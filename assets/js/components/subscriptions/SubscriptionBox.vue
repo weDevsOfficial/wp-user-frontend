@@ -177,7 +177,7 @@ const postStatus = computed(() => {
 
 </script>
 <template>
-    <div v-if="showBox" class="wpuf-text-base wpuf-justify-between wpuf-max-w-sm wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-rounded-xl wpuf-shadow dark:wpuf-bg-gray-800 dark:wpuf-border-gray-700 dark:hover:wpuf-bg-gray-700">
+    <div v-if="showBox" class="wpuf-text-base wpuf-justify-between wpuf-max-w-sm wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-rounded-xl wpuf-shadow">
         <div class="wpuf-flex wpuf-justify-between wpuf-border-b border-gray-900/5 wpuf-bg-gray-50 wpuf-p-4 wpuf-rounded-t-xl">
             <div>
                 <div class="wpuf-block wpuf-py-1 wpuf-text-gray-900 wpuf-m-0 wpuf-font-medium" :title="'id: ' + subscription.ID">{{ title }}</div>

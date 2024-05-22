@@ -39,11 +39,11 @@ const toggleDependentFields = (fieldId, status) => {
 </script>
 <template>
     <div
-        class="wpuf-border wpuf-border-gray-200 wpuf-rounded-t-xl wpuf-rounded-b-xl dark:wpuf-border-gray-70 wpuf-mt-4 wpuf mb-4">
+        class="wpuf-border wpuf-border-gray-200 wpuf-rounded-t-xl wpuf-rounded-b-xl wpuf-mt-4 wpuf-mb-4">
         <h2 class="wpuf-m-0">
             <button type="button"
                     @click="closed = !closed"
-                    class="wpuf-rounded-t-xl wpuf-flex wpuf-items-center wpuf-justify-between wpuf-w-full wpuf-p-4 wpuf-font-medium rtl:wpuf-text-right wpuf-text-gray-500 dark:wpuf-text-gray-400 wpuf-bg-gray-100 dark:wpuf-bg-gray-800 wpuf-gap-3">
+                    class="wpuf-rounded-t-xl wpuf-flex wpuf-items-center wpuf-justify-between wpuf-w-full wpuf-p-4 wpuf-font-medium rtl:wpuf-text-right wpuf-text-gray-500 wpuf-bg-gray-100 wpuf-gap-3">
                 <span>{{ subSection.label }}</span>
                 <svg
                     :class="closed ? 'wpuf-rotate-90' : 'wpuf-rotate-180'"

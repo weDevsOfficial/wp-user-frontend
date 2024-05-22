@@ -1,5 +1,5 @@
 # WP User Frontend - Registration, User Profile, Membership, Content Restriction, User Directory, and Frontend Post Submission Plugin #
-**Contributors:** [tareq1988](https://profiles.wordpress.org/tareq1988), [nizamuddinbabu](https://profiles.wordpress.org/nizamuddinbabu), [wedevs](https://profiles.wordpress.org/wedevs)  
+**Contributors:** [tareq1988](https://profiles.wordpress.org/tareq1988/), [nizamuddinbabu](https://profiles.wordpress.org/nizamuddinbabu/), [wedevs](https://profiles.wordpress.org/wedevs/)  
 **Donate link:** https://tareq.co/donate/  
 **Tags:** frontend post, content restriction, registration, user profile, membership, login, forms, user directory, profile builder  
 **Requires at least:** 4.0  

@@ -22,8 +22,8 @@ const billingAmount = computed(() => {
 </script>
 <template>
     <div class="wpuf-mt-4 wpuf-border wpuf-border-gray-200">
-        <dl class="wpuf-mx-auto wpuf-grid wpuf-grid-cols-1 bg-gray-900/5 sm:wpuf-grid-cols-2 lg:wpuf-grid-cols-4 wpuf-border-b-2 wpuf-border-dashed wpuf-bg-white">
-            <div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-gap-x-4 wpuf-gap-y-2 wpuf-px-4 wpuf-py-2 sm:wpuf-px-6 xl:wpuf-px-8">
+        <dl class="wpuf-mx-auto wpuf-grid wpuf-grid-cols-1 bg-gray-900/5 wpuf-grid-cols-2 wpuf-grid-cols-4 wpuf-border-b-2 wpuf-border-dashed wpuf-bg-white">
+            <div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-gap-x-4 wpuf-gap-y-2 wpuf-px-4 wpuf-py-2 wpuf-px-6 xl:wpuf-px-8">
                 <dt class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500">
                     {{ __( 'Plan', 'wp-user-frontend' )}}
                 </dt>
@@ -31,7 +31,7 @@ const billingAmount = computed(() => {
                     {{ currentSubscription.post_title }}
                 </dd>
             </div>
-            <div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-gap-x-4 wpuf-gap-y-2 wpuf-px-4 wpuf-py-2 sm:wpuf-px-6 xl:wpuf-px-8">
+            <div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-gap-x-4 wpuf-gap-y-2 wpuf-px-4 wpuf-py-2 wpuf-px-6 xl:wpuf-px-8">
                 <dt class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500">
                     {{ __( 'Payment', 'wp-user-frontend' )}}
                 </dt>
@@ -39,16 +39,16 @@ const billingAmount = computed(() => {
                     {{ billingAmount }}
                 </dd>
             </div>
-            <div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-gap-x-4 wpuf-gap-y-2 wpuf-px-4 wpuf-py-2 sm:wpuf-px-6 xl:wpuf-px-8"></div>
-            <div v-if="isRecurring" class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-gap-x-4 wpuf-gap-y-2 wpuf-px-4 wpuf-py-5 sm:wpuf-px-6 xl:wpuf-px-8">
+            <div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-gap-x-4 wpuf-gap-y-2 wpuf-px-4 wpuf-py-2 wpuf-px-6 xl:wpuf-px-8"></div>
+            <div v-if="isRecurring" class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-gap-x-4 wpuf-gap-y-2 wpuf-px-4 wpuf-py-5 wpuf-px-6 xl:wpuf-px-8">
                 <dt class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500 wpuf-flex wpuf-items-center wpuf-justify-center">
                     <div class="dashicons dashicons-controls-repeat"></div>
                     &nbsp;&nbsp;{{ __( 'Recurring', 'wp-user-frontend' )}}
                 </dt>
             </div>
         </dl>
-        <dl class="wpuf-mx-auto wpuf-grid wpuf-grid-cols-1 bg-gray-900/5 sm:wpuf-grid-cols-2 lg:wpuf-grid-cols-4 wpuf-bg-white">
-            <div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-gap-x-4 wpuf-gap-y-2 wpuf-bg-white wpuf-px-4 wpuf-py-2 sm:wpuf-px-6 xl:wpuf-px-8">
+        <dl class="wpuf-mx-auto wpuf-grid wpuf-grid-cols-1 bg-gray-900/5 wpuf-grid-cols-2 wpuf-grid-cols-4 wpuf-bg-white">
+            <div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-gap-x-4 wpuf-gap-y-2 wpuf-bg-white wpuf-px-4 wpuf-py-2 wpuf-px-6 xl:wpuf-px-8">
                 <dt class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500">
                     {{ __( 'Subscribers', 'wp-user-frontend' )}}
                 </dt>

@@ -43,7 +43,7 @@ onBeforeMount(() => {
 
 </script>
 <template>
-    <div class="wpuf-mt-4 wpuf-text-sm wpuf-font-medium wpuf-text-center wpuf-text-gray-500 wpuf-border-b wpuf-border-gray-200 dark:wpuf-text-gray-400 dark:wpuf-border-gray-700">
+    <div class="wpuf-mt-4 wpuf-text-sm wpuf-font-medium wpuf-text-center wpuf-text-gray-500 wpuf-border-b wpuf-border-gray-200">
         <ul class="wpuf-flex wpuf-flex-wrap wpuf--mb-px">
             <li
                 v-for="section in wpufSubscriptions.sections"
@@ -51,8 +51,8 @@ onBeforeMount(() => {
                 class="wpuf-mb-0 wpuf-me-2">
                 <button
                    @click="currentTab = section.id"
-                   :class="currentTab === section.id ? 'wpuf-border-blue-600 wpuf-text-blue-600' : ''"
-                   class="active:wpuf-shadow-none focus:wpuf-shadow-none wpuf-inline-block wpuf-p-4 wpuf-border-b-2 wpuf-rounded-t-lg hover:wpuf-text-gray-600 hover:wpuf-border-blue-600 dark:hover:wpuf-text-gray-300">
+                   :class="currentTab === section.id ? 'wpuf-border-b-2 wpuf-border-blue-600 wpuf-text-blue-600' : ''"
+                   class="active:wpuf-shadow-none focus:wpuf-shadow-none wpuf-inline-block wpuf-p-4 wpuf-rounded-t-lg hover:wpuf-text-blue-600 hover:wpuf-border-b-2 hover:wpuf-border-blue-600">
                     {{ section.title }}
                 </button>
             </li>

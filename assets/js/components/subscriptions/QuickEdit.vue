@@ -108,8 +108,8 @@ const updateSubscription = () => {
 }
 </style>
 <template>
-    <div class="wpuf-fixed wpuf-z-20 wpuf-top-1/3 wpuf-left-[calc(50%-5rem)] wpuf-w-1/4 wpuf-bg-white wpuf-p-6 wpuf-border wpuf-border-gray-200 wpuf-shadow dark:wpuf-bg-gray-800 dark:wpuf-border-gray-700 dark:hover:wpuf-bg-gray-700">
-        <div class="wpuf-px-2 sm:wpuf-px-2 lg:wpuf-px-2">
+    <div class="wpuf-fixed wpuf-z-20 wpuf-top-1/3 wpuf-left-[calc(50%-5rem)] wpuf-w-1/4 wpuf-bg-white wpuf-p-6 wpuf-border wpuf-border-gray-200 wpuf-shadow">
+        <div class="wpuf-px-2">
             <label for="plan-name" class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">{{ __('Plan name', 'wp-user-frontend') }}</label>
             <div class="wpuf-relative wpuf-mt-2 wpuf-rounded-md wpuf-shadow-sm">
                 <input
@@ -117,7 +117,7 @@ const updateSubscription = () => {
                     name="plan-name"
                     id="plan-name"
                     :class="errors.planName ? 'wpuf-ring-red-300 placeholder:wpuf-text-red-300 !wpuf-text-red-900 focus:wpuf-ring-red-500' : ''"
-                    class="wpuf-block wpuf-w-full wpuf-rounded-md !wpuf-border-hidden wpuf-py-1.5 wpuf-pr-10 wpuf-ring-1 wpuf-ring-inset focus:wpuf-ring-2 focus:wpuf-ring-inset sm:wpuf-text-sm sm:wpuf-leading-6 !wpuf-shadow-none"
+                    class="wpuf-block wpuf-w-full wpuf-rounded-md !wpuf-border-hidden wpuf-py-1.5 wpuf-pr-10 wpuf-ring-1 wpuf-ring-inset focus:wpuf-ring-2 focus:wpuf-ring-inset wpuf-text-sm wpuf-leading-6 !wpuf-shadow-none"
                     aria-invalid="true"
                     aria-describedby="plan-name-error"
                     v-model="currentSubscription.post_title"
@@ -128,7 +128,7 @@ const updateSubscription = () => {
             </div>
             <p v-if="errors.planName" class="wpuf-mt-2 wpuf-text-sm wpuf-text-red-600" id="email-error">{{ errors.planName.message }}</p>
         </div>
-        <div class="wpuf-px-2 sm:wpuf-px-2 lg:wpuf-px-2 wpuf-mt-4">
+        <div class="wpuf-px-2 wpuf-mt-4">
             <label for="date" class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">{{ __('Date', 'wp-user-frontend') }}</label>
             <div
                 :class="errors.date ? 'wpuf-border wpuf-border-red-500 placeholder:wpuf-text-red-300 !wpuf-text-red-900 focus:wpuf-ring-red-500' : 'wpuf-ring-indigo-600'"
@@ -143,7 +143,7 @@ const updateSubscription = () => {
             </div>
             <p v-if="errors.date" class="wpuf-mt-2 wpuf-text-sm wpuf-text-red-600" id="email-error">{{ __('Not a valid date', 'wp-user-frontend') }}</p>
         </div>
-        <div class="wpuf-px-2 sm:wpuf-px-2 lg:wpuf-px-2 wpuf-flex wpuf-justify-between wpuf-mt-6">
+        <div class="wpuf-px-2 wpuf-flex wpuf-justify-between wpuf-mt-6">
             <label for="plan-private" class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">{{ __('Private', 'wp-user-frontend') }}</label>
             <button
                 @click="isPrivate = !isPrivate"
@@ -156,8 +156,8 @@ const updateSubscription = () => {
             </button>
             <p v-if="errors.isPrivate" class="wpuf-mt-2 wpuf-text-sm wpuf-text-red-600" id="is-private-error">{{ __('Invalid', 'wp-user-frontend') }}</p>
         </div>
-        <div class="wpuf-px-2 sm:wpuf-px-2 lg:wpuf-px-2 wpuf-mt-4">
-            <p v-if="subscriptionStore.updateError.status" id="filled_error_help" class="wpuf-mt-2 wpuf-text-xs wpuf-text-red-600 dark:wpuf-text-red-400">
+        <div class="wpuf-px-2 wpuf-mt-4">
+            <p v-if="subscriptionStore.updateError.status" id="filled_error_help" class="wpuf-mt-2 wpuf-text-xs wpuf-text-red-600">
                 {{ subscriptionStore.updateError.message }}</p>
         </div>
         <div class="wpuf-flex wpuf-mt-8 wpuf-flex-row-reverse">

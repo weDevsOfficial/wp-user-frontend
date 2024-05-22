@@ -49,10 +49,10 @@ onBeforeMount( () => {
 
 </script>
 <template>
-    <div class="wpuf-flex wpuf-justify-between wpuf-max-w-sm wpuf-p-6 wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-rounded-lg wpuf-shadow dark:wpuf-bg-gray-800 dark:wpuf-border-gray-700 dark:hover:wpuf-bg-gray-700">
+    <div class="wpuf-flex wpuf-justify-between wpuf-max-w-sm wpuf-p-6 wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-rounded-lg wpuf-shadow">
         <div
             class="wpuf-block">
-            <h5 class="wpuf-mb-1 wpuf-m-0 wpuf-text-2xl wpuf-font-bold wpuf-tracking-tight wpuf-text-gray-900 dark:wpuf-text-white">
+            <h5 class="wpuf-mb-1 wpuf-m-0 wpuf-text-2xl wpuf-font-bold wpuf-tracking-tight wpuf-text-gray-900">
                 {{ subscription.post_title }}</h5>
             <p class="wpuf-mt-1 wpuf-mb-1 wpuf-truncate wpuf-text-lg wpuf-text-gray-500">{{ billingAmount }}</p>
             <div :class="pillBackground"

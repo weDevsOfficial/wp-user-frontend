@@ -113,47 +113,17 @@ onMounted(() => {
 });
 
 </script>
-<style scoped>
-.dp__theme_light {
-    --dp-background-color: none;
-    --dp-text-color: none;
-    --dp-hover-color: none;
-    --dp-hover-text-color: none;
-    --dp-hover-icon-color: none;
-    --dp-primary-color: none;
-    --dp-primary-disabled-color: none;
-    --dp-primary-text-color: none;
-    --dp-secondary-color: none;
-    --dp-border-color: none;
-    --dp-menu-border-color: none;
-    --dp-border-color-hover: none;
-    --dp-disabled-color: none;
-    --dp-scroll-bar-background: none;
-    --dp-scroll-bar-color: none;
-    --dp-success-color: none;
-    --dp-success-color-disabled: none;
-    --dp-icon-color: none;
-    --dp-danger-color: none;
-    --dp-marker-color: none;
-    --dp-tooltip-color: none;
-    --dp-disabled-color-text: none;
-    --dp-highlight-color: none;
-    --dp-range-between-dates-background-color: none;
-    --dp-range-between-dates-text-color: none;
-    --dp-range-between-border-color: none;
-}
-</style>
 <template>
     <div
         v-show="showField"
-        :class="field.label ? 'sm:wpuf-grid sm:wpuf-grid-cols-3' : 'wpuf-block'"
-        class="wpuf-items-start sm:wpuf-gap-4 wpuf-p-4">
+        :class="field.label ? 'wpuf-grid wpuf-grid-cols-3' : 'wpuf-block'"
+        class="wpuf-gap-4 wpuf-p-4">
         <label v-if="field.label"
                :for="field.name"
                class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">
             {{ field.label }}
         </label>
-        <div class="wpuf-w-max">
+        <div class="wpuf-w-full wpuf-col-span-2">
             <input
                 v-if="field.type === 'input-text'"
                 type="text"
@@ -161,7 +131,7 @@ onMounted(() => {
                 :name="field.name"
                 :id="field.name"
                 @input="[modifySubscription($event), processInput($event)]"
-                class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 sm:wpuf-max-w-xs sm:wpuf-text-sm sm:wpuf-leading-6">
+                class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 wpuf-text-sm wpuf-leading-6">
             <input
                 v-if="field.type === 'input-number'"
                 type="number"
@@ -169,14 +139,14 @@ onMounted(() => {
                 :name="field.name"
                 :id="field.name"
                 @input="[modifySubscription($event), processInput($event)]"
-                class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 sm:wpuf-max-w-xs sm:wpuf-text-sm sm:wpuf-leading-6">
+                class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 wpuf-text-sm wpuf-leading-6">
             <textarea
                 v-if="field.type === 'textarea'"
                 :name="field.name"
                 :id="field.name"
                 rows="3"
                 @input="[modifySubscription($event), processInput($event)]"
-                class="wpuf-block wpuf-w-full wpuf-max-w-2xl wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 sm:wpuf-text-sm sm:wpuf-leading-6">{{ value }}</textarea>
+                class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 wpuf-text-sm wpuf-leading-6">{{ value }}</textarea>
             <button
                 v-if="field.type === 'switcher'"
                 @click="[toggleOnOff(), $emit('toggleDependentFields', fieldId, switchStatus)]"
@@ -204,6 +174,7 @@ onMounted(() => {
             <select v-if="field.type === 'select'"
                     :name="field.name"
                     :id="field.name"
+                    class="wpuf-w-full"
                     @input="[modifySubscription($event), processInput($event)]">
                 <option
                     v-for="(item, key) in field.options"

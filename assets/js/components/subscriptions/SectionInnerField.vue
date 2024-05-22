@@ -18,16 +18,16 @@ const showField = computed(() => {
 <template>
     <div
         v-show="showField"
-        class="sm:wpuf-grid sm:wpuf-grid-cols-3 sm:wpuf-items-start sm:wpuf-gap-4 wpuf-p-4">
+        class="wpuf-grid wpuf-grid-cols-3">
         <label
             :for="parentField.name"
-            class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">
+            class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900 wpuf-pl-4">
             {{ parentField.label }}
         </label>
-        <div class="wpuf-w-max wpuf-flex wpuf-inline-input">
+        <div class="wpuf-mr-2 wpuf-contents">
             <SectionInputField v-for="field in parentField.fields"
-                :field="field"
-                :hiddenFields="hiddenFields" />
+               :field="field"
+               :hiddenFields="hiddenFields" />
         </div>
     </div>
 </template>

@@ -75,12 +75,12 @@ const goToLastPage = () => {
 
 </script>
 <template>
-    <div class="wpuf-flex wpuf-items-center wpuf-justify-between wpuf-border-t wpuf-border-gray-200 wpuf-bg-white wpuf-px-4 wpuf-py-3 sm:wpuf-px-6">
-        <div class="wpuf-flex wpuf-flex-1 wpuf-justify-between sm:wpuf-hidden">
+    <div class="wpuf-flex wpuf-items-center wpuf-justify-between wpuf-border-t wpuf-border-gray-200 wpuf-bg-white wpuf-px-4 wpuf-py-3 wpuf-px-6">
+        <div class="wpuf-flex wpuf-flex-1 wpuf-justify-between wpuf-hidden">
             <a href="#" class="wpuf-relative wpuf-inline-flex wpuf-items-center wpuf-rounded-md wpuf-border wpuf-border-gray-300 wpuf-bg-white wpuf-px-4 wpuf-py-2 wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 hover:wpuf-bg-gray-50">Previous</a>
             <a href="#" class="wpuf-relative wpuf-ml-3 wpuf-inline-flex wpuf-items-center wpuf-rounded-md wpuf-border wpuf-border-gray-300 wpuf-bg-white wpuf-px-4 wpuf-py-2 wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 hover:wpuf-bg-gray-50">Next</a>
         </div>
-        <div class="wpuf-hidden sm:wpuf-flex sm:wpuf-flex-1 sm:wpuf-items-center sm:wpuf-justify-between">
+        <div class="wpuf-hidden wpuf-flex wpuf-flex-1 wpuf-items-center wpuf-justify-between">
             <div>
                 <p class="wpuf-text-sm wpuf-text-gray-700">
                     Showing
@@ -110,7 +110,7 @@ const goToLastPage = () => {
                         @click="[emit('changePageTo', page.name), currentPage = page.name]"
                         :key="page.name"
                         :class="currentPage === page.name ? 'wpuf-bg-indigo-600 wpuf-text-white hover:wpuf-bg-indigo-700' : ''"
-                        class="wpuf-relative wpuf-items-center wpuf-px-4 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900 wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 hover:wpuf-bg-gray-50 focus:wpuf-z-20 focus:outline-offset-0 md:wpuf-inline-flex">
+                        class="wpuf-relative wpuf-items-center wpuf-px-4 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900 wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 hover:wpuf-bg-gray-50 focus:wpuf-z-20 focus:outline-offset-0 wpuf-inline-flex">
                         {{ page.name }}
                     </button>
                     <button

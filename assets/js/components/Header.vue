@@ -18,7 +18,7 @@ const logoUrl = wpufSubscriptions.assetUrl + '/images/icon-128x128.png';
                 target="_blank"
                 class="wpuf-ml-4 wpuf-rounded-md wpuf-bg-amber-500 wpuf-px-3 wpuf-py-2 wpuf-text-sm font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-amber-600 hover:wpuf-text-white hover:wpuf-shadow-none active:wpuf-shadow-none focus:wpuf-bg-amber-600 focus:wpuf-text-white">
                 {{ __( 'Upgrade', 'wp-user-frontend' ) }}
-                &nbsp;&nbsp;
+                &nbsp;
                 <span class="dashicons dashicons-superhero-alt"></span>
             </a>
         </div>

@@ -7,6 +7,7 @@ import {useSubscriptionStore} from '../../stores/subscription';
 import {ref} from 'vue';
 import UpdateButton from './UpdateButton.vue';
 import {useNoticeStore} from '../../stores/notice';
+import Unsaved from './Unsaved.vue';
 
 const isUpdating = ref( false );
 
@@ -47,13 +48,22 @@ const updateSubscription = () => {
     isUpdating.value = false;
 };
 
+const goToList = () => {
+    subscriptionStore.isDirty = false;
+
+    componentStore.setCurrentComponent('List');
+    subscriptionStore.setCurrentSubscription(null);
+};
+
 </script>
 <template>
-    <div class="wpuf-px-12">
+    <div
+        :class="subscriptionStore.isUnsavedPopupOpen ? 'wpuf-blur' : ''"
+        class="wpuf-px-12">
         <div class="wpuf-flex wpuf-justify-between">
             <button
                 type="button"
-                @click="[componentStore.setCurrentComponent('List'), subscriptionStore.setCurrentSubscription(null)]"
+                @click="subscriptionStore.isDirty ? subscriptionStore.isUnsavedPopupOpen = subscriptionStore.isDirty : goToList()"
                 class="wpuf-rounded-md wpuf-bg-indigo-600 wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                 <span class="dashicons dashicons-arrow-left-alt"></span>&nbsp;{{ __( 'Back', 'wp-user-frontend' ) }}</button>
         </div>
@@ -66,4 +76,5 @@ const updateSubscription = () => {
                 :is-updating="isUpdating.value" />
         </div>
     </div>
+    <Unsaved v-if="subscriptionStore.isUnsavedPopupOpen" @close-popup="subscriptionStore.isUnsavedPopupOpen = false" @go-to-list="goToList" />
 </template>

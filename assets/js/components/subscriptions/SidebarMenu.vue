@@ -7,7 +7,8 @@ const subscriptionStore = useSubscriptionStore();
 const componentStore = useComponentStore();
 </script>
 <template>
-    <div>
+    <div
+    :class="subscriptionStore.isUnsavedPopupOpen ? 'wpuf-blur' : ''">
         <div class="wpuf-flex wpuf-flex-col wpuf-px-4">
             <div class="wpuf-flex wpuf-items-center wpuf-justify-between wpuf-mb-4">
                 <h3>{{ __('Subscriptions', 'wp-user-frontend') }}</h3>

@@ -7,8 +7,11 @@ import {addQueryArgs} from '@wordpress/url';
 export const useSubscriptionStore = defineStore( 'subscription', {
     state: () => ( {
         subscriptionList: ref( [] ),
+        isDirty: ref( false ),
+        isUnsavedPopupOpen: ref( false ),
         currentSubscriptionStatus: ref( 'all' ),
         currentSubscription: ref( null ),
+        currentSubscriptionCopy: ref( null ),
         errors: reactive( {} ),
         updateError: reactive( {
             status: false,
@@ -60,6 +63,7 @@ export const useSubscriptionStore = defineStore( 'subscription', {
     actions: {
         setCurrentSubscription( subscription ) {
             this.currentSubscription = subscription;
+            this.currentSubscriptionCopy = subscription;
         },
         setBlankSubscription() {
             this.currentSubscription = {};
@@ -127,6 +131,8 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                 body: JSON.stringify( {subscription} )
             };
 
+            this.isDirty = false;
+
             return fetch( requestUrl, requestOptions )
                 .then( ( response ) => response.json() )
                 .catch( ( error ) => {
@@ -139,6 +145,8 @@ export const useSubscriptionStore = defineStore( 'subscription', {
 
                 return;
             }
+
+            this.isDirty = true;
 
             if (serializeKey === null) {
                 // if key is not found in currentSubscription, then it must be in meta_value
@@ -166,6 +174,8 @@ export const useSubscriptionStore = defineStore( 'subscription', {
         },
         setMetaValue ( key, value ) {
             this.currentSubscription.meta_value[key] = value;
+
+            this.isDirty = true;
         },
         getSerializedMetaValue(key, serializeKey) {
             if (!this.currentSubscription.meta_value.hasOwnProperty( key )) {

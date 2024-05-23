@@ -174,7 +174,7 @@ onMounted(() => {
             <select v-if="field.type === 'select'"
                     :name="field.name"
                     :id="field.name"
-                    class="wpuf-w-full"
+                    class="wpuf-w-full !wpuf-max-w-full"
                     @input="[modifySubscription($event), processInput($event)]">
                 <option
                     v-for="(item, key) in field.options"

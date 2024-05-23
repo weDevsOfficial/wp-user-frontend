@@ -8,3 +8,6 @@
 .wpuf-inline-input > *:first-child {
     margin-right: 1rem;
 }
+body.user-frontend_page_wpuf_subscription {
+    background: #fff;
+}

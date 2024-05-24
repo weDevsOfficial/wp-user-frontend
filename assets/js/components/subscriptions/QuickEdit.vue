@@ -106,9 +106,12 @@ const updateSubscription = () => {
     --dp-range-between-dates-text-color: none;
     --dp-range-between-border-color: none;
 }
+.dp__input_valid {
+    box-shadow: none;
+}
 </style>
 <template>
-    <div class="wpuf-fixed wpuf-z-20 wpuf-top-1/3 wpuf-left-[calc(50%-5rem)] wpuf-w-1/4 wpuf-bg-white wpuf-p-6 wpuf-border wpuf-border-gray-200 wpuf-shadow">
+    <div class="wpuf-rounded-lg wpuf-fixed wpuf-z-20 wpuf-top-1/3 wpuf-left-[calc(50%-5rem)] wpuf-w-1/3 wpuf-bg-white wpuf-p-6 wpuf-border wpuf-border-gray-200 wpuf-shadow">
         <div class="wpuf-px-2">
             <label for="plan-name" class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">{{ __('Plan name', 'wp-user-frontend') }}</label>
             <div class="wpuf-relative wpuf-mt-2 wpuf-rounded-md wpuf-shadow-sm">
@@ -169,7 +172,7 @@ const updateSubscription = () => {
                 :disabled="isUpdating"
                 type="button"
                 :class="isUpdating ? 'wpuf-cursor-not-allowed' : ''"
-                class="wpuf-rounded-md wpuf-bg-white wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 hover:wpuf-bg-gray-50">
+                class="wpuf-rounded-lg wpuf-bg-white wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 hover:wpuf-bg-gray-50">
                 {{ __('Cancel', 'wp-user-frontend') }}
             </button>
         </div>

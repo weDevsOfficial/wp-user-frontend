@@ -67,7 +67,7 @@ const { currentComponent } = storeToRefs(componentStore);
     <div v-if="!count">
         <Empty />
     </div>
-    <div v-else class="wpuf-all-subscriptions-list wpuf-px-12 wpuf-pb-12">
+    <div v-else class="wpuf-all-subscriptions-list wpuf-px-8 wpuf-pb-8">
         <div class="wpuf-flex wpuf-justify-between">
             <div>
                 <h3 class="wpuf-text-lg wpuf-font-bold wpuf-m-0">{{ __( 'Subscriptions', 'wp-user-frontend' ) }}</h3>

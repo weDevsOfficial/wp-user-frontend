@@ -175,12 +175,23 @@ const postStatus = computed(() => {
     return firstLetterCap + remainingLetters;
 });
 
+const isPasswordProtected = computed(() => {
+    return subscription.value.post_password !== '';
+});
+
 </script>
 <template>
-    <div v-if="showBox" class="wpuf-text-base wpuf-justify-between wpuf-max-w-sm wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-rounded-xl wpuf-shadow">
-        <div class="wpuf-flex wpuf-justify-between wpuf-border-b border-gray-900/5 wpuf-bg-gray-50 wpuf-p-4 wpuf-rounded-t-xl">
+    <div v-if="showBox" class="wpuf-text-base wpuf-justify-between wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-rounded-xl wpuf-shadow">
+        <div class="wpuf-flex wpuf-justify-between wpuf-border-b border-gray-900/5 wpuf-bg-gray-50 wpuf-p-6 wpuf-rounded-t-xl">
             <div>
-                <div class="wpuf-block wpuf-py-1 wpuf-text-gray-900 wpuf-m-0 wpuf-font-medium" :title="'id: ' + subscription.ID">{{ title }}</div>
+                <div class="wpuf-flex wpuf-py-1 wpuf-text-gray-900 wpuf-m-0 wpuf-font-medium" :title="'id: ' + subscription.ID">
+                    {{ title }} &nbsp;
+                    <span v-if="isPasswordProtected">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M5.99999 10.8V8.4C5.99999 5.08629 8.68628 2.4 12 2.4C15.3137 2.4 18 5.08629 18 8.4V10.8C19.3255 10.8 20.4 11.8745 20.4 13.2V19.2C20.4 20.5255 19.3255 21.6 18 21.6H5.99999C4.67451 21.6 3.59999 20.5255 3.59999 19.2V13.2C3.59999 11.8745 4.67451 10.8 5.99999 10.8ZM15.6 8.4V10.8H8.39999V8.4C8.39999 6.41178 10.0118 4.8 12 4.8C13.9882 4.8 15.6 6.41178 15.6 8.4Z" fill="#a0aec0"/>
+                        </svg>
+                    </span>
+                </div>
                 <p class="wpuf-text-gray-500 wpuf-text-base wpuf-m-0">{{ billingAmount }}</p>
             </div>
             <div class="wpuf-flex wpuf-justify-between wpuf-flex-col wpuf-relative">
@@ -203,14 +214,14 @@ const postStatus = computed(() => {
                 </div>
             </div>
         </div>
-        <div class="wpuf-flex wpuf-px-4 wpuf-py-4 wpuf-justify-between wpuf-items-center">
+        <div class="wpuf-flex wpuf-px-6 wpuf-py-6 wpuf-justify-between wpuf-items-center">
             <div :class="pillColor"
                  class="wpuf-text-sm wpuf-w-fit wpuf-px-2.5 wpuf-py-1 wpuf-shadow-sm wpuf-bg-gray-100 wpuf-rounded-md wpuf-ring-1">
                 {{ postStatus }}
             </div>
             <div v-if="isRecurring" class="dashicons dashicons-controls-repeat"></div>
         </div>
-        <div class="wpuf-flex wpuf-px-4 wpuf-py-4 wpuf-justify-between wpuf-items-center">
+        <div class="wpuf-flex wpuf-px-6 wpuf-pb-6 wpuf-justify-between wpuf-items-center">
             <p class="wpuf-text-gray-500 wpuf-text-base wpuf-m-0">{{ __( 'Total Subscribers' ) }}</p>
             <a :href="subscribersLink" class="wpuf-text-gray-500">{{ subscribers }}</a>
         </div>

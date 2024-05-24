@@ -50,6 +50,7 @@ const updateSubscription = () => {
 
 const goToList = () => {
     subscriptionStore.isDirty = false;
+    subscriptionStore.isUnsavedPopupOpen = false;
 
     componentStore.setCurrentComponent('List');
     subscriptionStore.setCurrentSubscription(null);

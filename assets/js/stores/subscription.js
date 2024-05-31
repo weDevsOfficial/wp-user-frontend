@@ -17,6 +17,7 @@ export const useSubscriptionStore = defineStore( 'subscription', {
             status: false,
             message: '',
         } ),
+        allCount: ref( {} ),
     } ),
     getters: {
         fieldNames: () => {
@@ -24,11 +25,11 @@ export const useSubscriptionStore = defineStore( 'subscription', {
             const names = [];
 
             for (const section in sections) {
-                if ( !sections.hasOwnProperty( section ) ) {
+                if (!sections.hasOwnProperty( section )) {
                     continue;
                 }
                 for (const subsection in sections[section]) {
-                    if ( !sections[section].hasOwnProperty( subsection ) ) {
+                    if (!sections[section].hasOwnProperty( subsection )) {
                         continue;
                     }
                     for (const field in sections[section][subsection]) {
@@ -44,11 +45,11 @@ export const useSubscriptionStore = defineStore( 'subscription', {
             const fields = [];
 
             for (const section in sections) {
-                if ( !sections.hasOwnProperty( section ) ) {
+                if (!sections.hasOwnProperty( section )) {
                     continue;
                 }
                 for (const subsection in sections[section]) {
-                    if ( !sections[section].hasOwnProperty( subsection ) ) {
+                    if (!sections[section].hasOwnProperty( subsection )) {
                         continue;
                     }
                     for (const field in sections[section][subsection]) {
@@ -81,7 +82,7 @@ export const useSubscriptionStore = defineStore( 'subscription', {
 
                     case 'meta_serialized':
                         let serializedValue = {};
-                        if ( this.currentSubscription.meta_value.hasOwnProperty(field.db_key) ) {
+                        if (this.currentSubscription.meta_value.hasOwnProperty( field.db_key )) {
                             serializedValue = this.currentSubscription.meta_value[field.db_key];
                             serializedValue[field.serialize_key] = field.default;
                         } else {
@@ -94,31 +95,31 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                 }
             }
         },
-        getValueFromField(field) {
+        getValueFromField( field ) {
             switch (field.type) {
                 case 'input-text':
                 case 'input-number':
                 case 'textarea':
                 case 'switcher':
                 case 'select':
-                    return document.querySelector('#' + field.id).value;
+                    return document.querySelector( '#' + field.id ).value;
                 case 'time-date':
 
-                    return document.querySelector('#dp-input-' + field.id).value;
+                    return document.querySelector( '#dp-input-' + field.id ).value;
                 default:
 
                     return '';
             }
         },
         updateSubscription() {
-            if ( this.currentSubscription === null ) {
+            if (this.currentSubscription === null) {
                 return false;
             }
 
             const subscription = this.currentSubscription;
             let requestUrl = '/wp-json/wpuf/v1/wpuf_subscription';
 
-            if ( subscription.ID ) {
+            if (subscription.ID) {
                 requestUrl += '/' + subscription.ID;
             }
 
@@ -137,9 +138,9 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                 .then( ( response ) => response.json() )
                 .catch( ( error ) => {
                     console.log( error );
-            } );
+                } );
         },
-        modifyCurrentSubscription ( key, value, serializeKey = null ) {
+        modifyCurrentSubscription( key, value, serializeKey = null ) {
             if (this.currentSubscription === null) {
                 this.setBlankSubscription();
 
@@ -153,7 +154,7 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                 if (this.currentSubscription.hasOwnProperty( key )) {
                     this.currentSubscription[key] = value;
                 } else {
-                    this.setMetaValue ( key, value );
+                    this.setMetaValue( key, value );
                 }
 
                 return;
@@ -165,24 +166,23 @@ export const useSubscriptionStore = defineStore( 'subscription', {
 
             this.currentSubscription.meta_value[key][serializeKey] = value;
         },
-        getMetaValue (key) {
+        getMetaValue( key ) {
             if (!this.currentSubscription.meta_value.hasOwnProperty( key )) {
                 return '';
             }
 
             return this.currentSubscription.meta_value[key];
         },
-        setMetaValue ( key, value ) {
+        setMetaValue( key, value ) {
             this.currentSubscription.meta_value[key] = value;
 
             this.isDirty = true;
-        },
-        getSerializedMetaValue(key, serializeKey) {
+        }, getSerializedMetaValue( key, serializeKey ) {
             if (!this.currentSubscription.meta_value.hasOwnProperty( key )) {
                 return '';
             }
 
-            const serializedValue = this.getMetaValue(key);
+            const serializedValue = this.getMetaValue( key );
 
             if (!serializedValue.hasOwnProperty( serializeKey )) {
                 return '';
@@ -196,10 +196,10 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                 message: message,
             };
         },
-        resetErrors () {
+        resetErrors() {
             this.errors = {};
         },
-        hasError () {
+        hasError() {
             for (const item in this.errors) {
                 if (this.errors[item]) {
                     return true;
@@ -208,30 +208,30 @@ export const useSubscriptionStore = defineStore( 'subscription', {
 
             return false;
         },
-        validateQuickEdit () {
+        validateQuickEdit() {
             const planName = this.currentSubscription.post_title;
 
-            if ( planName === '' ) {
+            if (planName === '') {
                 this.setError( 'planName', __( 'This field is required', 'wp-user-frontend' ) );
             }
 
             // error if plan name contains #. PayPal doesn't allow # in package name
-            if ( planName.includes('#') ) {
+            if (planName.includes( '#' )) {
                 this.setError( 'planName', __( '# is not supported in plan name', 'wp-user-frontend' ) );
             }
         },
-        validateEdit () {
+        validateEdit() {
             const subscription = this.currentSubscription;
 
             const fields = wpufSubscriptions.fields;
 
             for (const section in fields) {
-                if ( !fields.hasOwnProperty( section ) ) {
+                if (!fields.hasOwnProperty( section )) {
                     continue;
                 }
 
                 for (const subsection in fields[section]) {
-                    if ( !fields[section].hasOwnProperty( subsection ) ) {
+                    if (!fields[section].hasOwnProperty( subsection )) {
                         continue;
                     }
 
@@ -253,7 +253,7 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                                 break;
                         }
 
-                        if ( fieldData.is_required && value === '' ) {
+                        if (fieldData.is_required && value === '') {
                             this.setError( field, __( 'This field is required', 'wp-user-frontend' ) );
                         }
                     }
@@ -263,7 +263,7 @@ export const useSubscriptionStore = defineStore( 'subscription', {
         validateFields( mode = 'update' ) {
             this.resetErrors();
 
-            switch ( mode ) {
+            switch (mode) {
                 case 'quickEdit':
                     this.validateQuickEdit();
                     break;
@@ -299,7 +299,7 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                 } );
         },
         setSubscriptionsByStatus( status, offset = 0 ) {
-            const queryParams = { 'per_page': wpufSubscriptions.perPage, 'offset': offset, 'post_status': status };
+            const queryParams = {'per_page': wpufSubscriptions.perPage, 'offset': offset, 'post_status': status};
             apiFetch( {
                 path: addQueryArgs( '/wp-json/wpuf/v1/wpuf_subscription', queryParams ),
                 method: 'GET',
@@ -307,15 +307,15 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                     'X-WP-Nonce': wpufSubscriptions.nonce,
                 },
             } )
-            .then( ( response ) => {
-                if (response.success) {
-                    this.currentSubscriptionStatus = status;
-                    this.subscriptionList = response.subscriptions;
-                }
-            } )
-            .catch( ( error ) => {
-                console.log( error );
-            } );
-        }
+                .then( ( response ) => {
+                    if (response.success) {
+                        this.currentSubscriptionStatus = status;
+                        this.subscriptionList = response.subscriptions;
+                    }
+                } )
+                .catch( ( error ) => {
+                    console.log( error );
+                } );
+        },
     }
 } );

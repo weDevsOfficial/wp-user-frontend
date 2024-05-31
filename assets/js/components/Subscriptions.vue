@@ -24,7 +24,6 @@ const subscriptionStore = useSubscriptionStore();
 const quickEditStore = useQuickEditStore();
 const { currentComponent } = storeToRefs(componentStore);
 const { isQuickEdit } = storeToRefs(quickEditStore);
-const { isUnsavedPopupOpen } = storeToRefs(subscriptionStore);
 
 const isLoading = ref( false );
 

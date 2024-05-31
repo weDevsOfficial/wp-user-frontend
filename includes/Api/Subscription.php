@@ -81,9 +81,49 @@ class Subscription extends WP_REST_Controller {
             '/' . $this->base . '/count/(?P<status>\w+)', [
                 [
                     'methods'             => 'GET',
-                    'callback'            => [ $this, 'get_subscriptions_count' ],
+                    'callback'            => [ $this, 'total_subscriptions_count_by_status' ],
                     'permission_callback' => [ $this, 'permission_check' ],
                 ],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->base . '/count', [
+                [
+                    'methods'             => 'GET',
+                    'callback'            => [ $this, 'total_subscriptions_count' ],
+                    'permission_callback' => [ $this, 'permission_check' ],
+                ],
+            ]
+        );
+    }
+
+    /**
+     * Get subscriptions count
+     *
+     * @since WPUF_SINCE
+     *
+     * @param WP_REST_Request $request Full details about the request.
+     *
+     * @return WP_REST_Response
+     */
+    public function total_subscriptions_count( $request ) {
+        $count = wpuf()->subscription->total_subscriptions_count_array();
+
+        if ( is_null( $count ) ) {
+            return new WP_REST_Response(
+                [
+                    'success' => false,
+                    'message' => __( 'Failed to get subscriptions count', 'wp-user-frontend' ),
+                ]
+            );
+        }
+
+        return new WP_REST_Response(
+            [
+                'success' => true,
+                'count'   => $count,
             ]
         );
     }
@@ -97,16 +137,16 @@ class Subscription extends WP_REST_Controller {
      *
      * @return WP_REST_Response
      */
-    public function get_subscriptions_count( $request ) {
+    public function total_subscriptions_count_by_status( $request ) {
         $status = ! empty( $request['status'] ) ? sanitize_text_field( $request['status'] ) : 'publish';
 
-        $count = wpuf()->subscription->total_subscriptions_count( $status );
+        $count = wpuf()->subscription->total_subscriptions_count_by_status( $status );
 
         if ( is_null( $count ) ) {
             return new WP_REST_Response(
                 [
                     'success' => false,
-                    'message' => __( 'Failed to delete subscription', 'wp-user-frontend' ),
+                    'message' => __( 'Failed to get subscriptions count', 'wp-user-frontend' ),
                 ]
             );
         }

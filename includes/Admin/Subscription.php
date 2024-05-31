@@ -1412,7 +1412,7 @@ class Subscription {
      *
      * @return string|null Database query result (as string), or null on failure.
      */
-    public function total_subscriptions_count( $status = 'all' ) {
+    public function total_subscriptions_count_by_status( $status = 'all' ) {
         global $wpdb;
 
         if ( 'all' === $status ) {
@@ -1425,5 +1425,29 @@ class Subscription {
                 )
             );
         }
+    }
+
+    /**
+     * Total count of subscriptions by status
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array
+     */
+    public function total_subscriptions_count_array() {
+        global $wpdb;
+
+        $status = [];
+        $result = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT post_status, COUNT(*) AS count FROM $wpdb->posts WHERE post_type = %s GROUP BY post_status", 'wpuf_subscription'
+            )
+        );
+
+        foreach ( $result as $row ) {
+            $status[ $row->post_status ] = $row->count;
+        }
+
+        return $status;
     }
 }

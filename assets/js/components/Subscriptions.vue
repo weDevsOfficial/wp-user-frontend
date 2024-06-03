@@ -16,7 +16,6 @@ import New from './subscriptions/New.vue';
 import QuickEdit from './subscriptions/QuickEdit.vue';
 import {useQuickEditStore} from '../stores/quickEdit';
 import Notice from './subscriptions/Notice.vue';
-import {__} from '@wordpress/i18n';
 import {useSubscriptionStore} from '../stores/subscription';
 
 const componentStore = useComponentStore();
@@ -55,6 +54,24 @@ const fetchData = async () => {
     });
 }
 
+const fetchSubscriptionCount = async () => {
+    apiFetch( {
+        path: '/wp-json/wpuf/v1/wpuf_subscription/count',
+        method: 'GET',
+        headers: {
+            'X-WP-Nonce': wpufSubscriptions.nonce,
+        },
+    } )
+        .then( ( response ) => {
+            if (response.success) {
+                subscriptionStore.allCount = response.count;
+            }
+        } )
+        .catch( ( error ) => {
+            console.log( error );
+        } );
+}
+
 const component = computed( () => {
     switch ( currentComponent.value ) {
         case 'List':
@@ -72,6 +89,7 @@ const component = computed( () => {
 
 onBeforeMount( () => {
     fetchData();
+    fetchSubscriptionCount();
 } );
 
 </script>
@@ -91,12 +109,14 @@ onBeforeMount( () => {
         <QuickEdit />
     </template>
     <div
+        v-if="!isLoading"
         :class="isQuickEdit ? 'wpuf-blur' : ''"
         class="wpuf-flex wpuf-flex-row wpuf-mt-12 wpuf-bg-white wpuf-py-8">
         <div class="wpuf-basis-1/5 wpuf-border-r-2 wpuf-border-gray-200">
             <SidebarMenu />
         </div>
-        <div class="wpuf-basis-4/5">
+        <div
+            class="wpuf-basis-4/5">
             <component :is="component" />
         </div>
     </div>

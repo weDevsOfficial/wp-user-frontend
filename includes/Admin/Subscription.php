@@ -1437,6 +1437,7 @@ class Subscription {
     public function total_subscriptions_count_array() {
         global $wpdb;
 
+        $total  = 0;
         $status = [];
         $result = $wpdb->get_results(
             $wpdb->prepare(
@@ -1446,7 +1447,10 @@ class Subscription {
 
         foreach ( $result as $row ) {
             $status[ $row->post_status ] = $row->count;
+            $total                      += $row->count;
         }
+
+        $status['all'] = $total;
 
         return $status;
     }

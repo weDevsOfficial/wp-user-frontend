@@ -13,8 +13,8 @@ import {useComponentStore} from '../../stores/component';
 const subscriptionStore = useSubscriptionStore();
 const componentStore = useComponentStore();
 const subscriptions = storeToRefs(subscriptionStore).subscriptionList;
-const count = ref( 0 );
-const totalPages = ref( 0 );
+const count = ref( subscriptionStore.allCount.all );
+const totalPages = ref( Math.ceil( count.value / wpufSubscriptions.perPage ) );
 const changePageTo = ( page ) => {
     const offset = ( page - 1 ) * parseInt( wpufSubscriptions.perPage );
 
@@ -22,22 +22,8 @@ const changePageTo = ( page ) => {
 };
 
 watch( () => subscriptionStore.currentSubscriptionStatus, ( newValue ) => {
-    apiFetch( {
-        path: addQueryArgs( '/wp-json/wpuf/v1/wpuf_subscription/count/' + newValue ),
-        method: 'GET',
-        headers: {
-            'X-WP-Nonce': wpufSubscriptions.nonce,
-        },
-    } )
-    .then( ( response ) => {
-        if (response.success) {
-            count.value = parseInt( response.count );
-            totalPages.value = Math.ceil(count.value / 10);
-        }
-    } )
-    .catch( ( error ) => {
-        console.log( error );
-    } );
+    count.value = subscriptionStore.allCount[newValue];
+    totalPages.value = Math.ceil(count.value / wpufSubscriptions.perPage);
 });
 
 onMounted(() => {
@@ -51,7 +37,7 @@ onMounted(() => {
     .then( ( response ) => {
         if (response.success) {
             count.value = parseInt( response.count );
-            totalPages.value = Math.ceil(count.value / 10);
+            totalPages.value = Math.ceil(count.value / wpufSubscriptions.perPage);
         }
     } )
     .catch( ( error ) => {
@@ -93,5 +79,5 @@ const { currentComponent } = storeToRefs(componentStore);
             <SubscriptionBox v-for="subscription in subscriptions" :subscription=subscription :key="subscription.ID" />
         </div>
     </div>
-    <Pagination v-if="count > 10" @changePageTo="changePageTo" :count="count" :totalPages="totalPages" />
+    <Pagination @changePageTo="changePageTo" />
 </template>

@@ -104,9 +104,11 @@ onBeforeMount( () => {
     setPillBackground();
     setBillingAmount();
 
-    if ( subscription.value.meta_value.recurring_pay === 'yes' ) {
+    if ( subscription.value.meta_value.recurring_pay === 'yes' || subscription.value.meta_value.recurring_pay === 'on' ) {
         isRecurring.value = true;
-        billingAmount.value += '/' + subscription.value.meta_value.cycle_period[0].toUpperCase();
+        if ( subscription.value.meta_value.cycle_period[0] ) {
+            billingAmount.value += '/' + subscription.value.meta_value.cycle_period[0].toUpperCase();
+        }
     }
 
     getSubscribers();

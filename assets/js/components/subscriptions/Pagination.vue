@@ -1,28 +1,22 @@
 <script setup>
-import {computed, ref, toRef} from 'vue';
+import {computed, onBeforeMount, ref, watch} from 'vue';
+import {useSubscriptionStore} from '../../stores/subscription';
 
-const props = defineProps({
-    count: {
-        type: Number,
-        required: true
-    },
-    maxVisibleButtons: {
-        type: Number,
-        required: false,
-        default: 3
-    },
-    totalPages: {
-        type: Number,
-        required: true
-    }
-});
+const subscriptionStore = useSubscriptionStore();
 
-const count = ref(props.count);
-const maxVisibleButtons = ref(props.maxVisibleButtons);
-const totalPages = ref(props.totalPages);
+const count = ref( subscriptionStore.allCount.all );
+const maxVisibleButtons = ref( 3 );
+const totalPages = ref( Math.ceil( count.value / wpufSubscriptions.perPage ) );
 const emit = defineEmits( ['changePageTo'] );
 
-const perPage = wpufSubscriptions.perPage;
+console.log(wpufSubscriptions);
+
+const perPage = parseInt( wpufSubscriptions.perPage );
+watch( () => subscriptionStore.currentSubscriptionStatus, ( newValue ) => {
+    count.value = subscriptionStore.allCount[newValue];
+    totalPages.value = Math.ceil(count.value / wpufSubscriptions.perPage);
+});
+
 const startPage = computed(() => {
     // When on the first page, or when the total pages are less than the max visible buttons
     if (currentPage.value === 1 || totalPages.value <= maxVisibleButtons.value) {
@@ -67,11 +61,15 @@ const goToFirstPage = () => {
 
     emit('changePageTo', 1);
 };
+
 const goToLastPage = () => {
     currentPage.value = totalPages.value;
 
     emit('changePageTo', totalPages.value);
 };
+
+console.log(count.value);
+console.log(perPage.value);
 
 </script>
 <template>
@@ -88,7 +86,7 @@ const goToLastPage = () => {
                     results
                 </p>
             </div>
-            <div>
+            <div v-if="count > perPage">
                 <nav class="isolate wpuf-inline-flex wpuf--space-x-px wpuf-rounded-md wpuf-shadow-sm" aria-label="Pagination">
                     <button
                         @click="goToFirstPage"

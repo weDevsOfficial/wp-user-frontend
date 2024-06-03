@@ -51,18 +51,6 @@ const componentStore = useComponentStore();
                     </span>
                 </li>
                 <li
-                    @click="[subscriptionStore.setSubscriptionsByStatus('pending'), componentStore.setCurrentComponent('List')]"
-                    :class="subscriptionStore.currentSubscriptionStatus === 'pending' ? 'wpuf-bg-gray-50 wpuf-text-indigo-600' : ''"
-                    class="wpuf-justify-between wpuf-text-gray-700 hover:wpuf-text-indigo-600 hover:wpuf-bg-gray-50 group wpuf-flex wpuf-gap-x-3 wpuf-rounded-md wpuf-p-2 wpuf-text-sm wpuf-leading-6 hover:wpuf-cursor-pointer">
-                    {{ __('Pending', 'wp-user-frontend') }}
-                    <span
-                        v-if="subscriptionStore.allCount.pending > 0"
-                        class="wpuf-text-sm wpuf-w-fit wpuf-px-2.5 wpuf-py-1 wpuf-shadow-sm wpuf-rounded-full wpuf-ring-1">
-                        {{ subscriptionStore.allCount.pending }}
-                    </span>
-                </li>
-
-                <li
                     @click="[subscriptionStore.setSubscriptionsByStatus('private'), componentStore.setCurrentComponent('List')]"
                     :class="subscriptionStore.currentSubscriptionStatus === 'private' ? 'wpuf-bg-gray-50 wpuf-text-indigo-600' : ''"
                     class="wpuf-justify-between wpuf-text-gray-700 hover:wpuf-text-indigo-600 hover:wpuf-bg-gray-50 group wpuf-flex wpuf-gap-x-3 wpuf-rounded-md wpuf-p-2 wpuf-text-sm wpuf-leading-6 hover:wpuf-cursor-pointer">

@@ -12,4 +12,4 @@ const app = createApp( Subscriptions );
 
 app.use( pinia );
 
-app.mount( '#subscription-page' );
+app.mount( '#wpuf-subscription-page' );

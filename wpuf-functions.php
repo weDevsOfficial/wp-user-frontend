@@ -4755,3 +4755,36 @@ function wpuf_remove_admin_notices() {
     remove_all_actions( 'admin_notices' );
     remove_all_actions( 'all_admin_notices' );
 }
+
+/**
+ * Load the Headway badge
+ *
+ * @since WPUF_SINCE
+ *
+ * @return void
+ */
+function wpuf_load_headway_badge( $selector = '#wpuf-headway-icon' ) {
+    ?>
+    <script>
+        const selector = '<?php echo $selector; ?>';
+        const HW_config = {
+            selector: selector,
+            account: 'JPqPQy',
+            callbacks: {
+                onWidgetReady: function ( widget ) {
+                    if ( widget.getUnseenCount() === 0 ) {
+                        document.querySelector( selector + ' ul li.headway-icon span#HW_badge_cont.HW_visible' )
+                            .style = 'opacity: 0';
+                    }
+                },
+                onHideWidget: function(){
+                    document.querySelector( selector + ' ul li.headway-icon span#HW_badge_cont.HW_visible' )
+                        .style = 'opacity: 0';
+                }
+            }
+        };
+
+    </script>
+    <?php
+    wp_enqueue_script( 'wpuf-headway' );
+}

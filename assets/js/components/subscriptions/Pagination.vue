@@ -9,8 +9,6 @@ const maxVisibleButtons = ref( 3 );
 const totalPages = ref( Math.ceil( count.value / wpufSubscriptions.perPage ) );
 const emit = defineEmits( ['changePageTo'] );
 
-console.log(wpufSubscriptions);
-
 const perPage = parseInt( wpufSubscriptions.perPage );
 watch( () => subscriptionStore.currentSubscriptionStatus, ( newValue ) => {
     count.value = subscriptionStore.allCount[newValue];
@@ -67,9 +65,6 @@ const goToLastPage = () => {
 
     emit('changePageTo', totalPages.value);
 };
-
-console.log(count.value);
-console.log(perPage.value);
 
 </script>
 <template>

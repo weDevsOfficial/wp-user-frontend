@@ -371,6 +371,9 @@ class Assets {
                 'src'  => WPUF_ASSET_URI . '/js/wpuf-login-widget.js',
                 'deps' => [ 'jquery' ],
             ],
+            'headway'                  => [
+                'src'  => '//cdn.headwayapp.co/widget.js',
+            ],
         ];
 
         if ( ! empty( $api_key ) ) {

@@ -22,12 +22,20 @@ const logoUrl = wpufSubscriptions.assetUrl + '/images/icon-128x128.png';
                 <span class="dashicons dashicons-superhero-alt"></span>
             </a>
         </div>
-        <div class="wpuf-align-right">
+        <div class="wpuf-align-right wpuf-flex wpuf-items-center wpuf-justify-between wpuf-w-1/4">
+            <span
+                id="wpuf-headway-icon"
+                class="wpuf-rounded-full wpuf-p-1 wpuf-shadow-sm hover:wpuf-bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            ></span>
+            <a
+                class="wpuf-canny-link wpuf-rounded-md wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-shadow-sm hover:wpuf-bg-slate-100 focus:wpuf-bg-slate-100"
+                target="_blank"
+                href="https://wpuf.canny.io/ideas">💡 {{ __( 'Submit Ideas', 'wp-user-frontend' ) }}</a>
             <a
                 :href="wpufSubscriptions.supportUrl"
                 target="_blank"
-                class="wpuf-rounded-md wpuf-bg-indigo-600 wpuf-px-3 wpuf-py-2 wpuf-text-sm font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-indigo-500 hover:wpuf-text-white focus:wpuf-bg-indigo-500 focus:wpuf-text-white">
-                {{ __( 'Support', 'wp-user-frontend' ) }}
+                class="wpuf-rounded-md wpuf-bg-indigo-600 wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-indigo-500 hover:wpuf-text-white focus:wpuf-bg-indigo-500 focus:wpuf-text-white">
+                {{ __( 'Support ', 'wp-user-frontend' ) }}
                 &nbsp;&nbsp;
                 <span class="dashicons dashicons-businessman"></span>
             </a>

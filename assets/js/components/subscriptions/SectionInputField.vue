@@ -120,7 +120,7 @@ const processInput = (event) => {
         class="wpuf-gap-4 wpuf-p-4">
         <label v-if="field.label"
                :for="field.name"
-               class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">
+               class="wpuf-block wpuf-text-sm wpuf-leading-6 wpuf-text-gray-600">
             {{ field.label }}
         </label>
         <div class="wpuf-w-full wpuf-col-span-2">
@@ -131,7 +131,7 @@ const processInput = (event) => {
                 :name="field.name"
                 :id="field.name"
                 @input="[modifySubscription($event), processInput($event)]"
-                class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 wpuf-text-sm wpuf-leading-6">
+                class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-600 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 wpuf-text-sm wpuf-leading-6">
             <input
                 v-if="field.type === 'input-number'"
                 type="number"
@@ -139,14 +139,14 @@ const processInput = (event) => {
                 :name="field.name"
                 :id="field.name"
                 @input="[modifySubscription($event), processInput($event)]"
-                class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 wpuf-text-sm wpuf-leading-6">
+                class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-600 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 wpuf-text-sm wpuf-leading-6">
             <textarea
                 v-if="field.type === 'textarea'"
                 :name="field.name"
                 :id="field.name"
                 rows="3"
                 @input="[modifySubscription($event), processInput($event)]"
-                class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 wpuf-text-sm wpuf-leading-6">{{ value }}</textarea>
+                class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-600 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 wpuf-text-sm wpuf-leading-6">{{ value }}</textarea>
             <button
                 v-if="field.type === 'switcher'"
                 @click="[toggleOnOff(), $emit('toggleDependentFields', fieldId, switchStatus)]"

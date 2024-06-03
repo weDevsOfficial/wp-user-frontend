@@ -23,7 +23,7 @@ const showField = computed(() => {
         class="wpuf-grid wpuf-grid-cols-3">
         <label
             :for="parentField.name"
-            class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900 wpuf-pl-4">
+            class="wpuf-block wpuf-text-sm wpuf-leading-6 wpuf-text-gray-600 wpuf-pl-4">
             {{ parentField.label }}
         </label>
         <div class="wpuf-mr-2 wpuf-contents">

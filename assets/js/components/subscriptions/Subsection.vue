@@ -1,5 +1,5 @@
 <script setup>
-import {computed, inject, provide, ref, toRefs} from 'vue';
+import {inject, onMounted, provide, ref, toRefs} from 'vue';
 import SectionInputField from './SectionInputField.vue';
 import SectionInnerField from './SectionInnerField.vue';
 import {useFieldDependencyStore} from '../../stores/fieldDependency';
@@ -17,7 +17,6 @@ const dependencyStore = useFieldDependencyStore();
 provide( 'subSection', subSection.value.id );
 
 const showField = ref( true );
-const hiddenFields = ref( [] );
 const closed = ref( false );
 
 const openTabs = [ 'overview', 'content_limits' ];
@@ -32,13 +31,35 @@ const toggleDependentFields = (fieldId, status) => {
     for (const field in fields.value) {
         if (dependencyStore.modifierFields[fieldId].hasOwnProperty( field )) {
             if (!status) {
-                hiddenFields.value.push( field );
+                if ( dependencyStore.modifierFields[fieldId][field] === 'hide' ) {
+                    dependencyStore.hiddenFields.push( field );
+                } else {
+                    dependencyStore.hiddenFields = dependencyStore.hiddenFields.filter( (item) => item !== field );
+                }
             } else {
-                hiddenFields.value = hiddenFields.value.filter( (item) => item !== field );
+                if ( dependencyStore.modifierFields[fieldId][field] === 'hide' ) {
+                    dependencyStore.hiddenFields = dependencyStore.hiddenFields.filter( (item) => item !== field );
+                } else {
+                    dependencyStore.hiddenFields.push( field );
+                }
             }
         }
     }
 };
+
+onMounted(() => {
+    for (const field in fields.value) {
+        // if (field.value.type !== 'switcher') {
+        //     return;
+        // }
+        //
+        // console.log(fields.value);
+
+        // toggleDependentFields( field.value.id, field.value.value === 'on' || field.value.value === 'yes' || field.value.value === 'private' );
+
+        // emit( 'toggleDependentFields', fieldId.value, switchStatus.value );
+    }
+});
 
 </script>
 <template>
@@ -68,14 +89,12 @@ const toggleDependentFields = (fieldId, status) => {
             <SectionInputField
                 v-if="field.type !== 'inline'"
                 @toggle-dependent-fields="toggleDependentFields"
-                :hiddenFields="hiddenFields"
                 :field="field"
                 :fieldId="fieldId"
                 :serializeKey="field.serialize_key"
                 :subscription="subscription"/>
             <SectionInnerField v-else
                :parentField="field"
-               :hiddenFields="hiddenFields"
                :fieldId="fieldId"
                :subscription="subscription"/>
         </div>

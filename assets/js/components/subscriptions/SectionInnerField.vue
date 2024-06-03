@@ -1,17 +1,19 @@
 <script setup>
 import {computed, toRefs} from 'vue';
 import SectionInputField from './SectionInputField.vue';
+import {useFieldDependencyStore} from '../../stores/fieldDependency';
 
 const props = defineProps( {
     parentField: Object,
     fieldId: String,
-    hiddenFields: Array,
 } );
 
-const { parentField, fieldId, hiddenFields } = toRefs( props );
+const { parentField, fieldId } = toRefs( props );
+
+const dependencyStore = useFieldDependencyStore();
 
 const showField = computed(() => {
-    return !hiddenFields.value.includes( fieldId.value );
+    return !dependencyStore.hiddenFields.includes( fieldId.value );
 });
 
 </script>
@@ -26,8 +28,7 @@ const showField = computed(() => {
         </label>
         <div class="wpuf-mr-2 wpuf-contents">
             <SectionInputField v-for="field in parentField.fields"
-               :field="field"
-               :hiddenFields="hiddenFields" />
+               :field="field" />
         </div>
     </div>
 </template>

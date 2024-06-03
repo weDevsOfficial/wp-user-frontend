@@ -4767,24 +4767,13 @@ function wpuf_load_headway_badge( $selector = '#wpuf-headway-icon' ) {
     ?>
     <script>
         const selector = '<?php echo $selector; ?>';
+        const badgeCount = selector + ' ul li.headway-icon span#HW_badge_cont.HW_visible';
         const HW_config = {
             selector: selector,
-            account: 'JPqPQy',
-            callbacks: {
-                onWidgetReady: function ( widget ) {
-                    if ( widget.getUnseenCount() === 0 ) {
-                        document.querySelector( selector + ' ul li.headway-icon span#HW_badge_cont.HW_visible' )
-                            .style = 'opacity: 0';
-                    }
-                },
-                onHideWidget: function(){
-                    document.querySelector( selector + ' ul li.headway-icon span#HW_badge_cont.HW_visible' )
-                        .style = 'opacity: 0';
-                }
-            }
+            account: 'JPqPQy'
         };
-
     </script>
+
     <?php
     wp_enqueue_script( 'wpuf-headway' );
 }

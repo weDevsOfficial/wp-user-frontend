@@ -1539,27 +1539,28 @@ class Admin_Subscription {
      */
     public function get_dependent_fields() {
         $fields = [
-            'post_expiration' => [
-                'expiration_time'    => 'on',
-                'post_status'        => 'on',
-                'send_mail'          => 'on',
-                'expiration_message' => 'on',
+            'post_expiration'  => [
+                'expiration_time'    => 'hide',
+                'post_status'        => 'hide',
+                'send_mail'          => 'hide',
+                'expiration_message' => 'hide',
             ],
-            'send_mail'       => [
-                'expiration_message' => 'on',
+            'send_mail'        => [
+                'expiration_message' => 'hide',
             ],
             'enable_recurring' => [
-                'payment_cycle' => 'on',
-                'stop_cycle'    => 'on',
-                'billing_limit'    => 'on',
-                'trial'    => 'on',
-                'trial_period'    => 'on',
+                'payment_cycle' => 'hide',
+                'stop_cycle'    => 'hide',
+                'billing_limit' => 'hide',
+                'trial'         => 'hide',
+                'trial_period'  => 'hide',
+                'expire_in'     => 'show',
             ],
-            'stop_cycle'      => [
-                'billing_limit' => 'on',
+            'stop_cycle'       => [
+                'billing_limit' => 'hide',
             ],
-            'trial'       => [
-                'trial_period' => 'on',
+            'trial'            => [
+                'trial_period' => 'hide',
             ],
         ];
 

@@ -2,6 +2,7 @@
 import {computed, inject, onMounted, ref, toRefs} from 'vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import {useSubscriptionStore} from '../../stores/subscription';
+import {useFieldDependencyStore} from '../../stores/fieldDependency';
 
 const emit = defineEmits(['toggleDependentFields']);
 
@@ -12,13 +13,12 @@ const subSection = inject( 'subSection' );
 const props = defineProps( {
     field: Object,
     fieldId: String,
-    hiddenFields: Array,
-    serializeKey: String,
 } );
 
+const dependencyStore = useFieldDependencyStore();
 const subscription = subscriptionStore.currentSubscription;
 
-const { field, fieldId, hiddenFields, serializeKey } = toRefs( props );
+const { field, fieldId } = toRefs( props );
 
 const publishedDate = ref(new Date());
 
@@ -79,7 +79,7 @@ const toggleOnOff = () => {
 };
 
 const showField = computed(() => {
-    return !hiddenFields.value.includes( fieldId.value );
+    return !dependencyStore.hiddenFields.includes( fieldId.value );
 });
 
 const modifySubscription = (event) => {
@@ -104,13 +104,13 @@ const processInput = (event) => {
     }
 };
 
-onMounted(() => {
+/*onMounted(() => {
     if (field.value.type !== 'switcher') {
         return;
     }
 
     emit('toggleDependentFields', fieldId.value, switchStatus.value);
-});
+});*/
 
 </script>
 <template>

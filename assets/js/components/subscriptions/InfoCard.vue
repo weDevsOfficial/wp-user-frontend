@@ -28,7 +28,7 @@ const isRecurring = computed(() => {
                 <dt class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500">
                     {{ __( 'Plan', 'wp-user-frontend' )}}
                 </dt>
-                <dd class="wpuf-w-full wpuf-flex-none wpuf-text-2xl wpuf-font-medium wpuf-leading-10 wpuf-tracking-tight wpuf-text-gray-900">
+                <dd class="wpuf-w-full wpuf-flex-none wpuf-text-2xl wpuf-leading-10 wpuf-tracking-tight wpuf-text-gray-900">
                     {{ currentSubscription.post_title }}
                 </dd>
             </div>
@@ -36,7 +36,7 @@ const isRecurring = computed(() => {
                 <dt class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500">
                     {{ __( 'Payment', 'wp-user-frontend' )}}
                 </dt>
-                <dd class="wpuf-w-full wpuf-flex-none wpuf-text-2xl wpuf-font-medium wpuf-leading-10 wpuf-tracking-tight wpuf-text-gray-900" v-html="billingAmount"></dd>
+                <dd class="wpuf-w-full wpuf-flex-none wpuf-text-2xl wpuf-leading-10 wpuf-tracking-tight wpuf-text-gray-900" v-html="billingAmount"></dd>
             </div>
             <div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-px-4 wpuf-py-2"></div>
             <div v-if="isRecurring" class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-px-4 wpuf-py-5">
@@ -53,7 +53,7 @@ const isRecurring = computed(() => {
                 <dt class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500">
                     {{ __( 'Subscribers', 'wp-user-frontend' )}}
                 </dt>
-                <dd class="wpuf-flex wpuf-items-center wpuf-w-full wpuf-flex-none wpuf-text-2xl wpuf-font-medium wpuf-leading-10 wpuf-tracking-tight wpuf-text-gray-900">
+                <dd class="wpuf-flex wpuf-items-center wpuf-w-full wpuf-flex-none wpuf-text-2xl wpuf-leading-10 wpuf-tracking-tight wpuf-text-gray-900">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 10.8C13.9882 10.8 15.6 9.18822 15.6 7.2C15.6 5.21177 13.9882 3.6 12 3.6C10.0118 3.6 8.4 5.21177 8.4 7.2C8.4 9.18822 10.0118 10.8 12 10.8Z" fill="#0F172A"/>
                         <path d="M3.6 21.6C3.6 16.9608 7.36081 13.2 12 13.2C16.6392 13.2 20.4 16.9608 20.4 21.6H3.6Z" fill="#0F172A"/>

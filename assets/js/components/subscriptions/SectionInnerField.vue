@@ -28,7 +28,7 @@ const showField = computed(() => {
         </label>
         <div class="wpuf-mr-2 wpuf-contents">
             <SectionInputField v-for="field in parentField.fields"
-               :field="field" />
+               :field="field" :fieldId="field.id" />
         </div>
     </div>
 </template>

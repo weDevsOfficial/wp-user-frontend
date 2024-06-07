@@ -104,14 +104,6 @@ const processInput = (event) => {
     }
 };
 
-/*onMounted(() => {
-    if (field.value.type !== 'switcher') {
-        return;
-    }
-
-    emit('toggleDependentFields', fieldId.value, switchStatus.value);
-});*/
-
 </script>
 <template>
     <div
@@ -131,7 +123,7 @@ const processInput = (event) => {
                 :name="field.name"
                 :id="field.name"
                 @input="[modifySubscription($event), processInput($event)]"
-                class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-600 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 wpuf-text-sm wpuf-leading-6">
+                class="wpuf-w-full wpuf-rounded-md !wpuf-border-gray-300 wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">
             <input
                 v-if="field.type === 'input-number'"
                 type="number"
@@ -139,14 +131,14 @@ const processInput = (event) => {
                 :name="field.name"
                 :id="field.name"
                 @input="[modifySubscription($event), processInput($event)]"
-                class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-600 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 wpuf-text-sm wpuf-leading-6">
+                class="wpuf-w-full wpuf-rounded-md wpuf-border-gray-300 wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">
             <textarea
                 v-if="field.type === 'textarea'"
                 :name="field.name"
                 :id="field.name"
                 rows="3"
                 @input="[modifySubscription($event), processInput($event)]"
-                class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-600 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 wpuf-text-sm wpuf-leading-6">{{ value }}</textarea>
+                class="wpuf-w-full wpuf-rounded-md wpuf-border-gray-300 wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">{{ value }}</textarea>
             <button
                 v-if="field.type === 'switcher'"
                 @click="[toggleOnOff(), $emit('toggleDependentFields', fieldId, switchStatus)]"

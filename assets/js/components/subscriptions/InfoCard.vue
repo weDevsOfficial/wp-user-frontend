@@ -24,7 +24,7 @@ const isRecurring = computed(() => {
 <template>
     <div class="wpuf-mt-4 wpuf-border wpuf-border-gray-200">
         <dl class="wpuf-mx-auto wpuf-grid bg-gray-900/5 wpuf-grid-cols-4 wpuf-border-b-2 wpuf-border-dashed wpuf-bg-white wpuf-p-2">
-            <div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-py-2 wpuf-px-6">
+            <div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-py-2 wpuf-px-6"  :title="'id: ' + currentSubscription.ID">
                 <dt class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500">
                     {{ __( 'Plan', 'wp-user-frontend' )}}
                 </dt>

@@ -177,7 +177,8 @@ export const useSubscriptionStore = defineStore( 'subscription', {
             this.currentSubscription.meta_value[key] = value;
 
             this.isDirty = true;
-        }, getSerializedMetaValue( key, serializeKey ) {
+        },
+        getSerializedMetaValue( key, serializeKey ) {
             if (!this.currentSubscription.meta_value.hasOwnProperty( key )) {
                 return '';
             }

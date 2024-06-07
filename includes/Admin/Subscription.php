@@ -306,6 +306,8 @@ class Subscription {
         $meta['_post_type_name']            = $meta['post_type_name'];
         $meta['_enable_post_expiration']    = get_post_meta( $subscription_id, '_enable_post_expiration', true );
         $meta['_post_expiration_time']      = get_post_meta( $subscription_id, '_post_expiration_time', true );
+        $meta['_post_expiration_number']    = get_post_meta( $subscription_id, '_post_expiration_number', true );
+        $meta['_post_expiration_period']    = get_post_meta( $subscription_id, '_post_expiration_period', true );
         $meta['_expired_post_status']       = get_post_meta( $subscription_id, '_expired_post_status', true );
         $meta['_enable_mail_after_expired'] = get_post_meta( $subscription_id, '_enable_mail_after_expired', true );
         $meta['_post_expiration_message']   = get_post_meta( $subscription_id, '_post_expiration_message', true );

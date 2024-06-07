@@ -47,20 +47,6 @@ const toggleDependentFields = (fieldId, status) => {
     }
 };
 
-onMounted(() => {
-    for (const field in fields.value) {
-        // if (field.value.type !== 'switcher') {
-        //     return;
-        // }
-        //
-        // console.log(fields.value);
-
-        // toggleDependentFields( field.value.id, field.value.value === 'on' || field.value.value === 'yes' || field.value.value === 'private' );
-
-        // emit( 'toggleDependentFields', fieldId.value, switchStatus.value );
-    }
-});
-
 </script>
 <template>
     <div

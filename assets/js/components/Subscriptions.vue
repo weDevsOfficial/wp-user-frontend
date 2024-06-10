@@ -24,12 +24,10 @@ const quickEditStore = useQuickEditStore();
 const { currentComponent } = storeToRefs(componentStore);
 const { isQuickEdit } = storeToRefs(quickEditStore);
 
-const isLoading = ref( false );
-
 provide( 'wpufSubscriptions', wpufSubscriptions );
 
 const fetchData = async () => {
-    isLoading.value = true;
+    subscriptionStore.isUpdating = true;
 
     const queryParams = { 'per_page': wpufSubscriptions.perPage, 'offset': 0 };
     apiFetch( {
@@ -50,7 +48,7 @@ const fetchData = async () => {
     } ).catch( ( error ) => {
         console.log( error );
     } ).finally( () => {
-        isLoading.value = false;
+        subscriptionStore.isUpdating = false;
     });
 }
 
@@ -96,7 +94,7 @@ onBeforeMount( () => {
 
 <template>
     <Header/>
-    <div v-if="isLoading" class="wpuf-flex wpuf-h-svh wpuf-items-center wpuf-justify-center">
+    <div v-if="subscriptionStore.isUpdating" class="wpuf-flex wpuf-h-svh wpuf-items-center wpuf-justify-center">
         <hollow-dots-spinner
             :animation-duration="1000"
             :dot-size="20"
@@ -104,12 +102,15 @@ onBeforeMount( () => {
             :color="'#7DC442'"
         />
     </div>
-    <div v-if="isQuickEdit" @click="quickEditStore.setQuickEditStatus(false)" class="wpuf-absolute wpuf-w-full wpuf-h-screen wpuf-z-10 wpuf-left-[-20px]"></div>
+    <div
+        v-if="isQuickEdit"
+        @click="quickEditStore.setQuickEditStatus(false)"
+        class="wpuf-absolute wpuf-w-full wpuf-h-screen wpuf-z-10 wpuf-left-[-20px]"></div>
     <template v-if="isQuickEdit">
         <QuickEdit />
     </template>
     <div
-        v-if="!isLoading"
+        v-if="!subscriptionStore.isUpdating"
         :class="isQuickEdit ? 'wpuf-blur' : ''"
         class="wpuf-flex wpuf-flex-row wpuf-mt-12 wpuf-bg-white wpuf-py-8">
         <div class="wpuf-basis-1/5 wpuf-border-r-2 wpuf-border-gray-200">

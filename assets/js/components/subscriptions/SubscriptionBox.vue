@@ -181,6 +181,13 @@ const isPasswordProtected = computed(() => {
     return subscription.value.post_password !== '';
 });
 
+quickEditStore.$subscribe( ( mutation, state ) => {
+    // if the quick edit menu is closed, check for the status of the subscription
+    if (!state.isQuickEdit) {
+        setPillBackground();
+    }
+});
+
 </script>
 <template>
     <div v-if="showBox" class="wpuf-text-base wpuf-justify-between wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-rounded-xl wpuf-shadow">

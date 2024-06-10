@@ -16,7 +16,6 @@ const noticeStore = useNoticeStore();
 const currentSubscription = subscriptionStore.currentSubscription;
 
 const date = ref(new Date(currentSubscription.post_date));
-const isPrivate = ref( currentSubscription.post_status === 'private' );
 
 const { errors } = storeToRefs( toRaw(subscriptionStore) );
 
@@ -57,8 +56,6 @@ const updateSubscription = () => {
             noticeStore.display = true;
             noticeStore.type = 'success';
             noticeStore.message = result.message;
-
-            currentSubscription.post_status = isPrivate.value ? 'private' : 'publish';
 
             setTimeout(() => {
                 noticeStore.display = false;
@@ -148,12 +145,12 @@ const updateSubscription = () => {
         <div class="wpuf-px-2 wpuf-flex wpuf-justify-between wpuf-mt-6">
             <label for="plan-private" class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">{{ __('Private', 'wp-user-frontend') }}</label>
             <button
-                @click="isPrivate = !isPrivate"
+                @click="currentSubscription.post_status = currentSubscription.post_status === 'private' ? 'publish' : 'private'"
                 type="button"
-                :class="isPrivate ? 'wpuf-bg-indigo-600' : 'wpuf-bg-gray-200'"
+                :class="currentSubscription.post_status === 'private'  ? 'wpuf-bg-indigo-600' : 'wpuf-bg-gray-200'"
                 class="wpuf-bg-gray-200 wpuf-relative wpuf-inline-flex wpuf-h-6 wpuf-w-11 wpuf-flex-shrink-0 wpuf-cursor-pointer wpuf-rounded-full wpuf-border-2 wpuf-border-transparent wpuf-transition-colors wpuf-duration-200 wpuf-ease-in-out focus:wpuf-outline-none focus:wpuf-ring-2 focus:wpuf-ring-indigo-600 focus:wpuf-ring-offset-2" role="switch" aria-checked="true">
                 <span aria-hidden="true"
-                      :class="isPrivate ? 'wpuf-translate-x-5' : 'wpuf-translate-x-0'"
+                      :class="currentSubscription.post_status === 'private' ? 'wpuf-translate-x-5' : 'wpuf-translate-x-0'"
                       class="wpuf-translate-x-0 wpuf-pointer-events-none wpuf-inline-block wpuf-h-5 wpuf-w-5 wpuf-transform wpuf-rounded-full wpuf-bg-white wpuf-shadow wpuf-ring-0 wpuf-transition wpuf-duration-200 wpuf-ease-in-out"></span>
             </button>
             <p v-if="errors.isPrivate" class="wpuf-mt-2 wpuf-text-sm wpuf-text-red-600" id="is-private-error">{{ __('Invalid', 'wp-user-frontend') }}</p>

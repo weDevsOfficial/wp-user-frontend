@@ -17,7 +17,6 @@ const currentSubscription = subscriptionStore.currentSubscription;
 
 const date = ref(new Date(currentSubscription.post_date));
 const isPrivate = ref( currentSubscription.post_status === 'private' );
-const isUpdating = ref( false );
 
 const { errors } = storeToRefs( toRaw(subscriptionStore) );
 
@@ -42,11 +41,11 @@ const handleDate = (modelData) => {
 };
 
 const updateSubscription = () => {
-    isUpdating.value = true;
+    subscriptionStore.isUpdating = true;
     subscriptionStore.resetErrors();
 
     if(!subscriptionStore.validateFields( 'quickEdit' )) {
-        isUpdating.value = false;
+        subscriptionStore.isUpdating = false;
 
         return;
     }
@@ -74,7 +73,7 @@ const updateSubscription = () => {
         }
     });
 
-    isUpdating.value = false;
+    subscriptionStore.isUpdating = false;
 };
 </script>
 <style scoped>
@@ -165,13 +164,12 @@ const updateSubscription = () => {
         </div>
         <div class="wpuf-flex wpuf-mt-8 wpuf-flex-row-reverse">
             <UpdateButton
-                @update-subscription="updateSubscription"
-                :is-updating="isUpdating.value" />
+                @update-subscription="updateSubscription" />
             <button
                 @click="quickEditStore.setQuickEditStatus(false)"
-                :disabled="isUpdating"
+                :disabled="subscriptionStore.isUpdating"
                 type="button"
-                :class="isUpdating ? 'wpuf-cursor-not-allowed' : ''"
+                :class="subscriptionStore.isUpdating ? 'wpuf-cursor-not-allowed wpuf-bg-gray-50' : ''"
                 class="wpuf-rounded-lg wpuf-bg-white wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 hover:wpuf-bg-gray-50">
                 {{ __('Cancel', 'wp-user-frontend') }}
             </button>

@@ -9,18 +9,15 @@ import UpdateButton from './UpdateButton.vue';
 import {useNoticeStore} from '../../stores/notice';
 import Unsaved from './Unsaved.vue';
 
-const isUpdating = ref( false );
-
 const componentStore = useComponentStore();
 const subscriptionStore = useSubscriptionStore();
 const noticeStore = useNoticeStore();
 
 const updateSubscription = () => {
-    isUpdating.value = true;
     subscriptionStore.resetErrors();
 
     if(!subscriptionStore.validateFields()) {
-        isUpdating.value = false;
+        subscriptionStore.isUpdating = false;
 
         return;
     }
@@ -38,14 +35,16 @@ const updateSubscription = () => {
             noticeStore.message = result.message;
         }
 
+        subscriptionStore.isUpdating = false;
+
         setTimeout(() => {
             noticeStore.display = false;
             noticeStore.type = '';
             noticeStore.message = '';
         }, 3000);
-    });
 
-    isUpdating.value = false;
+        componentStore.setCurrentComponent( 'List' );
+    });
 };
 
 const goToList = () => {
@@ -74,7 +73,7 @@ const goToList = () => {
         <div class="wpuf-mt-8 wpuf-text-end">
             <UpdateButton
                 @update-subscription="updateSubscription"
-                :is-updating="isUpdating.value" />
+                :is-updating="isUpdating" />
         </div>
     </div>
     <Unsaved v-if="subscriptionStore.isUnsavedPopupOpen" @close-popup="subscriptionStore.isUnsavedPopupOpen = false" @go-to-list="goToList" />

@@ -7,8 +7,6 @@ import {onBeforeMount, ref} from 'vue';
 import UpdateButton from './UpdateButton.vue';
 import {useNoticeStore} from '../../stores/notice';
 
-const isUpdating = ref( false );
-
 const componentStore = useComponentStore();
 const subscriptionStore = useSubscriptionStore();
 const noticeStore = useNoticeStore();
@@ -18,11 +16,11 @@ onBeforeMount(() => {
 });
 
 const updateSubscription = () => {
-    isUpdating.value = true;
+    subscriptionStore.isUpdating = true;
     subscriptionStore.resetErrors();
 
     if(!subscriptionStore.validateFields()) {
-        isUpdating.value = false;
+        subscriptionStore.isUpdating = false;
 
         return;
     }
@@ -40,14 +38,16 @@ const updateSubscription = () => {
             noticeStore.message = result.message;
         }
 
+        subscriptionStore.isUpdating = false;
+
         setTimeout(() => {
             noticeStore.display = false;
             noticeStore.type = '';
             noticeStore.message = '';
         }, 3000);
-    });
 
-    isUpdating.value = false;
+        componentStore.setCurrentComponent( 'List' );
+    });
 };
 
 </script>
@@ -65,8 +65,7 @@ const updateSubscription = () => {
         <div class="wpuf-mt-8 wpuf-text-end">
             <UpdateButton
                 buttonText="Save"
-                @update-subscription="updateSubscription"
-                :is-updating="isUpdating.value" />
+                @update-subscription="updateSubscription" />
         </div>
     </div>
 </template>

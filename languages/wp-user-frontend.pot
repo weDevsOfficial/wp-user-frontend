@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 4.0.6\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2024-06-04 06:37:08+00:00\n"
+"POT-Creation-Date: 2024-06-07 11:24:33+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -108,7 +108,7 @@ msgstr ""
 msgid "Subscriptions"
 msgstr ""
 
-#: admin/class-admin-settings.php:110 includes/Admin/Admin_Tools.php:368
+#: admin/class-admin-settings.php:110 includes/Admin/Admin_Tools.php:370
 #: includes/Admin/Menu.php:58
 #: includes/Admin/views/transactions-list-table-view.php:2
 msgid "Transactions"
@@ -134,7 +134,7 @@ msgstr ""
 #: admin/class-admin-settings.php:121 admin/class-admin-settings.php:169
 #: admin/form-builder/views/form-builder.php:9
 #: includes/Admin/Admin_Settings.php:68 includes/Admin/Menu.php:91
-#: includes/Admin/Menu.php:354 includes/Setup_Wizard.php:141
+#: includes/Admin/Menu.php:360 includes/Setup_Wizard.php:141
 msgid "Settings"
 msgstr ""
 
@@ -147,11 +147,11 @@ msgstr ""
 msgid "Number of items per page:"
 msgstr ""
 
-#: admin/class-admin-settings.php:497 includes/Admin.php:76
+#: admin/class-admin-settings.php:497 includes/Admin.php:77
 msgid "Post lock has been cleared"
 msgstr ""
 
-#: admin/class-admin-settings.php:500 includes/Admin.php:80
+#: admin/class-admin-settings.php:500 includes/Admin.php:81
 msgid ""
 "%sThis post contains a sensitive short-code %s, that may allow others to "
 "sign-up with distinguished roles. If unsure, remove the short-code before "
@@ -159,15 +159,15 @@ msgid ""
 "vulnerability.%s"
 msgstr ""
 
-#: admin/class-admin-settings.php:536 includes/Admin/Menu.php:309
+#: admin/class-admin-settings.php:536 includes/Admin/Menu.php:315
 msgid "WPUF Import Forms"
 msgstr ""
 
-#: admin/class-admin-settings.php:537 includes/Admin/Menu.php:310
+#: admin/class-admin-settings.php:537 includes/Admin/Menu.php:316
 msgid "Add JSON file"
 msgstr ""
 
-#: admin/class-admin-settings.php:538 includes/Admin/Menu.php:311
+#: admin/class-admin-settings.php:538 includes/Admin/Menu.php:317
 msgid "Could not import forms."
 msgstr ""
 
@@ -177,19 +177,19 @@ msgstr ""
 msgid "You do not have sufficient permissions to do this action"
 msgstr ""
 
-#: admin/class-admin-settings.php:623 includes/Admin/Admin_Tools.php:459
+#: admin/class-admin-settings.php:623 includes/Admin/Admin_Tools.php:463
 msgid "Missing file_id param"
 msgstr ""
 
-#: admin/class-admin-settings.php:633 includes/Admin/Admin_Tools.php:466
+#: admin/class-admin-settings.php:633 includes/Admin/Admin_Tools.php:474
 msgid "JSON file not found"
 msgstr ""
 
-#: admin/class-admin-settings.php:642 includes/Admin/Admin_Tools.php:471
+#: admin/class-admin-settings.php:642 includes/Admin/Admin_Tools.php:484
 msgid "Provided file is not a JSON file."
 msgstr ""
 
-#: admin/class-admin-settings.php:659 includes/Admin/Admin_Tools.php:482
+#: admin/class-admin-settings.php:659 includes/Admin/Admin_Tools.php:496
 msgid "Forms imported successfully."
 msgstr ""
 
@@ -281,9 +281,9 @@ msgstr ""
 #: admin/form-builder/assets/js/components/form-image_upload/template.php:6
 #: assets/js-templates/form-components.php:545
 #: assets/js-templates/form-components.php:616 class/render-form.php:1670
-#: includes/Fields/Form_Field_Featured_Image.php:126
-#: includes/Fields/Form_Field_Image.php:120
-#: includes/Fields/Form_Field_Image.php:141 includes/Render_Form.php:1527
+#: includes/Fields/Form_Field_Featured_Image.php:128
+#: includes/Fields/Form_Field_Image.php:122
+#: includes/Fields/Form_Field_Image.php:143 includes/Render_Form.php:1527
 msgid "Select Image"
 msgstr ""
 
@@ -612,7 +612,7 @@ msgstr ""
 
 #: admin/html/form-settings-post.php:56
 #: includes/Admin/Admin_Subscription.php:506
-#: includes/Admin/Admin_Subscription.php:1172
+#: includes/Admin/Admin_Subscription.php:1177
 #: includes/Admin/Forms/Post/Templates/List_Table_Admin_Post_Forms.php:323
 msgid "Post Status"
 msgstr ""
@@ -827,7 +827,7 @@ msgid ""
 msgstr ""
 
 #: admin/installer.php:30 includes/Admin/Admin_Installer.php:34
-#: includes/Admin/Admin_Tools.php:341 includes/Setup_Wizard.php:331
+#: includes/Admin/Admin_Tools.php:343 includes/Setup_Wizard.php:331
 msgid "Install WPUF Pages"
 msgstr ""
 
@@ -858,7 +858,7 @@ msgstr ""
 #: includes/Admin/Admin_Installer.php:88 includes/Admin/Forms/Admin_Form.php:80
 #: includes/Admin/Forms/Admin_Form.php:119
 #: includes/Admin/Forms/Post/Templates/List_Table_Admin_Post_Forms.php:416
-#: includes/Admin/Shortcodes_Button.php:93 includes/Admin/Subscription.php:476
+#: includes/Admin/Shortcodes_Button.php:93 includes/Admin/Subscription.php:478
 #: includes/functions/user/edit-user.php:102
 msgid "Edit"
 msgstr ""
@@ -872,9 +872,9 @@ msgstr ""
 #: admin/installer.php:95 class/subscription.php:441 class/subscription.php:461
 #: class/subscription.php:462 class/subscription.php:463
 #: includes/Admin/Admin_Installer.php:94
-#: includes/Admin/Shortcodes_Button.php:105 includes/Admin/Subscription.php:452
-#: includes/Admin/Subscription.php:471 includes/Admin/Subscription.php:472
-#: includes/Admin/Subscription.php:473 wpuf-functions.php:2069
+#: includes/Admin/Shortcodes_Button.php:105 includes/Admin/Subscription.php:454
+#: includes/Admin/Subscription.php:473 includes/Admin/Subscription.php:474
+#: includes/Admin/Subscription.php:475 wpuf-functions.php:2069
 msgid "Subscription"
 msgstr ""
 
@@ -921,40 +921,41 @@ msgid "Sample Form"
 msgstr ""
 
 #: admin/posting.php:74 class/render-form.php:1688
-#: includes/Admin/Posting.php:61 includes/Admin.php:108
-#: includes/Frontend.php:74 includes/Render_Form.php:1545
+#: includes/Admin/Posting.php:61 includes/Admin.php:109
+#: includes/Fields/Field_Contract.php:931 includes/Frontend.php:74
+#: includes/Render_Form.php:1545
 msgid "Are you sure?"
 msgstr ""
 
 #: admin/posting.php:75 includes/Admin/Forms/Admin_Form_Builder.php:273
-#: includes/Admin/Posting.php:62 includes/Admin.php:109
-#: includes/Frontend.php:75
+#: includes/Admin/Posting.php:62 includes/Admin.php:110
+#: includes/Fields/Field_Contract.php:932 includes/Frontend.php:75
 msgid "Yes, delete it"
 msgstr ""
 
 #: admin/posting.php:76 includes/Admin/Forms/Admin_Form_Builder.php:274
-#: includes/Admin/Posting.php:63 includes/Admin.php:110
-#: includes/Frontend.php:76
+#: includes/Admin/Posting.php:63 includes/Admin.php:111
+#: includes/Fields/Field_Contract.php:933 includes/Frontend.php:76
 msgid "No, cancel it"
 msgstr ""
 
-#: admin/posting.php:82 includes/Admin/Posting.php:69 includes/Admin.php:118
-#: includes/Frontend.php:86
+#: admin/posting.php:82 includes/Admin/Posting.php:69 includes/Admin.php:119
+#: includes/Fields/Field_Contract.php:943 includes/Frontend.php:86
 msgid "Allowed Files"
 msgstr ""
 
-#: admin/posting.php:85 includes/Admin/Posting.php:72 includes/Admin.php:124
-#: includes/Frontend.php:92
+#: admin/posting.php:85 includes/Admin/Posting.php:72 includes/Admin.php:125
+#: includes/Fields/Field_Contract.php:949 includes/Frontend.php:92
 msgid "Maximum number of files reached!"
 msgstr ""
 
-#: admin/posting.php:86 includes/Admin/Posting.php:73 includes/Admin.php:125
-#: includes/Frontend.php:93
+#: admin/posting.php:86 includes/Admin/Posting.php:73 includes/Admin.php:126
+#: includes/Fields/Field_Contract.php:950 includes/Frontend.php:93
 msgid "The file you have uploaded exceeds the file size limit. Please try again."
 msgstr ""
 
-#: admin/posting.php:87 includes/Admin/Posting.php:74 includes/Admin.php:126
-#: includes/Frontend.php:97
+#: admin/posting.php:87 includes/Admin/Posting.php:74 includes/Admin.php:127
+#: includes/Fields/Field_Contract.php:954 includes/Frontend.php:97
 msgid "You have uploaded an incorrect file type. Please try again."
 msgstr ""
 
@@ -1026,16 +1027,16 @@ msgstr ""
 #: admin/template-post.php:88 admin/template.php:608
 #: includes/Admin/Forms/Admin_Template.php:694
 #: includes/Admin/Forms/Template_Post.php:92
-#: includes/Fields/Form_Field_Featured_Image.php:120
-#: includes/Fields/Form_Field_Image.php:105
+#: includes/Fields/Form_Field_Featured_Image.php:122
+#: includes/Fields/Form_Field_Image.php:107
 msgid "Enter maximum upload size limit in KB"
 msgstr ""
 
 #: admin/template-post.php:99 admin/template.php:619
 #: includes/Admin/Forms/Admin_Template.php:705
 #: includes/Admin/Forms/Template_Post.php:103
-#: includes/Fields/Form_Field_Featured_Image.php:116
-#: includes/Fields/Form_Field_Image.php:101
+#: includes/Fields/Form_Field_Featured_Image.php:118
+#: includes/Fields/Form_Field_Image.php:103
 msgid "Max. file size"
 msgstr ""
 
@@ -1198,7 +1199,7 @@ msgid "Click and Drag to rearrange"
 msgstr ""
 
 #: admin/template.php:24 includes/Admin/Forms/Admin_Template.php:27
-#: includes/Traits/TaxableTrait.php:192
+#: includes/Traits/TaxableTrait.php:193
 msgid "Remove"
 msgstr ""
 
@@ -1405,12 +1406,12 @@ msgid "Description"
 msgstr ""
 
 #: admin/template.php:609 includes/Admin/Forms/Admin_Template.php:695
-#: includes/Fields/Form_Field_Image.php:114
+#: includes/Fields/Form_Field_Image.php:116
 msgid "Number of images can be uploaded"
 msgstr ""
 
 #: admin/template.php:624 includes/Admin/Forms/Admin_Template.php:711
-#: includes/Fields/Form_Field_Image.php:110
+#: includes/Fields/Form_Field_Image.php:112
 msgid "Max. files"
 msgstr ""
 
@@ -1496,138 +1497,138 @@ msgid "Delete"
 msgstr ""
 
 #: class/subscription.php:347 includes/Admin/Admin_Subscription.php:238
-#: includes/Admin/Subscription.php:358
+#: includes/Admin/Subscription.php:360
 msgid "Pack Name"
 msgstr ""
 
-#: class/subscription.php:464 includes/Admin/Subscription.php:474
+#: class/subscription.php:464 includes/Admin/Subscription.php:476
 #: includes/Admin/template-parts/subscription-no-item.php:19
 msgid "Add Subscription"
 msgstr ""
 
-#: class/subscription.php:465 includes/Admin/Subscription.php:475
+#: class/subscription.php:465 includes/Admin/Subscription.php:477
 msgid "Add New Subscription"
 msgstr ""
 
-#: class/subscription.php:467 includes/Admin/Subscription.php:477
+#: class/subscription.php:467 includes/Admin/Subscription.php:479
 msgid "Edit Subscription"
 msgstr ""
 
-#: class/subscription.php:468 includes/Admin/Subscription.php:478
+#: class/subscription.php:468 includes/Admin/Subscription.php:480
 msgid "New Subscription"
 msgstr ""
 
 #: class/subscription.php:469 class/subscription.php:470
-#: includes/Admin/Subscription.php:479 includes/Admin/Subscription.php:480
+#: includes/Admin/Subscription.php:481 includes/Admin/Subscription.php:482
 msgid "View Subscription"
 msgstr ""
 
-#: class/subscription.php:471 includes/Admin/Subscription.php:481
+#: class/subscription.php:471 includes/Admin/Subscription.php:483
 msgid "Search Subscription"
 msgstr ""
 
-#: class/subscription.php:472 includes/Admin/Subscription.php:482
+#: class/subscription.php:472 includes/Admin/Subscription.php:484
 msgid "No Subscription Found"
 msgstr ""
 
-#: class/subscription.php:473 includes/Admin/Subscription.php:483
+#: class/subscription.php:473 includes/Admin/Subscription.php:485
 msgid "No Subscription Found in Trash"
 msgstr ""
 
-#: class/subscription.php:474 includes/Admin/Subscription.php:484
+#: class/subscription.php:474 includes/Admin/Subscription.php:486
 msgid "Parent Subscription"
 msgstr ""
 
-#: class/subscription.php:829 includes/Admin/Subscription.php:846
+#: class/subscription.php:829 includes/Admin/Subscription.php:848
 msgid "Payment is complete"
 msgstr ""
 
-#: class/subscription.php:829 includes/Admin/Subscription.php:846
+#: class/subscription.php:829 includes/Admin/Subscription.php:848
 msgid "Congratulations, your payment has been completed!"
 msgstr ""
 
 #: class/subscription.php:833 class/subscription.php:837
-#: includes/Admin/Subscription.php:850 includes/Admin/Subscription.php:854
+#: includes/Admin/Subscription.php:852 includes/Admin/Subscription.php:856
 msgid "Please buy a subscription pack to post"
 msgstr ""
 
-#: class/subscription.php:856 includes/Admin/Subscription.php:873
+#: class/subscription.php:856 includes/Admin/Subscription.php:875
 msgid "<p><i>You have a subscription pack activated. </i></p>"
 msgstr ""
 
-#: class/subscription.php:858 includes/Admin/Subscription.php:875
+#: class/subscription.php:858 includes/Admin/Subscription.php:877
 #. translators: %s: pack title
 msgid "<p><i>Pack name: %s </i></p>"
 msgstr ""
 
-#: class/subscription.php:860 includes/Admin/Subscription.php:877
+#: class/subscription.php:860 includes/Admin/Subscription.php:879
 msgid "To cancel the pack, press the following cancel button"
 msgstr ""
 
 #: class/subscription.php:867 includes/Admin/Admin_Subscription.php:866
 #: includes/Admin/Forms/Admin_Form_Builder.php:276
 #: includes/Admin/List_Table_Subscribers.php:146
-#: includes/Admin/Subscription.php:884 includes/Frontend/Payment.php:246
+#: includes/Admin/Subscription.php:886 includes/Frontend/Payment.php:246
 #: templates/dashboard/subscription.php:68
 msgid "Cancel"
 msgstr ""
 
-#: class/subscription.php:907 includes/Admin/Subscription.php:924
+#: class/subscription.php:907 includes/Admin/Subscription.php:926
 msgid "Day"
 msgid_plural "Days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:908 includes/Admin/Subscription.php:925
+#: class/subscription.php:908 includes/Admin/Subscription.php:927
 msgid "Week"
 msgid_plural "Weeks"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:909 includes/Admin/Subscription.php:926
+#: class/subscription.php:909 includes/Admin/Subscription.php:928
 msgid "Month"
 msgid_plural "Months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:910 includes/Admin/Subscription.php:927
+#: class/subscription.php:910 includes/Admin/Subscription.php:929
 msgid "Year"
 msgid_plural "Years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:942 includes/Admin/Subscription.php:957
+#: class/subscription.php:942 includes/Admin/Subscription.php:959
 msgid "One time payment"
 msgstr ""
 
-#: class/subscription.php:949 includes/Admin/Subscription.php:964
+#: class/subscription.php:949 includes/Admin/Subscription.php:966
 msgid "Every"
 msgstr ""
 
-#: class/subscription.php:950 includes/Admin/Subscription.php:965
+#: class/subscription.php:950 includes/Admin/Subscription.php:967
 msgid "for"
 msgstr ""
 
-#: class/subscription.php:950 includes/Admin/Subscription.php:965
+#: class/subscription.php:950 includes/Admin/Subscription.php:967
 msgid "installments"
 msgstr ""
 
-#: class/subscription.php:958 includes/Admin/Subscription.php:973
+#: class/subscription.php:958 includes/Admin/Subscription.php:975
 #. translators: %s: trial days
 msgid "Trial available for first %1$s %2$s"
 msgstr ""
 
-#: class/subscription.php:962 includes/Admin/Subscription.php:977
+#: class/subscription.php:962 includes/Admin/Subscription.php:979
 msgid "Buy Now"
 msgstr ""
 
-#: class/subscription.php:966 includes/Admin/Subscription.php:981
+#: class/subscription.php:966 includes/Admin/Subscription.php:983
 msgid "Sign Up"
 msgstr ""
 
 #: class/subscription.php:969 includes/Admin/Admin_Subscription.php:261
 #: includes/Admin/Admin_Subscription.php:658
-#: includes/Admin/Subscription.php:984
+#: includes/Admin/Subscription.php:986
 #: includes/Free/templates/page-registration-form.php:94
 #: includes/Frontend/Frontend_Account.php:227
 #: includes/User_Subscription.php:314
@@ -1635,19 +1636,19 @@ msgstr ""
 msgid "Free"
 msgstr ""
 
-#: class/subscription.php:1034 includes/Admin/Subscription.php:1047
+#: class/subscription.php:1034 includes/Admin/Subscription.php:1049
 #. translators: %s: amount
 msgid "There is a <strong>%s</strong> charge to add a new post."
 msgstr ""
 
-#: class/subscription.php:1051 includes/Admin/Subscription.php:1064
+#: class/subscription.php:1051 includes/Admin/Subscription.php:1066
 #. translators: %s: amount
 msgid ""
 "Your Subscription pack is exhausted. There is a <strong>%s</strong> charge "
 "to add a new post."
 msgstr ""
 
-#: class/subscription.php:1097 includes/Admin/Subscription.php:1110
+#: class/subscription.php:1097 includes/Admin/Subscription.php:1112
 #. translators: %s: subscription link
 msgid "You must <a href=\"%s\">purchase a pack</a> before posting"
 msgstr ""
@@ -1773,45 +1774,45 @@ msgid "Send Mail to Author After Exceeding Post Expiration Time"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:538
-#: includes/Admin/Admin_Subscription.php:1196
+#: includes/Admin/Admin_Subscription.php:1201
 msgid "Expiration Message"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:541
-#: includes/Admin/Admin_Subscription.php:1197
+#: includes/Admin/Admin_Subscription.php:1202
 #: includes/Free/Form_Element.php:141
 msgid "You may use: {post_author} {post_url} {blogname} {post_title} {post_status}"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:603
-#: includes/Admin/Admin_Subscription.php:1149
-#: includes/Admin/Admin_Subscription.php:1253
-#: includes/Admin/Admin_Subscription.php:1293
-#: includes/Admin/Admin_Subscription.php:1354
+#: includes/Admin/Admin_Subscription.php:1154
+#: includes/Admin/Admin_Subscription.php:1258
+#: includes/Admin/Admin_Subscription.php:1298
+#: includes/Admin/Admin_Subscription.php:1359
 msgid "Day(s)"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:604
-#: includes/Admin/Admin_Subscription.php:1150
-#: includes/Admin/Admin_Subscription.php:1254
-#: includes/Admin/Admin_Subscription.php:1294
-#: includes/Admin/Admin_Subscription.php:1355
+#: includes/Admin/Admin_Subscription.php:1155
+#: includes/Admin/Admin_Subscription.php:1259
+#: includes/Admin/Admin_Subscription.php:1299
+#: includes/Admin/Admin_Subscription.php:1360
 msgid "Week(s)"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:605
-#: includes/Admin/Admin_Subscription.php:1151
-#: includes/Admin/Admin_Subscription.php:1255
-#: includes/Admin/Admin_Subscription.php:1295
-#: includes/Admin/Admin_Subscription.php:1356
+#: includes/Admin/Admin_Subscription.php:1156
+#: includes/Admin/Admin_Subscription.php:1260
+#: includes/Admin/Admin_Subscription.php:1300
+#: includes/Admin/Admin_Subscription.php:1361
 msgid "Month(s)"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:606
-#: includes/Admin/Admin_Subscription.php:1152
-#: includes/Admin/Admin_Subscription.php:1256
-#: includes/Admin/Admin_Subscription.php:1296
-#: includes/Admin/Admin_Subscription.php:1357
+#: includes/Admin/Admin_Subscription.php:1157
+#: includes/Admin/Admin_Subscription.php:1261
+#: includes/Admin/Admin_Subscription.php:1301
+#: includes/Admin/Admin_Subscription.php:1362
 msgid "Year(s)"
 msgstr ""
 
@@ -1958,295 +1959,303 @@ msgstr ""
 msgid "The subscription publishing date"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1158
+#: includes/Admin/Admin_Subscription.php:1153
+msgid "Never"
+msgstr ""
+
+#: includes/Admin/Admin_Subscription.php:1163
 msgid "Expiration Time"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1167
+#: includes/Admin/Admin_Subscription.php:1172
 msgid "Publish"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1168
+#: includes/Admin/Admin_Subscription.php:1173
 #: includes/Admin/Forms/Post/Templates/List_Table_Admin_Post_Forms.php:439
 #: wpuf-functions.php:66
 msgid "Draft"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1169
+#: includes/Admin/Admin_Subscription.php:1174
 msgid "Pending Review"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1170 wpuf-functions.php:44
+#: includes/Admin/Admin_Subscription.php:1175 wpuf-functions.php:44
 msgid "Private"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1173
+#: includes/Admin/Admin_Subscription.php:1178
 msgid "Status of post after post expiration time is over"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1183
+#: includes/Admin/Admin_Subscription.php:1188
 msgid "Send Expiration Mail"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1184
+#: includes/Admin/Admin_Subscription.php:1189
 msgid "Send an e-mail to the author after exceeding post expiration time"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1210
+#: includes/Admin/Admin_Subscription.php:1215
 msgid "Enable Post Number Rollback"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1211
+#: includes/Admin/Admin_Subscription.php:1216
 msgid "If enabled, number of posts will be restored if the post is deleted."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1229
+#: includes/Admin/Admin_Subscription.php:1234
 msgid "Billing Amount"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1230
+#: includes/Admin/Admin_Subscription.php:1235
 msgid "The billing amount for the subscription"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1262
+#: includes/Admin/Admin_Subscription.php:1267
 msgid "Expire In"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1263
+#: includes/Admin/Admin_Subscription.php:1268
 msgid "The billing cycle for the subscription"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1271
+#: includes/Admin/Admin_Subscription.php:1276
 #: includes/Free/Subscription_Element.php:20
 msgid "Enable Recurring Payment"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1272
+#: includes/Admin/Admin_Subscription.php:1277
 msgid "Is the payment recurring?"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1304
+#: includes/Admin/Admin_Subscription.php:1309
 msgid "Payment Cycle"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1312
+#: includes/Admin/Admin_Subscription.php:1317
 msgid "Stop Billing Cycle"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1313
+#: includes/Admin/Admin_Subscription.php:1318
 msgid "Stop billing cycle after a certain number"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1322
+#: includes/Admin/Admin_Subscription.php:1327
 msgid "Number of Billing Cycles"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1323
+#: includes/Admin/Admin_Subscription.php:1328
 msgid "After how many times the billing should stop?"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1332
+#: includes/Admin/Admin_Subscription.php:1337
 msgid "Enable Trial"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1333
+#: includes/Admin/Admin_Subscription.php:1338
 msgid "Enable trial period"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1365
+#: includes/Admin/Admin_Subscription.php:1370
 msgid "Trial Period"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1381
+#: includes/Admin/Admin_Subscription.php:1386
 msgid "Maximum Number of Posts"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1382
+#: includes/Admin/Admin_Subscription.php:1387
 msgid "How many post the user can list with this pack? Enter -1 for unlimited."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1395
+#: includes/Admin/Admin_Subscription.php:1400
 msgid "Maximum Number of Pages"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1396
+#: includes/Admin/Admin_Subscription.php:1401
 msgid "How many page the user can list with this pack? Enter -1 for unlimited."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1409
-#: includes/Admin/Admin_Subscription.php:1457
+#: includes/Admin/Admin_Subscription.php:1414
+#: includes/Admin/Admin_Subscription.php:1462
 msgid "Maximum Number of User Requests"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1410
-#: includes/Admin/Admin_Subscription.php:1458
+#: includes/Admin/Admin_Subscription.php:1415
+#: includes/Admin/Admin_Subscription.php:1463
 msgid ""
 "How many user_request the user can list with this pack? Enter -1 for "
 "unlimited."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1429
+#: includes/Admin/Admin_Subscription.php:1434
 msgid "Maximum Number of Reusable Block"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1430
-#: includes/Admin/Admin_Subscription.php:1505
+#: includes/Admin/Admin_Subscription.php:1435
+#: includes/Admin/Admin_Subscription.php:1510
 msgid "How many block the user can use with this pack? Enter -1 for unlimited."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1443
+#: includes/Admin/Admin_Subscription.php:1448
 msgid "Maximum Number of Templates"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1444
+#: includes/Admin/Admin_Subscription.php:1449
 msgid "How many templates the user can use with this pack? Enter -1 for unlimited."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1471
+#: includes/Admin/Admin_Subscription.php:1476
 msgid "Maximum Number of Global Styles"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1472
+#: includes/Admin/Admin_Subscription.php:1477
 msgid ""
 "How many global styles the user can use with this pack? Enter -1 for "
 "unlimited."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1485
+#: includes/Admin/Admin_Subscription.php:1490
 msgid "Maximum Number of Navigation Menus"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1486
+#: includes/Admin/Admin_Subscription.php:1491
 msgid ""
 "How many navigation menus the user can use with this pack? Enter -1 for "
 "unlimited."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1504
+#: includes/Admin/Admin_Subscription.php:1509
 msgid "Maximum number of featured items"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1517
+#: includes/Admin/Admin_Subscription.php:1522
 msgid "Remove Featured Item"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1518
+#: includes/Admin/Admin_Subscription.php:1523
 msgid "Remove featured items when plan expires"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:47
+#: includes/Admin/Admin_Tools.php:49
 msgid "Form Export"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:53 includes/Admin/Admin_Tools.php:116
+#: includes/Admin/Admin_Tools.php:55 includes/Admin/Admin_Tools.php:118
 #: includes/Admin/Forms/Post/Templates/List_Table_Admin_Post_Forms.php:53
 #: includes/Admin/List_Table_Subscribers.php:144
 #: includes/Admin/List_Table_Transactions.php:97 wpuf-functions.php:3517
 msgid "All"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:58 includes/Admin/Admin_Tools.php:121
+#: includes/Admin/Admin_Tools.php:60 includes/Admin/Admin_Tools.php:123
 msgid "Select individual"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:68 includes/Admin/Admin_Tools.php:134
+#: includes/Admin/Admin_Tools.php:70 includes/Admin/Admin_Tools.php:136
 #: includes/Admin/views/tools.php:11
 msgid "Export"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:76 includes/Admin/Admin_Tools.php:141
-msgid "Sorry you have no form to export"
+#: includes/Admin/Admin_Tools.php:78
+msgid "Sorry you have no post form to export"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:108
+#: includes/Admin/Admin_Tools.php:110
 msgid "Registration Form Export"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:150
+#: includes/Admin/Admin_Tools.php:143
+msgid "Sorry you have no registration form to export"
+msgstr ""
+
+#: includes/Admin/Admin_Tools.php:152
 msgid "Import forms"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:153
+#: includes/Admin/Admin_Tools.php:155
 msgid "Upload your JSON file and start imporing WPUF forms here"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:162
+#: includes/Admin/Admin_Tools.php:164
 msgid "Upload JSON File"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:165
+#: includes/Admin/Admin_Tools.php:167
 msgid "Importing JSON File"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:227
+#: includes/Admin/Admin_Tools.php:229
 msgid "Please select some form for exporting"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:310
+#: includes/Admin/Admin_Tools.php:312
 msgid "Are you Sure?"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:313
+#: includes/Admin/Admin_Tools.php:315
 msgid "All forms has been deleted"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:317
+#: includes/Admin/Admin_Tools.php:319
 msgid "Settings has been cleared!"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:321
+#: includes/Admin/Admin_Tools.php:323
 msgid "All transactions has been deleted!"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:337
+#: includes/Admin/Admin_Tools.php:339
 msgid "Page Installation"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:340
+#: includes/Admin/Admin_Tools.php:342
 msgid ""
 "Clicking this button will create required pages for the plugin. Note: It'll "
 "not delete/replace existing pages."
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:346 includes/Admin/Admin_Tools.php:350
+#: includes/Admin/Admin_Tools.php:348 includes/Admin/Admin_Tools.php:352
 msgid "Reset Settings"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:349
+#: includes/Admin/Admin_Tools.php:351
 msgid ""
 "Caution: This tool will delete all the plugin settings of WP User Frontend "
 "Pro"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:355
+#: includes/Admin/Admin_Tools.php:357
 msgid "Delete Forms"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:358
+#: includes/Admin/Admin_Tools.php:360
 msgid "Caution: This tool will delete all the post and registration/profile forms."
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:360
+#: includes/Admin/Admin_Tools.php:362
 msgid "Delete Post Forms"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:361
+#: includes/Admin/Admin_Tools.php:363
 msgid "Delete Registration Forms"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:362
+#: includes/Admin/Admin_Tools.php:364
 msgid "Delete Subscriptions"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:363
+#: includes/Admin/Admin_Tools.php:365
 msgid "Delete Coupons"
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:371
+#: includes/Admin/Admin_Tools.php:373
 msgid "This tool will delete all the transactions from the transaction table."
 msgstr ""
 
-#: includes/Admin/Admin_Tools.php:373
+#: includes/Admin/Admin_Tools.php:375
 msgid "Delete Transactions"
 msgstr ""
 
@@ -2262,8 +2271,8 @@ msgstr ""
 
 #: includes/Admin/Customizer_Options.php:45
 #: includes/Admin/Customizer_Options.php:86
-#: includes/Ajax/Address_Form_Ajax.php:167 includes/Traits/TaxableTrait.php:80
-#: includes/Traits/TaxableTrait.php:189 includes/WPUF_Privacy.php:270
+#: includes/Ajax/Address_Form_Ajax.php:167 includes/Traits/TaxableTrait.php:81
+#: includes/Traits/TaxableTrait.php:190 includes/WPUF_Privacy.php:270
 #: templates/dashboard/billing-address.php:51
 #: templates/dashboard/billing-address.php:52
 msgid "Country"
@@ -2664,7 +2673,7 @@ msgstr ""
 #: includes/Admin/Forms/Post/Templates/Post_Form_Template_Post.php:82
 #: includes/Admin/Forms/Post/Templates/Post_Form_Template_Post.php:83
 #: includes/Fields/Form_Field_Featured_Image.php:13
-#: includes/Fields/Form_Field_Featured_Image.php:146
+#: includes/Fields/Form_Field_Featured_Image.php:148
 #: templates/dashboard/list.php:7 templates/dashboard/posts.php:97
 msgid "Featured Image"
 msgstr ""
@@ -2856,7 +2865,7 @@ msgid "Subtotal"
 msgstr ""
 
 #: includes/Admin/List_Table_Transactions.php:51
-#: includes/Free/Free_Loader.php:194 includes/Traits/TaxableTrait.php:503
+#: includes/Free/Free_Loader.php:194 includes/Traits/TaxableTrait.php:504
 #: includes/WPUF_Privacy.php:339
 msgid "Tax"
 msgstr ""
@@ -2902,7 +2911,7 @@ msgstr ""
 msgid "No transactions found."
 msgstr ""
 
-#: includes/Admin/Menu.php:358
+#: includes/Admin/Menu.php:364
 #: includes/Admin/views/post-forms-list-table-view.php:16
 msgid "Submit Ideas"
 msgstr ""
@@ -2931,15 +2940,15 @@ msgstr ""
 msgid " Add Form"
 msgstr ""
 
-#: includes/Admin/Upgrades.php:121
+#: includes/Admin/Upgrades.php:122
 msgid "WPUF Data Update Required"
 msgstr ""
 
-#: includes/Admin/Upgrades.php:122
+#: includes/Admin/Upgrades.php:123
 msgid "Run the updater"
 msgstr ""
 
-#: includes/Admin/Upgrades.php:127
+#: includes/Admin/Upgrades.php:128
 msgid ""
 "It is strongly recommended that you backup your database before proceeding. "
 "Are you sure you wish to run the updater now?"
@@ -3434,14 +3443,14 @@ msgstr ""
 msgid "Some Required Fields are not filled!"
 msgstr ""
 
-#: includes/Ajax/Address_Form_Ajax.php:191 includes/Traits/TaxableTrait.php:108
-#: includes/Traits/TaxableTrait.php:211 includes/Traits/TaxableTrait.php:265
+#: includes/Ajax/Address_Form_Ajax.php:191 includes/Traits/TaxableTrait.php:109
+#: includes/Traits/TaxableTrait.php:212 includes/Traits/TaxableTrait.php:266
 #: templates/dashboard/billing-address.php:69
 msgid "Choose a country"
 msgstr ""
 
-#: includes/Ajax/Address_Form_Ajax.php:224 includes/Traits/TaxableTrait.php:125
-#: includes/Traits/TaxableTrait.php:160 includes/Traits/TaxableTrait.php:233
+#: includes/Ajax/Address_Form_Ajax.php:224 includes/Traits/TaxableTrait.php:126
+#: includes/Traits/TaxableTrait.php:161 includes/Traits/TaxableTrait.php:234
 #: templates/dashboard/billing-address.php:111
 msgid "Choose a state"
 msgstr ""
@@ -3578,7 +3587,7 @@ msgstr ""
 msgid "Failed to update subscription"
 msgstr ""
 
-#: includes/Api/Subscription.php:343 includes/Api/Subscription.php:427
+#: includes/Api/Subscription.php:343 includes/Api/Subscription.php:462
 msgid "Subscription updated successfully"
 msgstr ""
 
@@ -3586,11 +3595,11 @@ msgstr ""
 msgid "Subscription name cannot contain #"
 msgstr ""
 
-#: includes/Api/Subscription.php:429
+#: includes/Api/Subscription.php:464
 msgid "Subscription added successfully"
 msgstr ""
 
-#: includes/Api/Subscription.php:440
+#: includes/Api/Subscription.php:475
 msgid "Failed to insert post"
 msgstr ""
 
@@ -3770,13 +3779,13 @@ msgstr ""
 msgid "Email Address"
 msgstr ""
 
-#: includes/Fields/Form_Field_Featured_Image.php:124
-#: includes/Fields/Form_Field_Image.php:118
+#: includes/Fields/Form_Field_Featured_Image.php:126
+#: includes/Fields/Form_Field_Image.php:120
 msgid "Button Label"
 msgstr ""
 
-#: includes/Fields/Form_Field_Featured_Image.php:129
-#: includes/Fields/Form_Field_Image.php:123
+#: includes/Fields/Form_Field_Featured_Image.php:131
+#: includes/Fields/Form_Field_Image.php:125
 msgid "Enter a label for the Select button"
 msgstr ""
 
@@ -4711,24 +4720,24 @@ msgstr ""
 msgid "You are now logged out."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:425
+#: includes/Free/Simple_Login.php:445
 msgid "Nonce is invalid"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:444 includes/Frontend/Registration.php:214
+#: includes/Free/Simple_Login.php:464 includes/Frontend/Registration.php:214
 msgid "Username is required."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:450 includes/Frontend/Registration.php:221
+#: includes/Free/Simple_Login.php:470 includes/Frontend/Registration.php:221
 msgid "Password is required."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:457 includes/Traits/FieldableTrait.php:205
+#: includes/Free/Simple_Login.php:477 includes/Traits/FieldableTrait.php:205
 #: includes/class-frontend-render-form.php:877
 msgid "Empty reCaptcha Field"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:472 includes/Frontend/Registration.php:184
+#: includes/Free/Simple_Login.php:492 includes/Frontend/Registration.php:184
 #: includes/Frontend/Registration.php:191
 #: includes/Frontend/Registration.php:198
 #: includes/Frontend/Registration.php:205
@@ -4741,35 +4750,39 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:472 includes/Frontend/Registration.php:255
+#: includes/Free/Simple_Login.php:492 includes/Frontend/Registration.php:255
 msgid "A user could not be found with this email address."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:668
+#: includes/Free/Simple_Login.php:500
+msgid "You can't login until an administrator manually approve your account."
+msgstr ""
+
+#: includes/Free/Simple_Login.php:697
 msgid "Please enter your password."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:674
+#: includes/Free/Simple_Login.php:703
 msgid "Passwords do not match."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:722
+#: includes/Free/Simple_Login.php:751
 msgid "Enter a username or e-mail address."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:729
+#: includes/Free/Simple_Login.php:758
 msgid "There is no user registered with that email address."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:746
+#: includes/Free/Simple_Login.php:775
 msgid "Invalid username or e-mail."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:760
+#: includes/Free/Simple_Login.php:789
 msgid "Password reset is not allowed for this user"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:799
+#: includes/Free/Simple_Login.php:828
 #. translators: %s: activation link
 msgid ""
 "<strong>Your account is not active.</strong><br>Please check your email for "
@@ -4777,87 +4790,87 @@ msgid ""
 "link"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:820 includes/Free/Simple_Login.php:845
+#: includes/Free/Simple_Login.php:849 includes/Free/Simple_Login.php:874
 msgid "Activation URL is not valid"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:831
+#: includes/Free/Simple_Login.php:860
 msgid "Invalid User activation url"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:837
+#: includes/Free/Simple_Login.php:866
 msgid "User already verified"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:853 includes/Free/Simple_Login.php:929
+#: includes/Free/Simple_Login.php:882 includes/Free/Simple_Login.php:958
 msgid "Your account has been activated"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:856
+#: includes/Free/Simple_Login.php:885
 msgid ""
 "Your account has been verified , but you can't login until manually "
 "approved your account by an administrator."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:879
+#: includes/Free/Simple_Login.php:908
 #. translators: %s: blogname
 msgid "[%s] Your username and password info"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:881 includes/Free/Simple_Login.php:981
+#: includes/Free/Simple_Login.php:910 includes/Free/Simple_Login.php:1010
 #: includes/Frontend/Registration.php:291 includes/Widgets/Login_Widget.php:155
 #. translators: %s: username
 msgid "Username: %s"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:882
+#: includes/Free/Simple_Login.php:911
 msgid "To set your password, visit the following address:"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:978
+#: includes/Free/Simple_Login.php:1007
 msgid "Someone requested that the password be reset for the following account:"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:982 includes/Widgets/Login_Widget.php:156
+#: includes/Free/Simple_Login.php:1011 includes/Widgets/Login_Widget.php:156
 msgid "If this was a mistake, just ignore this email and nothing will happen."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:983 includes/Widgets/Login_Widget.php:157
+#: includes/Free/Simple_Login.php:1012 includes/Widgets/Login_Widget.php:157
 msgid "To reset your password, visit the following address:"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:994 includes/Widgets/Login_Widget.php:162
+#: includes/Free/Simple_Login.php:1023 includes/Widgets/Login_Widget.php:162
 #. translators: %s: blogname
 msgid "[%s] Password Reset"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1000
+#: includes/Free/Simple_Login.php:1029
 msgid "The e-mail could not be sent."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1000
+#: includes/Free/Simple_Login.php:1029
 msgid "Possible reason: your host may have disabled the mail() function."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1120
+#: includes/Free/Simple_Login.php:1149
 #. translators: %s: blogname
 msgid "[%s] Account has been activated"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1122
+#: includes/Free/Simple_Login.php:1151
 #. translators: %s: username
 msgid "Hi %s,"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1123
+#: includes/Free/Simple_Login.php:1152
 msgid "Congrats! Your account has been activated. To login visit the following url:"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1125
+#: includes/Free/Simple_Login.php:1154
 msgid "Thanks"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1151
+#: includes/Free/Simple_Login.php:1180
 msgid " Login "
 msgstr ""
 
@@ -5500,26 +5513,26 @@ msgstr ""
 msgid "Go to Full Settings"
 msgstr ""
 
-#: includes/Traits/TaxableTrait.php:81 includes/Traits/TaxableTrait.php:190
+#: includes/Traits/TaxableTrait.php:82 includes/Traits/TaxableTrait.php:191
 msgid "State / Province"
 msgstr ""
 
-#: includes/Traits/TaxableTrait.php:191
+#: includes/Traits/TaxableTrait.php:192
 msgid "Rate"
 msgstr ""
 
-#: includes/Traits/TaxableTrait.php:191
+#: includes/Traits/TaxableTrait.php:192
 msgid ""
 "Regional tax rates: When a customer enters an address on payment page that "
 "matches the specified region for this tax rate, the payment tax will adjust "
 "automatically. Enter a percentage, such as 5 for 5%."
 msgstr ""
 
-#: includes/Traits/TaxableTrait.php:248 includes/Traits/TaxableTrait.php:280
+#: includes/Traits/TaxableTrait.php:249 includes/Traits/TaxableTrait.php:281
 msgid "Remove Rate"
 msgstr ""
 
-#: includes/Traits/TaxableTrait.php:285
+#: includes/Traits/TaxableTrait.php:286
 msgid "Add Tax Rate"
 msgstr ""
 

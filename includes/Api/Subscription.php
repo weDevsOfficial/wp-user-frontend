@@ -405,6 +405,9 @@ class Subscription extends WP_REST_Controller {
         $cycle_period           = ! empty( $subscription['meta_value']['_cycle_period'] ) ? sanitize_text_field(
             $subscription['meta_value']['_cycle_period']
         ) : '';
+        $enable_billing_limit   = ! empty( $subscription['meta_value']['_enable_billing_limit'] ) ? sanitize_text_field(
+            $subscription['meta_value']['_enable_billing_limit']
+        ) : '';
         $billing_limit          = ! empty( $subscription['meta_value']['_billing_limit'] ) ? sanitize_text_field(
             $subscription['meta_value']['_billing_limit']
         ) : '';
@@ -482,6 +485,7 @@ class Subscription extends WP_REST_Controller {
             update_post_meta( $id, '_recurring_pay', $recurring_pay );
             update_post_meta( $id, '_billing_cycle_number', $billing_cycle_number );
             update_post_meta( $id, '_cycle_period', $cycle_period );
+            update_post_meta( $id, '_enable_billing_limit', $enable_billing_limit );
             update_post_meta( $id, '_billing_limit', $billing_limit );
             update_post_meta( $id, '_trial_status', $trial_status );
             update_post_meta( $id, '_trial_duration', $trial_duration );

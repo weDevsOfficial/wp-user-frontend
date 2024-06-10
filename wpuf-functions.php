@@ -4777,3 +4777,16 @@ function wpuf_load_headway_badge( $selector = '#wpuf-headway-icon' ) {
     <?php
     wp_enqueue_script( 'wpuf-headway' );
 }
+
+/**
+ * Check if the option is on
+ *
+ * @since WPUF_SINCE
+ *
+ * @param $option
+ *
+ * @return bool
+ */
+function wpuf_is_option_on( $option ) {
+    return 'on' === $option || 'yes' === $option;
+}

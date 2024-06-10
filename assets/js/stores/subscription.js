@@ -7,6 +7,7 @@ import {addQueryArgs} from '@wordpress/url';
 export const useSubscriptionStore = defineStore( 'subscription', {
     state: () => ( {
         subscriptionList: ref( [] ),
+        isUpdating: ref( false ),
         isDirty: ref( false ),
         isUnsavedPopupOpen: ref( false ),
         currentSubscriptionStatus: ref( 'all' ),
@@ -112,7 +113,11 @@ export const useSubscriptionStore = defineStore( 'subscription', {
             }
         },
         updateSubscription() {
+            this.isUpdating = true;
+
             if (this.currentSubscription === null) {
+                this.isUpdating = false;
+
                 return false;
             }
 

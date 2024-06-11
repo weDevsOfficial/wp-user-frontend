@@ -9,6 +9,7 @@ import apiFetch from '@wordpress/api-fetch';
 import {addQueryArgs} from '@wordpress/url';
 import {useComponentStore} from '../../stores/component';
 import ListHeader from './ListHeader.vue';
+import EmptyTrash from './EmptyTrash.vue';
 
 const subscriptionStore = useSubscriptionStore();
 const componentStore = useComponentStore();
@@ -53,7 +54,8 @@ const { currentComponent } = storeToRefs(componentStore);
 <template>
     <div v-if="!count" class="wpuf-px-8 wpuf-pb-8">
         <ListHeader />
-        <Empty />
+        <Empty v-if="subscriptionStore.currentSubscriptionStatus !== 'trash'" />
+        <EmptyTrash v-if="subscriptionStore.currentSubscriptionStatus === 'trash'" />
     </div>
     <div v-else class="wpuf-px-8 wpuf-pb-8">
         <ListHeader />

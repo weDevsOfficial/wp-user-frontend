@@ -13,12 +13,16 @@ const subSection = inject( 'subSection' );
 const props = defineProps( {
     field: Object,
     fieldId: String,
+    innerField: {
+        type: Boolean,
+        default: false,
+    },
 } );
 
 const dependencyStore = useFieldDependencyStore();
 const subscription = subscriptionStore.currentSubscription;
 
-const { field, fieldId } = toRefs( props );
+const { field, fieldId, innerField } = toRefs( props );
 
 const publishedDate = ref(new Date());
 
@@ -108,12 +112,21 @@ const processInput = (event) => {
 <template>
     <div
         v-show="showField"
-        :class="field.label ? 'wpuf-grid wpuf-grid-cols-3' : 'wpuf-block'"
-        class="wpuf-gap-4 wpuf-p-4">
+        :class="field.label ? 'wpuf-grid wpuf-grid-cols-3 wpuf-p-4' : 'wpuf-py-4 wpuf-pl-3 wpuf-pr-4'"
+        class="wpuf-gap-4">
         <label v-if="field.label"
                :for="field.name"
-               class="wpuf-block wpuf-text-sm wpuf-leading-6 wpuf-text-gray-600">
+               class="wpuf-block wpuf-text-sm wpuf-leading-6 wpuf-text-gray-600 wpuf-flex wpuf-items-center">
             {{ field.label }}
+            <div
+                v-if="field.description"
+                class="wpuf-tooltip wpuf-cursor-pointer wpuf-ml-2 wpuf-z-[9999]"
+                 :data-tip="field.description">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none">
+                    <path d="M9.833 12.333H9V9h-.833M9 5.667h.008M16.5 9a7.5 7.5 0 1 1-15 0 7.5 7.5 0 1 1 15 0z"
+                          stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </div>
         </label>
         <div class="wpuf-w-full wpuf-col-span-2">
             <input
@@ -174,7 +187,6 @@ const processInput = (event) => {
                     :selected="key === value"
                     :key="key">{{ item }}</option>
             </select>
-            <p class="wpuf-mt-3 wpuf-text-sm wpuf-leading-6 wpuf-text-gray-600">{{ field.description }}</p>
         </div>
     </div>
 </template>

@@ -143,7 +143,10 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                 .then( ( response ) => response.json() )
                 .catch( ( error ) => {
                     console.log( error );
-                } );
+                } )
+                .finally( () => {
+                    this.isUpdating = false;
+                });
         },
         modifyCurrentSubscription( key, value, serializeKey = null ) {
             if (this.currentSubscription === null) {

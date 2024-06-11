@@ -23,12 +23,12 @@ const showField = computed(() => {
         class="wpuf-grid wpuf-grid-cols-3">
         <label
             :for="parentField.name"
-            class="wpuf-block wpuf-text-sm wpuf-leading-6 wpuf-text-gray-600 wpuf-pl-4">
+            class="wpuf-block wpuf-text-sm wpuf-leading-6 wpuf-text-gray-600 wpuf-flex wpuf-items-center wpuf-pl-4">
             {{ parentField.label }}
         </label>
         <div class="wpuf-mr-2 wpuf-contents">
             <SectionInputField v-for="field in parentField.fields"
-               :field="field" :fieldId="field.id" />
+               :field="field" :fieldId="field.id" inner-field="true" />
         </div>
     </div>
 </template>

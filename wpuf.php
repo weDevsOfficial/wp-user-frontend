@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: weDevs
-Version: 4.0.6
+Version: 4.0.7
 Author URI: https://wedevs.com/?utm_source=WPUF_Author_URI
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -23,7 +23,7 @@ if ( file_exists( $autoload ) ) {
     require_once $autoload;
 }
 
-define( 'WPUF_VERSION', '4.0.6' );
+define( 'WPUF_VERSION', '4.0.7' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -40,7 +40,8 @@ use WeDevs\WpUtils\SingletonTrait;
 /*Marking a class with #[AllowDynamicProperties] is fully backwards-compatible with earlier PHP versions, because prior to PHP 8.0 this would be interpreted as a comment, and the use non-existent classes as attributes is not an error.*/
 #[AllowDynamicProperties]
 final class WP_User_Frontend {
-    use SingletonTrait, ContainerTrait;
+    use SingletonTrait;
+    use ContainerTrait;
 
     /**
      * Form field value seperator

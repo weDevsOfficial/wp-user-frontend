@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf\Admin;
 
+use WP_Error;
+use WP_Http;
 use WP_Query;
 
 /**
@@ -12,9 +14,9 @@ use WP_Query;
 class Admin_Tools {
 
     public function __construct() {
-        add_action( 'admin_init', [ $this, 'handle_tools_action' ] );
-        add_filter( 'wp_handle_upload_prefilter', [ $this, 'enable_json_upload' ], 1 );
+        add_action( 'wpuf_load_tools', [ $this, 'handle_tools_action' ] );
         add_filter( 'upload_mimes', [ $this, 'add_json_mime_type' ] );
+        add_filter( 'wp_handle_upload_prefilter', [ $this, 'enable_json_upload' ] );
     }
 
     /**
@@ -73,7 +75,7 @@ class Admin_Tools {
 
             <?php
         } else {
-            sprintf( '<p>%s</p>', __( 'Sorry you have no form to export', 'wp-user-frontend' ) );
+            printf( '<p>%s</p>', __( 'Sorry you have no post form to export', 'wp-user-frontend' ) );
         }
     }
 
@@ -138,7 +140,7 @@ class Admin_Tools {
             </div>
             <?php
         } else {
-            sprintf( '<p>%s</p>', __( 'Sorry you have no form to export', 'wp-user-frontend' ) );
+            printf( '<p>%s</p>', __( 'Sorry you have no registration form to export', 'wp-user-frontend' ) );
         }
     }
 
@@ -215,12 +217,12 @@ class Admin_Tools {
      * Export normal form data
      *
      * @param string $export_type
-     * @param int    $form_ids
+     * @param array    $form_ids
      */
     public function export_forms( $form_type, $export_type, $form_ids ) {
         if ( $export_type === 'all' ) {
             static::export_to_json( $form_type );
-        } else if ( $export_type === 'selected' ) {
+        } else if ( 'selected' === $export_type ) {
             if ( empty( $form_ids ) ) {
                 printf(
                     '<div class="error"><p>%s</p></div>',
@@ -455,32 +457,45 @@ class Admin_Tools {
     public function import_forms() {
         check_ajax_referer( 'wpuf_admin_tools' );
         if ( ! isset( $_POST['file_id'] ) ) {
-            wp_send_json_error( new WP_Error( 'wpuf_ajax_import_forms_error',
-                __( 'Missing file_id param', 'wp-user-frontend' ) ),
-                WP_Http::BAD_REQUEST );
+            wp_send_json_error(
+                new WP_Error(
+                    'wpuf_ajax_import_forms_error',
+                    __( 'Missing file_id param', 'wp-user-frontend' )
+                ),
+                WP_Http::BAD_REQUEST
+            );
         }
         $file_id = absint( wp_unslash( $_POST['file_id'] ) );
         $file    = get_attached_file( $file_id );
         if ( empty( $file ) ) {
-            wp_send_json_error( new WP_Error( 'wpuf_ajax_import_forms_error',
-                __( 'JSON file not found', 'wp-user-frontend' ) ), WP_Http::NOT_FOUND );
+            wp_send_json_error(
+                new WP_Error(
+                    'wpuf_ajax_import_forms_error',
+                    __( 'JSON file not found', 'wp-user-frontend' )
+                ),
+                WP_Http::NOT_FOUND
+            );
         }
         $filetype = wp_check_filetype( $file, [ 'json' => 'application/json' ] );
         if ( ! isset( $filetype['type'] ) || 'application/json' !== $filetype['type'] ) {
-            wp_send_json_error( new WP_Error( 'wpuf_ajax_import_forms_error',
-                __( 'Provided file is not a JSON file.', 'wp-user-frontend' ) ),
-                WP_Http::UNSUPPORTED_MEDIA_TYPE );
+            wp_send_json_error(
+                new WP_Error(
+                    'wpuf_ajax_import_forms_error',
+                    __( 'Provided file is not a JSON file.', 'wp-user-frontend' )
+                ),
+                WP_Http::UNSUPPORTED_MEDIA_TYPE
+            );
         }
-        if ( ! class_exists( 'WPUF_Admin_Tools' ) ) {
-            require_once WPUF_ROOT . '/admin/class-tools.php';
-        }
-        $imported = Admin_Tools::import_json_file( $file );
+
+        $imported = self::import_json_file( $file );
         if ( is_wp_error( $imported ) ) {
             wp_send_json_error( $imported, WP_Http::UNPROCESSABLE_ENTITY );
         }
-        wp_send_json_success( [
-            'message' => __( 'Forms imported successfully.', 'wp-user-frontend' ),
-        ] );
+        wp_send_json_success(
+            [
+                'message' => __( 'Forms imported successfully.', 'wp-user-frontend' ),
+            ]
+        );
     }
 
     /**

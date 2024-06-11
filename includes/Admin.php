@@ -27,11 +27,11 @@ class Admin {
         $this->settings              = new Admin\Admin_Settings();
         $this->forms                 = new Admin\Forms\Form_Manager();
         $this->gutenberg_block       = new Frontend\Form_Gutenberg_Block();
-        $this->whats_new             = new Admin\Whats_New();
         $this->promotion             = new Admin\Promotion();
         $this->plugin_upgrade_notice = new Admin\Plugin_Upgrade_Notice();
         $this->posting               = new Admin\Posting();
         $this->shortcodes_button     = new Admin\Shortcodes_Button();
+        $this->tools                 = new Admin\Admin_Tools();
 
         // dynamic hook. format: "admin_action_{$action}". more details: wp-admin/admin.php
         add_action( 'admin_action_post_form_template', [ $this, 'create_post_form_from_template' ] );

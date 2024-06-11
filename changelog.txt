@@ -1,3 +1,13 @@
+= v4.0.7 (11 Jun, 2024) =
+* Enhance - Remove what's new page
+* Fix - Pending user can log in
+* Fix - Error when multiple password fields in form
+* Fix - Error when using CPT on post form
+* Fix - File upload problem using page builders
+* Fix - Conflict with WC Stripe Gateway plugin
+* Fix - Edit link on mail not working
+* Fix - Form import is not working
+
 = v4.0.6 (13 Feb, 2024) =
 * Enhance - Update deprecated uses for PHP versions and latest WordPress
 * Enhance - Eye icon inside password field

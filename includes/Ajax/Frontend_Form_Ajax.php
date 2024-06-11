@@ -451,10 +451,10 @@ class Frontend_Form_Ajax {
 
             //redirect the user
             $response = apply_filters( 'wpuf_add_post_redirect', $response, $post_id, $form_id, $this->form_settings );
-            //now perform some post related actions. it should done after other action.either count related problem emerge
-            do_action( 'wpuf_add_post_after_insert', $post_id, $form_id, $this->form_settings, $meta_vars ); // plugin API to extend the functionality
-
         }
+
+        // now perform some post related actions. it should be done after other action. either count related problem emerge
+        do_action( 'wpuf_add_post_after_insert', $post_id, $form_id, $this->form_settings, $meta_vars ); // plugin API to extend the functionality
 
         return $response;
     }
@@ -641,7 +641,7 @@ class Frontend_Form_Ajax {
 
         $home_url = sprintf( '<a href="%s">%s</a>', home_url(), home_url() );
         $post_url = sprintf( '<a href="%s">%s</a>', get_permalink( $post_id ), get_permalink( $post_id ) );
-        $post_edit_link = sprintf( '<a href="%s">%s</a>', admin_url( 'WPUF_Post_Form_Template_Post.php?action=edit&post=' . $post_id ), admin_url( 'WPUF_Post_Form_Template_Post.php?action=edit&post=' . $post_id ) );
+	    $post_edit_link = sprintf( '<a href="%s">%s</a>', admin_url( 'post.php?action=edit&post=' . $post_id ), admin_url( 'post.php?action=edit&post=' . $post_id ) );
 
         $post_field_replace = [
             $post->post_title,

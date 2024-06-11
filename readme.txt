@@ -3,8 +3,8 @@ Contributors: tareq1988, nizamuddinbabu, wedevs
 Donate link: https://tareq.co/donate/
 Tags: frontend post, content restriction, registration, user profile, membership, login, forms, user directory, profile builder
 Requires at least: 4.0
-Tested up to: 6.4.3
-Stable tag: 4.0.6
+Tested up to: 6.5.4
+Stable tag: 4.0.7
 Requires PHP: 5.6
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -268,6 +268,16 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 18. Set Payment Related Options
 
 == Changelog ==
+= v4.0.7 (11 Jun, 2024) =
+* Enhance - Remove what's new page
+* Fix - Pending user can log in
+* Fix - Error when multiple password fields in form
+* Fix - Error when using CPT on post form
+* Fix - File upload problem using page builders
+* Fix - Conflict with WC Stripe Gateway plugin
+* Fix - Edit link on mail not working
+* Fix - Form import is not working
+
 = v4.0.6 (13 Feb, 2024) =
 * Enhance - Update deprecated uses for PHP versions and latest WordPress
 * Enhance - Eye icon inside password field

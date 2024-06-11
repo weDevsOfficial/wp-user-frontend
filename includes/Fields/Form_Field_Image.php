@@ -26,6 +26,8 @@ class Form_Field_Image extends Field_Contract {
      * @return void
      */
     public function render( $field_settings, $form_id, $type = 'post', $post_id = null ) {
+        $this->enqueue_file_upload_scripts();
+
         $has_images = false;
 
         if ( isset( $post_id ) && $post_id !== 0 ) {

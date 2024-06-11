@@ -10,6 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 use WC_Countries;
 use WC_Customer;
 use WeDevs\Wpuf\Admin\Forms\Form;
+use WeDevs\Wpuf\Admin\Subscription;
 use WeDevs\Wpuf\Data\Country_State;
 
 trait TaxableTrait {
@@ -440,7 +441,7 @@ trait TaxableTrait {
 
         if ( isset( $post_data['type'] ) && isset( $post_data['id'] ) ) {
             if ( 'pack' === $post_data['type'] ) {
-                $pack           = Subscription::init()->get_subscription( $post_data['id'] );
+                $pack           = ( new Subscription() )->get_subscription( $post_data['id'] );
                 $billing_amount = $pack->meta_value['billing_amount'];
                 $user_id        = $current_user->ID;
             } elseif ( 'post' === $post_data['type'] ) {

@@ -909,7 +909,7 @@ abstract class Field_Contract {
     /**
      * Enqueue file upload scripts
      *
-     * @since WPUF_SINCE
+     * @since 4.0.7
      *
      * @return void
      */

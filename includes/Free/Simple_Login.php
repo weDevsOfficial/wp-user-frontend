@@ -414,7 +414,7 @@ class Simple_Login {
      * Remove selected cookie to have consistency with the login nonce.
      * fixes WooCommerce Stripe Gateway plugin conflict
      *
-     * @since WPUF_SINCE
+     * @since 4.0.7
      *
      * @return void
      */

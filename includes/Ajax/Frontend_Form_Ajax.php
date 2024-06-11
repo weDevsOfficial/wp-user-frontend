@@ -451,10 +451,10 @@ class Frontend_Form_Ajax {
 
             //redirect the user
             $response = apply_filters( 'wpuf_add_post_redirect', $response, $post_id, $form_id, $this->form_settings );
-            //now perform some post related actions. it should done after other action.either count related problem emerge
-            do_action( 'wpuf_add_post_after_insert', $post_id, $form_id, $this->form_settings, $meta_vars ); // plugin API to extend the functionality
-
         }
+
+        // now perform some post related actions. it should be done after other action. either count related problem emerge
+        do_action( 'wpuf_add_post_after_insert', $post_id, $form_id, $this->form_settings, $meta_vars ); // plugin API to extend the functionality
 
         return $response;
     }

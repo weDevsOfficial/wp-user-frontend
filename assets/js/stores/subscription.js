@@ -12,8 +12,8 @@ export const useSubscriptionStore = defineStore( 'subscription', {
         isDirty: ref( false ),
         isUnsavedPopupOpen: ref( false ),
         currentSubscriptionStatus: ref( 'all' ),
-        currentSubscription: ref( null ),
         currentSubscriptionCopy: ref( null ),
+        currentSubscription: ref( null ),
         errors: reactive( {} ),
         updateError: reactive( {
             status: false,
@@ -66,7 +66,6 @@ export const useSubscriptionStore = defineStore( 'subscription', {
     actions: {
         setCurrentSubscription( subscription ) {
             this.currentSubscription = subscription;
-            this.currentSubscriptionCopy = subscription;
         },
         setBlankSubscription() {
             this.currentSubscription = {};
@@ -284,15 +283,6 @@ export const useSubscriptionStore = defineStore( 'subscription', {
 
             return !this.hasError();
         },
-        toggleDraft( subscription ) {
-            subscription.edit_single_row = true;
-            subscription.edit_row_name = 'post_status';
-            subscription.edit_row_value = subscription.post_status === 'draft' ? 'publish' : 'draft'
-            ;
-            this.setCurrentSubscription( subscription );
-
-            return this.updateSubscription();
-        },
         deleteSubscription( id ) {
             const requestOptions = {
                 method: 'DELETE',
@@ -307,6 +297,16 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                 .catch( ( error ) => {
                     console.log( error );
                 } );
+        },
+        changeSubscriptionStatus( subscription ) {
+            subscription.edit_single_row = true;
+
+            this.setCurrentSubscription( subscription );
+
+            this.allCount[subscription.edit_row_value] = parseInt( this.allCount[subscription.edit_row_value] ) + 1;
+            this.allCount[subscription.post_status] = parseInt( this.allCount[subscription.post_status] ) - 1;
+
+            return this.updateSubscription();
         },
         setSubscriptionsByStatus( status, offset = 0 ) {
             this.isSubscriptionLoading = true;

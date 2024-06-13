@@ -27,7 +27,7 @@ import {__} from '@wordpress/i18n';
                     <div class="wpuf-mt-4 wpuf-flex wpuf-flex-row-reverse">
                         <button
                             type="button"
-                            @click="$emit('delete')"
+                            @click="$emit('trash')"
                             class="wpuf-inline-flex wpuf-justify-center wpuf-rounded-md wpuf-bg-red-600 wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-red-500 wpuf-ml-3 wpuf-w-auto">
                             {{ __( 'Delete', 'wp-user-frontend' ) }}</button>
                         <button

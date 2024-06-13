@@ -4,7 +4,6 @@ import InfoCard from './InfoCard.vue';
 import SubscriptionsDetails from './SubscriptionsDetails.vue';
 import {useComponentStore} from '../../stores/component';
 import {useSubscriptionStore} from '../../stores/subscription';
-import {ref} from 'vue';
 import UpdateButton from './UpdateButton.vue';
 import {useNoticeStore} from '../../stores/notice';
 import Unsaved from './Unsaved.vue';
@@ -63,7 +62,7 @@ const goToList = () => {
         <div class="wpuf-flex wpuf-justify-between">
             <button
                 type="button"
-                @click="subscriptionStore.isDirty ? subscriptionStore.isUnsavedPopupOpen = subscriptionStore.isDirty : goToList()"
+                @click="subscriptionStore.isDirty ? subscriptionStore.isUnsavedPopupOpen = true : goToList()"
                 class="wpuf-rounded-md wpuf-bg-indigo-600 wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                 <span class="dashicons dashicons-arrow-left-alt"></span>&nbsp;{{ __( 'Back', 'wp-user-frontend' ) }}</button>
         </div>

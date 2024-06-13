@@ -113,7 +113,7 @@ onBeforeMount( () => {
         v-if="!subscriptionStore.isUpdating"
         :class="isQuickEdit ? 'wpuf-blur' : ''"
         class="wpuf-flex wpuf-flex-row wpuf-mt-12 wpuf-bg-white wpuf-py-8">
-        <div class="wpuf-basis-1/5 wpuf-border-r-2 wpuf-border-gray-200">
+        <div class="wpuf-basis-1/5 wpuf-border-r-2 wpuf-border-gray-200 wpuf-100vh">
             <SidebarMenu />
         </div>
         <div

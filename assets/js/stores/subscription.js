@@ -8,6 +8,7 @@ export const useSubscriptionStore = defineStore( 'subscription', {
     state: () => ( {
         subscriptionList: ref( [] ),
         isUpdating: ref( false ),
+        isSubscriptionLoading: ref( false ),
         isDirty: ref( false ),
         isUnsavedPopupOpen: ref( false ),
         currentSubscriptionStatus: ref( 'all' ),
@@ -308,7 +309,7 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                 } );
         },
         setSubscriptionsByStatus( status, offset = 0 ) {
-            this.isUpdating = true;
+            this.isSubscriptionLoading = true;
 
             const queryParams = {'per_page': wpufSubscriptions.perPage, 'offset': offset, 'post_status': status};
             apiFetch( {
@@ -328,7 +329,7 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                     console.log( error );
                 } )
                 .finally( () => {
-                    this.isUpdating = false;
+                    this.isSubscriptionLoading = false;
                 });
         },
     }

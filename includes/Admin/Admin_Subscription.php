@@ -1122,21 +1122,25 @@ class Admin_Subscription {
             [
                 'post_expiration' => [
                     'post_expiration'      => [
-                        'id'      => 'post-expiration',
-                        'name'    => 'post-expiration',
-                        'db_key'  => '_enable_post_expiration',
-                        'db_type' => 'meta',
-                        'type'    => 'switcher',
-                        'label'   => __( 'Enable Post Expiration', 'wp-user-frontend' ),
-                        'default' => false,
+                        'id'          => 'post-expiration',
+                        'name'        => 'post-expiration',
+                        'db_key'      => '_enable_post_expiration',
+                        'db_type'     => 'meta',
+                        'type'        => 'switcher',
+                        'label'       => __( 'Enable Post Expiration', 'wp-user-frontend' ),
+                        'description' => __(
+                            'Enable or disable post expiration for this subscription plan. If enabled, posts created using this plan will expire after a certain period, as specified in the settings',
+                            'wp-user-frontend'
+                        ),
+                        'default'     => false,
                     ],
                     'expiration_time'      => [
-                        'id'         => 'expiration-time',
-                        'name'       => 'expiration-time',
-                        'type'       => 'inline',
-                        'db_key'     => '_post_expiration_time',
-                        'db_type'    => 'meta',
-                        'fields'     => [
+                        'id'      => 'expiration-time',
+                        'name'    => 'expiration-time',
+                        'type'    => 'inline',
+                        'db_key'  => '_post_expiration_time',
+                        'db_type' => 'meta',
+                        'fields'  => [
                             'expiration_value' => [
                                 'id'      => 'post-expiration-value',
                                 'name'    => 'post-expiration-value',
@@ -1161,8 +1165,8 @@ class Admin_Subscription {
                                 'default' => 'day',
                             ],
                         ],
-                        'key_id'     => 'expiration_time',
-                        'label'      => __( 'Expiration Time', 'wp-user-frontend' ),
+                        'key_id'  => 'expiration_time',
+                        'label'   => __( 'Expiration Time', 'wp-user-frontend' ),
                     ],
                     'post_status'          => [
                         'id'          => 'post-status',
@@ -1178,7 +1182,10 @@ class Admin_Subscription {
                         ],
                         'label'       => __( 'Post Status', 'wp-user-frontend' ),
                         'description' => __( 'Status of post after post expiration time is over', 'wp-user-frontend' ),
-                        'placeholder' => __( 'Post status will be changed to the selected one when expiration time is over', 'wp-user-frontend' ),
+                        'placeholder' => __(
+                            'Post status will be changed to the selected one when expiration time is over',
+                            'wp-user-frontend'
+                        ),
                         'key_id'      => 'post_status',
                         'default'     => 'publish',
                     ],
@@ -1206,7 +1213,10 @@ class Admin_Subscription {
                             'You may use: {post_author} {post_url} {blogname} {post_title} {post_status}',
                             'wp-user-frontend'
                         ),
-                        'placeholder' => __( 'Dear, Your post has been expired. Post details: {post_url} {blogname} {post_title}', 'wp-user-frontend' ),
+                        'placeholder' => __(
+                            'Dear, Your post has been expired. Post details: {post_url} {blogname} {post_title}',
+                            'wp-user-frontend'
+                        ),
                         'key_id'      => 'expiration_message',
                         'default'     => '',
                     ],
@@ -1236,7 +1246,7 @@ class Admin_Subscription {
                         'db_type'     => 'meta',
                         'type'        => 'input-number',
                         'label'       => __( 'Billing Amount', 'wp-user-frontend' ),
-                        'description' => __( 'The billing amount for the subscription', 'wp-user-frontend' ),
+                        'description' => __( 'Enter the billing amount for the subscription. This amount will be charged to users who subscribe to this plan', 'wp-user-frontend' ),
                         'default'     => 0,
                     ],
                     'expire_in'        => [
@@ -1269,7 +1279,7 @@ class Admin_Subscription {
                         ],
                         'key_id'      => 'expiration_time',
                         'label'       => __( 'Expire In', 'wp-user-frontend' ),
-                        'description' => __( 'The billing cycle for the subscription', 'wp-user-frontend' ),
+                        'description' => __( 'Set the duration for the subscription to remain active before expiring', 'wp-user-frontend' ),
                     ],
                     'enable_recurring' => [
                         'id'          => 'cycle-period',
@@ -1278,7 +1288,7 @@ class Admin_Subscription {
                         'db_type'     => 'meta',
                         'type'        => 'switcher',
                         'label'       => __( 'Enable Recurring Payment', 'wp-user-frontend' ),
-                        'description' => __( 'Is the payment recurring?', 'wp-user-frontend' ),
+                        'description' => __( 'Enable recurring payments for this subscription. Users will be charged automatically at the end of each billing cycle until the subscription is canceled', 'wp-user-frontend' ),
                         'default'     => false,
                     ],
                     'payment_cycle'    => [
@@ -1309,8 +1319,9 @@ class Admin_Subscription {
                                 'default' => 'day',
                             ],
                         ],
-                        'key_id'     => 'payment_cycle',
-                        'label'      => __( 'Payment Cycle', 'wp-user-frontend' ),
+                        'key_id'      => 'payment_cycle',
+                        'label'       => __( 'Payment Cycle', 'wp-user-frontend' ),
+                        'description' => __( 'Set the duration of each billing cycle for this subscription', 'wp-user-frontend' ),
                     ],
                     'stop_cycle'      => [
                         'id'          => 'stop-cycle',
@@ -1339,18 +1350,18 @@ class Admin_Subscription {
                         'db_type'     => 'meta',
                         'type'        => 'switcher',
                         'label'       => __( 'Enable Trial', 'wp-user-frontend' ),
-                        'description' => __( 'Enable trial period', 'wp-user-frontend' ),
+                        'description' => __( 'Enable or disable a trial period for this subscription. When enabled, users will have the option to access the subscription for a limited trial period before the actual billing cycle begins', 'wp-user-frontend' ),
                         'default'     => false,
                     ],
                     'trial_period'    => [
-                        'id'         => 'trial-period',
-                        'name'       => 'trial-period',
-                        'type'       => 'inline',
-                        'fields'     => [
+                        'id'          => 'trial-period',
+                        'name'        => 'trial-period',
+                        'type'        => 'inline',
+                        'fields'      => [
                             'trial_period_value' => [
-                                'id'   => 'trial-period-value',
-                                'name' => 'trial-period-value',
-                                'type' => 'input-number',
+                                'id'      => 'trial-period-value',
+                                'name'    => 'trial-period-value',
+                                'type'    => 'input-number',
                                 'db_key'  => '_trial_duration',
                                 'db_type' => 'meta',
                                 'default' => '-1',
@@ -1370,8 +1381,11 @@ class Admin_Subscription {
                                 'default' => 'day',
                             ],
                         ],
-                        'key_id'     => 'trial_period',
-                        'label'      => __( 'Trial Period', 'wp-user-frontend' ),
+                        'key_id'      => 'trial_period',
+                        'label'       => __( 'Trial Period', 'wp-user-frontend' ),
+                        'description' => __(
+                            'Enter the duration of the trial period for this subscription', 'wp-user-frontend'
+                        ),
                     ],
                 ],
             ]
@@ -1389,7 +1403,7 @@ class Admin_Subscription {
                         'type'          => 'input-number',
                         'label'         => __( 'Maximum Number of Posts', 'wp-user-frontend' ),
                         'description'   => __(
-                            'How many post the user can list with this pack? Enter -1 for unlimited.',
+                            'Set the maximum number of posts users can list within their subscription period. Enter -1 for unlimited',
                             'wp-user-frontend'
                         ),
                         'default'       => '-1',
@@ -1403,7 +1417,7 @@ class Admin_Subscription {
                         'type'          => 'input-number',
                         'label'         => __( 'Maximum Number of Pages', 'wp-user-frontend' ),
                         'description'   => __(
-                            'How many page the user can list with this pack? Enter -1 for unlimited.',
+                            'Set the maximum number of pages a user can list within the subscription period. Enter -1 for unlimited',
                             'wp-user-frontend'
                         ),
                         'default'       => '-1',
@@ -1417,7 +1431,7 @@ class Admin_Subscription {
                         'type'          => 'input-number',
                         'label'         => __( 'Maximum Number of User Requests', 'wp-user-frontend' ),
                         'description'   => __(
-                            'How many user_request the user can list with this pack? Enter -1 for unlimited.',
+                            'Set the maximum number of user requests allowed within the subscription period. Enter -1 for unlimited',
                             'wp-user-frontend'
                         ),
                         'default'       => '-1',
@@ -1437,7 +1451,7 @@ class Admin_Subscription {
                         'type'          => 'input-number',
                         'label'         => __( 'Maximum Number of Reusable Block', 'wp-user-frontend' ),
                         'description'   => __(
-                            'How many block the user can use with this pack? Enter -1 for unlimited.',
+                            'Set the maximum number of reusable blocks that users can create within the subscription period. Enter -1 for unlimited',
                             'wp-user-frontend'
                         ),
                         'default'       => '-1',
@@ -1451,7 +1465,7 @@ class Admin_Subscription {
                         'type'          => 'input-number',
                         'label'         => __( 'Maximum Number of Templates', 'wp-user-frontend' ),
                         'description'   => __(
-                            'How many templates the user can use with this pack? Enter -1 for unlimited.',
+                            'Set the maximum number of templates users can use during the subscription period. Enter -1 for unlimited',
                             'wp-user-frontend'
                         ),
                         'default'       => '-1',
@@ -1465,7 +1479,7 @@ class Admin_Subscription {
                         'type'          => 'input-number',
                         'label'         => __( 'Maximum Number of User Requests', 'wp-user-frontend' ),
                         'description'   => __(
-                            'How many user_request the user can list with this pack? Enter -1 for unlimited.',
+                            'Set maximum number of template parts that users can create within the subscription period. Enter -1 for unlimited',
                             'wp-user-frontend'
                         ),
                         'default'       => '-1',
@@ -1479,7 +1493,7 @@ class Admin_Subscription {
                         'type'          => 'input-number',
                         'label'         => __( 'Maximum Number of Global Styles', 'wp-user-frontend' ),
                         'description'   => __(
-                            'How many global styles the user can use with this pack? Enter -1 for unlimited.',
+                            'Set maximum number of global styles that users can use within the subscription period. Enter -1 for unlimited',
                             'wp-user-frontend'
                         ),
                         'default'       => '-1',
@@ -1493,7 +1507,7 @@ class Admin_Subscription {
                         'type'          => 'input-number',
                         'label'         => __( 'Maximum Number of Navigation Menus', 'wp-user-frontend' ),
                         'description'   => __(
-                            'How many navigation menus the user can use with this pack? Enter -1 for unlimited.',
+                            'Set maximum number of navigation menus that users can use within the subscription period. Enter -1 for unlimited',
                             'wp-user-frontend'
                         ),
                         'default'       => '-1',
@@ -1512,7 +1526,7 @@ class Admin_Subscription {
                         'type'        => 'input-number',
                         'label'       => __( 'Maximum number of featured items', 'wp-user-frontend' ),
                         'description' => __(
-                            'How many block the user can use with this pack? Enter -1 for unlimited.',
+                            'Limit the featured items users can display during their subscription. Featured items gain more visibility, enhancing content or product exposure. Enter -1 for unlimited',
                             'wp-user-frontend'
                         ),
                         'default'     => '-1',

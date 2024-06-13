@@ -2,16 +2,35 @@
 import {__} from '@wordpress/i18n';
 import {storeToRefs} from 'pinia';
 import {useComponentStore} from '../../stores/component';
+import {computed, ref} from 'vue';
+import {useSubscriptionStore} from '../../stores/subscription';
 
 const componentStore = useComponentStore();
+const subscriptionStore = useSubscriptionStore();
 
 const { currentComponent } = storeToRefs(componentStore);
+
+const title = computed(() => {
+    switch (subscriptionStore.currentSubscriptionStatus) {
+        case 'all':
+            return __( 'All Subscriptions', 'wp-user-frontend' );
+        case 'publish':
+            return __( 'Published', 'wp-user-frontend' );
+        case 'draft':
+            return __( 'Drafts', 'wp-user-frontend' );
+        case 'trash':
+            return __( 'Trash', 'wp-user-frontend' );
+        default:
+            return __( 'Subscriptions', 'wp-user-frontend' );
+
+    }
+});
 
 </script>
 <template>
     <div class="wpuf-flex wpuf-justify-between">
         <div>
-            <h3 class="wpuf-text-lg wpuf-font-bold wpuf-m-0">{{ __( 'Subscriptions', 'wp-user-frontend' ) }}</h3>
+            <h3 class="wpuf-text-lg wpuf-font-bold wpuf-m-0">{{ title }}</h3>
             <p class="wpuf-text-sm wpuf-text-gray-500">{{ __( 'Explore and manage all subscriptions in one place', 'wp-user-frontend' ) }}</p>
         </div>
         <div>

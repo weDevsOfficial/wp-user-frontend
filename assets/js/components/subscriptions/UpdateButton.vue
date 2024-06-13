@@ -30,16 +30,15 @@ const buttonText = ref( props.buttonText );
             class="wpuf-hidden group-hover:wpuf-block wpuf-cursor-pointer wpuf-w-44 wpuf-z-40 wpuf-bg-white wpuf-border border-[#DBDBDB] wpuf-absolute wpuf-z-10 wpuf-shadow wpuf-right-0 wpuf-rounded-md after:content-[''] before:content-[''] after:wpuf-absolute before:wpuf-absolute after:w-[13px] before:w-[70%] before:-right-[1px] after:h-[13px] before:wpuf-h-3 before:wpuf-mt-3 after:top-[-7px] before:wpuf--top-6 after:right-[1.4rem] after:z-[-1] after:wpuf-bg-white after:wpuf-border after:border-[#DBDBDB] after:!rotate-45 after:wpuf-border-r-0 after:wpuf-border-b-0"
         >
         <span
-            @click="() => {subscriptionStore.currentSubscription.post_status = 'draft'; $emit('updateSubscription');}"
-            class="wpuf-flex wpuf-py-3 wpuf-items-center wpuf-px-4 wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 hover:wpuf-bg-indigo-700 hover:wpuf-text-white wpuf-rounded-t-md">
-            {{ __( 'Draft', 'wp-user-frontend' ) }}
-        </span>
-            <span
                 @click="() => {subscriptionStore.currentSubscription.post_status = 'publish'; $emit('updateSubscription'); }"
-                class="wpuf-flex wpuf-py-3 wpuf-items-center wpuf-px-4 wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 hover:wpuf-bg-indigo-700 hover:wpuf-text-white wpuf-rounded-b-md">
+                class="wpuf-flex wpuf-py-3 wpuf-items-center wpuf-px-4 wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 hover:wpuf-bg-indigo-700 hover:wpuf-text-white wpuf-rounded-t-md">
             {{ __( 'Publish', 'wp-user-frontend' ) }}
+        </span>
+        <span
+            @click="() => {subscriptionStore.currentSubscription.post_status = 'draft'; $emit('updateSubscription');}"
+            class="wpuf-flex wpuf-py-3 wpuf-items-center wpuf-px-4 wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 hover:wpuf-bg-indigo-700 hover:wpuf-text-white wpuf-rounded-b-md">
+            {{ __( 'Draft', 'wp-user-frontend' ) }}
         </span>
         </div>
     </div>
-
 </template>

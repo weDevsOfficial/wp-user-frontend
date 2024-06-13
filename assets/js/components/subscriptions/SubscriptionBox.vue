@@ -168,11 +168,17 @@ const deleteSubscription = () => {
 };
 
 const postStatus = computed(() => {
-    const firstLetter = subscription.value.post_status.charAt(0);
+    let postStatus = subscription.value.post_status;
+    if (subscription.value.post_status === 'publish') {
+        postStatus = 'Published';
+
+        return postStatus;
+    }
+    const firstLetter = postStatus.charAt(0);
 
     const firstLetterCap = firstLetter.toUpperCase();
 
-    const remainingLetters = subscription.value.post_status.slice(1);
+    const remainingLetters = postStatus.slice(1);
 
     return firstLetterCap + remainingLetters;
 });

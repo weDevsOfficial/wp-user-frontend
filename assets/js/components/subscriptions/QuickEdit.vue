@@ -167,7 +167,7 @@ const updateSubscription = () => {
                 :disabled="subscriptionStore.isUpdating"
                 type="button"
                 :class="subscriptionStore.isUpdating ? 'wpuf-cursor-not-allowed wpuf-bg-gray-50' : ''"
-                class="wpuf-rounded-lg wpuf-bg-white wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 hover:wpuf-bg-gray-50">
+                class="wpuf-rounded-lg wpuf-mr-4 wpuf-bg-white wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 hover:wpuf-bg-gray-50">
                 {{ __('Cancel', 'wp-user-frontend') }}
             </button>
         </div>

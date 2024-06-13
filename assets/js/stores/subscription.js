@@ -308,6 +308,8 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                 } );
         },
         setSubscriptionsByStatus( status, offset = 0 ) {
+            this.isUpdating = true;
+
             const queryParams = {'per_page': wpufSubscriptions.perPage, 'offset': offset, 'post_status': status};
             apiFetch( {
                 path: addQueryArgs( '/wp-json/wpuf/v1/wpuf_subscription', queryParams ),
@@ -324,7 +326,10 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                 } )
                 .catch( ( error ) => {
                     console.log( error );
-                } );
+                } )
+                .finally( () => {
+                    this.isUpdating = false;
+                });
         },
     }
 } );

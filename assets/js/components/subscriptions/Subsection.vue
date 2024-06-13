@@ -59,7 +59,7 @@ const toggleDependentFields = (fieldId, status) => {
                 <span class="wpuf-flex">{{ subSection.label }}</span>
                 <svg
                     :class="closed ? 'wpuf-rotate-90' : 'wpuf-rotate-180'"
-                    data-accordion-icon class="wpuf-w-3 wpuf-h-3 wpuf-rotate-180 shrink-0" aria-hidden="true"
+                    data-accordion-icon class="wpuf-w-3 wpuf-h-3 shrink-0" aria-hidden="true"
                      xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                     <path stroke="currentColor"
                           stroke-linecap="round"

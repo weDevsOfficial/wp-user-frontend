@@ -135,6 +135,7 @@ const processInput = (event) => {
                 :value="value"
                 :name="field.name"
                 :id="field.name"
+                :placeholder="field.placeholder ? field.placeholder : ''"
                 @input="[modifySubscription($event), processInput($event)]"
                 class="wpuf-w-full wpuf-rounded-md !wpuf-border-gray-300 wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">
             <input
@@ -143,12 +144,14 @@ const processInput = (event) => {
                 :value="value"
                 :name="field.name"
                 :id="field.name"
+                :placeholder="field.placeholder ? field.placeholder : ''"
                 @input="[modifySubscription($event), processInput($event)]"
                 class="wpuf-w-full wpuf-rounded-md wpuf-border-gray-300 wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">
             <textarea
                 v-if="field.type === 'textarea'"
                 :name="field.name"
                 :id="field.name"
+                :placeholder="field.placeholder ? field.placeholder : ''"
                 rows="3"
                 @input="[modifySubscription($event), processInput($event)]"
                 class="wpuf-w-full wpuf-rounded-md wpuf-border-gray-300 wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">{{ value }}</textarea>

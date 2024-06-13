@@ -72,8 +72,7 @@ const goToList = () => {
         <SubscriptionsDetails />
         <div class="wpuf-mt-8 wpuf-text-end">
             <UpdateButton
-                @update-subscription="updateSubscription"
-                :is-updating="isUpdating" />
+                @update-subscription="updateSubscription" />
         </div>
     </div>
     <Unsaved v-if="subscriptionStore.isUnsavedPopupOpen" @close-popup="subscriptionStore.isUnsavedPopupOpen = false" @go-to-list="goToList" />

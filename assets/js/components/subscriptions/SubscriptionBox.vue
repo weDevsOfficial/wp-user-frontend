@@ -269,7 +269,7 @@ quickEditStore.$subscribe( ( mutation, state ) => {
                             class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">
                             {{ __( 'Edit', 'wp-user-frontend' ) }}
                         </li>
-                        <li @click="quickEditStore.setQuickEditStatus(true); subscriptionStore.setCurrentSubscription(subscription); subscriptionStore.currentSubscriptionCopy = subscription"
+                        <li @click="quickEditStore.isQuickEdit = true; subscriptionStore.setCurrentSubscription(subscription); subscriptionStore.currentSubscriptionCopy = subscription"
                             class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">
                             {{ __( 'Quick Edit', 'wp-user-frontend' ) }}
                         </li>

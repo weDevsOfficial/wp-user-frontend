@@ -22,7 +22,6 @@ const componentStore = useComponentStore();
 const subscriptionStore = useSubscriptionStore();
 const quickEditStore = useQuickEditStore();
 const { currentComponent } = storeToRefs(componentStore);
-const { isQuickEdit } = storeToRefs(quickEditStore);
 
 provide( 'wpufSubscriptions', wpufSubscriptions );
 
@@ -103,15 +102,15 @@ onBeforeMount( () => {
         />
     </div>
     <div
-        v-if="isQuickEdit"
-        @click="quickEditStore.setQuickEditStatus(false)"
+        v-if="quickEditStore.isQuickEdit"
+        @click="quickEditStore.isQuickEdit = false"
         class="wpuf-absolute wpuf-w-full wpuf-h-screen wpuf-z-10 wpuf-left-[-20px]"></div>
-    <template v-if="isQuickEdit">
+    <template v-if="quickEditStore.isQuickEdit">
         <QuickEdit />
     </template>
     <div
         v-if="!subscriptionStore.isUpdating"
-        :class="isQuickEdit ? 'wpuf-blur' : ''"
+        :class="quickEditStore.isQuickEdit ? 'wpuf-blur' : ''"
         class="wpuf-flex wpuf-flex-row wpuf-mt-12 wpuf-bg-white wpuf-py-8">
         <div class="wpuf-basis-1/5 wpuf-border-r-2 wpuf-border-gray-200 wpuf-100vh">
             <SidebarMenu />

@@ -14,6 +14,7 @@ const subscriptionStore = useSubscriptionStore();
 const noticeStore = useNoticeStore();
 
 const currentSubscription = subscriptionStore.currentSubscription;
+const title = ref(currentSubscription.post_title);
 
 const date = ref(new Date(currentSubscription.post_date));
 
@@ -42,6 +43,7 @@ const handleDate = (modelData) => {
 const updateSubscription = () => {
     subscriptionStore.isUpdating = true;
     subscriptionStore.resetErrors();
+    currentSubscription.post_title = title.value;
 
     if(!subscriptionStore.validateFields( 'quickEdit' )) {
         subscriptionStore.isUpdating = false;
@@ -63,7 +65,7 @@ const updateSubscription = () => {
                 noticeStore.message = '';
             }, 3000);
 
-            quickEditStore.setQuickEditStatus(false);
+            quickEditStore.isQuickEdit = false;
         } else {
             subscriptionStore.updateError.status = true;
             subscriptionStore.updateError.message = result.message;
@@ -119,7 +121,8 @@ const updateSubscription = () => {
                     class="wpuf-block wpuf-w-full wpuf-rounded-md !wpuf-border-hidden wpuf-py-1.5 wpuf-pr-10 wpuf-ring-1 wpuf-ring-inset focus:wpuf-ring-2 focus:wpuf-ring-inset wpuf-text-sm wpuf-leading-6 !wpuf-shadow-none"
                     aria-invalid="true"
                     aria-describedby="plan-name-error"
-                    v-model="currentSubscription.post_title"
+                    @change="title = $event.target.value"
+                    :value="title"
                 />
                 <div v-if="errors.planName" class="wpuf-pointer-events-none wpuf-absolute wpuf-inset-y-0 wpuf-right-0 wpuf-flex wpuf-items-center wpuf-pr-3">
                     <ExclamationCircleIcon class="wpuf-h-5 wpuf-w-5 wpuf-text-red-500" aria-hidden="true" />
@@ -150,7 +153,7 @@ const updateSubscription = () => {
             <UpdateButton
                 @update-subscription="updateSubscription" />
             <button
-                @click="[quickEditStore.setQuickEditStatus(false), subscriptionStore.setCurrentSubscription(subscriptionStore.currentSubscriptionCopy)]"
+                @click="[quickEditStore.setQuickEditStatus(false)]"
                 :disabled="subscriptionStore.isUpdating"
                 type="button"
                 :class="subscriptionStore.isUpdating ? 'wpuf-cursor-not-allowed wpuf-bg-gray-50' : ''"

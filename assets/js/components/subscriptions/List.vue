@@ -16,10 +16,12 @@ const subscriptionStore = useSubscriptionStore();
 const componentStore = useComponentStore();
 const subscriptions = storeToRefs( subscriptionStore ).subscriptionList;
 const count = ref( subscriptionStore.allCount.all );
+const currentPage = ref( 1 );
 const perPage = parseInt( wpufSubscriptions.perPage );
 const totalPages = ref( Math.ceil( count.value / wpufSubscriptions.perPage ) );
 const changePageTo = ( page ) => {
     const offset = ( page - 1 ) * parseInt( wpufSubscriptions.perPage );
+    currentPage.value = page;
 
     subscriptionStore.setSubscriptionsByStatus( subscriptionStore.currentSubscriptionStatus, offset );
 };
@@ -78,6 +80,6 @@ const {currentComponent} = storeToRefs( componentStore );
                     :key="subscription.ID"/>
             </div>
         </div>
-        <Pagination v-if="count > perPage" @changePageTo="changePageTo"/>
+        <Pagination v-if="count > perPage" :currentPage="currentPage" @changePageTo="changePageTo"/>
     </div>
 </template>

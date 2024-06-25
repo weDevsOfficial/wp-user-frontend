@@ -4,17 +4,20 @@ import {useSubscriptionStore} from '../../stores/subscription';
 
 const subscriptionStore = useSubscriptionStore();
 
+const props = defineProps( {
+    currentPage: Number,
+} );
+
+const emit = defineEmits( ['changePageTo'] );
+const currentPage = ref( props.currentPage );
 const count = ref( subscriptionStore.allCount.all );
 const maxVisibleButtons = ref( 3 );
 const totalPages = ref( Math.ceil( count.value / wpufSubscriptions.perPage ) );
-const emit = defineEmits( ['changePageTo'] );
 
 const perPage = parseInt( wpufSubscriptions.perPage );
-watch( () => subscriptionStore.currentSubscriptionStatus, ( newValue ) => {
-    count.value = subscriptionStore.allCount[newValue];
-    totalPages.value = Math.ceil(count.value / wpufSubscriptions.perPage);
-});
 
+const isInFirstPage = computed(() => currentPage.value === 1);
+const isInLastPage = computed(() => currentPage.value === totalPages.value);
 const startPage = computed(() => {
     // When on the first page, or when the total pages are less than the max visible buttons
     if (currentPage.value === 1 || totalPages.value <= maxVisibleButtons.value) {
@@ -28,6 +31,12 @@ const startPage = computed(() => {
 
     // When in-between
     return currentPage.value - 1;
+});
+const startNumber = computed(() => {
+    return (currentPage.value - 1) * perPage + 1;
+});
+const endNumber = computed(() => {
+    return Math.min(currentPage.value * perPage, count.value);
 });
 const pages = computed(() => {
     const range = [];
@@ -44,15 +53,6 @@ const pages = computed(() => {
 
     return range;
 });
-const isInFirstPage = computed(() => currentPage.value === 1);
-const isInLastPage = computed(() => currentPage.value === totalPages.value);
-const currentPage = ref( 1 );
-const startNumber = computed(() => {
-    return (currentPage.value - 1) * perPage + 1;
-});
-const endNumber = computed(() => {
-    return Math.min(currentPage.value * perPage, count.value);
-});
 
 const goToFirstPage = () => {
     currentPage.value = 1;
@@ -65,6 +65,11 @@ const goToLastPage = () => {
 
     emit('changePageTo', totalPages.value);
 };
+
+watch( () => subscriptionStore.currentSubscriptionStatus, ( newValue ) => {
+    count.value = subscriptionStore.allCount[newValue];
+    totalPages.value = Math.ceil(count.value / wpufSubscriptions.perPage);
+});
 
 </script>
 <template>
@@ -86,7 +91,6 @@ const goToLastPage = () => {
                     <button
                         @click="goToFirstPage"
                         :disabled="isInFirstPage"
-                        href="#"
                         :class="isInFirstPage ? 'wpuf-bg-gray-50 wpuf-cursor-not-allowed' : ''"
                         class="wpuf-relative wpuf-inline-flex wpuf-items-center wpuf-rounded-l-md wpuf-px-2 wpuf-py-2 wpuf-text-gray-400 wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 hover:wpuf-bg-gray-50 focus:wpuf-z-20 focus:outline-offset-0">
                         <span class="wpuf-sr-only">Previous</span>
@@ -96,7 +100,7 @@ const goToLastPage = () => {
                     </button>
                     <button
                         v-for="page in pages"
-                        @click="[emit('changePageTo', page.name), currentPage = page.name]"
+                        @click="[emit('changePageTo', page.name)]"
                         :key="page.name"
                         :class="currentPage === page.name ? 'wpuf-bg-indigo-600 wpuf-text-white hover:wpuf-bg-indigo-700' : ''"
                         class="wpuf-relative wpuf-items-center wpuf-px-4 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900 wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 hover:wpuf-bg-gray-50 focus:wpuf-z-20 focus:outline-offset-0 wpuf-inline-flex">
@@ -104,6 +108,7 @@ const goToLastPage = () => {
                     </button>
                     <button
                         @click="goToLastPage"
+                        :disabled="isInLastPage"
                         :class="isInLastPage ? 'wpuf-bg-gray-50 wpuf-cursor-not-allowed' : ''"
                         class="wpuf-relative wpuf-inline-flex wpuf-items-center wpuf-rounded-r-md wpuf-px-2 wpuf-py-2 wpuf-text-gray-400 wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 hover:wpuf-bg-gray-50 focus:wpuf-z-20 focus:outline-offset-0">
                         <span class="wpuf-sr-only">Next</span>

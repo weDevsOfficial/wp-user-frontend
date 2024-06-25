@@ -13,7 +13,7 @@ const componentStore = useComponentStore();
         </svg>
         <h3 class="wpuf-text-3xl wpuf-font-semibold wpuf-text-gray-900">{{ __( 'No Subscription created yet!', 'wp-user-frontend' ) }}</h3>
         <p class="wpuf-text-lg wpuf-text-gray-500">{{
-                __( 'Powerful Subscription Features for Monetizing Your Content. Unlock a World of Possibilities with WPUF\'s Subscription Features – From Charging Users for Posting to Exclusive Content Access.',
+                __( 'It appears there are no subscriptions to display at the moment. To create a new subscription and start managing your content, click the \'Add Subscription\' button.',
                     'wp-user-frontend' )
             }}</p>
         <div class="wpuf-mt-12">

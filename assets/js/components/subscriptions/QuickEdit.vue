@@ -142,19 +142,6 @@ const updateSubscription = () => {
             </div>
             <p v-if="errors.date" class="wpuf-mt-2 wpuf-text-sm wpuf-text-red-600" id="email-error">{{ __('Not a valid date', 'wp-user-frontend') }}</p>
         </div>
-        <div class="wpuf-px-2 wpuf-flex wpuf-justify-between wpuf-mt-6">
-            <label for="plan-private" class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">{{ __('Private', 'wp-user-frontend') }}</label>
-            <button
-                @click="currentSubscription.post_status = currentSubscription.post_status === 'private' ? 'publish' : 'private'"
-                type="button"
-                :class="currentSubscription.post_status === 'private'  ? 'wpuf-bg-indigo-600' : 'wpuf-bg-gray-200'"
-                class="wpuf-bg-gray-200 wpuf-relative wpuf-inline-flex wpuf-h-6 wpuf-w-11 wpuf-flex-shrink-0 wpuf-cursor-pointer wpuf-rounded-full wpuf-border-2 wpuf-border-transparent wpuf-transition-colors wpuf-duration-200 wpuf-ease-in-out focus:wpuf-outline-none focus:wpuf-ring-2 focus:wpuf-ring-indigo-600 focus:wpuf-ring-offset-2" role="switch" aria-checked="true">
-                <span aria-hidden="true"
-                      :class="currentSubscription.post_status === 'private' ? 'wpuf-translate-x-5' : 'wpuf-translate-x-0'"
-                      class="wpuf-translate-x-0 wpuf-pointer-events-none wpuf-inline-block wpuf-h-5 wpuf-w-5 wpuf-transform wpuf-rounded-full wpuf-bg-white wpuf-shadow wpuf-ring-0 wpuf-transition wpuf-duration-200 wpuf-ease-in-out"></span>
-            </button>
-            <p v-if="errors.isPrivate" class="wpuf-mt-2 wpuf-text-sm wpuf-text-red-600" id="is-private-error">{{ __('Invalid', 'wp-user-frontend') }}</p>
-        </div>
         <div class="wpuf-px-2 wpuf-mt-4">
             <p v-if="subscriptionStore.updateError.status" id="filled_error_help" class="wpuf-mt-2 wpuf-text-xs wpuf-text-red-600">
                 {{ subscriptionStore.updateError.message }}</p>
@@ -163,7 +150,7 @@ const updateSubscription = () => {
             <UpdateButton
                 @update-subscription="updateSubscription" />
             <button
-                @click="quickEditStore.setQuickEditStatus(false)"
+                @click="[quickEditStore.setQuickEditStatus(false), subscriptionStore.setCurrentSubscription(subscriptionStore.currentSubscriptionCopy)]"
                 :disabled="subscriptionStore.isUpdating"
                 type="button"
                 :class="subscriptionStore.isUpdating ? 'wpuf-cursor-not-allowed wpuf-bg-gray-50' : ''"

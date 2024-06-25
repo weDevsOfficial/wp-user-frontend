@@ -16,9 +16,11 @@ const props = defineProps( {
 } );
 
 const {subscription} = toRefs( props );
+const emit = defineEmits( ['toggleSubscriptionStatus'] );
 const showPopup = ref( false );
 const showBox = ref( true );
 const pillColor = ref( '' );
+// const title = ref( '' );
 const isRecurring = ref( false );
 const quickMenuStatus = ref( false );
 const billingAmount = ref( 0 );
@@ -35,8 +37,7 @@ const setPillBackground = () => {
 
     if (postStatus === 'publish') {
         pillColor.value = 'wpuf-text-green-700 wpuf-bg-green-50 ring-green-600/20';
-    }
-    if (postStatus === 'private') {
+    } else if (postStatus === 'private') {
         pillColor.value = 'wpuf-text-orange-700 wpuf-bg-orange-50 wpuf-ring-orange-600/10';
     } else if (postStatus === 'draft') {
         pillColor.value = 'wpuf-text-yellow-700 wpuf-bg-yellow-50 wpuf-ring-yellow-600/10';
@@ -119,14 +120,6 @@ const title = computed( () => {
     return currentSubscription ? currentSubscription.post_title : subscription.value.post_title;
 } );
 
-const toggleSubscriptionStatus = ( subscription ) => {
-    subscription.edit_row_name = 'post_status';
-    subscription.edit_row_value = subscription.post_status === 'draft' ? 'publish' : 'draft';
-    const promiseResult = subscriptionStore.changeSubscriptionStatus( subscription );
-
-    processPromiseResult( promiseResult );
-};
-
 const trashSubscription = ( subscription ) => {
     subscription.edit_row_name = 'post_status';
     subscription.edit_row_value = 'trash';
@@ -151,6 +144,38 @@ const deleteSubscription = ( subscription ) => {
     processPromiseResult( promiseResult );
 };
 
+const toggleSubscriptionStatus = ( subscription ) => {
+    subscription.edit_row_name = 'post_status';
+    subscription.edit_row_value = subscription.post_status === 'draft' ? 'publish' : 'draft';
+    const promiseResult = subscriptionStore.changeSubscriptionStatus( subscription );
+
+    subscriptionStore.setSubscriptionsByStatus( subscriptionStore.currentSubscriptionStatus );
+    componentStore.setCurrentComponent( 'List' );
+
+    promiseResult.then((result) => {
+        if (result.success) {
+            noticeStore.display = true;
+            noticeStore.type = 'success';
+            noticeStore.message = result.message;
+
+            subscription.post_status = subscription.post_status === 'publish' ? 'draft' : 'publish';
+            setPillBackground();
+
+            title.value = subscription.post_title;
+        } else {
+            noticeStore.display = true;
+            noticeStore.type = 'danger';
+            noticeStore.message = result.message;
+        }
+
+        setTimeout(() => {
+            noticeStore.display = false;
+            noticeStore.type = '';
+            noticeStore.message = '';
+        }, 3000);
+    });
+};
+
 const processPromiseResult = ( promiseResult ) => {
     promiseResult.then( ( result ) => {
         if (result.success) {
@@ -159,6 +184,11 @@ const processPromiseResult = ( promiseResult ) => {
             noticeStore.message = result.message;
             showPopup.value = false;
             showBox.value = false;
+
+            subscriptionStore.isDirty = false;
+            subscriptionStore.isUnsavedPopupOpen = false;
+
+            subscriptionStore.setCurrentSubscription(null);
         } else {
             noticeStore.display = true;
             noticeStore.type = 'danger';
@@ -239,7 +269,7 @@ quickEditStore.$subscribe( ( mutation, state ) => {
                             class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">
                             {{ __( 'Edit', 'wp-user-frontend' ) }}
                         </li>
-                        <li @click="quickEditStore.setQuickEditStatus(true); subscriptionStore.setCurrentSubscription(subscription)"
+                        <li @click="quickEditStore.setQuickEditStatus(true); subscriptionStore.setCurrentSubscription(subscription); subscriptionStore.currentSubscriptionCopy = subscription"
                             class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">
                             {{ __( 'Quick Edit', 'wp-user-frontend' ) }}
                         </li>

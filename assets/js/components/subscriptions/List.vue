@@ -71,8 +71,11 @@ const {currentComponent} = storeToRefs( componentStore );
         <div v-else class="wpuf-px-8 wpuf-pb-8">
             <ListHeader/>
             <div class="wpuf-grid wpuf-grid-cols-3 wpuf-gap-4 wpuf-mt-4">
-                <SubscriptionBox v-for="subscription in subscriptions" :subscription=subscription
-                                 :key="subscription.ID"/>
+                <SubscriptionBox
+                    v-for="subscription in subscriptions"
+                    :subscription=subscription
+                    @toggle-subscription-status="toggleSubscriptionStatus"
+                    :key="subscription.ID"/>
             </div>
         </div>
         <Pagination v-if="count > perPage" @changePageTo="changePageTo"/>

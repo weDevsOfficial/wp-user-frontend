@@ -1015,8 +1015,8 @@ class Admin_Subscription {
             'wpuf_subscription_section_payment', [
                 'payment_settings' => [
                     [
-                        'id'    => 'overview',
-                        'label' => __( 'Overview', 'wp-user-frontend' ),
+                        'id'    => 'payment_details',
+                        'label' => __( 'Payment Details', 'wp-user-frontend' ),
                     ],
                 ],
             ]
@@ -1084,16 +1084,6 @@ class Admin_Subscription {
         $access     = apply_filters(
             'wpuf_subscription_access_fields', [
                 'access_and_visibility' => [
-                    'plan_private' => [
-                        'id'          => 'is-plan-private',
-                        'name'        => 'is-plan-private',
-                        'db_key'      => 'post_status',
-                        'db_type'     => 'post',
-                        'type'        => 'switcher',
-                        'label'       => __( 'Make Plan Private', 'wp-user-frontend' ),
-                        'description' => __( 'Make the subscription plan private or published', 'wp-user-frontend' ),
-                        'default'     => false,
-                    ],
                     'plan_slug'    => [
                         'id'          => 'plan-slug',
                         'name'        => 'plan-slug',
@@ -1178,7 +1168,6 @@ class Admin_Subscription {
                             'publish' => __( 'Publish', 'wp-user-frontend' ),
                             'draft'   => __( 'Draft', 'wp-user-frontend' ),
                             'pending' => __( 'Pending Review', 'wp-user-frontend' ),
-                            'private' => __( 'Private', 'wp-user-frontend' ),
                         ],
                         'label'       => __( 'Post Status', 'wp-user-frontend' ),
                         'description' => __( 'Status of post after post expiration time is over', 'wp-user-frontend' ),
@@ -1238,7 +1227,7 @@ class Admin_Subscription {
 
         $payment = apply_filters(
             'wpuf_subscription_payment_fields', [
-                'overview' => [
+                'payment_details' => [
                     'billing_amount'   => [
                         'id'          => 'billing-amount',
                         'name'        => 'billing-amount',

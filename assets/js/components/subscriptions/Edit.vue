@@ -41,8 +41,8 @@ const updateSubscription = () => {
             noticeStore.type = '';
             noticeStore.message = '';
         }, 3000);
-
-        componentStore.setCurrentComponent( 'List' );
+    }).finally(() => {
+        goToList();
     });
 };
 

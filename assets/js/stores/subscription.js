@@ -67,6 +67,9 @@ export const useSubscriptionStore = defineStore( 'subscription', {
         setCurrentSubscription( subscription ) {
             this.currentSubscription = subscription;
         },
+        setCurrentSubscriptionCopy() {
+            this.currentSubscriptionCopy = this.subscription;
+        },
         setBlankSubscription() {
             this.currentSubscription = {};
             this.currentSubscription.meta_value = {};
@@ -140,13 +143,13 @@ export const useSubscriptionStore = defineStore( 'subscription', {
             this.isDirty = false;
 
             return fetch( requestUrl, requestOptions )
-                .then( ( response ) => response.json() )
-                .catch( ( error ) => {
-                    console.log( error );
-                } )
-                .finally( () => {
-                    this.isUpdating = false;
-                });
+            .then( ( response ) => response.json() )
+            .catch( ( error ) => {
+                console.log( error );
+            } )
+            .finally( () => {
+                this.isUpdating = false;
+            });
         },
         modifyCurrentSubscription( key, value, serializeKey = null ) {
             if (this.currentSubscription === null) {

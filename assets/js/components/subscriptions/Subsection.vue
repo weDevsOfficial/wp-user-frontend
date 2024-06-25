@@ -19,7 +19,7 @@ provide( 'subSection', subSection.value.id );
 const showField = ref( true );
 const closed = ref( false );
 
-const openTabs = [ 'overview', 'content_limits' ];
+const openTabs = [ 'overview', 'content_limits', 'payment_details' ];
 
 closed.value = !openTabs.includes( subSection.value.id );
 

@@ -10,13 +10,14 @@ const billingAmount = computed(() => {
     if (parseFloat( currentSubscription.meta_value.billing_amount ) === 0) {
         return __( 'Free', 'wp-user-frontend' );
     } else {
-        if ( currentSubscription.meta_value.recurring_pay === 'on' || currentSubscription.meta_value.recurring_pay === 'yes' ) {
+        if ( isRecurring ) {
             return wpufSubscriptions.currencySymbol + currentSubscription.meta_value.billing_amount + ' <span class="wpuf-text-sm wpuf-text-gray-500">per ' + currentSubscription.meta_value.cycle_period + '</span>';
         }
 
         return wpufSubscriptions.currencySymbol + currentSubscription.meta_value.billing_amount;
     }
 });
+
 const isRecurring = computed(() => {
     return currentSubscription.meta_value.recurring_pay === 'on' || currentSubscription.meta_value.recurring_pay === 'yes';
 });
@@ -32,13 +33,13 @@ const isRecurring = computed(() => {
                     {{ currentSubscription.post_title }}
                 </dd>
             </div>
+            <div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-px-4 wpuf-py-2"></div>
             <div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-px-4 wpuf-py-2">
                 <dt class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500">
                     {{ __( 'Payment', 'wp-user-frontend' )}}
                 </dt>
                 <dd class="wpuf-w-full wpuf-flex-none wpuf-text-2xl wpuf-leading-10 wpuf-tracking-tight wpuf-text-gray-900" v-html="billingAmount"></dd>
             </div>
-            <div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-px-4 wpuf-py-2"></div>
             <div v-if="isRecurring" class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-px-4 wpuf-py-5">
                 <dt class="wpuf-text-sm wpuf-italic wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500 wpuf-flex wpuf-items-center wpuf-justify-center">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

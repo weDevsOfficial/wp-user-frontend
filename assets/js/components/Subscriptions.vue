@@ -1,5 +1,5 @@
 <script setup>
-import {ref, provide, onBeforeMount, computed} from 'vue';
+import {provide, onBeforeMount, computed} from 'vue';
 import {storeToRefs} from 'pinia';
 import { useComponentStore } from '../stores/component';
 import apiFetch from '@wordpress/api-fetch';

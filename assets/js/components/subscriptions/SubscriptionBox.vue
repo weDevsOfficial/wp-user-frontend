@@ -20,7 +20,6 @@ const emit = defineEmits( ['toggleSubscriptionStatus'] );
 const showPopup = ref( false );
 const showBox = ref( true );
 const pillColor = ref( '' );
-// const title = ref( '' );
 const isRecurring = ref( false );
 const quickMenuStatus = ref( false );
 const billingAmount = ref( 0 );
@@ -30,7 +29,6 @@ const componentStore = useComponentStore();
 const quickEditStore = useQuickEditStore();
 const subscriptionStore = useSubscriptionStore();
 const noticeStore = useNoticeStore();
-const currentSubscription = subscriptionStore.currentSubscription;
 
 const setPillBackground = () => {
     const postStatus = subscription.value.post_status;
@@ -117,7 +115,7 @@ onBeforeMount( () => {
 } );
 
 const title = computed( () => {
-    return currentSubscription ? currentSubscription.post_title : subscription.value.post_title;
+    return subscription.value.post_title;
 } );
 
 const trashSubscription = ( subscription ) => {
@@ -148,9 +146,6 @@ const toggleSubscriptionStatus = ( subscription ) => {
     subscription.edit_row_name = 'post_status';
     subscription.edit_row_value = subscription.post_status === 'draft' ? 'publish' : 'draft';
     const promiseResult = subscriptionStore.changeSubscriptionStatus( subscription );
-
-    subscriptionStore.setSubscriptionsByStatus( subscriptionStore.currentSubscriptionStatus );
-    componentStore.setCurrentComponent( 'List' );
 
     promiseResult.then((result) => {
         if (result.success) {

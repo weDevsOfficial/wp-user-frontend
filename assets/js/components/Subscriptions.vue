@@ -1,9 +1,7 @@
 <script setup>
-import {provide, onBeforeMount, computed} from 'vue';
+import {provide, onBeforeMount, ref, watch} from 'vue';
 import {storeToRefs} from 'pinia';
 import { useComponentStore } from '../stores/component';
-import apiFetch from '@wordpress/api-fetch';
-import { addQueryArgs } from '@wordpress/url';
 
 import {HollowDotsSpinner} from 'epic-spinners';
 
@@ -23,71 +21,41 @@ const subscriptionStore = useSubscriptionStore();
 const quickEditStore = useQuickEditStore();
 const { currentComponent } = storeToRefs(componentStore);
 
+const component = ref(Empty);
+
 provide( 'wpufSubscriptions', wpufSubscriptions );
 
-const fetchData = async () => {
-    subscriptionStore.isUpdating = true;
-
-    const queryParams = { 'per_page': wpufSubscriptions.perPage, 'offset': 0 };
-    apiFetch( {
-            path: addQueryArgs( '/wp-json/wpuf/v1/wpuf_subscription', queryParams ),
-            method: 'GET',
-            headers: {
-            'X-WP-Nonce': wpufSubscriptions.nonce,
-        },
-        } )
-        .then( ( response ) => {
-            subscriptionStore.subscriptionList = response.subscriptions;
-
-            if ( subscriptionStore.subscriptionList.length > 0 ) {
-                componentStore.setCurrentComponent( 'List' );
-            } else {
-                componentStore.setCurrentComponent( 'Empty' );
-            }
-    } ).catch( ( error ) => {
-        console.log( error );
-    } ).finally( () => {
-        subscriptionStore.isUpdating = false;
-    });
-}
-
-const fetchSubscriptionCount = async () => {
-    apiFetch( {
-        path: '/wp-json/wpuf/v1/wpuf_subscription/count',
-        method: 'GET',
-        headers: {
-            'X-WP-Nonce': wpufSubscriptions.nonce,
-        },
-    } )
-        .then( ( response ) => {
-            if (response.success) {
-                subscriptionStore.allCount = response.count;
-            }
-        } )
-        .catch( ( error ) => {
-            console.log( error );
-        } );
-}
-
-const component = computed( () => {
-    switch ( currentComponent.value ) {
-        case 'List':
-            return List;
-        case 'Empty':
-            return Empty;
-        case 'Edit':
-            return Edit;
-        case 'New':
-            return New;
-        default:
-            return Empty;
-    }
-});
-
 onBeforeMount( () => {
-    fetchData();
-    fetchSubscriptionCount();
+    const promiseResult = subscriptionStore.setSubscriptionsByStatus( subscriptionStore.currentSubscriptionStatus );
+    promiseResult.then( ( result ) => {
+        if (subscriptionStore.subscriptionList) {
+            componentStore.setCurrentComponent( 'List' );
+        } else {
+            componentStore.setCurrentComponent( 'Empty' );
+        }
+    } );
+
+    subscriptionStore.getSubscriptionCount();
 } );
+
+watch(
+    () => componentStore.currentComponent,
+    (newComponent) => {
+        switch ( newComponent ) {
+            case 'List':
+                component.value = List;
+                break;
+            case 'Edit':
+                component.value = Edit;
+                break;
+            case 'New':
+                component.value = New;
+                break;
+            default:
+                component.value = Empty;
+        }
+    }
+);
 
 </script>
 
@@ -113,9 +81,12 @@ onBeforeMount( () => {
         :class="quickEditStore.isQuickEdit ? 'wpuf-blur' : ''"
         class="wpuf-flex wpuf-flex-row wpuf-mt-12 wpuf-bg-white wpuf-py-8">
         <div class="wpuf-basis-1/5 wpuf-border-r-2 wpuf-border-gray-200 wpuf-100vh">
-            <SidebarMenu />
+            <keep-alive>
+                <SidebarMenu />
+            </keep-alive>
         </div>
         <div
+            v-if="!subscriptionStore.isSubscriptionLoading"
             class="wpuf-basis-4/5">
             <component :is="component" />
         </div>

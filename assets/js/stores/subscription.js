@@ -311,29 +311,55 @@ export const useSubscriptionStore = defineStore( 'subscription', {
 
             return this.updateSubscription();
         },
-        setSubscriptionsByStatus( status, offset = 0 ) {
+        async setSubscriptionsByStatus( status, offset = 0 ) {
             this.isSubscriptionLoading = true;
 
             const queryParams = {'per_page': wpufSubscriptions.perPage, 'offset': offset, 'post_status': status};
-            apiFetch( {
+            return apiFetch( {
                 path: addQueryArgs( '/wp-json/wpuf/v1/wpuf_subscription', queryParams ),
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-WP-Nonce': wpufSubscriptions.nonce,
+                },
+            } )
+            .then( ( response ) => {
+                if (response.success) {
+                    this.currentSubscriptionStatus = status;
+                    this.subscriptionList = response.subscriptions;
+                }
+
+                return response;
+            } )
+            .catch( ( error ) => {
+                console.log( error );
+            } )
+            .finally( () => {
+                this.isSubscriptionLoading = false;
+            });
+        },
+        getSubscriptionCount( status = 'all' ) {
+            let path = '/wp-json/wpuf/v1/wpuf_subscription/count';
+
+            if (status !== 'all') {
+                path += '/' + status;
+            }
+
+            return apiFetch( {
+                path: addQueryArgs( path ),
                 method: 'GET',
                 headers: {
                     'X-WP-Nonce': wpufSubscriptions.nonce,
                 },
             } )
-                .then( ( response ) => {
-                    if (response.success) {
-                        this.currentSubscriptionStatus = status;
-                        this.subscriptionList = response.subscriptions;
-                    }
-                } )
-                .catch( ( error ) => {
-                    console.log( error );
-                } )
-                .finally( () => {
-                    this.isSubscriptionLoading = false;
-                });
+            .then( ( response ) => {
+                if (response.success) {
+                    this.allCount = response.count;
+                }
+            } )
+            .catch( ( error ) => {
+                console.log( error );
+            } );
         },
     }
 } );

@@ -4,16 +4,12 @@ import Empty from './Empty.vue';
 import {useSubscriptionStore} from '../../stores/subscription';
 import {storeToRefs} from 'pinia';
 import Pagination from './Pagination.vue';
-import {onMounted, ref, computed, watch} from 'vue';
-import apiFetch from '@wordpress/api-fetch';
-import {addQueryArgs} from '@wordpress/url';
-import {useComponentStore} from '../../stores/component';
+import {onBeforeMount, ref, watch} from 'vue';
 import ListHeader from './ListHeader.vue';
 import EmptyTrash from './EmptyTrash.vue';
 import {HollowDotsSpinner} from 'epic-spinners';
 
 const subscriptionStore = useSubscriptionStore();
-const componentStore = useComponentStore();
 const subscriptions = storeToRefs( subscriptionStore ).subscriptionList;
 const count = ref( subscriptionStore.allCount.all );
 const currentPage = ref( 1 );
@@ -26,31 +22,12 @@ const changePageTo = ( page ) => {
     subscriptionStore.setSubscriptionsByStatus( subscriptionStore.currentSubscriptionStatus, offset );
 };
 
-watch( () => subscriptionStore.currentSubscriptionStatus, ( newValue ) => {
-    count.value = subscriptionStore.allCount[newValue];
-    totalPages.value = Math.ceil( count.value / wpufSubscriptions.perPage );
-} );
-
-onMounted( () => {
-    apiFetch( {
-        path: addQueryArgs( '/wp-json/wpuf/v1/wpuf_subscription/count/' + subscriptionStore.currentSubscriptionStatus ),
-        method: 'GET',
-        headers: {
-            'X-WP-Nonce': wpufSubscriptions.nonce,
-        },
-    } )
-    .then( ( response ) => {
-        if (response.success) {
-            count.value = parseInt( response.count );
-            totalPages.value = Math.ceil( count.value / wpufSubscriptions.perPage );
-        }
-    } )
-    .catch( ( error ) => {
-        console.log( error );
-    } );
-} );
-
-const {currentComponent} = storeToRefs( componentStore );
+onBeforeMount(
+    () => {
+        count.value = subscriptionStore.allCount[subscriptionStore.currentSubscriptionStatus];
+        totalPages.value = Math.ceil( count.value / wpufSubscriptions.perPage );
+    }
+);
 
 </script>
 

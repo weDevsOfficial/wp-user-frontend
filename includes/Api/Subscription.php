@@ -138,7 +138,7 @@ class Subscription extends WP_REST_Controller {
      * @return WP_REST_Response
      */
     public function total_subscriptions_count_by_status( $request ) {
-        $status = ! empty( $request['status'] ) ? sanitize_text_field( $request['status'] ) : 'publish';
+        $status = ! empty( $request['status'] ) ? sanitize_text_field( $request['status'] ) : 'all';
 
         $count = wpuf()->subscription->total_subscriptions_count_by_status( $status );
 

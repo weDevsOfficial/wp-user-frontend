@@ -2,8 +2,6 @@
 import { __ } from '@wordpress/i18n';
 import {useSubscriptionStore} from '../../stores/subscription';
 import {useComponentStore} from '../../stores/component';
-import {onBeforeMount} from 'vue';
-import apiFetch from '@wordpress/api-fetch';
 
 const subscriptionStore = useSubscriptionStore();
 const componentStore = useComponentStore();

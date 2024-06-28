@@ -46,26 +46,11 @@ const updateSubscription = () => {
     });
 };
 
-const goToList = () => {
-    subscriptionStore.isDirty = false;
-    subscriptionStore.isUnsavedPopupOpen = false;
-
-    componentStore.setCurrentComponent('List');
-    subscriptionStore.setCurrentSubscription(null);
-};
-
 </script>
 <template>
     <div
         :class="subscriptionStore.isUnsavedPopupOpen ? 'wpuf-blur' : ''"
         class="wpuf-px-12">
-        <div class="wpuf-flex wpuf-justify-between">
-            <button
-                type="button"
-                @click="subscriptionStore.isDirty ? subscriptionStore.isUnsavedPopupOpen = true : goToList()"
-                class="wpuf-rounded-md wpuf-bg-indigo-600 wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                <span class="dashicons dashicons-arrow-left-alt"></span>&nbsp;{{ __( 'Back', 'wp-user-frontend' ) }}</button>
-        </div>
         <h3 class="wpuf-text-lg wpuf-font-bold wpuf-mb-0">{{ __( 'Edit', 'wp-user-frontend' ) }}</h3>
         <InfoCard />
         <SubscriptionsDetails />
@@ -74,5 +59,4 @@ const goToList = () => {
                 @update-subscription="updateSubscription" />
         </div>
     </div>
-    <Unsaved v-if="subscriptionStore.isUnsavedPopupOpen" @close-popup="subscriptionStore.isUnsavedPopupOpen = false" @go-to-list="goToList" />
 </template>

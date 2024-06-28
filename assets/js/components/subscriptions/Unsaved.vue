@@ -1,5 +1,6 @@
 <script setup>
 import {__} from '@wordpress/i18n';
+
 </script>
 <template>
     <div class="wpuf-h-80">

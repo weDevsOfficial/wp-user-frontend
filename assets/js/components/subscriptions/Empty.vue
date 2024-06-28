@@ -12,7 +12,7 @@ const componentStore = useComponentStore();
             <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
         </svg>
         <h3 class="wpuf-text-3xl wpuf-font-semibold wpuf-text-gray-900">{{ __( 'No Subscription created yet!', 'wp-user-frontend' ) }}</h3>
-        <p class="wpuf-text-lg wpuf-text-gray-500">{{
+        <p class="wpuf-text-lg wpuf-text-gray-500 text-center">{{
                 __( 'It appears there are no subscriptions to display at the moment. To create a new subscription and start managing your content, click the \'Add Subscription\' button.',
                     'wp-user-frontend' )
             }}</p>

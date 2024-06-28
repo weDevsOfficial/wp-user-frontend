@@ -53,13 +53,6 @@ const updateSubscription = () => {
 </script>
 <template>
     <div class="wpuf-px-12">
-        <div class="wpuf-flex wpuf-justify-between">
-            <button
-                type="button"
-                @click="[componentStore.setCurrentComponent('List'), subscriptionStore.setCurrentSubscription(null)]"
-                class="wpuf-rounded-md wpuf-bg-indigo-600 wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                <span class="dashicons dashicons-arrow-left-alt"></span>&nbsp;{{ __( 'Back', 'wp-user-frontend' ) }}</button>
-        </div>
         <h3 class="wpuf-text-lg wpuf-font-bold wpuf-mb-0">{{ __( 'New Subscription', 'wp-user-frontend' ) }}</h3>
         <SubscriptionsDetails />
         <div class="wpuf-mt-8 wpuf-text-end">

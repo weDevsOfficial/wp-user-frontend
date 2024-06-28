@@ -15,13 +15,15 @@ import QuickEdit from './subscriptions/QuickEdit.vue';
 import {useQuickEditStore} from '../stores/quickEdit';
 import Notice from './subscriptions/Notice.vue';
 import {useSubscriptionStore} from '../stores/subscription';
+import Unsaved from './subscriptions/Unsaved.vue';
 
 const componentStore = useComponentStore();
 const subscriptionStore = useSubscriptionStore();
 const quickEditStore = useQuickEditStore();
 const { currentComponent } = storeToRefs(componentStore);
 
-const component = ref(Empty);
+const component = ref( Empty );
+const tempSubscriptionStatus = ref( 'all' );
 
 provide( 'wpufSubscriptions', wpufSubscriptions );
 
@@ -37,6 +39,29 @@ onBeforeMount( () => {
 
     subscriptionStore.getSubscriptionCount();
 } );
+
+const checkIsDirty = ( subscriptionStatus = 'all' ) => {
+    if (subscriptionStore.isDirty) {
+        subscriptionStore.isUnsavedPopupOpen = true;
+        tempSubscriptionStatus.value = subscriptionStatus;
+    } else {
+        subscriptionStore.isDirty = false;
+        subscriptionStore.isUnsavedPopupOpen = false;
+
+        subscriptionStore.setSubscriptionsByStatus( subscriptionStatus );
+        componentStore.setCurrentComponent('List');
+        subscriptionStore.setCurrentSubscription(null);
+    }
+};
+
+const goToList = () => {
+    subscriptionStore.isDirty = false;
+    subscriptionStore.isUnsavedPopupOpen = false;
+
+    subscriptionStore.setSubscriptionsByStatus( tempSubscriptionStatus.value );
+    componentStore.setCurrentComponent('List');
+    subscriptionStore.setCurrentSubscription(null);
+};
 
 watch(
     () => componentStore.currentComponent,
@@ -82,7 +107,7 @@ watch(
         class="wpuf-flex wpuf-flex-row wpuf-mt-12 wpuf-bg-white wpuf-py-8">
         <div class="wpuf-basis-1/5 wpuf-border-r-2 wpuf-border-gray-200 wpuf-100vh">
             <keep-alive>
-                <SidebarMenu />
+                <SidebarMenu @check-is-dirty="checkIsDirty" />
             </keep-alive>
         </div>
         <div
@@ -90,6 +115,7 @@ watch(
             class="wpuf-basis-4/5">
             <component :is="component" />
         </div>
+        <Unsaved v-if="subscriptionStore.isUnsavedPopupOpen" @close-popup="subscriptionStore.isUnsavedPopupOpen = false" @go-to-list="goToList" />
     </div>
     <Notice />
 </template>

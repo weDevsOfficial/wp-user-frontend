@@ -13,14 +13,16 @@ class Admin_Subscription {
      * The constructor
      */
     public function __construct() {
-        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
         add_filter( 'manage_wpuf_subscription_posts_columns', [ $this, 'subscription_columns_head' ] );
+        add_filter( 'post_updated_messages', [ $this, 'form_updated_message' ] );
+        add_filter( 'wpuf_subscription_additional_fields', [ $this, 'third_party_cpt_options' ] );
+
+        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
         add_action( 'manage_wpuf_subscription_posts_custom_column', [ $this, 'subscription_columns_content' ], 10, 2 );
 
         // new subscription metabox hooks
         add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes' ] );
 
-        add_filter( 'post_updated_messages', [ $this, 'form_updated_message' ] );
 
         add_action( 'show_user_profile', [ $this, 'profile_subscription_details' ], 30 );
         add_action( 'edit_user_profile', [ $this, 'profile_subscription_details' ], 30 );
@@ -35,8 +37,38 @@ class Admin_Subscription {
         add_action( 'admin_print_styles-post.php', [ $this, 'enqueue_scripts' ] );
 
         add_action( 'wpuf_load_subscription_page', [ $this, 'remove_notices' ] );
-
         add_action( 'wpuf_load_subscription_page', [ $this, 'enqueue_admin_scripts' ] );
+    }
+
+    /**
+     * Add third party plugins (i.e.: WooCommerce, Elementor etc.) custom post type options
+     *
+     * @return array
+     */
+    public function third_party_cpt_options( $additional_options ) {
+        $post_types = wpuf()->subscription->get_all_post_type();
+
+        foreach ( $post_types as $key => $name ) {
+            $post_type_object = get_post_type_object( $key );
+
+            if ( $post_type_object ) {
+                $additional_options['additional'][ $key ] = [
+                    'id'          => $key,
+                    'name'        => $key,
+                    'db_key'      => $key,
+                    'db_type'     => 'meta',
+                    'type'        => 'input-number',
+                    'label'       => sprintf( 'Number of %s', esc_html( $post_type_object->label ) ),
+                    'description' => sprintf(
+                        'How many %s the user can list with this pack? Enter -1 for unlimited.',
+                        esc_html( $key )
+                    ),
+                    'default'     => '-1',
+                ];
+            }
+        }
+
+        return $additional_options;
     }
 
     /**

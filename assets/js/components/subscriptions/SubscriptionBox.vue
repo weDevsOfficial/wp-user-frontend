@@ -153,8 +153,7 @@ const toggleSubscriptionStatus = ( subscription ) => {
             noticeStore.type = 'success';
             noticeStore.message = result.message;
 
-            subscription.post_status = subscription.post_status === 'publish' ? 'draft' : 'publish';
-            setPillBackground();
+            subscriptionStore.setSubscriptionsByStatus( subscriptionStore.currentSubscriptionStatus );
 
             title.value = subscription.post_title;
         } else {

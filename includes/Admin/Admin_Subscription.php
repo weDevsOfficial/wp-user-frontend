@@ -1162,6 +1162,8 @@ class Admin_Subscription {
                         'type'    => 'inline',
                         'db_key'  => '_post_expiration_time',
                         'db_type' => 'meta',
+                        'key_id'  => 'expiration_time',
+                        'label'   => __( 'Expiration Time', 'wp-user-frontend' ),
                         'fields'  => [
                             'expiration_value' => [
                                 'id'      => 'post-expiration-value',
@@ -1187,8 +1189,6 @@ class Admin_Subscription {
                                 'default' => 'day',
                             ],
                         ],
-                        'key_id'  => 'expiration_time',
-                        'label'   => __( 'Expiration Time', 'wp-user-frontend' ),
                     ],
                     'post_status'          => [
                         'id'          => 'post-status',

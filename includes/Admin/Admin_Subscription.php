@@ -1311,6 +1311,7 @@ class Admin_Subscription {
                         'label'       => __( 'Enable Recurring Payment', 'wp-user-frontend' ),
                         'description' => __( 'Enable recurring payments for this subscription. Users will be charged automatically at the end of each billing cycle until the subscription is canceled', 'wp-user-frontend' ),
                         'default'     => false,
+                        'is_pro'      => true,
                     ],
                     'payment_cycle'    => [
                         'id'         => 'payment-cycle',

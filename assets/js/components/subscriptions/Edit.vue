@@ -2,15 +2,14 @@
 import {__} from '@wordpress/i18n';
 import InfoCard from './InfoCard.vue';
 import SubscriptionsDetails from './SubscriptionsDetails.vue';
-import {useComponentStore} from '../../stores/component';
 import {useSubscriptionStore} from '../../stores/subscription';
 import UpdateButton from './UpdateButton.vue';
 import {useNoticeStore} from '../../stores/notice';
-import Unsaved from './Unsaved.vue';
 
-const componentStore = useComponentStore();
 const subscriptionStore = useSubscriptionStore();
 const noticeStore = useNoticeStore();
+
+const emit = defineEmits( ['go-to-list'] );
 
 const updateSubscription = () => {
     subscriptionStore.resetErrors();
@@ -28,6 +27,8 @@ const updateSubscription = () => {
             noticeStore.display = true;
             noticeStore.type = 'success';
             noticeStore.message = result.message;
+
+            emit('go-to-list');
         } else {
             noticeStore.display = true;
             noticeStore.type = 'danger';
@@ -41,8 +42,6 @@ const updateSubscription = () => {
             noticeStore.type = '';
             noticeStore.message = '';
         }, 3000);
-    }).finally(() => {
-        goToList();
     });
 };
 

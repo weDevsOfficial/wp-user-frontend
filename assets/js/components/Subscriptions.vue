@@ -113,9 +113,9 @@ watch(
         <div
             v-if="!subscriptionStore.isSubscriptionLoading"
             class="wpuf-basis-4/5">
-            <component :is="component" />
+            <component :is="component" @go-to-list="goToList" />
         </div>
-        <Unsaved v-if="subscriptionStore.isUnsavedPopupOpen" @close-popup="subscriptionStore.isUnsavedPopupOpen = false" @go-to-list="goToList" />
+        <Unsaved v-if="subscriptionStore.isUnsavedPopupOpen" @close-popup="subscriptionStore.isUnsavedPopupOpen = false" @goToList="goToList" />
     </div>
     <Notice />
 </template>

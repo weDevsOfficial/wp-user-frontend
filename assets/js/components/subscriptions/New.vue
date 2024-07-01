@@ -46,6 +46,7 @@ const updateSubscription = () => {
             noticeStore.message = '';
         }, 3000);
 
+        subscriptionStore.setSubscriptionsByStatus( subscriptionStore.currentSubscriptionStatus );
         componentStore.setCurrentComponent( 'List' );
     });
 };

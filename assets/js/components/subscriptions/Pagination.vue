@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onBeforeMount, ref, watch} from 'vue';
+import {computed, ref, watch} from 'vue';
 import {useSubscriptionStore} from '../../stores/subscription';
 
 const subscriptionStore = useSubscriptionStore();

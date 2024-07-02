@@ -205,11 +205,10 @@ class Admin_Form_Builder {
         <script>
             if (!window.Promise) {
                 var promise_polyfill = document.createElement( 'script' );
-                promise_polyfill.setAttribute( 'src', 'https://cdn.polyfill.io/v2/polyfill.min.js' );
+                promise_polyfill.setAttribute( 'src', 'https://cdnjs.cloudflare.com/polyfill/v3/polyfill.js?version=4.8.0&features=default' );
                 document.head.appendChild( promise_polyfill );
             }
         </script>
-
         <script>
             var wpuf_form_builder_mixins = function ( mixins, mixin_parent ) {
                 if (!mixins || !mixins.length) {

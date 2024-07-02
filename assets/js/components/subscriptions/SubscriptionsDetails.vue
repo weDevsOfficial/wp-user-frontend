@@ -21,7 +21,7 @@ const errors = reactive( {
 
 provide( 'currentSection', currentTab );
 
-const addDepentendFields = () => {
+const addDependentFields = () => {
     // for each wpufSubscriptions.dependentFields, add it to the dependencyStore
     for (const dependentField in wpufSubscriptions.dependentFields) {
         for (const field in wpufSubscriptions.dependentFields[dependentField]) {
@@ -38,7 +38,7 @@ const addDepentendFields = () => {
 };
 
 onBeforeMount(() => {
-    addDepentendFields();
+    addDependentFields();
 });
 
 </script>

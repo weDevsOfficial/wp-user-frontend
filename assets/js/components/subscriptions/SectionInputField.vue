@@ -3,7 +3,6 @@ import {computed, inject, onMounted, ref, toRefs} from 'vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import {useSubscriptionStore} from '../../stores/subscription';
 import {useFieldDependencyStore} from '../../stores/fieldDependency';
-import Multiselect from 'vue-multiselect';
 
 const emit = defineEmits(['toggleDependentFields']);
 
@@ -112,6 +111,12 @@ const processInput = (event) => {
         subscriptionStore.modifyCurrentSubscription( 'post_name', event.target.value.replace(/\s+/g, '-').toLowerCase() );
     }
 };
+
+onMounted(() => {
+    if ( field.value.type === 'switcher' ) {
+        emit('toggleDependentFields', fieldId.value, switchStatus.value);
+    }
+});
 
 </script>
 <template>

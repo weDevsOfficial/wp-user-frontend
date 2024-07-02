@@ -203,6 +203,13 @@ class Admin_Form_Builder {
     public function admin_print_scripts() {
         ?>
         <script>
+            if (!window.Promise) {
+                var promise_polyfill = document.createElement( 'script' );
+                promise_polyfill.setAttribute( 'src', 'https://cdnjs.cloudflare.com/polyfill/v3/polyfill.js?version=4.8.0&features=default' );
+                document.head.appendChild( promise_polyfill );
+            }
+        </script>
+        <script>
             var wpuf_form_builder_mixins = function ( mixins, mixin_parent ) {
                 if (!mixins || !mixins.length) {
                     return [];

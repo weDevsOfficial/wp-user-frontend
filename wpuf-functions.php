@@ -4153,7 +4153,7 @@ function wpuf_recursive_sanitize_text_field($arr){
  */
 function wpuf_payment_success_page( $data ){
     $gateway          = ! empty( $data['wpuf_payment_method'] ) ? $data['wpuf_payment_method'] : '';
-    $success_query    = "wpuf_${gateway}_success";
+    $success_query    = 'wpuf_' . $gateway . '_success';
     $redirect_page    = '';
     $redirect_page_id = 0;
     $payment_method   = ! empty( $data['post_data']['wpuf_payment_method'] ) ? $data['post_data']['wpuf_payment_method'] : '';

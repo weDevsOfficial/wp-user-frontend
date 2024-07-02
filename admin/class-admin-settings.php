@@ -1,5 +1,8 @@
 <?php
 
+// Use the fully-qualified AllowDynamicProperties, otherwise the #[AllowDynamicProperties] attribute WILL NOT WORK.
+use \AllowDynamicProperties;
+
 /**
  * WPUF settings
  */

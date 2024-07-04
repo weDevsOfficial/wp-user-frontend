@@ -15,9 +15,9 @@ const buttonText = ref( props.buttonText );
 
 </script>
 <template>
-    <div class="wpuf-relative wpuf-group">
+    <div class="wpuf-relative">
         <button
-            class="wpuf-inline-flex wpuf-justify-between wpuf-items-center wpuf-cursor-pointer wpuf-bg-indigo-600 hover:wpuf-bg-indigo-800 wpuf-text-white wpuf-font-medium wpuf-text-base wpuf-py-2 wpuf-px-5 wpuf-rounded-md min-w-[122px]">
+            class="wpuf-peer wpuf-inline-flex wpuf-justify-between wpuf-items-center wpuf-cursor-pointer wpuf-bg-indigo-600 hover:wpuf-bg-indigo-800 wpuf-text-white wpuf-font-medium wpuf-text-base wpuf-py-2 wpuf-px-5 wpuf-rounded-md min-w-[122px]">
             {{ buttonText }}
             <svg class="wpuf-rotate-180 wpuf-w-3 wpuf-h-3 shrink-0 wpuf-ml-4"
                  data-accordion-icon="" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -27,7 +27,7 @@ const buttonText = ref( props.buttonText );
             </svg>
         </button>
         <div
-            class="wpuf-hidden group-hover:wpuf-block wpuf-cursor-pointer wpuf-w-44 wpuf-z-40 wpuf-bg-white wpuf-border border-[#DBDBDB] wpuf-absolute wpuf-z-10 wpuf-shadow wpuf-right-0 wpuf-rounded-md after:content-[''] before:content-[''] after:wpuf-absolute before:wpuf-absolute after:w-[13px] before:w-[70%] before:-right-[1px] after:h-[13px] before:wpuf-h-3 before:wpuf-mt-3 after:top-[-7px] before:wpuf--top-6 after:right-[1.4rem] after:z-[-1] after:wpuf-bg-white after:wpuf-border after:border-[#DBDBDB] after:!rotate-45 after:wpuf-border-r-0 after:wpuf-border-b-0"
+            class="wpuf-hidden hover:wpuf-block peer-hover:wpuf-block wpuf-cursor-pointer wpuf-w-44 wpuf-z-40 wpuf-bg-white wpuf-border border-[#DBDBDB] wpuf-absolute wpuf-z-10 wpuf-shadow wpuf-right-0 wpuf-rounded-md after:content-[''] before:content-[''] after:wpuf-absolute before:wpuf-absolute after:w-[13px] before:w-[70%] before:-right-[1px] after:h-[13px] before:wpuf-h-3 before:wpuf-mt-3 after:top-[-7px] before:wpuf--top-6 after:right-[1.4rem] after:z-[-1] after:wpuf-bg-white after:wpuf-border after:border-[#DBDBDB] after:!rotate-45 after:wpuf-border-r-0 after:wpuf-border-b-0"
         >
         <span
                 @click="() => {subscriptionStore.currentSubscription.post_status = 'publish'; $emit('updateSubscription'); }"

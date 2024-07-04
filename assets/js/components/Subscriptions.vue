@@ -51,6 +51,7 @@ const checkIsDirty = ( subscriptionStatus = 'all' ) => {
         subscriptionStore.setSubscriptionsByStatus( subscriptionStatus );
         componentStore.setCurrentComponent('List');
         subscriptionStore.setCurrentSubscription(null);
+        subscriptionStore.getSubscriptionCount();
     }
 };
 
@@ -111,7 +112,6 @@ watch(
             </keep-alive>
         </div>
         <div
-            v-if="!subscriptionStore.isSubscriptionLoading"
             class="wpuf-basis-4/5">
             <component :is="component" @go-to-list="goToList" />
         </div>

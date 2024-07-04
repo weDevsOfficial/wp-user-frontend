@@ -145,6 +145,9 @@ const deleteSubscription = ( subscription ) => {
 const toggleSubscriptionStatus = ( subscription ) => {
     subscription.edit_row_name = 'post_status';
     subscription.edit_row_value = subscription.post_status === 'draft' ? 'publish' : 'draft';
+
+    subscriptionStore.isSubscriptionLoading = true;
+
     const promiseResult = subscriptionStore.changeSubscriptionStatus( subscription );
 
     promiseResult.then((result) => {
@@ -167,6 +170,8 @@ const toggleSubscriptionStatus = ( subscription ) => {
             noticeStore.type = '';
             noticeStore.message = '';
         }, 3000);
+    }).finally(() => {
+        subscriptionStore.isSubscriptionLoading = false;
     });
 };
 

@@ -5,16 +5,34 @@ import {useSubscriptionStore} from '../../stores/subscription';
 const subscriptionStore = useSubscriptionStore();
 
 const props = defineProps( {
-    currentPage: Number,
+    currentPage: {
+        type: Number,
+        required: true,
+    },
+    count:  {
+        type: Number,
+        required: true,
+    },
+    maxVisibleButtons:  {
+        type: Number,
+        required: true,
+    },
+    totalPages:  {
+        type: Number,
+        required: true,
+    },
+    perPage:  {
+        type: Number,
+        required: true,
+    },
 } );
 
 const emit = defineEmits( ['changePageTo'] );
 const currentPage = ref( props.currentPage );
-const count = ref( subscriptionStore.allCount.all );
-const maxVisibleButtons = ref( 3 );
-const totalPages = ref( Math.ceil( count.value / wpufSubscriptions.perPage ) );
-
-const perPage = parseInt( wpufSubscriptions.perPage );
+const count = ref( props.count );
+const maxVisibleButtons = ref( props.maxVisibleButtons );
+const totalPages = ref( props.totalPages );
+const perPage = parseInt( props.perPage );
 
 const isInFirstPage = computed(() => currentPage.value === 1);
 const isInLastPage = computed(() => currentPage.value === totalPages.value);

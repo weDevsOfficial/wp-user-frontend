@@ -6,8 +6,8 @@ import {storeToRefs} from 'pinia';
 import Pagination from './Pagination.vue';
 import {onBeforeMount, ref, watch} from 'vue';
 import ListHeader from './ListHeader.vue';
-import EmptyTrash from './EmptyTrash.vue';
 import {HollowDotsSpinner} from 'epic-spinners';
+import {__} from '@wordpress/i18n';
 
 const subscriptionStore = useSubscriptionStore();
 const subscriptions = storeToRefs( subscriptionStore ).subscriptionList;
@@ -21,11 +21,29 @@ const changePageTo = ( page ) => {
 
     subscriptionStore.setSubscriptionsByStatus( subscriptionStore.currentSubscriptionStatus, offset );
 };
+const maxVisibleButtons = ref( 3 );
+
+const emptyMessages = {
+    all: __( 'Powerful Subscription Features for Monetizing Your Content. Unlock a World of Possibilities with WPUF\'s Subscription Features – From Charging Users for Posting to Exclusive Content Access.',
+        'wp-user-frontend' ),
+    publish: __( 'Ops! It looks like you haven\'t published any subscriptions yet. To create a new subscription and start monetizing your content, click the \'Add Subscription\' button above.', 'wp-user-frontend' ),
+    draft: __( 'Ops! It looks like you haven\'t saved any subscriptions as drafts yet.', 'wp-user-frontend' ),
+    trash: __( 'Your trash is empty! If you delete a subscription, it will be moved here.', 'wp-user-frontend' ),
+};
 
 onBeforeMount(
     () => {
         count.value = subscriptionStore.allCount[subscriptionStore.currentSubscriptionStatus];
         totalPages.value = Math.ceil( count.value / wpufSubscriptions.perPage );
+    }
+);
+
+watch(
+    () => subscriptionStore.currentSubscriptionStatus,
+    ( newValue ) => {
+        count.value = subscriptionStore.allCount[newValue];
+        totalPages.value = Math.ceil( count.value / wpufSubscriptions.perPage );
+        currentPage.value = 1;
     }
 );
 
@@ -44,8 +62,7 @@ onBeforeMount(
     <div v-if="!subscriptionStore.isSubscriptionLoading">
         <div v-if="!count" class="wpuf-px-8 wpuf-pb-8">
             <ListHeader/>
-            <Empty v-if="subscriptionStore.currentSubscriptionStatus !== 'trash'"/>
-            <EmptyTrash v-if="subscriptionStore.currentSubscriptionStatus === 'trash'"/>
+            <Empty :message="emptyMessages[subscriptionStore.currentSubscriptionStatus]"/>
         </div>
         <div v-else class="wpuf-px-8 wpuf-pb-8">
             <ListHeader/>
@@ -53,10 +70,16 @@ onBeforeMount(
                 <SubscriptionBox
                     v-for="subscription in subscriptions"
                     :subscription=subscription
-                    @toggle-subscription-status="toggleSubscriptionStatus"
                     :key="subscription.ID"/>
             </div>
         </div>
-        <Pagination v-if="count > perPage" :currentPage="currentPage" @changePageTo="changePageTo"/>
+        <Pagination
+            v-if="count > perPage"
+            :currentPage="currentPage"
+            :count="count"
+            :maxVisibleButtons="maxVisibleButtons"
+            :totalPages="totalPages"
+            :perPage="perPage"
+            @changePageTo="changePageTo"/>
     </div>
 </template>

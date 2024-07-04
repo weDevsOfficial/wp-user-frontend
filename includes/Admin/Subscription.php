@@ -1443,7 +1443,9 @@ class Subscription {
         $status = [];
         $result = $wpdb->get_results(
             $wpdb->prepare(
-                "SELECT post_status, COUNT(*) AS count FROM $wpdb->posts WHERE post_type = %s GROUP BY post_status", 'wpuf_subscription'
+                "SELECT post_status, COUNT(*) AS count FROM $wpdb->posts WHERE post_type = %s AND post_status != %s GROUP BY post_status",
+                'wpuf_subscription',
+                'auto-draft'
             )
         );
 
@@ -1452,7 +1454,11 @@ class Subscription {
             $total                      += $row->count;
         }
 
-        $status['all'] = $total;
+        if ( empty( $status['trash'] ) ) {
+            return $status;
+        }
+
+        $status['all'] = $total - $status['trash'];
 
         return $status;
     }

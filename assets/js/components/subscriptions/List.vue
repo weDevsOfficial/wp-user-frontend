@@ -31,6 +31,13 @@ const emptyMessages = {
     trash: __( 'Your trash is empty! If you delete a subscription, it will be moved here.', 'wp-user-frontend' ),
 };
 
+const headerMessage = {
+    all: __( 'Manage all your subscriptions in one place. Monitor their status, edit details, or create new subscriptions as needed.', 'wp-user-frontend' ),
+    publish: __( 'Manage all active subscriptions that are currently published and available for users', 'wp-user-frontend' ),
+    draft: __( 'Manage subscriptions that are currently in draft mode and have not been published yet', 'wp-user-frontend' ),
+    trash: __( 'Find all deleted subscriptions here. You can restore them to their previous state or permanently delete them.', 'wp-user-frontend' ),
+};
+
 onBeforeMount(
     () => {
         count.value = subscriptionStore.allCount[subscriptionStore.currentSubscriptionStatus];
@@ -61,11 +68,11 @@ watch(
     </div>
     <div v-if="!subscriptionStore.isSubscriptionLoading">
         <div v-if="!count" class="wpuf-px-8 wpuf-pb-8">
-            <ListHeader/>
+            <ListHeader :message="headerMessage[subscriptionStore.currentSubscriptionStatus]" />
             <Empty :message="emptyMessages[subscriptionStore.currentSubscriptionStatus]"/>
         </div>
         <div v-else class="wpuf-px-8 wpuf-pb-8">
-            <ListHeader/>
+            <ListHeader :message="headerMessage[subscriptionStore.currentSubscriptionStatus]" />
             <div class="wpuf-grid wpuf-grid-cols-3 wpuf-gap-4 wpuf-mt-4">
                 <SubscriptionBox
                     v-for="subscription in subscriptions"

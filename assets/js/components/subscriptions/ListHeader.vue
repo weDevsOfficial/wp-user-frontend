@@ -9,6 +9,12 @@ const componentStore = useComponentStore();
 const subscriptionStore = useSubscriptionStore();
 
 const { currentComponent } = storeToRefs(componentStore);
+const props = defineProps({
+    message: {
+        type: String,
+        default: __( 'Explore and manage all subscriptions in one place', 'wp-user-frontend' ),
+    },
+});
 
 const title = computed(() => {
     switch (subscriptionStore.currentSubscriptionStatus) {
@@ -31,7 +37,7 @@ const title = computed(() => {
     <div class="wpuf-flex wpuf-justify-between">
         <div>
             <h3 class="wpuf-text-lg wpuf-font-bold wpuf-m-0">{{ title }}</h3>
-            <p class="wpuf-text-sm wpuf-text-gray-500">{{ __( 'Explore and manage all subscriptions in one place', 'wp-user-frontend' ) }}</p>
+            <p class="wpuf-text-sm wpuf-text-gray-500">{{ props.message }}</p>
         </div>
         <div>
             <button

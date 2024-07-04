@@ -129,9 +129,9 @@ onMounted(() => {
                class="wpuf-block wpuf-text-sm wpuf-leading-6 wpuf-text-gray-600 wpuf-flex wpuf-items-center">
             {{ field.label }}
             <div
-                v-if="field.description"
+                v-if="field.tooltip"
                 class="wpuf-tooltip wpuf-cursor-pointer wpuf-ml-2 wpuf-z-[9999]"
-                 :data-tip="field.description">
+                 :data-tip="field.tooltip">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none">
                     <path d="M9.833 12.333H9V9h-.833M9 5.667h.008M16.5 9a7.5 7.5 0 1 1-15 0 7.5 7.5 0 1 1 15 0z"
                           stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -221,6 +221,11 @@ onMounted(() => {
                     :selected="key === value"
                     :key="key">{{ item }}</option>
             </select>
+            <div
+                v-if="field.description"
+                class="label">
+                <span class="label-text-alt">{{ field.description }}</span>
+            </div>
         </div>
     </div>
 </template>

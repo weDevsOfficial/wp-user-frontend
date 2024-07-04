@@ -26,9 +26,9 @@ const showField = computed(() => {
             class="wpuf-block wpuf-text-sm wpuf-leading-6 wpuf-text-gray-600 wpuf-flex wpuf-items-center wpuf-pl-4">
             {{ parentField.label }}
             <div
-                v-if="parentField.description"
+                v-if="parentField.tooltip"
                 class="wpuf-tooltip wpuf-cursor-pointer wpuf-ml-2 wpuf-z-[9999]"
-                :data-tip="parentField.description">
+                :data-tip="parentField.tooltip">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none">
                     <path d="M9.833 12.333H9V9h-.833M9 5.667h.008M16.5 9a7.5 7.5 0 1 1-15 0 7.5 7.5 0 1 1 15 0z"
                           stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>

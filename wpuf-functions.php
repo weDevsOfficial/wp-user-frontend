@@ -2115,10 +2115,13 @@ function wpuf_get_account_sections_list( $post_type = 'page' ) {
  *
  * @since 2.4.2
  *
- * @return array
+ * @return array|string
  */
 function wpuf_get_completed_transactions( $args = [] ) {
     global $wpdb;
+
+    $orderby = [ 'id', 'status', 'created' ];
+    $order   = [ 'asc', 'desc' ];
 
     $defaults = [
         'number'  => 20,
@@ -2130,10 +2133,18 @@ function wpuf_get_completed_transactions( $args = [] ) {
 
     $args = wp_parse_args( $args, $defaults );
 
+    if ( ! in_array( $args['orderby'], $orderby ) ) {
+        $args['orderby'] = 'id';
+    }
+
+    if ( ! in_array( $args['order'], $order ) ) {
+        $args['order'] = 'DESC';
+    }
+
     if ( $args['count'] ) {
         return $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}wpuf_transaction" );
     }
-    //phpcs:ignore
+
     $result = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wpuf_transaction ORDER BY `{$args['orderby']}` {$args['order']} LIMIT {$args['offset']}, {$args['number']}", OBJECT );
 
     return $result;
@@ -2149,6 +2160,9 @@ function wpuf_get_completed_transactions( $args = [] ) {
 function wpuf_get_pending_transactions( $args = [] ) {
     global $wpdb;
 
+    $orderby = [ 'id', 'status', 'created' ];
+    $order   = [ 'asc', 'desc' ];
+
     $defaults = [
         'number'  => 20,
         'offset'  => 0,
@@ -2158,6 +2172,14 @@ function wpuf_get_pending_transactions( $args = [] ) {
     ];
 
     $args = wp_parse_args( $args, $defaults );
+
+    if ( ! in_array( $args['orderby'], $orderby ) ) {
+        $args['orderby'] = 'id';
+    }
+
+    if ( ! in_array( $args['order'], $order ) ) {
+        $args['order'] = 'DESC';
+    }
 
     $pending_args = [
         'post_type'      => 'wpuf_order',
@@ -2218,7 +2240,7 @@ function wpuf_get_pending_transactions( $args = [] ) {
  *
  * @param $args
  *
- * @return array
+ * @return array|int|void
  */
 function wpuf_get_all_transactions( $args = [] ) {
     global $wpdb;
@@ -4153,7 +4175,7 @@ function wpuf_recursive_sanitize_text_field($arr){
  */
 function wpuf_payment_success_page( $data ){
     $gateway          = ! empty( $data['wpuf_payment_method'] ) ? $data['wpuf_payment_method'] : '';
-    $success_query    = "wpuf_${gateway}_success";
+    $success_query    = 'wpuf_' . $gateway . '_success';
     $redirect_page    = '';
     $redirect_page_id = 0;
     $payment_method   = ! empty( $data['post_data']['wpuf_payment_method'] ) ? $data['post_data']['wpuf_payment_method'] : '';

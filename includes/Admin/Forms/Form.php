@@ -2,6 +2,9 @@
 
 namespace WeDevs\Wpuf\Admin\Forms;
 
+// Use the fully-qualified AllowDynamicProperties, otherwise the #[AllowDynamicProperties] attribute WILL NOT WORK.
+use \AllowDynamicProperties;
+
 #[AllowDynamicProperties]
 class Form {
 

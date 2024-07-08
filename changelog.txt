@@ -1,3 +1,7 @@
+= v4.0.8 (03 Jul, 2024) =
+* Fix - Optimized the script loading process by removing a Promise polyfill
+* Fix - Added validation on the transaction page
+
 = v4.0.7 (11 Jun, 2024) =
 * Enhance - Remove what's new page
 * Fix - Pending user can log in

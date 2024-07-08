@@ -3,8 +3,8 @@ Contributors: tareq1988, nizamuddinbabu, wedevs
 Donate link: https://tareq.co/donate/
 Tags: frontend post, content restriction, registration, user profile, membership, login, forms, user directory, profile builder
 Requires at least: 4.0
-Tested up to: 6.5.4
-Stable tag: 4.0.7
+Tested up to: 6.5.5
+Stable tag: 4.0.8
 Requires PHP: 5.6
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -268,6 +268,10 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 18. Set Payment Related Options
 
 == Changelog ==
+= v4.0.8 (03 Jul, 2024) =
+* Fix - Optimized the script loading process by removing a Promise polyfill
+* Fix - Added validation on the transaction page
+
 = v4.0.7 (11 Jun, 2024) =
 * Enhance - Remove what's new page
 * Fix - Pending user can log in

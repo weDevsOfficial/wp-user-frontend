@@ -1,8 +1,10 @@
 <script setup>
 import {computed, inject, onMounted, ref, toRefs} from 'vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
+import Multiselect from '@vueform/multiselect';
 import {useSubscriptionStore} from '../../stores/subscription';
 import {useFieldDependencyStore} from '../../stores/fieldDependency';
+import {__} from '@wordpress/i18n';
 
 const emit = defineEmits(['toggleDependentFields']);
 
@@ -44,9 +46,9 @@ const getFieldValue = () => {
 };
 
 const value = computed(() => {
-    let fieldValue = getFieldValue( field.value.db_type, field.value.db_key );
+    const fieldValue = getFieldValue( field.value.db_type, field.value.db_key );
 
-    return getModifiedValue(field.value.type, fieldValue);
+    return getModifiedValue( field.value.type, fieldValue );
 });
 
 const getModifiedValue = (fieldType, fieldValue) => {
@@ -59,6 +61,9 @@ const getModifiedValue = (fieldType, fieldValue) => {
 
         case 'inline':
             return '';
+
+        case 'multi-select':
+            return Array.isArray(fieldValue) ? fieldValue : [];
 
         default:
             return fieldValue;
@@ -118,7 +123,25 @@ onMounted(() => {
     }
 });
 
+const multiValue = ref( value );
+
+const options = computed( () => {
+    if ( ! wpufSubscriptions.fields.advanced_configuration.hasOwnProperty( 'taxonomy_restriction' ) ) {
+        return [];
+    }
+
+    return wpufSubscriptions.fields.advanced_configuration.taxonomy_restriction[field.value.id].term_fields;
+} );
 </script>
+
+<style>
+@import '@vueform/multiselect/themes/default.css';
+
+.multiselect-caret {
+    margin-top: 0.25rem;
+}
+</style>
+
 <template>
     <div
         v-show="showField"
@@ -221,6 +244,21 @@ onMounted(() => {
                     :selected="key === value"
                     :key="key">{{ item }}</option>
             </select>
+            <Multiselect
+                v-if="field.type === 'multi-select'"
+                :placeholder="field.placeholder ? field.placeholder : __( 'Select options', 'wp-user-frontend' )"
+                v-model="multiValue"
+                :options="options"
+                mode="tags"
+                :close-on-select="false"
+                :classes="{
+                    container: 'wpuf-w-full wpuf-border wpuf-rounded-md !wpuf-border-gray-300 wpuf-bg-white wpuf-text-left wpuf-shadow-sm focus:wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm',
+                    wrapper: 'wpuf-min-h-max wpuf-align-center wpuf-cursor-pointer wpuf-flex wpuf-justify-end wpuf-w-full wpuf-relative',
+                    placeholder: 'wpuf-ml-2 wpuf-flex wpuf-items-center wpuf-h-full wpuf-absolute wpuf-left-0 wpuf-top-0 wpuf-pointer-events-none wpuf-bg-transparent wpuf-form-color-placeholder rtl:wpuf-left-auto rtl:wpuf-right-0 rtl:wpuf-pl-0 wpuf-form-pl-input rtl:wpuf-form-pr-input',
+                    tags: 'wpuf-flex-grow wpuf-flex-shrink wpuf-flex wpuf-flex-wrap wpuf-items-center wpuf-pl-1 wpuf-min-w-0 rtl:wpuf-pl-0 rtl:wpuf-pr-2',
+                    clear: 'wpuf-mt-1 wpuf-pr-2',
+                }"
+            />
             <div
                 v-if="field.description"
                 class="label">

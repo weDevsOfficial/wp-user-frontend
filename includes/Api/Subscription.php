@@ -255,7 +255,7 @@ class Subscription extends WP_REST_Controller {
             $args['post_status'] = 'draft, publish, future, pending, private';
         }
 
-        $subscriptions = ( new \WeDevs\Wpuf\Admin\Subscription() )->get_subscriptions( $args );
+        $subscriptions = wpuf()->subscription->get_subscriptions( $args );
 
         if ( ! is_array( $subscriptions ) ) {
             return new WP_REST_Response(

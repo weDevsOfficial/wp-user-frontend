@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "@heroicons/vue": "^2.1.1",
+    "@vueform/multiselect": "^2.6.8",
     "@vuepic/vue-datepicker": "^8.2.0",
     "@wordpress/api-fetch": "^6.49.0",
     "@wordpress/i18n": "^4.52.0",
@@ -45,7 +46,6 @@
     "epic-spinners": "^2.0.0",
     "pinia": "^2.1.7",
     "vue": "^3.4.19",
-    "vue-multiselect": "^3.0.0",
     "vue-router": "^4.3.2"
   }
 }

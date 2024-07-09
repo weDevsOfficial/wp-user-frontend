@@ -464,9 +464,9 @@ class Subscription extends WP_REST_Controller {
                 $success_message = __( 'Subscription added successfully', 'wp-user-frontend' );
             }
 
-            do_action( 'wpuf_before_update_subscription_pack', $id, $request );
+            do_action( 'wpuf_before_update_subscription_pack', $id, $request, $post_arr );
             $id = wp_insert_post( $post_arr );
-            do_action( 'wpuf_before_update_subscription_pack', $id, $request );
+            do_action( 'wpuf_before_update_subscription_pack', $id, $request, $post_arr );
 
             if ( empty( $id ) || is_wp_error( $id ) ) {
                 return new WP_REST_Response(

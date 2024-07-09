@@ -19,7 +19,6 @@ function wpuf_upgrade_4_0_8_migration() {
 
         preg_match( $regex, $meta->meta_value, $matches );
         if ( ! empty( $matches ) ) {
-            error_log( print_r( $matches, true ) );
             $number = ! empty( $matches[1] ) ? $matches[1] : -1;
             $period = ! empty( $matches[2] ) ? $matches[2] : 'forever';
 

@@ -123,8 +123,6 @@ onMounted(() => {
     }
 });
 
-const multiValue = ref( value );
-
 const options = computed( () => {
     if ( ! wpufSubscriptions.fields.advanced_configuration.hasOwnProperty( 'taxonomy_restriction' ) ) {
         return [];
@@ -132,6 +130,19 @@ const options = computed( () => {
 
     return wpufSubscriptions.fields.advanced_configuration.taxonomy_restriction[field.value.id].term_fields;
 } );
+
+const onMultiSelectChange = ( currentValue ) => {
+    if ( ! wpufSubscriptions.fields.advanced_configuration.hasOwnProperty( 'taxonomy_restriction' ) ) {
+        subscriptionStore.setMetaValue( field.value.db_key, value );
+    }
+
+    const previousValue = Array.isArray( subscriptionStore.getMetaValue( '_sub_allowed_term_ids' ) ) ? subscriptionStore.getMetaValue( '_sub_allowed_term_ids' ) : [];
+    const prevIntValue = previousValue.map( ( item ) => parseInt( item ) );
+
+    // concat with previous value and only get unique values
+    subscriptionStore.setMetaValue( field.value.db_key, [...new Set( previousValue.concat( currentValue ) )] );
+};
+
 </script>
 
 <style>
@@ -246,16 +257,19 @@ const options = computed( () => {
             </select>
             <Multiselect
                 v-if="field.type === 'multi-select'"
+                :id="field.id"
+                :name="field.name"
                 :placeholder="field.placeholder ? field.placeholder : __( 'Select options', 'wp-user-frontend' )"
-                v-model="multiValue"
+                v-model="value"
                 :options="options"
                 mode="tags"
+                @input="onMultiSelectChange"
                 :close-on-select="false"
                 :classes="{
                     container: 'wpuf-w-full wpuf-border wpuf-rounded-md !wpuf-border-gray-300 wpuf-bg-white wpuf-text-left wpuf-shadow-sm focus:wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm',
                     wrapper: 'wpuf-min-h-max wpuf-align-center wpuf-cursor-pointer wpuf-flex wpuf-justify-end wpuf-w-full wpuf-relative',
                     placeholder: 'wpuf-ml-2 wpuf-flex wpuf-items-center wpuf-h-full wpuf-absolute wpuf-left-0 wpuf-top-0 wpuf-pointer-events-none wpuf-bg-transparent wpuf-form-color-placeholder rtl:wpuf-left-auto rtl:wpuf-right-0 rtl:wpuf-pl-0 wpuf-form-pl-input rtl:wpuf-form-pr-input',
-                    tags: 'wpuf-flex-grow wpuf-flex-shrink wpuf-flex wpuf-flex-wrap wpuf-items-center wpuf-pl-1 wpuf-min-w-0 rtl:wpuf-pl-0 rtl:wpuf-pr-2',
+                    tags: 'wpuf-h-max wpuf-flex-grow wpuf-flex-shrink wpuf-flex wpuf-flex-wrap wpuf-items-center wpuf-pl-1 wpuf-min-w-0 rtl:wpuf-pl-0 rtl:wpuf-pr-2',
                     clear: 'wpuf-mt-1 wpuf-pr-2',
                 }"
             />

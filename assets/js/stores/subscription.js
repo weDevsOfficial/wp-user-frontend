@@ -20,6 +20,7 @@ export const useSubscriptionStore = defineStore( 'subscription', {
             message: '',
         } ),
         allCount: ref( {} ),
+        taxonomyRestriction: ref( {} ),
     } ),
     getters: {
         fieldNames: () => {
@@ -119,6 +120,19 @@ export const useSubscriptionStore = defineStore( 'subscription', {
             if (this.currentSubscription === null) {
                 return false;
             }
+
+            let allTaxonomies = [];
+
+            for (const [key, taxonomy] of Object.entries( this.taxonomyRestriction )) {
+                allTaxonomies = allTaxonomies.concat( taxonomy );
+            }
+
+            const taxonomyIntValue = allTaxonomies.map( ( item ) => parseInt( item ) );
+
+            const uniqueTaxonomies = [...new Set( taxonomyIntValue )];
+
+            // custom meta key for taxonomy restriction
+            this.setMetaValue( '_sub_allowed_term_ids', uniqueTaxonomies );
 
             const subscription = this.currentSubscription;
             let requestUrl = '/wp-json/wpuf/v1/wpuf_subscription';

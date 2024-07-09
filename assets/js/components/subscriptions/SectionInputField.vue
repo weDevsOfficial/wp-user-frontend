@@ -1,5 +1,5 @@
 <script setup>
-import {computed, inject, onMounted, ref, toRefs} from 'vue';
+import {computed, inject, onMounted, ref, toRaw, toRefs} from 'vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import Multiselect from '@vueform/multiselect';
 import {useSubscriptionStore} from '../../stores/subscription';
@@ -132,16 +132,43 @@ const options = computed( () => {
 } );
 
 const onMultiSelectChange = ( currentValue ) => {
-    if ( ! wpufSubscriptions.fields.advanced_configuration.hasOwnProperty( 'taxonomy_restriction' ) ) {
-        subscriptionStore.setMetaValue( field.value.db_key, value );
+    const tempObj = toRaw( subscriptionStore.taxonomyRestriction );
+
+    tempObj[fieldId.value] = currentValue;
+
+    subscriptionStore.$patch({
+        taxonomyRestriction: tempObj,
+    });
+};
+
+onMounted(() => {
+    if ( field.value.type !== 'multi-select' ) {
+        return;
     }
 
-    const previousValue = Array.isArray( subscriptionStore.getMetaValue( '_sub_allowed_term_ids' ) ) ? subscriptionStore.getMetaValue( '_sub_allowed_term_ids' ) : [];
-    const prevIntValue = previousValue.map( ( item ) => parseInt( item ) );
+    // first get all the term fields as an array
+    const termFields = wpufSubscriptions.fields.advanced_configuration.taxonomy_restriction[field.value.id].term_fields.map( ( item ) => {
+        return item.value;
+    } );
 
-    // concat with previous value and only get unique values
-    subscriptionStore.setMetaValue( field.value.db_key, [...new Set( previousValue.concat( currentValue ) )] );
-};
+    let selectedValues = [];
+
+    // then check if the selected values are in the term fields array
+    value.value.map( ( item ) => {
+        if (termFields.includes( item )) {
+            selectedValues.push( item );
+        }
+    } );
+
+    const tempObj = toRaw( subscriptionStore.taxonomyRestriction );
+
+    tempObj[fieldId.value] = selectedValues;
+
+    // update the store
+    subscriptionStore.$patch({
+        taxonomyRestriction: tempObj,
+    });
+});
 
 </script>
 

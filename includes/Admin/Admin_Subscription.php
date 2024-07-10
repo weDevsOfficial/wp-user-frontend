@@ -23,7 +23,6 @@ class Admin_Subscription {
         // new subscription metabox hooks
         add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes' ] );
 
-
         add_action( 'show_user_profile', [ $this, 'profile_subscription_details' ], 30 );
         add_action( 'edit_user_profile', [ $this, 'profile_subscription_details' ], 30 );
         add_action( 'personal_options_update', [ $this, 'profile_subscription_update' ] );
@@ -38,6 +37,7 @@ class Admin_Subscription {
 
         add_action( 'wpuf_load_subscription_page', [ $this, 'remove_notices' ] );
         add_action( 'wpuf_load_subscription_page', [ $this, 'enqueue_admin_scripts' ] );
+        add_action( 'wpuf_load_subscription_page', [ $this, 'modify_admin_footer_text' ] );
     }
 
     /**
@@ -1544,5 +1544,35 @@ class Admin_Subscription {
         ];
 
         return apply_filters( 'wpuf_subscriptions_dependent_fields', $fields );
+    }
+
+    /**
+     * Modify the admin footer text
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function modify_admin_footer_text() {
+        add_action( 'admin_footer_text', [ $this, 'admin_footer_text' ] );
+    }
+
+    /**
+     * Modify the admin footer text
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $footer_text
+     *
+     * @return string
+     */
+    public function admin_footer_text( $footer_text ) {
+        $footer_text = __( 'Thank you for using <strong>WP User Frontend</strong>.', 'wp-user-frontend' );
+        $footer_text .= ' ' . sprintf(
+            // Translators: %s: link to the classic UI
+            __( 'Use the <a href="%s">classic UI</a>.', 'wp-user-frontend' ), admin_url( 'edit.php?post_type=wpuf_subscription' )
+        );
+
+        return $footer_text;
     }
 }

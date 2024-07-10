@@ -1455,6 +1455,8 @@ class Subscription {
         }
 
         if ( empty( $status['trash'] ) ) {
+            $status['all'] = $total;
+
             return $status;
         }
 

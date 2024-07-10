@@ -276,7 +276,7 @@ quickEditStore.$subscribe( ( mutation, state ) => {
                             class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">
                             {{ __( 'Draft/Publish', 'wp-user-frontend' ) }}
                         </li>
-                        <li @click="trashSubscription(subscription)"
+                        <li @click="showPopup = true"
                             class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">
                             {{ __( 'Delete', 'wp-user-frontend' ) }}
                         </li>
@@ -311,5 +311,9 @@ quickEditStore.$subscribe( ( mutation, state ) => {
             <a :href="subscribersLink" class="wpuf-text-gray-500">{{ subscribers }}</a>
         </div>
     </div>
-    <Popup @hide-popup="showPopup = false" @trash="deleteSubscription(subscription)" v-if="showPopup" />
+    <Popup
+        v-if="showPopup"
+        @hide-popup="showPopup = false"
+        @trash-subscription="trashSubscription(subscription)"
+        @delete-subscription="deleteSubscription(subscription)" />
 </template>

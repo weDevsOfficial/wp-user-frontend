@@ -1,5 +1,37 @@
 <script setup>
 import {__} from '@wordpress/i18n';
+import {useSubscriptionStore} from '../../stores/subscription';
+import {computed} from 'vue';
+
+const emit = defineEmits( ['deleteSubscription', 'trashSubscription', 'hidePopup'] );
+const subscriptionStore = useSubscriptionStore();
+const currentSubscriptionStatus = subscriptionStore.currentSubscriptionStatus;
+const info = computed( () => {
+    switch ( currentSubscriptionStatus ) {
+        case 'trash':
+            return {
+                title: __( 'Delete Subscription', 'wp-user-frontend' ),
+                message: __( 'Are you sure you want to delete this subscription? This action cannot be undone.', 'wp-user-frontend' ),
+                actionText: __( 'Delete', 'wp-user-frontend' ),
+            }
+        default:
+            return {
+                title: __( 'Trash Subscription', 'wp-user-frontend' ),
+                message: __( 'This subscription will moved to trash. Are you sure?', 'wp-user-frontend' ),
+                actionText: __( 'Trash', 'wp-user-frontend' ),
+            }
+    }
+} );
+
+const emitAction = () => {
+    if ( currentSubscriptionStatus === 'trash' ) {
+        emit('deleteSubscription');
+    } else {
+        emit('trashSubscription');
+    }
+
+}
+
 </script>
 <template>
     <div class="wpuf-relative wpuf-z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -18,18 +50,18 @@ import {__} from '@wordpress/i18n';
                     <div class="wpuf-flex wpuf-items-start">
                         <div class="wpuf-ml-4 wpuf-mt-0 wpuf-text-left">
                             <h3 class="wpuf-text-base wpuf-font-semibold wpuf-leading-6 wpuf-text-gray-900" id="modal-title">
-                                {{ __( 'Delete subscription', 'wp-user-frontend' ) }}</h3>
+                                {{ info.title }}</h3>
                             <div class="wpuf-mt-2">
-                                <p class="wpuf-text-sm wpuf-text-gray-500">{{ __( 'Are you sure you want to delete this subscription? This action cannot be undone.', 'wp-user-frontend' ) }}</p>
+                                <p class="wpuf-text-sm wpuf-text-gray-500">{{ info.message }}</p>
                             </div>
                         </div>
                     </div>
                     <div class="wpuf-mt-4 wpuf-flex wpuf-flex-row-reverse">
                         <button
                             type="button"
-                            @click="$emit('trash')"
+                            @click="emitAction"
                             class="wpuf-inline-flex wpuf-justify-center wpuf-rounded-md wpuf-bg-red-600 wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-red-500 wpuf-ml-3 wpuf-w-auto">
-                            {{ __( 'Delete', 'wp-user-frontend' ) }}</button>
+                            {{ info.actionText }}</button>
                         <button
                             type="button"
                             @click="$emit('hidePopup')"

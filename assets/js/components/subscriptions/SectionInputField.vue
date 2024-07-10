@@ -178,6 +178,12 @@ onMounted(() => {
 .multiselect-caret {
     margin-top: 0.25rem;
 }
+
+.dp__input {
+    font-size: .875rem !important;
+    padding-top: .25rem !important;
+    padding-bottom: .25rem !important;
+}
 </style>
 
 <template>

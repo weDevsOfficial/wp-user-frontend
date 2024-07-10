@@ -1334,10 +1334,6 @@ class Admin_Subscription {
                         ),
                     ],
                     'enable_recurring' => [
-                        'id'      => 'cycle-period',
-                        'name'    => 'cycle-period',
-                        'db_key'  => '_recurring_pay',
-                        'db_type' => 'meta',
                         'type'    => 'switcher',
                         'label'   => __( 'Enable Recurring Payment', 'wp-user-frontend' ),
                         'tooltip' => __(
@@ -1346,108 +1342,6 @@ class Admin_Subscription {
                         ),
                         'default' => false,
                         'is_pro'  => true,
-                    ],
-                    'payment_cycle'    => [
-                        'id'      => 'payment-cycle',
-                        'name'    => 'payment-cycle',
-                        'type'    => 'inline',
-                        'fields'  => [
-                            'payment_cycle_value' => [
-                                'id'      => 'payment-cycle-value',
-                                'name'    => 'payment-cycle-value',
-                                'type'    => 'input-number',
-                                'db_key'  => '_billing_cycle_number',
-                                'db_type' => 'meta',
-                                'default' => '-1',
-                            ],
-                            'payment_cycle_unit'  => [
-                                'id'      => 'payment-cycle-unit',
-                                'name'    => 'payment-cycle-unit',
-                                'type'    => 'select',
-                                'options' => [
-                                    'day'   => __( 'Day(s)', 'wp-user-frontend' ),
-                                    'week'  => __( 'Week(s)', 'wp-user-frontend' ),
-                                    'month' => __( 'Month(s)', 'wp-user-frontend' ),
-                                    'year'  => __( 'Year(s)', 'wp-user-frontend' ),
-                                ],
-                                'db_key'  => '_cycle_period',
-                                'db_type' => 'meta',
-                                'default' => 'day',
-                            ],
-                        ],
-                        'key_id'  => 'payment_cycle',
-                        'label'   => __( 'Payment Cycle', 'wp-user-frontend' ),
-                        'tooltip' => __(
-                            'Specify the number of payment cycles this subscription will be active for', 'wp-user-frontend'
-                        ),
-                        'placeholder' => __( 'enter duration', 'wp-user-frontend' ),
-                    ],
-                    'stop_cycle'       => [
-                        'id'      => 'stop-cycle',
-                        'name'    => 'stop-cycle',
-                        'db_key'  => '_enable_billing_limit',
-                        'db_type' => 'meta',
-                        'type'    => 'switcher',
-                        'label'   => __( 'Stop Billing Cycle', 'wp-user-frontend' ),
-                        'tooltip' => __( 'Stop billing cycle after a certain number', 'wp-user-frontend' ),
-                        'default' => false,
-                    ],
-                    'billing_limit'    => [
-                        'id'      => 'billing-limit',
-                        'name'    => 'billing-limit',
-                        'db_key'  => '_billing_limit',
-                        'db_type' => 'meta',
-                        'type'    => 'input-number',
-                        'label'   => __( 'Number of Billing Cycles', 'wp-user-frontend' ),
-                        'tooltip' => __( 'After how many times the billing should stop?', 'wp-user-frontend' ),
-                        'default' => '-1',
-                    ],
-                    'trial'            => [
-                        'id'      => 'trial',
-                        'name'    => 'trial',
-                        'db_key'  => '_trial_status',
-                        'db_type' => 'meta',
-                        'type'    => 'switcher',
-                        'label'   => __( 'Enable Trial', 'wp-user-frontend' ),
-                        'tooltip' => __(
-                            'If enabled, users will have the option to access the subscription for a trial period before the actual billing cycle begins',
-                            'wp-user-frontend'
-                        ),
-                        'default' => false,
-                    ],
-                    'trial_period'     => [
-                        'id'      => 'trial-period',
-                        'name'    => 'trial-period',
-                        'type'    => 'inline',
-                        'fields'  => [
-                            'trial_period_value' => [
-                                'id'      => 'trial-period-value',
-                                'name'    => 'trial-period-value',
-                                'type'    => 'input-number',
-                                'db_key'  => '_trial_duration',
-                                'db_type' => 'meta',
-                                'default' => '-1',
-                            ],
-                            'trial_period_unit'  => [
-                                'id'      => 'trial-period-unit',
-                                'name'    => 'trial-period-unit',
-                                'type'    => 'select',
-                                'options' => [
-                                    'day'   => __( 'Day(s)', 'wp-user-frontend' ),
-                                    'week'  => __( 'Week(s)', 'wp-user-frontend' ),
-                                    'month' => __( 'Month(s)', 'wp-user-frontend' ),
-                                    'year'  => __( 'Year(s)', 'wp-user-frontend' ),
-                                ],
-                                'db_key'  => '_trial_duration_type',
-                                'db_type' => 'meta',
-                                'default' => 'day',
-                            ],
-                        ],
-                        'key_id'  => 'trial_period',
-                        'label'   => __( 'Trial Period', 'wp-user-frontend' ),
-                        'tooltip' => __(
-                            'Enter the duration of the trial period for this subscription', 'wp-user-frontend'
-                        ),
                     ],
                 ],
             ]

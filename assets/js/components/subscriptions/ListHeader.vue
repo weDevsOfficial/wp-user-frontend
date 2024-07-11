@@ -32,16 +32,20 @@ const title = computed(() => {
     }
 });
 
+const shouldShowButton = computed( () => {
+    return !( subscriptionStore.currentSubscriptionStatus === 'trash' || ( subscriptionStore.currentSubscriptionStatus === 'all' && subscriptionStore.allCount.all === 0 ) );
+} );
+
 </script>
 <template>
     <div class="wpuf-flex wpuf-justify-between">
-        <div>
+        <div class="wpuf-w-3/5">
             <h3 class="wpuf-text-lg wpuf-font-bold wpuf-m-0">{{ title }}</h3>
             <p class="wpuf-text-sm wpuf-text-gray-500">{{ props.message }}</p>
         </div>
-        <div>
+        <div class="wpuf-w-1/5">
             <button
-                v-if="currentComponent === 'List'"
+                v-if="shouldShowButton"
                 @click="componentStore.setCurrentComponent( 'New' )"
                 type="button"
                 class="wpuf-flex wpuf-items-center wpuf-rounded-md wpuf-bg-indigo-600 hover:wpuf-bg-indigo-500 wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">

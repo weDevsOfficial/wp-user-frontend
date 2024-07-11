@@ -22,6 +22,7 @@ const changePageTo = ( page ) => {
     subscriptionStore.setSubscriptionsByStatus( subscriptionStore.currentSubscriptionStatus, offset );
 };
 const maxVisibleButtons = ref( 3 );
+const paginationKey = ref( 0 );
 
 const emptyMessages = {
     all: __( 'Powerful Subscription Features for Monetizing Your Content. Unlock a World of Possibilities with WPUF\'s Subscription Features – From Charging Users for Posting to Exclusive Content Access.',
@@ -54,6 +55,23 @@ watch(
     }
 );
 
+watch(
+    () => subscriptionStore.subscriptionList,
+    ( newValue ) => {
+        const promiseResult = subscriptionStore.getSubscriptionCount();
+
+        promiseResult.then( ( result ) => {
+            if (result.allCount) {
+                count.value = subscriptionStore.allCount[subscriptionStore.currentSubscriptionStatus];
+                totalPages.value = Math.ceil( count.value / wpufSubscriptions.perPage );
+
+                // refresh the pagination component
+                paginationKey.value += 1;
+            }
+        } );
+    }
+);
+
 </script>
 
 <template>
@@ -82,6 +100,7 @@ watch(
         </div>
         <Pagination
             v-if="count > perPage"
+            :key="paginationKey"
             :currentPage="currentPage"
             :count="count"
             :maxVisibleButtons="maxVisibleButtons"

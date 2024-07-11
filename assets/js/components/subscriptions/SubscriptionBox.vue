@@ -129,7 +129,7 @@ const trashSubscription = ( subscription ) => {
 
 const restoreSubscription = ( subscription ) => {
     subscription.edit_row_name = 'post_status';
-    subscription.edit_row_value = 'publish';
+    subscription.edit_row_value = 'draft';
 
     const promiseResult = subscriptionStore.changeSubscriptionStatus( subscription );
 
@@ -157,6 +157,7 @@ const toggleSubscriptionStatus = ( subscription ) => {
             noticeStore.message = result.message;
 
             subscriptionStore.setSubscriptionsByStatus( subscriptionStore.currentSubscriptionStatus );
+            subscriptionStore.getSubscriptionCount();
 
             title.value = subscription.post_title;
         } else {
@@ -188,6 +189,8 @@ const processPromiseResult = ( promiseResult ) => {
             subscriptionStore.isUnsavedPopupOpen = false;
 
             subscriptionStore.setCurrentSubscription(null);
+            subscriptionStore.setSubscriptionsByStatus( subscriptionStore.currentSubscriptionStatus );
+            subscriptionStore.getSubscriptionCount();
         } else {
             noticeStore.display = true;
             noticeStore.type = 'danger';
@@ -278,7 +281,7 @@ quickEditStore.$subscribe( ( mutation, state ) => {
                         </li>
                         <li @click="showPopup = true"
                             class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">
-                            {{ __( 'Delete', 'wp-user-frontend' ) }}
+                            {{ __( 'Trash', 'wp-user-frontend' ) }}
                         </li>
                     </ul>
                     <ul v-if="subscription.post_status === 'trash'">

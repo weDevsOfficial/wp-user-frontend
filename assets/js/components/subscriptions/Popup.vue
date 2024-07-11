@@ -29,7 +29,6 @@ const emitAction = () => {
     } else {
         emit('trashSubscription');
     }
-
 }
 
 </script>

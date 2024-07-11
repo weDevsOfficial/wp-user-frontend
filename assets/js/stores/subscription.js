@@ -313,9 +313,6 @@ export const useSubscriptionStore = defineStore( 'subscription', {
 
             this.setCurrentSubscription( subscription );
 
-            this.allCount[subscription.edit_row_value] = parseInt( this.allCount[subscription.edit_row_value] ) + 1;
-            this.allCount[subscription.post_status] = parseInt( this.allCount[subscription.post_status] ) - 1;
-
             return this.updateSubscription();
         },
         async setSubscriptionsByStatus( status, offset = 0 ) {

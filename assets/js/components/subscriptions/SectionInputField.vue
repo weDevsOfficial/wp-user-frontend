@@ -195,7 +195,7 @@ onMounted(() => {
                :for="field.name"
                class="wpuf-block wpuf-text-sm wpuf-leading-6 wpuf-text-gray-600 wpuf-flex wpuf-items-center">
             {{ field.label }}
-            <div
+            <span
                 v-if="field.tooltip"
                 class="wpuf-tooltip wpuf-cursor-pointer wpuf-ml-2 wpuf-z-[9999]"
                  :data-tip="field.tooltip">
@@ -203,7 +203,7 @@ onMounted(() => {
                     <path d="M9.833 12.333H9V9h-.833M9 5.667h.008M16.5 9a7.5 7.5 0 1 1-15 0 7.5 7.5 0 1 1 15 0z"
                           stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
-            </div>
+            </span>
             &nbsp;&nbsp;
             <svg
                 v-if="showProBadge"
@@ -235,7 +235,7 @@ onMounted(() => {
                 :id="field.name"
                 :placeholder="field.placeholder ? field.placeholder : ''"
                 @input="[modifySubscription($event), processInput($event)]"
-                class="wpuf-w-full wpuf-rounded-md !wpuf-border-gray-300 wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">
+                class="wpuf-w-full wpuf-rounded-md !wpuf-border-gray-300 wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">
             <input
                 v-if="field.type === 'input-number'"
                 type="number"
@@ -244,7 +244,7 @@ onMounted(() => {
                 :id="field.name"
                 :placeholder="field.placeholder ? field.placeholder : ''"
                 @input="[modifySubscription($event), processInput($event)]"
-                class="wpuf-w-full wpuf-rounded-md !wpuf-border-gray-300 wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">
+                class="wpuf-w-full wpuf-rounded-md !wpuf-border-gray-300 wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">
             <textarea
                 v-if="field.type === 'textarea'"
                 :name="field.name"
@@ -252,7 +252,7 @@ onMounted(() => {
                 :placeholder="field.placeholder ? field.placeholder : ''"
                 rows="3"
                 @input="[modifySubscription($event), processInput($event)]"
-                class="wpuf-w-full wpuf-rounded-md wpuf-border-gray-300 wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">{{ value }}</textarea>
+                class="wpuf-w-full wpuf-rounded-md wpuf-border-gray-300 wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">{{ value }}</textarea>
             <button
                 v-if="field.type === 'switcher'"
                 @click="[toggleOnOff(), $emit('toggleDependentFields', fieldId, switchStatus)]"
@@ -280,7 +280,7 @@ onMounted(() => {
             <select v-if="field.type === 'select'"
                     :name="field.name"
                     :id="field.name"
-                    class="wpuf-w-full !wpuf-max-w-full wpuf-rounded-md !wpuf-border-gray-300 wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm"
+                    class="wpuf-w-full !wpuf-max-w-full wpuf-rounded-md !wpuf-border-gray-300 wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm"
                     @input="[modifySubscription($event), processInput($event)]">
                 <option
                     v-for="(item, key) in field.options"
@@ -299,7 +299,7 @@ onMounted(() => {
                 @input="onMultiSelectChange"
                 :close-on-select="false"
                 :classes="{
-                    container: 'wpuf-w-full wpuf-border wpuf-rounded-md !wpuf-border-gray-300 wpuf-bg-white wpuf-text-left wpuf-shadow-sm focus:wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm',
+                    container: 'wpuf-w-full wpuf-border wpuf-rounded-md !wpuf-border-gray-300 wpuf-bg-white wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm',
                     wrapper: 'wpuf-min-h-max wpuf-align-center wpuf-cursor-pointer wpuf-flex wpuf-justify-end wpuf-w-full wpuf-relative',
                     placeholder: 'wpuf-ml-2 wpuf-flex wpuf-items-center wpuf-h-full wpuf-absolute wpuf-left-0 wpuf-top-0 wpuf-pointer-events-none wpuf-bg-transparent wpuf-form-color-placeholder rtl:wpuf-left-auto rtl:wpuf-right-0 rtl:wpuf-pl-0 wpuf-form-pl-input rtl:wpuf-form-pr-input',
                     tags: 'wpuf-h-max wpuf-flex-grow wpuf-flex-shrink wpuf-flex wpuf-flex-wrap wpuf-items-center wpuf-pl-1 wpuf-pt-1 wpuf-min-w-0 rtl:wpuf-pl-0 rtl:wpuf-pr-2',

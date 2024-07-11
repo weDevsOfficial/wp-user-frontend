@@ -1310,7 +1310,7 @@ class Admin_Subscription {
                                 'type'    => 'input-number',
                                 'db_key'  => '_expiration_number',
                                 'db_type' => 'meta',
-                                'default' => 0,
+                                'default' => -1,
                             ],
                             'subs_expiration_unit'  => [
                                 'id'      => 'subs-expiration-unit',
@@ -1330,7 +1330,7 @@ class Admin_Subscription {
                         'key_id'  => 'expiration_time',
                         'label'   => __( 'Expire In', 'wp-user-frontend' ),
                         'tooltip' => __(
-                            'Set the duration for the subscription to remain active before expiring', 'wp-user-frontend'
+                            'Set the duration for the subscription to remain active before expiring. Enter -1 for no expiration', 'wp-user-frontend'
                         ),
                     ],
                     'enable_recurring' => [

@@ -359,8 +359,7 @@ class Subscription extends WP_REST_Controller {
      * @return WP_REST_Response
      */
     public function create_or_update_item( $request ) {
-        $subscription    = ! empty( $request['subscription'] ) ? $request['subscription'] : '';
-        $success_message = '';
+        $subscription = ! empty( $request['subscription'] ) ? $request['subscription'] : '';
 
         if ( empty( $subscription ) ) {
             return new WP_REST_Response(
@@ -371,8 +370,7 @@ class Subscription extends WP_REST_Controller {
             );
         }
 
-        $id = ! empty( $subscription['ID'] ) ? (int) $subscription['ID'] : 0;
-
+        $id   = ! empty( $subscription['ID'] ) ? (int) $subscription['ID'] : 0;
         $name = ! empty( $subscription['post_title'] ) ? sanitize_text_field( $subscription['post_title'] ) : '';
 
         // error if plan name contains #. PayPal doesn't allow # in package name
@@ -441,6 +439,10 @@ class Subscription extends WP_REST_Controller {
         $remove_feature_item    = ! empty( $subscription['meta_value']['_remove_feature_item'] ) ? sanitize_text_field(
             $subscription['meta_value']['_remove_feature_item']
         ) : '';
+
+        if ( $recurring_pay !== 'no' && empty( $cycle_period ) ) {
+            $cycle_period = 'day';
+        }
 
         try {
             $current_time = wpuf_current_datetime();

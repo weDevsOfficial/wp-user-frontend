@@ -20,7 +20,6 @@ const emit = defineEmits( ['toggleSubscriptionStatus'] );
 const showPopup = ref( false );
 const showBox = ref( true );
 const pillColor = ref( '' );
-const isRecurring = ref( false );
 const quickMenuStatus = ref( false );
 const billingAmount = ref( 0 );
 const subscribers = ref( 0 );
@@ -100,14 +99,19 @@ const setBillingAmount = () => {
     }
 };
 
+const isRecurring = computed(() => {
+    return subscription.value.meta_value.recurring_pay === 'on' || subscription.value.meta_value.recurring_pay === 'yes';
+});
+
 onBeforeMount( () => {
     setPillBackground();
     setBillingAmount();
 
-    if (subscription.value.meta_value.recurring_pay === 'yes' || subscription.value.meta_value.recurring_pay === 'on') {
-        isRecurring.value = true;
+    if (isRecurring.value) {
         if (subscription.value.meta_value.cycle_period[0]) {
             billingAmount.value += '/' + subscription.value.meta_value.cycle_period[0].toUpperCase();
+        } else {
+            billingAmount.value += '/D';
         }
     }
 

@@ -33,10 +33,10 @@ const emptyMessages = {
 };
 
 const headerMessage = {
-    all: __( 'Manage all your subscriptions in one place. Monitor their status, edit details, or create new subscriptions as needed.', 'wp-user-frontend' ),
-    publish: __( 'Manage all active subscriptions that are currently published and available for users', 'wp-user-frontend' ),
-    draft: __( 'Manage subscriptions that are currently in draft mode and have not been published yet', 'wp-user-frontend' ),
-    trash: __( 'Find all deleted subscriptions here. You can restore them to their previous state or permanently delete them.', 'wp-user-frontend' ),
+    all: __( 'Manage and monitor all your subscriptions. Edit details or create new ones as needed.', 'wp-user-frontend' ),
+    publish: __( 'Oversee all active subscriptions currently available for users.', 'wp-user-frontend' ),
+    draft: __( 'Handle subscriptions that are saved as drafts but not yet published.', 'wp-user-frontend' ),
+    trash: __( 'Review deleted subscriptions. Restore or permanently delete them as required.', 'wp-user-frontend' ),
 };
 
 onBeforeMount(
@@ -56,19 +56,13 @@ watch(
 );
 
 watch(
-    () => subscriptionStore.subscriptionList,
+    () => subscriptionStore.allCount,
     ( newValue ) => {
-        const promiseResult = subscriptionStore.getSubscriptionCount();
+        count.value = subscriptionStore.allCount[subscriptionStore.currentSubscriptionStatus];
+        totalPages.value = Math.ceil( count.value / wpufSubscriptions.perPage );
 
-        promiseResult.then( ( result ) => {
-            if (result.allCount) {
-                count.value = subscriptionStore.allCount[subscriptionStore.currentSubscriptionStatus];
-                totalPages.value = Math.ceil( count.value / wpufSubscriptions.perPage );
-
-                // refresh the pagination component
-                paginationKey.value += 1;
-            }
-        } );
+        // refresh the pagination component
+        paginationKey.value += 1;
     }
 );
 

@@ -1,31 +1,34 @@
 <script setup>
 import {__} from '@wordpress/i18n';
 import {useSubscriptionStore} from '../../stores/subscription';
-import {computed, ref} from 'vue';
+import {computed, watch} from 'vue';
 
 const subscriptionStore = useSubscriptionStore();
 const currentSubscription = subscriptionStore.currentSubscription;
 
-const billingAmount = computed(() => {
+const isRecurring = computed(() => {
+    return currentSubscription.meta_value.recurring_pay === 'on' || currentSubscription.meta_value.recurring_pay === 'yes';
+});
+
+const getBillingAmountText = computed(() => {
     if (parseFloat( currentSubscription.meta_value.billing_amount ) === 0) {
         return __( 'Free', 'wp-user-frontend' );
     } else {
         if ( isRecurring ) {
-            return wpufSubscriptions.currencySymbol + currentSubscription.meta_value.billing_amount + ' <span class="wpuf-text-sm wpuf-text-gray-500">per ' + currentSubscription.meta_value.cycle_period + '</span>';
+            const cyclePeriod = currentSubscription.meta_value.cycle_period === '' ? __( 'day', 'wp-user-frontend' ) : currentSubscription.meta_value.cycle_period;
+            return wpufSubscriptions.currencySymbol + currentSubscription.meta_value.billing_amount + ' <span class="wpuf-text-sm wpuf-text-gray-500">per ' + cyclePeriod + '</span>';
         }
 
         return wpufSubscriptions.currencySymbol + currentSubscription.meta_value.billing_amount;
     }
 });
 
-const isRecurring = computed(() => {
-    return currentSubscription.meta_value.recurring_pay === 'on' || currentSubscription.meta_value.recurring_pay === 'yes';
-});
+const billingAmount = getBillingAmountText;
 </script>
 <template>
     <div class="wpuf-mt-4 wpuf-border wpuf-border-gray-200">
         <dl class="wpuf-mx-auto wpuf-grid bg-gray-900/5 wpuf-grid-cols-4 wpuf-border-b-2 wpuf-border-dashed wpuf-bg-white wpuf-p-2">
-            <div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-py-2 wpuf-px-6"  :title="'id: ' + currentSubscription.ID">
+            <div class="wpuf-flex wpuf-col-span-2 wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-py-2 wpuf-px-6" :title="'id: ' + currentSubscription.ID">
                 <dt class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500">
                     {{ __( 'Plan', 'wp-user-frontend' )}}
                 </dt>
@@ -33,7 +36,6 @@ const isRecurring = computed(() => {
                     {{ currentSubscription.post_title }}
                 </dd>
             </div>
-            <div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-px-4 wpuf-py-2"></div>
             <div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-px-4 wpuf-py-2">
                 <dt class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500">
                     {{ __( 'Payment', 'wp-user-frontend' )}}

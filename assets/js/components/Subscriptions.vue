@@ -22,8 +22,9 @@ const subscriptionStore = useSubscriptionStore();
 const quickEditStore = useQuickEditStore();
 const { currentComponent } = storeToRefs(componentStore);
 
-const component = ref( Empty );
+const component = ref( null );
 const tempSubscriptionStatus = ref( 'all' );
+const componentKey = ref( 0 );
 
 provide( 'wpufSubscriptions', wpufSubscriptions );
 
@@ -35,6 +36,7 @@ onBeforeMount( () => {
         } else {
             componentStore.setCurrentComponent( 'Empty' );
         }
+        componentKey.value += 1;
     } );
 
     subscriptionStore.getSubscriptionCount();
@@ -49,7 +51,7 @@ const checkIsDirty = ( subscriptionStatus = 'all' ) => {
         subscriptionStore.isUnsavedPopupOpen = false;
 
         subscriptionStore.setSubscriptionsByStatus( subscriptionStatus );
-        componentStore.setCurrentComponent('List');
+        componentStore.setCurrentComponent( 'List' );
         subscriptionStore.setCurrentSubscription(null);
         subscriptionStore.getSubscriptionCount();
     }
@@ -60,7 +62,7 @@ const goToList = () => {
     subscriptionStore.isUnsavedPopupOpen = false;
 
     subscriptionStore.setSubscriptionsByStatus( tempSubscriptionStatus.value );
-    componentStore.setCurrentComponent('List');
+    componentStore.setCurrentComponent( 'List' );
     subscriptionStore.setCurrentSubscription(null);
 };
 
@@ -87,7 +89,7 @@ watch(
 
 <template>
     <Header/>
-    <div v-if="subscriptionStore.isUpdating" class="wpuf-flex wpuf-h-svh wpuf-items-center wpuf-justify-center">
+    <div v-if="subscriptionStore.isUpdating || component === null" class="wpuf-flex wpuf-h-svh wpuf-items-center wpuf-justify-center">
         <hollow-dots-spinner
             :animation-duration="1000"
             :dot-size="20"
@@ -113,7 +115,7 @@ watch(
         </div>
         <div
             class="wpuf-basis-4/5">
-            <component :is="component" @go-to-list="goToList" />
+            <component :key="componentKey" :is="component" @go-to-list="goToList" />
         </div>
         <Unsaved v-if="subscriptionStore.isUnsavedPopupOpen" @close-popup="subscriptionStore.isUnsavedPopupOpen = false" @goToList="goToList" />
     </div>

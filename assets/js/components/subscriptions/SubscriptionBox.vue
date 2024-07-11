@@ -83,13 +83,13 @@ const getSubscribers = () => {
             },
         }
     )
-        .then( ( response ) => {
-            subscribers.value = response.subscribers;
-            subscription.value.subscribers = subscribers.value;
-        } )
-        .catch( ( error ) => {
-            console.log( error );
-        } );
+    .then( ( response ) => {
+        subscribers.value = response.subscribers;
+        subscription.value.subscribers = subscribers.value;
+    } )
+    .catch( ( error ) => {
+        console.log( error );
+    } );
 };
 
 const setBillingAmount = () => {

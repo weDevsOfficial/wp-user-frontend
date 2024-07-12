@@ -50,7 +50,7 @@ const updateSubscription = () => {
     <div
         :class="subscriptionStore.isUnsavedPopupOpen ? 'wpuf-blur' : ''"
         class="wpuf-px-12">
-        <h3 class="wpuf-text-lg wpuf-font-bold wpuf-mb-0">{{ __( 'Edit', 'wp-user-frontend' ) }}</h3>
+        <h3 class="wpuf-text-lg wpuf-font-bold wpuf-mb-0">{{ __( 'Edit Subscription', 'wp-user-frontend' ) }}</h3>
         <InfoCard />
         <SubscriptionsDetails />
         <div class="wpuf-mt-8 wpuf-text-end">

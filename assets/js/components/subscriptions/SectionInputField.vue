@@ -215,7 +215,7 @@ onMounted(() => {
             class="wpuf-w-full wpuf-col-span-2 wpuf-relative wpuf-group">
             <div
                 v-if="showProBadge"
-                class="wpuf-hidden group-hover:wpuf-flex group-hover:wpuf-cursor-pointer wpuf-absolute wpuf-items-center wpuf-justify-center wpuf-bg-black/25 wpuf-z-10 wpuf-p-4 wpuf-w-[102%] wpuf-h-[160%] wpuf-top-[-30%] wpuf-left-[-1%]">
+                class="wpuf-hidden wpuf-rounded-md group-hover:wpuf-flex group-hover:wpuf-cursor-pointer wpuf-absolute wpuf-items-center wpuf-justify-center wpuf-bg-black/25 wpuf-z-10 wpuf-p-4 wpuf-w-[104%] wpuf-h-[180%] wpuf-top-[-40%] wpuf-left-[-2%]">
                 <a href="https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=wpdashboard&amp;utm_medium=popup"
                    target="_blank"
                    class="wpuf-inline-flex wpuf-align-center wpuf-p-2 wpuf-bg-amber-600 wpuf-text-white hover:wpuf-text-white wpuf-rounded-md">
@@ -303,6 +303,7 @@ onMounted(() => {
                     wrapper: 'wpuf-min-h-max wpuf-align-center wpuf-cursor-pointer wpuf-flex wpuf-justify-end wpuf-w-full wpuf-relative',
                     placeholder: 'wpuf-ml-2 wpuf-flex wpuf-items-center wpuf-h-full wpuf-absolute wpuf-left-0 wpuf-top-0 wpuf-pointer-events-none wpuf-bg-transparent wpuf-form-color-placeholder rtl:wpuf-left-auto rtl:wpuf-right-0 rtl:wpuf-pl-0 wpuf-form-pl-input rtl:wpuf-form-pr-input',
                     tags: 'wpuf-h-max wpuf-flex-grow wpuf-flex-shrink wpuf-flex wpuf-flex-wrap wpuf-items-center wpuf-pl-1 wpuf-pt-1 wpuf-min-w-0 rtl:wpuf-pl-0 rtl:wpuf-pr-2',
+                    tag: 'wpuf-bg-indigo-600 wpuf-text-white wpuf-text-sm wpuf-font-semibold wpuf-py-0.5 wpuf-pl-2 wpuf-rounded wpuf-mr-1 wpuf-mb-1 wpuf-flex wpuf-items-center wpuf-whitespace-nowrap wpuf-min-w-0 rtl:wpuf-pl-0 rtl:wpuf-pr-2 rtl:wpuf-mr-0 rtl:wpuf-ml-1',
                     clear: 'wpuf-mt-1 wpuf-pr-2',
                 }"
             />

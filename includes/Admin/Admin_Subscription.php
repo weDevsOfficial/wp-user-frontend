@@ -104,7 +104,7 @@ class Admin_Subscription {
                 'siteUrl'         => site_url(),
                 'currencySymbol'  => wpuf_get_currency( 'symbol' ),
                 'supportUrl'      => esc_url(
-                    'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment?utm_source=wpuf-subscription-help&utm_medium=text-link'
+                    'https://wedevs.com/account/tickets?utm_medium=text-link'
                 ),
                 'isProActive'     => class_exists( 'WP_User_Frontend_Pro' ),
                 'upgradeUrl'      => esc_url(
@@ -1071,8 +1071,8 @@ class Admin_Subscription {
             'wpuf_subscription_section_advanced', [
                 'advanced_configuration' => [
                     [
-                        'id'    => 'content_limits',
-                        'label' => __( 'Content Limits', 'wp-user-frontend' ),
+                        'id'    => 'content_limit',
+                        'label' => __( 'Content Limit', 'wp-user-frontend' ),
                     ],
                     [
                         'id'    => 'design_elements',

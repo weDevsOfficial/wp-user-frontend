@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 4.0.8\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2024-07-11 06:09:58+00:00\n"
+"POT-Creation-Date: 2024-07-12 05:38:45+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1903,7 +1903,7 @@ msgid "Payment Details"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:1075
-msgid "Content Limits"
+msgid "Content Limit"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:1079
@@ -2045,7 +2045,9 @@ msgid "Expire In"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:1332
-msgid "Set the duration for the subscription to remain active before expiring"
+msgid ""
+"Set the duration for the subscription to remain active before expiring. "
+"Enter -1 for no expiration"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:1338
@@ -2430,8 +2432,8 @@ msgstr ""
 msgid "Registraton Forms"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form.php:117 includes/Free/Free_Loader.php:86
-#: includes/Free/Free_Loader.php:87
+#: includes/Admin/Forms/Admin_Form.php:117 includes/Free/Free_Loader.php:88
+#: includes/Free/Free_Loader.php:89
 msgid "Registration Forms"
 msgstr ""
 
@@ -2894,7 +2896,7 @@ msgid "Subtotal"
 msgstr ""
 
 #: includes/Admin/List_Table_Transactions.php:51
-#: includes/Free/Free_Loader.php:194 includes/Traits/TaxableTrait.php:504
+#: includes/Free/Free_Loader.php:196 includes/Traits/TaxableTrait.php:504
 #: includes/WPUF_Privacy.php:339
 msgid "Tax"
 msgstr ""
@@ -3015,7 +3017,7 @@ msgid "This integration is not installed."
 msgstr ""
 
 #: includes/Admin/template-parts/modal.php:105
-#: includes/Free/Free_Loader.php:984 includes/Free/Free_Loader.php:1066
+#: includes/Free/Free_Loader.php:986 includes/Free/Free_Loader.php:1068
 #: includes/Free/templates/page-registration-form.php:156
 msgid "Upgrade to PRO"
 msgstr ""
@@ -3171,8 +3173,8 @@ msgid ""
 "Long and lengthy forms are uninviting, why build one?"
 msgstr ""
 
-#: includes/Admin/views/premium.php:93 includes/Free/Free_Loader.php:92
-#: includes/Free/Free_Loader.php:1025
+#: includes/Admin/views/premium.php:93 includes/Free/Free_Loader.php:94
+#: includes/Free/Free_Loader.php:1027
 msgid "Modules"
 msgstr ""
 
@@ -3185,7 +3187,7 @@ msgstr ""
 msgid "BuddyPress Profile"
 msgstr ""
 
-#: includes/Admin/views/premium.php:104 includes/Free/Free_Loader.php:173
+#: includes/Admin/views/premium.php:104 includes/Free/Free_Loader.php:175
 msgid "Social Login"
 msgstr ""
 
@@ -3196,7 +3198,7 @@ msgid ""
 msgstr ""
 
 #: includes/Admin/views/premium.php:111 includes/Admin/views/premium.php:114
-#: includes/Free/Free_Loader.php:180
+#: includes/Free/Free_Loader.php:182
 msgid "User Directory"
 msgstr ""
 
@@ -3537,7 +3539,7 @@ msgid "Using %s as shortcode is restricted"
 msgstr ""
 
 #: includes/Ajax/Frontend_Form_Ajax.php:337 includes/Api/Subscription.php:264
-#: includes/Api/Subscription.php:294 includes/Api/Subscription.php:369
+#: includes/Api/Subscription.php:294 includes/Api/Subscription.php:368
 msgid "Something went wrong"
 msgstr ""
 
@@ -3616,19 +3618,19 @@ msgstr ""
 msgid "Failed to update subscription"
 msgstr ""
 
-#: includes/Api/Subscription.php:343 includes/Api/Subscription.php:462
+#: includes/Api/Subscription.php:343 includes/Api/Subscription.php:464
 msgid "Subscription updated successfully"
 msgstr ""
 
-#: includes/Api/Subscription.php:383
+#: includes/Api/Subscription.php:381
 msgid "Subscription name cannot contain #"
 msgstr ""
 
-#: includes/Api/Subscription.php:464
+#: includes/Api/Subscription.php:466
 msgid "Subscription added successfully"
 msgstr ""
 
-#: includes/Api/Subscription.php:475
+#: includes/Api/Subscription.php:477
 msgid "Failed to insert post"
 msgstr ""
 
@@ -3849,7 +3851,7 @@ msgid "Numeric Field"
 msgstr ""
 
 #: includes/Fields/Form_Field_Post_Content.php:11
-#: includes/Free/Free_Loader.php:803
+#: includes/Free/Free_Loader.php:805
 msgid "Post Content"
 msgstr ""
 
@@ -4219,503 +4221,507 @@ msgstr ""
 msgid "Update Button text"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:136 includes/Free/Free_Loader.php:137
-#: includes/Free/Free_Loader.php:1406
+#: includes/Free/Free_Loader.php:138 includes/Free/Free_Loader.php:139
+#: includes/Free/Free_Loader.php:1408
 msgid "Coupons"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:166
+#: includes/Free/Free_Loader.php:168
 msgid "SMS"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:187
+#: includes/Free/Free_Loader.php:189
 msgid "Invoices"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:201
+#: includes/Free/Free_Loader.php:203
 msgid "Content Filtering"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:224
+#: includes/Free/Free_Loader.php:226
 msgid "Comments Per Page"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:226
+#: includes/Free/Free_Loader.php:228
 msgid "Show how many comments per page in comments add-on"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:234
+#: includes/Free/Free_Loader.php:236
 msgid "Ipstack API Key"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:236
+#: includes/Free/Free_Loader.php:238
 msgid ""
 "<a target=\"_blank\" href=\"https://ipstack.com/dashboard\">Register "
 "here</a> to get your Free ipstack api key"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:243
+#: includes/Free/Free_Loader.php:245
 msgid "Google Map API"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:245
+#: includes/Free/Free_Loader.php:247
 msgid ""
 "<a target=\"_blank\" "
 "href=\"https://developers.google.com/maps/documentation/javascript\">API</"
 "a> key is needed to render Google Maps"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:252 wpuf-functions.php:2068
+#: includes/Free/Free_Loader.php:254 wpuf-functions.php:2068
 msgid "Edit Profile"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:254
+#: includes/Free/Free_Loader.php:256
 msgid "Allow user to update their profile information from the account page"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:263
+#: includes/Free/Free_Loader.php:265
 msgid "Profile Form"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:265
+#: includes/Free/Free_Loader.php:267
 msgid "User will use this form to update their information from the account page,"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:274
+#: includes/Free/Free_Loader.php:276
 msgid "Avatar Size"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:276
+#: includes/Free/Free_Loader.php:278
 msgid ""
 "Avatar size to crop when upload using the registration/profile "
 "form.(e.g:100x100)"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:285
+#: includes/Free/Free_Loader.php:287
 msgid "Pending User Message"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:287
+#: includes/Free/Free_Loader.php:289
 msgid "Pending user will see this message when try to log in."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:288
+#: includes/Free/Free_Loader.php:290
 msgid ""
 "<strong>ERROR:</strong> Your account has to be approved by an administrator "
 "before you can login."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:296
+#: includes/Free/Free_Loader.php:298
 msgid "Denied User Message"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:298
+#: includes/Free/Free_Loader.php:300
 msgid "Denied user will see this message when try to log in."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:299
+#: includes/Free/Free_Loader.php:301
 msgid ""
 "<strong>ERROR:</strong> Your account has been denied by an administrator, "
 "please contact admin to approve your account."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:307
+#: includes/Free/Free_Loader.php:309
 msgid "<span class=\"dashicons dashicons-money\"></span> Subscription"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:315
+#: includes/Free/Free_Loader.php:317
 msgid "<span class=\"dashicons dashicons-admin-generic\"></span> Template Settings"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:323
+#: includes/Free/Free_Loader.php:325
 msgid "<span class=\"dashicons dashicons-unlock\"></span> Reset Email"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:331
+#: includes/Free/Free_Loader.php:333
 msgid ""
 "<span class=\"dashicons dashicons-email-alt\"></span> Resend Confirmation "
 "Email"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:339
+#: includes/Free/Free_Loader.php:341
 msgid "<span class=\"dashicons dashicons-groups\"></span> Pending User Email"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:347
+#: includes/Free/Free_Loader.php:349
 msgid "<span class=\"dashicons dashicons-dismiss\"></span> Denied User Email"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:355
+#: includes/Free/Free_Loader.php:357
 msgid "<span class=\"dashicons dashicons-smiley\"></span> Approved User Email"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:363
+#: includes/Free/Free_Loader.php:365
 msgid "<span class=\"dashicons dashicons-smiley\"></span> Account Activated Email"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:371
+#: includes/Free/Free_Loader.php:373
 msgid "<span class=\"dashicons dashicons-saved\"></span> Approved Post Email"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:380 includes/Free/Free_Loader.php:381
+#: includes/Free/Free_Loader.php:382 includes/Free/Free_Loader.php:383
 msgid "Clickatell name"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:387 includes/Free/Free_Loader.php:388
+#: includes/Free/Free_Loader.php:389 includes/Free/Free_Loader.php:390
 msgid "Clickatell Password"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:394 includes/Free/Free_Loader.php:395
+#: includes/Free/Free_Loader.php:396 includes/Free/Free_Loader.php:397
 msgid "Clickatell api"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:401 includes/Free/Free_Loader.php:402
+#: includes/Free/Free_Loader.php:403 includes/Free/Free_Loader.php:404
 msgid "SMSGlobal Name"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:408 includes/Free/Free_Loader.php:409
+#: includes/Free/Free_Loader.php:410 includes/Free/Free_Loader.php:411
 msgid "SMSGlobal Passord"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:415 includes/Free/Free_Loader.php:416
+#: includes/Free/Free_Loader.php:417 includes/Free/Free_Loader.php:418
 msgid "Nexmo API"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:422 includes/Free/Free_Loader.php:423
+#: includes/Free/Free_Loader.php:424 includes/Free/Free_Loader.php:425
 msgid "Nexmo API Secret"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:429 includes/Free/Free_Loader.php:430
+#: includes/Free/Free_Loader.php:431 includes/Free/Free_Loader.php:432
 msgid "Twillo From Number"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:436 includes/Free/Free_Loader.php:437
+#: includes/Free/Free_Loader.php:438 includes/Free/Free_Loader.php:439
 msgid "Twillo Account SID"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:443 includes/Free/Free_Loader.php:444
+#: includes/Free/Free_Loader.php:445 includes/Free/Free_Loader.php:446
 msgid "Twillo Authro Token"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:452
+#: includes/Free/Free_Loader.php:454
 msgid "Enable Social Login"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:454
+#: includes/Free/Free_Loader.php:456
 msgid ""
 "Enabling this will add Social Icons under registration form to allow users "
 "to login or register using Social Profiles"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:460
+#: includes/Free/Free_Loader.php:462
 msgid "Facebook App Settings"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:462 includes/Free/Free_Loader.php:489
-#: includes/Free/Free_Loader.php:517 includes/Free/Free_Loader.php:545
-#: includes/Free/Free_Loader.php:573
+#: includes/Free/Free_Loader.php:464 includes/Free/Free_Loader.php:491
+#: includes/Free/Free_Loader.php:519 includes/Free/Free_Loader.php:547
+#: includes/Free/Free_Loader.php:575
 msgid "Create an App"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:463
+#: includes/Free/Free_Loader.php:465
 msgid " if you don't have one and fill App ID and App Secret below. "
 msgstr ""
 
-#: includes/Free/Free_Loader.php:468 includes/Free/Free_Loader.php:524
-#: includes/Free/Free_Loader.php:580
+#: includes/Free/Free_Loader.php:470 includes/Free/Free_Loader.php:526
+#: includes/Free/Free_Loader.php:582
 msgid "Redirect URI"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:475
+#: includes/Free/Free_Loader.php:477
 msgid "App Id"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:481
+#: includes/Free/Free_Loader.php:483
 msgid "App Secret"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:487
+#: includes/Free/Free_Loader.php:489
 msgid "Twitter App Settings"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:490
+#: includes/Free/Free_Loader.php:492
 msgid " if you don't have one and fill Consumer key and Consumer Secret below."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:496
+#: includes/Free/Free_Loader.php:498
 msgid "Callback URL"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:503
+#: includes/Free/Free_Loader.php:505
 msgid "Consumer Key"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:509
+#: includes/Free/Free_Loader.php:511
 msgid "Consumer Secret"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:515
+#: includes/Free/Free_Loader.php:517
 msgid "Google App Settings"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:518 includes/Free/Free_Loader.php:546
-#: includes/Free/Free_Loader.php:574
+#: includes/Free/Free_Loader.php:520 includes/Free/Free_Loader.php:548
+#: includes/Free/Free_Loader.php:576
 msgid " if you don't have one and fill Client ID and Client Secret below."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:531 includes/Free/Free_Loader.php:559
-#: includes/Free/Free_Loader.php:587
+#: includes/Free/Free_Loader.php:533 includes/Free/Free_Loader.php:561
+#: includes/Free/Free_Loader.php:589
 msgid "Client ID"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:537
+#: includes/Free/Free_Loader.php:539
 msgid "Client secret"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:543
+#: includes/Free/Free_Loader.php:545
 msgid "Linkedin App Settings"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:552
+#: includes/Free/Free_Loader.php:554
 msgid "Redirect URL"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:565 includes/Free/Free_Loader.php:593
+#: includes/Free/Free_Loader.php:567 includes/Free/Free_Loader.php:595
 msgid "Client Secret"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:571
+#: includes/Free/Free_Loader.php:573
 msgid "Instagram App Settings"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:601
+#: includes/Free/Free_Loader.php:603
 msgid "Profile Gallery Image Size "
 msgstr ""
 
-#: includes/Free/Free_Loader.php:602
+#: includes/Free/Free_Loader.php:604
 msgid "Set the image size of picture gallery in frontend"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:609
+#: includes/Free/Free_Loader.php:611
 msgid "Avatar Size "
 msgstr ""
 
-#: includes/Free/Free_Loader.php:610
+#: includes/Free/Free_Loader.php:612
 msgid "Set the image size of profile picture in frontend"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:617
+#: includes/Free/Free_Loader.php:619
 msgid "Profile Header Template"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:629
+#: includes/Free/Free_Loader.php:631
 msgid "User Listing Template"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:646
+#: includes/Free/Free_Loader.php:648
 msgid "Enable Invoices"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:647
+#: includes/Free/Free_Loader.php:649
 msgid "Enable sending invoices for completed payments"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:654
+#: includes/Free/Free_Loader.php:656
 msgid "Show Invoices"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:655
+#: includes/Free/Free_Loader.php:657
 msgid "Show Invoices option where <code>[wpuf_account]</code> is located"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:663
+#: includes/Free/Free_Loader.php:665
 msgid "Set Invoice Logo"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:664
+#: includes/Free/Free_Loader.php:666
 msgid "This sets the company Logo to be used in Invoice"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:671
+#: includes/Free/Free_Loader.php:673
 msgid "Set Invoice Color"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:672
+#: includes/Free/Free_Loader.php:674
 msgid "Set color code to be used in invoice"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:679
+#: includes/Free/Free_Loader.php:681
 msgid "From Address"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:680
+#: includes/Free/Free_Loader.php:682
 msgid ""
 "This sets the provider information of the Invoice. Note: use the <xmp "
 "class=\"wpuf-xmp-tag\"><br></xmp> tag to enter line breaks."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:687
+#: includes/Free/Free_Loader.php:689
 msgid "Invoice Title"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:688
+#: includes/Free/Free_Loader.php:690
 msgid "This sets the payment information title of the Invoice"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:694
+#: includes/Free/Free_Loader.php:696
 msgid "Invoice Paragraph"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:695
+#: includes/Free/Free_Loader.php:697
 msgid "This sets the payment information paragraph of the Invoice"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:702
+#: includes/Free/Free_Loader.php:704
 msgid "Invoice Footer"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:703
+#: includes/Free/Free_Loader.php:705
 msgid "This sets the footer of the Invoice"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:709
+#: includes/Free/Free_Loader.php:711
 msgid "Invoice Filename Prefix"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:710
+#: includes/Free/Free_Loader.php:712
 msgid "This sets the filename prefix of the Invoice"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:716
+#: includes/Free/Free_Loader.php:718
 msgid "Set Invoice Mail Subject"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:717
+#: includes/Free/Free_Loader.php:719
 msgid "This sets the mail subject of the Invoice"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:723
+#: includes/Free/Free_Loader.php:725
 msgid "Set Invoice Mail Body"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:724
+#: includes/Free/Free_Loader.php:726
 msgid "This sets the mail body of the Invoice"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:732
+#: includes/Free/Free_Loader.php:734
 msgid "Need help?"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:733
+#: includes/Free/Free_Loader.php:735
 msgid ""
 "Visit the <a href=\"%s\" target=\"_blank\">Tax setup documentation</a> for "
 "guidance on how to setup tax."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:738
+#: includes/Free/Free_Loader.php:740
 msgid "Enable Tax"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:739
+#: includes/Free/Free_Loader.php:741
 msgid "Enable tax on payments"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:746
+#: includes/Free/Free_Loader.php:748
 msgid "Base Country and State"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:747
+#: includes/Free/Free_Loader.php:749
 msgid "Select your base country and state"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:752
+#: includes/Free/Free_Loader.php:754
 msgid "Tax Rates"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:753
+#: includes/Free/Free_Loader.php:755
 msgid "Add tax rates for specific regions. Enter a percentage, such as 5 for 5%"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:759
+#: includes/Free/Free_Loader.php:761
 msgid "Fallback Tax Rate"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:760
+#: includes/Free/Free_Loader.php:762
 msgid ""
 "Customers not in a specific rate will be charged this tax rate. Enter a "
 "percentage, such as 5 for 5%"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:768 includes/Free/Free_Loader.php:773
+#: includes/Free/Free_Loader.php:770 includes/Free/Free_Loader.php:775
 msgid "Show prices with tax"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:769
+#: includes/Free/Free_Loader.php:771
 msgid "If frontend prices will include tax or not"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:774
+#: includes/Free/Free_Loader.php:776
 msgid "Show prices without tax"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:782
+#: includes/Free/Free_Loader.php:784
 msgid "Enable Content Filtering"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:783
+#: includes/Free/Free_Loader.php:785
 msgid "Enable Content Filtering in frontend"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:790
+#: includes/Free/Free_Loader.php:792
 msgid "Keyword Dictionary"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:791
+#: includes/Free/Free_Loader.php:793
 msgid "Enter Keywords to Remove. Separate keywords with commas."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:798
+#: includes/Free/Free_Loader.php:800
 msgid "Filter main content"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:799
+#: includes/Free/Free_Loader.php:801
 msgid "Choose which content to filter."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:802
+#: includes/Free/Free_Loader.php:804
 msgid "Post Titles"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:819
+#: includes/Free/Free_Loader.php:821
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1256
+#: includes/Free/Free_Loader.php:1258
 msgid "Credit Card"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1278
+#: includes/Free/Free_Loader.php:1280
 msgid "Taxonomy Restriction "
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1296
+#: includes/Free/Free_Loader.php:1298
 msgid "Choose the taxonomy terms you want to enable for this pack:"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1410
+#: includes/Free/Free_Loader.php:1412
 msgid "Use Coupon codes for subscription for discounts."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1414
+#: includes/Free/Free_Loader.php:1416
 msgid "This feature is only available in the Pro Version."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1418
+#: includes/Free/Free_Loader.php:1420
 msgid "Upgrade to Pro Version"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1419
+#: includes/Free/Free_Loader.php:1421
 msgid "Learn more about Coupons"
+msgstr ""
+
+#: includes/Free/Free_Loader.php:1440
+msgid "Taxonomy Restriction"
 msgstr ""
 
 #: includes/Free/Simple_Login.php:316 includes/Widgets/Login_Widget.php:295

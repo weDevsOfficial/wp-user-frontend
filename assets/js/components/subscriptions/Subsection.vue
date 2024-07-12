@@ -3,6 +3,8 @@ import {inject, onMounted, provide, ref, toRefs} from 'vue';
 import SectionInputField from './SectionInputField.vue';
 import SectionInnerField from './SectionInnerField.vue';
 import {useFieldDependencyStore} from '../../stores/fieldDependency';
+import ProBadge from '../ProBadge.vue';
+import ProTooltip from '../ProTooltip.vue';
 const props = defineProps( {
     subSection: Object,
     subscription: Object,
@@ -56,7 +58,13 @@ const toggleDependentFields = (fieldId, status) => {
                     @click="closed = !closed"
                     :class="closed ? 'wpuf-rounded-xl' : 'wpuf-rounded-t-xl'"
                     class="wpuf-flex wpuf-items-center wpuf-justify-between wpuf-w-full wpuf-p-4 wpuf-font-medium rtl:wpuf-text-right wpuf-text-gray-500 wpuf-bg-gray-100 wpuf-gap-3">
-                <span class="wpuf-flex">{{ subSection.label }}</span>
+                <span class="wpuf-flex">
+                    {{ subSection.label }}
+                    <span class="pro-icon-title wpuf-relative wpuf-pt-1 wpuf-group wpuf-ml-2">
+                        <ProBadge v-if="subSection.is_pro" />
+                        <ProTooltip />
+                    </span>
+                </span>
                 <svg
                     :class="closed ? 'wpuf-rotate-90' : 'wpuf-rotate-180'"
                     data-accordion-icon class="wpuf-w-3 wpuf-h-3 shrink-0" aria-hidden="true"

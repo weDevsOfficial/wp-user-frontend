@@ -769,6 +769,7 @@ img.user-listing.active {
 }
 h3.tooltip-header {
   color: #fff;
+  font-size: 1.3rem;
 }
 .wpuf-subscription-pack-settings nav ul .wpuf-pro-field-tooltip ul li span.tooltip-check svg path,
 .wpuf-pro-field-tooltip ul li span.tooltip-check svg path {
@@ -780,8 +781,8 @@ h3.tooltip-header {
 }
 .wpuf-subscription-pack-settings nav ul .wpuf-pro-field-tooltip ul li,
 .wpuf-pro-field-tooltip ul li {
-  font-size: 1.2em;
-  line-height: 1.5em;
+  font-size: 1rem;
+  line-height: 1.5rem;
   font-weight: 400;
   margin-bottom: 6px;
 }

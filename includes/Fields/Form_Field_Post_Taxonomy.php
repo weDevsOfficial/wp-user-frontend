@@ -7,10 +7,6 @@ namespace WeDevs\Wpuf\Fields;
 // require WPUF_INCLUDES . '/fields/class-abstract-fields.php';
 use WPUF_Walker_Category_Multi;
 
-// Use the fully-qualified AllowDynamicProperties, otherwise the #[AllowDynamicProperties] attribute WILL NOT WORK.
-use \AllowDynamicProperties;
-
-#[AllowDynamicProperties]
 class Form_Field_Post_Taxonomy extends Field_Contract {
     use Form_Field_Post_Trait;
 

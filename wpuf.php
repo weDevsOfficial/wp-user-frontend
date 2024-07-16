@@ -30,21 +30,13 @@ define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
 define( 'WPUF_ASSET_URI', WPUF_ROOT_URI . '/assets' );
 define( 'WPUF_INCLUDES', WPUF_ROOT . '/includes' );
 
-use WeDevs\WpUtils\ContainerTrait;
 use WeDevs\WpUtils\SingletonTrait;
-
-// Use the fully-qualified AllowDynamicProperties, otherwise the #[AllowDynamicProperties] attribute WILL NOT WORK.
-use \AllowDynamicProperties;
 
 /**
  * Main bootstrap class for WP User Frontend
  */
-
-/*Marking a class with #[AllowDynamicProperties] is fully backwards-compatible with earlier PHP versions, because prior to PHP 8.0 this would be interpreted as a comment, and the use non-existent classes as attributes is not an error.*/
-#[AllowDynamicProperties]
 final class WP_User_Frontend {
     use SingletonTrait;
-    use ContainerTrait;
 
     /**
      * Form field value seperator
@@ -66,6 +58,15 @@ final class WP_User_Frontend {
      * @var string
      */
     private $min_php = '5.6';
+
+    /**
+     * Holds various class instances
+     *
+     * @since WPUF_SINCE
+     *
+     * @var array
+     */
+    public $container = [];
 
     /**
      * Fire up the plugin
@@ -165,24 +166,24 @@ final class WP_User_Frontend {
      * @return void
      */
     public function instantiate() {
-        $this->assets       = new WeDevs\Wpuf\Assets();
-        $this->subscription = new WeDevs\Wpuf\Admin\Subscription();
-        $this->fields       = new WeDevs\Wpuf\Admin\Forms\Field_Manager();
-        $this->customize    = new WeDevs\Wpuf\Admin\Customizer_Options();
-        $this->bank         = new WeDevs\Wpuf\Lib\Gateway\Bank();
-        $this->paypal       = new WeDevs\Wpuf\Lib\Gateway\Paypal();
+        $this->container['assets']       = new WeDevs\Wpuf\Assets();
+        $this->container['subscription'] = new WeDevs\Wpuf\Admin\Subscription();
+        $this->container['fields']       = new WeDevs\Wpuf\Admin\Forms\Field_Manager();
+        $this->container['customize']    = new WeDevs\Wpuf\Admin\Customizer_Options();
+        $this->container['bank']         = new WeDevs\Wpuf\Lib\Gateway\Bank();
+        $this->container['paypal']       = new WeDevs\Wpuf\Lib\Gateway\Paypal();
 
         if ( is_admin() ) {
-            $this->admin        = new WeDevs\Wpuf\Admin();
-            $this->setup_wizard = new WeDevs\Wpuf\Setup_Wizard();
-            $this->pro_upgrades = new WeDevs\Wpuf\Pro_Upgrades();
-            $this->privacy      = new WeDevs\Wpuf\WPUF_Privacy();
+            $this->container['admin']        = new WeDevs\Wpuf\Admin();
+            $this->container['setup_wizard'] = new WeDevs\Wpuf\Setup_Wizard();
+            $this->container['pro_upgrades'] = new WeDevs\Wpuf\Pro_Upgrades();
+            $this->container['privacy']      = new WeDevs\Wpuf\WPUF_Privacy();
         } else {
-            $this->frontend = new WeDevs\Wpuf\Frontend();
+            $this->container['frontend'] = new WeDevs\Wpuf\Frontend();
         }
 
         if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-            $this->ajax = new WeDevs\Wpuf\Ajax();
+            $this->container['ajax'] = new WeDevs\Wpuf\Ajax();
         }
     }
 
@@ -208,7 +209,7 @@ final class WP_User_Frontend {
             return;
         }
 
-        $this->upgrades = new WeDevs\Wpuf\Admin\Upgrades();
+        $this->container['upgrades'] = new WeDevs\Wpuf\Admin\Upgrades();
     }
 
     /**
@@ -257,7 +258,7 @@ final class WP_User_Frontend {
         if ( $has_pro ) {
             $this->is_pro = true;
         } else {
-            $this->free_loader = new WeDevs\Wpuf\Free\Free_Loader();
+            $this->container['free_loader'] = new WeDevs\Wpuf\Free\Free_Loader();
         }
 
         // Remove the what's new option.
@@ -337,7 +338,7 @@ final class WP_User_Frontend {
      * @return void
      */
     public function register_widgets() {
-        $this->widgets = new WeDevs\Wpuf\Widgets\Manager();
+        $this->container['widgets'] = new WeDevs\Wpuf\Widgets\Manager();
     }
     public function license_expired() {
         echo '<div class="error">';
@@ -354,6 +355,21 @@ final class WP_User_Frontend {
      */
     public function get_field_seperator() {
         return self::$field_separator;
+    }
+
+    /**
+     * Magic getter to bypass referencing objects
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $prop
+     *
+     * @return object Class Instance
+     */
+    public function __get( $prop ) {
+        if ( array_key_exists( $prop, $this->container ) ) {
+            return $this->container[ $prop ];
+        }
     }
 }
 

@@ -28,6 +28,18 @@ class Setup_Wizard {
         add_action( 'admin_init', [ $this, 'redirect_to_page' ], 9999 );
         add_action( 'admin_init', [ $this, 'add_custom_menu_class'] );
         add_filter( 'safe_style_css', [ $this, 'wpuf_safe_style_css' ] );
+        add_action( 'admin_init', [ $this, 'custom_admin_bar_styles' ] );
+    }
+
+    /**
+     * Enqueue styles for admin bar
+     *
+     * @return void
+     */
+    public function custom_admin_bar_styles() {
+        if ( is_admin_bar_showing() ) {
+            wp_enqueue_admin_bar_header_styles();
+        }
     }
 
     /**
@@ -127,6 +139,7 @@ class Setup_Wizard {
      * Show the setup wizard.
      */
     public function setup_wizard() {
+        remove_action( 'admin_print_styles', 'print_emoji_styles' );
         $page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
         if ( empty( $page ) || 'wpuf-setup' !== $page ) {
             return;

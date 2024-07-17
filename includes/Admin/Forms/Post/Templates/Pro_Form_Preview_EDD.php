@@ -2,13 +2,9 @@
 
 namespace WeDevs\Wpuf\Admin\Forms\Post\Templates;
 
-// Use the fully-qualified AllowDynamicProperties, otherwise the #[AllowDynamicProperties] attribute WILL NOT WORK.
-use \AllowDynamicProperties;
-
 /**
  * Easy Digital Downloads post form template preview
  */
-#[AllowDynamicProperties]
 class Pro_Form_Preview_EDD {
     /**
      * Template title
@@ -23,6 +19,11 @@ class Pro_Form_Preview_EDD {
      * @var string
      */
     public $image;
+
+    /**
+     * @var string
+     */
+    private $pro_icon;
 
     public function __construct() {
         $this->title    = __( 'EDD Download', 'wp-user-frontend' );

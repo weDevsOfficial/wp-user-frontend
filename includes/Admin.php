@@ -2,8 +2,6 @@
 
 namespace WeDevs\Wpuf;
 
-// Use the fully-qualified AllowDynamicProperties, otherwise the #[AllowDynamicProperties] attribute WILL NOT WORK.
-use \AllowDynamicProperties;
 use WeDevs\WpUtils\ContainerTrait;
 
 /**
@@ -12,27 +10,26 @@ use WeDevs\WpUtils\ContainerTrait;
  *
  * @since 4.0.0
  */
-#[AllowDynamicProperties]
 class Admin {
     use ContainerTrait;
 
     public function __construct() {
-        $this->admin_welcome         = new Admin\Admin_Welcome();
-        $this->menu                  = new Admin\Menu();
-        $this->dashboard_metabox     = new Admin\Dashboard_Metabox();
-        $this->form_template         = new Admin\Forms\Post\Templates\Form_Template();
-        $this->admin_form            = new Admin\Forms\Admin_Form();
-        $this->admin_form_handler    = new Admin\Forms\Admin_Form_Handler();
-        $this->admin_subscription    = new Admin\Admin_Subscription();
-        $this->admin_installer       = new Admin\Admin_Installer();
-        $this->settings              = new Admin\Admin_Settings();
-        $this->forms                 = new Admin\Forms\Form_Manager();
-        $this->gutenberg_block       = new Frontend\Form_Gutenberg_Block();
-        $this->promotion             = new Admin\Promotion();
-        $this->plugin_upgrade_notice = new Admin\Plugin_Upgrade_Notice();
-        $this->posting               = new Admin\Posting();
-        $this->shortcodes_button     = new Admin\Shortcodes_Button();
-        $this->tools                 = new Admin\Admin_Tools();
+        $this->container['admin_welcome']         = new Admin\Admin_Welcome();
+        $this->container['menu']                  = new Admin\Menu();
+        $this->container['dashboard_metabox']     = new Admin\Dashboard_Metabox();
+        $this->container['form_template']         = new Admin\Forms\Post\Templates\Form_Template();
+        $this->container['admin_form']            = new Admin\Forms\Admin_Form();
+        $this->container['admin_form_handler']    = new Admin\Forms\Admin_Form_Handler();
+        $this->container['admin_subscription']    = new Admin\Admin_Subscription();
+        $this->container['admin_installer']       = new Admin\Admin_Installer();
+        $this->container['settings']              = new Admin\Admin_Settings();
+        $this->container['forms']                 = new Admin\Forms\Form_Manager();
+        $this->container['gutenberg_block']       = new Frontend\Form_Gutenberg_Block();
+        $this->container['promotion']             = new Admin\Promotion();
+        $this->container['plugin_upgrade_notice'] = new Admin\Plugin_Upgrade_Notice();
+        $this->container['posting']               = new Admin\Posting();
+        $this->container['shortcodes_button']     = new Admin\Shortcodes_Button();
+        $this->container['tools']                 = new Admin\Admin_Tools();
 
         // dynamic hook. format: "admin_action_{$action}". more details: wp-admin/admin.php
         add_action( 'admin_action_post_form_template', [ $this, 'create_post_form_from_template' ] );
@@ -53,7 +50,7 @@ class Admin {
      * @return void
      */
     public function create_post_form_from_template() {
-        $this->form_template->create_post_form_from_template();
+        $this->container['form_template']->create_post_form_from_template();
     }
 
     /**

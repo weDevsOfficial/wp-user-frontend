@@ -1,3 +1,7 @@
+= v4.0.9 (17 Jul, 2024) =
+* Fix - Remove PHP AllowDynamicProperties warning on plugin pages
+* Fix - Remove print_emoji_styles is deprecated message from setup page
+
 = v4.0.8 (03 Jul, 2024) =
 * Fix - Optimized the script loading process by removing a Promise polyfill
 * Fix - Added validation on the transaction page

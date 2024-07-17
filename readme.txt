@@ -1,57 +1,59 @@
-=== WP User Frontend - Registration, User Profile, Membership, Content Restriction, User Directory, and Frontend Post Submission Plugin ===
+=== Registration, User Profile, Membership, Content Restriction, User Directory, and Frontend Post Submission – WP User Frontend ===
 Contributors: tareq1988, nizamuddinbabu, wedevs
 Donate link: https://tareq.co/donate/
-Tags: frontend post, content restriction, registration, user profile, membership, login, forms, user directory, profile builder
+Tags: frontend post, forms, user directory, profile builder, membership
 Requires at least: 4.0
-Tested up to: 6.5.5
-Stable tag: 4.0.8
+Tested up to: 6.6
+Stable tag: 4.0.9
 Requires PHP: 5.6
 License: GPLv2
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+License URL: https://www.gnu.org/licenses/gpl-2.0.html
 
-Get frontend post, content access & restriction, user login & registration, subscription & membership, form builder, user directory & profile builder for your website.
+Frontend post, content restriction, user login & registration, subscription & membership, forms, user directory & profile builder for your website.
 
 == Description ==
 
 WP User Frontend makes the frontend better for you! It includes frontend dashboard, frontend editor, publishing, and uploader for WordPress user profile, post submissions, and memberships.
 
+<strong>#1 Frontend Post Submission, Membership, Profile Builder, & WordPress Editor Plugin</strong>
+
 <strong>FREE FEATURES</strong>
 
-<strong>#1 Frontend Post Submission, Membership, Profile Builder & WordPress Editor Plugin</strong>
+<strong>Unlimited post-type form creation</strong>
 
-Unlimited post-type form creation. The forms give users the ability to create new posts and edit their profile all from the site frontend, so that the user does not need to enter the backend admin panel to do action.
+The forms let users create new posts and edit their profile from the site frontend, with no need to access admin panel or backend.
 
 <strong>Update Profile from the Frontend</strong>
 
-This WordPress Profile Plugin allows registered users to edit their profile using default fields from frontend without having backend access. Unlimited fields can be added using PRO.
+This WordPress Profile Plugin allows registered users to edit their profile using default fields from frontend. (Unlimited fields can be added using PRO)
 
 <strong>Flexibility for Admins</strong>
 
-Admins can manage users from the frontend as well as configure from the backend who can access the dashboard.
+Admins can manage users both from frontend and backend to control who can access the dashboard.
 
 <strong>Featured Image & Image Upload</strong>
 
-Users can upload images from the frontend. They can also upload featured image for a post using the Image Upload option on the post content area.
+Users can upload images and featured image for a post using the Image Upload option on the post content area.
 
 <strong>Drag-and-drop Form Builder</strong>
 
-Quickly build your form with necessary fields using drag-and-drops and real-time preview that updates as you make changes. You can also see how your form will look like eventually from the dashboard!
+Quickly build your form with necessary fields using drag-and-drops and real-time preview that updates as you make changes.
 
 <strong>Publish Your WPUF Forms Using Gutenberg</strong>
 
-Easily add your published forms in the Gutenberg editor with the WPUF block. When users want to publish a form on a page, they can simply select it from the drop-down included in the dedicated WPUF block for Gutenberg. The entire form automatically renders within the editor as well as on the page. It’s much easier than manually copying and pasting shortcodes! Saves you a ton of time and clicks. But you can also do it the old style using the shortcodes block.
+Easily add your published forms in the Gutenberg editor with the WPUF block. When users want to publish a form on a page, they can simply select it from the drop-down included in the dedicated WPUF block for Gutenberg. The entire form automatically renders within the editor as well as on the page.
 
 <strong>Use Forms Anywhere Easily with Shortcodes</strong>
 
-All of the forms get an unique shortcode which you can paste on any page and the form will generate without breaking the style of your theme.
+All of the forms get a unique shortcode which you can paste on any page and the form will generate without breaking the style of your theme.
 
 <strong>WordPress Guest Post Submission</strong>
 
-Enable guests to post from your site frontend without registering with WP User Frontend, the WordPress User Registration plugin. Choose to require name and email address to automatically register and allow them to comment on their posts. Allow email verification for guests.
+Enable guests to post from your site frontend without registering with WP User Frontend, the WordPress User Registration plugin. Choose to require name and email address to register automatically and allow them to comment on the posts. Allow email verification for guests.
 
 <strong>Role Based Access Control</strong>
 
-Enable certain user roles to make posts, while restricting others. Create the unauthorized message you want to show for the restricted users.
+Enable certain user roles to make posts, while restricting others. Create the unauthorized message you want to show to restricted users.
 
 <strong>Submit and Update Anything from Frontend</strong>
 
@@ -59,11 +61,11 @@ Users can upload images, fill out forms, even enter data with multiple choice me
 
 <strong>Build Customized Forms with Custom Post Types</strong>
 
-Taking the advantage of custom post types will allow you to work on any platform. WP User Frontend is WooCommerce supported, so you can also create products for your WooCommerce site using our forms.
+Taking advantage of custom post types will allow you to work on any platform. WP User Frontend is WooCommerce supported, so you can also create products for your WooCommerce site using our forms.
 
 <strong>Set Post Status, Post Message, Update Post Button text</strong>
 
-Assign separate default statuses for new posts or edited posts. Set the message you want to show to users after form submission, and change the text of submit buttons as you like.
+Assign separate default statuses for new posts or edited posts. Set the message you want to show users after form submission and change the text of the submit buttons as you like.
 
 <strong>Custom Redirection After Login and Submission</strong>
 
@@ -116,7 +118,7 @@ Custom field data are viewable to visitors on frontend on single post pages. Adm
 * <a href="https://www.youtube.com/watch?v=rzxdIN8ZMYc&list=PLJorZsV2RVv9G5J3kcqJQjUwgqZSwc_Hf">WPUF Videos</a>
 * <a href="https://github.com/weDevsOfficial/wp-user-frontend">Github Repository</a>
 
-Try an <a href="https://wedevs.com/in/wpuf/demo">Online Demo</a> of the FREE & PRO version.
+Try an <a href="https://wedevs.com/in/wpuf/demo/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme">Online Demo</a> of the FREE & PRO version.
 
 = Translation =
 
@@ -177,14 +179,25 @@ Subscription Packs.
 * [User Activity](https://wedevs.com/wp-user-frontend-pro/modules/user-activity/)
 * [Zapier](https://wedevs.com/wp-user-frontend-pro/modules/zapier/)
 
-Check out the <a href="https://wedevs.com/wp-user-frontend-pro/pricing/">full feature list and pricing plans here.</a> of the Pro version.
+Check out the <a href="https://wedevs.com/wp-user-frontend-pro/pricing/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme">full feature list and pricing plans </a> of the Pro version.
 
 = Checkout Our Other Products =
-* [ReCaptcha Integration for WordPress](https://wordpress.org/plugins/wp-recaptcha-integration/)
-* [WP ERP](https://wperp.com/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+ERP)
-* [Dokan - Multivendor Plugin](https://wedevs.com/dokan/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=Dokan)
-* [WP Project Manager](https://wedevs.com/wp-project-manager-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=WP+Project+Manager)
-* [WooCommerce Conversion Tracking](https://wedevs.com/woocommerce-conversion-tracking/?utm_medium=referral&utm_source=wporg&utm_campaign=WP+ERP+Readme&utm_content=WP+Conversion+Tracking)
+
+*[Dokan:](https://wordpress.org/plugins/dokan-lite/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) The pioneer WooCommerce multivendor marketplace solution for WordPress. Start your own multi vendor marketplace like Amazon, eBay, Etsy - in minutes!
+
+*[Texty:](https://wordpress.org/plugins/texty/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) A lightweight SMS Notification plugin for WordPress, WooCommerce, Dokan, and more. Get instant notification with gateways like Twilio, Vonage – Formerly Nexmo, etc.
+
+*[weDocs:](https://wordpress.org/plugins/wedocs/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) The best WordPress documentation and knowledge base plugin for managing your self-hosted knowledge base, wiki, and docs.
+
+*[weMail:](https://wordpress.org/plugins/wemail/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) A simplified WordPress solution for email marketing, newsletter, opt-in form, subscription form, and more!
+
+*[wePOS:](https://wordpress.org/plugins/wepos/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) WooCommerce point of sale solution for WordPress by weDevs.
+
+*[WP Project Manager:](https://wordpress.org/plugins/wedevs-project-manager/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) A project management plugin by weDevs making task scheduling, project management, and team collaboration simpler than ever featuring a Kanban board and Gantt charts.
+
+*[Happy Addons for Elementor:](https://wordpress.org/plugins/happy-elementor-addons/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) An Elementor Addon solution that comes with Header Footer Builder, 500+ templates, 143+ free & essential pro elementor widget like – Theme Builder, Mega Menu, and more!
+
+*[WP ERP:](https://wordpress.org/plugins/erp/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) An ERP with complete HR, Recruitment, and Job Listings for Business Managers with WooCommerce CRM and accounting solutions by weDevs.
 
 = Privacy Policy =
 WP User Frontend uses [Appsero](https://appsero.com) SDK to collect some telemetry data upon user's confirmation. This helps us to troubleshoot problems faster & make product improvements.
@@ -215,30 +228,30 @@ After having installed the plugin:
 
 == Frequently Asked Questions ==
 
-= Can I create new posts from frontend =
+= Can I create new posts from frontend? =
 
 Yes
 
-= Can I Edit my posts from frontend =
+= Can I Edit my posts from frontend? =
 
 Yes
 
-= Can I delete my posts from frontend =
+= Can I delete my posts from frontend? =
 
 Yes
 
-= Can I upload photo/image/video =
+= Can I upload photo/image/video? =
 
 Yes
 
 = I am having problem with uploading files =
 
-Please check if you've specified the max upload size on setting
+Please check if you've specified the max upload size on the setting
 
-= Why "Edit Post" page shows "invalid post id"? =
+= Why does the "Edit Post" page show "invalid post id"? =
 
 This page is for the purpose of editing posts. You shouldn't access this page directly.
-First you need to go to the dashboard, then when you click "edit", you'll be
+First, you need to go to the dashboard, then when you click "edit", you'll be
 redirected to the edit page with that post id. Then you'll see the edit post form.
 
 =  =
@@ -268,6 +281,10 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 18. Set Payment Related Options
 
 == Changelog ==
+= v4.0.9 (17 Jul, 2024) =
+* Fix - Remove PHP AllowDynamicProperties warning on plugin pages
+* Fix - Remove print_emoji_styles is deprecated message from setup page
+
 = v4.0.8 (03 Jul, 2024) =
 * Fix - Optimized the script loading process by removing a Promise polyfill
 * Fix - Added validation on the transaction page

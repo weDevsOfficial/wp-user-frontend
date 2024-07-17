@@ -2,19 +2,16 @@
 
 namespace WeDevs\Wpuf\Admin\Forms;
 
-// Use the fully-qualified AllowDynamicProperties, otherwise the #[AllowDynamicProperties] attribute WILL NOT WORK.
-use \AllowDynamicProperties;
 use WeDevs\Wpuf\Admin\Subscription;
 use WeDevs\Wpuf\Traits\FieldableTrait;
-use WeDevs\WpUtils\ContainerTrait;
 
 /**
  * Post Forms or wpuf_forms form builder class
  */
-#[AllowDynamicProperties]
 class Admin_Form {
 
-    use FieldableTrait, ContainerTrait;
+    use FieldableTrait;
+
     /**
      * Form type of which we're working on
      *
@@ -182,7 +179,7 @@ class Admin_Form {
                 'form_settings_key' => $this->form_settings_key,
                 'shortcodes'        => [ [ 'name' => 'wpuf_form' ] ],
             ];
-            wpuf()->form_builder = new Admin_Form_Builder( $settings );
+            wpuf()->container['form_builder'] = new Admin_Form_Builder( $settings );
         }
     }
 

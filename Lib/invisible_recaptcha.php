@@ -16,11 +16,7 @@
 *
 */
 
-// Use the fully-qualified AllowDynamicProperties, otherwise the #[AllowDynamicProperties] attribute WILL NOT WORK.
-use \AllowDynamicProperties;
-
-#[AllowDynamicProperties]
-class Invisible_Recaptcha{
+class Invisible_Recaptcha {
 
 	private static $_signupUrl = "https://www.google.com/recaptcha/admin";
 

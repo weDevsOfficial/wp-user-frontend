@@ -329,11 +329,16 @@ Edit URL: %editlink%',
      */
     public function update_meta( $post_id ) {
         //keep backwards compatible
-        if ( version_compare( WC_VERSION, '2.7', '<' ) ) {
+        if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '2.7', '<' ) ) {
             return;
         }
         $visibility = get_post_meta( $post_id, '_visibility', true );
         $product = wc_get_product( $post_id );
+
+        if ( ! $product ) {
+            return;
+        }
+
         if ( ! empty( $visibility ) ) {
             $product->set_catalog_visibility( $visibility );
         }

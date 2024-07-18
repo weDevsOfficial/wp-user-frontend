@@ -1348,7 +1348,7 @@ class Admin_Subscription {
         );
         $content_limit      = apply_filters(
             'wpuf_subscription_content_limits_fields', [
-                'content_limits' => [
+                'content_limit' => [
                     'number_of_posts'         => [
                         'id'            => 'number-of-posts',
                         'name'          => 'number-of-posts',
@@ -1479,7 +1479,7 @@ class Admin_Subscription {
                         'db_key'  => '_total_feature_item',
                         'db_type' => 'meta',
                         'type'    => 'input-number',
-                        'label'   => __( 'Maximum number of featured items', 'wp-user-frontend' ),
+                        'label'   => __( 'Maximum Number of Featured Items', 'wp-user-frontend' ),
                         'tooltip' => __(
                             'Limit the featured items users can display during their subscription. Featured items gain more visibility, enhancing content or product exposure. Enter -1 for unlimited',
                             'wp-user-frontend'

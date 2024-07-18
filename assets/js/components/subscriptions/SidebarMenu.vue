@@ -10,7 +10,7 @@ const subscriptionStore = useSubscriptionStore();
     :class="subscriptionStore.isUnsavedPopupOpen ? 'wpuf-blur' : ''">
         <div class="wpuf-flex wpuf-flex-col wpuf-px-4 wpuf-min-h-screen">
             <div class="wpuf-flex wpuf-items-center wpuf-justify-between wpuf-mb-4">
-                <h3 class="wpuf-text-lg wpuf-mt-0">{{ __('Subscriptions', 'wp-user-frontend') }}</h3>
+                <h3 class="wpuf-text-lg wpuf-font-semibold wpuf-mt-0">{{ __('Subscriptions', 'wp-user-frontend') }}</h3>
             </div>
             <ul class="wpuf-space-y-2 wpuf-text-lg">
                 <li

@@ -92,10 +92,16 @@ const getSubscribers = () => {
 };
 
 const setBillingAmount = () => {
-    if (parseFloat( subscription.value.meta_value.billing_amount ) === 0 || subscription.value.meta_value.billing_amount === '') {
-        billingAmount.value = __( 'Free', 'wp-user-frontend' );
+    if (isRecurring.value) {
+        const cyclePeriod = subscription.value.meta_value.cycle_period === '' ? __( 'day', 'wp-user-frontend' ) : subscription.value.meta_value.cycle_period;
+        const expireAfter = (parseInt( subscription.value.meta_value._billing_cycle_number ) === 0 || parseInt( subscription.value.meta_value._billing_cycle_number ) === 1) ? '' : ' ' + subscription.value.meta_value._billing_cycle_number + ' ';
+        billingAmount.value = wpufSubscriptions.currencySymbol + subscription.value.meta_value.billing_amount + ' per ' + expireAfter + ' ' + cyclePeriod + '(s)';
     } else {
-        billingAmount.value = wpufSubscriptions.currencySymbol + subscription.value.meta_value.billing_amount;
+        if (parseInt( subscription.value.meta_value.billing_amount ) === 0 || subscription.value.meta_value.billing_amount === '') {
+            billingAmount.value = __( 'Free', 'wp-user-frontend' );
+        } else {
+            billingAmount.value = wpufSubscriptions.currencySymbol + subscription.value.meta_value.billing_amount;
+        }
     }
 };
 
@@ -106,12 +112,6 @@ const isRecurring = computed(() => {
 onBeforeMount( () => {
     setPillBackground();
     setBillingAmount();
-
-    if (isRecurring.value) {
-        const cyclePeriod = subscription.value.meta_value.cycle_period === '' ? __( 'day', 'wp-user-frontend' ) : subscription.value.meta_value.cycle_period;
-        const expireAfter = subscription.value.meta_value._billing_cycle_number !== '0' && subscription.value.meta_value._billing_cycle_number !== '1' ? '' : ' ' + subscription.value.meta_value._billing_cycle_number + ' ';
-        billingAmount.value = wpufSubscriptions.currencySymbol + subscription.value.meta_value.billing_amount + ' per ' + expireAfter + ' ' + cyclePeriod + '(s)';
-    }
 
     getSubscribers();
 } );

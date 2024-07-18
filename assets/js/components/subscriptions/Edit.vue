@@ -20,6 +20,8 @@ const updateSubscription = () => {
         return;
     }
 
+    subscriptionStore.isSubscriptionLoading = true;
+
     const promiseResult = subscriptionStore.updateSubscription();
 
     promiseResult.then((result) => {
@@ -27,6 +29,9 @@ const updateSubscription = () => {
             noticeStore.display = true;
             noticeStore.type = 'success';
             noticeStore.message = result.message;
+
+            subscriptionStore.setSubscriptionsByStatus( subscriptionStore.currentSubscriptionStatus );
+            subscriptionStore.getSubscriptionCount();
 
             emit('go-to-list');
         } else {
@@ -42,6 +47,8 @@ const updateSubscription = () => {
             noticeStore.type = '';
             noticeStore.message = '';
         }, 3000);
+    }).finally(() => {
+        subscriptionStore.isSubscriptionLoading = false;
     });
 };
 

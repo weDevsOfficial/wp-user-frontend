@@ -4,5 +4,6 @@ export const useFieldDependencyStore = defineStore( 'fieldDependency', {
     state: () => ( {
         modifierFields: {},
         hiddenFields: [],
+        modifierFieldStatus: {},
     } ),
 } );

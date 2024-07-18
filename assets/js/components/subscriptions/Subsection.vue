@@ -21,32 +21,29 @@ provide( 'subSection', subSection.value.id );
 const showField = ref( true );
 const closed = ref( false );
 
-const openTabs = [ 'overview', 'content_limits', 'payment_details' ];
+const openTabs = [ 'overview', 'content_limit', 'payment_details' ];
 
 closed.value = !openTabs.includes( subSection.value.id );
 
 const toggleDependentFields = (fieldId, status) => {
-    if (!dependencyStore.modifierFields.hasOwnProperty( fieldId )) {
+    if (!wpufSubscriptions.dependentFields.hasOwnProperty( fieldId )) {
         return;
     }
 
-    for (const field in fields.value) {
-        if (dependencyStore.modifierFields[fieldId].hasOwnProperty( field )) {
-            if (!status) {
-                if ( dependencyStore.modifierFields[fieldId][field] === 'hide' ) {
-                    dependencyStore.hiddenFields.push( field );
-                } else {
-                    dependencyStore.hiddenFields = dependencyStore.hiddenFields.filter( (item) => item !== field );
-                }
+    dependencyStore.modifierFieldStatus[fieldId] = status;
+    let hiddenFields = [];
+
+    for ( const modifierFieldName in dependencyStore.modifierFieldStatus ) {
+        for (const field in wpufSubscriptions.dependentFields[modifierFieldName]) {
+            if (!dependencyStore.modifierFieldStatus[modifierFieldName]) {
+                hiddenFields.push( field );
             } else {
-                if ( dependencyStore.modifierFields[fieldId][field] === 'hide' ) {
-                    dependencyStore.hiddenFields = dependencyStore.hiddenFields.filter( (item) => item !== field );
-                } else {
-                    dependencyStore.hiddenFields.push( field );
-                }
+                hiddenFields = hiddenFields.filter( (item) => item !== field );
             }
         }
     }
+
+    dependencyStore.hiddenFields = hiddenFields;
 };
 
 </script>

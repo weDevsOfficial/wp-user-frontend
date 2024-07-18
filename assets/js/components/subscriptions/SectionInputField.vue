@@ -119,12 +119,6 @@ const processInput = (event) => {
     }
 };
 
-onMounted(() => {
-    if ( field.value.type === 'switcher' ) {
-        emit('toggleDependentFields', fieldId.value, switchStatus.value);
-    }
-});
-
 const options = computed( () => {
     if ( ! wpufSubscriptions.fields.advanced_configuration.hasOwnProperty( 'taxonomy_restriction' ) ) {
         return [];
@@ -142,6 +136,12 @@ const onMultiSelectChange = ( currentValue ) => {
         taxonomyRestriction: tempObj,
     });
 };
+
+onMounted(() => {
+    if ( field.value.type === 'switcher' ) {
+        emit('toggleDependentFields', fieldId.value, switchStatus.value);
+    }
+});
 
 onMounted(() => {
     if ( field.value.type !== 'multi-select' ) {

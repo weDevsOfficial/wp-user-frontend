@@ -2,8 +2,6 @@
 
 namespace WeDevs\Wpuf;
 
-// Use the fully-qualified AllowDynamicProperties, otherwise the #[AllowDynamicProperties] attribute WILL NOT WORK.
-use \AllowDynamicProperties;
 use WeDevs\WpUtils\ContainerTrait;
 
 /**
@@ -12,19 +10,18 @@ use WeDevs\WpUtils\ContainerTrait;
  *
  * @since 4.0.0
  */
-#[AllowDynamicProperties]
 class Frontend {
     use ContainerTrait;
 
     public function __construct() {
-        $this->frontend_form      = new Frontend\Frontend_Form();
-        $this->registration       = new Frontend\Registration();
-        $this->simple_login       = new Free\Simple_Login();
-        $this->frontend_account   = new Frontend\Frontend_Account();
-        $this->frontend_dashboard = new Frontend\Frontend_Dashboard();
-        $this->shortcode          = new Frontend\Shortcode();
-        $this->payment            = new Frontend\Payment();
-        $this->form_preview       = new Frontend\Form_Preview();
+        $this->container['frontend_form']      = new Frontend\Frontend_Form();
+        $this->container['registration']       = new Frontend\Registration();
+        $this->container['simple_login']       = new Free\Simple_Login();
+        $this->container['frontend_account']   = new Frontend\Frontend_Account();
+        $this->container['frontend_dashboard'] = new Frontend\Frontend_Dashboard();
+        $this->container['shortcode']          = new Frontend\Shortcode();
+        $this->container['payment']            = new Frontend\Payment();
+        $this->container['form_preview']       = new Frontend\Form_Preview();
 
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 

@@ -2,15 +2,12 @@
 
 namespace WeDevs\Wpuf\Ajax;
 
-// Use the fully-qualified AllowDynamicProperties, otherwise the #[AllowDynamicProperties] attribute WILL NOT WORK.
-use \AllowDynamicProperties;
 use DOMDocument;
 use WeDevs\Wpuf\Admin\Forms\Form;
 use WeDevs\Wpuf\Traits\FieldableTrait;
 use WeDevs\Wpuf\User_Subscription;
 use WP_Error;
 
-#[AllowDynamicProperties]
 class Frontend_Form_Ajax {
 
     use FieldableTrait;

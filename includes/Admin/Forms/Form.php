@@ -2,10 +2,6 @@
 
 namespace WeDevs\Wpuf\Admin\Forms;
 
-// Use the fully-qualified AllowDynamicProperties, otherwise the #[AllowDynamicProperties] attribute WILL NOT WORK.
-use \AllowDynamicProperties;
-
-#[AllowDynamicProperties]
 class Form {
 
     /**
@@ -21,6 +17,11 @@ class Form {
      * @var array
      */
     public $form_fields = [];
+
+    /**
+     * @var array|\WP_Post|null
+     */
+    private $data;
 
     public function __construct( $form ) {
         if ( is_numeric( $form ) ) {

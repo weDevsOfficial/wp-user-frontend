@@ -20,7 +20,7 @@ const updateSubscription = () => {
         return;
     }
 
-    subscriptionStore.isSubscriptionLoading = true;
+    subscriptionStore.isUpdating = true;
 
     const promiseResult = subscriptionStore.updateSubscription();
 
@@ -40,15 +40,13 @@ const updateSubscription = () => {
             noticeStore.message = result.message;
         }
 
-        subscriptionStore.isUpdating = false;
-
         setTimeout(() => {
             noticeStore.display = false;
             noticeStore.type = '';
             noticeStore.message = '';
         }, 3000);
     }).finally(() => {
-        subscriptionStore.isSubscriptionLoading = false;
+        subscriptionStore.isUpdating = false;
     });
 };
 

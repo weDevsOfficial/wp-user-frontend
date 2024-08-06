@@ -7,6 +7,7 @@ import {useFieldDependencyStore} from '../../stores/fieldDependency';
 import {__} from '@wordpress/i18n';
 import ProBadge from '../ProBadge.vue';
 import ProTooltip from '../ProTooltip.vue';
+import {storeToRefs} from 'pinia';
 
 const emit = defineEmits(['toggleDependentFields']);
 
@@ -25,6 +26,7 @@ const props = defineProps( {
 
 const dependencyStore = useFieldDependencyStore();
 const subscription = subscriptionStore.currentSubscription;
+const errors = storeToRefs( subscriptionStore.errors );
 
 const { field, fieldId } = toRefs( props );
 
@@ -236,7 +238,8 @@ onMounted(() => {
                 :id="field.name"
                 :placeholder="field.placeholder ? field.placeholder : ''"
                 @input="[modifySubscription($event), processInput($event)]"
-                class="wpuf-w-full wpuf-rounded-md !wpuf-border-gray-300 wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">
+                :class="subscriptionStore.errors[fieldId] ? '!wpuf-border-red-500' : '!wpuf-border-gray-300'"
+                class="wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">
             <input
                 v-if="field.type === 'input-number'"
                 type="number"
@@ -245,7 +248,8 @@ onMounted(() => {
                 :id="field.name"
                 :placeholder="field.placeholder ? field.placeholder : ''"
                 @input="[modifySubscription($event), processInput($event)]"
-                class="wpuf-w-full wpuf-rounded-md !wpuf-border-gray-300 wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">
+                :class="subscriptionStore.errors[fieldId] ? '!wpuf-border-red-500' : '!wpuf-border-gray-300'"
+                class="wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">
             <textarea
                 v-if="field.type === 'textarea'"
                 :name="field.name"
@@ -253,7 +257,8 @@ onMounted(() => {
                 :placeholder="field.placeholder ? field.placeholder : ''"
                 rows="3"
                 @input="[modifySubscription($event), processInput($event)]"
-                class="wpuf-w-full wpuf-rounded-md wpuf-border-gray-300 wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">{{ value }}</textarea>
+                :class="subscriptionStore.errors[fieldId] ? '!wpuf-border-red-500' : '!wpuf-border-gray-300'"
+                class="wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">{{ value }}</textarea>
             <button
                 v-if="field.type === 'switcher'"
                 @click="[toggleOnOff(), $emit('toggleDependentFields', fieldId, switchStatus)]"
@@ -281,7 +286,8 @@ onMounted(() => {
             <select v-if="field.type === 'select'"
                     :name="field.name"
                     :id="field.name"
-                    class="wpuf-w-full !wpuf-max-w-full wpuf-rounded-md !wpuf-border-gray-300 wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm"
+                    :class="subscriptionStore.errors[fieldId] ? '!wpuf-border-red-500' : '!wpuf-border-gray-300'"
+                    class="wpuf-w-full !wpuf-max-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm"
                     @input="[modifySubscription($event), processInput($event)]">
                 <option
                     v-for="(item, key) in field.options"
@@ -312,6 +318,11 @@ onMounted(() => {
                 v-if="field.description"
                 class="label">
                 <span class="label-text-alt">{{ field.description }}</span>
+            </div>
+            <div
+                v-if="subscriptionStore.errors[fieldId]"
+                class="label">
+                <span class="label-text-alt wpuf-text-red-500">{{ subscriptionStore.errors[fieldId].message }}</span>
             </div>
         </div>
     </div>

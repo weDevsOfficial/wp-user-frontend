@@ -16,15 +16,19 @@ import {useQuickEditStore} from '../stores/quickEdit';
 import Notice from './subscriptions/Notice.vue';
 import {useSubscriptionStore} from '../stores/subscription';
 import Unsaved from './subscriptions/Unsaved.vue';
+import {useNoticeStore} from '../stores/notice';
 
 const componentStore = useComponentStore();
 const subscriptionStore = useSubscriptionStore();
 const quickEditStore = useQuickEditStore();
-const { currentComponent } = storeToRefs(componentStore);
+const noticeStore = useNoticeStore();
+const {currentComponent} = storeToRefs( componentStore );
+const {notices} = storeToRefs( noticeStore );
 
 const component = ref( null );
 const tempSubscriptionStatus = ref( 'all' );
 const componentKey = ref( 0 );
+const noticeKey = ref( 0 );
 
 provide( 'wpufSubscriptions', wpufSubscriptions );
 
@@ -66,9 +70,14 @@ const goToList = () => {
     subscriptionStore.setCurrentSubscription(null);
 };
 
+const removeNotice = ( index ) => {
+    noticeStore.removeNotice( index );
+    noticeKey.value += 1;
+};
+
 watch(
     () => componentStore.currentComponent,
-    (newComponent) => {
+    ( newComponent ) => {
         switch ( newComponent ) {
             case 'List':
                 component.value = List;
@@ -82,6 +91,8 @@ watch(
             default:
                 component.value = Empty;
         }
+
+        subscriptionStore.resetErrors();
     }
 );
 
@@ -89,7 +100,7 @@ watch(
 
 <template>
     <Header/>
-    <div v-if="subscriptionStore.isUpdating || component === null" class="wpuf-flex wpuf-h-svh wpuf-items-center wpuf-justify-center">
+    <div v-if="subscriptionStore.isSubscriptionLoading || component === null" class="wpuf-flex wpuf-h-svh wpuf-items-center wpuf-justify-center">
         <hollow-dots-spinner
             :animation-duration="1000"
             :dot-size="20"
@@ -105,7 +116,7 @@ watch(
         <QuickEdit />
     </template>
     <div
-        v-if="!subscriptionStore.isUpdating"
+        v-if="!subscriptionStore.isSubscriptionLoading"
         :class="quickEditStore.isQuickEdit ? 'wpuf-blur' : ''"
         class="wpuf-flex wpuf-flex-row wpuf-mt-12 wpuf-bg-white wpuf-py-8">
         <div class="wpuf-basis-1/5 wpuf-border-r-2 wpuf-border-gray-200 wpuf-100vh">
@@ -119,5 +130,15 @@ watch(
         </div>
         <Unsaved v-if="subscriptionStore.isUnsavedPopupOpen" @close-popup="subscriptionStore.isUnsavedPopupOpen = false" @goToList="goToList" />
     </div>
-    <Notice />
+    <div class="wpuf-fixed wpuf-top-20 wpuf-right-8 wpuf-z-10">
+        <Notice
+            v-if="noticeStore.display"
+            v-for="(notice, index) in notices"
+            :key="noticeKey"
+            :index="index"
+            :type="notice.type"
+            :message="notice.message"
+            @removeNotice="removeNotice(index)"
+        />
+    </div>
 </template>

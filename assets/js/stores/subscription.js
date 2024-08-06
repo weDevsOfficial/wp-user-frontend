@@ -116,10 +116,12 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                     return '';
             }
         },
-        updateSubscription() {
+        async updateSubscription() {
             if (this.currentSubscription === null) {
                 return false;
             }
+
+            this.isUpdating = true;
 
             let allTaxonomies = [];
 
@@ -156,6 +158,8 @@ export const useSubscriptionStore = defineStore( 'subscription', {
             .then( ( response ) => response.json() )
             .catch( ( error ) => {
                 console.log( error );
+            } ).finally( () => {
+                this.isUpdating = false;
             } );
         },
         modifyCurrentSubscription( key, value, serializeKey = null ) {
@@ -272,8 +276,13 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                                 break;
                         }
 
+                        // error if plan name contains #. PayPal doesn't allow # in package name
+                        if ( fieldData.id === 'plan-name' && value.includes( '#' )) {
+                            this.setError( field, __( '# is not supported in plan name', 'wp-user-frontend' ) );
+                        }
+
                         if (fieldData.is_required && value === '') {
-                            this.setError( field, __( 'This field is required', 'wp-user-frontend' ) );
+                            this.setError( field, __( fieldData.label + ' is required', 'wp-user-frontend' ) );
                         }
                     }
                 }
@@ -342,7 +351,7 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                 this.isSubscriptionLoading = false;
             });
         },
-        getSubscriptionCount( status = 'all' ) {
+        async getSubscriptionCount( status = 'all' ) {
             let path = '/wp-json/wpuf/v1/wpuf_subscription/count';
 
             if (status !== 'all') {

@@ -308,7 +308,14 @@ class Setup_Wizard {
     public function wpuf_setup_introduction() {
         ?>
         <h1><?php esc_html_e( 'Welcome to the world of WPUF!', 'wp-user-frontend' ); ?></h1>
-        <p><?php echo wp_kses_post( __( 'Thank you for choosing WPUF to power your websites frontend! This quick setup wizard will help you configure the basic settings. <strong>It’s completely optional and shouldn’t take longer than a minute.</strong>', 'wp-user-frontend' ) ); ?></p>
+        <p>
+            <?php
+            echo wp_kses_post(
+                // translators: %1$s and %2$s are strong tags
+                sprintf( __( 'Thank you for choosing WPUF to power your websites frontend! This quick setup wizard will help you configure the basic settings. %1$sIt’s completely optional and shouldn’t take longer than a minute%2$s', 'wp-user-frontend' ), '<strong>', '<strong />' )
+            );
+            ?>
+        </p>
         <p><?php esc_html_e( 'No time right now? If you don’t want to go through the wizard, you can skip and return to the WordPress dashboard. Come back anytime if you change your mind!', 'wp-user-frontend' ); ?></p>
         <p class="wpuf-setup-actions step">
             <a href="<?php echo esc_url( $this->get_next_step_link() ); ?>" class="button-primary button button-large button-next"><?php esc_html_e( 'Let\'s Go!', 'wp-user-frontend' ); ?></a>

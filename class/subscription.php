@@ -457,7 +457,7 @@ class WPUF_Subscription {
                     'delete_post'         => $capability,
                     'read_post'           => $capability,
                 ],
-                'labels' => [
+                'labels'          => [
                     'name'               => __( 'Subscription', 'wp-user-frontend' ),
                     'singular_name'      => __( 'Subscription', 'wp-user-frontend' ),
                     'menu_name'          => __( 'Subscription', 'wp-user-frontend' ),

@@ -79,11 +79,11 @@ watch(
         />
     </div>
     <div v-if="!subscriptionStore.isSubscriptionLoading">
-        <div v-if="!count" class="wpuf-px-8 wpuf-pb-8">
+        <div v-if="!count" class="wpuf-pl-[48px]">
             <ListHeader :message="headerMessage[subscriptionStore.currentSubscriptionStatus]" />
             <Empty :message="emptyMessages[subscriptionStore.currentSubscriptionStatus]"/>
         </div>
-        <div v-else class="wpuf-px-8 wpuf-pb-8">
+        <div v-else class="wpuf-pl-[48px]">
             <ListHeader :message="headerMessage[subscriptionStore.currentSubscriptionStatus]" />
             <div class="wpuf-grid wpuf-grid-cols-3 wpuf-gap-4 wpuf-mt-4">
                 <SubscriptionBox

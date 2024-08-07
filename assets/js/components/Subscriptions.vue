@@ -110,7 +110,7 @@ watch(
     </div>
     <div
         v-if="quickEditStore.isQuickEdit"
-        @click="quickEditStore.isQuickEdit = false"
+        @click="[quickEditStore.setQuickEditStatus(false), subscriptionStore.errors = {}]"
         class="wpuf-absolute wpuf-w-full wpuf-h-screen wpuf-z-10 wpuf-left-[-20px]"></div>
     <template v-if="quickEditStore.isQuickEdit">
         <QuickEdit />
@@ -118,7 +118,7 @@ watch(
     <div
         v-if="!subscriptionStore.isSubscriptionLoading"
         :class="quickEditStore.isQuickEdit ? 'wpuf-blur' : ''"
-        class="wpuf-flex wpuf-flex-row wpuf-mt-12 wpuf-bg-white wpuf-py-8">
+        class="wpuf-flex wpuf-flex-row wpuf-mt-12 wpuf-bg-white wpuf-pt-[32px] wpuf-pr-[20px] wpuf-pl-[20px]">
         <div class="wpuf-basis-1/5 wpuf-border-r-2 wpuf-border-gray-200 wpuf-100vh">
             <keep-alive>
                 <SidebarMenu @check-is-dirty="checkIsDirty" />
@@ -126,7 +126,7 @@ watch(
         </div>
         <div
             class="wpuf-basis-4/5">
-            <component :key="componentKey" :is="component" @go-to-list="goToList" />
+            <component :key="componentKey" :is="component" @go-to-list="goToList" @check-is-dirty="checkIsDirty" />
         </div>
         <Unsaved v-if="subscriptionStore.isUnsavedPopupOpen" @close-popup="subscriptionStore.isUnsavedPopupOpen = false" @goToList="goToList" />
     </div>

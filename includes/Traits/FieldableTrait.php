@@ -696,21 +696,21 @@ trait FieldableTrait {
      *
      * @since 4.0.0 moved from Render_Form.php to FieldableTrait.php
      *
-     * @param array  $array
+     * @param array  $the_array
      * @param string $key   name of key
      * @param string $value the value to search
      *
      * @return array
      */
-    public function search( $array, $key, $value ) {
+    public function search( $the_array, $key, $value ) {
         $results = [];
 
-        if ( is_array( $array ) ) {
-            if ( isset( $array[ $key ] ) && $array[ $key ] === $value ) {
-                $results[] = $array;
+        if ( is_array( $the_array ) ) {
+            if ( isset( $the_array[ $key ] ) && $the_array[ $key ] === $value ) {
+                $results[] = $the_array;
             }
 
-            foreach ( $array as $subarray ) {
+            foreach ( $the_array as $subarray ) {
                 $results = array_merge( $results, $this->search( $subarray, $key, $value ) );
             }
         }
@@ -732,9 +732,9 @@ trait FieldableTrait {
         $taxonomy_name = isset( $_POST[ $taxonomy['name'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $taxonomy['name'] ] ) ) : '';
 
         return [
-            'name'         => $taxonomy['name'],
+            'name'         => ! empty( $taxonomy['name'] ) ? $taxonomy['name'] : '',
             'value'        => $taxonomy_name,
-            'is_visible'   => $taxonomy['woo_attr_vis'] === 'yes' ? 1 : 0,
+            'is_visible'   => ! empty( $taxonomy['woo_attr_vis'] ) && ( 'yes' === $taxonomy['woo_attr_vis'] ) ? 1 : 0,
             'is_variation' => 0,
             'is_taxonomy'  => 1,
         ];

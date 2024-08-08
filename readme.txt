@@ -3,8 +3,8 @@ Contributors: tareq1988, nizamuddinbabu, wedevs
 Donate link: https://tareq.co/donate/
 Tags: frontend post, forms, user directory, profile builder, membership
 Requires at least: 4.0
-Tested up to: 6.6
-Stable tag: 4.0.9
+Tested up to: 6.6.1
+Stable tag: 4.0.10
 Requires PHP: 5.6
 License: GPLv2
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -281,6 +281,10 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 18. Set Payment Related Options
 
 == Changelog ==
+= v4.0.10 (08 Aug, 2024) =
+* Fix - Error on WC post template
+* Fix - Move login validation to pro
+
 = v4.0.9 (17 Jul, 2024) =
 * Fix - Remove PHP AllowDynamicProperties warning on plugin pages
 * Fix - Remove print_emoji_styles is deprecated message from setup page

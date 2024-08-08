@@ -493,16 +493,6 @@ class Simple_Login {
 
                 return;
             }
-
-            $wpuf_user_status = get_user_meta( $user->ID, 'wpuf_user_status', true );
-
-            if ( 'approved' !== $wpuf_user_status ) {
-                $message = __( 'You can\'t login until an administrator manually approve your account.', 'wp-user-frontend' );
-
-                $this->login_errors[] = $message;
-
-                return;
-            }
         } else {
             $creds['user_login'] = $log;
         }

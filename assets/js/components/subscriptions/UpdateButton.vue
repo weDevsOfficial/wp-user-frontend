@@ -41,7 +41,7 @@ const buttonText = ref( props.buttonText );
             @click="() => {subscriptionStore.currentSubscription.post_status = 'draft'; $emit('updateSubscription');}"
             :class="subscriptionStore.isUpdating ? 'wpuf-cursor-not-allowed wpuf-bg-gray-50' : ''"
             class="wpuf-flex wpuf-py-3 wpuf-items-center wpuf-px-4 wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 hover:wpuf-bg-indigo-700 hover:wpuf-text-white wpuf-rounded-b-md">
-            {{ __( 'Draft', 'wp-user-frontend' ) }}
+            {{ __( 'Save as Draft', 'wp-user-frontend' ) }}
         </span>
         </div>
     </div>

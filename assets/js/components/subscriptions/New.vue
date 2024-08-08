@@ -62,10 +62,16 @@ const updateSubscription = () => {
     <div class="wpuf-px-12">
         <h3 class="wpuf-text-lg wpuf-font-bold wpuf-mb-0">{{ __( 'New Subscription', 'wp-user-frontend' ) }}</h3>
         <SubscriptionsDetails />
-        <div class="wpuf-mt-8 wpuf-text-end">
+        <div class="wpuf-flex wpuf-flex-row-reverse wpuf-mt-8 wpuf-text-end">
             <UpdateButton
                 buttonText="Save"
                 @update-subscription="updateSubscription" />
+            <button
+                @click="$emit('checkIsDirty', subscriptionStore.currentSubscriptionStatus)"
+                type="button"
+                class="wpuf-mr-[10px] wpuf-rounded-md wpuf-bg-white wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 hover:wpuf-bg-gray-50">
+                {{ __( 'Cancel', 'wp-user-frontend' ) }}
+            </button>
         </div>
     </div>
 </template>

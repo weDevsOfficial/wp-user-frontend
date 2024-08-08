@@ -85,7 +85,7 @@ watch(
         </div>
         <div v-else class="wpuf-pl-[48px]">
             <ListHeader :message="headerMessage[subscriptionStore.currentSubscriptionStatus]" />
-            <div class="wpuf-grid wpuf-grid-cols-3 wpuf-gap-4 wpuf-mt-4">
+            <div class="wpuf-grid wpuf-grid-cols-3 wpuf-gap-4 wpuf-mt-[40px]">
                 <SubscriptionBox
                     v-for="subscription in subscriptions"
                     :subscription=subscription

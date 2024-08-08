@@ -55,7 +55,7 @@ const shouldShowButton = computed( () => {
     <div class="wpuf-flex wpuf-justify-between wpuf-mt-[20px]">
         <div class="wpuf-w-3/5">
             <h3 class="wpuf-text-lg wpuf-font-bold wpuf-m-0">{{ title }}</h3>
-            <p class="wpuf-text-sm wpuf-text-gray-500">{{ props.message }}</p>
+            <p class="wpuf-text-sm wpuf-text-gray-500 wpuf-mb-0">{{ props.message }}</p>
         </div>
     </div>
 </template>

@@ -118,7 +118,7 @@ watch(
     <div
         v-if="!subscriptionStore.isSubscriptionLoading"
         :class="quickEditStore.isQuickEdit ? 'wpuf-blur' : ''"
-        class="wpuf-flex wpuf-flex-row wpuf-mt-12 wpuf-bg-white wpuf-pt-[32px] wpuf-pr-[20px] wpuf-pl-[20px]">
+        class="wpuf-flex wpuf-flex-row wpuf-bg-white wpuf-pt-[32px] wpuf-pr-[20px] wpuf-pl-[20px]">
         <div class="wpuf-basis-1/5 wpuf-border-r-2 wpuf-border-gray-200 wpuf-100vh">
             <keep-alive>
                 <SidebarMenu @check-is-dirty="checkIsDirty" />

@@ -1,7 +1,7 @@
 <script setup>
 import {__} from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
-import {toRefs, ref, onBeforeMount, computed} from 'vue';
+import {toRefs, ref, onBeforeMount, computed, onMounted} from 'vue';
 import {addQueryArgs} from '@wordpress/url';
 import Edit from './Edit.vue';
 
@@ -227,13 +227,6 @@ const isPasswordProtected = computed( () => {
     return subscription.value.post_password !== '';
 } );
 
-quickEditStore.$subscribe( ( mutation, state ) => {
-    // if the quick edit menu is closed, check for the status of the subscription
-    if (!state.isQuickEdit) {
-        setPillBackground();
-    }
-} );
-
 </script>
 <template>
     <div v-if="showBox"
@@ -279,7 +272,7 @@ quickEditStore.$subscribe( ( mutation, state ) => {
                         </li>
                         <li @click="toggleSubscriptionStatus(subscription)"
                             class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">
-                            {{ __( 'Draft/Publish', 'wp-user-frontend' ) }}
+                            {{ subscription.post_status === 'publish' ? __( 'Draft', 'wp-user-frontend' ) : __( 'Publish', 'wp-user-frontend' ) }}
                         </li>
                         <li @click="showPopup = true"
                             class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">
@@ -312,7 +305,7 @@ quickEditStore.$subscribe( ( mutation, state ) => {
             </svg>
         </div>
         <div class="wpuf-flex wpuf-px-6 wpuf-pb-6 wpuf-justify-between wpuf-items-center">
-            <p class="wpuf-text-gray-500 wpuf-text-base wpuf-m-0">{{ __( 'Total Subscribers' ) }}</p>
+            <p class="wpuf-text-gray-500 wpuf-text-sm wpuf-m-0">{{ __( 'Total Subscribers' ) }}</p>
             <a :href="subscribersLink" class="wpuf-text-gray-500">{{ subscribers }}</a>
         </div>
     </div>

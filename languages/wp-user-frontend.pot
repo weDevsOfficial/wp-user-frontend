@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 4.0.9\n"
+"Project-Id-Version: WP User Frontend 4.0.10\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2024-07-17 08:17:03+00:00\n"
+"POT-Creation-Date: 2024-08-08 09:32:14+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4395,35 +4395,31 @@ msgstr ""
 msgid "A user could not be found with this email address."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:500
-msgid "You can't login until an administrator manually approve your account."
-msgstr ""
-
-#: includes/Free/Simple_Login.php:697
+#: includes/Free/Simple_Login.php:687
 msgid "Please enter your password."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:703
+#: includes/Free/Simple_Login.php:693
 msgid "Passwords do not match."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:751
+#: includes/Free/Simple_Login.php:741
 msgid "Enter a username or e-mail address."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:758
+#: includes/Free/Simple_Login.php:748
 msgid "There is no user registered with that email address."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:775
+#: includes/Free/Simple_Login.php:765
 msgid "Invalid username or e-mail."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:789
+#: includes/Free/Simple_Login.php:779
 msgid "Password reset is not allowed for this user"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:828
+#: includes/Free/Simple_Login.php:818
 #. translators: %s: activation link
 msgid ""
 "<strong>Your account is not active.</strong><br>Please check your email for "
@@ -4431,87 +4427,87 @@ msgid ""
 "link"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:849 includes/Free/Simple_Login.php:874
+#: includes/Free/Simple_Login.php:839 includes/Free/Simple_Login.php:864
 msgid "Activation URL is not valid"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:860
+#: includes/Free/Simple_Login.php:850
 msgid "Invalid User activation url"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:866
+#: includes/Free/Simple_Login.php:856
 msgid "User already verified"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:882 includes/Free/Simple_Login.php:958
+#: includes/Free/Simple_Login.php:872 includes/Free/Simple_Login.php:948
 msgid "Your account has been activated"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:885
+#: includes/Free/Simple_Login.php:875
 msgid ""
 "Your account has been verified , but you can't login until manually "
 "approved your account by an administrator."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:908
+#: includes/Free/Simple_Login.php:898
 #. translators: %s: blogname
 msgid "[%s] Your username and password info"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:910 includes/Free/Simple_Login.php:1010
+#: includes/Free/Simple_Login.php:900 includes/Free/Simple_Login.php:1000
 #: includes/Frontend/Registration.php:291 includes/Widgets/Login_Widget.php:155
 #. translators: %s: username
 msgid "Username: %s"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:911
+#: includes/Free/Simple_Login.php:901
 msgid "To set your password, visit the following address:"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1007
+#: includes/Free/Simple_Login.php:997
 msgid "Someone requested that the password be reset for the following account:"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1011 includes/Widgets/Login_Widget.php:156
+#: includes/Free/Simple_Login.php:1001 includes/Widgets/Login_Widget.php:156
 msgid "If this was a mistake, just ignore this email and nothing will happen."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1012 includes/Widgets/Login_Widget.php:157
+#: includes/Free/Simple_Login.php:1002 includes/Widgets/Login_Widget.php:157
 msgid "To reset your password, visit the following address:"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1023 includes/Widgets/Login_Widget.php:162
+#: includes/Free/Simple_Login.php:1013 includes/Widgets/Login_Widget.php:162
 #. translators: %s: blogname
 msgid "[%s] Password Reset"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1029
+#: includes/Free/Simple_Login.php:1019
 msgid "The e-mail could not be sent."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1029
+#: includes/Free/Simple_Login.php:1019
 msgid "Possible reason: your host may have disabled the mail() function."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1149
+#: includes/Free/Simple_Login.php:1139
 #. translators: %s: blogname
 msgid "[%s] Account has been activated"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1151
+#: includes/Free/Simple_Login.php:1141
 #. translators: %s: username
 msgid "Hi %s,"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1152
+#: includes/Free/Simple_Login.php:1142
 msgid "Congrats! Your account has been activated. To login visit the following url:"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1154
+#: includes/Free/Simple_Login.php:1144
 msgid "Thanks"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1180
+#: includes/Free/Simple_Login.php:1170
 msgid " Login "
 msgstr ""
 

@@ -1,3 +1,7 @@
+= v4.0.10 (08 Aug, 2024) =
+* Fix - Error on WC post template
+* Fix - Move login validation to pro
+
 = v4.0.9 (17 Jul, 2024) =
 * Fix - Remove PHP AllowDynamicProperties warning on plugin pages
 * Fix - Remove print_emoji_styles is deprecated message from setup page

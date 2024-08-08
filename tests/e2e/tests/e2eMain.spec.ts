@@ -41,7 +41,7 @@ test.describe(registrationFormsTestsLite);
 
 
 //*[Spec-3]: Test- Subscription + FrontEnd Case.../
-test.describe.only(subscriptionsTests);
+test.describe(subscriptionsTests);
 
 //*---------------------------------------------------*/
 //*--------------------------------------------------*/

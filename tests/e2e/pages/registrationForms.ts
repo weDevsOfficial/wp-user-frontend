@@ -40,7 +40,7 @@ export class registrationForms {
 
             //Check Setup
             const checkUpgradeToProOption = await this.page.locator(selectors.registrationForms.validateRegistrationFormsProFeatureLite.checkUpgradeToProOption);
-            await expect(checkUpgradeToProOption).toBeTruthy();
+            expect(checkUpgradeToProOption).toBeTruthy();
         }
     };
 
@@ -105,7 +105,7 @@ export class registrationForms {
 
         //Validate Page
         const validatePageCreated = await this.page.innerText(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.validatePageCreated);
-        await expect(validatePageCreated).toContain(registrationFormPageTitle);
+        expect(validatePageCreated).toContain(registrationFormPageTitle);
 
     };
 

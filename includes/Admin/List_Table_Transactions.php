@@ -9,8 +9,8 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
     require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
 
+#[AllowDynamicProperties]
 class List_Table_Transactions extends WP_List_Table {
-
     /**
      * Constructor.
      */

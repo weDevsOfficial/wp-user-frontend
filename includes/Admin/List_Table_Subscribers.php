@@ -11,7 +11,9 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 /**
  * List table class
  */
+#[AllowDynamicProperties]
 class List_Table_Subscribers extends WP_List_Table {
+    protected $page_status;
 
     public function __construct() {
         parent::__construct(

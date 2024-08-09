@@ -156,7 +156,7 @@ class Admin_Template {
                 <label>
                     <input type="text" class="smallipopInput" name="<?php echo esc_attr( $word_restriction_name ); ?>"
                            value="<?php echo esc_attr( $word_restriction_value ); ?>" title="<?php esc_attr_e(
-                        'Numebr of words the author to be restricted in', 'wp-user-frontend'
+                        'Number of words the author to be restricted in', 'wp-user-frontend'
                     ); ?>"/>
                 </label>
             </div>
@@ -231,7 +231,7 @@ class Admin_Template {
                 <label>
                     <input type="text" class="smallipopInput" name="<?php echo esc_attr( $word_restriction_name ); ?>"
                            value="<?php echo esc_attr( $word_restriction_value ); ?>" title="<?php esc_attr_e(
-                        'Numebr of words the author to be restricted in', 'wp-user-frontend'
+                        'Number of words the author to be restricted in', 'wp-user-frontend'
                     ); ?>"/>
                 </label>
             </div>

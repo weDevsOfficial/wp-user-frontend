@@ -155,6 +155,9 @@ class Assets {
             'admin'              => [
                 'src' => WPUF_ASSET_URI . '/css/admin.css',
             ],
+            'admin-subscriptions'              => [
+                'src' => WPUF_ASSET_URI . '/css/admin/subscriptions.min.css',
+            ],
             'registration-forms' => [
                 'src' => WPUF_ASSET_URI . '/css/registration-forms.css',
             ],
@@ -211,6 +214,11 @@ class Assets {
                 'src'       => WPUF_ASSET_URI . '/vendor/vue/vue' . $this->suffix . '.js',
                 'in_footer' => true,
                 'version'   => '2.2.4',
+            ],
+            'vue-3'                    => [
+                'src'       => WPUF_ASSET_URI . '/vendor/vue-3/vue.esm-browser.js',
+                'in_footer' => true,
+                'version'   => '3.4.19',
             ],
             'vuex'                     => [
                 'src'       => WPUF_ASSET_URI . '/vendor/vuex/vuex' . $this->suffix . '.js',
@@ -270,8 +278,12 @@ class Assets {
                 'deps' => [ 'jquery' ],
             ],
             'subscriptions'            => [
-                'src'       => WPUF_ASSET_URI . '/js/subscriptions.js',
+                'src'       => WPUF_ASSET_URI . '/js/subscriptions-old.js',
                 'deps'      => [ 'jquery' ],
+                'in_footer' => true,
+            ],
+            'admin-subscriptions'      => [
+                'src'       => WPUF_ASSET_URI . '/js/subscriptions.min.js',
                 'in_footer' => true,
             ],
             'timepicker'               => [
@@ -358,6 +370,9 @@ class Assets {
             'ajax_login'               => [
                 'src'  => WPUF_ASSET_URI . '/js/wpuf-login-widget.js',
                 'deps' => [ 'jquery' ],
+            ],
+            'headway'                  => [
+                'src'  => '//cdn.headwayapp.co/widget.js',
             ],
         ];
 

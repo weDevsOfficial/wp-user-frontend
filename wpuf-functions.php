@@ -4682,6 +4682,10 @@ function wpuf_get_single_user_roles( $user_id ) {
 
     $user = get_user_by( 'id', $user_id );
 
+    if ( ! $user ) {
+        return [];
+    }
+
     return ( array ) $user->roles;
 }
 

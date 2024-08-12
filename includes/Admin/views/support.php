@@ -225,8 +225,10 @@ function wpuf_help_related_articles( $articles ) {
             </div>
 
             <div class="submit-btn">
-                <input type="hidden" name="group[3555][1]" value="1">
                 <input type="submit" class="button button-primary" value="<?php echo esc_attr( __( 'Subscribe', 'wp-user-frontend' ) ); ?>">
+            </div>
+            <div id="wpuf-response-msg" style="position: absolute; bottom: -5px">
+                <p>something</p>
             </div>
         </div>
     </form>
@@ -522,34 +524,61 @@ function wpuf_help_related_articles( $articles ) {
             });
         });
 
-        $('#wpuf-form-subscribe').submit(function(e) {
+        $('#wpuf-form-subscribe').submit(function ( e ) {
             e.preventDefault();
 
-            var form = $(this);
+            const form = $( this );
+            const message = $( '#wpuf-response-msg p' );
+            const submitBtn = form.find( 'input[type="submit"]' );
 
-            form.find('input[type="submit"]').prop('disabled', true);
+            submitBtn.prop( 'disabled', true );
+            message.css( 'color', 'initial' );
 
-            $.ajax({
-                url: form.attr('action'),
-                data: form.serialize(),
-                type: 'GET',
-                dataType: 'json',
-                cache: false,
-                contentType: "application/json; charset=utf-8",
+            message.html( '' );
+
+            // todo: test single and multiple tags
+
+            const firstName = form.find( '#fname' ).val().trim();
+            const email = form.find( '#email' ).val().trim();
+            const tags = ['WPUF Dashboard'];
+            const tag = '698f5d31-4ef9-430a-a6f3-7f4bb24cdaf9';
+
+            if (!firstName || !email) {
+                message.html( 'First Name and Email are required' );
+                submitBtn.prop( 'disabled', false );
+
+                return;
+            }
+
+            const data = {
+                first_name: firstName,
+                email: email,
+                tags: tags,
+            };
+
+             fetch('https://api.getwemail.io/api/v1/lists/8da67b42-c367-4ad3-ae70-5cf63635a832/subscribers', {
+                method: 'POST',
+                body: JSON.stringify( data ),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-API-KEY': '83d4e7d2b2331f0026bcfb9a423d61ac9ac131e98fd0c2af1994fd3ee9fc56d8'
+                },
             })
-            .done(function(data) {
-                // console.log(data);
-
-                if (data.result != "success") {
-                    // do something
+            .then( function ( response ) {
+             return response.json();
+            } )
+            .then( function ( responseJson ) {
+                if ( responseJson.data && responseJson.data.id ) {
+                    message.html( 'Successfully subscribed' );
+                } else {
+                    message.html( responseJson );
+                    message.css( 'color', 'red' );
                 }
-            })
-            .fail(function() {
-                // console.log("error");
-            })
-            .always(function(response) {
-                $('.form-wrap', form).html( '<div class="thank-you">' + response.msg + '</div>' );
-            });
+            } )
+            .finally( function () {
+                submitBtn.prop( 'disabled', false );
+            } );
         });
     });
 </script>

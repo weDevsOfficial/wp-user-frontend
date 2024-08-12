@@ -17,7 +17,7 @@ const info = computed( () => {
         default:
             return {
                 title: __( 'Trash Subscription', 'wp-user-frontend' ),
-                message: __( 'This subscription will moved to trash. Are you sure?', 'wp-user-frontend' ),
+                message: __( 'This subscription will be moved to the trash. Are you sure?', 'wp-user-frontend' ),
                 actionText: __( 'Trash', 'wp-user-frontend' ),
             }
     }

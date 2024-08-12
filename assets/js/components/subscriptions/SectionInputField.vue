@@ -201,7 +201,7 @@ onMounted(() => {
             {{ field.label }}
             <span
                 v-if="field.tooltip"
-                class="wpuf-tooltip wpuf-cursor-pointer wpuf-ml-2 wpuf-z-[9999]"
+                class="wpuf-tooltip wpuf-cursor-pointer wpuf-ml-2 wpuf-z-10"
                  :data-tip="field.tooltip">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none">
                     <path d="M9.833 12.333H9V9h-.833M9 5.667h.008M16.5 9a7.5 7.5 0 1 1-15 0 7.5 7.5 0 1 1 15 0z"

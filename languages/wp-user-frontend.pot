@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 4.0.10\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2024-08-08 09:32:14+00:00\n"
+"POT-Creation-Date: 2024-08-12 16:06:24+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4721,7 +4721,11 @@ msgid "Learn more about Coupons"
 msgstr ""
 
 #: includes/Free/Free_Loader.php:1440
-msgid "Taxonomy Restriction"
+msgid "Taxonomy Access"
+msgstr ""
+
+#: includes/Free/Free_Loader.php:1441
+msgid "(Control user access to specific taxonomies)"
 msgstr ""
 
 #: includes/Free/Simple_Login.php:316 includes/Widgets/Login_Widget.php:295
@@ -5369,6 +5373,10 @@ msgstr ""
 
 #: includes/Frontend.php:147
 msgid "is not valid"
+msgstr ""
+
+#: includes/Frontend.php:154
+msgid "Please Cancel Your Currently Active Pack first!"
 msgstr ""
 
 #: includes/Frontend_Render_Form.php:300

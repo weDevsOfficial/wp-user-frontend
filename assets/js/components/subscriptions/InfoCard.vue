@@ -14,9 +14,10 @@ const getBillingAmountText = computed(() => {
     if (parseFloat( currentSubscription.meta_value.billing_amount ) === 0) {
         return __( 'Free', 'wp-user-frontend' );
     } else {
-        if ( isRecurring ) {
+        if ( isRecurring.value ) {
             const cyclePeriod = currentSubscription.meta_value.cycle_period === '' ? __( 'day', 'wp-user-frontend' ) : currentSubscription.meta_value.cycle_period;
             const expireAfter = currentSubscription.meta_value._billing_cycle_number !== '0' ? ' ' + currentSubscription.meta_value._billing_cycle_number + ' ' : '';
+
             return wpufSubscriptions.currencySymbol + currentSubscription.meta_value.billing_amount + ' <span class="wpuf-text-sm wpuf-text-gray-500">per ' + expireAfter + ' ' + cyclePeriod + '(s)</span>';
         }
 

@@ -158,7 +158,7 @@ export const useSubscriptionStore = defineStore( 'subscription', {
             return fetch( requestUrl, requestOptions )
             .then( ( response ) => response.json() )
             .catch( ( error ) => {
-                console.log( error );
+                this.setError('fetch', 'An error occurred while updating the subscription.');
             } ).finally( () => {
                 this.isUpdating = false;
             } );

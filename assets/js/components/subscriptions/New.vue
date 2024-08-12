@@ -59,7 +59,9 @@ const updateSubscription = () => {
 
 </script>
 <template>
-    <div class="wpuf-px-12">
+    <div
+        :class="subscriptionStore.isUnsavedPopupOpen ? 'wpuf-blur' : ''"
+        class="wpuf-px-12">
         <h3 class="wpuf-text-lg wpuf-font-bold wpuf-mb-0">{{ __( 'New Subscription', 'wp-user-frontend' ) }}</h3>
         <SubscriptionsDetails />
         <div class="wpuf-flex wpuf-flex-row-reverse wpuf-mt-8 wpuf-text-end">

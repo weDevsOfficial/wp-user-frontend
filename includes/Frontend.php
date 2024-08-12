@@ -147,6 +147,14 @@ class Frontend {
                     'validation' => __( 'is not valid', 'wp-user-frontend' ),
                 ]
             );
+
+            wp_localize_script(
+                'wpuf-subscriptions', 'wpuf_subscription', apply_filters(
+                    'wpuf_subscription_js_data', [
+                        'pack_notice'  => __( 'Please Cancel Your Currently Active Pack first!', 'wp-user-frontend' ),
+                    ]
+                )
+            );
         }
     }
 

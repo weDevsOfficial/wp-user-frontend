@@ -86,9 +86,9 @@ const updateSubscription = () => {
     --dp-primary-disabled-color: none;
     --dp-primary-text-color: none;
     --dp-secondary-color: none;
-    --dp-border-color: none;
-    --dp-menu-border-color: none;
-    --dp-border-color-hover: none;
+    --dp-border-color: #8c8f94;
+    --dp-menu-border-color: #8c8f94;
+    --dp-border-color-hover: #8c8f94;
     --dp-disabled-color: none;
     --dp-scroll-bar-background: none;
     --dp-scroll-bar-color: none;
@@ -102,7 +102,7 @@ const updateSubscription = () => {
     --dp-highlight-color: none;
     --dp-range-between-dates-background-color: none;
     --dp-range-between-dates-text-color: none;
-    --dp-range-between-border-color: none;
+    --dp-range-between-border-color: #8c8f94;
 }
 .dp__input_valid {
     box-shadow: none;

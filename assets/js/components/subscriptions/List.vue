@@ -12,17 +12,20 @@ import {__} from '@wordpress/i18n';
 const subscriptionStore = useSubscriptionStore();
 const subscriptions = storeToRefs( subscriptionStore ).subscriptionList;
 const count = ref( subscriptionStore.allCount.all );
-const currentPage = ref( 1 );
+const currentPage = storeToRefs( subscriptionStore ).currentPageNumber;
 const perPage = parseInt( wpufSubscriptions.perPage );
 const totalPages = ref( Math.ceil( count.value / wpufSubscriptions.perPage ) );
-const changePageTo = ( page ) => {
-    const offset = ( page - 1 ) * parseInt( wpufSubscriptions.perPage );
-    currentPage.value = page;
-
-    subscriptionStore.setSubscriptionsByStatus( subscriptionStore.currentSubscriptionStatus, offset );
-};
 const maxVisibleButtons = ref( 3 );
 const paginationKey = ref( 0 );
+const changePageTo = ( page ) => {
+    const offset = ( page - 1 ) * parseInt( wpufSubscriptions.perPage );
+    subscriptionStore.setSubscriptionsByStatus( subscriptionStore.currentSubscriptionStatus, offset );
+
+    currentPage.value = page;
+
+    // refresh the pagination component
+    paginationKey.value += 1;
+};
 
 const emptyMessages = {
     all: __( 'Powerful Subscription Features for Monetizing Your Content. Unlock a World of Possibilities with WPUF\'s Subscription Features – From Charging Users for Posting to Exclusive Content Access.',

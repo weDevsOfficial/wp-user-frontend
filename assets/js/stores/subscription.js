@@ -21,6 +21,7 @@ export const useSubscriptionStore = defineStore( 'subscription', {
         } ),
         allCount: ref( {} ),
         taxonomyRestriction: ref( {} ),
+        currentPageNumber: ref( 1 ),
     } ),
     getters: {
         fieldNames: () => {

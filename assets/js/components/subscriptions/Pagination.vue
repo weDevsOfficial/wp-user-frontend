@@ -91,7 +91,7 @@ watch( () => subscriptionStore.currentSubscriptionStatus, ( newValue ) => {
 
 </script>
 <template>
-    <div class="wpuf-flex wpuf-items-center wpuf-justify-between wpuf-border-t wpuf-border-gray-200 wpuf-bg-white wpuf-py-3 wpuf-px-6">
+    <div class="wpuf-flex wpuf-items-center wpuf-justify-between wpuf-border-t wpuf-border-gray-200 wpuf-bg-white wpuf-py-3 wpuf-px-6 wpuf-mt-16">
         <div class="wpuf-flex wpuf-flex-1 wpuf-items-center wpuf-justify-between">
             <div>
                 <p class="wpuf-text-sm wpuf-text-gray-700">

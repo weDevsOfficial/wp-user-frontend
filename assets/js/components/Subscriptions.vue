@@ -58,6 +58,7 @@ const checkIsDirty = ( subscriptionStatus = 'all' ) => {
         componentStore.setCurrentComponent( 'List' );
         subscriptionStore.setCurrentSubscription(null);
         subscriptionStore.getSubscriptionCount();
+        subscriptionStore.currentPageNumber = 1;
     }
 };
 
@@ -68,6 +69,7 @@ const goToList = () => {
     subscriptionStore.setSubscriptionsByStatus( tempSubscriptionStatus.value );
     componentStore.setCurrentComponent( 'List' );
     subscriptionStore.setCurrentSubscription(null);
+    subscriptionStore.currentPageNumber = 1;
 };
 
 const removeNotice = ( index ) => {

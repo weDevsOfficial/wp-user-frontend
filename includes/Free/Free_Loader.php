@@ -1436,9 +1436,10 @@ class Free_Loader extends Pro_Prompt {
      */
     public function add_taxonomy_restriction_section( $sections ) {
         $sections['advanced_configuration'][] = [
-            'id'     => 'taxonomy_restriction',
-            'label'  => __( 'Taxonomy Restriction', 'wpuf-pro' ),
-            'is_pro' => true,
+            'id'        => 'taxonomy_restriction',
+            'label'     => __( 'Taxonomy Access', 'wp-user-frontend' ),
+            'sub_label' => __( '(Control user access to specific taxonomies)', 'wp-user-frontend' ),
+            'is_pro'    => true,
         ];
 
         return $sections;

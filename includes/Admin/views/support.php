@@ -546,5 +546,31 @@ function wpuf_help_related_articles( $articles ) {
                 }
             });
         });
+
+        const wemailForm = document.getElementById('wemail-embedded-subscriber-form');
+
+        if (wemailForm) {
+            wemailForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const formData = new FormData(wemailForm);
+                const email = formData.get('email');
+
+                if (!isValidEmail( email )) {
+                    alert( 'Please enter a valid email address' );
+
+                    return;
+                }
+
+                wemailForm.submit();
+            });
+        }
+
+        function isValidEmail(email) {
+            // Regular expression for validating an Email
+            const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            
+            return regex.test(email);
+        }
     });
 </script>

@@ -139,12 +139,19 @@ class Frontend {
                     ]
                 )
             );
-
             wp_localize_script(
                 'wpuf-frontend-form', 'error_str_obj', [
                     'required'   => __( 'is required', 'wp-user-frontend' ),
                     'mismatch'   => __( 'does not match', 'wp-user-frontend' ),
                     'validation' => __( 'is not valid', 'wp-user-frontend' ),
+                ]
+            );
+            wp_localize_script(
+                'wpuf-billing-address',
+                'ajax_object',
+                [
+                    'ajaxurl'     => admin_url( 'admin-ajax.php' ),
+                    'fill_notice' => __( 'Some Required Fields are not filled!', 'wp-user-frontend' ),
                 ]
             );
         }

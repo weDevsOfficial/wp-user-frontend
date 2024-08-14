@@ -1,5 +1,5 @@
 <script setup>
-import {computed, inject, onMounted, ref, toRaw, toRefs} from 'vue';
+import {computed, inject, onMounted, ref, toRaw, toRefs, watch} from 'vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import Multiselect from '@vueform/multiselect';
 import {useSubscriptionStore} from '../../stores/subscription';
@@ -120,6 +120,13 @@ const processInput = (event) => {
         subscriptionStore.modifyCurrentSubscription( 'post_name', event.target.value.replace(/\s+/g, '-').toLowerCase() );
     }
 };
+
+const processNumber = (event) => {
+    const allowedKeys = ['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight'];
+    if (!allowedKeys.includes(event.key) && isNaN(Number(event.key))) {
+        event.preventDefault();
+    }
+}
 
 const options = computed( () => {
     if ( ! wpufSubscriptions.fields.advanced_configuration.hasOwnProperty( 'taxonomy_restriction' ) ) {
@@ -248,6 +255,7 @@ onMounted(() => {
                 :id="field.name"
                 :placeholder="field.placeholder ? field.placeholder : ''"
                 @input="[modifySubscription($event), processInput($event)]"
+                @keydown="processNumber"
                 :class="subscriptionStore.errors[fieldId] ? '!wpuf-border-red-500' : '!wpuf-border-gray-300'"
                 class="placeholder:wpuf-text-gray-400 wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">
             <textarea

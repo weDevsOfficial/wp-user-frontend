@@ -274,6 +274,7 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                                 value = subscription[fieldData.db_key];
                                 break;
                             default:
+                                value = '';
                                 break;
                         }
 
@@ -375,5 +376,26 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                 console.log( error );
             } );
         },
+        getReadableBillingAmount( subscription, returnAsHtml = false ) {
+            if (this.isRecurring( subscription )) {
+                const cyclePeriod = subscription.meta_value.cycle_period === '' ? __( 'day', 'wp-user-frontend' ) : subscription.meta_value.cycle_period;
+                const expireAfter = (parseInt( subscription.meta_value._billing_cycle_number ) === 0 || parseInt( subscription.meta_value._billing_cycle_number ) === 1) ? '' : ' ' + subscription.meta_value._billing_cycle_number + ' ';
+
+                if (returnAsHtml) {
+                    return wpufSubscriptions.currencySymbol + subscription.meta_value.billing_amount + ' <span class="wpuf-text-sm wpuf-text-gray-500">per ' + expireAfter + ' ' + cyclePeriod + '(s)</span>';
+                } else {
+                    return wpufSubscriptions.currencySymbol + subscription.meta_value.billing_amount + ' per ' + expireAfter + ' ' + cyclePeriod + '(s)';
+                }
+            } else {
+                if (parseInt( subscription.meta_value.billing_amount ) === 0 || subscription.meta_value.billing_amount === '') {
+                    return __( 'Free', 'wp-user-frontend' );
+                } else {
+                    return wpufSubscriptions.currencySymbol + subscription.meta_value.billing_amount;
+                }
+            }
+        },
+        isRecurring( subscription ) {
+            return subscription.meta_value.recurring_pay === 'on' || subscription.meta_value.recurring_pay === 'yes'
+        }
     }
 } );

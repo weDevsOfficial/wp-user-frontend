@@ -245,7 +245,9 @@ const isPasswordProtected = computed( () => {
                         </svg>
                     </span>
                 </div>
-                <p class="wpuf-text-gray-500 wpuf-text-base wpuf-m-0">{{ billingAmount }}</p>
+              <p class="wpuf-text-gray-500 wpuf-text-base wpuf-m-0">
+                {{ subscriptionStore.getReadableBillingAmount( subscription ) }}
+              </p>
             </div>
             <div class="wpuf-flex wpuf-justify-between wpuf-flex-col wpuf-relative">
                 <svg

@@ -6,6 +6,7 @@ import {useSubscriptionStore} from '../../stores/subscription';
 import UpdateButton from './UpdateButton.vue';
 import {useNoticeStore} from '../../stores/notice';
 import {useComponentStore} from '../../stores/component';
+import {defineEmits} from '../../../vendor/vue-3/vue.esm-browser';
 
 const subscriptionStore = useSubscriptionStore();
 const noticeStore = useNoticeStore();

@@ -57,7 +57,7 @@ const toggleDependentFields = (fieldId, status) => {
                     class="wpuf-flex wpuf-items-center wpuf-justify-between wpuf-w-full wpuf-p-4 wpuf-font-medium rtl:wpuf-text-right wpuf-text-gray-500 wpuf-bg-gray-100 wpuf-gap-3">
                 <span class="wpuf-flex">
                     {{ subSection.label }}
-                    <span v-if="subSection.sub_label" class="wpuf-relative wpuf-m-0 wpuf-p-0 wpuf-ml-2 wpuf-italic wpuf-text-[11px] wpuf-text-gray-400">
+                    <span v-if="subSection.sub_label" class="wpuf-relative wpuf-m-0 wpuf-p-0 wpuf-ml-2 wpuf-mt-[1px] wpuf-italic wpuf-text-[11px] wpuf-text-gray-400">
                         {{ subSection.sub_label }}
                     </span>
                     <span class="pro-icon-title wpuf-relative wpuf-pt-1 wpuf-group wpuf-ml-2">

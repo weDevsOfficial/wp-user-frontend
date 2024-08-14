@@ -17,6 +17,7 @@ import Notice from './subscriptions/Notice.vue';
 import {useSubscriptionStore} from '../stores/subscription';
 import Unsaved from './subscriptions/Unsaved.vue';
 import {useNoticeStore} from '../stores/notice';
+import ContentHeader from './subscriptions/ContentHeader.vue';
 
 const componentStore = useComponentStore();
 const subscriptionStore = useSubscriptionStore();
@@ -117,11 +118,12 @@ watch(
     <template v-if="quickEditStore.isQuickEdit">
         <QuickEdit />
     </template>
+    <ContentHeader />
     <div
         v-if="!subscriptionStore.isSubscriptionLoading"
         :class="quickEditStore.isQuickEdit ? 'wpuf-blur' : ''"
-        class="wpuf-flex wpuf-flex-row wpuf-bg-white wpuf-pt-[32px] wpuf-pr-[20px] wpuf-pl-[20px]">
-        <div class="wpuf-basis-1/5 wpuf-border-r-2 wpuf-border-gray-200 wpuf-100vh">
+        class="wpuf-flex wpuf-pt-[40px] wpuf-pr-[20px] wpuf-pl-[20px]">
+        <div class="wpuf-basis-1/5 wpuf-border-r-2 wpuf-border-gray-200">
             <keep-alive>
                 <SidebarMenu @check-is-dirty="checkIsDirty" />
             </keep-alive>

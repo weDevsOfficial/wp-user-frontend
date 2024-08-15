@@ -22,8 +22,8 @@ import {__} from '@wordpress/i18n';
                         </div>
                     </div>
                     <div class="wpuf-mt-5 wpuf-flex wpuf-justify-end wpuf-gap-3">
-                        <button @click="$emit('closePopup')" type="button" class="wpuf-rounded-lg wpuf-border wpuf-border-red-500 wpuf-bg-red-500 wpuf-px-4 wpuf-py-2 wpuf-text-center wpuf-text-sm wpuf-font-medium wpuf-text-white wpuf-shadow-sm wpuf-transition-all hover:wpuf-border-red-700 hover:wpuf-bg-red-700 focus:wpuf-ring focus:wpuf-ring-red-200">{{ __('Cancel', 'wp-user-frontend') }}</button>
-                        <button @click="$emit('goToList')" type="button" class="wpuf-rounded-lg wpuf-border wpuf-border-blue-500 wpuf-bg-blue-500 wpuf-px-4 wpuf-py-2 wpuf-text-center wpuf-text-sm wpuf-font-medium wpuf-text-white wpuf-shadow-sm wpuf-transition-all hover:wpuf-border-blue-700 hover:wpuf-bg-blue-700 focus:wpuf-ring focus:wpuf-ring-blue-200">{{ __('Confirm', 'wp-user-frontend') }}</button>
+                        <button @click="$emit('goToList')" type="button" class="wpuf-rounded-lg wpuf-border wpuf-border-red-500 wpuf-bg-red-500 wpuf-px-4 wpuf-py-2 wpuf-text-center wpuf-text-sm wpuf-font-medium wpuf-text-white wpuf-shadow-sm wpuf-transition-all hover:wpuf-border-red-700 hover:wpuf-bg-red-700 focus:wpuf-ring focus:wpuf-ring-red-200">{{ __('Discard Changes', 'wp-user-frontend') }}</button>
+                        <button @click="$emit('closePopup')" type="button" class="wpuf-rounded-lg wpuf-border wpuf-border-blue-500 wpuf-bg-blue-500 wpuf-px-4 wpuf-py-2 wpuf-text-center wpuf-text-sm wpuf-font-medium wpuf-text-white wpuf-shadow-sm wpuf-transition-all hover:wpuf-border-blue-700 hover:wpuf-bg-blue-700 focus:wpuf-ring focus:wpuf-ring-blue-200">{{ __('Continue', 'wp-user-frontend') }}</button>
                     </div>
                 </div>
             </div>

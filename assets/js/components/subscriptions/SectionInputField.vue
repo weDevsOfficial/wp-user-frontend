@@ -18,10 +18,6 @@ const subSection = inject( 'subSection' );
 const props = defineProps( {
     field: Object,
     fieldId: String,
-    innerField: {
-        type: Boolean,
-        default: false,
-    },
 } );
 
 const dependencyStore = useFieldDependencyStore();

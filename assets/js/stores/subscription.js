@@ -77,28 +77,37 @@ export const useSubscriptionStore = defineStore( 'subscription', {
             this.currentSubscription.meta_value = {};
 
             for (const field of this.fields) {
-                switch (field.db_type) {
-                    case 'post':
-                        this.currentSubscription[field.db_key] = field.default;
-                        break;
-
-                    case 'meta':
-                        this.currentSubscription.meta_value[field.db_key] = field.default;
-                        break;
-
-                    case 'meta_serialized':
-                        let serializedValue = {};
-                        if (this.currentSubscription.meta_value.hasOwnProperty( field.db_key )) {
-                            serializedValue = this.currentSubscription.meta_value[field.db_key];
-                            serializedValue[field.serialize_key] = field.default;
-                        } else {
-                            serializedValue[field.serialize_key] = field.default;
-                        }
-
-                        this.currentSubscription.meta_value[field.db_key] = serializedValue;
-
-                        break;
+                if (field.hasOwnProperty('type') && field.type === 'inline') {
+                    for (const innerField in field.fields) {
+                        this.populateDefaultValue( field.fields[innerField] );
+                    }
+                } else {
+                    this.populateDefaultValue( field );
                 }
+            }
+        },
+        populateDefaultValue( field ) {
+            switch (field.db_type) {
+                case 'post':
+                    this.currentSubscription[field.db_key] = field.default;
+                    break;
+
+                case 'meta':
+                    this.currentSubscription.meta_value[field.db_key] = field.default;
+                    break;
+
+                case 'meta_serialized':
+                    let serializedValue = {};
+                    if (this.currentSubscription.meta_value.hasOwnProperty( field.db_key )) {
+                        serializedValue = this.currentSubscription.meta_value[field.db_key];
+                        serializedValue[field.serialize_key] = field.default;
+                    } else {
+                        serializedValue[field.serialize_key] = field.default;
+                    }
+
+                    this.currentSubscription.meta_value[field.db_key] = serializedValue;
+
+                    break;
             }
         },
         getValueFromField( field ) {

@@ -15,8 +15,8 @@ const props = defineProps( {
 </script>
 
 <template>
-    <div class="wpuf-flex wpuf-items-center wpuf-justify-center wpuf-h-[50vh] wpuf-justify-center">
-        <div class="wpuf-text-center">
+    <div class="wpuf-h-[50vh] wpuf-flex wpuf-items-center wpuf-justify-center">
+        <div class="wpuf-w-3/4 wpuf-text-center">
             <svg
                 v-if="subscriptionStore.currentSubscriptionStatus === 'all'"
                 class="wpuf-mx-auto wpuf-h-12 wpuf-w-12 wpuf-text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -24,8 +24,10 @@ const props = defineProps( {
             </svg>
             <h3
                 v-if="subscriptionStore.currentSubscriptionStatus === 'all'"
-                class="wpuf-text-3xl wpuf-text-gray-900">{{ __( 'No Subscription created yet!', 'wp-user-frontend' ) }}</h3>
-            <p class="wpuf-text-sm wpuf-text-gray-500 wpuf-text-center">
+                class="wpuf-text-3xl wpuf-text-gray-900">
+                {{ __( 'No Subscription created yet!', 'wp-user-frontend' ) }}
+            </h3>
+            <p class="wpuf-text-sm wpuf-text-gray-500 wpuf-text-center wpuf-mt-8">
                 {{ props.message }}
             </p>
             <div

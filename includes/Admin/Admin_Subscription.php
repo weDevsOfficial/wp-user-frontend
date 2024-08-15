@@ -1060,8 +1060,18 @@ class Admin_Subscription {
             'wpuf_subscription_section_payment', [
                 'payment_settings' => [
                     [
-                        'id'    => 'payment_details',
-                        'label' => __( 'Payment Details', 'wp-user-frontend' ),
+                        'id'     => 'payment_details',
+                        'label'  => __( 'Payment Details', 'wp-user-frontend' ),
+                        'notice' => [
+                            'type'    => 'attention',
+                            'message' => sprintf(
+                                // translators: %s: Payment Settings URL
+                                __(
+                                    'For subscriptions to work correctly, please ensure the payment gateway and related settings are properly configured in the <a href="%s">Payment Settings</a>',
+                                    'wp-user-frontend'
+                                ), admin_url( 'admin.php?page=wpuf-settings' )
+                            ),
+                        ],
                     ],
                 ],
             ]

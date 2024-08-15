@@ -198,10 +198,11 @@ onMounted(() => {
         v-show="showField"
         :class="field.label ? 'wpuf-grid wpuf-grid-cols-3 wpuf-p-4' : 'wpuf-py-4 wpuf-pl-3 wpuf-pr-4'"
         class="wpuf-gap-4">
-        <label v-if="field.label"
-               :for="field.name"
-               class="wpuf-block wpuf-text-sm wpuf-leading-6 wpuf-text-gray-600 wpuf-flex wpuf-items-center">
-            {{ field.label }}
+        <div
+            v-if="field.label"
+           class="wpuf-block wpuf-text-sm wpuf-leading-6 wpuf-text-gray-600 wpuf-flex wpuf-items-center"
+        >
+            <label :for="field.name" v-html="field.label"></label>
             <span
                 v-if="field.tooltip"
                 class="wpuf-tooltip wpuf-cursor-pointer wpuf-ml-2 wpuf-z-10"
@@ -216,7 +217,7 @@ onMounted(() => {
                 <ProBadge v-if="showProBadge" />
                 <ProTooltip />
             </span>
-        </label>
+        </div>
         <div
             class="wpuf-w-full wpuf-col-span-2 wpuf-relative wpuf-group">
             <div

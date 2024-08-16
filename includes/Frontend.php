@@ -139,7 +139,6 @@ class Frontend {
                     ]
                 )
             );
-
             wp_localize_script(
                 'wpuf-frontend-form', 'error_str_obj', [
                     'required'   => __( 'is required', 'wp-user-frontend' ),
@@ -154,6 +153,14 @@ class Frontend {
                         'pack_notice'  => __( 'Please Cancel Your Currently Active Pack first!', 'wp-user-frontend' ),
                     ]
                 )
+
+            wp_localize_script(
+                'wpuf-billing-address',
+                'ajax_object',
+                [
+                    'ajaxurl'     => admin_url( 'admin-ajax.php' ),
+                    'fill_notice' => __( 'Some Required Fields are not filled!', 'wp-user-frontend' ),
+                ]
             );
         }
     }

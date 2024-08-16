@@ -8,7 +8,6 @@ $cs             = new WeDevs\Wpuf\Data\Country_State();
 
 
 if ( isset( $_POST['update_billing_address'] ) ) {
-
     if ( ! isset( $_POST['wpuf_save_address_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['wpuf_save_address_nonce'] ), 'wpuf_address_ajax_action' ) ) {
         return;
     }

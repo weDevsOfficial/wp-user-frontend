@@ -308,8 +308,6 @@ class Menu {
      * @return void
      */
     public function enqueue_settings_page_scripts() {
-        wp_enqueue_style( 'wpuf-admin' );
-        wp_enqueue_script( 'wpuf-admin' );
         wp_enqueue_script( 'wpuf-subscriptions' );
         wp_enqueue_script( 'wpuf-settings' );
 

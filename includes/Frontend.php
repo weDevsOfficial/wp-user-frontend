@@ -153,6 +153,7 @@ class Frontend {
                         'pack_notice'  => __( 'Please Cancel Your Currently Active Pack first!', 'wp-user-frontend' ),
                     ]
                 )
+            );
 
             wp_localize_script(
                 'wpuf-billing-address',

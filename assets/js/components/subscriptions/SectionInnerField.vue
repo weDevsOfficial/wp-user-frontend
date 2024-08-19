@@ -20,9 +20,9 @@ const showField = computed(() => {
 <template>
     <div
         v-show="showField"
-        class="wpuf-grid wpuf-grid-cols-3">
-        <div class="wpuf-block wpuf-text-sm wpuf-leading-6 wpuf-text-gray-600 wpuf-flex wpuf-items-center wpuf-pl-4">
-        <label :for="parentField.name" v-html="parentField.label"></label>
+        class="wpuf-grid wpuf-grid-cols-3 wpuf-p-4 wpuf-gap-4">
+        <div class="wpuf-block wpuf-text-sm wpuf-leading-6 wpuf-text-gray-600 wpuf-flex wpuf-items-center">
+            <label :for="parentField.name" v-html="parentField.label"></label>
             <div
                 v-if="parentField.tooltip"
                 class="wpuf-tooltip wpuf-cursor-pointer wpuf-ml-2 wpuf-z-10"
@@ -32,10 +32,14 @@ const showField = computed(() => {
                           stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
             </div>
-        <div class="wpuf-mr-2 wpuf-contents">
-            <SectionInputField v-for="field in parentField.fields"
-               :field="field" :fieldId="field.id" />
         </div>
+        <div class="wpuf--ml-3 wpuf-flex wpuf-justify-between wpuf-col-span-2 wpuf--mr-3">
+            <SectionInputField
+                v-for="field in parentField.fields"
+                :field="field"
+                :fieldId="field.id"
+                :isChildField="true"
+            />
         </div>
     </div>
 </template>

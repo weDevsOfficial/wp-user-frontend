@@ -624,18 +624,18 @@ class Frontend_Form_Ajax {
         $post = get_post( $post_id );
 
         $post_field_search = [
-            '%post_title%',
-            '%post_content%',
-            '%post_excerpt%',
-            '%tags%',
-            '%category%',
-            '%author%',
-            '%author_email%',
-            '%author_bio%',
-            '%sitename%',
-            '%siteurl%',
-            '%permalink%',
-            '%editlink%',
+            '{post_title}',
+            '{post_content}',
+            '{post_excerpt}',
+            '{tags}',
+            '{category}',
+            '{author}',
+            '{author_email}',
+            '{author_bio}',
+            '{sitename}',
+            '{siteurl}',
+            '{permalink}',
+            '{editlink}',
         ];
 
         $home_url = sprintf( '<a href="%s">%s</a>', home_url(), home_url() );

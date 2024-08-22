@@ -23,7 +23,7 @@ if ( file_exists( $autoload ) ) {
     require_once $autoload;
 }
 
-define( 'WPUF_VERSION', '4.0.10' );
+define( 'WPUF_VERSION', '4.0.11' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -370,6 +370,17 @@ final class WP_User_Frontend {
         if ( array_key_exists( $prop, $this->container ) ) {
             return $this->container[ $prop ];
         }
+    }
+
+    /**
+     * Get the DB version key
+     *
+     * @since WPUF_SINCE
+     *
+     * @return string
+     */
+    public function get_db_version_key() {
+        return 'wpuf_version';
     }
 }
 

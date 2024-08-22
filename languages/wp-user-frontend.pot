@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 4.0.10\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2024-08-08 09:32:14+00:00\n"
+"POT-Creation-Date: 2024-08-22 03:44:53+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -133,7 +133,7 @@ msgstr ""
 #: admin/class-admin-settings.php:119 admin/class-admin-settings.php:167
 #: admin/form-builder/views/form-builder.php:9
 #: includes/Admin/Admin_Settings.php:68 includes/Admin/Menu.php:81
-#: includes/Admin/Menu.php:329 includes/Setup_Wizard.php:154
+#: includes/Admin/Menu.php:327 includes/Setup_Wizard.php:154
 msgid "Settings"
 msgstr ""
 
@@ -649,8 +649,7 @@ msgid "Name"
 msgstr ""
 
 #: admin/html/form-submission-restriction.php:12
-#: includes/Admin/List_Table_Transactions.php:56
-#: includes/Admin/views/support.php:223 includes/WPUF_Privacy.php:363
+#: includes/Admin/List_Table_Transactions.php:56 includes/WPUF_Privacy.php:363
 #: includes/functions/user/edit-user.php:166 templates/registration-form.php:48
 msgid "Email"
 msgstr ""
@@ -1978,16 +1977,16 @@ msgstr ""
 #: includes/Admin/Customizer_Options.php:86
 #: includes/Ajax/Address_Form_Ajax.php:167 includes/Traits/TaxableTrait.php:81
 #: includes/Traits/TaxableTrait.php:190 includes/WPUF_Privacy.php:270
+#: templates/dashboard/billing-address.php:50
 #: templates/dashboard/billing-address.php:51
-#: templates/dashboard/billing-address.php:52
 msgid "Country"
 msgstr ""
 
 #: includes/Admin/Customizer_Options.php:46
 #: includes/Admin/Customizer_Options.php:87
 #: includes/Ajax/Address_Form_Ajax.php:210
+#: templates/dashboard/billing-address.php:89
 #: templates/dashboard/billing-address.php:90
-#: templates/dashboard/billing-address.php:91
 msgid "State/Province/Region"
 msgstr ""
 
@@ -2004,8 +2003,8 @@ msgstr ""
 #: includes/Admin/Customizer_Options.php:49
 #: includes/Admin/Customizer_Options.php:90
 #: includes/Ajax/Address_Form_Ajax.php:265 includes/WPUF_Privacy.php:258
+#: templates/dashboard/billing-address.php:147
 #: templates/dashboard/billing-address.php:148
-#: templates/dashboard/billing-address.php:149
 msgid "City"
 msgstr ""
 
@@ -2621,7 +2620,7 @@ msgstr ""
 msgid "No transactions found."
 msgstr ""
 
-#: includes/Admin/Menu.php:333
+#: includes/Admin/Menu.php:331
 #: includes/Admin/views/post-forms-list-table-view.php:16
 msgid "Submit Ideas"
 msgstr ""
@@ -3000,7 +2999,7 @@ msgstr ""
 msgid "View all Documentations"
 msgstr ""
 
-#: includes/Admin/views/support.php:210
+#: includes/Admin/views/support.php:209
 msgid "Subscribe to Our Newsletter"
 msgstr ""
 
@@ -3010,113 +3009,108 @@ msgid ""
 "<strong>offers</strong> and <strong>news updates</strong>."
 msgstr ""
 
-#: includes/Admin/views/support.php:218 includes/Free/Edit_Profile.php:108
-#: includes/WPUF_Privacy.php:355
-msgid "First Name"
-msgstr ""
-
-#: includes/Admin/views/support.php:229
+#: includes/Admin/views/support.php:252
 msgid "Subscribe"
 msgstr ""
 
-#: includes/Admin/views/support.php:240
+#: includes/Admin/views/support.php:265
 msgid "Plugin Setup"
 msgstr ""
 
-#: includes/Admin/views/support.php:246
+#: includes/Admin/views/support.php:271
 #: includes/functions/settings-options.php:19
 msgid "Frontend Posting"
 msgstr ""
 
-#: includes/Admin/views/support.php:252
+#: includes/Admin/views/support.php:277
 msgid "Frontend Dashboard"
 msgstr ""
 
-#: includes/Admin/views/support.php:258
+#: includes/Admin/views/support.php:283
 msgid "User Registration"
 msgstr ""
 
-#: includes/Admin/views/support.php:264
+#: includes/Admin/views/support.php:289
 msgid "User Login"
 msgstr ""
 
-#: includes/Admin/views/support.php:270
+#: includes/Admin/views/support.php:295
 msgid "Profile Editing"
 msgstr ""
 
-#: includes/Admin/views/support.php:276
+#: includes/Admin/views/support.php:301
 msgid "Subscription &amp; Payment"
 msgstr ""
 
-#: includes/Admin/views/support.php:282 includes/Fields/Field_Contract.php:69
+#: includes/Admin/views/support.php:307 includes/Fields/Field_Contract.php:69
 msgid "Content Restriction"
 msgstr ""
 
-#: includes/Admin/views/support.php:304
+#: includes/Admin/views/support.php:329
 msgid "Learn More About Installation"
 msgstr ""
 
-#: includes/Admin/views/support.php:315
+#: includes/Admin/views/support.php:340
 msgid "Learn More About Frontend Posting"
 msgstr ""
 
-#: includes/Admin/views/support.php:325
+#: includes/Admin/views/support.php:350
 msgid "Learn More About Frontend Dashboard"
 msgstr ""
 
-#: includes/Admin/views/support.php:355
+#: includes/Admin/views/support.php:380
 msgid "Learn More About Registration"
 msgstr ""
 
-#: includes/Admin/views/support.php:371
+#: includes/Admin/views/support.php:396
 msgid "Learn More About Login"
 msgstr ""
 
-#: includes/Admin/views/support.php:388
+#: includes/Admin/views/support.php:413
 msgid "Learn More About Profile Editing"
 msgstr ""
 
-#: includes/Admin/views/support.php:441
+#: includes/Admin/views/support.php:466
 msgid "Learn More About Payments"
 msgstr ""
 
-#: includes/Admin/views/support.php:458
+#: includes/Admin/views/support.php:483
 msgid "Learn More About Content Restriction"
 msgstr ""
 
-#: includes/Admin/views/support.php:467 includes/Admin/views/support.php:469
+#: includes/Admin/views/support.php:492 includes/Admin/views/support.php:494
 msgid "Like The Plugin?"
 msgstr ""
 
-#: includes/Admin/views/support.php:471
+#: includes/Admin/views/support.php:496
 msgid "Your Review is very important to us as it helps us to grow more."
 msgstr ""
 
-#: includes/Admin/views/support.php:473
+#: includes/Admin/views/support.php:498
 msgid "Review Us on WP.org"
 msgstr ""
 
-#: includes/Admin/views/support.php:477 includes/Admin/views/support.php:479
+#: includes/Admin/views/support.php:502 includes/Admin/views/support.php:504
 msgid "Found Any Bugs?"
 msgstr ""
 
-#: includes/Admin/views/support.php:481
+#: includes/Admin/views/support.php:506
 msgid "Report any Bug that you Discovered, Get Instant Solutions."
 msgstr ""
 
-#: includes/Admin/views/support.php:483
+#: includes/Admin/views/support.php:508
 msgid "Report to GitHub"
 msgstr ""
 
-#: includes/Admin/views/support.php:487 includes/Admin/views/support.php:489
+#: includes/Admin/views/support.php:512 includes/Admin/views/support.php:514
 msgid "Need Any Assistance?"
 msgstr ""
 
-#: includes/Admin/views/support.php:491
+#: includes/Admin/views/support.php:516
 msgid "Our EXPERT Support Team is always ready to Help you out."
 msgstr ""
 
-#: includes/Admin/views/support.php:493
+#: includes/Admin/views/support.php:518
 msgid "Contact Support"
 msgstr ""
 
@@ -3124,39 +3118,39 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-#: includes/Ajax/Address_Form_Ajax.php:40
+#: includes/Ajax/Address_Form_Ajax.php:40 includes/Frontend.php:154
 msgid "Some Required Fields are not filled!"
 msgstr ""
 
 #: includes/Ajax/Address_Form_Ajax.php:191 includes/Traits/TaxableTrait.php:109
 #: includes/Traits/TaxableTrait.php:212 includes/Traits/TaxableTrait.php:266
-#: templates/dashboard/billing-address.php:69
+#: templates/dashboard/billing-address.php:68
 msgid "Choose a country"
 msgstr ""
 
 #: includes/Ajax/Address_Form_Ajax.php:224 includes/Traits/TaxableTrait.php:126
 #: includes/Traits/TaxableTrait.php:161 includes/Traits/TaxableTrait.php:234
-#: templates/dashboard/billing-address.php:111
+#: templates/dashboard/billing-address.php:110
 msgid "Choose a state"
 msgstr ""
 
 #: includes/Ajax/Address_Form_Ajax.php:243
-#: templates/dashboard/billing-address.php:134
+#: templates/dashboard/billing-address.php:133
 msgid "Address Line 1 "
 msgstr ""
 
 #: includes/Ajax/Address_Form_Ajax.php:254
-#: templates/dashboard/billing-address.php:142
+#: templates/dashboard/billing-address.php:141
 msgid "Address Line 2 "
 msgstr ""
 
 #: includes/Ajax/Address_Form_Ajax.php:285
-#: templates/dashboard/billing-address.php:167
+#: templates/dashboard/billing-address.php:166
 msgid "Update Billing Address"
 msgstr ""
 
 #: includes/Ajax/Address_Form_Ajax.php:328
-#: templates/dashboard/billing-address.php:32
+#: templates/dashboard/billing-address.php:31
 msgid "Billing address is updated."
 msgstr ""
 
@@ -3620,6 +3614,10 @@ msgstr ""
 
 #: includes/Free/Edit_Profile.php:105
 msgid "Usernames cannot be changed."
+msgstr ""
+
+#: includes/Free/Edit_Profile.php:108 includes/WPUF_Privacy.php:355
+msgid "First Name"
 msgstr ""
 
 #: includes/Free/Edit_Profile.php:113 includes/WPUF_Privacy.php:359
@@ -4684,48 +4682,48 @@ msgstr ""
 msgid "For each"
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:299
+#: includes/Frontend/Frontend_Account.php:302
 msgid "Nonce failure"
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:310
+#: includes/Frontend/Frontend_Account.php:313
 msgid "First Name is a required field."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:313
+#: includes/Frontend/Frontend_Account.php:316
 msgid "Last Name is a required field."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:316
+#: includes/Frontend/Frontend_Account.php:319
 msgid "Email is a required field."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:325
+#: includes/Frontend/Frontend_Account.php:328
 msgid "Please provide a valid email address."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:327
+#: includes/Frontend/Frontend_Account.php:330
 msgid "This email address is already registered."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:332
+#: includes/Frontend/Frontend_Account.php:335
 msgid "Please fill out all password fields."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:335
+#: includes/Frontend/Frontend_Account.php:338
 msgid "Please enter your current password."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:338
+#: includes/Frontend/Frontend_Account.php:341
 msgid "Please re-enter your password."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:341
+#: includes/Frontend/Frontend_Account.php:344
 msgid "New passwords do not match."
 msgstr ""
 
-#: includes/Frontend/Frontend_Account.php:345
-#: includes/Frontend/Frontend_Account.php:353
+#: includes/Frontend/Frontend_Account.php:348
+#: includes/Frontend/Frontend_Account.php:356
 msgid "Your current password is incorrect."
 msgstr ""
 
@@ -4969,15 +4967,15 @@ msgstr ""
 msgid "Using %shortcode% is restricted"
 msgstr ""
 
-#: includes/Frontend.php:145
+#: includes/Frontend.php:144
 msgid "is required"
 msgstr ""
 
-#: includes/Frontend.php:146
+#: includes/Frontend.php:145
 msgid "does not match"
 msgstr ""
 
-#: includes/Frontend.php:147
+#: includes/Frontend.php:146
 msgid "is not valid"
 msgstr ""
 
@@ -6221,16 +6219,16 @@ msgid ""
 "<a href=\"mailto:%s\">webmaster</a> !"
 msgstr ""
 
-#: templates/dashboard/billing-address.php:133
+#: templates/dashboard/billing-address.php:132
 msgid "Address Line 1"
 msgstr ""
 
-#: templates/dashboard/billing-address.php:141
+#: templates/dashboard/billing-address.php:140
 msgid "Address Line 2"
 msgstr ""
 
-#: templates/dashboard/billing-address.php:156
-#: templates/dashboard/billing-address.php:158
+#: templates/dashboard/billing-address.php:155
+#: templates/dashboard/billing-address.php:157
 msgid "Postal/ZIP Code"
 msgstr ""
 

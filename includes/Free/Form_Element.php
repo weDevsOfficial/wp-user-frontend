@@ -191,7 +191,7 @@ class Form_Element extends Pro_Prompt {
         global $post;
 
         $new_mail_body  = "Hi Admin,\r\n";
-        $new_mail_body .= "A new post has been created in your site %sitename% (%siteurl%).\r\n\r\n";
+        $new_mail_body .= "A new post has been created in your site {sitename} ({siteurl}).\r\n\r\n";
 
         $edit_mail_body = "Hi Admin,\r\n";
         $edit_mail_body .= "The post \"{post_title}\" has been updated.\r\n\r\n";

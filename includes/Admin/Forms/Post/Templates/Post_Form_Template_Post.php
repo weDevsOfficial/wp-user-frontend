@@ -157,7 +157,7 @@ class Post_Form_Template_Post extends Form_Template {
                 'new_to'                     => get_option( 'admin_email' ),
                 'new_subject'                => 'New post has been created',
                 'new_body'                   => 'Hi,
-                A new post has been created in your site %sitename% (%siteurl%).
+                A new post has been created in your site {sitename} ({siteurl}).
 
                 Here is the details:
                 Post Title: {post_title}

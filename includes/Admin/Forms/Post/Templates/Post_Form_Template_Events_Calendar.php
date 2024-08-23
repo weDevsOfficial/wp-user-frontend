@@ -192,7 +192,7 @@ class Post_Form_Template_Events_Calendar extends Form_Template{
                 'new_to'       => get_option( 'admin_email' ),
                 'new_subject'  => 'New event has been created',
                 'new_body'     => 'Hi,
-A new event has been created in your site %sitename% (%siteurl%).
+A new event has been created in your site {sitename} ({siteurl}).
 
 Here is the details:
 Event Title: {post_title}

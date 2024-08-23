@@ -199,7 +199,7 @@ class Post_Form_Template_WooCommerce extends Form_Template {
                 'new_to'       => get_option( 'admin_email' ),
                 'new_subject'  => 'New product has been created',
                 'new_body'     => 'Hi,
-A new product has been created in your site %sitename% (%siteurl%).
+A new product has been created in your site {sitename} ({siteurl}).
 
 Here is the details:
 Product Title: {post_title}

@@ -55,8 +55,6 @@ function wpuf_upgrade_4_0_11_migration() {
         '{link}',
     ];
 
-    // error_log( print_r( $form_settings, true ) );
-
     foreach ( $form_settings as $form_setting ) {
         $unserilized = maybe_unserialize( $form_setting->meta_value );
 
@@ -64,7 +62,7 @@ function wpuf_upgrade_4_0_11_migration() {
             $new_body         = $unserilized['notification']['new_body'];
             $updated_new_body = str_replace( $search, $replace, $new_body );
 
-            $unserilized['notification']['email_body'] = $updated_new_body;
+            $unserilized['notification']['new_body'] = $updated_new_body;
         }
 
         if ( isset( $unserilized['notification']['edit_body'] ) ) {

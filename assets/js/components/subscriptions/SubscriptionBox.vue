@@ -209,8 +209,9 @@ const isPasswordProtected = computed( () => {
     <div v-if="showBox"
          class="wpuf-text-base wpuf-justify-between wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-rounded-xl wpuf-shadow wpuf-relative">
         <div
-            @click="componentStore.setCurrentComponent( 'Edit' ); subscriptionStore.setCurrentSubscription(subscription)"
-            class="wpuf-flex wpuf-justify-between wpuf-border-b border-gray-900/5 wpuf-bg-gray-50 wpuf-p-6 wpuf-rounded-t-xl hover:wpuf-cursor-pointer">
+            @click="subscription.post_status !== 'trash' ? [ componentStore.setCurrentComponent( 'Edit' ), subscriptionStore.setCurrentSubscription(subscription) ] : ''"
+            :class="subscription.post_status !== 'trash' ? 'wpuf-cursor-pointer' : ''"
+            class="wpuf-flex wpuf-justify-between wpuf-border-b border-gray-900/5 wpuf-bg-gray-50 wpuf-p-6 wpuf-rounded-t-xl">
             <div>
                 <div class="wpuf-flex wpuf-py-1 wpuf-text-gray-900 wpuf-m-0 wpuf-font-medium"
                      :title="'id: ' + subscription.ID">
@@ -241,7 +242,7 @@ const isPasswordProtected = computed( () => {
             </svg>
             <div
                 v-if="quickMenuStatus"
-                class="wpuf-w-max wpuf--left-20 wpuf-absolute wpuf-rounded-xl wpuf-bg-white wpuf-shadow-lg wpuf-ring-1 wpuf-ring-gray-900/5 wpuf-overflow-hidden">
+                class="wpuf-w-max wpuf--left-20 wpuf-absolute wpuf-rounded-xl wpuf-bg-white wpuf-shadow-lg wpuf-ring-1 wpuf-ring-gray-900/5 wpuf-overflow-hidden wpuf-z-10">
                 <ul v-if="subscription.post_status !== 'trash'">
                     <li @click="componentStore.setCurrentComponent( 'Edit' ); subscriptionStore.setCurrentSubscription(subscription)"
                         class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">

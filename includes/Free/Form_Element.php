@@ -191,17 +191,17 @@ class Form_Element extends Pro_Prompt {
         global $post;
 
         $new_mail_body  = "Hi Admin,\r\n";
-        $new_mail_body .= "A new post has been created in your site %sitename% (%siteurl%).\r\n\r\n";
+        $new_mail_body .= "A new post has been created in your site {sitename} ({siteurl}).\r\n\r\n";
 
         $edit_mail_body = "Hi Admin,\r\n";
-        $edit_mail_body .= "The post \"%post_title%\" has been updated.\r\n\r\n";
+        $edit_mail_body .= "The post \"{post_title}\" has been updated.\r\n\r\n";
 
         $mail_body      = "Here is the details:\r\n";
-        $mail_body .= "Post Title: %post_title%\r\n";
-        $mail_body .= "Content: %post_content%\r\n";
-        $mail_body .= "Author: %author%\r\n";
-        $mail_body .= "Post URL: %permalink%\r\n";
-        $mail_body .= 'Edit URL: %editlink%';
+        $mail_body .= "Post Title: {post_title}\r\n";
+        $mail_body .= "Content: {post_content}\r\n";
+        $mail_body .= "Author: {author}\r\n";
+        $mail_body .= "Post URL: {permalink}\r\n";
+        $mail_body .= 'Edit URL: {editlink}';
 
         $form_settings = wpuf_get_form_settings( $post->ID );
 
@@ -288,13 +288,13 @@ class Form_Element extends Pro_Prompt {
 
         <h3><?php esc_html_e( 'You may use in to, subject & message:', 'wp-user-frontend' ); ?></h3>
         <p>
-            <code>%post_title%</code>, <code>%post_content%</code>, <code>%post_excerpt%</code>, <code>%tags%</code>, <code>%category%</code>,
+            <code>{post_title}</code>, <code>{post_content}</code>, <code>{post_excerpt}</code>, <code>{tags}</code>, <code>{category}</code>,
             <?php
             if ( class_exists( 'WooCommerce' ) ) :
 				?>
-                 <code>%product_cat%</code> <?php endif ?>,
-            <code>%author%</code>, <code>%author_email%</code>, <code>%author_bio%</code>, <code>%sitename%</code>, <code>%siteurl%</code>, <code>%permalink%</code>, <code>%editlink%</code>
-            <br><code>%custom_{NAME_OF_CUSTOM_FIELD}%</code> e.g: <code>%custom_website_url%</code> for <code>website_url</code> meta field
+                <code>{product_cat}</code> <?php endif ?>,
+            <code>{author}</code>, <code>{author_email}</code>, <code>{author_bio}</code>, <code>{sitename}</code>, <code>{siteurl}</code>, <code>{permalink}</code>, <code>{editlink}</code>
+            <br><code>{custom_{NAME_OF_CUSTOM_FIELD}}</code> e.g: <code>{custom_website_url}</code> for <code>website_url</code> meta field
         </p>
 
 		<?php

@@ -148,7 +148,7 @@ class Post_Form_Template_Post extends Form_Template {
                 ],
                 'edit_post_status'           => 'publish',
                 'edit_redirect_to'           => 'same',
-                'update_message'             => __( 'Post has been updated successfully. <a target="_blank" href="%link%">View post</a>', 'wp-user-frontend' ),
+                'update_message'             => __( 'Post has been updated successfully. <a target="_blank" href="{link}">View post</a>', 'wp-user-frontend' ),
                 'edit_url'                   => '',
                 'update_text'                => __( 'Update Post', 'wp-user-frontend' ),
                 'form_template'              => 'post_form_template_post',
@@ -157,28 +157,28 @@ class Post_Form_Template_Post extends Form_Template {
                 'new_to'                     => get_option( 'admin_email' ),
                 'new_subject'                => 'New post has been created',
                 'new_body'                   => 'Hi,
-                A new post has been created in your site %sitename% (%siteurl%).
+                A new post has been created in your site {sitename} ({siteurl}).
 
                 Here is the details:
-                Post Title: %post_title%
-                Description: %post_content%
-                Short Description: %post_excerpt%
-                Author: %author%
-                Post URL: %permalink%
-                Edit URL: %editlink%',
+                Post Title: {post_title}
+                Description: {post_content}
+                Short Description: {post_excerpt}
+                Author: {author}
+                Post URL: {permalink}
+                Edit URL: {editlink}',
                 'edit'                       => 'off',
                 'edit_to'                    => get_option( 'admin_email' ),
                 'edit_subject'               => 'Post has been edited',
                 'edit_body'                  => 'Hi,
-                The post "%post_title%" has been updated.
+                The post "{post_title}" has been updated
 
                 Here is the details:
-                Post Title: %post_title%
-                Description: %post_content%
-                Short Description: %post_excerpt%
-                Author: %author%
-                Post URL: %permalink%
-                Edit URL: %editlink%',
+                Post Title: {post_title}
+                Description: {post_content}
+                Short Description: {post_excerpt}
+                Author: {author}
+                Post URL: {permalink}
+                Edit URL: {editlink}'
                 ],
             ];
     }

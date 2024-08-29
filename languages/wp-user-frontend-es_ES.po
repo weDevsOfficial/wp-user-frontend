@@ -2246,11 +2246,11 @@ msgid "Please select your payment page from admin panel"
 msgstr "Por favor, seleccione su página de pago en el panel de administración"
 
 #: class/payment.php:118
-msgid "Your free package has been activated. Enjoy!"
+msgid "Your Free package has been activated. Enjoy!"
 msgstr "¡Su paquete gratuito ha sido activado!"
 
 #: class/payment.php:120
-msgid "You already have activated a free package previously."
+msgid "You already have activated a Free package previously."
 msgstr "Ya has activado un paquete gratuito anteriormente."
 
 #: class/payment.php:144

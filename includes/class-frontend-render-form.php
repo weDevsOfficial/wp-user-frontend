@@ -759,6 +759,10 @@ class WPUF_Frontend_Render_Form {
                 $row_number    = ! empty( $_POST[ $row_count_key ] ) ? absint( wp_unslash( $_POST[ $row_count_key ] ) ) : 1; // phpcs:ignore WordPress.Security.NonceVerification
                 $repeat_fields['row_number'] = $row_number;
 
+                if ( '_downloadable' === $value['name'] && 'on' === $value_name ) {
+                    $value_name = 'yes';
+                }
+
                 // loop for each column. we have 3 columns for repeated fields
                 for ( $i = 0; $i < $row_number; $i++ ) {
                     $meta_key      = ! empty( $value['name'] ) ? $value['name'] : '';

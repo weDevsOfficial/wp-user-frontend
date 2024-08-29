@@ -535,7 +535,7 @@
 
                         if ( typeof res.type !== 'undefined' && res.type === 'login' ) {
 
-                            if ( confirm(res.error) ) {
+                            if ( confirm(res.data.error) ) {
                                 window.location = res.redirect_to;
                             } else {
                                 submitButton.removeAttr('disabled');
@@ -550,7 +550,7 @@
                             }
 
                             Swal.fire({
-                                html: res.error,
+                                html: res.data.error,
                                 icon: 'warning',
                                 showCancelButton: false,
                                 confirmButtonColor: '#d54e21',
@@ -729,8 +729,8 @@
                             break;
                         }
 
-                        if ( hasRepeat ) {
-                            var repeatItem = $('[data-type="confirm_password"]').eq(0);
+                        if ( hasRepeat === 'yes' ) {
+                            var repeatItem = $(item).closest('.wpuf-form').find('[data-type="confirm_password"]').eq(0);
 
                             if ( repeatItem.val() !== val ) {
                                 errors.push({
@@ -1023,9 +1023,9 @@
                 multi_selection: false,
                 urlstream_upload: true,
                 file_data_name: 'wpuf_file',
-                max_file_size: wpuf_frontend_upload.max_filesize,
-                url: wpuf_frontend_upload.plupload.url,
-                flash_swf_url: wpuf_frontend_upload.flash_swf_url,
+                max_file_size: wpuf_upload.max_filesize,
+                url: wpuf_upload.plupload.url,
+                flash_swf_url: wpuf_upload.flash_swf_url,
                 filters: [{
                     title: 'Allowed Files',
                     extensions: 'jpg,jpeg,gif,png,bmp'
@@ -1405,7 +1405,7 @@
 
             make_media_embed_code: function(content, editor){
                 $.post( ajaxurl, {
-                        action:'make_media_embed_code',
+                        action:'wpuf_make_media_embed_code',
                         content: content
                     },
                     function(data){
@@ -1453,7 +1453,6 @@
                     shortcodeFound: false,
                 };
             }
-
             for ( var i = 0; i < shortcodes.length; i++) {
                 var shortcode = shortcodes[i];
                 var regex = new RegExp(shortcode);
@@ -1560,5 +1559,20 @@
 
         // Set name attribute for google map search field
         $(".wpuf-form-add #wpuf-map-add-location").attr("name", "find_address");
+    });
+
+    $(function($) {
+        // eye icon for password field
+        $(document).on('click', '.wpuf-eye', function () {
+            const input = $( this ).siblings( 'input' );
+
+            if ( input.attr("type") === "password" ) {
+                input.attr( "type", "text" );
+                $( this ).attr( "src", wpuf_frontend.asset_url + '/images/eye-close.svg' );
+            } else {
+                input.attr( "type", "password" );
+                $( this ).attr( "src", wpuf_frontend.asset_url + '/images/eye.svg' );
+            }
+        });
     });
 })(jQuery, window);

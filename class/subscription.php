@@ -17,7 +17,7 @@ class WPUF_Subscription {
         add_filter( 'wpuf_add_post_redirect', [ $this, 'post_redirect' ], 10, 4 );
 
         add_filter( 'wpuf_addpost_notice', [ $this, 'force_pack_notice' ], 20, 3 );
-        add_filter( 'wpuf_can_post', [ $this, 'force_pack_permission' ], 20, 3 );
+        // add_filter( 'wpuf_can_post', [ $this, 'force_pack_permission' ], 20, 3 );
         add_action( 'wpuf_add_post_form_top', [ $this, 'add_post_info' ], 10, 2 );
 
         add_action( 'wpuf_add_post_after_insert', [ $this, 'monitor_new_post' ], 10, 3 );
@@ -274,8 +274,8 @@ class WPUF_Subscription {
      *
      * @since 2.2
      *
-     * @param int      $subscription_id
-     * @param \WP_Post $pack_post
+     * @param int     $subscription_id
+     * @param WP_Post $pack_post
      *
      * @return array
      */
@@ -353,8 +353,8 @@ class WPUF_Subscription {
     /**
      * Save form data
      *
-     * @param int      $post_ID
-     * @param \WP_Post $post
+     * @param int     $post_ID
+     * @param WP_Post $post
      *
      * @return void
      */
@@ -372,9 +372,9 @@ class WPUF_Subscription {
 
         $post_data = wp_unslash( $_POST );
 
-//        if ( ! isset( $post_data['billing_amount'] ) ) {
-//            return;
-//        }
+        //        if ( ! isset( $post_data['billing_amount'] ) ) {
+        //            return;
+        //        }
 
         $expiration_time      = '';
         $enable_post_expir    = '';
@@ -844,7 +844,7 @@ class WPUF_Subscription {
             ! empty( $current_pack['pack_id'] ) &&
             isset( $current_pack['status'] ) &&
             $current_pack['status'] === 'completed'
-         ) {
+        ) {
             global $wpdb;
 
             $user_id         = get_current_user_id();
@@ -1349,9 +1349,9 @@ class WPUF_Subscription {
         $current_time  = current_time( 'mysql' );
         $non_recurrent = array_filter(
             $all_subscription, function ( $pack ) use ( $current_time ) {
-                $pack = maybe_unserialize( $pack->meta_value );
-                return ! empty( $pack['recurring'] ) && $pack['recurring'] === 'no' && $current_time >= $pack['expire'];
-            }
+            $pack = maybe_unserialize( $pack->meta_value );
+            return ! empty( $pack['recurring'] ) && $pack['recurring'] === 'no' && $current_time >= $pack['expire'];
+        }
         );
 
         $remove_feature_item_by_author = [];

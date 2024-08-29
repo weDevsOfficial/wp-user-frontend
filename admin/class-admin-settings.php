@@ -8,21 +8,21 @@ class WPUF_Admin_Settings {
     /**
      * Settings API
      *
-     * @var \WeDevs_Settings_API
+     * @var WeDevs_Settings_API
      */
     private $settings_api;
 
     /**
      * Static instance of this class
      *
-     * @var \self
+     * @var self
      */
     private static $_instance;
 
     /**
      * Public instance of this class
      *
-     * @var \self
+     * @var self
      */
     public $subscribers_list_table_obj;
 

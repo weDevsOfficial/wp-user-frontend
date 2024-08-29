@@ -167,8 +167,8 @@
                     var el = $('#form-preview-stage .wpuf-form .field-items').eq(payload.toIndex);
                     if ('yes' == payload.field.is_meta && state.show_custom_field_tooltip) {
 
-                        var image_one  = wpuf_assets_url.url + '/images/custom-fields/settings.png';
-                        var image_two  = wpuf_assets_url.url + '/images/custom-fields/advance.png';
+                        var image_one  = wpuf_admin_script.asset_url + '/images/custom-fields/settings.png';
+                        var image_two  = wpuf_admin_script.asset_url + '/images/custom-fields/advance.png';
                         var html       = '<div class="wpuf-custom-field-instruction">';
                             html      += '<div class="step-one">';
                             html      += sprintf( '<p style="font-weight: 400">%s<strong><code>%s</code></strong>%s"</p>', __( 'Navigate through', 'wp-user-frontend' ), __( 'WP-admin > WPUF > Settings > Frontend Posting', 'wp-user-frontend' ), __( '- there you have to check the checkbox: "Show custom field data in the post content area', 'wp-user-frontend' ) );
@@ -291,7 +291,7 @@
                 if (state.form_fields[columnFieldIndex].inner_fields[payload.toWhichColumn] === undefined) {
                     state.form_fields[columnFieldIndex].inner_fields[payload.toWhichColumn] = [];
                 } else {
-                    state.form_fields[columnFieldIndex].inner_fields[payload.toWhichColumn].splice(payload.toIndex, 0, payload.field);
+                    state.form_fields[columnFieldIndex].inner_fields[payload.toWhichColumn].splice( payload.toIndex, 0, payload.field );
                 }
             },
 

@@ -1,5 +1,10 @@
 <?php
 
+use WeDevs\Wpuf\Admin\Subscription;
+use WeDevs\Wpuf\Encryption_Helper;
+use WeDevs\Wpuf\Free\Pro_Prompt;
+use WeDevs\Wpuf\Frontend\Payment;
+
 /**
  * Start output buffering
  *
@@ -177,7 +182,7 @@ function wpuf_get_post_types( $args = [] ) {
         }
     }
 
-    return apply_filters( 'wpuf-get-post-types', $post_types );
+    return apply_filters( 'wpuf_get_post_types', $post_types );
 }
 
 /**
@@ -610,13 +615,13 @@ function wpuf_associate_attachment( $attachment_id, $post_id ) {
 function wpuf_update_post( $args ) {
     if ( ! wp_is_post_revision( $args['ID'] ) ) {
         // unhook this function so it doesn't loop infinitely
-        remove_action( 'save_post', [ WPUF_Admin_Posting::init(), 'save_meta' ], 1 );
+        remove_action( 'save_post', [ WeDevs\Wpuf\Admin\Posting::init(), 'save_meta' ], 1 );
 
         // update the post, which calls save_post again
         wp_update_post( $args );
 
         // re-hook this function
-        add_action( 'save_post', [ WPUF_Admin_Posting::init(), 'save_meta' ], 1 );
+        add_action( 'save_post', [ WeDevs\Wpuf\Admin\Posting::init(), 'save_meta' ], 1 );
     }
 }
 
@@ -834,7 +839,7 @@ function wpuf_admin_role() {
  * @return array
  */
 function wpuf_get_gateways( $context = 'admin' ) {
-    $gateways = WPUF_Payment::get_payment_gateways();
+    $gateways = Payment::get_payment_gateways();
     $return   = [];
 
     foreach ( $gateways as $id => $gate ) {
@@ -868,6 +873,10 @@ function wpuf_get_gateways( $context = 'admin' ) {
  */
 function wpuf_show_custom_fields( $content ) {
     global $post;
+
+    if ( ! is_a( $post, '\WP_Post' ) ) {
+        return $content;
+    }
 
     $show_custom = wpuf_get_option( 'cf_show_front', 'wpuf_frontend_posting' );
 
@@ -1096,6 +1105,8 @@ function wpuf_show_custom_fields( $content ) {
                     ob_start();
                     wpuf_shortcode_map_post( $attr['name'], $post->ID );
 
+                    wp_enqueue_script( 'wpuf-google-maps' );
+
                     if ( isset( $attr['directions'] ) && $attr['directions'] ) {
                         $location   = get_post_meta( $post->ID, $attr['name'], true );
                         $def_lat    = isset( $location['lat'] ) ? $location['lat'] : 40.7143528;
@@ -1110,7 +1121,7 @@ function wpuf_show_custom_fields( $content ) {
                     break;
 
                 case 'address':
-                    include_once __DIR__ . '/includes/countries.php';
+                    include_once WPUF_ROOT . '/includes/Data/countries.php';
 
                     $address_html = '';
 
@@ -1196,7 +1207,7 @@ function wpuf_show_custom_fields( $content ) {
 
                 case 'country_list':
                     $value         = get_post_meta( $post->ID, $attr['name'], true );
-                    $country_state = new CountryState();
+                    $country_state = new WeDevs\Wpuf\Data\Country_State();
                     $countries     = $country_state->countries();
 
                     if ( isset( $countries[ $value ] ) ) {
@@ -1270,7 +1281,7 @@ function wpuf_show_custom_fields( $content ) {
     return $content . $html;
 }
 
-add_filter( 'the_content', 'wpuf_show_custom_fields', 10 );
+add_filter( 'the_content', 'wpuf_show_custom_fields' );
 
 /**
  * Map display shortcode
@@ -1435,8 +1446,6 @@ function wpuf_meta_shortcode( $atts ) {
     }
 }
 
-add_shortcode( 'wpuf-meta', 'wpuf_meta_shortcode' );
-
 /**
  * Get the value of a settings field
  *
@@ -1537,7 +1546,7 @@ function wpuf_get_attachment_id_from_url( $attachment_url = '' ) {
  *
  * @global object $wpdb
  */
-function wpufe_ajax_tag_search() {
+function wpuf_ajax_tag_search() {
     if ( ! isset( $_REQUEST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_REQUEST['nonce'] ) ), 'wpuf_ajax_tag_search' ) ) {
         wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
     }
@@ -1581,9 +1590,6 @@ function wpufe_ajax_tag_search() {
     wp_die();
 }
 
-add_action( 'wp_ajax_wpuf-ajax-tag-search', 'wpufe_ajax_tag_search' );
-add_action( 'wp_ajax_nopriv_wpuf-ajax-tag-search', 'wpufe_ajax_tag_search' );
-
 /**
  * Option dropdown helper
  *
@@ -1626,7 +1632,7 @@ function wpuf_load_template( $file, $args = [] ) {
         include $child_theme_dir . $file;
     } elseif ( file_exists( $parent_theme_dir . $file ) ) {
         include $parent_theme_dir . $file;
-    } else {
+    } elseif ( file_exists( $wpuf_dir . $file ) ) {
         include $wpuf_dir . $file;
     }
 }
@@ -1839,7 +1845,7 @@ function wpuf_get_child_cats() {
     $parent_cat  = isset( $_POST['catID'] ) ? sanitize_text_field( wp_unslash( $_POST['catID'] ) ) : '';
     $field_attr = isset( $_POST['field_attr'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['field_attr'] ) ) : [];
 
-    if ( wp_verify_nonce( $nonce, 'wpuf_nonce' ) ) {
+    if ( ! wp_verify_nonce( $nonce, 'wpuf_nonce' ) ) {
         wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
     }
 
@@ -1932,7 +1938,7 @@ function taxnomy_select( $terms, $attr ) {
 /**
  * Returns form setting value
  *
- * @param init   $form_id
+ * @param int   $form_id
  * @param boolen $status
  *
  * @return array
@@ -2069,10 +2075,7 @@ function wpuf_is_license_expired() {
  * @return array
  */
 function wpuf_get_post_form_templates() {
-    require_once WPUF_ROOT . '/class/post-form-templates/post.php';
-
-    $integrations                                 = [];
-    $integrations['WPUF_Post_Form_Template_Post'] = new WPUF_Post_Form_Template_Post();
+    $integrations['post_form_template_post'] = new WeDevs\Wpuf\Admin\Forms\Post\Templates\Post_Form_Template_Post();
 
     return apply_filters( 'wpuf_get_post_form_templates', $integrations );
 }
@@ -2107,7 +2110,7 @@ function wpuf_get_pro_form_previews() {
  * @return array|string
  */
 function wpuf_get_countries( $type = 'array' ) {
-    $countries = include __DIR__ . '/includes/countries-formated.php';
+    $countries = include WPUF_ROOT . '/includes/Data/countries-formated.php';
 
     if ( 'json' === $type ) {
         $countries = json_encode( $countries );
@@ -2175,10 +2178,13 @@ function wpuf_get_account_sections_list( $post_type = 'page' ) {
  *
  * @since 2.4.2
  *
- * @return array
+ * @return array|string
  */
 function wpuf_get_completed_transactions( $args = [] ) {
     global $wpdb;
+
+    $orderby = [ 'id', 'status', 'created' ];
+    $order   = [ 'asc', 'desc' ];
 
     $defaults = [
         'number'  => 20,
@@ -2190,10 +2196,18 @@ function wpuf_get_completed_transactions( $args = [] ) {
 
     $args = wp_parse_args( $args, $defaults );
 
+    if ( ! in_array( $args['orderby'], $orderby ) ) {
+        $args['orderby'] = 'id';
+    }
+
+    if ( ! in_array( $args['order'], $order ) ) {
+        $args['order'] = 'DESC';
+    }
+
     if ( $args['count'] ) {
         return $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}wpuf_transaction" );
     }
-    //phpcs:ignore
+
     $result = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wpuf_transaction ORDER BY `{$args['orderby']}` {$args['order']} LIMIT {$args['offset']}, {$args['number']}", OBJECT );
 
     return $result;
@@ -2209,6 +2223,9 @@ function wpuf_get_completed_transactions( $args = [] ) {
 function wpuf_get_pending_transactions( $args = [] ) {
     global $wpdb;
 
+    $orderby = [ 'id', 'status', 'created' ];
+    $order   = [ 'asc', 'desc' ];
+
     $defaults = [
         'number'  => 20,
         'offset'  => 0,
@@ -2218,6 +2235,14 @@ function wpuf_get_pending_transactions( $args = [] ) {
     ];
 
     $args = wp_parse_args( $args, $defaults );
+
+    if ( ! in_array( $args['orderby'], $orderby ) ) {
+        $args['orderby'] = 'id';
+    }
+
+    if ( ! in_array( $args['order'], $order ) ) {
+        $args['order'] = 'DESC';
+    }
 
     $pending_args = [
         'post_type'      => 'wpuf_order',
@@ -2278,7 +2303,7 @@ function wpuf_get_pending_transactions( $args = [] ) {
  *
  * @param $args
  *
- * @return array
+ * @return array|int|void
  */
 function wpuf_get_all_transactions( $args = [] ) {
     global $wpdb;
@@ -3001,11 +3026,11 @@ function wpuf_create_sample_form( $post_title = 'Sample Form', $post_type = 'wpu
                 'new'          => 'on',
                 'new_to'       => get_option( 'admin_email' ),
                 'new_subject'  => 'New post created',
-                'new_body'     => "Hi Admin, \r\n\r\nA new post has been created in your site %sitename% (%siteurl%). \r\n\r\nHere is the details: \r\nPost Title: %post_title% \r\nContent: %post_content% \r\nAuthor: %author% \r\nPost URL: %permalink% \r\nEdit URL: %editlink%",
+                'new_body'     => "Hi Admin, \r\n\r\nA new post has been created in your site {sitename} ({siteurl}). \r\n\r\nHere is the details: \r\nPost Title: {post_title} \r\nContent: {post_content} \r\nAuthor: {author} \r\nPost URL: {permalink} \r\nEdit URL: {editlink}",
                 'edit'         => 'off',
                 'edit_to'      => get_option( 'admin_email' ),
                 'edit_subject' => 'A post has been edited',
-                'edit_body'    => "Hi Admin, \r\n\r\nThe post \"%post_title%\" has been updated. \r\n\r\nHere is the details: \r\nPost Title: %post_title% \r\nContent: %post_content% \r\nAuthor: %author% \r\nPost URL: %permalink% \r\nEdit URL: %editlink%",
+                'edit_body'    => "Hi Admin, \r\n\r\nThe post \"{post_title}\" has been updated. \r\n\r\nHere is the details: \r\nPost Title: {post_title} \r\nContent: {post_content} \r\nAuthor: {author} \r\nPost URL: {permalink} \r\nEdit URL: {editlink}",
             ],
         ];
     }
@@ -3167,8 +3192,8 @@ function wpuf_get_draft_post_status( $form_settings ) {
  *
  * @since 2.6.0
  *
- * @param array    $state
- * @param \WP_Post $post
+ * @param array   $state
+ * @param WP_Post $post
  *
  * @return array
  */
@@ -3228,7 +3253,7 @@ add_filter( 'display_post_states', 'wpuf_admin_page_states', 10, 2 );
  * @return string|bool encoded string or false if encryption failed
  */
 function wpuf_encryption( $id, $nonce = null ) {
-    $auth_keys  = WPUF_Encryption_Helper::get_encryption_auth_keys();
+    $auth_keys  = WeDevs\Wpuf\Encryption_Helper::get_encryption_auth_keys();
     $secret_key = $auth_keys['auth_key'];
     $secret_iv  = ! empty( $nonce ) ? base64_decode( $nonce ) : $auth_keys['auth_salt'];
 
@@ -3241,7 +3266,7 @@ function wpuf_encryption( $id, $nonce = null ) {
         }
     }
 
-    $ciphertext_raw = openssl_encrypt( $id, WPUF_Encryption_Helper::get_encryption_method(), $secret_key, OPENSSL_RAW_DATA, $secret_iv );
+    $ciphertext_raw = openssl_encrypt( $id, Encryption_Helper::get_encryption_method(), $secret_key, OPENSSL_RAW_DATA, $secret_iv );
     $hmac           = hash_hmac( 'sha256', $ciphertext_raw, $secret_key, true );
 
     return base64_encode( $secret_iv.$hmac.$ciphertext_raw );
@@ -3260,7 +3285,7 @@ function wpuf_encryption( $id, $nonce = null ) {
  */
 function wpuf_decryption( $id, $nonce = null ) {
     // get auth keys
-    $auth_keys = WPUF_Encryption_Helper::get_encryption_auth_keys();
+    $auth_keys = Encryption_Helper::get_encryption_auth_keys();
     if ( empty( $auth_keys ) ) {
         return false;
     }
@@ -3279,11 +3304,11 @@ function wpuf_decryption( $id, $nonce = null ) {
     }
 
     $c              = base64_decode( $id );
-    $ivlen          = WPUF_Encryption_Helper::get_encryption_nonce_length();
+    $ivlen          = Encryption_Helper::get_encryption_nonce_length();
     $secret_iv      = substr( $c, 0, $ivlen );
     $hmac           = substr( $c, $ivlen, 32 );
     $ciphertext_raw = substr( $c, $ivlen + 32 );
-    $original_text  = openssl_decrypt( $ciphertext_raw, WPUF_Encryption_Helper::get_encryption_method(), $secret_key, OPENSSL_RAW_DATA, $secret_iv );
+    $original_text  = openssl_decrypt( $ciphertext_raw, Encryption_Helper::get_encryption_method(), $secret_key, OPENSSL_RAW_DATA, $secret_iv );
     $calcmac        = hash_hmac( 'sha256', $ciphertext_raw, $secret_key, true );
 
     // timing attack safe comparison
@@ -3392,14 +3417,14 @@ function is_wpuf_profile_form_builder() {
  *
  * @param int|WP_User $user_id
  *
- * @return \WPUF_User
+ * @return WeDevs\Wpuf\WPUF_User
  */
 function wpuf_get_user( $user = null ) {
     if ( ! $user ) {
         $user = wp_get_current_user();
     }
 
-    return new WPUF_User( $user );
+    return new WeDevs\Wpuf\WPUF_User( $user );
 }
 
 /**
@@ -3411,7 +3436,7 @@ function wpuf_get_user( $user = null ) {
  */
 function wpuf_set_all_terms_as_allowed() {
     if ( class_exists( 'WP_User_Frontend_Pro' ) ) {
-        $subscriptions  = WPUF_Subscription::init()->get_subscriptions();
+        $subscriptions  = ( new Subscription() )->get_subscriptions();
         $allowed_term   = [];
 
         foreach ( $subscriptions as $pack ) {
@@ -3539,7 +3564,7 @@ function get_formatted_mail_body( $message, $subject ) {
         $content = $header . '<pre>' . $message . '</pre>' . $footer;
 
         if ( ! class_exists( 'Emogrifier' ) ) {
-            require_once WPUF_PRO_INCLUDES . '/libs/Emogrifier.php';
+            require_once WPUF_PRO_ROOT . '/assets/vendor/Emogrifier.php';
         }
 
         try {
@@ -3783,10 +3808,10 @@ function wpuf_get_terms( $taxonomy = 'category' ) {
  * @return void
  */
 function wpuf_ajax_get_states_field() {
-    check_ajax_referer( 'wpuf-ajax-address' );
+    check_ajax_referer( 'wpuf_ajax_address' );
 
     $country = isset( $_POST['country'] ) ? sanitize_text_field( wp_unslash( $_POST['country'] ) ) : '';
-    $cs        = new CountryState();
+    $cs        = new WeDevs\Wpuf\Data\Country_State();
     $countries = $cs->countries();
     $states    = $cs->getStates( $countries[ $country ] );
 
@@ -3807,8 +3832,6 @@ function wpuf_ajax_get_states_field() {
 
     wp_send_json( $response ); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
 }
-add_action( 'wp_ajax_wpuf-ajax-address', 'wpuf_ajax_get_states_field' );
-add_action( 'wp_ajax_nopriv_wpuf-ajax-address', 'wpuf_ajax_get_states_field' );
 
 /**
  * Performs tax calculations and updates billing address
@@ -3816,7 +3839,7 @@ add_action( 'wp_ajax_nopriv_wpuf-ajax-address', 'wpuf_ajax_get_states_field' );
  * @return void
  */
 function wpuf_update_billing_address() {
-    check_ajax_referer( 'wpuf-ajax-address' );
+    check_ajax_referer( 'wpuf_ajax_address' );
 
     ob_start();
 
@@ -3854,8 +3877,6 @@ function wpuf_update_billing_address() {
         die();
     }
 }
-add_action( 'wp_ajax_wpuf_update_billing_address', 'wpuf_update_billing_address' );
-add_action( 'wp_ajax_nopriv_wpuf_update_billing_address', 'wpuf_update_billing_address' );
 
 /**
  * Retrieve user address
@@ -3907,6 +3928,8 @@ function wpuf_get_user_address( $user_id = 0 ) {
  * @param array $args settings field args
  */
 function wpuf_settings_multiselect( $args ) {
+    wpuf_require_once( WPUF_ROOT . '/Lib/WeDevs_Settings_API.php' );
+
     $settings = new WeDevs_Settings_API();
     $value    = $settings->get_option( $args['id'], $args['section'], $args['std'] );
     $value    = is_array( $value ) ? (array) $value : [];
@@ -4023,9 +4046,10 @@ add_action( 'wpuf_before_form_render', 'wpuf_show_form_limit_message' );
  * @return void
  */
 function wpuf_frontend_post_revision( $post_id, $form_settings ) {
-    $post = get_post( $post_id );
+    $post      = get_post( $post_id );
+    $post_type = ! empty( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
 
-    if ( post_type_supports( $form_settings['post_type'], 'revisions' ) ) {
+    if ( post_type_supports( $post_type, 'revisions' ) ) {
         $revisions = wp_get_post_revisions(
             $post_id, [
                 'order' => 'ASC',
@@ -4214,7 +4238,7 @@ function wpuf_recursive_sanitize_text_field($arr){
  */
 function wpuf_payment_success_page( $data ){
     $gateway          = ! empty( $data['wpuf_payment_method'] ) ? $data['wpuf_payment_method'] : '';
-    $success_query    = "wpuf_${gateway}_success";
+    $success_query    = 'wpuf_' . $gateway . '_success';
     $redirect_page    = '';
     $redirect_page_id = 0;
     $payment_method   = ! empty( $data['post_data']['wpuf_payment_method'] ) ? $data['post_data']['wpuf_payment_method'] : '';
@@ -4233,9 +4257,11 @@ function wpuf_payment_success_page( $data ){
         $redirect_page_id  = $ppp_success_page ? $ppp_success_page : $redirect_page_id;
     }
 
-    $redirect_page = $redirect_page_id ? add_query_arg( 'action', $success_query,  untrailingslashit( get_permalink( $redirect_page_id ) ) ) : add_query_arg( 'action', $success_query, untrailingslashit( get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) ) ) );
+    $redirect_page = $redirect_page_id ? add_query_arg( 'action', $success_query,  untrailingslashit( get_permalink( $redirect_page_id ) ) ) : add_query_arg( 'action', $success_query, untrailingslashit( get_permalink( wpuf_get_option( 'subscription_page',
+                                                                                                                                                                                                                                           'wpuf_payment' ) ) ) );
     //for bank
-    $redirect_page =  ! empty( $data['wpuf_payment_method'] ) && 'bank' === $data['wpuf_payment_method'] ? get_permalink( wpuf_get_option( 'bank_success', 'wpuf_payment' ) ) : $redirect_page;
+    $redirect_page =  ! empty( $data['wpuf_payment_method'] ) && 'bank' === $data['wpuf_payment_method'] ? get_permalink( wpuf_get_option( 'bank_success',
+                                                                                                                                           'wpuf_payment' ) ) : $redirect_page;
 
     return $redirect_page;
 }
@@ -4438,7 +4464,9 @@ function wpuf_unset_conditional( $settings ) {
                     }
                 );
 
-                unset( $field['settings'][ array_keys( $index )[0] ] );
+                if ( ! empty( $index ) ) {
+                    unset( $field['settings'][ array_keys( $index )[0] ] );
+                }
             }
 
             return $field;
@@ -4463,7 +4491,7 @@ function wpuf_is_post_editable( $post ) {
     $show_edit = false;
 
     $current_user      = wpuf_get_user();
-    $user_subscription = new WPUF_User_Subscription( $current_user );
+    $user_subscription = new WeDevs\Wpuf\User_Subscription( $current_user );
     $user_sub          = $user_subscription->current_pack();
     $sub_id            = $current_user->subscription()->current_pack_id();
 
@@ -4546,7 +4574,7 @@ function wpuf_get_pro_preview_html() {
     $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
     return sprintf( '<div class="pro-field-overlay">
                         <a href="%1$s" target="%2$s" class="%3$s">Upgrade to PRO<span class="pro-icon icon-white"> %4$s</span></a>
-                    </div>', esc_url( WPUF_Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro',
+                    </div>', esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro',
                     file_get_contents( $crown_icon ) );
 }
 
@@ -4581,13 +4609,112 @@ function wpuf_get_pro_preview_tooltip() {
 
     $html .= '</ul>';
     $html .= sprintf( '<div class="pro-link"><a href="%1$s" target="%2$s" class="%3$s">Upgrade to PRO<span class="pro-icon icon-white"> %4$s</span></a></div>',
-              esc_url( WPUF_Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro',
+              esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro',
                       file_get_contents( $crown_icon ) );
 
     $html .= '<i></i>';
     $html .= '</div>';
 
     return $html;
+}
+
+/**
+ * Get post forms created by WPUF
+ *
+ * @since 2.9.0
+ * @since 4.0.0 moved to wpuf-functions.php from WPUF_Frontend_Account.php
+ *
+ * @return array $forms
+ *
+ */
+function wpuf_get_post_forms() {
+    $args = [
+        'post_type'   => 'wpuf_forms',
+        'post_status' => 'any',
+        'orderby'     => 'DESC',
+        'order'       => 'ID',
+        'numberposts' => - 1,
+    ];
+    $posts = get_posts( $args );
+    $forms = [];
+    if ( ! empty( $posts ) ) {
+        foreach ( $posts as $post ) {
+            $forms[ $post->ID ] = $post->post_title;
+        }
+    }
+
+    return $forms;
+}
+
+/**
+ * require_once a file upon checking the existence of the file
+ *
+ * @since 4.0.0
+ *
+ * @param $file_location
+ *
+ * @return void
+ */
+function wpuf_require_once( $file_location ) {
+    if ( file_exists( $file_location ) ) {
+        require_once $file_location;
+    }
+}
+
+/**
+ * include_once a file upon checking the existence of the file
+ *
+ * @since 4.0.0
+ *
+ * @param $file_location
+ *
+ * @return void
+ */
+function wpuf_include_once( $file_location ) {
+    if ( file_exists( $file_location ) ) {
+        include_once $file_location;
+    }
+}
+
+/**
+ * Guess a suitable username for registration based on email address
+ *
+ * @param string $email email address
+ *
+ * @return string username
+ */
+function wpuf_guess_username( $email ) {
+	// username from email address
+	$username = sanitize_user( substr( $email, 0, strpos( $email, '@' ) ) );
+
+	if ( ! username_exists( $username ) ) {
+		return $username;
+	}
+
+	// try to add some random number in username
+	// and may be we got our username
+	$username .= rand( 1, 199 );
+
+	if ( ! username_exists( $username ) ) {
+		return $username;
+	}
+}
+
+/**
+ * Clear Schedule lock
+ *
+ * @since 3.0.2
+ */
+function wpuf_clear_schedule_lock() {
+	check_ajax_referer( 'wpuf_nonce', 'nonce' );
+
+	$post_id = isset( $_POST['post_id'] ) ? intval( wp_unslash( $_POST['post_id'] ) ) : '';
+
+	if ( ! empty( $post_id ) ) {
+		update_post_meta( $post_id, '_wpuf_lock_user_editing_post_time', '' );
+		update_post_meta( $post_id, '_wpuf_lock_editing_post', 'no' );
+	}
+	exit;
 }
 
 /**
@@ -4619,7 +4746,7 @@ function wpuf_get_single_user_roles( $user_id ) {
     $user = get_user_by( 'id', $user_id );
 
     if ( ! $user ) {
-        return false;
+        return [];
     }
 
     return ( array ) $user->roles;
@@ -4635,6 +4762,12 @@ function wpuf_get_single_user_roles( $user_id ) {
  */
 function wpuf_modify_shortcodes( $content ) {
     global $pagenow;
+
+    $post = get_post();
+
+    if ( ! ( $post instanceof WP_Post ) ) {
+        return $content;
+    }
 
     if ( 'post.php' === $pagenow ) {
         return $content;
@@ -4664,9 +4797,8 @@ function wpuf_modify_shortcodes( $content ) {
 
             $content = preg_replace_callback(
                 $pattern, function( $matches ) {
-                    return str_replace( [ '[', ']' ], [ '&lbrack;', '&rbrack;' ], $matches[0] );
-                }, $content
-            );
+                return str_replace( [ '[', ']' ], [ '&lbrack;', '&rbrack;' ], $matches[0] );
+            }, $content );
         }
     }
 
@@ -4675,3 +4807,21 @@ function wpuf_modify_shortcodes( $content ) {
 
 // @todo: move this to frontend class
 add_filter( 'the_content', 'wpuf_modify_shortcodes' );
+
+/**
+ * Hide the Google map button
+ *
+ * @since 4.0.0 function moved from Posting class
+ *
+ * @return void
+ */
+function wpuf_hide_google_map_button() {
+    echo wp_kses( "<style>
+                button.button[data-name='custom_map'] {
+                    display: none;
+                }
+              </style>", [
+        'style' =>  [],
+        'button'    =>  []
+    ] );
+}

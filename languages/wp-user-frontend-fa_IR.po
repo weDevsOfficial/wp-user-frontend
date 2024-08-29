@@ -1834,11 +1834,11 @@ msgid "Please select your payment page from admin panel"
 msgstr "لطفا برگه پرداخت خود را از ناحیه مدیریت انتخاب کنید"
 
 #: class/payment.php:117
-msgid "Your free package has been activated. Enjoy!"
+msgid "Your Free package has been activated. Enjoy!"
 msgstr "بسته رایگان شما فعال شده است. لذت ببرید!"
 
 #: class/payment.php:119
-msgid "You already have activated a free package previously."
+msgid "You already have activated a Free package previously."
 msgstr "شما در حال حاضر یک بسته رایگان از قبل فعال کرده اید."
 
 #: class/payment.php:143

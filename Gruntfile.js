@@ -28,6 +28,7 @@ module.exports = function(grunt) {
                 files: {
                     '<%= dirs.css %>/wpuf-form-builder.css': ['admin/form-builder/assets/less/form-builder.less'],
                     '<%= dirs.css %>/admin.css': ['<%= dirs.less %>/admin.less'],
+                    '<%= dirs.css %>/admin/whats-new.css': ['<%= dirs.less %>/whats-new.less'],
                     '<%= dirs.css %>/registration-forms.css': ['<%= dirs.less %>/registration-forms.less']
                 }
             }
@@ -138,7 +139,6 @@ module.exports = function(grunt) {
                     '!**/readme.md',
                     '!**/docs.md',
                     '!**/*~',
-                    '!vendor/**',
                     '!**/log.txt',
                     '!**/package-lock.json',
                     '!**/appsero.json',
@@ -218,7 +218,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks( 'grunt-notify' );
     grunt.loadNpmTasks( 'grunt-wp-readme-to-markdown' );
 
-    grunt.registerTask( 'default', [ 'less', 'concat' ] );
+    grunt.registerTask( 'default', [ 'less', 'concat', 'uglify', 'i18n' ] );
 
     // file auto generation
     grunt.registerTask( 'i18n', [ 'makepot' ] );

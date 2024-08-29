@@ -1324,6 +1324,9 @@ body .wpuf-dashboard-container .wpuf-dashboard-content .wpuf-fields textarea:not
 body .wpuf-dashboard-container .wpuf-dashboard-content .wpuf-fields input:not([type="reset"]) {
   width: 100%;
 }
+body .wpuf-dashboard-container .wpuf-dashboard-content .wpuf-fields input[type="radio"] {
+  width: initial;
+}
 body .wpuf-dashboard-container .items-table-container,
 body .wpuf-dashboard-container .wpuf-dashboard-content.invoices {
   max-width: 100%;
@@ -1833,4 +1836,10 @@ body .wpuf-attachment-upload-filelist + .moxie-shim {
 /* field specific style to override our default padding*/
 .iti--allow-dropdown input[type="text"] {
   padding-left: 52px !important;
+}
+img.wpuf-eye {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%) translateX(-6%);
 }

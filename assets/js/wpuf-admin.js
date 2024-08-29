@@ -130,60 +130,6 @@ jQuery(function($) {
 
     var publishBtn = body.find('#post input#publish');
 
-    // for classic editor
-    publishBtn.click( function( event ) {
-        event.preventDefault();
-
-        var shortcodesFound = [];
-        var postContent = '';
-
-        // Check if we are on the post editing screen
-        if ($('#wp-content-editor-container').length > 0) {
-            var activeEditor = $('#wp-content-editor-container .switch-tmce.active').length > 0 ? 'visual' : 'text';
-
-            if (activeEditor === 'visual') {
-                postContent = tinyMCE.activeEditor.getContent(); // Get the content from the Visual tab
-            } else {
-                postContent = $('#wp-content-editor-container textarea').val(); // Get the content from the Text tab
-            }
-        }
-
-        for ( var i = 0; i < shortcodes.length; i++) {
-            var shortcode = shortcodes[i];
-            var regex = new RegExp(shortcode);
-            if (!regex.test( postContent )) {
-                continue;
-            }
-
-            shortcodesFound.push(shortcode);
-        }
-
-        // no shortcodes found
-        if ( ! shortcodesFound.length ) {
-            publishBtn.unbind('click').click();
-
-            return;
-        }
-
-        Swal.fire({
-            title: 'Are you sure to update the post?',
-            html: wpuf_admin_script.protected_shortcodes_message,
-            icon: 'warning',
-            padding: '0px 2em 2em',
-            width: '35em',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Proceed with Update',
-            cancelButtonText: 'Remove Shortcode & Publish'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                publishBtn.unbind('click').click();
-            }
-        });
-    });
-    // end classic editor
-
     // warn the admin before updating a post if it's contains a restricted shortcode
     setTimeout(function() {
 
@@ -248,4 +194,27 @@ jQuery(function($) {
         // for gutenberg
         postButton.on('click', checkForShortcodes);
     }, 500);
+
+    // align with WooCommerce _downloadable meta key
+    var downloadableRadio = $('.wpuf-fields input[type="radio"][name="_downloadable"]');
+    var downloadableCheckbox = $('#woocommerce-product-data input[type="checkbox"][name="_downloadable"]');
+    downloadableRadio.click(function() {
+        var downloadable = $(this).val();
+
+        if ($(this).is(':checked') && downloadable === 'yes') {
+            downloadableCheckbox.prop('checked', true);
+        } else {
+            downloadableCheckbox.prop('checked', false);
+        }
+    });
+
+    downloadableCheckbox.change(function() {
+        if ($(this).is(':checked')) {
+            $('.wpuf-fields input[type="radio"][name="_downloadable"][value="yes"]').prop('checked', true);
+            $('.wpuf-fields input[type="radio"][name="_downloadable"][value="no"]').prop('checked', false);
+        } else {
+            $('.wpuf-fields input[type="radio"][name="_downloadable"][value="yes"]').prop('checked', false);
+            $('.wpuf-fields input[type="radio"][name="_downloadable"][value="no"]').prop('checked', true);
+        }
+    });
 });

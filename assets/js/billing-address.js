@@ -55,7 +55,7 @@ jQuery(function($){
     $( document.body ).on('change', 'select#wpuf_biiling_country', function() {
         var $this = $(this), $tr = $this.closest('tr');
         var data = {
-            action: 'wpuf-ajax-address',
+            action: 'wpuf_ajax_address',
             country: $(this).val(),
             field_name: $("#wpuf_biiling_state").attr("name"),
             _wpnonce: $("#_wpnonce").val()

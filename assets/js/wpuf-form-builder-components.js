@@ -753,6 +753,7 @@ Vue.component('field-visibility', {
         }
     }
 });
+
 /**
  * Field template: Checkbox
  */

@@ -22,6 +22,16 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
 
     protected $form_id;
 
+    /**
+     * @var mixed|string
+     */
+    private $exclude_type;
+
+    /**
+     * @var mixed
+     */
+    private $exclude;
+
     public function __construct( $tax_name, $taxonomy, $post_id = null, $user_id = null ) {
         //phpcs:ignore
         $this->name       = __( ucfirst( $tax_name ), 'wp-user-frontend' );

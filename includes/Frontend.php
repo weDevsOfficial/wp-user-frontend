@@ -135,7 +135,11 @@ class Frontend {
                             'wp-user-frontend'
                         ),
                         'protected_shortcodes'         => wpuf_get_protected_shortcodes(),
+                        // translators: %shortcode% is the shortcode name
                         'protected_shortcodes_message' => __( 'Using %shortcode% is restricted', 'wp-user-frontend' ),
+                        'password_warning_weak'        => __( 'Password minimum strength should be weak', 'wp-user-frontend' ),
+                        'password_warning_medium'      => __( 'Password minimum strength should be medium', 'wp-user-frontend' ),
+                        'password_warning_strong'      => __( 'Password minimum strength should be strong', 'wp-user-frontend' ),
                     ]
                 )
             );

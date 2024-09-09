@@ -101,8 +101,7 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
                         'selected'         => $default_category,
                         'taxonomy'         => $tax->name,
                     ];
-
-                    $tax = '<tr class="wpuf_settings_taxonomy"> <th> Default '. $post_type_selected . ' '. $tax->name .'</th> <td>
+                    $tax = '<tr class="wpuf_settings_taxonomy"> <th>' . __( 'Default ', 'wp-user-frontend' ) . $post_type_selected . ' '. $tax->name .'</th> <td>
                     <select multiple name="wpuf_settings[default_'.$tax->name.'][]">';
                     $categories = get_terms( $args );
 

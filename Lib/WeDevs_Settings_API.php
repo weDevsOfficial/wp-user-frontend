@@ -538,7 +538,7 @@ class WeDevs_Settings_API {
     function show_navigation() {
         $html = '<h2 class="nav-tab-wrapper">';
         $html .= '<div id="wpuf-search-section">
-        <input type="text" id="wpuf-settings-search" placeholder="Search in settings">
+        <input type="text" id="wpuf-settings-search" placeholder="'. esc_attr__( 'Search in settings', 'wp-user-frontend' ) .'">
         <span class="dashicons dashicons-no-alt"></span>
     </div>';
         $count = count( $this->settings_sections );

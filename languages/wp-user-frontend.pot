@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 4.0.10\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2024-09-05 05:07:35+00:00\n"
+"POT-Creation-Date: 2024-09-09 10:48:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -32,7 +32,7 @@ msgstr ""
 msgid "Bank Payment Success Page"
 msgstr ""
 
-#: Lib/Gateway/Bank.php:40 includes/functions/settings-options.php:518
+#: Lib/Gateway/Bank.php:40 includes/functions/settings-options.php:525
 msgid "After payment users will be redirected here"
 msgstr ""
 
@@ -87,6 +87,10 @@ msgstr ""
 
 #: Lib/WeDevs_Settings_API.php:409
 msgid "Choose File"
+msgstr ""
+
+#: Lib/WeDevs_Settings_API.php:541
+msgid "Search in settings"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
@@ -355,7 +359,7 @@ msgstr ""
 
 #: admin/html/form-settings-display.php:40 admin/template.php:64
 #: includes/Admin/Admin_Subscription.php:229
-#: includes/Admin/Admin_Subscription.php:705
+#: includes/Admin/Admin_Subscription.php:719
 #: includes/Admin/Forms/Admin_Template.php:69
 #: includes/Admin/Forms/Post/Templates/List_Table_Admin_Post_Forms.php:371
 #: includes/Fields/Field_Contract.php:300
@@ -363,17 +367,17 @@ msgstr ""
 #: includes/Fields/Field_Contract.php:407
 #: includes/Fields/Field_Contract.php:471
 #: includes/Fields/Form_Field_Checkbox.php:84
-#: includes/Fields/Form_Field_Radio.php:88 includes/Free/Form_Element.php:504
+#: includes/Fields/Form_Field_Radio.php:88 includes/Free/Form_Element.php:525
 #: includes/Frontend.php:113 includes/functions/settings-options.php:123
-#: includes/functions/settings-options.php:135
-#: includes/functions/settings-options.php:233
-#: includes/functions/settings-options.php:244
+#: includes/functions/settings-options.php:142
+#: includes/functions/settings-options.php:240
+#: includes/functions/settings-options.php:251
 msgid "No"
 msgstr ""
 
 #: admin/html/form-settings-display.php:41 admin/template.php:63
 #: includes/Admin/Admin_Subscription.php:227
-#: includes/Admin/Admin_Subscription.php:705
+#: includes/Admin/Admin_Subscription.php:719
 #: includes/Admin/Forms/Admin_Template.php:66
 #: includes/Admin/Forms/Post/Templates/List_Table_Admin_Post_Forms.php:370
 #: includes/Fields/Field_Contract.php:299
@@ -381,11 +385,11 @@ msgstr ""
 #: includes/Fields/Field_Contract.php:406
 #: includes/Fields/Field_Contract.php:470
 #: includes/Fields/Form_Field_Checkbox.php:83
-#: includes/Fields/Form_Field_Radio.php:87 includes/Free/Form_Element.php:503
+#: includes/Fields/Form_Field_Radio.php:87 includes/Free/Form_Element.php:524
 #: includes/Frontend.php:112 includes/functions/settings-options.php:122
-#: includes/functions/settings-options.php:134
-#: includes/functions/settings-options.php:232
-#: includes/functions/settings-options.php:243
+#: includes/functions/settings-options.php:141
+#: includes/functions/settings-options.php:239
+#: includes/functions/settings-options.php:250
 msgid "Yes"
 msgstr ""
 
@@ -402,7 +406,7 @@ msgid "Payment Options"
 msgstr ""
 
 #: admin/html/form-settings-payment.php:26 includes/Setup_Wizard.php:330
-#: includes/functions/settings-options.php:431
+#: includes/functions/settings-options.php:438
 msgid "Enable Payments"
 msgstr ""
 
@@ -442,7 +446,7 @@ msgstr ""
 msgid "Cost of pay per post after a subscription pack limit is reached."
 msgstr ""
 
-#: admin/html/form-settings-payment.php:67
+#: admin/html/form-settings-payment.php:67 includes/Admin/views/support.php:589
 msgid "Pay Per Post"
 msgstr ""
 
@@ -467,7 +471,7 @@ msgid "Amount to be charged per post"
 msgstr ""
 
 #: admin/html/form-settings-payment.php:88
-#: includes/functions/settings-options.php:517
+#: includes/functions/settings-options.php:524
 msgid "Payment Success Page"
 msgstr ""
 
@@ -493,32 +497,32 @@ msgid "No Change"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:31
-#: admin/html/form-settings-post.php:130 includes/Free/Form_Element.php:395
+#: admin/html/form-settings-post.php:129 includes/Free/Form_Element.php:416
 msgid "Redirect To"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:36
-#: admin/html/form-settings-post.php:135
+#: admin/html/form-settings-post.php:134
 msgid "Newly created post"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:37
-#: admin/html/form-settings-post.php:136 includes/Free/Form_Element.php:400
+#: admin/html/form-settings-post.php:135 includes/Free/Form_Element.php:421
 msgid "Same Page"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:38
-#: admin/html/form-settings-post.php:137 includes/Free/Form_Element.php:401
+#: admin/html/form-settings-post.php:136 includes/Free/Form_Element.php:422
 msgid "To a page"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:39
-#: admin/html/form-settings-post.php:138 includes/Free/Form_Element.php:402
+#: admin/html/form-settings-post.php:137 includes/Free/Form_Element.php:423
 msgid "To a custom URL"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:48
-#: admin/html/form-settings-post.php:147 includes/Free/Form_Element.php:411
+#: admin/html/form-settings-post.php:146 includes/Free/Form_Element.php:432
 msgid "After successfull submit, where the page will redirect to"
 msgstr ""
 
@@ -527,12 +531,12 @@ msgid "Post Update Message"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:61
-#: admin/html/form-settings-post.php:160 includes/Free/Form_Element.php:431
+#: admin/html/form-settings-post.php:159 includes/Free/Form_Element.php:452
 msgid "Page"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:76
-#: admin/html/form-settings-post.php:175 includes/Free/Form_Element.php:454
+#: admin/html/form-settings-post.php:174 includes/Free/Form_Element.php:475
 msgid "Custom URL"
 msgstr ""
 
@@ -592,6 +596,7 @@ msgstr ""
 #: admin/html/form-settings-post.php:56
 #: includes/Admin/Admin_Subscription.php:455
 #: includes/Admin/Forms/Post/Templates/List_Table_Admin_Post_Forms.php:323
+#: includes/Free/Form_Element.php:109
 msgid "Post Status"
 msgstr ""
 
@@ -603,41 +608,46 @@ msgstr ""
 msgid "- None -"
 msgstr ""
 
-#: admin/html/form-settings-post.php:120
+#: admin/html/form-settings-post.php:104
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:103
+msgid "Default "
+msgstr ""
+
+#: admin/html/form-settings-post.php:119
 msgid ""
 "If users are not allowed to choose any category, this category will be used "
 "instead (if post type supports)"
 msgstr ""
 
-#: admin/html/form-settings-post.php:153
+#: admin/html/form-settings-post.php:152
 msgid "Message to show"
 msgstr ""
 
-#: admin/html/form-settings-post.php:182
+#: admin/html/form-settings-post.php:181
 msgid "Comment Status"
 msgstr ""
 
-#: admin/html/form-settings-post.php:185
+#: admin/html/form-settings-post.php:184
 msgid "Open"
 msgstr ""
 
-#: admin/html/form-settings-post.php:186
+#: admin/html/form-settings-post.php:185
 msgid "Closed"
 msgstr ""
 
-#: admin/html/form-settings-post.php:192
+#: admin/html/form-settings-post.php:191
 msgid "Submit Post Button text"
 msgstr ""
 
-#: admin/html/form-settings-post.php:199
+#: admin/html/form-settings-post.php:198
 msgid "Post Draft"
 msgstr ""
 
-#: admin/html/form-settings-post.php:204
+#: admin/html/form-settings-post.php:203
 msgid "Enable Saving as draft"
 msgstr ""
 
-#: admin/html/form-settings-post.php:206
+#: admin/html/form-settings-post.php:205
 msgid "It will show a button to save as draft"
 msgstr ""
 
@@ -734,7 +744,7 @@ msgid "Choose which roles can submit posts."
 msgstr ""
 
 #: admin/html/form-submission-restriction.php:117
-#: includes/functions/settings-options.php:303
+#: includes/functions/settings-options.php:310
 msgid "Unauthorized Message"
 msgstr ""
 
@@ -765,7 +775,7 @@ msgid "From"
 msgstr ""
 
 #: admin/html/form-submission-restriction.php:144
-#: includes/Free/Form_Element.php:234 includes/Free/Form_Element.php:271
+#: includes/Free/Form_Element.php:255 includes/Free/Form_Element.php:292
 msgid "To"
 msgstr ""
 
@@ -982,8 +992,8 @@ msgstr ""
 #: includes/Admin/Promotion.php:305 includes/Admin/Promotion.php:309
 #: includes/Ajax/Admin_Form_Builder_Ajax.php:27
 #: includes/Ajax/Admin_Form_Builder_Ajax.php:31
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:78
 #: includes/Ajax/Admin_Form_Builder_Ajax.php:82
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:86
 #: includes/Integrations/WPUF_ACF_Compatibility.php:76
 #: includes/Integrations/WPUF_ACF_Compatibility.php:94
 #: includes/Integrations/WPUF_ACF_Compatibility.php:160
@@ -1541,7 +1551,7 @@ msgstr ""
 msgid "To cancel the pack, press the following cancel button"
 msgstr ""
 
-#: class/subscription.php:867 includes/Admin/Admin_Subscription.php:812
+#: class/subscription.php:867 includes/Admin/Admin_Subscription.php:826
 #: includes/Admin/Forms/Admin_Form_Builder.php:292
 #: includes/Admin/List_Table_Subscribers.php:144
 #: includes/Admin/Subscription.php:873 includes/Frontend/Payment.php:246
@@ -1603,7 +1613,7 @@ msgid "Sign Up"
 msgstr ""
 
 #: class/subscription.php:969 includes/Admin/Admin_Subscription.php:210
-#: includes/Admin/Admin_Subscription.php:607
+#: includes/Admin/Admin_Subscription.php:621
 #: includes/Admin/Subscription.php:973
 #: includes/Free/templates/page-registration-form.php:94
 #: includes/Frontend/Frontend_Account.php:227
@@ -1679,7 +1689,7 @@ msgid "Duration"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:325
-#: includes/Admin/Forms/Admin_Form.php:243
+#: includes/Admin/Forms/Admin_Form.php:243 includes/Admin/views/support.php:77
 msgid "Payment Settings"
 msgstr ""
 
@@ -1700,7 +1710,7 @@ msgid "Expires In:"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:374
-#: includes/Admin/Admin_Subscription.php:658
+#: includes/Admin/Admin_Subscription.php:672
 msgid "Number of featured item"
 msgstr ""
 
@@ -1717,20 +1727,20 @@ msgid "The featured item will be removed if the subscription expires"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:421
-#: includes/Admin/Forms/Admin_Form.php:247 includes/Free/Form_Element.php:61
+#: includes/Admin/Forms/Admin_Form.php:247 includes/Free/Form_Element.php:59
 msgid "Post Expiration"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:426 includes/Free/Form_Element.php:65
+#: includes/Admin/Admin_Subscription.php:426 includes/Free/Form_Element.php:63
 msgid "Enable Post Expiration"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:438
-#: includes/Admin/Admin_Subscription.php:715 includes/Free/Form_Element.php:71
+#: includes/Admin/Admin_Subscription.php:729 includes/Free/Form_Element.php:78
 msgid "Post Expiration Time"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:468 includes/Free/Form_Element.php:122
+#: includes/Admin/Admin_Subscription.php:468 includes/Free/Form_Element.php:127
 msgid "Status of post after post expiration time is over "
 msgstr ""
 
@@ -1750,96 +1760,98 @@ msgstr ""
 msgid "Expiration Message"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:490 includes/Free/Form_Element.php:141
-msgid "You may use: {post_author} {post_url} {blogname} {post_title} {post_status}"
+#: includes/Admin/Admin_Subscription.php:495 includes/Free/Form_Element.php:149
+#. translators: %1$s: {post_author}, %2$s: {post_url}, %3$s: {blogname}, %4$s:
+#. {post_title}, %5$s: {post_status}
+msgid "You may use: %1$s %2$s %3$s %4$s %5$s"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:552
+#: includes/Admin/Admin_Subscription.php:566
 msgid "Day(s)"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:553
+#: includes/Admin/Admin_Subscription.php:567
 msgid "Week(s)"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:554
+#: includes/Admin/Admin_Subscription.php:568
 msgid "Month(s)"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:555
+#: includes/Admin/Admin_Subscription.php:569
 msgid "Year(s)"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:599
+#: includes/Admin/Admin_Subscription.php:613
 msgid "WPUF Subscription Information"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:611
+#: includes/Admin/Admin_Subscription.php:625
 msgid "For each %1$s %2$s"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:612
+#: includes/Admin/Admin_Subscription.php:626
 #: includes/Frontend/Frontend_Account.php:237
 #. translators: %s: number of installments
 msgid ", for %s installments"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:623
+#: includes/Admin/Admin_Subscription.php:637
 msgid "Subcription Name"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:633
+#: includes/Admin/Admin_Subscription.php:647
 msgid "Billing Info"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:647
+#: includes/Admin/Admin_Subscription.php:661
 msgid "This user is using recurring subscription pack"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:653
+#: includes/Admin/Admin_Subscription.php:667
 msgid "Remaining Posting Count"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:682
+#: includes/Admin/Admin_Subscription.php:696
 msgid "Subscription Expiration Info"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:691 includes/User_Subscription.php:366
+#: includes/Admin/Admin_Subscription.php:705 includes/User_Subscription.php:366
 #: templates/dashboard/subscription.php:50
 msgid "Expire date:"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:704
+#: includes/Admin/Admin_Subscription.php:718
 msgid "Post Expiration Enabled"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:741
+#: includes/Admin/Admin_Subscription.php:755
 msgid "Allowed Taxonomy Terms"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:811
+#: includes/Admin/Admin_Subscription.php:825
 msgid "Assign Package"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:818
+#: includes/Admin/Admin_Subscription.php:832
 msgid "Select Package:"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:821
-#: includes/functions/settings-options.php:632 wpuf-functions.php:215
+#: includes/Admin/Admin_Subscription.php:835
+#: includes/functions/settings-options.php:639 wpuf-functions.php:215
 #: wpuf-functions.php:1838 wpuf-functions.php:2103
 msgid "&mdash; Select &mdash;"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:825
+#: includes/Admin/Admin_Subscription.php:839
 msgid "Only non-recurring pack can be assigned"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:836
+#: includes/Admin/Admin_Subscription.php:850
 msgid "Delete Package"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:895
+#: includes/Admin/Admin_Subscription.php:909
 msgid "Learn more about <a href=\"%s\" target=\"_blank\">Subscription</a>"
 msgstr ""
 
@@ -1969,7 +1981,7 @@ msgstr ""
 
 #: includes/Admin/Customizer_Options.php:44
 #: includes/Admin/Customizer_Options.php:85
-#: includes/functions/settings-options.php:342
+#: includes/functions/settings-options.php:349
 msgid "Show Billing Address"
 msgstr ""
 
@@ -2126,8 +2138,8 @@ msgstr ""
 msgid "Display Settings"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form.php:266 includes/Free/Form_Element.php:222
-#: includes/Free/Form_Element.php:260
+#: includes/Admin/Forms/Admin_Form.php:266 includes/Free/Form_Element.php:239
+#: includes/Free/Form_Element.php:281
 msgid "Notification"
 msgstr ""
 
@@ -2315,7 +2327,7 @@ msgstr ""
 #: includes/Admin/Forms/Post/Templates/List_Table_Admin_Post_Forms.php:325
 #: includes/Admin/views/premium.php:39
 #: includes/Fields/Form_Pro_Upgrade_Fields.php:187
-#: includes/Free/Form_Element.php:35
+#: includes/Free/Form_Element.php:33
 msgid "Shortcode"
 msgstr ""
 
@@ -2598,7 +2610,7 @@ msgid "Trans ID"
 msgstr ""
 
 #: includes/Admin/List_Table_Transactions.php:58
-#: includes/Free/Form_Element.php:17
+#: includes/Free/Form_Element.php:15
 msgid "Date"
 msgstr ""
 
@@ -2695,7 +2707,7 @@ msgid "This integration is not installed."
 msgstr ""
 
 #: includes/Admin/template-parts/modal.php:105
-#: includes/Free/Free_Loader.php:984 includes/Free/Free_Loader.php:1066
+#: includes/Free/Free_Loader.php:987 includes/Free/Free_Loader.php:1069
 #: includes/Free/templates/page-registration-form.php:156
 msgid "Upgrade to PRO"
 msgstr ""
@@ -2746,7 +2758,7 @@ msgstr ""
 
 #: includes/Admin/views/premium.php:33
 #: includes/Fields/Form_Pro_Upgrade_Fields.php:47
-#: includes/Free/Form_Element.php:20
+#: includes/Free/Form_Element.php:18
 msgid "Country List"
 msgstr ""
 
@@ -2765,7 +2777,7 @@ msgstr ""
 
 #: includes/Admin/views/premium.php:37
 #: includes/Fields/Form_Pro_Upgrade_Fields.php:99
-#: includes/Free/Form_Element.php:38
+#: includes/Free/Form_Element.php:36
 msgid "Action Hook"
 msgstr ""
 
@@ -2783,7 +2795,7 @@ msgstr ""
 
 #: includes/Admin/views/premium.php:42
 #: includes/Fields/Form_Pro_Upgrade_Fields.php:77
-#: includes/Free/Form_Element.php:18
+#: includes/Free/Form_Element.php:16
 msgid "File Upload"
 msgstr ""
 
@@ -2816,7 +2828,7 @@ msgid ""
 msgstr ""
 
 #: includes/Admin/views/premium.php:71 includes/Admin/views/premium.php:74
-#: includes/Free/Form_Element.php:500 includes/Pro_Upgrades.php:85
+#: includes/Free/Form_Element.php:521 includes/Pro_Upgrades.php:85
 msgid "Conditional Logic"
 msgstr ""
 
@@ -2837,7 +2849,7 @@ msgid ""
 msgstr ""
 
 #: includes/Admin/views/premium.php:93 includes/Free/Free_Loader.php:92
-#: includes/Free/Free_Loader.php:1025
+#: includes/Free/Free_Loader.php:1028
 msgid "Modules"
 msgstr ""
 
@@ -2987,6 +2999,155 @@ msgstr ""
 msgid "Number of subscribers per page:"
 msgstr ""
 
+#: includes/Admin/views/support.php:7
+msgid "How to Install"
+msgstr ""
+
+#: includes/Admin/views/support.php:11
+msgid "License Activation"
+msgstr ""
+
+#: includes/Admin/views/support.php:15
+msgid "Shortcodes"
+msgstr ""
+
+#: includes/Admin/views/support.php:19
+msgid "User Dashboard"
+msgstr ""
+
+#: includes/Admin/views/support.php:25
+msgid "Creating Posting Forms"
+msgstr ""
+
+#: includes/Admin/views/support.php:29
+msgid "Available Form Elements"
+msgstr ""
+
+#: includes/Admin/views/support.php:33
+msgid "Creating Forms Using The Form Templates"
+msgstr ""
+
+#: includes/Admin/views/support.php:37
+msgid "How to Allow Guest Posting"
+msgstr ""
+
+#: includes/Admin/views/support.php:41
+msgid "Setup Automatic Post Expiration"
+msgstr ""
+
+#: includes/Admin/views/support.php:45
+msgid "How to create Multistep forms"
+msgstr ""
+
+#: includes/Admin/views/support.php:51
+msgid "Setting up Frontend Dashboard for Users"
+msgstr ""
+
+#: includes/Admin/views/support.php:55
+msgid "Unified My Account Page"
+msgstr ""
+
+#: includes/Admin/views/support.php:59
+msgid "Showing meta fields in frontend"
+msgstr ""
+
+#: includes/Admin/views/support.php:65
+#: includes/functions/settings-options.php:14
+msgid "General Options"
+msgstr ""
+
+#: includes/Admin/views/support.php:69
+msgid "Dashboard Settings"
+msgstr ""
+
+#: includes/Admin/views/support.php:73
+msgid "Login Registration Settings"
+msgstr ""
+
+#: includes/Admin/views/support.php:83
+msgid "Creating Registration Form"
+msgstr ""
+
+#: includes/Admin/views/support.php:87
+msgid "Creating a Multistep Registration Form"
+msgstr ""
+
+#: includes/Admin/views/support.php:91
+msgid "Setting Up Confirmation Message"
+msgstr ""
+
+#: includes/Admin/views/support.php:95
+msgid "Paid Membership Registration"
+msgstr ""
+
+#: includes/Admin/views/support.php:99
+msgid "Setting Up Email Verification for New Users"
+msgstr ""
+
+#: includes/Admin/views/support.php:105 includes/Admin/views/support.php:524
+msgid "Creating a Profile Editing Form"
+msgstr ""
+
+#: includes/Admin/views/support.php:111
+msgid "Creating Subscription Packs"
+msgstr ""
+
+#: includes/Admin/views/support.php:115
+msgid "Payment & Gateway Settings"
+msgstr ""
+
+#: includes/Admin/views/support.php:119
+msgid "Setting Up Recurring Payment"
+msgstr ""
+
+#: includes/Admin/views/support.php:123
+msgid "Forcing Subscription Pack For Post Submission"
+msgstr ""
+
+#: includes/Admin/views/support.php:127
+msgid "How to Charge for Each Post Submission?"
+msgstr ""
+
+#: includes/Admin/views/support.php:131
+msgid "Creating Coupons"
+msgstr ""
+
+#: includes/Admin/views/support.php:138
+msgid "Action Hook Field"
+msgstr ""
+
+#: includes/Admin/views/support.php:142
+msgid "Add a New Tab on My Account Page"
+msgstr ""
+
+#: includes/Admin/views/support.php:146
+msgid "Insert/update checkbox or radio field data as serialize"
+msgstr ""
+
+#: includes/Admin/views/support.php:150
+msgid "Filters"
+msgstr ""
+
+#: includes/Admin/views/support.php:154
+msgid "Actions"
+msgstr ""
+
+#: includes/Admin/views/support.php:158
+msgid "Changelog"
+msgstr ""
+
+#: includes/Admin/views/support.php:164
+msgid "Content Restriction for Logged in Users"
+msgstr ""
+
+#: includes/Admin/views/support.php:168
+msgid "Restricting Content by User Roles"
+msgstr ""
+
+#: includes/Admin/views/support.php:172
+msgid "Restricting Contents for Different Subscription Packs"
+msgstr ""
+
 #: includes/Admin/views/support.php:187
 msgid "Related Articles:"
 msgstr ""
@@ -3017,16 +3178,16 @@ msgstr ""
 msgid "Plugin Setup"
 msgstr ""
 
-#: includes/Admin/views/support.php:271
+#: includes/Admin/views/support.php:271 includes/Admin/views/support.php:403
 #: includes/functions/settings-options.php:19
 msgid "Frontend Posting"
 msgstr ""
 
-#: includes/Admin/views/support.php:277
+#: includes/Admin/views/support.php:277 includes/Admin/views/support.php:430
 msgid "Frontend Dashboard"
 msgstr ""
 
-#: includes/Admin/views/support.php:283
+#: includes/Admin/views/support.php:283 includes/Admin/views/support.php:460
 msgid "User Registration"
 msgstr ""
 
@@ -3042,75 +3203,390 @@ msgstr ""
 msgid "Subscription &amp; Payment"
 msgstr ""
 
-#: includes/Admin/views/support.php:307 includes/Fields/Field_Contract.php:69
+#: includes/Admin/views/support.php:307 includes/Admin/views/support.php:611
+#: includes/Fields/Field_Contract.php:69
 msgid "Content Restriction"
 msgstr ""
 
-#: includes/Admin/views/support.php:329
+#: includes/Admin/views/support.php:315
+msgid "Plugin Setup Guide"
+msgstr ""
+
+#: includes/Admin/views/support.php:317
+msgid ""
+"Setting up WP User Frontend is very easy. Here are few things that you "
+"should consider."
+msgstr ""
+
+#: includes/Admin/views/support.php:334
+#. translators: %1$s and %2$s are HTML tags
+msgid ""
+"You can create amazing frontend posting forms with more than 20 useful form "
+"fields."
+msgstr ""
+
+#: includes/Admin/views/support.php:366
+#. translators: %1$s: {login_forms}, %2$s: {subscription_forms}, %3$s:
+#. {guest_posting}
+msgid ""
+"Add customized %1$slogin forms%2$s using simple shortcodes and override "
+"default WordPress login and registration."
+msgstr ""
+
+#: includes/Admin/views/support.php:376
+#. translators: %1$s: {login_forms}, %2$s: {subscription_forms}, %3$s:
+#. {guest_posting}
+msgid "Create %1$ssubscription packs%2$s and charge users for posting."
+msgstr ""
+
+#: includes/Admin/views/support.php:389
+#. translators: %1$s: {login_forms}, %2$s: {subscription_forms}, %3$s:
+#. {guest_posting}
+msgid ""
+"Enable %1$sguest posting%2$s and earn from each posts without any "
+"difficulties."
+msgstr ""
+
+#: includes/Admin/views/support.php:398
 msgid "Learn More About Installation"
 msgstr ""
 
-#: includes/Admin/views/support.php:340
+#: includes/Admin/views/support.php:407
+msgid ""
+"%1$sPosting Forms are used to %2$screate new%3$s blog posts, WooCommerce "
+"Products, Directory Listing Entries etc. You can create any custom post "
+"type from the front using this feature. You just need to create a form with "
+"necessary fields and embed the form in a page and your users will be able "
+"to create posts from frontend in no time.%4$s\n"
+"                %5$sTo create a posting form, go to %6$sPost Forms%7$s → "
+"Add Form and start building your ultimate frontend posting forms.%8$s\n"
+"                %9$sAfter building your forms, %10$suse the shortcodes%11$s "
+"on any new page or post and publish them before sharing.%12$s"
+msgstr ""
+
+#: includes/Admin/views/support.php:425
 msgid "Learn More About Frontend Posting"
 msgstr ""
 
-#: includes/Admin/views/support.php:350
+#: includes/Admin/views/support.php:434
+msgid ""
+"%1$sWP User Frontend generates %2$sFrontend Dashboard%3$s and %4$sMy "
+"Account%5$s page for all your users. Using these pages, they can get a list "
+"of their posts and subscriptions directly at frontend. They can also "
+"customize the details of their profile. You don’t need to give them access "
+"to the backend at all!%6$s"
+msgstr ""
+
+#: includes/Admin/views/support.php:443
+msgid ""
+"%1$sTo create this page, %2$screate a new page%3$s, put a title and simply "
+"copy-paste the following shortcode: %4$s[wpuf_dashboard]%5$s. "
+"Alternatively, there is an unified %6$smy account page%7$s as well. "
+"Finally, hit the publish button and you are done.%8$s"
+msgstr ""
+
+#: includes/Admin/views/support.php:455
 msgid "Learn More About Frontend Dashboard"
 msgstr ""
 
-#: includes/Admin/views/support.php:380
-msgid "Learn More About Registration"
+#: includes/Admin/views/support.php:464
+msgid ""
+"%1$sYou can create as many registration forms as you want and assign them "
+"to different user roles. Creating Registration forms are easy. Navigate to "
+"%2$sRegistration Forms%3$s.%4$s%5$sYou can create new forms just you would "
+"create posts in WordPress.%6$s"
 msgstr ""
 
-#: includes/Admin/views/support.php:396
-msgid "Learn More About Login"
+#: includes/Admin/views/support.php:475
+msgid "Give your form a name and click on Form Elements on the right sidebar."
 msgstr ""
 
-#: includes/Admin/views/support.php:413
-msgid "Learn More About Profile Editing"
+#: includes/Admin/views/support.php:476
+msgid "The form elements will appear to the Form Editor tab with some options."
 msgstr ""
 
-#: includes/Admin/views/support.php:466
-msgid "Learn More About Payments"
+#: includes/Admin/views/support.php:479
+msgid "From settings you can –"
+msgstr ""
+
+#: includes/Admin/views/support.php:482
+msgid "Assign New User Roles"
 msgstr ""
 
 #: includes/Admin/views/support.php:483
-msgid "Learn More About Content Restriction"
+msgid "Can redirect to any custom page or same page with successful message"
 msgstr ""
 
-#: includes/Admin/views/support.php:492 includes/Admin/views/support.php:494
-msgid "Like The Plugin?"
+#: includes/Admin/views/support.php:486
+msgid "Showing Registration Form"
 msgstr ""
 
-#: includes/Admin/views/support.php:496
-msgid "Your Review is very important to us as it helps us to grow more."
+#: includes/Admin/views/support.php:489
+msgid ""
+"By using short-code you can show your registration form into any page or "
+"post."
 msgstr ""
 
-#: includes/Admin/views/support.php:498
-msgid "Review Us on WP.org"
+#: includes/Admin/views/support.php:490
+msgid "You will get different short-codes for each registration forms separately."
 msgstr ""
 
-#: includes/Admin/views/support.php:502 includes/Admin/views/support.php:504
-msgid "Found Any Bugs?"
+#: includes/Admin/views/support.php:494
+msgid "Learn More About Registration"
+msgstr ""
+
+#: includes/Admin/views/support.php:499
+#: includes/functions/settings-options.php:405
+msgid "Login Page"
+msgstr ""
+
+#: includes/Admin/views/support.php:501
+msgid ""
+"WP User Frontend Automatically creates important pages when you install it "
+"for the first time. You can also create login forms manually."
 msgstr ""
 
 #: includes/Admin/views/support.php:506
+#. translators: 1: URL to the settings page, 2: opening <a> tag, 3: closing
+#. </a> tag, 4: opening <strong> tag, 5: closing </strong> tag, 6: opening
+#. <strong> tag, 7: closing </strong> tag, 8: shortcode [wpuf-login]
+msgid ""
+"Navigate to %2$sSettings%3$s → %4$sLogin/Registration%5$s tab. In this "
+"page, you will find several useful settings related to WPUF login. You can "
+"override default registration and login forms with WPUF login & "
+"registration feature if you want. To do this, check the "
+"%6$sLogin/Registration override option%7$s. You can also specify the login "
+"page. WPUF automatically adds the default login page that it has created. "
+"If you manually create one, use the following shortcode – %8$s. Simply, "
+"create a new page and put the above shortcode. Finally, publish the page "
+"and add it to the Login Page option in the settings."
+msgstr ""
+
+#: includes/Admin/views/support.php:521
+msgid "Learn More About Login"
+msgstr ""
+
+#: includes/Admin/views/support.php:529
+#. translators: 1: shortcode for registration form, 2: shortcode for profile
+#. edit, 3: opening <strong> tag, 4: closing </strong> tag, 5: opening <strong>
+#. tag, 6: closing </strong> tag
+msgid ""
+"When you are making a registration form, you get two shortcodes: For "
+"embedding the registration form: this is something like %1$s. For profile "
+"edit page: this is something like %2$s. You already know how to make a "
+"registration form in WP User Frontend Pro and embed that into a page. The "
+"very same process is for creating the profile edit page. How to get the "
+"shortcode: We assume that you already have created a registration form. If "
+"not, you can use the default registration form, that was created "
+"automatically while installing the plugin. So to get the shortcode, "
+"navigate to %3$sUser Frontend%4$s → %5$sRegistration Forms%6$s and you will "
+"be able to see the shortcodes on the right side of your screen."
+msgstr ""
+
+#: includes/Admin/views/support.php:555
+msgid "Learn More About Profile Editing"
+msgstr ""
+
+#: includes/Admin/views/support.php:560
+msgid "Subscription Payment"
+msgstr ""
+
+#: includes/Admin/views/support.php:562
+msgid ""
+"WP User Frontend allows you to create as many subscription packs you want. "
+"Simply, navigate to - WP-Admin → User Frontend → Subscription → Add "
+"Subscription"
+msgstr ""
+
+#: includes/Admin/views/support.php:565
+msgid "Enter your subscription name and pack description."
+msgstr ""
+
+#: includes/Admin/views/support.php:566
+msgid ""
+"Include the billing amount and the validity of the pack. You can choose "
+"day, week, month or year in case of expiry."
+msgstr ""
+
+#: includes/Admin/views/support.php:567
+msgid ""
+"You can enable post expiration if you want to expire post after a certain "
+"amount of time. To do so check the Enable Post Expiration box."
+msgstr ""
+
+#: includes/Admin/views/support.php:568
+msgid ""
+"This will enable some new settings. You have to specify post expiration "
+"time and the post status after the post expires."
+msgstr ""
+
+#: includes/Admin/views/support.php:569
+msgid ""
+"You can also notify users when a post expires. To do so, check the Send "
+"Mail option."
+msgstr ""
+
+#: includes/Admin/views/support.php:570
+msgid ""
+"Now, enter the message you want to send the user in the Post Expiration "
+"Message field."
+msgstr ""
+
+#: includes/Admin/views/support.php:571
+msgid ""
+"You can specify the number of posts you are giving away with this "
+"subscription pack. If you want to provide unlimited posts, enter ‘-1’ in "
+"the number of posts field."
+msgstr ""
+
+#: includes/Admin/views/support.php:572
+msgid ""
+"You can also set the number of pages and custom CSS. For unlimited value, "
+"enter ‘-1’."
+msgstr ""
+
+#: includes/Admin/views/support.php:573
+msgid ""
+"WPUF offers you recurring payment while creating a Subscription pack. "
+"Enable this option if you want to set recurring payment for this pack. It "
+"will provide you some new options for the recurring payment."
+msgstr ""
+
+#: includes/Admin/views/support.php:574
+msgid "Now, select the billing cycle."
+msgstr ""
+
+#: includes/Admin/views/support.php:575
+msgid ""
+"You can also stop the billing cycle if you want. If you don’t want to stop "
+"the cycle select Never."
+msgstr ""
+
+#: includes/Admin/views/support.php:576
+msgid ""
+"To enable trial period, check the Trial box. You can set the trial amount "
+"to be paid by the user for trial period."
+msgstr ""
+
+#: includes/Admin/views/support.php:577
+msgid "Now, specify the trial period. Enter number of days, week, month or year."
+msgstr ""
+
+#: includes/Admin/views/support.php:578
+msgid ""
+"You can also enable post number rollback. If enabled, number of posts will "
+"be restored if the post is deleted."
+msgstr ""
+
+#: includes/Admin/views/support.php:579
+msgid "Finally, click on the publish button to create the subscription pack."
+msgstr ""
+
+#: includes/Admin/views/support.php:582
+msgid "Subscription Packs on Frontend"
+msgstr ""
+
+#: includes/Admin/views/support.php:583
+msgid ""
+"To view the created subscription packs on frontend, visit the Subscription "
+"page."
+msgstr ""
+
+#: includes/Admin/views/support.php:586
+msgid "Payment &amp; Gateway Settings"
+msgstr ""
+
+#: includes/Admin/views/support.php:587
+msgid ""
+"Post subscription and payment system is a module where you can add paid "
+"posting system with WP User Frontend. You can introduce two types of "
+"payment system. Pay per post and subscription pack based."
+msgstr ""
+
+#: includes/Admin/views/support.php:592
+msgid ""
+"With this you can introduce pay per post feature where users pay to publish "
+"their posts each post. When pay per post is enabled from “Settings → "
+"Payments → Charge for posting“, users see a notice right before the post "
+"creation form in frontend about payment. When the submits a post, the post "
+"status gets pending and he is redirected to the payment page (to setup the "
+"payment page, create a Page Payment and select the page at “Settings → "
+"Payments → Payment Page“. No shortcode is needed). Currently by default "
+"PayPal is only supported gateway. Upon selecting PayPal, he is redirected "
+"to PayPal for payment. After successful payment he is redirected back to "
+"the site and the post gets published."
+msgstr ""
+
+#: includes/Admin/views/support.php:595
+msgid "Subscription Pack"
+msgstr ""
+
+#: includes/Admin/views/support.php:597
+msgid ""
+"There is an another option for charged posting. With this feature, you can "
+"create unlimited subscription pack. In each pack, you can configure the "
+"number of posts, validity date and the cost."
+msgstr ""
+
+#: includes/Admin/views/support.php:598
+msgid ""
+"When a user buys a subscription package, he gets to create some posts (e.g. "
+"10) in X days (e.g: 30 days). If he crosses the number of posts or the "
+"validity date, he can’t post again. You can force the user to buy a pack "
+"before posting “Settings → Payments → Force pack purchase“."
+msgstr ""
+
+#: includes/Admin/views/support.php:601
+msgid "Payment Gateway"
+msgstr ""
+
+#: includes/Admin/views/support.php:603
+msgid ""
+"Currently only PayPal basic gateway is supported. The plugin is extension "
+"aware, that means other gateways can be integrated."
+msgstr ""
+
+#: includes/Admin/views/support.php:606
+msgid "Learn More About Payments"
+msgstr ""
+
+#: includes/Admin/views/support.php:623
+msgid "Learn More About Content Restriction"
+msgstr ""
+
+#: includes/Admin/views/support.php:632 includes/Admin/views/support.php:634
+msgid "Like The Plugin?"
+msgstr ""
+
+#: includes/Admin/views/support.php:636
+msgid "Your Review is very important to us as it helps us to grow more."
+msgstr ""
+
+#: includes/Admin/views/support.php:638
+msgid "Review Us on WP.org"
+msgstr ""
+
+#: includes/Admin/views/support.php:642 includes/Admin/views/support.php:644
+msgid "Found Any Bugs?"
+msgstr ""
+
+#: includes/Admin/views/support.php:646
 msgid "Report any Bug that you Discovered, Get Instant Solutions."
 msgstr ""
 
-#: includes/Admin/views/support.php:508
+#: includes/Admin/views/support.php:648
 msgid "Report to GitHub"
 msgstr ""
 
-#: includes/Admin/views/support.php:512 includes/Admin/views/support.php:514
+#: includes/Admin/views/support.php:652 includes/Admin/views/support.php:654
 msgid "Need Any Assistance?"
 msgstr ""
 
-#: includes/Admin/views/support.php:516
+#: includes/Admin/views/support.php:656
 msgid "Our EXPERT Support Team is always ready to Help you out."
 msgstr ""
 
-#: includes/Admin/views/support.php:518
+#: includes/Admin/views/support.php:658
 msgid "Contact Support"
 msgstr ""
 
@@ -3162,7 +3638,7 @@ msgstr ""
 msgid "Invalid form id"
 msgstr ""
 
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:86
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:90
 msgid "Invalid post type"
 msgstr ""
 
@@ -3444,18 +3920,18 @@ msgstr ""
 msgid "Hidden Field"
 msgstr ""
 
-#: includes/Fields/Form_Field_Image.php:13 includes/Free/Form_Element.php:13
+#: includes/Fields/Form_Field_Image.php:13 includes/Free/Form_Element.php:11
 msgid "Image Upload"
 msgstr ""
 
 #: includes/Fields/Form_Field_Numeric.php:9
 #: includes/Fields/Form_Pro_Upgrade_Fields.php:110
-#: includes/Free/Form_Element.php:21
+#: includes/Free/Form_Element.php:19
 msgid "Numeric Field"
 msgstr ""
 
 #: includes/Fields/Form_Field_Post_Content.php:11
-#: includes/Free/Free_Loader.php:803
+#: includes/Free/Free_Loader.php:806
 msgid "Post Content"
 msgstr ""
 
@@ -3505,7 +3981,7 @@ msgid "Choose whether the link will open in new tab or same window"
 msgstr ""
 
 #: includes/Fields/Form_Field_reCaptcha.php:12
-#: includes/Free/Form_Element.php:36
+#: includes/Free/Form_Element.php:34
 msgid "reCaptcha"
 msgstr ""
 
@@ -3541,7 +4017,7 @@ msgid "Select reCaptcha Theme"
 msgstr ""
 
 #: includes/Fields/Form_Pro_Upgrade_Fields.php:36
-#: includes/Free/Form_Element.php:22
+#: includes/Free/Form_Element.php:20
 msgid "Address Field"
 msgstr ""
 
@@ -3570,17 +4046,17 @@ msgid "Multiple Choice Grid"
 msgstr ""
 
 #: includes/Fields/Form_Pro_Upgrade_Fields.php:165
-#: includes/Free/Form_Element.php:16
+#: includes/Free/Form_Element.php:14
 msgid "Repeat Field"
 msgstr ""
 
 #: includes/Fields/Form_Pro_Upgrade_Fields.php:176
-#: includes/Free/Form_Element.php:37
+#: includes/Free/Form_Element.php:35
 msgid "Really Simple Captcha"
 msgstr ""
 
 #: includes/Fields/Form_Pro_Upgrade_Fields.php:198
-#: includes/Free/Form_Element.php:23
+#: includes/Free/Form_Element.php:21
 msgid "Step Start"
 msgstr ""
 
@@ -3674,7 +4150,7 @@ msgstr ""
 msgid "Password Strength"
 msgstr ""
 
-#: includes/Free/Edit_Profile.php:235 includes/Free/Form_Element.php:360
+#: includes/Free/Edit_Profile.php:235 includes/Free/Form_Element.php:381
 #: templates/dashboard/edit-profile.php:141
 msgid "Update Profile"
 msgstr ""
@@ -3707,130 +4183,138 @@ msgstr ""
 msgid "Edit Post Lock Reason:"
 msgstr ""
 
-#: includes/Free/Form_Element.php:12 includes/Free/Form_Element.php:31
+#: includes/Free/Form_Element.php:10 includes/Free/Form_Element.php:29
 msgid "Click to add to the editor"
 msgstr ""
 
-#: includes/Free/Form_Element.php:19
+#: includes/Free/Form_Element.php:17
 msgid "Google Maps"
 msgstr ""
 
-#: includes/Free/Form_Element.php:39
+#: includes/Free/Form_Element.php:37
 msgid "Term &amp; Conditions"
 msgstr ""
 
-#: includes/Free/Form_Element.php:68
+#: includes/Free/Form_Element.php:70
 msgid "Learn more about Automatic Post Expiration"
 msgstr ""
 
-#: includes/Free/Form_Element.php:133
+#: includes/Free/Form_Element.php:132
+msgid "Send Mail"
+msgstr ""
+
+#: includes/Free/Form_Element.php:136
 msgid "Send Email to Author After Exceeding Post Expiration Time"
 msgstr ""
 
-#: includes/Free/Form_Element.php:159 includes/Free/Form_Element.php:163
+#: includes/Free/Form_Element.php:141
+msgid "Post Expiration Message"
+msgstr ""
+
+#: includes/Free/Form_Element.php:176 includes/Free/Form_Element.php:180
 msgid "Enable Multistep"
 msgstr ""
 
-#: includes/Free/Form_Element.php:166
+#: includes/Free/Form_Element.php:183
 msgid "If checked, form will be displayed in frontend in multiple steps"
 msgstr ""
 
-#: includes/Free/Form_Element.php:167
+#: includes/Free/Form_Element.php:184
 msgid " Learn more about Multistep"
 msgstr ""
 
-#: includes/Free/Form_Element.php:171
+#: includes/Free/Form_Element.php:188
 msgid "Multistep Progressbar Type"
 msgstr ""
 
-#: includes/Free/Form_Element.php:181
+#: includes/Free/Form_Element.php:198
 msgid "Choose how you want the progressbar"
 msgstr ""
 
-#: includes/Free/Form_Element.php:210
+#: includes/Free/Form_Element.php:227
 msgid "New post created"
 msgstr ""
 
-#: includes/Free/Form_Element.php:215
+#: includes/Free/Form_Element.php:232
 msgid "A post has been edited"
 msgstr ""
 
-#: includes/Free/Form_Element.php:219
+#: includes/Free/Form_Element.php:236
 msgid "New Post Notification"
 msgstr ""
 
-#: includes/Free/Form_Element.php:227 includes/Free/Form_Element.php:265
+#: includes/Free/Form_Element.php:244 includes/Free/Form_Element.php:286
 msgid "Enable post notification"
 msgstr ""
 
-#: includes/Free/Form_Element.php:230
+#: includes/Free/Form_Element.php:249
 msgid "Learn more about Email Notification"
 msgstr ""
 
-#: includes/Free/Form_Element.php:241 includes/Free/Form_Element.php:276
+#: includes/Free/Form_Element.php:262 includes/Free/Form_Element.php:297
 msgid "Subject"
 msgstr ""
 
-#: includes/Free/Form_Element.php:246 includes/Free/Form_Element.php:281
+#: includes/Free/Form_Element.php:267 includes/Free/Form_Element.php:302
 msgid "Message"
 msgstr ""
 
-#: includes/Free/Form_Element.php:253
+#: includes/Free/Form_Element.php:274
 msgid "Update Post Notification"
 msgstr ""
 
-#: includes/Free/Form_Element.php:289
+#: includes/Free/Form_Element.php:310
 msgid "You may use in to, subject & message:"
 msgstr ""
 
-#: includes/Free/Form_Element.php:314
+#: includes/Free/Form_Element.php:335
 msgid "Toggle All"
 msgstr ""
 
-#: includes/Free/Form_Element.php:318
+#: includes/Free/Form_Element.php:339
 msgid "Click on a form element to add to the editor"
 msgstr ""
 
-#: includes/Free/Form_Element.php:355
+#: includes/Free/Form_Element.php:376
 msgid "Registration successful"
 msgstr ""
 
-#: includes/Free/Form_Element.php:356
+#: includes/Free/Form_Element.php:377
 msgid "Profile updated successfully"
 msgstr ""
 
-#: includes/Free/Form_Element.php:359 includes/Free/Simple_Login.php:320
+#: includes/Free/Form_Element.php:380 includes/Free/Simple_Login.php:320
 #: includes/Frontend/Registration.php:104 includes/Widgets/Login_Widget.php:230
 #: includes/Widgets/Login_Widget.php:266
 msgid "Register"
 msgstr ""
 
-#: includes/Free/Form_Element.php:368
+#: includes/Free/Form_Element.php:389
 msgid "Enable Email Verfication"
 msgstr ""
 
-#: includes/Free/Form_Element.php:376
+#: includes/Free/Form_Element.php:397
 msgid "New User Role"
 msgstr ""
 
-#: includes/Free/Form_Element.php:417
+#: includes/Free/Form_Element.php:438
 msgid "Registration success message"
 msgstr ""
 
-#: includes/Free/Form_Element.php:424
+#: includes/Free/Form_Element.php:445
 msgid "Update profile message"
 msgstr ""
 
-#: includes/Free/Form_Element.php:461
+#: includes/Free/Form_Element.php:482
 msgid "Submit Button text"
 msgstr ""
 
-#: includes/Free/Form_Element.php:468
+#: includes/Free/Form_Element.php:489
 msgid "Update Button text"
 msgstr ""
 
 #: includes/Free/Free_Loader.php:136 includes/Free/Free_Loader.php:137
-#: includes/Free/Free_Loader.php:1406
+#: includes/Free/Free_Loader.php:1409
 msgid "Coupons"
 msgstr ""
 
@@ -3858,473 +4342,472 @@ msgstr ""
 msgid "Ipstack API Key"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:236
-msgid ""
-"<a target=\"_blank\" href=\"https://ipstack.com/dashboard\">Register "
-"here</a> to get your Free ipstack api key"
+#: includes/Free/Free_Loader.php:238
+#. translators: %1$s: opening anchor tag, %2$s: closing anchor tag
+msgid "%1$sRegister here%2$s to get your free ipstack api key"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:243
+#: includes/Free/Free_Loader.php:246
 msgid "Google Map API"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:245
+#: includes/Free/Free_Loader.php:248
 msgid ""
 "<a target=\"_blank\" "
 "href=\"https://developers.google.com/maps/documentation/javascript\">API</"
 "a> key is needed to render Google Maps"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:252 wpuf-functions.php:2068
+#: includes/Free/Free_Loader.php:255 wpuf-functions.php:2068
 msgid "Edit Profile"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:254
+#: includes/Free/Free_Loader.php:257
 msgid "Allow user to update their profile information from the account page"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:263
+#: includes/Free/Free_Loader.php:266
 msgid "Profile Form"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:265
+#: includes/Free/Free_Loader.php:268
 msgid "User will use this form to update their information from the account page,"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:274
+#: includes/Free/Free_Loader.php:277
 msgid "Avatar Size"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:276
+#: includes/Free/Free_Loader.php:279
 msgid ""
 "Avatar size to crop when upload using the registration/profile "
 "form.(e.g:100x100)"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:285
+#: includes/Free/Free_Loader.php:288
 msgid "Pending User Message"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:287
+#: includes/Free/Free_Loader.php:290
 msgid "Pending user will see this message when try to log in."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:288
+#: includes/Free/Free_Loader.php:291
 msgid ""
 "<strong>ERROR:</strong> Your account has to be approved by an administrator "
 "before you can login."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:296
+#: includes/Free/Free_Loader.php:299
 msgid "Denied User Message"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:298
+#: includes/Free/Free_Loader.php:301
 msgid "Denied user will see this message when try to log in."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:299
+#: includes/Free/Free_Loader.php:302
 msgid ""
 "<strong>ERROR:</strong> Your account has been denied by an administrator, "
 "please contact admin to approve your account."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:307
+#: includes/Free/Free_Loader.php:310
 msgid "<span class=\"dashicons dashicons-money\"></span> Subscription"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:315
+#: includes/Free/Free_Loader.php:318
 msgid "<span class=\"dashicons dashicons-admin-generic\"></span> Template Settings"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:323
+#: includes/Free/Free_Loader.php:326
 msgid "<span class=\"dashicons dashicons-unlock\"></span> Reset Email"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:331
+#: includes/Free/Free_Loader.php:334
 msgid ""
 "<span class=\"dashicons dashicons-email-alt\"></span> Resend Confirmation "
 "Email"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:339
+#: includes/Free/Free_Loader.php:342
 msgid "<span class=\"dashicons dashicons-groups\"></span> Pending User Email"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:347
+#: includes/Free/Free_Loader.php:350
 msgid "<span class=\"dashicons dashicons-dismiss\"></span> Denied User Email"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:355
+#: includes/Free/Free_Loader.php:358
 msgid "<span class=\"dashicons dashicons-smiley\"></span> Approved User Email"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:363
+#: includes/Free/Free_Loader.php:366
 msgid "<span class=\"dashicons dashicons-smiley\"></span> Account Activated Email"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:371
+#: includes/Free/Free_Loader.php:374
 msgid "<span class=\"dashicons dashicons-saved\"></span> Approved Post Email"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:380 includes/Free/Free_Loader.php:381
+#: includes/Free/Free_Loader.php:383 includes/Free/Free_Loader.php:384
 msgid "Clickatell name"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:387 includes/Free/Free_Loader.php:388
+#: includes/Free/Free_Loader.php:390 includes/Free/Free_Loader.php:391
 msgid "Clickatell Password"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:394 includes/Free/Free_Loader.php:395
+#: includes/Free/Free_Loader.php:397 includes/Free/Free_Loader.php:398
 msgid "Clickatell api"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:401 includes/Free/Free_Loader.php:402
+#: includes/Free/Free_Loader.php:404 includes/Free/Free_Loader.php:405
 msgid "SMSGlobal Name"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:408 includes/Free/Free_Loader.php:409
+#: includes/Free/Free_Loader.php:411 includes/Free/Free_Loader.php:412
 msgid "SMSGlobal Passord"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:415 includes/Free/Free_Loader.php:416
+#: includes/Free/Free_Loader.php:418 includes/Free/Free_Loader.php:419
 msgid "Nexmo API"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:422 includes/Free/Free_Loader.php:423
+#: includes/Free/Free_Loader.php:425 includes/Free/Free_Loader.php:426
 msgid "Nexmo API Secret"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:429 includes/Free/Free_Loader.php:430
+#: includes/Free/Free_Loader.php:432 includes/Free/Free_Loader.php:433
 msgid "Twillo From Number"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:436 includes/Free/Free_Loader.php:437
+#: includes/Free/Free_Loader.php:439 includes/Free/Free_Loader.php:440
 msgid "Twillo Account SID"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:443 includes/Free/Free_Loader.php:444
+#: includes/Free/Free_Loader.php:446 includes/Free/Free_Loader.php:447
 msgid "Twillo Authro Token"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:452
+#: includes/Free/Free_Loader.php:455
 msgid "Enable Social Login"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:454
+#: includes/Free/Free_Loader.php:457
 msgid ""
 "Enabling this will add Social Icons under registration form to allow users "
 "to login or register using Social Profiles"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:460
+#: includes/Free/Free_Loader.php:463
 msgid "Facebook App Settings"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:462 includes/Free/Free_Loader.php:489
-#: includes/Free/Free_Loader.php:517 includes/Free/Free_Loader.php:545
-#: includes/Free/Free_Loader.php:573
+#: includes/Free/Free_Loader.php:465 includes/Free/Free_Loader.php:492
+#: includes/Free/Free_Loader.php:520 includes/Free/Free_Loader.php:548
+#: includes/Free/Free_Loader.php:576
 msgid "Create an App"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:463
+#: includes/Free/Free_Loader.php:466
 msgid " if you don't have one and fill App ID and App Secret below. "
 msgstr ""
 
-#: includes/Free/Free_Loader.php:468 includes/Free/Free_Loader.php:524
-#: includes/Free/Free_Loader.php:580
+#: includes/Free/Free_Loader.php:471 includes/Free/Free_Loader.php:527
+#: includes/Free/Free_Loader.php:583
 msgid "Redirect URI"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:475
+#: includes/Free/Free_Loader.php:478
 msgid "App Id"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:481
+#: includes/Free/Free_Loader.php:484
 msgid "App Secret"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:487
+#: includes/Free/Free_Loader.php:490
 msgid "Twitter App Settings"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:490
+#: includes/Free/Free_Loader.php:493
 msgid " if you don't have one and fill Consumer key and Consumer Secret below."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:496
+#: includes/Free/Free_Loader.php:499
 msgid "Callback URL"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:503
+#: includes/Free/Free_Loader.php:506
 msgid "Consumer Key"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:509
+#: includes/Free/Free_Loader.php:512
 msgid "Consumer Secret"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:515
+#: includes/Free/Free_Loader.php:518
 msgid "Google App Settings"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:518 includes/Free/Free_Loader.php:546
-#: includes/Free/Free_Loader.php:574
+#: includes/Free/Free_Loader.php:521 includes/Free/Free_Loader.php:549
+#: includes/Free/Free_Loader.php:577
 msgid " if you don't have one and fill Client ID and Client Secret below."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:531 includes/Free/Free_Loader.php:559
-#: includes/Free/Free_Loader.php:587
+#: includes/Free/Free_Loader.php:534 includes/Free/Free_Loader.php:562
+#: includes/Free/Free_Loader.php:590
 msgid "Client ID"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:537
+#: includes/Free/Free_Loader.php:540
 msgid "Client secret"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:543
+#: includes/Free/Free_Loader.php:546
 msgid "Linkedin App Settings"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:552
+#: includes/Free/Free_Loader.php:555
 msgid "Redirect URL"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:565 includes/Free/Free_Loader.php:593
+#: includes/Free/Free_Loader.php:568 includes/Free/Free_Loader.php:596
 msgid "Client Secret"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:571
+#: includes/Free/Free_Loader.php:574
 msgid "Instagram App Settings"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:601
+#: includes/Free/Free_Loader.php:604
 msgid "Profile Gallery Image Size "
 msgstr ""
 
-#: includes/Free/Free_Loader.php:602
+#: includes/Free/Free_Loader.php:605
 msgid "Set the image size of picture gallery in frontend"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:609
+#: includes/Free/Free_Loader.php:612
 msgid "Avatar Size "
 msgstr ""
 
-#: includes/Free/Free_Loader.php:610
+#: includes/Free/Free_Loader.php:613
 msgid "Set the image size of profile picture in frontend"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:617
+#: includes/Free/Free_Loader.php:620
 msgid "Profile Header Template"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:629
+#: includes/Free/Free_Loader.php:632
 msgid "User Listing Template"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:646
+#: includes/Free/Free_Loader.php:649
 msgid "Enable Invoices"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:647
+#: includes/Free/Free_Loader.php:650
 msgid "Enable sending invoices for completed payments"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:654
+#: includes/Free/Free_Loader.php:657
 msgid "Show Invoices"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:655
+#: includes/Free/Free_Loader.php:658
 msgid "Show Invoices option where <code>[wpuf_account]</code> is located"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:663
+#: includes/Free/Free_Loader.php:666
 msgid "Set Invoice Logo"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:664
+#: includes/Free/Free_Loader.php:667
 msgid "This sets the company Logo to be used in Invoice"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:671
+#: includes/Free/Free_Loader.php:674
 msgid "Set Invoice Color"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:672
+#: includes/Free/Free_Loader.php:675
 msgid "Set color code to be used in invoice"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:679
+#: includes/Free/Free_Loader.php:682
 msgid "From Address"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:680
+#: includes/Free/Free_Loader.php:683
 msgid ""
 "This sets the provider information of the Invoice. Note: use the <xmp "
 "class=\"wpuf-xmp-tag\"><br></xmp> tag to enter line breaks."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:687
+#: includes/Free/Free_Loader.php:690
 msgid "Invoice Title"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:688
+#: includes/Free/Free_Loader.php:691
 msgid "This sets the payment information title of the Invoice"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:694
+#: includes/Free/Free_Loader.php:697
 msgid "Invoice Paragraph"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:695
+#: includes/Free/Free_Loader.php:698
 msgid "This sets the payment information paragraph of the Invoice"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:702
+#: includes/Free/Free_Loader.php:705
 msgid "Invoice Footer"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:703
+#: includes/Free/Free_Loader.php:706
 msgid "This sets the footer of the Invoice"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:709
+#: includes/Free/Free_Loader.php:712
 msgid "Invoice Filename Prefix"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:710
+#: includes/Free/Free_Loader.php:713
 msgid "This sets the filename prefix of the Invoice"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:716
+#: includes/Free/Free_Loader.php:719
 msgid "Set Invoice Mail Subject"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:717
+#: includes/Free/Free_Loader.php:720
 msgid "This sets the mail subject of the Invoice"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:723
+#: includes/Free/Free_Loader.php:726
 msgid "Set Invoice Mail Body"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:724
+#: includes/Free/Free_Loader.php:727
 msgid "This sets the mail body of the Invoice"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:732
+#: includes/Free/Free_Loader.php:735
 msgid "Need help?"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:733
+#: includes/Free/Free_Loader.php:736
 msgid ""
 "Visit the <a href=\"%s\" target=\"_blank\">Tax setup documentation</a> for "
 "guidance on how to setup tax."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:738
+#: includes/Free/Free_Loader.php:741
 msgid "Enable Tax"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:739
+#: includes/Free/Free_Loader.php:742
 msgid "Enable tax on payments"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:746
+#: includes/Free/Free_Loader.php:749
 msgid "Base Country and State"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:747
+#: includes/Free/Free_Loader.php:750
 msgid "Select your base country and state"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:752
+#: includes/Free/Free_Loader.php:755
 msgid "Tax Rates"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:753
+#: includes/Free/Free_Loader.php:756
 msgid "Add tax rates for specific regions. Enter a percentage, such as 5 for 5%"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:759
+#: includes/Free/Free_Loader.php:762
 msgid "Fallback Tax Rate"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:760
+#: includes/Free/Free_Loader.php:763
 msgid ""
 "Customers not in a specific rate will be charged this tax rate. Enter a "
 "percentage, such as 5 for 5%"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:768 includes/Free/Free_Loader.php:773
+#: includes/Free/Free_Loader.php:771 includes/Free/Free_Loader.php:776
 msgid "Show prices with tax"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:769
+#: includes/Free/Free_Loader.php:772
 msgid "If frontend prices will include tax or not"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:774
+#: includes/Free/Free_Loader.php:777
 msgid "Show prices without tax"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:782
+#: includes/Free/Free_Loader.php:785
 msgid "Enable Content Filtering"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:783
+#: includes/Free/Free_Loader.php:786
 msgid "Enable Content Filtering in frontend"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:790
+#: includes/Free/Free_Loader.php:793
 msgid "Keyword Dictionary"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:791
+#: includes/Free/Free_Loader.php:794
 msgid "Enter Keywords to Remove. Separate keywords with commas."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:798
+#: includes/Free/Free_Loader.php:801
 msgid "Filter main content"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:799
+#: includes/Free/Free_Loader.php:802
 msgid "Choose which content to filter."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:802
+#: includes/Free/Free_Loader.php:805
 msgid "Post Titles"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:819
+#: includes/Free/Free_Loader.php:822
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1256
+#: includes/Free/Free_Loader.php:1259
 msgid "Credit Card"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1278
+#: includes/Free/Free_Loader.php:1281
 msgid "Taxonomy Restriction "
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1296
+#: includes/Free/Free_Loader.php:1299
 msgid "Choose the taxonomy terms you want to enable for this pack:"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1410
+#: includes/Free/Free_Loader.php:1413
 msgid "Use Coupon codes for subscription for discounts."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1414
+#: includes/Free/Free_Loader.php:1417
 msgid "This feature is only available in the Pro Version."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1418
+#: includes/Free/Free_Loader.php:1421
 msgid "Upgrade to Pro Version"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1419
+#: includes/Free/Free_Loader.php:1422
 msgid "Learn more about Coupons"
 msgstr ""
 
@@ -4626,22 +5109,22 @@ msgid "Sorry, you are not eligible to preview this form."
 msgstr ""
 
 #: includes/Frontend/Frontend_Account.php:43
-#: includes/functions/settings-options.php:349
+#: includes/functions/settings-options.php:356
 msgid "Post Submission"
 msgstr ""
 
 #: includes/Frontend/Frontend_Account.php:44
-#: includes/functions/settings-options.php:350
+#: includes/functions/settings-options.php:357
 msgid "Enable if you want to allow users to submit post from the account page."
 msgstr ""
 
 #: includes/Frontend/Frontend_Account.php:51
-#: includes/functions/settings-options.php:357
+#: includes/functions/settings-options.php:364
 msgid "Submission Menu Label"
 msgstr ""
 
 #: includes/Frontend/Frontend_Account.php:52
-#: includes/functions/settings-options.php:358
+#: includes/functions/settings-options.php:365
 msgid "Label for post submission menu"
 msgstr ""
 
@@ -4649,17 +5132,17 @@ msgstr ""
 #: includes/Frontend/Frontend_Account.php:78
 #: includes/Integrations/WPUF_WCMp_Integration.php:128
 #: includes/Integrations/WPUF_WCMp_Integration.php:146
-#: includes/functions/settings-options.php:360
+#: includes/functions/settings-options.php:367
 msgid "Submit Post"
 msgstr ""
 
 #: includes/Frontend/Frontend_Account.php:58
-#: includes/functions/settings-options.php:364
+#: includes/functions/settings-options.php:371
 msgid "Submission Form"
 msgstr ""
 
 #: includes/Frontend/Frontend_Account.php:59
-#: includes/functions/settings-options.php:365
+#: includes/functions/settings-options.php:372
 msgid ""
 "Select a post form that will use to submit post by the users from their "
 "account page."
@@ -4969,15 +5452,15 @@ msgid "Using %shortcode% is restricted"
 msgstr ""
 
 #: includes/Frontend.php:140
-msgid "Password minimum strength should be weak"
+msgid "Your password should be at least weak in strength"
 msgstr ""
 
 #: includes/Frontend.php:141
-msgid "Password minimum strength should be medium"
+msgid "Your password needs to be medium strength for better protection"
 msgstr ""
 
 #: includes/Frontend.php:142
-msgid "Password minimum strength should be strong"
+msgid "Create a strong password for maximum security"
 msgstr ""
 
 #: includes/Frontend.php:148
@@ -5649,10 +6132,6 @@ msgstr ""
 msgid "Password Reset Label:"
 msgstr ""
 
-#: includes/functions/settings-options.php:14
-msgid "General Options"
-msgstr ""
-
 #: includes/functions/settings-options.php:29
 msgid "My Account"
 msgstr ""
@@ -5724,435 +6203,432 @@ msgstr ""
 msgid "ACF Compatibility"
 msgstr ""
 
-#: includes/functions/settings-options.php:129
+#: includes/functions/settings-options.php:131
+#. translators: %1$s and %2$s are strong tags
 msgid ""
-"Select <strong>Yes</strong> if you want to make compatible WPUF custom "
-"fields data with advanced custom fields."
-msgstr ""
-
-#: includes/functions/settings-options.php:140
-msgid "Load Scripts"
-msgstr ""
-
-#: includes/functions/settings-options.php:141
-msgid "Load scripts/styles in all pages"
+"Select %1$sYes%2$s if you want to make compatible WPUF custom fields data "
+"with advanced custom fields."
 msgstr ""
 
 #: includes/functions/settings-options.php:147
+msgid "Load Scripts"
+msgstr ""
+
+#: includes/functions/settings-options.php:148
+msgid "Load scripts/styles in all pages"
+msgstr ""
+
+#: includes/functions/settings-options.php:154
 msgid "reCAPTCHA Site Key"
 msgstr ""
 
-#: includes/functions/settings-options.php:151
+#: includes/functions/settings-options.php:158
 msgid "reCAPTCHA Secret Key"
 msgstr ""
 
-#: includes/functions/settings-options.php:152
+#: includes/functions/settings-options.php:159
 msgid ""
 "<a target=\"_blank\" href=\"https://www.google.com/recaptcha/\">Register "
 "here</a> to get reCaptcha Site and Secret keys."
 msgstr ""
 
-#: includes/functions/settings-options.php:157
+#: includes/functions/settings-options.php:164
 msgid "Custom CSS codes"
 msgstr ""
 
-#: includes/functions/settings-options.php:158
+#: includes/functions/settings-options.php:165
 msgid ""
 "If you want to add your custom CSS code, it will be added on page header "
 "wrapped with style tag"
 msgstr ""
 
-#: includes/functions/settings-options.php:166
+#: includes/functions/settings-options.php:173
 msgid "Edit Page"
 msgstr ""
 
-#: includes/functions/settings-options.php:167
+#: includes/functions/settings-options.php:174
 msgid "Select the page where <code>[wpuf_edit]</code> is located"
 msgstr ""
 
-#: includes/functions/settings-options.php:173
+#: includes/functions/settings-options.php:180
 msgid "Default Post Owner"
 msgstr ""
 
-#: includes/functions/settings-options.php:174
+#: includes/functions/settings-options.php:181
 msgid ""
 "If guest post is enabled and user details are OFF, the posts are assigned "
 "to this user"
 msgstr ""
 
-#: includes/functions/settings-options.php:182
+#: includes/functions/settings-options.php:189
 msgid "Custom Fields in post"
 msgstr ""
 
-#: includes/functions/settings-options.php:183
+#: includes/functions/settings-options.php:190
 msgid "Show custom fields on post content area"
 msgstr ""
 
-#: includes/functions/settings-options.php:189
+#: includes/functions/settings-options.php:196
 msgid "Insert Photo image size"
 msgstr ""
 
-#: includes/functions/settings-options.php:190
+#: includes/functions/settings-options.php:197
 msgid ""
 "Default image size of \"<strong>Insert Photo</strong>\" button in post "
 "content area"
 msgstr ""
 
-#: includes/functions/settings-options.php:198
+#: includes/functions/settings-options.php:205
 msgid "Insert Photo image type"
 msgstr ""
 
-#: includes/functions/settings-options.php:199
+#: includes/functions/settings-options.php:206
 msgid ""
 "Default image type of \"<strong>Insert Photo</strong>\" button in post "
 "content area"
 msgstr ""
 
-#: includes/functions/settings-options.php:203
+#: includes/functions/settings-options.php:210
 msgid "Image only"
 msgstr ""
 
-#: includes/functions/settings-options.php:204
+#: includes/functions/settings-options.php:211
 msgid "Image with link"
 msgstr ""
 
-#: includes/functions/settings-options.php:210
+#: includes/functions/settings-options.php:217
 msgid "Enable Image Caption"
 msgstr ""
 
-#: includes/functions/settings-options.php:211
+#: includes/functions/settings-options.php:218
 msgid "Allow users to update image/video title, caption and description"
 msgstr ""
 
-#: includes/functions/settings-options.php:218
+#: includes/functions/settings-options.php:225
 msgid "Default Post Form"
 msgstr ""
 
-#: includes/functions/settings-options.php:219
+#: includes/functions/settings-options.php:226
 msgid "Fallback form for post editing if no associated form found"
 msgstr ""
 
-#: includes/functions/settings-options.php:227
+#: includes/functions/settings-options.php:234
 msgid "Users can edit post?"
 msgstr ""
 
-#: includes/functions/settings-options.php:228
+#: includes/functions/settings-options.php:235
 msgid "Users will be able to edit their own posts"
 msgstr ""
 
-#: includes/functions/settings-options.php:238
+#: includes/functions/settings-options.php:245
 msgid "User can delete post?"
 msgstr ""
 
-#: includes/functions/settings-options.php:239
+#: includes/functions/settings-options.php:246
 msgid "Users will be able to delete their own posts"
 msgstr ""
 
-#: includes/functions/settings-options.php:249
+#: includes/functions/settings-options.php:256
 msgid "Pending Post Edit"
 msgstr ""
 
-#: includes/functions/settings-options.php:250
+#: includes/functions/settings-options.php:257
 msgid "Disable post editing while post in \"pending\" status"
 msgstr ""
 
-#: includes/functions/settings-options.php:256
+#: includes/functions/settings-options.php:263
 msgid "Editing Published Post"
 msgstr ""
 
-#: includes/functions/settings-options.php:257
+#: includes/functions/settings-options.php:264
 msgid "Disable post editing while post in \"publish\" status"
 msgstr ""
 
-#: includes/functions/settings-options.php:263
+#: includes/functions/settings-options.php:270
 msgid "Posts per page"
 msgstr ""
 
-#: includes/functions/settings-options.php:264
+#: includes/functions/settings-options.php:271
 msgid "How many posts will be listed in a page"
 msgstr ""
 
-#: includes/functions/settings-options.php:270
+#: includes/functions/settings-options.php:277
 msgid "Show user bio"
 msgstr ""
 
-#: includes/functions/settings-options.php:271
+#: includes/functions/settings-options.php:278
 msgid "Users biographical info will be shown"
 msgstr ""
 
-#: includes/functions/settings-options.php:277
+#: includes/functions/settings-options.php:284
 msgid "Show post count"
 msgstr ""
 
-#: includes/functions/settings-options.php:278
+#: includes/functions/settings-options.php:285
 msgid "Show how many posts are created by the user"
 msgstr ""
 
-#: includes/functions/settings-options.php:284
+#: includes/functions/settings-options.php:291
 msgid "Show Featured Image"
 msgstr ""
 
-#: includes/functions/settings-options.php:285
+#: includes/functions/settings-options.php:292
 msgid "Show featured image of the post (Overridden by Shortcode)"
 msgstr ""
 
-#: includes/functions/settings-options.php:290
+#: includes/functions/settings-options.php:297
 msgid "Show Payment Column"
 msgstr ""
 
-#: includes/functions/settings-options.php:291
+#: includes/functions/settings-options.php:298
 msgid "Enable if you want show payment column on posts table"
 msgstr ""
 
-#: includes/functions/settings-options.php:297
+#: includes/functions/settings-options.php:304
 msgid "Featured Image size"
 msgstr ""
 
-#: includes/functions/settings-options.php:304
+#: includes/functions/settings-options.php:311
 msgid "Not logged in users will see this message"
 msgstr ""
 
-#: includes/functions/settings-options.php:311
+#: includes/functions/settings-options.php:318
 msgid "Account Page"
 msgstr ""
 
-#: includes/functions/settings-options.php:312
+#: includes/functions/settings-options.php:319
 msgid "Select the page which contains <code>[wpuf_account]</code> shortcode"
 msgstr ""
 
-#: includes/functions/settings-options.php:319
+#: includes/functions/settings-options.php:326
 msgid "Select Custom Post For Account Page"
 msgstr ""
 
-#: includes/functions/settings-options.php:320
+#: includes/functions/settings-options.php:327
 msgid "Select the post types you want to show on user dashboard."
 msgstr ""
 
-#: includes/functions/settings-options.php:326
+#: includes/functions/settings-options.php:333
 msgid "Active Tab"
 msgstr ""
 
-#: includes/functions/settings-options.php:327
+#: includes/functions/settings-options.php:334
 msgid "Which tab should be set as active by default when opening the account page"
 msgstr ""
 
-#: includes/functions/settings-options.php:334
+#: includes/functions/settings-options.php:341
 msgid "Show Subscriptions"
 msgstr ""
 
-#: includes/functions/settings-options.php:335
+#: includes/functions/settings-options.php:342
 msgid ""
 "Show Subscriptions tab in \"my account\" page where "
 "<code>[wpuf_account]</code> is located"
 msgstr ""
 
-#: includes/functions/settings-options.php:343
+#: includes/functions/settings-options.php:350
 msgid "Show billing address in account page."
 msgstr ""
 
-#: includes/functions/settings-options.php:374
+#: includes/functions/settings-options.php:381
 msgid "Auto Login After Registration"
 msgstr ""
 
-#: includes/functions/settings-options.php:375
+#: includes/functions/settings-options.php:382
 msgid "If enabled, users after registration will be logged in to the system"
 msgstr ""
 
-#: includes/functions/settings-options.php:382
+#: includes/functions/settings-options.php:389
 msgid "Login/Registration override"
 msgstr ""
 
-#: includes/functions/settings-options.php:383
+#: includes/functions/settings-options.php:390
 msgid ""
 "If enabled, default login and registration forms will be overridden by WPUF "
 "with pages below"
 msgstr ""
 
-#: includes/functions/settings-options.php:390
+#: includes/functions/settings-options.php:397
 msgid "Registration Page"
 msgstr ""
 
-#: includes/functions/settings-options.php:391
+#: includes/functions/settings-options.php:398
 msgid ""
 "Select the page you want to use as registration page override <em>(should "
 "have shortcode)</em>"
 msgstr ""
 
-#: includes/functions/settings-options.php:398
-msgid "Login Page"
-msgstr ""
-
-#: includes/functions/settings-options.php:399
+#: includes/functions/settings-options.php:406
 msgid "Select the page which contains <code>[wpuf-login]</code> shortcode"
 msgstr ""
 
-#: includes/functions/settings-options.php:406
+#: includes/functions/settings-options.php:413
 msgid "Redirect After Login"
 msgstr ""
 
-#: includes/functions/settings-options.php:407
+#: includes/functions/settings-options.php:414
 msgid "After successfull login, where the page will redirect to"
 msgstr ""
 
-#: includes/functions/settings-options.php:413
+#: includes/functions/settings-options.php:420
 msgid "Default Login Redirect"
 msgstr ""
 
-#: includes/functions/settings-options.php:414
+#: includes/functions/settings-options.php:421
 msgid ""
 "If enabled, users who login using WordPress default login form will be "
 "redirected to the selected page."
 msgstr ""
 
-#: includes/functions/settings-options.php:421
+#: includes/functions/settings-options.php:428
 msgid "reCAPTCHA in Login Form"
 msgstr ""
 
-#: includes/functions/settings-options.php:422
+#: includes/functions/settings-options.php:429
 msgid ""
 "If enabled, users have to verify reCAPTCHA in login page. Also, make sure "
 "that reCAPTCHA is configured properly from <b>General Options</b>"
 msgstr ""
 
-#: includes/functions/settings-options.php:432
+#: includes/functions/settings-options.php:439
 msgid "Enable payments on your site."
 msgstr ""
 
-#: includes/functions/settings-options.php:438
+#: includes/functions/settings-options.php:445
 msgid "Subscription Pack Page"
 msgstr ""
 
-#: includes/functions/settings-options.php:439
+#: includes/functions/settings-options.php:446
 msgid "Select the page where <code>[wpuf_sub_pack]</code> located."
 msgstr ""
 
-#: includes/functions/settings-options.php:445
+#: includes/functions/settings-options.php:452
 msgid "Subscription at registration"
 msgstr ""
 
-#: includes/functions/settings-options.php:446
+#: includes/functions/settings-options.php:453
 msgid "Registration time redirect to subscription page"
 msgstr ""
 
-#: includes/functions/settings-options.php:451
+#: includes/functions/settings-options.php:458
 msgid "Currency"
 msgstr ""
 
-#: includes/functions/settings-options.php:458
+#: includes/functions/settings-options.php:465
 msgid "Currency Position"
 msgstr ""
 
-#: includes/functions/settings-options.php:462
+#: includes/functions/settings-options.php:469
 msgid "Left"
 msgstr ""
 
-#: includes/functions/settings-options.php:464
+#: includes/functions/settings-options.php:471
 msgid "Right"
 msgstr ""
 
-#: includes/functions/settings-options.php:466
+#: includes/functions/settings-options.php:473
 msgid "Left with space"
 msgstr ""
 
-#: includes/functions/settings-options.php:468
+#: includes/functions/settings-options.php:475
 msgid "Right with space"
 msgstr ""
 
-#: includes/functions/settings-options.php:474
+#: includes/functions/settings-options.php:481
 msgid "Thousand Separator"
 msgstr ""
 
-#: includes/functions/settings-options.php:475
+#: includes/functions/settings-options.php:482
 msgid "This sets the thousand separator of displayed prices."
 msgstr ""
 
-#: includes/functions/settings-options.php:483
+#: includes/functions/settings-options.php:490
 msgid "Decimal Separator"
 msgstr ""
 
-#: includes/functions/settings-options.php:484
+#: includes/functions/settings-options.php:491
 msgid "This sets the decimal separator of displayed prices."
 msgstr ""
 
-#: includes/functions/settings-options.php:490
+#: includes/functions/settings-options.php:497
 msgid "Number of Decimals"
 msgstr ""
 
-#: includes/functions/settings-options.php:491
+#: includes/functions/settings-options.php:498
 msgid "This sets the number of decimal points shown in displayed prices."
 msgstr ""
 
-#: includes/functions/settings-options.php:502
+#: includes/functions/settings-options.php:509
 msgid "Enable demo/sandbox mode"
 msgstr ""
 
-#: includes/functions/settings-options.php:503
+#: includes/functions/settings-options.php:510
 msgid "When sandbox mode is active, all payment gateway will be used in demo mode"
 msgstr ""
 
-#: includes/functions/settings-options.php:510
+#: includes/functions/settings-options.php:517
 msgid "Payment Page"
 msgstr ""
 
-#: includes/functions/settings-options.php:511
+#: includes/functions/settings-options.php:518
 msgid "This page will be used to process payment options"
 msgstr ""
 
-#: includes/functions/settings-options.php:524
+#: includes/functions/settings-options.php:531
 msgid "Payment Gateways"
 msgstr ""
 
-#: includes/functions/settings-options.php:525
+#: includes/functions/settings-options.php:532
 msgid "Active payment gateways"
 msgstr ""
 
-#: includes/functions/settings-options.php:531
+#: includes/functions/settings-options.php:538
 msgid "Retry Failed Payment"
 msgstr ""
 
-#: includes/functions/settings-options.php:532
+#: includes/functions/settings-options.php:539
 msgid "How many times should retry for failed payment max is 4"
 msgstr ""
 
-#: includes/functions/settings-options.php:546
+#: includes/functions/settings-options.php:553
 msgid "<span class=\"dashicons dashicons-universal-access-alt\"></span> Guest Email"
 msgstr ""
 
-#: includes/functions/settings-options.php:554
+#: includes/functions/settings-options.php:561
 msgid "Guest Email Notification"
 msgstr ""
 
-#: includes/functions/settings-options.php:555
+#: includes/functions/settings-options.php:562
 msgid "Enable Guest Email Notification ."
 msgstr ""
 
-#: includes/functions/settings-options.php:561
+#: includes/functions/settings-options.php:568
 msgid "Guest mail subject"
 msgstr ""
 
-#: includes/functions/settings-options.php:562
+#: includes/functions/settings-options.php:569
 msgid "This sets the subject of the emails sent to guest users"
 msgstr ""
 
-#: includes/functions/settings-options.php:569
+#: includes/functions/settings-options.php:576
 msgid "Guest mail body"
 msgstr ""
 
-#: includes/functions/settings-options.php:570
+#: includes/functions/settings-options.php:577
 msgid ""
 "This sets the body of the emails sent to guest users. Please DON'T edit the "
 "<code>{activation_link}</code> part, you can use {sitename} too."
 msgstr ""
 
-#: includes/functions/settings-options.php:588
+#: includes/functions/settings-options.php:595
 msgid "Post Types"
 msgstr ""
 
-#: includes/functions/settings-options.php:589
+#: includes/functions/settings-options.php:596
 msgid "Select the post types you will allow users to export."
 msgstr ""
 
-#: includes/functions/settings-options.php:621
+#: includes/functions/settings-options.php:628
 msgid ""
 "Select profile/registration forms for user roles. These forms will be used "
 "to populate extra edit profile fields in backend."

@@ -126,8 +126,15 @@ function wpuf_settings_fields() {
             [
                 'name'    => 'wpuf_compatibility_acf',
                 'label'   => __( 'ACF Compatibility', 'wp-user-frontend' ),
-                'desc'    => __( 'Select <strong>Yes</strong> if you want to make compatible WPUF custom fields data with advanced custom fields.',
-                                 'wp-user-frontend' ),
+                'desc' => sprintf(
+                    // translators: %1$s and %2$s are strong tags
+                    __(
+                        'Select %1$sYes%2$s if you want to make compatible WPUF custom fields data with advanced custom fields.',
+                        'wp-user-frontend'
+                    ),
+                    '<strong>',
+                    '</strong>'
+                ),
                 'type'    => 'select',
                 'default' => 'no',
                 'options' => [

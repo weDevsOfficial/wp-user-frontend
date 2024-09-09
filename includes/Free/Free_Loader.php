@@ -233,8 +233,11 @@ class Free_Loader extends Pro_Prompt {
             'name'           => 'ipstack_key',
             'label'          => __( 'Ipstack API Key',
                                     'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
-            'desc'           => __( '<a target="_blank" href="https://ipstack.com/dashboard">Register here</a> to get your Free ipstack api key',
-                                    'wp-user-frontend' ),
+            'desc'           => sprintf(
+            // translators: %1$s: opening anchor tag, %2$s: closing anchor tag
+                __( '%1$sRegister here%2$s to get your free ipstack api key', 'wp-user-frontend' ),
+                '<a target="_blank" href="https://ipstack.com/dashboard">', '</a>'
+            ),
             'class'          => 'pro-preview',
             'is_pro_preview' => true,
         ];

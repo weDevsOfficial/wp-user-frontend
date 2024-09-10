@@ -539,18 +539,60 @@ function wpuf_help_related_articles( $articles ) {
                 );
                 ?>
 
+                <p>
+                    <?php
+                    printf(
+                    // translators: %1$s and %2$s are HTML tags
+                        esc_html__(
+                        'When you are making a registration form, you get two shortcodes: For embedding the registration form: this is something like %1$s[wpuf_profile type="registration" id="3573"]%2$s',
+                            'wp-user-frontend'
+                        ),
+                        '<code>',
+                        '</code>'
+                    );
+                    ?>
+                </p>
 
-                <p>When you are making a registration form, you get two shortcodes:
-                For embedding the registration form: this is something like <code>[wpuf_profile type=&quot;registration&quot; id=&quot;3573&quot;]</code></p>
+                <p>
+                    <?php
+                    printf(
+                        // translators: %1$s and %2$s are HTML tags
+                        esc_html__(
+                            'For profile edit page: this is something like %1$s[wpuf_profile type="profile" id="3573"]%2$s',
+                            'wp-user-frontend'
+                        ),
+                        '<code>',
+                        '</code>'
+                    );
+                    ?>
+                </p>
 
-                <p>For profile edit page: this is something like <code>[wpuf_profile type=&quot;profile&quot; id=&quot;3573&quot;]</code></p>
+                <p>
+                    <?php
+                     esc_html_e(
+                        'You already know that how to make a registration form in WP User Frontend Pro and embed that into a page. The very same process is for creating the profile edit page.',
+                        'wp-user-frontend');
+                    ?>
+                </p>
 
-                <p>You already know that how to make a registration form in WP User Frontend Pro and embed that into a page. The very same process is for creating the profile edit page.</p>
+                <h2><?php esc_html_e( 'How to get the shortcode', 'wp-user-frontend' ); ?></h2>
 
-                <h2>How to get the shortcode</h2>
-
-                <p>We assume that you already have created a registration form. If not you can use the default registration form, that was created automatically while installing the plugin.
-                So to get the shortcode, navigate to <strong>User Frontend</strong> → <strong>Registration Forms</strong> and you will be able to see the shortcodes on the right side of your screen.</p>
+                <p>
+                    <?php
+                    printf(
+                        // translators: %1$s and %2$s are HTML tags
+                        esc_html__(
+                            'We assume that you already have created a registration form. If not you can use the default registration form, that was created automatically while installing the plugin.
+                So to get the shortcode, navigate to %1$sUser Frontend%2$s → %3$sRegistration Forms%4$s and you will be able to see the shortcodes on the right side of your screen.',
+                            'wp-user-frontend'
+                        ),
+                        '<strong>',
+                        '</strong>',
+                        '<strong>',
+                        '</strong>'
+                    );
+                    ?>
+                </p>
 
                 <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=registration-profile-forms" target="_blank"><?php esc_html_e( 'Learn More About Profile Editing', 'wp-user-frontend' ); ?></a>
 
@@ -582,7 +624,20 @@ function wpuf_help_related_articles( $articles ) {
                 <h2><?php esc_html_e( 'Subscription Packs on Frontend', 'wp-user-frontend' ); ?></h2>
                 <p><?php esc_html_e( 'To view the created subscription packs on frontend, visit the Subscription page.', 'wp-user-frontend' ); ?></p>
 
-                <p>Short-code for creating the Subscription page – <code>[wpuf_sub_pack]</code>.</p>
+                <p>
+                    <?php
+                    printf(
+                        // translators: %1$s and %2$s are HTML tags
+                        esc_html__(
+
+                            'Short-code for creating the Subscription page – %1$s[wpuf_sub_pack]%2$s.',
+                            'wp-user-frontend'
+                        ),
+                        '<code>',
+                        '</code>'
+                    );
+                    ?>
+                </p>
                 <h2><?php esc_html_e('Payment &amp; Gateway Settings', 'wp-user-frontend'); ?></h2>
                 <p><?php esc_html_e('Post subscription and payment system is a module where you can add paid posting system with WP User Frontend. You can introduce two types of payment system. Pay per post and subscription pack based.', 'wp-user-frontend'); ?></p>
 
@@ -596,7 +651,22 @@ function wpuf_help_related_articles( $articles ) {
 
                 <p><?php esc_html_e('There is an another option for charged posting. With this feature, you can create unlimited subscription pack. In each pack, you can configure the number of posts, validity date and the cost.', 'wp-user-frontend'); ?></p>
                 <p><?php esc_html_e('When a user buys a subscription package, he gets to create some posts (e.g. 10) in X days (e.g: 30 days). If he crosses the number of posts or the validity date, he can’t post again. You can force the user to buy a pack before posting “Settings → Payments → Force pack purchase“.', 'wp-user-frontend'); ?></p>
-                <p>To show the subscription packs in a page, you can use the shortcode: <code>[wpuf_sub_pack]</code>. To show the user subscription info: <code>[wpuf_sub_info]</code>. The info will show the user about his pack’s remaining post count and expiration date of his pack.</p>
+                <p></p>
+                <p>
+                    <?php
+                    printf(
+                        esc_html__(
+                            // translators: %1$s and %2$s are HTML tags, %3$s and %4$s are HTML tags
+                            'To show the subscription packs in a page, you can use the shortcode: %1$s[wpuf_sub_pack]%2$s. To show the user subscription info: %3$s[wpuf_sub_info]%4$s. The info will show the user about his pack’s remaining post count and expiration date of his pack.',
+                            'wp-user-frontend'
+                        ),
+                        '<code>',
+                        '</code>',
+                        '<code>',
+                        '</code>'
+                    );
+                    ?>
+                </p>
 
                 <h2><?php esc_html_e('Payment Gateway', 'wp-user-frontend'); ?></h2>
 
@@ -609,15 +679,26 @@ function wpuf_help_related_articles( $articles ) {
             </section>
             <section id="content-restriction">
                 <h2><?php esc_html_e('Content Restriction', 'wp-user-frontend'); ?></h2>
-
-                <p>To set content restriction for a certain form, navigate to <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=page' ) ); ?>" target="_blank">Pages</a></strong></p>
+                <p>
+                    <?php
+                    printf(
+                        esc_html__(
+                            // translators: %1$s and %2$s are HTML tags
+                            'To set content restriction for a certain form, navigate to %1$sPages%2$s',
+                            'wp-user-frontend'
+                        ),
+                        '<a href="'. esc_url( admin_url( 'edit.php?post_type=page' ) ) . '" target="_blank">',
+                        '</a>'
+                    );
+                    ?>
+                </p>
 
                 <ol>
-                    <li>Now, select the page that has the shortcode of the selected form.</li>
-                    <li>Scroll down and you will find the <strong>WPUF Content Restriction</strong> settings.</li>
-                    <li>You can set the form visible to three types of people: <strong>Everyone</strong>, <strong>Logged in users only</strong> or <strong>Subscription users only</strong></li>
-                    <li>You can also set <strong>subscription plans</strong> for the form. For this, check the box of relevant subscription pack.</li>
-                    <li>Finally, update the page.</li>
+                    <li><?php esc_html_e( 'Now, select the page that has the shortcode of the selected form.', 'wp-user-frontend' ); ?></li>
+                    <li><?php esc_html_e( 'Scroll down and you will find the <strong>WPUF Content Restriction</strong> settings.', 'wp-user-frontend' ); ?></li>
+                    <li><?php esc_html_e( 'You can set the form visible to three types of people: <strong>Everyone</strong>, <strong>Logged in users only</strong> or <strong>Subscription users only</strong>', 'wp-user-frontend' ); ?></li>
+                    <li><?php esc_html_e( 'You can also set <strong>subscription plans</strong> for the form. For this, check the box of relevant subscription pack.', 'wp-user-frontend' ); ?></li>
+                    <li><?php esc_html_e( 'Finally, update the page.', 'wp-user-frontend' ); ?></li>
                 </ol>
 
                 <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/content-restriction/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=content-restriction" target="_blank"><?php esc_html_e( 'Learn More About Content Restriction', 'wp-user-frontend' ); ?></a>

@@ -133,7 +133,7 @@ class Form_Element extends Pro_Prompt {
                     <td>
                         <label>
                             <input disabled type="checkbox" name="" value="on" <?php echo esc_attr( $is_enable_mail_after_expired ); ?> />
-                            <?php echo esc_html( __( 'Send Email to Author After Exceeding Post Expiration Time', 'wp-user-frontend' ) ); ?>
+                            <?php esc_html_e( 'Send Email to Author After Exceeding Post Expiration Time', 'wp-user-frontend' ); ?>
                         </label>
                     </td>
                 </tr>

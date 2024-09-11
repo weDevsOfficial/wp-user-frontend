@@ -204,32 +204,57 @@ function wpuf_help_related_articles( $articles ) {
 <div class="wrap wpuf-help-page">
     <h1><?php esc_html_e( 'General Help Questions', 'wp-user-frontend' ); ?> <a href="https://wedevs.com/docs/wp-user-frontend-pro/?utm_source=wpuf-help-page&utm_medium=button-primary&utm_campaign=view-all-docs" target="_blank" class="page-title-action"><span class="dashicons dashicons-external" style="margin-top: 8px;"></span> <?php esc_html_e( 'View all Documentations', 'wp-user-frontend' ); ?></a></h1>
 
-    <form class="wpuf-subscribe-box" id="wpuf-form-subscribe" action="https://wedevs.us16.list-manage.com/subscribe/post-json?u=66e606cfe0af264974258f030&id=0d176bb256&c=?" method="get">
-
-        <div class="text-wrap">
+    <div class="wpuf-subscribe-box">
+        <div class="wpuf-text-wrap">
             <h3><?php esc_html_e( 'Subscribe to Our Newsletter', 'wp-user-frontend' ); ?></h3>
             <p>
-                <?php echo wp_kses_post( __( 'Subscribe to our newsletter for regular <strong>tips</strong>, <strong>offers</strong> and <strong>news updates</strong>.', 'wp-user-frontend' ) ); ?>
+                <?php echo wp_kses_post(
+                    __(
+                        'Subscribe to our newsletter for regular <strong>tips</strong>, <strong>offers</strong> and <strong>news updates</strong>.',
+                        'wp-user-frontend'
+                    )
+                ); ?>
             </p>
         </div>
+        <div class="wpuf-form-wrap">
+            <form id="wemail-embedded-subscriber-form" method="post"
+                  action="https://api.getwemail.io/v1/embed/subscribe/8da67b42-c367-4ad3-ae70-5cf63635a832">
+                <div class="form-group">
+                    <label for="wemail-first-name">First Name <span
+                            class="required-indicator">*</span></label>
+                    <div>
+                        <input
+                            type="text"
+                            name="first_name"
+                            id="wemail-first-name"
+                            required="required"
+                            placeholder="<?php echo esc_attr( "Enter first name" ); ?>"
+                            value="<?php echo esc_attr( $current_user->first_name ); ?>"
+                            class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="wemail-email">Email <span
+                            class="required-indicator">*</span></label>
+                    <div>
+                        <input
+                            type="email"
+                            name="email"
+                           required="required"
+                            id="wemail-email"
+                            placeholder="<?php echo esc_attr( "Enter email" ); ?>"
+                            value="<?php echo esc_attr( $current_user->user_email ); ?>"
+                           class="form-control">
+                    </div>
+                </div>
+                <input type="hidden" name="tag" value="698f5d31-4ef9-430a-a6f3-7f4bb24cdaf9">
+                <div>
+                    <button class="button button-primary"><?php esc_html_e( 'Subscribe', 'wp-user-frontend' ); ?></button>
+                </div>
 
-        <div class="form-wrap">
-            <div class="fname">
-                <label for="fname"><?php esc_html_e( 'First Name', 'wp-user-frontend' ); ?></label>
-                <input type="text" name="FNAME" id="fname" class="regular-text" value="<?php echo esc_attr( $current_user->first_name ); ?>" required>
-            </div>
-
-            <div class="email">
-                <label for="email"><?php esc_html_e( 'Email', 'wp-user-frontend' ); ?></label>
-                <input type="email" name="EMAIL" id="email" class="regular-text" value="<?php echo esc_attr( $current_user->user_email ); ?>" required>
-            </div>
-
-            <div class="submit-btn">
-                <input type="hidden" name="group[3555][1]" value="1">
-                <input type="submit" class="button button-primary" value="<?php echo esc_attr( __( 'Subscribe', 'wp-user-frontend' ) ); ?>">
-            </div>
+            </form>
         </div>
-    </form>
+    </div>
 
     <div class="wpuf-help-tabbed">
         <nav>
@@ -522,34 +547,30 @@ function wpuf_help_related_articles( $articles ) {
             });
         });
 
-        $('#wpuf-form-subscribe').submit(function(e) {
-            e.preventDefault();
+        const wemailForm = document.getElementById('wemail-embedded-subscriber-form');
 
-            var form = $(this);
+        if (wemailForm) {
+            wemailForm.addEventListener('submit', function(e) {
+                e.preventDefault();
 
-            form.find('input[type="submit"]').prop('disabled', true);
+                const formData = new FormData(wemailForm);
+                const email = formData.get('email');
 
-            $.ajax({
-                url: form.attr('action'),
-                data: form.serialize(),
-                type: 'GET',
-                dataType: 'json',
-                cache: false,
-                contentType: "application/json; charset=utf-8",
-            })
-            .done(function(data) {
-                // console.log(data);
+                if (!isValidEmail( email )) {
+                    alert( 'Please enter a valid email address' );
 
-                if (data.result != "success") {
-                    // do something
+                    return;
                 }
-            })
-            .fail(function() {
-                // console.log("error");
-            })
-            .always(function(response) {
-                $('.form-wrap', form).html( '<div class="thank-you">' + response.msg + '</div>' );
+
+                wemailForm.submit();
             });
-        });
+        }
+
+        function isValidEmail(email) {
+            // Regular expression for validating an Email
+            const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            
+            return regex.test(email);
+        }
     });
 </script>

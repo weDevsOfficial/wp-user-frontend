@@ -280,10 +280,13 @@ class Frontend_Account {
      * @return void
      */
     public function billing_address_section( $sections, $current_section ) {
-        wpuf_load_template( 'dashboard/billing-address.php', [
-            'sections'        => $sections,
-            'current_section' => $current_section,
-        ] );
+        wpuf_load_template(
+            'dashboard/billing-address.php',
+            [
+                'sections'        => $sections,
+                'current_section' => $current_section,
+            ]
+        );
     }
 
     /**

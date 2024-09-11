@@ -182,7 +182,7 @@ class Post_Form_Template_Events_Calendar extends Form_Template{
             'submit_text'      => __( 'Create Event', 'wp-user-frontend' ),
             'edit_post_status' => 'publish',
             'edit_redirect_to' => 'same',
-            'update_message'   => __( 'Event has been updated successfully. <a target="_blank" href="%link%">View event</a>',
+            'update_message'   => __( 'Event has been updated successfully. <a target="_blank" href="{link}">View event</a>',
                                       'wp-user-frontend' ),
             'edit_url'         => '',
             'update_text'      => __( 'Update Event', 'wp-user-frontend' ),
@@ -192,28 +192,28 @@ class Post_Form_Template_Events_Calendar extends Form_Template{
                 'new_to'       => get_option( 'admin_email' ),
                 'new_subject'  => 'New event has been created',
                 'new_body'     => 'Hi,
-A new event has been created in your site %sitename% (%siteurl%).
+A new event has been created in your site {sitename} ({siteurl}).
 
 Here is the details:
-Event Title: %post_title%
-Description: %post_content%
-Short Description: %post_excerpt%
-Author: %author%
-Post URL: %permalink%
-Edit URL: %editlink%',
+Event Title: {post_title}
+Description: {post_content}
+Short Description: {post_excerpt}
+Author: {author}
+Post URL: {permalink}
+Edit URL: {editlink}',
                 'edit'         => 'off',
                 'edit_to'      => get_option( 'admin_email' ),
                 'edit_subject' => 'Post has been edited',
                 'edit_body'    => 'Hi,
-The event "%post_title%" has been updated.
+The event "{post_title}" has been updated
 
 Here is the details:
-Event Title: %post_title%
-Description: %post_content%
-Short Description: %post_excerpt%
-Author: %author%
-Post URL: %permalink%
-Edit URL: %editlink%',
+Event Title: {post_title}
+Description: {post_content}
+Short Description: {post_excerpt}
+Author: {author}
+Post URL: {permalink}
+Edit URL: {editlink}'
             ],
         ];
     }

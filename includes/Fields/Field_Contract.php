@@ -527,7 +527,11 @@ abstract class Field_Contract {
                 'type'      => 'multiselect',
                 'section'   => 'advanced',
                 'priority'  => 27,
-                'help_text' => __( 'Search the terms name. use ⇦ ⇨ for navigate', 'wp-user-frontend' ),
+                // translators: %1$s: left arrow, %2$s: right arrow
+                'help_text' => sprintf(
+                    // translators: %s: left and right arrow
+                    __( 'Search the terms name. use %1$s %2$s for navigate', 'wp-user-frontend' ), '⇦', '⇨'
+                ),
                 'options'   => wpuf_get_terms( $tax_name ),
             ],
 
@@ -700,7 +704,10 @@ abstract class Field_Contract {
                 'dependencies' => [
                     'rich' => [ 'yes', 'teeny' ],
                 ],
-                'help_text' => __( 'Select button for exclude from frontend. Search button name. use ⇦ ⇨ for navigate', 'wp-user-frontend' ),
+                'help_text' => sprintf(
+                    // translators: %1$s: left arrow, %2$s: right arrow
+                    __( 'Select button for exclude from frontend. Search button name. use %1$s %2$s for navigate', 'wp-user-frontend' ), '⇦', '⇨'
+                ),
                 'options'   => wpuf_get_editor_buttons(),
             ],
         ];

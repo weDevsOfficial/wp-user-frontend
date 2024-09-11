@@ -172,6 +172,7 @@ final class WP_User_Frontend {
         $this->container['customize']    = new WeDevs\Wpuf\Admin\Customizer_Options();
         $this->container['bank']         = new WeDevs\Wpuf\Lib\Gateway\Bank();
         $this->container['paypal']       = new WeDevs\Wpuf\Lib\Gateway\Paypal();
+        $this->container['api']          = new WeDevs\Wpuf\API();
 
         if ( is_admin() ) {
             $this->container['admin']        = new WeDevs\Wpuf\Admin();

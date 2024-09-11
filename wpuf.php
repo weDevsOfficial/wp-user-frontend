@@ -372,6 +372,17 @@ final class WP_User_Frontend {
             return $this->container[ $prop ];
         }
     }
+
+    /**
+     * Get the DB version key
+     *
+     * @since WPUF_SINCE
+     *
+     * @return string
+     */
+    public function get_db_version_key() {
+        return 'wpuf_version';
+    }
 }
 
 /**

@@ -624,18 +624,18 @@ class Frontend_Form_Ajax {
         $post = get_post( $post_id );
 
         $post_field_search = [
-            '%post_title%',
-            '%post_content%',
-            '%post_excerpt%',
-            '%tags%',
-            '%category%',
-            '%author%',
-            '%author_email%',
-            '%author_bio%',
-            '%sitename%',
-            '%siteurl%',
-            '%permalink%',
-            '%editlink%',
+            '{post_title}',
+            '{post_content}',
+            '{post_excerpt}',
+            '{tags}',
+            '{category}',
+            '{author}',
+            '{author_email}',
+            '{author_bio}',
+            '{sitename}',
+            '{siteurl}',
+            '{permalink}',
+            '{editlink}',
         ];
 
         $home_url = sprintf( '<a href="%s">%s</a>', home_url(), home_url() );
@@ -658,14 +658,14 @@ class Frontend_Form_Ajax {
         ];
 
         if ( class_exists( 'WooCommerce' ) ) {
-            $post_field_search[] = '%product_cat%';
+            $post_field_search[] = '{product_cat}';
             $post_field_replace[] = get_the_term_list( $post_id, 'product_cat', '', ', ' );
         }
 
         $content = str_replace( $post_field_search, $post_field_replace, $content );
 
         // custom fields
-        preg_match_all( '/%custom_([\w-]*)\b%/', $content, $matches );
+        preg_match_all( '/{custom_([\w-]*)\b}/', $content, $matches );
         [ $search, $replace ] = $matches;
 
         if ( $replace ) {

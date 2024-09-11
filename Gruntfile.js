@@ -239,7 +239,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks( 'grunt-wp-readme-to-markdown' );
     grunt.loadNpmTasks( 'grunt-shell' );
 
-    grunt.registerTask( 'default', [ 'less', 'concat' ] );
+    grunt.registerTask( 'default', [ 'less', 'concat', 'uglify', 'i18n' ] );
 
     // file auto generation
     grunt.registerTask( 'i18n', [ 'makepot' ] );

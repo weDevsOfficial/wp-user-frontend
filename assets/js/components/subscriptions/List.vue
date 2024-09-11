@@ -12,17 +12,20 @@ import {__} from '@wordpress/i18n';
 const subscriptionStore = useSubscriptionStore();
 const subscriptions = storeToRefs( subscriptionStore ).subscriptionList;
 const count = ref( subscriptionStore.allCount.all );
-const currentPage = ref( 1 );
+const currentPage = storeToRefs( subscriptionStore ).currentPageNumber;
 const perPage = parseInt( wpufSubscriptions.perPage );
 const totalPages = ref( Math.ceil( count.value / wpufSubscriptions.perPage ) );
-const changePageTo = ( page ) => {
-    const offset = ( page - 1 ) * parseInt( wpufSubscriptions.perPage );
-    currentPage.value = page;
-
-    subscriptionStore.setSubscriptionsByStatus( subscriptionStore.currentSubscriptionStatus, offset );
-};
 const maxVisibleButtons = ref( 3 );
 const paginationKey = ref( 0 );
+const changePageTo = ( page ) => {
+    const offset = ( page - 1 ) * parseInt( wpufSubscriptions.perPage );
+    subscriptionStore.setSubscriptionsByStatus( subscriptionStore.currentSubscriptionStatus, offset );
+
+    currentPage.value = page;
+
+    // refresh the pagination component
+    paginationKey.value += 1;
+};
 
 const emptyMessages = {
     all: __( 'Powerful Subscription Features for Monetizing Your Content. Unlock a World of Possibilities with WPUF\'s Subscription Features – From Charging Users for Posting to Exclusive Content Access.',
@@ -79,13 +82,13 @@ watch(
         />
     </div>
     <div v-if="!subscriptionStore.isSubscriptionLoading">
-        <div v-if="!count" class="wpuf-px-8 wpuf-pb-8">
+        <div v-if="!count" class="wpuf-pl-[48px]">
             <ListHeader :message="headerMessage[subscriptionStore.currentSubscriptionStatus]" />
             <Empty :message="emptyMessages[subscriptionStore.currentSubscriptionStatus]"/>
         </div>
-        <div v-else class="wpuf-px-8 wpuf-pb-8">
+        <div v-else class="wpuf-pl-[48px]">
             <ListHeader :message="headerMessage[subscriptionStore.currentSubscriptionStatus]" />
-            <div class="wpuf-grid wpuf-grid-cols-3 wpuf-gap-4 wpuf-mt-4">
+            <div class="wpuf-grid wpuf-grid-cols-3 wpuf-gap-4 wpuf-mt-[40px]">
                 <SubscriptionBox
                     v-for="subscription in subscriptions"
                     :subscription=subscription

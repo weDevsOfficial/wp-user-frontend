@@ -1060,8 +1060,18 @@ class Admin_Subscription {
             'wpuf_subscription_section_payment', [
                 'payment_settings' => [
                     [
-                        'id'    => 'payment_details',
-                        'label' => __( 'Payment Details', 'wp-user-frontend' ),
+                        'id'     => 'payment_details',
+                        'label'  => __( 'Payment Details', 'wp-user-frontend' ),
+                        'notice' => [
+                            'type'    => 'attention',
+                            'message' => sprintf(
+                                // translators: %s: Payment Settings URL
+                                __(
+                                    'For subscriptions to work correctly, please ensure the payment gateway and related settings are properly configured in the <a href="%s">Payment Settings</a>',
+                                    'wp-user-frontend'
+                                ), admin_url( 'admin.php?page=wpuf-settings' )
+                            ),
+                        ],
                     ],
                 ],
             ]
@@ -1107,8 +1117,8 @@ class Admin_Subscription {
                         'db_type'     => 'post',
                         'type'        => 'input-text',
                         'label'       => __( 'Plan Name', 'wp-user-frontend' ),
-                        'tooltip'     => __( 'Enter a name for this subscription plan', 'wp-user-frontend' ),
-                        'placeholder' => __( 'enter subscription name', 'wp-user-frontend' ),
+                        'tooltip'     => __( 'Enter a name for this subscription plan. E.g., "Featured Article Subscription"', 'wp-user-frontend' ),
+                        'placeholder' => __( 'Enter subscription name', 'wp-user-frontend' ),
                         'is_required' => true,
                         'default'     => '',
                     ],
@@ -1123,7 +1133,7 @@ class Admin_Subscription {
                             'Provide a brief description of this subscription plan to help users understand key features or benefits',
                             'wp-user-frontend'
                         ),
-                        'placeholder' => __( 'write briefly what this subscription is about', 'wp-user-frontend' ),
+                        'placeholder' => __( 'Write briefly what this subscription is about', 'wp-user-frontend' ),
                         'default'     => '',
                     ],
                 ],
@@ -1143,7 +1153,7 @@ class Admin_Subscription {
                             'Enter a unique slug for the subscription. Leave it blank for WordPress default slug',
                             'wp-user-frontend'
                         ),
-                        'placeholder' => __( 'enter plan slug', 'wp-user-frontend' ),
+                        'placeholder' => __( 'Enter plan slug', 'wp-user-frontend' ),
                         'default'     => '',
                     ],
                     'publish_time' => [
@@ -1194,7 +1204,8 @@ class Admin_Subscription {
                                 'type'    => 'input-number',
                                 'db_key'  => '_post_expiration_number',
                                 'db_type' => 'meta',
-                                'default' => '-1',
+                                'key_id'  => 'expiration_value',
+                                'default' => -1,
                             ],
                             'expiration_unit'  => [
                                 'id'      => 'post-expiration-unit',
@@ -1202,6 +1213,7 @@ class Admin_Subscription {
                                 'type'    => 'select',
                                 'db_key'  => '_post_expiration_period',
                                 'db_type' => 'meta',
+                                'key_id'  => 'expiration_unit',
                                 'options' => [
                                     'forever' => __( 'Never', 'wp-user-frontend' ),
                                     'day'     => __( 'Day(s)', 'wp-user-frontend' ),
@@ -1262,7 +1274,7 @@ class Admin_Subscription {
                             'wp-user-frontend'
                         ),
                         'placeholder' => __(
-                            'write the expiration message here',
+                            'Write the expiration message here',
                             'wp-user-frontend'
                         ),
                         'key_id'      => 'expiration_message',

@@ -14,9 +14,10 @@ const getBillingAmountText = computed(() => {
     if (parseFloat( currentSubscription.meta_value.billing_amount ) === 0) {
         return __( 'Free', 'wp-user-frontend' );
     } else {
-        if ( isRecurring ) {
+        if ( isRecurring.value ) {
             const cyclePeriod = currentSubscription.meta_value.cycle_period === '' ? __( 'day', 'wp-user-frontend' ) : currentSubscription.meta_value.cycle_period;
             const expireAfter = currentSubscription.meta_value._billing_cycle_number !== '0' ? ' ' + currentSubscription.meta_value._billing_cycle_number + ' ' : '';
+
             return wpufSubscriptions.currencySymbol + currentSubscription.meta_value.billing_amount + ' <span class="wpuf-text-sm wpuf-text-gray-500">per ' + expireAfter + ' ' + cyclePeriod + '(s)</span>';
         }
 
@@ -41,7 +42,7 @@ const billingAmount = getBillingAmountText;
                 <dt class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500">
                     {{ __( 'Payment', 'wp-user-frontend' )}}
                 </dt>
-                <dd class="wpuf-w-full wpuf-flex-none wpuf-text-2xl wpuf-leading-10 wpuf-tracking-tight wpuf-text-gray-900" v-html="billingAmount"></dd>
+                <dd class="wpuf-w-full wpuf-flex-none wpuf-text-2xl wpuf-leading-10 wpuf-tracking-tight wpuf-text-gray-900" v-html="subscriptionStore.getReadableBillingAmount(currentSubscription, true)"></dd>
             </div>
             <div v-if="isRecurring" class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-px-4 wpuf-py-5">
                 <dt class="wpuf-text-sm wpuf-italic wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500 wpuf-flex wpuf-items-center wpuf-justify-center">

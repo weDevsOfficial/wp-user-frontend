@@ -17,7 +17,7 @@ const info = computed( () => {
         default:
             return {
                 title: __( 'Trash Subscription', 'wp-user-frontend' ),
-                message: __( 'This subscription will moved to trash. Are you sure?', 'wp-user-frontend' ),
+                message: __( 'This subscription will be moved to the trash. Are you sure?', 'wp-user-frontend' ),
                 actionText: __( 'Trash', 'wp-user-frontend' ),
             }
     }
@@ -33,7 +33,7 @@ const emitAction = () => {
 
 </script>
 <template>
-    <div class="wpuf-relative wpuf-z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="wpuf-fixed wpuf-z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="wpuf-fixed wpuf-inset-0 wpuf-bg-gray-500 wpuf-bg-opacity-75 wpuf-transition-opacity"></div>
         <div class="wpuf-fixed wpuf-inset-0 wpuf-z-10 wpuf-w-screen wpuf-overflow-y-auto">
             <div class="wpuf-flex wpuf-min-h-full wpuf-justify-center wpuf-text-center wpuf-items-center wpuf-p-0">

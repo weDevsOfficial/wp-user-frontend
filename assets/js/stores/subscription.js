@@ -21,6 +21,7 @@ export const useSubscriptionStore = defineStore( 'subscription', {
         } ),
         allCount: ref( {} ),
         taxonomyRestriction: ref( {} ),
+        currentPageNumber: ref( 1 ),
     } ),
     getters: {
         fieldNames: () => {
@@ -76,28 +77,37 @@ export const useSubscriptionStore = defineStore( 'subscription', {
             this.currentSubscription.meta_value = {};
 
             for (const field of this.fields) {
-                switch (field.db_type) {
-                    case 'post':
-                        this.currentSubscription[field.db_key] = field.default;
-                        break;
-
-                    case 'meta':
-                        this.currentSubscription.meta_value[field.db_key] = field.default;
-                        break;
-
-                    case 'meta_serialized':
-                        let serializedValue = {};
-                        if (this.currentSubscription.meta_value.hasOwnProperty( field.db_key )) {
-                            serializedValue = this.currentSubscription.meta_value[field.db_key];
-                            serializedValue[field.serialize_key] = field.default;
-                        } else {
-                            serializedValue[field.serialize_key] = field.default;
-                        }
-
-                        this.currentSubscription.meta_value[field.db_key] = serializedValue;
-
-                        break;
+                if (field.hasOwnProperty('type') && field.type === 'inline') {
+                    for (const innerField in field.fields) {
+                        this.populateDefaultValue( field.fields[innerField] );
+                    }
+                } else {
+                    this.populateDefaultValue( field );
                 }
+            }
+        },
+        populateDefaultValue( field ) {
+            switch (field.db_type) {
+                case 'post':
+                    this.currentSubscription[field.db_key] = field.default;
+                    break;
+
+                case 'meta':
+                    this.currentSubscription.meta_value[field.db_key] = field.default;
+                    break;
+
+                case 'meta_serialized':
+                    let serializedValue = {};
+                    if (this.currentSubscription.meta_value.hasOwnProperty( field.db_key )) {
+                        serializedValue = this.currentSubscription.meta_value[field.db_key];
+                        serializedValue[field.serialize_key] = field.default;
+                    } else {
+                        serializedValue[field.serialize_key] = field.default;
+                    }
+
+                    this.currentSubscription.meta_value[field.db_key] = serializedValue;
+
+                    break;
             }
         },
         getValueFromField( field ) {
@@ -157,7 +167,7 @@ export const useSubscriptionStore = defineStore( 'subscription', {
             return fetch( requestUrl, requestOptions )
             .then( ( response ) => response.json() )
             .catch( ( error ) => {
-                console.log( error );
+                this.setError('fetch', 'An error occurred while updating the subscription.');
             } ).finally( () => {
                 this.isUpdating = false;
             } );
@@ -273,6 +283,7 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                                 value = subscription[fieldData.db_key];
                                 break;
                             default:
+                                value = '';
                                 break;
                         }
 
@@ -374,5 +385,26 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                 console.log( error );
             } );
         },
+        getReadableBillingAmount( subscription, returnAsHtml = false ) {
+            if (this.isRecurring( subscription )) {
+                const cyclePeriod = subscription.meta_value.cycle_period === '' ? __( 'day', 'wp-user-frontend' ) : subscription.meta_value.cycle_period;
+                const expireAfter = (parseInt( subscription.meta_value._billing_cycle_number ) === 0 || parseInt( subscription.meta_value._billing_cycle_number ) === 1) ? '' : ' ' + subscription.meta_value._billing_cycle_number + ' ';
+
+                if (returnAsHtml) {
+                    return wpufSubscriptions.currencySymbol + subscription.meta_value.billing_amount + ' <span class="wpuf-text-sm wpuf-text-gray-500">per ' + expireAfter + ' ' + cyclePeriod + '(s)</span>';
+                } else {
+                    return wpufSubscriptions.currencySymbol + subscription.meta_value.billing_amount + ' per ' + expireAfter + ' ' + cyclePeriod + '(s)';
+                }
+            } else {
+                if (parseInt( subscription.meta_value.billing_amount ) === 0 || subscription.meta_value.billing_amount === '') {
+                    return __( 'Free', 'wp-user-frontend' );
+                } else {
+                    return wpufSubscriptions.currencySymbol + subscription.meta_value.billing_amount;
+                }
+            }
+        },
+        isRecurring( subscription ) {
+            return subscription.meta_value.recurring_pay === 'on' || subscription.meta_value.recurring_pay === 'yes'
+        }
     }
 } );

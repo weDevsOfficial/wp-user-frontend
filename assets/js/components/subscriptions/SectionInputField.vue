@@ -1,5 +1,5 @@
 <script setup>
-import {computed, inject, onMounted, ref, toRaw, toRefs} from 'vue';
+import {computed, inject, onMounted, ref, toRaw, toRefs, watch} from 'vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import Multiselect from '@vueform/multiselect';
 import {useSubscriptionStore} from '../../stores/subscription';
@@ -18,7 +18,7 @@ const subSection = inject( 'subSection' );
 const props = defineProps( {
     field: Object,
     fieldId: String,
-    innerField: {
+    isChildField: {
         type: Boolean,
         default: false,
     },
@@ -28,7 +28,7 @@ const dependencyStore = useFieldDependencyStore();
 const subscription = subscriptionStore.currentSubscription;
 const errors = storeToRefs( subscriptionStore.errors );
 
-const { field, fieldId } = toRefs( props );
+const { field, fieldId, isChildField } = toRefs( props );
 
 const publishedDate = ref( new Date() );
 
@@ -121,6 +121,13 @@ const processInput = (event) => {
     }
 };
 
+const processNumber = (event) => {
+    const allowedKeys = ['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight'];
+    if (!allowedKeys.includes(event.key) && isNaN(Number(event.key))) {
+        event.preventDefault();
+    }
+}
+
 const options = computed( () => {
     if ( ! wpufSubscriptions.fields.advanced_configuration.hasOwnProperty( 'taxonomy_restriction' ) ) {
         return [];
@@ -138,6 +145,19 @@ const onMultiSelectChange = ( currentValue ) => {
         taxonomyRestriction: tempObj,
     });
 };
+
+const fieldLabelClasses = computed(() => {
+    const classes = ['wpuf-gap-4'];
+    if (field.value.label) {
+        classes.push('wpuf-grid wpuf-grid-cols-3 wpuf-p-4');
+    } else {
+        classes.push('wpuf-py-4 wpuf-pl-3 wpuf-pr-4');
+    }
+
+    if (isChildField.value) classes.push('wpuf-col-span-2 wpuf-w-1/2');
+
+    return classes;
+});
 
 onMounted(() => {
     if ( field.value.type === 'switcher' ) {
@@ -193,19 +213,19 @@ onMounted(() => {
 <template>
     <div
         v-show="showField"
-        :class="field.label ? 'wpuf-grid wpuf-grid-cols-3 wpuf-p-4' : 'wpuf-py-4 wpuf-pl-3 wpuf-pr-4'"
-        class="wpuf-gap-4">
-        <label v-if="field.label"
-               :for="field.name"
-               class="wpuf-block wpuf-text-sm wpuf-leading-6 wpuf-text-gray-600 wpuf-flex wpuf-items-center">
-            {{ field.label }}
+        :class="fieldLabelClasses">
+        <div
+            v-if="field.label"
+           class="wpuf-block wpuf-text-sm wpuf-leading-6 wpuf-text-gray-600 wpuf-flex wpuf-items-center"
+        >
+            <label :for="field.name" v-html="field.label"></label>
             <span
                 v-if="field.tooltip"
-                class="wpuf-tooltip wpuf-cursor-pointer wpuf-ml-2 wpuf-z-[9999]"
+                class="wpuf-tooltip before:wpuf-bg-gray-700 before:wpuf-text-zinc-50 after:wpuf-border-t-gray-700 after:wpuf-border-x-transparent wpuf-cursor-pointer wpuf-ml-2 wpuf-z-10"
                  :data-tip="field.tooltip">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none">
                     <path d="M9.833 12.333H9V9h-.833M9 5.667h.008M16.5 9a7.5 7.5 0 1 1-15 0 7.5 7.5 0 1 1 15 0z"
-                          stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                          stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
             </span>
             &nbsp;&nbsp;
@@ -213,7 +233,7 @@ onMounted(() => {
                 <ProBadge v-if="showProBadge" />
                 <ProTooltip />
             </span>
-        </label>
+        </div>
         <div
             class="wpuf-w-full wpuf-col-span-2 wpuf-relative wpuf-group">
             <div
@@ -222,7 +242,7 @@ onMounted(() => {
                 <a href="https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=wpdashboard&amp;utm_medium=popup"
                    target="_blank"
                    class="wpuf-inline-flex wpuf-align-center wpuf-p-2 wpuf-bg-amber-600 wpuf-text-white hover:wpuf-text-white wpuf-rounded-md">
-                    Upgrade to PRO
+                    {{ __( 'Upgrade to Pro', 'wp-user-frontend' ) }}
                     <span class="pro-icon icon-white">
                         <svg width="20" height="15" viewBox="0 0 20 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M19.2131 4.11564C19.2161 4.16916 19.2121 4.22364 19.1983 4.27775L17.9646 10.5323C17.9024 10.7741 17.6796 10.9441 17.4235 10.9455L10.0216 10.9818H10.0188H2.61682C2.35933 10.9818 2.13495 10.8112 2.07275 10.5681L0.839103 4.29542C0.824897 4.23985 0.820785 4.18385 0.824374 4.12895C0.34714 3.98269 0 3.54829 0 3.03636C0 2.40473 0.528224 1.89091 1.17757 1.89091C1.82692 1.89091 2.35514 2.40473 2.35514 3.03636C2.35514 3.39207 2.18759 3.71033 1.92523 3.92058L3.46976 5.43433C3.86011 5.81695 4.40179 6.03629 4.95596 6.03629C5.61122 6.03629 6.23596 5.7336 6.62938 5.22647L9.1677 1.95491C8.95447 1.74764 8.82243 1.46124 8.82243 1.14545C8.82243 0.513818 9.35065 0 10 0C10.6493 0 11.1776 0.513818 11.1776 1.14545C11.1776 1.45178 11.0526 1.72982 10.8505 1.93556L10.8526 1.93811L13.3726 5.21869C13.7658 5.73069 14.3928 6.03636 15.0499 6.03636C15.6092 6.03636 16.1351 5.82451 16.5305 5.43978L18.0848 3.92793C17.8169 3.71775 17.6449 3.39644 17.6449 3.03636C17.6449 2.40473 18.1731 1.89091 18.8224 1.89091C19.4718 1.89091 20 2.40473 20 3.03636C20 3.53462 19.6707 3.9584 19.2131 4.11564ZM17.8443 12.6909C17.8443 12.3897 17.5932 12.1455 17.2835 12.1455H2.77884C2.46916 12.1455 2.21809 12.3897 2.21809 12.6909V14C2.21809 14.3012 2.46916 14.5455 2.77884 14.5455H17.2835C17.5932 14.5455 17.8443 14.3012 17.8443 14V12.6909Z" fill="#FB9A28" />
@@ -239,7 +259,7 @@ onMounted(() => {
                 :placeholder="field.placeholder ? field.placeholder : ''"
                 @input="[modifySubscription($event), processInput($event)]"
                 :class="subscriptionStore.errors[fieldId] ? '!wpuf-border-red-500' : '!wpuf-border-gray-300'"
-                class="wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">
+                class="placeholder:wpuf-text-gray-400 wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">
             <input
                 v-if="field.type === 'input-number'"
                 type="number"
@@ -248,8 +268,9 @@ onMounted(() => {
                 :id="field.name"
                 :placeholder="field.placeholder ? field.placeholder : ''"
                 @input="[modifySubscription($event), processInput($event)]"
+                @keydown="processNumber"
                 :class="subscriptionStore.errors[fieldId] ? '!wpuf-border-red-500' : '!wpuf-border-gray-300'"
-                class="wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">
+                class="placeholder:wpuf-text-gray-400 wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">
             <textarea
                 v-if="field.type === 'textarea'"
                 :name="field.name"
@@ -258,7 +279,7 @@ onMounted(() => {
                 rows="3"
                 @input="[modifySubscription($event), processInput($event)]"
                 :class="subscriptionStore.errors[fieldId] ? '!wpuf-border-red-500' : '!wpuf-border-gray-300'"
-                class="wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">{{ value }}</textarea>
+                class="placeholder:wpuf-text-gray-400 wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">{{ value }}</textarea>
             <button
                 v-if="field.type === 'switcher'"
                 @click="[toggleOnOff(), $emit('toggleDependentFields', fieldId, switchStatus)]"
@@ -267,7 +288,7 @@ onMounted(() => {
                 :name="field.name"
                 :id="field.name"
                 :class="switchStatus ? 'wpuf-bg-indigo-600' : 'wpuf-bg-gray-200'"
-                class="wpuf-bg-gray-200 wpuf-relative wpuf-inline-flex wpuf-h-6 wpuf-w-11 wpuf-flex-shrink-0 wpuf-cursor-pointer wpuf-rounded-full wpuf-border-2 wpuf-border-transparent wpuf-transition-colors wpuf-duration-200 wpuf-ease-in-out"
+                class="placeholder:wpuf-text-gray-400 wpuf-bg-gray-200 wpuf-relative wpuf-inline-flex wpuf-h-6 wpuf-w-11 wpuf-flex-shrink-0 wpuf-cursor-pointer wpuf-rounded-full wpuf-border-2 wpuf-border-transparent wpuf-transition-colors wpuf-duration-200 wpuf-ease-in-out"
                 role="switch">
                 <span
                     aria-hidden="true"

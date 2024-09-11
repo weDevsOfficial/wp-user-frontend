@@ -1,7 +1,7 @@
 <script setup>
 import {__} from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
-import {toRefs, ref, onBeforeMount, computed} from 'vue';
+import {toRefs, ref, onBeforeMount, computed, onMounted} from 'vue';
 import {addQueryArgs} from '@wordpress/url';
 import Edit from './Edit.vue';
 
@@ -152,30 +152,7 @@ const toggleSubscriptionStatus = ( subscription ) => {
 
     const promiseResult = subscriptionStore.changeSubscriptionStatus( subscription );
 
-    promiseResult.then((result) => {
-        if (result.success) {
-            noticeStore.display = true;
-            noticeStore.type = 'success';
-            noticeStore.message = result.message;
-
-            subscriptionStore.setSubscriptionsByStatus( subscriptionStore.currentSubscriptionStatus );
-            subscriptionStore.getSubscriptionCount();
-
-            title.value = subscription.post_title;
-        } else {
-            noticeStore.display = true;
-            noticeStore.type = 'danger';
-            noticeStore.message = result.message;
-        }
-
-        setTimeout(() => {
-            noticeStore.display = false;
-            noticeStore.type = '';
-            noticeStore.message = '';
-        }, 3000);
-    }).finally(() => {
-        subscriptionStore.isSubscriptionLoading = false;
-    });
+    processPromiseResult( promiseResult );
 };
 
 const processPromiseResult = ( promiseResult ) => {
@@ -227,18 +204,13 @@ const isPasswordProtected = computed( () => {
     return subscription.value.post_password !== '';
 } );
 
-quickEditStore.$subscribe( ( mutation, state ) => {
-    // if the quick edit menu is closed, check for the status of the subscription
-    if (!state.isQuickEdit) {
-        setPillBackground();
-    }
-} );
-
 </script>
 <template>
     <div v-if="showBox"
-         class="wpuf-text-base wpuf-justify-between wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-rounded-xl wpuf-shadow">
+         class="wpuf-text-base wpuf-justify-between wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-rounded-xl wpuf-shadow wpuf-relative">
         <div
+            @click="subscription.post_status !== 'trash' ? [ componentStore.setCurrentComponent( 'Edit' ), subscriptionStore.setCurrentSubscription(subscription) ] : ''"
+            :class="subscription.post_status !== 'trash' ? 'wpuf-cursor-pointer' : ''"
             class="wpuf-flex wpuf-justify-between wpuf-border-b border-gray-900/5 wpuf-bg-gray-50 wpuf-p-6 wpuf-rounded-t-xl">
             <div>
                 <div class="wpuf-flex wpuf-py-1 wpuf-text-gray-900 wpuf-m-0 wpuf-font-medium"
@@ -252,51 +224,53 @@ quickEditStore.$subscribe( ( mutation, state ) => {
                         </svg>
                     </span>
                 </div>
-                <p class="wpuf-text-gray-500 wpuf-text-base wpuf-m-0">{{ billingAmount }}</p>
+              <p class="wpuf-text-gray-500 wpuf-text-base wpuf-m-0">
+                {{ subscriptionStore.getReadableBillingAmount( subscription ) }}
+              </p>
             </div>
-            <div class="wpuf-flex wpuf-justify-between wpuf-flex-col wpuf-relative">
-                <svg
-                    @click="showQuickMenu"
-                    v-click-outside="hideQuickMenu"
-                    class="wpuf-h-5 wpuf-w-5 hover:wpuf-cursor-pointer"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    aria-hidden="true">
-                    <path
-                        d="M3 10a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM8.5 10a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM15.5 8.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"></path>
-                </svg>
-                <div
-                    v-if="quickMenuStatus"
-                    class="wpuf-w-max wpuf--left-20 wpuf-absolute wpuf-rounded-xl wpuf-bg-white wpuf-shadow-lg wpuf-ring-1 wpuf-ring-gray-900/5 wpuf-overflow-hidden">
-                    <ul v-if="subscription.post_status !== 'trash'">
-                        <li @click="componentStore.setCurrentComponent( 'Edit' ); subscriptionStore.setCurrentSubscription(subscription)"
-                            class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">
-                            {{ __( 'Edit', 'wp-user-frontend' ) }}
-                        </li>
-                        <li @click="quickEditStore.isQuickEdit = true; subscriptionStore.setCurrentSubscription(subscription); subscriptionStore.currentSubscriptionCopy = subscription"
-                            class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">
-                            {{ __( 'Quick Edit', 'wp-user-frontend' ) }}
-                        </li>
-                        <li @click="toggleSubscriptionStatus(subscription)"
-                            class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">
-                            {{ __( 'Draft/Publish', 'wp-user-frontend' ) }}
-                        </li>
-                        <li @click="showPopup = true"
-                            class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">
-                            {{ __( 'Trash', 'wp-user-frontend' ) }}
-                        </li>
-                    </ul>
-                    <ul v-if="subscription.post_status === 'trash'">
-                        <li @click="restoreSubscription(subscription); componentStore.setCurrentComponent( 'List' )"
-                            class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">
-                            {{ __( 'Restore', 'wp-user-frontend' ) }}
-                        </li>
-                        <li @click="showPopup = true"
-                            class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">
-                            {{ __( 'Delete Permanently', 'wp-user-frontend' ) }}
-                        </li>
-                    </ul>
-                </div>
+        </div>
+        <div class="wpuf-absolute wpuf-right-6 wpuf-p-[10px] wpuf-rounded-full hover:wpuf-bg-gray-100 wpuf-top-4 wpuf-right-4">
+            <svg
+                @click="showQuickMenu"
+                v-click-outside="hideQuickMenu"
+                class="wpuf-h-5 wpuf-w-5 hover:wpuf-cursor-pointer"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true">
+                <path
+                    d="M3 10a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM8.5 10a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM15.5 8.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"></path>
+            </svg>
+            <div
+                v-if="quickMenuStatus"
+                class="wpuf-w-max wpuf--left-20 wpuf-absolute wpuf-rounded-xl wpuf-bg-white wpuf-shadow-lg wpuf-ring-1 wpuf-ring-gray-900/5 wpuf-overflow-hidden wpuf-z-10">
+                <ul v-if="subscription.post_status !== 'trash'">
+                    <li @click="componentStore.setCurrentComponent( 'Edit' ); subscriptionStore.setCurrentSubscription(subscription)"
+                        class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">
+                        {{ __( 'Edit', 'wp-user-frontend' ) }}
+                    </li>
+                    <li @click="quickEditStore.isQuickEdit = true; subscriptionStore.setCurrentSubscription(subscription); subscriptionStore.currentSubscriptionCopy = subscription"
+                        class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">
+                        {{ __( 'Quick Edit', 'wp-user-frontend' ) }}
+                    </li>
+                    <li @click="toggleSubscriptionStatus(subscription)"
+                        class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">
+                        {{ subscription.post_status === 'publish' ? __( 'Draft', 'wp-user-frontend' ) : __( 'Publish', 'wp-user-frontend' ) }}
+                    </li>
+                    <li @click="showPopup = true"
+                        class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">
+                        {{ __( 'Trash', 'wp-user-frontend' ) }}
+                    </li>
+                </ul>
+                <ul v-if="subscription.post_status === 'trash'">
+                    <li @click="restoreSubscription(subscription); componentStore.setCurrentComponent( 'List' )"
+                        class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">
+                        {{ __( 'Restore', 'wp-user-frontend' ) }}
+                    </li>
+                    <li @click="showPopup = true"
+                        class="wpuf-px-4 wpuf-py-2 wpuf-mb-0 hover:wpuf-bg-gray-100 hover:wpuf-cursor-pointer">
+                        {{ __( 'Delete Permanently', 'wp-user-frontend' ) }}
+                    </li>
+                </ul>
             </div>
         </div>
         <div class="wpuf-flex wpuf-px-6 wpuf-py-6 wpuf-justify-between wpuf-items-center">
@@ -312,7 +286,7 @@ quickEditStore.$subscribe( ( mutation, state ) => {
             </svg>
         </div>
         <div class="wpuf-flex wpuf-px-6 wpuf-pb-6 wpuf-justify-between wpuf-items-center">
-            <p class="wpuf-text-gray-500 wpuf-text-base wpuf-m-0">{{ __( 'Total Subscribers' ) }}</p>
+            <p class="wpuf-text-gray-500 wpuf-text-sm wpuf-m-0">{{ __( 'Total Subscribers' ) }}</p>
             <a :href="subscribersLink" class="wpuf-text-gray-500">{{ subscribers }}</a>
         </div>
     </div>

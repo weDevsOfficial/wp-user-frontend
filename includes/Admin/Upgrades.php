@@ -24,6 +24,8 @@ class Upgrades {
         '2.9.2'  => 'upgrades/upgrade-2.9.2.php',
         '3.6.0'  => 'upgrades/upgrade-3.6.0.php',
         '4.0.4'  => 'upgrades/upgrade-4.0.4.php',
+        '4.0.8'  => 'upgrades/upgrade-4.0.8.php',
+        '4.0.11' => 'upgrades/upgrade-4.0.11.php',
     ];
 
     /**
@@ -53,7 +55,6 @@ class Upgrades {
      * @return bool
      */
     public function needs_update() {
-
         // may be it's the first install
         if ( ! $this->get_version() ) {
             return false;
@@ -88,11 +89,10 @@ class Upgrades {
                 if ( file_exists( $path ) ) {
                     include_once $path;
                 }
-                update_option( 'wpuf_version', $version );
             }
         }
 
-        update_option( 'wpuf_version', WPUF_VERSION );
+        update_option( wpuf()->get_db_version_key(), WPUF_VERSION );
     }
 
     /**
@@ -118,8 +118,8 @@ class Upgrades {
             );
             ?>
             <div id="message" class="updated">
-                <p><?php printf( '<strong>%s</strong>', esc_attr__( 'WPUF Data Update Required', 'wp-user-frontend' ) ); ?></p>
-                <p class="submit"><a href="<?php echo esc_url( $link ); ?>" class="wpuf-update-btn button-primary"><?php esc_attr_e( 'Run the updater', 'wp-user-frontend' ); ?></a></p>
+                <p><?php printf( '<strong>%s</strong>', esc_html__( 'WPUF Data Update Required', 'wp-user-frontend' ) ); ?></p>
+                <p class="submit"><a href="<?php echo esc_url( $link ); ?>" class="wpuf-update-btn button-primary"><?php esc_html_e( 'Run the updater', 'wp-user-frontend' ); ?></a></p>
             </div>
 
             <script type="text/javascript">

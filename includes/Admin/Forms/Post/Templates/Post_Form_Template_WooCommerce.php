@@ -190,7 +190,7 @@ class Post_Form_Template_WooCommerce extends Form_Template {
             'submit_text'      => 'Create Product',
             'edit_post_status' => 'publish',
             'edit_redirect_to' => 'same',
-            'update_message'   => 'Product has been updated successfully. <a target="_blank" href="%link%">View Product</a>',
+            'update_message'   => 'Product has been updated successfully. <a target="_blank" href="{link}">View Product</a>',
             'edit_url'         => '',
             'update_text'      => 'Update Product',
             'form_template'    => 'post_form_template_woocommerce',
@@ -199,28 +199,28 @@ class Post_Form_Template_WooCommerce extends Form_Template {
                 'new_to'       => get_option( 'admin_email' ),
                 'new_subject'  => 'New product has been created',
                 'new_body'     => 'Hi,
-A new product has been created in your site %sitename% (%siteurl%).
+A new product has been created in your site {sitename} ({siteurl}).
 
 Here is the details:
-Product Title: %post_title%
-Description: %post_content%
-Short Description: %post_excerpt%
-Author: %author%
-Post URL: %permalink%
-Edit URL: %editlink%',
+Product Title: {post_title}
+Description: {post_content}
+Short Description: {post_excerpt}
+Author: {author}
+Post URL: {permalink}
+Edit URL: {editlink}',
                 'edit'         => 'off',
                 'edit_to'      => get_option( 'admin_email' ),
                 'edit_subject' => 'Product has been edited',
                 'edit_body'    => 'Hi,
-The product "%post_title%" has been updated.
+The product "{post_title}" has been updated
 
 Here is the details:
-Product Title: %post_title%
-Description: %post_content%
-Short Description: %post_excerpt%
-Author: %author%
-Post URL: %permalink%
-Edit URL: %editlink%',
+Product Title: {post_title}
+Description: {post_content}
+Short Description: {post_excerpt}
+Author: {author}
+Post URL: {permalink}
+Edit URL: {editlink}'
             ],
         ];
     }
@@ -332,6 +332,7 @@ Edit URL: %editlink%',
         if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '2.7', '<' ) ) {
             return;
         }
+
         $visibility = get_post_meta( $post_id, '_visibility', true );
         $product = wc_get_product( $post_id );
 

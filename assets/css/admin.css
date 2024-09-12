@@ -750,7 +750,7 @@ img.user-listing.active {
 .wpuf-pro-field-tooltip {
   background: #000;
   width: max-content;
-  padding: 25px 50px 20px 20px;
+  padding: 25px 35px 30px 20px;
   border-radius: 5px;
   color: #fff;
   position: absolute;
@@ -769,6 +769,7 @@ img.user-listing.active {
 }
 h3.tooltip-header {
   color: #fff;
+  font-size: 1.3rem;
 }
 .wpuf-subscription-pack-settings nav ul .wpuf-pro-field-tooltip ul li span.tooltip-check svg path,
 .wpuf-pro-field-tooltip ul li span.tooltip-check svg path {
@@ -780,8 +781,7 @@ h3.tooltip-header {
 }
 .wpuf-subscription-pack-settings nav ul .wpuf-pro-field-tooltip ul li,
 .wpuf-pro-field-tooltip ul li {
-  font-size: 1.2em;
-  line-height: 1.5em;
+  line-height: 1.5rem;
   font-weight: 400;
   margin-bottom: 6px;
 }
@@ -906,42 +906,42 @@ span.pro-icon:hover .wpuf-pro-field-tooltip {
 .headway-header ul li a:hover {
   text-decoration: underline;
 }
-.user-frontend_page_wpuf-post-forms .wrap h2.with-headway-icon,
-.user-frontend_page_wpuf-profile-forms .wrap h2.with-headway-icon,
-.user-frontend_page_wpuf-settings .wrap h2.with-headway-icon {
+.wrap h2.with-headway-icon,
+.wrap h2.with-headway-icon,
+.wrap h2.with-headway-icon {
   display: flex;
   justify-content: space-between;
 }
-.user-frontend_page_wpuf-post-forms .wrap h2.with-headway-icon .flex-end,
-.user-frontend_page_wpuf-profile-forms .wrap h2.with-headway-icon .flex-end,
-.user-frontend_page_wpuf-settings .wrap h2.with-headway-icon .flex-end {
+.wrap h2.with-headway-icon .flex-end,
+.wrap h2.with-headway-icon .flex-end,
+.wrap h2.with-headway-icon .flex-end {
   display: flex;
   align-items: center;
 }
-.user-frontend_page_wpuf-post-forms .wrap h2.with-headway-icon .flex-end .HW_badge.HW_softHidden,
-.user-frontend_page_wpuf-profile-forms .wrap h2.with-headway-icon .flex-end .HW_badge.HW_softHidden,
-.user-frontend_page_wpuf-settings .wrap h2.with-headway-icon .flex-end .HW_badge.HW_softHidden {
+.wrap h2.with-headway-icon .flex-end .HW_badge.HW_softHidden,
+.wrap h2.with-headway-icon .flex-end .HW_badge.HW_softHidden,
+.wrap h2.with-headway-icon .flex-end .HW_badge.HW_softHidden {
   background: #eea6d0 !important;
 }
-.user-frontend_page_wpuf-post-forms .wrap h2.with-headway-icon .flex-end .flex-end .headway-icon:hover .HW_badge.HW_softHidden,
-.user-frontend_page_wpuf-profile-forms .wrap h2.with-headway-icon .flex-end .flex-end .headway-icon:hover .HW_badge.HW_softHidden,
-.user-frontend_page_wpuf-settings .wrap h2.with-headway-icon .flex-end .flex-end .headway-icon:hover .HW_badge.HW_softHidden {
+.wrap h2.with-headway-icon .flex-end .flex-end .headway-icon:hover .HW_badge.HW_softHidden,
+.wrap h2.with-headway-icon .flex-end .flex-end .headway-icon:hover .HW_badge.HW_softHidden,
+.wrap h2.with-headway-icon .flex-end .flex-end .headway-icon:hover .HW_badge.HW_softHidden {
   background: #ee62b4 !important;
 }
-.user-frontend_page_wpuf-post-forms .wrap h2.with-headway-icon .flex-end a.canny-link,
-.user-frontend_page_wpuf-profile-forms .wrap h2.with-headway-icon .flex-end a.canny-link,
-.user-frontend_page_wpuf-settings .wrap h2.with-headway-icon .flex-end a.canny-link {
+.wrap h2.with-headway-icon .flex-end a.canny-link,
+.wrap h2.with-headway-icon .flex-end a.canny-link,
+.wrap h2.with-headway-icon .flex-end a.canny-link {
   font-size: 1rem;
   text-decoration: none;
 }
-.user-frontend_page_wpuf-post-forms .wrap h2.with-headway-icon .flex-end a.canny-link:hover,
-.user-frontend_page_wpuf-profile-forms .wrap h2.with-headway-icon .flex-end a.canny-link:hover,
-.user-frontend_page_wpuf-settings .wrap h2.with-headway-icon .flex-end a.canny-link:hover {
+.wrap h2.with-headway-icon .flex-end a.canny-link:hover,
+.wrap h2.with-headway-icon .flex-end a.canny-link:hover,
+.wrap h2.with-headway-icon .flex-end a.canny-link:hover {
   text-decoration: underline;
 }
-.user-frontend_page_wpuf-post-forms .wrap h2.with-headway-icon #HW_frame_cont,
-.user-frontend_page_wpuf-profile-forms .wrap h2.with-headway-icon #HW_frame_cont,
-.user-frontend_page_wpuf-settings .wrap h2.with-headway-icon #HW_frame_cont {
+.wrap h2.with-headway-icon #HW_frame_cont,
+.wrap h2.with-headway-icon #HW_frame_cont,
+.wrap h2.with-headway-icon #HW_frame_cont {
   top: 78px !important;
 }
 @media only screen and (max-width: 1399px) {
@@ -1069,59 +1069,35 @@ span.pro-icon:hover .wpuf-pro-field-tooltip {
 }
 .wpuf-help-page .wpuf-subscribe-box {
   display: flex;
+  justify-content: space-between;
   border: 1px solid #e5e5e5;
   background: #fff;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
   margin-top: 15px;
 }
-.wpuf-help-page .wpuf-subscribe-box .text-wrap {
-  width: calc(100% - 530px);
+.wpuf-help-page .wpuf-subscribe-box .wpuf-text-wrap {
   padding: 10px 15px;
+  width: 60%;
 }
-.wpuf-help-page .wpuf-subscribe-box .text-wrap h3 {
+.wpuf-help-page .wpuf-subscribe-box .wpuf-text-wrap h3 {
   color: #ff5722;
   margin: 4px 0 0 0;
 }
-.wpuf-help-page .wpuf-subscribe-box .text-wrap p {
-  margin-bottom: 5px;
-}
-.wpuf-help-page .wpuf-subscribe-box .form-wrap {
-  width: 530px;
-  display: flex;
-  padding: 10px 0;
+.wpuf-help-page .wpuf-subscribe-box .wpuf-form-wrap {
   background: #f7f7f7;
-  padding-left: 20px;
+  padding: 10px 15px;
+  width: 40%;
   border-left: 1px solid #eee;
 }
-.wpuf-help-page .wpuf-subscribe-box .form-wrap .thank-you {
-  font-size: 16px;
-  color: green;
-  padding-top: 20px;
-  text-align: center;
-  width: 100%;
-}
-.wpuf-help-page .wpuf-subscribe-box .form-wrap label {
+.wpuf-help-page .wpuf-subscribe-box .wpuf-form-wrap label {
   color: #666;
 }
-.wpuf-help-page .wpuf-subscribe-box .form-wrap input {
-  max-width: 100%;
-  overflow: hidden;
+.wpuf-help-page .wpuf-subscribe-box .wpuf-form-wrap form {
+  display: flex;
+  align-items: flex-end;
 }
-.wpuf-help-page .wpuf-subscribe-box .form-wrap input[type="text"],
-.wpuf-help-page .wpuf-subscribe-box .form-wrap input[type="email"] {
-  padding: 5px 8px;
-}
-.wpuf-help-page .wpuf-subscribe-box .form-wrap .fname {
-  width: 35%;
-  margin-right: 10px;
-}
-.wpuf-help-page .wpuf-subscribe-box .form-wrap .email {
-  width: 40%;
-  margin-right: 10px;
-}
-.wpuf-help-page .wpuf-subscribe-box .form-wrap .submit-btn {
-  width: 20%;
-  padding-top: 22px;
+.wpuf-help-page .wpuf-subscribe-box .wpuf-form-wrap form input {
+  margin-right: 15px;
 }
 .wpuf-help-page .help-blocks {
   display: flex;

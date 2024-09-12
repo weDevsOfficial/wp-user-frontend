@@ -41,9 +41,19 @@ class Menu {
         do_action( 'wpuf_admin_menu_top' );
 
         if ( 'on' === wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
-            $subscription_hook = add_submenu_page( $this->parent_slug, __( 'Subscriptions', 'wp-user-frontend' ), __( 'Subscriptions', 'wp-user-frontend' ), $capability, 'edit.php?post_type=wpuf_subscription' );
+            // $subscription_hook = add_submenu_page( $this->parent_slug, __( 'Subscriptions', 'wp-user-frontend' ), __( 'Subscriptions', 'wp-user-frontend' ), $capability, 'edit.php?post_type=wpuf_subscription' );
+
+            $subscription_hook = add_submenu_page(
+                $this->parent_slug,
+                __( 'Subscriptions', 'wp-user-frontend' ),
+                __( 'Subscriptions', 'wp-user-frontend' ),
+                $capability,
+                'wpuf_subscription',
+                [ $this, 'subscription_menu_page' ]
+            );
 
             $this->all_submenu_hooks['subscription_hook'] = $subscription_hook;
+            add_action( 'load-' . $subscription_hook, [ $this, 'subscription_menu_action' ] );
 
             $transactions_page = add_submenu_page( $this->parent_slug, __( 'Transactions', 'wp-user-frontend' ), __( 'Transactions', 'wp-user-frontend' ), $capability, 'wpuf_transaction', [ $this, 'transactions_page' ] );
 
@@ -155,6 +165,27 @@ class Menu {
          * This hook won't get translated even the site language is changed
          */
         do_action( 'wpuf_load_post_forms' );
+    }
+
+    public function subscription_menu_action() {
+        /**
+         * Backdoor for calling the menu hook.
+         * This hook won't get translated even the site language is changed
+         */
+        do_action( 'wpuf_load_subscription_page' );
+    }
+
+    /**
+     * The content of the Subscription page.
+     *
+     * @since WPUF_VERSION
+     *
+     * @return void
+     */
+    public function subscription_menu_page() {
+        $page = WPUF_INCLUDES . '/Admin/views/subscriptions.php';
+
+        wpuf_require_once( $page );
     }
 
     /**
@@ -308,8 +339,6 @@ class Menu {
      * @return void
      */
     public function enqueue_settings_page_scripts() {
-        wp_enqueue_style( 'wpuf-admin' );
-        wp_enqueue_script( 'wpuf-admin' );
         wp_enqueue_script( 'wpuf-subscriptions' );
         wp_enqueue_script( 'wpuf-settings' );
 

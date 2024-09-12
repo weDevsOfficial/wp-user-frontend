@@ -679,19 +679,19 @@
                                 errors.push({
                                     type: 'custom',
                                     container: item,
-                                    message: 'Password minimum strength should be weak'
+                                    message: wpuf_frontend.password_warning_weak
                                 });
                             } else if (strength === 'medium' && strengthMeter < 3) {
                                 errors.push({
                                     type: 'custom',
                                     container: item,
-                                    message: 'Password minimum strength should be medium'
+                                    message: wpuf_frontend.password_warning_medium
                                 });
                             } else if (strength === 'strong' && strengthMeter < 4) {
                                 errors.push({
                                     type: 'custom',
                                     container: item,
-                                    message: 'Password strength should be strong'
+                                    message: wpuf_frontend.password_warning_strong
                                 });
                             }
                         }

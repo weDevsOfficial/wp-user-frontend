@@ -46,7 +46,7 @@ class Ajax {
         $this->register_ajax( 'wpuf_account_update_profile', [ new Frontend\Frontend_Account(), 'update_profile' ], $this->logged_in_only );
         $this->register_ajax( 'wpuf_import_forms', [ new Admin\Admin_Tools(), 'import_forms' ], $this->logged_in_only );
         $this->register_ajax( 'wpuf_get_child_cat', 'wpuf_get_child_cats' );
-        $this->register_ajax( 'wpuf_ajax_address', 'wpuf_get_child_cats' );
+        $this->register_ajax( 'wpuf_ajax_address', 'wpuf_ajax_get_states_field' );
         $this->register_ajax( 'wpuf_update_billing_address', 'wpuf_update_billing_address' );
         $this->register_ajax( 'wpuf_clear_schedule_lock', 'wpuf_clear_schedule_lock', $this->logged_in_only );
     }

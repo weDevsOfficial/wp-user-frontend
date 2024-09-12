@@ -4771,7 +4771,7 @@ function wpuf_hide_google_map_button() {
  *
  * @since 2.5
  *
- * @since WPUF_SINCE function moved to wpuf-functions.php
+ * @since 4.0.11 function moved to wpuf-functions.php
  *
  * @return void
  */
@@ -4785,7 +4785,7 @@ function wpuf_remove_admin_notices() {
 /**
  * Load the Headway badge
  *
- * @since WPUF_SINCE
+ * @since 4.0.11
  *
  * @return void
  */
@@ -4807,7 +4807,7 @@ function wpuf_load_headway_badge( $selector = '#wpuf-headway-icon' ) {
 /**
  * Check if the option is on
  *
- * @since WPUF_SINCE
+ * @since 4.0.11
  *
  * @param $option
  *

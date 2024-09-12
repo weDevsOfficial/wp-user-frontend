@@ -12,7 +12,7 @@ class Subscription extends WP_REST_Controller {
     /**
      * The namespace of this controller's route.
      *
-     * @since WPUF_SINCE
+     * @since 4.0.11
      *
      * @var string
      */
@@ -21,7 +21,7 @@ class Subscription extends WP_REST_Controller {
     /**
      * Route name
      *
-     * @since WPUF_SINCE
+     * @since 4.0.11
      *
      * @var string
      */
@@ -30,7 +30,7 @@ class Subscription extends WP_REST_Controller {
     /**
      * Register the routes for the objects of the controller.
      *
-     * @since WPUF_SINCE
+     * @since 4.0.11
      */
     public function register_routes() {
         register_rest_route(
@@ -102,7 +102,7 @@ class Subscription extends WP_REST_Controller {
     /**
      * Get subscriptions count
      *
-     * @since WPUF_SINCE
+     * @since 4.0.11
      *
      * @param WP_REST_Request $request Full details about the request.
      *
@@ -131,7 +131,7 @@ class Subscription extends WP_REST_Controller {
     /**
      * Get subscriptions count based on status
      *
-     * @since WPUF_SINCE
+     * @since 4.0.11
      *
      * @param WP_REST_Request $request Full details about the request.
      *
@@ -162,7 +162,7 @@ class Subscription extends WP_REST_Controller {
     /**
      * Delete an existing item
      *
-     * @since WPUF_SINCE
+     * @since 4.0.11
      *
      * @param WP_REST_Request $request Full details about the request.
      *
@@ -202,7 +202,7 @@ class Subscription extends WP_REST_Controller {
     /**
      * Get subscribers count based on subscription id
      *
-     * @since WPUF_SINCE
+     * @since 4.0.11
      *
      * @param WP_REST_Request $request Full details about the request.
      *
@@ -233,7 +233,7 @@ class Subscription extends WP_REST_Controller {
     /**
      * Retrieves a collection of posts.
      *
-     * @since WPUF_SINCE
+     * @since 4.0.11
      *
      * @param WP_REST_Request $request Full details about the request.
      *
@@ -277,7 +277,7 @@ class Subscription extends WP_REST_Controller {
     /**
      * Edit an existing item
      *
-     * @since WPUF_SINCE
+     * @since 4.0.11
      *
      * @param WP_REST_Request $request Full details about the request.
      *
@@ -352,7 +352,7 @@ class Subscription extends WP_REST_Controller {
     /**
      * Create a new item
      *
-     * @since WPUF_SINCE
+     * @since 4.0.11
      *
      * @param WP_REST_Request $request Full details about the request.
      *
@@ -523,7 +523,7 @@ class Subscription extends WP_REST_Controller {
     /**
      * Check permission for API request
      *
-     * @since WPUF_SINCE
+     * @since 4.0.11
      *
      * @return bool
      */

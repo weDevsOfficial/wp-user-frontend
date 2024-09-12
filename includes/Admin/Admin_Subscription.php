@@ -87,7 +87,7 @@ class Admin_Subscription {
     /**
      * Enqueue scripts for subscription page
      *
-     * @since WPUF_SINCE
+     * @since 4.0.11
      *
      * @return void
      */
@@ -104,7 +104,7 @@ class Admin_Subscription {
                 'siteUrl'         => site_url(),
                 'currencySymbol'  => wpuf_get_currency( 'symbol' ),
                 'supportUrl'      => esc_url(
-                    'https://wedevs.com/account/tickets?utm_medium=text-link'
+                    'https://wedevs.com/contact/?utm_source=wpuf-subscription'
                 ),
                 'isProActive'     => class_exists( 'WP_User_Frontend_Pro' ),
                 'upgradeUrl'      => esc_url(
@@ -123,7 +123,7 @@ class Admin_Subscription {
     /**
      * Remove admin notices from this page
      *
-     * @since WPUF_SINCE
+     * @since 4.0.11
      *
      * @return void
      */
@@ -1006,7 +1006,7 @@ class Admin_Subscription {
     /**
      * Get all the sections of the subscription settings
      *
-     * @since WPUF_SINCE
+     * @since 4.0.11
      *
      * @return array
      */
@@ -1032,7 +1032,7 @@ class Admin_Subscription {
     /**
      * Get all the sub-sections of the subscription settings
      *
-     * @since WPUF_SINCE
+     * @since 4.0.11
      *
      * @return array
      */
@@ -1102,7 +1102,7 @@ class Admin_Subscription {
     /**
      * Returns all the subscription fields that are used in the sections
      *
-     * @since WPUF_SINCE
+     * @since 4.0.11
      *
      * @return array
      */
@@ -1524,7 +1524,7 @@ class Admin_Subscription {
     /**
      * Get all the fields that depend on other fields
      *
-     * @since WPUF_SINCE
+     * @since 4.0.11
      *
      * @return array
      */
@@ -1561,7 +1561,7 @@ class Admin_Subscription {
     /**
      * Modify the admin footer text
      *
-     * @since WPUF_SINCE
+     * @since 4.0.11
      *
      * @return void
      */
@@ -1572,7 +1572,7 @@ class Admin_Subscription {
     /**
      * Modify the admin footer text
      *
-     * @since WPUF_SINCE
+     * @since 4.0.11
      *
      * @param string $footer_text
      *

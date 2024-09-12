@@ -1428,7 +1428,7 @@ class Free_Loader extends Pro_Prompt {
     /**
      * Add taxonomy restriction options
      *
-     * @since WPUF_SINCE
+     * @since 4.0.11
      *
      * @param array $sections
      *
@@ -1448,7 +1448,7 @@ class Free_Loader extends Pro_Prompt {
     /**
      * Add taxonomy restriction fields
      *
-     * @since WPUF_SINCE
+     * @since 4.0.11
      *
      * @param array $fields
      *

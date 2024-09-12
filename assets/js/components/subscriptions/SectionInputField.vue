@@ -269,6 +269,7 @@ onMounted(() => {
                 :placeholder="field.placeholder ? field.placeholder : ''"
                 @input="[modifySubscription($event), processInput($event)]"
                 @keydown="processNumber"
+                min="-1"
                 :class="subscriptionStore.errors[fieldId] ? '!wpuf-border-red-500' : '!wpuf-border-gray-300'"
                 class="placeholder:wpuf-text-gray-400 wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">
             <textarea

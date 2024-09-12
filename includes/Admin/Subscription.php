@@ -1410,7 +1410,7 @@ class Subscription {
     /**
      * Total count of subscriptions by status
      *
-     * @since WPUF_SINCE
+     * @since 4.0.11
      *
      * @return string|null Database query result (as string), or null on failure.
      */
@@ -1432,7 +1432,7 @@ class Subscription {
     /**
      * Total count of subscriptions by status
      *
-     * @since WPUF_SINCE
+     * @since 4.0.11
      *
      * @return array
      */

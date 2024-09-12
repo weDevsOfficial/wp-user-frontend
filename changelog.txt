@@ -1,3 +1,11 @@
+= v4.0.11 (12 Sep, 2024) =
+* Enhance - Subscription design revamp
+* Enhance - Consistent format in email templates
+* Enhance - Move newsletter subscription to weMail
+* Fix - Translation for password strength
+* Fix - Different languages breaking design
+* Fix - State field is not changing
+
 = v4.0.10 (08 Aug, 2024) =
 * Fix - Error on WC post template
 * Fix - Move login validation to pro

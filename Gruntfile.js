@@ -58,7 +58,7 @@ module.exports = function(grunt) {
         makepot: {
             target: {
                 options: {
-                    exclude: ['build/.*', 'node_modules/*', 'assets/*'],
+                    exclude: ['build/.*', 'node_modules/*'],
                     mainFile: 'wpuf.php',
                     domainPath: '/languages/',
                     potFilename: 'wp-user-frontend.pot',
@@ -100,6 +100,18 @@ module.exports = function(grunt) {
                     'jshint:formBuilder', 'less:admin',
                     'concat:formBuilder', 'concat:templates', 'less:front'
                 ]
+            },
+
+            vue: {
+                files: [
+                    'assets/js/subscriptions.js',
+                    'assets/css/admin/subscriptions.css',
+                    'assets/js/components/**/*.vue',
+                    'assets/js/stores/**/*.js',
+                ],
+                tasks: [
+                    'shell:npm_build'
+                ]
             }
         },
 
@@ -133,6 +145,7 @@ module.exports = function(grunt) {
                     '!config.codekit',
                     '!**/nbproject/**',
                     '!assets/less/**',
+                    '!assets/tailwind/**',
                     '!tests/**',
                     '!**/Gruntfile.js',
                     '!**/package.json',
@@ -203,6 +216,13 @@ module.exports = function(grunt) {
                 }
             }
         },
+
+        // is to run NPM commands through Grunt
+        shell: {
+            npm_build: {
+                command: 'npm run build',
+            }
+        }
     });
 
     // Load NPM tasks to be used here
@@ -217,6 +237,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks( 'grunt-contrib-compress' );
     grunt.loadNpmTasks( 'grunt-notify' );
     grunt.loadNpmTasks( 'grunt-wp-readme-to-markdown' );
+    grunt.loadNpmTasks( 'grunt-shell' );
 
     grunt.registerTask( 'default', [ 'less', 'concat', 'uglify', 'i18n' ] );
 

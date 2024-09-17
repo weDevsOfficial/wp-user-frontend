@@ -735,7 +735,11 @@ class Free_Loader extends Pro_Prompt {
             [
                 'name'    => 'tax_help',
                 'label'   => __( 'Need help?', 'wp-user-frontend' ),
-                'desc'    => sprintf( __( 'Visit the <a href="%s" target="_blank">Tax setup documentation</a> for guidance on how to setup tax.', 'wp-user-frontend' ), 'https://wedevs.com/docs/wp-user-frontend-pro/settings/tax/' ),
+                'desc'    => sprintf(
+                // translators: %1$s: opening anchor tag, %2$s: closing anchor tag
+                    __( 'Visit the %1$sTax setup documentation%2$s for guidance on how to setup tax.', 'wp-user-frontend' ), '<a href="https://wedevs.com/docs/wp-user-frontend-pro/settings/tax/" target="_blank">',
+                    '</a>'
+                ),
                 'callback'    => 'wpuf_descriptive_text',
             ],
             [
@@ -793,8 +797,7 @@ class Free_Loader extends Pro_Prompt {
             [
                 'name'           => 'keyword_dictionary',
                 'label'          => __( 'Keyword Dictionary', 'wp-user-frontend' ),
-                'desc'           => __( 'Enter Keywords to Remove. Separate keywords with commas.',
-                                        'wp-user-frontend' ),
+                'desc'           => __( 'Enter Keywords to Remove. Separate keywords with commas.', 'wp-user-frontend' ),
                 'type'           => 'textarea',
                 'is_pro_preview' => true,
             ],

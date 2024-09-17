@@ -4,172 +4,172 @@ $current_user = wp_get_current_user();
 $articles = [
     'setup' => [
         [
-            'title' => 'How to Install',
+            'title' => __( 'How to Install', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/getting-started/how-to-install/',
         ],
         [
-            'title' => 'License Activation',
+            'title' => __( 'License Activation', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/troubleshoot/license-activation/',
         ],
         [
-            'title' => 'Shortcodes',
+            'title' => __( 'Shortcodes', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/getting-started/wpuf-shortcodes/',
         ],
         [
-            'title' => 'User Dashboard',
+            'title' =>  __( 'User Dashboard', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/getting-started/user-dashboard/',
         ],
     ],
     'posting' => [
         [
-            'title' => 'Creating Posting Forms',
+            'title' => __( 'Creating Posting Forms', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/creating-posting-forms/',
         ],
         [
-            'title' => 'Available Form Elements',
+            'title' => __( 'Available Form Elements', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/form-elements/',
         ],
         [
-            'title' => 'Creating Forms Using The Form Templates',
+            'title' => __( 'Creating Forms Using The Form Templates', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/form-templates/',
         ],
         [
-            'title' => 'How to Allow Guest Posting',
+            'title' => __( 'How to Allow Guest Posting', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/guest-posting/',
         ],
         [
-            'title' => 'Setup Automatic Post Expiration',
+            'title' => __( 'Setup Automatic Post Expiration', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/using-post-expiration-wp-user-frontend/',
         ],
         [
-            'title' => 'How to create Multistep forms',
+            'title' => __( 'How to create Multistep forms', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-add-multi-step-form/',
         ],
     ],
     'dashboard' => [
         [
-            'title' => 'Setting up Frontend Dashboard for Users',
+            'title' => __( 'Setting up Frontend Dashboard for Users', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/frontend/configuring-dashboard-settings/',
         ],
         [
-            'title' => 'Unified My Account Page',
+            'title' => __( 'Unified My Account Page', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/frontend/how-to-create-my-account-page/',
         ],
         [
-            'title' => 'Showing meta fields in frontend',
+            'title' => __( 'Showing meta fields in frontend', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/frontend/showing-meta-fields-in-frontend/',
         ],
     ],
     'settings' => [
         [
-            'title' => 'General Options',
+            'title' => __( 'General Options', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/settings/configuring-general-options/',
         ],
         [
-            'title' => 'Dashboard Settings',
+            'title' => __( 'Dashboard Settings', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/settings/configuring-dashboard-settings/',
         ],
         [
-            'title' => 'Login Registration Settings',
+            'title' => __( 'Login Registration Settings', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/settings/login-registration-settings/',
         ],
         [
-            'title' => 'Payment Settings',
+            'title' => __( 'Payment Settings', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/settings/configuring-payment-settings/',
         ],
     ],
     'registration' => [
         [
-            'title' => 'Creating Registration Form',
+            'title' => __( 'Creating Registration Form', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-forms/',
         ],
         [
-            'title' => 'Creating a Multistep Registration Form',
+            'title' => __( 'Creating a Multistep Registration Form', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/creating-a-multistep-registration-form/',
         ],
         [
-            'title' => 'Setting Up Confirmation Message',
+            'title' => __( 'Setting Up Confirmation Message', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/setup-confirmation-message/',
         ],
         [
-            'title' => 'Paid Membership Registration',
+            'title' => __( 'Paid Membership Registration', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/paid-membership-registration/',
         ],
         [
-            'title' => 'Setting Up Email Verification for New Users',
+            'title' => __( 'Setting Up Email Verification for New Users', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/setting-up-email-verification-for-new-users/',
         ],
     ],
     'profile' => [
         [
-            'title' => 'Creating a Profile Editing Form',
+            'title' => __( 'Creating a Profile Editing Form', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/wordpress-edit-user-profile-from-front-end/',
         ],
     ],
     'subscription' => [
         [
-            'title' => 'Creating Subscription Packs',
+            'title' => __( 'Creating Subscription Packs', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/creating-subscription-packs/',
         ],
         [
-            'title' => 'Payment & Gateway Settings',
+            'title' => __( 'Payment & Gateway Settings', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/configuring-payment-settings/',
         ],
         [
-            'title' => 'Setting Up Recurring Payment',
+            'title' => __( 'Setting Up Recurring Payment', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/setting-up-recurring-payment/',
         ],
         [
-            'title' => 'Forcing Subscription Pack For Post Submission',
+            'title' => __( 'Forcing Subscription Pack For Post Submission', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/forcing-subscription-pack-for-post-submission/',
         ],
         [
-            'title' => 'How to Charge for Each Post Submission?',
+            'title' => __( 'How to Charge for Each Post Submission?', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/how-to-charge-for-each-post-submission/',
         ],
         [
-            'title' => 'Creating Coupons',
+            'title' => __( 'Creating Coupons', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/coupons/',
         ],
     ],
 
     'developer' => [
         [
-            'title' => 'Action Hook Field',
+            'title' => __( 'Action Hook Field', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/developer-docs/action-hook-field/',
         ],
         [
-            'title' => 'Add a New Tab on My Account Page',
+            'title' => __( 'Add a New Tab on My Account Page', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/developer-docs/add-a-new-tab-on-my-account-page/',
         ],
         [
-            'title' => 'Insert/update checkbox or radio field data as serialize',
+            'title' => __( 'Insert/update checkbox or radio field data as serialize', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/developer-docs/insertupdate-checkbox-or-radio-field-data-as-serialize/',
         ],
         [
-            'title' => 'Filters',
+            'title' => __( 'Filters', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/developer-docs/filters/',
         ],
         [
-            'title' => 'Actions',
+            'title' => __( 'Actions', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/developer-docs/actions/',
         ],
         [
-            'title' => 'Changelog',
+            'title' => __( 'Changelog', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/changelog/',
         ],
     ],
     'restriction' => [
         [
-            'title' => 'Content Restriction for Logged in Users',
+            'title' => __( 'Content Restriction for Logged in Users', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/content-restriction/content-restriction/',
         ],
         [
-            'title' => 'Restricting Content by User Roles',
+            'title' => __( 'Restricting Content by User Roles', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/content-restriction/restricting-content-by-user-roles/',
         ],
         [
-            'title' => 'Restricting Contents for Different Subscription Packs',
+            'title' => __( 'Restricting Contents for Different Subscription Packs', 'wp-user-frontend' ),
             'link'  => 'https://wedevs.com/docs/wp-user-frontend-pro/content-restriction/restricting-contents-for-different-subscription-packs/',
         ],
     ],
@@ -312,18 +312,87 @@ function wpuf_help_related_articles( $articles ) {
 
         <div class="nav-content">
             <section id="setup" class="content-current">
-                <h2>Plugin Setup Guide</h2>
+                <h2><?php esc_html_e( 'Plugin Setup Guide', 'wp-user-frontend' ); ?></h2>
 
-                <p>Setting up WP User Frontend is very easy. Here are few things that you should consider.</p>
+                <p><?php esc_html_e( 'Setting up WP User Frontend is very easy. Here are few things that you should consider.', 'wp-user-frontend' ); ?></p>
 
                 <ol>
-                    <li><strong>Install WPUF Pages</strong> with a single click. Check your admin dashboard for a message to install WPUF required pages.</li>
-                    <li>You can create amazing frontend posting forms with more than 20 useful form fields. </li>
-                    <li>Posting the forms in the frontend is also very easy. All you have to do is <strong>put the shortcode</strong> of your form to a page. </li>
-                    <li>Building registration &amp; profile editing forms has never been easier, thanks to WP User Frontend. <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-profile-forms' ) ); ?>" target="_blank">Build registration &amp; profile forms</a> on the go with simple steps.</li>
-                    <li>Add customized <strong>login forms</strong> using simple shortcodes and override default WordPress login and registration.</li>
-                    <li>Create customized <strong>subscription forms</strong> and let your users buy with multiple payment gateways.</li>
-                    <li><strong>Enable guest posting</strong> and earn from each posts without any difficulties. </li>
+                    <li>
+                        <?php
+                        printf(
+                            esc_html__(
+                                // translators: %1$s and %2$s are HTML tags
+                                '%1$sInstall WPUF Pages%2$s with a single click. Check your admin dashboard for a message to install WPUF required pages.',
+                                'wp-user-frontend'
+                            ),
+                            '<strong>',
+                            '</strong>'
+                        );
+                        ?>
+                    </li>
+                    <li>
+                        <?php esc_html_e( 'You can create amazing frontend posting forms with more than 20 useful form fields.', 'wp-user-frontend' ); ?>
+                    </li>
+                    <li>
+                        <?php
+                        printf(
+                            esc_html__(
+                            // translators: %1$s and %2$s are HTML tags
+                                'Posting the forms in the frontend is also very easy. All you have to do is %1$sput the shortcode%2$s of your form to a page.',
+                                'wp-user-frontend'
+                            ),
+                            '<strong>',
+                            '</strong>'
+                        );
+                        ?>
+                    </li>
+                    <li>
+                        <?php
+                        printf(
+                            esc_html__(
+                            // translators: %1$s and %2$s are HTML tags
+                                'Building registration &amp; profile editing forms has never been easier, thanks to WP User Frontend. %1$sBuild registration &amp; profile forms%2$s on the go with simple steps.',
+                                'wp-user-frontend'
+                            ),
+                            '<a href="'. esc_url( admin_url( 'admin.php?page=wpuf-profile-forms' ) ) . '" target="_blank">',
+                            '</a>'
+                        );
+                        ?>
+                    </li>
+                    <li>
+                        <?php
+                            printf(
+                                // translators: %1$s: {login_forms}, %2$s: {subscription_forms}, %3$s: {guest_posting}
+                                esc_html__( 'Add customized %1$slogin forms%2$s using simple shortcodes and override default WordPress login and registration.', 'wp-user-frontend' ),
+                                '<strong>',
+                                '</strong>'
+                            );
+                        ?>
+                    </li>
+                    <li>
+                        <?php
+                        printf(
+                        // translators: %1$s: {login_forms}, %2$s: {subscription_forms}, %3$s: {guest_posting}
+                            esc_html__(
+                                'Create %1$ssubscription packs%2$s and charge users for posting.',
+                                'wp-user-frontend'
+                            ),
+                            '<strong>',
+                            '</strong>'
+                        );
+                        ?>
+                    </li>
+                    <li>
+                        <?php
+                        printf(
+                        // translators: %1$s: {login_forms}, %2$s: {subscription_forms}, %3$s: {guest_posting}
+                            esc_html__(
+                                'Enable %1$sguest posting%2$s and earn from each posts without any difficulties.',
+                                'wp-user-frontend'
+                            ), '<strong>', '</strong>'
+                        );
+                        ?>
+                    </li>
                 </ol>
 
                 <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/getting-started/how-to-install/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=how-to-install" target="_blank"><?php esc_html_e( 'Learn More About Installation', 'wp-user-frontend' ); ?></a>
@@ -331,49 +400,94 @@ function wpuf_help_related_articles( $articles ) {
                 <?php wpuf_help_related_articles( $articles['setup'] ); ?>
             </section>
             <section id="frontend-posting">
-                <h2>Frontend Posting</h2>
+                <h2><?php esc_html_e( 'Frontend Posting', 'wp-user-frontend' ); ?></h2>
 
-                <p>Posting Forms are used to <strong>create new</strong> blog posts, WooCommerce Products, Directory Listing Entries etc. You can create any custom post type from the front using this feature. You just need to create a form with necessary fields and embed the form in a page and your users will be able to create posts from frontend in no time.</p>
-                <p>To create a posting form, go to <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-post-forms' ) ); ?>" target="_blank">Post Forms</a> → Add Form and start building your ultimate frontend posting forms. </p>
-                <p>After building your forms, <strong>use the shortcodes</strong> on any new page or post and publish them before sharing.</p>
+                <?php
+                printf(
+                    __( '%1$sPosting Forms are used to %2$screate new%3$s blog posts, WooCommerce Products, Directory Listing Entries etc. You can create any custom post type from the front using this feature. You just need to create a form with necessary fields and embed the form in a page and your users will be able to create posts from frontend in no time.%4$s
+                %5$sTo create a posting form, go to %6$sPost Forms%7$s → Add Form and start building your ultimate frontend posting forms.%8$s
+                %9$sAfter building your forms, %10$suse the shortcodes%11$s on any new page or post and publish them before sharing.%12$s', 'wp-user-frontend' ),
+                    '<p>',
+                    '<strong>',
+                    '</strong>',
+                    '</p>',
+                    '<p>',
+                    '<a href="' . esc_url( admin_url( 'admin.php?page=wpuf-post-forms' ) ) . '" target="_blank">',
+                    '</a>',
+                    '</p>',
+                    '<p>',
+                    '<strong>',
+                    '</strong>',
+                    '</p>'
+                );
+                ?>
 
                 <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=frontend-posting" target="_blank"><?php esc_html_e( 'Learn More About Frontend Posting', 'wp-user-frontend' ); ?></a>
 
                 <?php wpuf_help_related_articles( $articles['posting'] ); ?>
             </section>
             <section id="frontend-dashboard">
-                <h2>Frontend Dashboard</h2>
+                <h2><?php esc_html_e( 'Frontend Dashboard', 'wp-user-frontend' ); ?></h2>
 
-                <p>WP User Frontend generates <strong>Frontend Dashboard</strong> and <strong>My Account</strong> page for all your users. Using these pages, they can get a list of their posts and subscriptions directly at frontend. They can also customize the details of their profile. You don’t need to give them access to the backend at all!</p>
-                <p>To crate this page, <a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=page' ) ); ?>" target="_blank">create a new page</a>, put a title and simply copy-paste the following shortcode: <code>[wpuf_dashboard]</code>. Alternatively, there is an unified <a href="https://wedevs.com/docs/wp-user-frontend-pro/frontend/how-to-create-my-account-page/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=unified-my-account-page" target="_blank">my account page</a> as well. Finally, hit the publish button and you are done.</p>
+                <?php
+                    printf(
+                        __( '%1$sWP User Frontend generates %2$sFrontend Dashboard%3$s and %4$sMy Account%5$s page for all your users. Using these pages, they can get a list of their posts and subscriptions directly at frontend. They can also customize the details of their profile. You don’t need to give them access to the backend at all!%6$s', 'wp-user-frontend' ),
+                        '<p>',
+                        '<strong>',
+                        '</strong>',
+                        '<strong>',
+                        '</strong>',
+                        '</p>'
+                    );
+                    printf(
+                        __( '%1$sTo create this page, %2$screate a new page%3$s, put a title and simply copy-paste the following shortcode: %4$s[wpuf_dashboard]%5$s. Alternatively, there is an unified %6$smy account page%7$s as well. Finally, hit the publish button and you are done.%8$s', 'wp-user-frontend' ),
+                        '<p>',
+                        '<a href="' . esc_url( admin_url( 'post-new.php?post_type=page' ) ) . '" target="_blank">',
+                        '</a>',
+                        '<code>',
+                        '</code>',
+                        '<a href="https://wedevs.com/docs/wp-user-frontend-pro/frontend/how-to-create-my-account-page/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=unified-my-account-page" target="_blank">',
+                        '</a>',
+                        '</p>'
+                    );
+                ?>
 
                 <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/frontend/configuring-dashboard-settings/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=frontend-dashboard" target="_blank"><?php esc_html_e( 'Learn More About Frontend Dashboard', 'wp-user-frontend' ); ?></a>
 
                 <?php wpuf_help_related_articles( $articles['dashboard'] ); ?>
             </section>
             <section id="user-registration">
-                <h2>User Registration</h2>
+                <h2><?php esc_html_e( 'User Registration', 'wp-user-frontend' ); ?></h2>
 
-                <p>You can create as many registration forms as you want and assign them to different user roles. Creating Registration forms are easy. Navigate to <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-profile-forms' ) ); ?>" target="_blank">Registration Forms</a>.</p>
-                <p>You can create new forms just you would create posts in WordPress.</p>
+                <?php
+                    printf(
+                        __( '%1$sYou can create as many registration forms as you want and assign them to different user roles. Creating Registration forms are easy. Navigate to %2$sRegistration Forms%3$s.%4$s%5$sYou can create new forms just you would create posts in WordPress.%6$s', 'wp-user-frontend' ),
+                        '<p>',
+                        '<a href="' . esc_url( admin_url( 'admin.php?page=wpuf-profile-forms' ) ) . '" target="_blank">',
+                        '</a>',
+                        '</p>',
+                        '<p>',
+                        '</p>'
+                    );
+                ?>
 
                 <ol>
-                    <li>Give your form a name and click on Form Elements on the right sidebar.</li>
-                    <li>The form elements will appear to the Form Editor tab with some options.</li>
+                    <li><?php esc_html_e('Give your form a name and click on Form Elements on the right sidebar.', 'wp-user-frontend'); ?></li>
+                    <li><?php esc_html_e('The form elements will appear to the Form Editor tab with some options.', 'wp-user-frontend'); ?></li>
                 </ol>
 
-                <p>From settings you can –</p>
+                <p><?php esc_html_e('From settings you can –', 'wp-user-frontend'); ?></p>
 
                 <ul>
-                    <li>Assign New User Roles</li>
-                    <li>Can redirect to any custom page or same page with successful message</li>
+                    <li><?php esc_html_e('Assign New User Roles', 'wp-user-frontend'); ?></li>
+                    <li><?php esc_html_e('Can redirect to any custom page or same page with successful message', 'wp-user-frontend'); ?></li>
                 </ul>
 
-                <h3>Showing Registration Form</h3>
+                <h3><?php esc_html_e('Showing Registration Form', 'wp-user-frontend'); ?></h3>
 
                 <ul>
-                    <li>By using short-code you can show your registration form into any page or post</li>
-                    <li>You will get different short-codes for each registration forms separately.</li>
+                    <li><?php esc_html_e('By using short-code you can show your registration form into any page or post.', 'wp-user-frontend'); ?></li>
+                    <li><?php esc_html_e('You will get different short-codes for each registration forms separately.', 'wp-user-frontend'); ?></li>
                 </ul>
 
 
@@ -382,85 +496,181 @@ function wpuf_help_related_articles( $articles ) {
                 <?php wpuf_help_related_articles( $articles['registration'] ); ?>
             </section>
             <section id="login-page">
-                <h2>Login Page</h2>
+                <h2><?php esc_html_e( 'Login Page', 'wp-user-frontend' ); ?></h2>
 
-                <p>WP User Frontend Automatically creates important pages when you install it for the first time. You can also create login forms manually. </p>
+                <p><?php esc_html_e('WP User Frontend Automatically creates important pages when you install it for the first time. You can also create login forms manually.', 'wp-user-frontend'); ?></p>
 
-                <p>Navigate to <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-settings' ) ); ?>" target="_blank">Settings</a> → <strong>Login/Registration</strong> tab.
-                In this page, you will find several useful settings related to WPUF login. You can override default registration and login forms with WPUF login &amp; registration feature if you want. To do this, check the <strong>Login/Registration override option</strong>.</p>
-
-                <p>You can also specify the login page. WPUF automatically adds the default login page that it has created. If you manually create one, use the following shortcode – <code>[wpuf-login]</code></p>
-
-                <p>Simply, create a new page and put the above shortcode. Finally, publish the page and add it to the Login Page option in the settings.</p>
+                <?php
+                    printf(
+                    /* translators: 1: URL to the settings page, 2: opening <a> tag, 3: closing </a> tag, 4: opening <strong> tag, 5: closing </strong> tag, 6: opening <strong> tag, 7: closing </strong> tag, 8: shortcode [wpuf-login] */
+                        esc_html__(
+                            'Navigate to %2$sSettings%3$s → %4$sLogin/Registration%5$s tab. In this page, you will find several useful settings related to WPUF login. You can override default registration and login forms with WPUF login & registration feature if you want. To do this, check the %6$sLogin/Registration override option%7$s. You can also specify the login page. WPUF automatically adds the default login page that it has created. If you manually create one, use the following shortcode – %8$s. Simply, create a new page and put the above shortcode. Finally, publish the page and add it to the Login Page option in the settings.',
+                            'wp-user-frontend'
+                        ),
+                        esc_url( admin_url( 'admin.php?page=wpuf-settings' ) ),
+                        '<a href="' . esc_url( admin_url( 'admin.php?page=wpuf-settings' ) ) . '" target="_blank">',
+                        '</a>',
+                        '<strong>',
+                        '</strong>',
+                        '<strong>',
+                        '</strong>',
+                        '<code>[wpuf-login]</code>'
+                    )
+                ?>
 
                 <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/user-login/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=learn-more-login" target="_blank"><?php esc_html_e( 'Learn More About Login', 'wp-user-frontend' ); ?></a>
             </section>
             <section id="profile-editing">
-                <h2>Creating a Profile Editing Form</h2>
+                <h2><?php esc_html_e( 'Creating a Profile Editing Form', 'wp-user-frontend' ); ?></h2>
 
-                <p>When you are making a registration form, you get two shortcodes:
-                For embedding the registration form: this is something like <code>[wpuf_profile type=&quot;registration&quot; id=&quot;3573&quot;]</code></p>
+                <?php
+                printf(
+                /* translators: 1: shortcode for registration form, 2: shortcode for profile edit, 3: opening <strong> tag, 4: closing </strong> tag, 5: opening <strong> tag, 6: closing </strong> tag */
+                    esc_html__(
+                        'When you are making a registration form, you get two shortcodes: For embedding the registration form: this is something like %1$s. For profile edit page: this is something like %2$s. You already know how to make a registration form in WP User Frontend Pro and embed that into a page. The very same process is for creating the profile edit page. How to get the shortcode: We assume that you already have created a registration form. If not, you can use the default registration form, that was created automatically while installing the plugin. So to get the shortcode, navigate to %3$sUser Frontend%4$s → %5$sRegistration Forms%6$s and you will be able to see the shortcodes on the right side of your screen.',
+                        'wp-user-frontend'
+                    ),
+                    '<code>[wpuf_profile type="registration" id="3573"]</code>',
+                    '<code>[wpuf_profile type="profile" id="3573"]</code>',
+                    '<strong>',
+                    '</strong>',
+                    '<strong>',
+                    '</strong>'
+                );
+                ?>
 
-                <p>For profile edit page: this is something like <code>[wpuf_profile type=&quot;profile&quot; id=&quot;3573&quot;]</code></p>
+                <p>
+                    <?php
+                    printf(
+                    // translators: %1$s and %2$s are HTML tags
+                        esc_html__(
+                        'When you are making a registration form, you get two shortcodes: For embedding the registration form: this is something like %1$s[wpuf_profile type="registration" id="3573"]%2$s',
+                            'wp-user-frontend'
+                        ),
+                        '<code>',
+                        '</code>'
+                    );
+                    ?>
+                </p>
 
-                <p>You already know that how to make a registration form in WP User Frontend Pro and embed that into a page. The very same process is for creating the profile edit page.</p>
+                <p>
+                    <?php
+                    printf(
+                        // translators: %1$s and %2$s are HTML tags
+                        esc_html__(
+                            'For profile edit page: this is something like %1$s[wpuf_profile type="profile" id="3573"]%2$s',
+                            'wp-user-frontend'
+                        ),
+                        '<code>',
+                        '</code>'
+                    );
+                    ?>
+                </p>
 
-                <h2>How to get the shortcode</h2>
+                <p>
+                    <?php
+                     esc_html_e(
+                        'You already know that how to make a registration form in WP User Frontend Pro and embed that into a page. The very same process is for creating the profile edit page.',
+                        'wp-user-frontend');
+                    ?>
+                </p>
 
-                <p>We assume that you already have created a registration form. If not you can use the default registration form, that was created automatically while installing the plugin.
-                So to get the shortcode, navigate to <strong>User Frontend</strong> → <strong>Registration Forms</strong> and you will be able to see the shortcodes on the right side of your screen.</p>
+                <h2><?php esc_html_e( 'How to get the shortcode', 'wp-user-frontend' ); ?></h2>
+
+                <p>
+                    <?php
+                    printf(
+                        // translators: %1$s and %2$s are HTML tags
+                        esc_html__(
+                            'We assume that you already have created a registration form. If not you can use the default registration form, that was created automatically while installing the plugin.
+                So to get the shortcode, navigate to %1$sUser Frontend%2$s → %3$sRegistration Forms%4$s and you will be able to see the shortcodes on the right side of your screen.',
+                            'wp-user-frontend'
+                        ),
+                        '<strong>',
+                        '</strong>',
+                        '<strong>',
+                        '</strong>'
+                    );
+                    ?>
+                </p>
 
                 <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/registration-profile-forms/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=registration-profile-forms" target="_blank"><?php esc_html_e( 'Learn More About Profile Editing', 'wp-user-frontend' ); ?></a>
 
                 <?php wpuf_help_related_articles( $articles['profile'] ); ?>
             </section>
             <section id="subscription-payment">
-                <h2>Subscription Payment</h2>
+                <h2><?php esc_html_e( 'Subscription Payment', 'wp-user-frontend' ); ?></h2>
 
-                <p>WP User Frontend allows you to create as many subscription packs you want. Simply, navigate to - WP-Admin → User Frontend → Subscription → Add Subscription</p>
+                <p><?php esc_html_e( 'WP User Frontend allows you to create as many subscription packs you want. Simply, navigate to - WP-Admin → User Frontend → Subscription → Add Subscription', 'wp-user-frontend' ); ?></p>
 
                 <ol>
-                    <li>Enter your subscription name and pack description.</li>
-                    <li>Include the billing amount and the validity of the pack. You can choose day, week, month or year in case of expiry.</li>
-                    <li>You can enable post expiration if you want to expire post after a certain amount of time. To do so check the Enable Post Expiration box.</li>
-                    <li>This will enable some new settings. You have to specify post expiration time and the post status after the post expires.</li>
-                    <li>You can also notify users when a post expires. To do so, check the Send Mail option.</li>
-                    <li>Now, enter the message you want to send the user in the Post Expiration Message field.</li>
-                    <li>You can specify the number of posts you are giving away with this subscription pack. If you want to provide unlimited posts, enter ‘-1’ in the number of posts field.</li>
-                    <li>You can also set the number of pages and custom CSS. For unlimited value, enter ‘-1’.</li>
-                    <li>WPUF offers you recurring payment while creating a Subscription pack. Enable this option if you want to set recurring payment for this pack. It will provide you some new options for the recurring payment.</li>
-                    <li>Now, select the billing cycle.</li>
-                    <li>You can also stop the billing cycle if you want. If you don’t want to stop the cycle select Never.</li>
-                    <li>To enable trial period, check the Trial box. You can set the trial amount to be paid by the user for trial period.</li>
-                    <li>Now, specify the trial period. Enter number of days, week, month or year.</li>
-                    <li>You can also enable post number rollback. If enabled, number of posts will be restored if the post is deleted.</li>
-                    <li>Finally, click on the publish button to create the subscription pack.</li>
+                    <li><?php esc_html_e( 'Enter your subscription name and pack description.', 'wp-user-frontend' ); ?></li>
+                    <li><?php esc_html_e( 'Include the billing amount and the validity of the pack. You can choose day, week, month or year in case of expiry.', 'wp-user-frontend' ); ?></li>
+                    <li><?php esc_html_e( 'You can enable post expiration if you want to expire post after a certain amount of time. To do so check the Enable Post Expiration box.', 'wp-user-frontend' ); ?></li>
+                    <li><?php esc_html_e( 'This will enable some new settings. You have to specify post expiration time and the post status after the post expires.', 'wp-user-frontend' ); ?></li>
+                    <li><?php esc_html_e( 'You can also notify users when a post expires. To do so, check the Send Mail option.', 'wp-user-frontend' ); ?></li>
+                    <li><?php esc_html_e( 'Now, enter the message you want to send the user in the Post Expiration Message field.', 'wp-user-frontend' ); ?></li>
+                    <li><?php esc_html_e( 'You can specify the number of posts you are giving away with this subscription pack. If you want to provide unlimited posts, enter ‘-1’ in the number of posts field.', 'wp-user-frontend' ); ?></li>
+                    <li><?php esc_html_e( 'You can also set the number of pages and custom CSS. For unlimited value, enter ‘-1’.', 'wp-user-frontend' ); ?></li>
+                    <li><?php esc_html_e( 'WPUF offers you recurring payment while creating a Subscription pack. Enable this option if you want to set recurring payment for this pack. It will provide you some new options for the recurring payment.', 'wp-user-frontend' ); ?></li>
+                    <li><?php esc_html_e( 'Now, select the billing cycle.', 'wp-user-frontend' ); ?></li>
+                    <li><?php esc_html_e( 'You can also stop the billing cycle if you want. If you don’t want to stop the cycle select Never.', 'wp-user-frontend' ); ?></li>
+                    <li><?php esc_html_e( 'To enable trial period, check the Trial box. You can set the trial amount to be paid by the user for trial period.', 'wp-user-frontend' ); ?></li>
+                    <li><?php esc_html_e( 'Now, specify the trial period. Enter number of days, week, month or year.', 'wp-user-frontend' ); ?></li>
+                    <li><?php esc_html_e( 'You can also enable post number rollback. If enabled, number of posts will be restored if the post is deleted.', 'wp-user-frontend' ); ?></li>
+                    <li><?php esc_html_e( 'Finally, click on the publish button to create the subscription pack.', 'wp-user-frontend' ); ?></li>
                 </ol>
-                <h2>Subscription Packs on Frontend</h2>
-                <p>To view the created subscription packs on frontend, visit the Subscription page.</p>
 
-                <p>Short-code for creating the Subscription page – <code>[wpuf_sub_pack]</code>.</p>
-                <h2>Payment &amp; Gateway Settings</h2>
-                <p>Post subscription and payment system is a module where you can add paid posting system with WP User Frontend. You can introduce two types of payment system. Pay per post and subscription pack based.</p>
+                <h2><?php esc_html_e( 'Subscription Packs on Frontend', 'wp-user-frontend' ); ?></h2>
+                <p><?php esc_html_e( 'To view the created subscription packs on frontend, visit the Subscription page.', 'wp-user-frontend' ); ?></p>
 
+                <p>
+                    <?php
+                    printf(
+                        // translators: %1$s and %2$s are HTML tags
+                        esc_html__(
 
-                <h2>Pay Per Post</h2>
+                            'Short-code for creating the Subscription page – %1$s[wpuf_sub_pack]%2$s.',
+                            'wp-user-frontend'
+                        ),
+                        '<code>',
+                        '</code>'
+                    );
+                    ?>
+                </p>
+                <h2><?php esc_html_e('Payment &amp; Gateway Settings', 'wp-user-frontend'); ?></h2>
+                <p><?php esc_html_e('Post subscription and payment system is a module where you can add paid posting system with WP User Frontend. You can introduce two types of payment system. Pay per post and subscription pack based.', 'wp-user-frontend'); ?></p>
 
+                <h2><?php esc_html_e('Pay Per Post', 'wp-user-frontend'); ?></h2>
 
-                <p>With this you can introduce pay per post feature where users pay to publish their posts each post. When pay per post is enabled from “Settings → Payments → Charge for posting“, users see a notice right before the post creation form in frontend about payment. When the submits a post, the post status gets pending and he is redirected to the payment page (to setup the payment page, create a Page Payment and select the page at “Settings → Payments → Payment Page“. No shortcode is needed). Currently by default PayPal is only supported gateway. Upon selecting PayPal, he is redirected to PayPal for payment. After successful payment he is redirected back to the site and the post gets published.</p>
+                <p>
+                    <?php esc_html_e('With this you can introduce pay per post feature where users pay to publish their posts each post. When pay per post is enabled from “Settings → Payments → Charge for posting“, users see a notice right before the post creation form in frontend about payment. When the submits a post, the post status gets pending and he is redirected to the payment page (to setup the payment page, create a Page Payment and select the page at “Settings → Payments → Payment Page“. No shortcode is needed). Currently by default PayPal is only supported gateway. Upon selecting PayPal, he is redirected to PayPal for payment. After successful payment he is redirected back to the site and the post gets published.', 'wp-user-frontend'); ?>
+                </p>
 
+                <h2><?php esc_html_e('Subscription Pack', 'wp-user-frontend'); ?></h2>
 
-                <h2>Subscription Pack</h2>
+                <p><?php esc_html_e('There is an another option for charged posting. With this feature, you can create unlimited subscription pack. In each pack, you can configure the number of posts, validity date and the cost.', 'wp-user-frontend'); ?></p>
+                <p><?php esc_html_e('When a user buys a subscription package, he gets to create some posts (e.g. 10) in X days (e.g: 30 days). If he crosses the number of posts or the validity date, he can’t post again. You can force the user to buy a pack before posting “Settings → Payments → Force pack purchase“.', 'wp-user-frontend'); ?></p>
+                <p></p>
+                <p>
+                    <?php
+                    printf(
+                        esc_html__(
+                            // translators: %1$s and %2$s are HTML tags, %3$s and %4$s are HTML tags
+                            'To show the subscription packs in a page, you can use the shortcode: %1$s[wpuf_sub_pack]%2$s. To show the user subscription info: %3$s[wpuf_sub_info]%4$s. The info will show the user about his pack’s remaining post count and expiration date of his pack.',
+                            'wp-user-frontend'
+                        ),
+                        '<code>',
+                        '</code>',
+                        '<code>',
+                        '</code>'
+                    );
+                    ?>
+                </p>
 
+                <h2><?php esc_html_e('Payment Gateway', 'wp-user-frontend'); ?></h2>
 
-                <p>There is an another option for charged posting. With this feature, you can create unlimited subscription pack. In each pack, you can configure the number of posts, validity date and the cost.</p>
-                <p>When a user buys a subscription package, he gets to create some posts (e.g. 10) in X days (e.g: 30 days). If he crosses the number of posts or the validity date, he can’t post again. You can force the user to buy a pack before posting “Settings → Payments → Force pack purchase“.</p>
-                <p>To show the subscription packs in a page, you can use the shortcode: <code>[wpuf_sub_pack]</code>. To show the user subscription info: <code>[wpuf_sub_info]</code>. The info will show the user about his pack’s remaining post count and expiration date of his pack.</p>
-
-
-                <h2>Payment Gateway</h2>
-
-                <p>Currently only PayPal basic gateway is supported. The plugin is extension aware, that means other gateways can be integrated.</p>
+                <p><?php esc_html_e('Currently only PayPal basic gateway is supported. The plugin is extension aware, that means other gateways can be integrated.', 'wp-user-frontend'); ?></p>
 
 
                 <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=subscription-payment" target="_blank"><?php esc_html_e( 'Learn More About Payments', 'wp-user-frontend' ); ?></a>
@@ -468,16 +678,27 @@ function wpuf_help_related_articles( $articles ) {
                 <?php wpuf_help_related_articles( $articles['subscription'] ); ?>
             </section>
             <section id="content-restriction">
-                <h2>Content Restriction</h2>
-
-                <p>To set content restriction for a certain form, navigate to <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=page' ) ); ?>" target="_blank">Pages</a></strong></p>
+                <h2><?php esc_html_e('Content Restriction', 'wp-user-frontend'); ?></h2>
+                <p>
+                    <?php
+                    printf(
+                        esc_html__(
+                            // translators: %1$s and %2$s are HTML tags
+                            'To set content restriction for a certain form, navigate to %1$sPages%2$s',
+                            'wp-user-frontend'
+                        ),
+                        '<a href="'. esc_url( admin_url( 'edit.php?post_type=page' ) ) . '" target="_blank">',
+                        '</a>'
+                    );
+                    ?>
+                </p>
 
                 <ol>
-                    <li>Now, select the page that has the shortcode of the selected form.</li>
-                    <li>Scroll down and you will find the <strong>WPUF Content Restriction</strong> settings.</li>
-                    <li>You can set the form visible to three types of people: <strong>Everyone</strong>, <strong>Logged in users only</strong> or <strong>Subscription users only</strong></li>
-                    <li>You can also set <strong>subscription plans</strong> for the form. For this, check the box of relevant subscription pack.</li>
-                    <li>Finally, update the page.</li>
+                    <li><?php esc_html_e( 'Now, select the page that has the shortcode of the selected form.', 'wp-user-frontend' ); ?></li>
+                    <li><?php esc_html_e( 'Scroll down and you will find the <strong>WPUF Content Restriction</strong> settings.', 'wp-user-frontend' ); ?></li>
+                    <li><?php esc_html_e( 'You can set the form visible to three types of people: <strong>Everyone</strong>, <strong>Logged in users only</strong> or <strong>Subscription users only</strong>', 'wp-user-frontend' ); ?></li>
+                    <li><?php esc_html_e( 'You can also set <strong>subscription plans</strong> for the form. For this, check the box of relevant subscription pack.', 'wp-user-frontend' ); ?></li>
+                    <li><?php esc_html_e( 'Finally, update the page.', 'wp-user-frontend' ); ?></li>
                 </ol>
 
                 <a class="button button-primary button-large" href="https://wedevs.com/docs/wp-user-frontend-pro/content-restriction/?utm_source=wpuf-help-page&utm_medium=help-links&utm_campaign=wpuf-help&utm_term=content-restriction" target="_blank"><?php esc_html_e( 'Learn More About Content Restriction', 'wp-user-frontend' ); ?></a>
@@ -569,7 +790,7 @@ function wpuf_help_related_articles( $articles ) {
         function isValidEmail(email) {
             // Regular expression for validating an Email
             const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            
+
             return regex.test(email);
         }
     });

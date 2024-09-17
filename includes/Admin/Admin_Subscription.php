@@ -583,7 +583,21 @@ class Admin_Subscription {
                                 <th><?php esc_html_e( 'Expiration Message', 'wp-user-frontend' ); ?></th>
                                 <td>
                                     <textarea name="post_expiration_settings[post_expiration_message]" id="wpuf-post_expiration_message" cols="50" rows="5"><?php echo esc_attr( $post_expiration_message ); ?></textarea>
-                                    <p class="description"><strong><?php echo esc_html( __( 'You may use: {post_author} {post_url} {blogname} {post_title} {post_status}', 'wp-user-frontend' ) ); ?></strong></p>
+                                    <p class="description">
+                                        <strong>
+                                            <?php
+                                            printf(
+                                            // translators: %1$s: {post_author}, %2$s: {post_url}, %3$s: {blogname}, %4$s: {post_title}, %5$s: {post_status}
+                                                __( 'You may use: %1$s %2$s %3$s %4$s %5$s', 'wp-user-frontend' ),
+                                                '{post_author}',
+                                                '{post_url}',
+                                                '{blogname}',
+                                                '{post_title}',
+                                                '{post_status}'
+                                            )
+                                            ?>
+                                        </strong>
+                                    </p>
                                 </td>
                             </tr>
 

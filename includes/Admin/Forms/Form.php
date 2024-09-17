@@ -182,7 +182,9 @@ class Form {
             return [ $user_can_post, $info ];
         }
 
-        $has_post_count = $current_user->subscription()->has_post_count( $form_settings['post_type'] );
+        $post_type = ! empty( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
+
+        $has_post_count = $current_user->subscription()->has_post_count( $post_type );
 
         if ( $current_user->subscription()->current_pack_id() && ! $has_post_count ) {
             $user_can_post = 'no';

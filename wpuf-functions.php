@@ -2115,10 +2115,13 @@ function wpuf_get_account_sections_list( $post_type = 'page' ) {
  *
  * @since 2.4.2
  *
- * @return array
+ * @return array|string
  */
 function wpuf_get_completed_transactions( $args = [] ) {
     global $wpdb;
+
+    $orderby = [ 'id', 'status', 'created' ];
+    $order   = [ 'asc', 'desc' ];
 
     $defaults = [
         'number'  => 20,
@@ -2130,10 +2133,18 @@ function wpuf_get_completed_transactions( $args = [] ) {
 
     $args = wp_parse_args( $args, $defaults );
 
+    if ( ! in_array( $args['orderby'], $orderby ) ) {
+        $args['orderby'] = 'id';
+    }
+
+    if ( ! in_array( $args['order'], $order ) ) {
+        $args['order'] = 'DESC';
+    }
+
     if ( $args['count'] ) {
         return $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}wpuf_transaction" );
     }
-    //phpcs:ignore
+
     $result = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wpuf_transaction ORDER BY `{$args['orderby']}` {$args['order']} LIMIT {$args['offset']}, {$args['number']}", OBJECT );
 
     return $result;
@@ -2149,6 +2160,9 @@ function wpuf_get_completed_transactions( $args = [] ) {
 function wpuf_get_pending_transactions( $args = [] ) {
     global $wpdb;
 
+    $orderby = [ 'id', 'status', 'created' ];
+    $order   = [ 'asc', 'desc' ];
+
     $defaults = [
         'number'  => 20,
         'offset'  => 0,
@@ -2158,6 +2172,14 @@ function wpuf_get_pending_transactions( $args = [] ) {
     ];
 
     $args = wp_parse_args( $args, $defaults );
+
+    if ( ! in_array( $args['orderby'], $orderby ) ) {
+        $args['orderby'] = 'id';
+    }
+
+    if ( ! in_array( $args['order'], $order ) ) {
+        $args['order'] = 'DESC';
+    }
 
     $pending_args = [
         'post_type'      => 'wpuf_order',
@@ -2218,7 +2240,7 @@ function wpuf_get_pending_transactions( $args = [] ) {
  *
  * @param $args
  *
- * @return array
+ * @return array|int|void
  */
 function wpuf_get_all_transactions( $args = [] ) {
     global $wpdb;
@@ -2941,11 +2963,11 @@ function wpuf_create_sample_form( $post_title = 'Sample Form', $post_type = 'wpu
                 'new'          => 'on',
                 'new_to'       => get_option( 'admin_email' ),
                 'new_subject'  => 'New post created',
-                'new_body'     => "Hi Admin, \r\n\r\nA new post has been created in your site %sitename% (%siteurl%). \r\n\r\nHere is the details: \r\nPost Title: %post_title% \r\nContent: %post_content% \r\nAuthor: %author% \r\nPost URL: %permalink% \r\nEdit URL: %editlink%",
+                'new_body'     => "Hi Admin, \r\n\r\nA new post has been created in your site {sitename} ({siteurl}). \r\n\r\nHere is the details: \r\nPost Title: {post_title} \r\nContent: {post_content} \r\nAuthor: {author} \r\nPost URL: {permalink} \r\nEdit URL: {editlink}",
                 'edit'         => 'off',
                 'edit_to'      => get_option( 'admin_email' ),
                 'edit_subject' => 'A post has been edited',
-                'edit_body'    => "Hi Admin, \r\n\r\nThe post \"%post_title%\" has been updated. \r\n\r\nHere is the details: \r\nPost Title: %post_title% \r\nContent: %post_content% \r\nAuthor: %author% \r\nPost URL: %permalink% \r\nEdit URL: %editlink%",
+                'edit_body'    => "Hi Admin, \r\n\r\nThe post \"{post_title}\" has been updated. \r\n\r\nHere is the details: \r\nPost Title: {post_title} \r\nContent: {post_content} \r\nAuthor: {author} \r\nPost URL: {permalink} \r\nEdit URL: {editlink}",
             ],
         ];
     }
@@ -4153,7 +4175,7 @@ function wpuf_recursive_sanitize_text_field($arr){
  */
 function wpuf_payment_success_page( $data ){
     $gateway          = ! empty( $data['wpuf_payment_method'] ) ? $data['wpuf_payment_method'] : '';
-    $success_query    = "wpuf_${gateway}_success";
+    $success_query    = 'wpuf_' . $gateway . '_success';
     $redirect_page    = '';
     $redirect_page_id = 0;
     $payment_method   = ! empty( $data['post_data']['wpuf_payment_method'] ) ? $data['post_data']['wpuf_payment_method'] : '';
@@ -4660,6 +4682,10 @@ function wpuf_get_single_user_roles( $user_id ) {
 
     $user = get_user_by( 'id', $user_id );
 
+    if ( ! $user ) {
+        return [];
+    }
+
     return ( array ) $user->roles;
 }
 
@@ -4735,4 +4761,58 @@ function wpuf_hide_google_map_button() {
         'style' =>  [],
         'button'    =>  []
     ] );
+}
+
+/**
+ * Remove all kinds of admin notices from admin dashboard
+ *
+ * Since we don't have much space left on top of the page,
+ * we have to remove all kinds of admin notices
+ *
+ * @since 2.5
+ *
+ * @since 4.0.11 function moved to wpuf-functions.php
+ *
+ * @return void
+ */
+function wpuf_remove_admin_notices() {
+    remove_all_actions( 'network_admin_notices' );
+    remove_all_actions( 'user_admin_notices' );
+    remove_all_actions( 'admin_notices' );
+    remove_all_actions( 'all_admin_notices' );
+}
+
+/**
+ * Load the Headway badge
+ *
+ * @since 4.0.11
+ *
+ * @return void
+ */
+function wpuf_load_headway_badge( $selector = '#wpuf-headway-icon' ) {
+    ?>
+    <script>
+        const selector = '<?php echo $selector; ?>';
+        const badgeCount = selector + ' ul li.headway-icon span#HW_badge_cont.HW_visible';
+        const HW_config = {
+            selector: selector,
+            account: 'JPqPQy'
+        };
+    </script>
+
+    <?php
+    wp_enqueue_script( 'wpuf-headway' );
+}
+
+/**
+ * Check if the option is on
+ *
+ * @since 4.0.11
+ *
+ * @param $option
+ *
+ * @return bool
+ */
+function wpuf_is_option_on( $option ) {
+    return 'on' === $option || 'yes' === $option;
 }

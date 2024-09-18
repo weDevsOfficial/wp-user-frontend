@@ -1,3 +1,33 @@
+= v4.0.11 (12 Sep, 2024) =
+* Enhance - Subscription design revamp
+* Enhance - Consistent format in email templates
+* Enhance - Move newsletter subscription to weMail
+* Fix - Translation for password strength
+* Fix - Different languages breaking design
+* Fix - State field is not changing
+
+= v4.0.10 (08 Aug, 2024) =
+* Fix - Error on WC post template
+* Fix - Move login validation to pro
+
+= v4.0.9 (17 Jul, 2024) =
+* Fix - Remove PHP AllowDynamicProperties warning on plugin pages
+* Fix - Remove print_emoji_styles is deprecated message from setup page
+
+= v4.0.8 (03 Jul, 2024) =
+* Fix - Optimized the script loading process by removing a Promise polyfill
+* Fix - Added validation on the transaction page
+
+= v4.0.7 (11 Jun, 2024) =
+* Enhance - Remove what's new page
+* Fix - Pending user can log in
+* Fix - Error when multiple password fields in form
+* Fix - Error when using CPT on post form
+* Fix - File upload problem using page builders
+* Fix - Conflict with WC Stripe Gateway plugin
+* Fix - Edit link on mail not working
+* Fix - Form import is not working
+
 = v4.0.6 (13 Feb, 2024) =
 * Enhance - Update deprecated uses for PHP versions and latest WordPress
 * Enhance - Eye icon inside password field

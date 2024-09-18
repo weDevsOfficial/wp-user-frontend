@@ -7,7 +7,6 @@ namespace WeDevs\Wpuf\Fields;
 // require WPUF_INCLUDES . '/fields/class-abstract-fields.php';
 use WPUF_Walker_Category_Multi;
 
-#[AllowDynamicProperties]
 class Form_Field_Post_Taxonomy extends Field_Contract {
     use Form_Field_Post_Trait;
 
@@ -22,6 +21,16 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
     protected $field_settings;
 
     protected $form_id;
+
+    /**
+     * @var mixed|string
+     */
+    private $exclude_type;
+
+    /**
+     * @var mixed
+     */
+    private $exclude;
 
     public function __construct( $tax_name, $taxonomy, $post_id = null, $user_id = null ) {
         //phpcs:ignore

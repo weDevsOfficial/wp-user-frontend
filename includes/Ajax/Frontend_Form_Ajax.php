@@ -7,9 +7,7 @@ use WeDevs\Wpuf\Admin\Forms\Form;
 use WeDevs\Wpuf\Traits\FieldableTrait;
 use WeDevs\Wpuf\User_Subscription;
 use WP_Error;
-use WPUF_Subscription;
 
-#[AllowDynamicProperties]
 class Frontend_Form_Ajax {
 
     use FieldableTrait;
@@ -452,10 +450,10 @@ class Frontend_Form_Ajax {
 
             //redirect the user
             $response = apply_filters( 'wpuf_add_post_redirect', $response, $post_id, $form_id, $this->form_settings );
-            //now perform some post related actions. it should done after other action.either count related problem emerge
-            do_action( 'wpuf_add_post_after_insert', $post_id, $form_id, $this->form_settings, $meta_vars ); // plugin API to extend the functionality
-
         }
+
+        // now perform some post related actions. it should be done after other action. either count related problem emerge
+        do_action( 'wpuf_add_post_after_insert', $post_id, $form_id, $this->form_settings, $meta_vars ); // plugin API to extend the functionality
 
         return $response;
     }
@@ -626,18 +624,18 @@ class Frontend_Form_Ajax {
         $post = get_post( $post_id );
 
         $post_field_search = [
-            '%post_title%',
-            '%post_content%',
-            '%post_excerpt%',
-            '%tags%',
-            '%category%',
-            '%author%',
-            '%author_email%',
-            '%author_bio%',
-            '%sitename%',
-            '%siteurl%',
-            '%permalink%',
-            '%editlink%',
+            '{post_title}',
+            '{post_content}',
+            '{post_excerpt}',
+            '{tags}',
+            '{category}',
+            '{author}',
+            '{author_email}',
+            '{author_bio}',
+            '{sitename}',
+            '{siteurl}',
+            '{permalink}',
+            '{editlink}',
         ];
 
         $home_url = sprintf( '<a href="%s">%s</a>', home_url(), home_url() );
@@ -660,14 +658,14 @@ class Frontend_Form_Ajax {
         ];
 
         if ( class_exists( 'WooCommerce' ) ) {
-            $post_field_search[] = '%product_cat%';
+            $post_field_search[] = '{product_cat}';
             $post_field_replace[] = get_the_term_list( $post_id, 'product_cat', '', ', ' );
         }
 
         $content = str_replace( $post_field_search, $post_field_replace, $content );
 
         // custom fields
-        preg_match_all( '/%custom_([\w-]*)\b%/', $content, $matches );
+        preg_match_all( '/{custom_([\w-]*)\b}/', $content, $matches );
         [ $search, $replace ] = $matches;
 
         if ( $replace ) {
@@ -727,227 +725,5 @@ class Frontend_Form_Ajax {
         }
 
         return $content;
-    }
-
-    public function woo_attribute( $taxonomy ) {
-        check_ajax_referer( 'wpuf_form_add' );
-        $taxonomy_name = isset( $_POST[ $taxonomy['name'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $taxonomy['name'] ] ) ) : '';
-
-        return [
-            'name'         => $taxonomy['name'],
-            'value'        => $taxonomy_name,
-            'is_visible'   => $taxonomy['woo_attr_vis'] === 'yes' ? 1 : 0,
-            'is_variation' => 0,
-            'is_taxonomy'  => 1,
-        ];
-    }
-
-    /**
-     * Hook to publish verified guest post with payment
-     *
-     * @since 2.5.8
-     */
-    public function publish_guest_post() {
-        $post_msg = isset( $_GET['post_msg'] ) ? sanitize_text_field( wp_unslash( $_GET['post_msg'] ) ) : '';
-        $pid      = isset( $_GET['p_id'] ) ? sanitize_text_field( wp_unslash( $_GET['p_id'] ) ) : '';
-        $fid      = isset( $_GET['f_id'] ) ? sanitize_text_field( wp_unslash( $_GET['f_id'] ) ) : '';
-
-        if ( $post_msg !== 'verified' ) {
-            return;
-        }
-
-        $response       = [];
-        $post_id        = wpuf_decryption( $pid );
-        $form_id        = wpuf_decryption( $fid );
-        $form_settings  = wpuf_get_form_settings( $form_id );
-        $payment_status = new WPUF_Subscription();
-        $form           = new Form( $form_id );
-        $pay_per_post   = $form->is_enabled_pay_per_post();
-
-        if ( $form->is_charging_enabled() && $pay_per_post ) {
-            if ( ( $payment_status->get_payment_status( $post_id ) ) === 'pending' ) {
-                $response['show_message'] = true;
-                $response['redirect_to']  = add_query_arg(
-                    [
-                        'action'  => 'wpuf_pay',
-                        'type'    => 'post',
-                        'post_id' => $post_id,
-                    ],
-                    get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) )
-                );
-
-                wp_redirect( $response['redirect_to'] );
-                wpuf_clear_buffer();
-                wp_send_json( $response );
-            }
-        } else {
-            $p_status = get_post_status( $post_id );
-
-            if ( $p_status ) {
-                wp_update_post(
-                    [
-                        'ID'          => $post_id,
-                        'post_status' => isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish',
-                    ]
-                );
-
-                echo wp_kses_post( "<div class='wpuf-success' style='text-align:center'>" . __( 'Email successfully verified. Please Login.', 'wp-user-frontend' ) . '</div>' );
-            }
-        }
-
-        do_action( 'wpuf_guest_post_email_verified', $post_id );
-    }
-
-    /**
-     * Enable edit post link for post authors
-     *
-     * @since 3.4.0
-     *
-     * @param array    $allcaps
-     * @param array    $caps
-     * @param array    $args
-     * @param \WP_User $wp_user
-     *
-     * @return array
-    */
-    public function map_capabilities_for_post_authors( $allcaps, $caps, $args, $wp_user ) {
-        if (
-            empty( $args )
-            || count( $args ) < 3
-            || empty( $caps )
-            || 'edit_post' !== $args[0]
-            || isset( $allcaps[ $caps[0] ] )
-        ) {
-            return $allcaps;
-        }
-
-        $post_id = $args[2];
-        $post    = get_post( $post_id );
-
-        // We'll show edit link only for posts, not page, product or other post types
-        if (
-            empty( $post->post_type )
-            || 'post' !== $post->post_type
-            || ! wpuf_validate_boolean( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) )
-            || ! $this->get_frontend_post_edit_link( $post_id )
-            || absint( $post->post_author ) !== $wp_user->ID
-        ) {
-            return $allcaps;
-        }
-
-        $allcaps['edit_published_posts'] = 1;
-
-        return $allcaps;
-    }
-
-    /**
-     * Filter hook for edit post link
-     *
-     * @since 3.4.0
-     *
-     * @param string $url
-     * @param int    $post_id
-     *
-     * @return string
-    */
-    public function get_edit_post_link( $url, $post_id ) {
-        if (
-            current_user_can( 'edit_post', $post_id )
-            && ! current_user_can( 'administrator' )
-            && ! current_user_can( 'editor' )
-            && ! current_user_can( 'author' )
-            && ! current_user_can( 'contributor' )
-        ) {
-            $post    = get_post( $post_id );
-            $form_id = get_post_meta( $post_id, '_wpuf_form_id', true );
-
-            if ( absint( $post->post_author ) === get_current_user_id() && $form_id ) {
-                return $this->get_frontend_post_edit_link( $post_id );
-            }
-        }
-
-        return $url;
-    }
-
-    /**
-     * Get post edit link
-     *
-     * @since 3.4.0
-     *
-     * @param int $post_id
-     *
-     * @return string
-     */
-    public function get_frontend_post_edit_link( $post_id ) {
-        $edit_page = absint( wpuf_get_option( 'edit_page_id', 'wpuf_frontend_posting' ) );
-
-        if ( ! $edit_page ) {
-            return '';
-        }
-
-        $url           = add_query_arg( [ 'pid' => $post_id ], get_permalink( $edit_page ) );
-        $edit_page_url = apply_filters( 'wpuf_edit_post_link', $url );
-
-        return wp_nonce_url( $edit_page_url, 'wpuf_edit' );
-    }
-
-    /**
-     * Generate login registartion link for unauth message
-     */
-    private function generate_auth_link() {
-        if ( ! is_user_logged_in() && $this->form_settings['guest_post'] !== 'true' ) {
-            $login        = wpuf()->login->get_login_url();
-            $register     = wpuf()->login->get_registration_url();
-            $replace      = [ "<a href='" . $login . "'>Login</a>", "<a href='" . $register . "'>Register</a>" ];
-            $placeholders = [ '%login%', '%register%' ];
-
-            $this->form_settings['message_restrict'] = str_replace( $placeholders, $replace, $this->form_settings['message_restrict'] );
-        }
-    }
-
-    /**
-     * Send a notification mail after a guest verified his/her email
-     *
-     * @since WPUF
-     *
-     * @return void
-     */
-    public function send_mail_to_admin_after_guest_mail_verified() {
-        $post_id = ! empty( $_GET['p_id'] ) ? wpuf_decryption( sanitize_text_field( wp_unslash( $_GET['p_id'] ) ) ) : 0;
-        $form_id = ! empty( $_GET['f_id'] ) ? wpuf_decryption( sanitize_text_field( wp_unslash( $_GET['f_id'] ) ) ) : 0;
-
-        if ( empty( $post_id ) || empty( $form_id ) ) {
-            return;
-        }
-
-        $form = new Form( $form_id );
-
-        if ( empty( $form->data ) ) {
-            return;
-        }
-
-        $this->form_fields   = $form->get_fields();
-        $this->form_settings = $form->get_settings();
-
-        $author_id = get_post_field( 'post_author', $post_id );
-
-        $is_email_varified = get_user_meta( $author_id, 'wpuf_guest_email_verified', true );
-
-        // if user email already verified, no need to check again.
-        // It will prevent mail flooding by clicking on the same link
-        if ( $is_email_varified ) {
-            return;
-        }
-
-        $mail_body   = $this->prepare_mail_body( $this->form_settings['notification']['new_body'], $author_id, $post_id );
-        $to          = $this->prepare_mail_body( $this->form_settings['notification']['new_to'], $author_id, $post_id );
-        $subject     = $this->prepare_mail_body( $this->form_settings['notification']['new_subject'], $author_id, $post_id );
-        $subject     = wp_strip_all_tags( $subject );
-        $mail_body   = get_formatted_mail_body( $mail_body, $subject );
-        $headers     = [ 'Content-Type: text/html; charset=UTF-8' ];
-
-        // update the information for future to check if the email is already verified
-        update_user_meta( $author_id, 'wpuf_guest_email_verified', 1 );
-        wp_mail( $to, $subject, $mail_body, $headers );
     }
 }

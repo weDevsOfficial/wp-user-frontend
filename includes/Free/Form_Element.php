@@ -2,11 +2,9 @@
 
 namespace WeDevs\Wpuf\Free;
 
-// @codingStandardsIgnoreStart
 use WeDevs\Wpuf\Pro\Admin\FormBuilder\Template_Profile;
 
 class Form_Element extends Pro_Prompt {
-// @codingStandardsIgnoreEnd
 
     public static function add_form_custom_buttons() {
         $title = esc_attr( __( 'Click to add to the editor', 'wp-user-frontend' ) ); ?>
@@ -65,7 +63,16 @@ class Form_Element extends Pro_Prompt {
                             <?php esc_html_e( 'Enable Post Expiration', 'wp-user-frontend' ); ?>
                         </label>
                     </td>
-                     <p class="description"><a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/using-post-expiration-wp-user-frontend/"><?php esc_html_e( 'Learn more about Automatic Post Expiration', 'wp-user-frontend' ); ?></a></p>
+                    <p class="description">
+                        <a target="_blank"
+                            href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/using-post-expiration-wp-user-frontend/">
+                            <?php
+                            esc_html_e(
+                                'Learn more about Automatic Post Expiration', 'wp-user-frontend'
+                            );
+                            ?>
+                        </a>
+                    </p>
                 </tr>
                 <tr class="wpuf_expiration_field">
                     <th><?php esc_html_e( 'Post Expiration Time', 'wp-user-frontend' ); ?></th>
@@ -99,9 +106,7 @@ class Form_Element extends Pro_Prompt {
                 </tr>
 
                 <tr class="wpuf_expiration_field">
-                    <th>
-                        Post Status :
-                    </th>
+                    <th><?php esc_html_e( 'Post Status', 'wp-user-frontend' ); ?></th>
                     <td>
                         <?php $post_statuses = get_post_statuses(); ?>
                         <select disabled name="" id="wpuf-expired_post_status">
@@ -124,21 +129,33 @@ class Form_Element extends Pro_Prompt {
                     </td>
                 </tr>
                 <tr class="wpuf_expiration_field">
-                    <th>
-                        Send Mail :
-                    </th>
+                    <th><?php esc_html_e( 'Send Mail', 'wp-user-frontend' ); ?></th>
                     <td>
                         <label>
                             <input disabled type="checkbox" name="" value="on" <?php echo esc_attr( $is_enable_mail_after_expired ); ?> />
-                            <?php echo esc_html( __( 'Send Email to Author After Exceeding Post Expiration Time', 'wp-user-frontend' ) ); ?>
+                            <?php esc_html_e( 'Send Email to Author After Exceeding Post Expiration Time', 'wp-user-frontend' ); ?>
                         </label>
                     </td>
                 </tr>
                 <tr class="wpuf_expiration_field">
-                    <th>Post Expiration Message</th>
+                    <th><?php esc_html_e( 'Post Expiration Message', 'wp-user-frontend' ); ?></th>
                     <td>
                         <textarea disabled name="" id="wpuf-post_expiration_message" cols="50" rows="5"><?php echo esc_html( $post_expiration_message ); ?></textarea>
-                        <p class="description"><strong><?php echo esc_html( __( 'You may use: {post_author} {post_url} {blogname} {post_title} {post_status}', 'wp-user-frontend' ) ); ?></strong></p>
+                        <p class="description">
+                            <strong>
+                                <?php
+                                printf(
+                                // translators: %1$s: {post_author}, %2$s: {post_url}, %3$s: {blogname}, %4$s: {post_title}, %5$s: {post_status}
+                                    __( 'You may use: %1$s %2$s %3$s %4$s %5$s', 'wp-user-frontend' ),
+                                    '{post_author}',
+                                    '{post_url}',
+                                    '{blogname}',
+                                    '{post_title}',
+                                    '{post_status}'
+                                )
+                                ?>
+                            </strong>
+                        </p>
                     </td>
                 </tr>
             </table>
@@ -191,17 +208,17 @@ class Form_Element extends Pro_Prompt {
         global $post;
 
         $new_mail_body  = "Hi Admin,\r\n";
-        $new_mail_body .= "A new post has been created in your site %sitename% (%siteurl%).\r\n\r\n";
+        $new_mail_body .= "A new post has been created in your site {sitename} ({siteurl}).\r\n\r\n";
 
         $edit_mail_body = "Hi Admin,\r\n";
-        $edit_mail_body .= "The post \"%post_title%\" has been updated.\r\n\r\n";
+        $edit_mail_body .= "The post \"{post_title}\" has been updated.\r\n\r\n";
 
         $mail_body      = "Here is the details:\r\n";
-        $mail_body .= "Post Title: %post_title%\r\n";
-        $mail_body .= "Content: %post_content%\r\n";
-        $mail_body .= "Author: %author%\r\n";
-        $mail_body .= "Post URL: %permalink%\r\n";
-        $mail_body .= 'Edit URL: %editlink%';
+        $mail_body .= "Post Title: {post_title}\r\n";
+        $mail_body .= "Content: {post_content}\r\n";
+        $mail_body .= "Author: {author}\r\n";
+        $mail_body .= "Post URL: {permalink}\r\n";
+        $mail_body .= 'Edit URL: {editlink}';
 
         $form_settings = wpuf_get_form_settings( $post->ID );
 
@@ -227,7 +244,11 @@ class Form_Element extends Pro_Prompt {
                         <?php esc_html_e( 'Enable post notification', 'wp-user-frontend' ); ?>
                     </label>
                 </td>
-                 <p class="description"><a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-set-up-submission-email-notification/"><?php esc_html_e( 'Learn more about Email Notification', 'wp-user-frontend' ); ?></a></p>
+                <p class="description">
+                    <a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-set-up-submission-email-notification/">
+                        <?php esc_html_e( 'Learn more about Email Notification', 'wp-user-frontend' ); ?>
+                    </a>
+                </p>
             </tr>
 
             <tr>
@@ -288,13 +309,13 @@ class Form_Element extends Pro_Prompt {
 
         <h3><?php esc_html_e( 'You may use in to, subject & message:', 'wp-user-frontend' ); ?></h3>
         <p>
-            <code>%post_title%</code>, <code>%post_content%</code>, <code>%post_excerpt%</code>, <code>%tags%</code>, <code>%category%</code>,
+            <code>{post_title}</code>, <code>{post_content}</code>, <code>{post_excerpt}</code>, <code>{tags}</code>, <code>{category}</code>,
             <?php
             if ( class_exists( 'WooCommerce' ) ) :
 				?>
-                 <code>%product_cat%</code> <?php endif ?>,
-            <code>%author%</code>, <code>%author_email%</code>, <code>%author_bio%</code>, <code>%sitename%</code>, <code>%siteurl%</code>, <code>%permalink%</code>, <code>%editlink%</code>
-            <br><code>%custom_{NAME_OF_CUSTOM_FIELD}%</code> e.g: <code>%custom_website_url%</code> for <code>website_url</code> meta field
+                <code>{product_cat}</code> <?php endif ?>,
+            <code>{author}</code>, <code>{author_email}</code>, <code>{author_bio}</code>, <code>{sitename}</code>, <code>{siteurl}</code>, <code>{permalink}</code>, <code>{editlink}</code>
+            <br><code>{custom_{NAME_OF_CUSTOM_FIELD}}</code> e.g: <code>{custom_website_url}</code> for <code>website_url</code> meta field
         </p>
 
 		<?php

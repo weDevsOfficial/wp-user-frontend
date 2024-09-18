@@ -125,7 +125,7 @@ class Frontend_Form extends Frontend_Render_Form {
 
         if ( $msg === 'post_updated' ) {
             echo wp_kses_post( '<div class="wpuf-success">' );
-            echo wp_kses_post( str_replace( '%link%', get_permalink( $post_id ), $this->form_settings['update_message'] ) );
+            echo wp_kses_post( str_replace( '{link}', get_permalink( $post_id ), $this->form_settings['update_message'] ) );
             echo wp_kses_post( '</div>' );
         }
 

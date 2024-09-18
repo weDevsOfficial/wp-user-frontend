@@ -52,6 +52,8 @@ class Free_Loader extends Pro_Prompt {
 
         // subscription
         add_action( 'wpuf_admin_subscription_detail', [ $this, 'wpuf_admin_subscription_detail_runner' ], 10, 4 );
+        add_filter( 'wpuf_subscription_section_advanced', [ $this, 'add_taxonomy_restriction_section' ] );
+        add_filter( 'wpuf_subscriptions_fields', [ $this, 'add_taxonomy_restriction_fields' ], 11 );
     }
 
     public function includes() {
@@ -233,8 +235,11 @@ class Free_Loader extends Pro_Prompt {
             'name'           => 'ipstack_key',
             'label'          => __( 'Ipstack API Key',
                                     'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
-            'desc'           => __( '<a target="_blank" href="https://ipstack.com/dashboard">Register here</a> to get your Free ipstack api key',
-                                    'wp-user-frontend' ),
+            'desc'           => sprintf(
+            // translators: %1$s: opening anchor tag, %2$s: closing anchor tag
+                __( '%1$sRegister here%2$s to get your free ipstack api key', 'wp-user-frontend' ),
+                '<a target="_blank" href="https://ipstack.com/dashboard">', '</a>'
+            ),
             'class'          => 'pro-preview',
             'is_pro_preview' => true,
         ];
@@ -730,7 +735,11 @@ class Free_Loader extends Pro_Prompt {
             [
                 'name'    => 'tax_help',
                 'label'   => __( 'Need help?', 'wp-user-frontend' ),
-                'desc'    => sprintf( __( 'Visit the <a href="%s" target="_blank">Tax setup documentation</a> for guidance on how to setup tax.', 'wp-user-frontend' ), 'https://wedevs.com/docs/wp-user-frontend-pro/settings/tax/' ),
+                'desc'    => sprintf(
+                // translators: %1$s: opening anchor tag, %2$s: closing anchor tag
+                    __( 'Visit the %1$sTax setup documentation%2$s for guidance on how to setup tax.', 'wp-user-frontend' ), '<a href="https://wedevs.com/docs/wp-user-frontend-pro/settings/tax/" target="_blank">',
+                    '</a>'
+                ),
                 'callback'    => 'wpuf_descriptive_text',
             ],
             [
@@ -788,8 +797,7 @@ class Free_Loader extends Pro_Prompt {
             [
                 'name'           => 'keyword_dictionary',
                 'label'          => __( 'Keyword Dictionary', 'wp-user-frontend' ),
-                'desc'           => __( 'Enter Keywords to Remove. Separate keywords with commas.',
-                                        'wp-user-frontend' ),
+                'desc'           => __( 'Enter Keywords to Remove. Separate keywords with commas.', 'wp-user-frontend' ),
                 'type'           => 'textarea',
                 'is_pro_preview' => true,
             ],
@@ -1421,5 +1429,55 @@ class Free_Loader extends Pro_Prompt {
         </div>
 
         <?php
+    }
+
+    /**
+     * Add taxonomy restriction options
+     *
+     * @since 4.0.11
+     *
+     * @param array $sections
+     *
+     * @return array
+     */
+    public function add_taxonomy_restriction_section( $sections ) {
+        $sections['advanced_configuration'][] = [
+            'id'        => 'taxonomy_restriction',
+            'label'     => __( 'Taxonomy Access', 'wp-user-frontend' ),
+            'sub_label' => __( '(Control user access to specific taxonomies)', 'wp-user-frontend' ),
+            'is_pro'    => true,
+        ];
+
+        return $sections;
+    }
+
+    /**
+     * Add taxonomy restriction fields
+     *
+     * @since 4.0.11
+     *
+     * @param array $fields
+     *
+     * @return array
+     */
+    public function add_taxonomy_restriction_fields( $fields ) {
+        $cts = get_taxonomies( [], 'objects' );
+
+        foreach ( $cts as $ct ) {
+            if ( ! is_taxonomy_hierarchical( $ct->name ) ) {
+                continue;
+            }
+
+            $fields['advanced_configuration']['taxonomy_restriction'][ $ct->name ] = [
+                'id'          => $ct->name,
+                'name'        => $ct->name,
+                'type'        => 'multi-select',
+                'label'       => $ct->label,
+                'term_fields' => [],
+                'is_pro'      => true,
+            ];
+        }
+
+        return $fields;
     }
 }

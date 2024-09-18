@@ -280,19 +280,34 @@ class Subscription {
     public static function get_subscription_meta( $subscription_id, $pack_post = null ) {
         $meta['post_content']               = isset( $pack_post->post_content ) ? $pack_post->post_content : '';
         $meta['post_title']                 = isset( $pack_post->post_title ) ? $pack_post->post_title : '';
+
+        // keeping the '_' in the key for backward compatibility. Example $meta['_billing_amount']
         $meta['billing_amount']             = get_post_meta( $subscription_id, '_billing_amount', true );
+        $meta['_billing_amount']            = $meta['billing_amount'];
         $meta['expiration_number']          = get_post_meta( $subscription_id, '_expiration_number', true );
+        $meta['_expiration_number']         = $meta['expiration_number'];
         $meta['expiration_period']          = get_post_meta( $subscription_id, '_expiration_period', true );
+        $meta['_expiration_period']         = $meta['expiration_period'];
         $meta['recurring_pay']              = get_post_meta( $subscription_id, '_recurring_pay', true );
+        $meta['_recurring_pay']             = $meta['recurring_pay'];
         $meta['billing_cycle_number']       = get_post_meta( $subscription_id, '_billing_cycle_number', true );
+        $meta['_billing_cycle_number']      = $meta['billing_cycle_number'];
         $meta['cycle_period']               = get_post_meta( $subscription_id, '_cycle_period', true );
+        $meta['_cycle_period']              = $meta['cycle_period'];
         $meta['billing_limit']              = get_post_meta( $subscription_id, '_billing_limit', true );
+        $meta['_billing_limit']             = $meta['billing_limit'];
         $meta['trial_status']               = get_post_meta( $subscription_id, '_trial_status', true );
+        $meta['_trial_status']              = $meta['trial_status'];
         $meta['trial_duration']             = get_post_meta( $subscription_id, '_trial_duration', true );
+        $meta['_trial_duration']            = $meta['trial_duration'];
         $meta['trial_duration_type']        = get_post_meta( $subscription_id, '_trial_duration_type', true );
+        $meta['_trial_duration_type']       = $meta['trial_duration_type'];
         $meta['post_type_name']             = get_post_meta( $subscription_id, '_post_type_name', true );
+        $meta['_post_type_name']            = $meta['post_type_name'];
         $meta['_enable_post_expiration']    = get_post_meta( $subscription_id, '_enable_post_expiration', true );
         $meta['_post_expiration_time']      = get_post_meta( $subscription_id, '_post_expiration_time', true );
+        $meta['_post_expiration_number']    = get_post_meta( $subscription_id, '_post_expiration_number', true );
+        $meta['_post_expiration_period']    = get_post_meta( $subscription_id, '_post_expiration_period', true );
         $meta['_expired_post_status']       = get_post_meta( $subscription_id, '_expired_post_status', true );
         $meta['_enable_mail_after_expired'] = get_post_meta( $subscription_id, '_enable_mail_after_expired', true );
         $meta['_post_expiration_message']   = get_post_meta( $subscription_id, '_post_expiration_message', true );
@@ -437,10 +452,9 @@ class Subscription {
         register_post_type(
             'wpuf_subscription', [
                 'label'           => __( 'Subscription', 'wp-user-frontend' ),
-                'public'          => false,
-                'show_ui'         => true,
+                'public'          => true,
                 'show_in_menu'    => false,
-                'hierarchical'    => false,
+                'show_in_rest'    => true,
                 'query_var'       => false,
                 'supports'        => [ 'title' ],
                 'capability_type' => 'post',
@@ -474,7 +488,6 @@ class Subscription {
             ]
         );
     }
-
 
     /**
      * Get a subscription row from database
@@ -1392,5 +1405,63 @@ class Subscription {
                 }
             }
         }
+    }
+
+    /**
+     * Total count of subscriptions by status
+     *
+     * @since 4.0.11
+     *
+     * @return string|null Database query result (as string), or null on failure.
+     */
+    public function total_subscriptions_count_by_status( $status = 'all' ) {
+        global $wpdb;
+
+        if ( 'all' === $status ) {
+            return $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'wpuf_subscription'" );
+        } else {
+            return $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'wpuf_subscription' AND post_status = %s",
+                    $status
+                )
+            );
+        }
+    }
+
+    /**
+     * Total count of subscriptions by status
+     *
+     * @since 4.0.11
+     *
+     * @return array
+     */
+    public function total_subscriptions_count_array() {
+        global $wpdb;
+
+        $total  = 0;
+        $status = [];
+        $result = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT post_status, COUNT(*) AS count FROM $wpdb->posts WHERE post_type = %s AND post_status != %s GROUP BY post_status",
+                'wpuf_subscription',
+                'auto-draft'
+            )
+        );
+
+        foreach ( $result as $row ) {
+            $status[ $row->post_status ] = $row->count;
+            $total                      += $row->count;
+        }
+
+        if ( empty( $status['trash'] ) ) {
+            $status['all'] = $total;
+
+            return $status;
+        }
+
+        $status['all'] = $total - $status['trash'];
+
+        return $status;
     }
 }

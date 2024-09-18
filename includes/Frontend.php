@@ -2,7 +2,6 @@
 
 namespace WeDevs\Wpuf;
 
-use AllowDynamicProperties;
 use WeDevs\WpUtils\ContainerTrait;
 
 /**
@@ -11,19 +10,18 @@ use WeDevs\WpUtils\ContainerTrait;
  *
  * @since 4.0.0
  */
-#[AllowDynamicProperties]
 class Frontend {
     use ContainerTrait;
 
     public function __construct() {
-        $this->frontend_form      = new Frontend\Frontend_Form();
-        $this->registration       = new Frontend\Registration();
-        $this->simple_login       = new Free\Simple_Login();
-        $this->frontend_account   = new Frontend\Frontend_Account();
-        $this->frontend_dashboard = new Frontend\Frontend_Dashboard();
-        $this->shortcode          = new Frontend\Shortcode();
-        $this->payment            = new Frontend\Payment();
-        $this->form_preview       = new Frontend\Form_Preview();
+        $this->container['frontend_form']      = new Frontend\Frontend_Form();
+        $this->container['registration']       = new Frontend\Registration();
+        $this->container['simple_login']       = new Free\Simple_Login();
+        $this->container['frontend_account']   = new Frontend\Frontend_Account();
+        $this->container['frontend_dashboard'] = new Frontend\Frontend_Dashboard();
+        $this->container['shortcode']          = new Frontend\Shortcode();
+        $this->container['payment']            = new Frontend\Payment();
+        $this->container['form_preview']       = new Frontend\Form_Preview();
 
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 
@@ -137,16 +135,36 @@ class Frontend {
                             'wp-user-frontend'
                         ),
                         'protected_shortcodes'         => wpuf_get_protected_shortcodes(),
+                        // translators: %shortcode% is the shortcode name
                         'protected_shortcodes_message' => __( 'Using %shortcode% is restricted', 'wp-user-frontend' ),
+                        'password_warning_weak'        => __( 'Your password should be at least weak in strength', 'wp-user-frontend' ),
+                        'password_warning_medium'      => __( 'Your password needs to be medium strength for better protection', 'wp-user-frontend' ),
+                        'password_warning_strong'      => __( 'Create a strong password for maximum security', 'wp-user-frontend' ),
                     ]
                 )
             );
-
             wp_localize_script(
                 'wpuf-frontend-form', 'error_str_obj', [
                     'required'   => __( 'is required', 'wp-user-frontend' ),
                     'mismatch'   => __( 'does not match', 'wp-user-frontend' ),
                     'validation' => __( 'is not valid', 'wp-user-frontend' ),
+                ]
+            );
+
+            wp_localize_script(
+                'wpuf-subscriptions', 'wpuf_subscription', apply_filters(
+                    'wpuf_subscription_js_data', [
+                        'pack_notice'  => __( 'Please Cancel Your Currently Active Pack first!', 'wp-user-frontend' ),
+                    ]
+                )
+            );
+
+            wp_localize_script(
+                'wpuf-billing-address',
+                'ajax_object',
+                [
+                    'ajaxurl'     => admin_url( 'admin-ajax.php' ),
+                    'fill_notice' => __( 'Some Required Fields are not filled!', 'wp-user-frontend' ),
                 ]
             );
         }

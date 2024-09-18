@@ -28,6 +28,18 @@ class Setup_Wizard {
         add_action( 'admin_init', [ $this, 'redirect_to_page' ], 9999 );
         add_action( 'admin_init', [ $this, 'add_custom_menu_class'] );
         add_filter( 'safe_style_css', [ $this, 'wpuf_safe_style_css' ] );
+        add_action( 'admin_init', [ $this, 'custom_admin_bar_styles' ] );
+    }
+
+    /**
+     * Enqueue styles for admin bar
+     *
+     * @return void
+     */
+    public function custom_admin_bar_styles() {
+        if ( is_admin_bar_showing() ) {
+            wp_enqueue_admin_bar_header_styles();
+        }
     }
 
     /**
@@ -127,6 +139,7 @@ class Setup_Wizard {
      * Show the setup wizard.
      */
     public function setup_wizard() {
+        remove_action( 'admin_print_styles', 'print_emoji_styles' );
         $page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
         if ( empty( $page ) || 'wpuf-setup' !== $page ) {
             return;
@@ -295,7 +308,14 @@ class Setup_Wizard {
     public function wpuf_setup_introduction() {
         ?>
         <h1><?php esc_html_e( 'Welcome to the world of WPUF!', 'wp-user-frontend' ); ?></h1>
-        <p><?php echo wp_kses_post( __( 'Thank you for choosing WPUF to power your websites frontend! This quick setup wizard will help you configure the basic settings. <strong>It’s completely optional and shouldn’t take longer than a minute.</strong>', 'wp-user-frontend' ) ); ?></p>
+        <p>
+            <?php
+            echo wp_kses_post(
+                // translators: %1$s and %2$s are strong tags
+                sprintf( __( 'Thank you for choosing WPUF to power your websites frontend! This quick setup wizard will help you configure the basic settings. %1$sIt’s completely optional and shouldn’t take longer than a minute%2$s', 'wp-user-frontend' ), '<strong>', '<strong />' )
+            );
+            ?>
+        </p>
         <p><?php esc_html_e( 'No time right now? If you don’t want to go through the wizard, you can skip and return to the WordPress dashboard. Come back anytime if you change your mind!', 'wp-user-frontend' ); ?></p>
         <p class="wpuf-setup-actions step">
             <a href="<?php echo esc_url( $this->get_next_step_link() ); ?>" class="button-primary button button-large button-next"><?php esc_html_e( 'Let\'s Go!', 'wp-user-frontend' ); ?></a>

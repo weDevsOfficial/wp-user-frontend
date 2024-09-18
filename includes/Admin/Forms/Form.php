@@ -2,7 +2,6 @@
 
 namespace WeDevs\Wpuf\Admin\Forms;
 
-#[AllowDynamicProperties]
 class Form {
 
     /**
@@ -18,6 +17,11 @@ class Form {
      * @var array
      */
     public $form_fields = [];
+
+    /**
+     * @var array|\WP_Post|null
+     */
+    private $data;
 
     public function __construct( $form ) {
         if ( is_numeric( $form ) ) {

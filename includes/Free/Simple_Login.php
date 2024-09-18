@@ -414,7 +414,7 @@ class Simple_Login {
      * Remove selected cookie to have consistency with the login nonce.
      * fixes WooCommerce Stripe Gateway plugin conflict
      *
-     * @since WPUF_SINCE
+     * @since 4.0.7
      *
      * @return void
      */
@@ -490,16 +490,6 @@ class Simple_Login {
                 $creds['user_login'] = $user->user_login;
             } else {
                 $this->login_errors[] = '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'A user could not be found with this email address.', 'wp-user-frontend' );
-
-                return;
-            }
-
-            $wpuf_user_status = get_user_meta( $user->ID, 'wpuf_user_status', true );
-
-            if ( 'approved' !== $wpuf_user_status ) {
-                $message = __( 'You can\'t login until an administrator manually approve your account.', 'wp-user-frontend' );
-
-                $this->login_errors[] = $message;
 
                 return;
             }

@@ -33,12 +33,14 @@ class Form_Field_Textarea extends Field_Contract {
             $value = $field_settings['default'];
         }
 
-        $req_class   = ( $field_settings['required'] == 'yes' ) ? 'required' : 'rich-editor';
+        $req_class   = ( 'yes' === $field_settings['required'] ) ? 'required' : 'rich-editor';
         $textarea_id = $field_settings['name'] ? $field_settings['name'] . '_' . $form_id : 'textarea_';
 
         $this->field_print_label( $field_settings, $form_id ); ?>
 
-             <?php if ( in_array( $field_settings['rich'], [ 'yes', 'teeny' ] ) ) { ?>
+            <?php
+            if ( in_array( $field_settings['rich'], [ 'yes', 'teeny' ], true ) ) {
+                ?>
                 <div class="wpuf-fields wpuf-rich-validation <?php printf( 'wpuf_%s_%s', esc_attr( $field_settings['name'] ), esc_attr( $form_id ) ); ?>" data-type="rich" data-required="<?php echo esc_attr( $field_settings['required'] ); ?>" data-id="<?php echo esc_attr( $field_settings['name'] ) . '_' . esc_attr( $form_id ); ?>" data-name="<?php echo esc_attr( $field_settings['name'] ); ?>">
             <?php } else { ?>
                 <div class="wpuf-fields">
@@ -56,6 +58,10 @@ class Form_Field_Textarea extends Field_Contract {
                         'textarea_name' => $field_settings['name'],
                     ];
 
+                    if ( ! empty( $field_settings['read_only'] ) ) {
+                        $tinymce_settings['readonly'] = true;
+                    }
+
                     if ( ! empty( $tinymce_settings ) ) {
                         $editor_settings['tinymce'] = $tinymce_settings;
                     }
@@ -65,6 +71,7 @@ class Form_Field_Textarea extends Field_Contract {
                     }
 
                     $editor_settings = apply_filters( 'wpuf_textarea_editor_args', $editor_settings );
+
                     wp_editor( $value, $textarea_id, $editor_settings );
                 } else {
                     ?>

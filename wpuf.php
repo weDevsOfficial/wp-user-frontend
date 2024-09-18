@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: weDevs
-Version: 4.0.6
+Version: 4.0.11
 Author URI: https://wedevs.com/?utm_source=WPUF_Author_URI
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -21,28 +21,22 @@ $autoload = __DIR__ . '/vendor/autoload.php';
 
 if ( file_exists( $autoload ) ) {
     require_once $autoload;
-} else {
-	wp_die( __( 'There was a problem installing the plugin' ), __( 'Problem installing plugin' ) );
 }
 
-define( 'WPUF_VERSION', '4.0.6' );
+define( 'WPUF_VERSION', '4.0.11' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
 define( 'WPUF_ASSET_URI', WPUF_ROOT_URI . '/assets' );
 define( 'WPUF_INCLUDES', WPUF_ROOT . '/includes' );
 
-use WeDevs\WpUtils\ContainerTrait;
 use WeDevs\WpUtils\SingletonTrait;
 
 /**
  * Main bootstrap class for WP User Frontend
  */
-
-/*Marking a class with #[AllowDynamicProperties] is fully backwards-compatible with earlier PHP versions, because prior to PHP 8.0 this would be interpreted as a comment, and the use non-existent classes as attributes is not an error.*/
-#[AllowDynamicProperties]
 final class WP_User_Frontend {
-    use SingletonTrait, ContainerTrait;
+    use SingletonTrait;
 
     /**
      * Form field value seperator
@@ -64,6 +58,15 @@ final class WP_User_Frontend {
      * @var string
      */
     private $min_php = '5.6';
+
+    /**
+     * Holds various class instances
+     *
+     * @since 4.0.9
+     *
+     * @var array
+     */
+    public $container = [];
 
     /**
      * Fire up the plugin
@@ -163,24 +166,25 @@ final class WP_User_Frontend {
      * @return void
      */
     public function instantiate() {
-        $this->assets       = new WeDevs\Wpuf\Assets();
-        $this->subscription = new WeDevs\Wpuf\Admin\Subscription();
-        $this->fields       = new WeDevs\Wpuf\Admin\Forms\Field_Manager();
-        $this->customize    = new WeDevs\Wpuf\Admin\Customizer_Options();
-        $this->bank         = new WeDevs\Wpuf\Lib\Gateway\Bank();
-        $this->paypal       = new WeDevs\Wpuf\Lib\Gateway\Paypal();
+        $this->container['assets']       = new WeDevs\Wpuf\Assets();
+        $this->container['subscription'] = new WeDevs\Wpuf\Admin\Subscription();
+        $this->container['fields']       = new WeDevs\Wpuf\Admin\Forms\Field_Manager();
+        $this->container['customize']    = new WeDevs\Wpuf\Admin\Customizer_Options();
+        $this->container['bank']         = new WeDevs\Wpuf\Lib\Gateway\Bank();
+        $this->container['paypal']       = new WeDevs\Wpuf\Lib\Gateway\Paypal();
+        $this->container['api']          = new WeDevs\Wpuf\API();
 
         if ( is_admin() ) {
-            $this->admin        = new WeDevs\Wpuf\Admin();
-            $this->setup_wizard = new WeDevs\Wpuf\Setup_Wizard();
-            $this->pro_upgrades = new WeDevs\Wpuf\Pro_Upgrades();
-            $this->privacy      = new WeDevs\Wpuf\WPUF_Privacy();
+            $this->container['admin']        = new WeDevs\Wpuf\Admin();
+            $this->container['setup_wizard'] = new WeDevs\Wpuf\Setup_Wizard();
+            $this->container['pro_upgrades'] = new WeDevs\Wpuf\Pro_Upgrades();
+            $this->container['privacy']      = new WeDevs\Wpuf\WPUF_Privacy();
         } else {
-            $this->frontend = new WeDevs\Wpuf\Frontend();
+            $this->container['frontend'] = new WeDevs\Wpuf\Frontend();
         }
 
         if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-            $this->ajax = new WeDevs\Wpuf\Ajax();
+            $this->container['ajax'] = new WeDevs\Wpuf\Ajax();
         }
     }
 
@@ -206,7 +210,7 @@ final class WP_User_Frontend {
             return;
         }
 
-        $this->upgrades = new WeDevs\Wpuf\Admin\Upgrades();
+        $this->container['upgrades'] = new WeDevs\Wpuf\Admin\Upgrades();
     }
 
     /**
@@ -233,11 +237,11 @@ final class WP_User_Frontend {
     public function wpuf_upgrade_notice() {
         ?>
         <div class="notice error" id="wpuf-pro-installer-notice" style="padding: 1em; position: relative;">
-            <h2><?php esc_html_e( 'Your WP User Frontend Pro is almost ready!', 'wpuf-pro' ); ?></h2>
+            <h2><?php esc_html_e( 'Your WP User Frontend Pro is almost ready!', 'wp-user-frontend' ); ?></h2>
             <p>
                 <?php
                 /* translators: 1: opening anchor tag, 2: closing anchor tag. */
-                echo sprintf( __( 'We\'ve pushed a major update on both <b>WP User Frontend Free</b> and <b>WP User Frontend Pro</b> that requires you to use latest version of both. Please update the WPUF pro to the latest version. <br><strong>Please make sure to take a complete backup of your site before updating.</strong>', 'wpuf-pro' ), '<a target="_blank" href="https://wordpress.org/plugins/wp-user-frontend/">', '</a>' );
+                echo sprintf( __( 'We\'ve pushed a major update on both <b>WP User Frontend Free</b> and <b>WP User Frontend Pro</b> that requires you to use latest version of both. Please update the WPUF pro to the latest version. <br><strong>Please make sure to take a complete backup of your site before updating.</strong>', 'wp-user-frontend' ), '<a target="_blank" href="https://wordpress.org/plugins/wp-user-frontend/">', '</a>' );
                 ?>
             </p>
         </div>
@@ -255,7 +259,7 @@ final class WP_User_Frontend {
         if ( $has_pro ) {
             $this->is_pro = true;
         } else {
-            $this->free_loader = new WeDevs\Wpuf\Free\Free_Loader();
+            $this->container['free_loader'] = new WeDevs\Wpuf\Free\Free_Loader();
         }
 
         // Remove the what's new option.
@@ -335,7 +339,7 @@ final class WP_User_Frontend {
      * @return void
      */
     public function register_widgets() {
-        $this->widgets = new WeDevs\Wpuf\Widgets\Manager();
+        $this->container['widgets'] = new WeDevs\Wpuf\Widgets\Manager();
     }
     public function license_expired() {
         echo '<div class="error">';
@@ -352,6 +356,32 @@ final class WP_User_Frontend {
      */
     public function get_field_seperator() {
         return self::$field_separator;
+    }
+
+    /**
+     * Magic getter to bypass referencing objects
+     *
+     * @since 4.0.9
+     *
+     * @param string $prop
+     *
+     * @return object Class Instance
+     */
+    public function __get( $prop ) {
+        if ( array_key_exists( $prop, $this->container ) ) {
+            return $this->container[ $prop ];
+        }
+    }
+
+    /**
+     * Get the DB version key
+     *
+     * @since 4.0.11
+     *
+     * @return string
+     */
+    public function get_db_version_key() {
+        return 'wpuf_version';
     }
 }
 

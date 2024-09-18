@@ -21,6 +21,11 @@ class Frontend_Form_Ajax {
     private $post_expiration_message = 'wpuf-post_expiration_message';
 
     /**
+     * @var array
+     */
+    private $form_fields;
+
+    /**
      * New/Edit post submit handler
      *
      * @return void
@@ -155,9 +160,9 @@ class Frontend_Form_Ajax {
             $charging_enabled = 'yes';
         }
 
-        if ( $guest_mode === 'true' && $guest_verify === 'true' && ! is_user_logged_in() && $charging_enabled === 'yes' ) {
+        if ( 'true' === $guest_mode && 'true' === $guest_verify && ! is_user_logged_in() && 'yes' === $charging_enabled ) {
             $postarr['post_status'] = wpuf_get_draft_post_status( $this->form_settings );
-        } elseif ( $guest_mode === 'true' && $guest_verify === 'true' && ! is_user_logged_in() ) {
+        } elseif ( 'true' === $guest_mode && 'true' === $guest_verify && ! is_user_logged_in() ) {
             $postarr['post_status'] = 'draft';
         }
         //if date is set and assigned as publish date

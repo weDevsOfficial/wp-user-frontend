@@ -21,7 +21,7 @@ class Form {
     /**
      * @var array|\WP_Post|null
      */
-    private $data;
+    public $data;
 
     public function __construct( $form ) {
         if ( is_numeric( $form ) ) {

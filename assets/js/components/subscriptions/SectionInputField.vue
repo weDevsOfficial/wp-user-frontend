@@ -122,7 +122,7 @@ const processInput = (event) => {
 };
 
 const processNumber = (event) => {
-    const allowedKeys = ['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight'];
+    const allowedKeys = ['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight', '.'];
     if (!allowedKeys.includes(event.key) && isNaN(Number(event.key))) {
         event.preventDefault();
     }

@@ -391,7 +391,7 @@ class Subscription extends WP_REST_Controller {
         $post_content           = ! empty( $subscription['post_content'] ) ? sanitize_textarea_field(
             $subscription['post_content']
         ) : '';
-        $billing_amount         = ! empty( $subscription['meta_value']['_billing_amount'] ) ? (int) $subscription['meta_value']['_billing_amount'] : 0;
+        $billing_amount         = ! empty( $subscription['meta_value']['_billing_amount'] ) ? floatval( $subscription['meta_value']['_billing_amount'] ) : 0;
         $expiration_number      = ! empty( $subscription['meta_value']['_expiration_number'] ) ? (int) $subscription['meta_value']['_expiration_number'] : 0;
         $expiration_period      = ! empty( $subscription['meta_value']['_expiration_period'] ) ? sanitize_text_field(
             $subscription['meta_value']['_expiration_period']

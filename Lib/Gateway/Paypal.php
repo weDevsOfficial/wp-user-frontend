@@ -352,7 +352,7 @@ class Paypal {
             $custom         = json_decode( stripcslashes( $type ) );
             $item_number    = ! empty( $postdata['item_number'] ) ? $postdata['item_number'] : 0;
 
-            if ( property_exists( $custom, 'type' ) ) {
+            if ( ! empty( $custom ) && property_exists( $custom, 'type' ) ) {
                 switch ( $custom->type ) {
                     case 'post':
                         $post_id = $item_number;
@@ -448,11 +448,11 @@ class Paypal {
             } // payment type
 
             $data = [
-                'user_id'          => property_exists( $custom, 'user_id' ) ? ( int) $custom->user_id : 0,
+                'user_id'          => ! empty( $custom ) && property_exists( $custom, 'user_id' ) ? ( int) $custom->user_id : 0,
                 'status'           => ! empty( $postdata['payment_status'] ) ? strtolower( $postdata['payment_status'] ) : '',
                 'subtotal'         => ! empty( $postdata['mc_gross'] ) ? $postdata['mc_gross'] : '',
-                'tax'              => property_exists( $custom, 'tax' ) ? (float) $custom->tax : 0,
-                'cost'             => property_exists( $custom, 'subtotal' ) ? (float) $custom->subtotal : 0,
+                'tax'              => ! empty( $custom ) && property_exists( $custom, 'tax' ) ? (float) $custom->tax : 0,
+                'cost'             => ! empty( $custom ) && property_exists( $custom, 'subtotal' ) ? (float) $custom->subtotal : 0,
                 'post_id'          => isset( $post_id ) ? $post_id : 0,
                 'pack_id'          => isset( $pack_id ) ? $pack_id : 0,
                 'payer_first_name' => ! empty( $postdata['first_name'] ) ? $postdata['first_name'] : '',

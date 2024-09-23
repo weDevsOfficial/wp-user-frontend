@@ -158,6 +158,9 @@ class Assets {
             'admin-subscriptions'              => [
                 'src' => WPUF_ASSET_URI . '/css/admin/subscriptions.min.css',
             ],
+            'admin-transactions'              => [
+                'src' => WPUF_ASSET_URI . '/css/admin/transactions.min.css',
+            ],
             'registration-forms' => [
                 'src' => WPUF_ASSET_URI . '/css/registration-forms.css',
             ],
@@ -284,6 +287,10 @@ class Assets {
             ],
             'admin-subscriptions'      => [
                 'src'       => WPUF_ASSET_URI . '/js/subscriptions.min.js',
+                'in_footer' => true,
+            ],
+            'admin-transactions'      => [
+                'src'       => WPUF_ASSET_URI . '/js/transactions' . $this->suffix . '.js',
                 'in_footer' => true,
             ],
             'timepicker'               => [

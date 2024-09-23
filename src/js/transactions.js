@@ -3,7 +3,8 @@ import {createPinia} from 'pinia';
 
 import Transactions from './components/Transactions.vue';
 
-import '../../assets/css/admin/transactions.css';
+import '../../src/css/admin/transactions.css';
+
 
 // window.wpufSubscriptions = wpufSubscriptions;
 

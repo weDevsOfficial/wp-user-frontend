@@ -159,7 +159,7 @@ class Assets {
                 'src' => WPUF_ASSET_URI . '/css/admin/subscriptions.min.css',
             ],
             'admin-transactions'              => [
-                'src' => WPUF_ASSET_URI . '/css/admin/transactions.min.css',
+                'src' => WPUF_ASSET_URI . '/css/admin/transactions' . $this->suffix . '.css',
             ],
             'registration-forms' => [
                 'src' => WPUF_ASSET_URI . '/css/registration-forms.css',

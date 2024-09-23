@@ -26,7 +26,7 @@ const hasOwnProperty$1$1 = Object.prototype.hasOwnProperty;
 const hasOwn$1 = (val, key) => hasOwnProperty$1$1.call(val, key);
 const isArray$1 = Array.isArray;
 const isMap$1 = (val) => toTypeString$1(val) === "[object Map]";
-const isSet = (val) => toTypeString$1(val) === "[object Set]";
+const isSet$1 = (val) => toTypeString$1(val) === "[object Set]";
 const isDate = (val) => toTypeString$1(val) === "[object Date]";
 const isRegExp = (val) => toTypeString$1(val) === "[object RegExp]";
 const isFunction$1 = (val) => typeof val === "function";
@@ -41,7 +41,7 @@ const toTypeString$1 = (value) => objectToString$1.call(value);
 const toRawType$1 = (value) => {
   return toTypeString$1(value).slice(8, -1);
 };
-const isPlainObject = (val) => toTypeString$1(val) === "[object Object]";
+const isPlainObject$1 = (val) => toTypeString$1(val) === "[object Object]";
 const isIntegerKey$1 = (key) => isString$1(key) && key !== "NaN" && key[0] !== "-" && "" + parseInt(key, 10) === key;
 const isReservedProp = /* @__PURE__ */ makeMap$1(
   // the leading comma is intentional so empty string "" is also included
@@ -315,34 +315,34 @@ function looseEqual(a, b) {
 function looseIndexOf(arr, val) {
   return arr.findIndex((item) => looseEqual(item, val));
 }
-const toDisplayString = (val) => {
-  return isString$1(val) ? val : val == null ? "" : isArray$1(val) || isObject$1(val) && (val.toString === objectToString$1 || !isFunction$1(val.toString)) ? JSON.stringify(val, replacer, 2) : String(val);
+const toDisplayString$1 = (val) => {
+  return isString$1(val) ? val : val == null ? "" : isArray$1(val) || isObject$1(val) && (val.toString === objectToString$1 || !isFunction$1(val.toString)) ? JSON.stringify(val, replacer$1, 2) : String(val);
 };
-const replacer = (_key, val) => {
+const replacer$1 = (_key, val) => {
   if (val && val.__v_isRef) {
-    return replacer(_key, val.value);
+    return replacer$1(_key, val.value);
   } else if (isMap$1(val)) {
     return {
       [`Map(${val.size})`]: [...val.entries()].reduce(
         (entries, [key, val2], i) => {
-          entries[stringifySymbol(key, i) + " =>"] = val2;
+          entries[stringifySymbol$1(key, i) + " =>"] = val2;
           return entries;
         },
         {}
       )
     };
-  } else if (isSet(val)) {
+  } else if (isSet$1(val)) {
     return {
-      [`Set(${val.size})`]: [...val.values()].map((v) => stringifySymbol(v))
+      [`Set(${val.size})`]: [...val.values()].map((v) => stringifySymbol$1(v))
     };
   } else if (isSymbol$1(val)) {
-    return stringifySymbol(val);
-  } else if (isObject$1(val) && !isArray$1(val) && !isPlainObject(val)) {
+    return stringifySymbol$1(val);
+  } else if (isObject$1(val) && !isArray$1(val) && !isPlainObject$1(val)) {
     return String(val);
   }
   return val;
 };
-const stringifySymbol = (v, i = "") => {
+const stringifySymbol$1 = (v, i = "") => {
   var _a;
   return isSymbol$1(v) ? `Symbol(${(_a = v.description) != null ? _a : i})` : v;
 };
@@ -794,7 +794,7 @@ let BaseReactiveHandler$1 = class BaseReactiveHandler {
     if (shallow) {
       return res;
     }
-    if (isRef$1(res)) {
+    if (isRef$2(res)) {
       return targetIsArray && isIntegerKey$1(key) ? res : res.value;
     }
     if (isObject$1(res)) {
@@ -815,7 +815,7 @@ let MutableReactiveHandler$1 = class MutableReactiveHandler extends BaseReactive
         oldValue = toRaw$1(oldValue);
         value = toRaw$1(value);
       }
-      if (!isArray$1(target) && isRef$1(oldValue) && !isRef$1(value)) {
+      if (!isArray$1(target) && isRef$2(oldValue) && !isRef$2(value)) {
         if (isOldValueReadonly) {
           return false;
         } else {
@@ -1383,7 +1383,7 @@ function triggerRefValue(ref2, dirtyLevel = 4, newVal) {
     );
   }
 }
-function isRef$1(r) {
+function isRef$2(r) {
   return !!(r && r.__v_isRef === true);
 }
 function ref$1(value) {
@@ -1393,7 +1393,7 @@ function shallowRef(value) {
   return createRef$1(value, true);
 }
 function createRef$1(rawValue, shallow) {
-  if (isRef$1(rawValue)) {
+  if (isRef$2(rawValue)) {
     return rawValue;
   }
   return new RefImpl$1(rawValue, shallow);
@@ -1423,17 +1423,17 @@ let RefImpl$1 = class RefImpl {
 function triggerRef(ref2) {
   triggerRefValue(ref2, 4, ref2.value);
 }
-function unref(ref2) {
-  return isRef$1(ref2) ? ref2.value : ref2;
+function unref$1(ref2) {
+  return isRef$2(ref2) ? ref2.value : ref2;
 }
 function toValue(source) {
-  return isFunction$1(source) ? source() : unref(source);
+  return isFunction$1(source) ? source() : unref$1(source);
 }
 const shallowUnwrapHandlers = {
-  get: (target, key, receiver) => unref(Reflect.get(target, key, receiver)),
+  get: (target, key, receiver) => unref$1(Reflect.get(target, key, receiver)),
   set: (target, key, value, receiver) => {
     const oldValue = target[key];
-    if (isRef$1(oldValue) && !isRef$1(value)) {
+    if (isRef$2(oldValue) && !isRef$2(value)) {
       oldValue.value = value;
       return true;
     } else {
@@ -1504,7 +1504,7 @@ class GetterRefImpl {
   }
 }
 function toRef(source, key, defaultValue) {
-  if (isRef$1(source)) {
+  if (isRef$2(source)) {
     return source;
   } else if (isFunction$1(source)) {
     return new GetterRefImpl(source);
@@ -1516,7 +1516,7 @@ function toRef(source, key, defaultValue) {
 }
 function propertyToRef(source, key, defaultValue) {
   const val = source[key];
-  return isRef$1(val) ? val : new ObjectRefImpl(source, key, defaultValue);
+  return isRef$2(val) ? val : new ObjectRefImpl(source, key, defaultValue);
 }
 const TrackOpTypes = {
   "GET": "get",
@@ -1623,7 +1623,7 @@ function formatProp(key, value, raw) {
     return raw ? value : [`${key}=${value}`];
   } else if (typeof value === "number" || typeof value === "boolean" || value == null) {
     return raw ? value : [`${key}=${value}`];
-  } else if (isRef$1(value)) {
+  } else if (isRef$2(value)) {
     value = formatProp(key, toRaw$1(value.value), true);
     return raw ? value : [`${key}=Ref<`, value, `>`];
   } else if (isFunction$1(value)) {
@@ -3370,7 +3370,7 @@ function doWatch(source, cb, {
   let getter;
   let forceTrigger = false;
   let isMultiSource = false;
-  if (isRef$1(source)) {
+  if (isRef$2(source)) {
     getter = () => source.value;
     forceTrigger = isShallow$1(source);
   } else if (isReactive(source)) {
@@ -3380,7 +3380,7 @@ function doWatch(source, cb, {
     isMultiSource = true;
     forceTrigger = source.some((s) => isReactive(s) || isShallow$1(s));
     getter = () => source.map((s) => {
-      if (isRef$1(s)) {
+      if (isRef$2(s)) {
         return s.value;
       } else if (isReactive(s)) {
         return reactiveGetter(s);
@@ -3524,17 +3524,17 @@ function traverse(value, depth, currentDepth = 0, seen2) {
     return value;
   }
   seen2.add(value);
-  if (isRef$1(value)) {
+  if (isRef$2(value)) {
     traverse(value.value, depth, currentDepth, seen2);
   } else if (isArray$1(value)) {
     for (let i = 0; i < value.length; i++) {
       traverse(value[i], depth, currentDepth, seen2);
     }
-  } else if (isSet(value) || isMap$1(value)) {
+  } else if (isSet$1(value) || isMap$1(value)) {
     value.forEach((v) => {
       traverse(v, depth, currentDepth, seen2);
     });
-  } else if (isPlainObject(value)) {
+  } else if (isPlainObject$1(value)) {
     for (const key in value) {
       traverse(value[key], depth, currentDepth, seen2);
     }
@@ -5069,7 +5069,7 @@ function resolveInjections(injectOptions, ctx, checkDuplicateProperties = NOOP) 
     } else {
       injected = inject(opt);
     }
-    if (isRef$1(injected)) {
+    if (isRef$2(injected)) {
       Object.defineProperty(ctx, key, {
         enumerable: true,
         configurable: true,
@@ -6024,7 +6024,7 @@ function setRef(rawRef, oldRawRef, parentSuspense, vnode, isUnmount = false) {
       if (hasOwn$1(setupState, oldRef)) {
         setupState[oldRef] = null;
       }
-    } else if (isRef$1(oldRef)) {
+    } else if (isRef$2(oldRef)) {
       oldRef.value = null;
     }
   }
@@ -6032,7 +6032,7 @@ function setRef(rawRef, oldRawRef, parentSuspense, vnode, isUnmount = false) {
     callWithErrorHandling(ref2, owner, 12, [value, refs]);
   } else {
     const _isString = isString$1(ref2);
-    const _isRef = isRef$1(ref2);
+    const _isRef = isRef$2(ref2);
     if (_isString || _isRef) {
       const doSet = () => {
         if (rawRef.f) {
@@ -8563,7 +8563,7 @@ const normalizeRef$1 = ({
   if (typeof ref2 === "number") {
     ref2 = "" + ref2;
   }
-  return ref2 != null ? isString$1(ref2) || isRef$1(ref2) || isFunction$1(ref2) ? { i: currentRenderingInstance$1, r: ref2, k: ref_key, f: !!ref_for } : ref2 : null;
+  return ref2 != null ? isString$1(ref2) || isRef$2(ref2) || isFunction$1(ref2) ? { i: currentRenderingInstance$1, r: ref2, k: ref_key, f: !!ref_for } : ref2 : null;
 };
 function createBaseVNode$1(type, props = null, children = null, patchFlag = 0, dynamicProps = null, shapeFlag = type === Fragment$1 ? 0 : 1, isBlockNode = false, needFullChildrenNormalization = false) {
   const vnode = {
@@ -8750,7 +8750,7 @@ function createStaticVNode(content, numberOfNodes) {
   vnode.staticCount = numberOfNodes;
   return vnode;
 }
-function createCommentVNode(text = "", asBlock = false) {
+function createCommentVNode$1(text = "", asBlock = false) {
   return asBlock ? (openBlock$1(), createBlock$1(Comment$1, null, text)) : createVNode$1(Comment$1, null, text);
 }
 function normalizeVNode(child) {
@@ -9183,7 +9183,7 @@ function createSetupContext(instance) {
         if (exposedType === "object") {
           if (isArray$1(exposed)) {
             exposedType = "array";
-          } else if (isRef$1(exposed)) {
+          } else if (isRef$2(exposed)) {
             exposedType = "ref";
           }
         }
@@ -9347,7 +9347,7 @@ function initCustomFormatter() {
       }
       if (obj.__isVue) {
         return ["div", vueStyle, `VueInstance`];
-      } else if (isRef$1(obj)) {
+      } else if (isRef$2(obj)) {
         return [
           "div",
           {},
@@ -10730,7 +10730,7 @@ const vModelCheckbox = {
           filtered.splice(index, 1);
           assign(filtered);
         }
-      } else if (isSet(modelValue)) {
+      } else if (isSet$1(modelValue)) {
         const cloned = new Set(modelValue);
         if (checked) {
           cloned.add(elementValue);
@@ -10754,7 +10754,7 @@ function setChecked(el, { value, oldValue }, vnode) {
   el._modelValue = value;
   if (isArray$1(value)) {
     el.checked = looseIndexOf(value, vnode.props.value) > -1;
-  } else if (isSet(value)) {
+  } else if (isSet$1(value)) {
     el.checked = value.has(vnode.props.value);
   } else if (value !== oldValue) {
     el.checked = looseEqual(value, getCheckboxValue(el, true));
@@ -10779,7 +10779,7 @@ const vModelSelect = {
   // <select multiple> value need to be deep traversed
   deep: true,
   created(el, { value, modifiers: { number } }, vnode) {
-    const isSetModel = isSet(value);
+    const isSetModel = isSet$1(value);
     addEventListener(el, "change", () => {
       const selectedVal = Array.prototype.filter.call(el.options, (o) => o.selected).map(
         (o) => number ? looseToNumber(getValue(o)) : getValue(o)
@@ -10811,7 +10811,7 @@ const vModelSelect = {
 function setSelected(el, value, oldValue, number) {
   const isMultiple = el.multiple;
   const isArrayValue = isArray$1(value);
-  if (isMultiple && !isArrayValue && !isSet(value)) {
+  if (isMultiple && !isArrayValue && !isSet$1(value)) {
     warn(
       `<select multiple v-model> expects an Array or Set value for its binding, but got ${Object.prototype.toString.call(value).slice(8, -1)}.`
     );
@@ -11088,7 +11088,7 @@ var runtimeDom = /* @__PURE__ */ Object.freeze({
   computed,
   createApp,
   createBlock: createBlock$1,
-  createCommentVNode,
+  createCommentVNode: createCommentVNode$1,
   createElementBlock: createElementBlock$1,
   createElementVNode: createBaseVNode$1,
   createHydrationRenderer,
@@ -11128,7 +11128,7 @@ var runtimeDom = /* @__PURE__ */ Object.freeze({
   isProxy: isProxy$1,
   isReactive,
   isReadonly: isReadonly$1,
-  isRef: isRef$1,
+  isRef: isRef$2,
   isRuntimeOnly,
   isShallow: isShallow$1,
   isVNode: isVNode$1,
@@ -11180,7 +11180,7 @@ var runtimeDom = /* @__PURE__ */ Object.freeze({
   ssrContextKey,
   ssrUtils,
   stop,
-  toDisplayString,
+  toDisplayString: toDisplayString$1,
   toHandlerKey,
   toHandlers,
   toRaw: toRaw$1,
@@ -11189,7 +11189,7 @@ var runtimeDom = /* @__PURE__ */ Object.freeze({
   toValue,
   transformVNodeArgs,
   triggerRef,
-  unref,
+  unref: unref$1,
   useAttrs,
   useCssModule,
   useCssVars,
@@ -16584,6 +16584,7 @@ const hasOwnProperty$1 = Object.prototype.hasOwnProperty;
 const hasOwn = (val, key) => hasOwnProperty$1.call(val, key);
 const isArray = Array.isArray;
 const isMap = (val) => toTypeString(val) === "[object Map]";
+const isSet = (val) => toTypeString(val) === "[object Set]";
 const isFunction = (val) => typeof val === "function";
 const isString = (val) => typeof val === "string";
 const isSymbol = (val) => typeof val === "symbol";
@@ -16593,6 +16594,7 @@ const toTypeString = (value) => objectToString.call(value);
 const toRawType = (value) => {
   return toTypeString(value).slice(8, -1);
 };
+const isPlainObject = (val) => toTypeString(val) === "[object Object]";
 const isIntegerKey = (key) => isString(key) && key !== "NaN" && key[0] !== "-" && "" + parseInt(key, 10) === key;
 const hasChanged = (value, oldValue) => !Object.is(value, oldValue);
 const def = (obj, key, value, writable = false) => {
@@ -16657,6 +16659,44 @@ function normalizeClass(value) {
   }
   return res.trim();
 }
+const isRef$1 = (val) => {
+  return !!(val && val["__v_isRef"] === true);
+};
+const toDisplayString = (val) => {
+  return isString(val) ? val : val == null ? "" : isArray(val) || isObject(val) && (val.toString === objectToString || !isFunction(val.toString)) ? isRef$1(val) ? toDisplayString(val.value) : JSON.stringify(val, replacer, 2) : String(val);
+};
+const replacer = (_key, val) => {
+  if (isRef$1(val)) {
+    return replacer(_key, val.value);
+  } else if (isMap(val)) {
+    return {
+      [`Map(${val.size})`]: [...val.entries()].reduce(
+        (entries, [key, val2], i) => {
+          entries[stringifySymbol(key, i) + " =>"] = val2;
+          return entries;
+        },
+        {}
+      )
+    };
+  } else if (isSet(val)) {
+    return {
+      [`Set(${val.size})`]: [...val.values()].map((v) => stringifySymbol(v))
+    };
+  } else if (isSymbol(val)) {
+    return stringifySymbol(val);
+  } else if (isObject(val) && !isArray(val) && !isPlainObject(val)) {
+    return String(val);
+  }
+  return val;
+};
+const stringifySymbol = (v, i = "") => {
+  var _a;
+  return (
+    // Symbol.description in es2019+ so we need to cast here to pass
+    // the lib: es2016 check
+    isSymbol(v) ? `Symbol(${(_a = v.description) != null ? _a : i})` : v
+  );
+};
 /**
 * @vue/reactivity v3.5.4
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
@@ -17623,6 +17663,9 @@ class RefImpl2 {
     }
   }
 }
+function unref(ref2) {
+  return isRef(ref2) ? ref2.value : ref2;
+}
 /**
 * @vue/runtime-core v3.5.4
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
@@ -17871,6 +17914,9 @@ function cloneVNode(vnode, extraProps, mergeRef = false, cloneTransition = false
 }
 function createTextVNode(text = " ", flag = 0) {
   return createVNode(Text, null, text, flag);
+}
+function createCommentVNode(text = "", asBlock = false) {
+  return asBlock ? (openBlock(), createBlock(Comment, null, text)) : createVNode(Comment, null, text);
 }
 function normalizeChildren(vnode, children) {
   let type = 0;
@@ -18476,7 +18522,7 @@ const createI18n = (initialData, initialDomain, hooks) => {
     return tannin.dcnpgettext(domain, context, single, plural, number);
   };
   const getFilterDomain = (domain = "default") => domain;
-  const __ = (text, domain) => {
+  const __2 = (text, domain) => {
     let translation = dcnpgettext(domain, void 0, text);
     if (!hooks) {
       return translation;
@@ -18564,7 +18610,7 @@ const createI18n = (initialData, initialDomain, hooks) => {
     addLocaleData,
     resetLocaleData,
     subscribe,
-    __,
+    __: __2,
     _x,
     _n,
     _nx,
@@ -18790,19 +18836,64 @@ i18n.getLocaleData.bind(i18n);
 i18n.setLocaleData.bind(i18n);
 i18n.resetLocaleData.bind(i18n);
 i18n.subscribe.bind(i18n);
-i18n.__.bind(i18n);
+const __ = i18n.__.bind(i18n);
 i18n._x.bind(i18n);
 i18n._n.bind(i18n);
 i18n._nx.bind(i18n);
 i18n.isRTL.bind(i18n);
 i18n.hasTranslation.bind(i18n);
+const _hoisted_1 = { class: "wpuf-w-[calc(100%+40px)] wpuf-ml-[-20px] wpuf-px-[20px] wpuf-py-[15px] wpuf-bg-white wpuf-flex wpuf-justify-between wpuf-items-center wpuf-border-b-2 wpuf-border-gray-100 wpuf-border-gray-100 wpuf-border-b-2" };
+const _hoisted_2 = { class: "wpuf-flex wpuf-justify-start wpuf-items-center" };
+const _hoisted_3 = { class: "wpuf-ml-2 wpuf-inline-flex wpuf-items-center wpuf-rounded-full wpuf-bg-green-100 wpuf-px-2 wpuf-py-1 wpuf-text-xs wpuf-font-medium wpuf-text-green-700 wpuf-ring-1 wpuf-ring-inset wpuf-ring-green-600/20" };
+const _hoisted_4 = ["href"];
+const _hoisted_5 = { class: "wpuf-flex wpuf-justify-end wpuf-items-center wpuf-w-2/4" };
+const _hoisted_6 = {
+  class: "wpuf-border wpuf-border-gray-100 wpuf-mr-[16px] wpuf-canny-link wpuf-text-center wpuf-rounded-md wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-shadow-sm hover:wpuf-bg-slate-100 focus:wpuf-bg-slate-100",
+  target: "_blank",
+  href: "https://wpuf.canny.io/ideas"
+};
+const _hoisted_7 = ["href"];
 const _sfc_main$1 = {
   __name: "Header",
   setup(__props) {
     const wpuf_admin_script = window.wpuf_admin_script;
-    wpuf_admin_script.asset_url + "/images/wpuf-icon-circle.svg";
+    const logoUrl = wpuf_admin_script.asset_url + "/images/wpuf-icon-circle.svg";
     return (_ctx, _cache) => {
-      return openBlock(), createElementBlock("h2", null, "nothing");
+      return openBlock(), createElementBlock("div", _hoisted_1, [
+        createBaseVNode("div", _hoisted_2, [
+          createBaseVNode("img", {
+            src: logoUrl,
+            alt: "WPUF Icon",
+            class: "wpuf-w-12 wpuf-mr-4"
+          }),
+          createBaseVNode("h2", null, toDisplayString(unref(__)("WP User Frontend", "wp-user-frontend")), 1),
+          createBaseVNode("span", _hoisted_3, "v" + toDisplayString(unref(wpuf_admin_script).version), 1),
+          !unref(wpuf_admin_script).isProActive ? (openBlock(), createElementBlock("a", {
+            key: 0,
+            href: unref(wpuf_admin_script).upgradeUrl,
+            target: "_blank",
+            class: "wpuf-ml-4 wpuf-rounded-md wpuf-bg-amber-500 wpuf-px-3 wpuf-py-2 wpuf-text-sm font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-amber-600 hover:wpuf-text-white hover:wpuf-shadow-none active:wpuf-shadow-none focus:wpuf-bg-amber-600 focus:wpuf-text-white"
+          }, [
+            createTextVNode(toDisplayString(unref(__)("Upgrade", "wp-user-frontend")) + "   ", 1),
+            _cache[0] || (_cache[0] = createBaseVNode("span", { class: "dashicons dashicons-superhero-alt" }, null, -1))
+          ], 8, _hoisted_4)) : createCommentVNode("", true)
+        ]),
+        createBaseVNode("div", _hoisted_5, [
+          _cache[2] || (_cache[2] = createBaseVNode("span", {
+            id: "wpuf-headway-icon",
+            class: "wpuf-border wpuf-border-gray-100 wpuf-mr-[16px] wpuf-rounded-full wpuf-p-1 wpuf-shadow-sm hover:wpuf-bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+          }, null, -1)),
+          createBaseVNode("a", _hoisted_6, "💡 " + toDisplayString(unref(__)("Submit Ideas", "wp-user-frontend")), 1),
+          createBaseVNode("a", {
+            href: unref(wpuf_admin_script).supportUrl,
+            target: "_blank",
+            class: "wpuf-rounded-md wpuf-text-center wpuf-bg-indigo-600 wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-indigo-500 hover:wpuf-text-white focus:wpuf-bg-indigo-500 focus:wpuf-text-white"
+          }, [
+            createTextVNode(toDisplayString(unref(__)("Support ", "wp-user-frontend")) + "    ", 1),
+            _cache[1] || (_cache[1] = createBaseVNode("span", { class: "dashicons dashicons-businessman" }, null, -1))
+          ], 8, _hoisted_7)
+        ])
+      ]);
     };
   }
 };

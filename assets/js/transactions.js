@@ -1260,9 +1260,9 @@ function createReactiveObject$1(target, isReadonly2, baseHandlers, collectionHan
   proxyMap.set(target, proxy);
   return proxy;
 }
-function isReactive(value) {
+function isReactive$1(value) {
   if (isReadonly$1(value)) {
-    return isReactive(value["__v_raw"]);
+    return isReactive$1(value["__v_raw"]);
   }
   return !!(value && value["__v_isReactive"]);
 }
@@ -1273,7 +1273,7 @@ function isShallow$1(value) {
   return !!(value && value["__v_isShallow"]);
 }
 function isProxy$1(value) {
-  return isReactive(value) || isReadonly$1(value);
+  return isReactive$1(value) || isReadonly$1(value);
 }
 function toRaw$1(observed) {
   const raw = observed && observed["__v_raw"];
@@ -1442,7 +1442,7 @@ const shallowUnwrapHandlers = {
   }
 };
 function proxyRefs(objectWithRefs) {
-  return isReactive(objectWithRefs) ? objectWithRefs : new Proxy(objectWithRefs, shallowUnwrapHandlers);
+  return isReactive$1(objectWithRefs) ? objectWithRefs : new Proxy(objectWithRefs, shallowUnwrapHandlers);
 }
 class CustomRefImpl {
   constructor(factory) {
@@ -2106,7 +2106,7 @@ function devtoolsInitApp(app2, version2) {
     Fragment: Fragment$1,
     Text: Text$1,
     Comment: Comment$1,
-    Static
+    Static: Static$1
   });
 }
 function devtoolsUnmountApp(app2) {
@@ -3373,16 +3373,16 @@ function doWatch(source, cb, {
   if (isRef$2(source)) {
     getter = () => source.value;
     forceTrigger = isShallow$1(source);
-  } else if (isReactive(source)) {
+  } else if (isReactive$1(source)) {
     getter = () => reactiveGetter(source);
     forceTrigger = true;
   } else if (isArray$1(source)) {
     isMultiSource = true;
-    forceTrigger = source.some((s) => isReactive(s) || isShallow$1(s));
+    forceTrigger = source.some((s) => isReactive$1(s) || isShallow$1(s));
     getter = () => source.map((s) => {
       if (isRef$2(s)) {
         return s.value;
-      } else if (isReactive(s)) {
+      } else if (isReactive$1(s)) {
         return reactiveGetter(s);
       } else if (isFunction$1(s)) {
         return callWithErrorHandling(s, instance, 2);
@@ -4365,7 +4365,7 @@ const onRenderTracked = createHook(
 function onErrorCaptured(hook, target = currentInstance) {
   injectHook("ec", hook, target);
 }
-function renderList(source, renderItem, cache, index) {
+function renderList$1(source, renderItem, cache, index) {
   let ret;
   const cached = cache && cache[index];
   if (isArray$1(source) || isString$1(source)) {
@@ -6194,7 +6194,7 @@ function createHydrationFunctions(rendererInternals) {
           nextNode = nextSibling(node);
         }
         break;
-      case Static:
+      case Static$1:
         if (isFragmentStart) {
           node = nextSibling(node);
           domType = node.nodeType;
@@ -6740,7 +6740,7 @@ function baseCreateRenderer(options, createHydrationFns) {
       case Comment$1:
         processCommentNode(n1, n2, container, anchor);
         break;
-      case Static:
+      case Static$1:
         if (n1 == null) {
           mountStaticNode(n2, container, anchor, namespace);
         } else {
@@ -7892,7 +7892,7 @@ function baseCreateRenderer(options, createHydrationFns) {
       hostInsert(vnode.anchor, container, anchor);
       return;
     }
-    if (type === Static) {
+    if (type === Static$1) {
       moveStaticNode(vnode, container, anchor);
       return;
     }
@@ -8003,7 +8003,7 @@ function baseCreateRenderer(options, createHydrationFns) {
       }
       return;
     }
-    if (type === Static) {
+    if (type === Static$1) {
       removeStaticNode(vnode);
       return;
     }
@@ -8486,7 +8486,7 @@ function updateCssVars(vnode) {
 const Fragment$1 = Symbol.for("v-fgt");
 const Text$1 = Symbol.for("v-txt");
 const Comment$1 = Symbol.for("v-cmt");
-const Static = Symbol.for("v-stc");
+const Static$1 = Symbol.for("v-stc");
 const blockStack$1 = [];
 let currentBlock$1 = null;
 function openBlock$1(disableTracking = false) {
@@ -8745,8 +8745,8 @@ function deepCloneVNode(vnode) {
 function createTextVNode$1(text = " ", flag = 0) {
   return createVNode$1(Text$1, null, text, flag);
 }
-function createStaticVNode(content, numberOfNodes) {
-  const vnode = createVNode$1(Static, null, content);
+function createStaticVNode$1(content, numberOfNodes) {
+  const vnode = createVNode$1(Static$1, null, content);
   vnode.staticCount = numberOfNodes;
   return vnode;
 }
@@ -9356,7 +9356,7 @@ function initCustomFormatter() {
           formatValue(obj.value),
           `>`
         ];
-      } else if (isReactive(obj)) {
+      } else if (isReactive$1(obj)) {
         return [
           "div",
           {},
@@ -9974,7 +9974,7 @@ function setVarsOnVNode(vnode, vars) {
     setVarsOnNode(vnode.el, vars);
   } else if (vnode.type === Fragment$1) {
     vnode.children.forEach((c) => setVarsOnVNode(c, vars));
-  } else if (vnode.type === Static) {
+  } else if (vnode.type === Static$1) {
     let { el, anchor } = vnode;
     while (el) {
       setVarsOnNode(el, vars);
@@ -11069,7 +11069,7 @@ var runtimeDom = /* @__PURE__ */ Object.freeze({
   Fragment: Fragment$1,
   KeepAlive,
   ReactiveEffect,
-  Static,
+  Static: Static$1,
   Suspense,
   Teleport,
   Text: Text$1,
@@ -11096,7 +11096,7 @@ var runtimeDom = /* @__PURE__ */ Object.freeze({
   createRenderer,
   createSSRApp,
   createSlots,
-  createStaticVNode,
+  createStaticVNode: createStaticVNode$1,
   createTextVNode: createTextVNode$1,
   createVNode: createVNode$1,
   customRef,
@@ -11126,7 +11126,7 @@ var runtimeDom = /* @__PURE__ */ Object.freeze({
   inject,
   isMemoSame,
   isProxy: isProxy$1,
-  isReactive,
+  isReactive: isReactive$1,
   isReadonly: isReadonly$1,
   isRef: isRef$2,
   isRuntimeOnly,
@@ -11164,7 +11164,7 @@ var runtimeDom = /* @__PURE__ */ Object.freeze({
   ref: ref$1,
   registerRuntimeCompiler,
   render,
-  renderList,
+  renderList: renderList$1,
   renderSlot,
   resolveComponent,
   resolveDirective,
@@ -17602,6 +17602,12 @@ function createReactiveObject(target, isReadonly2, baseHandlers, collectionHandl
   proxyMap.set(target, proxy);
   return proxy;
 }
+function isReactive(value) {
+  if (isReadonly(value)) {
+    return isReactive(value["__v_raw"]);
+  }
+  return !!(value && value["__v_isReactive"]);
+}
 function isReadonly(value) {
   return !!(value && value["__v_isReadonly"]);
 }
@@ -17686,12 +17692,57 @@ function setTransitionHooks(vnode, hooks) {
   }
 }
 const NULL_DYNAMIC_COMPONENT = Symbol.for("v-ndc");
+function renderList(source, renderItem, cache, index) {
+  let ret;
+  const cached = cache;
+  const sourceIsArray = isArray(source);
+  if (sourceIsArray || isString(source)) {
+    const sourceIsReactiveArray = sourceIsArray && isReactive(source);
+    let needsWrap = false;
+    if (sourceIsReactiveArray) {
+      needsWrap = !isShallow(source);
+      source = shallowReadArray(source);
+    }
+    ret = new Array(source.length);
+    for (let i = 0, l = source.length; i < l; i++) {
+      ret[i] = renderItem(
+        needsWrap ? toReactive(source[i]) : source[i],
+        i,
+        void 0,
+        cached
+      );
+    }
+  } else if (typeof source === "number") {
+    ret = new Array(source);
+    for (let i = 0; i < source; i++) {
+      ret[i] = renderItem(i + 1, i, void 0, cached);
+    }
+  } else if (isObject(source)) {
+    if (source[Symbol.iterator]) {
+      ret = Array.from(
+        source,
+        (item, i) => renderItem(item, i, void 0, cached)
+      );
+    } else {
+      const keys = Object.keys(source);
+      ret = new Array(keys.length);
+      for (let i = 0, l = keys.length; i < l; i++) {
+        const key = keys[i];
+        ret[i] = renderItem(source[key], key, i, cached);
+      }
+    }
+  } else {
+    ret = [];
+  }
+  return ret;
+}
 const internalObjectProto = {};
 const isInternalObject = (obj) => Object.getPrototypeOf(obj) === internalObjectProto;
 const isSuspense = (type) => type.__isSuspense;
 const Fragment = Symbol.for("v-fgt");
 const Text = Symbol.for("v-txt");
 const Comment = Symbol.for("v-cmt");
+const Static = Symbol.for("v-stc");
 const blockStack = [];
 let currentBlock = null;
 function openBlock(disableTracking = false) {
@@ -17914,6 +17965,11 @@ function cloneVNode(vnode, extraProps, mergeRef = false, cloneTransition = false
 }
 function createTextVNode(text = " ", flag = 0) {
   return createVNode(Text, null, text, flag);
+}
+function createStaticVNode(content, numberOfNodes) {
+  const vnode = createVNode(Static, null, content);
+  vnode.staticCount = numberOfNodes;
+  return vnode;
 }
 function createCommentVNode(text = "", asBlock = false) {
   return asBlock ? (openBlock(), createBlock(Comment, null, text)) : createVNode(Comment, null, text);
@@ -18842,32 +18898,32 @@ i18n._n.bind(i18n);
 i18n._nx.bind(i18n);
 i18n.isRTL.bind(i18n);
 i18n.hasTranslation.bind(i18n);
-const _hoisted_1 = { class: "wpuf-w-[calc(100%+40px)] wpuf-ml-[-20px] wpuf-px-[20px] wpuf-py-[15px] wpuf-bg-white wpuf-flex wpuf-justify-between wpuf-items-center wpuf-border-b-2 wpuf-border-gray-100 wpuf-border-gray-100 wpuf-border-b-2" };
-const _hoisted_2 = { class: "wpuf-flex wpuf-justify-start wpuf-items-center" };
-const _hoisted_3 = { class: "wpuf-ml-2 wpuf-inline-flex wpuf-items-center wpuf-rounded-full wpuf-bg-green-100 wpuf-px-2 wpuf-py-1 wpuf-text-xs wpuf-font-medium wpuf-text-green-700 wpuf-ring-1 wpuf-ring-inset wpuf-ring-green-600/20" };
-const _hoisted_4 = ["href"];
-const _hoisted_5 = { class: "wpuf-flex wpuf-justify-end wpuf-items-center wpuf-w-2/4" };
-const _hoisted_6 = {
+const _hoisted_1$3 = { class: "wpuf-w-[calc(100%+40px)] wpuf-ml-[-20px] wpuf-px-[20px] wpuf-py-[15px] wpuf-bg-white wpuf-flex wpuf-justify-between wpuf-items-center wpuf-border-b wpuf-border-gray-100 wpuf-border-gray-100" };
+const _hoisted_2$3 = { class: "wpuf-flex wpuf-justify-start wpuf-items-center" };
+const _hoisted_3$3 = { class: "wpuf-ml-2 wpuf-inline-flex wpuf-items-center wpuf-rounded-full wpuf-bg-green-100 wpuf-px-2 wpuf-py-1 wpuf-text-xs wpuf-font-medium wpuf-text-green-700 wpuf-ring-1 wpuf-ring-inset wpuf-ring-green-600/20" };
+const _hoisted_4$3 = ["href"];
+const _hoisted_5$2 = { class: "wpuf-flex wpuf-justify-end wpuf-items-center wpuf-w-2/4" };
+const _hoisted_6$1 = {
   class: "wpuf-border wpuf-border-gray-100 wpuf-mr-[16px] wpuf-canny-link wpuf-text-center wpuf-rounded-md wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-shadow-sm hover:wpuf-bg-slate-100 focus:wpuf-bg-slate-100",
   target: "_blank",
   href: "https://wpuf.canny.io/ideas"
 };
 const _hoisted_7 = ["href"];
-const _sfc_main$1 = {
+const _sfc_main$6 = {
   __name: "Header",
   setup(__props) {
     const wpuf_admin_script = window.wpuf_admin_script;
     const logoUrl = wpuf_admin_script.asset_url + "/images/wpuf-icon-circle.svg";
     return (_ctx, _cache) => {
-      return openBlock(), createElementBlock("div", _hoisted_1, [
-        createBaseVNode("div", _hoisted_2, [
+      return openBlock(), createElementBlock("div", _hoisted_1$3, [
+        createBaseVNode("div", _hoisted_2$3, [
           createBaseVNode("img", {
             src: logoUrl,
             alt: "WPUF Icon",
             class: "wpuf-w-12 wpuf-mr-4"
           }),
           createBaseVNode("h2", null, toDisplayString(unref(__)("WP User Frontend", "wp-user-frontend")), 1),
-          createBaseVNode("span", _hoisted_3, "v" + toDisplayString(unref(wpuf_admin_script).version), 1),
+          createBaseVNode("span", _hoisted_3$3, "v" + toDisplayString(unref(wpuf_admin_script).version), 1),
           !unref(wpuf_admin_script).isProActive ? (openBlock(), createElementBlock("a", {
             key: 0,
             href: unref(wpuf_admin_script).upgradeUrl,
@@ -18876,14 +18932,14 @@ const _sfc_main$1 = {
           }, [
             createTextVNode(toDisplayString(unref(__)("Upgrade", "wp-user-frontend")) + "   ", 1),
             _cache[0] || (_cache[0] = createBaseVNode("span", { class: "dashicons dashicons-superhero-alt" }, null, -1))
-          ], 8, _hoisted_4)) : createCommentVNode("", true)
+          ], 8, _hoisted_4$3)) : createCommentVNode("", true)
         ]),
-        createBaseVNode("div", _hoisted_5, [
+        createBaseVNode("div", _hoisted_5$2, [
           _cache[2] || (_cache[2] = createBaseVNode("span", {
             id: "wpuf-headway-icon",
             class: "wpuf-border wpuf-border-gray-100 wpuf-mr-[16px] wpuf-rounded-full wpuf-p-1 wpuf-shadow-sm hover:wpuf-bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
           }, null, -1)),
-          createBaseVNode("a", _hoisted_6, "💡 " + toDisplayString(unref(__)("Submit Ideas", "wp-user-frontend")), 1),
+          createBaseVNode("a", _hoisted_6$1, "💡 " + toDisplayString(unref(__)("Submit Ideas", "wp-user-frontend")), 1),
           createBaseVNode("a", {
             href: unref(wpuf_admin_script).supportUrl,
             target: "_blank",
@@ -18897,11 +18953,195 @@ const _sfc_main$1 = {
     };
   }
 };
+var _export_sfc$1 = (sfc, props) => {
+  const target = sfc.__vccOpts || sfc;
+  for (const [key, val] of props) {
+    target[key] = val;
+  }
+  return target;
+};
+const _sfc_main$5 = {
+  name: "HollowDotsSpinner",
+  props: {
+    animationDuration: {
+      type: Number,
+      default: 1e3
+    },
+    dotSize: {
+      type: Number,
+      default: 15
+    },
+    dotsNum: {
+      type: Number,
+      default: 3
+    },
+    color: {
+      type: String,
+      default: "#fff"
+    }
+  },
+  computed: {
+    horizontalMargin() {
+      return this.dotSize / 2;
+    },
+    spinnerStyle() {
+      return {
+        height: `${this.dotSize}px`,
+        width: `${(this.dotSize + this.horizontalMargin * 2) * this.dotsNum}px`
+      };
+    },
+    dotStyle() {
+      return {
+        animationDuration: `${this.animationDuration}ms`,
+        width: `${this.dotSize}px`,
+        height: `${this.dotSize}px`,
+        margin: `0 ${this.horizontalMargin}px`,
+        borderWidth: `${this.dotSize / 5}px`,
+        borderColor: this.color
+      };
+    },
+    dotsStyles() {
+      const dotsStyles = [];
+      const delayModifier = 0.3;
+      const basicDelay = this.animationDuration;
+      for (let i = 1; i <= this.dotsNum; i++) {
+        dotsStyles.push({
+          animationDelay: `${basicDelay * i * delayModifier}ms`,
+          ...this.dotStyle
+        });
+      }
+      return dotsStyles;
+    }
+  }
+};
+function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createElementBlock("div", {
+    class: "hollow-dots-spinner",
+    style: normalizeStyle($options.spinnerStyle)
+  }, [
+    (openBlock(true), createElementBlock(Fragment, null, renderList($options.dotsStyles, (ds, index) => {
+      return openBlock(), createElementBlock("div", {
+        key: index,
+        class: "dot",
+        style: normalizeStyle(ds)
+      }, null, 4);
+    }), 128))
+  ], 4);
+}
+var HollowDotsSpinner = /* @__PURE__ */ _export_sfc$1(_sfc_main$5, [["render", _sfc_render$1]]);
+const _hoisted_1$2 = { class: "wpuf-h-screen wpuf-flex wpuf-items-center wpuf-justify-center wpuf-w-screen" };
+const _hoisted_2$2 = { class: "wpuf-w-3/4 wpuf-text-center" };
+const _hoisted_3$2 = { class: "wpuf-text-xl" };
+const _hoisted_4$2 = { class: "wpuf-text-base" };
+const _sfc_main$4 = {
+  __name: "Empty",
+  setup(__props) {
+    return (_ctx, _cache) => {
+      return openBlock(), createElementBlock("div", _hoisted_1$2, [
+        createBaseVNode("div", _hoisted_2$2, [
+          createBaseVNode("h2", _hoisted_3$2, toDisplayString(unref(__)("No Transaction Found!", "wp-user-frontend")), 1),
+          createBaseVNode("p", _hoisted_4$2, toDisplayString(unref(__)("Oops! It looks like there are no transactions to display at the moment. Don't worry, this could be due to no recent activity or transactions on your account.", "wp-user-frontend")), 1)
+        ])
+      ]);
+    };
+  }
+};
+const _sfc_main$3 = {
+  __name: "SidebarMenu",
+  setup(__props) {
+    return (_ctx, _cache) => {
+      return openBlock(), createElementBlock("div", null, _cache[0] || (_cache[0] = [
+        createStaticVNode('<div class="wpuf-flex wpuf-flex-col wpuf-pr-[48px]"><ul class="wpuf-space-y-2 wpuf-text-lg"><li class="wpuf-bg-gray-50 wpuf-text-indigo-600 wpuf-justify-between wpuf-text-gray-700 hover:wpuf-text-indigo-600 hover:wpuf-bg-gray-50 group wpuf-flex wpuf-gap-x-3 wpuf-rounded-md wpuf-py-2 wpuf-px-[20px] wpuf-text-sm wpuf-leading-6 hover:wpuf-cursor-pointer"> All Subscriptions <span class="wpuf-border-indigo-600 wpuf-text-sm wpuf-w-fit wpuf-px-2.5 wpuf-py-1 wpuf-rounded-full wpuf-w-max wpuf-h-max wpuf-border">32</span></li><li class="wpuf-justify-between wpuf-text-gray-700 hover:wpuf-text-indigo-600 hover:wpuf-bg-gray-50 group wpuf-flex wpuf-gap-x-3 wpuf-rounded-md wpuf-py-2 wpuf-px-[20px] wpuf-text-sm wpuf-leading-6 hover:wpuf-cursor-pointer"> Published <span class="wpuf-text-sm wpuf-w-fit wpuf-px-2.5 wpuf-py-1 wpuf-rounded-full wpuf-w-max wpuf-h-max wpuf-border">21</span></li><li class="wpuf-justify-between wpuf-text-gray-700 hover:wpuf-text-indigo-600 hover:wpuf-bg-gray-50 group wpuf-flex wpuf-gap-x-3 wpuf-rounded-md wpuf-py-2 wpuf-px-[20px] wpuf-text-sm wpuf-leading-6 hover:wpuf-cursor-pointer"> Drafts <span class="wpuf-text-sm wpuf-w-fit wpuf-px-2.5 wpuf-py-1 wpuf-rounded-full wpuf-w-max wpuf-h-max wpuf-border">11</span></li><li class="wpuf-justify-between wpuf-text-gray-700 hover:wpuf-text-indigo-600 hover:wpuf-bg-gray-50 group wpuf-flex wpuf-gap-x-3 wpuf-rounded-md wpuf-py-2 wpuf-px-[20px] wpuf-text-sm wpuf-leading-6 hover:wpuf-cursor-pointer"> Trash <span class="wpuf-text-sm wpuf-w-fit wpuf-px-2.5 wpuf-py-1 wpuf-rounded-full wpuf-w-max wpuf-h-max wpuf-border">6</span></li></ul></div>', 1)
+      ]));
+    };
+  }
+};
+const _export_sfc = (sfc, props) => {
+  const target = sfc.__vccOpts || sfc;
+  for (const [key, val] of props) {
+    target[key] = val;
+  }
+  return target;
+};
+const _sfc_main$2 = {};
+function _sfc_render(_ctx, _cache) {
+  return openBlock(), createElementBlock("p", null, "hello List");
+}
+const List = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render]]);
+const _hoisted_1$1 = { class: "wpuf-flex wpuf-items-center wpuf-justify-between" };
+const _hoisted_2$1 = { class: "wpuf-text-[24px] wpuf-font-semibold wpuf-my-0" };
+const _hoisted_3$1 = { class: "wpuf-mt-3 wpuf-flex wpuf-ml-4" };
+const _hoisted_4$1 = { class: "wpuf-mr-4 wpuf-block wpuf-w-full !wpuf-border-none wpuf-text-gray-900 !wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 focus:wpuf-ring-2 focus:wpuf-ring-indigo-600" };
+const _hoisted_5$1 = {
+  type: "button",
+  class: "wpuf-rounded wpuf-bg-white wpuf-px-8 wpuf-py-1 wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 hover:wpuf-bg-gray-50"
+};
+const _sfc_main$1 = {
+  __name: "ContentHeader",
+  setup(__props) {
+    return (_ctx, _cache) => {
+      return openBlock(), createElementBlock(Fragment, null, [
+        createBaseVNode("div", _hoisted_1$1, [
+          createBaseVNode("h3", _hoisted_2$1, toDisplayString(unref(__)("Transaction Summary", "wp-user-frontend")), 1),
+          createBaseVNode("div", _hoisted_3$1, [
+            createBaseVNode("select", _hoisted_4$1, [
+              createBaseVNode("option", null, toDisplayString(unref(__)("Select", "wp-user-frontend")), 1),
+              createBaseVNode("option", null, toDisplayString(unref(__)("This Month", "wp-user-frontend")), 1),
+              createBaseVNode("option", null, toDisplayString(unref(__)("Last Month", "wp-user-frontend")), 1),
+              createBaseVNode("option", null, toDisplayString(unref(__)("Last 6 Months", "wp-user-frontend")), 1),
+              createBaseVNode("option", null, toDisplayString(unref(__)("Custom Range", "wp-user-frontend")), 1)
+            ]),
+            createBaseVNode("button", _hoisted_5$1, toDisplayString(unref(__)("Show", "wp-user-frontend")), 1)
+          ])
+        ]),
+        _cache[0] || (_cache[0] = createStaticVNode('<div class="wpuf-bg-gray-100 wpuf-mt-8 wpuf-p-px wpuf-rounded-xl"><dl class="wpuf-mx-auto wpuf-grid wpuf-grid-cols-1 wpuf-gap-px bg-gray-900/5 sm:wpuf-grid-cols-2 lg:wpuf-grid-cols-4"><div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-gap-x-4 wpuf-gap-y-2 wpuf-bg-white wpuf-px-4 wpuf-py-10 sm:wpuf-px-6 xl:wpuf-px-8 wpuf-rounded-s-xl"><dt class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500">Revenue</dt><dd class="wpuf-text-xs wpuf-font-medium wpuf-text-gray-700">+4.75%</dd><dd class="wpuf-w-full wpuf-flex-none wpuf-text-3xl wpuf-font-medium wpuf-leading-10 wpuf-tracking-tight wpuf-text-gray-900">$405,091.00</dd></div><div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-gap-x-4 wpuf-gap-y-2 wpuf-bg-white wpuf-px-4 wpuf-py-10 sm:wpuf-px-6 xl:wpuf-px-8"><dt class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500">Overdue invoices</dt><dd class="wpuf-text-xs wpuf-font-medium text-rose-600">+54.02%</dd><dd class="wpuf-w-full wpuf-flex-none wpuf-text-3xl wpuf-font-medium wpuf-leading-10 wpuf-tracking-tight wpuf-text-gray-900">$12,787.00</dd></div><div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-gap-x-4 wpuf-gap-y-2 wpuf-bg-white wpuf-px-4 wpuf-py-10 sm:wpuf-px-6 xl:wpuf-px-8"><dt class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500">Outstanding invoices</dt><dd class="wpuf-text-xs wpuf-font-medium wpuf-text-gray-700">-1.39%</dd><dd class="wpuf-w-full wpuf-flex-none wpuf-text-3xl wpuf-font-medium wpuf-leading-10 wpuf-tracking-tight wpuf-text-gray-900">$245,988.00</dd></div><div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-gap-x-4 wpuf-gap-y-2 wpuf-bg-white wpuf-px-4 wpuf-py-10 sm:wpuf-px-6 xl:wpuf-px-8 wpuf-rounded-e-xl"><dt class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500">Expenses</dt><dd class="wpuf-text-xs wpuf-font-medium text-rose-600">+10.18%</dd><dd class="wpuf-w-full wpuf-flex-none wpuf-text-3xl wpuf-font-medium wpuf-leading-10 wpuf-tracking-tight wpuf-text-gray-900">$30,156.00</dd></div></dl></div>', 1))
+      ], 64);
+    };
+  }
+};
+const _hoisted_1 = {
+  key: 0,
+  class: "wpuf-flex wpuf-h-svh wpuf-items-center wpuf-justify-center"
+};
+const _hoisted_2 = { class: "wpuf-w-[calc(100%+40px)] wpuf-ml-[-20px] wpuf-bg-white wpuf-h-screen" };
+const _hoisted_3 = { class: "wpuf-pt-[32px] wpuf-px-[40px]" };
+const _hoisted_4 = {
+  key: 1,
+  class: "wpuf-flex wpuf-pt-[40px] wpuf-px-[40px]"
+};
+const _hoisted_5 = { class: "wpuf-w-72 wpuf-border-r wpuf-border-gray-200" };
+const _hoisted_6 = { class: "wpuf-basis-4/5" };
 const _sfc_main = {
   __name: "Transactions",
   setup(__props) {
+    const isLoading = ref(false);
+    const isEmpty = ref(false);
     return (_ctx, _cache) => {
-      return openBlock(), createBlock(_sfc_main$1);
+      return openBlock(), createElementBlock(Fragment, null, [
+        createVNode(_sfc_main$6),
+        isLoading.value ? (openBlock(), createElementBlock("div", _hoisted_1, [
+          createVNode(unref(HollowDotsSpinner), {
+            "animation-duration": 1e3,
+            "dot-size": 20,
+            "dots-num": 3,
+            color: "#7DC442"
+          })
+        ])) : createCommentVNode("", true),
+        createBaseVNode("div", _hoisted_2, [
+          createBaseVNode("div", _hoisted_3, [
+            createVNode(_sfc_main$1)
+          ]),
+          isEmpty.value ? (openBlock(), createBlock(_sfc_main$4, { key: 0 })) : createCommentVNode("", true),
+          !isEmpty.value ? (openBlock(), createElementBlock("div", _hoisted_4, [
+            createBaseVNode("div", _hoisted_5, [
+              createVNode(_sfc_main$3)
+            ]),
+            createBaseVNode("div", _hoisted_6, [
+              createVNode(List)
+            ])
+          ])) : createCommentVNode("", true)
+        ])
+      ], 64);
     };
   }
 };

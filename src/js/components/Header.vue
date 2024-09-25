@@ -7,7 +7,7 @@ const logoUrl = wpuf_admin_script.asset_url + '/images/wpuf-icon-circle.svg';
 </script>
 
 <template>
-    <div class="wpuf-w-[calc(100%+40px)] wpuf-ml-[-20px] wpuf-px-[20px] wpuf-py-[15px] wpuf-bg-white wpuf-flex wpuf-justify-between wpuf-items-center wpuf-border-b-2 wpuf-border-gray-100 wpuf-border-gray-100 wpuf-border-b-2">
+    <div class="wpuf-w-[calc(100%+40px)] wpuf-ml-[-20px] wpuf-px-[20px] wpuf-py-[15px] wpuf-bg-white wpuf-flex wpuf-justify-between wpuf-items-center wpuf-border-b wpuf-border-gray-100 wpuf-border-gray-100">
         <div class="wpuf-flex wpuf-justify-start wpuf-items-center">
             <img :src="logoUrl" alt="WPUF Icon" class="wpuf-w-12 wpuf-mr-4">
             <h2>{{ __( 'WP User Frontend', 'wp-user-frontend' ) }}</h2>
@@ -41,5 +41,4 @@ const logoUrl = wpuf_admin_script.asset_url + '/images/wpuf-icon-circle.svg';
             </a>
         </div>
     </div>
-
 </template>

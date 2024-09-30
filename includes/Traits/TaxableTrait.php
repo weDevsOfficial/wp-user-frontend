@@ -384,7 +384,7 @@ trait TaxableTrait {
                 continue;
             }
             if ( $rate['state'] === $state && $rate['country'] === $country ) {
-                $tax_amount = $rate['rate'];
+                $tax_amount = ! empty( $rate['rate'] ) ? $rate['rate'] : 0;
             }
 
             if ( intval( $tax_amount ) === 0 && $rate['country'] === $country && 'country_wide' === $rate['state'] ) {

@@ -66,17 +66,26 @@ class Admin_Subscription {
 
             if ( $post_type_object ) {
                 $additional_options['additional'][ $key ] = [
-                    'id'          => $key,
-                    'name'        => $key,
-                    'db_key'      => $key,
-                    'db_type'     => 'meta',
-                    'type'        => 'input-number',
-                    'label'       => sprintf( 'Number of %s', esc_html( $post_type_object->label ) ),
-                    'tooltip'     => sprintf(
-                        'Set the maximum number of %s users can create within their subscription period. Enter -1 for unlimited',
+                    'id'            => $key,
+                    'name'          => $key,
+                    'db_key'        => 'additional_cpt_options',
+                    'db_type'       => 'meta_serialized',
+                    'serialize_key' => $key,
+                    'type'          => 'input-number',
+                    'label'         => sprintf(
+                        // translators: %s: post type label
+                        __( 'Number of %s', 'wp-user-frontend' ),
+                        esc_html( $post_type_object->label )
+                    ),
+                    'tooltip' => sprintf(
+                        // translators: %s: post type label
+                        __(
+                            'Set the maximum number of %s users can create within their subscription period. Enter -1 for unlimited',
+                            'wp-user-frontend'
+                        ),
                         esc_html( $key )
                     ),
-                    'default'     => '-1',
+                    'default'       => '-1',
                 ];
             }
         }
@@ -809,9 +818,6 @@ class Admin_Subscription {
                             $_post_expiration_time = explode( ' ', isset( $user_sub['_post_expiration_time'] ) ? $user_sub['_post_expiration_time'] : '' );
                             $time_value            = isset( $_post_expiration_time[0] ) && ! empty( $_post_expiration_time[0] ) ? $_post_expiration_time[0] : '1';
                             $time_type             = isset( $_post_expiration_time[1] ) && ! empty( $_post_expiration_time[1] ) ? $_post_expiration_time[1] : 'day';
-
-                            error_log( print_r( $_post_expiration_time, true ) );
-                            error_log( print_r( $time_type, true ) );
                             ?>
                             <tr>
                                 <th><label><?php esc_html_e( 'Post Expiration Enabled', 'wp-user-frontend' ); ?></label></th>

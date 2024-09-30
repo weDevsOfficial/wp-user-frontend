@@ -419,6 +419,9 @@ class Subscription extends WP_REST_Controller {
         $post_type_name         = ! empty( $subscription['meta_value']['_post_type_name'] ) ? array_map(
             'sanitize_text_field', $subscription['meta_value']['_post_type_name']
         ) : '';
+        $additional_cpt_options = ! empty( $subscription['meta_value']['additional_cpt_options'] ) ? array_map(
+            'sanitize_text_field', $subscription['meta_value']['additional_cpt_options']
+        ) : '';
         $enable_post_expir      = ! empty( $subscription['meta_value']['_enable_post_expiration'] ) ? sanitize_text_field(
             $subscription['meta_value']['_enable_post_expiration']
         ) : 'no';
@@ -493,6 +496,7 @@ class Subscription extends WP_REST_Controller {
             update_post_meta( $id, '_trial_duration', $trial_duration );
             update_post_meta( $id, '_trial_duration_type', $trial_duration_type );
             update_post_meta( $id, '_post_type_name', $post_type_name );
+            update_post_meta( $id, 'additional_cpt_options', $additional_cpt_options );
             update_post_meta( $id, '_enable_post_expiration', $enable_post_expir );
             update_post_meta( $id, '_post_expiration_number', $post_expiration_number );
             update_post_meta( $id, '_post_expiration_period', $post_expiration_period );

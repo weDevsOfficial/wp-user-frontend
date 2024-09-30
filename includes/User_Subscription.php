@@ -176,11 +176,12 @@ class User_Subscription {
         $subscription = wpuf()->subscription->get_subscription( $pack_id );
 
         $additional_cpt_options = ! empty( $subscription->meta_value['additional_cpt_options'] ) ? $subscription->meta_value['additional_cpt_options'] : [];
+        $post_type_name = isset( $subscription->meta_value['post_type_name'] ) && is_array( $subscription->meta_value['post_type_name'] ) ? $subscription->meta_value['post_type_name'] : [];
 
         if ( $this->user->id && $subscription ) {
             $user_meta = [
                 'pack_id' => $pack_id,
-                'posts'   => array_merge( $subscription->meta_value['post_type_name'], $additional_cpt_options ),
+                'posts'   => array_merge( $post_type_name, $additional_cpt_options ),
                 'total_feature_item' => $subscription->meta_value['_total_feature_item'],
                 'remove_feature_item' => $subscription->meta_value['_remove_feature_item'],
                 'status'  => $status,

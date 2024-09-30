@@ -19,7 +19,10 @@ class Frontend_Form_Ajax {
     private $expired_post_status = 'wpuf-expired_post_status';
 
     private $post_expiration_message = 'wpuf-post_expiration_message';
+
     /**
+     *  An array of form fields retrieved from the form configuration.
+     *
      * @var array
      */
     private $form_fields;

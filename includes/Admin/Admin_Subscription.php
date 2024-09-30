@@ -72,9 +72,17 @@ class Admin_Subscription {
                     'db_type'       => 'meta_serialized',
                     'serialize_key' => $key,
                     'type'          => 'input-number',
-                    'label'         => sprintf( 'Number of %s', esc_html( $post_type_object->label ) ),
-                    'tooltip'       => sprintf(
-                        'Set the maximum number of %s users can create within their subscription period. Enter -1 for unlimited',
+                    'label'         => sprintf(
+                        // translators: %s: post type label
+                        __( 'Number of %s', 'wp-user-frontend' ),
+                        esc_html( $post_type_object->label )
+                    ),
+                    'tooltip' => sprintf(
+                        // translators: %s: post type label
+                        __(
+                            'Set the maximum number of %s users can create within their subscription period. Enter -1 for unlimited',
+                            'wp-user-frontend'
+                        ),
                         esc_html( $key )
                     ),
                     'default'       => '-1',

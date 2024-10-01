@@ -3,10 +3,9 @@ import {createPinia} from 'pinia';
 
 import Transactions from './components/Transactions.vue';
 
-import '../../src/css/admin/transactions.css';
+import '../css/admin/transactions.css';
 
-
-// window.wpufSubscriptions = wpufSubscriptions;
+window.wpufTransactions = wpufTransactions;
 
 const pinia = createPinia();
 const app = createApp( Transactions );

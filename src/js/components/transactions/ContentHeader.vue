@@ -1,12 +1,18 @@
 <script setup>
 import {__} from '@wordpress/i18n';
+import ProBadge from '../ProBadge.vue';
+import {ref} from '../../../../assets/vendor/vue-3/vue.esm-browser';
 
-const stats = [
-    { name: 'Revenue', value: '$405,091.00', change: '+4.75%', changeType: 'positive' },
-    { name: 'Overdue invoices', value: '$12,787.00', change: '+54.02%', changeType: 'negative' },
-    { name: 'Outstanding invoices', value: '$245,988.00', change: '-1.39%', changeType: 'positive' },
-    { name: 'Expenses', value: '$30,156.00', change: '+10.18%', changeType: 'negative' },
-];
+const transactionSummary = wpufTransactions.transactionSummary;
+const toolTipIndex = ref( [] );
+
+Object.keys( transactionSummary ).forEach( ( transaction, index ) => {
+    toolTipIndex.value[index] = false;
+});
+
+const getChangePercentage = (changeType, percentage) => {
+    return changeType === 'positive' ? `+${percentage}%` : `-${percentage}%`;
+};
 </script>
 <template>
     <div class="wpuf-flex wpuf-items-center wpuf-justify-between">
@@ -26,26 +32,25 @@ const stats = [
         </div>
     </div>
     <div class="wpuf-bg-gray-100 wpuf-mt-8 wpuf-p-px wpuf-rounded-xl">
-        <dl class="wpuf-mx-auto wpuf-grid wpuf-grid-cols-1 wpuf-gap-px bg-gray-900/5 sm:wpuf-grid-cols-2 lg:wpuf-grid-cols-4">
-            <div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-gap-x-4 wpuf-gap-y-2 wpuf-bg-white wpuf-px-4 wpuf-py-10 sm:wpuf-px-6 xl:wpuf-px-8 wpuf-rounded-s-xl">
-                <dt class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500">Revenue</dt>
-                <dd class="wpuf-text-xs wpuf-font-medium wpuf-text-gray-700">+4.75%</dd>
-                <dd class="wpuf-w-full wpuf-flex-none wpuf-text-3xl wpuf-font-medium wpuf-leading-10 wpuf-tracking-tight wpuf-text-gray-900">$405,091.00</dd>
-            </div>
-            <div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-gap-x-4 wpuf-gap-y-2 wpuf-bg-white wpuf-px-4 wpuf-py-10 sm:wpuf-px-6 xl:wpuf-px-8">
-                <dt class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500">Overdue invoices</dt>
-                <dd class="wpuf-text-xs wpuf-font-medium text-rose-600">+54.02%</dd>
-                <dd class="wpuf-w-full wpuf-flex-none wpuf-text-3xl wpuf-font-medium wpuf-leading-10 wpuf-tracking-tight wpuf-text-gray-900">$12,787.00</dd>
-            </div>
-            <div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-gap-x-4 wpuf-gap-y-2 wpuf-bg-white wpuf-px-4 wpuf-py-10 sm:wpuf-px-6 xl:wpuf-px-8">
-                <dt class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500">Outstanding invoices</dt>
-                <dd class="wpuf-text-xs wpuf-font-medium wpuf-text-gray-700">-1.39%</dd>
-                <dd class="wpuf-w-full wpuf-flex-none wpuf-text-3xl wpuf-font-medium wpuf-leading-10 wpuf-tracking-tight wpuf-text-gray-900">$245,988.00</dd>
-            </div>
-            <div class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-gap-x-4 wpuf-gap-y-2 wpuf-bg-white wpuf-px-4 wpuf-py-10 sm:wpuf-px-6 xl:wpuf-px-8 wpuf-rounded-e-xl">
-                <dt class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500">Expenses</dt>
-                <dd class="wpuf-text-xs wpuf-font-medium text-rose-600">+10.18%</dd>
-                <dd class="wpuf-w-full wpuf-flex-none wpuf-text-3xl wpuf-font-medium wpuf-leading-10 wpuf-tracking-tight wpuf-text-gray-900">$30,156.00</dd>
+        <dl class="wpuf-mx-auto wpuf-grid wpuf-grid-cols-1 wpuf-gap-px bg-gray-900/5 wpuf-grid-cols-2 wpuf-grid-cols-5">
+            <div
+                v-for="(transaction, key, index) in transactionSummary"
+                :key="key"
+                :class="index === 0 ? 'wpuf-rounded-s-xl' : index === Object.keys( transactionSummary ).length - 1 ? 'wpuf-rounded-e-xl' : ''"
+                class="wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-gap-x-4 wpuf-gap-y-2 wpuf-bg-white wpuf-px-4 wpuf-py-10 wpuf-relative">
+                <dt class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500">{{ transaction.label }}</dt>
+                <div
+                    :class="transaction.change_type === 'positive' ? 'wpuf-text-green-600' : 'wpuf-text-rose-600'"
+                    class="wpuf-text-xs wpuf-font-medium wpuf-text-gray-700 wpuf-flex wpuf-relative">
+                    {{ getChangePercentage(transaction.change_type, transaction.percentage) }}
+                    <div
+                        v-if="transaction.is_pro_preview"
+                        class="wpuf-ml-2 wpuf-z-40 hover:wpuf-cursor-pointer">
+                        <ProBadge />
+                    </div>
+                </div>
+                <dd class="wpuf-w-full wpuf-flex-none wpuf-text-3xl wpuf-font-medium wpuf-leading-10 wpuf-tracking-tight wpuf-text-gray-900">${{ transaction.amount }}</dd>
+                <div v-if="transaction.is_pro_preview" class="wpuf-absolute wpuf-bg-slate-50/50 wpuf-top-0 wpuf-left-0 wpuf-w-full wpuf-h-full hover:wpuf-bg-slate-60/50"></div>
             </div>
         </dl>
     </div>

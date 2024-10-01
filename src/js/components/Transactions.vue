@@ -30,12 +30,8 @@ const isEmpty = ref( false );
         <div
             v-if="!isEmpty"
             class="wpuf-flex wpuf-pt-[40px] wpuf-px-[40px]">
-            <div class="wpuf-w-72 wpuf-border-r wpuf-border-gray-200">
-                <SidebarMenu/>
-            </div>
-            <div class="wpuf-basis-4/5">
-                <List/>
-            </div>
+            <div class="wpuf-w-72 wpuf-border-r wpuf-border-gray-200"></div>
+            <div class="wpuf-basis-4/5"></div>
         </div>
     </div>
 </template>

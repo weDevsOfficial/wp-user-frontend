@@ -49,25 +49,14 @@ class Transaction {
         wp_enqueue_style( 'wpuf-admin-transactions' );
         wp_script_add_data( 'wpuf-admin-transactions', 'type', 'module' );
 
-        //
-//        wp_localize_script(
-//            'wpuf-admin-subscriptions', 'wpufSubscriptions',
-//            [
-//                'version'         => WPUF_VERSION,
-//                'assetUrl'        => WPUF_ASSET_URI,
-//                'siteUrl'         => site_url(),
-//                'currencySymbol'  => wpuf_get_currency( 'symbol' ),
-//                'supportUrl'      => esc_url(
-//                    'https://wedevs.com/contact/?utm_source=wpuf_transaction'
-//                ),
-//                'isProActive'     => class_exists( 'WP_User_Frontend_Pro' ),
-//                'upgradeUrl'      => esc_url(
-//                    'https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=wpuf-subscription'
-//                ),
-//                'nonce'           => wp_create_nonce( 'wp_rest' ),
-//                'perPage'         => apply_filters( 'wpuf_transactions_per_page', 10 ),
-//            ]
-//        );
+        wp_localize_script(
+            'wpuf-admin-transactions', 'wpufTransactions',
+            [
+                'nonce'              => wp_create_nonce( 'wp_rest' ),
+                'transactionSummary' => $this->get_transaction_summary(),
+                'perPage'            => apply_filters( 'wpuf_transactions_per_page', 10 ),
+            ]
+        );
     }
 
     /**
@@ -79,5 +68,55 @@ class Transaction {
      */
     public function remove_notices() {
         add_action( 'in_admin_header', 'wpuf_remove_admin_notices' );
+    }
+
+    /**
+     * Get transaction summary
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array
+     */
+    public function get_transaction_summary() {
+        $total = apply_filters(
+            'wpuf_transaction_summary_total', [
+                'amount'      => 4500,
+                'change_type' => 'positive',
+                'percentage'  => 4.75,
+                'label'       => __( 'Total', 'wp-user-frontend' ),
+            ]
+        );
+
+        $approved = apply_filters(
+            'wpuf_transaction_summary_approved', [
+                'amount'         => 4000,
+                'change_type'    => 'negative',
+                'percentage'     => 4.5,
+                'label'          => __( 'Approved', 'wp-user-frontend' ),
+                'is_pro_preview' => true,
+            ]
+        );
+
+        $pending = apply_filters(
+            'wpuf_transaction_summary_pending', [
+                'amount'         => 4000,
+                'change_type'    => 'positive',
+                'percentage'     => 4.5,
+                'label'          => __( 'Pending', 'wp-user-frontend' ),
+                'is_pro_preview' => true,
+            ]
+        );
+
+        $summary = apply_filters(
+            'wpuf_transaction_summary', [
+                'total'         => $total,
+                'approved'      => $approved,
+                'pending'       => $pending,
+                'refunded'      => $pending,
+                'subscriptions' => $pending,
+            ]
+        );
+
+        return $summary;
     }
 }

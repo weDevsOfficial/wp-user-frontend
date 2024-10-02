@@ -84,9 +84,9 @@ const selected = ref( '' );
                 <dt class="wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500">{{ transaction.label }}</dt>
                 <div
                     v-if="transaction.percentage"
-                    :class="transaction.change_type === 'positive' ? 'wpuf-text-green-600' : 'wpuf-text-rose-600'"
+                    :class="transaction.change_type === '+' ? 'wpuf-text-green-600' : 'wpuf-text-rose-600'"
                     class="wpuf-text-xs wpuf-font-medium wpuf-text-gray-700 wpuf-flex wpuf-relative">
-                    {{ transaction.percentage }}
+                    {{ transaction.change_type === '+' ? '+' : '' }} {{ transaction.percentage }}
                     <div
                         v-if="transaction.is_pro_preview"
                         class="wpuf-ml-2 wpuf-z-40 hover:wpuf-cursor-pointer">

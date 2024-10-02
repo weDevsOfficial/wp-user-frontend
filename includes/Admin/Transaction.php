@@ -75,12 +75,12 @@ class Transaction {
      * @since WPUF_SINCE
      *
      * @param string $args
+     *
      * The arguments. Default is empty array.
      * - time: string
      *      The time. Default is 'all'.
      * - per_page: int
      *      The number of items per page. Default is 10.
-     *
      *
      * @return array
      */
@@ -103,23 +103,6 @@ class Transaction {
 
         $change_direction  = 'all' === $args['time'] ? '' : $income_direction['profit_trend'];
         $change_percentage = 'all' === $args['time'] ? '' : $income_direction['percentage_change'];
-
-//        switch ( $args['time'] ) {
-//            case 'this_month':
-//                $total_income      = $this->get_total_income( $args['time'] );
-//                $total_change_type = 'positive';
-//                $change_percentage = 2.5;
-//                break;
-//            case 'last_month':
-//                $total_income = 2000;
-//                break;
-//            case 'last_6_months':
-//                $total_income = 3000;
-//                break;
-//            default:
-//                // get total cost from wpuf_transaction table without the refunded amount
-//                $total_income = $wpdb->get_var( "SELECT SUM(cost) FROM {$wpdb->prefix}wpuf_transaction" );
-//        }
 
         $total = apply_filters(
             'wpuf_transaction_summary_total', [
@@ -198,7 +181,7 @@ class Transaction {
      * - type: string
      *      The type. Default is 'total'.
      *
-     * @return string
+     * @return array
      */
     public function get_income_direction( $args = [] ) {
         global $wpdb;
@@ -211,73 +194,38 @@ class Transaction {
 
         $args = wp_parse_args( $args, $default );
 
-        $result = [
-            'current_month'     => '',
-            'current_profit'    => '',
-            'previous_profit'   => '',
-            'profit_trend'      => '',
-            'percentage_change' => '',
-        ];
+        $result = 0;
 
-        if ( 'total' === $args['type'] && 'this_month' === $args['time'] ) {
-            $result = $wpdb->get_results(
-                "WITH MonthlyTotals AS (
-    SELECT
-        DATE_FORMAT(created, '%Y-%m') AS month,
-        SUM(cost) AS monthly_cost
-    FROM {$wpdb->prefix}wpuf_transaction
-    WHERE status = 'completed'
-    GROUP BY DATE_FORMAT(created, '%Y-%m')
-)
-
-SELECT
-    current.month AS current_month,
-    current.monthly_cost AS current_profit,
-    previous.monthly_cost AS previous_profit,
-    CASE
-        WHEN current.monthly_cost > previous.monthly_cost THEN '+'
-        WHEN current.monthly_cost < previous.monthly_cost THEN '-'
-        ELSE '0'
-    END AS profit_trend,
-    ROUND(((current.monthly_cost - previous.monthly_cost) / previous.monthly_cost) * 100, 2) AS percentage_change
-FROM MonthlyTotals AS current
-JOIN MonthlyTotals AS previous
-    ON current.month = DATE_FORMAT(DATE_ADD(STR_TO_DATE(CONCAT(previous.month, '-01'), '%Y-%m-%d'), INTERVAL 1 MONTH), '%Y-%m')
-ORDER BY current.month DESC
-LIMIT 1;",
-                ARRAY_A
-            );
+        if ( 'total' === $args['type'] ) {
+            if ( 'this_month' === $args['time'] ) {
+                $result = $wpdb->get_var( "SELECT SUM(cost) FROM {$wpdb->prefix}wpuf_transaction WHERE MONTH(created) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)" );
+            } elseif ( 'last_month' === $args['time'] ) {
+                // get the income of the month before previous month
+                $result = $wpdb->get_var( "SELECT SUM(cost) FROM {$wpdb->prefix}wpuf_transaction WHERE MONTH(created) = MONTH(CURRENT_DATE - INTERVAL 2 MONTH)" );
+            } elseif ( 'last_6_months' === $args['time'] ) {
+                $result = $wpdb->get_var(
+                    "SELECT
+                            SUM(cost) AS total_cost
+                        FROM
+                            {$wpdb->prefix}wpuf_transaction
+                        WHERE
+                            created BETWEEN
+                            DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
+                            AND DATE_ADD(DATE_SUB(CURDATE(), INTERVAL 1 YEAR), INTERVAL 5 MONTH)"
+                );
+            }
         }
 
-        return isset( $result[0] ) ? $result[0] : $result;
+        $data = [
+            'current_profit'    => $args['income'],
+            'previous_profit'   => $result,
+            'profit_trend'      => $args['income'] > $result ? '+' : '-',
+            'percentage_change' => $result ? round(
+                ( ( $args['income'] - $result ) / $result ) * 100, 2
+            ) : 0,
+        ];
 
-        // 6 months
-//        $result = $wpdb->get_results(
-//            "WITH MonthlyTotals AS (
-//    SELECT
-//        DATE_FORMAT(created, '%Y-%m') as month,
-//        SUM(cost) as monthly_cost
-//    FROM {$wpdb->prefix}wpuf_transaction
-//    WHERE status = 'completed'
-//    GROUP BY DATE_FORMAT(created, '%Y-%m')
-//)
-//SELECT
-//    current.month as current_month,
-//    current.monthly_cost as current_profit,
-//    previous.month as six_months_ago,
-//    previous.monthly_cost as previous_profit,
-//    CASE
-//        WHEN current.monthly_cost > previous.monthly_cost THEN 'Increase'
-//        WHEN current.monthly_cost < previous.monthly_cost THEN 'Decrease'
-//        ELSE 'No Change'
-//    END AS profit_trend,
-//    ROUND(((current.monthly_cost - previous.monthly_cost) / previous.monthly_cost) * 100, 2) AS percentage_change
-//FROM MonthlyTotals as current
-//JOIN MonthlyTotals as previous
-//    ON current.month = DATE_FORMAT(DATE_ADD(STR_TO_DATE(CONCAT(previous.month, '-01'), '%Y-%m-%d'), INTERVAL 6 MONTH), '%Y-%m')
-//ORDER BY current.month DESC
-//LIMIT 1"
-//        );
+        return $data;
     }
 
     /**

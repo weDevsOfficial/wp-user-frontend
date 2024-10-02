@@ -7920,9 +7920,9 @@ const _sfc_main$1 = {
                 createBaseVNode("dt", _hoisted_7, toDisplayString(transaction.label), 1),
                 transaction.percentage ? (openBlock(), createElementBlock("div", {
                   key: 0,
-                  class: normalizeClass([transaction.change_type === "positive" ? "wpuf-text-green-600" : "wpuf-text-rose-600", "wpuf-text-xs wpuf-font-medium wpuf-text-gray-700 wpuf-flex wpuf-relative"])
+                  class: normalizeClass([transaction.change_type === "+" ? "wpuf-text-green-600" : "wpuf-text-rose-600", "wpuf-text-xs wpuf-font-medium wpuf-text-gray-700 wpuf-flex wpuf-relative"])
                 }, [
-                  createTextVNode(toDisplayString(transaction.percentage) + " ", 1),
+                  createTextVNode(toDisplayString(transaction.change_type === "+" ? "+" : "") + " " + toDisplayString(transaction.percentage) + " ", 1),
                   transaction.is_pro_preview ? (openBlock(), createElementBlock("div", _hoisted_8, [
                     createVNode(_sfc_main$2)
                   ])) : createCommentVNode("", true)

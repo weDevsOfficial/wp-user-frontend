@@ -1,7 +1,6 @@
 'use strict';
 module.exports = function(grunt) {
     var formBuilderAssets = require('./admin/form-builder/assets/js/form-builder-assets.js');
-
     var pkg = grunt.file.readJSON('package.json');
 
     grunt.initConfig({
@@ -16,14 +15,11 @@ module.exports = function(grunt) {
 
         // Compile all .less files.
         less: {
-
-            // one to one
             front: {
                 files: {
                     '<%= dirs.css %>/frontend-forms.css': '<%= dirs.less %>/frontend-forms.less'
                 }
             },
-
             admin: {
                 files: {
                     '<%= dirs.css %>/wpuf-form-builder.css': ['admin/form-builder/assets/less/form-builder.less'],
@@ -84,11 +80,14 @@ module.exports = function(grunt) {
         },
 
         watch: {
+            options: {
+                debounceDelay: 500, // Add debounce delay
+                spawn: false // Recommended for better performance
+            },
             less: {
                 files: ['<%= dirs.less %>/*.less'],
                 tasks: ['less:front', 'less:admin']
             },
-
             formBuilder: {
                 files: [
                     'admin/form-builder/assets/less/*',
@@ -101,130 +100,30 @@ module.exports = function(grunt) {
                     'concat:formBuilder', 'concat:templates', 'less:front'
                 ]
             },
-
             vue: {
                 files: [
-                    'assets/js/subscriptions.js',
-                    'assets/css/admin/subscriptions.css',
-                    'src/js/transactions.js',
-                    'src/css/admin/transactions.css',
-                    'assets/js/components/**/*.vue',
-                    'src/js/components/**/*.vue',
-                    'assets/js/stores/**/*.js',
-                    'src/js/stores/**/*.js',
+                    'assets/js/**/*.{js,vue}',
+                    'src/js/**/*.{js,vue}',
+                    '!assets/js/**/*.min.js', // Exclude minified files
+                    '!src/js/**/*.min.js'     // Exclude minified files
                 ],
-                tasks: [
-                    'shell:npm_build'
-                ]
-            }
-        },
-
-        // Clean up build directory
-        clean: {
-            main: ['build/']
-        },
-
-        // Copy the plugin into the build directory
-        copy: {
-            main: {
-                src: [
-                    '**',
-                    '!node_modules/**',
-                    '!build/**',
-                    '!admin/form-builder/assets/**',
-                    '!assets/css/*.less',
-                    '!bin/**',
-                    '!.git/**',
-                    '!includes/pro/.git/**',
-                    '!Gruntfile.js',
-                    '!secret.json',
-                    '!package.json',
-                    '!debug.log',
-                    '!phpunit.xml',
-                    '!.gitignore',
-                    '!.gitmodules',
-                    '!npm-debug.log',
-                    '!plugin-deploy.sh',
-                    '!export.sh',
-                    '!config.codekit',
-                    '!**/nbproject/**',
-                    '!assets/less/**',
-                    '!assets/tailwind/**',
-                    '!tests/**',
-                    '!**/Gruntfile.js',
-                    '!**/package.json',
-                    '!**/readme.md',
-                    '!**/docs.md',
-                    '!**/*~',
-                    '!**/log.txt',
-                    '!**/package-lock.json',
-                    '!**/appsero.json',
-                    '!**/composer.json',
-                    '!**/composer.lock',
-                    '!**/phpcs-report.txt',
-                    '!**/phpcs.xml.dist'
-                ],
-                dest: 'build/'
-            }
-        },
-
-        //Compress build directory into <name>.zip and <name>-<version>.zip
-        compress: {
-            main: {
+                tasks: ['shell:npm_build'],
                 options: {
-                    mode: 'zip',
-                    archive: './build/wp-user-frontend-v'+pkg.version+'.zip'
-                },
-                expand: true,
-                cwd: 'build/',
-                src: ['**/*'],
-                dest: 'wp-user-frontend'
-            }
-        },
-
-        // jshint
-        jshint: {
-            options: {
-                jshintrc: '.jshintrc',
-                reporter: require('jshint-stylish')
-            },
-
-            formBuilder: [
-                'admin/form-builder/assets/js/**/*.js',
-                '!admin/form-builder/assets/js/jquery-siaf-start.js',
-                '!admin/form-builder/assets/js/jquery-siaf-end.js',
-                'assets/js/wpuf-form-builder-wpuf-forms.js',
-            ]
-        },
-
-        // concat/join files
-        concat: {
-            formBuilder: {
-                files: {
-                    '<%= dirs.js %>/wpuf-form-builder.js': 'admin/form-builder/assets/js/form-builder.js',
-                    '<%= dirs.js %>/wpuf-form-builder-mixins.js': formBuilderAssets.mixins,
-                    '<%= dirs.js %>/wpuf-form-builder-components.js': formBuilderAssets.components,
-                },
-            },
-
-            templates: {
-                options: {
-                    process: function(src, filepath) {
-                        var id = filepath.replace('/template.php', '').split('/').pop();
-
-                        return '<script type="text/x-template" id="tmpl-wpuf-' + id + '">\n' + src + '</script>\n';
-                    }
-                },
-                files: {
-                    '<%= dirs.template %>/form-components.php': formBuilderAssets.componentTemplates,
+                    debounceDelay: 1000, // Longer delay for Vue files
+                    spawn: false,
+                    interval: 1000 // Add interval
                 }
             }
         },
 
-        // is to run NPM commands through Grunt
+        // Shell command for npm build
         shell: {
             npm_build: {
                 command: 'npm run build',
+                options: {
+                    stdout: true,
+                    stderr: true
+                }
             }
         }
     });
@@ -243,13 +142,22 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks( 'grunt-wp-readme-to-markdown' );
     grunt.loadNpmTasks( 'grunt-shell' );
 
-    grunt.registerTask( 'default', [ 'less', 'concat', 'uglify', 'i18n' ] );
+    // Task optimization
+    let changedFiles = Object.create(null);
+    let onChange = grunt.util._.debounce(function() {
+        grunt.config('shell.npm_build.src', Object.keys(changedFiles));
+        changedFiles = Object.create(null);
+    }, 200);
 
-    // file auto generation
-    grunt.registerTask( 'i18n', [ 'makepot' ] );
-    grunt.registerTask( 'readme', [ 'wp_readme_to_markdown' ] );
+    grunt.event.on('watch', function(action, filepath) {
+        changedFiles[filepath] = action;
+        onChange();
+    });
 
-    // build stuff
-    grunt.registerTask( 'release', [ 'less', 'concat', 'uglify', 'i18n', 'readme' ] );
-    grunt.registerTask( 'zip', [ 'clean', 'copy', 'compress' ] );
+    // Define tasks
+    grunt.registerTask( 'default', ['less', 'concat', 'uglify', 'i18n'] );
+    grunt.registerTask( 'i18n', ['makepot'] );
+    grunt.registerTask( 'readme', ['wp_readme_to_markdown'] );
+    grunt.registerTask( 'release', ['less', 'concat', 'uglify', 'i18n', 'readme'] );
+    grunt.registerTask( 'zip', ['clean', 'copy', 'compress'] );
 };

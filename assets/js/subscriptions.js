@@ -8761,3 +8761,4 @@ window.wpufSubscriptions = wpufSubscriptions;
 const C5 = Hv(), ef = Fv(S5);
 ef.use(C5);
 ef.mount("#wpuf-subscription-page");
+//# sourceMappingURL=subscriptions.js.map

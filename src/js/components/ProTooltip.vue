@@ -1,6 +1,6 @@
 <script setup>
 import {__} from '@wordpress/i18n';
-import {ref, defineProps, onBeforeMount} from '../../../assets/vendor/vue-3/vue.esm-browser';
+import {ref, defineProps, onBeforeMount} from 'vue';
 
 const props = defineProps( {
     position: {

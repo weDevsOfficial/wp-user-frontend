@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from '../../../assets/vendor/vue-3/vue.esm-browser';
+import {ref} from 'vue';
 import ProTooltip from './ProTooltip.vue';
 
 const show = ref( false );

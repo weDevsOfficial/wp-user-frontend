@@ -1,9 +1,12 @@
-import {createApp} from '../../assets/vendor/vue-3/vue.esm-browser';
+import {createApp} from 'vue';
 import {createPinia} from 'pinia';
 
 import Transactions from './components/Transactions.vue';
-
 import '../css/admin/transactions.css';
+
+if (process.env.NODE_ENV === 'development') {
+    app.config.devtools = true;
+}
 
 window.wpufTransactions = wpufTransactions;
 

@@ -1,7 +1,7 @@
 <script setup>
 import {__} from '@wordpress/i18n';
 import ProBadge from '../ProBadge.vue';
-import {ref, watch} from 'vue';
+import {ref} from 'vue';
 import apiFetch from '@wordpress/api-fetch';
 import {addQueryArgs} from '@wordpress/url';
 
@@ -28,6 +28,8 @@ const getFilteredData = () => {
 
     queryParams['per_page'] = wpufTransactions.perPage;
 
+    summaryLoading.value = true;
+
     apiFetch(
         {
             path: addQueryArgs( '/wp-json/wpuf/v1/transactions', queryParams ),
@@ -41,6 +43,8 @@ const getFilteredData = () => {
         if (response.success) {
             transactionSummary.value = response.result;
         }
+    }).finally(() => {
+        summaryLoading.value = false;
     });
 };
 
@@ -52,6 +56,16 @@ const filteringOptions = [
 ];
 
 const selected = ref( '' );
+
+const summaryLoading = ref( false );
+
+const getReadablePercentage = ( percentage ) => {
+    if (percentage === 0) {
+        return '';
+    }
+
+    return percentage > 0 ? `+${percentage}%` : `${percentage}%`;
+};
 
 </script>
 <template>
@@ -71,11 +85,19 @@ const selected = ref( '' );
             </select>
             <button
                 type="button"
+                :class="summaryLoading ? 'wpuf-opacity-50 wpuf-pointer-events-none' : ''"
                 class="wpuf-rounded wpuf-bg-white wpuf-px-8 wpuf-py-1 wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 hover:wpuf-bg-gray-50 hover:wpuf-cursor-pointer"
                 @click="getFilteredData">{{ __( 'Show', 'wp-user-frontend' ) }}</button>
         </div>
     </div>
-    <div class="wpuf-bg-gray-100 wpuf-mt-8 wpuf-p-px wpuf-rounded-xl">
+    <div class="wpuf-bg-gray-100 wpuf-mt-8 wpuf-p-px wpuf-rounded-xl wpuf-relative">
+        <div
+            v-if="summaryLoading"
+            class="wpuf-absolute wpuf-w-full wpuf-h-full wpuf-left-0 wpuf-top-0 wpuf-z-50 wpuf-bg-slate-50/50 wpuf-rounded-xl wpuf-flex wpuf-items-center wpuf-justify-evenly">
+            <svg class="wpuf-animate-spin wpuf-h-5 wpuf-w-5 wpuf-mr-3" viewBox="0 0 24 24">
+                <path class="wpuf-opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+        </div>
         <dl class="wpuf-mx-auto wpuf-grid wpuf-grid-cols-1 wpuf-gap-px bg-gray-900/5 wpuf-grid-cols-2 wpuf-grid-cols-5">
             <div
                 v-for="(transaction, key, index) in transactionSummary"
@@ -86,7 +108,7 @@ const selected = ref( '' );
                     v-if="transaction.percentage"
                     :class="transaction.change_type === '+' ? 'wpuf-text-green-600' : 'wpuf-text-rose-600'"
                     class="wpuf-text-xs wpuf-font-medium wpuf-text-gray-700 wpuf-flex wpuf-relative">
-                    {{ transaction.change_type === '+' ? '+' : '' }} {{ transaction.percentage }}
+                    {{ getReadablePercentage( transaction.percentage ) }}
                     <div
                         v-if="transaction.is_pro_preview"
                         class="wpuf-ml-2 wpuf-z-40 hover:wpuf-cursor-pointer">

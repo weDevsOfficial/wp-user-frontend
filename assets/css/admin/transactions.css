@@ -1288,6 +1288,9 @@ html {
 .wpuf-mr-2 {
   margin-right: 0.5rem;
 }
+.wpuf-mr-3 {
+  margin-right: 0.75rem;
+}
 .wpuf-mr-4 {
   margin-right: 1rem;
 }
@@ -1531,6 +1534,15 @@ html {
 .wpuf-transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
+@keyframes wpuf-spin {
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+.wpuf-animate-spin {
+  animation: wpuf-spin 1s linear infinite;
+}
 .wpuf-cursor-not-allowed {
   cursor: not-allowed;
 }
@@ -1584,6 +1596,9 @@ html {
 }
 .wpuf-justify-around {
   justify-content: space-around;
+}
+.wpuf-justify-evenly {
+  justify-content: space-evenly;
 }
 .wpuf-gap-3 {
   gap: 0.75rem;
@@ -2156,6 +2171,12 @@ html {
 .wpuf-text-yellow-700 {
   --tw-text-opacity: 1;
   color: rgb(161 98 7 / var(--tw-text-opacity));
+}
+.wpuf-opacity-50 {
+  opacity: 0.5;
+}
+.wpuf-opacity-75 {
+  opacity: 0.75;
 }
 .wpuf-shadow {
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);

@@ -7830,15 +7830,19 @@ const _hoisted_1$1 = { class: "wpuf-flex wpuf-items-center wpuf-justify-between"
 const _hoisted_2$1 = { class: "wpuf-text-[24px] wpuf-font-semibold wpuf-my-0" };
 const _hoisted_3$1 = { class: "wpuf-mt-3 wpuf-flex wpuf-ml-4" };
 const _hoisted_4$1 = ["value"];
-const _hoisted_5 = { class: "wpuf-bg-gray-100 wpuf-mt-8 wpuf-p-px wpuf-rounded-xl" };
-const _hoisted_6 = { class: "wpuf-mx-auto wpuf-grid wpuf-grid-cols-1 wpuf-gap-px bg-gray-900/5 wpuf-grid-cols-2 wpuf-grid-cols-5" };
-const _hoisted_7 = { class: "wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500" };
-const _hoisted_8 = {
+const _hoisted_5 = { class: "wpuf-bg-gray-100 wpuf-mt-8 wpuf-p-px wpuf-rounded-xl wpuf-relative" };
+const _hoisted_6 = {
+  key: 0,
+  class: "wpuf-absolute wpuf-w-full wpuf-h-full wpuf-left-0 wpuf-top-0 wpuf-z-50 wpuf-bg-slate-50/50 wpuf-rounded-xl wpuf-flex wpuf-items-center wpuf-justify-evenly"
+};
+const _hoisted_7 = { class: "wpuf-mx-auto wpuf-grid wpuf-grid-cols-1 wpuf-gap-px bg-gray-900/5 wpuf-grid-cols-2 wpuf-grid-cols-5" };
+const _hoisted_8 = { class: "wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-500" };
+const _hoisted_9 = {
   key: 0,
   class: "wpuf-ml-2 wpuf-z-40 hover:wpuf-cursor-pointer"
 };
-const _hoisted_9 = { class: "wpuf-w-full wpuf-flex-none wpuf-text-3xl wpuf-font-medium wpuf-leading-10 wpuf-tracking-tight wpuf-text-gray-900" };
-const _hoisted_10 = {
+const _hoisted_10 = { class: "wpuf-w-full wpuf-flex-none wpuf-text-3xl wpuf-font-medium wpuf-leading-10 wpuf-tracking-tight wpuf-text-gray-900" };
+const _hoisted_11 = {
   key: 1,
   class: "wpuf-absolute wpuf-bg-slate-50/50 wpuf-top-0 wpuf-left-0 wpuf-w-full wpuf-h-full hover:wpuf-bg-slate-60/50"
 };
@@ -7864,6 +7868,7 @@ const _sfc_main$1 = {
           break;
       }
       queryParams["per_page"] = wpufTransactions.perPage;
+      summaryLoading.value = true;
       apiFetch(
         {
           path: addQueryArgs("/wp-json/wpuf/v1/transactions", queryParams),
@@ -7877,6 +7882,8 @@ const _sfc_main$1 = {
         if (response.success) {
           transactionSummary.value = response.result;
         }
+      }).finally(() => {
+        summaryLoading.value = false;
       });
     };
     const filteringOptions = [
@@ -7886,6 +7893,13 @@ const _sfc_main$1 = {
       __("Last 6 Months", "wp-user-frontend")
     ];
     ref("");
+    const summaryLoading = ref(false);
+    const getReadablePercentage = (percentage) => {
+      if (percentage === 0) {
+        return "";
+      }
+      return percentage > 0 ? `+${percentage}%` : `${percentage}%`;
+    };
     return (_ctx, _cache) => {
       return openBlock(), createElementBlock(Fragment, null, [
         createBaseVNode("div", _hoisted_1$1, [
@@ -7906,29 +7920,41 @@ const _sfc_main$1 = {
             ]),
             createBaseVNode("button", {
               type: "button",
-              class: "wpuf-rounded wpuf-bg-white wpuf-px-8 wpuf-py-1 wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 hover:wpuf-bg-gray-50 hover:wpuf-cursor-pointer",
+              class: normalizeClass([summaryLoading.value ? "wpuf-opacity-50 wpuf-pointer-events-none" : "", "wpuf-rounded wpuf-bg-white wpuf-px-8 wpuf-py-1 wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 hover:wpuf-bg-gray-50 hover:wpuf-cursor-pointer"]),
               onClick: getFilteredData
-            }, toDisplayString(unref(__)("Show", "wp-user-frontend")), 1)
+            }, toDisplayString(unref(__)("Show", "wp-user-frontend")), 3)
           ])
         ]),
         createBaseVNode("div", _hoisted_5, [
-          createBaseVNode("dl", _hoisted_6, [
+          summaryLoading.value ? (openBlock(), createElementBlock("div", _hoisted_6, _cache[1] || (_cache[1] = [
+            createBaseVNode("svg", {
+              class: "wpuf-animate-spin wpuf-h-5 wpuf-w-5 wpuf-mr-3",
+              viewBox: "0 0 24 24"
+            }, [
+              createBaseVNode("path", {
+                class: "wpuf-opacity-75",
+                fill: "currentColor",
+                d: "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              })
+            ], -1)
+          ]))) : createCommentVNode("", true),
+          createBaseVNode("dl", _hoisted_7, [
             (openBlock(true), createElementBlock(Fragment, null, renderList(transactionSummary.value, (transaction, key, index) => {
               return openBlock(), createElementBlock("div", {
                 class: normalizeClass([index === 0 ? "wpuf-rounded-s-xl" : index === Object.keys(transactionSummary.value).length - 1 ? "wpuf-rounded-e-xl" : "", "wpuf-flex wpuf-flex-wrap wpuf-items-baseline wpuf-justify-between wpuf-gap-x-4 wpuf-gap-y-2 wpuf-bg-white wpuf-px-4 wpuf-py-10 wpuf-relative"])
               }, [
-                createBaseVNode("dt", _hoisted_7, toDisplayString(transaction.label), 1),
+                createBaseVNode("dt", _hoisted_8, toDisplayString(transaction.label), 1),
                 transaction.percentage ? (openBlock(), createElementBlock("div", {
                   key: 0,
                   class: normalizeClass([transaction.change_type === "+" ? "wpuf-text-green-600" : "wpuf-text-rose-600", "wpuf-text-xs wpuf-font-medium wpuf-text-gray-700 wpuf-flex wpuf-relative"])
                 }, [
-                  createTextVNode(toDisplayString(transaction.change_type === "+" ? "+" : "") + " " + toDisplayString(transaction.percentage) + " ", 1),
-                  transaction.is_pro_preview ? (openBlock(), createElementBlock("div", _hoisted_8, [
+                  createTextVNode(toDisplayString(getReadablePercentage(transaction.percentage)) + " ", 1),
+                  transaction.is_pro_preview ? (openBlock(), createElementBlock("div", _hoisted_9, [
                     createVNode(_sfc_main$2)
                   ])) : createCommentVNode("", true)
                 ], 2)) : createCommentVNode("", true),
-                createBaseVNode("dd", _hoisted_9, "$" + toDisplayString(transaction.amount), 1),
-                transaction.is_pro_preview ? (openBlock(), createElementBlock("div", _hoisted_10)) : createCommentVNode("", true)
+                createBaseVNode("dd", _hoisted_10, "$" + toDisplayString(transaction.amount), 1),
+                transaction.is_pro_preview ? (openBlock(), createElementBlock("div", _hoisted_11)) : createCommentVNode("", true)
               ], 2);
             }), 256)),
             createTextVNode(" " + toDisplayString(_ctx.transaction), 1)

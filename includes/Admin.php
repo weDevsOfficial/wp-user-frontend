@@ -30,6 +30,7 @@ class Admin {
         $this->container['posting']               = new Admin\Posting();
         $this->container['shortcodes_button']     = new Admin\Shortcodes_Button();
         $this->container['tools']                 = new Admin\Admin_Tools();
+        $this->container['transaction']           = new Admin\Transaction();
 
         // dynamic hook. format: "admin_action_{$action}". more details: wp-admin/admin.php
         add_action( 'admin_action_post_form_template', [ $this, 'create_post_form_from_template' ] );
@@ -70,19 +71,27 @@ class Admin {
         wp_localize_script(
             'wpuf-admin', 'wpuf_admin_script',
             [
-                'ajaxurl'               => admin_url( 'admin-ajax.php' ),
-                'nonce'                 => wp_create_nonce( 'wpuf_nonce' ),
-                'cleared_schedule_lock' => __( 'Post lock has been cleared', 'wp-user-frontend' ),
-                'asset_url' => WPUF_ASSET_URI,
+                'ajaxurl'                      => admin_url( 'admin-ajax.php' ),
+                'version'                      => WPUF_VERSION,
+                'assetUrl'                     => WPUF_ASSET_URI,
+                'supportUrl'                   => esc_url(
+                    'https://wedevs.com/contact/?utm_source=wpuf-subscription'
+                ),
+                'isProActive'                  => class_exists( 'WP_User_Frontend_Pro' ),
+                'upgradeUrl'                   => esc_url(
+                    'https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=wpuf-subscription'
+                ),
+                'nonce'                        => wp_create_nonce( 'wpuf_nonce' ),
+                'cleared_schedule_lock'        => __( 'Post lock has been cleared', 'wp-user-frontend' ),
+                'asset_url'                    => WPUF_ASSET_URI,
                 'protected_shortcodes'         => wpuf_get_protected_shortcodes(),
                 'protected_shortcodes_message' => sprintf(
-                    __( '%sThis post contains a sensitive short-code %s, that may allow others to sign-up with distinguished roles. If unsure, remove the short-code before publishing (recommended) %sas this may be exploited as a security vulnerability.%s', 'wp-user-frontend' ),
-                    '<div style="font-size: 1em; text-align: justify; color: darkgray">',
-                    '[wpuf-registration]',
-                    '<strong>',
-                    '</strong>',
-                    '</div>'
-                )
+                    __(
+                        '%sThis post contains a sensitive short-code %s, that may allow others to sign-up with distinguished roles. If unsure, remove the short-code before publishing (recommended) %sas this may be exploited as a security vulnerability.%s',
+                        'wp-user-frontend'
+                    ), '<div style="font-size: 1em; text-align: justify; color: darkgray">', '[wpuf-registration]',
+                    '<strong>', '</strong>', '</div>'
+                ),
             ]
         );
     }

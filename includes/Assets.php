@@ -158,6 +158,9 @@ class Assets {
             'admin-subscriptions'              => [
                 'src' => WPUF_ASSET_URI . '/css/admin/subscriptions.min.css',
             ],
+            'admin-transactions'              => [
+                'src' => WPUF_ASSET_URI . '/css/admin/transactions' . $this->suffix . '.css',
+            ],
             'registration-forms' => [
                 'src' => WPUF_ASSET_URI . '/css/registration-forms.css',
             ],
@@ -218,7 +221,7 @@ class Assets {
             'vue-3'                    => [
                 'src'       => WPUF_ASSET_URI . '/vendor/vue-3/vue.esm-browser.js',
                 'in_footer' => true,
-                'version'   => '3.4.19',
+                'version'   => '3.5.10',
             ],
             'vuex'                     => [
                 'src'       => WPUF_ASSET_URI . '/vendor/vuex/vuex' . $this->suffix . '.js',
@@ -284,6 +287,10 @@ class Assets {
             ],
             'admin-subscriptions'      => [
                 'src'       => WPUF_ASSET_URI . '/js/subscriptions.min.js',
+                'in_footer' => true,
+            ],
+            'admin-transactions'      => [
+                'src'       => WPUF_ASSET_URI . '/js/transactions' . $this->suffix . '.js',
                 'in_footer' => true,
             ],
             'timepicker'               => [

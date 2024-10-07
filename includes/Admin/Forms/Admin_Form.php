@@ -261,11 +261,9 @@ class Admin_Form {
      */
     public function add_primary_tabs() {
         ?>
-
-        <a href="#wpuf-form-builder-notification" class="nav-tab">
+        <a href="#wpuf-form-builder-notification" class="wpuf-whitespace-nowrap wpuf-border-b-2 wpuf-border-transparent wpuf-px-1 wpuf-py-4 wpuf-text-sm wpuf-font-medium wpuf-text-gray-500 hover:wpuf-border-gray-300 hover:wpuf-text-gray-700">
             <?php esc_html_e( 'Notification', 'wp-user-frontend' ); ?>
         </a>
-
         <?php
     }
 

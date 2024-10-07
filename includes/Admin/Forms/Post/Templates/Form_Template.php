@@ -82,6 +82,7 @@ class Form_Template {
             wp_enqueue_style( $deps );
         }
 
+        wp_enqueue_style( 'wpuf-form-builder-classic' );
         wp_enqueue_style( 'wpuf-form-builder' );
     }
 

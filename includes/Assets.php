@@ -148,9 +148,13 @@ class Assets {
                 'src'     => WPUF_ASSET_URI . '/vendor/tooltip/tooltip.css',
                 'version' => '3.3.7',
             ],
-            'form-builder'       => [
+            'form-builder-classic'       => [
                 'src'  => WPUF_ASSET_URI . '/css/wpuf-form-builder.css',
                 'deps' => $this->form_builder_css_deps,
+            ],
+            'form-builder'       => [
+                'src'  => WPUF_ASSET_URI . '/css/admin/form-builder.css',
+                'deps' => [ 'wpuf-form-builder-classic' ],
             ],
             'admin'              => [
                 'src' => WPUF_ASSET_URI . '/css/admin.css',

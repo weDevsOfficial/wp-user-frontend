@@ -3,15 +3,15 @@
 namespace WeDevs\Wpuf;
 
 /**
- * The installer class
+ * The integration class to handle all integrations with our plugin
  *
- * @since 2.6.0
+ * @since WPUF_SINCE
  */
 class Integrations {
     /**
      * Holds various class instances
      *
-     * @since 4.0.9
+     * @since WPUF_SINCE
      *
      * @var array
      */
@@ -33,5 +33,22 @@ class Integrations {
         if ( class_exists( 'ACF' ) ) {
             $this->container['acf'] = new Integrations\WPUF_ACF_Compatibility();
         }
+    }
+
+    /**
+     * Magic getter to bypass referencing objects
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $prop
+     *
+     * @return null|object Class Instance
+     */
+    public function __get( $prop ) {
+        if ( array_key_exists( $prop, $this->container ) ) {
+            return $this->container[ $prop ];
+        }
+
+        return null;
     }
 }

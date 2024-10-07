@@ -154,7 +154,6 @@ class Assets {
             ],
             'form-builder'       => [
                 'src'  => WPUF_ASSET_URI . '/css/admin/form-builder.css',
-                'deps' => [ 'wpuf-form-builder-classic' ],
             ],
             'admin'              => [
                 'src' => WPUF_ASSET_URI . '/css/admin.css',

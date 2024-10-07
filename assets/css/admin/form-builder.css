@@ -1520,6 +1520,10 @@ html {
   width: 104%;
 }
 
+.wpuf-w-\[calc\(100\%\+20px\)\] {
+  width: calc(100% + 20px);
+}
+
 .wpuf-w-\[calc\(100\%\+40px\)\] {
   width: calc(100% + 40px);
 }
@@ -1640,6 +1644,10 @@ html {
 
 .wpuf-cursor-pointer {
   cursor: pointer;
+}
+
+.wpuf-cursor-wait {
+  cursor: wait;
 }
 
 .wpuf-grid-cols-1 {
@@ -2107,6 +2115,11 @@ html {
 .wpuf-px-3 {
   padding-left: 0.75rem;
   padding-right: 0.75rem;
+}
+
+.wpuf-px-3\.5 {
+  padding-left: 0.875rem;
+  padding-right: 0.875rem;
 }
 
 .wpuf-px-4 {

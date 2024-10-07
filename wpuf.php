@@ -173,6 +173,7 @@ final class WP_User_Frontend {
         $this->container['bank']         = new WeDevs\Wpuf\Lib\Gateway\Bank();
         $this->container['paypal']       = new WeDevs\Wpuf\Lib\Gateway\Paypal();
         $this->container['api']          = new WeDevs\Wpuf\API();
+        $this->container['integrations'] = new WeDevs\Wpuf\Integrations();
 
         if ( is_admin() ) {
             $this->container['admin']        = new WeDevs\Wpuf\Admin();

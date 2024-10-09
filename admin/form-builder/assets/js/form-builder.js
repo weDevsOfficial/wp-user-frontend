@@ -408,7 +408,7 @@
         data: {
             is_form_saving: false,
             is_form_saved: false,
-            is_form_switcher: false,
+            isDropDownShowing: false,
             post_title_editing: false,
             isDirty: false
         },

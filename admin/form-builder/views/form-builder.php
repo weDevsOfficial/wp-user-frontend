@@ -79,27 +79,22 @@
                     printf( "<span class=\"form-id\" title=\"%s\" data-clipboard-text='%s'><i class=\"fa fa-clipboard\" aria-hidden=\"true\"></i> %s: #{{ post.ID }}</span>", sprintf( esc_html( __( 'Click to copy %s shortcode', 'wp-user-frontend' ) ), esc_attr( $shortcode['type'] ) ), sprintf( '[%s type="%s" id="%s"]', esc_attr( $shortcode['name'] ), esc_attr( $shortcode['type'] ), esc_attr( $form_id ) ), esc_attr( ucwords( $shortcode['type'] ) ), esc_attr( $shortcode['type'] ) );
                 }
             } else {
-                printf(
-                    "<span class=\"form-id wpuf-flex wpuf-items-center wpuf-py-2 wpuf-px-4 wpuf-rounded-md wpuf-border wpuf-border-slate-300 hover:wpuf-cursor-pointer\" title=\"%s\" data-clipboard-text='%s'>#{{ post.ID }} <span id=\"default-icon\" class=\"wpuf-ml-2\">
-                    <svg class=\"wpuf-w-3.5 wpuf-h-3.5\" aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"currentColor\" viewBox=\"0 0 18 20\">
-                        <path
-                            d=\"M16 1h-3.278A1.992 1.992 0 0 0 11 0H7a1.993 1.993 0 0 0-1.722 1H2a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2Zm-3 14H5a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2Zm0-4H5a1 1 0 0 1 0-2h8a1 1 0 1 1 0 2Zm0-5H5a1 1 0 0 1 0-2h2V2h4v2h2a1 1 0 1 1 0 2Z\"/>
-                    </svg>
-                </span>
-                <span id=\"success-icon\" class=\"wpuf-hidden wpuf-ml-2 wpuf-inline-flex wpuf-items-center\">
-                    <svg class=\"wpuf-w-3.5 wpuf-h-3.5 wpuf-text-blue-700 dark:wpuf-text-blue-500\" aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 16 12\">
-                        <path stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M1 5.917 5.724 10.5 15 1.5\"/>
-                    </svg>
-                </span></span>",
-                    esc_html( __( 'Click to copy shortcode', 'wp-user-frontend' ) ),
-                    '[' . esc_attr( $shortcodes[0]['name'] ) . ' id="' . esc_attr( $form_id ) . '"]'
-                );
                 ?>
+                <span class="form-id wpuf-group wpuf-flex wpuf-items-center wpuf-py-2 wpuf-px-4 wpuf-rounded-md wpuf-border wpuf-border-slate-300 hover:wpuf-cursor-pointer" title="<?php esc_html_e( __( 'Click to copy shortcode', 'wp-user-frontend' ) ); ?>" data-clipboard-text="<?php '[' . esc_attr_e( $shortcodes[0]['name'] ) . ' id="' . esc_attr( $form_id ) . '"]'; ?>">#{{ post.ID }}
+                    <span id="default-icon" class="wpuf-ml-2">
+                        <svg
+                            :class="!shortcodeCopied ? 'wpuf-fill-gray-300' : '!wpuf-fill-blue-500 wpuf-rotate-6'"
+                            class="wpuf-w-3.5 wpuf-h-3.5 group-hover:wpuf-rotate-6 group-hover:wpuf-fill-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
+                            <g class=""><path d="M15.9975 5.99988L15.9975 3.99988" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M19.9975 5.99988L20.9975 4.99988" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M11.9975 5.99988L10.9975 4.99988" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></g>
+                            <path
+                                d="M16 1h-3.278A1.992 1.992 0 0 0 11 0H7a1.993 1.993 0 0 0-1.722 1H2a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2Zm-3 14H5a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2Zm0-4H5a1 1 0 0 1 0-2h8a1 1 0 1 1 0 2Zm0-5H5a1 1 0 0 1 0-2h2V2h4v2h2a1 1 0 1 1 0 2Z"/>
+                        </svg>
+                    </span>
+                </span>
                 <?php
             }
             ?>
             <a :href="'<?php echo get_wpuf_preview_page(); ?>?wpuf_preview=1&form_id=' + post.ID" target="_blank" class="wpuf-rounded-md wpuf-bg-white wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 hover:wpuf-bg-gray-50"><?php esc_html_e( 'Preview', 'wp-user-frontend' ); ?></a>
-
             <button
                 v-if="!is_form_saving"
                 @click="save_form_builder"
@@ -115,7 +110,8 @@
     </div>
     <div class="wpuf-flex">
         <div class="wpuf-w-2/3 wpuf-bg-white wpuf-min-h-screen wpuf-px-[20px] wpuf-pt-4">
-            <builder-stage></builder-stage>
+            builder stage here
+<!--            <builder-stage></builder-stage>-->
         </div>
         <div class="wpuf-w-1/3 wpuf-bg-gray-50 wpuf-px-[20px] wpuf-pt-4">Field attributes</div>
     </div>

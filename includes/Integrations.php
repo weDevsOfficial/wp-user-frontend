@@ -17,21 +17,23 @@ class Integrations {
      */
     public $container = [];
 
+    private $integrations = [
+        'WeDevs_Dokan' => 'WPUF_Dokan_Integration',
+        'WC_Vendors'   => 'WPUF_WC_Vendors_Integration',
+        'WCMp'         => 'WPUF_WCMp_Integration',
+        'ACF'          => 'WPUF_ACF_Compatibility',
+    ];
+
     public function __construct() {
-        if ( class_exists( 'WeDevs_Dokan' ) ) {
-            $this->container['dokan'] = new Integrations\WPUF_Dokan_Integration();
-        }
-
-        if ( class_exists( 'WC_Vendors' ) ) {
-            $this->container['wc_vendors'] = new Integrations\WPUF_WC_Vendors_Integration();
-        }
-
-        if ( class_exists( 'WCMp' ) ) {
-            $this->container['wcmp'] = new Integrations\WPUF_WCMp_Integration();
-        }
-
-        if ( class_exists( 'ACF' ) ) {
-            $this->container['acf'] = new Integrations\WPUF_ACF_Compatibility();
+        foreach ( $this->integrations as $external_class => $integration_class ) {
+            if ( class_exists( $external_class ) ) {
+                $full_class_name = __NAMESPACE__ . '\\Integrations\\' . $integration_class;
+                try {
+                    $this->container[ strtolower( $external_class ) ] = new $full_class_name();
+                } catch ( \Exception $e ) {
+                    \WP_User_Frontend::log( 'integration', print_r( $external_class . ' integration failed', true ) );
+                }
+            }
         }
     }
 

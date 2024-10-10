@@ -16,7 +16,7 @@ class Form_Template {
         add_action( 'admin_enqueue_scripts', [ $this, 'deregister_scripts' ], 99 );
 
         // post form templates
-        // add_action( 'admin_footer', [ $this, 'render_post_form_templates' ] );
+        add_action( 'admin_footer', [ $this, 'render_post_form_templates' ] );
 
         // form settings
         add_action( 'wpuf_form_setting', [ $this, 'post_form_settings' ], 8, 2 );
@@ -82,8 +82,11 @@ class Form_Template {
             wp_enqueue_style( $deps );
         }
 
-        // wp_enqueue_style( 'wpuf-form-builder-classic' );
-        wp_enqueue_style( 'wpuf-form-builder' );
+        if ( defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.0.12', '<' ) ) {
+            wp_enqueue_style( 'wpuf-form-builder' );
+        } else {
+            wp_enqueue_style( 'wpuf-admin-form-builder' );
+        }
     }
 
     /**

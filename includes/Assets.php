@@ -106,77 +106,77 @@ class Assets {
      */
     public function get_styles() {
         $styles = [
-            'frontend-forms'     => [
+            'frontend-forms'      => [
                 'src' => WPUF_ASSET_URI . '/css/frontend-forms.css',
             ],
-            'layout1'            => [
+            'layout1'             => [
                 'src' => WPUF_ASSET_URI . '/css/frontend-form/layout1.css',
             ],
-            'layout2'            => [
+            'layout2'             => [
                 'src' => WPUF_ASSET_URI . '/css/frontend-form/layout2.css',
             ],
-            'layout3'            => [
+            'layout3'             => [
                 'src' => WPUF_ASSET_URI . '/css/frontend-form/layout3.css',
             ],
-            'layout4'            => [
+            'layout4'             => [
                 'src' => WPUF_ASSET_URI . '/css/frontend-form/layout4.css',
             ],
-            'layout5'            => [
+            'layout5'             => [
                 'src' => WPUF_ASSET_URI . '/css/frontend-form/layout5.css',
             ],
-            'jquery-ui'          => [
+            'jquery-ui'           => [
                 'src'     => WPUF_ASSET_URI . '/css/jquery-ui-1.9.1.custom.css',
                 'version' => '1.9.1',
             ],
-            'sweetalert2'        => [
+            'sweetalert2'         => [
                 'src'     => WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.css',
                 'version' => '11.4.19',
             ],
-            'font-awesome'       => [
+            'font-awesome'        => [
                 'src'     => WPUF_ASSET_URI . '/vendor/font-awesome/css/font-awesome.min.css',
                 'version' => '4.7.0',
             ],
-            'selectize'          => [
+            'selectize'           => [
                 'src'     => WPUF_ASSET_URI . '/vendor/selectize/css/selectize.default.css',
                 'version' => '0.12.4',
             ],
-            'toastr'             => [
+            'toastr'              => [
                 'src'     => WPUF_ASSET_URI . '/vendor/toastr/toastr.min.css',
                 'version' => '2.1.3',
             ],
-            'tooltip'            => [
+            'tooltip'             => [
                 'src'     => WPUF_ASSET_URI . '/vendor/tooltip/tooltip.css',
                 'version' => '3.3.7',
             ],
-            'form-builder-classic'       => [
+            'form-builder'        => [
                 'src'  => WPUF_ASSET_URI . '/css/wpuf-form-builder.css',
                 'deps' => $this->form_builder_css_deps,
             ],
-            'form-builder'       => [
-                'src'  => WPUF_ASSET_URI . '/css/admin/form-builder.css',
+            'admin-form-builder'  => [
+                'src' => WPUF_ASSET_URI . '/css/admin/form-builder.css',
             ],
-            'admin'              => [
+            'admin'               => [
                 'src' => WPUF_ASSET_URI . '/css/admin.css',
             ],
-            'admin-subscriptions'              => [
+            'admin-subscriptions' => [
                 'src' => WPUF_ASSET_URI . '/css/admin/subscriptions.min.css',
             ],
-            'registration-forms' => [
+            'registration-forms'  => [
                 'src' => WPUF_ASSET_URI . '/css/registration-forms.css',
             ],
-            'module'             => [
+            'module'              => [
                 'src' => WPUF_ASSET_URI . '/css/admin/wpuf-module.css',
             ],
-            'swiffy-slider'      => [
+            'swiffy-slider'       => [
                 'src'     => WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider.min.css',
                 'version' => '1.6.0',
             ],
-            'setup'              => [
+            'setup'               => [
                 'src'  => WPUF_ASSET_URI . '/css/admin/wpuf-setup.css',
                 'deps' => [ 'dashicons', 'install' ],
             ],
-            'whats-new'          => [
-                'src'  => WPUF_ASSET_URI . '/css/admin/whats-new.css',
+            'whats-new'           => [
+                'src' => WPUF_ASSET_URI . '/css/admin/whats-new.css',
             ],
         ];
 

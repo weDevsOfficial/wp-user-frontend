@@ -39,7 +39,11 @@ class Posting {
     public function enqueue_script() {
         $api_key = wpuf_get_option( 'gmap_api_key', 'wpuf_general' );
 
-        wp_enqueue_style( 'wpuf-form-builder' );
+        if ( defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.0.12', '<' ) ) {
+            wp_enqueue_style( 'wpuf-form-builder' );
+        } else {
+            wp_enqueue_style( 'wpuf-admin-form-builder' );
+        }
 
         wp_enqueue_style( 'jquery-ui', WPUF_ASSET_URI . '/css/jquery-ui-1.9.1.custom.css' );
         wp_enqueue_script( 'jquery-ui-slider' );

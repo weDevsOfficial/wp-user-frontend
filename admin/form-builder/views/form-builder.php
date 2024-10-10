@@ -17,11 +17,11 @@
                     </div>
                     <button
                         v-show="!post_title_editing"
-                        @mouseover="isDropDownShowing = true"
-                        @mouseleave="isDropDownShowing = false"
+                        @mouseover="is_form_switcher = true"
+                        @mouseleave="is_form_switcher = false"
                         type="button"
                         class="wpuf-dropdown-container wpuf-relative wpuf--ml-px wpuf-inline-flex wpuf-items-center wpuf-gap-x-1.5 wpuf-rounded-r-md wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900 wpuf-border wpuf-border-l-0 wpuf-rounded-r-lg wpuf-border-gray-300 hover:wpuf-bg-gray-50">
-                        <i :class="(isDropDownShowing ? 'fa fa-angle-up' : 'fa fa-angle-down') + ' form-switcher-arrow'"></i>
+                        <i :class="(is_form_switcher ? 'fa fa-angle-up' : 'fa fa-angle-down') + ' form-switcher-arrow'"></i>
                         <div
                             class="wpuf-dropdown-item wpuf-absolute wpuf--left-40 wpuf-z-10 wpuf-w-max wpuf-origin-top-right wpuf-rounded-md wpuf-bg-white wpuf-shadow-lg focus:wpuf-shadow-none focus:wpuf-outline-none wpuf-top-9"
                             role="menu"

@@ -1362,6 +1362,10 @@ html {
   margin-top: 2rem;
 }
 
+.wpuf-mt-\[-5px\] {
+  margin-top: -5px;
+}
+
 .wpuf-mt-\[1px\] {
   margin-top: 1px;
 }
@@ -1408,10 +1412,6 @@ html {
 
 .wpuf-h-3 {
   height: 0.75rem;
-}
-
-.wpuf-h-3\.5 {
-  height: 0.875rem;
 }
 
 .wpuf-h-5 {
@@ -1502,10 +1502,6 @@ html {
 
 .wpuf-w-3 {
   width: 0.75rem;
-}
-
-.wpuf-w-3\.5 {
-  width: 0.875rem;
 }
 
 .wpuf-w-3\/4 {
@@ -2059,12 +2055,12 @@ html {
   --tw-bg-opacity: 0.75;
 }
 
-.\!wpuf-fill-blue-500 {
-  fill: #3b82f6 !important;
+.\!wpuf-stroke-indigo-600 {
+  stroke: #4f46e5 !important;
 }
 
-.wpuf-fill-gray-300 {
-  fill: #d1d5db;
+.wpuf-stroke-gray-400 {
+  stroke: #9ca3af;
 }
 
 .wpuf-p-0 {
@@ -2580,6 +2576,18 @@ html {
   transition-property: all;
 }
 
+.wpuf-form-template-modal {
+  background: #fff;
+  position: fixed;
+  top: 5%;
+  bottom: 5%;
+  right: 10%;
+  left: 10%;
+  display: none;
+  box-shadow: 0 1px 20px 5px rgba(0, 0, 0, 0.1);
+  z-index: 99;
+}
+
 /* Transition styles */
 
 .wpuf-dropdown-item {
@@ -2931,8 +2939,8 @@ html {
   cursor: pointer;
 }
 
-.wpuf-group:hover .group-hover\:wpuf-fill-gray-500 {
-  fill: #6b7280;
+.wpuf-group:hover .group-hover\:wpuf-stroke-gray-500 {
+  stroke: #6b7280;
 }
 
 .wpuf-peer:hover ~ .peer-hover\:wpuf-block {

@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.wpuf-form-template-modal {
+    background: #fff;
+    position: fixed;
+    top: 5%;
+    bottom: 5%;
+    right: 10%;
+    left: 10%;
+    display: none;
+    box-shadow: 0 1px 20px 5px rgba(0, 0, 0, 0.1);
+    z-index: 99;
+}
+
+@layer utilities {
+    .wpuf-transition-all {
+        transition-property: all;
+    }
+    .wpuf-duration-100 {
+        transition-duration: 100ms;
+    }
+    .wpuf-ease-out {
+        transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+    .wpuf-scale-95 {
+        transform: scale(.95);
+    }
+    .wpuf-scale-100 {
+        transform: scale(1);
+    }
+}
+
+/* Transition styles */
+.wpuf-dropdown-item {
+    @apply wpuf-transition-all wpuf-duration-100 wpuf-ease-out wpuf-opacity-0 wpuf-scale-75;
+}
+
+.wpuf-dropdown-container:hover .wpuf-dropdown-item {
+    @apply wpuf-opacity-100 wpuf-scale-100;
+}

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 4.0.11\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2024-09-17 09:28:09+00:00\n"
+"POT-Creation-Date: 2024-10-04 06:51:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -136,7 +136,7 @@ msgid "<span style=\"color:#f18500\">Help</span>"
 msgstr ""
 
 #: admin/class-admin-settings.php:119 admin/class-admin-settings.php:167
-#: admin/form-builder/views/form-builder.php:9
+#: admin/form-builder/views/form-builder.php:13
 #: includes/Admin/Admin_Settings.php:68 includes/Admin/Menu.php:91
 #: includes/Admin/Menu.php:358 includes/Setup_Wizard.php:154
 msgid "Settings"
@@ -307,43 +307,43 @@ msgstr ""
 msgid "— Select —"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:5
+#: admin/form-builder/views/form-builder.php:9
 msgid "Form Editor"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:15
+#: admin/form-builder/views/form-builder.php:19
 #: admin/html/form-settings-post.php:23 templates/dashboard/posts.php:165
 msgid "Preview"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:18
+#: admin/form-builder/views/form-builder.php:22
 msgid "Save Form"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:22
+#: admin/form-builder/views/form-builder.php:26
 msgid "Saving Form Data"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:25
-#: admin/form-builder/views/form-builder.php:77
+#: admin/form-builder/views/form-builder.php:29
+#: admin/form-builder/views/form-builder.php:81
 msgid "Add Fields"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:26
+#: admin/form-builder/views/form-builder.php:30
 msgid "Show Form"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:47
+#: admin/form-builder/views/form-builder.php:51
 #. translators: %s: form id
 msgid "Click to copy %s shortcode"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:50
+#: admin/form-builder/views/form-builder.php:54
 #: includes/Admin/Forms/Admin_Form_Builder.php:289
 msgid "Click to copy shortcode"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:83
+#: admin/form-builder/views/form-builder.php:87
 msgid "Field Options"
 msgstr ""
 
@@ -930,85 +930,85 @@ msgid "Sample Form"
 msgstr ""
 
 #: admin/posting.php:74 class/render-form.php:1688
-#: includes/Admin/Posting.php:61 includes/Admin.php:107
+#: includes/Admin/Posting.php:63 includes/Admin.php:107
 #: includes/Fields/Field_Contract.php:931 includes/Frontend.php:72
 #: includes/Render_Form.php:1545
 msgid "Are you sure?"
 msgstr ""
 
 #: admin/posting.php:75 includes/Admin/Forms/Admin_Form_Builder.php:272
-#: includes/Admin/Posting.php:62 includes/Admin.php:108
+#: includes/Admin/Posting.php:64 includes/Admin.php:108
 #: includes/Fields/Field_Contract.php:932 includes/Frontend.php:73
 msgid "Yes, delete it"
 msgstr ""
 
 #: admin/posting.php:76 includes/Admin/Forms/Admin_Form_Builder.php:273
-#: includes/Admin/Posting.php:63 includes/Admin.php:109
+#: includes/Admin/Posting.php:65 includes/Admin.php:109
 #: includes/Fields/Field_Contract.php:933 includes/Frontend.php:74
 msgid "No, cancel it"
 msgstr ""
 
-#: admin/posting.php:82 includes/Admin/Posting.php:69 includes/Admin.php:117
+#: admin/posting.php:82 includes/Admin/Posting.php:71 includes/Admin.php:117
 #: includes/Fields/Field_Contract.php:943 includes/Frontend.php:84
 msgid "Allowed Files"
 msgstr ""
 
-#: admin/posting.php:85 includes/Admin/Posting.php:72 includes/Admin.php:123
+#: admin/posting.php:85 includes/Admin/Posting.php:74 includes/Admin.php:123
 #: includes/Fields/Field_Contract.php:949 includes/Frontend.php:90
 msgid "Maximum number of files reached!"
 msgstr ""
 
-#: admin/posting.php:86 includes/Admin/Posting.php:73 includes/Admin.php:124
+#: admin/posting.php:86 includes/Admin/Posting.php:75 includes/Admin.php:124
 #: includes/Fields/Field_Contract.php:950 includes/Frontend.php:91
 msgid "The file you have uploaded exceeds the file size limit. Please try again."
 msgstr ""
 
-#: admin/posting.php:87 includes/Admin/Posting.php:74 includes/Admin.php:125
+#: admin/posting.php:87 includes/Admin/Posting.php:76 includes/Admin.php:125
 #: includes/Fields/Field_Contract.php:954 includes/Frontend.php:95
 msgid "You have uploaded an incorrect file type. Please try again."
 msgstr ""
 
-#: admin/posting.php:106 includes/Admin/Posting.php:93
+#: admin/posting.php:106 includes/Admin/Posting.php:95
 msgid "WPUF Form"
 msgstr ""
 
-#: admin/posting.php:134 includes/Admin/Posting.php:121
+#: admin/posting.php:134 includes/Admin/Posting.php:123
 msgid "Learn more"
 msgstr ""
 
-#: admin/posting.php:181 includes/Admin/Posting.php:168
+#: admin/posting.php:181 includes/Admin/Posting.php:170
 msgid "WPUF Lock User"
 msgstr ""
 
-#: admin/posting.php:207 includes/Admin/Posting.php:194
+#: admin/posting.php:207 includes/Admin/Posting.php:196
 msgid ""
 "Post is locked, to allow user to edit this post <a "
 "id=\"wpuf_clear_schedule_lock\" data=\"%s\" href=\"#\">Click here</a>"
 msgstr ""
 
-#: admin/posting.php:214 includes/Admin/Posting.php:201
+#: admin/posting.php:214 includes/Admin/Posting.php:203
 msgid ""
 "Frontend edit access for this post will be automatically locked after %s, "
 "<a id=\"wpuf_clear_schedule_lock\" data=\"%s\" href=\"#\">Clear Lock</a> Or,"
 msgstr ""
 
-#: admin/posting.php:235 includes/Admin/Posting.php:222
+#: admin/posting.php:235 includes/Admin/Posting.php:224
 msgid "Lock Post Permanently"
 msgstr ""
 
-#: admin/posting.php:240 includes/Admin/Posting.php:227
+#: admin/posting.php:240 includes/Admin/Posting.php:229
 msgid "Lock user from editing this post from the frontend dashboard"
 msgstr ""
 
-#: admin/posting.php:291 includes/Admin/Posting.php:278
+#: admin/posting.php:291 includes/Admin/Posting.php:280
 msgid "WPUF Custom Fields"
 msgstr ""
 
-#: admin/posting.php:348 includes/Admin/Posting.php:335
+#: admin/posting.php:348 includes/Admin/Posting.php:337
 msgid "No custom fields found."
 msgstr ""
 
-#: admin/posting.php:543 includes/Admin/Posting.php:530
+#: admin/posting.php:543 includes/Admin/Posting.php:532
 #: includes/Admin/Promotion.php:216 includes/Admin/Promotion.php:220
 #: includes/Admin/Promotion.php:224 includes/Admin/Promotion.php:301
 #: includes/Admin/Promotion.php:305 includes/Admin/Promotion.php:309
@@ -2612,19 +2612,19 @@ msgstr ""
 msgid "Payment type not selected for this form. Please contact admin."
 msgstr ""
 
-#: includes/Admin/Forms/Post/Templates/Form_Template.php:102
+#: includes/Admin/Forms/Post/Templates/Form_Template.php:103
 msgid "Want a new integration? <a href=\"%s\" target=\"_blank\">Let us know</a>."
 msgstr ""
 
-#: includes/Admin/Forms/Post/Templates/Form_Template.php:214
+#: includes/Admin/Forms/Post/Templates/Form_Template.php:215
 msgid "Form Template"
 msgstr ""
 
-#: includes/Admin/Forms/Post/Templates/Form_Template.php:217
+#: includes/Admin/Forms/Post/Templates/Form_Template.php:218
 msgid "&mdash; No Template &mdash;"
 msgstr ""
 
-#: includes/Admin/Forms/Post/Templates/Form_Template.php:226
+#: includes/Admin/Forms/Post/Templates/Form_Template.php:227
 msgid ""
 "If selected a form template, it will try to execute that integration "
 "options when new post created and updated."

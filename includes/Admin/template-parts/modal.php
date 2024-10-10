@@ -127,7 +127,6 @@
     <div class="wpuf-form-template-modal-backdrop"></div>
 </div>
 
-
 <script type="text/javascript">
 (function($) {
     var popup = {

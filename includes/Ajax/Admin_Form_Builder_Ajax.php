@@ -31,6 +31,10 @@ class Admin_Form_Builder_Ajax {
             wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
         }
 
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
         if ( empty( $form_data['wpuf_form_id'] ) ) {
             wp_send_json_error( __( 'Invalid form id', 'wp-user-frontend' ) );
         }
@@ -79,6 +83,10 @@ class Admin_Form_Builder_Ajax {
         $nonce     = $post_data['wpuf_form_builder_setting_nonce'];
 
         if ( isset( $nonce ) && ! wp_verify_nonce( $post_data['wpuf_form_builder_setting_nonce'], 'form-builder-setting-nonce' ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
             wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
         }
 

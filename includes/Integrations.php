@@ -5,13 +5,13 @@ namespace WeDevs\Wpuf;
 /**
  * The integration class to handle all integrations with our plugin
  *
- * @since WPUF_SINCE
+ * @since 4.0.12
  */
 class Integrations {
     /**
      * Holds various class instances
      *
-     * @since WPUF_SINCE
+     * @since 4.0.12
      *
      * @var array
      */
@@ -40,7 +40,7 @@ class Integrations {
     /**
      * Magic getter to bypass referencing objects
      *
-     * @since WPUF_SINCE
+     * @since 4.0.12
      *
      * @param string $prop
      *

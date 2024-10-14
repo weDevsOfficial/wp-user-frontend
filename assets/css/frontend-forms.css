@@ -542,13 +542,6 @@ body ul.wpuf-form li .wpuf-address-field:after {
   display: table;
 }
 body ul.wpuf-form li .wpuf-address-field.city_name,
-body ul.wpuf-form li .wpuf-address-field.state,
-body ul.wpuf-form li .wpuf-address-field.zip,
-body ul.wpuf-form li .wpuf-address-field.country_select {
-  float: left;
-  width: 47%;
-}
-body ul.wpuf-form li .wpuf-address-field.city_name,
 body ul.wpuf-form li .wpuf-address-field.zip {
   margin-right: 4%;
 }
@@ -1835,7 +1828,7 @@ body .wpuf-attachment-upload-filelist + .moxie-shim {
 }
 img.wpuf-eye {
   position: absolute;
-  right: 0;
+  right: 1rem;
   top: 50%;
   transform: translateY(-50%) translateX(-6%);
 }

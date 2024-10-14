@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: weDevs
-Version: 4.0.11
+Version: 4.0.12
 Author URI: https://wedevs.com/?utm_source=WPUF_Author_URI
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -23,7 +23,7 @@ if ( file_exists( $autoload ) ) {
     require_once $autoload;
 }
 
-define( 'WPUF_VERSION', '4.0.11' );
+define( 'WPUF_VERSION', '4.0.12' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -173,6 +173,7 @@ final class WP_User_Frontend {
         $this->container['bank']         = new WeDevs\Wpuf\Lib\Gateway\Bank();
         $this->container['paypal']       = new WeDevs\Wpuf\Lib\Gateway\Paypal();
         $this->container['api']          = new WeDevs\Wpuf\API();
+        $this->container['integrations'] = new WeDevs\Wpuf\Integrations();
 
         if ( is_admin() ) {
             $this->container['admin']        = new WeDevs\Wpuf\Admin();
@@ -237,11 +238,11 @@ final class WP_User_Frontend {
     public function wpuf_upgrade_notice() {
         ?>
         <div class="notice error" id="wpuf-pro-installer-notice" style="padding: 1em; position: relative;">
-            <h2><?php esc_html_e( 'Your WP User Frontend Pro is almost ready!', 'wpuf-pro' ); ?></h2>
+            <h2><?php esc_html_e( 'Your WP User Frontend Pro is almost ready!', 'wp-user-frontend' ); ?></h2>
             <p>
                 <?php
                 /* translators: 1: opening anchor tag, 2: closing anchor tag. */
-                echo sprintf( __( 'We\'ve pushed a major update on both <b>WP User Frontend Free</b> and <b>WP User Frontend Pro</b> that requires you to use latest version of both. Please update the WPUF pro to the latest version. <br><strong>Please make sure to take a complete backup of your site before updating.</strong>', 'wpuf-pro' ), '<a target="_blank" href="https://wordpress.org/plugins/wp-user-frontend/">', '</a>' );
+                echo sprintf( __( 'We\'ve pushed a major update on both <b>WP User Frontend Free</b> and <b>WP User Frontend Pro</b> that requires you to use latest version of both. Please update the WPUF pro to the latest version. <br><strong>Please make sure to take a complete backup of your site before updating.</strong>', 'wp-user-frontend' ), '<a target="_blank" href="https://wordpress.org/plugins/wp-user-frontend/">', '</a>' );
                 ?>
             </p>
         </div>

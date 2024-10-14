@@ -78,8 +78,8 @@ trait TaxableTrait {
         <table style="width:80%; table-layout:auto;" id="wpuf-base-country-state" class="wp-list-table">
             <thead>
             <tr>
-                <th scope="col" class="wpuf_tax_country" style="padding: 10px;"><?php esc_attr_e( 'Country', 'wpuf-pro' ); ?></th>
-                <th scope="col" class="wpuf_tax_state" style="padding: 10px;"><?php esc_attr_e( 'State / Province', 'wpuf-pro' ); ?></th>
+                <th scope="col" class="wpuf_tax_country" style="padding: 10px;"><?php esc_html_e( 'Country', 'wp-user-frontend' ); ?></th>
+                <th scope="col" class="wpuf_tax_state" style="padding: 10px;"><?php esc_html_e( 'State / Province', 'wp-user-frontend' ); ?></th>
             </tr>
             </thead>
             <tr>
@@ -106,7 +106,7 @@ trait TaxableTrait {
                             'id'               => 'wpuf-base-country',
                             'class'            => 'wpuf-base-country',
                             'chosen'           => false,
-                            'placeholder'      => __( 'Choose a country', 'wpuf-pro' ),
+                            'placeholder'      => __( 'Choose a country', 'wp-user-frontend' ),
                         ]
                     );
                     ?>
@@ -123,7 +123,7 @@ trait TaxableTrait {
                             'show_option_none' => false,
                             'class'            => 'wpuf-base-state',
                             'chosen'           => false,
-                            'placeholder'      => __( 'Choose a state', 'wpuf-pro' ),
+                            'placeholder'      => __( 'Choose a state', 'wp-user-frontend' ),
                         ]
                     );
                     ?>
@@ -158,7 +158,7 @@ trait TaxableTrait {
                 'show_option_none' => false,
                 'class'            => 'wpuf-base-state',
                 'chosen'           => false,
-                'placeholder'      => __( 'Choose a state', 'wpuf-pro' ),
+                'placeholder'      => __( 'Choose a state', 'wp-user-frontend' ),
             ];
 
             $response = wpuf_select( $args );
@@ -176,7 +176,7 @@ trait TaxableTrait {
      * @param array $args Arguments passed by the setting
      * @return void
      */
-    function wpuf_tax_rates( $args ) {
+    public function wpuf_tax_rates( $args ) {
         $rates  = $this->wpuf_get_tax_rates();
         $cs     = new Country_State();
         $states = [];
@@ -187,10 +187,10 @@ trait TaxableTrait {
         <table style="width:100%; table-layout:auto;" id="wpuf_tax_rates" class="wp-list-table widefat">
             <thead>
             <tr>
-                <th scope="col" class="wpuf_tax_country" style="padding: 10px;"><?php esc_attr_e( 'Country', 'wpuf-pro' ); ?></th>
-                <th scope="col" class="wpuf_tax_state" style="padding: 10px;"><?php esc_attr_e( 'State / Province', 'wpuf-pro' ); ?></th>
-                <th scope="col" class="wpuf_tax_rate" style="padding: 10px;"><?php esc_attr_e( 'Rate', 'wpuf-pro' ); ?><span alt="f223" class="wpuf-help-tip dashicons dashicons-editor-help" title="<?php esc_attr_e( 'Regional tax rates: When a customer enters an address on payment page that matches the specified region for this tax rate, the payment tax will adjust automatically. Enter a percentage, such as 5 for 5%.', 'wpuf-pro' ); ?>"></span></th>
-                <th scope="col" style="padding: 10px;"><?php esc_attr_e( 'Remove', 'wpuf-pro' ); ?></th>
+                <th scope="col" class="wpuf_tax_country" style="padding: 10px;"><?php esc_html_e( 'Country', 'wp-user-frontend' ); ?></th>
+                <th scope="col" class="wpuf_tax_state" style="padding: 10px;"><?php esc_html_e( 'State / Province', 'wp-user-frontend' ); ?></th>
+                <th scope="col" class="wpuf_tax_rate" style="padding: 10px;"><?php esc_html_e( 'Rate', 'wp-user-frontend' ); ?><span alt="f223" class="wpuf-help-tip dashicons dashicons-editor-help" title="<?php esc_attr_e( 'Regional tax rates: When a customer enters an address on payment page that matches the specified region for this tax rate, the payment tax will adjust automatically. Enter a percentage, such as 5 for 5%.', 'wp-user-frontend' ); ?>"></span></th>
+                <th scope="col" style="padding: 10px;"><?php esc_attr_e( 'Remove', 'wp-user-frontend' ); ?></th>
             </tr>
             </thead>
             <?php if ( ! empty( $rates ) ) : ?>
@@ -209,7 +209,7 @@ trait TaxableTrait {
                                     'show_option_none' => false,
                                     'class'            => 'wpuf-tax-country',
                                     'chosen'           => false,
-                                    'placeholder'      => __( 'Choose a country', 'wpuf-pro' ),
+                                    'placeholder'      => __( 'Choose a country', 'wp-user-frontend' ),
                                 ]
                             );
                             ?>
@@ -231,7 +231,7 @@ trait TaxableTrait {
                                         'show_option_none' => false,
                                         'class'            => 'wpuf-tax-state',
                                         'chosen'           => false,
-                                        'placeholder'      => __( 'Choose a state', 'wpuf-pro' ),
+                                        'placeholder'      => __( 'Choose a state', 'wp-user-frontend' ),
                                     ]
                                 );
                             } else {
@@ -246,7 +246,7 @@ trait TaxableTrait {
                             ?>
                         </td>
                         <td style="width:20%" class="wpuf_tax_rate"><input type="number" class="small-text" step="0.0001" min="0.0" max="99" name="wpuf_tax_rates[<?php echo $key; ?>][rate]" value="<?php echo esc_html( ! empty( $rate['rate'] ) ? $rate['rate'] : 0 ); ?>"/></td>
-                        <td style="width:10%"><span class="wpuf_remove_tax_rate button-secondary"><?php esc_attr_e( 'Remove Rate', 'wpuf-pro' ); ?></span></td>
+                        <td style="width:10%"><span class="wpuf_remove_tax_rate button-secondary"><?php esc_html_e( 'Remove Rate', 'wp-user-frontend' ); ?></span></td>
                     </tr>
                 <?php endforeach; ?>
             <?php else : ?>
@@ -263,7 +263,7 @@ trait TaxableTrait {
                                 'show_option_none' => false,
                                 'class'            => 'wpuf-tax-country',
                                 'chosen'           => false,
-                                'placeholder'      => __( 'Choose a country', 'wpuf-pro' ),
+                                'placeholder'      => __( 'Choose a country', 'wp-user-frontend' ),
                             ]
                         );
                         ?>
@@ -278,12 +278,12 @@ trait TaxableTrait {
                         ?>
                     </td>
                     <td class="wpuf_tax_rate"><input type="number" class="small-text" step="0.0001" min="0.0" name="wpuf_tax_rates[0][rate]" value=""/></td>
-                    <td><span class="wpuf_remove_tax_rate button-secondary"><?php esc_attr_e( 'Remove Rate', 'wpuf-pro' ); ?></span></td>
+                    <td><span class="wpuf_remove_tax_rate button-secondary"><?php esc_html_e( 'Remove Rate', 'wp-user-frontend' ); ?></span></td>
                 </tr>
             <?php endif; ?>
         </table>
         <p>
-            <span class="button-secondary" id="wpuf_add_tax_rate"><?php esc_attr_e( 'Add Tax Rate', 'wpuf-pro' ); ?></span>
+            <span class="button-secondary" id="wpuf_add_tax_rate"><?php esc_attr_e( 'Add Tax Rate', 'wp-user-frontend' ); ?></span>
         </p>
         <?php
         echo ob_get_clean();
@@ -384,11 +384,11 @@ trait TaxableTrait {
                 continue;
             }
             if ( $rate['state'] === $state && $rate['country'] === $country ) {
-                $tax_amount = $rate['rate'];
+                $tax_amount = ! empty( $rate['rate'] ) ? $rate['rate'] : 0;
             }
 
             if ( intval( $tax_amount ) === 0 && $rate['country'] === $country && 'country_wide' === $rate['state'] ) {
-                $tax_amount = $rate['rate'];
+                $tax_amount = ! empty( $rate['rate'] ) ? $rate['rate'] : 0;
             }
         }
 
@@ -501,7 +501,7 @@ trait TaxableTrait {
         $tax_rate = $this->wpuf_current_tax_rate() . '%';
         if ( $this->wpuf_tax_enabled() ) {
             ?>
-            <div><?php esc_attr_e( 'Tax', 'wpuf-pro' ); ?>: <strong><span id="wpuf_pay_page_tax"><?php echo $tax_rate; ?></strong></span></div>
+            <div><?php esc_attr_e( 'Tax', 'wp-user-frontend' ); ?>: <strong><span id="wpuf_pay_page_tax"><?php echo $tax_rate; ?></strong></span></div>
             <?php
         }
     }

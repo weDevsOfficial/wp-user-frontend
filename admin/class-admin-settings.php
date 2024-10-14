@@ -3,6 +3,8 @@
 /**
  * WPUF settings
  */
+
+#[AllowDynamicProperties]
 class WPUF_Admin_Settings {
 
     /**

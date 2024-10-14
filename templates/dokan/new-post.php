@@ -1,6 +1,5 @@
 <?php
-
-$access   	    = dokan_get_option( 'allow_wpuf_post', 'dokan_general' );
+$access        = dokan_get_option( 'allow_wpuf_post', 'dokan_general' );
 $selected_form = dokan_get_option( 'wpuf_post_forms', 'dokan_general' );
 
 if ( $access != 'on' ) {

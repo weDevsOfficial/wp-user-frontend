@@ -16,14 +16,18 @@ class Admin_Form_Builder_Ajax {
      * @return void
      */
     public function save_form() {
-        $post_data =  wp_unslash($_POST);
+        $post_data = wp_unslash( $_POST );
         if ( isset( $post_data['form_data'] ) ) {
-            parse_str( $post_data['form_data'],  $form_data );
+            parse_str( $post_data['form_data'], $form_data );
         } else {
-            wp_send_json_error( __( 'form data is missing', 'wp-user-frontend'));
+            wp_send_json_error( __( 'form data is missing', 'wp-user-frontend' ) );
         }
 
-        if ( !wp_verify_nonce( $form_data['wpuf_form_builder_nonce'], 'wpuf_form_builder_save_form' ) ) {
+        if ( ! wp_verify_nonce( $form_data['wpuf_form_builder_nonce'], 'wpuf_form_builder_save_form' ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
             wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
         }
 
@@ -50,7 +54,6 @@ class Admin_Form_Builder_Ajax {
             $integrations = (array) json_decode( $post_data['integrations'] );
         }
 
-
         $form_fields   = json_decode( $form_fields, true );
         $notifications = json_decode( $notifications, true );
 
@@ -66,15 +69,24 @@ class Admin_Form_Builder_Ajax {
 
         $form_fields = Admin_Form_Builder::save_form( $data );
 
-        wp_send_json_success( [ 'form_fields' => $form_fields, 'form_settings' => $settings ] );
+        wp_send_json_success(
+            [
+                'form_fields'   => $form_fields,
+                'form_settings' => $settings,
+			]
+        );
     }
 
     public function wpuf_get_post_taxonomies() {
-        $post_data =  wp_unslash($_POST);
+        $post_data = wp_unslash( $_POST );
         $post_type = $post_data['post_type'];
         $nonce     = $post_data['wpuf_form_builder_setting_nonce'];
 
-        if ( isset( $nonce ) && !wp_verify_nonce( $post_data['wpuf_form_builder_setting_nonce'], 'form-builder-setting-nonce' ) ) {
+        if ( isset( $nonce ) && ! wp_verify_nonce( $post_data['wpuf_form_builder_setting_nonce'], 'form-builder-setting-nonce' ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
             wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
         }
 
@@ -91,23 +103,28 @@ class Admin_Form_Builder_Ajax {
         foreach ( $post_taxonomies as $tax ) {
             if ( $tax->hierarchical ) {
                 $args = [
-                    'hide_empty'       => false,
-                    'hierarchical'     => true,
-                    'taxonomy'         => $tax->name,
+                    'hide_empty'   => false,
+                    'hierarchical' => true,
+                    'taxonomy'     => $tax->name,
                 ];
 
-                $cat .= '<tr class="wpuf_settings_taxonomy"> <th> Default '. $post_type . ' '. $tax->name  .'</th> <td>
-                <select multiple name="wpuf_settings[default_'.$tax->name.'][]">';
+                $cat .= '<tr class="wpuf_settings_taxonomy"> <th>' . __( 'Default ', 'wp-user-frontend' ) . $post_type . ' ' . $tax->name . '</th> <td>
+                <select multiple name="wpuf_settings[default_' . $tax->name . '][]">';
                 $categories = get_terms( $args );
 
                 foreach ( $categories as $category ) {
                     $cat .= '<option value="' . $category->term_id . '">' . $category->name . '</option>';
                 }
 
-                $cat .='</select></td>';
+                $cat .= '</select></td>';
             }
         }
 
-        wp_send_json_success( [ 'success' => 'true' , 'data' => $cat ] );
+        wp_send_json_success(
+            [
+                'success' => 'true',
+                'data'    => $cat,
+			]
+        );
     }
 }

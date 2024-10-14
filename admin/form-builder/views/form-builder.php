@@ -1,5 +1,5 @@
 <form id="wpuf-form-builder"
-    class="wpuf-w-[calc(100%+20px)] wpuf-ml-[-20px] wpuf-form-builder-<?php echo esc_attr( $form_type ); ?>" method="post" action="" @submit.prevent="save_form_builder" v-cloak>
+    class="!wpuf-w-[calc(100%+20px)] !wpuf-initial !wpuf-relative !wpuf-top-0 !wpuf-bg-white !wpuf-p-0 wpuf-ml-[-20px] wpuf-form-builder-<?php echo esc_attr( $form_type ); ?>" method="post" action="" @submit.prevent="save_form_builder" v-cloak>
     <div class="wpuf-flex wpuf-bg-white wpuf-px-[20px] wpuf-pt-4 wpuf-justify-between wpuf-items-center wpuf-border-b wpuf-border-slate-200 wpuf-pb-4">
         <div class="wpuf-flex">
             <img src="https://wpuf.test/wp-content/plugins/wp-user-frontend/assets/images/wpuf-icon-circle.svg" alt="WPUF Icon" class="wpuf-w-12 wpuf-mr-4">
@@ -116,8 +116,7 @@
     </div>
     <div class="wpuf-flex">
         <div class="wpuf-w-2/3 wpuf-bg-white wpuf-min-h-screen wpuf-px-[20px] wpuf-pt-4">
-            builder stage here
-<!--            <builder-stage></builder-stage>-->
+            <builder-stage></builder-stage>
         </div>
         <div class="wpuf-w-1/3 wpuf-bg-gray-50 wpuf-px-[20px] wpuf-pt-4">Field attributes</div>
     </div>

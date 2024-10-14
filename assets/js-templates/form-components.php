@@ -1,8 +1,31 @@
 <script type="text/x-template" id="tmpl-wpuf-builder-stage">
-<div id="form-preview-stage" class="wpuf-style">
+<div id="form-preview-stage">
     <h4 v-if="!form_fields.length" class="text-center">
         <?php _e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wp-user-frontend' ); ?>
     </h4>
+
+    <div
+        v-for="(field, index) in form_fields"
+        :key="field.id"
+        :data-index="index"
+        data-source="stage"
+        :class="index === 0 ? '' : 'wpuf-mt-4'"
+        class="wpuf-relative wpuf-flex wpuf-justify-between wpuf-space-x-3 wpuf-rounded-lg wpuf-bg-white wpuf-p-4 hover:wpuf-shadow-sm hover:wpuf-bg-gray-100 hover:wpuf-ease-in wpuf-transition wpuf-duration-150 wpuf-ease-out">
+        <div v-if="!is_full_width(field.template)" class="wpuf-w-1/4">
+            <label
+                v-if="!is_invisible(field)"
+                :for="'wpuf-' + field.name ? field.name : 'cls'"
+                class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">
+                {{ field.label }} <span v-if="field.required && 'yes' === field.required" class="required">*</span>
+            </label>
+        </div>
+        <div class="wpuf-w-3/4">
+            <component
+                v-if="is_template_available(field)"
+                :is="'form-' + field.template"
+                :field="field"></component>
+        </div>
+    </div>
 
     <ul :class="['wpuf-form', 'sortable-list', 'form-label-' + label_type]">
         <li
@@ -423,42 +446,36 @@
 <div class="wpuf-fields">
     <div
         v-if="field.inline !== 'yes'"
-        class="wpuf-space-y-5">
+        class="wpuf-space-y-2">
         <div
             v-if="has_options" v-for="(label, val) in field.options"
-            class="wpuf-relative wpuf-flex wpuf-items-start">
-            <div class="wpuf-items-center">
+            class="wpuf-relative wpuf-flex wpuf-items-center">
+            <div class="wpuf-flex wpuf-items-center">
                 <input
                     type="checkbox"
                     :value="val"
                     :checked="is_selected(val)"
                     :class="class_names('checkbox_btns')"
-                    class="wpuf-h-4 wpuf-w-4 wpuf-rounded wpuf-border-gray-300 wpuf-text-indigo-600 focus:wpuf-ring-indigo-600">
-            </div>
-            <div class="wpuf-ml-1 wpuf-text-sm">
-                <label class="wpuf-font-medium wpuf-text-gray-900">{{ label }}</label>
+                    class="wpuf-h-4 wpuf-w-4 wpuf-rounded wpuf-border-gray-300 wpuf-text-indigo-600 focus:wpuf-ring-indigo-600 !wpuf-mt-0.5">
+                <label class="wpuf-ml-3 wpuf-text-sm wpuf-font-medium wpuf-text-gray-900">{{ label }}</label>
             </div>
         </div>
     </div>
 
     <div
-        v-if="field.inline === 'yes'"
+        v-else
         class="wpuf-flex"
     >
         <div
             v-if="has_options" v-for="(label, val) in field.options"
-            class="wpuf-relative wpuf-flex wpuf-items-start wpuf-mr-4">
-            <div class="wpuf-items-center">
-                <input
-                    type="checkbox"
-                    :value="val"
-                    :checked="is_selected(val)"
-                    :class="class_names('checkbox_btns')"
-                    class="wpuf-h-4 wpuf-w-4 wpuf-rounded wpuf-border-gray-300 wpuf-text-indigo-600 focus:wpuf-ring-indigo-600">
-            </div>
-            <div class="wpuf-ml-1 wpuf-text-sm">
-                <label class="wpuf-font-medium wpuf-text-gray-900">{{ label }}</label>
-            </div>
+            class="wpuf-relative wpuf-flex wpuf-items-center wpuf-mr-4">
+            <input
+                type="checkbox"
+                :value="val"
+                :checked="is_selected(val)"
+                :class="class_names('checkbox_btns')"
+                class="!wpuf-mt-[.5px] wpuf-rounded wpuf-border-gray-300 wpuf-text-indigo-600">
+            <label class="wpuf-ml-1 wpuf-text-sm wpuf-font-medium wpuf-text-gray-900">{{ label }}</label>
         </div>
     </div>
 
@@ -508,23 +525,29 @@
                             </p>
                         </div>
                     </li>
-
                 </ul>
             </div>
         </div>
     </div>
-</div></script>
+
+    <ul role="list" class="wpuf-divide-y wpuf-divide-gray-200">
+        <li class="wpuf-py-4"></li>
+        <li class="wpuf-py-4"></li>
+        <li class="wpuf-py-4"></li>
+    </ul>
+</div>
+</script>
 
 <script type="text/x-template" id="tmpl-wpuf-form-custom_hidden_field">
 <div class="wpuf-fields">
     <input
         type="text"
-        :class="class_names('textfield')"
+        :class="builder_class_names('text_hidden')"
         :placeholder="field.placeholder"
         :value="field.default"
         :size="field.size"
     >
-    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>
 </script>
 
@@ -535,9 +558,8 @@
 <script type="text/x-template" id="tmpl-wpuf-form-dropdown_field">
 <div class="wpuf-fields">
     <select
-        disabled
         :class="class_names('select_lbl')"
-        class="wpuf-block wpuf-w-full !wpuf-max-w-full wpuf-rounded-md wpuf-border-0 wpuf-text-gray-900 wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 focus:wpuf-ring-2 focus:wpuf-ring-indigo-600 sm:wpuf-text-sm sm:wpuf-leading-6">
+        class="wpuf-block wpuf-w-full wpuf-min-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm   placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300">
         <option v-if="field.first" value="">{{ field.first }}</option>
         <option
             v-if="has_options"
@@ -554,12 +576,12 @@
 <div class="wpuf-fields">
     <input
         type="email"
-        :class="class_names('email')"
+        :class="class_names('email') + builder_class_names('text')"
         :placeholder="field.placeholder"
         :value="field.default"
         :size="field.size"
     >
-    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>
 </script>
 
@@ -657,6 +679,7 @@
 <div class="wpuf-fields">
     <select
         :class="class_names('multi_label')"
+        class="wpuf-block wpuf-w-full wpuf-min-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm   placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300"
         multiple
     >
         <option v-if="field.first" value="">{{ field.first }}</option>
@@ -702,6 +725,7 @@
     <textarea
         v-if="'no' === field.rich"
         :class="class_names('textareafield')"
+        class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm   placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300"
         :placeholder="field.placeholder"
         :rows="field.rows"
         :cols="field.cols"
@@ -709,7 +733,7 @@
 
     <text-editor v-if="'no' !== field.rich" :rich="field.rich" :default_text="field.default"></text-editor>
 
-    <span v-if="field.help" class="wpuf-help" v-html="field.help" ></span>
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>
 </script>
 
@@ -717,26 +741,26 @@
 <div class="wpuf-fields">
     <input
         type="text"
-        :class="class_names('textfield')"
+        :class="builder_class_names('text')"
+        class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm   placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300"
         :placeholder="field.placeholder"
         :value="field.default"
         :size="field.size"
     >
 
-    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-form-post_title">
 <div class="wpuf-fields">
     <input
-        disabled
         type="text"
         :placeholder="field.placeholder"
         :value="field.default"
         :size="field.size"
         :class="class_names('textfield')"
-        class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 sm:wpuf-text-sm sm:wpuf-leading-6"
+        class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm   placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300"
     >
     <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>
@@ -746,15 +770,29 @@
 <div class="wpuf-fields">
     <div
         v-if="field.inline !== 'yes'"
-        class="wpuf-space-y-6">
+        class="wpuf-space-y-2">
         <div
             v-if="has_options" v-for="(label, val) in field.options"
             class="wpuf-flex wpuf-items-center">
             <input
                 type="radio"
-                class="wpuf-h-4 wpuf-w-4 wpuf-border-gray-300 wpuf-text-indigo-600 focus:wpuf-ring-indigo-600">
+                class="wpuf-border-gray-300 wpuf-text-indigo-600 !wpuf-m-0">
             <label
-                disabled
+                :value="val"
+                :checked="is_selected(val)"
+                :class="class_names('radio_btns')"
+                class="wpuf-ml-3 wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">{{ label }}</label>
+        </div>
+    </div>
+
+    <div
+        v-else
+        class="wpuf-space-y-6 sm:wpuf-flex sm:wpuf-items-center sm:wpuf-space-x-10 sm:wpuf-space-y-0">
+        <div
+            v-if="has_options" v-for="(label, val) in field.options"
+            class="wpuf-flex wpuf-items-center">
+            <input type="radio" class="wpuf-h-4 wpuf-w-4 wpuf-border-gray-300 wpuf-text-indigo-600 !wpuf-m-0">
+            <label
                 :value="val"
                 :checked="is_selected(val)"
                 :class="class_names('radio_btns')"
@@ -792,15 +830,15 @@
 <div class="wpuf-fields">
     <select
         v-if="'select' === field.type"
-        disabled
-        :class="field.name"
-        class="wpuf-block wpuf-w-full !wpuf-max-w-full wpuf-rounded-md wpuf-border-0 wpuf-text-gray-900 wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 focus:wpuf-ring-2 focus:wpuf-ring-indigo-600 sm:wpuf-text-sm sm:wpuf-leading-6"
+        :class="builder_class_names('select')"
         v-html ="get_term_dropdown_options()">
     </select>
 
     <div v-if="'ajax' === field.type" class="category-wrap">
         <div>
-            <select>
+            <select
+                :class="builder_class_names('select')"
+            >
                 <option><?php _e( '— Select —', 'wp-user-frontend' ); ?></option>
                 <option v-for="term in sorted_terms" :value="term.id">{{ term.name }}</option>
             </select>
@@ -809,7 +847,7 @@
 
     <div v-if="'multiselect' === field.type" class="category-wrap">
         <select
-            :class="field.name"
+            :class="builder_class_names('select')"
             v-html="get_term_dropdown_options()"
             multiple
         >
@@ -828,9 +866,7 @@
     <input
         v-if="'text' === field.type"
         type="text"
-        disabled="disabled"
-        :class="class_names('textfield')"
-        class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 sm:wpuf-text-sm sm:wpuf-leading-6"
+        :class="builder_class_names('text')"
         :placeholder="field.placeholder"
         :size="field.size"
         value=""
@@ -843,13 +879,11 @@
 <script type="text/x-template" id="tmpl-wpuf-form-text_field">
 <div class="wpuf-fields">
     <input
-        disabled
         type="text"
         :placeholder="field.placeholder"
         :value="field.default"
         :size="field.size"
-        :class="class_names('textfield')"
-        class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 sm:wpuf-text-sm sm:wpuf-leading-6"
+        :class="builder_class_names('textfield')"
     >
     <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>
@@ -863,8 +897,7 @@
         :deault="field.default"
         :rows="field.rows"
         :cols="field.cols"
-        :class="class_names('textareafield')"
-        class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 sm:wpuf-text-sm sm:wpuf-leading-6">{{ field.default }}</textarea>
+        :class="builder_class_names('textareafield')">{{ field.default }}</textarea>
 
 
     <text-editor
@@ -880,12 +913,12 @@
 <div class="wpuf-fields">
     <input
         type="url"
-        :class="class_names('url')"
+        :class="builder_class_names('url')"
         :placeholder="field.placeholder"
         :value="field.default"
         :size="field.size"
     >
-    <span v-if="field.help" class="wpuf-help" v-html="field.help"/>
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>
 </script>
 

@@ -39,9 +39,14 @@
                             </p>
                         </div>
                     </li>
-
                 </ul>
             </div>
         </div>
     </div>
+
+    <ul role="list" class="wpuf-divide-y wpuf-divide-gray-200">
+        <li class="wpuf-py-4"></li>
+        <li class="wpuf-py-4"></li>
+        <li class="wpuf-py-4"></li>
+    </ul>
 </div>

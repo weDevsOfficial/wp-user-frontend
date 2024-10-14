@@ -1,15 +1,15 @@
 <div class="wpuf-fields">
     <select
         v-if="'select' === field.type"
-        disabled
-        :class="field.name"
-        class="wpuf-block wpuf-w-full !wpuf-max-w-full wpuf-rounded-md wpuf-border-0 wpuf-text-gray-900 wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 focus:wpuf-ring-2 focus:wpuf-ring-indigo-600 sm:wpuf-text-sm sm:wpuf-leading-6"
+        :class="builder_class_names('select')"
         v-html ="get_term_dropdown_options()">
     </select>
 
     <div v-if="'ajax' === field.type" class="category-wrap">
         <div>
-            <select>
+            <select
+                :class="builder_class_names('select')"
+            >
                 <option><?php _e( '— Select —', 'wp-user-frontend' ); ?></option>
                 <option v-for="term in sorted_terms" :value="term.id">{{ term.name }}</option>
             </select>
@@ -18,7 +18,7 @@
 
     <div v-if="'multiselect' === field.type" class="category-wrap">
         <select
-            :class="field.name"
+            :class="builder_class_names('select')"
             v-html="get_term_dropdown_options()"
             multiple
         >
@@ -37,9 +37,7 @@
     <input
         v-if="'text' === field.type"
         type="text"
-        disabled="disabled"
-        :class="class_names('textfield')"
-        class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-border-0 wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 placeholder:wpuf-text-gray-400 focus:wpuf-ring-2 focus:wpuf-ring-inset focus:wpuf-ring-indigo-600 sm:wpuf-text-sm sm:wpuf-leading-6"
+        :class="builder_class_names('text')"
         :placeholder="field.placeholder"
         :size="field.size"
         value=""

@@ -86,6 +86,29 @@ wpuf_mixins.form_field_mixin = {
             ];
         },
 
+        builder_class_names: function(type_class) {
+            var commonClasses = '';
+
+            switch (type_class) {
+                case 'text':
+                case 'url':
+                case 'email':
+                case 'textareafield':
+                case 'textfield':
+                case 'select':
+                case 'text_hidden':
+                    commonClasses = 'wpuf-block wpuf-min-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300';
+                    break;
+            }
+
+            return [
+                type_class,
+                this.required_class(),
+                'wpuf_' + this.field.name + '_' + this.form_id,
+                commonClasses
+            ];
+        },
+
         required_class: function () {
             return ('yes' === this.required) ? 'required' : '';
         },

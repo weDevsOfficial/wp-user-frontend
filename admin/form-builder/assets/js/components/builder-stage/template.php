@@ -1,7 +1,30 @@
-<div id="form-preview-stage" class="wpuf-style">
+<div id="form-preview-stage">
     <h4 v-if="!form_fields.length" class="text-center">
         <?php _e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wp-user-frontend' ); ?>
     </h4>
+
+    <div
+        v-for="(field, index) in form_fields"
+        :key="field.id"
+        :data-index="index"
+        data-source="stage"
+        :class="index === 0 ? '' : 'wpuf-mt-4'"
+        class="wpuf-relative wpuf-flex wpuf-justify-between wpuf-space-x-3 wpuf-rounded-lg wpuf-bg-white wpuf-p-4 hover:wpuf-shadow-sm hover:wpuf-bg-gray-100 hover:wpuf-ease-in wpuf-transition wpuf-duration-150 wpuf-ease-out">
+        <div v-if="!is_full_width(field.template)" class="wpuf-w-1/4">
+            <label
+                v-if="!is_invisible(field)"
+                :for="'wpuf-' + field.name ? field.name : 'cls'"
+                class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">
+                {{ field.label }} <span v-if="field.required && 'yes' === field.required" class="required">*</span>
+            </label>
+        </div>
+        <div class="wpuf-w-3/4">
+            <component
+                v-if="is_template_available(field)"
+                :is="'form-' + field.template"
+                :field="field"></component>
+        </div>
+    </div>
 
     <ul :class="['wpuf-form', 'sortable-list', 'form-label-' + label_type]">
         <li

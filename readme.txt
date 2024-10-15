@@ -4,7 +4,7 @@ Donate link: https://tareq.co/donate/
 Tags: frontend post, forms, user directory, profile builder, membership
 Requires at least: 4.0
 Tested up to: 6.6.2
-Stable tag: 4.0.11
+Stable tag: 4.0.12
 Requires PHP: 5.6
 License: GPLv2
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -281,6 +281,13 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 18. Set Payment Related Options
 
 == Changelog ==
+= v4.0.12 (14 Oct, 2024) =
+* Enhance - Decimal value for subscription pack
+* Fix - Required asterisk on password label
+* Fix - Field overlapping in address field
+* Fix - Read-only does not work for 'Teeny Rich textarea'
+* Fix - Integrations not loading properly for Dokan, ACF, WC Vendors
+
 = v4.0.11 (12 Sep, 2024) =
 * Enhance - Subscription design revamp
 * Enhance - Consistent format in email templates

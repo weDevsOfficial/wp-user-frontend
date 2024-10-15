@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 4.0.11\n"
+"Project-Id-Version: WP User Frontend 4.0.12\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2024-10-04 06:51:00+00:00\n"
+"POT-Creation-Date: 2024-10-14 11:28:52+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -97,65 +97,65 @@ msgstr ""
 msgid "WP User Frontend"
 msgstr ""
 
-#: admin/class-admin-settings.php:87 includes/Admin/Menu.php:23
+#: admin/class-admin-settings.php:89 includes/Admin/Menu.php:23
 msgid "User Frontend"
 msgstr ""
 
-#: admin/class-admin-settings.php:89 includes/Admin/Menu.php:27
+#: admin/class-admin-settings.php:91 includes/Admin/Menu.php:27
 #: includes/Admin/Menu.php:28
 #: includes/Admin/views/post-forms-list-table-view.php:5
 msgid "Post Forms"
 msgstr ""
 
-#: admin/class-admin-settings.php:102 includes/Admin/Menu.php:48
+#: admin/class-admin-settings.php:104 includes/Admin/Menu.php:48
 #: includes/Admin/Menu.php:49
 msgid "Subscriptions"
 msgstr ""
 
-#: admin/class-admin-settings.php:108 includes/Admin/Admin_Tools.php:370
+#: admin/class-admin-settings.php:110 includes/Admin/Admin_Tools.php:370
 #: includes/Admin/Menu.php:58
 #: includes/Admin/views/transactions-list-table-view.php:2
 msgid "Transactions"
 msgstr ""
 
-#: admin/class-admin-settings.php:111 includes/Admin/Menu.php:63
+#: admin/class-admin-settings.php:113 includes/Admin/Menu.php:63
 #: includes/Admin/views/tools.php:7
 msgid "Tools"
 msgstr ""
 
-#: admin/class-admin-settings.php:116 includes/Admin/Menu.php:75
+#: admin/class-admin-settings.php:118 includes/Admin/Menu.php:75
 msgid "Premium"
 msgstr ""
 
-#: admin/class-admin-settings.php:118 includes/Admin/Menu.php:80
+#: admin/class-admin-settings.php:120 includes/Admin/Menu.php:80
 msgid "Help"
 msgstr ""
 
-#: admin/class-admin-settings.php:118
+#: admin/class-admin-settings.php:120
 msgid "<span style=\"color:#f18500\">Help</span>"
 msgstr ""
 
-#: admin/class-admin-settings.php:119 admin/class-admin-settings.php:167
-#: admin/form-builder/views/form-builder.php:13
+#: admin/class-admin-settings.php:121 admin/class-admin-settings.php:169
+#: admin/form-builder/views/form-builder.php:9
 #: includes/Admin/Admin_Settings.php:68 includes/Admin/Menu.php:91
-#: includes/Admin/Menu.php:358 includes/Setup_Wizard.php:154
+#: includes/Admin/Menu.php:358 includes/Setup_Wizard.php:160
 msgid "Settings"
 msgstr ""
 
-#: admin/class-admin-settings.php:121 includes/Admin/Admin_Subscription.php:285
+#: admin/class-admin-settings.php:123 includes/Admin/Admin_Subscription.php:285
 #: includes/Admin/Menu.php:85 includes/Admin/views/subscribers.php:14
 msgid "Subscribers"
 msgstr ""
 
-#: admin/class-admin-settings.php:464 includes/Admin/Menu.php:199
+#: admin/class-admin-settings.php:466 includes/Admin/Menu.php:199
 msgid "Number of items per page:"
 msgstr ""
 
-#: admin/class-admin-settings.php:495 includes/Admin.php:75
+#: admin/class-admin-settings.php:497 includes/Admin.php:75
 msgid "Post lock has been cleared"
 msgstr ""
 
-#: admin/class-admin-settings.php:498 includes/Admin.php:79
+#: admin/class-admin-settings.php:500 includes/Admin.php:79
 msgid ""
 "%sThis post contains a sensitive short-code %s, that may allow others to "
 "sign-up with distinguished roles. If unsure, remove the short-code before "
@@ -163,37 +163,37 @@ msgid ""
 "vulnerability.%s"
 msgstr ""
 
-#: admin/class-admin-settings.php:534 includes/Admin/Menu.php:315
+#: admin/class-admin-settings.php:536 includes/Admin/Menu.php:315
 msgid "WPUF Import Forms"
 msgstr ""
 
-#: admin/class-admin-settings.php:535 includes/Admin/Menu.php:316
+#: admin/class-admin-settings.php:537 includes/Admin/Menu.php:316
 msgid "Add JSON file"
 msgstr ""
 
-#: admin/class-admin-settings.php:536 includes/Admin/Menu.php:317
+#: admin/class-admin-settings.php:538 includes/Admin/Menu.php:317
 msgid "Could not import forms."
 msgstr ""
 
-#: admin/class-admin-settings.php:616
+#: admin/class-admin-settings.php:618
 #: includes/Admin/Forms/Admin_Form_Handler.php:60
 #: includes/Admin/Forms/Admin_Form_Handler.php:200
 msgid "You do not have sufficient permissions to do this action"
 msgstr ""
 
-#: admin/class-admin-settings.php:621 includes/Admin/Admin_Tools.php:463
+#: admin/class-admin-settings.php:623 includes/Admin/Admin_Tools.php:463
 msgid "Missing file_id param"
 msgstr ""
 
-#: admin/class-admin-settings.php:631 includes/Admin/Admin_Tools.php:474
+#: admin/class-admin-settings.php:633 includes/Admin/Admin_Tools.php:474
 msgid "JSON file not found"
 msgstr ""
 
-#: admin/class-admin-settings.php:640 includes/Admin/Admin_Tools.php:484
+#: admin/class-admin-settings.php:642 includes/Admin/Admin_Tools.php:484
 msgid "Provided file is not a JSON file."
 msgstr ""
 
-#: admin/class-admin-settings.php:657 includes/Admin/Admin_Tools.php:496
+#: admin/class-admin-settings.php:659 includes/Admin/Admin_Tools.php:496
 msgid "Forms imported successfully."
 msgstr ""
 
@@ -307,43 +307,43 @@ msgstr ""
 msgid "— Select —"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:9
+#: admin/form-builder/views/form-builder.php:5
 msgid "Form Editor"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:19
+#: admin/form-builder/views/form-builder.php:15
 #: admin/html/form-settings-post.php:23 templates/dashboard/posts.php:165
 msgid "Preview"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:22
+#: admin/form-builder/views/form-builder.php:18
 msgid "Save Form"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:26
+#: admin/form-builder/views/form-builder.php:22
 msgid "Saving Form Data"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:29
-#: admin/form-builder/views/form-builder.php:81
+#: admin/form-builder/views/form-builder.php:25
+#: admin/form-builder/views/form-builder.php:77
 msgid "Add Fields"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:30
+#: admin/form-builder/views/form-builder.php:26
 msgid "Show Form"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:51
+#: admin/form-builder/views/form-builder.php:47
 #. translators: %s: form id
 msgid "Click to copy %s shortcode"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:54
+#: admin/form-builder/views/form-builder.php:50
 #: includes/Admin/Forms/Admin_Form_Builder.php:289
 msgid "Click to copy shortcode"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:87
+#: admin/form-builder/views/form-builder.php:83
 msgid "Field Options"
 msgstr ""
 
@@ -426,7 +426,7 @@ msgstr ""
 msgid "Payment Options"
 msgstr ""
 
-#: admin/html/form-settings-payment.php:26 includes/Setup_Wizard.php:337
+#: admin/html/form-settings-payment.php:26 includes/Setup_Wizard.php:343
 #: includes/functions/settings-options.php:438
 msgid "Enable Payments"
 msgstr ""
@@ -836,7 +836,7 @@ msgid ""
 msgstr ""
 
 #: admin/installer.php:30 includes/Admin/Admin_Installer.php:34
-#: includes/Admin/Admin_Tools.php:343 includes/Setup_Wizard.php:344
+#: includes/Admin/Admin_Tools.php:343 includes/Setup_Wizard.php:350
 msgid "Install WPUF Pages"
 msgstr ""
 
@@ -930,92 +930,94 @@ msgid "Sample Form"
 msgstr ""
 
 #: admin/posting.php:74 class/render-form.php:1688
-#: includes/Admin/Posting.php:63 includes/Admin.php:107
+#: includes/Admin/Posting.php:61 includes/Admin.php:107
 #: includes/Fields/Field_Contract.php:931 includes/Frontend.php:72
 #: includes/Render_Form.php:1545
 msgid "Are you sure?"
 msgstr ""
 
 #: admin/posting.php:75 includes/Admin/Forms/Admin_Form_Builder.php:272
-#: includes/Admin/Posting.php:64 includes/Admin.php:108
+#: includes/Admin/Posting.php:62 includes/Admin.php:108
 #: includes/Fields/Field_Contract.php:932 includes/Frontend.php:73
 msgid "Yes, delete it"
 msgstr ""
 
 #: admin/posting.php:76 includes/Admin/Forms/Admin_Form_Builder.php:273
-#: includes/Admin/Posting.php:65 includes/Admin.php:109
+#: includes/Admin/Posting.php:63 includes/Admin.php:109
 #: includes/Fields/Field_Contract.php:933 includes/Frontend.php:74
 msgid "No, cancel it"
 msgstr ""
 
-#: admin/posting.php:82 includes/Admin/Posting.php:71 includes/Admin.php:117
+#: admin/posting.php:82 includes/Admin/Posting.php:69 includes/Admin.php:117
 #: includes/Fields/Field_Contract.php:943 includes/Frontend.php:84
 msgid "Allowed Files"
 msgstr ""
 
-#: admin/posting.php:85 includes/Admin/Posting.php:74 includes/Admin.php:123
+#: admin/posting.php:85 includes/Admin/Posting.php:72 includes/Admin.php:123
 #: includes/Fields/Field_Contract.php:949 includes/Frontend.php:90
 msgid "Maximum number of files reached!"
 msgstr ""
 
-#: admin/posting.php:86 includes/Admin/Posting.php:75 includes/Admin.php:124
+#: admin/posting.php:86 includes/Admin/Posting.php:73 includes/Admin.php:124
 #: includes/Fields/Field_Contract.php:950 includes/Frontend.php:91
 msgid "The file you have uploaded exceeds the file size limit. Please try again."
 msgstr ""
 
-#: admin/posting.php:87 includes/Admin/Posting.php:76 includes/Admin.php:125
+#: admin/posting.php:87 includes/Admin/Posting.php:74 includes/Admin.php:125
 #: includes/Fields/Field_Contract.php:954 includes/Frontend.php:95
 msgid "You have uploaded an incorrect file type. Please try again."
 msgstr ""
 
-#: admin/posting.php:106 includes/Admin/Posting.php:95
+#: admin/posting.php:106 includes/Admin/Posting.php:93
 msgid "WPUF Form"
 msgstr ""
 
-#: admin/posting.php:134 includes/Admin/Posting.php:123
+#: admin/posting.php:134 includes/Admin/Posting.php:121
 msgid "Learn more"
 msgstr ""
 
-#: admin/posting.php:181 includes/Admin/Posting.php:170
+#: admin/posting.php:181 includes/Admin/Posting.php:168
 msgid "WPUF Lock User"
 msgstr ""
 
-#: admin/posting.php:207 includes/Admin/Posting.php:196
+#: admin/posting.php:207 includes/Admin/Posting.php:194
 msgid ""
 "Post is locked, to allow user to edit this post <a "
 "id=\"wpuf_clear_schedule_lock\" data=\"%s\" href=\"#\">Click here</a>"
 msgstr ""
 
-#: admin/posting.php:214 includes/Admin/Posting.php:203
+#: admin/posting.php:214 includes/Admin/Posting.php:201
 msgid ""
 "Frontend edit access for this post will be automatically locked after %s, "
 "<a id=\"wpuf_clear_schedule_lock\" data=\"%s\" href=\"#\">Clear Lock</a> Or,"
 msgstr ""
 
-#: admin/posting.php:235 includes/Admin/Posting.php:224
+#: admin/posting.php:235 includes/Admin/Posting.php:222
 msgid "Lock Post Permanently"
 msgstr ""
 
-#: admin/posting.php:240 includes/Admin/Posting.php:229
+#: admin/posting.php:240 includes/Admin/Posting.php:227
 msgid "Lock user from editing this post from the frontend dashboard"
 msgstr ""
 
-#: admin/posting.php:291 includes/Admin/Posting.php:280
+#: admin/posting.php:291 includes/Admin/Posting.php:278
 msgid "WPUF Custom Fields"
 msgstr ""
 
-#: admin/posting.php:348 includes/Admin/Posting.php:337
+#: admin/posting.php:348 includes/Admin/Posting.php:335
 msgid "No custom fields found."
 msgstr ""
 
-#: admin/posting.php:543 includes/Admin/Posting.php:532
+#: admin/posting.php:543 includes/Admin/Posting.php:530
 #: includes/Admin/Promotion.php:216 includes/Admin/Promotion.php:220
 #: includes/Admin/Promotion.php:224 includes/Admin/Promotion.php:301
 #: includes/Admin/Promotion.php:305 includes/Admin/Promotion.php:309
 #: includes/Ajax/Admin_Form_Builder_Ajax.php:27
 #: includes/Ajax/Admin_Form_Builder_Ajax.php:31
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:82
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:35
 #: includes/Ajax/Admin_Form_Builder_Ajax.php:86
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:90
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:94
 #: includes/Integrations/WPUF_ACF_Compatibility.php:76
 #: includes/Integrations/WPUF_ACF_Compatibility.php:94
 #: includes/Integrations/WPUF_ACF_Compatibility.php:160
@@ -2612,19 +2614,19 @@ msgstr ""
 msgid "Payment type not selected for this form. Please contact admin."
 msgstr ""
 
-#: includes/Admin/Forms/Post/Templates/Form_Template.php:103
+#: includes/Admin/Forms/Post/Templates/Form_Template.php:102
 msgid "Want a new integration? <a href=\"%s\" target=\"_blank\">Let us know</a>."
 msgstr ""
 
-#: includes/Admin/Forms/Post/Templates/Form_Template.php:215
+#: includes/Admin/Forms/Post/Templates/Form_Template.php:214
 msgid "Form Template"
 msgstr ""
 
-#: includes/Admin/Forms/Post/Templates/Form_Template.php:218
+#: includes/Admin/Forms/Post/Templates/Form_Template.php:217
 msgid "&mdash; No Template &mdash;"
 msgstr ""
 
-#: includes/Admin/Forms/Post/Templates/Form_Template.php:227
+#: includes/Admin/Forms/Post/Templates/Form_Template.php:226
 msgid ""
 "If selected a form template, it will try to execute that integration "
 "options when new post created and updated."
@@ -4063,55 +4065,55 @@ msgstr ""
 msgid "form data is missing"
 msgstr ""
 
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:35
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:39
 msgid "Invalid form id"
 msgstr ""
 
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:90
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:98
 msgid "Invalid post type"
 msgstr ""
 
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:103
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:111
 msgid "Default "
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:59
+#: includes/Ajax/Frontend_Form_Ajax.php:64
 msgid "Minimum %d character is required for %s"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:67
+#: includes/Ajax/Frontend_Form_Ajax.php:72
 msgid "Maximum %d character is allowed for %s"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:78
+#: includes/Ajax/Frontend_Form_Ajax.php:83
 msgid "Minimum %d word is required for %s"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:86
+#: includes/Ajax/Frontend_Form_Ajax.php:91
 msgid "Maximum %d word is allowed for %s"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:106
+#: includes/Ajax/Frontend_Form_Ajax.php:111
 msgid "Using %s as shortcode is restricted"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:334 includes/Api/Subscription.php:264
+#: includes/Ajax/Frontend_Form_Ajax.php:339 includes/Api/Subscription.php:264
 #: includes/Api/Subscription.php:294 includes/Api/Subscription.php:368
 msgid "Something went wrong"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:406
-#: includes/Ajax/Frontend_Form_Ajax.php:412
+#: includes/Ajax/Frontend_Form_Ajax.php:411
+#: includes/Ajax/Frontend_Form_Ajax.php:417
 msgid ""
 "Thank you for posting on our site. We have sent you an confirmation email. "
 "Please check your inbox!"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:482
+#: includes/Ajax/Frontend_Form_Ajax.php:487
 msgid "Invalid email address."
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:508
+#: includes/Ajax/Frontend_Form_Ajax.php:513
 msgid ""
 "You already have an account in our site. Please login to continue.\n"
 "\n"
@@ -4120,7 +4122,7 @@ msgid ""
 "Click 'Cancel' to stay at this page."
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:562
+#: includes/Ajax/Frontend_Form_Ajax.php:567
 #: includes/Frontend_Render_Form.php:216
 #: includes/class-frontend-render-form.php:324
 msgid "You do not have sufficient permissions to access this form."
@@ -5704,52 +5706,52 @@ msgstr ""
 msgid "You are not the post author. Cheating huh!"
 msgstr ""
 
-#: includes/Frontend/Frontend_Form.php:48
+#: includes/Frontend/Frontend_Form.php:51
 msgid "You are not logged in"
 msgstr ""
 
-#: includes/Frontend/Frontend_Form.php:58
-#: includes/Frontend/Frontend_Form.php:88
+#: includes/Frontend/Frontend_Form.php:61
+#: includes/Frontend/Frontend_Form.php:91
 msgid "Invalid post"
 msgstr ""
 
-#: includes/Frontend/Frontend_Form.php:65
+#: includes/Frontend/Frontend_Form.php:68
 msgid "Your edit access for this post has been locked by an administrator."
 msgstr ""
 
-#: includes/Frontend/Frontend_Form.php:69
+#: includes/Frontend/Frontend_Form.php:72
 msgid "Your allocated time for editing this post has been expired."
 msgstr ""
 
-#: includes/Frontend/Frontend_Form.php:77
+#: includes/Frontend/Frontend_Form.php:80
 msgid "Your post edit access has been locked by an administrator."
 msgstr ""
 
-#: includes/Frontend/Frontend_Form.php:82
+#: includes/Frontend/Frontend_Form.php:85
 msgid "Post Editing is disabled"
 msgstr ""
 
-#: includes/Frontend/Frontend_Form.php:93
+#: includes/Frontend/Frontend_Form.php:96
 msgid "You are not allowed to edit"
 msgstr ""
 
-#: includes/Frontend/Frontend_Form.php:104
+#: includes/Frontend/Frontend_Form.php:107
 msgid "I don't know how to edit this post, I don't have the form ID"
 msgstr ""
 
-#: includes/Frontend/Frontend_Form.php:117
+#: includes/Frontend/Frontend_Form.php:120
 msgid "You can't edit a post while in pending mode."
 msgstr ""
 
-#: includes/Frontend/Frontend_Form.php:121
+#: includes/Frontend/Frontend_Form.php:124
 msgid "You're not allowed to edit this post."
 msgstr ""
 
-#: includes/Frontend/Frontend_Form.php:278
+#: includes/Frontend/Frontend_Form.php:281
 msgid "Post Saved"
 msgstr ""
 
-#: includes/Frontend/Frontend_Form.php:367
+#: includes/Frontend/Frontend_Form.php:373
 msgid "Email successfully verified. Please Login."
 msgstr ""
 
@@ -5959,13 +5961,13 @@ msgstr ""
 msgid "Please Cancel Your Currently Active Pack first!"
 msgstr ""
 
-#: includes/Frontend_Render_Form.php:300
+#: includes/Frontend_Render_Form.php:299
 #: includes/class-frontend-render-form.php:910
 #: templates/dashboard/posts.php:120
 msgid "Featured"
 msgstr ""
 
-#: includes/Frontend_Render_Form.php:305
+#: includes/Frontend_Render_Form.php:304
 #: includes/class-frontend-render-form.php:915
 msgid "Mark the %s as featured (remaining %d)"
 msgstr ""
@@ -6053,27 +6055,27 @@ msgstr ""
 msgid "Set endpoint for vendor submit post page"
 msgstr ""
 
-#: includes/Setup_Wizard.php:149
+#: includes/Setup_Wizard.php:155
 msgid "Introduction"
 msgstr ""
 
-#: includes/Setup_Wizard.php:159
+#: includes/Setup_Wizard.php:165
 msgid "Ready!"
 msgstr ""
 
-#: includes/Setup_Wizard.php:196
+#: includes/Setup_Wizard.php:202
 msgid "WPUF &rsaquo; Setup Wizard"
 msgstr ""
 
-#: includes/Setup_Wizard.php:269
+#: includes/Setup_Wizard.php:275
 msgid "Return to the WordPress Dashboard"
 msgstr ""
 
-#: includes/Setup_Wizard.php:310
+#: includes/Setup_Wizard.php:316
 msgid "Welcome to the world of WPUF!"
 msgstr ""
 
-#: includes/Setup_Wizard.php:315
+#: includes/Setup_Wizard.php:321
 #. translators: %1$s and %2$s are strong tags
 msgid ""
 "Thank you for choosing WPUF to power your websites frontend! This quick "
@@ -6081,54 +6083,54 @@ msgid ""
 "completely optional and shouldn’t take longer than a minute%2$s"
 msgstr ""
 
-#: includes/Setup_Wizard.php:319
+#: includes/Setup_Wizard.php:325
 msgid ""
 "No time right now? If you don’t want to go through the wizard, you can skip "
 "and return to the WordPress dashboard. Come back anytime if you change your "
 "mind!"
 msgstr ""
 
-#: includes/Setup_Wizard.php:321
+#: includes/Setup_Wizard.php:327
 msgid "Let's Go!"
 msgstr ""
 
-#: includes/Setup_Wizard.php:322
+#: includes/Setup_Wizard.php:328
 msgid "Not right now"
 msgstr ""
 
-#: includes/Setup_Wizard.php:333
+#: includes/Setup_Wizard.php:339
 msgid "Basic Setting"
 msgstr ""
 
-#: includes/Setup_Wizard.php:340
+#: includes/Setup_Wizard.php:346
 msgid "Make payment enable for user to add posts on frontend."
 msgstr ""
 
-#: includes/Setup_Wizard.php:347
+#: includes/Setup_Wizard.php:353
 msgid "Install neccessery pages on your site frontend."
 msgstr ""
 
-#: includes/Setup_Wizard.php:352
+#: includes/Setup_Wizard.php:358
 msgid "Share Essentials "
 msgstr ""
 
-#: includes/Setup_Wizard.php:384
+#: includes/Setup_Wizard.php:390
 msgid "Continue"
 msgstr ""
 
-#: includes/Setup_Wizard.php:385
+#: includes/Setup_Wizard.php:391
 msgid "Skip this step"
 msgstr ""
 
-#: includes/Setup_Wizard.php:434
+#: includes/Setup_Wizard.php:440
 msgid "Thank you!"
 msgstr ""
 
-#: includes/Setup_Wizard.php:439
+#: includes/Setup_Wizard.php:445
 msgid "Welcome to Awesomeness!"
 msgstr ""
 
-#: includes/Setup_Wizard.php:443
+#: includes/Setup_Wizard.php:449
 msgid "Go to Full Settings"
 msgstr ""
 
@@ -7330,7 +7332,7 @@ msgstr ""
 msgid "You have created <span>%d</span> (%s)"
 msgstr ""
 
-#: templates/dokan/new-post.php:7 templates/wc-marketplace/new-post.php:7
+#: templates/dokan/new-post.php:6 templates/wc-marketplace/new-post.php:7
 #: templates/wc-vendors/new-post.php:7
 msgid "You are not allowed to submit post. Please contact admin"
 msgstr ""
@@ -7684,11 +7686,11 @@ msgstr ""
 msgid "</strong> or greater."
 msgstr ""
 
-#: wpuf.php:240
+#: wpuf.php:241
 msgid "Your WP User Frontend Pro is almost ready!"
 msgstr ""
 
-#: wpuf.php:244
+#: wpuf.php:245
 #. translators: 1: opening anchor tag, 2: closing anchor tag.
 msgid ""
 "We've pushed a major update on both <b>WP User Frontend Free</b> and <b>WP "
@@ -7715,62 +7717,62 @@ msgstr ""
 msgid "https://wedevs.com/?utm_source=WPUF_Author_URI"
 msgstr ""
 
-#: includes/Setup_Wizard.php:56
+#: includes/Setup_Wizard.php:62
 msgctxt "enhanced select"
 msgid "One result is available, press enter to select it."
 msgstr ""
 
-#: includes/Setup_Wizard.php:59
+#: includes/Setup_Wizard.php:65
 msgctxt "enhanced select"
 msgid "%qty% results are available, use up and down arrow keys to navigate."
 msgstr ""
 
-#: includes/Setup_Wizard.php:63
+#: includes/Setup_Wizard.php:69
 msgctxt "enhanced select"
 msgid "No matches found"
 msgstr ""
 
-#: includes/Setup_Wizard.php:64
+#: includes/Setup_Wizard.php:70
 msgctxt "enhanced select"
 msgid "Loading failed"
 msgstr ""
 
-#: includes/Setup_Wizard.php:65
+#: includes/Setup_Wizard.php:71
 msgctxt "enhanced select"
 msgid "Please enter 1 or more characters"
 msgstr ""
 
-#: includes/Setup_Wizard.php:68
+#: includes/Setup_Wizard.php:74
 msgctxt "enhanced select"
 msgid "Please enter %qty% or more characters"
 msgstr ""
 
-#: includes/Setup_Wizard.php:71
+#: includes/Setup_Wizard.php:77
 msgctxt "enhanced select"
 msgid "Please delete 1 character"
 msgstr ""
 
-#: includes/Setup_Wizard.php:72
+#: includes/Setup_Wizard.php:78
 msgctxt "enhanced select"
 msgid "Please delete %qty% characters"
 msgstr ""
 
-#: includes/Setup_Wizard.php:75
+#: includes/Setup_Wizard.php:81
 msgctxt "enhanced select"
 msgid "You can only select 1 item"
 msgstr ""
 
-#: includes/Setup_Wizard.php:78
+#: includes/Setup_Wizard.php:84
 msgctxt "enhanced select"
 msgid "You can only select %qty% items"
 msgstr ""
 
-#: includes/Setup_Wizard.php:81
+#: includes/Setup_Wizard.php:87
 msgctxt "enhanced select"
 msgid "Loading more results&hellip;"
 msgstr ""
 
-#: includes/Setup_Wizard.php:84
+#: includes/Setup_Wizard.php:90
 msgctxt "enhanced select"
 msgid "Searching&hellip;"
 msgstr ""

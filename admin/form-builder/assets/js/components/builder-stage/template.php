@@ -18,7 +18,7 @@
                 {{ field.label }} <span v-if="field.required && 'yes' === field.required" class="required">*</span>
             </label>
         </div>
-        <div class="wpuf-w-3/4">
+        <div :class="is_full_width(field.template) ? 'wpuf-w-full' : 'wpuf-w-3/4'">
             <component
                 v-if="is_template_available(field)"
                 :is="'form-' + field.template"

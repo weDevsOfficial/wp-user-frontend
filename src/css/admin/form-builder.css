@@ -40,3 +40,9 @@
 .wpuf-dropdown-container:hover .wpuf-dropdown-item {
     @apply wpuf-opacity-100 wpuf-scale-100;
 }
+
+.wpuf-pattern-1 {
+    border: 1px dashed #ddd;
+    opacity: 0.5;
+    background: repeating-linear-gradient( -45deg, #ddd, #ddd 2px, #fff 2px, #fff 10px );
+}

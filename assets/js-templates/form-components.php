@@ -19,7 +19,7 @@
                 {{ field.label }} <span v-if="field.required && 'yes' === field.required" class="required">*</span>
             </label>
         </div>
-        <div class="wpuf-w-3/4">
+        <div :class="is_full_width(field.template) ? 'wpuf-w-full' : 'wpuf-w-3/4'">
             <component
                 v-if="is_template_available(field)"
                 :is="'form-' + field.template"
@@ -484,11 +484,11 @@
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-form-column_field">
-<div v-bind:class="['wpuf-field-columns', 'has-columns-'+field.columns]">
+<div v-bind:class="['wpuf-field-columns wpuf-bg-gray-50 wpuf-min-h-24', 'has-columns-'+field.columns]">
     <div class="wpuf-column-field-inner-columns">
-        <div class="wpuf-column">
+        <div class="wpuf-column wpuf-flex">
             <!-- don't change column class names -->
-            <div v-for="column in columnClasses" :class="[column, 'items-of-column-'+field.columns, 'wpuf-column-inner-fields']" :style="{ width: field.inner_columns_size[column], paddingRight: field.column_space+'px'}">
+            <div v-for="column in columnClasses" :class="[column, 'items-of-column-'+field.columns, 'wpuf-column-inner-fields wpuf-pattern-1 wpuf-min-h-20 wpuf-m-2']" :style="{ width: field.inner_columns_size[column], paddingRight: field.column_space+'px'}">
                 <ul class="wpuf-column-fields-sortable-list">
                     <li
                         v-for="(field, index) in column_fields[column]"
@@ -525,16 +525,11 @@
                             </p>
                         </div>
                     </li>
+
                 </ul>
             </div>
         </div>
     </div>
-
-    <ul role="list" class="wpuf-divide-y wpuf-divide-gray-200">
-        <li class="wpuf-py-4"></li>
-        <li class="wpuf-py-4"></li>
-        <li class="wpuf-py-4"></li>
-    </ul>
 </div>
 </script>
 
@@ -820,9 +815,24 @@
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-form-section_break">
-<div class="wpuf-section-wrap">
-    <h2 class="wpuf-section-title">{{ field.label }}</h2>
-    <div class="wpuf-section-details">{{ field.description }}</div>
+<div class="wpuf-fields">
+    <div
+        v-if="!field.divider || field.divider === 'regular'"
+        class="wpuf-section-wrap">
+        <h2 class="wpuf-section-title">{{ field.label }}</h2>
+        <div class="wpuf-section-details">{{ field.description }}</div>
+        <div class="wpuf-border wpuf-border-gray-200 wpuf-h-0 wpuf-w-full"></div>
+    </div>
+    <div
+        v-else-if="field.divider === 'dashed'"
+        class="wpuf-section-wrap">
+        <div class="wpuf-flex wpuf-items-center wpuf-justify-between">
+            <div class="wpuf-border wpuf-border-gray-200 wpuf-h-0 wpuf-w-2/5"></div>
+            <div class="wpuf-section-title wpuf-text-base text-gray-900 wpuf-px-3 wpuf-font-semibold">{{ field.label }}</div>
+            <div class="wpuf-border wpuf-border-gray-200 wpuf-h-0 wpuf-w-2/5"></div>
+        </div>
+        <div class="wpuf-section-details wpuf-text-gray-400 wpuf-text-center wpuf-mt-2">{{ field.description }}</div>
+    </div>
 </div>
 </script>
 

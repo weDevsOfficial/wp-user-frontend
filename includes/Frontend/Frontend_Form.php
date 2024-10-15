@@ -16,6 +16,9 @@ class Frontend_Form extends Frontend_Render_Form {
     public function __construct() {
         // // guest post hook
         add_action( 'init', [ $this, 'publish_guest_post' ] );
+        // notification and other tasks after the guest verified the email
+        add_action( 'wpuf_guest_post_email_verified', [ $this, 'send_mail_to_admin_after_guest_mail_verified' ] );
+
         $this->set_wp_post_types();
 
         // Enable post edit link for post authors in frontend
@@ -326,48 +329,52 @@ class Frontend_Form extends Frontend_Render_Form {
         $pid      = isset( $_GET['p_id'] ) ? sanitize_text_field( wp_unslash( $_GET['p_id'] ) ) : '';
         $fid      = isset( $_GET['f_id'] ) ? sanitize_text_field( wp_unslash( $_GET['f_id'] ) ) : '';
 
-        if ( $post_msg === 'verified' ) {
-            $response       = [];
-            $post_id        = wpuf_decryption( $pid );
-            $form_id        = wpuf_decryption( $fid );
-            $form_settings  = wpuf_get_form_settings( $form_id );
-            $post_author_id = get_post_field( 'post_author', $post_id );
-            $payment_status = new Subscription();
-            $form           = new Form( $form_id );
-            $pay_per_post   = $form->is_enabled_pay_per_post();
-            $force_pack     = $form->is_enabled_force_pack();
+        if ( $post_msg !== 'verified' ) {
+            return;
+        }
 
-            if ( $form->is_charging_enabled() && $pay_per_post ) {
-                if ( ( $payment_status->get_payment_status( $post_id ) ) === 'pending' ) {
-                    $response['show_message'] = true;
-                    $response['redirect_to']  = add_query_arg(
-                        [
-                            'action'  => 'wpuf_pay',
-                            'type'    => 'post',
-                            'post_id' => $post_id,
-                        ],
-                        get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) )
-                    );
+        $response       = [];
+        $post_id        = wpuf_decryption( $pid );
+        $form_id        = wpuf_decryption( $fid );
+        $form_settings  = wpuf_get_form_settings( $form_id );
+        $post_author_id = get_post_field( 'post_author', $post_id );
+        $payment_status = new Subscription();
+        $form           = new Form( $form_id );
+        $pay_per_post   = $form->is_enabled_pay_per_post();
+        $force_pack     = $form->is_enabled_force_pack();
 
-                    wp_redirect( $response['redirect_to'] );
-                    wpuf_clear_buffer();
-                    wp_send_json( $response );
-                }
-            } else {
-                $p_status = get_post_status( $post_id );
+        if ( $form->is_charging_enabled() && $pay_per_post ) {
+            if ( ( $payment_status->get_payment_status( $post_id ) ) === 'pending' ) {
+                $response['show_message'] = true;
+                $response['redirect_to']  = add_query_arg(
+                    [
+                        'action'  => 'wpuf_pay',
+                        'type'    => 'post',
+                        'post_id' => $post_id,
+                    ],
+                    get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) )
+                );
 
-                if ( $p_status ) {
-                    wp_update_post(
-                        [
-                            'ID'          => $post_id,
-                            'post_status' => isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish',
-                        ]
-                    );
+                wp_redirect( $response['redirect_to'] );
+                wpuf_clear_buffer();
+                wp_send_json( $response );
+            }
+        } else {
+            $p_status = get_post_status( $post_id );
 
-                    echo wp_kses_post( "<div class='wpuf-success' style='text-align:center'>" . __( 'Email successfully verified. Please Login.', 'wp-user-frontend' ) . '</div>' );
-                }
+            if ( $p_status ) {
+                wp_update_post(
+                    [
+                        'ID'          => $post_id,
+                        'post_status' => isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish',
+                    ]
+                );
+
+                echo wp_kses_post( "<div class='wpuf-success' style='text-align:center'>" . __( 'Email successfully verified. Please Login.', 'wp-user-frontend' ) . '</div>' );
             }
         }
+
+        do_action( 'wpuf_guest_post_email_verified', $post_id );
     }
 
     /**
@@ -475,5 +482,168 @@ class Frontend_Form extends Frontend_Render_Form {
 
             $this->form_settings['message_restrict'] = str_replace( $placeholders, $replace, $this->form_settings['message_restrict'] );
         }
+    }
+
+    /**
+     * Send a notification mail after a guest verified his/her email
+     *
+     * @since WPUF
+     *
+     * @return void
+     */
+    public function send_mail_to_admin_after_guest_mail_verified() {
+        $post_id = ! empty( $_GET['p_id'] ) ? wpuf_decryption( sanitize_text_field( wp_unslash( $_GET['p_id'] ) ) ) : 0;
+        $form_id = ! empty( $_GET['f_id'] ) ? wpuf_decryption( sanitize_text_field( wp_unslash( $_GET['f_id'] ) ) ) : 0;
+
+        if ( empty( $post_id ) || empty( $form_id ) ) {
+            return;
+        }
+
+        $form = new Form( $form_id );
+
+        if ( empty( $form->data ) ) {
+            return;
+        }
+
+        $this->form_fields   = $form->get_fields();
+        $this->form_settings = $form->get_settings();
+
+        $author_id = get_post_field( 'post_author', $post_id );
+
+        $is_email_varified = get_user_meta( $author_id, 'wpuf_guest_email_verified', true );
+
+        // if user email already verified, no need to check again.
+        // It will prevent mail flooding by clicking on the same link
+        if ( $is_email_varified ) {
+            return;
+        }
+
+        $mail_body   = $this->prepare_mail_body( $this->form_settings['notification']['new_body'], $author_id, $post_id );
+        $to          = $this->prepare_mail_body( $this->form_settings['notification']['new_to'], $author_id, $post_id );
+        $subject     = $this->prepare_mail_body( $this->form_settings['notification']['new_subject'], $author_id, $post_id );
+        $subject     = wp_strip_all_tags( $subject );
+        $mail_body   = get_formatted_mail_body( $mail_body, $subject );
+        $headers     = [ 'Content-Type: text/html; charset=UTF-8' ];
+
+        // update the information for future to check if the email is already verified
+        update_user_meta( $author_id, 'wpuf_guest_email_verified', 1 );
+        wp_mail( $to, $subject, $mail_body, $headers );
+    }
+
+    /**
+     * Prepare the mail body
+     *
+     * @param $content
+     * @param $user_id
+     * @param $post_id
+     *
+     * @return array|string|string[]
+     */
+    public function prepare_mail_body( $content, $user_id, $post_id ) {
+        $user = get_user_by( 'id', $user_id );
+        $post = get_post( $post_id );
+
+        $post_field_search = [
+            '{post_title}',
+            '{post_content}',
+            '{post_excerpt}',
+            '{tags}',
+            '{category}',
+            '{author}',
+            '{author_email}',
+            '{author_bio}',
+            '{sitename}',
+            '{siteurl}',
+            '{permalink}',
+            '{editlink}',
+        ];
+
+        $home_url = sprintf( '<a href="%s">%s</a>', home_url(), home_url() );
+        $post_url = sprintf( '<a href="%s">%s</a>', get_permalink( $post_id ), get_permalink( $post_id ) );
+        $post_edit_link = sprintf( '<a href="%s">%s</a>', admin_url( 'post.php?action=edit&post=' . $post_id ), admin_url( 'post.php?action=edit&post=' . $post_id ) );
+
+        $post_field_replace = [
+            $post->post_title,
+            $post->post_content,
+            $post->post_excerpt,
+            get_the_term_list( $post_id, 'post_tag', '', ', ' ),
+            get_the_term_list( $post_id, 'category', '', ', ' ),
+            $user->display_name,
+            $user->user_email,
+            ( $user->description ) ? $user->description : 'not available',
+            get_bloginfo( 'name' ),
+            $home_url,
+            $post_url,
+            $post_edit_link,
+        ];
+
+        if ( class_exists( 'WooCommerce' ) ) {
+            $post_field_search[] = '{product_cat}';
+            $post_field_replace[] = get_the_term_list( $post_id, 'product_cat', '', ', ' );
+        }
+
+        $content = str_replace( $post_field_search, $post_field_replace, $content );
+
+        // custom fields
+        preg_match_all( '/{custom_([\w-]*)\b}/', $content, $matches );
+        [ $search, $replace ] = $matches;
+
+        if ( $replace ) {
+            foreach ( $replace as $index => $meta_key ) {
+                $value = get_post_meta( $post_id, $meta_key, false );
+
+                if ( isset( $value[0] ) && is_array( $value[0] ) ) {
+                    $new_value = implode( '; ', $value[0] );
+                } else {
+                    $new_value = implode( '; ', $value );
+                }
+
+                $original_value = '';
+                $meta_val       = '';
+
+                if ( count( $value ) > 1 ) {
+                    $is_first = true;
+
+                    foreach ( $value as $val ) {
+                        if ( $is_first ) {
+                            if ( get_post_mime_type( (int) $val ) ) {
+                                $meta_val = wp_get_attachment_url( $val );
+                            } else {
+                                $meta_val = $val;
+                            }
+                            $is_first = false;
+                        } else {
+                            if ( get_post_mime_type( (int) $val ) ) {
+                                $meta_val = $meta_val . ', ' . wp_get_attachment_url( $val );
+                            } else {
+                                $meta_val = $meta_val . ', ' . $val;
+                            }
+                        }
+
+                        if ( get_post_mime_type( (int) $val ) ) {
+                            $meta_val = $meta_val . ',' . wp_get_attachment_url( $val );
+                        } else {
+                            $meta_val = $meta_val . ',' . $val;
+                        }
+                    }
+                    $original_value = $original_value . $meta_val;
+                } else {
+                    if ( 'address_field' === $meta_key ) {
+                        $value     = get_post_meta( $post_id, $meta_key, true );
+                        $new_value = implode( ', ', $value );
+                    }
+
+                    if ( get_post_mime_type( (int) $new_value ) ) {
+                        $original_value = wp_get_attachment_url( $new_value );
+                    } else {
+                        $original_value = $new_value;
+                    }
+                }
+
+                $content = str_replace( $search[ $index ], $original_value, $content );
+            }
+        }
+
+        return $content;
     }
 }

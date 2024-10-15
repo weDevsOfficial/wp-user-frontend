@@ -180,11 +180,8 @@ class Frontend {
     private function dokan_is_seller_dashboard() {
         return class_exists( 'WeDevs_Dokan' )
                 && function_exists( 'dokan_is_seller_dashboard' )
-                && dokan_is_seller_dashboard()
-                && ! empty( $wp->query_vars['posts'] );
+                && dokan_is_seller_dashboard();
     }
-
-
 
     /**
      * Show/hide admin bar to the permitted user level

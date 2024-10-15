@@ -2,7 +2,7 @@
 
 namespace WeDevs\Wpuf\Lib;
 
-if ( ! class_exists( 'WPUF_WeDevs_Insights' ) ) :
+if ( ! class_exists( 'WeDevs_Insights' ) ) :
 
 /**
  * weDevs Tracker
@@ -17,7 +17,7 @@ if ( ! class_exists( 'WPUF_WeDevs_Insights' ) ) :
  */
 class WeDevs_Insights {
     /**
-     * @var object|Appsero\Insights|Insights
+     * @var object|Appsero\Insights
      */
     public $insights;
 
@@ -25,18 +25,10 @@ class WeDevs_Insights {
      * Initialize the class
      */
     public function __construct( $file ) {
-        if ( ! class_exists( 'Appsero\Client' ) ) {
-            require_once WPUF_ROOT . '/Lib/Appsero/Client.php';
-        }
-
         $client = new Appsero\Client( '958afc63-99f8-4b98-b321-fcbc5cf95694', 'WP User Frontend', $file );
         $this->insights = $client->insights();
         $this->insights->client = $client;
         $this->insights->init();
-
-//        $client = new Appsero\Client( '958afc63-99f8-4b98-b321-fcbc5cf95694', 'WP User Frontend', $file );
-//        $this->insights = $client->insights();
-//        $this->insights->init();
     }
 }
 

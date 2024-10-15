@@ -55,9 +55,9 @@ class Menu {
             $this->all_submenu_hooks['subscription_hook'] = $subscription_hook;
             add_action( 'load-' . $subscription_hook, [ $this, 'subscription_menu_action' ] );
 
-            $transactions_page = add_submenu_page( $this->parent_slug, __( 'Transactions', 'wp-user-frontend' ), __( 'Transactions', 'wp-user-frontend' ), $capability, 'wpuf_transaction', [ $this, 'transactions_page' ] );
+            $transactions_page = add_submenu_page( $this->parent_slug, __( 'Transactions', 'wp-user-frontend' ), __( 'Transactions', 'wp-user-frontend' ), $capability, 'wpuf-transaction', [ $this, 'transactions_page' ] );
 
-            add_action( 'load-' . $transactions_page, [ $this, 'transactions_screen_option' ] );
+            add_action( 'load-' . $transactions_page, [ $this, 'transactions_menu_action' ] );
         }
 
         $tools_hook = add_submenu_page( $this->parent_slug, __( 'Tools', 'wp-user-frontend' ), __( 'Tools', 'wp-user-frontend' ), $capability, 'wpuf_tools', [ $this, 'tools_page' ] );
@@ -167,12 +167,34 @@ class Menu {
         do_action( 'wpuf_load_post_forms' );
     }
 
+    /**
+     * The action to run just after the menu is created.
+     *
+     * @since 4.0.11
+     *
+     * @return void
+     */
     public function subscription_menu_action() {
         /**
          * Backdoor for calling the menu hook.
          * This hook won't get translated even the site language is changed
          */
         do_action( 'wpuf_load_subscription_page' );
+    }
+
+    /**
+     * The action to run just after the menu is created.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function transactions_menu_action() {
+        /**
+         * Backdoor for calling the menu hook.
+         * This hook won't get translated even the site language is changed
+         */
+        do_action( 'wpuf_load_transactions_page' );
     }
 
     /**
@@ -188,26 +210,8 @@ class Menu {
         wpuf_require_once( $page );
     }
 
-    /**
-     * Screen options.
-     *
-     * @return void
-     */
-    public function transactions_screen_option() {
-        $option = 'per_page';
-        $args   = [
-            'label'   => __( 'Number of items per page:', 'wp-user-frontend' ),
-            'default' => 20,
-            'option'  => 'transactions_per_page',
-        ];
-
-        add_screen_option( $option, $args );
-
-        wpuf()->admin->transaction_list_table = new List_Table_Transactions();
-    }
-
     public function transactions_page() {
-        $page = WPUF_INCLUDES . '/Admin/views/transactions-list-table-view.php';
+        $page = WPUF_INCLUDES . '/Admin/views/transactions.php';
 
         wpuf_require_once( $page );
     }

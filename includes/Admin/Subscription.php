@@ -34,6 +34,7 @@ class Subscription {
         add_action( 'save_post', [ $this, 'save_form_meta' ], 10, 2 );
         add_filter( 'enter_title_here', [ $this, 'change_default_title' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'subscription_script' ] );
+        add_filter( 'script_loader_tag', [ $this, 'add_type_attribute' ], 10, 3 );
 
         add_action( 'user_register', [ $this, 'after_registration' ], 10, 1 );
 
@@ -49,6 +50,27 @@ class Subscription {
         //Handle non recurring subscription when expired
         add_action( 'wp', [ $this, 'handle_non_recur_subs' ] );
         add_action( 'non_recur_subs_daily', [ $this, 'cancel_non_recurring_subscription' ] );
+    }
+
+    /**
+     * Add type="module" to the script tag
+     *
+     * @param $tag
+     * @param $handle
+     * @param $src
+     *
+     * @since WPUF_SINCE
+     *
+     * @return mixed|string
+     */
+    public function add_type_attribute( $tag, $handle, $src ) {
+        // Check if this is the script you want to modify
+        if ( 'wpuf-admin-subscriptions' === $handle ) {
+            // phpcs:ignore
+            $tag = '<script type="module" src="' . esc_url( $src ) . '"></script>';
+        }
+
+        return $tag;
     }
 
     /**
@@ -235,7 +257,6 @@ class Subscription {
      * @since 2.2
      */
     public function subscription_script() {
-        // wp_enqueue_script( 'wpuf-subscriptions', WPUF_ASSET_URI . '/js/subscriptions.js', [ 'jquery' ], WPUF_VERSION, true );
         wp_localize_script(
             'wpuf-subscriptions', 'wpuf_subs_vars', array(
                 'wpuf_subscription_delete_nonce' => wp_create_nonce( 'wpuf-subscription-delete-nonce' ),

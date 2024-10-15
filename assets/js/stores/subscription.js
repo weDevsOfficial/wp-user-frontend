@@ -196,6 +196,10 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                 return;
             }
 
+            if ( (typeof this.currentSubscription.meta_value[key] === 'string') && key === 'additional_cpt_options' ) {
+                this.currentSubscription.meta_value[key] = {};
+            }
+
             this.currentSubscription.meta_value[key][serializeKey] = value;
         },
         getMetaValue( key ) {

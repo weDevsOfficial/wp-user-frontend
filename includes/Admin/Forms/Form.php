@@ -193,7 +193,6 @@ class Form {
             return [ $user_can_post, $info ];
         }
 
-
         if ( $this->is_charging_enabled() ) {
             $pay_per_post      = $this->is_enabled_pay_per_post();
             // $pay_per_post_cost = (float) $this->get_pay_per_post_cost();

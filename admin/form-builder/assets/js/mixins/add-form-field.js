@@ -46,4 +46,10 @@ wpuf_mixins.add_form_field = {
             this.$store.commit('add_form_field_element', payload);
         },
     },
+
+    computed: {
+        action_button_classes: function() {
+            return 'wpuf-p-2 wpuf-bg-slate-800 wpuf-text-white hover:wpuf-cursor-pointer hover:wpuf-bg-indigo-600';
+        }
+    },
 };

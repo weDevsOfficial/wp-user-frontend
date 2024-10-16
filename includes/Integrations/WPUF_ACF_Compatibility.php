@@ -316,6 +316,7 @@ class WPUF_ACF_Compatibility {
         foreach ( acf_get_fields( $groups ) as $group ) {
             $meta_key = '_' . $group['name'];
             $name     = $group['name'];
+
             if ( 'repeater' === $group['type'] ) {
                 $meta_key = 'repeater';
             }

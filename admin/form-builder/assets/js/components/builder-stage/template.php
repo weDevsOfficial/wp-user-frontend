@@ -8,9 +8,15 @@
         :key="field.id"
         :data-index="index"
         data-source="stage"
-        :class="index === 0 ? '' : 'wpuf-mt-4'"
-        class="wpuf-relative wpuf-flex wpuf-justify-between wpuf-space-x-3 wpuf-rounded-lg wpuf-bg-white wpuf-p-4 hover:wpuf-shadow-sm hover:wpuf-bg-gray-100 hover:wpuf-ease-in wpuf-transition wpuf-duration-150 wpuf-ease-out">
-        <div v-if="!is_full_width(field.template)" class="wpuf-w-1/4">
+        :class="[
+                'field-items', 'wpuf-el', field.name, field.css, 'form-field-' + field.template,
+                field.width ? 'field-size-' + field.width : '',
+                ('custom_hidden_field' === field.template) ? 'hidden-field' : '',
+                parseInt(editing_form_id) === parseInt(field.id) ? 'current-editing' : '',
+                index === 0 ? '' : 'wpuf-mt-4'
+            ]"
+        class="wpuf-relative wpuf-flex wpuf-justify-between wpuf-space-x-3 wpuf-rounded-lg wpuf-bg-white wpuf-p-4 hover:wpuf-shadow-sm hover:wpuf-bg-gray-100 hover:wpuf-ease-in wpuf-border wpuf-border-transparent hover:wpuf-border hover:wpuf-border-dashed hover:wpuf-border-gray-300 wpuf-transition wpuf-duration-150 wpuf-ease-out">
+        <div v-if="!(is_full_width(field.template) || is_pro_feature(field.template))" class="wpuf-w-1/4">
             <label
                 v-if="!is_invisible(field)"
                 :for="'wpuf-' + field.name ? field.name : 'cls'"
@@ -18,12 +24,41 @@
                 {{ field.label }} <span v-if="field.required && 'yes' === field.required" class="required">*</span>
             </label>
         </div>
-        <div :class="is_full_width(field.template) ? 'wpuf-w-full' : 'wpuf-w-3/4'">
-            <component
-                v-if="is_template_available(field)"
-                :is="'form-' + field.template"
-                :field="field"></component>
+        <div :class="(is_full_width(field.template) || is_pro_feature(field.template)) ? 'wpuf-w-full' : 'wpuf-w-3/4'">
+            <component v-if="is_template_available(field)" :is="'form-' + field.template" :field="field"></component>
+            <div v-if="is_pro_feature(field.template)" class="stage-pro-alert wpuf-text-center">
+                <label class="wpuf-pro-text-alert">
+                    <a :href="pro_link" target="_blank" class="wpuf-text-gray-700 wpuf-text-base"><strong>{{ get_field_name(field.template) }}</strong> <?php _e( 'is available in Pro Version', 'wp-user-frontend' ); ?></a>
+                </label>
+            </div>
         </div>
+    </div>
+
+    <div class="control-buttons">
+        <p>
+            <i class="fa fa-pencil" @click="open_field_settings(field.id)"></i>
+            <i class="fa fa-clone" @click="clone_field(field.id, index)"></i>
+            <i class="fa fa-trash-o" @click="delete_hidden_field(field.id)"></i>
+        </p>
+    </div>
+
+    <li class="wpuf-submit wpuf-list-none">
+        <div class="wpuf-label">&nbsp;</div>
+
+        <?php do_action( 'wpuf_form_builder_template_builder_stage_submit_area' ); ?>
+    </li>
+
+    <div v-if="hidden_fields.length" class="wpuf-border-t wpuf-border-dashed wpuf-border-gray-300">
+        <h4><?php esc_html_e( 'Hidden Fields', 'wp-user-frontend' ); ?></h4>
+
+        <ul class="wpuf-form">
+            <li
+                v-for="(field, index) in hidden_fields"
+                :class="['field-items wpuf-bg-gray-50 hover:wpuf-bg-gray-100', parseInt(editing_form_id) === parseInt(field.id) ? 'current-editing' : '']"
+            >
+                <strong><?php esc_html_e( 'key', 'wp-user-frontend' ); ?></strong>: {{ field.name }} | <strong><?php esc_html_e( 'value', 'wp-user-frontend' ); ?></strong>: {{ field.meta_value }}
+            </li>
+        </ul>
     </div>
 
     <ul :class="['wpuf-form', 'sortable-list', 'form-label-' + label_type]">

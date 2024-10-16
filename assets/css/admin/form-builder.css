@@ -1728,6 +1728,10 @@ html {
   cursor: wait;
 }
 
+.wpuf-list-none {
+  list-style-type: none;
+}
+
 .wpuf-grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
@@ -2832,8 +2836,16 @@ html {
   cursor: pointer;
 }
 
+.hover\:wpuf-border:hover {
+  border-width: 1px;
+}
+
 .hover\:wpuf-border-b-2:hover {
   border-bottom-width: 2px;
+}
+
+.hover\:wpuf-border-dashed:hover {
+  border-style: dashed;
 }
 
 .hover\:wpuf-border-blue-600:hover {

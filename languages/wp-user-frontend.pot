@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 4.0.12\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2024-10-14 11:28:52+00:00\n"
+"POT-Creation-Date: 2024-10-16 11:33:42+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -136,9 +136,10 @@ msgid "<span style=\"color:#f18500\">Help</span>"
 msgstr ""
 
 #: admin/class-admin-settings.php:121 admin/class-admin-settings.php:169
-#: admin/form-builder/views/form-builder.php:9
+#: admin/form-builder/views/form-builder-old.php:9
+#: admin/form-builder/views/form-builder.php:66
 #: includes/Admin/Admin_Settings.php:68 includes/Admin/Menu.php:91
-#: includes/Admin/Menu.php:358 includes/Setup_Wizard.php:160
+#: includes/Admin/Menu.php:358 includes/Setup_Wizard.php:156
 msgid "Settings"
 msgstr ""
 
@@ -202,89 +203,89 @@ msgstr ""
 msgid "Add fields by dragging the fields from the right sidebar to this area."
 msgstr ""
 
-#: admin/form-builder/assets/js/components/builder-stage/template.php:29
+#: admin/form-builder/assets/js/components/builder-stage/template.php:32
 #: admin/form-builder/assets/js/components/form-column_field/template.php:29
-#: assets/js-templates/form-components.php:30
-#: assets/js-templates/form-components.php:470
+#: assets/js-templates/form-components.php:33
+#: assets/js-templates/form-components.php:499
 msgid "is available in Pro Version"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/builder-stage/template.php:60
-#: assets/js-templates/form-components.php:61
+#: admin/form-builder/assets/js/components/builder-stage/template.php:75
+#: assets/js-templates/form-components.php:76
 msgid "Hidden Fields"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/builder-stage/template.php:67
-#: assets/js-templates/form-components.php:68
+#: admin/form-builder/assets/js/components/builder-stage/template.php:82
+#: assets/js-templates/form-components.php:83
 msgid "key"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/builder-stage/template.php:67
-#: assets/js-templates/form-components.php:68
+#: admin/form-builder/assets/js/components/builder-stage/template.php:82
+#: assets/js-templates/form-components.php:83
 msgid "value"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-data/template.php:10
-#: admin/template.php:231 assets/js-templates/form-components.php:130
+#: admin/template.php:231 assets/js-templates/form-components.php:137
 #: includes/Admin/Forms/Admin_Template.php:270
 msgid "Show values"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-data/template.php:18
-#: assets/js-templates/form-components.php:138
+#: assets/js-templates/form-components.php:145
 msgid "Sync values"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-data/template.php:20
-#: assets/js-templates/form-components.php:140
+#: assets/js-templates/form-components.php:147
 msgid "When enabled, option values will update according to their labels."
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-data/template.php:32
 #: admin/template.php:234 admin/template.php:286
-#: assets/js-templates/form-components.php:152
+#: assets/js-templates/form-components.php:159
 #: includes/Admin/Forms/Admin_Template.php:275
 #: includes/Admin/Forms/Admin_Template.php:336
 msgid "Label"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-data/template.php:33
-#: assets/js-templates/form-components.php:153
+#: assets/js-templates/form-components.php:160
 msgid "Do not use & or other special character for option label"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-data/template.php:37
 #: admin/template.php:234 admin/template.php:286
-#: assets/js-templates/form-components.php:157
+#: assets/js-templates/form-components.php:164
 #: includes/Admin/Forms/Admin_Template.php:276
 #: includes/Admin/Forms/Admin_Template.php:337
 msgid "Value"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-data/template.php:85
-#: assets/js-templates/form-components.php:205
+#: assets/js-templates/form-components.php:212
 msgid "Clear Selection"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-pro-feature-alert/template.php:4
-#: assets/js-templates/form-components.php:213
+#: assets/js-templates/form-components.php:220
 msgid "Available in Pro Version"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-select/template.php:7
-#: assets/js-templates/form-components.php:308
+#: assets/js-templates/form-components.php:315
 msgid "Select an option"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-visibility/template.php:52
-#: assets/js-templates/form-components.php:412
+#: assets/js-templates/form-components.php:419
 msgid "No subscription plan found."
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-featured_image/template.php:6
 #: admin/form-builder/assets/js/components/form-image_upload/template.php:6
-#: assets/js-templates/form-components.php:545
-#: assets/js-templates/form-components.php:616 class/render-form.php:1670
+#: assets/js-templates/form-components.php:573
+#: assets/js-templates/form-components.php:644 class/render-form.php:1670
 #: includes/Fields/Form_Field_Featured_Image.php:128
 #: includes/Fields/Form_Field_Image.php:122
 #: includes/Fields/Form_Field_Image.php:143 includes/Render_Form.php:1527
@@ -292,58 +293,63 @@ msgid "Select Image"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-post_content/template.php:4
-#: assets/js-templates/form-components.php:653 class/render-form.php:1058
+#: assets/js-templates/form-components.php:682 class/render-form.php:1058
 #: includes/Fields/Form_Field_Post_Content.php:51 includes/Render_Form.php:915
 msgid "Insert Photo"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/form-recaptcha/template.php:10
-#: assets/js-templates/form-components.php:745
+#: admin/form-builder/assets/js/components/form-recaptcha/template.php:12
+#: assets/js-templates/form-components.php:798
 msgid "Invisible reCaptcha"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/form-taxonomy/template.php:11
-#: assets/js-templates/form-components.php:768
+#: admin/form-builder/assets/js/components/form-taxonomy/template.php:13
+#: assets/js-templates/form-components.php:838
 msgid "— Select —"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:5
+#: admin/form-builder/views/form-builder-old.php:5
+#: admin/form-builder/views/form-builder.php:62
 msgid "Form Editor"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:15
+#: admin/form-builder/views/form-builder-old.php:15
+#: admin/form-builder/views/form-builder.php:103
 #: admin/html/form-settings-post.php:23 templates/dashboard/posts.php:165
 msgid "Preview"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:18
+#: admin/form-builder/views/form-builder-old.php:18
+#: admin/form-builder/views/form-builder.php:110
 msgid "Save Form"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:22
+#: admin/form-builder/views/form-builder-old.php:22
+#: admin/form-builder/views/form-builder.php:113
 msgid "Saving Form Data"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:25
-#: admin/form-builder/views/form-builder.php:77
+#: admin/form-builder/views/form-builder-old.php:25
+#: admin/form-builder/views/form-builder-old.php:77
 msgid "Add Fields"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:26
+#: admin/form-builder/views/form-builder-old.php:26
 msgid "Show Form"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:47
+#: admin/form-builder/views/form-builder-old.php:47
+#: admin/form-builder/views/form-builder.php:79
 #. translators: %s: form id
 msgid "Click to copy %s shortcode"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:50
-#: includes/Admin/Forms/Admin_Form_Builder.php:289
+#: admin/form-builder/views/form-builder-old.php:50
+#: includes/Admin/Forms/Admin_Form_Builder.php:300
 msgid "Click to copy shortcode"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:83
+#: admin/form-builder/views/form-builder-old.php:83
 msgid "Field Options"
 msgstr ""
 
@@ -426,7 +432,7 @@ msgstr ""
 msgid "Payment Options"
 msgstr ""
 
-#: admin/html/form-settings-payment.php:26 includes/Setup_Wizard.php:343
+#: admin/html/form-settings-payment.php:26 includes/Setup_Wizard.php:339
 #: includes/functions/settings-options.php:438
 msgid "Enable Payments"
 msgstr ""
@@ -595,7 +601,7 @@ msgid "Submit"
 msgstr ""
 
 #: admin/html/form-settings-post.php:22 class/render-form.php:761
-#: includes/Admin/Forms/Admin_Form_Builder.php:74
+#: includes/Admin/Forms/Admin_Form_Builder.php:75
 #: includes/Frontend_Render_Form.php:79 includes/Render_Form.php:618
 #: includes/class-frontend-render-form.php:183
 msgid "Save Draft"
@@ -836,7 +842,7 @@ msgid ""
 msgstr ""
 
 #: admin/installer.php:30 includes/Admin/Admin_Installer.php:34
-#: includes/Admin/Admin_Tools.php:343 includes/Setup_Wizard.php:350
+#: includes/Admin/Admin_Tools.php:343 includes/Setup_Wizard.php:346
 msgid "Install WPUF Pages"
 msgstr ""
 
@@ -930,85 +936,85 @@ msgid "Sample Form"
 msgstr ""
 
 #: admin/posting.php:74 class/render-form.php:1688
-#: includes/Admin/Posting.php:61 includes/Admin.php:107
+#: includes/Admin/Posting.php:67 includes/Admin.php:107
 #: includes/Fields/Field_Contract.php:931 includes/Frontend.php:72
 #: includes/Render_Form.php:1545
 msgid "Are you sure?"
 msgstr ""
 
-#: admin/posting.php:75 includes/Admin/Forms/Admin_Form_Builder.php:272
-#: includes/Admin/Posting.php:62 includes/Admin.php:108
+#: admin/posting.php:75 includes/Admin/Forms/Admin_Form_Builder.php:283
+#: includes/Admin/Posting.php:68 includes/Admin.php:108
 #: includes/Fields/Field_Contract.php:932 includes/Frontend.php:73
 msgid "Yes, delete it"
 msgstr ""
 
-#: admin/posting.php:76 includes/Admin/Forms/Admin_Form_Builder.php:273
-#: includes/Admin/Posting.php:63 includes/Admin.php:109
+#: admin/posting.php:76 includes/Admin/Forms/Admin_Form_Builder.php:284
+#: includes/Admin/Posting.php:69 includes/Admin.php:109
 #: includes/Fields/Field_Contract.php:933 includes/Frontend.php:74
 msgid "No, cancel it"
 msgstr ""
 
-#: admin/posting.php:82 includes/Admin/Posting.php:69 includes/Admin.php:117
+#: admin/posting.php:82 includes/Admin/Posting.php:75 includes/Admin.php:117
 #: includes/Fields/Field_Contract.php:943 includes/Frontend.php:84
 msgid "Allowed Files"
 msgstr ""
 
-#: admin/posting.php:85 includes/Admin/Posting.php:72 includes/Admin.php:123
+#: admin/posting.php:85 includes/Admin/Posting.php:78 includes/Admin.php:123
 #: includes/Fields/Field_Contract.php:949 includes/Frontend.php:90
 msgid "Maximum number of files reached!"
 msgstr ""
 
-#: admin/posting.php:86 includes/Admin/Posting.php:73 includes/Admin.php:124
+#: admin/posting.php:86 includes/Admin/Posting.php:79 includes/Admin.php:124
 #: includes/Fields/Field_Contract.php:950 includes/Frontend.php:91
 msgid "The file you have uploaded exceeds the file size limit. Please try again."
 msgstr ""
 
-#: admin/posting.php:87 includes/Admin/Posting.php:74 includes/Admin.php:125
+#: admin/posting.php:87 includes/Admin/Posting.php:80 includes/Admin.php:125
 #: includes/Fields/Field_Contract.php:954 includes/Frontend.php:95
 msgid "You have uploaded an incorrect file type. Please try again."
 msgstr ""
 
-#: admin/posting.php:106 includes/Admin/Posting.php:93
+#: admin/posting.php:106 includes/Admin/Posting.php:99
 msgid "WPUF Form"
 msgstr ""
 
-#: admin/posting.php:134 includes/Admin/Posting.php:121
+#: admin/posting.php:134 includes/Admin/Posting.php:127
 msgid "Learn more"
 msgstr ""
 
-#: admin/posting.php:181 includes/Admin/Posting.php:168
+#: admin/posting.php:181 includes/Admin/Posting.php:174
 msgid "WPUF Lock User"
 msgstr ""
 
-#: admin/posting.php:207 includes/Admin/Posting.php:194
+#: admin/posting.php:207 includes/Admin/Posting.php:200
 msgid ""
 "Post is locked, to allow user to edit this post <a "
 "id=\"wpuf_clear_schedule_lock\" data=\"%s\" href=\"#\">Click here</a>"
 msgstr ""
 
-#: admin/posting.php:214 includes/Admin/Posting.php:201
+#: admin/posting.php:214 includes/Admin/Posting.php:207
 msgid ""
 "Frontend edit access for this post will be automatically locked after %s, "
 "<a id=\"wpuf_clear_schedule_lock\" data=\"%s\" href=\"#\">Clear Lock</a> Or,"
 msgstr ""
 
-#: admin/posting.php:235 includes/Admin/Posting.php:222
+#: admin/posting.php:235 includes/Admin/Posting.php:228
 msgid "Lock Post Permanently"
 msgstr ""
 
-#: admin/posting.php:240 includes/Admin/Posting.php:227
+#: admin/posting.php:240 includes/Admin/Posting.php:233
 msgid "Lock user from editing this post from the frontend dashboard"
 msgstr ""
 
-#: admin/posting.php:291 includes/Admin/Posting.php:278
+#: admin/posting.php:291 includes/Admin/Posting.php:284
 msgid "WPUF Custom Fields"
 msgstr ""
 
-#: admin/posting.php:348 includes/Admin/Posting.php:335
+#: admin/posting.php:348 includes/Admin/Posting.php:341
 msgid "No custom fields found."
 msgstr ""
 
-#: admin/posting.php:543 includes/Admin/Posting.php:530
+#: admin/posting.php:543 includes/Admin/Posting.php:536
 #: includes/Admin/Promotion.php:216 includes/Admin/Promotion.php:220
 #: includes/Admin/Promotion.php:224 includes/Admin/Promotion.php:301
 #: includes/Admin/Promotion.php:305 includes/Admin/Promotion.php:309
@@ -1390,8 +1396,8 @@ msgstr ""
 #: includes/Admin/Forms/Admin_Template.php:661
 #: includes/Admin/Forms/Admin_Template.php:746
 #: includes/Ajax/Upload_Ajax.php:236
-#: includes/Fields/Form_Field_SectionBreak.php:58
-#: includes/Fields/Form_Field_reCaptcha.php:150 templates/dashboard/list.php:10
+#: includes/Fields/Form_Field_SectionBreak.php:57
+#: includes/Fields/Form_Field_reCaptcha.php:149 templates/dashboard/list.php:10
 #: templates/dashboard/posts.php:100 wpuf-functions.php:1052
 msgid "Title"
 msgstr ""
@@ -1412,7 +1418,7 @@ msgstr ""
 
 #: admin/template.php:583 includes/Admin/Forms/Admin_Template.php:668
 #: includes/Ajax/Upload_Ajax.php:244
-#: includes/Fields/Form_Field_SectionBreak.php:66 wpuf-functions.php:1060
+#: includes/Fields/Form_Field_SectionBreak.php:65 wpuf-functions.php:1060
 msgid "Description"
 msgstr ""
 
@@ -1437,12 +1443,12 @@ msgid "reCaptcha type"
 msgstr ""
 
 #: admin/template.php:672 includes/Admin/Forms/Admin_Template.php:774
-#: includes/Fields/Form_Field_reCaptcha.php:163
+#: includes/Fields/Form_Field_reCaptcha.php:162
 msgid "Enable Invisible reCaptcha"
 msgstr ""
 
 #: admin/template.php:676 includes/Admin/Forms/Admin_Template.php:780
-#: includes/Fields/Form_Field_reCaptcha.php:162
+#: includes/Fields/Form_Field_reCaptcha.php:161
 msgid "Enable noCaptcha"
 msgstr ""
 
@@ -1577,7 +1583,7 @@ msgid "To cancel the pack, press the following cancel button"
 msgstr ""
 
 #: class/subscription.php:867 includes/Admin/Admin_Subscription.php:925
-#: includes/Admin/Forms/Admin_Form_Builder.php:275
+#: includes/Admin/Forms/Admin_Form_Builder.php:286
 #: includes/Admin/List_Table_Subscribers.php:146
 #: includes/Admin/Subscription.php:886 includes/Frontend/Payment.php:246
 #: templates/dashboard/subscription.php:68
@@ -2478,50 +2484,50 @@ msgstr ""
 msgid "Display Settings"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form.php:266 includes/Free/Form_Element.php:239
+#: includes/Admin/Forms/Admin_Form.php:265 includes/Free/Form_Element.php:239
 #: includes/Free/Form_Element.php:281
 msgid "Notification"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form.php:302
-#: includes/Admin/Forms/Admin_Form.php:308
+#: includes/Admin/Forms/Admin_Form.php:300
+#: includes/Admin/Forms/Admin_Form.php:306
 msgid "- Select -"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form.php:346
+#: includes/Admin/Forms/Admin_Form.php:344
 msgid "Post Fields"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form.php:351
+#: includes/Admin/Forms/Admin_Form.php:349
 msgid "Taxonomies"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form.php:444
+#: includes/Admin/Forms/Admin_Form.php:442
 msgid "Post Forms must have either Post Title, Post Body or Excerpt field"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:270
+#: includes/Admin/Forms/Admin_Form_Builder.php:281
 msgid "Advanced Options"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:271
+#: includes/Admin/Forms/Admin_Form_Builder.php:282
 msgid "Are you sure you want to delete this field?"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:274
+#: includes/Admin/Forms/Admin_Form_Builder.php:285
 msgid "OK"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:276
+#: includes/Admin/Forms/Admin_Form_Builder.php:287
 #: includes/Admin/views/shortcode-builder.php:70
 msgid "Close"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:277
+#: includes/Admin/Forms/Admin_Form_Builder.php:288
 msgid "This field must contain at least one choice"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:278
+#: includes/Admin/Forms/Admin_Form_Builder.php:289
 #: includes/Fields/Form_Field_Checkbox.php:110
 #: includes/Fields/Form_Field_Dropdown.php:107
 #: includes/Fields/Form_Field_MultiDropdown.php:84
@@ -2529,36 +2535,36 @@ msgstr ""
 msgid "Option"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:279
+#: includes/Admin/Forms/Admin_Form_Builder.php:290
 msgid "Column"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:280
+#: includes/Admin/Forms/Admin_Form_Builder.php:291
 msgid "This field must contain at least one column"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:281
+#: includes/Admin/Forms/Admin_Form_Builder.php:292
 msgid "is available in Pro version"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:282
+#: includes/Admin/Forms/Admin_Form_Builder.php:293
 msgid "Please upgrade to the Pro version to unlock all these awesome features"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:285
+#: includes/Admin/Forms/Admin_Form_Builder.php:296
 msgid "Get the Pro version"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:286
+#: includes/Admin/Forms/Admin_Form_Builder.php:297
 #: includes/Fields/Field_Contract.php:445
 msgid "Select"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:287
+#: includes/Admin/Forms/Admin_Form_Builder.php:298
 msgid "Saved form data"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:288
+#: includes/Admin/Forms/Admin_Form_Builder.php:299
 msgid "You have unsaved changes."
 msgstr ""
 
@@ -2614,19 +2620,19 @@ msgstr ""
 msgid "Payment type not selected for this form. Please contact admin."
 msgstr ""
 
-#: includes/Admin/Forms/Post/Templates/Form_Template.php:102
+#: includes/Admin/Forms/Post/Templates/Form_Template.php:106
 msgid "Want a new integration? <a href=\"%s\" target=\"_blank\">Let us know</a>."
 msgstr ""
 
-#: includes/Admin/Forms/Post/Templates/Form_Template.php:214
+#: includes/Admin/Forms/Post/Templates/Form_Template.php:218
 msgid "Form Template"
 msgstr ""
 
-#: includes/Admin/Forms/Post/Templates/Form_Template.php:217
+#: includes/Admin/Forms/Post/Templates/Form_Template.php:221
 msgid "&mdash; No Template &mdash;"
 msgstr ""
 
-#: includes/Admin/Forms/Post/Templates/Form_Template.php:226
+#: includes/Admin/Forms/Post/Templates/Form_Template.php:230
 msgid ""
 "If selected a form template, it will try to execute that integration "
 "options when new post created and updated."
@@ -2666,7 +2672,7 @@ msgstr ""
 
 #: includes/Admin/Forms/Post/Templates/List_Table_Admin_Post_Forms.php:325
 #: includes/Admin/views/premium.php:39
-#: includes/Fields/Form_Pro_Upgrade_Fields.php:187
+#: includes/Fields/Form_Pro_Upgrade_Fields.php:215
 #: includes/Free/Form_Element.php:33
 msgid "Shortcode"
 msgstr ""
@@ -3107,7 +3113,7 @@ msgid "Advanced Fields"
 msgstr ""
 
 #: includes/Admin/views/premium.php:33
-#: includes/Fields/Form_Pro_Upgrade_Fields.php:47
+#: includes/Fields/Form_Pro_Upgrade_Fields.php:49
 #: includes/Free/Form_Element.php:18
 msgid "Country List"
 msgstr ""
@@ -3121,12 +3127,12 @@ msgid "Date Field"
 msgstr ""
 
 #: includes/Admin/views/premium.php:36
-#: includes/Fields/Form_Pro_Upgrade_Fields.php:88
+#: includes/Fields/Form_Pro_Upgrade_Fields.php:116
 msgid "Google Map"
 msgstr ""
 
 #: includes/Admin/views/premium.php:37
-#: includes/Fields/Form_Pro_Upgrade_Fields.php:99
+#: includes/Fields/Form_Pro_Upgrade_Fields.php:127
 #: includes/Free/Form_Element.php:36
 msgid "Action Hook"
 msgstr ""
@@ -3144,7 +3150,7 @@ msgid "Repeater"
 msgstr ""
 
 #: includes/Admin/views/premium.php:42
-#: includes/Fields/Form_Pro_Upgrade_Fields.php:77
+#: includes/Fields/Form_Pro_Upgrade_Fields.php:105
 #: includes/Free/Form_Element.php:16
 msgid "File Upload"
 msgstr ""
@@ -4352,8 +4358,8 @@ msgid "Number of Columns"
 msgstr ""
 
 #: includes/Fields/Form_Field_Column.php:83
-#: includes/Fields/Form_Field_SectionBreak.php:62
-#: includes/Fields/Form_Field_reCaptcha.php:154
+#: includes/Fields/Form_Field_SectionBreak.php:61
+#: includes/Fields/Form_Field_reCaptcha.php:153
 msgid "Title of the section"
 msgstr ""
 
@@ -4404,7 +4410,7 @@ msgid "Image Upload"
 msgstr ""
 
 #: includes/Fields/Form_Field_Numeric.php:9
-#: includes/Fields/Form_Pro_Upgrade_Fields.php:110
+#: includes/Fields/Form_Pro_Upgrade_Fields.php:138
 #: includes/Free/Form_Element.php:19
 msgid "Numeric Field"
 msgstr ""
@@ -4422,16 +4428,16 @@ msgstr ""
 msgid "Radio"
 msgstr ""
 
-#: includes/Fields/Form_Field_SectionBreak.php:12
+#: includes/Fields/Form_Field_SectionBreak.php:11
 msgid "Section Break"
 msgstr ""
 
-#: includes/Fields/Form_Field_SectionBreak.php:70
+#: includes/Fields/Form_Field_SectionBreak.php:69
 msgid "Some details text about the section"
 msgstr ""
 
-#: includes/Fields/Form_Field_SectionBreak.php:87
-msgid "Some description about this section"
+#: includes/Fields/Form_Field_SectionBreak.php:86
+msgid "Some description about this section adshfdsh"
 msgstr ""
 
 #: includes/Fields/Form_Field_Text.php:11
@@ -4459,95 +4465,103 @@ msgstr ""
 msgid "Choose whether the link will open in new tab or same window"
 msgstr ""
 
-#: includes/Fields/Form_Field_reCaptcha.php:12
+#: includes/Fields/Form_Field_reCaptcha.php:11
 #: includes/Free/Form_Element.php:34
 msgid "reCaptcha"
 msgstr ""
 
-#: includes/Fields/Form_Field_reCaptcha.php:51
+#: includes/Fields/Form_Field_reCaptcha.php:50
 msgid "reCaptcha API key is missing."
 msgstr ""
 
-#: includes/Fields/Form_Field_reCaptcha.php:129
+#: includes/Fields/Form_Field_reCaptcha.php:128
 msgid "Site key and Secret key"
 msgstr ""
 
-#: includes/Fields/Form_Field_reCaptcha.php:131
+#: includes/Fields/Form_Field_reCaptcha.php:130
 msgid ""
 "You need to set Site key and Secret key in <a href=\"%s\" "
 "target=\"_blank\">Settings</a> in order to use \"Recaptcha\" field. <a "
 "href=\"%s\" target=\"_blank\">Click here to get the these key</a>."
 msgstr ""
 
-#: includes/Fields/Form_Field_reCaptcha.php:168
+#: includes/Fields/Form_Field_reCaptcha.php:167
 msgid "Select reCaptcha type"
 msgstr ""
 
-#: includes/Fields/Form_Field_reCaptcha.php:176
+#: includes/Fields/Form_Field_reCaptcha.php:175
 msgid "Light"
 msgstr ""
 
-#: includes/Fields/Form_Field_reCaptcha.php:177
+#: includes/Fields/Form_Field_reCaptcha.php:176
 msgid "Dark"
 msgstr ""
 
-#: includes/Fields/Form_Field_reCaptcha.php:182
+#: includes/Fields/Form_Field_reCaptcha.php:181
 msgid "Select reCaptcha Theme"
 msgstr ""
 
-#: includes/Fields/Form_Pro_Upgrade_Fields.php:36
+#: includes/Fields/Form_Pro_Upgrade_Fields.php:38
 #: includes/Free/Form_Element.php:20
 msgid "Address Field"
 msgstr ""
 
-#: includes/Fields/Form_Pro_Upgrade_Fields.php:58
+#: includes/Fields/Form_Pro_Upgrade_Fields.php:60
 msgid "Date / Time"
 msgstr ""
 
-#: includes/Fields/Form_Pro_Upgrade_Fields.php:66
+#: includes/Fields/Form_Pro_Upgrade_Fields.php:73
+msgid "Time"
+msgstr ""
+
+#: includes/Fields/Form_Pro_Upgrade_Fields.php:86
+msgid "Phone Field"
+msgstr ""
+
+#: includes/Fields/Form_Pro_Upgrade_Fields.php:94
 msgid "Embed"
 msgstr ""
 
-#: includes/Fields/Form_Pro_Upgrade_Fields.php:121
+#: includes/Fields/Form_Pro_Upgrade_Fields.php:149
 msgid "Ratings"
 msgstr ""
 
-#: includes/Fields/Form_Pro_Upgrade_Fields.php:132
+#: includes/Fields/Form_Pro_Upgrade_Fields.php:160
 msgid "Linear Scale"
 msgstr ""
 
-#: includes/Fields/Form_Pro_Upgrade_Fields.php:143
+#: includes/Fields/Form_Pro_Upgrade_Fields.php:171
 msgid "Checkbox Grid"
 msgstr ""
 
-#: includes/Fields/Form_Pro_Upgrade_Fields.php:154
+#: includes/Fields/Form_Pro_Upgrade_Fields.php:182
 msgid "Multiple Choice Grid"
 msgstr ""
 
-#: includes/Fields/Form_Pro_Upgrade_Fields.php:165
+#: includes/Fields/Form_Pro_Upgrade_Fields.php:193
 #: includes/Free/Form_Element.php:14
 msgid "Repeat Field"
 msgstr ""
 
-#: includes/Fields/Form_Pro_Upgrade_Fields.php:176
+#: includes/Fields/Form_Pro_Upgrade_Fields.php:204
 #: includes/Free/Form_Element.php:35
 msgid "Really Simple Captcha"
 msgstr ""
 
-#: includes/Fields/Form_Pro_Upgrade_Fields.php:198
+#: includes/Fields/Form_Pro_Upgrade_Fields.php:226
 #: includes/Free/Form_Element.php:21
 msgid "Step Start"
 msgstr ""
 
-#: includes/Fields/Form_Pro_Upgrade_Fields.php:209
+#: includes/Fields/Form_Pro_Upgrade_Fields.php:237
 msgid "Terms & Conditions"
 msgstr ""
 
-#: includes/Fields/Form_Pro_Upgrade_Fields.php:221
+#: includes/Fields/Form_Pro_Upgrade_Fields.php:249
 msgid "Math Captcha"
 msgstr ""
 
-#: includes/Fields/Form_Pro_Upgrade_Fields.php:233
+#: includes/Fields/Form_Pro_Upgrade_Fields.php:261
 msgid "QR Code"
 msgstr ""
 
@@ -6055,27 +6069,27 @@ msgstr ""
 msgid "Set endpoint for vendor submit post page"
 msgstr ""
 
-#: includes/Setup_Wizard.php:155
+#: includes/Setup_Wizard.php:151
 msgid "Introduction"
 msgstr ""
 
-#: includes/Setup_Wizard.php:165
+#: includes/Setup_Wizard.php:161
 msgid "Ready!"
 msgstr ""
 
-#: includes/Setup_Wizard.php:202
+#: includes/Setup_Wizard.php:198
 msgid "WPUF &rsaquo; Setup Wizard"
 msgstr ""
 
-#: includes/Setup_Wizard.php:275
+#: includes/Setup_Wizard.php:271
 msgid "Return to the WordPress Dashboard"
 msgstr ""
 
-#: includes/Setup_Wizard.php:316
+#: includes/Setup_Wizard.php:312
 msgid "Welcome to the world of WPUF!"
 msgstr ""
 
-#: includes/Setup_Wizard.php:321
+#: includes/Setup_Wizard.php:317
 #. translators: %1$s and %2$s are strong tags
 msgid ""
 "Thank you for choosing WPUF to power your websites frontend! This quick "
@@ -6083,54 +6097,54 @@ msgid ""
 "completely optional and shouldn’t take longer than a minute%2$s"
 msgstr ""
 
-#: includes/Setup_Wizard.php:325
+#: includes/Setup_Wizard.php:321
 msgid ""
 "No time right now? If you don’t want to go through the wizard, you can skip "
 "and return to the WordPress dashboard. Come back anytime if you change your "
 "mind!"
 msgstr ""
 
-#: includes/Setup_Wizard.php:327
+#: includes/Setup_Wizard.php:323
 msgid "Let's Go!"
 msgstr ""
 
-#: includes/Setup_Wizard.php:328
+#: includes/Setup_Wizard.php:324
 msgid "Not right now"
 msgstr ""
 
-#: includes/Setup_Wizard.php:339
+#: includes/Setup_Wizard.php:335
 msgid "Basic Setting"
 msgstr ""
 
-#: includes/Setup_Wizard.php:346
+#: includes/Setup_Wizard.php:342
 msgid "Make payment enable for user to add posts on frontend."
 msgstr ""
 
-#: includes/Setup_Wizard.php:353
+#: includes/Setup_Wizard.php:349
 msgid "Install neccessery pages on your site frontend."
 msgstr ""
 
-#: includes/Setup_Wizard.php:358
+#: includes/Setup_Wizard.php:354
 msgid "Share Essentials "
 msgstr ""
 
-#: includes/Setup_Wizard.php:390
+#: includes/Setup_Wizard.php:386
 msgid "Continue"
 msgstr ""
 
-#: includes/Setup_Wizard.php:391
+#: includes/Setup_Wizard.php:387
 msgid "Skip this step"
 msgstr ""
 
-#: includes/Setup_Wizard.php:440
+#: includes/Setup_Wizard.php:436
 msgid "Thank you!"
 msgstr ""
 
-#: includes/Setup_Wizard.php:445
+#: includes/Setup_Wizard.php:441
 msgid "Welcome to Awesomeness!"
 msgstr ""
 
-#: includes/Setup_Wizard.php:449
+#: includes/Setup_Wizard.php:445
 msgid "Go to Full Settings"
 msgstr ""
 
@@ -7717,62 +7731,62 @@ msgstr ""
 msgid "https://wedevs.com/?utm_source=WPUF_Author_URI"
 msgstr ""
 
-#: includes/Setup_Wizard.php:62
+#: includes/Setup_Wizard.php:58
 msgctxt "enhanced select"
 msgid "One result is available, press enter to select it."
 msgstr ""
 
-#: includes/Setup_Wizard.php:65
+#: includes/Setup_Wizard.php:61
 msgctxt "enhanced select"
 msgid "%qty% results are available, use up and down arrow keys to navigate."
 msgstr ""
 
-#: includes/Setup_Wizard.php:69
+#: includes/Setup_Wizard.php:65
 msgctxt "enhanced select"
 msgid "No matches found"
 msgstr ""
 
-#: includes/Setup_Wizard.php:70
+#: includes/Setup_Wizard.php:66
 msgctxt "enhanced select"
 msgid "Loading failed"
 msgstr ""
 
-#: includes/Setup_Wizard.php:71
+#: includes/Setup_Wizard.php:67
 msgctxt "enhanced select"
 msgid "Please enter 1 or more characters"
 msgstr ""
 
-#: includes/Setup_Wizard.php:74
+#: includes/Setup_Wizard.php:70
 msgctxt "enhanced select"
 msgid "Please enter %qty% or more characters"
 msgstr ""
 
-#: includes/Setup_Wizard.php:77
+#: includes/Setup_Wizard.php:73
 msgctxt "enhanced select"
 msgid "Please delete 1 character"
 msgstr ""
 
-#: includes/Setup_Wizard.php:78
+#: includes/Setup_Wizard.php:74
 msgctxt "enhanced select"
 msgid "Please delete %qty% characters"
 msgstr ""
 
-#: includes/Setup_Wizard.php:81
+#: includes/Setup_Wizard.php:77
 msgctxt "enhanced select"
 msgid "You can only select 1 item"
 msgstr ""
 
-#: includes/Setup_Wizard.php:84
+#: includes/Setup_Wizard.php:80
 msgctxt "enhanced select"
 msgid "You can only select %qty% items"
 msgstr ""
 
-#: includes/Setup_Wizard.php:87
+#: includes/Setup_Wizard.php:83
 msgctxt "enhanced select"
 msgid "Loading more results&hellip;"
 msgstr ""
 
-#: includes/Setup_Wizard.php:90
+#: includes/Setup_Wizard.php:86
 msgctxt "enhanced select"
 msgid "Searching&hellip;"
 msgstr ""

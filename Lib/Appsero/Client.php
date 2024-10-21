@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf\Lib\Appsero;
 
+use WP_Error;
+
 /**
  * Appsero Client
  *
@@ -110,13 +112,9 @@ class Client {
     /**
      * Initialize insights class
      *
-     * @return Appsero\Insights
+     * @return object
      */
     public function insights() {
-        if ( ! class_exists( __NAMESPACE__ . '\Insights' ) ) {
-            require_once __DIR__ . '/Insights.php';
-        }
-
         // if already instantiated, return the cached one
         if ( $this->insights ) {
             return $this->insights;
@@ -130,13 +128,9 @@ class Client {
     /**
      * Initialize license checker
      *
-     * @return Appsero\License
+     * @return object
      */
     public function license() {
-        if ( ! class_exists( __NAMESPACE__ . '\License' ) ) {
-            require_once __DIR__ . '/License.php';
-        }
-
         // if already instantiated, return the cached one
         if ( $this->license ) {
             return $this->license;

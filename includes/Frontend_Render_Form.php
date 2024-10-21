@@ -224,7 +224,6 @@ class Frontend_Render_Form {
 
                 <form class="wpuf-form-add wpuf-form-<?php echo esc_attr( $layout ); ?> <?php echo ( $layout == 'layout1' ) ? esc_html( $theme_css ) : 'wpuf-style'; ?>" action="" method="post">
 
-
                    <script type="text/javascript">
                         if ( typeof wpuf_conditional_items === 'undefined' ) {
                             wpuf_conditional_items = [];

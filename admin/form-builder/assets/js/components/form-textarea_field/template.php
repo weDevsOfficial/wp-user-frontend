@@ -2,7 +2,7 @@
     <textarea
         v-if="'no' === field.rich"
         :placeholder="field.placeholder"
-        :deault="field.default"
+        :default="field.default"
         :rows="field.rows"
         :cols="field.cols"
         :class="class_names('textareafield')"

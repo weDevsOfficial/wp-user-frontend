@@ -412,6 +412,7 @@
             post_title_editing: false,
             isDirty: false,
             shortcodeCopied: false,
+            logoUrl: wpuf_form_builder.assetUrl + '/images/wpuf-icon-circle.svg'
         },
 
         computed: {

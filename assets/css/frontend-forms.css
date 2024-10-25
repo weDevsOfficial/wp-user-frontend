@@ -11,9 +11,6 @@ body {
   /* CSS for custom columns */
   /* Upload Button */
 }
-body #wpfooter {
-  position: fixed !important;
-}
 body .has-error {
   background: #FFE4E4;
   padding: 10px;

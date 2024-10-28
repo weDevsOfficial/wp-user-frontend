@@ -18,12 +18,10 @@ class Integrations {
     public $container = [];
 
     private $integrations = [
-        'WeDevs_Dokan'             => 'WPUF_Dokan_Integration',
-        'WC_Vendors'               => 'WPUF_WC_Vendors_Integration',
-        'WCMp'                     => 'WPUF_WCMp_Integration',
-        'ACF'                      => 'WPUF_ACF_Compatibility',
-        'Tribe__Events__Main'      => 'The_Events_Calendar',
-        'Tribe__Events__Pro__Main' => 'The_Events_Calendar',
+        'WeDevs_Dokan' => 'WPUF_Dokan_Integration',
+        'WC_Vendors'   => 'WPUF_WC_Vendors_Integration',
+        'WCMp'         => 'WPUF_WCMp_Integration',
+        'ACF'          => 'WPUF_ACF_Compatibility',
     ];
 
     public function __construct() {

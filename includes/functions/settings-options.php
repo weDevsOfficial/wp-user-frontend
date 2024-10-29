@@ -166,6 +166,23 @@ function wpuf_settings_fields() {
                 'default' => 'off',
             ],
             [
+                'name'       => 'turnstile_site_key',
+                'label'      => __( 'Turnstile Site Key', 'wp-user-frontend' ),
+                'depends_on' => 'enable_turnstile',
+            ],
+            [
+                'name'       => 'turnstile_secret_key',
+                'label'      => __( 'Turnstile Site Key', 'wp-user-frontend' ),
+                'depends_on' => 'enable_turnstile',
+                'desc'       => sprintf(
+                    // translators: %s is a link
+                    __(
+                        '<a target="_blank" href="%1$s">Register here</a> to get Turnstile Site and Secret keys.',
+                        'wp-user-frontend'
+                    ), esc_url( 'https://developers.cloudflare.com/turnstile/' )
+                ),
+            ],
+            [
                 'name'  => 'custom_css',
                 'label' => __( 'Custom CSS codes', 'wp-user-frontend' ),
                 'desc'  => __( 'If you want to add your custom CSS code, it will be added on page header wrapped with style tag',

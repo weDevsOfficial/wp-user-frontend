@@ -461,6 +461,36 @@ class WeDevs_Settings_API {
     }
 
     /**
+     * Displays a toggle field for a settings field
+     *
+     * @param array   $args settings field args
+     */
+    public function callback_toggle( $args ) {
+        $value    = esc_attr( $this->get_option( $args['id'], $args['section'], $args['std'] ) );
+        $disabled = ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ? 'disabled' : '';
+        $name = $args['section'] . '[' . $args['id'] . ']';
+        ?>
+        <fieldset>
+        <label for="<?php echo 'wpuf-' . $name; ?>" class="wpuf-toggle-switch">
+            <input
+                type="hidden"
+                name="<?php echo $name; ?>"
+                value="off" />
+            <input
+                type="checkbox"
+                <?php echo $value === 'on' ? 'checked' : ''; ?>
+                <?php echo $disabled ? 'disabled' : ''; ?>
+                id="<?php echo 'wpuf-' . $name; ?>"
+                name="<?php echo $name; ?>"
+                class="wpuf-toggle-module checkbox"
+                value="on">
+            <span class="slider round"></span>
+        </label>
+        </fieldset>
+        <?php
+    }
+
+    /**
      * Sanitize callback for Settings API
      *
      * @return mixed

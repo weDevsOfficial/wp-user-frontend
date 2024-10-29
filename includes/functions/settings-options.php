@@ -160,6 +160,12 @@ function wpuf_settings_fields() {
                                'wp-user-frontend' ),
             ],
             [
+                'name'    => 'enable_turnstile',
+                'label'   => __( 'Enable Turnstile', 'wp-user-frontend' ),
+                'type'    => 'toggle',
+                'default' => 'off',
+            ],
+            [
                 'name'  => 'custom_css',
                 'label' => __( 'Custom CSS codes', 'wp-user-frontend' ),
                 'desc'  => __( 'If you want to add your custom CSS code, it will be added on page header wrapped with style tag',

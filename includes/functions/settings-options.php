@@ -172,7 +172,7 @@ function wpuf_settings_fields() {
             ],
             [
                 'name'       => 'turnstile_secret_key',
-                'label'      => __( 'Turnstile Site Key', 'wp-user-frontend' ),
+                'label'      => __( 'Turnstile Secret Key', 'wp-user-frontend' ),
                 'depends_on' => 'enable_turnstile',
                 'desc'       => sprintf(
                     // translators: %s is a link
@@ -453,6 +453,17 @@ function wpuf_settings_fields() {
                                  'wp-user-frontend' ),
                 'type'    => 'checkbox',
                 'default' => 'off',
+            ],
+            [
+                'name'       => 'login_form_turnstile',
+                'label'      => __( 'Turnstile in Login Form', 'wp-user-frontend' ),
+                'desc'       => __(
+                    'If enabled, users have to verify Cloudflare Turnstile in login page. Also, make sure that Turnstile is configured properly from <b>General Options</b>',
+                    'wp-user-frontend'
+                ),
+                'type'       => 'toggle',
+                'default'    => 'off',
+                'depends_on' => 'enable_turnstile',
             ],
         ] ),
         'wpuf_payment'          => apply_filters( 'wpuf_options_payment', [

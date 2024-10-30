@@ -339,7 +339,7 @@ class Simple_Login {
         $reset = isset( $getdata['reset'] ) ? sanitize_text_field( $getdata['reset'] ) : '';
 
         if ( false === $login_page ) {
-            return;
+            return '';
         }
 
         ob_start();
@@ -394,6 +394,11 @@ class Simple_Login {
 
                 default:
                     $loggedout = isset( $getdata['loggedout'] ) ? sanitize_text_field( $getdata['loggedout'] ) : '';
+                    $enable_turnstile = wpuf_get_option( 'enable_turnstile', 'wpuf_general', 'off' );
+
+                    if ( 'on' === $enable_turnstile ) {
+                        wp_enqueue_script( 'wpuf-turnstile' );
+                    }
 
                     if ( $loggedout === 'true' ) {
                         $this->messages[] = __( 'You are now logged out.', 'wp-user-frontend' );

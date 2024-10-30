@@ -475,22 +475,24 @@ class WeDevs_Settings_API {
         $name = $args['section'] . '[' . $args['id'] . ']';
         ?>
         <fieldset>
-        <label for="<?php echo 'wpuf-' . $name; ?>" class="wpuf-toggle-switch">
-            <input
-                type="hidden"
-                name="<?php echo $name; ?>"
-                value="off" />
-            <input
-                type="checkbox"
-                <?php echo $value === 'on' ? 'checked' : ''; ?>
-                <?php echo $disabled ? 'disabled' : ''; ?>
-                id="<?php echo 'wpuf-' . $name; ?>"
-                name="<?php echo $name; ?>"
-                class="wpuf-toggle-module checkbox"
-                value="on">
-            <span class="slider round"></span>
-        </label>
+            <label for="<?php echo 'wpuf-' . $name; ?>" class="wpuf-toggle-switch">
+                <input
+                    type="hidden"
+                    name="<?php echo $name; ?>"
+                    value="off" />
+                <input
+                    type="checkbox"
+                    <?php echo $value === 'on' ? 'checked' : ''; ?>
+                    <?php echo $disabled ? 'disabled' : ''; ?>
+                    id="<?php echo 'wpuf-' . $name; ?>"
+                    name="<?php echo $name; ?>"
+                    class="wpuf-toggle-module checkbox"
+                    value="on">
+                <span class="slider round"></span>
+            </label>
         </fieldset>
+
+        <?php echo $args['desc']; ?>
         <?php
     }
 

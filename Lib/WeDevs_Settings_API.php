@@ -710,7 +710,6 @@ class WeDevs_Settings_API {
                 // disable the pro preview checkboxes
                 $('span.pro-icon-title').siblings('input[type="checkbox"]').prop('disabled', true);
 
-
                 var fields = $('table.form-table input, table.form-table select, table.form-table textarea');
 
                 // iterate over each field and check if it depends on another field

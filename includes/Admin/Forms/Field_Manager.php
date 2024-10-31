@@ -5,6 +5,7 @@ namespace WeDevs\Wpuf\Admin\Forms;
 use WeDevs\Wpuf\Admin\Subscription;
 use WeDevs\Wpuf\Fields\Field_Contract;
 use WeDevs\Wpuf\Fields\Form_Field_Checkbox;
+use WeDevs\Wpuf\Fields\Form_Field_Cloudflare_Turnstile;
 use WeDevs\Wpuf\Fields\Form_Field_Column;
 use WeDevs\Wpuf\Fields\Form_Field_Dropdown;
 use WeDevs\Wpuf\Fields\Form_Field_Email;
@@ -83,25 +84,26 @@ class Field_Manager {
      */
     private function register_field_types() {
         $fields = [
-            'post_title'          => new Form_Field_Post_Title(),
-            'post_content'        => new Form_Field_Post_Content(),
-            'post_tags'           => new Form_Field_Post_Tags(),
-            'taxonomy'            => new Form_Field_Post_Taxonomy( 'category', 'category' ),
-            'text_field'          => new Form_Field_Text(),
-            'email_address'       => new Form_Field_Email(),
-            'textarea_field'      => new Form_Field_Textarea(),
-            'radio_field'         => new Form_Field_Radio(),
-            'checkbox_field'      => new Form_Field_Checkbox(),
-            'dropdown_field'      => new Form_Field_Dropdown(),
-            'multiple_select'     => new Form_Field_MultiDropdown(),
-            'website_url'         => new Form_Field_URL(),
-            'column_field'        => new Form_Field_Column(),
-            'section_break'       => new Form_Field_SectionBreak(),
-            'custom_html'         => new Form_Field_HTML(),
-            'custom_hidden_field' => new Form_Field_Hidden(),
-            'image_upload'        => new Form_Field_Image(),
-            'recaptcha'           => new Form_Field_reCaptcha(),
-            'featured_image'      => new Form_Field_Featured_Image(),
+            'post_title'           => new Form_Field_Post_Title(),
+            'post_content'         => new Form_Field_Post_Content(),
+            'post_tags'            => new Form_Field_Post_Tags(),
+            'taxonomy'             => new Form_Field_Post_Taxonomy( 'category', 'category' ),
+            'text_field'           => new Form_Field_Text(),
+            'email_address'        => new Form_Field_Email(),
+            'textarea_field'       => new Form_Field_Textarea(),
+            'radio_field'          => new Form_Field_Radio(),
+            'checkbox_field'       => new Form_Field_Checkbox(),
+            'dropdown_field'       => new Form_Field_Dropdown(),
+            'multiple_select'      => new Form_Field_MultiDropdown(),
+            'website_url'          => new Form_Field_URL(),
+            'column_field'         => new Form_Field_Column(),
+            'section_break'        => new Form_Field_SectionBreak(),
+            'custom_html'          => new Form_Field_HTML(),
+            'custom_hidden_field'  => new Form_Field_Hidden(),
+            'image_upload'         => new Form_Field_Image(),
+            'recaptcha'            => new Form_Field_reCaptcha(),
+            'cloudflare_turnstile' => new Form_Field_Cloudflare_Turnstile(),
+            'featured_image'       => new Form_Field_Featured_Image(),
         ];
         $this->fields = apply_filters( 'wpuf_form_fields', $fields );
     }
@@ -170,6 +172,7 @@ class Field_Manager {
                 'section_break',
                 'custom_html',
                 'recaptcha',
+                'cloudflare_turnstile',
             ]
         );
 

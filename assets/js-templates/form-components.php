@@ -438,6 +438,21 @@
 </div>
 </script>
 
+<script type="text/x-template" id="tmpl-wpuf-form-cloudflare_turnstile">
+<div class="wpuf-fields">
+    <template v-if="!has_turnstile_api_keys">
+        <p v-html="no_api_keys_msg"></p>
+    </template>
+
+    <template v-else>
+        <img
+            class="wpuf-turnstile-placeholder"
+            :src="turnstile_image"
+            alt="">
+    </template>
+</div>
+</script>
+
 <script type="text/x-template" id="tmpl-wpuf-form-column_field">
 <div v-bind:class="['wpuf-field-columns', 'has-columns-'+field.columns]">
     <div class="wpuf-column-field-inner-columns">

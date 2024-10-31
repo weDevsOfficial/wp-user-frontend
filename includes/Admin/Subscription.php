@@ -304,6 +304,7 @@ class Subscription {
         $meta['_trial_duration_type']       = $meta['trial_duration_type'];
         $meta['post_type_name']             = get_post_meta( $subscription_id, '_post_type_name', true );
         $meta['_post_type_name']            = $meta['post_type_name'];
+        $meta['additional_cpt_options']     = get_post_meta( $subscription_id, 'additional_cpt_options', true );
         $meta['_enable_post_expiration']    = get_post_meta( $subscription_id, '_enable_post_expiration', true );
         $meta['_post_expiration_time']      = get_post_meta( $subscription_id, '_post_expiration_time', true );
         $meta['_post_expiration_number']    = get_post_meta( $subscription_id, '_post_expiration_number', true );
@@ -431,6 +432,7 @@ class Subscription {
         update_post_meta( $subscription_id, '_trial_duration', $trial_duration );
         update_post_meta( $subscription_id, '_trial_duration_type', $trial_duration_type );
         update_post_meta( $subscription_id, '_post_type_name', array_map( 'sanitize_text_field', $post_data['post_type_name'] ) );
+        update_post_meta( $subscription_id, 'additional_cpt_options', array_map( 'sanitize_text_field', $post_data['additional_cpt_options'] ) );
         update_post_meta( $subscription_id, '_enable_post_expiration', $enable_post_expir );
         update_post_meta( $subscription_id, '_post_expiration_time', $expiration_time );
         update_post_meta( $subscription_id, '_expired_post_status', $expire_post_status );

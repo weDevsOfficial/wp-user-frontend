@@ -411,6 +411,7 @@
             is_form_switcher: false,
             post_title_editing: false,
             isDirty: false,
+            enableMultistep: false,
             shortcodeCopied: false,
         },
 
@@ -449,7 +450,7 @@
                 });
 
                 return meta_key.map(function(name) { return '{' + name +'}' }).join( );
-            }
+            },
         },
 
         watch: {

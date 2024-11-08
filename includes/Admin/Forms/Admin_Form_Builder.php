@@ -256,7 +256,7 @@ class Admin_Form_Builder {
         $shortcodes        = $this->settings['shortcodes'];
         $forms             = get_posts(
             [
-                'post_type' => $post_type,
+                'post_type'   => $post_type,
                 'post_status' => 'any',
             ]
         );

@@ -2,16 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-.wpuf-form-template-modal {
-    background: #fff;
-    position: fixed;
-    top: 5%;
-    bottom: 5%;
-    right: 10%;
-    left: 10%;
-    display: none;
-    box-shadow: 0 1px 20px 5px rgba(0, 0, 0, 0.1);
-    z-index: 99;
+@layer components {
+    .wpuf-btn-primary {
+        @apply wpuf-rounded-md wpuf-bg-green-800 wpuf-text-white hover:wpuf-bg-green-700 hover:wpuf-text-white wpuf-px-3.5 wpuf-py-2 wpuf-text-sm wpuf-font-semibold;
+    }
 }
 
 @layer utilities {
@@ -30,6 +24,18 @@
     .wpuf-scale-100 {
         transform: scale(1);
     }
+}
+
+.wpuf-form-template-modal {
+    background: #fff;
+    position: fixed;
+    top: 5%;
+    bottom: 5%;
+    right: 10%;
+    left: 10%;
+    display: none;
+    box-shadow: 0 1px 20px 5px rgba(0, 0, 0, 0.1);
+    z-index: 99;
 }
 
 /* Transition styles */

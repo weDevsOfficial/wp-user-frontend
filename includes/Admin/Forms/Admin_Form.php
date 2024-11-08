@@ -261,7 +261,11 @@ class Admin_Form {
      */
     public function add_primary_tabs() {
         ?>
-        <a href="#wpuf-form-builder-notification" class="wpuf-text-gray-800 hover:wpuf-text-gray-800 wpuf-py-2 wpuf-px-4 wpuf-text-sm hover:wpuf-bg-white hover:wpuf-rounded-md focus:wpuf-shadow-none">
+        <a
+            href="#wpuf-form-builder-notification"
+            @click="active_tab = 'notification'"
+            :class="active_tab === 'notification' ? 'wpuf-bg-white wpuf-text-gray-800 wpuf-rounded-md wpuf-drop-shadow-sm' : ''"
+            class="wpuf-nav-tab wpuf-nav-tab-active wpuf-text-gray-800 wpuf-py-2 wpuf-px-4 wpuf-text-sm hover:wpuf-bg-white hover:wpuf-text-gray-800 hover:wpuf-rounded-md hover:wpuf-drop-shadow-sm focus:wpuf-shadow-none">
             <?php esc_html_e( 'Notification', 'wp-user-frontend' ); ?>
         </a>
         <?php
@@ -277,7 +281,7 @@ class Admin_Form {
     public function add_primary_tab_contents() {
         ?>
 
-        <div id="wpuf-form-builder-notification" class="group">
+        <div id="wpuf-form-builder-notification" class="group wpuf-nav-tab">
             <?php do_action( 'wpuf_form_settings_post_notification' ); ?>
         </div><!-- #wpuf-form-builder-notification -->
 

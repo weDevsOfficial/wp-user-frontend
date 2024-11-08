@@ -2,7 +2,6 @@
 
 namespace WeDevs\Wpuf\Fields;
 
-
 /**
  * Recaptcha Field Class
  */
@@ -186,6 +185,15 @@ class Form_Field_reCaptcha extends Field_Contract {
         // return array_merge( $default_options,$settings);
 
         return $settings;
+    }
+
+    /**
+     * It's a full width block
+     *
+     * @return bool
+     */
+    public function is_full_width() {
+        return true;
     }
 
     /**

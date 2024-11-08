@@ -119,7 +119,12 @@ module.exports = function( grunt) {
             },
 
             tailwind: {
-                files: ['src/css/**/*.css', 'admin/form-builder/views/*.php', 'includes/Admin/views/*.php'],
+                files: [
+                    'src/css/**/*.css',
+                    'admin/form-builder/views/*.php',
+                    'includes/Admin/views/*.php',
+                    'admin/form-builder/assets/js/**/*'
+                ],
                 tasks: ['shell:tailwind'],
                 options: {
                     spawn: false

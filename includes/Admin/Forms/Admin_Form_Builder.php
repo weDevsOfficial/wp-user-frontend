@@ -154,6 +154,7 @@ class Admin_Form_Builder {
                 'i18n'             => $this->i18n(),
                 'post'             => $post,
                 'form_fields'      => wpuf_get_form_fields( $post->ID ),
+                'assetUrl'         => WPUF_ASSET_URI,
                 'panel_sections'   => wpuf()->fields->get_field_groups(),
                 'field_settings'   => wpuf()->fields->get_js_settings(),
                 'form_settings'    => wpuf_get_form_settings( $post->ID ),

@@ -414,6 +414,7 @@
             enableMultistep: false,
             shortcodeCopied: false,
             active_tab: 'form-editor',
+            logoUrl: wpuf_form_builder.assetUrl + '/images/wpuf-icon-circle.svg'
         },
 
         computed: {

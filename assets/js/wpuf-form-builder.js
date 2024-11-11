@@ -410,7 +410,10 @@
             is_form_saved: false,
             is_form_switcher: false,
             post_title_editing: false,
-            isDirty: false
+            isDirty: false,
+            enableMultistep: false,
+            shortcodeCopied: false,
+            active_tab: 'form-editor',
         },
 
         computed: {
@@ -448,7 +451,7 @@
                 });
 
                 return meta_key.map(function(name) { return '{' + name +'}' }).join( );
-            }
+            },
         },
 
         watch: {
@@ -471,18 +474,6 @@
         },
 
         mounted: function () {
-            // primary nav tabs and their contents
-            this.bind_tab_on_click($('#wpuf-form-builder > fieldset > .nav-tab-wrapper > a'), '#wpuf-form-builder');
-
-            // secondary settings tabs and their contents
-            var settings_tabs = $('#wpuf-form-builder-settings .nav-tab'),
-                settings_tab_contents = $('#wpuf-form-builder-settings .tab-contents .group');
-
-            settings_tabs.first().addClass('nav-tab-active');
-            settings_tab_contents.first().addClass('active');
-
-            this.bind_tab_on_click(settings_tabs, '#wpuf-form-builder-settings');
-
             var clipboard = new window.Clipboard('.form-id');
             $(".form-id").tooltip();
 
@@ -491,13 +482,16 @@
             clipboard.on('success', function(e) {
                 // Show copied tooltip
                 $(e.trigger)
-                    .attr('data-original-title', 'Copied!')
+                    .attr('data-original-title', 'Shortcode copied!')
                     .tooltip('show');
+
+                self.shortcodeCopied = true;
 
                 // Reset the copied tooltip
                 setTimeout(function() {
                     $(e.trigger).tooltip('hide')
                     .attr('data-original-title', self.i18n.copy_shortcode);
+                    self.shortcodeCopied = false;
                 }, 1000);
 
                 e.clearSelection();
@@ -511,22 +505,6 @@
         },
 
         methods: {
-            // tabs and their contents
-            bind_tab_on_click: function (tabs, scope) {
-                tabs.on('click', function (e) {
-                    e.preventDefault();
-
-                    var button = $(this),
-                        tab_contents = $(scope + ' > fieldset > .tab-contents'),
-                        group_id = button.attr('href');
-
-                    button.addClass('nav-tab-active').siblings('.nav-tab-active').removeClass('nav-tab-active');
-
-                    tab_contents.children().removeClass('active');
-                    $(group_id).addClass('active');
-                });
-            },
-
             // switch form
             switch_form: function () {
                 this.is_form_switcher = (this.is_form_switcher) ? false : true;
@@ -899,11 +877,11 @@
 
     // on DOM ready
     $(function() {
-        resizeBuilderContainer();
-
-        $("#collapse-menu").click(function () {
-            resizeBuilderContainer();
-        });
+        // resizeBuilderContainer();
+        //
+        // $("#collapse-menu").click(function () {
+        //     resizeBuilderContainer();
+        // });
 
         function resizeBuilderContainer() {
             if ($(document.body).hasClass('folded')) {

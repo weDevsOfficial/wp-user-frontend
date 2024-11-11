@@ -33,8 +33,8 @@ class Frontend_Form extends Frontend_Render_Form {
      *
      * @param array $atts
      *
-     * @return
-     **/
+     * @return false|string
+     */
     public function edit_post_shortcode( $atts ) {
         add_filter( 'wpuf_form_fields', [ $this, 'add_field_settings' ] );
         // @codingStandardsIgnoreStart
@@ -52,7 +52,13 @@ class Frontend_Form extends Frontend_Render_Form {
 
             wp_login_form();
 
-            return;
+            return '';
+        }
+
+        $nonce = isset( $_GET['_wpnonce'] ) ? sanitize_key( wp_unslash( $_GET['_wpnonce'] ) ) : '';
+
+        if ( ! wp_verify_nonce( $nonce, 'wpuf_edit' ) ) {
+            return '<div class="wpuf-info">' . __( 'Please re-open the post', 'wp-user-frontend' ) . '</div>';
         }
 
         $post_id = isset( $_GET['pid'] ) ? intval( wp_unslash( $_GET['pid'] ) ) : 0;
@@ -110,7 +116,6 @@ class Frontend_Form extends Frontend_Render_Form {
         $form = new Form( $form_id );
 
         $this->form_fields = $form->get_fields();
-        // $form_settings = wpuf_get_form_settings( $form_id );
         $this->form_settings = $form->get_settings();
 
         $disable_pending_edit = wpuf_get_option( 'disable_pending_edit', 'wpuf_dashboard', 'on' );

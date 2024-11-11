@@ -124,6 +124,7 @@ class Admin_Form_Builder {
             'password',
             'user_avatar',
             'taxonomy',
+            'cloudflare_turnstile',
         ];
         $taxonomy_terms = array_keys( get_taxonomies() );
         $single_objects = array_merge( $single_objects, $taxonomy_terms );
@@ -159,8 +160,11 @@ class Admin_Form_Builder {
                 'notifications'    => wpuf_get_form_notifications( $post->ID ),
                 'pro_link'         => Pro_Prompt::get_pro_url(),
                 'site_url'         => site_url( '/' ),
+                'asset_url'        => WPUF_ASSET_URI,
                 'recaptcha_site'   => wpuf_get_option( 'recaptcha_public', 'wpuf_general' ),
                 'recaptcha_secret' => wpuf_get_option( 'recaptcha_private', 'wpuf_general' ),
+                'turnstile_site'   => wpuf_get_option( 'turnstile_site_key', 'wpuf_general' ),
+                'turnstile_secret' => wpuf_get_option( 'turnstile_secret_key', 'wpuf_general' ),
                 'nonce'            => wp_create_nonce( 'form-builder-setting-nonce' ),
             ]
         );

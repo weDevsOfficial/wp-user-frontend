@@ -1169,6 +1169,59 @@ span.pro-icon:hover .wpuf-pro-field-tooltip {
     }
 }
 
+.wpuf-toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+
+    input {
+        display: none;
+
+        &:checked + .slider {
+            background-color: #0073aa;
+        }
+
+        &:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        &:checked + .slider:before {
+            transform: translateX(26px);
+        }
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .2s;
+
+        &.round {
+            border-radius: 34px;
+        }
+
+        &.round:before {
+            border-radius: 50%;
+        }
+
+        &::before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 4px;
+            background-color: white;
+            transition: .2s;
+        }
+    }
+}
+
 @media only screen and (max-width: 1399px) {
     a.wpuf-button.button-upgrade-to-pro {
         padding: 10px;

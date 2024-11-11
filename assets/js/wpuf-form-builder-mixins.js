@@ -151,6 +151,10 @@ Vue.mixin({
             return (wpuf_form_builder.recaptcha_site && wpuf_form_builder.recaptcha_secret) ? true : false;
         },
 
+        has_turnstile_api_keys: function () {
+            return wpuf_form_builder.turnstile_site && wpuf_form_builder.turnstile_secret;
+        },
+
         containsField: function(field_name) {
             var self = this,
                 i = 0;

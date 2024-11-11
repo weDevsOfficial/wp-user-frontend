@@ -321,7 +321,7 @@ class Assets {
                 'version'   => '1.6.0',
                 'in_footer' => true,
             ],
-            'admin-shortcode'                => [
+            'admin-shortcode'          => [
                 'src'  => WPUF_ASSET_URI . '/js/admin-shortcode.js',
                 'deps' => [ 'jquery' ],
             ],
@@ -376,6 +376,9 @@ class Assets {
             ],
             'headway'                  => [
                 'src'  => '//cdn.headwayapp.co/widget.js',
+            ],
+            'turnstile'                  => [
+                'src'  => 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback',
             ],
         ];
 

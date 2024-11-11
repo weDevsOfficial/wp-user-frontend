@@ -38,13 +38,14 @@ class Form_Field_Radio extends Form_Field_Checkbox {
 
         $this->field_print_label( $field_settings, $form_id );
 
-        do_action( 'WPUF_radio_field_after_label', $field_settings ); ?>
+        do_action( 'wpuf_radio_field_after_label', $field_settings ); ?>
 
             <div class="wpuf-fields">
 
                 <?php
                 if ( $field_settings['options'] && count( $field_settings['options'] ) > 0 ) {
                     foreach ( $field_settings['options'] as $value => $option ) {
+                        $selected = is_array( $selected ) ? '' : $selected;
                         ?>
 
                         <label <?php echo $field_settings['inline'] == 'yes' ? 'class="wpuf-radio-inline"' : 'class="wpuf-radio-block"'; ?>>

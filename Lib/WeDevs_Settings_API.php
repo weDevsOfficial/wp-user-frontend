@@ -140,6 +140,7 @@ class WeDevs_Settings_API {
                     'max'               => isset( $option['max'] ) ? $option['max'] : '',
                     'step'              => isset( $option['step'] ) ? $option['step'] : '',
                     'is_pro_preview'    => ! empty( $option['is_pro_preview'] ) ? $option['is_pro_preview'] : false,
+                    'depends_on'        => ! empty( $option['depends_on'] ) ? $option['depends_on'] : '',
                 );
 
                 add_settings_field( $section . '[' . $option['name'] . ']', $option['label'], (isset($option['callback']) ? $option['callback'] : array($this, 'callback_' . $type )), $section, $section, $args );
@@ -173,14 +174,17 @@ class WeDevs_Settings_API {
      * @param array   $args settings field args
      */
     function callback_text( $args ) {
-
         $value       = esc_attr( $this->get_option( $args['id'], $args['section'], $args['std'] ) );
         $size        = isset( $args['size'] ) && !is_null( $args['size'] ) ? $args['size'] : 'regular';
         $type        = isset( $args['type'] ) ? $args['type'] : 'text';
         $placeholder = empty( $args['placeholder'] ) ? '' : ' placeholder="' . $args['placeholder'] . '"';
         $disabled    = ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ? 'disabled' : '';
+        $depends_on  = ! empty( $args['depends_on'] ) ? $args['depends_on'] : '';
 
-        $html        = sprintf( '<input type="%1$s" class="%2$s-text" id="%3$s[%4$s]" name="%3$s[%4$s]" value="%5$s"%6$s %7$s/>', $type, $size, $args['section'], $args['id'], $value, $placeholder, $disabled );
+        $html        = sprintf(
+            '<input type="%1$s" class="%2$s-text" id="%3$s[%4$s]" name="%3$s[%4$s]" value="%5$s"%6$s %7$s data-depends-on="%8$s" />',
+            $type, $size, $args['section'], $args['id'], $value, $placeholder, $disabled, $depends_on
+        );
         $html       .= $this->get_field_description( $args );
 
         if ( ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ) {
@@ -461,6 +465,38 @@ class WeDevs_Settings_API {
     }
 
     /**
+     * Displays a toggle field for a settings field
+     *
+     * @param array   $args settings field args
+     */
+    public function callback_toggle( $args ) {
+        $value    = esc_attr( $this->get_option( $args['id'], $args['section'], $args['std'] ) );
+        $disabled = ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ? 'disabled' : '';
+        $name = $args['section'] . '[' . $args['id'] . ']';
+        ?>
+        <fieldset>
+            <label for="<?php echo 'wpuf-' . $name; ?>" class="wpuf-toggle-switch">
+                <input
+                    type="hidden"
+                    name="<?php echo $name; ?>"
+                    value="off" />
+                <input
+                    type="checkbox"
+                    <?php echo $value === 'on' ? 'checked' : ''; ?>
+                    <?php echo $disabled ? 'disabled' : ''; ?>
+                    id="<?php echo 'wpuf-' . $name; ?>"
+                    name="<?php echo $name; ?>"
+                    class="wpuf-toggle-module checkbox"
+                    value="on">
+                <span class="slider round"></span>
+            </label>
+        </fieldset>
+
+        <?php echo $args['desc']; ?>
+        <?php
+    }
+
+    /**
      * Sanitize callback for Settings API
      *
      * @return mixed
@@ -673,6 +709,44 @@ class WeDevs_Settings_API {
 
                 // disable the pro preview checkboxes
                 $('span.pro-icon-title').siblings('input[type="checkbox"]').prop('disabled', true);
+
+                var fields = $('table.form-table input, table.form-table select, table.form-table textarea');
+
+                // iterate over each field and check if it depends on another field
+                fields.each(function() {
+                    var $this = $(this);
+                    var data_depends_on = $this.data('depends-on');
+
+                    if (!data_depends_on) {
+                        return;
+                    }
+
+                    var $depends_on = $("input[id*='"+ data_depends_on +"']");
+                    var $depends_on_type = $depends_on.attr('type');
+
+                    if ($depends_on_type === 'checkbox') {
+                        if ($depends_on.is(':checked')) {
+                            $this.closest('tr').show();
+                        } else {
+                            $this.closest('tr').hide();
+                        }
+                        $depends_on.on('change', function() {
+                            if ($(this).is(':checked')) {
+                                $this.closest('tr').show();
+                            } else {
+                                $this.closest('tr').hide();
+                            }
+                        });
+                    } else {
+                        $depends_on.on('keyup change', function() {
+                            if ($(this).val() === $this.data('depends-on-value')) {
+                                $this.closest('tr').show();
+                            } else {
+                                $this.closest('tr').hide();
+                            }
+                        });
+                    }
+                });
             });
         </script>
 

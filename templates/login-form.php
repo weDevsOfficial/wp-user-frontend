@@ -30,8 +30,13 @@
             <input type="password" name="pwd" id="wpuf-user_pass" class="input" value="" size="20" />
         </p>
 
-        <?php $recaptcha = wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off' ); ?>
-        <?php if ( $recaptcha == 'on' ) { ?>
+        <?php
+            $recaptcha = wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off' );
+            $turnstile = wpuf_get_option( 'login_form_turnstile', 'wpuf_profile', 'off' );
+
+            $turnstile_site_key = wpuf_get_option( 'turnstile_site_key', 'wpuf_general', '' );
+        ?>
+        <?php if ( $recaptcha === 'on' ) { ?>
             <p>
                 <div class="wpuf-fields">
                     <?php echo wp_kses( recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), true, null, is_ssl() ),[
@@ -66,6 +71,22 @@
                     ] ); ?>
                 </div>
             </p>
+        <?php } ?>
+
+        <?php if ( $turnstile === 'on' ) { ?>
+            <div
+                id="wpuf-turnstile"
+                class="wpuf-turnstile"
+                data-sitekey="<?php echo esc_attr( $turnstile_site_key ); ?>"
+                data-callback="javascriptCallback"
+            ></div>
+            <script>
+                window.onloadTurnstileCallback = function () {
+                    turnstile.render("#wpuf-turnstile", {
+                        sitekey: "<?php echo esc_js( $turnstile_site_key ); ?>",
+                    });
+                };
+            </script>
         <?php } ?>
 
         <p class="forgetmenot">

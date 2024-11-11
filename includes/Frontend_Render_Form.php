@@ -183,7 +183,7 @@ class Frontend_Render_Form {
             return;
         }
 
-        if ( $form_status != 'publish' ) {
+        if ( 'publish' !== $form_status ) {
             echo wp_kses_post( '<div class="wpuf-message">' . __( "Please make sure you've published your form.", 'wp-user-frontend' ) . '</div>' );
 
             return;
@@ -222,9 +222,9 @@ class Frontend_Render_Form {
         if ( $this->form_fields ) {
             ?>
 
-                <form class="wpuf-form-add wpuf-form-<?php echo esc_attr( $layout ); ?> <?php echo ( $layout == 'layout1' ) ? esc_html( $theme_css ) : 'wpuf-style'; ?>" action="" method="post">
+                <form class="wpuf-form-add wpuf-form-<?php echo esc_attr( $layout ); ?> <?php echo ( 'layout1' === $layout ) ? esc_html( $theme_css ) : 'wpuf-style'; ?>" action="" method="post">
 
-                   <script type="text/javascript">
+                    <script type="text/javascript">
                         if ( typeof wpuf_conditional_items === 'undefined' ) {
                             wpuf_conditional_items = [];
                         }

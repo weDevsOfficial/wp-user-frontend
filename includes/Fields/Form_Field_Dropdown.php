@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf\Fields;
 
+use WP_Query;
+
 /**
  * DropDown Field Class
  */

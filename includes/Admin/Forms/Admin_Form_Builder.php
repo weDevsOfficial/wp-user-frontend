@@ -48,6 +48,7 @@ class Admin_Form_Builder {
             add_action( 'admin_footer', [ $this, 'custom_dequeue' ] );
             add_action( 'admin_footer', [ $this, 'admin_footer' ] );
             add_action( 'wpuf_admin_form_builder', [ $this, 'include_form_builder' ] );
+            add_action( 'wpuf_admin_form_builder_view', [ $this, 'include_form_builder' ] );
         }
 
         add_action( 'wpuf_form_builder_template_builder_stage_submit_area', [ $this, 'add_form_submit_area' ] );
@@ -154,6 +155,7 @@ class Admin_Form_Builder {
                 'i18n'             => $this->i18n(),
                 'post'             => $post,
                 'form_fields'      => wpuf_get_form_fields( $post->ID ),
+                'assetUrl'         => WPUF_ASSET_URI,
                 'panel_sections'   => wpuf()->fields->get_field_groups(),
                 'field_settings'   => wpuf()->fields->get_js_settings(),
                 'form_settings'    => wpuf_get_form_settings( $post->ID ),
@@ -257,12 +259,22 @@ class Admin_Form_Builder {
         $post_type         = $this->settings['post_type'];
         $form_settings_key = $this->settings['form_settings_key'];
         $shortcodes        = $this->settings['shortcodes'];
-        $forms             = get_posts( [ 'post_type' => $post_type, 'post_status' => 'any' ] );
-        include WPUF_ROOT . '/admin/form-builder/views/form-builder.php';
+        $forms             = get_posts(
+            [
+                'post_type' => $post_type,
+                'post_status' => 'any',
+            ]
+        );
+
+        if ( defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.0.12', '<' ) ) {
+            include WPUF_ROOT . '/admin/form-builder/views/form-builder-old.php';
+        } else {
+            include WPUF_ROOT . '/admin/form-builder/views/form-builder.php';
+        }
     }
 
     /**
-     * i18n translatable strings
+     * WordPress i18n translatable strings
      *
      * @since 2.5
      *

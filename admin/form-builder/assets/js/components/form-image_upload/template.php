@@ -1,7 +1,7 @@
 <div class="wpuf-fields">
     <div :id="'wpuf-img_label-' + field.id + '-upload-container'">
         <div class="wpuf-attachment-upload-filelist" data-type="file" data-required="yes">
-            <a class="button file-selector wpuf_img_label_148" href="#">
+            <a :class="builder_class_names('upload_btn')" href="#">
                 <template v-if="field.button_label === ''">
                     <?php _e( 'Select Image', 'wp-user-frontend' ); ?>
                 </template>
@@ -12,5 +12,5 @@
         </div>
     </div>
 
-    <span v-if="field.help" class="wpuf-help" v-html="field.help"/>
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>

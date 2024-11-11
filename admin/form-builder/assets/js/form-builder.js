@@ -410,7 +410,9 @@
             is_form_saved: false,
             is_form_switcher: false,
             post_title_editing: false,
-            isDirty: false
+            isDirty: false,
+            shortcodeCopied: false,
+            logoUrl: wpuf_form_builder.assetUrl + '/images/wpuf-icon-circle.svg'
         },
 
         computed: {
@@ -491,13 +493,16 @@
             clipboard.on('success', function(e) {
                 // Show copied tooltip
                 $(e.trigger)
-                    .attr('data-original-title', 'Copied!')
+                    .attr('data-original-title', 'Shortcode copied!')
                     .tooltip('show');
+
+                self.shortcodeCopied = true;
 
                 // Reset the copied tooltip
                 setTimeout(function() {
                     $(e.trigger).tooltip('hide')
                     .attr('data-original-title', self.i18n.copy_shortcode);
+                    self.shortcodeCopied = false;
                 }, 1000);
 
                 e.clearSelection();
@@ -899,11 +904,11 @@
 
     // on DOM ready
     $(function() {
-        resizeBuilderContainer();
-
-        $("#collapse-menu").click(function () {
-            resizeBuilderContainer();
-        });
+        // resizeBuilderContainer();
+        //
+        // $("#collapse-menu").click(function () {
+        //     resizeBuilderContainer();
+        // });
 
         function resizeBuilderContainer() {
             if ($(document.body).hasClass('folded')) {

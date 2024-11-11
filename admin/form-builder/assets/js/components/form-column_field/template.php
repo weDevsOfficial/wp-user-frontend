@@ -1,8 +1,8 @@
-<div v-bind:class="['wpuf-field-columns', 'has-columns-'+field.columns]">
+<div v-bind:class="['wpuf-field-columns wpuf-bg-gray-50 wpuf-min-h-20', 'has-columns-'+field.columns]">
     <div class="wpuf-column-field-inner-columns">
-        <div class="wpuf-column">
+        <div class="wpuf-column wpuf-flex">
             <!-- don't change column class names -->
-            <div v-for="column in columnClasses" :class="[column, 'items-of-column-'+field.columns, 'wpuf-column-inner-fields']" :style="{ width: field.inner_columns_size[column], paddingRight: field.column_space+'px'}">
+            <div v-for="column in columnClasses" :class="[column, 'items-of-column-'+field.columns, 'wpuf-column-inner-fields wpuf-pattern-1 wpuf-min-h-16 wpuf-m-2']" :style="{ width: field.inner_columns_size[column], paddingRight: field.column_space+'px'}">
                 <ul class="wpuf-column-fields-sortable-list">
                     <li
                         v-for="(field, index) in column_fields[column]"

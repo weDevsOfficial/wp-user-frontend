@@ -52,7 +52,7 @@ wpuf_mixins.add_form_field = {
 
     computed: {
         action_button_classes: function() {
-            return 'wpuf-p-2 wpuf-bg-slate-800 wpuf-text-white hover:wpuf-cursor-pointer hover:wpuf-bg-indigo-600';
+            return 'wpuf-p-2 hover:wpuf-cursor-pointer hover:wpuf-text-white';
         }
     },
 };
@@ -102,11 +102,11 @@ wpuf_mixins.form_field_mixin = {
                 case 'textareafield':
                 case 'textfield':
                 case 'select':
-                    commonClasses = 'wpuf-block wpuf-min-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300';
+                    commonClasses = 'wpuf-block wpuf-min-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 !wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300';
                     break;
 
                 case 'upload_btn':
-                    commonClasses = 'file-selector wpuf-rounded-md wpuf-bg-indigo-600 wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-indigo-500 hover:wpuf-text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600';
+                    commonClasses = 'file-selector  wpuf-rounded-md wpuf-btn-secondary';
                     break;
             }
 

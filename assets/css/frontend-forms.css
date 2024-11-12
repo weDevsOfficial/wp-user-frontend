@@ -281,31 +281,6 @@ body ul.wpuf-form li .wpuf-fields .wpuf-checkbox-block {
   display: block;
   margin-bottom: 6px;
 }
-body ul.wpuf-form li .wpuf-fields a.file-selector {
-  display: inline;
-  text-decoration: none;
-  padding: 5px 12px;
-  margin: 0;
-  height: 30px;
-  line-height: 28px;
-  border: 1px solid #ccc;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  background: #fafafa;
-  color: #23282d;
-  box-shadow: 0 1px 0 #cccccc;
-  vertical-align: top;
-  cursor: pointer;
-  -webkit-appearance: none;
-  white-space: nowrap;
-}
-body ul.wpuf-form li .wpuf-fields a.file-selector:hover,
-body ul.wpuf-form li .wpuf-fields a.file-selector:focus {
-  background: #fafafa;
-  border-color: #999;
-  color: #23282d;
-}
 body ul.wpuf-form li .wpuf-fields .google-map img {
   max-width: none !important;
 }

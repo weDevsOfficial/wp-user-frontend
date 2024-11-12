@@ -5,12 +5,13 @@ module.exports = {
         './assets/**/*.{js,jsx,ts,tsx,vue,html}',
         './includes/Admin/views/*.php',
         './admin/form-builder/views/*.php',
-        './admin/form-builder/assets/js/components/**/*.php'
+        './admin/form-builder/assets/js/**/*.php',
     ],
     theme: {
         extend: {
             colors: {
                 primary: '#166534',
+                primaryHover: '#15803d',
             }
         },
     },

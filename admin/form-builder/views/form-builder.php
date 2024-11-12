@@ -1,57 +1,12 @@
 <form id="wpuf-form-builder"
-    class="wpuf-w-[calc(100%+20px)] wpuf-ml-[-20px] wpuf-form-builder-<?php echo esc_attr( $form_type ); ?>" method="post" action="" @submit.prevent="save_form_builder" v-cloak>
-    <div class="wpuf-bg-white wpuf-px-[20px] wpuf-pt-8 wpuf-justify-between wpuf-items-center wpuf-border-b wpuf-border-slate-200 wpuf-pb-4">
+      class="wpuf-w-[calc(100%+20px)] wpuf-ml-[-20px] wpuf-form-builder-<?php echo esc_attr( $form_type ); ?>" method="post" action="" @submit.prevent="save_form_builder" v-cloak>
+    <div class="wpuf-bg-white wpuf-px-[20px] wpuf-pt-8 wpuf-justify-between wpuf-items-center wpuf-pb-4">
         <div class="wpuf-flex wpuf-justify-between">
             <div class="wpuf-flex">
                 <img src="<?php echo WPUF_ASSET_URI . '/images/wpuf-icon-circle.svg'; ?>" alt="WPUF Icon" class="wpuf-mr-2">
                 <nav class="wpuf-flex wpuf-items-center" aria-label="Tabs">
                     <div class="wpuf-relative wpuf-flex">
                         <div class="wpuf-flex wpuf-items-center">
-
-    <div class="!wpuf-w-[calc(100%+20px)] !wpuf-initial !wpuf-relative !wpuf-top-0 !wpuf-bg-white !wpuf-p-0 wpuf-ml-[-20px] wpuf-form-builder-<?php echo esc_attr( $form_type ); ?>" method="post" action="" @submit.prevent="save_form_builder" v-cloak>
-    <div class="wpuf-flex wpuf-bg-white wpuf-px-[20px] wpuf-pt-4 wpuf-justify-between wpuf-items-center wpuf-border-b wpuf-border-slate-200 wpuf-pb-4">
-        <div class="wpuf-flex">
-            <img :src="logoUrl" alt="WPUF Icon" class="wpuf-w-12 wpuf-mr-4">
-            <nav class="wpuf-flex wpuf-space-x-8 wpuf-items-center" aria-label="Tabs">
-                <div class="wpuf-relative wpuf-flex">
-                    <div
-                        @click.prevent="post_title_editing = true"
-                        v-show="!post_title_editing"
-                        class="wpuf-rounded-md wpuf-shadow-sm">
-                        <input
-                            v-model="post.post_title"
-                            type="text"
-                            name="post_title"
-                            class="wpuf-block wpuf-w-full !wpuf-rounded-none !wpuf-rounded-l-md !wpuf-py-1 !wpuf-px-4 wpuf-text-gray-900  placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 !wpuf-border !wpuf-border-gray-300">
-                    </div>
-                    <button
-                        v-show="!post_title_editing"
-                        @mouseover="is_form_switcher = true"
-                        @mouseleave="is_form_switcher = false"
-                        type="button"
-                        class="wpuf-dropdown-container wpuf-relative wpuf--ml-px wpuf-inline-flex wpuf-items-center wpuf-gap-x-1.5 wpuf-rounded-r-md wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900 wpuf-border wpuf-border-l-0 wpuf-rounded-r-lg wpuf-border-gray-300 hover:wpuf-bg-gray-50">
-                        <i :class="(is_form_switcher ? 'fa fa-angle-up' : 'fa fa-angle-down') + ' form-switcher-arrow'"></i>
-                        <div
-                            class="wpuf-dropdown-item wpuf-absolute wpuf--left-40 wpuf-z-10 wpuf-w-max wpuf-origin-top-right wpuf-rounded-md wpuf-bg-white wpuf-shadow-lg focus:wpuf-shadow-none focus:wpuf-outline-none wpuf-top-9"
-                            role="menu"
-                            aria-orientation="vertical"
-                            aria-labelledby="menu-button">
-                            <div class="wpuf-py-1" role="none">
-                                <?php
-                                foreach ( $forms as $form ) {
-                                    ?>
-                                    <a class="wpuf-block wpuf-text-left wpuf-px-4 wpuf-py-2 !wpuf-text-sm wpuf-text-gray-700 hover:wpuf-bg-gray-100 hover:wpuf-text-gray-900 focus:wpuf-shadow-none focus:wpuf-outline-none" href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-' . $form_type . '-forms&action=edit&id=' . $form->ID ) ); ?>"><?php echo esc_html( $form->post_title ); ?></a>
-                                    <?php
-                                }
-                                ?>
-
-                            </div>
-                        </div>
-                    </button>
-                    <div
-                        v-show="post_title_editing"
-                        class="wpuf-flex wpuf-rounded-md wpuf-shadow-sm">
-                        <div class="wpuf-relative wpuf-flex wpuf-flex-grow wpuf-items-stretch focus-within:wpuf-z-10">
                             <input
                                 @click="post_title_editing = !post_title_editing"
                                 v-model="post.post_title"
@@ -191,11 +146,9 @@
         </div>
     </div>
     <div class="wpuf-flex">
-        <div class="wpuf-w-2/3 wpuf-bg-white wpuf-min-h-screen wpuf-px-[20px] wpuf-pt-4">
+        <div class="wpuf-w-2/3 wpuf-bg-white wpuf-min-h-screen wpuf-px-[20px] wpuf-pt-4 wpuf-border-t wpuf-border-gray-200">
             <builder-stage></builder-stage>
         </div>
         <div class="wpuf-w-1/3 wpuf-bg-gray-50 wpuf-px-[20px] wpuf-pt-4">Field attributes</div>
     </div>
-                        </div>
-                    </div>
 </form>

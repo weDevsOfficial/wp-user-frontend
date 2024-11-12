@@ -6,6 +6,10 @@
     .wpuf-btn-primary {
         @apply wpuf-rounded-md wpuf-bg-green-800 wpuf-text-white hover:wpuf-bg-green-700 hover:wpuf-text-white wpuf-px-3.5 wpuf-py-2 wpuf-text-sm wpuf-font-semibold;
     }
+
+    .wpuf-btn-secondary {
+        @apply wpuf-rounded-md wpuf-bg-green-50 wpuf-text-green-700 wpuf-px-3.5 wpuf-py-2 wpuf-text-sm wpuf-border wpuf-border-green-300 wpuf-font-semibold hover:wpuf-bg-green-100 hover:wpuf-text-white;
+    }
 }
 
 @layer utilities {

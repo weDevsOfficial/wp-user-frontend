@@ -2714,6 +2714,11 @@ html {
   border-color: rgb(187 247 208 / var(--tw-border-opacity));
 }
 
+.wpuf-border-green-400 {
+  --tw-border-opacity: 1;
+  border-color: rgb(74 222 128 / var(--tw-border-opacity));
+}
+
 .wpuf-border-indigo-600 {
   --tw-border-opacity: 1;
   border-color: rgb(79 70 229 / var(--tw-border-opacity));

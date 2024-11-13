@@ -1,4 +1,4 @@
-<div v-bind:class="['wpuf-field-columns wpuf-bg-gray-50 wpuf-min-h-20', 'has-columns-'+field.columns]">
+<div v-bind:class="['wpuf-field-columns wpuf-bg-green-50 wpuf-min-h-20', 'has-columns-'+field.columns]">
     <div class="wpuf-column-field-inner-columns">
         <div class="wpuf-column wpuf-flex">
             <!-- don't change column class names -->

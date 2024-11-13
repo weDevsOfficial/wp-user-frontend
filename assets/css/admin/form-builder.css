@@ -3471,8 +3471,9 @@ html {
 
 .wpuf-pattern-1 {
   border: 1px dashed #ddd;
-  opacity: 0.5;
-  background: repeating-linear-gradient( -45deg, #ddd, #ddd 2px, #fff 2px, #fff 10px );
+  background-color: #ffffff;
+  opacity: 1;
+  background: repeating-linear-gradient( -45deg, #dcfce7, #dcfce7 2px, #ffffff 2px, #ffffff 6px );
 }
 
 .placeholder\:wpuf-text-gray-400::-moz-placeholder {
@@ -3905,14 +3906,8 @@ html {
   }
 }
 
-@media (min-width: 1024px) {
-  .lg\:wpuf-w-1\/2 {
-    width: 50%;
-  }
-}
-
-@media (min-width: 1280px) {
-  .xl\:wpuf-w-1\/3 {
+@media (min-width: 1536px) {
+  .\32xl\:wpuf-w-1\/3 {
     width: 33.333333%;
   }
 }

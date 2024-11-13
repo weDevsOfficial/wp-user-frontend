@@ -53,6 +53,7 @@
 
 .wpuf-pattern-1 {
     border: 1px dashed #ddd;
-    opacity: 0.5;
-    background: repeating-linear-gradient( -45deg, #ddd, #ddd 2px, #fff 2px, #fff 10px );
+    background-color: #ffffff;
+    opacity: 1;
+    background: repeating-linear-gradient( -45deg, #dcfce7, #dcfce7 2px, #ffffff 2px, #ffffff 6px );
 }

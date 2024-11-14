@@ -425,7 +425,7 @@ class Simple_Login {
     /**
      * Verify if cloudflare turnstile request is successful
      *
-     * @since WPUF_SINCE
+     * @since 4.0.13
      *
      * @return bool
      */

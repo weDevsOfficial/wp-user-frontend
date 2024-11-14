@@ -158,7 +158,10 @@ module.exports = function(grunt) {
                     '!**/composer.json',
                     '!**/composer.lock',
                     '!**/phpcs-report.txt',
-                    '!**/phpcs.xml.dist'
+                    '!**/phpcs.xml.dist',
+                    '!**/postcss.config.js',
+                    '!**/tailwind.config.js',
+                    '!**/vite.config.mjs',
                 ],
                 dest: 'build/'
             }

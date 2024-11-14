@@ -19,6 +19,13 @@ class Simple_Login {
 
     private $messages = [];
 
+    /**
+     * Cloudflare Turnstile messages
+     *
+     * @var array
+     */
+    private $cf_messages = [];
+
     private static $_instance;
 
     public function __construct() {
@@ -339,7 +346,7 @@ class Simple_Login {
         $reset = isset( $getdata['reset'] ) ? sanitize_text_field( $getdata['reset'] ) : '';
 
         if ( false === $login_page ) {
-            return;
+            return '';
         }
 
         ob_start();
@@ -394,6 +401,11 @@ class Simple_Login {
 
                 default:
                     $loggedout = isset( $getdata['loggedout'] ) ? sanitize_text_field( $getdata['loggedout'] ) : '';
+                    $enable_turnstile = wpuf_get_option( 'enable_turnstile', 'wpuf_general', 'off' );
+
+                    if ( 'on' === $enable_turnstile ) {
+                        wp_enqueue_script( 'wpuf-turnstile' );
+                    }
 
                     if ( $loggedout === 'true' ) {
                         $this->messages[] = __( 'You are now logged out.', 'wp-user-frontend' );
@@ -408,6 +420,52 @@ class Simple_Login {
         }
 
         return ob_get_clean();
+    }
+
+    /**
+     * Verify if cloudflare turnstile request is successful
+     *
+     * @since 4.0.13
+     *
+     * @return bool
+     */
+    private function verify_cloudflare_turnstile_on_login() {
+        $nonce = isset( $_POST['wpuf-login-nonce'] ) ? sanitize_key( wp_unslash( $_POST['wpuf-login-nonce'] ) ) : '';
+
+        if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
+            return false;
+        }
+
+        $secret = wpuf_get_option( 'turnstile_secret_key', 'wpuf_general', '' );
+
+        if ( empty( $secret ) ) {
+            return false;
+        }
+
+        $remote_addr = ! empty( $_SERVER['REMOTE_ADDR'] ) ? sanitize_url(
+            wp_unslash( $_SERVER['REMOTE_ADDR'] )
+        ) : '';
+
+        $cf_url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+        $token  = ! empty( $_POST['cf-turnstile-response'] ) ? sanitize_text_field( wp_unslash( $_POST['cf-turnstile-response'] ) ) : '';
+
+        // Request data
+        $data = [
+            'secret'   => $secret,
+            'response' => $token,
+            'remoteip' => $remote_addr,
+        ];
+
+        $response = wp_remote_post( $cf_url, [ 'body' => $data ] );
+        $body     = json_decode( wp_remote_retrieve_body( $response ), true );
+
+        if ( ! empty( $body['success'] ) ) {
+            return true;
+        } else {
+            $this->cf_messages[] = ! empty( $body['error-codes'] ) ? $body['error-codes'] : '';
+
+            return false;
+        }
     }
 
     /**
@@ -447,9 +505,23 @@ class Simple_Login {
             return;
         }
 
-        $log = isset( $_POST['log'] ) ? esc_attr( wp_unslash( $_POST['log'] ) ) : '';
-        $pwd = isset( $_POST['pwd'] ) ? trim( $_POST['pwd'] ) : '';
+        $log = isset( $_POST['log'] ) ? sanitize_text_field( wp_unslash( $_POST['log'] ) ) : '';
+        $pwd = isset( $_POST['pwd'] ) ? sanitize_text_field( ( wp_unslash( $_POST['pwd'] ) ) ) : '';
         // $g_recaptcha_response = isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '';
+
+        if ( ! $this->verify_cloudflare_turnstile_on_login() ) {
+            $errors = ! empty( $this->cf_messages[0] ) ? $this->cf_messages[0] : '';
+            $errors = implode( ', ', $errors );
+            $this->login_errors[] =
+            sprintf(
+                // translators: %1$s and %2$s are strong tags, %3$s is the error message
+                __( '%1$sError%2$s: Cloudflare Turnstile verification failed. Reasons: [%3$s]', 'wp-user-frontend' ),
+                '<strong>',
+                '</strong>',
+                $errors
+            );
+                '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Cloudflare Turnstile verification failed. Reasons: [', 'wp-user-frontend' );
+        }
 
         $validation_error = new WP_Error();
         $validation_error = apply_filters( 'wpuf_process_login_errors', $validation_error, $log, $pwd );

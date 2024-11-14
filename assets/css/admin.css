@@ -944,6 +944,50 @@ span.pro-icon:hover .wpuf-pro-field-tooltip {
 .wrap h2.with-headway-icon #HW_frame_cont {
   top: 78px !important;
 }
+.wpuf-toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+.wpuf-toggle-switch input {
+  display: none;
+}
+.wpuf-toggle-switch input:checked + .slider {
+  background-color: #0073aa;
+}
+.wpuf-toggle-switch input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+.wpuf-toggle-switch input:checked + .slider:before {
+  transform: translateX(26px);
+}
+.wpuf-toggle-switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .2s;
+}
+.wpuf-toggle-switch .slider.round {
+  border-radius: 34px;
+}
+.wpuf-toggle-switch .slider.round:before {
+  border-radius: 50%;
+}
+.wpuf-toggle-switch .slider::before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 4px;
+  background-color: white;
+  transition: .2s;
+}
 @media only screen and (max-width: 1399px) {
   a.wpuf-button.button-upgrade-to-pro {
     padding: 10px;

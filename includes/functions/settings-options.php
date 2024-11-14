@@ -160,6 +160,29 @@ function wpuf_settings_fields() {
                                'wp-user-frontend' ),
             ],
             [
+                'name'    => 'enable_turnstile',
+                'label'   => __( 'Enable Turnstile', 'wp-user-frontend' ),
+                'type'    => 'toggle',
+                'default' => 'off',
+            ],
+            [
+                'name'       => 'turnstile_site_key',
+                'label'      => __( 'Turnstile Site Key', 'wp-user-frontend' ),
+                'depends_on' => 'enable_turnstile',
+            ],
+            [
+                'name'       => 'turnstile_secret_key',
+                'label'      => __( 'Turnstile Secret Key', 'wp-user-frontend' ),
+                'depends_on' => 'enable_turnstile',
+                'desc'       => sprintf(
+                    // translators: %s is a link
+                    __(
+                        '<a target="_blank" href="%1$s">Register here</a> to get Turnstile Site and Secret keys.',
+                        'wp-user-frontend'
+                    ), esc_url( 'https://developers.cloudflare.com/turnstile/' )
+                ),
+            ],
+            [
                 'name'  => 'custom_css',
                 'label' => __( 'Custom CSS codes', 'wp-user-frontend' ),
                 'desc'  => __( 'If you want to add your custom CSS code, it will be added on page header wrapped with style tag',
@@ -430,6 +453,17 @@ function wpuf_settings_fields() {
                                  'wp-user-frontend' ),
                 'type'    => 'checkbox',
                 'default' => 'off',
+            ],
+            [
+                'name'       => 'login_form_turnstile',
+                'label'      => __( 'Turnstile in Login Form', 'wp-user-frontend' ),
+                'desc'       => __(
+                    'If enabled, users have to verify Cloudflare Turnstile in login page. Also, make sure that Turnstile is configured properly from <b>General Options</b>',
+                    'wp-user-frontend'
+                ),
+                'type'       => 'toggle',
+                'default'    => 'off',
+                'depends_on' => 'enable_turnstile',
             ],
         ] ),
         'wpuf_payment'          => apply_filters( 'wpuf_options_payment', [

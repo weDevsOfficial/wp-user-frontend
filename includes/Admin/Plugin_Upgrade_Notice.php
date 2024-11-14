@@ -84,7 +84,7 @@ class Plugin_Upgrade_Notice {
 
         $min_version = ! empty( $notice['min-version'] ) ? $notice['min-version'] : '';
 
-        if ( version_compare( WPUF_VERSION, $min_version,  '>=' ) ) {
+        if ( version_compare( WPUF_VERSION, $min_version, '>=' ) ) {
             return;
         }
 

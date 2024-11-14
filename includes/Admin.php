@@ -25,11 +25,15 @@ class Admin {
         $this->container['settings']              = new Admin\Admin_Settings();
         $this->container['forms']                 = new Admin\Forms\Form_Manager();
         $this->container['gutenberg_block']       = new Frontend\Form_Gutenberg_Block();
-        $this->container['promotion']             = new Admin\Promotion();
         $this->container['plugin_upgrade_notice'] = new Admin\Plugin_Upgrade_Notice();
         $this->container['posting']               = new Admin\Posting();
         $this->container['shortcodes_button']     = new Admin\Shortcodes_Button();
         $this->container['tools']                 = new Admin\Admin_Tools();
+
+        // only free users will see the promotion
+        if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {
+            $this->container['promotion'] = new Admin\Promotion();
+        }
 
         // dynamic hook. format: "admin_action_{$action}". more details: wp-admin/admin.php
         add_action( 'admin_action_post_form_template', [ $this, 'create_post_form_from_template' ] );

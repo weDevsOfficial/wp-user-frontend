@@ -17,7 +17,7 @@ class Form_Field_Cloudflare_Turnstile extends Field_Contract {
     /**
      * Render the field in frontend
      *
-     * @since WPUF_SINCE
+     * @since 4.0.13
      *
      * @param array $field_settings
      * @param int   $form_id
@@ -61,7 +61,7 @@ class Form_Field_Cloudflare_Turnstile extends Field_Contract {
     /**
      * Custom validator
      *
-     * @since WPUF_SINCE
+     * @since 4.0.13
      *
      * @return array
      */
@@ -82,7 +82,7 @@ class Form_Field_Cloudflare_Turnstile extends Field_Contract {
     /**
      * Get field options setting
      *
-     * @since WPUF_SINCE
+     * @since 4.0.13
      *
      * @return array
      */
@@ -139,25 +139,27 @@ class Form_Field_Cloudflare_Turnstile extends Field_Contract {
             ],
         ];
 
-        return $settings;
+        return apply_filters( 'wpuf_turnstile_field_option_settings', $settings );
     }
 
     /**
      * Get the field props
      *
-     * @since WPUF_SINCE
+     * @since 4.0.13
      *
      * @return array
      */
     public function get_field_props() {
 
         $props = [
-            'input_type'      => 'turnstile',
+            'input_type'      => 'cloudflare_turnstile',
             'template'        => $this->get_type(),
             'label'           => '',
+            'name'            => '',
             'turnstile_type'  => 'managed',
             'turnstile_theme' => 'light',
             'turnstile_size'  => 'normal',
+            'is_new'          => true,
             'is_meta'         => 'yes',
             'id'              => 0,
             'wpuf_cond'       => null,

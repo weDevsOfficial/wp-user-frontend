@@ -13,7 +13,7 @@
                                 type="text"
                                 name="post_title"
                                 :class="post_title_editing ? '' : '!wpuf-border-0'"
-                                class="wpuf-text-gray-900 placeholder:wpuf-text-gray-400 wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-p-2">
+                                class="wpuf-text-gray-900 placeholder:wpuf-text-gray-400 wpuf-font-medium wpuf-min-w-16 wpuf-max-w-32">
                             <i
                                 v-if="post_title_editing"
                                 @click="post_title_editing = !post_title_editing"
@@ -105,7 +105,7 @@
         </div>
 
         <div class="wpuf-flex wpuf-items-center wpuf-mt-8">
-            <div class="wpuf-flex wpuf-bg-gray-100 wpuf-w-max wpuf-rounded-lg wpuf-p-4">
+            <div class="wpuf-flex wpuf-bg-gray-100 wpuf-w-max wpuf-rounded-lg wpuf-p-4 wpuf-mr-6">
                 <div class="wpuf-tab-contents">
                     <a
                         href="#wpuf-form-builder-container"

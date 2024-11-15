@@ -1,47 +1,62 @@
-<div v-bind:class="['wpuf-field-columns wpuf-min-h-20', 'has-columns-'+field.columns]">
-    <div class="wpuf-column-field-inner-columns">
-        <div class="wpuf-column wpuf-flex">
-            <!-- don't change column class names -->
-            <div v-for="column in columnClasses" :class="[column, 'items-of-column-'+field.columns, 'wpuf-column-inner-fields wpuf-border wpuf-border-dashed wpuf-border-green-400 wpuf-bg-green-50 wpuf-shadow-sm wpuf-rounded-md wpuf-min-h-16 wpuf-m-2']" :style="{ width: field.inner_columns_size[column], paddingRight: field.column_space+'px'}">
-                <ul class="wpuf-column-fields-sortable-list">
-                    <li
-                        v-for="(field, index) in column_fields[column]"
-                        :key="field.id"
-                        :class="[
-                            'column-field-items', 'wpuf-el', field.name, field.css, 'form-field-' + field.template,
-                            field.width ? 'field-size-' + field.width : '',
-                            parseInt(editing_form_id) === parseInt(field.id) ? 'current-editing' : ''
-                        ]"
-                        :column-field-index="index"
-                        :in-column="column"
-                        data-source="column-field-stage"
-                    >
-                        <div v-if="!is_full_width(field.template)" class="wpuf-label wpuf-column-field-label">
-                            <label v-if="!is_invisible(field)" :for="'wpuf-' + field.name ? field.name : 'cls'">
-                                {{ field.label }} <span v-if="field.required && 'yes' === field.required" class="required">*</span>
+<div :class="['wpuf-flex wpuf-flex-col md:wpuf-flex-row wpuf-gap-4 wpuf-p-4 wpuf-w-full', 'has-columns-'+field.columns]">
+    <div
+        v-for="column in columnClasses"
+        class="wpuf-flex-1 wpuf-min-w-0 wpuf-min-h-full">
+        <div class="wpuf-column-inner-fields wpuf-border wpuf-border-dashed wpuf-border-green-400 wpuf-bg-green-50 wpuf-shadow-sm wpuf-rounded-md wpuf-p-3">
+            <ul class="wpuf-column-fields-sortable-list ui-sortable wpuf-space-y-3">
+                <li
+                    v-for="(field, index) in column_fields[column]"
+                    :key="field.id"
+                    :column-field-index="index"
+                    :in-column="column"
+                    data-source="column-field-stage"
+                    :class="[
+                        'wpuf-group',
+                        'wpuf-rounded-lg',
+                        'hover:wpuf-bg-green-50',
+                        'wpuf-transition',
+                        'wpuf-duration-150',
+                        'wpuf-ease-out',
+                        'column-field-items',
+                        'wpuf-el',
+                        field.name,
+                        field.css,
+                        'form-field-' + field.template,
+                        field.width ? 'field-size-' + field.width : '',
+                        ('custom_hidden_field' === field.template) ? 'hidden-field' : '',
+                        parseInt(editing_form_id) === parseInt(field.id) ? 'current-editing' : ''
+                      ]">
+                    <div class="wpuf-flex wpuf-flex-col md:wpuf-flex-row wpuf-gap-2 wpuf-p-2">
+                        <div
+                            v-if="!(is_full_width(field.template) || is_pro_feature(field.template))"
+                            class="wpuf-w-full md:wpuf-w-1/4 wpuf-shrink-0">
+                            <label v-if="!is_invisible(field)"
+                                   :for="'wpuf-' + (field.name ? field.name : 'cls')"
+                                   class="wpuf-block wpuf-text-sm">
+                                {{ field.label }}
+                                <span v-if="field.required && 'yes' === field.required"
+                                      class="required">*</span>
                             </label>
                         </div>
-
-                        <component v-if="is_template_available(field)" :is="'form-' + field.template" :field="field"></component>
-
-                        <div v-if="is_pro_feature(field.template)" class="stage-pro-alert">
-                            <label class="wpuf-pro-text-alert">
-                                <a :href="pro_link" target="_blank"><strong>{{ get_field_name(field.template) }}</strong> <?php _e( 'is available in Pro Version', 'wp-user-frontend' ); ?></a>
-                            </label>
+                        <div
+                            :class="[
+                             'wpuf-relative wpuf-min-w-0', // Added wpuf-min-w-0
+                             (is_full_width(field.template) || is_pro_feature(field.template))
+                               ? 'wpuf-w-full'
+                               : 'wpuf-w-full md:wpuf-w-3/4'
+                           ]">
+                            <div class="wpuf-absolute wpuf-w-full wpuf-h-full wpuf-z-10"></div>
+                            <div class="wpuf-relative">
+                                <component
+                                    v-if="is_template_available(field)"
+                                   :is="'form-' + field.template"
+                                   :field="field">
+                                </component>
+                            </div>
                         </div>
-
-                        <div class="wpuf-column-field-control-buttons">
-                            <p>
-                                <i class="fa fa-arrows move"></i>
-                                <i class="fa fa-pencil" @click="open_column_field_settings(field, index, column)"></i>
-                                <i class="fa fa-clone" @click="clone_column_field(field, index, column)"></i>
-                                <i class="fa fa-trash-o" @click="delete_column_field(index, column)"></i>
-                            </p>
-                        </div>
-                    </li>
-
-                </ul>
-            </div>
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
 </div>

@@ -255,22 +255,6 @@ body ul.wpuf-form li .wpuf-label {
 body ul.wpuf-form li .wpuf-label .required {
   color: red;
 }
-body ul.wpuf-form li.field-size-large .wpuf-fields {
-  float: left;
-  width: 70%;
-}
-body ul.wpuf-form li.field-size-medium .wpuf-fields {
-  float: left;
-  width: 50%;
-}
-body ul.wpuf-form li.field-size-small .wpuf-fields {
-  float: left;
-  width: 30%;
-}
-body ul.wpuf-form li .wpuf-fields {
-  float: left;
-  width: 70%;
-}
 body ul.wpuf-form li .wpuf-fields .wpuf-radio-inline,
 body ul.wpuf-form li .wpuf-fields .wpuf-checkbox-inline {
   display: inline-block;

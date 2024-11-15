@@ -1958,10 +1958,6 @@ html {
   margin: 0.25rem;
 }
 
-.wpuf-m-2 {
-  margin: 0.5rem;
-}
-
 .wpuf--mx-1\.5 {
   margin-left: -0.375rem;
   margin-right: -0.375rem;
@@ -2070,6 +2066,10 @@ html {
 
 .wpuf-mr-4 {
   margin-right: 1rem;
+}
+
+.wpuf-mr-6 {
+  margin-right: 1.5rem;
 }
 
 .wpuf-mr-\[10px\] {
@@ -2223,14 +2223,6 @@ html {
   height: 100svh;
 }
 
-.wpuf-min-h-16 {
-  min-height: 4rem;
-}
-
-.wpuf-min-h-20 {
-  min-height: 5rem;
-}
-
 .wpuf-min-h-full {
   min-height: 100%;
 }
@@ -2363,12 +2355,24 @@ html {
   min-width: 0px;
 }
 
+.wpuf-min-w-16 {
+  min-width: 4rem;
+}
+
 .wpuf-min-w-full {
   min-width: 100%;
 }
 
 .\!wpuf-max-w-full {
   max-width: 100% !important;
+}
+
+.wpuf-max-w-32 {
+  max-width: 8rem;
+}
+
+.wpuf-max-w-full {
+  max-width: 100%;
 }
 
 .wpuf-max-w-lg {
@@ -2392,6 +2396,10 @@ html {
 }
 
 .wpuf-flex-shrink-0 {
+  flex-shrink: 0;
+}
+
+.wpuf-shrink-0 {
   flex-shrink: 0;
 }
 
@@ -2508,6 +2516,10 @@ html {
   justify-content: space-around;
 }
 
+.wpuf-gap-2 {
+  gap: 0.5rem;
+}
+
 .wpuf-gap-3 {
   gap: 0.75rem;
 }
@@ -2542,6 +2554,12 @@ html {
   --tw-space-y-reverse: 0;
   margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+}
+
+.wpuf-space-y-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
 }
 
 .wpuf-space-y-6 > :not([hidden]) ~ :not([hidden]) {
@@ -2886,6 +2904,10 @@ html {
 
 .wpuf-p-2 {
   padding: 0.5rem;
+}
+
+.wpuf-p-3 {
+  padding: 0.75rem;
 }
 
 .wpuf-p-4 {
@@ -3860,10 +3882,6 @@ html {
   border-color: rgb(74 222 128 / var(--tw-border-opacity));
 }
 
-.wpuf-group:hover .group-hover\:wpuf-bg-green-50\/50 {
-  background-color: rgb(240 253 244 / 0.5);
-}
-
 .wpuf-group:hover .group-hover\:wpuf-stroke-gray-500 {
   stroke: #6b7280;
 }
@@ -3908,6 +3926,20 @@ html {
 
   .sm\:wpuf-leading-6 {
     line-height: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .md\:wpuf-w-1\/4 {
+    width: 25%;
+  }
+
+  .md\:wpuf-w-3\/4 {
+    width: 75%;
+  }
+
+  .md\:wpuf-flex-row {
+    flex-direction: row;
   }
 }
 

@@ -18,7 +18,8 @@
                     ]"
             class="wpuf-group wpuf-rounded-lg hover:wpuf-bg-green-50 wpuf-transition wpuf-duration-150 wpuf-ease-out !wpuf-m-0 !wpuf-p-0">
             <div
-                class="wpuf-flex wpuf-justify-between wpuf-p-4 wpuf-rounded-t-md wpuf-border-transparent wpuf-border-t wpuf-border-r wpuf-border-l group-hover:wpuf-border-dashed group-hover:wpuf-border-green-400 group-hover:wpuf-cursor-pointer">
+                v-if="field.input_type !== 'column_field'"
+                class="wpuf-flex wpuf-justify-between wpuf-p-4 wpuf-rounded-t-md wpuf-border-transparent wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed wpuf-border-green-400 group-hover:wpuf-cursor-pointer">
                 <div v-if="!(is_full_width(field.template) || is_pro_feature(field.template))" class="wpuf-w-1/4">
                     <label
                         v-if="!is_invisible(field)"
@@ -32,7 +33,7 @@
                     :class="(is_full_width(field.template) || is_pro_feature(field.template)) ? 'wpuf-w-full' : 'wpuf-w-3/4'"
                     class="wpuf-relative"
                 >
-                    <div class="wpuf-absolute wpuf-w-full wpuf-h-full group-hover:wpuf-bg-green-50/50 wpuf-z-10"></div>
+                    <div class="wpuf-absolute wpuf-w-full wpuf-h-full wpuf-z-10"></div>
                     <component v-if="is_template_available(field)" :is="'form-' + field.template"
                                :field="field"></component>
                     <div v-if="is_pro_feature(field.template)" class="stage-pro-alert wpuf-text-center">
@@ -44,6 +45,10 @@
                     </div>
                 </div>
             </div>
+            <component
+                v-if="is_template_available(field) && field.input_type === 'column_field'"
+                :is="'form-' + field.template"
+                       :field="field"></component>
             <div
                 class="control-buttons wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-rounded-b-lg wpuf-bg-green-600  wpuf-flex wpuf-justify-around wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out">
                 <div class="wpuf-flex wpuf-items-center wpuf-text-green-200">

@@ -432,6 +432,12 @@ class Simple_Login {
     private function verify_cloudflare_turnstile_on_login() {
         $nonce = isset( $_POST['wpuf-login-nonce'] ) ? sanitize_key( wp_unslash( $_POST['wpuf-login-nonce'] ) ) : '';
 
+        $enable_turnstile = wpuf_get_option( 'enable_turnstile', 'wpuf_general', 'off' );
+
+        if ( 'on' !== $enable_turnstile ) {
+            return true;
+        }
+
         if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf_login_action' ) ) {
             return false;
         }
@@ -511,16 +517,17 @@ class Simple_Login {
 
         if ( ! $this->verify_cloudflare_turnstile_on_login() ) {
             $errors = ! empty( $this->cf_messages[0] ) ? $this->cf_messages[0] : '';
-            $errors = implode( ', ', $errors );
+            $errors = is_array( $errors ) ? implode( ', ', $errors ) : $errors;
+
             $this->login_errors[] =
-            sprintf(
+                sprintf(
                 // translators: %1$s and %2$s are strong tags, %3$s is the error message
-                __( '%1$sError%2$s: Cloudflare Turnstile verification failed. Reasons: [%3$s]', 'wp-user-frontend' ),
-                '<strong>',
-                '</strong>',
-                $errors
-            );
-                '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Cloudflare Turnstile verification failed. Reasons: [', 'wp-user-frontend' );
+                    __( '%1$sError%2$s: Cloudflare Turnstile verification failed. Reasons: [%3$s]', 'wp-user-frontend' ),
+                    '<strong>',
+                    '</strong>',
+                    $errors
+                );
+            '<strong>' . __( 'Error', 'wp-user-frontend' ) . ':</strong> ' . __( 'Cloudflare Turnstile verification failed. Reasons: [', 'wp-user-frontend' );
         }
 
         $validation_error = new WP_Error();

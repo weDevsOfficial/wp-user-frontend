@@ -1,3 +1,7 @@
+= v4.0.14 (23 Nov, 2024) =
+* Fix - Error in login page
+* Fix - Support situations in which (WPUF) translations are loaded too early
+
 = v4.0.13 (14 Nov, 2024) =
 * Enhance - Cloudflare Turnstile field on form builder
 * Enhance - Cloudflare Turnstile on login form

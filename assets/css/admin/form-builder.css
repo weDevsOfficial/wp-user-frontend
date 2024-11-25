@@ -2749,6 +2749,11 @@ html {
   border-color: transparent;
 }
 
+.\!wpuf-bg-green-600 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(22 163 74 / var(--tw-bg-opacity)) !important;
+}
+
 .wpuf-bg-amber-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(245 158 11 / var(--tw-bg-opacity));

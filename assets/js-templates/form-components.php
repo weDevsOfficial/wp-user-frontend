@@ -4,8 +4,8 @@
         <?php _e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wp-user-frontend' ); ?>
     </h4>
     <ul
-        :class="['wpuf-form', 'sortable-list', 'form-label-' + label_type]"
-        class="wpuf-py-8">
+        :class="['form-label-' + label_type]"
+        class="wpuf-form sortable-list wpuf-py-8">
         <li
             v-for="(field, index) in form_fields"
             :key="field.id"
@@ -52,7 +52,7 @@
                 :field="field">
             </component>
             <div
-                class="control-buttons wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-rounded-b-lg wpuf-bg-green-600 wpuf-flex wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out">
+                class="control-buttons wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-rounded-b-lg !wpuf-bg-green-600 wpuf-flex wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out">
                 <div class="wpuf-flex wpuf-justify-around wpuf-text-green-200">
                     <template v-if="!is_failed_to_validate(field.template)">
                             <span :class="action_button_classes">
@@ -131,7 +131,7 @@
                     <strong><?php esc_html_e( 'value', 'wp-user-frontend' ); ?></strong>: {{ field.meta_value }}
                 </div>
                 <div
-                    class="control-buttons wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-rounded-b-lg wpuf-bg-green-600  wpuf-flex wpuf-justify-around wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out">
+                    class="control-buttons wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-rounded-b-lg !wpuf-bg-green-600 wpuf-flex wpuf-justify-around wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out">
                     <div class="wpuf-flex wpuf-items-center wpuf-text-green-200">
                         <template v-if="!is_failed_to_validate(field.template)">
                                 <span
@@ -646,7 +646,7 @@
                         </div>
                     </div>
                     <div
-                        class="control-buttons wpuf-opacity-0 group-hover/column-inner:wpuf-opacity-100 wpuf-rounded-b-lg wpuf-bg-green-600 wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out">
+                        class="wpuf-column-field-control-buttons wpuf-opacity-0 group-hover/column-inner:wpuf-opacity-100 wpuf-rounded-b-lg wpuf-bg-green-600 wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out">
                         <div class="wpuf-items-center wpuf-text-green-200 wpuf-flex wpuf-justify-evenly wpuf-p-1">
                             <template v-if="!is_failed_to_validate(field.template)">
                             <span :class="action_button_classes">

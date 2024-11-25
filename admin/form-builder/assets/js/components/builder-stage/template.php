@@ -51,7 +51,7 @@
                 :field="field">
             </component>
             <div
-                class="control-buttons wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-rounded-b-lg !wpuf-bg-green-600 wpuf-flex wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out">
+                class="control-buttons wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-rounded-b-lg !wpuf-bg-green-600 wpuf-flex wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out wpuf-flex wpuf-justify-around">
                 <div class="wpuf-flex wpuf-justify-around wpuf-text-green-200">
                     <template v-if="!is_failed_to_validate(field.template)">
                             <span :class="action_button_classes">

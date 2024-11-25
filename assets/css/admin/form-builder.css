@@ -2157,6 +2157,11 @@ html {
   height: 1rem;
 }
 
+.wpuf-size-5 {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
 .wpuf-h-0 {
   height: 0px;
 }
@@ -2530,6 +2535,11 @@ html {
 
 .wpuf-gap-4 {
   gap: 1rem;
+}
+
+.wpuf-gap-x-1\.5 {
+  -moz-column-gap: 0.375rem;
+       column-gap: 0.375rem;
 }
 
 .wpuf-gap-x-2 {

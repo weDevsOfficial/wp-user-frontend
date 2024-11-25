@@ -19,7 +19,7 @@
             class="wpuf-group wpuf-rounded-lg hover:wpuf-bg-green-50 wpuf-transition wpuf-duration-150 wpuf-ease-out !wpuf-m-0 !wpuf-p-0">
             <div
                 v-if="field.input_type !== 'column_field'"
-                class="wpuf-flex wpuf-justify-between wpuf-p-4 wpuf-rounded-t-md wpuf-border-transparent wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed wpuf-border-green-400 group-hover:wpuf-cursor-pointer">
+                class="wpuf-flex wpuf-justify-between wpuf-p-4 wpuf-rounded-t-md wpuf-border-transparent wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed group-hover:wpuf-border-green-400 group-hover:wpuf-cursor-pointer">
                 <div v-if="!(is_full_width(field.template) || is_pro_feature(field.template))" class="wpuf-w-1/4">
                     <label
                         v-if="!is_invisible(field)"
@@ -48,10 +48,11 @@
             <component
                 v-if="is_template_available(field) && field.input_type === 'column_field'"
                 :is="'form-' + field.template"
-                       :field="field"></component>
+                :field="field">
+            </component>
             <div
-                class="control-buttons wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-rounded-b-lg wpuf-bg-green-600  wpuf-flex wpuf-justify-around wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out">
-                <div class="wpuf-flex wpuf-items-center wpuf-text-green-200">
+                class="control-buttons wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-rounded-b-lg wpuf-bg-green-600 wpuf-flex wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out">
+                <div class="wpuf-flex wpuf-justify-around wpuf-text-green-200">
                     <template v-if="!is_failed_to_validate(field.template)">
                             <span :class="action_button_classes">
                             <i

@@ -842,7 +842,6 @@ Vue.component('form-column_field', {
             self.resizeColumns(self.field.columns);
         });
 
-
         columnFieldArea.mouseleave(function() {
             columnFields.unbind( "mouseup" );
             columnFields.unbind( "mousemove" );
@@ -924,6 +923,10 @@ Vue.component('form-column_field', {
         field_settings: function () {
             return this.$store.state.field_settings;
         },
+
+        action_button_classes: function() {
+            return 'hover:wpuf-cursor-pointer hover:wpuf-text-white';
+        }
     },
 
     methods: {

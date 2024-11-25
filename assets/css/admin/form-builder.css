@@ -2516,6 +2516,10 @@ html {
   justify-content: space-around;
 }
 
+.wpuf-justify-evenly {
+  justify-content: space-evenly;
+}
+
 .wpuf-gap-2 {
   gap: 0.5rem;
 }
@@ -2554,12 +2558,6 @@ html {
   --tw-space-y-reverse: 0;
   margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
-}
-
-.wpuf-space-y-3 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-y-reverse: 0;
-  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
 }
 
 .wpuf-space-y-6 > :not([hidden]) ~ :not([hidden]) {
@@ -2904,10 +2902,6 @@ html {
 
 .wpuf-p-2 {
   padding: 0.5rem;
-}
-
-.wpuf-p-3 {
-  padding: 0.75rem;
 }
 
 .wpuf-p-4 {
@@ -3877,6 +3871,11 @@ html {
   border-style: dashed;
 }
 
+.wpuf-group\/column-inner:hover .group-hover\/column-inner\:wpuf-border-green-400 {
+  --tw-border-opacity: 1;
+  border-color: rgb(74 222 128 / var(--tw-border-opacity));
+}
+
 .wpuf-group:hover .group-hover\:wpuf-border-green-400 {
   --tw-border-opacity: 1;
   border-color: rgb(74 222 128 / var(--tw-border-opacity));
@@ -3884,6 +3883,10 @@ html {
 
 .wpuf-group:hover .group-hover\:wpuf-stroke-gray-500 {
   stroke: #6b7280;
+}
+
+.wpuf-group\/column-inner:hover .group-hover\/column-inner\:wpuf-opacity-100 {
+  opacity: 1;
 }
 
 .wpuf-group:hover .group-hover\:wpuf-opacity-100 {

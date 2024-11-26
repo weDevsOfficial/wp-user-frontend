@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 4.0.13\n"
+"Project-Id-Version: WP User Frontend 4.0.14\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2024-11-14 05:14:46+00:00\n"
+"POT-Creation-Date: 2024-11-23 04:35:17+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -5394,16 +5394,16 @@ msgstr ""
 msgid "You are now logged out."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:503
+#: includes/Free/Simple_Login.php:509
 msgid "Nonce is invalid"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:518
+#: includes/Free/Simple_Login.php:525
 #. translators: %1$s and %2$s are strong tags, %3$s is the error message
 msgid "%1$sError%2$s: Cloudflare Turnstile verification failed. Reasons: [%3$s]"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:523 includes/Free/Simple_Login.php:564
+#: includes/Free/Simple_Login.php:530 includes/Free/Simple_Login.php:571
 #: includes/Frontend/Registration.php:184
 #: includes/Frontend/Registration.php:191
 #: includes/Frontend/Registration.php:198
@@ -5417,52 +5417,52 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:523
+#: includes/Free/Simple_Login.php:530
 msgid "Cloudflare Turnstile verification failed. Reasons: ["
 msgstr ""
 
-#: includes/Free/Simple_Login.php:536 includes/Frontend/Registration.php:214
+#: includes/Free/Simple_Login.php:543 includes/Frontend/Registration.php:214
 msgid "Username is required."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:542 includes/Frontend/Registration.php:221
+#: includes/Free/Simple_Login.php:549 includes/Frontend/Registration.php:221
 msgid "Password is required."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:549 includes/Traits/FieldableTrait.php:205
+#: includes/Free/Simple_Login.php:556 includes/Traits/FieldableTrait.php:205
 #: includes/class-frontend-render-form.php:877
 msgid "Empty reCaptcha Field"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:564 includes/Frontend/Registration.php:255
+#: includes/Free/Simple_Login.php:571 includes/Frontend/Registration.php:255
 msgid "A user could not be found with this email address."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:759
+#: includes/Free/Simple_Login.php:766
 msgid "Please enter your password."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:765
+#: includes/Free/Simple_Login.php:772
 msgid "Passwords do not match."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:813
+#: includes/Free/Simple_Login.php:820
 msgid "Enter a username or e-mail address."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:820
+#: includes/Free/Simple_Login.php:827
 msgid "There is no user registered with that email address."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:837
+#: includes/Free/Simple_Login.php:844
 msgid "Invalid username or e-mail."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:851
+#: includes/Free/Simple_Login.php:858
 msgid "Password reset is not allowed for this user"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:890
+#: includes/Free/Simple_Login.php:897
 #. translators: %s: activation link
 msgid ""
 "<strong>Your account is not active.</strong><br>Please check your email for "
@@ -5470,87 +5470,87 @@ msgid ""
 "link"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:911 includes/Free/Simple_Login.php:936
+#: includes/Free/Simple_Login.php:918 includes/Free/Simple_Login.php:943
 msgid "Activation URL is not valid"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:922
+#: includes/Free/Simple_Login.php:929
 msgid "Invalid User activation url"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:928
+#: includes/Free/Simple_Login.php:935
 msgid "User already verified"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:944 includes/Free/Simple_Login.php:1020
+#: includes/Free/Simple_Login.php:951 includes/Free/Simple_Login.php:1027
 msgid "Your account has been activated"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:947
+#: includes/Free/Simple_Login.php:954
 msgid ""
 "Your account has been verified , but you can't login until manually "
 "approved your account by an administrator."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:970
+#: includes/Free/Simple_Login.php:977
 #. translators: %s: blogname
 msgid "[%s] Your username and password info"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:972 includes/Free/Simple_Login.php:1072
+#: includes/Free/Simple_Login.php:979 includes/Free/Simple_Login.php:1079
 #: includes/Frontend/Registration.php:291 includes/Widgets/Login_Widget.php:155
 #. translators: %s: username
 msgid "Username: %s"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:973
+#: includes/Free/Simple_Login.php:980
 msgid "To set your password, visit the following address:"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1069
+#: includes/Free/Simple_Login.php:1076
 msgid "Someone requested that the password be reset for the following account:"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1073 includes/Widgets/Login_Widget.php:156
+#: includes/Free/Simple_Login.php:1080 includes/Widgets/Login_Widget.php:156
 msgid "If this was a mistake, just ignore this email and nothing will happen."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1074 includes/Widgets/Login_Widget.php:157
+#: includes/Free/Simple_Login.php:1081 includes/Widgets/Login_Widget.php:157
 msgid "To reset your password, visit the following address:"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1085 includes/Widgets/Login_Widget.php:162
+#: includes/Free/Simple_Login.php:1092 includes/Widgets/Login_Widget.php:162
 #. translators: %s: blogname
 msgid "[%s] Password Reset"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1091
+#: includes/Free/Simple_Login.php:1098
 msgid "The e-mail could not be sent."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1091
+#: includes/Free/Simple_Login.php:1098
 msgid "Possible reason: your host may have disabled the mail() function."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1211
+#: includes/Free/Simple_Login.php:1218
 #. translators: %s: blogname
 msgid "[%s] Account has been activated"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1213
+#: includes/Free/Simple_Login.php:1220
 #. translators: %s: username
 msgid "Hi %s,"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1214
+#: includes/Free/Simple_Login.php:1221
 msgid "Congrats! Your account has been activated. To login visit the following url:"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1216
+#: includes/Free/Simple_Login.php:1223
 msgid "Thanks"
 msgstr ""
 
-#: includes/Free/Simple_Login.php:1242
+#: includes/Free/Simple_Login.php:1249
 msgid " Login "
 msgstr ""
 
@@ -7783,23 +7783,23 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: wpuf.php:118
+#: wpuf.php:115
 msgid "Your installed PHP Version is: "
 msgstr ""
 
-#: wpuf.php:119
+#: wpuf.php:116
 msgid "The <strong>WP User Frontend</strong> plugin requires PHP version <strong>"
 msgstr ""
 
-#: wpuf.php:119
+#: wpuf.php:116
 msgid "</strong> or greater."
 msgstr ""
 
-#: wpuf.php:241
+#: wpuf.php:238
 msgid "Your WP User Frontend Pro is almost ready!"
 msgstr ""
 
-#: wpuf.php:245
+#: wpuf.php:242
 #. translators: 1: opening anchor tag, 2: closing anchor tag.
 msgid ""
 "We've pushed a major update on both <b>WP User Frontend Free</b> and <b>WP "

@@ -414,6 +414,7 @@
             enableMultistep: false,
             shortcodeCopied: false,
             active_tab: 'form-editor',
+            active_settings_tab: '#wpuf-metabox-settings',
             logoUrl: wpuf_form_builder.assetUrl + '/images/wpuf-icon-circle.svg'
         },
 
@@ -475,10 +476,17 @@
         },
 
         mounted: function () {
+            // secondary settings tabs and their contents
+            var settings_tabs = $('#wpuf-form-builder-settings-tabs .nav-tab');
+            var self = this;
+
+            // add a click listener to each settings_tab
+            settings_tabs.each(function () {
+                $(this).bind('click', self.setActiveSettingsTab );
+            });
+
             var clipboard = new window.Clipboard('.form-id');
             $(".form-id").tooltip();
-
-            var self = this;
 
             clipboard.on('success', function(e) {
                 // Show copied tooltip
@@ -506,6 +514,10 @@
         },
 
         methods: {
+            setActiveSettingsTab: function (e) {
+                this.active_settings_tab = $(e.target).attr('href');
+            },
+
             // switch form
             switch_form: function () {
                 this.is_form_switcher = (this.is_form_switcher) ? false : true;

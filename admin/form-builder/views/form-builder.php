@@ -1,5 +1,7 @@
 <form id="wpuf-form-builder"
-      class="wpuf-w-[calc(100%+20px)] wpuf-ml-[-20px] wpuf-form-builder-<?php echo esc_attr( $form_type ); ?>" method="post" action="" @submit.prevent="save_form_builder" v-cloak>
+    class="wpuf-w-[calc(100%+20px)] wpuf-ml-[-20px] wpuf-form-builder-<?php echo esc_attr( $form_type ); ?>"
+    method="post"
+    action="" @submit.prevent="save_form_builder" v-cloak>
     <div class="wpuf-bg-white wpuf-px-[20px] wpuf-pt-8 wpuf-justify-between wpuf-items-center wpuf-pb-4">
         <div class="wpuf-flex wpuf-justify-between">
             <div class="wpuf-flex">
@@ -121,7 +123,6 @@
                         class="wpuf-nav-tab wpuf-nav-tab-active wpuf-text-gray-800 wpuf-py-2 wpuf-px-4 wpuf-text-sm hover:wpuf-bg-white hover:wpuf-text-gray-800 hover:wpuf-rounded-md hover:wpuf-drop-shadow-sm focus:wpuf-shadow-none">
                         <?php esc_html_e( 'Settings', 'wp-user-frontend' ); ?>
                     </a>
-
                     <?php do_action( "wpuf-form-builder-tabs-{$form_type}" ); ?>
                 </div>
             </div>
@@ -145,10 +146,38 @@
             <?php esc_html_e( 'Enable Multistep', 'wp-user-frontend' ); ?>
         </div>
     </div>
-    <div class="wpuf-flex">
+    <div
+        v-show="active_tab === 'form-editor'"
+        class="wpuf-flex">
         <div class="wpuf-w-2/3 wpuf-bg-white wpuf-min-h-screen wpuf-px-[20px] wpuf-pt-4 wpuf-border-t wpuf-border-gray-200">
             <builder-stage></builder-stage>
         </div>
         <div class="wpuf-w-1/3 wpuf-bg-gray-50 wpuf-px-[20px] wpuf-pt-4">Field attributes</div>
     </div>
+    <div
+        v-show="active_tab === 'form-settings'"
+        id="wpuf-form-builder-settings"
+        class="group clearfix wpuf-flex">
+        <div class="wpuf-w-1/3 wpuf-bg-gray-50 wpuf-px-[20px] wpuf-pt-4">
+            <div id="wpuf-form-builder-settings-tabs" class="nav-tab-wrapper wpuf-flex wpuf-flex-col">
+                <?php do_action( "wpuf-form-builder-settings-tabs-{$form_type}" ); ?>
+            </div><!-- #wpuf-form-builder-settings-tabs -->
+        </div>
+        <div class="wpuf-w-2/3 wpuf-bg-gray-50">
+            <div
+                id="wpuf-form-builder-settings-contents"
+                class="tab-contents">
+                <?php do_action( "wpuf-form-builder-settings-tab-contents-{$form_type}" ); ?>
+            </div><!-- #wpuf-form-builder-settings-contents -->
+        </div>
+    </div><!-- #wpuf-form-builder-settings -->
+    <?php do_action( "wpuf-form-builder-tab-contents-{$form_type}" ); ?>
+
+    <?php if ( ! empty( $form_settings_key ) ) { ?>
+        <input type="hidden" name="form_settings_key" value="<?php echo esc_attr( $form_settings_key ); ?>">
+    <?php } ?>
+
+    <?php wp_nonce_field( 'wpuf_form_builder_save_form', 'wpuf_form_builder_nonce' ); ?>
+
+    <input type="hidden" name="wpuf_form_id" value="<?php echo esc_attr( $form_id ); ?>">
 </form>

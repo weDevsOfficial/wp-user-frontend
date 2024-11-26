@@ -189,9 +189,8 @@
             </li>
         </ul>
     </div>
-
     <?php do_action( 'wpuf_form_builder_template_builder_stage_bottom_area' ); ?>
-</div><!-- #form-preview-stage -->
+</div>
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-field-checkbox">

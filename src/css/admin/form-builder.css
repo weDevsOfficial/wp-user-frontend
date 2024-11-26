@@ -30,18 +30,6 @@
     }
 }
 
-.wpuf-form-template-modal {
-    background: #fff;
-    position: fixed;
-    top: 5%;
-    bottom: 5%;
-    right: 10%;
-    left: 10%;
-    display: none;
-    box-shadow: 0 1px 20px 5px rgba(0, 0, 0, 0.1);
-    z-index: 99;
-}
-
 /* Transition styles */
 .wpuf-dropdown-item {
     @apply wpuf-transition-all wpuf-duration-100 wpuf-ease-out wpuf-opacity-0 wpuf-scale-75;

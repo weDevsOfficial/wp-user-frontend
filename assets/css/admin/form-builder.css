@@ -3472,18 +3472,6 @@ html {
   transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
 }
 
-.wpuf-form-template-modal {
-  background: #fff;
-  position: fixed;
-  top: 5%;
-  bottom: 5%;
-  right: 10%;
-  left: 10%;
-  display: none;
-  box-shadow: 0 1px 20px 5px rgba(0, 0, 0, 0.1);
-  z-index: 99;
-}
-
 /* Transition styles */
 
 .wpuf-dropdown-item {

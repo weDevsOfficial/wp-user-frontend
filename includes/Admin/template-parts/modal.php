@@ -1,168 +1,92 @@
 <?php use WeDevs\Wpuf\Free\Pro_Prompt; ?>
-<div id="wpuf-form-template-modal">
-    <div class="wpuf-form-template-modal">
+<div class="wpuf-form-template-modal wpuf-w-[calc(100%+20px)] wpuf-ml-[-20px] wpuf-bg-gray-100 wpuf-hidden">
+    <div class="wpuf-relative wpuf-mx-auto wpuf-px-4 wpuf-py-10">
+        <button
+            class="wpuf-absolute wpuf-right-4 wpuf-top-4 wpuf-text-gray-400 hover:wpuf-text-gray-600 focus:wpuf-outline-none wpuf-close-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" class="wpuf-h-6 wpuf-w-6" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
 
-        <span id="modal-label" class="screen-reader-text"><?php esc_html_e( 'Modal window. Press escape to close.', 'wp-user-frontend'  ); ?></span>
-        <a href="#" class="close">× <span class="screen-reader-text"><?php esc_html_e( 'Close modal window', 'wp-user-frontend'  ); ?></span></a>
-
-        <header class="modal-header">
-            <h2>
-                <?php esc_html_e( 'Select a Template', 'wp-user-frontend' ); ?>
-                <small><?php
-                printf(
-                    wp_kses_post( __( 'Select from a pre-defined template or from a <a href="%s">blank form</a>', 'wp-user-frontend' ) ),
-                    esc_attr( $blank_form_url )
-                 ); ?></small>
-            </h2>
-        </header>
-
-        <div class="content-container modal-footer">
-            <div class="content">
-
-                <ul>
-                    <li class="blank-form">
-                        <h3><?php esc_html_e( 'Blank Form', 'wp-user-frontend' ); ?></h3>
-
-                        <div class="form-middle-text">
-                            <span class="dashicons dashicons-plus"></span>
-                            <div class="title"><?php esc_html_e( 'Blank Form', 'wp-user-frontend' ); ?></div>
-                        </div>
-
-                        <div class="form-create-overlay">
-                            <div class="title"><?php esc_html_e( 'Blank Form', 'wp-user-frontend' ); ?></div>
-                            <br>
-                            <a href="<?php echo esc_url( $blank_form_url ); ?>" class="button button-primary" title="<?php echo esc_attr( 'Blank Form' ); ?>">
-                                <?php esc_html_e( 'Create Form', 'wp-user-frontend' ); ?>
-                            </a>
-                        </div>
-                    </li>
-
-                    <?php
-                    foreach ( $registry as $key => $template ) {
-                        $class    = 'template-active';
-                        $title    = $template->title;
-                        $image    = $template->image ? $template->image : '';
-                        $disabled = '';
-
-                        $url   = esc_url( add_query_arg( [
-                            'action'   => $action_name,
-                            'template' => $key,
-                            '_wpnonce' => wp_create_nonce( 'wpuf_create_from_template' ),
-                        ], admin_url( 'admin.php' ) ) );
-
-                        if ( !$template->is_enabled() ) {
-                            $url      = '#';
-                            $class    = 'template-inactive';
-                            $title    = __( 'This integration is not installed.', 'wp-user-frontend' );
-                            $disabled = 'disabled';
-                        } ?>
-
-                        <li class="<?php echo esc_attr( $class ); ?>">
-                            <h3><?php echo esc_html( $template->get_title() ); ?></h3>
-                            <?php if ( $image ) {
-                            printf( '<img src="%s" alt="%s">', esc_attr( $image ), esc_attr( $title ) );
-                        } ?>
-
-                            <div class="form-create-overlay">
-                                <div class="title"><?php echo esc_html( $title ); ?></div>
-                                <div class="description"><?php echo esc_html( $template->get_description() ); ?></div>
-                                <br>
-                                <a href="<?php echo esc_url( $url ); ?>" class="button button-primary" title="<?php echo esc_attr( $template->get_title() ); ?>" <?php echo esc_attr($disabled ); ?>>
-                                    <?php esc_html_e( 'Create Form', 'wp-user-frontend' ); ?>
-                                </a>
-                            </div>
-                        </li>
-
-                    <?php
-                    }
-
-                    $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
-                    foreach ( $pro_templates as $template ) {
-                        $class = 'template-inactive is-pro-template';
-                        $image = $template->get_image();
-                        $title = $template->get_title();
-                         ?>
-
-                        <li class="<?php echo esc_attr( $class ); ?>">
-                            <h3>
-                                <?php
-                                    echo esc_html( $title );
-                                    if ( file_exists( $crown_icon ) ) {
-                                        printf( '<span class="pro-icon-title"> %s</span>', file_get_contents( $crown_icon ) );
-                                    }
-                                ?>
-                            </h3>
-                            <?php if ( $image ) {
-                                printf( '<img src="%s" alt="%s">', esc_attr( $image ), esc_attr( $title ) );
-                            } ?>
-
-                            <div class="form-create-overlay">
-                                <a href="<?php echo esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ); ?>"
-                                   target="_blank"
-                                   class="wpuf-button button-upgrade-to-pro"
-                                   title="<?php echo esc_attr( $template->get_title() ); ?>" >
-                                    <?php
-                                        esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' );
-                                        if ( file_exists( $crown_icon ) ) {
-                                            printf( '<span class="pro-icon"> %s</span>', file_get_contents( $crown_icon ) );
-                                        }
-                                    ?>
-                                </a>
-                            </div>
-                        </li>
-
-                        <?php
-                    }
-                    ?>
-                </ul>
-            </div>
+        <!-- Header -->
+        <div class="wpuf-mb-10 wpuf-text-center">
+            <h1 class="wpuf-text-2xl wpuf-font-bold wpuf-text-gray-800">Select a Post Form Template</h1>
+            <p class="wpuf-text-gray-600">Select from a pre-defined template or from a blank form</p>
         </div>
 
-        <?php if ( $footer_help ) { ?>
-            <footer>
-                <?php echo wp_kses_post( $footer_help ); ?>
-            </footer>
-        <?php } ?>
+        <!-- Templates Grid -->
+        <div class="wpuf-grid wpuf-gap-6 wpuf-grid-cols-3">
+            <!-- Blank Form -->
+            <div
+                class="wpuf-flex wpuf-h-48 wpuf-cursor-pointer wpuf-items-center wpuf-justify-center wpuf-rounded-lg wpuf-border wpuf-bg-white wpuf-shadow-sm wpuf-transition wpuf-duration-200 hover:wpuf-shadow-lg">
+                <h2 class="wpuf-text-lg wpuf-font-semibold wpuf-text-gray-800">Blank Form</h2>
+            </div>
+
+            <!-- Post Form -->
+            <div
+                class="wpuf-flex wpuf-h-48 wpuf-cursor-pointer wpuf-items-center wpuf-justify-center wpuf-rounded-lg wpuf-border wpuf-bg-white wpuf-shadow-sm wpuf-transition wpuf-duration-200 hover:wpuf-shadow-lg">
+                <h2 class="wpuf-text-lg wpuf-font-semibold wpuf-text-gray-800">Post Form</h2>
+            </div>
+
+            <!-- WooCommerce Product Form -->
+            <div
+                class="wpuf-flex wpuf-h-48 wpuf-cursor-pointer wpuf-items-center wpuf-justify-center wpuf-rounded-lg wpuf-border wpuf-bg-white wpuf-shadow-sm wpuf-transition wpuf-duration-200 hover:wpuf-shadow-lg">
+                <h2 class="wpuf-text-lg wpuf-font-semibold wpuf-text-gray-800">WooCommerce Product Form</h2>
+            </div>
+
+            <!-- EDD Download Form -->
+            <div
+                class="wpuf-flex wpuf-h-48 wpuf-cursor-pointer wpuf-items-center wpuf-justify-center wpuf-rounded-lg wpuf-border wpuf-bg-white wpuf-shadow-sm wpuf-transition wpuf-duration-200 hover:wpuf-shadow-lg">
+                <h2 class="wpuf-text-lg wpuf-font-semibold wpuf-text-gray-800">EDD Download Form</h2>
+            </div>
+
+            <!-- The Event Calendar Form -->
+            <div
+                class="wpuf-flex wpuf-h-48 wpuf-cursor-pointer wpuf-items-center wpuf-justify-center wpuf-rounded-lg wpuf-border wpuf-bg-white wpuf-shadow-sm wpuf-transition wpuf-duration-200 hover:wpuf-shadow-lg">
+                <h2 class="wpuf-text-lg wpuf-font-semibold wpuf-text-gray-800">The Event Calendar Form</h2>
+            </div>
+        </div>
     </div>
-    <div class="wpuf-form-template-modal-backdrop"></div>
 </div>
 
+
 <script type="text/javascript">
-(function($) {
-    var popup = {
-        init: function() {
-            $('.wrap').on('click', 'a.page-title-action.add-form', this.openModal);
-            $('.wpuf-form-template-modal-backdrop, .wpuf-form-template-modal .close').on('click', $.proxy(this.closeModal, this) );
+    ( function ( $ ) {
+        var popup = {
+            init: function () {
+                $( '.wrap' ).on( 'click', 'a.page-title-action.add-form', this.openModal );
+                $( '.wpuf-form-template-modal .wpuf-close-btn' ).on( 'click', $.proxy( this.closeModal, this ) );
 
-            $('body').on( 'keydown', $.proxy(this.onEscapeKey, this) );
-        },
+                $( 'body' ).on( 'keydown', $.proxy( this.onEscapeKey, this ) );
+            },
 
-        openModal: function(e) {
-            e.preventDefault();
-
-            $('.wpuf-form-template-modal').show();
-            $('.wpuf-form-template-modal-backdrop').show();
-        },
-
-        onEscapeKey: function(e) {
-            if ( 27 === e.keyCode ) {
-                this.closeModal(e);
-            }
-        },
-
-        closeModal: function(e) {
-            if ( typeof e !== 'undefined' ) {
+            openModal: function ( e ) {
                 e.preventDefault();
+
+                $( '.wpuf-form-template-modal' ).show();
+                $( '#wpbody-content .wrap' ).hide();
+            },
+
+            onEscapeKey: function ( e ) {
+                if (27 === e.keyCode) {
+                    this.closeModal( e );
+                }
+            },
+
+            closeModal: function ( e ) {
+                if (typeof e !== 'undefined') {
+                    e.preventDefault();
+                }
+
+                $( '.wpuf-form-template-modal' ).hide();
+                $( '#wpbody-content .wrap' ).show();
             }
+        };
 
-            $('.wpuf-form-template-modal').hide();
-            $('.wpuf-form-template-modal-backdrop').hide();
-        }
-    };
+        $( function () {
+            popup.init();
+        } );
 
-    $(function() {
-        popup.init();
-    });
-
-})(jQuery);
+    } )( jQuery );
 </script>

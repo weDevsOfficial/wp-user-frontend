@@ -116,6 +116,22 @@ class Menu {
 
             default:
                 require_once WPUF_INCLUDES . '/Admin/views/post-forms-list-table-view.php';
+
+                $registry       = wpuf_get_post_form_templates();
+                $pro_templates  = wpuf_get_pro_form_previews();
+                $blank_form_url = admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' );
+                $action_name    = 'post_form_template';
+                $footer_help    = sprintf(
+                    // translators: %s: mailto link
+                    __( 'Want a new integration? <a href="%s" target="_blank">Let us know</a>.', 'wp-user-frontend' ), 'mailto:support@wedevs.com?subject=WPUF Custom Post Template Integration Request'
+                );
+
+                if ( ! $registry ) {
+                    break;
+                }
+
+                require_once WPUF_ROOT . '/includes/Admin/template-parts/modal.php';
+
                 break;
         }
     }

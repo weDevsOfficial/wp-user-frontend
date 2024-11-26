@@ -82,7 +82,7 @@ class Form_Template {
             wp_enqueue_style( $deps );
         }
 
-        if ( defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.0.12', '<' ) ) {
+        if ( defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.0.13', '<' ) ) {
             wp_enqueue_style( 'wpuf-form-builder' );
         } else {
             wp_enqueue_style( 'wpuf-admin-form-builder' );

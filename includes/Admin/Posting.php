@@ -22,10 +22,25 @@ class Posting {
         add_action( 'add_meta_boxes', [ $this, 'add_meta_box_post_lock'] );
         // add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_script'] );
         add_action( 'wpuf_load_post_forms', [ $this, 'enqueue_script' ] );
+        add_action( 'admin_enqueue_scripts', [ $this, 'dequeue_assets' ] );
         add_action( 'wpuf_load_registration_forms', [ $this, 'enqueue_script' ] );
         add_action( 'save_post', [ $this, 'save_meta'], 100, 2 ); // save the custom fields
         add_action( 'save_post', [ $this, 'form_selection_metabox_save' ], 1, 2 ); // save edit form id
         add_action( 'save_post', [ $this, 'post_lock_metabox_save' ], 1, 2 ); // save post lock option
+    }
+
+    /**
+     * Dequeue assets
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function dequeue_assets() {
+        wp_dequeue_style( 'wpuf-form-builder' );
+        if ( defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.0.13', '<' ) ) {
+            wp_dequeue_style( 'wpuf-form-builder-pro' );
+        }
     }
 
     public static function init() {

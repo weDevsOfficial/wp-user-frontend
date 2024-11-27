@@ -410,7 +410,12 @@
             is_form_saved: false,
             is_form_switcher: false,
             post_title_editing: false,
-            isDirty: false
+            isDirty: false,
+            enableMultistep: false,
+            shortcodeCopied: false,
+            active_tab: 'form-editor',
+            active_settings_tab: '#wpuf-metabox-settings',
+            logoUrl: wpuf_form_builder.assetUrl + '/images/wpuf-icon-circle.svg'
         },
 
         computed: {
@@ -448,7 +453,7 @@
                 });
 
                 return meta_key.map(function(name) { return '{' + name +'}' }).join( );
-            }
+            },
         },
 
         watch: {
@@ -471,33 +476,31 @@
         },
 
         mounted: function () {
-            // primary nav tabs and their contents
-            this.bind_tab_on_click($('#wpuf-form-builder > fieldset > .nav-tab-wrapper > a'), '#wpuf-form-builder');
-
             // secondary settings tabs and their contents
-            var settings_tabs = $('#wpuf-form-builder-settings .nav-tab'),
-                settings_tab_contents = $('#wpuf-form-builder-settings .tab-contents .group');
+            var settings_tabs = $('#wpuf-form-builder-settings-tabs .nav-tab');
+            var self = this;
 
-            settings_tabs.first().addClass('nav-tab-active');
-            settings_tab_contents.first().addClass('active');
-
-            this.bind_tab_on_click(settings_tabs, '#wpuf-form-builder-settings');
+            // add a click listener to each settings_tab
+            settings_tabs.each(function () {
+                $(this).bind('click', self.setActiveSettingsTab );
+            });
 
             var clipboard = new window.Clipboard('.form-id');
             $(".form-id").tooltip();
 
-            var self = this;
-
             clipboard.on('success', function(e) {
                 // Show copied tooltip
                 $(e.trigger)
-                    .attr('data-original-title', 'Copied!')
+                    .attr('data-original-title', 'Shortcode copied!')
                     .tooltip('show');
+
+                self.shortcodeCopied = true;
 
                 // Reset the copied tooltip
                 setTimeout(function() {
                     $(e.trigger).tooltip('hide')
                     .attr('data-original-title', self.i18n.copy_shortcode);
+                    self.shortcodeCopied = false;
                 }, 1000);
 
                 e.clearSelection();
@@ -511,20 +514,8 @@
         },
 
         methods: {
-            // tabs and their contents
-            bind_tab_on_click: function (tabs, scope) {
-                tabs.on('click', function (e) {
-                    e.preventDefault();
-
-                    var button = $(this),
-                        tab_contents = $(scope + ' > fieldset > .tab-contents'),
-                        group_id = button.attr('href');
-
-                    button.addClass('nav-tab-active').siblings('.nav-tab-active').removeClass('nav-tab-active');
-
-                    tab_contents.children().removeClass('active');
-                    $(group_id).addClass('active');
-                });
+            setActiveSettingsTab: function (e) {
+                this.active_settings_tab = $(e.target).attr('href');
             },
 
             // switch form
@@ -899,11 +890,11 @@
 
     // on DOM ready
     $(function() {
-        resizeBuilderContainer();
-
-        $("#collapse-menu").click(function () {
-            resizeBuilderContainer();
-        });
+        // resizeBuilderContainer();
+        //
+        // $("#collapse-menu").click(function () {
+        //     resizeBuilderContainer();
+        // });
 
         function resizeBuilderContainer() {
             if ($(document.body).hasClass('folded')) {

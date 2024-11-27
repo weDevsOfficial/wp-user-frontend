@@ -5,9 +5,6 @@
 @mediaMD: 1200px;
 /* DivTable.com */
 body {
-#wpfooter {
-    position: fixed  !important
-}
 .has-error {
     background: #FFE4E4;
     padding: 10px;
@@ -281,29 +278,8 @@ ul.wpuf-form {
                 color: red;
             }
         }
-        &.field-size-large {
-            .wpuf-fields {
-                float: left;
-                width: 70%;
-            }
-        }
-        &.field-size-medium {
-            .wpuf-fields {
-                float: left;
-                width: 50%;
-            }
-        }
-        &.field-size-small {
-            .wpuf-fields {
-                float: left;
-                width: 30%;
-            }
-        }
 
         .wpuf-fields {
-            float: left;
-            width: 70%;
-
             .wpuf-radio-inline,
             .wpuf-checkbox-inline{
                 display: inline-block;
@@ -314,31 +290,6 @@ ul.wpuf-form {
             .wpuf-checkbox-block{
                 display: block;
                 margin-bottom: 6px;
-            }
-
-            a.file-selector {
-                display: inline;
-                text-decoration: none;
-                padding: 5px 12px;
-                margin: 0;
-                height: 30px;
-                line-height: 28px;
-                border: 1px solid #ccc;
-                .border-radius(3px);
-                background: #fafafa;
-                color: #23282d;
-                box-shadow: 0 1px 0 #cccccc;
-                vertical-align: top;
-                cursor: pointer;
-                -webkit-appearance: none;
-                white-space: nowrap;
-
-                &:hover,
-                &:focus {
-                    background: #fafafa;
-                    border-color: #999;
-                    color: #23282d;
-                }
             }
 
             .google-map {

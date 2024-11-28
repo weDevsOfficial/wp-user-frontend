@@ -102,11 +102,11 @@ wpuf_mixins.form_field_mixin = {
                 case 'textareafield':
                 case 'textfield':
                 case 'select':
-                    commonClasses = 'wpuf-block wpuf-min-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 !wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300 wpuf-max-w-full';
+                    commonClasses = 'wpuf-block wpuf-min-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 !wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300 wpuf-max-w-full wpuf-drop-shadow-sm';
                     break;
 
                 case 'upload_btn':
-                    commonClasses = 'file-selector  wpuf-rounded-md wpuf-btn-secondary';
+                    commonClasses = 'file-selector  wpuf-rounded-md wpuf-btn-secondary group-hover:wpuf-bg-white';
                     break;
             }
 

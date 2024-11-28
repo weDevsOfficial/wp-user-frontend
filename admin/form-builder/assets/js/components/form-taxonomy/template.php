@@ -1,13 +1,15 @@
 <div class="wpuf-fields">
     <select
         v-if="'select' === field.type"
-        :class="field.name"
-        v-html ="get_term_dropdown_options()"
-    />
+        :class="builder_class_names('select')"
+        v-html ="get_term_dropdown_options()">
+    </select>
 
     <div v-if="'ajax' === field.type" class="category-wrap">
         <div>
-            <select>
+            <select
+                :class="builder_class_names('select')"
+            >
                 <option><?php _e( '— Select —', 'wp-user-frontend' ); ?></option>
                 <option v-for="term in sorted_terms" :value="term.id">{{ term.name }}</option>
             </select>
@@ -16,7 +18,7 @@
 
     <div v-if="'multiselect' === field.type" class="category-wrap">
         <select
-            :class="field.name"
+            :class="builder_class_names('select')"
             v-html="get_term_dropdown_options()"
             multiple
         >
@@ -34,11 +36,12 @@
 
     <input
         v-if="'text' === field.type"
-        class="textfield"
         type="text"
+        :class="builder_class_names('text')"
+        :placeholder="field.placeholder"
+        :size="field.size"
         value=""
-        size="40"
         autocomplete="off"
     >
-    <span v-if="field.help" class="wpuf-help" v-html="field.help" />
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>

@@ -10,6 +10,8 @@ class Form_Pro_Upgrade_Fields {
         $this->fields['repeat_field']          = new Form_Field_Repeat();
         $this->fields['country_list_field']    = new Form_Field_Country();
         $this->fields['date_field']            = new Form_Field_Date();
+        $this->fields['time_field']            = new Form_Field_Time();
+        $this->fields['phone_field']           = new Form_Field_Phone();
         $this->fields['embed']                 = new Form_Field_Embed();
         $this->fields['file_upload']           = new Form_Field_File();
         $this->fields['google_map']            = new Form_Field_GMap();
@@ -58,6 +60,32 @@ class Form_Field_Date extends Form_Field_Pro {
         $this->name       = __( 'Date / Time', 'wp-user-frontend' );
         $this->input_type = 'date_field';
         $this->icon       = 'calendar-o';
+    }
+}
+
+/**
+ * Time Field Class
+ *
+ * @since WPUF_SINCE
+ */
+class Form_Field_Time extends Form_Field_Pro {
+    public function __construct() {
+        $this->name       = __( 'Time', 'wp-user-frontend' );
+        $this->input_type = 'time_field';
+        $this->icon       = 'clock-o';
+    }
+}
+
+/**
+ * Phone Field Class
+ *
+ * @since WPUF_SINCE
+ */
+class Form_Field_Phone extends Form_Field_Pro {
+    public function __construct() {
+        $this->name       = __( 'Phone Field', 'wpuf-pro' );
+        $this->input_type = 'phone_field';
+        $this->icon       = 'phone';
     }
 }
 

@@ -982,7 +982,7 @@ function wpuf_show_custom_fields( $content ) {
                 continue;
             }
 
-            if ( method_exists( $wpuf_field, 'render_field_data' ) ) {
+            if ( ! empty( $wpuf_field ) && method_exists( $wpuf_field, 'render_field_data' ) ) {
                 $html .= $wpuf_field->render_field_data( $field_value, $attr );
                 continue;
             }

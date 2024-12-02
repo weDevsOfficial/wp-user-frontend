@@ -152,7 +152,56 @@
         <div class="wpuf-w-2/3 wpuf-bg-white wpuf-min-h-screen wpuf-px-[20px] wpuf-pt-4 wpuf-border-t wpuf-border-gray-200">
             <builder-stage></builder-stage>
         </div>
-        <div class="wpuf-w-1/3 wpuf-bg-gray-50 wpuf-px-[20px] wpuf-pt-4">Field attributes</div>
+        <div class="wpuf-w-1/3 wpuf-bg-gray-50">
+            <div class="wpuf-p-6">
+                <div role="tablist" class="wpuf-tabs wpuf-tabs-boxed wpuf-text-gray-500 wpuf-rounded-md wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-medium " style="background: #F3F3F3">
+                    <a
+                        role="tab"
+                        :class="current_panel === 'form-fields' ? 'wpuf-bg-white wpuf-text-gray-800 wpuf-shadow-sm' : ''"
+                        class="wpuf-tab wpuf-h-10 hover:wpuf-bg-white hover:wpuf-text-gray-800 hover:wpuf-shadow-sm focus:wpuf-shadow-none wpuf-transition-all"
+                        href="#add-fields"
+                        @click.prevent="set_current_panel('form-fields')">
+                        <?php esc_html_e( 'Add Fields', 'wp-user-frontend' ); ?>
+                    </a>
+                    <a
+                        role="tab"
+                        :class="current_panel === 'field-options' ? 'wpuf-bg-white wpuf-text-gray-800 wpuf-shadow-sm' : ''"
+                        class="wpuf-tab wpuf-h-10 hover:wpuf-bg-white hover:wpuf-text-gray-800 hover:wpuf-shadow-sm focus:wpuf-shadow-none wpuf-ml-1 wpuf-transition-all"
+                        href="#field-options"
+                        @click.prevent="set_current_panel('field-options')">
+                        <?php esc_html_e( 'Field Options', 'wp-user-frontend' ); ?>
+                    </a>
+                </div>
+                    <div
+                        class="wpuf-mt-8 wpuf-flex wpuf-rounded-md wpuf-bg-white wpuf-outline wpuf--outline-1 wpuf--outline-offset-1 wpuf-outline-gray-300 wpuf-border wpuf-border-gray-200">
+                        <input
+                            type="text"
+                            name="search"
+                            id="search"
+                            class="!wpuf-border-none wpuf-block wpuf-min-w-0 wpuf-grow wpuf-px-4 wpuf-py-1.5 wpuf-text-base wpuf-text-gray-900 placeholder:wpuf-text-gray-400 sm:wpuf-text-sm/6 !wpuf-shadow-none !wpuf-ring-transparent"
+                            placeholder="<?php esc_attr_e( 'Search Field', 'wp-user-frontend' ); ?>">
+                        <div class="wpuf-flex wpuf-py-1.5 wpuf-pr-1.5">
+                            <span class="wpuf-inline-flex wpuf-items-center wpuf-rounded wpuf-px-1 wpuf-font-sans wpuf-text-xs wpuf-text-gray-400">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="wpuf-size-5 hover:wpuf-cursor-pointer">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <section>
+                    <div class="wpuf-form-builder-panel">
+                        <component :is="current_panel"></component>
+                    </div>
+                </section>
+            </div>
+        </div>
     </div>
     <div
         v-show="active_tab === 'form-settings'"

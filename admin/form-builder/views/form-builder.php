@@ -107,7 +107,7 @@
         </div>
 
         <div class="wpuf-flex wpuf-items-center wpuf-mt-8">
-            <div class="wpuf-flex wpuf-bg-gray-100 wpuf-w-max wpuf-rounded-lg wpuf-p-4 wpuf-mr-6">
+            <div class="wpuf-flex wpuf-bg-gray-100 wpuf-w-max wpuf-rounded-xl wpuf-p-4 wpuf-mr-6">
                 <div class="wpuf-tab-contents">
                     <a
                         href="#wpuf-form-builder-container"
@@ -154,7 +154,7 @@
         </div>
         <div class="wpuf-w-1/3 wpuf-bg-gray-50">
             <div class="wpuf-p-6">
-                <div role="tablist" class="wpuf-tabs wpuf-tabs-boxed wpuf-text-gray-500 wpuf-rounded-md wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-medium " style="background: #F3F3F3">
+                <div role="tablist" class="wpuf-tabs wpuf-tabs-boxed wpuf-text-gray-500 wpuf-rounded-xl wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-medium wpuf-bg-gray-100">
                     <a
                         role="tab"
                         :class="current_panel === 'form-fields' ? 'wpuf-bg-white wpuf-text-gray-800 wpuf-shadow-sm' : ''"

@@ -836,15 +836,16 @@
                             class="wpuf-relative wpuf-flex wpuf-items-center wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-bg-white wpuf-shadow-sm hover:wpuf-border-gray-300 wpuf-p-3">
                             <div
                                 v-if="field_settings[field].icon"
-                                class="wpuf-shrink-0 wpuf-mr-2">
+                                class="wpuf-shrink-0 wpuf-mr-2 wpuf-text-gray-400">
                                 <i :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i>
                             </div>
                             <div class="wpuf-min-w-0 wpuf-flex-1">
                                 <a href="#" class="focus:wpuf-outline-none">
                                     <span class="wpuf-absolute wpuf-inset-0" aria-hidden="true"></span>
-                                    <p class="wpuf-text-sm wpuf-font-medium wpuf-text-gray-500 wpuf-m-0">{{ field_settings[field].title }}</p>
+                                    <p class="wpuf-text-sm wpuf-font-medium wpuf-text-gray-400 wpuf-m-0">{{ field_settings[field].title }}</p>
                                 </a>
                             </div>
+                            <img src="<?php esc_attr_e( WPUF_ASSET_URI . '/images/crown.svg' ); ?>" alt="">
                         </div>
                         <div
                             v-else-if="is_failed_to_validate(field)"

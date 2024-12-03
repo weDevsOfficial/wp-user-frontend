@@ -6,6 +6,12 @@ Vue.component('form-fields', {
 
     mixins: wpuf_form_builder_mixins(wpuf_mixins.form_fields).concat(wpuf_mixins.add_form_field),
 
+    data: function () {
+        return {
+            searched_fields: '',
+        };
+    },
+
     computed: {
         panel_sections: function () {
             return this.$store.state.panel_sections;
@@ -75,6 +81,29 @@ Vue.component('form-fields', {
 
         get_invalidate_btn_class: function (field) {
             return this.field_settings[field].validator.button_class;
+        }
+    },
+
+    watch: {
+        searched_fields: function ( searchValue ) {
+            var self = this;
+
+            this.$store.commit('set_default_panel_sections', this.panel_sections);
+
+            if (this.searched_fields === '') {
+                return;
+            }
+
+            const matchedFields = Object.keys(self.field_settings).filter(key =>
+                self.field_settings[key].title.toLowerCase().includes(searchValue.toLowerCase())
+            );
+
+            const updatedStructure = self.panel_sections.map(section => ({
+                ...section,
+                fields: section.fields.filter(field => matchedFields.includes(field))
+            }));
+
+            this.$store.commit('set_panel_sections', updatedStructure);
         }
     }
 });

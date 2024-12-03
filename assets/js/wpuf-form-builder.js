@@ -391,7 +391,15 @@
                 state.form_fields[columnFieldIndex].inner_fields[payload.fromColumn].splice(payload.index, 1);
             },
 
+            // update the panel sections
+            set_panel_sections: function ( state, sections ) {
+                state.panel_sections = sections;
+            },
 
+            // set default panel sections
+            set_default_panel_sections: function ( state ) {
+                state.panel_sections = wpuf_form_builder.panel_sections;
+            }
         }
     });
 

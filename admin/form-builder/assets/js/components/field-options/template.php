@@ -24,7 +24,6 @@
             </transition>
         </div>
 
-
         <div v-if="advanced_settings.length" class="option-fields-section">
             <h3 class="section-title" @click="show_advanced_settings = !show_advanced_settings">
                 {{ i18n.advanced_options }}  <i :class="[show_advanced_settings ? 'fa fa-angle-down' : 'fa fa-angle-right']"></i>

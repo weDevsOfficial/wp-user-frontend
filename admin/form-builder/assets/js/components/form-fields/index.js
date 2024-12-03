@@ -8,7 +8,7 @@ Vue.component('form-fields', {
 
     data: function () {
         return {
-            searched_fields: '',
+            searched_fields: ''
         };
     },
 
@@ -81,6 +81,10 @@ Vue.component('form-fields', {
 
         get_invalidate_btn_class: function (field) {
             return this.field_settings[field].validator.button_class;
+        },
+
+        set_default_panel_sections: function () {
+            this.$store.commit('set_default_panel_sections', this.panel_sections);
         }
     },
 
@@ -88,7 +92,7 @@ Vue.component('form-fields', {
         searched_fields: function ( searchValue ) {
             var self = this;
 
-            this.$store.commit('set_default_panel_sections', this.panel_sections);
+            this.set_default_panel_sections();
 
             if (this.searched_fields === '') {
                 return;

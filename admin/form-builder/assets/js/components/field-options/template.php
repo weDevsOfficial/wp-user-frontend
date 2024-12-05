@@ -1,4 +1,4 @@
-<div class="wpuf-form-builder-field-options">
+<div class="wpuf-form-builder-field-options wpuf-px-6">
     <div v-if="!parseInt(editing_field_id)" class="options-fileds-section text-center">
         <p>
             <span class="loader"></span>
@@ -6,9 +6,13 @@
     </div>
 
     <div v-else>
-        <div class="option-fields-section">
-            <h3 class="section-title clearfix" @click="show_basic_settings = !show_basic_settings">
-                {{ form_field_type_title }} <i :class="[show_basic_settings ? 'fa fa-angle-down' : 'fa fa-angle-right']"></i>
+        <div class="option-fields-section wpuf-mt-6">
+            <h3
+                :class="show_basic_settings ? 'wpuf-text-green-600' : 'wpuf-text-gray-500'"
+                class="wpuf-flex wpuf-mt-0 wpuf-mb-6 wpuf-justify-between hover:wpuf-cursor-pointer"
+                @click="show_basic_settings = !show_basic_settings">
+                {{ form_field_type_title }}
+                <i :class="show_basic_settings ? 'fa fa-angle-down wpuf-text-green-600' : 'fa fa-angle-right wpuf-text-gray-500'"></i>
             </h3>
 
             <transition name="slide-fade">
@@ -25,8 +29,12 @@
         </div>
 
         <div v-if="advanced_settings.length" class="option-fields-section">
-            <h3 class="section-title" @click="show_advanced_settings = !show_advanced_settings">
-                {{ i18n.advanced_options }}  <i :class="[show_advanced_settings ? 'fa fa-angle-down' : 'fa fa-angle-right']"></i>
+            <h3
+                :class="show_advanced_settings ? 'wpuf-text-green-600' : 'wpuf-text-gray-500'"
+                class="wpuf-flex wpuf-mt-0 wpuf-mb-6 wpuf-justify-between hover:wpuf-cursor-pointer"
+                @click="show_advanced_settings = !show_advanced_settings">
+                {{ i18n.advanced_options }}
+                <i :class="show_advanced_settings ? 'fa fa-angle-down wpuf-text-green-600' : 'fa fa-angle-right wpuf-text-gray-500'"></i>
             </h3>
 
             <transition name="slide-fade">

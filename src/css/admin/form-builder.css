@@ -10,6 +10,14 @@
     .wpuf-btn-secondary {
         @apply wpuf-rounded-md wpuf-bg-green-50 wpuf-text-green-700 wpuf-px-3.5 wpuf-py-2 wpuf-text-sm wpuf-border wpuf-border-green-300 wpuf-font-semibold hover:wpuf-bg-green-100 hover:wpuf-text-white;
     }
+
+    .wpuf-tooltip-top {
+        @apply wpuf-tooltip before:wpuf-bg-gray-700 before:wpuf-text-zinc-50 after:wpuf-border-t-gray-700 after:wpuf-border-x-transparent wpuf-cursor-pointer wpuf-ml-2 wpuf-z-10;
+    }
+
+    .wpuf-input-checkbox {
+        @apply wpuf-bg-transparent wpuf-text-white checked:wpuf-bg-transparent checked:wpuf-shadow-primary checked:hover:wpuf-shadow-transparent checked:hover:wpuf-bg-transparent checked:focus:wpuf-bg-transparent
+    }
 }
 
 @layer utilities {

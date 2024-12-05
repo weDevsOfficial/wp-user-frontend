@@ -1,29 +1,55 @@
-<div class="panel-field-opt panel-field-opt-radio">
-    <label v-if="option_field.title">
-        {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
-    </label>
+<div class="panel-field-opt panel-field-opt-radio wpuf-mb-6">
+    <div class="wpuf-flex">
+        <label
+            v-if="option_field.title"
+            class="wpuf-font-sm wpuf-text-gray-900">{{ option_field.title }}</label>
+        <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
+    </div>
 
-    <ul :class="[option_field.inline ? 'list-inline' : '']">
-        <li v-for="(option, key) in option_field.options">
-            <label>
-                <input type="radio" :value="key" v-model="selected"> {{ option }}
+    <div
+        v-if="!option_field.inline"
+        class="wpuf-flex wpuf-items-center wpuf-gap-x-2 wpuf-m-2"
+        v-for="(option, key) in option_field.options">
+        <label
+            class="wpuf-block text-sm/6 wpuf-font-medium wpuf-text-gray-900">
+            <input
+                type="radio"
+                :value="key"
+                v-model="selected"
+                class="!wpuf-m-0 checked:!wpuf-bg-primary checked:before:!wpuf-bg-transparent">
+            {{ option }}</label>
+    </div>
+
+    <div
+        v-if="option_field.inline"
+        class="wpuf-mt-2 wpuf-flex wpuf-flex-wrap">
+        <div
+            v-for="(option, key, index) in option_field.options"
+            class="wpuf-items-center">
+            <label
+                :class="index !== 0 ? 'wpuf-ml-2' : ''"
+                class="wpuf-block wpuf-m-1 wpuf-font-medium wpuf-text-gray-900">
+                <input
+                    type="radio"
+                    :value="key"
+                    v-model="selected"
+                    class="checked:!wpuf-bg-primary checked:before:!wpuf-bg-transparent">
+                {{ option }}
             </label>
-        </li>
-    </ul>
+        </div>
+    </div>
 
-    <div v-if="'logged_in' === selected" class="condiotional-logic-container">
+    <div v-if="'logged_in' === selected" class="condiotional-logic-container wpuf-mt-2">
 
-    	<?php use WeDevs\Wpuf\Admin\Subscription;
-
-	    $roles = get_editable_roles(); ?>
+    	<?php $roles = get_editable_roles(); ?>
 
     	<ul>
 			<?php
                 foreach ( $roles as $role => $value ) {
                     $role_name = $value['name'];
 
-                    $output  = '<li>';
-                    $output .= "<label><input type='checkbox' v-model='choices' value='{$role}'> {$role_name} </label>";
+                    $output  = '<li class="wpuf-mt-2">';
+                    $output .= "<label><input class='wpuf-bg-transparent wpuf-text-white checked:wpuf-bg-transparent checked:wpuf-shadow-primary checked:hover:wpuf-shadow-transparent checked:focus:wpuf-bg-transparent' type='checkbox' v-model='choices' value='{$role}'> {$role_name} </label>";
                     $output .= '</li>';
 
                     echo $output;
@@ -32,7 +58,7 @@
 	    </ul>
     </div>
 
-    <div v-if="'subscribed_users' === selected" class="condiotional-logic-container">
+    <div v-if="'subscribed_users' === selected" class="condiotional-logic-container wpuf-mt-2">
 
     	<ul>
     		<?php
@@ -42,8 +68,8 @@
 
                     if ( $subscriptions ) {
                         foreach ( $subscriptions as $pack ) {
-                            $output  = '<li>';
-                            $output .= "<label><input type='checkbox' v-model='choices' value='{$pack->ID}' > {$pack->post_title} </label>";
+                            $output  = '<li class="wpuf-mt-2">';
+                            $output .= "<label><input class='wpuf-bg-transparent wpuf-shadow-primary' type='checkbox' v-model='choices' value='{$pack->ID}' > {$pack->post_title} </label>";
                             $output .= '</li>';
 
                             echo $output;

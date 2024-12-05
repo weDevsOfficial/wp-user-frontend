@@ -1,12 +1,12 @@
 <div class="wpuf-px-6">
     <div
-        class="wpuf-flex wpuf-rounded-md wpuf-bg-white wpuf-outline wpuf--outline-1 wpuf--outline-offset-1 wpuf-outline-gray-300 wpuf-border wpuf-border-gray-200">
+        class="wpuf-flex wpuf-rounded-lg wpuf-bg-white wpuf-outline wpuf--outline-1 wpuf--outline-offset-1 wpuf-outline-gray-300 wpuf-border wpuf-border-gray-200 wpuf-shadow">
         <input
             type="text"
             name="search"
             id="search"
             v-model="searched_fields"
-            class="!wpuf-border-none wpuf-block wpuf-min-w-0 wpuf-grow wpuf-px-4 wpuf-py-1.5 wpuf-text-base wpuf-text-gray-900 placeholder:wpuf-text-gray-400 sm:wpuf-text-sm/6 !wpuf-shadow-none !wpuf-ring-transparent"
+            class="!wpuf-border-none wpuf-rounded-lg wpuf-block wpuf-min-w-0 wpuf-grow wpuf-px-4 wpuf-py-1.5 wpuf-text-base wpuf-text-gray-900 placeholder:wpuf-text-gray-400 sm:wpuf-text-sm/6 !wpuf-shadow-none !wpuf-ring-transparent"
             placeholder="<?php esc_attr_e( 'Search Field', 'wp-user-frontend' ); ?>">
         <div class="wpuf-flex wpuf-py-1.5 wpuf-pr-1.5">
             <span class="wpuf-inline-flex wpuf-items-center wpuf-rounded wpuf-px-1 wpuf-font-sans wpuf-text-xs wpuf-text-gray-400">
@@ -37,10 +37,11 @@
             v-for="(section, index) in panel_sections">
             <div v-if="section.fields.length" class="panel-form-field-group clearfix">
                 <h3
-                    class="wpuf-text-gray-500 wpuf-flex wpuf-justify-between hover:wpuf-cursor-pointer"
+                    :class="section.show ? 'wpuf-text-green-600' : 'wpuf-text-gray-500'"
+                    class="wpuf-flex wpuf-justify-between hover:wpuf-cursor-pointer"
                     @click="panel_toggle(index)">
                     {{ section.title }}
-                    <i :class="[section.show ? 'fa fa-angle-down' : 'fa fa-angle-right']"></i>
+                    <i :class="[section.show ? 'fa fa-angle-down wpuf-text-green-600' : 'fa fa-angle-right wpuf-text-gray-500']"></i>
                 </h3>
                 <div
                     v-show="section.show"

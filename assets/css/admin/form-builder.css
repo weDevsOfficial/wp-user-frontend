@@ -3899,6 +3899,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   opacity: 0;
 }
 
+.wpuf-opacity-100 {
+  opacity: 1;
+}
+
 .\!wpuf-shadow-none {
   --tw-shadow: 0 0 #0000 !important;
   --tw-shadow-colored: 0 0 #0000 !important;

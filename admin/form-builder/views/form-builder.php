@@ -32,7 +32,7 @@
                                         class="form-switcher-arrow !wpuf-font-bold !wpuf-text-xl !wpuf-leading-none"
                                     ></i>
                                 </div>
-                                <ul tabindex="0" class="wpuf-dropdown-content wpuf-menu !wpuf-p-0 wpuf-rounded-md wpuf-z-[1] wpuf-w-52 wpuf-shadow">
+                                <ul tabindex="0" class="wpuf-dropdown-content wpuf-menu !wpuf-p-0 wpuf-rounded-md wpuf-z-[1] wpuf-w-52 wpuf-shadow wpuf-bg-white">
                                     <?php
                                     foreach ( $forms as $form ) {
                                         ?>

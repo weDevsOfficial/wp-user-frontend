@@ -14,13 +14,13 @@
             :class="[
                         'field-items', 'wpuf-el', field.name, field.css, 'form-field-' + field.template,
                         field.width ? 'field-size-' + field.width : '',
-                        ('custom_hidden_field' === field.template) ? 'hidden-field' : '',
-                        parseInt(editing_form_id) === parseInt(field.id) ? 'current-editing' : ''
+                        ('custom_hidden_field' === field.template) ? 'hidden-field' : ''
                     ]"
             class="wpuf-group wpuf-rounded-lg hover:wpuf-bg-green-50 wpuf-transition wpuf-duration-150 wpuf-ease-out !wpuf-m-0 !wpuf-p-0">
             <div
                 v-if="field.input_type !== 'column_field'"
-                class="wpuf-flex wpuf-justify-between wpuf-p-4 wpuf-rounded-t-md wpuf-border-transparent wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed group-hover:wpuf-border-green-400 group-hover:wpuf-cursor-pointer">
+                :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-bg-green-50 wpuf-border-green-400' : 'wpuf-border-transparent'"
+                class="wpuf-flex wpuf-justify-between wpuf-p-4 wpuf-rounded-t-md wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed group-hover:wpuf-border-green-400 group-hover:wpuf-cursor-pointer">
                 <div v-if="!(is_full_width(field.template) || is_pro_feature(field.template))" class="wpuf-w-1/4">
                     <label
                         v-if="!is_invisible(field)"
@@ -52,7 +52,8 @@
                 :field="field">
             </component>
             <div
-                class="control-buttons wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-rounded-b-lg !wpuf-bg-green-600 wpuf-flex wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out wpuf-flex wpuf-justify-around">
+                :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-opacity-100' : 'wpuf-opacity-0'"
+                class="control-buttons group-hover:wpuf-opacity-100 wpuf-rounded-b-lg !wpuf-bg-green-600 wpuf-flex wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out wpuf-flex wpuf-justify-around">
                 <div class="wpuf-flex wpuf-justify-around wpuf-text-green-200">
                     <template v-if="!is_failed_to_validate(field.template)">
                             <span :class="action_button_classes">
@@ -122,11 +123,11 @@
         <ul class="wpuf-form">
             <li
                 v-for="(field, index) in hidden_fields"
-                :class="['field-items', parseInt(editing_form_id) === parseInt(field.id) ? 'current-editing' : '']"
-                class="wpuf-group hover:wpuf-bg-green-50 !wpuf-m-0 !wpuf-p-0"
+                class="field-items wpuf-group hover:wpuf-bg-green-50 !wpuf-m-0 !wpuf-p-0"
             >
                 <div
-                    class="wpuf-flex wpuf-bg-gray-50 wpuf-p-4 wpuf-rounded-t-md wpuf-border-transparent wpuf-border-t wpuf-border-r wpuf-border-l group-hover:wpuf-border-dashed group-hover:wpuf-border-green-400 group-hover:wpuf-cursor-pointer">
+                    :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-border wpuf-border-dashed wpuf-bg-green-50 wpuf-border-green-400' : 'wpuf-border-transparent'"
+                    class="wpuf-flex wpuf-bg-gray-50 wpuf-p-4 wpuf-rounded-t-md wpuf-border-t wpuf-border-r wpuf-border-l group-hover:wpuf-border-dashed group-hover:wpuf-border-green-400 group-hover:wpuf-cursor-pointer">
                     <strong><?php esc_html_e( 'key', 'wp-user-frontend' ); ?></strong>: {{ field.name }} |
                     <strong><?php esc_html_e( 'value', 'wp-user-frontend' ); ?></strong>: {{ field.meta_value }}
                 </div>
@@ -504,7 +505,7 @@
     <label>
         {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
 
-        <textarea :rows="option_field.rows || 5" v-model="value"></textarea>
+        <textarea :class="builder_class_names('textareafield')" :rows="option_field.rows || 5" v-model="value"></textarea>
     </label>
 </div>
 </script>
@@ -673,7 +674,7 @@
                         'form-field-' + field.template,
                         field.width ? 'field-size-' + field.width : '',
                         ('custom_hidden_field' === field.template) ? 'hidden-field' : '',
-                        parseInt(editing_form_id) === parseInt(field.id) ? 'current-editing' : ''
+                        parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-bg-green-50' : ''
                       ]">
                     <div class="wpuf-flex wpuf-flex-col md:wpuf-flex-row wpuf-gap-2 wpuf-p-4 wpuf-border-transparent group-hover/column-inner:wpuf-border-green-400 wpuf-rounded-t-md wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed wpuf-border-green-400">
                         <div
@@ -1019,7 +1020,7 @@
 
     <textarea
         v-if="'no' === field.rich"
-        :class="class_names('textareafield')"
+        :class="builder_class_names('textareafield')"
         :placeholder="field.placeholder"
         :default_text="field.default"
         :rows="field.rows"
@@ -1037,7 +1038,7 @@
     <textarea
         v-if="'no' === field.rich"
         :class="class_names('textareafield')"
-        class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm   placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300"
+        class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300"
         :placeholder="field.placeholder"
         :rows="field.rows"
         :cols="field.cols"
@@ -1054,7 +1055,7 @@
     <input
         type="text"
         :class="builder_class_names('text')"
-        class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm   placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300"
+        class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300"
         :placeholder="field.placeholder"
         :value="field.default"
         :size="field.size"
@@ -1072,7 +1073,7 @@
         :value="field.default"
         :size="field.size"
         :class="class_names('textfield')"
-        class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm   placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300"
+        class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300"
     >
     <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>

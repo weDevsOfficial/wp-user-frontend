@@ -8,7 +8,7 @@
 
     <textarea
         v-if="'no' === field.rich"
-        :class="class_names('textareafield')"
+        :class="builder_class_names('textareafield')"
         :placeholder="field.placeholder"
         :default_text="field.default"
         :rows="field.rows"

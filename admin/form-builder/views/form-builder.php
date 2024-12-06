@@ -174,7 +174,7 @@
                 </div>
                 </div>
                 <section>
-                    <div class="wpuf-form-builder-panel wpuf-mt-6">
+                    <div class="wpuf-form-builder-panel wpuf-my-6">
                         <component :is="current_panel"></component>
                     </div>
                 </section>

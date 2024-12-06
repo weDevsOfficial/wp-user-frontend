@@ -110,7 +110,7 @@ class Form_Field_Featured_Image extends Field_Contract {
      * @return array
      */
     public function get_options_settings() {
-        $default_options      = $this->get_default_option_settings( false, ['dynamic'] ); // exclude dynamic
+        $default_options = $this->get_default_option_settings( false, [ 'dynamic', 'width' ] ); // exclude dynamic
 
         $settings = [
             [

@@ -2455,6 +2455,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   margin-bottom: 0px;
 }
 
+.wpuf-my-6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
 .wpuf-my-8 {
   margin-top: 2rem;
   margin-bottom: 2rem;
@@ -4123,6 +4128,19 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   background-color: #ffffff;
   opacity: 1;
   background: repeating-linear-gradient( -45deg, #dcfce7, #dcfce7 2px, #ffffff 2px, #ffffff 6px );
+}
+
+.selectize-control.multi .selectize-input [data-value] {
+  background: #16a34a !important;
+  border: 1px solid transparent !important;
+}
+
+ul.wpuf-form li.field-size-small .wpuf-fields {
+  width: 30%;
+}
+
+ul.wpuf-form li.field-size-medium .wpuf-fields {
+  width: 50%;
 }
 
 .placeholder\:wpuf-text-gray-400::-moz-placeholder {

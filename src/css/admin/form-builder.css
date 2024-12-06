@@ -53,3 +53,16 @@
     opacity: 1;
     background: repeating-linear-gradient( -45deg, #dcfce7, #dcfce7 2px, #ffffff 2px, #ffffff 6px );
 }
+
+.selectize-control.multi .selectize-input [data-value] {
+    background: #16a34a !important;
+    border: 1px solid transparent !important;
+}
+
+ul.wpuf-form li.field-size-small .wpuf-fields {
+    width: 30%;
+}
+
+ul.wpuf-form li.field-size-medium .wpuf-fields {
+    width: 50%;
+}

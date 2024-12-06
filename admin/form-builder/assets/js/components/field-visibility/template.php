@@ -27,8 +27,7 @@
             v-for="(option, key, index) in option_field.options"
             class="wpuf-items-center">
             <label
-                :class="index !== 0 ? 'wpuf-ml-2' : ''"
-                class="wpuf-block wpuf-m-1 wpuf-font-medium wpuf-text-gray-900">
+                class="wpuf-block wpuf-mt-1 wpuf-mr-2 wpuf-font-medium wpuf-text-gray-900">
                 <input
                     type="radio"
                     :value="key"

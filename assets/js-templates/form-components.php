@@ -214,7 +214,7 @@
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-field-multiselect">
-<div class="panel-field-opt panel-field-opt-select" v-show="met_dependencies">
+<div v-if="met_dependencies" class="panel-field-opt panel-field-opt-select wpuf-mb-6">
     <label v-if="option_field.title">
         {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
     </label>
@@ -540,8 +540,7 @@
             v-for="(option, key, index) in option_field.options"
             class="wpuf-items-center">
             <label
-                :class="index !== 0 ? 'wpuf-ml-2' : ''"
-                class="wpuf-block wpuf-m-1 wpuf-font-medium wpuf-text-gray-900">
+                class="wpuf-block wpuf-mt-1 wpuf-mr-2 wpuf-font-medium wpuf-text-gray-900">
                 <input
                     type="radio"
                     :value="key"

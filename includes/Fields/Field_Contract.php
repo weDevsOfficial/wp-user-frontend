@@ -65,11 +65,12 @@ abstract class Field_Contract {
             ],
 
             [
-                'name' => 'content_restriction',
-                'title' => __( 'Content Restriction', 'wp-user-frontend' ),
-                'type' => 'text',
-                'section' => 'advanced',
-                'priority' => 16,
+                'name'      => 'content_restriction',
+                'title'     => __( 'Content Restriction', 'wp-user-frontend' ),
+                'type'      => 'text',
+                'variation' => 'number',
+                'section'   => 'advanced',
+                'priority'  => 16,
                 'help_text' => __( 'Number of characters or words the author to be restricted in', 'wp-user-frontend' ),
             ],
         ];

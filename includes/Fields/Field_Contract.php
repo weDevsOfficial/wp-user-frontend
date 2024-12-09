@@ -379,7 +379,7 @@ abstract class Field_Contract {
                 ],
                 'section'   => 'basic',
                 'priority'  => 21,
-                'help_text' => __( 'Read only', 'wp-user-frontend' ),
+                'help_text' => __( 'Make this field read only', 'wp-user-frontend' ),
             ];
 
             if ( is_wpuf_post_form_builder() ) {

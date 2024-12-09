@@ -1,4 +1,4 @@
-<div v-if="met_dependencies" class="panel-field-opt panel-field-opt-radio wpuf-mb-6">
+<div v-if="met_dependencies" class="panel-field-opt panel-field-opt-radio">
     <div class="wpuf-flex">
         <label
             class="wpuf-font-sm wpuf-text-gray-900">{{ option_field.title }}</label>
@@ -14,7 +14,7 @@
             type="radio"
             :value="key"
             v-model="value"
-            class="!wpuf-m-0 checked:!wpuf-bg-primary checked:before:!wpuf-bg-transparent">
+            class="checked:!wpuf-bg-primary checked:before:!wpuf-bg-transparent">
             {{ option }}</label>
     </div>
 

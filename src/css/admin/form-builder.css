@@ -18,6 +18,14 @@
     .wpuf-input-checkbox {
         @apply wpuf-bg-transparent wpuf-text-white checked:wpuf-bg-transparent checked:wpuf-shadow-primary checked:hover:wpuf-shadow-transparent checked:hover:wpuf-bg-transparent checked:focus:wpuf-bg-transparent
     }
+
+    .panel-field-opt {
+        @apply wpuf-mb-4
+    }
+
+    .panel-field-opt label {
+        @apply wpuf-flex wpuf-items-center
+    }
 }
 
 @layer utilities {

@@ -1,4 +1,4 @@
-<div v-if="met_dependencies" class="panel-field-opt panel-field-opt-text wpuf-mb-6">
+<div v-if="met_dependencies" class="panel-field-opt panel-field-opt-text">
     <div class="wpuf-flex">
         <label
             :for="option_field.name"

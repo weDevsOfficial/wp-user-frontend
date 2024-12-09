@@ -214,73 +214,71 @@
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-field-multiselect">
-<div v-if="met_dependencies" class="panel-field-opt panel-field-opt-select wpuf-mb-6">
+<div v-if="met_dependencies" class="panel-field-opt panel-field-opt-select">
     <label v-if="option_field.title">
         {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
     </label>
 
     <select
         :class="['term-list-selector']"
+        class="wpuf-w-full wpuf-mt-2 wpuf-border-primary wpuf-z-30"
         v-model="value"
         multiple
     >
-        <option v-for="(option, key) in option_field.options" :value="key">{{ option }}</option>
+        <option
+            class="checked:wpuf-bg-primary"
+            v-for="(option, key) in option_field.options"
+            :value="key">{{ option }}</option>
     </select>
 </div>
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-field-option-data">
 <div class="panel-field-opt panel-field-opt-text">
-    <div>
-        {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
-        <ul class="pull-right list-inline field-option-actions">
-            <li>
-                <label>
-                    <input
-                        type="checkbox"
-                        v-model="show_value"
-                    /><?php esc_attr_e( 'Show values', 'wp-user-frontend' ); ?>
-                </label>
-            </li>
-            <li>
-                <label>
-                    <input
-                        type="checkbox"
-                        v-model="sync_value"
-                    /><?php esc_attr_e( 'Sync values', 'wp-user-frontend' ); ?>
-                </label>
-                <help-text placement="left" text="<?php esc_attr_e( 'When enabled, option values will update according to their labels.', 'wp-user-frontend' ); ?>" />
-            </li>
-        </ul>
+    <div class="wpuf-flex">
+        <label
+            class="wpuf-font-sm wpuf-text-gray-900">{{ option_field.title }}</label>
+        <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
+    </div>
+    <div class="wpuf-mt-2 wpuf-flex">
+            <label class="wpuf-block text-sm/6 wpuf-font-medium wpuf-text-gray-900">
+                <input
+                    type="checkbox"
+                    :value="key"
+                    v-model="show_value"
+                    class="wpuf-input-checkbox">
+                <?php esc_attr_e( 'Show values', 'wp-user-frontend' ); ?>
+            </label>
+        <label class="wpuf-block text-sm/6 wpuf-font-medium wpuf-text-gray-900 wpuf-ml-2">
+            <input
+                type="checkbox"
+                v-model="sync_value"
+                class="wpuf-input-checkbox"
+            /><?php esc_attr_e( 'Sync values', 'wp-user-frontend' ); ?>
+        </label>
     </div>
 
     <ul :class="['option-field-option-chooser', show_value ? 'show-value' : '']">
-        <li class="clearfix margin-0 header">
-            <div class="selector">&nbsp;</div>
-
-            <div class="sort-handler">&nbsp;</div>
-
-            <div class="label">
+        <div class="wpuf-flex wpuf-mt-2">
+            <label class="wpuf-font-sm wpuf-text-gray-900">
                 <?php esc_attr_e( 'Label', 'wp-user-frontend' ); ?>
-                <help-text placement="left" text="<?php esc_attr_e( 'Do not use & or other special character for option label', 'wp-user-frontend' ); ?>" />
-            </div>
-
-            <div v-if="show_value" class="value">
-                <?php esc_attr_e( 'Value', 'wp-user-frontend' ); ?>
-            </div>
-
-            <div class="action-buttons">&nbsp;</div>
-        </li>
+            </label>
+            <help-text text="<?php esc_attr_e( 'Do not use & or other special character for option label', 'wp-user-frontend' ); ?>"></help-text>
+        </div>
+        <div v-if="show_value" class="value">
+            <?php esc_attr_e( 'Value', 'wp-user-frontend' ); ?>
+        </div>
     </ul>
 
     <ul :class="['option-field-option-chooser margin-0', show_value ? 'show-value' : '']">
-        <li v-for="(option, index) in options" :key="option.id" :data-index="index" class="clearfix option-field-option">
+        <li v-for="(option, index) in options" :key="option.id" :data-index="index" class="clearfix option-field-option wpuf-flex wpuf-items-center wpuf-justify-start wpuf-gap-4">
             <div class="selector">
                 <input
                     v-if="option_field.is_multiple"
                     type="checkbox"
                     :value="option.value"
                     v-model="selected"
+                    class="wpuf-input-checkbox"
                 >
                 <input
                     v-else
@@ -303,13 +301,23 @@
                 <input type="text" v-model="option.value">
             </div>
 
-            <div class="action-buttons clearfix">
-                <i class="fa fa-minus-circle" @click="delete_option(index)"></i>
-            </div>
-        </li>
-        <li>
-            <div class="plus-buttons clearfix" @click="add_option">
-                <i class="fa fa-plus-circle"></i>
+            <div class="wpuf-flex">
+                <div
+                    class="action-buttons hover:wpuf-cursor-pointer"
+                    @click="delete_option(index)">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="wpuf-size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                </div>
+                <div
+                    v-if="index === options.length - 1"
+                    class="plus-buttons hover:wpuf-cursor-pointer"
+                    @click="add_option">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                         stroke="currentColor" class="wpuf-size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                </div>
             </div>
         </li>
     </ul>
@@ -389,7 +397,7 @@
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-field-radio">
-<div v-if="met_dependencies" class="panel-field-opt panel-field-opt-radio wpuf-mb-6">
+<div v-if="met_dependencies" class="panel-field-opt panel-field-opt-radio">
     <div class="wpuf-flex">
         <label
             class="wpuf-font-sm wpuf-text-gray-900">{{ option_field.title }}</label>
@@ -405,7 +413,7 @@
             type="radio"
             :value="key"
             v-model="value"
-            class="!wpuf-m-0 checked:!wpuf-bg-primary checked:before:!wpuf-bg-transparent">
+            class="checked:!wpuf-bg-primary checked:before:!wpuf-bg-transparent">
             {{ option }}</label>
     </div>
 
@@ -451,15 +459,35 @@
         {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
     </label>
 
-    <select class="opt-select-element" v-model="value">
-        <option value=""><?php _e( 'Select an option', 'wp-user-frontend' ); ?></option>
-        <option v-for="(option, key) in option_field.options" :value="key">{{ option }}</option>
-    </select>
+    <div class="option-fields-section wpuf-relative">
+        <p
+            @click="showOptions = !showOptions"
+            class="wpuf-flex wpuf-items-center wpuf-justify-between wpuf-min-w-full wpuf-rounded-md wpuf-py-1 wpuf-px-2 wpuf-text-gray-900 !wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300 wpuf-max-w-full hover:wpuf-cursor-pointer"
+        >
+            {{ selectedOption }}
+            <i
+                :class="showOptions ? 'fa-angle-up' : 'fa-angle-down'"
+                class="fa"></i>
+        </p>
+
+        <div
+            v-if="showOptions"
+            class="wpuf-absolute wpuf-bg-white wpuf-border wpuf-border-gray-300 wpuf-rounded-lg wpuf-w-full wpuf-z-30">
+            <ul>
+                <li
+                    v-for="(option, key) in option_field.options"
+                    @click="[value = key, showOptions = false, selectedOption = option]"
+                    :value="key"
+                    class="wpuf-text-sm wpuf-color-gray-900 wpuf-py-2 wpuf-px-4 hover:wpuf-cursor-pointer hover:wpuf-bg-gray-100">{{ option }}</li>
+            </ul>
+        </div>
+    </div>
+
 </div>
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-field-text">
-<div v-if="met_dependencies" class="panel-field-opt panel-field-opt-text wpuf-mb-6">
+<div v-if="met_dependencies" class="panel-field-opt panel-field-opt-text">
     <div class="wpuf-flex">
         <label
             :for="option_field.name"
@@ -489,14 +517,21 @@
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-field-text-meta">
-<div class="panel-field-opt panel-field-opt-text panel-field-opt-text-meta">
-    <label>
-        {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
+<div v-if="met_dependencies" class="panel-field-opt panel-field-opt-text panel-field-opt-text-meta">
+    <div class="wpuf-flex">
+        <label
+            :for="option_field.title"
+            class="wpuf-font-sm wpuf-text-gray-900">{{ option_field.title }}</label>
+        <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
+    </div>
+    <div class="wpuf-mt-2">
         <input
             type="text"
             v-model="value"
-        >
-    </label>
+            @focusout="on_focusout"
+            @keyup="on_keyup"
+            :class="builder_class_names('text')">
+    </div>
 </div>
 </script>
 
@@ -511,7 +546,7 @@
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-field-visibility">
-<div class="panel-field-opt panel-field-opt-radio wpuf-mb-6">
+<div class="panel-field-opt panel-field-opt-radio">
     <div class="wpuf-flex">
         <label
             v-if="option_field.title"
@@ -529,7 +564,7 @@
                 type="radio"
                 :value="key"
                 v-model="selected"
-                class="!wpuf-m-0 checked:!wpuf-bg-primary checked:before:!wpuf-bg-transparent">
+                class="checked:!wpuf-bg-primary checked:before:!wpuf-bg-transparent">
             {{ option }}</label>
     </div>
 
@@ -540,7 +575,7 @@
             v-for="(option, key, index) in option_field.options"
             class="wpuf-items-center">
             <label
-                class="wpuf-block wpuf-mt-1 wpuf-mr-2 wpuf-font-medium wpuf-text-gray-900">
+                class="wpuf-block wpuf-my-1 wpuf-mr-2 wpuf-font-medium wpuf-text-gray-900">
                 <input
                     type="radio"
                     :value="key"
@@ -1010,12 +1045,12 @@
 
 <script type="text/x-template" id="tmpl-wpuf-form-post_content">
 <div class="wpuf-fields">
-    <div class="wp-media-buttons" v-if="field.insert_image == 'yes'">
+    <div class="wp-media-buttons" v-if="field.insert_image === 'yes'">
         <button type="button" class="button insert-media add_media" data-editor="content">
             <span class="dashicons dashicons-admin-media insert-photo-icon"></span> <?php _e( 'Insert Photo', 'wp-user-frontend' ); ?>
         </button>
     </div>
-    <br v-if="field.insert_image == 'yes'" />
+    <br v-if="field.insert_image === 'yes'" />
 
     <textarea
         v-if="'no' === field.rich"

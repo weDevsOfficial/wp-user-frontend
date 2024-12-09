@@ -1,4 +1,4 @@
-<div class="panel-field-opt panel-field-opt-radio wpuf-mb-6">
+<div class="panel-field-opt panel-field-opt-radio">
     <div class="wpuf-flex">
         <label
             v-if="option_field.title"
@@ -16,7 +16,7 @@
                 type="radio"
                 :value="key"
                 v-model="selected"
-                class="!wpuf-m-0 checked:!wpuf-bg-primary checked:before:!wpuf-bg-transparent">
+                class="checked:!wpuf-bg-primary checked:before:!wpuf-bg-transparent">
             {{ option }}</label>
     </div>
 
@@ -27,7 +27,7 @@
             v-for="(option, key, index) in option_field.options"
             class="wpuf-items-center">
             <label
-                class="wpuf-block wpuf-mt-1 wpuf-mr-2 wpuf-font-medium wpuf-text-gray-900">
+                class="wpuf-block wpuf-my-1 wpuf-mr-2 wpuf-font-medium wpuf-text-gray-900">
                 <input
                     type="radio"
                     :value="key"

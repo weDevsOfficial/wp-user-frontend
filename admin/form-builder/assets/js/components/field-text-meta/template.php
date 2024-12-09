@@ -11,6 +11,6 @@
             v-model="value"
             @focusout="on_focusout"
             @keyup="on_keyup"
-            :class="builder_class_names('text')">
+            class="wpuf-block wpuf-min-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 !wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300 wpuf-max-w-full">
     </div>
 </div>

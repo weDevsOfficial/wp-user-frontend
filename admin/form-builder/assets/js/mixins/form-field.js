@@ -49,6 +49,10 @@ wpuf_mixins.form_field_mixin = {
                 case 'upload_btn':
                     commonClasses = 'file-selector  wpuf-rounded-md wpuf-btn-secondary';
                     break;
+
+                case 'radio':
+                    commonClasses = 'wpuf-ml-3 wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900';
+                    break;
             }
 
             return [

@@ -37,7 +37,8 @@
         <div
             v-for="(option, index) in options"
             :key="option.id"
-            class="wpuf-grid wpuf-grid-flow-col wpuf-auto-cols-min wpuf-gap-4 wpuf-mb-2 option-field-option hover:wpuf-cursor-pointer">
+            :data-index="index"
+            class="wpuf-grid wpuf-grid-cols-[auto_1fr_1fr_auto] wpuf-items-center wpuf-gap-4 wpuf-mb-2 option-field-option hover:wpuf-cursor-pointer">
                 <div class="wpuf-flex wpuf-items-center">
                     <div class="selector">
                         <input
@@ -53,32 +54,29 @@
                             :value="option.value"
                             v-model="selected"
                             :class="builder_class_names('radio')"
-                            class="option-chooser-radio wpuf-ml-3 wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900"
+                            class="option-chooser-radio wpuf-ml-3 wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900"
                         >
                     </div>
-
                     <div class="sort-handler">
                         <i class="fa fa-bars"></i>
                     </div>
                 </div>
-                <div
-                    :class="show_value ? 'wpuf-max-w-32' : 'wpuf-max-w-full'"
-                    class="label wpuf-flex">
+                <div class="label wpuf-flex">
                     <input
-                        class="wpuf-text-sm wpuf-max-w-full"
+                        class="wpuf-text-sm wpuf-w-full"
                         type="text"
                         v-model="option.label"
                         @input="set_option_label(index, option.label)">
                 </div>
                 <div
                     v-if="show_value"
-                    class="value wpuf-flex wpuf-max-w-32">
+                    class="value wpuf-flex">
                     <input
-                        class="wpuf-text-sm wpuf-max-w-full"
+                        class="wpuf-text-sm wpuf-w-full"
                         type="text"
                         v-model="option.value">
                 </div>
-                <div class="wpuf-flex wpuf-items-center">
+                <div class="wpuf-flex wpuf-items-center wpuf-gap-1">
                     <div
                         class="action-buttons hover:wpuf-cursor-pointer"
                         @click="delete_option(index)">

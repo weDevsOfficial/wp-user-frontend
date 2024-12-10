@@ -3005,10 +3005,6 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   grid-auto-columns: min-content;
 }
 
-.wpuf-grid-flow-col {
-  grid-auto-flow: column;
-}
-
 .wpuf-grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
@@ -3019,6 +3015,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-grid-cols-4 {
   grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.wpuf-grid-cols-\[auto_1fr_1fr_auto\] {
+  grid-template-columns: auto 1fr 1fr auto;
 }
 
 .wpuf-flex-row {
@@ -3075,6 +3075,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-justify-evenly {
   justify-content: space-evenly;
+}
+
+.wpuf-gap-1 {
+  gap: 0.25rem;
 }
 
 .wpuf-gap-2 {

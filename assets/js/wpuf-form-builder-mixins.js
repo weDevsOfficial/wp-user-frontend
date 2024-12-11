@@ -65,7 +65,7 @@ wpuf_mixins.form_field_mixin = {
     props: {
         field: {
             type: Object,
-            default: {}
+            default: () => ({ key: 'value' })
         }
     },
 
@@ -302,12 +302,12 @@ wpuf_mixins.option_field_mixin = {
     props: {
         option_field: {
             type: Object,
-            default: {}
+            default: () => ({ key: 'value' })
         },
 
         editing_form_field: {
             type: Object,
-            default: {}
+            default: () => ({ key: 'value' })
         }
     },
 

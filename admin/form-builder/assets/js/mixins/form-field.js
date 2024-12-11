@@ -6,7 +6,7 @@ wpuf_mixins.form_field_mixin = {
     props: {
         field: {
             type: Object,
-            default: {}
+            default: () => ({ key: 'value' })
         }
     },
 

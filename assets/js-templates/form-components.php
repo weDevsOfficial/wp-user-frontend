@@ -550,8 +550,6 @@
         <input
             type="text"
             v-model="value"
-            @focusout="on_focusout"
-            @keyup="on_keyup"
             class="wpuf-block wpuf-min-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 !wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300 wpuf-max-w-full">
     </div>
 </div>
@@ -1180,11 +1178,7 @@
     </template>
 
     <template v-else>
-    	<div
-            v-if="'invisible_recaptcha' !== field.recaptcha_type"
-            class="2xl:wpuf-w-1/3 wpuf-w-1/2">
-        	<img class="wpuf-recaptcha-placeholder" src="<?php echo WPUF_ASSET_URI . '/images/recaptcha-placeholder.png'; ?>" alt="">
-        </div>
+        <img v-if="'invisible_recaptcha' !== field.recaptcha_type" class="wpuf-recaptcha-placeholder" src="<?php echo WPUF_ASSET_URI . '/images/recaptcha-placeholder.png'; ?>" alt="">
         <div v-else><p><?php _e( 'Invisible reCaptcha', 'wp-user-frontend' ); ?></p></div>
     </template>
 </div>
@@ -1310,9 +1304,11 @@
 
 <script type="text/x-template" id="tmpl-wpuf-help-text">
 <span
-    class="wpuf-tooltip-top"
+    class="wpuf-tooltip-top field-helper-text wpuf-tooltip"
     :data-placement="placement"
-    :data-tip="text">
+    :data-tip="text"
+    data-toggle="tooltip"
+    data-container="body">
     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none">
     <path d="M9.833 12.333H9V9h-.833M9 5.667h.008M16.5 9a7.5 7.5 0 1 1-15 0 7.5 7.5 0 1 1 15 0z"
           stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>

@@ -188,15 +188,6 @@ class Form_Field_reCaptcha extends Field_Contract {
     }
 
     /**
-     * It's a full width block
-     *
-     * @return bool
-     */
-    public function is_full_width() {
-        return true;
-    }
-
-    /**
      * Get the field props
      *
      * @return array

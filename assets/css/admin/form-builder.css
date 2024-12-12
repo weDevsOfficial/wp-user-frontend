@@ -3360,6 +3360,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   background-color: rgb(22 163 74 / var(--tw-bg-opacity)) !important;
 }
 
+.\!wpuf-bg-transparent {
+  background-color: transparent !important;
+}
+
 .wpuf-bg-amber-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(245 158 11 / var(--tw-bg-opacity));
@@ -4194,6 +4198,11 @@ ul.wpuf-form li.field-size-small .wpuf-fields {
 
 ul.wpuf-form li.field-size-medium .wpuf-fields {
   width: 50%;
+}
+
+#wpuf-form-builder .wpuf-fields {
+  float: none;
+  width: auto;
 }
 
 .placeholder\:wpuf-text-gray-400::-moz-placeholder {

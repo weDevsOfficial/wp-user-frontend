@@ -98,8 +98,8 @@ Vue.component('form-fields', {
                 return;
             }
 
-            const matchedFields = Object.keys(self.field_settings).filter(key =>
-                self.field_settings[key].title.toLowerCase().includes(searchValue.toLowerCase())
+            const matchedFields = Object.keys( self.field_settings ).filter( key =>
+                self.field_settings[key].title.toLowerCase().includes( searchValue.toLowerCase() )
             );
 
             const updatedStructure = self.panel_sections.map(section => ({

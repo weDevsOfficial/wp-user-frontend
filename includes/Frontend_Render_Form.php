@@ -300,8 +300,13 @@ class Frontend_Render_Form {
                 </div>
                 <div >
                     <label >
-                         <input type="checkbox" class="wpuf_is_featured" name="is_featured_item" value="1" <?php echo $is_featured ? 'checked' : ''; ?> >
-                         <span class="wpuf-items-table-containermessage-box" id="remaining-feature-item"> <?php echo sprintf( __( 'Mark the %s as featured (remaining %d)', 'wp-user-frontend' ), $post_type, $featured_item ); ?></span>
+                        <input type="checkbox" class="wpuf_is_featured" name="is_featured_item" value="1" <?php echo $is_featured ? 'checked' : ''; ?> >
+                        <span class="wpuf-items-table-containermessage-box" id="remaining-feature-item">
+                            <?php
+                                // translators: %s: post type, %d: remaining featured item
+                                printf( __( 'Mark the %1$s as featured (remaining %2$d)', 'wp-user-frontend' ), $post_type, $featured_item );
+                            ?>
+                        </span>
                     </label>
                 </div>
             </li>

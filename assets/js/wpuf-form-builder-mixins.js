@@ -80,7 +80,7 @@ wpuf_mixins.form_field_mixin = {
             }
 
             return !!Object.keys(this.field.options).length;
-        }
+        },
     },
 
     methods: {
@@ -97,10 +97,11 @@ wpuf_mixins.form_field_mixin = {
 
             switch (type_class) {
                 case 'text':
+                case 'textfield':
                 case 'url':
                 case 'email':
+                case 'textarea':
                 case 'textareafield':
-                case 'textfield':
                 case 'select':
                     commonClasses = 'wpuf-block wpuf-min-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 !wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300 wpuf-max-w-full';
                     break;
@@ -111,6 +112,10 @@ wpuf_mixins.form_field_mixin = {
 
                 case 'radio':
                     commonClasses = 'wpuf-ml-3 wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900';
+                    break;
+
+                    case 'checkbox':
+                    commonClasses = '!wpuf-bg-transparent wpuf-h-4 wpuf-w-4 wpuf-rounded wpuf-border-gray-300 wpuf-text-indigo-600 focus:wpuf-ring-indigo-600 !wpuf-mt-0.5';
                     break;
             }
 

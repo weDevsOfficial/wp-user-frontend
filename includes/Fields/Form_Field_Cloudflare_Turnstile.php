@@ -38,12 +38,14 @@ class Form_Field_Cloudflare_Turnstile extends Field_Contract {
         $action = 'non_interactive' === $action ? 'non-interactive' : $action;
         ?>
 
-        <div
-            <?php if ( 'invisible' === $action ) { ?>
-                style="display: none;"
-            <?php } ?>
-            id="wpuf-turnstile"
-            class="wpuf-turnstile"></div>
+        <li <?php $this->print_list_attributes( $field_settings ); ?>>
+            <div
+                <?php if ( 'invisible' === $action ) { ?>
+                    style="display: none;"
+                <?php } ?>
+                id="wpuf-turnstile"
+                class="wpuf-fields wpuf-turnstile"></div>
+        </li>
 
         <script>
             window.onloadTurnstileCallback = function () {

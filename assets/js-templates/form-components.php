@@ -195,14 +195,14 @@
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-field-checkbox">
-<div v-if="met_dependencies" class="panel-field-opt panel-field-opt-checkbox" <div class="panel-field-opt panel-field-opt-radio wpuf-mb-6">
+<div v-if="met_dependencies" class="panel-field-opt panel-field-opt-checkbox wpuf-mb-6">
     <label v-if="option_field.title" :class="option_field.title_class">
         {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
     </label>
     <ul :class="[option_field.inline ? 'list-inline' : '']">
         <li v-for="(option, key) in option_field.options" class="wpuf-mt-2">
             <label>
-                <input type="checkbox" class="wpuf-input-checkbox" :value="key" v-model="value"> {{ option }}
+                <input type="checkbox" :class="builder_class_names('checkbox')" :value="key" v-model="value"> {{ option }}
             </label>
         </li>
     </ul>
@@ -665,8 +665,7 @@
                     type="checkbox"
                     :value="val"
                     :checked="is_selected(val)"
-                    :class="class_names('checkbox_btns')"
-                    class="wpuf-h-4 wpuf-w-4 wpuf-rounded wpuf-border-gray-300 wpuf-text-indigo-600 focus:wpuf-ring-indigo-600 !wpuf-mt-0.5">
+                    :class="builder_class_names('checkbox')">
                 <label class="wpuf-ml-3 wpuf-text-sm wpuf-font-medium wpuf-text-gray-900">{{ label }}</label>
             </div>
         </div>

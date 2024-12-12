@@ -88,10 +88,10 @@
             },
 
             // open field settings panel
-            open_field_settings: function (state, field_id) {
-                var field = state.form_fields.filter(function(item) {
-                    return parseInt(field_id) === parseInt(item.id);
-                });
+            open_field_settings: function ( state, field_id ) {
+                var field = state.form_fields.filter( function ( item ) {
+                    return parseInt( field_id ) === parseInt( item.id );
+                } );
 
                 if ('field-options' === state.current_panel && field[0].id === state.editing_field_id) {
                     return;
@@ -101,9 +101,9 @@
                     state.editing_field_id = 0;
                     state.current_panel = 'field-options';
 
-                    setTimeout(function () {
+                    setTimeout( function () {
                         state.editing_field_id = field[0].id;
-                    }, 400);
+                    }, 400 );
                 }
             },
 

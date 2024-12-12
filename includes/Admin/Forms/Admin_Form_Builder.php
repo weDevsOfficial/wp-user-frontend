@@ -267,9 +267,9 @@ class Admin_Form_Builder {
         );
 
         if ( defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.0.12', '<' ) ) {
-            include WPUF_ROOT . '/admin/form-builder/views/form-builder-old.php';
-        } else {
             include WPUF_ROOT . '/admin/form-builder/views/form-builder.php';
+        } else {
+            include WPUF_ROOT . '/admin/form-builder/views/form-builder-v4.1.php';
         }
     }
 

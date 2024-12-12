@@ -74,3 +74,8 @@ ul.wpuf-form li.field-size-small .wpuf-fields {
 ul.wpuf-form li.field-size-medium .wpuf-fields {
     width: 50%;
 }
+
+#wpuf-form-builder .wpuf-fields {
+    float: none;
+    width: auto;
+}

@@ -10,8 +10,7 @@
                     type="checkbox"
                     :value="val"
                     :checked="is_selected(val)"
-                    :class="class_names('checkbox_btns')"
-                    class="wpuf-h-4 wpuf-w-4 wpuf-rounded wpuf-border-gray-300 wpuf-text-indigo-600 focus:wpuf-ring-indigo-600 !wpuf-mt-0.5">
+                    :class="builder_class_names('checkbox')">
                 <label class="wpuf-ml-3 wpuf-text-sm wpuf-font-medium wpuf-text-gray-900">{{ label }}</label>
             </div>
         </div>

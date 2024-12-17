@@ -168,6 +168,7 @@ class Admin_Form_Builder {
                 'turnstile_site'   => wpuf_get_option( 'turnstile_site_key', 'wpuf_general' ),
                 'turnstile_secret' => wpuf_get_option( 'turnstile_secret_key', 'wpuf_general' ),
                 'nonce'            => wp_create_nonce( 'form-builder-setting-nonce' ),
+                'is_older_form'    => defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.1', '<' ),
             ]
         );
         $wpuf_form_builder = wpuf_unset_conditional( $wpuf_form_builder );
@@ -266,7 +267,7 @@ class Admin_Form_Builder {
             ]
         );
 
-        if ( defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.0.12', '<' ) ) {
+        if ( ( 'wpuf_forms' !== $post_type ) && defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.1', '<' ) ) {
             include WPUF_ROOT . '/admin/form-builder/views/form-builder.php';
         } else {
             include WPUF_ROOT . '/admin/form-builder/views/form-builder-v4.1.php';

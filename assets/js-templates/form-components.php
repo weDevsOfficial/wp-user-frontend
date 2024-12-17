@@ -1,8 +1,93 @@
 <script type="text/x-template" id="tmpl-wpuf-builder-stage">
+<div id="form-preview-stage" class="wpuf-style">
+    <h4 v-if="!form_fields.length" class="text-center">
+        <?php _e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wp-user-frontend' ); ?>
+    </h4>
+
+    <ul :class="['wpuf-form', 'sortable-list', 'form-label-' + label_type]">
+        <li
+            v-for="(field, index) in form_fields"
+            :key="field.id"
+            :class="[
+                'field-items', 'wpuf-el', field.name, field.css, 'form-field-' + field.template,
+                field.width ? 'field-size-' + field.width : '',
+                ('custom_hidden_field' === field.template) ? 'hidden-field' : '',
+                parseInt(editing_form_id) === parseInt(field.id) ? 'current-editing' : ''
+            ]"
+            :data-index="index"
+            data-source="stage"
+        >
+            <div v-if="!is_full_width(field.template)" class="wpuf-label">
+                <label v-if="!is_invisible(field)" :for="'wpuf-' + field.name ? field.name : 'cls'">
+                    {{ field.label }} <span v-if="field.required && 'yes' === field.required" class="required">*</span>
+                </label>
+            </div>
+
+            <component v-if="is_template_available(field)" :is="'form-' + field.template" :field="field"></component>
+
+            <div v-if="is_pro_feature(field.template)" class="stage-pro-alert">
+                <label class="wpuf-pro-text-alert">
+                    <a :href="pro_link" target="_blank"><strong>{{ get_field_name(field.template) }}</strong> <?php _e( 'is available in Pro Version', 'wp-user-frontend' ); ?></a>
+                </label>
+            </div>
+
+            <div class="control-buttons">
+                <p>
+                    <template v-if="!is_failed_to_validate(field.template)">
+                        <i class="fa fa-arrows move"></i>
+                        <i class="fa fa-pencil" @click="open_field_settings(field.id)"></i>
+                        <i class="fa fa-clone" @click="clone_field(field.id, index)"></i>
+                    </template>
+                    <template v-else>
+                        <i class="fa fa-arrows control-button-disabled"></i>
+                        <i class="fa fa-pencil control-button-disabled"></i>
+                        <i class="fa fa-clone control-button-disabled"></i>
+                    </template>
+                    <i class="fa fa-trash-o" @click="delete_field(index)"></i>
+                </p>
+            </div>
+        </li>
+
+        <li v-if="!form_fields.length" class="field-items empty-list-item"></li>
+
+        <li class="wpuf-submit">
+            <div class="wpuf-label">&nbsp;</div>
+
+            <?php do_action( 'wpuf_form_builder_template_builder_stage_submit_area' ); ?>
+        </li>
+    </ul><!-- .wpuf-form -->
+
+    <div v-if="hidden_fields.length" class="hidden-field-list">
+        <h4><?php esc_html_e( 'Hidden Fields', 'wp-user-frontend' ); ?></h4>
+
+        <ul class="wpuf-form">
+            <li
+                v-for="(field, index) in hidden_fields"
+                :class="['field-items', parseInt(editing_form_id) === parseInt(field.id) ? 'current-editing' : '']"
+            >
+                <strong><?php esc_html_e( 'key', 'wp-user-frontend' ); ?></strong>: {{ field.name }} | <strong><?php esc_html_e( 'value', 'wp-user-frontend' ); ?></strong>: {{ field.meta_value }}
+
+                <div class="control-buttons">
+                    <p>
+                        <i class="fa fa-pencil" @click="open_field_settings(field.id)"></i>
+                        <i class="fa fa-clone" @click="clone_field(field.id, index)"></i>
+                        <i class="fa fa-trash-o" @click="delete_hidden_field(field.id)"></i>
+                    </p>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <?php do_action( 'wpuf_form_builder_template_builder_stage_bottom_area' ); ?>
+</div><!-- #form-preview-stage -->
+</script>
+
+<script type="text/x-template" id="tmpl-wpuf-builder-stage-v4-1">
 <div id="form-preview-stage">
     <h4 v-if="!form_fields.length" class="text-center">
         <?php _e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wp-user-frontend' ); ?>
     </h4>
+
     <ul
         :class="['form-label-' + label_type]"
         class="wpuf-form sortable-list wpuf-py-8">
@@ -901,6 +986,58 @@
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-form-fields">
+<div class="wpuf-form-builder-form-fields">
+    <template v-for="(section, index) in panel_sections">
+        <div v-if="section.fields.length" class="panel-form-field-group clearfix">
+            <h3 class="clearfix" @click="panel_toggle(index)">
+                {{ section.title }} <i :class="[section.show ? 'fa fa-angle-down' : 'fa fa-angle-right']"></i>
+            </h3>
+
+            <transition name="slide-fade">
+                <ul
+                    v-show="section.show"
+                    class="panel-form-field-buttons clearfix"
+                    :id="'panel-form-field-buttons-' + section.id"
+                >
+                    <template v-for="field in section.fields">
+                        <li
+                            v-if="is_pro_feature(field)"
+                            class="button button-faded"
+                            :data-form-field="field"
+                            data-source="panel"
+                            @click="alert_pro_feature(field)"
+                        >
+                            <i v-if="field_settings[field].icon" :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i> {{ field_settings[field].title }}
+                        </li>
+
+                        <li
+                            v-if="is_failed_to_validate(field)"
+                            :class="['button', get_invalidate_btn_class(field)]"
+                            :data-form-field="field"
+                            data-source="panel"
+                            @click="alert_invalidate_msg(field)"
+                        >
+                            <i v-if="field_settings[field].icon" :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i> {{ field_settings[field].title }}
+                        </li>
+
+                        <li
+                            v-if="!is_pro_feature(field) && !is_failed_to_validate(field)"
+                            class="button"
+                            :data-form-field="field"
+                            data-source="panel"
+                            @click="add_form_field(field)"
+                        >
+                            <i v-if="field_settings[field].icon" :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i> {{ field_settings[field].title }}
+                        </li>
+                    </template>
+                </ul>
+            </transition>
+        </div>
+    </template>
+</div>
+</script>
+
+<script type="text/x-template" id="tmpl-wpuf-form-fields-v4-1">
 <div class="wpuf-px-6">
     <div
         class="wpuf-flex wpuf-rounded-lg wpuf-bg-white wpuf-outline wpuf--outline-1 wpuf--outline-offset-1 wpuf-outline-gray-300 wpuf-border wpuf-border-gray-200 wpuf-shadow">

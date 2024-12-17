@@ -2,7 +2,8 @@ Vue.component('field-checkbox', {
     template: '#tmpl-wpuf-field-checkbox',
 
     mixins: [
-        wpuf_mixins.option_field_mixin
+        wpuf_mixins.option_field_mixin,
+        wpuf_mixins.form_field_mixin
     ],
 
     computed: {

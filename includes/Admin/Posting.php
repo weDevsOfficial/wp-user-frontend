@@ -30,15 +30,21 @@ class Posting {
     }
 
     /**
-     * Dequeue assets
+     * Dequeue assets to avoid conflict
      *
      * @since WPUF_SINCE
      *
      * @return void
      */
     public function dequeue_assets() {
+        $post_form_page = 'wpuf-post-forms';
+
+        if ( strpos( get_current_screen()->id, $post_form_page ) === false ) {
+            return;
+        }
+
         wp_dequeue_style( 'wpuf-form-builder' );
-        if ( defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.0.13', '<' ) ) {
+        if ( defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.1', '<' ) ) {
             wp_dequeue_style( 'wpuf-form-builder-pro' );
         }
     }
@@ -54,10 +60,10 @@ class Posting {
     public function enqueue_script() {
         $api_key = wpuf_get_option( 'gmap_api_key', 'wpuf_general' );
 
-        if ( defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.0.12', '<' ) ) {
-            wp_enqueue_style( 'wpuf-form-builder' );
-        } else {
+        if ( defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.1', '<' ) ) {
             wp_enqueue_style( 'wpuf-admin-form-builder' );
+        } else {
+            wp_enqueue_style( 'wpuf-form-builder' );
         }
 
         wp_enqueue_style( 'jquery-ui', WPUF_ASSET_URI . '/css/jquery-ui-1.9.1.custom.css' );

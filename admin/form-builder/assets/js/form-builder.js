@@ -41,7 +41,8 @@
             field_settings: wpuf_form_builder.field_settings,
             notifications: wpuf_form_builder.notifications,
             settings: wpuf_form_builder.form_settings,
-            current_panel: 'form-fields',
+            is_older_form: wpuf_form_builder.is_older_form,
+            current_panel: wpuf_form_builder.is_older_form && wpuf_form_builder.post.post_type !== 'wpuf_forms' ? 'form-fields' : 'form-fields-v4-1',
             editing_field_id: 0, // editing form field id
             show_custom_field_tooltip: true,
             index_to_insert: 0,
@@ -68,7 +69,7 @@
                 state.current_panel = panel;
 
                 // reset editing field id
-                if ('form-fields' === panel) {
+                if ('form-fields' === panel || 'form-fields-v4-1' === panel) {
                     state.editing_field_id = 0;
                 }
             },
@@ -240,7 +241,7 @@
 
             // delete a field
             delete_form_field_element: function (state, index) {
-                state.current_panel = 'form-fields';
+                state.current_panel = this.is_older_form ? 'form-fields' : 'form-fields-v4-1';
                 state.form_fields.splice(index, 1);
             },
 
@@ -387,7 +388,7 @@
             delete_column_field_element: function (state, payload) {
                 var columnFieldIndex = state.form_fields.findIndex(field => field.id === payload.field_id);
 
-                state.current_panel = 'form-fields';
+                state.current_panel = this.is_older_form ? 'form-fields' : 'form-fields-v4-1';
                 state.form_fields[columnFieldIndex].inner_fields[payload.fromColumn].splice(payload.index, 1);
             },
 
@@ -540,6 +541,8 @@
             save_form_builder: function () {
                 var self = this;
 
+                var panel = this.is_older_form ? 'form-fields' : 'form-fields-v4-1';
+
                 if (_.isFunction(this.validate_form_before_submit) && !this.validate_form_before_submit()) {
 
                     this.warn({
@@ -550,7 +553,7 @@
                 }
 
                 self.is_form_saving = true;
-                self.set_current_panel('form-fields');
+                self.set_current_panel(panel);
 
                 var form_id = $('#wpuf-form-builder [name="wpuf_form_id"]').val();
 

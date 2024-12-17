@@ -130,11 +130,7 @@ class Menu {
                     break;
                 }
 
-                if ( defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.1', '<' ) ) {
-                    require_once WPUF_ROOT . '/includes/Admin/template-parts/modal.php';
-                } else {
-                    require_once WPUF_ROOT . '/includes/Admin/template-parts/modal-v4.1.php';
-                }
+                require_once WPUF_ROOT . '/includes/Admin/template-parts/modal-v4.1.php';
 
                 break;
         }

@@ -2473,6 +2473,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   margin-bottom: 0.25rem;
 }
 
+.wpuf-my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
 .wpuf-my-6 {
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
@@ -3791,6 +3796,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 .wpuf-text-sm {
   font-size: 0.875rem;
   line-height: 1.25rem;
+}
+
+.wpuf-text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
 
 .wpuf-text-xs {

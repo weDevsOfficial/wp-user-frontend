@@ -38,7 +38,7 @@
             <div v-if="section.fields.length" class="panel-form-field-group clearfix">
                 <h3
                     :class="section.show ? 'wpuf-text-green-600' : 'wpuf-text-gray-500'"
-                    class="wpuf-flex wpuf-justify-between hover:wpuf-cursor-pointer"
+                    class="wpuf-flex wpuf-justify-between hover:wpuf-cursor-pointer wpuf-text-xl wpuf-my-4"
                     @click="panel_toggle(index)">
                     {{ section.title }}
                     <i :class="[section.show ? 'fa fa-angle-down wpuf-text-green-600' : 'fa fa-angle-right wpuf-text-gray-500']"></i>

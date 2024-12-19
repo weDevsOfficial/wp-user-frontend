@@ -1,7 +1,6 @@
 <span
-    class="wpuf-tooltip-top field-helper-text wpuf-tooltip"
+    class="field-helper-text wpuf-ml-2"
     :data-placement="placement"
-    :data-tip="text"
     data-toggle="tooltip"
     data-container="body">
     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none">

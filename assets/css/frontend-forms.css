@@ -237,7 +237,7 @@ body ul.wpuf-form li.has-error {
   background: #FFE4E4;
 }
 body ul.wpuf-form li .wp-editor-wrap {
-  border: 1px solid #eee;
+  border: none;
 }
 body ul.wpuf-form liwpuf-el {
   position: relative;

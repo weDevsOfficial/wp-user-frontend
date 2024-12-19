@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 4.0.14\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2024-11-26 04:19:40+00:00\n"
+"POT-Creation-Date: 2024-12-17 11:00:42+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -136,10 +136,10 @@ msgid "<span style=\"color:#f18500\">Help</span>"
 msgstr ""
 
 #: admin/class-admin-settings.php:121 admin/class-admin-settings.php:169
-#: admin/form-builder/views/form-builder-old.php:9
-#: admin/form-builder/views/form-builder.php:122
+#: admin/form-builder/views/form-builder-v4.1.php:124
+#: admin/form-builder/views/form-builder.php:9
 #: includes/Admin/Admin_Settings.php:68 includes/Admin/Menu.php:91
-#: includes/Admin/Menu.php:358 includes/Setup_Wizard.php:156
+#: includes/Admin/Menu.php:374 includes/Setup_Wizard.php:156
 msgid "Settings"
 msgstr ""
 
@@ -148,7 +148,7 @@ msgstr ""
 msgid "Subscribers"
 msgstr ""
 
-#: admin/class-admin-settings.php:466 includes/Admin/Menu.php:199
+#: admin/class-admin-settings.php:466 includes/Admin/Menu.php:215
 msgid "Number of items per page:"
 msgstr ""
 
@@ -164,15 +164,15 @@ msgid ""
 "vulnerability.%s"
 msgstr ""
 
-#: admin/class-admin-settings.php:536 includes/Admin/Menu.php:315
+#: admin/class-admin-settings.php:536 includes/Admin/Menu.php:331
 msgid "WPUF Import Forms"
 msgstr ""
 
-#: admin/class-admin-settings.php:537 includes/Admin/Menu.php:316
+#: admin/class-admin-settings.php:537 includes/Admin/Menu.php:332
 msgid "Add JSON file"
 msgstr ""
 
-#: admin/class-admin-settings.php:538 includes/Admin/Menu.php:317
+#: admin/class-admin-settings.php:538 includes/Admin/Menu.php:333
 msgid "Could not import forms."
 msgstr ""
 
@@ -199,163 +199,170 @@ msgid "Forms imported successfully."
 msgstr ""
 
 #: admin/form-builder/assets/js/components/builder-stage/template.php:3
+#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:3
 #: assets/js-templates/form-components.php:4
+#: assets/js-templates/form-components.php:88
 msgid "Add fields by dragging the fields from the right sidebar to this area."
 msgstr ""
 
-#: admin/form-builder/assets/js/components/builder-stage/template.php:43
+#: admin/form-builder/assets/js/components/builder-stage/template.php:29
+#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:44
 #: admin/form-builder/assets/js/components/form-column_field/template.php:52
-#: assets/js-templates/form-components.php:44
-#: assets/js-templates/form-components.php:642
+#: assets/js-templates/form-components.php:30
+#: assets/js-templates/form-components.php:129
+#: assets/js-templates/form-components.php:847
 msgid "is available in Pro Version"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/builder-stage/template.php:120
-#: assets/js-templates/form-components.php:121
+#: admin/form-builder/assets/js/components/builder-stage/template.php:60
+#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:122
+#: assets/js-templates/form-components.php:61
+#: assets/js-templates/form-components.php:207
 msgid "Hidden Fields"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/builder-stage/template.php:129
-#: assets/js-templates/form-components.php:130
+#: admin/form-builder/assets/js/components/builder-stage/template.php:67
+#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:131
+#: assets/js-templates/form-components.php:68
+#: assets/js-templates/form-components.php:216
 msgid "key"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/builder-stage/template.php:130
-#: assets/js-templates/form-components.php:131
+#: admin/form-builder/assets/js/components/builder-stage/template.php:67
+#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:132
+#: assets/js-templates/form-components.php:68
+#: assets/js-templates/form-components.php:217
 msgid "value"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/field-option-data/template.php:10
-#: admin/template.php:231 assets/js-templates/form-components.php:242
+#: admin/form-builder/assets/js/components/field-option-data/template.php:13
+#: admin/template.php:231 assets/js-templates/form-components.php:334
 #: includes/Admin/Forms/Admin_Template.php:270
 msgid "Show values"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/field-option-data/template.php:18
-#: assets/js-templates/form-components.php:250
+#: admin/form-builder/assets/js/components/field-option-data/template.php:20
+#: assets/js-templates/form-components.php:341
 msgid "Sync values"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/field-option-data/template.php:20
-#: assets/js-templates/form-components.php:252
-msgid "When enabled, option values will update according to their labels."
-msgstr ""
-
-#: admin/form-builder/assets/js/components/field-option-data/template.php:32
+#: admin/form-builder/assets/js/components/field-option-data/template.php:27
 #: admin/template.php:234 admin/template.php:286
-#: assets/js-templates/form-components.php:264
+#: assets/js-templates/form-components.php:348
 #: includes/Admin/Forms/Admin_Template.php:275
 #: includes/Admin/Forms/Admin_Template.php:336
 msgid "Label"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/field-option-data/template.php:33
-#: assets/js-templates/form-components.php:265
+#: admin/form-builder/assets/js/components/field-option-data/template.php:29
+#: assets/js-templates/form-components.php:350
 msgid "Do not use & or other special character for option label"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/field-option-data/template.php:37
+#: admin/form-builder/assets/js/components/field-option-data/template.php:32
 #: admin/template.php:234 admin/template.php:286
-#: assets/js-templates/form-components.php:269
+#: assets/js-templates/form-components.php:353
 #: includes/Admin/Forms/Admin_Template.php:276
 #: includes/Admin/Forms/Admin_Template.php:337
 msgid "Value"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/field-option-data/template.php:85
-#: assets/js-templates/form-components.php:317
+#: admin/form-builder/assets/js/components/field-option-data/template.php:111
+#: assets/js-templates/form-components.php:432
 msgid "Clear Selection"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/field-option-pro-feature-alert/template.php:4
-#: assets/js-templates/form-components.php:325
-msgid "Available in Pro Version"
+#: admin/form-builder/assets/js/components/field-option-pro-feature-alert/template.php:5
+#: assets/js-templates/form-components.php:441
+msgid "Available in PRO version"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/field-select/template.php:7
-#: assets/js-templates/form-components.php:420
-msgid "Select an option"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/field-visibility/template.php:52
-#: assets/js-templates/form-components.php:524
+#: admin/form-builder/assets/js/components/field-visibility/template.php:77
+#: assets/js-templates/form-components.php:730
 msgid "No subscription plan found."
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-featured_image/template.php:7
 #: admin/form-builder/assets/js/components/form-image_upload/template.php:11
-#: assets/js-templates/form-components.php:767
-#: assets/js-templates/form-components.php:846 class/render-form.php:1670
+#: assets/js-templates/form-components.php:972
+#: assets/js-templates/form-components.php:1165 class/render-form.php:1670
 #: includes/Fields/Form_Field_Featured_Image.php:128
 #: includes/Fields/Form_Field_Image.php:122
 #: includes/Fields/Form_Field_Image.php:143 includes/Render_Form.php:1527
 msgid "Select Image"
 msgstr ""
 
+#: admin/form-builder/assets/js/components/form-fields-v4-1/template.php:10
+#: assets/js-templates/form-components.php:1050
+msgid "Search Field"
+msgstr ""
+
 #: admin/form-builder/assets/js/components/form-post_content/template.php:4
-#: assets/js-templates/form-components.php:887 class/render-form.php:1058
+#: assets/js-templates/form-components.php:1206 class/render-form.php:1058
 #: includes/Fields/Form_Field_Post_Content.php:72 includes/Render_Form.php:915
 msgid "Insert Photo"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/form-recaptcha/template.php:12
-#: assets/js-templates/form-components.php:1003
+#: admin/form-builder/assets/js/components/form-recaptcha/template.php:8
+#: assets/js-templates/form-components.php:1318
 msgid "Invisible reCaptcha"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-taxonomy/template.php:13
-#: assets/js-templates/form-components.php:1043
+#: assets/js-templates/form-components.php:1358
 msgid "— Select —"
 msgstr ""
 
-#: admin/form-builder/views/form-builder-old.php:5
-#: admin/form-builder/views/form-builder.php:115
-msgid "Form Editor"
-msgstr ""
-
-#: admin/form-builder/views/form-builder-old.php:15
-#: admin/form-builder/views/form-builder.php:87
-#: admin/html/form-settings-post.php:23 templates/dashboard/posts.php:165
-msgid "Preview"
-msgstr ""
-
-#: admin/form-builder/views/form-builder-old.php:18
-#: admin/form-builder/views/form-builder.php:99
-msgid "Save Form"
-msgstr ""
-
-#: admin/form-builder/views/form-builder-old.php:22
-#: admin/form-builder/views/form-builder.php:101
-msgid "Saving Form Data"
-msgstr ""
-
-#: admin/form-builder/views/form-builder-old.php:25
-#: admin/form-builder/views/form-builder-old.php:77
-msgid "Add Fields"
-msgstr ""
-
-#: admin/form-builder/views/form-builder-old.php:26
-msgid "Show Form"
-msgstr ""
-
-#: admin/form-builder/views/form-builder-old.php:47
-#: admin/form-builder/views/form-builder.php:57
+#: admin/form-builder/views/form-builder-v4.1.php:59
+#: admin/form-builder/views/form-builder.php:47
 #. translators: %s: form id
 msgid "Click to copy %s shortcode"
 msgstr ""
 
-#: admin/form-builder/views/form-builder-old.php:50
-#: includes/Admin/Forms/Admin_Form_Builder.php:305
-msgid "Click to copy shortcode"
+#: admin/form-builder/views/form-builder-v4.1.php:89
+#: admin/form-builder/views/form-builder.php:15
+#: admin/html/form-settings-post.php:23 templates/dashboard/posts.php:165
+msgid "Preview"
 msgstr ""
 
-#: admin/form-builder/views/form-builder-old.php:83
+#: admin/form-builder/views/form-builder-v4.1.php:101
+#: admin/form-builder/views/form-builder.php:18
+msgid "Save Form"
+msgstr ""
+
+#: admin/form-builder/views/form-builder-v4.1.php:103
+#: admin/form-builder/views/form-builder.php:22
+msgid "Saving Form Data"
+msgstr ""
+
+#: admin/form-builder/views/form-builder-v4.1.php:117
+#: admin/form-builder/views/form-builder.php:5
+msgid "Form Editor"
+msgstr ""
+
+#: admin/form-builder/views/form-builder-v4.1.php:146
+#: includes/Free/Form_Element.php:176 includes/Free/Form_Element.php:180
+msgid "Enable Multistep"
+msgstr ""
+
+#: admin/form-builder/views/form-builder-v4.1.php:164
+#: admin/form-builder/views/form-builder.php:25
+#: admin/form-builder/views/form-builder.php:77
+msgid "Add Fields"
+msgstr ""
+
+#: admin/form-builder/views/form-builder-v4.1.php:172
+#: admin/form-builder/views/form-builder.php:83
 msgid "Field Options"
 msgstr ""
 
-#: admin/form-builder/views/form-builder.php:145
-#: includes/Free/Form_Element.php:176 includes/Free/Form_Element.php:180
-msgid "Enable Multistep"
+#: admin/form-builder/views/form-builder.php:26
+msgid "Show Form"
+msgstr ""
+
+#: admin/form-builder/views/form-builder.php:50
+#: includes/Admin/Forms/Admin_Form_Builder.php:306
+msgid "Click to copy shortcode"
 msgstr ""
 
 #: admin/html/form-settings-display.php:11
@@ -376,7 +383,7 @@ msgstr ""
 
 #: admin/html/form-settings-display.php:19
 #: includes/Admin/Customizer_Options.php:119
-#: includes/Fields/Field_Contract.php:352
+#: includes/Fields/Field_Contract.php:353
 #: includes/Fields/Form_Field_Column.php:112
 msgid "Hidden"
 msgstr ""
@@ -394,10 +401,10 @@ msgstr ""
 #: includes/Admin/Admin_Subscription.php:824
 #: includes/Admin/Forms/Admin_Template.php:69
 #: includes/Admin/Forms/Post/Templates/List_Table_Admin_Post_Forms.php:371
-#: includes/Fields/Field_Contract.php:300
-#: includes/Fields/Field_Contract.php:393
-#: includes/Fields/Field_Contract.php:407
-#: includes/Fields/Field_Contract.php:471
+#: includes/Fields/Field_Contract.php:301
+#: includes/Fields/Field_Contract.php:394
+#: includes/Fields/Field_Contract.php:408
+#: includes/Fields/Field_Contract.php:472
 #: includes/Fields/Form_Field_Checkbox.php:84
 #: includes/Fields/Form_Field_Radio.php:89 includes/Free/Form_Element.php:525
 #: includes/Frontend.php:113 includes/functions/settings-options.php:123
@@ -412,10 +419,10 @@ msgstr ""
 #: includes/Admin/Admin_Subscription.php:824
 #: includes/Admin/Forms/Admin_Template.php:66
 #: includes/Admin/Forms/Post/Templates/List_Table_Admin_Post_Forms.php:370
-#: includes/Fields/Field_Contract.php:299
-#: includes/Fields/Field_Contract.php:392
-#: includes/Fields/Field_Contract.php:406
-#: includes/Fields/Field_Contract.php:470
+#: includes/Fields/Field_Contract.php:300
+#: includes/Fields/Field_Contract.php:393
+#: includes/Fields/Field_Contract.php:407
+#: includes/Fields/Field_Contract.php:471
 #: includes/Fields/Form_Field_Checkbox.php:83
 #: includes/Fields/Form_Field_Radio.php:88 includes/Free/Form_Element.php:524
 #: includes/Frontend.php:112 includes/functions/settings-options.php:122
@@ -685,8 +692,8 @@ msgid "It will show a button to save as draft"
 msgstr ""
 
 #: admin/html/form-submission-restriction.php:11 admin/template-post.php:160
-#: includes/Admin/Forms/Template_Post.php:174
-#: includes/Fields/Field_Contract.php:485 includes/Free/Edit_Profile.php:100
+#: includes/Admin/Forms/Template_Post.php:177
+#: includes/Fields/Field_Contract.php:486 includes/Free/Edit_Profile.php:100
 #: templates/registration-form.php:31
 msgid "Name"
 msgstr ""
@@ -941,85 +948,85 @@ msgid "Sample Form"
 msgstr ""
 
 #: admin/posting.php:74 class/render-form.php:1688
-#: includes/Admin/Posting.php:67 includes/Admin.php:111
-#: includes/Fields/Field_Contract.php:931 includes/Frontend.php:72
+#: includes/Admin/Posting.php:88 includes/Admin.php:111
+#: includes/Fields/Field_Contract.php:932 includes/Frontend.php:72
 #: includes/Render_Form.php:1545
 msgid "Are you sure?"
 msgstr ""
 
-#: admin/posting.php:75 includes/Admin/Forms/Admin_Form_Builder.php:288
-#: includes/Admin/Posting.php:68 includes/Admin.php:112
-#: includes/Fields/Field_Contract.php:932 includes/Frontend.php:73
+#: admin/posting.php:75 includes/Admin/Forms/Admin_Form_Builder.php:289
+#: includes/Admin/Posting.php:89 includes/Admin.php:112
+#: includes/Fields/Field_Contract.php:933 includes/Frontend.php:73
 msgid "Yes, delete it"
 msgstr ""
 
-#: admin/posting.php:76 includes/Admin/Forms/Admin_Form_Builder.php:289
-#: includes/Admin/Posting.php:69 includes/Admin.php:113
-#: includes/Fields/Field_Contract.php:933 includes/Frontend.php:74
+#: admin/posting.php:76 includes/Admin/Forms/Admin_Form_Builder.php:290
+#: includes/Admin/Posting.php:90 includes/Admin.php:113
+#: includes/Fields/Field_Contract.php:934 includes/Frontend.php:74
 msgid "No, cancel it"
 msgstr ""
 
-#: admin/posting.php:82 includes/Admin/Posting.php:75 includes/Admin.php:121
-#: includes/Fields/Field_Contract.php:943 includes/Frontend.php:84
+#: admin/posting.php:82 includes/Admin/Posting.php:96 includes/Admin.php:121
+#: includes/Fields/Field_Contract.php:944 includes/Frontend.php:84
 msgid "Allowed Files"
 msgstr ""
 
-#: admin/posting.php:85 includes/Admin/Posting.php:78 includes/Admin.php:127
-#: includes/Fields/Field_Contract.php:949 includes/Frontend.php:90
+#: admin/posting.php:85 includes/Admin/Posting.php:99 includes/Admin.php:127
+#: includes/Fields/Field_Contract.php:950 includes/Frontend.php:90
 msgid "Maximum number of files reached!"
 msgstr ""
 
-#: admin/posting.php:86 includes/Admin/Posting.php:79 includes/Admin.php:128
-#: includes/Fields/Field_Contract.php:950 includes/Frontend.php:91
+#: admin/posting.php:86 includes/Admin/Posting.php:100 includes/Admin.php:128
+#: includes/Fields/Field_Contract.php:951 includes/Frontend.php:91
 msgid "The file you have uploaded exceeds the file size limit. Please try again."
 msgstr ""
 
-#: admin/posting.php:87 includes/Admin/Posting.php:80 includes/Admin.php:129
-#: includes/Fields/Field_Contract.php:954 includes/Frontend.php:95
+#: admin/posting.php:87 includes/Admin/Posting.php:101 includes/Admin.php:129
+#: includes/Fields/Field_Contract.php:955 includes/Frontend.php:95
 msgid "You have uploaded an incorrect file type. Please try again."
 msgstr ""
 
-#: admin/posting.php:106 includes/Admin/Posting.php:99
+#: admin/posting.php:106 includes/Admin/Posting.php:120
 msgid "WPUF Form"
 msgstr ""
 
-#: admin/posting.php:134 includes/Admin/Posting.php:127
+#: admin/posting.php:134 includes/Admin/Posting.php:148
 msgid "Learn more"
 msgstr ""
 
-#: admin/posting.php:181 includes/Admin/Posting.php:174
+#: admin/posting.php:181 includes/Admin/Posting.php:195
 msgid "WPUF Lock User"
 msgstr ""
 
-#: admin/posting.php:207 includes/Admin/Posting.php:200
+#: admin/posting.php:207 includes/Admin/Posting.php:221
 msgid ""
 "Post is locked, to allow user to edit this post <a "
 "id=\"wpuf_clear_schedule_lock\" data=\"%s\" href=\"#\">Click here</a>"
 msgstr ""
 
-#: admin/posting.php:214 includes/Admin/Posting.php:207
+#: admin/posting.php:214 includes/Admin/Posting.php:228
 msgid ""
 "Frontend edit access for this post will be automatically locked after %s, "
 "<a id=\"wpuf_clear_schedule_lock\" data=\"%s\" href=\"#\">Clear Lock</a> Or,"
 msgstr ""
 
-#: admin/posting.php:235 includes/Admin/Posting.php:228
+#: admin/posting.php:235 includes/Admin/Posting.php:249
 msgid "Lock Post Permanently"
 msgstr ""
 
-#: admin/posting.php:240 includes/Admin/Posting.php:233
+#: admin/posting.php:240 includes/Admin/Posting.php:254
 msgid "Lock user from editing this post from the frontend dashboard"
 msgstr ""
 
-#: admin/posting.php:291 includes/Admin/Posting.php:284
+#: admin/posting.php:291 includes/Admin/Posting.php:305
 msgid "WPUF Custom Fields"
 msgstr ""
 
-#: admin/posting.php:348 includes/Admin/Posting.php:341
+#: admin/posting.php:348 includes/Admin/Posting.php:362
 msgid "No custom fields found."
 msgstr ""
 
-#: admin/posting.php:543 includes/Admin/Posting.php:536
+#: admin/posting.php:543 includes/Admin/Posting.php:557
 #: includes/Admin/Promotion.php:216 includes/Admin/Promotion.php:220
 #: includes/Admin/Promotion.php:224 includes/Admin/Promotion.php:301
 #: includes/Admin/Promotion.php:305 includes/Admin/Promotion.php:309
@@ -1041,14 +1048,14 @@ msgstr ""
 msgid "Enable Image Insertion"
 msgstr ""
 
-#: admin/template-post.php:42 includes/Admin/Forms/Template_Post.php:46
+#: admin/template-post.php:42 includes/Admin/Forms/Template_Post.php:49
 #: includes/Fields/Form_Field_Post_Content.php:168
 msgid "Enable image upload in post area"
 msgstr ""
 
 #: admin/template-post.php:88 admin/template.php:608
 #: includes/Admin/Forms/Admin_Template.php:694
-#: includes/Admin/Forms/Template_Post.php:92
+#: includes/Admin/Forms/Template_Post.php:95
 #: includes/Fields/Form_Field_Featured_Image.php:122
 #: includes/Fields/Form_Field_Image.php:107
 msgid "Enter maximum upload size limit in KB"
@@ -1056,163 +1063,163 @@ msgstr ""
 
 #: admin/template-post.php:99 admin/template.php:619
 #: includes/Admin/Forms/Admin_Template.php:705
-#: includes/Admin/Forms/Template_Post.php:103
+#: includes/Admin/Forms/Template_Post.php:106
 #: includes/Fields/Form_Field_Featured_Image.php:118
 #: includes/Fields/Form_Field_Image.php:103
 msgid "Max. file size"
 msgstr ""
 
-#: admin/template-post.php:147 includes/Admin/Forms/Template_Post.php:151
-#: includes/Fields/Field_Contract.php:442
+#: admin/template-post.php:147 includes/Admin/Forms/Template_Post.php:154
+#: includes/Fields/Field_Contract.php:443
 msgid "Type"
 msgstr ""
 
-#: admin/template-post.php:149 includes/Admin/Forms/Template_Post.php:153
+#: admin/template-post.php:149 includes/Admin/Forms/Template_Post.php:156
 #: includes/Fields/Form_Field_Dropdown.php:13
 #: includes/Fields/Form_Field_Dropdown.php:107
 msgid "Dropdown"
 msgstr ""
 
-#: admin/template-post.php:150 includes/Admin/Forms/Template_Post.php:156
-#: includes/Fields/Field_Contract.php:446
+#: admin/template-post.php:150 includes/Admin/Forms/Template_Post.php:159
+#: includes/Fields/Field_Contract.php:447
 #: includes/Fields/Form_Field_MultiDropdown.php:11
 #: includes/Fields/Form_Field_MultiDropdown.php:81
 msgid "Multi Select"
 msgstr ""
 
-#: admin/template-post.php:151 includes/Admin/Forms/Template_Post.php:159
-#: includes/Fields/Field_Contract.php:447
+#: admin/template-post.php:151 includes/Admin/Forms/Template_Post.php:162
+#: includes/Fields/Field_Contract.php:448
 #: includes/Fields/Form_Field_Checkbox.php:11
 msgid "Checkbox"
 msgstr ""
 
-#: admin/template-post.php:152 includes/Admin/Forms/Template_Post.php:162
-#: includes/Fields/Field_Contract.php:448
+#: admin/template-post.php:152 includes/Admin/Forms/Template_Post.php:165
+#: includes/Fields/Field_Contract.php:449
 msgid "Text Input"
 msgstr ""
 
-#: admin/template-post.php:153 includes/Admin/Forms/Template_Post.php:165
-#: includes/Fields/Field_Contract.php:449
+#: admin/template-post.php:153 includes/Admin/Forms/Template_Post.php:168
+#: includes/Fields/Field_Contract.php:450
 msgid "Ajax"
 msgstr ""
 
-#: admin/template-post.php:158 includes/Admin/Forms/Template_Post.php:172
-#: includes/Fields/Field_Contract.php:482
+#: admin/template-post.php:158 includes/Admin/Forms/Template_Post.php:175
+#: includes/Fields/Field_Contract.php:483
 msgid "Order By"
 msgstr ""
 
-#: admin/template-post.php:161 includes/Admin/Forms/Template_Post.php:177
-#: includes/Fields/Field_Contract.php:486
+#: admin/template-post.php:161 includes/Admin/Forms/Template_Post.php:180
+#: includes/Fields/Field_Contract.php:487
 msgid "Term ID"
 msgstr ""
 
-#: admin/template-post.php:162 includes/Admin/Forms/Template_Post.php:180
-#: includes/Fields/Field_Contract.php:487
+#: admin/template-post.php:162 includes/Admin/Forms/Template_Post.php:183
+#: includes/Fields/Field_Contract.php:488
 msgid "Slug"
 msgstr ""
 
-#: admin/template-post.php:163 includes/Admin/Forms/Template_Post.php:183
-#: includes/Fields/Field_Contract.php:488
+#: admin/template-post.php:163 includes/Admin/Forms/Template_Post.php:186
+#: includes/Fields/Field_Contract.php:489
 msgid "Count"
 msgstr ""
 
-#: admin/template-post.php:164 includes/Admin/Forms/Template_Post.php:186
-#: includes/Fields/Field_Contract.php:489
+#: admin/template-post.php:164 includes/Admin/Forms/Template_Post.php:189
+#: includes/Fields/Field_Contract.php:490
 msgid "Term Group"
 msgstr ""
 
-#: admin/template-post.php:169 includes/Admin/Forms/Template_Post.php:193
-#: includes/Fields/Field_Contract.php:498
+#: admin/template-post.php:169 includes/Admin/Forms/Template_Post.php:196
+#: includes/Fields/Field_Contract.php:499
 msgid "Order"
 msgstr ""
 
-#: admin/template-post.php:171 includes/Admin/Forms/Template_Post.php:195
-#: includes/Fields/Field_Contract.php:502
+#: admin/template-post.php:171 includes/Admin/Forms/Template_Post.php:198
+#: includes/Fields/Field_Contract.php:503
 msgid "ASC"
 msgstr ""
 
-#: admin/template-post.php:172 includes/Admin/Forms/Template_Post.php:198
-#: includes/Fields/Field_Contract.php:503
+#: admin/template-post.php:172 includes/Admin/Forms/Template_Post.php:201
+#: includes/Fields/Field_Contract.php:504
 msgid "DESC"
 msgstr ""
 
-#: admin/template-post.php:177 includes/Admin/Forms/Template_Post.php:205
-#: includes/Fields/Field_Contract.php:512
+#: admin/template-post.php:177 includes/Admin/Forms/Template_Post.php:208
+#: includes/Fields/Field_Contract.php:513
 msgid "Selection Type"
 msgstr ""
 
-#: admin/template-post.php:179 includes/Admin/Forms/Template_Post.php:207
-#: includes/Fields/Field_Contract.php:515
+#: admin/template-post.php:179 includes/Admin/Forms/Template_Post.php:210
+#: includes/Fields/Field_Contract.php:516
 msgid "Exclude"
 msgstr ""
 
-#: admin/template-post.php:180 includes/Admin/Forms/Template_Post.php:210
-#: includes/Fields/Field_Contract.php:516
+#: admin/template-post.php:180 includes/Admin/Forms/Template_Post.php:213
+#: includes/Fields/Field_Contract.php:517
 msgid "Include"
 msgstr ""
 
-#: admin/template-post.php:181 includes/Admin/Forms/Template_Post.php:213
-#: includes/Fields/Field_Contract.php:517
+#: admin/template-post.php:181 includes/Admin/Forms/Template_Post.php:216
+#: includes/Fields/Field_Contract.php:518
 msgid "Child of"
 msgstr ""
 
-#: admin/template-post.php:186 includes/Admin/Forms/Template_Post.php:220
+#: admin/template-post.php:186 includes/Admin/Forms/Template_Post.php:223
 msgid "Selection terms"
 msgstr ""
 
-#: admin/template-post.php:187 includes/Admin/Forms/Template_Post.php:222
+#: admin/template-post.php:187 includes/Admin/Forms/Template_Post.php:225
 msgid "Search the terms name."
 msgstr ""
 
-#: admin/template-post.php:191 includes/Admin/Forms/Template_Post.php:227
+#: admin/template-post.php:191 includes/Admin/Forms/Template_Post.php:230
 msgid "WooCommerce Attribute"
 msgstr ""
 
-#: admin/template-post.php:197 includes/Admin/Forms/Template_Post.php:234
-#: includes/Fields/Field_Contract.php:543
+#: admin/template-post.php:197 includes/Admin/Forms/Template_Post.php:237
+#: includes/Fields/Field_Contract.php:544
 msgid "This taxonomy is a WooCommerce attribute"
 msgstr ""
 
-#: admin/template-post.php:203 includes/Admin/Forms/Template_Post.php:240
-#: includes/Fields/Field_Contract.php:347
+#: admin/template-post.php:203 includes/Admin/Forms/Template_Post.php:243
+#: includes/Fields/Field_Contract.php:348
 #: includes/Fields/Form_Field_Column.php:107
 msgid "Visibility"
 msgstr ""
 
-#: admin/template-post.php:209 includes/Admin/Forms/Template_Post.php:247
-#: includes/Fields/Field_Contract.php:554
+#: admin/template-post.php:209 includes/Admin/Forms/Template_Post.php:250
+#: includes/Fields/Field_Contract.php:555
 msgid "Visible on product page"
 msgstr ""
 
-#: admin/template-post.php:247 includes/Admin/Forms/Template_Post.php:294
+#: admin/template-post.php:247 includes/Admin/Forms/Template_Post.php:297
 msgid "all"
 msgstr ""
 
-#: admin/template-post.php:247 includes/Admin/Forms/Template_Post.php:296
+#: admin/template-post.php:247 includes/Admin/Forms/Template_Post.php:299
 msgid "Show All"
 msgstr ""
 
-#: admin/template-post.php:250 includes/Admin/Forms/Template_Post.php:302
+#: admin/template-post.php:250 includes/Admin/Forms/Template_Post.php:305
 msgid "hide"
 msgstr ""
 
-#: admin/template-post.php:250 includes/Admin/Forms/Template_Post.php:304
+#: admin/template-post.php:250 includes/Admin/Forms/Template_Post.php:307
 msgid "Hide These Countries"
 msgstr ""
 
-#: admin/template-post.php:251 includes/Admin/Forms/Template_Post.php:308
+#: admin/template-post.php:251 includes/Admin/Forms/Template_Post.php:311
 msgid "Chose Country to hide from List"
 msgstr ""
 
-#: admin/template-post.php:255 includes/Admin/Forms/Template_Post.php:315
+#: admin/template-post.php:255 includes/Admin/Forms/Template_Post.php:318
 msgid "show"
 msgstr ""
 
-#: admin/template-post.php:255 includes/Admin/Forms/Template_Post.php:317
+#: admin/template-post.php:255 includes/Admin/Forms/Template_Post.php:320
 msgid "Show These Countries"
 msgstr ""
 
-#: admin/template-post.php:256 includes/Admin/Forms/Template_Post.php:322
+#: admin/template-post.php:256 includes/Admin/Forms/Template_Post.php:325
 msgid "Add Country to List"
 msgstr ""
 
@@ -1231,24 +1238,24 @@ msgstr ""
 
 #: admin/template.php:60 includes/Admin/Customizer_Options.php:121
 #: includes/Admin/Forms/Admin_Template.php:61
-#: includes/Fields/Field_Contract.php:296
+#: includes/Fields/Field_Contract.php:297
 msgid "Required"
 msgstr ""
 
 #: admin/template.php:69 includes/Admin/Forms/Admin_Template.php:74
-#: includes/Fields/Field_Contract.php:278
+#: includes/Fields/Field_Contract.php:279
 msgid "Field Label"
 msgstr ""
 
 #: admin/template.php:70 includes/Admin/Forms/Admin_Template.php:77
-#: includes/Fields/Field_Contract.php:282
+#: includes/Fields/Field_Contract.php:283
 msgid "Enter a title of this field"
 msgstr ""
 
 #: admin/template.php:75 admin/template.php:550
 #: includes/Admin/Forms/Admin_Template.php:82
 #: includes/Admin/Forms/Admin_Template.php:627
-#: includes/Fields/Field_Contract.php:365
+#: includes/Fields/Field_Contract.php:366
 #: includes/Fields/Form_Field_Hidden.php:41
 msgid "Meta Key"
 msgstr ""
@@ -1256,23 +1263,23 @@ msgstr ""
 #: admin/template.php:76 admin/template.php:551
 #: includes/Admin/Forms/Admin_Template.php:85
 #: includes/Admin/Forms/Admin_Template.php:630
-#: includes/Fields/Field_Contract.php:369
+#: includes/Fields/Field_Contract.php:370
 #: includes/Fields/Form_Field_Hidden.php:45
 msgid "Name of the meta key this field will save to"
 msgstr ""
 
 #: admin/template.php:87 includes/Admin/Forms/Admin_Template.php:99
-#: includes/Fields/Field_Contract.php:287
+#: includes/Fields/Field_Contract.php:288
 msgid "Help text"
 msgstr ""
 
 #: admin/template.php:88 includes/Admin/Forms/Admin_Template.php:100
-#: includes/Fields/Field_Contract.php:291
+#: includes/Fields/Field_Contract.php:292
 msgid "Give the user some information about this field"
 msgstr ""
 
 #: admin/template.php:92 includes/Admin/Forms/Admin_Template.php:106
-#: includes/Fields/Field_Contract.php:326
+#: includes/Fields/Field_Contract.php:327
 #: includes/Fields/Form_Field_Column.php:95
 msgid "CSS Class Name"
 msgstr ""
@@ -1284,38 +1291,38 @@ msgstr ""
 #: admin/template.php:117 admin/template.php:175
 #: includes/Admin/Forms/Admin_Template.php:132
 #: includes/Admin/Forms/Admin_Template.php:200
-#: includes/Fields/Field_Contract.php:582
-#: includes/Fields/Field_Contract.php:666
+#: includes/Fields/Field_Contract.php:583
+#: includes/Fields/Field_Contract.php:667
 msgid "Placeholder text"
 msgstr ""
 
 #: admin/template.php:118 includes/Admin/Forms/Admin_Template.php:134
-#: includes/Fields/Field_Contract.php:588
-#: includes/Fields/Field_Contract.php:670
+#: includes/Fields/Field_Contract.php:589
+#: includes/Fields/Field_Contract.php:671
 msgid "Text for HTML5 placeholder attribute"
 msgstr ""
 
 #: admin/template.php:122 admin/template.php:180
 #: includes/Admin/Forms/Admin_Template.php:139
 #: includes/Admin/Forms/Admin_Template.php:206
-#: includes/Fields/Field_Contract.php:593
-#: includes/Fields/Field_Contract.php:678
+#: includes/Fields/Field_Contract.php:594
+#: includes/Fields/Field_Contract.php:679
 msgid "Default value"
 msgstr ""
 
 #: admin/template.php:123 includes/Admin/Forms/Admin_Template.php:141
-#: includes/Fields/Field_Contract.php:599
-#: includes/Fields/Field_Contract.php:682
+#: includes/Fields/Field_Contract.php:600
+#: includes/Fields/Field_Contract.php:683
 msgid "The default value this field will have"
 msgstr ""
 
 #: admin/template.php:127 includes/Admin/Forms/Admin_Template.php:146
-#: includes/Fields/Field_Contract.php:604
+#: includes/Fields/Field_Contract.php:605
 msgid "Size"
 msgstr ""
 
 #: admin/template.php:128 includes/Admin/Forms/Admin_Template.php:148
-#: includes/Fields/Field_Contract.php:609
+#: includes/Fields/Field_Contract.php:610
 msgid "Size of this input field"
 msgstr ""
 
@@ -1332,35 +1339,35 @@ msgid "Number of words the author to be restricted in"
 msgstr ""
 
 #: admin/template.php:165 includes/Admin/Forms/Admin_Template.php:188
-#: includes/Fields/Field_Contract.php:648
+#: includes/Fields/Field_Contract.php:649
 msgid "Rows"
 msgstr ""
 
 #: admin/template.php:170 includes/Admin/Forms/Admin_Template.php:194
-#: includes/Fields/Field_Contract.php:657
+#: includes/Fields/Field_Contract.php:658
 #: includes/Fields/Form_Field_Column.php:11
 msgid "Columns"
 msgstr ""
 
 #: admin/template.php:185 includes/Admin/Forms/Admin_Template.php:212
-#: includes/Fields/Field_Contract.php:687
+#: includes/Fields/Field_Contract.php:688
 #: includes/Fields/Form_Field_Textarea.php:12
-#: includes/Fields/Form_Field_Textarea.php:132
+#: includes/Fields/Form_Field_Textarea.php:133
 msgid "Textarea"
 msgstr ""
 
 #: admin/template.php:188 includes/Admin/Forms/Admin_Template.php:217
-#: includes/Fields/Field_Contract.php:690
+#: includes/Fields/Field_Contract.php:691
 msgid "Normal"
 msgstr ""
 
 #: admin/template.php:189 includes/Admin/Forms/Admin_Template.php:220
-#: includes/Fields/Field_Contract.php:691
+#: includes/Fields/Field_Contract.php:692
 msgid "Rich textarea"
 msgstr ""
 
 #: admin/template.php:190 includes/Admin/Forms/Admin_Template.php:223
-#: includes/Fields/Field_Contract.php:692
+#: includes/Fields/Field_Contract.php:693
 msgid "Teeny Rich textarea"
 msgstr ""
 
@@ -1373,7 +1380,7 @@ msgstr ""
 #: includes/Admin/Forms/Admin_Template.php:461
 #: includes/Admin/Forms/Admin_Template.php:498
 #: includes/Admin/Forms/Admin_Template.php:535
-#: includes/Fields/Field_Contract.php:630 templates/dashboard/list.php:19
+#: includes/Fields/Field_Contract.php:631 templates/dashboard/list.php:19
 #: templates/dashboard/posts.php:109
 msgid "Options"
 msgstr ""
@@ -1381,7 +1388,7 @@ msgstr ""
 #: admin/template.php:417 admin/template.php:448
 #: includes/Admin/Forms/Admin_Template.php:478
 #: includes/Admin/Forms/Admin_Template.php:515
-#: includes/Fields/Field_Contract.php:462
+#: includes/Fields/Field_Contract.php:463
 #: includes/Fields/Form_Field_Dropdown.php:91
 msgid ""
 "First element of the select dropdown. Leave this empty if you don't want to "
@@ -1391,7 +1398,7 @@ msgstr ""
 #: admin/template.php:427 admin/template.php:458
 #: includes/Admin/Forms/Admin_Template.php:492
 #: includes/Admin/Forms/Admin_Template.php:529
-#: includes/Fields/Field_Contract.php:458
+#: includes/Fields/Field_Contract.php:459
 #: includes/Fields/Form_Field_Dropdown.php:87
 msgid "Select Text"
 msgstr ""
@@ -1401,7 +1408,7 @@ msgstr ""
 #: includes/Admin/Forms/Admin_Template.php:661
 #: includes/Admin/Forms/Admin_Template.php:746
 #: includes/Ajax/Upload_Ajax.php:236
-#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:93
+#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:95
 #: includes/Fields/Form_Field_SectionBreak.php:57
 #: includes/Fields/Form_Field_reCaptcha.php:149 templates/dashboard/list.php:10
 #: templates/dashboard/posts.php:100 wpuf-functions.php:1052
@@ -1589,7 +1596,7 @@ msgid "To cancel the pack, press the following cancel button"
 msgstr ""
 
 #: class/subscription.php:869 includes/Admin/Admin_Subscription.php:931
-#: includes/Admin/Forms/Admin_Form_Builder.php:291
+#: includes/Admin/Forms/Admin_Form_Builder.php:292
 #: includes/Admin/List_Table_Subscribers.php:146
 #: includes/Admin/Subscription.php:888 includes/Frontend/Payment.php:246
 #: templates/dashboard/subscription.php:68
@@ -1739,7 +1746,7 @@ msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:430
 #: includes/Admin/Admin_Subscription.php:1041
-#: includes/Admin/Forms/Admin_Form.php:243 includes/Admin/views/support.php:77
+#: includes/Admin/Forms/Admin_Form.php:248 includes/Admin/views/support.php:77
 msgid "Payment Settings"
 msgstr ""
 
@@ -1778,7 +1785,7 @@ msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:526
 #: includes/Admin/Admin_Subscription.php:1073
-#: includes/Admin/Forms/Admin_Form.php:247 includes/Free/Form_Element.php:59
+#: includes/Admin/Forms/Admin_Form.php:254 includes/Free/Form_Element.php:59
 msgid "Post Expiration"
 msgstr ""
 
@@ -2486,66 +2493,66 @@ msgstr ""
 msgid "Registration Forms"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form.php:238
+#: includes/Admin/Forms/Admin_Form.php:239
 msgid "Post Settings"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form.php:239
+#: includes/Admin/Forms/Admin_Form.php:242
 msgid "Edit Settings"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form.php:241
+#: includes/Admin/Forms/Admin_Form.php:245
 msgid "Submission Restriction"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form.php:245
+#: includes/Admin/Forms/Admin_Form.php:251
 msgid "Display Settings"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form.php:269 includes/Free/Form_Element.php:239
+#: includes/Admin/Forms/Admin_Form.php:275 includes/Free/Form_Element.php:239
 #: includes/Free/Form_Element.php:281
 msgid "Notification"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form.php:304
 #: includes/Admin/Forms/Admin_Form.php:310
+#: includes/Admin/Forms/Admin_Form.php:316
 msgid "- Select -"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form.php:348
+#: includes/Admin/Forms/Admin_Form.php:354
 msgid "Post Fields"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form.php:353
+#: includes/Admin/Forms/Admin_Form.php:359
 msgid "Taxonomies"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form.php:446
+#: includes/Admin/Forms/Admin_Form.php:452
 msgid "Post Forms must have either Post Title, Post Body or Excerpt field"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:286
+#: includes/Admin/Forms/Admin_Form_Builder.php:287
 msgid "Advanced Options"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:287
+#: includes/Admin/Forms/Admin_Form_Builder.php:288
 msgid "Are you sure you want to delete this field?"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:290
+#: includes/Admin/Forms/Admin_Form_Builder.php:291
 msgid "OK"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:292
+#: includes/Admin/Forms/Admin_Form_Builder.php:293
 #: includes/Admin/views/shortcode-builder.php:70
 msgid "Close"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:293
+#: includes/Admin/Forms/Admin_Form_Builder.php:294
 msgid "This field must contain at least one choice"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:294
+#: includes/Admin/Forms/Admin_Form_Builder.php:295
 #: includes/Fields/Form_Field_Checkbox.php:110
 #: includes/Fields/Form_Field_Dropdown.php:109
 #: includes/Fields/Form_Field_MultiDropdown.php:84
@@ -2553,36 +2560,36 @@ msgstr ""
 msgid "Option"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:295
+#: includes/Admin/Forms/Admin_Form_Builder.php:296
 msgid "Column"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:296
+#: includes/Admin/Forms/Admin_Form_Builder.php:297
 msgid "This field must contain at least one column"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:297
+#: includes/Admin/Forms/Admin_Form_Builder.php:298
 msgid "is available in Pro version"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:298
+#: includes/Admin/Forms/Admin_Form_Builder.php:299
 msgid "Please upgrade to the Pro version to unlock all these awesome features"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:301
+#: includes/Admin/Forms/Admin_Form_Builder.php:302
 msgid "Get the Pro version"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:302
-#: includes/Fields/Field_Contract.php:445
+#: includes/Admin/Forms/Admin_Form_Builder.php:303
+#: includes/Fields/Field_Contract.php:446
 msgid "Select"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:303
+#: includes/Admin/Forms/Admin_Form_Builder.php:304
 msgid "Saved form data"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:304
+#: includes/Admin/Forms/Admin_Form_Builder.php:305
 msgid "You have unsaved changes."
 msgstr ""
 
@@ -2639,18 +2646,20 @@ msgid "Payment type not selected for this form. Please contact admin."
 msgstr ""
 
 #: includes/Admin/Forms/Post/Templates/Form_Template.php:106
+#: includes/Admin/Menu.php:126
+#. translators: %s: mailto link
 msgid "Want a new integration? <a href=\"%s\" target=\"_blank\">Let us know</a>."
 msgstr ""
 
-#: includes/Admin/Forms/Post/Templates/Form_Template.php:218
+#: includes/Admin/Forms/Post/Templates/Form_Template.php:224
 msgid "Form Template"
 msgstr ""
 
-#: includes/Admin/Forms/Post/Templates/Form_Template.php:221
+#: includes/Admin/Forms/Post/Templates/Form_Template.php:227
 msgid "&mdash; No Template &mdash;"
 msgstr ""
 
-#: includes/Admin/Forms/Post/Templates/Form_Template.php:230
+#: includes/Admin/Forms/Post/Templates/Form_Template.php:236
 msgid ""
 "If selected a form template, it will try to execute that integration "
 "options when new post created and updated."
@@ -2825,7 +2834,7 @@ msgid "Select a category for your post"
 msgstr ""
 
 #: includes/Admin/Forms/Post/Templates/Post_Form_Template_Post.php:44
-#: includes/Fields/Field_Contract.php:235
+#: includes/Fields/Field_Contract.php:236
 #: includes/Fields/Form_Field_Dropdown.php:110
 #: includes/Fields/Form_Field_MultiDropdown.php:85
 #: includes/Fields/Form_Field_Post_Taxonomy.php:471
@@ -2991,7 +3000,7 @@ msgstr ""
 msgid "No transactions found."
 msgstr ""
 
-#: includes/Admin/Menu.php:362
+#: includes/Admin/Menu.php:378
 #: includes/Admin/views/post-forms-list-table-view.php:16
 msgid "Submit Ideas"
 msgstr ""
@@ -3034,6 +3043,33 @@ msgid ""
 "Are you sure you wish to run the updater now?"
 msgstr ""
 
+#: includes/Admin/template-parts/modal-v4.1.php:15
+msgid "Select a Post Form Template"
+msgstr ""
+
+#: includes/Admin/template-parts/modal-v4.1.php:18
+msgid "Select from a pre-defined template or from a blank form"
+msgstr ""
+
+#: includes/Admin/template-parts/modal-v4.1.php:32
+#: includes/Admin/template-parts/modal-v4.1.php:79
+#: includes/Admin/template-parts/modal.php:35
+#: includes/Admin/template-parts/modal.php:71
+msgid "Create Form"
+msgstr ""
+
+#: includes/Admin/template-parts/modal-v4.1.php:59
+#: includes/Admin/template-parts/modal.php:56
+msgid "This integration is not installed."
+msgstr ""
+
+#: includes/Admin/template-parts/modal-v4.1.php:112
+#: includes/Admin/template-parts/modal.php:105
+#: includes/Free/Free_Loader.php:992 includes/Free/Free_Loader.php:1074
+#: includes/Free/templates/page-registration-form.php:156
+msgid "Upgrade to PRO"
+msgstr ""
+
 #: includes/Admin/template-parts/modal.php:5
 msgid "Modal window. Press escape to close."
 msgstr ""
@@ -3054,21 +3090,6 @@ msgstr ""
 #: includes/Admin/template-parts/modal.php:28
 #: includes/Admin/template-parts/modal.php:32
 msgid "Blank Form"
-msgstr ""
-
-#: includes/Admin/template-parts/modal.php:35
-#: includes/Admin/template-parts/modal.php:71
-msgid "Create Form"
-msgstr ""
-
-#: includes/Admin/template-parts/modal.php:56
-msgid "This integration is not installed."
-msgstr ""
-
-#: includes/Admin/template-parts/modal.php:105
-#: includes/Free/Free_Loader.php:992 includes/Free/Free_Loader.php:1074
-#: includes/Free/templates/page-registration-form.php:156
-msgid "Upgrade to PRO"
 msgstr ""
 
 #: includes/Admin/template-parts/subscription-header.php:13
@@ -4245,33 +4266,33 @@ msgstr ""
 msgid "Word"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:73
+#: includes/Fields/Field_Contract.php:74
 msgid "Number of characters or words the author to be restricted in"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:306
+#: includes/Fields/Field_Contract.php:307
 msgid ""
 "Check this option to mark the field required. A form will not submit unless "
 "all required fields are provided."
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:311
+#: includes/Fields/Field_Contract.php:312
 msgid "Field Size"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:314
+#: includes/Fields/Field_Contract.php:315
 msgid "Small"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:315
+#: includes/Fields/Field_Contract.php:316
 msgid "Medium"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:316
+#: includes/Fields/Field_Contract.php:317
 msgid "Large"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:330
+#: includes/Fields/Field_Contract.php:331
 #: includes/Fields/Form_Field_Column.php:99
 msgid ""
 "Provide a container class name for this field. Available classes: "
@@ -4279,92 +4300,92 @@ msgid ""
 "wpuf-col-one-third-last"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:351
+#: includes/Fields/Field_Contract.php:352
 #: includes/Fields/Form_Field_Column.php:111
 msgid "Everyone"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:353
+#: includes/Fields/Field_Contract.php:354
 #: includes/Fields/Form_Field_Column.php:113
 msgid "Logged in users only"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:354
+#: includes/Fields/Field_Contract.php:355
 #: includes/Fields/Form_Field_Column.php:114
 msgid "Subscription users only"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:358
+#: includes/Fields/Field_Contract.php:359
 #: includes/Fields/Form_Field_Column.php:118
 msgid "Select option"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:374
+#: includes/Fields/Field_Contract.php:375
 msgid "Read Only"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:377
+#: includes/Fields/Field_Contract.php:378
 msgid "Make this field read only "
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:381
-msgid "Read only"
+#: includes/Fields/Field_Contract.php:382
+msgid "Make this field read only"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:389
+#: includes/Fields/Field_Contract.php:390
 msgid "Show Data in Post"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:399
+#: includes/Fields/Field_Contract.php:400
 msgid "Select Yes if you want to show the field data in single post."
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:403
+#: includes/Fields/Field_Contract.php:404
 msgid "Hide Field Label in Post"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:413
+#: includes/Fields/Field_Contract.php:414
 msgid "Select Yes if you want to hide the field label in single post."
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:467
+#: includes/Fields/Field_Contract.php:468
 #: includes/Fields/Form_Field_Checkbox.php:80
 #: includes/Fields/Form_Field_Radio.php:85
 msgid "Show in inline list"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:477
+#: includes/Fields/Field_Contract.php:478
 #: includes/Fields/Form_Field_Checkbox.php:90
 #: includes/Fields/Form_Field_Radio.php:95
 msgid "Show this option in an inline list"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:526
+#: includes/Fields/Field_Contract.php:527
 msgid "Selection Terms"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:533
+#: includes/Fields/Field_Contract.php:534
 #. translators: %s: left and right arrow
 msgid "Search the terms name. use %1$s %2$s for navigate"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:635
+#: includes/Fields/Field_Contract.php:636
 msgid "Add options for the form field"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:652
+#: includes/Fields/Field_Contract.php:653
 msgid "Number of rows in textarea"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:661
+#: includes/Fields/Field_Contract.php:662
 msgid "Number of columns in textarea"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:700
+#: includes/Fields/Field_Contract.php:701
 msgid "Select buttons to exclude"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:709
+#: includes/Fields/Field_Contract.php:710
 #. translators: %1$s: left arrow, %2$s: right arrow
 msgid ""
 "Select button for exclude from frontend. Search button name. use %1$s %2$s "
@@ -4375,12 +4396,12 @@ msgstr ""
 msgid "Cloudflare Turnstile"
 msgstr ""
 
-#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:72
+#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:74
 #: includes/Fields/Form_Field_reCaptcha.php:128
 msgid "Site key and Secret key"
 msgstr ""
 
-#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:75
+#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:77
 #. translators: %s: settings url
 msgid ""
 "You need to set Site key and Secret key in <a href=\"%1$s\" "
@@ -4389,56 +4410,56 @@ msgid ""
 "key</a>."
 msgstr ""
 
-#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:97
+#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:99
 #: includes/Fields/Form_Field_Column.php:83
 #: includes/Fields/Form_Field_SectionBreak.php:61
 #: includes/Fields/Form_Field_reCaptcha.php:153
 msgid "Title of the section"
 msgstr ""
 
-#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:104
+#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:106
 #: includes/Fields/Form_Field_reCaptcha.php:175
 msgid "Light"
 msgstr ""
 
-#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:105
+#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:107
 #: includes/Fields/Form_Field_reCaptcha.php:176
 msgid "Dark"
 msgstr ""
 
-#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:110
+#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:112
 msgid "Select turnstile theme"
 msgstr ""
 
-#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:117
+#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:119
 msgid "Normal [Width: 300px, Height: 65px]"
 msgstr ""
 
-#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:118
+#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:120
 msgid "Flexible [Width: 100% (min: 300px), Height: 65px]"
 msgstr ""
 
-#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:119
+#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:121
 msgid "Compact [Width: 150px, Height: 140px]"
 msgstr ""
 
-#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:124
+#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:126
 msgid "Select turnstile size"
 msgstr ""
 
-#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:131
+#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:133
 msgid "Managed (recommended)"
 msgstr ""
 
-#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:132
+#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:134
 msgid "Non-Interactive"
 msgstr ""
 
-#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:133
+#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:135
 msgid "Invisible"
 msgstr ""
 
-#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:138
+#: includes/Fields/Form_Field_Cloudflare_Turnstile.php:140
 msgid "Select turnstile type"
 msgstr ""
 
@@ -6062,9 +6083,9 @@ msgstr ""
 msgid "Featured"
 msgstr ""
 
-#: includes/Frontend_Render_Form.php:304
-#: includes/class-frontend-render-form.php:915
-msgid "Mark the %s as featured (remaining %d)"
+#: includes/Frontend_Render_Form.php:307
+#. translators: %s: post type, %d: remaining featured item
+msgid "Mark the %1$s as featured (remaining %2$d)"
 msgstr ""
 
 #: includes/Integrations/WPUF_ACF_Compatibility.php:72
@@ -6708,6 +6729,10 @@ msgstr ""
 
 #: includes/Widgets/Login_Widget.php:326
 msgid "Password Reset Label:"
+msgstr ""
+
+#: includes/class-frontend-render-form.php:915
+msgid "Mark the %s as featured (remaining %d)"
 msgstr ""
 
 #: includes/functions/settings-options.php:29

@@ -66,7 +66,7 @@ class Posting {
             wp_enqueue_style( 'wpuf-form-builder' );
         }
 
-        wp_enqueue_style( 'jquery-ui', WPUF_ASSET_URI . '/css/jquery-ui-1.9.1.custom.css' );
+        wp_enqueue_style( 'jquery-ui' );
         wp_enqueue_script( 'jquery-ui-slider' );
 
         if( ! class_exists('ACF') ) {

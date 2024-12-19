@@ -38,7 +38,7 @@
             <div v-if="section.fields.length" class="panel-form-field-group clearfix">
                 <h3
                     :class="section.show ? 'wpuf-text-green-600' : 'wpuf-text-gray-500'"
-                    class="wpuf-flex wpuf-justify-between hover:wpuf-cursor-pointer wpuf-text-xl wpuf-my-4"
+                    class="wpuf-flex wpuf-justify-between hover:wpuf-cursor-pointer wpuf-text-sm wpuf-my-4"
                     @click="panel_toggle(index)">
                     {{ section.title }}
                     <i :class="[section.show ? 'fa fa-angle-down wpuf-text-green-600' : 'fa fa-angle-right wpuf-text-gray-500']"></i>
@@ -60,8 +60,7 @@
                                 <i :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i>
                             </div>
                             <div class="wpuf-min-w-0 wpuf-flex-1">
-                                <a href="#" class="focus:wpuf-outline-none">
-                                    <span class="wpuf-absolute wpuf-inset-0" aria-hidden="true"></span>
+                                <a href="#" class="focus:wpuf-outline-none focus:wpuf-shadow-none">
                                     <p class="wpuf-text-sm wpuf-font-medium wpuf-text-gray-400 wpuf-m-0">{{ field_settings[field].title }}</p>
                                 </a>
                             </div>
@@ -79,8 +78,7 @@
                                 <i :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i>
                             </div>
                             <div class="wpuf-min-w-0 wpuf-flex-1">
-                                <a href="#" class="focus:wpuf-outline-none">
-                                    <span class="wpuf-absolute wpuf-inset-0" aria-hidden="true"></span>
+                                <a href="#" class="focus:wpuf-outline-none focus:wpuf-shadow-none">
                                     <p class="wpuf-text-sm wpuf-font-medium wpuf-text-gray-500 wpuf-m-0">{{ field_settings[field].title }}</p>
                                 </a>
                             </div>
@@ -97,8 +95,7 @@
                                 <i :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i>
                             </div>
                             <div class="wpuf-min-w-0 wpuf-flex-1">
-                                <a href="#" class="focus:wpuf-outline-none">
-                                    <span class="wpuf-absolute wpuf-inset-0" aria-hidden="true"></span>
+                                <a href="#" class="focus:wpuf-outline-none focus:wpuf-shadow-none">
                                     <p class="wpuf-text-sm wpuf-font-medium wpuf-text-gray-500 wpuf-m-0">{{ field_settings[field].title }}</p>
                                 </a>
                             </div>

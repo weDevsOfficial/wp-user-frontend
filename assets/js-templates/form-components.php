@@ -456,7 +456,7 @@
         <div class="option-fields-section wpuf-mt-6">
             <h3
                 :class="show_basic_settings ? 'wpuf-text-green-600' : 'wpuf-text-gray-500'"
-                class="wpuf-flex wpuf-mt-0 wpuf-mb-6 wpuf-justify-between hover:wpuf-cursor-pointer"
+                class="wpuf-flex wpuf-mt-0 wpuf-mb-6 wpuf-justify-between hover:wpuf-cursor-pointer wpuf-text-sm"
                 @click="show_basic_settings = !show_basic_settings">
                 {{ form_field_type_title }}
                 <i :class="show_basic_settings ? 'fa fa-angle-down wpuf-text-green-600' : 'fa fa-angle-right wpuf-text-gray-500'"></i>
@@ -478,7 +478,7 @@
         <div v-if="advanced_settings.length" class="option-fields-section">
             <h3
                 :class="show_advanced_settings ? 'wpuf-text-green-600' : 'wpuf-text-gray-500'"
-                class="wpuf-flex wpuf-mt-0 wpuf-mb-6 wpuf-justify-between hover:wpuf-cursor-pointer"
+                class="wpuf-flex wpuf-mt-0 wpuf-mb-6 wpuf-justify-between hover:wpuf-cursor-pointer wpuf-text-sm"
                 @click="show_advanced_settings = !show_advanced_settings">
                 {{ i18n.advanced_options }}
                 <i :class="show_advanced_settings ? 'fa fa-angle-down wpuf-text-green-600' : 'fa fa-angle-right wpuf-text-gray-500'"></i>
@@ -1078,7 +1078,7 @@
             <div v-if="section.fields.length" class="panel-form-field-group clearfix">
                 <h3
                     :class="section.show ? 'wpuf-text-green-600' : 'wpuf-text-gray-500'"
-                    class="wpuf-flex wpuf-justify-between hover:wpuf-cursor-pointer wpuf-text-xl wpuf-my-4"
+                    class="wpuf-flex wpuf-justify-between hover:wpuf-cursor-pointer wpuf-text-sm wpuf-my-4"
                     @click="panel_toggle(index)">
                     {{ section.title }}
                     <i :class="[section.show ? 'fa fa-angle-down wpuf-text-green-600' : 'fa fa-angle-right wpuf-text-gray-500']"></i>
@@ -1100,8 +1100,7 @@
                                 <i :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i>
                             </div>
                             <div class="wpuf-min-w-0 wpuf-flex-1">
-                                <a href="#" class="focus:wpuf-outline-none">
-                                    <span class="wpuf-absolute wpuf-inset-0" aria-hidden="true"></span>
+                                <a href="#" class="focus:wpuf-outline-none focus:wpuf-shadow-none">
                                     <p class="wpuf-text-sm wpuf-font-medium wpuf-text-gray-400 wpuf-m-0">{{ field_settings[field].title }}</p>
                                 </a>
                             </div>
@@ -1119,8 +1118,7 @@
                                 <i :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i>
                             </div>
                             <div class="wpuf-min-w-0 wpuf-flex-1">
-                                <a href="#" class="focus:wpuf-outline-none">
-                                    <span class="wpuf-absolute wpuf-inset-0" aria-hidden="true"></span>
+                                <a href="#" class="focus:wpuf-outline-none focus:wpuf-shadow-none">
                                     <p class="wpuf-text-sm wpuf-font-medium wpuf-text-gray-500 wpuf-m-0">{{ field_settings[field].title }}</p>
                                 </a>
                             </div>
@@ -1137,8 +1135,7 @@
                                 <i :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i>
                             </div>
                             <div class="wpuf-min-w-0 wpuf-flex-1">
-                                <a href="#" class="focus:wpuf-outline-none">
-                                    <span class="wpuf-absolute wpuf-inset-0" aria-hidden="true"></span>
+                                <a href="#" class="focus:wpuf-outline-none focus:wpuf-shadow-none">
                                     <p class="wpuf-text-sm wpuf-font-medium wpuf-text-gray-500 wpuf-m-0">{{ field_settings[field].title }}</p>
                                 </a>
                             </div>
@@ -1201,10 +1198,17 @@
 
 <script type="text/x-template" id="tmpl-wpuf-form-post_content">
 <div class="wpuf-fields">
-    <div class="wp-media-buttons" v-if="field.insert_image === 'yes'">
-        <button type="button" class="button insert-media add_media" data-editor="content">
-            <span class="dashicons dashicons-admin-media insert-photo-icon"></span> <?php _e( 'Insert Photo', 'wp-user-frontend' ); ?>
-        </button>
+    <div
+        v-if="field.insert_image === 'yes'"
+        class="wpuf-attachment-upload-filelist" data-type="file" data-required="yes">
+        <a
+            class="wpuf-inline-flex wpuf-items-center wpuf-gap-x-1.5"
+            :class="builder_class_names('upload_btn')" href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="wpuf-size-5">
+            <path d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z" />
+            </svg>
+            <?php _e( 'Insert Photo', 'wp-user-frontend' ); ?>
+        </a>
     </div>
     <br v-if="field.insert_image === 'yes'" />
 
@@ -1440,9 +1444,8 @@
 
 <script type="text/x-template" id="tmpl-wpuf-help-text">
 <span
-    class="wpuf-tooltip-top field-helper-text wpuf-tooltip"
+    class="field-helper-text wpuf-ml-2"
     :data-placement="placement"
-    :data-tip="text"
     data-toggle="tooltip"
     data-container="body">
     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none">

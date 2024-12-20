@@ -604,8 +604,6 @@
     <div class="wpuf-mt-2">
         <input
             v-if="option_field.variation && 'number' === option_field.variation"
-            :id="option_field.name"
-            :name="option_field.name"
             type="number"
             v-model="value"
             @focusout="on_focusout"
@@ -1231,9 +1229,9 @@
 <div class="wpuf-fields">
     <textarea
         v-if="'no' === field.rich"
-        :class="class_names('textareafield')"
-        class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300"
+        :class="builder_class_names('textareafield')"
         :placeholder="field.placeholder"
+        :default_text="field.default"
         :rows="field.rows"
         :cols="field.cols"
     >{{ field.default }}</textarea>

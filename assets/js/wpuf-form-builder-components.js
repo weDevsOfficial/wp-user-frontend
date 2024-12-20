@@ -1645,7 +1645,9 @@ Vue.component('form-fields-v4-1', {
             );
 
             const updatedStructure = self.panel_sections.map(section => ({
-                ...section,
+                id: section.id,
+                title: section.title,
+                show: section.show,
                 fields: section.fields.filter(field => matchedFields.includes(field))
             }));
 

@@ -425,7 +425,7 @@
             shortcodeCopied: false,
             active_tab: 'form-editor',
             active_settings_tab: '#wpuf-metabox-settings',
-            logoUrl: wpuf_form_builder.assetUrl + '/images/wpuf-icon-circle.svg'
+            logoUrl: wpuf_form_builder.asset_url + '/images/wpuf-icon-circle.svg'
         },
 
         computed: {

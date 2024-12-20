@@ -8,8 +8,6 @@
     <div class="wpuf-mt-2">
         <input
             v-if="option_field.variation && 'number' === option_field.variation"
-            :id="option_field.name"
-            :name="option_field.name"
             type="number"
             v-model="value"
             @focusout="on_focusout"

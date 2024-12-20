@@ -982,7 +982,7 @@ function wpuf_show_custom_fields( $content ) {
                 continue;
             }
 
-            if ( method_exists( $wpuf_field, 'render_field_data' ) ) {
+            if ( ! empty( $wpuf_field ) && method_exists( $wpuf_field, 'render_field_data' ) ) {
                 $html .= $wpuf_field->render_field_data( $field_value, $attr );
                 continue;
             }
@@ -4816,3 +4816,15 @@ function wpuf_load_headway_badge( $selector = '#wpuf-headway-icon' ) {
 function wpuf_is_option_on( $option ) {
     return 'on' === $option || 'yes' === $option;
 }
+
+/**
+ * Get the pro icon link
+ *
+ * @since WPUF_SINCE
+ *
+ * @return string
+ */
+function wpuf_get_pro_icon() {
+    return WPUF_ASSET_URI . '/images/crown.svg';
+}
+

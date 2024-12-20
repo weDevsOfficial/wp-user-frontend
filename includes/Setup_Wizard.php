@@ -37,10 +37,6 @@ class Setup_Wizard {
      * @return void
      */
     public function custom_admin_bar_styles() {
-        if ( ! is_admin_bar_showing() ) {
-            return;
-        }
-
         if ( function_exists( 'wp_enqueue_admin_bar_header_styles' ) ) {
             wp_enqueue_admin_bar_header_styles();
         } else {

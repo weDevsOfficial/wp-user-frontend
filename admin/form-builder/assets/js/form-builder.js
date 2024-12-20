@@ -41,8 +41,10 @@
             field_settings: wpuf_form_builder.field_settings,
             notifications: wpuf_form_builder.notifications,
             settings: wpuf_form_builder.form_settings,
-            current_panel: 'form-fields',
-            editing_field_id: 0, // editing form field id
+            is_older_form: wpuf_form_builder.is_older_form,
+            is_post_form: wpuf_form_builder.is_older_form && wpuf_form_builder.post.post_type === 'wpuf_forms',
+            current_panel: wpuf_form_builder.is_older_form && wpuf_form_builder.post.post_type !== 'wpuf_forms' ? 'form-fields' : 'form-fields-v4-1',
+            editing_field_id: 0,
             show_custom_field_tooltip: true,
             index_to_insert: 0,
         },
@@ -68,7 +70,7 @@
                 state.current_panel = panel;
 
                 // reset editing field id
-                if ('form-fields' === panel) {
+                if ('form-fields' === panel || 'form-fields-v4-1' === panel) {
                     state.editing_field_id = 0;
                 }
             },
@@ -88,10 +90,10 @@
             },
 
             // open field settings panel
-            open_field_settings: function (state, field_id) {
-                var field = state.form_fields.filter(function(item) {
-                    return parseInt(field_id) === parseInt(item.id);
-                });
+            open_field_settings: function ( state, field_id ) {
+                var field = state.form_fields.filter( function ( item ) {
+                    return parseInt( field_id ) === parseInt( item.id );
+                } );
 
                 if ('field-options' === state.current_panel && field[0].id === state.editing_field_id) {
                     return;
@@ -101,9 +103,9 @@
                     state.editing_field_id = 0;
                     state.current_panel = 'field-options';
 
-                    setTimeout(function () {
+                    setTimeout( function () {
                         state.editing_field_id = field[0].id;
-                    }, 400);
+                    }, 400 );
                 }
             },
 
@@ -240,7 +242,7 @@
 
             // delete a field
             delete_form_field_element: function (state, index) {
-                state.current_panel = 'form-fields';
+                state.current_panel = state.is_older_form ? 'form-fields' : 'form-fields-v4-1';
                 state.form_fields.splice(index, 1);
             },
 
@@ -387,11 +389,19 @@
             delete_column_field_element: function (state, payload) {
                 var columnFieldIndex = state.form_fields.findIndex(field => field.id === payload.field_id);
 
-                state.current_panel = 'form-fields';
+                state.current_panel = state.is_older_form ? 'form-fields' : 'form-fields-v4-1';
                 state.form_fields[columnFieldIndex].inner_fields[payload.fromColumn].splice(payload.index, 1);
             },
 
+            // update the panel sections
+            set_panel_sections: function ( state, sections ) {
+                state.panel_sections = sections;
+            },
 
+            // set default panel sections
+            set_default_panel_sections: function ( state ) {
+                state.panel_sections = wpuf_form_builder.panel_sections;
+            }
         }
     });
 
@@ -410,7 +420,12 @@
             is_form_saved: false,
             is_form_switcher: false,
             post_title_editing: false,
-            isDirty: false
+            isDirty: false,
+            enableMultistep: false,
+            shortcodeCopied: false,
+            active_tab: 'form-editor',
+            active_settings_tab: '#wpuf-metabox-settings',
+            logoUrl: wpuf_form_builder.asset_url + '/images/wpuf-icon-circle.svg'
         },
 
         computed: {
@@ -448,7 +463,7 @@
                 });
 
                 return meta_key.map(function(name) { return '{' + name +'}' }).join( );
-            }
+            },
         },
 
         watch: {
@@ -471,49 +486,88 @@
         },
 
         mounted: function () {
-            // primary nav tabs and their contents
-            this.bind_tab_on_click($('#wpuf-form-builder > fieldset > .nav-tab-wrapper > a'), '#wpuf-form-builder');
+            if ( this.is_post_form ) {
+                // secondary settings tabs and their contents
+                var settings_tabs = $( '#wpuf-form-builder-settings-tabs .nav-tab' );
+                var self = this;
 
-            // secondary settings tabs and their contents
-            var settings_tabs = $('#wpuf-form-builder-settings .nav-tab'),
-                settings_tab_contents = $('#wpuf-form-builder-settings .tab-contents .group');
+                // add a click listener to each settings_tab
+                settings_tabs.each( function () {
+                    $( this ).bind( 'click', self.setActiveSettingsTab );
+                } );
 
-            settings_tabs.first().addClass('nav-tab-active');
-            settings_tab_contents.first().addClass('active');
+                var clipboard = new window.Clipboard( '.form-id' );
+                $( ".form-id" ).tooltip();
 
-            this.bind_tab_on_click(settings_tabs, '#wpuf-form-builder-settings');
+                clipboard.on( 'success', function ( e ) {
+                    // Show copied tooltip
+                    $( e.trigger )
+                        .attr( 'data-original-title', 'Shortcode copied!' )
+                        .tooltip( 'show' );
 
-            var clipboard = new window.Clipboard('.form-id');
-            $(".form-id").tooltip();
+                    self.shortcodeCopied = true;
 
-            var self = this;
+                    // Reset the copied tooltip
+                    setTimeout( function () {
+                        $( e.trigger ).tooltip( 'hide' )
+                            .attr( 'data-original-title', self.i18n.copy_shortcode );
+                        self.shortcodeCopied = false;
+                    }, 1000 );
 
-            clipboard.on('success', function(e) {
-                // Show copied tooltip
-                $(e.trigger)
-                    .attr('data-original-title', 'Copied!')
-                    .tooltip('show');
+                    e.clearSelection();
+                } );
 
-                // Reset the copied tooltip
-                setTimeout(function() {
-                    $(e.trigger).tooltip('hide')
-                    .attr('data-original-title', self.i18n.copy_shortcode);
-                }, 1000);
+                window.onbeforeunload = function () {
+                    if (self.isDirty) {
+                        return self.i18n.unsaved_changes;
+                    }
+                };
+            } else {
+                // primary nav tabs and their contents
+                this.bind_tab_on_click($('#wpuf-form-builder > fieldset > .nav-tab-wrapper > a'), '#wpuf-form-builder');
 
-                e.clearSelection();
-            });
+                // secondary settings tabs and their contents
+                var settings_tabs = $('#wpuf-form-builder-settings .nav-tab'),
+                    settings_tab_contents = $('#wpuf-form-builder-settings .tab-contents .group');
 
-            window.onbeforeunload = function () {
-                if ( self.isDirty ) {
-                    return self.i18n.unsaved_changes;
-                }
-            };
+                settings_tabs.first().addClass('nav-tab-active');
+                settings_tab_contents.first().addClass('active');
+
+                this.bind_tab_on_click(settings_tabs, '#wpuf-form-builder-settings');
+
+                var clipboard = new window.Clipboard('.form-id');
+                $(".form-id").tooltip();
+
+                var self = this;
+
+                clipboard.on('success', function(e) {
+                    // Show copied tooltip
+                    $(e.trigger)
+                        .attr('data-original-title', 'Copied!')
+                        .tooltip('show');
+
+                    // Reset the copied tooltip
+                    setTimeout(function() {
+                        $(e.trigger).tooltip('hide')
+                            .attr('data-original-title', self.i18n.copy_shortcode);
+                    }, 1000);
+
+                    e.clearSelection();
+                });
+
+                window.onbeforeunload = function () {
+                    if ( self.isDirty ) {
+                        return self.i18n.unsaved_changes;
+                    }
+                };
+            }
         },
 
         methods: {
             // tabs and their contents
             bind_tab_on_click: function (tabs, scope) {
                 tabs.on('click', function (e) {
+                    console.log('clicked');
                     e.preventDefault();
 
                     var button = $(this),
@@ -525,6 +579,10 @@
                     tab_contents.children().removeClass('active');
                     $(group_id).addClass('active');
                 });
+            },
+
+            setActiveSettingsTab: function (e) {
+                this.active_settings_tab = $(e.target).attr('href');
             },
 
             // switch form
@@ -541,6 +599,8 @@
             save_form_builder: function () {
                 var self = this;
 
+                var panel = this.is_older_form ? 'form-fields' : 'form-fields-v4-1';
+
                 if (_.isFunction(this.validate_form_before_submit) && !this.validate_form_before_submit()) {
 
                     this.warn({
@@ -551,7 +611,7 @@
                 }
 
                 self.is_form_saving = true;
-                self.set_current_panel('form-fields');
+                self.set_current_panel(panel);
 
                 var form_id = $('#wpuf-form-builder [name="wpuf_form_id"]').val();
 
@@ -899,11 +959,11 @@
 
     // on DOM ready
     $(function() {
-        resizeBuilderContainer();
-
-        $("#collapse-menu").click(function () {
-            resizeBuilderContainer();
-        });
+        // resizeBuilderContainer();
+        //
+        // $("#collapse-menu").click(function () {
+        //     resizeBuilderContainer();
+        // });
 
         function resizeBuilderContainer() {
             if ($(document.body).hasClass('folded')) {

@@ -2,7 +2,6 @@
 
 namespace WeDevs\Wpuf\Fields;
 
-
 /**
  * Recaptcha Field Class
  */

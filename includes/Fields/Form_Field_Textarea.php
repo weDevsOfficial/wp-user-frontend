@@ -76,6 +76,7 @@ class Form_Field_Textarea extends Field_Contract {
                 } else {
                     ?>
                     <textarea
+                        :class="builder_class_names('textareafield')"
                         class="textareafield <?php echo esc_attr( ' wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>"
                         id="<?php echo esc_attr( $field_settings['name'] . '_' . $form_id ); ?>"
                         name="<?php echo esc_attr( $field_settings['name'] ); ?>"

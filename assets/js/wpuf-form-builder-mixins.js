@@ -49,6 +49,12 @@ wpuf_mixins.add_form_field = {
             this.$store.commit('add_form_field_element', payload);
         },
     },
+
+    computed: {
+        action_button_classes: function() {
+            return 'wpuf-p-2 hover:wpuf-cursor-pointer hover:wpuf-text-white';
+        }
+    },
 };
 
 /**
@@ -59,7 +65,7 @@ wpuf_mixins.form_field_mixin = {
     props: {
         field: {
             type: Object,
-            default: {}
+            default: () => ({ key: 'value' })
         }
     },
 
@@ -74,7 +80,7 @@ wpuf_mixins.form_field_mixin = {
             }
 
             return !!Object.keys(this.field.options).length;
-        }
+        },
     },
 
     methods: {
@@ -83,6 +89,41 @@ wpuf_mixins.form_field_mixin = {
                 type_class,
                 this.required_class(),
                 'wpuf_' + this.field.name + '_' + this.form_id
+            ];
+        },
+
+        builder_class_names: function(type_class) {
+            var commonClasses = '';
+
+            switch (type_class) {
+                case 'text':
+                case 'textfield':
+                case 'url':
+                case 'email':
+                case 'textarea':
+                case 'textareafield':
+                case 'select':
+                    commonClasses = 'wpuf-block wpuf-min-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 !wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300 wpuf-max-w-full';
+                    break;
+
+                case 'upload_btn':
+                    commonClasses = 'file-selector  wpuf-rounded-md wpuf-btn-secondary';
+                    break;
+
+                case 'radio':
+                    commonClasses = 'wpuf-ml-3 wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900';
+                    break;
+
+                    case 'checkbox':
+                    commonClasses = '!wpuf-bg-transparent wpuf-h-4 wpuf-w-4 wpuf-rounded wpuf-border-gray-300 wpuf-text-indigo-600 focus:wpuf-ring-indigo-600 !wpuf-mt-0.5';
+                    break;
+            }
+
+            return [
+                type_class,
+                this.required_class(),
+                'wpuf_' + this.field.name + '_' + this.form_id,
+                commonClasses
             ];
         },
 
@@ -266,12 +307,12 @@ wpuf_mixins.option_field_mixin = {
     props: {
         option_field: {
             type: Object,
-            default: {}
+            default: () => ({ key: 'value' })
         },
 
         editing_form_field: {
             type: Object,
-            default: {}
+            default: () => ({ key: 'value' })
         }
     },
 

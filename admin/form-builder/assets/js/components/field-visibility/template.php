@@ -48,7 +48,7 @@
                     $role_name = $value['name'];
 
                     $output  = '<li class="wpuf-mt-2">';
-                    $output .= "<label><input class='wpuf-bg-transparent wpuf-text-white checked:wpuf-bg-transparent checked:wpuf-shadow-primary checked:hover:wpuf-shadow-transparent checked:focus:wpuf-bg-transparent' type='checkbox' v-model='choices' value='{$role}'> {$role_name} </label>";
+                    $output .= "<label><input :class=\"builder_class_names('checkbox')\" type=\"checkbox\" v-model=\"choices\" value=\"{$role}\"> {$role_name} </label>";
                     $output .= '</li>';
 
                     echo $output;

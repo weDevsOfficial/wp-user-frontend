@@ -1,9 +1,12 @@
-<div :class="['wpuf-field-columns wpuf-flex wpuf-flex-col md:wpuf-flex-row wpuf-gap-4 wpuf-p-4 wpuf-w-full', 'has-columns-'+field.columns]">
+<div
+    :class="'has-columns-'+field.columns"
+    class="wpuf-field-columns wpuf-flex wpuf-flex-col md:wpuf-flex-row wpuf-gap-4 wpuf-p-4 wpuf-w-full">
     <div
         v-for="column in columnClasses"
+        :style="{paddingRight: field.column_space+'px'}"
         class="wpuf-flex-1 wpuf-min-w-0 wpuf-min-h-full">
         <div class="wpuf-column-inner-fields wpuf-border wpuf-border-dashed wpuf-border-green-400 wpuf-bg-green-50 wpuf-shadow-sm wpuf-rounded-md wpuf-p-1">
-            <ul class="wpuf-column-fields-sortable-list">
+            <ul class="wpuf-column-fields-sortable-list wpuf-min-h-16">
                 <li
                     v-for="(field, innerIndex) in column_fields[column]"
                     :key="field.id"

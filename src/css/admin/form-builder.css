@@ -20,7 +20,7 @@
     }
 
     .panel-field-opt {
-        @apply wpuf-mb-4
+        @apply wpuf-mb-8
     }
 
     .panel-field-opt label {

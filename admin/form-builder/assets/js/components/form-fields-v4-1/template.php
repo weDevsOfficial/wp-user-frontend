@@ -6,7 +6,7 @@
             name="search"
             id="search"
             v-model="searched_fields"
-            class="!wpuf-border-none wpuf-rounded-lg wpuf-block wpuf-min-w-0 wpuf-grow wpuf-px-4 wpuf-py-1.5 wpuf-text-base wpuf-text-gray-900 placeholder:wpuf-text-gray-400 sm:wpuf-text-sm/6 !wpuf-shadow-none !wpuf-ring-transparent"
+            class="!wpuf-border-none !wpuf-rounded-lg wpuf-block wpuf-min-w-0 wpuf-grow wpuf-px-4 wpuf-py-1.5 wpuf-text-base wpuf-text-gray-900 placeholder:wpuf-text-gray-400 sm:wpuf-text-sm/6 !wpuf-shadow-none !wpuf-ring-transparent"
             placeholder="<?php esc_attr_e( 'Search Field', 'wp-user-frontend' ); ?>">
         <div class="wpuf-flex wpuf-py-1.5 wpuf-pr-1.5">
             <span class="wpuf-inline-flex wpuf-items-center wpuf-rounded wpuf-px-1 wpuf-font-sans wpuf-text-xs wpuf-text-gray-400">

@@ -640,11 +640,10 @@
 
 <script type="text/x-template" id="tmpl-wpuf-field-textarea">
 <div class="panel-field-opt panel-field-opt-textarea">
-    <label>
+    <label class="wpuf-mb-2">
         {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
-
-        <textarea :class="builder_class_names('textareafield')" :rows="option_field.rows || 5" v-model="value"></textarea>
     </label>
+    <textarea :class="builder_class_names('textareafield')" :rows="option_field.rows || 5" v-model="value"></textarea>
 </div>
 </script>
 
@@ -699,7 +698,7 @@
                     $role_name = $value['name'];
 
                     $output  = '<li class="wpuf-mt-2">';
-                    $output .= "<label><input class='wpuf-bg-transparent wpuf-text-white checked:wpuf-bg-transparent checked:wpuf-shadow-primary checked:hover:wpuf-shadow-transparent checked:focus:wpuf-bg-transparent' type='checkbox' v-model='choices' value='{$role}'> {$role_name} </label>";
+                    $output .= "<label><input :class=\"builder_class_names('checkbox')\" type=\"checkbox\" v-model=\"choices\" value=\"{$role}\"> {$role_name} </label>";
                     $output .= '</li>';
 
                     echo $output;
@@ -791,12 +790,15 @@
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-form-column_field">
-<div :class="['wpuf-field-columns wpuf-flex wpuf-flex-col md:wpuf-flex-row wpuf-gap-4 wpuf-p-4 wpuf-w-full', 'has-columns-'+field.columns]">
+<div
+    :class="'has-columns-'+field.columns"
+    class="wpuf-field-columns wpuf-flex wpuf-flex-col md:wpuf-flex-row wpuf-gap-4 wpuf-p-4 wpuf-w-full">
     <div
         v-for="column in columnClasses"
+        :style="{paddingRight: field.column_space+'px'}"
         class="wpuf-flex-1 wpuf-min-w-0 wpuf-min-h-full">
         <div class="wpuf-column-inner-fields wpuf-border wpuf-border-dashed wpuf-border-green-400 wpuf-bg-green-50 wpuf-shadow-sm wpuf-rounded-md wpuf-p-1">
-            <ul class="wpuf-column-fields-sortable-list">
+            <ul class="wpuf-column-fields-sortable-list wpuf-min-h-16">
                 <li
                     v-for="(field, innerIndex) in column_fields[column]"
                     :key="field.id"
@@ -1044,7 +1046,7 @@
             name="search"
             id="search"
             v-model="searched_fields"
-            class="!wpuf-border-none wpuf-rounded-lg wpuf-block wpuf-min-w-0 wpuf-grow wpuf-px-4 wpuf-py-1.5 wpuf-text-base wpuf-text-gray-900 placeholder:wpuf-text-gray-400 sm:wpuf-text-sm/6 !wpuf-shadow-none !wpuf-ring-transparent"
+            class="!wpuf-border-none !wpuf-rounded-lg wpuf-block wpuf-min-w-0 wpuf-grow wpuf-px-4 wpuf-py-1.5 wpuf-text-base wpuf-text-gray-900 placeholder:wpuf-text-gray-400 sm:wpuf-text-sm/6 !wpuf-shadow-none !wpuf-ring-transparent"
             placeholder="<?php esc_attr_e( 'Search Field', 'wp-user-frontend' ); ?>">
         <div class="wpuf-flex wpuf-py-1.5 wpuf-pr-1.5">
             <span class="wpuf-inline-flex wpuf-items-center wpuf-rounded wpuf-px-1 wpuf-font-sans wpuf-text-xs wpuf-text-gray-400">

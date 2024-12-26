@@ -56,7 +56,7 @@
                         <?php
                         foreach ( $forms as $form ) {
                             ?>
-                            <li><a class="<?php echo ( (int) $form->ID === $_GET['id'] ) ? 'active' : ''; ?>" href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-' . $form_type . '-forms&action=edit&id=' . $form->ID ) ); ?>"><?php echo esc_html( $form->post_title ); ?></a></li>
+                            <li class="button ui-draggable ui-draggable-handle"><a class="<?php echo ( (int) $form->ID === $_GET['id'] ) ? 'active' : ''; ?>" href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-' . $form_type . '-forms&action=edit&id=' . $form->ID ) ); ?>"><?php echo esc_html( $form->post_title ); ?></a></li>
                             <?php
                         }
                         ?>

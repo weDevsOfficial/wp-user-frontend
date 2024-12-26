@@ -18,12 +18,6 @@ Vue.component('form-column_field', {
 
     mixins: mixins,
 
-    data() {
-        return{
-            columnClasses: ['column-1', 'column-2', 'column-3'] // don't edit class names
-        };
-    },
-
     mounted() {
         this.resizeColumns(this.field.columns);
 
@@ -122,6 +116,17 @@ Vue.component('form-column_field', {
 
         action_button_classes: function() {
             return 'hover:wpuf-cursor-pointer hover:wpuf-text-white';
+        },
+
+        columnClasses: function() {
+            var columns_count = parseInt( this.field.columns );
+            var columns = [];
+
+            for (var i = 1; i <= columns_count; i++) {
+                columns.push('column-' + i);
+            }
+
+            return columns;
         }
     },
 

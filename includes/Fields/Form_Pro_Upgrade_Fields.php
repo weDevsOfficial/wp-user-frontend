@@ -202,7 +202,7 @@ class Form_Field_Repeat extends Form_Field_Pro {
 class Form_Field_Really_Simple_Captcha extends Form_Field_Pro {
     public function __construct() {
         $this->name       = __( 'Really Simple Captcha', 'wp-user-frontend' );
-        $this->input_type = 'shortcode';
+        $this->input_type = 'really_simple_captcha';
         $this->icon       = '';
     }
 }

@@ -35,8 +35,10 @@
                     class="wpuf-relative"
                 >
                     <div class="wpuf-absolute wpuf-w-full wpuf-h-full wpuf-z-10"></div>
-                    <component v-if="is_template_available(field)" :is="'form-' + field.template"
-                               :field="field"></component>
+                    <component
+                        v-if="is_template_available(field)"
+                        :is="'form-' + field.template"
+                        :field="field"></component>
                     <div v-if="is_pro_feature(field.template)" class="stage-pro-alert wpuf-text-center">
                         <label class="wpuf-pro-text-alert">
                             <a :href="pro_link" target="_blank"

@@ -567,7 +567,6 @@
             // tabs and their contents
             bind_tab_on_click: function (tabs, scope) {
                 tabs.on('click', function (e) {
-                    console.log('clicked');
                     e.preventDefault();
 
                     var button = $(this),

@@ -28,7 +28,7 @@ Vue.component('form-fields-v4-1', {
 
     mounted: function () {
         // bind jquery ui draggable
-        $(this.$el).find('.panel-form-field-buttons .button').draggable({
+        $(this.$el).find('.panel-form-field-buttons .wpuf-field-button').draggable({
             connectToSortable: '#form-preview-stage .wpuf-form, .wpuf-column-inner-fields .wpuf-column-fields-sortable-list',
             helper: 'clone',
             revert: 'invalid',

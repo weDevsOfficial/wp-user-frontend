@@ -4,8 +4,11 @@
     <div
         v-for="column in columnClasses"
         :style="{paddingRight: field.column_space+'px'}"
-        class="wpuf-flex-1 wpuf-min-w-0 wpuf-min-h-full">
-        <div class="wpuf-column-inner-fields wpuf-border wpuf-border-dashed wpuf-border-green-400 wpuf-bg-green-50 wpuf-shadow-sm wpuf-rounded-md wpuf-p-1">
+        :key="column"
+        class="wpuf-flex-1 wpuf-min-w-0 wpuf-min-h-full wpuf-column-inner-fields">
+        <div
+            :data-column="column"
+            class="wpuf-border wpuf-border-dashed wpuf-border-green-400 wpuf-bg-green-50 wpuf-shadow-sm wpuf-rounded-md wpuf-p-1">
             <ul class="wpuf-column-fields-sortable-list wpuf-min-h-16">
                 <li
                     v-for="(field, innerIndex) in column_fields[column]"

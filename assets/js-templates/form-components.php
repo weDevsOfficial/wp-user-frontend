@@ -120,8 +120,10 @@
                     class="wpuf-relative"
                 >
                     <div class="wpuf-absolute wpuf-w-full wpuf-h-full wpuf-z-10"></div>
-                    <component v-if="is_template_available(field)" :is="'form-' + field.template"
-                               :field="field"></component>
+                    <component
+                        v-if="is_template_available(field)"
+                        :is="'form-' + field.template"
+                        :field="field"></component>
                     <div v-if="is_pro_feature(field.template)" class="stage-pro-alert wpuf-text-center">
                         <label class="wpuf-pro-text-alert">
                             <a :href="pro_link" target="_blank"
@@ -796,8 +798,11 @@
     <div
         v-for="column in columnClasses"
         :style="{paddingRight: field.column_space+'px'}"
-        class="wpuf-flex-1 wpuf-min-w-0 wpuf-min-h-full">
-        <div class="wpuf-column-inner-fields wpuf-border wpuf-border-dashed wpuf-border-green-400 wpuf-bg-green-50 wpuf-shadow-sm wpuf-rounded-md wpuf-p-1">
+        :key="column"
+        class="wpuf-flex-1 wpuf-min-w-0 wpuf-min-h-full wpuf-column-inner-fields">
+        <div
+            :data-column="column"
+            class="wpuf-border wpuf-border-dashed wpuf-border-green-400 wpuf-bg-green-50 wpuf-shadow-sm wpuf-rounded-md wpuf-p-1">
             <ul class="wpuf-column-fields-sortable-list wpuf-min-h-16">
                 <li
                     v-for="(field, innerIndex) in column_fields[column]"
@@ -1086,7 +1091,7 @@
                 <div
                     v-show="section.show"
                     :id="'panel-form-field-buttons-' + section.id"
-                    class="wpuf-grid wpuf-grid-cols-1 wpuf-gap-4 sm:wpuf-grid-cols-2">
+                    class="wpuf-field-button panel-form-field-buttons wpuf-grid wpuf-grid-cols-1 wpuf-gap-4 sm:wpuf-grid-cols-2">
                     <template v-for="field in section.fields">
                         <div
                             v-if="is_pro_feature(field)"
@@ -1128,7 +1133,7 @@
                             :data-form-field="field"
                             data-source="panel"
                             @click="add_form_field(field)"
-                            class="wpuf-relative wpuf-flex wpuf-items-center wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-bg-white wpuf-shadow-sm hover:wpuf-border-gray-300 wpuf-p-3">
+                            class="wpuf-field-button wpuf-relative wpuf-flex wpuf-items-center wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-bg-white wpuf-shadow-sm hover:wpuf-border-gray-300 wpuf-p-3">
                             <div
                                 v-if="field_settings[field].icon"
                                 class="wpuf-shrink-0 wpuf-mr-2">

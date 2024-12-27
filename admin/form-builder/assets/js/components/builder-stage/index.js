@@ -76,7 +76,6 @@ Vue.component('builder-stage', {
 
                     self.$store.commit('swap_form_field_elements', payload);
                 }
-
             }
         });
     },

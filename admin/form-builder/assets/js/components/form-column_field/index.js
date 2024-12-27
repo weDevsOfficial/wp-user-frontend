@@ -26,7 +26,7 @@ Vue.component('form-column_field', {
             sortableFields = $(self.$el).find('.wpuf-column-inner-fields .wpuf-column-fields-sortable-list'),
             sortableTriggered = 1,
             columnFieldArea = $('.wpuf-field-columns'),
-            columnFields = $(self.$el).find(".wpuf-column-field-inner-columns .wpuf-column-inner-fields");
+            columnFields = $(self.$el).find(".wpuf-field-columns .wpuf-column-inner-fields");
 
         columnFieldArea.mouseenter(function() {
             self.resizeColumns(self.field.columns);
@@ -53,13 +53,13 @@ Vue.component('form-column_field', {
                     var payload = {
                         toIndex: parseInt($(ui.item).index()),
                         field_template: data.formField,
-                        to_column: $(this).parent().attr('class').split(' ')[0]
+                        to_column: $(this).parent().data('column')
                     };
 
                     self.add_column_inner_field(payload);
 
                     // remove button from stage
-                    $(this).find('.button.ui-draggable.ui-draggable-handle').remove();
+                    $(this).find('.wpuf-field-button').remove();
                 }
             },
             update: function (e, ui) {

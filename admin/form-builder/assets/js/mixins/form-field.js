@@ -39,6 +39,7 @@ wpuf_mixins.form_field_mixin = {
             switch (type_class) {
                 case 'text':
                 case 'textfield':
+                case 'number':
                 case 'url':
                 case 'email':
                 case 'textarea':

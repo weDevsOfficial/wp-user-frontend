@@ -36,7 +36,7 @@
                                     <?php
                                     foreach ( $forms as $form ) {
                                         ?>
-                                        <li>
+                                        <li class="button ui-draggable ui-draggable-handle">
                                             <a class="wpuf-block wpuf-rounded-none wpuf-font-medium wpuf-text-left wpuf-px-4 wpuf-py-2 !wpuf-text-sm wpuf-text-gray-700 hover:wpuf-bg-gray-100 hover:wpuf-text-gray-900 focus:wpuf-shadow-none focus:wpuf-outline-none" href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-' . $form_type . '-forms&action=edit&id=' . $form->ID ) ); ?>">
                                                 <?php echo esc_html( $form->post_title ); ?>
                                             </a>

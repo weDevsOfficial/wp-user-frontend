@@ -69,7 +69,7 @@ Vue.component('builder-stage-v4-1', {
                     }
 
                     // remove button from stage
-                    $(this).find('.button.ui-draggable.ui-draggable-handle').remove();
+                    $(this).find('.wpuf-field-button').remove();
 
                 } else if ('stage' === source) {
                     payload.fromIndex = parseInt(data.index);
@@ -82,7 +82,6 @@ Vue.component('builder-stage-v4-1', {
     },
 
     methods: {
-
         open_field_settings: function(field_id) {
             this.$store.commit('open_field_settings', field_id);
         },

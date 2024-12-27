@@ -79,7 +79,6 @@ Vue.component('builder-stage', {
 
                     self.$store.commit('swap_form_field_elements', payload);
                 }
-
             }
         });
     },
@@ -257,7 +256,7 @@ Vue.component('builder-stage-v4-1', {
                     }
 
                     // remove button from stage
-                    $(this).find('.button.ui-draggable.ui-draggable-handle').remove();
+                    $(this).find('.wpuf-field-button').remove();
 
                 } else if ('stage' === source) {
                     payload.fromIndex = parseInt(data.index);
@@ -270,7 +269,6 @@ Vue.component('builder-stage-v4-1', {
     },
 
     methods: {
-
         open_field_settings: function(field_id) {
             this.$store.commit('open_field_settings', field_id);
         },
@@ -1027,7 +1025,7 @@ Vue.component('form-column_field', {
             sortableFields = $(self.$el).find('.wpuf-column-inner-fields .wpuf-column-fields-sortable-list'),
             sortableTriggered = 1,
             columnFieldArea = $('.wpuf-field-columns'),
-            columnFields = $(self.$el).find(".wpuf-column-field-inner-columns .wpuf-column-inner-fields");
+            columnFields = $(self.$el).find(".wpuf-field-columns .wpuf-column-inner-fields");
 
         columnFieldArea.mouseenter(function() {
             self.resizeColumns(self.field.columns);
@@ -1054,13 +1052,13 @@ Vue.component('form-column_field', {
                     var payload = {
                         toIndex: parseInt($(ui.item).index()),
                         field_template: data.formField,
-                        to_column: $(this).parent().attr('class').split(' ')[0]
+                        to_column: $(this).parent().data('column')
                     };
 
                     self.add_column_inner_field(payload);
 
                     // remove button from stage
-                    $(this).find('.button.ui-draggable.ui-draggable-handle').remove();
+                    $(this).find('.wpuf-field-button').remove();
                 }
             },
             update: function (e, ui) {
@@ -1577,7 +1575,7 @@ Vue.component('form-fields-v4-1', {
 
     mounted: function () {
         // bind jquery ui draggable
-        $(this.$el).find('.panel-form-field-buttons .button').draggable({
+        $(this.$el).find('.panel-form-field-buttons .wpuf-field-button').draggable({
             connectToSortable: '#form-preview-stage .wpuf-form, .wpuf-column-inner-fields .wpuf-column-fields-sortable-list',
             helper: 'clone',
             revert: 'invalid',

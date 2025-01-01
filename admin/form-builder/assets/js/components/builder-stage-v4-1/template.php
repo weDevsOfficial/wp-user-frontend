@@ -1,7 +1,9 @@
 <div id="form-preview-stage">
-    <h4 v-if="!form_fields.length" class="text-center">
-        <?php _e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wp-user-frontend' ); ?>
-    </h4>
+    <div v-if="!form_fields.length" class="wpuf-flex wpuf-flex-col wpuf-items-center wpuf-justify-center wpuf-h-[80vh]">
+        <img src="<?php echo WPUF_ASSET_URI . '/images/form-blank-state.svg'; ?>" alt="">
+        <h2 class="wpuf-text-lg wpuf-text-gray-800"><?php esc_html_e( 'Add fields and build your desired form', 'wp-user-frontend' ); ?></h2>
+        <p class="wpuf-text-sm wpuf-text-gray-500"><?php esc_html_e( 'Add fields and build your desired form', 'wp-user-frontend' ); ?></p>
+    </div>
 
     <ul
         :class="['form-label-' + label_type]"

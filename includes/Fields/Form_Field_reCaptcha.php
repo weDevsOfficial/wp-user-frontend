@@ -10,7 +10,7 @@ class Form_Field_reCaptcha extends Field_Contract {
     public function __construct() {
         $this->name       = __( 'reCaptcha', 'wp-user-frontend' );
         $this->input_type = 'recaptcha';
-        $this->icon       = 'qrcode';
+        $this->icon       = 'badge-check';
     }
 
     /**

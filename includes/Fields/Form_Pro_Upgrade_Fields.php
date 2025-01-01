@@ -37,7 +37,7 @@ class Form_Field_Address extends Form_Field_Pro {
     public function __construct() {
         $this->name       = __( 'Address Field', 'wp-user-frontend' );
         $this->input_type = 'address_field';
-        $this->icon       = 'address-card-o';
+        $this->icon       = 'map';
     }
 }
 
@@ -48,7 +48,7 @@ class Form_Field_Country extends Form_Field_Pro {
     public function __construct() {
         $this->name       = __( 'Country List', 'wp-user-frontend' );
         $this->input_type = 'country_list_field';
-        $this->icon       = 'globe';
+        $this->icon       = 'globe-alt';
     }
 }
 
@@ -59,7 +59,7 @@ class Form_Field_Date extends Form_Field_Pro {
     public function __construct() {
         $this->name       = __( 'Date / Time', 'wp-user-frontend' );
         $this->input_type = 'date_field';
-        $this->icon       = 'calendar-o';
+        $this->icon       = 'clock';
     }
 }
 
@@ -72,7 +72,7 @@ class Form_Field_Time extends Form_Field_Pro {
     public function __construct() {
         $this->name       = __( 'Time', 'wp-user-frontend' );
         $this->input_type = 'time_field';
-        $this->icon       = 'clock-o';
+        $this->icon       = 'clock';
     }
 }
 
@@ -93,7 +93,7 @@ class Form_Field_Embed extends Form_Field_Pro {
     public function __construct() {
         $this->name       = __( 'Embed', 'wp-user-frontend' );
         $this->input_type = 'embed';
-        $this->icon       = 'address-card-o';
+        $this->icon       = 'code-bracket-square';
     }
 }
 
@@ -104,7 +104,7 @@ class Form_Field_File extends Form_Field_Pro {
     public function __construct() {
         $this->name       = __( 'File Upload', 'wp-user-frontend' );
         $this->input_type = 'file_upload';
-        $this->icon       = 'upload';
+        $this->icon       = 'arrow-up-tray';
     }
 }
 
@@ -115,7 +115,7 @@ class Form_Field_GMap extends Form_Field_Pro {
     public function __construct() {
         $this->name       = __( 'Google Map', 'wp-user-frontend' );
         $this->input_type = 'google_map';
-        $this->icon       = 'map-marker';
+        $this->icon       = 'location-marker';
     }
 }
 
@@ -126,7 +126,7 @@ class Form_Field_Hook extends Form_Field_Pro {
     public function __construct() {
         $this->name       = __( 'Action Hook', 'wp-user-frontend' );
         $this->input_type = 'action_hook';
-        $this->icon       = 'anchor';
+        $this->icon       = 'command-line';
     }
 }
 
@@ -137,7 +137,7 @@ class Form_Field_Numeric extends Form_Field_Pro {
     public function __construct() {
         $this->name       = __( 'Numeric Field', 'wp-user-frontend' );
         $this->input_type = 'numeric_text_field';
-        $this->icon       = 'hashtag';
+        $this->icon       = 'adjustments-horizontal';
     }
 }
 
@@ -148,7 +148,7 @@ class Form_Field_Rating extends Form_Field_Pro {
     public function __construct() {
         $this->name       = __( 'Ratings', 'wp-user-frontend' );
         $this->input_type = 'ratings';
-        $this->icon       = 'star-half-o';
+        $this->icon       = 'star';
     }
 }
 
@@ -192,7 +192,7 @@ class Form_Field_Repeat extends Form_Field_Pro {
     public function __construct() {
         $this->name       = __( 'Repeat Field', 'wp-user-frontend' );
         $this->input_type = 'repeat_field';
-        $this->icon       = 'text-width';
+        $this->icon       = 'rectangle-stack';
     }
 }
 
@@ -203,7 +203,7 @@ class Form_Field_Really_Simple_Captcha extends Form_Field_Pro {
     public function __construct() {
         $this->name       = __( 'Really Simple Captcha', 'wp-user-frontend' );
         $this->input_type = 'really_simple_captcha';
-        $this->icon       = '';
+        $this->icon       = 'document-check';
     }
 }
 
@@ -214,7 +214,7 @@ class Form_Field_Shortcode extends Form_Field_Pro {
     public function __construct() {
         $this->name       = __( 'Shortcode', 'wp-user-frontend' );
         $this->input_type = 'shortcode';
-        $this->icon       = 'calendar-o';
+        $this->icon       = 'code-bracket-square';
     }
 }
 
@@ -225,7 +225,7 @@ class Form_Field_Step extends Form_Field_Pro {
     public function __construct() {
         $this->name       = __( 'Step Start', 'wp-user-frontend' );
         $this->input_type = 'step_start';
-        $this->icon       = 'step-forward';
+        $this->icon       = 'play';
     }
 }
 
@@ -236,7 +236,7 @@ class Form_Field_Toc extends Form_Field_Pro {
     public function __construct() {
         $this->name       = __( 'Terms & Conditions', 'wp-user-frontend' );
         $this->input_type = 'toc';
-        $this->icon       = 'file-text';
+        $this->icon       = 'exclamation-circle';
     }
 }
 
@@ -248,7 +248,7 @@ class Form_Field_Math_Captcha extends Form_Field_Pro {
     public function __construct() {
         $this->name       = __( 'Math Captcha', 'wp-user-frontend' );
         $this->input_type = 'math_captcha';
-        $this->icon       = 'hashtag';
+        $this->icon       = 'check-circle';
     }
 }
 
@@ -260,6 +260,6 @@ class Form_Field_QR_Code extends Form_Field_Pro {
     public function __construct() {
         $this->name       = __( 'QR Code', 'wp-user-frontend' );
         $this->input_type = 'qr_code';
-        $this->icon       = 'address-card-o';
+        $this->icon       = 'qrcode';
     }
 }

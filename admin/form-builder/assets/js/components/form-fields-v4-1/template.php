@@ -57,7 +57,7 @@
                             <div
                                 v-if="field_settings[field].icon"
                                 class="wpuf-shrink-0 wpuf-mr-2 wpuf-text-gray-400">
-                                <i :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i>
+                                <img :src="asset_url + '/images/' + field_settings[field].icon + '.svg'" alt="">
                             </div>
                             <div class="wpuf-min-w-0 wpuf-flex-1">
                                 <a href="#" class="focus:wpuf-outline-none focus:wpuf-shadow-none">
@@ -75,7 +75,7 @@
                             <div
                                 v-if="field_settings[field].icon"
                                 class="wpuf-shrink-0 wpuf-mr-2">
-                                <i :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i>
+                                <img :src="asset_url + '/images/' + field_settings[field].icon + '.svg'" alt="">
                             </div>
                             <div class="wpuf-min-w-0 wpuf-flex-1">
                                 <a href="#" class="focus:wpuf-outline-none focus:wpuf-shadow-none">
@@ -92,7 +92,7 @@
                             <div
                                 v-if="field_settings[field].icon"
                                 class="wpuf-shrink-0 wpuf-mr-2">
-                                <i :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i>
+                                <img :src="asset_url + '/images/' + field_settings[field].icon + '.svg'" alt="">
                             </div>
                             <div class="wpuf-min-w-0 wpuf-flex-1">
                                 <a href="#" class="focus:wpuf-outline-none focus:wpuf-shadow-none">

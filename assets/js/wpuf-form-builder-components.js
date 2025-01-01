@@ -1555,7 +1555,8 @@ Vue.component('form-fields-v4-1', {
 
     data: function () {
         return {
-            searched_fields: ''
+            searched_fields: '',
+            asset_url: wpuf_form_builder.asset_url,
         };
     },
 

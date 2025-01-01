@@ -2623,6 +2623,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   height: 50vh;
 }
 
+.wpuf-h-\[80vh\] {
+  height: 80vh;
+}
+
 .wpuf-h-full {
   height: 100%;
 }

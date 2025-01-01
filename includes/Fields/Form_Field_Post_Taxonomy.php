@@ -38,7 +38,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
         $this->input_type = 'taxonomy';
         $this->tax_name   = $tax_name;
         // $this->taxonomy=$taxonomy;
-        // $this->icon       = 'caret-square-o-down';
+        $this->icon       = 'squares-2x2';
     }
 
     /**

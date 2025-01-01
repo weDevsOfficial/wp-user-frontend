@@ -11,7 +11,7 @@ class Form_Field_Textarea extends Field_Contract {
     public function __construct() {
         $this->name       = __( 'Textarea', 'wp-user-frontend' );
         $this->input_type = 'textarea_field';
-        $this->icon       = 'paragraph';
+        $this->icon       = 'menu-alt-2';
     }
 
      /**

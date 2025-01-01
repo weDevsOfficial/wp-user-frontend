@@ -6,7 +6,7 @@ class Form_Field_Post_Title extends Field_Contract {
     public function __construct() {
         $this->name       = __( 'Post Title', 'wp-user-frontend' );
         $this->input_type = 'post_title';
-        $this->icon       = 'header';
+        $this->icon       = 'title';
     }
 
     /**

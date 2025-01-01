@@ -12,7 +12,7 @@ class Form_Field_Dropdown extends Field_Contract {
     public function __construct() {
         $this->name       = __( 'Dropdown', 'wp-user-frontend' );
         $this->input_type = 'dropdown_field';
-        $this->icon       = 'caret-square-o-down';
+        $this->icon       = 'chevron-down';
     }
 
     /**

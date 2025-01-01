@@ -10,7 +10,7 @@ class Form_Field_SectionBreak extends Field_Contract {
     public function __construct() {
         $this->name       = __( 'Section Break', 'wp-user-frontend' );
         $this->input_type = 'section_break';
-        $this->icon       = 'columns';
+        $this->icon       = 'menu-alt-4';
     }
 
     /**

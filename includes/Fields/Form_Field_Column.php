@@ -10,7 +10,7 @@ class Form_Field_Column extends Field_Contract {
     public function __construct() {
         $this->name       = __( 'Columns', 'wp-user-frontend' );
         $this->input_type = 'column_field';
-        $this->icon       = 'columns';
+        $this->icon       = 'view-columns';
     }
 
     /**

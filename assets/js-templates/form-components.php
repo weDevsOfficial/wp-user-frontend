@@ -84,9 +84,11 @@
 
 <script type="text/x-template" id="tmpl-wpuf-builder-stage-v4-1">
 <div id="form-preview-stage">
-    <h4 v-if="!form_fields.length" class="text-center">
-        <?php _e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wp-user-frontend' ); ?>
-    </h4>
+    <div v-if="!form_fields.length" class="wpuf-flex wpuf-flex-col wpuf-items-center wpuf-justify-center wpuf-h-[80vh]">
+        <img src="<?php echo WPUF_ASSET_URI . '/images/form-blank-state.svg'; ?>" alt="">
+        <h2 class="wpuf-text-lg wpuf-text-gray-800"><?php esc_html_e( 'Add fields and build your desired form', 'wp-user-frontend' ); ?></h2>
+        <p class="wpuf-text-sm wpuf-text-gray-500"><?php esc_html_e( 'Add fields and build your desired form', 'wp-user-frontend' ); ?></p>
+    </div>
 
     <ul
         :class="['form-label-' + label_type]"
@@ -1102,7 +1104,7 @@
                             <div
                                 v-if="field_settings[field].icon"
                                 class="wpuf-shrink-0 wpuf-mr-2 wpuf-text-gray-400">
-                                <i :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i>
+                                <img :src="asset_url + '/images/' + field_settings[field].icon + '.svg'" alt="">
                             </div>
                             <div class="wpuf-min-w-0 wpuf-flex-1">
                                 <a href="#" class="focus:wpuf-outline-none focus:wpuf-shadow-none">
@@ -1120,7 +1122,7 @@
                             <div
                                 v-if="field_settings[field].icon"
                                 class="wpuf-shrink-0 wpuf-mr-2">
-                                <i :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i>
+                                <img :src="asset_url + '/images/' + field_settings[field].icon + '.svg'" alt="">
                             </div>
                             <div class="wpuf-min-w-0 wpuf-flex-1">
                                 <a href="#" class="focus:wpuf-outline-none focus:wpuf-shadow-none">
@@ -1137,7 +1139,7 @@
                             <div
                                 v-if="field_settings[field].icon"
                                 class="wpuf-shrink-0 wpuf-mr-2">
-                                <i :class="['fa fa-' + field_settings[field].icon]" aria-hidden="true"></i>
+                                <img :src="asset_url + '/images/' + field_settings[field].icon + '.svg'" alt="">
                             </div>
                             <div class="wpuf-min-w-0 wpuf-flex-1">
                                 <a href="#" class="focus:wpuf-outline-none focus:wpuf-shadow-none">

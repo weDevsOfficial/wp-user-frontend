@@ -10,7 +10,7 @@ class Form_Field_Hidden extends Field_Contract {
     public function __construct() {
         $this->name       = __( 'Hidden Field', 'wp-user-frontend' );
         $this->input_type = 'custom_hidden_field';
-        $this->icon       = 'eye-slash';
+        $this->icon       = 'eye-off';
     }
 
     /**

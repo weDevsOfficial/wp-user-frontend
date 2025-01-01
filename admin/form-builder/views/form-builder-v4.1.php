@@ -22,7 +22,7 @@
                                 class="fa fa-check !wpuf-leading-none hover:wpuf-cursor-pointer wpuf-ml-1 wpuf-text-base"></i>
                             <div
                                 v-if="!post_title_editing"
-                                class="wpuf-dropdown wpuf-dropdown-bottom wpuf-dropdown-end">
+                                class="wpuf-dropdown wpuf-dropdown-bottom wpuf-dropdown-end wpuf-relative">
                                 <div
                                     tabindex="0"
                                     role="button"
@@ -32,11 +32,11 @@
                                         class="form-switcher-arrow !wpuf-font-bold !wpuf-text-xl !wpuf-leading-none"
                                     ></i>
                                 </div>
-                                <ul tabindex="0" class="wpuf-dropdown-content wpuf-menu !wpuf-p-0 wpuf-rounded-md wpuf-z-[1] wpuf-w-52 wpuf-shadow wpuf-bg-white">
+                                <ul tabindex="0" class="wpuf-absolute wpuf-dropdown-content wpuf-menu !wpuf-p-0 wpuf-rounded-md wpuf-z-[1] wpuf-w-52 wpuf-shadow wpuf-bg-white !wpuf-right-[-4rem] !wpuf-top-8">
                                     <?php
                                     foreach ( $forms as $form ) {
                                         ?>
-                                        <li class="button ui-draggable ui-draggable-handle">
+                                        <li>
                                             <a class="wpuf-block wpuf-rounded-none wpuf-font-medium wpuf-text-left wpuf-px-4 wpuf-py-2 !wpuf-text-sm wpuf-text-gray-700 hover:wpuf-bg-gray-100 hover:wpuf-text-gray-900 focus:wpuf-shadow-none focus:wpuf-outline-none" href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-' . $form_type . '-forms&action=edit&id=' . $form->ID ) ); ?>">
                                                 <?php echo esc_html( $form->post_title ); ?>
                                             </a>
@@ -60,23 +60,26 @@
                     }
                 } else {
                     ?>
-                    <span class="form-id wpuf-group wpuf-flex wpuf-items-center wpuf-px-2 wpuf-rounded-md wpuf-border wpuf-border-gray-300 hover:wpuf-cursor-pointer wpuf-ml-6" title="<?php esc_html_e( __( 'Click to copy shortcode', 'wp-user-frontend' ) ); ?>" data-clipboard-text="<?php '[' . esc_attr_e( $shortcodes[0]['name'] ) . ' id="' . esc_attr( $form_id ) . '"]'; ?>">#{{ post.ID }}
-                    <span id="default-icon" class="wpuf-ml-2">
-                        <svg
-                            v-if="!shortcodeCopied"
-                            class="group-hover:wpuf-rotate-6 group-hover:wpuf-stroke-gray-500 wpuf-stroke-gray-400"
-                            width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M14.4438 6.17602C14.2661 5.49738 13.687 5 13 5H11C10.313 5 9.73391 5.49738 9.55618 6.17602M14.4438 6.17602C14.4804 6.31575 14.5 6.46317 14.5 6.61552C14.5 6.91293 14.2761 7.15403 14 7.15403H10C9.72386 7.15403 9.5 6.91293 9.5 6.61552C9.5 6.46317 9.51958 6.31575 9.55618 6.17602M14.4438 6.17602C14.8746 6.21105 15.303 6.25528 15.7289 6.30851C16.4626 6.40022 17 7.08151 17 7.87705V16.897C17 17.7892 16.3284 18.5125 15.5 18.5125H8.5C7.67157 18.5125 7 17.7892 7 16.897V7.87705C7 7.08151 7.53739 6.40022 8.27112 6.30851C8.69698 6.25528 9.12539 6.21105 9.55618 6.17602M9.99997 11.4122H14M9.99997 14.0125H12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+                    <span
+                        class="form-id wpuf-group wpuf-flex wpuf-items-center wpuf-px-2 wpuf-rounded-md wpuf-border wpuf-border-gray-300 hover:wpuf-cursor-pointer wpuf-ml-6"
+                        title="<?php esc_html_e( 'Click to copy shortcode', 'wp-user-frontend' ); ?>"
+                        data-clipboard-text="<?php '[' . $shortcodes[0]['name'] . ' id="' . esc_attr( $form_id ) . ']'; ?>">#{{ post.ID }}
+                        <span id="default-icon" class="wpuf-ml-2">
+                            <svg
+                                v-if="!shortcodeCopied"
+                                class="group-hover:wpuf-rotate-6 group-hover:wpuf-stroke-gray-500 wpuf-stroke-gray-400"
+                                width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M14.4438 6.17602C14.2661 5.49738 13.687 5 13 5H11C10.313 5 9.73391 5.49738 9.55618 6.17602M14.4438 6.17602C14.4804 6.31575 14.5 6.46317 14.5 6.61552C14.5 6.91293 14.2761 7.15403 14 7.15403H10C9.72386 7.15403 9.5 6.91293 9.5 6.61552C9.5 6.46317 9.51958 6.31575 9.55618 6.17602M14.4438 6.17602C14.8746 6.21105 15.303 6.25528 15.7289 6.30851C16.4626 6.40022 17 7.08151 17 7.87705V16.897C17 17.7892 16.3284 18.5125 15.5 18.5125H8.5C7.67157 18.5125 7 17.7892 7 16.897V7.87705C7 7.08151 7.53739 6.40022 8.27112 6.30851C8.69698 6.25528 9.12539 6.21105 9.55618 6.17602M9.99997 11.4122H14M9.99997 14.0125H12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
 
-                        <svg
-                            v-if="shortcodeCopied"
-                            class="wpuf-rotate-6 !wpuf-stroke-primary wpuf-mt-[-5px]"
-                            width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12.2392 3V5.15403M7.81196 4.54199L9.22618 6.06512M16.6663 4.54199L15.2521 6.06512M14.4438 8.66349C14.2661 7.98485 13.687 7.48747 13 7.48747H11C10.313 7.48747 9.73391 7.98485 9.55618 8.66349M14.4438 8.66349C14.4804 8.80322 14.5 8.95064 14.5 9.10299C14.5 9.4004 14.2761 9.6415 14 9.6415H10C9.72386 9.6415 9.5 9.4004 9.5 9.10299C9.5 8.95064 9.51958 8.80322 9.55618 8.66349M14.4438 8.66349C14.8746 8.69852 15.303 8.74275 15.7289 8.79598C16.4626 8.88769 17 9.56898 17 10.3645V19.3845C17 20.2767 16.3284 21 15.5 21H8.5C7.67157 21 7 20.2767 7 19.3845V10.3645C7 9.56898 7.53739 8.88769 8.27112 8.79598C8.69698 8.74275 9.12539 8.69852 9.55618 8.66349M9.99997 13.8997H14M9.99997 16.5H12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+                            <svg
+                                v-if="shortcodeCopied"
+                                class="wpuf-rotate-6 !wpuf-stroke-primary wpuf-mt-[-5px]"
+                                width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12.2392 3V5.15403M7.81196 4.54199L9.22618 6.06512M16.6663 4.54199L15.2521 6.06512M14.4438 8.66349C14.2661 7.98485 13.687 7.48747 13 7.48747H11C10.313 7.48747 9.73391 7.98485 9.55618 8.66349M14.4438 8.66349C14.4804 8.80322 14.5 8.95064 14.5 9.10299C14.5 9.4004 14.2761 9.6415 14 9.6415H10C9.72386 9.6415 9.5 9.4004 9.5 9.10299C9.5 8.95064 9.51958 8.80322 9.55618 8.66349M14.4438 8.66349C14.8746 8.69852 15.303 8.74275 15.7289 8.79598C16.4626 8.88769 17 9.56898 17 10.3645V19.3845C17 20.2767 16.3284 21 15.5 21H8.5C7.67157 21 7 20.2767 7 19.3845V10.3645C7 9.56898 7.53739 8.88769 8.27112 8.79598C8.69698 8.74275 9.12539 8.69852 9.55618 8.66349M9.99997 13.8997H14M9.99997 16.5H12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
                     </span>
-                </span>
                     <?php
                 }
                 ?>

@@ -2235,6 +2235,14 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   bottom: 0px;
 }
 
+.\!wpuf-right-\[-4rem\] {
+  right: -4rem !important;
+}
+
+.\!wpuf-top-8 {
+  top: 2rem !important;
+}
+
 .wpuf--left-20 {
   left: -5rem;
 }

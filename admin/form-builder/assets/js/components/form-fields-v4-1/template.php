@@ -88,7 +88,7 @@
                             :data-form-field="field"
                             data-source="panel"
                             @click="add_form_field(field)"
-                            class="wpuf-field-button wpuf-relative wpuf-flex wpuf-items-center wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-bg-white wpuf-shadow-sm hover:wpuf-border-gray-300 wpuf-p-3">
+                            class="wpuf-field-button wpuf-relative wpuf-flex wpuf-items-center wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-bg-white wpuf-shadow-sm wpuf-p-3 hover:wpuf-border-gray-300 hover:wpuf-cursor-pointer">
                             <div
                                 v-if="field_settings[field].icon"
                                 class="wpuf-shrink-0 wpuf-mr-2">

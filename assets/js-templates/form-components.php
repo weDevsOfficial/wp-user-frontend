@@ -1155,6 +1155,21 @@
                 </div>
             </div>
         </template>
+
+        <div class="wpuf-mt-12 wpuf-p-6 wpuf-rounded-lg wpuf-shadow-md wpuf-text-center">
+            <h2 class="wpuf-text-slate-600 wpuf-text-xl wpuf-font-bold wpuf-mb-4">
+                <?php esc_html_e( 'Got an idea for a new field?', 'wp-user-frontend' ); ?>
+            </h2>
+            <p class="wpuf-text-slate-600 wpuf-mb-6">
+                <?php esc_html_e( 'We\'d love to hear it!', 'wp-user-frontend' ); ?>
+            </p>
+            <a
+                class="wpuf-btn-primary"
+               target="_blank"
+                href="<?php echo esc_url( 'https://wpuf.canny.io/ideas' ); ?>">
+                <?php esc_html_e( 'Share Your Idea', 'wp-user-frontend' ); ?>
+            </a>
+        </div>
     </div>
 </div>
 </script>

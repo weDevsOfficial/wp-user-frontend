@@ -119,7 +119,7 @@
                     });
 
                     buttons.draggable({
-                        connectToSortable: '#form-preview-stage .wpuf-form, .wpuf-column-inner-fields .wpuf-column-fields-sortable-list',
+                        connectToSortable: '#form-preview-stage, #form-preview-stage .wpuf-form, .wpuf-column-inner-fields .wpuf-column-fields-sortable-list',
                         helper: 'clone',
                         revert: 'invalid',
                         cancel: '.button-faded',

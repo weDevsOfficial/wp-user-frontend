@@ -45,15 +45,17 @@
                 </h3>
                 <div
                     v-show="section.show"
+                    :key="section.id"
                     :id="'panel-form-field-buttons-' + section.id"
-                    class="wpuf-field-button panel-form-field-buttons wpuf-grid wpuf-grid-cols-1 wpuf-gap-4 sm:wpuf-grid-cols-2">
+                    class="panel-form-field-buttons wpuf-grid wpuf-grid-cols-1 wpuf-gap-4 sm:wpuf-grid-cols-2">
                     <template v-for="field in section.fields">
                         <div
                             v-if="is_pro_feature(field)"
+                            :key="field"
                             :data-form-field="field"
                             data-source="panel"
                             @click="alert_pro_feature(field)"
-                            class="wpuf-relative wpuf-flex wpuf-items-center wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-bg-white wpuf-shadow-sm hover:wpuf-border-gray-300 wpuf-p-3">
+                            class="wpuf-relative wpuf-flex wpuf-items-center wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-bg-white wpuf-shadow-sm wpuf-p-3 hover:wpuf-border-gray-300 hover:wpuf-cursor-pointer">
                             <div
                                 v-if="field_settings[field].icon"
                                 class="wpuf-shrink-0 wpuf-mr-2 wpuf-text-gray-400">
@@ -68,10 +70,11 @@
                         </div>
                         <div
                             v-else-if="is_failed_to_validate(field)"
+                            :key="field"
                             :data-form-field="field"
                             data-source="panel"
                             @click="alert_invalidate_msg(field)"
-                            class="wpuf-relative wpuf-flex wpuf-items-center wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-bg-white wpuf-shadow-sm hover:wpuf-border-gray-300 wpuf-p-3">
+                            class="wpuf-relative wpuf-flex wpuf-items-center wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-bg-white wpuf-shadow-sm wpuf-p-3 hover:wpuf-border-gray-300 hover:wpuf-cursor-pointer">
                             <div
                                 v-if="field_settings[field].icon"
                                 class="wpuf-shrink-0 wpuf-mr-2">
@@ -85,6 +88,7 @@
                         </div>
                         <div
                             v-else
+                            :key="field"
                             :data-form-field="field"
                             data-source="panel"
                             @click="add_form_field(field)"

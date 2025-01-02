@@ -62,8 +62,8 @@
                     ?>
                     <span
                         class="form-id wpuf-group wpuf-flex wpuf-items-center wpuf-px-2 wpuf-rounded-md wpuf-border wpuf-border-gray-300 hover:wpuf-cursor-pointer wpuf-ml-6"
-                        title="<?php esc_html_e( 'Click to copy shortcode', 'wp-user-frontend' ); ?>"
-                        data-clipboard-text="<?php '[' . $shortcodes[0]['name'] . ' id="' . esc_attr( $form_id ) . ']'; ?>">#{{ post.ID }}
+                        title="<?php printf( esc_html( __( 'Click to copy shortcode', 'wp-user-frontend' ) ) ); ?>"
+                        data-clipboard-text="<?php printf( esc_attr( '[' . $shortcodes[0]['name'] . ' id="' . esc_attr( $form_id ) . ']' ) ); ?>">#{{ post.ID }}
                         <span id="default-icon" class="wpuf-ml-2">
                             <svg
                                 v-if="!shortcodeCopied"

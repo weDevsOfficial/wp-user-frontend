@@ -486,18 +486,17 @@
         },
 
         mounted: function () {
-            if ( this.is_post_form ) {
-                // secondary settings tabs and their contents
-                var settings_tabs = $( '#wpuf-form-builder-settings-tabs .nav-tab' );
-                var self = this;
+            var clipboard = new window.Clipboard('.form-id');
+            var settings_tabs = $( '#wpuf-form-builder-settings-tabs .nav-tab' );
+            var self = this;
 
+            $(".form-id").tooltip();
+
+            if ( this.is_post_form ) {
                 // add a click listener to each settings_tab
                 settings_tabs.each( function () {
                     $( this ).bind( 'click', self.setActiveSettingsTab );
                 } );
-
-                var clipboard = new window.Clipboard( '.form-id' );
-                $( ".form-id" ).tooltip();
 
                 clipboard.on( 'success', function ( e ) {
                     // Show copied tooltip
@@ -527,33 +526,30 @@
                 this.bind_tab_on_click($('#wpuf-form-builder > fieldset > .nav-tab-wrapper > a'), '#wpuf-form-builder');
 
                 // secondary settings tabs and their contents
-                var settings_tabs = $('#wpuf-form-builder-settings .nav-tab'),
-                    settings_tab_contents = $('#wpuf-form-builder-settings .tab-contents .group');
+                var settings_tab_contents = $('#wpuf-form-builder-settings .tab-contents .group');
 
                 settings_tabs.first().addClass('nav-tab-active');
                 settings_tab_contents.first().addClass('active');
 
                 this.bind_tab_on_click(settings_tabs, '#wpuf-form-builder-settings');
 
-                var clipboard = new window.Clipboard('.form-id');
-                $(".form-id").tooltip();
-
-                var self = this;
-
-                clipboard.on('success', function(e) {
+                clipboard.on( 'success', function ( e ) {
                     // Show copied tooltip
-                    $(e.trigger)
-                        .attr('data-original-title', 'Copied!')
-                        .tooltip('show');
+                    $( e.trigger )
+                        .attr( 'data-original-title', 'Shortcode copied!' )
+                        .tooltip( 'show' );
+
+                    self.shortcodeCopied = true;
 
                     // Reset the copied tooltip
-                    setTimeout(function() {
-                        $(e.trigger).tooltip('hide')
-                            .attr('data-original-title', self.i18n.copy_shortcode);
-                    }, 1000);
+                    setTimeout( function () {
+                        $( e.trigger ).tooltip( 'hide' )
+                            .attr( 'data-original-title', self.i18n.copy_shortcode );
+                        self.shortcodeCopied = false;
+                    }, 1000 );
 
                     e.clearSelection();
-                });
+                } );
 
                 window.onbeforeunload = function () {
                     if ( self.isDirty ) {

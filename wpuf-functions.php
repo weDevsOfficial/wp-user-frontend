@@ -4828,3 +4828,14 @@ function wpuf_get_pro_icon() {
     return WPUF_ASSET_URI . '/images/crown.svg';
 }
 
+/**
+ * Check if the pro version is active
+ *
+ * @since WPUF_SINCE
+ *
+ * @return bool
+ */
+function wpuf_is_pro_active() {
+    return class_exists( 'WP_User_Frontend_Pro' );
+}
+

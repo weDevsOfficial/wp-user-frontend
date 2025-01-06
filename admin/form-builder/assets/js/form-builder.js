@@ -587,6 +587,9 @@
 
             // set current sidebar panel
             set_current_panel: function (panel) {
+                if (panel === 'form-fields-v4-1') {
+                    this.$store.state.panel_sections = wpuf_form_builder.panel_sections;
+                }
                 this.$store.commit('set_current_panel', panel);
             },
 
@@ -972,7 +975,7 @@
     });
 
     // Mobile view menu toggle
-    $('#wpuf-form-builder').on('click', '#wpuf-toggle-field-options, #wpuf-toggle-show-form, .control-buttons .fa-pencil, .ui-draggable-handle', function() {
+    $('#wpuf-form-builder').on('click', '#wpuf-toggle-field-options, #wpuf-toggle-show-form, .field-buttons .fa-pencil, .ui-draggable-handle', function() {
         $('#wpuf-toggle-field-options').toggleClass('hide');
         $('#wpuf-toggle-show-form').toggleClass('show');
         $('#builder-form-fields').toggleClass('show');

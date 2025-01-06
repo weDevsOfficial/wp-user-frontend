@@ -35,7 +35,7 @@ Vue.component('builder-stage', {
         $('#form-preview-stage .wpuf-form.sortable-list').sortable({
             placeholder: 'form-preview-stage-dropzone',
             items: '.field-items',
-            handle: '.control-buttons .move',
+            handle: '.field-buttons .move',
             scroll: true,
             over: function() {
                 in_column_field = false;

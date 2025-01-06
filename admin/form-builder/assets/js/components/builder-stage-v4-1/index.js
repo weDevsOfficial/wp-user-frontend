@@ -35,7 +35,7 @@ Vue.component('builder-stage-v4-1', {
         $('#form-preview-stage .wpuf-form.sortable-list').sortable({
             placeholder: 'form-preview-stage-dropzone',
             items: '.field-items',
-            handle: '.control-buttons .move',
+            handle: '.field-buttons .move',
             scroll: true,
             over: function() {
                 in_column_field = false;
@@ -142,7 +142,7 @@ Vue.component('builder-stage-v4-1', {
         },
 
         is_pro_feature: function (template) {
-            return (this.field_settings[template] && this.field_settings[template].pro_feature) ? true : false;
+            return ( this.field_settings[template] && this.field_settings[template].pro_feature ) ? true : false;
         },
 
         is_template_available: function (field) {

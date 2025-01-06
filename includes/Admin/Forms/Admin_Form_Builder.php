@@ -170,6 +170,8 @@ class Admin_Form_Builder {
                 'turnstile_secret' => wpuf_get_option( 'turnstile_secret_key', 'wpuf_general' ),
                 'nonce'            => wp_create_nonce( 'form-builder-setting-nonce' ),
                 'is_older_form'    => defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.1', '<' ),
+                'is_pro_active'    => wpuf_is_pro_active(),
+                'pro_asset_url'    => defined( 'WPUF_PRO_ASSET_URI' ) ? WPUF_PRO_ASSET_URI : '',
             ]
         );
         $wpuf_form_builder = wpuf_unset_conditional( $wpuf_form_builder );

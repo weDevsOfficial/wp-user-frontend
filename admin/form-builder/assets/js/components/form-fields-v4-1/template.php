@@ -32,7 +32,7 @@
             </span>
         </div>
     </div>
-    <div class="wpuf-form-builder-form-fields">
+    <div class="wpuf-form-builder-form-fields wpuf-mt-4">
         <template
             v-for="(section, index) in panel_sections">
             <div v-if="section.fields.length" class="panel-form-field-group clearfix">
@@ -50,7 +50,7 @@
                     class="panel-form-field-buttons wpuf-grid wpuf-grid-cols-1 wpuf-gap-4 sm:wpuf-grid-cols-2">
                     <template v-for="field in section.fields">
                         <div
-                            v-if="is_pro_feature(field)"
+                            v-if="is_pro_preview(field)"
                             :key="field"
                             :data-form-field="field"
                             data-source="panel"
@@ -59,7 +59,7 @@
                             <div
                                 v-if="field_settings[field].icon"
                                 class="wpuf-shrink-0 wpuf-mr-2 wpuf-text-gray-400">
-                                <img :src="asset_url + '/images/' + field_settings[field].icon + '.svg'" alt="">
+                                <img :src="get_icon_url(field)" alt="">
                             </div>
                             <div class="wpuf-min-w-0 wpuf-flex-1">
                                 <a href="#" class="focus:wpuf-outline-none focus:wpuf-shadow-none">
@@ -78,7 +78,7 @@
                             <div
                                 v-if="field_settings[field].icon"
                                 class="wpuf-shrink-0 wpuf-mr-2">
-                                <img :src="asset_url + '/images/' + field_settings[field].icon + '.svg'" alt="">
+                                <img :src="get_icon_url(field)" alt="">
                             </div>
                             <div class="wpuf-min-w-0 wpuf-flex-1">
                                 <a href="#" class="focus:wpuf-outline-none focus:wpuf-shadow-none">
@@ -96,7 +96,7 @@
                             <div
                                 v-if="field_settings[field].icon"
                                 class="wpuf-shrink-0 wpuf-mr-2">
-                                <img :src="asset_url + '/images/' + field_settings[field].icon + '.svg'" alt="">
+                                <img :src="get_icon_url(field)" alt="">
                             </div>
                             <div class="wpuf-min-w-0 wpuf-flex-1">
                                 <a href="#" class="focus:wpuf-outline-none focus:wpuf-shadow-none">

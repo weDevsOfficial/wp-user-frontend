@@ -1,5 +1,5 @@
 <form id="wpuf-form-builder"
-    class="wpuf-bg-white wpuf-w-[calc(100%+20px)] wpuf-ml-[-20px] wpuf-form-builder-<?php echo esc_attr( $form_type ); ?>"
+    class="!wpuf-bg-white !wpuf-static !wpuf-w-[calc(100%+20px)] wpuf-ml-[-20px] !wpuf-p-0 wpuf-form-builder-<?php echo esc_attr( $form_type ); ?>"
     method="post"
     action="" @submit.prevent="save_form_builder" v-cloak>
     <div class="wpuf-bg-white wpuf-px-[20px] wpuf-pt-8 wpuf-justify-between wpuf-items-center wpuf-pb-4">

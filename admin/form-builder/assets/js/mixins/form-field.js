@@ -37,17 +37,6 @@ wpuf_mixins.form_field_mixin = {
             var commonClasses = '';
 
             switch (type_class) {
-                case 'text':
-                case 'textfield':
-                case 'number':
-                case 'url':
-                case 'email':
-                case 'textarea':
-                case 'textareafield':
-                case 'select':
-                    commonClasses = 'wpuf-block wpuf-min-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 !wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300 wpuf-max-w-full';
-                    break;
-
                 case 'upload_btn':
                     commonClasses = 'file-selector  wpuf-rounded-md wpuf-btn-secondary';
                     break;
@@ -56,9 +45,16 @@ wpuf_mixins.form_field_mixin = {
                     commonClasses = 'wpuf-ml-3 wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900';
                     break;
 
-                    case 'checkbox':
+                case 'checkbox':
                     commonClasses = 'wpuf-h-4 wpuf-w-4 wpuf-rounded wpuf-border-gray-300 !wpuf-mt-0.5 checked:focus:wpuf-bg-primary checked:hover:wpuf-bg-primary checked:wpuf-bg-primary before:!wpuf-content-none';
                     break;
+
+                case 'dropdown':
+                    commonClasses = 'wpuf-block wpuf-w-full wpuf-min-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm   placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300';
+                    break;
+
+                default:
+                    commonClasses = 'wpuf-block wpuf-min-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 !wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300 wpuf-max-w-full';
             }
 
             return [

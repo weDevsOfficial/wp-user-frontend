@@ -18,7 +18,7 @@
                         field.width ? 'field-size-' + field.width : '',
                         ('custom_hidden_field' === field.template) ? 'hidden-field' : ''
                     ]"
-            class="wpuf-group wpuf-rounded-lg hover:wpuf-bg-green-50 wpuf-transition wpuf-duration-150 wpuf-ease-out !wpuf-m-0 !wpuf-p-0">
+            class="wpuf-group wpuf-rounded-lg hover:!wpuf-bg-green-50 wpuf-transition wpuf-duration-150 wpuf-ease-out !wpuf-m-0 !wpuf-p-0">
             <div
                 v-if="field.input_type !== 'column_field'"
                 :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-bg-green-50 wpuf-border-green-400' : 'wpuf-border-transparent'"
@@ -57,7 +57,7 @@
             </component>
             <div
                 :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-opacity-100' : 'wpuf-opacity-0'"
-                class="control-buttons group-hover:wpuf-opacity-100 wpuf-rounded-b-lg !wpuf-bg-green-600 wpuf-flex wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out wpuf-flex wpuf-justify-around">
+                class="field-buttons group-hover:wpuf-opacity-100 wpuf-rounded-b-lg !wpuf-bg-green-600 wpuf-flex wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out wpuf-flex wpuf-justify-around">
                 <div class="wpuf-flex wpuf-justify-around wpuf-text-green-200">
                     <template v-if="!is_failed_to_validate(field.template)">
                             <span :class="action_button_classes">
@@ -127,7 +127,7 @@
         <ul class="wpuf-form">
             <li
                 v-for="(field, index) in hidden_fields"
-                class="field-items wpuf-group hover:wpuf-bg-green-50 !wpuf-m-0 !wpuf-p-0"
+                class="field-items wpuf-group hover:!wpuf-bg-green-50 !wpuf-m-0 !wpuf-p-0"
             >
                 <div
                     :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-border wpuf-border-dashed wpuf-bg-green-50 wpuf-border-green-400' : 'wpuf-border-transparent'"

@@ -3370,6 +3370,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   background-color: rgb(67 56 202 / var(--tw-bg-opacity));
 }
 
+.wpuf-bg-orange-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 237 213 / var(--tw-bg-opacity));
+}
+
 .wpuf-bg-orange-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(255 247 237 / var(--tw-bg-opacity));
@@ -4580,11 +4585,12 @@ ul.wpuf-form li.field-size-medium .wpuf-fields {
   cursor: pointer;
 }
 
-.wpuf-group:hover .group-hover\:wpuf-border-dashed {
-  border-style: dashed;
+.wpuf-group\/column-inner:hover .group-hover\/column-inner\:wpuf-border-green-400 {
+  --tw-border-opacity: 1;
+  border-color: rgb(74 222 128 / var(--tw-border-opacity));
 }
 
-.wpuf-group\/column-inner:hover .group-hover\/column-inner\:wpuf-border-green-400 {
+.wpuf-group\/hidden-fields:hover .group-hover\/hidden-fields\:wpuf-border-green-400 {
   --tw-border-opacity: 1;
   border-color: rgb(74 222 128 / var(--tw-border-opacity));
 }
@@ -4599,6 +4605,10 @@ ul.wpuf-form li.field-size-medium .wpuf-fields {
 }
 
 .wpuf-group\/column-inner:hover .group-hover\/column-inner\:wpuf-opacity-100 {
+  opacity: 1;
+}
+
+.wpuf-group\/hidden-fields:hover .group-hover\/hidden-fields\:wpuf-opacity-100 {
   opacity: 1;
 }
 

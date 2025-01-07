@@ -45,6 +45,12 @@ wpuf_mixins.add_form_field = {
             // add new form element
             this.$store.commit('add_form_field_element', payload);
         },
+
+        is_pro_preview: function (template) {
+            var is_pro_active = wpuf_form_builder.is_pro_active === '1';
+
+            return (!is_pro_active && this.field_settings[template] && this.field_settings[template].pro_feature);
+        },
     },
 
     computed: {

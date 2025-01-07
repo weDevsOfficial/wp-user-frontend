@@ -336,7 +336,7 @@ Vue.component('builder-stage-v4-1', {
             var template = field.template;
 
             if (this.field_settings[template]) {
-                if (this.is_pro_feature(template)) {
+                if (this.is_pro_preview(template)) {
                     return false;
                 }
 
@@ -1134,7 +1134,7 @@ Vue.component('form-column_field', {
             var template = field.template;
 
             if (this.field_settings[template]) {
-                if (this.is_pro_feature(template)) {
+                if (this.is_pro_preview(template)) {
                     return false;
                 }
 
@@ -1652,19 +1652,11 @@ Vue.component('form-fields-v4-1', {
                 return '';
             }
 
-            console.log(this.field_settings[field].pro_feature);
-
             if (this.is_pro_active === '1' && this.field_settings[field].pro_feature) {
                 return wpuf_form_builder.pro_asset_url + '/images/' + this.field_settings[field].icon + '.svg';
             } else {
                 return wpuf_form_builder.asset_url + '/images/' + this.field_settings[field].icon + '.svg';
             }
-        },
-
-        is_pro_preview: function (template) {
-            var is_pro_active = wpuf_form_builder.is_pro_active === '1';
-
-            return (!is_pro_active && this.field_settings[template] && this.field_settings[template].pro_feature);
         },
     },
 

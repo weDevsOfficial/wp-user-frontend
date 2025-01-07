@@ -149,7 +149,7 @@ Vue.component('builder-stage-v4-1', {
             var template = field.template;
 
             if (this.field_settings[template]) {
-                if (this.is_pro_feature(template)) {
+                if (this.is_pro_preview(template)) {
                     return false;
                 }
 

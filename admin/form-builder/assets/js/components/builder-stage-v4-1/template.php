@@ -23,7 +23,7 @@
                 v-if="field.input_type !== 'column_field'"
                 :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-bg-green-50 wpuf-border-green-400' : 'wpuf-border-transparent'"
                 class="wpuf-flex wpuf-justify-between wpuf-p-4 wpuf-rounded-t-md wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed group-hover:wpuf-border-green-400 group-hover:wpuf-cursor-pointer">
-                <div v-if="!(is_full_width(field.template) || is_pro_feature(field.template))" class="wpuf-w-1/4">
+                <div v-if="!(is_full_width(field.template) || is_pro_preview(field.template))" class="wpuf-w-1/4">
                     <label
                         v-if="!is_invisible(field)"
                         :for="'wpuf-' + field.name ? field.name : 'cls'"
@@ -33,7 +33,7 @@
                     </label>
                 </div>
                 <div
-                    :class="(is_full_width(field.template) || is_pro_feature(field.template)) ? 'wpuf-w-full' : 'wpuf-w-3/4'"
+                    :class="(is_full_width(field.template) || is_pro_preview(field.template)) ? 'wpuf-w-full' : 'wpuf-w-3/4'"
                     class="wpuf-relative"
                 >
                     <div class="wpuf-absolute wpuf-w-full wpuf-h-full wpuf-z-10"></div>
@@ -41,7 +41,7 @@
                         v-if="is_template_available(field)"
                         :is="'form-' + field.template"
                         :field="field"></component>
-                    <div v-if="is_pro_feature(field.template)" class="stage-pro-alert wpuf-text-center">
+                    <div v-if="is_pro_preview(field.template)" class="stage-pro-alert wpuf-text-center">
                         <label class="wpuf-pro-text-alert">
                             <a :href="pro_link" target="_blank"
                                class="wpuf-text-gray-700 wpuf-text-base"><strong>{{ get_field_name( field.template )
@@ -99,7 +99,7 @@
                                 Remove
                         </span>
                     <span
-                        v-if="is_pro_feature(field.template)"
+                        v-if="is_pro_preview(field.template)"
                         :class="action_button_classes" class="hover:wpuf-bg-green-700">
                             <a
                                 :href="pro_link"
@@ -127,21 +127,22 @@
         <ul class="wpuf-form">
             <li
                 v-for="(field, index) in hidden_fields"
-                class="field-items wpuf-group hover:!wpuf-bg-green-50 !wpuf-m-0 !wpuf-p-0"
+                class="field-items wpuf-group/hidden-fields !wpuf-m-0 !wpuf-p-0 hover:wpuf-cursor-pointer"
             >
                 <div
-                    :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-border wpuf-border-dashed wpuf-bg-green-50 wpuf-border-green-400' : 'wpuf-border-transparent'"
-                    class="wpuf-flex wpuf-bg-gray-50 wpuf-p-4 wpuf-rounded-t-md wpuf-border-t wpuf-border-r wpuf-border-l group-hover:wpuf-border-dashed group-hover:wpuf-border-green-400 group-hover:wpuf-cursor-pointer">
+                    :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed wpuf-bg-green-50 wpuf-border-green-400' : ''"
+                    class="wpuf-flex wpuf-bg-orange-100 wpuf-p-4 wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed wpuf-border-transparent group-hover/hidden-fields:wpuf-border-green-400">
                     <strong><?php esc_html_e( 'key', 'wp-user-frontend' ); ?></strong>: {{ field.name }} |
                     <strong><?php esc_html_e( 'value', 'wp-user-frontend' ); ?></strong>: {{ field.meta_value }}
                 </div>
                 <div
-                    class="control-buttons wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-rounded-b-lg !wpuf-bg-green-600 wpuf-flex wpuf-justify-around wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out">
-                    <div class="wpuf-flex wpuf-items-center wpuf-text-green-200">
+                    :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-opacity-100' : 'wpuf-opacity-0'"
+                    class="field-buttons wpuf-opacity-0 group-hover/hidden-fields:wpuf-opacity-100 wpuf-bg-green-600 wpuf-rounded-b-lg wpuf-flex wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out wpuf-flex wpuf-justify-around">
+                    <div class="wpuf-flex wpuf-justify-around wpuf-text-green-200">
                         <template v-if="!is_failed_to_validate(field.template)">
-                                <span
-                                    :class="action_button_classes"
-                                    @click="open_field_settings(field.id)">
+                            <span
+                                :class="action_button_classes"
+                                @click="open_field_settings(field.id)">
                             <i
                                 class="fa fa-pencil"></i>
                                 Edit
@@ -156,15 +157,11 @@
                         </template>
                         <template v-else>
                             <span :class="action_button_classes">
-                            <i class="fa fa-arrows control-button-disabled wpuf--ml-1 wpuf-rounded-l-md"></i>
-                                </span>
-                            <span :class="action_button_classes">
-                            <i class="fa fa-pencil control-button-disabled wpuf--ml-1"></i>
+                                <i class="fa fa-pencil control-button-disabled wpuf--ml-1"></i>
                                 Edit
-                                </span>
+                            </span>
                             <span :class="action_button_classes">
-                            <i
-                                class="fa fa-clone control-button-disabled wpuf--ml-1"></i>
+                                <i class="fa fa-clone control-button-disabled wpuf--ml-1"></i>
                                 Copy
                             </span>
                         </template>
@@ -174,7 +171,7 @@
                                 Remove
                         </span>
                         <span
-                            v-if="is_pro_feature(field.template)"
+                            v-if="is_pro_preview(field.template)"
                             :class="action_button_classes" class="hover:wpuf-bg-green-700">
                             <a
                                 :href="pro_link"

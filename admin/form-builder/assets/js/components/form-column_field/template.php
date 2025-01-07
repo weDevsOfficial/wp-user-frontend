@@ -27,7 +27,7 @@
                       ]">
                     <div class="wpuf-flex wpuf-flex-col md:wpuf-flex-row wpuf-gap-2 wpuf-p-4 wpuf-border-transparent group-hover/column-inner:wpuf-border-green-400 wpuf-rounded-t-md wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed wpuf-border-green-400">
                         <div
-                            v-if="!(is_full_width(field.template) || is_pro_feature(field.template))"
+                            v-if="!(is_full_width(field.template) || is_pro_preview(field.template))"
                             class="wpuf-w-full md:wpuf-w-1/4 wpuf-shrink-0">
                             <label v-if="!is_invisible(field)"
                                    :for="'wpuf-' + (field.name ? field.name : 'cls')"
@@ -40,7 +40,7 @@
                         <div
                             :class="[
                              'wpuf-relative wpuf-min-w-0', // Added wpuf-min-w-0
-                             (is_full_width(field.template) || is_pro_feature(field.template))
+                             (is_full_width(field.template) || is_pro_preview(field.template))
                                ? 'wpuf-w-full'
                                : 'wpuf-w-full md:wpuf-w-3/4'
                            ]">
@@ -51,7 +51,7 @@
                                    :is="'form-' + field.template"
                                    :field="field">
                                 </component>
-                                <div v-if="is_pro_feature(field.template)" class="stage-pro-alert wpuf-text-center">
+                                <div v-if="is_pro_preview(field.template)" class="stage-pro-alert wpuf-text-center">
                                     <label class="wpuf-pro-text-alert">
                                         <a :href="pro_link" target="_blank"
                                            class="wpuf-text-gray-700 wpuf-text-base"><strong>{{ get_field_name( field.template )
@@ -102,7 +102,7 @@
                                 Remove
                         </span>
                             <span :class="action_button_classes"
-                                v-if="is_pro_feature(field.template)"
+                                v-if="is_pro_preview(field.template)"
                                 class="hover:wpuf-bg-green-700">
                             <a
                                 :href="pro_link"

@@ -11,8 +11,7 @@
             <label
                 :value="val"
                 :checked="is_selected(val)"
-                :class="class_names('radio_btns')"
-                class="wpuf-ml-3 wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">{{ label }}</label>
+                :class="builder_class_names('radio_btns')">{{ label }}</label>
         </div>
     </div>
 

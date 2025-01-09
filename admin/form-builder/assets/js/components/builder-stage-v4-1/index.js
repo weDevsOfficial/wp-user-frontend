@@ -32,7 +32,7 @@ Vue.component('builder-stage-v4-1', {
             in_column_field = false;
 
         // bind jquery ui sortable
-        $('#form-preview-stage .wpuf-form.sortable-list').sortable({
+        $('#form-preview-stage, #form-preview-stage .wpuf-form.sortable-list').sortable({
             placeholder: 'form-preview-stage-dropzone',
             items: '.field-items',
             handle: '.field-buttons .move',

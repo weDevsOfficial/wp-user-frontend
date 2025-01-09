@@ -42,7 +42,7 @@ wpuf_mixins.form_field_mixin = {
                     break;
 
                 case 'radio':
-                    commonClasses = 'wpuf-ml-3 wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900';
+                    commonClasses = 'wpuf-ml-3 wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900 checked:focus:wpuf-bg-primary checked:hover:wpuf-bg-primary checked:before:!wpuf-bg-white checked:wpuf-bg-primary';
                     break;
 
                 case 'checkbox':
@@ -50,7 +50,7 @@ wpuf_mixins.form_field_mixin = {
                     break;
 
                 case 'dropdown':
-                    commonClasses = 'wpuf-block wpuf-w-full wpuf-min-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm   placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300';
+                    commonClasses = 'wpuf-block wpuf-w-full wpuf-min-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300';
                     break;
 
                 default:

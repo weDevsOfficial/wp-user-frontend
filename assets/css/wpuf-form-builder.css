@@ -692,15 +692,11 @@
 .option-field-option-chooser .selector {
   width: 25px;
 }
-.option-field-option-chooser .selector input {
-  margin-top: 14px;
-}
 .option-field-option-chooser .sort-handler {
   width: 22px;
   cursor: ns-resize;
 }
 .option-field-option-chooser .sort-handler i {
-  margin-top: 14px;
   font-size: 15px;
 }
 .option-field-option-chooser .label {
@@ -716,22 +712,10 @@
 .option-field-option-chooser .header .value {
   color: #909090;
 }
-.option-field-option-chooser .action-buttons {
-  width: 36px;
-}
 .option-field-option-chooser .action-buttons i {
   cursor: pointer;
   font-size: 16px;
   margin-top: 13px;
-}
-.option-field-option-chooser .plus-buttons {
-  padding: 5px;
-  font-size: 18px;
-  text-align: center;
-  cursor: pointer;
-  border: 1px solid #ccc;
-  width: 61%;
-  margin-left: 14%;
 }
 .panel-field-opt-repeater-columns .repeater-columns li > div {
   float: left;

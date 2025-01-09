@@ -83,7 +83,7 @@
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-builder-stage-v4-1">
-<div id="form-preview-stage">
+<div id="form-preview-stage" class="wpuf-h-[80vh]">
     <div v-if="!form_fields.length" class="wpuf-flex wpuf-flex-col wpuf-items-center wpuf-justify-center wpuf-h-[80vh]">
         <img src="<?php echo WPUF_ASSET_URI . '/images/form-blank-state.svg'; ?>" alt="">
         <h2 class="wpuf-text-lg wpuf-text-gray-800"><?php esc_html_e( 'Add fields and build your desired form', 'wp-user-frontend' ); ?></h2>
@@ -239,38 +239,12 @@
                                 class="fa fa-clone"></i>
                                 Copy
                             </span>
-                        </template>
-                        <template v-else>
-                            <span :class="action_button_classes">
-                                <i class="fa fa-pencil control-button-disabled wpuf--ml-1"></i>
-                                Edit
-                            </span>
-                            <span :class="action_button_classes">
-                                <i class="fa fa-clone control-button-disabled wpuf--ml-1"></i>
-                                Copy
+                            <span :class="action_button_classes"  @click="delete_hidden_field(field.id)">
+                                <i
+                                    class="fa fa-trash-o wpuf--ml-1"></i>
+                                    Remove
                             </span>
                         </template>
-                        <span :class="action_button_classes" @click="delete_field(index)">
-                            <i
-                                class="fa fa-trash-o wpuf--ml-1"></i>
-                                Remove
-                        </span>
-                        <span
-                            v-if="is_pro_preview(field.template)"
-                            :class="action_button_classes" class="hover:wpuf-bg-green-700">
-                            <a
-                                :href="pro_link"
-                                target="_blank"
-                                class="wpuf-rounded-r-md hover:wpuf-bg-slate-500 hover:wpuf-cursor-pointer wpuf-transition wpuf-duration-150 wpuf-ease-out hover:wpuf-transition-all">
-                                <svg
-                                    width="15" height="15" viewBox="0 0 20 15" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M19.2131 4.11564C19.2161 4.16916 19.2121 4.22364 19.1983 4.27775L17.9646 10.5323C17.9024 10.7741 17.6796 10.9441 17.4235 10.9455L10.0216 10.9818H10.0188H2.61682C2.35933 10.9818 2.13495 10.8112 2.07275 10.5681L0.839103 4.29542C0.824897 4.23985 0.820785 4.18385 0.824374 4.12895C0.34714 3.98269 0 3.54829 0 3.03636C0 2.40473 0.528224 1.89091 1.17757 1.89091C1.82692 1.89091 2.35514 2.40473 2.35514 3.03636C2.35514 3.39207 2.18759 3.71033 1.92523 3.92058L3.46976 5.43433C3.86011 5.81695 4.40179 6.03629 4.95596 6.03629C5.61122 6.03629 6.23596 5.7336 6.62938 5.22647L9.1677 1.95491C8.95447 1.74764 8.82243 1.46124 8.82243 1.14545C8.82243 0.513818 9.35065 0 10 0C10.6493 0 11.1776 0.513818 11.1776 1.14545C11.1776 1.45178 11.0526 1.72982 10.8505 1.93556L10.8526 1.93811L13.3726 5.21869C13.7658 5.73069 14.3928 6.03636 15.0499 6.03636C15.6092 6.03636 16.1351 5.82451 16.5305 5.43978L18.0848 3.92793C17.8169 3.71775 17.6449 3.39644 17.6449 3.03636C17.6449 2.40473 18.1731 1.89091 18.8224 1.89091C19.4718 1.89091 20 2.40473 20 3.03636C20 3.53462 19.6707 3.9584 19.2131 4.11564ZM17.8443 12.6909C17.8443 12.3897 17.5932 12.1455 17.2835 12.1455H2.77884C2.46916 12.1455 2.21809 12.3897 2.21809 12.6909V14C2.21809 14.3012 2.46916 14.5455 2.77884 14.5455H17.2835C17.5932 14.5455 17.8443 14.3012 17.8443 14V12.6909Z"
-                                    fill="#FB9A28"/>
-                            </svg>
-                            </a>
-                        </span>
                     </div>
                 </div>
             </li>
@@ -342,27 +316,33 @@
             /><?php esc_attr_e( 'Sync values', 'wp-user-frontend' ); ?>
         </label>
     </div>
-    <div class="wpuf-grid wpuf-grid-cols-4 wpuf-auto-cols-min wpuf-gap-4 wpuf-mt-4">
-        <div></div>
-        <div class="wpuf-flex">
-            <label class="wpuf-font-sm wpuf-text-gray-900">
-                <?php esc_attr_e( 'Label', 'wp-user-frontend' ); ?>
-            </label>
-            <help-text text="<?php esc_attr_e( 'Do not use & or other special character for option label', 'wp-user-frontend' ); ?>"></help-text>
-        </div>
-        <div v-if="show_value" class="value">
-            <?php esc_attr_e( 'Value', 'wp-user-frontend' ); ?>
-        </div>
-        <div></div>
-    </div>
-    <div class="option-field-option-chooser">
-        <div
-            v-for="(option, index) in options"
-            :key="option.id"
-            :data-index="index"
-            class="wpuf-grid wpuf-grid-cols-[auto_1fr_1fr_auto] wpuf-items-center wpuf-gap-4 wpuf-mb-2 option-field-option hover:wpuf-cursor-pointer">
-                <div class="wpuf-flex wpuf-items-center">
-                    <div class="selector">
+
+    <div class="option-field-option-chooser wpuf-mx-auto wpuf-flow-root wpuf-overflow-hidden">
+        <table class="wpuf-w-full wpuf-text-left">
+            <thead class="wpuf-bg-white">
+            <tr>
+                <th scope="col"></th>
+                <th scope="col" class="wpuf-flex wpuf-font-normal">
+                    <?php esc_attr_e( 'Label', 'wp-user-frontend' ); ?>
+                    <help-text text="<?php esc_attr_e( 'Do not use & or other special character for option label', 'wp-user-frontend' ); ?>"></help-text>
+                </th>
+                <th
+                    v-if="show_value"
+                    class="wpuf-font-normal"
+                    scope="col">
+                    <?php esc_attr_e( 'Value', 'wp-user-frontend' ); ?>
+                </th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr
+                v-for="(option, index) in options"
+                :key="option.id"
+                :data-index="index">
+                <td class="wpuf-flex">
+                    <div class="selector ">
                         <input
                             v-if="option_field.is_multiple"
                             type="checkbox"
@@ -376,31 +356,30 @@
                             :value="option.value"
                             v-model="selected"
                             :class="builder_class_names('radio')"
-                            class="option-chooser-radio wpuf-ml-3 wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900"
                         >
                     </div>
                     <div class="sort-handler">
                         <i class="fa fa-bars"></i>
                     </div>
-                </div>
-                <div class="label wpuf-flex">
+                </td>
+                <td>
                     <input
-                        class="wpuf-text-sm wpuf-w-full"
+                        :class="builder_class_names('text')"
                         type="text"
                         v-model="option.label"
                         @input="set_option_label(index, option.label)">
-                </div>
-                <div
+                </td>
+                <td
                     v-if="show_value"
-                    class="value wpuf-flex">
+                    class="wpuf-text-sm wpuf-text-gray-500">
                     <input
-                        class="wpuf-text-sm wpuf-w-full"
+                        :class="builder_class_names('text')"
                         type="text"
                         v-model="option.value">
-                </div>
-                <div class="wpuf-flex wpuf-items-center wpuf-gap-1">
+                </td>
+                <td class="wpuf-ml-2 wpuf-flex wpuf-items-center">
                     <div
-                        class="action-buttons hover:wpuf-cursor-pointer"
+                        class="action-buttons hover:wpuf-cursor-pointer wpuf-mt-1"
                         @click="delete_option(index)">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -411,11 +390,10 @@
                             class="wpuf-size-6 wpuf-border wpuf-rounded-2xl wpuf-border-gray-400 hover:wpuf-border-primary wpuf-p-1">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
                         </svg>
-
                     </div>
                     <div
                         v-if="index === options.length - 1"
-                        class="plus-buttons hover:wpuf-cursor-pointer"
+                        class="plus-buttons hover:wpuf-cursor-pointer !wpuf-border-0 wpuf-mt-1"
                         @click="add_option">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -427,10 +405,19 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                         </svg>
                     </div>
-                </div>
-        </div>
+                </td>
+            </tr>
+            </tbody>
+    </table>
     </div>
-    <a v-if="!option_field.is_multiple && selected" href="#clear" @click.prevent="clear_selection"><?php esc_attr_e( 'Clear Selection', 'wp-user-frontend' ); ?></a>
+
+    <a
+        v-if="!option_field.is_multiple && selected"
+        class="wpuf-inline-flex wpuf-items-center wpuf-gap-x-2 wpuf-rounded-md wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-text-gray-700  hover:wpuf-text-gray-700 hover:wpuf-bg-gray-50 wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 wpuf-mt-4"
+        href="#clear"
+        @click.prevent="clear_selection">
+        <?php esc_attr_e( 'Clear Selection', 'wp-user-frontend' ); ?>
+    </a>
 </div>
 </script>
 
@@ -1309,8 +1296,7 @@
             <label
                 :value="val"
                 :checked="is_selected(val)"
-                :class="class_names('radio_btns')"
-                class="wpuf-ml-3 wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">{{ label }}</label>
+                :class="builder_class_names('radio_btns')">{{ label }}</label>
         </div>
     </div>
 

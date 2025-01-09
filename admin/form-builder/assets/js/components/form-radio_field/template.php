@@ -7,11 +7,10 @@
             class="wpuf-flex wpuf-items-center">
             <input
                 type="radio"
-                class="wpuf-border-gray-300 wpuf-text-indigo-600 !wpuf-m-0">
+                :class="builder_class_names('radio')">
             <label
                 :value="val"
-                :checked="is_selected(val)"
-                :class="builder_class_names('radio_btns')">{{ label }}</label>
+                :checked="is_selected(val)">{{ label }}</label>
         </div>
     </div>
 
@@ -21,11 +20,10 @@
         <div
             v-if="has_options" v-for="(label, val) in field.options"
             class="wpuf-flex wpuf-items-center">
-            <input type="radio" class="wpuf-h-4 wpuf-w-4 wpuf-border-gray-300 wpuf-text-indigo-600 !wpuf-m-0">
+            <input type="radio" :class="builder_class_names('radio')">
             <label
                 :value="val"
                 :checked="is_selected(val)"
-                :class="class_names('radio_btns')"
                 class="wpuf-ml-3 wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">{{ label }}</label>
         </div>
     </div>

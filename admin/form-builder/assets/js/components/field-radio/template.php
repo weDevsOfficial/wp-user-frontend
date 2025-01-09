@@ -10,12 +10,13 @@
         v-for="(option, key) in option_field.options">
         <label
             class="wpuf-block text-sm/6 wpuf-font-medium wpuf-text-gray-900">
+        </label>
         <input
             type="radio"
             :value="key"
             v-model="value"
             class="checked:!wpuf-bg-primary checked:before:!wpuf-bg-transparent">
-            {{ option }}</label>
+            {{ option }}
     </div>
 
     <div

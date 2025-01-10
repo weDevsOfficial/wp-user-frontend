@@ -1001,7 +1001,8 @@ Vue.component('form-cloudflare_turnstile', {
  * Field template: Column Field
  */
 const mixins = [
-    wpuf_mixins.form_field_mixin
+    wpuf_mixins.form_field_mixin,
+    wpuf_mixins.add_form_field
 ];
 
 if (window.wpuf_forms_mixin_builder_stage) {

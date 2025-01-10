@@ -4156,6 +4156,22 @@ ul.wpuf-form li.field-size-medium .wpuf-fields {
   width: auto;
 }
 
+body ul.wpuf-form li.field-size-large .wpuf-fields {
+  width: 100% !important;
+}
+
+body ul.wpuf-form li.field-size-medium .wpuf-fields {
+  width: 50% !important;
+}
+
+body ul.wpuf-form li.field-size-small .wpuf-fields {
+  width: 30% !important;
+}
+
+body ul.wpuf-form li .wpuf-fields {
+  width: 70% !important;
+}
+
 .placeholder\:wpuf-text-gray-400::-moz-placeholder {
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity));

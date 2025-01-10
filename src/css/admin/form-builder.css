@@ -79,3 +79,15 @@ ul.wpuf-form li.field-size-medium .wpuf-fields {
     float: none;
     width: auto;
 }
+body ul.wpuf-form li.field-size-large .wpuf-fields {
+    width: 100% !important;
+}
+body ul.wpuf-form li.field-size-medium .wpuf-fields {
+    width: 50% !important;
+}
+body ul.wpuf-form li.field-size-small .wpuf-fields {
+    width: 30% !important;
+}
+body ul.wpuf-form li .wpuf-fields {
+    width: 70% !important;
+}

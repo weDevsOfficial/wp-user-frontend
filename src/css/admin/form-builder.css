@@ -91,3 +91,12 @@ body ul.wpuf-form li.field-size-small .wpuf-fields {
 body ul.wpuf-form li .wpuf-fields {
     width: 70% !important;
 }
+#wpuf-form-builder-settings ul.wpuf-sidebar-menu li a svg {
+    stroke: #4b5563;
+}
+#wpuf-form-builder-settings ul.wpuf-sidebar-menu li:hover a svg,
+#wpuf-form-builder-settings ul.wpuf-sidebar-menu li.active_settings_tab a svg {
+    stroke: #ffffff;
+}
+
+/*wpuf-size-4 wpuf-stroke-gray-600 group-hover/sidebar-item:wpuf-stroke-white*/

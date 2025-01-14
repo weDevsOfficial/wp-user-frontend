@@ -22,7 +22,7 @@ class Posting {
         add_action( 'add_meta_boxes', [ $this, 'add_meta_box_post_lock'] );
         // add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_script'] );
         add_action( 'wpuf_load_post_forms', [ $this, 'enqueue_script' ] );
-        add_action( 'admin_enqueue_scripts', [ $this, 'dequeue_assets' ] );
+        // add_action( 'admin_enqueue_scripts', [ $this, 'dequeue_assets' ] );
         add_action( 'wpuf_load_registration_forms', [ $this, 'enqueue_script' ] );
         add_action( 'save_post', [ $this, 'save_meta'], 100, 2 ); // save the custom fields
         add_action( 'save_post', [ $this, 'form_selection_metabox_save' ], 1, 2 ); // save edit form id
@@ -60,11 +60,7 @@ class Posting {
     public function enqueue_script() {
         $api_key = wpuf_get_option( 'gmap_api_key', 'wpuf_general' );
 
-        if ( defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.1', '<' ) ) {
-            wp_enqueue_style( 'wpuf-admin-form-builder' );
-        } else {
-            wp_enqueue_style( 'wpuf-form-builder' );
-        }
+        wp_enqueue_style( 'wpuf-admin-form-builder' );
 
         wp_enqueue_style( 'jquery-ui' );
         wp_enqueue_script( 'jquery-ui-slider' );

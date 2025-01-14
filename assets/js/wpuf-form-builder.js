@@ -423,9 +423,12 @@
             isDirty: false,
             enableMultistep: false,
             shortcodeCopied: false,
+            logoUrl: wpuf_form_builder.asset_url + '/images/wpuf-icon-circle.svg',
+            settings_titles: wpuf_form_builder.settings_titles,
+            settings_items: wpuf_form_builder.settings_items,
             active_tab: 'form-editor',
-            active_settings_tab: '#wpuf-metabox-settings',
-            logoUrl: wpuf_form_builder.asset_url + '/images/wpuf-icon-circle.svg'
+            active_settings_tab: Object.keys(wpuf_form_builder.settings_titles.post_settings.sub_items)[0],
+            active_settings_title: wpuf_form_builder.settings_titles.post_settings.sub_items[Object.keys(wpuf_form_builder.settings_titles.post_settings.sub_items)[0]].label,
         },
 
         computed: {
@@ -463,6 +466,14 @@
                 });
 
                 return meta_key.map(function(name) { return '{' + name +'}' }).join( );
+            },
+
+            settings_titles: function() {
+                return this.$store.state.settings_titles;
+            },
+
+            settings_items: function() {
+                return this.$store.state.settings_items;
             },
         },
 
@@ -654,6 +665,31 @@
                         self.is_form_saving = false;
                     }
                 });
+            },
+
+            // settings field classes to add similar field classes
+            setting_class_names: function(field_type) {
+                switch (field_type) {
+                    case 'upload_btn':
+                        return 'file-selector  wpuf-rounded-md wpuf-btn-secondary';
+
+                    case 'radio':
+                        return 'wpuf-ml-3 wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900 checked:focus:wpuf-bg-primary checked:hover:wpuf-bg-primary checked:before:!wpuf-bg-white checked:wpuf-bg-primary';
+
+                    case 'checkbox':
+                        return 'wpuf-h-4 wpuf-w-4 wpuf-rounded wpuf-border-gray-300 !wpuf-mt-0.5 checked:focus:wpuf-bg-primary checked:hover:wpuf-bg-primary checked:wpuf-bg-primary before:!wpuf-content-none';
+
+                    case 'dropdown':
+                        return 'wpuf-block wpuf-w-full wpuf-min-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300';
+
+                    default:
+                        return 'wpuf-block wpuf-min-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 !wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300 wpuf-max-w-full';
+                }
+            },
+
+            switch_settings_menu: function(menu) {
+                this.active_settings_tab = menu;
+                this.active_settings_title = this.settings_titles.post_settings.sub_items[menu].label;
             }
         }
     });

@@ -113,17 +113,15 @@
             <div class="wpuf-flex wpuf-bg-gray-100 wpuf-w-max wpuf-rounded-xl wpuf-p-4 wpuf-mr-6">
                 <div class="wpuf-tab-contents">
                     <a
-                        href="#wpuf-form-builder-container"
                         @click="active_tab = 'form-editor'"
                         :class="active_tab === 'form-editor' ? 'wpuf-bg-white wpuf-text-gray-800 wpuf-rounded-md wpuf-drop-shadow-sm' : ''"
-                        class="wpuf-nav-tab wpuf-nav-tab-active wpuf-text-gray-800 wpuf-py-2 wpuf-px-4 wpuf-text-sm hover:wpuf-bg-white hover:wpuf-text-gray-800 hover:wpuf-rounded-md hover:wpuf-drop-shadow-sm focus:wpuf-shadow-none wpuf-mr-2">
+                        class="wpuf-nav-tab wpuf-nav-tab-active wpuf-text-gray-800 wpuf-py-2 wpuf-px-4 wpuf-text-sm hover:wpuf-bg-white hover:wpuf-text-gray-800 hover:wpuf-rounded-md hover:wpuf-drop-shadow-sm focus:wpuf-shadow-none wpuf-mr-2 hover:wpuf-cursor-pointer">
                         <?php esc_html_e( 'Form Editor', 'wp-user-frontend' ); ?>
                     </a>
                     <a
-                        href="#wpuf-form-builder-settings"
                         @click="active_tab = 'form-settings'"
                         :class="active_tab === 'form-settings' ? 'wpuf-bg-white wpuf-text-gray-800 wpuf-rounded-md wpuf-drop-shadow-sm' : ''"
-                        class="wpuf-nav-tab wpuf-nav-tab-active wpuf-text-gray-800 wpuf-py-2 wpuf-px-4 wpuf-text-sm hover:wpuf-bg-white hover:wpuf-text-gray-800 hover:wpuf-rounded-md hover:wpuf-drop-shadow-sm focus:wpuf-shadow-none wpuf-mr-2">
+                        class="wpuf-nav-tab wpuf-nav-tab-active wpuf-text-gray-800 wpuf-py-2 wpuf-px-4 wpuf-text-sm hover:wpuf-bg-white hover:wpuf-text-gray-800 hover:wpuf-rounded-md hover:wpuf-drop-shadow-sm focus:wpuf-shadow-none wpuf-mr-2 hover:wpuf-cursor-pointer">
                         <?php esc_html_e( 'Settings', 'wp-user-frontend' ); ?>
                     </a>
                     <?php do_action( "wpuf-form-builder-tabs-{$form_type}" ); ?>
@@ -187,20 +185,22 @@
         </div>
     <div
         v-show="active_tab === 'form-settings'"
-        id="wpuf-form-builder-settings"
-        class="group clearfix wpuf-flex">
-        <div class="wpuf-w-1/3 wpuf-bg-gray-50 wpuf-px-[20px] wpuf-pt-4">
-            <div id="wpuf-form-builder-settings-tabs" class="nav-tab-wrapper wpuf-flex wpuf-flex-col">
-                <?php do_action( "wpuf-form-builder-settings-tabs-{$form_type}" ); ?>
-            </div><!-- #wpuf-form-builder-settings-tabs -->
-        </div>
-        <div class="wpuf-w-2/3 wpuf-bg-gray-50">
-            <div
-                id="wpuf-form-builder-settings-contents"
-                class="tab-contents">
-                <?php do_action( "wpuf-form-builder-settings-tab-contents-{$form_type}" ); ?>
-            </div><!-- #wpuf-form-builder-settings-contents -->
-        </div>
+        id="wpuf-form-builder-settings">
+        <?php
+            require_once WPUF_ROOT . '/admin/form-builder/views/settings-sidebar.php';
+        ?>
+<!--        <div class="wpuf-w-1/3 wpuf-bg-gray-50 wpuf-px-[20px] wpuf-pt-4">-->
+<!--            <div id="wpuf-form-builder-settings-tabs" class="nav-tab-wrapper wpuf-flex wpuf-flex-col">-->
+<!--                --><?php //do_action( "wpuf-form-builder-settings-tabs-{$form_type}" ); ?>
+<!--            </div> #wpuf-form-builder-settings-tabs -->
+<!--        </div>-->
+<!--        <div class="wpuf-w-2/3 wpuf-bg-gray-50">-->
+<!--            <div-->
+<!--                id="wpuf-form-builder-settings-contents"-->
+<!--                class="tab-contents">-->
+<!--                --><?php //do_action( "wpuf-form-builder-settings-tab-contents-{$form_type}" ); ?>
+<!--            </div> #wpuf-form-builder-settings-contents -->
+<!--        </div>-->
     </div><!-- #wpuf-form-builder-settings -->
     <?php do_action( "wpuf-form-builder-tab-contents-{$form_type}" ); ?>
 

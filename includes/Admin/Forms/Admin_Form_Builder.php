@@ -172,6 +172,8 @@ class Admin_Form_Builder {
                 'is_older_form'    => defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.1', '<' ),
                 'is_pro_active'    => wpuf_is_pro_active(),
                 'pro_asset_url'    => defined( 'WPUF_PRO_ASSET_URI' ) ? WPUF_PRO_ASSET_URI : '',
+                'settings_titles'  => wpuf_get_post_form_builder_setting_menu_titles(),
+                'settings_items'   => wpuf_get_post_form_builder_setting_menu_contents(),
             ]
         );
         $wpuf_form_builder = wpuf_unset_conditional( $wpuf_form_builder );
@@ -270,11 +272,7 @@ class Admin_Form_Builder {
             ]
         );
 
-        if ( ( 'wpuf_forms' !== $post_type ) && defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.1', '<' ) ) {
-            include WPUF_ROOT . '/admin/form-builder/views/form-builder.php';
-        } else {
-            include WPUF_ROOT . '/admin/form-builder/views/form-builder-v4.1.php';
-        }
+        include WPUF_ROOT . '/admin/form-builder/views/form-builder-v4.1.php';
     }
 
     /**

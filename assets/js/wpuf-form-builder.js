@@ -475,6 +475,10 @@
             settings_items: function() {
                 return this.$store.state.settings_items;
             },
+
+            section_exists: function() {
+                return this.settings_items[this.active_settings_tab] && this.settings_items[this.active_settings_tab].section;
+            }
         },
 
         watch: {
@@ -488,6 +492,15 @@
 
         created: function () {
             this.$store.commit('panel_add_show_prop');
+
+            Vue.nextTick(function () {
+                // selectize for making taxonomy field multi-select
+                $('select.tax-list-selector').selectize({
+                    plugins: ['remove_button'],
+                    maxItems: null,
+                    create: false
+                });
+            });
 
             /**
              * This is the event hub we'll use in every

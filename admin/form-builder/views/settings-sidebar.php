@@ -62,19 +62,29 @@
                 {{ active_settings_title }}
             </h2>
         </div>
+        <template v-if="section_exists">
         <div
             v-for="(section, index) in settings_items[active_settings_tab].section"
             class="wpuf-py-4">
             <p class="wpuf-text-lg wpuf-font-medium wpuf-mb-2">
                 {{ section.label }}
             </p>
-            <p>{{ section.desc }}</p>
+            <p class="wpuf-text-gray-500 wpuf-text-xs">{{ section.desc }}</p>
             <div
                 v-for="(field, index) in section.fields"
-                class="wpuf-mb-4">
-                <label :for="index" class="wpuf-block wpuf-text-sm wpuf-font-semibold wpuf-mb-2">
-                    {{ field.label }}
-                </label>
+                class="wpuf-my-4">
+                <div class="wpuf-flex">
+                    <label :for="index" class="wpuf-text-sm wpuf-text-gray-700 wpuf-mb-2">
+                        {{ field.label }}
+                    </label>
+                    <help-text v-if="field.help_text" :text="field.help_text"></help-text>
+                    <a v-if="field.link" :href="field.link" target="_blank" title="<?php esc_attr_e( 'Learn More', 'wp-user-frontend' ); ?>" class="focus:wpuf-shadow-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="wpuf-size-5 wpuf-ml-1 wpuf-stroke-gray-50 hover:wpuf-stroke-gray-200">
+                            <path d="M12.232 4.232a2.5 2.5 0 0 1 3.536 3.536l-1.225 1.224a.75.75 0 0 0 1.061 1.06l1.224-1.224a4 4 0 0 0-5.656-5.656l-3 3a4 4 0 0 0 .225 5.865.75.75 0 0 0 .977-1.138 2.5 2.5 0 0 1-.142-3.667l3-3Z" />
+                            <path d="M11.603 7.963a.75.75 0 0 0-.977 1.138 2.5 2.5 0 0 1 .142 3.667l-3 3a2.5 2.5 0 0 1-3.536-3.536l1.225-1.224a.75.75 0 0 0-1.061-1.06l-1.224 1.224a4 4 0 1 0 5.656 5.656l3-3a4 4 0 0 0-.225-5.865Z" />
+                        </svg>
+                    </a>
+                </div>
                 <select
                     v-if="field.type === 'select'"
                     :class="setting_class_names('dropdown')">
@@ -84,7 +94,19 @@
                         {{ option }}
                     </option>
                 </select>
+                <select
+                    v-if="field.type === 'multi-select'"
+                    :class="['tax-list-selector']"
+                    multiple
+                >
+                    <option
+                        v-for="(option, index) in field.options"
+                        :value="index">
+                        {{ option }}
+                    </option>
+                </select>
             </div>
         </div>
+        </template>
     </div>
 </div>

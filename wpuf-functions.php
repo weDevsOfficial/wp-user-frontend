@@ -4909,8 +4909,6 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
     unset( $post_types['wpuf_coupon'] );
     unset( $post_types['oembed_cache'] );
 
-    error_log( print_r( $post_types, true ) );
-
     $general = [
         'section' => [
             'before_post_settings' => [
@@ -4918,31 +4916,30 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                 'desc'  => __( 'Before post settings let managers customize user-created posts, including forms, status, access, and notifications. These tools ensure a personalized experience with content control.', 'wp-user-frontend' ),
                 'fields' => [
                     'post_type' => [
-                        'label'   => __( 'Post Type', 'wp-user-frontend' ),
-                        'type'    => 'select',
-                        'options' => $post_types,
-                        'help'    => __( 'Choose the content type for the post editor', 'wp-user-frontend' ),
+                        'label'     => __( 'Post Type', 'wp-user-frontend' ),
+                        'type'      => 'select',
+                        'options'   => $post_types,
+                        'help_text' => __( 'Choose the content type for the post editor', 'wp-user-frontend' ),
+                        'link'      => esc_url_raw(
+                            'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/different-custom-post-type-submission-2/'
+                        ),
                     ],
                     'default_category' => [
-                        'label'   => __( 'Default Category', 'wp-user-frontend' ),
-                        'type'    => 'select',
-                        'options' => [
-                            'uncategorized' => __( 'Uncategorized', 'wp-user-frontend' ),
-                            __( 'Select a category', 'wp-user-frontend' ),
-                            __( 'Category 1', 'wp-user-frontend' ),
-                        ],
-                        'help'    => __( 'Choose the default category for the post', 'wp-user-frontend' ),
+                        'label'     => __( 'Default Category', 'wp-user-frontend' ),
+                        'type'      => 'multi-select',
+                        'options'   => wpuf_get_terms(),
+                        'help_text' => __( 'Choose the default category for the post', 'wp-user-frontend' ),
                     ],
                     'post_submission_status' => [
-                        'label'   => __( 'Post Submission Status', 'wp-user-frontend' ),
-                        'type'    => 'select',
-                        'options' => [
+                        'label'     => __( 'Post Submission Status', 'wp-user-frontend' ),
+                        'type'      => 'select',
+                        'options'   => [
                             'draft'          => __( 'Draft', 'wp-user-frontend' ),
-                            'published'      => __( 'Published', 'wp-user-frontend' ),
                             'pending-review' => __( 'Pending Review', 'wp-user-frontend' ),
                             'private'        => __( 'Private', 'wp-user-frontend' ),
+                            'published'      => __( 'Published', 'wp-user-frontend' ),
                         ],
-                        'help'    => __( 'Choose the default category for the post', 'wp-user-frontend' ),
+                        'help_text' => __( 'Choose the default category for the post', 'wp-user-frontend' ),
                     ],
                 ],
             ],

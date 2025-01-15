@@ -3443,6 +3443,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   stroke: #9ca3af;
 }
 
+.wpuf-stroke-gray-50 {
+  stroke: #f9fafb;
+}
+
 .wpuf-stroke-gray-600 {
   stroke: #4b5563;
 }
@@ -4435,6 +4439,10 @@ body ul.wpuf-form li .wpuf-fields {
 .hover\:wpuf-bg-white:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.hover\:wpuf-stroke-gray-200:hover {
+  stroke: #e5e7eb;
 }
 
 .hover\:wpuf-text-blue-600:hover {

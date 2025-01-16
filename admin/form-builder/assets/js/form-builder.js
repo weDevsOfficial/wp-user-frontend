@@ -427,6 +427,7 @@
             settings_titles: wpuf_form_builder.settings_titles,
             settings_items: wpuf_form_builder.settings_items,
             active_tab: 'form-editor',
+            form_settings: wpuf_form_builder.form_settings,
             active_settings_tab: Object.keys(wpuf_form_builder.settings_titles.post_settings.sub_items)[0],
             active_settings_title: wpuf_form_builder.settings_titles.post_settings.sub_items[Object.keys(wpuf_form_builder.settings_titles.post_settings.sub_items)[0]].label,
         },
@@ -487,6 +488,16 @@
                     this.isDirty = true;
                 },
                 deep: true
+            },
+            active_settings_tab: {
+                // attach selectize to the dropdowns after settings tab changes
+                handler: function() {
+                    setTimeout(function() {
+                        $('.wpuf-settings-container select').selectize({
+                            plugins: ['remove_button'],
+                        });
+                    }, 100);
+                }
             }
         },
 
@@ -494,11 +505,9 @@
             this.$store.commit('panel_add_show_prop');
 
             Vue.nextTick(function () {
-                // selectize for making taxonomy field multi-select
-                $('select.tax-list-selector').selectize({
+                // selectize for all the dropdowns
+                $('.wpuf-settings-container select').selectize({
                     plugins: ['remove_button'],
-                    maxItems: null,
-                    create: false
                 });
             });
 
@@ -703,6 +712,10 @@
             switch_settings_menu: function(menu) {
                 this.active_settings_tab = menu;
                 this.active_settings_title = this.settings_titles.post_settings.sub_items[menu].label;
+            },
+
+            switch_form_settings_pic_radio_item: function ( key, value ) {
+                this.form_settings[key] = value;
             }
         }
     });

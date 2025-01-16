@@ -1,3 +1,8 @@
+<?php
+global $post;
+$form_settings = wpuf_get_form_settings( $post->ID );
+$post_type_selected = ! empty( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
+?>
 <div class="wpuf-settings-container wpuf-border wpuf-border-gray-200 wpuf-rounded-lg wpuf-m-4 wpuf-flex wpuf-transition-transform wpuf-duration-200 wpuf-ease-in-out">
     <div class="wpuf-w-1/4 wpuf-min-h-screen wpuf-max-h-screen wpuf-border-r wpuf-p-8">
         <?php
@@ -71,10 +76,16 @@
             </p>
             <p class="wpuf-text-gray-500 wpuf-text-xs">{{ section.desc }}</p>
             <div
-                v-for="(field, index) in section.fields"
+                v-for="(field, field_index) in section.fields"
                 class="wpuf-my-4">
                 <div class="wpuf-flex">
-                    <label :for="index" class="wpuf-text-sm wpuf-text-gray-700 wpuf-mb-2">
+                    <input
+                        v-if="field.type === 'checkbox'"
+                        :class="[setting_class_names('checkbox'), '!wpuf-mr-2']"
+                        :type="field.type"
+                        :name="field_index"
+                        :value="field.value"/>
+                    <label :for="field_index" class="wpuf-text-sm wpuf-text-gray-700 wpuf-mb-2">
                         {{ field.label }}
                     </label>
                     <help-text v-if="field.help_text" :text="field.help_text"></help-text>
@@ -96,7 +107,7 @@
                 </select>
                 <select
                     v-if="field.type === 'multi-select'"
-                    :class="['tax-list-selector']"
+                    :class="['tax-list-selector', setting_class_names('dropdown')]"
                     multiple
                 >
                     <option
@@ -105,6 +116,40 @@
                         {{ option }}
                     </option>
                 </select>
+                <input
+                    v-if="field.type === 'text'"
+                    :class="setting_class_names('text')"
+                    :type="field.type"
+                    :name="index"
+                    :value="field.value"/>
+                <div v-if="field.type === 'pic-radio'">
+                    <div class="wpuf-flex">
+                        <li
+                            v-for="(option, index) in field.options"
+                            class="wpuf-list-none wpuf-text-center wpuf-relative">
+                            <input
+                                type="radio"
+                                :name="`wpuf_settings[${field_index}]`"
+                                :value="index"
+                                class="!wpuf-hidden">
+                            <img
+                                v-if="form_settings[field_index] === index"
+                                class="wpuf-absolute wpuf-top-4 wpuf-right-8 wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out"
+                                src="<?php echo esc_attr( WPUF_ASSET_URI . '/images/checked-green.svg' ); ?>" alt="">
+                            <img
+                                v-if="option.image"
+                                @click="switch_form_settings_pic_radio_item(field_index, index)"
+                                :src="option.image"
+                                :alt="option.label"
+                                :class="form_settings[field_index] === index ? 'wpuf-border-primary' : 'wpuf-border-transparent'"
+                                class="wpuf-w-11/12 wpuf-mb-4 wpuf-border-2 wpuf-border-solid wpuf-rounded-md hover:wpuf-border-primary hover:wpuf-cursor-pointer wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out">
+                            <label
+                                :for="index"
+                                class="wpuf-mr-2 wpuf-text-sm wpuf-text-gray-700">
+                                {{ option.label }}
+                        </li>
+                    </div>
+                </div>
             </div>
         </div>
         </template>

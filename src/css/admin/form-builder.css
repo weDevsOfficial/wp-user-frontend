@@ -98,5 +98,13 @@ body ul.wpuf-form li .wpuf-fields {
 #wpuf-form-builder-settings ul.wpuf-sidebar-menu li.active_settings_tab a svg {
     stroke: #ffffff;
 }
-
-/*wpuf-size-4 wpuf-stroke-gray-600 group-hover/sidebar-item:wpuf-stroke-white*/
+.selectize-control {
+    border: none !important;
+    box-shadow: none !important;
+}
+.selectize-control.single .selectize-input,
+.selectize-dropdown.single {
+    border: 1px solid #d1d5db;
+    box-shadow: none;
+    background: #fff;
+}

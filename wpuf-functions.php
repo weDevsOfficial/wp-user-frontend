@@ -4913,9 +4913,9 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
         'section' => [
             'before_post_settings' => [
                 'label' => __( 'Before Post Settings', 'wp-user-frontend' ),
-                'desc'  => __( 'Before post settings let managers customize user-created posts, including forms, status, access, and notifications. These tools ensure a personalized experience with content control.', 'wp-user-frontend' ),
+                'desc'  => __( 'Configure the form\'s behavior and appearance before submission, including content type, category, status, draft saving, and submit button customization.', 'wp-user-frontend' ),
                 'fields' => [
-                    'post_type' => [
+                    'post_type'        => [
                         'label'     => __( 'Post Type', 'wp-user-frontend' ),
                         'type'      => 'select',
                         'options'   => $post_types,
@@ -4930,7 +4930,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                         'options'   => wpuf_get_terms(),
                         'help_text' => __( 'Choose the default category for the post', 'wp-user-frontend' ),
                     ],
-                    'post_submission_status' => [
+                    'post_status'      => [
                         'label'     => __( 'Post Submission Status', 'wp-user-frontend' ),
                         'type'      => 'select',
                         'options'   => [
@@ -4940,6 +4940,39 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                             'published'      => __( 'Published', 'wp-user-frontend' ),
                         ],
                         'help_text' => __( 'Choose the default category for the post', 'wp-user-frontend' ),
+                    ],
+                    'draft_post'       => [
+                        'label'     => __( 'Enable saving as draft', 'wp-user-frontend' ),
+                        'type'      => 'checkbox',
+                        'help_text' => __( 'Allow users to save posts before final submission', 'wp-user-frontend' ),
+                    ],
+                    'submit_text'      => [
+                        'label'     => __( 'Submit Post Button Text', 'wp-user-frontend' ),
+                        'type'      => 'text',
+                        'help_text' => __( 'Customize the text of the submit button', 'wp-user-frontend' ),
+                    ],
+                    'form_template'    => [
+                        'label'     => __( 'Choose Form Template', 'wp-user-frontend' ),
+                        'type'      => 'pic-radio',
+                        'help_text' => __( 'If selected a form template, it will try to execute that integration options when new post created and updated.', 'wp-user-frontend' ),
+                        'options'   => [
+                            'post_form_template_post' => [
+                                'label' => __( 'Post Form', 'wp-user-frontend' ),
+                                'image' => WPUF_ASSET_URI . '/images/templates/post.svg',
+                            ],
+                            'post_form_template_woocommerce' => [
+                                'label' => __( 'WooCommerce Product', 'wp-user-frontend' ),
+                                'image' => WPUF_ASSET_URI . '/images/templates/woocommerce.svg',
+                            ],
+                            'post_form_template_edd' => [
+                                'label' => __( 'EDD Download Form', 'wp-user-frontend' ),
+                                'image' => WPUF_ASSET_URI . '/images/templates/edd.svg',
+                            ],
+                            'post_form_template_events_calendar'  => [
+                                'label' => __( 'The Events Calendar', 'wp-user-frontend' ),
+                                'image' => WPUF_ASSET_URI . '/images/templates/event.svg',
+                            ],
+                        ],
                     ],
                 ],
             ],

@@ -4,7 +4,7 @@ $form_settings = wpuf_get_form_settings( $post->ID );
 $post_type_selected = ! empty( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
 ?>
 <div class="wpuf-settings-container wpuf-border wpuf-border-gray-200 wpuf-rounded-lg wpuf-m-4 wpuf-flex wpuf-transition-transform wpuf-duration-200 wpuf-ease-in-out">
-    <div class="wpuf-w-1/4 wpuf-min-h-screen wpuf-max-h-screen wpuf-border-r wpuf-p-8">
+    <div class="wpuf-w-1/4 wpuf-min-h-screen wpuf-border-r wpuf-p-8">
         <?php
         $settings_titles = wpuf_get_post_form_builder_setting_menu_titles();
         $settings_items = wpuf_get_post_form_builder_setting_menu_contents();
@@ -22,30 +22,30 @@ $post_type_selected = ! empty( $form_settings['post_type'] ) ? $form_settings['p
                     echo $label;
                     ?>
                     </span>
-                </h2>
-                <i
-                    class="fa fa-angle-down !wpuf-font-bold !wpuf-text-xl !wpuf-leading-none wpuf-text-gray-600"
-                ></i>
-            </div>
-            <div class="wpuf-mb-4">
-                <ul class="wpuf-sidebar-menu wpuf-list-none wpuf-space-y-2">
-                    <?php
-                    $sub_menus = ! empty( $top_settings['sub_items'] ) ? $top_settings['sub_items'] : [];
-                    foreach ( $sub_menus as $sub_key => $sub_menu ) {
-                        $sub_icon  = ! empty( $sub_menu['icon'] ) ? $sub_menu['icon'] : '';
-                        $sub_label = ! empty( $sub_menu['label'] ) ? $sub_menu['label'] : '';
-                        ?>
-                    <li
-                        @click="switch_settings_menu('<?php echo $sub_key; ?>')"
-                        :class="active_settings_tab === '<?php echo $sub_key; ?>' ? 'wpuf-bg-primary active_settings_tab' : ''"
-                        class="wpuf-group/sidebar-item wpuf-mx-2 wpuf-py-2 wpuf-px-3 wpuf-flex hover:wpuf-bg-primary hover:wpuf-cursor-pointer wpuf-rounded-lg wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out wpuf-flex wpuf-items-center wpuf-focus-visible:">
-                        <a
-                            :class="active_settings_tab === '<?php echo $sub_key; ?>' ? 'wpuf-text-white' : 'wpuf-text-gray-600'"
-                            class="wpuf-ml-2 wpuf-text-sm group-hover/sidebar-item:wpuf-text-white wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out focus:wpuf-shadow-none focus:wpuf-outline-none wpuf-flex">
-                            <?php
-                            echo $sub_icon;
+                    </h2>
+                    <i
+                        class="fa fa-angle-down !wpuf-font-bold !wpuf-text-xl !wpuf-leading-none wpuf-text-gray-600"
+                    ></i>
+                </div>
+                <div class="wpuf-mb-4">
+                    <ul class="wpuf-sidebar-menu wpuf-list-none wpuf-space-y-2">
+                        <?php
+                        $sub_menus = ! empty( $top_settings['sub_items'] ) ? $top_settings['sub_items'] : [];
+                        foreach ( $sub_menus as $sub_key => $sub_menu ) {
+                            $sub_icon  = ! empty( $sub_menu['icon'] ) ? $sub_menu['icon'] : '';
+                            $sub_label = ! empty( $sub_menu['label'] ) ? $sub_menu['label'] : '';
                             ?>
-                            <span class="wpuf-ml-2">
+                            <li
+                                @click="switch_settings_menu('<?php echo $sub_key; ?>')"
+                                :class="active_settings_tab === '<?php echo $sub_key; ?>' ? 'wpuf-bg-primary active_settings_tab' : ''"
+                                class="wpuf-group/sidebar-item wpuf-mx-2 wpuf-py-2 wpuf-px-3 wpuf-flex hover:wpuf-bg-primary hover:wpuf-cursor-pointer wpuf-rounded-lg wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out wpuf-flex wpuf-items-center wpuf-focus-visible:">
+                                <a
+                                    :class="active_settings_tab === '<?php echo $sub_key; ?>' ? 'wpuf-text-white' : 'wpuf-text-gray-600'"
+                                    class="wpuf-ml-2 wpuf-text-sm group-hover/sidebar-item:wpuf-text-white wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out focus:wpuf-shadow-none focus:wpuf-outline-none wpuf-flex">
+                                    <?php
+                                    echo $sub_icon;
+                                    ?>
+                                    <span class="wpuf-ml-2">
                             <?php
                             echo $sub_label;
                             ?>
@@ -61,7 +61,7 @@ $post_type_selected = ! empty( $form_settings['post_type'] ) ? $form_settings['p
         }
         ?>
     </div>
-    <div class="wpuf-w-3/4 wpuf-min-h-screen wpuf-max-h-screen wpuf-p-8">
+    <div class="wpuf-w-3/4 wpuf-min-h-screen wpuf-p-8">
         <div class="wpuf-pb-6 wpuf-border-b">
             <h2 class="wpuf-text-2xl wpuf-mb-2 wpuf-mt-0">
                 {{ active_settings_title }}
@@ -78,14 +78,14 @@ $post_type_selected = ! empty( $form_settings['post_type'] ) ? $form_settings['p
             <div
                 v-for="(field, field_index) in section.fields"
                 class="wpuf-my-4">
-                <div class="wpuf-flex">
+                <div class="wpuf-flex wpuf-items-center">
                     <input
                         v-if="field.type === 'checkbox'"
                         :class="[setting_class_names('checkbox'), '!wpuf-mr-2']"
                         :type="field.type"
                         :name="field_index"
                         :value="field.value"/>
-                    <label :for="field_index" class="wpuf-text-sm wpuf-text-gray-700 wpuf-mb-2">
+                    <label :for="field_index" class="wpuf-text-sm wpuf-text-gray-700 wpuf-my-2">
                         {{ field.label }}
                     </label>
                     <help-text v-if="field.help_text" :text="field.help_text"></help-text>
@@ -95,6 +95,12 @@ $post_type_selected = ! empty( $form_settings['post_type'] ) ? $form_settings['p
                             <path d="M11.603 7.963a.75.75 0 0 0-.977 1.138 2.5 2.5 0 0 1 .142 3.667l-3 3a2.5 2.5 0 0 1-3.536-3.536l1.225-1.224a.75.75 0 0 0-1.061-1.06l-1.224 1.224a4 4 0 1 0 5.656 5.656l3-3a4 4 0 0 0-.225-5.865Z" />
                         </svg>
                     </a>
+                    <label
+                        v-if="field.type === 'toggle'"
+                        class="wpuf-relative wpuf-inline-flex wpuf-items-center wpuf-cursor-pointer wpuf-ml-2">
+                        <input type="checkbox" class="wpuf-sr-only wpuf-peer">
+                        <div class="wpuf-flex wpuf-items-center wpuf-w-12 wpuf-h-6 wpuf-bg-gray-300 wpuf-rounded-full wpuf-peer peer-checked:after:wpuf-translate-x-full rtl:wpuf-peer-checked:after:wpuf--translate-x-full peer-checked:after:wpuf-border-white after:content-[''] after:wpuf-absolute after:top-[4px] after:wpuf-bg-white after:wpuf-border-gray-300 after:wpuf-border after:wpuf-rounded-full after:wpuf-h-5 after:wpuf-w-5 after:wpuf-left-[3px] after:wpuf-transition-all peer-checked:wpuf-bg-primary"></div>
+                    </label>
                 </div>
                 <select
                     v-if="field.type === 'select'"
@@ -150,6 +156,8 @@ $post_type_selected = ! empty( $form_settings['post_type'] ) ? $form_settings['p
                         </li>
                     </div>
                 </div>
+
+
             </div>
         </div>
         </template>

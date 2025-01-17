@@ -2394,6 +2394,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   margin-bottom: 0.25rem;
 }
 
+.wpuf-my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
 .wpuf-my-4 {
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -3344,6 +3349,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   background-color: rgb(229 231 235 / var(--tw-bg-opacity));
 }
 
+.wpuf-bg-gray-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
+}
+
 .wpuf-bg-gray-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity));
@@ -4288,6 +4298,26 @@ body ul.wpuf-form li .wpuf-fields {
   position: absolute;
 }
 
+.after\:wpuf-left-\[3px\]::after {
+  content: var(--tw-content);
+  left: 3px;
+}
+
+.after\:wpuf-h-5::after {
+  content: var(--tw-content);
+  height: 1.25rem;
+}
+
+.after\:wpuf-w-5::after {
+  content: var(--tw-content);
+  width: 1.25rem;
+}
+
+.after\:wpuf-rounded-full::after {
+  content: var(--tw-content);
+  border-radius: 9999px;
+}
+
 .after\:wpuf-border::after {
   content: var(--tw-content);
   border-width: 1px;
@@ -4301,6 +4331,12 @@ body ul.wpuf-form li .wpuf-fields {
 .after\:wpuf-border-r-0::after {
   content: var(--tw-content);
   border-right-width: 0px;
+}
+
+.after\:wpuf-border-gray-300::after {
+  content: var(--tw-content);
+  --tw-border-opacity: 1;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity));
 }
 
 .after\:wpuf-border-x-transparent::after {
@@ -4319,6 +4355,13 @@ body ul.wpuf-form li .wpuf-fields {
   content: var(--tw-content);
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.after\:wpuf-transition-all::after {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  content: var(--tw-content);
+  transition-property: all;
 }
 
 .checked\:\!wpuf-bg-primary:checked {
@@ -4700,6 +4743,23 @@ body ul.wpuf-form li .wpuf-fields {
 
 .wpuf-group:hover .group-hover\:wpuf-opacity-100 {
   opacity: 1;
+}
+
+.wpuf-peer:checked ~ .peer-checked\:wpuf-bg-primary {
+  --tw-bg-opacity: 1;
+  background-color: rgb(22 163 74 / var(--tw-bg-opacity));
+}
+
+.wpuf-peer:checked ~ .peer-checked\:after\:wpuf-translate-x-full::after {
+  content: var(--tw-content);
+  --tw-translate-x: 100%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.wpuf-peer:checked ~ .peer-checked\:after\:wpuf-border-white::after {
+  content: var(--tw-content);
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity));
 }
 
 .wpuf-peer:hover ~ .peer-hover\:wpuf-block {

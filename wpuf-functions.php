@@ -4961,7 +4961,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                                 'image' => WPUF_ASSET_URI . '/images/templates/post.svg',
                             ],
                             'post_form_template_woocommerce' => [
-                                'label' => __( 'WooCommerce Product', 'wp-user-frontend' ),
+                                'label' => __( 'WooCommerce Product Form', 'wp-user-frontend' ),
                                 'image' => WPUF_ASSET_URI . '/images/templates/woocommerce.svg',
                             ],
                             'post_form_template_edd' => [
@@ -4969,10 +4969,18 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                                 'image' => WPUF_ASSET_URI . '/images/templates/edd.svg',
                             ],
                             'post_form_template_events_calendar'  => [
-                                'label' => __( 'The Events Calendar', 'wp-user-frontend' ),
+                                'label' => __( 'The Events Calendar Form', 'wp-user-frontend' ),
                                 'image' => WPUF_ASSET_URI . '/images/templates/event.svg',
                             ],
                         ],
+                    ],
+                    'enable_multistep' => [
+                        'label'     => __( 'Enable Multi-Step', 'wp-user-frontend' ),
+                        'type'      => 'toggle',
+                        'help_text' => __( 'If checked, form will be displayed in frontend in multiple steps.', 'wp-user-frontend' ),
+                        'link'      => esc_url_raw(
+                            'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-add-multi-step-form/'
+                        ),
                     ],
                 ],
             ],

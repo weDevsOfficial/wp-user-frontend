@@ -59,6 +59,8 @@ function wpuf_show_post_status( $status ) {
  * @author Tareq Hasan
  */
 function wpuf_admin_post_status( $status ) {
+    $fontcolor = '#000';
+    $title = '';
     if ( 'publish' === $status ) {
         $title     = __( 'Published', 'wp-user-frontend' );
         $fontcolor = '#009200';
@@ -4915,7 +4917,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                 'label' => __( 'Before Post Settings', 'wp-user-frontend' ),
                 'desc'  => __( 'Configure the form\'s behavior and appearance before submission, including content type, category, status, draft saving, and submit button customization.', 'wp-user-frontend' ),
                 'fields' => [
-                    'post_type'        => [
+                    'post_type'                  => [
                         'label'     => __( 'Post Type', 'wp-user-frontend' ),
                         'type'      => 'select',
                         'options'   => $post_types,
@@ -4924,13 +4926,13 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                             'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/different-custom-post-type-submission-2/'
                         ),
                     ],
-                    'default_category' => [
+                    'default_category'           => [
                         'label'     => __( 'Default Category', 'wp-user-frontend' ),
                         'type'      => 'multi-select',
                         'options'   => wpuf_get_terms(),
                         'help_text' => __( 'Choose the default category for the post', 'wp-user-frontend' ),
                     ],
-                    'post_status'      => [
+                    'post_status'                => [
                         'label'     => __( 'Post Submission Status', 'wp-user-frontend' ),
                         'type'      => 'select',
                         'options'   => [
@@ -4941,46 +4943,78 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                         ],
                         'help_text' => __( 'Choose the default category for the post', 'wp-user-frontend' ),
                     ],
-                    'draft_post'       => [
+                    'draft_post'                 => [
                         'label'     => __( 'Enable saving as draft', 'wp-user-frontend' ),
                         'type'      => 'checkbox',
                         'help_text' => __( 'Allow users to save posts before final submission', 'wp-user-frontend' ),
                     ],
-                    'submit_text'      => [
+                    'submit_text'                => [
                         'label'     => __( 'Submit Post Button Text', 'wp-user-frontend' ),
                         'type'      => 'text',
                         'help_text' => __( 'Customize the text of the submit button', 'wp-user-frontend' ),
                     ],
-                    'form_template'    => [
+                    'form_template'              => [
                         'label'     => __( 'Choose Form Template', 'wp-user-frontend' ),
                         'type'      => 'pic-radio',
-                        'help_text' => __( 'If selected a form template, it will try to execute that integration options when new post created and updated.', 'wp-user-frontend' ),
+                        'help_text' => __(
+                            'If selected a form template, it will try to execute that integration options when new post created and updated.',
+                            'wp-user-frontend'
+                        ),
                         'options'   => [
-                            'post_form_template_post' => [
+                            'post_form_template_post'            => [
                                 'label' => __( 'Post Form', 'wp-user-frontend' ),
                                 'image' => WPUF_ASSET_URI . '/images/templates/post.svg',
                             ],
-                            'post_form_template_woocommerce' => [
+                            'post_form_template_woocommerce'     => [
                                 'label' => __( 'WooCommerce Product Form', 'wp-user-frontend' ),
                                 'image' => WPUF_ASSET_URI . '/images/templates/woocommerce.svg',
                             ],
-                            'post_form_template_edd' => [
+                            'post_form_template_edd'             => [
                                 'label' => __( 'EDD Download Form', 'wp-user-frontend' ),
                                 'image' => WPUF_ASSET_URI . '/images/templates/edd.svg',
                             ],
-                            'post_form_template_events_calendar'  => [
+                            'post_form_template_events_calendar' => [
                                 'label' => __( 'The Events Calendar Form', 'wp-user-frontend' ),
                                 'image' => WPUF_ASSET_URI . '/images/templates/event.svg',
                             ],
                         ],
                     ],
-                    'enable_multistep' => [
+                    'enable_multistep'           => [
                         'label'     => __( 'Enable Multi-Step', 'wp-user-frontend' ),
                         'type'      => 'toggle',
-                        'help_text' => __( 'If checked, form will be displayed in frontend in multiple steps.', 'wp-user-frontend' ),
+                        'help_text' => __(
+                            'If checked, form will be displayed in frontend in multiple steps.', 'wp-user-frontend'
+                        ),
                         'link'      => esc_url_raw(
                             'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-add-multi-step-form/'
                         ),
+                    ],
+                    'multistep_progressbar_type' => [
+                        'label'     => __( 'Multistep Progressbar Type', 'wp-user-frontend' ),
+                        'type'      => 'select',
+                        'help_text' => __( 'Choose how you want the progressbar', 'wp-user-frontend' ),
+                        'options'   => [
+                            'progressive'  => __( 'Progressbar', 'wp-user-frontend' ),
+                            'step_by_step' => __( 'Step by Step', 'wp-user-frontend' ),
+                        ],
+                    ],
+                    'ms_ac_txt_color' => [
+                        'label'     => __( 'Active Text Color', 'wp-user-frontend' ),
+                        'type'      => 'color-picker',
+                        'help_text' => __( 'Text color for active step.', 'wp-user-frontend' ),
+                        'default'   => '#fff',
+                    ],
+                    'ms_active_bgcolor' => [
+                        'label'     => __( 'Active Background Color', 'wp-user-frontend' ),
+                        'type'      => 'color-picker',
+                        'help_text' => __( 'Background color for progressbar or active step.', 'wp-user-frontend' ),
+                        'default'   => '#00a0d2',
+                    ],
+                    'ms_bgcolor' => [
+                        'label'     => __( 'Background Color', 'wp-user-frontend' ),
+                        'type'      => 'color-picker',
+                        'help_text' => __( 'Background color for normal steps.', 'wp-user-frontend' ),
+                        'default'   => '#E4E4E4',
                     ],
                 ],
             ],

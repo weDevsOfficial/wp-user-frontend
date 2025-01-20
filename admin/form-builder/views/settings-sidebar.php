@@ -78,7 +78,8 @@ $post_type_selected = ! empty( $form_settings['post_type'] ) ? $form_settings['p
             <div
                 v-for="(field, field_index) in section.fields"
                 class="wpuf-my-4">
-                <div class="wpuf-flex wpuf-items-center">
+                <div class="wpuf-flex wpuf-items-center wpuf-w-2/5 wpuf-justify-between">
+                    <div class="wpuf-flex wpuf-items-center">
                     <input
                         v-if="field.type === 'checkbox'"
                         :class="[setting_class_names('checkbox'), '!wpuf-mr-2']"
@@ -101,6 +102,21 @@ $post_type_selected = ! empty( $form_settings['post_type'] ) ? $form_settings['p
                         <input type="checkbox" class="wpuf-sr-only wpuf-peer">
                         <div class="wpuf-flex wpuf-items-center wpuf-w-12 wpuf-h-6 wpuf-bg-gray-300 wpuf-rounded-full wpuf-peer peer-checked:after:wpuf-translate-x-full rtl:wpuf-peer-checked:after:wpuf--translate-x-full peer-checked:after:wpuf-border-white after:content-[''] after:wpuf-absolute after:top-[4px] after:wpuf-bg-white after:wpuf-border-gray-300 after:wpuf-border after:wpuf-rounded-full after:wpuf-h-5 after:wpuf-w-5 after:wpuf-left-[3px] after:wpuf-transition-all peer-checked:wpuf-bg-primary"></div>
                     </label>
+                    </div>
+                    <div v-if="field.type === 'color-picker'" class="wpuf-relative wpuf-ml-2 wpuf-flex wpuf-gap-2.5">
+                        <div
+                            @click="$event.target.querySelector('input').click()"
+                            class="wpuf-flex wpuf-justify-center wpuf-items-center wpuf-space-x-1 wpuf-px-2 wpuf-py-1.5 wpuf-rounded-md wpuf-bg-white wpuf-border wpuf-cursor-pointer wpuf-relative">
+                            <div class="wpuf-w-6 wpuf-h-6 wpuf-overflow-hidden wpuf-border wpuf-border-gray-200 wpuf-rounded-full wpuf-flex wpuf-justify-center wpuf-items-center">
+                                <input
+                                    type="color"
+                                    class="wpuf-w-8 wpuf-h-12 !wpuf-border-gray-50 !wpuf--m-4 hover:!wpuf-cursor-pointer"
+                                    :style="{background: field.default}"
+                                    :value="field.value ? field.value : field.default">
+                            </div>
+                            <i class="fa fa-angle-down !wpuf-font-bold !wpuf-text-xl !wpuf-leading-none wpuf-text-gray-600 wpuf-ml-2"></i>
+                        </div>
+                    </div>
                 </div>
                 <select
                     v-if="field.type === 'select'"
@@ -156,8 +172,6 @@ $post_type_selected = ! empty( $form_settings['post_type'] ) ? $form_settings['p
                         </li>
                     </div>
                 </div>
-
-
             </div>
         </div>
         </template>

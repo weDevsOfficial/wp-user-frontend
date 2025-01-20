@@ -2339,6 +2339,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   grid-column: span 2 / span 2;
 }
 
+.\!wpuf--m-4 {
+  margin: -1rem !important;
+}
+
 .\!wpuf-m-0 {
   margin: 0px !important;
 }
@@ -3032,6 +3036,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   gap: 0.5rem;
 }
 
+.wpuf-gap-2\.5 {
+  gap: 0.625rem;
+}
+
 .wpuf-gap-3 {
   gap: 0.75rem;
 }
@@ -3063,6 +3071,12 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   --tw-space-x-reverse: 0;
   margin-right: calc(-1px * var(--tw-space-x-reverse));
   margin-left: calc(-1px * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.wpuf-space-x-1 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.25rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
 .wpuf-space-x-4 > :not([hidden]) ~ :not([hidden]) {
@@ -3239,6 +3253,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 .\!wpuf-border-gray-300 {
   --tw-border-opacity: 1 !important;
   border-color: rgb(209 213 219 / var(--tw-border-opacity)) !important;
+}
+
+.\!wpuf-border-gray-50 {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(249 250 251 / var(--tw-border-opacity)) !important;
 }
 
 .\!wpuf-border-red-500 {
@@ -4391,6 +4410,10 @@ body ul.wpuf-form li .wpuf-fields {
 
 .hover\:\!wpuf-cursor-move:hover {
   cursor: move !important;
+}
+
+.hover\:\!wpuf-cursor-pointer:hover {
+  cursor: pointer !important;
 }
 
 .hover\:wpuf-cursor-pointer:hover {

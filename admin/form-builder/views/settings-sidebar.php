@@ -62,7 +62,7 @@ $post_type_selected = ! empty( $form_settings['post_type'] ) ? $form_settings['p
         ?>
     </div>
     <div class="wpuf-w-3/4 wpuf-min-h-screen wpuf-p-8">
-        <div class="wpuf-pb-6 wpuf-border-b">
+        <div class="wpuf-pb-6 wpuf-border-b wpuf-border-gray-200">
             <h2 class="wpuf-text-2xl wpuf-mb-2 wpuf-mt-0">
                 {{ active_settings_title }}
             </h2>
@@ -70,7 +70,8 @@ $post_type_selected = ! empty( $form_settings['post_type'] ) ? $form_settings['p
         <template v-if="section_exists">
         <div
             v-for="(section, index) in settings_items[active_settings_tab].section"
-            class="wpuf-py-4">
+            class="wpuf-py-4 wpuf-border-b wpuf-border-gray-300">
+
             <p class="wpuf-text-lg wpuf-font-medium wpuf-mb-2">
                 {{ section.label }}
             </p>
@@ -85,7 +86,7 @@ $post_type_selected = ! empty( $form_settings['post_type'] ) ? $form_settings['p
                         :class="[setting_class_names('checkbox'), '!wpuf-mr-2']"
                         :type="field.type"
                         :name="field_index"
-                        :value="field.value"/>
+                        :value="field.value ? field.value : field.default"/>
                     <label :for="field_index" class="wpuf-text-sm wpuf-text-gray-700 wpuf-my-2">
                         {{ field.label }}
                     </label>
@@ -143,7 +144,7 @@ $post_type_selected = ! empty( $form_settings['post_type'] ) ? $form_settings['p
                     :class="setting_class_names('text')"
                     :type="field.type"
                     :name="index"
-                    :value="field.value"/>
+                    :value="field.value ? field.value : field.default"/>
                 <div v-if="field.type === 'pic-radio'">
                     <div class="wpuf-flex">
                         <li
@@ -171,6 +172,25 @@ $post_type_selected = ! empty( $form_settings['post_type'] ) ? $form_settings['p
                                 {{ option.label }}
                         </li>
                     </div>
+                </div>
+                <textarea
+                    v-if="field.type === 'textarea'"
+                    :class="setting_class_names('textarea')"
+                    :name="field_index"
+                    :value="field.value ? field.value : field.default"></textarea>
+                <div
+                    v-if="field.type === 'trailing-text'"
+                    class="wpuf-mt-2 wpuf-relative">
+                    <input
+                        :class="setting_class_names(field.trailing_type)"
+                        :type="field.trailing_type"
+                        :name="index"
+                        :value="field.value ? field.value : field.default"/>
+                    <span
+                        :class="field.trailing_type === 'number' ? 'wpuf-p-1' : 'wpuf-p-2'"
+                        class="wpuf-absolute wpuf-top-0 wpuf--right-px wpuf-h-full wpuf-bg-gray-50 wpuf-rounded-r-sm wpuf-text-gray-700 wpuf-border wpuf-border-gray-300">
+                        {{ field.trailing_text }}
+                    </span>
                 </div>
             </div>
         </div>

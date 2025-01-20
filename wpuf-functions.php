@@ -4914,8 +4914,11 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
     $general = [
         'section' => [
             'before_post_settings' => [
-                'label' => __( 'Before Post Settings', 'wp-user-frontend' ),
-                'desc'  => __( 'Configure the form\'s behavior and appearance before submission, including content type, category, status, draft saving, and submit button customization.', 'wp-user-frontend' ),
+                'label'  => __( 'Before Post Settings', 'wp-user-frontend' ),
+                'desc'   => __(
+                    'Configure the form\'s behavior and appearance before submission, including content type, category, status, draft saving, and submit button customization.',
+                    'wp-user-frontend'
+                ),
                 'fields' => [
                     'post_type'                  => [
                         'label'     => __( 'Post Type', 'wp-user-frontend' ),
@@ -4929,8 +4932,8 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                     'default_category'           => [
                         'label'     => __( 'Default Category', 'wp-user-frontend' ),
                         'type'      => 'multi-select',
-                        'options'   => wpuf_get_terms(),
                         'help_text' => __( 'Choose the default category for the post', 'wp-user-frontend' ),
+                        'options'   => wpuf_get_terms(),
                     ],
                     'post_status'                => [
                         'label'     => __( 'Post Submission Status', 'wp-user-frontend' ),
@@ -4998,23 +5001,75 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                             'step_by_step' => __( 'Step by Step', 'wp-user-frontend' ),
                         ],
                     ],
-                    'ms_ac_txt_color' => [
+                    'ms_ac_txt_color'            => [
                         'label'     => __( 'Active Text Color', 'wp-user-frontend' ),
                         'type'      => 'color-picker',
                         'help_text' => __( 'Text color for active step.', 'wp-user-frontend' ),
                         'default'   => '#fff',
                     ],
-                    'ms_active_bgcolor' => [
+                    'ms_active_bgcolor'          => [
                         'label'     => __( 'Active Background Color', 'wp-user-frontend' ),
                         'type'      => 'color-picker',
                         'help_text' => __( 'Background color for progressbar or active step.', 'wp-user-frontend' ),
                         'default'   => '#00a0d2',
                     ],
-                    'ms_bgcolor' => [
+                    'ms_bgcolor'                 => [
                         'label'     => __( 'Background Color', 'wp-user-frontend' ),
                         'type'      => 'color-picker',
                         'help_text' => __( 'Background color for normal steps.', 'wp-user-frontend' ),
                         'default'   => '#E4E4E4',
+                    ],
+                ],
+            ],
+            'after_post_settings'  => [
+                'label'  => __( 'After Post Settings', 'wp-user-frontend' ),
+                'desc'   => __(
+                    'Define actions post-submission, such as updating status, success messages, redirections, edit time limits, and button text customization.',
+                    'wp-user-frontend'
+                ),
+                'fields' => [
+                    'edit_post_status' => [
+                        'label'   => __( 'Post Update Status', 'wp-user-frontend' ),
+                        'type'    => 'select',
+                        'options' => [
+                            'draft'     => __( 'Draft', 'wp-user-frontend' ),
+                            'pending'   => __( 'Pending Review', 'wp-user-frontend' ),
+                            'private'   => __( 'Private', 'wp-user-frontend' ),
+                            'publish'   => __( 'Published', 'wp-user-frontend' ),
+                            '_nochange' => __( 'No Change', 'wp-user-frontend' ),
+                        ],
+                    ],
+                    'update_message'   => [
+                        'label'   => __( 'Post Update Message', 'wp-user-frontend' ),
+                        'type'    => 'textarea',
+                        'default' => 'Post has been updated successfully.<a target="_blank" href="{link}">View post</a>',
+                    ],
+                    'edit_redirect_to' => [
+                        'label'     => __( 'Successful Redirection', 'wp-user-frontend' ),
+                        'type'      => 'select',
+                        'help_text' => __(
+                            'After successfull submit, where the page will redirect to', 'wp-user-frontend'
+                        ),
+                        'options'   => [
+                            'post' => __( 'Newly created post', 'wp-user-frontend' ),
+                            'same' => __( 'Same page', 'wp-user-frontend' ),
+                            'page' => __( 'To a page', 'wp-user-frontend' ),
+                            'url'  => __( 'To a custom URL', 'wp-user-frontend' ),
+                        ],
+                    ],
+                    'lock_edit_post'   => [
+                        'label'         => __( 'Lock User Editing After', 'wp-user-frontend' ),
+                        'type'          => 'trailing-text',
+                        'help_text'     => __(
+                            'After how many hours user will be locked from editing the submitted post.',
+                            'wp-user-frontend'
+                        ),
+                        'trailing_type' => 'number',
+                        'trailing_text' => __( 'Hours', 'wp-user-frontend' ),
+                    ],
+                    'update_text'      => [
+                        'label' => __( 'Update Post Button Text', 'wp-user-frontend' ),
+                        'type'  => 'text',
                     ],
                 ],
             ],

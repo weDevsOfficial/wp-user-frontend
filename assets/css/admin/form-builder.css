@@ -2259,6 +2259,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   left: -5rem;
 }
 
+.wpuf--right-px {
+  right: -1px;
+}
+
 .wpuf-left-0 {
   left: 0px;
 }
@@ -3181,6 +3185,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 .wpuf-rounded-r-md {
   border-top-right-radius: 0.375rem;
   border-bottom-right-radius: 0.375rem;
+}
+
+.wpuf-rounded-r-sm {
+  border-top-right-radius: 0.125rem;
+  border-bottom-right-radius: 0.125rem;
 }
 
 .wpuf-rounded-t-lg {

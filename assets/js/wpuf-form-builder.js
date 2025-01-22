@@ -1033,6 +1033,33 @@
             }
         }
 
+        hide_posting_control_cond_fields();
+
+        $('#post_permission').on('change', function () {
+            if ( $(this).val() === 'guest_post' ) {
+                $('#guest_details').parents('.wpuf-input-container').show();
+                $('#guest_email_verify').parents('.wpuf-input-container').show();
+
+                $('#roles').parents('.wpuf-input-container').hide();
+            } else if ( $(this).val() === 'role_base' ) {
+                $('#roles').parents('.wpuf-input-container').show();
+
+                $('#guest_details').parents('.wpuf-input-container').hide();
+                $('#guest_email_verify').parents('.wpuf-input-container').hide();
+                $('#name_label').parents('.wpuf-input-container').hide();
+            } else {
+                hide_posting_control_cond_fields();
+            }
+        });
+
+        $('#guest_details').on('change', function () {
+            if ( $(this).is(':checked') ) {
+                $('#name_label').parents('.wpuf-input-container').show();
+            } else {
+                $('#name_label').parents('.wpuf-input-container').hide();
+            }
+        });
+
         SettingsTab.init();
     });
 
@@ -1060,5 +1087,12 @@
             }
         });
     });
+
+    function hide_posting_control_cond_fields() {
+        $('#guest_details').parents('.wpuf-input-container').hide();
+        $('#name_label').parents('.wpuf-input-container').hide();
+        $('#guest_email_verify').parents('.wpuf-input-container').hide();
+        $('#roles').parents('.wpuf-input-container').hide();
+    }
 
 })(jQuery);

@@ -4993,10 +4993,10 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                         ),
                     ],
                     'multistep_progressbar_type' => [
-                        'label'     => __( 'Multistep Progressbar Type', 'wp-user-frontend' ),
-                        'type'      => 'select',
-                        'help_text' => __( 'Choose how you want the progressbar', 'wp-user-frontend' ),
-                        'options'   => [
+                        'label'      => __( 'Multistep Progressbar Type', 'wp-user-frontend' ),
+                        'type'       => 'select',
+                        'help_text'  => __( 'Choose how you want the progressbar', 'wp-user-frontend' ),
+                        'options'    => [
                             'progressive'  => __( 'Progressbar', 'wp-user-frontend' ),
                             'step_by_step' => __( 'Step by Step', 'wp-user-frontend' ),
                         ],
@@ -5070,6 +5070,59 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                     'update_text'      => [
                         'label' => __( 'Update Post Button Text', 'wp-user-frontend' ),
                         'type'  => 'text',
+                    ],
+                ],
+            ],
+            'posting_control'      => [
+                'label'  => __( 'Posting Control', 'wp-user-frontend' ),
+                'desc'   => __(
+                    'Before post settings let managers customize user-created posts, including forms, status, access, and notifications. These tools ensure a personalized experience with content control.',
+                    'wp-user-frontend'
+                ),
+                'fields' => [
+                    'post_permission'    => [
+                        'label'   => __( 'Enable Guest Post', 'wp-user-frontend' ),
+                        'type'    => 'select',
+                        'options' => [
+                            'everyone'   => __( '- Select Post Permission -', 'wp-user-frontend' ),
+                            'guest_post' => __( 'Guest Post', 'wp-user-frontend' ),
+                            'role_base'  => __( 'Role Based Post', 'wp-user-frontend' ),
+                        ],
+                    ],
+                    'guest_details'      => [
+                        'label'     => __( 'Require Name and Email address', 'wp-user-frontend' ),
+                        'type'      => 'checkbox',
+                        'help_text' => __(
+                            'Users will be registered automatically with their name & email.', 'wp-user-frontend'
+                        ),
+                    ],
+                    'inline_fields'      => [
+                        'fields' => [
+                            'name_label'  => [
+                                'label'     => __( 'Name Label', 'wp-user-frontend' ),
+                                'type'      => 'text',
+                                'help_text' => __( 'Label text for name field', 'wp-user-frontend' ),
+                            ],
+                            'email_label' => [
+                                'label'     => __( 'E-Mail Label', 'wp-user-frontend' ),
+                                'type'      => 'text',
+                                'help_text' => __( 'Label text for email field', 'wp-user-frontend' ),
+                            ],
+                        ],
+                    ],
+                    'guest_email_verify' => [
+                        'label'     => __( 'Require email verification', 'wp-user-frontend' ),
+                        'type'      => 'checkbox',
+                        'help_text' => __(
+                            'If requires, users will be required to verify their email adress.', 'wp-user-frontend'
+                        ),
+                    ],
+                    'roles'              => [
+                        'label'           => __( 'Choose who can submit post', 'wp-user-frontend' ),
+                        'type'            => 'multi-select',
+                        'help'            => __( 'Select the user roles who can submit posts', 'wp-user-frontend' ),
+                        'options'         => wpuf_get_user_roles(),
+                        'always_selected' => [ 'administrator' ],
                     ],
                 ],
             ],

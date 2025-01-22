@@ -83,7 +83,7 @@ $post_type_selected = ! empty( $form_settings['post_type'] ) ? $form_settings['p
                         if ( 'inline_fields' !== $field_key ) {
                             ?>
                         <div class="wpuf-my-4 wpuf-input-container">
-                            <div class="wpuf-flex wpuf-items-center wpuf-w-2/5<?php echo 'color-picker' === $field['type'] ? ' wpuf-justify-between' : '' ?>">
+                            <div class="wpuf-flex wpuf-items-center wpuf-w-2/5<?php echo 'color-picker' === $field['type'] ? ' wpuf-justify-between' : ''; ?>">
                                 <?php if ( 'checkbox' === $field['type'] ) { ?>
                                     <input
                                         :class="[setting_class_names('checkbox'), '!wpuf-mr-2']"
@@ -136,6 +136,8 @@ $post_type_selected = ! empty( $form_settings['post_type'] ) ? $form_settings['p
                                             <input
                                                 type="color"
                                                 class="wpuf-w-8 wpuf-h-12 !wpuf-border-gray-50 !wpuf--m-4 hover:!wpuf-cursor-pointer"
+                                                name="wpuf_settings[<?php echo $field_key; ?>]"
+                                                id="<?php echo $field_key; ?>"
                                                 style="background: <?php echo $field['default']; ?>"
                                                 value="<?php echo ! empty( $field['default'] ) ? $field['default'] : ''; ?>">
                                         </div>

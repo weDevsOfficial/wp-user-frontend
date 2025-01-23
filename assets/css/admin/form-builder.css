@@ -2198,7 +2198,7 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 }
 
 .panel-field-opt {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .panel-field-opt label {
@@ -2606,10 +2606,6 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   display: inline-flex;
 }
 
-.wpuf-flow-root {
-  display: flow-root;
-}
-
 .wpuf-grid {
   display: grid;
 }
@@ -2733,6 +2729,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   width: calc(100% + 20px) !important;
 }
 
+.\!wpuf-w-full {
+  width: 100% !important;
+}
+
 .wpuf-w-1\/2 {
   width: 50%;
 }
@@ -2805,6 +2805,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   width: 2.25rem;
 }
 
+.wpuf-w-\[10\%\] {
+  width: 10%;
+}
+
 .wpuf-w-\[104\%\] {
   width: 104%;
 }
@@ -2865,6 +2869,14 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-max-w-32 {
   max-width: 8rem;
+}
+
+.wpuf-max-w-\[10\%\] {
+  max-width: 10%;
+}
+
+.wpuf-max-w-\[40\%\] {
+  max-width: 40%;
 }
 
 .wpuf-max-w-\[768px\] {

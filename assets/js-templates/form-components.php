@@ -317,32 +317,22 @@
         </label>
     </div>
 
-    <div class="option-field-option-chooser wpuf-mx-auto wpuf-flow-root wpuf-overflow-hidden">
-        <table class="wpuf-w-full wpuf-text-left">
-            <thead class="wpuf-bg-white">
-            <tr>
-                <th scope="col"></th>
-                <th scope="col" class="wpuf-flex wpuf-font-normal">
-                    <?php esc_attr_e( 'Label', 'wp-user-frontend' ); ?>
-                    <help-text text="<?php esc_attr_e( 'Do not use & or other special character for option label', 'wp-user-frontend' ); ?>"></help-text>
-                </th>
-                <th
-                    v-if="show_value"
-                    class="wpuf-font-normal"
-                    scope="col">
-                    <?php esc_attr_e( 'Value', 'wp-user-frontend' ); ?>
-                </th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
+    <div class="wpuf-mt-4">
+        <table>
             <tbody>
-            <tr
+                <tr>
+                    <td class="wpuf-max-w-[10%]"></td>
+                    <td class="wpuf-flex wpuf-max-w-[40%]"><?php esc_attr_e( 'Label', 'wp-user-frontend' ); ?>
+                        <help-text text="<?php esc_attr_e( 'Do not use & or otder special character for option label', 'wp-user-frontend' ); ?>"></help-text></td>
+                    <td v-if="show_value" class="wpuf-max-w-[40%]"><?php esc_attr_e( 'Value', 'wp-user-frontend' ); ?></td>
+                    <td class="wpuf-max-w-[10%]"></td>
+                </tr>
+                <tr
                 v-for="(option, index) in options"
                 :key="option.id"
                 :data-index="index">
-                <td class="wpuf-flex">
-                    <div class="selector ">
+                <td class="wpuf-flex wpuf-max-w-[10%] wpuf-mt-1">
+                    <div>
                         <input
                             v-if="option_field.is_multiple"
                             type="checkbox"
@@ -362,53 +352,53 @@
                         <i class="fa fa-bars"></i>
                     </div>
                 </td>
-                <td>
+                <td class="wpuf-max-w-[40%]">
                     <input
-                        :class="builder_class_names('text')"
+                        :class="[builder_class_names('text'), '!wpuf-w-full']"
                         type="text"
                         v-model="option.label"
                         @input="set_option_label(index, option.label)">
                 </td>
-                <td
-                    v-if="show_value"
-                    class="wpuf-text-sm wpuf-text-gray-500">
+                <td v-if="show_value" class="wpuf-max-w-[40%]">
                     <input
-                        :class="builder_class_names('text')"
+                        :class="[builder_class_names('text'), '!wpuf-w-full']"
                         type="text"
                         v-model="option.value">
                 </td>
-                <td class="wpuf-ml-2 wpuf-flex wpuf-items-center">
-                    <div
-                        class="action-buttons hover:wpuf-cursor-pointer wpuf-mt-1"
-                        @click="delete_option(index)">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            class="wpuf-size-6 wpuf-border wpuf-rounded-2xl wpuf-border-gray-400 hover:wpuf-border-primary wpuf-p-1">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
-                        </svg>
-                    </div>
-                    <div
-                        v-if="index === options.length - 1"
-                        class="plus-buttons hover:wpuf-cursor-pointer !wpuf-border-0 wpuf-mt-1"
-                        @click="add_option">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            class="wpuf-ml-1 wpuf-size-6 wpuf-border wpuf-rounded-2xl wpuf-border-gray-400 wpuf-p-1">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                        </svg>
+                <td class="wpuf-w-[10%]">
+                    <div class="wpuf-flex wpuf-ml-2">
+                        <div
+                            @click="delete_option(index)"
+                            class="action-buttons hover:wpuf-cursor-pointer">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="wpuf-size-6 wpuf-border wpuf-rounded-2xl wpuf-border-gray-400 hover:wpuf-border-primary wpuf-p-1">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+                            </svg>
+                        </div>
+                        <div
+                            v-if="index === options.length - 1"
+                            @click="add_option"
+                            class="plus-buttons hover:wpuf-cursor-pointer !wpuf-border-0">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="wpuf-ml-1 wpuf-size-6 wpuf-border wpuf-rounded-2xl wpuf-border-gray-400 wpuf-p-1">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            </svg>
+                        </div>
                     </div>
                 </td>
             </tr>
             </tbody>
-    </table>
+        </table>
     </div>
 
     <a

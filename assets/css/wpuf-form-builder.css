@@ -197,7 +197,7 @@
   border: 1px solid #ddd;
 }
 .selectize-dropdown .active {
-  background-color: #0073aa;
+  background-color: #16a34a;
   color: #fff;
 }
 .selectize-element-group {
@@ -537,8 +537,8 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 #form-preview-stage .form-preview-stage-dropzone {
-  background-color: rgba(255, 185, 0, 0.3) !important;
-  border: 1px solid #ffb900;
+  background-color: #f0fdf4;
+  border: 1px solid #4ade80;
   height: 50px;
 }
 #form-preview-stage .wpuf-submit + .button + .form-preview-stage-dropzone,
@@ -692,15 +692,11 @@
 .option-field-option-chooser .selector {
   width: 25px;
 }
-.option-field-option-chooser .selector input {
-  margin-top: 14px;
-}
 .option-field-option-chooser .sort-handler {
   width: 22px;
   cursor: ns-resize;
 }
 .option-field-option-chooser .sort-handler i {
-  margin-top: 14px;
   font-size: 15px;
 }
 .option-field-option-chooser .label {
@@ -716,22 +712,10 @@
 .option-field-option-chooser .header .value {
   color: #909090;
 }
-.option-field-option-chooser .action-buttons {
-  width: 36px;
-}
 .option-field-option-chooser .action-buttons i {
   cursor: pointer;
   font-size: 16px;
   margin-top: 13px;
-}
-.option-field-option-chooser .plus-buttons {
-  padding: 5px;
-  font-size: 18px;
-  text-align: center;
-  cursor: pointer;
-  border: 1px solid #ccc;
-  width: 61%;
-  margin-left: 14%;
 }
 .panel-field-opt-repeater-columns .repeater-columns li > div {
   float: left;

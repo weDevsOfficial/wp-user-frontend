@@ -10,7 +10,7 @@ class Form_Field_Column extends Field_Contract {
     public function __construct() {
         $this->name       = __( 'Columns', 'wp-user-frontend' );
         $this->input_type = 'column_field';
-        $this->icon       = 'columns';
+        $this->icon       = 'view-columns';
     }
 
     /**
@@ -80,7 +80,7 @@ class Form_Field_Column extends Field_Contract {
                 'type'      => 'range',
                 'section'   => 'basic',
                 'priority'  => 10,
-                'help_text' => __( 'Title of the section', 'wp-user-frontend' ),
+                'help_text' => __( 'How many columns should be there. Maximum 3', 'wp-user-frontend' ),
             ],
             [
                 'name'      => 'column_space',

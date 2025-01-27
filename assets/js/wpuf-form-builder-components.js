@@ -1608,21 +1608,70 @@ Vue.component('form-fields-v4-1', {
 
         alert_pro_feature: function (field) {
             var title = this.field_settings[field].title;
+            var iconHtml = '';
 
-            Swal.fire({
-                title: '<i class="fa fa-lock"></i> ' + title + ' <br>' + this.i18n.is_a_pro_feature,
-                text: this.i18n.pro_feature_msg,
-                icon: '',
-                showCancelButton: true,
-                cancelButtonText: this.i18n.close,
-                confirmButtonColor: '#46b450',
-                confirmButtonText: this.i18n.upgrade_to_pro
-            }).then(function (result) {
-                if (result.isConfirmed) {
-                    window.open(wpuf_form_builder.pro_link, '_blank');
+            if ( this.i18n.pro_field_message[field] ) {
+                switch ( this.i18n.pro_field_message[field].asset_type ) {
+                    case 'image':
+                        iconHtml = `<img src="${this.i18n.pro_field_message[field].asset_url}" alt="${field}">`;
+                        break;
+
+                    case 'video':
+                        iconHtml = `<iframe src="${this.i18n.pro_field_message[field].asset_url}" title="${field}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></iframe>`;
+                        break;
                 }
 
-            }, function() {});
+                var html = `<div class="wpuf-flex wpuf-text-left">
+                                        <div class="wpuf-w-1/2">
+                                            <img src="${this.i18n.lock_icon}" alt="">
+                                            <h2 class="wpuf-text-black"><span class="wpuf-text-orange-400">${title} </span>${this.i18n.is_a_pro_feature}</h2>
+                                            <p>${this.i18n.pro_feature_msg}</p>
+                                        </div>
+                                        <div class="wpuf-w-1/2 wpuf-flex wpuf-justify-center">
+                                            ${iconHtml}
+                                        </div>
+                                    </div>`;
+
+                Swal.fire({
+                    html: html,
+                    showCloseButton: true,
+                    customClass: {
+                        confirmButton: "!wpuf-flex focus:!wpuf-shadow-none",
+                        closeButton: "wpuf-absolute"
+                    },
+                    width: '50rem',
+                    padding: '1.5rem',
+                    confirmButtonColor: '#F97316',
+                    confirmButtonText: this.i18n.upgrade_to_pro
+                }).then(function (result) {
+                    if (result.isConfirmed) {
+                        window.open(wpuf_form_builder.pro_link, '_blank');
+                    }
+
+                }, function() {});
+
+            } else {
+                Swal.fire({
+                    html: this.i18n.pro_feature_msg,
+                    showCloseButton: true,
+                    customClass: {
+                        confirmButton: "!wpuf-flex focus:!wpuf-shadow-none",
+                        closeButton: "wpuf-absolute"
+                    },
+                    width: '40rem',
+                    padding: '2rem 3rem',
+                    title: '<span class="wpuf-text-orange-400">' + title + '</span> ' + this.i18n.is_a_pro_feature,
+                    icon: '',
+                    imageUrl: this.i18n.lock_icon,
+                    confirmButtonColor: '#F97316',
+                    confirmButtonText: this.i18n.upgrade_to_pro
+                }).then(function (result) {
+                    if (result.isConfirmed) {
+                        window.open(wpuf_form_builder.pro_link, '_blank');
+                    }
+
+                }, function() {});
+            }
         },
 
         alert_invalidate_msg: function (field) {

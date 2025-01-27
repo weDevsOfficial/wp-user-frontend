@@ -283,6 +283,10 @@ class Admin_Form_Builder {
      * @return array
      */
     private function i18n() {
+        $crown_icon     = WPUF_ASSET_URI . '/images/crown-white.svg';
+        $lock_icon      = WPUF_ASSET_URI . '/images/lock-icon-rounded-bg.svg';
+        $field_messages = $this->get_pro_field_messages();
+
         return apply_filters(
             'wpuf_form_builder_i18n', [
                 'advanced_options'      => __( 'Advanced Options', 'wp-user-frontend' ),
@@ -296,15 +300,20 @@ class Admin_Form_Builder {
                 'option'                => __( 'Option', 'wp-user-frontend' ),
                 'column'                => __( 'Column', 'wp-user-frontend' ),
                 'last_column_warn_msg'  => __( 'This field must contain at least one column', 'wp-user-frontend' ),
-                'is_a_pro_feature'      => __( 'is available in Pro version', 'wp-user-frontend' ),
+                'is_a_pro_feature'      => __( 'is a pro feature', 'wp-user-frontend' ),
                 'pro_feature_msg'       => __(
-                    'Please upgrade to the Pro version to unlock all these awesome features', 'wp-user-frontend'
+                    '<p class="wpuf-text-gray-500 wpuf-font-medium wpuf-text-xl">Please upgrade to the Pro version to unlock all these awesome features</p>',
+                    'wp-user-frontend'
                 ),
-                'upgrade_to_pro'        => __( 'Get the Pro version', 'wp-user-frontend' ),
+                'upgrade_to_pro'        => sprintf(
+                    __( 'Upgrade to PRO &nbsp;&nbsp;%s', 'wp-user-frontend' ), '<img src="' . $crown_icon . '"/>'
+                ),
                 'select'                => __( 'Select', 'wp-user-frontend' ),
                 'saved_form_data'       => __( 'Saved form data', 'wp-user-frontend' ),
                 'unsaved_changes'       => __( 'You have unsaved changes.', 'wp-user-frontend' ),
                 'copy_shortcode'        => __( 'Click to copy shortcode', 'wp-user-frontend' ),
+                'lock_icon'             => $lock_icon,
+                'pro_field_message'     => $field_messages,
             ]
         );
     }
@@ -357,5 +366,30 @@ class Admin_Form_Builder {
         update_post_meta( $data['form_id'], 'integrations', $data['integrations'] );
 
         return $saved_wpuf_inputs;
+    }
+
+    /**
+     * Check and get pro-field related text, image, video etc. to show when user clicks on a pro field
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array
+     */
+    protected function get_pro_field_messages() {
+        $url      = 'https://raw.githubusercontent.com/weDevsOfficial/wpuf-util/master/pro-field-assets.json';
+        $response = wp_remote_get( $url, [ 'timeout' => 15 ] );
+        $info     = wp_remote_retrieve_body( $response );
+
+        if ( is_wp_error( $response ) || ( 200 !== $response['response']['code'] ) ) {
+            return [];
+        }
+
+        $info = json_decode( $info, true );
+
+        if ( empty( $info ) ) {
+            return [];
+        }
+
+        return $info;
     }
 }

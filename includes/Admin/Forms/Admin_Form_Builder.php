@@ -8,6 +8,14 @@ use WeDevs\Wpuf\Free\Pro_Prompt;
  * Form Builder framework
  */
 class Admin_Form_Builder {
+    /**
+     * transient key to store pro field assets info
+     *
+     * @since WPUF_SINCE
+     *
+     * @var string
+     */
+    const PRO_FIELD_ASSETS = 'wpuf_pro_field_assets';
 
     /**
      * Form Settings
@@ -376,12 +384,18 @@ class Admin_Form_Builder {
      * @return array
      */
     protected function get_pro_field_messages() {
-        $url      = 'https://raw.githubusercontent.com/weDevsOfficial/wpuf-util/master/pro-field-assets.json';
-        $response = wp_remote_get( $url, [ 'timeout' => 15 ] );
-        $info     = wp_remote_retrieve_body( $response );
+        $info = get_transient( self::PRO_FIELD_ASSETS );
 
-        if ( is_wp_error( $response ) || ( 200 !== $response['response']['code'] ) ) {
-            return [];
+        if ( false === $info ) {
+            $url      = 'https://raw.githubusercontent.com/weDevsOfficial/wpuf-util/master/pro-field-assets.json';
+            $response = wp_remote_get( $url, [ 'timeout' => 15 ] );
+            $info     = wp_remote_retrieve_body( $response );
+
+            if ( is_wp_error( $response ) || ( 200 !== $response['response']['code'] ) ) {
+                return [];
+            }
+
+            set_transient( self::PRO_FIELD_ASSETS, $info, DAY_IN_SECONDS );
         }
 
         $info = json_decode( $info, true );

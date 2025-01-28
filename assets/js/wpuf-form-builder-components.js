@@ -1684,10 +1684,19 @@ Vue.component('form-fields-v4-1', {
                 this.warn({
                     title: validator.msg_title || '',
                     html: validator.msg,
+                    showCancelButton: true,
+                    imageUrl: validator.icon || '',
+                    confirmButtonText: validator.cta || '',
+                    cancelButtonText: this.i18n.ok,
+                    showCloseButton: true,
+                    width: '40rem',
+                    padding: '2rem 3rem',
                     type: 'warning',
-                    showCancelButton: false,
-                    confirmButtonColor: '#46b450',
-                    confirmButtonText: this.i18n.ok
+                    customClass: {
+                        confirmButton: '!wpuf-bg-white !wpuf-text-black focus:!wpuf-shadow-none !wpuf-p-0 hover:!wpuf-bg-none',
+                        closeButton: "wpuf-absolute",
+                        cancelButton: "!wpuf-bg-primary"
+                    },
                 });
             }
         },

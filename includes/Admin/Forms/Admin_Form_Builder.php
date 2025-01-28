@@ -303,7 +303,7 @@ class Admin_Form_Builder {
                 'delete_field_warn_msg' => __( 'Are you sure you want to delete this field?', 'wp-user-frontend' ),
                 'yes_delete_it'         => __( 'Yes, delete it', 'wp-user-frontend' ),
                 'no_cancel_it'          => __( 'No, cancel it', 'wp-user-frontend' ),
-                'ok'                    => __( 'OK', 'wp-user-frontend' ),
+                'ok'                    => __( 'Okay', 'wp-user-frontend' ),
                 'cancel'                => __( 'Cancel', 'wp-user-frontend' ),
                 'close'                 => __( 'Close', 'wp-user-frontend' ),
                 'last_choice_warn_msg'  => __( 'This field must contain at least one choice', 'wp-user-frontend' ),

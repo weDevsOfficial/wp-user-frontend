@@ -9,7 +9,7 @@ use WeDevs\Wpuf\Free\Pro_Prompt;
  */
 class Admin_Form_Builder {
     /**
-     * transient key to store pro field assets info
+     * Transient key to store pro field assets info
      *
      * @since WPUF_SINCE
      *
@@ -158,6 +158,8 @@ class Admin_Form_Builder {
         wpuf_require_once( WPUF_ROOT . '/admin/form-builder/class-wpuf-form-builder-field-settings.php' );
         wpuf_require_once( WPUF_ROOT . '/includes/Free/Pro_Prompt.php' );
 
+        $lock_icon = WPUF_ASSET_URI . '/images/lock-icon-rounded-bg.svg';
+
         $wpuf_form_builder = apply_filters(
             'wpuf_form_builder_localize_script',
             [
@@ -182,6 +184,7 @@ class Admin_Form_Builder {
                 'pro_asset_url'    => defined( 'WPUF_PRO_ASSET_URI' ) ? WPUF_PRO_ASSET_URI : '',
                 'settings_titles'  => wpuf_get_post_form_builder_setting_menu_titles(),
                 'settings_items'   => wpuf_get_post_form_builder_setting_menu_contents(),
+                'lock_icon'        => $lock_icon,
             ]
         );
         $wpuf_form_builder = wpuf_unset_conditional( $wpuf_form_builder );
@@ -292,7 +295,6 @@ class Admin_Form_Builder {
      */
     private function i18n() {
         $crown_icon     = WPUF_ASSET_URI . '/images/crown-white.svg';
-        $lock_icon      = WPUF_ASSET_URI . '/images/lock-icon-rounded-bg.svg';
         $field_messages = $this->get_pro_field_messages();
 
         return apply_filters(
@@ -320,7 +322,6 @@ class Admin_Form_Builder {
                 'saved_form_data'       => __( 'Saved form data', 'wp-user-frontend' ),
                 'unsaved_changes'       => __( 'You have unsaved changes.', 'wp-user-frontend' ),
                 'copy_shortcode'        => __( 'Click to copy shortcode', 'wp-user-frontend' ),
-                'lock_icon'             => $lock_icon,
                 'pro_field_message'     => $field_messages,
             ]
         );

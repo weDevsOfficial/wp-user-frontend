@@ -3223,6 +3223,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   border-top-right-radius: 0.75rem;
 }
 
+.\!wpuf-border {
+  border-width: 1px !important;
+}
+
 .\!wpuf-border-0 {
   border-width: 0px !important;
 }
@@ -3261,6 +3265,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-border-t {
   border-top-width: 1px;
+}
+
+.\!wpuf-border-solid {
+  border-style: solid !important;
 }
 
 .wpuf-border-solid {
@@ -3869,6 +3877,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   letter-spacing: -0.025em;
 }
 
+.\!wpuf-text-black {
+  --tw-text-opacity: 1 !important;
+  color: rgb(0 0 0 / var(--tw-text-opacity)) !important;
+}
+
 .\!wpuf-text-red-900 {
   --tw-text-opacity: 1 !important;
   color: rgb(127 29 29 / var(--tw-text-opacity)) !important;
@@ -3947,6 +3960,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 .wpuf-text-orange-700 {
   --tw-text-opacity: 1;
   color: rgb(194 65 12 / var(--tw-text-opacity));
+}
+
+.wpuf-text-primary {
+  --tw-text-opacity: 1;
+  color: rgb(22 163 74 / var(--tw-text-opacity));
 }
 
 .wpuf-text-red-500 {
@@ -4288,6 +4306,65 @@ body ul.wpuf-form li .wpuf-fields {
   border: 1px solid #d1d5db;
   box-shadow: none;
   background: #fff;
+}
+
+.wpuf-icon-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #eee;
+  overflow: hidden;
+}
+
+.wpuf-icon-container.wpuf-is-loaded {
+  background: none;
+}
+
+.wpuf-icon-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.wpuf-icon-container.wpuf-is-loaded img,
+.wpuf-icon-container.wpuf-is-loaded iframe {
+  opacity: 1;
+}
+
+.wpuf-shimmer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+        90deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0.5) 50%,
+        rgba(255,255,255,0) 100%
+    );
+  animation: wpuf-shimmer 1.5s infinite;
+  transition: all 0.3s ease;
+}
+
+@keyframes wpuf-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.wpuf-icon-container.wpuf-is-loaded .wpuf-shimmer {
+  display: none;
 }
 
 .placeholder\:wpuf-text-gray-400::-moz-placeholder {

@@ -167,26 +167,25 @@
                         var image_two  = wpuf_admin_script.asset_url + '/images/custom-fields/advance.png';
                         var html       = '<div class="wpuf-custom-field-instruction">';
                             html      += '<div class="step-one">';
-                            html      += sprintf( '<p style="font-weight: 400">%s<strong><code>%s</code></strong>%s"</p>', __( 'Navigate through', 'wp-user-frontend' ), __( 'WP-admin > WPUF > Settings > Frontend Posting', 'wp-user-frontend' ), __( '- there you have to check the checkbox: "Show custom field data in the post content area', 'wp-user-frontend' ) );
+                            html      += sprintf( '<p class="wpuf-text-base">%s <span class="wpuf-text-primary">%s</span>%s"</p>', __( 'Navigate through', 'wp-user-frontend' ), __( 'WP-admin > WPUF > Settings > Frontend Posting', 'wp-user-frontend' ), __( '- there you have to check the checkbox: "Show custom field data in the post content area', 'wp-user-frontend' ) );
                             html      += '<img src="'+ image_one +'" alt="settings">';
                             html      += '</div>';
                             html      += '<div class="step-two">';
-                            html      += sprintf( '<p style="font-weight: 400">%s<strong>%s</strong>%s</p>', __( 'Edit the custom field inside the post form and on the right side you will see', 'wp-user-frontend' ), __( '"Advanced Options".', 'wp-user-frontend' ), __( ' Expand that, scroll down and you will see "Show data on post" - set this yes.', 'wp-user-frontend' ) );
+                            html      += sprintf( '<p class="wpuf-text-base">%s<span class="wpuf-text-primary">%s</span>%s<span class="wpuf-text-primary">%s</span>%s</p>', __( 'Edit the custom field inside the post form and on the right side you will see', 'wp-user-frontend' ), __( '"Advanced Options".', 'wp-user-frontend' ), __( ' Expand that, scroll down and you will see ', 'wp-user-frontend' ), __( '"Show data on post"', 'wp-user-frontend' ), __( ' - set this yes.', 'wp-user-frontend' ) );
                             html      += '<img src="' + image_two + '" alt="custom field data">';
                             html      += '</div>';
                             html      += '</div>';
                         Swal.fire({
                             title: __( 'Do you want to show custom field data inside your post ?', 'wp-user-frontend' ),
                             html: html,
+                            imageUrl: wpuf_form_builder.lock_icon,
                             showCancelButton: true,
-                            confirmButtonColor: '#d54e21',
                             confirmButtonText: "Don't show again",
                             cancelButtonText: 'Okay',
                             customClass: {
-                                confirmButton: 'btn btn-success',
-                                cancelButton: 'btn btn-success',
+                                confirmButton: '!wpuf-bg-white !wpuf-text-black !wpuf-border !wpuf-border-solid !wpuf-border-gray-300 focus:!wpuf-shadow-none',
                             },
-                            cancelButtonColor: '#007cba'
+                            cancelButtonColor: '#16a34a'
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 state.show_custom_field_tooltip = false;

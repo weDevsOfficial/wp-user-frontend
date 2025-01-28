@@ -1613,22 +1613,25 @@ Vue.component('form-fields-v4-1', {
             if ( this.i18n.pro_field_message[field] ) {
                 switch ( this.i18n.pro_field_message[field].asset_type ) {
                     case 'image':
-                        iconHtml = `<img src="${this.i18n.pro_field_message[field].asset_url}" alt="${field}">`;
+                        iconHtml = `<img src="${this.i18n.pro_field_message[field].asset_url}" alt="${field}" loading="lazy" onload="this.closest('div').classList.add('wpuf-is-loaded')">`;
                         break;
 
                     case 'video':
-                        iconHtml = `<iframe src="${this.i18n.pro_field_message[field].asset_url}" title="${field}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></iframe>`;
+                        iconHtml = `<iframe onload="this.closest('div').classList.add('wpuf-is-loaded')" class="wpuf-w-full" src="${this.i18n.pro_field_message[field].asset_url}" title="${field}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></iframe>`;
                         break;
                 }
 
                 var html = `<div class="wpuf-flex wpuf-text-left">
                                         <div class="wpuf-w-1/2">
-                                            <img src="${this.i18n.lock_icon}" alt="">
+                                            <img src="${wpuf_form_builder.lock_icon}" alt="">
                                             <h2 class="wpuf-text-black"><span class="wpuf-text-orange-400">${title} </span>${this.i18n.is_a_pro_feature}</h2>
                                             <p>${this.i18n.pro_feature_msg}</p>
                                         </div>
-                                        <div class="wpuf-w-1/2 wpuf-flex wpuf-justify-center">
-                                            ${iconHtml}
+                                        <div class="wpuf-w-1/2">
+                                            <div class="wpuf-icon-container wpuf-flex wpuf-justify-center wpuf-items-center">
+                                                ${iconHtml}
+                                                <div class="wpuf-shimmer"></div>
+                                            </div>
                                         </div>
                                     </div>`;
 
@@ -1662,7 +1665,7 @@ Vue.component('form-fields-v4-1', {
                     padding: '2rem 3rem',
                     title: '<span class="wpuf-text-orange-400">' + title + '</span> ' + this.i18n.is_a_pro_feature,
                     icon: '',
-                    imageUrl: this.i18n.lock_icon,
+                    imageUrl: wpuf_form_builder.lock_icon,
                     confirmButtonColor: '#F97316',
                     confirmButtonText: this.i18n.upgrade_to_pro
                 }).then(function (result) {

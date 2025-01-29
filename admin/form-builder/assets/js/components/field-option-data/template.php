@@ -9,14 +9,14 @@
             <input
                 type="checkbox"
                 v-model="show_value"
-                class="wpuf-input-checkbox">
+                :class="builder_class_names('checkbox')">
             <?php esc_attr_e( 'Show values', 'wp-user-frontend' ); ?>
         </label>
         <label class="wpuf-block text-sm/6 wpuf-font-medium wpuf-text-gray-900 wpuf-ml-2">
             <input
                 type="checkbox"
                 v-model="sync_value"
-                class="wpuf-input-checkbox"
+                :class="builder_class_names('checkbox')"
             /><?php esc_attr_e( 'Sync values', 'wp-user-frontend' ); ?>
         </label>
     </div>

@@ -4721,6 +4721,11 @@ body ul.wpuf-form li .wpuf-fields {
   transition-property: all;
 }
 
+.checked\:hover\:\!wpuf-bg-primary:hover:checked {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(22 163 74 / var(--tw-bg-opacity)) !important;
+}
+
 .checked\:hover\:wpuf-bg-primary:hover:checked {
   --tw-bg-opacity: 1;
   background-color: rgb(22 163 74 / var(--tw-bg-opacity));
@@ -4813,6 +4818,11 @@ body ul.wpuf-form li .wpuf-fields {
 .focus\:wpuf-ring-red-500:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(239 68 68 / var(--tw-ring-opacity));
+}
+
+.checked\:focus\:\!wpuf-bg-primary:focus:checked {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(22 163 74 / var(--tw-bg-opacity)) !important;
 }
 
 .checked\:focus\:wpuf-bg-primary:focus:checked {

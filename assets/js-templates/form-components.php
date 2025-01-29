@@ -305,14 +305,14 @@
             <input
                 type="checkbox"
                 v-model="show_value"
-                class="wpuf-input-checkbox">
+                :class="builder_class_names('checkbox')">
             <?php esc_attr_e( 'Show values', 'wp-user-frontend' ); ?>
         </label>
         <label class="wpuf-block text-sm/6 wpuf-font-medium wpuf-text-gray-900 wpuf-ml-2">
             <input
                 type="checkbox"
                 v-model="sync_value"
-                class="wpuf-input-checkbox"
+                :class="builder_class_names('checkbox')"
             /><?php esc_attr_e( 'Sync values', 'wp-user-frontend' ); ?>
         </label>
     </div>
@@ -798,8 +798,7 @@
                       ]">
                     <div class="wpuf-flex wpuf-flex-col md:wpuf-flex-row wpuf-gap-2 wpuf-p-4 wpuf-border-transparent group-hover/column-inner:wpuf-border-green-400 wpuf-rounded-t-md wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed wpuf-border-green-400">
                         <div
-                            v-if="!(is_full_width(field.template) || is_pro_preview(field.template))"
-                            class="wpuf-w-full md:wpuf-w-1/4 wpuf-shrink-0">
+                            v-if="!(is_full_width(field.template) || is_pro_preview(field.template))">
                             <label v-if="!is_invisible(field)"
                                    :for="'wpuf-' + (field.name ? field.name : 'cls')"
                                    class="wpuf-block wpuf-text-sm">

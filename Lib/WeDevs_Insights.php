@@ -26,13 +26,7 @@ class WeDevs_Insights {
      */
     public function __construct( $file ) {
         $client = new Appsero\Client( '958afc63-99f8-4b98-b321-fcbc5cf95694', 'WP User Frontend', $file );
-        $metadata = [
-            'current_date' => wpuf_current_datetime()->format( 'Y-m-d H:i:s' ),
-            'url'          => get_bloginfo( 'url' ),
-        ];
-
         $this->insights = $client->insights();
-        $this->insights->add_extra( $metadata );
         $this->insights->client = $client;
         $this->insights->init();
     }

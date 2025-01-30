@@ -1031,9 +1031,32 @@
             }
         }
 
+        SettingsTab.init();
+
+        // initially show the first tab(General) on first page load
+        show_settings_for('general');
+
+        function show_settings_for(settings) {
+            $('.wpuf-settings-body').each(function() {
+                if ($(this).data('settings-body') === settings) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
+
+        $('ul.wpuf-sidebar-menu li').each(function() {
+            $(this).on('click', function() {
+                show_settings_for($(this).data('settings'));
+            });
+        });
+
         hide_multistep_cond_fields();
         hide_posting_control_cond_fields();
+        hide_enable_payment_cond_fields();
 
+        // conditional fields. the fields that show/hide depending on another field settings
         $('#enable_multistep').on('change', function() {
             if ( $(this).is(':checked') ) {
                 $('#multistep_progressbar_type').parents('.wpuf-input-container').show();
@@ -1070,24 +1093,32 @@
             }
         });
 
-        SettingsTab.init();
+        $('#payment_options').on('change', function() {
+            if ( $(this).is(':checked') ) {
+                $('#choose_payment_option').parents('.wpuf-input-container').show();
+            } else {
+                hide_enable_payment_cond_fields();
+            }
+        });
 
-        show_settings_for('general');
+        $('#choose_payment_option').on('change', function () {
+            if ( $(this).val() === 'force_pack_purchase' ) {
+                $('#fallback_ppp_enable').parents('.wpuf-input-container').show();
+                $('#pay_per_post_cost').parents('.wpuf-input-container').hide();
+                $('#ppp_payment_success_page').parents('.wpuf-input-container').hide();
+            } else {
+                $('#fallback_ppp_enable').parents('.wpuf-input-container').hide();
+                $('#pay_per_post_cost').parents('.wpuf-input-container').show();
+                $('#ppp_payment_success_page').parents('.wpuf-input-container').show();
+            }
+        });
 
-        function show_settings_for(settings) {
-            $('.wpuf-settings-body').each(function() {
-                if ($(this).data('settings-body') === settings) {
-                    $(this).show();
-                } else {
-                    $(this).hide();
-                }
-            });
-        }
-
-        $('ul.wpuf-sidebar-menu li').each(function() {
-            $(this).on('click', function() {
-                show_settings_for($(this).data('settings'));
-            });
+        $('#fallback_ppp_enable').on('change', function () {
+            if ( $(this).is(':checked') ) {
+                $('#fallback_ppp_cost').parents('.wpuf-input-container').show();
+            } else {
+                $('#fallback_ppp_cost').parents('.wpuf-input-container').hide();
+            }
         });
     });
 
@@ -1128,6 +1159,14 @@
         $('#name_label').parents('.wpuf-input-container').hide();
         $('#guest_email_verify').parents('.wpuf-input-container').hide();
         $('#roles').parents('.wpuf-input-container').hide();
+    }
+
+    function hide_enable_payment_cond_fields() {
+        $('#choose_payment_option').parents('.wpuf-input-container').hide();
+        $('#fallback_ppp_enable').parents('.wpuf-input-container').hide();
+        $('#fallback_ppp_cost').parents('.wpuf-input-container').hide();
+        $('#pay_per_post_cost').parents('.wpuf-input-container').hide();
+        $('#ppp_payment_success_page').parents('.wpuf-input-container').hide();
     }
 
 })(jQuery);

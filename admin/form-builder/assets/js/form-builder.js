@@ -420,7 +420,6 @@
             is_form_switcher: false,
             post_title_editing: false,
             isDirty: false,
-            enableMultistep: false,
             shortcodeCopied: false,
             logoUrl: wpuf_form_builder.asset_url + '/images/wpuf-icon-circle.svg',
             settings_titles: wpuf_form_builder.settings_titles,
@@ -698,7 +697,7 @@
                         return 'wpuf-ml-3 wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900 checked:focus:wpuf-bg-primary checked:hover:wpuf-bg-primary checked:before:!wpuf-bg-white checked:wpuf-bg-primary';
 
                     case 'checkbox':
-                        return 'wpuf-h-4 wpuf-w-4 wpuf-rounded wpuf-border-gray-300 !wpuf-mt-0.5 checked:focus:wpuf-bg-primary checked:hover:wpuf-bg-primary checked:wpuf-bg-primary before:!wpuf-content-none';
+                        return 'wpuf-h-4 wpuf-w-4 wpuf-rounded wpuf-border-gray-300 !wpuf-mt-0.5 checked:focus:!wpuf-bg-primary checked:hover:wpuf-bg-primary checked:!wpuf-bg-primary before:!wpuf-content-none';
 
                     case 'dropdown':
                         return 'wpuf-block wpuf-w-full wpuf-min-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300';
@@ -1072,6 +1071,24 @@
         });
 
         SettingsTab.init();
+
+        show_settings_for('general');
+
+        function show_settings_for(settings) {
+            $('.wpuf-settings-body').each(function() {
+                if ($(this).data('settings-body') === settings) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
+
+        $('ul.wpuf-sidebar-menu li').each(function() {
+            $(this).on('click', function() {
+                show_settings_for($(this).data('settings'));
+            });
+        });
     });
 
     // Mobile view menu toggle

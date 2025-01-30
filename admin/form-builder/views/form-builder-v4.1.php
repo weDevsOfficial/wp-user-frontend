@@ -127,26 +127,6 @@
                     <?php do_action( "wpuf-form-builder-tabs-{$form_type}" ); ?>
                 </div>
             </div>
-            <div v-if="is_pro_active" class="wpuf-flex wpuf-items-center">
-                <button
-                    @click="enableMultistep = !enableMultistep"
-                    type="button"
-                    class="wpuf-mx-4 wpuf-group wpuf-relative wpuf-inline-flex wpuf-h-5 wpuf-w-10 shrink-0 wpuf-cursor-pointer wpuf-items-center wpuf-justify-center wpuf-rounded-full"
-                    role="switch"
-                    aria-checked="false">
-                    <span class="wpuf-sr-only">Enable Multistep</span>
-                    <span aria-hidden="true" class="wpuf-pointer-events-none wpuf-absolute wpuf-h-full wpuf-w-full wpuf-rounded-md wpuf-bg-white"></span>
-                    <span
-                        aria-hidden="true"
-                        :class="enableMultistep ? 'wpuf-bg-primary' : 'wpuf-bg-gray-200'"
-                        class="wpuf-pointer-events-none wpuf-absolute wpuf-mx-auto wpuf-h-4 wpuf-w-9 wpuf-rounded-full wpuf-transition-colors wpuf-duration-200 wpuf-ease-in-out"></span>
-                    <span
-                        aria-hidden="true"
-                        :class="enableMultistep ? 'wpuf-translate-x-5' : 'wpuf-translate-x-0'"
-                        class="wpuf-pointer-events-none wpuf-absolute wpuf-left-0 wpuf-inline-block wpuf-h-5 wpuf-w-5 wpuf-transform wpuf-rounded-full wpuf-border wpuf-border-gray-200 wpuf-bg-white wpuf-shadow wpuf-ring-0 wpuf-transition-transform wpuf-duration-200 wpuf-ease-in-out"></span>
-                </button>
-                <?php esc_html_e( 'Enable Multistep', 'wp-user-frontend' ); ?>
-            </div>
         </div>
     </div>
     <div

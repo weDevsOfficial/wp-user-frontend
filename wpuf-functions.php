@@ -4899,6 +4899,8 @@ function wpuf_get_post_form_builder_setting_menu_titles() {
  */
 function wpuf_get_post_form_builder_setting_menu_contents() {
     $post_types = get_post_types();
+    $pages      = wpuf_get_pages();
+
     unset( $post_types['attachment'] );
     unset( $post_types['revision'] );
     unset( $post_types['nav_menu_item'] );
@@ -5129,7 +5131,46 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
         ],
     ];
 
+    $payment = [
+        'payment_options'          => [
+            'label'     => __( 'Enable Payments', 'wp-user-frontend' ),
+            'type'      => 'toggle',
+            'help_text' => __(
+                'Check to enable Payments for this form.', 'wp-user-frontend'
+            ),
+        ],
+        'choose_payment_option'    => [
+            'label'   => __( 'Choose Payment Option', 'wp-user-frontend' ),
+            'type'    => 'select',
+            'options' => [
+                'force_pack_purchase' => __( 'Mandatory Subscription', 'wp-user-frontend' ),
+                'enable_pay_per_post' => __( 'Pay as you post', 'wp-user-frontend' ),
+            ],
+        ],
+        'fallback_ppp_enable'      => [
+            'label' => __( 'Pay-per-post billing when limit exceeds', 'wp-user-frontend' ),
+            'type'  => 'checkbox',
+            'help'  => __( 'Switch to pay-per-post billing if pack limit is exceeded', 'wp-user-frontend' ),
+        ],
+        'fallback_ppp_cost'        => [
+            'label' => __( 'Cost for each additional post after pack limit is reached', 'wp-user-frontend' ),
+            'type'  => 'number',
+        ],
+        'pay_per_post_cost'        => [
+            'label'       => __( 'Charge for each post', 'wp-user-frontend' ),
+            'type'        => 'number',
+            'placeholder' => __( 'Enter Amount', 'wp-user-frontend' ),
+        ],
+        'ppp_payment_success_page' => [
+            'label'   => __( 'Payment Success Page', 'wp-user-frontend' ),
+            'type'    => 'select',
+            'options' => $pages,
+            'help'    => __( 'Page will show after successful payment', 'wp-user-frontend' ),
+        ],
+    ];
+
     return [
-        'general' => $general,
+        'general'          => $general,
+        'payment_settings' => $payment,
     ];
 }

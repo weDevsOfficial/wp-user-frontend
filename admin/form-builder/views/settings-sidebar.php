@@ -171,7 +171,7 @@ function wpuf_render_settings_field( $field_key, $field ) {
                             id="<?php echo $field_key; ?>"
                             name="wpuf_settings[<?php echo $field_key; ?>]"
                             class="wpuf-sr-only wpuf-peer">
-                        <div class="wpuf-flex wpuf-items-center wpuf-w-12 wpuf-h-6 wpuf-bg-gray-300 wpuf-rounded-full wpuf-peer peer-checked:after:wpuf-translate-x-full rtl:wpuf-peer-checked:after:wpuf--translate-x-full peer-checked:after:wpuf-border-white after:content-[''] after:wpuf-absolute after:top-[4px] after:wpuf-bg-white after:wpuf-border-gray-300 after:wpuf-border after:wpuf-rounded-full after:wpuf-h-5 after:wpuf-w-5 after:wpuf-left-[3px] after:wpuf-transition-all peer-checked:wpuf-bg-primary"></div>
+                        <span class="wpuf-flex wpuf-items-center wpuf-w-10 wpuf-h-4 wpuf-bg-gray-300 wpuf-rounded-full wpuf-peer peer-checked:wpuf-bg-primary after:wpuf-w-6 after:wpuf-h-6 after:wpuf-bg-white after:wpuf-rounded-full after:wpuf-shadow-md after:wpuf-duration-300 peer-checked:after:wpuf-translate-x-4 after:wpuf-border after:wpuf-border-solid after:wpuf-border-gray-50"></span>
                     </label>
                 <?php } ?>
                 <?php if ( 'color-picker' === $field['type'] ) { ?>

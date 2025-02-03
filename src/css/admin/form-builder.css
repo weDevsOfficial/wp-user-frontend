@@ -19,6 +19,10 @@
         @apply wpuf-bg-transparent wpuf-text-white checked:wpuf-bg-transparent checked:wpuf-shadow-primary checked:hover:wpuf-shadow-transparent checked:hover:wpuf-bg-transparent checked:focus:wpuf-bg-transparent
     }
 
+    .wpuf-pill-green {
+        @apply wpuf-text-green-800 wpuf-bg-green-50 wpuf-border wpuf-border-solid wpuf-border-green-200 wpuf-rounded-md wpuf-py-1 wpuf-px-3;
+    }
+
     .panel-field-opt {
         @apply wpuf-mb-4
     }

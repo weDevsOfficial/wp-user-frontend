@@ -7,6 +7,7 @@ module.exports = {
         './includes/Admin/template-parts/*.php',
         './admin/form-builder/views/*.php',
         './admin/form-builder/assets/js/**/*.php',
+        'wpuf-functions.php',
     ],
     theme: {
         extend: {

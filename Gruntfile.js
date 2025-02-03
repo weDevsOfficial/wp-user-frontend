@@ -125,6 +125,7 @@ module.exports = function( grunt) {
                     'admin/form-builder/assets/js/**/*.php',
                     'admin/form-builder/assets/js/**/*.js',
                     'includes/Admin/**/*.php',
+                    'wpuf-functions.php',
                 ],
                 tasks: ['shell:tailwind:src/css/admin/form-builder.css:assets/css/admin/form-builder.css'],
                 options: {

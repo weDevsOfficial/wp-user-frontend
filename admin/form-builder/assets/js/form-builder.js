@@ -588,6 +588,24 @@
                     }
                 };
             }
+
+            $( '.wpuf-template-text' ).each( function () {
+                ( new window.Clipboard( this ) ).on( 'success', function ( e ) {
+                    var attr_name = 'data-original-title';
+                    // Show copied tooltip
+                    $( e.trigger )
+                        .attr( attr_name, 'Copied!' )
+                        .tooltip( 'show' );
+
+                    // Reset the copied tooltip
+                    setTimeout( function () {
+                        $( e.trigger )
+                            .removeAttr( attr_name );
+                    }, 1000 );
+
+                    e.clearSelection();
+                } );
+            } );
         },
 
         methods: {
@@ -1120,6 +1138,26 @@
                 $('#fallback_ppp_cost').parents('.wpuf-input-container').hide();
             }
         });
+
+        $('#notification_new').on('change', function () {
+            if ( $(this).is(':checked') ) {
+                $('#notification_new_to').parents('.wpuf-input-container').show();
+                $('#notification_new_subject').parents('.wpuf-input-container').show();
+                $('#notification_new_body').parents('.wpuf-input-container').show();
+            } else {
+                hide_new_post_notification();
+            }
+        });
+
+        $('#notification_edit').on('change', function () {
+            if ( $(this).is(':checked') ) {
+                $('#notification_edit_to').parents('.wpuf-input-container').show();
+                $('#notification_edit_subject').parents('.wpuf-input-container').show();
+                $('#notification_edit_body').parents('.wpuf-input-container').show();
+            } else {
+                hide_update_post_notification();
+            }
+        });
     });
 
     // Mobile view menu toggle
@@ -1167,6 +1205,18 @@
         $('#fallback_ppp_cost').parents('.wpuf-input-container').hide();
         $('#pay_per_post_cost').parents('.wpuf-input-container').hide();
         $('#ppp_payment_success_page').parents('.wpuf-input-container').hide();
+    }
+
+    function hide_new_post_notification() {
+        $('#notification_new_to').parents('.wpuf-input-container').hide();
+        $('#notification_new_subject').parents('.wpuf-input-container').hide();
+        $('#notification_new_body').parents('.wpuf-input-container').hide();
+    }
+
+    function hide_update_post_notification() {
+        $('#notification_edit_to').parents('.wpuf-input-container').hide();
+        $('#notification_edit_subject').parents('.wpuf-input-container').hide();
+        $('#notification_edit_body').parents('.wpuf-input-container').hide();
     }
 
 })(jQuery);

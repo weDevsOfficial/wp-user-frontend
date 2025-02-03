@@ -5157,9 +5157,8 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
             'type'  => 'number',
         ],
         'pay_per_post_cost'        => [
-            'label'       => __( 'Charge for each post', 'wp-user-frontend' ),
-            'type'        => 'number',
-            'placeholder' => __( 'Enter Amount', 'wp-user-frontend' ),
+            'label' => __( 'Charge for each post', 'wp-user-frontend' ),
+            'type'  => 'number',
         ],
         'ppp_payment_success_page' => [
             'label'   => __( 'Payment Success Page', 'wp-user-frontend' ),
@@ -5169,8 +5168,102 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
         ],
     ];
 
+    $notification = [
+        'section' => [
+            'new_post' => [
+                'label'  => __( 'New Post Notification', 'wp-user-frontend' ),
+                'desc'   => __(
+                    'Automatically notify recipients when a new post is submitted.',
+                    'wp-user-frontend'
+                ),
+                'fields' => [
+                    'notification_new' => [
+                        'label' => __( 'New Post Notification', 'wp-user-frontend' ),
+                        'type'  => 'toggle',
+                    ],
+                    'notification_new_to' => [
+                        'label' => __( 'To', 'wp-user-frontend' ),
+                        'type'  => 'text',
+                        'value' => get_option( 'admin_email' ),
+                    ],
+                    'notification_new_subject'           => [
+                        'label'       => __( 'Subject', 'wp-user-frontend' ),
+                        'type'        => 'text',
+                        'value' => __( 'New post created', 'wp-user-frontend' ),
+                    ],
+                    'notification_new_body'           => [
+                        'label'       => __( 'Email Body', 'wp-user-frontend' ),
+                        'type'        => 'textarea',
+                        'value' => "Hi Admin, \r\n\r\nA new post has been created in your site {sitename} ({siteurl}). \r\n\r\nHere is the details: \r\nPost Title: {post_title} \r\nContent: {post_content} \r\nAuthor: {author} \r\nPost URL: {permalink} \r\nEdit URL: {editlink}",
+                        'long_help' => '<h4 class="wpuf-m-0">You may use in to, subject & message:</h4>
+                                         <p class="wpuf-leading-8">
+                                         <span data-clipboard-text="{post_title}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{post_title}</span>
+                                         <span data-clipboard-text="{post_content}" class="wpuf-post-content wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{post_content}</span>
+                                         <span data-clipboard-text="{post_excerpt}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{post_excerpt}</span>
+                                         <span data-clipboard-text="{tags}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{tags}</span>
+                                         <span data-clipboard-text="{category}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{category}</span>
+                                         <span data-clipboard-text="{author}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{author}</span>
+                                         <span data-clipboard-text="{author_email}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{author_email}</span>
+                                         <span data-clipboard-text="{author_bio}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{author_bio}</span>
+                                         <span data-clipboard-text="{sitename}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{sitename}</span>
+                                         <span data-clipboard-text="{siteurl}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{siteurl}</span>
+                                         <span data-clipboard-text="{permalink}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{permalink}</span>
+                                         <span data-clipboard-text="{editlink}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{editlink}</span>
+                                         <span class="wpuf-pill-green">{custom_{NAME_OF_CUSTOM_FIELD}}</span>
+                                         e.g: <span class="wpuf-pill-green">{custom_website_url}</span> for website_url meta field</p>',
+                    ],
+                ],
+            ],
+            'update_post' => [
+                'label'  => __( 'Update Post Notification', 'wp-user-frontend' ),
+                'desc'   => __(
+                    'Notify specified recipients when a post is updated.',
+                    'wp-user-frontend'
+                ),
+                'fields' => [
+                    'notification_edit' => [
+                        'label' => __( 'Enable Update Post Notification', 'wp-user-frontend' ),
+                        'type'  => 'toggle',
+                    ],
+                    'notification_edit_to' => [
+                        'label' => __( 'To', 'wp-user-frontend' ),
+                        'type'  => 'text',
+                        'value' => get_option( 'admin_email' ),
+                    ],
+                    'notification_edit_subject'           => [
+                        'label'       => __( 'Subject', 'wp-user-frontend' ),
+                        'type'        => 'text',
+                        'value' => __( 'A post has been edited', 'wp-user-frontend' ),
+                    ],
+                    'notification_edit_body'           => [
+                        'label'       => __( 'Email Body', 'wp-user-frontend' ),
+                        'type'        => 'textarea',
+                        'value' => "Hi Admin, \r\n\r\nThe post \"{post_title}\" has been updated. \r\n\r\nHere is the details: \r\nPost Title: {post_title} \r\nContent: {post_content} \r\nAuthor: {author} \r\nPost URL: {permalink} \r\nEdit URL: {editlink}",
+                        'long_help' => '<h4 class="wpuf-m-0">You may use in to, subject & message:</h4>
+                                         <p class="wpuf-leading-8">
+                                         <span data-clipboard-text="{post_title}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{post_title}</span>
+                                         <span data-clipboard-text="{post_content}" class="wpuf-post-content wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{post_content}</span>
+                                         <span data-clipboard-text="{post_excerpt}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{post_excerpt}</span>
+                                         <span data-clipboard-text="{tags}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{tags}</span>
+                                         <span data-clipboard-text="{category}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{category}</span>
+                                         <span data-clipboard-text="{author}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{author}</span>
+                                         <span data-clipboard-text="{author_email}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{author_email}</span>
+                                         <span data-clipboard-text="{author_bio}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{author_bio}</span>
+                                         <span data-clipboard-text="{sitename}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{sitename}</span>
+                                         <span data-clipboard-text="{siteurl}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{siteurl}</span>
+                                         <span data-clipboard-text="{permalink}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{permalink}</span>
+                                         <span data-clipboard-text="{editlink}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{editlink}</span>
+                                         <span class="wpuf-pill-green">{custom_{NAME_OF_CUSTOM_FIELD}}</span>
+                                         e.g: <span class="wpuf-pill-green">{custom_website_url}</span> for website_url meta field</p>',
+                    ],
+                ],
+            ],
+        ],
+    ];
+
     return [
-        'general'          => $general,
-        'payment_settings' => $payment,
+        'general'               => $general,
+        'payment_settings'      => $payment,
+        'notification_settings' => $notification,
     ];
 }

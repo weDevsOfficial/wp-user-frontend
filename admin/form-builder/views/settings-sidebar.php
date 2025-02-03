@@ -230,6 +230,7 @@ function wpuf_render_settings_field( $field_key, $field ) {
                 ?>
                 <textarea
                     :class="setting_class_names('textarea')"
+                    rows="6"
                     name="wpuf_settings[<?php echo $field_key; ?>]"
                     id="<?php echo $field_key; ?>"><?php echo $value; ?></textarea>
             <?php } ?>
@@ -287,6 +288,14 @@ function wpuf_render_settings_field( $field_key, $field ) {
                 </div>
                 <?php
             }
+
+            if ( ! empty( $field['long_help'] ) ) {
+                ?>
+                <div class="wpuf-text-sm">
+                    <?php echo wp_kses_post( $field['long_help'] ); ?>
+                </div>
+                <?php
+            }
             ?>
 
         </div>
@@ -322,6 +331,14 @@ function wpuf_render_settings_field( $field_key, $field ) {
                     }
                     ?>
                 </div>
+                <?php
+            }
+
+            if ( ! empty( $field['long_help'] ) ) {
+                ?>
+            <div class="wpuf-text-sm">
+                <?php echo wp_kses_post( $field['long_help'] ); ?>
+            </div>
                 <?php
             }
             ?>

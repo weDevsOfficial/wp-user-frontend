@@ -1,8 +1,3 @@
-<?php
-global $post;
-$form_settings = wpuf_get_form_settings( $post->ID );
-$post_type_selected = ! empty( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
-?>
 <div class="wpuf-settings-container wpuf-border wpuf-border-gray-200 wpuf-rounded-lg wpuf-m-4 wpuf-flex wpuf-transition-transform wpuf-duration-200 wpuf-ease-in-out">
     <div class="wpuf-w-1/4 wpuf-min-h-screen wpuf-border-r wpuf-p-8">
         <?php
@@ -67,6 +62,10 @@ $post_type_selected = ! empty( $form_settings['post_type'] ) ? $form_settings['p
             <h2 class="wpuf-text-2xl wpuf-mb-2 wpuf-mt-0">{{ active_settings_title }}</h2>
         </div>
         <?php
+        global $post;
+
+        $form_settings = wpuf_get_form_settings( $post->ID );
+
         foreach ( $settings_items as $settings_key => $settings_item ) {
             if ( ! empty( $settings_item['section'] ) ) {
                 foreach ( $settings_item['section'] as $section_key => $section ) {
@@ -75,13 +74,11 @@ $post_type_selected = ! empty( $form_settings['post_type'] ) ? $form_settings['p
                         class="wpuf-settings-body wpuf-py-4 wpuf-border-b wpuf-border-gray-300"
                         data-settings-body="<?php echo $settings_key; ?>"
                     >
-                        <p class="wpuf-text-lg wpuf-font-medium wpuf-mb-2">
-                            <?php echo $section['label']; ?>
-                        </p>
+                        <p class="wpuf-text-lg wpuf-font-medium wpuf-mb-2"><?php echo $section['label']; ?></p>
                         <p class="wpuf-text-gray-500 wpuf-text-xs"><?php echo $section['desc']; ?></p>
                     <?php
                     foreach ( $section['fields'] as $field_key => $field ) {
-                        wpuf_render_settings_field( $field_key, $field );
+                        wpuf_render_settings_field( $field_key, $field, $form_settings );
                     }
                     ?>
                     </div>
@@ -95,7 +92,7 @@ $post_type_selected = ! empty( $form_settings['post_type'] ) ? $form_settings['p
                 >
                     <?php
                     foreach ( $settings_item as $field_key => $field ) {
-                        wpuf_render_settings_field( $field_key, $field );
+                        wpuf_render_settings_field( $field_key, $field, $form_settings );
                     }
                     ?>
                 </div>
@@ -123,9 +120,10 @@ $post_type_selected = ! empty( $form_settings['post_type'] ) ? $form_settings['p
 </div>
 
 <?php
-function wpuf_render_settings_field( $field_key, $field ) {
+function wpuf_render_settings_field( $field_key, $field, $form_settings ) {
     $value = ! empty( $field['default'] ) ? $field['default'] : '';
-    $value = isset( $field['value'] ) ? $field['value'] : $value; // checking with isset because saved value can be empty string
+    $value = ! empty( $field['value'] ) ? $field['value'] : $value;                           // default value
+    $value = isset( $form_settings[ $field_key ] ) ? $form_settings[ $field_key ] : $value; // checking with isset because saved value can be empty string
 
     if ( 'inline_fields' !== $field_key ) {
         ?>
@@ -136,6 +134,7 @@ function wpuf_render_settings_field( $field_key, $field ) {
                         :class="[setting_class_names('checkbox'), '!wpuf-mr-2']"
                         type="checkbox"
                         name="wpuf_settings[<?php echo $field_key; ?>]"
+                        <?php echo esc_attr( checked( $value, 'on', false ) ); ?>
                         id="<?php echo $field_key; ?>"/>
                 <?php } ?>
                 <?php
@@ -170,6 +169,7 @@ function wpuf_render_settings_field( $field_key, $field ) {
                             type="checkbox"
                             id="<?php echo $field_key; ?>"
                             name="wpuf_settings[<?php echo $field_key; ?>]"
+                            <?php echo esc_attr( checked( $value, 'on', false ) ); ?>
                             class="wpuf-sr-only wpuf-peer">
                         <span class="wpuf-flex wpuf-items-center wpuf-w-10 wpuf-h-4 wpuf-bg-gray-300 wpuf-rounded-full wpuf-peer peer-checked:wpuf-bg-primary after:wpuf-w-6 after:wpuf-h-6 after:wpuf-bg-white after:wpuf-rounded-full after:wpuf-shadow-md after:wpuf-duration-300 peer-checked:after:wpuf-translate-x-4 after:wpuf-border after:wpuf-border-solid after:wpuf-border-gray-50"></span>
                     </label>
@@ -186,7 +186,7 @@ function wpuf_render_settings_field( $field_key, $field ) {
                                     name="wpuf_settings[<?php echo $field_key; ?>]"
                                     id="<?php echo $field_key; ?>"
                                     style="background: <?php echo $field['default']; ?>"
-                                    value="<?php echo ! empty( $field['default'] ) ? $field['default'] : ''; ?>">
+                                    value="<?php echo $value; ?>">
                             </div>
                             <i class="fa fa-angle-down !wpuf-font-bold !wpuf-text-xl !wpuf-leading-none wpuf-text-gray-600 wpuf-ml-2"></i>
                         </div>
@@ -196,21 +196,34 @@ function wpuf_render_settings_field( $field_key, $field ) {
             <?php if ( 'select' === $field['type'] ) { ?>
                 <select
                     id="<?php echo $field_key; ?>"
+                    name="wpuf_settings[<?php echo $field_key; ?>]"
                     :class="setting_class_names('dropdown')">
-                    <?php foreach ( $field['options'] as $index => $option ) { ?>
-                        <option value="<?php echo $index; ?>"><?php echo $option; ?></option>
-                    <?php } ?>
+                    <?php
+                    foreach ( $field['options'] as $index => $option ) {
+                        printf( '<option data-select-value="%s" data-select-index="%s" value="%s"%s>%s</option>', $value, $index, esc_attr( $index ), esc_attr( selected( $value, $index, false ) ), esc_html( $option ) );
+                    }
+                    ?>
                 </select>
             <?php } ?>
             <?php if ( 'multi-select' === $field['type'] ) { ?>
                 <select
                     id="<?php echo $field_key; ?>"
+                    name="wpuf_settings[<?php echo $field_key; ?>][]"
                     :class="['tax-list-selector', setting_class_names('dropdown')]"
                     multiple
                 >
-                    <?php foreach ( $field['options'] as $index => $option ) { ?>
-                        <option value="<?php echo $index; ?>"><?php echo $option; ?></option>
-                    <?php } ?>
+                    <?php
+                    foreach ( $field['options'] as $index => $option ) {
+                        if ( is_array( $value ) ) {
+                            // phpcs:ignore WordPress.PHP
+                            $selected = in_array( $index, $value ) ? 'selected' : '';
+
+                            printf(
+                                '<option value="%s" %s>%s</option>', esc_attr( $index ), $selected, esc_html( $option )
+                            );
+                        }
+                    }
+                    ?>
                 </select>
             <?php } ?>
             <?php
@@ -248,6 +261,7 @@ function wpuf_render_settings_field( $field_key, $field ) {
                                     type="radio"
                                     name="wpuf_settings[<?php echo $field_key; ?>]"
                                     value="<?php echo $key; ?>"
+                                    <?php echo esc_attr( checked( $value, $key, false ) ); ?>
                                     class="wpuf-absolute wpuf-opacity-0 wpuf-peer">
                                 <img
                                     class="wpuf-absolute wpuf-opacity-0 peer-checked:wpuf-opacity-100 wpuf-top-[5%] wpuf-right-[10%] wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out"
@@ -291,7 +305,7 @@ function wpuf_render_settings_field( $field_key, $field ) {
 
             if ( ! empty( $field['long_help'] ) ) {
                 ?>
-                <div class="wpuf-text-sm">
+                <div class="wpuf-text-sm wpuf-mt-2">
                     <?php echo wp_kses_post( $field['long_help'] ); ?>
                 </div>
                 <?php
@@ -336,7 +350,7 @@ function wpuf_render_settings_field( $field_key, $field ) {
 
             if ( ! empty( $field['long_help'] ) ) {
                 ?>
-            <div class="wpuf-text-sm">
+            <div class="wpuf-text-sm wpuf-mt-2">
                 <?php echo wp_kses_post( $field['long_help'] ); ?>
             </div>
                 <?php

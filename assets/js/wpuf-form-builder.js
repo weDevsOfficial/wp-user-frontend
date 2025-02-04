@@ -646,8 +646,6 @@
             save_form_builder: function () {
                 var self = this;
 
-                var panel = this.is_older_form ? 'form-fields' : 'form-fields-v4-1';
-
                 if (_.isFunction(this.validate_form_before_submit) && !this.validate_form_before_submit()) {
 
                     this.warn({
@@ -658,7 +656,6 @@
                 }
 
                 self.is_form_saving = true;
-                self.set_current_panel(panel);
 
                 var form_id = $('#wpuf-form-builder [name="wpuf_form_id"]').val();
 
@@ -1070,23 +1067,44 @@
             });
         });
 
-        hide_multistep_cond_fields();
+        const multistep = $('#enable_multistep');
+        const post_permission = $('#post_permission');
+
+        // initial show/hide fields when page loads
+        if ( multistep.is(':checked') ) {
+            show_multistep_cond_fields();
+        } else {
+            hide_multistep_cond_fields();
+        }
+
+        if ( post_permission.val() === 'guest_post' ) {
+            $('#guest_details').parents('.wpuf-input-container').show();
+            $('#guest_email_verify').parents('.wpuf-input-container').show();
+
+            $('#roles').parents('.wpuf-input-container').hide();
+        } else if ( post_permission.val() === 'role_base' ) {
+            $('#roles').parents('.wpuf-input-container').show();
+
+            $('#guest_details').parents('.wpuf-input-container').hide();
+            $('#guest_email_verify').parents('.wpuf-input-container').hide();
+            $('#name_label').parents('.wpuf-input-container').hide();
+        } else {
+            hide_posting_control_cond_fields();
+        }
+
         hide_posting_control_cond_fields();
         hide_enable_payment_cond_fields();
 
         // conditional fields. the fields that show/hide depending on another field settings
-        $('#enable_multistep').on('change', function() {
+        multistep.on('change', function() {
             if ( $(this).is(':checked') ) {
-                $('#multistep_progressbar_type').parents('.wpuf-input-container').show();
-                $('#ms_ac_txt_color').parents('.wpuf-input-container').show();
-                $('#ms_active_bgcolor').parents('.wpuf-input-container').show();
-                $('#ms_bgcolor').parents('.wpuf-input-container').show();
+                show_multistep_cond_fields();
             } else {
                 hide_multistep_cond_fields();
             }
         });
 
-        $('#post_permission').on('change', function () {
+        post_permission.on('change', function () {
             if ( $(this).val() === 'guest_post' ) {
                 $('#guest_details').parents('.wpuf-input-container').show();
                 $('#guest_email_verify').parents('.wpuf-input-container').show();
@@ -1184,6 +1202,13 @@
             }
         });
     });
+
+    function show_multistep_cond_fields() {
+        $('#multistep_progressbar_type').parents('.wpuf-input-container').show();
+        $('#ms_ac_txt_color').parents('.wpuf-input-container').show();
+        $('#ms_active_bgcolor').parents('.wpuf-input-container').show();
+        $('#ms_bgcolor').parents('.wpuf-input-container').show();
+    }
 
     function hide_multistep_cond_fields() {
         $('#multistep_progressbar_type').parents('.wpuf-input-container').hide();

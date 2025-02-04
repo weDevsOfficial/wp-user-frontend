@@ -155,8 +155,6 @@ class Admin_Form {
             wp_safe_redirect( $add_new_page_url );
         }
         if ( ( 'edit' === $_GET['action'] ) && ! empty( $_GET['id'] ) ) {
-            add_action( 'wpuf-form-builder-tabs-post', [ $this, 'add_primary_tabs' ] );
-            add_action( 'wpuf-form-builder-tab-contents-post', [ $this, 'add_primary_tab_contents' ] );
             add_action( 'wpuf-form-builder-settings-tabs-post', [ $this, 'add_settings_tabs' ] );
             add_action( 'wpuf-form-builder-settings-tab-contents-post', [ $this, 'add_settings_tab_contents' ] );
             add_filter( 'wpuf_form_fields_section_before', [ $this, 'add_post_field_section' ] );
@@ -279,42 +277,6 @@ class Admin_Form {
 
         <?php
         do_action( 'wpuf_post_form_tab' );
-    }
-
-    /**
-     * Additional primary tabs
-     *
-     * @since 2.5
-     *
-     * @return void
-     */
-    public function add_primary_tabs() {
-        ?>
-        <a
-            href="#wpuf-form-builder-notification"
-            @click="active_tab = 'notification'"
-            :class="active_tab === 'notification' ? 'wpuf-bg-white wpuf-text-gray-800 wpuf-rounded-md wpuf-drop-shadow-sm' : ''"
-            class="wpuf-nav-tab wpuf-nav-tab-active wpuf-text-gray-800 wpuf-py-2 wpuf-px-4 wpuf-text-sm hover:wpuf-bg-white hover:wpuf-text-gray-800 hover:wpuf-rounded-md hover:wpuf-drop-shadow-sm focus:wpuf-shadow-none wpuf-mr-2">
-            <?php esc_html_e( 'Notification', 'wp-user-frontend' ); ?>
-        </a>
-        <?php
-    }
-
-    /**
-     * Add primary tab contents
-     *
-     * @since 2.5
-     *
-     * @return void
-     */
-    public function add_primary_tab_contents() {
-        ?>
-
-        <div v-show="active_tab === 'notification'" id="wpuf-form-builder-notification" class="group wpuf-nav-tab" style="padding: 2rem">
-            <?php do_action( 'wpuf_form_settings_post_notification' ); ?>
-        </div><!-- #wpuf-form-builder-notification -->
-
-        <?php
     }
 
     /**

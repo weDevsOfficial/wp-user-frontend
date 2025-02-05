@@ -128,7 +128,6 @@
                         } else {
                             state.form_fields[i][payload.field_name] = payload.value;
                         }
-
                     }
 
                     // check if the editing field belong to a column field

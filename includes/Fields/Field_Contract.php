@@ -261,6 +261,7 @@ abstract class Field_Contract {
             'is_new'            => true, // introduced by @edi, not sure what it does. Have to remove
             'wpuf_cond'         => $this->default_conditional_prop(),
             'wpuf_visibility'   => $this->get_default_visibility_prop(),
+            'read_only'         => false,
         ];
     }
 

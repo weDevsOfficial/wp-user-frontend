@@ -2,7 +2,8 @@ Vue.component('field-textarea', {
     template: '#tmpl-wpuf-field-textarea',
 
     mixins: [
-        wpuf_mixins.option_field_mixin
+        wpuf_mixins.option_field_mixin,
+        wpuf_mixins.form_field_mixin
     ],
 
     computed: {

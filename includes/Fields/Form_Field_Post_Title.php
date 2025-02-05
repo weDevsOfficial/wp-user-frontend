@@ -6,7 +6,7 @@ class Form_Field_Post_Title extends Field_Contract {
     public function __construct() {
         $this->name       = __( 'Post Title', 'wp-user-frontend' );
         $this->input_type = 'post_title';
-        $this->icon       = 'header';
+        $this->icon       = 'title';
     }
 
     /**
@@ -94,7 +94,7 @@ class Form_Field_Post_Title extends Field_Contract {
      * @return array
      */
     public function get_options_settings() {
-        $default_options      = $this->get_default_option_settings( false, [ 'dynamic' ] );
+        $default_options      = $this->get_default_option_settings( false, [ 'dynamic', 'required' ] );
         $default_text_options = $this->get_default_text_option_settings( true );
 
         return array_merge( $default_options, $default_text_options );
@@ -110,6 +110,7 @@ class Form_Field_Post_Title extends Field_Contract {
         $props    = [
             'input_type'        => 'text',
             'is_meta'           => 'no',
+            'required'          => 'yes',
             'name'              => 'post_title',
             'width'             => 'large',
             'size'              => 40,

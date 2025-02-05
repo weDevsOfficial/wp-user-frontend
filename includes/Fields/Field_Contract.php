@@ -65,11 +65,11 @@ abstract class Field_Contract {
             ],
 
             [
-                'name' => 'content_restriction',
-                'title' => __( 'Content Restriction', 'wp-user-frontend' ),
-                'type' => 'text',
-                'section' => 'advanced',
-                'priority' => 16,
+                'name'      => 'content_restriction',
+                'title'     => __( 'Content Restriction', 'wp-user-frontend' ),
+                'type'      => 'text',
+                'section'   => 'advanced',
+                'priority'  => 16,
                 'help_text' => __( 'Number of characters or words the author to be restricted in', 'wp-user-frontend' ),
             ],
         ];
@@ -261,6 +261,7 @@ abstract class Field_Contract {
             'is_new'            => true, // introduced by @edi, not sure what it does. Have to remove
             'wpuf_cond'         => $this->default_conditional_prop(),
             'wpuf_visibility'   => $this->get_default_visibility_prop(),
+            'read_only'         => false,
         ];
     }
 
@@ -378,7 +379,7 @@ abstract class Field_Contract {
                 ],
                 'section'   => 'basic',
                 'priority'  => 21,
-                'help_text' => __( 'Read only', 'wp-user-frontend' ),
+                'help_text' => __( 'Make this field read only', 'wp-user-frontend' ),
             ];
 
             if ( is_wpuf_post_form_builder() ) {

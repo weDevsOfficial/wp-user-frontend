@@ -1,6 +1,7 @@
 <div class="wpuf-fields">
     <select
         :class="class_names('multi_label')"
+        class="wpuf-block wpuf-w-full wpuf-min-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm   placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300"
         multiple
     >
         <option v-if="field.first" value="">{{ field.first }}</option>

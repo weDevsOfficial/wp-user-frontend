@@ -48,6 +48,7 @@ class Admin_Form_Builder {
             add_action( 'admin_footer', [ $this, 'custom_dequeue' ] );
             add_action( 'admin_footer', [ $this, 'admin_footer' ] );
             add_action( 'wpuf_admin_form_builder', [ $this, 'include_form_builder' ] );
+            add_action( 'wpuf_admin_form_builder_view', [ $this, 'include_form_builder' ] );
         }
 
         add_action( 'wpuf_form_builder_template_builder_stage_submit_area', [ $this, 'add_form_submit_area' ] );
@@ -125,6 +126,7 @@ class Admin_Form_Builder {
             'user_avatar',
             'taxonomy',
             'cloudflare_turnstile',
+            'recaptcha',
         ];
         $taxonomy_terms = array_keys( get_taxonomies() );
         $single_objects = array_merge( $single_objects, $taxonomy_terms );
@@ -161,11 +163,15 @@ class Admin_Form_Builder {
                 'pro_link'         => Pro_Prompt::get_pro_url(),
                 'site_url'         => site_url( '/' ),
                 'asset_url'        => WPUF_ASSET_URI,
+                'root_dir'         => WPUF_ROOT,
                 'recaptcha_site'   => wpuf_get_option( 'recaptcha_public', 'wpuf_general' ),
                 'recaptcha_secret' => wpuf_get_option( 'recaptcha_private', 'wpuf_general' ),
                 'turnstile_site'   => wpuf_get_option( 'turnstile_site_key', 'wpuf_general' ),
                 'turnstile_secret' => wpuf_get_option( 'turnstile_secret_key', 'wpuf_general' ),
                 'nonce'            => wp_create_nonce( 'form-builder-setting-nonce' ),
+                'is_older_form'    => defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.1', '<' ),
+                'is_pro_active'    => wpuf_is_pro_active(),
+                'pro_asset_url'    => defined( 'WPUF_PRO_ASSET_URI' ) ? WPUF_PRO_ASSET_URI : '',
             ]
         );
         $wpuf_form_builder = wpuf_unset_conditional( $wpuf_form_builder );
@@ -257,12 +263,22 @@ class Admin_Form_Builder {
         $post_type         = $this->settings['post_type'];
         $form_settings_key = $this->settings['form_settings_key'];
         $shortcodes        = $this->settings['shortcodes'];
-        $forms             = get_posts( [ 'post_type' => $post_type, 'post_status' => 'any' ] );
-        include WPUF_ROOT . '/admin/form-builder/views/form-builder.php';
+        $forms             = get_posts(
+            [
+                'post_type'   => $post_type,
+                'post_status' => 'any',
+            ]
+        );
+
+        if ( ( 'wpuf_forms' !== $post_type ) && defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.1', '<' ) ) {
+            include WPUF_ROOT . '/admin/form-builder/views/form-builder.php';
+        } else {
+            include WPUF_ROOT . '/admin/form-builder/views/form-builder-v4.1.php';
+        }
     }
 
     /**
-     * i18n translatable strings
+     * WordPress i18n translatable strings
      *
      * @since 2.5
      *

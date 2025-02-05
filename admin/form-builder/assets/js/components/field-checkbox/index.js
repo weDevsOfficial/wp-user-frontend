@@ -2,7 +2,8 @@ Vue.component('field-checkbox', {
     template: '#tmpl-wpuf-field-checkbox',
 
     mixins: [
-        wpuf_mixins.option_field_mixin
+        wpuf_mixins.option_field_mixin,
+        wpuf_mixins.form_field_mixin
     ],
 
     computed: {
@@ -13,12 +14,7 @@ Vue.component('field-checkbox', {
                 if (this.option_field.is_single_opt) {
                     var option = Object.keys(this.option_field.options)[0];
 
-                    if (value === option) {
-                        return true;
-
-                    } else {
-                        return false;
-                    }
+                    return value === option;
                 }
 
                 return this.editing_form_field[this.option_field.name];

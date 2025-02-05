@@ -75,7 +75,7 @@
                         data-settings-body="<?php echo $settings_key; ?>"
                     >
                         <p class="wpuf-text-lg wpuf-font-medium wpuf-mb-2"><?php echo $section['label']; ?></p>
-                        <p class="wpuf-text-gray-500 wpuf-text-xs"><?php echo $section['desc']; ?></p>
+                        <p class="wpuf-text-gray-500 wpuf-text-xs wpuf-leading-5"><?php echo $section['desc']; ?></p>
                     <?php
                     foreach ( $section['fields'] as $field_key => $field ) {
                         wpuf_render_settings_field( $field_key, $field, $form_settings );
@@ -188,7 +188,9 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings ) {
                                     style="background: <?php echo $field['default']; ?>"
                                     value="<?php echo $value; ?>">
                             </div>
-                            <i class="fa fa-angle-down !wpuf-font-bold !wpuf-text-xl !wpuf-leading-none wpuf-text-gray-600 wpuf-ml-2"></i>
+                            <i
+                                @click="$event.target.closest('div').querySelector('input').click()"
+                                class="fa fa-angle-down !wpuf-font-bold !wpuf-text-xl !wpuf-leading-none wpuf-text-gray-600 wpuf-ml-2"></i>
                         </div>
                     </div>
                 <?php } ?>

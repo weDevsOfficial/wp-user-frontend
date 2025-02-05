@@ -3955,6 +3955,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   line-height: 2.5rem;
 }
 
+.wpuf-leading-5 {
+  line-height: 1.25rem;
+}
+
 .wpuf-leading-6 {
   line-height: 1.5rem;
 }

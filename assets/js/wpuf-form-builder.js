@@ -1069,6 +1069,12 @@
 
         const multistep = $('#enable_multistep');
         const post_permission = $('#post_permission');
+        const payment_options = $('#payment_options');
+        const guest_details = $('#guest_details');
+        const choose_payment_option = $('#choose_payment_option');
+        const fallback_ppp_enable = $('#fallback_ppp_enable');
+        const notification_new = $('#notification_new');
+        const notification_edit = $('#notification_edit');
 
         // initial show/hide fields when page loads
         if ( multistep.is(':checked') ) {
@@ -1078,22 +1084,63 @@
         }
 
         if ( post_permission.val() === 'guest_post' ) {
-            $('#guest_details').parents('.wpuf-input-container').show();
+            guest_details.parents('.wpuf-input-container').show();
             $('#guest_email_verify').parents('.wpuf-input-container').show();
 
             $('#roles').parents('.wpuf-input-container').hide();
+            $('#message_restrict').parents('.wpuf-input-container').hide();
         } else if ( post_permission.val() === 'role_base' ) {
             $('#roles').parents('.wpuf-input-container').show();
+            $('#message_restrict').parents('.wpuf-input-container').show();
 
-            $('#guest_details').parents('.wpuf-input-container').hide();
+            guest_details.parents('.wpuf-input-container').hide();
             $('#guest_email_verify').parents('.wpuf-input-container').hide();
             $('#name_label').parents('.wpuf-input-container').hide();
         } else {
             hide_posting_control_cond_fields();
         }
 
-        hide_posting_control_cond_fields();
-        hide_enable_payment_cond_fields();
+        if ( payment_options.is(':checked') ) {
+            choose_payment_option.parents('.wpuf-input-container').show();
+        } else {
+            hide_enable_payment_cond_fields();
+        }
+
+        if (post_permission.val() === 'guest_post' && guest_details.is(':checked')) {
+            $('#name_label').parents('.wpuf-input-container').show();
+        } else {
+            $('#name_label').parents('.wpuf-input-container').hide();
+        }
+
+        if ( choose_payment_option.val('force_pack_purchase') ) {
+            fallback_ppp_enable.parents('.wpuf-input-container').show();
+            $('#pay_per_post_cost').parents('.wpuf-input-container').hide();
+            $('#ppp_payment_success_page').parents('.wpuf-input-container').hide();
+        } else {
+            fallback_ppp_enable.parents('.wpuf-input-container').hide();
+            $('#pay_per_post_cost').parents('.wpuf-input-container').show();
+            $('#ppp_payment_success_page').parents('.wpuf-input-container').show();
+        }
+
+        if ( fallback_ppp_enable.is(':checked') ) {
+            $('#fallback_ppp_cost').parents('.wpuf-input-container').show();
+        } else {
+            $('#fallback_ppp_cost').parents('.wpuf-input-container').hide();
+        }
+
+        if ( notification_new.is(':checked') ) {
+            show_new_post_notification();
+        } else {
+            hide_new_post_notification();
+        }
+
+        if ( notification_edit.is(':checked') ) {
+            $('#notification_edit_to').parents('.wpuf-input-container').show();
+            $('#notification_edit_subject').parents('.wpuf-input-container').show();
+            $('#notification_edit_body').parents('.wpuf-input-container').show();
+        } else {
+            hide_update_post_notification();
+        }
 
         // conditional fields. the fields that show/hide depending on another field settings
         multistep.on('change', function() {
@@ -1106,14 +1153,16 @@
 
         post_permission.on('change', function () {
             if ( $(this).val() === 'guest_post' ) {
-                $('#guest_details').parents('.wpuf-input-container').show();
+                guest_details.parents('.wpuf-input-container').show();
                 $('#guest_email_verify').parents('.wpuf-input-container').show();
 
                 $('#roles').parents('.wpuf-input-container').hide();
+                $('#message_restrict').parents('.wpuf-input-container').hide();
             } else if ( $(this).val() === 'role_base' ) {
                 $('#roles').parents('.wpuf-input-container').show();
+                $('#message_restrict').parents('.wpuf-input-container').show();
 
-                $('#guest_details').parents('.wpuf-input-container').hide();
+                guest_details.parents('.wpuf-input-container').hide();
                 $('#guest_email_verify').parents('.wpuf-input-container').hide();
                 $('#name_label').parents('.wpuf-input-container').hide();
             } else {
@@ -1121,7 +1170,7 @@
             }
         });
 
-        $('#guest_details').on('change', function () {
+        guest_details.on('change', function () {
             if ( $(this).is(':checked') ) {
                 $('#name_label').parents('.wpuf-input-container').show();
             } else {
@@ -1129,27 +1178,27 @@
             }
         });
 
-        $('#payment_options').on('change', function() {
+        payment_options.on('change', function() {
             if ( $(this).is(':checked') ) {
-                $('#choose_payment_option').parents('.wpuf-input-container').show();
+                choose_payment_option.parents('.wpuf-input-container').show();
             } else {
                 hide_enable_payment_cond_fields();
             }
         });
 
-        $('#choose_payment_option').on('change', function () {
+        choose_payment_option.on('change', function () {
             if ( $(this).val() === 'force_pack_purchase' ) {
-                $('#fallback_ppp_enable').parents('.wpuf-input-container').show();
+                fallback_ppp_enable.parents('.wpuf-input-container').show();
                 $('#pay_per_post_cost').parents('.wpuf-input-container').hide();
                 $('#ppp_payment_success_page').parents('.wpuf-input-container').hide();
             } else {
-                $('#fallback_ppp_enable').parents('.wpuf-input-container').hide();
+                fallback_ppp_enable.parents('.wpuf-input-container').hide();
                 $('#pay_per_post_cost').parents('.wpuf-input-container').show();
                 $('#ppp_payment_success_page').parents('.wpuf-input-container').show();
             }
         });
 
-        $('#fallback_ppp_enable').on('change', function () {
+        fallback_ppp_enable.on('change', function () {
             if ( $(this).is(':checked') ) {
                 $('#fallback_ppp_cost').parents('.wpuf-input-container').show();
             } else {
@@ -1157,7 +1206,7 @@
             }
         });
 
-        $('#notification_new').on('change', function () {
+        notification_new.on('change', function () {
             if ( $(this).is(':checked') ) {
                 $('#notification_new_to').parents('.wpuf-input-container').show();
                 $('#notification_new_subject').parents('.wpuf-input-container').show();
@@ -1167,7 +1216,7 @@
             }
         });
 
-        $('#notification_edit').on('change', function () {
+        notification_edit.on('change', function () {
             if ( $(this).is(':checked') ) {
                 $('#notification_edit_to').parents('.wpuf-input-container').show();
                 $('#notification_edit_subject').parents('.wpuf-input-container').show();
@@ -1222,6 +1271,7 @@
         $('#name_label').parents('.wpuf-input-container').hide();
         $('#guest_email_verify').parents('.wpuf-input-container').hide();
         $('#roles').parents('.wpuf-input-container').hide();
+        $('#message_restrict').parents('.wpuf-input-container').hide();
     }
 
     function hide_enable_payment_cond_fields() {
@@ -1230,6 +1280,12 @@
         $('#fallback_ppp_cost').parents('.wpuf-input-container').hide();
         $('#pay_per_post_cost').parents('.wpuf-input-container').hide();
         $('#ppp_payment_success_page').parents('.wpuf-input-container').hide();
+    }
+
+    function show_new_post_notification() {
+        $('#notification_new_to').parents('.wpuf-input-container').show();
+        $('#notification_new_subject').parents('.wpuf-input-container').show();
+        $('#notification_new_body').parents('.wpuf-input-container').show();
     }
 
     function hide_new_post_notification() {

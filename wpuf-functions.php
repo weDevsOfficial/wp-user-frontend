@@ -5083,7 +5083,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                 ),
                 'fields' => [
                     'post_permission'    => [
-                        'label'   => __( 'Enable Guest Post', 'wp-user-frontend' ),
+                        'label'   => __( 'Post Permission', 'wp-user-frontend' ),
                         'type'    => 'select',
                         'options' => [
                             'everyone'   => __( '- Select Post Permission -', 'wp-user-frontend' ),
@@ -5122,9 +5122,14 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                     'roles'              => [
                         'label'           => __( 'Choose who can submit post', 'wp-user-frontend' ),
                         'type'            => 'multi-select',
-                        'help'            => __( 'Select the user roles who can submit posts', 'wp-user-frontend' ),
+                        'help_text'       => __( 'Select the user roles who can submit posts', 'wp-user-frontend' ),
                         'options'         => wpuf_get_user_roles(),
                         'always_selected' => [ 'administrator' ],
+                    ],
+                    'message_restrict' => [
+                        'label'           => __( 'Unauthorized Message', 'wp-user-frontend' ),
+                        'type'            => 'textarea',
+                        'help_text'       => __( 'Not logged in users will see this message. You may use {login}, {register} for link', 'wp-user-frontend' )
                     ],
                 ],
             ],

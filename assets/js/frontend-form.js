@@ -482,7 +482,7 @@
                             }
 
                             Swal.fire({
-                                html: res.error,
+                                html: res.data.error,
                                 icon: 'warning',
                                 showCancelButton: false,
                                 confirmButtonColor: '#d54e21',

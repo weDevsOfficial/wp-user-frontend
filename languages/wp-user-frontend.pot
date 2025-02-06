@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 4.0.14\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2025-02-06 05:05:12+00:00\n"
+"POT-Creation-Date: 2025-02-06 05:27:06+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4127,12 +4127,7 @@ msgid "Invalid email address."
 msgstr ""
 
 #: includes/Ajax/Frontend_Form_Ajax.php:515
-msgid ""
-"You already have an account in our site. Please login to continue.\n"
-"\n"
-"Clicking 'OK' will redirect you to the login page and you will lose the "
-"form data.\n"
-"Click 'Cancel' to stay at this page."
+msgid "You already have an account in our site. Please login to continue."
 msgstr ""
 
 #: includes/Ajax/Frontend_Form_Ajax.php:569

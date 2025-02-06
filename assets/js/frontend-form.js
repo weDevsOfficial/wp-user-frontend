@@ -448,8 +448,8 @@
                         // enable external plugins to use events
                         $('body').trigger('wpuf:postform:success', res);
 
-                        if ( res.show_message == true) {
-                            form.before( '<div class="wpuf-success">' + res.message + '</div>');
+                        if ( res.data.show_message ) {
+                            form.before( '<div class="wpuf-success">' + res.data.message + '</div>');
                             form.slideUp( 'fast', function() {
                                 form.remove();
                             });
@@ -460,15 +460,15 @@
                             }, 'fast');
 
                         } else {
-                            window.location = res.redirect_to;
+                            window.location = res.data.redirect_to;
                         }
 
                     } else {
 
-                        if ( typeof res.type !== 'undefined' && res.type === 'login' ) {
+                        if ( typeof res.data.type !== 'undefined' && res.data.type === 'login' ) {
 
-                            if ( confirm(res.error) ) {
-                                window.location = res.redirect_to;
+                            if ( confirm(res.data.error) ) {
+                                window.location = res.data.redirect_to;
                             } else {
                                 submitButton.removeAttr('disabled');
                                 submitButton.removeClass('button-primary-disabled');

@@ -497,7 +497,7 @@
             type="radio"
             :value="key"
             v-model="value"
-            class="checked:!wpuf-bg-primary checked:before:!wpuf-bg-transparent">
+            :class="builder_class_names('radio')">
             {{ option }}
     </div>
 
@@ -514,7 +514,7 @@
                     type="radio"
                     :value="key"
                     v-model="value"
-                    class="checked:!wpuf-bg-primary checked:before:!wpuf-bg-transparent">
+                    :class="builder_class_names('radio')">
                 {{ option }}
             </label>
         </div>
@@ -556,7 +556,7 @@
 
         <div
             v-if="showOptions"
-            class="wpuf-absolute wpuf-bg-white wpuf-border wpuf-border-gray-300 wpuf-rounded-lg wpuf-w-full wpuf-z-30">
+            class="wpuf-absolute wpuf-bg-white wpuf-border wpuf-border-gray-300 wpuf-rounded-lg wpuf-w-full wpuf-z-10 wpuf--mt-4">
             <ul>
                 <li
                     v-for="(option, key) in option_field.options"
@@ -1297,7 +1297,7 @@
             <label
                 :value="val"
                 :checked="is_selected(val)"
-                class="wpuf-ml-3 wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">{{ label }}</label>
+                :class="builder_class_names('radio')">{{ label }}</label>
         </div>
     </div>
 

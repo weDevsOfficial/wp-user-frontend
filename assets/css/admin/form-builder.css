@@ -2472,6 +2472,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   margin-right: -0.75rem;
 }
 
+.wpuf--mt-4 {
+  margin-top: -1rem;
+}
+
 .wpuf-mb-0 {
   margin-bottom: 0px;
 }
@@ -4373,6 +4377,10 @@ body ul.wpuf-form li .wpuf-fields {
 
 .wpuf-icon-container.wpuf-is-loaded .wpuf-shimmer {
   display: none;
+}
+
+#wpcontent {
+  background: #fff;
 }
 
 .placeholder\:wpuf-text-gray-400::-moz-placeholder {

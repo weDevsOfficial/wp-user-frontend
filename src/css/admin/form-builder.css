@@ -154,3 +154,6 @@ body ul.wpuf-form li .wpuf-fields {
 .wpuf-icon-container.wpuf-is-loaded .wpuf-shimmer {
     display: none;
 }
+#wpcontent {
+    background: #fff;
+}

@@ -8,7 +8,7 @@ class Form_Field_Post_Excerpt extends Field_Contract {
     public function __construct() {
         $this->name       = __( 'Post Excerpt', 'wp-user-frontend' );
         $this->input_type = 'post_excerpt';
-        $this->icon       = 'compress';
+        $this->icon       = 'menu-alt-2';
     }
 
     /**

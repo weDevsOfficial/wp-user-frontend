@@ -59,6 +59,8 @@ function wpuf_show_post_status( $status ) {
  * @author Tareq Hasan
  */
 function wpuf_admin_post_status( $status ) {
+    $fontcolor = '#000';
+    $title = '';
     if ( 'publish' === $status ) {
         $title     = __( 'Published', 'wp-user-frontend' );
         $fontcolor = '#009200';
@@ -982,7 +984,7 @@ function wpuf_show_custom_fields( $content ) {
                 continue;
             }
 
-            if ( method_exists( $wpuf_field, 'render_field_data' ) ) {
+            if ( ! empty( $wpuf_field ) && method_exists( $wpuf_field, 'render_field_data' ) ) {
                 $html .= $wpuf_field->render_field_data( $field_value, $attr );
                 continue;
             }
@@ -4815,4 +4817,319 @@ function wpuf_load_headway_badge( $selector = '#wpuf-headway-icon' ) {
  */
 function wpuf_is_option_on( $option ) {
     return 'on' === $option || 'yes' === $option;
+}
+
+/**
+ * Get the pro icon link
+ *
+ * @since WPUF_SINCE
+ *
+ * @return string
+ */
+function wpuf_get_pro_icon() {
+    return WPUF_ASSET_URI . '/images/crown.svg';
+}
+
+/**
+ * Check if the pro version is active
+ *
+ * @since WPUF_SINCE
+ *
+ * @return bool
+ */
+function wpuf_is_pro_active() {
+    return class_exists( 'WP_User_Frontend_Pro' );
+}
+
+/**
+ * Get the post form builder setting menu titles. The titles will show on Post frms > Settings > left side menu
+ *
+ * @since WPUF_SINCE
+ *
+ * @return mixed|null
+ */
+function wpuf_get_post_form_builder_setting_menu_titles() {
+    $post_settings_fields = apply_filters(
+        'wpuf_post_form_builder_setting_menu_titles',
+        [
+            'general'               => [
+                'label' => __( 'General', 'wp-user-frontend' ),
+                'icon'  => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8.75 5L16.875 5M8.75 5C8.75 5.69036 8.19036 6.25 7.5 6.25C6.80964 6.25 6.25 5.69036 6.25 5M8.75 5C8.75 4.30964 8.19036 3.75 7.5 3.75C6.80964 3.75 6.25 4.30964 6.25 5M3.125 5H6.25M8.75 15H16.875M8.75 15C8.75 15.6904 8.19036 16.25 7.5 16.25C6.80964 16.25 6.25 15.6904 6.25 15M8.75 15C8.75 14.3096 8.19036 13.75 7.5 13.75C6.80964 13.75 6.25 14.3096 6.25 15M3.125 15L6.25 15M13.75 10L16.875 10M13.75 10C13.75 10.6904 13.1904 11.25 12.5 11.25C11.8096 11.25 11.25 10.6904 11.25 10M13.75 10C13.75 9.30964 13.1904 8.75 12.5 8.75C11.8096 8.75 11.25 9.30964 11.25 10M3.125 10H11.25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>',
+            ],
+            'payment_settings'      => [
+                'label' => __( 'Payment Settings', 'wp-user-frontend' ),
+                'icon'  => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3.125 5H16.875C17.5654 5 18.125 5.55964 18.125 6.25V13.75C18.125 14.4404 17.5654 15 16.875 15H3.125C2.43464 15 1.875 14.4404 1.875 13.75V6.25C1.875 5.55964 2.43464 5 3.125 5Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M5 15V10H15V15" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 10V5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>',
+            ],
+            'notification_settings' => [
+                'label' => __( 'Notification Settings', 'wp-user-frontend' ),
+                'icon'  => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14.8559 17.0817C16.7504 16.857 18.5773 16.4116 20.3102 15.7719C18.8734 14.177 17.9988 12.0656 17.9988 9.75V9.04919C17.999 9.03281 17.999 9.01641 17.999 9C17.999 5.68629 15.3127 3 11.999 3C8.68531 3 5.99902 5.68629 5.99902 9L5.99883 9.75C5.99883 12.0656 5.1243 14.177 3.6875 15.7719C5.42043 16.4116 7.24746 16.857 9.14216 17.0818M14.8559 17.0817C13.919 17.1928 12.9656 17.25 11.9988 17.25C11.0322 17.25 10.0789 17.1929 9.14216 17.0818M14.8559 17.0817C14.9488 17.3711 14.999 17.6797 14.999 18C14.999 19.6569 13.6559 21 11.999 21C10.3422 21 8.99902 19.6569 8.99902 18C8.99902 17.6797 9.04921 17.3712 9.14216 17.0818" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>',
+            ],
+        ]
+    );
+
+    return apply_filters(
+        'wpuf_form_builder_post_settings',
+        [
+            'post_settings' => [
+            'label'     => __( 'Post Settings', 'wp-user-frontend' ),
+            'icon'      => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.34332 1.94005C8.43373 1.39759 8.90307 1 9.45302 1H10.547C11.0969 1 11.5663 1.39759 11.6567 1.94005L11.8056 2.83386C11.8764 3.25813 12.1893 3.59838 12.5865 3.76332C12.9839 3.92832 13.4403 3.90629 13.7904 3.65617L14.528 3.12933C14.9755 2.80969 15.5885 2.86042 15.9774 3.24929L16.751 4.02284C17.1398 4.41171 17.1906 5.02472 16.8709 5.47223L16.3439 6.21007C16.0938 6.56012 16.0718 7.01633 16.2367 7.41363C16.4016 7.81078 16.7418 8.12363 17.166 8.19433L18.0599 8.34332C18.6024 8.43373 19 8.90307 19 9.45302V10.547C19 11.0969 18.6024 11.5663 18.0599 11.6567L17.1661 11.8056C16.7419 11.8764 16.4016 12.1893 16.2367 12.5865C16.0717 12.9839 16.0937 13.4403 16.3438 13.7904L16.8706 14.5278C17.1902 14.9753 17.1395 15.5884 16.7506 15.9772L15.9771 16.7508C15.5882 17.1396 14.9752 17.1904 14.5277 16.8707L13.7901 16.3439C13.44 16.0938 12.9837 16.0718 12.5864 16.2367C12.1892 16.4016 11.8764 16.7418 11.8057 17.166L11.6567 18.0599C11.5663 18.6024 11.0969 19 10.547 19H9.45302C8.90307 19 8.43373 18.6024 8.34332 18.0599L8.19435 17.1661C8.12364 16.7419 7.81072 16.4016 7.41349 16.2367C7.01608 16.0717 6.55975 16.0937 6.2096 16.3438L5.47198 16.8707C5.02447 17.1904 4.41146 17.1396 4.02259 16.7507L3.24904 15.9772C2.86017 15.5883 2.80944 14.9753 3.12909 14.5278L3.65612 13.79C3.90616 13.4399 3.92821 12.9837 3.76326 12.5864C3.59837 12.1892 3.25819 11.8764 2.83402 11.8057L1.94005 11.6567C1.39759 11.5663 1 11.0969 1 10.547V9.45302C1 8.90307 1.39759 8.43373 1.94005 8.34332L2.83386 8.19436C3.25813 8.12364 3.59838 7.81071 3.76332 7.41347C3.92833 7.01605 3.90629 6.5597 3.65618 6.20954L3.12948 5.47216C2.80983 5.02465 2.86057 4.41164 3.24943 4.02277L4.02298 3.24922C4.41185 2.86036 5.02486 2.80962 5.47237 3.12927L6.20997 3.65613C6.56004 3.90618 7.01628 3.92822 7.4136 3.76326C7.81077 3.59837 8.12364 3.25819 8.19433 2.834L8.34332 1.94005Z" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M13.0007 10C13.0007 11.6569 11.6576 13 10.0007 13C8.34384 13 7.0007 11.6569 7.0007 10C7.0007 8.34317 8.34384 7.00002 10.0007 7.00002C11.6576 7.00002 13.0007 8.34317 13.0007 10Z" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>',
+            'sub_items' => $post_settings_fields,
+        ],
+        ]
+    );
+}
+
+/**
+ * Get the post form builder setting menu contents
+ *
+ * @since WPUF_SINCE
+ *
+ * @return array
+ */
+function wpuf_get_post_form_builder_setting_menu_contents() {
+    $post_types = get_post_types();
+    unset( $post_types['attachment'] );
+    unset( $post_types['revision'] );
+    unset( $post_types['nav_menu_item'] );
+    unset( $post_types['wpuf_forms'] );
+    unset( $post_types['wpuf_profile'] );
+    unset( $post_types['wpuf_input'] );
+    unset( $post_types['wpuf_subscription'] );
+    unset( $post_types['custom_css'] );
+    unset( $post_types['customize_changeset'] );
+    unset( $post_types['wpuf_coupon'] );
+    unset( $post_types['oembed_cache'] );
+
+    $general = [
+        'section' => [
+            'before_post_settings' => [
+                'label'  => __( 'Before Post Settings', 'wp-user-frontend' ),
+                'desc'   => __(
+                    'Configure the form\'s behavior and appearance before submission, including content type, category, status, draft saving, and submit button customization.',
+                    'wp-user-frontend'
+                ),
+                'fields' => [
+                    'post_type'                  => [
+                        'label'     => __( 'Post Type', 'wp-user-frontend' ),
+                        'type'      => 'select',
+                        'options'   => $post_types,
+                        'help_text' => __( 'Choose the content type for the post editor', 'wp-user-frontend' ),
+                        'link'      => esc_url_raw(
+                            'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/different-custom-post-type-submission-2/'
+                        ),
+                    ],
+                    'default_category'           => [
+                        'label'     => __( 'Default Category', 'wp-user-frontend' ),
+                        'type'      => 'multi-select',
+                        'help_text' => __( 'Choose the default category for the post', 'wp-user-frontend' ),
+                        'options'   => wpuf_get_terms(),
+                    ],
+                    'post_status'                => [
+                        'label'     => __( 'Post Submission Status', 'wp-user-frontend' ),
+                        'type'      => 'select',
+                        'options'   => [
+                            'draft'          => __( 'Draft', 'wp-user-frontend' ),
+                            'pending-review' => __( 'Pending Review', 'wp-user-frontend' ),
+                            'private'        => __( 'Private', 'wp-user-frontend' ),
+                            'published'      => __( 'Published', 'wp-user-frontend' ),
+                        ],
+                        'help_text' => __( 'Choose the default category for the post', 'wp-user-frontend' ),
+                    ],
+                    'draft_post'                 => [
+                        'label'     => __( 'Enable saving as draft', 'wp-user-frontend' ),
+                        'type'      => 'checkbox',
+                        'help_text' => __( 'Allow users to save posts before final submission', 'wp-user-frontend' ),
+                    ],
+                    'submit_text'                => [
+                        'label'     => __( 'Submit Post Button Text', 'wp-user-frontend' ),
+                        'type'      => 'text',
+                        'help_text' => __( 'Customize the text of the submit button', 'wp-user-frontend' ),
+                    ],
+                    'form_template'              => [
+                        'label'     => __( 'Choose Form Template', 'wp-user-frontend' ),
+                        'type'      => 'pic-radio',
+                        'help_text' => __(
+                            'If selected a form template, it will try to execute that integration options when new post created and updated.',
+                            'wp-user-frontend'
+                        ),
+                        'options'   => [
+                            'post_form_template_post'            => [
+                                'label' => __( 'Post Form', 'wp-user-frontend' ),
+                                'image' => WPUF_ASSET_URI . '/images/templates/post.svg',
+                            ],
+                            'post_form_template_woocommerce'     => [
+                                'label' => __( 'WooCommerce Product Form', 'wp-user-frontend' ),
+                                'image' => WPUF_ASSET_URI . '/images/templates/woocommerce.svg',
+                            ],
+                            'post_form_template_edd'             => [
+                                'label' => __( 'EDD Download Form', 'wp-user-frontend' ),
+                                'image' => WPUF_ASSET_URI . '/images/templates/edd.svg',
+                            ],
+                            'post_form_template_events_calendar' => [
+                                'label' => __( 'The Events Calendar Form', 'wp-user-frontend' ),
+                                'image' => WPUF_ASSET_URI . '/images/templates/event.svg',
+                            ],
+                        ],
+                    ],
+                    'enable_multistep'           => [
+                        'label'     => __( 'Enable Multi-Step', 'wp-user-frontend' ),
+                        'type'      => 'toggle',
+                        'help_text' => __(
+                            'If checked, form will be displayed in frontend in multiple steps.', 'wp-user-frontend'
+                        ),
+                        'link'      => esc_url_raw(
+                            'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-add-multi-step-form/'
+                        ),
+                    ],
+                    'multistep_progressbar_type' => [
+                        'label'      => __( 'Multistep Progressbar Type', 'wp-user-frontend' ),
+                        'type'       => 'select',
+                        'help_text'  => __( 'Choose how you want the progressbar', 'wp-user-frontend' ),
+                        'options'    => [
+                            'progressive'  => __( 'Progressbar', 'wp-user-frontend' ),
+                            'step_by_step' => __( 'Step by Step', 'wp-user-frontend' ),
+                        ],
+                    ],
+                    'ms_ac_txt_color'            => [
+                        'label'     => __( 'Active Text Color', 'wp-user-frontend' ),
+                        'type'      => 'color-picker',
+                        'help_text' => __( 'Text color for active step.', 'wp-user-frontend' ),
+                        'default'   => '#fff',
+                    ],
+                    'ms_active_bgcolor'          => [
+                        'label'     => __( 'Active Background Color', 'wp-user-frontend' ),
+                        'type'      => 'color-picker',
+                        'help_text' => __( 'Background color for progressbar or active step.', 'wp-user-frontend' ),
+                        'default'   => '#00a0d2',
+                    ],
+                    'ms_bgcolor'                 => [
+                        'label'     => __( 'Background Color', 'wp-user-frontend' ),
+                        'type'      => 'color-picker',
+                        'help_text' => __( 'Background color for normal steps.', 'wp-user-frontend' ),
+                        'default'   => '#E4E4E4',
+                    ],
+                ],
+            ],
+            'after_post_settings'  => [
+                'label'  => __( 'After Post Settings', 'wp-user-frontend' ),
+                'desc'   => __(
+                    'Define actions post-submission, such as updating status, success messages, redirections, edit time limits, and button text customization.',
+                    'wp-user-frontend'
+                ),
+                'fields' => [
+                    'edit_post_status' => [
+                        'label'   => __( 'Post Update Status', 'wp-user-frontend' ),
+                        'type'    => 'select',
+                        'options' => [
+                            'draft'     => __( 'Draft', 'wp-user-frontend' ),
+                            'pending'   => __( 'Pending Review', 'wp-user-frontend' ),
+                            'private'   => __( 'Private', 'wp-user-frontend' ),
+                            'publish'   => __( 'Published', 'wp-user-frontend' ),
+                            '_nochange' => __( 'No Change', 'wp-user-frontend' ),
+                        ],
+                    ],
+                    'update_message'   => [
+                        'label'   => __( 'Post Update Message', 'wp-user-frontend' ),
+                        'type'    => 'textarea',
+                        'default' => 'Post has been updated successfully.<a target="_blank" href="{link}">View post</a>',
+                    ],
+                    'edit_redirect_to' => [
+                        'label'     => __( 'Successful Redirection', 'wp-user-frontend' ),
+                        'type'      => 'select',
+                        'help_text' => __(
+                            'After successfull submit, where the page will redirect to', 'wp-user-frontend'
+                        ),
+                        'options'   => [
+                            'post' => __( 'Newly created post', 'wp-user-frontend' ),
+                            'same' => __( 'Same page', 'wp-user-frontend' ),
+                            'page' => __( 'To a page', 'wp-user-frontend' ),
+                            'url'  => __( 'To a custom URL', 'wp-user-frontend' ),
+                        ],
+                    ],
+                    'lock_edit_post'   => [
+                        'label'         => __( 'Lock User Editing After', 'wp-user-frontend' ),
+                        'type'          => 'trailing-text',
+                        'help_text'     => __(
+                            'After how many hours user will be locked from editing the submitted post.',
+                            'wp-user-frontend'
+                        ),
+                        'trailing_type' => 'number',
+                        'trailing_text' => __( 'Hours', 'wp-user-frontend' ),
+                    ],
+                    'update_text'      => [
+                        'label' => __( 'Update Post Button Text', 'wp-user-frontend' ),
+                        'type'  => 'text',
+                    ],
+                ],
+            ],
+            'posting_control'      => [
+                'label'  => __( 'Posting Control', 'wp-user-frontend' ),
+                'desc'   => __(
+                    'Before post settings let managers customize user-created posts, including forms, status, access, and notifications. These tools ensure a personalized experience with content control.',
+                    'wp-user-frontend'
+                ),
+                'fields' => [
+                    'post_permission'    => [
+                        'label'   => __( 'Enable Guest Post', 'wp-user-frontend' ),
+                        'type'    => 'select',
+                        'options' => [
+                            'everyone'   => __( '- Select Post Permission -', 'wp-user-frontend' ),
+                            'guest_post' => __( 'Guest Post', 'wp-user-frontend' ),
+                            'role_base'  => __( 'Role Based Post', 'wp-user-frontend' ),
+                        ],
+                    ],
+                    'guest_details'      => [
+                        'label'     => __( 'Require Name and Email address', 'wp-user-frontend' ),
+                        'type'      => 'checkbox',
+                        'help_text' => __(
+                            'Users will be registered automatically with their name & email.', 'wp-user-frontend'
+                        ),
+                    ],
+                    'inline_fields'      => [
+                        'fields' => [
+                            'name_label'  => [
+                                'label'     => __( 'Name Label', 'wp-user-frontend' ),
+                                'type'      => 'text',
+                                'help_text' => __( 'Label text for name field', 'wp-user-frontend' ),
+                            ],
+                            'email_label' => [
+                                'label'     => __( 'E-Mail Label', 'wp-user-frontend' ),
+                                'type'      => 'text',
+                                'help_text' => __( 'Label text for email field', 'wp-user-frontend' ),
+                            ],
+                        ],
+                    ],
+                    'guest_email_verify' => [
+                        'label'     => __( 'Require email verification', 'wp-user-frontend' ),
+                        'type'      => 'checkbox',
+                        'help_text' => __(
+                            'If requires, users will be required to verify their email adress.', 'wp-user-frontend'
+                        ),
+                    ],
+                    'roles'              => [
+                        'label'           => __( 'Choose who can submit post', 'wp-user-frontend' ),
+                        'type'            => 'multi-select',
+                        'help'            => __( 'Select the user roles who can submit posts', 'wp-user-frontend' ),
+                        'options'         => wpuf_get_user_roles(),
+                        'always_selected' => [ 'administrator' ],
+                    ],
+                ],
+            ],
+        ],
+    ];
+
+    return [
+        'general' => $general,
+    ];
 }

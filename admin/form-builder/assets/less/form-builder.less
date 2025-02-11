@@ -266,7 +266,7 @@
 }
 
 .selectize-dropdown .active {
-    background-color: @wpBlue;
+    background-color: @wpufPrimary;
     color: #fff;
 }
 
@@ -674,8 +674,8 @@
     }
 
     .form-preview-stage-dropzone {
-        background-color: fade(@wpYellow, 30%) !important;
-        border: 1px solid @wpYellow;
+        background-color: #f0fdf4;
+        border: 1px solid #4ade80;
         height: 50px;
     }
 
@@ -786,7 +786,7 @@
     }
 
     .panel-field-opt {
-        margin-bottom: 15px;
+        margin-bottom: 2rem;
 
         .field-helper-text {
             color: fadeout(@wpBlack, 50%);
@@ -796,7 +796,6 @@
         &.panel-field-opt-text {
 
             input[type="text"],
-            input[type="range"],
             input[type="number"] {
                 display: block;
                 width: 100%;
@@ -887,10 +886,6 @@
 
     .selector {
         width: 25px;
-
-        input {
-            margin-top: 14px;
-        }
     }
 
     .sort-handler {
@@ -898,7 +893,6 @@
         cursor: ns-resize;
 
         i {
-            margin-top: 14px;
             font-size: 15px;
         }
     }
@@ -923,23 +917,11 @@
     }
 
     .action-buttons {
-        width: 36px;
-
         i {
             cursor: pointer;
             font-size: 16px;
             margin-top: 13px;
         }
-    }
-
-    .plus-buttons {
-        padding: 5px;
-        font-size: 18px;
-        text-align: center;
-        cursor: pointer;
-        border: 1px solid #ccc;
-        width: 61%;
-        margin-left: 14%;
     }
 }
 
@@ -1127,15 +1109,9 @@ ul.wpuf-form li .wpuf-password-field:after {
 
 .wpuf-form-template-modal {
     background: #fff;
-    position: fixed;
-    top: 5%;
-    bottom: 5%;
-    right: 10%;
-    left: 10%;
-    // display: block;
     display: none;
     box-shadow: 0 1px 20px 5px rgba(0, 0, 0, 0.1);
-    z-index: 160000;
+    height: 100vh;
 
     &.show {
         display: block;

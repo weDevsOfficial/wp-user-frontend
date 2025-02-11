@@ -10,7 +10,7 @@ class Form_Field_Post_Content extends Field_Contract {
     public function __construct() {
         $this->name       = __( 'Post Content', 'wp-user-frontend' );
         $this->input_type = 'post_content';
-        $this->icon       = 'text-width';
+        $this->icon       = 'queue-list';
 
         // check if block theme is active
         if ( function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() ) {

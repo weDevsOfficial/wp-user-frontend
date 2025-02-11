@@ -5,6 +5,7 @@
         <input
             type="range"
             v-model="value"
+            class="wpuf-accent-green-600 wpuf-bg-green-400"
             v-bind:min="minColumn"
             v-bind:max="maxColumn"
         >

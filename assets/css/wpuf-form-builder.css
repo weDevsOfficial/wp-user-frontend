@@ -619,14 +619,13 @@
   opacity: 1;
 }
 .wpuf-form-builder-field-options .panel-field-opt {
-  margin-bottom: 15px;
+  margin-bottom: 2rem;
 }
 .wpuf-form-builder-field-options .panel-field-opt .field-helper-text {
   color: rgba(35, 40, 45, 0.5);
   margin-left: 6px;
 }
 .wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-text input[type="text"],
-.wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-text input[type="range"],
 .wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-text input[type="number"] {
   display: block;
   width: 100%;

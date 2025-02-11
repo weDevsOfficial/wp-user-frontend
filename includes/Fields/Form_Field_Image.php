@@ -12,7 +12,7 @@ class Form_Field_Image extends Field_Contract {
     public function __construct() {
         $this->name       = __( 'Image Upload', 'wp-user-frontend' );
         $this->input_type = 'image_upload';
-        $this->icon       = 'file-image-o';
+        $this->icon       = 'photograph';
     }
 
     /**

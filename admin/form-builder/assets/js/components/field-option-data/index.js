@@ -6,7 +6,8 @@ Vue.component('field-option-data', {
     template: '#tmpl-wpuf-field-option-data',
 
     mixins: [
-        wpuf_mixins.option_field_mixin
+        wpuf_mixins.option_field_mixin,
+        wpuf_mixins.form_field_mixin
     ],
 
     data: function () {

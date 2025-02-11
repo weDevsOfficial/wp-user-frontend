@@ -1,9 +1,20 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     prefix: 'wpuf-',
-    content: ["./assets/**/*.{js,jsx,ts,tsx,vue,html}", "./includes/Admin/views/*.php"],
+    content: [
+        './assets/**/*.{js,jsx,ts,tsx,vue,html}',
+        './includes/Admin/**/*.php',
+        './includes/Admin/template-parts/*.php',
+        './admin/form-builder/views/*.php',
+        './admin/form-builder/assets/js/**/*.php',
+    ],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                primary: '#16a34a',
+                primaryHover: '#22c55e',
+            }
+        },
     },
     plugins: [
         require('@tailwindcss/forms'),

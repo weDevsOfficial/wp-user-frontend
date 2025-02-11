@@ -10,7 +10,7 @@ class Form_Field_Checkbox extends Field_Contract {
     public function __construct() {
         $this->name       = __( 'Checkbox', 'wp-user-frontend' );
         $this->input_type = 'checkbox_field';
-        $this->icon       = 'check-square-o';
+        $this->icon       = 'check-circle';
     }
 
     /**

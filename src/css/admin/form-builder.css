@@ -1,0 +1,159 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .wpuf-btn-primary {
+        @apply wpuf-rounded-md wpuf-bg-primary wpuf-text-white wpuf-px-3.5 wpuf-py-2 wpuf-text-sm wpuf-font-semibold hover:wpuf-bg-green-700 hover:wpuf-text-white focus:wpuf-text-white focus:wpuf-shadow-none;
+    }
+
+    .wpuf-btn-secondary {
+        @apply wpuf-rounded-md wpuf-bg-green-50 wpuf-text-green-700 wpuf-px-3.5 wpuf-py-2 wpuf-text-sm wpuf-border wpuf-border-green-300 wpuf-font-semibold hover:wpuf-bg-green-100 hover:wpuf-text-white;
+    }
+
+    .wpuf-tooltip-top {
+        @apply before:wpuf-bg-gray-700 before:wpuf-text-zinc-50 after:wpuf-border-t-gray-700 after:wpuf-border-x-transparent wpuf-cursor-pointer wpuf-ml-2 wpuf-z-10;
+    }
+
+    .wpuf-input-checkbox {
+        @apply wpuf-bg-transparent wpuf-text-white checked:wpuf-bg-transparent checked:wpuf-shadow-primary checked:hover:wpuf-shadow-transparent checked:hover:wpuf-bg-transparent checked:focus:wpuf-bg-transparent
+    }
+
+    .panel-field-opt {
+        @apply wpuf-mb-4
+    }
+
+    .panel-field-opt label {
+        @apply wpuf-flex wpuf-items-center
+    }
+}
+
+@layer utilities {
+    .wpuf-transition-all {
+        transition-property: all;
+    }
+    .wpuf-duration-100 {
+        transition-duration: 100ms;
+    }
+    .wpuf-ease-out {
+        transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+    .wpuf-scale-95 {
+        transform: scale(.95);
+    }
+    .wpuf-scale-100 {
+        transform: scale(1);
+    }
+}
+
+/* Transition styles */
+.wpuf-dropdown-item {
+    @apply wpuf-transition-all wpuf-duration-100 wpuf-ease-out wpuf-opacity-0 wpuf-scale-75;
+}
+
+.wpuf-dropdown-container:hover .wpuf-dropdown-item {
+    @apply wpuf-opacity-100 wpuf-scale-100;
+}
+
+.wpuf-pattern-1 {
+    border: 1px dashed #ddd;
+    background-color: #ffffff;
+    opacity: 1;
+    background: repeating-linear-gradient( -45deg, #dcfce7, #dcfce7 2px, #ffffff 2px, #ffffff 6px );
+}
+
+.selectize-control.multi .selectize-input [data-value] {
+    background: #15803d !important;
+    border: 1px solid transparent !important;
+}
+
+ul.wpuf-form li.field-size-small .wpuf-fields {
+    width: 30%;
+}
+
+ul.wpuf-form li.field-size-medium .wpuf-fields {
+    width: 50%;
+}
+
+#wpuf-form-builder .wpuf-fields {
+    float: none;
+    width: auto;
+}
+body ul.wpuf-form li.field-size-large .wpuf-fields {
+    width: 100% !important;
+}
+body ul.wpuf-form li.field-size-medium .wpuf-fields {
+    width: 50% !important;
+}
+body ul.wpuf-form li.field-size-small .wpuf-fields {
+    width: 30% !important;
+}
+body ul.wpuf-form li .wpuf-fields {
+    width: 70% !important;
+}
+#wpuf-form-builder-settings ul.wpuf-sidebar-menu li a svg {
+    stroke: #4b5563;
+}
+#wpuf-form-builder-settings ul.wpuf-sidebar-menu li:hover a svg,
+#wpuf-form-builder-settings ul.wpuf-sidebar-menu li.active_settings_tab a svg {
+    stroke: #ffffff;
+}
+.selectize-control {
+    border: none !important;
+    box-shadow: none !important;
+}
+.selectize-control.single .selectize-input,
+.selectize-dropdown.single {
+    border: 1px solid #d1d5db;
+    box-shadow: none;
+    background: #fff;
+}
+.wpuf-icon-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #eee;
+    overflow: hidden;
+}
+.wpuf-icon-container.wpuf-is-loaded {
+    background: none;
+}
+.wpuf-icon-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.wpuf-icon-container.wpuf-is-loaded img,
+.wpuf-icon-container.wpuf-is-loaded iframe {
+    opacity: 1;
+}
+.wpuf-shimmer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0.5) 50%,
+        rgba(255,255,255,0) 100%
+    );
+    animation: wpuf-shimmer 1.5s infinite;
+    transition: all 0.3s ease;
+}
+@keyframes wpuf-shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+.wpuf-icon-container.wpuf-is-loaded .wpuf-shimmer {
+    display: none;
+}
+#wpcontent {
+    background: #fff;
+}

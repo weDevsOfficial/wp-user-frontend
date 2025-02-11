@@ -17,6 +17,9 @@ Vue.component('help-text', {
     },
 
     mounted: function () {
-        $(this.$el).tooltip();
+        $( this.$el ).tooltip({
+            title: this.text,
+            placement: 'auto top'
+        });
     }
 });

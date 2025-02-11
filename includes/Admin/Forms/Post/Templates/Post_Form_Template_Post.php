@@ -15,7 +15,7 @@ class Post_Form_Template_Post extends Form_Template {
         $this->enabled     = true;
         $this->title       = __( 'Post Form', 'wp-user-frontend' );
         $this->description = __( 'Form for creating a blog post.', 'wp-user-frontend' );
-        $this->image       = WPUF_ASSET_URI . '/images/templates/post.png';
+        $this->image       = WPUF_ASSET_URI . '/images/templates/post.svg';
         $this->form_fields = [
             [
                 'input_type'       => 'text',

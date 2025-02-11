@@ -3428,6 +3428,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   background-color: rgb(220 252 231 / var(--tw-bg-opacity));
 }
 
+.wpuf-bg-green-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(74 222 128 / var(--tw-bg-opacity));
+}
+
 .wpuf-bg-green-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(240 253 244 / var(--tw-bg-opacity));
@@ -4027,6 +4032,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 .wpuf-text-yellow-700 {
   --tw-text-opacity: 1;
   color: rgb(161 98 7 / var(--tw-text-opacity));
+}
+
+.wpuf-accent-green-600 {
+  accent-color: #16a34a;
 }
 
 .wpuf-opacity-0 {
@@ -4889,6 +4898,11 @@ body ul.wpuf-form li .wpuf-fields {
 .wpuf-group:hover .group-hover\:wpuf-border-green-400 {
   --tw-border-opacity: 1;
   border-color: rgb(74 222 128 / var(--tw-border-opacity));
+}
+
+.wpuf-group\/hidden-fields:hover .group-hover\/hidden-fields\:wpuf-bg-green-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(240 253 244 / var(--tw-bg-opacity));
 }
 
 .wpuf-group\/sidebar-item:hover .group-hover\/sidebar-item\:wpuf-stroke-white {

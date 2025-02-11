@@ -32,7 +32,7 @@
                     type="radio"
                     :value="key"
                     v-model="selected"
-                    class="checked:!wpuf-bg-primary checked:before:!wpuf-bg-transparent">
+                    :class="builder_class_names('radio')">
                 {{ option }}
             </label>
         </div>

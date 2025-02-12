@@ -158,7 +158,6 @@ body ul.wpuf-form li .wpuf-fields {
 .wpuf-icon-container.wpuf-is-loaded .wpuf-shimmer {
     display: none;
 }
-
 input[type="range"] {
     -webkit-appearance: none;
     width: 100%;
@@ -168,7 +167,6 @@ input[type="range"] {
     transition: background 0.3s;
     border-radius: 10px
 }
-
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -178,7 +176,6 @@ input[type="range"]::-webkit-slider-thumb {
     cursor: pointer;
     border-radius: 10px;
 }
-
 input[type="range"]::-moz-range-thumb {
     width: 20px;
     height: 20px;
@@ -186,15 +183,16 @@ input[type="range"]::-moz-range-thumb {
     cursor: pointer;
     border-radius: 10px;
 }
-
 input[type="range"]:hover,
 input[type="range"]:active {
     background: green;
 }
-
 input[type="range"]::-webkit-slider-thumb:hover,
 input[type="range"]::-webkit-slider-thumb:active,
 input[type="range"]::-moz-range-thumb:hover,
 input[type="range"]::-moz-range-thumb:active {
     background: green;
+}
+table.option-field-option-chooser tbody tr td {
+    padding: .25rem;
 }

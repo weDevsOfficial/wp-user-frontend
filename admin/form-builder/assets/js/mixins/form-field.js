@@ -42,7 +42,7 @@ wpuf_mixins.form_field_mixin = {
                     break;
 
                 case 'radio':
-                    commonClasses = 'wpuf-ml-3 wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900 checked:focus:!wpuf-bg-primary checked:hover:!wpuf-bg-primary checked:before:!wpuf-bg-white checked:!wpuf-bg-primary';
+                    commonClasses = '!wpuf-mt-0 wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900 checked:focus:!wpuf-bg-primary checked:hover:!wpuf-bg-primary checked:before:!wpuf-bg-white checked:!wpuf-bg-primary';
                     break;
 
                 case 'checkbox':

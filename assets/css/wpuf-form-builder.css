@@ -626,7 +626,6 @@
   margin-left: 6px;
 }
 .wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-text input[type="text"],
-.wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-text input[type="range"],
 .wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-text input[type="number"] {
   display: block;
   width: 100%;

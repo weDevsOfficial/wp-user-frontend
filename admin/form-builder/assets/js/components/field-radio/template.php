@@ -1,7 +1,7 @@
 <div v-if="met_dependencies" class="panel-field-opt panel-field-opt-radio">
     <div class="wpuf-flex">
         <label
-            class="wpuf-font-sm wpuf-text-gray-900">{{ option_field.title }}</label>
+            class="wpuf-option-field-title wpuf-font-sm wpuf-text-gray-900">{{ option_field.title }}</label>
         <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
     </div>
     <div

@@ -83,7 +83,7 @@ class Form_Field_SectionBreak extends Field_Contract {
             'input_type'       => 'section_break',
             'template'         => $this->get_type(),
             'label'            => $this->get_name(),
-            'description'      => __( 'Some description about this section adshfdsh', 'wp-user-frontend' ),
+            'description'      => __( 'Some description about this section', 'wp-user-frontend' ),
             'id'               => 0,
             'is_new'           => true,
             'show_in_post'     => 'yes',

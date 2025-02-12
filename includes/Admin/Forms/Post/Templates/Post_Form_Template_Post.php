@@ -31,7 +31,9 @@ class Post_Form_Template_Post extends Form_Template {
                 'size'             => '40',
                 'wpuf_cond'        => $this->conditionals,
                 'wpuf_visibility'  => $this->get_default_visibility_prop(),
-                'restriction_type' => 'character'
+                'restriction_to'   => 'max',
+                'restriction_type' => 'character',
+                'width'            => 'large',
             ],
             [
                 'input_type'      => 'taxonomy',
@@ -53,6 +55,8 @@ class Post_Form_Template_Post extends Form_Template {
                 'options'         => [],
                 'wpuf_cond'       => $this->conditionals,
                 'wpuf_visibility' => $this->get_default_visibility_prop(),
+                'width'           => 'large',
+                'show_inline'     => false,
             ],
             [
                 'input_type'          => 'textarea',
@@ -71,8 +75,10 @@ class Post_Form_Template_Post extends Form_Template {
                 'insert_image'        => 'yes',
                 'wpuf_cond'           => $this->conditionals,
                 'wpuf_visibility'     => $this->get_default_visibility_prop(),
+                'restriction_to'      => 'max',
                 'restriction_type'    => 'character',
                 'text_editor_control' => [],
+                'width'               => 'large',
             ],
             [
                 'input_type'      => 'image_upload',
@@ -88,6 +94,7 @@ class Post_Form_Template_Post extends Form_Template {
                 'max_size'        => '1024',
                 'wpuf_cond'       => $this->conditionals,
                 'wpuf_visibility' => $this->get_default_visibility_prop(),
+                'width'           => 'large',
             ],
             [
                 'input_type'          => 'textarea',
@@ -97,7 +104,7 @@ class Post_Form_Template_Post extends Form_Template {
                 'name'                => 'post_excerpt',
                 'is_meta'             => 'no',
                 'help'                => __( 'Provide a short description of this post (optional)',
-                                             'wp-user-frontend' ),
+                    'wp-user-frontend' ),
                 'css'                 => '',
                 'rows'                => '5',
                 'cols'                => '25',
@@ -106,8 +113,10 @@ class Post_Form_Template_Post extends Form_Template {
                 'rich'                => 'no',
                 'wpuf_cond'           => $this->conditionals,
                 'wpuf_visibility'     => $this->get_default_visibility_prop(),
+                'restriction_to'      => 'max',
                 'restriction_type'    => 'character',
                 'text_editor_control' => [],
+                'width'               => 'large',
             ],
             [
                 'input_type'      => 'text',
@@ -123,36 +132,37 @@ class Post_Form_Template_Post extends Form_Template {
                 'size'            => '40',
                 'wpuf_cond'       => $this->conditionals,
                 'wpuf_visibility' => $this->get_default_visibility_prop(),
+                'width'           => 'large',
             ],
         ];
 
         $this->form_settings = [
-                'post_type'                  => 'post',
-                'post_status'                => 'publish',
-                'default_cat'                => '-1',
-                'guest_post'                 => 'false',
-                'message_restrict'           => __( 'This page is restricted. Please %login% / %register% to view this page.', 'wp-user-frontend' ),
-                'redirect_to'                => 'post',
-                'comment_status'             => 'open',
-                'submit_text'                => __( 'Create Post', 'wp-user-frontend' ),
-                'submit_button_cond'         => [
-                    'condition_status' => 'no',
-                    'cond_logic'       => 'any',
-                    'conditions'       => [
-                        [
-                            'name'             => '',
-                            'operator'         => '=',
-                            'option'           => '',
-                        ],
+            'post_type'                  => 'post',
+            'post_status'                => 'publish',
+            'default_cat'                => '-1',
+            'guest_post'                 => 'false',
+            'message_restrict'           => __( 'This page is restricted. Please %login% / %register% to view this page.', 'wp-user-frontend' ),
+            'redirect_to'                => 'post',
+            'comment_status'             => 'open',
+            'submit_text'                => __( 'Create Post', 'wp-user-frontend' ),
+            'submit_button_cond'         => [
+                'condition_status' => 'no',
+                'cond_logic'       => 'any',
+                'conditions'       => [
+                    [
+                        'name'             => '',
+                        'operator'         => '=',
+                        'option'           => '',
                     ],
                 ],
-                'edit_post_status'           => 'publish',
-                'edit_redirect_to'           => 'same',
-                'update_message'             => __( 'Post has been updated successfully. <a target="_blank" href="{link}">View post</a>', 'wp-user-frontend' ),
-                'edit_url'                   => '',
-                'update_text'                => __( 'Update Post', 'wp-user-frontend' ),
-                'form_template'              => 'post_form_template_post',
-                'notification'               => [
+            ],
+            'edit_post_status'           => 'publish',
+            'edit_redirect_to'           => 'same',
+            'update_message'             => __( 'Post has been updated successfully. <a target="_blank" href="{link}">View post</a>', 'wp-user-frontend' ),
+            'edit_url'                   => '',
+            'update_text'                => __( 'Update Post', 'wp-user-frontend' ),
+            'form_template'              => 'post_form_template_post',
+            'notification'               => [
                 'new'                        => 'on',
                 'new_to'                     => get_option( 'admin_email' ),
                 'new_subject'                => 'New post has been created',
@@ -179,7 +189,7 @@ class Post_Form_Template_Post extends Form_Template {
                 Author: {author}
                 Post URL: {permalink}
                 Edit URL: {editlink}'
-                ],
-            ];
+            ],
+        ];
     }
 }

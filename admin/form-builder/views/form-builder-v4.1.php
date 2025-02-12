@@ -101,7 +101,7 @@
                         type="button"
                         :disabled="is_form_saving"
                         :class="is_form_saving ? 'wpuf-cursor-wait' : 'wpuf-cursor-pointer'"
-                        class="wpuf-btn-primary"><?php esc_html_e( 'Save Form', 'wp-user-frontend' ); ?></button>
+                        class="wpuf-btn-primary"><?php esc_html_e( 'Save', 'wp-user-frontend' ); ?></button>
                     <button v-else type="button" class="button button-primary button-ajax-working" disabled>
                         <span class="loader"></span> <?php esc_html_e( 'Saving Form Data', 'wp-user-frontend' ); ?>
                     </button>
@@ -135,7 +135,7 @@
         <div class="wpuf-w-2/3 wpuf-min-h-screen wpuf-max-h-screen wpuf-px-[20px] wpuf-pt-4 wpuf-border-t wpuf-border-gray-200 wpuf-overflow-auto">
             <builder-stage-v4-1></builder-stage-v4-1>
         </div>
-        <div class="wpuf-w-1/3 wpuf-max-h-screen wpuf-overflow-auto wpuf-rounded-r-lg wpuf-border wpuf-border-gray-200">
+        <div class="wpuf-w-1/3 wpuf-max-h-screen wpuf-overflow-auto wpuf-rounded-tr-lg wpuf-border wpuf-border-b-0 wpuf-border-gray-200">
             <div class="wpuf-p-6 wpuf-pb-0">
                 <div role="tablist" class="wpuf-tabs wpuf-tabs-boxed wpuf-text-gray-500 wpuf-rounded-xl wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-medium wpuf-bg-gray-100">
                     <a

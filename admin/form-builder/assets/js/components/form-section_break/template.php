@@ -1,8 +1,8 @@
-<div class="wpuf-fields">
+<div class="wpuf-fields wpuf-min-w-full">
     <div
         v-if="!field.divider || field.divider === 'regular'"
         class="wpuf-section-wrap">
-        <h2 class="wpuf-section-title wpuf-text-xs">{{ field.label }}</h2>
+        <h2 class="wpuf-section-title">{{ field.label }}</h2>
         <div class="wpuf-section-details wpuf-text-sm wpuf-text-gray-500">{{ field.description }}</div>
         <div class="wpuf-border wpuf-border-gray-200 wpuf-h-0 wpuf-w-full"></div>
     </div>

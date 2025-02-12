@@ -297,7 +297,7 @@
 <div class="panel-field-opt panel-field-opt-text">
     <div class="wpuf-flex">
         <label
-            class="wpuf-font-sm wpuf-text-gray-900">{{ option_field.title }}</label>
+            class="wpuf-option-field-title wpuf-font-sm wpuf-text-gray-900">{{ option_field.title }}</label>
         <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
     </div>
     <div class="wpuf-mt-2 wpuf-flex">
@@ -485,7 +485,7 @@
 <div v-if="met_dependencies" class="panel-field-opt panel-field-opt-radio">
     <div class="wpuf-flex">
         <label
-            class="wpuf-font-sm wpuf-text-gray-900">{{ option_field.title }}</label>
+            class="wpuf-option-field-title wpuf-font-sm wpuf-text-gray-900">{{ option_field.title }}</label>
         <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
     </div>
     <div
@@ -529,13 +529,13 @@
     <label>
         {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
         {{ option_field.min_column }}
-        <input
-            type="range"
-            v-model="value"
-            v-bind:min="minColumn"
-            v-bind:max="maxColumn"
-        >
     </label>
+    <input
+        type="range"
+        v-model="value"
+        v-bind:min="minColumn"
+        v-bind:max="maxColumn"
+    >
 </div>
 </script>
 
@@ -577,7 +577,7 @@
     <div class="wpuf-flex">
         <label
             :for="option_field.name"
-            class="wpuf-font-sm wpuf-text-gray-900">{{ option_field.title }}</label>
+            class="wpuf-option-field-title wpuf-font-sm wpuf-text-gray-900">{{ option_field.title }}</label>
         <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
     </div>
     <div class="wpuf-mt-2">
@@ -605,7 +605,7 @@
     <div class="wpuf-flex">
         <label
             :for="option_field.title"
-            class="wpuf-font-sm wpuf-text-gray-900">{{ option_field.title }}</label>
+            class="wpuf-option-field-title wpuf-font-sm wpuf-text-gray-900">{{ option_field.title }}</label>
         <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
     </div>
     <div class="wpuf-mt-2">
@@ -631,7 +631,7 @@
     <div class="wpuf-flex">
         <label
             v-if="option_field.title"
-            class="wpuf-font-sm wpuf-text-gray-900">{{ option_field.title }}</label>
+            class="wpuf-option-field-title wpuf-font-sm wpuf-text-gray-900">{{ option_field.title }}</label>
         <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
     </div>
 
@@ -1075,7 +1075,7 @@
                             :data-form-field="field"
                             data-source="panel"
                             @click="alert_pro_feature(field)"
-                            class="wpuf-relative wpuf-flex wpuf-items-center wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-bg-white wpuf-shadow-sm wpuf-p-3 hover:wpuf-border-gray-300 hover:wpuf-cursor-pointer">
+                            class="wpuf-opacity-50 wpuf-field-button wpuf-relative wpuf-flex wpuf-items-center wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-bg-white wpuf-shadow-sm wpuf-p-3 hover:wpuf-border-gray-300 hover:wpuf-cursor-pointer">
                             <div
                                 v-if="field_settings[field].icon"
                                 class="wpuf-shrink-0 wpuf-mr-2 wpuf-text-gray-400">
@@ -1083,7 +1083,7 @@
                             </div>
                             <div class="wpuf-min-w-0 wpuf-flex-1">
                                 <a href="#" class="focus:wpuf-outline-none focus:wpuf-shadow-none">
-                                    <p class="wpuf-text-sm wpuf-font-medium wpuf-text-gray-400 wpuf-m-0">{{ field_settings[field].title }}</p>
+                                    <p class="wpuf-text-sm wpuf-font-medium wpuf-text-gray-500 wpuf-m-0">{{ field_settings[field].title }}</p>
                                 </a>
                             </div>
                             <img src="<?php esc_attr_e( WPUF_ASSET_URI . '/images/crown.svg' ); ?>" alt="">
@@ -1129,7 +1129,7 @@
             </div>
         </template>
 
-        <div class="wpuf-mt-12 wpuf-p-6 wpuf-rounded-lg wpuf-shadow-md wpuf-text-center">
+        <div class="wpuf-mt-12 wpuf-p-6 wpuf-rounded-lg wpuf-shadow-md wpuf-text-center wpuf-border wpuf-border-gray-50">
             <h2 class="wpuf-text-slate-600 wpuf-text-xl wpuf-font-bold wpuf-mb-4">
                 <?php esc_html_e( 'Got an idea for a new field?', 'wp-user-frontend' ); ?>
             </h2>
@@ -1321,11 +1321,11 @@
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-form-section_break">
-<div class="wpuf-fields">
+<div class="wpuf-fields wpuf-min-w-full">
     <div
         v-if="!field.divider || field.divider === 'regular'"
         class="wpuf-section-wrap">
-        <h2 class="wpuf-section-title wpuf-text-xs">{{ field.label }}</h2>
+        <h2 class="wpuf-section-title">{{ field.label }}</h2>
         <div class="wpuf-section-details wpuf-text-sm wpuf-text-gray-500">{{ field.description }}</div>
         <div class="wpuf-border wpuf-border-gray-200 wpuf-h-0 wpuf-w-full"></div>
     </div>

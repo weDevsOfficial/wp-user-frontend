@@ -55,7 +55,7 @@
                             :data-form-field="field"
                             data-source="panel"
                             @click="alert_pro_feature(field)"
-                            class="wpuf-relative wpuf-flex wpuf-items-center wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-bg-white wpuf-shadow-sm wpuf-p-3 hover:wpuf-border-gray-300 hover:wpuf-cursor-pointer">
+                            class="wpuf-opacity-50 wpuf-field-button wpuf-relative wpuf-flex wpuf-items-center wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-bg-white wpuf-shadow-sm wpuf-p-3 hover:wpuf-border-gray-300 hover:wpuf-cursor-pointer">
                             <div
                                 v-if="field_settings[field].icon"
                                 class="wpuf-shrink-0 wpuf-mr-2 wpuf-text-gray-400">
@@ -63,7 +63,7 @@
                             </div>
                             <div class="wpuf-min-w-0 wpuf-flex-1">
                                 <a href="#" class="focus:wpuf-outline-none focus:wpuf-shadow-none">
-                                    <p class="wpuf-text-sm wpuf-font-medium wpuf-text-gray-400 wpuf-m-0">{{ field_settings[field].title }}</p>
+                                    <p class="wpuf-text-sm wpuf-font-medium wpuf-text-gray-500 wpuf-m-0">{{ field_settings[field].title }}</p>
                                 </a>
                             </div>
                             <img src="<?php esc_attr_e( WPUF_ASSET_URI . '/images/crown.svg' ); ?>" alt="">
@@ -109,7 +109,7 @@
             </div>
         </template>
 
-        <div class="wpuf-mt-12 wpuf-p-6 wpuf-rounded-lg wpuf-shadow-md wpuf-text-center">
+        <div class="wpuf-mt-12 wpuf-p-6 wpuf-rounded-lg wpuf-shadow-md wpuf-text-center wpuf-border wpuf-border-gray-50">
             <h2 class="wpuf-text-slate-600 wpuf-text-xl wpuf-font-bold wpuf-mb-4">
                 <?php esc_html_e( 'Got an idea for a new field?', 'wp-user-frontend' ); ?>
             </h2>

@@ -16,7 +16,7 @@
 
         <div
             v-if="showOptions"
-            class="wpuf-absolute wpuf-bg-white wpuf-border wpuf-border-gray-300 wpuf-rounded-lg wpuf-w-full wpuf-z-30">
+            class="wpuf-absolute wpuf-bg-white wpuf-border wpuf-border-gray-300 wpuf-rounded-lg wpuf-w-full wpuf-z-10 wpuf--mt-4">
             <ul>
                 <li
                     v-for="(option, key) in option_field.options"

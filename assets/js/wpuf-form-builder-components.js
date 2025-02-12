@@ -712,7 +712,8 @@ Vue.component('field-radio', {
     template: '#tmpl-wpuf-field-radio',
 
     mixins: [
-        wpuf_mixins.option_field_mixin
+        wpuf_mixins.option_field_mixin,
+        wpuf_mixins.form_field_mixin
     ],
 
     computed: {

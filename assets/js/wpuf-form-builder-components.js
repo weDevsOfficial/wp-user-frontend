@@ -208,10 +208,6 @@ Vue.component('builder-stage-v4-1', {
         editing_form_id: function () {
             return this.$store.state.editing_field_id;
         },
-
-        pro_link: function () {
-            return wpuf_form_builder.pro_link;
-        }
     },
 
     mounted: function () {

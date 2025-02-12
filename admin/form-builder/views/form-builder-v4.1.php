@@ -1,5 +1,5 @@
 <form id="wpuf-form-builder"
-    class="!wpuf-bg-white !wpuf-static !wpuf-w-[calc(100%+20px)] wpuf-ml-[-20px] !wpuf-p-0 wpuf-form-builder-<?php echo esc_attr( $form_type ); ?>"
+    class="wpuf-max-w-[1440px] wpuf-mx-auto wpuf-w-auto !wpuf-bg-white !wpuf-static !wpuf-p-0 wpuf-form-builder-<?php echo esc_attr( $form_type ); ?>"
     method="post"
     action="" @submit.prevent="save_form_builder" v-cloak>
     <div class="wpuf-bg-white wpuf-px-[20px] wpuf-pt-8 wpuf-justify-between wpuf-items-center wpuf-pb-4">
@@ -131,8 +131,8 @@
     </div>
     <div
         v-show="active_tab === 'form-editor'"
-        class="wpuf-flex wpuf-bg-white wpuf-pb-16 wpuf-w-[calc(100%-30px)]">
-        <div class="wpuf-w-2/3 wpuf-min-h-screen wpuf-max-h-screen wpuf-px-[20px] wpuf-pt-4 wpuf-border-t wpuf-border-gray-200 wpuf-overflow-auto">
+        class="wpuf-flex wpuf-bg-white wpuf-pb-16 wpuf-w-[calc(100%-30px)] wpuf-mx-4">
+        <div class="wpuf-w-2/3 wpuf-min-h-screen wpuf-max-h-screen wpuf-px-[20px] wpuf-pt-4 wpuf-border-t wpuf-border-l wpuf-rounded-tl-lg wpuf-border-gray-200 wpuf-overflow-auto">
             <builder-stage-v4-1></builder-stage-v4-1>
         </div>
         <div class="wpuf-w-1/3 wpuf-max-h-screen wpuf-overflow-auto wpuf-rounded-tr-lg wpuf-border wpuf-border-b-0 wpuf-border-gray-200">

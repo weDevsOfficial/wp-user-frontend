@@ -50,6 +50,10 @@
     }
 }
 
+#wpcontent {
+    background: #fff;
+}
+
 /* Transition styles */
 .wpuf-dropdown-item {
     @apply wpuf-transition-all wpuf-duration-100 wpuf-ease-out wpuf-opacity-0 wpuf-scale-75;

@@ -2493,6 +2493,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   margin-right: 0.5rem;
 }
 
+.wpuf-mx-4 {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
 .wpuf-mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -2831,10 +2836,6 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   min-height: 100vh;
 }
 
-.\!wpuf-w-\[calc\(100\%\+20px\)\] {
-  width: calc(100% + 20px) !important;
-}
-
 .\!wpuf-w-full {
   width: 100% !important;
 }
@@ -2967,6 +2968,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-max-w-32 {
   max-width: 8rem;
+}
+
+.wpuf-max-w-\[1440px\] {
+  max-width: 1440px;
 }
 
 .wpuf-max-w-\[768px\] {
@@ -3302,6 +3307,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 .wpuf-rounded-t-xl {
   border-top-left-radius: 0.75rem;
   border-top-right-radius: 0.75rem;
+}
+
+.wpuf-rounded-tl-lg {
+  border-top-left-radius: 0.5rem;
 }
 
 .wpuf-rounded-tr-lg {
@@ -4339,6 +4348,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-ease-out {
   transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
+#wpcontent {
+  background: #fff;
 }
 
 /* Transition styles */

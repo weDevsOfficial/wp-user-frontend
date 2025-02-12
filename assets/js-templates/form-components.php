@@ -142,7 +142,7 @@
             </component>
             <div
                 :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-opacity-100' : 'wpuf-opacity-0'"
-                class="field-buttons group-hover:wpuf-opacity-100 wpuf-rounded-b-lg !wpuf-bg-green-600 wpuf-flex wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out wpuf-flex wpuf-justify-around">
+                class="field-buttons group-hover:wpuf-opacity-100 wpuf-rounded-b-lg !wpuf-bg-green-600 wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out wpuf-flex wpuf-justify-around">
                 <div class="wpuf-flex wpuf-justify-around wpuf-text-green-200">
                     <template v-if="!is_failed_to_validate(field.template)">
                             <span :class="action_button_classes">
@@ -215,14 +215,16 @@
                 class="field-items wpuf-group/hidden-fields !wpuf-m-0 !wpuf-p-0 hover:wpuf-cursor-pointer"
             >
                 <div
-                    :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed wpuf-bg-green-50 wpuf-border-green-400' : ''"
-                    class="wpuf-flex wpuf-bg-orange-100 wpuf-p-4 wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed wpuf-border-transparent group-hover/hidden-fields:wpuf-border-green-400">
-                    <strong><?php esc_html_e( 'key', 'wp-user-frontend' ); ?></strong>: {{ field.name }} |
-                    <strong><?php esc_html_e( 'value', 'wp-user-frontend' ); ?></strong>: {{ field.meta_value }}
+                    :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-bg-green-50 wpuf-border-green-400' : 'wpuf-border-transparent'"
+                    class="wpuf-flex wpuf-rounded-t-lg wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed group-hover/hidden-fields:wpuf-border-green-400 group-hover/hidden-fields:wpuf-bg-green-50">
+                    <div class="wpuf-bg-orange-100 wpuf-m-4 wpuf-py-2 wpuf-px-4 wpuf-w-full wpuf-rounded-lg">
+                        <strong><?php esc_html_e( 'key', 'wp-user-frontend' ); ?></strong>: {{ field.name }} |
+                        <strong><?php esc_html_e( 'value', 'wp-user-frontend' ); ?></strong>: {{ field.meta_value }}
+                    </div>
                 </div>
                 <div
                     :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-opacity-100' : 'wpuf-opacity-0'"
-                    class="field-buttons wpuf-opacity-0 group-hover/hidden-fields:wpuf-opacity-100 wpuf-bg-green-600 wpuf-rounded-b-lg wpuf-flex wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out wpuf-flex wpuf-justify-around">
+                    class="field-buttons wpuf-opacity-0 group-hover/hidden-fields:wpuf-opacity-100 wpuf-bg-green-600 wpuf-rounded-b-lg wpuf-transition wpuf-duration-150 wpuf-ease-out wpuf-flex wpuf-items-center wpuf-justify-around">
                     <div class="wpuf-flex wpuf-justify-around wpuf-text-green-200">
                         <template v-if="!is_failed_to_validate(field.template)">
                             <span
@@ -519,7 +521,7 @@
             type="radio"
             :value="key"
             v-model="value"
-            class="checked:!wpuf-bg-primary checked:before:!wpuf-bg-transparent">
+            :class="builder_class_names('radio')">
             {{ option }}
     </div>
 
@@ -536,7 +538,7 @@
                     type="radio"
                     :value="key"
                     v-model="value"
-                    class="checked:!wpuf-bg-primary checked:before:!wpuf-bg-transparent">
+                    :class="builder_class_names('radio')">
                 {{ option }}
             </label>
         </div>
@@ -578,7 +580,7 @@
 
         <div
             v-if="showOptions"
-            class="wpuf-absolute wpuf-bg-white wpuf-border wpuf-border-gray-300 wpuf-rounded-lg wpuf-w-full wpuf-z-30">
+            class="wpuf-absolute wpuf-bg-white wpuf-border wpuf-border-gray-300 wpuf-rounded-lg wpuf-w-full wpuf-z-10 wpuf--mt-4">
             <ul>
                 <li
                     v-for="(option, key) in option_field.options"
@@ -681,7 +683,7 @@
                     type="radio"
                     :value="key"
                     v-model="selected"
-                    class="checked:!wpuf-bg-primary checked:before:!wpuf-bg-transparent">
+                    :class="builder_class_names('radio')">
                 {{ option }}
             </label>
         </div>
@@ -1319,7 +1321,7 @@
             <label
                 :value="val"
                 :checked="is_selected(val)"
-                class="wpuf-ml-3 wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">{{ label }}</label>
+                :class="builder_class_names('radio')">{{ label }}</label>
         </div>
     </div>
 

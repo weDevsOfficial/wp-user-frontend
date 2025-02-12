@@ -77,7 +77,7 @@ class Admin_Form_Builder_Ajax {
         );
     }
 
-    public function wpuf_get_post_taxonomies() {
+    public function wpuf_get_post_taxonomies_old() {
         $post_data = wp_unslash( $_POST );
         $post_type = $post_data['post_type'];
         $nonce     = $post_data['wpuf_form_builder_setting_nonce'];
@@ -117,6 +117,68 @@ class Admin_Form_Builder_Ajax {
                 }
 
                 $cat .= '</select></td>';
+            }
+        }
+
+        wp_send_json_success(
+            [
+                'success' => 'true',
+                'data'    => $cat,
+			]
+        );
+    }
+
+    public function wpuf_get_post_taxonomies() {
+        $post_data = wp_unslash( $_POST );
+        $post_type = $post_data['post_type'];
+        $nonce     = $post_data['wpuf_form_builder_setting_nonce'];
+
+        if ( isset( $nonce ) && ! wp_verify_nonce( $post_data['wpuf_form_builder_setting_nonce'], 'form-builder-setting-nonce' ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
+        if ( isset( $post_type ) && empty( $post_data['post_type'] ) ) {
+            wp_send_json_error( __( 'Invalid post type', 'wp-user-frontend' ) );
+        }
+
+        $post_taxonomies = get_object_taxonomies( $post_type, 'objects' );
+        $cat = '';
+        /*<select
+                    id="default_category"
+                    name="wpuf_settings[default_category][]"
+                    :class="['tax-list-selector', setting_class_names('dropdown')]"
+                    multiple
+                    >*/
+        foreach ( $post_taxonomies as $tax ) {
+            if ( $tax->hierarchical ) {
+                $args = [
+                    'hide_empty'   => false,
+                    'hierarchical' => true,
+                    'taxonomy'     => $tax->name,
+                ];
+
+                $cat .= '<div class="wpuf-my-4 wpuf-input-container"><div class="wpuf-flex wpuf-items-center"><label for="default_category" class="wpuf-text-sm wpuf-text-gray-700 wpuf-my-2">' . __( 'Default ', 'wp-user-frontend' ) . $post_type . ' ' . $tax->name . '</label></div>';
+
+                $cat .= '<select
+                    multiple
+                    id="default_category"
+                    name="wpuf_settings[default_' . $tax->name . '][]"
+                    :class="[\'tax-list-selector\', setting_class_names(\'dropdown\')]">';
+                $categories = get_terms( $args );
+
+                foreach ( $categories as $category ) {
+                    $cat .= '<option value="' . $category->term_id . '">' . $category->name . '</option>';
+                }
+
+                $cat .= '</select></div>';
             }
         }
 

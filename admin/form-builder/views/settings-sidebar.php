@@ -2,7 +2,7 @@
     <div class="wpuf-w-1/4 wpuf-min-h-screen wpuf-border-r wpuf-p-8">
         <?php
         $settings_titles = wpuf_get_post_form_builder_setting_menu_titles();
-        $settings_items = wpuf_get_post_form_builder_setting_menu_contents();
+        $settings_items  = wpuf_get_post_form_builder_setting_menu_contents();
         foreach ( $settings_titles as $key => $top_settings ) {
             $icon  = ! empty( $top_settings['icon'] ) ? $top_settings['icon'] : '';
             $label = ! empty( $top_settings['label'] ) ? $top_settings['label'] : '';
@@ -64,7 +64,8 @@
         <?php
         global $post;
 
-        $form_settings = wpuf_get_form_settings( $post->ID );
+        $form_settings  = wpuf_get_form_settings( $post->ID );
+        $form_post_type = ! empty( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
 
         foreach ( $settings_items as $settings_key => $settings_item ) {
             if ( ! empty( $settings_item['section'] ) ) {
@@ -78,7 +79,7 @@
                         <p class="wpuf-text-gray-500 wpuf-text-xs wpuf-leading-5"><?php echo $section['desc']; ?></p>
                     <?php
                     foreach ( $section['fields'] as $field_key => $field ) {
-                        wpuf_render_settings_field( $field_key, $field, $form_settings );
+                        wpuf_render_settings_field( $field_key, $field, $form_settings, $form_post_type );
                     }
                     ?>
                     </div>
@@ -92,7 +93,7 @@
                 >
                     <?php
                     foreach ( $settings_item as $field_key => $field ) {
-                        wpuf_render_settings_field( $field_key, $field, $form_settings );
+                        wpuf_render_settings_field( $field_key, $field, $form_settings, $form_post_type );
                     }
                     ?>
                 </div>
@@ -120,7 +121,13 @@
 </div>
 
 <?php
-function wpuf_render_settings_field( $field_key, $field, $form_settings ) {
+function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_type = 'post' ) {
+    if ( ( 'default_category' === $field_key ) && ( 'post' !== $post_type ) ) {
+        $field_key = 'default_' . $post_type . '_cat';
+    }
+
+    error_log( print_r( $field_key, true ) );
+
     $value = ! empty( $field['default'] ) ? $field['default'] : '';
     $value = ! empty( $field['value'] ) ? $field['value'] : $value;                           // default value
     $value = isset( $form_settings[ $field_key ] ) ? $form_settings[ $field_key ] : $value; // checking with isset because saved value can be empty string
@@ -195,10 +202,14 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings ) {
                     </div>
                 <?php } ?>
             </div>
-            <?php if ( 'select' === $field['type'] ) { ?>
+            <?php
+            if ( 'select' === $field['type'] ) {
+                $value_str = is_array( $value ) ? implode( ',', $value ) : $value;
+                ?>
                 <select
                     id="<?php echo $field_key; ?>"
                     name="wpuf_settings[<?php echo $field_key; ?>]"
+                    data-value="<?php echo $value_str; ?>"
                     :class="setting_class_names('dropdown')">
                     <?php
                     foreach ( $field['options'] as $index => $option ) {
@@ -207,10 +218,14 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings ) {
                     ?>
                 </select>
             <?php } ?>
-            <?php if ( 'multi-select' === $field['type'] ) { ?>
+            <?php
+            if ( 'multi-select' === $field['type'] ) {
+                $value_str = is_array( $value ) ? implode( ',', $value ) : $value;
+                ?>
                 <select
                     id="<?php echo $field_key; ?>"
                     name="wpuf_settings[<?php echo $field_key; ?>][]"
+                    data-value="<?php echo $value_str; ?>"
                     :class="['tax-list-selector', setting_class_names('dropdown')]"
                     multiple
                 >

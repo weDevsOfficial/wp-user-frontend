@@ -1083,6 +1083,8 @@
             hide_multistep_cond_fields();
         }
 
+        populate_default_categories('select#post_type');
+
         if ( post_permission.val() === 'guest_post' ) {
             guest_details.parents('.wpuf-input-container').show();
             $('#guest_email_verify').parents('.wpuf-input-container').show();
@@ -1235,27 +1237,7 @@
     });
 
     $('select#post_type').on('change', function() {
-        event.preventDefault();
-        var self = this;
-        var post_type =  $(this).val();
-        wp.ajax.send('wpuf_form_setting_post', {
-            data: {
-                post_type: post_type,
-                wpuf_form_builder_setting_nonce: wpuf_form_builder.nonce
-            },
-            success: function (response) {
-                const default_category = 'select#default_category';
-                $(default_category).parent('.wpuf-my-4.wpuf-input-container').remove();
-                $('select#post_type').parent('.wpuf-my-4.wpuf-input-container').after(response.data);
-
-                $(default_category).selectize({
-                    plugins: ['remove_button'],
-                });
-            },
-            error: function ( error ) {
-                console.log(error);
-            }
-        });
+        populate_default_categories(this);
     });
 
     function show_multistep_cond_fields() {
@@ -1304,6 +1286,41 @@
         $('#notification_edit_to').parents('.wpuf-input-container').hide();
         $('#notification_edit_subject').parents('.wpuf-input-container').hide();
         $('#notification_edit_body').parents('.wpuf-input-container').hide();
+    }
+
+    function populate_default_categories(obj) {
+        var post_type = $( obj ).val();
+        wp.ajax.send('wpuf_form_setting_post', {
+            data: {
+                post_type: post_type,
+                wpuf_form_builder_setting_nonce: wpuf_form_builder.nonce
+            },
+            success: function (response) {
+                const default_category = 'select#default_category';
+                let default_category_name = default_category;
+
+                if ( post_type !== 'post' ) {
+                    default_category_name = 'select#default_' + post_type + '_cat';
+                }
+
+                const value = $(default_category_name).data('value');
+
+                $(default_category).parent('.wpuf-my-4.wpuf-input-container').remove();
+                $('select#post_type').parent('.wpuf-my-4.wpuf-input-container').after(response.data);
+
+                if (value) {
+                    $(default_category).val(value.split(","));
+                }
+
+                $(default_category).selectize({
+                    plugins: ['remove_button'],
+                });
+
+            },
+            error: function ( error ) {
+                console.log(error);
+            }
+        });
     }
 
 })(jQuery);

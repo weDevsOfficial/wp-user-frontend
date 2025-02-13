@@ -151,12 +151,6 @@ class Admin_Form_Builder_Ajax {
 
         $post_taxonomies = get_object_taxonomies( $post_type, 'objects' );
         $cat = '';
-        /*<select
-                    id="default_category"
-                    name="wpuf_settings[default_category][]"
-                    :class="['tax-list-selector', setting_class_names('dropdown')]"
-                    multiple
-                    >*/
         foreach ( $post_taxonomies as $tax ) {
             if ( $tax->hierarchical ) {
                 $args = [

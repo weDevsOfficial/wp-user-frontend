@@ -9,10 +9,10 @@
             <h2>
                 <?php esc_html_e( 'Select a Template', 'wp-user-frontend' ); ?>
                 <small><?php
-                printf(
-                    wp_kses_post( __( 'Select from a pre-defined template or from a <a href="%s">blank form</a>', 'wp-user-frontend' ) ),
-                    esc_attr( $blank_form_url )
-                 ); ?></small>
+                    printf(
+                        wp_kses_post( __( 'Select from a pre-defined template or from a <a href="%s">blank form</a>', 'wp-user-frontend' ) ),
+                        esc_attr( $blank_form_url )
+                    ); ?></small>
             </h2>
         </header>
 
@@ -60,8 +60,8 @@
                         <li class="<?php echo esc_attr( $class ); ?>">
                             <h3><?php echo esc_html( $template->get_title() ); ?></h3>
                             <?php if ( $image ) {
-                            printf( '<img src="%s" alt="%s">', esc_attr( $image ), esc_attr( $title ) );
-                        } ?>
+                                printf( '<img src="%s" alt="%s">', esc_attr( $image ), esc_attr( $title ) );
+                            } ?>
 
                             <div class="form-create-overlay">
                                 <div class="title"><?php echo esc_html( $title ); ?></div>
@@ -73,7 +73,7 @@
                             </div>
                         </li>
 
-                    <?php
+                        <?php
                     }
 
                     $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
@@ -81,15 +81,15 @@
                         $class = 'template-inactive is-pro-template';
                         $image = $template->get_image();
                         $title = $template->get_title();
-                         ?>
+                        ?>
 
                         <li class="<?php echo esc_attr( $class ); ?>">
                             <h3>
                                 <?php
-                                    echo esc_html( $title );
-                                    if ( file_exists( $crown_icon ) ) {
-                                        printf( '<span class="pro-icon-title"> %s</span>', file_get_contents( $crown_icon ) );
-                                    }
+                                echo esc_html( $title );
+                                if ( file_exists( $crown_icon ) ) {
+                                    printf( '<span class="pro-icon-title"> %s</span>', file_get_contents( $crown_icon ) );
+                                }
                                 ?>
                             </h3>
                             <?php if ( $image ) {
@@ -102,10 +102,10 @@
                                    class="wpuf-button button-upgrade-to-pro"
                                    title="<?php echo esc_attr( $template->get_title() ); ?>" >
                                     <?php
-                                        esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' );
-                                        if ( file_exists( $crown_icon ) ) {
-                                            printf( '<span class="pro-icon"> %s</span>', file_get_contents( $crown_icon ) );
-                                        }
+                                    esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' );
+                                    if ( file_exists( $crown_icon ) ) {
+                                        printf( '<span class="pro-icon"> %s</span>', file_get_contents( $crown_icon ) );
+                                    }
                                     ?>
                                 </a>
                             </div>
@@ -129,41 +129,41 @@
 
 
 <script type="text/javascript">
-(function($) {
-    var popup = {
-        init: function() {
-            $('.wrap').on('click', 'a.page-title-action.add-form', this.openModal);
-            $('.wpuf-form-template-modal-backdrop, .wpuf-form-template-modal .close').on('click', $.proxy(this.closeModal, this) );
+    (function($) {
+        var popup = {
+            init: function() {
+                $('.wrap').on('click', 'a.page-title-action.add-form', this.openModal);
+                $('.wpuf-form-template-modal-backdrop, .wpuf-form-template-modal .close').on('click', $.proxy(this.closeModal, this) );
 
-            $('body').on( 'keydown', $.proxy(this.onEscapeKey, this) );
-        },
+                $('body').on( 'keydown', $.proxy(this.onEscapeKey, this) );
+            },
 
-        openModal: function(e) {
-            e.preventDefault();
-
-            $('.wpuf-form-template-modal').show();
-            $('.wpuf-form-template-modal-backdrop').show();
-        },
-
-        onEscapeKey: function(e) {
-            if ( 27 === e.keyCode ) {
-                this.closeModal(e);
-            }
-        },
-
-        closeModal: function(e) {
-            if ( typeof e !== 'undefined' ) {
+            openModal: function(e) {
                 e.preventDefault();
+
+                $('.wpuf-form-template-modal').show();
+                $('.wpuf-form-template-modal-backdrop').show();
+            },
+
+            onEscapeKey: function(e) {
+                if ( 27 === e.keyCode ) {
+                    this.closeModal(e);
+                }
+            },
+
+            closeModal: function(e) {
+                if ( typeof e !== 'undefined' ) {
+                    e.preventDefault();
+                }
+
+                $('.wpuf-form-template-modal').hide();
+                $('.wpuf-form-template-modal-backdrop').hide();
             }
+        };
 
-            $('.wpuf-form-template-modal').hide();
-            $('.wpuf-form-template-modal-backdrop').hide();
-        }
-    };
+        $(function() {
+            popup.init();
+        });
 
-    $(function() {
-        popup.init();
-    });
-
-})(jQuery);
+    })(jQuery);
 </script>

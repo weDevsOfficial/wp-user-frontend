@@ -2,7 +2,8 @@
  * Field template: Column Field
  */
 const mixins = [
-    wpuf_mixins.form_field_mixin
+    wpuf_mixins.form_field_mixin,
+    wpuf_mixins.add_form_field
 ];
 
 if (window.wpuf_forms_mixin_builder_stage) {
@@ -18,12 +19,6 @@ Vue.component('form-column_field', {
 
     mixins: mixins,
 
-    data() {
-        return{
-            columnClasses: ['column-1', 'column-2', 'column-3'] // don't edit class names
-        };
-    },
-
     mounted() {
         this.resizeColumns(this.field.columns);
 
@@ -32,12 +27,11 @@ Vue.component('form-column_field', {
             sortableFields = $(self.$el).find('.wpuf-column-inner-fields .wpuf-column-fields-sortable-list'),
             sortableTriggered = 1,
             columnFieldArea = $('.wpuf-field-columns'),
-            columnFields = $(self.$el).find(".wpuf-column-field-inner-columns .wpuf-column-inner-fields");
+            columnFields = $(self.$el).find(".wpuf-field-columns .wpuf-column-inner-fields");
 
         columnFieldArea.mouseenter(function() {
             self.resizeColumns(self.field.columns);
         });
-
 
         columnFieldArea.mouseleave(function() {
             columnFields.unbind( "mouseup" );
@@ -60,13 +54,13 @@ Vue.component('form-column_field', {
                     var payload = {
                         toIndex: parseInt($(ui.item).index()),
                         field_template: data.formField,
-                        to_column: $(this).parent().attr('class').split(' ')[0]
+                        to_column: $(this).parent().data('column')
                     };
 
                     self.add_column_inner_field(payload);
 
                     // remove button from stage
-                    $(this).find('.button.ui-draggable.ui-draggable-handle').remove();
+                    $(this).find('.wpuf-field-button').remove();
                 }
             },
             update: function (e, ui) {
@@ -120,6 +114,21 @@ Vue.component('form-column_field', {
         field_settings: function () {
             return this.$store.state.field_settings;
         },
+
+        action_button_classes: function() {
+            return 'hover:wpuf-cursor-pointer hover:wpuf-text-white';
+        },
+
+        columnClasses: function() {
+            var columns_count = parseInt( this.field.columns );
+            var columns = [];
+
+            for (var i = 1; i <= columns_count; i++) {
+                columns.push('column-' + i);
+            }
+
+            return columns;
+        }
     },
 
     methods: {
@@ -127,7 +136,7 @@ Vue.component('form-column_field', {
             var template = field.template;
 
             if (this.field_settings[template]) {
-                if (this.is_pro_feature(template)) {
+                if (this.is_pro_preview(template)) {
                     return false;
                 }
 

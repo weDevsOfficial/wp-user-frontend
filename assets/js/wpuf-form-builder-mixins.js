@@ -21,8 +21,16 @@ wpuf_mixins.add_form_field = {
             // check if these are already inserted
             if ( this.isSingleInstance( field_template ) && this.containsField( field_template ) ) {
                 Swal.fire({
-                    title: "Oops...",
-                    text: "You already have this field in the form"
+                    title: '<span class="wpuf-text-orange-400">Oops...</span>',
+                    html: '<p class="wpuf-text-gray-500 wpuf-text-xl wpuf-m-0 wpuf-p-0">You already have this field in the form</p>',
+                    imageUrl: wpuf_form_builder.asset_url + '/images/oops.svg',
+                    showCloseButton: true,
+                    padding: '1rem',
+                    width: '35rem',
+                    customClass: {
+                        confirmButton: "!wpuf-flex focus:!wpuf-shadow-none !wpuf-bg-primary",
+                        closeButton: "wpuf-absolute"
+                    },
                 });
                 return;
             }
@@ -48,6 +56,18 @@ wpuf_mixins.add_form_field = {
             // add new form element
             this.$store.commit('add_form_field_element', payload);
         },
+
+        is_pro_preview: function (template) {
+            var is_pro_active = wpuf_form_builder.is_pro_active === '1';
+
+            return (!is_pro_active && this.field_settings[template] && this.field_settings[template].pro_feature);
+        },
+    },
+
+    computed: {
+        action_button_classes: function() {
+            return 'wpuf-p-2 hover:wpuf-cursor-pointer hover:wpuf-text-white';
+        }
     },
 };
 
@@ -59,7 +79,7 @@ wpuf_mixins.form_field_mixin = {
     props: {
         field: {
             type: Object,
-            default: {}
+            default: () => ({ key: 'value' })
         }
     },
 
@@ -74,7 +94,7 @@ wpuf_mixins.form_field_mixin = {
             }
 
             return !!Object.keys(this.field.options).length;
-        }
+        },
     },
 
     methods: {
@@ -83,6 +103,38 @@ wpuf_mixins.form_field_mixin = {
                 type_class,
                 this.required_class(),
                 'wpuf_' + this.field.name + '_' + this.form_id
+            ];
+        },
+
+        builder_class_names: function(type_class) {
+            var commonClasses = '';
+
+            switch (type_class) {
+                case 'upload_btn':
+                    commonClasses = 'file-selector  wpuf-rounded-md wpuf-btn-secondary';
+                    break;
+
+                case 'radio':
+                    commonClasses = '!wpuf-mt-0 wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900 checked:focus:!wpuf-bg-primary checked:hover:!wpuf-bg-primary checked:before:!wpuf-bg-white checked:!wpuf-bg-primary';
+                    break;
+
+                case 'checkbox':
+                    commonClasses = 'wpuf-h-4 wpuf-w-4 wpuf-rounded wpuf-border-gray-300 !wpuf-mt-0.5 checked:focus:!wpuf-bg-primary checked:hover:wpuf-bg-primary checked:!wpuf-bg-primary before:!wpuf-content-none';
+                    break;
+
+                case 'dropdown':
+                    commonClasses = 'wpuf-block wpuf-w-full wpuf-min-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300';
+                    break;
+
+                default:
+                    commonClasses = 'wpuf-block wpuf-min-w-full wpuf-rounded-md wpuf-py-1.5 wpuf-text-gray-900 !wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300 wpuf-max-w-full';
+            }
+
+            return [
+                type_class,
+                this.required_class(),
+                'wpuf_' + this.field.name + '_' + this.form_id,
+                commonClasses
             ];
         },
 
@@ -112,6 +164,14 @@ Vue.mixin({
     computed: {
         i18n: function () {
             return wpuf_form_builder.i18n;
+        },
+
+        is_pro_active: function () {
+            return wpuf_form_builder.is_pro_active === '1';
+        },
+
+        pro_link: function () {
+            return wpuf_form_builder.pro_link;
         }
     },
 
@@ -266,12 +326,12 @@ wpuf_mixins.option_field_mixin = {
     props: {
         option_field: {
             type: Object,
-            default: {}
+            default: () => ({ key: 'value' })
         },
 
         editing_form_field: {
             type: Object,
-            default: {}
+            default: () => ({ key: 'value' })
         }
     },
 

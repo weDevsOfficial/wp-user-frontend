@@ -1,13 +1,40 @@
 <div v-if="met_dependencies" class="panel-field-opt panel-field-opt-radio">
-    <label v-if="option_field.title">
-        {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
-    </label>
+    <div class="wpuf-flex">
+        <label
+            class="wpuf-option-field-title wpuf-font-sm wpuf-text-gray-900">{{ option_field.title }}</label>
+        <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
+    </div>
+    <div
+        v-if="!option_field.inline"
+        class="wpuf-flex wpuf-items-center wpuf-gap-x-2 wpuf-m-2"
+        v-for="(option, key) in option_field.options">
+        <label
+            class="wpuf-block text-sm/6 wpuf-font-medium wpuf-text-gray-900">
+        </label>
+        <input
+            type="radio"
+            :value="key"
+            v-model="value"
+            :class="builder_class_names('radio')">
+            {{ option }}
+    </div>
 
-    <ul :class="[option_field.inline ? 'list-inline' : '']">
-        <li v-for="(option, key) in option_field.options">
-            <label>
-                <input type="radio" :value="key" v-model="value"> {{ option }}
+    <div
+        v-if="option_field.inline"
+        class="wpuf-mt-2 wpuf-flex">
+        <div
+            v-for="(option, key, index) in option_field.options"
+            class="wpuf-items-center">
+            <label
+                :class="index !== 0 ? 'wpuf-ml-2' : ''"
+                class="wpuf-block text-sm/6 wpuf-font-medium wpuf-text-gray-900">
+                <input
+                    type="radio"
+                    :value="key"
+                    v-model="value"
+                    :class="builder_class_names('radio')">
+                {{ option }}
             </label>
-        </li>
-    </ul>
+        </div>
+    </div>
 </div>

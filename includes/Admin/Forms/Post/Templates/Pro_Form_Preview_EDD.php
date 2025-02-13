@@ -27,7 +27,7 @@ class Pro_Form_Preview_EDD {
 
     public function __construct() {
         $this->title    = __( 'EDD Download', 'wp-user-frontend' );
-        $this->image    = WPUF_ASSET_URI . '/images/templates/edd.png';
+        $this->image    = WPUF_ASSET_URI . '/images/templates/edd.svg';
         $this->pro_icon = WPUF_ASSET_URI . '/images/templates/crown.svg';
     }
 

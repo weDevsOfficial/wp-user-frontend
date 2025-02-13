@@ -5,6 +5,13 @@ Vue.component('field-select', {
         wpuf_mixins.option_field_mixin
     ],
 
+    data: function () {
+        return {
+            showOptions: false,
+            selectedOption: 'Select an option',
+        };
+    },
+
     computed: {
         value: {
             get: function () {
@@ -18,6 +25,6 @@ Vue.component('field-select', {
                     value: value
                 });
             }
-        }
+        },
     }
 });

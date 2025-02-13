@@ -155,8 +155,6 @@ class Admin_Form {
             wp_safe_redirect( $add_new_page_url );
         }
         if ( ( 'edit' === $_GET['action'] ) && ! empty( $_GET['id'] ) ) {
-            add_action( 'wpuf-form-builder-tabs-post', [ $this, 'add_primary_tabs' ] );
-            add_action( 'wpuf-form-builder-tab-contents-post', [ $this, 'add_primary_tab_contents' ] );
             add_action( 'wpuf-form-builder-settings-tabs-post', [ $this, 'add_settings_tabs' ] );
             add_action( 'wpuf-form-builder-settings-tab-contents-post', [ $this, 'add_settings_tab_contents' ] );
             add_filter( 'wpuf_form_fields_section_before', [ $this, 'add_post_field_section' ] );
@@ -196,27 +194,27 @@ class Admin_Form {
         $form_settings = wpuf_get_form_settings( $post->ID );
         ?>
 
-        <div id="wpuf-metabox-settings" class="group">
+        <div v-show="active_settings_tab === '#wpuf-metabox-settings'" id="wpuf-metabox-settings" class="group">
             <?php include_once WPUF_ROOT . '/admin/html/form-settings-post.php'; ?>
         </div>
 
-        <div id="wpuf-metabox-settings-update" class="group">
+        <div v-show="active_settings_tab === '#wpuf-metabox-settings-update'" id="wpuf-metabox-settings-update" class="group">
             <?php include_once WPUF_ROOT . '/admin/html/form-settings-post-edit.php'; ?>
         </div>
 
-        <div id="wpuf-metabox-submission-restriction" class="group">
+        <div v-show="active_settings_tab === '#wpuf-metabox-submission-restriction'" id="wpuf-metabox-submission-restriction" class="group">
             <?php include_once WPUF_ROOT . '/admin/html/form-submission-restriction.php'; ?>
         </div>
 
-        <div id="wpuf-metabox-settings-payment" class="group">
+        <div v-show="active_settings_tab === '#wpuf-metabox-settings-payment'" id="wpuf-metabox-settings-payment" class="group">
             <?php include_once WPUF_ROOT . '/admin/html/form-settings-payment.php'; ?>
         </div>
 
-        <div id="wpuf-metabox-settings-display" class="group">
+        <div v-show="active_settings_tab === '#wpuf-metabox-settings-display'" id="wpuf-metabox-settings-display" class="group">
             <?php include_once WPUF_ROOT . '/admin/html/form-settings-display.php'; ?>
         </div>
 
-        <div id="wpuf-metabox-post_expiration" class="group wpuf-metabox-post_expiration">
+        <div v-show="active_settings_tab === '#wpuf-metabox-post_expiration'" id="wpuf-metabox-post_expiration" class="group wpuf-metabox-post_expiration wpuf-mt-4">
             <?php wpuf()->admin->admin_form->form_post_expiration(); ?>
         </div>
 
@@ -234,56 +232,51 @@ class Admin_Form {
      */
     public function add_settings_tabs() {
         ?>
+<!--        <a href="#wpuf-metabox-settings"
+            :class="active_settings_tab === '#wpuf-metabox-settings' ? 'nav-tab-active' : ''"
+            class="nav-tab"><?php // esc_html_e( 'Post Settings', 'wp-user-frontend' ); ?></a>
+        <a href="#wpuf-metabox-settings-update"
+            :class="active_settings_tab === '#wpuf-metabox-settings-update' ? 'nav-tab-active' : ''"
+            class="nav-tab"><?php // esc_html_e( 'Edit Settings', 'wp-user-frontend' ); ?></a>
+        <a href="#wpuf-metabox-submission-restriction"
+            :class="active_settings_tab === '#wpuf-metabox-submission-restriction' ? 'nav-tab-active' : ''"
+            class="nav-tab"><?php // esc_html_e( 'Submission Restriction', 'wp-user-frontend' ); ?></a>
+        <a href="#wpuf-metabox-settings-payment"
+            :class="active_settings_tab === '#wpuf-metabox-settings-payment' ? 'nav-tab-active' : ''"
+            class="nav-tab"><?php // esc_html_e( 'Payment Settings', 'wp-user-frontend' ); ?></a>
+        <a href="#wpuf-metabox-settings-display"
+            :class="active_settings_tab === '#wpuf-metabox-settings-display' ? 'nav-tab-active' : ''"
+            class="nav-tab"><?php // esc_html_e( 'Display Settings', 'wp-user-frontend' ); ?></a>
+        <a href="#wpuf-metabox-post_expiration"
+            :class="active_settings_tab === '#wpuf-metabox-post_expiration' ? 'nav-tab-active' : ''"
+            class="nav-tab"><?php // esc_html_e( 'Post Expiration', 'wp-user-frontend' ); ?></a>-->
 
-        <a href="#wpuf-metabox-settings" class="nav-tab"><?php esc_html_e( 'Post Settings', 'wp-user-frontend' ); ?></a>
-        <a href="#wpuf-metabox-settings-update" class="nav-tab"><?php esc_html_e( 'Edit Settings',
-                'wp-user-frontend' ); ?></a>
-        <a href="#wpuf-metabox-submission-restriction" class="nav-tab"><?php esc_html_e( 'Submission Restriction',
-                'wp-user-frontend' ); ?></a>
-        <a href="#wpuf-metabox-settings-payment" class="nav-tab"><?php esc_html_e( 'Payment Settings',
-                'wp-user-frontend' ); ?></a>
-        <a href="#wpuf-metabox-settings-display" class="nav-tab"><?php esc_html_e( 'Display Settings',
-                'wp-user-frontend' ); ?></a>
-        <a href="#wpuf-metabox-post_expiration" class="nav-tab"><?php esc_html_e( 'Post Expiration',
-                'wp-user-frontend' ); ?></a>
-
-        <?php do_action( 'wpuf_post_form_tab' ); ?>
-
-        <?php
-    }
-
-    /**
-     * Additional primary tabs
-     *
-     * @since 2.5
-     *
-     * @return void
-     */
-    public function add_primary_tabs() {
-        ?>
-
-        <a href="#wpuf-form-builder-notification" class="nav-tab">
-            <?php esc_html_e( 'Notification', 'wp-user-frontend' ); ?>
-        </a>
-
-        <?php
-    }
-
-    /**
-     * Add primary tab contents
-     *
-     * @since 2.5
-     *
-     * @return void
-     */
-    public function add_primary_tab_contents() {
-        ?>
-
-        <div id="wpuf-form-builder-notification" class="group">
-            <?php do_action( 'wpuf_form_settings_post_notification' ); ?>
-        </div><!-- #wpuf-form-builder-notification -->
+        <div class="wpuf-mb-4 wpuf-flex wpuf-justify-between">
+            <h2 class="wpuf-text-base wpuf-text-gray-600 wpuf-mb-2 wpuf-flex wpuf-items-center">
+                <svg class="wpuf-size-4 wpuf-mr-2 wpuf-stroke-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
+                </svg>
+                <?php esc_html_e( 'Post Settings', 'wp-user-frontend' ); ?>
+            </h2>
+            <i
+                class="fa fa-angle-down !wpuf-font-bold !wpuf-text-xl !wpuf-leading-none wpuf-text-gray-600"
+            ></i>
+        </div>
+        <div class="wpuf-mb-4">
+            <ul class="wpuf-list-none wpuf-space-y-2">
+                <li class="wpuf-group/sidebar-item wpuf-mx-2 wpuf-py-2 wpuf-px-3 hover:wpuf-bg-primary hover:wpuf-cursor-pointer wpuf-rounded-lg wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out wpuf-flex wpuf-items-center">
+                    <svg class="wpuf-size-4 wpuf-stroke-gray-600 group-hover/sidebar-item:wpuf-stroke-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
+                    </svg>
+                    <a href="#wpuf-metabox-settings" class="wpuf-ml-2 wpuf-text-sm wpuf-text-gray-600 group-hover/sidebar-item:wpuf-text-white wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out focus:wpuf-shadow-none focus:wpuf-outline-none wpuf-w-full">
+                        <?php esc_html_e( 'General', 'wp-user-frontend' ); ?>
+                    </a>
+                </li>
+            </ul>
+        </div>
 
         <?php
+        do_action( 'wpuf_post_form_tab' );
     }
 
     /**

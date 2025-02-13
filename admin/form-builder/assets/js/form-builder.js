@@ -1076,6 +1076,7 @@
         const notification_new = $('#notification_new');
         const notification_edit = $('#notification_edit');
         const redirect_to = $('#redirect_to');
+        const edit_redirect_to = $('#edit_redirect_to');
 
         // initial show/hide fields when page loads
         if ( multistep.is(':checked') ) {
@@ -1086,7 +1087,9 @@
 
         populate_default_categories('select#post_type');
         hide_redirect_to_options();
+        hide_redirect_to_options_post_update();
         show_conditional_redirect_to_options( redirect_to );
+        show_conditional_redirect_to_options_post_update( edit_redirect_to );
 
         if ( post_permission.val() === 'guest_post' ) {
             guest_details.parents('.wpuf-input-container').show();
@@ -1095,8 +1098,11 @@
             $('#roles').parents('.wpuf-input-container').hide();
             $('#message_restrict').parents('.wpuf-input-container').hide();
         } else if ( post_permission.val() === 'role_base' ) {
-            $('#roles').parents('.wpuf-input-container').show();
+            const roles = '#roles';
+            $(roles).parents('.wpuf-input-container').show();
             $('#message_restrict').parents('.wpuf-input-container').show();
+
+            populate_default_roles();
 
             guest_details.parents('.wpuf-input-container').hide();
             $('#guest_email_verify').parents('.wpuf-input-container').hide();
@@ -1152,6 +1158,10 @@
             show_conditional_redirect_to_options( $(this) );
         });
 
+        edit_redirect_to.on('change', function() {
+            show_conditional_redirect_to_options_post_update( $(this) );
+        });
+
         multistep.on('change', function() {
             if ( $(this).is(':checked') ) {
                 show_multistep_cond_fields();
@@ -1170,6 +1180,8 @@
             } else if ( $(this).val() === 'role_base' ) {
                 $('#roles').parents('.wpuf-input-container').show();
                 $('#message_restrict').parents('.wpuf-input-container').show();
+
+                populate_default_roles();
 
                 guest_details.parents('.wpuf-input-container').hide();
                 $('#guest_email_verify').parents('.wpuf-input-container').hide();
@@ -1234,6 +1246,7 @@
                 hide_update_post_notification();
             }
         });
+
     });
 
     // Mobile view menu toggle
@@ -1301,6 +1314,12 @@
         $('#url').parents('.wpuf-input-container').hide();
     }
 
+    function hide_redirect_to_options_post_update() {
+        $('#update_message').parents('.wpuf-input-container').hide();
+        $('#edit_page_id').parents('.wpuf-input-container').hide();
+        $('#edit_url').parents('.wpuf-input-container').hide();
+    }
+
     function populate_default_categories(obj) {
         var post_type = $( obj ).val();
         wp.ajax.send('wpuf_form_setting_post', {
@@ -1321,14 +1340,45 @@
                 $(default_category).parent('.wpuf-my-4.wpuf-input-container').remove();
                 $('select#post_type').parent('.wpuf-my-4.wpuf-input-container').after(response.data);
 
-                if (value) {
+                if (value && ( typeof value === 'string' )) {
                     $(default_category).val(value.split(","));
+                } else {
+                    $(default_category).val(value);
                 }
 
                 $(default_category).selectize({
                     plugins: ['remove_button'],
                 });
 
+            },
+            error: function ( error ) {
+                console.log(error);
+            }
+        });
+    }
+
+    function populate_default_roles() {
+        wp.ajax.send('wpuf_form_roles', {
+            data: {
+                wpuf_form_builder_setting_nonce: wpuf_form_builder.nonce
+            },
+            success: function (response) {
+                const roles = 'select#roles';
+
+                const value = $(roles).data('value');
+
+                $(roles).parent('.wpuf-my-4.wpuf-input-container').remove();
+                $('select#post_permission').parent('.wpuf-my-4.wpuf-input-container').after(response.data);
+
+                if (value && ( typeof value === 'string' )) {
+                    $(roles).val(value.split(","));
+                } else {
+                    $(roles).val(value);
+                }
+
+                $(roles).selectize({
+                    plugins: ['remove_button'],
+                });
             },
             error: function ( error ) {
                 console.log(error);
@@ -1350,6 +1400,25 @@
 
             case 'url':
                 $( '#url' ).parents('.wpuf-input-container').show();
+                break;
+
+        }
+    }
+
+    function show_conditional_redirect_to_options_post_update(redirect_to) {
+        hide_redirect_to_options_post_update();
+
+        switch ( redirect_to.val() ) {
+            case 'same':
+                $('#update_message').parents('.wpuf-input-container').show();
+                break;
+
+            case 'page':
+                $( '#edit_page_id' ).parents('.wpuf-input-container').show();
+                break;
+
+            case 'url':
+                $( '#edit_url' ).parents('.wpuf-input-container').show();
                 break;
 
         }

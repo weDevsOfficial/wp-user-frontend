@@ -71,10 +71,9 @@
 }
 
 .selectize-control.multi .selectize-input [data-value] {
-    background: #15803d !important;
+    background: #059669 !important;
     border: 1px solid transparent !important;
 }
-
 ul.wpuf-form li.field-size-small .wpuf-fields {
     width: 30%;
 }

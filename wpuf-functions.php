@@ -4937,7 +4937,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                         'help_text' => __( 'Choose the default category for the post', 'wp-user-frontend' ),
                         'options'   => wpuf_get_terms(),
                     ],
-                    'redirect_to' => [
+                    'redirect_to'                => [
                         'label'     => __( 'Successful Redirection', 'wp-user-frontend' ),
                         'type'      => 'select',
                         'help_text' => __(
@@ -4950,20 +4950,20 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                             'url'  => __( 'To a custom URL', 'wp-user-frontend' ),
                         ],
                     ],
-                    'message'   => [
+                    'message'                    => [
                         'label'   => __( 'Message to show', 'wp-user-frontend' ),
                         'type'    => 'textarea',
                         'default' => __( 'Post saved', 'wp-user-frontend' ),
                     ],
-                    'page_id'                => [
+                    'page_id'                    => [
                         'label'     => __( 'Page', 'wp-user-frontend' ),
                         'type'      => 'select',
                         'options'   => $pages,
                         'help_text' => __( 'Choose the default category for the post', 'wp-user-frontend' ),
                     ],
-                    'url'                => [
-                        'label'     => __( 'Custom URL', 'wp-user-frontend' ),
-                        'type'      => 'text',
+                    'url'                        => [
+                        'label' => __( 'Custom URL', 'wp-user-frontend' ),
+                        'type'  => 'text',
                     ],
                     'post_status'                => [
                         'label'     => __( 'Post Submission Status', 'wp-user-frontend' ),
@@ -5023,10 +5023,10 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                         ),
                     ],
                     'multistep_progressbar_type' => [
-                        'label'      => __( 'Multistep Progressbar Type', 'wp-user-frontend' ),
-                        'type'       => 'select',
-                        'help_text'  => __( 'Choose how you want the progressbar', 'wp-user-frontend' ),
-                        'options'    => [
+                        'label'     => __( 'Multistep Progressbar Type', 'wp-user-frontend' ),
+                        'type'      => 'select',
+                        'help_text' => __( 'Choose how you want the progressbar', 'wp-user-frontend' ),
+                        'options'   => [
                             'progressive'  => __( 'Progressbar', 'wp-user-frontend' ),
                             'step_by_step' => __( 'Step by Step', 'wp-user-frontend' ),
                         ],
@@ -5069,11 +5069,6 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                             '_nochange' => __( 'No Change', 'wp-user-frontend' ),
                         ],
                     ],
-                    'update_message'   => [
-                        'label'   => __( 'Post Update Message', 'wp-user-frontend' ),
-                        'type'    => 'textarea',
-                        'default' => 'Post has been updated successfully.<a target="_blank" href="{link}">View post</a>',
-                    ],
                     'edit_redirect_to' => [
                         'label'     => __( 'Successful Redirection', 'wp-user-frontend' ),
                         'type'      => 'select',
@@ -5086,6 +5081,26 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                             'page' => __( 'To a page', 'wp-user-frontend' ),
                             'url'  => __( 'To a custom URL', 'wp-user-frontend' ),
                         ],
+                    ],
+                    'update_message'   => [
+                        'label'   => __( 'Post Update Message', 'wp-user-frontend' ),
+                        'type'    => 'textarea',
+                        'default' => sprintf(
+                            __(
+                                'Post has been updated successfully. <a target="_blank" href="%s">View post</a>',
+                                'wp-user-frontend'
+                            ), '{link}'
+                        ),
+                    ],
+                    'edit_page_id'     => [
+                        'label'     => __( 'Page', 'wp-user-frontend' ),
+                        'type'      => 'select',
+                        'options'   => $pages,
+                        'help_text' => __( 'Choose the default category for the post', 'wp-user-frontend' ),
+                    ],
+                    'edit_url'         => [
+                        'label' => __( 'Custom URL', 'wp-user-frontend' ),
+                        'type'  => 'text',
                     ],
                     'lock_edit_post'   => [
                         'label'         => __( 'Lock User Editing After', 'wp-user-frontend' ),
@@ -5154,10 +5169,13 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                         'options'         => wpuf_get_user_roles(),
                         'always_selected' => [ 'administrator' ],
                     ],
-                    'message_restrict' => [
-                        'label'           => __( 'Unauthorized Message', 'wp-user-frontend' ),
-                        'type'            => 'textarea',
-                        'help_text'       => __( 'Not logged in users will see this message. You may use {login}, {register} for link', 'wp-user-frontend' )
+                    'message_restrict'   => [
+                        'label'     => __( 'Unauthorized Message', 'wp-user-frontend' ),
+                        'type'      => 'textarea',
+                        'help_text' => __(
+                            'Not logged in users will see this message. You may use {login}, {register} for link',
+                            'wp-user-frontend'
+                        ),
                     ],
                 ],
             ],

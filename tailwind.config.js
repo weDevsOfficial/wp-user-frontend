@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const colors = require('tailwindcss/colors')
+
 module.exports = {
     prefix: 'wpuf-',
     content: [
@@ -12,8 +14,8 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                primary: '#16a34a',
-                primaryHover: '#22c55e',
+                primary: colors.emerald[600],
+                primaryHover: colors.emerald[500],
             }
         },
     },

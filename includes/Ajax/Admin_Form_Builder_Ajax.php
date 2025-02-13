@@ -128,7 +128,7 @@ class Admin_Form_Builder_Ajax {
         );
     }
 
-    public function wpuf_get_post_taxonomies() {
+    public function get_post_taxonomies() {
         $post_data = wp_unslash( $_POST );
         $post_type = $post_data['post_type'];
         $nonce     = $post_data['wpuf_form_builder_setting_nonce'];
@@ -181,6 +181,31 @@ class Admin_Form_Builder_Ajax {
                 'success' => 'true',
                 'data'    => $cat,
 			]
+        );
+    }
+
+    public function get_roles() {
+        $roles = wpuf_get_user_roles();
+
+        $html = '<div class="wpuf-my-4 wpuf-input-container"><div class="wpuf-flex wpuf-items-center"><label for="default_category" class="wpuf-text-sm wpuf-text-gray-700 wpuf-my-2">' . __( 'Choose who can submit post ', 'wp-user-frontend' ) . '</label></div>';
+        $html .= '<select
+                    multiple
+                    id="roles"
+                    data-roles="roles"
+                    name="wpuf_settings[roles][]"
+                    :class="setting_class_names(\'dropdown\')">';
+
+        foreach ( $roles as $key => $role ) {
+            $html .= '<option value="' . $key . '">' . $role . '</option>';
+        }
+
+        $html .= '</select>';
+
+        wp_send_json_success(
+            [
+                'success' => 'true',
+                'data'    => $html,
+            ]
         );
     }
 }

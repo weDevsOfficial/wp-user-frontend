@@ -126,8 +126,6 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
         $field_key = 'default_' . $post_type . '_cat';
     }
 
-    error_log( print_r( $field_key, true ) );
-
     $value = ! empty( $field['default'] ) ? $field['default'] : '';
     $value = ! empty( $field['value'] ) ? $field['value'] : $value;                           // default value
     $value = isset( $form_settings[ $field_key ] ) ? $form_settings[ $field_key ] : $value; // checking with isset because saved value can be empty string
@@ -226,7 +224,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                     id="<?php echo $field_key; ?>"
                     name="wpuf_settings[<?php echo $field_key; ?>][]"
                     data-value="<?php echo $value_str; ?>"
-                    :class="['tax-list-selector', setting_class_names('dropdown')]"
+                    :class="setting_class_names('dropdown')"
                     multiple
                 >
                     <?php

@@ -2179,7 +2179,7 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 .wpuf-btn-primary {
   border-radius: 0.375rem;
   --tw-bg-opacity: 1;
-  background-color: rgb(22 163 74 / var(--tw-bg-opacity));
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity));
   padding-left: 0.875rem;
   padding-right: 0.875rem;
   padding-top: 0.5rem;
@@ -2261,7 +2261,7 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-input-checkbox:checked {
   background-color: transparent;
-  --tw-shadow-color: #16a34a;
+  --tw-shadow-color: #059669;
   --tw-shadow: var(--tw-shadow-colored);
 }
 
@@ -3462,7 +3462,7 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-border-primary {
   --tw-border-opacity: 1;
-  border-color: rgb(22 163 74 / var(--tw-border-opacity));
+  border-color: rgb(5 150 105 / var(--tw-border-opacity));
 }
 
 .wpuf-border-red-500 {
@@ -3486,7 +3486,7 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .\!wpuf-bg-primary {
   --tw-bg-opacity: 1 !important;
-  background-color: rgb(22 163 74 / var(--tw-bg-opacity)) !important;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity)) !important;
 }
 
 .\!wpuf-bg-white {
@@ -3579,7 +3579,7 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-bg-primary {
   --tw-bg-opacity: 1;
-  background-color: rgb(22 163 74 / var(--tw-bg-opacity));
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity));
 }
 
 .wpuf-bg-red-100 {
@@ -3636,7 +3636,7 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 }
 
 .\!wpuf-stroke-primary {
-  stroke: #16a34a !important;
+  stroke: #059669 !important;
 }
 
 .wpuf-stroke-gray-400 {
@@ -4099,7 +4099,7 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-text-primary {
   --tw-text-opacity: 1;
-  color: rgb(22 163 74 / var(--tw-text-opacity));
+  color: rgb(5 150 105 / var(--tw-text-opacity));
 }
 
 .wpuf-text-red-500 {
@@ -4213,7 +4213,7 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 }
 
 .wpuf-shadow-primary {
-  --tw-shadow-color: #16a34a;
+  --tw-shadow-color: #059669;
   --tw-shadow: var(--tw-shadow-colored);
 }
 
@@ -4397,7 +4397,7 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 }
 
 .selectize-control.multi .selectize-input [data-value] {
-  background: #15803d !important;
+  background: #059669 !important;
   border: 1px solid transparent !important;
 }
 
@@ -4689,12 +4689,12 @@ table.option-field-option-chooser tbody tr td {
 
 .checked\:\!wpuf-bg-primary:checked {
   --tw-bg-opacity: 1 !important;
-  background-color: rgb(22 163 74 / var(--tw-bg-opacity)) !important;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity)) !important;
 }
 
 .checked\:wpuf-bg-primary:checked {
   --tw-bg-opacity: 1;
-  background-color: rgb(22 163 74 / var(--tw-bg-opacity));
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity));
 }
 
 .checked\:before\:\!wpuf-bg-transparent:checked::before {
@@ -4749,7 +4749,7 @@ table.option-field-option-chooser tbody tr td {
 
 .hover\:wpuf-border-primary:hover {
   --tw-border-opacity: 1;
-  border-color: rgb(22 163 74 / var(--tw-border-opacity));
+  border-color: rgb(5 150 105 / var(--tw-border-opacity));
 }
 
 .hover\:wpuf-border-red-700:hover {
@@ -4809,7 +4809,7 @@ table.option-field-option-chooser tbody tr td {
 
 .hover\:wpuf-bg-primary:hover {
   --tw-bg-opacity: 1;
-  background-color: rgb(22 163 74 / var(--tw-bg-opacity));
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity));
 }
 
 .hover\:wpuf-bg-red-500:hover {
@@ -4910,12 +4910,12 @@ table.option-field-option-chooser tbody tr td {
 
 .checked\:hover\:\!wpuf-bg-primary:hover:checked {
   --tw-bg-opacity: 1 !important;
-  background-color: rgb(22 163 74 / var(--tw-bg-opacity)) !important;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity)) !important;
 }
 
 .checked\:hover\:wpuf-bg-primary:hover:checked {
   --tw-bg-opacity: 1;
-  background-color: rgb(22 163 74 / var(--tw-bg-opacity));
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity));
 }
 
 .focus\:wpuf-z-20:focus {
@@ -5009,7 +5009,7 @@ table.option-field-option-chooser tbody tr td {
 
 .checked\:focus\:\!wpuf-bg-primary:focus:checked {
   --tw-bg-opacity: 1 !important;
-  background-color: rgb(22 163 74 / var(--tw-bg-opacity)) !important;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity)) !important;
 }
 
 .focus-visible\:wpuf-outline:focus-visible {
@@ -5094,12 +5094,12 @@ table.option-field-option-chooser tbody tr td {
 
 .wpuf-peer:checked ~ .peer-checked\:wpuf-border-primary {
   --tw-border-opacity: 1;
-  border-color: rgb(22 163 74 / var(--tw-border-opacity));
+  border-color: rgb(5 150 105 / var(--tw-border-opacity));
 }
 
 .wpuf-peer:checked ~ .peer-checked\:wpuf-bg-primary {
   --tw-bg-opacity: 1;
-  background-color: rgb(22 163 74 / var(--tw-bg-opacity));
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity));
 }
 
 .wpuf-peer:checked ~ .peer-checked\:wpuf-opacity-100 {

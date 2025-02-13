@@ -1075,6 +1075,7 @@
         const fallback_ppp_enable = $('#fallback_ppp_enable');
         const notification_new = $('#notification_new');
         const notification_edit = $('#notification_edit');
+        const redirect_to = $('#redirect_to');
 
         // initial show/hide fields when page loads
         if ( multistep.is(':checked') ) {
@@ -1084,6 +1085,8 @@
         }
 
         populate_default_categories('select#post_type');
+        hide_redirect_to_options();
+        show_conditional_redirect_to_options( redirect_to );
 
         if ( post_permission.val() === 'guest_post' ) {
             guest_details.parents('.wpuf-input-container').show();
@@ -1145,6 +1148,10 @@
         }
 
         // conditional fields. the fields that show/hide depending on another field settings
+        redirect_to.on('change', function() {
+            show_conditional_redirect_to_options( $(this) );
+        });
+
         multistep.on('change', function() {
             if ( $(this).is(':checked') ) {
                 show_multistep_cond_fields();
@@ -1288,6 +1295,12 @@
         $('#notification_edit_body').parents('.wpuf-input-container').hide();
     }
 
+    function hide_redirect_to_options() {
+        $('#message').parents('.wpuf-input-container').hide();
+        $('#page_id').parents('.wpuf-input-container').hide();
+        $('#url').parents('.wpuf-input-container').hide();
+    }
+
     function populate_default_categories(obj) {
         var post_type = $( obj ).val();
         wp.ajax.send('wpuf_form_setting_post', {
@@ -1321,6 +1334,25 @@
                 console.log(error);
             }
         });
+    }
+
+    function show_conditional_redirect_to_options(redirect_to) {
+        hide_redirect_to_options();
+
+        switch ( redirect_to.val() ) {
+            case 'same':
+                $('#message').parents('.wpuf-input-container').show();
+                break;
+
+            case 'page':
+                $( '#page_id' ).parents('.wpuf-input-container').show();
+                break;
+
+            case 'url':
+                $( '#url' ).parents('.wpuf-input-container').show();
+                break;
+
+        }
     }
 
 })(jQuery);

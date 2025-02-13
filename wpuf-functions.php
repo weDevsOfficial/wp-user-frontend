@@ -4937,6 +4937,34 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                         'help_text' => __( 'Choose the default category for the post', 'wp-user-frontend' ),
                         'options'   => wpuf_get_terms(),
                     ],
+                    'redirect_to' => [
+                        'label'     => __( 'Successful Redirection', 'wp-user-frontend' ),
+                        'type'      => 'select',
+                        'help_text' => __(
+                            'After successfully submit, where the page will redirect to', 'wp-user-frontend'
+                        ),
+                        'options'   => [
+                            'post' => __( 'Newly created post', 'wp-user-frontend' ),
+                            'same' => __( 'Same page', 'wp-user-frontend' ),
+                            'page' => __( 'To a page', 'wp-user-frontend' ),
+                            'url'  => __( 'To a custom URL', 'wp-user-frontend' ),
+                        ],
+                    ],
+                    'message'   => [
+                        'label'   => __( 'Message to show', 'wp-user-frontend' ),
+                        'type'    => 'textarea',
+                        'default' => __( 'Post saved', 'wp-user-frontend' ),
+                    ],
+                    'page_id'                => [
+                        'label'     => __( 'Page', 'wp-user-frontend' ),
+                        'type'      => 'select',
+                        'options'   => $pages,
+                        'help_text' => __( 'Choose the default category for the post', 'wp-user-frontend' ),
+                    ],
+                    'url'                => [
+                        'label'     => __( 'Custom URL', 'wp-user-frontend' ),
+                        'type'      => 'text',
+                    ],
                     'post_status'                => [
                         'label'     => __( 'Post Submission Status', 'wp-user-frontend' ),
                         'type'      => 'select',
@@ -5050,7 +5078,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                         'label'     => __( 'Successful Redirection', 'wp-user-frontend' ),
                         'type'      => 'select',
                         'help_text' => __(
-                            'After successfull submit, where the page will redirect to', 'wp-user-frontend'
+                            'After successfully submit, where the page will redirect to', 'wp-user-frontend'
                         ),
                         'options'   => [
                             'post' => __( 'Newly created post', 'wp-user-frontend' ),

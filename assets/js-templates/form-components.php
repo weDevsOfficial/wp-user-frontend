@@ -83,10 +83,10 @@
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-builder-stage-v4-1">
-<div id="form-preview-stage" class="wpuf-h-[80vh]">
+<div id="form-preview-stage" class="wpuf-h-[70vh]">
     <div v-if="!form_fields.length" class="wpuf-flex wpuf-flex-col wpuf-items-center wpuf-justify-center wpuf-h-[80vh]">
         <img src="<?php echo WPUF_ASSET_URI . '/images/form-blank-state.svg'; ?>" alt="">
-        <h2 class="wpuf-text-lg wpuf-text-gray-800"><?php esc_html_e( 'Add fields and build your desired form', 'wp-user-frontend' ); ?></h2>
+        <h2 class="wpuf-text-lg wpuf-text-gray-800 wpuf-mt-8 wpuf-mb-2"><?php esc_html_e( 'Add fields and build your desired form', 'wp-user-frontend' ); ?></h2>
         <p class="wpuf-text-sm wpuf-text-gray-500"><?php esc_html_e( 'Add fields and build your desired form', 'wp-user-frontend' ); ?></p>
     </div>
 

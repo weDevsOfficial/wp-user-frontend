@@ -4,11 +4,11 @@
 
 @layer components {
     .wpuf-btn-primary {
-        @apply wpuf-rounded-md wpuf-bg-primary wpuf-text-white wpuf-px-3.5 wpuf-py-2 wpuf-text-sm wpuf-font-semibold hover:wpuf-bg-green-700 hover:wpuf-text-white focus:wpuf-text-white focus:wpuf-shadow-none;
+        @apply wpuf-rounded-md wpuf-bg-primary wpuf-text-white wpuf-px-4 wpuf-py-3 wpuf-text-sm wpuf-font-semibold hover:wpuf-bg-emerald-700 hover:wpuf-text-white focus:wpuf-text-white focus:wpuf-shadow-none;
     }
 
     .wpuf-btn-secondary {
-        @apply wpuf-rounded-md wpuf-bg-green-50 wpuf-text-green-700 wpuf-px-3.5 wpuf-py-2 wpuf-text-sm wpuf-border wpuf-border-green-300 wpuf-font-semibold hover:wpuf-bg-green-100 hover:wpuf-text-white;
+        @apply wpuf-rounded-md wpuf-bg-emerald-50 wpuf-text-emerald-700 wpuf-px-4 wpuf-py-3 wpuf-text-sm wpuf-font-semibold hover:wpuf-bg-emerald-100;
     }
 
     .wpuf-tooltip-top {
@@ -20,7 +20,7 @@
     }
 
     .wpuf-pill-green {
-        @apply wpuf-text-green-800 wpuf-bg-green-50 wpuf-border wpuf-border-solid wpuf-border-green-200 wpuf-rounded-md wpuf-py-1 wpuf-px-3;
+        @apply wpuf-text-emerald-800 wpuf-bg-emerald-50 wpuf-border wpuf-border-solid wpuf-border-emerald-200 wpuf-rounded-md wpuf-py-1 wpuf-px-3;
     }
 
     .panel-field-opt {

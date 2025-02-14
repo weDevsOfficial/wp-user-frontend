@@ -735,7 +735,7 @@
 
     var SettingsTab = {
         init: function() {
-            $(function() {
+            /*$(function() {
                 $('.datepicker').datetimepicker();
                 $('.wpuf-ms-color').wpColorPicker();
             });
@@ -783,7 +783,7 @@
             });
 
             this.showRegFormNotificationFields();
-            this.integrationsCondFieldsVisibility();
+            this.integrationsCondFieldsVisibility();*/
 
         },
 

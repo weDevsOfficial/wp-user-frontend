@@ -1,8 +1,8 @@
 <form id="wpuf-form-builder"
-    class="wpuf-max-w-[1440px] wpuf-mx-auto wpuf-w-auto !wpuf-bg-white !wpuf-static !wpuf-p-0 wpuf-form-builder-<?php echo esc_attr( $form_type ); ?>"
+    class="!wpuf-bg-white !wpuf-static !wpuf-w-[calc(100%+20px)] wpuf-ml-[-20px] !wpuf-p-0 wpuf-form-builder-<?php echo esc_attr( $form_type ); ?>"
     method="post"
     action="" @submit.prevent="save_form_builder" v-cloak>
-    <div class="wpuf-bg-white wpuf-px-[20px] wpuf-pt-8 wpuf-justify-between wpuf-items-center wpuf-pb-4">
+    <div class="wpuf-bg-white wpuf-p-8 wpuf-justify-between wpuf-items-center wpuf-pb-10">
         <div class="wpuf-flex wpuf-justify-between">
             <div class="wpuf-flex">
                 <img src="<?php echo WPUF_ASSET_URI . '/images/wpuf-icon-circle.svg'; ?>" alt="WPUF Icon" class="wpuf-mr-2">
@@ -15,7 +15,7 @@
                                 type="text"
                                 name="post_title"
                                 :class="post_title_editing ? '' : '!wpuf-border-0'"
-                                class="wpuf-text-gray-900 placeholder:wpuf-text-gray-400 wpuf-font-medium wpuf-min-w-16 wpuf-max-w-32">
+                                class="wpuf-text-gray-900 placeholder:wpuf-text-gray-400 wpuf-font-medium wpuf-min-w-16 wpuf-max-w-40 wpuf-text-base wpuf-px-4 wpuf-py-3 wpuf-leading-none">
                             <i
                                 v-if="post_title_editing"
                                 @click="post_title_editing = !post_title_editing"
@@ -61,17 +61,21 @@
                 } else {
                     ?>
                     <span
-                        class="form-id wpuf-group wpuf-flex wpuf-items-center wpuf-px-2 wpuf-rounded-md wpuf-border wpuf-border-gray-300 hover:wpuf-cursor-pointer wpuf-ml-6"
+                        class="form-id wpuf-group wpuf-flex wpuf-items-center wpuf-px-4 wpuf-py-3 wpuf-rounded-md wpuf-border wpuf-border-gray-300 hover:wpuf-cursor-pointer wpuf-ml-6 wpuf-text-gray-700 wpuf-text-base"
                         title="<?php printf( esc_html( __( 'Click to copy shortcode', 'wp-user-frontend' ) ) ); ?>"
                         data-clipboard-text="<?php printf( esc_attr( '[' . $shortcodes[0]['name'] . ' id="' . esc_attr( $form_id ) . '"]' ) ); ?>">#{{ post.ID }}
                         <span id="default-icon" class="wpuf-ml-2">
+
                             <svg
                                 v-if="!shortcodeCopied"
                                 class="group-hover:wpuf-rotate-6 group-hover:wpuf-stroke-gray-500 wpuf-stroke-gray-400"
-                                width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M14.4438 6.17602C14.2661 5.49738 13.687 5 13 5H11C10.313 5 9.73391 5.49738 9.55618 6.17602M14.4438 6.17602C14.4804 6.31575 14.5 6.46317 14.5 6.61552C14.5 6.91293 14.2761 7.15403 14 7.15403H10C9.72386 7.15403 9.5 6.91293 9.5 6.61552C9.5 6.46317 9.51958 6.31575 9.55618 6.17602M14.4438 6.17602C14.8746 6.21105 15.303 6.25528 15.7289 6.30851C16.4626 6.40022 17 7.08151 17 7.87705V16.897C17 17.7892 16.3284 18.5125 15.5 18.5125H8.5C7.67157 18.5125 7 17.7892 7 16.897V7.87705C7 7.08151 7.53739 6.40022 8.27112 6.30851C8.69698 6.25528 9.12539 6.21105 9.55618 6.17602M9.99997 11.4122H14M9.99997 14.0125H12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                width="20"
+                                height="20"
+                                viewBox="0 0 20 20"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13.125 14.375V17.1875C13.125 17.7053 12.7053 18.125 12.1875 18.125H4.0625C3.54473 18.125 3.125 17.7053 3.125 17.1875V6.5625C3.125 6.04473 3.54473 5.625 4.0625 5.625H5.625C6.05089 5.625 6.46849 5.6605 6.875 5.7287M13.125 14.375H15.9375C16.4553 14.375 16.875 13.9553 16.875 13.4375V9.375C16.875 5.65876 14.1721 2.5738 10.625 1.9787C10.2185 1.9105 9.80089 1.875 9.375 1.875H7.8125C7.29473 1.875 6.875 2.29473 6.875 2.8125V5.7287M13.125 14.375H7.8125C7.29473 14.375 6.875 13.9553 6.875 13.4375V5.7287M16.875 11.25V9.6875C16.875 8.1342 15.6158 6.875 14.0625 6.875H12.8125C12.2947 6.875 11.875 6.45527 11.875 5.9375V4.6875C11.875 3.1342 10.6158 1.875 9.0625 1.875H8.125" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-
                             <svg
                                 v-if="shortcodeCopied"
                                 class="wpuf-rotate-6 !wpuf-stroke-primary wpuf-mt-[-5px]"
@@ -89,10 +93,10 @@
                     <a
                         :href="'<?php echo get_wpuf_preview_page(); ?>?wpuf_preview=1&form_id=' + post.ID"
                         target="_blank"
-                        class="wpuf-inline-flex wpuf-items-center wpuf-gap-x-2 wpuf-rounded-md wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-text-gray-700  hover:wpuf-text-gray-700 hover:wpuf-bg-gray-50 wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300"><?php esc_html_e( 'Preview', 'wp-user-frontend' ); ?>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="wpuf-size-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        class="wpuf-inline-flex wpuf-items-center wpuf-gap-x-3 wpuf-rounded-md wpuf-px-4 wpuf-py-3 wpuf-text-base wpuf-text-gray-700  hover:wpuf-text-gray-700 hover:wpuf-bg-gray-50 wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 focus:wpuf-shadow-none focus:wpuf-border-none"><?php esc_html_e( 'Preview', 'wp-user-frontend' ); ?>
+                        <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1.69947 7.26867C1.6419 7.09594 1.64184 6.90895 1.69931 6.73619C2.85628 3.2581 6.13716 0.75 10.0038 0.75C13.8687 0.75 17.1484 3.25577 18.3068 6.73134C18.3643 6.90406 18.3644 7.09106 18.3069 7.26381C17.15 10.7419 13.8691 13.25 10.0024 13.25C6.1375 13.25 2.85787 10.7442 1.69947 7.26867Z" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12.5032 7C12.5032 8.38071 11.3839 9.5 10.0032 9.5C8.62246 9.5 7.50317 8.38071 7.50317 7C7.50317 5.61929 8.62246 4.5 10.0032 4.5C11.3839 4.5 12.5032 5.61929 12.5032 7Z" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </a>
                     <button
@@ -110,29 +114,27 @@
         </div>
 
         <div class="wpuf-flex wpuf-items-center wpuf-mt-8">
-            <div class="wpuf-flex wpuf-bg-gray-100 wpuf-w-max wpuf-rounded-xl wpuf-p-4 wpuf-mr-6">
-                <div class="wpuf-tab-contents">
-                    <a
-                        @click="active_tab = 'form-editor'"
-                        :class="active_tab === 'form-editor' ? 'wpuf-bg-white wpuf-text-gray-800 wpuf-rounded-md wpuf-drop-shadow-sm' : ''"
-                        class="wpuf-nav-tab wpuf-nav-tab-active wpuf-text-gray-800 wpuf-py-2 wpuf-px-4 wpuf-text-sm hover:wpuf-bg-white hover:wpuf-text-gray-800 hover:wpuf-rounded-md hover:wpuf-drop-shadow-sm focus:wpuf-shadow-none wpuf-mr-2 hover:wpuf-cursor-pointer">
-                        <?php esc_html_e( 'Form Editor', 'wp-user-frontend' ); ?>
-                    </a>
-                    <a
-                        @click="active_tab = 'form-settings'"
-                        :class="active_tab === 'form-settings' ? 'wpuf-bg-white wpuf-text-gray-800 wpuf-rounded-md wpuf-drop-shadow-sm' : ''"
-                        class="wpuf-nav-tab wpuf-nav-tab-active wpuf-text-gray-800 wpuf-py-2 wpuf-px-4 wpuf-text-sm hover:wpuf-bg-white hover:wpuf-text-gray-800 hover:wpuf-rounded-md hover:wpuf-drop-shadow-sm focus:wpuf-shadow-none wpuf-mr-2 hover:wpuf-cursor-pointer">
-                        <?php esc_html_e( 'Settings', 'wp-user-frontend' ); ?>
-                    </a>
-                    <?php do_action( "wpuf-form-builder-tabs-{$form_type}" ); ?>
-                </div>
+            <div class="wpuf-flex wpuf-bg-gray-100 wpuf-w-max wpuf-rounded-lg wpuf-p-2">
+                <a
+                    @click="active_tab = 'form-editor'"
+                    :class="active_tab === 'form-editor' ? 'wpuf-bg-white wpuf-text-gray-800 wpuf-rounded-md wpuf-drop-shadow-sm' : ''"
+                    class="wpuf-nav-tab wpuf-nav-tab-active wpuf-text-gray-800 wpuf-py-2 wpuf-px-4 wpuf-text-base hover:wpuf-bg-white hover:wpuf-text-gray-800 hover:wpuf-rounded-md hover:wpuf-drop-shadow-sm focus:wpuf-shadow-none wpuf-mr-2 hover:wpuf-cursor-pointer">
+                    <?php esc_html_e( 'Form Editor', 'wp-user-frontend' ); ?>
+                </a>
+                <a
+                    @click="active_tab = 'form-settings'"
+                    :class="active_tab === 'form-settings' ? 'wpuf-bg-white wpuf-text-gray-800 wpuf-rounded-md wpuf-drop-shadow-sm' : ''"
+                    class="wpuf-nav-tab wpuf-nav-tab-active wpuf-text-gray-800 wpuf-py-2 wpuf-px-4 wpuf-text-base hover:wpuf-bg-white hover:wpuf-text-gray-800 hover:wpuf-rounded-md hover:wpuf-drop-shadow-sm focus:wpuf-shadow-none wpuf-mr-2 hover:wpuf-cursor-pointer">
+                    <?php esc_html_e( 'Settings', 'wp-user-frontend' ); ?>
+                </a>
+                <?php do_action( "wpuf-form-builder-tabs-{$form_type}" ); ?>
             </div>
         </div>
     </div>
     <div
         v-show="active_tab === 'form-editor'"
-        class="wpuf-flex wpuf-bg-white wpuf-pb-16 wpuf-w-[calc(100%-30px)] wpuf-mx-4">
-        <div class="wpuf-w-2/3 wpuf-min-h-screen wpuf-max-h-screen wpuf-px-[20px] wpuf-pt-4 wpuf-border-t wpuf-border-l wpuf-rounded-tl-lg wpuf-border-gray-200 wpuf-overflow-auto">
+        class="wpuf-flex wpuf-bg-white wpuf-pb-16 wpuf-mr-8 ">
+        <div class="wpuf-w-2/3 wpuf-min-h-screen wpuf-max-h-screen wpuf-px-[78px] wpuf-py-4 wpuf-border-t wpuf-border-l wpuf-border-gray-200 wpuf-overflow-auto">
             <builder-stage-v4-1></builder-stage-v4-1>
         </div>
         <div class="wpuf-w-1/3 wpuf-max-h-screen wpuf-overflow-auto wpuf-rounded-tr-lg wpuf-border wpuf-border-b-0 wpuf-border-gray-200">

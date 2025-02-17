@@ -1495,92 +1495,11 @@ class Free_Loader extends Pro_Prompt {
      * @return array
      */
     public function form_settings_preview_general( $general_settings ) {
-
-        /*'enable_multistep'           => [
-            'label'     => __( 'Enable Multi-Step', 'wp-user-frontend' ),
-            'type'      => 'toggle',
-            'help_text' => __(
-                'If checked, form will be displayed in frontend in multiple steps.', 'wp-user-frontend'
-            ),
-            'link'      => esc_url_raw(
-                'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-add-multi-step-form/'
-            ),
-        ],
-                        'multistep_progressbar_type' => [
-            'label'     => __( 'Multistep Progressbar Type', 'wp-user-frontend' ),
-            'type'      => 'select',
-            'help_text' => __( 'Choose how you want the progressbar', 'wp-user-frontend' ),
-            'options'   => [
-                'progressive'  => __( 'Progressbar', 'wp-user-frontend' ),
-                'step_by_step' => __( 'Step by Step', 'wp-user-frontend' ),
-            ],
-        ],
-                        'ms_ac_txt_color'            => [
-            'label'     => __( 'Active Text Color', 'wp-user-frontend' ),
-            'type'      => 'color-picker',
-            'help_text' => __( 'Text color for active step.', 'wp-user-frontend' ),
-            'default'   => '#fff',
-        ],
-                        'ms_active_bgcolor'          => [
-            'label'     => __( 'Active Background Color', 'wp-user-frontend' ),
-            'type'      => 'color-picker',
-            'help_text' => __( 'Background color for progressbar or active step.', 'wp-user-frontend' ),
-            'default'   => '#00a0d2',
-        ],
-                        'ms_bgcolor'                 => [
-            'label'     => __( 'Background Color', 'wp-user-frontend' ),
-            'type'      => 'color-picker',
-            'help_text' => __( 'Background color for normal steps.', 'wp-user-frontend' ),
-            'default'   => '#E4E4E4',
-        ],*/
-        /*$general_settings['section']['before_post_settings']['fields']['enable_multistep']           = [
-            'label'       => __( 'Enable Multi-Step', 'wp-user-frontend' ),
-            'type'        => 'toggle',
-            'value'       => 'on',
-            'help_text'   => __(
-                'If checked, form will be displayed in frontend in multiple steps.', 'wp-user-frontend'
-            ),
-            'link'        => esc_url_raw(
-                'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/how-to-add-multi-step-form/'
-            ),
-            'pro_preview' => true,
-        ];
-        $general_settings['section']['before_post_settings']['fields']['multistep_progressbar_type'] = [
-            'label'       => __( 'Multistep Progressbar Type', 'wp-user-frontend' ),
-            'type'        => 'select',
-            'help_text'   => __( 'Choose how you want the progressbar', 'wp-user-frontend' ),
-            'options'     => [
-                'progressive'  => __( 'Progressbar', 'wp-user-frontend' ),
-                'step_by_step' => __( 'Step by Step', 'wp-user-frontend' ),
-            ],
-            'pro_preview' => true,
-        ];
-        $general_settings['section']['before_post_settings']['fields']['ms_ac_txt_color']            = [
-            'label'       => __( 'Active Text Color', 'wp-user-frontend' ),
-            'type'        => 'color-picker',
-            'help_text'   => __( 'Text color for active step.', 'wp-user-frontend' ),
-            'default'     => '#fff',
-            'pro_preview' => true,
-        ];
-        $general_settings['section']['before_post_settings']['fields']['ms_active_bgcolor']          = [
-            'label'       => __( 'Active Background Color', 'wp-user-frontend' ),
-            'type'        => 'color-picker',
-            'help_text'   => __( 'Background color for progressbar or active step.', 'wp-user-frontend' ),
-            'default'     => '#00a0d2',
-            'pro_preview' => true,
-        ];
-        $general_settings['section']['before_post_settings']['fields']['ms_bgcolor']                 = [
-            'label'       => __( 'Background Color', 'wp-user-frontend' ),
-            'type'        => 'color-picker',
-            'help_text'   => __( 'Background color for normal steps.', 'wp-user-frontend' ),
-            'default'     => '#E4E4E4',
-            'pro_preview' => true,
-        ];*/
-
         $general_settings['section']['before_post_settings']['pro_preview']['fields'] = [
             'enable_multistep'           => [
                 'label'     => __( 'Enable Multi-Step', 'wp-user-frontend' ),
                 'type'      => 'toggle',
+                'value'     => 'on',
                 'help_text' => __(
                     'If checked, form will be displayed in frontend in multiple steps.', 'wp-user-frontend'
                 ),

@@ -90,7 +90,7 @@
                     if ( ! empty( $section['pro_preview'] ) ) {
                         if ( ! empty( $section['pro_preview']['fields'] ) ) {
                             ?>
-                            <div class="wpuf-p-4 wpuf-relative wpuf-rounded wpuf-border hover:wpuf-border-dashed wpuf-border-transparent wpuf-border-emerald-100 wpuf-group/pro-item">
+                            <div class="wpuf-p-4 wpuf-relative wpuf-rounded wpuf-border wpuf-border-transparent hover:wpuf-border-sky-500 wpuf-border-dashed wpuf-group/pro-item wpuf-transition-all wpuf-opacity-50 hover:wpuf-opacity-100">
                                 <a
                                     class="wpuf-btn-primary wpuf-absolute wpuf-top-[50%] wpuf-left-[50%] wpuf--translate-y-[50%] wpuf--translate-x-[50%] wpuf-z-30 wpuf-opacity-0 group-hover/pro-item:wpuf-opacity-100 wpuf-transition-all"
                                     target="_blank"
@@ -379,11 +379,6 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
         </div>
         <?php
     } else {
-        if ( 'pro_preview' === $field_key ) {
-            ?>
-            <div class="wpuf-pro-preview-area wpuf-relative">
-            <?php
-        }
         ?>
         <div class="wpuf-flex wpuf-input-container">
             <?php
@@ -438,10 +433,5 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
             ?>
         </div>
         <?php
-        if ( 'pro_preview' === $field_key ) {
-            ?>
-            </div>
-            <?php
-        }
     }
 }

@@ -2397,8 +2397,8 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   right: 2rem;
 }
 
-.wpuf-right-\[10\%\] {
-  right: 10%;
+.wpuf-right-\[12\%\] {
+  right: 12%;
 }
 
 .wpuf-top-0 {
@@ -2429,8 +2429,8 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   top: .70rem;
 }
 
-.wpuf-top-\[5\%\] {
-  top: 5%;
+.wpuf-top-\[10\%\] {
+  top: 10%;
 }
 
 .wpuf-top-\[50\%\] {

@@ -4872,6 +4872,12 @@ function wpuf_get_post_form_builder_setting_menu_titles() {
                     <path d="M14.8559 17.0817C16.7504 16.857 18.5773 16.4116 20.3102 15.7719C18.8734 14.177 17.9988 12.0656 17.9988 9.75V9.04919C17.999 9.03281 17.999 9.01641 17.999 9C17.999 5.68629 15.3127 3 11.999 3C8.68531 3 5.99902 5.68629 5.99902 9L5.99883 9.75C5.99883 12.0656 5.1243 14.177 3.6875 15.7719C5.42043 16.4116 7.24746 16.857 9.14216 17.0818M14.8559 17.0817C13.919 17.1928 12.9656 17.25 11.9988 17.25C11.0322 17.25 10.0789 17.1929 9.14216 17.0818M14.8559 17.0817C14.9488 17.3711 14.999 17.6797 14.999 18C14.999 19.6569 13.6559 21 11.999 21C10.3422 21 8.99902 19.6569 8.99902 18C8.99902 17.6797 9.04921 17.3712 9.14216 17.0818" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>',
             ],
+            'display_settings' => [
+                'label' => __( 'Display Settings', 'wp-user-frontend' ),
+                'icon'  => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 17.25V18.2574C9 19.053 8.68393 19.8161 8.12132 20.3787L7.5 21H16.5L15.8787 20.3787C15.3161 19.8161 15 19.053 15 18.2574V17.25M21 5.25V15C21 16.2426 19.9926 17.25 18.75 17.25H5.25C4.00736 17.25 3 16.2426 3 15V5.25M21 5.25C21 4.00736 19.9926 3 18.75 3H5.25C4.00736 3 3 4.00736 3 5.25M21 5.25V12C21 13.2426 19.9926 14.25 18.75 14.25H5.25C4.00736 14.25 3 13.2426 3 12V5.25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>',
+            ],
         ]
     );
 
@@ -5312,9 +5318,72 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
         ],
     ];
 
+    $display = [
+        'section' => [
+            'custom_form_style' => [
+                'label'  => __( 'Choose Form', 'wp-user-frontend' ),
+                'desc'   => __(
+                    'Select from a variety of pre-designed form templates to align with your website’s visual style.',
+                    'wp-user-frontend'
+                ),
+                'fields' => [
+                    'form_layout' => [
+                        'label'     => __( 'Choose Form Style', 'wp-user-frontend' ),
+                        'type'      => 'pic-radio',
+                        'help_text' => __(
+                            'If selected a form template, it will try to execute that integration options when new post created and updated.',
+                            'wp-user-frontend'
+                        ),
+                        'options'   => [
+                            'layout1' => [
+                                'label' => __( 'Post Form', 'wp-user-frontend' ),
+                                'image' => WPUF_PRO_ASSET_URI . '/images/forms/layout1.png',
+                            ],
+                            'layout2' => [
+                                'label' => __( 'Post Form', 'wp-user-frontend' ),
+                                'image' => WPUF_PRO_ASSET_URI . '/images/forms/layout2.png',
+                            ],
+                            'layout3' => [
+                                'label' => __( 'Post Form', 'wp-user-frontend' ),
+                                'image' => WPUF_PRO_ASSET_URI . '/images/forms/layout3.png',
+                            ],
+                            'layout4' => [
+                                'label' => __( 'Post Form', 'wp-user-frontend' ),
+                                'image' => WPUF_PRO_ASSET_URI . '/images/forms/layout4.png',
+                            ],
+                            'layout5' => [
+                                'label' => __( 'Post Form', 'wp-user-frontend' ),
+                                'image' => WPUF_PRO_ASSET_URI . '/images/forms/layout5.png',
+                            ],
+                        ],
+                    ],
+                    'use_theme_css'           => [
+                        'label'     => __( 'Use Theme CSS', 'wp-user-frontend' ),
+                        'type'      => 'toggle',
+                        'help_text' => __(
+                            'Selecting Yes will use your theme\'s style for form fields.', 'wp-user-frontend'
+                        ),
+                    ],
+                    'label_position' => [
+                        'label'   => __( 'Label Position', 'wp-user-frontend' ),
+                        'type'    => 'select',
+                        'options' => [
+                            'above'   => __( 'Above Element', 'wp-user-frontend' ),
+                            'left'    => __( 'Left of Element', 'wp-user-frontend' ),
+                            'right'   => __( 'Right of Element', 'wp-user-frontend' ),
+                            'hidden'  => __( 'Hidden', 'wp-user-frontend' ),
+                        ],
+                        'help'    => __( 'Where the labels of the form should display', 'wp-user-frontend' ),
+                    ],
+                ],
+            ],
+        ],
+    ];
+
     return [
         'general'               => $general,
         'payment_settings'      => $payment,
         'notification_settings' => $notification,
+        'display_settings'      => $display,
     ];
 }

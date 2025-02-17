@@ -61,7 +61,7 @@
                 } else {
                     ?>
                     <span
-                        class="form-id wpuf-group wpuf-flex wpuf-items-center wpuf-px-4 wpuf-py-3 wpuf-rounded-md wpuf-border wpuf-border-gray-300 hover:wpuf-cursor-pointer wpuf-ml-6 wpuf-text-gray-700 wpuf-text-base"
+                        class="form-id wpuf-group wpuf-flex wpuf-items-center wpuf-px-4 wpuf-py-3 wpuf-rounded-md wpuf-border wpuf-border-gray-300 hover:wpuf-cursor-pointer wpuf-ml-6 wpuf-text-gray-700 wpuf-text-base wpuf-leading-none"
                         title="<?php printf( esc_html( __( 'Click to copy shortcode', 'wp-user-frontend' ) ) ); ?>"
                         data-clipboard-text="<?php printf( esc_attr( '[' . $shortcodes[0]['name'] . ' id="' . esc_attr( $form_id ) . '"]' ) ); ?>">#{{ post.ID }}
                         <span id="default-icon" class="wpuf-ml-2">
@@ -93,7 +93,7 @@
                     <a
                         :href="'<?php echo get_wpuf_preview_page(); ?>?wpuf_preview=1&form_id=' + post.ID"
                         target="_blank"
-                        class="wpuf-inline-flex wpuf-items-center wpuf-gap-x-3 wpuf-rounded-md wpuf-px-4 wpuf-py-3 wpuf-text-base wpuf-text-gray-700  hover:wpuf-text-gray-700 hover:wpuf-bg-gray-50 wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 focus:wpuf-shadow-none focus:wpuf-border-none"><?php esc_html_e( 'Preview', 'wp-user-frontend' ); ?>
+                        class="wpuf-inline-flex wpuf-items-center wpuf-gap-x-3 wpuf-rounded-md wpuf-px-4 wpuf-py-3 wpuf-text-base wpuf-text-gray-700  hover:wpuf-text-gray-700 hover:wpuf-bg-gray-50 wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 focus:wpuf-shadow-none focus:wpuf-border-none wpuf-leading-none"><?php esc_html_e( 'Preview', 'wp-user-frontend' ); ?>
                         <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M1.69947 7.26867C1.6419 7.09594 1.64184 6.90895 1.69931 6.73619C2.85628 3.2581 6.13716 0.75 10.0038 0.75C13.8687 0.75 17.1484 3.25577 18.3068 6.73134C18.3643 6.90406 18.3644 7.09106 18.3069 7.26381C17.15 10.7419 13.8691 13.25 10.0024 13.25C6.1375 13.25 2.85787 10.7442 1.69947 7.26867Z" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M12.5032 7C12.5032 8.38071 11.3839 9.5 10.0032 9.5C8.62246 9.5 7.50317 8.38071 7.50317 7C7.50317 5.61929 8.62246 4.5 10.0032 4.5C11.3839 4.5 12.5032 5.61929 12.5032 7Z" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -105,7 +105,7 @@
                         type="button"
                         :disabled="is_form_saving"
                         :class="is_form_saving ? 'wpuf-cursor-wait' : 'wpuf-cursor-pointer'"
-                        class="wpuf-btn-primary"><?php esc_html_e( 'Save', 'wp-user-frontend' ); ?></button>
+                        class="wpuf-btn-primary wpuf-leading-none"><?php esc_html_e( 'Save', 'wp-user-frontend' ); ?></button>
                     <button v-else type="button" class="button button-primary button-ajax-working" disabled>
                         <span class="loader"></span> <?php esc_html_e( 'Saving Form Data', 'wp-user-frontend' ); ?>
                     </button>

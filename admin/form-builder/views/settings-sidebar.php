@@ -266,11 +266,11 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
             <?php
             if ( 'pic-radio' === $field['type'] ) {
                 ?>
-                <div class="wpuf-flex">
+                <div class="wpuf-grid wpuf-grid-cols-4">
                     <?php
                     foreach ( $field['options'] as $key => $option ) {
                         ?>
-                        <div class="wpuf-relative wpuf-text-center">
+                        <div class="wpuf-relative wpuf-text-center wpuf-p-3">
                             <label>
                                 <input
                                     type="radio"
@@ -279,12 +279,12 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                                     <?php echo esc_attr( checked( $value, $key, false ) ); ?>
                                     class="wpuf-absolute wpuf-opacity-0 wpuf-peer">
                                 <img
-                                    class="wpuf-absolute wpuf-opacity-0 peer-checked:wpuf-opacity-100 wpuf-top-[5%] wpuf-right-[10%] wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out"
+                                    class="wpuf-absolute wpuf-opacity-0 peer-checked:wpuf-opacity-100 wpuf-top-[10%] wpuf-right-[12%] wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out"
                                     src="<?php echo esc_attr( WPUF_ASSET_URI . '/images/checked-green.svg' ); ?>" alt="">
                                 <img
                                     src="<?php echo $option['image']; ?>"
                                     alt="<?php echo $key; ?>"
-                                    class="hover:wpuf-cursor-pointer wpuf-border-transparent wpuf-border-2 wpuf-border-solid wpuf-rounded-lg hover:wpuf-border-primary peer-checked:wpuf-border-primary wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out wpuf-mb-2">
+                                    class="hover:wpuf-cursor-pointer wpuf-border-transparent wpuf-border-2 wpuf-border-solid wpuf-rounded-lg hover:wpuf-border-primary peer-checked:wpuf-border-primary wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out wpuf-mb-2 wpuf-w-full">
                             </label>
                             <label
                                 for="<?php echo $field_key; ?>"

@@ -3486,6 +3486,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   border-color: transparent;
 }
 
+.wpuf-border-white {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity));
+}
+
 .wpuf-border-zinc-300 {
   --tw-border-opacity: 1;
   border-color: rgb(212 212 216 / var(--tw-border-opacity));
@@ -3770,6 +3775,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   padding-right: 20px;
 }
 
+.wpuf-px-\[6px\] {
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
 .wpuf-px-\[78px\] {
   padding-left: 78px;
   padding-right: 78px;
@@ -3818,6 +3828,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 .wpuf-py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+
+.wpuf-py-\[2px\] {
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 .wpuf-pb-0 {
@@ -5091,6 +5106,11 @@ table.option-field-option-chooser tbody tr td {
 .wpuf-group\/hidden-fields:hover .group-hover\/hidden-fields\:wpuf-border-green-400 {
   --tw-border-opacity: 1;
   border-color: rgb(74 222 128 / var(--tw-border-opacity));
+}
+
+.wpuf-group\/sidebar-item:hover .group-hover\/sidebar-item\:wpuf-border-white {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity));
 }
 
 .wpuf-group:hover .group-hover\:wpuf-border-green-400 {

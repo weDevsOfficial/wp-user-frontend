@@ -4884,6 +4884,12 @@ function wpuf_get_post_form_builder_setting_menu_titles() {
                                 <path d="M4.5 11.9993C4.5 16.1414 7.85786 19.4993 12 19.4993C16.1421 19.4993 19.5 16.1414 19.5 11.9993M4.5 11.9993C4.5 7.85712 7.85786 4.49925 12 4.49925C16.1421 4.49926 19.5 7.85712 19.5 11.9993M4.5 11.9993L3 11.9993M19.5 11.9993L21 11.9993M19.5 11.9993L12 11.9993M3.54256 15.0774L4.9521 14.5644M19.0475 9.43411L20.457 8.92108M5.10547 17.785L6.25454 16.8208M17.7452 7.17897L18.8943 6.21479M7.4999 19.7943L8.2499 18.4952M15.7499 5.50484L16.4999 4.2058M10.4371 20.8633L10.6975 19.386M13.3023 4.61393L13.5627 3.13672M13.5627 20.8633L13.3023 19.3861M10.6976 4.61397L10.4371 3.13676M16.4999 19.7941L15.7499 18.4951M7.49995 4.20565L12 11.9993M18.8944 17.7843L17.7454 16.8202M6.25469 7.17835L5.10562 6.21417M20.4573 15.0776L19.0477 14.5646M4.95235 9.43426L3.54281 8.92123M12 11.9993L8.25 18.4944"  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>',
             ],
+            'post_expiration'       => [
+                'label' => __( 'Post Expiration', 'wp-user-frontend' ),
+                'icon'  => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.75 3V5.25M17.25 3V5.25M3 18.75V7.5C3 6.25736 4.00736 5.25 5.25 5.25H18.75C19.9926 5.25 21 6.25736 21 7.5V18.75M3 18.75C3 19.9926 4.00736 21 5.25 21H18.75C19.9926 21 21 19.9926 21 18.75M3 18.75V11.25C3 10.0074 4.00736 9 5.25 9H18.75C19.9926 9 21 10.0074 21 11.25V18.75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>',
+            ],
         ]
     );
 
@@ -4936,7 +4942,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                         'wp-user-frontend'
                     ),
                     'fields' => [
-                        'post_type'                  => [
+                        'post_type'        => [
                             'label'     => __( 'Post Type', 'wp-user-frontend' ),
                             'type'      => 'select',
                             'options'   => $post_types,
@@ -4945,13 +4951,13 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                                 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/different-custom-post-type-submission-2/'
                             ),
                         ],
-                        'default_category'           => [
+                        'default_category' => [
                             'label'     => __( 'Default Category', 'wp-user-frontend' ),
                             'type'      => 'multi-select',
                             'help_text' => __( 'Choose the default category for the post', 'wp-user-frontend' ),
                             'options'   => wpuf_get_terms(),
                         ],
-                        'redirect_to'                => [
+                        'redirect_to'      => [
                             'label'     => __( 'Successful Redirection', 'wp-user-frontend' ),
                             'type'      => 'select',
                             'help_text' => __(
@@ -4964,22 +4970,22 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                                 'url'  => __( 'To a custom URL', 'wp-user-frontend' ),
                             ],
                         ],
-                        'message'                    => [
+                        'message'          => [
                             'label'   => __( 'Message to show', 'wp-user-frontend' ),
                             'type'    => 'textarea',
                             'default' => __( 'Post saved', 'wp-user-frontend' ),
                         ],
-                        'page_id'                    => [
+                        'page_id'          => [
                             'label'     => __( 'Page', 'wp-user-frontend' ),
                             'type'      => 'select',
                             'options'   => $pages,
                             'help_text' => __( 'Choose the default category for the post', 'wp-user-frontend' ),
                         ],
-                        'url'                        => [
+                        'url'              => [
                             'label' => __( 'Custom URL', 'wp-user-frontend' ),
                             'type'  => 'text',
                         ],
-                        'post_status'                => [
+                        'post_status'      => [
                             'label'     => __( 'Post Submission Status', 'wp-user-frontend' ),
                             'type'      => 'select',
                             'options'   => [
@@ -4990,17 +4996,19 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                             ],
                             'help_text' => __( 'Choose the default category for the post', 'wp-user-frontend' ),
                         ],
-                        'draft_post'                 => [
+                        'draft_post'       => [
                             'label'     => __( 'Enable saving as draft', 'wp-user-frontend' ),
                             'type'      => 'checkbox',
-                            'help_text' => __( 'Allow users to save posts before final submission', 'wp-user-frontend' ),
+                            'help_text' => __(
+                                'Allow users to save posts before final submission', 'wp-user-frontend'
+                            ),
                         ],
-                        'submit_text'                => [
+                        'submit_text'      => [
                             'label'     => __( 'Submit Post Button Text', 'wp-user-frontend' ),
                             'type'      => 'text',
                             'help_text' => __( 'Customize the text of the submit button', 'wp-user-frontend' ),
                         ],
-                        'form_template'              => [
+                        'form_template'    => [
                             'label'     => __( 'Choose Form Template', 'wp-user-frontend' ),
                             'type'      => 'pic-radio',
                             'help_text' => __(
@@ -5254,43 +5262,6 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                         'Notify specified recipients when a post is updated.',
                         'wp-user-frontend'
                     ),
-                    'fields' => [
-                        'notification_edit' => [
-                            'label' => __( 'Enable Update Post Notification', 'wp-user-frontend' ),
-                            'type'  => 'toggle',
-                        ],
-                        'notification_edit_to' => [
-                            'label' => __( 'To', 'wp-user-frontend' ),
-                            'type'  => 'text',
-                            'value' => get_option( 'admin_email' ),
-                        ],
-                        'notification_edit_subject'           => [
-                            'label'       => __( 'Subject', 'wp-user-frontend' ),
-                            'type'        => 'text',
-                            'value' => __( 'A post has been edited', 'wp-user-frontend' ),
-                        ],
-                        'notification_edit_body'           => [
-                            'label'       => __( 'Email Body', 'wp-user-frontend' ),
-                            'type'        => 'textarea',
-                            'value' => "Hi Admin, \r\n\r\nThe post \"{post_title}\" has been updated. \r\n\r\nHere is the details: \r\nPost Title: {post_title} \r\nContent: {post_content} \r\nAuthor: {author} \r\nPost URL: {permalink} \r\nEdit URL: {editlink}",
-                            'long_help' => '<h4 class="wpuf-m-0">You may use in to, subject & message:</h4>
-                                         <p class="wpuf-leading-8">
-                                         <span data-clipboard-text="{post_title}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{post_title}</span>
-                                         <span data-clipboard-text="{post_content}" class="wpuf-post-content wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{post_content}</span>
-                                         <span data-clipboard-text="{post_excerpt}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{post_excerpt}</span>
-                                         <span data-clipboard-text="{tags}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{tags}</span>
-                                         <span data-clipboard-text="{category}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{category}</span>
-                                         <span data-clipboard-text="{author}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{author}</span>
-                                         <span data-clipboard-text="{author_email}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{author_email}</span>
-                                         <span data-clipboard-text="{author_bio}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{author_bio}</span>
-                                         <span data-clipboard-text="{sitename}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{sitename}</span>
-                                         <span data-clipboard-text="{siteurl}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{siteurl}</span>
-                                         <span data-clipboard-text="{permalink}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{permalink}</span>
-                                         <span data-clipboard-text="{editlink}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{editlink}</span>
-                                         <span class="wpuf-pill-green">{custom_{NAME_OF_CUSTOM_FIELD}}</span>
-                                         e.g: <span class="wpuf-pill-green">{custom_website_url}</span> for website_url meta field</p>',
-                        ],
-                    ],
                 ],
             ],
         ]
@@ -5364,56 +5335,60 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
     $advanced = apply_filters(
         'wpuf_form_builder_settings_advanced',
         [
-            'comment_status' => [
-                'label'     => __( 'Enable User Comment', 'wp-user-frontend' ),
-                'type'      => 'toggle',
+            'comment_status'       => [
+                'label' => __( 'Enable User Comment', 'wp-user-frontend' ),
+                'type'  => 'toggle',
             ],
-            'schedule_form' => [
+            'schedule_form'        => [
                 'label'     => __( 'Enable Form Scheduling', 'wp-user-frontend' ),
                 'type'      => 'toggle',
                 'help_text' => __(
                     'Schedule for a time period the form is active.', 'wp-user-frontend'
                 ),
             ],
-            'inline_fields'      => [
+            'inline_fields'        => [
                 'fields' => [
-                    'schedule_start'  => [
-                        'label'     => __( 'From', 'wp-user-frontend' ),
-                        'type'      => 'date',
+                    'schedule_start' => [
+                        'label' => __( 'From', 'wp-user-frontend' ),
+                        'type'  => 'date',
                     ],
-                    'schedule_end' => [
-                        'label'     => __( 'To', 'wp-user-frontend' ),
-                        'type'      => 'date',
+                    'schedule_end'   => [
+                        'label' => __( 'To', 'wp-user-frontend' ),
+                        'type'  => 'date',
                     ],
                 ],
             ],
             'form_pending_message' => [
-                'label'     => __( 'Form Pending Message', 'wp-user-frontend' ),
-                'type'      => 'textarea',
+                'label' => __( 'Form Pending Message', 'wp-user-frontend' ),
+                'type'  => 'textarea',
             ],
             'form_expired_message' => [
-                'label'     => __( 'Form Expired Message', 'wp-user-frontend' ),
-                'type'      => 'textarea',
+                'label' => __( 'Form Expired Message', 'wp-user-frontend' ),
+                'type'  => 'textarea',
             ],
-            'limit_entries' => [
+            'limit_entries'        => [
                 'label'     => __( 'Limit Form Entries', 'wp-user-frontend' ),
                 'type'      => 'toggle',
                 'help_text' => __( 'Limit the number of entries allowed for this form', 'wp-user-frontend' ),
             ],
-            'limit_number' => [
-                'label'     => __( 'Number of Entries', 'wp-user-frontend' ),
-                'type'      => 'number',
-                'default' => 100
+            'limit_number'         => [
+                'label'   => __( 'Number of Entries', 'wp-user-frontend' ),
+                'type'    => 'number',
+                'default' => 100,
             ],
-            'limit_message' => [
-                'label'   => __( 'Limit Reached Message', 'wp-user-frontend' ),
-                'type'    => 'textarea',
+            'limit_message'        => [
+                'label' => __( 'Limit Reached Message', 'wp-user-frontend' ),
+                'type'  => 'textarea',
             ],
-            'condition_status' => [
-                'label'     => __( 'Conditional Logic on Submit', 'wp-user-frontend' ),
-                'type'      => 'toggle',
+            'condition_status'     => [
+                'label' => __( 'Conditional Logic on Submit', 'wp-user-frontend' ),
+                'type'  => 'toggle',
             ],
         ]
+    );
+
+    $post_expiration = apply_filters(
+        'wpuf_form_builder_settings_post_expiration', []
     );
 
     return apply_filters(
@@ -5424,6 +5399,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
             'notification_settings' => $notification,
             'display_settings'      => $display,
             'advanced'              => $advanced,
+            'post_expiration'       => $post_expiration,
         ]
     );
 }

@@ -46,6 +46,8 @@ class Free_Loader extends Pro_Prompt {
 
         // post form settings
         add_filter( 'wpuf_form_builder_settings_general', [ $this, 'form_settings_preview_general' ] );
+        add_filter( 'wpuf_form_builder_settings_notification', [ $this, 'form_settings_preview_notification' ] );
+        add_filter( 'wpuf_form_builder_settings_post_expiration', [ $this, 'form_settings_preview_post_expiration' ] );
 
         // payment gateway added for previewing
         add_filter( 'wpuf_payment_gateways', [ $this, 'wpuf_payment_gateways' ] );
@@ -1486,11 +1488,11 @@ class Free_Loader extends Pro_Prompt {
     }
 
     /**
-     * Add general settings pro fileds preview
+     * Add general settings pro fields preview
      *
      * @since WPUF_SINCE
      *
-     * @param array $fields
+     * @param array $general_settings
      *
      * @return array
      */
@@ -1537,5 +1539,105 @@ class Free_Loader extends Pro_Prompt {
         ];
 
         return $general_settings;
+    }
+
+    /**
+     * Add notification settings pro fields preview
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $notification_settings
+     *
+     * @return array
+     */
+    public function form_settings_preview_notification( $notification_settings ) {
+        $notification_settings['section']['update_post']['pro_preview']['fields'] = [
+            'notification_edit'         => [
+                'label' => __( 'Enable Update Post Notification', 'wp-user-frontend' ),
+                'type'  => 'toggle',
+                'value' => 'on',
+            ],
+            'notification_edit_to'      => [
+                'label' => __( 'To', 'wp-user-frontend' ),
+                'type'  => 'text',
+                'value' => get_option( 'admin_email' ),
+            ],
+            'notification_edit_subject' => [
+                'label' => __( 'Subject', 'wp-user-frontend' ),
+                'type'  => 'text',
+                'value' => __( 'A post has been edited', 'wp-user-frontend' ),
+            ],
+            'notification_edit_body'    => [
+                'label'     => __( 'Email Body', 'wp-user-frontend' ),
+                'type'      => 'textarea',
+                'value'     => "Hi Admin, \r\n\r\nThe post \"{post_title}\" has been updated. \r\n\r\nHere is the details: \r\nPost Title: {post_title} \r\nContent: {post_content} \r\nAuthor: {author} \r\nPost URL: {permalink} \r\nEdit URL: {editlink}",
+                'long_help' => '<h4 class="wpuf-m-0">You may use in to, subject & message:</h4>
+                                         <p class="wpuf-leading-8">
+                                         <span data-clipboard-text="{post_title}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{post_title}</span>
+                                         <span data-clipboard-text="{post_content}" class="wpuf-post-content wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{post_content}</span>
+                                         <span data-clipboard-text="{post_excerpt}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{post_excerpt}</span>
+                                         <span data-clipboard-text="{tags}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{tags}</span>
+                                         <span data-clipboard-text="{category}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{category}</span>
+                                         <span data-clipboard-text="{author}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{author}</span>
+                                         <span data-clipboard-text="{author_email}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{author_email}</span>
+                                         <span data-clipboard-text="{author_bio}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{author_bio}</span>
+                                         <span data-clipboard-text="{sitename}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{sitename}</span>
+                                         <span data-clipboard-text="{siteurl}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{siteurl}</span>
+                                         <span data-clipboard-text="{permalink}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{permalink}</span>
+                                         <span data-clipboard-text="{editlink}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{editlink}</span>
+                                         <span class="wpuf-pill-green">{custom_{NAME_OF_CUSTOM_FIELD}}</span>
+                                         e.g: <span class="wpuf-pill-green">{custom_website_url}</span> for website_url meta field</p>',
+            ],
+        ];
+
+        return $notification_settings;
+    }
+
+    /**
+     * Add post expiration settings pro fields preview
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $expiration_settings
+     *
+     * @return array
+     */
+    public function form_settings_preview_post_expiration( $expiration_settings ) {
+        $expiration_settings['pro_preview']['fields'] = [
+            'enable_post_expiration'    => [
+                'label' => __( 'Enable Post Expiration', 'wp-user-frontend' ),
+                'type'  => 'toggle',
+                'value' => 'on',
+            ],
+            'inline_fields'             => [
+                'fields' => [
+                    'expiration_time_value' => [
+                        'label' => __( 'Post Expiration Time', 'wp-user-frontend' ),
+                        'type'  => 'number',
+                        'value' => '7',
+                    ],
+                    'expiration_time_type'  => [
+                        'label'   => __( 'Duration Type', 'wp-user-frontend' ),
+                        'type'    => 'select',
+                        'options' => [
+                            'day'   => __( 'Day(s)', 'wp-user-frontend' ),
+                            'week'  => __( 'Week(s)', 'wp-user-frontend' ),
+                            'month' => __( 'Month(s)', 'wp-user-frontend' ),
+                        ],
+                    ],
+                ],
+            ],
+            'enable_mail_after_expired' => [
+                'label' => __( 'Send post expiration email to author', 'wp-user-frontend' ),
+                'type'  => 'checkbox',
+                'help_text' => __( 'Verification of email addresses will be mandatory', 'wp-user-frontend' ),
+            ],
+            'post_expiration_message'      => [
+                'label' => __( 'From Expired Message', 'wp-user-frontend' ),
+                'type'  => 'textarea',
+            ],
+        ];
+
+        return $expiration_settings;
     }
 }

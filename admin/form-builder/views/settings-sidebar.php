@@ -6,6 +6,9 @@
 
         $settings_titles = wpuf_get_post_form_builder_setting_menu_titles();
         $settings_items  = wpuf_get_post_form_builder_setting_menu_contents();
+        $badge_menus     = [
+            'post_expiration',
+        ];
         foreach ( $settings_titles as $key => $top_settings ) {
             $icon  = ! empty( $top_settings['icon'] ) ? $top_settings['icon'] : '';
             $label = ! empty( $top_settings['label'] ) ? $top_settings['label'] : '';
@@ -21,9 +24,6 @@
                     ?>
                     </span>
                     </h2>
-                    <i
-                        class="fa fa-angle-down !wpuf-font-bold !wpuf-text-xl !wpuf-leading-none wpuf-text-gray-600"
-                    ></i>
                 </div>
                 <div class="wpuf-mb-4">
                     <ul class="wpuf-sidebar-menu wpuf-list-none wpuf-space-y-2">
@@ -36,21 +36,30 @@
                             <li
                                 @click="switch_settings_menu('<?php echo $sub_key; ?>')"
                                 :class="active_settings_tab === '<?php echo $sub_key; ?>' ? 'wpuf-bg-primary active_settings_tab' : ''"
-                                class="wpuf-group/sidebar-item wpuf-mx-2 wpuf-py-2 wpuf-px-3 hover:wpuf-bg-primary hover:wpuf-cursor-pointer wpuf-rounded-lg wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out wpuf-flex wpuf-items-center"
+                                class="wpuf-group/sidebar-item wpuf-mx-2 wpuf-py-2 wpuf-px-3 hover:wpuf-bg-primary hover:wpuf-cursor-pointer wpuf-rounded-lg wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out wpuf-items-center wpuf-flex wpuf-justify-between"
                                 data-settings="<?php echo $sub_key; ?>">
                                 <a
                                     :class="active_settings_tab === '<?php echo $sub_key; ?>' ? 'wpuf-text-white' : 'wpuf-text-gray-600'"
-                                    class="wpuf-ml-2 wpuf-text-sm group-hover/sidebar-item:wpuf-text-white wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out focus:wpuf-shadow-none focus:wpuf-outline-none wpuf-flex">
+                                    class="wpuf-ml-2 wpuf-text-sm group-hover/sidebar-item:wpuf-text-white wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out focus:wpuf-shadow-none focus:wpuf-outline-none wpuf-flex wpuf-items-center">
                                     <?php
                                     echo $sub_icon;
                                     ?>
                                     <span class="wpuf-ml-2">
-                            <?php
-                            echo $sub_label;
-                            ?>
-                            </span>
-                        </a>
-                    </li>
+                                        <?php
+                                        echo $sub_label;
+                                        ?>
+                                    </span>
+                                </a>
+                                <?php
+                                if ( in_array( $sub_key, $badge_menus, true ) && ! wpuf_is_pro_active() ) {
+                                    ?>
+                                    <span
+                                        :class="active_settings_tab === '<?php echo $sub_key; ?>' ? 'wpuf-border-white wpuf-text-white' : 'wpuf-border-primary wpuf-text-primary'"
+                                        class="wpuf-border wpuf-py-[2px] wpuf-px-[6px] wpuf-rounded-md group-hover/sidebar-item:wpuf-border-white group-hover/sidebar-item:wpuf-text-white">PRO</span>
+                                    <?php
+                                }
+                                ?>
+                            </li>
                             <?php
                         }
                         ?>
@@ -118,8 +127,28 @@
                     data-settings-body="<?php echo $settings_key; ?>"
                 >
                     <?php
-                    foreach ( $settings_item as $field_key => $field ) {
-                        wpuf_render_settings_field( $field_key, $field, $form_settings, $form_post_type );
+                    error_log( print_r( $settings_item, true ) );
+                    if ( ! empty( $settings_item['pro_preview'] ) ) {
+                        ?>
+                        <div class="wpuf-p-4 wpuf-relative wpuf-rounded wpuf-border wpuf-border-transparent hover:wpuf-border-sky-500 wpuf-border-dashed wpuf-group/pro-item wpuf-transition-all wpuf-opacity-50 hover:wpuf-opacity-100">
+                            <a
+                                class="wpuf-btn-primary wpuf-absolute wpuf-top-[50%] wpuf-left-[50%] wpuf--translate-y-[50%] wpuf--translate-x-[50%] wpuf-z-30 wpuf-opacity-0 group-hover/pro-item:wpuf-opacity-100 wpuf-transition-all"
+                                target="_blank"
+                                href="<?php echo esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ); ?>">
+                                <?php esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' ); ?>
+                            </a>
+                            <div class="wpuf-z-20 wpuf-absolute wpuf-top-0 wpuf-left-0 wpuf-w-full wpuf-h-full wpuf-shadow-sm wpuf-bg-emerald-50 group-hover/pro-item:wpuf-opacity-50 wpuf-opacity-0"></div>
+                            <?php
+                            foreach ( $settings_item['pro_preview']['fields'] as $field_key => $field ) {
+                                wpuf_render_settings_field( $field_key, $field, $form_settings, $form_post_type );
+                            }
+                            ?>
+                        </div>
+                        <?php
+                    } else {
+                        foreach ( $settings_item as $field_key => $field ) {
+                            wpuf_render_settings_field( $field_key, $field, $form_settings, $form_post_type );
+                        }
                     }
                     ?>
                 </div>
@@ -151,6 +180,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
     $pro_badge  = WPUF_ASSET_URI . '/images/pro-badge.svg';
     $badge_fields = [
         'enable_multistep',
+        'notification_edit',
     ];
 
     if ( ( 'default_category' === $field_key ) && ( 'post' !== $post_type ) ) {
@@ -196,7 +226,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                         </svg>
                     </a>
                 <?php } ?>
-                <?php if ( in_array( $field_key, $badge_fields, true ) ) { ?>
+                <?php if ( in_array( $field_key, $badge_fields, true ) && ! wpuf_is_pro_active() ) { ?>
                     <img class="wpuf-ml-2" src="<?php echo esc_attr( $pro_badge ); ?>" alt="">
                 <?php } ?>
                 <?php

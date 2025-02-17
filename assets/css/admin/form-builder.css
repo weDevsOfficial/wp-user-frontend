@@ -3432,6 +3432,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   border-color: rgb(37 99 235 / var(--tw-border-opacity));
 }
 
+.wpuf-border-emerald-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(209 250 229 / var(--tw-border-opacity));
+}
+
 .wpuf-border-gray-100 {
   --tw-border-opacity: 1;
   border-color: rgb(243 244 246 / var(--tw-border-opacity));
@@ -3523,6 +3528,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 .wpuf-bg-blue-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(59 130 246 / var(--tw-bg-opacity));
+}
+
+.wpuf-bg-emerald-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(236 253 245 / var(--tw-bg-opacity));
 }
 
 .wpuf-bg-emerald-900 {
@@ -4750,6 +4760,10 @@ table.option-field-option-chooser tbody tr td {
   border-bottom-width: 2px;
 }
 
+.hover\:wpuf-border-dashed:hover {
+  border-style: dashed;
+}
+
 .hover\:wpuf-border-blue-600:hover {
   --tw-border-opacity: 1;
   border-color: rgb(37 99 235 / var(--tw-border-opacity));
@@ -5108,6 +5122,14 @@ table.option-field-option-chooser tbody tr td {
 
 .wpuf-group\/hidden-fields:hover .group-hover\/hidden-fields\:wpuf-opacity-100 {
   opacity: 1;
+}
+
+.wpuf-group\/pro-item:hover .group-hover\/pro-item\:wpuf-opacity-100 {
+  opacity: 1;
+}
+
+.wpuf-group\/pro-item:hover .group-hover\/pro-item\:wpuf-opacity-50 {
+  opacity: 0.5;
 }
 
 .wpuf-group:hover .group-hover\:wpuf-opacity-100 {

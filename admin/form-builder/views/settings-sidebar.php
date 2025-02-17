@@ -1,6 +1,9 @@
 <div class="wpuf-settings-container wpuf-border wpuf-border-gray-200 wpuf-rounded-lg wpuf-m-4 wpuf-flex wpuf-transition-transform wpuf-duration-200 wpuf-ease-in-out">
     <div class="wpuf-w-1/4 wpuf-min-h-screen wpuf-border-r wpuf-p-8">
         <?php
+
+        use WeDevs\Wpuf\Free\Pro_Prompt;
+
         $settings_titles = wpuf_get_post_form_builder_setting_menu_titles();
         $settings_items  = wpuf_get_post_form_builder_setting_menu_contents();
         foreach ( $settings_titles as $key => $top_settings ) {
@@ -78,8 +81,31 @@
                         <p class="wpuf-text-lg wpuf-font-medium wpuf-mb-2"><?php echo $section['label']; ?></p>
                         <p class="wpuf-text-gray-500 wpuf-text-xs wpuf-leading-5"><?php echo $section['desc']; ?></p>
                     <?php
-                    foreach ( $section['fields'] as $field_key => $field ) {
-                        wpuf_render_settings_field( $field_key, $field, $form_settings, $form_post_type );
+                    if ( ! empty( $section['fields'] ) ) {
+                        foreach ( $section['fields'] as $field_key => $field ) {
+                            wpuf_render_settings_field( $field_key, $field, $form_settings, $form_post_type );
+                        }
+                    }
+
+                    if ( ! empty( $section['pro_preview'] ) ) {
+                        if ( ! empty( $section['pro_preview']['fields'] ) ) {
+                            ?>
+                            <div class="wpuf-p-4 wpuf-relative wpuf-rounded wpuf-border hover:wpuf-border-dashed wpuf-border-transparent wpuf-border-emerald-100 wpuf-group/pro-item">
+                                <a
+                                    class="wpuf-btn-primary wpuf-absolute wpuf-top-[50%] wpuf-left-[50%] wpuf--translate-y-[50%] wpuf--translate-x-[50%] wpuf-z-30 wpuf-opacity-0 group-hover/pro-item:wpuf-opacity-100 wpuf-transition-all"
+                                    target="_blank"
+                                    href="<?php echo esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ); ?>">
+                                    <?php esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' ); ?>
+                                </a>
+                                <div class="wpuf-z-20 wpuf-absolute wpuf-top-0 wpuf-left-0 wpuf-w-full wpuf-h-full wpuf-shadow-sm wpuf-bg-emerald-50 group-hover/pro-item:wpuf-opacity-50 wpuf-opacity-0"></div>
+                                <?php
+                                foreach ( $section['pro_preview']['fields'] as $field_key => $field ) {
+                                    wpuf_render_settings_field( $field_key, $field, $form_settings, $form_post_type );
+                                }
+                                ?>
+                            </div>
+                            <?php
+                        }
                     }
                     ?>
                     </div>
@@ -122,13 +148,22 @@
 
 <?php
 function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_type = 'post' ) {
+    $pro_badge  = WPUF_ASSET_URI . '/images/pro-badge.svg';
+    $badge_fields = [
+        'enable_multistep',
+    ];
+
     if ( ( 'default_category' === $field_key ) && ( 'post' !== $post_type ) ) {
         $field_key = 'default_' . $post_type . '_cat';
     }
 
     $value = ! empty( $field['default'] ) ? $field['default'] : '';
     $value = ! empty( $field['value'] ) ? $field['value'] : $value;                           // default value
-    $value = isset( $form_settings[ $field_key ] ) ? $form_settings[ $field_key ] : $value; // checking with isset because saved value can be empty string
+
+    // if the field is a pro fields preview, no need to load fields from db
+    if ( empty( $field['pro_preview'] ) ) {
+        $value = isset( $form_settings[ $field_key ] ) ? $form_settings[ $field_key ] : $value;   // checking with isset because saved value can be empty string
+    }
 
     if ( 'inline_fields' !== $field_key ) {
         ?>
@@ -160,6 +195,9 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                             <path d="M11.603 7.963a.75.75 0 0 0-.977 1.138 2.5 2.5 0 0 1 .142 3.667l-3 3a2.5 2.5 0 0 1-3.536-3.536l1.225-1.224a.75.75 0 0 0-1.061-1.06l-1.224 1.224a4 4 0 1 0 5.656 5.656l3-3a4 4 0 0 0-.225-5.865Z" />
                         </svg>
                     </a>
+                <?php } ?>
+                <?php if ( in_array( $field_key, $badge_fields, true ) ) { ?>
+                    <img class="wpuf-ml-2" src="<?php echo esc_attr( $pro_badge ); ?>" alt="">
                 <?php } ?>
                 <?php
                 if ( 'color-picker' === $field['type'] || 'toggle' === $field['type'] ) {
@@ -318,6 +356,17 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                 <?php
             }
 
+            if ( 'date' === $field['type'] ) {
+                ?>
+                <input
+                    :class="[setting_class_names('text'), 'datepicker hasDatepicker']"
+                    type="text"
+                    name="wpuf_settings[<?php echo $field_key; ?>]"
+                    id="<?php echo $field_key; ?>"
+                    value="<?php echo $value; ?>"/>
+                <?php
+            }
+
             if ( ! empty( $field['long_help'] ) ) {
                 ?>
                 <div class="wpuf-text-sm wpuf-mt-2">
@@ -330,6 +379,11 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
         </div>
         <?php
     } else {
+        if ( 'pro_preview' === $field_key ) {
+            ?>
+            <div class="wpuf-pro-preview-area wpuf-relative">
+            <?php
+        }
         ?>
         <div class="wpuf-flex wpuf-input-container">
             <?php
@@ -358,6 +412,17 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                             value="<?php echo $value; ?>"/>
                         <?php
                     }
+
+                    if ( 'date' === $inner_field['type'] ) {
+                        ?>
+                        <input
+                            :class="[setting_class_names('text'), 'datepicker hasDatepicker']"
+                            type="text"
+                            name="wpuf_settings[<?php echo $inner_field_key; ?>]"
+                            id="<?php echo $inner_field_key; ?>"
+                            value="<?php echo $value; ?>"/>
+                        <?php
+                    }
                     ?>
                 </div>
                 <?php
@@ -373,5 +438,10 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
             ?>
         </div>
         <?php
+        if ( 'pro_preview' === $field_key ) {
+            ?>
+            </div>
+            <?php
+        }
     }
 }

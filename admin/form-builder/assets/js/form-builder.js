@@ -928,14 +928,6 @@
             }
         },
 
-        changeMultistepVisibility: function(target) {
-            if (target.is(':checked')) {
-                $('.wpuf_multistep_content').show();
-            } else {
-                $('.wpuf_multistep_content').hide();
-            }
-        },
-
         showRegFormNotificationFields: function() {
             var newUserStatus                 = $( "input#wpuf_new_user_status" ),
                 emailVerification             = $( "input#notification_type_verification" ),
@@ -1067,7 +1059,6 @@
             });
         });
 
-        const multistep = $('#enable_multistep');
         const post_permission = $('#post_permission');
         const payment_options = $('#payment_options');
         const guest_details = $('#guest_details');
@@ -1077,13 +1068,6 @@
         const notification_edit = $('#notification_edit');
         const redirect_to = $('#redirect_to');
         const edit_redirect_to = $('#edit_redirect_to');
-
-        // initial show/hide fields when page loads
-        if ( multistep.is(':checked') ) {
-            show_multistep_cond_fields();
-        } else {
-            hide_multistep_cond_fields();
-        }
 
         populate_default_categories('select#post_type');
         hide_redirect_to_options();
@@ -1160,14 +1144,6 @@
 
         edit_redirect_to.on('change', function() {
             show_conditional_redirect_to_options_post_update( $(this) );
-        });
-
-        multistep.on('change', function() {
-            if ( $(this).is(':checked') ) {
-                show_multistep_cond_fields();
-            } else {
-                hide_multistep_cond_fields();
-            }
         });
 
         post_permission.on('change', function () {
@@ -1259,20 +1235,6 @@
     $('select#post_type').on('change', function() {
         populate_default_categories(this);
     });
-
-    function show_multistep_cond_fields() {
-        $('#multistep_progressbar_type').parents('.wpuf-input-container').show();
-        $('#ms_ac_txt_color').parents('.wpuf-input-container').show();
-        $('#ms_active_bgcolor').parents('.wpuf-input-container').show();
-        $('#ms_bgcolor').parents('.wpuf-input-container').show();
-    }
-
-    function hide_multistep_cond_fields() {
-        $('#multistep_progressbar_type').parents('.wpuf-input-container').hide();
-        $('#ms_ac_txt_color').parents('.wpuf-input-container').hide();
-        $('#ms_active_bgcolor').parents('.wpuf-input-container').hide();
-        $('#ms_bgcolor').parents('.wpuf-input-container').hide();
-    }
 
     function hide_posting_control_cond_fields() {
         $('#guest_details').parents('.wpuf-input-container').hide();
@@ -1423,5 +1385,13 @@
 
         }
     }
+
+    const changeMultistepVisibility = function(target) {
+        if (target.is(':checked')) {
+            $('.wpuf_multistep_content').show();
+        } else {
+            $('.wpuf_multistep_content').hide();
+        }
+    };
 
 })(jQuery);

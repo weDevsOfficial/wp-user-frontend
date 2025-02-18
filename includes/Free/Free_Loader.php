@@ -47,6 +47,8 @@ class Free_Loader extends Pro_Prompt {
         // post form settings
         add_filter( 'wpuf_form_builder_settings_general', [ $this, 'form_settings_preview_general' ] );
         add_filter( 'wpuf_form_builder_settings_notification', [ $this, 'form_settings_preview_notification' ] );
+        add_filter( 'wpuf_form_builder_settings_display', [ $this, 'form_settings_preview_display' ] );
+        // add_filter( 'wpuf_form_builder_settings_advanced', [ $this, 'form_settings_preview_advanced' ] );
         add_filter( 'wpuf_form_builder_settings_post_expiration', [ $this, 'form_settings_preview_post_expiration' ] );
 
         // payment gateway added for previewing
@@ -1591,6 +1593,52 @@ class Free_Loader extends Pro_Prompt {
         ];
 
         return $notification_settings;
+    }
+
+    /**
+     * Add notification settings pro fields preview
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $display_settings
+     *
+     * @return array
+     */
+    public function form_settings_preview_display( $display_settings ) {
+        $display_settings['section']['custom_form_style']['pro_preview']['fields'] = [
+            'form_layout'         => [
+                'label'     => __( 'Choose Form Style', 'wp-user-frontend' ),
+                'type'      => 'pic-radio',
+                'help_text' => __(
+                    'If selected a form template, it will try to execute that integration options when new post created and updated.',
+                    'wp-user-frontend'
+                ),
+                'options'   => [
+                    'layout1' => [
+                        'label' => __( 'Post Form', 'wp-user-frontend' ),
+                        'image' => WPUF_ASSET_URI . '/images/forms/layout1.png',
+                    ],
+                    'layout2' => [
+                        'label' => __( 'Post Form', 'wp-user-frontend' ),
+                        'image' => WPUF_ASSET_URI . '/images/forms/layout2.png',
+                    ],
+                    'layout3' => [
+                        'label' => __( 'Post Form', 'wp-user-frontend' ),
+                        'image' => WPUF_ASSET_URI . '/images/forms/layout3.png',
+                    ],
+                    'layout4' => [
+                        'label' => __( 'Post Form', 'wp-user-frontend' ),
+                        'image' => WPUF_ASSET_URI . '/images/forms/layout4.png',
+                    ],
+                    'layout5' => [
+                        'label' => __( 'Post Form', 'wp-user-frontend' ),
+                        'image' => WPUF_ASSET_URI . '/images/forms/layout5.png',
+                    ],
+                ],
+            ],
+        ];
+
+        return $display_settings;
     }
 
     /**

@@ -28,10 +28,10 @@
                     echo $icon;
                     ?>
                     <span class="wpuf-ml-2">
-                            <?php
-                            echo $label;
-                            ?>
-                            </span>
+                        <?php
+                        echo $label;
+                        ?>
+                    </span>
                 </h2>
             </div>
             <?php } else { ?>
@@ -184,8 +184,20 @@
                 <?php
             }
         }
-        ?>
-        <div class="wpuf-py-4 wpuf-border-b wpuf-border-gray-300 wpuf-flex wpuf-items-center wpuf-justify-evenly wpuf-flex-col wpuf-h-[70vh]">
+        if ( ! wpuf_is_pro_active() ) {
+            ?>
+        <div
+            v-if="active_settings_tab === 'modules'"
+            class="wpuf-py-4 wpuf-border-b wpuf-border-gray-300 wpuf-flex wpuf-items-center wpuf-justify-evenly wpuf-flex-col wpuf-h-[70vh] wpuf-p-4 wpuf-relative wpuf-rounded wpuf-border wpuf-border-transparent hover:wpuf-border-sky-500 wpuf-border-dashed wpuf-group/pro-item wpuf-transition-all wpuf-opacity-50 hover:wpuf-opacity-100">
+
+            <a
+                class="wpuf-btn-primary wpuf-absolute wpuf-top-[50%] wpuf-left-[50%] wpuf--translate-y-[50%] wpuf--translate-x-[50%] wpuf-z-30 wpuf-opacity-0 group-hover/pro-item:wpuf-opacity-100 wpuf-transition-all"
+                target="_blank"
+                href="<?php echo esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ); ?>">
+                <?php esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' ); ?>
+            </a>
+            <div class="wpuf-z-20 wpuf-absolute wpuf-top-0 wpuf-left-0 wpuf-w-full wpuf-h-full wpuf-shadow-sm wpuf-bg-emerald-50 group-hover/pro-item:wpuf-opacity-50 wpuf-opacity-0"></div>
+
             <div class="wpuf-flex wpuf-flex-col wpuf-items-center">
                 <svg width="161" height="161" viewBox="0 0 161 161" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="80.5" cy="80.5" r="80.5" fill="#F3F3F4"/>
@@ -225,6 +237,9 @@
                 <p class="wpuf-text-sm wpuf-text-gray-500 wpuf-mt-2">No modules have been activated yet.</p>
             </div>
         </div>
+            <?php
+        }
+        ?>
         <div class="wpuf-flex wpuf-space-x-4 wpuf-items-center wpuf-mt-8">
             <button
                 @click.prevent=""

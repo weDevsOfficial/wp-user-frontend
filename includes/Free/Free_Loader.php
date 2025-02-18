@@ -50,6 +50,7 @@ class Free_Loader extends Pro_Prompt {
         add_filter( 'wpuf_form_builder_settings_display', [ $this, 'form_settings_preview_display' ] );
         add_filter( 'wpuf_form_builder_settings_advanced', [ $this, 'form_settings_preview_advanced' ] );
         add_filter( 'wpuf_form_builder_settings_post_expiration', [ $this, 'form_settings_preview_post_expiration' ] );
+        add_filter( 'wpuf_form_builder_post_settings_menu_items', [ $this, 'form_settings_modules' ] );
 
         // payment gateway added for previewing
         add_filter( 'wpuf_payment_gateways', [ $this, 'wpuf_payment_gateways' ] );
@@ -1697,16 +1698,36 @@ class Free_Loader extends Pro_Prompt {
                 ],
             ],
             'enable_mail_after_expired' => [
-                'label' => __( 'Send post expiration email to author', 'wp-user-frontend' ),
-                'type'  => 'checkbox',
+                'label'     => __( 'Send post expiration email to author', 'wp-user-frontend' ),
+                'type'      => 'checkbox',
                 'help_text' => __( 'Verification of email addresses will be mandatory', 'wp-user-frontend' ),
             ],
-            'post_expiration_message'      => [
+            'post_expiration_message'   => [
                 'label' => __( 'From Expired Message', 'wp-user-frontend' ),
                 'type'  => 'textarea',
             ],
         ];
 
         return $expiration_settings;
+    }
+
+    /**
+     * Add module settings pro fields preview
+     *
+     * @since WPUF_SINCE
+ *
+     * @param array $settings
+     *
+     * @return array
+     */
+    public function form_settings_modules( $settings ) {
+        $settings['modules'] = [
+            'label'     => __( 'Modules', 'wp-user-frontend' ),
+            'icon'      => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.42857 9.75L2.25 12L6.42857 14.25M6.42857 9.75L12 12.75L17.5714 9.75M6.42857 9.75L2.25 7.5L12 2.25L21.75 7.5L17.5714 9.75M17.5714 9.75L21.75 12L17.5714 14.25M17.5714 14.25L21.75 16.5L12 21.75L2.25 16.5L6.42857 14.25M17.5714 14.25L12 17.25L6.42857 14.25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>',
+        ];
+
+        return $settings;
     }
 }

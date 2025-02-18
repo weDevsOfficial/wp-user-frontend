@@ -724,7 +724,11 @@
 
             switch_settings_menu: function(menu) {
                 this.active_settings_tab = menu;
-                this.active_settings_title = this.settings_titles.post_settings.sub_items[menu].label;
+                if (menu === 'modules') {
+                    this.active_settings_title = 'Modules';
+                } else {
+                    this.active_settings_title = this.settings_titles.post_settings.sub_items[menu].label;
+                }
             },
 
             switch_form_settings_pic_radio_item: function ( key, value ) {
@@ -1047,9 +1051,9 @@
         function show_settings_for(settings) {
             $('.wpuf-settings-body').each(function() {
                 if ($(this).data('settings-body') === settings) {
-                    $(this).show();
+                    $(this).fadeIn();
                 } else {
-                    $(this).hide();
+                    $(this).fadeOut();
                 }
             });
         }
@@ -1058,6 +1062,10 @@
             $(this).on('click', function() {
                 show_settings_for($(this).data('settings'));
             });
+        });
+
+        $('#modules-menu').on('click', function() {
+            show_settings_for('modules');
         });
 
         const post_permission = $('#post_permission');

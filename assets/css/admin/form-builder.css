@@ -2705,6 +2705,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   margin-top: 2rem;
 }
 
+.wpuf-mt-9 {
+  margin-top: 2.25rem;
+}
+
 .wpuf-mt-\[-5px\] {
   margin-top: -5px;
 }
@@ -4468,18 +4472,22 @@ body ul.wpuf-form li .wpuf-fields {
   width: 70% !important;
 }
 
-#wpuf-form-builder-settings ul.wpuf-sidebar-menu li a svg {
+#wpuf-form-builder-settings ul.wpuf-sidebar-menu li a svg,
+h2#modules-menu svg{
   stroke: #4b5563;
 }
 
 #wpuf-form-builder-settings ul.wpuf-sidebar-menu li:hover a svg,
-#wpuf-form-builder-settings ul.wpuf-sidebar-menu li.active_settings_tab a svg {
+#wpuf-form-builder-settings ul.wpuf-sidebar-menu li.active_settings_tab a svg,
+h2#modules-menu:hover svg,
+h2#modules-menu.active_settings_tab svg{
   stroke: #ffffff;
 }
 
 .selectize-control {
   border: none !important;
   box-shadow: none !important;
+  padding: 0 !important;
 }
 
 .selectize-control.single .selectize-input,

@@ -5219,24 +5219,24 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                         'wp-user-frontend'
                     ),
                     'fields' => [
-                        'notification_new' => [
+                        'notification_new'         => [
                             'label' => __( 'New Post Notification', 'wp-user-frontend' ),
                             'type'  => 'toggle',
                         ],
-                        'notification_new_to' => [
+                        'notification_new_to'      => [
                             'label' => __( 'To', 'wp-user-frontend' ),
                             'type'  => 'text',
                             'value' => get_option( 'admin_email' ),
                         ],
-                        'notification_new_subject'           => [
-                            'label'       => __( 'Subject', 'wp-user-frontend' ),
-                            'type'        => 'text',
+                        'notification_new_subject' => [
+                            'label' => __( 'Subject', 'wp-user-frontend' ),
+                            'type'  => 'text',
                             'value' => __( 'New post created', 'wp-user-frontend' ),
                         ],
-                        'notification_new_body'           => [
-                            'label'       => __( 'Email Body', 'wp-user-frontend' ),
-                            'type'        => 'textarea',
-                            'value' => "Hi Admin, \r\n\r\nA new post has been created in your site {sitename} ({siteurl}). \r\n\r\nHere is the details: \r\nPost Title: {post_title} \r\nContent: {post_content} \r\nAuthor: {author} \r\nPost URL: {permalink} \r\nEdit URL: {editlink}",
+                        'notification_new_body'    => [
+                            'label'     => __( 'Email Body', 'wp-user-frontend' ),
+                            'type'      => 'textarea',
+                            'value'     => "Hi Admin, \r\n\r\nA new post has been created in your site {sitename} ({siteurl}). \r\n\r\nHere is the details: \r\nPost Title: {post_title} \r\nContent: {post_content} \r\nAuthor: {author} \r\nPost URL: {permalink} \r\nEdit URL: {editlink}",
                             'long_help' => '<h4 class="wpuf-m-0">You may use in to, subject & message:</h4>
                                          <p class="wpuf-leading-8">
                                          <span data-clipboard-text="{post_title}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{post_title}</span>

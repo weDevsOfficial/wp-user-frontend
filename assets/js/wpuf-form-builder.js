@@ -735,11 +735,12 @@
 
     var SettingsTab = {
         init: function() {
-            /*$(function() {
+            $(function() {
                 $('.datepicker').datetimepicker();
                 $('.wpuf-ms-color').wpColorPicker();
             });
 
+            /*
             $('#wpuf-metabox-settings').on('change', 'select[name="wpuf_settings[redirect_to]"]', this.settingsRedirect);
             $('#wpuf-metabox-settings-update').on('change', 'select[name="wpuf_settings[edit_redirect_to]"]', this.settingsRedirect);
             $('select[name="wpuf_settings[redirect_to]"]').change();
@@ -1068,6 +1069,8 @@
         const notification_edit = $('#notification_edit');
         const redirect_to = $('#redirect_to');
         const edit_redirect_to = $('#edit_redirect_to');
+        const schedule_form = $('#schedule_form');
+        const limit_entries = $('#limit_entries');
 
         populate_default_categories('select#post_type');
         hide_redirect_to_options();
@@ -1076,51 +1079,63 @@
         show_conditional_redirect_to_options_post_update( edit_redirect_to );
 
         if ( post_permission.val() === 'guest_post' ) {
-            guest_details.parents('.wpuf-input-container').show();
-            $('#guest_email_verify').parents('.wpuf-input-container').show();
+            guest_details.parents('.wpuf-input-container').fadeIn();
+            $('#guest_email_verify').parents('.wpuf-input-container').fadeIn();
 
-            $('#roles').parents('.wpuf-input-container').hide();
-            $('#message_restrict').parents('.wpuf-input-container').hide();
+            $('#roles').parents('.wpuf-input-container').fadeOut();
+            $('#message_restrict').parents('.wpuf-input-container').fadeOut();
         } else if ( post_permission.val() === 'role_base' ) {
             const roles = '#roles';
-            $(roles).parents('.wpuf-input-container').show();
-            $('#message_restrict').parents('.wpuf-input-container').show();
+            $(roles).parents('.wpuf-input-container').fadeIn();
+            $('#message_restrict').parents('.wpuf-input-container').fadeIn();
 
             populate_default_roles();
 
-            guest_details.parents('.wpuf-input-container').hide();
-            $('#guest_email_verify').parents('.wpuf-input-container').hide();
-            $('#name_label').parents('.wpuf-input-container').hide();
+            guest_details.parents('.wpuf-input-container').fadeOut();
+            $('#guest_email_verify').parents('.wpuf-input-container').fadeOut();
+            $('#name_label').parents('.wpuf-input-container').fadeOut();
         } else {
             hide_posting_control_cond_fields();
         }
 
         if ( payment_options.is(':checked') ) {
-            choose_payment_option.parents('.wpuf-input-container').show();
+            choose_payment_option.parents('.wpuf-input-container').fadeIn();
         } else {
             hide_enable_payment_cond_fields();
         }
 
-        if (post_permission.val() === 'guest_post' && guest_details.is(':checked')) {
-            $('#name_label').parents('.wpuf-input-container').show();
+        if ( schedule_form.is(':checked') ) {
+            show_schedule_form_items();
         } else {
-            $('#name_label').parents('.wpuf-input-container').hide();
+            hide_schedule_form_items();
+        }
+
+        if ( limit_entries.is(':checked') ) {
+            show_limit_entry_items();
+        } else {
+            hide_limit_entry_items();
+        }
+
+        if (post_permission.val() === 'guest_post' && guest_details.is(':checked')) {
+            $('#name_label').parents('.wpuf-input-container').fadeIn();
+        } else {
+            $('#name_label').parents('.wpuf-input-container').fadeOut();
         }
 
         if ( choose_payment_option.val('force_pack_purchase') ) {
-            fallback_ppp_enable.parents('.wpuf-input-container').show();
-            $('#pay_per_post_cost').parents('.wpuf-input-container').hide();
-            $('#ppp_payment_success_page').parents('.wpuf-input-container').hide();
+            fallback_ppp_enable.parents('.wpuf-input-container').fadeIn();
+            $('#pay_per_post_cost').parents('.wpuf-input-container').fadeOut();
+            $('#ppp_payment_success_page').parents('.wpuf-input-container').fadeOut();
         } else {
-            fallback_ppp_enable.parents('.wpuf-input-container').hide();
-            $('#pay_per_post_cost').parents('.wpuf-input-container').show();
-            $('#ppp_payment_success_page').parents('.wpuf-input-container').show();
+            fallback_ppp_enable.parents('.wpuf-input-container').fadeOut();
+            $('#pay_per_post_cost').parents('.wpuf-input-container').fadeIn();
+            $('#ppp_payment_success_page').parents('.wpuf-input-container').fadeIn();
         }
 
         if ( fallback_ppp_enable.is(':checked') ) {
-            $('#fallback_ppp_cost').parents('.wpuf-input-container').show();
+            $('#fallback_ppp_cost').parents('.wpuf-input-container').fadeIn();
         } else {
-            $('#fallback_ppp_cost').parents('.wpuf-input-container').hide();
+            $('#fallback_ppp_cost').parents('.wpuf-input-container').fadeOut();
         }
 
         if ( notification_new.is(':checked') ) {
@@ -1130,9 +1145,9 @@
         }
 
         if ( notification_edit.is(':checked') ) {
-            $('#notification_edit_to').parents('.wpuf-input-container').show();
-            $('#notification_edit_subject').parents('.wpuf-input-container').show();
-            $('#notification_edit_body').parents('.wpuf-input-container').show();
+            $('#notification_edit_to').parents('.wpuf-input-container').fadeIn();
+            $('#notification_edit_subject').parents('.wpuf-input-container').fadeIn();
+            $('#notification_edit_body').parents('.wpuf-input-container').fadeIn();
         } else {
             hide_update_post_notification();
         }
@@ -1148,20 +1163,20 @@
 
         post_permission.on('change', function () {
             if ( $(this).val() === 'guest_post' ) {
-                guest_details.parents('.wpuf-input-container').show();
-                $('#guest_email_verify').parents('.wpuf-input-container').show();
+                guest_details.parents('.wpuf-input-container').fadeIn();
+                $('#guest_email_verify').parents('.wpuf-input-container').fadeIn();
 
-                $('#roles').parents('.wpuf-input-container').hide();
-                $('#message_restrict').parents('.wpuf-input-container').hide();
+                $('#roles').parents('.wpuf-input-container').fadeOut();
+                $('#message_restrict').parents('.wpuf-input-container').fadeOut();
             } else if ( $(this).val() === 'role_base' ) {
-                $('#roles').parents('.wpuf-input-container').show();
-                $('#message_restrict').parents('.wpuf-input-container').show();
+                $('#roles').parents('.wpuf-input-container').fadeIn();
+                $('#message_restrict').parents('.wpuf-input-container').fadeIn();
 
                 populate_default_roles();
 
-                guest_details.parents('.wpuf-input-container').hide();
-                $('#guest_email_verify').parents('.wpuf-input-container').hide();
-                $('#name_label').parents('.wpuf-input-container').hide();
+                guest_details.parents('.wpuf-input-container').fadeOut();
+                $('#guest_email_verify').parents('.wpuf-input-container').fadeOut();
+                $('#name_label').parents('.wpuf-input-container').fadeOut();
             } else {
                 hide_posting_control_cond_fields();
             }
@@ -1169,45 +1184,61 @@
 
         guest_details.on('change', function () {
             if ( $(this).is(':checked') ) {
-                $('#name_label').parents('.wpuf-input-container').show();
+                $('#name_label').parents('.wpuf-input-container').fadeIn();
             } else {
-                $('#name_label').parents('.wpuf-input-container').hide();
+                $('#name_label').parents('.wpuf-input-container').fadeOut();
             }
         });
 
         payment_options.on('change', function() {
             if ( $(this).is(':checked') ) {
-                choose_payment_option.parents('.wpuf-input-container').show();
+                choose_payment_option.parents('.wpuf-input-container').fadeIn();
             } else {
                 hide_enable_payment_cond_fields();
             }
         });
 
+        schedule_form.on('change', function() {
+            if ( $(this).is(':checked') ) {
+                show_schedule_form_items();
+            } else {
+                hide_schedule_form_items();
+            }
+        });
+
+        limit_entries.on('change', function() {
+            if ( $(this).is(':checked') ) {
+                show_limit_entry_items();
+            } else {
+                hide_limit_entry_items();
+            }
+        });
+
         choose_payment_option.on('change', function () {
             if ( $(this).val() === 'force_pack_purchase' ) {
-                fallback_ppp_enable.parents('.wpuf-input-container').show();
-                $('#pay_per_post_cost').parents('.wpuf-input-container').hide();
-                $('#ppp_payment_success_page').parents('.wpuf-input-container').hide();
+                fallback_ppp_enable.parents('.wpuf-input-container').fadeIn();
+                $('#pay_per_post_cost').parents('.wpuf-input-container').fadeOut();
+                $('#ppp_payment_success_page').parents('.wpuf-input-container').fadeOut();
             } else {
-                fallback_ppp_enable.parents('.wpuf-input-container').hide();
-                $('#pay_per_post_cost').parents('.wpuf-input-container').show();
-                $('#ppp_payment_success_page').parents('.wpuf-input-container').show();
+                fallback_ppp_enable.parents('.wpuf-input-container').fadeOut();
+                $('#pay_per_post_cost').parents('.wpuf-input-container').fadeIn();
+                $('#ppp_payment_success_page').parents('.wpuf-input-container').fadeIn();
             }
         });
 
         fallback_ppp_enable.on('change', function () {
             if ( $(this).is(':checked') ) {
-                $('#fallback_ppp_cost').parents('.wpuf-input-container').show();
+                $('#fallback_ppp_cost').parents('.wpuf-input-container').fadeIn();
             } else {
-                $('#fallback_ppp_cost').parents('.wpuf-input-container').hide();
+                $('#fallback_ppp_cost').parents('.wpuf-input-container').fadeOut();
             }
         });
 
         notification_new.on('change', function () {
             if ( $(this).is(':checked') ) {
-                $('#notification_new_to').parents('.wpuf-input-container').show();
-                $('#notification_new_subject').parents('.wpuf-input-container').show();
-                $('#notification_new_body').parents('.wpuf-input-container').show();
+                $('#notification_new_to').parents('.wpuf-input-container').fadeIn();
+                $('#notification_new_subject').parents('.wpuf-input-container').fadeIn();
+                $('#notification_new_body').parents('.wpuf-input-container').fadeIn();
             } else {
                 hide_new_post_notification();
             }
@@ -1215,9 +1246,9 @@
 
         notification_edit.on('change', function () {
             if ( $(this).is(':checked') ) {
-                $('#notification_edit_to').parents('.wpuf-input-container').show();
-                $('#notification_edit_subject').parents('.wpuf-input-container').show();
-                $('#notification_edit_body').parents('.wpuf-input-container').show();
+                $('#notification_edit_to').parents('.wpuf-input-container').fadeIn();
+                $('#notification_edit_subject').parents('.wpuf-input-container').fadeIn();
+                $('#notification_edit_body').parents('.wpuf-input-container').fadeIn();
             } else {
                 hide_update_post_notification();
             }
@@ -1237,49 +1268,49 @@
     });
 
     function hide_posting_control_cond_fields() {
-        $('#guest_details').parents('.wpuf-input-container').hide();
-        $('#name_label').parents('.wpuf-input-container').hide();
-        $('#guest_email_verify').parents('.wpuf-input-container').hide();
-        $('#roles').parents('.wpuf-input-container').hide();
-        $('#message_restrict').parents('.wpuf-input-container').hide();
+        $('#guest_details').parents('.wpuf-input-container').fadeOut();
+        $('#name_label').parents('.wpuf-input-container').fadeOut();
+        $('#guest_email_verify').parents('.wpuf-input-container').fadeOut();
+        $('#roles').parents('.wpuf-input-container').fadeOut();
+        $('#message_restrict').parents('.wpuf-input-container').fadeOut();
     }
 
     function hide_enable_payment_cond_fields() {
-        $('#choose_payment_option').parents('.wpuf-input-container').hide();
-        $('#fallback_ppp_enable').parents('.wpuf-input-container').hide();
-        $('#fallback_ppp_cost').parents('.wpuf-input-container').hide();
-        $('#pay_per_post_cost').parents('.wpuf-input-container').hide();
-        $('#ppp_payment_success_page').parents('.wpuf-input-container').hide();
+        $('#choose_payment_option').parents('.wpuf-input-container').fadeOut();
+        $('#fallback_ppp_enable').parents('.wpuf-input-container').fadeOut();
+        $('#fallback_ppp_cost').parents('.wpuf-input-container').fadeOut();
+        $('#pay_per_post_cost').parents('.wpuf-input-container').fadeOut();
+        $('#ppp_payment_success_page').parents('.wpuf-input-container').fadeOut();
     }
 
     function show_new_post_notification() {
-        $('#notification_new_to').parents('.wpuf-input-container').show();
-        $('#notification_new_subject').parents('.wpuf-input-container').show();
-        $('#notification_new_body').parents('.wpuf-input-container').show();
+        $('#notification_new_to').parents('.wpuf-input-container').fadeIn();
+        $('#notification_new_subject').parents('.wpuf-input-container').fadeIn();
+        $('#notification_new_body').parents('.wpuf-input-container').fadeIn();
     }
 
     function hide_new_post_notification() {
-        $('#notification_new_to').parents('.wpuf-input-container').hide();
-        $('#notification_new_subject').parents('.wpuf-input-container').hide();
-        $('#notification_new_body').parents('.wpuf-input-container').hide();
+        $('#notification_new_to').parents('.wpuf-input-container').fadeOut();
+        $('#notification_new_subject').parents('.wpuf-input-container').fadeOut();
+        $('#notification_new_body').parents('.wpuf-input-container').fadeOut();
     }
 
     function hide_update_post_notification() {
-        $('#notification_edit_to').parents('.wpuf-input-container').hide();
-        $('#notification_edit_subject').parents('.wpuf-input-container').hide();
-        $('#notification_edit_body').parents('.wpuf-input-container').hide();
+        $('#notification_edit_to').parents('.wpuf-input-container').fadeOut();
+        $('#notification_edit_subject').parents('.wpuf-input-container').fadeOut();
+        $('#notification_edit_body').parents('.wpuf-input-container').fadeOut();
     }
 
     function hide_redirect_to_options() {
-        $('#message').parents('.wpuf-input-container').hide();
-        $('#page_id').parents('.wpuf-input-container').hide();
-        $('#url').parents('.wpuf-input-container').hide();
+        $('#message').parents('.wpuf-input-container').fadeOut();
+        $('#page_id').parents('.wpuf-input-container').fadeOut();
+        $('#url').parents('.wpuf-input-container').fadeOut();
     }
 
     function hide_redirect_to_options_post_update() {
-        $('#update_message').parents('.wpuf-input-container').hide();
-        $('#edit_page_id').parents('.wpuf-input-container').hide();
-        $('#edit_url').parents('.wpuf-input-container').hide();
+        $('#update_message').parents('.wpuf-input-container').fadeOut();
+        $('#edit_page_id').parents('.wpuf-input-container').fadeOut();
+        $('#edit_url').parents('.wpuf-input-container').fadeOut();
     }
 
     function populate_default_categories(obj) {
@@ -1348,20 +1379,44 @@
         });
     }
 
+    function show_schedule_form_items() {
+        $('#schedule_start').parents('.wpuf-input-container').fadeIn();
+        $('#form_pending_message').parents('.wpuf-input-container').fadeIn();
+        $('#form_expired_message').parents('.wpuf-input-container').fadeIn();
+
+        $('#schedule_end').datetimepicker();
+    }
+
+    function hide_schedule_form_items() {
+        $('#schedule_start').parents('.wpuf-input-container').fadeOut();
+        $('#form_pending_message').parents('.wpuf-input-container').fadeOut();
+        $('#form_expired_message').parents('.wpuf-input-container').fadeOut();
+    }
+
+    function show_limit_entry_items() {
+        $('#limit_number').parents('.wpuf-input-container').fadeIn();
+        $('#limit_message').parents('.wpuf-input-container').fadeIn();
+    }
+
+    function hide_limit_entry_items() {
+        $('#limit_number').parents('.wpuf-input-container').fadeOut();
+        $('#limit_message').parents('.wpuf-input-container').fadeOut();
+    }
+
     function show_conditional_redirect_to_options(redirect_to) {
         hide_redirect_to_options();
 
         switch ( redirect_to.val() ) {
             case 'same':
-                $('#message').parents('.wpuf-input-container').show();
+                $('#message').parents('.wpuf-input-container').fadeIn();
                 break;
 
             case 'page':
-                $( '#page_id' ).parents('.wpuf-input-container').show();
+                $( '#page_id' ).parents('.wpuf-input-container').fadeIn();
                 break;
 
             case 'url':
-                $( '#url' ).parents('.wpuf-input-container').show();
+                $( '#url' ).parents('.wpuf-input-container').fadeIn();
                 break;
 
         }
@@ -1372,15 +1427,15 @@
 
         switch ( redirect_to.val() ) {
             case 'same':
-                $('#update_message').parents('.wpuf-input-container').show();
+                $('#update_message').parents('.wpuf-input-container').fadeIn();
                 break;
 
             case 'page':
-                $( '#edit_page_id' ).parents('.wpuf-input-container').show();
+                $( '#edit_page_id' ).parents('.wpuf-input-container').fadeIn();
                 break;
 
             case 'url':
-                $( '#edit_url' ).parents('.wpuf-input-container').show();
+                $( '#edit_url' ).parents('.wpuf-input-container').fadeIn();
                 break;
 
         }

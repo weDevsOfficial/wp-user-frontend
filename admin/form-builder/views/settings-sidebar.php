@@ -127,7 +127,14 @@
                     data-settings-body="<?php echo $settings_key; ?>"
                 >
                     <?php
-                    error_log( print_r( $settings_item, true ) );
+                    foreach ( $settings_item as $field_key => $field ) {
+                        if ( 'pro_preview' === $field_key ) {
+                            continue;
+                        }
+
+                        wpuf_render_settings_field( $field_key, $field, $form_settings, $form_post_type );
+                    }
+
                     if ( ! empty( $settings_item['pro_preview'] ) ) {
                         ?>
                         <div class="wpuf-p-4 wpuf-relative wpuf-rounded wpuf-border wpuf-border-transparent hover:wpuf-border-sky-500 wpuf-border-dashed wpuf-group/pro-item wpuf-transition-all wpuf-opacity-50 hover:wpuf-opacity-100">
@@ -145,10 +152,6 @@
                             ?>
                         </div>
                         <?php
-                    } else {
-                        foreach ( $settings_item as $field_key => $field ) {
-                            wpuf_render_settings_field( $field_key, $field, $form_settings, $form_post_type );
-                        }
                     }
                     ?>
                 </div>
@@ -389,7 +392,8 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
             if ( 'date' === $field['type'] ) {
                 ?>
                 <input
-                    :class="[setting_class_names('text'), 'datepicker hasDatepicker']"
+                    :class="setting_class_names('text')"
+                    class="datepicker"
                     type="text"
                     name="wpuf_settings[<?php echo $field_key; ?>]"
                     id="<?php echo $field_key; ?>"
@@ -417,6 +421,14 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                 $classes = 'wpuf-w-1/2';
                 $classes .= $index_counter === 0 ? ' wpuf-mr-2' : '';
 
+                $value = ! empty( $inner_field['default'] ) ? $inner_field['default'] : '';
+                $value = ! empty( $inner_field['value'] ) ? $inner_field['value'] : $value;                 // default value
+
+                // if the field is a pro fields preview, no need to load fields from db
+                if ( empty( $inner_field['pro_preview'] ) ) {
+                    $value = isset( $form_settings[ $inner_field_key ] ) ? $form_settings[ $inner_field_key ] : $value;   // checking with isset because saved value can be empty string
+                }
+
                 ++$index_counter;
                 ?>
                 <div
@@ -441,7 +453,8 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                     if ( 'date' === $inner_field['type'] ) {
                         ?>
                         <input
-                            :class="[setting_class_names('text'), 'datepicker hasDatepicker']"
+                            :class="setting_class_names('text')"
+                            class="datepicker"
                             type="text"
                             name="wpuf_settings[<?php echo $inner_field_key; ?>]"
                             id="<?php echo $inner_field_key; ?>"

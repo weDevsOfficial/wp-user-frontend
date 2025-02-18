@@ -48,7 +48,7 @@ class Free_Loader extends Pro_Prompt {
         add_filter( 'wpuf_form_builder_settings_general', [ $this, 'form_settings_preview_general' ] );
         add_filter( 'wpuf_form_builder_settings_notification', [ $this, 'form_settings_preview_notification' ] );
         add_filter( 'wpuf_form_builder_settings_display', [ $this, 'form_settings_preview_display' ] );
-        // add_filter( 'wpuf_form_builder_settings_advanced', [ $this, 'form_settings_preview_advanced' ] );
+        add_filter( 'wpuf_form_builder_settings_advanced', [ $this, 'form_settings_preview_advanced' ] );
         add_filter( 'wpuf_form_builder_settings_post_expiration', [ $this, 'form_settings_preview_post_expiration' ] );
 
         // payment gateway added for previewing
@@ -1593,6 +1593,27 @@ class Free_Loader extends Pro_Prompt {
         ];
 
         return $notification_settings;
+    }
+
+    /**
+     * Add advance settings pro fields preview
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $advanced_settings
+     *
+     * @return array
+     */
+    public function form_settings_preview_advanced( $advanced_settings ) {
+        $advanced_settings['pro_preview']['fields'] = [
+            'conditional_logic' => [
+                'label' => __( 'Conditional Logic on Submit', 'wp-user-frontend' ),
+                'type'  => 'toggle',
+                'value' => 'on',
+            ],
+        ];
+
+        return $advanced_settings;
     }
 
     /**

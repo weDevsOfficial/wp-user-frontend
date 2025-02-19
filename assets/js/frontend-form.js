@@ -448,20 +448,38 @@
                         // enable external plugins to use events
                         $('body').trigger('wpuf:postform:success', res);
 
-                        if ( res.data.show_message ) {
-                            form.before( '<div class="wpuf-success">' + res.data.message + '</div>');
-                            form.slideUp( 'fast', function() {
-                                form.remove();
-                            });
+                        if ( res.data ) {
+                            if ( res.data.show_message ) {
+                                form.before( '<div class="wpuf-success">' + res.data.message + '</div>');
+                                form.slideUp( 'fast', function() {
+                                    form.remove();
+                                });
 
-                            //focus
-                            $('html, body').animate({
-                                scrollTop: $('.wpuf-success').offset().top - 100
-                            }, 'fast');
+                                //focus
+                                $('html, body').animate({
+                                    scrollTop: $('.wpuf-success').offset().top - 100
+                                }, 'fast');
 
+                            } else {
+                                window.location = res.data.redirect_to;
+                            }
                         } else {
-                            window.location = res.data.redirect_to;
+                            if ( res.show_message ) {
+                                form.before( '<div class="wpuf-success">' + res.message + '</div>');
+                                form.slideUp( 'fast', function() {
+                                    form.remove();
+                                });
+
+                                //focus
+                                $('html, body').animate({
+                                    scrollTop: $('.wpuf-success').offset().top - 100
+                                }, 'fast');
+
+                            } else {
+                                window.location = res.redirect_to;
+                            }
                         }
+
 
                     } else {
 

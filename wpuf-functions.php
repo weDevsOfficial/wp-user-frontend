@@ -5357,7 +5357,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
         'wpuf_form_builder_settings_post_expiration', []
     );
 
-    return apply_filters(
+    $post_settings['post_settings'] = apply_filters(
         'wpuf_form_builder_post_settings',
         [
             'general'               => $general,
@@ -5367,5 +5367,10 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
             'advanced'              => $advanced,
             'post_expiration'       => $post_expiration,
         ]
+    );
+
+    return apply_filters(
+        'wpuf_post_form_builder_setting_menu_contents',
+        $post_settings
     );
 }

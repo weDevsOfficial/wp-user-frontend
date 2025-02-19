@@ -722,12 +722,12 @@
                 }
             },
 
-            switch_settings_menu: function(menu) {
-                this.active_settings_tab = menu;
-                if (menu === 'modules') {
+            switch_settings_menu: function(menu, submenu) {
+                this.active_settings_tab = submenu;
+                if (submenu === 'modules') {
                     this.active_settings_title = 'Modules';
                 } else {
-                    this.active_settings_title = this.settings_titles.post_settings.sub_items[menu].label;
+                    this.active_settings_title = this.settings_titles[menu].sub_items[submenu].label;
                 }
             },
 

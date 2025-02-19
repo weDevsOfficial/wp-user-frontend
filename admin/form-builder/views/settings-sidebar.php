@@ -6,6 +6,7 @@
 
         $settings_titles = wpuf_get_post_form_builder_setting_menu_titles();
         $settings_items  = wpuf_get_post_form_builder_setting_menu_contents();
+
         $badge_menus     = [
             'post_expiration',
         ];
@@ -16,12 +17,12 @@
             ?>
 
             <?php
-            if ( ( 'modules' === $key ) && ! wpuf_is_pro_active() ) {
+            if ( ( 'modules' === $key ) ) {
                 ?>
             <div class="wpuf-mb-4 wpuf-flex wpuf-justify-between wpuf-items-center">
                 <h2
                     id="modules-menu"
-                    @click="switch_settings_menu('modules')"
+                    @click="switch_settings_menu('modules', 'modules')"
                     :class="active_settings_tab === 'modules'? 'wpuf-bg-primary active_settings_tab wpuf-m-0 wpuf-text-white' : ''"
                     class="wpuf-group/sidebar-item hover:wpuf-bg-primary hover:wpuf-cursor-pointer hover:wpuf-text-white wpuf-rounded-lg wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out wpuf-items-center wpuf-w-full wpuf-m-0 wpuf-py-2 wpuf-px-3 wpuf--ml-3 wpuf-flex wpuf-text-gray-600">
                     <?php
@@ -60,7 +61,7 @@
                             $sub_label = ! empty( $sub_menu['label'] ) ? $sub_menu['label'] : '';
                             ?>
                             <li
-                                @click="switch_settings_menu('<?php echo $sub_key; ?>')"
+                                @click="switch_settings_menu('<?php echo $key; ?>', '<?php echo $sub_key; ?>')"
                                 :class="active_settings_tab === '<?php echo $sub_key; ?>' ? 'wpuf-bg-primary active_settings_tab' : ''"
                                 class="wpuf-group/sidebar-item wpuf-mx-2 wpuf-py-2 wpuf-px-3 hover:wpuf-bg-primary hover:wpuf-cursor-pointer wpuf-rounded-lg wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out wpuf-items-center wpuf-flex wpuf-justify-between"
                                 data-settings="<?php echo $sub_key; ?>">
@@ -105,7 +106,8 @@
         $form_settings  = wpuf_get_form_settings( $post->ID );
         $form_post_type = ! empty( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
 
-        foreach ( $settings_items as $settings_key => $settings_item ) {
+        foreach ( $settings_items as $section_key => $section ) {
+            foreach ( $section as $settings_key => $settings_item ) {
             if ( ! empty( $settings_item['section'] ) ) {
                 foreach ( $settings_item['section'] as $section_key => $section ) {
                     ?>
@@ -181,15 +183,16 @@
                     }
                     ?>
                 </div>
-                <?php
+                    <?php
+                }
             }
         }
+
         if ( ! wpuf_is_pro_active() ) {
             ?>
         <div
             v-if="active_settings_tab === 'modules'"
             class="wpuf-py-4 wpuf-border-b wpuf-border-gray-300 wpuf-flex wpuf-items-center wpuf-justify-evenly wpuf-flex-col wpuf-h-[70vh] wpuf-p-4 wpuf-relative wpuf-rounded wpuf-border wpuf-border-transparent hover:wpuf-border-sky-500 wpuf-border-dashed wpuf-group/pro-item wpuf-transition-all wpuf-opacity-50 hover:wpuf-opacity-100">
-
             <a
                 class="wpuf-btn-primary wpuf-absolute wpuf-top-[50%] wpuf-left-[50%] wpuf--translate-y-[50%] wpuf--translate-x-[50%] wpuf-z-30 wpuf-opacity-0 group-hover/pro-item:wpuf-opacity-100 wpuf-transition-all"
                 target="_blank"
@@ -418,7 +421,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
             <?php
             if ( 'pic-radio' === $field['type'] ) {
                 ?>
-                <div class="wpuf-grid wpuf-grid-cols-4">
+                <div class="wpuf-grid wpuf-grid-cols-4" id="<?php echo $field_key; ?>">
                     <?php
                     foreach ( $field['options'] as $key => $option ) {
                         ?>

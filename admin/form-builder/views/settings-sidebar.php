@@ -6,10 +6,10 @@
 
         $settings_titles = wpuf_get_post_form_builder_setting_menu_titles();
         $settings_items  = wpuf_get_post_form_builder_setting_menu_contents();
-
         $badge_menus     = [
             'post_expiration',
         ];
+
         foreach ( $settings_titles as $key => $top_settings ) {
             $icon  = ! empty( $top_settings['icon'] ) ? $top_settings['icon'] : '';
             $label = ! empty( $top_settings['label'] ) ? $top_settings['label'] : '';
@@ -17,7 +17,7 @@
             ?>
 
             <?php
-            if ( ( 'modules' === $key ) ) {
+            if ( ( 'modules' === $key ) && empty( $settings_items['modules'] ) ) {
                 ?>
             <div class="wpuf-mb-4 wpuf-flex wpuf-justify-between wpuf-items-center">
                 <h2
@@ -108,48 +108,48 @@
 
         foreach ( $settings_items as $section_key => $section ) {
             foreach ( $section as $settings_key => $settings_item ) {
-            if ( ! empty( $settings_item['section'] ) ) {
-                foreach ( $settings_item['section'] as $section_key => $section ) {
-                    ?>
+                if ( ! empty( $settings_item['section'] ) ) {
+                    foreach ( $settings_item['section'] as $section_key => $section ) {
+                        ?>
                     <div
                         class="wpuf-settings-body wpuf-py-4 wpuf-border-b wpuf-border-gray-300"
                         data-settings-body="<?php echo $settings_key; ?>"
                     >
                         <p class="wpuf-text-lg wpuf-font-medium wpuf-mb-2"><?php echo $section['label']; ?></p>
                         <p class="wpuf-text-gray-500 wpuf-text-xs wpuf-leading-5"><?php echo $section['desc']; ?></p>
-                    <?php
-                    if ( ! empty( $section['fields'] ) ) {
-                        foreach ( $section['fields'] as $field_key => $field ) {
-                            wpuf_render_settings_field( $field_key, $field, $form_settings, $form_post_type );
+                        <?php
+                        if ( ! empty( $section['fields'] ) ) {
+                            foreach ( $section['fields'] as $field_key => $field ) {
+                                wpuf_render_settings_field( $field_key, $field, $form_settings, $form_post_type );
+                            }
                         }
-                    }
 
-                    if ( ! empty( $section['pro_preview'] ) ) {
-                        if ( ! empty( $section['pro_preview']['fields'] ) ) {
-                            ?>
-                            <div class="wpuf-p-4 wpuf-relative wpuf-rounded wpuf-border wpuf-border-transparent hover:wpuf-border-sky-500 wpuf-border-dashed wpuf-group/pro-item wpuf-transition-all wpuf-opacity-50 hover:wpuf-opacity-100">
-                                <a
-                                    class="wpuf-btn-primary wpuf-absolute wpuf-top-[50%] wpuf-left-[50%] wpuf--translate-y-[50%] wpuf--translate-x-[50%] wpuf-z-30 wpuf-opacity-0 group-hover/pro-item:wpuf-opacity-100 wpuf-transition-all"
-                                    target="_blank"
-                                    href="<?php echo esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ); ?>">
-                                    <?php esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' ); ?>
-                                </a>
-                                <div class="wpuf-z-20 wpuf-absolute wpuf-top-0 wpuf-left-0 wpuf-w-full wpuf-h-full wpuf-shadow-sm wpuf-bg-emerald-50 group-hover/pro-item:wpuf-opacity-50 wpuf-opacity-0"></div>
-                                <?php
-                                foreach ( $section['pro_preview']['fields'] as $field_key => $field ) {
-                                    wpuf_render_settings_field( $field_key, $field, $form_settings, $form_post_type );
-                                }
+                        if ( ! empty( $section['pro_preview'] ) ) {
+                            if ( ! empty( $section['pro_preview']['fields'] ) ) {
                                 ?>
-                            </div>
-                            <?php
+                                <div class="wpuf-p-4 wpuf-relative wpuf-rounded wpuf-border wpuf-border-transparent hover:wpuf-border-sky-500 wpuf-border-dashed wpuf-group/pro-item wpuf-transition-all wpuf-opacity-50 hover:wpuf-opacity-100">
+                                    <a
+                                        class="wpuf-btn-primary wpuf-absolute wpuf-top-[50%] wpuf-left-[50%] wpuf--translate-y-[50%] wpuf--translate-x-[50%] wpuf-z-30 wpuf-opacity-0 group-hover/pro-item:wpuf-opacity-100 wpuf-transition-all"
+                                        target="_blank"
+                                        href="<?php echo esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ); ?>">
+                                        <?php esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' ); ?>
+                                    </a>
+                                    <div class="wpuf-z-20 wpuf-absolute wpuf-top-0 wpuf-left-0 wpuf-w-full wpuf-h-full wpuf-shadow-sm wpuf-bg-emerald-50 group-hover/pro-item:wpuf-opacity-50 wpuf-opacity-0"></div>
+                                    <?php
+                                    foreach ( $section['pro_preview']['fields'] as $field_key => $field ) {
+                                        wpuf_render_settings_field( $field_key, $field, $form_settings, $form_post_type );
+                                    }
+                                    ?>
+                                </div>
+                                <?php
+                            }
                         }
-                    }
-                    ?>
+                        ?>
                     </div>
-                    <?php
-                }
-            } else {
-                ?>
+                        <?php
+                    }
+                } else {
+                    ?>
                 <div
                     class="wpuf-settings-body wpuf-py-4 wpuf-border-b wpuf-border-gray-300"
                     data-settings-body="<?php echo $settings_key; ?>"
@@ -188,11 +188,14 @@
             }
         }
 
-        if ( ! wpuf_is_pro_active() ) {
+        if ( ! wpuf_is_pro_active() || empty( $settings_items['modules'] ) ) {
             ?>
         <div
             v-if="active_settings_tab === 'modules'"
             class="wpuf-py-4 wpuf-border-b wpuf-border-gray-300 wpuf-flex wpuf-items-center wpuf-justify-evenly wpuf-flex-col wpuf-h-[70vh] wpuf-p-4 wpuf-relative wpuf-rounded wpuf-border wpuf-border-transparent hover:wpuf-border-sky-500 wpuf-border-dashed wpuf-group/pro-item wpuf-transition-all wpuf-opacity-50 hover:wpuf-opacity-100">
+            <?php
+            if ( ! wpuf_is_pro_active() ) {
+                ?>
             <a
                 class="wpuf-btn-primary wpuf-absolute wpuf-top-[50%] wpuf-left-[50%] wpuf--translate-y-[50%] wpuf--translate-x-[50%] wpuf-z-30 wpuf-opacity-0 group-hover/pro-item:wpuf-opacity-100 wpuf-transition-all"
                 target="_blank"
@@ -200,7 +203,9 @@
                 <?php esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' ); ?>
             </a>
             <div class="wpuf-z-20 wpuf-absolute wpuf-top-0 wpuf-left-0 wpuf-w-full wpuf-h-full wpuf-shadow-sm wpuf-bg-emerald-50 group-hover/pro-item:wpuf-opacity-50 wpuf-opacity-0"></div>
-
+                <?php
+            }
+            ?>
             <div class="wpuf-flex wpuf-flex-col wpuf-items-center">
                 <svg width="161" height="161" viewBox="0 0 161 161" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="80.5" cy="80.5" r="80.5" fill="#F3F3F4"/>
@@ -238,6 +243,19 @@
                 </svg>
                 <p class="wpuf-text-lg wpuf-text-gray-800 wpuf-mt-9 wpuf-mb-0">No modules have been activated yet.</p>
                 <p class="wpuf-text-sm wpuf-text-gray-500 wpuf-mt-2">No modules have been activated yet.</p>
+
+                <?php
+                if ( wpuf_is_pro_active() ) {
+                    ?>
+                    <a
+                        class="wpuf-btn-primary wpuf-mt-4"
+                        target="_blank"
+                        href="#">
+                        <?php esc_html_e( 'Go To Module Page', 'wp-user-frontend' ); ?>
+                    </a>
+                    <?php
+                }
+                ?>
             </div>
         </div>
             <?php

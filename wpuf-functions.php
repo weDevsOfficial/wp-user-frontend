@@ -4938,7 +4938,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                 'before_post_settings' => [
                     'label'  => __( 'Before Post Settings', 'wp-user-frontend' ),
                     'desc'   => __(
-                        'Configure the form\'s behavior and appearance before submission, including content type, category, status, draft saving, and submit button customization.',
+                        'Configure how the form behaves before submission, including content type, default category, post status, draft-saving options, and submit button customization',
                         'wp-user-frontend'
                     ),
                     'fields' => [
@@ -4946,7 +4946,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                             'label'     => __( 'Post Type', 'wp-user-frontend' ),
                             'type'      => 'select',
                             'options'   => $post_types,
-                            'help_text' => __( 'Choose the content type for the post editor', 'wp-user-frontend' ),
+                            'help_text' => __( 'Select the content type this form will create, like a post, product, or custom type', 'wp-user-frontend' ),
                             'link'      => esc_url_raw(
                                 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/different-custom-post-type-submission-2/'
                             ),
@@ -4954,14 +4954,14 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                         'default_category' => [
                             'label'     => __( 'Default Category', 'wp-user-frontend' ),
                             'type'      => 'multi-select',
-                            'help_text' => __( 'Choose the default category for the post', 'wp-user-frontend' ),
+                            'help_text' => __( 'Select the default category for posts submitted through this form', 'wp-user-frontend' ),
                             'options'   => wpuf_get_terms(),
                         ],
                         'redirect_to'      => [
                             'label'     => __( 'Successful Redirection', 'wp-user-frontend' ),
                             'type'      => 'select',
                             'help_text' => __(
-                                'After successfully submit, where the page will redirect to', 'wp-user-frontend'
+                                'Select where users will be redirected after successfully submitting the form', 'wp-user-frontend'
                             ),
                             'options'   => [
                                 'post' => __( 'Newly created post', 'wp-user-frontend' ),
@@ -4994,7 +4994,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                                 'private'        => __( 'Private', 'wp-user-frontend' ),
                                 'published'      => __( 'Published', 'wp-user-frontend' ),
                             ],
-                            'help_text' => __( 'Choose the default category for the post', 'wp-user-frontend' ),
+                            'help_text' => __( 'Select the status of the post after submission', 'wp-user-frontend' ),
                         ],
                         'draft_post'       => [
                             'label'     => __( 'Enable saving as draft', 'wp-user-frontend' ),
@@ -5006,7 +5006,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                         'submit_text'      => [
                             'label'     => __( 'Submit Post Button Text', 'wp-user-frontend' ),
                             'type'      => 'text',
-                            'help_text' => __( 'Customize the text of the submit button', 'wp-user-frontend' ),
+                            'help_text' => __( 'Customize the text on the "Submit" button for this form', 'wp-user-frontend' ),
                         ],
                         'form_template'    => [
                             'label'     => __( 'Choose Form Template', 'wp-user-frontend' ),
@@ -5039,20 +5039,23 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                 'after_post_settings'  => [
                     'label'  => __( 'After Post Settings', 'wp-user-frontend' ),
                     'desc'   => __(
-                        'Define actions post-submission, such as updating status, success messages, redirections, edit time limits, and button text customization.',
+                        'Manage what happens after submission, such as setting post update status, displaying success messages, redirecting users, limiting edit time, and customizing the update button',
                         'wp-user-frontend'
                     ),
                     'fields' => [
                         'edit_post_status' => [
-                            'label'   => __( 'Post Update Status', 'wp-user-frontend' ),
-                            'type'    => 'select',
-                            'options' => [
+                            'label'     => __( 'Post Update Status', 'wp-user-frontend' ),
+                            'type'      => 'select',
+                            'options'   => [
                                 'draft'     => __( 'Draft', 'wp-user-frontend' ),
                                 'pending'   => __( 'Pending Review', 'wp-user-frontend' ),
                                 'private'   => __( 'Private', 'wp-user-frontend' ),
                                 'publish'   => __( 'Published', 'wp-user-frontend' ),
                                 '_nochange' => __( 'No Change', 'wp-user-frontend' ),
                             ],
+                            'help_text' => __(
+                                'Select the status the post will have after being updated', 'wp-user-frontend'
+                            ),
                         ],
                         'edit_redirect_to' => [
                             'label'     => __( 'Successful Redirection', 'wp-user-frontend' ),
@@ -5068,13 +5071,17 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                             ],
                         ],
                         'update_message'   => [
-                            'label'   => __( 'Post Update Message', 'wp-user-frontend' ),
-                            'type'    => 'textarea',
-                            'default' => sprintf(
+                            'label'     => __( 'Post Update Message', 'wp-user-frontend' ),
+                            'type'      => 'textarea',
+                            'default'   => sprintf(
                                 __(
                                     'Post has been updated successfully. <a target="_blank" href="%s">View post</a>',
                                     'wp-user-frontend'
                                 ), '{link}'
+                            ),
+                            'help_text' => __(
+                                'Customize the message displayed after a post is successfully updated',
+                                'wp-user-frontend'
                             ),
                         ],
                         'edit_page_id'     => [
@@ -5091,7 +5098,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                             'label'         => __( 'Lock User Editing After', 'wp-user-frontend' ),
                             'type'          => 'trailing-text',
                             'help_text'     => __(
-                                'After how many hours user will be locked from editing the submitted post.',
+                                'Set the number of hours after which users can no longer edit their submitted post',
                                 'wp-user-frontend'
                             ),
                             'trailing_type' => 'number',
@@ -5100,30 +5107,38 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                         'update_text'      => [
                             'label' => __( 'Update Post Button Text', 'wp-user-frontend' ),
                             'type'  => 'text',
+                            'help_text'     => __(
+                                'Customize the text on the "Update" button for this form',
+                                'wp-user-frontend'
+                            ),
                         ],
                     ],
                 ],
                 'posting_control'      => [
                     'label'  => __( 'Posting Control', 'wp-user-frontend' ),
                     'desc'   => __(
-                        'Before post settings let managers customize user-created posts, including forms, status, access, and notifications. These tools ensure a personalized experience with content control.',
+                        'Define who can submit posts using this form. Choose whether to allow guest submissions or restrict access based on user roles',
                         'wp-user-frontend'
                     ),
                     'fields' => [
                         'post_permission'    => [
-                            'label'   => __( 'Post Permission', 'wp-user-frontend' ),
-                            'type'    => 'select',
-                            'options' => [
+                            'label'     => __( 'Post Permission', 'wp-user-frontend' ),
+                            'type'      => 'select',
+                            'options'   => [
                                 'everyone'   => __( '- Select Post Permission -', 'wp-user-frontend' ),
                                 'guest_post' => __( 'Guest Post', 'wp-user-frontend' ),
                                 'role_base'  => __( 'Role Based Post', 'wp-user-frontend' ),
                             ],
+                            'help_text' => __(
+                                'Select who can submit posts using this form, either guests or specific user roles',
+                                'wp-user-frontend'
+                            ),
                         ],
                         'guest_details'      => [
                             'label'     => __( 'Require Name and Email address', 'wp-user-frontend' ),
                             'type'      => 'checkbox',
-                            'help_text' => __(
-                                'Users will be registered automatically with their name & email.', 'wp-user-frontend'
+                            'sub_label' => __(
+                                'If enabled, guest users will be automatically registered using their name and email', 'wp-user-frontend'
                             ),
                         ],
                         'inline_fields'      => [
@@ -5131,20 +5146,20 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                                 'name_label'  => [
                                     'label'     => __( 'Name Label', 'wp-user-frontend' ),
                                     'type'      => 'text',
-                                    'help_text' => __( 'Label text for name field', 'wp-user-frontend' ),
+                                    'help_text' => __( 'Customize the label for the name field in guest submissions', 'wp-user-frontend' ),
                                 ],
                                 'email_label' => [
                                     'label'     => __( 'E-Mail Label', 'wp-user-frontend' ),
                                     'type'      => 'text',
-                                    'help_text' => __( 'Label text for email field', 'wp-user-frontend' ),
+                                    'help_text' => __( 'Customize the label for the email field in guest submissions', 'wp-user-frontend' ),
                                 ],
                             ],
                         ],
                         'guest_email_verify' => [
                             'label'     => __( 'Require email verification', 'wp-user-frontend' ),
                             'type'      => 'checkbox',
-                            'help_text' => __(
-                                'If requires, users will be required to verify their email adress.', 'wp-user-frontend'
+                            'sub_label' => __(
+                                'If enabled, users must verify their email before submitting a post', 'wp-user-frontend'
                             ),
                         ],
                         'roles'              => [
@@ -5158,7 +5173,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                             'label'     => __( 'Unauthorized Message', 'wp-user-frontend' ),
                             'type'      => 'textarea',
                             'help_text' => __(
-                                'Not logged in users will see this message. You may use {login}, {register} for link',
+                                'Display this message to non-logged-in users. Use {login} and {register} placeholders to add login and registration links',
                                 'wp-user-frontend'
                             ),
                         ],
@@ -5175,7 +5190,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                 'label'     => __( 'Enable Payments', 'wp-user-frontend' ),
                 'type'      => 'toggle',
                 'help_text' => __(
-                    'Check to enable Payments for this form.', 'wp-user-frontend'
+                    'Enable payments for this form to charge users for submissions', 'wp-user-frontend'
                 ),
             ],
             'choose_payment_option'    => [
@@ -5185,25 +5200,31 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                     'force_pack_purchase' => __( 'Mandatory Subscription', 'wp-user-frontend' ),
                     'enable_pay_per_post' => __( 'Pay as you post', 'wp-user-frontend' ),
                 ],
+                'help_text' => __(
+                    'Select how users will pay for submitting posts', 'wp-user-frontend'
+                ),
             ],
             'fallback_ppp_enable'      => [
-                'label' => __( 'Pay-per-post billing when limit exceeds', 'wp-user-frontend' ),
-                'type'  => 'checkbox',
-                'help'  => __( 'Switch to pay-per-post billing if pack limit is exceeded', 'wp-user-frontend' ),
+                'label'     => __( 'Pay-per-post billing when limit exceeds', 'wp-user-frontend' ),
+                'type'      => 'checkbox',
+                'sub_label' => __( 'Switch to pay-per-post billing if pack limit is exceeded', 'wp-user-frontend' ),
             ],
             'fallback_ppp_cost'        => [
                 'label' => __( 'Cost for each additional post after pack limit is reached', 'wp-user-frontend' ),
                 'type'  => 'number',
             ],
             'pay_per_post_cost'        => [
-                'label' => __( 'Charge for each post', 'wp-user-frontend' ),
-                'type'  => 'number',
+                'label'     => __( 'Charge for each post', 'wp-user-frontend' ),
+                'type'      => 'number',
+                'help_text' => __(
+                    'Set a fee for each post submission', 'wp-user-frontend'
+                ),
             ],
             'ppp_payment_success_page' => [
                 'label'   => __( 'Payment Success Page', 'wp-user-frontend' ),
                 'type'    => 'select',
                 'options' => $pages,
-                'help'    => __( 'Page will show after successful payment', 'wp-user-frontend' ),
+                'help'    => __( 'Select the page users will be redirected to after a successful payment', 'wp-user-frontend' ),
             ],
         ]
     );
@@ -5215,13 +5236,14 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                 'new_post' => [
                     'label'  => __( 'New Post Notification', 'wp-user-frontend' ),
                     'desc'   => __(
-                        'Automatically notify recipients when a new post is submitted.',
+                        'Enable email alerts for new post submissions via the frontend form. This feature keeps you updated on user activity, allowing for timely review and approval of content.',
                         'wp-user-frontend'
                     ),
                     'fields' => [
                         'notification_new'         => [
                             'label' => __( 'New Post Notification', 'wp-user-frontend' ),
                             'type'  => 'toggle',
+                            'help'    => __( 'Enable email alerts for each new post submitted through this form', 'wp-user-frontend' ),
                         ],
                         'notification_new_to'      => [
                             'label' => __( 'To', 'wp-user-frontend' ),
@@ -5259,7 +5281,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                 'update_post' => [
                     'label'  => __( 'Update Post Notification', 'wp-user-frontend' ),
                     'desc'   => __(
-                        'Notify specified recipients when a post is updated.',
+                        'Enable this feature to receive email alerts whenever an existing post is updated through the frontend form. This ensures you\'re promptly informed about any changes made by users, allowing you to review and manage content updates efficiently.',
                         'wp-user-frontend'
                     ),
                 ],
@@ -5274,7 +5296,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                 'custom_form_style' => [
                     'label'  => __( 'Choose Form', 'wp-user-frontend' ),
                     'desc'   => __(
-                        'Select from a variety of pre-designed form templates to align with your website’s visual style.',
+                        'Customize the appearance and layout of your form. Select a form template that best suits your website\'s design for a cohesive look and feel.',
                         'wp-user-frontend'
                     ),
                     'fields' => [
@@ -5282,7 +5304,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                             'label'     => __( 'Use Theme CSS', 'wp-user-frontend' ),
                             'type'      => 'toggle',
                             'help_text' => __(
-                                'Selecting Yes will use your theme\'s style for form fields.', 'wp-user-frontend'
+                                'Apply your site\'s theme CSS for consistent styling and appearance', 'wp-user-frontend'
                             ),
                         ],
                         'label_position' => [
@@ -5294,7 +5316,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                                 'right'   => __( 'Right of Element', 'wp-user-frontend' ),
                                 'hidden'  => __( 'Hidden', 'wp-user-frontend' ),
                             ],
-                            'help'    => __( 'Where the labels of the form should display', 'wp-user-frontend' ),
+                            'help'    => __( 'Customize the position of form labels for improved user navigation and clarity', 'wp-user-frontend' ),
                         ],
                     ],
                 ],
@@ -5308,12 +5330,13 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
             'comment_status'       => [
                 'label' => __( 'Enable User Comment', 'wp-user-frontend' ),
                 'type'  => 'toggle',
+                'help'    => __( 'Allow users to comment on posts submitted via this form', 'wp-user-frontend' ),
             ],
             'schedule_form'        => [
                 'label'     => __( 'Enable Form Scheduling', 'wp-user-frontend' ),
                 'type'      => 'toggle',
                 'help_text' => __(
-                    'Schedule for a time period the form is active.', 'wp-user-frontend'
+                    'Set specific dates and times for when the form will be accessible to users', 'wp-user-frontend'
                 ),
             ],
             'inline_fields'        => [
@@ -5339,7 +5362,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
             'limit_entries'        => [
                 'label'     => __( 'Limit Form Entries', 'wp-user-frontend' ),
                 'type'      => 'toggle',
-                'help_text' => __( 'Limit the number of entries allowed for this form', 'wp-user-frontend' ),
+                'help_text' => __( 'Limit the number of submissions allowed for the form', 'wp-user-frontend' ),
             ],
             'limit_number'         => [
                 'label'   => __( 'Number of Entries', 'wp-user-frontend' ),

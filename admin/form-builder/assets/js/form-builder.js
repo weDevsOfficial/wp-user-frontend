@@ -1104,12 +1104,9 @@
         // if it is a select field, then attach selectize like below
         attachSelectize(fieldId) {
             if ($(`#${fieldId}`).is('select')) {
-                console.log(fieldId);
                 $(`#${fieldId}`).selectize({
                     plugins: ['remove_button'],
                 });
-            } else {
-                console.log('not a select field');
             }
         }
 

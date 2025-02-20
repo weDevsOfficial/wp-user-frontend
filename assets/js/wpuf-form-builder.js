@@ -606,6 +606,8 @@
                     e.clearSelection();
                 } );
             } );
+
+            populate_default_categories('select#post_type');
         },
 
         methods: {
@@ -743,288 +745,7 @@
                 $('.datepicker').datetimepicker();
                 $('.wpuf-ms-color').wpColorPicker();
             });
-
-            /*
-            $('#wpuf-metabox-settings').on('change', 'select[name="wpuf_settings[redirect_to]"]', this.settingsRedirect);
-            $('#wpuf-metabox-settings-update').on('change', 'select[name="wpuf_settings[edit_redirect_to]"]', this.settingsRedirect);
-            $('select[name="wpuf_settings[redirect_to]"]').change();
-            $('select[name="wpuf_settings[edit_redirect_to]"]').change();
-
-            // Form settings: Payment
-            $('#wpuf-metabox-settings-payment').on('change', 'input[type=checkbox][name="wpuf_settings[payment_options]"]', this.settingsPayment);
-            $('input[type=checkbox][name="wpuf_settings[payment_options]"]').trigger('change');
-
-            // pay per post
-            $('#wpuf-metabox-settings-payment').on('change', 'input[type=checkbox][name="wpuf_settings[enable_pay_per_post]"]', this.settingsPayPerPost);
-            $('input[type=checkbox][name="wpuf_settings[enable_pay_per_post]"]').trigger('change');
-
-            // force pack purchase
-            $('#wpuf-metabox-settings-payment').on('change', 'input[type=checkbox][name="wpuf_settings[force_pack_purchase]"]', this.settingsForcePack);
-            $('input[type=checkbox][name="wpuf_settings[force_pack_purchase]"]').trigger('change');
-
-            // Form settings: Submission Restriction
-
-            // Form settings: Guest post
-            $('#wpuf-metabox-submission-restriction').on('change', 'input[type=checkbox][name="wpuf_settings[guest_post]"]', this.settingsGuest);
-            $('input[type=checkbox][name="wpuf_settings[guest_post]"]').trigger('change');
-            $('#wpuf-metabox-submission-restriction').on('change', 'input[type=checkbox][name="wpuf_settings[role_base]"]', this.settingsRoles);
-            $('input[type=checkbox][name="wpuf_settings[role_base]"]').trigger('change');
-
-            // From settings: User details
-            $('#wpuf-metabox-submission-restriction').on('change', 'input[type=checkbox][name="wpuf_settings[guest_details]"]', this.settingsGuestDetails);
-
-            // From settings: schedule form
-            $('#wpuf-metabox-submission-restriction').on('change', 'input[type=checkbox][name="wpuf_settings[schedule_form]"]', this.settingsRestriction);
-            $('input[type=checkbox][name="wpuf_settings[schedule_form]"]').trigger('change');
-
-            // From settings: limit entries
-            $('#wpuf-metabox-submission-restriction').on('change', 'input[type=checkbox][name="wpuf_settings[limit_entries]"]', this.settingsLimit);
-            $('input[type=checkbox][name="wpuf_settings[limit_entries]"]').trigger('change');
-
-            this.changeMultistepVisibility($('.wpuf_enable_multistep_section :input[type="checkbox"]'));
-            var self = this;
-            $('.wpuf_enable_multistep_section :input[type="checkbox"]').click(function() {
-                self.changeMultistepVisibility($(this));
-            });
-
-            this.showRegFormNotificationFields();
-            this.integrationsCondFieldsVisibility();*/
-
         },
-
-        settingsGuest: function (e) {
-            e.preventDefault();
-
-            var table = $(this).closest('table');
-
-            if ( $(this).is(':checked') ) {
-                table.find('tr.show-if-guest').show();
-                table.find('tr.show-if-not-guest').hide();
-
-                $('input[type=checkbox][name="wpuf_settings[guest_details]"]').trigger('change');
-
-            } else {
-                table.find('tr.show-if-guest').hide();
-                table.find('tr.show-if-not-guest').show();
-            }
-        },
-
-        settingsRoles: function (e) {
-            e.preventDefault();
-
-            var table = $(this).closest('table');
-
-            if ( $(this).is(':checked') ) {
-                table.find('tr.show-if-roles').show();
-            } else {
-                table.find('tr.show-if-roles').hide();
-            }
-        },
-
-        settingsGuestDetails: function (e) {
-            e.preventDefault();
-
-            var table = $(this).closest('table');
-
-            if ( $(this).is(':checked') ) {
-                table.find('tr.show-if-details').show();
-            } else {
-                table.find('tr.show-if-details').hide();
-            }
-        },
-
-        settingsPayment: function (e) {
-            e.preventDefault();
-
-            var table = $(this).closest('table');
-
-            if ( $(this).is(':checked') ) {
-                table.find('tr.show-if-payment').show();
-                table.find('tr.show-if-force-pack').hide();
-            } else {
-                table.find('tr.show-if-payment').hide();
-                table.find('input[type=checkbox]').removeAttr('checked');
-            }
-        },
-
-        settingsPayPerPost: function (e) {
-            e.preventDefault();
-
-            var table = $(this).closest('table');
-
-            if ( $(this).is(':checked') ) {
-                table.find('tr.show-if-pay-per-post').show();
-
-            } else {
-                table.find('tr.show-if-pay-per-post').hide();
-
-            }
-        },
-
-        settingsForcePack: function (e) {
-            e.preventDefault();
-
-            var table = $(this).closest('table');
-
-            if ( $(this).is(':checked') ) {
-                table.find('tr.show-if-force-pack').show();
-
-            } else {
-                table.find('tr.show-if-force-pack').hide();
-
-            }
-        },
-
-        settingsRestriction: function (e) {
-            e.preventDefault();
-
-            var table = $(this).closest('table');
-
-            if ( $(this).is(':checked') ) {
-                table.find('tr.show-if-schedule').show();
-            } else {
-                table.find('tr.show-if-schedule').hide();
-
-            }
-        },
-
-        settingsLimit: function (e) {
-            e.preventDefault();
-
-            var table = $(this).closest('table');
-
-            if ( $(this).is(':checked') ) {
-                table.find('tr.show-if-limit-entries').show();
-            } else {
-                table.find('tr.show-if-limit-entries').hide();
-
-            }
-        },
-
-        settingsRedirect: function(e) {
-            e.preventDefault();
-
-            var $self = $(this),
-                $table = $self.closest('table'),
-                value = $self.val();
-
-            switch( value ) {
-                case 'post':
-                    $table.find('tr.wpuf-page-id, tr.wpuf-url, tr.wpuf-same-page').hide();
-                    break;
-
-                case 'page':
-                    $table.find('tr.wpuf-page-id').show();
-                    $table.find('tr.wpuf-same-page').hide();
-                    $table.find('tr.wpuf-url').hide();
-                    break;
-
-                case 'url':
-                    $table.find('tr.wpuf-page-id').hide();
-                    $table.find('tr.wpuf-same-page').hide();
-                    $table.find('tr.wpuf-url').show();
-                    break;
-
-                case 'same':
-                    $table.find('tr.wpuf-page-id').hide();
-                    $table.find('tr.wpuf-url').hide();
-                    $table.find('tr.wpuf-same-page').show();
-                    break;
-            }
-        },
-
-        showRegFormNotificationFields: function() {
-            var newUserStatus                 = $( "input#wpuf_new_user_status" ),
-                emailVerification             = $( "input#notification_type_verification" ),
-                welcomeEmail                  = $( "#notification_type_welcome_email" );
-
-            if ( newUserStatus.is(':checked') ) {
-                $('#wpuf_pending_user_admin_notification').show();
-                $('#wpuf_approved_user_admin_notification').hide();
-            } else{
-                $('#wpuf_pending_user_admin_notification').hide();
-                $('#wpuf_approved_user_admin_notification').show();
-            }
-
-            $( newUserStatus ).on( "click", function() {
-                $('#wpuf_pending_user_admin_notification').hide();
-                $('#wpuf_approved_user_admin_notification').show();
-
-                if ( newUserStatus.is(':checked') ) {
-                    $('#wpuf_pending_user_admin_notification').show();
-                    $('#wpuf_approved_user_admin_notification').hide();
-                }
-            });
-
-            if ( emailVerification.is(':checked') ) {
-                $('.wpuf-email-verification-settings-fields').show();
-                $('.wpuf-welcome-email-settings-fields').hide();
-            }
-
-            if ( welcomeEmail.is(':checked') ) {
-                $('.wpuf-welcome-email-settings-fields').show();
-                $('.wpuf-email-verification-settings-fields').hide();
-            }
-
-            $( emailVerification ).on( "click", function() {
-                $('.wpuf-email-verification-settings-fields').show();
-                $('.wpuf-welcome-email-settings-fields').hide();
-            });
-
-            $( welcomeEmail ).on( "click", function() {
-                $('.wpuf-welcome-email-settings-fields').show();
-                $('.wpuf-email-verification-settings-fields').hide();
-            });
-        },
-
-        integrationsCondFieldsVisibility: function() {
-            var conditional_logic      = $( '.wpuf-integrations-conditional-logic' ),
-                cond_fields_container  = $( '.wpuf-integrations-conditional-logic-container' ),
-                cond_fields            = $( '.wpuf_available_conditional_fields' ),
-                cond_field_options     = $( '.wpuf_selected_conditional_field_options' );
-
-            $( conditional_logic ).on( "click", function(e) {
-                $( cond_fields_container ).hide();
-
-                if ( e.target.value === 'yes' ) {
-                    $( cond_fields_container ).show();
-                }
-            });
-
-            $( cond_fields ).on('focus', function(e) {
-                var form_fields = wpuf_form_builder.form_fields,
-                    options     = '';
-                    options     += '<option value="-1">- select -</option>';
-
-                form_fields.forEach(function(field) {
-                  if ( field.template === 'radio_field' || field.template === 'checkbox_field' || field.template === 'dropdown_field' ) {
-                    options += '<option value="'+field.name+'">'+field.label+'</option>';
-                  }
-                });
-                e.target.innerHTML = options;
-            });
-
-            $( cond_fields ).on('change', function(e){
-                var form_fields = wpuf_form_builder.form_fields,
-                    field_name = e.target.value,
-                    field_options  = '';
-                    field_options += '<option value="-1">- select -</option>';
-
-                form_fields.forEach(function(field) {
-                    if ( field.name === field_name ) {
-                        var options = field.options;
-
-                        for (var key in options) {
-                            if (options.hasOwnProperty(key)) {
-                                field_options += '<option value="'+key+'">'+options[key]+'</option>';
-                            }
-                        }
-                    }
-                });
-
-                cond_field_options[0].innerHTML = field_options;
-            });
-        }
     };
 
     // on DOM ready
@@ -1044,6 +765,229 @@
         }
 
         SettingsTab.init();
+
+        const dependencies = {
+            // Fields and their show/hide conditions
+            fields: {
+                message: {
+                    type: 'textarea',
+                    dependsOn: [{
+                        field: 'redirect_to',
+                        value: 'same'
+                    }],
+                },
+                page_id: {
+                    type: 'select',
+                    dependsOn: [{
+                        field: 'redirect_to',
+                        value: 'page'
+                    }],
+                },
+                url: {
+                    type: 'text',
+                    dependsOn: [{
+                        field: 'redirect_to',
+                        value: 'url'
+                    }],
+                },
+                update_message: {
+                    type: 'textarea',
+                    dependsOn: [{
+                        field: 'edit_redirect_to',
+                        value: 'same'
+                    }],
+                },
+                edit_page_id: {
+                    type: 'select',
+                    dependsOn: [{
+                        field: 'edit_redirect_to',
+                        value: 'page'
+                    }],
+                },
+                edit_url: {
+                    type: 'text',
+                    dependsOn: [{
+                        field: 'edit_redirect_to',
+                        value: 'url'
+                    }],
+                },
+                guest_details: {
+                    type: 'checkbox',
+                    dependsOn: [{
+                        field: 'post_permission',
+                        value: 'guest_post'
+                    }]
+                },
+                guest_email_verify: {
+                    type: 'text',
+                    dependsOn: [{
+                        field: 'post_permission',
+                        value: 'guest_post'
+                    }]
+                },
+                name_label: {
+                    type: 'text',
+                    dependsOn: [
+                        {
+                            field: 'post_permission',
+                            value: 'guest_post'
+                        },
+                        {
+                            field: 'guest_details',
+                            value: true
+                        }
+                    ]
+                },
+                email_label: {
+                    type: 'text',
+                    dependsOn: [
+                        {
+                            field: 'post_permission',
+                            value: 'guest_post'
+                        },
+                        {
+                            field: 'guest_details',
+                            value: true
+                        }
+                    ]
+                },
+                roles: {
+                    type: 'select',
+                    dependsOn: [{
+                        field: 'post_permission',
+                        value: 'role_base'
+                    }]
+                },
+                message_restrict: {
+                    type: 'textarea',
+                    dependsOn: [{
+                        field: 'post_permission',
+                        value: 'role_base'
+                    }]
+                },
+                choose_payment_option: {
+                    type: 'select',
+                    dependsOn: [{
+                        field: 'payment_options',
+                        value: true
+                    }]
+                },
+                fallback_ppp_enable: {
+                    type: 'checkbox',
+                    dependsOn: [
+                        {
+                            field: 'payment_options',
+                            value: true
+                        },
+                        {
+                            field: 'choose_payment_option',
+                            value: 'force_pack_purchase'
+                        }
+                    ]
+                },
+                fallback_ppp_cost: {
+                    type: 'checkbox',
+                    dependsOn: [
+                        {
+                            field: 'payment_options',
+                            value: true
+                        },
+                        {
+                            field: 'choose_payment_option',
+                            value: 'force_pack_purchase'
+                        },
+                        {
+                            field: 'fallback_ppp_enable',
+                            value: true
+                        }
+                    ]
+                },
+                pay_per_post_cost: {
+                    type: 'number',
+                    dependsOn: [
+                        {
+                            field: 'payment_options',
+                            value: true
+                        },
+                        {
+                            field: 'choose_payment_option',
+                            value: 'enable_pay_per_post'
+                        }
+                    ]
+                },
+                ppp_payment_success_page: {
+                    type: 'select',
+                    dependsOn: [
+                        {
+                            field: 'payment_options',
+                            value: true
+                        },
+                        {
+                            field: 'choose_payment_option',
+                            value: 'enable_pay_per_post'
+                        }
+                    ]
+                },
+                notification_new_to: {
+                    type: 'text',
+                    dependsOn: [{
+                        field: 'notification_new',
+                        value: true
+                    }]
+                },
+                notification_new_subject: {
+                    type: 'text',
+                    dependsOn: [{
+                        field: 'notification_new',
+                        value: true
+                    }]
+                },
+                notification_new_body: {
+                    type: 'textarea',
+                    dependsOn: [{
+                        field: 'notification_new',
+                        value: true
+                    }]
+                },
+                schedule_start: {
+                    type: 'text',
+                    dependsOn: [{
+                        field: 'schedule_form',
+                        value: true
+                    }]
+                },
+                form_pending_message: {
+                    type: 'textarea',
+                    dependsOn: [{
+                        field: 'schedule_form',
+                        value: true
+                    }]
+                },
+                form_expired_message: {
+                    type: 'textarea',
+                    dependsOn: [{
+                        field: 'schedule_form',
+                        value: true
+                    }]
+                },
+                limit_number: {
+                    type: 'number',
+                    dependsOn: [{
+                        field: 'limit_entries',
+                        value: true
+                    }]
+                },
+                limit_message: {
+                    type: 'textarea',
+                    dependsOn: [{
+                        field: 'limit_entries',
+                        value: true
+                    }]
+                }
+            }
+        };
+
+        const formHandler = new FormDependencyHandler(dependencies);
 
         // initially show the first tab(General) on first page load
         show_settings_for('general');
@@ -1067,202 +1011,109 @@
         $('#modules-menu').on('click', function() {
             show_settings_for('modules');
         });
-
-        const post_permission = $('#post_permission');
-        const payment_options = $('#payment_options');
-        const guest_details = $('#guest_details');
-        const choose_payment_option = $('#choose_payment_option');
-        const fallback_ppp_enable = $('#fallback_ppp_enable');
-        const notification_new = $('#notification_new');
-        const notification_edit = $('#notification_edit');
-        const redirect_to = $('#redirect_to');
-        const edit_redirect_to = $('#edit_redirect_to');
-        const schedule_form = $('#schedule_form');
-        const limit_entries = $('#limit_entries');
-
-        populate_default_categories('select#post_type');
-        hide_redirect_to_options();
-        hide_redirect_to_options_post_update();
-        show_conditional_redirect_to_options( redirect_to );
-        show_conditional_redirect_to_options_post_update( edit_redirect_to );
-
-        if ( post_permission.val() === 'guest_post' ) {
-            guest_details.parents('.wpuf-input-container').fadeIn();
-            $('#guest_email_verify').parents('.wpuf-input-container').fadeIn();
-
-            $('#roles').parents('.wpuf-input-container').fadeOut();
-            $('#message_restrict').parents('.wpuf-input-container').fadeOut();
-        } else if ( post_permission.val() === 'role_base' ) {
-            const roles = '#roles';
-            $(roles).parents('.wpuf-input-container').fadeIn();
-            $('#message_restrict').parents('.wpuf-input-container').fadeIn();
-
-            populate_default_roles();
-
-            guest_details.parents('.wpuf-input-container').fadeOut();
-            $('#guest_email_verify').parents('.wpuf-input-container').fadeOut();
-            $('#name_label').parents('.wpuf-input-container').fadeOut();
-        } else {
-            hide_posting_control_cond_fields();
-        }
-
-        if ( payment_options.is(':checked') ) {
-            choose_payment_option.parents('.wpuf-input-container').fadeIn();
-        } else {
-            hide_enable_payment_cond_fields();
-        }
-
-        if ( schedule_form.is(':checked') ) {
-            show_schedule_form_items();
-        } else {
-            hide_schedule_form_items();
-        }
-
-        if ( limit_entries.is(':checked') ) {
-            show_limit_entry_items();
-        } else {
-            hide_limit_entry_items();
-        }
-
-        if (post_permission.val() === 'guest_post' && guest_details.is(':checked')) {
-            $('#name_label').parents('.wpuf-input-container').fadeIn();
-        } else {
-            $('#name_label').parents('.wpuf-input-container').fadeOut();
-        }
-
-        if ( choose_payment_option.val('force_pack_purchase') ) {
-            fallback_ppp_enable.parents('.wpuf-input-container').fadeIn();
-            $('#pay_per_post_cost').parents('.wpuf-input-container').fadeOut();
-            $('#ppp_payment_success_page').parents('.wpuf-input-container').fadeOut();
-        } else {
-            fallback_ppp_enable.parents('.wpuf-input-container').fadeOut();
-            $('#pay_per_post_cost').parents('.wpuf-input-container').fadeIn();
-            $('#ppp_payment_success_page').parents('.wpuf-input-container').fadeIn();
-        }
-
-        if ( fallback_ppp_enable.is(':checked') ) {
-            $('#fallback_ppp_cost').parents('.wpuf-input-container').fadeIn();
-        } else {
-            $('#fallback_ppp_cost').parents('.wpuf-input-container').fadeOut();
-        }
-
-        if ( notification_new.is(':checked') ) {
-            show_new_post_notification();
-        } else {
-            hide_new_post_notification();
-        }
-
-        if ( notification_edit.is(':checked') ) {
-            $('#notification_edit_to').parents('.wpuf-input-container').fadeIn();
-            $('#notification_edit_subject').parents('.wpuf-input-container').fadeIn();
-            $('#notification_edit_body').parents('.wpuf-input-container').fadeIn();
-        } else {
-            hide_update_post_notification();
-        }
-
-        // conditional fields. the fields that show/hide depending on another field settings
-        redirect_to.on('change', function() {
-            show_conditional_redirect_to_options( $(this) );
-        });
-
-        edit_redirect_to.on('change', function() {
-            show_conditional_redirect_to_options_post_update( $(this) );
-        });
-
-        post_permission.on('change', function () {
-            if ( $(this).val() === 'guest_post' ) {
-                guest_details.parents('.wpuf-input-container').fadeIn();
-                $('#guest_email_verify').parents('.wpuf-input-container').fadeIn();
-
-                $('#roles').parents('.wpuf-input-container').fadeOut();
-                $('#message_restrict').parents('.wpuf-input-container').fadeOut();
-            } else if ( $(this).val() === 'role_base' ) {
-                $('#roles').parents('.wpuf-input-container').fadeIn();
-                $('#message_restrict').parents('.wpuf-input-container').fadeIn();
-
-                populate_default_roles();
-
-                guest_details.parents('.wpuf-input-container').fadeOut();
-                $('#guest_email_verify').parents('.wpuf-input-container').fadeOut();
-                $('#name_label').parents('.wpuf-input-container').fadeOut();
-            } else {
-                hide_posting_control_cond_fields();
-            }
-        });
-
-        guest_details.on('change', function () {
-            if ( $(this).is(':checked') ) {
-                $('#name_label').parents('.wpuf-input-container').fadeIn();
-            } else {
-                $('#name_label').parents('.wpuf-input-container').fadeOut();
-            }
-        });
-
-        payment_options.on('change', function() {
-            if ( $(this).is(':checked') ) {
-                choose_payment_option.parents('.wpuf-input-container').fadeIn();
-            } else {
-                hide_enable_payment_cond_fields();
-            }
-        });
-
-        schedule_form.on('change', function() {
-            if ( $(this).is(':checked') ) {
-                show_schedule_form_items();
-            } else {
-                hide_schedule_form_items();
-            }
-        });
-
-        limit_entries.on('change', function() {
-            if ( $(this).is(':checked') ) {
-                show_limit_entry_items();
-            } else {
-                hide_limit_entry_items();
-            }
-        });
-
-        choose_payment_option.on('change', function () {
-            if ( $(this).val() === 'force_pack_purchase' ) {
-                fallback_ppp_enable.parents('.wpuf-input-container').fadeIn();
-                $('#pay_per_post_cost').parents('.wpuf-input-container').fadeOut();
-                $('#ppp_payment_success_page').parents('.wpuf-input-container').fadeOut();
-            } else {
-                fallback_ppp_enable.parents('.wpuf-input-container').fadeOut();
-                $('#pay_per_post_cost').parents('.wpuf-input-container').fadeIn();
-                $('#ppp_payment_success_page').parents('.wpuf-input-container').fadeIn();
-            }
-        });
-
-        fallback_ppp_enable.on('change', function () {
-            if ( $(this).is(':checked') ) {
-                $('#fallback_ppp_cost').parents('.wpuf-input-container').fadeIn();
-            } else {
-                $('#fallback_ppp_cost').parents('.wpuf-input-container').fadeOut();
-            }
-        });
-
-        notification_new.on('change', function () {
-            if ( $(this).is(':checked') ) {
-                $('#notification_new_to').parents('.wpuf-input-container').fadeIn();
-                $('#notification_new_subject').parents('.wpuf-input-container').fadeIn();
-                $('#notification_new_body').parents('.wpuf-input-container').fadeIn();
-            } else {
-                hide_new_post_notification();
-            }
-        });
-
-        notification_edit.on('change', function () {
-            if ( $(this).is(':checked') ) {
-                $('#notification_edit_to').parents('.wpuf-input-container').fadeIn();
-                $('#notification_edit_subject').parents('.wpuf-input-container').fadeIn();
-                $('#notification_edit_body').parents('.wpuf-input-container').fadeIn();
-            } else {
-                hide_update_post_notification();
-            }
-        });
-
     });
+
+    class FormDependencyHandler {
+        constructor(dependencies) {
+            this.dependencies = dependencies;
+            this.init();
+        }
+
+        init() {
+            // Get all fields that have dependencies
+            const fieldsWithDependencies = Object.keys(this.dependencies.fields);
+
+            // Initially hide all dependent fields
+            fieldsWithDependencies.forEach(fieldId => {
+                this.hideField(fieldId);
+            });
+
+            // Add change event listeners to all form fields that others depend on
+            const uniqueControlFields = this.getUniqueControlFields();
+            uniqueControlFields.forEach(fieldId => {
+                this.attachFieldListener(fieldId);
+            });
+
+            // Initial check for all fields
+            this.checkAllDependencies();
+        }
+
+        getUniqueControlFields() {
+            // Get unique list of fields that control other fields
+            const controlFields = new Set();
+            Object.values(this.dependencies.fields).forEach(field => {
+                field.dependsOn.forEach(dependency => {
+                    controlFields.add(dependency.field);
+                });
+            });
+            return Array.from(controlFields);
+        }
+
+        attachFieldListener(fieldId) {
+            const field = $(`#${fieldId}`);
+            const fieldType = field.attr('type') || field.prop('tagName').toLowerCase();
+
+            if (fieldType === 'checkbox') {
+                field.on('change', () => this.checkAllDependencies());
+            } else if (fieldType === 'select' || fieldType === 'radio') {
+                field.on('change', () => this.checkAllDependencies());
+            }
+        }
+
+        checkAllDependencies() {
+            Object.keys(this.dependencies.fields).forEach(fieldId => {
+                this.checkFieldDependencies(fieldId);
+            });
+        }
+
+        checkFieldDependencies(fieldId) {
+            const fieldConfig = this.dependencies.fields[fieldId];
+            const shouldShow = this.shouldFieldBeVisible(fieldConfig.dependsOn);
+
+            if (shouldShow) {
+                this.showField(fieldId);
+                this.attachSelectize(fieldId);
+            } else {
+                this.hideField(fieldId);
+            }
+        }
+
+        shouldFieldBeVisible(dependencies) {
+            // All conditions must be met (AND logic)
+            return dependencies.every(dep => {
+                const controlField = $(`#${dep.field}`);
+                const fieldType = controlField.attr('type') || controlField.prop('tagName').toLowerCase();
+
+                if (fieldType === 'checkbox') {
+                    return controlField.is(':checked') === dep.value;
+                } else if (fieldType === 'select' || fieldType === 'radio') {
+                    return controlField.val() === dep.value;
+                }
+                return false;
+            });
+        }
+
+        showField(fieldId) {
+            $(`#${fieldId}`).closest('.wpuf-input-container').fadeIn(200);
+        }
+
+        hideField(fieldId) {
+            $(`#${fieldId}`).closest('.wpuf-input-container').fadeOut(200);
+        }
+
+        // if it is a select field, then attach selectize like below
+        attachSelectize(fieldId) {
+            if ($(`#${fieldId}`).is('select')) {
+                console.log(fieldId);
+                $(`#${fieldId}`).selectize({
+                    plugins: ['remove_button'],
+                });
+            } else {
+                console.log('not a select field');
+            }
+        }
+
+    }
 
     // Mobile view menu toggle
     $('#wpuf-form-builder').on('click', '#wpuf-toggle-field-options, #wpuf-toggle-show-form, .field-buttons .fa-pencil, .ui-draggable-handle', function() {
@@ -1274,52 +1125,6 @@
     $('select#post_type').on('change', function() {
         populate_default_categories(this);
     });
-
-    function hide_posting_control_cond_fields() {
-        $('#guest_details').parents('.wpuf-input-container').fadeOut();
-        $('#name_label').parents('.wpuf-input-container').fadeOut();
-        $('#guest_email_verify').parents('.wpuf-input-container').fadeOut();
-        $('#roles').parents('.wpuf-input-container').fadeOut();
-        $('#message_restrict').parents('.wpuf-input-container').fadeOut();
-    }
-
-    function hide_enable_payment_cond_fields() {
-        $('#choose_payment_option').parents('.wpuf-input-container').fadeOut();
-        $('#fallback_ppp_enable').parents('.wpuf-input-container').fadeOut();
-        $('#fallback_ppp_cost').parents('.wpuf-input-container').fadeOut();
-        $('#pay_per_post_cost').parents('.wpuf-input-container').fadeOut();
-        $('#ppp_payment_success_page').parents('.wpuf-input-container').fadeOut();
-    }
-
-    function show_new_post_notification() {
-        $('#notification_new_to').parents('.wpuf-input-container').fadeIn();
-        $('#notification_new_subject').parents('.wpuf-input-container').fadeIn();
-        $('#notification_new_body').parents('.wpuf-input-container').fadeIn();
-    }
-
-    function hide_new_post_notification() {
-        $('#notification_new_to').parents('.wpuf-input-container').fadeOut();
-        $('#notification_new_subject').parents('.wpuf-input-container').fadeOut();
-        $('#notification_new_body').parents('.wpuf-input-container').fadeOut();
-    }
-
-    function hide_update_post_notification() {
-        $('#notification_edit_to').parents('.wpuf-input-container').fadeOut();
-        $('#notification_edit_subject').parents('.wpuf-input-container').fadeOut();
-        $('#notification_edit_body').parents('.wpuf-input-container').fadeOut();
-    }
-
-    function hide_redirect_to_options() {
-        $('#message').parents('.wpuf-input-container').fadeOut();
-        $('#page_id').parents('.wpuf-input-container').fadeOut();
-        $('#url').parents('.wpuf-input-container').fadeOut();
-    }
-
-    function hide_redirect_to_options_post_update() {
-        $('#update_message').parents('.wpuf-input-container').fadeOut();
-        $('#edit_page_id').parents('.wpuf-input-container').fadeOut();
-        $('#edit_url').parents('.wpuf-input-container').fadeOut();
-    }
 
     function populate_default_categories(obj) {
         var post_type = $( obj ).val();
@@ -1358,103 +1163,5 @@
         });
     }
 
-    function populate_default_roles() {
-        wp.ajax.send('wpuf_form_roles', {
-            data: {
-                wpuf_form_builder_setting_nonce: wpuf_form_builder.nonce
-            },
-            success: function (response) {
-                const roles = 'select#roles';
-
-                const value = $(roles).data('value');
-
-                $(roles).parent('.wpuf-my-4.wpuf-input-container').remove();
-                $('select#post_permission').parent('.wpuf-my-4.wpuf-input-container').after(response.data);
-
-                if (value && ( typeof value === 'string' )) {
-                    $(roles).val(value.split(","));
-                } else {
-                    $(roles).val(value);
-                }
-
-                $(roles).selectize({
-                    plugins: ['remove_button'],
-                });
-            },
-            error: function ( error ) {
-                console.log(error);
-            }
-        });
-    }
-
-    function show_schedule_form_items() {
-        $('#schedule_start').parents('.wpuf-input-container').fadeIn();
-        $('#form_pending_message').parents('.wpuf-input-container').fadeIn();
-        $('#form_expired_message').parents('.wpuf-input-container').fadeIn();
-
-        $('#schedule_end').datetimepicker();
-    }
-
-    function hide_schedule_form_items() {
-        $('#schedule_start').parents('.wpuf-input-container').fadeOut();
-        $('#form_pending_message').parents('.wpuf-input-container').fadeOut();
-        $('#form_expired_message').parents('.wpuf-input-container').fadeOut();
-    }
-
-    function show_limit_entry_items() {
-        $('#limit_number').parents('.wpuf-input-container').fadeIn();
-        $('#limit_message').parents('.wpuf-input-container').fadeIn();
-    }
-
-    function hide_limit_entry_items() {
-        $('#limit_number').parents('.wpuf-input-container').fadeOut();
-        $('#limit_message').parents('.wpuf-input-container').fadeOut();
-    }
-
-    function show_conditional_redirect_to_options(redirect_to) {
-        hide_redirect_to_options();
-
-        switch ( redirect_to.val() ) {
-            case 'same':
-                $('#message').parents('.wpuf-input-container').fadeIn();
-                break;
-
-            case 'page':
-                $( '#page_id' ).parents('.wpuf-input-container').fadeIn();
-                break;
-
-            case 'url':
-                $( '#url' ).parents('.wpuf-input-container').fadeIn();
-                break;
-
-        }
-    }
-
-    function show_conditional_redirect_to_options_post_update(redirect_to) {
-        hide_redirect_to_options_post_update();
-
-        switch ( redirect_to.val() ) {
-            case 'same':
-                $('#update_message').parents('.wpuf-input-container').fadeIn();
-                break;
-
-            case 'page':
-                $( '#edit_page_id' ).parents('.wpuf-input-container').fadeIn();
-                break;
-
-            case 'url':
-                $( '#edit_url' ).parents('.wpuf-input-container').fadeIn();
-                break;
-
-        }
-    }
-
-    const changeMultistepVisibility = function(target) {
-        if (target.is(':checked')) {
-            $('.wpuf_multistep_content').show();
-        } else {
-            $('.wpuf_multistep_content').hide();
-        }
-    };
 
 })(jQuery);

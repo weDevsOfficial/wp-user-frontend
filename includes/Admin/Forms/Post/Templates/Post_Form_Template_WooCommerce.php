@@ -184,7 +184,7 @@ class Post_Form_Template_WooCommerce extends Form_Template {
             'post_status'      => 'publish',
             'default_cat'      => '-1',
             'guest_post'       => 'false',
-            'message_restrict' => 'This page is restricted. Please %login% / %register% to view this page.',
+            'message_restrict' => 'This page is restricted. Please {login} / {register} to view this page.',
             'redirect_to'      => 'post',
             'comment_status'   => 'open',
             'submit_text'      => 'Create Product',

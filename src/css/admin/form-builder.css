@@ -203,3 +203,16 @@ input[type="range"]::-moz-range-thumb:active {
 table.option-field-option-chooser tbody tr td {
     padding: .25rem;
 }
+.selectize-control.single .selectize-input:after {
+    content: '\f107';
+    font-family: FontAwesome, serif;
+    font-size: 1rem;
+    border: none;
+    top: 25%;
+    right: 1.5rem;
+    margin-top: 0;
+}
+.selectize-control.single .selectize-input.dropdown-active:after {
+    margin-top: 0;
+    border: none;
+}

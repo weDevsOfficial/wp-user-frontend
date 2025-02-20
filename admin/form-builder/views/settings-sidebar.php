@@ -409,6 +409,10 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                             printf(
                                 '<option value="%s" %s>%s</option>', esc_attr( $index ), $selected, esc_html( $option )
                             );
+                        } else {
+                            printf(
+                                '<option value="%s">%s</option>', esc_attr( $index ), esc_html( $option )
+                            );
                         }
                     }
                     ?>

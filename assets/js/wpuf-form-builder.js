@@ -986,7 +986,6 @@
                 }
             }
         };
-
         const formHandler = new FormDependencyHandler(dependencies);
 
         // initially show the first tab(General) on first page load
@@ -1107,12 +1106,11 @@
                 $(`#${fieldId}`).selectize({
                     plugins: ['remove_button'],
                 });
-            } else {
-                console.log('not a select field');
             }
         }
-
     }
+
+    window.FormDependencyHandler = FormDependencyHandler;
 
     // Mobile view menu toggle
     $('#wpuf-form-builder').on('click', '#wpuf-toggle-field-options, #wpuf-toggle-show-form, .field-buttons .fa-pencil, .ui-draggable-handle', function() {

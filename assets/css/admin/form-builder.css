@@ -2986,20 +2986,12 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   min-width: 0px;
 }
 
-.wpuf-min-w-16 {
-  min-width: 4rem;
-}
-
 .wpuf-min-w-full {
   min-width: 100%;
 }
 
 .\!wpuf-max-w-full {
   max-width: 100% !important;
-}
-
-.wpuf-max-w-40 {
-  max-width: 10rem;
 }
 
 .wpuf-max-w-\[768px\] {
@@ -3774,6 +3766,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   padding-right: 1.5rem;
 }
 
+.wpuf-px-\[18px\] {
+  padding-left: 18px;
+  padding-right: 18px;
+}
+
 .wpuf-px-\[20px\] {
   padding-left: 20px;
   padding-right: 20px;
@@ -3832,6 +3829,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 .wpuf-py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+
+.wpuf-py-\[10px\] {
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .wpuf-py-\[2px\] {
@@ -4613,6 +4615,10 @@ table.option-field-option-chooser tbody tr td {
 .selectize-control.single .selectize-input.dropdown-active:after {
   margin-top: 0;
   border: none;
+}
+
+.wpuf-field-sizing-content {
+  field-sizing: content;
 }
 
 .placeholder\:wpuf-text-gray-400::-moz-placeholder {

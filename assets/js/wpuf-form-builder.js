@@ -41,9 +41,7 @@
             field_settings: wpuf_form_builder.field_settings,
             notifications: wpuf_form_builder.notifications,
             settings: wpuf_form_builder.form_settings,
-            is_older_form: wpuf_form_builder.is_older_form,
-            is_post_form: wpuf_form_builder.is_older_form && wpuf_form_builder.post.post_type === 'wpuf_forms',
-            current_panel: wpuf_form_builder.is_older_form && wpuf_form_builder.post.post_type !== 'wpuf_forms' ? 'form-fields' : 'form-fields-v4-1',
+            current_panel: 'form-fields-v4-1',
             editing_field_id: 0,
             show_custom_field_tooltip: true,
             index_to_insert: 0,
@@ -241,7 +239,7 @@
 
             // delete a field
             delete_form_field_element: function (state, index) {
-                state.current_panel = state.is_older_form ? 'form-fields' : 'form-fields-v4-1';
+                state.current_panel = 'form-fields-v4-1';
                 state.form_fields.splice(index, 1);
             },
 
@@ -388,7 +386,7 @@
             delete_column_field_element: function (state, payload) {
                 var columnFieldIndex = state.form_fields.findIndex(field => field.id === payload.field_id);
 
-                state.current_panel = state.is_older_form ? 'form-fields' : 'form-fields-v4-1';
+                state.current_panel = 'form-fields-v4-1';
                 state.form_fields[columnFieldIndex].inner_fields[payload.fromColumn].splice(payload.index, 1);
             },
 
@@ -517,97 +515,43 @@
         },
 
         mounted: function () {
-            var clipboard = new window.Clipboard('.form-id');
-            var settings_tabs = $( '#wpuf-form-builder-settings-tabs .nav-tab' );
-            var self = this;
+            // primary nav tabs and their contents
+            this.bind_tab_on_click($('#wpuf-form-builder > fieldset > .nav-tab-wrapper > a'), '#wpuf-form-builder');
 
+            // secondary settings tabs and their contents
+            var settings_tabs = $('#wpuf-form-builder-settings .nav-tab'),
+                settings_tab_contents = $('#wpuf-form-builder-settings .tab-contents .group');
+
+            settings_tabs.first().addClass('nav-tab-active');
+            settings_tab_contents.first().addClass('active');
+
+            this.bind_tab_on_click(settings_tabs, '#wpuf-form-builder-settings');
+
+            var clipboard = new window.Clipboard('.form-id');
             $(".form-id").tooltip();
 
-            if ( this.is_post_form ) {
-                // add a click listener to each settings_tab
-                settings_tabs.each( function () {
-                    $( this ).bind( 'click', self.setActiveSettingsTab );
-                } );
+            var self = this;
 
-                clipboard.on( 'success', function ( e ) {
-                    // Show copied tooltip
-                    $( e.trigger )
-                        .attr( 'data-original-title', 'Shortcode copied!' )
-                        .tooltip( 'show' );
+            clipboard.on('success', function(e) {
+                // Show copied tooltip
+                $(e.trigger)
+                    .attr('data-original-title', 'Copied!')
+                    .tooltip('show');
 
-                    self.shortcodeCopied = true;
+                // Reset the copied tooltip
+                setTimeout(function() {
+                    $(e.trigger).tooltip('hide')
+                        .attr('data-original-title', self.i18n.copy_shortcode);
+                }, 1000);
 
-                    // Reset the copied tooltip
-                    setTimeout( function () {
-                        $( e.trigger ).tooltip( 'hide' )
-                            .attr( 'data-original-title', self.i18n.copy_shortcode );
-                        self.shortcodeCopied = false;
-                    }, 1000 );
+                e.clearSelection();
+            });
 
-                    e.clearSelection();
-                } );
-
-                window.onbeforeunload = function () {
-                    if (self.isDirty) {
-                        return self.i18n.unsaved_changes;
-                    }
-                };
-            } else {
-                // primary nav tabs and their contents
-                this.bind_tab_on_click($('#wpuf-form-builder > fieldset > .nav-tab-wrapper > a'), '#wpuf-form-builder');
-
-                // secondary settings tabs and their contents
-                var settings_tab_contents = $('#wpuf-form-builder-settings .tab-contents .group');
-
-                settings_tabs.first().addClass('nav-tab-active');
-                settings_tab_contents.first().addClass('active');
-
-                this.bind_tab_on_click(settings_tabs, '#wpuf-form-builder-settings');
-
-                clipboard.on( 'success', function ( e ) {
-                    // Show copied tooltip
-                    $( e.trigger )
-                        .attr( 'data-original-title', 'Shortcode copied!' )
-                        .tooltip( 'show' );
-
-                    self.shortcodeCopied = true;
-
-                    // Reset the copied tooltip
-                    setTimeout( function () {
-                        $( e.trigger ).tooltip( 'hide' )
-                            .attr( 'data-original-title', self.i18n.copy_shortcode );
-                        self.shortcodeCopied = false;
-                    }, 1000 );
-
-                    e.clearSelection();
-                } );
-
-                window.onbeforeunload = function () {
-                    if ( self.isDirty ) {
-                        return self.i18n.unsaved_changes;
-                    }
-                };
-            }
-
-            $( '.wpuf-template-text' ).each( function () {
-                ( new window.Clipboard( this ) ).on( 'success', function ( e ) {
-                    var attr_name = 'data-original-title';
-                    // Show copied tooltip
-                    $( e.trigger )
-                        .attr( attr_name, 'Copied!' )
-                        .tooltip( 'show' );
-
-                    // Reset the copied tooltip
-                    setTimeout( function () {
-                        $( e.trigger )
-                            .removeAttr( attr_name );
-                    }, 1000 );
-
-                    e.clearSelection();
-                } );
-            } );
-
-            populate_default_categories('select#post_type');
+            window.onbeforeunload = function () {
+                if ( self.isDirty ) {
+                    return self.i18n.unsaved_changes;
+                }
+            };
         },
 
         methods: {

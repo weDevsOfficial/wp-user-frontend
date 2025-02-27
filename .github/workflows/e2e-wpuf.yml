@@ -16,7 +16,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "7.3"
+          php-version: "7.4"
       
       # Checkout the code for wp-user-frontend repo
       - name: Checkout code
@@ -63,12 +63,16 @@ jobs:
       - name: Run Playwright tests/e2e
         run: |
           cd tests/e2e
+          ll
           npx playwright test e2eMain.spec.ts --project=chromium
+
+
         env:
           BASE_URL: ${{ secrets.QA_BASE_URL }}
           CI: true
           ADMIN_USERNAME: ${{ secrets.QA_ADMIN_USERNAME }}
           ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
+
 
       # Archive Playwright artifacts (screenshots, HTML snapshots, videos)
       - name: Archive playwright artifacts (screenshots, HTML snapshots, videos)

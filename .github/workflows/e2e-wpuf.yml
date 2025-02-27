@@ -1,92 +1,77 @@
 name: Playwright tests/e2e
+
 on:
   push:
-    branches: [ develop, automation/wpuf-e2e-pw ]
+    branches: [develop, automation/wpuf-e2e-pw]
   pull_request:
-    branches: [ develop ]
-
-
+    branches: [develop]
 
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest    
     
-    #Cloning WPUF-Lite + WPUF-PRO
     steps:
+      # Setup PHP
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: "7.4"
-     
+      
+      # Checkout the code for wp-user-frontend repo
       - name: Checkout code
         uses: actions/checkout@v4
-        # with:
-        #   ref: 'automation/wpuf-e2e-pw'
 
+      # Setup Node.js (preferably use LTS version)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
-      
+          node-version: '18.x'  # Use LTS version for stability
+
+      # Composer install and build (WPUF-lite)
       - name: Composer install and build (WPUF-lite)
         run: |
-            composer update
-            composer install
-            composer dump-autoload -o
+          composer update
+          composer install
+          composer dump-autoload -o
             
+      # NPM install and build (WPUF-lite)
       - name: Npm install and build (WPUF-lite)
         run: |
-            npm i
-            grunt release
-            
+          npm i
+          grunt release
+
+      # Install dependencies for e2e tests
       - name: Install dependencies
         run: |
           cd tests/e2e  
           npm ci
           
+      # Install Playwright Browsers
       - name: Install Playwright Browsers
         run: |
           cd tests/e2e 
           npx playwright install chromium
 
-
+      # Setup WordPress using wp-env
       - name: Setup WordPress 
         run: |
           cd tests/e2e 
           npm run wp-env start
           
-
+      # Run Playwright tests/e2e
       - name: Run Playwright tests/e2e
         run: |
           cd tests/e2e
-            npx playwright test e2eMain.spec.ts --project=chromium
-            ls
-            
-
+          npx playwright test e2eMain.spec.ts --project=chromium
         env:
-          BASE_URL: ${{ secrets.QA_BASE_URL}}
+          BASE_URL: ${{ secrets.QA_BASE_URL }}
           CI: true
           ADMIN_USERNAME: ${{ secrets.QA_ADMIN_USERNAME }}
           ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
-          
 
-      
-      #######--- Remove Later ---#######
-      - name: Publish Test Report
-        uses: mikepenz/action-junit-report@v3
-        if: always() # always run even if the previous step fails
-        with:
-          report_paths: "tests/e2e/playwright-report/results.xml"
-          include_passed: true,
-          # check_retries: true,
-          # detailed_summary: true,
-      
-      #######--- Remove Later ---#######
-
-      
-
-      - name: Archive playwright artifacts (screenshots, HTML snapshots, videos).
+      # Archive Playwright artifacts (screenshots, HTML snapshots, videos)
+      - name: Archive playwright artifacts (screenshots, HTML snapshots, videos)
         uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -95,24 +80,19 @@ jobs:
           if-no-files-found: ignore
           retention-days: 3
       
+      # Optional: Publish HTML report to GitHub Pages (commented out if not needed)
       # - name: Publish HTML report to GH Pages
-      #   if: always() # We want this to always run, even if test fail prior to this step running
+      #   if: always() 
       #   uses: peaceiris/actions-gh-pages@v3.7.3
       #   with:
       #     github_token: ${{ secrets.ACCESS_TOKEN }}
-      #     publish_dir: tests/e2e/playwright-report # This is where index.html will be output
-      #     keep_files: true # Set this to true to make sure we don't wipe out the other content in GitHub Pages
-      #     user_name: "github-actions[bot]" # This will be the username that gets stamped in the repo commit
-      #     user_email: "github-actions[bot]@users.noreply.github.com" # This will be the user email that gets stamped in the repo commit
+      #     publish_dir: tests/e2e/playwright-report
+      #     keep_files: true
+      #     user_name: "github-actions[bot]"
+      #     user_email: "github-actions[bot]@users.noreply.github.com"
 
+      # Output Test Results URL
       - name: Test results
         if: always()
         run: |
-          echo "url is https://$GITHUB_REPOSITORY_OWNER.github.io/${GITHUB_REPOSITORY#*/}"
-
-      
-
-
-
-
-      
+          echo "Test results can be found at https://$GITHUB_REPOSITORY_OWNER.github.io/${GITHUB_REPOSITORY#*/}"

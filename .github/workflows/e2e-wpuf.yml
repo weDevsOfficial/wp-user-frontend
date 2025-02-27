@@ -14,23 +14,21 @@ jobs:
     
     #Cloning WPUF-Lite + WPUF-PRO
     steps:
-
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "7.3"
-            
-      - uses: actions/checkout@v3
+          php-version: "7.4"
+     
+      - name: Checkout code
+        uses: actions/checkout@v4
         # with:
         #   ref: 'automation/wpuf-e2e-pw'
 
-     
-      - uses: actions/setup-node@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '14.x'
+          node-version: 22
       
-
-
       - name: Composer install and build (WPUF-lite)
         run: |
             composer update
@@ -42,8 +40,6 @@ jobs:
             npm i
             grunt release
             
-
-
       - name: Install dependencies
         run: |
           cd tests/e2e  

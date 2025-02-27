@@ -96,9 +96,6 @@ test.describe('Login and Setup :-->', () => {
 
         //Logout
         await BasicLogout.logOut();
-
-        fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
-
     });
 
 

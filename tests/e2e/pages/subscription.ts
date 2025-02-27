@@ -34,7 +34,7 @@ export class subscription extends base {
         //Second tab
         await this.page.isVisible('//a[@href="#wpuf-post-restriction"]');
         //Third tab
-        await this.page.isVisible('//a[@href="#taxonomy-restriction""]');
+        await this.page.isVisible('//a[@href="#taxonomy-restriction"]');
         //Publish subscription
         await this.validateAndClick('//input[@id="publish"]');
 

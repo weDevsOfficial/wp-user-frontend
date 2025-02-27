@@ -151,8 +151,8 @@
             <builder-stage-v4-1></builder-stage-v4-1>
         </div>
         <div class="wpuf-w-1/3 wpuf-max-h-screen wpuf-overflow-auto wpuf-rounded-tr-lg wpuf-border wpuf-border-b-0 wpuf-border-gray-200">
-            <div class="wpuf-p-6 wpuf-pb-0">
-                <div role="tablist" class="wpuf-tabs wpuf-tabs-boxed wpuf-text-gray-500 wpuf-rounded-xl wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-medium wpuf-bg-gray-100">
+            <div class="wpuf-p-6 wpuf-pb-0 wpuf-mb-8">
+                <div role="tablist" class="wpuf-tabs wpuf-tabs-boxed wpuf-text-gray-500 wpuf-rounded-xl wpuf-px-3 wpuf-py-2 wpuf-text-base wpuf-font-medium wpuf-bg-gray-100">
                     <a
                         role="tab"
                         :class="current_panel === 'form-fields-v4-1' ? 'wpuf-bg-white wpuf-text-gray-800 wpuf-shadow-sm' : ''"

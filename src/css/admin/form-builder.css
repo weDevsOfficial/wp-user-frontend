@@ -27,8 +27,8 @@
         @apply wpuf-mb-6
     }
 
-    .panel-field-opt label {
-        @apply wpuf-flex wpuf-items-center wpuf-mb-3
+    .panel-field-opt > div > label {
+        @apply wpuf-flex wpuf-items-center wpuf-mb-3 wpuf-text-gray-700 wpuf-text-sm wpuf-font-medium
     }
 }
 

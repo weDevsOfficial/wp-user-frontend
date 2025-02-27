@@ -1,7 +1,7 @@
 <div class="wpuf-fields">
     <input
         type="email"
-        :class="class_names('email') + builder_class_names('text')"
+        :class="builder_class_names('text')"
         :placeholder="field.placeholder"
         :value="field.default"
         :size="field.size"

@@ -564,25 +564,6 @@
 #form-preview-stage .hidden-field-list ul li {
   background-color: #f1f1f1;
 }
-.panel-form-field-group {
-  margin-bottom: 15px;
-}
-.panel-form-field-group h3 {
-  margin: 0;
-  font-size: 15px;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
-  cursor: pointer;
-}
-.panel-form-field-group h3 i {
-  float: right;
-}
-.panel-form-field-group .panel-form-field-buttons {
-  opacity: 1;
-  max-height: 100vh;
-  overflow: hidden;
-  margin: 15px 0 0;
-}
 .panel-form-field-group .button {
   display: block;
   width: 48%;
@@ -617,63 +598,6 @@
   margin-top: 15px;
   height: auto;
   opacity: 1;
-}
-.wpuf-form-builder-field-options .panel-field-opt {
-  margin-bottom: 2rem;
-}
-.wpuf-form-builder-field-options .panel-field-opt .field-helper-text {
-  color: rgba(35, 40, 45, 0.5);
-  margin-left: 6px;
-}
-.wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-text input[type="text"],
-.wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-text input[type="number"] {
-  display: block;
-  width: 100%;
-  margin: 5px 0 0;
-  line-height: 1.75;
-}
-.wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-radio > label {
-  display: block;
-  margin-bottom: 5px;
-}
-.wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-radio > ul {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-.wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-select select {
-  width: 100%;
-  height: 32px;
-  margin: 4px 0 0;
-}
-.wpuf-form-builder-field-options .panel-field-opt .chosen-select + .chosen-container {
-  margin-top: 10px;
-}
-.wpuf-form-builder-field-options .panel-field-opt .label-title-block {
-  display: block;
-  margin-bottom: 3px;
-}
-.wpuf-form-builder-field-options .panel-field-opt .field-option-actions {
-  margin: 0;
-  line-height: 1.2;
-}
-.wpuf-form-builder-field-options .panel-field-opt .field-option-actions li {
-  position: relative;
-  margin: 0;
-}
-.wpuf-form-builder-field-options .panel-field-opt .field-option-actions li:not(:last-child):after {
-  content: "|";
-  position: absolute;
-  top: 0;
-  right: -3px;
-  opacity: .5;
-}
-.wpuf-form-builder-field-options .panel-field-opt .field-option-actions .field-helper-text {
-  position: relative;
-  top: 1px;
-  margin-left: 0;
-}
-.wpuf-form-builder-field-options .panel-field-opt .field-option-actions .tooltip .tooltip-inner {
-  width: 200px;
 }
 .option-field-option-chooser {
   margin: 12px 0 0;

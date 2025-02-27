@@ -1,7 +1,9 @@
 <div class="panel-field-opt panel-field-opt-select">
-    <label v-if="option_field.title">
-        {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
-    </label>
+    <div class="wpuf-flex">
+        <label v-if="option_field.title" class="!wpuf-mb-0">
+            {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
+        </label>
+    </div>
 
     <div class="option-fields-section wpuf-relative">
         <p

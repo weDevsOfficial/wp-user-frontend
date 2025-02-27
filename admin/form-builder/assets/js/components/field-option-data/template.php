@@ -1,8 +1,9 @@
 <div class="panel-field-opt panel-field-opt-text">
     <div class="wpuf-flex">
         <label
-            class="wpuf-font-sm wpuf-text-gray-900">{{ option_field.title }}</label>
+            class="wpuf-font-sm wpuf-text-gray-900">{{ option_field.title }}
         <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
+        </label>
     </div>
     <div class="wpuf-mt-2 wpuf-flex">
         <label class="wpuf-block text-sm/6 wpuf-font-medium wpuf-text-gray-900">

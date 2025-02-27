@@ -90,14 +90,14 @@ jobs:
 
       
 
-      - name: Archive playwright artifacts (screenshots, HTML snapshots, videos)
+      - name: Archive playwright artifacts (screenshots, HTML snapshots, videos).
         uses: actions/upload-artifact@v3
         if: always()
         with:
           name: playwright-report
           path: tests/e2e/playwright-report
           if-no-files-found: ignore
-          retention-days: 30
+          retention-days: 3
       
       # - name: Publish HTML report to GH Pages
       #   if: always() # We want this to always run, even if test fail prior to this step running

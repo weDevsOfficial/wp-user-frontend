@@ -4693,6 +4693,11 @@ table.option-field-option-chooser tbody tr td {
   field-sizing: content;
 }
 
+.wp-core-ui select {
+  line-height: 1 !important;
+  padding: 0;
+}
+
 .placeholder\:wpuf-text-gray-400::-moz-placeholder {
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity));
@@ -4998,6 +5003,11 @@ table.option-field-option-chooser tbody tr td {
 
 .hover\:wpuf-stroke-gray-200:hover {
   stroke: #e5e7eb;
+}
+
+.hover\:\!wpuf-text-gray-700:hover {
+  --tw-text-opacity: 1 !important;
+  color: rgb(55 65 81 / var(--tw-text-opacity)) !important;
 }
 
 .hover\:wpuf-text-blue-600:hover {

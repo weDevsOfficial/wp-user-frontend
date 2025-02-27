@@ -219,3 +219,7 @@ table.option-field-option-chooser tbody tr td {
 .wpuf-field-sizing-content {
     field-sizing: content;
 }
+.wp-core-ui select {
+    line-height: 1 !important;
+    padding: 0;
+}

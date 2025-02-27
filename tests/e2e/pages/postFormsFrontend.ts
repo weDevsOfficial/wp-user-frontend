@@ -33,7 +33,7 @@ export class postFormsFrontend {
 
 
     //Registration forms page - only WPUF-Lite activated
-    async createPostFormFrontend(postFormTitle) {
+    async createPostFormFrontend(postFormTitle: string) {
         //Go to Accounts page - FrontEnd
         const wpufRegistrationFormFage = Urls.baseUrl + '/account/';
         await Promise.all([
@@ -61,7 +61,7 @@ export class postFormsFrontend {
         //Create Post
         await this.page.click(selectors.postForms.postFormsFrontendCreate.submitPostFormsFE);
         //Validate Post Submitted
-        const validatePostSubmitted = await this.page.innerText(selectors.postForms.postFormsFrontendCreate.validatePostSubmitted);
+        const validatePostSubmitted = await this.page.innerText(`//h1[normalize-space(text())='${postFormTitle}']`);
         expect(validatePostSubmitted).toContain(postFormTitle);
     };
 
@@ -74,16 +74,16 @@ export class postFormsFrontend {
     /******************************************************/
 
     //Validate in Admin - Registered Form Submitted
-    async validatePostFormCreatedFrontend(postFormTitle) {
+    async validatePostFormCreatedFrontend(postFormTitle: string) {
         //Go to FrontEnd
         //Click Accounts
         await this.page.click(selectors.postForms.postFormsFrontendValidate.clickAccountsTopMenu);
         //Click Post
         await this.page.click(selectors.postForms.postFormsFrontendValidate.clickPostsSideMenu);
         //Validate First Item in List
-        const validatePostCreated = await this.page.innerText(selectors.postForms.postFormsFrontendValidate.validatePostSubmittedFE);
+        const validatePostCreated: string = await this.page.innerText(selectors.postForms.postFormsFrontendValidate.validatePostSubmittedFE);
         //Validate created Post
-        await expect(validatePostCreated).toContain(postFormTitle);
+        expect(validatePostCreated).toContain(postFormTitle);
 
     };
 

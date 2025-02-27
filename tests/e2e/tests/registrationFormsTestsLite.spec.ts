@@ -1,11 +1,10 @@
 require('dotenv').config();
-import { test, expect, Page } from '@playwright/test';
+import { test } from '@playwright/test';
 import { basicLoginPage } from '../pages/basicLogin';
 import { registrationForms } from '../pages/registrationForms';
 import { registrationFormsFrontend } from '../pages/registrationFormsFrontend';
-import { fieldOptionsCommon } from '../pages/fieldOptionsCommon';
 import { settingsSetup } from '../pages/settingsSetup';
-import { Users, RegistrationForm } from '../utils/testData';
+import { Users } from '../utils/testData';
 
 import * as fs from "fs"; //Clear Cookie
 

@@ -465,7 +465,7 @@ export const selectors = {
             //Create Post
             submitPostFormsFE: '//input[@value="Create Post"]',
             //Validate Post Submitted
-            validatePostSubmitted: '//h1[@class="wp-block-post-title has-x-large-font-size"]',
+            validatePostSubmitted: '//h1[@class="wp-block-post-title"]',
 
         },
 
@@ -559,6 +559,10 @@ export const selectors = {
             storeShortcode: '//code[text()="[wpuf-registration]"]',
             //Add New Page
             addNewPage: '//a[@class="page-title-action"]',
+            //Close Pattern Modal
+            closePatternModal: '//h1[normalize-space(text())="Choose a pattern"]/../../button[@aria-label="Close"]',
+            //Close Welcome Modal
+            closeWelcomeModal: '//button[@aria-label="Close"]',
             //Add Page Title
             addPageTitle: '//h1[@aria-label="Add title"]',
             //Block Add Button

@@ -28,6 +28,7 @@ module.exports = function(grunt) {
                 files: {
                     '<%= dirs.css %>/wpuf-form-builder.css': ['admin/form-builder/assets/less/form-builder.less'],
                     '<%= dirs.css %>/admin.css': ['<%= dirs.less %>/admin.less'],
+                    '<%= dirs.css %>/admin/whats-new.css': ['<%= dirs.less %>/whats-new.less'],
                     '<%= dirs.css %>/registration-forms.css': ['<%= dirs.less %>/registration-forms.less']
                 }
             }
@@ -57,7 +58,7 @@ module.exports = function(grunt) {
         makepot: {
             target: {
                 options: {
-                    exclude: ['build/.*', 'node_modules/*', 'assets/*'],
+                    exclude: ['build/.*', 'node_modules/*'],
                     mainFile: 'wpuf.php',
                     domainPath: '/languages/',
                     potFilename: 'wp-user-frontend.pot',
@@ -99,6 +100,18 @@ module.exports = function(grunt) {
                     'jshint:formBuilder', 'less:admin',
                     'concat:formBuilder', 'concat:templates', 'less:front'
                 ]
+            },
+
+            vue: {
+                files: [
+                    'assets/js/subscriptions.js',
+                    'assets/css/admin/subscriptions.css',
+                    'assets/js/components/**/*.vue',
+                    'assets/js/stores/**/*.js',
+                ],
+                tasks: [
+                    'shell:npm_build'
+                ]
             }
         },
 
@@ -132,20 +145,23 @@ module.exports = function(grunt) {
                     '!config.codekit',
                     '!**/nbproject/**',
                     '!assets/less/**',
+                    '!assets/tailwind/**',
                     '!tests/**',
                     '!**/Gruntfile.js',
                     '!**/package.json',
                     '!**/readme.md',
                     '!**/docs.md',
                     '!**/*~',
-                    '!vendor/**',
                     '!**/log.txt',
                     '!**/package-lock.json',
                     '!**/appsero.json',
                     '!**/composer.json',
                     '!**/composer.lock',
                     '!**/phpcs-report.txt',
-                    '!**/phpcs.xml.dist'
+                    '!**/phpcs.xml.dist',
+                    '!**/postcss.config.js',
+                    '!**/tailwind.config.js',
+                    '!**/vite.config.mjs',
                 ],
                 dest: 'build/'
             }
@@ -203,6 +219,13 @@ module.exports = function(grunt) {
                 }
             }
         },
+
+        // is to run NPM commands through Grunt
+        shell: {
+            npm_build: {
+                command: 'npm run build',
+            }
+        }
     });
 
     // Load NPM tasks to be used here
@@ -217,8 +240,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks( 'grunt-contrib-compress' );
     grunt.loadNpmTasks( 'grunt-notify' );
     grunt.loadNpmTasks( 'grunt-wp-readme-to-markdown' );
+    grunt.loadNpmTasks( 'grunt-shell' );
 
-    grunt.registerTask( 'default', [ 'less', 'concat' ] );
+    grunt.registerTask( 'default', [ 'less', 'concat', 'uglify', 'i18n' ] );
 
     // file auto generation
     grunt.registerTask( 'i18n', [ 'makepot' ] );

@@ -3,16 +3,25 @@
 	<description>Generally-applicable sniffs for WordPress plugins.</description>
 
 	<!-- What to scan -->
-	<file>.</file>
-	<exclude-pattern>*/assets/*</exclude-pattern>
+    <file>.</file>
+    <exclude-pattern>*/.git/*</exclude-pattern>
+    <exclude-pattern>*/.githooks/*</exclude-pattern>
+    <exclude-pattern>*/.make/*</exclude-pattern>
+    <exclude-pattern>*/assets/*</exclude-pattern>
     <exclude-pattern>*/src/*</exclude-pattern>
     <exclude-pattern>*/lib/*</exclude-pattern>
+    <exclude-pattern>*/dist/*</exclude-pattern>
     <exclude-pattern>*/build/*</exclude-pattern>
     <exclude-pattern>*/node_modules/*</exclude-pattern>
     <exclude-pattern>*/vendor/*</exclude-pattern>
     <exclude-pattern>*/tests/*</exclude-pattern>
-    <exclude-pattern>*/bin/*</exclude-pattern>
-    <exclude-pattern>*/templates/*</exclude-pattern>
+    <exclude-pattern>*.js</exclude-pattern>
+    <exclude-pattern>*.mo</exclude-pattern>
+    <exclude-pattern>*.po</exclude-pattern>
+    <exclude-pattern>*.twig</exclude-pattern>
+    <exclude-pattern>*.css</exclude-pattern>
+    <exclude-pattern>*.scss</exclude-pattern>
+    <exclude-pattern>languages/*</exclude-pattern>
 
 	<!-- How to scan -->
 	<!-- Usage instructions: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Usage -->
@@ -39,9 +48,11 @@
 	</rule>
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<!-- Value: replace the text domain used. -->
-			<property name="text_domain" type="array" value="wp-user-frontend"/>
-		</properties>
+            <property name="text_domain" type="array">
+                <element value="wp-user-frontend"/>
+                <element value="wpuf-pro"/>
+            </property>
+        </properties>
 	</rule>
 	<rule ref="WordPress.WhiteSpace.ControlStructureSpacing">
 		<properties>
@@ -94,9 +105,6 @@
 	<rule ref="WordPress.PHP.StrictInArray.MissingTrueStrict">
 		<type>error</type>
 	</rule>
-	<rule ref="WordPress.PHP.StrictComparisons.LooseComparison">
-		<type>error</type>
-	</rule>
 	<rule ref="WordPress.DB.DirectDatabaseQuery.DirectQuery">
 		<severity>0</severity>
 	</rule>
@@ -109,7 +117,7 @@
 	<rule ref="WordPress.PHP.DevelopmentFunctions.error_log_var_export">
 		<severity>0</severity>
 	</rule>
-	<rule ref="Generic.Arrays.DisallowShortArraySyntax">
+	<rule ref="Universal.Arrays.DisallowShortArraySyntax">
 		<severity>0</severity>
 	</rule>
 </ruleset>

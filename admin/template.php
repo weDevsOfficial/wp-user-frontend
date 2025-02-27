@@ -133,7 +133,7 @@ class WPUF_Admin_Template {
 
             <div class="wpuf-form-sub-fields">
                 <label>
-                    <input type="text" class="smallipopInput" name="<?php echo esc_attr( $word_restriction_name ); ?>" value="<?php echo esc_attr( $word_restriction_value ); ?>" title="<?php esc_attr_e( 'Numebr of words the author to be restricted in', 'wp-user-frontend' ); ?>" />
+                    <input type="text" class="smallipopInput" name="<?php echo esc_attr( $word_restriction_name ); ?>" value="<?php echo esc_attr( $word_restriction_value ); ?>" title="<?php esc_attr_e( 'Number of words the author to be restricted in', 'wp-user-frontend' ); ?>" />
                 </label>
             </div>
         </div> <!-- .wpuf-form-rows -->
@@ -196,7 +196,7 @@ class WPUF_Admin_Template {
 
             <div class="wpuf-form-sub-fields">
                 <label>
-                    <input type="text" class="smallipopInput" name="<?php echo esc_attr( $word_restriction_name ); ?>" value="<?php echo esc_attr( $word_restriction_value ); ?>" title="<?php esc_attr_e( 'Numebr of words the author to be restricted in', 'wp-user-frontend' ); ?>" />
+                    <input type="text" class="smallipopInput" name="<?php echo esc_attr( $word_restriction_name ); ?>" value="<?php echo esc_attr( $word_restriction_value ); ?>" title="<?php esc_attr_e( 'Number of words the author to be restricted in', 'wp-user-frontend' ); ?>" />
                 </label>
             </div>
         </div> <!-- .wpuf-form-rows -->
@@ -377,7 +377,7 @@ class WPUF_Admin_Template {
                     <label><?php esc_html_e( 'Options', 'wp-user-frontend' ); ?></label>
 
                     <div class="wpuf-form-sub-fields wpuf-options">
-                    <?php self::radio_fields( $field_id, 'options', $values ); ?>
+                        <?php self::radio_fields( $field_id, 'options', $values ); ?>
 
                     </div> <!-- .wpuf-form-sub-fields -->
                     <?php self::conditional_field( $field_id, $values ); ?>
@@ -401,7 +401,7 @@ class WPUF_Admin_Template {
                     <label><?php esc_html_e( 'Options', 'wp-user-frontend' ); ?></label>
 
                     <div class="wpuf-form-sub-fields wpuf-options">
-                    <?php self::common_checkbox( $field_id, 'options', $values ); ?>
+                        <?php self::common_checkbox( $field_id, 'options', $values ); ?>
 
                     </div> <!-- .wpuf-form-sub-fields -->
                     <?php self::conditional_field( $field_id, $values ); ?>
@@ -628,7 +628,7 @@ class WPUF_Admin_Template {
                 <?php self::conditional_field( $field_id, $values ); ?>
             </div> <!-- .wpuf-form-holder -->
         </li>
-    <?php
+        <?php
     }
 
     /**
@@ -680,6 +680,6 @@ class WPUF_Admin_Template {
                 <?php self::conditional_field( $field_id, $values ); ?>
             </div> <!-- .wpuf-form-holder -->
         </li>
-    <?php
+        <?php
     }
 }

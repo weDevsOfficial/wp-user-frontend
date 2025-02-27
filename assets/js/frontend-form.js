@@ -80,8 +80,8 @@
                         confirmButton: 'btn btn-success',
                         cancelButton: 'btn btn-danger'
                     }
-                }).then(function ( isConfirmed ) {
-                    if ( !isConfirmed ) {
+                }).then(function ( result ) {
+                    if ( !result.isConfirmed ) {
                         return false;
                     }
                     $('#wpuf_cancel_subscription').submit();
@@ -547,6 +547,19 @@
                             break;
                         }
 
+                        var containingShortcode = WP_User_Frontend.editorContainingShortcode(item);
+
+                        if ( containingShortcode.shortcodeFound ) {
+                            errors.push({
+                                type: 'custom',
+                                container: item,
+                                message: wpuf_frontend.protected_shortcodes_message
+                                    .replace('%shortcode%', '[' + containingShortcode.shortcode + ']')
+                            });
+
+                            break;
+                        }
+
                         richTexts.push( item_name + '=' + encodeURIComponent( val ) );
 
                         break;
@@ -648,8 +661,8 @@
                             break;
                         }
 
-                        if ( hasRepeat ) {
-                            var repeatItem = $('[data-type="confirm_password"]').eq(0);
+                        if ( hasRepeat === 'yes' ) {
+                            var repeatItem = $(item).closest('.wpuf-form').find('[data-type="confirm_password"]').eq(0);
 
                             if ( repeatItem.val() !== val ) {
                                 errors.push({
@@ -666,19 +679,19 @@
                                 errors.push({
                                     type: 'custom',
                                     container: item,
-                                    message: 'Password minimum strength should be weak'
+                                    message: wpuf_frontend.password_warning_weak
                                 });
                             } else if (strength === 'medium' && strengthMeter < 3) {
                                 errors.push({
                                     type: 'custom',
                                     container: item,
-                                    message: 'Password minimum strength should be medium'
+                                    message: wpuf_frontend.password_warning_medium
                                 });
                             } else if (strength === 'strong' && strengthMeter < 4) {
                                 errors.push({
                                     type: 'custom',
                                     container: item,
-                                    message: 'Password strength should be strong'
+                                    message: wpuf_frontend.password_warning_strong
                                 });
                             }
                         }
@@ -942,9 +955,9 @@
                 multi_selection: false,
                 urlstream_upload: true,
                 file_data_name: 'wpuf_file',
-                max_file_size: wpuf_frontend_upload.max_filesize,
-                url: wpuf_frontend_upload.plupload.url,
-                flash_swf_url: wpuf_frontend_upload.flash_swf_url,
+                max_file_size: wpuf_upload.max_filesize,
+                url: wpuf_upload.plupload.url,
+                flash_swf_url: wpuf_upload.flash_swf_url,
                 filters: [{
                     title: 'Allowed Files',
                     extensions: 'jpg,jpeg,gif,png,bmp'
@@ -1324,7 +1337,7 @@
 
             make_media_embed_code: function(content, editor){
                 $.post( ajaxurl, {
-                        action:'make_media_embed_code',
+                        action:'wpuf_make_media_embed_code',
                         content: content
                     },
                     function(data){
@@ -1359,6 +1372,33 @@
             }
 
             field.closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html( limitMessage );
+        },
+
+        editorContainingShortcode: function( field ) {
+            var item = $( field );
+            var editor_id = item.data( 'id' );
+            var postContent = $.trim( tinyMCE.get( editor_id ).getContent() ).toLowerCase();
+            var shortcodes = wpuf_frontend.protected_shortcodes;
+
+            if ( ! shortcodes) {
+                return {
+                    shortcodeFound: false,
+                };
+            }
+            for ( var i = 0; i < shortcodes.length; i++) {
+                var shortcode = shortcodes[i];
+                var regex = new RegExp(shortcode);
+                if (regex.test(postContent)) {
+                    return {
+                        shortcodeFound: true,
+                        shortcode: shortcode,
+                    };
+                }
+            }
+
+            return {
+                shortcodeFound: false,
+            };
         }
     };
 
@@ -1451,5 +1491,20 @@
 
         // Set name attribute for google map search field
         $(".wpuf-form-add #wpuf-map-add-location").attr("name", "find_address");
+    });
+
+    $(function($) {
+        // eye icon for password field
+        $(document).on('click', '.wpuf-eye', function () {
+            const input = $( this ).siblings( 'input' );
+
+            if ( input.attr("type") === "password" ) {
+                input.attr( "type", "text" );
+                $( this ).attr( "src", wpuf_frontend.asset_url + '/images/eye-close.svg' );
+            } else {
+                input.attr( "type", "password" );
+                $( this ).attr( "src", wpuf_frontend.asset_url + '/images/eye.svg' );
+            }
+        });
     });
 })(jQuery, window);

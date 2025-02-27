@@ -3,26 +3,28 @@
 /**
  * WPUF settings
  */
+
+#[AllowDynamicProperties]
 class WPUF_Admin_Settings {
 
     /**
      * Settings API
      *
-     * @var \WeDevs_Settings_API
+     * @var WeDevs_Settings_API
      */
     private $settings_api;
 
     /**
      * Static instance of this class
      *
-     * @var \self
+     * @var self
      */
     private static $_instance;
 
     /**
      * Public instance of this class
      *
-     * @var \self
+     * @var self
      */
     public $subscribers_list_table_obj;
 
@@ -490,9 +492,18 @@ class WPUF_Admin_Settings {
 
         wp_localize_script(
             'wpuf-admin-script', 'wpuf_admin_script', [
-                'ajaxurl'               => admin_url( 'admin-ajax.php' ),
-                'nonce'                 => wp_create_nonce( 'wpuf_nonce' ),
-                'cleared_schedule_lock' => __( 'Post lock has been cleared', 'wp-user-frontend' ),
+                'ajaxurl'                      => admin_url( 'admin-ajax.php' ),
+                'nonce'                        => wp_create_nonce( 'wpuf_nonce' ),
+                'cleared_schedule_lock'        => __( 'Post lock has been cleared', 'wp-user-frontend' ),
+                'protected_shortcodes'         => wpuf_get_protected_shortcodes(),
+                'protected_shortcodes_message' => sprintf(
+                    __( '%sThis post contains a sensitive short-code %s, that may allow others to sign-up with distinguished roles. If unsure, remove the short-code before publishing (recommended) %sas this may be exploited as a security vulnerability.%s', 'wp-user-frontend' ),
+                    '<div style="font-size: 1em; text-align: justify; color: darkgray">',
+                    '[wpuf-registration]',
+                    '<strong>',
+                    '</strong>',
+                    '</div>'
+                )
             ]
         );
     }
@@ -602,6 +613,10 @@ class WPUF_Admin_Settings {
      */
     public function import_forms() {
         check_ajax_referer( 'wpuf_admin_tools' );
+
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            wp_send_json_error( __( 'You do not have sufficient permissions to do this action', 'wp-user-frontend' ) );
+        }
 
         if ( ! isset( $_POST['file_id'] ) ) {
             wp_send_json_error(

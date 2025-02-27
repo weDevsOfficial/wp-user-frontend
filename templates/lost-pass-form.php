@@ -3,11 +3,15 @@
 If you would like to edit this file, copy it to your current theme's directory and edit it there.
 WPUF will always look in your theme's directory first, before using this default template.
 */
+
+use WeDevs\Wpuf\Free\Simple_Login;
 ?>
 <div class="login" id="wpuf-login-form">
 
-	<?php WPUF_Simple_Login::init()->show_errors(); ?>
-	<?php WPUF_Simple_Login::init()->show_messages(); ?>
+    <?php
+        wpuf()->frontend->simple_login->show_errors();
+        wpuf()->frontend->simple_login->show_messages();
+    ?>
 
 	<form name="lostpasswordform" id="lostpasswordform" action="" method="post">
 		<p>
@@ -19,7 +23,7 @@ WPUF will always look in your theme's directory first, before using this default
 
 		<p class="submit">
 			<input type="submit" name="wp-submit" id="wp-submit" value="<?php esc_attr_e( 'Get New Password', 'wp-user-frontend' ); ?>" />
-			<input type="hidden" name="redirect_to" value="<?php echo esc_attr( WPUF_Simple_Login::get_posted_value( 'redirect_to' ) ); ?>" />
+			<input type="hidden" name="redirect_to" value="<?php echo esc_attr( Simple_Login::get_posted_value( 'redirect_to' ) ); ?>" />
 			<input type="hidden" name="wpuf_reset_password" value="true" />
 			<input type="hidden" name="action" value="lostpassword" />
 
@@ -27,5 +31,5 @@ WPUF will always look in your theme's directory first, before using this default
 		</p>
 	</form>
 
-	<?php echo wp_kses_post( WPUF_Simple_Login::init()->get_action_links( [ 'lostpassword' => false ] ) ); ?>
+	<?php echo wp_kses_post( Simple_Login::init()->get_action_links( [ 'lostpassword' => false ] ) ); ?>
 </div>

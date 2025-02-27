@@ -84,7 +84,7 @@ body .wpuf-error {
   background-color: #f2dede;
   color: #a94442;
   border: 1px solid #ebccd1;
-  margin: 10px 10px 20px;
+  margin: 10px 0 20px 0;
   padding: 10px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -540,13 +540,6 @@ body ul.wpuf-form li .wpuf-address-field:after {
   clear: both;
   content: "";
   display: table;
-}
-body ul.wpuf-form li .wpuf-address-field.city_name,
-body ul.wpuf-form li .wpuf-address-field.state,
-body ul.wpuf-form li .wpuf-address-field.zip,
-body ul.wpuf-form li .wpuf-address-field.country_select {
-  float: left;
-  width: 47%;
 }
 body ul.wpuf-form li .wpuf-address-field.city_name,
 body ul.wpuf-form li .wpuf-address-field.zip {
@@ -1319,6 +1312,9 @@ body .wpuf-dashboard-container .wpuf-dashboard-content .wpuf-fields textarea:not
 body .wpuf-dashboard-container .wpuf-dashboard-content .wpuf-fields input:not([type="reset"]) {
   width: 100%;
 }
+body .wpuf-dashboard-container .wpuf-dashboard-content .wpuf-fields input[type="radio"] {
+  width: initial;
+}
 body .wpuf-dashboard-container .items-table-container,
 body .wpuf-dashboard-container .wpuf-dashboard-content.invoices {
   max-width: 100%;
@@ -1829,4 +1825,10 @@ body .wpuf-attachment-upload-filelist + .moxie-shim {
 /* field specific style to override our default padding*/
 .iti--allow-dropdown input[type="text"] {
   padding-left: 52px !important;
+}
+img.wpuf-eye {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%) translateX(-6%);
 }

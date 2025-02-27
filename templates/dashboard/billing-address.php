@@ -4,11 +4,10 @@ $user_id = get_current_user_id();
 
 $address_fields = [];
 $countries      = [];
-$cs             = new CountryState();
+$cs             = new WeDevs\Wpuf\Data\Country_State();
 
 
 if ( isset( $_POST['update_billing_address'] ) ) {
-
     if ( ! isset( $_POST['wpuf_save_address_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['wpuf_save_address_nonce'] ), 'wpuf_address_ajax_action' ) ) {
         return;
     }
@@ -43,7 +42,7 @@ if ( isset( $_POST['update_billing_address'] ) ) {
 <form class="wpuf-form form-label-above" action="" method="post" id="wpuf-payment-gateway">
     <div class="wpuf-fields">
         <?php
-        wp_nonce_field( 'wpuf-ajax-address' );
+        wp_nonce_field( 'wpuf_ajax_address' );
         wp_nonce_field( 'wpuf_address_ajax_action', 'wpuf_save_address_nonce' );
         ?>
         <ul class="wpuf-form form-label-above">

@@ -982,11 +982,14 @@ class WPUF_Render_Form {
             <span class="wpuf-wordlimit-message wpuf-help"></span>
             <?php $this->help_text( $attr ); ?>
 
-            <?php if ( $taxonomy ) { ?>
+            <?php if ( $taxonomy ) {
+                $query_string = '?action=wpuf-ajax-tag-search&tax=post_tag';
+                $query_string .= '&nonce=' . wp_create_nonce( 'wpuf_ajax_tag_search' );
+                ?>
             <script type="text/javascript">
                 ;(function($) {
                     $(document).ready( function(){
-                        $('li.tags input[name=tags]').suggest( wpuf_frontend.ajaxurl + '?action=wpuf-ajax-tag-search&tax=post_tag', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
+                        $('li.tags input[name=tags]').suggest( wpuf_frontend.ajaxurl + '<?php echo $query_string; ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
                     });
                 })(jQuery);
             </script>
@@ -1579,6 +1582,9 @@ class WPUF_Render_Form {
                         break;
 
                     case 'text':
+                        $query_string = '?action=wpuf-ajax-tag-search&tax=' . esc_attr( $attr['name'] );
+                        $query_string .= '&nonce=' . wp_create_nonce( 'wpuf_ajax_tag_search' );
+
                         ?>
 
                         <input class="textfield<?php echo esc_attr( $this->required_class( $attr ) ); ?>" id="<?php echo esc_attr( $attr['name'] ); ?>" type="text" data-required="<?php echo esc_attr( $attr['required'] ); ?>" data-type="text"<?php esc_attr( $this->required_html5( $attr ) ); ?> name="<?php echo esc_attr( $attr['name'] ); ?>" value="<?php echo esc_attr( implode( ', ', $terms ) ); ?>" size="40" />
@@ -1586,7 +1592,7 @@ class WPUF_Render_Form {
                         <script type="text/javascript">
                             ;(function($) {
                                 $(document).ready( function(){
-                                        $('#<?php echo esc_attr( $attr['name'] ); ?>').suggest( wpuf_frontend.ajaxurl + '?action=wpuf-ajax-tag-search&tax=<?php echo esc_attr( $attr['name'] ); ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
+                                        $('#<?php echo esc_attr( $attr['name'] ); ?>').suggest( wpuf_frontend.ajaxurl + '<?php echo $query_string; ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
                                 });
                             })(jQuery);
                         </script>
@@ -1652,7 +1658,7 @@ class WPUF_Render_Form {
 
                     if ( $thumb_id ) {
                         $has_featured_image = true;
-                        $featured_image     = WPUF_Upload::attach_html( $thumb_id, 'featured_image' );
+                        $featured_image     = WeDevs\Wpuf\Ajax\Upload_Ajax::attach_html( $thumb_id, 'featured_image' );
                     }
                 } else {
                     // it must be a user avatar
@@ -1686,7 +1692,7 @@ class WPUF_Render_Form {
 
         if ( $has_images ) {
             foreach ( $images as $attach_id ) {
-                echo esc_attr( WPUF_Upload::attach_html( $attach_id, $attr['name'] ) );
+                echo esc_attr( WeDevs\Wpuf\Ajax\Upload_Ajax::attach_html( $attach_id, $attr['name'] ) );
             }
         } ?>
                     </ul>

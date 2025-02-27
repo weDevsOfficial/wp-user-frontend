@@ -116,7 +116,7 @@ body {
     background-color: #f2dede;
     color: #a94442;
     border: 1px solid #ebccd1;
-    margin: 10px 10px 20px;
+    margin: 10px 0 20px 0;
     padding: 10px;
     .border-radius(3px);
     font-size: 13px;
@@ -602,14 +602,6 @@ ul.wpuf-form {
             .clearfix();
             width: 100%;
             margin-bottom: 10px;
-
-            &.city_name,
-            &.state,
-            &.zip,
-            &.country_select {
-                float: left;
-                width: 47%;
-            }
 
             &.city_name,
             &.zip {
@@ -1460,6 +1452,12 @@ body.rtl{
             }
         }
 
+        .wpuf-fields {
+            input[type="radio"] {
+                    width: initial;
+            }
+        }
+
     }
 
     .items-table-container,
@@ -2114,4 +2112,11 @@ ul.wpuf-form{
 /* field specific style to override our default padding*/
 .iti--allow-dropdown input[type="text"] {
     padding-left: 52px !important;
+}
+
+img.wpuf-eye {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%) translateX(-6%);
 }

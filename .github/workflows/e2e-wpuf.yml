@@ -59,11 +59,11 @@ jobs:
           cd tests/e2e 
           npm run wp-env start
 
-      - name: List files
+      - name: Check path
         run: |
           cd tests/e2e
-          ls -al
-          
+          pwd
+
       # Run Playwright tests/e2e
       - name: Run Playwright tests/e2e
         run: |

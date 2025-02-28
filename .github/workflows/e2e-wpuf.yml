@@ -67,8 +67,8 @@ jobs:
       # Run Playwright tests/e2e
       - name: Run Playwright tests/e2e
         run: |
-          cd tests/e2e
           npx playwright test e2eMain.spec.ts --project=chromium
+        working-directory: wp-user-frontend/tests/e2e
 
 
         env:

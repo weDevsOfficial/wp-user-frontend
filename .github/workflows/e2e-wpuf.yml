@@ -9,18 +9,9 @@ on:
 jobs:
   test:
     timeout-minutes: 60
-    runs-on: ubuntu-latest   
-    defaults:
-      run:
-        working-directory: tests/e2e  
+    runs-on: ubuntu-latest    
     
     steps:
-
-      # - name: List files
-      #   run: |
-      #     ls -al
-
-
       # Setup PHP
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -35,7 +26,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x' # Use LTS version for stability
+          node-version: '18.x'  # Use LTS version for stability
 
       # Composer install and build (WPUF-lite)
       - name: Composer install and build (WPUF-lite)
@@ -53,23 +44,30 @@ jobs:
       # Install dependencies for e2e tests
       - name: Install dependencies
         run: |
+          cd tests/e2e  
           npm ci
           
       # Install Playwright Browsers
       - name: Install Playwright Browsers
         run: |
+          cd tests/e2e 
           npx playwright install chromium
 
       # Setup WordPress using wp-env
       - name: Setup WordPress 
         run: |
+          cd tests/e2e 
           npm run wp-env start
-          
 
-    
+      - name: List files
+        run: |
+          cd tests/e2e
+          ls -al
+          
       # Run Playwright tests/e2e
       - name: Run Playwright tests/e2e
         run: |
+          cd tests/e2e
           npx playwright test e2eMain.spec.ts --project=chromium
 
 

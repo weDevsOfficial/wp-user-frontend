@@ -18,11 +18,11 @@ jobs:
         with:
           php-version: "7.4"
       
-      # Checkout the code for wp-user-frontend repo
-      - name: Checkout code
+      # Checkout the code for wp-user-frontend repo (without custom path)
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Setup Node.js (preferably use LTS version)
+      # Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -40,6 +40,12 @@ jobs:
         run: |
           npm i
           grunt release
+
+      # Debug directory structure (to check paths)
+      - name: Debug directory structure
+        run: |
+          pwd
+          ls -R
 
       # Install dependencies for e2e tests
       - name: Install dependencies
@@ -64,19 +70,24 @@ jobs:
           cd tests/e2e
           pwd
 
+
+      - name: "Debug: Verify test files exist"
+        working-directory: tests/e2e
+        run: |
+          echo "Current directory: $(pwd)"
+          ls -l *.spec.ts
+
       # Run Playwright tests/e2e
       - name: Run Playwright tests/e2e
         run: |
+          cd tests/e2e
           npx playwright test e2eMain.spec.ts --project=chromium
-        working-directory: wp-user-frontend/tests/e2e
-
 
         env:
           BASE_URL: ${{ secrets.QA_BASE_URL }}
           CI: true
           ADMIN_USERNAME: ${{ secrets.QA_ADMIN_USERNAME }}
           ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
-
 
       # Archive Playwright artifacts (screenshots, HTML snapshots, videos)
       - name: Archive playwright artifacts (screenshots, HTML snapshots, videos)
@@ -87,17 +98,6 @@ jobs:
           path: tests/e2e/playwright-report
           if-no-files-found: ignore
           retention-days: 3
-      
-      # Optional: Publish HTML report to GitHub Pages (commented out if not needed)
-      # - name: Publish HTML report to GH Pages
-      #   if: always() 
-      #   uses: peaceiris/actions-gh-pages@v3.7.3
-      #   with:
-      #     github_token: ${{ secrets.ACCESS_TOKEN }}
-      #     publish_dir: tests/e2e/playwright-report
-      #     keep_files: true
-      #     user_name: "github-actions[bot]"
-      #     user_email: "github-actions[bot]@users.noreply.github.com"
 
       # Output Test Results URL
       - name: Test results

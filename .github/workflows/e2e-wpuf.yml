@@ -18,46 +18,35 @@ jobs:
         with:
           php-version: "7.4"
       
-      # Checkout the code for wp-user-frontend repo (without custom path)
-      - name: Checkout repository
+      # Checkout testing repo
+      - name: Checkout testing repo
+        id: clone-wpuf-lite
         uses: actions/checkout@v4
 
-      # Setup Node.js
-      - name: Setup Node.js
+      # Use desired version of NodeJS
+      - name: Use desired version of NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'  # Use LTS version for stability
+            node-version: 14
+            cache: npm
 
       # Composer install and build (WPUF-lite)
       - name: Composer install and build (WPUF-lite)
         run: |
-          composer update
-          composer install
-          composer dump-autoload -o
+           composer i --no-dev -o || composer update --no-dev -o
             
-      # NPM install and build (WPUF-lite)
+      # Npm install and build (WPUF-lite)
       - name: Npm install and build (WPUF-lite)
         run: |
-          npm i
-          grunt release
+            npm ci || npm i
+            npm run build
 
-      # Debug directory structure (to check paths)
-      - name: Debug directory structure
+      # Install test dependencies
+      - name: Install test dependencies
+        working-directory: tests/e2e
         run: |
-          pwd
-          ls -R
-
-      # Install dependencies for e2e tests
-      - name: Install dependencies
-        run: |
-          cd tests/e2e  
-          npm ci
-          
-      # Install Playwright Browsers
-      - name: Install Playwright Browsers
-        run: |
-          cd tests/e2e 
-          npx playwright install chromium
+            npm ci || npm i
+    
 
       # Setup WordPress using wp-env
       - name: Setup WordPress 
@@ -69,6 +58,12 @@ jobs:
         run: |
           cd tests/e2e
           pwd
+
+      # Install Playwright Browsers
+      - name: Install Playwright Browsers
+        run: |
+          cd tests/e2e 
+          npx playwright install chromium
 
 
       - name: "Debug: Verify test files exist"

@@ -70,16 +70,8 @@ export class RegistrationFormsPage {
 
         //Add New Page
         await this.page.click(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addNewPage);
-
-        // Check if the Welcome Modal is visible
-        let closeWelcomeModal = this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closeWelcomeModal);
-        try {
-            await closeWelcomeModal.waitFor({ state: 'visible', timeout: 5000 });
-            await closeWelcomeModal.click();
-        } catch (error) {
-            console.log('Welcome Modal not visible!');
-        }
-
+        await this.page.reload();
+       
         // Check if the Choose Pattern Modal is visible
         let closePatternModal = this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closePatternModal);
         try {
@@ -88,6 +80,16 @@ export class RegistrationFormsPage {
         } catch (error) {
             console.log('Pattern Modal not visible!');
         }
+
+         // Check if the Welcome Modal is visible
+         let closeWelcomeModal = this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closeWelcomeModal);
+         try {
+             await closeWelcomeModal.waitFor({ state: 'visible', timeout: 5000 });
+             await closeWelcomeModal.click();
+         } catch (error) {
+             console.log('Welcome Modal not visible!');
+         }
+ 
 
         //Add Page Title
         await this.page.fill(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addPageTitle, registrationFormPageTitle);

@@ -37,11 +37,10 @@ jobs:
             composer install
             composer dump-autoload -o
             
-      # Npm install and build (WPUF-lite) with compatible npm
+      # Npm install and build (WPUF-lite)
       - name: Npm install and build (WPUF-lite)
         run: |
-            npm install -g npm@latest
-            npm ci || npm i
+            npm i
             grunt release
 
       # Install test dependencies

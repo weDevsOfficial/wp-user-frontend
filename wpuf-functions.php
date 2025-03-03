@@ -4842,7 +4842,7 @@ function wpuf_is_pro_active() {
 }
 
 /**
- * Get the post form builder setting menu titles. The titles will show on Post frms > Settings > left side menu
+ * Get the post form builder setting menu titles. The titles will show on Post forms > Settings > left side menu
  *
  * @since WPUF_SINCE
  *

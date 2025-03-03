@@ -182,7 +182,7 @@
         v-show="active_tab === 'form-settings'"
         id="wpuf-form-builder-settings">
         <?php
-            require_once WPUF_ROOT . '/admin/form-builder/views/settings-sidebar.php';
+            do_action( "wpuf_form_builder_settings_tabs_{$form_type}" );
         ?>
 <!--        <div class="wpuf-w-1/3 wpuf-bg-gray-50 wpuf-px-[20px] wpuf-pt-4">-->
 <!--            <div id="wpuf-form-builder-settings-tabs" class="nav-tab-wrapper wpuf-flex wpuf-flex-col">-->

@@ -930,7 +930,11 @@
                 }
             }
         };
-        const formHandler = new FormDependencyHandler(dependencies);
+
+        // load only for post form settings
+        if (wpuf_form_builder.form_type === 'wpuf_forms') {
+            new FormDependencyHandler(dependencies);
+        }
 
         // initially show the first tab(General) on first page load
         show_settings_for('general');

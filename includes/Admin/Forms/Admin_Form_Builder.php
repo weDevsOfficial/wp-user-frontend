@@ -165,6 +165,7 @@ class Admin_Form_Builder {
             [
                 'i18n'             => $this->i18n(),
                 'post'             => $post,
+                'form_type'        => $post->post_type,
                 'form_fields'      => wpuf_get_form_fields( $post->ID ),
                 'panel_sections'   => wpuf()->fields->get_field_groups(),
                 'field_settings'   => wpuf()->fields->get_js_settings(),
@@ -179,7 +180,6 @@ class Admin_Form_Builder {
                 'turnstile_site'   => wpuf_get_option( 'turnstile_site_key', 'wpuf_general' ),
                 'turnstile_secret' => wpuf_get_option( 'turnstile_secret_key', 'wpuf_general' ),
                 'nonce'            => wp_create_nonce( 'form-builder-setting-nonce' ),
-                'is_older_form'    => defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.1', '<' ),
                 'is_pro_active'    => wpuf_is_pro_active(),
                 'pro_asset_url'    => defined( 'WPUF_PRO_ASSET_URI' ) ? WPUF_PRO_ASSET_URI : '',
                 'settings_titles'  => wpuf_get_post_form_builder_setting_menu_titles(),

@@ -16,7 +16,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "7.4"
+          php-version: "7.3"
       
       # Checkout testing repo
       - name: Checkout testing repo
@@ -33,19 +33,21 @@ jobs:
       # Composer install and build (WPUF-lite)
       - name: Composer install and build (WPUF-lite)
         run: |
-           composer i --no-dev -o || composer update --no-dev -o
+            composer update
+            composer install
+            composer dump-autoload -o
             
       # Npm install and build (WPUF-lite)
       - name: Npm install and build (WPUF-lite)
         run: |
-            npm ci || npm i
-            npm run build
+            npm i
+            grunt release
 
       # Install test dependencies
       - name: Install test dependencies
         working-directory: tests/e2e
         run: |
-            npm ci || npm i
+            npm ci
     
 
       # Setup WordPress using wp-env

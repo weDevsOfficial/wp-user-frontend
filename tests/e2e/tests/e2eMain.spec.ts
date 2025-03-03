@@ -22,8 +22,9 @@ import resetWordpressSite from './resetWordpressSite.spec';
  * @cleanup
  *  - Clears cookies and origins before running the reset test.
  */
-fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
-test.describe(resetWordpressSite);
+
+// fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
+// test.describe(resetWordpressSite);
 
 
 
@@ -47,7 +48,6 @@ test.describe(resetWordpressSite);
  * @cleanup
  *  - Clears cookies and origins before running any of the tests to maintain test isolation and avoid session interference.
  */
-
 
 fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
 test.describe(loginAndSetupTests);

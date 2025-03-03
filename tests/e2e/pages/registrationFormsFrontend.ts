@@ -45,7 +45,7 @@ export class RegistrationFormsFrontendPage {
 
         //Validate Registration page
         const validateRegistrationPage = await this.page.innerText(Selectors.registrationForms.completeUserRegistrationFormFrontend.validateRegistrationPage);
-        await expect(validateRegistrationPage).toContain('Registration Page');
+        expect(validateRegistrationPage).toContain('Registration Page');
 
         //Enter First Name
         await this.page.fill(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfFirstName, firstName);

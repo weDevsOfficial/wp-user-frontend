@@ -55,12 +55,11 @@ export class RegistrationFormsPage {
 
         //Validate Shortcode
         const validateShortcode = await this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.validateShortcode);
-        await expect(validateShortcode).toBeTruthy();
+        expect(validateShortcode).toBeTruthy();
 
         //Copy Shortcode
         const storeShortcode = await this.page.innerText(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.storeShortcode);
         console.log(storeShortcode);
-
 
         //Visit Pages
         const visitPagesAdminMenuOption = Urls.baseUrl + '/wp-admin/edit.php?post_type=page';
@@ -71,15 +70,6 @@ export class RegistrationFormsPage {
         //Add New Page
         await this.page.click(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addNewPage);
         await this.page.reload();
-       
-        // Check if the Choose Pattern Modal is visible
-        let closePatternModal = this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closePatternModal);
-        try {
-            await closePatternModal.waitFor({ state: 'visible', timeout: 5000 });
-            await closePatternModal.click();
-        } catch (error) {
-            console.log('Pattern Modal not visible!');
-        }
 
          // Check if the Welcome Modal is visible
          let closeWelcomeModal = this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closeWelcomeModal);
@@ -89,8 +79,16 @@ export class RegistrationFormsPage {
          } catch (error) {
              console.log('Welcome Modal not visible!');
          }
+       
+        // Check if the Choose Pattern Modal is visible
+        let closePatternModal = this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closePatternModal);
+        try {
+            await closePatternModal.waitFor({ state: 'visible', timeout: 5000 });
+            await closePatternModal.click();
+        } catch (error) {
+            console.log('Pattern Modal not visible!');
+        }
  
-
         //Add Page Title
         await this.page.fill(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addPageTitle, registrationFormPageTitle);
 

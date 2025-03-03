@@ -23,11 +23,11 @@ jobs:
         id: clone-wpuf-lite
         uses: actions/checkout@v4
 
-      # Use desired version of NodeJS
+      # Use Node.js 18
       - name: Use desired version of NodeJS
         uses: actions/setup-node@v4
         with:
-            node-version: 14
+            node-version: 18
             cache: npm
 
       # Composer install and build (WPUF-lite)
@@ -37,10 +37,11 @@ jobs:
             composer install
             composer dump-autoload -o
             
-      # Npm install and build (WPUF-lite)
+      # Npm install and build (WPUF-lite) with compatible npm
       - name: Npm install and build (WPUF-lite)
         run: |
-            npm i
+            npm install -g npm@latest
+            npm ci || npm i
             grunt release
 
       # Install test dependencies
@@ -48,7 +49,6 @@ jobs:
         working-directory: tests/e2e
         run: |
             npm ci
-    
 
       # Setup WordPress using wp-env
       - name: Setup WordPress 
@@ -66,13 +66,6 @@ jobs:
         run: |
           cd tests/e2e 
           npx playwright install chromium
-
-
-      - name: "Debug: Verify test files exist"
-        working-directory: tests/e2e
-        run: |
-          echo "Current directory: $(pwd)"
-          ls -l *.spec.ts
 
       # Run Playwright tests/e2e
       - name: Run Playwright tests/e2e

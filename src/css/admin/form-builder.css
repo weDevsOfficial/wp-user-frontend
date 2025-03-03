@@ -8,7 +8,7 @@
     }
 
     .wpuf-btn-secondary {
-        @apply wpuf-rounded-md wpuf-bg-emerald-50 wpuf-text-emerald-700 wpuf-px-4 wpuf-py-3 wpuf-text-sm wpuf-font-semibold hover:wpuf-bg-emerald-100;
+        @apply wpuf-rounded-md wpuf-bg-emerald-50 wpuf-text-emerald-700 wpuf-px-4 wpuf-py-3 wpuf-text-sm wpuf-font-medium hover:wpuf-bg-emerald-100 wpuf-border wpuf-border-emerald-300;
     }
 
     .wpuf-tooltip-top {

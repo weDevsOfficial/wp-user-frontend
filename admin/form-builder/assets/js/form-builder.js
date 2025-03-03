@@ -652,7 +652,7 @@
             setting_class_names: function(field_type) {
                 switch (field_type) {
                     case 'upload_btn':
-                        return 'file-selector wpuf-rounded-lg wpuf-btn-secondary';
+                        return 'file-selector !wpuf-rounded-[6px] wpuf-btn-secondary';
 
                     case 'radio':
                         return '!wpuf-mr-2 wpuf-radio !wpuf-shadow-none checked:!wpuf-shadow-none focus:checked:!wpuf-shadow-primary !wpuf-border-gray-300 checked:!wpuf-border-primary checked:!wpuf-bg-primary before:checked:!wpuf-bg-white hover:checked:!wpuf-bg-primary  focus:!wpuf-ring-transparent focus:checked:!wpuf-ring-transparent hover:checked:!wpuf-ring-transparent focus:checked:!wpuf-bg-primary focus:checked:!wpuf-shadow-none focus:wpuf-shadow-primary';

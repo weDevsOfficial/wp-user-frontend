@@ -263,7 +263,7 @@
     </label>
     <ul :class="[option_field.inline ? 'list-inline' : '']">
         <li v-for="(option, key) in option_field.options" class="wpuf-mt-2">
-            <label>
+            <label class="wpuf-flex wpuf-items-center">
                 <input type="checkbox" :class="builder_class_names('checkbox')" :value="key" v-model="value"> {{ option }}
             </label>
         </li>

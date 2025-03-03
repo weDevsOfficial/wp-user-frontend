@@ -111,7 +111,7 @@ wpuf_mixins.form_field_mixin = {
 
             switch (type_class) {
                 case 'upload_btn':
-                    commonClasses = 'file-selector wpuf-rounded-lg wpuf-btn-secondary';
+                    commonClasses = 'file-selector wpuf-rounded-[6px] wpuf-btn-secondary';
                     break;
 
                 case 'radio':
@@ -119,7 +119,7 @@ wpuf_mixins.form_field_mixin = {
                     break;
 
                 case 'checkbox':
-                    commonClasses = 'wpuf-h-4 wpuf-w-4 wpuf-rounded wpuf-border-gray-300 !wpuf-mt-0.5 checked:focus:!wpuf-bg-primary checked:hover:wpuf-bg-primary checked:!wpuf-bg-primary before:!wpuf-content-none';
+                    commonClasses = 'wpuf-h-4 wpuf-w-4 !wpuf-shadow-none checked:!wpuf-shadow-none focus:checked:!wpuf-shadow-primary focus:checked:!wpuf-shadow-none !wpuf-border-gray-300 checked:!wpuf-border-primary checked:!wpuf-bg-primary before:checked:!wpuf-bg-white hover:checked:!wpuf-bg-primary focus:!wpuf-ring-transparent focus:checked:!wpuf-ring-transparent hover:checked:!wpuf-ring-transparent focus:checked:!wpuf-bg-primary focus:wpuf-shadow-primary !wpuf-mt-0.5 checked:focus:!wpuf-bg-primary checked:hover:wpuf-bg-primary checked:!wpuf-bg-primary before:!wpuf-content-none wpuf-rounded';
                     break;
 
                 case 'dropdown':

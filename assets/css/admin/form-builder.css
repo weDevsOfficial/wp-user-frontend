@@ -2249,6 +2249,9 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-btn-secondary {
   border-radius: 0.375rem;
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(110 231 183 / var(--tw-border-opacity));
   --tw-bg-opacity: 1;
   background-color: rgb(236 253 245 / var(--tw-bg-opacity));
   padding-left: 1rem;
@@ -2257,7 +2260,7 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   padding-bottom: 0.75rem;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  font-weight: 600;
+  font-weight: 500;
   --tw-text-opacity: 1;
   color: rgb(4 120 87 / var(--tw-text-opacity));
 }

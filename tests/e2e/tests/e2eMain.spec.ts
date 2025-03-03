@@ -16,7 +16,7 @@ import resetWordpressSite from './resetWordpressSite.spec';
  *  Test suite that resets the WordPress site before running tests.
  * 
  * @details
- *  - This spec resets the WordPress site using the WP-Reset plugin.
+ *  - This spec resets the @WordPress site using the @WP_RESET_PLUGIN (Must needed) before running any tests.
  *  - To use the reset functionality, uncomment the necessary lines in this file.
  * 
  * @cleanup

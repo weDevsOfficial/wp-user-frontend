@@ -1,10 +1,9 @@
 require('dotenv').config();
-
 import { expect, Page } from '@playwright/test';
-import { selectors } from './selectors';
+import { Selectors } from './selectors';
 
 
-export class fieldOptionsCommon {
+export class FieldOptionsCommonPage {
     readonly page: Page;
 
     constructor(page: Page) {
@@ -20,10 +19,10 @@ export class fieldOptionsCommon {
     //PostFields
     async addPostFields_PF() {
         //PostFields
-        await this.page.click(selectors.postForms.addPostFields_PF.postTitleBlock);
-        await this.page.click(selectors.postForms.addPostFields_PF.postContentBlock);
-        await this.page.click(selectors.postForms.addPostFields_PF.postExcerptBlock);
-        await this.page.click(selectors.postForms.addPostFields_PF.featuredImageBlock);
+        await this.page.click(Selectors.postForms.addPostFields_PF.postTitleBlock);
+        await this.page.click(Selectors.postForms.addPostFields_PF.postContentBlock);
+        await this.page.click(Selectors.postForms.addPostFields_PF.postExcerptBlock);
+        await this.page.click(Selectors.postForms.addPostFields_PF.featuredImageBlock);
         await this.page.waitForLoadState('domcontentloaded');
     };
 
@@ -31,13 +30,13 @@ export class fieldOptionsCommon {
     async validatePostFields_PF() {
         //Validate
         //Post Title
-        await expect(await this.page.isVisible(selectors.postForms.validatePostFields_PF.validatePostTitle)).toBeTruthy();
+        await expect(await this.page.isVisible(Selectors.postForms.validatePostFields_PF.validatePostTitle)).toBeTruthy();
         //Post Description
-        await expect(await this.page.isVisible(selectors.postForms.validatePostFields_PF.validatePostContent)).toBeTruthy();
+        await expect(await this.page.isVisible(Selectors.postForms.validatePostFields_PF.validatePostContent)).toBeTruthy();
         //Excerpt
-        await expect(await this.page.isVisible(selectors.postForms.validatePostFields_PF.validateExcerpt)).toBeTruthy();
+        await expect(await this.page.isVisible(Selectors.postForms.validatePostFields_PF.validateExcerpt)).toBeTruthy();
         //Featured Image
-        await expect(await this.page.isVisible(selectors.postForms.validatePostFields_PF.validateFeaturedImage)).toBeTruthy();
+        await expect(await this.page.isVisible(Selectors.postForms.validatePostFields_PF.validateFeaturedImage)).toBeTruthy();
 
     };
 
@@ -47,8 +46,8 @@ export class fieldOptionsCommon {
     //Taxonomies
     async addTaxonomies_PF() {
         //Taxonomies
-        await this.page.click(selectors.postForms.addTaxonomies_PF.categoryBlock);
-        await this.page.click(selectors.postForms.addTaxonomies_PF.tagsBlock);
+        await this.page.click(Selectors.postForms.addTaxonomies_PF.categoryBlock);
+        await this.page.click(Selectors.postForms.addTaxonomies_PF.tagsBlock);
 
         await this.page.waitForLoadState('domcontentloaded');
     };
@@ -57,17 +56,17 @@ export class fieldOptionsCommon {
     async validateTaxonomies_PF() {
         //Validate
         //Category
-        expect(await this.page.isVisible(selectors.postForms.validateTaxonomies_PF.validateCategory)).toBeTruthy();
+        expect(await this.page.isVisible(Selectors.postForms.validateTaxonomies_PF.validateCategory)).toBeTruthy();
         //Tags
-        expect(await this.page.isVisible(selectors.postForms.validateTaxonomies_PF.validateTags)).toBeTruthy();
+        expect(await this.page.isVisible(Selectors.postForms.validateTaxonomies_PF.validateTags)).toBeTruthy();
     };
 
     async validateTaxonomiesPreset_PF() {
         //Validate
         //Category
-        await expect(await this.page.isVisible(selectors.postForms.validateTaxonomiesPreset_PF.validateCategory)).toBeTruthy();
+        await expect(await this.page.isVisible(Selectors.postForms.validateTaxonomiesPreset_PF.validateCategory)).toBeTruthy();
         //Tags
-        await expect(await this.page.isVisible(selectors.postForms.validateTaxonomiesPreset_PF.validateTags)).toBeTruthy();
+        await expect(await this.page.isVisible(Selectors.postForms.validateTaxonomiesPreset_PF.validateTags)).toBeTruthy();
     };
 
 
@@ -83,55 +82,55 @@ export class fieldOptionsCommon {
     //CustomFields
     async addCustomFields_Common() {
         //CustomFields
-        await this.page.click(selectors.postForms.addCustomFields_Common.customFieldsText);
-        if (await this.page.isVisible(selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
-            await this.page.click(selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
+        await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsText);
+        if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
+            await this.page.click(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
         }
-        await this.page.click(selectors.postForms.addCustomFields_Common.customFieldsTextarea);
-        await this.page.click(selectors.postForms.addCustomFields_Common.customFieldsDropdown);
-        await this.page.click(selectors.postForms.addCustomFields_Common.customFieldsMultiSelect);
-        await this.page.click(selectors.postForms.addCustomFields_Common.customFieldsRadio);
-        await this.page.click(selectors.postForms.addCustomFields_Common.customFieldsCheckBox);
-        await this.page.click(selectors.postForms.addCustomFields_Common.customFieldsWebsiteUrl);
-        await this.page.click(selectors.postForms.addCustomFields_Common.customFieldsEmailAddress);
-        await this.page.click(selectors.postForms.addCustomFields_Common.customFieldsHiddenField);
-        await this.page.click(selectors.postForms.addCustomFields_Common.customFieldsImageUpload);
+        await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsTextarea);
+        await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsDropdown);
+        await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsMultiSelect);
+        await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsRadio);
+        await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsCheckBox);
+        await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsWebsiteUrl);
+        await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsEmailAddress);
+        await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsHiddenField);
+        await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsImageUpload);
 
         //FromPRO
         //RepeatField
-        await this.page.click(selectors.postForms.addCustomFields_Common.customFieldsRepeatField);
-        const checkProPopUpCloseButton = await this.page.isVisible(selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
+        await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsRepeatField);
+        const checkProPopUpCloseButton = await this.page.isVisible(Selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
         if (checkProPopUpCloseButton === true) {
-            await this.page.click(selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
+            await this.page.click(Selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
             console.log("Pro: WPUF Pro is requred...")
         }
         else {
             //DateTime
-            await this.page.click(selectors.postForms.addCustomFields_Common.customFieldsDateTime);
+            await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsDateTime);
             //TimeField
-            await this.page.click(selectors.postForms.addCustomFields_Common.customFieldsTimeField);
+            await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsTimeField);
             //FileUpload    
-            await this.page.click(selectors.postForms.addCustomFields_Common.customFieldsFileUpload);
+            await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsFileUpload);
             //CountryList
-            await this.page.click(selectors.postForms.addCustomFields_Common.customFieldsCountryList);
+            await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsCountryList);
             //NumericField
-            await this.page.click(selectors.postForms.addCustomFields_Common.customFieldsNumericField);
+            await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsNumericField);
             //PhoneField
-            await this.page.click(selectors.postForms.addCustomFields_Common.customFieldsPhoneField);
+            await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsPhoneField);
             //AddressField  
-            await this.page.click(selectors.postForms.addCustomFields_Common.customFieldsAddressField);
+            await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsAddressField);
             //GoogleMaps
-            await this.page.click(selectors.postForms.addCustomFields_Common.customFieldsGoogleMaps);
-            if (await this.page.isVisible(selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
-                await this.page.click(selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
+            await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsGoogleMaps);
+            if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
+                await this.page.click(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
             }
             //StepStart
-            await this.page.click(selectors.postForms.addCustomFields_Common.customFieldsStepStart);
-            if (await this.page.isVisible(selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
-                await this.page.click(selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
+            await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsStepStart);
+            if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
+                await this.page.click(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
             }
             //Embed
-            await this.page.click(selectors.postForms.addCustomFields_Common.customFieldsEmbed); //TODO: This is an Error as position changes in Lite and Pro
+            await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsEmbed); //TODO: This is an Error as position changes in Lite and Pro
 
             await this.page.waitForLoadState('domcontentloaded');
 
@@ -143,56 +142,56 @@ export class fieldOptionsCommon {
     async validateCustomFields_Common() {
         //Validate
         //Text
-        await expect(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateText)).toBeTruthy();
+        await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateText)).toBeTruthy();
         //Textarea
-        await expect(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateTextarea)).toBeTruthy();
+        await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateTextarea)).toBeTruthy();
         //Dropdown
-        await expect(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateDropdown)).toBeTruthy();
+        await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateDropdown)).toBeTruthy();
         //MultiSelect
-        await expect(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateMultiSelect)).toBeTruthy();
+        await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateMultiSelect)).toBeTruthy();
         //Radio
-        await expect(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateRadio)).toBeTruthy();
+        await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateRadio)).toBeTruthy();
         //CheckBox
-        await expect(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateCheckBox)).toBeTruthy();
+        await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateCheckBox)).toBeTruthy();
         //WebsiteUrl
-        await expect(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateWebsiteUrl)).toBeTruthy();
+        await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateWebsiteUrl)).toBeTruthy();
         //EmailAddress
-        await expect(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateEmailAddress)).toBeTruthy();
+        await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateEmailAddress)).toBeTruthy();
         //HiddenField
-        await expect(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateHiddenField)).toBeTruthy();
+        await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateHiddenField)).toBeTruthy();
         //ImageUpload
-        await expect(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateImageUpload)).toBeTruthy();
+        await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateImageUpload)).toBeTruthy();
 
         //From PRO
         //RepeatField
-        const proCustomFields_Common = await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateRepeatField);
+        const proCustomFields_Common = await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateRepeatField);
         if (proCustomFields_Common === true) {
             //RepeatField
-            await expect(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateRepeatField)).toBeTruthy();
+            await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateRepeatField)).toBeTruthy();
             //DateTime
-            await expect(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateDateTime)).toBeTruthy();
+            await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateDateTime)).toBeTruthy();
             //TimeField
-            await expect(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateTimeField)).toBeTruthy();
+            await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateTimeField)).toBeTruthy();
             //FileUpload
-            await expect(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateFileUpload)).toBeTruthy();
+            await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateFileUpload)).toBeTruthy();
             //CountryList
-            await expect(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateCountryList)).toBeTruthy();
+            await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateCountryList)).toBeTruthy();
             //NumericField
-            await expect(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateNumericField)).toBeTruthy();
+            await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateNumericField)).toBeTruthy();
             //PhoneField
-            await expect(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validatePhoneField)).toBeTruthy();
+            await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validatePhoneField)).toBeTruthy();
             //AddressField
-            await expect(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateAddressField)).toBeTruthy();
+            await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateAddressField)).toBeTruthy();
 
             //GoogleMaps        //TODO: Setup required
-            // if(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateGoogleMaps) === true){
-            //     await expect(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateGoogleMaps)).toBeTruthy();
+            // if(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateGoogleMaps) === true){
+            //     await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateGoogleMaps)).toBeTruthy();
             // }
 
             //StepStart
-            await expect(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateStepStart)).toBeTruthy();
+            await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateStepStart)).toBeTruthy();
             //Embed
-            await expect(await this.page.isVisible(selectors.postForms.validateCustomFields_Common.validateEmbed)).toBeTruthy();
+            await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateEmbed)).toBeTruthy();
 
         }
 
@@ -205,41 +204,41 @@ export class fieldOptionsCommon {
     //Others
     async addOthers_Common() {
         //Others
-        await this.page.click(selectors.postForms.addOthers_Common.othersColumns);
-        await this.page.click(selectors.postForms.addOthers_Common.othersSectionBreak);
-        await this.page.click(selectors.postForms.addOthers_Common.othersCustomHTML);
-        await this.page.click(selectors.postForms.addOthers_Common.othersReCaptcha);
-        if (await this.page.isVisible(selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
-            await this.page.click(selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
+        await this.page.click(Selectors.postForms.addOthers_Common.othersColumns);
+        await this.page.click(Selectors.postForms.addOthers_Common.othersSectionBreak);
+        await this.page.click(Selectors.postForms.addOthers_Common.othersCustomHTML);
+        await this.page.click(Selectors.postForms.addOthers_Common.othersReCaptcha);
+        if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
+            await this.page.click(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
         }
 
 
         //FromPRO
-        await this.page.click(selectors.postForms.addOthers_Common.othersShortCode);
-        const checkProPopUpCloseButton = await this.page.isVisible(selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
+        await this.page.click(Selectors.postForms.addOthers_Common.othersShortCode);
+        const checkProPopUpCloseButton = await this.page.isVisible(Selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
         if (checkProPopUpCloseButton === true) {
-            await this.page.click(selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
+            await this.page.click(Selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
             console.log("Pro: WPUF Pro is requred...")
         }
 
         else {
             //ShortCode
-            if (await this.page.isVisible(selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
-                await this.page.click(selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
+            if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
+                await this.page.click(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
             }
             //ActionHook
-            await this.page.click(selectors.postForms.addOthers_Common.othersActionHook);
+            await this.page.click(Selectors.postForms.addOthers_Common.othersActionHook);
             //TermsAndConditions
-            await this.page.click(selectors.postForms.addOthers_Common.othersTermsAndConditions);
+            await this.page.click(Selectors.postForms.addOthers_Common.othersTermsAndConditions);
             //Ratings
-            await this.page.click(selectors.postForms.addOthers_Common.othersRatings);
+            await this.page.click(Selectors.postForms.addOthers_Common.othersRatings);
             //ReallySimpleCaptcha
-            await this.page.click(selectors.postForms.addOthers_Common.othersReallySimpleCaptcha);
-            if (await this.page.isVisible(selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
-                await this.page.click(selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
+            await this.page.click(Selectors.postForms.addOthers_Common.othersReallySimpleCaptcha);
+            if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
+                await this.page.click(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
             }
             //MathCaptcha
-            await this.page.click(selectors.postForms.addOthers_Common.othersMathCaptcha);
+            await this.page.click(Selectors.postForms.addOthers_Common.othersMathCaptcha);
             await this.page.waitForLoadState('domcontentloaded');
         }
 
@@ -249,30 +248,30 @@ export class fieldOptionsCommon {
     async validateOthers_Common() {
         //Validate
         //Columns
-        await expect(await this.page.isVisible(selectors.postForms.validateOthers_Common.validateColumns)).toBeTruthy();
+        await expect(await this.page.isVisible(Selectors.postForms.validateOthers_Common.validateColumns)).toBeTruthy();
         //SectionBreak
-        await expect(await this.page.isVisible(selectors.postForms.validateOthers_Common.validateSectionBreak)).toBeTruthy();
+        await expect(await this.page.isVisible(Selectors.postForms.validateOthers_Common.validateSectionBreak)).toBeTruthy();
         //CustomHTML
-        await expect(await this.page.isVisible(selectors.postForms.validateOthers_Common.validateCustomHTML)).toBeTruthy();
+        await expect(await this.page.isVisible(Selectors.postForms.validateOthers_Common.validateCustomHTML)).toBeTruthy();
 
         //From PRO
         //ReCaptcha
         //Not visible
         //Shortcode
-        const proOthers_Common = await this.page.isVisible(selectors.postForms.validateOthers_Common.validateShortcode);
+        const proOthers_Common = await this.page.isVisible(Selectors.postForms.validateOthers_Common.validateShortcode);
         if (proOthers_Common === true) {
             //Shortcode
-            await expect(await this.page.isVisible(selectors.postForms.validateOthers_Common.validateShortcode)).toBeTruthy();
+            await expect(await this.page.isVisible(Selectors.postForms.validateOthers_Common.validateShortcode)).toBeTruthy();
             //ActionHook
-            await expect(await this.page.isVisible(selectors.postForms.validateOthers_Common.validateActionHook)).toBeTruthy();
+            await expect(await this.page.isVisible(Selectors.postForms.validateOthers_Common.validateActionHook)).toBeTruthy();
             //TermsAndConditions
-            await expect(await this.page.isVisible(selectors.postForms.validateOthers_Common.validateTermsAndConditions)).toBeTruthy();
+            await expect(await this.page.isVisible(Selectors.postForms.validateOthers_Common.validateTermsAndConditions)).toBeTruthy();
             //Ratings
-            await expect(await this.page.isVisible(selectors.postForms.validateOthers_Common.validateRatings)).toBeTruthy();
+            await expect(await this.page.isVisible(Selectors.postForms.validateOthers_Common.validateRatings)).toBeTruthy();
             //ReallySimpletCaptcha
             //Not visible
             //MathCaptcha
-            await expect(await this.page.isVisible(selectors.postForms.validateOthers_Common.validateMathCaptcha)).toBeTruthy();
+            await expect(await this.page.isVisible(Selectors.postForms.validateOthers_Common.validateMathCaptcha)).toBeTruthy();
         }
     };
 
@@ -281,17 +280,17 @@ export class fieldOptionsCommon {
     async setMultiStepSettings_Common() {
         await this.page.waitForLoadState('domcontentloaded');
         //Add Multi-Step-Check
-        await this.page.click(selectors.postForms.formSettings.clickFormEditorSettings);
-        const proTextAlertInSettings = await this.page.isVisible(selectors.postForms.addCustomFields_Common.proTextAlertInSettings);
+        await this.page.click(Selectors.postForms.formSettings.clickFormEditorSettings);
+        const proTextAlertInSettings = await this.page.isVisible(Selectors.postForms.addCustomFields_Common.proTextAlertInSettings);
         if (proTextAlertInSettings === true) {
             console.log("Pro: WPUF Pro is requred...");
         }
         else {
-            await this.page.click(selectors.postForms.formSettings.checkMultiStepOption);
-            expect(await this.page.isChecked(selectors.postForms.formSettings.checkMultiStepOption)).toBeTruthy();
+            await this.page.click(Selectors.postForms.formSettings.checkMultiStepOption);
+            expect(await this.page.isChecked(Selectors.postForms.formSettings.checkMultiStepOption)).toBeTruthy();
         }
 
-        await this.page.click(selectors.postForms.formSettings.clickFormEditor);
+        await this.page.click(Selectors.postForms.formSettings.clickFormEditor);
         await this.page.waitForLoadState('domcontentloaded');
     };
 
@@ -299,15 +298,15 @@ export class fieldOptionsCommon {
 
     /********************* SaveForm *********************/
     //SaveForm
-    async saveForm_Common(validateNewPostName_Common) {
+    async saveForm_Common(validateNewPostName_Common: string) {
         //Validate Form Name
-        const checkNewFormName_Common = await this.page.innerText(selectors.postForms.saveForm_Common.formNameReCheck);
+        const checkNewFormName_Common = await this.page.innerText(Selectors.postForms.saveForm_Common.formNameReCheck);
         await expect(checkNewFormName_Common).toContain(validateNewPostName_Common);
         console.log('Before Save-Form Name: ' + checkNewFormName_Common);
         await this.page.waitForLoadState('networkidle');
 
         //Save Form
-        await this.page.click(selectors.postForms.saveForm_Common.saveFormButton);
+        await this.page.click(Selectors.postForms.saveForm_Common.saveFormButton);
         await this.page.reload();
     };
 
@@ -317,16 +316,16 @@ export class fieldOptionsCommon {
 
     /********************* Validate *********************/
     //Admin checks if Created form is displayed in Post Forms - Table/List
-    async validatePostFormCreated(validateNewPostName_PF) {
+    async validatePostFormCreated(validateNewPostName_PF: string) {
         //Return HOME
-        await this.page.click(selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
+        await this.page.click(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();
         await this.page.waitForLoadState('domcontentloaded');
 
         //ASSERTION > Check if-VALID
-        const checkNewBlankFormCreatedValid_PF = await this.page.isVisible(selectors.postForms.navigatePage_PF.checkAddButton_PF);
+        const checkNewBlankFormCreatedValid_PF = await this.page.isVisible(Selectors.postForms.navigatePage_PF.checkAddButton_PF);
         if (checkNewBlankFormCreatedValid_PF === true) {
-            const checkNewFormCreated_PF = await this.page.innerText(selectors.postForms.navigatePage_PF.postFormsPageFormsTitleCheck_PF);
+            const checkNewFormCreated_PF = await this.page.innerText(Selectors.postForms.navigatePage_PF.postFormsPageFormsTitleCheck_PF);
             await expect(checkNewFormCreated_PF).toContain(validateNewPostName_PF);
             console.log('PF Name: ' + checkNewFormCreated_PF);
             console.log('PF List: ' + validateNewPostName_PF);
@@ -364,16 +363,16 @@ export class fieldOptionsCommon {
     async addProfileFields_RF() {
         //PostFields
         await this.page.waitForLoadState('domcontentloaded')
-        await this.page.click(selectors.registrationForms.addProfileFields_RF.profileFieldUsername);
-        await this.page.click(selectors.registrationForms.addProfileFields_RF.profileFieldFirstName);
-        await this.page.click(selectors.registrationForms.addProfileFields_RF.profileFieldLastName);
-        await this.page.click(selectors.registrationForms.addProfileFields_RF.profileFieldDisplayName);
-        await this.page.click(selectors.registrationForms.addProfileFields_RF.profileFieldNickName);
-        await this.page.click(selectors.registrationForms.addProfileFields_RF.profileFieldEmail);
-        await this.page.click(selectors.registrationForms.addProfileFields_RF.profileFieldWebsiteUrl);
-        await this.page.click(selectors.registrationForms.addProfileFields_RF.profileFielBioInfo);
-        await this.page.click(selectors.registrationForms.addProfileFields_RF.profileFieldPassword);
-        await this.page.click(selectors.registrationForms.addProfileFields_RF.profileFieldAvatar);
+        await this.page.click(Selectors.registrationForms.addProfileFields_RF.profileFieldUsername);
+        await this.page.click(Selectors.registrationForms.addProfileFields_RF.profileFieldFirstName);
+        await this.page.click(Selectors.registrationForms.addProfileFields_RF.profileFieldLastName);
+        await this.page.click(Selectors.registrationForms.addProfileFields_RF.profileFieldDisplayName);
+        await this.page.click(Selectors.registrationForms.addProfileFields_RF.profileFieldNickName);
+        await this.page.click(Selectors.registrationForms.addProfileFields_RF.profileFieldEmail);
+        await this.page.click(Selectors.registrationForms.addProfileFields_RF.profileFieldWebsiteUrl);
+        await this.page.click(Selectors.registrationForms.addProfileFields_RF.profileFielBioInfo);
+        await this.page.click(Selectors.registrationForms.addProfileFields_RF.profileFieldPassword);
+        await this.page.click(Selectors.registrationForms.addProfileFields_RF.profileFieldAvatar);
     };
 
     /********************* Custom Fields *********************/
@@ -390,13 +389,13 @@ export class fieldOptionsCommon {
     //Admin checks if Created form is displayed in Post Forms - Table/List
     async validateRegistrtionFormCreated(validateNewPostName_RF) {
         //Return HOME
-        await this.page.click(selectors.registrationForms.createBlankForm_RF.clickRegistrationFormMenuOption);
+        await this.page.click(Selectors.registrationForms.createBlankForm_RF.clickRegistrationFormMenuOption);
         await this.page.waitForLoadState('domcontentloaded');
 
         //ASSERTION > Check if-VALID
-        const checkNewBlankFormCreatedValid_RF = await this.page.isVisible(selectors.registrationForms.navigatePage_RF.checkAddButton_RF);
+        const checkNewBlankFormCreatedValid_RF = await this.page.isVisible(Selectors.registrationForms.navigatePage_RF.checkAddButton_RF);
         if (checkNewBlankFormCreatedValid_RF === true) {
-            const checkNewFormCreated_RF = await this.page.innerText(selectors.registrationForms.navigatePage_RF.postFormsPageFormTitleCheck_RF);
+            const checkNewFormCreated_RF = await this.page.innerText(Selectors.registrationForms.navigatePage_RF.postFormsPageFormTitleCheck_RF);
             await expect(checkNewFormCreated_RF).toContain(validateNewPostName_RF);
             console.log('RF Name: ' + checkNewFormCreated_RF);
             console.log('PF List: ' + validateNewPostName_RF);

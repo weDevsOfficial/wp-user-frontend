@@ -1,6 +1,6 @@
 require('dotenv').config();
 import { expect, Page } from '@playwright/test';
-import { selectors } from './selectors';
+import { Selectors } from './selectors';
 import { Urls, PostForm, RegistrationForm } from '../utils/testData';
 
 
@@ -17,7 +17,7 @@ const postTags = RegistrationForm.rfUsername;
 
 
 
-export class postFormsFrontend {
+export class PostFormsFrontendPage {
     readonly page: Page;
 
     constructor(page: Page) {
@@ -41,25 +41,25 @@ export class postFormsFrontend {
         ]);
 
         //Go to Submit Post
-        await this.page.click(selectors.postForms.postFormsFrontendCreate.submitPostSideMenu);
+        await this.page.click(Selectors.postForms.postFormsFrontendCreate.submitPostSideMenu);
 
         //Post Form process
         //Enter Post Title
-        await this.page.fill(selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postFormTitle);
+        await this.page.fill(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postFormTitle);
         //Select Category
-        await this.page.selectOption(selectors.postForms.postFormsFrontendCreate.categorySelectionFormsFE, { label: 'Uncategorized' });
+        await this.page.selectOption(Selectors.postForms.postFormsFrontendCreate.categorySelectionFormsFE, { label: 'Uncategorized' });
         //Enter Post Description
-        await this.page.frameLocator(selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postDescription);
+        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
+            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postDescription);
 
         //Add Featured Photo
-        await this.page.setInputFiles(selectors.postForms.postFormsFrontendCreate.featuredPhotoFormsFE, 'uploadeditems/sample_image.jpeg');
+        await this.page.setInputFiles(Selectors.postForms.postFormsFrontendCreate.featuredPhotoFormsFE, 'uploadeditems/sample_image.jpeg');
         //Enter Excerpt
-        await this.page.fill(selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
+        await this.page.fill(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
         //Enter Tags
-        await this.page.fill(selectors.postForms.postFormsFrontendCreate.postTagsFormsFE, postTags);
+        await this.page.fill(Selectors.postForms.postFormsFrontendCreate.postTagsFormsFE, postTags);
         //Create Post
-        await this.page.click(selectors.postForms.postFormsFrontendCreate.submitPostFormsFE);
+        await this.page.click(Selectors.postForms.postFormsFrontendCreate.submitPostFormsFE);
         //Validate Post Submitted
         const validatePostSubmitted = await this.page.innerText(`//h1[normalize-space(text())='${postFormTitle}']`);
         expect(validatePostSubmitted).toContain(postFormTitle);
@@ -77,11 +77,11 @@ export class postFormsFrontend {
     async validatePostFormCreatedFrontend(postFormTitle: string) {
         //Go to FrontEnd
         //Click Accounts
-        await this.page.click(selectors.postForms.postFormsFrontendValidate.clickAccountsTopMenu);
+        await this.page.click(Selectors.postForms.postFormsFrontendValidate.clickAccountsTopMenu);
         //Click Post
-        await this.page.click(selectors.postForms.postFormsFrontendValidate.clickPostsSideMenu);
+        await this.page.click(Selectors.postForms.postFormsFrontendValidate.clickPostsSideMenu);
         //Validate First Item in List
-        const validatePostCreated: string = await this.page.innerText(selectors.postForms.postFormsFrontendValidate.validatePostSubmittedFE);
+        const validatePostCreated: string = await this.page.innerText(Selectors.postForms.postFormsFrontendValidate.validatePostSubmittedFE);
         //Validate created Post
         expect(validatePostCreated).toContain(postFormTitle);
 

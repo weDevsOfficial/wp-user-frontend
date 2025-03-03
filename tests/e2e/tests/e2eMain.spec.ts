@@ -1,4 +1,4 @@
-import { test, expect, Page } from '@playwright/test';
+import { test } from '@playwright/test';
 import loginAndSetupTests from './loginAndSetupTests.spec';
 import postFormsTests from './postFormsTests.spec';
 import registrationFormsTestsLite from './registrationFormsTestsLite.spec';

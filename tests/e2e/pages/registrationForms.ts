@@ -1,12 +1,12 @@
 require('dotenv').config();
 import { expect, Page } from '@playwright/test';
-import { selectors } from './selectors';
+import { Selectors } from './selectors';
 import { Urls } from '../utils/testData';
 
 
 
 
-export class registrationForms {
+export class RegistrationFormsPage {
     readonly page: Page;
 
     constructor(page: Page) {
@@ -29,24 +29,24 @@ export class registrationForms {
         ]);
 
 
-        const validateWPUFProActivate = await this.page.isVisible(selectors.registrationForms.navigatePage_RF.checkAddButton_RF);
+        const validateWPUFProActivate = await this.page.isVisible(Selectors.registrationForms.navigatePage_RF.checkAddButton_RF);
         if (validateWPUFProActivate == true) {
             console.log("WPUF Pro is Activated");
         }
         else {
             //Check Pro Features Header
-            const checkProFeaturesText = await this.page.innerText(selectors.registrationForms.validateRegistrationFormsProFeatureLite.checkProFeaturesText);
+            const checkProFeaturesText = await this.page.innerText(Selectors.registrationForms.validateRegistrationFormsProFeatureLite.checkProFeaturesText);
             await expect(checkProFeaturesText).toContain("Unlock PRO Features");
 
             //Check Setup
-            const checkUpgradeToProOption = await this.page.locator(selectors.registrationForms.validateRegistrationFormsProFeatureLite.checkUpgradeToProOption);
+            const checkUpgradeToProOption = await this.page.locator(Selectors.registrationForms.validateRegistrationFormsProFeatureLite.checkUpgradeToProOption);
             expect(checkUpgradeToProOption).toBeTruthy();
         }
     };
 
 
     //Create Registration page using Shortcode
-    async createRegistrationPageUsingShortcodeLite(registrationFormPageTitle) {
+    async createRegistrationPageUsingShortcodeLite(registrationFormPageTitle: string) {
         // Visit Registration forms page
         const wpufRegistrationFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
         await Promise.all([
@@ -54,11 +54,11 @@ export class registrationForms {
         ]);
 
         //Validate Shortcode
-        const validateShortcode = await this.page.locator(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.validateShortcode);
+        const validateShortcode = await this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.validateShortcode);
         await expect(validateShortcode).toBeTruthy();
 
         //Copy Shortcode
-        const storeShortcode = await this.page.innerText(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.storeShortcode);
+        const storeShortcode = await this.page.innerText(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.storeShortcode);
         console.log(storeShortcode);
 
 
@@ -69,10 +69,10 @@ export class registrationForms {
         ]);
 
         //Add New Page
-        await this.page.click(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addNewPage);
+        await this.page.click(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addNewPage);
 
         // Check if the Welcome Modal is visible
-        let closeWelcomeModal = this.page.locator(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closeWelcomeModal);
+        let closeWelcomeModal = this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closeWelcomeModal);
         try {
             await closeWelcomeModal.waitFor({ state: 'visible', timeout: 5000 });
             await closeWelcomeModal.click();
@@ -81,7 +81,7 @@ export class registrationForms {
         }
 
         // Check if the Choose Pattern Modal is visible
-        let closePatternModal = this.page.locator(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closePatternModal);
+        let closePatternModal = this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closePatternModal);
         try {
             await closePatternModal.waitFor({ state: 'visible', timeout: 5000 });
             await closePatternModal.click();
@@ -90,25 +90,25 @@ export class registrationForms {
         }
 
         //Add Page Title
-        await this.page.fill(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addPageTitle, registrationFormPageTitle);
+        await this.page.fill(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addPageTitle, registrationFormPageTitle);
 
         //Click Add Block Button
-        await this.page.click(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.blockAddButton);
+        await this.page.click(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.blockAddButton);
 
         //Search and Add Shortcode block
-        await this.page.fill(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.blockSearchBox, 'Shortcode');
-        await this.page.click(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addShortCodeBlock);
+        await this.page.fill(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.blockSearchBox, 'Shortcode');
+        await this.page.click(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addShortCodeBlock);
 
         //Enter Registration Shortcode
-        await this.page.fill(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.enterRegistrationShortcode, storeShortcode);
+        await this.page.fill(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.enterRegistrationShortcode, storeShortcode);
 
         //Click Publish Page
-        await this.page.click(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.clickPublishPage);
+        await this.page.click(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.clickPublishPage);
         //Allow Permission
-        expect(await this.page.isVisible(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.allowShortcodePermission)).toBeTruthy();
-        await this.page.click(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.allowShortcodePermission);
+        expect(await this.page.isVisible(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.allowShortcodePermission)).toBeTruthy();
+        await this.page.click(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.allowShortcodePermission);
         //Confirm Publish
-        await this.page.click(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.confirmPublish);
+        await this.page.click(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.confirmPublish);
 
 
         //Go to Pages 
@@ -118,11 +118,11 @@ export class registrationForms {
 
         //Validate Page Created
         //Search Page
-        await this.page.fill(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.pagesSearchBox, registrationFormPageTitle);
-        await this.page.click(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.pagesSearchBoxSubmit);
+        await this.page.fill(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.pagesSearchBox, registrationFormPageTitle);
+        await this.page.click(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.pagesSearchBoxSubmit);
 
         //Validate Page
-        const validatePageCreated = await this.page.innerText(selectors.registrationForms.createRegistrationPageUsingShortcodeLite.validatePageCreated);
+        const validatePageCreated = await this.page.innerText(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.validatePageCreated);
         expect(validatePageCreated).toContain(registrationFormPageTitle);
 
     };
@@ -143,7 +143,7 @@ export class registrationForms {
     /***********************************************/
 
     //BlankForm
-    async createBlankForm_RF(newRegistrationName) {
+    async createBlankForm_RF(newRegistrationName: string) {
         //Visit Post Form Page
         const wpufRegistrationFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
         await Promise.all([
@@ -151,29 +151,29 @@ export class registrationForms {
         ]);
         //CreateNewRegistrationForm
 
-        await this.page.click(selectors.registrationForms.createBlankForm_RF.clickRegistrationFormMenuOption);
+        await this.page.click(Selectors.registrationForms.createBlankForm_RF.clickRegistrationFormMenuOption);
 
         await this.page.waitForTimeout(1000 * 5);
         //Start
-        await expect(this.page.isVisible(selectors.registrationForms.createBlankForm_RF.clickRegistraionAddForm)).toBeTruthy();
-        await this.page.click(selectors.registrationForms.createBlankForm_RF.clickRegistraionAddForm);    //TODO: Issue here
+        await expect(this.page.isVisible(Selectors.registrationForms.createBlankForm_RF.clickRegistraionAddForm)).toBeTruthy();
+        await this.page.click(Selectors.registrationForms.createBlankForm_RF.clickRegistraionAddForm);    //TODO: Issue here
         await this.page.waitForTimeout(1000 * 5);
 
 
         //ClickBlankForm
         //Templates 
-        await expect(this.page.isVisible(selectors.registrationForms.createBlankForm_RF.hoverBlankForm)).toBeTruthy();
-        await this.page.hover(selectors.registrationForms.createBlankForm_RF.hoverBlankForm);
-        await expect(this.page.isVisible(selectors.registrationForms.createBlankForm_RF.clickBlankForm)).toBeTruthy();
-        await this.page.click(selectors.registrationForms.createBlankForm_RF.clickBlankForm);
+        await expect(this.page.isVisible(Selectors.registrationForms.createBlankForm_RF.hoverBlankForm)).toBeTruthy();
+        await this.page.hover(Selectors.registrationForms.createBlankForm_RF.hoverBlankForm);
+        await expect(this.page.isVisible(Selectors.registrationForms.createBlankForm_RF.clickBlankForm)).toBeTruthy();
+        await this.page.click(Selectors.registrationForms.createBlankForm_RF.clickBlankForm);
 
 
 
         //EnterName
         await this.page.waitForLoadState('domcontentloaded');
-        await this.page.click(selectors.registrationForms.createBlankForm_RF.editNewFormName);
-        await this.page.fill(selectors.registrationForms.createBlankForm_RF.enterNewFormName, newRegistrationName);
-        await this.page.click(selectors.registrationForms.createBlankForm_RF.confirmNewNameTickButton);
+        await this.page.click(Selectors.registrationForms.createBlankForm_RF.editNewFormName);
+        await this.page.fill(Selectors.registrationForms.createBlankForm_RF.enterNewFormName, newRegistrationName);
+        await this.page.click(Selectors.registrationForms.createBlankForm_RF.confirmNewNameTickButton);
 
     }
 

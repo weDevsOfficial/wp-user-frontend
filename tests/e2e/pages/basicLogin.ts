@@ -1,10 +1,10 @@
 require('dotenv').config();
 import { expect, Page } from '@playwright/test';
-import { selectors } from './selectors';
-import { settingsSetup } from '../pages/settingsSetup';
+import { Selectors } from './selectors';
+import { SettingsSetupPage } from '../pages/settingsSetup';
 import { Urls } from '../utils/testData';
 
-export class basicLoginPage {
+export class BasicLoginPage {
     readonly page: Page;
 
     constructor(page: Page) {
@@ -18,7 +18,7 @@ export class basicLoginPage {
     /************************************************/
 
     //Basic Login
-    async basicLogin(email, password) {
+    async basicLogin(email: string, password: string) {
         const adminEmail = email;
         const adminPassword = password;
 
@@ -27,7 +27,7 @@ export class basicLoginPage {
             this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'networkidle' }),
         ]);
 
-        const emailStateCheck = await this.page.isVisible(selectors.login.basicLogin.loginEmailField);
+        const emailStateCheck = await this.page.isVisible(Selectors.login.basicLogin.loginEmailField);
         //if in BackEnd or FrontEnd
         if (emailStateCheck == true) {
             await this.backendLogin(adminEmail, adminPassword);
@@ -41,8 +41,8 @@ export class basicLoginPage {
     };
 
     //Login and Plugin Visit
-    async basicLoginAndPluginVisit(email, password) {
-        const SettingsSetup = new settingsSetup(this.page);
+    async basicLoginAndPluginVisit(email: string, password: string) {
+        const SettingsSetup = new SettingsSetupPage(this.page);
         const adminEmail = email;
         const adminPassword = password;
 
@@ -50,7 +50,7 @@ export class basicLoginPage {
             this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'networkidle' }),
         ]);
 
-        const emailStateCheck = await this.page.isVisible(selectors.login.basicLogin.loginEmailField);
+        const emailStateCheck = await this.page.isVisible(Selectors.login.basicLogin.loginEmailField);
         //if in BackEnd or FrontEnd
         if (emailStateCheck == true) {
             await this.backendLogin(adminEmail, adminPassword);
@@ -77,7 +77,7 @@ export class basicLoginPage {
 
         //Validate LOGIN
         await this.page.waitForLoadState('domcontentloaded');
-        const dashboardLanded = await this.page.isVisible(selectors.login.validateBasicLogin.logingSuccessDashboard);
+        const dashboardLanded = await this.page.isVisible(Selectors.login.validateBasicLogin.logingSuccessDashboard);
         await expect(dashboardLanded).toBeTruthy;
     };
 
@@ -89,30 +89,30 @@ export class basicLoginPage {
     /************************************************/
 
     //BackEnd Login
-    async backendLogin(email, password) {
-        await this.page.fill(selectors.login.basicLogin.loginEmailField, email);
+    async backendLogin(email: string, password: string) {
+        await this.page.fill(Selectors.login.basicLogin.loginEmailField, email);
 
-        const passwordCheck = await this.page.isVisible(selectors.login.basicLogin.loginPasswordField);
+        const passwordCheck = await this.page.isVisible(Selectors.login.basicLogin.loginPasswordField);
         await expect(passwordCheck).toBeTruthy();
-        await this.page.fill(selectors.login.basicLogin.loginPasswordField, password);
+        await this.page.fill(Selectors.login.basicLogin.loginPasswordField, password);
 
-        await this.page.click(selectors.login.basicLogin.rememberMeField);
-        const loginButtonCheck = await this.page.isVisible(selectors.login.basicLogin.loginButton);
+        await this.page.click(Selectors.login.basicLogin.rememberMeField);
+        const loginButtonCheck = await this.page.isVisible(Selectors.login.basicLogin.loginButton);
         await expect(loginButtonCheck).toBeTruthy();
-        await this.page.click(selectors.login.basicLogin.loginButton);
+        await this.page.click(Selectors.login.basicLogin.loginButton);
     }
 
     //FrontEnd Login
-    async frontendLogin(email, password) {
-        await this.page.fill(selectors.login.basicLogin.loginEmailField2, email);
+    async frontendLogin(email: string, password: string) {
+        await this.page.fill(Selectors.login.basicLogin.loginEmailField2, email);
 
-        const passwordCheck = await this.page.isVisible(selectors.login.basicLogin.loginPasswordField2);
+        const passwordCheck = await this.page.isVisible(Selectors.login.basicLogin.loginPasswordField2);
         await expect(passwordCheck).toBeTruthy();
-        await this.page.fill(selectors.login.basicLogin.loginPasswordField2, password);
+        await this.page.fill(Selectors.login.basicLogin.loginPasswordField2, password);
 
-        const loginButtonCheck = await this.page.isVisible(selectors.login.basicLogin.loginButton2);
+        const loginButtonCheck = await this.page.isVisible(Selectors.login.basicLogin.loginButton2);
         await expect(loginButtonCheck).toBeTruthy();
-        await this.page.click(selectors.login.basicLogin.loginButton2);
+        await this.page.click(Selectors.login.basicLogin.loginButton2);
     }
 
 

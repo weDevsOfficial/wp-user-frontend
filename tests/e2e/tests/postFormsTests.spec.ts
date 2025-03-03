@@ -1,10 +1,10 @@
 require('dotenv').config();
 import { test, expect, Page } from '@playwright/test';
-import { basicLoginPage } from '../pages/basicLogin';
-import { postForms } from '../pages/postForms';
-import { fieldOptionsCommon } from '../pages/fieldOptionsCommon';
-import { postFormsFrontend } from '../pages/postFormsFrontend';
-import { settingsSetup } from '../pages/settingsSetup';
+import { BasicLoginPage } from '../pages/basicLogin';
+import { PostFormsPage } from '../pages/postForms';
+import { FieldOptionsCommonPage } from '../pages/fieldOptionsCommon';
+import { PostFormsFrontendPage } from '../pages/postFormsFrontend';
+import { SettingsSetupPage } from '../pages/settingsSetup';
 import { Users, PostForm } from '../utils/testData';
 import * as fs from "fs"; //Clear Cookie
 
@@ -34,9 +34,9 @@ test.describe('Post-Forms @Lite :-->', () => {
 //TODO: Create a BeforeAll for login
 
     test('0010:[Post-Forms] Here, Admin is creating Blank Form with > PostFields', async ({ page }) => {
-        const BasicLogin = new basicLoginPage(page);
-        const PostForms = new postForms(page);
-        const FieldOptionsCommon = new fieldOptionsCommon(page);
+        const BasicLogin = new BasicLoginPage(page);
+        const PostForms = new PostFormsPage(page);
+        const FieldOptionsCommon = new FieldOptionsCommonPage(page);
 
         //Log into Admin Dashboard
         await BasicLogin.basicLoginAndPluginVisit(Users.adminUsername, Users.adminPassword);
@@ -55,8 +55,8 @@ test.describe('Post-Forms @Lite :-->', () => {
 
 
     test('0011:[Post-Forms] Admin is creating Blank Form with > Taxonomies', async ({ page }) => {
-        const PostForms = new postForms(page);
-        const FieldOptionsCommon = new fieldOptionsCommon(page);
+        const PostForms = new PostFormsPage(page);
+        const FieldOptionsCommon = new FieldOptionsCommonPage(page);
 
         //Post Blank Form
         await PostForms.createBlankFormPostForm(PostForm.pfPostName2);
@@ -74,8 +74,8 @@ test.describe('Post-Forms @Lite :-->', () => {
 
 
     test('0012:[Post-Forms] Here, Admin is creating Blank Form with > CustomFields', async ({ page }) => {
-        const PostForms = new postForms(page);
-        const FieldOptionsCommon = new fieldOptionsCommon(page);
+        const PostForms = new PostFormsPage(page);
+        const FieldOptionsCommon = new FieldOptionsCommonPage(page);
 
 
         //Post Blank Form
@@ -94,8 +94,8 @@ test.describe('Post-Forms @Lite :-->', () => {
 
 
     test('0013:[Post-Forms] Here, Admin is creating Blank Form with > Others', async ({ page }) => {
-        const PostForms = new postForms(page);
-        const FieldOptionsCommon = new fieldOptionsCommon(page);
+        const PostForms = new PostFormsPage(page);
+        const FieldOptionsCommon = new FieldOptionsCommonPage(page);
 
 
         //Post Blank Form
@@ -115,8 +115,8 @@ test.describe('Post-Forms @Lite :-->', () => {
 
 
     test('0014:[Post-Forms] Here, Admin is creating a Blank Post Form with all Fields', async ({ page }) => {
-        const PostForms = new postForms(page);
-        const FieldOptionsCommon = new fieldOptionsCommon(page);
+        const PostForms = new PostFormsPage(page);
+        const FieldOptionsCommon = new FieldOptionsCommonPage(page);
 
         //Post Blank Form
         await PostForms.createBlankFormPostForm(PostForm.pfPostName1);
@@ -142,8 +142,8 @@ test.describe('Post-Forms @Lite :-->', () => {
 
 
     test('0015:[Post-Forms] Here, Admin is creating a Preset Post Form', async ({ page }) => {
-        const PostForms = new postForms(page);
-        const FieldOptionsCommon = new fieldOptionsCommon(page);
+        const PostForms = new PostFormsPage(page);
+        const FieldOptionsCommon = new FieldOptionsCommonPage(page);
 
         //Post Preset Form
         await PostForms.createPresetPostForm(PostForm.pfPostName2);
@@ -159,8 +159,8 @@ test.describe('Post-Forms @Lite :-->', () => {
 
 
     test('0016:[Post-Forms-FE] Here, Admin is creating a Preset Post Form - with Guest Enabled', async ({ page }) => {
-        const PostForms = new postForms(page);
-        const FieldOptionsCommon = new fieldOptionsCommon(page);
+        const PostForms = new PostFormsPage(page);
+        const FieldOptionsCommon = new FieldOptionsCommonPage(page);
 
         //For Front-End
         //Create Post Form
@@ -179,8 +179,8 @@ test.describe('Post-Forms @Lite :-->', () => {
 
 
     test('0017:[Post-Forms-FE] Here, Admin is Updating Settings with default Post Form', async ({ page }) => {
-        const PostForms = new postForms(page);
-        const SettingsSetup = new settingsSetup(page);
+        const PostForms = new PostFormsPage(page);
+        const SettingsSetup = new SettingsSetupPage(page);
 
         const postFormPresetFrontendTitle = 'FE PostForm - 0001';
 
@@ -191,8 +191,8 @@ test.describe('Post-Forms @Lite :-->', () => {
 
 
     test('0018:[Post-Forms-FE] Here, User is Submitting Form from Frontend', async ({ page }) => {
-        const BasicLogin = new basicLoginPage(page);
-        const PostFormsFrontend = new postFormsFrontend(page);
+        const BasicLogin = new BasicLoginPage(page);
+        const PostFormsFrontend = new PostFormsFrontendPage(page);
 
         //New User created Login
         const newUserEmail = Users.userEmail;

@@ -1,9 +1,9 @@
 require('dotenv').config();
 import { test } from '@playwright/test';
-import { basicLoginPage } from '../pages/basicLogin';
-import { registrationForms } from '../pages/registrationForms';
-import { registrationFormsFrontend } from '../pages/registrationFormsFrontend';
-import { settingsSetup } from '../pages/settingsSetup';
+import { BasicLoginPage } from '../pages/basicLogin';
+import { RegistrationFormsPage } from '../pages/registrationForms';
+import { RegistrationFormsFrontendPage } from '../pages/registrationFormsFrontend';
+import { SettingsSetupPage } from '../pages/settingsSetup';
 import { Users } from '../utils/testData';
 
 import * as fs from "fs"; //Clear Cookie
@@ -28,8 +28,8 @@ test.describe('Registration-Forms @Lite :-->', () => {
 
 
     test('0019:[Reg-Forms] Here, Admin is checking Registration Forms - Pro Feature Page', async ({ page }) => {
-        const BasicLogin = new basicLoginPage(page);
-        const RegistrationFormsLite = new registrationForms(page);
+        const BasicLogin = new BasicLoginPage(page);
+        const RegistrationFormsLite = new RegistrationFormsPage(page);
         //Basic login
         await BasicLogin.basicLoginAndPluginVisit(Users.adminUsername, Users.adminPassword);
         await RegistrationFormsLite.validateRegistrationFormsProFeatureLite();
@@ -38,8 +38,8 @@ test.describe('Registration-Forms @Lite :-->', () => {
 
 
     test('0020:[Reg-Forms] Here, Admin is creating Registration Forms Page - using shortcode', async ({ page }) => {
-        const RegistrationFormsLite = new registrationForms(page);
-        const SettingsSetup = new settingsSetup(page);
+        const RegistrationFormsLite = new RegistrationFormsPage(page);
+        const SettingsSetup = new SettingsSetupPage(page);
         //Registration Forms page - Title
         const registrationFormPageTitle = 'Registration Page';
         //Create Registration Forms page
@@ -52,7 +52,7 @@ test.describe('Registration-Forms @Lite :-->', () => {
 
 
     test('0021:[Reg-Forms] Here, User is registering using - Registration Form', async ({ page }) => {
-        const RegistrationFormsFrontend = new registrationFormsFrontend(page);
+        const RegistrationFormsFrontend = new RegistrationFormsFrontendPage(page);
         //FrontEnd
         //Complete FrontEnd Registration
         await RegistrationFormsFrontend.completeUserRegistrationFormFrontend();
@@ -62,8 +62,8 @@ test.describe('Registration-Forms @Lite :-->', () => {
 
 
     test('0022:[Reg-Forms] Here, Admin is validating - Registered user', async ({ page }) => {
-        const BasicLogin = new basicLoginPage(page);
-        const RegistrationFormsFrontend = new registrationFormsFrontend(page);
+        const BasicLogin = new BasicLoginPage(page);
+        const RegistrationFormsFrontend = new RegistrationFormsFrontendPage(page);
         //Basic Login
         await BasicLogin.basicLoginAndPluginVisit(Users.adminUsername, Users.adminPassword);
         //Validate FrontEnd Registered

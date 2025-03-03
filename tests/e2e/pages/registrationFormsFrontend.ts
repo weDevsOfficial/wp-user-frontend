@@ -1,6 +1,6 @@
 require('dotenv').config();
 import { expect, Page } from '@playwright/test';
-import { selectors } from './selectors';
+import { Selectors } from './selectors';
 import { Urls, RegistrationForm } from '../utils/testData';
 
 
@@ -19,7 +19,7 @@ const password = RegistrationForm.rfPassword;
 
 
 
-export class registrationFormsFrontend {
+export class RegistrationFormsFrontendPage {
     readonly page: Page;
 
     constructor(page: Page) {
@@ -44,25 +44,25 @@ export class registrationFormsFrontend {
 
 
         //Validate Registration page
-        const validateRegistrationPage = await this.page.innerText(selectors.registrationForms.completeUserRegistrationFormFrontend.validateRegistrationPage);
+        const validateRegistrationPage = await this.page.innerText(Selectors.registrationForms.completeUserRegistrationFormFrontend.validateRegistrationPage);
         await expect(validateRegistrationPage).toContain('Registration Page');
 
         //Enter First Name
-        await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontend.rfFirstName, firstName);
+        await this.page.fill(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfFirstName, firstName);
         //Enter Last Name
-        await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontend.rfLastName, lastName);
+        await this.page.fill(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfLastName, lastName);
         //Enter Email
-        await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontend.rfEmail, email);
+        await this.page.fill(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfEmail, email);
         //Enter Username
-        await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontend.rfUserName, userName);
+        await this.page.fill(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfUserName, userName);
         //Enter Password
-        await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontend.rfPassword, password);
+        await this.page.fill(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfPassword, password);
         //Confirm Password
-        await this.page.fill(selectors.registrationForms.completeUserRegistrationFormFrontend.rfConfirmPassword, password);
+        await this.page.fill(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfConfirmPassword, password);
         //Click Register
-        await this.page.click(selectors.registrationForms.completeUserRegistrationFormFrontend.rfRegisterButton);
+        await this.page.click(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfRegisterButton);
         //Validate User logged in
-        await expect(await this.page.locator(selectors.registrationForms.completeUserRegistrationFormFrontend.validateRegisteredLogoutButton)).toBeTruthy();
+        await expect(await this.page.locator(Selectors.registrationForms.completeUserRegistrationFormFrontend.validateRegisteredLogoutButton)).toBeTruthy();
 
     };
 
@@ -76,29 +76,23 @@ export class registrationFormsFrontend {
 
     //Validate in Admin - Registered Form Submitted
     async validateUserRegisteredAdminEnd() {
-        //Go to Admin End/Back End
         const wpufRegistrationFormPage = Urls.baseUrl + '/wp-admin/';
         await Promise.all([
             this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }),
         ]);
 
-
         //Validate Registered User
         //Go to Users List
-        await this.page.click(selectors.registrationForms.validateUserRegisteredAdminEnd.adminUsersList);
+        await this.page.click(Selectors.registrationForms.validateUserRegisteredAdminEnd.adminUsersList);
         //Search Username
-        await this.page.fill(selectors.registrationForms.validateUserRegisteredAdminEnd.adminUsersSearchBox, email);
+        await this.page.fill(Selectors.registrationForms.validateUserRegisteredAdminEnd.adminUsersSearchBox, email);
         //Click Search
-        await this.page.click(selectors.registrationForms.validateUserRegisteredAdminEnd.adminUsersSearchButton);
+        await this.page.click(Selectors.registrationForms.validateUserRegisteredAdminEnd.adminUsersSearchButton);
         //Validate Email present
-        const validateUserCreated = await this.page.innerText(selectors.registrationForms.validateUserRegisteredAdminEnd.validateUserCreated);
+        const validateUserCreated = await this.page.innerText(Selectors.registrationForms.validateUserRegisteredAdminEnd.validateUserCreated);
 
-        if (validateUserCreated == email) {
-            console.log("User is registered and present");
-        }
-        else {
-            console.log("User could not be found");
-        }
+        expect(validateUserCreated, `Expected user with email ${email} to be found in admin`).toBe(email);
+
     };
 
 

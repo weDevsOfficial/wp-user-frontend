@@ -1,9 +1,9 @@
 require('dotenv').config();
 import type { Page } from '@playwright/test';
-import { selectors } from './selectors';
+import { Selectors } from './selectors';
 import { Urls } from '../utils/testData';
 
-export class basicLogoutPage {
+export class BasicLogoutPage {
     readonly page: Page;
 
     constructor(page: Page) {
@@ -15,11 +15,11 @@ export class basicLogoutPage {
             this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'networkidle' }),
         ]);
 
-        await this.page.hover(selectors.logout.basicLogout.logoutHoverUsername);
-        await this.page.click(selectors.logout.basicLogout.logoutButton);
+        await this.page.hover(Selectors.logout.basicLogout.logoutHoverUsername);
+        await this.page.click(Selectors.logout.basicLogout.logoutButton);
 
         //Validate LOGOUT
-        await this.page.isVisible(selectors.logout.basicLogout.logoutSuccess);
+        await this.page.isVisible(Selectors.logout.basicLogout.logoutSuccess);
         console.log("LogOut Done");
 
 

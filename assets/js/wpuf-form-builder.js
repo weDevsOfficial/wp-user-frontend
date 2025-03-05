@@ -424,8 +424,8 @@
             settings_items: wpuf_form_builder.settings_items,
             active_tab: 'form-editor',
             form_settings: wpuf_form_builder.form_settings,
-            active_settings_tab: Object.keys(wpuf_form_builder.settings_titles.post_settings.sub_items)[0],
-            active_settings_title: wpuf_form_builder.settings_titles.post_settings.sub_items[Object.keys(wpuf_form_builder.settings_titles.post_settings.sub_items)[0]].label,
+            active_settings_tab: Object.keys(wpuf_form_builder.settings_titles[Object.keys(wpuf_form_builder.settings_titles)[0]].sub_items)[0],
+            active_settings_title: wpuf_form_builder.settings_titles[Object.keys(wpuf_form_builder.settings_titles)[0]].sub_items[Object.keys(wpuf_form_builder.settings_titles[Object.keys(wpuf_form_builder.settings_titles)[0]].sub_items)[0]].label,
         },
 
         computed: {
@@ -997,15 +997,20 @@
         }
 
         attachFieldListener(fieldId) {
-            const field = $(`#${fieldId}`);
-            const fieldType = field.attr('type') || field.prop('tagName').toLowerCase();
+                const field = $(`#${fieldId}`);
+                const fieldType = field.attr('type') || field.prop('tagName').toLowerCase();
 
-            if (fieldType === 'checkbox') {
-                field.on('change', () => this.checkAllDependencies());
-            } else if (fieldType === 'select' || fieldType === 'radio') {
-                field.on('change', () => this.checkAllDependencies());
+                if (fieldType === 'checkbox' || fieldType === 'select') {
+                    field.on('change', () => this.checkAllDependencies());
+                } else if (fieldType === 'radio') {
+                    const fieldName = field.attr('name');
+                    const radioFields = $(`input[name="${fieldName}"]`);
+
+                    radioFields.each((index, radio) => {
+                        $(radio).on('change', () => this.checkAllDependencies());
+                    });
+                }
             }
-        }
 
         checkAllDependencies() {
             Object.keys(this.dependencies.fields).forEach(fieldId => {
@@ -1031,9 +1036,9 @@
                 const controlField = $(`#${dep.field}`);
                 const fieldType = controlField.attr('type') || controlField.prop('tagName').toLowerCase();
 
-                if (fieldType === 'checkbox') {
+                if (fieldType === 'checkbox' || fieldType === 'radio') {
                     return controlField.is(':checked') === dep.value;
-                } else if (fieldType === 'select' || fieldType === 'radio') {
+                } else if (fieldType === 'select') {
                     return controlField.val() === dep.value;
                 }
                 return false;

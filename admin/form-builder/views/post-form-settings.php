@@ -264,7 +264,7 @@
         <div class="wpuf-flex wpuf-space-x-4 wpuf-items-center wpuf-mt-8">
             <button
                 @click.prevent=""
-                class="wpuf-inline-flex wpuf-items-center wpuf-gap-x-2 wpuf-rounded-md wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-text-gray-700  hover:wpuf-text-gray-700 hover:wpuf-bg-gray-50 wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300"><?php esc_html_e( 'Cancel', 'wp-user-frontend' ); ?>
+                class="wpuf-inline-flex wpuf-items-center wpuf-gap-x-2 wpuf-rounded-md wpuf-px-8 wpuf-py-3 wpuf-text-gray-700  hover:wpuf-text-gray-700 hover:wpuf-bg-gray-50 wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300"><?php esc_html_e( 'Cancel', 'wp-user-frontend' ); ?>
             </button>
             <button
                 v-if="!is_form_saving"

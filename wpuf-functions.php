@@ -4946,7 +4946,10 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                             'label'     => __( 'Post Type', 'wp-user-frontend' ),
                             'type'      => 'select',
                             'options'   => $post_types,
-                            'help_text' => __( 'Select the content type this form will create, like a post, product, or custom type', 'wp-user-frontend' ),
+                            'help_text' => __(
+                                'Select the content type this form will create, like a post, product, or custom type',
+                                'wp-user-frontend'
+                            ),
                             'link'      => esc_url_raw(
                                 'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/different-custom-post-type-submission-2/'
                             ),
@@ -4954,14 +4957,17 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                         'default_category' => [
                             'label'     => __( 'Default Category', 'wp-user-frontend' ),
                             'type'      => 'multi-select',
-                            'help_text' => __( 'Select the default category for posts submitted through this form', 'wp-user-frontend' ),
+                            'help_text' => __(
+                                'Select the default category for posts submitted through this form', 'wp-user-frontend'
+                            ),
                             'options'   => wpuf_get_terms(),
                         ],
                         'redirect_to'      => [
                             'label'     => __( 'Successful Redirection', 'wp-user-frontend' ),
                             'type'      => 'select',
                             'help_text' => __(
-                                'Select where users will be redirected after successfully submitting the form', 'wp-user-frontend'
+                                'Select where users will be redirected after successfully submitting the form',
+                                'wp-user-frontend'
                             ),
                             'options'   => [
                                 'post' => __( 'Newly created post', 'wp-user-frontend' ),
@@ -5006,7 +5012,9 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                         'submit_text'      => [
                             'label'     => __( 'Submit Post Button Text', 'wp-user-frontend' ),
                             'type'      => 'text',
-                            'help_text' => __( 'Customize the text on the "Submit" button for this form', 'wp-user-frontend' ),
+                            'help_text' => __(
+                                'Customize the text on the "Submit" button for this form', 'wp-user-frontend'
+                            ),
                         ],
                         'form_template'    => [
                             'label'     => __( 'Choose Form Template', 'wp-user-frontend' ),
@@ -5105,11 +5113,10 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                             'trailing_text' => __( 'Hours', 'wp-user-frontend' ),
                         ],
                         'update_text'      => [
-                            'label' => __( 'Update Post Button Text', 'wp-user-frontend' ),
-                            'type'  => 'text',
-                            'help_text'     => __(
-                                'Customize the text on the "Update" button for this form',
-                                'wp-user-frontend'
+                            'label'     => __( 'Update Post Button Text', 'wp-user-frontend' ),
+                            'type'      => 'text',
+                            'help_text' => __(
+                                'Customize the text on the "Update" button for this form', 'wp-user-frontend'
                             ),
                         ],
                     ],
@@ -5138,7 +5145,8 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                             'label'     => __( 'Require Name and Email address', 'wp-user-frontend' ),
                             'type'      => 'checkbox',
                             'sub_label' => __(
-                                'If enabled, guest users will be automatically registered using their name and email', 'wp-user-frontend'
+                                'If enabled, guest users will be automatically registered using their name and email',
+                                'wp-user-frontend'
                             ),
                         ],
                         'inline_fields'      => [
@@ -5146,12 +5154,18 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                                 'name_label'  => [
                                     'label'     => __( 'Name Label', 'wp-user-frontend' ),
                                     'type'      => 'text',
-                                    'help_text' => __( 'Customize the label for the name field in guest submissions', 'wp-user-frontend' ),
+                                    'help_text' => __(
+                                        'Customize the label for the name field in guest submissions',
+                                        'wp-user-frontend'
+                                    ),
                                 ],
                                 'email_label' => [
                                     'label'     => __( 'E-Mail Label', 'wp-user-frontend' ),
                                     'type'      => 'text',
-                                    'help_text' => __( 'Customize the label for the email field in guest submissions', 'wp-user-frontend' ),
+                                    'help_text' => __(
+                                        'Customize the label for the email field in guest submissions',
+                                        'wp-user-frontend'
+                                    ),
                                 ],
                             ],
                         ],
@@ -5260,7 +5274,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                             'type'      => 'textarea',
                             'value'     => "Hi Admin, \r\n\r\nA new post has been created in your site {sitename} ({siteurl}). \r\n\r\nHere is the details: \r\nPost Title: {post_title} \r\nContent: {post_content} \r\nAuthor: {author} \r\nPost URL: {permalink} \r\nEdit URL: {editlink}",
                             'long_help' => '<h4 class="wpuf-m-0">You may use in to, subject & message:</h4>
-                                         <p class="wpuf-leading-8">
+                                         <p class="wpuf-leading-8 wpuf-ml-3">
                                          <span data-clipboard-text="{post_title}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{post_title}</span>
                                          <span data-clipboard-text="{post_content}" class="wpuf-post-content wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{post_content}</span>
                                          <span data-clipboard-text="{post_excerpt}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{post_excerpt}</span>

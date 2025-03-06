@@ -31,7 +31,10 @@ class Edit_Profile {
         if ( is_user_logged_in() ) {
             $this->show_form();
         } else {
-            printf( esc_html( __( 'This page is restricted. Please %s to view this page.', 'wp-user-frontend' ) ), wp_loginout( '', false ) );
+            printf(
+                // translators: %s is the link
+                esc_html( __( 'This page is restricted. Please %s to view this page.', 'wp-user-frontend' ) ), wp_loginout( '', false ) 
+            );
         }
 
         $content = ob_get_contents();

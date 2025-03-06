@@ -343,23 +343,39 @@ class Admin_Form_Handler {
         if ( !empty( $_GET['page'] ) && 'wpuf-post-forms' === $_GET['page'] ) {
             if ( !empty( $_GET['trashed'] ) ) {
                 $trashed = sanitize_text_field( wp_unslash( $_GET['trashed'] ) );
-                $notice = sprintf( _n( '%d form moved to the trash.', '%d forms moved to the trash.', $trashed, 'wp-user-frontend' ), $trashed );
+                $notice = sprintf(
+                    // translators: %d is the number of forms
+                    _n( '%d form moved to the trash.', '%d forms moved to the trash.', $trashed, 'wp-user-frontend' ), 
+                    $trashed 
+                );
                 $this->display_notice( $notice );
             } elseif ( !empty( $_GET['untrashed'] ) ) {
                 $untrashed = isset( $_GET['untrashed'] ) ? sanitize_text_field( wp_unslash( $_GET['untrashed'] ) ) : '';
 
-                $notice = sprintf( _n( '%d form restored from the trash.', '%d forms restored from the trash.', $untrashed, 'wp-user-frontend' ), $untrashed );
+                $notice = sprintf(
+                    // translators: %d is the number of forms
+                    _n( '%d form restored from the trash.', '%d forms restored from the trash.', $untrashed, 'wp-user-frontend' ), 
+                    $untrashed 
+                );
                 $this->display_notice( $notice );
             } elseif ( !empty( $_GET['deleted'] ) ) {
                 $deleted = sanitize_text_field( wp_unslash( $_GET['deleted'] ) );
 
-                $notice = sprintf( _n( '%d form permanently deleted.', '%d forms permanently deleted.', $deleted, 'wp-user-frontend' ), $deleted );
+                $notice = sprintf(
+                    // translators: %d is the number of forms
+                    _n( '%d form permanently deleted.', '%d forms permanently deleted.', $deleted, 'wp-user-frontend' ), 
+                    $deleted 
+                );
                 $this->display_notice( $notice );
             } elseif ( !empty( $_GET['duplicated'] ) ) {
                 $duplicated = sanitize_text_field( wp_unslash( $_GET['duplicated'] ) );
 
                 $form_url = admin_url( 'admin.php?page=wpuf-post-forms&action=edit&id=' . $duplicated );
-                $notice   = sprintf( __( 'Form duplicated successfully. <a href="%s">View form.</a>', 'wp-user-frontend' ), $form_url );
+                $notice   = sprintf(
+                    // translators: %s is the form url
+                    __( 'Form duplicated successfully. <a href="%s">View form.</a>', 'wp-user-frontend' ), 
+                    $form_url 
+                );
                 $this->display_notice( $notice );
             }
         }
@@ -368,23 +384,39 @@ class Admin_Form_Handler {
             if ( !empty( $_GET['trashed'] ) ) {
                 $trashed = sanitize_text_field( wp_unslash( $_GET['trashed'] ) );
 
-                $notice = sprintf( _n( '%d form moved to the trash.', '%d forms moved to the trash.', $trashed, 'wp-user-frontend' ), $trashed );
+                $notice = sprintf(
+                    // translators: %s is the form url
+                    _n( '%d form moved to the trash.', '%d forms moved to the trash.', $trashed, 'wp-user-frontend' ), 
+                    $trashed 
+                );
                 $this->display_notice( $notice );
             } elseif ( !empty( $_GET['untrashed'] ) ) {
                 $untrashed = sanitize_text_field( wp_unslash( $_GET['untrashed'] ) );
 
-                $notice = sprintf( _n( '%d form restored from the trash.', '%d forms restored from the trash.', $untrashed, 'wp-user-frontend' ), $untrashed );
+                $notice = sprintf(
+                    // translators: %d is the number of forms
+                    _n( '%d form restored from the trash.', '%d forms restored from the trash.', $untrashed, 'wp-user-frontend' ), 
+                    $untrashed 
+                );
                 $this->display_notice( $notice );
             } elseif ( !empty( $_GET['deleted'] ) ) {
                 $deleted = sanitize_text_field( wp_unslash( $_GET['deleted'] ) );
 
-                $notice = sprintf( _n( '%d form permanently deleted.', '%d forms permanently deleted.', $deleted, 'wp-user-frontend' ), $deleted );
+                $notice = sprintf(
+                    // translators: %d is the number of form
+                    _n( '%d form permanently deleted.', '%d forms permanently deleted.', $deleted, 'wp-user-frontend' ), 
+                    $deleted 
+                );
                 $this->display_notice( $notice );
             } elseif ( !empty( $_GET['duplicated'] ) ) {
                 $duplicated = sanitize_text_field( wp_unslash( $_GET['duplicated'] ) );
 
                 $form_url = admin_url( 'admin.php?page=wpuf-profile-forms&action=edit&id=' . $duplicated );
-                $notice   = sprintf( __( 'Form duplicated successfully. <a href="%s">View form.</a>', 'wp-user-frontend' ), $form_url );
+                $notice   = sprintf(
+                    // translators: %s is the form url
+                    __( 'Form duplicated successfully. <a href="%s">View form.</a>', 'wp-user-frontend' ), 
+                    $form_url 
+                );
                 $this->display_notice( $notice );
             }
         }

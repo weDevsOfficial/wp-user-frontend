@@ -1260,7 +1260,11 @@ class Free_Loader extends Pro_Prompt {
         }
 
         $gateways['stripe'] = [
-            'admin_label'    => __( 'Credit Card ' . $crown, 'wp-user-frontend' ),
+            'admin_label'    => sprintf(
+                // translators: %s is the crown symbol
+                __( 'Credit Card %s', 'wp-user-frontend' ), 
+                $crown 
+            ),
             'checkout_label' => __( 'Credit Card', 'wp-user-frontend' ),
             'label_class'    => 'pro-preview',
         ];

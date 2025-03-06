@@ -162,7 +162,10 @@ class Admin_Subscription {
             2  => __( 'Custom field updated.', 'wp-user-frontend' ),
             3  => __( 'Custom field deleted.', 'wp-user-frontend' ),
             4  => __( 'Subscription pack updated.', 'wp-user-frontend' ),
-            5  => isset( $_GET['revision'] ) ? sprintf( __( 'Subscription pack restored to revision from %s', 'wp-user-frontend' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+            5  => isset( $_GET['revision'] ) ? sprintf(
+                // translators: %s is Revision
+                __( 'Subscription pack restored to revision from %s', 'wp-user-frontend' ), wp_post_revision_title( (int) $_GET['revision'], 
+                false ) ) : false,
             6  => __( 'Subscription pack published.', 'wp-user-frontend' ),
             7  => __( 'Subscription pack saved.', 'wp-user-frontend' ),
             8  => __( 'Subscription pack submitted.', 'wp-user-frontend' ),
@@ -542,7 +545,7 @@ class Admin_Subscription {
                                 ?>
                                 <th class="wpuf-post-exp-time"> <?php esc_html_e( 'Post Expiration Time', 'wp-user-frontend' ); ?> </th>
                                 <td class="wpuf-post-exp-time">
-                                    <input type="number" name="post_expiration_settings[expiration_time_value]" id="wpuf-expiration_time_value" value="<?php echo $time_value; ?>" id="wpuf-expiration_time_value" min="1">
+                                    <input type="number" name="post_expiration_settings[expiration_time_value]" id="wpuf-expiration_time_value" value="<?php echo esc_attr( $time_value ); ?>" id="wpuf-expiration_time_value" min="1">
                                     <select name="post_expiration_settings[expiration_time_type]" id="wpuf-expiration_time_type">
                                         <?php
                                         foreach ( $timeType_array as $each_time_type ) {
@@ -597,7 +600,7 @@ class Admin_Subscription {
                                             <?php
                                             printf(
                                             // translators: %1$s: {post_author}, %2$s: {post_url}, %3$s: {blogname}, %4$s: {post_title}, %5$s: {post_status}
-                                                __( 'You may use: %1$s %2$s %3$s %4$s %5$s', 'wp-user-frontend' ),
+                                            esc_html__( 'You may use: %1$s %2$s %3$s %4$s %5$s', 'wp-user-frontend' ),
                                                 '{post_author}',
                                                 '{post_url}',
                                                 '{blogname}',
@@ -727,8 +730,12 @@ class Admin_Subscription {
                 $recurring_pay  = isset( $pack->meta_value['recurring_pay'] ) && wpuf_is_option_on( $pack->meta_value['recurring_pay'] );
 
                 if ( $billing_amount && $recurring_pay ) {
-                    $recurring_des = sprintf( __( 'For each %1$s %2$s', 'wp-user-frontend' ), $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
-                    $recurring_des .= ! empty( $pack->meta_value['billing_limit'] ) ? sprintf( __( ', for %s installments', 'wp-user-frontend' ), $pack->meta_value['billing_limit'] ) : '';
+                    $recurring_des = sprintf(
+                        // translators: %1$s and %2$s are Billing cycle number and Billing cycle period
+                        __( 'For each %1$s %2$s', 'wp-user-frontend' ), $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
+                    $recurring_des .= ! empty( $pack->meta_value['billing_limit'] ) ? sprintf(
+                        // translators: %s is Billing limit
+                        __( ', for %s installments', 'wp-user-frontend' ), $pack->meta_value['billing_limit'] ) : '';
                     $recurring_des = $recurring_des;
                 } else {
                     $recurring_des = '';
@@ -821,7 +828,7 @@ class Admin_Subscription {
                             ?>
                             <tr>
                                 <th><label><?php esc_html_e( 'Post Expiration Enabled', 'wp-user-frontend' ); ?></label></th>
-                                <td><?php $is_post_exp_selected ? _e( 'Yes', 'wp-user-frontend' ) : _e( 'No', 'wp-user-frontend' ); ?></td>
+                                <td><?php $is_post_exp_selected ? esc_html_e( 'Yes', 'wp-user-frontend' ) : esc_html_e( 'No', 'wp-user-frontend' ); ?></td>
                             </tr>
                             <tr class="wpuf-post-exp-time">
                                 <?php
@@ -1011,7 +1018,9 @@ class Admin_Subscription {
         <div class="wpuf-footer-help">
             <span class="wpuf-footer-help-content">
                 <span class="dashicons dashicons-editor-help"></span>
-                <?php printf( wp_kses_post( __( 'Learn more about <a href="%s" target="_blank">Subscription</a>', 'wp-user-frontend' ) ), 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/?utm_source=wpuf-footer-help&utm_medium=text-link&utm_campaign=learn-more-subscription' ); ?>
+                <?php printf(
+                    // translators: %s is a link about subscription payment
+                    wp_kses_post( __( 'Learn more about <a href="%s" target="_blank">Subscription</a>', 'wp-user-frontend' ) ), 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/?utm_source=wpuf-footer-help&utm_medium=text-link&utm_campaign=learn-more-subscription' ); ?>
             </span>
         </div>
 

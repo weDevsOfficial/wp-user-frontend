@@ -5013,7 +5013,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                             'label'     => __( 'Submit Post Button Text', 'wp-user-frontend' ),
                             'type'      => 'text',
                             'help_text' => __(
-                                'Customize the text on the "Submit" button for this form', 'wp-user-frontend'
+                                'Customize the text on the \'Submit\' button for this form', 'wp-user-frontend'
                             ),
                         ],
                         'form_template'    => [
@@ -5116,7 +5116,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                             'label'     => __( 'Update Post Button Text', 'wp-user-frontend' ),
                             'type'      => 'text',
                             'help_text' => __(
-                                'Customize the text on the "Update" button for this form', 'wp-user-frontend'
+                                'Customize the text on the \'Update\' button for this form', 'wp-user-frontend'
                             ),
                         ],
                     ],

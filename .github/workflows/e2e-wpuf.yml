@@ -1,8 +1,12 @@
 name: Playwright tests/e2e
 
+
 on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 1 * * *"  # Run workflow at 8:00 AM UTC +6 every day
   push:
-    branches: [develop, automation/wpuf-e2e-pw]
+    branches: [develop]
   pull_request:
     branches: [develop]
 

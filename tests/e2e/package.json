@@ -1,5 +1,5 @@
 {
-  "name": "wpuf_project2",
+  "name": "wpuf_automation",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,11 +10,16 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@faker-js/faker": "^7.6.0",
-    "@playwright/test": "^1.42.0"
+    "@faker-js/faker": "^9.4.0",
+    "@playwright/test": "^1.50.1",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^18.19.79",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
   },
   "dependencies": {
     "@wordpress/env": "^9.4.0",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "js-yaml": "^4.0.9"
   }
 }

@@ -1,4 +1,5 @@
-require('dotenv').config();
+import dotenv from "dotenv";
+dotenv.config();
 import { expect, Page } from '@playwright/test';
 
 export class Base {

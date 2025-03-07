@@ -478,7 +478,7 @@ export const Selectors = {
             // Add Page Title
             addPageTitle: '//h1[@aria-label="Add title"]',
             // Block Add Button
-            blockAddButton: '//button[@aria-label="Add block"]',
+            blockAddButton: '//button[@aria-label="Add block"]', 
             // Block Search box
             blockSearchBox: '//input[@placeholder="Search"]',
             // Block Add ShortCode Block

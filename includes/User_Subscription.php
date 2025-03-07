@@ -56,7 +56,9 @@ class User_Subscription {
         if ( ! isset( $this->pack['pack_id'] ) ) {
             $pack_page = get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) );
 
-            return new WP_Error( 'no-pack', sprintf( __( 'You must <a href="%s">purchase a subscription package</a> before posting', 'wp-user-frontend' ), $pack_page ) );
+            return new WP_Error( 'no-pack', sprintf( 
+                // translators: %s is the user pack page url
+                __( 'You must <a href="%s">purchase a subscription package</a> before posting', 'wp-user-frontend' ), $pack_page ) );
         }
 
         // seems like the user has a pack, now check expiration

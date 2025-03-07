@@ -110,13 +110,13 @@ $email_integrations = [
 <div class="wpuf-registration-page-area">
     <header>
         <div class="wpuf-logo-area">
-            <img src="<?php echo WPUF_ASSET_URI . '/images/wpuf-pro-2.svg'; ?>" alt="WPUF Pro">
+            <img src="<?php echo wp_kses( WPUF_ASSET_URI . '/images/wpuf-pro-2.svg', array('svg' => [ 'xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true ], 'path' => [ 'd' => true, 'fill' => true ],) ); ?>" alt="WPUF Pro">
         </div>
         <div class="wpuf-menu-area">
             <ul>
                 <li>
                     <a target="_blank" rel="noopener noreferrer" href="https://wedevs.com/docs/wp-user-frontend-pro/">
-                        <img src="<?php echo WPUF_ASSET_URI . '/images/doc.svg' ?>" alt="">
+                        <img src="<?php echo wp_kses( WPUF_ASSET_URI . '/images/doc.svg', array('svg' => [ 'xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true ],  'path' => ['fill-rule' => true, 'clip-rule' => true, 'd' => true, 'fill' => true ] ) ); ?>" alt="">
                         <?php esc_html_e( 'Docs', 'wp-user-frontend' ); ?>
                     </a>
                 </li>
@@ -170,7 +170,7 @@ $email_integrations = [
                 ?>
                 <div class="single-pro-feature">
                     <img src="<?php echo WPUF_ASSET_URI . '/images/' . $feature['icon']; ?>">
-                    <p><?php echo $feature['title']; ?></p>
+                    <p><?php echo esc_html( $feature['title'] ); ?></p>
                 </div>
                 <?php
             }
@@ -183,7 +183,7 @@ $email_integrations = [
                 ?>
                 <div class="single-pro-feature">
                     <img src="<?php echo WPUF_ASSET_URI . '/images/' . $integration['icon']; ?>">
-                    <p><?php echo $integration['title']; ?></p>
+                    <p><?php echo esc_html( $integration['title'] ); ?></p>
                 </div>
                 <?php
             }

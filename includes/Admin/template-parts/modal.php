@@ -10,6 +10,7 @@
                 <?php esc_html_e( 'Select a Template', 'wp-user-frontend' ); ?>
                 <small><?php
                 printf(
+                    // translators: %s is a URL leading to a blank form.
                     wp_kses_post( __( 'Select from a pre-defined template or from a <a href="%s">blank form</a>', 'wp-user-frontend' ) ),
                     esc_attr( $blank_form_url )
                  ); ?></small>

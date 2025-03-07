@@ -667,7 +667,7 @@ function wpuf_settings_field_profile( $form ) {
             $current = isset( $val['roles'][ $role ] ) ? $val['roles'][ $role ] : '';
             ?>
             <tr valign="top" <?php echo $class; ?>>
-                <th scrope="row"><?php echo esc_attr( $name ) . $crown_icon; ?></th>
+                <th scrope="row"><?php echo esc_attr( $name ) . wp_kses( $crown_icon, array('svg' => [ 'xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true ], 'path' => [ 'd' => true, 'fill' => true ], 'circle' => [ 'cx' => true, 'cy' => true, 'r' => true ], ) ); ?></th>
                 <td>
                     <select name="wpuf_profile[roles][<?php echo esc_attr( $role ); ?>]" class="regular" style="min-width: 300px;" <?php echo esc_attr( $disabled ); ?>>
                         <option value=""><?php esc_html_e( '&mdash; Select &mdash;', 'wp-user-frontend' ); ?></option>

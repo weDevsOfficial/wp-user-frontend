@@ -50,11 +50,11 @@
                 <td data-label="<?php esc_attr_e( 'Title: ', 'wp-user-frontend' ); ?>" class="<?php echo 'on' === $featured_img ? 'data-column' : '' ; ?>">
                     <?php if ( ! $show_link ) { ?>
 
-                        <?php echo wp_trim_words( get_the_title(), 5 ); ?>
+                        <?php echo esc_html( wp_trim_words( get_the_title(), 5 ) ); ?>
 
                     <?php } else { ?>
 
-                        <a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wp-user-frontend' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php echo wp_trim_words( get_the_title(), 5 ); ?></a>
+                        <a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wp-user-frontend' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php echo esc_html( wp_trim_words( get_the_title(), 5 ) ); ?></a>
 
                     <?php } ?>
                     <?php if ( 'on' !== $featured_img ) { ?>

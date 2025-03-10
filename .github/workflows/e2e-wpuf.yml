@@ -3,8 +3,8 @@ name: Playwright tests/e2e
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 1 * * *"  # Run workflow at 8:00 AM UTC +6 every day
+  # schedule:
+  #   - cron: "0 1 * * *"  # Run workflow at 8:00 AM UTC +6 every day
   push:
     branches: [develop]
   pull_request:
@@ -20,7 +20,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "7.3"
+          php-version: "7.4"
       
       # Checkout testing repo
       - name: Checkout testing repo

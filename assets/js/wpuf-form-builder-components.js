@@ -451,8 +451,8 @@ Vue.component('field-options', {
                     return self.$store.state.form_fields[i];
                 }
 
-                // check if the editing field belong to column field
-                if (self.$store.state.form_fields[i].template === 'column_field') {
+                // check if the editing field belong to column field or repeat field
+                if (self.$store.state.form_fields[i].template.match(/^(column|repeat)_field$/)) {
                     var innerColumnFields = self.$store.state.form_fields[i].inner_fields;
 
                     for (const columnFields in innerColumnFields) {
@@ -966,7 +966,8 @@ Vue.component('form-column_field', {
             return ( field.recaptcha_type && 'invisible_recaptcha' === field.recaptcha_type ) ? true : false;
         },
 
-        isAllowedInClolumnField: function(field_template) {
+
+        isAllowedInColumnField: function(field_template) {
             var restrictedFields = ['column_field', 'custom_hidden_field', 'step_start'];
 
             if ( $.inArray(field_template, restrictedFields) >= 0 ) {
@@ -984,7 +985,7 @@ Vue.component('form-column_field', {
                 toWhichColumn: data.to_column
             };
 
-            if (this.isAllowedInClolumnField(data.field_template)) {
+            if (this.isAllowedInColumnField(data.field_template)) {
                 Swal.fire({
                     title: "Oops...",
                     text: "You cannot add this field as inner column field"

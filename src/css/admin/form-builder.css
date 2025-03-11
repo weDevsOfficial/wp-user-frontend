@@ -66,10 +66,6 @@
     opacity: 1;
     background: repeating-linear-gradient( -45deg, #dcfce7, #dcfce7 2px, #ffffff 2px, #ffffff 6px );
 }
-.selectize-control.multi .selectize-input [data-value] {
-    background: #059669 !important;
-    border: 1px solid transparent !important;
-}
 ul.wpuf-form li.field-size-small .wpuf-fields {
     width: 30%;
 }
@@ -102,6 +98,7 @@ h2#modules-menu:hover svg.custom-stroke,
 h2#modules-menu.active_settings_tab svg.custom-stroke {
     stroke: #ffffff;
 }
+/*selectize styles*/
 .selectize-control {
     border: none !important;
     box-shadow: none !important;
@@ -113,6 +110,31 @@ h2#modules-menu.active_settings_tab svg.custom-stroke {
     box-shadow: none;
     background: #fff;
 }
+.selectize-control .selectize-input {
+    @apply wpuf-flex wpuf-items-center wpuf-justify-between wpuf-min-w-full wpuf-rounded-md wpuf-py-1 wpuf-px-2 wpuf-text-gray-900 !wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300 wpuf-max-w-full hover:wpuf-cursor-pointer
+}
+.selectize-control.multi .selectize-input [data-value] {
+    background: #059669 !important;
+    border: 1px solid transparent !important;
+}
+.selectize-control.single .selectize-input:after {
+    content: '\f107';
+    font-family: FontAwesome, serif;
+    font-size: 1rem;
+    border: none;
+    top: 25%;
+    right: 1.5rem;
+    margin-top: 0;
+}
+.selectize-control.single .selectize-input.dropdown-active:after {
+    margin-top: 0;
+    border: none;
+}
+.selectize-input.items.not-full.has-options.focus.input-active.dropdown-active.has-items {
+    display: flex;
+    justify-content: flex-start;
+}
+/*selectize styles*/
 .wpuf-icon-container {
     position: relative;
     width: 100%;
@@ -196,19 +218,6 @@ input[type="range"]::-moz-range-thumb:active {
 }
 table.option-field-option-chooser tbody tr td {
     padding: .25rem;
-}
-.selectize-control.single .selectize-input:after {
-    content: '\f107';
-    font-family: FontAwesome, serif;
-    font-size: 1rem;
-    border: none;
-    top: 25%;
-    right: 1.5rem;
-    margin-top: 0;
-}
-.selectize-control.single .selectize-input.dropdown-active:after {
-    margin-top: 0;
-    border: none;
 }
 .wpuf-field-sizing-content {
     field-sizing: content;

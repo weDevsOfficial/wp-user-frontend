@@ -575,17 +575,17 @@
     <div class="option-fields-section wpuf-relative">
         <p
             @click="showOptions = !showOptions"
-            class="wpuf-flex wpuf-items-center wpuf-justify-between wpuf-min-w-full wpuf-rounded-md wpuf-py-1 wpuf-px-2 wpuf-text-gray-900 !wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300 wpuf-max-w-full hover:wpuf-cursor-pointer"
+            class="wpuf-w-full wpuf-min-w-full !wpuf-py-[10px] !wpuf-px-[14px] wpuf-text-gray-700 wpuf-font-medium !wpuf-shadow-sm wpuf-border !wpuf-border-gray-300 !wpuf-rounded-[6px] focus:!wpuf-ring-transparent focus:checked:!wpuf-ring-transparent hover:checked:!wpuf-ring-transparent hover:!wpuf-text-gray-700 wpuf-flex wpuf-justify-between wpuf-items-center !wpuf-text-base"
         >
             {{ selectedOption }}
             <i
                 :class="showOptions ? 'fa-angle-up' : 'fa-angle-down'"
-                class="fa"></i>
+                class="fa wpuf-text-base"></i>
         </p>
 
         <div
             v-if="showOptions"
-            class="wpuf-absolute wpuf-bg-white wpuf-border wpuf-border-gray-300 wpuf-rounded-lg wpuf-w-full wpuf-z-10 wpuf--mt-4">
+            class="wpuf-absolute wpuf-bg-white wpuf-border wpuf-border-gray-300 wpuf-rounded-lg wpuf-w-full wpuf-z-40 wpuf--mt-4">
             <ul>
                 <li
                     v-for="(option, key) in option_field.options"

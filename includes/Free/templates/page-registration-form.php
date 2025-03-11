@@ -147,13 +147,20 @@ $email_integrations = [
             </a>
         </div>
         <div class="wpuf-box-inner">
-            <img src="<?php echo WPUF_ASSET_URI . '/images/form-banner.svg'; ?>" alt="WPUF Registration Form">
+            <img src="<?php echo wp_kses( WPUF_ASSET_URI . '/images/form-banner.svg', array(
+                'svg' => [ 'xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true ],
+                'path' => [ 'd' => true, 'fill' => true, 'fill-opacity' => true, 'fill-rule' => true, 'clip-rule' => true,],
+                'rect' => [ 'x' => true, 'y' => true, 'width' => true, 'height' => true, 'rx' => true, 'fill' => true, 'stroke' => true, 'stroke-width' => true],
+                'circle' => [ 'cx' => true, 'cy' => true, 'r' => true, 'fill' => true ],
+                'linearGradient' => [ 'id' => true, 'x1' => true, 'y1' => true, 'x2' => true, 'y2' => true, 'gradientUnits' => true ],
+                'stop' => [ 'stop-color' => true, 'offset' => true, 'stop-opacity' => true]
+            )); ?>" alt="WPUF Registration Form">
         </div>
     </div>
     <div class="wpuf-box">
         <div class="heading">
             <div class="crown-icon pro-icon">
-                <?php echo file_get_contents( $crown_icon ); ?>
+                <?php echo wp_kses_post( file_get_contents( wp_kses($crown_icon, array('svg' => [ 'xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true ], 'path' => [ 'd' => true, 'fill' => true ], 'circle' => [ 'cx' => true, 'cy' => true, 'r' => true ], ) ) ) ); ?>
             </div>
             <div class="titles">
                 <h2><?php esc_html_e( 'Unlock PRO Features', 'wp-user-frontend' ); ?></h2>
@@ -169,7 +176,7 @@ $email_integrations = [
             foreach ( $pro_features as $feature ) {
                 ?>
                 <div class="single-pro-feature">
-                    <img src="<?php echo WPUF_ASSET_URI . '/images/' . $feature['icon']; ?>">
+                    <img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/' . $feature['icon'] ); ?>">
                     <p><?php echo esc_html( $feature['title'] ); ?></p>
                 </div>
                 <?php
@@ -182,7 +189,7 @@ $email_integrations = [
             foreach ( $email_integrations as $integration ) {
                 ?>
                 <div class="single-pro-feature">
-                    <img src="<?php echo WPUF_ASSET_URI . '/images/' . $integration['icon']; ?>">
+                    <img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/' . $integration['icon'] ); ?>">
                     <p><?php echo esc_html( $integration['title'] ); ?></p>
                 </div>
                 <?php
@@ -202,7 +209,7 @@ $email_integrations = [
                         <?php
                         esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' );
                         ?>
-                        <span class="pro-icon icon-white"> <?php echo file_get_contents( $crown_icon ); ?></span>
+                        <span class="pro-icon icon-white"> <?php echo wp_kses_post( file_get_contents( wp_kses($crown_icon, array('svg' => [ 'xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true ], 'path' => [ 'd' => true, 'fill' => true ], 'circle' => [ 'cx' => true, 'cy' => true, 'r' => true ], ) ) ) ); ?></span>
                     </a>
                 </li>
             </ul>

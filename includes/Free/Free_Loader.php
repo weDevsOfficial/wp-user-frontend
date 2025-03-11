@@ -1039,8 +1039,8 @@ class Free_Loader extends Pro_Prompt {
                             <div class="plugin-card-top">
                                 <div class="name column-name">
                                     <h3>
-                                        <span class="plugin-name"><a href="<?php echo $module['plugin_uri']; ?>" target="_blank"><?php echo $module['name']; ?></a></span>
-                                        <a href="<?php echo $module['plugin_uri']; ?>" target="_blank"><img class="plugin-icon" src="<?php echo WPUF_ASSET_URI . '/images/modules/' . $module['thumbnail']; ?>" alt="" /></a>
+                                        <span class="plugin-name"><a href="<?php echo esc_url( $module['plugin_uri'] ); ?>" target="_blank"><?php echo esc_html( $module['name'] ); ?></a></span>
+                                        <a href="<?php echo esc_url( $module['plugin_uri'] ); ?>" target="_blank"><img class="plugin-icon" src="<?php echo esc_url( WPUF_ASSET_URI . '/images/modules/' . $module['thumbnail'] ); ?>" alt="" /></a>
                                     </h3>
                                 </div>
 
@@ -1287,7 +1287,7 @@ class Free_Loader extends Pro_Prompt {
             $crown = sprintf( '<span class="pro-icon-title"> %s</span>', file_get_contents( $crown_icon ) );
         }
 
-        echo '<li><a href="#taxonomy-restriction"><span class="dashicons dashicons-image-filter"></span> ' . esc_html(__( 'Taxonomy Restriction ', 'wp-user-frontend' ) ) . $crown . '</a></li>';
+        echo '<li><a href="#taxonomy-restriction"><span class="dashicons dashicons-image-filter"></span> ' . esc_html(__( 'Taxonomy Restriction ', 'wp-user-frontend' ) ) . wp_kses($crown, array('svg' => ['xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true,], 'path' => ['d' => true, 'fill' => true, ] ) ) . '</a></li>';
     }
 
     /**
@@ -1406,7 +1406,7 @@ class Free_Loader extends Pro_Prompt {
                 </tr>
             </table>
             <?php
-                echo wpuf_get_pro_preview_html();
+                echo wp_kses_post( wpuf_get_pro_preview_html() );
             ?>
         </section>
 

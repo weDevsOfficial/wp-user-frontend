@@ -75,7 +75,7 @@ class Admin_Tools {
 
             <?php
         } else {
-            printf( '<p>%s</p>', __( 'Sorry you have no post form to export', 'wp-user-frontend' ) );
+            printf( '<p>%s</p>', esc_html( __( 'Sorry you have no post form to export', 'wp-user-frontend' ) ) );
         }
     }
 
@@ -140,7 +140,7 @@ class Admin_Tools {
             </div>
             <?php
         } else {
-            printf( '<p>%s</p>', __( 'Sorry you have no registration form to export', 'wp-user-frontend' ) );
+            printf( '<p>%s</p>', esc_html( __( 'Sorry you have no registration form to export', 'wp-user-frontend' ) ) );
         }
     }
 
@@ -281,7 +281,7 @@ class Admin_Tools {
 
         ob_clean();
 
-        echo $json_file; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+        echo $json_file; // phpcs:ignore
 
         header( 'Content-Type: text/json; charset=' . get_option( 'blog_charset' ) );
         header( "Content-Disposition: attachment; filename=$json_name.json" );

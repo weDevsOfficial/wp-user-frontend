@@ -191,7 +191,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo $html;
+        echo esc_html( $html );
     }
 
     /**
@@ -225,7 +225,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo $html;
+        echo esc_html( $html );
     }
 
     /**
@@ -248,7 +248,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo $html;
+        echo esc_html( $html );
     }
 
     /**
@@ -277,7 +277,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo $html;
+        echo esc_html( $html );
     }
 
     /**
@@ -303,7 +303,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo $html;
+        echo esc_html( $html );
     }
 
     /**
@@ -329,7 +329,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo $html;
+        echo esc_html( $html );
     }
 
     /**
@@ -351,7 +351,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo $html;
+        echo esc_html( $html );
     }
 
     /**
@@ -367,7 +367,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo $html;
+        echo esc_html( $html );
     }
 
     /**
@@ -380,7 +380,7 @@ class WeDevs_Settings_API {
         $value = $this->get_option( $args['id'], $args['section'], $args['std'] );
         $size  = isset( $args['size'] ) && !is_null( $args['size'] ) ? $args['size'] : '500px';
 
-        echo '<div style="max-width: ' . $size . ';">';
+        echo '<div style="max-width: ' . esc_attr( $size ) . ';">';
 
         $editor_settings = array(
             'teeny'          => true,
@@ -421,7 +421,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo $html;
+        echo esc_html( $html );
     }
 
     /**
@@ -441,7 +441,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo $html;
+        echo esc_html( $html );
     }
 
     /**
@@ -461,7 +461,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo $html;
+        echo esc_html( $html );
     }
 
     /**
@@ -475,17 +475,17 @@ class WeDevs_Settings_API {
         $name = $args['section'] . '[' . $args['id'] . ']';
         ?>
         <fieldset>
-            <label for="<?php echo 'wpuf-' . $name; ?>" class="wpuf-toggle-switch">
+            <label for="<?php echo 'wpuf-' . esc_attr( $name ); ?>" class="wpuf-toggle-switch">
                 <input
                     type="hidden"
-                    name="<?php echo $name; ?>"
+                    name="<?php echo esc_attr( $name ); ?>"
                     value="off" />
                 <input
                     type="checkbox"
                     <?php echo $value === 'on' ? 'checked' : ''; ?>
                     <?php echo $disabled ? 'disabled' : ''; ?>
-                    id="<?php echo 'wpuf-' . $name; ?>"
-                    name="<?php echo $name; ?>"
+                    id="<?php echo 'wpuf-' . esc_attr( $name ); ?>"
+                    name="<?php echo esc_attr( $name ); ?>"
                     class="wpuf-toggle-module checkbox"
                     value="on">
                 <span class="slider round"></span>
@@ -590,7 +590,7 @@ class WeDevs_Settings_API {
 
         $html .= '</h2>';
 
-        echo $html;
+        echo esc_html( $html );
     }
 
     /**
@@ -604,7 +604,7 @@ class WeDevs_Settings_API {
             <?php foreach ( $this->settings_sections as $form ) {
                 $class = ! empty( $form['class'] ) ? esc_attr( $form['class'] ) : '';
                 ?>
-                <div id="<?php echo $form['id']; ?>" class="group <?php echo $class; ?>" style="display: none;">
+                <div id="<?php echo esc_attr( $form['id'] ); ?>" class="group <?php echo esc_attr( $class ); ?>" style="display: none;">
                     <form method="post" action="options.php">
                         <?php
                         do_action( 'wsa_form_top_' . $form['id'], $form );

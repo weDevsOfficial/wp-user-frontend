@@ -45,7 +45,7 @@ $lock_edit_post       = isset( $form_settings['lock_edit_post'] ) ? $form_settin
                 ?>
             </select>
             <p class="description">
-                <?php esc_html_e( 'After successfull submit, where the page will redirect to', $domain = 'wp-user-frontend' ); ?>
+                <?php esc_html_e( 'After successfull submit, where the page will redirect to', 'wp-user-frontend' ); ?>
             </p>
         </td>
     </tr>

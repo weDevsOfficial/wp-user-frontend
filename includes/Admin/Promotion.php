@@ -251,7 +251,7 @@ class Promotion {
         ?>
         <div class="notice notice-success wpuf-notice" id="wpuf-bfcm-notice">
             <div class="wpuf-logo-wrapper">
-                <img src="<?php echo WPUF_ASSET_URI . '/images/icon-128x128.png'; ?>" alt="WPUF Icon">
+                <img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/icon-128x128.png' ); ?>" alt="WPUF Icon">
             </div>
             <div class="wpuf-notice-content-wrapper">
                 <h3><?php echo esc_html( $title ); ?></h3>

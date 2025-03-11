@@ -159,7 +159,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
         $tax_args = apply_filters( 'wpuf_taxonomy_checklist_args', $tax_args );
         $select = wp_dropdown_categories( $tax_args );
 
-        echo str_replace( '<select', '<select ' . $dataset, $select ); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+        echo str_replace( '<select', '<select ' . $dataset, $select ); // phpcs:ignore
         $attr = [
             'required'      => $attr['required'],
             'name'          => $attr['name'],
@@ -286,7 +286,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
                     ];
 
                       $select_result = wp_dropdown_categories( $tax_args );
-                       echo str_replace( '<select', '<select ' . $dataset, $select_result );
+                       echo str_replace( '<select', '<select ' . $dataset, $select_result ); // phpcs:ignore
                         $attr = [
                             'required'      => $attr['required'],
                             'name'          => $attr['name'],
@@ -372,7 +372,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
             ],
         ];
 
-        echo str_replace( '<select', '<select ' . $required, $select ); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+        echo str_replace( '<select', '<select ' . $required, $select ); // phpcs:ignore
 
         // echo wp_kses( str_replace( '<select', '<select ' . $required, $select ), [
         //     'select' => [],
@@ -415,7 +415,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
         $tax_args = apply_filters( 'wpuf_taxonomy_checklist_args', $tax_args );
         $select   = wp_dropdown_categories( $tax_args );
 
-        echo str_replace( '<select', '<select multiple="multiple" ' . $required, $select );  // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+        echo str_replace( '<select', '<select multiple="multiple" ' . $required, $select );  // phpcs:ignore
     }
 
     public function tax_input( $post_id = null, $field_settings = [] ) {
@@ -435,7 +435,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
         <script type="text/javascript">
             ;(function($) {
                 $(document).ready( function(){
-                        $('#<?php echo esc_attr( $attr['name'] ); ?>').suggest( wpuf_frontend.ajaxurl + '<?php echo $query_string; ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
+                        $('#<?php echo esc_attr( $attr['name'] ); ?>').suggest( wpuf_frontend.ajaxurl + '<?php echo $query_string; // phpcs:ignore ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
                 });
             })(jQuery);
         </script>

@@ -239,7 +239,7 @@ final class WP_User_Frontend {
             <p>
                 <?php
                 /* translators: 1: opening anchor tag, 2: closing anchor tag. */
-                echo sprintf( __( 'We\'ve pushed a major update on both <b>WP User Frontend Free</b> and <b>WP User Frontend Pro</b> that requires you to use latest version of both. Please update the WPUF pro to the latest version. <br><strong>Please make sure to take a complete backup of your site before updating.</strong>', 'wp-user-frontend' ), '<a target="_blank" href="https://wordpress.org/plugins/wp-user-frontend/">', '</a>' );
+                echo sprintf( wp_kses_post( __( 'We\'ve pushed a major update on both <b>WP User Frontend Free</b> and <b>WP User Frontend Pro</b> that requires you to use latest version of both. Please update the WPUF pro to the latest version. <br><strong>Please make sure to take a complete backup of your site before updating.</strong>', 'wp-user-frontend' ), '<a target="_blank" href="https://wordpress.org/plugins/wp-user-frontend/">', '</a>' ) );
                 ?>
             </p>
         </div>

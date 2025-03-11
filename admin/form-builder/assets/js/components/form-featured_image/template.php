@@ -3,7 +3,7 @@
         <div class="wpuf-attachment-upload-filelist" data-type="file" data-required="yes">
             <a class="button file-selector" href="#">
                 <template v-if="field.button_label === ''">
-                    <?php _e( 'Select Image', 'wp-user-frontend' ); ?>
+                    <?php esc_html_e( 'Select Image', 'wp-user-frontend' ); ?>
                 </template>
                 <template v-else>
                     {{ field.button_label }}

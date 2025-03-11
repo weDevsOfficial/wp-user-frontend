@@ -489,7 +489,7 @@
                 // attach selectize to the dropdowns after settings tab changes
                 handler: function() {
                     setTimeout(function() {
-                        $('.wpuf-settings-container select').selectize({
+                        $('.wpuf-settings-container select').not('.wpuf_available_conditional_fields, .wpuf_cond_operators, .wpuf_selected_conditional_field_options').selectize({
                             plugins: ['remove_button'],
                         });
                     }, 100);
@@ -502,7 +502,7 @@
 
             Vue.nextTick(function () {
                 // selectize for all the dropdowns
-                $('.wpuf-settings-container select').selectize({
+                $('.wpuf-settings-container select').not('.wpuf_available_conditional_fields, .wpuf_cond_operators, .wpuf_selected_conditional_field_options').selectize({
                     plugins: ['remove_button'],
                 });
             });
@@ -689,7 +689,58 @@
                 $('.datepicker').datetimepicker();
                 $('.wpuf-ms-color').wpColorPicker();
             });
+
+            this.integrationsCondFieldsVisibility();
         },
+
+        integrationsCondFieldsVisibility: function() {
+            var conditional_logic      = $( '.wpuf-integrations-conditional-logic' ),
+                cond_fields_container  = $( '.wpuf-integrations-conditional-logic-container' ),
+                cond_fields            = $( '.wpuf_available_conditional_fields' ),
+                cond_field_options     = $( '.wpuf_selected_conditional_field_options' );
+
+            $( conditional_logic ).on( "click", function(e) {
+                $( cond_fields_container ).hide();
+
+                if ( e.target.value === 'yes' ) {
+                    $( cond_fields_container ).show();
+                }
+            });
+
+            $( cond_fields ).on('focus', function(e) {
+                var form_fields = wpuf_form_builder.form_fields,
+                    options     = '';
+                options     += '<option value="-1">- select -</option>';
+
+                form_fields.forEach(function(field) {
+                    if ( field.template === 'radio_field' || field.template === 'checkbox_field' || field.template === 'dropdown_field' ) {
+                        options += '<option value="'+field.name+'">'+field.label+'</option>';
+                    }
+                });
+                e.target.innerHTML = options;
+            });
+
+            $( cond_fields ).on('change', function(e){
+                var form_fields = wpuf_form_builder.form_fields,
+                    field_name = e.target.value,
+                    field_options  = '';
+                field_options += '<option value="-1">- select -</option>';
+
+                form_fields.forEach(function(field) {
+                    if ( field.name === field_name ) {
+                        var options = field.options;
+
+                        for (var key in options) {
+                            if (options.hasOwnProperty(key)) {
+                                field_options += '<option value="'+key+'">'+options[key]+'</option>';
+                            }
+                        }
+                    }
+                });
+
+                cond_field_options[0].innerHTML = field_options;
+            });
+        }
     };
 
     // on DOM ready

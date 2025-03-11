@@ -4854,13 +4854,13 @@ function wpuf_get_post_form_builder_setting_menu_titles() {
         [
             'general'               => [
                 'label' => __( 'General', 'wp-user-frontend' ),
-                'icon'  => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                'icon'  => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="custom-stroke">
                                 <path d="M8.75 5L16.875 5M8.75 5C8.75 5.69036 8.19036 6.25 7.5 6.25C6.80964 6.25 6.25 5.69036 6.25 5M8.75 5C8.75 4.30964 8.19036 3.75 7.5 3.75C6.80964 3.75 6.25 4.30964 6.25 5M3.125 5H6.25M8.75 15H16.875M8.75 15C8.75 15.6904 8.19036 16.25 7.5 16.25C6.80964 16.25 6.25 15.6904 6.25 15M8.75 15C8.75 14.3096 8.19036 13.75 7.5 13.75C6.80964 13.75 6.25 14.3096 6.25 15M3.125 15L6.25 15M13.75 10L16.875 10M13.75 10C13.75 10.6904 13.1904 11.25 12.5 11.25C11.8096 11.25 11.25 10.6904 11.25 10M13.75 10C13.75 9.30964 13.1904 8.75 12.5 8.75C11.8096 8.75 11.25 9.30964 11.25 10M3.125 10H11.25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>',
             ],
             'payment_settings'      => [
                 'label' => __( 'Payment Settings', 'wp-user-frontend' ),
-                'icon'  => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                'icon'  => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="custom-stroke">
                                 <path d="M3.125 5H16.875C17.5654 5 18.125 5.55964 18.125 6.25V13.75C18.125 14.4404 17.5654 15 16.875 15H3.125C2.43464 15 1.875 14.4404 1.875 13.75V6.25C1.875 5.55964 2.43464 5 3.125 5Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M5 15V10H15V15" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M10 10V5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -4868,25 +4868,25 @@ function wpuf_get_post_form_builder_setting_menu_titles() {
             ],
             'notification_settings' => [
                 'label' => __( 'Notification Settings', 'wp-user-frontend' ),
-                'icon'  => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                'icon'  => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="custom-stroke">
                     <path d="M14.8559 17.0817C16.7504 16.857 18.5773 16.4116 20.3102 15.7719C18.8734 14.177 17.9988 12.0656 17.9988 9.75V9.04919C17.999 9.03281 17.999 9.01641 17.999 9C17.999 5.68629 15.3127 3 11.999 3C8.68531 3 5.99902 5.68629 5.99902 9L5.99883 9.75C5.99883 12.0656 5.1243 14.177 3.6875 15.7719C5.42043 16.4116 7.24746 16.857 9.14216 17.0818M14.8559 17.0817C13.919 17.1928 12.9656 17.25 11.9988 17.25C11.0322 17.25 10.0789 17.1929 9.14216 17.0818M14.8559 17.0817C14.9488 17.3711 14.999 17.6797 14.999 18C14.999 19.6569 13.6559 21 11.999 21C10.3422 21 8.99902 19.6569 8.99902 18C8.99902 17.6797 9.04921 17.3712 9.14216 17.0818" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>',
             ],
             'display_settings'      => [
                 'label' => __( 'Display Settings', 'wp-user-frontend' ),
-                'icon'  => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                'icon'  => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="custom-stroke">
                             <path d="M9 17.25V18.2574C9 19.053 8.68393 19.8161 8.12132 20.3787L7.5 21H16.5L15.8787 20.3787C15.3161 19.8161 15 19.053 15 18.2574V17.25M21 5.25V15C21 16.2426 19.9926 17.25 18.75 17.25H5.25C4.00736 17.25 3 16.2426 3 15V5.25M21 5.25C21 4.00736 19.9926 3 18.75 3H5.25C4.00736 3 3 4.00736 3 5.25M21 5.25V12C21 13.2426 19.9926 14.25 18.75 14.25H5.25C4.00736 14.25 3 13.2426 3 12V5.25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>',
             ],
             'advanced'              => [
                 'label' => __( 'Advanced', 'wp-user-frontend' ),
-                'icon'  => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                'icon'  => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="custom-stroke">
                                 <path d="M4.5 11.9993C4.5 16.1414 7.85786 19.4993 12 19.4993C16.1421 19.4993 19.5 16.1414 19.5 11.9993M4.5 11.9993C4.5 7.85712 7.85786 4.49925 12 4.49925C16.1421 4.49926 19.5 7.85712 19.5 11.9993M4.5 11.9993L3 11.9993M19.5 11.9993L21 11.9993M19.5 11.9993L12 11.9993M3.54256 15.0774L4.9521 14.5644M19.0475 9.43411L20.457 8.92108M5.10547 17.785L6.25454 16.8208M17.7452 7.17897L18.8943 6.21479M7.4999 19.7943L8.2499 18.4952M15.7499 5.50484L16.4999 4.2058M10.4371 20.8633L10.6975 19.386M13.3023 4.61393L13.5627 3.13672M13.5627 20.8633L13.3023 19.3861M10.6976 4.61397L10.4371 3.13676M16.4999 19.7941L15.7499 18.4951M7.49995 4.20565L12 11.9993M18.8944 17.7843L17.7454 16.8202M6.25469 7.17835L5.10562 6.21417M20.4573 15.0776L19.0477 14.5646M4.95235 9.43426L3.54281 8.92123M12 11.9993L8.25 18.4944"  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>',
             ],
             'post_expiration'       => [
                 'label' => __( 'Post Expiration', 'wp-user-frontend' ),
-                'icon'  => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                'icon'  => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="custom-stroke">
 <path d="M6.75 3V5.25M17.25 3V5.25M3 18.75V7.5C3 6.25736 4.00736 5.25 5.25 5.25H18.75C19.9926 5.25 21 6.25736 21 7.5V18.75M3 18.75C3 19.9926 4.00736 21 5.25 21H18.75C19.9926 21 21 19.9926 21 18.75M3 18.75V11.25C3 10.0074 4.00736 9 5.25 9H18.75C19.9926 9 21 10.0074 21 11.25V18.75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>',
             ],

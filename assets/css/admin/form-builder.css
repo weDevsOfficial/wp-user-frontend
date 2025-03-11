@@ -4552,15 +4552,15 @@ body ul.wpuf-form li .wpuf-fields {
   width: 70% !important;
 }
 
-#wpuf-form-builder-settings ul.wpuf-sidebar-menu li a svg,
-h2#modules-menu svg{
+#wpuf-form-builder-settings ul.wpuf-sidebar-menu li a svg.custom-stroke,
+h2#modules-menu svg.custom-stroke {
   stroke: #4b5563;
 }
 
-#wpuf-form-builder-settings ul.wpuf-sidebar-menu li:hover a svg,
-#wpuf-form-builder-settings ul.wpuf-sidebar-menu li.active_settings_tab a svg,
-h2#modules-menu:hover svg,
-h2#modules-menu.active_settings_tab svg{
+#wpuf-form-builder-settings ul.wpuf-sidebar-menu li:hover a svg.custom-stroke,
+#wpuf-form-builder-settings ul.wpuf-sidebar-menu li.active_settings_tab a svg.custom-stroke,
+h2#modules-menu:hover svg.custom-stroke,
+h2#modules-menu.active_settings_tab svg.custom-stroke {
   stroke: #ffffff;
 }
 

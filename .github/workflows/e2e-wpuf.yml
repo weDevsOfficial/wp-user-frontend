@@ -40,7 +40,7 @@ jobs:
       # Npm install and build (WPUF-lite) - for plugin
       - name: Npm install and build (WPUF-lite)
         run: |
-          npm ci
+          npm install
           grunt release
 
       # ✅ Setup WordPress in the ROOT directory

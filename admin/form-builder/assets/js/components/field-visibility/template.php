@@ -25,7 +25,7 @@
         class="wpuf-mt-2 wpuf-flex wpuf-flex-wrap">
         <div
             v-for="(option, key, index) in option_field.options"
-            class="wpuf-items-center">
+            class="wpuf-items-center wpuf-mr-9">
             <label
                 class="wpuf-block wpuf-my-1 wpuf-mr-2 wpuf-font-medium wpuf-text-gray-900">
                 <input
@@ -47,8 +47,8 @@
                 foreach ( $roles as $role => $value ) {
                     $role_name = $value['name'];
 
-                    $output  = '<li class="wpuf-mt-2">';
-                    $output .= "<label><input :class=\"builder_class_names('checkbox')\" type=\"checkbox\" v-model=\"choices\" value=\"{$role}\"> {$role_name} </label>";
+                    $output  = '<li class="wpuf-mt-2 wpuf-flex wpuf-items-center">';
+                    $output .= "<label class='wpuf-flex wpuf-items-center'><input :class=\"builder_class_names('checkbox')\" class=\"!wpuf-mr-2\" type=\"checkbox\" v-model=\"choices\" value=\"{$role}\"> {$role_name} </label>";
                     $output .= '</li>';
 
                     echo $output;
@@ -67,8 +67,8 @@
 
                     if ( $subscriptions ) {
                         foreach ( $subscriptions as $pack ) {
-                            $output  = '<li class="wpuf-mt-2">';
-                            $output .= "<label><input class='wpuf-bg-transparent wpuf-shadow-primary' type='checkbox' v-model='choices' value='{$pack->ID}' > {$pack->post_title} </label>";
+                            $output  = '<li class="wpuf-mt-2 wpuf-flex wpuf-items-center">';
+                            $output .= "<label class='wpuf-flex wpuf-items-center'><input  :class=\"builder_class_names('checkbox')\" class=\"!wpuf-mr-2\" type='checkbox' v-model='choices' value='{$pack->ID}' > {$pack->post_title} </label>";
                             $output .= '</li>';
 
                             echo $output;

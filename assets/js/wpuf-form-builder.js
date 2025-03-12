@@ -663,8 +663,11 @@
                     case 'dropdown':
                         return 'wpuf-block wpuf-w-full wpuf-min-w-full wpuf-rounded-lg wpuf-py-1.5 wpuf-text-gray-900 wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300';
 
+                    case 'textarea':
+                        return 'wpuf-block wpuf-min-w-full !wpuf-rounded-[6px] !wpuf-m-0 !wpuf-py-[10px] !wpuf-px-[14px] wpuf-text-base wpuf-text-gray-900 !wpuf-shadow-sm placeholder:wpuf-text-gray-400 wpuf-border !wpuf-border-gray-300 wpuf-max-w-full focus:wpuf-ring-primary';
+
                     default:
-                        return 'wpuf-block wpuf-min-w-full !wpuf-rounded-[6px] !wpuf-m-0 !wpuf-leading-none !wpuf-py-[10px] !wpuf-px-[14px] wpuf-text-gray-900 !wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm wpuf-border !wpuf-border-gray-300 wpuf-max-w-full';
+                        return 'wpuf-block wpuf-min-w-full !wpuf-rounded-[6px] !wpuf-m-0 !wpuf-leading-none !wpuf-py-[10px] !wpuf-px-[14px] wpuf-text-base wpuf-text-gray-900 !wpuf-shadow-sm placeholder:wpuf-text-gray-400 wpuf-border !wpuf-border-gray-300 wpuf-max-w-full focus:wpuf-ring-primary';
                 }
             },
 

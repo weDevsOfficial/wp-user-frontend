@@ -1,24 +1,26 @@
 <div class="panel-field-opt panel-field-opt-text">
     <div class="wpuf-flex">
         <label
-            class="wpuf-font-sm wpuf-text-gray-900">{{ option_field.title }}
+            class="wpuf-font-sm wpuf-text-gray-700">{{ option_field.title }}
         <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
         </label>
     </div>
     <div class="wpuf-mt-2 wpuf-flex">
-        <label class="wpuf-block text-sm/6 wpuf-font-medium wpuf-text-gray-900">
+        <label class="wpuf-block text-sm/6 wpuf-font-medium wpuf-text-gray-700">
             <input
                 type="checkbox"
                 v-model="show_value"
-                :class="builder_class_names('checkbox')">
+                :class="builder_class_names('checkbox')"
+                class="!wpuf-mr-2" />
             <?php esc_attr_e( 'Show values', 'wp-user-frontend' ); ?>
         </label>
-        <label class="wpuf-block text-sm/6 wpuf-font-medium wpuf-text-gray-900 wpuf-ml-2">
+        <label class="wpuf-block text-sm/6 wpuf-font-medium wpuf-text-gray-700 wpuf-ml-8">
             <input
                 type="checkbox"
                 v-model="sync_value"
                 :class="builder_class_names('checkbox')"
-            /><?php esc_attr_e( 'Sync values', 'wp-user-frontend' ); ?>
+                class="!wpuf-mr-2" />
+            <?php esc_attr_e( 'Sync values', 'wp-user-frontend' ); ?>
         </label>
     </div>
 
@@ -31,6 +33,7 @@
                         <div>
                             <input
                                 type="radio"
+                                class="!wpuf-mt-0"
                                 :class="builder_class_names('radio')"
                             >
                         </div>
@@ -40,7 +43,7 @@
                     </td>
                     <td class="wpuf-options-label-holder wpuf-relative">
                         <input
-                            class="!wpuf-border-none !wpuf-shadow-none !wpuf-text-gray-700 !wpuf-m-0 !wpuf-p-0 !wpuf-text-sm"
+                            class="!wpuf-border-none !wpuf-shadow-none !wpuf-text-gray-700 !wpuf-m-0 !wpuf-p-0"
                             disabled
                             type="text"
                             value="<?php esc_attr_e( 'Label', 'wp-user-frontend' ); ?>">
@@ -48,7 +51,7 @@
                     </td>
                     <td v-if="show_value">
                         <input
-                            class="!wpuf-border-none !wpuf-shadow-none !wpuf-text-gray-700 !wpuf-m-0 !wpuf-p-0 !wpuf-text-sm !wpuf-w-full"
+                            class="!wpuf-border-none !wpuf-shadow-none !wpuf-text-gray-700 !wpuf-m-0 !wpuf-p-0 !wpuf-w-full"
                             disabled
                             type="text"
                             value="<?php esc_attr_e( 'Value', 'wp-user-frontend' ); ?>">
@@ -66,16 +69,17 @@
                             type="checkbox"
                             :value="option.value"
                             v-model="selected"
-                            class="wpuf-input-checkbox"
+                            :class="builder_class_names('checkbox')"
                         >
                         <input
                             v-else
                             type="radio"
                             :value="option.value"
                             v-model="selected"
+                            class="!wpuf-mt-0"
                             :class="builder_class_names('radio')"
                         >
-                        <i class="fa fa-bars sort-handler hover:!wpuf-cursor-move wpuf-text-gray-400"></i>
+                        <i class="fa fa-bars sort-handler hover:!wpuf-cursor-move wpuf-text-gray-400 wpuf-ml-1"></i>
                     </td>
                     <td>
                         <input

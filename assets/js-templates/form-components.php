@@ -87,7 +87,8 @@
     <div v-if="!form_fields.length" class="wpuf-flex wpuf-flex-col wpuf-items-center wpuf-justify-center wpuf-h-[80vh]">
         <img src="<?php echo WPUF_ASSET_URI . '/images/form-blank-state.svg'; ?>" alt="">
         <h2 class="wpuf-text-lg wpuf-text-gray-800 wpuf-mt-8 wpuf-mb-2"><?php esc_html_e( 'Add fields and build your desired form', 'wp-user-frontend' ); ?></h2>
-        <p class="wpuf-text-sm wpuf-text-gray-500"><?php esc_html_e( 'Add fields and build your desired form', 'wp-user-frontend' ); ?></p>
+
+        <p class="wpuf-text-sm wpuf-text-gray-500"><?php esc_html_e( 'Add the necessary field and build your form.', 'wp-user-frontend' ); ?></p>
     </div>
 
     <ul
@@ -107,8 +108,8 @@
             <div
                 v-if="field.input_type !== 'column_field'"
                 :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-bg-green-50 wpuf-border-green-400' : 'wpuf-border-transparent'"
-                class="wpuf-flex wpuf-justify-between wpuf-p-4 wpuf-pb-8 wpuf-rounded-t-md wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed group-hover:wpuf-border-green-400 group-hover:wpuf-cursor-pointer">
-                <div v-if="!(is_full_width(field.template) || is_pro_preview(field.template))" class="wpuf-w-1/4">
+                class="wpuf-flex wpuf-justify-between wpuf-p-6 wpuf-rounded-t-md wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed group-hover:wpuf-border-green-400 group-hover:wpuf-cursor-pointer">
+                <div v-if="!(is_full_width(field.template) || is_pro_preview(field.template))" class="wpuf-w-1/4 wpuf-flex wpuf-items-center">
                     <label
                         v-if="!is_invisible(field)"
                         :for="'wpuf-' + field.name ? field.name : 'cls'"
@@ -258,13 +259,16 @@
 
 <script type="text/x-template" id="tmpl-wpuf-field-checkbox">
 <div v-if="met_dependencies" class="panel-field-opt panel-field-opt-checkbox wpuf-mb-6">
-    <label v-if="option_field.title" :class="option_field.title_class">
-        {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
-    </label>
+    <div class="wpuf-flex">
+        <label v-if="option_field.title" class="wpuf-option-field-title wpuf-font-sm wpuf-text-gray-700 wpuf-font-medium">
+            {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
+        </label>
+    </div>
     <ul :class="[option_field.inline ? 'list-inline' : '']">
-        <li v-for="(option, key) in option_field.options" class="wpuf-mt-2">
+        <li v-for="(option, key) in option_field.options">
             <label class="wpuf-flex wpuf-items-center">
-                <input type="checkbox" :class="builder_class_names('checkbox')" :value="key" v-model="value"> {{ option }}
+                <input type="checkbox" :class="builder_class_names('checkbox')" class="!wpuf-mr-2" :value="key" v-model="value">
+                {{ option }}
             </label>
         </li>
     </ul>
@@ -301,24 +305,26 @@
 <div class="panel-field-opt panel-field-opt-text">
     <div class="wpuf-flex">
         <label
-            class="wpuf-font-sm wpuf-text-gray-900">{{ option_field.title }}
+            class="wpuf-font-sm wpuf-text-gray-700">{{ option_field.title }}
         <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
         </label>
     </div>
     <div class="wpuf-mt-2 wpuf-flex">
-        <label class="wpuf-block text-sm/6 wpuf-font-medium wpuf-text-gray-900">
+        <label class="wpuf-block text-sm/6 wpuf-font-medium wpuf-text-gray-700">
             <input
                 type="checkbox"
                 v-model="show_value"
-                :class="builder_class_names('checkbox')">
+                :class="builder_class_names('checkbox')"
+                class="!wpuf-mr-2" />
             <?php esc_attr_e( 'Show values', 'wp-user-frontend' ); ?>
         </label>
-        <label class="wpuf-block text-sm/6 wpuf-font-medium wpuf-text-gray-900 wpuf-ml-2">
+        <label class="wpuf-block text-sm/6 wpuf-font-medium wpuf-text-gray-700 wpuf-ml-8">
             <input
                 type="checkbox"
                 v-model="sync_value"
                 :class="builder_class_names('checkbox')"
-            /><?php esc_attr_e( 'Sync values', 'wp-user-frontend' ); ?>
+                class="!wpuf-mr-2" />
+            <?php esc_attr_e( 'Sync values', 'wp-user-frontend' ); ?>
         </label>
     </div>
 
@@ -331,6 +337,7 @@
                         <div>
                             <input
                                 type="radio"
+                                class="!wpuf-mt-0"
                                 :class="builder_class_names('radio')"
                             >
                         </div>
@@ -340,7 +347,7 @@
                     </td>
                     <td class="wpuf-options-label-holder wpuf-relative">
                         <input
-                            class="!wpuf-border-none !wpuf-shadow-none !wpuf-text-gray-700 !wpuf-m-0 !wpuf-p-0 !wpuf-text-sm"
+                            class="!wpuf-border-none !wpuf-shadow-none !wpuf-text-gray-700 !wpuf-m-0 !wpuf-p-0"
                             disabled
                             type="text"
                             value="<?php esc_attr_e( 'Label', 'wp-user-frontend' ); ?>">
@@ -348,7 +355,7 @@
                     </td>
                     <td v-if="show_value">
                         <input
-                            class="!wpuf-border-none !wpuf-shadow-none !wpuf-text-gray-700 !wpuf-m-0 !wpuf-p-0 !wpuf-text-sm !wpuf-w-full"
+                            class="!wpuf-border-none !wpuf-shadow-none !wpuf-text-gray-700 !wpuf-m-0 !wpuf-p-0 !wpuf-w-full"
                             disabled
                             type="text"
                             value="<?php esc_attr_e( 'Value', 'wp-user-frontend' ); ?>">
@@ -366,16 +373,17 @@
                             type="checkbox"
                             :value="option.value"
                             v-model="selected"
-                            class="wpuf-input-checkbox"
+                            :class="builder_class_names('checkbox')"
                         >
                         <input
                             v-else
                             type="radio"
                             :value="option.value"
                             v-model="selected"
+                            class="!wpuf-mt-0"
                             :class="builder_class_names('radio')"
                         >
-                        <i class="fa fa-bars sort-handler hover:!wpuf-cursor-move wpuf-text-gray-400"></i>
+                        <i class="fa fa-bars sort-handler hover:!wpuf-cursor-move wpuf-text-gray-400 wpuf-ml-1"></i>
                     </td>
                     <td>
                         <input
@@ -459,7 +467,7 @@
         <div class="option-fields-section wpuf-mt-6">
             <h3
                 :class="show_basic_settings ? 'wpuf-text-green-600' : 'wpuf-text-gray-500'"
-                class="wpuf-flex wpuf-mt-0 wpuf-mb-6 wpuf-justify-between hover:wpuf-cursor-pointer wpuf-text-sm"
+                class="wpuf-flex wpuf-mt-0 wpuf-mb-6 wpuf-justify-between hover:wpuf-cursor-pointer wpuf-font-medium wpuf-text-lg"
                 @click="show_basic_settings = !show_basic_settings">
                 {{ form_field_type_title }}
                 <i :class="show_basic_settings ? 'fa fa-angle-down wpuf-text-green-600' : 'fa fa-angle-right wpuf-text-gray-500'"></i>
@@ -481,7 +489,7 @@
         <div v-if="advanced_settings.length" class="option-fields-section">
             <h3
                 :class="show_advanced_settings ? 'wpuf-text-green-600' : 'wpuf-text-gray-500'"
-                class="wpuf-flex wpuf-mt-0 wpuf-mb-6 wpuf-justify-between hover:wpuf-cursor-pointer wpuf-text-sm"
+                class="wpuf-flex wpuf-mt-0 wpuf-mb-6 wpuf-justify-between hover:wpuf-cursor-pointer wpuf-font-medium wpuf-text-lg"
                 @click="show_advanced_settings = !show_advanced_settings">
                 {{ i18n.advanced_options }}
                 <i :class="show_advanced_settings ? 'fa fa-angle-down wpuf-text-green-600' : 'fa fa-angle-right wpuf-text-gray-500'"></i>
@@ -551,10 +559,12 @@
 
 <script type="text/x-template" id="tmpl-wpuf-field-range">
 <div v-if="met_dependencies" class="panel-field-opt panel-field-opt-text">
-    <label>
-        {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
-        {{ option_field.min_column }}
-    </label>
+    <div class="wpuf-flex">
+        <label>
+            {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
+            {{ option_field.min_column }}
+        </label>
+    </div>
     <input
         type="range"
         v-model="value"
@@ -645,9 +655,11 @@
 
 <script type="text/x-template" id="tmpl-wpuf-field-textarea">
 <div class="panel-field-opt panel-field-opt-textarea">
-    <label class="wpuf-mb-2">
-        {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
-    </label>
+    <div class="wpuf-flex">
+        <label class="wpuf-mb-2">
+            {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
+        </label>
+    </div>
     <textarea :class="builder_class_names('textareafield')" :rows="option_field.rows || 5" v-model="value"></textarea>
 </div>
 </script>
@@ -680,7 +692,7 @@
         class="wpuf-mt-2 wpuf-flex wpuf-flex-wrap">
         <div
             v-for="(option, key, index) in option_field.options"
-            class="wpuf-items-center">
+            class="wpuf-items-center wpuf-mr-9">
             <label
                 class="wpuf-block wpuf-my-1 wpuf-mr-2 wpuf-font-medium wpuf-text-gray-900">
                 <input
@@ -702,8 +714,8 @@
                 foreach ( $roles as $role => $value ) {
                     $role_name = $value['name'];
 
-                    $output  = '<li class="wpuf-mt-2">';
-                    $output .= "<label><input :class=\"builder_class_names('checkbox')\" type=\"checkbox\" v-model=\"choices\" value=\"{$role}\"> {$role_name} </label>";
+                    $output  = '<li class="wpuf-mt-2 wpuf-flex wpuf-items-center">';
+                    $output .= "<label class='wpuf-flex wpuf-items-center'><input :class=\"builder_class_names('checkbox')\" class=\"!wpuf-mr-2\" type=\"checkbox\" v-model=\"choices\" value=\"{$role}\"> {$role_name} </label>";
                     $output .= '</li>';
 
                     echo $output;
@@ -722,8 +734,8 @@
 
                     if ( $subscriptions ) {
                         foreach ( $subscriptions as $pack ) {
-                            $output  = '<li class="wpuf-mt-2">';
-                            $output .= "<label><input class='wpuf-bg-transparent wpuf-shadow-primary' type='checkbox' v-model='choices' value='{$pack->ID}' > {$pack->post_title} </label>";
+                            $output  = '<li class="wpuf-mt-2 wpuf-flex wpuf-items-center">';
+                            $output .= "<label class='wpuf-flex wpuf-items-center'><input  :class=\"builder_class_names('checkbox')\" class=\"!wpuf-mr-2\" type='checkbox' v-model='choices' value='{$pack->ID}' > {$pack->post_title} </label>";
                             $output .= '</li>';
 
                             echo $output;
@@ -753,7 +765,7 @@
                     :value="val"
                     :checked="is_selected(val)"
                     :class="builder_class_names('checkbox')">
-                <label class="wpuf-ml-3 wpuf-text-sm wpuf-font-medium wpuf-text-gray-900">{{ label }}</label>
+                <label class="wpuf-ml-2 wpuf-text-sm wpuf-font-medium wpuf-text-gray-900">{{ label }}</label>
             </div>
         </div>
     </div>
@@ -1052,7 +1064,7 @@
             name="search"
             id="search"
             v-model="searched_fields"
-            class="!wpuf-border-none !wpuf-rounded-[6px] wpuf-block wpuf-min-w-0 wpuf-grow !wpuf-px-4 !wpuf-py-1.5 wpuf-text-base wpuf-text-gray-900 placeholder:wpuf-text-gray-400 sm:wpuf-text-sm/6 !wpuf-ring-transparent wpuf-shadow focus:!wpuf-shadow-none"
+            class="!wpuf-border-none !wpuf-rounded-[6px] wpuf-block wpuf-min-w-0 wpuf-grow !wpuf-px-4 !wpuf-py-1.5 !wpuf-text-base wpuf-text-gray-900 placeholder:wpuf-text-gray-400 !wpuf-ring-transparent wpuf-shadow focus:!wpuf-shadow-none"
             placeholder="<?php esc_attr_e( 'Search Field', 'wp-user-frontend' ); ?>">
         <div class="wpuf-flex wpuf-py-1.5 wpuf-pr-1.5">
             <span class="wpuf-inline-flex wpuf-items-center wpuf-rounded wpuf-px-1 wpuf-font-sans wpuf-text-xs wpuf-text-gray-400">
@@ -1084,7 +1096,7 @@
             <div v-if="section.fields.length" class="panel-form-field-group wpuf-mb-8">
                 <h3
                     :class="section.show ? 'wpuf-text-green-600' : 'wpuf-text-gray-500'"
-                    class="wpuf-flex wpuf-justify-between hover:wpuf-cursor-pointer wpuf-text-base wpuf-m-0"
+                    class="wpuf-flex wpuf-justify-between hover:wpuf-cursor-pointer wpuf-text-base wpuf-m-0 !wpuf-font-medium"
                     @click="panel_toggle(index)">
                     {{ section.title }}
                     <i
@@ -1111,7 +1123,7 @@
                             </div>
                             <div class="wpuf-min-w-0 wpuf-flex-1">
                                 <a href="#" class="focus:wpuf-outline-none focus:wpuf-shadow-none">
-                                    <p class="wpuf-text-base wpuf-font-medium wpuf-text-gray-500 wpuf-m-0">{{ field_settings[field].title }}</p>
+                                    <p class="wpuf-text-base wpuf-font-normal wpuf-text-gray-500 wpuf-m-0">{{ field_settings[field].title }}</p>
                                 </a>
                             </div>
                             <img src="<?php esc_attr_e( WPUF_ASSET_URI . '/images/crown.svg' ); ?>" alt="">
@@ -1130,7 +1142,7 @@
                             </div>
                             <div class="wpuf-min-w-0 wpuf-flex-1">
                                 <a href="#" class="focus:wpuf-outline-none focus:wpuf-shadow-none">
-                                    <p class="wpuf-text-base wpuf-font-medium wpuf-text-gray-500 wpuf-m-0">{{ field_settings[field].title }}</p>
+                                    <p class="wpuf-text-base wpuf-font-normal wpuf-text-gray-500 wpuf-m-0">{{ field_settings[field].title }}</p>
                                 </a>
                             </div>
                         </div>
@@ -1140,7 +1152,7 @@
                             :data-form-field="field"
                             data-source="panel"
                             @click="add_form_field(field)"
-                            class="wpuf-field-button wpuf-relative wpuf-flex wpuf-items-center wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-bg-white wpuf-shadow wpuf-px-3 wpuf-py-4 hover:wpuf-border-gray-300 hover:wpuf-cursor-pointer">
+                            class="wpuf-field-button wpuf-relative wpuf-flex wpuf-items-center wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-bg-white wpuf-shadow wpuf-px-3 wpuf-py-4 hover:wpuf-cursor-pointer hover:wpuf-border-primary">
                             <div
                                 v-if="field_settings[field].icon"
                                 class="wpuf-shrink-0 wpuf-mr-2">
@@ -1148,7 +1160,7 @@
                             </div>
                             <div class="wpuf-min-w-0 wpuf-flex-1">
                                 <a href="#" class="focus:wpuf-outline-none focus:wpuf-shadow-none">
-                                    <p class="wpuf-text-base wpuf-font-medium wpuf-text-gray-500 wpuf-m-0">{{ field_settings[field].title }}</p>
+                                    <p class="wpuf-text-base wpuf-font-normal wpuf-text-gray-500 wpuf-m-0">{{ field_settings[field].title }}</p>
                                 </a>
                             </div>
                         </div>

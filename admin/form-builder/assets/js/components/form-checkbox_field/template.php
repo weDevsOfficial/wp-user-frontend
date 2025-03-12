@@ -11,7 +11,7 @@
                     :value="val"
                     :checked="is_selected(val)"
                     :class="builder_class_names('checkbox')">
-                <label class="wpuf-ml-3 wpuf-text-sm wpuf-font-medium wpuf-text-gray-900">{{ label }}</label>
+                <label class="wpuf-ml-2 wpuf-text-sm wpuf-font-medium wpuf-text-gray-900">{{ label }}</label>
             </div>
         </div>
     </div>

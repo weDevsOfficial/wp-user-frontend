@@ -2,7 +2,7 @@
     class="!wpuf-bg-white !wpuf-static !wpuf-w-[calc(100%+20px)] wpuf-ml-[-20px] !wpuf-p-0 wpuf-form-builder-<?php echo esc_attr( $form_type ); ?>"
     method="post"
     action="" @submit.prevent="save_form_builder" v-cloak>
-    <div class="wpuf-bg-white wpuf-p-8 wpuf-justify-between wpuf-items-center wpuf-pb-10">
+    <div class="wpuf-bg-white wpuf-p-8 wpuf-justify-between wpuf-items-center wpuf-pb-7">
         <div class="wpuf-flex wpuf-justify-between">
             <div class="wpuf-flex">
                 <img src="<?php echo WPUF_ASSET_URI . '/images/wpuf-icon-circle.svg'; ?>" alt="WPUF Icon" class="wpuf-mr-2">
@@ -14,8 +14,8 @@
                                 v-model="post.post_title"
                                 type="text"
                                 name="post_title"
-                                :class="post_title_editing ? '' : '!wpuf-border-0'"
-                                class="wpuf-text-gray-900 wpuf-text-base wpuf-field-sizing-content">
+                                :class="post_title_editing ? '' : '!wpuf-border-transparent'"
+                                class="wpuf-text-gray-900 wpuf-text-base wpuf-field-sizing-content focus:!wpuf-ring-primary focus:!wpuf-border-transparent focus:!wpuf-shadow-none">
                             <i
                                 v-if="post_title_editing"
                                 @click="post_title_editing = !post_title_editing"
@@ -130,14 +130,14 @@
             <div class="wpuf-flex wpuf-bg-gray-100 wpuf-w-max wpuf-rounded-lg wpuf-p-2">
                 <a
                     @click="active_tab = 'form-editor'"
-                    :class="active_tab === 'form-editor' ? 'wpuf-bg-white wpuf-text-gray-800 wpuf-rounded-md wpuf-drop-shadow-sm' : ''"
-                    class="wpuf-nav-tab wpuf-nav-tab-active wpuf-text-gray-800 wpuf-py-2 wpuf-px-4 wpuf-text-base hover:wpuf-bg-white hover:wpuf-text-gray-800 hover:wpuf-rounded-md hover:wpuf-drop-shadow-sm focus:wpuf-shadow-none wpuf-mr-2 hover:wpuf-cursor-pointer">
+                    :class="active_tab === 'form-editor' ? 'wpuf-bg-white wpuf-text-gray-800 wpuf-rounded-md wpuf-drop-shadow-sm' : 'wpuf-text-gray-500'"
+                    class="wpuf-nav-tab wpuf-nav-tab-active  wpuf-py-2 wpuf-px-4 wpuf-text-base hover:wpuf-bg-white hover:wpuf-text-gray-800 hover:wpuf-rounded-md hover:wpuf-drop-shadow-sm focus:wpuf-shadow-none wpuf-mr-2 hover:wpuf-cursor-pointer">
                     <?php esc_html_e( 'Form Editor', 'wp-user-frontend' ); ?>
                 </a>
                 <a
                     @click="active_tab = 'form-settings'"
-                    :class="active_tab === 'form-settings' ? 'wpuf-bg-white wpuf-text-gray-800 wpuf-rounded-md wpuf-drop-shadow-sm' : ''"
-                    class="wpuf-nav-tab wpuf-nav-tab-active wpuf-text-gray-800 wpuf-py-2 wpuf-px-4 wpuf-text-base hover:wpuf-bg-white hover:wpuf-text-gray-800 hover:wpuf-rounded-md hover:wpuf-drop-shadow-sm focus:wpuf-shadow-none wpuf-mr-2 hover:wpuf-cursor-pointer">
+                    :class="active_tab === 'form-settings' ? 'wpuf-bg-white wpuf-text-gray-800 wpuf-rounded-md wpuf-drop-shadow-sm' : 'wpuf-text-gray-500'"
+                    class="wpuf-nav-tab wpuf-nav-tab-active  wpuf-py-2 wpuf-px-4 wpuf-text-base hover:wpuf-bg-white hover:wpuf-text-gray-800 hover:wpuf-rounded-md hover:wpuf-drop-shadow-sm focus:wpuf-shadow-none wpuf-mr-2 hover:wpuf-cursor-pointer">
                     <?php esc_html_e( 'Settings', 'wp-user-frontend' ); ?>
                 </a>
                 <?php do_action( "wpuf-form-builder-tabs-{$form_type}" ); ?>
@@ -147,7 +147,7 @@
     <div
         v-show="active_tab === 'form-editor'"
         class="wpuf-flex wpuf-bg-white wpuf-pb-16 wpuf-mr-8 ">
-        <div class="wpuf-w-2/3 wpuf-min-h-screen wpuf-max-h-screen wpuf-px-[78px] wpuf-py-4 wpuf-border-t wpuf-border-l wpuf-border-gray-200 wpuf-overflow-auto">
+        <div class="wpuf-w-2/3 wpuf-min-h-screen wpuf-max-h-screen wpuf-px-[52px] wpuf-py-4 wpuf-border-t wpuf-border-l wpuf-border-gray-200 wpuf-overflow-auto">
             <builder-stage-v4-1></builder-stage-v4-1>
         </div>
         <div class="wpuf-w-1/3 wpuf-max-h-screen wpuf-overflow-auto wpuf-rounded-tr-lg wpuf-border wpuf-border-b-0 wpuf-border-gray-200">
@@ -163,7 +163,7 @@
                     </a>
                     <a
                         role="tab"
-                        :class="current_panel === 'field-options' ? 'wpuf-bg-white wpuf-text-gray-800 wpuf-shadow-sm' : ''"
+                        :class="current_panel === 'field-options' ? 'wpuf-bg-white wpuf-text-gray-800 wpuf-shadow-sm' : 'wpuf-text-gray-500'"
                         class="wpuf-tab wpuf-h-10 hover:wpuf-bg-white hover:wpuf-text-gray-800 hover:wpuf-shadow-sm focus:wpuf-shadow-none wpuf-ml-1 wpuf-transition-all"
                         href="#field-options"
                         @click.prevent="set_current_panel('field-options')">

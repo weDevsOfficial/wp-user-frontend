@@ -1,5 +1,5 @@
 <?php use WeDevs\Wpuf\Free\Pro_Prompt; ?>
-<div class="wpuf-form-template-modal wpuf-w-[calc(100%+20px)] wpuf-h-screen wpuf-ml-[-20px] wpuf-bg-gray-100 wpuf-hidden">
+<div class="wpuf-form-template-modal wpuf-w-[calc(100%+20px)] wpuf-h-[150vh] wpuf--mb-[30px] wpuf-ml-[-20px] wpuf-bg-gray-100 wpuf-hidden">
     <div class="wpuf-relative wpuf-mx-auto wpuf-p-20">
         <button
             class="wpuf-absolute wpuf-right-4 wpuf-top-4 wpuf-text-gray-400 hover:wpuf-text-gray-600 focus:wpuf-outline-none wpuf-close-btn wpuf-border wpuf-border-gray-200 wpuf-rounded-3xl wpuf-p-2 hover:wpuf-border-gray-300">
@@ -9,13 +9,13 @@
             </svg>
         </button>
 
-        <div class="wpuf-w-1/2 wpuf-max-w-1/2 wpuf-mx-auto">
+        <div class="wpuf-w-2/3 wpuf-max-w-2/3 wpuf-mx-auto">
             <!-- Header -->
             <div class="wpuf-mb-12">
-                <h1 class="wpuf-text-3xl wpuf-font-bold wpuf-text-black wpuf-m-0 wpuf-p-0">
+                <h1 class="wpuf-text-3xl wpuf-text-black wpuf-m-0 wpuf-p-0">
                     <?php esc_html_e( 'Select a Post Form Template', 'wp-user-frontend' ); ?>
                 </h1>
-                <p class="wpuf-text-base wpuf-text-gray-600 wpuf-mt-3 wpuf-p-0">
+                <p class="wpuf-text-base wpuf-text-gray-500 wpuf-mt-3 wpuf-p-0">
                     <?php esc_html_e( 'Select from a pre-defined template or from a blank form', 'wp-user-frontend' ); ?>
                 </p>
             </div>
@@ -31,7 +31,7 @@
                                 <?php esc_html_e( 'Create Form', 'wp-user-frontend' ); ?>
                             </a>
                         </div>
-                        <p class="wpuf-font-medium wpuf-text-gray-700"><?php echo esc_html( 'Blank Form' ); ?></p>
+                        <p class="wpuf-text-sm wpuf-text-gray-700"><?php echo esc_html( 'Blank Form' ); ?></p>
                     </div>
 
                     <?php
@@ -91,7 +91,7 @@
                                     }
                                     ?>
                                 </div>
-                                <p class="wpuf-font-medium wpuf-text-gray-700"><?php echo esc_html( $title ); ?></p>
+                                <p class="wpuf-text-sm wpuf-text-gray-700"><?php echo esc_html( $title ); ?></p>
                             </div>
                         <?php
                         }
@@ -118,7 +118,7 @@
                                         <?php esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' ); ?>
                                     </a>
                                 </div>
-                                <p class="wpuf-font-medium wpuf-text-gray-700"><?php echo esc_html( $title ); ?></p>
+                                <p class="wpuf-text-sm wpuf-text-gray-700"><?php echo esc_html( $title ); ?></p>
                             </div>
                             </li>
 

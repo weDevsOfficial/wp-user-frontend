@@ -4,7 +4,7 @@
 
 @layer components {
     .wpuf-btn-primary {
-        @apply wpuf-rounded-md wpuf-bg-primary wpuf-text-white wpuf-px-4 wpuf-py-3 wpuf-text-sm wpuf-font-semibold hover:wpuf-bg-emerald-700 hover:wpuf-text-white focus:wpuf-text-white focus:wpuf-shadow-none;
+        @apply wpuf-rounded-md wpuf-bg-primary !wpuf-text-white wpuf-px-4 wpuf-py-3 wpuf-text-sm wpuf-font-semibold hover:wpuf-bg-emerald-700 hover:wpuf-text-white focus:wpuf-text-white focus:wpuf-shadow-none;
     }
 
     .wpuf-btn-secondary {
@@ -223,7 +223,6 @@ table.option-field-option-chooser tbody tr td {
     field-sizing: content;
 }
 .wp-core-ui select {
-    line-height: 1 !important;
     padding: 0;
 }
 #wpuf-form-builder .wp-media-buttons {

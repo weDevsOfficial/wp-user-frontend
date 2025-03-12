@@ -6,7 +6,7 @@
             name="search"
             id="search"
             v-model="searched_fields"
-            class="!wpuf-border-none !wpuf-rounded-[6px] wpuf-block wpuf-min-w-0 wpuf-grow !wpuf-px-4 !wpuf-py-1.5 wpuf-text-base wpuf-text-gray-900 placeholder:wpuf-text-gray-400 sm:wpuf-text-sm/6 !wpuf-ring-transparent wpuf-shadow focus:!wpuf-shadow-none"
+            class="!wpuf-border-none !wpuf-rounded-[6px] wpuf-block wpuf-min-w-0 wpuf-grow !wpuf-px-4 !wpuf-py-1.5 !wpuf-text-base wpuf-text-gray-900 placeholder:wpuf-text-gray-400 !wpuf-ring-transparent wpuf-shadow focus:!wpuf-shadow-none"
             placeholder="<?php esc_attr_e( 'Search Field', 'wp-user-frontend' ); ?>">
         <div class="wpuf-flex wpuf-py-1.5 wpuf-pr-1.5">
             <span class="wpuf-inline-flex wpuf-items-center wpuf-rounded wpuf-px-1 wpuf-font-sans wpuf-text-xs wpuf-text-gray-400">
@@ -38,7 +38,7 @@
             <div v-if="section.fields.length" class="panel-form-field-group wpuf-mb-8">
                 <h3
                     :class="section.show ? 'wpuf-text-green-600' : 'wpuf-text-gray-500'"
-                    class="wpuf-flex wpuf-justify-between hover:wpuf-cursor-pointer wpuf-text-base wpuf-m-0"
+                    class="wpuf-flex wpuf-justify-between hover:wpuf-cursor-pointer wpuf-text-base wpuf-m-0 !wpuf-font-medium"
                     @click="panel_toggle(index)">
                     {{ section.title }}
                     <i
@@ -65,7 +65,7 @@
                             </div>
                             <div class="wpuf-min-w-0 wpuf-flex-1">
                                 <a href="#" class="focus:wpuf-outline-none focus:wpuf-shadow-none">
-                                    <p class="wpuf-text-base wpuf-font-medium wpuf-text-gray-500 wpuf-m-0">{{ field_settings[field].title }}</p>
+                                    <p class="wpuf-text-base wpuf-font-normal wpuf-text-gray-500 wpuf-m-0">{{ field_settings[field].title }}</p>
                                 </a>
                             </div>
                             <img src="<?php esc_attr_e( WPUF_ASSET_URI . '/images/crown.svg' ); ?>" alt="">
@@ -84,7 +84,7 @@
                             </div>
                             <div class="wpuf-min-w-0 wpuf-flex-1">
                                 <a href="#" class="focus:wpuf-outline-none focus:wpuf-shadow-none">
-                                    <p class="wpuf-text-base wpuf-font-medium wpuf-text-gray-500 wpuf-m-0">{{ field_settings[field].title }}</p>
+                                    <p class="wpuf-text-base wpuf-font-normal wpuf-text-gray-500 wpuf-m-0">{{ field_settings[field].title }}</p>
                                 </a>
                             </div>
                         </div>
@@ -94,7 +94,7 @@
                             :data-form-field="field"
                             data-source="panel"
                             @click="add_form_field(field)"
-                            class="wpuf-field-button wpuf-relative wpuf-flex wpuf-items-center wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-bg-white wpuf-shadow wpuf-px-3 wpuf-py-4 hover:wpuf-border-gray-300 hover:wpuf-cursor-pointer">
+                            class="wpuf-field-button wpuf-relative wpuf-flex wpuf-items-center wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-bg-white wpuf-shadow wpuf-px-3 wpuf-py-4 hover:wpuf-cursor-pointer hover:wpuf-border-primary">
                             <div
                                 v-if="field_settings[field].icon"
                                 class="wpuf-shrink-0 wpuf-mr-2">
@@ -102,7 +102,7 @@
                             </div>
                             <div class="wpuf-min-w-0 wpuf-flex-1">
                                 <a href="#" class="focus:wpuf-outline-none focus:wpuf-shadow-none">
-                                    <p class="wpuf-text-base wpuf-font-medium wpuf-text-gray-500 wpuf-m-0">{{ field_settings[field].title }}</p>
+                                    <p class="wpuf-text-base wpuf-font-normal wpuf-text-gray-500 wpuf-m-0">{{ field_settings[field].title }}</p>
                                 </a>
                             </div>
                         </div>

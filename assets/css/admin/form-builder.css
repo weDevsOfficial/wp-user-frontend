@@ -2228,8 +2228,8 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 600;
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
+  --tw-text-opacity: 1 !important;
+  color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
 }
 
 .wpuf-btn-primary:hover {
@@ -2599,12 +2599,20 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   margin-right: 0.5rem !important;
 }
 
+.\!wpuf-mt-0 {
+  margin-top: 0px !important;
+}
+
 .\!wpuf-mt-0\.5 {
   margin-top: 0.125rem !important;
 }
 
 .\!wpuf-mt-\[\.5px\] {
   margin-top: .5px !important;
+}
+
+.wpuf--mb-\[30px\] {
+  margin-bottom: -30px;
 }
 
 .wpuf--mb-px {
@@ -2709,6 +2717,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-mr-8 {
   margin-right: 2rem;
+}
+
+.wpuf-mr-9 {
+  margin-right: 2.25rem;
 }
 
 .wpuf-mr-\[10px\] {
@@ -2851,6 +2863,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-h-80 {
   height: 20rem;
+}
+
+.wpuf-h-\[150vh\] {
+  height: 150vh;
 }
 
 .wpuf-h-\[180\%\] {
@@ -3471,6 +3487,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   border-color: rgb(239 68 68 / var(--tw-border-opacity)) !important;
 }
 
+.\!wpuf-border-transparent {
+  border-color: transparent !important;
+}
+
 .wpuf-border-blue-500 {
   --tw-border-opacity: 1;
   border-color: rgb(59 130 246 / var(--tw-border-opacity));
@@ -3850,14 +3870,14 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   padding-right: 20px;
 }
 
+.wpuf-px-\[52px\] {
+  padding-left: 52px;
+  padding-right: 52px;
+}
+
 .wpuf-px-\[6px\] {
   padding-left: 6px;
   padding-right: 6px;
-}
-
-.wpuf-px-\[78px\] {
-  padding-left: 78px;
-  padding-right: 78px;
 }
 
 .wpuf-py-0\.5 {
@@ -3919,10 +3939,6 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   padding-bottom: 0px;
 }
 
-.wpuf-pb-10 {
-  padding-bottom: 2.5rem;
-}
-
 .wpuf-pb-16 {
   padding-bottom: 4rem;
 }
@@ -3935,8 +3951,8 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   padding-bottom: 1.5rem;
 }
 
-.wpuf-pb-8 {
-  padding-bottom: 2rem;
+.wpuf-pb-7 {
+  padding-bottom: 1.75rem;
 }
 
 .wpuf-pl-1 {
@@ -4084,6 +4100,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .\!wpuf-font-bold {
   font-weight: 700 !important;
+}
+
+.\!wpuf-font-medium {
+  font-weight: 500 !important;
 }
 
 .wpuf-font-bold {
@@ -4337,11 +4357,6 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-.wpuf-shadow-primary {
-  --tw-shadow-color: #059669;
-  --tw-shadow: var(--tw-shadow-colored);
 }
 
 .wpuf-outline {
@@ -4756,7 +4771,6 @@ table.option-field-option-chooser tbody tr td {
 }
 
 .wp-core-ui select {
-  line-height: 1 !important;
   padding: 0;
 }
 
@@ -5213,6 +5227,10 @@ table.option-field-option-chooser tbody tr td {
   border-color: rgb(99 102 241 / var(--tw-border-opacity)) !important;
 }
 
+.focus\:\!wpuf-border-transparent:focus {
+  border-color: transparent !important;
+}
+
 .focus\:wpuf-bg-amber-600:focus {
   --tw-bg-opacity: 1;
   background-color: rgb(217 119 6 / var(--tw-bg-opacity));
@@ -5273,6 +5291,11 @@ table.option-field-option-chooser tbody tr td {
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
 
+.focus\:\!wpuf-ring-primary:focus {
+  --tw-ring-opacity: 1 !important;
+  --tw-ring-color: rgb(5 150 105 / var(--tw-ring-opacity)) !important;
+}
+
 .focus\:\!wpuf-ring-transparent:focus {
   --tw-ring-color: transparent !important;
 }
@@ -5290,6 +5313,11 @@ table.option-field-option-chooser tbody tr td {
 .focus\:wpuf-ring-indigo-500:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(99 102 241 / var(--tw-ring-opacity));
+}
+
+.focus\:wpuf-ring-primary:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(5 150 105 / var(--tw-ring-opacity));
 }
 
 .focus\:wpuf-ring-red-200:focus {
@@ -5476,11 +5504,6 @@ table.option-field-option-chooser tbody tr td {
   .sm\:wpuf-text-sm {
     font-size: 0.875rem;
     line-height: 1.25rem;
-  }
-
-  .sm\:wpuf-text-sm\/6 {
-    font-size: 0.875rem;
-    line-height: 1.5rem;
   }
 
   .sm\:wpuf-leading-6 {

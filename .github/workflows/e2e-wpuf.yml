@@ -12,8 +12,11 @@ on:
 
 jobs:
   test:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest    
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    defaults:
+      run:
+        working-directory: tests/e2e    
     
     steps:
       # Setup PHP
@@ -56,24 +59,37 @@ jobs:
       # Setup WordPress using wp-env
       - name: Setup WordPress 
         run: |
-          cd tests/e2e 
           npm run wp-env start
 
       - name: Check path
         run: |
-          cd tests/e2e
           pwd
 
       # Install Playwright Browsers
-      - name: Install Playwright Browsers
+      - name: Get installed Playwright version
+        id: playwright-version
         run: |
-          cd tests/e2e 
-          npx playwright install chromium
+            echo "PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq --raw-output '.dependencies["@playwright/test"].version')" >> "$GITHUB_ENV"
+
+      - name: Cache playwright binaries
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+            path: |
+                ~/.cache/ms-playwright
+            key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
+            restore-keys: |
+                ${{ runner.os }}-playwright-
+
+      - name: Install Playwright browser binaries & OS dependencies
+        id: pw-install
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: |
+            npx playwright install chromium --with-deps
 
       # Run Playwright tests/e2e
       - name: Run Playwright tests/e2e
         run: |
-          cd tests/e2e
           npx playwright test e2eMain.spec.ts --project=chromium
 
         env:

@@ -1,10 +1,7 @@
 name: Playwright tests/e2e
 
-
 on:
   workflow_dispatch:
-  # schedule:
-  #   - cron: "0 1 * * *"  # Run workflow at 8:00 AM UTC +6 every day
   push:
     branches: [develop]
   pull_request:
@@ -12,19 +9,16 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-    timeout-minutes: 50
-    defaults:
-      run:
-        working-directory: tests/e2e    
-    
+    timeout-minutes: 60
+    runs-on: ubuntu-latest    
+
     steps:
       # Setup PHP
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "7.4"
-      
+          php-version: "8.0"
+
       # Checkout testing repo
       - name: Checkout testing repo
         id: clone-wpuf-lite
@@ -34,64 +28,57 @@ jobs:
       - name: Use desired version of NodeJS
         uses: actions/setup-node@v4
         with:
-            node-version: 18
-            cache: npm
+          node-version: 18
+          cache: npm
 
       # Composer install and build (WPUF-lite)
       - name: Composer install and build (WPUF-lite)
         run: |
-            composer update
-            composer install
-            composer dump-autoload -o
-            
-      # Npm install and build (WPUF-lite)
+          composer install --no-dev --prefer-dist
+          composer dump-autoload -o
+
+      # Npm install and build (WPUF-lite) - for plugin
       - name: Npm install and build (WPUF-lite)
         run: |
-            npm i
-            grunt release
+          npm ci
+          grunt release
 
-      # Install test dependencies
-      - name: Install test dependencies
+      # ✅ Setup WordPress in the ROOT directory
+      - name: Setup WordPress
+        run: npm run wp-env start
+
+      # Install Playwright test dependencies inside tests/e2e
+      - name: Install test dependencies (Playwright)
         working-directory: tests/e2e
-        run: |
-            npm ci
+        run: npm ci
 
-      # Setup WordPress using wp-env
-      - name: Setup WordPress 
-        run: |
-          npm run wp-env start
-
-      - name: Check path
-        run: |
-          pwd
-
-      # Install Playwright Browsers
+      # Get installed Playwright version (inside tests/e2e)
       - name: Get installed Playwright version
         id: playwright-version
+        working-directory: tests/e2e
         run: |
-            echo "PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq --raw-output '.dependencies["@playwright/test"].version')" >> "$GITHUB_ENV"
+          PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq -r '.dependencies["@playwright/test"].version')
+          echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> "$GITHUB_ENV"
 
-      - name: Cache playwright binaries
+      # Cache Playwright binaries (inside tests/e2e)
+      - name: Cache Playwright binaries
         id: playwright-cache
         uses: actions/cache@v4
         with:
-            path: |
-                ~/.cache/ms-playwright
-            key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
-            restore-keys: |
-                ${{ runner.os }}-playwright-
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ env.PLAYWRIGHT_VERSION }}
+          restore-keys: playwright-${{ runner.os }}-
 
+      # Install Playwright browser binaries inside tests/e2e
       - name: Install Playwright browser binaries & OS dependencies
-        id: pw-install
+        working-directory: tests/e2e
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: |
-            npx playwright install chromium --with-deps
+        run: npx playwright install chromium --with-deps
 
-      # Run Playwright tests/e2e
+      # ✅ Run Playwright tests inside tests/e2e (WordPress is in root)
       - name: Run Playwright tests/e2e
-        run: |
-          npx playwright test e2eMain.spec.ts --project=chromium
-
+        working-directory: tests/e2e
+        run: npx playwright test e2eMain.spec.ts --project=chromium
         env:
           BASE_URL: ${{ secrets.QA_BASE_URL }}
           CI: true
@@ -99,17 +86,16 @@ jobs:
           ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
 
       # Archive Playwright artifacts (screenshots, HTML snapshots, videos)
-      - name: Archive playwright artifacts (screenshots, HTML snapshots, videos)
+      - name: Archive Playwright artifacts
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report
-          path: tests/e2e/playwright-report
+          path: tests/e2e/test-results
           if-no-files-found: ignore
           retention-days: 3
 
       # Output Test Results URL
       - name: Test results
         if: always()
-        run: |
-          echo "Test results can be found at https://$GITHUB_REPOSITORY_OWNER.github.io/${GITHUB_REPOSITORY#*/}"
+        run: echo "Test results can be found at https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"

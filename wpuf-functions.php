@@ -5342,8 +5342,12 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
         [
             'comment_status'       => [
                 'label' => __( 'Enable User Comment', 'wp-user-frontend' ),
-                'type'  => 'toggle',
+                'type'  => 'select',
                 'help'    => __( 'Allow users to comment on posts submitted via this form', 'wp-user-frontend' ),
+                'options' => [
+                    'open'   => __( 'Open', 'wp-user-frontend' ),
+                    'closed'   => __( 'Closed', 'wp-user-frontend' ),
+                ],
             ],
             'schedule_form'        => [
                 'label'     => __( 'Enable Form Scheduling', 'wp-user-frontend' ),

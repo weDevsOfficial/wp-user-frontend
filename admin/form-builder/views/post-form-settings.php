@@ -282,11 +282,12 @@
 
 <?php
 function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_type = 'post' ) {
-    $pro_badge  = WPUF_ASSET_URI . '/images/pro-badge.svg';
+    $pro_badge    = WPUF_ASSET_URI . '/images/pro-badge.svg';
     $badge_fields = [
         'enable_multistep',
         'notification_edit',
     ];
+    $name         = ! empty( $field['name'] ) ? $field['name'] : 'wpuf_settings[' . $field_key . ']';
 
     if ( ( 'default_category' === $field_key ) && ( 'post' !== $post_type ) ) {
         $field_key = 'default_' . $post_type . '_cat';
@@ -311,7 +312,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                     <input
                         :class="[setting_class_names('checkbox'), '!wpuf-mr-2']"
                         type="checkbox"
-                        name="wpuf_settings[<?php echo $field_key; ?>]"
+                        name="<?php echo $name; ?>"
                         <?php echo esc_attr( checked( $value, 'on', false ) ); ?>
                         id="<?php echo $field_key; ?>"/>
                 <?php } ?>
@@ -349,7 +350,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                         <input
                             type="checkbox"
                             id="<?php echo $field_key; ?>"
-                            name="wpuf_settings[<?php echo $field_key; ?>]"
+                            name="<?php echo $name; ?>"
                             <?php echo esc_attr( checked( $value, 'on', false ) ); ?>
                             class="wpuf-sr-only wpuf-peer">
                         <span class="wpuf-flex wpuf-items-center wpuf-w-10 wpuf-h-4 wpuf-bg-gray-300 wpuf-rounded-full wpuf-peer peer-checked:wpuf-bg-primary after:wpuf-w-6 after:wpuf-h-6 after:wpuf-bg-white after:wpuf-rounded-full after:wpuf-shadow-md after:wpuf-duration-300 peer-checked:after:wpuf-translate-x-4 after:wpuf-border after:wpuf-border-solid after:wpuf-border-gray-50"></span>
@@ -364,7 +365,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                                 <input
                                     type="color"
                                     class="wpuf-w-8 wpuf-h-12 !wpuf-border-gray-50 !wpuf--m-4 hover:!wpuf-cursor-pointer"
-                                    name="wpuf_settings[<?php echo $field_key; ?>]"
+                                    name="<?php echo $name; ?>"
                                     id="<?php echo $field_key; ?>"
                                     style="background: <?php echo $field['default']; ?>"
                                     value="<?php echo $value; ?>">
@@ -382,7 +383,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                 ?>
                 <select
                     id="<?php echo $field_key; ?>"
-                    name="wpuf_settings[<?php echo $field_key; ?>]"
+                    name="<?php echo $name; ?>"
                     data-value="<?php echo $value_str; ?>"
                     :class="setting_class_names('dropdown')">
                     <?php
@@ -398,7 +399,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                 ?>
                 <select
                     id="<?php echo $field_key; ?>"
-                    name="wpuf_settings[<?php echo $field_key; ?>][]"
+                    name="<?php echo $name; ?>[]"
                     data-value="<?php echo $value_str; ?>"
                     :class="setting_class_names('dropdown')"
                     multiple
@@ -427,7 +428,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                 <input
                     :class="setting_class_names('text')"
                     type="<?php echo $field['type']; ?>"
-                    name="wpuf_settings[<?php echo $field_key; ?>]"
+                    name="<?php echo $name; ?>"
                     <?php echo ! empty( $field['placeholder'] ) ? 'placeholder=' . $field['placeholder'] : ''; ?>
                     id="<?php echo $field_key; ?>"
                     value="<?php echo $value; ?>"/>
@@ -439,7 +440,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                 <textarea
                     :class="setting_class_names('textarea')"
                     rows="6"
-                    name="wpuf_settings[<?php echo $field_key; ?>]"
+                    name="<?php echo $name; ?>"
                     id="<?php echo $field_key; ?>"><?php echo $value; ?></textarea>
             <?php } ?>
 
@@ -454,7 +455,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                             <label>
                                 <input
                                     type="radio"
-                                    name="wpuf_settings[<?php echo $field_key; ?>]"
+                                    name="<?php echo $name; ?>"
                                     value="<?php echo $key; ?>"
                                     <?php echo esc_attr( checked( $value, $key, false ) ); ?>
                                     class="wpuf-absolute wpuf-opacity-0 wpuf-peer">
@@ -486,7 +487,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                     <input
                         :class="setting_class_names('<?php echo $field['trailing_type']; ?>')"
                         type="<?php echo $field['trailing_type']; ?>"
-                        name="<?php echo $field_key; ?>"
+                        name="<?php echo $name; ?>"
                         id="<?php echo $field_key; ?>"
                         value="<?php echo $value; ?>"/>
                     <span
@@ -504,7 +505,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                     :class="setting_class_names('text')"
                     class="datepicker"
                     type="text"
-                    name="wpuf_settings[<?php echo $field_key; ?>]"
+                    name="<?php echo $name; ?>"
                     id="<?php echo $field_key; ?>"
                     value="<?php echo $value; ?>"/>
                 <?php

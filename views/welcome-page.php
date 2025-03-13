@@ -608,8 +608,6 @@
             $('body').on('click', '.wpuf-welcome-modal a.close', function(e) {
                 e.preventDefault();
 
-                console.log('close modal');
-
                 modal.removeClass('show');
                 modalBackdrop.removeClass('show');
 

@@ -85,13 +85,10 @@ class Form {
      * @return bool
      */
     public function is_enabled_pay_per_post() {
-        $settings = $this->get_settings();
+        $settings       = $this->get_settings();
+        $payment_option = ! empty( $settings['choose_payment_option'] ) ? $settings['choose_payment_option'] : '';
 
-        if ( isset( $settings['enable_pay_per_post'] ) && wpuf_is_checkbox_or_toggle_on( $settings['enable_pay_per_post'] ) ) {
-            return true;
-        }
-
-        return false;
+        return isset( $settings['choose_payment_option'] ) && 'enable_pay_per_post' === $payment_option;
     }
 
     /**
@@ -101,12 +98,9 @@ class Form {
      */
     public function is_enabled_force_pack() {
         $settings = $this->get_settings();
+        $payment_option = ! empty( $settings['choose_payment_option'] ) ? $settings['choose_payment_option'] : '';
 
-        if ( isset( $settings['force_pack_purchase'] ) && wpuf_is_checkbox_or_toggle_on( $settings['force_pack_purchase'] ) ) {
-            return true;
-        }
-
-        return false;
+        return isset( $settings['choose_payment_option'] ) && 'force_pack_purchase' === $payment_option;
     }
 
     /**
@@ -191,13 +185,14 @@ class Form {
 
         if ( $this->is_charging_enabled() ) {
             $pay_per_post      = $this->is_enabled_pay_per_post();
+
             // $pay_per_post_cost = (float) $this->get_pay_per_post_cost();
             $force_pack        = $this->is_enabled_force_pack();
             $fallback_enabled  = $this->is_enabled_fallback_cost();
             // $fallback_cost     = $this->get_subs_fallback_cost();
 
             // guest post payment checking
-            if ( ! is_user_logged_in() && isset( $form_settings['guest_post'] ) && wpuf_is_checkbox_or_toggle_on( $form_settings['guest_post'] ) ) {
+            if ( ! is_user_logged_in() && isset( $form_settings['post_permission'] ) && 'guest_post' === $form_settings['post_permission'] ) {
 
                 //if ( $form->is_charging_enabled() ) {
 
@@ -258,7 +253,7 @@ class Form {
                 }
             }
         } else {
-            if ( isset( $form_settings['guest_post'] ) && wpuf_is_checkbox_or_toggle_on( $form_settings['guest_post'] ) && !
+            if ( isset( $form_settings['post_permission'] ) && 'guest_post' === $form_settings['post_permission'] && !
                 is_user_logged_in() ) {
                 $user_can_post = 'yes';
             }

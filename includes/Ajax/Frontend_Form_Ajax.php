@@ -378,8 +378,8 @@ class Frontend_Form_Ajax {
             }
         }
 
-        if ( $charging_enabled === 'yes' && isset( $this->form_settings['enable_pay_per_post'] )
-             && wpuf_validate_boolean( $this->form_settings['enable_pay_per_post'] )
+        if ( $charging_enabled === 'yes' && isset( $this->form_settings['payment_options'] )
+             && 'enable_pay_per_post' === $this->form_settings['payment_options']
              && ! $is_update
         ) {
             $redirect_to = add_query_arg(

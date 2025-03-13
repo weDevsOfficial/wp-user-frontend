@@ -1000,20 +1000,25 @@
         }
 
         attachFieldListener(fieldId) {
-                const field = $(`#${fieldId}`);
-                const fieldType = field.attr('type') || field.prop('tagName').toLowerCase();
+            const field = $(`#${fieldId}`);
 
-                if (fieldType === 'checkbox' || fieldType === 'select') {
-                    field.on('change', () => this.checkAllDependencies());
-                } else if (fieldType === 'radio') {
-                    const fieldName = field.attr('name');
-                    const radioFields = $(`input[name="${fieldName}"]`);
-
-                    radioFields.each((index, radio) => {
-                        $(radio).on('change', () => this.checkAllDependencies());
-                    });
-                }
+            if (field.length === 0) {
+                return;
             }
+
+            const fieldType = field.attr('type') || field.prop('tagName').toLowerCase();
+
+            if (fieldType === 'checkbox' || fieldType === 'select') {
+                field.on('change', () => this.checkAllDependencies());
+            } else if (fieldType === 'radio') {
+                const fieldName = field.attr('name');
+                const radioFields = $(`input[name="${fieldName}"]`);
+
+                radioFields.each((index, radio) => {
+                    $(radio).on('change', () => this.checkAllDependencies());
+                });
+            }
+        }
 
         checkAllDependencies() {
             Object.keys(this.dependencies.fields).forEach(fieldId => {
@@ -1037,6 +1042,11 @@
             // All conditions must be met (AND logic)
             return dependencies.every(dep => {
                 const controlField = $(`#${dep.field}`);
+
+                if (controlField.length === 0) {
+                    return;
+                }
+
                 const fieldType = controlField.attr('type') || controlField.prop('tagName').toLowerCase();
 
                 if (fieldType === 'checkbox' || fieldType === 'radio') {

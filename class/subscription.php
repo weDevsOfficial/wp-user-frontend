@@ -1155,7 +1155,7 @@ class WPUF_Subscription {
             }
         }
 
-        if ( ! is_user_logged_in() && isset( $form_settings['guest_post'] ) && wpuf_is_checkbox_or_toggle_on( $form_settings['guest_post'] ) ) {
+        if ( ! is_user_logged_in() && isset( $form_settings['post_permission'] ) && 'guest_post' === $form_settings['post_permission'] ) {
             if ( $form->is_charging_enabled() ) {
                 if ( $force_pack ) {
                     return 'no';

@@ -5071,7 +5071,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                                 'After successfully submit, where the page will redirect to', 'wp-user-frontend'
                             ),
                             'options'   => [
-                                'post' => __( 'Newly created post', 'wp-user-frontend' ),
+                                'post' => __( 'Updated post', 'wp-user-frontend' ),
                                 'same' => __( 'Same page', 'wp-user-frontend' ),
                                 'page' => __( 'To a page', 'wp-user-frontend' ),
                                 'url'  => __( 'To a custom URL', 'wp-user-frontend' ),
@@ -5253,24 +5253,28 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                         'wp-user-frontend'
                     ),
                     'fields' => [
-                        'notification_new'         => [
+                        'new'         => [
                             'label' => __( 'New Post Notification', 'wp-user-frontend' ),
                             'type'  => 'toggle',
-                            'help'    => __( 'Enable email alerts for each new post submitted through this form', 'wp-user-frontend' ),
+                            'help'  => __( 'Enable email alerts for each new post submitted through this form', 'wp-user-frontend' ),
+                            'name'  => 'wpuf_settings[notification][new]',
                         ],
-                        'notification_new_to'      => [
+                        'new_to'      => [
                             'label' => __( 'To', 'wp-user-frontend' ),
                             'type'  => 'text',
                             'value' => get_option( 'admin_email' ),
+                            'name'  => 'wpuf_settings[notification][new_to]',
                         ],
-                        'notification_new_subject' => [
+                        'new_subject' => [
                             'label' => __( 'Subject', 'wp-user-frontend' ),
                             'type'  => 'text',
                             'value' => __( 'New post created', 'wp-user-frontend' ),
+                            'name'  => 'wpuf_settings[notification][new_subject]',
                         ],
-                        'notification_new_body'    => [
+                        'new_body'    => [
                             'label'     => __( 'Email Body', 'wp-user-frontend' ),
                             'type'      => 'textarea',
+                            'name'      => 'wpuf_settings[notification][new_body]',
                             'value'     => "Hi Admin, \r\n\r\nA new post has been created in your site {sitename} ({siteurl}). \r\n\r\nHere is the details: \r\nPost Title: {post_title} \r\nContent: {post_content} \r\nAuthor: {author} \r\nPost URL: {permalink} \r\nEdit URL: {editlink}",
                             'long_help' => '<h4 class="wpuf-m-0">You may use in to, subject & message:</h4>
                                          <p class="wpuf-leading-8 wpuf-ml-3">

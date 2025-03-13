@@ -61,11 +61,7 @@ class Form {
     public function guest_post() {
         $settings = $this->get_settings();
 
-        if ( isset( $settings['guest_post'] ) && $settings['guest_post'] === 'true' ) {
-            return true;
-        }
-
-        return false;
+        return isset( $settings['guest_post'] ) && wpuf_is_checkbox_or_toggle_on( $settings['guest_post'] );
     }
 
     /**
@@ -76,7 +72,7 @@ class Form {
     public function is_charging_enabled() {
         $settings = $this->get_settings();
 
-        if ( isset( $settings['payment_options'] ) && $settings['payment_options'] === 'true' ) {
+        if ( isset( $settings['payment_options'] ) && wpuf_is_checkbox_or_toggle_on( $settings['payment_options'] ) ) {
             return true;
         }
 
@@ -91,7 +87,7 @@ class Form {
     public function is_enabled_pay_per_post() {
         $settings = $this->get_settings();
 
-        if ( isset( $settings['enable_pay_per_post'] ) && $settings['enable_pay_per_post'] === 'true' ) {
+        if ( isset( $settings['enable_pay_per_post'] ) && wpuf_is_checkbox_or_toggle_on( $settings['enable_pay_per_post'] ) ) {
             return true;
         }
 
@@ -106,7 +102,7 @@ class Form {
     public function is_enabled_force_pack() {
         $settings = $this->get_settings();
 
-        if ( isset( $settings['force_pack_purchase'] ) && $settings['force_pack_purchase'] === 'true' ) {
+        if ( isset( $settings['force_pack_purchase'] ) && wpuf_is_checkbox_or_toggle_on( $settings['force_pack_purchase'] ) ) {
             return true;
         }
 
@@ -136,7 +132,7 @@ class Form {
     public function is_enabled_fallback_cost() {
         $settings = $this->get_settings();
 
-        if ( isset( $settings['fallback_ppp_enable'] ) && $settings['fallback_ppp_enable'] === 'true' ) {
+        if ( isset( $settings['fallback_ppp_enable'] ) && wpuf_is_checkbox_or_toggle_on( $settings['fallback_ppp_enable'] ) ) {
             return true;
         }
 
@@ -201,7 +197,7 @@ class Form {
             // $fallback_cost     = $this->get_subs_fallback_cost();
 
             // guest post payment checking
-            if ( ! is_user_logged_in() && isset( $form_settings['guest_post'] ) && $form_settings['guest_post'] === 'true' ) {
+            if ( ! is_user_logged_in() && isset( $form_settings['guest_post'] ) && wpuf_is_checkbox_or_toggle_on( $form_settings['guest_post'] ) ) {
 
                 //if ( $form->is_charging_enabled() ) {
 
@@ -262,7 +258,7 @@ class Form {
                 }
             }
         } else {
-            if ( isset( $form_settings['guest_post'] ) && $form_settings['guest_post'] === 'true' && !
+            if ( isset( $form_settings['guest_post'] ) && wpuf_is_checkbox_or_toggle_on( $form_settings['guest_post'] ) && !
                 is_user_logged_in() ) {
                 $user_can_post = 'yes';
             }

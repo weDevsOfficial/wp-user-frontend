@@ -179,7 +179,7 @@ class WPUF_Frontend_Render_Form {
                 <input type="submit" class="wpuf-submit-button wpuf_submit_<?php echo esc_attr( $form_id ); ?>" name="submit" value="<?php echo esc_attr( $form_settings['submit_text'] ); ?>" />
             <?php } ?>
 
-            <?php if ( isset( $form_settings['draft_post'] ) && $form_settings['draft_post'] == 'true' ) { ?>
+            <?php if ( isset( $form_settings['draft_post'] ) && wpuf_is_checkbox_or_toggle_on( $form_settings['draft_post'] ) ) { ?>
                 <a href="#" class="btn" id="wpuf-post-draft"><?php esc_html_e( 'Save Draft', 'wp-user-frontend' ); ?></a>
             <?php } ?>
         </li>
@@ -309,7 +309,7 @@ class WPUF_Frontend_Render_Form {
             wp_enqueue_style( 'wpuf-' . $layout );
         }
 
-        if ( ! is_user_logged_in() && $this->form_settings['guest_post'] !== 'true' ) {
+        if ( ! is_user_logged_in() && wpuf_is_checkbox_or_toggle_on( $this->form_settings['guest_post'] ) ) {
             echo wp_kses_post( '<div class="wpuf-message">' . $this->form_settings['message_restrict'] . '</div>' );
 
             return;
@@ -359,7 +359,7 @@ class WPUF_Frontend_Render_Form {
                         do_action( 'wpuf_edit_post_form_top', $form_id, $post_id, $this->form_settings );
                     }
 
-                    if ( ! is_user_logged_in() && $this->form_settings['guest_post'] == 'true' && $this->form_settings['guest_details'] == 'true' ) {
+                    if ( ! is_user_logged_in() && wpuf_is_checkbox_or_toggle_on( $this->form_settings['guest_post'] ) && wpuf_is_checkbox_or_toggle_on( $this->form_settings['guest_details'] ) ) {
                         $this->guest_fields( $this->form_settings );
                     }
 

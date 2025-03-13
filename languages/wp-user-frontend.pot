@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 4.0.14\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2025-03-12 04:58:32+00:00\n"
+"POT-Creation-Date: 2025-03-12 09:24:26+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -205,93 +205,96 @@ msgid "Add fields by dragging the fields from the right sidebar to this area."
 msgstr ""
 
 #: admin/form-builder/assets/js/components/builder-stage/template.php:29
-#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:48
+#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:49
 #: admin/form-builder/assets/js/components/form-column_field/template.php:57
 #: assets/js-templates/form-components.php:30
-#: assets/js-templates/form-components.php:133
-#: assets/js-templates/form-components.php:854
+#: assets/js-templates/form-components.php:134
+#: assets/js-templates/form-components.php:866
 msgid "is available in Pro Version"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/builder-stage/template.php:60
-#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:126
+#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:127
 #: assets/js-templates/form-components.php:61
-#: assets/js-templates/form-components.php:211
+#: assets/js-templates/form-components.php:212
 msgid "Hidden Fields"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/builder-stage/template.php:67
-#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:136
-#: assets/js-templates/form-components.php:68
-#: assets/js-templates/form-components.php:221
-msgid "key"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/builder-stage/template.php:67
 #: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:137
 #: assets/js-templates/form-components.php:68
 #: assets/js-templates/form-components.php:222
+msgid "key"
+msgstr ""
+
+#: admin/form-builder/assets/js/components/builder-stage/template.php:67
+#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:138
+#: assets/js-templates/form-components.php:68
+#: assets/js-templates/form-components.php:223
 msgid "value"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:4
-#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:5
 #: assets/js-templates/form-components.php:89
-#: assets/js-templates/form-components.php:90
 msgid "Add fields and build your desired form"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/field-option-data/template.php:14
-#: admin/template.php:231 assets/js-templates/form-components.php:314
+#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:6
+#: assets/js-templates/form-components.php:91
+msgid "Add the necessary field and build your form."
+msgstr ""
+
+#: admin/form-builder/assets/js/components/field-option-data/template.php:15
+#: admin/template.php:231 assets/js-templates/form-components.php:319
 #: includes/Admin/Forms/Admin_Template.php:270
 msgid "Show values"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/field-option-data/template.php:21
-#: assets/js-templates/form-components.php:321
+#: admin/form-builder/assets/js/components/field-option-data/template.php:23
+#: assets/js-templates/form-components.php:327
 msgid "Sync values"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/field-option-data/template.php:46
+#: admin/form-builder/assets/js/components/field-option-data/template.php:49
 #: admin/template.php:234 admin/template.php:286
-#: assets/js-templates/form-components.php:346
+#: assets/js-templates/form-components.php:353
 #: includes/Admin/Forms/Admin_Template.php:275
 #: includes/Admin/Forms/Admin_Template.php:336
 msgid "Label"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/field-option-data/template.php:47
-#: assets/js-templates/form-components.php:347
+#: admin/form-builder/assets/js/components/field-option-data/template.php:50
+#: assets/js-templates/form-components.php:354
 msgid "Do not use & or other special character for option label"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/field-option-data/template.php:54
+#: admin/form-builder/assets/js/components/field-option-data/template.php:57
 #: admin/template.php:234 admin/template.php:286
-#: assets/js-templates/form-components.php:354
+#: assets/js-templates/form-components.php:361
 #: includes/Admin/Forms/Admin_Template.php:276
 #: includes/Admin/Forms/Admin_Template.php:337
 msgid "Value"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/field-option-data/template.php:134
-#: assets/js-templates/form-components.php:434
+#: admin/form-builder/assets/js/components/field-option-data/template.php:138
+#: assets/js-templates/form-components.php:442
 msgid "Clear Selection"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-pro-feature-alert/template.php:5
-#: assets/js-templates/form-components.php:444
+#: assets/js-templates/form-components.php:452
 msgid "Available in PRO version"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-visibility/template.php:77
-#: assets/js-templates/form-components.php:732
+#: assets/js-templates/form-components.php:744
 msgid "No subscription plan found."
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-featured_image/template.php:7
 #: admin/form-builder/assets/js/components/form-image_upload/template.php:11
-#: assets/js-templates/form-components.php:978
-#: assets/js-templates/form-components.php:1189 class/render-form.php:1670
+#: assets/js-templates/form-components.php:990
+#: assets/js-templates/form-components.php:1201 class/render-form.php:1670
 #: includes/Fields/Form_Field_Featured_Image.php:128
 #: includes/Fields/Form_Field_Image.php:122
 #: includes/Fields/Form_Field_Image.php:143 includes/Render_Form.php:1527
@@ -299,38 +302,38 @@ msgid "Select Image"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-fields-v4-1/template.php:10
-#: assets/js-templates/form-components.php:1056
+#: assets/js-templates/form-components.php:1068
 msgid "Search Field"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-fields-v4-1/template.php:116
-#: assets/js-templates/form-components.php:1162
+#: assets/js-templates/form-components.php:1174
 msgid "Got an idea for a new field?"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-fields-v4-1/template.php:119
-#: assets/js-templates/form-components.php:1165
+#: assets/js-templates/form-components.php:1177
 msgid "We'd love to hear it!"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-fields-v4-1/template.php:125
-#: assets/js-templates/form-components.php:1171
+#: assets/js-templates/form-components.php:1183
 msgid "Share Your Idea"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-post_content/template.php:11
-#: assets/js-templates/form-components.php:1237 class/render-form.php:1058
+#: assets/js-templates/form-components.php:1249 class/render-form.php:1058
 #: includes/Fields/Form_Field_Post_Content.php:72 includes/Render_Form.php:915
 msgid "Insert Photo"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-recaptcha/template.php:8
-#: assets/js-templates/form-components.php:1344
+#: assets/js-templates/form-components.php:1356
 msgid "Invisible reCaptcha"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-taxonomy/template.php:13
-#: assets/js-templates/form-components.php:1384
+#: assets/js-templates/form-components.php:1396
 msgid "— Select —"
 msgstr ""
 

@@ -954,7 +954,7 @@ function wpuf_show_custom_fields( $content ) {
                         }
                         $cond_field_value = isset( $post_terms[0] ) ? $post_terms[0]->term_id : '';
                     } else {
-                        $cond_field_value = get_post_meta( $post->ID, $cond_field_name, 'true' );
+                        $cond_field_value = get_post_meta( $post->ID, $cond_field_name, true );
                     }
 
                     if ( isset( $attr['wpuf_cond']['cond_option'][ $field_key ] ) ) {
@@ -3429,20 +3429,19 @@ function wpuf_set_all_terms_as_allowed() {
  *
  * @param int $form_id
  *
- * @return List of WP_Post objects
+ * @return int[]|WP_Post[]
  */
 function wpuf_posts_submitted_by( $form_id ) {
     $settings = wpuf_get_form_settings( $form_id );
-    $settings['post_type'];
+
     $args = [
         'meta_key'         => '_wpuf_form_id',
         'meta_value'       => $form_id,
         'post_type'        => $settings['post_type'],
         'post_status'      => 'publish',
     ];
-    $posts_array = get_posts( $args );
 
-    return $posts_array;
+    return get_posts( $args );
 }
 
 /**
@@ -3908,8 +3907,8 @@ function wpuf_settings_multiselect( $args ) {
  * @param int $form_id
  */
 function wpuf_show_form_schedule_message( $form_id ) {
-    $form_settings   = wpuf_get_form_settings( $form_id );
-    $is_scheduled    = ( isset( $form_settings['schedule_form'] ) && $form_settings['schedule_form'] === 'true' ) ? true : false;
+    $form_settings = wpuf_get_form_settings( $form_id );
+    $is_scheduled  = isset( $form_settings['schedule_form'] ) && wpuf_is_checkbox_or_toggle_on( $form_settings['schedule_form'] );
 
     if ( $is_scheduled ) {
         $start_time   = ! empty( $form_settings['schedule_start'] ) ? strtotime( $form_settings['schedule_start'] ) : 0;
@@ -3947,7 +3946,7 @@ add_action( 'wpuf_before_form_render', 'wpuf_show_form_schedule_message' );
  */
 function wpuf_show_form_limit_message( $form_id ) {
     $form_settings  = wpuf_get_form_settings( $form_id );
-    $has_limit      = ( isset( $form_settings['limit_entries'] ) && $form_settings['limit_entries'] === 'true' ) ? true : false;
+    $has_limit      = isset( $form_settings['limit_entries'] ) && wpuf_is_checkbox_or_toggle_on( $form_settings['limit_entries'] );
     $post_to_check  = get_post( get_the_ID() );
     $is_edit_page   = false;
 
@@ -4998,7 +4997,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                                 'draft'          => __( 'Draft', 'wp-user-frontend' ),
                                 'pending-review' => __( 'Pending Review', 'wp-user-frontend' ),
                                 'private'        => __( 'Private', 'wp-user-frontend' ),
-                                'published'      => __( 'Published', 'wp-user-frontend' ),
+                                'publish'        => __( 'Published', 'wp-user-frontend' ),
                             ],
                             'help_text' => __( 'Select the status of the post after submission', 'wp-user-frontend' ),
                         ],
@@ -5410,4 +5409,17 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
         'wpuf_post_form_builder_setting_menu_contents',
         $post_settings
     );
+}
+
+/**
+ * Check if a checkbox or toggle is on
+ *
+ * @since WPUF_SINCE
+ *
+ * @param string $value
+ *
+ * @return bool
+ */
+function wpuf_is_checkbox_or_toggle_on( $value ) {
+    return 'on' === $value || 'yes' === $value || 'true' === $value;
 }

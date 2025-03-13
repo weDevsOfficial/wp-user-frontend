@@ -81,15 +81,15 @@ export class RegistrationFormsPage {
             console.log('Pattern Modal not visible!');
         }
 
-         // Check if the Welcome Modal is visible
-         let closeWelcomeModal = this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closeWelcomeModal);
-         try {
-             await closeWelcomeModal.waitFor({ state: 'visible', timeout: 5000 });
-             await closeWelcomeModal.click();
-         } catch (error) {
-             console.log('Welcome Modal not visible!');
-         }
- 
+        // // Check if the Welcome Modal is visible
+        // let closeWelcomeModal = this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closeWelcomeModal);
+        // try {
+        //     await closeWelcomeModal.waitFor({ state: 'visible', timeout: 5000 });
+        //     await closeWelcomeModal.click();
+        // } catch (error) {
+        //     console.log('Welcome Modal not visible!');
+        // }
+
         //Add Page Title
         await this.page.fill(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addPageTitle, registrationFormPageTitle);
 

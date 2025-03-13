@@ -57,18 +57,24 @@
                             :data-form-field="field"
                             data-source="panel"
                             @click="alert_pro_feature(field)"
-                            class="wpuf-opacity-50 wpuf-field-button wpuf-relative wpuf-flex wpuf-items-center wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-bg-white wpuf-shadow-sm wpuf-px-4 wpuf-py-3 hover:wpuf-border-gray-300 hover:wpuf-cursor-pointer">
+                            class="wpuf-relative wpuf-group/pro-field">
+                                <div class="wpuf-opacity-50 wpuf-field-button wpuf-flex wpuf-items-center wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-bg-white wpuf-shadow-sm wpuf-px-4 wpuf-py-3 hover:wpuf-border-gray-300 hover:wpuf-cursor-pointer">
+                                    <div
+                                        v-if="field_settings[field].icon"
+                                        class="wpuf-shrink-0 wpuf-mr-2 wpuf-text-gray-400">
+                                        <img :src="get_icon_url(field)" alt="">
+                                    </div>
+                                    <div class="wpuf-min-w-0 wpuf-flex-1">
+                                        <a href="#" class="focus:wpuf-outline-none focus:wpuf-shadow-none">
+                                            <p class="wpuf-text-base wpuf-font-normal wpuf-text-gray-500 wpuf-m-0">
+                                                {{ field_settings[field].title }}</p>
+                                        </a>
+                                    </div>
+                                </div>
                             <div
-                                v-if="field_settings[field].icon"
-                                class="wpuf-shrink-0 wpuf-mr-2 wpuf-text-gray-400">
-                                <img :src="get_icon_url(field)" alt="">
+                                class="wpuf-absolute wpuf-top-4 wpuf-right-4 wpuf-opacity-0 group-hover/pro-field:wpuf-opacity-100 wpuf-transition-all">
+                                <img src="<?php esc_attr_e( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="">
                             </div>
-                            <div class="wpuf-min-w-0 wpuf-flex-1">
-                                <a href="#" class="focus:wpuf-outline-none focus:wpuf-shadow-none">
-                                    <p class="wpuf-text-base wpuf-font-normal wpuf-text-gray-500 wpuf-m-0">{{ field_settings[field].title }}</p>
-                                </a>
-                            </div>
-                            <img src="<?php esc_attr_e( WPUF_ASSET_URI . '/images/crown.svg' ); ?>" alt="">
                         </div>
                         <div
                             v-else-if="is_failed_to_validate(field)"

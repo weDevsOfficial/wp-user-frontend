@@ -1,6 +1,6 @@
 <div
     :class="'has-columns-'+field.columns"
-    class="wpuf-field-columns wpuf-flex wpuf-flex-col md:wpuf-flex-row wpuf-gap-4 wpuf-p-4 wpuf-w-full">
+    class="wpuf-field-columns wpuf-flex md:wpuf-flex-row wpuf-gap-4 wpuf-p-4 wpuf-w-full">
     <div
         v-for="column in columnClasses"
         :style="{paddingRight: field.column_space+'px'}"

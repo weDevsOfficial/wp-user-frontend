@@ -80,9 +80,7 @@
                                 <?php
                                 if ( in_array( $sub_key, $badge_menus, true ) && ! wpuf_is_pro_active() ) {
                                     ?>
-                                    <span
-                                        :class="active_settings_tab === '<?php echo $sub_key; ?>' ? 'wpuf-border-white wpuf-text-white' : 'wpuf-border-primary wpuf-text-primary'"
-                                        class="wpuf-border wpuf-py-[2px] wpuf-px-[6px] wpuf-rounded-md group-hover/sidebar-item:wpuf-border-white group-hover/sidebar-item:wpuf-text-white">PRO</span>
+                                    <span><img src="<?php echo wpuf_get_pro_icon() ?>" alt="pro icon"></span>
                                     <?php
                                 }
                                 ?>

@@ -4826,7 +4826,7 @@ function wpuf_is_option_on( $option ) {
  * @return string
  */
 function wpuf_get_pro_icon() {
-    return WPUF_ASSET_URI . '/images/crown.svg';
+    return WPUF_ASSET_URI . '/images/pro-badge.svg';
 }
 
 /**

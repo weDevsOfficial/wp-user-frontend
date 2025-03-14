@@ -4817,6 +4817,23 @@ table.option-field-option-chooser tbody tr td {
   padding: 0;
 }
 
+/*sweetalert*/
+
+.swal2-icon.swal2-icon-show {
+  border: none;
+}
+
+.swal2-styled.swal2-default-outline:focus {
+  box-shadow: none !important;
+}
+
+button.swal2-cancel.swal2-styled.swal2-default-outline {
+  border: 1px solid #CBD5E1;
+  color: #334155;
+}
+
+/*sweetalert*/
+
 .placeholder\:wpuf-text-gray-400::-moz-placeholder {
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity));

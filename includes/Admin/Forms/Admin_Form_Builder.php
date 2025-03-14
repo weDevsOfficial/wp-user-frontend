@@ -299,30 +299,33 @@ class Admin_Form_Builder {
 
         return apply_filters(
             'wpuf_form_builder_i18n', [
-                'advanced_options'      => __( 'Advanced Options', 'wp-user-frontend' ),
-                'delete_field_warn_msg' => __( 'Are you sure you want to delete this field?', 'wp-user-frontend' ),
-                'yes_delete_it'         => __( 'Yes, delete it', 'wp-user-frontend' ),
-                'no_cancel_it'          => __( 'No, cancel it', 'wp-user-frontend' ),
-                'ok'                    => __( 'Okay', 'wp-user-frontend' ),
-                'cancel'                => __( 'Cancel', 'wp-user-frontend' ),
-                'close'                 => __( 'Close', 'wp-user-frontend' ),
-                'last_choice_warn_msg'  => __( 'This field must contain at least one choice', 'wp-user-frontend' ),
-                'option'                => __( 'Option', 'wp-user-frontend' ),
-                'column'                => __( 'Column', 'wp-user-frontend' ),
-                'last_column_warn_msg'  => __( 'This field must contain at least one column', 'wp-user-frontend' ),
-                'is_a_pro_feature'      => __( 'is a pro feature', 'wp-user-frontend' ),
-                'pro_feature_msg'       => __(
+                'advanced_options'        => __( 'Advanced Options', 'wp-user-frontend' ),
+                'delete_field_warn_title' => __( 'Delete Field Confirmation', 'wp-user-frontend' ),
+                'delete_field_warn_msg'   => __(
+                    'Are you sure you want to delete this field? This action cannot be undone.', 'wp-user-frontend'
+                ),
+                'yes_delete_it'           => __( 'Yes, delete it', 'wp-user-frontend' ),
+                'no_cancel_it'            => __( 'Cancel', 'wp-user-frontend' ),
+                'ok'                      => __( 'Okay', 'wp-user-frontend' ),
+                'cancel'                  => __( 'Cancel', 'wp-user-frontend' ),
+                'close'                   => __( 'Close', 'wp-user-frontend' ),
+                'last_choice_warn_msg'    => __( 'This field must contain at least one choice', 'wp-user-frontend' ),
+                'option'                  => __( 'Option', 'wp-user-frontend' ),
+                'column'                  => __( 'Column', 'wp-user-frontend' ),
+                'last_column_warn_msg'    => __( 'This field must contain at least one column', 'wp-user-frontend' ),
+                'is_a_pro_feature'        => __( 'is a pro feature', 'wp-user-frontend' ),
+                'pro_feature_msg'         => __(
                     '<p class="wpuf-text-gray-500 wpuf-font-medium wpuf-text-xl">Please upgrade to the Pro version to unlock all these awesome features</p>',
                     'wp-user-frontend'
                 ),
-                'upgrade_to_pro'        => sprintf(
+                'upgrade_to_pro'          => sprintf(
                     __( 'Upgrade to PRO &nbsp;&nbsp;%s', 'wp-user-frontend' ), '<img src="' . $crown_icon . '"/>'
                 ),
-                'select'                => __( 'Select', 'wp-user-frontend' ),
-                'saved_form_data'       => __( 'Saved form data', 'wp-user-frontend' ),
-                'unsaved_changes'       => __( 'You have unsaved changes.', 'wp-user-frontend' ),
-                'copy_shortcode'        => __( 'Click to copy shortcode', 'wp-user-frontend' ),
-                'pro_field_message'     => $field_messages,
+                'select'                  => __( 'Select', 'wp-user-frontend' ),
+                'saved_form_data'         => __( 'Saved form data', 'wp-user-frontend' ),
+                'unsaved_changes'         => __( 'You have unsaved changes.', 'wp-user-frontend' ),
+                'copy_shortcode'          => __( 'Click to copy shortcode', 'wp-user-frontend' ),
+                'pro_field_message'       => $field_messages,
             ]
         );
     }

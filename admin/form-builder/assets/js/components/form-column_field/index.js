@@ -285,18 +285,20 @@ Vue.component('form-column_field', {
                     fromColumn: fromColumn
                 };
 
-            Swal.fire({
-                text: self.i18n.delete_field_warn_msg,
-                icon: 'warning',
+            const icon_delete  = wpuf_admin_script.asset_url + '/images/delete-icon-rounded.svg';
+            const delete_icon_html = '<img src="' + icon_delete + '" alt="delete">';
+
+            (Swal.fire({
+                title: self.i18n.delete_field_warn_title,
+                html: '<span class="wpuf-text-gray-500 wpuf-font-medium">' +  self.i18n.delete_field_warn_msg + '</span>',
+                iconHtml: delete_icon_html,
                 showCancelButton: true,
-                confirmButtonColor: '#d54e21',
                 confirmButtonText: self.i18n.yes_delete_it,
                 cancelButtonText: self.i18n.no_cancel_it,
-                customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-danger'
-                },
-            }).then((result) => {
+                cancelButtonColor: '#fff',
+                confirmButtonColor: '#EF4444',
+                reverseButtons: true
+            })).then((result) => {
                 if (result.isConfirmed) {
                     self.$store.commit('delete_column_field_element', payload);
                 }

@@ -85,9 +85,6 @@ body ul.wpuf-form li.field-size-medium .wpuf-fields {
 body ul.wpuf-form li.field-size-small .wpuf-fields {
     width: 30% !important;
 }
-body ul.wpuf-form li .wpuf-fields {
-    width: 70% !important;
-}
 #wpuf-form-builder-settings ul.wpuf-sidebar-menu li a svg.custom-stroke,
 h2#modules-menu svg.custom-stroke {
     stroke: #4b5563;
@@ -222,9 +219,6 @@ table.option-field-option-chooser tbody tr td {
 .wpuf-field-sizing-content {
     field-sizing: content;
 }
-.wp-core-ui select {
-    padding: 0;
-}
 #wpuf-form-builder .wp-media-buttons {
     display: flex;
     align-items: center;
@@ -263,4 +257,7 @@ table.option-field-option-chooser tbody tr td {
 }
 #wpuf-form-builder .wp-editor-tabs .wp-switch-editor:focus {
     box-shadow: none;
+}
+#wpuf-form-builder .wp-core-ui select {
+    padding: 0;
 }

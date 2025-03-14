@@ -236,13 +236,6 @@
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#660073aa', endColorstr='#ff0073aa', GradientType=0);
 }
-#wpuf-form-builder {
-  width: calc(100% - 200px);
-  padding-top: 10px;
-  position: fixed;
-  top: 25px;
-  background: #f1f1f1;
-}
 #wpuf-form-builder * {
   box-sizing: border-box;
 }

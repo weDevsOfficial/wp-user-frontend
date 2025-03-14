@@ -116,7 +116,7 @@ Vue.component('form-column_field', {
         },
 
         action_button_classes: function() {
-            return 'hover:wpuf-cursor-pointer hover:wpuf-text-white';
+            return 'hover:wpuf-cursor-pointer hover:wpuf-text-white wpuf-flex wpuf-mr-2';
         },
 
         columnClasses: function() {

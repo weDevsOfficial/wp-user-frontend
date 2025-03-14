@@ -146,7 +146,7 @@
     </div>
     <div
         v-show="active_tab === 'form-editor'"
-        class="wpuf-flex wpuf-bg-white wpuf-pb-16 wpuf-mr-8 ">
+        class="wpuf-flex wpuf-bg-white wpuf-mr-8 ">
         <div class="wpuf-w-2/3 wpuf-min-h-screen wpuf-max-h-screen wpuf-px-[52px] wpuf-py-4 wpuf-border-t wpuf-border-l wpuf-border-gray-200 wpuf-overflow-auto">
             <builder-stage-v4-1></builder-stage-v4-1>
         </div>
@@ -170,9 +170,8 @@
                         <?php esc_html_e( 'Field Options', 'wp-user-frontend' ); ?>
                     </a>
                 </div>
-                </div>
                 <section>
-                    <div class="wpuf-form-builder-panel wpuf-my-6">
+                    <div class="wpuf-form-builder-panel wpuf-mt-6 wpuf-mb-32">
                         <component :is="current_panel"></component>
                     </div>
                 </section>

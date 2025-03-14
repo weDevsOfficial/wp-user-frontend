@@ -63,7 +63,7 @@ wpuf_mixins.add_form_field = {
 
     computed: {
         action_button_classes: function() {
-            return 'wpuf-p-2 hover:wpuf-cursor-pointer hover:wpuf-text-white';
+            return 'wpuf-p-2 hover:wpuf-cursor-pointer hover:wpuf-text-white wpuf-flex';
         }
     },
 };

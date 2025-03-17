@@ -4065,6 +4065,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   font-size: 11px;
 }
 
+.wpuf-text-\[13px\] {
+  font-size: 13px;
+}
+
 .wpuf-text-\[17px\] {
   font-size: 17px;
 }
@@ -4840,6 +4844,15 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
 }
 
 /*sweetalert*/
+
+/*tooltip*/
+
+.tooltip-inner {
+  padding: 10px 5px;
+  font-size: .75rem;
+}
+
+/*tooltip*/
 
 .placeholder\:wpuf-text-gray-400::-moz-placeholder {
   --tw-text-opacity: 1;

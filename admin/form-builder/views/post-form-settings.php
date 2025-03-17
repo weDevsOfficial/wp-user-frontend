@@ -113,8 +113,8 @@
                         class="wpuf-settings-body wpuf-py-4 wpuf-border-b wpuf-border-gray-300"
                         data-settings-body="<?php echo $settings_key; ?>"
                     >
-                        <p class="wpuf-text-lg wpuf-font-medium wpuf-mb-2"><?php echo $section['label']; ?></p>
-                        <p class="wpuf-text-gray-500 wpuf-text-xs wpuf-leading-5"><?php echo $section['desc']; ?></p>
+                        <p class="wpuf-text-lg wpuf-font-medium wpuf-mb-3"><?php echo $section['label']; ?></p>
+                        <p class="wpuf-text-gray-500 wpuf-text-[13px] wpuf-leading-5 !wpuf-m-0"><?php echo $section['desc']; ?></p>
                         <?php
                         if ( ! empty( $section['fields'] ) ) {
                             foreach ( $section['fields'] as $field_key => $field ) {

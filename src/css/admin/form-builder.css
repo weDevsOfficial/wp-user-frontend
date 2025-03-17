@@ -275,3 +275,9 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
     color: #334155;
 }
 /*sweetalert*/
+/*tooltip*/
+.tooltip-inner {
+    padding: 10px 5px;
+    font-size: .75rem;
+}
+/*tooltip*/

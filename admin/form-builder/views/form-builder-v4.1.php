@@ -177,6 +177,7 @@
                 </section>
             </div>
     </div>
+    </div>
     <div
         v-show="active_tab === 'form-settings'"
         id="wpuf-form-builder-settings">

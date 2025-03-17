@@ -4828,7 +4828,8 @@ table.option-field-option-chooser tbody tr td {
   border: none;
 }
 
-.swal2-styled.swal2-default-outline:focus {
+.swal2-styled.swal2-default-outline:focus,
+.swal2-styled.swal2-cancel:focus {
   box-shadow: none !important;
 }
 

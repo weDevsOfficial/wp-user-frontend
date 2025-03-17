@@ -1694,9 +1694,9 @@ Vue.component('form-fields-v4-1', {
                     padding: '2rem 3rem',
                     type: 'warning',
                     customClass: {
-                        confirmButton: '!wpuf-bg-white !wpuf-text-black focus:!wpuf-shadow-none !wpuf-p-0 hover:!wpuf-bg-none',
-                        closeButton: "wpuf-absolute",
-                        cancelButton: "!wpuf-bg-primary"
+                        confirmButton: '!wpuf-bg-white !wpuf-text-gray-700 focus:!wpuf-shadow-none !wpuf-p-0 hover:!wpuf-bg-none',
+                        closeButton: "wpuf-absolute wpuf-top-4 wpuf-right-4",
+                        cancelButton: "!wpuf-bg-primary !wpuf-text-white"
                     },
                 });
             }

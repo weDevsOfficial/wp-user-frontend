@@ -265,7 +265,8 @@ table.option-field-option-chooser tbody tr td {
 .swal2-icon.swal2-icon-show {
     border: none;
 }
-.swal2-styled.swal2-default-outline:focus {
+.swal2-styled.swal2-default-outline:focus,
+.swal2-styled.swal2-cancel:focus {
     box-shadow: none !important;
 }
 button.swal2-cancel.swal2-styled,

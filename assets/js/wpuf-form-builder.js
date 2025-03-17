@@ -182,6 +182,7 @@
                             cancelButtonText: 'Okay',
                             customClass: {
                                 confirmButton: '!wpuf-bg-white !wpuf-text-black !wpuf-border !wpuf-border-solid !wpuf-border-gray-300 focus:!wpuf-shadow-none',
+                                cancelButton: '!wpuf-text-white',
                             },
                             cancelButtonColor: '#16a34a'
                         }).then((result) => {
@@ -595,7 +596,13 @@
                 if (_.isFunction(this.validate_form_before_submit) && !this.validate_form_before_submit()) {
 
                     this.warn({
-                        text: this.validation_error_msg
+                        title: 'Incomplete Post Form',
+                        html: this.validation_error_msg,
+                        reverseButtons: true,
+                        customClass: {
+                            cancelButton: '!wpuf-bg-white !wpuf-text-black !wpuf-border !wpuf-border-solid !wpuf-border-gray-300 focus:!wpuf-shadow-none',
+                            confirmButton: '!wpuf-text-white !wpuf-bg-primary',
+                        },
                     });
 
                     return;

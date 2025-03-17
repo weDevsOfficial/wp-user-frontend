@@ -4169,6 +4169,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   color: rgb(127 29 29 / var(--tw-text-opacity)) !important;
 }
 
+.\!wpuf-text-white {
+  --tw-text-opacity: 1 !important;
+  color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
+}
+
 .wpuf-text-black {
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity));
@@ -4827,6 +4832,7 @@ table.option-field-option-chooser tbody tr td {
   box-shadow: none !important;
 }
 
+button.swal2-cancel.swal2-styled,
 button.swal2-cancel.swal2-styled.swal2-default-outline {
   border: 1px solid #CBD5E1;
   color: #334155;

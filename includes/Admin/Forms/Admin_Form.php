@@ -393,8 +393,21 @@ class Admin_Form {
      */
     public function i18n( $i18n ) {
         return array_merge( $i18n, [
-            'any_of_three_needed' => __( 'Post Forms must have either Post Title, Post Body or Excerpt field',
-                                         'wp-user-frontend' ),
+            'any_of_three_needed' =>
+                __(
+                    sprintf(
+                        '%sSome required fields are missing. Please include a %sTitle%s, %sBody%s, or %sExcerpt%s to continue.%s',
+                        '<p class="!wpuf-m-0 wpuf-text-xl wpuf-text-gray-500">',
+                        '<span class="wpuf-font-semibold">',
+                        '</span>',
+                        '<span class="wpuf-font-semibold">',
+                        '</span>',
+                        '<span class="wpuf-font-semibold">',
+                        '</span>',
+                        '</p>'
+                    ),
+                    'wp-user-frontend'
+                )
         ] );
     }
 }

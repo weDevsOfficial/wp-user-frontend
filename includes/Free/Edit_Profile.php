@@ -212,8 +212,10 @@ class Edit_Profile {
                             <th><label><?php esc_html_e( 'Password Strength', 'wp-user-frontend' ); ?></label></th>
                             <td>
                                 <div id="pass-strength-result"><?php esc_html_e( 'Strength indicator', 'wp-user-frontend' ); ?></div>
-                                <script src="<?php echo esc_url( site_url() ); ?>/wp-includes/js/zxcvbn.min.js"></script>
-                                <script src="<?php echo esc_url( admin_url() ); ?>/js/password-strength-meter.js"></script>
+                                <?php
+                                    wp_enqueue_script( 'zxcvbn' );
+                                    wp_enqueue_script( 'password-strength-meter' ); ?>
+                                ?>
                                 <script type="text/javascript">
                                     var pwsL10n = {
                                         empty: "Strength indicator",

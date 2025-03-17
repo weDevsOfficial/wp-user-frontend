@@ -1076,7 +1076,7 @@ class WPUF_Subscription {
         $sql .= $pack_id ? ' WHERE subscribtion_id  = ' . $pack_id : '';
         $sql .= $status ? ' AND subscribtion_status = ' . $status : '';
 
-        $rows = $wpdb->get_results( $sql );
+        $rows = $wpdb->get_results( $wpdb->prepare( "SELECT user_id FROM {$wpdb->prefix}wpuf_subscribers WHERE subscribtion_id  = %s AND subscribtion_status = %s", $pack_id ? $pack_id : '', $status ? $status : '') );
 
         if ( empty( $rows ) ) {
             return $rows;

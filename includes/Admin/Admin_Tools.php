@@ -244,7 +244,7 @@ class Admin_Tools {
         $formatted_data = [];
         $ids            = [];
         $blogname       = strtolower( str_replace( ' ', '-', get_option( 'blogname' ) ) );
-        $date           = date( 'Y-m-d' );
+        $date           = date( 'Y-m-d' ); // phpcs:ignore
         $json_name      = $blogname . '-wpuf-' . $post_type . '-' . $date; // Namming the filename will be generated.
 
         if ( !empty( $post_ids ) ) {

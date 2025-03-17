@@ -149,7 +149,7 @@ class Render_Form {
 
         // try to add some random number in username
         // and may be we got our username
-        $username .= rand( 1, 199 );
+        $username .= wp_rand( 1, 199 );
 
         if ( !username_exists( $username ) ) {
             return $username;
@@ -630,6 +630,8 @@ class Render_Form {
         $form_id = isset( $_GET['form_id'] ) ? intval( wp_unslash( $_GET['form_id'] ) ) : 0;
 
         if ( $form_id ) {
+            wp_enqueue_script( 'jquery' );
+            wp_enqueue_style( 'wpuf-frontend-forms' );
             ?>
 
             <!doctype html>
@@ -637,7 +639,6 @@ class Render_Form {
                 <head>
                     <meta charset="UTF-8">
                     <title>Form Preview</title>
-                    <link rel="stylesheet" href="<?php echo esc_url( plugins_url( 'assets/css/frontend-forms.css', __DIR__ ) ); ?>">
 
                     <style type="text/css">
                         body {
@@ -658,7 +659,6 @@ class Render_Form {
                         }
                     </style>
 
-                    <script type="text/javascript" src="<?php echo esc_url( includes_url( 'js/jquery/jquery.js' ) ); ?>"></script>
                 </head>
                 <body>
                     <div class="container">
@@ -728,7 +728,7 @@ class Render_Form {
             return;
         } ?>
         <div class="wpuf-label">
-            <label for="<?php echo isset( $attr['name'] ) ? esc_attr( $attr['name'] ) : 'cls'; ?>"><?php echo render-form.phpesc_attr( $attr['label'] ) . esc_attr( $this->required_mark( $attr ) ); ?></label>
+            <label for="<?php echo isset( $attr['name'] ) ? esc_attr( $attr['name'] ) : 'cls'; ?>"><?php echo esc_attr( $attr['label'] ) . esc_attr( $this->required_mark( $attr ) ); ?></label>
         </div>
         <?php
     }
@@ -846,7 +846,7 @@ class Render_Form {
             <script type="text/javascript">
                 ;(function($) {
                     $(document).ready( function(){
-                        $('li.tags input[name=tags]').suggest( wpuf_frontend.ajaxurl + '<?php echo $query_string; ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
+                        $('li.tags input[name=tags]').suggest( wpuf_frontend.ajaxurl + '<?php echo esc_js( $query_string ); ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
                     });
                 })(jQuery);
             </script>
@@ -1198,8 +1198,8 @@ class Render_Form {
             echo wp_kses_post( '</li>' );
             echo wp_kses_post( '<li>' );
 
-            wp_enqueue_script( 'zxcvbn' );
-            wp_enqueue_script( 'password-strength-meter' ); ?>
+            wp_enqueue_script( 'wpuf-zxcvbn' );
+            wp_enqueue_script( 'wpuf-password-strength-meter' ); ?>
             <div class="wpuf-label">
                 &nbsp;
             </div>
@@ -1449,7 +1449,7 @@ class Render_Form {
                         <script type="text/javascript">
                             ;(function($) {
                                 $(document).ready( function(){
-                                    $('#<?php echo esc_attr( $attr['name'] ); ?>').suggest( wpuf_frontend.ajaxurl + '<?php echo $query_string; ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
+                                    $('#<?php echo esc_attr( $attr['name'] ); ?>').suggest( wpuf_frontend.ajaxurl + '<?php echo esc_js( $query_string ); ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
                                 });
                             })(jQuery);
                         </script>

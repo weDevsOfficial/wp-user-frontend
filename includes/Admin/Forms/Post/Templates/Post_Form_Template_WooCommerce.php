@@ -280,7 +280,7 @@ Edit URL: {editlink}'
         $status  = ! empty( $reviews ) ? 'open' : 'closed';
         // wp_update_post( array( 'ID' => $post_id, 'comment_status' => $status ) );
         $comment_sql = "UPDATE {$wpdb->prefix}posts SET comment_status='{$status}' WHERE ID={$post_id} AND post_status='publish' AND post_type='product'";
-        $wpdb->get_results( $comment_sql );
+        $wpdb->get_results( $wpdb->prepare( "UPDATE {$wpdb->prefix}posts SET comment_status=%s WHERE ID=%d AND post_status='publish' AND post_type='product'", $status, $post_id ) );
     }
 
     /**

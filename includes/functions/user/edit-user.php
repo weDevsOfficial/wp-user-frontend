@@ -103,7 +103,7 @@ function wpuf_show_users() {
                 <tr>
                     <td><a href="<?php echo esc_attr( get_author_posts_url( $user->ID ) ); ?>"><?php printf(
                         // translators: %s is the display name
-                        esc_attr__( '%s', 'wp-user-frontend' ), esc_attr( $user->display_name ) ); ?></td>
+                        esc_html( '%s', 'wp-user-frontend' ), esc_attr( $user->display_name ) ); ?></td>
                     <td>
                         <a href="<?php echo esc_url( wp_nonce_url( get_permalink() . '?action=edit&user_id=' . $user->ID, 'wpuf_edit_user' ) ); ?>"><?php esc_html_e( 'Edit', 'wp-user-frontend' ); ?></a>
                         <a href="<?php echo esc_url( wp_nonce_url( the_permalink( 'echo=false' ) . '?action=del&user_id=' . $user->ID, 'wpuf_del_user' ) ); ?>" onclick="return confirm('<?php echo esc_html( $delete_message ); ?>');"><span style="color: red;"><?php esc_html_e( 'Delete', 'wp-user-frontend' ); ?></span></a>

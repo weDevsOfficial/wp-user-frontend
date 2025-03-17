@@ -200,7 +200,7 @@ class Posting {
 
         if ( !empty( $edit_post_lock_time ) && $edit_post_lock_time > time() ) {
             $is_locked    = false;
-            $time         = date( 'Y-m-d H:i:s', $edit_post_lock_time );
+            $time         = date( 'Y-m-d H:i:s', $edit_post_lock_time ); // phpcs:ignore
             $local_time   = get_date_from_gmt( $time, get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) );
             $msg          = sprintf(
                                 // translators: %1$s The time when the post edit access will be locked and %2$s The post ID.

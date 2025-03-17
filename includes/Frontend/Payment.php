@@ -482,7 +482,9 @@ class Payment {
         $sql = $wpdb->prepare( 'SELECT transaction_id
             FROM ' . $wpdb->prefix . 'wpuf_transaction
             WHERE transaction_id = %s LIMIT 1', $transaction_id );
-        $result = $wpdb->get_row( $sql );
+        $result = $wpdb->get_row( $wpdb->prepare( 'SELECT transaction_id
+            FROM ' . $wpdb->prefix . 'wpuf_transaction
+            WHERE transaction_id = %s LIMIT 1', $transaction_id ) );
         if ( $recurring !== false ) {
             $profile_id = $data['profile_id'];
         }

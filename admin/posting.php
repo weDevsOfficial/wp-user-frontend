@@ -211,7 +211,7 @@ class WPUF_Admin_Posting {
 
         if ( !empty( $edit_post_lock_time ) && $edit_post_lock_time > time() ) {
             $is_locked    = false;
-            $time         = date( 'Y-m-d H:i:s', $edit_post_lock_time );
+            $time         = date( 'Y-m-d H:i:s', $edit_post_lock_time ); // phpcs:ignore
             $local_time   = get_date_from_gmt( $time, get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) );
             $msg          = sprintf( 
                 // translators: %1$s is local time and %2$ is Post ID

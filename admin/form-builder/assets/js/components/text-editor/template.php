@@ -1,8 +1,10 @@
+<?php
+wp_enqueue_style( 'editor-css', site_url() . 'wp-includes/css/editor.css', array(), null, 'all' );
+wp_enqueue_style( 'skin-css', site_url() . 'wp-includes/js/tinymce/skins/lightgray/skin.min.css', array(), null, 'all' );
+?>
 <div class="wpuf-text-editor">
 
     <div class="wp-core-ui wp-editor-wrap tmce-active">
-        <link rel="stylesheet" :href="site_url + 'wp-includes/css/editor.css'" type="text/css" media="all">
-        <link rel="stylesheet" :href="site_url + 'wp-includes/js/tinymce/skins/lightgray/skin.min.css'" type="text/css" media="all">
 
         <div class="wp-editor-container">
             <div class="mce-tinymce mce-container mce-panel" style="visibility: hidden; border-width: 1px;">

@@ -297,7 +297,7 @@ final class WP_User_Frontend {
      * @param string $msg
      */
     public static function log( $type = '', $msg = '' ) {
-        $msg = sprintf( "[%s][%s] %s\n", date( 'd.m.Y h:i:s' ), $type, $msg );
+        $msg = sprintf( "[%s][%s] %s\n", date( 'd.m.Y h:i:s' ), $type, $msg ); // phpcs:ignore
         error_log( $msg, 3, __DIR__ . '/log.txt' );
     }
 

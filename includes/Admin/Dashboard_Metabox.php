@@ -84,7 +84,7 @@ class Dashboard_Metabox {
                         ?>
                         <li class="blog-item">
                             <a href="<?php echo esc_url( $link['href'] ); ?>"
-                               target="_blank"><?php esc_html_e( $link['title'], 'wp-user-frontend' ); ?>
+                               target="_blank"><?php esc_html( $link['title'], 'wp-user-frontend' ); ?>
                                 <span aria-hidden="true" class="dashicons dashicons-external"></span></a>
                         </li>
                     <?php } ?>

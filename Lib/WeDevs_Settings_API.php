@@ -107,7 +107,7 @@ class WeDevs_Settings_API {
 
             if ( isset($section['desc']) && !empty($section['desc']) ) {
                 $section['desc'] = '<div class="inside">' . $section['desc'] . '</div>';
-                $callback = create_function('', 'echo "' . str_replace( '"', '\"', $section['desc'] ) . '";');
+                $callback = create_function('', 'echo "' . str_replace( '"', '\"', $section['desc'] ) . '";'); // phpcs:ignore
             } else if ( isset( $section['callback'] ) ) {
                 $callback = $section['callback'];
             } else {
@@ -191,7 +191,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo esc_html( $html );
+        echo wp_kses( $html, array('input' => ['type' => [],'class' => [],'id' => [],'name' => [],'value' => [],'disabled' => [],'data-depends-on' => []], 'p' => ['class' => []], 'div' => ['class' => []], 'a' => ['href' => [],'target' => [],'class' => []], 'span' => ['class' => []], 'svg' => ['width' => [],'height' => [],'viewBox' => [],'fill' => [],'xmlns' => [],],));
     }
 
     /**
@@ -225,7 +225,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo esc_html( $html );
+        echo wp_kses( $html, array('input' => ['type' => [],'class' => [],'id' => [],'name' => [],'value' => [],'disabled' => [],],'p' => ['class' => [],],'div' => ['class' => [],],'a' => ['href' => [],'target' => [],'class' => [],],'span' => ['class' => [],],'svg' => ['width' => [],'height' => [],'viewBox' => [],'fill' => [],'xmlns' => [],],'path' => ['d' => [],'fill' => [],],) );
     }
 
     /**
@@ -248,7 +248,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo esc_html( $html );
+        echo wp_kses( $html, array('fieldset' => [],'label' => ['for' => [],],'input' => ['type' => [],'class' => [],'id' => [],'name' => [],'value' => [],'checked' => [], 'disabled' => []], 'div' => ['class' => [] ], 'a' => ['href' => [],'target' => [],'class' => [] ], 'span' => ['class' => [] ],'svg' => ['width' => [],'height' => [],'viewBox' => [],'fill' => [],'xmlns' => [] ], 'path' => ['d' => [], 'fill' => [] ], 'br' => [],) );
     }
 
     /**
@@ -277,7 +277,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo esc_html( $html );
+        echo wp_kses( $html, array('fieldset' => [],'label' => ['for' => []],'input' => ['type' => [],'class' => [],'id' => [],'name' => [],'value' => [],'checked' => [],],'br' => [],'span' => ['class' => []],'svg' => ['width' => [],'height' => [],'viewBox' => [],'fill' => [],'xmlns' => [],],'path' => ['d' => [], 'fill' => []],'p' => ['class' => [] ] ) );
     }
 
     /**
@@ -303,7 +303,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo esc_html( $html );
+        echo wp_kses( $html, array('fieldset' => [], 'label' => ['for' => []], 'input' => ['type' => [], 'class' => [], 'id' => [], 'name' => [], 'value' => [], 'checked' => [], 'disabled' => []], 'img' => ['class' => [], 'src' => [], 'alt' => []], 'br' => [], 'div' => ['class' => []], 'a' => ['href' => [], 'target' => [], 'class' => []], 'span' => ['class' => []], 'svg' => ['width' => [], 'height' => [], 'viewBox' => [], 'fill' => [], 'xmlns' => []], 'path' => ['d' => [], 'fill' => [] ] ) );
     }
 
     /**
@@ -329,7 +329,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo esc_html( $html );
+        echo wp_kses( $html, array('select' => ['class' => [], 'name' => [], 'id' => [], 'disabled' => []], 'option' => ['value' => [], 'selected' => []], 'p' => ['class' => []], 'div' => ['class' => []], 'a' => ['href' => [], 'target' => [], 'class' => []], 'span' => ['class' => []], 'svg' => ['width' => [], 'height' => [], 'viewBox' => [], 'fill' => [], 'xmlns' => []], 'path' => ['d' => [], 'fill' => [] ] ) );
     }
 
     /**
@@ -351,7 +351,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo esc_html( $html );
+        echo wp_kses_post( $html );
     }
 
     /**
@@ -367,7 +367,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo esc_html( $html );
+        echo wp_kses( $html, array('p' => ['class' => []], 'input' => ['class' => [],'type' => [],'disabled' => [],'value' => []], 'div' => ['class' => []], 'a' => ['href' => [],'target' => [],'class' => []], 'span' => ['class' => []], 'svg' => ['width' => [],'height' => [],'viewBox' => [],'fill' => [],'xmlns' => [],], 'path' => ['d' => [], 'fill' => []],) );
     }
 
     /**
@@ -397,7 +397,7 @@ class WeDevs_Settings_API {
 
         echo '</div>';
 
-        echo $this->get_field_description( $args );
+        echo wp_kses_post( $this->get_field_description( $args ) );
     }
 
     /**
@@ -421,7 +421,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo esc_html( $html );
+        echo wp_kses( $html, array('input' => ['type' => [],'class' => [],'id' => [],'name' => [],'value' => [],'disabled' => []], 'p' => ['class' => []], 'div' => ['class' => []], 'a' => ['href' => [],'target' => [],'class' => []], 'span' => ['class' => []], 'svg' => ['width' => [],'height' => [],'viewBox' => [],'fill' => [],'xmlns' => [],], 'path' => ['d' => [], 'fill' => []],) );
     }
 
     /**
@@ -441,7 +441,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo esc_html( $html );
+        echo wp_kses_post( $html );
     }
 
     /**
@@ -461,7 +461,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo esc_html( $html );
+        echo wp_kses_post( $html );
     }
 
     /**
@@ -492,7 +492,7 @@ class WeDevs_Settings_API {
             </label>
         </fieldset>
 
-        <?php echo $args['desc']; ?>
+        <?php echo wp_kses_post( $args['desc'] ); ?>
         <?php
     }
 
@@ -590,7 +590,7 @@ class WeDevs_Settings_API {
 
         $html .= '</h2>';
 
-        echo esc_html( $html );
+        echo wp_kses_post( $html );
     }
 
     /**
@@ -622,8 +622,8 @@ class WeDevs_Settings_API {
             <?php
             }
             if ( ! wpuf()->is_pro() ) {
-                echo wpuf_get_pro_preview_html();
-                echo wpuf_get_pro_preview_tooltip();
+                echo wp_kses_post( wpuf_get_pro_preview_html() );
+                echo wp_kses_post( wpuf_get_pro_preview_tooltip() );
             }
             ?>
         </div>

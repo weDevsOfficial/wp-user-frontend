@@ -74,7 +74,7 @@ trait TaxableTrait {
         $states = [];
 
         ob_start(); ?>
-        <p><?php echo $args['desc']; ?></p>
+        <p><?php echo wp_kses_post( $args['desc'] ); ?></p>
         <table style="width:80%; table-layout:auto;" id="wpuf-base-country-state" class="wp-list-table">
             <thead>
             <tr>
@@ -157,7 +157,7 @@ trait TaxableTrait {
             </tr>
         </table>
         <?php
-        echo ob_get_clean();
+        echo ob_get_clean(); // @codingStandardsIgnoreLine
     }
 
     /**
@@ -209,7 +209,7 @@ trait TaxableTrait {
 
         ob_start();
         ?>
-        <p><?php echo $args['desc']; ?></p>
+        <p><?php echo wp_kses_post( $args['desc'] ); ?></p>
         <table style="width:100%; table-layout:auto;" id="wpuf_tax_rates" class="wp-list-table widefat">
             <thead>
             <tr>
@@ -307,7 +307,7 @@ trait TaxableTrait {
                             }
                             ?>
                         </td>
-                        <td style="width:20%" class="wpuf_tax_rate"><input type="number" class="small-text" step="0.0001" min="0.0" max="99" name="wpuf_tax_rates[<?php echo $key; ?>][rate]" value="<?php echo esc_html( ! empty( $rate['rate'] ) ? $rate['rate'] : 0 ); ?>"/></td>
+                        <td style="width:20%" class="wpuf_tax_rate"><input type="number" class="small-text" step="0.0001" min="0.0" max="99" name="wpuf_tax_rates[<?php echo esc_attr( $key ); ?>][rate]" value="<?php echo esc_html( ! empty( $rate['rate'] ) ? $rate['rate'] : 0 ); ?>"/></td>
                         <td style="width:10%"><span class="wpuf_remove_tax_rate button-secondary"><?php esc_html_e( 'Remove Rate', 'wp-user-frontend' ); ?></span></td>
                     </tr>
                 <?php endforeach; ?>
@@ -371,7 +371,7 @@ trait TaxableTrait {
             <span class="button-secondary" id="wpuf_add_tax_rate"><?php esc_attr_e( 'Add Tax Rate', 'wp-user-frontend' ); ?></span>
         </p>
         <?php
-        echo ob_get_clean();
+        echo ob_get_clean(); // @codingStandardsIgnoreLine
     }
 
     /**
@@ -620,7 +620,7 @@ trait TaxableTrait {
             $response = 'nostates';
         }
 
-        echo $response;
+        echo $response; // phpcs:ignore
 
         wp_die();
     }

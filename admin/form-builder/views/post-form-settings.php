@@ -248,7 +248,7 @@
                     <a
                         class="wpuf-btn-primary wpuf-mt-4"
                         target="_blank"
-                        href="#">
+                        href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-modules' ) ); ?>">
                         <?php esc_html_e( 'Go To Module Page', 'wp-user-frontend' ); ?>
                     </a>
                     <?php

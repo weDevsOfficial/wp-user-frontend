@@ -1061,7 +1061,7 @@
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-form-fields-v4-1">
-<div class="wpuf-px-6">
+<div>
     <div
         class="wpuf-flex wpuf-rounded-lg wpuf-bg-white wpuf-outline wpuf--outline-1 wpuf--outline-offset-1 wpuf-outline-gray-300 wpuf-border wpuf-border-gray-200 wpuf-shadow wpuf-mb-8">
         <input

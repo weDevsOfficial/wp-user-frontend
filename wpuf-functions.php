@@ -5298,7 +5298,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                 'update_post' => [
                     'label'  => __( 'Update Post Notification', 'wp-user-frontend' ),
                     'desc'   => __(
-                        'Enable this feature to receive email alerts whenever an existing post is updated through the frontend form. This ensures you\'re promptly informed about any changes made by users, allowing you to review and manage content updates efficiently.',
+                        'Enable this feature to receive email alerts whenever an existing post is updated through the frontend form. This ensures you\'re promptly informed about any changes made by users, allowing you to review and manage content updates ',
                         'wp-user-frontend'
                     ),
                 ],

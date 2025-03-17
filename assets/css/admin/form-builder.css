@@ -2590,6 +2590,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   margin-bottom: 0px !important;
 }
 
+.\!wpuf-mb-8 {
+  margin-bottom: 2rem !important;
+}
+
 .\!wpuf-mr-2 {
   margin-right: 0.5rem !important;
 }
@@ -2712,6 +2716,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-mr-4 {
   margin-right: 1rem;
+}
+
+.wpuf-mr-6 {
+  margin-right: 1.5rem;
 }
 
 .wpuf-mr-8 {
@@ -3951,6 +3959,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   padding-bottom: 1.75rem;
 }
 
+.wpuf-pl-0 {
+  padding-left: 0px;
+}
+
 .wpuf-pl-1 {
   padding-left: 0.25rem;
 }
@@ -4644,6 +4656,11 @@ h2#modules-menu.active_settings_tab svg.custom-stroke {
 .selectize-control.multi .selectize-input [data-value] {
   background: #059669 !important;
   border: 1px solid transparent !important;
+}
+
+.selectize-input.items.not-full.has-options.has-items {
+  display: flex;
+  justify-content: flex-start;
 }
 
 .selectize-control.single .selectize-input:after {
@@ -5346,11 +5363,6 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
 .focus\:wpuf-ring-indigo-500:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(99 102 241 / var(--tw-ring-opacity));
-}
-
-.focus\:wpuf-ring-primary:focus {
-  --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(5 150 105 / var(--tw-ring-opacity));
 }
 
 .focus\:wpuf-ring-red-200:focus {

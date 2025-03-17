@@ -5003,7 +5003,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                         ],
                         'draft_post'       => [
                             'label'     => __( 'Enable saving as draft', 'wp-user-frontend' ),
-                            'type'      => 'checkbox',
+                            'type'      => 'toggle',
                             'help_text' => __(
                                 'Allow users to save posts before final submission', 'wp-user-frontend'
                             ),

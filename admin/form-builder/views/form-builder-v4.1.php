@@ -184,18 +184,6 @@
         <?php
             do_action( "wpuf_form_builder_settings_tabs_{$form_type}" );
         ?>
-<!--        <div class="wpuf-w-1/3 wpuf-bg-gray-50 wpuf-px-[20px] wpuf-pt-4">-->
-<!--            <div id="wpuf-form-builder-settings-tabs" class="nav-tab-wrapper wpuf-flex wpuf-flex-col">-->
-<!--                --><?php //do_action( "wpuf-form-builder-settings-tabs-{$form_type}" ); ?>
-<!--            </div> #wpuf-form-builder-settings-tabs -->
-<!--        </div>-->
-<!--        <div class="wpuf-w-2/3 wpuf-bg-gray-50">-->
-<!--            <div-->
-<!--                id="wpuf-form-builder-settings-contents"-->
-<!--                class="tab-contents">-->
-<!--                --><?php //do_action( "wpuf-form-builder-settings-tab-contents-{$form_type}" ); ?>
-<!--            </div> #wpuf-form-builder-settings-contents -->
-<!--        </div>-->
     </div><!-- #wpuf-form-builder-settings -->
     <?php do_action( "wpuf-form-builder-tab-contents-{$form_type}" ); ?>
 

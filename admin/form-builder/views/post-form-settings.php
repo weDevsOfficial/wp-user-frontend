@@ -114,7 +114,7 @@
                         data-settings-body="<?php echo $settings_key; ?>"
                     >
                         <p class="wpuf-text-lg wpuf-font-medium wpuf-mb-3"><?php echo $section['label']; ?></p>
-                        <p class="wpuf-text-gray-500 wpuf-text-[13px] wpuf-leading-5 !wpuf-m-0"><?php echo $section['desc']; ?></p>
+                        <p class="wpuf-text-gray-500 wpuf-text-[13px] wpuf-leading-5 !wpuf-mb-8 !wpuf-mt-0"><?php echo $section['desc']; ?></p>
                         <?php
                         if ( ! empty( $section['fields'] ) ) {
                             foreach ( $section['fields'] as $field_key => $field ) {
@@ -260,10 +260,10 @@
         }
         ?>
         <div class="wpuf-flex wpuf-space-x-4 wpuf-items-center wpuf-mt-8">
-            <button
-                @click.prevent=""
-                class="wpuf-inline-flex wpuf-items-center wpuf-gap-x-2 wpuf-rounded-md wpuf-px-8 wpuf-py-3 wpuf-text-gray-700  hover:wpuf-text-gray-700 hover:wpuf-bg-gray-50 wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300"><?php esc_html_e( 'Cancel', 'wp-user-frontend' ); ?>
-            </button>
+            <a
+                href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-post-forms' ) ); ?>"
+                class="wpuf-inline-flex wpuf-items-center wpuf-gap-x-2 wpuf-rounded-md wpuf-px-8 wpuf-py-3 wpuf-text-gray-700  hover:wpuf-text-gray-700 hover:wpuf-bg-gray-50 wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 hover:wpuf-cursor-pointer"><?php esc_html_e( 'Cancel', 'wp-user-frontend' ); ?>
+            </a>
             <button
                 v-if="!is_form_saving"
                 @click="save_form_builder"
@@ -449,7 +449,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                     <?php
                     foreach ( $field['options'] as $key => $option ) {
                         ?>
-                        <div class="wpuf-relative wpuf-text-center wpuf-p-3">
+                        <div class="wpuf-relative wpuf-text-center wpuf-p-3 wpuf-pl-0">
                             <label>
                                 <input
                                     type="radio"
@@ -527,7 +527,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
             $index_counter = 0;
             foreach ( $field['fields'] as $inner_field_key => $inner_field ) {
                 $classes = 'wpuf-w-1/2';
-                $classes .= $index_counter === 0 ? ' wpuf-mr-2' : '';
+                $classes .= $index_counter === 0 ? ' wpuf-mr-6' : '';
 
                 $value = ! empty( $inner_field['default'] ) ? $inner_field['default'] : '';
                 $value = ! empty( $inner_field['value'] ) ? $inner_field['value'] : $value;                 // default value

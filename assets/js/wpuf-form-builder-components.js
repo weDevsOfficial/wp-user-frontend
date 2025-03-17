@@ -1700,7 +1700,7 @@ Vue.component('form-fields-v4-1', {
             if (validator && validator.msg) {
                 this.warn({
                     title: validator.msg_title || '',
-                    color: validator.color || '',
+                    color: validator.color || '#059669',
                     html: validator.msg,
                     showCancelButton: true,
                     imageUrl: validator.icon || '',

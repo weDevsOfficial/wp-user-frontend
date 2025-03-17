@@ -114,6 +114,10 @@ h2#modules-menu.active_settings_tab svg.custom-stroke {
     background: #059669 !important;
     border: 1px solid transparent !important;
 }
+.selectize-input.items.not-full.has-options.has-items {
+    display: flex;
+    justify-content: flex-start;
+}
 .selectize-control.single .selectize-input:after {
     content: '\f107';
     font-family: FontAwesome, serif;

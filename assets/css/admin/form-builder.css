@@ -3878,6 +3878,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   padding-right: 2rem;
 }
 
+.wpuf-px-\[15px\] {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
 .wpuf-px-\[18px\] {
   padding-left: 18px;
   padding-right: 18px;
@@ -3941,6 +3946,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 .wpuf-py-\[10px\] {
   padding-top: 10px;
   padding-bottom: 10px;
+}
+
+.wpuf-py-\[7px\] {
+  padding-top: 7px;
+  padding-bottom: 7px;
 }
 
 .wpuf-pb-0 {

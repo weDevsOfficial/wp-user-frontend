@@ -489,10 +489,9 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                         id="<?php echo $field_key; ?>"
                         value="<?php echo $value; ?>"/>
                     <span
-                        :class="<?php echo $field['trailing_type'] === 'number'; ?> ? 'wpuf-p-1' : 'wpuf-p-2'"
-                        class="wpuf-absolute wpuf-top-0 wpuf--right-px wpuf-h-full wpuf-bg-gray-50 wpuf-rounded-r-sm wpuf-text-gray-700 wpuf-border wpuf-border-gray-300 wpuf-p-1">
-                                        <?php echo $field['trailing_text']; ?>
-                                    </span>
+                        class="wpuf-absolute wpuf-top-0 wpuf--right-px wpuf-h-full wpuf-bg-gray-50 wpuf-rounded-r-sm wpuf-text-gray-700 wpuf-border wpuf-border-gray-300 wpuf-text-base wpuf-py-[7px] wpuf-px-[15px]">
+                        <?php echo $field['trailing_text']; ?>
+                    </span>
                 </div>
                 <?php
             }

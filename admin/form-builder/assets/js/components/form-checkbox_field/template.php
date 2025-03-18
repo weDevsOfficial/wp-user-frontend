@@ -11,7 +11,7 @@
                     :value="val"
                     :checked="is_selected(val)"
                     :class="builder_class_names('checkbox')">
-                <label class="wpuf-ml-2 wpuf-text-sm wpuf-font-medium wpuf-text-gray-900">{{ label }}</label>
+                <label>{{ label }}</label>
             </div>
         </div>
     </div>
@@ -29,9 +29,9 @@
                 :checked="is_selected(val)"
                 :class="builder_class_names('checkbox')"
                 class="!wpuf-mt-[.5px] wpuf-rounded wpuf-border-gray-300 wpuf-text-indigo-600">
-            <label class="wpuf-ml-1 wpuf-text-sm wpuf-font-medium wpuf-text-gray-900">{{ label }}</label>
+            <label>{{ label }}</label>
         </div>
     </div>
 
-    <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-mb-0 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>

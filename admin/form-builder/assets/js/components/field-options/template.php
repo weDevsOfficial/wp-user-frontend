@@ -1,4 +1,4 @@
-<div class="wpuf-form-builder-field-options wpuf-px-6">
+<div class="wpuf-form-builder-field-options">
     <div v-if="!parseInt(editing_field_id)" class="options-fileds-section text-center">
         <p>
             <span class="loader"></span>

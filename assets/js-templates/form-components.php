@@ -108,7 +108,7 @@
             <div
                 v-if="field.input_type !== 'column_field'"
                 :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-bg-green-50 wpuf-border-green-400' : 'wpuf-border-transparent'"
-                class="wpuf-flex wpuf-justify-between wpuf-p-6 wpuf-rounded-t-md wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed group-hover:wpuf-border-green-400 group-hover:wpuf-cursor-pointer">
+                class="wpuf-flex wpuf-justify-between wpuf-p-6 wpuf-rounded-t-md wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed group-hover:wpuf-border-green-400 group-hover:wpuf-cursor-pointer !wpuf-pb-3">
                 <div v-if="!(is_full_width(field.template) || is_pro_preview(field.template))" class="wpuf-w-1/4 wpuf-flex wpuf-items-center">
                     <label
                         v-if="!is_invisible(field)"
@@ -269,7 +269,7 @@
     </div>
     <ul :class="[option_field.inline ? 'list-inline' : '']">
         <li v-for="(option, key) in option_field.options">
-            <label class="wpuf-flex wpuf-items-center">
+            <label class="wpuf-block text-sm/6 wpuf-font-medium wpuf-text-gray-900 !wpuf-mb-0">
                 <input type="checkbox" :class="builder_class_names('checkbox')" class="!wpuf-mr-2" :value="key" v-model="value">
                 {{ option }}
             </label>
@@ -332,39 +332,9 @@
     </div>
 
     <div class="wpuf-mt-4">
+        <span class="wpuf-text-[14px] wpuf-text-gray-700 wpuf-font-medium"><?php esc_attr_e( 'Label & Values', 'wp-user-frontend' ); ?></span>
         <table class="option-field-option-chooser">
             <tbody>
-                <tr
-                    class="wpuf-flex wpuf-justify-start wpuf-items-center">
-                    <td class="wpuf-flex wpuf-mt-1 wpuf-opacity-0">
-                        <div>
-                            <input
-                                type="radio"
-                                class="!wpuf-mt-0"
-                                :class="builder_class_names('radio')"
-                            >
-                        </div>
-                        <div>
-                            <i class="fa fa-bars"></i>
-                        </div>
-                    </td>
-                    <td class="wpuf-options-label-holder wpuf-relative">
-                        <input
-                            class="!wpuf-border-none !wpuf-shadow-none !wpuf-text-gray-700 !wpuf-m-0 !wpuf-p-0"
-                            disabled
-                            type="text"
-                            value="<?php esc_attr_e( 'Label', 'wp-user-frontend' ); ?>">
-                        <help-text class="wpuf-absolute wpuf-left-11 wpuf-top-[.70rem]" text="<?php esc_attr_e( 'Do not use & or other special character for option label', 'wp-user-frontend' ); ?>"></help-text>
-                    </td>
-                    <td v-if="show_value">
-                        <input
-                            class="!wpuf-border-none !wpuf-shadow-none !wpuf-text-gray-700 !wpuf-m-0 !wpuf-p-0 !wpuf-w-full"
-                            disabled
-                            type="text"
-                            value="<?php esc_attr_e( 'Value', 'wp-user-frontend' ); ?>">
-                    </td>
-                    <td></td>
-                </tr>
                 <tr
                 v-for="(option, index) in options"
                 :key="option.id"
@@ -459,7 +429,7 @@
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-field-options">
-<div class="wpuf-form-builder-field-options wpuf-px-6">
+<div class="wpuf-form-builder-field-options">
     <div v-if="!parseInt(editing_field_id)" class="options-fileds-section text-center">
         <p>
             <span class="loader"></span>
@@ -768,7 +738,7 @@
                     :value="val"
                     :checked="is_selected(val)"
                     :class="builder_class_names('checkbox')">
-                <label class="wpuf-ml-2 wpuf-text-sm wpuf-font-medium wpuf-text-gray-900">{{ label }}</label>
+                <label>{{ label }}</label>
             </div>
         </div>
     </div>
@@ -786,11 +756,11 @@
                 :checked="is_selected(val)"
                 :class="builder_class_names('checkbox')"
                 class="!wpuf-mt-[.5px] wpuf-rounded wpuf-border-gray-300 wpuf-text-indigo-600">
-            <label class="wpuf-ml-1 wpuf-text-sm wpuf-font-medium wpuf-text-gray-900">{{ label }}</label>
+            <label>{{ label }}</label>
         </div>
     </div>
 
-    <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-mb-0 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>
 </script>
 
@@ -948,7 +918,7 @@
         :value="field.default"
         :size="field.size"
     >
-    <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-mb-0 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>
 </script>
 
@@ -968,7 +938,7 @@
             :selected="is_selected(label)"
         >{{ label }}</option>
     </select>
-    <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-mb-0 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>
 </script>
 
@@ -981,7 +951,7 @@
         :value="field.default"
         :size="field.size"
     >
-    <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-mb-0 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>
 </script>
 
@@ -1004,7 +974,7 @@
         </div>
     </div>
 
-    <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-mb-0 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>
 </script>
 
@@ -1221,7 +1191,7 @@
         </div>
     </div>
 
-    <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-mb-0 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>
 </script>
 
@@ -1290,7 +1260,7 @@
 
     <text-editor v-if="'no' !== field.rich" :rich="field.rich" :default_text="field.default"></text-editor>
 
-    <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-mb-0 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>
 </script>
 
@@ -1304,7 +1274,7 @@
         :size="field.size"
     >
 
-    <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-mb-0 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>
 </script>
 
@@ -1317,7 +1287,7 @@
         :size="field.size"
         :class="builder_class_names('text')"
     >
-    <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-mb-0 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>
 </script>
 
@@ -1352,7 +1322,7 @@
         </div>
     </div>
 
-    <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-mb-0 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>
 </script>
 
@@ -1404,7 +1374,7 @@
             <select
                 :class="builder_class_names('select')"
             >
-                <option><?php _e( '— Select —', 'wp-user-frontend' ); ?></option>
+                <option class="wpuf-text-base !wpuf-leading-none"><?php _e( '— Select —', 'wp-user-frontend' ); ?></option>
                 <option v-for="term in sorted_terms" :value="term.id">{{ term.name }}</option>
             </select>
         </div>
@@ -1437,7 +1407,7 @@
         value=""
         autocomplete="off"
     >
-    <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-mb-0 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>
 </script>
 
@@ -1450,7 +1420,7 @@
         :size="field.size"
         :class="builder_class_names('textfield')"
     >
-    <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-mb-0 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>
 </script>
 
@@ -1470,7 +1440,7 @@
         :default_text="field.default"
         :rich="field.rich"></text-editor>
 
-    <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-mb-0 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>
 </script>
 
@@ -1483,7 +1453,7 @@
         :value="field.default"
         :size="field.size"
     >
-    <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-mb-0 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>
 </script>
 

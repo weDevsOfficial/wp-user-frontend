@@ -10,7 +10,7 @@
             <select
                 :class="builder_class_names('select')"
             >
-                <option><?php _e( '— Select —', 'wp-user-frontend' ); ?></option>
+                <option class="wpuf-text-base !wpuf-leading-none"><?php _e( '— Select —', 'wp-user-frontend' ); ?></option>
                 <option v-for="term in sorted_terms" :value="term.id">{{ term.name }}</option>
             </select>
         </div>
@@ -43,5 +43,5 @@
         value=""
         autocomplete="off"
     >
-    <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-mb-0 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>

@@ -466,7 +466,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
             'label'             => ucfirst( $this->tax_name ),
             'name'              => $this->tax_name,
             'is_meta'           => 'no',
-            'width'             => 'small',
+            'width'             => 'large',
             'type'              => 'select',
             'first'             => __( '- select -', 'wp-user-frontend' ),
             'show_inline'       => 'inline',

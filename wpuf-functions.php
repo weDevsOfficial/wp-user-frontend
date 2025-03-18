@@ -5276,8 +5276,8 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                             'type'      => 'textarea',
                             'name'      => 'wpuf_settings[notification][new_body]',
                             'value'     => "Hi Admin, \r\n\r\nA new post has been created in your site {sitename} ({siteurl}). \r\n\r\nHere is the details: \r\nPost Title: {post_title} \r\nContent: {post_content} \r\nAuthor: {author} \r\nPost URL: {permalink} \r\nEdit URL: {editlink}",
-                            'long_help' => '<h4 class="wpuf-m-0">You may use in to, subject & message:</h4>
-                                         <p class="wpuf-leading-8 wpuf-ml-3">
+                            'long_help' => '<h4 class="wpuf-mt-[24px] wpuf-mb-0">You may use in to, subject & message:</h4>
+                                         <p class="wpuf-leading-8 !wpuf-ml-0">
                                          <span data-clipboard-text="{post_title}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{post_title}</span>
                                          <span data-clipboard-text="{post_content}" class="wpuf-post-content wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{post_content}</span>
                                          <span data-clipboard-text="{post_excerpt}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{post_excerpt}</span>
@@ -5291,7 +5291,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                                          <span data-clipboard-text="{permalink}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{permalink}</span>
                                          <span data-clipboard-text="{editlink}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{editlink}</span>
                                          <span class="wpuf-pill-green">{custom_{NAME_OF_CUSTOM_FIELD}}</span>
-                                         e.g: <span class="wpuf-pill-green">{custom_website_url}</span> for website_url meta field</p>',
+                                         e.g: <span class="wpuf-pill-green">{custom_website_url}</span> for <i>website_url</i> meta field</p>',
                         ],
                     ],
                 ],

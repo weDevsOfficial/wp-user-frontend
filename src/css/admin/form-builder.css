@@ -108,7 +108,7 @@ h2#modules-menu.active_settings_tab svg.custom-stroke {
     background: #fff;
 }
 .selectize-control .selectize-input {
-    @apply wpuf-flex wpuf-items-center wpuf-justify-between wpuf-min-w-full wpuf-rounded-md wpuf-py-1 wpuf-px-2 wpuf-text-gray-900 !wpuf-shadow-sm placeholder:wpuf-text-gray-400 sm:wpuf-text-sm sm:wpuf-leading-6 wpuf-border !wpuf-border-gray-300 wpuf-max-w-full hover:wpuf-cursor-pointer
+    @apply wpuf-flex wpuf-items-center wpuf-justify-between wpuf-min-w-full wpuf-rounded-md wpuf-py-1 wpuf-px-2 wpuf-text-gray-900 !wpuf-shadow-sm placeholder:wpuf-text-gray-400 !wpuf-text-base wpuf-border !wpuf-border-gray-300 wpuf-max-w-full hover:wpuf-cursor-pointer
 }
 .selectize-control.multi .selectize-input [data-value] {
     background: #059669 !important;
@@ -134,6 +134,9 @@ h2#modules-menu.active_settings_tab svg.custom-stroke {
 .selectize-input.items.not-full.has-options.focus.input-active.dropdown-active.has-items {
     display: flex;
     justify-content: flex-start;
+}
+.selectize-input.items.full.has-options.has-items {
+    padding: 10px;
 }
 /*selectize styles*/
 .wpuf-icon-container {

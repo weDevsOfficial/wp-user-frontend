@@ -95,26 +95,39 @@
         ?>
     </div>
     <div class="wpuf-w-3/4 wpuf-min-h-screen wpuf-p-8">
-        <div class="wpuf-pb-6 wpuf-border-b wpuf-border-gray-200">
-            <h2 class="wpuf-text-2xl wpuf-mb-2 wpuf-mt-0">{{ active_settings_title }}</h2>
+        <div class="wpuf-pb-8">
+            <h2 class="wpuf-text-2xl wpuf-m-0 wpuf-leading-none">{{ active_settings_title }}</h2>
         </div>
         <?php
         global $post;
 
         $form_settings  = wpuf_get_form_settings( $post->ID );
         $form_post_type = ! empty( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
-
+?>
+        <div class="wpuf-border-y wpuf-border-gray-200 wpuf-py-8">
+        <?php
         foreach ( $settings_items as $section_key => $section ) {
             foreach ( $section as $settings_key => $settings_item ) {
                 if ( ! empty( $settings_item['section'] ) ) {
+                    $section_counter = 1;
+
                     foreach ( $settings_item['section'] as $section_key => $section ) {
+                        $class_list = 'wpuf-settings-body wpuf-pb-8';
+                        if ( 1 < $section_counter ) {
+                            $class_list .= ' wpuf-pt-6 wpuf-border-t wpuf-border-gray-200';
+                        }
+
+                        // if it is the last item of the section
+                        if ( $section_counter === count( $settings_item['section'] ) ) {
+                            $class_list = 'wpuf-settings-body wpuf-pt-6 wpuf-border-t wpuf-border-gray-200';
+                        }
                         ?>
                     <div
-                        class="wpuf-settings-body wpuf-py-4 wpuf-border-b wpuf-border-gray-300"
+                        class="<?php echo $class_list; ?>"
                         data-settings-body="<?php echo $settings_key; ?>"
                     >
-                        <p class="wpuf-text-lg wpuf-font-medium wpuf-mb-3"><?php echo $section['label']; ?></p>
-                        <p class="wpuf-text-gray-500 wpuf-text-[13px] wpuf-leading-5 !wpuf-mb-8 !wpuf-mt-0"><?php echo $section['desc']; ?></p>
+                        <p class="wpuf-text-lg wpuf-font-medium wpuf-mb-3 wpuf-mt-0 wpuf-leading-none"><?php echo $section['label']; ?></p>
+                        <p class="wpuf-text-gray-500 wpuf-text-[13px] wpuf-leading-5 !wpuf-mb-4 !wpuf-mt-0"><?php echo $section['desc']; ?></p>
                         <?php
                         if ( ! empty( $section['fields'] ) ) {
                             foreach ( $section['fields'] as $field_key => $field ) {
@@ -145,11 +158,12 @@
                         ?>
                     </div>
                         <?php
+                        $section_counter++;
                     }
                 } else {
                     ?>
                 <div
-                    class="wpuf-settings-body wpuf-py-4 wpuf-border-b wpuf-border-gray-300"
+                    class="wpuf-settings-body wpuf--mt-6"
                     data-settings-body="<?php echo $settings_key; ?>"
                 >
                     <?php
@@ -185,6 +199,9 @@
                 }
             }
         }
+        ?>
+        </div>
+            <?php
 
         if ( ! wpuf_is_pro_active() || empty( $settings_items['modules'] ) ) {
             ?>
@@ -304,7 +321,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
 
     if ( 'inline_fields' !== $field_key ) {
         ?>
-        <div class="wpuf-my-4 wpuf-input-container">
+        <div class="wpuf-mt-6 wpuf-input-container">
             <div class="wpuf-flex wpuf-items-center <?php echo ( 'color-picker' === $field['type'] || 'toggle' === $field['type'] ) ? 'wpuf-justify-between wpuf-w-2/5' : ''; ?>">
                 <?php if ( 'checkbox' === $field['type'] ) { ?>
                     <input
@@ -449,7 +466,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                     <?php
                     foreach ( $field['options'] as $key => $option ) {
                         ?>
-                        <div class="wpuf-relative wpuf-text-center wpuf-p-3 wpuf-pl-0">
+                        <div class="wpuf-relative wpuf-text-center wpuf-p-3 wpuf-pl-0 wpuf-pt-0">
                             <label>
                                 <input
                                     type="radio"
@@ -481,7 +498,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
             <?php
             if ( 'trailing-text' === $field['type'] ) {
                 ?>
-                <div class="wpuf-mt-2 wpuf-relative">
+                <div class="wpuf-relative">
                     <input
                         :class="setting_class_names('<?php echo $field['trailing_type']; ?>')"
                         type="<?php echo $field['trailing_type']; ?>"
@@ -489,7 +506,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                         id="<?php echo $field_key; ?>"
                         value="<?php echo $value; ?>"/>
                     <span
-                        class="wpuf-absolute wpuf-top-0 wpuf--right-px wpuf-h-full wpuf-bg-gray-50 wpuf-rounded-r-sm wpuf-text-gray-700 wpuf-border wpuf-border-gray-300 wpuf-text-base wpuf-py-[7px] wpuf-px-[15px]">
+                        class="wpuf-absolute wpuf-top-0 wpuf--right-px wpuf-h-full wpuf-bg-gray-50 wpuf-rounded-r-[6px] wpuf-text-gray-700 wpuf-border wpuf-border-gray-300 wpuf-text-base wpuf-py-[7px] wpuf-px-[15px]">
                         <?php echo $field['trailing_text']; ?>
                     </span>
                 </div>
@@ -550,6 +567,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                         ?>
                         <input
                             :class="setting_class_names('text')"
+                            class="!wpuf-mt-2"
                             type="<?php echo $inner_field['type']; ?>"
                             name="wpuf_settings[<?php echo $inner_field_key; ?>]"
                             <?php echo ! empty( $inner_field['placeholder'] ) ? 'placeholder=' . $inner_field['placeholder'] : ''; ?>
@@ -562,7 +580,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                         ?>
                         <input
                             :class="setting_class_names('text')"
-                            class="datepicker"
+                            class="datepicker !wpuf-mt-2"
                             type="text"
                             name="wpuf_settings[<?php echo $inner_field_key; ?>]"
                             id="<?php echo $inner_field_key; ?>"
@@ -577,6 +595,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                             id="<?php echo $inner_field_key; ?>"
                             name="<?php echo $inner_field_key; ?>"
                             data-value="<?php echo $value_str; ?>"
+                            class="!wpuf-mt-2"
                             :class="setting_class_names('dropdown')">
                             <?php
                             foreach ( $inner_field['options'] as $index => $option ) {

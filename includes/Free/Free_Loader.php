@@ -256,7 +256,7 @@ class Free_Loader extends Pro_Prompt {
             'name'           => 'gmap_api_key',
             'label'          => __( 'Google Map API',
                                     'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
-            'desc'           => __( '<a target="_blank" href="https://developers.google.com/maps/documentation/javascript">API</a> key is needed to render Google Maps',
+            'desc'           => __( '<a target="_blank" href="https://developers.google.com/maps/documentation/javascript/get-api-key">API</a> key is needed to render Google Maps',
                                     'wp-user-frontend' ),
             'class'          => 'pro-preview',
             'is_pro_preview' => true,
@@ -1589,7 +1589,7 @@ class Free_Loader extends Pro_Prompt {
                                          <span data-clipboard-text="{permalink}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{permalink}</span>
                                          <span data-clipboard-text="{editlink}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{editlink}</span>
                                          <span class="wpuf-pill-green">{custom_{NAME_OF_CUSTOM_FIELD}}</span>
-                                         e.g: <span class="wpuf-pill-green">{custom_website_url}</span> for website_url meta field</p>',
+                                         e.g: <span class="wpuf-pill-green">{custom_website_url}</span> for <i>website_url</i> meta field</p>',
             ],
         ];
 

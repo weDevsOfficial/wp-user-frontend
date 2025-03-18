@@ -6,7 +6,7 @@
     </div>
     <ul :class="[option_field.inline ? 'list-inline' : '']">
         <li v-for="(option, key) in option_field.options">
-            <label class="wpuf-flex wpuf-items-center">
+            <label class="wpuf-block text-sm/6 wpuf-font-medium wpuf-text-gray-900 !wpuf-mb-0">
                 <input type="checkbox" :class="builder_class_names('checkbox')" class="!wpuf-mr-2" :value="key" v-model="value">
                 {{ option }}
             </label>

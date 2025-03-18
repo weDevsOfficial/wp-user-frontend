@@ -25,39 +25,9 @@
     </div>
 
     <div class="wpuf-mt-4">
+        <span class="wpuf-text-[14px] wpuf-text-gray-700 wpuf-font-medium"><?php esc_attr_e( 'Label & Values', 'wp-user-frontend' ); ?></span>
         <table class="option-field-option-chooser">
             <tbody>
-                <tr
-                    class="wpuf-flex wpuf-justify-start wpuf-items-center">
-                    <td class="wpuf-flex wpuf-mt-1 wpuf-opacity-0">
-                        <div>
-                            <input
-                                type="radio"
-                                class="!wpuf-mt-0"
-                                :class="builder_class_names('radio')"
-                            >
-                        </div>
-                        <div>
-                            <i class="fa fa-bars"></i>
-                        </div>
-                    </td>
-                    <td class="wpuf-options-label-holder wpuf-relative">
-                        <input
-                            class="!wpuf-border-none !wpuf-shadow-none !wpuf-text-gray-700 !wpuf-m-0 !wpuf-p-0"
-                            disabled
-                            type="text"
-                            value="<?php esc_attr_e( 'Label', 'wp-user-frontend' ); ?>">
-                        <help-text class="wpuf-absolute wpuf-left-11 wpuf-top-[.70rem]" text="<?php esc_attr_e( 'Do not use & or other special character for option label', 'wp-user-frontend' ); ?>"></help-text>
-                    </td>
-                    <td v-if="show_value">
-                        <input
-                            class="!wpuf-border-none !wpuf-shadow-none !wpuf-text-gray-700 !wpuf-m-0 !wpuf-p-0 !wpuf-w-full"
-                            disabled
-                            type="text"
-                            value="<?php esc_attr_e( 'Value', 'wp-user-frontend' ); ?>">
-                    </td>
-                    <td></td>
-                </tr>
                 <tr
                 v-for="(option, index) in options"
                 :key="option.id"

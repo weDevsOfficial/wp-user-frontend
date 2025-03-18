@@ -159,7 +159,7 @@ class Admin_Form_Builder_Ajax {
                     'taxonomy'     => $tax->name,
                 ];
 
-                $cat .= '<div class="wpuf-my-4 wpuf-input-container"><div class="wpuf-flex wpuf-items-center"><label for="default_category" class="wpuf-text-sm wpuf-text-gray-700 wpuf-my-2">' . __( 'Default ', 'wp-user-frontend' ) . $post_type . ' ' . $tax->name . '</label></div>';
+                $cat .= '<div class="wpuf-mt-6 wpuf-input-container"><div class="wpuf-flex wpuf-items-center"><label for="default_category" class="wpuf-text-sm wpuf-text-gray-700 wpuf-my-2">' . __( 'Default ', 'wp-user-frontend' ) . $post_type . ' ' . $tax->name . '</label></div>';
 
                 $cat .= '<select
                     multiple
@@ -187,7 +187,7 @@ class Admin_Form_Builder_Ajax {
     public function get_roles() {
         $roles = wpuf_get_user_roles();
 
-        $html = '<div class="wpuf-my-4 wpuf-input-container"><div class="wpuf-flex wpuf-items-center"><label for="default_category" class="wpuf-text-sm wpuf-text-gray-700 wpuf-my-2">' . __( 'Choose who can submit post ', 'wp-user-frontend' ) . '</label></div>';
+        $html = '<div class="wpuf-mt-6 wpuf-input-container"><div class="wpuf-flex wpuf-items-center"><label for="default_category" class="wpuf-text-sm wpuf-text-gray-700 wpuf-my-2">' . __( 'Choose who can submit post ', 'wp-user-frontend' ) . '</label></div>';
         $html .= '<select
                     multiple
                     id="roles"

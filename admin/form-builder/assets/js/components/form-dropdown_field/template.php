@@ -9,5 +9,5 @@
             :selected="is_selected(label)"
         >{{ label }}</option>
     </select>
-    <p v-if="field.help" class="wpuf-mt-2 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-mb-0 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>

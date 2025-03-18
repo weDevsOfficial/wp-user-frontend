@@ -137,7 +137,7 @@ class Menu {
                     break;
                 }
 
-                require_once WPUF_ROOT . '/includes/Admin/template-parts/modal-v4.1.php';
+                include WPUF_ROOT . '/includes/Admin/template-parts/modal-v4.1.php';
 
                 break;
         }

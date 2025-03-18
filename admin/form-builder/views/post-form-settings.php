@@ -540,7 +540,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
 
             if ( ! empty( $field['long_help'] ) ) {
                 ?>
-                <div class="wpuf-text-sm wpuf-mt-2">
+                <div class="wpuf-text-sm wpuf-mt-4">
                     <?php echo wp_kses_post( $field['long_help'] ); ?>
                 </div>
                 <?php
@@ -623,7 +623,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
 
             if ( ! empty( $field['long_help'] ) ) {
                 ?>
-            <div class="wpuf-text-sm wpuf-mt-2">
+            <div class="wpuf-text-sm wpuf-mt-4">
                 <?php echo wp_kses_post( $field['long_help'] ); ?>
             </div>
                 <?php

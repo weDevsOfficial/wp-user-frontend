@@ -1362,6 +1362,7 @@
     <select
         v-if="'select' === field.type"
         :class="builder_class_names('select')"
+        class="!wpuf-text-base"
         v-html ="get_term_dropdown_options()">
     </select>
 
@@ -1369,6 +1370,7 @@
         <div>
             <select
                 :class="builder_class_names('select')"
+                class="!wpuf-text-base"
             >
                 <option class="wpuf-text-base !wpuf-leading-none"><?php _e( '— Select —', 'wp-user-frontend' ); ?></option>
                 <option v-for="term in sorted_terms" :value="term.id">{{ term.name }}</option>
@@ -1379,6 +1381,7 @@
     <div v-if="'multiselect' === field.type" class="category-wrap">
         <select
             :class="builder_class_names('select')"
+            class="!wpuf-text-base"
             v-html="get_term_dropdown_options()"
             multiple
         >

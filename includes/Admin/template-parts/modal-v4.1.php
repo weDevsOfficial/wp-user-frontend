@@ -1,5 +1,5 @@
 <?php use WeDevs\Wpuf\Free\Pro_Prompt; ?>
-<div class="wpuf-form-template-modal wpuf-w-[calc(100%+20px)] wpuf-h-[150vh] wpuf--mb-[30px] wpuf-ml-[-20px] wpuf-bg-gray-100 wpuf-hidden">
+<div class="wpuf-form-template-modal wpuf-w-[calc(100%+20px)] !wpuf-h-[150vh] !wpuf--mb-[30px] wpuf-ml-[-20px] wpuf-bg-gray-100 wpuf-hidden">
     <div class="wpuf-relative wpuf-mx-auto wpuf-p-20">
         <button
             class="wpuf-absolute wpuf-right-4 wpuf-top-4 wpuf-text-gray-400 hover:wpuf-text-gray-600 focus:wpuf-outline-none wpuf-close-btn wpuf-border wpuf-border-gray-200 wpuf-rounded-3xl wpuf-p-2 hover:wpuf-border-gray-300">
@@ -27,7 +27,7 @@
                         <div class="wpuf-relative wpuf-group wpuf-shadow-base">
                             <img src="<?php esc_attr_e( WPUF_ASSET_URI . '/images/templates/blank.svg' ); ?>" alt="Blank Form">
                             <div class="wpuf-absolute wpuf-opacity-0 group-hover:wpuf-opacity-70 wpuf-transition-all wpuf-z-10 wpuf-text-center wpuf-flex wpuf-flex-col wpuf-justify-center wpuf-items-center wpuf-bg-emerald-900 wpuf-h-full wpuf-w-full wpuf-top-0 wpuf-left-0 wpuf-text-white wpuf-p-10 wpuf-rounded-md"></div>
-                            <a href="<?php echo esc_url( $blank_form_url ); ?>" class="wpuf-btn-secondary wpuf-w-max wpuf-absolute wpuf-top-[50%] wpuf-left-[50%] wpuf--translate-y-[50%] wpuf--translate-x-[50%] wpuf-z-20 wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-border-transparent" title="<?php echo esc_attr( 'Blank Form' ); ?>">
+                            <a href="<?php echo esc_url( $blank_form_url ); ?>" class="wpuf-btn-secondary wpuf-w-max wpuf-absolute wpuf-top-[50%] wpuf-left-[50%] wpuf--translate-y-[50%] wpuf--translate-x-[50%] wpuf-z-20 wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-border-transparent focus:wpuf-shadow-none" title="<?php echo esc_attr( 'Blank Form' ); ?>">
                                 <?php esc_html_e( 'Create Form', 'wp-user-frontend' ); ?>
                             </a>
                         </div>
@@ -82,7 +82,7 @@
                                     ?>
                                     <a
                                         href="<?php echo esc_url( $url ); ?>"
-                                        class="wpuf-btn-secondary wpuf-w-max wpuf-absolute wpuf-top-[50%] wpuf-left-[50%] wpuf--translate-y-[50%] wpuf--translate-x-[50%] wpuf-z-20 wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-border-transparent"
+                                        class="wpuf-btn-secondary wpuf-w-max wpuf-absolute wpuf-top-[50%] wpuf-left-[50%] wpuf--translate-y-[50%] wpuf--translate-x-[50%] wpuf-z-20 wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-border-transparent focus:wpuf-shadow-none"
                                         title="<?php echo esc_attr( $template->get_title() ); ?>" <?php echo esc_attr($disabled ); ?>
                                     >
                                         <?php esc_html_e( 'Create Form', 'wp-user-frontend' ); ?>
@@ -113,7 +113,7 @@
                                     <a
                                         href="<?php echo esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ); ?>"
                                         target="_blank"
-                                        class="wpuf-btn-secondary wpuf-w-max wpuf-absolute wpuf-top-[50%] wpuf-left-[50%] wpuf--translate-y-[50%] wpuf--translate-x-[50%] wpuf-z-20 wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-border-transparent"
+                                        class="wpuf-btn-secondary wpuf-w-max wpuf-absolute wpuf-top-[50%] wpuf-left-[50%] wpuf--translate-y-[50%] wpuf--translate-x-[50%] wpuf-z-20 wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-border-transparent focus:wpuf-shadow-none"
                                         title="<?php echo esc_attr( $template->get_title() ); ?>" >
                                         <?php esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' ); ?>
                                     </a>

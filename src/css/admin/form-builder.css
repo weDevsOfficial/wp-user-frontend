@@ -20,7 +20,7 @@
     }
 
     .wpuf-pill-green {
-        @apply wpuf-text-emerald-800 wpuf-bg-emerald-50 wpuf-border wpuf-border-solid wpuf-border-emerald-200 wpuf-rounded-[5px] wpuf-py-1 wpuf-px-3 wpuf-text-sm wpuf-mr-3;
+        @apply wpuf-text-emerald-800 wpuf-bg-emerald-50 wpuf-border wpuf-border-solid wpuf-border-emerald-200 wpuf-rounded-[5px] wpuf-py-1 wpuf-px-3 wpuf-text-sm wpuf-mr-1;
     }
 
     .panel-field-opt {

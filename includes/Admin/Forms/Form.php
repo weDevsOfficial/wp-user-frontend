@@ -61,7 +61,7 @@ class Form {
     public function guest_post() {
         $settings = $this->get_settings();
 
-        return isset( $settings['guest_post'] ) && wpuf_is_checkbox_or_toggle_on( $settings['guest_post'] );
+        return ! empty( $settings['post_permission'] ) && 'guest_post' === $settings['post_permission'];
     }
 
     /**
@@ -192,7 +192,7 @@ class Form {
             // $fallback_cost     = $this->get_subs_fallback_cost();
 
             // guest post payment checking
-            if ( ! is_user_logged_in() && isset( $form_settings['post_permission'] ) && 'guest_post' === $form_settings['post_permission'] ) {
+            if ( ! is_user_logged_in() && ( isset( $form_settings['post_permission'] ) && 'guest_post' === $form_settings['post_permission'] ) ) {
 
                 //if ( $form->is_charging_enabled() ) {
 
@@ -253,7 +253,7 @@ class Form {
                 }
             }
         } else {
-            if ( isset( $form_settings['post_permission'] ) && 'guest_post' === $form_settings['post_permission'] && !
+            if ( ( isset( $form_settings['post_permission'] ) && 'guest_post' === $form_settings['post_permission'] ) && !
                 is_user_logged_in() ) {
                 $user_can_post = 'yes';
             }

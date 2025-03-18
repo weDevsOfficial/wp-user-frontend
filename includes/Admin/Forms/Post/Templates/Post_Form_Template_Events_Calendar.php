@@ -181,6 +181,7 @@ class Post_Form_Template_Events_Calendar extends Form_Template{
             'post_type'        => 'tribe_events',
             'post_status'      => 'publish',
             'default_cat'      => '-1',
+            'post_permission'  => '-1',
             'guest_post'       => 'false',
             'message_restrict' => __( 'This page is restricted. Please Log in / Register to view this page.',
                                       'wp-user-frontend' ),

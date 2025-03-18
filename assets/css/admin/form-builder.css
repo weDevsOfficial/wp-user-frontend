@@ -2750,6 +2750,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   margin-top: 0.25rem;
 }
 
+.wpuf-mt-10 {
+  margin-top: 2.5rem;
+}
+
 .wpuf-mt-12 {
   margin-top: 3rem;
 }
@@ -3284,6 +3288,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
        column-gap: 0.75rem;
 }
 
+.wpuf-gap-x-6 {
+  -moz-column-gap: 1.5rem;
+       column-gap: 1.5rem;
+}
+
 .wpuf--space-x-px > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(-1px * var(--tw-space-x-reverse));
@@ -3332,6 +3341,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-text-wrap {
   text-wrap: wrap;
+}
+
+.wpuf-text-pretty {
+  text-wrap: pretty;
 }
 
 .\!wpuf-rounded-\[6px\] {
@@ -3931,6 +3944,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   padding-bottom: 0.5rem;
 }
 
+.wpuf-py-24 {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
 .wpuf-py-3 {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
@@ -4105,6 +4123,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 .wpuf-text-3xl {
   font-size: 1.875rem;
   line-height: 2.25rem;
+}
+
+.wpuf-text-4xl {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
 }
 
 .wpuf-text-5xl {
@@ -5592,6 +5615,21 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
     padding: 0px;
   }
 
+  .sm\:wpuf-px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .sm\:wpuf-py-32 {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
+
+  .sm\:wpuf-text-5xl {
+    font-size: 3rem;
+    line-height: 1;
+  }
+
   .sm\:wpuf-text-sm {
     font-size: 0.875rem;
     line-height: 1.25rem;
@@ -5609,6 +5647,13 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
 
   .md\:wpuf-flex-row {
     flex-direction: row;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:wpuf-px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 }
 

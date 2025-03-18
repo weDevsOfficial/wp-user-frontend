@@ -311,6 +311,19 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
     $value = ! empty( $field['default'] ) ? $field['default'] : '';
     $value = ! empty( $field['value'] ) ? $field['value'] : $value;                           // default value
 
+    // replace default value if already saved in DB
+    if ( ! empty( $field['name'] ) ) {
+        preg_match('/wpuf_settings\[(.*?)\]\[(.*?)\]/', $field['name'], $matches);
+
+        if (isset($matches[1]) && isset($matches[2])) {
+            $dynamic_key = $matches[1];
+            $temp_key    = $matches[2];
+            $value       = isset( $form_settings[ $dynamic_key ][ $temp_key ] ) ? $form_settings[ $dynamic_key ][ $temp_key ] : $value;
+        }
+    } else {
+        $value = isset( $form_settings[ $field_key ] ) ? $form_settings[ $field_key ] : $value;   // checking with isset because saved value can be empty string
+    }
+
     // if the field is a pro fields preview, no need to load fields from db
     if ( empty( $field['pro_preview'] ) ) {
         $value = isset( $form_settings[ $field_key ] ) ? $form_settings[ $field_key ] : $value;   // checking with isset because saved value can be empty string
@@ -538,7 +551,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
         <?php
     } else {
         ?>
-        <div class="wpuf-flex wpuf-input-container">
+        <div class="wpuf-mt-6 wpuf-flex wpuf-input-container">
             <?php
             $index_counter = 0;
             foreach ( $field['fields'] as $inner_field_key => $inner_field ) {

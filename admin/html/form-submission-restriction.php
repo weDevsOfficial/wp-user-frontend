@@ -3,7 +3,7 @@ global $post;
 
 $form_settings = wpuf_get_form_settings( $post->ID );
 
-$guest_post             = ! empty( $form_settings['guest_post'] ) ? $form_settings['guest_post'] : 'false';
+$guest_post             = ! empty( $form_settings['post_permission'] ) && 'guest_post' === $form_settings['post_permission'] ? 'true' : 'false';
 $role_base              = ! empty( $form_settings['role_base'] ) ? $form_settings['role_base'] : 'false';
 $roles                  = ! empty( $form_settings['roles'] ) ? $form_settings['roles'] : [ 'administrator' ];
 $guest_details          = ! empty( $form_settings['guest_details'] ) ? $form_settings['guest_details'] : 'true';

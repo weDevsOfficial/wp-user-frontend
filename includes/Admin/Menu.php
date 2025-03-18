@@ -103,7 +103,14 @@ class Menu {
      * @return void
      */
     public function wpuf_post_forms_page() {
+//        if ( wpuf_is_pro_active() && defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.1.0', '<' ) ) {
+//            require_once WPUF_INCLUDES . '/Admin/views/need-to-update.php';
+//
+//            return;
+//        }
+
         add_action( 'admin_footer', [ $this, 'load_headway_badge' ] );
+
         // phpcs:ignore WordPress.Security.NonceVerification
         $action           = ! empty( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : null;
         $add_new_page_url = admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' );

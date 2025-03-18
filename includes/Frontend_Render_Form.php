@@ -250,7 +250,7 @@ class Frontend_Render_Form {
                         do_action( 'wpuf_edit_post_form_top', $form_id, $post_id, $this->form_settings );
                     }
 
-                    if ( ! is_user_logged_in() && $this->form_settings['guest_post'] == 'true' && $this->form_settings['guest_details'] == 'true' ) {
+                    if ( ! is_user_logged_in() && ( isset( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) && $this->form_settings['guest_details'] == 'true' ) {
                         $this->guest_fields( $this->form_settings );
                     }
 

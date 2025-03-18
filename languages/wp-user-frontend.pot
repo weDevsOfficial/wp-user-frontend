@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 4.0.14\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2025-03-17 09:22:39+00:00\n"
+"POT-Creation-Date: 2025-03-18 06:54:35+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -210,7 +210,7 @@ msgstr ""
 #: admin/form-builder/assets/js/components/form-column_field/template.php:57
 #: assets/js-templates/form-components.php:30
 #: assets/js-templates/form-components.php:134
-#: assets/js-templates/form-components.php:869
+#: assets/js-templates/form-components.php:839
 msgid "is available in Pro Version"
 msgstr ""
 
@@ -256,46 +256,30 @@ msgstr ""
 msgid "Sync values"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/field-option-data/template.php:49
-#: admin/template.php:234 admin/template.php:286
-#: assets/js-templates/form-components.php:356
-#: includes/Admin/Forms/Admin_Template.php:275
-#: includes/Admin/Forms/Admin_Template.php:336
-msgid "Label"
+#: admin/form-builder/assets/js/components/field-option-data/template.php:28
+#: assets/js-templates/form-components.php:335
+msgid "Label & Values"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/field-option-data/template.php:50
-#: assets/js-templates/form-components.php:357
-msgid "Do not use & or other special character for option label"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/field-option-data/template.php:57
-#: admin/template.php:234 admin/template.php:286
-#: assets/js-templates/form-components.php:364
-#: includes/Admin/Forms/Admin_Template.php:276
-#: includes/Admin/Forms/Admin_Template.php:337
-msgid "Value"
-msgstr ""
-
-#: admin/form-builder/assets/js/components/field-option-data/template.php:138
-#: assets/js-templates/form-components.php:445
+#: admin/form-builder/assets/js/components/field-option-data/template.php:108
+#: assets/js-templates/form-components.php:415
 msgid "Clear Selection"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-pro-feature-alert/template.php:5
-#: assets/js-templates/form-components.php:455
+#: assets/js-templates/form-components.php:425
 msgid "Available in PRO version"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-visibility/template.php:77
-#: assets/js-templates/form-components.php:747
+#: assets/js-templates/form-components.php:717
 msgid "No subscription plan found."
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-featured_image/template.php:7
 #: admin/form-builder/assets/js/components/form-image_upload/template.php:11
-#: assets/js-templates/form-components.php:995
-#: assets/js-templates/form-components.php:1212 class/render-form.php:1670
+#: assets/js-templates/form-components.php:961
+#: assets/js-templates/form-components.php:1178 class/render-form.php:1670
 #: includes/Fields/Form_Field_Featured_Image.php:128
 #: includes/Fields/Form_Field_Image.php:122
 #: includes/Fields/Form_Field_Image.php:143 includes/Render_Form.php:1527
@@ -303,38 +287,38 @@ msgid "Select Image"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-fields-v4-1/template.php:10
-#: assets/js-templates/form-components.php:1073
+#: assets/js-templates/form-components.php:1039
 msgid "Search Field"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-fields-v4-1/template.php:122
-#: assets/js-templates/form-components.php:1185
+#: assets/js-templates/form-components.php:1151
 msgid "Got an idea for a new field?"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-fields-v4-1/template.php:125
-#: assets/js-templates/form-components.php:1188
+#: assets/js-templates/form-components.php:1154
 msgid "We'd love to hear it!"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-fields-v4-1/template.php:131
-#: assets/js-templates/form-components.php:1194
+#: assets/js-templates/form-components.php:1160
 msgid "Share Your Idea"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-post_content/template.php:11
-#: assets/js-templates/form-components.php:1260 class/render-form.php:1058
+#: assets/js-templates/form-components.php:1226 class/render-form.php:1058
 #: includes/Fields/Form_Field_Post_Content.php:72 includes/Render_Form.php:915
 msgid "Insert Photo"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-recaptcha/template.php:8
-#: assets/js-templates/form-components.php:1367
+#: assets/js-templates/form-components.php:1333
 msgid "Invisible reCaptcha"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-taxonomy/template.php:13
-#: assets/js-templates/form-components.php:1407
+#: assets/js-templates/form-components.php:1373
 msgid "— Select —"
 msgstr ""
 
@@ -362,7 +346,7 @@ msgstr ""
 
 #: admin/form-builder/views/form-builder-v4.1.php:125
 #: admin/form-builder/views/form-builder.php:22
-#: admin/form-builder/views/post-form-settings.php:275
+#: admin/form-builder/views/post-form-settings.php:292
 msgid "Saving Form Data"
 msgstr ""
 
@@ -383,7 +367,7 @@ msgid "Field Options"
 msgstr ""
 
 #: admin/form-builder/views/form-builder.php:18
-#: admin/form-builder/views/post-form-settings.php:273
+#: admin/form-builder/views/post-form-settings.php:290
 msgid "Save Form"
 msgstr ""
 
@@ -391,9 +375,9 @@ msgstr ""
 msgid "Show Form"
 msgstr ""
 
-#: admin/form-builder/views/post-form-settings.php:133
-#: admin/form-builder/views/post-form-settings.php:171
-#: admin/form-builder/views/post-form-settings.php:201
+#: admin/form-builder/views/post-form-settings.php:146
+#: admin/form-builder/views/post-form-settings.php:185
+#: admin/form-builder/views/post-form-settings.php:218
 #: includes/Admin/template-parts/modal-v4.1.php:118
 #: includes/Admin/template-parts/modal.php:105
 #: includes/Free/Free_Loader.php:1001 includes/Free/Free_Loader.php:1083
@@ -401,11 +385,11 @@ msgstr ""
 msgid "Upgrade to PRO"
 msgstr ""
 
-#: admin/form-builder/views/post-form-settings.php:252
+#: admin/form-builder/views/post-form-settings.php:269
 msgid "Go To Module Page"
 msgstr ""
 
-#: admin/form-builder/views/post-form-settings.php:265
+#: admin/form-builder/views/post-form-settings.php:282
 #: class/subscription.php:869 includes/Admin/Admin_Subscription.php:931
 #: includes/Admin/Forms/Admin_Form_Builder.php:308
 #: includes/Admin/Forms/Admin_Form_Builder.php:310
@@ -415,7 +399,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: admin/form-builder/views/post-form-settings.php:329
+#: admin/form-builder/views/post-form-settings.php:346
 msgid "Learn More"
 msgstr ""
 
@@ -1433,6 +1417,18 @@ msgstr ""
 #: admin/template.php:190 includes/Admin/Forms/Admin_Template.php:223
 #: includes/Fields/Field_Contract.php:693
 msgid "Teeny Rich textarea"
+msgstr ""
+
+#: admin/template.php:234 admin/template.php:286
+#: includes/Admin/Forms/Admin_Template.php:275
+#: includes/Admin/Forms/Admin_Template.php:336
+msgid "Label"
+msgstr ""
+
+#: admin/template.php:234 admin/template.php:286
+#: includes/Admin/Forms/Admin_Template.php:276
+#: includes/Admin/Forms/Admin_Template.php:337
+msgid "Value"
 msgstr ""
 
 #: admin/template.php:285 includes/Admin/Forms/Admin_Template.php:333
@@ -2672,19 +2668,19 @@ msgstr ""
 msgid "Others"
 msgstr ""
 
-#: includes/Admin/Forms/Form.php:181 includes/Admin/Forms/Form.php:231
+#: includes/Admin/Forms/Form.php:182 includes/Admin/Forms/Form.php:232
 msgid "Post Limit Exceeded for your purchased subscription pack."
 msgstr ""
 
-#: includes/Admin/Forms/Form.php:204
+#: includes/Admin/Forms/Form.php:205
 #. translators: %s: Pack page link
 msgid ""
 "You need to  <a href=\"%s\">purchase a subscription package</a> to post in "
 "this form"
 msgstr ""
 
-#: includes/Admin/Forms/Form.php:211 includes/Admin/Forms/Form.php:244
-#: includes/Admin/Forms/Form.php:251
+#: includes/Admin/Forms/Form.php:212 includes/Admin/Forms/Form.php:245
+#: includes/Admin/Forms/Form.php:252
 msgid "Payment type not selected for this form. Please contact admin."
 msgstr ""
 
@@ -5000,8 +4996,8 @@ msgstr ""
 #: includes/Free/Free_Loader.php:259
 msgid ""
 "<a target=\"_blank\" "
-"href=\"https://developers.google.com/maps/documentation/javascript\">API</"
-"a> key is needed to render Google Maps"
+"href=\"https://developers.google.com/maps/documentation/javascript/get-api-"
+"key\">API</a> key is needed to render Google Maps"
 msgstr ""
 
 #: includes/Free/Free_Loader.php:266 wpuf-functions.php:2070

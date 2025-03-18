@@ -140,6 +140,7 @@ class Post_Form_Template_Post extends Form_Template {
             'post_type'                  => 'post',
             'post_status'                => 'publish',
             'default_cat'                => '-1',
+            'post_permission'            => '-1',
             'guest_post'                 => 'false',
             'message_restrict'           => __( 'This page is restricted. Please {login} / {register} to view this page.', 'wp-user-frontend' ),
             'redirect_to'                => 'post',

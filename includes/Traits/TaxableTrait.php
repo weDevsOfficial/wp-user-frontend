@@ -557,7 +557,7 @@ trait TaxableTrait {
             'cost'   => html_entity_decode( $billing_amount, ENT_COMPAT, 'UTF-8' ),
         ];
 
-        echo json_encode( $response );
+        echo wp_json_encode( $response );
         die();
     }
 

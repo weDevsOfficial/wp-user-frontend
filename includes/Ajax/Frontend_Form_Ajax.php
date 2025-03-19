@@ -489,7 +489,7 @@ class Frontend_Form_Ajax {
 
                 // is valid email?
                 if ( ! is_email( $guest_email ) ) {
-                    echo json_encode(
+                    echo wp_json_encode(
                         [
                             'success' => false,
                             'error'   => __( 'Invalid email address.', 'wp-user-frontend' ),

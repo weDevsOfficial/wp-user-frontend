@@ -277,7 +277,7 @@ class Admin_Tools {
             array_push( $formatted_data, $data );
         }
 
-        $json_file = json_encode( $formatted_data ); // Encode data into json data
+        $json_file = wp_json_encode( $formatted_data ); // Encode data into json data
 
         ob_clean();
 

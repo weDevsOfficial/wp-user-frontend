@@ -226,7 +226,7 @@ class Paypal {
                 'p3'            => ! empty( $data['custom']['billing_cycle_number'] ) ? $data['custom']['billing_cycle_number'] : '0',
                 't3'            => $period,
                 'item_name'     => $data['custom']['post_title'],
-                'custom'        => json_encode(
+                'custom'        => wp_json_encode(
                     [
                         'billing_amount' => $billing_amount,
                         'type'           => $data['type'],
@@ -268,7 +268,7 @@ class Paypal {
                 'item_number'   => $data['item_number'],
                 'charset'       => 'UTF-8',
                 'rm'            => '2',
-                'custom'        => json_encode(
+                'custom'        => wp_json_encode(
                     [
                         'type'      => $data['type'],
                         'user_id'   => $user_id,

@@ -41,7 +41,7 @@ class Render_Form {
      * @param string $error
      */
     public function send_error( $error ) {
-        echo json_encode( [
+        echo wp_json_encode( [
             'success' => false,
             'error'   => $error,
         ] );
@@ -321,7 +321,7 @@ class Render_Form {
             $cond_inputs['type']    = $form_field['input_type'];
             $cond_inputs['name']    = $form_field['name'];
             $cond_inputs['form_id'] = $form_id;
-            $condition              = json_encode( $cond_inputs );
+            $condition              = wp_json_encode( $cond_inputs );
         } else {
             $condition = '';
         }
@@ -329,13 +329,13 @@ class Render_Form {
         //taxnomy name create unique
         if ( $form_field['input_type'] == 'taxonomy' ) {
             $cond_inputs['name'] = $form_field['name'] . '_' . $form_field['type'] . '_' . $form_field['id'];
-            $condition           = json_encode( $cond_inputs );
+            $condition           = wp_json_encode( $cond_inputs );
         }
 
         //for section break
         if ( $form_field['input_type'] == 'section_break' ) {
             $cond_inputs['name'] = $form_field['name'] . '_' . $form_field['id'];
-            $condition           = json_encode( $cond_inputs );
+            $condition           = wp_json_encode( $cond_inputs );
         } ?>
         <script type="text/javascript">
             wpuf_conditional_items.push(<?php echo esc_html( $condition ); ?>);
@@ -1299,7 +1299,7 @@ class Render_Form {
             //'term_id'      => $selected
         ];
         $attr = apply_filters( 'wpuf_taxonomy_checklist_args', $attr ); ?>
-        <span data-taxonomy=<?php echo esc_attr( json_encode( $attr ) ); ?>></span>
+        <span data-taxonomy=<?php echo esc_attr( wp_json_encode( $attr ) ); ?>></span>
         <?php
     }
 

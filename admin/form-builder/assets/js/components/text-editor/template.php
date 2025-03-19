@@ -1,6 +1,6 @@
 <?php
-wp_enqueue_style( 'editor-css', site_url() . 'wp-includes/css/editor.css', array(), null, 'all' );
-wp_enqueue_style( 'skin-css', site_url() . 'wp-includes/js/tinymce/skins/lightgray/skin.min.css', array(), null, 'all' );
+wp_enqueue_style( 'editor-css', site_url() . '/wp-includes/css/editor.css', array(), null, 'all' );
+wp_enqueue_style( 'skin-css', site_url() . '/wp-includes/js/tinymce/skins/lightgray/skin.min.css', array(), null, 'all' );
 ?>
 <div class="wpuf-text-editor">
 

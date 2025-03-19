@@ -1,6 +1,6 @@
 <?php
-wp_enqueue_style( 'editor-css', site_url() . 'wp-includes/css/editor.css', array(), null, 'all' );
-wp_enqueue_style( 'skin-css', site_url() . 'wp-includes/js/tinymce/skins/lightgray/skin.min.css', array(), null, 'all' );
+wp_enqueue_style( 'editor-css', site_url() . '/wp-includes/css/editor.css', array(), null, 'all' );
+wp_enqueue_style( 'skin-css', site_url() . '/wp-includes/js/tinymce/skins/lightgray/skin.min.css', array(), null, 'all' );
 ?>
 <script type="text/x-template" id="tmpl-wpuf-builder-stage">
 <div id="form-preview-stage" class="wpuf-style">

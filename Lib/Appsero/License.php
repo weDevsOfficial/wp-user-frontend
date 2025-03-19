@@ -272,23 +272,23 @@ class License {
 
                 <div class="appsero-license-details">
                     <p>
-                        <?php printf( $this->client->__trans( 'Activate <strong>%s</strong> by your license key to get professional support and automatic update from your WordPress dashboard.' ), $this->client->name ); ?>
+                        <?php printf( wp_kses_post( $this->client->__trans( 'Activate <strong>%s</strong> by your license key to get professional support and automatic update from your WordPress dashboard.' ), $this->client->name ) ); ?>
                     </p>
                     <form method="post" novalidate="novalidate" spellcheck="false">
-                        <input type="hidden" name="_action" value="<?php echo $action; ?>">
-                        <input type="hidden" name="_nonce" value="<?php echo wp_create_nonce( $this->client->name ); ?>">
+                        <input type="hidden" name="_action" value="<?php echo esc_attr( $action ); ?>">
+                        <input type="hidden" name="_nonce" value="<?php echo esc_attr( wp_create_nonce( $this->client->name ) ); ?>">
                         <div class="license-input-fields">
                             <div class="license-input-key">
                                 <svg enable-background="new 0 0 512 512" version="1.1" viewBox="0 0 512 512" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
                                     <path d="m463.75 48.251c-64.336-64.336-169.01-64.335-233.35 1e-3 -43.945 43.945-59.209 108.71-40.181 167.46l-185.82 185.82c-2.813 2.813-4.395 6.621-4.395 10.606v84.858c0 8.291 6.709 15 15 15h84.858c3.984 0 7.793-1.582 10.605-4.395l21.211-21.226c3.237-3.237 4.819-7.778 4.292-12.334l-2.637-22.793 31.582-2.974c7.178-0.674 12.847-6.343 13.521-13.521l2.974-31.582 22.793 2.651c4.233 0.571 8.496-0.85 11.704-3.691 3.193-2.856 5.024-6.929 5.024-11.206v-27.929h27.422c3.984 0 7.793-1.582 10.605-4.395l38.467-37.958c58.74 19.043 122.38 4.929 166.33-39.046 64.336-64.335 64.336-169.01 0-233.35zm-42.435 106.07c-17.549 17.549-46.084 17.549-63.633 0s-17.549-46.084 0-63.633 46.084-17.549 63.633 0 17.548 46.084 0 63.633z"/>
                                 </svg>
-                                <input type="text" value="<?php echo $this->get_input_license_value( $action, $license ); ?>"
+                                <input type="text" value="<?php echo esc_attr( $this->get_input_license_value( $action, $license ) ); ?>"
                                        placeholder="<?php echo esc_attr( $this->client->__trans( 'Enter your license key to activate' ) ); ?>" name="license_key"
                                     <?php echo ( 'deactive' === $action ) ? 'readonly="readonly"' : ''; ?>
                                 />
                             </div>
                             <button type="submit" name="submit" class="<?php echo 'deactive' === $action ? 'deactive-button' : ''; ?>">
-                                <?php echo $action === 'active' ? $this->client->__trans( 'Activate License' ) : $this->client->__trans( 'Deactivate License' ); ?>
+                                <?php echo $action === 'active' ? esc_html( $this->client->__trans( 'Activate License' ) ) : esc_html( $this->client->__trans( 'Deactivate License' ) ); ?>
                             </button>
                         </div>
                     </form>
@@ -552,7 +552,7 @@ class License {
                     <p><?php $this->client->_etrans( 'Unlimited' ); ?></p>
                 <?php } else { ?>
                     <p class="<?php echo $license['remaining'] ? '' : 'occupied'; ?>">
-                        <?php printf( $this->client->__trans( '%1$d out of %2$d' ), $license['remaining'], $license['activation_limit'] ); ?>
+                        <?php printf( wp_kses_post( $this->client->__trans( '%1$d out of %2$d' ), esc_html( $license['remaining'] ), esc_html( $license['activation_limit'] ) ) ); ?>
                     </p>
                 <?php } ?>
             </div>
@@ -561,9 +561,9 @@ class License {
                 <?php
                 if ( false !== $license['expiry_days'] ) {
                     $occupied = $license['expiry_days'] > 21 ? '' : 'occupied';
-                    echo '<p class="' . $occupied . '">' . $license['expiry_days'] . ' days</p>';
+                    echo '<p class="' . esc_attr( $occupied ) . '">' . esc_html( $license['expiry_days'] ) . ' days</p>';
                 } else {
-                    echo '<p>' . $this->client->__trans( 'Never' ) . '</p>';
+                    echo '<p>' . esc_html( $this->client->__trans( 'Never' ) ) . '</p>';
                 }
                 ?>
             </div>
@@ -578,7 +578,7 @@ class License {
         if ( ! empty( $this->error ) ) {
             ?>
             <div class="notice notice-error is-dismissible appsero-license-section">
-                <p><?php echo $this->error; ?></p>
+                <p><?php echo esc_html( $this->error ); ?></p>
             </div>
             <?php
         }
@@ -586,7 +586,7 @@ class License {
         if ( ! empty( $this->success ) ) {
             ?>
             <div class="notice notice-success is-dismissible appsero-license-section">
-                <p><?php echo $this->success; ?></p>
+                <p><?php echo esc_html( $this->success ); ?></p>
             </div>
             <?php
         }
@@ -604,15 +604,15 @@ class License {
                 <path d="m150 85.849c-13.111 0-23.775 10.665-23.775 23.775v25.319h47.548v-25.319c-1e-3 -13.108-10.665-23.775-23.773-23.775z"/>
                 <path d="m150 1e-3c-82.839 0-150 67.158-150 150 0 82.837 67.156 150 150 150s150-67.161 150-150c0-82.839-67.161-150-150-150zm46.09 227.12h-92.173c-9.734 0-17.626-7.892-17.626-17.629v-56.919c0-8.491 6.007-15.582 14.003-17.25v-25.697c0-27.409 22.3-49.711 49.711-49.711 27.409 0 49.709 22.3 49.709 49.711v25.697c7.993 1.673 14 8.759 14 17.25v56.919h2e-3c0 9.736-7.892 17.629-17.626 17.629z"/>
             </svg>
-            <span><?php echo $this->client->__trans( 'Activate License' ); ?></span>
+            <span><?php echo esc_html( $this->client->__trans( 'Activate License' ) ); ?></span>
 
             <?php if ( $license && $license['key'] ) { ?>
                 <form method="post" class="appsero-license-right-form" novalidate="novalidate" spellcheck="false">
                     <input type="hidden" name="_action" value="refresh">
-                    <input type="hidden" name="_nonce" value="<?php echo wp_create_nonce( $this->client->name ); ?>">
+                    <input type="hidden" name="_nonce" value="<?php echo esc_attr( wp_create_nonce( $this->client->name ) ); ?>">
                     <button type="submit" name="submit" class="appsero-license-refresh-button">
                         <span class="dashicons dashicons-update"></span>
-                        <?php echo $this->client->__trans( 'Refresh License' ); ?>
+                        <?php echo esc_html( $this->client->__trans( 'Refresh License' ) ); ?>
                     </button>
                 </form>
             <?php } ?>

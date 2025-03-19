@@ -10,7 +10,7 @@
     $message = apply_filters( 'registration_message', '' );
 
     if ( !empty( $message ) ) {
-        echo $message . "\n";
+        echo wp_kses_post( $message ) . "\n";
     }
 
     $success = isset( $_GET['success'] ) ? sanitize_text_field( wp_unslash( $_GET['success'] ) ) : '';

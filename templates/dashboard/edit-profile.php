@@ -4,6 +4,9 @@ global $current_user;
 ob_start();
 
 $eye_icon_src = file_exists( WPUF_ROOT . '/assets/images/eye.svg' ) ? WPUF_ASSET_URI . '/images/eye.svg' : '';
+wp_enqueue_script( 'zxcvbn' );
+wp_enqueue_script( 'password-strength-meter' );
+?>
 ?>
 
 <form class="wpuf-form wpuf-update-profile-form" action="" method="post">
@@ -79,8 +82,6 @@ $eye_icon_src = file_exists( WPUF_ROOT . '/assets/images/eye.svg' ) ? WPUF_ASSET
             </div>
 
             <span style="display: block; margin-top:20px" class="pass-strength-result" id="pass-strength-result"><?php esc_html_e( 'Strength indicator', 'wp-user-frontend' ); ?></span>
-            <script src="<?php echo esc_url_raw( includes_url() ); ?>/js/zxcvbn.min.js"></script>
-            <script src="<?php echo esc_url_raw( admin_url() ); ?>/js/password-strength-meter.js"></script>
             <script type="text/javascript">
                 jQuery(function($) {
                     function check_pass_strength() {
@@ -146,5 +147,5 @@ $eye_icon_src = file_exists( WPUF_ROOT . '/assets/images/eye.svg' ) ? WPUF_ASSET
 
 <?php
     $output = apply_filters( 'wpuf_account_edit_profile_content', ob_get_clean() );
-    echo $output; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+    echo $output; // phpcs:ignore
 ?>

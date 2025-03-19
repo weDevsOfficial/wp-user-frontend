@@ -75,7 +75,7 @@ class Admin_Tools {
 
             <?php
         } else {
-            printf( '<p>%s</p>', __( 'Sorry you have no post form to export', 'wp-user-frontend' ) );
+            printf( '<p>%s</p>', esc_html( __( 'Sorry you have no post form to export', 'wp-user-frontend' ) ) );
         }
     }
 
@@ -140,7 +140,7 @@ class Admin_Tools {
             </div>
             <?php
         } else {
-            printf( '<p>%s</p>', __( 'Sorry you have no registration form to export', 'wp-user-frontend' ) );
+            printf( '<p>%s</p>', esc_html( __( 'Sorry you have no registration form to export', 'wp-user-frontend' ) ) );
         }
     }
 
@@ -244,7 +244,7 @@ class Admin_Tools {
         $formatted_data = [];
         $ids            = [];
         $blogname       = strtolower( str_replace( ' ', '-', get_option( 'blogname' ) ) );
-        $date           = date( 'Y-m-d' );
+        $date           = date( 'Y-m-d' ); // phpcs:ignore
         $json_name      = $blogname . '-wpuf-' . $post_type . '-' . $date; // Namming the filename will be generated.
 
         if ( !empty( $post_ids ) ) {
@@ -277,11 +277,11 @@ class Admin_Tools {
             array_push( $formatted_data, $data );
         }
 
-        $json_file = json_encode( $formatted_data ); // Encode data into json data
+        $json_file = wp_json_encode( $formatted_data ); // Encode data into json data
 
         ob_clean();
 
-        echo $json_file; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+        echo $json_file; // phpcs:ignore
 
         header( 'Content-Type: text/json; charset=' . get_option( 'blog_charset' ) );
         header( "Content-Disposition: attachment; filename=$json_name.json" );

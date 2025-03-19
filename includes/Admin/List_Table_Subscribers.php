@@ -186,7 +186,7 @@ class List_Table_Subscribers extends WP_List_Table {
 
         $sql .= isset( $_REQUEST['status'] ) ? ' AND subscribtion_status = "' . sanitize_key( wp_unslash( $_REQUEST['status'] ) ) . '"' : '';
 
-        $this->items  = $wpdb->get_results( $sql, OBJECT );
+        $this->items = $wpdb->get_results( $wpdb->prepare("SELECT * FROM {$wpdb->prefix}wpuf_subscribers WHERE subscribtion_id = %d AND subscribtion_status = %s", isset( $_REQUEST['post_ID'] ) ? intval( sanitize_text_field( wp_unslash( $_REQUEST['post_ID'] ) ) ) : '',  isset( $_REQUEST['status'] ) ? sanitize_key( wp_unslash( $_REQUEST['status'] ) ) : '' ), OBJECT );
 
         $this->set_pagination_args( [
             'total_items' => count( $this->items ),

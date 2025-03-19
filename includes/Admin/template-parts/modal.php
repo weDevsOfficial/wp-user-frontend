@@ -10,6 +10,7 @@
                 <?php esc_html_e( 'Select a Template', 'wp-user-frontend' ); ?>
                 <small><?php
                 printf(
+                    // translators: %s is a URL leading to a blank form.
                     wp_kses_post( __( 'Select from a pre-defined template or from a <a href="%s">blank form</a>', 'wp-user-frontend' ) ),
                     esc_attr( $blank_form_url )
                  ); ?></small>
@@ -88,7 +89,7 @@
                                 <?php
                                     echo esc_html( $title );
                                     if ( file_exists( $crown_icon ) ) {
-                                        printf( '<span class="pro-icon-title"> %s</span>', file_get_contents( $crown_icon ) );
+                                        printf( '<span class="pro-icon-title"> %s</span>', wp_kses_post( file_get_contents( wp_kses($crown_icon, array('svg' => [ 'xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true ], 'path' => [ 'd' => true, 'fill' => true ], 'circle' => [ 'cx' => true, 'cy' => true, 'r' => true ] ) ) ) ) );
                                     }
                                 ?>
                             </h3>
@@ -104,7 +105,7 @@
                                     <?php
                                         esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' );
                                         if ( file_exists( $crown_icon ) ) {
-                                            printf( '<span class="pro-icon"> %s</span>', file_get_contents( $crown_icon ) );
+                                            printf( '<span class="pro-icon"> %s</span>', wp_kses_post( file_get_contents( wp_kses($crown_icon, array('svg' => [ 'xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true ], 'path' => [ 'd' => true, 'fill' => true ], 'circle' => [ 'cx' => true, 'cy' => true, 'r' => true ] ) ) ) ) );
                                         }
                                     ?>
                                 </a>

@@ -29,7 +29,7 @@ class Form_Field_HTML extends Field_Contract {
         <li <?php $this->print_list_attributes( $field_settings ); ?>>
 
             <div class="wpuf-fields <?php echo 'html_' . esc_attr( $form_id ); ?><?php echo ' wpuf_' . esc_attr( $field_settings['name'] ) . '_' . esc_attr( $form_id ); ?>">
-                <?php echo $field_settings['html']; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped ?>
+                <?php echo $field_settings['html']; // phpcs:ignore ?>
             </div>
 
         </li>

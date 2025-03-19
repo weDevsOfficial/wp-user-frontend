@@ -128,7 +128,8 @@ class Form_Field_reCaptcha extends Field_Contract {
             'button_class'  => 'button-faded',
             'msg_title'     => __( 'Site key and Secret key', 'wp-user-frontend' ),
             'msg'           => sprintf(
-                __( 'You need to set Site key and Secret key in <a href="%s" target="_blank">Settings</a> in order to use "Recaptcha" field. <a href="%s" target="_blank">Click here to get the these key</a>.', 'wp-user-frontend' ),
+                // translators: %1$s wpuf admin settings url and %2$s is recaptcha url
+                __( 'You need to set Site key and Secret key in <a href="%1$s" target="_blank">Settings</a> in order to use "Recaptcha" field. <a href="%2$s" target="_blank">Click here to get the these key</a>.', 'wp-user-frontend' ),
                 admin_url( 'admin.php?page=wpuf-settings' ),
                 'https://www.google.com/recaptcha/'
              ),

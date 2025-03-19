@@ -752,9 +752,10 @@ class Admin_Template {
 
                         <div class="description" style="margin-top: 8px;">
                             <?php printf(
+                                // translators: %s is url of settings and recaptcha
                                 esc_html(
                                     __(
-                                        "Insert your public key and private key in <a href='%s'>plugin settings</a>. <a href='%s' target='_blank'>Register</a> first if you don't have any keys.",
+                                        "Insert your public key and private key in <a href='%1\$s'>plugin settings</a>. <a href='%2\$s' target='_blank'>Register</a> first if you don't have any keys.",
                                         'wp-user-frontend'
                                     )
                                 ), esc_url( admin_url( 'admin.php?page=wpuf-settings' ) ),

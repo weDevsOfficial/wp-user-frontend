@@ -14,7 +14,7 @@
         </div>
         <?php } else {
              if ( ! empty( $user_sub['total_feature_item'] ) ) { ?>
-                <div><strong><?php esc_html_e( 'Number of featured item: ', 'wp-user-frontend' ); ?></strong><?php echo $user_sub['total_feature_item']; ?></div>
+                <div><strong><?php esc_html_e( 'Number of featured item: ', 'wp-user-frontend' ); ?></strong><?php echo esc_html( $user_sub['total_feature_item'] ); ?></div>
             <?php } ?>
             <div>
                 <strong><?php esc_html_e( 'Remaining post: ', 'wp-user-frontend' ); ?></strong>
@@ -57,7 +57,7 @@
                 global $wpdb;
 
                 $user_id         = get_current_user_id();
-                $payment_gateway = $wpdb->get_var( "SELECT payment_type FROM {$wpdb->prefix}wpuf_transaction WHERE user_id = {$user_id} AND status = 'completed' ORDER BY created DESC" );
+                $payment_gateway = $wpdb->get_var( $wpdb->prepare( "SELECT payment_type FROM {$wpdb->prefix}wpuf_transaction WHERE user_id = %d AND status = 'completed' ORDER BY created DESC", $user_id ) );
 
                 $payment_gateway = strtolower( $payment_gateway ); ?>
                 <br>

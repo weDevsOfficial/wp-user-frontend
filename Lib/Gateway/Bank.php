@@ -86,8 +86,12 @@ class Bank {
      * @param array $info payment information
      */
     public function order_notify_admin() {
-        $subject  = sprintf( __( '[%s] New Bank Order Received', 'wp-user-frontend' ), get_bloginfo( 'name' ) );
-        $msg      = sprintf( __( 'New bank order received at %s, please check it out: %s', 'wp-user-frontend' ), get_bloginfo( 'name' ), admin_url( 'admin.php?page=wpuf_transaction' ) );
+        $subject  = sprintf( 
+            // translators: %s is site name
+            __( '[%s] New Bank Order Received', 'wp-user-frontend' ), get_bloginfo( 'name' ) );
+        $msg      = sprintf( 
+            // translators: %1$s is site name url and %2$s is wpuf transaction url
+            __( 'New bank order received at %1$s, please check it out: %2$s', 'wp-user-frontend' ), get_bloginfo( 'name' ), admin_url( 'admin.php?page=wpuf_transaction' ) );
 
         $receiver = get_bloginfo( 'admin_email' );
         $subject  = apply_filters( 'wpuf_mail_bank_admin_subject', $subject );
@@ -108,8 +112,12 @@ class Bank {
             return;
         }
 
-        $subject = sprintf( __( '[%s] Payment Received', 'wp-user-frontend' ), get_bloginfo( 'name' ) );
-        $msg     = sprintf( __( 'Hello %s,', 'wp-user-frontend' ), $user->display_name ) . "\r\n";
+        $subject = sprintf( 
+            // translators: %s is site name
+            __( '[%s] Payment Received', 'wp-user-frontend' ), get_bloginfo( 'name' ) );
+        $msg     = sprintf( 
+            // translators: %s is displayname
+            __( 'Hello %s,', 'wp-user-frontend' ), $user->display_name ) . "\r\n";
         $msg .= __( 'We have received your bank payment.', 'wp-user-frontend' ) . "\r\n\r\n";
         $msg .= __( 'Thanks for being with us.', 'wp-user-frontend' ) . "\r\n";
 

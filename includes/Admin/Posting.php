@@ -191,14 +191,22 @@ class Posting {
 
         if ( ( !empty( $edit_post_lock_time ) && $edit_post_lock_time < time() ) || $edit_post_lock == 'yes' ) {
             $is_locked = true;
-            $msg       = sprintf( __( 'Post is locked, to allow user to edit this post <a id="wpuf_clear_schedule_lock" data="%s" href="#">Click here</a>', 'wp-user-frontend' ), $post->ID );
+            $msg       = sprintf(
+                    // translators: %s is the post ID.
+                    __( 'Post is locked, to allow user to edit this post <a id="wpuf_clear_schedule_lock" data="%s" href="#">Click here</a>', 'wp-user-frontend' ),
+                    $post->ID 
+                );
         }
 
         if ( !empty( $edit_post_lock_time ) && $edit_post_lock_time > time() ) {
             $is_locked    = false;
-            $time         = date( 'Y-m-d H:i:s', $edit_post_lock_time );
+            $time         = date( 'Y-m-d H:i:s', $edit_post_lock_time ); // phpcs:ignore
             $local_time   = get_date_from_gmt( $time, get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) );
-            $msg          = sprintf( __( 'Frontend edit access for this post will be automatically locked after %s, <a id="wpuf_clear_schedule_lock" data="%s" href="#">Clear Lock</a> Or,', 'wp-user-frontend' ), $local_time, $post->ID );
+            $msg          = sprintf(
+                                // translators: %1$s The time when the post edit access will be locked and %2$s The post ID.
+                                __( 'Frontend edit access for this post will be automatically locked after %1$s, <a id="wpuf_clear_schedule_lock" data="%2$s" href="#">Clear Lock</a> Or,', 'wp-user-frontend' ), 
+                                $local_time, $post->ID 
+                            );
         } ?>
 
         <!-- <input type="hidden" name="wpuf_lock_editing_post_nonce" value="<?php // echo wp_create_nonce( plugin_basename( __FILE__ ) ); ?>" /> -->

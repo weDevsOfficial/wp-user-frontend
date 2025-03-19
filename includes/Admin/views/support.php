@@ -320,8 +320,8 @@ function wpuf_help_related_articles( $articles ) {
                     <li>
                         <?php
                         printf(
+                            // translators: %1$s and %2$s are HTML tags
                             esc_html__(
-                                // translators: %1$s and %2$s are HTML tags
                                 '%1$sInstall WPUF Pages%2$s with a single click. Check your admin dashboard for a message to install WPUF required pages.',
                                 'wp-user-frontend'
                             ),
@@ -336,8 +336,8 @@ function wpuf_help_related_articles( $articles ) {
                     <li>
                         <?php
                         printf(
-                            esc_html__(
                             // translators: %1$s and %2$s are HTML tags
+                            esc_html__(
                                 'Posting the forms in the frontend is also very easy. All you have to do is %1$sput the shortcode%2$s of your form to a page.',
                                 'wp-user-frontend'
                             ),
@@ -349,8 +349,8 @@ function wpuf_help_related_articles( $articles ) {
                     <li>
                         <?php
                         printf(
-                            esc_html__(
                             // translators: %1$s and %2$s are HTML tags
+                            esc_html__(
                                 'Building registration &amp; profile editing forms has never been easier, thanks to WP User Frontend. %1$sBuild registration &amp; profile forms%2$s on the go with simple steps.',
                                 'wp-user-frontend'
                             ),
@@ -404,9 +404,18 @@ function wpuf_help_related_articles( $articles ) {
 
                 <?php
                 printf(
-                    __( '%1$sPosting Forms are used to %2$screate new%3$s blog posts, WooCommerce Products, Directory Listing Entries etc. You can create any custom post type from the front using this feature. You just need to create a form with necessary fields and embed the form in a page and your users will be able to create posts from frontend in no time.%4$s
-                %5$sTo create a posting form, go to %6$sPost Forms%7$s → Add Form and start building your ultimate frontend posting forms.%8$s
-                %9$sAfter building your forms, %10$suse the shortcodes%11$s on any new page or post and publish them before sharing.%12$s', 'wp-user-frontend' ),
+                    wp_kses(
+                        // translators:  %1$s. Opening paragraph tag. %2$s. Opening strong tag for emphasis on "create new". %3$s. Closing strong tag. %4$s. Closing paragraph tag. %5$s. Opening paragraph tag. %6$s. Opening anchor tag for "Post Forms" menu link. %7$s. Closing anchor tag. %8$s. Closing paragraph tag. %9$s. Opening paragraph tag. %10$s. Opening strong tag for emphasis on "use the shortcodes". %11$s. Closing strong tag. %12$s. Closing paragraph tag.
+                        __( '%1$sPosting Forms are used to %2$screate new%3$s blog posts, WooCommerce Products, Directory Listing Entries etc. You can create any custom post type from the front using this feature. You just need to create a form with necessary fields and embed the form in a page and your users will be able to create posts from frontend in no time.%4$s
+                        %5$sTo create a posting form, go to %6$sPost Forms%7$s → Add Form and start building your ultimate frontend posting forms.%8$s
+                        %9$sAfter building your forms, %10$suse the shortcodes%11$s on any new page or post and publish them before sharing.%12$s', 'wp-user-frontend' ),
+                        array(
+                            'p'      => array(), 
+                            'strong' => array(), 
+                            'a'      => array( 'href' => array(), 'target' => array() ), 
+                            'code'   => array()
+                        )
+                    ),
                     '<p>',
                     '<strong>',
                     '</strong>',
@@ -431,7 +440,14 @@ function wpuf_help_related_articles( $articles ) {
 
                 <?php
                     printf(
-                        __( '%1$sWP User Frontend generates %2$sFrontend Dashboard%3$s and %4$sMy Account%5$s page for all your users. Using these pages, they can get a list of their posts and subscriptions directly at frontend. They can also customize the details of their profile. You don’t need to give them access to the backend at all!%6$s', 'wp-user-frontend' ),
+                        wp_kses(
+                            // translators: %1$s. Opening paragraph tag. %2$s Opening strong tag for "Frontend Dashboard". %3$s Closing strong tag. %4$s Opening strong tag for "My Account". %5$s Closing strong tag. %6$s Closing paragraph tag.
+                            __( '%1$sWP User Frontend generates %2$sFrontend Dashboard%3$s and %4$sMy Account%5$s page for all your users. Using these pages, they can get a list of their posts and subscriptions directly at frontend. They can also customize the details of their profile. You don’t need to give them access to the backend at all!%6$s', 'wp-user-frontend' ),
+                            array(
+                                'p'      => array(),
+                                'strong' => array()
+                            )
+                        ),
                         '<p>',
                         '<strong>',
                         '</strong>',
@@ -440,7 +456,15 @@ function wpuf_help_related_articles( $articles ) {
                         '</p>'
                     );
                     printf(
-                        __( '%1$sTo create this page, %2$screate a new page%3$s, put a title and simply copy-paste the following shortcode: %4$s[wpuf_dashboard]%5$s. Alternatively, there is an unified %6$smy account page%7$s as well. Finally, hit the publish button and you are done.%8$s', 'wp-user-frontend' ),
+                        wp_kses(
+                            // translators: %1$s Opening paragraph tag. %2$s Opening anchor tag for creating a new page. %3$s Closing anchor tag. %4$s Opening code tag for shortcode. %5$s Closing code tag. %6$s Opening anchor tag for "my account" page documentation link. %7$s Closing anchor tag. %8$s Closing paragraph tag.
+                            __( '%1$sTo create this page, %2$screate a new page%3$s, put a title and simply copy-paste the following shortcode: %4$s[wpuf_dashboard]%5$s. Alternatively, there is an unified %6$smy account page%7$s as well. Finally, hit the publish button and you are done.%8$s', 'wp-user-frontend' ),
+                            array(
+                                'p'      => array(),
+                                'a'      => array( 'href' => array(), 'target' => array() ),  // Allow links with href and target attributes
+                                'code'   => array()
+                            )
+                        ),
                         '<p>',
                         '<a href="' . esc_url( admin_url( 'post-new.php?post_type=page' ) ) . '" target="_blank">',
                         '</a>',
@@ -461,7 +485,14 @@ function wpuf_help_related_articles( $articles ) {
 
                 <?php
                     printf(
-                        __( '%1$sYou can create as many registration forms as you want and assign them to different user roles. Creating Registration forms are easy. Navigate to %2$sRegistration Forms%3$s.%4$s%5$sYou can create new forms just you would create posts in WordPress.%6$s', 'wp-user-frontend' ),
+                        wp_kses(
+                            // translators: %1$s Opening paragraph tag %2$s Opening anchor tag for Registration Forms link %3$s Closing anchor tag %$4s Closing paragraph tag %5$s Opening paragraph tag for the second sentence %6$s Closing paragraph tag for the second sentence.
+                            __( '%1$sYou can create as many registration forms as you want and assign them to different user roles. Creating Registration forms are easy. Navigate to %2$sRegistration Forms%3$s.%4$s%5$sYou can create new forms just you would create posts in WordPress.%6$s', 'wp-user-frontend' ),
+                            array(
+                                'p'      => array(),
+                                'a'      => array( 'href' => array(), 'target' => array() ),  // Allow links with href and target attributes
+                            )
+                        ),
                         '<p>',
                         '<a href="' . esc_url( admin_url( 'admin.php?page=wpuf-profile-forms' ) ) . '" target="_blank">',
                         '</a>',
@@ -655,8 +686,8 @@ function wpuf_help_related_articles( $articles ) {
                 <p>
                     <?php
                     printf(
+                        // translators: %1$s and %2$s are HTML tags, %3$s and %4$s are HTML tags
                         esc_html__(
-                            // translators: %1$s and %2$s are HTML tags, %3$s and %4$s are HTML tags
                             'To show the subscription packs in a page, you can use the shortcode: %1$s[wpuf_sub_pack]%2$s. To show the user subscription info: %3$s[wpuf_sub_info]%4$s. The info will show the user about his pack’s remaining post count and expiration date of his pack.',
                             'wp-user-frontend'
                         ),
@@ -682,8 +713,8 @@ function wpuf_help_related_articles( $articles ) {
                 <p>
                     <?php
                     printf(
+                        // translators: %1$s and %2$s are HTML tags
                         esc_html__(
-                            // translators: %1$s and %2$s are HTML tags
                             'To set content restriction for a certain form, navigate to %1$sPages%2$s',
                             'wp-user-frontend'
                         ),

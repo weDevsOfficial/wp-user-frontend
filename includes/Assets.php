@@ -377,6 +377,10 @@ class Assets {
             'turnstile'                  => [
                 'src'  => 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback',
             ],
+            'headway-script'         => [
+                'src' => WPUF_ASSET_URI . '/vendor/headway.js',
+                'deps' => [ 'jquery' ],
+            ],
         ];
 
         if ( ! empty( $api_key ) ) {

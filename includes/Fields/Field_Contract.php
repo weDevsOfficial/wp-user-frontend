@@ -838,7 +838,7 @@ abstract class Field_Contract {
             $cond_inputs['type']    = isset( $form_field['input_type'] ) ? $form_field['input_type'] : '';
             $cond_inputs['name']    = isset( $form_field['name'] ) ? $form_field['name'] : $form_field['template'] . '_' . $form_field['id'];
             $cond_inputs['form_id'] = $form_id;
-            $condition              = json_encode( $cond_inputs );
+            $condition              = wp_json_encode( $cond_inputs );
         } else {
             $condition = '';
         }
@@ -846,7 +846,7 @@ abstract class Field_Contract {
         //taxnomy name create unique
         if ( $form_field['input_type'] === 'taxonomy' ) {
             $cond_inputs['name'] = $form_field['name'] . '_' . $form_field['type'] . '_' . $form_field['id'];
-            $condition           = json_encode( $cond_inputs );
+            $condition           = wp_json_encode( $cond_inputs );
         }
         ?>
         <script type="text/javascript">

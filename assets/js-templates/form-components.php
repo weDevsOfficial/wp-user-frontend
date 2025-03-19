@@ -1,7 +1,3 @@
-<?php
-wp_enqueue_style( 'editor-css', site_url() . '/wp-includes/css/editor.css', array(), null, 'all' );
-wp_enqueue_style( 'skin-css', site_url() . '/wp-includes/js/tinymce/skins/lightgray/skin.min.css', array(), null, 'all' );
-?>
 <script type="text/x-template" id="tmpl-wpuf-builder-stage">
 <div id="form-preview-stage" class="wpuf-style">
     <h4 v-if="!form_fields.length" class="text-center">
@@ -759,7 +755,7 @@ wp_enqueue_style( 'skin-css', site_url() . '/wp-includes/js/tinymce/skins/lightg
 
     <template v-else>
     	<div v-if="'invisible_recaptcha' != field.recaptcha_type">
-        	<img class="wpuf-recaptcha-placeholder" src="<?php echo esc_url( WPUF_ASSET_URI . '/images/recaptcha-placeholder.png' ); ?>" alt="">
+        	<img class="wpuf-recaptcha-placeholder" src="<?php echo esc_url ( WPUF_ASSET_URI . '/images/recaptcha-placeholder.png' ); ?>" alt="">
         </div>
         <div v-else><p><?php esc_html_e( 'Invisible reCaptcha', 'wp-user-frontend' ); ?></p></div>
     </template>
@@ -868,6 +864,10 @@ wp_enqueue_style( 'skin-css', site_url() . '/wp-includes/js/tinymce/skins/lightg
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-text-editor">
+<?php
+wp_enqueue_style( 'editor-css', site_url() . '/wp-includes/css/editor.css', array(), null, 'all' );
+wp_enqueue_style( 'skin-css', site_url() . '/wp-includes/js/tinymce/skins/lightgray/skin.min.css', array(), null, 'all' );
+?>
 <div class="wpuf-text-editor">
 
     <div class="wp-core-ui wp-editor-wrap tmce-active">

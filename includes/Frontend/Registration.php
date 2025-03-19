@@ -282,8 +282,8 @@ class Registration {
                 $user_login = stripslashes( $wpuf_user->user_login );
                 $user_email = stripslashes( $wpuf_user->user_email );
                 $blogname   = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
-                /* translators: %s: site name */
                 $message = sprintf(
+                            /* translators: %s: site name */
                                esc_html__( 'New user registration on your site %s:', 'wp-user-frontend' ),
                                get_option( 'blogname' )
                            ) . "\r\n\r\n";
@@ -294,10 +294,14 @@ class Registration {
                 $subject = 'New User Registration';
                 $subject = apply_filters( 'wpuf_default_reg_admin_mail_subject', $subject );
                 $message = apply_filters( 'wpuf_default_reg_admin_mail_body', $message );
-                /* translators: %s %s: site name subject*/
+
                 wp_mail(
                     get_option( 'admin_email' ),
-                    sprintf( esc_html__( '[%1$s] %2$s', 'wp-user-frontend' ), $blogname, $subject ), $message
+                    sprintf(
+                        /* translators: %s %s: site name subject*/
+                        esc_html__( '[%1$s] %2$s', 'wp-user-frontend' ), 
+                        $blogname, $subject 
+                    ), $message
                 );
                 /* translators: %s: username */
                 $message = sprintf( esc_html__( 'Hi, %s', 'wp-user-frontend' ), $user_login ) . "\r\n";
@@ -306,9 +310,13 @@ class Registration {
                 $subject = 'Thank you for registering';
                 $subject = apply_filters( 'wpuf_default_reg_mail_subject', $subject );
                 $message = apply_filters( 'wpuf_default_reg_mail_body', $message );
-                /* translators: %s %s: site name subject*/
+
                 wp_mail(
-                    $user_email, sprintf( esc_html__( '[%1$s] %2$s', 'wp-user-frontend' ), $blogname, $subject ),
+                    $user_email, sprintf(
+                        /* translators: %s %s: site name subject*/
+                        esc_html__( '[%1$s] %2$s', 'wp-user-frontend' ), 
+                        $blogname, $subject 
+                    ),
                     $message
                 );
             }

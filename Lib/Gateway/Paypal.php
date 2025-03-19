@@ -112,7 +112,10 @@ class Paypal {
             WHERE user_id = %d AND payment_type = %s Order by created desc limit 1', $user_id, 'Paypal'
             );
 
-            $result         = $wpdb->get_row( $sql );
+            $result = $wpdb->get_row( $wpdb->prepare(
+                    'SELECT transaction_id FROM ' . $wpdb->prefix . 'wpuf_transaction
+                    WHERE user_id = %d AND payment_type = %s Order by created desc limit 1', $user_id, 'Paypal'
+                ) );
             $transaction_id = $result ? $result->transaction_id : 0;
 
             $args_profile = array_merge(
@@ -139,7 +142,9 @@ class Paypal {
                 'METHOD'    => 'ManageRecurringPaymentsProfileStatus',
                 'PROFILEID' => $profile_id,
                 'ACTION'    => ucfirst( $new_status ),
-                'NOTE'      => sprintf( __( 'Subscription %1$s at %2$s', 'wp-user-frontend' ), $new_status_string, get_bloginfo( 'name' ) ),
+                'NOTE'      => sprintf( 
+                    // translators: %1$s is status string and %2$s is site name
+                    __( 'Subscription %1$s at %2$s', 'wp-user-frontend' ), $new_status_string, get_bloginfo( 'name' ) ),
             ]
         );
 
@@ -221,7 +226,7 @@ class Paypal {
                 'p3'            => ! empty( $data['custom']['billing_cycle_number'] ) ? $data['custom']['billing_cycle_number'] : '0',
                 't3'            => $period,
                 'item_name'     => $data['custom']['post_title'],
-                'custom'        => json_encode(
+                'custom'        => wp_json_encode(
                     [
                         'billing_amount' => $billing_amount,
                         'type'           => $data['type'],
@@ -263,7 +268,7 @@ class Paypal {
                 'item_number'   => $data['item_number'],
                 'charset'       => 'UTF-8',
                 'rm'            => '2',
-                'custom'        => json_encode(
+                'custom'        => wp_json_encode(
                     [
                         'type'      => $data['type'],
                         'user_id'   => $user_id,
@@ -558,7 +563,7 @@ class Paypal {
 
         $query = $wpdb->prepare( "SELECT transaction_id FROM `{$wpdb->prefix}wpuf_transaction` WHERE transaction_id = %s LIMIT 0, 1", $trns_id );
 
-        return $wpdb->get_var( $query ) ? true : false;
+        return $wpdb->get_var( $wpdb->prepare( "SELECT transaction_id FROM `{$wpdb->prefix}wpuf_transaction` WHERE transaction_id = %s LIMIT 0, 1", $trns_id ) ) ? true : false;
     }
 
 }

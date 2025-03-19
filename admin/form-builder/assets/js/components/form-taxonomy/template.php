@@ -12,7 +12,7 @@
                 :class="builder_class_names('select')"
                 class="!wpuf-text-base"
             >
-                <option class="wpuf-text-base !wpuf-leading-none"><?php _e( '— Select —', 'wp-user-frontend' ); ?></option>
+                <option class="wpuf-text-base !wpuf-leading-none"><?php esc_html_e( '— Select —', 'wp-user-frontend' ); ?></option>
                 <option v-for="term in sorted_terms" :value="term.id">{{ term.name }}</option>
             </select>
         </div>

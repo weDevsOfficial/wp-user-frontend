@@ -117,7 +117,7 @@ class WPUF_Admin_Settings {
         if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {
             $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Premium', 'wp-user-frontend' ), __( 'Premium', 'wp-user-frontend' ), $capability, 'wpuf_premium', [ $this, 'premium_page' ] );
         }
-        $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Help', 'wp-user-frontend' ), __( '<span style="color:#f18500">Help</span>', 'wp-user-frontend' ), $capability, 'wpuf-support', [ $this, 'support_page' ] );
+        $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Help', 'wp-user-frontend' ), '<span style="color:#f18500">' . __( 'Help', 'wp-user-frontend' ) . '</span>', $capability, 'wpuf-support', [ $this, 'support_page' ] );
         $this->menu_pages[] = add_submenu_page( 'wp-user-frontend', __( 'Settings', 'wp-user-frontend' ), __( 'Settings', 'wp-user-frontend' ), $capability, 'wpuf-settings', [ $this, 'plugin_page' ] );
 
         $this->menu_pages[] = add_submenu_page( 'edit.php?post_type=wpuf_subscription', __( 'Subscribers', 'wp-user-frontend' ), __( 'Subscribers', 'wp-user-frontend' ), $capability, 'wpuf_subscribers', [ $this, 'subscribers_page' ] );
@@ -497,7 +497,8 @@ class WPUF_Admin_Settings {
                 'cleared_schedule_lock'        => __( 'Post lock has been cleared', 'wp-user-frontend' ),
                 'protected_shortcodes'         => wpuf_get_protected_shortcodes(),
                 'protected_shortcodes_message' => sprintf(
-                    __( '%sThis post contains a sensitive short-code %s, that may allow others to sign-up with distinguished roles. If unsure, remove the short-code before publishing (recommended) %sas this may be exploited as a security vulnerability.%s', 'wp-user-frontend' ),
+                    // translators: %1$s opening div tag, %2$s shortcode, %3$s opening strong tag, %4$s closing strong tag, %5$s closing div tag.
+                    __( '%1$sThis post contains a sensitive short-code %2$s, that may allow others to sign-up with distinguished roles. If unsure, remove the short-code before publishing (recommended) %3$sas this may be exploited as a security vulnerability.%4$s', 'wp-user-frontend' ),
                     '<div style="font-size: 1em; text-align: justify; color: darkgray">',
                     '[wpuf-registration]',
                     '<strong>',

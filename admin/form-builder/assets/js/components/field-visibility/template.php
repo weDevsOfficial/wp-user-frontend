@@ -51,7 +51,7 @@
                     $output .= "<label class='wpuf-flex wpuf-items-center'><input :class=\"builder_class_names('checkbox')\" class=\"!wpuf-mr-2\" type=\"checkbox\" v-model=\"choices\" value=\"{$role}\"> {$role_name} </label>";
                     $output .= '</li>';
 
-                    echo $output;
+                    echo wp_kses( $output, array( 'li' => array(), 'label' => array(), 'input' => array( 'type', 'value', 'v-model' ) ) );
                 }
             ?>
 	    </ul>
@@ -71,10 +71,10 @@
                             $output .= "<label class='wpuf-flex wpuf-items-center'><input  :class=\"builder_class_names('checkbox')\" class=\"!wpuf-mr-2\" type='checkbox' v-model='choices' value='{$pack->ID}' > {$pack->post_title} </label>";
                             $output .= '</li>';
 
-                            echo $output;
+                            echo wp_kses( $output, array( 'li' => array(), 'label' => array(), 'input' => array( 'type', 'value', 'v-model' ) ) );
                         }
                     } else {
-                        _e( 'No subscription plan found.', 'wp-user-frontend' );
+                        esc_html_e( 'No subscription plan found.', 'wp-user-frontend' );
                     }
                 }
             ?>

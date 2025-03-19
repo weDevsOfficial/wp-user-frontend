@@ -4,7 +4,7 @@
             <a class="wpuf-inline-flex wpuf-items-center wpuf-gap-x-1.5"
                :class="builder_class_names('upload_btn')" href="#">
                 <template v-if="field.button_label === ''">
-                    <?php _e( 'Select Image', 'wp-user-frontend' ); ?>
+                    <?php esc_html_e( 'Select Image', 'wp-user-frontend' ); ?>
                 </template>
                 <template v-else>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="wpuf-size-5">

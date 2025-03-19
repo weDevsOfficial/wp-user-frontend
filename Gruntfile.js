@@ -175,7 +175,6 @@ module.exports = function( grunt) {
                     '!**/log.txt',
                     '!**/package-lock.json',
                     '!**/appsero.json',
-                    '!**/composer.json',
                     '!**/composer.lock',
                     '!**/phpcs-report.txt',
                     '!**/phpcs.xml.dist',

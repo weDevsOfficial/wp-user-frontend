@@ -11,7 +11,7 @@
     $message = apply_filters( 'login_message', '' );
 
     if ( !empty( $message ) ) {
-        echo $message . "\n";
+        echo wp_kses_post( $message ) . "\n";
     }
     ?>
 

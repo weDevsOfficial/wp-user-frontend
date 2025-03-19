@@ -128,9 +128,9 @@ class Assets {
                 'src'     => WPUF_ASSET_URI . '/css/jquery-ui-1.9.1.custom.css',
                 'version' => '1.9.1',
             ],
-            'sweetalert2'         => [
-                'src'     => WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.css',
-                'version' => '11.4.19',
+            'sweetalert2'        => [
+                'src'     => WPUF_ASSET_URI . '/vendor/sweetalert2/sweetalert2.css',
+                'version' => '11.4.8',
             ],
             'font-awesome'        => [
                 'src'     => WPUF_ASSET_URI . '/vendor/font-awesome/css/font-awesome.min.css',
@@ -230,9 +230,9 @@ class Assets {
                 'version'   => '2.2.1',
             ],
             'sweetalert2'              => [
-                'src'       => WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2' . $this->suffix . '.js',
+                'src'       => WPUF_ASSET_URI . '/vendor/sweetalert2/sweetalert2.js',
                 'in_footer' => true,
-                'version'   => '11.4.19',
+                'version'   => '11.4.8',
                 'deps'      => [ 'jquery' ],
             ],
             'jquery-scrollTo'          => [
@@ -380,6 +380,10 @@ class Assets {
             ],
             'turnstile'                  => [
                 'src'  => 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback',
+            ],
+            'headway-script'         => [
+                'src' => WPUF_ASSET_URI . '/vendor/headway.js',
+                'deps' => [ 'jquery' ],
             ],
         ];
 

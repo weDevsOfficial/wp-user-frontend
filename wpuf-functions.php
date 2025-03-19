@@ -1870,7 +1870,7 @@ function taxnomy_select( $terms, $attr ) {
     ];
     $attr = apply_filters( 'wpuf_taxonomy_checklist_args', $attr );
     ?>
-    <span data-taxonomy=<?php echo json_encode( $attr ); ?>></span>
+    <span data-taxonomy=<?php echo wp_json_encode( $attr ); ?>></span>
     <?php
 }
 
@@ -2052,7 +2052,7 @@ function wpuf_get_countries( $type = 'array' ) {
     $countries = include WPUF_ROOT . '/includes/Data/countries-formated.php';
 
     if ( 'json' === $type ) {
-        $countries = json_encode( $countries );
+        $countries = wp_json_encode( $countries );
     }
 
     return $countries;

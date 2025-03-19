@@ -54,7 +54,7 @@
                                     <label class="wpuf-pro-text-alert">
                                         <a :href="pro_link" target="_blank"
                                            class="wpuf-text-gray-700 wpuf-text-base"><strong>{{ get_field_name( field.template )
-                                                }}</strong> <?php _e( 'is available in Pro Version', 'wp-user-frontend' ); ?></a>
+                                                }}</strong> <?php esc_html_e( 'is available in Pro Version', 'wp-user-frontend' ); ?></a>
                                     </label>
                                 </div>
                             </div>

@@ -275,7 +275,7 @@ class Frontend_Form extends Frontend_Render_Form {
 
         wpuf_clear_buffer();
 
-        echo json_encode(
+        echo wp_json_encode(
             [
                 'post_id'        => $post_id,
                 'action'         => isset( $_POST['action'] ) ? sanitize_text_field( wp_unslash( $_POST['action'] ) ) : '',

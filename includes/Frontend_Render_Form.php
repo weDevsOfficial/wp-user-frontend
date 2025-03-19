@@ -27,7 +27,7 @@ class Frontend_Render_Form {
      * @param string $error
      */
     public function send_error( $error ) {
-        echo json_encode(
+        echo wp_json_encode(
             [
                 'success' => false,
                 'error'   => $error,
@@ -121,6 +121,8 @@ class Frontend_Render_Form {
         $form_id = isset( $_GET['form_id'] ) ? intval( wp_unslash( $_GET['form_id'] ) ) : 0;
 
         if ( $form_id ) {
+            wp_enqueue_script( 'jquery' );
+            wp_enqueue_style( 'wpuf-frontend-forms' );
             ?>
 
             <!doctype html>
@@ -136,7 +138,6 @@ class Frontend_Render_Form {
                         padding: 0;
                         background: #eee;
                     }
-
                     .container {
                         width: 700px;
                         margin: 0 auto;
@@ -298,8 +299,10 @@ class Frontend_Render_Form {
                 </div>
                 <div >
                     <label >
-                        <input type="checkbox" class="wpuf_is_featured" name="is_featured_item" value="1" <?php echo $is_featured ? 'checked' : ''; ?> >
-                        <span class="wpuf-items-table-containermessage-box" id="remaining-feature-item"> <?php echo sprintf( __( 'Mark the %s as featured (remaining %d)', 'wp-user-frontend' ), $post_type, $featured_item ); ?></span>
+                         <input type="checkbox" class="wpuf_is_featured" name="is_featured_item" value="1" <?php echo $is_featured ? 'checked' : ''; ?> >
+                         <span class="wpuf-items-table-containermessage-box" id="remaining-feature-item"> <?php echo sprintf(
+                            // translators: %1$s is Post type and %2$d is item
+                            wp_kses_post( __( 'Mark the %1$s as featured (remaining %2$d)', 'wp-user-frontend' ), esc_html( $post_type ), esc_html( $featured_item ) ) ); ?></span>
                     </label>
                 </div>
             </li>

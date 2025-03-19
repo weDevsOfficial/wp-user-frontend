@@ -72,7 +72,8 @@ function wpuf_upgrade_2_6_insert_subscribers() {
         $sub_data               = get_user_meta( $user->data->ID, '_wpuf_subscription_pack', true );
         $sql                    = $wpdb->prepare( 'SELECT * FROM ' . $wpdb->prefix . 'wpuf_transaction
         WHERE user_id = %d AND pack_id = %d LIMIT 1', $user->data->ID, $sub_data['pack_id'] );
-        $result = $wpdb->get_row( $sql );
+        $result = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . $wpdb->prefix . 'wpuf_transaction
+            WHERE user_id = %d AND pack_id = %d LIMIT 1', $user->data->ID, $sub_data['pack_id'] ) );
 
         if ( $result ) {
             $table_data = [

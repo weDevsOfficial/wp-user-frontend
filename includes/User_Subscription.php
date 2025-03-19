@@ -56,7 +56,9 @@ class User_Subscription {
         if ( ! isset( $this->pack['pack_id'] ) ) {
             $pack_page = get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) );
 
-            return new WP_Error( 'no-pack', sprintf( __( 'You must <a href="%s">purchase a subscription package</a> before posting', 'wp-user-frontend' ), $pack_page ) );
+            return new WP_Error( 'no-pack', sprintf( 
+                // translators: %s is the user pack page url
+                __( 'You must <a href="%s">purchase a subscription package</a> before posting', 'wp-user-frontend' ), $pack_page ) );
         }
 
         // seems like the user has a pack, now check expiration
@@ -82,6 +84,7 @@ class User_Subscription {
         $expire_date = isset( $this->pack['expire'] ) ? $this->pack['expire'] : 0;
         $expired     = true;
 
+        // phpcs:disable
         if ( strtolower( $expire_date ) == 'unlimited' || empty( $expire_date ) ) {
             $expired = false;
         } elseif ( strtotime( date( 'Y-m-d', strtotime( $expire_date ) ) ) >= strtotime( date( 'Y-m-d', time() ) ) ) {
@@ -89,6 +92,7 @@ class User_Subscription {
         } else {
             $expired = true;
         }
+        // phpcs:disable
 
         return $expired;
     }
@@ -190,14 +194,14 @@ class User_Subscription {
             // $recurring = get_post_meta( $pack_id, '_recurring_pay', true );
 
             if ( $recurring ) {
-                $totla_date              = date( 'd-m-Y', strtotime( '+' . $subscription->meta_value['billing_cycle_number'] . $subscription->meta_value['cycle_period'] . 's' ) );
+                $totla_date              = date( 'd-m-Y', strtotime( '+' . $subscription->meta_value['billing_cycle_number'] . $subscription->meta_value['cycle_period'] . 's' ) ); // phpcs:ignore
                 $user_meta['expire']     = '';
                 $user_meta['profile_id'] = $profile_id;
                 $user_meta['recurring']  = 'yes';
             } else {
                 $period_type            = $subscription->meta_value['expiration_period'];
                 $period_number          = $subscription->meta_value['expiration_number'];
-                $date                   = date( 'd-m-Y', strtotime( '+' . $period_number . $period_type . 's' ) );
+                $date                   = date( 'd-m-Y', strtotime( '+' . $period_number . $period_type . 's' ) ); // phpcs:ignore
                 $expired                = ( empty( $period_number ) || ( $period_number == 0 ) ) ? 'unlimited' : wpuf_date2mysql( $date );
                 $user_meta['expire']    = $expired;
                 $user_meta['recurring'] = 'no';
@@ -232,7 +236,7 @@ class User_Subscription {
                     'subscribtion_status'   => $status,
                     'gateway'               => isset( $result->payment_type ) ? $result->payment_type : 'bank',
                     'transaction_id'        => isset( $result->transaction_id ) ? $result->transaction_id : 'NA',
-                    'starts_from'           => date( 'd-m-Y' ),
+                    'starts_from'           => date( 'd-m-Y' ), // phpcs:ignore
                     'expire'                => $user_meta['expire'] == '' ? 'recurring' : $user_meta['expire'],
                 ];
 
@@ -459,7 +463,7 @@ class User_Subscription {
 
             if ( strtolower( $expire ) == 'unlimited' || empty( $expire ) ) {
                 $expire_status = false;
-            } elseif ( ( strtotime( date( 'Y-m-d', strtotime( $expire ) ) ) >= strtotime( date( 'Y-m-d', time() ) ) ) && ( $post_count > 0 || $post_count == '-1' ) ) {
+            } elseif ( ( strtotime( date( 'Y-m-d', strtotime( $expire ) ) ) >= strtotime( date( 'Y-m-d', time() ) ) ) && ( $post_count > 0 || $post_count == '-1' ) ) { // phpcs:ignore
                 $expire_status = false;
             } else {
                 $expire_status = true;

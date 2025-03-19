@@ -50,11 +50,13 @@
                 <td data-label="<?php esc_attr_e( 'Title: ', 'wp-user-frontend' ); ?>" class="<?php echo 'on' === $featured_img ? 'data-column' : '' ; ?>">
                     <?php if ( ! $show_link ) { ?>
 
-                        <?php echo wp_trim_words( get_the_title(), 5 ); ?>
+                        <?php echo esc_html( wp_trim_words( get_the_title(), 5 ) ); ?>
 
                     <?php } else { ?>
 
-                        <a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wp-user-frontend' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php echo wp_trim_words( get_the_title(), 5 ); ?></a>
+                        <a href="<?php the_permalink(); ?>" title="<?php printf( 
+                            // translators: %s: is permalink
+                            esc_attr__( 'Permalink to %s', 'wp-user-frontend' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php echo esc_html( wp_trim_words( get_the_title(), 5 ) ); ?></a>
 
                     <?php } ?>
                     <?php if ( 'on' !== $featured_img ) { ?>
@@ -93,7 +95,7 @@
                                 $url = add_query_arg( [ 'pid' => $post->ID ], get_permalink( $edit_page ) );
                                 ?>
                                 <a class="wpuf-posts-options wpuf-posts-edit" href="<?php echo esc_url( wp_nonce_url( $url, 'wpuf_edit' ) ); ?>">
-                                    <img src="<?php echo WPUF_ASSET_URI . '/images/edit.svg'; ?>" alt="Edit">
+                                    <img src="<?php echo wp_kses( WPUF_ASSET_URI . '/images/edit.svg', array('svg' => ['xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true,], 'path' => ['d' => true, 'fill' => true, 'fill-rule' => true, 'clip-rule' => true ] ) ); ?>" alt="Edit">
                                 </a>
                                 <?php
                                 }
@@ -104,7 +106,7 @@
                                 $del_url = add_query_arg( ['action' => 'del', 'pid' => $post->ID] );
                                 $message = __( 'Are you sure to delete?', 'wp-user-frontend' ); ?>
                                 <a class="wpuf-posts-options wpuf-posts-delete" style="color: red;" href="<?php echo esc_url_raw( wp_nonce_url( $del_url, 'wpuf_del' ) ); ?>" onclick="return confirm('<?php echo esc_attr( $message ); ?>');">
-                                    <img src="<?php echo WPUF_ASSET_URI . '/images/trash.svg'; ?>" alt="Delete">
+                                    <img src="<?php echo wp_kses( WPUF_ASSET_URI . '/images/trash.svg', array('svg' => ['xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true,], 'path' => ['d' => true, 'fill' => true, 'fill-rule' => true, 'clip-rule' => true ] ) ); ?>" alt="Delete">
                                 </a>
                             <?php
                             } ?>

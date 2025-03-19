@@ -152,14 +152,18 @@ class Login_Widget extends WP_Widget {
 
         $message = __( 'Someone has requested a password reset for the following account:', 'wp-user-frontend' ) . "\r\n\r\n";
         $message .= network_home_url( '/' ) . "\r\n\r\n";
-        $message .= sprintf( __( 'Username: %s', 'wp-user-frontend' ), $user_login ) . "\r\n\r\n";
+        $message .= sprintf( 
+            // translators: %s is the user name
+            __( 'Username: %s', 'wp-user-frontend' ), $user_login ) . "\r\n\r\n";
         $message .= __( 'If this was a mistake, just ignore this email and nothing will happen.', 'wp-user-frontend' ) . "\r\n\r\n";
         $message .= __( 'To reset your password, visit the following address:', 'wp-user-frontend' ) . "\r\n\r\n";
         $message .= '<' . network_site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user_login ), 'login' ) . ">\r\n";
 
         $blogname = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
 
-        $title = sprintf( __( '[%s] Password Reset', 'wp-user-frontend' ), $blogname );
+        $title = sprintf(
+            // translators: %s is the blogname
+            __( '[%s] Password Reset', 'wp-user-frontend' ), $blogname );
 
         $title = apply_filters( 'retrieve_password_title', $title, $user_login, $user_data );
 
@@ -336,14 +340,14 @@ class Login_Widget extends WP_Widget {
      */
     public function update( $new_instance, $old_instance ) {
         $instance                     = [];
-        $instance['title']            = ( !empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
-        $instance['log_in_header']    = ( !empty( $new_instance['log_in_header'] ) ) ? strip_tags( $new_instance['log_in_header'] ) : '';
-        $instance['pwd_reset_header'] = ( !empty( $new_instance['pwd_reset_header'] ) ) ? strip_tags( $new_instance['pwd_reset_header'] ) : '';
-        $instance['uname_label']      = ( !empty( $new_instance['uname_label'] ) ) ? strip_tags( $new_instance['uname_label'] ) : '';
-        $instance['pwd_label']        = ( !empty( $new_instance['pwd_label'] ) ) ? strip_tags( $new_instance['pwd_label'] ) : '';
-        $instance['remember_label']   = ( !empty( $new_instance['remember_label'] ) ) ? strip_tags( $new_instance['remember_label'] ) : '';
-        $instance['log_in_label']     = ( !empty( $new_instance['log_in_label'] ) ) ? strip_tags( $new_instance['log_in_label'] ) : '';
-        $instance['pass_reset_label'] = ( !empty( $new_instance['pass_reset_label'] ) ) ? strip_tags( $new_instance['pass_reset_label'] ) : '';
+        $instance['title']            = ( !empty( $new_instance['title'] ) ) ? wp_strip_all_tags( $new_instance['title'] ) : '';
+        $instance['log_in_header']    = ( !empty( $new_instance['log_in_header'] ) ) ? wp_strip_all_tags( $new_instance['log_in_header'] ) : '';
+        $instance['pwd_reset_header'] = ( !empty( $new_instance['pwd_reset_header'] ) ) ? wp_strip_all_tags( $new_instance['pwd_reset_header'] ) : '';
+        $instance['uname_label']      = ( !empty( $new_instance['uname_label'] ) ) ? wp_strip_all_tags( $new_instance['uname_label'] ) : '';
+        $instance['pwd_label']        = ( !empty( $new_instance['pwd_label'] ) ) ? wp_strip_all_tags( $new_instance['pwd_label'] ) : '';
+        $instance['remember_label']   = ( !empty( $new_instance['remember_label'] ) ) ? wp_strip_all_tags( $new_instance['remember_label'] ) : '';
+        $instance['log_in_label']     = ( !empty( $new_instance['log_in_label'] ) ) ? wp_strip_all_tags( $new_instance['log_in_label'] ) : '';
+        $instance['pass_reset_label'] = ( !empty( $new_instance['pass_reset_label'] ) ) ? wp_strip_all_tags( $new_instance['pass_reset_label'] ) : '';
 
         return $instance;
     }

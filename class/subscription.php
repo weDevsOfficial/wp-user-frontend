@@ -59,7 +59,10 @@ class WPUF_Subscription {
             'SELECT transaction_id FROM ' . $wpdb->prefix . 'wpuf_transaction
             WHERE user_id = %d AND pack_id = %d LIMIT 1', $user_id, $pack_id
         );
-        $result = $wpdb->get_row( $sql );
+        $result = $wpdb->get_row( $wpdb->prepare(
+            'SELECT transaction_id FROM ' . $wpdb->prefix . 'wpuf_transaction
+            WHERE user_id = %d AND pack_id = %d LIMIT 1', $user_id, $pack_id
+        ) );
 
         $transaction_id = $result ? $result->transaction_id : 0;
 
@@ -583,7 +586,7 @@ class WPUF_Subscription {
         } elseif ( $pay_per_post || ( $force_pack && $fallback_cost && ! $has_post ) ) {
             //there is some error and it needs payment
             //add a uniqid to track the post easily
-            $order_id = uniqid( rand( 10, 1000 ), false );
+            $order_id = uniqid( wp_rand( 10, 1000 ), false );
             update_post_meta( $post_id, '_wpuf_order_id', $order_id, true );
             update_post_meta( $post_id, '_wpuf_payment_status', 'pending' );
         }
@@ -612,7 +615,7 @@ class WPUF_Subscription {
         }
         //phpcs:ignore
         $userdata = get_userdata( get_current_user_id() );
-        $order_id = uniqid( rand( 10, 1000 ), false );
+        $order_id = uniqid( wp_rand( 10, 1000 ), false );
 
         if ( self::has_user_error( $form_settings ) ) {
             update_post_meta( $post_id, '_wpuf_order_id', $order_id, true );
@@ -737,7 +740,11 @@ class WPUF_Subscription {
             WHERE p.ID = m.post_id AND p.post_status <> 'publish' AND m.meta_key = '_wpuf_order_id' AND m.meta_value = %s", $order_id
         );
 
-        return $wpdb->get_row( $sql );
+        return $wpdb->get_row( $wpdb->prepare(
+            "SELECT p.ID, p.post_status
+            FROM $wpdb->posts p, $wpdb->postmeta m
+            WHERE p.ID = m.post_id AND p.post_status <> 'publish' AND m.meta_key = '_wpuf_order_id' AND m.meta_value = %s", $order_id
+        ) );
     }
 
     /**
@@ -1069,7 +1076,7 @@ class WPUF_Subscription {
         $sql .= $pack_id ? ' WHERE subscribtion_id  = ' . $pack_id : '';
         $sql .= $status ? ' AND subscribtion_status = ' . $status : '';
 
-        $rows = $wpdb->get_results( $sql );
+        $rows = $wpdb->get_results( $wpdb->prepare( "SELECT user_id FROM {$wpdb->prefix}wpuf_subscribers WHERE subscribtion_id  = %s AND subscribtion_status = %s", $pack_id ? $pack_id : '', $status ? $status : '') );
 
         if ( empty( $rows ) ) {
             return $rows;

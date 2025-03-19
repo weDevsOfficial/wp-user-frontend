@@ -1706,6 +1706,7 @@ body ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-col
   padding: 0;
   border: 0;
   float: none;
+  display: flex;
   width: 100%;
   overflow: hidden;
 }
@@ -1739,6 +1740,7 @@ body ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-col
 body ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields li input[type="color"],
 body ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields li textarea {
   width: 100%;
+  max-width: fit-content;
 }
 body .ac_results {
   z-index: 99999 !important;

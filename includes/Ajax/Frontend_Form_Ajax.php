@@ -558,14 +558,15 @@ class Frontend_Form_Ajax {
                 }
 
                 // guest post is enabled and details are off
-            } elseif ( isset( $this->form_settings['guest_post'] ) && wpuf_is_checkbox_or_toggle_on( $this->form_settings['guest_post'] ) && ! wpuf_is_checkbox_or_toggle_on( $this->form_settings['guest_details'] ) ) {
+            } elseif ( ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) && ! wpuf_is_checkbox_or_toggle_on( $this->form_settings['guest_details'] ) ) {
                 $post_author = $default_post_author;
-            } elseif ( isset( $this->form_settings['guest_post'] ) && ! wpuf_is_checkbox_or_toggle_on( $this->form_settings['guest_post'] ) ) {
+            } elseif ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) {
                 wpuf()->ajax->send_error( $this->form_settings['message_restrict'] );
             }
 
             // the user must be logged in already
-        } elseif ( isset( $this->form_settings['role_base'] ) && wpuf_is_checkbox_or_toggle_on( $this->form_settings['role_base'] ) && ! wpuf_user_has_roles( $this->form_settings['roles'] ) ) {
+        } elseif ( ( ! empty( $this->form_settings['post_permission'] ) && 'role_base' === $this->form_settings['post_permission'] )
+                   && ( ! empty( $this->form_settings['roles'] ) && ! wpuf_user_has_roles( $this->form_settings['roles'] ) ) ) {
             wpuf()->ajax->send_error( __( 'You do not have sufficient permissions to access this form.', 'wp-user-frontend' ) );
         } else {
             $post_author = get_current_user_id();

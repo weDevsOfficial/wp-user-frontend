@@ -85,7 +85,7 @@ class Form_Field_Column extends Field_Contract {
             [
                 'name'      => 'column_space',
                 'title'     => __( 'Space Between Columns', 'wp-user-frontend' ),
-                'type'      => 'text',
+                'type'      => 'number',
                 'section'   => 'basic',
                 'priority'  => 11,
                 'help_text' => __( 'Add padding space between columns. e.g: 10', 'wp-user-frontend' ),

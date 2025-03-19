@@ -165,11 +165,11 @@
                         var image_two  = wpuf_admin_script.asset_url + '/images/custom-fields/advance.png';
                         var html       = '<div class="wpuf-custom-field-instruction">';
                             html      += '<div class="step-one">';
-                            html      += sprintf( '<p class="wpuf-text-base wpuf-mx-4">%s <span class="wpuf-text-primary">%s</span>%s"</p>', __( 'Navigate through', 'wp-user-frontend' ), __( 'WP-admin > WPUF > Settings > Frontend Posting', 'wp-user-frontend' ), __( '- there you have to check the checkbox: "Show custom field data in the post content area', 'wp-user-frontend' ) );
+                            html      += sprintf( '<p class="wpuf-text-base">%s <span class="wpuf-text-primary">%s</span>%s"</p>', __( 'Navigate through', 'wp-user-frontend' ), __( 'WP-admin > WPUF > Settings > Frontend Posting', 'wp-user-frontend' ), __( '- there you have to check the checkbox: "Show custom field data in the post content area', 'wp-user-frontend' ) );
                             html      += '<img src="'+ image_one +'" alt="settings">';
                             html      += '</div>';
                             html      += '<div class="step-two">';
-                            html      += sprintf( '<p class="wpuf-text-base wpuf-mx-4">%s<span class="wpuf-text-primary">%s</span>%s<span class="wpuf-text-primary">%s</span>%s</p>', __( 'Edit the custom field inside the post form and on the right side you will see', 'wp-user-frontend' ), __( '"Advanced Options".', 'wp-user-frontend' ), __( ' Expand that, scroll down and you will see ', 'wp-user-frontend' ), __( '"Show data on post"', 'wp-user-frontend' ), __( ' - set this yes.', 'wp-user-frontend' ) );
+                            html      += sprintf( '<p class="wpuf-text-base">%s<span class="wpuf-text-primary">%s</span>%s<span class="wpuf-text-primary">%s</span>%s</p>', __( 'Edit the custom field inside the post form and on the right side you will see', 'wp-user-frontend' ), __( '"Advanced Options".', 'wp-user-frontend' ), __( ' Expand that, scroll down and you will see ', 'wp-user-frontend' ), __( '"Show data on post"', 'wp-user-frontend' ), __( ' - set this yes.', 'wp-user-frontend' ) );
                             html      += '<img src="' + image_two + '" alt="custom field data">';
                             html      += '</div>';
                             html      += '</div>';

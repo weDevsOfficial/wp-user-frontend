@@ -1,6 +1,6 @@
 {
   "name": "wp-user-frontend",
-  "version": "4.0.14",
+  "version": "4.0.15",
   "description": "A Frontend Plugin for WordPress",
   "author": "Tareq Hasan",
   "license": "GPL",
@@ -11,6 +11,7 @@
     "build": "vite build"
   },
   "devDependencies": {
+    "@types/node": "^18.11.18",
     "@tailwindcss/forms": "^0.5.7",
     "@vitejs/plugin-vue": "^5.0.4",
     "daisyui": "^4.12.2",

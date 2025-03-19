@@ -52,7 +52,7 @@ class Dashboard_Metabox {
         </style>
         <div class="wpuf-db-widget">
             <div class="wpuf-db-banner">
-                <img src="<?php echo BANNER; ?>" alt="Rating Banner">
+                <img src="<?php echo esc_url( BANNER ); ?>" alt="Rating Banner">
                 <p>
                     Could you please take a moment and <a
                         href="https://wordpress.org/support/plugin/wp-user-frontend/reviews/?filter=5" target="_blank">share
@@ -69,7 +69,7 @@ class Dashboard_Metabox {
                     foreach ( $articles as $article ) {
                         ?>
                         <li><a href="<?php echo esc_url( $article['href'] ); ?>"
-                               target="_blank"><?php echo $article['title']; ?></a></li>
+                               target="_blank"><?php echo esc_html( $article['title'] ); ?></a></li>
                     <?php } ?>
                 </ul>
             </div>
@@ -83,8 +83,8 @@ class Dashboard_Metabox {
                         }
                         ?>
                         <li class="blog-item">
-                            <a href="<?php echo $link['href']; ?>"
-                               target="_blank"><?php esc_html_e( $link['title'], 'wp-user-frontend' ); ?>
+                            <a href="<?php echo esc_url( $link['href'] ); ?>"
+                               target="_blank"><?php esc_html( $link['title'], 'wp-user-frontend' ); ?>
                                 <span aria-hidden="true" class="dashicons dashicons-external"></span></a>
                         </li>
                     <?php } ?>

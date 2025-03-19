@@ -659,7 +659,9 @@ class WPUF_Admin_Template {
                         <input type="text" class="smallipopInput" title="Title of the section" name="<?php echo esc_attr( $title_name ); ?>" value="<?php echo esc_attr( $title_value ); ?>" />
 
                         <div class="description" style="margin-top: 8px;">
-                            <?php printf( esc_html( __( "Insert your public key and private key in <a href='%s'>plugin settings</a>. <a href='%s' target='_blank'>Register</a> first if you don't have any keys.", 'wp-user-frontend' ) ), esc_url( admin_url( 'admin.php?page=wpuf-settings' ) ), 'https://www.google.com/recaptcha/' ); ?>
+                            <?php printf( esc_html( 
+                                // translators: %1$s is Admin settings url and %2$s is recaptcha
+                                __( "Insert your public key and private key in <a href='%1\$s'>plugin settings</a>. <a href='%2\$s' target='_blank'>Register</a> first if you don't have any keys.", 'wp-user-frontend' ) ), esc_url( admin_url( 'admin.php?page=wpuf-settings' ) ), 'https://www.google.com/recaptcha/' ); ?>
                         </div>
                     </div> <!-- .wpuf-form-rows -->
                 </div>

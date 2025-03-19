@@ -8,7 +8,7 @@
     <div v-if="'ajax' === field.type" class="category-wrap">
         <div>
             <select>
-                <option><?php _e( '— Select —', 'wp-user-frontend' ); ?></option>
+                <option><?php esc_html_e( '— Select —', 'wp-user-frontend' ); ?></option>
                 <option v-for="term in sorted_terms" :value="term.id">{{ term.name }}</option>
             </select>
         </div>

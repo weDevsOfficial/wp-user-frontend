@@ -363,7 +363,7 @@ class Setup_Wizard {
                     <a class="wpuf-insights-data-we-collect" href="#">What we collect</a>                </span>
                 <p id="collection-info" class="description" style="display:none;">
                     Server environment details (php, mysql, server, WordPress versions), Number of users in your site, Site language, Number of active and inactive plugins, Site name and url, Your name and email address. No sensitive data is tracked.                    We are using <a href="https://appsero.com" target="_blank">Appsero</a> to collect your data. <a href="https://appsero.com/privacy-policy/" target="_blank">Learn more</a> about how <a href="https://appsero.com" target="_blank">Appsero</a> collects and handle your data.                </p>'; ?>
-                        <label for="share_wpuf_essentials"><?php echo wp_kses( __( $share, 'wp-user-frontend' ),
+                        <label for="share_wpuf_essentials"><?php echo wp_kses( $share,
                             [
                                 'span'      => [
                                     'class' => []

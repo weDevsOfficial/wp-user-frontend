@@ -27,7 +27,7 @@ class WPUF_Frontend_Render_Form {
      * @param string $error
      */
     public function send_error( $error ) {
-        echo json_encode(
+        echo wp_json_encode(
             [
                 'success' => false,
                 'error'   => $error,
@@ -229,6 +229,8 @@ class WPUF_Frontend_Render_Form {
         }
 
         if ( $form_id ) {
+            wp_enqueue_script( 'jquery' );
+            wp_enqueue_style( 'wpuf-frontend-forms' );
             ?>
 
             <!doctype html>
@@ -236,7 +238,6 @@ class WPUF_Frontend_Render_Form {
                 <head>
                     <meta charset="UTF-8">
                     <title>__( 'Form Preview', 'wp-user-frontend' )</title>
-                    <link rel="stylesheet" href="<?php echo esc_url( plugins_url( 'assets/css/frontend-forms.css', __DIR__ ) ); ?>">
 
                     <style type="text/css">
                         body {
@@ -257,7 +258,6 @@ class WPUF_Frontend_Render_Form {
                         }
                     </style>
 
-                    <script type="text/javascript" src="<?php echo esc_url( includes_url( 'js/jquery/jquery.js' ) ); ?>"></script>
                 </head>
                 <body>
                     <div class="container">
@@ -445,7 +445,7 @@ class WPUF_Frontend_Render_Form {
 
         // try to add some random number in username
         // and may be we got our username
-        $username .= rand( 1, 199 );
+        $username .= wp_rand( 1, 199 );
 
         if ( ! username_exists( $username ) ) {
             return $username;
@@ -912,7 +912,9 @@ class WPUF_Frontend_Render_Form {
                 <div >
                     <label >
                          <input type="checkbox" class="wpuf_is_featured" name="is_featured_item" value="1" <?php echo $is_featured ? 'checked' : ''; ?> >
-                         <span class="wpuf-items-table-containermessage-box" id="remaining-feature-item"> <?php echo sprintf( __( 'Mark the %s as featured (remaining %d)', 'wp-user-frontend' ), $this->form_settings['post_type'], $user_sub['total_feature_item'] ); ?></span>
+                         <span class="wpuf-items-table-containermessage-box" id="remaining-feature-item"> <?php echo sprintf( 
+                            // translators: %1$s is Post type and %2$s is total feature item
+                            wp_kses_post(__( 'Mark the %1$s as featured (remaining %2$d)', 'wp-user-frontend' ), esc_html ($this->form_settings['post_type'] ), esc_html( $user_sub['total_feature_item'] ) )); ?></span>
                     </label>
                 </div>
             </li>

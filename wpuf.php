@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: weDevs
-Version: 4.0.14
+Version: 4.0.15
 Author URI: https://wedevs.com/?utm_source=WPUF_Author_URI
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -23,7 +23,7 @@ if ( file_exists( $autoload ) ) {
     require_once $autoload;
 }
 
-define( 'WPUF_VERSION', '4.0.14' );
+define( 'WPUF_VERSION', '4.0.15' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -239,7 +239,7 @@ final class WP_User_Frontend {
             <p>
                 <?php
                 /* translators: 1: opening anchor tag, 2: closing anchor tag. */
-                echo sprintf( __( 'We\'ve pushed a major update on both <b>WP User Frontend Free</b> and <b>WP User Frontend Pro</b> that requires you to use latest version of both. Please update the WPUF pro to the latest version. <br><strong>Please make sure to take a complete backup of your site before updating.</strong>', 'wp-user-frontend' ), '<a target="_blank" href="https://wordpress.org/plugins/wp-user-frontend/">', '</a>' );
+                echo sprintf( wp_kses_post( __( 'We\'ve pushed a major update on both <b>WP User Frontend Free</b> and <b>WP User Frontend Pro</b> that requires you to use latest version of both. Please update the WPUF pro to the latest version. <br><strong>Please make sure to take a complete backup of your site before updating.</strong>', 'wp-user-frontend' ), '<a target="_blank" href="https://wordpress.org/plugins/wp-user-frontend/">', '</a>' ) );
                 ?>
             </p>
         </div>
@@ -297,7 +297,7 @@ final class WP_User_Frontend {
      * @param string $msg
      */
     public static function log( $type = '', $msg = '' ) {
-        $msg = sprintf( "[%s][%s] %s\n", date( 'd.m.Y h:i:s' ), $type, $msg );
+        $msg = sprintf( "[%s][%s] %s\n", date( 'd.m.Y h:i:s' ), $type, $msg ); // phpcs:ignore
         error_log( $msg, 3, __DIR__ . '/log.txt' );
     }
 

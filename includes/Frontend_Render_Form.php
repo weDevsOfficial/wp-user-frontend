@@ -27,7 +27,7 @@ class Frontend_Render_Form {
      * @param string $error
      */
     public function send_error( $error ) {
-        echo json_encode(
+        echo wp_json_encode(
             [
                 'success' => false,
                 'error'   => $error,
@@ -121,6 +121,8 @@ class Frontend_Render_Form {
         $form_id = isset( $_GET['form_id'] ) ? intval( wp_unslash( $_GET['form_id'] ) ) : 0;
 
         if ( $form_id ) {
+            wp_enqueue_script( 'jquery' );
+            wp_enqueue_style( 'wpuf-frontend-forms' );
             ?>
 
             <!doctype html>
@@ -128,7 +130,6 @@ class Frontend_Render_Form {
                 <head>
                     <meta charset="UTF-8">
                     <title>__( 'Form Preview', 'wp-user-frontend' )</title>
-                    <link rel="stylesheet" href="<?php echo esc_url( plugins_url( 'assets/css/frontend-forms.css', __DIR__ ) ); ?>">
 
                     <style type="text/css">
                         body {
@@ -148,8 +149,6 @@ class Frontend_Render_Form {
                             box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
                         }
                     </style>
-
-                    <script type="text/javascript" src="<?php echo esc_url( includes_url( 'js/jquery/jquery.js' ) ); ?>"></script>
                 </head>
                 <body>
                     <div class="container">
@@ -301,7 +300,9 @@ class Frontend_Render_Form {
                 <div >
                     <label >
                          <input type="checkbox" class="wpuf_is_featured" name="is_featured_item" value="1" <?php echo $is_featured ? 'checked' : ''; ?> >
-                         <span class="wpuf-items-table-containermessage-box" id="remaining-feature-item"> <?php echo sprintf( __( 'Mark the %s as featured (remaining %d)', 'wp-user-frontend' ), $post_type, $featured_item ); ?></span>
+                         <span class="wpuf-items-table-containermessage-box" id="remaining-feature-item"> <?php echo sprintf( 
+                            // translators: %1$s is Post type and %2$d is item
+                            wp_kses_post( __( 'Mark the %1$s as featured (remaining %2$d)', 'wp-user-frontend' ), esc_html( $post_type ), esc_html( $featured_item ) ) ); ?></span>
                     </label>
                 </div>
             </li>

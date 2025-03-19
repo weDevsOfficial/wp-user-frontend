@@ -63,7 +63,8 @@ class Frontend_Form_Ajax {
                 if ( strlen( $current_data ) > 0 && strlen( $current_data ) < $restricted_num ) {
                     wpuf()->ajax->send_error(
                         sprintf(
-                            __( 'Minimum %d character is required for %s', 'wp-user-frontend' ), $restricted_num, $label
+                            // translators: %1$d is number and %2$s is label
+                            __( 'Minimum %1$d character is required for %2$s', 'wp-user-frontend' ), $restricted_num, $label
                         )
                     );
                 }
@@ -71,7 +72,8 @@ class Frontend_Form_Ajax {
                 if ( strlen( $current_data ) > 0 && strlen( $current_data ) > $restricted_num ) {
                     wpuf()->ajax->send_error(
                         sprintf(
-                            __( 'Maximum %d character is allowed for %s', 'wp-user-frontend' ), $restricted_num, $label
+                            // translators: %1$d is number and %2$s is label
+                            __( 'Maximum %1$d character is allowed for %2$s', 'wp-user-frontend' ), $restricted_num, $label
                         )
                     );
                 }
@@ -82,7 +84,8 @@ class Frontend_Form_Ajax {
                 if ( str_word_count( $current_data ) > 0 && str_word_count( $current_data ) < $restricted_num ) {
                     wpuf()->ajax->send_error(
                         sprintf(
-                            __( 'Minimum %d word is required for %s', 'wp-user-frontend' ), $restricted_num, $label
+                            // translators: %1$d is number and %2$s is label
+                            __( 'Minimum %1$d word is required for %2$s', 'wp-user-frontend' ), $restricted_num, $label
                         )
                     );
                 }
@@ -90,7 +93,8 @@ class Frontend_Form_Ajax {
                 if ( str_word_count( $current_data ) > 0 && str_word_count( $current_data ) > $restricted_num ) {
                     wpuf()->ajax->send_error(
                         sprintf(
-                            __( 'Maximum %d word is allowed for %s', 'wp-user-frontend' ), $restricted_num, $label
+                            // translators: %1$d is number and %2$s is label
+                            __( 'Maximum %1$d word is allowed for %2$s', 'wp-user-frontend' ), $restricted_num, $label
                         )
                     );
                 }
@@ -110,7 +114,9 @@ class Frontend_Form_Ajax {
             foreach ( $protected_shortcodes as $shortcode ) {
                 $search_for = '[' . $shortcode;
                 if ( strpos( $current_data, $search_for ) !== false ) {
-                    wpuf()->ajax->send_error( sprintf( __( 'Using %s as shortcode is restricted', 'wp-user-frontend' ), $shortcode ) );
+                    wpuf()->ajax->send_error( sprintf( 
+                        // translators: %s is shortcode
+                        __( 'Using %s as shortcode is restricted', 'wp-user-frontend' ), $shortcode ) );
                 }
             }
         }
@@ -483,7 +489,7 @@ class Frontend_Form_Ajax {
 
                 // is valid email?
                 if ( ! is_email( $guest_email ) ) {
-                    echo json_encode(
+                    echo wp_json_encode(
                         [
                             'success' => false,
                             'error'   => __( 'Invalid email address.', 'wp-user-frontend' ),

@@ -941,10 +941,10 @@ class Free_Loader extends Pro_Prompt {
                 <div class="modal-window-inner">
                     <div class="content-area">
                         <div class="popup-close-button">
-                            <?php echo $close_icon; ?>
+                            <?php echo wp_kses( $close_icon, array( 'svg' => ['xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true,] , 'path' => ['d' => true, 'fill' => true,] ) ); ?>
                         </div>
                         <div class="popup-diamond">
-                            <?php echo $diamond_icon; ?>
+                            <?php echo wp_kses( $diamond_icon , array('svg' => ['xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true,], 'path' => ['d' => true, 'fill' => true, 'stroke' => true, 'stroke-linecap' => true,] ) ); ?>
                         </div>
                         <div class="wpuf-popup-header">
                             <h2 class="font-orange header-one">Upgrade to</h2>
@@ -954,7 +954,7 @@ class Free_Loader extends Pro_Prompt {
                         <div class="wpuf-popup-list-area">
                             <div class="single-checklist">
                                 <div class="check-icon">
-                                    <?php echo $check_icon; ?>
+                                    <?php echo wp_kses( $check_icon, array('svg' => ['xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true,], 'path' => ['d' => true, 'fill' => true, 'fill-rule' => true, 'clip-rule' => true,] ) ); ?>
                                 </div>
                                 <div class="check-list">
                                     <p>Get custom <span class="bold font-black">Post Type</span> and <span class="bold font-black">Taxonomy</span> support with
@@ -963,7 +963,7 @@ class Free_Loader extends Pro_Prompt {
                             </div>
                             <div class="single-checklist">
                                 <div class="check-icon">
-                                    <?php echo $check_icon; ?>
+                                    <?php echo wp_kses( $check_icon, array('svg' => ['xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true,], 'path' => ['d' => true, 'fill' => true, 'fill-rule' => true, 'clip-rule' => true,] ) ); ?>
                                 </div>
                                 <div class="check-list">
                                     <p>Enable <span class="bold font-black">conditional logic</span> and <span class="bold font-black">multi-step</span><span class="line-break"></span> functionalities on your forms.</p>
@@ -971,7 +971,7 @@ class Free_Loader extends Pro_Prompt {
                             </div>
                             <div class="single-checklist">
                                 <div class="check-icon">
-                                    <?php echo $check_icon; ?>
+                                    <?php echo wp_kses( $check_icon, array('svg' => ['xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true,], 'path' => ['d' => true, 'fill' => true, 'fill-rule' => true, 'clip-rule' => true,] ) ); ?>
                                 </div>
                                 <div class="check-list">
                                     <p>Show or hide <span class="bold font-black">menus, pages,</span> and <span class="bold font-black">content</span> based on<span class="line-break"></span> user roles or login status of a user.</p>
@@ -979,28 +979,28 @@ class Free_Loader extends Pro_Prompt {
                             </div>
                             <div class="single-checklist">
                                 <div class="check-icon">
-                                    <?php echo $check_icon; ?>
+                                <?php echo wp_kses( $check_icon, array('svg' => ['xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true,], 'path' => ['d' => true, 'fill' => true, 'fill-rule' => true, 'clip-rule' => true,] ) ); ?>
                                 </div>
                                 <div class="check-list">
                                     <p><span class="bold font-black">20+ Premium Modules</span> (Social Login, User<span class="line-break"></span> Directory, User Activity, Stripe, MailChimp, Private<span class="line-break"></span> Messaging, Zapier, & more)</p>
                                 </div>
                             </div>
                         </div>
-                        <a href="<?php echo self::get_upgrade_to_pro_popup_url(); ?>"
+                        <a href="<?php echo esc_url( self::get_upgrade_to_pro_popup_url() ); ?>"
                            target="_blank"
                            class="wpuf-button button-upgrade-to-pro">
                             <?php esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' ); ?>
-                            <?php printf( '<span class="pro-icon"> %s</span>', $crown_icon );  ?>
+                            <?php printf( '<span class="pro-icon"> %s</span>', wp_kses( $crown_icon, array('svg' => [ 'xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true ], 'path' => [ 'd' => true, 'fill' => true ], 'circle' => [ 'cx' => true, 'cy' => true, 'r' => true ], ) ) );  ?>
                         </a>
                     </div>
                     <div class="slider-area">
                         <div class="wpuf-slider slider-indicators-outside slider-indicators-round slider-nav-mousedrag slider-nav-autoplay slider-nav-autopause"" id="wpuf-slider">
                         <div class="swiffy-slider">
                             <ul class="slider-container">
-                                <li><img src="<?php echo WPUF_ASSET_URI . '/images/woocommerce-form-template.png'; ?>"></li>
-                                <li><img src="<?php echo WPUF_ASSET_URI . '/images/conditional-form.png'; ?>"></li>
-                                <li><img src="<?php echo WPUF_ASSET_URI . '/images/content-restriction.png'; ?>"></li>
-                                <li><img src="<?php echo WPUF_ASSET_URI . '/images/modules.png'; ?>"></li>
+                                <li><img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/woocommerce-form-template.png' ); ?>"></li>
+                                <li><img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/conditional-form.png' ); ?>"></li>
+                                <li><img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/content-restriction.png' ); ?>"></li>
+                                <li><img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/modules.png' ); ?>"></li>
                             </ul>
 
                             <div class="slider-indicators">
@@ -1016,13 +1016,13 @@ class Free_Loader extends Pro_Prompt {
             <div class="modal-footer">
                 <div class="footer-feature">
                     <p>
-                        <?php echo $check_icon; ?> Industry leading 24x7 support
+                        <?php echo wp_kses( $check_icon, array('svg' => ['xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true,], 'path' => ['d' => true, 'fill' => true, 'fill-rule' => true, 'clip-rule' => true,] ) ); ?> Industry leading 24x7 support
                     </p>
                     <p>
-                        <?php echo $check_icon; ?> 14 days no questions asked refund policy
+                        <?php echo wp_kses( $check_icon, array('svg' => ['xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true,], 'path' => ['d' => true, 'fill' => true, 'fill-rule' => true, 'clip-rule' => true,] ) ); ?> 14 days no questions asked refund policy
                     </p>
                     <p>
-                        <?php echo $check_icon; ?> Secured payment
+                        <?php echo wp_kses( $check_icon, array('svg' => ['xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true,], 'path' => ['d' => true, 'fill' => true, 'fill-rule' => true, 'clip-rule' => true,] ) ); ?> Secured payment
                     </p>
 
                 </div>
@@ -1039,26 +1039,26 @@ class Free_Loader extends Pro_Prompt {
                             <div class="plugin-card-top">
                                 <div class="name column-name">
                                     <h3>
-                                        <span class="plugin-name"><a href="<?php echo $module['plugin_uri']; ?>" target="_blank"><?php echo $module['name']; ?></a></span>
-                                        <a href="<?php echo $module['plugin_uri']; ?>" target="_blank"><img class="plugin-icon" src="<?php echo WPUF_ASSET_URI . '/images/modules/' . $module['thumbnail']; ?>" alt="" /></a>
+                                        <span class="plugin-name"><a href="<?php echo esc_url( $module['plugin_uri'] ); ?>" target="_blank"><?php echo esc_html( $module['name'] ); ?></a></span>
+                                        <a href="<?php echo esc_url( $module['plugin_uri'] ); ?>" target="_blank"><img class="plugin-icon" src="<?php echo esc_url( WPUF_ASSET_URI . '/images/modules/' . $module['thumbnail'] ); ?>" alt="" /></a>
                                     </h3>
                                 </div>
 
                                 <div class="action-links">
                                     <ul class="plugin-action-buttons">
-                                        <li data-module="<?php echo $slug; ?>">
+                                        <li data-module="<?php echo esc_attr( $slug ); ?>">
                                             <label class="wpuf-toggle-switch">
                                                 <input type="checkbox" name="module_toggle" class="wpuf-toggle-module" disabled>
                                                 <span class="slider round"></span>
                                             </label>
                                         </li>
                                     </ul>
-                                    <div class="wpuf-doc-link" ><a href="<?php echo $module['plugin_uri']; ?>" target="_blank">Documentation</a></div>
+                                    <div class="wpuf-doc-link" ><a href="<?php echo esc_url( $module['plugin_uri'] ); ?>" target="_blank">Documentation</a></div>
                                 </div>
 
                                 <div class="desc column-description">
                                     <p>
-                                        <?php echo $module['description']; ?>
+                                        <?php echo esc_html( $module['description'] ); ?>
                                     </p>
                                 </div>
                             </div>
@@ -1072,7 +1072,7 @@ class Free_Loader extends Pro_Prompt {
                 <a href="#wpuf-upgrade-popup"
                    class="wpuf-button button-upgrade-to-pro">
                     <?php esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' ); ?>
-                    <?php printf( '<span class="pro-icon"> %s</span>', $crown_icon ); ?>
+                    <?php printf( '<span class="pro-icon"> %s</span>', wp_kses($crown_icon, array('svg' => [ 'xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true ], 'path' => [ 'd' => true, 'fill' => true ], 'circle' => [ 'cx' => true, 'cy' => true, 'r' => true ], ) ) ); ?>
                 </a>
             </div>
         </div>
@@ -1260,7 +1260,11 @@ class Free_Loader extends Pro_Prompt {
         }
 
         $gateways['stripe'] = [
-            'admin_label'    => __( 'Credit Card ' . $crown, 'wp-user-frontend' ),
+            'admin_label'    => sprintf(
+                // translators: %s is the crown symbol
+                __( 'Credit Card %s', 'wp-user-frontend' ), 
+                $crown 
+            ),
             'checkout_label' => __( 'Credit Card', 'wp-user-frontend' ),
             'label_class'    => 'pro-preview',
         ];
@@ -1283,7 +1287,7 @@ class Free_Loader extends Pro_Prompt {
             $crown = sprintf( '<span class="pro-icon-title"> %s</span>', file_get_contents( $crown_icon ) );
         }
 
-        echo '<li><a href="#taxonomy-restriction"><span class="dashicons dashicons-image-filter"></span> ' . __( 'Taxonomy Restriction ', 'wp-user-frontend' ) . $crown . '</a></li>';
+        echo '<li><a href="#taxonomy-restriction"><span class="dashicons dashicons-image-filter"></span> ' . esc_html(__( 'Taxonomy Restriction ', 'wp-user-frontend' ) ) . wp_kses($crown, array('svg' => ['xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true,], 'path' => ['d' => true, 'fill' => true, ] ) ) . '</a></li>';
     }
 
     /**
@@ -1313,7 +1317,7 @@ class Free_Loader extends Pro_Prompt {
                                 ?>
                                 <div class="metabox-holder" style="float:left; padding:5px;">
                                     <div class="postbox">
-                                        <h3 class="handle"><span><?php echo $ct->label; ?></span></h3>
+                                        <h3 class="handle"><span><?php echo esc_html( $ct->label ); ?></span></h3>
                                         <div class="inside" style="padding:0 10px;">
                                             <div class="taxonomydiv">
                                                 <div class="tabs-panel" style="height: 200px; overflow-y:auto">
@@ -1328,7 +1332,7 @@ class Free_Loader extends Pro_Prompt {
                                                         $selected[] = $tax_term;
                                                         ?>
                                                         <ul class="categorychecklist form-no-clear">
-                                                            <input type="checkbox" class="tax-term-class" name="allowed-term[]" value="<?php echo $tax_term->term_id; ?>" <?php echo in_array( $tax_term->term_id, $allowed_tax_id_arr, true ) ? ' checked="checked"' : ''; ?> name="<?php echo $tax_term->name; ?>" disabled> <?php echo $tax_term->name; ?>
+                                                            <input type="checkbox" class="tax-term-class" name="allowed-term[]" value="<?php echo esc_attr( $tax_term->term_id ); ?>" <?php echo in_array( $tax_term->term_id, $allowed_tax_id_arr, true ) ? ' checked="checked"' : ''; ?> name="<?php echo esc_attr( $tax_term->name ); ?>" disabled> <?php echo esc_html( $tax_term->name ); ?>
                                                         </ul>
                                                     <?php } ?>
                                                 </div>
@@ -1359,7 +1363,7 @@ class Free_Loader extends Pro_Prompt {
                             <td>
                                 <div class="metabox-holder" style="float:left; padding:5px;">
                                     <div class="postbox">
-                                        <h3 class="handle"><span><?php echo $ct->label; ?></span></h3>
+                                        <h3 class="handle"><span><?php echo esc_html( $ct->label ); ?></span></h3>
                                         <div class="inside" style="padding:0 10px;">
                                             <div class="taxonomydiv">
                                                 <div class="tabs-panel" style="height: 200px; overflow-y:auto">
@@ -1378,9 +1382,9 @@ class Free_Loader extends Pro_Prompt {
                                                                 type="checkbox"
                                                                 class="tax-term-class"
                                                                 name="allowed-term[]"
-                                                                value="<?php echo $tax_term->term_id; ?>" <?php echo in_array( $tax_term->term_id, $allowed_tax_id_arr, true ) ? ' checked="checked"' : ''; ?>
-                                                                name="<?php echo $tax_term->name; ?>"
-                                                                disabled> <?php echo $tax_term->name; ?>
+                                                                value="<?php echo esc_attr( $tax_term->term_id ); ?>" <?php echo in_array( $tax_term->term_id, $allowed_tax_id_arr, true ) ? ' checked="checked"' : ''; ?>
+                                                                name="<?php echo esc_attr( $tax_term->name ); ?>"
+                                                                disabled> <?php echo esc_html( $tax_term->name ); ?>
                                                         </ul>
                                                     <?php } ?>
                                                 </div>
@@ -1402,7 +1406,7 @@ class Free_Loader extends Pro_Prompt {
                 </tr>
             </table>
             <?php
-                echo wpuf_get_pro_preview_html();
+                echo wp_kses_post( wpuf_get_pro_preview_html() );
             ?>
         </section>
 

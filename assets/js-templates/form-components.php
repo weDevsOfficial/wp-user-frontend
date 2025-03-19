@@ -1,7 +1,7 @@
 <script type="text/x-template" id="tmpl-wpuf-builder-stage">
 <div id="form-preview-stage" class="wpuf-style">
     <h4 v-if="!form_fields.length" class="text-center">
-        <?php _e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wp-user-frontend' ); ?>
+        <?php esc_html_e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wp-user-frontend' ); ?>
     </h4>
 
     <ul :class="['wpuf-form', 'sortable-list', 'form-label-' + label_type]">
@@ -27,7 +27,7 @@
 
             <div v-if="is_pro_feature(field.template)" class="stage-pro-alert">
                 <label class="wpuf-pro-text-alert">
-                    <a :href="pro_link" target="_blank"><strong>{{ get_field_name(field.template) }}</strong> <?php _e( 'is available in Pro Version', 'wp-user-frontend' ); ?></a>
+                    <a :href="pro_link" target="_blank"><strong>{{ get_field_name(field.template) }}</strong> <?php esc_html_e( 'is available in Pro Version', 'wp-user-frontend' ); ?></a>
                 </label>
             </div>
 
@@ -210,7 +210,7 @@
 <div class="panel-field-opt panel-field-opt-pro-feature">
     <label>{{ option_field.title }}</label><br>
     <label class="wpuf-pro-text-alert">
-        <a :href="pro_link" target="_blank"><?php _e( 'Available in Pro Version', 'wp-user-frontend' ); ?></a>
+        <a :href="pro_link" target="_blank"><?php esc_html_e( 'Available in Pro Version', 'wp-user-frontend' ); ?></a>
     </label>
 </div>
 </script>
@@ -305,7 +305,7 @@
     </label>
 
     <select class="opt-select-element" v-model="value">
-        <option value=""><?php _e( 'Select an option', 'wp-user-frontend' ); ?></option>
+        <option value=""><?php esc_html_e( 'Select an option', 'wp-user-frontend' ); ?></option>
         <option v-for="(option, key) in option_field.options" :value="key">{{ option }}</option>
     </select>
 </div>
@@ -386,7 +386,7 @@
                     $output .= "<label><input type='checkbox' v-model='choices' value='{$role}'> {$role_name} </label>";
                     $output .= '</li>';
 
-                    echo $output;
+                    echo wp_kses( $output, array( 'li' => array(), 'label' => array(), 'input' => array( 'type', 'value', 'v-model' ) ) );
                 }
             ?>
 	    </ul>
@@ -406,10 +406,10 @@
                             $output .= "<label><input type='checkbox' v-model='choices' value='{$pack->ID}' > {$pack->post_title} </label>";
                             $output .= '</li>';
 
-                            echo $output;
+                            echo wp_kses( $output, array( 'li' => array(), 'label' => array(), 'input' => array( 'type', 'value', 'v-model' ) ) );
                         }
                     } else {
-                        _e( 'No subscription plan found.', 'wp-user-frontend' );
+                        esc_html_e( 'No subscription plan found.', 'wp-user-frontend' );
                     }
                 }
             ?>
@@ -482,7 +482,7 @@
 
                         <div v-if="is_pro_feature(field.template)" class="stage-pro-alert">
                             <label class="wpuf-pro-text-alert">
-                                <a :href="pro_link" target="_blank"><strong>{{ get_field_name(field.template) }}</strong> <?php _e( 'is available in Pro Version', 'wp-user-frontend' ); ?></a>
+                                <a :href="pro_link" target="_blank"><strong>{{ get_field_name(field.template) }}</strong> <?php esc_html_e( 'is available in Pro Version', 'wp-user-frontend' ); ?></a>
                             </label>
                         </div>
 
@@ -557,7 +557,7 @@
         <div class="wpuf-attachment-upload-filelist" data-type="file" data-required="yes">
             <a class="button file-selector" href="#">
                 <template v-if="field.button_label === ''">
-                    <?php _e( 'Select Image', 'wp-user-frontend' ); ?>
+                    <?php esc_html_e( 'Select Image', 'wp-user-frontend' ); ?>
                 </template>
                 <template v-else>
                     {{ field.button_label }}
@@ -628,7 +628,7 @@
         <div class="wpuf-attachment-upload-filelist" data-type="file" data-required="yes">
             <a class="button file-selector wpuf_img_label_148" href="#">
                 <template v-if="field.button_label === ''">
-                    <?php _e( 'Select Image', 'wp-user-frontend' ); ?>
+                    <?php esc_html_e( 'Select Image', 'wp-user-frontend' ); ?>
                 </template>
                 <template v-else>
                     {{ field.button_label }}
@@ -665,7 +665,7 @@
 <div class="wpuf-fields">
     <div class="wp-media-buttons" v-if="field.insert_image == 'yes'">
         <button type="button" class="button insert-media add_media" data-editor="content">
-            <span class="dashicons dashicons-admin-media insert-photo-icon"></span> <?php _e( 'Insert Photo', 'wp-user-frontend' ); ?>
+            <span class="dashicons dashicons-admin-media insert-photo-icon"></span> <?php esc_html_e( 'Insert Photo', 'wp-user-frontend' ); ?>
         </button>
     </div>
     <br v-if="field.insert_image == 'yes'" />
@@ -755,9 +755,9 @@
 
     <template v-else>
     	<div v-if="'invisible_recaptcha' != field.recaptcha_type">
-        	<img class="wpuf-recaptcha-placeholder" src="<?php echo WPUF_ASSET_URI . '/images/recaptcha-placeholder.png'; ?>" alt="">
+        	<img class="wpuf-recaptcha-placeholder" src="<?php echo esc_url ( WPUF_ASSET_URI . '/images/recaptcha-placeholder.png' ); ?>" alt="">
         </div>
-        <div v-else><p><?php _e( 'Invisible reCaptcha', 'wp-user-frontend' ); ?></p></div>
+        <div v-else><p><?php esc_html_e( 'Invisible reCaptcha', 'wp-user-frontend' ); ?></p></div>
     </template>
 </div>
 </script>
@@ -780,7 +780,7 @@
     <div v-if="'ajax' === field.type" class="category-wrap">
         <div>
             <select>
-                <option><?php _e( '— Select —', 'wp-user-frontend' ); ?></option>
+                <option><?php esc_html_e( '— Select —', 'wp-user-frontend' ); ?></option>
                 <option v-for="term in sorted_terms" :value="term.id">{{ term.name }}</option>
             </select>
         </div>
@@ -864,11 +864,13 @@
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-text-editor">
+<?php
+wp_enqueue_style( 'editor-css', site_url() . '/wp-includes/css/editor.css', array(), null, 'all' );
+wp_enqueue_style( 'skin-css', site_url() . '/wp-includes/js/tinymce/skins/lightgray/skin.min.css', array(), null, 'all' );
+?>
 <div class="wpuf-text-editor">
 
     <div class="wp-core-ui wp-editor-wrap tmce-active">
-        <link rel="stylesheet" :href="site_url + 'wp-includes/css/editor.css'" type="text/css" media="all">
-        <link rel="stylesheet" :href="site_url + 'wp-includes/js/tinymce/skins/lightgray/skin.min.css'" type="text/css" media="all">
 
         <div class="wp-editor-container">
             <div class="mce-tinymce mce-container mce-panel" style="visibility: hidden; border-width: 1px;">

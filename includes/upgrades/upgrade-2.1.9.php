@@ -83,7 +83,7 @@ function wpuf_upgrade_2_1_9_subscription() {
     }
 
     $sql = "DROP TABLE IF_EXISTS $table";
-    $wpdb->query( $sql );
+    $wpdb->query( $wpdb->prepare( "DROP TABLE IF_EXISTS %s", $table ) );
 }
 
 wpuf_upgrade_2_1_9_form_fields();

@@ -103,7 +103,9 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
                     ];
 
                     // translators: %s: post type name and taxonomy name
-                    $tax = '<tr class="wpuf_settings_taxonomy"> <th>' . sprintf( __( 'Default %s %s', 'wp-user-frontend' ), $post_type_selected, $tax->name ) . '</th> <td>
+                    $tax = '<tr class="wpuf_settings_taxonomy"> <th>' . sprintf( 
+                        // translators: %1$s is Post type and %2$s is Tax name
+                        __( 'Default %1$s %2$s', 'wp-user-frontend' ), $post_type_selected, $tax->name ) . '</th> <td>
                         <select multiple name="wpuf_settings[default_'.$tax->name.'][]">';
                     $categories = get_terms( $args );
 
@@ -145,7 +147,7 @@ $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings[
                     ?>
                 </select>
                 <p class="description">
-                    <?php esc_html_e( 'After successfull submit, where the page will redirect to', $domain = 'wp-user-frontend' ); ?>
+                    <?php esc_html_e( 'After successful submit, where the page will redirect to', 'wp-user-frontend' ); ?>
                 </p>
             </td>
         </tr>

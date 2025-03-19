@@ -2,7 +2,9 @@
     global $current_user;
 
     printf(
-        wp_kses_post( __( 'Hello %1$s, (not %1$s? <a href="%2$s">Sign out</a>)', 'wp-user-frontend' ) ),
+        wp_kses_post( 
+            // translators: %1$s is displayname and %2$s is permalink
+            __( 'Hello %1$s, (not %1$s? <a href="%2$s">Sign out</a>)', 'wp-user-frontend' ) ),
         '<strong>' . esc_html( $current_user->display_name ) . '</strong>',
         esc_url( wp_logout_url( get_permalink() ) )
      );
@@ -37,7 +39,9 @@
     }
 
     printf(
-        wp_kses_post( __( 'From your account dashboard you can view your dashboard, manage your %s', 'wp-user-frontend' ) ),
+        wp_kses_post( 
+            // translators: %s is link
+            __( 'From your account dashboard you can view your dashboard, manage your %s', 'wp-user-frontend' ) ),
         wp_kses( $links, [ 'a' => [ 'href' => [] ] ] )
      );
 ?></p>

@@ -12,6 +12,7 @@ class Menu {
 
         add_filter( 'parent_file', [ $this, 'fix_parent_menu' ] );
         add_filter( 'submenu_file', [ $this, 'fix_submenu_file' ] );
+        add_filter( 'script_loader_tag', [ $this , 'add_async_attribute' ], 10, 3 );
     }
 
     public function admin_menu() {
@@ -128,6 +129,7 @@ class Menu {
      * @return void
      */
     public function load_headway_badge() {
+        wp_enqueue_script( 'wpuf-headway-script' );
         ?>
         <script>
             const HW_config = {
@@ -148,8 +150,18 @@ class Menu {
             };
 
         </script>
-        <script async src="//cdn.headwayapp.co/widget.js"></script>
         <?php
+    }
+
+    /**
+    * Mark headway as async. Because nothing depends on it, it can run at any time
+    */
+    public function add_async_attribute( $tag, $handle, $src ) {
+        if ('wpuf-headway-script' === $handle) {
+            return str_replace( ' src', ' async src', $tag );
+        }
+
+        return $tag;
     }
 
     /**

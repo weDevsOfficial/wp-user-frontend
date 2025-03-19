@@ -206,8 +206,6 @@ class Frontend_Render_Form {
             return;
         }
 
-        error_log( print_r( $this->form_settings['roles'], true ) );
-
         if (
             ( ! empty( $this->form_settings['post_permission'] ) && 'role_base' === $this->form_settings['post_permission'] )
             && ( ! empty( $this->form_settings['roles'] ) && ! wpuf_user_has_roles( $this->form_settings['roles'] ) )

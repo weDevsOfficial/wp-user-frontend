@@ -362,7 +362,7 @@ class Frontend_Form extends Frontend_Render_Form {
 
                 wp_redirect( $response['redirect_to'] );
                 wpuf_clear_buffer();
-                wp_send_json( $response );
+                wp_send_json_error( $response );
             }
         } else {
             $p_status = get_post_status( $post_id );

@@ -10,7 +10,7 @@ class Form_Field_Radio extends Form_Field_Checkbox {
     public function __construct() {
         $this->name       = __( 'Radio', 'wp-user-frontend' );
         $this->input_type = 'radio_field';
-        $this->icon       = 'dot-circle-o';
+        $this->icon       = 'stop';
     }
 
     /**

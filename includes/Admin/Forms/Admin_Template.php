@@ -473,7 +473,7 @@ class Admin_Template {
 
     public static function dropdown_field( $field_id, $label, $values = [] ) {
         $first_name  = sprintf( '%s[%d][first]', self::$input_name, $field_id );
-        $first_value = $values ? $values['first'] : ' - select -';
+        $first_value = $values ? $values['first'] : ' - Select -';
         $help        = esc_attr(
             __(
                 'First element of the select dropdown. Leave this empty if you don\'t want to show this field',
@@ -510,7 +510,7 @@ class Admin_Template {
 
     public static function multiple_select( $field_id, $label, $values = [] ) {
         $first_name  = sprintf( '%s[%d][first]', esc_attr( self::$input_name ), esc_attr( $field_id ) );
-        $first_value = $values ? $values['first'] : ' - select -';
+        $first_value = $values ? $values['first'] : ' - Select -';
         $help        = esc_attr(
             __(
                 'First element of the select dropdown. Leave this empty if you don\'t want to show this field',

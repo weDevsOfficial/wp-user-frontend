@@ -28,7 +28,8 @@ class Ajax {
         $this->register_ajax( 'wpuf_upload_file', [ new Ajax\Upload_Ajax(), 'upload_file' ] );
         $this->register_ajax( 'wpuf_insert_image', [ new Ajax\Upload_Ajax(), 'insert_image' ] );
         $this->register_ajax( 'wpuf_form_builder_save_form', [ new Ajax\Admin_Form_Builder_Ajax(), 'save_form' ], $this->logged_in_only );
-        $this->register_ajax( 'wpuf_form_setting_post', [ new Ajax\Admin_Form_Builder_Ajax(), 'wpuf_get_post_taxonomies' ], $this->logged_in_only );
+        $this->register_ajax( 'wpuf_form_setting_post', [ new Ajax\Admin_Form_Builder_Ajax(), 'get_post_taxonomies' ], $this->logged_in_only );
+        $this->register_ajax( 'wpuf_form_roles', [ new Ajax\Admin_Form_Builder_Ajax(), 'get_roles' ], $this->logged_in_only );
         $this->register_ajax( 'wpuf_dismiss_promotional_offer_notice', [ new Admin\Promotion(), 'dismiss_promotional_offer' ], $this->logged_in_only );
         $this->register_ajax( 'wpuf_dismiss_review_notice', [ new Admin\Promotion(), 'dismiss_review_notice' ], $this->logged_in_only );
         $this->register_ajax( 'wpuf_ajax_tag_search', 'wpuf_ajax_tag_search' );

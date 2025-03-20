@@ -5,9 +5,6 @@
 @mediaMD: 1200px;
 /* DivTable.com */
 body {
-#wpfooter {
-    position: fixed  !important
-}
 .has-error {
     background: #FFE4E4;
     padding: 10px;
@@ -259,7 +256,7 @@ ul.wpuf-form {
         }
 
         .wp-editor-wrap {
-            border: 1px solid @borderColor;
+            border: none;
         }
 
         &wpuf-el {
@@ -281,24 +278,6 @@ ul.wpuf-form {
                 color: red;
             }
         }
-        &.field-size-large {
-            .wpuf-fields {
-                float: left;
-                width: 70%;
-            }
-        }
-        &.field-size-medium {
-            .wpuf-fields {
-                float: left;
-                width: 50%;
-            }
-        }
-        &.field-size-small {
-            .wpuf-fields {
-                float: left;
-                width: 30%;
-            }
-        }
 
         .wpuf-fields {
             float: left;
@@ -314,31 +293,6 @@ ul.wpuf-form {
             .wpuf-checkbox-block{
                 display: block;
                 margin-bottom: 6px;
-            }
-
-            a.file-selector {
-                display: inline;
-                text-decoration: none;
-                padding: 5px 12px;
-                margin: 0;
-                height: 30px;
-                line-height: 28px;
-                border: 1px solid #ccc;
-                .border-radius(3px);
-                background: #fafafa;
-                color: #23282d;
-                box-shadow: 0 1px 0 #cccccc;
-                vertical-align: top;
-                cursor: pointer;
-                -webkit-appearance: none;
-                white-space: nowrap;
-
-                &:hover,
-                &:focus {
-                    background: #fafafa;
-                    border-color: #999;
-                    color: #23282d;
-                }
             }
 
             .google-map {
@@ -615,7 +569,6 @@ ul.wpuf-form {
 
         .wpuf-section-wrap {
             border-bottom: 1px solid #ccc;
-            margin: 15px 0;
 
             h2.wpuf-section-title {
                 margin: 0;
@@ -2024,6 +1977,7 @@ ul.wpuf-form{
                 padding: 0;
                 border: 0;
                 float: none;
+                display: flex;
                 width: 100%;
                 overflow: hidden;
 
@@ -2056,6 +2010,7 @@ ul.wpuf-form{
                             input[type="datetime-local"],
                             input[type="color"], textarea{
                                 width: 100%;
+                                max-width: fit-content;
                             }
                         }
                     }
@@ -2113,7 +2068,11 @@ ul.wpuf-form{
 .iti--allow-dropdown input[type="text"] {
     padding-left: 52px !important;
 }
-
+.form-preview-stage-dropzone {
+    background-color: #f0fdf4;
+    border: 1px solid #4ade80;
+    height: 50px;
+}
 img.wpuf-eye {
     position: absolute;
     right: 1rem;

@@ -453,7 +453,7 @@ class User_Subscription {
             // user has recurring subscription
             if ( $post_count > 0 || $post_count == '-1' ) {
                 return false;
-            } elseif ( $post_count <= 0 && $fallback_ppp_enable == 'true' ) {
+            } elseif ( $post_count <= 0 && wpuf_is_checkbox_or_toggle_on( $fallback_ppp_enable ) ) {
                 return true;
             } else {
                 return true;
@@ -471,7 +471,7 @@ class User_Subscription {
 
             if ( $post_count > 0 || $post_count == '-1' ) {
                 $post_count_status = false;
-            } elseif ( $post_count <= 0 && $fallback_ppp_enable == 'true' ) {
+            } elseif ( $post_count <= 0 && wpuf_is_checkbox_or_toggle_on( $fallback_ppp_enable ) ) {
                 $post_count_status = false;
             } else {
                 $post_count_status = true;

@@ -8,12 +8,15 @@
         <header class="modal-header">
             <h2>
                 <?php esc_html_e( 'Select a Template', 'wp-user-frontend' ); ?>
-                <small><?php
-                printf(
-                    // translators: %s is a URL leading to a blank form.
-                    wp_kses_post( __( 'Select from a pre-defined template or from a <a href="%s">blank form</a>', 'wp-user-frontend' ) ),
-                    esc_attr( $blank_form_url )
-                 ); ?></small>
+                <small>
+                    <?php
+                    printf(
+                        // translators: %s is a URL leading to a blank form.
+                        wp_kses_post( __( 'Select from a pre-defined template or from a <a href="%s">blank form</a>', 'wp-user-frontend' ) ),
+                        esc_attr( $blank_form_url )
+                     );
+                    ?>
+                </small>
             </h2>
         </header>
 
@@ -61,8 +64,8 @@
                         <li class="<?php echo esc_attr( $class ); ?>">
                             <h3><?php echo esc_html( $template->get_title() ); ?></h3>
                             <?php if ( $image ) {
-                            printf( '<img src="%s" alt="%s">', esc_attr( $image ), esc_attr( $title ) );
-                        } ?>
+                                printf( '<img src="%s" alt="%s">', esc_attr( $image ), esc_attr( $title ) );
+                            } ?>
 
                             <div class="form-create-overlay">
                                 <div class="title"><?php echo esc_html( $title ); ?></div>
@@ -74,7 +77,7 @@
                             </div>
                         </li>
 
-                    <?php
+                        <?php
                     }
 
                     $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
@@ -82,7 +85,7 @@
                         $class = 'template-inactive is-pro-template';
                         $image = $template->get_image();
                         $title = $template->get_title();
-                         ?>
+                        ?>
 
                         <li class="<?php echo esc_attr( $class ); ?>">
                             <h3>
@@ -130,41 +133,41 @@
 
 
 <script type="text/javascript">
-(function($) {
-    var popup = {
-        init: function() {
-            $('.wrap').on('click', 'a.page-title-action.add-form', this.openModal);
-            $('.wpuf-form-template-modal-backdrop, .wpuf-form-template-modal .close').on('click', $.proxy(this.closeModal, this) );
+    (function($) {
+        var popup = {
+            init: function() {
+                $('.wrap').on('click', 'a.page-title-action.add-form', this.openModal);
+                $('.wpuf-form-template-modal-backdrop, .wpuf-form-template-modal .close').on('click', $.proxy(this.closeModal, this) );
 
-            $('body').on( 'keydown', $.proxy(this.onEscapeKey, this) );
-        },
+                $('body').on( 'keydown', $.proxy(this.onEscapeKey, this) );
+            },
 
-        openModal: function(e) {
-            e.preventDefault();
-
-            $('.wpuf-form-template-modal').show();
-            $('.wpuf-form-template-modal-backdrop').show();
-        },
-
-        onEscapeKey: function(e) {
-            if ( 27 === e.keyCode ) {
-                this.closeModal(e);
-            }
-        },
-
-        closeModal: function(e) {
-            if ( typeof e !== 'undefined' ) {
+            openModal: function(e) {
                 e.preventDefault();
+
+                $('.wpuf-form-template-modal').show();
+                $('.wpuf-form-template-modal-backdrop').show();
+            },
+
+            onEscapeKey: function(e) {
+                if ( 27 === e.keyCode ) {
+                    this.closeModal(e);
+                }
+            },
+
+            closeModal: function(e) {
+                if ( typeof e !== 'undefined' ) {
+                    e.preventDefault();
+                }
+
+                $('.wpuf-form-template-modal').hide();
+                $('.wpuf-form-template-modal-backdrop').hide();
             }
+        };
 
-            $('.wpuf-form-template-modal').hide();
-            $('.wpuf-form-template-modal-backdrop').hide();
-        }
-    };
+        $(function() {
+            popup.init();
+        });
 
-    $(function() {
-        popup.init();
-    });
-
-})(jQuery);
+    })(jQuery);
 </script>

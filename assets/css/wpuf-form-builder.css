@@ -197,7 +197,7 @@
   border: 1px solid #ddd;
 }
 .selectize-dropdown .active {
-  background-color: #0073aa;
+  background-color: #16a34a;
   color: #fff;
 }
 .selectize-element-group {
@@ -235,13 +235,6 @@
   background-image: linear-gradient(to bottom, rgba(0, 115, 170, 0.4), #0073aa);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#660073aa', endColorstr='#ff0073aa', GradientType=0);
-}
-#wpuf-form-builder {
-  width: calc(100% - 200px);
-  padding-top: 10px;
-  position: fixed;
-  top: 25px;
-  background: #f1f1f1;
 }
 #wpuf-form-builder * {
   box-sizing: border-box;
@@ -537,8 +530,8 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 #form-preview-stage .form-preview-stage-dropzone {
-  background-color: rgba(255, 185, 0, 0.3) !important;
-  border: 1px solid #ffb900;
+  background-color: #f0fdf4;
+  border: 1px solid #4ade80;
   height: 50px;
 }
 #form-preview-stage .wpuf-submit + .button + .form-preview-stage-dropzone,
@@ -563,25 +556,6 @@
 }
 #form-preview-stage .hidden-field-list ul li {
   background-color: #f1f1f1;
-}
-.panel-form-field-group {
-  margin-bottom: 15px;
-}
-.panel-form-field-group h3 {
-  margin: 0;
-  font-size: 15px;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
-  cursor: pointer;
-}
-.panel-form-field-group h3 i {
-  float: right;
-}
-.panel-form-field-group .panel-form-field-buttons {
-  opacity: 1;
-  max-height: 100vh;
-  overflow: hidden;
-  margin: 15px 0 0;
 }
 .panel-form-field-group .button {
   display: block;
@@ -618,64 +592,6 @@
   height: auto;
   opacity: 1;
 }
-.wpuf-form-builder-field-options .panel-field-opt {
-  margin-bottom: 15px;
-}
-.wpuf-form-builder-field-options .panel-field-opt .field-helper-text {
-  color: rgba(35, 40, 45, 0.5);
-  margin-left: 6px;
-}
-.wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-text input[type="text"],
-.wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-text input[type="range"],
-.wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-text input[type="number"] {
-  display: block;
-  width: 100%;
-  margin: 5px 0 0;
-  line-height: 1.75;
-}
-.wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-radio > label {
-  display: block;
-  margin-bottom: 5px;
-}
-.wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-radio > ul {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-.wpuf-form-builder-field-options .panel-field-opt.panel-field-opt-select select {
-  width: 100%;
-  height: 32px;
-  margin: 4px 0 0;
-}
-.wpuf-form-builder-field-options .panel-field-opt .chosen-select + .chosen-container {
-  margin-top: 10px;
-}
-.wpuf-form-builder-field-options .panel-field-opt .label-title-block {
-  display: block;
-  margin-bottom: 3px;
-}
-.wpuf-form-builder-field-options .panel-field-opt .field-option-actions {
-  margin: 0;
-  line-height: 1.2;
-}
-.wpuf-form-builder-field-options .panel-field-opt .field-option-actions li {
-  position: relative;
-  margin: 0;
-}
-.wpuf-form-builder-field-options .panel-field-opt .field-option-actions li:not(:last-child):after {
-  content: "|";
-  position: absolute;
-  top: 0;
-  right: -3px;
-  opacity: .5;
-}
-.wpuf-form-builder-field-options .panel-field-opt .field-option-actions .field-helper-text {
-  position: relative;
-  top: 1px;
-  margin-left: 0;
-}
-.wpuf-form-builder-field-options .panel-field-opt .field-option-actions .tooltip .tooltip-inner {
-  width: 200px;
-}
 .option-field-option-chooser {
   margin: 12px 0 0;
 }
@@ -692,15 +608,11 @@
 .option-field-option-chooser .selector {
   width: 25px;
 }
-.option-field-option-chooser .selector input {
-  margin-top: 14px;
-}
 .option-field-option-chooser .sort-handler {
   width: 22px;
   cursor: ns-resize;
 }
 .option-field-option-chooser .sort-handler i {
-  margin-top: 14px;
   font-size: 15px;
 }
 .option-field-option-chooser .label {
@@ -716,22 +628,10 @@
 .option-field-option-chooser .header .value {
   color: #909090;
 }
-.option-field-option-chooser .action-buttons {
-  width: 36px;
-}
 .option-field-option-chooser .action-buttons i {
   cursor: pointer;
   font-size: 16px;
   margin-top: 13px;
-}
-.option-field-option-chooser .plus-buttons {
-  padding: 5px;
-  font-size: 18px;
-  text-align: center;
-  cursor: pointer;
-  border: 1px solid #ccc;
-  width: 61%;
-  margin-left: 14%;
 }
 .panel-field-opt-repeater-columns .repeater-columns li > div {
   float: left;
@@ -869,14 +769,9 @@ ul.wpuf-form li .wpuf-password-field:after {
 }
 .wpuf-form-template-modal {
   background: #fff;
-  position: fixed;
-  top: 5%;
-  bottom: 5%;
-  right: 10%;
-  left: 10%;
   display: none;
   box-shadow: 0 1px 20px 5px rgba(0, 0, 0, 0.1);
-  z-index: 160000;
+  height: 100vh;
 }
 .wpuf-form-template-modal.show {
   display: block;

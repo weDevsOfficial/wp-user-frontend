@@ -76,7 +76,7 @@ Vue.component('form-fields-v4-1', {
                 var html = `<div class="wpuf-flex wpuf-text-left">
                                         <div class="wpuf-w-1/2">
                                             <img src="${wpuf_form_builder.lock_icon}" alt="">
-                                            <h2 class="wpuf-text-black"><span class="wpuf-text-orange-400">${title} </span>${this.i18n.is_a_pro_feature}</h2>
+                                            <h2 class="wpuf-text-black"><span class="wpuf-text-primary">${title} </span>${this.i18n.is_a_pro_feature}</h2>
                                             <p>${this.i18n.pro_feature_msg}</p>
                                         </div>
                                         <div class="wpuf-w-1/2">
@@ -96,7 +96,7 @@ Vue.component('form-fields-v4-1', {
                     },
                     width: '50rem',
                     padding: '1.5rem',
-                    confirmButtonColor: '#F97316',
+                    confirmButtonColor: '#059669',
                     confirmButtonText: this.i18n.upgrade_to_pro
                 }).then(function (result) {
                     if (result.isConfirmed) {
@@ -115,10 +115,10 @@ Vue.component('form-fields-v4-1', {
                     },
                     width: '40rem',
                     padding: '2rem 3rem',
-                    title: '<span class="wpuf-text-orange-400">' + title + '</span> ' + this.i18n.is_a_pro_feature,
+                    title: '<span class="wpuf-text-primary">' + title + '</span> ' + this.i18n.is_a_pro_feature,
                     icon: '',
                     imageUrl: wpuf_form_builder.lock_icon,
-                    confirmButtonColor: '#F97316',
+                    confirmButtonColor: '#059669',
                     confirmButtonText: this.i18n.upgrade_to_pro
                 }).then(function (result) {
                     if (result.isConfirmed) {

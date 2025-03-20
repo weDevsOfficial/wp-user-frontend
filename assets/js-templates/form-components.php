@@ -1,7 +1,7 @@
 <script type="text/x-template" id="tmpl-wpuf-builder-stage">
 <div id="form-preview-stage" class="wpuf-style">
     <h4 v-if="!form_fields.length" class="text-center">
-        <?php _e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wp-user-frontend' ); ?>
+        <?php esc_html_e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wp-user-frontend' ); ?>
     </h4>
 
     <ul :class="['wpuf-form', 'sortable-list', 'form-label-' + label_type]">
@@ -27,7 +27,7 @@
 
             <div v-if="is_pro_feature(field.template)" class="stage-pro-alert">
                 <label class="wpuf-pro-text-alert">
-                    <a :href="pro_link" target="_blank"><strong>{{ get_field_name(field.template) }}</strong> <?php _e( 'is available in Pro Version', 'wp-user-frontend' ); ?></a>
+                    <a :href="pro_link" target="_blank"><strong>{{ get_field_name(field.template) }}</strong> <?php esc_html_e( 'is available in Pro Version', 'wp-user-frontend' ); ?></a>
                 </label>
             </div>
 
@@ -220,7 +220,7 @@
                 <div
                     :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-bg-green-50 wpuf-border-green-400' : 'wpuf-border-transparent'"
                     class="wpuf-flex wpuf-rounded-t-lg wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed group-hover/hidden-fields:wpuf-border-green-400 group-hover/hidden-fields:wpuf-bg-green-50">
-                    <div class="wpuf-bg-orange-100 wpuf-m-4 wpuf-py-2 wpuf-px-4 wpuf-w-full wpuf-rounded-lg">
+                    <div class="wpuf-bg-primary wpuf-m-4 wpuf-py-2 wpuf-px-4 wpuf-w-full wpuf-rounded-lg">
                         <strong><?php esc_html_e( 'key', 'wp-user-frontend' ); ?></strong>: {{ field.name }} |
                         <strong><?php esc_html_e( 'value', 'wp-user-frontend' ); ?></strong>: {{ field.meta_value }}
                     </div>
@@ -578,7 +578,6 @@
             </ul>
         </div>
     </div>
-
 </div>
 </script>
 
@@ -691,7 +690,7 @@
                     $output .= "<label class='wpuf-flex wpuf-items-center'><input :class=\"builder_class_names('checkbox')\" class=\"!wpuf-mr-2\" type=\"checkbox\" v-model=\"choices\" value=\"{$role}\"> {$role_name} </label>";
                     $output .= '</li>';
 
-                    echo $output;
+                    echo wp_kses( $output, array( 'li' => array(), 'label' => array(), 'input' => array( 'type', 'value', 'v-model' ) ) );
                 }
             ?>
 	    </ul>
@@ -711,10 +710,10 @@
                             $output .= "<label class='wpuf-flex wpuf-items-center'><input  :class=\"builder_class_names('checkbox')\" class=\"!wpuf-mr-2\" type='checkbox' v-model='choices' value='{$pack->ID}' > {$pack->post_title} </label>";
                             $output .= '</li>';
 
-                            echo $output;
+                            echo wp_kses( $output, array( 'li' => array(), 'label' => array(), 'input' => array( 'type', 'value', 'v-model' ) ) );
                         }
                     } else {
-                        _e( 'No subscription plan found.', 'wp-user-frontend' );
+                        esc_html_e( 'No subscription plan found.', 'wp-user-frontend' );
                     }
                 }
             ?>
@@ -836,7 +835,7 @@
                                     <label class="wpuf-pro-text-alert">
                                         <a :href="pro_link" target="_blank"
                                            class="wpuf-text-gray-700 wpuf-text-base"><strong>{{ get_field_name( field.template )
-                                                }}</strong> <?php _e( 'is available in Pro Version', 'wp-user-frontend' ); ?></a>
+                                                }}</strong> <?php esc_html_e( 'is available in Pro Version', 'wp-user-frontend' ); ?></a>
                                     </label>
                                 </div>
                             </div>
@@ -958,7 +957,7 @@
             <a class="wpuf-inline-flex wpuf-items-center wpuf-gap-x-1.5"
                :class="builder_class_names('upload_btn')" href="#">
                 <template v-if="field.button_label === ''">
-                    <?php _e( 'Select Image', 'wp-user-frontend' ); ?>
+                    <?php esc_html_e( 'Select Image', 'wp-user-frontend' ); ?>
                 </template>
                 <template v-else>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="wpuf-size-5">
@@ -1175,7 +1174,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="wpuf-size-5">
                         <path d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z" />
                     </svg>
-                    <?php _e( 'Select Image', 'wp-user-frontend' ); ?>
+                    <?php esc_html_e( 'Select Image', 'wp-user-frontend' ); ?>
                 </template>
                 <template v-else>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="wpuf-size-5">
@@ -1223,7 +1222,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="wpuf-size-5">
             <path d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z" />
             </svg>
-            <?php _e( 'Insert Photo', 'wp-user-frontend' ); ?>
+            <?php esc_html_e( 'Insert Photo', 'wp-user-frontend' ); ?>
         </a>
     </div>
     <br v-if="field.insert_image === 'yes'" />
@@ -1329,8 +1328,12 @@
     </template>
 
     <template v-else>
-        <img v-if="'invisible_recaptcha' !== field.recaptcha_type" class="wpuf-recaptcha-placeholder" src="<?php echo WPUF_ASSET_URI . '/images/recaptcha-placeholder.png'; ?>" alt="">
-        <div v-else><p><?php _e( 'Invisible reCaptcha', 'wp-user-frontend' ); ?></p></div>
+        <img
+            v-if="'invisible_recaptcha' !== field.recaptcha_type"
+            class="wpuf-recaptcha-placeholder"
+            src="<?php echo esc_url ( WPUF_ASSET_URI . '/images/recaptcha-placeholder.png' ); ?>"
+            alt="">
+        <div v-else><p><?php esc_html_e( 'Invisible reCaptcha', 'wp-user-frontend' ); ?></p></div>
     </template>
 </div>
 </script>
@@ -1372,7 +1375,7 @@
                 :class="builder_class_names('select')"
                 class="!wpuf-text-base"
             >
-                <option class="wpuf-text-base !wpuf-leading-none"><?php _e( '— Select —', 'wp-user-frontend' ); ?></option>
+                <option class="wpuf-text-base !wpuf-leading-none"><?php esc_html_e( '— Select —', 'wp-user-frontend' ); ?></option>
                 <option v-for="term in sorted_terms" :value="term.id">{{ term.name }}</option>
             </select>
         </div>
@@ -1469,11 +1472,13 @@
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-text-editor">
+<?php
+wp_enqueue_style( 'editor-css', site_url() . '/wp-includes/css/editor.css', array(), null, 'all' );
+wp_enqueue_style( 'skin-css', site_url() . '/wp-includes/js/tinymce/skins/lightgray/skin.min.css', array(), null, 'all' );
+?>
 <div class="wpuf-text-editor">
 
     <div class="wp-core-ui wp-editor-wrap tmce-active">
-        <link rel="stylesheet" :href="site_url + 'wp-includes/css/editor.css'" type="text/css" media="all">
-        <link rel="stylesheet" :href="site_url + 'wp-includes/js/tinymce/skins/lightgray/skin.min.css'" type="text/css" media="all">
 
         <div class="wp-editor-container">
             <div class="mce-tinymce mce-container mce-panel" style="visibility: hidden; border-width: 1px;">

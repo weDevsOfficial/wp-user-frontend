@@ -11,7 +11,7 @@ class Admin_Form_Builder {
     /**
      * Transient key to store pro field assets info
      *
-     * @since WPUF_SINCE
+     * @since 4.1.0
      *
      * @var string
      */
@@ -158,7 +158,7 @@ class Admin_Form_Builder {
         wpuf_require_once( WPUF_ROOT . '/admin/form-builder/class-wpuf-form-builder-field-settings.php' );
         wpuf_require_once( WPUF_ROOT . '/includes/Free/Pro_Prompt.php' );
 
-        $lock_icon = WPUF_ASSET_URI . '/images/lock-icon-rounded-bg.svg';
+        $lock_icon = WPUF_ASSET_URI . '/images/crown-circle.svg';
 
         $wpuf_form_builder = apply_filters(
             'wpuf_form_builder_localize_script',
@@ -318,9 +318,7 @@ class Admin_Form_Builder {
                     '<p class="wpuf-text-gray-500 wpuf-font-medium wpuf-text-xl">Please upgrade to the Pro version to unlock all these awesome features</p>',
                     'wp-user-frontend'
                 ),
-                'upgrade_to_pro'          => sprintf(
-                    __( 'Upgrade to PRO &nbsp;&nbsp;%s', 'wp-user-frontend' ), '<img src="' . $crown_icon . '"/>'
-                ),
+                'upgrade_to_pro'          => __( 'Upgrade to PRO', 'wp-user-frontend' ),
                 'select'                  => __( 'Select', 'wp-user-frontend' ),
                 'saved_form_data'         => __( 'Saved form data', 'wp-user-frontend' ),
                 'unsaved_changes'         => __( 'You have unsaved changes.', 'wp-user-frontend' ),
@@ -383,7 +381,7 @@ class Admin_Form_Builder {
     /**
      * Check and get pro-field related text, image, video etc. to show when user clicks on a pro field
      *
-     * @since WPUF_SINCE
+     * @since 4.1.0
      *
      * @return array
      */

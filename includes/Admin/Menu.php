@@ -104,11 +104,11 @@ class Menu {
      * @return void
      */
     public function wpuf_post_forms_page() {
-//        if ( wpuf_is_pro_active() && defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.1.0', '<' ) ) {
-//            require_once WPUF_INCLUDES . '/Admin/views/need-to-update.php';
-//
-//            return;
-//        }
+        if ( wpuf_is_pro_active() && defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.1.0', '<' ) ) {
+            require_once WPUF_INCLUDES . '/Admin/views/need-to-update.php';
+
+            return;
+        }
 
         add_action( 'admin_footer', [ $this, 'load_headway_badge' ] );
 

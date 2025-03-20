@@ -6,7 +6,7 @@
                 <span class="wpuf-font-bold">version 4.1.0 or later</span>. Please update to the latest version to ensure smooth functionality and the best experience.</p>
             <div class="wpuf-mt-10 wpuf-flex wpuf-items-center wpuf-justify-center wpuf-gap-x-6">
                 <a href="<?php echo admin_url('plugins.php'); ?>" class="wpuf-btn-primary">Update to Latest</a>
-                <a href="#" class="wpuf-btn-secondary">Learn more <span aria-hidden="true">→</span></a>
+                <a href="<?php echo esc_url( 'https://wedevs.com/blog/504745/wp-user-frontend-release-march-2025/' ); ?>" target="_blank" class="wpuf-btn-secondary">Learn more <span aria-hidden="true">→</span></a>
             </div>
         </div>
     </div>

@@ -468,7 +468,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
             'is_meta'           => 'no',
             'width'             => 'large',
             'type'              => 'select',
-            'first'             => __( '- select -', 'wp-user-frontend' ),
+            'first'             => __( '- Select -', 'wp-user-frontend' ),
             'show_inline'       => 'inline',
             'orderby'           => 'name',
             'order'             => 'ASC',

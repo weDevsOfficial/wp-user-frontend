@@ -233,7 +233,7 @@ abstract class Field_Contract {
             'condition_status'  => 'no',
             'cond_field'        => [],
             'cond_operator'     => [ '=' ],
-            'cond_option'       => [ __( '- select -', 'wp-user-frontend' ) ],
+            'cond_option'       => [ __( '- Select -', 'wp-user-frontend' ) ],
             'cond_logic'        => 'all',
         ];
     }

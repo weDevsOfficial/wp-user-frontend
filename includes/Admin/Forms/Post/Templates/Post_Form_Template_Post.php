@@ -43,7 +43,7 @@ class Post_Form_Template_Post extends Form_Template {
                 'name'            => 'category',
                 'is_meta'         => 'no',
                 'help'            => __( 'Select a category for your post', 'wp-user-frontend' ),
-                'first'           => __( '- select -', 'wp-user-frontend' ),
+                'first'           => __( '- Select -', 'wp-user-frontend' ),
                 'css'             => '',
                 'type'            => 'select',
                 'orderby'         => 'name',

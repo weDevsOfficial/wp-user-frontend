@@ -137,7 +137,7 @@ class Post_Form_Template_WooCommerce extends Form_Template {
                 'is_meta'    => 'yes',
                 'help'       => 'Choose where this product should be displayed in your catalog. The product will always be accessible directly.',
                 'css'        => '',
-                'first'      => ' - select -',
+                'first'      => ' - Select -',
                 'options'    => [
                     'visible' => 'Catalog/search',
                     'catalog' => 'Catalog',

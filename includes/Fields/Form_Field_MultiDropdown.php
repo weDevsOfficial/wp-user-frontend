@@ -82,7 +82,7 @@ class Form_Field_MultiDropdown extends Form_Field_Dropdown {
             'is_meta'          => 'yes',
             'selected'         => [],
             'options'          => [ 'Option' => __( 'Option', 'wp-user-frontend' ) ],
-            'first'            => __( '- select -', 'wp-user-frontend' ),
+            'first'            => __( '- Select -', 'wp-user-frontend' ),
             'id'               => 0,
             'is_new'           => true,
             'show_in_post'     => 'yes',

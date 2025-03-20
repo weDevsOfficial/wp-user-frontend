@@ -4,7 +4,7 @@
 **Tags:** frontend post, forms, user directory, profile builder, membership  
 **Requires at least:** 4.0  
 **Tested up to:** 6.7.2  
-**Stable tag:** 4.0.15  
+**Stable tag:** 4.1.0  
 **Requires PHP:** 5.6  
 **License:** GPLv2  
 **License URL:** https://www.gnu.org/licenses/gpl-2.0.html  

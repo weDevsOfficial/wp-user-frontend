@@ -32,7 +32,7 @@ class Posting {
     /**
      * Dequeue assets to avoid conflict
      *
-     * @since WPUF_SINCE
+     * @since 4.1.0
      *
      * @return void
      */
@@ -217,7 +217,7 @@ class Posting {
             $msg       = sprintf(
                     // translators: %s is the post ID.
                     __( 'Post is locked, to allow user to edit this post <a id="wpuf_clear_schedule_lock" data="%s" href="#">Click here</a>', 'wp-user-frontend' ),
-                    $post->ID 
+                    $post->ID
                 );
         }
 
@@ -227,8 +227,8 @@ class Posting {
             $local_time   = get_date_from_gmt( $time, get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) );
             $msg          = sprintf(
                                 // translators: %1$s The time when the post edit access will be locked and %2$s The post ID.
-                                __( 'Frontend edit access for this post will be automatically locked after %1$s, <a id="wpuf_clear_schedule_lock" data="%2$s" href="#">Clear Lock</a> Or,', 'wp-user-frontend' ), 
-                                $local_time, $post->ID 
+                                __( 'Frontend edit access for this post will be automatically locked after %1$s, <a id="wpuf_clear_schedule_lock" data="%2$s" href="#">Clear Lock</a> Or,', 'wp-user-frontend' ),
+                                $local_time, $post->ID
                             );
         } ?>
 

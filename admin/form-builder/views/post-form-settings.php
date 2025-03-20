@@ -118,7 +118,9 @@
                         }
 
                         // if it is the last item of the section
-                        if ( $section_counter === count( $settings_item['section'] ) ) {
+                        if ( ( $section_counter === count( $settings_item['section'] ) ) && 1 < count(
+                                $settings_item['section']
+                            ) ) {
                             $class_list = 'wpuf-settings-body wpuf-pt-6 wpuf-border-t wpuf-border-gray-200';
                         }
                         ?>

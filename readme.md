@@ -281,6 +281,13 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 18. Set Payment Related Options
 
 ## Changelog ##
+### v4.1.0 (20 March, 2025) ###
+* Enhance - Redesigned Post Form Builder UI/UX
+* Enhance - Reorganized Forms Settings for better structure
+* Enhance - Added a search bar for quick field filtering
+* Enhance - Added new field & feature request submission area
+* Enhance - Improved field grouping & customization
+
 ### v4.0.15 (19 March, 2025) ###
 * Fix - Security vulnerabilities: escaped variables & sanitized inputs
 * Fix - Reverted SweetAlert2 to v11.4.8 for compliance

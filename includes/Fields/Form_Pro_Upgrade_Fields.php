@@ -66,7 +66,7 @@ class Form_Field_Date extends Form_Field_Pro {
 /**
  * Time Field Class
  *
- * @since WPUF_SINCE
+ * @since 4.1.0
  */
 class Form_Field_Time extends Form_Field_Pro {
     public function __construct() {
@@ -79,7 +79,7 @@ class Form_Field_Time extends Form_Field_Pro {
 /**
  * Phone Field Class
  *
- * @since WPUF_SINCE
+ * @since 4.1.0
  */
 class Form_Field_Phone extends Form_Field_Pro {
     public function __construct() {

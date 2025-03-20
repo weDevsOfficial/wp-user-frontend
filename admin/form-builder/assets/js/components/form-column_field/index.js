@@ -191,7 +191,7 @@ Vue.component('form-column_field', {
 
             if (this.isAllowedInClolumnField(data.field_template)) {
                 Swal.fire({
-                    title: '<span class="wpuf-text-orange-400">Oops...</span>',
+                    title: '<span class="wpuf-text-primary">Oops...</span>',
                     html: '<p class="wpuf-text-gray-500 wpuf-text-xl wpuf-m-0 wpuf-p-0">You cannot add this field as inner column field</p>',
                     imageUrl: wpuf_form_builder.asset_url + '/images/oops.svg',
                     showCloseButton: true,
@@ -208,7 +208,7 @@ Vue.component('form-column_field', {
             // check if these are already inserted
             if ( this.isSingleInstance( data.field_template ) && this.containsField( data.field_template ) ) {
                 Swal.fire({
-                    title: '<span class="wpuf-text-orange-400">Oops...</span>',
+                    title: '<span class="wpuf-text-primary">Oops...</span>',
                     html: '<p class="wpuf-text-gray-500 wpuf-text-xl wpuf-m-0 wpuf-p-0">You already have this field in the form</p>',
                     imageUrl: wpuf_form_builder.asset_url + '/images/oops.svg',
                     showCloseButton: true,

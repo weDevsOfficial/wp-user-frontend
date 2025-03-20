@@ -552,7 +552,7 @@ class License {
                     <p><?php $this->client->_etrans( 'Unlimited' ); ?></p>
                 <?php } else { ?>
                     <p class="<?php echo $license['remaining'] ? '' : 'occupied'; ?>">
-                        <?php printf( wp_kses_post( $this->client->__trans( '%1$d out of %2$d' ), esc_html( $license['remaining'] ), esc_html( $license['activation_limit'] ) ) ); ?>
+                        <?php printf( wp_kses_post( $this->client->__trans( '%1$d out of %2$d' ) ), esc_html( $license['remaining'] ), esc_html( $license['activation_limit'] ) ); ?>
                     </p>
                 <?php } ?>
             </div>

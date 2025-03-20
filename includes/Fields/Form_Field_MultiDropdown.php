@@ -10,7 +10,7 @@ class Form_Field_MultiDropdown extends Form_Field_Dropdown {
     public function __construct() {
         $this->name       = __( 'Multi Select', 'wp-user-frontend' );
         $this->input_type = 'multiple_select';
-        $this->icon       = 'list-ul';
+        $this->icon       = 'check-circle';
     }
 
     /**
@@ -82,7 +82,7 @@ class Form_Field_MultiDropdown extends Form_Field_Dropdown {
             'is_meta'          => 'yes',
             'selected'         => [],
             'options'          => [ 'Option' => __( 'Option', 'wp-user-frontend' ) ],
-            'first'            => __( '- select -', 'wp-user-frontend' ),
+            'first'            => __( '- Select -', 'wp-user-frontend' ),
             'id'               => 0,
             'is_new'           => true,
             'show_in_post'     => 'yes',

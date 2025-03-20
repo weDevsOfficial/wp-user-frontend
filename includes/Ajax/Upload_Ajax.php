@@ -45,7 +45,7 @@ class Upload_Ajax {
         if ( ! is_user_logged_in() ) {
             $guest_post    = false;
             $form_settings = wpuf_get_form_settings( $form_id );
-            if ( isset( $form_settings['guest_post'] ) && $form_settings['guest_post'] == 'true' ) {
+            if ( isset( $form_settings['post_permission'] ) && 'guest_post' === $form_settings['post_permission'] ) {
                 $guest_post = true;
             }
             // check if the request coming from weForms & allow users to upload when require login option is disabled

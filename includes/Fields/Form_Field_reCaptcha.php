@@ -2,7 +2,6 @@
 
 namespace WeDevs\Wpuf\Fields;
 
-
 /**
  * Recaptcha Field Class
  */
@@ -11,7 +10,7 @@ class Form_Field_reCaptcha extends Field_Contract {
     public function __construct() {
         $this->name       = __( 'reCaptcha', 'wp-user-frontend' );
         $this->input_type = 'recaptcha';
-        $this->icon       = 'qrcode';
+        $this->icon       = 'badge-check';
     }
 
     /**
@@ -126,13 +125,23 @@ class Form_Field_reCaptcha extends Field_Contract {
         return [
             'callback'      => 'has_recaptcha_api_keys',
             'button_class'  => 'button-faded',
+            'icon'          => WPUF_ASSET_URI . '/images/key-rounded.svg',
             'msg_title'     => __( 'Site key and Secret key', 'wp-user-frontend' ),
             'msg'           => sprintf(
                 // translators: %1$s wpuf admin settings url and %2$s is recaptcha url
                 __( 'You need to set Site key and Secret key in <a href="%1$s" target="_blank">Settings</a> in order to use "Recaptcha" field. <a href="%2$s" target="_blank">Click here to get the these key</a>.', 'wp-user-frontend' ),
                 admin_url( 'admin.php?page=wpuf-settings' ),
-                'https://www.google.com/recaptcha/'
-             ),
+                __( 'Settings', 'wp-user-frontend' ),
+                __( 'in order to use "Recaptcha" field.', 'wp-user-frontend' ),
+                'https://www.google.com/recaptcha/',
+                __( 'Click here to get the these key', 'wp-user-frontend' )
+            ),
+            'cta' => sprintf(
+                '<a class="%1$s" href="%2$s" target="_blank">%3$s</a>',
+                'wpuf-px-[20px] wpuf-py-[10px] !wpuf-border !wpuf-border-solid !wpuf-border-gray-300 !wpuf-rounded-md hover:!wpuf-bg-gray-50 !wpuf-text-black',
+                admin_url( 'admin.php?page=wpuf-settings' ),
+                __( 'Go to Setting', 'wp-user-frontend' )
+            ),
         ];
     }
 

@@ -38,7 +38,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
         $this->input_type = 'taxonomy';
         $this->tax_name   = $tax_name;
         // $this->taxonomy=$taxonomy;
-        // $this->icon       = 'caret-square-o-down';
+        $this->icon       = 'squares-2x2';
     }
 
     /**
@@ -466,9 +466,9 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
             'label'             => ucfirst( $this->tax_name ),
             'name'              => $this->tax_name,
             'is_meta'           => 'no',
-            'width'             => 'small',
+            'width'             => 'large',
             'type'              => 'select',
-            'first'             => __( '- select -', 'wp-user-frontend' ),
+            'first'             => __( '- Select -', 'wp-user-frontend' ),
             'show_inline'       => 'inline',
             'orderby'           => 'name',
             'order'             => 'ASC',

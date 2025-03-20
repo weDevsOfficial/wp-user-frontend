@@ -8,7 +8,7 @@ class Form_Field_Post_Tags extends Field_Contract {
     public function __construct() {
         $this->name       = __( 'Tags', 'wp-user-frontend' );
         $this->input_type = 'post_tags';
-        $this->icon       = 'text-width';
+        $this->icon       = 'tag';
     }
 
     /**

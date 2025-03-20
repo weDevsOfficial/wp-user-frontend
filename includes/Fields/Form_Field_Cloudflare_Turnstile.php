@@ -38,12 +38,14 @@ class Form_Field_Cloudflare_Turnstile extends Field_Contract {
         $action = 'non_interactive' === $action ? 'non-interactive' : $action;
         ?>
 
-        <div
-            <?php if ( 'invisible' === $action ) { ?>
-                style="display: none;"
-            <?php } ?>
-            id="wpuf-turnstile"
-            class="wpuf-turnstile"></div>
+        <li <?php $this->print_list_attributes( $field_settings ); ?>>
+            <div
+                <?php if ( 'invisible' === $action ) { ?>
+                    style="display: none;"
+                <?php } ?>
+                id="wpuf-turnstile"
+                class="wpuf-fields wpuf-turnstile"></div>
+        </li>
 
         <script>
             window.onloadTurnstileCallback = function () {
@@ -69,12 +71,25 @@ class Form_Field_Cloudflare_Turnstile extends Field_Contract {
         return [
             'callback'      => 'has_turnstile_api_keys',
             'button_class'  => 'button-faded',
-            'msg_title'     => __( 'Site key and Secret key', 'wp-user-frontend' ),
-            'msg'           => sprintf(
-                // translators: %s: settings url
-                __( 'You need to set Site key and Secret key in <a href="%1$s" target="_blank">Settings</a> in order to use "Cloudflare Turnstile" field. <a href="%2$s" target="_blank">Click here to get the these key</a>.', 'wp-user-frontend' ),
+            'icon'          => WPUF_ASSET_URI . '/images/key-rounded.svg',
+            'msg_title'     => sprintf(
+                '<span class="wpuf-text-primary">%s</span>',
+                __( 'Site key and Secret key', 'wp-user-frontend' )
+            ),
+            'msg' => sprintf(
+                '<span class="wpuf-text-xl wpuf-text-gray-500">%1$s <a class="wpuf-text-primary" href="%2$s" target="_blank">%3$s</a> %4$s <a class="wpuf-text-primary" href="%5$s" target="_blank">%6$s</a></span>',
+                __( 'You need to set Site key and Secret key in', 'wp-user-frontend' ),
                 admin_url( 'admin.php?page=wpuf-settings' ),
-                'https://developers.cloudflare.com/turnstile/'
+                __( 'Settings', 'wp-user-frontend' ),
+                __( 'in order to use "Cloudflare Turnstile" field.', 'wp-user-frontend' ),
+                'https://developers.cloudflare.com/turnstile/',
+                __( 'Click here to get the these key', 'wp-user-frontend' )
+            ),
+            'cta' => sprintf(
+                '<a class="%1$s" href="%2$s" target="_blank">%3$s</a>',
+                'wpuf-px-[20px] wpuf-py-[10px] !wpuf-border !wpuf-border-solid !wpuf-border-gray-300 !wpuf-rounded-md hover:!wpuf-bg-gray-50 !wpuf-text-black',
+                admin_url( 'admin.php?page=wpuf-settings' ),
+                __( 'Go to Setting', 'wp-user-frontend' )
             ),
         ];
     }

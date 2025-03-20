@@ -1182,7 +1182,7 @@ class Subscription {
             }
         }
 
-        if ( ! is_user_logged_in() && isset( $form_settings['guest_post'] ) && $form_settings['guest_post'] === 'true' ) {
+        if ( ! is_user_logged_in() && isset( $form_settings['post_permission'] ) && 'guest_post' === $form_settings['post_permission'] ) {
             if ( $form->is_charging_enabled() ) {
                 if ( $force_pack ) {
                     return 'no';

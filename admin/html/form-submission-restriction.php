@@ -3,10 +3,10 @@ global $post;
 
 $form_settings = wpuf_get_form_settings( $post->ID );
 
-$guest_post             = ! empty( $form_settings['guest_post'] ) ? $form_settings['guest_post'] : 'false';
-$role_base              = ! empty( $form_settings['role_base'] ) ? $form_settings['role_base'] : 'false';
+$guest_post             = ! empty( $form_settings['post_permission'] ) && 'guest_post' === $form_settings['post_permission'] ? 'true' : 'false';
+$role_base              = ! empty( $form_settings['post_permission'] ) && 'role_base' === $form_settings['post_permission'] ? $form_settings['role_base'] : 'false';
 $roles                  = ! empty( $form_settings['roles'] ) ? $form_settings['roles'] : [ 'administrator' ];
-$guest_details          = ! empty( $form_settings['guest_details'] ) ? $form_settings['guest_details'] : 'true';
+$guest_details          = ! empty( $form_settings['guest_details'] ) ? wpuf_is_checkbox_or_toggle_on( $this->form_settings['guest_details'] ) : 'true';
 $guest_email_verify     = ! empty( $form_settings['guest_email_verify'] ) ? $form_settings['guest_email_verify'] : 'false';
 $name_label             = ! empty( $form_settings['name_label'] ) ? $form_settings['name_label'] : __( 'Name', 'wp-user-frontend' );
 $email_label            = ! empty( $form_settings['email_label'] ) ? $form_settings['email_label'] : __( 'Email', 'wp-user-frontend' );

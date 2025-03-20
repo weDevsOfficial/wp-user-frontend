@@ -290,7 +290,7 @@ class List_Table_Admin_Post_Forms extends WP_List_Table {
                     'post_status'           => $form->post_status,
                     'settings_post_type'    => isset( $settings['post_type'] ) ? $settings['post_type'] : '',
                     'settings_post_status'  => isset( $settings['post_status'] ) ? $settings['post_status'] : '',
-                    'settings_guest_post'   => isset( $settings['guest_post'] ) ? $settings['guest_post'] : '',
+                    'settings_guest_post'   => isset( $settings['post_permission'] ) && 'guest_post' === $settings['post_permission'] ? 'guest_post' === $settings['post_permission'] : '',
                 ];
 
                 $i++;

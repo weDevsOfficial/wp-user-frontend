@@ -41,8 +41,8 @@
             field_settings: wpuf_form_builder.field_settings,
             notifications: wpuf_form_builder.notifications,
             settings: wpuf_form_builder.form_settings,
-            current_panel: 'form-fields',
-            editing_field_id: 0, // editing form field id
+            current_panel: 'form-fields-v4-1',
+            editing_field_id: 0,
             show_custom_field_tooltip: true,
             index_to_insert: 0,
         },
@@ -68,7 +68,7 @@
                 state.current_panel = panel;
 
                 // reset editing field id
-                if ('form-fields' === panel) {
+                if ('form-fields' === panel || 'form-fields-v4-1' === panel) {
                     state.editing_field_id = 0;
                 }
             },
@@ -88,10 +88,10 @@
             },
 
             // open field settings panel
-            open_field_settings: function (state, field_id) {
-                var field = state.form_fields.filter(function(item) {
-                    return parseInt(field_id) === parseInt(item.id);
-                });
+            open_field_settings: function ( state, field_id ) {
+                var field = state.form_fields.filter( function ( item ) {
+                    return parseInt( field_id ) === parseInt( item.id );
+                } );
 
                 if ('field-options' === state.current_panel && field[0].id === state.editing_field_id) {
                     return;
@@ -101,9 +101,9 @@
                     state.editing_field_id = 0;
                     state.current_panel = 'field-options';
 
-                    setTimeout(function () {
+                    setTimeout( function () {
                         state.editing_field_id = field[0].id;
-                    }, 400);
+                    }, 400 );
                 }
             },
 
@@ -165,26 +165,26 @@
                         var image_two  = wpuf_admin_script.asset_url + '/images/custom-fields/advance.png';
                         var html       = '<div class="wpuf-custom-field-instruction">';
                             html      += '<div class="step-one">';
-                            html      += sprintf( '<p style="font-weight: 400">%s<strong><code>%s</code></strong>%s"</p>', __( 'Navigate through', 'wp-user-frontend' ), __( 'WP-admin > WPUF > Settings > Frontend Posting', 'wp-user-frontend' ), __( '- there you have to check the checkbox: "Show custom field data in the post content area', 'wp-user-frontend' ) );
+                            html      += sprintf( '<p class="wpuf-text-base">%s <span class="wpuf-text-primary">%s</span>%s"</p>', __( 'Navigate through', 'wp-user-frontend' ), __( 'WP-admin > WPUF > Settings > Frontend Posting', 'wp-user-frontend' ), __( '- there you have to check the checkbox: "Show custom field data in the post content area', 'wp-user-frontend' ) );
                             html      += '<img src="'+ image_one +'" alt="settings">';
                             html      += '</div>';
                             html      += '<div class="step-two">';
-                            html      += sprintf( '<p style="font-weight: 400">%s<strong>%s</strong>%s</p>', __( 'Edit the custom field inside the post form and on the right side you will see', 'wp-user-frontend' ), __( '"Advanced Options".', 'wp-user-frontend' ), __( ' Expand that, scroll down and you will see "Show data on post" - set this yes.', 'wp-user-frontend' ) );
+                            html      += sprintf( '<p class="wpuf-text-base">%s<span class="wpuf-text-primary">%s</span>%s<span class="wpuf-text-primary">%s</span>%s</p>', __( 'Edit the custom field inside the post form and on the right side you will see', 'wp-user-frontend' ), __( '"Advanced Options".', 'wp-user-frontend' ), __( ' Expand that, scroll down and you will see ', 'wp-user-frontend' ), __( '"Show data on post"', 'wp-user-frontend' ), __( ' - set this yes.', 'wp-user-frontend' ) );
                             html      += '<img src="' + image_two + '" alt="custom field data">';
                             html      += '</div>';
                             html      += '</div>';
                         Swal.fire({
                             title: __( 'Do you want to show custom field data inside your post ?', 'wp-user-frontend' ),
                             html: html,
+                            imageUrl: wpuf_form_builder.lock_icon,
                             showCancelButton: true,
-                            confirmButtonColor: '#d54e21',
                             confirmButtonText: "Don't show again",
                             cancelButtonText: 'Okay',
                             customClass: {
-                                confirmButton: 'btn btn-success',
-                                cancelButton: 'btn btn-success',
+                                confirmButton: '!wpuf-bg-white !wpuf-text-black !wpuf-border !wpuf-border-solid !wpuf-border-gray-300 focus:!wpuf-shadow-none',
+                                cancelButton: '!wpuf-text-white',
                             },
-                            cancelButtonColor: '#007cba'
+                            cancelButtonColor: '#16a34a'
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 state.show_custom_field_tooltip = false;
@@ -240,7 +240,7 @@
 
             // delete a field
             delete_form_field_element: function (state, index) {
-                state.current_panel = 'form-fields';
+                state.current_panel = 'form-fields-v4-1';
                 state.form_fields.splice(index, 1);
             },
 
@@ -387,11 +387,19 @@
             delete_column_field_element: function (state, payload) {
                 var columnFieldIndex = state.form_fields.findIndex(field => field.id === payload.field_id);
 
-                state.current_panel = 'form-fields';
+                state.current_panel = 'form-fields-v4-1';
                 state.form_fields[columnFieldIndex].inner_fields[payload.fromColumn].splice(payload.index, 1);
             },
 
+            // update the panel sections
+            set_panel_sections: function ( state, sections ) {
+                state.panel_sections = sections;
+            },
 
+            // set default panel sections
+            set_default_panel_sections: function ( state ) {
+                state.panel_sections = wpuf_form_builder.panel_sections;
+            }
         }
     });
 
@@ -410,7 +418,15 @@
             is_form_saved: false,
             is_form_switcher: false,
             post_title_editing: false,
-            isDirty: false
+            isDirty: false,
+            shortcodeCopied: false,
+            logoUrl: wpuf_form_builder.asset_url + '/images/wpuf-icon-circle.svg',
+            settings_titles: wpuf_form_builder.settings_titles,
+            settings_items: wpuf_form_builder.settings_items,
+            active_tab: 'form-editor',
+            form_settings: wpuf_form_builder.form_settings,
+            active_settings_tab: Object.keys(wpuf_form_builder.settings_titles[Object.keys(wpuf_form_builder.settings_titles)[0]].sub_items)[0],
+            active_settings_title: wpuf_form_builder.settings_titles[Object.keys(wpuf_form_builder.settings_titles)[0]].sub_items[Object.keys(wpuf_form_builder.settings_titles[Object.keys(wpuf_form_builder.settings_titles)[0]].sub_items)[0]].label,
         },
 
         computed: {
@@ -448,6 +464,18 @@
                 });
 
                 return meta_key.map(function(name) { return '{' + name +'}' }).join( );
+            },
+
+            settings_titles: function() {
+                return this.$store.state.settings_titles;
+            },
+
+            settings_items: function() {
+                return this.$store.state.settings_items;
+            },
+
+            section_exists: function() {
+                return this.settings_items[this.active_settings_tab] && this.settings_items[this.active_settings_tab].section;
             }
         },
 
@@ -457,11 +485,28 @@
                     this.isDirty = true;
                 },
                 deep: true
+            },
+            active_settings_tab: {
+                // attach selectize to the dropdowns after settings tab changes
+                handler: function() {
+                    setTimeout(function() {
+                        $('.wpuf-settings-container select').selectize({
+                            plugins: ['remove_button'],
+                        });
+                    }, 100);
+                }
             }
         },
 
         created: function () {
             this.$store.commit('panel_add_show_prop');
+
+            Vue.nextTick(function () {
+                // selectize for all the dropdowns
+                $('.wpuf-settings-container select').selectize({
+                    plugins: ['remove_button'],
+                });
+            });
 
             /**
              * This is the event hub we'll use in every
@@ -497,7 +542,7 @@
                 // Reset the copied tooltip
                 setTimeout(function() {
                     $(e.trigger).tooltip('hide')
-                    .attr('data-original-title', self.i18n.copy_shortcode);
+                        .attr('data-original-title', self.i18n.copy_shortcode);
                 }, 1000);
 
                 e.clearSelection();
@@ -527,6 +572,10 @@
                 });
             },
 
+            setActiveSettingsTab: function (e) {
+                this.active_settings_tab = $(e.target).attr('href');
+            },
+
             // switch form
             switch_form: function () {
                 this.is_form_switcher = (this.is_form_switcher) ? false : true;
@@ -534,6 +583,9 @@
 
             // set current sidebar panel
             set_current_panel: function (panel) {
+                if (panel === 'form-fields-v4-1') {
+                    this.$store.state.panel_sections = wpuf_form_builder.panel_sections;
+                }
                 this.$store.commit('set_current_panel', panel);
             },
 
@@ -544,14 +596,19 @@
                 if (_.isFunction(this.validate_form_before_submit) && !this.validate_form_before_submit()) {
 
                     this.warn({
-                        text: this.validation_error_msg
+                        title: 'Incomplete Post Form',
+                        html: this.validation_error_msg,
+                        reverseButtons: true,
+                        customClass: {
+                            cancelButton: '!wpuf-bg-white !wpuf-text-black !wpuf-border !wpuf-border-solid !wpuf-border-gray-300 focus:!wpuf-shadow-none',
+                            confirmButton: '!wpuf-text-white !wpuf-bg-primary',
+                        },
                     });
 
                     return;
                 }
 
                 self.is_form_saving = true;
-                self.set_current_panel('form-fields');
 
                 var form_id = $('#wpuf-form-builder [name="wpuf_form_id"]').val();
 
@@ -596,6 +653,39 @@
                         self.is_form_saving = false;
                     }
                 });
+            },
+
+            // settings field classes to add similar field classes
+            setting_class_names: function(field_type) {
+                switch (field_type) {
+                    case 'upload_btn':
+                        return 'file-selector wpuf-rounded-[6px] wpuf-btn-secondary';
+
+                    case 'radio':
+                        return '!wpuf-mt-0 !wpuf-mr-2 wpuf-radio !wpuf-shadow-none checked:!wpuf-shadow-none focus:checked:!wpuf-shadow-primary !wpuf-border-gray-300 checked:!wpuf-border-primary checked:!wpuf-bg-primary before:checked:!wpuf-bg-white hover:checked:!wpuf-bg-primary focus:!wpuf-ring-transparent focus:checked:!wpuf-ring-transparent hover:checked:!wpuf-ring-transparent focus:checked:!wpuf-bg-primary focus:checked:!wpuf-shadow-none focus:wpuf-shadow-primary';
+
+                    case 'checkbox':
+                        return '!wpuf-mt-0 !wpuf-mr-2 wpuf-h-4 wpuf-w-4 !wpuf-shadow-none checked:!wpuf-shadow-none focus:checked:!wpuf-shadow-primary focus:checked:!wpuf-shadow-none !wpuf-border-gray-300 checked:!wpuf-border-primary checked:!wpuf-bg-primary before:checked:!wpuf-bg-white hover:checked:!wpuf-bg-primary focus:!wpuf-ring-transparent focus:checked:!wpuf-ring-transparent hover:checked:!wpuf-ring-transparent focus:checked:!wpuf-bg-primary focus:wpuf-shadow-primary checked:focus:!wpuf-bg-primary checked:hover:wpuf-bg-primary checked:!wpuf-bg-primary before:!wpuf-content-none wpuf-rounded';
+
+                    case 'dropdown':
+                        return 'wpuf-block wpuf-w-full wpuf-min-w-full wpuf-text-gray-700 wpuf-font-normal !wpuf-shadow-sm wpuf-border !wpuf-border-gray-300 !wpuf-rounded-[6px] focus:!wpuf-ring-transparent focus:checked:!wpuf-ring-transparent hover:checked:!wpuf-ring-transparent hover:!wpuf-text-gray-700 !wpuf-text-base !leading-6';
+
+                    default:
+                        return 'wpuf-block wpuf-min-w-full wpuf-my-0 wpuf-mb-0 !wpuf-leading-none !wpuf-py-[10px] !wpuf-px-[14px] wpuf-text-gray-700 !wpuf-shadow-sm placeholder:wpuf-text-gray-400 wpuf-border !wpuf-border-gray-300 !wpuf-rounded-[6px] wpuf-max-w-full focus:!wpuf-ring-transparent';
+                }
+            },
+
+            switch_settings_menu: function(menu, submenu) {
+                this.active_settings_tab = submenu;
+                if (submenu === 'modules') {
+                    this.active_settings_title = 'Modules';
+                } else {
+                    this.active_settings_title = this.settings_titles[menu].sub_items[submenu].label;
+                }
+            },
+
+            switch_form_settings_pic_radio_item: function ( key, value ) {
+                this.form_settings[key] = value;
             }
         }
     });
@@ -606,304 +696,16 @@
                 $('.datepicker').datetimepicker();
                 $('.wpuf-ms-color').wpColorPicker();
             });
-
-            $('#wpuf-metabox-settings').on('change', 'select[name="wpuf_settings[redirect_to]"]', this.settingsRedirect);
-            $('#wpuf-metabox-settings-update').on('change', 'select[name="wpuf_settings[edit_redirect_to]"]', this.settingsRedirect);
-            $('select[name="wpuf_settings[redirect_to]"]').change();
-            $('select[name="wpuf_settings[edit_redirect_to]"]').change();
-
-            // Form settings: Payment
-            $('#wpuf-metabox-settings-payment').on('change', 'input[type=checkbox][name="wpuf_settings[payment_options]"]', this.settingsPayment);
-            $('input[type=checkbox][name="wpuf_settings[payment_options]"]').trigger('change');
-
-            // pay per post
-            $('#wpuf-metabox-settings-payment').on('change', 'input[type=checkbox][name="wpuf_settings[enable_pay_per_post]"]', this.settingsPayPerPost);
-            $('input[type=checkbox][name="wpuf_settings[enable_pay_per_post]"]').trigger('change');
-
-            // force pack purchase
-            $('#wpuf-metabox-settings-payment').on('change', 'input[type=checkbox][name="wpuf_settings[force_pack_purchase]"]', this.settingsForcePack);
-            $('input[type=checkbox][name="wpuf_settings[force_pack_purchase]"]').trigger('change');
-
-            // Form settings: Submission Restriction
-
-            // Form settings: Guest post
-            $('#wpuf-metabox-submission-restriction').on('change', 'input[type=checkbox][name="wpuf_settings[guest_post]"]', this.settingsGuest);
-            $('input[type=checkbox][name="wpuf_settings[guest_post]"]').trigger('change');
-            $('#wpuf-metabox-submission-restriction').on('change', 'input[type=checkbox][name="wpuf_settings[role_base]"]', this.settingsRoles);
-            $('input[type=checkbox][name="wpuf_settings[role_base]"]').trigger('change');
-
-            // From settings: User details
-            $('#wpuf-metabox-submission-restriction').on('change', 'input[type=checkbox][name="wpuf_settings[guest_details]"]', this.settingsGuestDetails);
-
-            // From settings: schedule form
-            $('#wpuf-metabox-submission-restriction').on('change', 'input[type=checkbox][name="wpuf_settings[schedule_form]"]', this.settingsRestriction);
-            $('input[type=checkbox][name="wpuf_settings[schedule_form]"]').trigger('change');
-
-            // From settings: limit entries
-            $('#wpuf-metabox-submission-restriction').on('change', 'input[type=checkbox][name="wpuf_settings[limit_entries]"]', this.settingsLimit);
-            $('input[type=checkbox][name="wpuf_settings[limit_entries]"]').trigger('change');
-
-            this.changeMultistepVisibility($('.wpuf_enable_multistep_section :input[type="checkbox"]'));
-            var self = this;
-            $('.wpuf_enable_multistep_section :input[type="checkbox"]').click(function() {
-                self.changeMultistepVisibility($(this));
-            });
-
-            this.showRegFormNotificationFields();
-            this.integrationsCondFieldsVisibility();
-
         },
-
-        settingsGuest: function (e) {
-            e.preventDefault();
-
-            var table = $(this).closest('table');
-
-            if ( $(this).is(':checked') ) {
-                table.find('tr.show-if-guest').show();
-                table.find('tr.show-if-not-guest').hide();
-
-                $('input[type=checkbox][name="wpuf_settings[guest_details]"]').trigger('change');
-
-            } else {
-                table.find('tr.show-if-guest').hide();
-                table.find('tr.show-if-not-guest').show();
-            }
-        },
-
-        settingsRoles: function (e) {
-            e.preventDefault();
-
-            var table = $(this).closest('table');
-
-            if ( $(this).is(':checked') ) {
-                table.find('tr.show-if-roles').show();
-            } else {
-                table.find('tr.show-if-roles').hide();
-            }
-        },
-
-        settingsGuestDetails: function (e) {
-            e.preventDefault();
-
-            var table = $(this).closest('table');
-
-            if ( $(this).is(':checked') ) {
-                table.find('tr.show-if-details').show();
-            } else {
-                table.find('tr.show-if-details').hide();
-            }
-        },
-
-        settingsPayment: function (e) {
-            e.preventDefault();
-
-            var table = $(this).closest('table');
-
-            if ( $(this).is(':checked') ) {
-                table.find('tr.show-if-payment').show();
-                table.find('tr.show-if-force-pack').hide();
-            } else {
-                table.find('tr.show-if-payment').hide();
-                table.find('input[type=checkbox]').removeAttr('checked');
-            }
-        },
-
-        settingsPayPerPost: function (e) {
-            e.preventDefault();
-
-            var table = $(this).closest('table');
-
-            if ( $(this).is(':checked') ) {
-                table.find('tr.show-if-pay-per-post').show();
-
-            } else {
-                table.find('tr.show-if-pay-per-post').hide();
-
-            }
-        },
-
-        settingsForcePack: function (e) {
-            e.preventDefault();
-
-            var table = $(this).closest('table');
-
-            if ( $(this).is(':checked') ) {
-                table.find('tr.show-if-force-pack').show();
-
-            } else {
-                table.find('tr.show-if-force-pack').hide();
-
-            }
-        },
-
-        settingsRestriction: function (e) {
-            e.preventDefault();
-
-            var table = $(this).closest('table');
-
-            if ( $(this).is(':checked') ) {
-                table.find('tr.show-if-schedule').show();
-            } else {
-                table.find('tr.show-if-schedule').hide();
-
-            }
-        },
-
-        settingsLimit: function (e) {
-            e.preventDefault();
-
-            var table = $(this).closest('table');
-
-            if ( $(this).is(':checked') ) {
-                table.find('tr.show-if-limit-entries').show();
-            } else {
-                table.find('tr.show-if-limit-entries').hide();
-
-            }
-        },
-
-        settingsRedirect: function(e) {
-            e.preventDefault();
-
-            var $self = $(this),
-                $table = $self.closest('table'),
-                value = $self.val();
-
-            switch( value ) {
-                case 'post':
-                    $table.find('tr.wpuf-page-id, tr.wpuf-url, tr.wpuf-same-page').hide();
-                    break;
-
-                case 'page':
-                    $table.find('tr.wpuf-page-id').show();
-                    $table.find('tr.wpuf-same-page').hide();
-                    $table.find('tr.wpuf-url').hide();
-                    break;
-
-                case 'url':
-                    $table.find('tr.wpuf-page-id').hide();
-                    $table.find('tr.wpuf-same-page').hide();
-                    $table.find('tr.wpuf-url').show();
-                    break;
-
-                case 'same':
-                    $table.find('tr.wpuf-page-id').hide();
-                    $table.find('tr.wpuf-url').hide();
-                    $table.find('tr.wpuf-same-page').show();
-                    break;
-            }
-        },
-
-        changeMultistepVisibility: function(target) {
-            if (target.is(':checked')) {
-                $('.wpuf_multistep_content').show();
-            } else {
-                $('.wpuf_multistep_content').hide();
-            }
-        },
-
-        showRegFormNotificationFields: function() {
-            var newUserStatus                 = $( "input#wpuf_new_user_status" ),
-                emailVerification             = $( "input#notification_type_verification" ),
-                welcomeEmail                  = $( "#notification_type_welcome_email" );
-
-            if ( newUserStatus.is(':checked') ) {
-                $('#wpuf_pending_user_admin_notification').show();
-                $('#wpuf_approved_user_admin_notification').hide();
-            } else{
-                $('#wpuf_pending_user_admin_notification').hide();
-                $('#wpuf_approved_user_admin_notification').show();
-            }
-
-            $( newUserStatus ).on( "click", function() {
-                $('#wpuf_pending_user_admin_notification').hide();
-                $('#wpuf_approved_user_admin_notification').show();
-
-                if ( newUserStatus.is(':checked') ) {
-                    $('#wpuf_pending_user_admin_notification').show();
-                    $('#wpuf_approved_user_admin_notification').hide();
-                }
-            });
-
-            if ( emailVerification.is(':checked') ) {
-                $('.wpuf-email-verification-settings-fields').show();
-                $('.wpuf-welcome-email-settings-fields').hide();
-            }
-
-            if ( welcomeEmail.is(':checked') ) {
-                $('.wpuf-welcome-email-settings-fields').show();
-                $('.wpuf-email-verification-settings-fields').hide();
-            }
-
-            $( emailVerification ).on( "click", function() {
-                $('.wpuf-email-verification-settings-fields').show();
-                $('.wpuf-welcome-email-settings-fields').hide();
-            });
-
-            $( welcomeEmail ).on( "click", function() {
-                $('.wpuf-welcome-email-settings-fields').show();
-                $('.wpuf-email-verification-settings-fields').hide();
-            });
-        },
-
-        integrationsCondFieldsVisibility: function() {
-            var conditional_logic      = $( '.wpuf-integrations-conditional-logic' ),
-                cond_fields_container  = $( '.wpuf-integrations-conditional-logic-container' ),
-                cond_fields            = $( '.wpuf_available_conditional_fields' ),
-                cond_field_options     = $( '.wpuf_selected_conditional_field_options' );
-
-            $( conditional_logic ).on( "click", function(e) {
-                $( cond_fields_container ).hide();
-
-                if ( e.target.value === 'yes' ) {
-                    $( cond_fields_container ).show();
-                }
-            });
-
-            $( cond_fields ).on('focus', function(e) {
-                var form_fields = wpuf_form_builder.form_fields,
-                    options     = '';
-                    options     += '<option value="-1">- select -</option>';
-
-                form_fields.forEach(function(field) {
-                  if ( field.template === 'radio_field' || field.template === 'checkbox_field' || field.template === 'dropdown_field' ) {
-                    options += '<option value="'+field.name+'">'+field.label+'</option>';
-                  }
-                });
-                e.target.innerHTML = options;
-            });
-
-            $( cond_fields ).on('change', function(e){
-                var form_fields = wpuf_form_builder.form_fields,
-                    field_name = e.target.value,
-                    field_options  = '';
-                    field_options += '<option value="-1">- select -</option>';
-
-                form_fields.forEach(function(field) {
-                    if ( field.name === field_name ) {
-                        var options = field.options;
-
-                        for (var key in options) {
-                            if (options.hasOwnProperty(key)) {
-                                field_options += '<option value="'+key+'">'+options[key]+'</option>';
-                            }
-                        }
-                    }
-                });
-
-                cond_field_options[0].innerHTML = field_options;
-            });
-        }
     };
 
     // on DOM ready
     $(function() {
-        resizeBuilderContainer();
-
-        $("#collapse-menu").click(function () {
-            resizeBuilderContainer();
-        });
+        // resizeBuilderContainer();
+        //
+        // $("#collapse-menu").click(function () {
+        //     resizeBuilderContainer();
+        // });
 
         function resizeBuilderContainer() {
             if ($(document.body).hasClass('folded')) {
@@ -914,31 +716,419 @@
         }
 
         SettingsTab.init();
+
+        const dependencies = {
+            // Fields and their show/hide conditions
+            fields: {
+                message: {
+                    type: 'textarea',
+                    dependsOn: [{
+                        field: 'redirect_to',
+                        value: 'same'
+                    }],
+                },
+                page_id: {
+                    type: 'select',
+                    dependsOn: [{
+                        field: 'redirect_to',
+                        value: 'page'
+                    }],
+                },
+                url: {
+                    type: 'text',
+                    dependsOn: [{
+                        field: 'redirect_to',
+                        value: 'url'
+                    }],
+                },
+                update_message: {
+                    type: 'textarea',
+                    dependsOn: [{
+                        field: 'edit_redirect_to',
+                        value: 'same'
+                    }],
+                },
+                edit_page_id: {
+                    type: 'select',
+                    dependsOn: [{
+                        field: 'edit_redirect_to',
+                        value: 'page'
+                    }],
+                },
+                edit_url: {
+                    type: 'text',
+                    dependsOn: [{
+                        field: 'edit_redirect_to',
+                        value: 'url'
+                    }],
+                },
+                guest_details: {
+                    type: 'checkbox',
+                    dependsOn: [{
+                        field: 'post_permission',
+                        value: 'guest_post'
+                    }]
+                },
+                guest_email_verify: {
+                    type: 'text',
+                    dependsOn: [{
+                        field: 'post_permission',
+                        value: 'guest_post'
+                    }]
+                },
+                name_label: {
+                    type: 'text',
+                    dependsOn: [
+                        {
+                            field: 'post_permission',
+                            value: 'guest_post'
+                        },
+                        {
+                            field: 'guest_details',
+                            value: true
+                        }
+                    ]
+                },
+                email_label: {
+                    type: 'text',
+                    dependsOn: [
+                        {
+                            field: 'post_permission',
+                            value: 'guest_post'
+                        },
+                        {
+                            field: 'guest_details',
+                            value: true
+                        }
+                    ]
+                },
+                roles: {
+                    type: 'select',
+                    dependsOn: [{
+                        field: 'post_permission',
+                        value: 'role_base'
+                    }]
+                },
+                message_restrict: {
+                    type: 'textarea',
+                    dependsOn: [{
+                        field: 'post_permission',
+                        value: 'role_base'
+                    }]
+                },
+                choose_payment_option: {
+                    type: 'select',
+                    dependsOn: [{
+                        field: 'payment_options',
+                        value: true
+                    }]
+                },
+                fallback_ppp_enable: {
+                    type: 'checkbox',
+                    dependsOn: [
+                        {
+                            field: 'payment_options',
+                            value: true
+                        },
+                        {
+                            field: 'choose_payment_option',
+                            value: 'force_pack_purchase'
+                        }
+                    ]
+                },
+                fallback_ppp_cost: {
+                    type: 'checkbox',
+                    dependsOn: [
+                        {
+                            field: 'payment_options',
+                            value: true
+                        },
+                        {
+                            field: 'choose_payment_option',
+                            value: 'force_pack_purchase'
+                        },
+                        {
+                            field: 'fallback_ppp_enable',
+                            value: true
+                        }
+                    ]
+                },
+                pay_per_post_cost: {
+                    type: 'number',
+                    dependsOn: [
+                        {
+                            field: 'payment_options',
+                            value: true
+                        },
+                        {
+                            field: 'choose_payment_option',
+                            value: 'enable_pay_per_post'
+                        }
+                    ]
+                },
+                ppp_payment_success_page: {
+                    type: 'select',
+                    dependsOn: [
+                        {
+                            field: 'payment_options',
+                            value: true
+                        },
+                        {
+                            field: 'choose_payment_option',
+                            value: 'enable_pay_per_post'
+                        }
+                    ]
+                },
+                new_to: {
+                    type: 'text',
+                    dependsOn: [{
+                        field: 'new',
+                        value: true
+                    }]
+                },
+                new_subject: {
+                    type: 'text',
+                    dependsOn: [{
+                        field: 'new',
+                        value: true
+                    }]
+                },
+                new_body: {
+                    type: 'textarea',
+                    dependsOn: [{
+                        field: 'new',
+                        value: true
+                    }]
+                },
+                schedule_start: {
+                    type: 'text',
+                    dependsOn: [{
+                        field: 'schedule_form',
+                        value: true
+                    }]
+                },
+                form_pending_message: {
+                    type: 'textarea',
+                    dependsOn: [{
+                        field: 'schedule_form',
+                        value: true
+                    }]
+                },
+                form_expired_message: {
+                    type: 'textarea',
+                    dependsOn: [{
+                        field: 'schedule_form',
+                        value: true
+                    }]
+                },
+                limit_number: {
+                    type: 'number',
+                    dependsOn: [{
+                        field: 'limit_entries',
+                        value: true
+                    }]
+                },
+                limit_message: {
+                    type: 'textarea',
+                    dependsOn: [{
+                        field: 'limit_entries',
+                        value: true
+                    }]
+                }
+            }
+        };
+
+        // load only for post form settings
+        if (wpuf_form_builder.form_type === 'wpuf_forms') {
+            new FormDependencyHandler(dependencies);
+        }
+
+        // initially show the first tab(General) on first page load
+        show_settings_for('general');
+
+        function show_settings_for(settings) {
+            $('.wpuf-settings-body').each(function() {
+                if ($(this).data('settings-body') === settings) {
+                    $(this).fadeIn();
+                } else {
+                    $(this).fadeOut();
+                }
+            });
+        }
+
+        $('ul.wpuf-sidebar-menu li').each(function() {
+            $(this).on('click', function() {
+                show_settings_for($(this).data('settings'));
+            });
+        });
+
+        $('#modules-menu').on('click', function() {
+            show_settings_for('modules');
+        });
     });
 
+    class FormDependencyHandler {
+        constructor(dependencies) {
+            this.dependencies = dependencies;
+            this.init();
+        }
+
+        init() {
+            // Get all fields that have dependencies
+            const fieldsWithDependencies = Object.keys(this.dependencies.fields);
+
+            // Initially hide all dependent fields
+            fieldsWithDependencies.forEach(fieldId => {
+                this.hideField(fieldId);
+            });
+
+            // Add change event listeners to all form fields that others depend on
+            const uniqueControlFields = this.getUniqueControlFields();
+            uniqueControlFields.forEach(fieldId => {
+                this.attachFieldListener(fieldId);
+            });
+
+            // Initial check for all fields
+            this.checkAllDependencies();
+        }
+
+        getUniqueControlFields() {
+            // Get unique list of fields that control other fields
+            const controlFields = new Set();
+            Object.values(this.dependencies.fields).forEach(field => {
+                field.dependsOn.forEach(dependency => {
+                    controlFields.add(dependency.field);
+                });
+            });
+            return Array.from(controlFields);
+        }
+
+        attachFieldListener(fieldId) {
+            const field = $(`#${fieldId}`);
+
+            if (field.length === 0) {
+                return;
+            }
+
+            const fieldType = field.attr('type') || field.prop('tagName').toLowerCase();
+
+            if (fieldType === 'checkbox' || fieldType === 'select') {
+                field.on('change', () => this.checkAllDependencies());
+            } else if (fieldType === 'radio') {
+                const fieldName = field.attr('name');
+                const radioFields = $(`input[name="${fieldName}"]`);
+
+                radioFields.each((index, radio) => {
+                    $(radio).on('change', () => this.checkAllDependencies());
+                });
+            }
+        }
+
+        checkAllDependencies() {
+            Object.keys(this.dependencies.fields).forEach(fieldId => {
+                this.checkFieldDependencies(fieldId);
+            });
+        }
+
+        checkFieldDependencies(fieldId) {
+            const fieldConfig = this.dependencies.fields[fieldId];
+            const shouldShow = this.shouldFieldBeVisible(fieldConfig.dependsOn);
+
+            if (shouldShow) {
+                this.showField(fieldId);
+                this.attachSelectize(fieldId);
+            } else {
+                this.hideField(fieldId);
+            }
+        }
+
+        shouldFieldBeVisible(dependencies) {
+            // All conditions must be met (AND logic)
+            return dependencies.every(dep => {
+                const controlField = $(`#${dep.field}`);
+
+                if (controlField.length === 0) {
+                    return;
+                }
+
+                const fieldType = controlField.attr('type') || controlField.prop('tagName').toLowerCase();
+
+                if (fieldType === 'checkbox' || fieldType === 'radio') {
+                    return controlField.is(':checked') === dep.value;
+                } else if (fieldType === 'select') {
+                    return controlField.val() === dep.value;
+                }
+                return false;
+            });
+        }
+
+        showField(fieldId) {
+            $(`#${fieldId}`).closest('.wpuf-input-container').fadeIn(200);
+        }
+
+        hideField(fieldId) {
+            $(`#${fieldId}`).closest('.wpuf-input-container').fadeOut(200);
+        }
+
+        // if it is a select field, then attach selectize like below
+        attachSelectize(fieldId) {
+            if ($(`#${fieldId}`).is('select')) {
+                $(`#${fieldId}`).selectize({
+                    plugins: ['remove_button'],
+                });
+            }
+        }
+    }
+
+    window.FormDependencyHandler = FormDependencyHandler;
+
     // Mobile view menu toggle
-    $('#wpuf-form-builder').on('click', '#wpuf-toggle-field-options, #wpuf-toggle-show-form, .control-buttons .fa-pencil, .ui-draggable-handle', function() {
+    $('#wpuf-form-builder').on('click', '#wpuf-toggle-field-options, #wpuf-toggle-show-form, .field-buttons .fa-pencil, .ui-draggable-handle', function() {
         $('#wpuf-toggle-field-options').toggleClass('hide');
         $('#wpuf-toggle-show-form').toggleClass('show');
         $('#builder-form-fields').toggleClass('show');
     });
 
-    $('#wpuf_settings_posttype').on('change', function() {
-        event.preventDefault();
-        var post_type =  $(this).val();
+    $('select#post_type').on('change', function() {
+        populate_default_categories(this);
+    });
+
+    function populate_default_categories(obj) {
+        var post_type = $( obj ).val();
         wp.ajax.send('wpuf_form_setting_post', {
             data: {
                 post_type: post_type,
                 wpuf_form_builder_setting_nonce: wpuf_form_builder.nonce
             },
             success: function (response) {
-                $('.wpuf_settings_taxonomy').remove();
-                $('.wpuf-post-fromat').after(response.data);
+                const default_category = 'select#default_category';
+                let default_category_name = default_category;
+
+                if ( post_type !== 'post' ) {
+                    default_category_name = 'select#default_' + post_type + '_cat';
+                }
+
+                const value = $(default_category_name).data('value');
+
+                $(default_category).parent('.wpuf-my-4.wpuf-input-container').remove();
+                $('select#post_type').parent('.wpuf-my-4.wpuf-input-container').after(response.data);
+
+                if (value && ( typeof value === 'string' )) {
+                    $(default_category).val(value.split(","));
+                } else {
+                    $(default_category).val(value);
+                }
+
+                $(default_category).selectize({
+                    plugins: ['remove_button'],
+                });
+
             },
             error: function ( error ) {
                 console.log(error);
             }
         });
-    });
+    }
+
 
 })(jQuery);

@@ -2473,12 +2473,12 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   top: -40%;
 }
 
-.wpuf-top-\[10\%\] {
-  top: 10%;
-}
-
 .wpuf-top-\[50\%\] {
   top: 50%;
+}
+
+.wpuf-top-\[7\%\] {
+  top: 7%;
 }
 
 .wpuf-z-10 {

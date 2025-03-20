@@ -488,7 +488,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                                     <?php echo esc_attr( checked( $value, $key, false ) ); ?>
                                     class="wpuf-absolute wpuf-opacity-0 wpuf-peer">
                                 <img
-                                    class="wpuf-absolute wpuf-opacity-0 peer-checked:wpuf-opacity-100 wpuf-top-[10%] wpuf-right-[12%] wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out"
+                                    class="wpuf-absolute wpuf-opacity-0 peer-checked:wpuf-opacity-100 wpuf-top-[7%] wpuf-right-[12%] wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out"
                                     src="<?php echo esc_attr( WPUF_ASSET_URI . '/images/checked-green.svg' ); ?>" alt="">
                                 <img
                                     src="<?php echo $option['image']; ?>"

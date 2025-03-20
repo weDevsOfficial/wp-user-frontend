@@ -272,7 +272,7 @@ class License {
 
                 <div class="appsero-license-details">
                     <p>
-                        <?php printf( wp_kses_post( $this->client->__trans( 'Activate <strong>%s</strong> by your license key to get professional support and automatic update from your WordPress dashboard.' ), $this->client->name ) ); ?>
+                        <?php printf( wp_kses_post( $this->client->__trans( 'Activate <strong>%s</strong> by your license key to get professional support and automatic update from your WordPress dashboard.' ) ), $this->client->name ); ?>
                     </p>
                     <form method="post" novalidate="novalidate" spellcheck="false">
                         <input type="hidden" name="_action" value="<?php echo esc_attr( $action ); ?>">
@@ -552,7 +552,7 @@ class License {
                     <p><?php $this->client->_etrans( 'Unlimited' ); ?></p>
                 <?php } else { ?>
                     <p class="<?php echo $license['remaining'] ? '' : 'occupied'; ?>">
-                        <?php printf( wp_kses_post( $this->client->__trans( '%1$d out of %2$d' ), esc_html( $license['remaining'] ), esc_html( $license['activation_limit'] ) ) ); ?>
+                        <?php printf( wp_kses_post( $this->client->__trans( '%1$d out of %2$d' ) ), esc_html( $license['remaining'] ), esc_html( $license['activation_limit'] ) ); ?>
                     </p>
                 <?php } ?>
             </div>

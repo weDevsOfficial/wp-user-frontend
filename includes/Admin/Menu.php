@@ -104,7 +104,14 @@ class Menu {
      * @return void
      */
     public function wpuf_post_forms_page() {
+        if ( wpuf_is_pro_active() && defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.1.0', '<' ) ) {
+            require_once WPUF_INCLUDES . '/Admin/views/need-to-update.php';
+
+            return;
+        }
+
         add_action( 'admin_footer', [ $this, 'load_headway_badge' ] );
+
         // phpcs:ignore WordPress.Security.NonceVerification
         $action           = ! empty( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : null;
         $add_new_page_url = admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' );
@@ -117,6 +124,22 @@ class Menu {
 
             default:
                 require_once WPUF_INCLUDES . '/Admin/views/post-forms-list-table-view.php';
+
+                $registry       = wpuf_get_post_form_templates();
+                $pro_templates  = wpuf_get_pro_form_previews();
+                $blank_form_url = admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' );
+                $action_name    = 'post_form_template';
+                $footer_help    = sprintf(
+                    // translators: %s: mailto link
+                    __( 'Want a new integration? <a href="%s" target="_blank">Let us know</a>.', 'wp-user-frontend' ), 'mailto:support@wedevs.com?subject=WPUF Custom Post Template Integration Request'
+                );
+
+                if ( ! $registry ) {
+                    break;
+                }
+
+                include WPUF_ROOT . '/includes/Admin/template-parts/modal-v4.1.php';
+
                 break;
         }
     }

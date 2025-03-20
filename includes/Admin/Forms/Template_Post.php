@@ -41,8 +41,11 @@ class Template_Post extends Admin_Template {
                     <div class="wpuf-form-sub-fields">
                         <label>
                             <?php self::hidden_field( "[$field_id][insert_image]", 'no' ); ?>
-                            <input type="checkbox" name="<?php echo esc_attr( $image_insert_name ); ?>"
-                                   value="yes"<?php checked( $image_insert_value, 'yes' ); ?> />
+                            <input
+                                type="checkbox"
+                                class="wpuf-input-checkbox"
+                                name="<?php echo esc_attr( $image_insert_name ); ?>"
+                                value="yes"<?php checked( $image_insert_value, 'yes' ); ?> />
                             <?php esc_html_e( 'Enable image upload in post area', 'wp-user-frontend' ); ?>
                         </label>
                     </div>

@@ -11,7 +11,7 @@ class Form_Field_Textarea extends Field_Contract {
     public function __construct() {
         $this->name       = __( 'Textarea', 'wp-user-frontend' );
         $this->input_type = 'textarea_field';
-        $this->icon       = 'paragraph';
+        $this->icon       = 'menu-alt-2';
     }
 
      /**
@@ -76,6 +76,7 @@ class Form_Field_Textarea extends Field_Contract {
                 } else {
                     ?>
                     <textarea
+                        :class="builder_class_names('textareafield')"
                         class="textareafield <?php echo esc_attr( ' wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>"
                         id="<?php echo esc_attr( $field_settings['name'] . '_' . $form_id ); ?>"
                         name="<?php echo esc_attr( $field_settings['name'] ); ?>"

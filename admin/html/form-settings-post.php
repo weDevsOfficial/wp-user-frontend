@@ -4,7 +4,7 @@ global $post;
 $form_settings = wpuf_get_form_settings( $post->ID );
 
 $post_status_selected  = isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish';
-$restrict_message      = __( 'This page is restricted. Please %login% / %register% to view this page.', 'wp-user-frontend' );
+$restrict_message      = __( 'This page is restricted. Please {login} / {register} to view this page.', 'wp-user-frontend' );
 
 $post_type_selected    = isset( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
 

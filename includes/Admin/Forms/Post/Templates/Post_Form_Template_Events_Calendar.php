@@ -17,7 +17,7 @@ class Post_Form_Template_Events_Calendar extends Form_Template{
         $this->title       = __( 'The Events Calendar', 'wp-user-frontend' );
         $this->description = __( 'Form for creating events. The Events Calendar plugin is required.',
                                  'wp-user-frontend' );
-        $this->image       = WPUF_ASSET_URI . '/images/templates/post.png';
+        $this->image       = WPUF_ASSET_URI . '/images/templates/post.svg';
         $this->form_fields = [
             [
                 'input_type'  => 'text',
@@ -181,6 +181,7 @@ class Post_Form_Template_Events_Calendar extends Form_Template{
             'post_type'        => 'tribe_events',
             'post_status'      => 'publish',
             'default_cat'      => '-1',
+            'post_permission'  => '-1',
             'guest_post'       => 'false',
             'message_restrict' => __( 'This page is restricted. Please Log in / Register to view this page.',
                                       'wp-user-frontend' ),

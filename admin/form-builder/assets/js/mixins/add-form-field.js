@@ -18,8 +18,16 @@ wpuf_mixins.add_form_field = {
             // check if these are already inserted
             if ( this.isSingleInstance( field_template ) && this.containsField( field_template ) ) {
                 Swal.fire({
-                    title: "Oops...",
-                    text: "You already have this field in the form"
+                    title: '<span class="wpuf-text-orange-400">Oops...</span>',
+                    html: '<p class="wpuf-text-gray-500 wpuf-text-xl wpuf-m-0 wpuf-p-0">You already have this field in the form</p>',
+                    imageUrl: wpuf_form_builder.asset_url + '/images/oops.svg',
+                    showCloseButton: true,
+                    padding: '1rem',
+                    width: '35rem',
+                    customClass: {
+                        confirmButton: "!wpuf-flex focus:!wpuf-shadow-none !wpuf-bg-primary",
+                        closeButton: "wpuf-absolute"
+                    },
                 });
                 return;
             }
@@ -45,5 +53,17 @@ wpuf_mixins.add_form_field = {
             // add new form element
             this.$store.commit('add_form_field_element', payload);
         },
+
+        is_pro_preview: function (template) {
+            var is_pro_active = wpuf_form_builder.is_pro_active === '1';
+
+            return (!is_pro_active && this.field_settings[template] && this.field_settings[template].pro_feature);
+        },
+    },
+
+    computed: {
+        action_button_classes: function() {
+            return 'wpuf-p-2 hover:wpuf-cursor-pointer hover:wpuf-text-white wpuf-flex';
+        }
     },
 };

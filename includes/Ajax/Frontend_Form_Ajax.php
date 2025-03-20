@@ -41,7 +41,7 @@ class Frontend_Form_Ajax {
         $form                  = new Form( $form_id );
         $this->form_settings   = $form->get_settings();
         $this->form_fields     = $form->get_fields();
-        $guest_mode            = isset( $this->form_settings['guest_post'] ) ? $this->form_settings['guest_post'] : '';
+        $guest_mode            = isset( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ? $this->form_settings['post_permission'] : '';
         $guest_verify          = isset( $this->form_settings['guest_email_verify'] ) ? $this->form_settings['guest_email_verify'] : 'false';
         $attachments_to_delete = isset( $_POST['delete_attachments'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['delete_attachments'] ) ) : [];
 
@@ -128,7 +128,7 @@ class Frontend_Form_Ajax {
         [ $post_vars, $taxonomy_vars, $meta_vars ] = $this->get_input_fields( $this->form_fields );
 
         if ( ! isset( $_POST['post_id'] ) ) {
-            $has_limit = isset( $this->form_settings['limit_entries'] ) && $this->form_settings['limit_entries'] === 'true';
+            $has_limit = isset( $this->form_settings['limit_entries'] ) && ( 'true' === $this->form_settings['limit_entries'] || 'on' === $this->form_settings['limit_entries'] );
 
             if ( $has_limit ) {
                 $limit        = (int) ! empty( $this->form_settings['limit_number'] ) ? $this->form_settings['limit_number'] : 0;
@@ -384,8 +384,8 @@ class Frontend_Form_Ajax {
             }
         }
 
-        if ( $charging_enabled === 'yes' && isset( $this->form_settings['enable_pay_per_post'] )
-             && wpuf_validate_boolean( $this->form_settings['enable_pay_per_post'] )
+        if ( $charging_enabled === 'yes' && isset( $this->form_settings['payment_options'] )
+             && 'enable_pay_per_post' === $this->form_settings['payment_options']
              && ! $is_update
         ) {
             $redirect_to = add_query_arg(
@@ -405,8 +405,8 @@ class Frontend_Form_Ajax {
             'message'      => $this->form_settings['message'],
         ];
 
-        $guest_mode     = isset( $this->form_settings['guest_post'] ) ? $this->form_settings['guest_post'] : '';
-        $guest_verify   = isset( $this->form_settings['guest_email_verify'] ) ? $this->form_settings['guest_email_verify'] : 'false';
+        $guest_mode     = isset( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ? $this->form_settings['post_permission'] : '';
+        $guest_verify   = isset( $this->form_settings['guest_email_verify'] ) ? $this->form_settings['guest_email_verify'] : '';
 
         if ( $guest_mode === 'true' && $guest_verify === 'true' && ! is_user_logged_in() && $charging_enabled !== 'yes' ) {
             $post_id_encoded          = wpuf_encryption( $post_id );
@@ -428,7 +428,7 @@ class Frontend_Form_Ajax {
             wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, 'yes', 2 );
         }
 
-        if ( $guest_mode === 'true' && $guest_verify === 'true' && ! is_user_logged_in() ) {
+        if ( wpuf_is_checkbox_or_toggle_on( $guest_mode ) && wpuf_is_checkbox_or_toggle_on( $guest_verify ) && ! is_user_logged_in() ) {
             $response = apply_filters( 'wpuf_edit_post_redirect', $response, $post_id, $form_id, $this->form_settings );
         } elseif ( $is_update ) {
             //now perform some post related actions
@@ -481,7 +481,7 @@ class Frontend_Form_Ajax {
         $default_post_author = wpuf_get_option( 'default_post_owner', 'wpuf_frontend_posting', 1 );
 
         if ( ! is_user_logged_in() ) {
-            if ( isset( $this->form_settings['guest_post'] ) && $this->form_settings['guest_post'] === 'true' && $this->form_settings['guest_details'] === 'true' ) {
+            if ( isset( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) {
                 $guest_name = isset( $_POST['guest_name'] ) ? sanitize_text_field( wp_unslash( $_POST['guest_name'] ) ) : '';
 
                 $guest_email = isset( $_POST['guest_email'] ) ? sanitize_email( wp_unslash( $_POST['guest_email'] ) ) : '';
@@ -564,14 +564,15 @@ class Frontend_Form_Ajax {
                 }
 
                 // guest post is enabled and details are off
-            } elseif ( isset( $this->form_settings['guest_post'] ) && $this->form_settings['guest_post'] === 'true' && $this->form_settings['guest_details'] === 'false' ) {
+            } elseif ( ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) && ! wpuf_is_checkbox_or_toggle_on( $this->form_settings['guest_details'] ) ) {
                 $post_author = $default_post_author;
-            } elseif ( isset( $this->form_settings['guest_post'] ) && $this->form_settings['guest_post'] !== 'true' ) {
+            } elseif ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) {
                 wpuf()->ajax->send_error( $this->form_settings['message_restrict'] );
             }
 
             // the user must be logged in already
-        } elseif ( isset( $this->form_settings['role_base'] ) && $this->form_settings['role_base'] === 'true' && ! wpuf_user_has_roles( $this->form_settings['roles'] ) ) {
+        } elseif ( ( ! empty( $this->form_settings['post_permission'] ) && 'role_base' === $this->form_settings['post_permission'] )
+                   && ( ! empty( $this->form_settings['roles'] ) && ! wpuf_user_has_roles( $this->form_settings['roles'] ) ) ) {
             wpuf()->ajax->send_error( __( 'You do not have sufficient permissions to access this form.', 'wp-user-frontend' ) );
         } else {
             $post_author = get_current_user_id();

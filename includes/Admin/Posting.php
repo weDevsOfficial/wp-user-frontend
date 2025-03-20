@@ -22,10 +22,31 @@ class Posting {
         add_action( 'add_meta_boxes', [ $this, 'add_meta_box_post_lock'] );
         // add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_script'] );
         add_action( 'wpuf_load_post_forms', [ $this, 'enqueue_script' ] );
+        // add_action( 'admin_enqueue_scripts', [ $this, 'dequeue_assets' ] );
         add_action( 'wpuf_load_registration_forms', [ $this, 'enqueue_script' ] );
         add_action( 'save_post', [ $this, 'save_meta'], 100, 2 ); // save the custom fields
         add_action( 'save_post', [ $this, 'form_selection_metabox_save' ], 1, 2 ); // save edit form id
         add_action( 'save_post', [ $this, 'post_lock_metabox_save' ], 1, 2 ); // save post lock option
+    }
+
+    /**
+     * Dequeue assets to avoid conflict
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function dequeue_assets() {
+        $post_form_page = 'wpuf-post-forms';
+
+        if ( strpos( get_current_screen()->id, $post_form_page ) === false ) {
+            return;
+        }
+
+        wp_dequeue_style( 'wpuf-form-builder' );
+        if ( defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.1', '<' ) ) {
+            wp_dequeue_style( 'wpuf-form-builder-pro' );
+        }
     }
 
     public static function init() {
@@ -39,7 +60,9 @@ class Posting {
     public function enqueue_script() {
         $api_key = wpuf_get_option( 'gmap_api_key', 'wpuf_general' );
 
-        wp_enqueue_style( 'jquery-ui', WPUF_ASSET_URI . '/css/jquery-ui-1.9.1.custom.css' );
+        wp_enqueue_style( 'wpuf-admin-form-builder' );
+
+        wp_enqueue_style( 'jquery-ui' );
         wp_enqueue_script( 'jquery-ui-slider' );
 
         if( ! class_exists('ACF') ) {

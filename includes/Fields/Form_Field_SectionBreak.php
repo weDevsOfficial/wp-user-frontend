@@ -2,7 +2,6 @@
 
 namespace WeDevs\Wpuf\Fields;
 
-
 /**
  * Section Break Field Class
  */
@@ -11,7 +10,7 @@ class Form_Field_SectionBreak extends Field_Contract {
     public function __construct() {
         $this->name       = __( 'Section Break', 'wp-user-frontend' );
         $this->input_type = 'section_break';
-        $this->icon       = 'columns';
+        $this->icon       = 'menu-alt-4';
     }
 
     /**
@@ -81,15 +80,16 @@ class Form_Field_SectionBreak extends Field_Contract {
      */
     public function get_field_props() {
         $props = [
-            'input_type'        => 'section_break',
-            'template'          => $this->get_type(),
-            'label'             => $this->get_name(),
-            'description'       => __( 'Some description about this section', 'wp-user-frontend'  ),
-            'id'                => 0,
-            'is_new'            => true,
-            'show_in_post'      => 'yes',
-            'hide_field_label'  => 'no',
-            'wpuf_cond'         => null,
+            'input_type'       => 'section_break',
+            'template'         => $this->get_type(),
+            'label'            => $this->get_name(),
+            'description'      => __( 'Some description about this section', 'wp-user-frontend' ),
+            'id'               => 0,
+            'is_new'           => true,
+            'show_in_post'     => 'yes',
+            'hide_field_label' => 'no',
+            'wpuf_cond'        => null,
+            'divider'          => 'regular',
         ];
 
         return $props;

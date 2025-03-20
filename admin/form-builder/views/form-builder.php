@@ -39,7 +39,7 @@
 
                         <i :class="(is_form_switcher ? 'fa fa-angle-up' : 'fa fa-angle-down') + ' form-switcher-arrow'" @click.prevent="switch_form"></i>
                         <?php
-                            $form_id = isset( $_GET['id'] ) ? intval( wp_unslash( $_GET['id'] ) ) : 0;
+                        $form_id = isset( $_GET['id'] ) ? intval( wp_unslash( $_GET['id'] ) ) : 0;
 
                         if ( count( $shortcodes ) > 1 && isset( $shortcodes[0]['type'] ) ) {
                             foreach ( $shortcodes as $shortcode ) {
@@ -56,7 +56,7 @@
                         <?php
                         foreach ( $forms as $form ) {
                             ?>
-                                <li><a class="<?php echo ( (int) $form->ID === $_GET['id'] ) ? 'active' : ''; ?>" href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-' . $form_type . '-forms&action=edit&id=' . $form->ID ) ); ?>"><?php echo esc_html( $form->post_title ); ?></a></li>
+                            <li class="button ui-draggable ui-draggable-handle"><a class="<?php echo ( (int) $form->ID === $_GET['id'] ) ? 'active' : ''; ?>" href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-' . $form_type . '-forms&action=edit&id=' . $form->ID ) ); ?>"><?php echo esc_html( $form->post_title ); ?></a></li>
                             <?php
                         }
                         ?>

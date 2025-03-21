@@ -45,7 +45,7 @@ class Upload_Ajax {
         if ( ! is_user_logged_in() ) {
             $guest_post    = false;
             $form_settings = wpuf_get_form_settings( $form_id );
-            if ( isset( $form_settings['guest_post'] ) && $form_settings['guest_post'] == 'true' ) {
+            if ( isset( $form_settings['post_permission'] ) && 'guest_post' === $form_settings['post_permission'] ) {
                 $guest_post = true;
             }
             // check if the request coming from weForms & allow users to upload when require login option is disabled
@@ -309,11 +309,11 @@ class Upload_Ajax {
     function duplicate_upload( $file ) {
         global $wpdb;
         $upload_hash = md5( $file['name'] . $file['size'] );
-        $sql   = $wpdb->prepare(
+
+        $match = $wpdb->get_var( $wpdb->prepare(
             "SELECT post_id FROM $wpdb->postmeta m JOIN $wpdb->posts p ON p.ID = m.post_id WHERE m.meta_key = 'wpuf_file_hash' AND m.meta_value = %s AND p.post_status != 'trash' LIMIT 1;",
             $upload_hash
-        );
-        $match = $wpdb->get_var( $sql );
+        ) );
         if ( $match ) {
             $file['duplicate'] = $match;
         }

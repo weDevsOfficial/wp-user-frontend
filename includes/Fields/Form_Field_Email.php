@@ -10,7 +10,7 @@ class Form_Field_Email extends Form_Field_Text {
     public function __construct() {
         $this->name       = __( 'Email Address', 'wp-user-frontend' );
         $this->input_type = 'email_address';
-        $this->icon       = 'envelope-o';
+        $this->icon       = 'mail';
     }
 
     /**

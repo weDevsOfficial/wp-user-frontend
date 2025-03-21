@@ -77,15 +77,15 @@ function _recaptcha_http_post($host, $path, $data, $port = 80) {
         $http_request .= $req;
 
         $response = '';
-        if( false == ( $fs = @fsockopen($host, $port, $errno, $errstr, 10) ) ) {
+        if( false == ( $fs = @fsockopen($host, $port, $errno, $errstr, 10) ) ) { // @codingStandardsIgnoreLine
                 die ('Could not open socket');
         }
 
-        fwrite($fs, $http_request);
+        fwrite($fs, $http_request); // @codingStandardsIgnoreLine
 
         while ( !feof($fs) )
                 $response .= fgets($fs, 1160); // One TCP-IP packet
-        fclose($fs);
+        fclose($fs); // @codingStandardsIgnoreLine
         $response = explode("\r\n\r\n", $response, 2);
 
         return $response;

@@ -92,7 +92,7 @@ $ppp_success_page      = isset( $form_settings['ppp_payment_success_page'] ) ? $
                         <?php
                         foreach ( wpuf_get_pages() as $page_id => $page_name ) {
                             ?>
-                            <option value="<?php echo $page_id; ?>" <?php echo $page_id === (int) $ppp_success_page ? 'selected' : ''; ?> ><?php echo $page_name; ?></option>
+                            <option value="<?php echo esc_attr( $page_id ); ?>" <?php echo $page_id === (int) $ppp_success_page ? 'selected' : ''; ?> ><?php echo esc_html( $page_name ); ?></option>
                             <?php
                         }
                         ?>

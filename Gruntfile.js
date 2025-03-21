@@ -1,5 +1,10 @@
 'use strict';
-module.exports = function(grunt) {
+module.exports = function( grunt) {
+    const tailwindFileMap = {
+        'admin/form-builder/views/form-builder-v4.1.php': 'admin/form-builder.css',
+        'admin/form-builder/views/post-form-settings.php': 'admin/form-builder.css',
+    }
+
     var formBuilderAssets = require('./admin/form-builder/assets/js/form-builder-assets.js');
 
     var pkg = grunt.file.readJSON('package.json');
@@ -112,7 +117,22 @@ module.exports = function(grunt) {
                 tasks: [
                     'shell:npm_build'
                 ]
-            }
+            },
+
+            tailwind: {
+                files: [
+                    'src/css/**/*.css',
+                    'admin/form-builder/views/*.php',
+                    'admin/form-builder/assets/js/**/*.php',
+                    'admin/form-builder/assets/js/**/*.js',
+                    'includes/Admin/**/*.php',
+                    'wpuf-functions.php',
+                ],
+                tasks: ['shell:tailwind:src/css/admin/form-builder.css:assets/css/admin/form-builder.css'],
+                options: {
+                    spawn: false
+                }
+            },
         },
 
         // Clean up build directory
@@ -155,7 +175,6 @@ module.exports = function(grunt) {
                     '!**/log.txt',
                     '!**/package-lock.json',
                     '!**/appsero.json',
-                    '!**/composer.json',
                     '!**/composer.lock',
                     '!**/phpcs-report.txt',
                     '!**/phpcs.xml.dist',
@@ -224,6 +243,11 @@ module.exports = function(grunt) {
         shell: {
             npm_build: {
                 command: 'npm run build',
+            },
+            tailwind: {
+                command: function ( input, output ) {
+                    return `npx tailwindcss -i ${input} -o ${output}`;
+                }
             }
         }
     });
@@ -241,6 +265,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks( 'grunt-notify' );
     grunt.loadNpmTasks( 'grunt-wp-readme-to-markdown' );
     grunt.loadNpmTasks( 'grunt-shell' );
+    grunt.loadNpmTasks( 'grunt-postcss' );
 
     grunt.registerTask( 'default', [ 'less', 'concat', 'uglify', 'i18n' ] );
 
@@ -251,4 +276,28 @@ module.exports = function(grunt) {
     // build stuff
     grunt.registerTask( 'release', [ 'less', 'concat', 'uglify', 'i18n', 'readme' ] );
     grunt.registerTask( 'zip', [ 'clean', 'copy', 'compress' ] );
+
+    grunt.event.on('watch', function(action, filepath, target) {
+        if (target === 'tailwind') {
+            grunt.task.run('tailwind');
+        }
+    });
+
+    grunt.registerTask('tailwind', function() {
+        const done = this.async();
+
+        // Process each file mapping
+        Object.entries(tailwindFileMap).forEach(([phpFile, cssFile]) => {
+            const inputFile = `src/css/${cssFile}`;
+            const outputFile = `assets/css/${cssFile}`;
+
+            // Ensure the input file exists
+            if (grunt.file.exists(inputFile)) {
+                // Run the tailwind command
+                grunt.task.run(`shell:tailwind:${inputFile}:${outputFile}`);
+            }
+        });
+
+        done();
+    });
 };

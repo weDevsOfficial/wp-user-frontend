@@ -41,8 +41,11 @@ class Template_Post extends Admin_Template {
                     <div class="wpuf-form-sub-fields">
                         <label>
                             <?php self::hidden_field( "[$field_id][insert_image]", 'no' ); ?>
-                            <input type="checkbox" name="<?php echo esc_attr( $image_insert_name ); ?>"
-                                   value="yes"<?php checked( $image_insert_value, 'yes' ); ?> />
+                            <input
+                                type="checkbox"
+                                class="wpuf-input-checkbox"
+                                name="<?php echo esc_attr( $image_insert_name ); ?>"
+                                value="yes"<?php checked( $image_insert_value, 'yes' ); ?> />
                             <?php esc_html_e( 'Enable image upload in post area', 'wp-user-frontend' ); ?>
                         </label>
                     </div>
@@ -326,12 +329,12 @@ class Template_Post extends Admin_Template {
             ( function ( $ ) {
                 $( document ).ready( function () {
                     var hide_field_name = '<?php echo esc_attr( $param['names_to_hide']['name'] ); ?>';
-                    var hide_field_value = JSON.parse( '<?php echo json_encode(
+                    var hide_field_value = JSON.parse( '<?php echo wp_json_encode(
                         $param['names_to_hide']['value']
                     ); ?>' );
                     var show_field_name = '<?php echo esc_attr( $param['names_to_show']['name'] ); ?>';
                     var show_field_value = JSON.parse( '<?php echo esc_attr(
-                        json_encode( $param['names_to_show']['value'] )
+                        wp_json_encode( $param['names_to_show']['value'] )
                     ); ?>' );
                     var countries = <?php echo esc_attr( wpuf_get_countries( 'json' ) ); ?>;
                     var hide_field_option_string = '';

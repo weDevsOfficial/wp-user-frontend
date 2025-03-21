@@ -260,9 +260,9 @@ class WPUF_Admin_Template_Post extends WPUF_Admin_Template {
             (function($){
                 $(document).ready(function(){
                     var hide_field_name = '<?php echo esc_attr( $param['names_to_hide']['name'] ); ?>';
-                    var hide_field_value = JSON.parse('<?php echo json_encode( $param['names_to_hide']['value'] ); ?>');
+                    var hide_field_value = JSON.parse('<?php echo wp_json_encode( $param['names_to_hide']['value'] ); ?>');
                     var show_field_name = '<?php echo esc_attr( $param['names_to_show']['name'] ); ?>';
-                    var show_field_value = JSON.parse('<?php echo esc_attr( json_encode( $param['names_to_show']['value'] ) ); ?>');
+                    var show_field_value = JSON.parse('<?php echo esc_attr( wp_json_encode( $param['names_to_show']['value'] ) ); ?>');
                     var countries = <?php echo esc_attr( wpuf_get_countries( 'json' ) ); ?>;
                     var hide_field_option_string = '';
                     var show_field_option_string = '';

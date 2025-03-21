@@ -23,7 +23,7 @@ Vue.component('form-fields', {
     mounted: function () {
         // bind jquery ui draggable
         $(this.$el).find('.panel-form-field-buttons .button').draggable({
-            connectToSortable: '#form-preview-stage .wpuf-form, .wpuf-column-inner-fields .wpuf-column-fields-sortable-list',
+            connectToSortable: '#form-preview-stage, #form-preview-stage .wpuf-form, .wpuf-column-inner-fields .wpuf-column-fields-sortable-list',
             helper: 'clone',
             revert: 'invalid',
             cancel: '.button-faded',
@@ -48,7 +48,7 @@ Vue.component('form-fields', {
                 icon: '',
                 showCancelButton: true,
                 cancelButtonText: this.i18n.close,
-                confirmButtonColor: '#46b450',
+                confirmButtonColor: '#059669',
                 confirmButtonText: this.i18n.upgrade_to_pro
             }).then(function (result) {
                 if (result.isConfirmed) {

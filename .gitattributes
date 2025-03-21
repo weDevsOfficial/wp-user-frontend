@@ -7,6 +7,9 @@
 .php_cs export-ignore
 .github export-ignore
 Gruntfile.js export-ignore
+vite.config.mjs export-ignore
+tailwind.config.js export-ignore
+postcss.config.js export-ignore
 docs.md export-ignore
 package-lock.json export-ignore
 package.json export-ignore

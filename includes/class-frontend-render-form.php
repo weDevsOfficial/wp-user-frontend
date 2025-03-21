@@ -27,7 +27,7 @@ class WPUF_Frontend_Render_Form {
      * @param string $error
      */
     public function send_error( $error ) {
-        echo json_encode(
+        echo wp_json_encode(
             [
                 'success' => false,
                 'error'   => $error,
@@ -179,7 +179,7 @@ class WPUF_Frontend_Render_Form {
                 <input type="submit" class="wpuf-submit-button wpuf_submit_<?php echo esc_attr( $form_id ); ?>" name="submit" value="<?php echo esc_attr( $form_settings['submit_text'] ); ?>" />
             <?php } ?>
 
-            <?php if ( isset( $form_settings['draft_post'] ) && $form_settings['draft_post'] == 'true' ) { ?>
+            <?php if ( isset( $form_settings['draft_post'] ) && wpuf_is_checkbox_or_toggle_on( $form_settings['draft_post'] ) ) { ?>
                 <a href="#" class="btn" id="wpuf-post-draft"><?php esc_html_e( 'Save Draft', 'wp-user-frontend' ); ?></a>
             <?php } ?>
         </li>
@@ -229,6 +229,8 @@ class WPUF_Frontend_Render_Form {
         }
 
         if ( $form_id ) {
+            wp_enqueue_script( 'jquery' );
+            wp_enqueue_style( 'wpuf-frontend-forms' );
             ?>
 
             <!doctype html>
@@ -236,7 +238,6 @@ class WPUF_Frontend_Render_Form {
                 <head>
                     <meta charset="UTF-8">
                     <title>__( 'Form Preview', 'wp-user-frontend' )</title>
-                    <link rel="stylesheet" href="<?php echo esc_url( plugins_url( 'assets/css/frontend-forms.css', __DIR__ ) ); ?>">
 
                     <style type="text/css">
                         body {
@@ -257,7 +258,6 @@ class WPUF_Frontend_Render_Form {
                         }
                     </style>
 
-                    <script type="text/javascript" src="<?php echo esc_url( includes_url( 'js/jquery/jquery.js' ) ); ?>"></script>
                 </head>
                 <body>
                     <div class="container">
@@ -309,16 +309,15 @@ class WPUF_Frontend_Render_Form {
             wp_enqueue_style( 'wpuf-' . $layout );
         }
 
-        if ( ! is_user_logged_in() && $this->form_settings['guest_post'] !== 'true' ) {
+        if ( ! is_user_logged_in() && ( isset( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) ) {
             echo wp_kses_post( '<div class="wpuf-message">' . $this->form_settings['message_restrict'] . '</div>' );
 
             return;
         }
 
         if (
-                isset( $this->form_settings['role_base'] )
-                && wpuf_validate_boolean( $this->form_settings['role_base'] )
-                && ! wpuf_user_has_roles( $this->form_settings['roles'] )
+            ( ! empty( $this->form_settings['post_permission'] ) && 'role_base' === $this->form_settings['post_permission'] )
+            && ( ! empty( $this->form_settings['roles'] ) && ! wpuf_user_has_roles( $this->form_settings['roles'] ) )
             ) {
             ?>
             <div class="wpuf-message"><?php esc_html_e( 'You do not have sufficient permissions to access this form.', 'wp-user-frontend' ); ?></div>
@@ -359,7 +358,7 @@ class WPUF_Frontend_Render_Form {
                         do_action( 'wpuf_edit_post_form_top', $form_id, $post_id, $this->form_settings );
                     }
 
-                    if ( ! is_user_logged_in() && $this->form_settings['guest_post'] == 'true' && $this->form_settings['guest_details'] == 'true' ) {
+                    if ( isset( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) {
                         $this->guest_fields( $this->form_settings );
                     }
 
@@ -445,7 +444,7 @@ class WPUF_Frontend_Render_Form {
 
         // try to add some random number in username
         // and may be we got our username
-        $username .= rand( 1, 199 );
+        $username .= wp_rand( 1, 199 );
 
         if ( ! username_exists( $username ) ) {
             return $username;
@@ -912,7 +911,9 @@ class WPUF_Frontend_Render_Form {
                 <div >
                     <label >
                          <input type="checkbox" class="wpuf_is_featured" name="is_featured_item" value="1" <?php echo $is_featured ? 'checked' : ''; ?> >
-                         <span class="wpuf-items-table-containermessage-box" id="remaining-feature-item"> <?php echo sprintf( __( 'Mark the %s as featured (remaining %d)', 'wp-user-frontend' ), $this->form_settings['post_type'], $user_sub['total_feature_item'] ); ?></span>
+                         <span class="wpuf-items-table-containermessage-box" id="remaining-feature-item"> <?php echo sprintf( 
+                            // translators: %1$s is Post type and %2$s is total feature item
+                            wp_kses_post(__( 'Mark the %1$s as featured (remaining %2$d)', 'wp-user-frontend' ), esc_html ($this->form_settings['post_type'] ), esc_html( $user_sub['total_feature_item'] ) )); ?></span>
                     </label>
                 </div>
             </li>

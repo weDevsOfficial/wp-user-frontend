@@ -12,6 +12,7 @@ class Menu {
 
         add_filter( 'parent_file', [ $this, 'fix_parent_menu' ] );
         add_filter( 'submenu_file', [ $this, 'fix_submenu_file' ] );
+        add_filter( 'script_loader_tag', [ $this , 'add_async_attribute' ], 10, 3 );
     }
 
     public function admin_menu() {
@@ -103,7 +104,14 @@ class Menu {
      * @return void
      */
     public function wpuf_post_forms_page() {
+        if ( wpuf_is_pro_active() && defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4.1.0', '<' ) ) {
+            require_once WPUF_INCLUDES . '/Admin/views/need-to-update.php';
+
+            return;
+        }
+
         add_action( 'admin_footer', [ $this, 'load_headway_badge' ] );
+
         // phpcs:ignore WordPress.Security.NonceVerification
         $action           = ! empty( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : null;
         $add_new_page_url = admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' );
@@ -116,6 +124,22 @@ class Menu {
 
             default:
                 require_once WPUF_INCLUDES . '/Admin/views/post-forms-list-table-view.php';
+
+                $registry       = wpuf_get_post_form_templates();
+                $pro_templates  = wpuf_get_pro_form_previews();
+                $blank_form_url = admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' );
+                $action_name    = 'post_form_template';
+                $footer_help    = sprintf(
+                    // translators: %s: mailto link
+                    __( 'Want a new integration? <a href="%s" target="_blank">Let us know</a>.', 'wp-user-frontend' ), 'mailto:support@wedevs.com?subject=WPUF Custom Post Template Integration Request'
+                );
+
+                if ( ! $registry ) {
+                    break;
+                }
+
+                include WPUF_ROOT . '/includes/Admin/template-parts/modal-v4.1.php';
+
                 break;
         }
     }
@@ -128,6 +152,7 @@ class Menu {
      * @return void
      */
     public function load_headway_badge() {
+        wp_enqueue_script( 'wpuf-headway-script' );
         ?>
         <script>
             const HW_config = {
@@ -148,8 +173,18 @@ class Menu {
             };
 
         </script>
-        <script async src="//cdn.headwayapp.co/widget.js"></script>
         <?php
+    }
+
+    /**
+    * Mark headway as async. Because nothing depends on it, it can run at any time
+    */
+    public function add_async_attribute( $tag, $handle, $src ) {
+        if ('wpuf-headway-script' === $handle) {
+            return str_replace( ' src', ' async src', $tag );
+        }
+
+        return $tag;
     }
 
     /**

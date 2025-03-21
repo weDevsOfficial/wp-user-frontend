@@ -2,7 +2,8 @@ Vue.component('field-visibility', {
     template: '#tmpl-wpuf-field-visibility',
 
     mixins: [
-        wpuf_mixins.option_field_mixin
+        wpuf_mixins.option_field_mixin,
+        wpuf_mixins.form_field_mixin,
     ],
 
     computed: {

@@ -275,7 +275,7 @@ class Frontend_Form extends Frontend_Render_Form {
 
         wpuf_clear_buffer();
 
-        echo json_encode(
+        echo wp_json_encode(
             [
                 'post_id'        => $post_id,
                 'action'         => isset( $_POST['action'] ) ? sanitize_text_field( wp_unslash( $_POST['action'] ) ) : '',
@@ -479,7 +479,7 @@ class Frontend_Form extends Frontend_Render_Form {
      * Generate login registartion link for unauth message
      */
     private function generate_auth_link() {
-        if ( ! is_user_logged_in() && $this->form_settings['guest_post'] !== 'true' ) {
+        if ( ! is_user_logged_in() && ! empty( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) {
             $login        = wpuf()->frontend->simple_login->get_login_url();
             $register     = wpuf()->frontend->simple_login->get_registration_url();
             $replace      = [ "<a href='" . $login . "'>Login</a>", "<a href='" . $register . "'>Register</a>" ];

@@ -192,21 +192,21 @@ export const Selectors = {
 
         createPreset_PF: {
             // Start > Preset Form
-            hoverPresetForm: '(//div[@class="content"]//li)[2]',
+            hoverPresetForm: '//img[@alt="Post Form"]/following-sibling::div[1]',
             clickPresetForm: '//a[@title="Post Form" and contains(text(), "Create Form")]',
 
             // Enter_NAME
-            editNewFormName: '//span[@class="form-title"]',
+            editNewFormName: '//input[@name="post_title"]',
         },
 
         /* Locators for All Fields Options + Save */
         /********************* PostFields *********************/
         addPostFields_PF: {
             // Post_Fields
-            postTitleBlock: '//li[@data-form-field="post_title"]',
-            postContentBlock: '//li[@data-form-field="post_content"]',
-            postExcerptBlock: '//li[@data-form-field="post_excerpt"]',
-            featuredImageBlock: '//li[@data-form-field="featured_image"]',
+            postTitleBlock: '//p[normalize-space(text())="Post Title"]',
+            postContentBlock: '//p[normalize-space(text())="Post Content"]',
+            postExcerptBlock: '//p[normalize-space(text())="Post Excerpt"]',
+            featuredImageBlock: '//p[normalize-space(text())="Featured Image"]',
         },
 
         validatePostFields_PF: {      // TODO: Inconsistent with Blank form
@@ -219,8 +219,8 @@ export const Selectors = {
         /********************* Taxonomies *********************/
         addTaxonomies_PF: {
             // Taxonomies
-            categoryBlock: '//li[@data-form-field="category"]',
-            tagsBlock: '//li[@data-form-field="post_tag"]',
+            categoryBlock: '//p[normalize-space(text())="Category"]',
+            tagsBlock: '//p[normalize-space(text())="Tags"]',
         },
 
         validateTaxonomies_PF: {
@@ -240,29 +240,29 @@ export const Selectors = {
         // Custom - Field options for Forms
         addCustomFields_Common: {
             // Custom _Fields
-            customFieldsText: '//li[@data-form-field="text_field"]',
-            customFieldsTextarea: '//li[@data-form-field="textarea_field"]',
-            customFieldsDropdown: '//li[@data-form-field="dropdown_field"]',
-            customFieldsMultiSelect: '//li[@data-form-field="multiple_select"]',
-            customFieldsRadio: '//li[@data-form-field="radio_field"]',
-            customFieldsCheckBox: '//li[@data-form-field="checkbox_field"]',
-            customFieldsWebsiteUrl: '//li[@data-form-field="website_url"]',
-            customFieldsEmailAddress: '//li[@data-form-field="email_address"]',
-            customFieldsHiddenField: '//li[@data-form-field="custom_hidden_field"]',
-            customFieldsImageUpload: '//li[@data-form-field="image_upload"]',
+            customFieldsText: '//p[normalize-space(text())="Text"]',
+            customFieldsTextarea: '//p[normalize-space(text())="Textarea"]',
+            customFieldsDropdown: '//p[normalize-space(text())="Dropdown"]',
+            customFieldsMultiSelect: '//p[normalize-space(text())="Multi Select"]',
+            customFieldsRadio: '//p[normalize-space(text())="Radio"]',
+            customFieldsCheckBox: '//p[normalize-space(text())="Checkbox"]',
+            customFieldsWebsiteUrl: '//p[normalize-space(text())="Website URL"]',
+            customFieldsEmailAddress: '//p[normalize-space(text())="Email Address"]',
+            customFieldsHiddenField: '//p[normalize-space(text())="Hidden Field"]',
+            customFieldsImageUpload: '//p[normalize-space(text())="Image Upload"]',
 
             // From___PRO
-            customFieldsRepeatField: '//li[@data-form-field="repeat_field"]',
-            customFieldsDateTime: '//li[@data-form-field="date_field"]',
-            customFieldsTimeField: '//li[@data-form-field="time_field"]',
-            customFieldsFileUpload: '//li[@data-form-field="file_upload"]',
-            customFieldsCountryList: '//li[@data-form-field="country_list_field"]',
-            customFieldsNumericField: '//li[@data-form-field="numeric_text_field"]',
-            customFieldsPhoneField: '//li[@data-form-field="phone_field"]',
-            customFieldsAddressField: '//li[@data-form-field="address_field"]',
-            customFieldsGoogleMaps: '//li[@data-form-field="google_map"]',
-            customFieldsStepStart: '//li[@data-form-field="step_start"]',
-            customFieldsEmbed: '//li[@data-form-field="embed"]',
+            customFieldsRepeatField: '//p[normalize-space(text())="Repeat Field"]',
+            customFieldsDateTime: '//p[normalize-space(text())="Date / Time"]',
+            customFieldsTimeField: '//p[normalize-space(text())="Time Field"]',
+            customFieldsFileUpload: '//p[normalize-space(text())="File Upload"]',
+            customFieldsCountryList: '//p[normalize-space(text())="Country List"]',
+            customFieldsNumericField: '//p[normalize-space(text())="Numeric Field"]',
+            customFieldsPhoneField: '//p[normalize-space(text())="Phone Field"]',
+            customFieldsAddressField: '//p[normalize-space(text())="Address Field"]',
+            customFieldsGoogleMaps: '//p[normalize-space(text())="Google Map"]',
+            customFieldsStepStart: '//p[normalize-space(text())="Step Start"]',
+            customFieldsEmbed: '//p[normalize-space(text())="Embed"]',
 
             // prompt1
             prompt1PopUpModalClose: "//button[contains(@class,'swal2-confirm btn')]",
@@ -305,19 +305,20 @@ export const Selectors = {
         // Others - Field options for Forms
         addOthers_Common: {
             // Others
-            othersColumns: '//li[@data-form-field="column_field"]',
-            othersSectionBreak: '//li[@data-form-field="section_break"]',
-            othersCustomHTML: '//li[@data-form-field="custom_html"]',
-            othersQrCode: '//li[@data-form-field="qr_code"]',
-            othersReCaptcha: '//li[@data-form-field="recaptcha"]',
+            othersColumns: '//p[normalize-space(text())="Columns"]',
+            othersSectionBreak: '//p[normalize-space(text())="Section Break"]',
+            othersCustomHTML: '//p[normalize-space(text())="Custom HTML"]',
+            othersQrCode: '//p[normalize-space(text())="QR Code"]',
+            othersReCaptcha: '//p[normalize-space(text())="reCaptcha"]',
+            othersCloudflareTurnstile: '//p[normalize-space(text())="Cloudflare Turnstile"]',
 
             // From___PRO
-            othersShortCode: '//li[@data-form-field="shortcode"]',
-            othersActionHook: '//li[@data-form-field="action_hook"]',
-            othersTermsAndConditions: '//li[@data-form-field="toc"]',
-            othersRatings: '//li[@data-form-field="ratings"]',
-            othersReallySimpleCaptcha: '//li[@data-form-field="really_simple_captcha"]',
-            othersMathCaptcha: '//li[@data-form-field="math_captcha"]',
+            othersShortCode: '//p[normalize-space(text())="Shortcode"]',
+            othersActionHook: '//p[normalize-space(text())="Action Hook"]',
+            othersTermsAndConditions: '//p[normalize-space(text())="Terms & Conditions"]',
+            othersRatings: '//p[normalize-space(text())="Action Hook"]',
+            othersReallySimpleCaptcha: '//p[normalize-space(text())="Really Simple Captcha"]',
+            othersMathCaptcha: '//p[normalize-space(text())="Math Captcha"]',
         },
 
         // Form Settings

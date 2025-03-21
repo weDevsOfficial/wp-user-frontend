@@ -181,7 +181,7 @@ export const Selectors = {
             clickPostAddForm: '//a[@class="page-title-action add-form" and contains(text(), "Add Form")]',
 
             // Start > Blank Form
-            hoverBlankForm: '.blank-form',
+            hoverBlankForm: '//img[@alt="Blank Form"]/following-sibling::div[1]',
             clickBlankForm: '//a[@title="Blank Form" and contains(text(), "Create Form")]',
 
             // Enter_NAME

@@ -48,7 +48,7 @@ Vue.component('form-fields', {
                 icon: '',
                 showCancelButton: true,
                 cancelButtonText: this.i18n.close,
-                confirmButtonColor: '#46b450',
+                confirmButtonColor: '#059669',
                 confirmButtonText: this.i18n.upgrade_to_pro
             }).then(function (result) {
                 if (result.isConfirmed) {

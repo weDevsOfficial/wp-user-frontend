@@ -1499,7 +1499,7 @@ class Free_Loader extends Pro_Prompt {
     /**
      * Add general settings pro fields preview
      *
-     * @since WPUF_SINCE
+     * @since 4.1.0
      *
      * @param array $general_settings
      *
@@ -1553,7 +1553,7 @@ class Free_Loader extends Pro_Prompt {
     /**
      * Add notification settings pro fields preview
      *
-     * @since WPUF_SINCE
+     * @since 4.1.0
      *
      * @param array $notification_settings
      *
@@ -1605,7 +1605,7 @@ class Free_Loader extends Pro_Prompt {
     /**
      * Add advance settings pro fields preview
      *
-     * @since WPUF_SINCE
+     * @since 4.1.0
      *
      * @param array $advanced_settings
      *
@@ -1626,7 +1626,7 @@ class Free_Loader extends Pro_Prompt {
     /**
      * Add notification settings pro fields preview
      *
-     * @since WPUF_SINCE
+     * @since 4.1.0
      *
      * @param array $display_settings
      *
@@ -1672,7 +1672,7 @@ class Free_Loader extends Pro_Prompt {
     /**
      * Add post expiration settings pro fields preview
      *
-     * @since WPUF_SINCE
+     * @since 4.1.0
      *
      * @param array $expiration_settings
      *
@@ -1720,7 +1720,7 @@ class Free_Loader extends Pro_Prompt {
     /**
      * Add module settings pro fields preview
      *
-     * @since WPUF_SINCE
+     * @since 4.1.0
  *
      * @param array $settings
      *

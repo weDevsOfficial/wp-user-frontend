@@ -181,7 +181,7 @@ export const Selectors = {
             clickPostAddForm: '//a[@class="page-title-action add-form" and contains(text(), "Add Form")]',
 
             // Start > Blank Form
-            hoverBlankForm: '//img[@alt="Blank Form"]/following-sibling::div[1]',
+            hoverBlankForm: '//a[@title="Blank Form"]',
             clickBlankForm: '//a[@title="Blank Form" and contains(text(), "Create Form")]',
 
             // Enter_NAME
@@ -192,7 +192,7 @@ export const Selectors = {
 
         createPreset_PF: {
             // Start > Preset Form
-            hoverPresetForm: '//img[@alt="Post Form"]/following-sibling::div[1]',
+            hoverPresetForm: '//a[@title="Post Form"]',
             clickPresetForm: '//a[@title="Post Form" and contains(text(), "Create Form")]',
 
             // Enter_NAME

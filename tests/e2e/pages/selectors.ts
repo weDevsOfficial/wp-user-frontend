@@ -185,7 +185,7 @@ export const Selectors = {
             clickBlankForm: '//a[@title="Blank Form" and contains(text(), "Create Form")]',
 
             // Enter_NAME
-            editNewFormName: '//span[@class="form-title"]',
+            editNewFormName: '//input[@name="post_title"]',
             enterNewFormName: '//header[@class="clearfix"]/span/input',  // TODO: Catch with Child
             confirmNewNameTickButton: '//button[@class="button button-small"]',
         },

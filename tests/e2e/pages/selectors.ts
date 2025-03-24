@@ -181,18 +181,16 @@ export const Selectors = {
             clickPostAddForm: '//a[@class="page-title-action add-form" and contains(text(), "Add Form")]',
 
             // Start > Blank Form
-            hoverBlankForm: '//a[@title="Blank Form"]',
             clickBlankForm: '//a[@title="Blank Form" and contains(text(), "Create Form")]',
 
             // Enter_NAME
             editNewFormName: '//input[@name="post_title"]',
-            enterNewFormName: '//header[@class="clearfix"]/span/input',  // TODO: Catch with Child
-            confirmNewNameTickButton: '//button[@class="button button-small"]',
+            enterNewFormName: '//input[@name="post_title"]',  // TODO: Catch with Child
+            confirmNewNameTickButton: '//button[normalize-space()="Save"]',
         },
 
         createPreset_PF: {
             // Start > Preset Form
-            hoverPresetForm: '//a[@title="Post Form"]',
             clickPresetForm: '//a[@title="Post Form" and contains(text(), "Create Form")]',
 
             // Enter_NAME

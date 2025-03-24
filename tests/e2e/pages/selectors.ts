@@ -186,7 +186,7 @@ export const Selectors = {
             // Enter_NAME
             editNewFormName: '//input[@name="post_title"]',
             enterNewFormName: '//input[@name="post_title"]',  // TODO: Catch with Child
-            confirmNewNameTickButton: '//button[normalize-space()="Save"]',
+            confirmNewNameTickButton: '//input[@name="post_title"]/following-sibling::i[1]',
         },
 
         createPreset_PF: {

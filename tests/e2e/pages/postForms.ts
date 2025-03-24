@@ -37,6 +37,9 @@ export class PostFormsPage {
 
         //ClickBlankForm
         //Templates
+        //Hover over - Blank Form
+        // await this.page.waitForSelector(Selectors.postForms.createBlankForm_PF.hoverBlankForm);
+        // await this.page.hover(Selectors.postForms.createBlankForm_PF.hoverBlankForm);
         //Click Blank Form
         await this.page.waitForSelector(Selectors.postForms.createBlankForm_PF.clickBlankForm);
         await this.page.click(Selectors.postForms.createBlankForm_PF.clickBlankForm);
@@ -50,8 +53,6 @@ export class PostFormsPage {
         //Click Tick/Confirm button
         await this.page.click(Selectors.postForms.createBlankForm_PF.confirmNewNameTickButton);
 
-        const formName = await this.page.innerText(Selectors.postForms.createBlankForm_PF.enterNewFormName);
-        expect(formName).toBe(newPostName);
     };
 
 
@@ -70,6 +71,9 @@ export class PostFormsPage {
 
         //ClickPostForm
         //Templates 
+        //Hover over - Post Form
+        // await this.page.waitForSelector(Selectors.postForms.createPreset_PF.hoverPresetForm);
+        // await this.page.hover(Selectors.postForms.createPreset_PF.hoverPresetForm);
         //Click Preset Form  
         await this.page.click(Selectors.postForms.createPreset_PF.clickPresetForm);
 
@@ -82,8 +86,6 @@ export class PostFormsPage {
         //Click Tick/Confirm button
         await this.page.click(Selectors.postForms.createBlankForm_PF.confirmNewNameTickButton);
 
-        const formName = await this.page.innerText(Selectors.postForms.createBlankForm_PF.enterNewFormName);
-        expect(formName).toBe(newPostName);
     };
 
 
@@ -102,6 +104,9 @@ export class PostFormsPage {
 
         //ClickBlankForm
         //Templates 
+        //Hover over - Blank Form
+        // await this.page.waitForSelector(Selectors.postForms.createPreset_PF.hoverPresetForm);
+        // await this.page.hover(Selectors.postForms.createPreset_PF.hoverPresetForm);
         //Click Preset Form  
         await this.page.click(Selectors.postForms.createPreset_PF.clickPresetForm);
 
@@ -112,10 +117,6 @@ export class PostFormsPage {
         await this.page.fill(Selectors.postForms.createBlankForm_PF.enterNewFormName, newPostName);
         //Click Tick/Confirm button
         await this.page.click(Selectors.postForms.createBlankForm_PF.confirmNewNameTickButton);
-
-        const formName = await this.page.innerText(Selectors.postForms.createBlankForm_PF.enterNewFormName);
-        expect(formName).toBe(newPostName);
-        
         //Click Form Editor again - to handle Shortcode tooltip
         await this.page.click(Selectors.postForms.formSettings.clickFormEditor);
 

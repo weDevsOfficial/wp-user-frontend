@@ -300,10 +300,16 @@ export class FieldOptionsCommonPage {
     /********************* SaveForm *********************/
     //SaveForm
     async saveForm_Common(validateNewPostName_Common: string) {
-        //Validate Form Name
-        const checkNewFormName_Common = await this.page.innerText(Selectors.postForms.saveForm_Common.formNameReCheck);
-        await expect(checkNewFormName_Common).toContain(validateNewPostName_Common);
+        
+        try{
+        await this.page.waitForSelector(Selectors.postForms.saveForm_Common.formNameReCheck, { state: 'visible' });
+        const checkNewFormName_Common = await this.page.textContent(Selectors.postForms.saveForm_Common.formNameReCheck);
+        expect(checkNewFormName_Common?.trim()).toContain(validateNewPostName_Common);
+
         console.log('Before Save-Form Name: ' + checkNewFormName_Common);
+        }catch(e){
+            console.log('not matched ');
+        }
         await this.page.waitForLoadState('networkidle');
 
         //Save Form

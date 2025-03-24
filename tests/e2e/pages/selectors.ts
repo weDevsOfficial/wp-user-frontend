@@ -358,7 +358,7 @@ export const Selectors = {
             // Validate Name
             formNameReCheck: '//input[@name="post_title"]',
             // FINISH
-            saveFormButton: '//button[@class="button button-primary" and contains(text(), "Save Form")]',
+            saveFormButton: '//button[normalize-space(text())="Save"]',
         },
 
         /*****************************************************/

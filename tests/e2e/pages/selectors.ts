@@ -356,7 +356,7 @@ export const Selectors = {
         // Save Forms
         saveForm_Common: {
             // Validate Name
-            formNameReCheck: '.form-title',
+            formNameReCheck: '//input[@name="post_title"]',
             // FINISH
             saveFormButton: '//button[@class="button button-primary" and contains(text(), "Save Form")]',
         },

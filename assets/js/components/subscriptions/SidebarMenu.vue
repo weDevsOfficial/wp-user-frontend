@@ -34,12 +34,12 @@ status.map( ( item ) => {
                     v-for="item in status"
                     :key="Object.keys( item )[0]"
                     @click="$emit('checkIsDirty', Object.keys( item )[0])"
-                    :class="subscriptionStore.currentSubscriptionStatus === Object.keys( item )[0] ? 'wpuf-bg-gray-50 wpuf-text-indigo-600' : ''"
-                    class="wpuf-justify-between wpuf-text-gray-700 hover:wpuf-text-indigo-600 hover:wpuf-bg-gray-50 group wpuf-flex wpuf-gap-x-3 wpuf-rounded-md wpuf-py-2 wpuf-px-[20px] wpuf-text-sm wpuf-leading-6 hover:wpuf-cursor-pointer">
+                    :class="subscriptionStore.currentSubscriptionStatus === Object.keys( item )[0] ? 'wpuf-bg-gray-50 wpuf-text-primary' : ''"
+                    class="wpuf-justify-between wpuf-text-gray-700 hover:wpuf-text-primary hover:wpuf-bg-gray-50 group wpuf-flex wpuf-gap-x-3 wpuf-rounded-md wpuf-py-2 wpuf-px-[20px] wpuf-text-sm wpuf-leading-6 hover:wpuf-cursor-pointer">
                     {{ item[Object.keys( item )[0]] }}
                     <span
                         v-if="subscriptionStore.allCount[Object.keys( item )[0]] > 0"
-                        :class="subscriptionStore.currentSubscriptionStatus === Object.keys( item )[0] ? 'wpuf-border-indigo-600' : ''"
+                        :class="subscriptionStore.currentSubscriptionStatus === Object.keys( item )[0] ? 'wpuf-border-primary' : ''"
                         class="wpuf-text-sm wpuf-w-fit wpuf-px-2.5 wpuf-py-1 wpuf-rounded-full wpuf-w-max wpuf-h-max wpuf-border">
                         {{ subscriptionStore.allCount[Object.keys( item )[0]] }}
                     </span>

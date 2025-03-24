@@ -33,17 +33,17 @@ const setPillBackground = () => {
     const postStatus = subscription.value.post_status;
 
     if (postStatus === 'publish') {
-        pillColor.value = 'wpuf-text-green-700 wpuf-bg-green-50 ring-green-600/20';
+        pillColor.value = 'wpuf-text-green-700 wpuf-bg-green-50';
     } else if (postStatus === 'private') {
-        pillColor.value = 'wpuf-text-orange-700 wpuf-bg-orange-50 wpuf-ring-orange-600/10';
+        pillColor.value = 'wpuf-text-orange-700 wpuf-bg-orange-50';
     } else if (postStatus === 'draft') {
-        pillColor.value = 'wpuf-text-yellow-700 wpuf-bg-yellow-50 wpuf-ring-yellow-600/10';
+        pillColor.value = 'wpuf-text-yellow-700 wpuf-bg-yellow-50';
     } else if (postStatus === 'pending') {
-        pillColor.value = 'wpuf-text-slate-700 wpuf-bg-slate-50 wpuf-ring-slate-600/10';
+        pillColor.value = 'wpuf-text-slate-700 wpuf-bg-slate-50';
     } else if (postStatus === 'trash') {
-        pillColor.value = 'wpuf-text-red-700 wpuf-bg-red-50 wpuf-ring-red-600/10';
+        pillColor.value = 'wpuf-text-red-700 wpuf-bg-red-50';
     } else {
-        pillColor.value = 'wpuf-text-green-700 wpuf-bg-green-50 ring-green-600/20';
+        pillColor.value = 'wpuf-text-green-700 wpuf-bg-green-50';
     }
 };
 
@@ -275,7 +275,7 @@ const isPasswordProtected = computed( () => {
         </div>
         <div class="wpuf-flex wpuf-px-6 wpuf-py-6 wpuf-justify-between wpuf-items-center">
             <div :class="pillColor"
-                 class="wpuf-text-sm wpuf-w-fit wpuf-px-2.5 wpuf-py-1 wpuf-shadow-sm wpuf-bg-gray-100 wpuf-rounded-md wpuf-ring-1">
+                 class="wpuf-text-sm wpuf-w-fit wpuf-px-2.5 wpuf-py-1 wpuf-shadow-sm wpuf-rounded-md wpuf-border">
                 {{ postStatus }}
             </div>
             <svg v-if="isRecurring" width="24" height="24" viewBox="0 0 24 24" fill="none"

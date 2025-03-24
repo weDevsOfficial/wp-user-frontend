@@ -259,7 +259,7 @@ onMounted(() => {
                 :placeholder="field.placeholder ? field.placeholder : ''"
                 @input="[modifySubscription($event), processInput($event)]"
                 :class="subscriptionStore.errors[fieldId] ? '!wpuf-border-red-500' : '!wpuf-border-gray-300'"
-                class="placeholder:wpuf-text-gray-400 wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">
+                class="placeholder:wpuf-text-gray-400 wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-primaryHover focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-primaryHover sm:wpuf-text-sm">
             <input
                 v-if="field.type === 'input-number'"
                 type="number"
@@ -271,7 +271,7 @@ onMounted(() => {
                 @keydown="processNumber"
                 min="-1"
                 :class="subscriptionStore.errors[fieldId] ? '!wpuf-border-red-500' : '!wpuf-border-gray-300'"
-                class="placeholder:wpuf-text-gray-400 wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">
+                class="placeholder:wpuf-text-gray-400 wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-primaryHover focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-primaryHover sm:wpuf-text-sm">
             <textarea
                 v-if="field.type === 'textarea'"
                 :name="field.name"
@@ -280,7 +280,7 @@ onMounted(() => {
                 rows="3"
                 @input="[modifySubscription($event), processInput($event)]"
                 :class="subscriptionStore.errors[fieldId] ? '!wpuf-border-red-500' : '!wpuf-border-gray-300'"
-                class="placeholder:wpuf-text-gray-400 wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm">{{ value }}</textarea>
+                class="placeholder:wpuf-text-gray-400 wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-primaryHover focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-primaryHover sm:wpuf-text-sm">{{ value }}</textarea>
             <button
                 v-if="field.type === 'switcher'"
                 @click="[toggleOnOff(), $emit('toggleDependentFields', fieldId, switchStatus)]"
@@ -288,7 +288,7 @@ onMounted(() => {
                 :value="value"
                 :name="field.name"
                 :id="field.name"
-                :class="switchStatus ? 'wpuf-bg-indigo-600' : 'wpuf-bg-gray-200'"
+                :class="switchStatus ? 'wpuf-bg-primary' : 'wpuf-bg-gray-200'"
                 class="placeholder:wpuf-text-gray-400 wpuf-bg-gray-200 wpuf-relative wpuf-inline-flex wpuf-h-6 wpuf-w-11 wpuf-flex-shrink-0 wpuf-cursor-pointer wpuf-rounded-full wpuf-border-2 wpuf-border-transparent wpuf-transition-colors wpuf-duration-200 wpuf-ease-in-out"
                 role="switch">
                 <span
@@ -309,7 +309,7 @@ onMounted(() => {
                     :name="field.name"
                     :id="field.name"
                     :class="subscriptionStore.errors[fieldId] ? '!wpuf-border-red-500' : '!wpuf-border-gray-300'"
-                    class="wpuf-w-full !wpuf-max-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm"
+                    class="wpuf-w-full !wpuf-max-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-primaryHover focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-primaryHover sm:wpuf-text-sm"
                     @input="[modifySubscription($event), processInput($event)]">
                 <option
                     v-for="(item, key) in field.options"
@@ -328,11 +328,11 @@ onMounted(() => {
                 @input="onMultiSelectChange"
                 :close-on-select="false"
                 :classes="{
-                    container: 'wpuf-w-full wpuf-border wpuf-rounded-md !wpuf-border-gray-300 wpuf-bg-white wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm',
+                    container: 'wpuf-w-full wpuf-border wpuf-rounded-md !wpuf-border-gray-300 wpuf-bg-white wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-primaryHover focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-primaryHover sm:wpuf-text-sm',
                     wrapper: 'wpuf-min-h-max wpuf-align-center wpuf-cursor-pointer wpuf-flex wpuf-justify-end wpuf-w-full wpuf-relative',
                     placeholder: 'wpuf-ml-2 wpuf-flex wpuf-items-center wpuf-h-full wpuf-absolute wpuf-left-0 wpuf-top-0 wpuf-pointer-events-none wpuf-bg-transparent wpuf-form-color-placeholder rtl:wpuf-left-auto rtl:wpuf-right-0 rtl:wpuf-pl-0 wpuf-form-pl-input rtl:wpuf-form-pr-input',
                     tags: 'wpuf-h-max wpuf-flex-grow wpuf-flex-shrink wpuf-flex wpuf-flex-wrap wpuf-items-center wpuf-pl-1 wpuf-pt-1 wpuf-min-w-0 rtl:wpuf-pl-0 rtl:wpuf-pr-2',
-                    tag: 'wpuf-bg-indigo-600 wpuf-text-white wpuf-text-sm wpuf-font-semibold wpuf-py-0.5 wpuf-pl-2 wpuf-rounded wpuf-mr-1 wpuf-mb-1 wpuf-flex wpuf-items-center wpuf-whitespace-nowrap wpuf-min-w-0 rtl:wpuf-pl-0 rtl:wpuf-pr-2 rtl:wpuf-mr-0 rtl:wpuf-ml-1',
+                    tag: 'wpuf-bg-primary wpuf-text-white wpuf-text-sm wpuf-font-semibold wpuf-py-0.5 wpuf-pl-2 wpuf-rounded wpuf-mr-1 wpuf-mb-1 wpuf-flex wpuf-items-center wpuf-whitespace-nowrap wpuf-min-w-0 rtl:wpuf-pl-0 rtl:wpuf-pr-2 rtl:wpuf-mr-0 rtl:wpuf-ml-1',
                     clear: 'wpuf-mt-1 wpuf-pr-2',
                 }"
             />

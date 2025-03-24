@@ -19,7 +19,7 @@ const buttonText = ref( props.buttonText );
         <button
             :disabled="subscriptionStore.isUpdating"
             :class="subscriptionStore.isUpdating ? 'wpuf-cursor-not-allowed wpuf-bg-gray-50' : ''"
-            class="wpuf-peer wpuf-inline-flex wpuf-justify-between wpuf-items-center wpuf-cursor-pointer wpuf-bg-indigo-600 hover:wpuf-bg-indigo-800 wpuf-text-white wpuf-font-medium wpuf-text-base wpuf-py-2 wpuf-px-5 wpuf-rounded-md min-w-[122px]">
+            class="wpuf-peer wpuf-inline-flex wpuf-justify-between wpuf-items-center wpuf-cursor-pointer wpuf-bg-primary hover:wpuf-bg-primaryHover wpuf-text-white wpuf-font-medium wpuf-text-base wpuf-py-2 wpuf-px-5 wpuf-rounded-md min-w-[122px]">
             {{ buttonText }}
             <svg class="wpuf-rotate-180 wpuf-w-3 wpuf-h-3 shrink-0 wpuf-ml-4"
                  data-accordion-icon="" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -34,13 +34,13 @@ const buttonText = ref( props.buttonText );
         <span
             @click="() => {subscriptionStore.currentSubscription.post_status = 'publish'; $emit('updateSubscription'); }"
             :class="subscriptionStore.isUpdating ? 'wpuf-cursor-not-allowed wpuf-bg-gray-50' : ''"
-            class="wpuf-flex wpuf-py-3 wpuf-items-center wpuf-px-4 wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 hover:wpuf-bg-indigo-700 hover:wpuf-text-white wpuf-rounded-t-md">
+            class="wpuf-flex wpuf-py-3 wpuf-items-center wpuf-px-4 wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 hover:wpuf-bg-primaryHover hover:wpuf-text-white wpuf-rounded-t-md">
             {{ __( 'Publish', 'wp-user-frontend' ) }}
         </span>
         <span
             @click="() => {subscriptionStore.currentSubscription.post_status = 'draft'; $emit('updateSubscription');}"
             :class="subscriptionStore.isUpdating ? 'wpuf-cursor-not-allowed wpuf-bg-gray-50' : ''"
-            class="wpuf-flex wpuf-py-3 wpuf-items-center wpuf-px-4 wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 hover:wpuf-bg-indigo-700 hover:wpuf-text-white wpuf-rounded-b-md">
+            class="wpuf-flex wpuf-py-3 wpuf-items-center wpuf-px-4 wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 hover:wpuf-bg-primaryHover hover:wpuf-text-white wpuf-rounded-b-md">
             {{ __( 'Save as Draft', 'wp-user-frontend' ) }}
         </span>
         </div>

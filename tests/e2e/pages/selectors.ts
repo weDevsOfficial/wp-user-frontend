@@ -222,8 +222,8 @@ export const Selectors = {
         },
 
         validateTaxonomies_PF: {
-            validateCategory: '//li[@class="field-items wpuf-el category form-field-taxonomy field-size-small"]',
-            validateTags: '//li[@class="field-items wpuf-el tags form-field-post_tags field-size-large"]',
+            validateCategory: '//label[@for="category"]/../..//div[@class="wpuf-fields"]',
+            validateTags: '//label[@for="tags"]/../..//div[@class="wpuf-fields"]',
         },
 
         validateTaxonomiesPreset_PF: {

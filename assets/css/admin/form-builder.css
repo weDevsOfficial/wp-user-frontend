@@ -3699,11 +3699,6 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   background-color: rgb(67 56 202 / var(--tw-bg-opacity));
 }
 
-.wpuf-bg-orange-100 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 237 213 / var(--tw-bg-opacity));
-}
-
 .wpuf-bg-orange-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(255 247 237 / var(--tw-bg-opacity));
@@ -4315,11 +4310,6 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 .wpuf-text-indigo-600 {
   --tw-text-opacity: 1;
   color: rgb(79 70 229 / var(--tw-text-opacity));
-}
-
-.wpuf-text-orange-400 {
-  --tw-text-opacity: 1;
-  color: rgb(251 146 60 / var(--tw-text-opacity));
 }
 
 .wpuf-text-orange-700 {

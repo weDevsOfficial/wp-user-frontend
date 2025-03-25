@@ -342,8 +342,8 @@ export const Selectors = {
         },
 
         validateOthers_Common: {
-            validateColumns: '//div[@class="wpuf-field-columns has-columns-3"]',
-            validateSectionBreak: '//h2[text()="Section Break"]/../..//div[@class="wpuf-section-details"]',
+            validateColumns: '//li[contains(@class,"form-field-column_field")]',
+            validateSectionBreak: '//li[contains(@class,"section_break")]',
             validateCustomHTML: '//div[text()="HTML Section"]/..//div[@class="wpuf-fields"]',
 
             // validateReCaptcha: '',            // TODO: Setup required

@@ -340,7 +340,7 @@ export const Selectors = {
             enableGuestPost: '//div[@data-value="guest_post"]',
 
             // Save Form Settings
-            saveFormSettings: '//a[text()="Cancel "]/following-sibling::button',
+            saveFormSettings: '(//button[@type="button"])[3]',
         },
 
         validateOthers_Common: {

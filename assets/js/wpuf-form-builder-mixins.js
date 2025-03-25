@@ -21,8 +21,16 @@ wpuf_mixins.add_form_field = {
             // check if these are already inserted
             if ( this.isSingleInstance( field_template ) && this.containsField( field_template ) ) {
                 Swal.fire({
-                    title: "Oops...",
-                    text: "You already have this field in the form"
+                    title: '<span class="wpuf-text-primary">Oops...</span>',
+                    html: '<p class="wpuf-text-gray-500 wpuf-text-xl wpuf-m-0 wpuf-p-0">You already have this field in the form</p>',
+                    imageUrl: wpuf_form_builder.asset_url + '/images/oops.svg',
+                    showCloseButton: true,
+                    padding: '1rem',
+                    width: '35rem',
+                    customClass: {
+                        confirmButton: "!wpuf-flex focus:!wpuf-shadow-none !wpuf-bg-primary",
+                        closeButton: "wpuf-absolute"
+                    },
                 });
                 return;
             }
@@ -48,6 +56,18 @@ wpuf_mixins.add_form_field = {
             // add new form element
             this.$store.commit('add_form_field_element', payload);
         },
+
+        is_pro_preview: function (template) {
+            var is_pro_active = wpuf_form_builder.is_pro_active === '1';
+
+            return (!is_pro_active && this.field_settings[template] && this.field_settings[template].pro_feature);
+        },
+    },
+
+    computed: {
+        action_button_classes: function() {
+            return 'wpuf-p-2 hover:wpuf-cursor-pointer hover:wpuf-text-white wpuf-flex';
+        }
     },
 };
 
@@ -59,7 +79,7 @@ wpuf_mixins.form_field_mixin = {
     props: {
         field: {
             type: Object,
-            default: {}
+            default: () => ({ key: 'value' })
         }
     },
 
@@ -74,7 +94,7 @@ wpuf_mixins.form_field_mixin = {
             }
 
             return !!Object.keys(this.field.options).length;
-        }
+        },
     },
 
     methods: {
@@ -83,6 +103,38 @@ wpuf_mixins.form_field_mixin = {
                 type_class,
                 this.required_class(),
                 'wpuf_' + this.field.name + '_' + this.form_id
+            ];
+        },
+
+        builder_class_names: function(type_class) {
+            var commonClasses = '';
+
+            switch (type_class) {
+                case 'upload_btn':
+                    commonClasses = 'file-selector wpuf-rounded-[6px] wpuf-btn-secondary';
+                    break;
+
+                case 'radio':
+                    commonClasses = '!wpuf-mt-0 !wpuf-mr-2 wpuf-radio !wpuf-shadow-none checked:!wpuf-shadow-none focus:checked:!wpuf-shadow-primary !wpuf-border-gray-300 checked:!wpuf-border-primary checked:!wpuf-bg-primary before:checked:!wpuf-bg-white hover:checked:!wpuf-bg-primary focus:!wpuf-ring-transparent focus:checked:!wpuf-ring-transparent hover:checked:!wpuf-ring-transparent focus:checked:!wpuf-bg-primary focus:checked:!wpuf-shadow-none focus:wpuf-shadow-primary';
+                    break;
+
+                case 'checkbox':
+                    commonClasses = '!wpuf-mt-0 !wpuf-mr-2 wpuf-h-4 wpuf-w-4 !wpuf-shadow-none checked:!wpuf-shadow-none focus:checked:!wpuf-shadow-primary focus:checked:!wpuf-shadow-none !wpuf-border-gray-300 checked:!wpuf-border-primary checked:!wpuf-bg-primary before:checked:!wpuf-bg-white hover:checked:!wpuf-bg-primary focus:!wpuf-ring-transparent focus:checked:!wpuf-ring-transparent hover:checked:!wpuf-ring-transparent focus:checked:!wpuf-bg-primary focus:wpuf-shadow-primary checked:focus:!wpuf-bg-primary checked:hover:wpuf-bg-primary checked:!wpuf-bg-primary before:!wpuf-content-none wpuf-rounded';
+                    break;
+
+                case 'dropdown':
+                    commonClasses = 'wpuf-block wpuf-w-full wpuf-min-w-full !wpuf-py-[10px] !wpuf-px-[14px] wpuf-text-gray-700 wpuf-font-normal !wpuf-leading-none !wpuf-shadow-sm wpuf-border !wpuf-border-gray-300 !wpuf-rounded-[6px] focus:!wpuf-ring-transparent focus:checked:!wpuf-ring-transparent hover:checked:!wpuf-ring-transparent hover:!wpuf-text-gray-700 !wpuf-text-base !leading-6';
+                    break;
+
+                default:
+                    commonClasses = 'wpuf-block wpuf-min-w-full !wpuf-m-0 !wpuf-leading-none !wpuf-py-[10px] !wpuf-px-[14px] wpuf-text-gray-700 !wpuf-shadow-sm placeholder:wpuf-text-gray-400 wpuf-border !wpuf-border-gray-300 !wpuf-rounded-[6px] wpuf-max-w-full focus:!wpuf-ring-transparent';
+            }
+
+            return [
+                type_class,
+                this.required_class(),
+                'wpuf_' + this.field.name + '_' + this.form_id,
+                commonClasses
             ];
         },
 
@@ -112,6 +164,14 @@ Vue.mixin({
     computed: {
         i18n: function () {
             return wpuf_form_builder.i18n;
+        },
+
+        is_pro_active: function () {
+            return wpuf_form_builder.is_pro_active === '1';
+        },
+
+        pro_link: function () {
+            return wpuf_form_builder.pro_link;
         }
     },
 
@@ -266,12 +326,12 @@ wpuf_mixins.option_field_mixin = {
     props: {
         option_field: {
             type: Object,
-            default: {}
+            default: () => ({ key: 'value' })
         },
 
         editing_form_field: {
             type: Object,
-            default: {}
+            default: () => ({ key: 'value' })
         }
     },
 

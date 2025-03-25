@@ -12,7 +12,7 @@ class Form_Field_Dropdown extends Field_Contract {
     public function __construct() {
         $this->name       = __( 'Dropdown', 'wp-user-frontend' );
         $this->input_type = 'dropdown_field';
-        $this->icon       = 'caret-square-o-down';
+        $this->icon       = 'chevron-down';
     }
 
     /**
@@ -107,7 +107,7 @@ class Form_Field_Dropdown extends Field_Contract {
             'label'            => __( 'Dropdown', 'wp-user-frontend' ),
             'is_meta'          => 'yes',
             'options'          => [ 'Option' => __( 'Option', 'wp-user-frontend' ) ],
-            'first'            => __( '- select -', 'wp-user-frontend' ),
+            'first'            => __( '- Select -', 'wp-user-frontend' ),
             'id'               => 0,
             'is_new'           => true,
             'show_in_post'     => 'yes',

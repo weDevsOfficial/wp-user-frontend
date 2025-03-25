@@ -1,0 +1,20 @@
+{
+  "name": "wpuf_project2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "wp-env": "wp-env"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
+    "@playwright/test": "^1.42.0"
+  },
+  "dependencies": {
+    "@wordpress/env": "^9.4.0",
+    "dotenv": "^16.4.5"
+  }
+}

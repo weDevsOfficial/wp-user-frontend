@@ -24,7 +24,7 @@
             <span class="wpuf-sub-cost"><?php esc_html_e( 'Free', 'wp-user-frontend' ); ?></span>
         <?php } ?>
 
-        <?php echo wp_kses_post( __( $recurring_des, 'wp-user-frontend')); ?>
+        <?php echo wp_kses_post( $recurring_des ); ?>
 
     </div>
     <?php

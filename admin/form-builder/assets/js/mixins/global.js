@@ -5,6 +5,14 @@ Vue.mixin({
     computed: {
         i18n: function () {
             return wpuf_form_builder.i18n;
+        },
+
+        is_pro_active: function () {
+            return wpuf_form_builder.is_pro_active === '1';
+        },
+
+        pro_link: function () {
+            return wpuf_form_builder.pro_link;
         }
     },
 

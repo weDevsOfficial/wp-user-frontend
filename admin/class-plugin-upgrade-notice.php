@@ -100,6 +100,6 @@ class Plugin_Upgrade_Notice {
      */
     public function render_notice() {
         $notice = wp_kses_post( $this->upgrade_notice );
-        echo "<div class='wpuf-update-message' style='color: #fff; background: #f54a20; padding: 10px;'> $notice </div>";
+        echo "<div class='wpuf-update-message' style='color: #fff; background: #f54a20; padding: 10px;'>" . esc_html( $notice ) .  "</div>";
     }
 }

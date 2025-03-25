@@ -10,7 +10,7 @@ class Form_Field_Text extends Field_Contract {
     public function __construct() {
         $this->name       = __( 'Text', 'wp-user-frontend' );
         $this->input_type = 'text_field';
-        $this->icon       = 'text-width';
+        $this->icon       = 'title';
     }
 
     /**

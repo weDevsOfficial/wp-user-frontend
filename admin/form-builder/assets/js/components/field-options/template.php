@@ -6,9 +6,13 @@
     </div>
 
     <div v-else>
-        <div class="option-fields-section">
-            <h3 class="section-title clearfix" @click="show_basic_settings = !show_basic_settings">
-                {{ form_field_type_title }} <i :class="[show_basic_settings ? 'fa fa-angle-down' : 'fa fa-angle-right']"></i>
+        <div class="option-fields-section wpuf-mt-6">
+            <h3
+                :class="show_basic_settings ? 'wpuf-text-green-600' : 'wpuf-text-gray-500'"
+                class="wpuf-flex wpuf-mt-0 wpuf-mb-6 wpuf-justify-between hover:wpuf-cursor-pointer wpuf-font-medium wpuf-text-lg"
+                @click="show_basic_settings = !show_basic_settings">
+                {{ form_field_type_title }}
+                <i :class="show_basic_settings ? 'fa fa-angle-down wpuf-text-green-600' : 'fa fa-angle-right wpuf-text-gray-500'"></i>
             </h3>
 
             <transition name="slide-fade">
@@ -24,10 +28,13 @@
             </transition>
         </div>
 
-
         <div v-if="advanced_settings.length" class="option-fields-section">
-            <h3 class="section-title" @click="show_advanced_settings = !show_advanced_settings">
-                {{ i18n.advanced_options }}  <i :class="[show_advanced_settings ? 'fa fa-angle-down' : 'fa fa-angle-right']"></i>
+            <h3
+                :class="show_advanced_settings ? 'wpuf-text-green-600' : 'wpuf-text-gray-500'"
+                class="wpuf-flex wpuf-mt-0 wpuf-mb-6 wpuf-justify-between hover:wpuf-cursor-pointer wpuf-font-medium wpuf-text-lg"
+                @click="show_advanced_settings = !show_advanced_settings">
+                {{ i18n.advanced_options }}
+                <i :class="show_advanced_settings ? 'fa fa-angle-down wpuf-text-green-600' : 'fa fa-angle-right wpuf-text-gray-500'"></i>
             </h3>
 
             <transition name="slide-fade">

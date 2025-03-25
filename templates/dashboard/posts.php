@@ -142,11 +142,13 @@ $post_type_obj   = get_post_type_object( $post_type );
                         <td data-label="<?php esc_attr_e( 'Title: ', 'wp-user-frontend' ); ?>" class="<?php echo 'on' === $featured_img ? 'data-column' : '' ; ?>">
                             <?php if ( ! $show_link ) { ?>
 
-                                <?php echo $title ?>
+                                <?php echo esc_html( $title ); ?>
 
                             <?php } else { ?>
 
-                                <a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wp-user-frontend' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php echo $title ?></a>
+                                <a href="<?php the_permalink(); ?>" title="<?php printf( 
+                                    // translators: %s is title
+                                    esc_attr__( 'Permalink to %s', 'wp-user-frontend' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php echo esc_html( $title ); ?></a>
 
                             <?php } ?>
                             <?php if ( 'on' !== $featured_img ){?>
@@ -166,11 +168,11 @@ $post_type_obj   = get_post_type_object( $post_type );
                                 $the_link  = get_preview_post_link();
                             }
                             wpuf_show_post_status( $current_post_status );
-                            echo apply_filters( 'wpuf_preview_link_separator', '&nbsp;|&nbsp;' );
+                            echo esc_html( apply_filters( 'wpuf_preview_link_separator', '&nbsp;|&nbsp;' ) );
                             printf(
                                 '<a href="%s" target="_blank">%s</a>',
-                                $the_link,
-                                $link_text
+                                esc_url( $the_link ),
+                                esc_url( $link_text )
                             );
                             ?>
                         </td>
@@ -249,7 +251,11 @@ $post_type_obj   = get_post_type_object( $post_type );
 
             <?php
         } else {
-            printf( '<div class="wpuf-message">' . esc_attr( __( 'No %s found', 'wp-user-frontend' ) ) . '</div>', esc_html( $post_type_obj->label ) );
+            printf( 
+                // translators: %s is label
+                '<div class="wpuf-message">' . esc_attr( __( 'No %s found', 'wp-user-frontend' ) ) . '</div>', 
+                esc_html( $post_type_obj->label ) 
+            );
             do_action( 'wpuf_account_posts_nopost', $userdata->ID, $post_type_obj );
         }
 

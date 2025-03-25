@@ -61,13 +61,13 @@ class Pro_Upgrades {
      */
     public function add_to_others_fields( $fields ) {
         $pro_fields = [
-            'shortcode',
-            'action_hook',
-            'toc',
-            'ratings',
-            'embed',
             'really_simple_captcha',
             'math_captcha',
+            'toc',
+            'shortcode',
+            'action_hook',
+            'ratings',
+            'embed',
             'qr_code',
         ];
 

@@ -72,7 +72,7 @@ abstract class Form_Template {
             'condition_status' => 'no',
             'cond_field'       => [],
             'cond_operator'    => [ '=' ],
-            'cond_option'      => [ '- select -' ],
+            'cond_option'      => [ '- Select -' ],
             'cond_logic'       => 'all',
         ];
     }

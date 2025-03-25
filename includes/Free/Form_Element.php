@@ -145,13 +145,13 @@ class Form_Element extends Pro_Prompt {
                             <strong>
                                 <?php
                                 printf(
-                                // translators: %1$s: {post_author}, %2$s: {post_url}, %3$s: {blogname}, %4$s: {post_title}, %5$s: {post_status}
-                                    __( 'You may use: %1$s %2$s %3$s %4$s %5$s', 'wp-user-frontend' ),
-                                    '{post_author}',
-                                    '{post_url}',
-                                    '{blogname}',
-                                    '{post_title}',
-                                    '{post_status}'
+                                        // translators: %1$s: {post_author}, %2$s: {post_url}, %3$s: {blogname}, %4$s: {post_title}, %5$s: {post_status}
+                                        esc_html__( 'You may use: %1$s %2$s %3$s %4$s %5$s', 'wp-user-frontend' ),
+                                        '{post_author}',
+                                        '{post_url}',
+                                        '{blogname}',
+                                        '{post_title}',
+                                        '{post_status}'
                                 )
                                 ?>
                             </strong>

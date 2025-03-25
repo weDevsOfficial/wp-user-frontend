@@ -8,6 +8,14 @@ use WeDevs\Wpuf\Free\Pro_Prompt;
  * Form Builder framework
  */
 class Admin_Form_Builder {
+    /**
+     * Transient key to store pro field assets info
+     *
+     * @since 4.1.0
+     *
+     * @var string
+     */
+    const PRO_FIELD_ASSETS = 'wpuf_pro_field_assets';
 
     /**
      * Form Settings
@@ -48,6 +56,7 @@ class Admin_Form_Builder {
             add_action( 'admin_footer', [ $this, 'custom_dequeue' ] );
             add_action( 'admin_footer', [ $this, 'admin_footer' ] );
             add_action( 'wpuf_admin_form_builder', [ $this, 'include_form_builder' ] );
+            add_action( 'wpuf_admin_form_builder_view', [ $this, 'include_form_builder' ] );
         }
 
         add_action( 'wpuf_form_builder_template_builder_stage_submit_area', [ $this, 'add_form_submit_area' ] );
@@ -125,6 +134,7 @@ class Admin_Form_Builder {
             'user_avatar',
             'taxonomy',
             'cloudflare_turnstile',
+            'recaptcha',
         ];
         $taxonomy_terms = array_keys( get_taxonomies() );
         $single_objects = array_merge( $single_objects, $taxonomy_terms );
@@ -148,11 +158,14 @@ class Admin_Form_Builder {
         wpuf_require_once( WPUF_ROOT . '/admin/form-builder/class-wpuf-form-builder-field-settings.php' );
         wpuf_require_once( WPUF_ROOT . '/includes/Free/Pro_Prompt.php' );
 
+        $lock_icon = WPUF_ASSET_URI . '/images/crown-circle.svg';
+
         $wpuf_form_builder = apply_filters(
             'wpuf_form_builder_localize_script',
             [
                 'i18n'             => $this->i18n(),
                 'post'             => $post,
+                'form_type'        => $post->post_type,
                 'form_fields'      => wpuf_get_form_fields( $post->ID ),
                 'panel_sections'   => wpuf()->fields->get_field_groups(),
                 'field_settings'   => wpuf()->fields->get_js_settings(),
@@ -161,11 +174,17 @@ class Admin_Form_Builder {
                 'pro_link'         => Pro_Prompt::get_pro_url(),
                 'site_url'         => site_url( '/' ),
                 'asset_url'        => WPUF_ASSET_URI,
+                'root_dir'         => WPUF_ROOT,
                 'recaptcha_site'   => wpuf_get_option( 'recaptcha_public', 'wpuf_general' ),
                 'recaptcha_secret' => wpuf_get_option( 'recaptcha_private', 'wpuf_general' ),
                 'turnstile_site'   => wpuf_get_option( 'turnstile_site_key', 'wpuf_general' ),
                 'turnstile_secret' => wpuf_get_option( 'turnstile_secret_key', 'wpuf_general' ),
                 'nonce'            => wp_create_nonce( 'form-builder-setting-nonce' ),
+                'is_pro_active'    => wpuf_is_pro_active(),
+                'pro_asset_url'    => defined( 'WPUF_PRO_ASSET_URI' ) ? WPUF_PRO_ASSET_URI : '',
+                'settings_titles'  => wpuf_get_post_form_builder_setting_menu_titles(),
+                'settings_items'   => wpuf_get_post_form_builder_setting_menu_contents(),
+                'lock_icon'        => $lock_icon,
             ]
         );
         $wpuf_form_builder = wpuf_unset_conditional( $wpuf_form_builder );
@@ -257,40 +276,54 @@ class Admin_Form_Builder {
         $post_type         = $this->settings['post_type'];
         $form_settings_key = $this->settings['form_settings_key'];
         $shortcodes        = $this->settings['shortcodes'];
-        $forms             = get_posts( [ 'post_type' => $post_type, 'post_status' => 'any' ] );
-        include WPUF_ROOT . '/admin/form-builder/views/form-builder.php';
+        $forms             = get_posts(
+            [
+                'post_type'   => $post_type,
+                'post_status' => 'any',
+            ]
+        );
+
+        include WPUF_ROOT . '/admin/form-builder/views/form-builder-v4.1.php';
     }
 
     /**
-     * i18n translatable strings
+     * WordPress i18n translatable strings
      *
      * @since 2.5
      *
      * @return array
      */
     private function i18n() {
+        $crown_icon     = WPUF_ASSET_URI . '/images/crown-white.svg';
+        $field_messages = $this->get_pro_field_messages();
+
         return apply_filters(
             'wpuf_form_builder_i18n', [
-                'advanced_options'      => __( 'Advanced Options', 'wp-user-frontend' ),
-                'delete_field_warn_msg' => __( 'Are you sure you want to delete this field?', 'wp-user-frontend' ),
-                'yes_delete_it'         => __( 'Yes, delete it', 'wp-user-frontend' ),
-                'no_cancel_it'          => __( 'No, cancel it', 'wp-user-frontend' ),
-                'ok'                    => __( 'OK', 'wp-user-frontend' ),
-                'cancel'                => __( 'Cancel', 'wp-user-frontend' ),
-                'close'                 => __( 'Close', 'wp-user-frontend' ),
-                'last_choice_warn_msg'  => __( 'This field must contain at least one choice', 'wp-user-frontend' ),
-                'option'                => __( 'Option', 'wp-user-frontend' ),
-                'column'                => __( 'Column', 'wp-user-frontend' ),
-                'last_column_warn_msg'  => __( 'This field must contain at least one column', 'wp-user-frontend' ),
-                'is_a_pro_feature'      => __( 'is available in Pro version', 'wp-user-frontend' ),
-                'pro_feature_msg'       => __(
-                    'Please upgrade to the Pro version to unlock all these awesome features', 'wp-user-frontend'
+                'advanced_options'        => __( 'Advanced Options', 'wp-user-frontend' ),
+                'delete_field_warn_title' => __( 'Delete Field Confirmation', 'wp-user-frontend' ),
+                'delete_field_warn_msg'   => __(
+                    'Are you sure you want to delete this field? This action cannot be undone.', 'wp-user-frontend'
                 ),
-                'upgrade_to_pro'        => __( 'Get the Pro version', 'wp-user-frontend' ),
-                'select'                => __( 'Select', 'wp-user-frontend' ),
-                'saved_form_data'       => __( 'Saved form data', 'wp-user-frontend' ),
-                'unsaved_changes'       => __( 'You have unsaved changes.', 'wp-user-frontend' ),
-                'copy_shortcode'        => __( 'Click to copy shortcode', 'wp-user-frontend' ),
+                'yes_delete_it'           => __( 'Yes, delete it', 'wp-user-frontend' ),
+                'no_cancel_it'            => __( 'Cancel', 'wp-user-frontend' ),
+                'ok'                      => __( 'Okay', 'wp-user-frontend' ),
+                'cancel'                  => __( 'Cancel', 'wp-user-frontend' ),
+                'close'                   => __( 'Close', 'wp-user-frontend' ),
+                'last_choice_warn_msg'    => __( 'This field must contain at least one choice', 'wp-user-frontend' ),
+                'option'                  => __( 'Option', 'wp-user-frontend' ),
+                'column'                  => __( 'Column', 'wp-user-frontend' ),
+                'last_column_warn_msg'    => __( 'This field must contain at least one column', 'wp-user-frontend' ),
+                'is_a_pro_feature'        => __( 'is a pro feature', 'wp-user-frontend' ),
+                'pro_feature_msg'         => __(
+                    '<p class="wpuf-text-gray-500 wpuf-font-medium wpuf-text-xl">Please upgrade to the Pro version to unlock all these awesome features</p>',
+                    'wp-user-frontend'
+                ),
+                'upgrade_to_pro'          => __( 'Upgrade to PRO', 'wp-user-frontend' ),
+                'select'                  => __( 'Select', 'wp-user-frontend' ),
+                'saved_form_data'         => __( 'Saved form data', 'wp-user-frontend' ),
+                'unsaved_changes'         => __( 'You have unsaved changes.', 'wp-user-frontend' ),
+                'copy_shortcode'          => __( 'Click to copy shortcode', 'wp-user-frontend' ),
+                'pro_field_message'       => $field_messages,
             ]
         );
     }
@@ -343,5 +376,36 @@ class Admin_Form_Builder {
         update_post_meta( $data['form_id'], 'integrations', $data['integrations'] );
 
         return $saved_wpuf_inputs;
+    }
+
+    /**
+     * Check and get pro-field related text, image, video etc. to show when user clicks on a pro field
+     *
+     * @since 4.1.0
+     *
+     * @return array
+     */
+    protected function get_pro_field_messages() {
+        $info = get_transient( self::PRO_FIELD_ASSETS );
+
+        if ( false === $info ) {
+            $url      = 'https://raw.githubusercontent.com/weDevsOfficial/wpuf-util/master/pro-field-assets.json';
+            $response = wp_remote_get( $url, [ 'timeout' => 15 ] );
+            $info     = wp_remote_retrieve_body( $response );
+
+            if ( is_wp_error( $response ) || ( 200 !== $response['response']['code'] ) ) {
+                return [];
+            }
+
+            set_transient( self::PRO_FIELD_ASSETS, $info, DAY_IN_SECONDS );
+        }
+
+        $info = json_decode( $info, true );
+
+        if ( empty( $info ) ) {
+            return [];
+        }
+
+        return $info;
     }
 }

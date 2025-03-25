@@ -7,7 +7,6 @@ import {useFieldDependencyStore} from '../../stores/fieldDependency';
 import {__} from '@wordpress/i18n';
 import ProBadge from '../ProBadge.vue';
 import ProTooltip from '../ProTooltip.vue';
-import {storeToRefs} from 'pinia';
 
 const emit = defineEmits(['toggleDependentFields']);
 
@@ -205,6 +204,9 @@ onMounted(() => {
     padding-top: .25rem !important;
     padding-bottom: .25rem !important;
 }
+.dp__input_focus {
+    --tw-ring-color: #3DB981;
+}
 </style>
 
 <template>
@@ -256,7 +258,7 @@ onMounted(() => {
                 :placeholder="field.placeholder ? field.placeholder : ''"
                 @input="[modifySubscription($event), processInput($event)]"
                 :class="subscriptionStore.errors[fieldId] ? '!wpuf-border-red-500' : '!wpuf-border-gray-300'"
-                class="placeholder:wpuf-text-gray-400 wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-primaryHover focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-primaryHover sm:wpuf-text-sm">
+                class="placeholder:wpuf-text-gray-400 wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-primaryHover focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-primaryHover sm:wpuf-text-sm !wpuf-shadow-none">
             <input
                 v-if="field.type === 'input-number'"
                 type="number"

@@ -25,32 +25,6 @@ const openTabs = [ 'overview', 'content_limit', 'payment_details' ];
 closed.value = !openTabs.includes( subSection.value.id );
 
 const toggleDependentFields = ( fieldId, status ) => {
-    wpufSubscriptions.dependentFields = {
-        "post_expiration": {
-            "expiration_time": true,
-            "post_status": true,
-            "send_mail": true,
-            "expiration_message": true
-        },
-        "send_mail": {
-            "expiration_message": true
-        },
-        "enable_recurring": {
-            "payment_cycle": true,
-            "stop_cycle": true,
-            "billing_limit": true,
-            "trial": true,
-            "trial_period": true,
-            "expire_in": false
-        },
-        "stop_cycle": {
-            "billing_limit": true
-        },
-        "trial": {
-            "trial_period": true
-        }
-    };
-
     // Update the status of the current modifier field
     dependencyStore.modifierFieldStatus[fieldId] = status;
 

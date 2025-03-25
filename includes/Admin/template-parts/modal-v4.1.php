@@ -13,7 +13,9 @@
             <!-- Header -->
             <div class="wpuf-mb-12">
                 <h1 class="wpuf-text-3xl wpuf-text-black wpuf-m-0 wpuf-p-0">
-                    <?php esc_html_e( 'Select a Post Form Template', 'wp-user-frontend' ); ?>
+                    <?php
+                        esc_html_e( sprintf( 'Select a %s Template', $form_type ), 'wp-user-frontend' );
+                    ?>
                 </h1>
                 <p class="wpuf-text-base wpuf-text-gray-500 wpuf-mt-3 wpuf-p-0">
                     <?php esc_html_e( 'Select from a pre-defined template or from a blank form', 'wp-user-frontend' ); ?>

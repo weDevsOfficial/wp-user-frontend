@@ -78,6 +78,8 @@ export const Selectors = {
             // Menu-2nd Option
             // FrontEnd Posting
             settingsFrontendPosting: '//a[@id="wpuf_frontend_posting-tab"]',
+            //Turn on custom field
+            showCustomFields: '//label[normalize-space()="Show custom fields on post content area"]',
             // Set Default Post Form
             setDefaultPostForm: '//select[@id="wpuf_frontend_posting[default_post_form]"]',
             // Save Changes
@@ -263,9 +265,9 @@ export const Selectors = {
             customFieldsEmbed: '//p[normalize-space(text())="Embed"]',
 
             // prompt1
-            prompt1PopUpModalClose: "//button[contains(@class,'swal2-confirm btn')]",
+            prompt1PopUpModalClose: "//button[normalize-space(text())='Don\'t show again']",
             // prompt2
-            prompt2PopUpModalOk: '//button[contains(@class,"swal2-confirm swal2-styled")]',
+            prompt2PopUpModalOk: '//button[normalize-space(text())="Okay"]',
             // Pro Check Pop Up
             checkProPopUp: '//button[text()="Get the Pro version"]',
             checkProPopUpCloseButton: '//button[text()="Close"]',

@@ -207,6 +207,8 @@ export class SettingsSetupPage {
         await expect(await this.page.isVisible(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPosting)).toBeTruthy();
         //Click Frontend Posting
         await this.page.click(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPosting);
+        //Turn On Custom Fields
+        await this.page.click(Selectors.settingsSetup.wpufSettingsPage.showCustomFields);
         //Set Default Post Form 
         await this.page.selectOption(Selectors.settingsSetup.wpufSettingsPage.setDefaultPostForm, { label: 'FE PostForm' });
         //Save FrontEnd Posting

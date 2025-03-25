@@ -23,6 +23,7 @@ export class PostFormsPage {
 
     //BlankForm
     async createBlankFormPostForm(newPostName: string) {
+
         //Visit Post Form Page
         const wpufPostFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
         await Promise.all([

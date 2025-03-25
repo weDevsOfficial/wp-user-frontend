@@ -84,6 +84,7 @@ export class FieldOptionsCommonPage {
     async addCustomFields_Common() {
         //CustomFields
         await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsText);
+        
         if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
             await this.page.click(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
         }

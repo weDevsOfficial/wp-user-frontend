@@ -477,7 +477,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
             <?php
             if ( 'pic-radio' === $field['type'] ) {
                 ?>
-                <div class="wpuf-grid wpuf-grid-cols-4" id="<?php echo $field_key; ?>">
+                <div class="wpuf-grid wpuf-grid-cols-4 wpuf-pic-radio" id="<?php echo $field_key; ?>">
                     <?php
                     foreach ( $field['options'] as $key => $option ) {
                         ?>
@@ -537,6 +537,15 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                     name="<?php echo $name; ?>"
                     id="<?php echo $field_key; ?>"
                     value="<?php echo $value; ?>"/>
+                <?php
+            }
+
+            if ( ! empty( $field['notice'] ) ) {
+                ?>
+                <div class="wpuf-bg-yellow-50 wpuf-border-l-4 wpuf-border-yellow-500 wpuf-text-yellow-700 wpuf-p-4">
+                    <p class="wpuf-m-0"><?php echo $field['notice']['text']; ?></p>
+                </div>
+
                 <?php
             }
 

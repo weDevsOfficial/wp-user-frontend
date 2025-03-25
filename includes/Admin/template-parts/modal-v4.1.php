@@ -1,4 +1,8 @@
-<?php use WeDevs\Wpuf\Free\Pro_Prompt; ?>
+<?php
+use WeDevs\Wpuf\Free\Pro_Prompt;
+
+$form_type = ! empty( $form_type ) ?  $form_type : 'Post Form';
+?>
 <div class="wpuf-form-template-modal wpuf-w-[calc(100%+20px)] !wpuf-h-[150vh] !wpuf--mb-[30px] wpuf-ml-[-20px] wpuf-bg-gray-100 wpuf-hidden">
     <div class="wpuf-relative wpuf-mx-auto wpuf-p-20">
         <button
@@ -13,7 +17,9 @@
             <!-- Header -->
             <div class="wpuf-mb-12">
                 <h1 class="wpuf-text-3xl wpuf-text-black wpuf-m-0 wpuf-p-0">
-                    <?php esc_html_e( 'Select a Post Form Template', 'wp-user-frontend' ); ?>
+                    <?php
+                        esc_html_e( sprintf( 'Select a %s Template', $form_type ), 'wp-user-frontend' );
+                    ?>
                 </h1>
                 <p class="wpuf-text-base wpuf-text-gray-500 wpuf-mt-3 wpuf-p-0">
                     <?php esc_html_e( 'Select from a pre-defined template or from a blank form', 'wp-user-frontend' ); ?>

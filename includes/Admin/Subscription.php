@@ -135,7 +135,7 @@ class Subscription {
         $wpuf_sub = isset( $_POST['wpuf_sub'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_sub'] ) ) : '';
         $pack_id = isset( $_POST['pack_id'] ) ? sanitize_text_field( wp_unslash( $_POST['pack_id'] ) ) : '';
 
-        if ( $wpuf_sub !== 'yes' ) {
+        if ( wpuf_is_checkbox_or_toggle_on( $wpuf_sub ) ) {
             return $response;
         }
 
@@ -295,6 +295,8 @@ class Subscription {
         $meta['_recurring_pay']             = $meta['recurring_pay'];
         $meta['billing_cycle_number']       = get_post_meta( $subscription_id, '_billing_cycle_number', true );
         $meta['_billing_cycle_number']      = $meta['billing_cycle_number'];
+        $meta['enable_billing_limit']       = get_post_meta( $subscription_id, '_enable_billing_limit', true );
+        $meta['_enable_billing_limit']      = $meta['enable_billing_limit'];
         $meta['cycle_period']               = get_post_meta( $subscription_id, '_cycle_period', true );
         $meta['_cycle_period']              = $meta['cycle_period'];
         $meta['billing_limit']              = get_post_meta( $subscription_id, '_billing_limit', true );
@@ -971,13 +973,17 @@ class Subscription {
             $billing_amount = apply_filters( 'wpuf_payment_amount', $billing_amount );
         }
 
-        if ( $billing_amount && $pack->meta_value['recurring_pay'] === 'yes' ) {
+        if ( $billing_amount && wpuf_is_checkbox_or_toggle_on( $pack->meta_value['recurring_pay'] ) ) {
             $recurring_des = sprintf( __( 'Every', 'wp-user-frontend' ) . ' %s %s', $pack->meta_value['billing_cycle_number'], self::get_cycle_label( $pack->meta_value['cycle_period'], $pack->meta_value['billing_cycle_number'] ), $pack->meta_value['trial_duration_type'] );
-            $recurring_des .= ! empty( $pack->meta_value['billing_limit'] ) ? sprintf( ', ' . __( 'for', 'wp-user-frontend' ) . ' %s ' . __( 'installments', 'wp-user-frontend' ), $pack->meta_value['billing_limit'] ) : '';
+
+            if ( ! empty( $pack->meta_value['billing_limit'] ) && '-1' !== $pack->meta_value['billing_limit'] ) {
+                $recurring_des .= ! empty( $pack->meta_value['billing_limit'] ) ? sprintf( ', ' . __( 'for', 'wp-user-frontend' ) . ' %s ' . __( 'installments', 'wp-user-frontend' ), $pack->meta_value['billing_limit'] ) : '';
+            }
+
             $recurring_des = '<div class="wpuf-pack-cycle wpuf-nullamount-hide">' . $recurring_des . '</div>';
         }
 
-        if ( $billing_amount && $pack->meta_value['recurring_pay'] === 'yes' && $pack->meta_value['trial_status'] === 'yes' ) {
+        if ( $billing_amount && wpuf_is_checkbox_or_toggle_on( $pack->meta_value['recurring_pay']  ) && wpuf_is_checkbox_or_toggle_on( $pack->meta_value['trial_status'] ) ) {
             //phpcs:ignore
             $duration = _n( $pack->meta_value['trial_duration_type'], $pack->meta_value['trial_duration_type'] . 's', $pack->meta_value['trial_duration'], 'wp-user-frontend' );
             /* translators: %s: trial days */
@@ -1328,7 +1334,7 @@ class Subscription {
      */
     public function reset_trial( $sub_meta ) {
         $used_trial = get_user_meta( get_current_user_id(), '_wpuf_used_trial', true );
-        if ( 'yes' === $used_trial ) {
+        if ( wpuf_is_checkbox_or_toggle_on( $used_trial ) ) {
             unset( $sub_meta['trial_status'] );
             unset( $sub_meta['trial_duration'] );
             unset( $sub_meta['trial_duration_type'] );

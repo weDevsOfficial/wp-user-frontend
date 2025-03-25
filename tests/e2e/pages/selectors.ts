@@ -285,9 +285,9 @@ export const Selectors = {
             validateCheckBox: '//label[@for="checkbox"]/../..//div[@class="wpuf-fields"]',
             validateWebsiteUrl: '//label[@for="website_url"]/../..//div[@class="wpuf-fields"]',
             validateEmailAddress: '//label[@for="email_address"]/../..//div[@class="wpuf-fields"]',
-            validateHiddenField: '//div[@class="hidden-field-list"]//li[@class="field-items"]',
+            validateHiddenField: '(//li[contains(@class,"field-items wpuf-group/hidden-fields")]//div)[1]',
             validateImageUpload: '//label[@for="image_upload"]/../..//div[@class="wpuf-fields"]',
-
+            //div[contains(@class,'wpuf-flex wpuf-rounded-t-lg')]//div[1]
             // From___PRO
             validateRepeatField: '//label[@for="repeat_field"]/../..//div[@class="wpuf-fields"]',
             validateDateTime: '//label[@for="date___time"]/../..//div[@class="wpuf-fields"]',  // TODO: Date - Time has large underscore

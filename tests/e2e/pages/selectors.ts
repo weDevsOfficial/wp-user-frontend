@@ -325,7 +325,7 @@ export const Selectors = {
         formSettings: {
             // Post Settings
             // Click Form Edit Settings
-            clickFormEditorSettings: '//form[@id="wpuf-form-builder"]//h2//a[@href="#wpuf-form-builder-settings"]',
+            clickFormEditorSettings: '(//a[contains(@class,"wpuf-nav-tab wpuf-nav-tab-active")])[2]',
 
             // Click Form Editor
             clickFormEditor: '//a[contains(text(),"Form Editor")]',

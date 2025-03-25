@@ -1,4 +1,8 @@
-<?php use WeDevs\Wpuf\Free\Pro_Prompt; ?>
+<?php
+use WeDevs\Wpuf\Free\Pro_Prompt;
+
+$form_type = ! empty( $form_type ) ?  $form_type : 'Post Form';
+?>
 <div class="wpuf-form-template-modal wpuf-w-[calc(100%+20px)] !wpuf-h-[150vh] !wpuf--mb-[30px] wpuf-ml-[-20px] wpuf-bg-gray-100 wpuf-hidden">
     <div class="wpuf-relative wpuf-mx-auto wpuf-p-20">
         <button

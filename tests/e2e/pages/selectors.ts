@@ -334,11 +334,13 @@ export const Selectors = {
 
             // Submission Restriction
             clickSubmissionRestriction: '//a[contains(text(),"Submission Restriction")]',
+            // set post permission
+            setPostPermission: '//select[@name="wpuf_settings[post_permission]"]/following-sibling::div[1]',
             // Check Guest Enable
-            enableGuestPostCheckBox: '//input[@name="wpuf_settings[guest_post]" and @type="checkbox"]',
+            enableGuestPost: '//div[@data-value="guest_post"]',
 
             // Save Form Settings
-            saveFormSettings: '//button[@class="button button-primary"]',
+            saveFormSettings: '//button[normalize-space(text())="Save Form"]',
         },
 
         validateOthers_Common: {

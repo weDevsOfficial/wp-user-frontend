@@ -125,9 +125,10 @@ export class PostFormsPage {
         //Click Form Settings
         await this.page.click(Selectors.postForms.formSettings.clickFormEditorSettings);
         //Click Submission Restrictions
-        await this.page.click(Selectors.postForms.formSettings.clickSubmissionRestriction);
+        //await this.page.click(Selectors.postForms.formSettings.clickSubmissionRestriction);
         //Enable Guest Post Submission
-        await this.page.click(Selectors.postForms.formSettings.enableGuestPostCheckBox);
+        await this.page.click(Selectors.postForms.formSettings.setPostPermission);
+        await this.page.click(Selectors.postForms.formSettings.enableGuestPost);
         //Save Form Settings
         await this.page.click(Selectors.postForms.formSettings.saveFormSettings);
 

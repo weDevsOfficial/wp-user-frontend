@@ -18,11 +18,6 @@ function wpuf_upgrade_4_1_0_migration() {
             continue;
         }
 
-        if ( 4599 == $form_setting->post_id ) {
-            error_log( print_r( $unserilized['guest_post'], true ) );
-            error_log( print_r( gettype( $unserilized['guest_post'] ), true ) );
-        }
-
         if ( isset( $unserilized['guest_post'] ) && 'true' === $unserilized['guest_post'] ) {
             $unserilized['post_permission'] = 'guest_post';
         }

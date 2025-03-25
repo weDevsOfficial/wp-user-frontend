@@ -265,9 +265,9 @@ export const Selectors = {
             customFieldsEmbed: '//p[normalize-space(text())="Embed"]',
 
             // prompt1
-            prompt1PopUpModalClose: "//button[normalize-space(text())='Okay']",
+            prompt1PopUpModalClose: "//div[@class='swal2-loader']/following-sibling::button[1]",
             // prompt2
-            prompt2PopUpModalOk: '//button[normalize-space(text())="Okay"]',
+            prompt2PopUpModalOk: "//button[@class='swal2-deny swal2-styled']/following-sibling::button[1]",
             // Pro Check Pop Up
             checkProPopUp: '//button[text()="Get the Pro version"]',
             checkProPopUpCloseButton: '//button[text()="Close"]',

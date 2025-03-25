@@ -118,7 +118,7 @@ const updateSubscription = () => {
                     name="plan-name"
                     id="plan-name"
                     :class="errors.planName ? '!wpuf-border-red-500 wpuf-ring-red-300 placeholder:wpuf-text-red-300 !wpuf-text-red-900 focus:wpuf-ring-red-500' : ''"
-                    class="wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-indigo-500 focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-indigo-500 sm:wpuf-text-sm"
+                    class="wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-primaryHover focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-primaryHover sm:wpuf-text-sm"
                     aria-invalid="true"
                     aria-describedby="plan-name-error"
                     @change="title = $event.target.value"
@@ -133,7 +133,7 @@ const updateSubscription = () => {
         <div class="wpuf-px-2 wpuf-mt-4">
             <label for="date" class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">{{ __('Date', 'wp-user-frontend') }}</label>
             <div
-                :class="errors.date ? 'wpuf-border wpuf-border-red-500 placeholder:wpuf-text-red-300 !wpuf-text-red-900 focus:wpuf-ring-red-500' : 'wpuf-ring-indigo-600'"
+                :class="errors.date ? 'wpuf-border wpuf-border-red-500 placeholder:wpuf-text-red-300 !wpuf-text-red-900 focus:wpuf-ring-red-500' : 'wpuf-ring-primary'"
                 class="wpuf-relative wpuf-mt-2 wpuf-rounded-md wpuf-shadow-sm">
                 <VueDatePicker
                     textInput

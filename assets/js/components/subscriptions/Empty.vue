@@ -36,7 +36,7 @@ const props = defineProps( {
                 <button
                     type="button"
                     @click="componentStore.setCurrentComponent( 'New' )"
-                    class="wpuf-rounded-md wpuf-bg-indigo-600 wpuf-px-3 wpuf-py-2 wpuf-text-sm font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-indigo-500 focus-visible:wpuf-outline focus-visible:wpuf-outline-2 focus-visible:wpuf-outline-offset-2 focus-visible:wpuf-outline-indigo-600">
+                    class="wpuf-rounded-md wpuf-bg-primary wpuf-px-3 wpuf-py-2 wpuf-text-sm font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-primaryHover focus-visible:wpuf-outline focus-visible:wpuf-outline-2 focus-visible:wpuf-outline-offset-2 focus-visible:wpuf-outline-primary">
                     <span class="dashicons dashicons-plus-alt"></span>&nbsp;&nbsp;&nbsp;
                     {{ __( 'Add Subscription', 'wp-user-frontend' ) }}
                 </button>

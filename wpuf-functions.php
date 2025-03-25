@@ -5447,5 +5447,5 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
  * @return bool
  */
 function wpuf_is_checkbox_or_toggle_on( $value ) {
-    return 'on' === $value || 'yes' === $value || 'true' === $value;
+    return 'on' === $value || 'yes' === $value || 'true' === $value || '1' === $value;
 }

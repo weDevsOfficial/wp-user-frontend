@@ -270,7 +270,7 @@ export const Selectors = {
             prompt2PopUpModalOk: "//button[@class='swal2-deny swal2-styled']/following-sibling::button[1]",
             // Pro Check Pop Up
             checkProPopUp: '//button[text()="Get the Pro version"]',
-            checkProPopUpCloseButton: '//button[text()="Close"]',
+            checkProPopUpCloseButton: '//button[@aria-label="Close this dialog"]',
             // Pro Text Alert in Settings
             proTextAlertInSettings: '(//h3[@class="wpuf-pro-text-alert"])[1]'
         },

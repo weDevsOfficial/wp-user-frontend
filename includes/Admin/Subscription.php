@@ -295,6 +295,8 @@ class Subscription {
         $meta['_recurring_pay']             = $meta['recurring_pay'];
         $meta['billing_cycle_number']       = get_post_meta( $subscription_id, '_billing_cycle_number', true );
         $meta['_billing_cycle_number']      = $meta['billing_cycle_number'];
+        $meta['enable_billing_limit']       = get_post_meta( $subscription_id, '_enable_billing_limit', true );
+        $meta['_enable_billing_limit']      = $meta['enable_billing_limit'];
         $meta['cycle_period']               = get_post_meta( $subscription_id, '_cycle_period', true );
         $meta['_cycle_period']              = $meta['cycle_period'];
         $meta['billing_limit']              = get_post_meta( $subscription_id, '_billing_limit', true );

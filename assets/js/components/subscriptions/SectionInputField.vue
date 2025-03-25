@@ -13,8 +13,6 @@ const emit = defineEmits(['toggleDependentFields']);
 
 const subscriptionStore = useSubscriptionStore();
 
-const subSection = inject( 'subSection' );
-
 const props = defineProps( {
     field: Object,
     fieldId: String,
@@ -26,7 +24,6 @@ const props = defineProps( {
 
 const dependencyStore = useFieldDependencyStore();
 const subscription = subscriptionStore.currentSubscription;
-const errors = storeToRefs( subscriptionStore.errors );
 
 const { field, fieldId, isChildField } = toRefs( props );
 

@@ -265,7 +265,7 @@ export const Selectors = {
             customFieldsEmbed: '//p[normalize-space(text())="Embed"]',
 
             // prompt1
-            prompt1PopUpModalClose: "//button[normalize-space(text())='Don\'t show again']",
+            prompt1PopUpModalClose: "//button[normalize-space(text())='Okay']",
             // prompt2
             prompt2PopUpModalOk: '//button[normalize-space(text())="Okay"]',
             // Pro Check Pop Up

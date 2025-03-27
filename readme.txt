@@ -4,7 +4,7 @@ Donate link: https://tareq.co/donate/
 Tags: frontend post, forms, user directory, profile builder, membership
 Requires at least: 4.0
 Tested up to: 6.7.2
-Stable tag: 4.1.0
+Stable tag: 4.1.1
 Requires PHP: 5.6
 License: GPLv2
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -281,6 +281,10 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 18. Set Payment Related Options
 
 == Changelog ==
+= v4.1.1 (27 March, 2025) =
+* Fix - Resolved validation issue with error (!) after form submission.
+* Fix - Improve template selection UX to uncheck a selected post form template.
+
 = v4.1.0 (20 March, 2025) =
 * Enhance - Redesigned Post Form Builder UI/UX
 * Enhance - Reorganized Forms Settings for better structure

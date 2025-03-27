@@ -106,9 +106,9 @@ jobs:
           if-no-files-found: ignore
           retention-days: 3
 
-      - name: Publish HTML report to GH Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: tests/e2e/playwright-report
+      # - name: Publish HTML report to GH Pages
+      #   uses: peaceiris/actions-gh-pages@v4
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     publish_branch: gh-pages
+      #     publish_dir: tests/e2e/playwright-report

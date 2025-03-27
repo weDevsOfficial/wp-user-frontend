@@ -1,4 +1,5 @@
-require('dotenv').config();
+import dotenv from "dotenv";
+dotenv.config();
 import { expect, Page } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Urls } from '../utils/testData';
@@ -22,6 +23,7 @@ export class PostFormsPage {
 
     //BlankForm
     async createBlankFormPostForm(newPostName: string) {
+
         //Visit Post Form Page
         const wpufPostFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
         await Promise.all([
@@ -37,8 +39,8 @@ export class PostFormsPage {
         //ClickBlankForm
         //Templates
         //Hover over - Blank Form
-        await this.page.waitForSelector(Selectors.postForms.createBlankForm_PF.hoverBlankForm);
-        await this.page.hover(Selectors.postForms.createBlankForm_PF.hoverBlankForm);
+        // await this.page.waitForSelector(Selectors.postForms.createBlankForm_PF.hoverBlankForm);
+        // await this.page.hover(Selectors.postForms.createBlankForm_PF.hoverBlankForm);
         //Click Blank Form
         await this.page.waitForSelector(Selectors.postForms.createBlankForm_PF.clickBlankForm);
         await this.page.click(Selectors.postForms.createBlankForm_PF.clickBlankForm);
@@ -68,11 +70,11 @@ export class PostFormsPage {
         //Click Add Form
         await this.page.click(Selectors.postForms.createBlankForm_PF.clickPostAddForm);
 
-        //ClickBlankForm
+        //ClickPostForm
         //Templates 
-        //Hover over - Preset Form
-        await this.page.waitForSelector(Selectors.postForms.createPreset_PF.hoverPresetForm);
-        await this.page.hover(Selectors.postForms.createPreset_PF.hoverPresetForm);
+        //Hover over - Post Form
+        // await this.page.waitForSelector(Selectors.postForms.createPreset_PF.hoverPresetForm);
+        // await this.page.hover(Selectors.postForms.createPreset_PF.hoverPresetForm);
         //Click Preset Form  
         await this.page.click(Selectors.postForms.createPreset_PF.clickPresetForm);
 
@@ -104,8 +106,8 @@ export class PostFormsPage {
         //ClickBlankForm
         //Templates 
         //Hover over - Blank Form
-        await this.page.waitForSelector(Selectors.postForms.createPreset_PF.hoverPresetForm);
-        await this.page.hover(Selectors.postForms.createPreset_PF.hoverPresetForm);
+        // await this.page.waitForSelector(Selectors.postForms.createPreset_PF.hoverPresetForm);
+        // await this.page.hover(Selectors.postForms.createPreset_PF.hoverPresetForm);
         //Click Preset Form  
         await this.page.click(Selectors.postForms.createPreset_PF.clickPresetForm);
 
@@ -123,9 +125,10 @@ export class PostFormsPage {
         //Click Form Settings
         await this.page.click(Selectors.postForms.formSettings.clickFormEditorSettings);
         //Click Submission Restrictions
-        await this.page.click(Selectors.postForms.formSettings.clickSubmissionRestriction);
+        //await this.page.click(Selectors.postForms.formSettings.clickSubmissionRestriction);
         //Enable Guest Post Submission
-        await this.page.click(Selectors.postForms.formSettings.enableGuestPostCheckBox);
+        await this.page.click(Selectors.postForms.formSettings.setPostPermission);
+        await this.page.click(Selectors.postForms.formSettings.enableGuestPost);
         //Save Form Settings
         await this.page.click(Selectors.postForms.formSettings.saveFormSettings);
 

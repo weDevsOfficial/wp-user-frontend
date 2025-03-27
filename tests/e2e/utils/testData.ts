@@ -75,8 +75,8 @@ let PostForm: {
 /**------------------------------------------*/
 /**-------DATA_SET: Registration Form-------*/
 /**----------------------------------------*/
-const rfFirstName = faker.name.firstName();
-const rfLastName = faker.name.lastName();
+const rfFirstName = faker.person.firstName();
+const rfLastName = faker.person.lastName();
 
 let RegistrationForm: {
     //Registration Form Title
@@ -99,9 +99,9 @@ let RegistrationForm: {
     //Registration Form Data
     rfFirstName: rfFirstName,
     rfLastName: rfLastName,
-    rfUsername: faker.internet.userName(rfFirstName, rfLastName),
-    rfEmail: faker.internet.email(rfFirstName, rfLastName),
-    rfPassword: faker.internet.password(),
+    rfUsername: faker.internet.displayName(),
+    rfEmail: faker.internet.email(),
+    rfPassword: faker.internet.password()
 };
 
 
@@ -124,7 +124,7 @@ let SubscriptionPack: {
     subscriptionPackName: faker.commerce.productName(),
     subscriptionPackDescription: faker.commerce.productDescription(),
     SubscriptionPackPrice: faker.commerce.price(),
-    SubscriptionPackExpiration: faker.datatype.number({ min: 1, max: 365 }),
+    SubscriptionPackExpiration: faker.number.int({ min: 1, max: 365 }),
 
     //Posting Restrictions
     //Featured

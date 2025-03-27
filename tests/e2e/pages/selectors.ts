@@ -78,6 +78,8 @@ export const Selectors = {
             // Menu-2nd Option
             // FrontEnd Posting
             settingsFrontendPosting: '//a[@id="wpuf_frontend_posting-tab"]',
+            //Turn on custom field
+            showCustomFields: '//label[normalize-space()="Show custom fields on post content area"]',
             // Set Default Post Form
             setDefaultPostForm: '//select[@id="wpuf_frontend_posting[default_post_form]"]',
             // Save Changes
@@ -181,32 +183,30 @@ export const Selectors = {
             clickPostAddForm: '//a[@class="page-title-action add-form" and contains(text(), "Add Form")]',
 
             // Start > Blank Form
-            hoverBlankForm: '.blank-form',
             clickBlankForm: '//a[@title="Blank Form" and contains(text(), "Create Form")]',
 
             // Enter_NAME
-            editNewFormName: '//span[@class="form-title"]',
-            enterNewFormName: '//header[@class="clearfix"]/span/input',  // TODO: Catch with Child
-            confirmNewNameTickButton: '//button[@class="button button-small"]',
+            editNewFormName: '//input[@name="post_title"]',
+            enterNewFormName: '//input[@name="post_title"]',  // TODO: Catch with Child
+            confirmNewNameTickButton: '//input[@name="post_title"]/following-sibling::i[1]',
         },
 
         createPreset_PF: {
             // Start > Preset Form
-            hoverPresetForm: '(//div[@class="content"]//li)[2]',
             clickPresetForm: '//a[@title="Post Form" and contains(text(), "Create Form")]',
 
             // Enter_NAME
-            editNewFormName: '//span[@class="form-title"]',
+            editNewFormName: '//input[@name="post_title"]',
         },
 
         /* Locators for All Fields Options + Save */
         /********************* PostFields *********************/
         addPostFields_PF: {
             // Post_Fields
-            postTitleBlock: '//li[@data-form-field="post_title"]',
-            postContentBlock: '//li[@data-form-field="post_content"]',
-            postExcerptBlock: '//li[@data-form-field="post_excerpt"]',
-            featuredImageBlock: '//li[@data-form-field="featured_image"]',
+            postTitleBlock: '//p[normalize-space(text())="Post Title"]',
+            postContentBlock: '//p[normalize-space(text())="Post Content"]',
+            postExcerptBlock: '//p[normalize-space(text())="Post Excerpt"]',
+            featuredImageBlock: '//p[normalize-space(text())="Featured Image"]',
         },
 
         validatePostFields_PF: {      // TODO: Inconsistent with Blank form
@@ -219,13 +219,13 @@ export const Selectors = {
         /********************* Taxonomies *********************/
         addTaxonomies_PF: {
             // Taxonomies
-            categoryBlock: '//li[@data-form-field="category"]',
-            tagsBlock: '//li[@data-form-field="post_tag"]',
+            categoryBlock: '//p[normalize-space(text())="Category"]',
+            tagsBlock: '//p[normalize-space(text())="Tags"]',
         },
 
         validateTaxonomies_PF: {
-            validateCategory: '//li[@class="field-items wpuf-el category form-field-taxonomy field-size-small"]',
-            validateTags: '//li[@class="field-items wpuf-el tags form-field-post_tags field-size-large"]',
+            validateCategory: '//label[@for="category"]/../..//div[@class="wpuf-fields"]',
+            validateTags: '//label[@for="tags"]/../..//div[@class="wpuf-fields"]',
         },
 
         validateTaxonomiesPreset_PF: {
@@ -240,37 +240,37 @@ export const Selectors = {
         // Custom - Field options for Forms
         addCustomFields_Common: {
             // Custom _Fields
-            customFieldsText: '//li[@data-form-field="text_field"]',
-            customFieldsTextarea: '//li[@data-form-field="textarea_field"]',
-            customFieldsDropdown: '//li[@data-form-field="dropdown_field"]',
-            customFieldsMultiSelect: '//li[@data-form-field="multiple_select"]',
-            customFieldsRadio: '//li[@data-form-field="radio_field"]',
-            customFieldsCheckBox: '//li[@data-form-field="checkbox_field"]',
-            customFieldsWebsiteUrl: '//li[@data-form-field="website_url"]',
-            customFieldsEmailAddress: '//li[@data-form-field="email_address"]',
-            customFieldsHiddenField: '//li[@data-form-field="custom_hidden_field"]',
-            customFieldsImageUpload: '//li[@data-form-field="image_upload"]',
+            customFieldsText: '//p[normalize-space(text())="Text"]',
+            customFieldsTextarea: '//p[normalize-space(text())="Textarea"]',
+            customFieldsDropdown: '//p[normalize-space(text())="Dropdown"]',
+            customFieldsMultiSelect: '//p[normalize-space(text())="Multi Select"]',
+            customFieldsRadio: '//p[normalize-space(text())="Radio"]',
+            customFieldsCheckBox: '//p[normalize-space(text())="Checkbox"]',
+            customFieldsWebsiteUrl: '//p[normalize-space(text())="Website URL"]',
+            customFieldsEmailAddress: '//p[normalize-space(text())="Email Address"]',
+            customFieldsHiddenField: '//p[normalize-space(text())="Hidden Field"]',
+            customFieldsImageUpload: '//p[normalize-space(text())="Image Upload"]',
 
             // From___PRO
-            customFieldsRepeatField: '//li[@data-form-field="repeat_field"]',
-            customFieldsDateTime: '//li[@data-form-field="date_field"]',
-            customFieldsTimeField: '//li[@data-form-field="time_field"]',
-            customFieldsFileUpload: '//li[@data-form-field="file_upload"]',
-            customFieldsCountryList: '//li[@data-form-field="country_list_field"]',
-            customFieldsNumericField: '//li[@data-form-field="numeric_text_field"]',
-            customFieldsPhoneField: '//li[@data-form-field="phone_field"]',
-            customFieldsAddressField: '//li[@data-form-field="address_field"]',
-            customFieldsGoogleMaps: '//li[@data-form-field="google_map"]',
-            customFieldsStepStart: '//li[@data-form-field="step_start"]',
-            customFieldsEmbed: '//li[@data-form-field="embed"]',
+            customFieldsRepeatField: '//p[normalize-space(text())="Repeat Field"]',
+            customFieldsDateTime: '//p[normalize-space(text())="Date / Time"]',
+            customFieldsTimeField: '//p[normalize-space(text())="Time Field"]',
+            customFieldsFileUpload: '//p[normalize-space(text())="File Upload"]',
+            customFieldsCountryList: '//p[normalize-space(text())="Country List"]',
+            customFieldsNumericField: '//p[normalize-space(text())="Numeric Field"]',
+            customFieldsPhoneField: '//p[normalize-space(text())="Phone Field"]',
+            customFieldsAddressField: '//p[normalize-space(text())="Address Field"]',
+            customFieldsGoogleMaps: '//p[normalize-space(text())="Google Map"]',
+            customFieldsStepStart: '//p[normalize-space(text())="Step Start"]',
+            customFieldsEmbed: '//p[normalize-space(text())="Embed"]',
 
             // prompt1
-            prompt1PopUpModalClose: "//button[contains(@class,'swal2-confirm btn')]",
+            prompt1PopUpModalClose: "//div[@class='swal2-loader']/following-sibling::button[1]",
             // prompt2
-            prompt2PopUpModalOk: '//button[contains(@class,"swal2-confirm swal2-styled")]',
+            prompt2PopUpModalOk: "//button[@class='swal2-deny swal2-styled']/following-sibling::button[1]",
             // Pro Check Pop Up
             checkProPopUp: '//button[text()="Get the Pro version"]',
-            checkProPopUpCloseButton: '//button[text()="Close"]',
+            checkProPopUpCloseButton: '//button[@aria-label="Close this dialog"]',
             // Pro Text Alert in Settings
             proTextAlertInSettings: '(//h3[@class="wpuf-pro-text-alert"])[1]'
         },
@@ -285,9 +285,9 @@ export const Selectors = {
             validateCheckBox: '//label[@for="checkbox"]/../..//div[@class="wpuf-fields"]',
             validateWebsiteUrl: '//label[@for="website_url"]/../..//div[@class="wpuf-fields"]',
             validateEmailAddress: '//label[@for="email_address"]/../..//div[@class="wpuf-fields"]',
-            validateHiddenField: '//div[@class="hidden-field-list"]//li[@class="field-items"]',
+            validateHiddenField: '(//li[contains(@class,"field-items wpuf-group/hidden-fields")]//div)[1]',
             validateImageUpload: '//label[@for="image_upload"]/../..//div[@class="wpuf-fields"]',
-
+            //div[contains(@class,'wpuf-flex wpuf-rounded-t-lg')]//div[1]
             // From___PRO
             validateRepeatField: '//label[@for="repeat_field"]/../..//div[@class="wpuf-fields"]',
             validateDateTime: '//label[@for="date___time"]/../..//div[@class="wpuf-fields"]',  // TODO: Date - Time has large underscore
@@ -305,26 +305,27 @@ export const Selectors = {
         // Others - Field options for Forms
         addOthers_Common: {
             // Others
-            othersColumns: '//li[@data-form-field="column_field"]',
-            othersSectionBreak: '//li[@data-form-field="section_break"]',
-            othersCustomHTML: '//li[@data-form-field="custom_html"]',
-            othersQrCode: '//li[@data-form-field="qr_code"]',
-            othersReCaptcha: '//li[@data-form-field="recaptcha"]',
+            othersColumns: '//p[normalize-space(text())="Columns"]',
+            othersSectionBreak: '//p[normalize-space(text())="Section Break"]',
+            othersCustomHTML: '//p[normalize-space(text())="Custom HTML"]',
+            othersQrCode: '//p[normalize-space(text())="QR Code"]',
+            othersReCaptcha: '//p[normalize-space(text())="reCaptcha"]',
+            othersCloudflareTurnstile: '//p[normalize-space(text())="Cloudflare Turnstile"]',
 
             // From___PRO
-            othersShortCode: '//li[@data-form-field="shortcode"]',
-            othersActionHook: '//li[@data-form-field="action_hook"]',
-            othersTermsAndConditions: '//li[@data-form-field="toc"]',
-            othersRatings: '//li[@data-form-field="ratings"]',
-            othersReallySimpleCaptcha: '//li[@data-form-field="really_simple_captcha"]',
-            othersMathCaptcha: '//li[@data-form-field="math_captcha"]',
+            othersShortCode: '//p[normalize-space(text())="Shortcode"]',
+            othersActionHook: '//p[normalize-space(text())="Action Hook"]',
+            othersTermsAndConditions: '//p[normalize-space(text())="Terms & Conditions"]',
+            othersRatings: '//p[normalize-space(text())="Action Hook"]',
+            othersReallySimpleCaptcha: '//p[normalize-space(text())="Really Simple Captcha"]',
+            othersMathCaptcha: '//p[normalize-space(text())="Math Captcha"]',
         },
 
         // Form Settings
         formSettings: {
             // Post Settings
             // Click Form Edit Settings
-            clickFormEditorSettings: '//form[@id="wpuf-form-builder"]//h2//a[@href="#wpuf-form-builder-settings"]',
+            clickFormEditorSettings: '(//a[contains(@class,"wpuf-nav-tab wpuf-nav-tab-active")])[2]',
 
             // Click Form Editor
             clickFormEditor: '//a[contains(text(),"Form Editor")]',
@@ -333,16 +334,18 @@ export const Selectors = {
 
             // Submission Restriction
             clickSubmissionRestriction: '//a[contains(text(),"Submission Restriction")]',
+            // set post permission
+            setPostPermission: '//select[@name="wpuf_settings[post_permission]"]/following-sibling::div[1]',
             // Check Guest Enable
-            enableGuestPostCheckBox: '//input[@name="wpuf_settings[guest_post]" and @type="checkbox"]',
+            enableGuestPost: '//div[@data-value="guest_post"]',
 
             // Save Form Settings
-            saveFormSettings: '//button[@class="button button-primary"]',
+            saveFormSettings: '//button[normalize-space(text())="Save"]',
         },
 
         validateOthers_Common: {
-            validateColumns: '//div[@class="wpuf-field-columns has-columns-3"]',
-            validateSectionBreak: '//h2[text()="Section Break"]/../..//div[@class="wpuf-section-details"]',
+            validateColumns: '//li[contains(@class,"form-field-column_field")]',
+            validateSectionBreak: '//li[contains(@class,"section_break")]',
             validateCustomHTML: '//div[text()="HTML Section"]/..//div[@class="wpuf-fields"]',
 
             // validateReCaptcha: '',            // TODO: Setup required
@@ -357,9 +360,9 @@ export const Selectors = {
         // Save Forms
         saveForm_Common: {
             // Validate Name
-            formNameReCheck: '.form-title',
+            formNameReCheck: '//input[@name="post_title"]',
             // FINISH
-            saveFormButton: '//button[@class="button button-primary" and contains(text(), "Save Form")]',
+            saveFormButton: '//button[normalize-space(text())="Save"]',
         },
 
         /*****************************************************/
@@ -478,7 +481,7 @@ export const Selectors = {
             // Add Page Title
             addPageTitle: '//h1[@aria-label="Add title"]',
             // Block Add Button
-            blockAddButton: '//button[@aria-label="Add block"]',
+            blockAddButton: '//button[@aria-label="Add block"]', 
             // Block Search box
             blockSearchBox: '//input[@placeholder="Search"]',
             // Block Add ShortCode Block

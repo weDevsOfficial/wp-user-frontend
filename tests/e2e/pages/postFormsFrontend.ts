@@ -1,4 +1,5 @@
-require('dotenv').config();
+import dotenv from "dotenv";
+dotenv.config();
 import { expect, Page } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Urls, PostForm, RegistrationForm } from '../utils/testData';

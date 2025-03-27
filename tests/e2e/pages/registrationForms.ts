@@ -1,4 +1,5 @@
-require('dotenv').config();
+import dotenv from "dotenv";
+dotenv.config();
 import { expect, Page } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Urls } from '../utils/testData';
@@ -71,15 +72,6 @@ export class RegistrationFormsPage {
         await this.page.click(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addNewPage);
         await this.page.reload();
 
-         // Check if the Welcome Modal is visible
-         let closeWelcomeModal = this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closeWelcomeModal);
-         try {
-             await closeWelcomeModal.waitFor({ state: 'visible', timeout: 5000 });
-             await closeWelcomeModal.click();
-         } catch (error) {
-             console.log('Welcome Modal not visible!');
-         }
-       
         // Check if the Choose Pattern Modal is visible
         let closePatternModal = this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closePatternModal);
         try {
@@ -88,7 +80,16 @@ export class RegistrationFormsPage {
         } catch (error) {
             console.log('Pattern Modal not visible!');
         }
- 
+
+        // // Check if the Welcome Modal is visible
+        // let closeWelcomeModal = this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closeWelcomeModal);
+        // try {
+        //     await closeWelcomeModal.waitFor({ state: 'visible', timeout: 5000 });
+        //     await closeWelcomeModal.click();
+        // } catch (error) {
+        //     console.log('Welcome Modal not visible!');
+        // }
+
         //Add Page Title
         await this.page.fill(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addPageTitle, registrationFormPageTitle);
 

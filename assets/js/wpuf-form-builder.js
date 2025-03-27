@@ -965,6 +965,10 @@
         $('#modules-menu').on('click', function() {
             show_settings_for('modules');
         });
+
+        $('.wpuf-pic-radio img').dblclick(function() {
+            $( this ).siblings( 'input[type="radio"]' ).prop( 'checked', false );
+        });
     });
 
     class FormDependencyHandler {

@@ -51,8 +51,8 @@ onBeforeMount(() => {
                 class="wpuf-mb-0 wpuf-me-2">
                 <button
                    @click="currentTab = section.id"
-                   :class="currentTab === section.id ? 'wpuf-border-b-2 wpuf-border-blue-600 wpuf-text-blue-600' : ''"
-                   class="active:wpuf-shadow-none focus:wpuf-shadow-none wpuf-inline-block wpuf-p-4 wpuf-rounded-t-lg hover:wpuf-text-blue-600 hover:wpuf-border-b-2 hover:wpuf-border-blue-600">
+                   :class="currentTab === section.id ? 'wpuf-border-b-2 wpuf-border-primary wpuf-text-primary' : ''"
+                   class="active:wpuf-shadow-none focus:wpuf-shadow-none wpuf-inline-block wpuf-p-4 wpuf-rounded-t-lg hover:wpuf-text-primary hover:wpuf-border-b-2 hover:wpuf-border-primary wpuf-transition-all">
                     {{ section.title }}
                 </button>
             </li>

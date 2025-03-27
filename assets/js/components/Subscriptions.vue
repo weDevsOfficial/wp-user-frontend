@@ -23,7 +23,6 @@ const componentStore = useComponentStore();
 const subscriptionStore = useSubscriptionStore();
 const quickEditStore = useQuickEditStore();
 const noticeStore = useNoticeStore();
-const {currentComponent} = storeToRefs( componentStore );
 const {notices} = storeToRefs( noticeStore );
 
 const component = ref( null );

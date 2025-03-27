@@ -397,7 +397,7 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                 if (returnAsHtml) {
                     return wpufSubscriptions.currencySymbol + subscription.meta_value.billing_amount + ' <span class="wpuf-text-sm wpuf-text-gray-500">per ' + expireAfter + ' ' + cyclePeriod + '(s)</span>';
                 } else {
-                    return wpufSubscriptions.currencySymbol + subscription.meta_value.billing_amount + ' per ' + expireAfter + ' ' + cyclePeriod + '(s)';
+                    return wpufSubscriptions.currencySymbol + subscription.meta_value.billing_amount + ' every ' + expireAfter + ' ' + cyclePeriod + '(s)';
                 }
             } else {
                 if (parseInt( subscription.meta_value.billing_amount ) === 0 || subscription.meta_value.billing_amount === '') {

@@ -1,5 +1,6 @@
 includes/pro
 nbproject
+tests
 Gruntfile.js
 package.json
 package-lock.json
@@ -8,6 +9,7 @@ changelog.txt
 plugin-deploy.sh
 npm-debug.log
 secret.json
+state.json
 log.txt
 admin/form-builder/assets
 assets/css/*.less

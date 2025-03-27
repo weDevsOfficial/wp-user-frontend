@@ -34,7 +34,7 @@ const logoUrl = wpufSubscriptions.assetUrl + '/images/wpuf-icon-circle.svg';
             <a
                 :href="wpufSubscriptions.supportUrl"
                 target="_blank"
-                class="wpuf-rounded-md wpuf-text-center wpuf-bg-indigo-600 wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-indigo-500 hover:wpuf-text-white focus:wpuf-bg-indigo-500 focus:wpuf-text-white">
+                class="wpuf-rounded-md wpuf-text-center wpuf-bg-primary wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-primaryHover hover:wpuf-text-white focus:wpuf-bg-primaryHover focus:wpuf-text-white">
                 {{ __( 'Support ', 'wp-user-frontend' ) }}
                 &nbsp;&nbsp;
                 <span class="dashicons dashicons-businessman"></span>

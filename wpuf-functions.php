@@ -4930,6 +4930,30 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
     unset( $post_types['wpuf_coupon'] );
     unset( $post_types['oembed_cache'] );
 
+    $template_options = [
+        'post_form_template_post'            => [
+            'label' => __( 'Post Form', 'wp-user-frontend' ),
+            'image' => WPUF_ASSET_URI . '/images/templates/post.svg',
+        ],
+        'post_form_template_woocommerce'     => [
+            'label' => __( 'WooCommerce Product Form', 'wp-user-frontend' ),
+            'image' => WPUF_ASSET_URI . '/images/templates/woocommerce.svg',
+        ],
+        'post_form_template_edd'             => [
+            'label' => __( 'EDD Download Form', 'wp-user-frontend' ),
+            'image' => WPUF_ASSET_URI . '/images/templates/edd.svg',
+        ],
+    ];
+
+    $registry = wpuf_get_post_form_templates();
+
+    foreach ( $registry as $key => $template ) {
+        if ( ! $template->is_enabled() ) {
+            // remove the template if it's not enabled from $template_options
+            unset( $template_options[ $key ] );
+        }
+    }
+
     $general = apply_filters(
         'wpuf_form_builder_settings_general',
         [
@@ -5022,23 +5046,13 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                                 'If selected a form template, it will try to execute that integration options when new post created and updated.',
                                 'wp-user-frontend'
                             ),
-                            'options'   => [
-                                'post_form_template_post'            => [
-                                    'label' => __( 'Post Form', 'wp-user-frontend' ),
-                                    'image' => WPUF_ASSET_URI . '/images/templates/post.svg',
-                                ],
-                                'post_form_template_woocommerce'     => [
-                                    'label' => __( 'WooCommerce Product Form', 'wp-user-frontend' ),
-                                    'image' => WPUF_ASSET_URI . '/images/templates/woocommerce.svg',
-                                ],
-                                'post_form_template_edd'             => [
-                                    'label' => __( 'EDD Download Form', 'wp-user-frontend' ),
-                                    'image' => WPUF_ASSET_URI . '/images/templates/edd.svg',
-                                ],
-                                'post_form_template_events_calendar' => [
-                                    'label' => __( 'The Events Calendar Form', 'wp-user-frontend' ),
-                                    'image' => WPUF_ASSET_URI . '/images/templates/event.svg',
-                                ],
+                            'options'   => $template_options,
+                            'notice'    => [
+                                'type' => 'info',
+                                'text' => __(
+                                    'If you\'re building a post form from scratch, you don\'t need to pick a template (e.g., WooCommerce Product, EDD). Just double-click any selected template to uncheck it.',
+                                    'wp-user-frontend'
+                                ),
                             ],
                         ],
                     ],
@@ -5429,5 +5443,5 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
  * @return bool
  */
 function wpuf_is_checkbox_or_toggle_on( $value ) {
-    return 'on' === $value || 'yes' === $value || 'true' === $value;
+    return 'on' === $value || 'yes' === $value || 'true' === $value || '1' === $value;
 }

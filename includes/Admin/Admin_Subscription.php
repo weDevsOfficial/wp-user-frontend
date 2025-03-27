@@ -164,7 +164,7 @@ class Admin_Subscription {
             4  => __( 'Subscription pack updated.', 'wp-user-frontend' ),
             5  => isset( $_GET['revision'] ) ? sprintf(
                 // translators: %s is Revision
-                __( 'Subscription pack restored to revision from %s', 'wp-user-frontend' ), wp_post_revision_title( (int) $_GET['revision'], 
+                __( 'Subscription pack restored to revision from %s', 'wp-user-frontend' ), wp_post_revision_title( (int) $_GET['revision'],
                 false ) ) : false,
             6  => __( 'Subscription pack published.', 'wp-user-frontend' ),
             7  => __( 'Subscription pack saved.', 'wp-user-frontend' ),
@@ -1346,8 +1346,8 @@ class Admin_Subscription {
                         'type'    => 'inline',
                         'fields'  => [
                             'subs_expiration_value' => [
-                                'id'      => 'subs-expiration-value',
-                                'name'    => 'subs-expiration-value',
+                                'id'      => 'wpuf-expiration-number',
+                                'name'    => 'wpuf-expiration-number',
                                 'type'    => 'input-number',
                                 'db_key'  => '_expiration_number',
                                 'db_type' => 'meta',
@@ -1560,26 +1560,28 @@ class Admin_Subscription {
     public function get_dependent_fields() {
         $fields = [
             'post_expiration'  => [
-                'expiration_time'    => 'hide',
-                'post_status'        => 'hide',
-                'send_mail'          => 'hide',
-                'expiration_message' => 'hide',
+                'expiration_time'    => true,
+                'post_status'        => true,
+                'send_mail'          => true,
+                'expiration_message' => true,
             ],
             'send_mail'        => [
-                'expiration_message' => 'hide',
+                'expiration_message' => true,
             ],
             'enable_recurring' => [
-                'payment_cycle' => 'hide',
-                'stop_cycle'    => 'hide',
-                'billing_limit' => 'hide',
-                'trial'         => 'hide',
-                'trial_period'  => 'hide',
+                'payment_cycle'       => true,
+                'stop_cycle'          => true,
+                'billing_limit'       => true,
+                'trial'               => true,
+                'trial_period'        => true,
+                'billing_cycle'       => true,
+                'expire_in'           => false,
             ],
             'stop_cycle'       => [
-                'billing_limit' => 'hide',
+                'billing_limit' => true,
             ],
             'trial'            => [
-                'trial_period' => 'hide',
+                'trial_period' => true,
             ],
         ];
 

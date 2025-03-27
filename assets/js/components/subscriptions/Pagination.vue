@@ -120,7 +120,7 @@ watch( () => subscriptionStore.currentSubscriptionStatus, ( newValue ) => {
                         v-for="page in pages"
                         @click="[emit('changePageTo', page.name)]"
                         :key="page.name"
-                        :class="currentPage === page.name ? 'wpuf-bg-indigo-600 wpuf-text-white hover:wpuf-bg-indigo-700' : ''"
+                        :class="currentPage === page.name ? 'wpuf-bg-primary wpuf-text-white hover:wpuf-bg-primaryHover' : ''"
                         class="wpuf-relative wpuf-items-center wpuf-px-4 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900 wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 hover:wpuf-bg-gray-50 focus:wpuf-z-20 focus:outline-offset-0 wpuf-inline-flex">
                         {{ page.name }}
                     </button>

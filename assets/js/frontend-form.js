@@ -448,27 +448,45 @@
                         // enable external plugins to use events
                         $('body').trigger('wpuf:postform:success', res);
 
-                        if ( res.show_message == true) {
-                            form.before( '<div class="wpuf-success">' + res.message + '</div>');
-                            form.slideUp( 'fast', function() {
-                                form.remove();
-                            });
+                        if ( res.data ) {
+                            if ( res.data.show_message ) {
+                                form.before( '<div class="wpuf-success">' + res.data.message + '</div>');
+                                form.slideUp( 'fast', function() {
+                                    form.remove();
+                                });
 
-                            //focus
-                            $('html, body').animate({
-                                scrollTop: $('.wpuf-success').offset().top - 100
-                            }, 'fast');
+                                //focus
+                                $('html, body').animate({
+                                    scrollTop: $('.wpuf-success').offset().top - 100
+                                }, 'fast');
 
+                            } else {
+                                window.location = res.data.redirect_to;
+                            }
                         } else {
-                            window.location = res.redirect_to;
+                            if ( res.show_message ) {
+                                form.before( '<div class="wpuf-success">' + res.message + '</div>');
+                                form.slideUp( 'fast', function() {
+                                    form.remove();
+                                });
+
+                                //focus
+                                $('html, body').animate({
+                                    scrollTop: $('.wpuf-success').offset().top - 100
+                                }, 'fast');
+
+                            } else {
+                                window.location = res.redirect_to;
+                            }
                         }
+
 
                     } else {
 
-                        if ( typeof res.type !== 'undefined' && res.type === 'login' ) {
+                        if ( typeof res.data.type !== 'undefined' && res.data.type === 'login' ) {
 
-                            if ( confirm(res.error) ) {
-                                window.location = res.redirect_to;
+                            if ( confirm(res.data.error) ) {
+                                window.location = res.data.redirect_to;
                             } else {
                                 submitButton.removeAttr('disabled');
                                 submitButton.removeClass('button-primary-disabled');
@@ -482,7 +500,7 @@
                             }
 
                             Swal.fire({
-                                html: res.error,
+                                html: res.data.error,
                                 icon: 'warning',
                                 showCancelButton: false,
                                 confirmButtonColor: '#d54e21',

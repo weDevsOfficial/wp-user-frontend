@@ -115,6 +115,7 @@ class Menu {
         // phpcs:ignore WordPress.Security.NonceVerification
         $action           = ! empty( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : null;
         $add_new_page_url = admin_url( 'admin.php?page=wpuf-post-forms&action=add-new' );
+        $form_type        = __( 'Post Form', 'wp-user-frontend' );
 
         switch ( $action ) {
             case 'edit':

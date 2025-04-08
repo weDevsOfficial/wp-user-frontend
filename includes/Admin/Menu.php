@@ -139,6 +139,8 @@ class Menu {
                     break;
                 }
 
+                wp_enqueue_script( 'wpuf-forms-list' );
+
                 include WPUF_ROOT . '/includes/Admin/template-parts/modal-v4.1.php';
 
                 break;

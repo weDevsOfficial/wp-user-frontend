@@ -7,8 +7,9 @@
   "private": true,
   "scripts": {
     "release": "grunt release",
-    "dev": "vite",
-    "build": "vite build"
+    "build": "npm run build:forms-list && npm run build:subscriptions",
+    "build:forms-list": "ENTRY=forms-list vite build",
+    "build:subscriptions": "ENTRY=subscriptions vite build"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",

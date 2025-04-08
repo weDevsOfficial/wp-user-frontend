@@ -110,6 +110,7 @@ module.exports = function( grunt) {
             vue: {
                 files: [
                     'assets/js/subscriptions.js',
+                    'assets/js/forms-list.js',
                     'assets/css/admin/subscriptions.css',
                     'assets/js/components/**/*.vue',
                     'assets/js/stores/**/*.js',

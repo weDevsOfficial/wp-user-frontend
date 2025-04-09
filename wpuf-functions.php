@@ -5445,3 +5445,40 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
 function wpuf_is_checkbox_or_toggle_on( $value ) {
     return 'on' === $value || 'yes' === $value || 'true' === $value || '1' === $value;
 }
+
+/**
+ * Get the post forms count
+ *
+ * @since WPUF_SINCE
+ *
+ * @return array
+ */
+function wpuf_get_forms_counts_with_status() {
+    $post_counts = (array) wp_count_posts( 'wpuf_forms' );
+
+    $post_statuses  = apply_filters( 'wpuf_post_forms_list_table_post_statuses', [
+        'all'       => __( 'All', 'wp-user-frontend' ),
+        'publish'   => __( 'Published', 'wp-user-frontend' ),
+        'trash'     => __( 'Trash', 'wp-user-frontend' ),
+    ] );
+
+    $status_count = [];
+
+    foreach ( $post_statuses as $key => $status ) {
+        if ( ! empty( $post_counts[ $key ] ) ) {
+            $status_count[ $key ] = [
+                'label' => $status,
+                'count' => $post_counts[ $key ],
+            ];
+        } else {
+            $status_count[ $key ] = 0;
+        }
+    }
+
+    $status_count['all'] = [
+        'label' => __( 'All', 'wp-user-frontend' ),
+        'count' => $post_counts['publish'] + $post_counts['draft'] + $post_counts['pending'] + $post_counts['future'],
+    ];
+
+    return $status_count;
+}

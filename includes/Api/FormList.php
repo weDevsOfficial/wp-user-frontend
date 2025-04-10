@@ -242,29 +242,40 @@ class FormList extends WP_REST_Controller {
     public function get_items( $request ) {
         $per_page = ! empty( $request['per_page'] ) ? (int) sanitize_text_field( $request['per_page'] ) : 10;
         $page     = ! empty( $request['page'] ) ? (int) sanitize_text_field( $request['page'] ) : 1;
+        $status   = ! empty( $request['status'] ) ? sanitize_text_field( $request['status'] ) : 'all'; // Default to 'all'
         $offset   = ( $page - 1 ) * $per_page;
 
+        // Determine the post_status based on the requested status
+        if ( 'all' === $status ) {
+            $post_status = 'publish'; // As requested, 'all' shows 'publish'
+        } else {
+            $post_status = $status;
+        }
+
+        // Prepare args for the main query
         $args = [
             'post_type'      => 'wpuf_forms',
-            'post_status'    => 'any',
+            'post_status'    => $post_status,
             'posts_per_page' => $per_page,
             'offset'         => $offset,
             'orderby'        => 'ID',
             'order'          => 'DESC',
         ];
 
-        // Get total count for pagination
-        $total_query = new \WP_Query(
-            [
-                'post_type'      => 'wpuf_forms',
-                'post_status'    => 'any',
-                'posts_per_page' => -1,
-                'fields'         => 'ids',
-            ]
-        );
-        $total_posts = $total_query->found_posts;
+        // Prepare args for the total count query
+        $total_query_args = [
+            'post_type'      => 'wpuf_forms',
+            'post_status'    => $post_status,
+            'posts_per_page' => -1,
+            'fields'         => 'ids',
+        ];
+
+        // Get total count for pagination based on status
+        $total_query = new \WP_Query( $total_query_args );
+        $total_posts = (int) $total_query->found_posts;
         $total_pages = ceil( $total_posts / $per_page );
 
+        // Execute the main query
         $query = new \WP_Query( $args );
         $forms = [];
 
@@ -279,9 +290,9 @@ class FormList extends WP_REST_Controller {
                 $forms[] = [
                     'ID'                    => $post_id,
                     'post_title'            => get_the_title(),
-                    'post_status'           => get_post_status(),
-                    'settings_post_type'    => isset( $settings['post_type'] ) ? $settings['post_type'] : '',
-                    'settings_guest_post'   => isset( $settings['guest_post'] ) ? $settings['guest_post'] : false,
+                    'post_status'           => ! empty( $settings['post_status'] ) ? $settings['post_status'] : '',
+                    'settings_post_type'    => ! empty( $settings['post_type'] ) ? $settings['post_type'] : '',
+                    'settings_guest_post'   => ! empty( $settings['guest_post'] ) ? $settings['guest_post'] : false,
                 ];
             }
         }

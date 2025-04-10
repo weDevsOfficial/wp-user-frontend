@@ -1,7 +1,7 @@
 <script setup>
 import Header from './Header.vue';
 import {__} from '@wordpress/i18n';
-import {ref, onMounted, computed} from 'vue';
+import {ref, onMounted, computed, watch} from 'vue';
 
 const newFormUrl = wpuf_admin_script.admin_url + 'admin.php?page=wpuf-post-forms&action=add-new';
 // store only counts without 0 values
@@ -14,11 +14,12 @@ const currentPage = ref(1);
 const perPage = ref(10);
 const totalPages = ref(0);
 
-const fetchForms = async (page = 1) => {
+const fetchForms = async (page = 1, status = 'all') => {
   try {
     loading.value = true;
     currentPage.value = page;
-    const response = await fetch(`/wp-json/wpuf/v1/wpuf_form?page=${page}&per_page=${perPage.value}`, {
+    const response = await fetch(`/wp-json/wpuf/v1/wpuf_form?page=${page}&per_page=${perPage.value}&status=${status}`,
+     {
       headers: {
         'X-WP-Nonce': wpuf_forms_list.nonce,
       },
@@ -29,10 +30,17 @@ const fetchForms = async (page = 1) => {
       forms.value = data.result;
       if (data.pagination) {
         totalPages.value = data.pagination.total_pages;
+      } else {
+        totalPages.value = 0;
       }
+    } else {
+      forms.value = [];
+      totalPages.value = 0;
     }
   } catch (error) {
     console.error('Error fetching forms:', error);
+    forms.value = [];
+    totalPages.value = 0;
   } finally {
     loading.value = false;
   }
@@ -42,13 +50,18 @@ const changePage = (page) => {
   if (page < 1 || page > totalPages.value || page === currentPage.value) {
     return;
   }
-  fetchForms(page);
+  fetchForms(page, currentTab.value);
 };
+
+// Watch for changes in currentTab and fetch forms accordingly
+watch(currentTab, (newTab) => {
+  fetchForms(1, newTab);
+});
 
 const paginationRange = computed(() => {
   const range = [];
   const delta = 2; // Number of pages to show before and after current page
-  
+
   for (
     let i = Math.max(1, currentPage.value - delta);
     i <= Math.min(totalPages.value, currentPage.value + delta);
@@ -56,12 +69,12 @@ const paginationRange = computed(() => {
   ) {
     range.push(i);
   }
-  
+
   return range;
 });
 
 onMounted(() => {
-  fetchForms();
+  fetchForms(1, currentTab.value); // Initial fetch with the default tab
 });
 </script>
 
@@ -80,16 +93,18 @@ onMounted(() => {
     </div>
   </div>
   <div class="wpuf-flex">
-    <a
+    <span
         v-for="(value, key) in postCounts"
         :key="key"
         @click="currentTab = key"
-        href="#"
-        :class = "currentTab === key ? 'wpuf-border-primary wpuf-text-primary' : 'wpuf-border-transparent wpuf-text-gray-500'"
-        class="hover:wpuf-border-primary hover:wpuf-text-primary wpuf-flex wpuf-whitespace-nowrap wpuf-border-b-2 wpuf-py-4 wpuf-px-1 wpuf-font-medium wpuf-mr-8 focus:wpuf-shadow-none wpuf-transition-all">
+        :class="{
+          'wpuf-border-primary wpuf-text-primary': currentTab === key,
+          'wpuf-border-transparent wpuf-text-gray-500 hover:wpuf-border-gray-300 hover:wpuf-text-gray-700': currentTab !== key
+        }"
+        class="wpuf-flex wpuf-whitespace-nowrap wpuf-py-4 wpuf-px-1 wpuf-border-b-2 wpuf-font-medium wpuf-text-sm wpuf-mr-8 focus:wpuf-outline-none focus:wpuf-shadow-none wpuf-transition-all hover:wpuf-cursor-pointer">
       {{ value.label }}
       <span class="wpuf-bg-gray-100 wpuf-text-gray-900 wpuf-ml-3 wpuf-rounded-full wpuf-py-0.5 wpuf-px-2.5 wpuf-text-xs wpuf-font-medium md:wpuf-inline-block">{{ value.count }}</span>
-    </a>
+    </span>
   </div>
 
   <div class="wpuf-mt-8 wpuf-flow-root">
@@ -106,7 +121,7 @@ onMounted(() => {
                 {{ __( 'Form Name', 'wp-user-frontend' ) }}
               </th>
               <th scope="col" class="wpuf-px-3 wpuf-py-3.5 wpuf-text-left wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900">{{ __( 'Post Type', 'wp-user-frontend' ) }}</th>
-              <th scope="col" class="wpuf-px-3 wpuf-py-3.5 wpuf-text-left wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900">{{ __( 'Status', 'wp-user-frontend' ) }}</th>
+              <th scope="col" class="wpuf-px-3 wpuf-py-3.5 wpuf-text-left wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900">{{ __( 'Post Status', 'wp-user-frontend' ) }}</th>
               <th scope="col" class="wpuf-px-3 wpuf-py-3.5 wpuf-text-left wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900">{{ __( 'Shortcode', 'wp-user-frontend' ) }}</th>
               <th scope="col" class="wpuf-px-3 wpuf-py-3.5 wpuf-text-left wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900">{{ __( 'Guest Post', 'wp-user-frontend' ) }}</th>
               <th scope="col" class="wpuf-px-3 wpuf-py-3.5 wpuf-text-left wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900">
@@ -137,7 +152,7 @@ onMounted(() => {
                   {{ form.settings_post_type }}
                 </td>
                 <td class="wpuf-whitespace-nowrap wpuf-px-3 wpuf-py-4 wpuf-text-sm">
-                  <span 
+                  <span
                     :class="{
                       'wpuf-bg-green-100 wpuf-text-green-800': form.post_status === 'publish',
                       'wpuf-bg-yellow-100 wpuf-text-yellow-800': form.post_status === 'pending',
@@ -145,7 +160,7 @@ onMounted(() => {
                       'wpuf-bg-gray-100 wpuf-text-gray-800': form.post_status === 'draft'
                     }"
                     class="wpuf-inline-flex wpuf-items-center wpuf-px-2.5 wpuf-py-0.5 wpuf-rounded-full wpuf-text-xs wpuf-font-medium">
-                    {{ form.post_status === 'publish' ? 'Published' : 
+                    {{ form.post_status === 'publish' ? 'Published' :
                        form.post_status === 'pending' ? 'Pending Review' :
                        form.post_status === 'private' ? 'Private' : 'Draft' }}
                   </span>
@@ -177,7 +192,7 @@ onMounted(() => {
             </tbody>
           </table>
         </div>
-        
+
         <!-- Pagination -->
         <div v-if="totalPages > 1" class="wpuf-flex wpuf-items-center wpuf-justify-center wpuf-px-4 wpuf-py-3 sm:wpuf-px-6 wpuf-border-t wpuf-border-gray-200 wpuf-bg-white">
           <nav class="wpuf-flex wpuf-items-center wpuf-justify-between wpuf-w-full">
@@ -194,7 +209,7 @@ onMounted(() => {
                 {{ __('Previous', 'wp-user-frontend') }}
               </button>
             </div>
-            
+
             <div class="wpuf-flex wpuf-items-center">
               <span
                 v-for="page in paginationRange"
@@ -210,7 +225,7 @@ onMounted(() => {
                 {{ page }}
               </span>
             </div>
-            
+
             <div>
               <button
                 @click="changePage(currentPage + 1)"

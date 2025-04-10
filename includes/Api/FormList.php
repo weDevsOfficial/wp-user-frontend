@@ -241,58 +241,63 @@ class FormList extends WP_REST_Controller {
      */
     public function get_items( $request ) {
         $per_page = ! empty( $request['per_page'] ) ? (int) sanitize_text_field( $request['per_page'] ) : 10;
-        $offset   = ! empty( $request['offset'] ) ? (int) sanitize_text_field( $request['offset'] ) : 0;
+        $page     = ! empty( $request['page'] ) ? (int) sanitize_text_field( $request['page'] ) : 1;
+        $offset   = ( $page - 1 ) * $per_page;
 
         $args = [
-            'post_status'    => 'draft, publish, future, pending, private',
+            'post_type'      => 'wpuf_forms',
+            'post_status'    => 'any',
             'posts_per_page' => $per_page,
             'offset'         => $offset,
+            'orderby'        => 'ID',
+            'order'          => 'DESC',
         ];
 
-        $defauls = [
-            'post_status' => 'any',
-            'orderby'     => 'DESC',
-            'order'       => 'ID',
-        ];
-
-        $args = shortcode_atts( $args, $request->get_params() );
+        // Get total count for pagination
+        $total_query = new \WP_Query(
+            [
+                'post_type'      => 'wpuf_forms',
+                'post_status'    => 'any',
+                'posts_per_page' => -1,
+                'fields'         => 'ids',
+            ]
+        );
+        $total_posts = $total_query->found_posts;
+        $total_pages = ceil( $total_posts / $per_page );
 
         $query = new \WP_Query( $args );
-
         $forms = [];
 
         if ( $query->have_posts() ) {
-            $i = 0;
-
             while ( $query->have_posts() ) {
                 $query->the_post();
+                $post_id = get_the_ID();
 
-                $form = $query->posts[ $i ];
+                // Get form settings
+                $settings = get_post_meta( $post_id, 'wpuf_form_settings', true );
 
-                $settings = get_post_meta( get_the_ID(), 'wpuf_form_settings', true );
-
-                $forms[ $i ] = [
-                    'ID'                    => $form->ID,
-                    'post_title'            => $form->post_title,
-                    'post_status'           => $form->post_status,
+                $forms[] = [
+                    'ID'                    => $post_id,
+                    'post_title'            => get_the_title(),
+                    'post_status'           => get_post_status(),
                     'settings_post_type'    => isset( $settings['post_type'] ) ? $settings['post_type'] : '',
-                    'settings_post_status'  => isset( $settings['post_status'] ) ? $settings['post_status'] : '',
-                    'settings_guest_post'   => isset( $settings['post_permission'] ) && 'guest_post' === $settings['post_permission'] ? 'guest_post' === $settings['post_permission'] : '',
+                    'settings_guest_post'   => isset( $settings['guest_post'] ) ? $settings['guest_post'] : false,
                 ];
-
-                $i++;
             }
         }
 
-        $forms = apply_filters( 'wpuf_post_forms_list_table_query_results', $forms, $query, $args );
-
         wp_reset_postdata();
-
 
         return new WP_REST_Response(
             [
                 'success' => true,
                 'result'  => $forms,
+                'pagination' => [
+                    'total_items'  => $total_posts,
+                    'total_pages'  => $total_pages,
+                    'current_page' => $page,
+                    'per_page'     => $per_page,
+                ],
             ]
         );
     }

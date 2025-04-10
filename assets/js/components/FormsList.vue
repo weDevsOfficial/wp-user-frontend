@@ -2,6 +2,7 @@
 import Header from './Header.vue';
 import {__} from '@wordpress/i18n';
 import {ref, onMounted, computed, watch} from 'vue';
+import _ from 'lodash';
 
 const newFormUrl = wpuf_admin_script.admin_url + 'admin.php?page=wpuf-post-forms&action=add-new';
 // store only counts without 0 values
@@ -13,12 +14,22 @@ const loading = ref(true);
 const currentPage = ref(1);
 const perPage = ref(10);
 const totalPages = ref(0);
+const searchTerm = ref('');
 
-const fetchForms = async (page = 1, status = 'all') => {
+// Debounced search handler
+const debouncedFetchForms = _.debounce((page, status, search) => {
+  fetchForms(page, status, search);
+}, 500);
+
+const fetchForms = async (page = 1, status = 'all', search = '') => {
   try {
     loading.value = true;
     currentPage.value = page;
-    const response = await fetch(`/wp-json/wpuf/v1/wpuf_form?page=${page}&per_page=${perPage.value}&status=${status}`,
+    let apiUrl = `/wp-json/wpuf/v1/wpuf_form?page=${page}&per_page=${perPage.value}&status=${status}`;
+    if (search) {
+      apiUrl += `&s=${search}`;
+    }
+    const response = await fetch(apiUrl,
      {
       headers: {
         'X-WP-Nonce': wpuf_forms_list.nonce,
@@ -50,12 +61,17 @@ const changePage = (page) => {
   if (page < 1 || page > totalPages.value || page === currentPage.value) {
     return;
   }
-  fetchForms(page, currentTab.value);
+  fetchForms(page, currentTab.value, searchTerm.value);
 };
 
 // Watch for changes in currentTab and fetch forms accordingly
 watch(currentTab, (newTab) => {
-  fetchForms(1, newTab);
+  fetchForms(1, newTab, searchTerm.value);
+});
+
+// Watch for changes in searchTerm and fetch forms accordingly
+watch(searchTerm, (newSearch) => {
+  debouncedFetchForms(1, currentTab.value, newSearch);
 });
 
 const paginationRange = computed(() => {
@@ -74,13 +90,13 @@ const paginationRange = computed(() => {
 });
 
 onMounted(() => {
-  fetchForms(1, currentTab.value); // Initial fetch with the default tab
+  fetchForms(1, currentTab.value, searchTerm.value);
 });
 </script>
 
 <template>
   <Header utm="wpuf-form-builder" />
-  <div class="wpuf-flex wpuf-justify-between wpuf-items-center">
+  <div class="wpuf-flex wpuf-justify-between wpuf-items-center wpuf-mb-4">
     <h3 class="wpuf-text-2xl wpuf-font-bold">{{ __( 'Post Forms', 'wp-user-frontend' ) }}</h3>
     <div>
       <a
@@ -92,6 +108,7 @@ onMounted(() => {
     </a>
     </div>
   </div>
+
   <div class="wpuf-flex">
     <span
         v-for="(value, key) in postCounts"
@@ -107,7 +124,33 @@ onMounted(() => {
     </span>
   </div>
 
-  <div class="wpuf-mt-8 wpuf-flow-root">
+  <div class="wpuf-flex wpuf-justify-between wpuf-my-8">
+    <div class="wpuf-flex">
+      <select class="wpuf-block wpuf-w-full wpuf-min-w-full !wpuf-py-[10px] !wpuf-px-[14px] wpuf-text-gray-700 wpuf-font-normal !wpuf-leading-none !wpuf-shadow-sm wpuf-border !wpuf-border-gray-300 !wpuf-rounded-[6px] focus:!wpuf-ring-transparent focus:checked:!wpuf-ring-transparent hover:checked:!wpuf-ring-transparent hover:!wpuf-text-gray-700 !wpuf-text-base !leading-6">
+        <option value="">{{ __( 'Bulk actions', 'wp-user-frontend' ) }}</option>
+        <option value="trash">{{ __( 'Move to trash', 'wp-user-frontend' ) }}</option>
+      </select>
+      <button class="wpuf-ml-4 wpuf-inline-flex wpuf-items-center wpuf-justify-center wpuf-rounded-md wpuf-border wpuf-border-transparent wpuf-bg-primary wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white hover:wpuf-bg-primaryHover focus:wpuf-bg-primaryHover focus:wpuf-text-white">
+        {{ __( 'Apply', 'wp-user-frontend' ) }}
+      </button>
+    </div>
+    <div class="wpuf-form-search-box">
+      <div class="wpuf-relative">
+        <input
+            type="text"
+            v-model="searchTerm"
+            placeholder="Search Forms"
+            class="wpuf-block wpuf-min-w-full !wpuf-m-0 !wpuf-leading-none !wpuf-py-[10px] !wpuf-px-[14px] wpuf-text-gray-700 !wpuf-shadow-sm placeholder:wpuf-text-gray-400 wpuf-border !wpuf-border-gray-300 !wpuf-rounded-[6px] wpuf-max-w-full focus:!wpuf-ring-transparent"
+        />
+        <span class="wpuf-absolute wpuf-top-0 wpuf-right-0 wpuf-p-[10px]">
+          <svg class="wpuf-h-5 wpuf-w-5 wpuf-text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+          </svg>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="wpuf-flow-root">
     <div class="wpuf--mx-4 wpuf--my-2 wpuf-overflow-x-auto sm:wpuf--mx-6 lg:wpuf--mx-8">
       <div class="wpuf-inline-block wpuf-min-w-full wpuf-py-2 wpuf-align-middle sm:wpuf-px-6 lg:wpuf-px-8">
         <div class="wpuf-overflow-hidden wpuf-shadow wpuf-border wpuf-border-gray-200 sm:wpuf-rounded-lg">
@@ -176,10 +219,21 @@ onMounted(() => {
                   </div>
                 </td>
                 <td class="wpuf-whitespace-nowrap wpuf-px-3 wpuf-py-4 wpuf-text-sm wpuf-text-gray-500">
-                  <label class="wpuf-relative wpuf-inline-flex wpuf-items-center wpuf-cursor-pointer">
-                    <input type="checkbox" :checked="form.settings_guest_post" class="wpuf-sr-only wpuf-peer" />
-                    <div class="wpuf-w-11 wpuf-h-6 wpuf-bg-gray-200 peer-focus:wpuf-outline-none peer-focus:wpuf-ring-2 peer-focus:wpuf-ring-offset-2 peer-focus:wpuf-ring-primary wpuf-rounded-full peer peer-checked:wpuf-bg-primary peer-checked:after:wpuf-translate-x-full peer-checked:after:wpuf-border-white after:wpuf-content-[''] after:wpuf-absolute after:wpuf-top-[2px] after:wpuf-left-[2px] after:wpuf-bg-white after:wpuf-border-gray-300 after:wpuf-border after:wpuf-rounded-full after:wpuf-h-5 after:wpuf-w-5 after:wpuf-transition-all"></div>
-                  </label>
+                  <svg
+                      v-if="form.settings_guest_post"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 16 16"
+                      class="wpuf-size-4 wpuf-w-6">
+                    <path fill="#059669" fill-rule="evenodd" d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd" />
+                  </svg>
+                  <svg
+                      v-else
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 16 16"
+                      class="wpuf-size-4 wpuf-w-6">
+                    <path fill="#fca5a5" d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z" />
+                  </svg>
+
                 </td>
                 <td class="wpuf-whitespace-nowrap wpuf-px-3 wpuf-py-4 wpuf-text-sm wpuf-text-gray-500">
                   <button class="wpuf-text-gray-400 hover:wpuf-text-gray-600 wpuf-focus:outline-none">

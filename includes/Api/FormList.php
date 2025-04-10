@@ -240,10 +240,11 @@ class FormList extends WP_REST_Controller {
      * @return WP_REST_Response Response object on success, or WP_Error object on failure.
      */
     public function get_items( $request ) {
-        $per_page = ! empty( $request['per_page'] ) ? (int) sanitize_text_field( $request['per_page'] ) : 10;
-        $page     = ! empty( $request['page'] ) ? (int) sanitize_text_field( $request['page'] ) : 1;
-        $status   = ! empty( $request['status'] ) ? sanitize_text_field( $request['status'] ) : 'all'; // Default to 'all'
-        $offset   = ( $page - 1 ) * $per_page;
+        $per_page    = ! empty( $request['per_page'] ) ? (int) sanitize_text_field( $request['per_page'] ) : 10;
+        $page        = ! empty( $request['page'] ) ? (int) sanitize_text_field( $request['page'] ) : 1;
+        $status      = ! empty( $request['status'] ) ? sanitize_text_field( $request['status'] ) : 'all'; // Default to 'all'
+        $search_term = ! empty( $request['s'] ) ? sanitize_text_field( $request['s'] ) : '';
+        $offset      = ( $page - 1 ) * $per_page;
 
         // Determine the post_status based on the requested status
         if ( 'all' === $status ) {
@@ -252,8 +253,8 @@ class FormList extends WP_REST_Controller {
             $post_status = $status;
         }
 
-        // Prepare args for the main query
-        $args = [
+        // Base query args
+        $query_args = [
             'post_type'      => 'wpuf_forms',
             'post_status'    => $post_status,
             'posts_per_page' => $per_page,
@@ -261,6 +262,11 @@ class FormList extends WP_REST_Controller {
             'orderby'        => 'ID',
             'order'          => 'DESC',
         ];
+
+        // Add search term if present
+        if ( ! empty( $search_term ) ) {
+            $query_args['s'] = $search_term;
+        }
 
         // Prepare args for the total count query
         $total_query_args = [
@@ -270,13 +276,17 @@ class FormList extends WP_REST_Controller {
             'fields'         => 'ids',
         ];
 
-        // Get total count for pagination based on status
+        if ( ! empty( $search_term ) ) {
+            $total_query_args['s'] = $search_term;
+        }
+
+        // Get total count for pagination based on status and search
         $total_query = new \WP_Query( $total_query_args );
         $total_posts = (int) $total_query->found_posts;
         $total_pages = ceil( $total_posts / $per_page );
 
         // Execute the main query
-        $query = new \WP_Query( $args );
+        $query = new \WP_Query( $query_args );
         $forms = [];
 
         if ( $query->have_posts() ) {
@@ -287,15 +297,21 @@ class FormList extends WP_REST_Controller {
                 // Get form settings
                 $settings = get_post_meta( $post_id, 'wpuf_form_settings', true );
 
+                if (get_the_title() === 'Form 102') {
+                    error_log( print_r( $settings, true ) );
+                }
+
                 $forms[] = [
-                    'ID'                    => $post_id,
-                    'post_title'            => get_the_title(),
-                    'post_status'           => ! empty( $settings['post_status'] ) ? $settings['post_status'] : '',
-                    'settings_post_type'    => ! empty( $settings['post_type'] ) ? $settings['post_type'] : '',
-                    'settings_guest_post'   => ! empty( $settings['guest_post'] ) ? $settings['guest_post'] : false,
+                    'ID'                  => $post_id,
+                    'post_title'          => get_the_title(),
+                    'post_status'         => ! empty( $settings['post_status'] ) ? $settings['post_status'] : '',
+                    'settings_post_type'  => ! empty( $settings['post_type'] ) ? $settings['post_type'] : '',
+                    'settings_guest_post' => ! empty( $settings['post_permission'] ) && 'guest_post' === $settings['post_permission'],
                 ];
             }
         }
+
+        error_log( print_r( $forms, true ) );
 
         wp_reset_postdata();
 

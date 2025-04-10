@@ -6,6 +6,7 @@
 .php_cs.dist export-ignore
 .php_cs export-ignore
 .github export-ignore
+state.json export-ignore
 Gruntfile.js export-ignore
 vite.config.mjs export-ignore
 tailwind.config.js export-ignore

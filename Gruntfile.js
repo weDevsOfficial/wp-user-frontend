@@ -3,6 +3,7 @@ module.exports = function( grunt) {
     const tailwindFileMap = {
         'admin/form-builder/views/form-builder-v4.1.php': 'admin/form-builder.css',
         'admin/form-builder/views/post-form-settings.php': 'admin/form-builder.css',
+        'assets/js/forms-list.js': 'admin/form-builder.css'
     }
 
     var formBuilderAssets = require('./admin/form-builder/assets/js/form-builder-assets.js');

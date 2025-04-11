@@ -95,7 +95,7 @@ class FormList extends WP_REST_Controller {
 
         // Get total count for pagination based on status and search
         $total_query = new \WP_Query( $total_query_args );
-        $total_posts = (int) $total_query->found_posts;
+        $total_posts = $total_query->found_posts;
         $total_pages = ceil( $total_posts / $per_page );
 
         // Execute the main query

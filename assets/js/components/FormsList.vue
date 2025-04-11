@@ -291,8 +291,8 @@ onMounted(() => {
 
 <template>
   <Header utm="wpuf-form-builder" />
-  <div class="wpuf-flex wpuf-justify-between wpuf-items-center wpuf-mb-4">
-    <h3 class="wpuf-text-2xl wpuf-font-bold">{{ __( 'Post Forms', 'wp-user-frontend' ) }}</h3>
+  <div class="wpuf-flex wpuf-justify-between wpuf-items-center wpuf-mt-9">
+    <h3 class="wpuf-text-2xl wpuf-font-bold wpuf-m-0 wpuf-p-0 wpuf-leading-none">{{ __( 'Post Forms', 'wp-user-frontend' ) }}</h3>
     <div>
       <a
         :href="newFormUrl"
@@ -303,7 +303,7 @@ onMounted(() => {
     </a>
     </div>
   </div>
-  <div class="wpuf-flex">
+  <div class="wpuf-flex wpuf-mt-9">
     <span
         v-for="(value, key) in postCounts"
         :key="key"
@@ -319,7 +319,7 @@ onMounted(() => {
   </div>
   <div class="wpuf-flex wpuf-justify-between wpuf-my-8">
     <div class="wpuf-flex">
-      <select 
+      <select
         v-model="selectedBulkAction"
         class="wpuf-block wpuf-w-full wpuf-min-w-full !wpuf-py-[10px] !wpuf-px-[14px] wpuf-text-gray-700 wpuf-font-normal !wpuf-leading-none !wpuf-shadow-sm wpuf-border !wpuf-border-gray-300 !wpuf-rounded-[6px] focus:!wpuf-ring-transparent focus:checked:!wpuf-ring-transparent hover:checked:!wpuf-ring-transparent hover:wpuf-text-gray-700 !wpuf-text-base !leading-6">
         <option value="">{{ __( 'Bulk actions', 'wp-user-frontend' ) }}</option>
@@ -327,7 +327,7 @@ onMounted(() => {
         <option v-if="currentTab === 'trash'" value="restore">{{ __( 'Restore', 'wp-user-frontend' ) }}</option>
         <option v-if="currentTab === 'trash'" value="delete">{{ __( 'Delete Permanently', 'wp-user-frontend' ) }}</option>
       </select>
-      <button 
+      <button
         @click="handleBulkAction"
         :disabled="!selectedBulkAction || selectedForms.length === 0"
         :class="{
@@ -378,7 +378,7 @@ onMounted(() => {
               </th>
             </tr>
             </thead>
-            <tbody class="wpuf-divide-y wpuf-divide-gray-200 wpuf-bg-white">
+            <tbody class="wpuf-divide-y wpuf-divide-gray-200">
               <tr v-if="loading">
                 <td colspan="6" class="wpuf-py-4 wpuf-text-center">
                   {{ __( 'Loading...', 'wp-user-frontend' ) }}
@@ -390,14 +390,18 @@ onMounted(() => {
                 </td>
               </tr>
               <tr v-for="form in forms" :key="form.ID" class="wpuf-relative wpuf-group">
-                <td class="wpuf-whitespace-nowrap wpuf-py-4 wpuf-pl-4 wpuf-pr-3 wpuf-text-sm wpuf-font-medium wpuf-text-gray-900 sm:wpuf-pl-6">
+                <td class="wpuf-py-4 wpuf-pl-4 wpuf-pr-3 wpuf-text-sm wpuf-font-medium wpuf-text-gray-900 sm:wpuf-pl-6">
                   <input
                     type="checkbox"
                     :value="form.ID"
                     v-model="selectedForms"
                     class="!wpuf-mt-0 !wpuf-mr-2 wpuf-h-4 wpuf-w-4 !wpuf-shadow-none checked:!wpuf-shadow-none focus:checked:!wpuf-shadow-primary focus:checked:!wpuf-shadow-none !wpuf-border-gray-300 checked:!wpuf-border-primary before:checked:!wpuf-bg-white hover:checked:!wpuf-bg-primary focus:!wpuf-ring-transparent focus:checked:!wpuf-ring-transparent hover:checked:!wpuf-ring-transparent focus:checked:!wpuf-bg-primary focus:wpuf-shadow-primary checked:focus:!wpuf-bg-primary checked:hover:wpuf-bg-primary checked:!wpuf-bg-primary before:!wpuf-content-none wpuf-rounded" />
-                  {{ form.post_title }}
-                  <span v-if="form.post_status === 'draft'">
+                  <span
+                      @click="handleEdit(form.ID)"
+                      class="hover:wpuf-cursor-pointer">{{ form.post_title }}</span>
+                  <span
+                    v-if="form.post_status === 'draft'"
+                    class="wpuf-text-gray-400">
                     - {{ __( 'Draft', 'wp-user-frontend' ) }}
                   </span>
                 </td>
@@ -407,20 +411,20 @@ onMounted(() => {
                 <td class="wpuf-whitespace-nowrap wpuf-px-3 wpuf-py-4 wpuf-text-sm">
                   <span
                     :class="{
-                      'wpuf-bg-green-100 wpuf-text-green-800': form.post_status === 'publish',
+                      'wpuf-bg-emerald-50 wpuf-border-emerald-200 wpuf-text-emerald-800': form.post_status === 'publish',
                       'wpuf-bg-yellow-100 wpuf-text-yellow-800': form.post_status === 'pending',
-                      'wpuf-bg-purple-100 wpuf-text-purple-800': form.post_status === 'private',
-                      'wpuf-bg-gray-100 wpuf-text-gray-800': form.post_status === 'draft'
+                      'wpuf-bg-indigo-50 wpuf-border-indigo-200 wpuf-text-purple-800': form.post_status === 'private',
+                      'wpuf-bg-gray-100 wpuf-border-gray-200 wpuf-text-gray-800': form.post_status === 'draft'
                     }"
-                    class="wpuf-inline-flex wpuf-items-center wpuf-px-2.5 wpuf-py-0.5 wpuf-rounded-full wpuf-text-xs wpuf-font-medium">
+                    class="wpuf-inline-flex wpuf-items-center wpuf-py-[2px] wpuf-px-[12px] wpuf-rounded-[5px] wpuf-text-xs wpuf-font-medium wpuf-border">
                     {{ form.post_status === 'publish' ? 'Published' :
                        form.post_status === 'pending' ? 'Pending Review' :
                        form.post_status === 'private' ? 'Private' : 'Draft' }}
                   </span>
                 </td>
-                <td class="wpuf-whitespace-nowrap wpuf-px-3 wpuf-py-4 wpuf-text-sm wpuf-text-gray-500">
+                <td class="wpuf-whitespace-nowrap wpuf-px-3 wpuf-py-4 wpuf-text-sm wpuf-font-medium wpuf-text-gray-500">
                   <div class="wpuf-flex wpuf-items-center">
-                    <code class="wpuf-mr-2">[wpuf_form id="{{ form.ID }}"]</code>
+                    <code class="wpuf-mr-2 wpuf-bg-gray-50 wpuf-border wpuf-border-gray-300 wpuf-rounded-md wpuf-shadow-sm wpuf-py-[10px] wpuf-px-[14px]">[wpuf_form id="{{ form.ID }}"]</code>
                     <button
                       @click="copyToClipboard(form.ID, $event)"
                       class="wpuf-text-gray-500 hover:wpuf-text-gray-700 wpuf-focus:outline-none"
@@ -431,7 +435,7 @@ onMounted(() => {
                     </button>
                   </div>
                 </td>
-                <td class="wpuf-whitespace-nowrap wpuf-px-3 wpuf-py-4 wpuf-text-sm wpuf-text-gray-500">
+                <td class="wpuf-whitespace-nowrap wpuf-px-3 wpuf-py-4 wpuf-text-sm wpuf-font-medium wpuf-text-gray-500">
                   <svg
                       v-if="form.settings_guest_post"
                       xmlns="http://www.w3.org/2000/svg"
@@ -448,7 +452,7 @@ onMounted(() => {
                   </svg>
 
                 </td>
-                <td class="wpuf-whitespace-nowrap wpuf-px-3 wpuf-py-4 wpuf-text-sm wpuf-text-gray-500 wpuf-text-right">
+                <td class="wpuf-whitespace-nowrap wpuf-px-3 wpuf-py-4 wpuf-text-sm wpuf-font-medium wpuf-text-gray-500 wpuf-text-right">
                   <Menu as="div" class="wpuf-relative wpuf-inline-block wpuf-text-left">
                     <div>
                       <MenuButton class="wpuf-inline-flex wpuf-w-full wpuf-justify-center wpuf-rounded-md wpuf-px-2 wpuf-py-2 wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 hover:wpuf-bg-gray-50 focus:wpuf-outline-none focus-visible:wpuf-ring-2 focus-visible:wpuf-ring-white focus-visible:wpuf-ring-opacity-75">
@@ -494,18 +498,19 @@ onMounted(() => {
         </div>
 
         <!-- Pagination -->
-        <div v-if="totalPages > 1" class="wpuf-flex wpuf-items-center wpuf-justify-center wpuf-px-4 wpuf-py-3 sm:wpuf-px-6 wpuf-border-t wpuf-border-gray-200 wpuf-bg-white">
-          <nav class="wpuf-flex wpuf-items-center wpuf-justify-between wpuf-w-full">
+        <div v-if="totalPages > 1" class="wpuf-flex wpuf-items-center wpuf-justify-center wpuf-mt-8">
+          <nav class="wpuf-flex wpuf-items-center wpuf-w-full">
             <div>
               <button
                 @click="changePage(currentPage - 1)"
                 :disabled="currentPage === 1"
                 :class="{ 'wpuf-cursor-not-allowed wpuf-opacity-50': currentPage === 1 }"
-                class="wpuf-relative wpuf-inline-flex wpuf-items-center wpuf-rounded-md wpuf-border wpuf-border-gray-300 wpuf-bg-white wpuf-px-4 wpuf-py-2 wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 hover:wpuf-bg-gray-50"
+                class="wpuf-mr-3 wpuf-rounded-md wpuf-relative wpuf-inline-flex wpuf-items-center wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 hover:wpuf-text-primary"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" class="wpuf-h-5 wpuf-w-5 wpuf-mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M7.70711 14.7071C7.31658 15.0976 6.68342 15.0976 6.2929 14.7071L2.29289 10.7071C1.90237 10.3166 1.90237 9.68342 2.29289 9.29289L6.29289 5.29289C6.68342 4.90237 7.31658 4.90237 7.70711 5.29289C8.09763 5.68342 8.09763 6.31658 7.70711 6.70711L5.41421 9L17 9C17.5523 9 18 9.44771 18 10C18 10.5523 17.5523 11 17 11L5.41421 11L7.70711 13.2929C8.09763 13.6834 8.09763 14.3166 7.70711 14.7071Z" fill="#94A3B8"/>
                 </svg>
+                &nbsp;
                 {{ __('Previous', 'wp-user-frontend') }}
               </button>
             </div>
@@ -517,9 +522,9 @@ onMounted(() => {
                 @click="changePage(page)"
                 :class="[
                   page === currentPage
-                    ? 'wpuf-bg-primary wpuf-text-white'
-                    : 'wpuf-bg-white wpuf-text-gray-500 hover:wpuf-bg-gray-50',
-                  'wpuf-relative wpuf-inline-flex wpuf-items-center wpuf-px-4 wpuf-py-2 wpuf-text-sm wpuf-font-medium wpuf-cursor-pointer wpuf-mx-1 wpuf-rounded-md wpuf-border wpuf-border-gray-300'
+                    ? 'wpuf-text-primary wpuf-border-primary'
+                    : 'wpuf-text-gray-500 wpuf-border-transparent',
+                  'wpuf-relative wpuf-inline-flex wpuf-items-center wpuf-px-4 wpuf-py-2 wpuf-text-sm wpuf-font-medium wpuf-cursor-pointer wpuf-mx-1 wpuf-border-t-2 hover:wpuf-border-primary wpuf-transition-all'
                 ]"
               >
                 {{ page }}
@@ -531,11 +536,12 @@ onMounted(() => {
                 @click="changePage(currentPage + 1)"
                 :disabled="currentPage === totalPages"
                 :class="{ 'wpuf-cursor-not-allowed wpuf-opacity-50': currentPage === totalPages }"
-                class="wpuf-relative wpuf-inline-flex wpuf-items-center wpuf-rounded-md wpuf-border wpuf-border-gray-300 wpuf-bg-white wpuf-px-4 wpuf-py-2 wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 hover:wpuf-bg-gray-50"
+                class="wpuf-ml-3 wpuf-rounded-md wpuf-relative wpuf-inline-flex wpuf-items-center wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 hover:wpuf-text-primary"
               >
                 {{ __('Next', 'wp-user-frontend') }}
-                <svg xmlns="http://www.w3.org/2000/svg" class="wpuf-h-5 wpuf-w-5 wpuf-ml-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                &nbsp;
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12.2929 5.29289C12.6834 4.90237 13.3166 4.90237 13.7071 5.29289L17.7071 9.29289C18.0976 9.68342 18.0976 10.3166 17.7071 10.7071L13.7071 14.7071C13.3166 15.0976 12.6834 15.0976 12.2929 14.7071C11.9024 14.3166 11.9024 13.6834 12.2929 13.2929L14.5858 11H3C2.44772 11 2 10.5523 2 10C2 9.44772 2.44772 9 3 9H14.5858L12.2929 6.70711C11.9024 6.31658 11.9024 5.68342 12.2929 5.29289Z" fill="#94A3B8"/>
                 </svg>
               </button>
             </div>

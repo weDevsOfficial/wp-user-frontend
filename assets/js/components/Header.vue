@@ -12,6 +12,7 @@ const utm = props.utm;
 
 const wpuf = wpuf_admin_script;
 const logoUrl = wpuf.asset_url + '/images/wpuf-icon-circle.svg';
+const proBadge = wpuf.asset_url + '/images/pro-badge.svg';
 const upgradeUrl = wpuf.upgradeUrl + '?utm_source=' + utm + '&utm_medium=wpuf-header';
 </script>
 
@@ -25,10 +26,10 @@ const upgradeUrl = wpuf.upgradeUrl + '?utm_source=' + utm + '&utm_medium=wpuf-he
                 v-if="!wpuf.isProActive"
                 :href="upgradeUrl"
                 target="_blank"
-                class="wpuf-ml-4 wpuf-rounded-md wpuf-bg-amber-500 wpuf-px-3 wpuf-py-2 wpuf-text-sm font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-amber-600 hover:wpuf-text-white hover:wpuf-shadow-none active:wpuf-shadow-none focus:wpuf-bg-amber-600 focus:wpuf-text-white">
+                class="wpuf-btn-primary wpuf-flex wpuf-ml-4 wpuf-p-2">
                 {{ __( 'Upgrade', 'wp-user-frontend' ) }}
                 &nbsp;
-                <span class="dashicons dashicons-superhero-alt"></span>
+                <img :src="proBadge" alt="">
             </a>
         </div>
         <div class="wpuf-flex wpuf-justify-end wpuf-items-center wpuf-w-2/4">

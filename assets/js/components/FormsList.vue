@@ -48,8 +48,6 @@ const fetchForms = async (page = 1, status = 'all', search = '') => {
         totalPages.value = 0;
       }
 
-      console.log(forms.value);
-
       // Reset selection when forms data changes
       selectedForms.value = [];
       selectAllChecked.value = false;
@@ -120,6 +118,46 @@ const paginationRange = computed(() => {
   return range;
 });
 
+// Add computed property for menu items
+const menuItems = computed(() => {
+  if (currentTab.value === 'trash') {
+    return [
+      {
+        label: __('Restore', 'wp-user-frontend'),
+        action: 'restore',
+        class: 'wpuf-text-gray-900',
+        activeClass: 'wpuf-bg-primary wpuf-text-white'
+      },
+      {
+        label: __('Delete Permanently', 'wp-user-frontend'),
+        action: 'delete',
+        class: 'wpuf-text-red-600',
+        activeClass: 'wpuf-bg-red-500 wpuf-text-white'
+      }
+    ];
+  }
+  return [
+    {
+      label: __('Edit', 'wp-user-frontend'),
+      action: 'edit',
+      class: 'wpuf-text-gray-900',
+      activeClass: 'wpuf-bg-primary wpuf-text-white'
+    },
+    {
+      label: __('Duplicate', 'wp-user-frontend'),
+      action: 'duplicate',
+      class: 'wpuf-text-gray-900',
+      activeClass: 'wpuf-bg-primary wpuf-text-white'
+    },
+    {
+      label: __('Trash', 'wp-user-frontend'),
+      action: 'trash',
+      class: 'wpuf-text-red-600',
+      activeClass: 'wpuf-bg-red-500 wpuf-text-white'
+    }
+  ];
+});
+
 // Function to copy text to clipboard
 const copyToClipboard = async (formId, $event) => {
   const shortcode = `[wpuf_form id="${formId}"]`;
@@ -171,6 +209,35 @@ const handleTrash = (formId) => {
   const trashUrl = `${adminUrl}&action=trash`;
   // Redirect to the trash URL
   window.location.href = trashUrl;
+};
+
+// Add new handler for restore action
+const handleRestore = (formId) => {
+  // Generate WordPress nonce for security
+  const wpnonce = wpuf_forms_list.bulk_nonce;
+  // Construct the base admin URL with nonce
+  const adminUrl = `${wpuf_admin_script.admin_url}admin.php?page=wpuf-post-forms&id=${formId}&_wpnonce=${wpnonce}`;
+  // Construct the restore URL
+  const restoreUrl = `${adminUrl}&action=restore`;
+  // Redirect to the restore URL
+  window.location.href = restoreUrl;
+};
+
+// Add new handler for delete permanently action
+const handleDelete = (formId) => {
+  // Show confirmation dialog
+  if (!confirm(__('Are you sure you want to delete this form permanently? This action cannot be undone.', 'wp-user-frontend'))) {
+    return;
+  }
+
+  // Generate WordPress nonce for security
+  const wpnonce = wpuf_forms_list.bulk_nonce;
+  // Construct the base admin URL with nonce
+  const adminUrl = `${wpuf_admin_script.admin_url}admin.php?page=wpuf-post-forms&id=${formId}&_wpnonce=${wpnonce}`;
+  // Construct the delete URL
+  const deleteUrl = `${adminUrl}&action=delete`;
+  // Redirect to the delete URL
+  window.location.href = deleteUrl;
 };
 
 onMounted(() => {
@@ -347,39 +414,19 @@ onMounted(() => {
                     >
                       <MenuItems class="wpuf-absolute wpuf-right-0 wpuf-mt-2 wpuf-w-40 wpuf-origin-top-right wpuf-divide-y wpuf-divide-gray-100 wpuf-rounded-md wpuf-bg-white wpuf-shadow-lg wpuf-ring-1 wpuf-ring-black wpuf-ring-opacity-5 focus:wpuf-outline-none wpuf-z-10">
                         <div class="wpuf-px-1 wpuf-py-1">
-                          <MenuItem v-slot="{ active }">
+                          <MenuItem v-for="item in menuItems" :key="item.action" v-slot="{ active }">
                             <button
-                              @click="handleEdit(form.ID)"
+                              @click="item.action === 'edit' ? handleEdit(form.ID) :
+                                      item.action === 'duplicate' ? handleDuplicate(form.ID) :
+                                      item.action === 'trash' ? handleTrash(form.ID) :
+                                      item.action === 'restore' ? handleRestore(form.ID) :
+                                      handleDelete(form.ID)"
                               :class="[
-                                active ? 'wpuf-bg-primary wpuf-text-white' : 'wpuf-text-gray-900',
+                                active ? item.activeClass : item.class,
                                 'wpuf-group wpuf-flex wpuf-w-full wpuf-items-center wpuf-rounded-md wpuf-px-2 wpuf-py-2 wpuf-text-sm',
                               ]"
                             >
-                              {{ __( 'Edit', 'wp-user-frontend' ) }}
-                            </button>
-                          </MenuItem>
-                          <MenuItem v-slot="{ active }">
-                            <button
-                              @click="handleDuplicate(form.ID)"
-                              :class="[
-                                active ? 'wpuf-bg-primary wpuf-text-white' : 'wpuf-text-gray-900',
-                                'wpuf-group wpuf-flex wpuf-w-full wpuf-items-center wpuf-rounded-md wpuf-px-2 wpuf-py-2 wpuf-text-sm',
-                              ]"
-                            >
-                              {{ __( 'Duplicate', 'wp-user-frontend' ) }}
-                            </button>
-                          </MenuItem>
-                        </div>
-                        <div class="wpuf-px-1 wpuf-py-1">
-                          <MenuItem v-slot="{ active }">
-                            <button
-                              @click="handleTrash(form.ID)"
-                              :class="[
-                                active ? 'wpuf-bg-red-500 wpuf-text-white' : 'wpuf-text-red-600',
-                                'wpuf-group wpuf-flex wpuf-w-full wpuf-items-center wpuf-rounded-md wpuf-px-2 wpuf-py-2 wpuf-text-sm',
-                              ]"
-                            >
-                              {{ __( 'Trash', 'wp-user-frontend' ) }}
+                              {{ item.label }}
                             </button>
                           </MenuItem>
                         </div>

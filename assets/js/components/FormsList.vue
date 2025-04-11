@@ -3,6 +3,7 @@ import Header from './Header.vue';
 import {__} from '@wordpress/i18n';
 import {ref, onMounted, computed, watch} from 'vue';
 import _ from 'lodash';
+import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue';
 
 const newFormUrl = wpuf_admin_script.admin_url + 'admin.php?page=wpuf-post-forms&action=add-new';
 // store only counts without 0 values
@@ -34,7 +35,7 @@ const fetchForms = async (page = 1, status = 'all', search = '') => {
     const response = await fetch(apiUrl,
      {
       headers: {
-        'X-WP-Nonce': wpuf_forms_list.nonce,
+        'X-WP-Nonce': wpuf_forms_list.rest_nonce,
       },
     });
     const data = await response.json();
@@ -46,6 +47,9 @@ const fetchForms = async (page = 1, status = 'all', search = '') => {
       } else {
         totalPages.value = 0;
       }
+
+      console.log(forms.value);
+
       // Reset selection when forms data changes
       selectedForms.value = [];
       selectAllChecked.value = false;
@@ -140,6 +144,35 @@ const copyToClipboard = async (formId, $event) => {
   }
 };
 
+const handleEdit = (formId) => {
+  // Construct the edit URL
+  const editUrl = `${wpuf_admin_script.admin_url}admin.php?page=wpuf-post-forms&action=edit&id=${formId}`;
+  // Navigate to the edit page
+  window.location.href = editUrl;
+};
+
+const handleDuplicate = (formId) => {
+  // Generate WordPress nonce for security
+  const wpnonce = wpuf_forms_list.bulk_nonce;
+  // Construct the base admin URL with nonce
+  const adminUrl = `${wpuf_admin_script.admin_url}admin.php?page=wpuf-post-forms&id=${formId}&_wpnonce=${wpnonce}`;
+  // Construct the duplicate URL
+  const duplicateUrl = `${adminUrl}&action=duplicate`;
+  // Redirect to the duplicate URL
+  window.location.href = duplicateUrl;
+};
+
+const handleTrash = (formId) => {
+  // Generate WordPress nonce for security
+  const wpnonce = wpuf_forms_list.bulk_nonce;
+  // Construct the base admin URL with nonce
+  const adminUrl = `${wpuf_admin_script.admin_url}admin.php?page=wpuf-post-forms&id=${formId}&_wpnonce=${wpnonce}`;
+  // Construct the trash URL
+  const trashUrl = `${adminUrl}&action=trash`;
+  // Redirect to the trash URL
+  window.location.href = trashUrl;
+};
+
 onMounted(() => {
   fetchForms(1, currentTab.value, searchTerm.value);
 });
@@ -159,7 +192,6 @@ onMounted(() => {
     </a>
     </div>
   </div>
-
   <div class="wpuf-flex">
     <span
         v-for="(value, key) in postCounts"
@@ -174,7 +206,6 @@ onMounted(() => {
       <span class="wpuf-bg-gray-100 wpuf-text-gray-900 wpuf-ml-3 wpuf-rounded-full wpuf-py-0.5 wpuf-px-2.5 wpuf-text-xs wpuf-font-medium md:wpuf-inline-block">{{ value.count }}</span>
     </span>
   </div>
-
   <div class="wpuf-flex wpuf-justify-between wpuf-my-8">
     <div class="wpuf-flex">
       <select class="wpuf-block wpuf-w-full wpuf-min-w-full !wpuf-py-[10px] !wpuf-px-[14px] wpuf-text-gray-700 wpuf-font-normal !wpuf-leading-none !wpuf-shadow-sm wpuf-border !wpuf-border-gray-300 !wpuf-rounded-[6px] focus:!wpuf-ring-transparent focus:checked:!wpuf-ring-transparent hover:checked:!wpuf-ring-transparent hover:!wpuf-text-gray-700 !wpuf-text-base !leading-6">
@@ -204,7 +235,7 @@ onMounted(() => {
   <div class="wpuf-flow-root">
     <div class="wpuf--mx-4 wpuf--my-2 wpuf-overflow-x-auto sm:wpuf--mx-6 lg:wpuf--mx-8">
       <div class="wpuf-inline-block wpuf-min-w-full wpuf-py-2 wpuf-align-middle sm:wpuf-px-6 lg:wpuf-px-8">
-        <div class="wpuf-overflow-hidden wpuf-shadow wpuf-border wpuf-border-gray-200 sm:wpuf-rounded-lg">
+        <div class="wpuf-shadow wpuf-border wpuf-border-gray-200 sm:wpuf-rounded-lg">
           <table class="wpuf-min-w-full wpuf-divide-y wpuf-divide-gray-200">
             <thead>
             <tr>
@@ -245,6 +276,9 @@ onMounted(() => {
                     v-model="selectedForms"
                     class="!wpuf-mt-0 !wpuf-mr-2 wpuf-h-4 wpuf-w-4 !wpuf-shadow-none checked:!wpuf-shadow-none focus:checked:!wpuf-shadow-primary focus:checked:!wpuf-shadow-none !wpuf-border-gray-300 checked:!wpuf-border-primary before:checked:!wpuf-bg-white hover:checked:!wpuf-bg-primary focus:!wpuf-ring-transparent focus:checked:!wpuf-ring-transparent hover:checked:!wpuf-ring-transparent focus:checked:!wpuf-bg-primary focus:wpuf-shadow-primary checked:focus:!wpuf-bg-primary checked:hover:wpuf-bg-primary checked:!wpuf-bg-primary before:!wpuf-content-none wpuf-rounded" />
                   {{ form.post_title }}
+                  <span v-if="form.post_status === 'draft'">
+                    - {{ __( 'Draft', 'wp-user-frontend' ) }}
+                  </span>
                 </td>
                 <td class="wpuf-whitespace-nowrap wpuf-px-3 wpuf-py-4 wpuf-text-sm wpuf-text-gray-500">
                   {{ form.settings_post_type }}
@@ -293,12 +327,65 @@ onMounted(() => {
                   </svg>
 
                 </td>
-                <td class="wpuf-whitespace-nowrap wpuf-px-3 wpuf-py-4 wpuf-text-sm wpuf-text-gray-500">
-                  <button class="wpuf-text-gray-400 hover:wpuf-text-gray-600 wpuf-focus:outline-none">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M5 12H5.01M12 12H12.01M19 12H19.01M6 12C6 12.5523 5.55228 13 5 13C4.44772 13 4 12.5523 4 12C4 11.4477 4.44772 11 5 11C5.55228 11 6 11.4477 6 12ZM13 12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12C11 11.4477 11.4477 11 12 11C12.5523 11 13 11.4477 13 12ZM20 12C20 12.5523 19.5523 13 19 13C18.4477 13 18 12.5523 18 12C18 11.4477 18.4477 11 19 11C19.5523 11 20 11.4477 20 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </button>
+                <td class="wpuf-whitespace-nowrap wpuf-px-3 wpuf-py-4 wpuf-text-sm wpuf-text-gray-500 wpuf-text-right">
+                  <Menu as="div" class="wpuf-relative wpuf-inline-block wpuf-text-left">
+                    <div>
+                      <MenuButton class="wpuf-inline-flex wpuf-w-full wpuf-justify-center wpuf-rounded-md wpuf-px-2 wpuf-py-2 wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 hover:wpuf-bg-gray-50 focus:wpuf-outline-none focus-visible:wpuf-ring-2 focus-visible:wpuf-ring-white focus-visible:wpuf-ring-opacity-75">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="wpuf-h-5 wpuf-w-5 wpuf-text-gray-400 hover:wpuf-text-gray-600">
+                           <path d="M5 12H5.01M12 12H12.01M19 12H19.01M6 12C6 12.5523 5.55228 13 5 13C4.44772 13 4 12.5523 4 12C4 11.4477 4.44772 11 5 11C5.55228 11 6 11.4477 6 12ZM13 12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12C11 11.4477 11.4477 11 12 11C12.5523 11 13 11.4477 13 12ZM20 12C20 12.5523 19.5523 13 19 13C18.4477 13 18 12.5523 18 12C18 11.4477 18.4477 11 19 11C19.5523 11 20 11.4477 20 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </MenuButton>
+                    </div>
+
+                    <transition
+                      enter-active-class="wpuf-transition wpuf-duration-100 wpuf-ease-out"
+                      enter-from-class="wpuf-transform wpuf-scale-95 wpuf-opacity-0"
+                      enter-to-class="wpuf-transform wpuf-scale-100 wpuf-opacity-100"
+                      leave-active-class="wpuf-transition wpuf-duration-75 wpuf-ease-in"
+                      leave-from-class="wpuf-transform wpuf-scale-100 wpuf-opacity-100"
+                      leave-to-class="wpuf-transform wpuf-scale-95 wpuf-opacity-0"
+                    >
+                      <MenuItems class="wpuf-absolute wpuf-right-0 wpuf-mt-2 wpuf-w-40 wpuf-origin-top-right wpuf-divide-y wpuf-divide-gray-100 wpuf-rounded-md wpuf-bg-white wpuf-shadow-lg wpuf-ring-1 wpuf-ring-black wpuf-ring-opacity-5 focus:wpuf-outline-none wpuf-z-10">
+                        <div class="wpuf-px-1 wpuf-py-1">
+                          <MenuItem v-slot="{ active }">
+                            <button
+                              @click="handleEdit(form.ID)"
+                              :class="[
+                                active ? 'wpuf-bg-primary wpuf-text-white' : 'wpuf-text-gray-900',
+                                'wpuf-group wpuf-flex wpuf-w-full wpuf-items-center wpuf-rounded-md wpuf-px-2 wpuf-py-2 wpuf-text-sm',
+                              ]"
+                            >
+                              {{ __( 'Edit', 'wp-user-frontend' ) }}
+                            </button>
+                          </MenuItem>
+                          <MenuItem v-slot="{ active }">
+                            <button
+                              @click="handleDuplicate(form.ID)"
+                              :class="[
+                                active ? 'wpuf-bg-primary wpuf-text-white' : 'wpuf-text-gray-900',
+                                'wpuf-group wpuf-flex wpuf-w-full wpuf-items-center wpuf-rounded-md wpuf-px-2 wpuf-py-2 wpuf-text-sm',
+                              ]"
+                            >
+                              {{ __( 'Duplicate', 'wp-user-frontend' ) }}
+                            </button>
+                          </MenuItem>
+                        </div>
+                        <div class="wpuf-px-1 wpuf-py-1">
+                          <MenuItem v-slot="{ active }">
+                            <button
+                              @click="handleTrash(form.ID)"
+                              :class="[
+                                active ? 'wpuf-bg-red-500 wpuf-text-white' : 'wpuf-text-red-600',
+                                'wpuf-group wpuf-flex wpuf-w-full wpuf-items-center wpuf-rounded-md wpuf-px-2 wpuf-py-2 wpuf-text-sm',
+                              ]"
+                            >
+                              {{ __( 'Trash', 'wp-user-frontend' ) }}
+                            </button>
+                          </MenuItem>
+                        </div>
+                      </MenuItems>
+                    </transition>
+                  </Menu>
                 </td>
               </tr>
             </tbody>

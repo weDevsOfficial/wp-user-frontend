@@ -242,21 +242,14 @@ class FormList extends WP_REST_Controller {
     public function get_items( $request ) {
         $per_page    = ! empty( $request['per_page'] ) ? (int) sanitize_text_field( $request['per_page'] ) : 10;
         $page        = ! empty( $request['page'] ) ? (int) sanitize_text_field( $request['page'] ) : 1;
-        $status      = ! empty( $request['status'] ) ? sanitize_text_field( $request['status'] ) : 'all'; // Default to 'all'
+        $status      = ! empty( $request['status'] ) ? sanitize_text_field( $request['status'] ) : 'any'; // Default to 'all'
         $search_term = ! empty( $request['s'] ) ? sanitize_text_field( $request['s'] ) : '';
         $offset      = ( $page - 1 ) * $per_page;
-
-        // Determine the post_status based on the requested status
-        if ( 'all' === $status ) {
-            $post_status = 'publish'; // As requested, 'all' shows 'publish'
-        } else {
-            $post_status = $status;
-        }
 
         // Base query args
         $query_args = [
             'post_type'      => 'wpuf_forms',
-            'post_status'    => $post_status,
+            'post_status'    => $status,
             'posts_per_page' => $per_page,
             'offset'         => $offset,
             'orderby'        => 'ID',
@@ -271,8 +264,8 @@ class FormList extends WP_REST_Controller {
         // Prepare args for the total count query
         $total_query_args = [
             'post_type'      => 'wpuf_forms',
-            'post_status'    => $post_status,
-            'posts_per_page' => -1,
+            'post_status'    => $status,
+            'posts_per_page' => $per_page,
             'fields'         => 'ids',
         ];
 
@@ -287,6 +280,7 @@ class FormList extends WP_REST_Controller {
 
         // Execute the main query
         $query = new \WP_Query( $query_args );
+
         $forms = [];
 
         if ( $query->have_posts() ) {
@@ -297,10 +291,6 @@ class FormList extends WP_REST_Controller {
                 // Get form settings
                 $settings = get_post_meta( $post_id, 'wpuf_form_settings', true );
 
-                if (get_the_title() === 'Form 102') {
-                    error_log( print_r( $settings, true ) );
-                }
-
                 $forms[] = [
                     'ID'                  => $post_id,
                     'post_title'          => get_the_title(),
@@ -310,8 +300,6 @@ class FormList extends WP_REST_Controller {
                 ];
             }
         }
-
-        error_log( print_r( $forms, true ) );
 
         wp_reset_postdata();
 

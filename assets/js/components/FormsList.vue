@@ -18,6 +18,7 @@ const totalPages = ref(0);
 const searchTerm = ref('');
 const selectAllChecked = ref(false);
 const selectedForms = ref([]);
+const selectedBulkAction = ref('');
 
 // Debounced search handler
 const debouncedFetchForms = _.debounce((page, status, search) => {
@@ -240,6 +241,49 @@ const handleDelete = (formId) => {
   window.location.href = deleteUrl;
 };
 
+const handleBulkAction = () => {
+  if (!selectedBulkAction.value || selectedForms.value.length === 0) {
+    return;
+  }
+
+  // Construct the base URL
+  let url = `${wpuf_admin_script.admin_url}admin.php?page=wpuf-post-forms`;
+
+  // Add search parameter if exists
+  if (searchTerm.value) {
+    url += `&s=${encodeURIComponent(searchTerm.value)}`;
+  }
+
+  // Add nonce
+  url += `&_wpnonce=${wpuf_forms_list.bulk_nonce}`;
+
+  // Add referer
+  const referer = encodeURIComponent(window.location.href);
+  url += `&_wp_http_referer=${referer}`;
+
+  // Add action and bulk action
+  url += `&action=${selectedBulkAction.value}&bulk_action=Apply`;
+
+  // Add current page
+  url += `&paged=${currentPage.value}`;
+
+  // Add post status if in trash
+  if (currentTab.value === 'trash') {
+    url += '&post_status=trash';
+  }
+
+  // Add selected form IDs
+  selectedForms.value.forEach(formId => {
+    url += `&post[]=${formId}`;
+  });
+
+  // Add action2 (same as action)
+  url += `&action2=${selectedBulkAction.value}`;
+
+  // Navigate to the constructed URL
+  window.location.href = url;
+};
+
 onMounted(() => {
   fetchForms(1, currentTab.value, searchTerm.value);
 });
@@ -275,11 +319,21 @@ onMounted(() => {
   </div>
   <div class="wpuf-flex wpuf-justify-between wpuf-my-8">
     <div class="wpuf-flex">
-      <select class="wpuf-block wpuf-w-full wpuf-min-w-full !wpuf-py-[10px] !wpuf-px-[14px] wpuf-text-gray-700 wpuf-font-normal !wpuf-leading-none !wpuf-shadow-sm wpuf-border !wpuf-border-gray-300 !wpuf-rounded-[6px] focus:!wpuf-ring-transparent focus:checked:!wpuf-ring-transparent hover:checked:!wpuf-ring-transparent hover:!wpuf-text-gray-700 !wpuf-text-base !leading-6">
+      <select 
+        v-model="selectedBulkAction"
+        class="wpuf-block wpuf-w-full wpuf-min-w-full !wpuf-py-[10px] !wpuf-px-[14px] wpuf-text-gray-700 wpuf-font-normal !wpuf-leading-none !wpuf-shadow-sm wpuf-border !wpuf-border-gray-300 !wpuf-rounded-[6px] focus:!wpuf-ring-transparent focus:checked:!wpuf-ring-transparent hover:checked:!wpuf-ring-transparent hover:wpuf-text-gray-700 !wpuf-text-base !leading-6">
         <option value="">{{ __( 'Bulk actions', 'wp-user-frontend' ) }}</option>
-        <option value="trash">{{ __( 'Move to trash', 'wp-user-frontend' ) }}</option>
+        <option v-if="currentTab !== 'trash'" value="trash">{{ __( 'Move to trash', 'wp-user-frontend' ) }}</option>
+        <option v-if="currentTab === 'trash'" value="restore">{{ __( 'Restore', 'wp-user-frontend' ) }}</option>
+        <option v-if="currentTab === 'trash'" value="delete">{{ __( 'Delete Permanently', 'wp-user-frontend' ) }}</option>
       </select>
-      <button class="wpuf-ml-4 wpuf-inline-flex wpuf-items-center wpuf-justify-center wpuf-rounded-md wpuf-border wpuf-border-transparent wpuf-bg-primary wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white hover:wpuf-bg-primaryHover focus:wpuf-bg-primaryHover focus:wpuf-text-white">
+      <button 
+        @click="handleBulkAction"
+        :disabled="!selectedBulkAction || selectedForms.length === 0"
+        :class="{
+          'wpuf-opacity-50 wpuf-cursor-not-allowed': !selectedBulkAction || selectedForms.length === 0
+        }"
+        class="wpuf-ml-4 wpuf-inline-flex wpuf-items-center wpuf-justify-center wpuf-rounded-md wpuf-border wpuf-border-transparent wpuf-bg-primary wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white hover:wpuf-bg-primaryHover focus:wpuf-bg-primaryHover focus:wpuf-text-white">
         {{ __( 'Apply', 'wp-user-frontend' ) }}
       </button>
     </div>

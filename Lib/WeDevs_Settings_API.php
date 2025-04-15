@@ -590,7 +590,29 @@ class WeDevs_Settings_API {
 
         $html .= '</h2>';
 
-        echo wp_kses_post( $html );
+        $allowed_html = [
+            'h2'    => [
+                'class' => true,
+            ],
+            'div'   => [
+                'id' => true,
+            ],
+            'input' => [
+                'type'        => true,
+                'id'          => true,
+                'placeholder' => true,
+            ],
+            'span'  => [
+                'class' => true,
+            ],
+            'a'     => [
+                'href'  => true,
+                'class' => true,
+                'id'    => true,
+            ],
+        ];
+
+        echo wp_kses( $html, $allowed_html );
     }
 
     /**

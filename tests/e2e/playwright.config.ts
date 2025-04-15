@@ -13,13 +13,13 @@ import { devices } from "@playwright/test";
 const config: PlaywrightTestConfig = {
     testDir: "./tests",
     /* Maximum time one test can run for. */
-    timeout: 1000 * 90, //90 sec
+    timeout: 1000 * 10, //10 sec
     expect: {
         /**
          * Maximum time expect() should wait for the condition to be met.
          * For example in `await expect(locator).toHaveText();`
          */
-        timeout: 1000 * 30, //30 sec
+        timeout: 1000 * 10, //10 sec
     },
     /* Run tests in files in parallel */
     fullyParallel: false,
@@ -31,11 +31,13 @@ const config: PlaywrightTestConfig = {
     workers: process.env.CI ? 1 : undefined,
     /* Reporter to use. See https://playwright.dev/docs/test-reporters */
     reporter: process.env.CI
-        ? [["html"], ["junit", { outputFile: "playwright-report/results.xml" }]]
+        ? [
+            ["list", { printSteps: true }],
+            ["html", { outputFolder: "./playwright-report", open: "never" }]
+        ]
         : [
-              ["html", { open: "never" }],
-              ["list", { printSteps: true }],
-          ],
+            ["html", { outputFolder: "./playwright-report", open: "never" }],
+        ],
     /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
     use: {
         /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
@@ -44,7 +46,7 @@ const config: PlaywrightTestConfig = {
         // baseURL: 'http://localhost:3000',
 
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-        trace: "on",
+        trace: "off",
 
         // Browser options
         headless: true,
@@ -55,7 +57,7 @@ const config: PlaywrightTestConfig = {
         // Artifacts
         screenshot: "only-on-failure",
 
-        video: "on",
+        video: "off",
 
         //SlowMo
         launchOptions: {
@@ -72,58 +74,7 @@ const config: PlaywrightTestConfig = {
                 storageState: "state.json",
             },
         },
-
-        // {
-        //   name: 'firefox',
-        //   use: {
-        //     ...devices['Desktop Firefox'],
-        //   },
-        // },
-
-        // {
-        //   name: 'webkit',
-        //   use: {
-        //     ...devices['Desktop Safari'],
-        //   },
-        //},
-
-        /* Test against mobile viewports. */
-        // {
-        //   name: 'Mobile Chrome',
-        //   use: {
-        //     ...devices['Pixel 5'],
-        //   },
-        // },
-        // {
-        //   name: 'Mobile Safari',
-        //   use: {
-        //     ...devices['iPhone 12'],
-        //   },
-        // },
-
-        /* Test against branded browsers. */
-        // {
-        //   name: 'Microsoft Edge',
-        //   use: {
-        //     channel: 'msedge',
-        //   },
-        // },
-        // {
-        //   name: 'Google Chrome',
-        //   use: {
-        //     channel: 'chrome',
-        //   },
-        // },
     ],
-
-    /* Folder for test artifacts such as screenshots, videos, traces, etc. */
-    // outputDir: 'test-results/',
-
-    /* Run your local dev server before starting the tests */
-    // webServer: {
-    //   command: 'npm run start',
-    //   port: 3000,
-    // },
 };
 
 export default config;

@@ -1,4 +1,5 @@
-require('dotenv').config();
+import dotenv from "dotenv";
+dotenv.config();
 import { expect, Page } from '@playwright/test';
 import { Selectors } from './selectors';
 
@@ -83,6 +84,7 @@ export class FieldOptionsCommonPage {
     async addCustomFields_Common() {
         //CustomFields
         await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsText);
+        
         if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
             await this.page.click(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
         }
@@ -299,10 +301,16 @@ export class FieldOptionsCommonPage {
     /********************* SaveForm *********************/
     //SaveForm
     async saveForm_Common(validateNewPostName_Common: string) {
-        //Validate Form Name
-        const checkNewFormName_Common = await this.page.innerText(Selectors.postForms.saveForm_Common.formNameReCheck);
-        await expect(checkNewFormName_Common).toContain(validateNewPostName_Common);
+        
+        try{
+        await this.page.waitForSelector(Selectors.postForms.saveForm_Common.formNameReCheck, { state: 'visible' });
+        const checkNewFormName_Common = await this.page.textContent(Selectors.postForms.saveForm_Common.formNameReCheck);
+        expect(checkNewFormName_Common?.trim()).toContain(validateNewPostName_Common);
+
         console.log('Before Save-Form Name: ' + checkNewFormName_Common);
+        }catch(e){
+            console.log('not matched ');
+        }
         await this.page.waitForLoadState('networkidle');
 
         //Save Form

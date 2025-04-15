@@ -421,7 +421,7 @@
                 submitButton = form.find('input[type=submit]'),
                 form_data = WP_User_Frontend.validateForm(form);
 
-            if ( form_data == false ) {
+            if (!form_data) {
                 WP_User_Frontend.addErrorNotice( self, 'bottom' );
             }
             return form_data;
@@ -442,13 +442,11 @@
 
                 $.post(wpuf_frontend.ajaxurl, form_data, function(res) {
                     // var res = $.parseJSON(res);
-
                     if ( res.success) {
-
                         // enable external plugins to use events
                         $('body').trigger('wpuf:postform:success', res);
 
-                        if ( res.show_message == true) {
+                        if (res.show_message) {
                             form.before( '<div class="wpuf-success">' + res.message + '</div>');
                             form.slideUp( 'fast', function() {
                                 form.remove();
@@ -464,16 +462,23 @@
                         }
 
                     } else {
-
                         if ( typeof res.type !== 'undefined' && res.type === 'login' ) {
-
-                            if ( confirm(res.error) ) {
-                                window.location = res.redirect_to;
-                            } else {
-                                submitButton.removeAttr('disabled');
-                                submitButton.removeClass('button-primary-disabled');
-                                form.find('span.wpuf-loading').remove();
-                            }
+                            Swal.fire({
+                                text: res.error,
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#3085d6",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "OK"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location = res.redirect_to;
+                                } else {
+                                    submitButton.removeAttr('disabled');
+                                    submitButton.removeClass('button-primary-disabled');
+                                    form.find('span.wpuf-loading').remove();
+                                }
+                            });
 
                             return;
                         } else {
@@ -481,8 +486,10 @@
                                 grecaptcha.reset();
                             }
 
+                            const errorMsg = res.error ? res.error : res.data.error;
+
                             Swal.fire({
-                                html: res.error,
+                                html: errorMsg,
                                 icon: 'warning',
                                 showCancelButton: false,
                                 confirmButtonColor: '#d54e21',

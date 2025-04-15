@@ -296,7 +296,8 @@ onMounted(() => {
     <div>
       <a
         :href="newFormUrl"
-        class="wpuf-rounded-md wpuf-text-center wpuf-bg-primary wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-primaryHover hover:wpuf-text-white focus:wpuf-bg-primaryHover focus:wpuf-text-white">
+        id="new-wpuf-form"
+        class="wpuf-rounded-md wpuf-text-center wpuf-bg-primary wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-primaryHover hover:wpuf-text-white focus:wpuf-bg-primaryHover focus:wpuf-text-white focus:wpuf-shadow-none">
       <span class="dashicons dashicons-plus-alt2"></span>
       &nbsp;
       {{ __( 'Add New ', 'wp-user-frontend' ) }}

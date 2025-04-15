@@ -56,13 +56,13 @@
                     "aria/Add Form"
                 ],
                 [
-                    "#new-wpuf-post-form"
+                    "#new-wpuf-form"
                 ],
                 [
-                    "xpath///*[@id=\"new-wpuf-post-form\"]"
+                    "xpath///*[@id=\"new-wpuf-form\"]"
                 ],
                 [
-                    "pierce/#new-wpuf-post-form"
+                    "pierce/#new-wpuf-form"
                 ],
                 [
                     "text/Add Form"
@@ -100,13 +100,13 @@
                     "aria/Add Form"
                 ],
                 [
-                    "#new-wpuf-post-form"
+                    "#new-wpuf-form"
                 ],
                 [
-                    "xpath///*[@id=\"new-wpuf-post-form\"]"
+                    "xpath///*[@id=\"new-wpuf-form\"]"
                 ],
                 [
-                    "pierce/#new-wpuf-post-form"
+                    "pierce/#new-wpuf-form"
                 ],
                 [
                     "text/Add Form"

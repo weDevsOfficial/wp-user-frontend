@@ -3,6 +3,7 @@ plugin-deploy.sh
 config.codekit
 export.sh
 .idea
+.vscode
 /.DS_Store
 nbproject
 node_modules

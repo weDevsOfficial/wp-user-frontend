@@ -341,6 +341,8 @@ export const Selectors = {
 
             // Save Form Settings
             saveFormSettings: '//button[normalize-space(text())="Save"]',
+            // Validate Form Settings Saved
+            validateFormSettingsSaved: '//div[normalize-space(text())="Saved form data"]',
         },
 
         validateOthers_Common: {
@@ -562,5 +564,7 @@ export const Selectors = {
         wpResetSubmitButton: '//a[@id="wp_reset_submit"]',
         // Confirm WordPress Reset
         wpResetConfirmWordpressReset: '//button[text()="Reset WordPress"]',
+        // Validate Reset
+        notRightNowButton: '//a[normalize-space(text())="Not right now"]',
     },
 };

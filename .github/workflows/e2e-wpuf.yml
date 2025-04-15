@@ -44,7 +44,7 @@ jobs:
       - name: Npm install and build (WPUF-lite)
         run: |
             npm i
-            grunt release
+            grunt release --force
 
       # Install test dependencies
       - name: Install test dependencies

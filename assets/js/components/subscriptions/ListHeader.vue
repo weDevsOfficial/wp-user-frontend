@@ -18,7 +18,7 @@ const props = defineProps({
 
 const title = computed(() => {
     switch (subscriptionStore.currentSubscriptionStatus) {
-        case 'all':
+        case 'any':
             return __( 'All Subscriptions', 'wp-user-frontend' );
         case 'publish':
             return __( 'Published', 'wp-user-frontend' );

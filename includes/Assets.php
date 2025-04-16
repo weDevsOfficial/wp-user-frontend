@@ -385,6 +385,10 @@ class Assets {
                 'src' => WPUF_ASSET_URI . '/vendor/headway.js',
                 'deps' => [ 'jquery' ],
             ],
+            'forms-list'         => [
+                'src'       => WPUF_ASSET_URI . '/js/forms-list.min.js',
+                'in_footer' => true,
+            ],
         ];
 
         if ( ! empty( $api_key ) ) {

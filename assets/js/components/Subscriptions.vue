@@ -101,7 +101,7 @@ watch(
 </script>
 
 <template>
-    <Header/>
+    <Header utm="wpuf-subscription"/>
     <div v-if="subscriptionStore.isSubscriptionLoading || component === null" class="wpuf-flex wpuf-h-svh wpuf-items-center wpuf-justify-center">
         <hollow-dots-spinner
             :animation-duration="1000"

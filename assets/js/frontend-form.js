@@ -477,19 +477,24 @@
                                 window.location = res.redirect_to;
                             }
                         }
-
-
                     } else {
-
                         if ( typeof res.data.type !== 'undefined' && res.data.type === 'login' ) {
-
-                            if ( confirm(res.data.error) ) {
-                                window.location = res.data.redirect_to;
-                            } else {
-                                submitButton.removeAttr('disabled');
-                                submitButton.removeClass('button-primary-disabled');
-                                form.find('span.wpuf-loading').remove();
-                            }
+                            Swal.fire({
+                                text: res.error,
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#3085d6",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "OK"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location = res.redirect_to;
+                                } else {
+                                    submitButton.removeAttr('disabled');
+                                    submitButton.removeClass('button-primary-disabled');
+                                    form.find('span.wpuf-loading').remove();
+                                }
+                            });
                         }
 
                         if ( typeof res.type !== 'undefined' && res.type === 'login' ) {

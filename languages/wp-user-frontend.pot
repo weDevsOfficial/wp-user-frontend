@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 4.1.1\n"
+"Project-Id-Version: WP User Frontend 4.1.2\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2025-03-27 05:52:06+00:00\n"
+"POT-Creation-Date: 2025-04-16 10:22:46+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -530,7 +530,7 @@ msgstr ""
 msgid "Cost of pay per post after a subscription pack limit is reached."
 msgstr ""
 
-#: admin/html/form-settings-payment.php:67 includes/Admin/views/support.php:675
+#: admin/html/form-settings-payment.php:67 includes/Admin/views/support.php:644
 msgid "Pay Per Post"
 msgstr ""
 
@@ -3666,7 +3666,7 @@ msgstr ""
 msgid "Subscription &amp; Payment"
 msgstr ""
 
-#: includes/Admin/views/support.php:307 includes/Admin/views/support.php:712
+#: includes/Admin/views/support.php:307 includes/Admin/views/support.php:681
 #: includes/Fields/Field_Contract.php:69
 msgid "Content Restriction"
 msgstr ""
@@ -3870,186 +3870,161 @@ msgstr ""
 msgid "Learn More About Login"
 msgstr ""
 
-#: includes/Admin/views/support.php:560
-#. translators: 1: shortcode for registration form, 2: shortcode for profile
-#. edit, 3: opening <strong> tag, 4: closing </strong> tag, 5: opening <strong>
-#. tag, 6: closing </strong> tag
+#: includes/Admin/views/support.php:561
+#. translators: %1$s = registration shortcode, %2$s = profile edit shortcode
 msgid ""
-"When you are making a registration form, you get two shortcodes: For "
-"embedding the registration form: this is something like %1$s. For profile "
-"edit page: this is something like %2$s. You already know how to make a "
-"registration form in WP User Frontend Pro and embed that into a page. The "
-"very same process is for creating the profile edit page. How to get the "
-"shortcode: We assume that you already have created a registration form. If "
-"not, you can use the default registration form, that was created "
-"automatically while installing the plugin. So to get the shortcode, "
-"navigate to %3$sUser Frontend%4$s → %5$sRegistration Forms%6$s and you will "
-"be able to see the shortcodes on the right side of your screen."
+"When you create a registration form, you get two shortcodes: one for "
+"embedding the registration form: %1$s, and one for the profile edit page: "
+"%2$s."
 msgstr ""
 
-#: includes/Admin/views/support.php:577
-#. translators: %1$s and %2$s are HTML tags
+#: includes/Admin/views/support.php:572
 msgid ""
-"When you are making a registration form, you get two shortcodes: For "
-"embedding the registration form: this is something like %1$s[wpuf_profile "
-"type=\"registration\" id=\"3573\"]%2$s"
-msgstr ""
-
-#: includes/Admin/views/support.php:591
-#. translators: %1$s and %2$s are HTML tags
-msgid ""
-"For profile edit page: this is something like %1$s[wpuf_profile "
-"type=\"profile\" id=\"3573\"]%2$s"
-msgstr ""
-
-#: includes/Admin/views/support.php:603
-msgid ""
-"You already know that how to make a registration form in WP User Frontend "
-"Pro and embed that into a page. The very same process is for creating the "
+"You already know how to create a registration form in WP User Frontend Pro "
+"and embed it into a page. The same process applies when creating the "
 "profile edit page."
 msgstr ""
 
-#: includes/Admin/views/support.php:609
-msgid "How to get the shortcode"
+#: includes/Admin/views/support.php:578
+msgid "How to Get the Shortcode"
 msgstr ""
 
-#: includes/Admin/views/support.php:615
-#. translators: %1$s and %2$s are HTML tags
+#: includes/Admin/views/support.php:584
+#. translators: %1$s and %2$s = <strong> tags
 msgid ""
-"We assume that you already have created a registration form. If not you can "
-"use the default registration form, that was created automatically while "
-"installing the plugin.\n"
-"                So to get the shortcode, navigate to %1$sUser Frontend%2$s "
-"→ %3$sRegistration Forms%4$s and you will be able to see the shortcodes on "
-"the right side of your screen."
+"We assume you’ve already created a registration form. If not, you can use "
+"the default form that was automatically created during plugin installation. "
+"To get the shortcode, go to %1$sUser Frontend%2$s → %3$sRegistration "
+"Forms%4$s in your dashboard. You’ll find the shortcodes listed on the right "
+"side of the screen."
 msgstr ""
 
-#: includes/Admin/views/support.php:628
+#: includes/Admin/views/support.php:596
 msgid "Learn More About Profile Editing"
 msgstr ""
 
-#: includes/Admin/views/support.php:633
+#: includes/Admin/views/support.php:602
 msgid "Subscription Payment"
 msgstr ""
 
-#: includes/Admin/views/support.php:635
+#: includes/Admin/views/support.php:604
 msgid ""
 "WP User Frontend allows you to create as many subscription packs you want. "
 "Simply, navigate to - WP-Admin → User Frontend → Subscription → Add "
 "Subscription"
 msgstr ""
 
-#: includes/Admin/views/support.php:638
+#: includes/Admin/views/support.php:607
 msgid "Enter your subscription name and pack description."
 msgstr ""
 
-#: includes/Admin/views/support.php:639
+#: includes/Admin/views/support.php:608
 msgid ""
 "Include the billing amount and the validity of the pack. You can choose "
 "day, week, month or year in case of expiry."
 msgstr ""
 
-#: includes/Admin/views/support.php:640
+#: includes/Admin/views/support.php:609
 msgid ""
 "You can enable post expiration if you want to expire post after a certain "
 "amount of time. To do so check the Enable Post Expiration box."
 msgstr ""
 
-#: includes/Admin/views/support.php:641
+#: includes/Admin/views/support.php:610
 msgid ""
 "This will enable some new settings. You have to specify post expiration "
 "time and the post status after the post expires."
 msgstr ""
 
-#: includes/Admin/views/support.php:642
+#: includes/Admin/views/support.php:611
 msgid ""
 "You can also notify users when a post expires. To do so, check the Send "
 "Mail option."
 msgstr ""
 
-#: includes/Admin/views/support.php:643
+#: includes/Admin/views/support.php:612
 msgid ""
 "Now, enter the message you want to send the user in the Post Expiration "
 "Message field."
 msgstr ""
 
-#: includes/Admin/views/support.php:644
+#: includes/Admin/views/support.php:613
 msgid ""
 "You can specify the number of posts you are giving away with this "
 "subscription pack. If you want to provide unlimited posts, enter ‘-1’ in "
 "the number of posts field."
 msgstr ""
 
-#: includes/Admin/views/support.php:645
+#: includes/Admin/views/support.php:614
 msgid ""
 "You can also set the number of pages and custom CSS. For unlimited value, "
 "enter ‘-1’."
 msgstr ""
 
-#: includes/Admin/views/support.php:646
+#: includes/Admin/views/support.php:615
 msgid ""
 "WPUF offers you recurring payment while creating a Subscription pack. "
 "Enable this option if you want to set recurring payment for this pack. It "
 "will provide you some new options for the recurring payment."
 msgstr ""
 
-#: includes/Admin/views/support.php:647
+#: includes/Admin/views/support.php:616
 msgid "Now, select the billing cycle."
 msgstr ""
 
-#: includes/Admin/views/support.php:648
+#: includes/Admin/views/support.php:617
 msgid ""
 "You can also stop the billing cycle if you want. If you don’t want to stop "
 "the cycle select Never."
 msgstr ""
 
-#: includes/Admin/views/support.php:649
+#: includes/Admin/views/support.php:618
 msgid ""
 "To enable trial period, check the Trial box. You can set the trial amount "
 "to be paid by the user for trial period."
 msgstr ""
 
-#: includes/Admin/views/support.php:650
+#: includes/Admin/views/support.php:619
 msgid "Now, specify the trial period. Enter number of days, week, month or year."
 msgstr ""
 
-#: includes/Admin/views/support.php:651
+#: includes/Admin/views/support.php:620
 msgid ""
 "You can also enable post number rollback. If enabled, number of posts will "
 "be restored if the post is deleted."
 msgstr ""
 
-#: includes/Admin/views/support.php:652
+#: includes/Admin/views/support.php:621
 msgid "Finally, click on the publish button to create the subscription pack."
 msgstr ""
 
-#: includes/Admin/views/support.php:655
+#: includes/Admin/views/support.php:624
 msgid "Subscription Packs on Frontend"
 msgstr ""
 
-#: includes/Admin/views/support.php:656
+#: includes/Admin/views/support.php:625
 msgid ""
 "To view the created subscription packs on frontend, visit the Subscription "
 "page."
 msgstr ""
 
-#: includes/Admin/views/support.php:662
+#: includes/Admin/views/support.php:631
 #. translators: %1$s and %2$s are HTML tags
 msgid "Short-code for creating the Subscription page – %1$s[wpuf_sub_pack]%2$s."
 msgstr ""
 
-#: includes/Admin/views/support.php:672
+#: includes/Admin/views/support.php:641
 msgid "Payment &amp; Gateway Settings"
 msgstr ""
 
-#: includes/Admin/views/support.php:673
+#: includes/Admin/views/support.php:642
 msgid ""
 "Post subscription and payment system is a module where you can add paid "
 "posting system with WP User Frontend. You can introduce two types of "
 "payment system. Pay per post and subscription pack based."
 msgstr ""
 
-#: includes/Admin/views/support.php:678
+#: includes/Admin/views/support.php:647
 msgid ""
 "With this you can introduce pay per post feature where users pay to publish "
 "their posts each post. When pay per post is enabled from “Settings → "
@@ -4063,18 +4038,18 @@ msgid ""
 "the site and the post gets published."
 msgstr ""
 
-#: includes/Admin/views/support.php:681
+#: includes/Admin/views/support.php:650
 msgid "Subscription Pack"
 msgstr ""
 
-#: includes/Admin/views/support.php:683
+#: includes/Admin/views/support.php:652
 msgid ""
 "There is an another option for charged posting. With this feature, you can "
 "create unlimited subscription pack. In each pack, you can configure the "
 "number of posts, validity date and the cost."
 msgstr ""
 
-#: includes/Admin/views/support.php:684
+#: includes/Admin/views/support.php:653
 msgid ""
 "When a user buys a subscription package, he gets to create some posts (e.g. "
 "10) in X days (e.g: 30 days). If he crosses the number of posts or the "
@@ -4082,7 +4057,7 @@ msgid ""
 "before posting “Settings → Payments → Force pack purchase“."
 msgstr ""
 
-#: includes/Admin/views/support.php:690
+#: includes/Admin/views/support.php:659
 #. translators: %1$s and %2$s are HTML tags, %3$s and %4$s are HTML tags
 msgid ""
 "To show the subscription packs in a page, you can use the shortcode: "
@@ -4091,89 +4066,89 @@ msgid ""
 "remaining post count and expiration date of his pack."
 msgstr ""
 
-#: includes/Admin/views/support.php:702
+#: includes/Admin/views/support.php:671
 msgid "Payment Gateway"
 msgstr ""
 
-#: includes/Admin/views/support.php:704
+#: includes/Admin/views/support.php:673
 msgid ""
 "Currently only PayPal basic gateway is supported. The plugin is extension "
 "aware, that means other gateways can be integrated."
 msgstr ""
 
-#: includes/Admin/views/support.php:707
+#: includes/Admin/views/support.php:676
 msgid "Learn More About Payments"
 msgstr ""
 
-#: includes/Admin/views/support.php:717
+#: includes/Admin/views/support.php:686
 #. translators: %1$s and %2$s are HTML tags
 msgid "To set content restriction for a certain form, navigate to %1$sPages%2$s"
 msgstr ""
 
-#: includes/Admin/views/support.php:728
+#: includes/Admin/views/support.php:697
 msgid "Now, select the page that has the shortcode of the selected form."
 msgstr ""
 
-#: includes/Admin/views/support.php:729
+#: includes/Admin/views/support.php:698
 msgid ""
 "Scroll down and you will find the <strong>WPUF Content Restriction</strong> "
 "settings."
 msgstr ""
 
-#: includes/Admin/views/support.php:730
+#: includes/Admin/views/support.php:699
 msgid ""
 "You can set the form visible to three types of people: "
 "<strong>Everyone</strong>, <strong>Logged in users only</strong> or "
 "<strong>Subscription users only</strong>"
 msgstr ""
 
-#: includes/Admin/views/support.php:731
+#: includes/Admin/views/support.php:700
 msgid ""
 "You can also set <strong>subscription plans</strong> for the form. For "
 "this, check the box of relevant subscription pack."
 msgstr ""
 
-#: includes/Admin/views/support.php:732
+#: includes/Admin/views/support.php:701
 msgid "Finally, update the page."
 msgstr ""
 
-#: includes/Admin/views/support.php:735
+#: includes/Admin/views/support.php:704
 msgid "Learn More About Content Restriction"
 msgstr ""
 
-#: includes/Admin/views/support.php:744 includes/Admin/views/support.php:746
+#: includes/Admin/views/support.php:713 includes/Admin/views/support.php:715
 msgid "Like The Plugin?"
 msgstr ""
 
-#: includes/Admin/views/support.php:748
+#: includes/Admin/views/support.php:717
 msgid "Your Review is very important to us as it helps us to grow more."
 msgstr ""
 
-#: includes/Admin/views/support.php:750
+#: includes/Admin/views/support.php:719
 msgid "Review Us on WP.org"
 msgstr ""
 
-#: includes/Admin/views/support.php:754 includes/Admin/views/support.php:756
+#: includes/Admin/views/support.php:723 includes/Admin/views/support.php:725
 msgid "Found Any Bugs?"
 msgstr ""
 
-#: includes/Admin/views/support.php:758
+#: includes/Admin/views/support.php:727
 msgid "Report any Bug that you Discovered, Get Instant Solutions."
 msgstr ""
 
-#: includes/Admin/views/support.php:760
+#: includes/Admin/views/support.php:729
 msgid "Report to GitHub"
 msgstr ""
 
-#: includes/Admin/views/support.php:764 includes/Admin/views/support.php:766
+#: includes/Admin/views/support.php:733 includes/Admin/views/support.php:735
 msgid "Need Any Assistance?"
 msgstr ""
 
-#: includes/Admin/views/support.php:768
+#: includes/Admin/views/support.php:737
 msgid "Our EXPERT Support Team is always ready to Help you out."
 msgstr ""
 
-#: includes/Admin/views/support.php:770
+#: includes/Admin/views/support.php:739
 msgid "Contact Support"
 msgstr ""
 
@@ -4264,32 +4239,27 @@ msgstr ""
 msgid "Using %s as shortcode is restricted"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:347 includes/Api/Subscription.php:264
+#: includes/Ajax/Frontend_Form_Ajax.php:349 includes/Api/Subscription.php:264
 #: includes/Api/Subscription.php:294 includes/Api/Subscription.php:368
 msgid "Something went wrong"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:419
-#: includes/Ajax/Frontend_Form_Ajax.php:425
+#: includes/Ajax/Frontend_Form_Ajax.php:421
+#: includes/Ajax/Frontend_Form_Ajax.php:427
 msgid ""
 "Thank you for posting on our site. We have sent you an confirmation email. "
 "Please check your inbox!"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:495
+#: includes/Ajax/Frontend_Form_Ajax.php:497
 msgid "Invalid email address."
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:521
-msgid ""
-"You already have an account in our site. Please login to continue.\n"
-"\n"
-"Clicking 'OK' will redirect you to the login page and you will lose the "
-"form data.\n"
-"Click 'Cancel' to stay at this page."
+#: includes/Ajax/Frontend_Form_Ajax.php:522
+msgid "You already have an account in our site. Please login to continue."
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:576
+#: includes/Ajax/Frontend_Form_Ajax.php:577
 #: includes/Frontend_Render_Form.php:215
 #: includes/class-frontend-render-form.php:323
 msgid "You do not have sufficient permissions to access this form."

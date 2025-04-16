@@ -122,7 +122,7 @@ span.wpuf-loading {
 .wpuf-footer-help {
   box-sizing: border-box;
   width: auto;
-  margin: 2rem 0.8rem;
+  margin: 100px 0.8rem 2rem 0.8rem;
   text-align: center;
 }
 .wpuf-footer-help .wpuf-footer-help-content {

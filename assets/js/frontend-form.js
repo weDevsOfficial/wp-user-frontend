@@ -486,7 +486,7 @@
                                 confirmButtonColor: "#3085d6",
                                 cancelButtonColor: "#d33",
                                 confirmButtonText: "OK"
-                            }).then((result) => {
+                            } ).then( function ( result ) {
                                 if (result.isConfirmed) {
                                     window.location = res.redirect_to;
                                 } else {
@@ -505,7 +505,7 @@
                                 confirmButtonColor: "#3085d6",
                                 cancelButtonColor: "#d33",
                                 confirmButtonText: "OK"
-                            }).then((result) => {
+                            }).then(function(result) {
                                 if (result.isConfirmed) {
                                     window.location = res.redirect_to;
                                 } else {

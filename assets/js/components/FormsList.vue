@@ -5,11 +5,15 @@ import {ref, onMounted, computed, watch} from 'vue';
 import _ from 'lodash';
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue';
 
-const newFormUrl = wpuf_admin_script.admin_url + 'admin.php?page=wpuf-post-forms&action=add-new';
 // store only counts without 0 values
 const postCounts = wpuf_forms_list.post_counts;
+// const postType = wpuf_forms_list.post_type !== 'undefined' ? wpuf_forms_list.post_type : 'wpuf_forms';
+const postType = wpuf_forms_list.post_type ? wpuf_forms_list.post_type : 'wpuf_forms';
+const form = postType === 'wpuf_forms' ? 'post' : 'profile;'
 
-const currentTab = ref('all');
+const newFormUrl = wpuf_admin_script.admin_url + 'admin.php?page=wpuf-' + form + '-forms&action=add-new';
+
+const currentTab = ref('any');
 const forms = ref([]);
 const loading = ref(true);
 const currentPage = ref(1);
@@ -25,11 +29,11 @@ const debouncedFetchForms = _.debounce((page, status, search) => {
   fetchForms(page, status, search);
 }, 500);
 
-const fetchForms = async (page = 1, status = 'all', search = '') => {
+const fetchForms = async (page = 1, status = 'any', search = '') => {
   try {
     loading.value = true;
     currentPage.value = page;
-    let apiUrl = `/wp-json/wpuf/v1/wpuf_form?page=${page}&per_page=${perPage.value}&status=${status}`;
+    let apiUrl = `/wp-json/wpuf/v1/wpuf_form?page=${page}&per_page=${perPage.value}&status=${status}&post_type=${postType}`;
     if (search) {
       apiUrl += `&s=${search}`;
     }

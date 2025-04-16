@@ -61,19 +61,19 @@ class FormList extends WP_REST_Controller {
     public function get_items( $request ) {
         $per_page    = ! empty( $request['per_page'] ) ? (int) sanitize_text_field( $request['per_page'] ) : 10;
         $page        = ! empty( $request['page'] ) ? (int) sanitize_text_field( $request['page'] ) : 1;
-        $status      = ! empty( $request['status'] ) ? sanitize_text_field( $request['status'] ) : 'publish'; // Default to 'publish'
+        $status      = ! empty( $request['status'] ) ? sanitize_text_field( $request['status'] ) : 'any'; // Default to 'any'
         $search_term = ! empty( $request['s'] ) ? sanitize_text_field( $request['s'] ) : '';
+        $post_type   = ! empty( $request['post_type'] ) ? sanitize_text_field( $request['post_type'] ) : 'wpuf_forms';
         $offset      = ( $page - 1 ) * $per_page;
 
         // Base query args
         $query_args = [
-            'post_type'      => 'wpuf_forms',
+            'post_type'      => $post_type,
             'post_status'    => $status,
-            'post_status__not_in' => ['trash'], // Exclude trashed posts
             'posts_per_page' => $per_page,
             'offset'         => $offset,
-            'orderby'        => 'ID',
-            'order'          => 'DESC',
+            'order'        => 'ID',
+            'orderby'          => 'DESC',
         ];
 
         // Add search term if present
@@ -83,7 +83,7 @@ class FormList extends WP_REST_Controller {
 
         // Prepare args for the total count query
         $total_query_args = [
-            'post_type'      => 'wpuf_forms',
+            'post_type'      => $post_type,
             'post_status'    => $status,
             'posts_per_page' => $per_page,
             'fields'         => 'ids',
@@ -117,6 +117,7 @@ class FormList extends WP_REST_Controller {
                     'post_status'         => ! empty( $settings['post_status'] ) ? $settings['post_status'] : '',
                     'settings_post_type'  => ! empty( $settings['post_type'] ) ? $settings['post_type'] : '',
                     'settings_guest_post' => ! empty( $settings['post_permission'] ) && 'guest_post' === $settings['post_permission'],
+                    'settings_user_role'  => ! empty( $settings['role'] ) ? $settings['role'] : '',
                 ];
             }
         }

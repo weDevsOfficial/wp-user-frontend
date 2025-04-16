@@ -5453,8 +5453,8 @@ function wpuf_is_checkbox_or_toggle_on( $value ) {
  *
  * @return array
  */
-function wpuf_get_forms_counts_with_status() {
-    $post_counts = (array) wp_count_posts( 'wpuf_forms' );
+function wpuf_get_forms_counts_with_status( $post_type = 'wpuf_forms' ) {
+    $post_counts = (array) wp_count_posts( $post_type );
 
     $post_statuses  = apply_filters( 'wpuf_post_forms_list_table_post_statuses', [
         'all'       => __( 'All', 'wp-user-frontend' ),

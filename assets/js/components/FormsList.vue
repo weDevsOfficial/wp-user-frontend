@@ -163,28 +163,27 @@ const menuItems = computed(() => {
   ];
 });
 
-// Function to copy text to clipboard
-const copyToClipboard = async (formId, $event) => {
-  const shortcode = `[wpuf_form id="${formId}"]`;
+const copyToClipboard = async (shortcode, $event) => {
+  const eventElement = $event.target;
+  const buttonElement = eventElement.closest('button');
+  const codeElement = buttonElement.previousElementSibling;
+
   try {
     await navigator.clipboard.writeText(shortcode);
 
-    // Use currentTarget to reliably get the button element
-    const eventElement = $event.target;
-    const buttonElement = eventElement.closest('button');
-    const codeElement = buttonElement.previousElementSibling;
-
-    // Check if we found the code element and it is indeed a <code> tag
     if (codeElement && codeElement.tagName === 'CODE') {
       codeElement.textContent = 'Copied!';
       setTimeout(() => {
-        // Restore the original shortcode text
         codeElement.textContent = shortcode;
       }, 2000);
     }
   } catch (err) {
     console.error('Failed to copy shortcode: ', err);
   }
+};
+
+const getShortcode = (formId) => {
+  return `[wpuf_form id="${formId}"]`;
 };
 
 const handleEdit = (formId) => {
@@ -313,11 +312,8 @@ onMounted(() => {
         v-for="(value, key) in postCounts"
         :key="key"
         @click="currentTab = key"
-        :class="{
-          'wpuf-border-primary wpuf-text-primary': currentTab === key,
-          'wpuf-border-transparent wpuf-text-gray-500 hover:wpuf-border-gray-300 hover:wpuf-text-gray-700': currentTab !== key
-        }"
-        class="wpuf-flex wpuf-whitespace-nowrap wpuf-py-4 wpuf-px-1 wpuf-border-b-2 wpuf-font-medium wpuf-text-sm wpuf-mr-8 focus:wpuf-outline-none focus:wpuf-shadow-none wpuf-transition-all hover:wpuf-cursor-pointer">
+        :class="currentTab === key || ( key === 'all' && currentTab === 'any' ) ? 'wpuf-border-primary wpuf-text-primary' : 'wpuf-border-transparent wpuf-text-gray-500'"
+        class="wpuf-flex hover:wpuf-border-primary hover:wpuf-text-primary wpuf-whitespace-nowrap wpuf-py-4 wpuf-px-1 wpuf-border-b-2 wpuf-font-medium wpuf-text-sm wpuf-mr-8 focus:wpuf-outline-none focus:wpuf-shadow-none wpuf-transition-all hover:wpuf-cursor-pointer">
       {{ value.label }}
       <span class="wpuf-bg-gray-100 wpuf-text-gray-900 wpuf-ml-3 wpuf-rounded-full wpuf-py-0.5 wpuf-px-2.5 wpuf-text-xs wpuf-font-medium md:wpuf-inline-block">{{ value.count }}</span>
     </span>
@@ -429,9 +425,9 @@ onMounted(() => {
                 </td>
                 <td class="wpuf-whitespace-nowrap wpuf-px-3 wpuf-py-4 wpuf-text-sm wpuf-font-medium wpuf-text-gray-500">
                   <div class="wpuf-flex wpuf-items-center">
-                    <code class="wpuf-mr-2 wpuf-bg-gray-50 wpuf-border wpuf-border-gray-300 wpuf-rounded-md wpuf-shadow-sm wpuf-py-[10px] wpuf-px-[14px]">[wpuf_form id="{{ form.ID }}"]</code>
+                    <code class="wpuf-mr-2 wpuf-bg-gray-50 wpuf-border wpuf-border-gray-300 wpuf-rounded-md wpuf-shadow-sm wpuf-py-[10px] wpuf-px-[14px]">{{ getShortcode(form.ID) }}</code>
                     <button
-                      @click="copyToClipboard(form.ID, $event)"
+                      @click="copyToClipboard(getShortcode(form.ID), $event)"
                       class="wpuf-text-gray-500 hover:wpuf-text-gray-700 wpuf-focus:outline-none"
                       title="Copy shortcode">
                       <svg xmlns="http://www.w3.org/2000/svg" class="wpuf-h-4 wpuf-w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

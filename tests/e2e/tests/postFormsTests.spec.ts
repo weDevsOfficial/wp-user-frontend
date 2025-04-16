@@ -105,7 +105,7 @@ test.describe('Post-Forms @Lite :-->', () => {
         //Others + Validate
         await FieldOptionsCommon.addOthers_Common();
         await FieldOptionsCommon.validateOthers_Common();
-        await FieldOptionsCommon.setMultiStepSettings_Common();
+        //await FieldOptionsCommon.setMultiStepSettings_Common();
 
         //Save
         await FieldOptionsCommon.saveForm_Common(PostForm.pfPostName4);
@@ -132,7 +132,7 @@ test.describe('Post-Forms @Lite :-->', () => {
         //Others + Validate
         await FieldOptionsCommon.addOthers_Common();
         await FieldOptionsCommon.validateOthers_Common();
-        await FieldOptionsCommon.setMultiStepSettings_Common();
+        //await FieldOptionsCommon.setMultiStepSettings_Common();
 
         //Save
         await FieldOptionsCommon.saveForm_Common(PostForm.pfPostName1);

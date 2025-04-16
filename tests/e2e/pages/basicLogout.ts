@@ -1,4 +1,5 @@
-require('dotenv').config();
+import dotenv from "dotenv";
+dotenv.config();
 import type { Page } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Urls } from '../utils/testData';

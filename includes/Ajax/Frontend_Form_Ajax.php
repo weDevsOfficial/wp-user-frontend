@@ -114,7 +114,7 @@ class Frontend_Form_Ajax {
             foreach ( $protected_shortcodes as $shortcode ) {
                 $search_for = '[' . $shortcode;
                 if ( strpos( $current_data, $search_for ) !== false ) {
-                    wpuf()->ajax->send_error( sprintf( 
+                    wpuf()->ajax->send_error( sprintf(
                         // translators: %s is shortcode
                         __( 'Using %s as shortcode is restricted', 'wp-user-frontend' ), $shortcode ) );
                 }
@@ -283,7 +283,7 @@ class Frontend_Form_Ajax {
 
         $postarr = $this->adjust_thumbnail_id( $postarr );
 
-        $post_id = wp_insert_post( $postarr, $wp_error = false );
+        $post_id = wp_insert_post( $postarr );
 
         // add post revision when post edit from the frontend
         wpuf_frontend_post_revision( $post_id, $this->form_settings );
@@ -342,8 +342,10 @@ class Frontend_Form_Ajax {
 
             $response = $this->send_mail_for_guest( $charging_enabled, $post_id, $form_id, $is_update, $post_author, $meta_vars );
             wpuf_clear_buffer();
+
             wp_send_json( $response );
         }
+
         wpuf()->ajax->send_error( __( 'Something went wrong', 'wp-user-frontend' ) );
     }
 
@@ -515,10 +517,9 @@ class Frontend_Form_Ajax {
 
                 if ( $user ) {
                     // $post_author = $user->ID;
-                    wp_send_json(
+                    wp_send_json_error(
                         [
-                            'success'     => false,
-                            'error'       => __( "You already have an account in our site. Please login to continue.\n\nClicking 'OK' will redirect you to the login page and you will lose the form data.\nClick 'Cancel' to stay at this page.", 'wp-user-frontend' ),
+                            'error'       => __( 'You already have an account in our site. Please login to continue.', 'wp-user-frontend' ),
                             'type'        => 'login',
                             'redirect_to' => wp_login_url( get_permalink( $page_id ) ),
                         ]

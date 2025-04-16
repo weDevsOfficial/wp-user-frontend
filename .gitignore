@@ -16,7 +16,9 @@ vendor
 phpcs-report.txt
 assets/css/admin/subscriptions.min.css
 assets/js/subscriptions.min.js
-
+assets/js/frontend-form.min.js
+languages
+!languages/readme.txt
 
 # Ignore the following directories and files for automation tests
 test-results
@@ -27,3 +29,4 @@ tests/e2e/playwright-report/
 tests/e2e/playwright/.cache/
 tests/e2e/.DS_Store
 tests/e2e/.env
+

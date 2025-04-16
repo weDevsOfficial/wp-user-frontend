@@ -3485,6 +3485,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   border-left-width: 1px;
 }
 
+.wpuf-border-l-4 {
+  border-left-width: 4px;
+}
+
 .wpuf-border-r {
   border-right-width: 1px;
 }
@@ -3588,6 +3592,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-border-transparent {
   border-color: transparent;
+}
+
+.wpuf-border-yellow-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(234 179 8 / var(--tw-border-opacity));
 }
 
 .wpuf-border-zinc-300 {

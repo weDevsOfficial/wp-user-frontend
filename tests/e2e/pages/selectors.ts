@@ -568,5 +568,9 @@ export const Selectors = {
         wpResetConfirmWordpressReset: '//button[text()="Reset WordPress"]',
         // Validate Reset
         notRightNowButton: '//a[normalize-space(text())="Not right now"]',
+        // Reactivate Theme
+        reActivateTheme: '//input[@id="reactivate-theme"]',
+        // Reactivate Plugins
+        reActivatePlugins: '//input[@id="reactivate-plugins"]',
     },
 };

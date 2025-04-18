@@ -104,7 +104,6 @@ export class SettingsSetupPage {
         ]);
         //Activate Plugin
         const activateWPUFLite = await this.page.locator(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite).isVisible();
-        console.log(activateWPUFLite)
         if (activateWPUFLite === true) {
             console.log("Plugins is not activated")
             //Plugins is getting activated here
@@ -345,6 +344,8 @@ export class SettingsSetupPage {
             this.page.goto(Urls.baseUrl + '/wp-admin/tools.php?page=wp-reset', { waitUntil: 'networkidle' }),
         ]);
         await this.page.reload();
+        await this.page.click(Selectors.resetWordpreseSite.reActivateTheme);
+        await this.page.click(Selectors.resetWordpreseSite.reActivatePlugins);
         await this.page.fill(Selectors.resetWordpreseSite.wpResetInputBox, 'reset');
         await this.page.click(Selectors.resetWordpreseSite.wpResetSubmitButton);
         await this.page.click(Selectors.resetWordpreseSite.wpResetConfirmWordpressReset, );

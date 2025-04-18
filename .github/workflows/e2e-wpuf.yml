@@ -57,6 +57,7 @@ jobs:
         run: |
           cd tests/e2e 
           npm run wp-env start
+          npx wp-env run cli wp plugin activate wp-reset
 
       # Install Playwright Browsers
       - name: Get installed Playwright version

@@ -102,11 +102,11 @@ export class SettingsSetupPage {
         await Promise.all([
             this.page.goto(pluginsPage, { waitUntil: 'networkidle' }),
         ]);
-        console.log("Plugins page reached")
         //Activate Plugin
         const activateWPUFLite = await this.page.locator(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite).isVisible();
         console.log(activateWPUFLite)
-        if (activateWPUFLite == true) {
+        if (activateWPUFLite === true) {
+            console.log("Plugins is not activated")
             //Plugins is getting activated here
             await this.page.click(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
             console.log("Plugins is getting activated here")
@@ -125,6 +125,7 @@ export class SettingsSetupPage {
         }
 
         else {
+            console.log("Plugins is preActivated")
             await this.page.isVisible(Selectors.login.basicNavigation.clickWPUFSidebar);
             console.log("Plugins sidebar is visible in else")
             await this.page.click(Selectors.login.basicNavigation.clickWPUFSidebar);

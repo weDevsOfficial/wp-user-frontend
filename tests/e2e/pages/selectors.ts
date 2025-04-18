@@ -567,10 +567,12 @@ export const Selectors = {
         // Confirm WordPress Reset
         wpResetConfirmWordpressReset: '//button[text()="Reset WordPress"]',
         // Validate Reset
-        notRightNowButton: '//a[normalize-space(text())="Not right now"]',
+        notRightNowButton: '//div[@class="wpuf-setup-content"]',
         // Reactivate Theme
         reActivateTheme: '//input[@id="reactivate-theme"]',
         // Reactivate Plugins
         reActivatePlugins: '//input[@id="reactivate-plugins"]',
+        // Allow analytics
+        allowAnalytics: '//a[normalize-space()="Allow"]',
     },
 };

@@ -345,9 +345,10 @@ export class SettingsSetupPage {
         await this.page.fill(Selectors.resetWordpreseSite.wpResetInputBox, 'reset');
         await this.page.click(Selectors.resetWordpreseSite.wpResetSubmitButton);
         await this.page.click(Selectors.resetWordpreseSite.wpResetConfirmWordpressReset, );
-        //await this.page.click(Selectors.resetWordpreseSite.notRightNowButton);
-        await this.page.waitForLoadState('networkidle');
-        this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'networkidle' });
+        await this.page.waitForTimeout(7000);
+        this.page.goto(Urls.baseUrl + '/wp-admin/');
+        await this.page.waitForLoadState('domcontentloaded');
+        await this.page.click(Selectors.resetWordpreseSite.allowAnalytics);
         await this.page.hover(Selectors.logout.basicLogout.logoutHoverUsername, { timeout: 30000 });
         await this.page.waitForTimeout(1000);
         await this.page.click(Selectors.logout.basicLogout.logoutButton);

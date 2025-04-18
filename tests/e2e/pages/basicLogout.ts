@@ -17,6 +17,7 @@ export class BasicLogoutPage {
         ]);
 
         await this.page.hover(Selectors.logout.basicLogout.logoutHoverUsername);
+        await this.page.waitForTimeout(1000);
         await this.page.click(Selectors.logout.basicLogout.logoutButton);
 
         //Validate LOGOUT

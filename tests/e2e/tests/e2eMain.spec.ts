@@ -23,8 +23,8 @@ import resetWordpressSite from './resetWordpressSite.spec';
  *  - Clears cookies and origins before running the reset test.
  */
 
-// fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
-// test.describe(resetWordpressSite);
+fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
+test.describe(resetWordpressSite);
 
 
 

@@ -102,25 +102,34 @@ export class SettingsSetupPage {
         await Promise.all([
             this.page.goto(pluginsPage, { waitUntil: 'networkidle' }),
         ]);
-
+        console.log("Plugins page reached")
         //Activate Plugin
-        const activateWPUFLite = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
-
+        const activateWPUFLite = await this.page.locator(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite).isVisible();
+        console.log(activateWPUFLite)
         if (activateWPUFLite == true) {
             //Plugins is getting activated here
             await this.page.click(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
-
+            console.log("Plugins is getting activated here")
             await this.page.reload();
-            await this.page.goBack();
+            console.log("Plugins activated")
+            await expect(this.page.locator(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginDeactivate)).toBeVisible();
+            console.log("Plugins Deactivation button is visible")
+            // await this.page.goBack();
 
             await this.page.goto(Urls.baseUrl + '/wp-admin/');
+            console.log("Plugins page reached")
             await this.page.isVisible(Selectors.login.basicNavigation.clickWPUFSidebar);
+            console.log("Plugins sidebar is visible")
             await this.page.click(Selectors.login.basicNavigation.clickWPUFSidebar);
+            console.log("Plugins sidebar is clicked")
         }
 
         else {
             await this.page.isVisible(Selectors.login.basicNavigation.clickWPUFSidebar);
+            console.log("Plugins sidebar is visible in else")
             await this.page.click(Selectors.login.basicNavigation.clickWPUFSidebar);
+            console.log("Plugins sidebar is clicked in else")
+            await this.page.reload();
         }
         console.log("WPUF-Lite Status: Activated");
     };

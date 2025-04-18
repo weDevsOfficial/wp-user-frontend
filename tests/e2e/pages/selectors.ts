@@ -45,6 +45,8 @@ export const Selectors = {
             clickPluginsSidebar: '//li[@id="menu-plugins"]',
             clickWPUFPluginLite: '//a[@id="activate-wp-user-frontend"]',
             clickWPUFPluginPro: '//a[@id="activate-wp-user-frontend-pro"]',
+            clickWPUFPluginDeactivate: '//a[@id="deactivate-wp-user-frontend"]',
+            clickWPUFPluginProDeactivate: '//a[@id="deactivate-wp-user-frontend-pro"]',
         },
 
         // Plugin Visit

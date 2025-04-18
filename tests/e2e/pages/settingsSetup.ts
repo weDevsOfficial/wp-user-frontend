@@ -124,12 +124,8 @@ export class SettingsSetupPage {
         }
 
         else {
-            console.log("Plugins is preActivated")
             await this.page.isVisible(Selectors.login.basicNavigation.clickWPUFSidebar);
-            console.log("Plugins sidebar is visible in else")
             await this.page.click(Selectors.login.basicNavigation.clickWPUFSidebar);
-            console.log("Plugins sidebar is clicked in else")
-            await this.page.reload();
         }
         console.log("WPUF-Lite Status: Activated");
     };
@@ -351,6 +347,7 @@ export class SettingsSetupPage {
         await this.page.click(Selectors.resetWordpreseSite.wpResetConfirmWordpressReset, );
         //await this.page.click(Selectors.resetWordpreseSite.notRightNowButton);
         await this.page.waitForLoadState('networkidle');
+        this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'networkidle' });
         await this.page.hover(Selectors.logout.basicLogout.logoutHoverUsername, { timeout: 30000 });
         await this.page.waitForTimeout(1000);
         await this.page.click(Selectors.logout.basicLogout.logoutButton);

@@ -147,6 +147,7 @@ class Form_Field_Post_Content extends Field_Contract {
             );
         }
         ?>
+        </div>
         </li>
         <?php
     }

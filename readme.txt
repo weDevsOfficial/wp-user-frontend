@@ -3,8 +3,8 @@ Contributors: tareq1988, nizamuddinbabu, wedevs
 Donate link: https://tareq.co/donate/
 Tags: frontend post, forms, user directory, profile builder, membership
 Requires at least: 4.0
-Tested up to: 6.7.2
-Stable tag: 4.1.1
+Tested up to: 6.8
+Stable tag: 4.1.2
 Requires PHP: 5.6
 License: GPLv2
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -281,6 +281,10 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 18. Set Payment Related Options
 
 == Changelog ==
+= v4.1.2 (16 April, 2025) =
+* Fix - Help page of profile editing has duplicated text
+* Fix - Warning message not showing when guest post submitted with duplicate email, username
+
 = v4.1.1 (27 March, 2025) =
 * Fix - Resolved validation issue with error (!) after form submission.
 * Fix - Improve template selection UX to uncheck a selected post form template.

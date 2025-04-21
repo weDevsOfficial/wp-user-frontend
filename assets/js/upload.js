@@ -161,14 +161,12 @@
                 this.UploadedFiles++;
                 var $container = $('#' + this.container).find('.wpuf-attachment-list');
                 $container.append(response.response);
-
                 if ( this.perFileCount > this.max ) {
                     var attach_id = $('.wpuf-image-wrap:last a.attachment-delete',$container).data('attach-id');
                     self.removeExtraAttachment(attach_id);
                     $('.wpuf-image-wrap',$container).last().remove();
                     this.perFileCount--;
                 }
-
             } else {
                 alert(res.data.replace( /(<([^>]+)>)/ig, ''));
 
@@ -180,6 +178,8 @@
 
             var uploaded        = this.UploadedFiles,
                 FileProgress    = up.files.length;
+
+            this.count = $('#' + this.container).find('.wpuf-attachment-list > li').length;
 
             if ( this.count >= this.max ) {
                 $('#' + this.container).find('.file-selector').hide();

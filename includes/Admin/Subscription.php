@@ -1091,14 +1091,41 @@ class Subscription {
         return get_user_meta( $user_id, '_wpuf_subscription_pack', $status );
     }
 
+    /**
+     * Get all users who have a subscription pack
+     *
+     * @param int $pack_id
+     * @param int $status
+     *
+     * @return array|bool
+     */
     public function subscription_pack_users( $pack_id = '', $status = '' ) {
         global $wpdb;
-        $sql  = 'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers';
-        $sql .= $pack_id ? ' WHERE subscribtion_id  = ' . $pack_id : '';
-        $sql .= $status ? ' AND subscribtion_status = ' . $status : '';
 
+        // Start with the base query
+        $sql            = 'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers';
+        $where_clauses  = [];
+        $prepare_values = [];
 
-        $rows = $wpdb->get_results( $wpdb->prepare( "SELECT user_id FROM {$wpdb->prefix}wpuf_subscribers WHERE subscribtion_id  = %s AND subscribtion_status  = %s", $pack_id ? $pack_id : '', $status ? $status : '' ) );
+        // Add conditional WHERE clauses if params exist
+        if ( $pack_id ) {
+            $where_clauses[]  = 'subscribtion_id = %d';
+            $prepare_values[] = $pack_id;
+        }
+
+        if ( $status ) {
+            $where_clauses[]  = 'subscribtion_status = %d';
+            $prepare_values[] = $status;
+        }
+
+        // Combine WHERE clauses if any exist
+        if ( ! empty( $where_clauses ) ) {
+            $sql .= ' WHERE ' . implode( ' AND ', $where_clauses );
+        }
+
+        // Prepare and execute the query safely
+        $prepared_query = $wpdb->prepare( $sql, $prepare_values );
+        $rows           = $wpdb->get_results( $prepared_query );
 
         if ( empty( $rows ) ) {
             return $rows;

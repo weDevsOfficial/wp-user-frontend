@@ -553,6 +553,23 @@
                     return self.i18n.unsaved_changes;
                 }
             };
+
+            var mail_shortcodes = new window.Clipboard('.wpuf-long-help span[data-clipboard-text]');
+
+            mail_shortcodes.on('success', function(e) {
+                // Show copied tooltip
+                $(e.trigger)
+                    .attr('data-original-title', 'Copied!')
+                    .tooltip('show');
+
+                // Reset the copied tooltip
+                setTimeout(function() {
+                    $(e.trigger).tooltip('hide')
+                        .attr('data-original-title', self.i18n.copy_shortcode);
+                }, 1000);
+
+                e.clearSelection();
+            });
         },
 
         methods: {

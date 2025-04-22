@@ -15,7 +15,7 @@
  */
 ?>
 <div class="wpuf-pricing-wrap">
-    <h3><?php echo wp_kses_post( $pack->post_title ); ?> </h3>
+    <h3><?php echo wp_kses_post( $pack->post_title ); ?></h3>
     <div class="wpuf-sub-amount">
 
         <?php if ( $billing_amount != '0.00' ) { ?>
@@ -28,7 +28,7 @@
 
     </div>
     <?php
-    if ( $pack->meta_value['recurring_pay'] == 'yes' ) {
+    if ( wpuf_is_checkbox_or_toggle_on( $pack->meta_value['recurring_pay'] ) ) {
         ?>
         <div class="wpuf-sub-body wpuf-nullamount-hide">
             <div class="wpuf-sub-terms"><?php echo esc_html( $trial_des ); ?></div>

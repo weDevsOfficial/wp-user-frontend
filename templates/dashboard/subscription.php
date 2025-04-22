@@ -13,7 +13,7 @@
             <?php esc_html_e( 'Subscription Expired!', 'wp-user-frontend' ); ?>
         </div>
         <?php } else {
-             if ( ! empty( $user_sub['total_feature_item'] ) ) { ?>
+             if ( ! empty( $user_sub['total_feature_item'] ) && -1 === $user_sub['total_feature_item'] ) { ?>
                 <div><strong><?php esc_html_e( 'Number of featured item: ', 'wp-user-frontend' ); ?></strong><?php echo esc_html( $user_sub['total_feature_item'] ); ?></div>
             <?php } ?>
             <div>
@@ -24,7 +24,7 @@
                     foreach ( $user_sub['posts'] as $key => $value ) {
                         $value = intval( $value );
 
-                        if ( $value === 0 ) {
+                        if ( 0 === $value || -1 === $value ) {
                             continue;
                         }
 

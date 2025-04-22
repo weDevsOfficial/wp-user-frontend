@@ -974,7 +974,7 @@ class Subscription {
         }
 
         if ( $billing_amount && wpuf_is_checkbox_or_toggle_on( $pack->meta_value['recurring_pay'] ) ) {
-            $recurring_des = sprintf( __( 'Every', 'wp-user-frontend' ) . ' %s %s', $pack->meta_value['billing_cycle_number'], self::get_cycle_label( $pack->meta_value['cycle_period'], $pack->meta_value['billing_cycle_number'] ), $pack->meta_value['trial_duration_type'] );
+            $recurring_des = sprintf( __( 'Every', 'wp-user-frontend' ) . ' %s %s', $pack->meta_value['billing_cycle_number'], self::get_cycle_label( $pack->meta_value['cycle_period'], $pack->meta_value['billing_cycle_number'] ), $pack->meta_value['_trial_duration_type'] );
 
             if ( ! empty( $pack->meta_value['billing_limit'] ) && '-1' !== $pack->meta_value['billing_limit'] ) {
                 $recurring_des .= ! empty( $pack->meta_value['billing_limit'] ) ? sprintf( ', ' . __( 'for', 'wp-user-frontend' ) . ' %s ' . __( 'installments', 'wp-user-frontend' ), $pack->meta_value['billing_limit'] ) : '';
@@ -983,11 +983,11 @@ class Subscription {
             $recurring_des = '<div class="wpuf-pack-cycle wpuf-nullamount-hide">' . $recurring_des . '</div>';
         }
 
-        if ( $billing_amount && wpuf_is_checkbox_or_toggle_on( $pack->meta_value['recurring_pay']  ) && wpuf_is_checkbox_or_toggle_on( $pack->meta_value['trial_status'] ) ) {
+        if ( $billing_amount && wpuf_is_checkbox_or_toggle_on( $pack->meta_value['recurring_pay']  ) && wpuf_is_checkbox_or_toggle_on( $pack->meta_value['_trial_status'] ) ) {
             //phpcs:ignore
-            $duration = _n( $pack->meta_value['trial_duration_type'], $pack->meta_value['trial_duration_type'] . 's', $pack->meta_value['trial_duration'], 'wp-user-frontend' );
+            $duration = _n( $pack->meta_value['_trial_duration_type'], $pack->meta_value['_trial_duration_type'] . 's', $pack->meta_value['_trial_duration'], 'wp-user-frontend' );
             /* translators: %s: trial days */
-            $trial_des = sprintf( __( 'Trial available for first %1$s %2$s', 'wp-user-frontend' ), $pack->meta_value['trial_duration'], $duration );
+            $trial_des = sprintf( __( 'Trial available for first %1$s %2$s', 'wp-user-frontend' ), $pack->meta_value['_trial_duration'], $duration );
         }
 
         $label       = wpuf_get_option( 'logged_in_label', 'wpuf_subscription_settings', false );

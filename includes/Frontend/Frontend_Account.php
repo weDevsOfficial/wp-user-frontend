@@ -227,15 +227,16 @@ class Frontend_Account {
         $recurring_des = '';
         $billing_amount = ( intval( $pack->meta_value['billing_amount'] ) > 0 ) ? $details_meta['symbol'] . $pack->meta_value['billing_amount'] : __( 'Free',
                                                                                                                                                       'wp-user-frontend' );
-        if ( $pack->meta_value['recurring_pay'] === 'yes' ) {
+        if ( wpuf_is_checkbox_or_toggle_on( $pack->meta_value['recurring_pay'] ) ) {
+            error_log( print_r( $pack->meta_value, true ) );
             /* translators: %s: billing cycle number, %s: billing cycle period */
             $recurring_des = sprintf( __( 'For each', 'wp-user-frontend' ) . ' %s %s',
                                       $pack->meta_value['billing_cycle_number'],
                                       Subscription::get_cycle_label( $pack->meta_value['cycle_period'],
                                                                           $pack->meta_value['billing_cycle_number'] ),
-                                      $pack->meta_value['trial_duration_type'] );
+                                      $pack->meta_value['_trial_duration_type'] );
             /* translators: %s: number of installments */
-            $recurring_des .= ! empty( $pack->meta_value['billing_limit'] ) ? sprintf( __( ', for %s installments',
+            $recurring_des .= ! empty( $pack->meta_value['billing_limit'] ) && -1 ===  $pack->meta_value['billing_limit'] ? sprintf( __( ', for %s installments',
                                                                                            'wp-user-frontend' ),
                                                                                        $pack->meta_value['billing_limit'] ) : '';
         }

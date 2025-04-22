@@ -248,8 +248,10 @@ class Frontend_Render_Form {
                     } else {
                         do_action( 'wpuf_edit_post_form_top', $form_id, $post_id, $this->form_settings );
                     }
-
-                    if ( ! is_user_logged_in() && ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) && wpuf_is_checkbox_or_toggle_on( $this->form_settings['guest_details'] ) ) {
+                    if ( ! is_user_logged_in(
+                        ) && ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) && ( ! empty( $this->form_settings['guest_details'] ) && wpuf_is_checkbox_or_toggle_on(
+                                $this->form_settings['guest_details']
+                            ) ) ) {
                         $this->guest_fields( $this->form_settings );
                     }
 

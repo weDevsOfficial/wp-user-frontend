@@ -678,6 +678,8 @@ class Frontend_Form_Ajax {
         }
 
         $content = str_replace( $post_field_search, $post_field_replace, $content );
+        // replace line breaks with proper html tags
+        $content = str_replace( [ "\r\n", "\n", "\r" ], '<br />', $content );
 
         // custom fields
         preg_match_all( '/{custom_([\w-]*)\b}/', $content, $matches );

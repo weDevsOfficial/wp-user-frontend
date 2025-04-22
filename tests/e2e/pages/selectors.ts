@@ -45,6 +45,8 @@ export const Selectors = {
             clickPluginsSidebar: '//li[@id="menu-plugins"]',
             clickWPUFPluginLite: '//a[@id="activate-wp-user-frontend"]',
             clickWPUFPluginPro: '//a[@id="activate-wp-user-frontend-pro"]',
+            clickWPUFPluginDeactivate: '//a[@id="deactivate-wp-user-frontend"]',
+            clickWPUFPluginProDeactivate: '//a[@id="deactivate-wp-user-frontend-pro"]',
         },
 
         // Plugin Visit
@@ -341,6 +343,8 @@ export const Selectors = {
 
             // Save Form Settings
             saveFormSettings: '//button[normalize-space(text())="Save"]',
+            // Validate Form Settings Saved
+            validateFormSettingsSaved: '//div[normalize-space(text())="Saved form data"]',
         },
 
         validateOthers_Common: {
@@ -562,5 +566,13 @@ export const Selectors = {
         wpResetSubmitButton: '//a[@id="wp_reset_submit"]',
         // Confirm WordPress Reset
         wpResetConfirmWordpressReset: '//button[text()="Reset WordPress"]',
+        // Validate Reset
+        notRightNowButton: '//div[@class="wpuf-setup-content"]',
+        // Reactivate Theme
+        reActivateTheme: '//input[@id="reactivate-theme"]',
+        // Reactivate Plugins
+        reActivatePlugins: '//input[@id="reactivate-plugins"]',
+        // Allow analytics
+        allowAnalytics: '//a[normalize-space()="Allow"]',
     },
 };

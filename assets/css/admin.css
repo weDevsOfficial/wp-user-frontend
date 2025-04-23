@@ -1350,3 +1350,7 @@ span.pro-icon:hover .wpuf-pro-field-tooltip {
 .wpuf-subscription-pack-settings .subscription-nav-content section .form-table td {
   padding: 15px 0;
 }
+
+.plugin-card .desc>p, .plugin-card .name {
+  margin-left: 148px !important;
+}

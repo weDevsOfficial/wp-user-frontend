@@ -5019,7 +5019,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                             'type'      => 'select',
                             'options'   => [
                                 'draft'          => __( 'Draft', 'wp-user-frontend' ),
-                                'pending-review' => __( 'Pending Review', 'wp-user-frontend' ),
+                                'pending'        => __( 'Pending Review', 'wp-user-frontend' ),
                                 'private'        => __( 'Private', 'wp-user-frontend' ),
                                 'publish'        => __( 'Published', 'wp-user-frontend' ),
                             ],

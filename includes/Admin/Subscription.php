@@ -974,20 +974,23 @@ class Subscription {
         }
 
         if ( $billing_amount && wpuf_is_checkbox_or_toggle_on( $pack->meta_value['recurring_pay'] ) ) {
-            $recurring_des = sprintf( __( 'Every', 'wp-user-frontend' ) . ' %s %s', $pack->meta_value['billing_cycle_number'], self::get_cycle_label( $pack->meta_value['cycle_period'], $pack->meta_value['billing_cycle_number'] ), $pack->meta_value['trial_duration_type'] );
+            $cycle_number = ! empty( $pack->meta_value['billing_cycle_number'] ) && '1' !== $pack->meta_value['billing_cycle_number'] ? $pack->meta_value['billing_cycle_number'] : '';
 
-            if ( ! empty( $pack->meta_value['billing_limit'] ) && '-1' !== $pack->meta_value['billing_limit'] ) {
+            $recurring_des = sprintf( __( 'Every', 'wp-user-frontend' ) . ' %s %s', $cycle_number, self::get_cycle_label( $pack->meta_value['cycle_period'], $pack->meta_value['billing_cycle_number'] ), $pack->meta_value['_trial_duration_type'] );
+
+
+            if ( wpuf_is_checkbox_or_toggle_on( $pack->meta_value['enable_billing_limit'] ) && ! empty( $pack->meta_value['billing_limit'] ) && '-1' !== $pack->meta_value['billing_limit'] ) {
                 $recurring_des .= ! empty( $pack->meta_value['billing_limit'] ) ? sprintf( ', ' . __( 'for', 'wp-user-frontend' ) . ' %s ' . __( 'installments', 'wp-user-frontend' ), $pack->meta_value['billing_limit'] ) : '';
             }
 
             $recurring_des = '<div class="wpuf-pack-cycle wpuf-nullamount-hide">' . $recurring_des . '</div>';
         }
 
-        if ( $billing_amount && wpuf_is_checkbox_or_toggle_on( $pack->meta_value['recurring_pay']  ) && wpuf_is_checkbox_or_toggle_on( $pack->meta_value['trial_status'] ) ) {
+        if ( $billing_amount && wpuf_is_checkbox_or_toggle_on( $pack->meta_value['recurring_pay']  ) && wpuf_is_checkbox_or_toggle_on( $pack->meta_value['_trial_status'] ) ) {
             //phpcs:ignore
-            $duration = _n( $pack->meta_value['trial_duration_type'], $pack->meta_value['trial_duration_type'] . 's', $pack->meta_value['trial_duration'], 'wp-user-frontend' );
+            $duration = _n( $pack->meta_value['_trial_duration_type'], $pack->meta_value['_trial_duration_type'] . 's', $pack->meta_value['_trial_duration'], 'wp-user-frontend' );
             /* translators: %s: trial days */
-            $trial_des = sprintf( __( 'Trial available for first %1$s %2$s', 'wp-user-frontend' ), $pack->meta_value['trial_duration'], $duration );
+            $trial_des = sprintf( __( 'Trial available for first %1$s %2$s', 'wp-user-frontend' ), $pack->meta_value['_trial_duration'], $duration );
         }
 
         $label       = wpuf_get_option( 'logged_in_label', 'wpuf_subscription_settings', false );
@@ -1091,14 +1094,41 @@ class Subscription {
         return get_user_meta( $user_id, '_wpuf_subscription_pack', $status );
     }
 
+    /**
+     * Get all users who have a subscription pack
+     *
+     * @param int $pack_id
+     * @param int $status
+     *
+     * @return array|bool
+     */
     public function subscription_pack_users( $pack_id = '', $status = '' ) {
         global $wpdb;
-        $sql  = 'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers';
-        $sql .= $pack_id ? ' WHERE subscribtion_id  = ' . $pack_id : '';
-        $sql .= $status ? ' AND subscribtion_status = ' . $status : '';
 
+        // Start with the base query
+        $sql            = 'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers';
+        $where_clauses  = [];
+        $prepare_values = [];
 
-        $rows = $wpdb->get_results( $wpdb->prepare( "SELECT user_id FROM {$wpdb->prefix}wpuf_subscribers WHERE subscribtion_id  = %s AND subscribtion_status  = %s", $pack_id ? $pack_id : '', $status ? $status : '' ) );
+        // Add conditional WHERE clauses if params exist
+        if ( $pack_id ) {
+            $where_clauses[]  = 'subscribtion_id = %d';
+            $prepare_values[] = $pack_id;
+        }
+
+        if ( $status ) {
+            $where_clauses[]  = 'subscribtion_status = %d';
+            $prepare_values[] = $status;
+        }
+
+        // Combine WHERE clauses if any exist
+        if ( ! empty( $where_clauses ) ) {
+            $sql .= ' WHERE ' . implode( ' AND ', $where_clauses );
+        }
+
+        // Prepare and execute the query safely
+        $prepared_query = $wpdb->prepare( $sql, $prepare_values );
+        $rows           = $wpdb->get_results( $prepared_query );
 
         if ( empty( $rows ) ) {
             return $rows;

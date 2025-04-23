@@ -436,8 +436,12 @@ class Frontend_Form_Ajax {
             //now perform some post related actions
             do_action( 'wpuf_edit_post_after_update', $post_id, $form_id, $this->form_settings, $this->form_fields ); // plugin API to extend the functionality
 
-            //send mail notification
-            if ( isset( $this->form_settings['notification'] ) && $this->form_settings['notification']['edit'] === 'on' ) {
+            // send mail notification
+            if ( isset( $this->form_settings['notification'] ) && ( ( isset( $this->form_settings['notification']['edit'] ) && wpuf_is_checkbox_or_toggle_on(
+                            $this->form_settings['notification']['edit']
+                        ) ) || ( ! empty( $this->form_settings['notification_edit'] ) && wpuf_is_checkbox_or_toggle_on(
+                            $this->form_settings['notification_edit']
+                        ) ) ) ) {
                 $mail_body = $this->prepare_mail_body( $this->form_settings['notification']['edit_body'], $post_author, $post_id );
                 $to        = $this->prepare_mail_body( $this->form_settings['notification']['edit_to'], $post_author, $post_id );
                 $subject   = $this->prepare_mail_body( $this->form_settings['notification']['edit_subject'], $post_author, $post_id );
@@ -483,11 +487,14 @@ class Frontend_Form_Ajax {
         $default_post_author = wpuf_get_option( 'default_post_owner', 'wpuf_frontend_posting', 1 );
 
         if ( ! is_user_logged_in() ) {
-            if ( isset( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) {
+            if ( isset( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] && ! empty( $this->form_settings['guest_details'] ) && wpuf_is_checkbox_or_toggle_on(
+                $this->form_settings['guest_details']
+            )) {
                 $guest_name = isset( $_POST['guest_name'] ) ? sanitize_text_field( wp_unslash( $_POST['guest_name'] ) ) : '';
-
-                $guest_email = isset( $_POST['guest_email'] ) ? sanitize_email( wp_unslash( $_POST['guest_email'] ) ) : '';
-                $page_id = isset( $_POST['page_id'] ) ? sanitize_text_field( wp_unslash( $_POST['page_id'] ) ) : '';
+                $guest_email = isset( $_POST['guest_email'] ) ? sanitize_email(
+                    wp_unslash( $_POST['guest_email'] )
+                ) : '';
+                $page_id     = isset( $_POST['page_id'] ) ? sanitize_text_field( wp_unslash( $_POST['page_id'] ) ) : '';
 
                 // is valid email?
                 if ( ! is_email( $guest_email ) ) {
@@ -499,17 +506,6 @@ class Frontend_Form_Ajax {
                     );
 
                     die();
-
-//                    $this->send_error( __( 'Invalid email address.', 'wp-user-frontend' ) );
-//                    wp_send_json(
-//                        [
-//                            'success'     => false,
-//                            'error'       => __( "You already have an account in our site. Please login to continue.\n\nClicking 'OK' will redirect you to the login page and you will lose the form data.\nClick 'Cancel' to stay at this page.", 'wp-user-frontend' ),
-//                            'type'        => 'login',
-//                            'redirect_to' => wp_login_url( get_permalink( $page_id ) ),
-//                        ]
-//                    );
-                    // wpuf()->ajax->send_error( __( 'Invalid email address.', 'wp-user-frontend' ) );
                 }
 
                 // check if the user email already exists
@@ -678,6 +674,8 @@ class Frontend_Form_Ajax {
         }
 
         $content = str_replace( $post_field_search, $post_field_replace, $content );
+        // replace line breaks with proper html tags
+        $content = str_replace( [ "\r\n", "\n", "\r" ], '<br />', $content );
 
         // custom fields
         preg_match_all( '/{custom_([\w-]*)\b}/', $content, $matches );

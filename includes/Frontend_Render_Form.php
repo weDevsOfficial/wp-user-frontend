@@ -75,8 +75,8 @@ class Frontend_Render_Form {
                 <input type="submit" class="wpuf-submit-button wpuf_submit_<?php echo esc_attr( $form_id ); ?>" name="submit" value="<?php echo esc_attr( $form_settings['submit_text'] ); ?>" />
             <?php } ?>
 
-            <?php if ( isset( $form_settings['draft_post'] ) && $form_settings['draft_post'] == 'true' ) { ?>
-                <a href="#" class="btn" id="wpuf-post-draft"><?php esc_html_e( 'Save Draft', 'wp-user-frontend' ); ?></a>
+            <?php if ( isset( $form_settings['draft_post'] ) && wpuf_is_checkbox_or_toggle_on( $form_settings['draft_post'] ) ) { ?>
+                <a href="#" class="btn" style="margin-left: 0.5rem;" id="wpuf-post-draft"><?php esc_html_e( 'Save Draft', 'wp-user-frontend' ); ?></a>
             <?php } ?>
         </li>
 
@@ -248,8 +248,10 @@ class Frontend_Render_Form {
                     } else {
                         do_action( 'wpuf_edit_post_form_top', $form_id, $post_id, $this->form_settings );
                     }
-
-                    if ( ! is_user_logged_in() && ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) && wpuf_is_checkbox_or_toggle_on( $this->form_settings['guest_details'] ) ) {
+                    if ( ! is_user_logged_in(
+                        ) && ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) && ( ! empty( $this->form_settings['guest_details'] ) && wpuf_is_checkbox_or_toggle_on(
+                                $this->form_settings['guest_details']
+                            ) ) ) {
                         $this->guest_fields( $this->form_settings );
                     }
 

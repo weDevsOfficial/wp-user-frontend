@@ -4,7 +4,7 @@ Donate link: https://tareq.co/donate/
 Tags: frontend post, forms, user directory, profile builder, membership
 Requires at least: 4.0
 Tested up to: 6.8
-Stable tag: 4.1.2
+Stable tag: 4.1.3
 Requires PHP: 5.6
 License: GPLv2
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -281,6 +281,15 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 18. Set Payment Related Options
 
 == Changelog ==
+= v4.1.3 (23 April, 2025) =
+* Fix - Draft button does not appear
+* Fix - Post submission when name email not required
+* Fix - Subscription number not showing
+* Fix - Image upload button condition
+* Fix - Email body not respecting spaces
+* Fix - Show recurring and trial info on subscription
+* Fix - Minor css and styling
+
 = v4.1.2 (16 April, 2025) =
 * Fix - Help page of profile editing has duplicated text
 * Fix - Warning message not showing when guest post submitted with duplicate email, username

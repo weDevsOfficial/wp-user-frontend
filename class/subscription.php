@@ -391,7 +391,7 @@ class WPUF_Subscription {
         $cycle_period         = ! empty( $post_data['cycle_period'] ) ? sanitize_text_field( wp_unslash( $post_data['cycle_period'] ) ) : '';
         $billing_limit        = ! empty( $post_data['billing_limit'] ) ? sanitize_text_field( wp_unslash( $post_data['billing_limit'] ) ) : '';
         $trial_duration       = ! empty( $post_data['trial_duration'] ) ? sanitize_text_field( wp_unslash( $post_data['trial_duration'] ) ) : '';
-        $trial_duration_type  = ! empty( $post_data['trial_duration_type'] ) ? sanitize_text_field( wp_unslash( $post_data['trial_duration_type'] ) ) : '';
+        $trial_duration_type  = ! empty( $post_data['_trial_duration_type'] ) ? sanitize_text_field( wp_unslash( $post_data['_trial_duration_type'] ) ) : '';
 
         if ( isset( $post_data['post_expiration_settings'] ) ) {
             if ( isset( $post_data['post_expiration_settings']['expiration_time_value'] ) && isset( $post_data['post_expiration_settings']['expiration_time_type'] ) ) {
@@ -955,7 +955,7 @@ class WPUF_Subscription {
         }
 
         if ( $billing_amount && $pack->meta_value['recurring_pay'] === 'yes' ) {
-            $recurring_des = sprintf( __( 'Every', 'wp-user-frontend' ) . ' %s %s', $pack->meta_value['billing_cycle_number'], self::get_cycle_label( $pack->meta_value['cycle_period'], $pack->meta_value['billing_cycle_number'] ), $pack->meta_value['trial_duration_type'] );
+            $recurring_des = sprintf( __( 'Every', 'wp-user-frontend' ) . ' %s %s', $pack->meta_value['billing_cycle_number'], self::get_cycle_label( $pack->meta_value['cycle_period'], $pack->meta_value['billing_cycle_number'] ), $pack->meta_value['_trial_duration_type'] );
             $recurring_des .= ! empty( $pack->meta_value['billing_limit'] ) ? sprintf( ', ' . __( 'for', 'wp-user-frontend' ) . ' %s ' . __( 'installments', 'wp-user-frontend' ), $pack->meta_value['billing_limit'] ) : '';
             $recurring_des = '<div class="wpuf-pack-cycle wpuf-nullamount-hide">' . $recurring_des . '</div>';
         }

@@ -102,20 +102,25 @@ export class SettingsSetupPage {
         await Promise.all([
             this.page.goto(pluginsPage, { waitUntil: 'networkidle' }),
         ]);
-
         //Activate Plugin
-        const activateWPUFLite = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
-
-        if (activateWPUFLite == true) {
+        const activateWPUFLite = await this.page.locator(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite).isVisible();
+        if (activateWPUFLite === true) {
+            console.log("Plugins is not activated")
             //Plugins is getting activated here
             await this.page.click(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
-
+            console.log("Plugins is getting activated here")
             await this.page.reload();
-            await this.page.goBack();
+            console.log("Plugins activated")
+            await expect(this.page.locator(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginDeactivate)).toBeVisible();
+            console.log("Plugins Deactivation button is visible")
+            // await this.page.goBack();
 
             await this.page.goto(Urls.baseUrl + '/wp-admin/');
+            console.log("Plugins page reached")
             await this.page.isVisible(Selectors.login.basicNavigation.clickWPUFSidebar);
+            console.log("Plugins sidebar is visible")
             await this.page.click(Selectors.login.basicNavigation.clickWPUFSidebar);
+            console.log("Plugins sidebar is clicked")
         }
 
         else {
@@ -335,10 +340,18 @@ export class SettingsSetupPage {
             this.page.goto(Urls.baseUrl + '/wp-admin/tools.php?page=wp-reset', { waitUntil: 'networkidle' }),
         ]);
         await this.page.reload();
+        await this.page.click(Selectors.resetWordpreseSite.reActivateTheme);
+        await this.page.click(Selectors.resetWordpreseSite.reActivatePlugins);
         await this.page.fill(Selectors.resetWordpreseSite.wpResetInputBox, 'reset');
         await this.page.click(Selectors.resetWordpreseSite.wpResetSubmitButton);
-        await this.page.click(Selectors.resetWordpreseSite.wpResetConfirmWordpressReset);
-        await this.page.waitForLoadState('networkidle');
+        await this.page.click(Selectors.resetWordpreseSite.wpResetConfirmWordpressReset, );
+        await this.page.waitForTimeout(7000);
+        this.page.goto(Urls.baseUrl + '/wp-admin/');
+        await this.page.waitForLoadState('domcontentloaded');
+        await this.page.click(Selectors.resetWordpreseSite.allowAnalytics);
+        await this.page.hover(Selectors.logout.basicLogout.logoutHoverUsername, { timeout: 30000 });
+        await this.page.waitForTimeout(1000);
+        await this.page.click(Selectors.logout.basicLogout.logoutButton);
     };
 
 }

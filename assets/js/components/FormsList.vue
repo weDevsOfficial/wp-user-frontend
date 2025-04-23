@@ -4,6 +4,7 @@ import {__} from '@wordpress/i18n';
 import {ref, onMounted, computed, watch} from 'vue';
 import _ from 'lodash';
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue';
+import {HollowDotsSpinner} from 'epic-spinners';
 
 // store only counts without 0 values
 const postCounts = wpuf_forms_list.post_counts;
@@ -311,7 +312,7 @@ onMounted(() => {
     <span
         v-for="(value, key) in postCounts"
         :key="key"
-        @click="currentTab = key"
+        @click="key === 'all' ? currentTab = 'any' : currentTab = key"
         :class="currentTab === key || ( key === 'all' && currentTab === 'any' ) ? 'wpuf-border-primary wpuf-text-primary' : 'wpuf-border-transparent wpuf-text-gray-500'"
         class="wpuf-flex hover:wpuf-border-primary hover:wpuf-text-primary wpuf-whitespace-nowrap wpuf-py-4 wpuf-px-1 wpuf-border-b-2 wpuf-font-medium wpuf-text-sm wpuf-mr-8 focus:wpuf-outline-none focus:wpuf-shadow-none wpuf-transition-all hover:wpuf-cursor-pointer">
       {{ value.label }}
@@ -354,7 +355,26 @@ onMounted(() => {
       </div>
     </div>
   </div>
-  <div class="wpuf-flow-root">
+    <div v-if="loading" class="wpuf-flex wpuf-h-16 wpuf-items-center wpuf-justify-center">
+        <hollow-dots-spinner
+            :animation-duration="1000"
+            :dot-size="20"
+            :dots-num="3"
+            :color="'#7DC442'"
+        />
+    </div>
+    <div v-else-if="forms.length === 0">
+        <main class="wpuf-grid wpuf-min-h-full wpuf-place-items-center wpuf-bg-white wpuf-px-6 wpuf-py-24 sm:wpuf-py-32 lg:wpuf-px-8">
+            <div class="wpuf-text-center">
+                <h1 class="wpuf-mt-4 text-balance wpuf-text-5xl wpuf-font-semibold wpuf-tracking-tight wpuf-text-gray-500 sm:wpuf-text-7xl">
+                    {{ __( 'No item found', 'wp-user-frontend' ) }}
+                </h1>
+            </div>
+        </main>
+    </div>
+  <div
+      v-else
+      class="wpuf-flow-root">
     <div class="wpuf--mx-4 wpuf--my-2 wpuf-overflow-x-auto sm:wpuf--mx-6 lg:wpuf--mx-8">
       <div class="wpuf-inline-block wpuf-min-w-full wpuf-py-2 wpuf-align-middle sm:wpuf-px-6 lg:wpuf-px-8">
         <div class="wpuf-shadow wpuf-border wpuf-border-gray-200 sm:wpuf-rounded-lg">
@@ -380,16 +400,6 @@ onMounted(() => {
             </tr>
             </thead>
             <tbody class="wpuf-divide-y wpuf-divide-gray-200">
-              <tr v-if="loading">
-                <td colspan="6" class="wpuf-py-4 wpuf-text-center">
-                  {{ __( 'Loading...', 'wp-user-frontend' ) }}
-                </td>
-              </tr>
-              <tr v-else-if="forms.length === 0">
-                <td colspan="6" class="wpuf-py-4 wpuf-text-center">
-                  {{ __( 'No forms found', 'wp-user-frontend' ) }}
-                </td>
-              </tr>
               <tr v-for="form in forms" :key="form.ID" class="wpuf-relative wpuf-group">
                 <td class="wpuf-py-4 wpuf-pl-4 wpuf-pr-3 wpuf-text-sm wpuf-font-medium wpuf-text-gray-900 sm:wpuf-pl-6">
                   <input
@@ -430,9 +440,15 @@ onMounted(() => {
                       @click="copyToClipboard(getShortcode(form.ID), $event)"
                       class="wpuf-text-gray-500 hover:wpuf-text-gray-700 wpuf-focus:outline-none"
                       title="Copy shortcode">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="wpuf-h-4 wpuf-w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-                      </svg>
+                        <svg
+                            class="wpuf-stroke-gray-400"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13.125 14.375V17.1875C13.125 17.7053 12.7053 18.125 12.1875 18.125H4.0625C3.54473 18.125 3.125 17.7053 3.125 17.1875V6.5625C3.125 6.04473 3.54473 5.625 4.0625 5.625H5.625C6.05089 5.625 6.46849 5.6605 6.875 5.7287M13.125 14.375H15.9375C16.4553 14.375 16.875 13.9553 16.875 13.4375V9.375C16.875 5.65876 14.1721 2.5738 10.625 1.9787C10.2185 1.9105 9.80089 1.875 9.375 1.875H7.8125C7.29473 1.875 6.875 2.29473 6.875 2.8125V5.7287M13.125 14.375H7.8125C7.29473 14.375 6.875 13.9553 6.875 13.4375V5.7287M16.875 11.25V9.6875C16.875 8.1342 15.6158 6.875 14.0625 6.875H12.8125C12.2947 6.875 11.875 6.45527 11.875 5.9375V4.6875C11.875 3.1342 10.6158 1.875 9.0625 1.875H8.125" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                     </button>
                   </div>
                 </td>

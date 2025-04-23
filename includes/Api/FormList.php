@@ -111,6 +111,9 @@ class FormList extends WP_REST_Controller {
                 // Get form settings
                 $settings = get_post_meta( $post_id, 'wpuf_form_settings', true );
 
+                // Get post count for this form
+                $post_count = $this->get_form_post_count( $post_id, $settings );
+
                 $forms[] = [
                     'ID'                  => $post_id,
                     'post_title'          => get_the_title(),
@@ -118,6 +121,7 @@ class FormList extends WP_REST_Controller {
                     'settings_post_type'  => ! empty( $settings['post_type'] ) ? $settings['post_type'] : '',
                     'settings_guest_post' => ! empty( $settings['post_permission'] ) && 'guest_post' === $settings['post_permission'],
                     'settings_user_role'  => ! empty( $settings['role'] ) ? $settings['role'] : '',
+                    'post_count'          => $post_count,
                 ];
             }
         }
@@ -136,6 +140,36 @@ class FormList extends WP_REST_Controller {
                 ],
             ]
         );
+    }
+
+    /**
+     * Get post count for a form
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int   $form_id  Form ID
+     * @param array $settings Form settings
+     *
+     * @return int
+     */
+    private function get_form_post_count($form_id, $settings) {
+        $post_type = !empty($settings['post_type']) ? $settings['post_type'] : 'post';
+
+        $args = [
+            'post_type'      => $post_type,
+            'post_status'    => 'any',
+            'posts_per_page' => -1,
+            'meta_query'     => [
+                [
+                    'key'     => '_wpuf_form_id',
+                    'value'   => $form_id,
+                    'compare' => '='
+                ]
+            ]
+        ];
+
+        $query = new \WP_Query($args);
+        return $query->found_posts;
     }
 
     /**

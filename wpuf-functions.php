@@ -5451,34 +5451,43 @@ function wpuf_is_checkbox_or_toggle_on( $value ) {
  *
  * @since WPUF_SINCE
  *
- * @return array
+ * @param string $post_type Post type to count
+ * @return array Array of counts with labels
  */
 function wpuf_get_forms_counts_with_status( $post_type = 'wpuf_forms' ) {
     $post_counts = (array) wp_count_posts( $post_type );
-
-    $post_statuses  = apply_filters( 'wpuf_post_forms_list_table_post_statuses', [
-        'all'       => __( 'All', 'wp-user-frontend' ),
-        'publish'   => __( 'Published', 'wp-user-frontend' ),
-        'trash'     => __( 'Trash', 'wp-user-frontend' ),
+    
+    $post_statuses = apply_filters( 'wpuf_post_forms_list_table_post_statuses', [
+        'all'     => __( 'All', 'wp-user-frontend' ),
+        'publish' => __( 'Published', 'wp-user-frontend' ),
+        'trash'   => __( 'Trash', 'wp-user-frontend' ),
     ] );
 
     $status_count = [];
+    $total_count = 0;
 
-    foreach ( $post_statuses as $key => $status ) {
-        if ( ! empty( $post_counts[ $key ] ) ) {
-            $status_count[ $key ] = [
-                'label' => $status,
-                'count' => $post_counts[ $key ],
-            ];
-        } else {
-            $status_count[ $key ] = 0;
+    // Calculate total count (excluding trash)
+    foreach ( $post_counts as $status => $count ) {
+        if ( 'trash' !== $status ) {
+            $total_count += (int) $count;
         }
     }
 
-    $status_count['all'] = [
-        'label' => __( 'All', 'wp-user-frontend' ),
-        'count' => $post_counts['publish'] + $post_counts['draft'] + $post_counts['pending'] + $post_counts['future'],
-    ];
+    // Set up the counts array
+    foreach ( $post_statuses as $key => $label ) {
+        if ( 'all' === $key ) {
+            $status_count[ $key ] = [
+                'label' => $label,
+                'count' => $total_count,
+            ];
+        } else {
+            $count = isset( $post_counts[ $key ] ) ? (int) $post_counts[ $key ] : 0;
+            $status_count[ $key ] = [
+                'label' => $label,
+                'count' => $count,
+            ];
+        }
+    }
 
     return $status_count;
 }

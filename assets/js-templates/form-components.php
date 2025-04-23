@@ -690,7 +690,35 @@
                     $output .= "<label class='wpuf-flex wpuf-items-center'><input :class=\"builder_class_names('checkbox')\" class=\"!wpuf-mr-2\" type=\"checkbox\" v-model=\"choices\" value=\"{$role}\"> {$role_name} </label>";
                     $output .= '</li>';
 
-                    echo wp_kses( $output, array( 'li' => array(), 'label' => array(), 'input' => array( 'type', 'value', 'v-model' ) ) );
+                    $allowed_html = [
+                        'li'    => [
+                            'class' => true,
+                        ],
+                        'label' => [
+                            'class' => true,
+                        ],
+                        'input' => [
+                            'class' => true,
+                            'type'  => true,
+                            'value' => true,
+                        ],
+                    ];
+
+                    // Apply standard wp_kses first
+                    $partially_filtered = wp_kses( $output, $allowed_html );
+
+                    // Then re-add Vue attributes with explicit pattern matching for safety
+                    $vue_attributes = array(
+                        ':class="builder_class_names(\'checkbox\')"',
+                        'v-model="choices"'
+                    );
+
+                    foreach ($vue_attributes as $attr) {
+                        // Safely insert the attribute back into the input tag
+                        $partially_filtered = preg_replace('/(<input[^>]+)/', '$1 ' . $attr, $partially_filtered, 1);
+                    }
+
+                    echo $partially_filtered;
                 }
             ?>
 	    </ul>
@@ -710,7 +738,35 @@
                             $output .= "<label class='wpuf-flex wpuf-items-center'><input  :class=\"builder_class_names('checkbox')\" class=\"!wpuf-mr-2\" type='checkbox' v-model='choices' value='{$pack->ID}' > {$pack->post_title} </label>";
                             $output .= '</li>';
 
-                            echo wp_kses( $output, array( 'li' => array(), 'label' => array(), 'input' => array( 'type', 'value', 'v-model' ) ) );
+                            $allowed_html = [
+                                'li'    => [
+                                    'class' => true,
+                                ],
+                                'label' => [
+                                    'class' => true,
+                                ],
+                                'input' => [
+                                    'class' => true,
+                                    'type'  => true,
+                                    'value' => true,
+                                ],
+                            ];
+
+                            // Apply standard wp_kses first
+                            $partially_filtered = wp_kses( $output, $allowed_html );
+
+                            // Then re-add Vue attributes with explicit pattern matching for safety
+                            $vue_attributes = array(
+                                ':class="builder_class_names(\'checkbox\')"',
+                                'v-model="choices"'
+                            );
+
+                            foreach ($vue_attributes as $attr) {
+                                // Safely insert the attribute back into the input tag
+                                $partially_filtered = preg_replace('/(<input[^>]+)/', '$1 ' . $attr, $partially_filtered, 1);
+                            }
+
+                            echo $partially_filtered;
                         }
                     } else {
                         esc_html_e( 'No subscription plan found.', 'wp-user-frontend' );

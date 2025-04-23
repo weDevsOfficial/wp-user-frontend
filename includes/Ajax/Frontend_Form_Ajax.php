@@ -483,11 +483,14 @@ class Frontend_Form_Ajax {
         $default_post_author = wpuf_get_option( 'default_post_owner', 'wpuf_frontend_posting', 1 );
 
         if ( ! is_user_logged_in() ) {
-            if ( isset( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) {
+            if ( isset( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] && ! empty( $this->form_settings['guest_details'] ) && wpuf_is_checkbox_or_toggle_on(
+                $this->form_settings['guest_details']
+            )) {
                 $guest_name = isset( $_POST['guest_name'] ) ? sanitize_text_field( wp_unslash( $_POST['guest_name'] ) ) : '';
-
-                $guest_email = isset( $_POST['guest_email'] ) ? sanitize_email( wp_unslash( $_POST['guest_email'] ) ) : '';
-                $page_id = isset( $_POST['page_id'] ) ? sanitize_text_field( wp_unslash( $_POST['page_id'] ) ) : '';
+                $guest_email = isset( $_POST['guest_email'] ) ? sanitize_email(
+                    wp_unslash( $_POST['guest_email'] )
+                ) : '';
+                $page_id     = isset( $_POST['page_id'] ) ? sanitize_text_field( wp_unslash( $_POST['page_id'] ) ) : '';
 
                 // is valid email?
                 if ( ! is_email( $guest_email ) ) {
@@ -499,17 +502,6 @@ class Frontend_Form_Ajax {
                     );
 
                     die();
-
-//                    $this->send_error( __( 'Invalid email address.', 'wp-user-frontend' ) );
-//                    wp_send_json(
-//                        [
-//                            'success'     => false,
-//                            'error'       => __( "You already have an account in our site. Please login to continue.\n\nClicking 'OK' will redirect you to the login page and you will lose the form data.\nClick 'Cancel' to stay at this page.", 'wp-user-frontend' ),
-//                            'type'        => 'login',
-//                            'redirect_to' => wp_login_url( get_permalink( $page_id ) ),
-//                        ]
-//                    );
-                    // wpuf()->ajax->send_error( __( 'Invalid email address.', 'wp-user-frontend' ) );
                 }
 
                 // check if the user email already exists

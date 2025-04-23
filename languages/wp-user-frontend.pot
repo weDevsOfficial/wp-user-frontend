@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 4.1.2\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2025-04-16 10:22:46+00:00\n"
+"POT-Creation-Date: 2025-04-22 09:43:05+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1109,12 +1109,12 @@ msgid "Unauthorized operation"
 msgstr ""
 
 #: admin/template-post.php:36 includes/Admin/Forms/Template_Post.php:39
-#: includes/Fields/Form_Field_Post_Content.php:166
+#: includes/Fields/Form_Field_Post_Content.php:167
 msgid "Enable Image Insertion"
 msgstr ""
 
 #: admin/template-post.php:42 includes/Admin/Forms/Template_Post.php:49
-#: includes/Fields/Form_Field_Post_Content.php:168
+#: includes/Fields/Form_Field_Post_Content.php:169
 msgid "Enable image upload in post area"
 msgstr ""
 
@@ -1750,7 +1750,7 @@ msgid ""
 "to add a new post."
 msgstr ""
 
-#: class/subscription.php:1106 includes/Admin/Subscription.php:1128
+#: class/subscription.php:1106 includes/Admin/Subscription.php:1155
 #. translators: %s: subscription link
 msgid "You must <a href=\"%s\">purchase a pack</a> before posting"
 msgstr ""
@@ -4251,15 +4251,15 @@ msgid ""
 "Please check your inbox!"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:497
+#: includes/Ajax/Frontend_Form_Ajax.php:500
 msgid "Invalid email address."
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:522
+#: includes/Ajax/Frontend_Form_Ajax.php:514
 msgid "You already have an account in our site. Please login to continue."
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:577
+#: includes/Ajax/Frontend_Form_Ajax.php:569
 #: includes/Frontend_Render_Form.php:215
 #: includes/class-frontend-render-form.php:323
 msgid "You do not have sufficient permissions to access this form."
@@ -6300,13 +6300,13 @@ msgstr ""
 msgid "Please Cancel Your Currently Active Pack first!"
 msgstr ""
 
-#: includes/Frontend_Render_Form.php:298
+#: includes/Frontend_Render_Form.php:300
 #: includes/class-frontend-render-form.php:909
 #: templates/dashboard/posts.php:120
 msgid "Featured"
 msgstr ""
 
-#: includes/Frontend_Render_Form.php:305
+#: includes/Frontend_Render_Form.php:307
 #: includes/class-frontend-render-form.php:916
 #. translators: %1$s is Post type and %2$d is item
 #. translators: %1$s is Post type and %2$s is total feature item

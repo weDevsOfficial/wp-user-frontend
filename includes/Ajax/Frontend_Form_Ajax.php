@@ -436,8 +436,12 @@ class Frontend_Form_Ajax {
             //now perform some post related actions
             do_action( 'wpuf_edit_post_after_update', $post_id, $form_id, $this->form_settings, $this->form_fields ); // plugin API to extend the functionality
 
-            //send mail notification
-            if ( isset( $this->form_settings['notification'] ) && $this->form_settings['notification']['edit'] === 'on' ) {
+            // send mail notification
+            if ( isset( $this->form_settings['notification'] ) && ( ( isset( $this->form_settings['notification']['edit'] ) && wpuf_is_checkbox_or_toggle_on(
+                            $this->form_settings['notification']['edit']
+                        ) ) || ( ! empty( $this->form_settings['notification_edit'] ) && wpuf_is_checkbox_or_toggle_on(
+                            $this->form_settings['notification_edit']
+                        ) ) ) ) {
                 $mail_body = $this->prepare_mail_body( $this->form_settings['notification']['edit_body'], $post_author, $post_id );
                 $to        = $this->prepare_mail_body( $this->form_settings['notification']['edit_to'], $post_author, $post_id );
                 $subject   = $this->prepare_mail_body( $this->form_settings['notification']['edit_subject'], $post_author, $post_id );

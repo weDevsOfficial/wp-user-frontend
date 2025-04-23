@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "wp-env": "wp-env",
-    "test": "npx playwright test e2eMain.spec.ts --headed"
+    "test": "CI=false npx playwright test e2eMain.spec.ts --headed"
   },
   "keywords": [],
   "author": "",

@@ -29,4 +29,5 @@ tests/e2e/playwright-report/
 tests/e2e/playwright/.cache/
 tests/e2e/.DS_Store
 tests/e2e/.env
+tests/chrome_recordings
 

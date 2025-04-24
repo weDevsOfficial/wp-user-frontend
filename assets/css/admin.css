@@ -691,6 +691,10 @@ a.wpuf-button.button-upgrade-to-pro {
   border-radius: 5px;
   text-decoration: none;
   border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
 }
 .pro-field-overlay a.wpuf-button.button-upgrade-to-pro {
   position: absolute;
@@ -703,8 +707,13 @@ a.wpuf-button.button-upgrade-to-pro {
 a.wpuf-button.button-upgrade-to-pro:hover {
   background: #d07805;
 }
+span.pro-icon {
+  display: inline-flex;
+  align-items: center;
+}
 span.pro-icon svg {
   height: 1em;
+  margin-left: 5px;
 }
 span.pro-icon.icon-white svg path {
   fill: #fff;

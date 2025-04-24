@@ -3404,10 +3404,6 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   overflow: hidden;
 }
 
-.wpuf-overflow-x-auto {
-  overflow-x: auto;
-}
-
 .wpuf-overflow-y-auto {
   overflow-y: auto;
 }

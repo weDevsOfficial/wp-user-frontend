@@ -2893,6 +2893,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   height: 3rem;
 }
 
+.wpuf-h-16 {
+  height: 4rem;
+}
+
 .wpuf-h-3 {
   height: 0.75rem;
 }
@@ -3264,6 +3268,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-flex-wrap {
   flex-wrap: wrap;
+}
+
+.wpuf-place-items-center {
+  place-items: center;
 }
 
 .wpuf-items-start {
@@ -4245,6 +4253,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-text-5xl {
   font-size: 3rem;
+  line-height: 1;
+}
+
+.wpuf-text-7xl {
+  font-size: 4.5rem;
   line-height: 1;
 }
 
@@ -5768,6 +5781,11 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
 
   .sm\:wpuf-text-5xl {
     font-size: 3rem;
+    line-height: 1;
+  }
+
+  .sm\:wpuf-text-7xl {
+    font-size: 4.5rem;
     line-height: 1;
   }
 

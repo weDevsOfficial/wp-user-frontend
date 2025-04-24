@@ -375,7 +375,7 @@ onMounted(() => {
   <div
       v-else
       class="wpuf-flow-root">
-    <div class="wpuf--mx-4 wpuf--my-2 wpuf-overflow-x-auto sm:wpuf--mx-6 lg:wpuf--mx-8">
+    <div class="wpuf--mx-4 wpuf--my-2 sm:wpuf--mx-6 lg:wpuf--mx-8">
       <div class="wpuf-inline-block wpuf-min-w-full wpuf-py-2 wpuf-align-middle sm:wpuf-px-6 lg:wpuf-px-8">
         <div class="wpuf-shadow wpuf-border wpuf-border-gray-200 sm:wpuf-rounded-lg">
           <table class="wpuf-min-w-full wpuf-divide-y wpuf-divide-gray-200">

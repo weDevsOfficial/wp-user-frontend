@@ -240,7 +240,7 @@ onMounted(() => {
                 class="wpuf-hidden wpuf-rounded-md group-hover:wpuf-flex group-hover:wpuf-cursor-pointer wpuf-absolute wpuf-items-center wpuf-justify-center wpuf-bg-black/25 wpuf-z-10 wpuf-p-4 wpuf-w-[104%] wpuf-h-[180%] wpuf-top-[-40%] wpuf-left-[-2%]">
                 <a href="https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=wpdashboard&amp;utm_medium=popup"
                    target="_blank"
-                   class="wpuf-inline-flex wpuf-align-center wpuf-p-2 wpuf-bg-amber-600 wpuf-text-white hover:wpuf-text-white wpuf-rounded-md">
+                   class="wpuf-inline-flex wpuf-align-center wpuf-p-2 wpuf-bg-amber-500 focus:wpuf-bg-amber-600 hover:wpuf-bg-amber-600 wpuf-text-white hover:wpuf-text-white wpuf-rounded-md">
                     {{ __( 'Upgrade to Pro', 'wp-user-frontend' ) }}
                     <span class="pro-icon icon-white">
                         <svg width="20" height="15" viewBox="0 0 20 15" fill="none" xmlns="http://www.w3.org/2000/svg">

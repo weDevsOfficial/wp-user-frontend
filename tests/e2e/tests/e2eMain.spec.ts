@@ -6,7 +6,10 @@ import registrationFormsTestsLite from './registrationFormsTestsLite.spec';
 import * as fs from "fs"; //Clear Cookie
 import resetWordpressSite from './resetWordpressSite.spec';
 
-
+// Clear state.json before each test group
+const clearState = () => {
+    fs.writeFileSync('state.json', '{"cookies":[],"origins": []}');
+};
 
 //*---------------------------------------------------*/
 //*---------------------Reset WP---------------------*/
@@ -23,12 +26,11 @@ import resetWordpressSite from './resetWordpressSite.spec';
  *  - Clears cookies and origins before running the reset test.
  */
 
-fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
-test.describe(resetWordpressSite);
-
-
-
-
+// Only run resetWordpressSite locally
+if (!process.env.CI) {
+    clearState();
+    test.describe(resetWordpressSite);
+}
 
 //*-----------------------------------------------------*/
 //*---------------------MAIN Tests---------------------*/
@@ -49,11 +51,11 @@ test.describe(resetWordpressSite);
  *  - Clears cookies and origins before running any of the tests to maintain test isolation and avoid session interference.
  */
 
-fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
+clearState();
 test.describe(loginAndSetupTests);
 
-fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
+clearState();
 test.describe(postFormsTests);
 
-fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
+clearState();
 test.describe(registrationFormsTestsLite);

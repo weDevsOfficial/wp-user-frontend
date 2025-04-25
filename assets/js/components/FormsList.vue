@@ -8,7 +8,6 @@ import {HollowDotsSpinner} from 'epic-spinners';
 
 // store only counts without 0 values
 const postCounts = wpuf_forms_list.post_counts;
-// const postType = wpuf_forms_list.post_type !== 'undefined' ? wpuf_forms_list.post_type : 'wpuf_forms';
 const postType = wpuf_forms_list.post_type ? wpuf_forms_list.post_type : 'wpuf_forms';
 const form = postType === 'wpuf_forms' ? 'post' : 'profile;'
 
@@ -291,6 +290,7 @@ const handleBulkAction = () => {
 onMounted(() => {
   fetchForms(1, currentTab.value, searchTerm.value);
 });
+
 </script>
 
 <template>

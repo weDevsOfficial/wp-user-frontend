@@ -12,6 +12,7 @@ const postType = wpuf_forms_list.post_type ? wpuf_forms_list.post_type : 'wpuf_f
 const form = postType === 'wpuf_forms' ? 'post' : 'profile;'
 
 const newFormUrl = wpuf_admin_script.admin_url + 'admin.php?page=wpuf-' + form + '-forms&action=add-new';
+const blankImg = wpuf_admin_script.asset_url + '/images/form-blank-state.svg';
 
 const currentTab = ref('any');
 const forms = ref([]);
@@ -287,6 +288,19 @@ const handleBulkAction = () => {
   window.location.href = url;
 };
 
+const openModal = (event) => {
+  event.preventDefault();
+
+  // Trigger the jQuery modal
+  if (window.jQuery) {
+    window.jQuery('.wpuf-form-template-modal').show();
+    window.jQuery('#wpbody-content .wrap').hide();
+  } else {
+    // Fallback if jQuery is not available
+    window.location.href = newFormUrl;
+  }
+};
+
 onMounted(() => {
   fetchForms(1, currentTab.value, searchTerm.value);
 });
@@ -299,13 +313,12 @@ onMounted(() => {
     <h3 class="wpuf-text-2xl wpuf-font-bold wpuf-m-0 wpuf-p-0 wpuf-leading-none">{{ __( 'Post Forms', 'wp-user-frontend' ) }}</h3>
     <div>
       <a
-        :href="newFormUrl"
-        id="new-wpuf-form"
-        class="wpuf-rounded-md wpuf-text-center wpuf-bg-primary wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-primaryHover hover:wpuf-text-white focus:wpuf-bg-primaryHover focus:wpuf-text-white focus:wpuf-shadow-none">
+        @click="openModal"
+        class="new-wpuf-form wpuf-rounded-md wpuf-text-center wpuf-bg-primary wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-primaryHover hover:wpuf-text-white focus:wpuf-bg-primaryHover focus:wpuf-text-white focus:wpuf-shadow-none hover:wpuf-cursor-pointer">
       <span class="dashicons dashicons-plus-alt2"></span>
       &nbsp;
       {{ __( 'Add New ', 'wp-user-frontend' ) }}
-    </a>
+      </a>
     </div>
   </div>
   <div class="wpuf-flex wpuf-mt-9">
@@ -365,10 +378,24 @@ onMounted(() => {
     </div>
     <div v-else-if="forms.length === 0">
         <main class="wpuf-grid wpuf-min-h-full wpuf-place-items-center wpuf-bg-white wpuf-px-6 wpuf-py-24 sm:wpuf-py-32 lg:wpuf-px-8">
-            <div class="wpuf-text-center">
-                <h1 class="wpuf-mt-4 text-balance wpuf-text-5xl wpuf-font-semibold wpuf-tracking-tight wpuf-text-gray-500 sm:wpuf-text-7xl">
-                    {{ __( 'No item found', 'wp-user-frontend' ) }}
-                </h1>
+            <div class="wpuf-text-center wpuf-items-center">
+                <img :src="blankImg" alt="">
+                <h2 class="wpuf-text-lg wpuf-text-gray-800 wpuf-mt-8">
+                    {{ __( 'No Post Forms Created Yet', 'wp-user-frontend' ) }}
+                </h2>
+                <p class="wpuf-text-sm wpuf-text-gray-500 wpuf-mt-8 wpuf-mb-10">
+                    {{
+                        __( 'Start building a post form to let users submit content from the frontend.', 'wp-user-frontend' )
+                    }}
+                </p>
+
+                <a
+                    @click="openModal"
+                    class="new-wpuf-form wpuf-rounded-md wpuf-text-center wpuf-bg-primary wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-primaryHover hover:wpuf-text-white focus:wpuf-bg-primaryHover focus:wpuf-text-white focus:wpuf-shadow-none hover:wpuf-cursor-pointer">
+                    <span class="dashicons dashicons-plus-alt2"></span>
+                    &nbsp;
+                    {{ __( 'Add New ', 'wp-user-frontend' ) }}
+                </a>
             </div>
         </main>
     </div>

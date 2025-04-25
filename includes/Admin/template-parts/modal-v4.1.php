@@ -134,15 +134,14 @@ $form_type = ! empty( $form_type ) ?  $form_type : 'Post Form';
                 </div>
             </div>
         </div>
-        </div>
+    </div>
 </div>
-
 
 <script type="text/javascript">
     ( function ( $ ) {
         var popup = {
             init: function () {
-                $( 'a#new-wpuf-form' ).on( 'click', this.openModal );
+                $( 'a.new-wpuf-form' ).on( 'click', this.openModal );
 
                 $( '.wpuf-form-template-modal .wpuf-close-btn' ).on( 'click', $.proxy( this.closeModal, this ) );
 
@@ -172,7 +171,7 @@ $form_type = ! empty( $form_type ) ?  $form_type : 'Post Form';
             }
         };
 
-        $( function () {
+        $( document ).ready( function () {
             popup.init();
         } );
 

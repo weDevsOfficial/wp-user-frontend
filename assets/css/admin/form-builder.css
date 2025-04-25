@@ -2662,6 +2662,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   margin-bottom: 0.25rem;
 }
 
+.wpuf-mb-10 {
+  margin-bottom: 2.5rem;
+}
+
 .wpuf-mb-12 {
   margin-bottom: 3rem;
 }
@@ -4252,11 +4256,6 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   line-height: 1;
 }
 
-.wpuf-text-7xl {
-  font-size: 4.5rem;
-  line-height: 1;
-}
-
 .wpuf-text-\[11px\] {
   font-size: 11px;
 }
@@ -5777,11 +5776,6 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
 
   .sm\:wpuf-text-5xl {
     font-size: 3rem;
-    line-height: 1;
-  }
-
-  .sm\:wpuf-text-7xl {
-    font-size: 4.5rem;
     line-height: 1;
   }
 

@@ -377,8 +377,8 @@ onMounted(() => {
         />
     </div>
     <div v-else-if="forms.length === 0">
-        <main class="wpuf-grid wpuf-min-h-full wpuf-place-items-center wpuf-bg-white wpuf-px-6 wpuf-py-24 sm:wpuf-py-32 lg:wpuf-px-8">
-            <div class="wpuf-text-center wpuf-items-center">
+        <div class="wpuf-grid wpuf-min-h-full wpuf-bg-white wpuf-px-6 wpuf-py-24 sm:wpuf-py-32 lg:wpuf-px-8">
+            <div class="wpuf-flex wpuf-flex-col wpuf-items-center">
                 <img :src="blankImg" alt="">
                 <h2 class="wpuf-text-lg wpuf-text-gray-800 wpuf-mt-8">
                     {{ __( 'No Post Forms Created Yet', 'wp-user-frontend' ) }}
@@ -397,7 +397,7 @@ onMounted(() => {
                     {{ __( 'Add New ', 'wp-user-frontend' ) }}
                 </a>
             </div>
-        </main>
+        </div>
     </div>
   <div
       v-else

@@ -17,7 +17,7 @@ jobs:
 
       - name: Get Composer cache directory
         id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Setup cache
         uses: pat-s/always-upload-cache@v1.1.4
@@ -33,7 +33,7 @@ jobs:
         run: |
           URL="https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files"
           FILES=$(curl -s -X GET -G $URL | jq -r '.[] | .filename' | xargs)
-          echo "::set-output name=files::$FILES"
+          echo "files=$FILES" >> $GITHUB_OUTPUT
 
       - name: Detect coding standard violations
         run: vendor/bin/phpcs ${{ steps.changes.outputs.files }} -q --report=checkstyle | cs2pr --graceful-warnings

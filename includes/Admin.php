@@ -83,6 +83,9 @@ class Admin {
                 'cleared_schedule_lock'        => __( 'Post lock has been cleared', 'wp-user-frontend' ),
                 'asset_url'                    => WPUF_ASSET_URI,
                 'admin_url'                    => admin_url(),
+                'support_url'                  => esc_url(
+                    'https://wedevs.com/contact/?utm_source=wpuf-subscription'
+                ),
                 'version'                      => WPUF_VERSION,
                 'isProActive'                  => class_exists( 'WP_User_Frontend_Pro' ),
                 'protected_shortcodes'         => wpuf_get_protected_shortcodes(),

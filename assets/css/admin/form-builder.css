@@ -3274,10 +3274,6 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   flex-wrap: wrap;
 }
 
-.wpuf-place-items-center {
-  place-items: center;
-}
-
 .wpuf-items-start {
   align-items: flex-start;
 }
@@ -4343,6 +4339,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-leading-6 {
   line-height: 1.5rem;
+}
+
+.wpuf-leading-7 {
+  line-height: 1.75rem;
 }
 
 .wpuf-leading-8 {

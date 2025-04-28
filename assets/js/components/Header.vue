@@ -14,6 +14,7 @@ const wpuf = wpuf_admin_script;
 const logoUrl = wpuf.asset_url + '/images/wpuf-icon-circle.svg';
 const proBadge = wpuf.asset_url + '/images/pro-badge.svg';
 const upgradeUrl = wpuf.upgradeUrl + '?utm_source=' + utm + '&utm_medium=wpuf-header';
+const supportUrl = wpuf.support_url;
 </script>
 
 <template>
@@ -42,7 +43,7 @@ const upgradeUrl = wpuf.upgradeUrl + '?utm_source=' + utm + '&utm_medium=wpuf-he
                 target="_blank"
                 href="https://wpuf.canny.io/ideas">💡 {{ __( 'Submit Ideas', 'wp-user-frontend' ) }}</a>
             <a
-                :href="wpuf.supportUrl"
+                :href="supportUrl"
                 target="_blank"
                 class="wpuf-rounded-md wpuf-text-center wpuf-bg-primary wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-primaryHover hover:wpuf-text-white focus:wpuf-bg-primaryHover focus:wpuf-text-white">
                 {{ __( 'Support ', 'wp-user-frontend' ) }}

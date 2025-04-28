@@ -880,7 +880,7 @@ class Subscription {
             $user_id         = get_current_user_id();
             $payment_gateway = $wpdb->get_var( $wpdb->prepare( "SELECT payment_type FROM {$wpdb->prefix}wpuf_transaction WHERE user_id = %s AND status = 'completed' ORDER BY created DESC", $user_id ) );
 
-            $payment_gateway = strtolower( $payment_gateway );
+            $payment_gateway = $payment_gateway ? strtolower( $payment_gateway ) : '';
             ?>
 
             <?php echo wp_kses_post( __( '<p><i>You have a subscription pack activated. </i></p>', 'wp-user-frontend' ) ); ?>

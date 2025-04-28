@@ -7,13 +7,15 @@
             <strong><?php esc_html_e( 'Package & billing details: ', 'wp-user-frontend' ); ?></strong>
             <?php echo esc_html( $billing_amount . ' ' . $recurring_des ); ?>
         </div>
-        <?php  if ( is_wp_error( $user_sub ) ) { ?>
+        <?php if ( is_wp_error( $user_sub ) ) { ?>
         <div>
             <strong><?php esc_html_e( 'Subscription Status: ', 'wp-user-frontend' ); ?></strong>
             <?php esc_html_e( 'Subscription Expired!', 'wp-user-frontend' ); ?>
         </div>
-        <?php } else {
-             if ( ! empty( $user_sub['total_feature_item'] ) && -1 === $user_sub['total_feature_item'] ) { ?>
+			<?php
+        } else {
+			if ( ! empty( $user_sub['total_feature_item'] ) && -1 === $user_sub['total_feature_item'] ) {
+				?>
                 <div><strong><?php esc_html_e( 'Number of featured item: ', 'wp-user-frontend' ); ?></strong><?php echo esc_html( $user_sub['total_feature_item'] ); ?></div>
             <?php } ?>
             <div>
@@ -31,7 +33,7 @@
                         if ( ! $post_type_obj ) {
                             continue;
                         }
-                        $post_count++;
+                        ++$post_count;
                     }
                 }
                 ?>
@@ -49,17 +51,17 @@
                             continue;
                         }
                         $value = ( $value == '-1' ) ? __( 'Unlimited', 'wp-user-frontend' ) : $value;
-                        $hidden_class = ($i >= 3) ? 'wpuf-remaining-post-hidden' : '';
+                        $hidden_class = ( $i >= 0 ) ? 'wpuf-remaining-post-hidden' : '';
                         ?>
                         <div class="<?php echo esc_attr( $hidden_class ); ?>"><?php echo esc_html( $post_type_obj->labels->name ) . ': ' . esc_html( $value ); ?></div>
                         <?php
-                        $i ++;
+                        ++$i;
                     }
                 }
                 echo $i ? '' : esc_attr( $i );
                 ?>
                 </div>
-                <?php if ( $post_count > 3 ) : ?>
+                <?php if ( $post_count > 0 ) : ?>
                     <button type="button" id="wpuf-remaining-posts-toggle" class="btn btn-link" style="padding:0;"><?php esc_html_e( 'Show More', 'wp-user-frontend' ); ?></button>
                     <script>
                         (function(){
@@ -80,8 +82,9 @@
             </div>
             <?php
             if ( $user_sub['recurring'] != 'yes' ) {
-                if ( !empty( $user_sub['expire'] ) ) {
-                    $expiry_date =  ( 'unlimited' === $user_sub['expire'] ) ? __( 'Unlimited', 'wp-user-frontend' ) : wpuf_get_date( wpuf_date2mysql( $user_sub['expire'] ) ); ?>
+                if ( ! empty( $user_sub['expire'] ) ) {
+                    $expiry_date = ( 'unlimited' === $user_sub['expire'] ) ? __( 'Unlimited', 'wp-user-frontend' ) : wpuf_get_date( wpuf_date2mysql( $user_sub['expire'] ) );
+                    ?>
                     <div class="wpuf-expire">
                         <strong><?php echo esc_html__( 'Expire date:', 'wp-user-frontend' ); ?></strong> <?php echo esc_html( $expiry_date ); ?>
                     </div>
@@ -105,25 +108,28 @@
      * @param array $user_sub User subscription data
      * @return array Subscription data
      */
-    function get_subscription_data( $user_sub ) {
-        global $wpdb;
-        
-        $user_id = get_current_user_id();
-        $pack_id = $user_sub['pack_id'];
-        $subscription = wpuf()->subscription->get_subscription( $pack_id );
-        // Get payment gateway
-        $payment_gateway = $wpdb->get_var( $wpdb->prepare( 
+function get_subscription_data( $user_sub ) {
+	global $wpdb;
+
+	$user_id = get_current_user_id();
+	$pack_id = $user_sub['pack_id'];
+	$subscription = wpuf()->subscription->get_subscription( $pack_id );
+	// Get payment gateway
+	$payment_gateway = $wpdb->get_var(
+        $wpdb->prepare(
             "SELECT payment_type 
             FROM {$wpdb->prefix}wpuf_transaction 
             WHERE user_id = %d 
             AND status = 'completed' 
-            ORDER BY created DESC", 
-            $user_id 
-        ) );
-        $payment_gateway = strtolower( $payment_gateway );
+            ORDER BY created DESC",
+            $user_id
+        )
+    );
+	$payment_gateway = strtolower( $payment_gateway );
 
-        // Get last payment date
-        $last_payment_date = $wpdb->get_var( $wpdb->prepare(
+	// Get last payment date
+	$last_payment_date = $wpdb->get_var(
+        $wpdb->prepare(
             "SELECT created 
             FROM {$wpdb->prefix}wpuf_transaction 
             WHERE user_id = %d 
@@ -131,27 +137,28 @@
             ORDER BY created DESC 
             LIMIT 1",
             $user_id
-        ) );
+        )
+    );
 
-        // Get billing cycle details
-        $cycle_number = intval( $subscription->meta_value['billing_cycle_number'] );
-        $cycle_period = $subscription->meta_value['cycle_period'];
-        
-        // Get trial details
-        $trial_status = $subscription->meta_value['trial_status'];
-        $trial_duration = $subscription->meta_value['trial_duration'];
-        $trial_duration_type = $subscription->meta_value['trial_duration_type'];
+	// Get billing cycle details
+	$cycle_number = intval( $subscription->meta_value['billing_cycle_number'] );
+	$cycle_period = $subscription->meta_value['cycle_period'];
 
-        return [
-            'payment_gateway' => $payment_gateway,
-            'last_payment_date' => $last_payment_date,
-            'cycle_number' => $cycle_number,
-            'cycle_period' => $cycle_period,
-            'trial_status' => $trial_status,
-            'trial_duration' => $trial_duration,
-            'trial_duration_type' => $trial_duration_type
-        ];
-    }
+	// Get trial details
+	$trial_status = $subscription->meta_value['trial_status'];
+	$trial_duration = $subscription->meta_value['trial_duration'];
+	$trial_duration_type = $subscription->meta_value['trial_duration_type'];
+
+	return [
+		'payment_gateway' => $payment_gateway,
+		'last_payment_date' => $last_payment_date,
+		'cycle_number' => $cycle_number,
+		'cycle_period' => $cycle_period,
+		'trial_status' => $trial_status,
+		'trial_duration' => $trial_duration,
+		'trial_duration_type' => $trial_duration_type,
+	];
+}
 
     /**
      * Display subscription details
@@ -159,14 +166,14 @@
      * @param array $subscription_data Subscription data
      * @return void
      */
-    function display_subscription_details( $subscription_data ) {
-        $trial_html = get_trial_expiration_html( $subscription_data );
-        $billing_html = get_next_billing_html( $subscription_data );
-        ?>
+function display_subscription_details( $subscription_data ) {
+	$trial_html = get_trial_expiration_html( $subscription_data );
+	$billing_html = get_next_billing_html( $subscription_data );
+	?>
         <br>
-        <?php if ( $subscription_data['trial_status'] == 'on' ): ?>
+	<?php if ( $subscription_data['trial_status'] == 'on' ) : ?>
             <?php echo wp_kses_post( $trial_html ); ?>
-        <?php elseif ( $subscription_data['trial_status'] === 'off' ): ?>
+        <?php elseif ( $subscription_data['trial_status'] === 'off' ) : ?>
             <div class="wpuf-recurring-info">
                 <?php echo wp_kses_post( $billing_html ); ?>
             </div>
@@ -174,12 +181,12 @@
         
         <p><i><?php esc_html_e( 'To cancel the pack, press the following cancel button.', 'wp-user-frontend' ); ?></i></p>
         <form action="" method="post" style="text-align: center;">
-            <?php wp_nonce_field( 'wpuf-sub-cancel' ); ?>
+		<?php wp_nonce_field( 'wpuf-sub-cancel' ); ?>
             <input type="hidden" name="gateway" value="<?php echo esc_attr( $subscription_data['payment_gateway'] ); ?>">
             <input type="submit" name="wpuf_cancel_subscription" class="btn btn-sm btn-danger" value="<?php esc_html_e( 'Cancel', 'wp-user-frontend' ); ?>">
         </form>
         <?php
-    }
+}
 
     /**
      * Get trial expiration HTML
@@ -187,25 +194,25 @@
      * @param array $subscription_data Subscription data
      * @return string HTML for trial expiration
      */
-    function get_trial_expiration_html( $subscription_data ) {
-        if ( $subscription_data['trial_status'] !== 'on' ) {
-            return '';
-        }
+function get_trial_expiration_html( $subscription_data ) {
+	if ( $subscription_data['trial_status'] !== 'on' ) {
+		return '';
+	}
 
-        $trial_expiration_date = date(
-            'Y-m-d', 
-            strtotime(
-                "+{$subscription_data['trial_duration']} {$subscription_data['trial_duration_type']}", 
-                strtotime( $subscription_data['last_payment_date'] )
-            )
-        );
+	$trial_expiration_date = date(
+		'Y-m-d',
+		strtotime(
+			"+{$subscription_data['trial_duration']} {$subscription_data['trial_duration_type']}",
+			strtotime( $subscription_data['last_payment_date'] )
+		)
+	);
 
-        return sprintf(
-            '<div><strong>%s</strong> %s</div>',
-            esc_html__( 'Trial expiration date:', 'wp-user-frontend' ),
-            esc_html( $trial_expiration_date )
-        );
-    }
+	return sprintf(
+		'<div><strong>%s</strong> %s</div>',
+		esc_html__( 'Trial expiration date:', 'wp-user-frontend' ),
+		esc_html( $trial_expiration_date )
+	);
+}
 
     /**
      * Get next billing HTML
@@ -213,28 +220,28 @@
      * @param array $subscription_data Subscription data
      * @return string HTML for next billing
      */
-    function get_next_billing_html( $subscription_data ) {
-        if ( ! $subscription_data['last_payment_date'] || 
-             ! $subscription_data['cycle_number'] || 
-             ! $subscription_data['cycle_period'] ) {
-            return sprintf(
-                '<div><strong>%s</strong> %s</div>',
-                esc_html__( 'Next billing date:', 'wp-user-frontend' ),
-                esc_html__( 'N/A', 'wp-user-frontend' )
-            );
-        }
+function get_next_billing_html( $subscription_data ) {
+	if ( ! $subscription_data['last_payment_date'] ||
+		! $subscription_data['cycle_number'] ||
+		! $subscription_data['cycle_period'] ) {
+		return sprintf(
+			'<div><strong>%s</strong> %s</div>',
+			esc_html__( 'Next billing date:', 'wp-user-frontend' ),
+			esc_html__( 'N/A', 'wp-user-frontend' )
+		);
+	}
 
-        $next_billing_date = date(
-            'Y-m-d',
-            strtotime(
-                "+{$subscription_data['cycle_number']} {$subscription_data['cycle_period']}", 
-                strtotime( $subscription_data['last_payment_date'] )
-            )
-        );
-        return sprintf(
-            '<div><strong>%s</strong> %s</div>',
-            esc_html__( 'Next billing date:', 'wp-user-frontend' ),
-            esc_html( $next_billing_date )
-        );
-    }
+	$next_billing_date = date(
+		'Y-m-d',
+		strtotime(
+			"+{$subscription_data['cycle_number']} {$subscription_data['cycle_period']}",
+			strtotime( $subscription_data['last_payment_date'] )
+		)
+	);
+	return sprintf(
+		'<div><strong>%s</strong> %s</div>',
+		esc_html__( 'Next billing date:', 'wp-user-frontend' ),
+		esc_html( $next_billing_date )
+	);
+}
 ?>

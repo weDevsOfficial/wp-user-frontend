@@ -39,12 +39,6 @@ class FormList extends WP_REST_Controller {
                     'callback'            => [ $this, 'get_items' ],
                     'permission_callback' => [ $this, 'permission_check' ],
                 ],
-                [
-                    'methods'             => WP_REST_Server::CREATABLE,
-                    'callback'            => [ $this, 'create_or_update_item' ],
-                    'permission_callback' => [ $this, 'permission_check' ],
-                    'args'                => $this->get_endpoint_args_for_item_schema( true ),
-                ],
             ]
         );
     }
@@ -106,7 +100,9 @@ class FormList extends WP_REST_Controller {
         if ( $query->have_posts() ) {
             while ( $query->have_posts() ) {
                 $query->the_post();
-                $post_id = get_the_ID();
+
+                $post    = get_post();
+                $post_id = $post->ID;
 
                 // Get form settings
                 $settings = get_post_meta( $post_id, 'wpuf_form_settings', true );
@@ -117,6 +113,7 @@ class FormList extends WP_REST_Controller {
                 $forms[] = [
                     'ID'                  => $post_id,
                     'post_title'          => get_the_title(),
+                    'form_status'         => ! empty( $post->post_status ) ? $post->post_status : '',
                     'post_status'         => ! empty( $settings['post_status'] ) ? $settings['post_status'] : '',
                     'settings_post_type'  => ! empty( $settings['post_type'] ) ? $settings['post_type'] : '',
                     'settings_guest_post' => ! empty( $settings['post_permission'] ) && 'guest_post' === $settings['post_permission'],

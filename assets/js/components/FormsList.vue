@@ -9,9 +9,9 @@ import {HollowDotsSpinner} from 'epic-spinners';
 // store only counts without 0 values
 const postCounts = wpuf_forms_list.post_counts;
 const postType = wpuf_forms_list.post_type ? wpuf_forms_list.post_type : 'wpuf_forms';
-const form = postType === 'wpuf_forms' ? 'post' : 'profile;'
+const formType = postType === 'wpuf_forms' ? 'post' : 'profile';
 
-const newFormUrl = wpuf_admin_script.admin_url + 'admin.php?page=wpuf-' + form + '-forms&action=add-new';
+const newFormUrl = wpuf_admin_script.admin_url + 'admin.php?page=wpuf-' + formType + '-forms&action=add-new';
 const blankImg = wpuf_admin_script.asset_url + '/images/form-blank-state.svg';
 
 const currentTab = ref('any');
@@ -438,9 +438,9 @@ onMounted(() => {
                       @click="handleEdit(form.ID)"
                       class="hover:wpuf-cursor-pointer">{{ form.post_title }}</span>
                   <span
-                    v-if="form.post_status === 'draft'"
+                    v-if="form.form_status === 'draft'"
                     class="wpuf-text-gray-400">
-                    - {{ __( 'Draft', 'wp-user-frontend' ) }}
+                    — {{ __( 'Draft', 'wp-user-frontend' ) }}
                   </span>
                 </td>
                 <td class="wpuf-whitespace-nowrap wpuf-px-3 wpuf-py-4 wpuf-text-sm wpuf-text-gray-500">

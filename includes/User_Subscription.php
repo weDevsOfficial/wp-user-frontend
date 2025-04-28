@@ -83,9 +83,9 @@ class User_Subscription {
 
         $expire_date = isset( $this->pack['expire'] ) ? $this->pack['expire'] : 0;
         $expired     = true;
-
+        
         // phpcs:disable
-        if ( strtolower( $expire_date ) == 'unlimited' || empty( $expire_date ) ) {
+        if ( strtolower( $expire_date ) == 'unlimited' || empty( $expire_date ) || $expire_date == '-1' ) {
             $expired = false;
         } elseif ( strtotime( date( 'Y-m-d', strtotime( $expire_date ) ) ) >= strtotime( date( 'Y-m-d', time() ) ) ) {
             $expired = false;
@@ -191,9 +191,7 @@ class User_Subscription {
                 'status'  => $status,
             ];
 
-            // $recurring = get_post_meta( $pack_id, '_recurring_pay', true );
-
-            if ( $recurring ) {
+            if ( $subscription->meta_value['recurring_pay'] == 'on') {
                 $totla_date              = date( 'd-m-Y', strtotime( '+' . $subscription->meta_value['billing_cycle_number'] . $subscription->meta_value['cycle_period'] . 's' ) ); // phpcs:ignore
                 $user_meta['expire']     = '';
                 $user_meta['profile_id'] = $profile_id;
@@ -202,7 +200,7 @@ class User_Subscription {
                 $period_type            = $subscription->meta_value['expiration_period'];
                 $period_number          = $subscription->meta_value['expiration_number'];
                 $date                   = date( 'd-m-Y', strtotime( '+' . $period_number . $period_type . 's' ) ); // phpcs:ignore
-                $expired                = ( empty( $period_number ) || ( $period_number == 0 ) ) ? 'unlimited' : wpuf_date2mysql( $date );
+                $expired                = ( empty( $period_number ) || ( $period_number == 0 || $period_number == '-1' ) ) ? 'unlimited' : wpuf_date2mysql( $date );
                 $user_meta['expire']    = $expired;
                 $user_meta['recurring'] = 'no';
             }

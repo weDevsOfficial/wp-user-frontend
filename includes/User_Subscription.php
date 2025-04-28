@@ -86,7 +86,7 @@ class User_Subscription {
 
         $expire_date = isset( $this->pack['expire'] ) ? $this->pack['expire'] : 0;
         $expired     = true;
-        
+
         // phpcs:disable
         if ( strtolower( $expire_date ) == 'unlimited' || empty( $expire_date ) || $expire_date == '-1' ) {
             $expired = false;

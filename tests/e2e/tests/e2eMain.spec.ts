@@ -10,7 +10,7 @@ import resetWordpressSite from './resetWordpressSite.spec';
 const clearState = () => {
     fs.writeFileSync('state.json', '{"cookies":[],"origins": []}');
 };
-
+console.log('CI:', process.env.CI); 
 //*---------------------------------------------------*/
 //*---------------------Reset WP---------------------*/
 //*-------------------------------------------------*/
@@ -27,7 +27,7 @@ const clearState = () => {
  */
 
 // Only run resetWordpressSite locally
-if (!process.env.CI) {
+if (process.env.CI == 'false') {
     clearState();
     test.describe(resetWordpressSite);
 }

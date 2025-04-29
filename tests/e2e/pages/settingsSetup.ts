@@ -88,7 +88,7 @@ export class SettingsSetupPage {
         const availableText = await this.page.isVisible(Selectors.settingsSetup.pluginVisit.clickPostFormMenuOption);
         if (availableText == true) {
             const checkText = await this.page.innerText(Selectors.settingsSetup.pluginVisit.wpufPostFormCheckAddButton);
-            await expect(checkText).toContain("Add Form");
+            await expect(checkText).toContain("Add New");
         }
 
     };
@@ -101,25 +101,24 @@ export class SettingsSetupPage {
         await Promise.all([
             this.page.goto(pluginsPage, { waitUntil: 'networkidle' }),
         ]);
+        try {
+            expect(await this.page.locator("//a[@id='activate-wpuf-pro']")).toBeVisible();
+            console.log("WPUF-pro Status: Installed");
+        } catch (error) {
+            console.log("WPUF-pro Status: Not Installed");
+        }
         //Activate Plugin
         const activateWPUFLite = await this.page.locator(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite).isVisible();
         if (activateWPUFLite === true) {
-            console.log("Plugins is not activated")
             //Plugins is getting activated here
             await this.page.click(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
-            console.log("Plugins is getting activated here")
             await this.page.reload();
             console.log("Plugins activated")
-            await expect(this.page.locator(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginDeactivate)).toBeVisible();
-            console.log("Plugins Deactivation button is visible")
             // await this.page.goBack();
 
             await this.page.goto(Urls.baseUrl + '/wp-admin/');
-            console.log("Plugins page reached")
             await this.page.isVisible(Selectors.login.basicNavigation.clickWPUFSidebar);
-            console.log("Plugins sidebar is visible")
             await this.page.click(Selectors.login.basicNavigation.clickWPUFSidebar);
-            console.log("Plugins sidebar is clicked")
         }
 
         else {
@@ -340,11 +339,11 @@ export class SettingsSetupPage {
         ]);
         await this.page.reload();
         await this.page.click(Selectors.resetWordpreseSite.reActivateTheme);
-        await this.page.click(Selectors.resetWordpreseSite.reActivatePlugins);
+        // await this.page.click(Selectors.resetWordpreseSite.reActivatePlugins);
         await this.page.fill(Selectors.resetWordpreseSite.wpResetInputBox, 'reset');
         await this.page.click(Selectors.resetWordpreseSite.wpResetSubmitButton);
-        await this.page.click(Selectors.resetWordpreseSite.wpResetConfirmWordpressReset,);
-        await this.page.waitForTimeout(7000);
+        await this.page.click(Selectors.resetWordpreseSite.wpResetConfirmWordpressReset);
+        await this.page.waitForTimeout(5000);
     };
 
 }

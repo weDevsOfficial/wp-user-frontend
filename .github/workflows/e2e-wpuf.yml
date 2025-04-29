@@ -46,6 +46,26 @@ jobs:
             npm i
             grunt release --force
 
+      - name: Clone WPUF-pro
+        uses: actions/checkout@v4
+        with:
+          repository: weDevsOfficial/wpuf-pro
+          token: ${{ secrets.ACCESS_TOKEN }}
+          path: 'plugins/wpuf-pro'
+          ref: 'develop'
+
+      - name: Composer install and build (WPUF-pro)
+        run: |
+          cd plugins/wpuf-pro
+          composer install --no-dev --prefer-dist
+          composer dump-autoload -o
+
+      - name: Npm install and build (WPUF-pro)
+        run: |
+          cd plugins/wpuf-pro
+          npm i --legacy-peer-deps
+          grunt 
+
       # Install test dependencies
       - name: Install test dependencies
         working-directory: tests/e2e
@@ -106,9 +126,9 @@ jobs:
           if-no-files-found: ignore
           retention-days: 3
 
-      # - name: Publish HTML report to GH Pages
-      #   uses: peaceiris/actions-gh-pages@v4
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     publish_branch: gh-pages
-      #     publish_dir: tests/e2e/playwright-report
+      - name: Publish HTML report to GH Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: tests/e2e/playwright-report

@@ -55,7 +55,7 @@ export const Selectors = {
             // Sidebar
             // PostFormPage
             clickPostFormMenuOption: '//a[contains(text(), "Post Forms")]',
-            wpufPostFormCheckAddButton: '#new-wpuf-post-form',
+            wpufPostFormCheckAddButton: '#new-wpuf-form',
             wpufRegistrationFormCheckAddButton: '//a[@id="new-wpuf-profile-form"]',
             postFormsPageFormTitleCheck: '(//a[@class="row-title"])[1]',
         },
@@ -182,7 +182,7 @@ export const Selectors = {
             clickpostFormsMenuOption: '//a[contains(text(), "Post Forms")]',
 
             // Add Form
-            clickPostAddForm: '//a[@class="page-title-action add-form" and contains(text(), "Add Form")]',
+            clickPostAddForm: '//a[@id="new-wpuf-form"]',
 
             // Start > Blank Form
             clickBlankForm: '//a[@title="Blank Form" and contains(text(), "Create Form")]',

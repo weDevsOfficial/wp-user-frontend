@@ -109,23 +109,30 @@ export class SettingsSetupPage {
         }
         //Activate Plugin
         const activateWPUFLite = await this.page.locator(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite).isVisible();
+        console.log("installed");
         if (activateWPUFLite === true) {
+            console.log("being activated");
             //Plugins is getting activated here
             await this.page.click(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
+            console.log("activating");
             await this.page.reload();
             console.log("Plugins activated")
             // await this.page.goBack();
 
             await this.page.goto(Urls.baseUrl + '/wp-admin/');
+            console.log("navigated to dashboard");
             await this.page.isVisible(Selectors.login.basicNavigation.clickWPUFSidebar);
             await this.page.click(Selectors.login.basicNavigation.clickWPUFSidebar);
+            console.log("WPUF-Lite Status: Activated");
         }
 
         else {
+            console.log("already activated");
             await this.page.isVisible(Selectors.login.basicNavigation.clickWPUFSidebar);
+            console.log("navigated to dashboard");
             await this.page.click(Selectors.login.basicNavigation.clickWPUFSidebar);
+            console.log("WPUF-Lite Status: Activated");
         }
-        console.log("WPUF-Lite Status: Activated");
     };
 
     //Plugin Activate - Pro

@@ -124,6 +124,15 @@ class Menu {
                 break;
 
             default:
+                wp_enqueue_style( 'wpuf-forms-list' );
+                wp_enqueue_script( 'wpuf-forms-list' );
+                wp_localize_script('wpuf-forms-list', 'wpuf_forms_list',
+                    [
+                        'post_counts' => wpuf_get_forms_counts_with_status(),
+                        'rest_nonce'  => wp_create_nonce( 'wp_rest' ),
+                        'bulk_nonce'  => wp_create_nonce( 'bulk-post-forms' ),
+                    ]
+                );
                 require_once WPUF_INCLUDES . '/Admin/views/post-forms-list-table-view.php';
 
                 $registry       = wpuf_get_post_form_templates();

@@ -179,6 +179,9 @@ class Assets {
             'whats-new'           => [
                 'src' => WPUF_ASSET_URI . '/css/admin/whats-new.css',
             ],
+            'forms-list'           => [
+                'src' => WPUF_ASSET_URI . '/css/forms-list.min.css',
+            ],
         ];
 
         return apply_filters( 'wpuf_styles_to_register', $styles );
@@ -384,6 +387,10 @@ class Assets {
             'headway-script'         => [
                 'src' => WPUF_ASSET_URI . '/vendor/headway.js',
                 'deps' => [ 'jquery' ],
+            ],
+            'forms-list'         => [
+                'src'       => WPUF_ASSET_URI . '/js/forms-list.min.js',
+                'in_footer' => true,
             ],
         ];
 

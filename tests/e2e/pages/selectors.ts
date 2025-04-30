@@ -56,7 +56,7 @@ export const Selectors = {
             // Sidebar
             // PostFormPage
             clickPostFormMenuOption: '//a[contains(text(), "Post Forms")]',
-            wpufPostFormCheckAddButton: ' //a[contains(@class,"new-wpuf-form")][1]',
+            wpufPostFormCheckAddButton: ' //a[contains(text(),"Add New")]',
             wpufRegistrationFormCheckAddButton: '//a[@id="new-wpuf-profile-form"]',
             postFormsPageFormTitleCheck: '//a[@class="row-title"][1]',
         },

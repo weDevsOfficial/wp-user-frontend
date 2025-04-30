@@ -89,11 +89,11 @@ export class SettingsSetupPage extends Base {
         const availableText = await this.page.isVisible(Selectors.settingsSetup.pluginVisit.clickPostFormMenuOption);
         console.log("availableText: ", availableText);
         if (availableText == true) {
-            console.log("Post Form Menu Option is available");
+            console.log("Post Form Menu Option is available 1");
             const checkText = await this.validateAndGetText(Selectors.settingsSetup.pluginVisit.wpufPostFormCheckAddButton);
             console.log("checkText: ", checkText);
             await expect(checkText).toContain("Add New");
-            console.log("Post Form Menu Option is available");
+            console.log("Post Form Menu Option is available 2");
         }
 
     };

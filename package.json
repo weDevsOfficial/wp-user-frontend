@@ -7,12 +7,13 @@
   "private": true,
   "scripts": {
     "release": "grunt release",
-    "dev": "vite",
-    "build": "vite build"
+    "build": "npm run build:forms-list && npm run build:subscriptions",
+    "build:forms-list": "ENTRY=forms-list vite build",
+    "build:subscriptions": "ENTRY=subscriptions vite build"
   },
   "devDependencies": {
-    "@types/node": "^18.11.18",
     "@tailwindcss/forms": "^0.5.7",
+    "@types/node": "^18.11.18",
     "@vitejs/plugin-vue": "^5.0.4",
     "autoprefixer": "^10.4.16",
     "daisyui": "^4.12.2",
@@ -42,6 +43,7 @@
     "vite": "^5.1.4"
   },
   "dependencies": {
+    "@headlessui/vue": "^1.7.23",
     "@heroicons/vue": "^2.1.1",
     "@vueform/multiselect": "^2.6.8",
     "@vuepic/vue-datepicker": "^8.2.0",

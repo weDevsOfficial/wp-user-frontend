@@ -5445,3 +5445,49 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
 function wpuf_is_checkbox_or_toggle_on( $value ) {
     return 'on' === $value || 'yes' === $value || 'true' === $value || '1' === $value;
 }
+
+/**
+ * Get the post forms count
+ *
+ * @since WPUF_SINCE
+ *
+ * @param string $post_type Post type to count
+ * @return array Array of counts with labels
+ */
+function wpuf_get_forms_counts_with_status( $post_type = 'wpuf_forms' ) {
+    $post_counts = (array) wp_count_posts( $post_type );
+    
+    $post_statuses = apply_filters( 'wpuf_post_forms_list_table_post_statuses', [
+        'all'     => __( 'All', 'wp-user-frontend' ),
+        'publish' => __( 'Published', 'wp-user-frontend' ),
+        'trash'   => __( 'Trash', 'wp-user-frontend' ),
+    ] );
+
+    $status_count = [];
+    $total_count = 0;
+
+    // Calculate total count (excluding trash)
+    foreach ( $post_counts as $status => $count ) {
+        if ( 'trash' !== $status ) {
+            $total_count += (int) $count;
+        }
+    }
+
+    // Set up the counts array
+    foreach ( $post_statuses as $key => $label ) {
+        if ( 'all' === $key ) {
+            $status_count[ $key ] = [
+                'label' => $label,
+                'count' => $total_count,
+            ];
+        } else {
+            $count = isset( $post_counts[ $key ] ) ? (int) $post_counts[ $key ] : 0;
+            $status_count[ $key ] = [
+                'label' => $label,
+                'count' => $count,
+            ];
+        }
+    }
+
+    return $status_count;
+}

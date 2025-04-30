@@ -194,7 +194,7 @@ class User_Subscription {
                 'status'  => $status,
             ];
 
-            if ( $subscription->meta_value['recurring_pay'] == 'on') {
+            if ( ! empty( $subscription->meta_value['recurring_pay'] ) && wpuf_is_checkbox_or_toggle_on( $subscription->meta_value['recurring_pay'] ) ) {
                 $totla_date              = date( 'd-m-Y', strtotime( '+' . $subscription->meta_value['billing_cycle_number'] . $subscription->meta_value['cycle_period'] . 's' ) ); // phpcs:ignore
                 $user_meta['expire']     = '';
                 $user_meta['profile_id'] = $profile_id;
@@ -203,7 +203,7 @@ class User_Subscription {
                 $period_type            = $subscription->meta_value['expiration_period'];
                 $period_number          = $subscription->meta_value['expiration_number'];
                 $date                   = date( 'd-m-Y', strtotime( '+' . $period_number . $period_type . 's' ) ); // phpcs:ignore
-                $expired                = ( empty( $period_number ) || ( $period_number == 0 || $period_number == '-1' ) ) ? 'unlimited' : wpuf_date2mysql( $date );
+                $expired                = ( empty( $period_number ) || ( 0 === $period_number || '-1' === $period_number ) ) ? 'unlimited' : wpuf_date2mysql( $date );
                 $user_meta['expire']    = $expired;
                 $user_meta['recurring'] = 'no';
             }
@@ -358,7 +358,7 @@ class User_Subscription {
                         if ( ! $post_type_obj ) {
                             continue;
                         }
-                        $value = ( $value == '-1' ) ? __( 'Unlimited', 'wp-user-frontend' ) : $value;
+                        $value = ( '-1' === $value ) ? __( 'Unlimited', 'wp-user-frontend' ) : $value;
                         ?>
                         <div><?php echo esc_html( $post_type_obj->labels->name . ': ' . $value ); ?></div>
                         <?php

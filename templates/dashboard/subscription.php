@@ -228,4 +228,3 @@ function get_next_billing_html( $subscription_data ) {
         ?>
     </div>
 </div>
-?>

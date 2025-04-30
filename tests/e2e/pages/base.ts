@@ -15,12 +15,6 @@ export class Base {
         return expect(this.page.locator(locator).isVisible).toBeTruthy();
     };
 
-    // Validate and return
-    async validateAndReturn(locator: string) {
-        await this.page.locator(locator).waitFor();
-        return this.page.locator(locator).isVisible();
-    };
-
     // Validate and Click
     async validateAndClick(locator: string) {
         await this.page.locator(locator).waitFor();

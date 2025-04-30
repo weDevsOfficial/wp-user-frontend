@@ -25,7 +25,7 @@ export class SettingsSetupPage extends Base {
             this.page.goto(wpufSetupPage, { waitUntil: 'networkidle' }),
         ]);
 
-        const wpufSetup = await this.validateAndReturn(Selectors.settingsSetup.wpufSetup.validateWPUFSetupPage);
+        const wpufSetup = await this.page.isVisible(Selectors.settingsSetup.wpufSetup.validateWPUFSetupPage);
         if (wpufSetup == true) {
             //await this.validateAndClick(SelectorsPage.settingsSetup.clickWPUFSetupSkip);
             await this.validateAndClick(Selectors.settingsSetup.wpufSetup.clickWPUFSetupLetsGo);
@@ -83,7 +83,7 @@ export class SettingsSetupPage extends Base {
         await this.page.waitForLoadState('domcontentloaded');
 
         //ASSERTION > Check if-VALID
-        const availableText = await this.validateAndReturn(Selectors.settingsSetup.pluginVisit.clickPostFormMenuOption);
+        const availableText = await this.page.isVisible(Selectors.settingsSetup.pluginVisit.clickPostFormMenuOption);
         if (availableText == true) {
             const checkText = await this.validateAndGetText(Selectors.settingsSetup.pluginVisit.wpufPostFormCheckAddButton);
             await expect(checkText).toContain("Add New");
@@ -108,7 +108,7 @@ export class SettingsSetupPage extends Base {
         //     console.log("WPUF-pro Status: Not Installed");
         // }
         //Activate Plugin
-        const activateWPUFLite = await this.validateAndReturn(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
+        const activateWPUFLite = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
         console.log("installed");
         if (activateWPUFLite === true) {
             console.log("being activated");
@@ -144,7 +144,7 @@ export class SettingsSetupPage extends Base {
         ]);
 
         //Activate Plugin
-        const activateWPUFPro = await this.validateAndReturn(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginPro);
+        const activateWPUFPro = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginPro);
 
         if (activateWPUFPro == true) {
             //Plugins were DeActive

@@ -85,7 +85,7 @@ export class FieldOptionsCommonPage extends Base {
         //CustomFields
         await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsText);
         
-        if (await this.validateAndReturn(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
+        if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
             await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
         }
         await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsTextarea);
@@ -101,7 +101,7 @@ export class FieldOptionsCommonPage extends Base {
         //FromPRO
         //RepeatField
         await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsRepeatField);
-        const checkProPopUpCloseButton = await this.validateAndReturn(Selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
+        const checkProPopUpCloseButton = await this.page.isVisible(Selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
         if (checkProPopUpCloseButton === true) {
             await this.validateAndClick(Selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
             console.log("Pro: WPUF Pro is requred...")
@@ -123,12 +123,12 @@ export class FieldOptionsCommonPage extends Base {
             await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsAddressField);
             //GoogleMaps
             await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsGoogleMaps);
-            if (await this.validateAndReturn(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
+            if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
                 await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
             }
             //StepStart
             await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsStepStart);
-            if (await this.validateAndReturn(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
+            if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
                 await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
             }
             //Embed
@@ -186,7 +186,7 @@ export class FieldOptionsCommonPage extends Base {
             await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateAddressField);
 
             //GoogleMaps        //TODO: Setup required
-            // if(await this.validateAndReturn(Selectors.postForms.validateCustomFields_Common.validateGoogleMaps) === true){
+            // if(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateGoogleMaps) === true){
             //     await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateGoogleMaps)).toBeTruthy();
             // }
 
@@ -210,14 +210,14 @@ export class FieldOptionsCommonPage extends Base {
         await this.validateAndClick(Selectors.postForms.addOthers_Common.othersSectionBreak);
         await this.validateAndClick(Selectors.postForms.addOthers_Common.othersCustomHTML);
         await this.validateAndClick(Selectors.postForms.addOthers_Common.othersReCaptcha);
-        if (await this.validateAndReturn(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
+        if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
             await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
         }
 
 
         //FromPRO
         await this.validateAndClick(Selectors.postForms.addOthers_Common.othersShortCode);
-        const checkProPopUpCloseButton = await this.validateAndReturn(Selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
+        const checkProPopUpCloseButton = await this.page.isVisible(Selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
         if (checkProPopUpCloseButton === true) {
             await this.validateAndClick(Selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
             console.log("Pro: WPUF Pro is requred...")
@@ -225,7 +225,7 @@ export class FieldOptionsCommonPage extends Base {
 
         else {
             //ShortCode
-            if (await this.validateAndReturn(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
+            if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
                 await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
             }
             //ActionHook
@@ -236,7 +236,7 @@ export class FieldOptionsCommonPage extends Base {
             await this.validateAndClick(Selectors.postForms.addOthers_Common.othersRatings);
             //ReallySimpleCaptcha
             await this.validateAndClick(Selectors.postForms.addOthers_Common.othersReallySimpleCaptcha);
-            if (await this.validateAndReturn(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
+            if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
                 await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
             }
             //MathCaptcha
@@ -283,7 +283,7 @@ export class FieldOptionsCommonPage extends Base {
         await this.page.waitForLoadState('domcontentloaded');
         //Add Multi-Step-Check
         await this.validateAndClick(Selectors.postForms.formSettings.clickFormEditorSettings);
-        const proTextAlertInSettings = await this.validateAndReturn(Selectors.postForms.addCustomFields_Common.proTextAlertInSettings);
+        const proTextAlertInSettings = await this.page.isVisible(Selectors.postForms.addCustomFields_Common.proTextAlertInSettings);
         if (proTextAlertInSettings === true) {
             console.log("Pro: WPUF Pro is requred...");
         }
@@ -331,7 +331,7 @@ export class FieldOptionsCommonPage extends Base {
         await this.page.waitForLoadState('domcontentloaded');
 
         //ASSERTION > Check if-VALID
-        const checkNewBlankFormCreatedValid_PF = await this.validateAndReturn(Selectors.postForms.navigatePage_PF.checkAddButton_PF);
+        const checkNewBlankFormCreatedValid_PF = await this.page.isVisible(Selectors.postForms.navigatePage_PF.checkAddButton_PF);
         if (checkNewBlankFormCreatedValid_PF === true) {
             const checkNewFormCreated_PF = await this.validateAndGetText(Selectors.postForms.navigatePage_PF.postFormsPageFormsTitleCheck_PF);
             await expect(checkNewFormCreated_PF).toContain(validateNewPostName_PF);
@@ -401,7 +401,7 @@ export class FieldOptionsCommonPage extends Base {
         await this.page.waitForLoadState('domcontentloaded');
 
         //ASSERTION > Check if-VALID
-        const checkNewBlankFormCreatedValid_RF = await this.validateAndReturn(Selectors.registrationForms.navigatePage_RF.checkAddButton_RF);
+        const checkNewBlankFormCreatedValid_RF = await this.page.isVisible(Selectors.registrationForms.navigatePage_RF.checkAddButton_RF);
         if (checkNewBlankFormCreatedValid_RF === true) {
             const checkNewFormCreated_RF = await this.validateAndGetText(Selectors.registrationForms.navigatePage_RF.postFormsPageFormTitleCheck_RF);
             await expect(checkNewFormCreated_RF).toContain(validateNewPostName_RF);

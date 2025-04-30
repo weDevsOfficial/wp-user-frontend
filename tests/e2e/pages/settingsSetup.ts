@@ -74,19 +74,26 @@ export class SettingsSetupPage extends Base {
 
     //Plugin Page - Visit
     async pluginVisitWPUF() {
+        console.log("Plugin Visit");
         //Go to AdminEnd
         await Promise.all([
             this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'networkidle' }),
+            console.log("navigated to dashboard"),
         ]);
 
         await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
+        console.log("WPUF-Lite Status: Activated");
         await this.page.waitForLoadState('domcontentloaded');
 
         //ASSERTION > Check if-VALID
         const availableText = await this.page.isVisible(Selectors.settingsSetup.pluginVisit.clickPostFormMenuOption);
+        console.log("availableText: ", availableText);
         if (availableText == true) {
+            console.log("Post Form Menu Option is available");
             const checkText = await this.validateAndGetText(Selectors.settingsSetup.pluginVisit.wpufPostFormCheckAddButton);
+            console.log("checkText: ", checkText);
             await expect(checkText).toContain("Add New");
+            console.log("Post Form Menu Option is available");
         }
 
     };
@@ -95,43 +102,37 @@ export class SettingsSetupPage extends Base {
     //Plugin Activate - Lite
     async activateWPUFLite() {
         //Go to Plugins page
-        console.log("going to plugins page");
+        // console.log("going to plugins page");
         const pluginsPage = Urls.baseUrl + '/wp-admin/plugins.php';
         await Promise.all([
             this.page.goto(pluginsPage, { waitUntil: 'networkidle' }),
-            console.log("navigated to plugins page"),
+            // console.log("navigated to plugins page"),
         ]);
-        // try {
-        //     expect(await this.page.locator('//a[@id="activate-wpuf-pro"]')).toBeVisible( {timeout: 3000} );
-        //     console.log("WPUF-pro Status: Installed");
-        // } catch (error) {
-        //     console.log("WPUF-pro Status: Not Installed");
-        // }
         //Activate Plugin
         const activateWPUFLite = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
-        console.log("installed");
+        // console.log("installed");
         if (activateWPUFLite === true) {
-            console.log("being activated");
+            // console.log("being activated");
             //Plugins is getting activated here
             await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
-            console.log("activating");
+            // console.log("activating");
             await this.page.reload();
-            console.log("Plugins activated")
+            // console.log("Plugins activated")
             // await this.page.goBack();
 
             await this.page.goto(Urls.baseUrl + '/wp-admin/');
-            console.log("navigated to dashboard");
+            // console.log("navigated to dashboard");
             await this.assertionValidate(Selectors.login.basicNavigation.clickWPUFSidebar);
             await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
-            console.log("WPUF-Lite Status: Activated");
+            // console.log("WPUF-Lite Status: Activated");
         }
 
         else {
-            console.log("already activated");
+            // console.log("already activated");
             await this.assertionValidate(Selectors.login.basicNavigation.clickWPUFSidebar);
-            console.log("navigated to dashboard");
+            // console.log("navigated to dashboard");
             await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
-            console.log("WPUF-Lite Status: Activated");
+            // console.log("WPUF-Lite Status: Activated");
         }
     };
 

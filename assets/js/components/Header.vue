@@ -12,7 +12,6 @@ const utm = props.utm;
 
 const wpuf = wpuf_admin_script;
 const logoUrl = wpuf.asset_url + '/images/wpuf-icon-circle.svg';
-const proBadge = wpuf.asset_url + '/images/pro-badge.svg';
 const upgradeUrl = wpuf.upgradeUrl + '?utm_source=' + utm + '&utm_medium=wpuf-header';
 const supportUrl = wpuf.support_url;
 </script>
@@ -28,9 +27,7 @@ const supportUrl = wpuf.support_url;
                 :href="upgradeUrl"
                 target="_blank"
                 class="wpuf-btn-primary wpuf-flex wpuf-ml-4 wpuf-p-2">
-                {{ __( 'Upgrade', 'wp-user-frontend' ) }}
-                &nbsp;
-                <img :src="proBadge" alt="">
+                {{ __( 'Upgrade to PRO', 'wp-user-frontend' ) }}
             </a>
         </div>
         <div class="wpuf-flex wpuf-justify-end wpuf-items-center wpuf-w-2/4">

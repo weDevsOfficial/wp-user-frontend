@@ -95,9 +95,11 @@ export class SettingsSetupPage extends Base {
     //Plugin Activate - Lite
     async activateWPUFLite() {
         //Go to Plugins page
+        console.log("going to plugins page");
         const pluginsPage = Urls.baseUrl + '/wp-admin/plugins.php';
         await Promise.all([
             this.page.goto(pluginsPage, { waitUntil: 'networkidle' }),
+            console.log("navigated to plugins page"),
         ]);
         // try {
         //     expect(await this.page.locator('//a[@id="activate-wpuf-pro"]')).toBeVisible( {timeout: 3000} );

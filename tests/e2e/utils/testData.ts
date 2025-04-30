@@ -59,12 +59,12 @@ let PostForm: {
     pfTags: string;
 } = {
     //Post Form Titles
-    pfPostName1: faker.lorem.sentence(2),
-    pfPostName2: faker.lorem.sentence(2),
-    pfPostName3: faker.lorem.sentence(2),
-    pfPostName4: faker.lorem.sentence(2),
+    pfPostName1: faker.lorem.sentence(1),
+    pfPostName2: faker.lorem.sentence(1),
+    pfPostName3: faker.lorem.sentence(1),
+    pfPostName4: faker.lorem.sentence(1),
     //Post Form Data
-    pfTitle: faker.lorem.words(2),
+    pfTitle: faker.lorem.words(1),
     pfPostDescription: faker.lorem.sentence(4),
     pfExcerpt: faker.lorem.word(3),
     pfTags: faker.lorem.word(),

@@ -1,5 +1,5 @@
 require('dotenv').config();
-import { test, expect, Page } from '@playwright/test';
+import { test, Page } from '@playwright/test';
 import { BasicLoginPage } from '../pages/basicLogin';
 import { SettingsSetupPage } from '../pages/settingsSetup'
 import { Users } from '../utils/testData'

@@ -1,16 +1,9 @@
 require('dotenv').config();
-import { test, expect, Page } from '@playwright/test';
+import { test, Page } from '@playwright/test';
 import { BasicLoginPage } from '../pages/basicLogin';
 import { BasicLogoutPage } from '../pages/basicLogout';
 import { SettingsSetupPage } from '../pages/settingsSetup'
 import { Users } from '../utils/testData'
-
-import * as fs from "fs"; //Clear Cookie
-
-
-
-
-
 
 
 export default function loginAndSetupTests() {

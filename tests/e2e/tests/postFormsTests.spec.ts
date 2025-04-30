@@ -1,5 +1,5 @@
 require('dotenv').config();
-import { test, expect, Page } from '@playwright/test';
+import { test, Page } from '@playwright/test';
 import { BasicLoginPage } from '../pages/basicLogin';
 import { PostFormsPage } from '../pages/postForms';
 import { FieldOptionsCommonPage } from '../pages/fieldOptionsCommon';

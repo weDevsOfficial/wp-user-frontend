@@ -1,3 +1,4 @@
+import {Urls, Users, PostForm, RegistrationForm, SubscriptionPack} from '../utils/testData';
 export const Selectors = {
 
     /*********************************/
@@ -28,7 +29,7 @@ export const Selectors = {
         // Basic Navigation
         basicNavigation: {
             // Sidebar
-            clickWPUFSidebar: '#toplevel_page_wp-user-frontend > a',
+            clickWPUFSidebar: '//div[normalize-space(text())="User Frontend"]',
             // Hover Settings Menu
             hoverSettings: '//div[text()="Settings"]',
         },
@@ -55,9 +56,9 @@ export const Selectors = {
             // Sidebar
             // PostFormPage
             clickPostFormMenuOption: '//a[contains(text(), "Post Forms")]',
-            wpufPostFormCheckAddButton: '#new-wpuf-form',
+            wpufPostFormCheckAddButton: ' //a[contains(@class,"new-wpuf-form")][1]',
             wpufRegistrationFormCheckAddButton: '//a[@id="new-wpuf-profile-form"]',
-            postFormsPageFormTitleCheck: '(//a[@class="row-title"])[1]',
+            postFormsPageFormTitleCheck: '//a[@class="row-title"][1]',
         },
 
         // WPUF Setup
@@ -153,7 +154,7 @@ export const Selectors = {
             logoutButton: '//a[@class="ab-item" and contains(text(), "Log Out")]',
 
             // Validate LOGOUT
-            logoutSuccess: '//div[@class="wpuf-message"]',
+            logoutSuccess: '//p[normalize-space(text())="You are now logged out."]',
         },
 
         validateBasicLogout: {
@@ -169,11 +170,11 @@ export const Selectors = {
         /* Locators creating Navigating Post Forms Page */
         navigatePage_PF: {
             // WPUF > Pages > Navigation
-            checkAddButton_PF: '#new-wpuf-post-form',
-            postFormsPageFormsTitleCheck_PF: '(//a[@class="row-title"])[1]',
+            checkAddButton_PF: '//a[contains(text(),"Add New")]',
+            postFormsPageFormsTitleCheck_PF: "(//input[@type='checkbox']/following-sibling::span)[1]",
 
             // New_Created_NAME_Checker
-            newPostCreatedName_PF: '(//a[@class="row-title"])[1]',
+            newPostCreatedName_PF: "(//input[@type='checkbox']/following-sibling::span)[1]",
         },
 
         /* Locators creating Post > Blank Form */
@@ -182,7 +183,7 @@ export const Selectors = {
             clickpostFormsMenuOption: '//a[contains(text(), "Post Forms")]',
 
             // Add Form
-            clickPostAddForm: '//a[@id="new-wpuf-form"]',
+            clickPostAddForm: ' (//a[contains(@class,"new-wpuf-form")])[1]',
 
             // Start > Blank Form
             clickBlankForm: '//a[@title="Blank Form" and contains(text(), "Create Form")]',
@@ -377,7 +378,7 @@ export const Selectors = {
             // Post Forms Create
             // Account
             // Submit Post
-            submitPostSideMenu: '//a[contains(text(),"Submit Post")]',
+            submitPostSideMenu: '//li[@class="wpuf-menu-item submit-post"]//a[1]',
 
             // Start Form Submission
             // Post Tile
@@ -403,7 +404,7 @@ export const Selectors = {
             // Accounts - Top Menu
             clickAccountsTopMenu: '//a[contains(text(), "Account")]',
             // Post
-            clickPostsSideMenu: '//a[contains(text(),"Posts")]',
+            clickPostsSideMenu: '//li[@class="wpuf-menu-item post"]//a[1]',
             // Validate Title of Post Created
             validatePostSubmittedFE: '(//td[@data-label="Title: "])[1]'
         }

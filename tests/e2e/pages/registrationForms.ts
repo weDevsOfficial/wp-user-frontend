@@ -3,15 +3,15 @@ dotenv.config();
 import { expect, Page } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Urls } from '../utils/testData';
+import { Base } from './base';
 
 
 
 
-export class RegistrationFormsPage {
-    readonly page: Page;
+export class RegistrationFormsPage extends Base {
 
     constructor(page: Page) {
-        this.page = page;
+        super(page);
     }
 
 
@@ -36,7 +36,7 @@ export class RegistrationFormsPage {
         }
         else {
             //Check Pro Features Header
-            const checkProFeaturesText = await this.page.innerText(Selectors.registrationForms.validateRegistrationFormsProFeatureLite.checkProFeaturesText);
+            const checkProFeaturesText = await this.validateAndGetText(Selectors.registrationForms.validateRegistrationFormsProFeatureLite.checkProFeaturesText);
             await expect(checkProFeaturesText).toContain("Unlock PRO Features");
 
             //Check Setup
@@ -59,7 +59,7 @@ export class RegistrationFormsPage {
         expect(validateShortcode).toBeTruthy();
 
         //Copy Shortcode
-        const storeShortcode = await this.page.innerText(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.storeShortcode);
+        const storeShortcode: String | null = await this.validateAndGetText(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.storeShortcode);
         console.log(storeShortcode);
 
         //Visit Pages
@@ -69,7 +69,7 @@ export class RegistrationFormsPage {
         ]);
 
         //Add New Page
-        await this.page.click(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addNewPage);
+        await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addNewPage);
         await this.page.reload();
 
         // Check if the Choose Pattern Modal is visible
@@ -91,25 +91,25 @@ export class RegistrationFormsPage {
         }
 
         //Add Page Title
-        await this.page.fill(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addPageTitle, registrationFormPageTitle);
+        await this.validateAndFillStrings(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addPageTitle, registrationFormPageTitle);
 
         //Click Add Block Button
-        await this.page.click(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.blockAddButton);
+        await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.blockAddButton);
 
         //Search and Add Shortcode block
-        await this.page.fill(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.blockSearchBox, 'Shortcode');
-        await this.page.click(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addShortCodeBlock);
+        await this.validateAndFillStrings(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.blockSearchBox, 'Shortcode');
+        await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addShortCodeBlock);
 
         //Enter Registration Shortcode
-        await this.page.fill(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.enterRegistrationShortcode, storeShortcode);
+        await this.validateAndFillStrings(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.enterRegistrationShortcode, storeShortcode?.toString() ?? '');
 
         //Click Publish Page
-        await this.page.click(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.clickPublishPage);
+        await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.clickPublishPage);
         //Allow Permission
-        expect(await this.page.isVisible(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.allowShortcodePermission)).toBeTruthy();
-        await this.page.click(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.allowShortcodePermission);
+        await this.assertionValidate(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.allowShortcodePermission);
+        await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.allowShortcodePermission);
         //Confirm Publish
-        await this.page.click(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.confirmPublish);
+        await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.confirmPublish);
 
 
         //Go to Pages 
@@ -119,11 +119,11 @@ export class RegistrationFormsPage {
 
         //Validate Page Created
         //Search Page
-        await this.page.fill(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.pagesSearchBox, registrationFormPageTitle);
-        await this.page.click(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.pagesSearchBoxSubmit);
+        await this.validateAndFillStrings(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.pagesSearchBox, registrationFormPageTitle);
+        await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.pagesSearchBoxSubmit);
 
         //Validate Page
-        const validatePageCreated = await this.page.innerText(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.validatePageCreated);
+        const validatePageCreated = await this.validateAndGetText(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.validatePageCreated);
         expect(validatePageCreated).toContain(registrationFormPageTitle);
 
     };
@@ -152,29 +152,29 @@ export class RegistrationFormsPage {
         ]);
         //CreateNewRegistrationForm
 
-        await this.page.click(Selectors.registrationForms.createBlankForm_RF.clickRegistrationFormMenuOption);
+        await this.validateAndClick(Selectors.registrationForms.createBlankForm_RF.clickRegistrationFormMenuOption);
 
-        await this.page.waitForTimeout(1000 * 5);
+        // await this.page.waitForTimeout(1000 * 5);
         //Start
-        await expect(this.page.isVisible(Selectors.registrationForms.createBlankForm_RF.clickRegistraionAddForm)).toBeTruthy();
-        await this.page.click(Selectors.registrationForms.createBlankForm_RF.clickRegistraionAddForm);    //TODO: Issue here
-        await this.page.waitForTimeout(1000 * 5);
+        await this.assertionValidate(Selectors.registrationForms.createBlankForm_RF.clickRegistraionAddForm);
+        await this.validateAndClick(Selectors.registrationForms.createBlankForm_RF.clickRegistraionAddForm);    //TODO: Issue here
+        // await this.page.waitForTimeout(1000 * 5);
 
 
         //ClickBlankForm
         //Templates 
-        await expect(this.page.isVisible(Selectors.registrationForms.createBlankForm_RF.hoverBlankForm)).toBeTruthy();
+        await this.assertionValidate(Selectors.registrationForms.createBlankForm_RF.hoverBlankForm);
         await this.page.hover(Selectors.registrationForms.createBlankForm_RF.hoverBlankForm);
-        await expect(this.page.isVisible(Selectors.registrationForms.createBlankForm_RF.clickBlankForm)).toBeTruthy();
-        await this.page.click(Selectors.registrationForms.createBlankForm_RF.clickBlankForm);
+        await this.assertionValidate(Selectors.registrationForms.createBlankForm_RF.clickBlankForm);
+        await this.validateAndClick(Selectors.registrationForms.createBlankForm_RF.clickBlankForm);
 
 
 
         //EnterName
         await this.page.waitForLoadState('domcontentloaded');
-        await this.page.click(Selectors.registrationForms.createBlankForm_RF.editNewFormName);
-        await this.page.fill(Selectors.registrationForms.createBlankForm_RF.enterNewFormName, newRegistrationName);
-        await this.page.click(Selectors.registrationForms.createBlankForm_RF.confirmNewNameTickButton);
+        await this.validateAndClick(Selectors.registrationForms.createBlankForm_RF.editNewFormName);
+        await this.validateAndFillStrings(Selectors.registrationForms.createBlankForm_RF.enterNewFormName, newRegistrationName);
+        await this.validateAndClick(Selectors.registrationForms.createBlankForm_RF.confirmNewNameTickButton);
 
     }
 

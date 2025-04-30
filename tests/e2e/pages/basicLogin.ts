@@ -4,13 +4,12 @@ import { expect, Page } from '@playwright/test';
 import { Selectors } from './selectors';
 import { SettingsSetupPage } from '../pages/settingsSetup';
 import { Urls } from '../utils/testData';
+import { Base } from './base';
 
-export class BasicLoginPage {
-    readonly page: Page;
+export class BasicLoginPage extends Base {
 
     constructor(page: Page) {
-        this.page = page;
-
+        super(page);
     }
 
 
@@ -30,7 +29,7 @@ export class BasicLoginPage {
 
         const emailStateCheck = await this.page.isVisible(Selectors.login.basicLogin.loginEmailField);
         //if in BackEnd or FrontEnd
-        if (emailStateCheck == true) {
+        if (emailStateCheck) {
             await this.backendLogin(adminEmail, adminPassword);
         }
         else {
@@ -78,8 +77,7 @@ export class BasicLoginPage {
 
         //Validate LOGIN
         await this.page.waitForLoadState('domcontentloaded');
-        const dashboardLanded = await this.page.isVisible(Selectors.login.validateBasicLogin.logingSuccessDashboard);
-        await expect(dashboardLanded).toBeTruthy;
+        await this.assertionValidate(Selectors.login.validateBasicLogin.logingSuccessDashboard);
     };
 
 
@@ -91,29 +89,25 @@ export class BasicLoginPage {
 
     //BackEnd Login
     async backendLogin(email: string, password: string) {
-        await this.page.fill(Selectors.login.basicLogin.loginEmailField, email);
+        await this.validateAndFillStrings(Selectors.login.basicLogin.loginEmailField, email);
 
-        const passwordCheck = await this.page.isVisible(Selectors.login.basicLogin.loginPasswordField);
-        await expect(passwordCheck).toBeTruthy();
-        await this.page.fill(Selectors.login.basicLogin.loginPasswordField, password);
+        await this.assertionValidate(Selectors.login.basicLogin.loginPasswordField);
+        await this.validateAndFillStrings(Selectors.login.basicLogin.loginPasswordField, password);
 
-        await this.page.click(Selectors.login.basicLogin.rememberMeField);
-        const loginButtonCheck = await this.page.isVisible(Selectors.login.basicLogin.loginButton);
-        await expect(loginButtonCheck).toBeTruthy();
-        await this.page.click(Selectors.login.basicLogin.loginButton);
+        await this.validateAndClick(Selectors.login.basicLogin.rememberMeField);
+        await this.assertionValidate(Selectors.login.basicLogin.loginButton);
+        await this.validateAndClick(Selectors.login.basicLogin.loginButton);
     }
 
     //FrontEnd Login
     async frontendLogin(email: string, password: string) {
-        await this.page.fill(Selectors.login.basicLogin.loginEmailField2, email);
+        await this.validateAndFillStrings(Selectors.login.basicLogin.loginEmailField2, email);
 
-        const passwordCheck = await this.page.isVisible(Selectors.login.basicLogin.loginPasswordField2);
-        await expect(passwordCheck).toBeTruthy();
-        await this.page.fill(Selectors.login.basicLogin.loginPasswordField2, password);
+        await this.assertionValidate(Selectors.login.basicLogin.loginPasswordField2);
+        await this.validateAndFillStrings(Selectors.login.basicLogin.loginPasswordField2, password);
 
-        const loginButtonCheck = await this.page.isVisible(Selectors.login.basicLogin.loginButton2);
-        await expect(loginButtonCheck).toBeTruthy();
-        await this.page.click(Selectors.login.basicLogin.loginButton2);
+        await this.assertionValidate(Selectors.login.basicLogin.loginButton2);
+        await this.validateAndClick(Selectors.login.basicLogin.loginButton2);
     }
 
 

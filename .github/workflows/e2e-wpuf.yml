@@ -1,8 +1,11 @@
 name: Playwright tests/e2e
+
 on:
   workflow_dispatch:
   # schedule:
   #   - cron: "0 1 * * *"  # Run workflow at 8:00 AM UTC +6 every day
+
+
   push:
     branches: [develop]
   pull_request:
@@ -68,19 +71,27 @@ jobs:
         working-directory: tests/e2e
         run: npm ci
 
-      # Cache wp-env environment
-      - name: Cache wp-env data
-        uses: actions/cache@v4
+      # Restore wp-env cache BEFORE starting wp-env
+      - name: Restore wp-env cache
+        uses: actions/cache/restore@v4
         with:
           path: tests/e2e/.wp-env
           key: ${{ runner.os }}-wp-env-${{ hashFiles('tests/e2e/.wp-env.json') }}
           restore-keys: |
             ${{ runner.os }}-wp-env-
 
-      # Setup WordPress using wp-env
-      - name: Setup Wordpress using wp-env
+      # Start wp-env
+      - name: Start wp-env
         working-directory: tests/e2e
         run: npm run wp-env start -- --update --docker-compose
+
+      # Save wp-env cache AFTER it's created/updated
+      - name: Save wp-env cache
+        uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: tests/e2e/.wp-env
+          key: ${{ runner.os }}-wp-env-${{ hashFiles('tests/e2e/.wp-env.json') }}
 
       # Get Playwright version
       - name: Get installed Playwright version
@@ -100,7 +111,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-playwright-
 
-      # Install Playwright if cache missed
+      # Install Playwright browser binaries & OS dependencies
       - name: Install Playwright browser binaries & OS dependencies
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: |

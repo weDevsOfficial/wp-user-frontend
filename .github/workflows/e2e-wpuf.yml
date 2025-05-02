@@ -1,11 +1,10 @@
-name: Playwright tests/e2e
+name: WP User Frontend E2E Tests
+
 
 on:
   workflow_dispatch:
   # schedule:
   #   - cron: "0 1 * * *"  # Run workflow at 8:00 AM UTC +6 every day
-
-
   push:
     branches: [develop]
   pull_request:
@@ -27,21 +26,21 @@ jobs:
       - name: Checkout WPUF Lite
         uses: actions/checkout@v4
 
-      # Setup Node.js
-      - name: Use Node.js 18
+      # Setup Node.js 18
+      - name: Use desired version of NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: 18
-          cache: npm
+            node-version: 18
+            cache: npm
 
-      # Composer & NPM install + build (WPUF Lite)
+      # WPUF Lite dependencies
       - name: Install wpuf-lite dependencies
         run: |
-          composer install --no-dev --prefer-dist
-          composer dump-autoload -o
-          npm install
-          grunt release --force
-
+            composer install
+            composer dump-autoload -o
+            npm install
+            grunt release --force
+      
       # Clone WPUF Pro
       - name: Checkout WPUF-pro
         uses: actions/checkout@v4
@@ -50,27 +49,29 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
           path: 'plugins/wpuf-pro'
           ref: 'develop'
-
-      # Composer & NPM install + build (WPUF Pro)
+      
+      # WPUF Lite dependencies
       - name: Install wpuf-pro dependencies
         run: |
           cd plugins/wpuf-pro
-          composer install --no-dev --prefer-dist
+          composer install
           composer dump-autoload -o
           npm install --legacy-peer-deps
           grunt
-          
+            
 
       # Install test dependencies
-      - name: Install E2E test deps
+      - name: Install E2E test dependencies
         working-directory: tests/e2e
         run: npm ci
 
-      # Start wp-env
-      - name: Start wp-env
-        run: npm run wp-env start
+      # Setup WordPress using wp-env
+      - name: Setup WordPress 
+        run: |
+          cd tests/e2e 
+          npm run wp-env start
 
-      # Get Playwright version
+      # Install Playwright Browsers
       - name: Get installed Playwright version
         id: playwright-version
         run: |
@@ -78,28 +79,28 @@ jobs:
           PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq -r '.dependencies["@playwright/test"].version')
           echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> "$GITHUB_ENV"
 
-      # Cache playwright binaries
+
       - name: Cache playwright binaries
         id: playwright-cache
         uses: actions/cache@v4
         with:
-          path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
-          restore-keys: |
-            ${{ runner.os }}-playwright-
+            path: ~/.cache/ms-playwright
+            key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
+            restore-keys: ${{ runner.os }}-playwright-
 
-      # Install Playwright browser binaries & OS dependencies
       - name: Install Playwright browser binaries & OS dependencies
+        id: pw-install
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: |
-          cd tests/e2e
-          npx playwright install chromium --with-deps
+            cd tests/e2e
+            npx playwright install chromium --with-deps
 
-      # Run Playwright tests
+      # Run Playwright tests/e2e
       - name: Run Playwright tests/e2e
         run: |
           cd tests/e2e
           npx playwright test e2eMain.spec.ts --project=chromium
+
         env:
           BASE_URL: ${{ secrets.QA_BASE_URL }}
           CI: true

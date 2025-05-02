@@ -29,14 +29,6 @@ export class Base {
         await this.page.getByText(locator).click();
     };
 
-        // Validate and Get text
-        async validateAndGetText(locator: string) {
-            await this.page.locator(locator).waitFor();
-            let text = await this.page.innerText(locator);
-            console.log('Text:', text);
-            return text;
-        };
-
     // Validate and Click
     async validateAndClickAny(locator: string) {
         const elements = this.page.locator(locator);

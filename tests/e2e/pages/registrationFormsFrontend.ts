@@ -45,7 +45,7 @@ export class RegistrationFormsFrontendPage extends Base {
 
 
         //Validate Registration page
-        const validateRegistrationPage = await this.validateAndGetText(Selectors.registrationForms.completeUserRegistrationFormFrontend.validateRegistrationPage);
+        const validateRegistrationPage = await this.page.innerText(Selectors.registrationForms.completeUserRegistrationFormFrontend.validateRegistrationPage);
         expect(validateRegistrationPage).toContain('Registration Page');
 
         //Enter First Name
@@ -90,7 +90,7 @@ export class RegistrationFormsFrontendPage extends Base {
         //Click Search
         await this.validateAndClick(Selectors.registrationForms.validateUserRegisteredAdminEnd.adminUsersSearchButton);
         //Validate Email present
-        const validateUserCreated = await this.validateAndGetText(Selectors.registrationForms.validateUserRegisteredAdminEnd.validateUserCreated);
+        const validateUserCreated = await this.page.innerText(Selectors.registrationForms.validateUserRegisteredAdminEnd.validateUserCreated);
 
         expect(validateUserCreated, `Expected user with email ${email} to be found in admin`).toBe(email);
 

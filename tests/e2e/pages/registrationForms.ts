@@ -36,7 +36,7 @@ export class RegistrationFormsPage extends Base {
         }
         else {
             //Check Pro Features Header
-            const checkProFeaturesText = await this.validateAndGetText(Selectors.registrationForms.validateRegistrationFormsProFeatureLite.checkProFeaturesText);
+            const checkProFeaturesText = await this.page.innerText(Selectors.registrationForms.validateRegistrationFormsProFeatureLite.checkProFeaturesText);
             await expect(checkProFeaturesText).toContain("Unlock PRO Features");
 
             //Check Setup
@@ -59,7 +59,7 @@ export class RegistrationFormsPage extends Base {
         expect(validateShortcode).toBeTruthy();
 
         //Copy Shortcode
-        const storeShortcode: String | null = await this.validateAndGetText(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.storeShortcode);
+        const storeShortcode: String | null = await this.page.innerText(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.storeShortcode);
         console.log(storeShortcode);
 
         //Visit Pages
@@ -123,7 +123,7 @@ export class RegistrationFormsPage extends Base {
         await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.pagesSearchBoxSubmit);
 
         //Validate Page
-        const validatePageCreated = await this.validateAndGetText(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.validatePageCreated);
+        const validatePageCreated = await this.page.innerText(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.validatePageCreated);
         expect(validatePageCreated).toContain(registrationFormPageTitle);
 
     };

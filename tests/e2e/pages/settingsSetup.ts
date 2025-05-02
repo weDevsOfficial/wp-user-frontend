@@ -85,7 +85,7 @@ export class SettingsSetupPage extends Base {
         //ASSERTION > Check if-VALID
         const availableText = await this.page.isVisible(Selectors.settingsSetup.pluginVisit.clickPostFormMenuOption);
         if (availableText == true) {
-            const checkText = await this.validateAndGetText(Selectors.settingsSetup.pluginVisit.wpufPostFormCheckAddButton);
+            const checkText = await this.page.innerText(Selectors.settingsSetup.pluginVisit.wpufPostFormCheckAddButton);
             await expect(checkText).toContain("Add New");
         }
 
@@ -262,7 +262,7 @@ export class SettingsSetupPage extends Base {
         //Set Post Name Permalink
         await this.validateAndClick(Selectors.settingsSetup.setPermalink.clickCustomStructurePostName);
         //Validate Permalink - Postname select
-        const validatePermalinkPostname = await this.validateAndGetText(Selectors.settingsSetup.setPermalink.validatePermalinkPostname);
+        const validatePermalinkPostname = await this.page.innerText(Selectors.settingsSetup.setPermalink.validatePermalinkPostname);
         //Save Permalink Settings
         await this.validateAndClick(Selectors.settingsSetup.setPermalink.savePermalinkSettings);
         await this.page.reload();

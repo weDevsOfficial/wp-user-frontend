@@ -333,7 +333,7 @@ export class FieldOptionsCommonPage extends Base {
         //ASSERTION > Check if-VALID
         const checkNewBlankFormCreatedValid_PF = await this.page.isVisible(Selectors.postForms.navigatePage_PF.checkAddButton_PF);
         if (checkNewBlankFormCreatedValid_PF === true) {
-            const checkNewFormCreated_PF = await this.validateAndGetText(Selectors.postForms.navigatePage_PF.postFormsPageFormsTitleCheck_PF);
+            const checkNewFormCreated_PF = await this.page.innerText(Selectors.postForms.navigatePage_PF.postFormsPageFormsTitleCheck_PF);
             await expect(checkNewFormCreated_PF).toContain(validateNewPostName_PF);
             console.log('PF Name: ' + checkNewFormCreated_PF);
             console.log('PF List: ' + validateNewPostName_PF);
@@ -403,7 +403,7 @@ export class FieldOptionsCommonPage extends Base {
         //ASSERTION > Check if-VALID
         const checkNewBlankFormCreatedValid_RF = await this.page.isVisible(Selectors.registrationForms.navigatePage_RF.checkAddButton_RF);
         if (checkNewBlankFormCreatedValid_RF === true) {
-            const checkNewFormCreated_RF = await this.validateAndGetText(Selectors.registrationForms.navigatePage_RF.postFormsPageFormTitleCheck_RF);
+            const checkNewFormCreated_RF = await this.page.innerText(Selectors.registrationForms.navigatePage_RF.postFormsPageFormTitleCheck_RF);
             await expect(checkNewFormCreated_RF).toContain(validateNewPostName_RF);
             console.log('RF Name: ' + checkNewFormCreated_RF);
             console.log('PF List: ' + validateNewPostName_RF);

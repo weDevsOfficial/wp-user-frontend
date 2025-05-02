@@ -62,7 +62,7 @@ export class PostFormsFrontendPage extends Base{
         //Create Post
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.submitPostFormsFE);
         //Validate Post Submitted
-        const validatePostSubmitted = await this.validateAndGetText(`//h1[normalize-space(text())='${postFormTitle}']`);
+        const validatePostSubmitted = await this.page.innerText(`//h1[normalize-space(text())='${postFormTitle}']`);
         expect(validatePostSubmitted).toContain(postFormTitle);
     };
 
@@ -82,7 +82,7 @@ export class PostFormsFrontendPage extends Base{
         //Click Post
         await this.validateAndClick(Selectors.postForms.postFormsFrontendValidate.clickPostsSideMenu);
         //Validate First Item in List
-        const validatePostCreated: string | null = await this.validateAndGetText(Selectors.postForms.postFormsFrontendValidate.validatePostSubmittedFE);
+        const validatePostCreated: string | null = await this.page.innerText(Selectors.postForms.postFormsFrontendValidate.validatePostSubmittedFE);
         //Validate created Post
         expect(validatePostCreated).toContain(postFormTitle);
 

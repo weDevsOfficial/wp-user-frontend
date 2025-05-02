@@ -376,7 +376,7 @@ onMounted(() => {
             :color="'#7DC442'"
         />
     </div>
-    <div v-else-if="forms.length === 0 && currentTab === 'any'">
+    <div v-else-if="forms.length === 0 && currentTab === 'any' && searchTerm === ''">
         <div class="wpuf-grid wpuf-min-h-full wpuf-bg-white wpuf-px-6 wpuf-py-24 sm:wpuf-py-32 lg:wpuf-px-8">
             <div class="wpuf-flex wpuf-flex-col wpuf-items-center">
                 <img :src="blankImg" alt="">
@@ -397,6 +397,13 @@ onMounted(() => {
                     {{ __( 'Add New ', 'wp-user-frontend' ) }}
                 </a>
             </div>
+        </div>
+    </div>
+    <div v-else-if="forms.length === 0 && currentTab === 'any' && searchTerm !== ''">
+        <div class="wpuf-text-center">
+            <h1 class="wpuf-text-3xl wpuf-font-semibold wpuf-tracking-tight text-balance wpuf-text-gray-900">
+                {{ __( 'No forms found matching your search!', 'wp-user-frontend' ) }}
+            </h1>
         </div>
     </div>
     <div v-else-if="forms.length === 0 && currentTab !== 'any'">

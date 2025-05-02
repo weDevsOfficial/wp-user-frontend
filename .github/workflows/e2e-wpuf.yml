@@ -35,14 +35,10 @@ jobs:
           cache: npm
 
       # Composer install and build (WPUF-lite)
-      - name: Composer install and build (WPUF-lite)
+      - name: Composer, npm install and build (WPUF-lite)
         run: |
           composer install --no-dev --prefer-dist
           composer dump-autoload -o
-
-      # Npm install and build (WPUF-lite)
-      - name: Npm install and build (WPUF-lite)
-        run: |
           npm i
           grunt release --force
 
@@ -54,17 +50,14 @@ jobs:
           path: 'plugins/wpuf-pro'
           ref: 'develop'
 
-      - name: Composer install and build (WPUF-pro)
+      - name: Composer, npm install and build (WPUF-pro)
         run: |
           cd plugins/wpuf-pro
           composer install --no-dev --prefer-dist
           composer dump-autoload -o
-
-      - name: Npm install and build (WPUF-pro)
-        run: |
-          cd plugins/wpuf-pro
           npm i --legacy-peer-deps
           grunt 
+          
 
       # Install test dependencies
       - name: Install test dependencies

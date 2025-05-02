@@ -378,10 +378,9 @@ onMounted(() => {
     </div>
     <div v-else-if="forms.length === 0 && searchTerm !== ''">
         <div class="wpuf-text-center">
-            <h1 class="wpuf-text-3xl wpuf-font-semibold wpuf-tracking-tight text-balance wpuf-text-gray-900">
+            <h2 class="wpuf-text-lg wpuf-text-gray-800 wpuf-mt-8">
                 {{ __( 'No forms found matching your search!', 'wp-user-frontend' ) }}
-                
-            </h1>
+            </h2>
         </div>
     </div>
     <div v-else-if="forms.length === 0 && currentTab === 'any' && searchTerm === ''">

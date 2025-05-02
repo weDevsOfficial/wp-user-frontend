@@ -66,21 +66,20 @@ jobs:
         working-directory: tests/e2e
         run: npm ci
 
-      # Start WordPress via Docker
-      - name: Setup WordPress (Docker Compose)
-        working-directory: tests/e2e
-        run: ./setup-wordpress.sh
+      # Start wp-env
+      - name: Start wp-env
+        run: npm run wp-env start
 
-      # Get Playwright version for cache key
-      - name: Get Playwright version
+      # Get Playwright version
+      - name: Get installed Playwright version
         id: playwright-version
         run: |
           cd tests/e2e
           PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq -r '.dependencies["@playwright/test"].version')
           echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> "$GITHUB_ENV"
 
-      # Cache Playwright binaries
-      - name: Cache Playwright browsers
+      # Cache playwright binaries
+      - name: Cache playwright binaries
         id: playwright-cache
         uses: actions/cache@v4
         with:
@@ -102,10 +101,10 @@ jobs:
           cd tests/e2e
           npx playwright test e2eMain.spec.ts --project=chromium
         env:
-          BASE_URL: http://localhost:8888
+          BASE_URL: ${{ secrets.QA_BASE_URL }}
           CI: true
-          ADMIN_USERNAME: admin
-          ADMIN_PASSWORD: admin
+          ADMIN_USERNAME: ${{ secrets.QA_ADMIN_USERNAME }}
+          ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
 
       # Archive test artifacts
       - name: Archive playwright artifacts (screenshots, HTML snapshots, videos)

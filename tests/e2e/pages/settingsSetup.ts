@@ -92,7 +92,8 @@ export class SettingsSetupPage extends Base {
             console.log("Post Form Menu Option is available 1");
             await this.page.reload();
             await this.page.waitForLoadState('domcontentloaded');
-            const checkText = await this.validateAndGetText(Selectors.settingsSetup.pluginVisit.wpufPostFormCheckAddButton);
+            console.log("reloaded");
+            const checkText = await this.page.innerText(Selectors.settingsSetup.pluginVisit.wpufPostFormCheckAddButton);
             console.log("checkText: ", checkText);
             await expect(checkText).toContain("Add New");
             console.log("Post Form Menu Option is available 2");

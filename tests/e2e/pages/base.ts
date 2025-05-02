@@ -33,7 +33,9 @@ export class Base {
     async validateAndGetText(locator: string) {
         await this.page.locator(locator).waitFor();
         expect(this.page.locator(locator).isVisible).toBeTruthy();
-        return await this.page.innerText(locator);
+        let text = await this.page.locator(locator).innerText();
+        console.log('Text:', text);
+        return text;
     };
 
     // Validate and Click

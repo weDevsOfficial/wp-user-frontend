@@ -90,6 +90,8 @@ export class SettingsSetupPage extends Base {
         console.log("availableText: ", availableText);
         if (availableText == true) {
             console.log("Post Form Menu Option is available 1");
+            await this.page.reload();
+            await this.page.waitForLoadState('domcontentloaded');
             const checkText = await this.validateAndGetText(Selectors.settingsSetup.pluginVisit.wpufPostFormCheckAddButton);
             console.log("checkText: ", checkText);
             await expect(checkText).toContain("Add New");
@@ -102,37 +104,25 @@ export class SettingsSetupPage extends Base {
     //Plugin Activate - Lite
     async activateWPUFLite() {
         //Go to Plugins page
-        // console.log("going to plugins page");
         const pluginsPage = Urls.baseUrl + '/wp-admin/plugins.php';
         await Promise.all([
             this.page.goto(pluginsPage, { waitUntil: 'networkidle' }),
-            // console.log("navigated to plugins page"),
         ]);
         //Activate Plugin
         const activateWPUFLite = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
-        // console.log("installed");
         if (activateWPUFLite === true) {
-            // console.log("being activated");
             //Plugins is getting activated here
             await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
-            // console.log("activating");
             await this.page.reload();
-            // console.log("Plugins activated")
-            // await this.page.goBack();
 
             await this.page.goto(Urls.baseUrl + '/wp-admin/');
-            // console.log("navigated to dashboard");
             await this.assertionValidate(Selectors.login.basicNavigation.clickWPUFSidebar);
             await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
-            // console.log("WPUF-Lite Status: Activated");
         }
 
         else {
-            // console.log("already activated");
             await this.assertionValidate(Selectors.login.basicNavigation.clickWPUFSidebar);
-            // console.log("navigated to dashboard");
             await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
-            // console.log("WPUF-Lite Status: Activated");
         }
     };
 

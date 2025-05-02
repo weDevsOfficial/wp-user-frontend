@@ -2,10 +2,8 @@ name: Playwright tests/e2e
 
 on:
   workflow_dispatch:
-  # schedule:
-  #   - cron: "0 1 * * *"  # Run workflow at 8:00 AM UTC +6 every day
-
-
+  schedule:
+    - cron: '0 0 * * 0' # Every Sunday at midnight
   push:
     branches: [develop]
   pull_request:
@@ -13,90 +11,72 @@ on:
 
 jobs:
   test:
-    timeout-minutes: 10
-    runs-on: ubuntu-latest    
-    
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+
     steps:
       # Setup PHP
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: "7.4"
-      
-      # Checkout testing repo
-      - name: Checkout testing repo
+
+      # Checkout WPUF Lite
+      - name: Checkout WPUF Lite
         uses: actions/checkout@v4
 
-      # Use Node.js 18
-      - name: Use desired version of NodeJS
+      # Setup Node.js
+      - name: Use Node.js 18
         uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: npm
 
-      # Composer install and build (WPUF-lite)
-      - name: Composer, npm install and build (WPUF-lite)
+      # Composer & NPM install + build (WPUF Lite)
+      - name: Build WPUF Lite
         run: |
           composer install --no-dev --prefer-dist
           composer dump-autoload -o
-          npm i
+          npm install
           grunt release --force
 
-      - name: Clone WPUF-pro
+      # Clone WPUF Pro
+      - name: Checkout WPUF Pro
         uses: actions/checkout@v4
         with:
           repository: weDevsOfficial/wpuf-pro
           token: ${{ secrets.ACCESS_TOKEN }}
           path: 'plugins/wpuf-pro'
-          ref: 'develop'
+          ref: develop
 
-      - name: Composer, npm install and build (WPUF-pro)
+      # Composer & NPM install + build (WPUF Pro)
+      - name: Build WPUF Pro
+        working-directory: tests/e2e/wp-content/plugins/wpuf-pro
         run: |
-          cd plugins/wpuf-pro
           composer install --no-dev --prefer-dist
           composer dump-autoload -o
-          npm i --legacy-peer-deps
-          grunt 
-          
+          npm install --legacy-peer-deps
+          grunt
 
-      # Install test dependencies
-      - name: Install test dependencies
+      # Install E2E test dependencies
+      - name: Install E2E test deps
         working-directory: tests/e2e
         run: npm ci
 
-      # Restore wp-env cache BEFORE starting wp-env
-      - name: Restore wp-env cache
-        uses: actions/cache/restore@v4
-        with:
-          path: tests/e2e/.wp-env
-          key: ${{ runner.os }}-wp-env-${{ hashFiles('tests/e2e/.wp-env.json') }}
-          restore-keys: |
-            ${{ runner.os }}-wp-env-
-
-      # Start wp-env
-      - name: Start wp-env
+      # Start WordPress via Docker
+      - name: Setup WordPress (Docker Compose)
         working-directory: tests/e2e
-        run: npm run wp-env start -- --update --docker-compose
+        run: ./setup-wordpress.sh
 
-      # Save wp-env cache AFTER it's created/updated
-      - name: Save wp-env cache
-        uses: actions/cache/save@v4
-        if: always()
-        with:
-          path: tests/e2e/.wp-env
-          key: ${{ runner.os }}-wp-env-${{ hashFiles('tests/e2e/.wp-env.json') }}
-
-      # Get Playwright version
-      - name: Get installed Playwright version
+      # Get Playwright version for cache key
+      - name: Get Playwright version
         id: playwright-version
         run: |
           cd tests/e2e
-          PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq -r '.dependencies["@playwright/test"].version')
-          echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> "$GITHUB_ENV"
+          echo "PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq -r '.dependencies[\"@playwright/test\"].version')" >> $GITHUB_ENV
 
-      # Cache playwright binaries
-      - name: Cache playwright binaries
-        id: playwright-cache
+      # Cache Playwright binaries
+      - name: Cache Playwright browsers
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
@@ -104,26 +84,24 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-playwright-
 
-      # Install Playwright browser binaries & OS dependencies
-      - name: Install Playwright browser binaries & OS dependencies
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: |
-          cd tests/e2e
-          npx playwright install chromium --with-deps
+      # Install Playwright browsers if cache miss
+      - name: Install Playwright Browsers
+        if: steps.playwright-version.outputs.cache-hit != 'true'
+        working-directory: tests/e2e
+        run: npx playwright install chromium --with-deps
 
       # Run Playwright tests
-      - name: Run Playwright tests/e2e
-        run: |
-          cd tests/e2e
-          npx playwright test e2eMain.spec.ts --project=chromium
+      - name: Run Playwright tests
+        working-directory: tests/e2e
+        run: npx playwright test e2eMain.spec.ts --project=chromium
         env:
-          BASE_URL: ${{ secrets.QA_BASE_URL }}
+          BASE_URL: http://localhost:8888
           CI: true
-          ADMIN_USERNAME: ${{ secrets.QA_ADMIN_USERNAME }}
-          ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
+          ADMIN_USERNAME: admin
+          ADMIN_PASSWORD: admin
 
-      # Archive test artifacts
-      - name: Archive playwright artifacts (screenshots, HTML snapshots, videos)
+      # Upload test report
+      - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -132,7 +110,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 3
 
-      # Publish HTML report to GH Pages
+      # Publish report to GH Pages (optional)
       - name: Publish HTML report to GH Pages
         uses: peaceiris/actions-gh-pages@v4
         with:

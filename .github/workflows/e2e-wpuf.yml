@@ -2,8 +2,10 @@ name: Playwright tests/e2e
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 0 * * 0' # Every Sunday at midnight
+  # schedule:
+  #   - cron: "0 1 * * *"  # Run workflow at 8:00 AM UTC +6 every day
+
+
   push:
     branches: [develop]
   pull_request:
@@ -11,16 +13,16 @@ on:
 
 jobs:
   test:
-    timeout-minutes: 15
-    runs-on: ubuntu-latest
-
+    timeout-minutes: 10
+    runs-on: ubuntu-latest    
+    
     steps:
       # Setup PHP
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: "7.4"
-
+      
       # Checkout WPUF Lite
       - name: Checkout WPUF Lite
         uses: actions/checkout@v4
@@ -33,7 +35,7 @@ jobs:
           cache: npm
 
       # Composer & NPM install + build (WPUF Lite)
-      - name: Build WPUF Lite
+      - name: Install wpuf-lite dependencies
         run: |
           composer install --no-dev --prefer-dist
           composer dump-autoload -o
@@ -41,24 +43,25 @@ jobs:
           grunt release --force
 
       # Clone WPUF Pro
-      - name: Checkout WPUF Pro
+      - name: Checkout WPUF-pro
         uses: actions/checkout@v4
         with:
           repository: weDevsOfficial/wpuf-pro
           token: ${{ secrets.ACCESS_TOKEN }}
           path: 'plugins/wpuf-pro'
-          ref: develop
+          ref: 'develop'
 
       # Composer & NPM install + build (WPUF Pro)
-      - name: Build WPUF Pro
-        working-directory: tests/e2e/wp-content/plugins/wpuf-pro
+      - name: Install wpuf-pro dependencies
         run: |
+          cd plugins/wpuf-pro
           composer install --no-dev --prefer-dist
           composer dump-autoload -o
           npm install --legacy-peer-deps
           grunt
+          
 
-      # Install E2E test dependencies
+      # Install test dependencies
       - name: Install E2E test deps
         working-directory: tests/e2e
         run: npm ci
@@ -73,10 +76,12 @@ jobs:
         id: playwright-version
         run: |
           cd tests/e2e
-          echo "PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq -r '.dependencies[\"@playwright/test\"].version')" >> $GITHUB_ENV
+          PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq -r '.dependencies["@playwright/test"].version')
+          echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> "$GITHUB_ENV"
 
       # Cache Playwright binaries
       - name: Cache Playwright browsers
+        id: playwright-cache
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
@@ -84,24 +89,26 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-playwright-
 
-      # Install Playwright browsers if cache miss
-      - name: Install Playwright Browsers
-        if: steps.playwright-version.outputs.cache-hit != 'true'
-        working-directory: tests/e2e
-        run: npx playwright install chromium --with-deps
+      # Install Playwright browser binaries & OS dependencies
+      - name: Install Playwright browser binaries & OS dependencies
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: |
+          cd tests/e2e
+          npx playwright install chromium --with-deps
 
       # Run Playwright tests
-      - name: Run Playwright tests
-        working-directory: tests/e2e
-        run: npx playwright test e2eMain.spec.ts --project=chromium
+      - name: Run Playwright tests/e2e
+        run: |
+          cd tests/e2e
+          npx playwright test e2eMain.spec.ts --project=chromium
         env:
           BASE_URL: http://localhost:8888
           CI: true
           ADMIN_USERNAME: admin
           ADMIN_PASSWORD: admin
 
-      # Upload test report
-      - name: Upload Playwright Report
+      # Archive test artifacts
+      - name: Archive playwright artifacts (screenshots, HTML snapshots, videos)
         uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -110,7 +117,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 3
 
-      # Publish report to GH Pages (optional)
+      # Publish HTML report to GH Pages
       - name: Publish HTML report to GH Pages
         uses: peaceiris/actions-gh-pages@v4
         with:

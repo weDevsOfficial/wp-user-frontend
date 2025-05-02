@@ -29,14 +29,13 @@ export class Base {
         await this.page.getByText(locator).click();
     };
 
-    // Validate and Get text
-    async validateAndGetText(locator: string) {
-        await this.page.locator(locator).waitFor();
-        expect(this.page.locator(locator).isVisible).toBeTruthy();
-        let text = await this.page.locator(locator).innerText();
-        console.log('Text:', text);
-        return text;
-    };
+        // Validate and Get text
+        async validateAndGetText(locator: string) {
+            await this.page.locator(locator).waitFor();
+            let text = await this.page.innerText(locator);
+            console.log('Text:', text);
+            return text;
+        };
 
     // Validate and Click
     async validateAndClickAny(locator: string) {

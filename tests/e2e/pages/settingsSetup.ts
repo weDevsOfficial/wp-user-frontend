@@ -74,29 +74,19 @@ export class SettingsSetupPage extends Base {
 
     //Plugin Page - Visit
     async pluginVisitWPUF() {
-        console.log("Plugin Visit");
         //Go to AdminEnd
         await Promise.all([
             this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'networkidle' }),
-            console.log("navigated to dashboard"),
         ]);
 
         await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
-        console.log("WPUF-Lite Status: Activated");
         await this.page.waitForLoadState('domcontentloaded');
 
         //ASSERTION > Check if-VALID
         const availableText = await this.page.isVisible(Selectors.settingsSetup.pluginVisit.clickPostFormMenuOption);
-        console.log("availableText: ", availableText);
         if (availableText == true) {
-            console.log("Post Form Menu Option is available 1");
-            await this.page.reload();
-            await this.page.waitForLoadState('domcontentloaded');
-            console.log("reloaded");
-            const checkText = await this.page.innerText(Selectors.settingsSetup.pluginVisit.wpufPostFormCheckAddButton);
-            console.log("checkText: ", checkText);
+            const checkText = await this.validateAndGetText(Selectors.settingsSetup.pluginVisit.wpufPostFormCheckAddButton);
             await expect(checkText).toContain("Add New");
-            console.log("Post Form Menu Option is available 2");
         }
 
     };

@@ -32,6 +32,7 @@ export const Selectors = {
             clickWPUFSidebar: '//div[normalize-space(text())="User Frontend"]',
             // Hover Settings Menu
             hoverSettings: '//div[text()="Settings"]',
+            licenseTab: '//a[normalize-space()="License"]',
         },
     },
 
@@ -48,6 +49,13 @@ export const Selectors = {
             clickWPUFPluginPro: '//a[@id="activate-wp-user-frontend-pro"]',
             clickWPUFPluginDeactivate: '//a[@id="deactivate-wp-user-frontend"]',
             clickWPUFPluginProDeactivate: '//a[@id="deactivate-wp-user-frontend-pro"]',
+            clickAllow: '//a[normalize-space()="Allow"]',
+            clickRunUpdater: '//a[normalize-space()="Run the updater"]',
+            clickActivateLicense: '//a[normalize-space()="Activate License"]',
+            fillLicenseKey: '//input[@placeholder="Enter your license key to activate"]',
+            submitLicenseKey: '//div[@class="license-input-key"]/following-sibling::button[1]',
+            deactivateLicenseKey: '//button[normalize-space(text())="Deactivate License"]',
+            
         },
 
         // Plugin Visit
@@ -114,6 +122,14 @@ export const Selectors = {
 
             // Save Permalink Settings
             savePermalinkSettings: '//input[@id="submit"]',
+        },
+
+        // Allow User Registration
+        allowRegistration: {
+            // Settings > General
+            clickAnyoneRegister: '//input[@id="users_can_register"]',
+            // Save Settings
+            saveSettings: '//input[@id="submit"]',
         },
 
         // Admin Create New User
@@ -299,7 +315,7 @@ export const Selectors = {
             validateCountryList: '//label[@for="country_list"]/../..//div[@class="wpuf-fields"]',
             validateNumericField: '//label[@for="numeric_field"]/../..//div[@class="wpuf-fields"]',
             validatePhoneField: '//label[@for="phone_field"]/../..//div[@class="wpuf-fields"]',
-            validateAddressField: '//label[@for="addr_field_label"]/../..//div[@class="wpuf-fields"]',
+            validateAddressField: '//label[@for="address_field"]',
             // validateGoogleMaps: '',           // TODO: Setup required
             validateStepStart: '//div[@class="step-start-indicator"]/../..',
             validateEmbed: '//label[@for="embed"]/../..//div[@class="wpuf-fields"]',
@@ -319,7 +335,7 @@ export const Selectors = {
             othersShortCode: '//p[normalize-space(text())="Shortcode"]',
             othersActionHook: '//p[normalize-space(text())="Action Hook"]',
             othersTermsAndConditions: '//p[normalize-space(text())="Terms & Conditions"]',
-            othersRatings: '//p[normalize-space(text())="Action Hook"]',
+            othersRatings: '//p[normalize-space(text())="Ratings"]',
             othersReallySimpleCaptcha: '//p[normalize-space(text())="Really Simple Captcha"]',
             othersMathCaptcha: '//p[normalize-space(text())="Math Captcha"]',
         },
@@ -355,8 +371,8 @@ export const Selectors = {
 
             // validateReCaptcha: '',            // TODO: Setup required
             validateShortcode: '//label[@for="shortcode"]/../..//div[@class="wpuf-fields"]',
-            validateActionHook: '//div[text()="Action Hook"]/../..//div[@class="wpuf-fields"]',
-            validateTermsAndConditions: '//div[@class="wpuf-toc-container"]/..//div[@class="wpuf-fields clearfix has-toc-checkbox"]',
+            validateActionHook: '//span[normalize-space()="YOUR_CUSTOM_HOOK_NAME"]',
+            validateTermsAndConditions: '//div[contains(@class,"wpuf-toc-container wpuf-fields")]',
             validateRatings: '//label[@for="ratings"]/../..//div[@class="wpuf-fields"]',
             // validateReallySimpletCaptcha: '',  // TODO: Setup required
             validateMathCaptcha: '//label[@for="math_captcha"]/../..//div[@class="wpuf-fields"]',
@@ -418,7 +434,7 @@ export const Selectors = {
         // Navigate Registration Forms Page
         navigatePage_RF: {
             // WPUF > Pages > Navigation
-            checkAddButton_RF: '//a[@id="new-wpuf-profile-form"]',
+            checkAddButton_RF: '//a[contains(text(),"Add New")]',
             postFormsPageFormTitleCheck_RF: '(//a[@class="row-title"])[1]',
 
             // New_Created_NAME_Checker
@@ -476,7 +492,7 @@ export const Selectors = {
             // Validate Shortcode
             validateShortcode: '//code[text()="[wpuf-registration]"]',
             // Shortcode
-            storeShortcode: '//code[text()="[wpuf-registration]"]',
+            storeShortcode: '(//div[@class="wpuf-mb-4 wpuf-flex"]//code)[1]',
             // Add New Page
             addNewPage: '//a[@class="page-title-action"]',
             // Close Pattern Modal
@@ -522,19 +538,19 @@ export const Selectors = {
 
             // Registration Form
             // First Name
-            rfFirstName: '//input[@name="reg_fname"]',
+            rfFirstName: '//input[@type="reg_fname"]',
             // Last Name
-            rfLastName: '//input[@name="reg_lname"]',
+            rfLastName: '//input[@type="reg_lname"]',
             // Email
-            rfEmail: '//input[@name="reg_email"]',
+            rfEmail: '//input[@type="email"]',
             // Username
             rfUserName: '//input[@id="wpuf-user_login"]',
             // Password
-            rfPassword: '//input[@id="wpuf-user_pass1"]',
+            rfPassword: '(//input[@type="password"])[1]',
             // Confirm Password
-            rfConfirmPassword: '//input[@id="wpuf-user_pass2"]',
+            rfConfirmPassword: '(//input[@type="password"])[2]',
             // Register button
-            rfRegisterButton: '//input[@id="wp-submit"]',
+            rfRegisterButton: '//input[@type="submit"]',
 
             // Validate Registered
             // Logout button

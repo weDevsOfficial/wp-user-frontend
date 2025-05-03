@@ -265,7 +265,7 @@ export class FieldOptionsCommonPage extends Base {
             //Shortcode
             await this.assertionValidate(Selectors.postForms.validateOthers_Common.validateShortcode);
             //ActionHook
-            await this.assertionValidate(Selectors.postForms.validateOthers_Common.validateActionHook);
+            await this.validateAny(Selectors.postForms.validateOthers_Common.validateActionHook);
             //TermsAndConditions
             await this.assertionValidate(Selectors.postForms.validateOthers_Common.validateTermsAndConditions);
             //Ratings

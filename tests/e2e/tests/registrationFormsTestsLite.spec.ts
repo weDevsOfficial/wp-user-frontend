@@ -27,7 +27,7 @@ test.describe('Registration-Forms @Lite :-->', () => {
  */
 
 
-    test('0019:[Reg-Forms] Here, Admin is checking Registration Forms - Pro Feature Page', async ({ page }) => {
+    test('0022:[Reg-Forms] Here, Admin is checking Registration Forms - Pro Feature Page', async ({ page }) => {
         const BasicLogin = new BasicLoginPage(page);
         const RegistrationFormsLite = new RegistrationFormsPage(page);
         //Basic login
@@ -37,7 +37,7 @@ test.describe('Registration-Forms @Lite :-->', () => {
     });
 
 
-    test('0020:[Reg-Forms] Here, Admin is creating Registration Forms Page - using shortcode', async ({ page }) => {
+    test('0023:[Reg-Forms] Here, Admin is creating Registration Forms Page - using shortcode', async ({ page }) => {
         const RegistrationFormsLite = new RegistrationFormsPage(page);
         const SettingsSetup = new SettingsSetupPage(page);
         //Registration Forms page - Title
@@ -51,7 +51,7 @@ test.describe('Registration-Forms @Lite :-->', () => {
     });
 
 
-    test('0021:[Reg-Forms] Here, User is registering using - Registration Form', async ({ page }) => {
+    test('0024:[Reg-Forms] Here, User is registering using - Registration Form', async ({ page }) => {
         const RegistrationFormsFrontend = new RegistrationFormsFrontendPage(page);
         //FrontEnd
         //Complete FrontEnd Registration
@@ -61,7 +61,7 @@ test.describe('Registration-Forms @Lite :-->', () => {
     });
 
 
-    test('0022:[Reg-Forms] Here, Admin is validating - Registered user', async ({ page }) => {
+    test('0025:[Reg-Forms] Here, Admin is validating - Registered user', async ({ page }) => {
         const BasicLogin = new BasicLoginPage(page);
         const RegistrationFormsFrontend = new RegistrationFormsFrontendPage(page);
         //Basic Login

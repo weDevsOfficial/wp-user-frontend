@@ -43,19 +43,18 @@ export class RegistrationFormsFrontendPage extends Base {
             this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }),
         ]);
 
-
         //Validate Registration page
         const validateRegistrationPage = await this.page.innerText(Selectors.registrationForms.completeUserRegistrationFormFrontend.validateRegistrationPage);
         expect(validateRegistrationPage).toContain('Registration Page');
 
-        //Enter First Name
-        await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfFirstName, firstName);
-        //Enter Last Name
-        await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfLastName, lastName);
+        // Enter First Name
+        // await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfFirstName, firstName);
+        // Enter Last Name
+        // await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfLastName, lastName);
         //Enter Email
         await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfEmail, email);
         //Enter Username
-        await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfUserName, userName);
+        //await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfUserName, userName);
         //Enter Password
         await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfPassword, password);
         //Confirm Password

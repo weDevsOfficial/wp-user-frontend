@@ -29,7 +29,7 @@ export class Base {
         await this.page.getByText(locator).click();
     };
 
-    // Validate and Click
+    // Validate and Click any
     async validateAndClickAny(locator: string) {
         const elements = this.page.locator(locator);
         const count = await elements.count();
@@ -38,6 +38,21 @@ export class Base {
             const element = elements.nth(i);
             if (await element.isVisible()) {
                 await element.click();
+                return; // Exit the function once a visible element is clicked
+            }
+        }
+
+        throw new Error(`No visible elements found for locator: ${locator}`);
+    }
+
+    // Validate any
+    async validateAny(locator: string) {
+        const elements = this.page.locator(locator);
+        const count = await elements.count();
+
+        for (let i = 0; i < count; i++) {
+            const element = elements.nth(i);
+            if (await element.isVisible()) {
                 return; // Exit the function once a visible element is clicked
             }
         }

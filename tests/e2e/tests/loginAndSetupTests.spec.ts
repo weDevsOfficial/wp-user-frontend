@@ -28,49 +28,64 @@ test.describe('Login and Setup :-->', () => {
  *  
  */
 
-    test('001:[Login] Here, Admin is logging into Admin-Dashboard', async ({ page }) => {
+    test('0001:[Login] Here, Admin is logging into Admin-Dashboard', async ({ page }) => {
         const BasicLogin = new BasicLoginPage(page);
         await BasicLogin.basicLogin(Users.adminUsername, Users.adminPassword);
     });
 
 
-    test('002:[Login] Here, Admin is checking Dashboard page reached', async ({ page }) => {
+    test('0002:[Login] Here, Admin is checking Dashboard page reached', async ({ page }) => {
         const BasicLogin = new BasicLoginPage(page);
         await BasicLogin.validateBasicLogin();
     });
 
 
-    test('003:[Login] Here, Admin is checking Plugin Status - Lite Activation', async ({ page }) => {
+    test('0003:[Login] Here, Admin is checking Plugin Status - Lite Activation', async ({ page }) => {
         const SettingsSetup = new SettingsSetupPage(page);
         await SettingsSetup.pluginStatusCheckLite();
     });
 
+    test('0004:[Login] Here, Admin is checking Plugin Status - Pro Activation', async ({ page }) => {
+        const SettingsSetup = new SettingsSetupPage(page);
+        await SettingsSetup.pluginStatusCheckPro();
+    });
 
-    test('004:[Login] Here, Admin is Completing WPUF setup', async ({ page }) => {
+    test('0005:[Login] Here, Admin is activating license - Pro', async ({ page }) => {
+        const SettingsSetup = new SettingsSetupPage(page);
+        await SettingsSetup.licenseActivateWPUFPro();
+    });
+
+
+    test('0006:[Login] Here, Admin is Completing WPUF setup', async ({ page }) => {
         const SettingsSetup = new SettingsSetupPage(page);
         await SettingsSetup.wpufSetup();
     });
 
 
-    test('005:[Login] Here, Admin is visiting WPUF Page', async ({ page }) => {
+    test('0007:[Login] Here, Admin is visiting WPUF Page', async ({ page }) => {
         const SettingsSetup = new SettingsSetupPage(page);
         await SettingsSetup.pluginVisitWPUF();
     });
 
 
-    test('006:[Login] Here, Admin is changing WPUF Settings', async ({ page }) => {
+    test('0008:[Login] Here, Admin is changing WPUF Settings', async ({ page }) => {
         const SettingsSetup = new SettingsSetupPage(page);
         await SettingsSetup.changeSettingsSetLoginPageDefault();
     });
 
 
-    test('007: Here, Admin is setting Permalink', async ({ page }) => {
+    test('0009: Here, Admin is setting Permalink', async ({ page }) => {
         const SettingsSetup = new SettingsSetupPage(page);
         await SettingsSetup.setPermalink();
     });
 
+    test('0010: Here, Admin is allowing anyone to register', async ({ page }) => {
+        const SettingsSetup = new SettingsSetupPage(page);
+        await SettingsSetup.allowRegistration();
+    });
 
-    test('008: Here, Admin is creating a New User', async ({ page }) => {
+
+    test('0011: Here, Admin is creating a New User', async ({ page }) => {
         const SettingsSetup = new SettingsSetupPage(page);
 
         //New User Credentials
@@ -84,7 +99,7 @@ test.describe('Login and Setup :-->', () => {
     });
 
 
-    test('009: Here, Admin is logging out succesfully', async ({ page }) => {
+    test('00012: Here, Admin is logging out succesfully', async ({ page }) => {
         const BasicLogout = new BasicLogoutPage(page);
 
         //Logout

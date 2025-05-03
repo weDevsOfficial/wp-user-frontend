@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-import { expect, Page } from '@playwright/test';
+import { Dialog, expect, Page } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Urls } from '../utils/testData';
 import { Base } from './base';
@@ -66,6 +66,18 @@ export class SettingsSetupPage extends Base {
         await this.activateWPUFPro();
     };
 
+    // Plugin Activate - License
+    //Plugin Activate - Pro
+    async licenseActivateWPUFPro() {
+        //Go to AdminEnd
+        await Promise.all([
+            this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'networkidle' }),
+        ]);
+
+        //Activate Pro
+        await this.activateLicenseWPUFPro();
+    };
+
 
 
     /************************************************************/
@@ -107,12 +119,11 @@ export class SettingsSetupPage extends Base {
             await this.page.reload();
 
             await this.page.goto(Urls.baseUrl + '/wp-admin/');
-            await this.assertionValidate(Selectors.login.basicNavigation.clickWPUFSidebar);
+            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
             await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
         }
 
         else {
-            await this.assertionValidate(Selectors.login.basicNavigation.clickWPUFSidebar);
             await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
         }
     };
@@ -131,15 +142,52 @@ export class SettingsSetupPage extends Base {
         if (activateWPUFPro == true) {
             //Plugins were DeActive
             await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginPro);
+            await this.page.reload();
 
-            await this.assertionValidate(Selectors.login.basicNavigation.clickWPUFSidebar);
+            await this.page.goto(Urls.baseUrl + '/wp-admin/');
+            const dialogHandler = async (dialog: Dialog) => {
+                if (dialog.type() === 'confirm') {
+                    await dialog.accept();
+                }
+            };
+            this.page.on('dialog', dialogHandler);
+            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickRunUpdater);
+            this.page.off('dialog', dialogHandler);
             await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
         }
         else {
-            await this.assertionValidate(Selectors.login.basicNavigation.clickWPUFSidebar);
             await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
         }
         console.log("WPUF-Pro Status: Activated");
+
+    };
+
+    //Plugin Activate - Pro
+    async activateLicenseWPUFPro() {
+        //Go to Plugins page
+        const pluginsPage = Urls.baseUrl + '/wp-admin/';
+        await Promise.all([
+            this.page.goto(pluginsPage, { waitUntil: 'networkidle' }),
+        ]);
+
+        //Activate Plugin
+        const activateWPUFPro = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickActivateLicense);
+
+        if (activateWPUFPro == true) {
+            //Plugins were DeActive
+            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickActivateLicense);
+            await this.validateAndFillStrings(Selectors.settingsSetup.pluginStatusCheck.fillLicenseKey, process.env.WPUF_PRO_LICENSE_KEY?.toString() || '');
+            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.submitLicenseKey);
+            await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.deactivateLicenseKey);
+            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
+            await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
+        }
+        else {
+            await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
+            await this.validateAndClick(Selectors.login.basicNavigation.licenseTab);
+            await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.deactivateLicenseKey);
+        }
+        console.log("WPUF-Pro Status: License Activated");
 
     };
 
@@ -272,6 +320,20 @@ export class SettingsSetupPage extends Base {
 
     };
 
+
+    async allowRegistration() {
+        //Go to Settings - General page
+        const settingsGeneralPage = Urls.baseUrl + '/wp-admin/options-general.php';
+        await Promise.all([
+            this.page.goto(settingsGeneralPage, { waitUntil: 'networkidle' }),
+        ]);
+
+        await this.page.reload();
+        //Allow anyone to register
+        await this.validateAndClick(Selectors.settingsSetup.allowRegistration.clickAnyoneRegister);
+        //Save Settings
+        await this.validateAndClick(Selectors.settingsSetup.allowRegistration.saveSettings);
+    }
 
 
     /********************************************/

@@ -106,6 +106,8 @@ jobs:
           CI: true
           ADMIN_USERNAME: ${{ secrets.QA_ADMIN_USERNAME }}
           ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
+          WPUF_PRO_LICENSE_KEY: ${{secrets.WPUF_PRO_LICENSE_KEY}}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
       # Archive test artifacts
       - name: Archive playwright artifacts (screenshots, HTML snapshots, videos)

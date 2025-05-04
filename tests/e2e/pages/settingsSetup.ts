@@ -168,25 +168,38 @@ export class SettingsSetupPage extends Base {
         const pluginsPage = Urls.baseUrl + '/wp-admin/';
         await Promise.all([
             this.page.goto(pluginsPage, { waitUntil: 'networkidle' }),
+            console.log("WPUF-Pro License Activation Line 1 passed"),
         ]);
 
         //Activate Plugin
         const activateWPUFPro = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickActivateLicense);
-
-        if (activateWPUFPro == true) {
+        console.log("WPUF-Pro License Activation Line 2 passed");
+        if(activateWPUFPro == true) {
+            console.log("WPUF-Pro License Activation Line 3 passed"),
             //Plugins were DeActive
             await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickActivateLicense);
+            console.log("WPUF-Pro License Activation Line 4 passed"),
             await this.validateAndFillStrings(Selectors.settingsSetup.pluginStatusCheck.fillLicenseKey, process.env.WPUF_PRO_LICENSE_KEY?.toString() || '');
+            console.log("WPUF-Pro License Activation Line 5 passed");
             await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.submitLicenseKey);
+            console.log("WPUF-Pro License Activation Line 6 passed");
             await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.deactivateLicenseKey);
+            console.log("WPUF-Pro License Activation Line 7 passed");
             await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
+            console.log("WPUF-Pro License Activation Line 8 passed");
             await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
+            console.log("WPUF-Pro License Activation Line 9 passed");
         }
         else {
+            console.log("WPUF-Pro License Activation Line 10 passed");
             await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
+            console.log("WPUF-Pro License Activation Line 11 passed");
             await this.validateAndClick(Selectors.login.basicNavigation.licenseTab);
+            console.log("WPUF-Pro License Activation Line 12 passed");
             await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.deactivateLicenseKey);
+            console.log("WPUF-Pro License Activation Line 13 passed");
         }
+        console.log("WPUF-Pro License Activation Line 14 passed"),
         console.log("WPUF-Pro Status: License Activated");
 
     };

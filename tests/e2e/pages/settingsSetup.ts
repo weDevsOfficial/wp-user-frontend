@@ -173,7 +173,7 @@ export class SettingsSetupPage extends Base {
 
         //Activate Plugin
         const activateWPUFPro = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickActivateLicense);
-        console.log("WPUF-Pro License Activation Line 2 passed");
+        console.log(activateWPUFPro);
         if(activateWPUFPro == true) {
             console.log("WPUF-Pro License Activation Line 3 passed"),
             //Plugins were DeActive

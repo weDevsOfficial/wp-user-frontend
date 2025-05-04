@@ -116,7 +116,11 @@ export class SettingsSetupPage extends Base {
         if (activateWPUFLite === true) {
             //Plugins is getting activated here
             await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
-            await this.page.reload();
+            await this.page.waitForTimeout(3000);
+            await Promise.all([
+                this.page.goto(pluginsPage, { waitUntil: 'networkidle' }),
+            ]);
+            await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginDeactivate);
 
             await this.page.goto(Urls.baseUrl + '/wp-admin/');
             await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
@@ -142,7 +146,11 @@ export class SettingsSetupPage extends Base {
         if (activateWPUFPro == true) {
             //Plugins were DeActive
             await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginPro);
-            await this.page.reload();
+            await this.page.waitForTimeout(3000);
+            await Promise.all([
+                this.page.goto(pluginsPage, { waitUntil: 'networkidle' }),
+            ]);
+            await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginProDeactivate);
 
             await this.page.goto(Urls.baseUrl + '/wp-admin/');
             const dialogHandler = async (dialog: Dialog) => {

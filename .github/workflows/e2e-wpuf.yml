@@ -10,46 +10,30 @@ env:
   CI: true
   ADMIN_USERNAME: ${{ secrets.QA_ADMIN_USERNAME }}
   ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
-  WPUF_PRO_LICENSE_KEY: ${{ secrets.WPUF_PRO_LICENSE_KEY }}
+  WPUF_PRO_LICENSE_KEY: ${{secrets.WPUF_PRO_LICENSE_KEY}}
   ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest    
     steps:
-      - name: Checkout Test Suite
-        uses: actions/checkout@v4
-        with:
-          repository: weDevsOfficial/wp-user-frontend
-          token: ${{ secrets.ACCESS_TOKEN }}
-      
-      - name: change directory
-        run: cd tests/e2e
-
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: "7.4"
+
+      # First checkout WPUF Lite (current repo)
+      - name: Checkout WPUF Lite
+        uses: actions/checkout@v4
+        with:
+          path: wp-content/plugins/wp-user-frontend
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      - name: Install test dependencies
-        run: npm install
-
-      - name: Setup WordPress using wp-env
-        run: npx wp-env start
-
-      - name: Checkout WPUF Lite
-        uses: actions/checkout@v4
-        with:
-          repository: weDevsOfficial/wp-user-frontend
-          token: ${{ secrets.ACCESS_TOKEN }}
-          path: wp-content/plugins/wp-user-frontend
-          ref: develop
-
+      # Install WPUF Lite dependencies
       - name: Install wpuf-lite dependencies
         working-directory: wp-content/plugins/wp-user-frontend
         run: |
@@ -57,8 +41,8 @@ jobs:
           composer dump-autoload -o
           npm install
           grunt release --force
-          grunt
 
+      # Clone WPUF Pro
       - name: Checkout WPUF Pro
         uses: actions/checkout@v4
         with:
@@ -67,6 +51,7 @@ jobs:
           path: wp-content/plugins/wpuf-pro
           ref: develop
 
+      # Install WPUF Pro dependencies
       - name: Install wpuf-pro dependencies
         working-directory: wp-content/plugins/wpuf-pro
         run: |
@@ -75,27 +60,55 @@ jobs:
           npm install --legacy-peer-deps
           grunt
 
+      # Copy test files to correct location
+      - name: Copy test files
+        run: |
+          mkdir -p tests/e2e
+          cp -r wp-content/plugins/wp-user-frontend/tests/e2e/* tests/e2e/
+
+      # Install test dependencies
+      - name: Install E2E test dependencies
+        working-directory: tests/e2e
+        run: npm ci
+
+      # Setup WordPress
+      - name: Setup WordPress 
+        working-directory: tests/e2e
+        run: npm run wp-env:start
+
+      # Get Playwright version
       - name: Get installed Playwright version
+        id: playwright-version
+        working-directory: tests/e2e
         run: |
           PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq -r '.dependencies["@playwright/test"].version')
           echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> "$GITHUB_ENV"
 
-      - name: Cache Playwright binaries
+      # Cache Playwright
+      - name: Cache playwright binaries
+        id: playwright-cache
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
           restore-keys: ${{ runner.os }}-playwright-
 
-      - name: Install Playwright browser binaries & dependencies
+      # Install Playwright
+      - name: Install Playwright browser binaries & OS dependencies
+        id: pw-install
         if: steps.playwright-cache.outputs.cache-hit != 'true'
+        working-directory: tests/e2e
         run: npx playwright install chromium --with-deps
 
+      # Run Playwright tests
       - name: Run Playwright tests
-        run: npm run test:ci
+        working-directory: tests/e2e
+        run: |
+          DEBUG=pw:api npx playwright test e2eMain.spec.ts --project=chromium
         continue-on-error: true
 
-      - name: Archive Playwright artifacts
+      # Archive test artifacts
+      - name: Archive playwright artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -104,6 +117,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 3
 
+      # Publish HTML report
       - name: Publish HTML report to GH Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v4
@@ -112,3 +126,15 @@ jobs:
           publish_dir: tests/e2e/playwright-report
           publish_branch: gh-pages
           force_orphan: true
+
+      # Debug step - if needed
+      - name: Debug directory structure
+        if: failure()
+        run: |
+          echo "Current directory structure:"
+          pwd
+          ls -la
+          echo "WP-Content plugins directory:"
+          ls -la wp-content/plugins/
+          echo "Tests directory:"
+          ls -la tests/e2e/

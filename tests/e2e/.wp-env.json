@@ -1,7 +1,7 @@
 {
   "phpVersion": "7.4",
   "plugins": [
-    "./wp-content/plugins/wp-user-frontend",
-    "./wp-content/plugins/wp-user-frontend-pro"
+    "../../wp-content/plugins/wp-user-frontend",
+    "../../wp-content/plugins/wpuf-pro"
   ]
 }

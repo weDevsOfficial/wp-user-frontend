@@ -22,44 +22,44 @@ env:
 jobs:
   test:
     timeout-minutes: 60
-    runs-on: ubuntu-latest    
-    
+    runs-on: ubuntu-latest
+
     steps:
       # Setup PHP
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: "7.4"
-      
+
       # Checkout WPUF Lite
       - name: Checkout WPUF Lite
         uses: actions/checkout@v4
 
-      # Setup Node.js 18
-      - name: Use desired version of NodeJS
-        uses: actions/setup-node@v4
-        with:
-            node-version: 18
-            cache: npm
-
-      # WPUF Lite dependencies
-      - name: Install wpuf-lite dependencies
-        run: |
-            composer install
-            composer dump-autoload -o
-            npm install
-            grunt release --force
-      
-      # Clone WPUF Pro
+      # Checkout WPUF Pro
       - name: Checkout WPUF Pro
         uses: actions/checkout@v4
         with:
           repository: weDevsOfficial/wpuf-pro
           token: ${{ secrets.ACCESS_TOKEN }}
-          path: 'wp-content/plugins/wpuf-pro'
-          ref: 'develop'
-      
-      # WPUF Lite dependencies
+          path: wp-content/plugins/wpuf-pro
+          ref: develop
+
+      # Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      # Install WPUF Lite dependencies
+      - name: Install wpuf-lite dependencies
+        run: |
+          composer install
+          composer dump-autoload -o
+          npm install
+          grunt release --force
+
+      # Install wpuf-pro dependencies
       - name: Install wpuf-pro dependencies
         run: |
           cd wp-content/plugins/wpuf-pro
@@ -67,19 +67,18 @@ jobs:
           composer dump-autoload -o
           npm install --legacy-peer-deps
           grunt
-            
 
-      # Install test dependencies
+      # Install E2E test dependencies
       - name: Install E2E test dependencies
         working-directory: wp-content/plugins/wp-user-frontend/tests/e2e
         run: npm ci
 
-      # Setup WordPress using wp-env
-      - name: Setup WordPress 
+      # Setup WordPress
+      - name: Start wp-env
         working-directory: wp-content/plugins/wp-user-frontend/tests/e2e
         run: npm run wp-env start
 
-      # Install Playwright Browsers
+      # Get installed Playwright version
       - name: Get installed Playwright version
         id: playwright-version
         working-directory: wp-content/plugins/wp-user-frontend/tests/e2e
@@ -87,28 +86,29 @@ jobs:
           PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq -r '.dependencies["@playwright/test"].version')
           echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> "$GITHUB_ENV"
 
-
+      # Cache playwright binaries
       - name: Cache playwright binaries
         id: playwright-cache
         uses: actions/cache@v4
         with:
-            path: ~/.cache/ms-playwright
-            key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
-            restore-keys: ${{ runner.os }}-playwright-
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
+          restore-keys: ${{ runner.os }}-playwright-
 
-      - name: Install Playwright browser binaries & OS dependencies
+      # Install Playwright browser binaries
+      - name: Install Playwright browser binaries
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         working-directory: wp-content/plugins/wp-user-frontend/tests/e2e
         run: npx playwright install chromium --with-deps
 
-      # Run Playwright tests
+      # Run E2E tests
       - name: Run Playwright tests
-        working-directory: tests/e2e
+        working-directory: wp-content/plugins/wp-user-frontend/tests/e2e
         run: DEBUG=pw:api npx playwright test e2eMain.spec.ts --project=chromium
         continue-on-error: true
 
       # Archive test artifacts
-      - name: Archive playwright artifacts (screenshots, HTML snapshots, videos)
+      - name: Archive Playwright report
         uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -117,7 +117,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 3
 
-      # Publish HTML report to GH Pages
+      # Publish report to GitHub Pages
       - name: Publish HTML report to GH Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v4

@@ -1,7 +1,7 @@
 {
   "phpVersion": "7.4",
   "plugins": [
-    "../../",
-    "wp-content/plugins/wpuf-pro"
+    "../../", 
+    "../../wpuf-pro"
   ]
 }

@@ -1,7 +1,17 @@
 {
   "phpVersion": "7.4",
+  "core": "WordPress/WordPress#latest",
   "plugins": [
-    "../../", 
-    "../../wpuf-pro"
-  ]
+    ".",
+    "./plugins/wpuf-pro"
+  ],
+  "config": {
+    "WP_DEBUG": true,
+    "SCRIPT_DEBUG": true,
+    "WPUF_PRO_LICENSE_KEY": "${WPUF_PRO_LICENSE_KEY}"
+  },
+  "mappings": {
+    "wp-content/plugins/wp-user-frontend": ".",
+    "wp-content/plugins/wpuf-pro": "./plugins/wpuf-pro"
+  }
 }

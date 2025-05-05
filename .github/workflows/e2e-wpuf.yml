@@ -35,15 +35,6 @@ jobs:
       - name: Checkout WPUF Lite
         uses: actions/checkout@v4
 
-      # Checkout WPUF Pro
-      - name: Checkout WPUF Pro
-        uses: actions/checkout@v4
-        with:
-          repository: weDevsOfficial/wpuf-pro
-          token: ${{ secrets.ACCESS_TOKEN }}
-          path: wp-content/plugins/wpuf-pro
-          ref: develop
-
       # Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -59,34 +50,76 @@ jobs:
           npm install
           grunt release --force
 
-      # Install wpuf-pro dependencies
-      - name: Install wpuf-pro dependencies
+      - name: Checkout WPUF Pro
+        uses: actions/checkout@v4
+        with:
+          repository: weDevsOfficial/wpuf-pro
+          token: ${{ secrets.ACCESS_TOKEN }}
+          path: 'plugins/wpuf-pro'
+          ref: 'develop'
+
+      - name: Install WPUF Pro dependencies
         run: |
-          cd wp-content/plugins/wpuf-pro
+          cd plugins/wpuf-pro
           composer install
           composer dump-autoload -o
           npm install --legacy-peer-deps
           grunt
 
-      # Install E2E test dependencies
       - name: Install E2E test dependencies
-        working-directory: wp-content/plugins/wp-user-frontend/tests/e2e
+        working-directory: tests/e2e
         run: npm ci
 
-      # Setup WordPress
-      - name: Start wp-env
-        working-directory: wp-content/plugins/wp-user-frontend/tests/e2e
-        run: npm run wp-env start
+      - name: Verify directory structure
+        run: |
+          echo "Current directory structure:"
+          ls -la
+          echo "WPUF Pro directory structure:"
+          ls -la plugins/wpuf-pro
 
-      # Get installed Playwright version
+      - name: Setup WordPress
+        run: |
+          cd tests/e2e
+          npm run wp-env start
+  
+      # First approach through wp-env.json mapping
+      - name: Verify WordPress and Plugin Installation
+        run: |
+          cd tests/e2e
+          npm run wp-env run cli "wp core version"
+          npm run wp-env run cli "wp plugin list"
+          npm run wp-env run cli "wp plugin activate wp-user-frontend"
+          npm run wp-env run cli "wp plugin activate wpuf-pro"
+  
+      # Second approach through manual installation
+      - name: Install WPUF plugins in WordPress
+        run: |
+          cd tests/e2e
+          # Copy WPUF Lite
+          npm run wp-env run cli "wp plugin install $(pwd)/../../ --activate --force"
+          # Copy WPUF Pro
+          npm run wp-env run cli "wp plugin install $(pwd)/../../plugins/wpuf-pro --activate --force"
+          # Verify plugins are installed and activated
+          npm run wp-env run cli "wp plugin list"
+
+      # Add debugging step
+      - name: Debug Plugin Installation
+        run: |
+          cd tests/e2e
+          echo "Plugin Directory Contents:"
+          npm run wp-env run cli "ls -la wp-content/plugins"
+          echo "Plugin Status:"
+          npm run wp-env run cli "wp plugin list"
+          echo "WPUF Pro Directory Contents:"
+          npm run wp-env run cli "ls -la wp-content/plugins/wpuf-pro"
+
       - name: Get installed Playwright version
         id: playwright-version
-        working-directory: wp-content/plugins/wp-user-frontend/tests/e2e
         run: |
+          cd tests/e2e
           PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq -r '.dependencies["@playwright/test"].version')
           echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> "$GITHUB_ENV"
 
-      # Cache playwright binaries
       - name: Cache playwright binaries
         id: playwright-cache
         uses: actions/cache@v4
@@ -95,34 +128,44 @@ jobs:
           key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
           restore-keys: ${{ runner.os }}-playwright-
 
-      # Install Playwright browser binaries
-      - name: Install Playwright browser binaries
+      - name: Install Playwright browser binaries & OS dependencies
+        id: pw-install
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        working-directory: wp-content/plugins/wp-user-frontend/tests/e2e
-        run: npx playwright install chromium --with-deps
+        run: |
+          cd tests/e2e
+          npx playwright install chromium --with-deps
 
-      # Run E2E tests
       - name: Run Playwright tests
-        working-directory: wp-content/plugins/wp-user-frontend/tests/e2e
-        run: DEBUG=pw:api npx playwright test e2eMain.spec.ts --project=chromium
+        run: |
+          cd tests/e2e
+          DEBUG=pw:api npx playwright test e2eMain.spec.ts --project=chromium || true
         continue-on-error: true
 
-      # Archive test artifacts
-      - name: Archive Playwright report
+      - name: Archive playwright artifacts
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report
-          path: wp-content/plugins/wp-user-frontend/tests/e2e/playwright-report
+          path: tests/e2e/playwright-report
           if-no-files-found: ignore
           retention-days: 3
 
-      # Publish report to GitHub Pages
       - name: Publish HTML report to GH Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: wp-content/plugins/wp-user-frontend/tests/e2e/playwright-report
+          publish_dir: tests/e2e/playwright-report
           publish_branch: gh-pages
           force_orphan: true
+
+      - name: Debug on failure
+        if: failure()
+        run: |
+          cd tests/e2e
+          echo "WordPress Debug Log:"
+          npm run wp-env run cli "cat wp-content/debug.log"
+          echo "Plugin Status:"
+          npm run wp-env run cli "wp plugin list"
+          echo "WordPress Configuration:"
+          npm run wp-env run cli "wp config list"

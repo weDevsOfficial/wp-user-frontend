@@ -27,20 +27,18 @@ jobs:
         with:
           node-version: 18
 
-      # Create test directory and configuration
-      - name: Create test structure
-        run: |
-          mkdir -p tests/e2e
-          cd tests/e2e
-          echo '{
-            "phpVersion": "7.4",
-            "plugins": [
-              "../wp-content/plugins/wp-user-frontend",
-              "../wp-content/plugins/wpuf-pro"
-            ]
-          }' > .wp-env.json
+      - name: Checkout Test Suite
+        uses: actions/checkout@v4
+        with:
+          repository: weDevsOfficial/wp-user-frontend/tests/e2e
+          token: ${{ secrets.ACCESS_TOKEN }}
 
-      # Checkout WPUF Lite first
+      - name: Install test dependencies
+        run: npm install
+
+      - name: Setup WordPress using wp-env
+        run: npx @wordpress/env start
+
       - name: Checkout WPUF Lite
         uses: actions/checkout@v4
         with:
@@ -56,8 +54,8 @@ jobs:
           composer dump-autoload -o
           npm install
           grunt release --force
+          grunt
 
-      # Checkout WPUF Pro
       - name: Checkout WPUF Pro
         uses: actions/checkout@v4
         with:
@@ -73,31 +71,6 @@ jobs:
           composer dump-autoload -o
           npm install --legacy-peer-deps
           grunt
-
-      # Checkout test files
-      - name: Checkout Test Files
-        uses: actions/checkout@v4
-        with:
-          path: tests/e2e
-
-      - name: Install E2E test dependencies
-        working-directory: tests/e2e
-        run: |
-          npm install
-          npm install -g @wordpress/env
-
-      - name: Debug directory structure
-        run: |
-          echo "Current directory structure:"
-          tree -L 3 || true
-          echo "Contents of .wp-env.json:"
-          cat tests/e2e/.wp-env.json
-
-      - name: Setup WordPress using wp-env
-        working-directory: tests/e2e
-        run: |
-          npx @wordpress/env start
-          npx @wordpress/env status
 
       - name: Get installed Playwright version
         working-directory: tests/e2e

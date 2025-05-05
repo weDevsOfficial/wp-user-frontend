@@ -2,8 +2,8 @@
   "phpVersion": "7.4",
   "core": "https://wordpress.org/latest.zip",
   "plugins": [
-    "../../",
-    "../../plugins/wpuf-pro"
+    ".",
+    "./plugins/wpuf-pro"
   ],
   "env": {
     "tests": {
@@ -11,8 +11,7 @@
       "config": {
         "WP_DEBUG": true,
         "SCRIPT_DEBUG": true,
-        "FS_METHOD": "direct",
-        "WPUF_PRO_LICENSE_KEY": "${WPUF_PRO_LICENSE_KEY}"
+        "FS_METHOD": "direct"
       }
     },
     "development": {
@@ -20,13 +19,8 @@
       "config": {
         "WP_DEBUG": true,
         "SCRIPT_DEBUG": true,
-        "FS_METHOD": "direct",
-        "WPUF_PRO_LICENSE_KEY": "${WPUF_PRO_LICENSE_KEY}"
+        "FS_METHOD": "direct"
       }
     }
-  },
-  "mappings": {
-    "wp-content/plugins/wp-user-frontend": "../../",
-    "wp-content/plugins/wpuf-pro": "../../plugins/wpuf-pro"
   }
 }

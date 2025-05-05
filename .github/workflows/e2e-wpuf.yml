@@ -86,28 +86,45 @@ jobs:
           # Clean start
           echo "y" | npm run wp-env:destroy || true
           
-          # Start WordPress and install
+          # Start WordPress
           npm run wp-env:start
           
-          # Configure WordPress
-          npm run wp-env run cli "wp --allow-root core install --url=localhost:8889 --title='WPUF Test' --admin_user=admin --admin_password=password --admin_email=admin@example.com --skip-email"
+          # Wait for containers to be ready
+          sleep 10
+          
+          # Install WordPress using docker exec
+          docker exec $(docker ps -qf "name=wordpress-1") wp core install \
+            --path=/var/www/html \
+            --url=localhost:8889 \
+            --title="WPUF Test" \
+            --admin_user=admin \
+            --admin_password=password \
+            --admin_email=admin@example.com \
+            --skip-email \
+            --allow-root
           
           # Install and activate plugins
           echo "Installing WPUF..."
-          npm run wp-env run cli "wp --allow-root plugin install ../../ --activate --force"
+          docker exec $(docker ps -qf "name=wordpress-1") wp plugin install \
+            --path=/var/www/html \
+            --allow-root \
+            ../../wp-user-frontend --activate --force
+          
           echo "Installing WPUF Pro..."
-          npm run wp-env run cli "wp --allow-root plugin install ../../plugins/wpuf-pro --activate --force"
+          docker exec $(docker ps -qf "name=wordpress-1") wp plugin install \
+            --path=/var/www/html \
+            --allow-root \
+            ../../plugins/wpuf-pro --activate --force
           
           # Verify installation
           echo "WordPress version:"
-          npm run wp-env run cli "wp --allow-root core version"
+          docker exec $(docker ps -qf "name=wordpress-1") wp core version --path=/var/www/html --allow-root
           echo "Plugin status:"
-          npm run wp-env run cli "wp --allow-root plugin list"
+          docker exec $(docker ps -qf "name=wordpress-1") wp plugin list --path=/var/www/html --allow-root
         env:
           COMPOSE_INTERACTIVE_NO_CLI: 1
-          WP_ENV_HOME: "/tmp/wp-env-home"
         timeout-minutes: 15
-          
+
       - name: Debug Environment
         if: always()
         run: |
@@ -115,9 +132,12 @@ jobs:
           echo "Docker containers:"
           docker ps
           echo "WordPress directory:"
-          npm run wp-env run cli "ls -la /var/www/html"
+          docker exec $(docker ps -qf "name=wordpress-1") ls -la /var/www/html
           echo "Plugins directory:"
-          npm run wp-env run cli "ls -la /var/www/html/wp-content/plugins"
+          docker exec $(docker ps -qf "name=wordpress-1") ls -la /var/www/html/wp-content/plugins
+          echo "WordPress Configuration:"
+          docker exec $(docker ps -qf "name=wordpress-1") cat /var/www/html/wp-config.php
+        
 
       # First approach through wp-env.json mapping
       - name: Verify WordPress and Plugin Installation

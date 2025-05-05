@@ -8,10 +8,8 @@
     "wp-env:start": "wp-env start",
     "wp-env:stop": "wp-env stop",
     "wp-env:destroy": "echo 'y' | wp-env destroy",
-    "wp-env:clean": "wp-env clean all",
     "test": "CI=false npx playwright test e2eMain.spec.ts --headed",
-    "test:ci": "npx playwright test e2eMain.spec.ts",
-    "setup:wordpress": "wp-env start && wp-env run cli wp core install --url=localhost:8889 --title='WPUF Test' --admin_user=admin --admin_password=password --admin_email=admin@example.com --skip-email --allow-root"
+    "test:ci": "npx playwright test e2eMain.spec.ts"
   },
   "keywords": [],
   "author": "",

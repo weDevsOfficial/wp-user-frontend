@@ -108,7 +108,9 @@ export class SettingsSetupPage extends Base {
     async activateWPUFLite() {
         //Go to Plugins page
         const pluginsPage = Urls.baseUrl + '/wp-admin/plugins.php';
-        //Activate Plugin
+        try{
+            await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.availableWPUFPluginLite);
+            //Activate Plugin
         const activateWPUFLite = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
         console.log(activateWPUFLite);
         if (activateWPUFLite === true) {
@@ -130,12 +132,17 @@ export class SettingsSetupPage extends Base {
             await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
             console.log("WPUF-Lite Status: was Active");
         }
+        }catch(e) {
+            console.log("WPUF-Lite not available")
+        }
+        
     };
 
     //Plugin Activate - Pro
     async activateWPUFPro() {
         //Go to Plugins page
         const pluginsPage = Urls.baseUrl + '/wp-admin/plugins.php';
+        await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.availableWPUFPluginPro);
         //Activate Plugin
         const activateWPUFPro = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginPro);
         console.log(activateWPUFPro);

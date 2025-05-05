@@ -44,6 +44,8 @@ export const Selectors = {
         // Plugin Status Check
         pluginStatusCheck: {
             // Plugin Activate/Deactivate
+            availableWPUFPluginLite: '//strong[normalize-space(text())="WP User Frontend"]',
+            availableWPUFPluginPro: '//strong[normalize-space(text())="WP User Frontend Pro"]',
             clickPluginsSidebar: '//li[@id="menu-plugins"]',
             clickWPUFPluginLite: '//a[@id="activate-wp-user-frontend"]',
             clickWPUFPluginPro: '//a[@id="activate-wp-user-frontend-pro"]',

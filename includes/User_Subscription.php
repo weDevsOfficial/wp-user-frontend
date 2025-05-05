@@ -88,7 +88,7 @@ class User_Subscription {
         $expired     = true;
 
         // phpcs:disable
-        if ( strtolower( $expire_date ) == 'unlimited' || empty( $expire_date ) || $expire_date == '-1' ) {
+        if ( 'unlimited' === strtolower( $expire_date ) || empty( $expire_date ) || -1 === intval( $expire_date ) ) {
             $expired = false;
         } elseif ( strtotime( date( 'Y-m-d', strtotime( $expire_date ) ) ) >= strtotime( date( 'Y-m-d', time() ) ) ) {
             $expired = false;
@@ -187,11 +187,11 @@ class User_Subscription {
 
         if ( $this->user->id && $subscription ) {
             $user_meta = [
-                'pack_id' => $pack_id,
-                'posts'   => array_merge( $post_type_name, $additional_cpt_options ),
-                'total_feature_item' => $subscription->meta_value['_total_feature_item'],
+                'pack_id'             => $pack_id,
+                'posts'               => array_merge( $post_type_name, $additional_cpt_options ),
+                'total_feature_item'  => $subscription->meta_value['_total_feature_item'],
                 'remove_feature_item' => $subscription->meta_value['_remove_feature_item'],
-                'status'  => $status,
+                'status'              => $status,
             ];
 
             if ( ! empty( $subscription->meta_value['recurring_pay'] ) && wpuf_is_checkbox_or_toggle_on( $subscription->meta_value['recurring_pay'] ) ) {

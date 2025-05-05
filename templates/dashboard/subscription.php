@@ -1,11 +1,21 @@
 <?php
 
 if ( ! function_exists( 'wpuf_dashboard_get_subscription_data' ) ) {
+
+    /**
+     * Get subscription data for dashboard
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $user_sub User subscription data
+     *
+     * @return array Subscription data
+     */
     function wpuf_dashboard_get_subscription_data( $user_sub ) {
         global $wpdb;
 
-		$user_id = get_current_user_id();
-		$pack_id = $user_sub['pack_id'];
+		$user_id      = get_current_user_id();
+		$pack_id      = $user_sub['pack_id'];
 		$subscription = wpuf()->subscription->get_subscription( $pack_id );
 
         if ( ! $subscription || is_wp_error( $subscription ) || empty( $subscription->meta_value ) ) {
@@ -42,28 +52,35 @@ if ( ! function_exists( 'wpuf_dashboard_get_subscription_data' ) ) {
 		$cycle_period = $subscription->meta_value['cycle_period'];
 
 		// Get trial details
-		$trial_status = $subscription->meta_value['trial_status'];
-		$trial_duration = $subscription->meta_value['trial_duration'];
+		$trial_status        = $subscription->meta_value['trial_status'];
+		$trial_duration      = $subscription->meta_value['trial_duration'];
 		$trial_duration_type = $subscription->meta_value['trial_duration_type'];
 
 		return [
-			'payment_gateway' => $payment_gateway,
-			'last_payment_date' => $last_payment_date,
-			'cycle_number' => $cycle_number,
-			'cycle_period' => $cycle_period,
-			'trial_status' => $trial_status,
-			'trial_duration' => $trial_duration,
-			'trial_duration_type' => $trial_duration_type,
+			'payment_gateway'       => $payment_gateway,
+			'last_payment_date'     => $last_payment_date,
+			'cycle_number'          => $cycle_number,
+			'cycle_period'          => $cycle_period,
+			'trial_status'          => $trial_status,
+			'trial_duration'        => $trial_duration,
+			'trial_duration_type'   => $trial_duration_type,
 		];
 	}
 }
 
+/**
+ * Display subscription details
+ *
+ * @since WPUF_SINCE
+ *
+ * @param array $subscription_data Subscription data
+ */
 function display_subscription_details( $subscription_data ) {
 	$trial_html = get_trial_expiration_html( $subscription_data );
 	$billing_html = get_next_billing_html( $subscription_data );
 	?>
         <br>
-	<?php if ( ! empty( $subscription_data['trial_status'] ) && 'on' === $subscription_data['trial_status'] ) : ?>
+	<?php if ( ! empty( $subscription_data['trial_status'] ) && wpuf_is_checkbox_or_toggle_on( $subscription_data['trial_status'] ) ) : ?>
             <?php echo wp_kses_post( $trial_html ); ?>
         <?php elseif ( ! empty( $subscription_data['trial_status'] ) && 'off' === $subscription_data['trial_status'] ) : ?>
             <div class="wpuf-recurring-info">
@@ -81,6 +98,15 @@ function display_subscription_details( $subscription_data ) {
         <?php
 }
 
+/**
+ * Get trial expiration HTML
+ *
+ * @since WPUF_SINCE
+ *
+ * @param array $subscription_data Subscription data
+ *
+ * @return string Trial expiration HTML
+ */
 function get_trial_expiration_html( $subscription_data ) {
 	if ( ! empty( $subscription_data['trial_status'] ) && 'on' !== $subscription_data['trial_status'] ) {
 		return '';
@@ -101,10 +127,20 @@ function get_trial_expiration_html( $subscription_data ) {
 	);
 }
 
+/**
+ * Get next billing HTML
+ *
+ * @since WPUF_SINCE
+ *
+ * @param array $subscription_data Subscription data
+ *
+ * @return string Next billing HTML
+ */
 function get_next_billing_html( $subscription_data ) {
 	if ( ! $subscription_data['last_payment_date'] ||
-		! $subscription_data['cycle_number'] ||
-		! $subscription_data['cycle_period'] ) {
+		! $subscription_data['cycle_period'] ||
+		empty( $subscription_data['cycle_number'] ) ||
+		-1 === intval( $subscription_data['cycle_number'] ) ) {
 		return sprintf(
 			'<div><strong>%s</strong> %s</div>',
 			esc_html__( 'Next billing date:', 'wp-user-frontend' ),
@@ -142,7 +178,7 @@ function get_next_billing_html( $subscription_data ) {
         </div>
 			<?php
         } else {
-			if ( ! empty( $user_sub['total_feature_item'] ) && -1 === $user_sub['total_feature_item'] ) {
+			if ( ! empty( $user_sub['total_feature_item'] ) && -1 === intval( $user_sub['total_feature_item'] ) ) {
 				?>
                 <div><strong><?php esc_html_e( 'Number of featured item: ', 'wp-user-frontend' ); ?></strong><?php echo esc_html( $user_sub['total_feature_item'] ); ?></div>
             <?php } ?>
@@ -154,7 +190,7 @@ function get_next_billing_html( $subscription_data ) {
                 if ( ! empty( $user_sub['posts'] ) ) {
                     foreach ( $user_sub['posts'] as $key => $value ) {
                         $value = intval( $value );
-                        if ( 0 === $value || -1 === $value ) {
+                        if ( 0 === $value || -1 === intval( $value ) ) {
                             continue;
                         }
                         $post_type_obj = get_post_type_object( $key );
@@ -171,14 +207,11 @@ function get_next_billing_html( $subscription_data ) {
                 if ( ! empty( $user_sub['posts'] ) ) {
                     foreach ( $user_sub['posts'] as $key => $value ) {
                         $value = intval( $value );
-                        if ( 0 === $value || '-1' === $value ) {
-                            continue;
-                        }
                         $post_type_obj = get_post_type_object( $key );
                         if ( ! $post_type_obj ) {
                             continue;
                         }
-                        $value = ( '-1' === $value ) ? __( 'Unlimited', 'wp-user-frontend' ) : $value;
+                        $value = ( -1 === intval( $value ) ) ? __( 'Unlimited', 'wp-user-frontend' ) : $value;
                         $hidden_class = ( $i >= 3 ) ? 'wpuf-remaining-post-hidden' : '';
                         ?>
                         <div class="<?php echo esc_attr( $hidden_class ); ?>"><?php echo esc_html( $post_type_obj->labels->name ) . ': ' . esc_html( $value ); ?></div>
@@ -222,7 +255,9 @@ function get_next_billing_html( $subscription_data ) {
 
             if ( ! empty( $user_sub['recurring'] ) && 'yes' === $user_sub['recurring'] ) {
                 $subscription_data = wpuf_dashboard_get_subscription_data( $user_sub );
-                display_subscription_details( $subscription_data );
+                if ( ! empty( $subscription_data ) ) {
+                    display_subscription_details( $subscription_data );
+                }
             }
         }
         ?>

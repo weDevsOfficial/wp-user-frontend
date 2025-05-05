@@ -1,11 +1,7 @@
 {
   "phpVersion": "7.4",
   "plugins": [
-    "../../../wp-user-frontend",
-    "../../../wpuf-pro"
-  ],
-  "plugin-activation": {
-    "wp-user-frontend": "active",
-    "wpuf-pro": "active"
-  }
+    "../../",
+    "../../wpuf-pro"
+  ]
 }

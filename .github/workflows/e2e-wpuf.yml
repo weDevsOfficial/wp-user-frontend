@@ -56,7 +56,7 @@ jobs:
         with:
           repository: weDevsOfficial/wpuf-pro
           token: ${{ secrets.ACCESS_TOKEN }}
-          path: 'plugins/wpuf-pro'
+          path: 'wp-content/plugins/wpuf-pro'
           ref: 'develop'
       
       # WPUF Lite dependencies
@@ -76,15 +76,14 @@ jobs:
 
       # Setup WordPress using wp-env
       - name: Setup WordPress 
-        run: |
-          cd wp-content/plugins/wp-user-frontend/tests/e2e
-          npm run wp-env start
+        working-directory: wp-content/plugins/wp-user-frontend/tests/e2e
+        run: npm run wp-env start
 
       # Install Playwright Browsers
       - name: Get installed Playwright version
         id: playwright-version
+        working-directory: wp-content/plugins/wp-user-frontend/tests/e2e
         run: |
-          cd wp-content/plugins/wp-user-frontend/tests/e2e
           PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq -r '.dependencies["@playwright/test"].version')
           echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> "$GITHUB_ENV"
 
@@ -99,15 +98,13 @@ jobs:
 
       - name: Install Playwright browser binaries & OS dependencies
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: |
-          cd wp-content/plugins/wp-user-frontend/tests/e2e
-          npx playwright install chromium --with-deps
+        working-directory: wp-content/plugins/wp-user-frontend/tests/e2e
+        run: npx playwright install chromium --with-deps
 
       # Run Playwright tests
       - name: Run Playwright tests
-        run: |
-          cd wp-content/plugins/wp-user-frontend/tests/e2e
-          DEBUG=pw:api npx playwright test e2eMain.spec.ts --project=chromium
+        working-directory: wp-content/plugins/wp-user-frontend/tests/e2e
+        run: DEBUG=pw:api npx playwright test e2eMain.spec.ts --project=chromium
         continue-on-error: true
 
       # Archive test artifacts

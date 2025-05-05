@@ -2,22 +2,29 @@
   "phpVersion": "7.4",
   "core": "https://wordpress.org/latest.zip",
   "plugins": [
-    ".",
-    "./plugins/wpuf-pro"
+    "../../",
+    "../../plugins/wpuf-pro"
   ],
   "env": {
     "tests": {
-      "port": 8889
+      "port": 8889,
+      "config": {
+        "WP_DEBUG": true,
+        "SCRIPT_DEBUG": true,
+        "FS_METHOD": "direct",
+        "WP_ENVIRONMENT_TYPE": "local",
+        "WPUF_PRO_LICENSE_KEY": "${WPUF_PRO_LICENSE_KEY}"
+      }
     },
     "development": {
-      "port": 8888
+      "port": 8888,
+      "config": {
+        "WP_DEBUG": true,
+        "SCRIPT_DEBUG": true,
+        "FS_METHOD": "direct",
+        "WP_ENVIRONMENT_TYPE": "local",
+        "WPUF_PRO_LICENSE_KEY": "${WPUF_PRO_LICENSE_KEY}"
+      }
     }
-  },
-  "config": {
-    "WP_DEBUG": true,
-    "SCRIPT_DEBUG": true,
-    "WPUF_PRO_LICENSE_KEY": "${WPUF_PRO_LICENSE_KEY}",
-    "FS_METHOD": "direct",
-    "WP_ENVIRONMENT_TYPE": "local"
   }
 }

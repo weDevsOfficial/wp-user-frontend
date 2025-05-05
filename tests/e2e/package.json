@@ -5,7 +5,13 @@
   "main": "index.js",
   "scripts": {
     "wp-env": "wp-env",
-    "test": "CI=false npx playwright test e2eMain.spec.ts --headed"
+    "wp-env:start": "wp-env start",
+    "wp-env:stop": "wp-env stop",
+    "wp-env:destroy": "wp-env destroy",
+    "wp-env:clean": "wp-env clean all",
+    "test": "CI=false npx playwright test e2eMain.spec.ts --headed",
+    "test:ci": "npx playwright test e2eMain.spec.ts",
+    "setup:wp": "wp-env start && wp-env run cli 'wp core install --url=localhost:8889 --title=\"WPUF Test\" --admin_user=admin --admin_password=password --admin_email=admin@example.com'"
   },
   "keywords": [],
   "author": "",
@@ -15,11 +21,12 @@
     "@playwright/test": "^1.50.1",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^18.19.79",
+    "@wordpress/env": "^9.4.0",
+    "@wordpress/scripts": "^26.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
   },
   "dependencies": {
-    "@wordpress/env": "^9.4.0",
     "dotenv": "^16.4.5",
     "js-yaml": "^4.0.9"
   }

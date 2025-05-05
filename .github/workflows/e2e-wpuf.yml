@@ -68,7 +68,9 @@ jobs:
 
       - name: Install E2E test dependencies
         working-directory: tests/e2e
-        run: npm ci
+        run: |
+          npm ci
+          npm install @wordpress/env @wordpress/scripts --save-dev
 
       - name: Verify directory structure
         run: |
@@ -80,28 +82,28 @@ jobs:
       - name: Setup WordPress
         run: |
           cd tests/e2e
-          # Debug information
-          echo "Current directory: $(pwd)"
-          echo "Directory contents:"
-          ls -la
           
           # Clean start
-          echo "y" | npm run wp-env destroy || true
+          npm run wp-env:destroy || true
+          npm run wp-env:clean || true
           
-          # Start WordPress
-          npm run wp-env start
+          # Start WordPress and setup
+          npm run setup:wp
           
-          # Debug WordPress installation
-          echo "WordPress installation status:"
-          npm run wp-env run cli "wp --allow-root core version"
-          echo "Plugin directory contents:"
-          npm run wp-env run cli "ls -la /var/www/html/wp-content/plugins"
+          # Verify installation
+          npm run wp-env run cli "wp core version"
+          npm run wp-env run cli "wp plugin list"
           
-          # Activate and verify plugins
-          npm run wp-env run cli "wp --allow-root plugin activate wp-user-frontend" || echo "Failed to activate WPUF"
-          npm run wp-env run cli "wp --allow-root plugin activate wpuf-pro" || echo "Failed to activate WPUF Pro"
-          npm run wp-env run cli "wp --allow-root plugin list"
-        timeout-minutes: 10
+          # Install and activate plugins
+          npm run wp-env run cli "wp plugin install ../../ --activate --force"
+          npm run wp-env run cli "wp plugin install ../../plugins/wpuf-pro --activate --force"
+          
+          # Final verification
+          echo "Final plugin status:"
+          npm run wp-env run cli "wp plugin list"
+        env:
+          COMPOSE_INTERACTIVE_NO_CLI: 1
+        timeout-minutes: 15
   
       # First approach through wp-env.json mapping
       - name: Verify WordPress and Plugin Installation

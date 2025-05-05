@@ -30,7 +30,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: npm
 
       - name: Setup WordPress using wp-env
         working-directory: tests/e2e
@@ -63,7 +62,6 @@ jobs:
       - name: Install wpuf-pro dependencies
         working-directory: wp-content/plugins/wpuf-pro
         run: |
-          cd wp-content/plugins/wpuf-pro
           composer install
           composer dump-autoload -o
           npm install --legacy-peer-deps

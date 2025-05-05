@@ -276,6 +276,10 @@ final class WP_User_Frontend {
             $this->is_pro = true;
         } else {
             $this->container['free_loader'] = new WeDevs\Wpuf\Free\Free_Loader();
+
+            $this->container['free_loader']->includes();
+            $this->container['free_loader']->instantiate();
+            $this->container['free_loader']->run_hooks();
         }
 
         // Remove the what's new option.

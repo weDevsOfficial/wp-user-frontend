@@ -27,28 +27,19 @@ jobs:
         with:
           node-version: 18
 
-      # Checkout your test files repository (containing e2e tests)
-      - name: Checkout E2E Tests
+      # First checkout the current repository for test files
+      - name: Checkout Test Files
         uses: actions/checkout@v4
         with:
           path: tests/e2e
 
-      # Debug step to verify files
-      - name: Debug test files
-        run: |
-          echo "Contents of tests/e2e:"
-          ls -la tests/e2e/
-
       - name: Install E2E test dependencies
         working-directory: tests/e2e
-        run: |
-          npm install
-          npm install -g @wordpress/env
-          npm ls @wordpress/env
+        run: npm install
 
       - name: Setup WordPress using wp-env
         working-directory: tests/e2e
-        run: npm run wp-env start
+        run: npx wp-env start
 
       - name: Checkout WPUF Lite
         uses: actions/checkout@v4
@@ -80,7 +71,7 @@ jobs:
           composer install
           composer dump-autoload -o
           npm install --legacy-peer-deps
-          grunt
+          grunt release --force
 
       - name: Get installed Playwright version
         working-directory: tests/e2e

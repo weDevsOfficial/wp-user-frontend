@@ -10,6 +10,18 @@ on:
   pull_request:
     branches: [develop]
 
+# Cancels all previous workflow runs for pull requests that have not completed.
+concurrency:
+  # The concurrency group contains the workflow name and the branch name for pull requests or the commit hash for any other events.
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.sha }}
+  cancel-in-progress: true
+
+# workflow permissions
+permissions:
+  checks: write
+  contents: write
+  issues: write
+  pull-requests: write 
 
 env:
   BASE_URL: ${{ secrets.QA_BASE_URL }}
@@ -92,35 +104,36 @@ jobs:
           # Wait for containers to be ready
           sleep 10
           
-          # Install WordPress using docker exec
-          docker exec $(docker ps -qf "name=wordpress-1") wp core install \
+          # Get container ID
+          WP_CONTAINER=$(docker ps -qf "name=tests-wordpress-1")
+          echo "WordPress Container ID: $WP_CONTAINER"
+          
+          # Install WordPress
+          docker exec $WP_CONTAINER bash -c "wp core install \
             --path=/var/www/html \
             --url=localhost:8889 \
-            --title="WPUF Test" \
+            --title='WPUF Test' \
             --admin_user=admin \
             --admin_password=password \
             --admin_email=admin@example.com \
             --skip-email \
-            --allow-root
+            --allow-root"
           
-          # Install and activate plugins
-          echo "Installing WPUF..."
-          docker exec $(docker ps -qf "name=wordpress-1") wp plugin install \
-            --path=/var/www/html \
-            --allow-root \
-            ../../wp-user-frontend --activate --force
+          # Copy and activate plugins
+          echo "Copying WPUF..."
+          docker cp ../../ $WP_CONTAINER:/var/www/html/wp-content/plugins/wp-user-frontend
+          echo "Copying WPUF Pro..."
+          docker cp ../../plugins/wpuf-pro $WP_CONTAINER:/var/www/html/wp-content/plugins/
           
-          echo "Installing WPUF Pro..."
-          docker exec $(docker ps -qf "name=wordpress-1") wp plugin install \
-            --path=/var/www/html \
-            --allow-root \
-            ../../plugins/wpuf-pro --activate --force
+          # Activate plugins
+          docker exec $WP_CONTAINER bash -c "wp plugin activate wp-user-frontend --allow-root"
+          docker exec $WP_CONTAINER bash -c "wp plugin activate wpuf-pro --allow-root"
           
           # Verify installation
           echo "WordPress version:"
-          docker exec $(docker ps -qf "name=wordpress-1") wp core version --path=/var/www/html --allow-root
+          docker exec $WP_CONTAINER bash -c "wp core version --allow-root"
           echo "Plugin status:"
-          docker exec $(docker ps -qf "name=wordpress-1") wp plugin list --path=/var/www/html --allow-root
+          docker exec $WP_CONTAINER bash -c "wp plugin list --allow-root"
         env:
           COMPOSE_INTERACTIVE_NO_CLI: 1
         timeout-minutes: 15
@@ -129,14 +142,25 @@ jobs:
         if: always()
         run: |
           cd tests/e2e
+          
+          # Get container ID
+          WP_CONTAINER=$(docker ps -qf "name=tests-wordpress-1")
+          echo "WordPress Container ID: $WP_CONTAINER"
+          
           echo "Docker containers:"
           docker ps
+          
           echo "WordPress directory:"
-          docker exec $(docker ps -qf "name=wordpress-1") ls -la /var/www/html
+          docker exec $WP_CONTAINER bash -c "ls -la /var/www/html"
+          
           echo "Plugins directory:"
-          docker exec $(docker ps -qf "name=wordpress-1") ls -la /var/www/html/wp-content/plugins
+          docker exec $WP_CONTAINER bash -c "ls -la /var/www/html/wp-content/plugins"
+          
           echo "WordPress Configuration:"
-          docker exec $(docker ps -qf "name=wordpress-1") cat /var/www/html/wp-config.php
+          docker exec $WP_CONTAINER bash -c "cat /var/www/html/wp-config.php"
+          
+          echo "WP-CLI Version:"
+          docker exec $WP_CONTAINER bash -c "wp --version --allow-root"
         
 
       # First approach through wp-env.json mapping

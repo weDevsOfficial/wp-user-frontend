@@ -8,6 +8,7 @@
   "env": {
     "tests": {
       "port": 8889,
+      "phpVersion": "7.4",
       "config": {
         "WP_DEBUG": true,
         "SCRIPT_DEBUG": true,
@@ -16,11 +17,17 @@
     },
     "development": {
       "port": 8888,
+      "phpVersion": "7.4",
       "config": {
         "WP_DEBUG": true,
         "SCRIPT_DEBUG": true,
         "FS_METHOD": "direct"
       }
     }
+  },
+  "config": {
+    "WP_DEBUG": true,
+    "SCRIPT_DEBUG": true,
+    "FS_METHOD": "direct"
   }
 }

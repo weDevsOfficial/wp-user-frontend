@@ -103,7 +103,7 @@ jobs:
 
       # Run Playwright tests
       - name: Run Playwright tests
-        working-directory: wp-content/plugins/wp-user-frontend/tests/e2e
+        working-directory: tests/e2e
         run: DEBUG=pw:api npx playwright test e2eMain.spec.ts --project=chromium
         continue-on-error: true
 

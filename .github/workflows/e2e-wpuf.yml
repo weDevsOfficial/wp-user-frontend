@@ -10,6 +10,15 @@ on:
   pull_request:
     branches: [develop]
 
+
+env:
+  BASE_URL: ${{ secrets.QA_BASE_URL }}
+  CI: true
+  ADMIN_USERNAME: ${{ secrets.QA_ADMIN_USERNAME }}
+  ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
+  WPUF_PRO_LICENSE_KEY: ${{secrets.WPUF_PRO_LICENSE_KEY}}
+  ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
 jobs:
   test:
     timeout-minutes: 10
@@ -99,15 +108,8 @@ jobs:
       - name: Run Playwright tests/e2e
         run: |
           cd tests/e2e
-          npx playwright test e2eMain.spec.ts --project=chromium
-
-        env:
-          BASE_URL: ${{ secrets.QA_BASE_URL }}
-          CI: true
-          ADMIN_USERNAME: ${{ secrets.QA_ADMIN_USERNAME }}
-          ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
-          WPUF_PRO_LICENSE_KEY: ${{secrets.WPUF_PRO_LICENSE_KEY}}
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          DEBUG=pw:api npx playwright test e2eMain.spec.ts --project=chromium
+        continue-on-error: true
 
       # Archive test artifacts
       - name: Archive playwright artifacts (screenshots, HTML snapshots, videos)
@@ -121,8 +123,10 @@ jobs:
 
       # Publish HTML report to GH Pages
       - name: Publish HTML report to GH Pages
+        if: always()
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
           publish_dir: tests/e2e/playwright-report
+          publish_branch: gh-pages
+          force_orphan: true

@@ -33,9 +33,18 @@ jobs:
         with:
           path: tests/e2e
 
+      # Debug step to verify files
+      - name: Debug test files
+        run: |
+          echo "Contents of tests/e2e:"
+          ls -la tests/e2e/
+
       - name: Install E2E test dependencies
         working-directory: tests/e2e
-        run: npm ci
+        run: |
+          npm install
+          npm install -g @wordpress/env
+          npm ls @wordpress/env
 
       - name: Setup WordPress using wp-env
         working-directory: tests/e2e

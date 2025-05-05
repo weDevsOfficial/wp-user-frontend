@@ -51,7 +51,7 @@ jobs:
             grunt release --force
       
       # Clone WPUF Pro
-      - name: Checkout WPUF-pro
+      - name: Checkout WPUF Pro
         uses: actions/checkout@v4
         with:
           repository: weDevsOfficial/wpuf-pro

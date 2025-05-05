@@ -75,6 +75,8 @@ class Admin {
         wp_enqueue_script( 'wpuf-sweetalert2' );
         wp_enqueue_script( 'wpuf-admin' );
 
+        wpuf_load_headway_badge();
+
         wp_localize_script(
             'wpuf-admin', 'wpuf_admin_script',
             [

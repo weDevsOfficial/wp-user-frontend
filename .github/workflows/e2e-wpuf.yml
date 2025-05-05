@@ -1,12 +1,10 @@
 name: WP User Frontend E2E Tests
-
 on:
   workflow_dispatch:
   push:
     branches: [develop]
   pull_request:
     branches: [develop]
-
 env:
   BASE_URL: ${{ secrets.QA_BASE_URL }}
   CI: true
@@ -14,20 +12,11 @@ env:
   ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
   WPUF_PRO_LICENSE_KEY: ${{ secrets.WPUF_PRO_LICENSE_KEY }}
   ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest    
-
     steps:
-      # Debug step to see current directory and contents
-      - name: Debug working directory
-        run: |
-          echo "Current directory: $(pwd)"
-          echo "Directory contents:"
-          ls -la
-
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -37,6 +26,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
+
+      # Checkout your test files repository (containing e2e tests)
+      - name: Checkout E2E Tests
+        uses: actions/checkout@v4
+        with:
+          path: tests/e2e
+
+      - name: Install E2E test dependencies
+        working-directory: tests/e2e
+        run: npm ci
 
       - name: Setup WordPress using wp-env
         working-directory: tests/e2e
@@ -74,10 +73,6 @@ jobs:
           npm install --legacy-peer-deps
           grunt
 
-      - name: Install E2E test dependencies
-        working-directory: tests/e2e
-        run: npm ci
-
       - name: Get installed Playwright version
         working-directory: tests/e2e
         run: |
@@ -101,7 +96,7 @@ jobs:
         run: npm run test:ci
         continue-on-error: true
 
-      - name: Archive Playwright artifacts (screenshots, reports, videos)
+      - name: Archive Playwright artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:

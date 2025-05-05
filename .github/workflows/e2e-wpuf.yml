@@ -16,7 +16,7 @@ env:
   CI: true
   ADMIN_USERNAME: ${{ secrets.QA_ADMIN_USERNAME }}
   ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
-  WPUF_PRO_LICENSE_KEY: ${{secrets.WPUF_PRO_LICENSE_KEY}}
+  WPUF_PRO_LICENSE_KEY: ${{ secrets.WPUF_PRO_LICENSE_KEY }}
   ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
 jobs:
@@ -62,7 +62,7 @@ jobs:
       # WPUF Lite dependencies
       - name: Install wpuf-pro dependencies
         run: |
-          cd plugins/wpuf-pro
+          cd wp-content/plugins/wpuf-pro
           composer install
           composer dump-autoload -o
           npm install --legacy-peer-deps
@@ -71,20 +71,20 @@ jobs:
 
       # Install test dependencies
       - name: Install E2E test dependencies
-        working-directory: tests/e2e
+        working-directory: wp-content/plugins/wp-user-frontend/tests/e2e
         run: npm ci
 
       # Setup WordPress using wp-env
       - name: Setup WordPress 
         run: |
-          cd tests/e2e 
+          cd wp-content/plugins/wp-user-frontend/tests/e2e
           npm run wp-env start
 
       # Install Playwright Browsers
       - name: Get installed Playwright version
         id: playwright-version
         run: |
-          cd tests/e2e
+          cd wp-content/plugins/wp-user-frontend/tests/e2e
           PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq -r '.dependencies["@playwright/test"].version')
           echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> "$GITHUB_ENV"
 
@@ -98,16 +98,15 @@ jobs:
             restore-keys: ${{ runner.os }}-playwright-
 
       - name: Install Playwright browser binaries & OS dependencies
-        id: pw-install
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: |
-            cd tests/e2e
-            npx playwright install chromium --with-deps
+          cd wp-content/plugins/wp-user-frontend/tests/e2e
+          npx playwright install chromium --with-deps
 
-      # Run Playwright tests/e2e
-      - name: Run Playwright tests/e2e
+      # Run Playwright tests
+      - name: Run Playwright tests
         run: |
-          cd tests/e2e
+          cd wp-content/plugins/wp-user-frontend/tests/e2e
           DEBUG=pw:api npx playwright test e2eMain.spec.ts --project=chromium
         continue-on-error: true
 
@@ -117,7 +116,7 @@ jobs:
         if: always()
         with:
           name: playwright-report
-          path: tests/e2e/playwright-report
+          path: wp-content/plugins/wp-user-frontend/tests/e2e/playwright-report
           if-no-files-found: ignore
           retention-days: 3
 
@@ -127,6 +126,6 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: tests/e2e/playwright-report
+          publish_dir: wp-content/plugins/wp-user-frontend/tests/e2e/playwright-report
           publish_branch: gh-pages
           force_orphan: true

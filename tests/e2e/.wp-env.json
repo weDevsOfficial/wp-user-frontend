@@ -1,6 +1,6 @@
 {
   "phpVersion": "7.4",
-  "core": "WordPress/WordPress#latest",
+  "core": "WordPress/WordPress#6.8.1",
   "plugins": [
     ".",
     "./plugins/wpuf-pro"

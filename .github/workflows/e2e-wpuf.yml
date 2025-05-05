@@ -80,7 +80,8 @@ jobs:
       - name: Setup WordPress
         run: |
           cd tests/e2e
-          npm run wp-env start
+          npm run wp-env start || (echo "WordPress setup failed. Retrying..." && npm run wp-env destroy && npm run wp-env start)
+        timeout-minutes: 10
   
       # First approach through wp-env.json mapping
       - name: Verify WordPress and Plugin Installation

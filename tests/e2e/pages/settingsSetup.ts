@@ -173,20 +173,18 @@ export class SettingsSetupPage extends Base {
     //Plugin Activate - Pro
     async activateLicenseWPUFPro() {
         //Go to Plugins page
-        const pluginsPage = Urls.baseUrl + '/wp-admin/';
+        const pluginsPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
         await Promise.all([
             this.page.goto(pluginsPage, { waitUntil: 'networkidle' }),
             console.log("WPUF-Pro License Activation Line 1 passed"),
         ]);
 
+        await this.validateAndClick(Selectors.login.basicNavigation.licenseTab);
         //Activate Plugin
         const activateWPUFPro = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickActivateLicense);
         console.log(activateWPUFPro);
         if(activateWPUFPro == true) {
             console.log("WPUF-Pro License Activation Line 3 passed"),
-            //Plugins were DeActive
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickActivateLicense);
-            console.log("WPUF-Pro License Activation Line 4 passed"),
             await this.validateAndFillStrings(Selectors.settingsSetup.pluginStatusCheck.fillLicenseKey, process.env.WPUF_PRO_LICENSE_KEY?.toString() || '');
             console.log("WPUF-Pro License Activation Line 5 passed");
             await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.submitLicenseKey);

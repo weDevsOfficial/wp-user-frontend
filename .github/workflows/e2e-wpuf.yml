@@ -17,6 +17,15 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest    
     steps:
+      - name: Checkout Test Suite
+        uses: actions/checkout@v4
+        with:
+          repository: weDevsOfficial/wp-user-frontend
+          token: ${{ secrets.ACCESS_TOKEN }}
+      
+      - name: change directory
+        run: cd tests/e2e
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -27,21 +36,11 @@ jobs:
         with:
           node-version: 18
 
-      - name: Checkout Test Suite
-        uses: actions/checkout@v4
-        with:
-          repository: weDevsOfficial/wp-user-frontend/tests/e2e
-          token: ${{ secrets.ACCESS_TOKEN }}
-
       - name: Install test dependencies
-        run: |
-          cd tests/e2e
-          npm install
+        run: npm install
 
       - name: Setup WordPress using wp-env
-        run: |
-          cd tests/e2e
-          npm run wp-env:start
+        run: npm run wp-env:start
 
       - name: Checkout WPUF Lite
         uses: actions/checkout@v4
@@ -77,7 +76,6 @@ jobs:
           grunt
 
       - name: Get installed Playwright version
-        working-directory: tests/e2e
         run: |
           PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq -r '.dependencies["@playwright/test"].version')
           echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> "$GITHUB_ENV"
@@ -91,11 +89,9 @@ jobs:
 
       - name: Install Playwright browser binaries & dependencies
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        working-directory: tests/e2e
         run: npx playwright install chromium --with-deps
 
       - name: Run Playwright tests
-        working-directory: tests/e2e
         run: npm run test:ci
         continue-on-error: true
 

@@ -7,7 +7,6 @@
     "wp-env": "wp-env",
     "wp-env:start": "wp-env start",
     "wp-env:stop": "wp-env stop",
-    "wp-env:destroy": "echo 'y' | wp-env destroy",
     "test": "CI=false npx playwright test e2eMain.spec.ts --headed",
     "test:ci": "npx playwright test e2eMain.spec.ts"
   },

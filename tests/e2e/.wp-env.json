@@ -1,33 +1,7 @@
 {
   "phpVersion": "7.4",
-  "core": "https://wordpress.org/latest.zip",
   "plugins": [
-    ".",
-    "./plugins/wpuf-pro"
-  ],
-  "env": {
-    "tests": {
-      "port": 8889,
-      "phpVersion": "7.4",
-      "config": {
-        "WP_DEBUG": true,
-        "SCRIPT_DEBUG": true,
-        "FS_METHOD": "direct"
-      }
-    },
-    "development": {
-      "port": 8888,
-      "phpVersion": "7.4",
-      "config": {
-        "WP_DEBUG": true,
-        "SCRIPT_DEBUG": true,
-        "FS_METHOD": "direct"
-      }
-    }
-  },
-  "config": {
-    "WP_DEBUG": true,
-    "SCRIPT_DEBUG": true,
-    "FS_METHOD": "direct"
-  }
+    "../../", 
+    "../../wpuf-pro"
+  ]
 }

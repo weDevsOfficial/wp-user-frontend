@@ -1,27 +1,11 @@
 name: WP User Frontend E2E Tests
 
-
 on:
   workflow_dispatch:
-  # schedule:
-  #   - cron: "0 1 * * *"  # Run workflow at 8:00 AM UTC +6 every day
   push:
     branches: [develop]
   pull_request:
     branches: [develop]
-
-# Cancels all previous workflow runs for pull requests that have not completed.
-concurrency:
-  # The concurrency group contains the workflow name and the branch name for pull requests or the commit hash for any other events.
-  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.sha }}
-  cancel-in-progress: true
-
-# workflow permissions
-permissions:
-  checks: write
-  contents: write
-  issues: write
-  pull-requests: write 
 
 env:
   BASE_URL: ${{ secrets.QA_BASE_URL }}
@@ -34,28 +18,34 @@ env:
 jobs:
   test:
     timeout-minutes: 60
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest    
 
     steps:
-      # Setup PHP
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: "7.4"
 
-      # Checkout WPUF Lite
-      - name: Checkout WPUF Lite
-        uses: actions/checkout@v4
-
-      # Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: npm
 
-      # Install WPUF Lite dependencies
+      - name: Setup WordPress using wp-env
+        working-directory: tests/e2e
+        run: npm run wp-env:start
+
+      - name: Checkout WPUF Lite
+        uses: actions/checkout@v4
+        with:
+          repository: weDevsOfficial/wp-user-frontend
+          token: ${{ secrets.ACCESS_TOKEN }}
+          path: wp-content/plugins/wp-user-frontend
+          ref: develop
+
       - name: Install wpuf-lite dependencies
+        working-directory: wp-content/plugins/wp-user-frontend
         run: |
           composer install
           composer dump-autoload -o
@@ -67,12 +57,13 @@ jobs:
         with:
           repository: weDevsOfficial/wpuf-pro
           token: ${{ secrets.ACCESS_TOKEN }}
-          path: 'plugins/wpuf-pro'
-          ref: 'develop'
+          path: wp-content/plugins/wpuf-pro
+          ref: develop
 
-      - name: Install WPUF Pro dependencies
+      - name: Install wpuf-pro dependencies
+        working-directory: wp-content/plugins/wpuf-pro
         run: |
-          cd plugins/wpuf-pro
+          cd wp-content/plugins/wpuf-pro
           composer install
           composer dump-autoload -o
           npm install --legacy-peer-deps
@@ -80,151 +71,34 @@ jobs:
 
       - name: Install E2E test dependencies
         working-directory: tests/e2e
-        run: |
-          npm ci
-          npm install @wordpress/env @wordpress/scripts --save-dev
-
-      - name: Verify directory structure
-        run: |
-          echo "Current directory structure:"
-          ls -la
-          echo "WPUF Pro directory structure:"
-          ls -la plugins/wpuf-pro
-
-      - name: Setup WordPress
-        run: |
-          cd tests/e2e
-          
-          # Clean start
-          echo "y" | npm run wp-env:destroy || true
-          
-          # Start WordPress
-          npm run wp-env:start
-          
-          # Wait for containers to be ready
-          sleep 10
-          
-          # Get container ID
-          WP_CONTAINER=$(docker ps -qf "name=tests-wordpress-1")
-          echo "WordPress Container ID: $WP_CONTAINER"
-          
-          # Install WordPress
-          docker exec $WP_CONTAINER bash -c "wp core install \
-            --path=/var/www/html \
-            --url=localhost:8889 \
-            --title='WPUF Test' \
-            --admin_user=admin \
-            --admin_password=password \
-            --admin_email=admin@example.com \
-            --skip-email \
-            --allow-root"
-          
-          # Copy and activate plugins
-          echo "Copying WPUF..."
-          docker cp ../../ $WP_CONTAINER:/var/www/html/wp-content/plugins/wp-user-frontend
-          echo "Copying WPUF Pro..."
-          docker cp ../../plugins/wpuf-pro $WP_CONTAINER:/var/www/html/wp-content/plugins/
-          
-          # Activate plugins
-          docker exec $WP_CONTAINER bash -c "wp plugin activate wp-user-frontend --allow-root"
-          docker exec $WP_CONTAINER bash -c "wp plugin activate wpuf-pro --allow-root"
-          
-          # Verify installation
-          echo "WordPress version:"
-          docker exec $WP_CONTAINER bash -c "wp core version --allow-root"
-          echo "Plugin status:"
-          docker exec $WP_CONTAINER bash -c "wp plugin list --allow-root"
-        env:
-          COMPOSE_INTERACTIVE_NO_CLI: 1
-        timeout-minutes: 15
-
-      - name: Debug Environment
-        if: always()
-        run: |
-          cd tests/e2e
-          
-          # Get container ID
-          WP_CONTAINER=$(docker ps -qf "name=tests-wordpress-1")
-          echo "WordPress Container ID: $WP_CONTAINER"
-          
-          echo "Docker containers:"
-          docker ps
-          
-          echo "WordPress directory:"
-          docker exec $WP_CONTAINER bash -c "ls -la /var/www/html"
-          
-          echo "Plugins directory:"
-          docker exec $WP_CONTAINER bash -c "ls -la /var/www/html/wp-content/plugins"
-          
-          echo "WordPress Configuration:"
-          docker exec $WP_CONTAINER bash -c "cat /var/www/html/wp-config.php"
-          
-          echo "WP-CLI Version:"
-          docker exec $WP_CONTAINER bash -c "wp --version --allow-root"
-        
-
-      # First approach through wp-env.json mapping
-      - name: Verify WordPress and Plugin Installation
-        run: |
-          cd tests/e2e
-          npm run wp-env run cli "wp core version"
-          npm run wp-env run cli "wp plugin list"
-          npm run wp-env run cli "wp plugin activate wp-user-frontend"
-          npm run wp-env run cli "wp plugin activate wpuf-pro"
-  
-      # Second approach through manual installation
-      - name: Install WPUF plugins in WordPress
-        run: |
-          cd tests/e2e
-          # Copy WPUF Lite
-          npm run wp-env run cli "wp plugin install $(pwd)/../../ --activate --force"
-          # Copy WPUF Pro
-          npm run wp-env run cli "wp plugin install $(pwd)/../../plugins/wpuf-pro --activate --force"
-          # Verify plugins are installed and activated
-          npm run wp-env run cli "wp plugin list"
-
-      # Add debugging step
-      - name: Debug Plugin Installation
-        run: |
-          cd tests/e2e
-          echo "Plugin Directory Contents:"
-          npm run wp-env run cli "ls -la wp-content/plugins"
-          echo "Plugin Status:"
-          npm run wp-env run cli "wp plugin list"
-          echo "WPUF Pro Directory Contents:"
-          npm run wp-env run cli "ls -la wp-content/plugins/wpuf-pro"
+        run: npm ci
 
       - name: Get installed Playwright version
-        id: playwright-version
+        working-directory: tests/e2e
         run: |
-          cd tests/e2e
           PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq -r '.dependencies["@playwright/test"].version')
           echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> "$GITHUB_ENV"
 
-      - name: Cache playwright binaries
-        id: playwright-cache
+      - name: Cache Playwright binaries
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
           restore-keys: ${{ runner.os }}-playwright-
 
-      - name: Install Playwright browser binaries & OS dependencies
-        id: pw-install
+      - name: Install Playwright browser binaries & dependencies
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: |
-          cd tests/e2e
-          npx playwright install chromium --with-deps
+        working-directory: tests/e2e
+        run: npx playwright install chromium --with-deps
 
       - name: Run Playwright tests
-        run: |
-          cd tests/e2e
-          DEBUG=pw:api npx playwright test e2eMain.spec.ts --project=chromium || true
+        working-directory: tests/e2e
+        run: npm run test:ci
         continue-on-error: true
 
-      - name: Archive playwright artifacts
-        uses: actions/upload-artifact@v4
+      - name: Archive Playwright artifacts (screenshots, reports, videos)
         if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: playwright-report
           path: tests/e2e/playwright-report
@@ -239,14 +113,3 @@ jobs:
           publish_dir: tests/e2e/playwright-report
           publish_branch: gh-pages
           force_orphan: true
-
-      - name: Debug on failure
-        if: failure()
-        run: |
-          cd tests/e2e
-          echo "WordPress Debug Log:"
-          npm run wp-env run cli "cat wp-content/debug.log"
-          echo "Plugin Status:"
-          npm run wp-env run cli "wp plugin list"
-          echo "WordPress Configuration:"
-          npm run wp-env run cli "wp config list"

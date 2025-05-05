@@ -34,10 +34,14 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Install test dependencies
-        run: npm install
+        run: |
+          cd tests/e2e
+          npm install
 
       - name: Setup WordPress using wp-env
-        run: npx @wordpress/env start
+        run: |
+          cd tests/e2e
+          npm run wp-env:start
 
       - name: Checkout WPUF Lite
         uses: actions/checkout@v4

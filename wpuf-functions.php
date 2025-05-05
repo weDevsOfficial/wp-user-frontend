@@ -4791,18 +4791,30 @@ function wpuf_remove_admin_notices() {
  * @return void
  */
 function wpuf_load_headway_badge( $selector = '#wpuf-headway-icon' ) {
+    wp_enqueue_script( 'wpuf-headway-script' );
     ?>
     <script>
         const selector = '<?php echo $selector; ?>';
         const badgeCount = selector + ' ul li.headway-icon span#HW_badge_cont.HW_visible';
+
         const HW_config = {
             selector: selector,
-            account: 'JPqPQy'
+            account: 'JPqPQy',
+            callbacks: {
+                onWidgetReady: function ( widget ) {
+                    if ( widget.getUnseenCount() === 0 ) {
+                        document.querySelector(badgeCount).style = 'opacity: 0';
+                    }
+                },
+                onHideWidget: function(){
+                    document.querySelector(badgeCount).style = 'opacity: 0';
+                }
+            }
         };
+
     </script>
 
     <?php
-    wp_enqueue_script( 'wpuf-headway' );
 }
 
 /**
@@ -5456,7 +5468,7 @@ function wpuf_is_checkbox_or_toggle_on( $value ) {
  */
 function wpuf_get_forms_counts_with_status( $post_type = 'wpuf_forms' ) {
     $post_counts = (array) wp_count_posts( $post_type );
-    
+
     $post_statuses = apply_filters( 'wpuf_post_forms_list_table_post_statuses', [
         'all'     => __( 'All', 'wp-user-frontend' ),
         'publish' => __( 'Published', 'wp-user-frontend' ),

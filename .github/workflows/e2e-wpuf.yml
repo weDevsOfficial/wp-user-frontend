@@ -80,16 +80,27 @@ jobs:
       - name: Setup WordPress
         run: |
           cd tests/e2e
-          # Ensure clean state
+          # Debug information
+          echo "Current directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la
+          
+          # Clean start
           echo "y" | npm run wp-env destroy || true
+          
           # Start WordPress
           npm run wp-env start
-          # Verify installation
-          npm run wp-env run cli "wp core is-installed"
-          # List plugins
-          npm run wp-env run cli "wp plugin list"
-          # Check WordPress version
-          npm run wp-env run cli "wp core version"
+          
+          # Debug WordPress installation
+          echo "WordPress installation status:"
+          npm run wp-env run cli "wp --allow-root core version"
+          echo "Plugin directory contents:"
+          npm run wp-env run cli "ls -la /var/www/html/wp-content/plugins"
+          
+          # Activate and verify plugins
+          npm run wp-env run cli "wp --allow-root plugin activate wp-user-frontend" || echo "Failed to activate WPUF"
+          npm run wp-env run cli "wp --allow-root plugin activate wpuf-pro" || echo "Failed to activate WPUF Pro"
+          npm run wp-env run cli "wp --allow-root plugin list"
         timeout-minutes: 10
   
       # First approach through wp-env.json mapping

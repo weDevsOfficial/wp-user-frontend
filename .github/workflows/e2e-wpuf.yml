@@ -21,6 +21,13 @@ jobs:
     runs-on: ubuntu-latest    
 
     steps:
+      # Debug step to see current directory and contents
+      - name: Debug working directory
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:

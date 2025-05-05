@@ -39,7 +39,7 @@ jobs:
 
       - name: Setup WordPress using wp-env
         working-directory: tests/e2e
-        run: npm run wp-env:start
+        run: npm run wp-env start
 
       - name: Checkout WPUF Lite
         uses: actions/checkout@v4

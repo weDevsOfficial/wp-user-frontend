@@ -13,7 +13,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
     "@faker-js/faker": "^9.4.0",
     "@playwright/test": "^1.50.1",
     "@types/js-yaml": "^4.0.9",
@@ -21,9 +21,7 @@
     "@wordpress/env": "^9.4.0",
     "@wordpress/scripts": "^26.0.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.3"
-  },
-  "dependencies": {
+    "typescript": "^5.7.3",
     "dotenv": "^16.4.5",
     "js-yaml": "^4.0.9"
   }

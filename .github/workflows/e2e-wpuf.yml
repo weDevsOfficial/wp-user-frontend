@@ -35,11 +35,15 @@ jobs:
 
       - name: Install E2E test dependencies
         working-directory: tests/e2e
-        run: npm install
+        run: |
+          npm install
+          npm install -g @wordpress/env
 
       - name: Setup WordPress using wp-env
         working-directory: tests/e2e
-        run: npx wp-env start
+        run: |
+          npx @wordpress/env start
+          npx @wordpress/env status
 
       - name: Checkout WPUF Lite
         uses: actions/checkout@v4
@@ -56,6 +60,7 @@ jobs:
           composer dump-autoload -o
           npm install
           grunt release --force
+          grunt
 
       - name: Checkout WPUF Pro
         uses: actions/checkout@v4
@@ -71,7 +76,7 @@ jobs:
           composer install
           composer dump-autoload -o
           npm install --legacy-peer-deps
-          grunt release --force
+          grunt
 
       - name: Get installed Playwright version
         working-directory: tests/e2e

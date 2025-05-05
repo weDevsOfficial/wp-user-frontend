@@ -179,6 +179,7 @@ export class SettingsSetupPage extends Base {
             console.log("WPUF-Pro License Activation Line 1 passed"),
         ]);
 
+        await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
         await this.validateAndClick(Selectors.login.basicNavigation.licenseTab);
         //Activate Plugin
         const activateWPUFPro = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickActivateLicense);

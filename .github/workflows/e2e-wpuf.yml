@@ -40,7 +40,7 @@ jobs:
         run: npm install
 
       - name: Setup WordPress using wp-env
-        run: npm run wp-env:start
+        run: npx wp-env start
 
       - name: Checkout WPUF Lite
         uses: actions/checkout@v4

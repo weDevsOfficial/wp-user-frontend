@@ -84,27 +84,41 @@ jobs:
           cd tests/e2e
           
           # Clean start
-          npm run wp-env:destroy || true
-          npm run wp-env:clean || true
+          echo "y" | npm run wp-env:destroy || true
           
-          # Start WordPress and setup
-          npm run setup:wp
+          # Start WordPress and install
+          npm run wp-env:start
           
-          # Verify installation
-          npm run wp-env run cli "wp core version"
-          npm run wp-env run cli "wp plugin list"
+          # Configure WordPress
+          npm run wp-env run cli "wp --allow-root core install --url=localhost:8889 --title='WPUF Test' --admin_user=admin --admin_password=password --admin_email=admin@example.com --skip-email"
           
           # Install and activate plugins
-          npm run wp-env run cli "wp plugin install ../../ --activate --force"
-          npm run wp-env run cli "wp plugin install ../../plugins/wpuf-pro --activate --force"
+          echo "Installing WPUF..."
+          npm run wp-env run cli "wp --allow-root plugin install ../../ --activate --force"
+          echo "Installing WPUF Pro..."
+          npm run wp-env run cli "wp --allow-root plugin install ../../plugins/wpuf-pro --activate --force"
           
-          # Final verification
-          echo "Final plugin status:"
-          npm run wp-env run cli "wp plugin list"
+          # Verify installation
+          echo "WordPress version:"
+          npm run wp-env run cli "wp --allow-root core version"
+          echo "Plugin status:"
+          npm run wp-env run cli "wp --allow-root plugin list"
         env:
           COMPOSE_INTERACTIVE_NO_CLI: 1
+          WP_ENV_HOME: "/tmp/wp-env-home"
         timeout-minutes: 15
-  
+          
+      - name: Debug Environment
+        if: always()
+        run: |
+          cd tests/e2e
+          echo "Docker containers:"
+          docker ps
+          echo "WordPress directory:"
+          npm run wp-env run cli "ls -la /var/www/html"
+          echo "Plugins directory:"
+          npm run wp-env run cli "ls -la /var/www/html/wp-content/plugins"
+
       # First approach through wp-env.json mapping
       - name: Verify WordPress and Plugin Installation
         run: |

@@ -1,137 +1,137 @@
 name: WP User Frontend E2E Tests
+
+
 on:
   workflow_dispatch:
+  # schedule:
+  #   - cron: "0 1 * * *"  # Run workflow at 8:00 AM UTC +6 every day
   push:
     branches: [develop]
   pull_request:
     branches: [develop]
-env:
-  BASE_URL: ${{ secrets.QA_BASE_URL }}
-  CI: true
-  ADMIN_USERNAME: ${{ secrets.QA_ADMIN_USERNAME }}
-  ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
-  WPUF_PRO_LICENSE_KEY: ${{secrets.WPUF_PRO_LICENSE_KEY}}
-  ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
 jobs:
   test:
-    timeout-minutes: 60
+    timeout-minutes: 10
     runs-on: ubuntu-latest    
+    
     steps:
+
+      # Debug initial directory
+      - name: Check initial directory
+        run: |
+          echo "Initial working directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la
+      
+      # Setup PHP
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: "7.4"
+      
+      # Checkout WPUF Lite
+      - name: Checkout WPUF Lite
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      # Debug after checkout
+      - name: Check directory after checkout
+        run: |
+          echo "Working directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la
+          echo "\nwp-user-frontend contents:"
+          ls -la wp-user-frontend
+
+      # Setup Node.js 18
+      - name: Use desired version of NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+            node-version: 18
+            cache: npm
 
-      # First checkout test suite
-      - name: Checkout Test Suite
+      # WPUF Lite dependencies
+      - name: Install wpuf-lite dependencies
+        run: |
+            composer install
+            composer dump-autoload -o
+            npm install
+            grunt release --force
+      
+      # Clone WPUF Pro
+      - name: Checkout WPUF-pro
         uses: actions/checkout@v4
         with:
-          path: tests/e2e
-
+          repository: weDevsOfficial/wpuf-pro
+          token: ${{ secrets.ACCESS_TOKEN }}
+          path: 'plugins/wpuf-pro'
+          ref: 'develop'
+      
+      # WPUF Lite dependencies
+      - name: Install wpuf-pro dependencies
+        run: |
+          cd plugins/wpuf-pro
+          composer install
+          composer dump-autoload -o
+          npm install --legacy-peer-deps
+          grunt
+            
       # Install test dependencies
       - name: Install E2E test dependencies
         working-directory: tests/e2e
         run: npm ci
 
-      # Setup WordPress first
+      # Setup WordPress using wp-env
       - name: Setup WordPress 
-        working-directory: tests/e2e
         run: |
-          npm run wp-env:start
-          sleep 5
-
-      # Now clone and install plugins
-      - name: Checkout WPUF Lite
-        uses: actions/checkout@v4
-        with:
-          repository: weDevsOfficial/wp-user-frontend
-          token: ${{ secrets.ACCESS_TOKEN }}
-          path: tests/e2e/.wp-env/WordPress/wp-content/plugins/wp-user-frontend
-          ref: develop
-
-      - name: Install wpuf-lite dependencies
-        working-directory: tests/e2e/.wp-env/WordPress/wp-content/plugins/wp-user-frontend
-        run: |
-          composer install
-          composer dump-autoload -o
-          npm install
-          grunt release --force
-
-      - name: Checkout WPUF Pro
-        uses: actions/checkout@v4
-        with:
-          repository: weDevsOfficial/wpuf-pro
-          token: ${{ secrets.ACCESS_TOKEN }}
-          path: tests/e2e/.wp-env/WordPress/wp-content/plugins/wpuf-pro
-          ref: develop
-
-      - name: Install wpuf-pro dependencies
-        working-directory: tests/e2e/.wp-env/WordPress/wp-content/plugins/wpuf-pro
-        run: |
-          composer install
-          composer dump-autoload -o
-          npm install --legacy-peer-deps
-          grunt
-
-      # Activate plugins
-      - name: Activate plugins
-        working-directory: tests/e2e
-        run: |
-          npm run wp-env run cli -- wp plugin activate wp-user-frontend wpuf-pro --allow-root
-          npm run wp-env run cli -- wp plugin list --allow-root
-
-      # Get Playwright version
+          cd tests/e2e 
+          npm run wp-env start
+      # Install Playwright Browsers
       - name: Get installed Playwright version
         id: playwright-version
-        working-directory: tests/e2e
         run: |
+          cd tests/e2e
           PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq -r '.dependencies["@playwright/test"].version')
           echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> "$GITHUB_ENV"
-
-      # Cache Playwright
       - name: Cache playwright binaries
         id: playwright-cache
         uses: actions/cache@v4
         with:
-          path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
-          restore-keys: ${{ runner.os }}-playwright-
+            path: ~/.cache/ms-playwright
+            key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
+            restore-keys: ${{ runner.os }}-playwright-
 
-      # Install Playwright
       - name: Install Playwright browser binaries & OS dependencies
         id: pw-install
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        working-directory: tests/e2e
-        run: npx playwright install chromium --with-deps
-
-      # Run Playwright tests
-      - name: Run Playwright tests
-        working-directory: tests/e2e
         run: |
+            cd tests/e2e
+            npx playwright install chromium --with-deps
+      # Run Playwright tests/e2e
+      - name: Run Playwright tests/e2e
+        run: |
+          cd tests/e2e
           npx playwright test e2eMain.spec.ts --project=chromium
-        continue-on-error: true
+        env:
+          BASE_URL: ${{ secrets.QA_BASE_URL }}
+          CI: true
+          ADMIN_USERNAME: ${{ secrets.QA_ADMIN_USERNAME }}
+          ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
 
       # Archive test artifacts
-      - name: Archive playwright artifacts
-        if: always()
+      - name: Archive playwright artifacts (screenshots, HTML snapshots, videos)
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: playwright-report
           path: tests/e2e/playwright-report
           if-no-files-found: ignore
           retention-days: 3
 
-      # Publish HTML report
+      # Publish HTML report to GH Pages
       - name: Publish HTML report to GH Pages
-        if: always()
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: tests/e2e/playwright-report
           publish_branch: gh-pages
-          force_orphan: true
+          publish_dir: tests/e2e/playwright-report

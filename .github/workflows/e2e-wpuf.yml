@@ -65,7 +65,6 @@ jobs:
             tests/e2e/tests/
             tests/e2e/pages/
             tests/e2e/utils/
-            .github/workflows/
           sparse-checkout-cone-mode: false
 
       # Debug initial directory

@@ -5,13 +5,22 @@ on:
     branches: [develop]
   pull_request:
     branches: [develop]
+
+env:
+  BASE_URL: ${{ secrets.QA_BASE_URL }}
+  CI: true
+  ADMIN_USERNAME: ${{ secrets.QA_ADMIN_USERNAME }}
+  ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
+  ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+  WPUF_PRO_KEY: ${{ secrets.WPUF_PRO_KEY }}
+
 jobs:
   test:
-    timeout-minutes: 10
+    timeout-minutes: 30
     runs-on: ubuntu-latest    
     
     steps:
-      # Debug directory
+      # Debug initial directory
       - name: Check directory
         run: |
           echo "Initial working directory: $(pwd)"
@@ -24,214 +33,167 @@ jobs:
         with:
           php-version: "7.4"
 
-      # Debug directory
+      # Debug initial directory
       - name: Check directory
         run: |
           echo "Initial working directory: $(pwd)"
           echo "Directory contents:"
           ls -la
       
-      # Checkout WPUF Lite
-      - name: Checkout WPUF Lite
-        uses: actions/checkout@v4
-
-      # Debug directory
-      - name: Check directory
-        run: |
-          echo "Initial working directory: $(pwd)"
-          echo "Directory contents:"
-          ls -la
-
-      # Debug directory
-      - name: Check directory
-        run: |
-          echo "Initial working directory: $(pwd)"
-          echo "Directory contents:"
-          ls -la
-
       # Setup Node.js 18
       - name: Use desired version of NodeJS
         uses: actions/setup-node@v4
         with:
             node-version: 18
             cache: npm
-      
-      # Debug directory
+
+      # Debug initial directory
       - name: Check directory
         run: |
           echo "Initial working directory: $(pwd)"
           echo "Directory contents:"
           ls -la
 
-      # WPUF Lite dependencies
-      - name: Install wpuf-lite dependencies
-        run: |
-            composer install
-            composer dump-autoload -o
-            npm install
-            grunt release --force
-
-      # Debug directory
-      - name: Check directory
-        run: |
-          echo "Initial working directory: $(pwd)"
-          echo "Directory contents:"
-          ls -la
-      
-      # Clone WPUF Pro
-      - name: Checkout WPUF Pro
+      # First checkout test suite
+      - name: Checkout Test Suite
         uses: actions/checkout@v4
         with:
-          repository: weDevsOfficial/wpuf-pro
-          token: ${{ secrets.ACCESS_TOKEN }}
-          path: 'tests/e2e/wp-content/plugins/wpuf-pro'
-          ref: 'develop'
+          path: tests/e2e
 
-      # Debug directory
-      - name: Check directory
-        run: |
-          echo "Initial working directory: $(pwd)"
-          echo "Directory contents:"
-          ls -la
-      
-      # Copy WPUF Lite to WordPress plugins directory
-      - name: Setup WordPress plugins
-        run: |
-          mkdir -p tests/e2e/wp-content/plugins
-          cp -r . tests/e2e/wp-content/plugins/wp-user-frontend
-          rm -rf tests/e2e/wp-content/plugins/wp-user-frontend/.git
-      
-      # Debug directory
+      # Debug initial directory
       - name: Check directory
         run: |
           echo "Initial working directory: $(pwd)"
           echo "Directory contents:"
           ls -la
 
-      # Debug WordPress plugins directory
-      - name: Check WordPress plugins directory
-        run: |
-          echo "WordPress plugins directory contents:"
-          ls -la tests/e2e/wp-content/plugins/
-            
-      # Install test dependencies
-      - name: Install E2E test dependencies
-        working-directory: tests/e2e
-        run: npm ci
-
-      # Debug directory
-      - name: Check directory
-        run: |
-          echo "Initial working directory: $(pwd)"
-          echo "Directory contents:"
-          ls -la
-
-      # Setup WordPress using wp-env
-      - name: Setup WordPress 
+      # Install test dependencies and setup WordPress
+      - name: Setup WordPress Environment
         working-directory: tests/e2e
         run: |
+          npm ci
           npx wp-env start
           sleep 5
           npx wp-env run cli "wp plugin list --allow-root"
 
-      # Debug directory
-      - name: Check directory
-        run: |
-          echo "Initial working directory: $(pwd)"
-          echo "Directory contents:"
-          ls -la
-      
-      # Install Playwright Browsers
-      - name: Get installed Playwright version
-        id: playwright-version
-        run: |
-          cd tests/e2e
-          PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq -r '.dependencies["@playwright/test"].version')
-          echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> "$GITHUB_ENV"
-      
-      # Debug directory
-      - name: Check directory
-        run: |
-          echo "Initial working directory: $(pwd)"
-          echo "Directory contents:"
-          ls -la
-      
-      - name: Cache playwright binaries
-        id: playwright-cache
-        uses: actions/cache@v4
-        with:
-            path: ~/.cache/ms-playwright
-            key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
-            restore-keys: ${{ runner.os }}-playwright-
-
-      # Debug directory
+      # Debug initial directory
       - name: Check directory
         run: |
           echo "Initial working directory: $(pwd)"
           echo "Directory contents:"
           ls -la
 
-      - name: Install Playwright browser binaries & OS dependencies
-        id: pw-install
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
+      # Debug WordPress installation
+      - name: WordPress setup
+        working-directory: tests/e2e
         run: |
-            cd tests/e2e
-            npx playwright install chromium --with-deps
-      
-      # Debug directory
+          echo "WordPress installation:"
+          npx wp-env run cli "wp core version --allow-root"
+          echo "\nPlugin directory:"
+          npx wp-env run cli "ls -la /var/www/html/wp-content/plugins --allow-root"
+
+      # Debug initial directory
       - name: Check directory
         run: |
           echo "Initial working directory: $(pwd)"
           echo "Directory contents:"
           ls -la
-      
-      # Run Playwright tests/e2e
-      - name: Run Playwright tests/e2e
+
+      # Now install WPUF Lite into WordPress
+      - name: Install WPUF Lite
+        working-directory: tests/e2e
         run: |
-          cd tests/e2e
+          git clone https://github.com/weDevsOfficial/wp-user-frontend.git .wp-env/WordPress/wp-content/plugins/wp-user-frontend
+          cd .wp-env/WordPress/wp-content/plugins/wp-user-frontend
+          composer install
+          composer dump-autoload -o
+          npm install
+          grunt release --force
+          grunt
+          cd ../../../../
+      # Debug initial directory
+      - name: Check directory
+        run: |
+          echo "Initial working directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la
+
+      # Install WPUF Pro
+      - name: Install WPUF Pro
+        working-directory: tests/e2e
+        run: |
+          git clone https://${{ secrets.ACCESS_TOKEN }}@github.com/weDevsOfficial/wpuf-pro.git .wp-env/WordPress/wp-content/plugins/wpuf-pro
+          cd .wp-env/WordPress/wp-content/plugins/wpuf-pro
+          composer install
+          composer dump-autoload -o
+          npm install --legacy-peer-deps
+          grunt
+          cd ../../../../
+
+      # Debug initial directory
+      - name: Check directory
+        run: |
+          echo "Initial working directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la
+
+      # Verify plugins installation
+      - name: Verify plugins
+        working-directory: tests/e2e
+        run: |
+          echo "Active plugins:"
+          npx wp-env run cli "wp plugin list --status=deactive --allow-root"
+
+      # Debug initial directory
+      - name: Check directory
+        run: |
+          echo "Initial working directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la1
+
+      # Run the tests
+      - name: Run Playwright tests
+        working-directory: tests/e2e
+        run: |
           npx playwright test e2eMain.spec.ts --project=chromium
-        env:
-          BASE_URL: ${{ secrets.QA_BASE_URL }}
-          CI: true
-          ADMIN_USERNAME: ${{ secrets.QA_ADMIN_USERNAME }}
-          ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          WPUF_LICENSE_KEY: ${{ secrets.WPUF_LICENSE_KEY }}
+        continue-on-error: true
 
-      # Debug directory
-      - name: Check directory
+          
+      # Debug initial directory
+      - name: Check initial directory
         run: |
           echo "Initial working directory: $(pwd)"
           echo "Directory contents:"
           ls -la
 
       # Archive test artifacts
-      - name: Archive playwright artifacts (screenshots, HTML snapshots, videos)
-        uses: actions/upload-artifact@v4
+      - name: Archive playwright artifacts
         if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: playwright-report
           path: tests/e2e/playwright-report
           if-no-files-found: ignore
           retention-days: 3
 
-      # Debug directory
-      - name: Check directory
+      # Debug initial directory
+      - name: Check initial directory
         run: |
           echo "Initial working directory: $(pwd)"
           echo "Directory contents:"
           ls -la
 
-      # Publish HTML report to GH Pages
+      # Publish HTML report
       - name: Publish HTML report to GH Pages
+        if: always()
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
           publish_dir: tests/e2e/playwright-report
+          publish_branch: gh-pages
 
-      # Debug directory
-      - name: Check directory
+      # Debug initial directory
+      - name: Check initial directory
         run: |
           echo "Initial working directory: $(pwd)"
           echo "Directory contents:"

@@ -1,17 +1,5 @@
 {
-  "core": "WordPress/WordPress",
-  "version": "6.3",
   "phpVersion": "7.4",
-  "config": {
-    "WP_DEBUG": true,
-    "WP_DEBUG_LOG": true,
-    "WP_DEBUG_DISPLAY": false,
-    "SCRIPT_DEBUG": true,
-    "DISALLOW_FILE_EDIT": false,
-    "DISALLOW_FILE_MODS": false,
-    "WP_ALLOW_REPAIR": true,
-    "WP_ENVIRONMENT_TYPE": "development"
-  },
   "plugins": [
     "./.wp-env/WordPress/wp-content/plugins/wp-user-frontend",
     "./.wp-env/WordPress/wp-content/plugins/wpuf-pro"

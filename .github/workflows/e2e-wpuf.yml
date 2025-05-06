@@ -27,95 +27,63 @@ jobs:
         with:
           node-version: 18
 
-      # First checkout WPUF Lite (which contains the test suite)
-      - name: Checkout WPUF Lite
+      # First checkout test suite
+      - name: Checkout Test Suite
         uses: actions/checkout@v4
         with:
-          path: wp-user-frontend
-
-      # Install WPUF Lite dependencies
-      - name: Install wpuf-lite dependencies
-        working-directory: wp-user-frontend
-        run: |
-          composer install
-          composer dump-autoload -o
-          npm install
-          grunt release --force
-
-      # Clone WPUF Pro
-      - name: Checkout WPUF Pro
-        uses: actions/checkout@v4
-        with:
-          repository: weDevsOfficial/wpuf-pro
-          token: ${{ secrets.ACCESS_TOKEN }}
-          path: wpuf-pro
-          ref: develop
-
-      # Install WPUF Pro dependencies
-      - name: Install wpuf-pro dependencies
-        working-directory: wpuf-pro
-        run: |
-          composer install
-          composer dump-autoload -o
-          npm install --legacy-peer-deps
-          grunt
-
-      # Create test directory and copy files
-      - name: Setup test environment
-        run: |
-          # Create directory structure
-          mkdir -p tests/e2e
-          mkdir -p tests/e2e/wp-content/plugins
-
-          # Copy test files
-          cp -r wp-user-frontend/tests/e2e/* tests/e2e/
-          cp wp-user-frontend/tests/e2e/.wp-env.json tests/e2e/
-
-          # Move plugins to correct location
-          mv wp-user-frontend tests/e2e/wp-content/plugins/
-          mv wpuf-pro tests/e2e/wp-content/plugins/
-
-          # Create wp-env.json if it doesn't exist
-          if [ ! -f tests/e2e/.wp-env.json ]; then
-            echo '{
-              "phpVersion": "7.4",
-              "plugins": [
-                "./wp-content/plugins/wp-user-frontend",
-                "./wp-content/plugins/wpuf-pro"
-              ]
-            }' > tests/e2e/.wp-env.json
-          fi
+          path: tests/e2e
 
       # Install test dependencies
       - name: Install E2E test dependencies
         working-directory: tests/e2e
         run: npm ci
 
-      # Debug directory structure
-      - name: Debug directory structure
-        run: |
-          echo "Current directory:"
-          pwd
-          echo "\nDirectory structure:"
-          ls -la
-          echo "\nTest directory:"
-          ls -la tests/e2e
-          echo "\nPlugins directory:"
-          ls -la tests/e2e/wp-content/plugins
-          echo "\nwp-env.json content:"
-          cat tests/e2e/.wp-env.json
-
-      # Setup WordPress
+      # Setup WordPress first
       - name: Setup WordPress 
         working-directory: tests/e2e
         run: |
           npm run wp-env:start
           sleep 5
-          # Fix wp-cli command
-          npm run wp-env run cli "wp --allow-root plugin list"
-          # Verify plugin activation
-          npm run wp-env run cli "wp --allow-root plugin activate wp-user-frontend wpuf-pro"
-          npm run wp-env run cli "wp --allow-root plugin list --status=active"
+
+      # Now clone and install plugins
+      - name: Checkout WPUF Lite
+        uses: actions/checkout@v4
+        with:
+          repository: weDevsOfficial/wp-user-frontend
+          token: ${{ secrets.ACCESS_TOKEN }}
+          path: tests/e2e/.wp-env/WordPress/wp-content/plugins/wp-user-frontend
+          ref: develop
+
+      - name: Install wpuf-lite dependencies
+        working-directory: tests/e2e/.wp-env/WordPress/wp-content/plugins/wp-user-frontend
+        run: |
+          composer install
+          composer dump-autoload -o
+          npm install
+          grunt release --force
+
+      - name: Checkout WPUF Pro
+        uses: actions/checkout@v4
+        with:
+          repository: weDevsOfficial/wpuf-pro
+          token: ${{ secrets.ACCESS_TOKEN }}
+          path: tests/e2e/.wp-env/WordPress/wp-content/plugins/wpuf-pro
+          ref: develop
+
+      - name: Install wpuf-pro dependencies
+        working-directory: tests/e2e/.wp-env/WordPress/wp-content/plugins/wpuf-pro
+        run: |
+          composer install
+          composer dump-autoload -o
+          npm install --legacy-peer-deps
+          grunt
+
+      # Activate plugins
+      - name: Activate plugins
+        working-directory: tests/e2e
+        run: |
+          npm run wp-env run cli -- wp plugin activate wp-user-frontend wpuf-pro --allow-root
+          npm run wp-env run cli -- wp plugin list --allow-root
 
       # Get Playwright version
       - name: Get installed Playwright version
@@ -145,7 +113,7 @@ jobs:
       - name: Run Playwright tests
         working-directory: tests/e2e
         run: |
-          DEBUG=pw:api npx playwright test e2eMain.spec.ts --project=chromium
+          npx playwright test e2eMain.spec.ts --project=chromium
         continue-on-error: true
 
       # Archive test artifacts

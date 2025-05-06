@@ -1,22 +1,16 @@
 name: WP User Frontend E2E Tests
-
-
 on:
   workflow_dispatch:
-  # schedule:
-  #   - cron: "0 1 * * *"  # Run workflow at 8:00 AM UTC +6 every day
   push:
     branches: [develop]
   pull_request:
     branches: [develop]
-
 jobs:
   test:
     timeout-minutes: 10
     runs-on: ubuntu-latest    
     
     steps:
-
       # Debug initial directory
       - name: Check initial directory
         run: |
@@ -40,8 +34,8 @@ jobs:
           echo "Working directory: $(pwd)"
           echo "Directory contents:"
           ls -la
-          echo "\nwp-user-frontend contents:"
-          ls -la wp-user-frontend
+          echo "\nTests directory contents:"
+          ls -la tests/e2e
 
       # Setup Node.js 18
       - name: Use desired version of NodeJS
@@ -59,22 +53,26 @@ jobs:
             grunt release --force
       
       # Clone WPUF Pro
-      - name: Checkout WPUF-pro
+      - name: Checkout WPUF Pro
         uses: actions/checkout@v4
         with:
           repository: weDevsOfficial/wpuf-pro
           token: ${{ secrets.ACCESS_TOKEN }}
-          path: 'plugins/wpuf-pro'
+          path: 'tests/e2e/wp-content/plugins/wpuf-pro'
           ref: 'develop'
       
-      # WPUF Lite dependencies
-      - name: Install wpuf-pro dependencies
+      # Copy WPUF Lite to WordPress plugins directory
+      - name: Setup WordPress plugins
         run: |
-          cd plugins/wpuf-pro
-          composer install
-          composer dump-autoload -o
-          npm install --legacy-peer-deps
-          grunt
+          mkdir -p tests/e2e/wp-content/plugins
+          cp -r . tests/e2e/wp-content/plugins/wp-user-frontend
+          rm -rf tests/e2e/wp-content/plugins/wp-user-frontend/.git
+
+      # Debug WordPress plugins directory
+      - name: Check WordPress plugins directory
+        run: |
+          echo "WordPress plugins directory contents:"
+          ls -la tests/e2e/wp-content/plugins/
             
       # Install test dependencies
       - name: Install E2E test dependencies
@@ -83,9 +81,12 @@ jobs:
 
       # Setup WordPress using wp-env
       - name: Setup WordPress 
+        working-directory: tests/e2e
         run: |
-          cd tests/e2e 
-          npm run wp-env start
+          npx wp-env start
+          sleep 5
+          npx wp-env run cli "wp plugin list --allow-root"
+      
       # Install Playwright Browsers
       - name: Get installed Playwright version
         id: playwright-version

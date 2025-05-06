@@ -27,17 +27,25 @@ jobs:
         with:
           node-version: 18
 
-      # Create directory structure
-      - name: Create directory structure
-        run: |
-          mkdir -p tests/e2e
-          mkdir -p tests/e2e/wp-content/plugins
+      # First checkout your test suite with e2e tests
+      - name: Checkout Test Suite
+        uses: actions/checkout@v4
+        with:
+          path: tests/e2e
 
-      # Checkout WPUF Lite (current repo)
+      # Install test dependencies first
+      - name: Install E2E test dependencies
+        working-directory: tests/e2e
+        run: npm ci
+
+      # Checkout WPUF Lite
       - name: Checkout WPUF Lite
         uses: actions/checkout@v4
         with:
+          repository: weDevsOfficial/wp-user-frontend
+          token: ${{ secrets.ACCESS_TOKEN }}
           path: tests/e2e/wp-content/plugins/wp-user-frontend
+          ref: develop
 
       # Install WPUF Lite dependencies
       - name: Install wpuf-lite dependencies
@@ -66,15 +74,13 @@ jobs:
           npm install --legacy-peer-deps
           grunt
 
-      # Copy test files
-      - name: Copy test files
+      # Debug directory structure before wp-env
+      - name: Debug pre-wp-env
         run: |
-          cp -r tests/e2e/wp-content/plugins/wp-user-frontend/tests/e2e/* tests/e2e/
-
-      # Install test dependencies
-      - name: Install E2E test dependencies
-        working-directory: tests/e2e
-        run: npm ci
+          echo "Current structure:"
+          ls -R tests/e2e/
+          echo "Content of .wp-env.json:"
+          cat tests/e2e/.wp-env.json
 
       # Setup WordPress
       - name: Setup WordPress 
@@ -85,9 +91,9 @@ jobs:
       - name: Debug WordPress installation
         working-directory: tests/e2e
         run: |
-          echo "WordPress plugin directory contents:"
-          ls -la .wp-env/*/wp-content/plugins/
-          echo "Plugin status:"
+          echo "WordPress environment status:"
+          npm run wp-env run cli "wp core version"
+          echo "Plugin list:"
           npm run wp-env run cli "wp plugin list"
 
       # Get Playwright version

@@ -105,6 +105,7 @@ jobs:
           npm install
           grunt release --force
           grunt
+          ls -la
           cd ../../../../../
           echo "Current directory contents:"
           ls -la
@@ -118,15 +119,8 @@ jobs:
           composer dump-autoload -o
           npm install --legacy-peer-deps
           grunt
-          cd ../../../../../
-          echo "Current directory contents:"
           ls -la
-
-      # Verify plugins installation
-      - name: Verify plugins
-        run: |
-          echo "inactive plugins:"
-          npx wp-env run cli "wp plugin list --status=inactive --allow-root"
+          cd ../../../../../
           echo "Current directory contents:"
           ls -la
 

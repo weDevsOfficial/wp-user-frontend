@@ -111,7 +111,11 @@ jobs:
         run: |
           npm run wp-env:start
           sleep 5
-          npm run wp-env run cli "wp plugin list"
+          # Fix wp-cli command
+          npm run wp-env run cli "wp --allow-root plugin list"
+          # Verify plugin activation
+          npm run wp-env run cli "wp --allow-root plugin activate wp-user-frontend wpuf-pro"
+          npm run wp-env run cli "wp --allow-root plugin list --status=active"
 
       # Get Playwright version
       - name: Get installed Playwright version

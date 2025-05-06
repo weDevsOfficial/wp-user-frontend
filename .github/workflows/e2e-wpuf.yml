@@ -53,25 +53,26 @@ jobs:
           echo "Directory contents:"
           ls -la
 
-      # First checkout test suite
+    # First checkout test suite
       - name: Checkout Test Suite
-        uses: actions/checkout@v4
-        with:
-          sparse-checkout: |
-            tests/e2e/package.json
-            tests/e2e/package-lock.json
-            tests/e2e/.wp-env.json
-            tests/e2e/playwright.config.ts
-            tests/e2e/tests/
-            tests/e2e/pages/
-            tests/e2e/utils/
-          sparse-checkout-cone-mode: false
-
-      # Debug initial directory
-      - name: Check directory
         run: |
-          echo "Initial working directory: $(pwd)"
-          echo "Directory contents:"
+          # Clone repository
+          git clone --depth 1 https://github.com/Rubaiyat-E-Mohammad/wp-user-frontend.git temp
+          
+          # Copy only needed files
+          cp temp/tests/e2e/package.json .
+          cp temp/tests/e2e/package-lock.json .
+          cp temp/tests/e2e/.wp-env.json .
+          cp temp/tests/e2e/playwright.config.ts .
+          cp -r temp/tests/e2e/tests .
+          cp -r temp/tests/e2e/pages .
+          cp -r temp/tests/e2e/utils .
+          
+          # Cleanup
+          rm -rf temp
+          
+          # Debug
+          echo "Current directory contents:"
           ls -la
 
       # Install test dependencies and setup WordPress
@@ -80,12 +81,7 @@ jobs:
           ls -la
           npm ci
           npx wp-env start
-
-      # Debug initial directory
-      - name: Check directory
-        run: |
-          echo "Initial working directory: $(pwd)"
-          echo "Directory contents:"
+          echo "Current directory contents:"
           ls -la
 
       # Debug WordPress installation
@@ -96,12 +92,7 @@ jobs:
           echo "\nPlugin directory:"
           npx wp-env run cli "ls -la /var/www/html/wp-content/plugins --allow-root"
           cd ../../
-
-      # Debug initial directory
-      - name: Check directory
-        run: |
-          echo "Initial working directory: $(pwd)"
-          echo "Directory contents:"
+          echo "Current directory contents:"
           ls -la
 
       # Now install WPUF Lite into WordPress
@@ -115,17 +106,12 @@ jobs:
           grunt release --force
           grunt
           cd ../../../../../
-      # Debug initial directory
-      - name: Check directory
-        run: |
-          echo "Initial working directory: $(pwd)"
-          echo "Directory contents:"
+          echo "Current directory contents:"
           ls -la
 
       # Install WPUF Pro
       - name: Install WPUF Pro
         run: |
-          cd tests/e2e
           git clone https://${{ secrets.ACCESS_TOKEN }}@github.com/weDevsOfficial/wpuf-pro.git .wp-env/WordPress/wp-content/plugins/wpuf-pro
           cd .wp-env/WordPress/wp-content/plugins/wpuf-pro
           composer install
@@ -133,40 +119,24 @@ jobs:
           npm install --legacy-peer-deps
           grunt
           cd ../../../../../
-
-      # Debug initial directory
-      - name: Check directory
-        run: |
-          echo "Initial working directory: $(pwd)"
-          echo "Directory contents:"
+          echo "Current directory contents:"
           ls -la
 
       # Verify plugins installation
       - name: Verify plugins
         run: |
-          echo "Active plugins:"
+          echo "inactive plugins:"
           npx wp-env run cli "wp plugin list --status=inactive --allow-root"
-
-      # Debug initial directory
-      - name: Check directory
-        run: |
-          echo "Initial working directory: $(pwd)"
-          echo "Directory contents:"
+          echo "Current directory contents:"
           ls -la
 
       # Run the tests
       - name: Run Playwright tests
         run: |
           npx playwright test e2eMain.spec.ts --project=chromium
-        continue-on-error: true
-
-          
-      # Debug initial directory
-      - name: Check initial directory
-        run: |
-          echo "Initial working directory: $(pwd)"
-          echo "Directory contents:"
+          echo "Current directory contents:"
           ls -la
+        continue-on-error: true
 
       # Archive test artifacts
       - name: Archive playwright artifacts
@@ -193,10 +163,3 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: playwright-report
           publish_branch: gh-pages
-
-      # Debug initial directory
-      - name: Check initial directory
-        run: |
-          echo "Initial working directory: $(pwd)"
-          echo "Directory contents:"
-          ls -la

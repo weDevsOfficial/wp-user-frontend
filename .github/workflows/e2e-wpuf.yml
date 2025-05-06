@@ -75,10 +75,9 @@ jobs:
       - name: Setup WordPress Environment
         run: |
           cd tests/e2e
+          ls -la
           npm ci
           npx wp-env start
-          sleep 5
-          npx wp-env run cli "wp plugin list --allow-root"
           cd ../../
 
       # Debug initial directory

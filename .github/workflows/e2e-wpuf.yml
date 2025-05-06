@@ -27,44 +27,35 @@ jobs:
         with:
           node-version: 18
 
-      # First checkout WPUF Lite (main repo with tests)
+      # First checkout WPUF Lite (which contains the test suite)
       - name: Checkout WPUF Lite
         uses: actions/checkout@v4
-        with:
-          path: tests/e2e/wp-content/plugins/wp-user-frontend
 
       # Install WPUF Lite dependencies
       - name: Install wpuf-lite dependencies
-        working-directory: tests/e2e/wp-content/plugins/wp-user-frontend
         run: |
           composer install
           composer dump-autoload -o
           npm install
           grunt release --force
 
-      # Clone WPUF Pro
+      # Clone WPUF Pro alongside WPUF Lite
       - name: Checkout WPUF Pro
         uses: actions/checkout@v4
         with:
           repository: weDevsOfficial/wpuf-pro
           token: ${{ secrets.ACCESS_TOKEN }}
-          path: tests/e2e/wp-content/plugins/wpuf-pro
+          path: ../wpuf-pro
           ref: develop
 
       # Install WPUF Pro dependencies
       - name: Install wpuf-pro dependencies
-        working-directory: tests/e2e/wp-content/plugins/wpuf-pro
+        working-directory: ../wpuf-pro
         run: |
           composer install
           composer dump-autoload -o
           npm install --legacy-peer-deps
           grunt
-
-      # Copy test files to tests/e2e
-      - name: Setup test environment
-        run: |
-          cp -r tests/e2e/wp-content/plugins/wp-user-frontend/tests/e2e/* tests/e2e/
-          rm -rf tests/e2e/wp-content/plugins/wp-user-frontend/tests/e2e
 
       # Install test dependencies
       - name: Install E2E test dependencies
@@ -74,9 +65,13 @@ jobs:
       # Debug directory structure
       - name: Debug directory structure
         run: |
-          echo "Current structure:"
-          tree tests/e2e || true
-          echo "\nContent of .wp-env.json:"
+          echo "Current directory:"
+          pwd
+          echo "\nDirectory structure:"
+          ls -la ..
+          echo "\nTest directory:"
+          ls -la tests/e2e
+          echo "\nwp-env.json content:"
           cat tests/e2e/.wp-env.json
 
       # Setup WordPress

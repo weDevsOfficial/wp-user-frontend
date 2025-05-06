@@ -74,8 +74,6 @@ jobs:
           echo "Initial working directory: $(pwd)"
           echo "Directory contents:"
           ls -la
-          echo "Contents of tests/e2e:"
-          ls -la tests/e2e
 
       # Install test dependencies and setup WordPress
       - name: Setup WordPress Environment

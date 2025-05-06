@@ -1,7 +1,3 @@
 {
-  "phpVersion": "7.4",
-  "plugins": [
-    "./.wp-env/WordPress/wp-content/plugins/wp-user-frontend",
-    "./.wp-env/WordPress/wp-content/plugins/wpuf-pro"
-  ]
+  "phpVersion": "7.4"
 }

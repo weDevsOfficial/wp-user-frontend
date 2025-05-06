@@ -81,6 +81,7 @@ jobs:
           ls -la
           npm ci
           npx wp-env start
+          sleep 5
           echo "Current directory contents:"
           ls -la
 
@@ -88,10 +89,9 @@ jobs:
       - name: WordPress setup
         run: |
           echo "WordPress installation:"
-          npx wp-env run cli "wp core version --allow-root"
+          npx wp-env run cli -- wp core version --allow-root
           echo "\nPlugin directory:"
-          npx wp-env run cli "ls -la /var/www/html/wp-content/plugins --allow-root"
-          cd ../../
+          npx wp-env run cli -- wp plugin list --allow-root
           echo "Current directory contents:"
           ls -la
 

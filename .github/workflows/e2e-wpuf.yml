@@ -30,32 +30,44 @@ jobs:
       # First checkout WPUF Lite (which contains the test suite)
       - name: Checkout WPUF Lite
         uses: actions/checkout@v4
+        with:
+          path: wp-user-frontend
 
       # Install WPUF Lite dependencies
       - name: Install wpuf-lite dependencies
+        working-directory: wp-user-frontend
         run: |
           composer install
           composer dump-autoload -o
           npm install
           grunt release --force
 
-      # Clone WPUF Pro alongside WPUF Lite
+      # Clone WPUF Pro
       - name: Checkout WPUF Pro
         uses: actions/checkout@v4
         with:
           repository: weDevsOfficial/wpuf-pro
           token: ${{ secrets.ACCESS_TOKEN }}
-          path: ../wpuf-pro
+          path: wpuf-pro
           ref: develop
 
       # Install WPUF Pro dependencies
       - name: Install wpuf-pro dependencies
-        working-directory: ../wpuf-pro
+        working-directory: wpuf-pro
         run: |
           composer install
           composer dump-autoload -o
           npm install --legacy-peer-deps
           grunt
+
+      # Create test directory and copy files
+      - name: Setup test environment
+        run: |
+          mkdir -p tests/e2e
+          cp -r wp-user-frontend/tests/e2e/* tests/e2e/
+          mkdir -p tests/e2e/wp-content/plugins
+          mv wp-user-frontend tests/e2e/wp-content/plugins/
+          mv wpuf-pro tests/e2e/wp-content/plugins/
 
       # Install test dependencies
       - name: Install E2E test dependencies
@@ -68,9 +80,11 @@ jobs:
           echo "Current directory:"
           pwd
           echo "\nDirectory structure:"
-          ls -la ..
+          ls -la
           echo "\nTest directory:"
           ls -la tests/e2e
+          echo "\nPlugins directory:"
+          ls -la tests/e2e/wp-content/plugins
           echo "\nwp-env.json content:"
           cat tests/e2e/.wp-env.json
 

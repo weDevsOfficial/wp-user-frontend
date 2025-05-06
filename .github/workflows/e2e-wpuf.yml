@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest    
     
     steps:
-      # Debug initial directory
-      - name: Check initial directory
+      # Debug directory
+      - name: Check directory
         run: |
           echo "Initial working directory: $(pwd)"
           echo "Directory contents:"
@@ -23,19 +23,31 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: "7.4"
+
+      # Debug directory
+      - name: Check directory
+        run: |
+          echo "Initial working directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la
       
       # Checkout WPUF Lite
       - name: Checkout WPUF Lite
         uses: actions/checkout@v4
 
-      # Debug after checkout
-      - name: Check directory after checkout
+      # Debug directory
+      - name: Check directory
         run: |
-          echo "Working directory: $(pwd)"
+          echo "Initial working directory: $(pwd)"
           echo "Directory contents:"
           ls -la
-          echo "\nTests directory contents:"
-          ls -la tests/e2e
+
+      # Debug directory
+      - name: Check directory
+        run: |
+          echo "Initial working directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la
 
       # Setup Node.js 18
       - name: Use desired version of NodeJS
@@ -43,6 +55,13 @@ jobs:
         with:
             node-version: 18
             cache: npm
+      
+      # Debug directory
+      - name: Check directory
+        run: |
+          echo "Initial working directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la
 
       # WPUF Lite dependencies
       - name: Install wpuf-lite dependencies
@@ -51,6 +70,13 @@ jobs:
             composer dump-autoload -o
             npm install
             grunt release --force
+
+      # Debug directory
+      - name: Check directory
+        run: |
+          echo "Initial working directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la
       
       # Clone WPUF Pro
       - name: Checkout WPUF Pro
@@ -60,6 +86,13 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
           path: 'tests/e2e/wp-content/plugins/wpuf-pro'
           ref: 'develop'
+
+      # Debug directory
+      - name: Check directory
+        run: |
+          echo "Initial working directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la
       
       # Copy WPUF Lite to WordPress plugins directory
       - name: Setup WordPress plugins
@@ -67,6 +100,13 @@ jobs:
           mkdir -p tests/e2e/wp-content/plugins
           cp -r . tests/e2e/wp-content/plugins/wp-user-frontend
           rm -rf tests/e2e/wp-content/plugins/wp-user-frontend/.git
+      
+      # Debug directory
+      - name: Check directory
+        run: |
+          echo "Initial working directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la
 
       # Debug WordPress plugins directory
       - name: Check WordPress plugins directory
@@ -79,6 +119,13 @@ jobs:
         working-directory: tests/e2e
         run: npm ci
 
+      # Debug directory
+      - name: Check directory
+        run: |
+          echo "Initial working directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la
+
       # Setup WordPress using wp-env
       - name: Setup WordPress 
         working-directory: tests/e2e
@@ -86,6 +133,13 @@ jobs:
           npx wp-env start
           sleep 5
           npx wp-env run cli "wp plugin list --allow-root"
+
+      # Debug directory
+      - name: Check directory
+        run: |
+          echo "Initial working directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la
       
       # Install Playwright Browsers
       - name: Get installed Playwright version
@@ -94,6 +148,14 @@ jobs:
           cd tests/e2e
           PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq -r '.dependencies["@playwright/test"].version')
           echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> "$GITHUB_ENV"
+      
+      # Debug directory
+      - name: Check directory
+        run: |
+          echo "Initial working directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la
+      
       - name: Cache playwright binaries
         id: playwright-cache
         uses: actions/cache@v4
@@ -102,12 +164,27 @@ jobs:
             key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
             restore-keys: ${{ runner.os }}-playwright-
 
+      # Debug directory
+      - name: Check directory
+        run: |
+          echo "Initial working directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la
+
       - name: Install Playwright browser binaries & OS dependencies
         id: pw-install
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: |
             cd tests/e2e
             npx playwright install chromium --with-deps
+      
+      # Debug directory
+      - name: Check directory
+        run: |
+          echo "Initial working directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la
+      
       # Run Playwright tests/e2e
       - name: Run Playwright tests/e2e
         run: |
@@ -118,6 +195,15 @@ jobs:
           CI: true
           ADMIN_USERNAME: ${{ secrets.QA_ADMIN_USERNAME }}
           ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          WPUF_LICENSE_KEY: ${{ secrets.WPUF_LICENSE_KEY }}
+
+      # Debug directory
+      - name: Check directory
+        run: |
+          echo "Initial working directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la
 
       # Archive test artifacts
       - name: Archive playwright artifacts (screenshots, HTML snapshots, videos)
@@ -129,6 +215,13 @@ jobs:
           if-no-files-found: ignore
           retention-days: 3
 
+      # Debug directory
+      - name: Check directory
+        run: |
+          echo "Initial working directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la
+
       # Publish HTML report to GH Pages
       - name: Publish HTML report to GH Pages
         uses: peaceiris/actions-gh-pages@v4
@@ -136,3 +229,10 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: tests/e2e/playwright-report
+
+      # Debug directory
+      - name: Check directory
+        run: |
+          echo "Initial working directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la

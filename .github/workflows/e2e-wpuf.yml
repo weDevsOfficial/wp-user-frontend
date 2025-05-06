@@ -124,6 +124,38 @@ jobs:
           echo "Current directory contents:"
           ls -la
 
+      # Get Playwright version
+      - name: Get installed Playwright version
+        run: |
+          PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq -r '.dependencies["@playwright/test"].version')
+          echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> "$GITHUB_ENV"
+          echo "Current directory contents:"
+          ls -la
+
+      # Cache Playwright binaries
+      - name: Cache playwright binaries
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
+          restore-keys: ${{ runner.os }}-playwright-
+
+      # Install Playwright
+      - name: Install Playwright browser binaries & OS dependencies
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: |
+          npx playwright install chromium --with-deps
+          echo "Current directory contents:"
+          ls -la
+
+      # Install Playwright dependencies
+      - name: Install Playwright Dependencies
+        run: |
+          npm install -D @playwright/test
+          echo "Current directory contents:"
+          ls -la
+
       # Run the tests
       - name: Run Playwright tests
         run: |

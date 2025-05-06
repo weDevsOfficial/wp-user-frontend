@@ -63,11 +63,28 @@ jobs:
       # Create test directory and copy files
       - name: Setup test environment
         run: |
+          # Create directory structure
           mkdir -p tests/e2e
-          cp -r wp-user-frontend/tests/e2e/* tests/e2e/
           mkdir -p tests/e2e/wp-content/plugins
+
+          # Copy test files
+          cp -r wp-user-frontend/tests/e2e/* tests/e2e/
+          cp wp-user-frontend/tests/e2e/.wp-env.json tests/e2e/
+
+          # Move plugins to correct location
           mv wp-user-frontend tests/e2e/wp-content/plugins/
           mv wpuf-pro tests/e2e/wp-content/plugins/
+
+          # Create wp-env.json if it doesn't exist
+          if [ ! -f tests/e2e/.wp-env.json ]; then
+            echo '{
+              "phpVersion": "7.4",
+              "plugins": [
+                "./wp-content/plugins/wp-user-frontend",
+                "./wp-content/plugins/wpuf-pro"
+              ]
+            }' > tests/e2e/.wp-env.json
+          fi
 
       # Install test dependencies
       - name: Install E2E test dependencies

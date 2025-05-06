@@ -27,44 +27,15 @@ jobs:
         with:
           node-version: 18
 
-      # First checkout your test suite
-      - name: Checkout Test Suite
-        uses: actions/checkout@v4
-        with:
-          path: tests/e2e
-
-      # Update .wp-env.json with correct paths
-      - name: Update wp-env.json
-        run: |
-          echo '{
-            "phpVersion": "7.4",
-            "plugins": [
-              "../../wp-content/plugins/wp-user-frontend",
-              "../../wp-content/plugins/wpuf-pro"
-            ],
-            "config": {
-              "WP_DEBUG": true,
-              "SCRIPT_DEBUG": true
-            }
-          }' > tests/e2e/.wp-env.json
-
-      # Install test dependencies
-      - name: Install E2E test dependencies
-        working-directory: tests/e2e
-        run: npm ci
-
-      # Checkout WPUF Lite
+      # First checkout WPUF Lite (main repo with tests)
       - name: Checkout WPUF Lite
         uses: actions/checkout@v4
         with:
-          repository: weDevsOfficial/wp-user-frontend
-          token: ${{ secrets.ACCESS_TOKEN }}
-          path: wp-content/plugins/wp-user-frontend
-          ref: develop
+          path: tests/e2e/wp-content/plugins/wp-user-frontend
 
       # Install WPUF Lite dependencies
       - name: Install wpuf-lite dependencies
-        working-directory: wp-content/plugins/wp-user-frontend
+        working-directory: tests/e2e/wp-content/plugins/wp-user-frontend
         run: |
           composer install
           composer dump-autoload -o
@@ -77,27 +48,34 @@ jobs:
         with:
           repository: weDevsOfficial/wpuf-pro
           token: ${{ secrets.ACCESS_TOKEN }}
-          path: wp-content/plugins/wpuf-pro
+          path: tests/e2e/wp-content/plugins/wpuf-pro
           ref: develop
 
       # Install WPUF Pro dependencies
       - name: Install wpuf-pro dependencies
-        working-directory: wp-content/plugins/wpuf-pro
+        working-directory: tests/e2e/wp-content/plugins/wpuf-pro
         run: |
           composer install
           composer dump-autoload -o
           npm install --legacy-peer-deps
           grunt
 
-      # Debug configuration before wp-env
-      - name: Debug pre-wp-env
+      # Copy test files to tests/e2e
+      - name: Setup test environment
         run: |
-          echo "Directory structure:"
-          ls -la
-          echo "\nTest directory contents:"
-          ls -la tests/e2e/
-          echo "\nPlugin directory contents:"
-          ls -la wp-content/plugins/
+          cp -r tests/e2e/wp-content/plugins/wp-user-frontend/tests/e2e/* tests/e2e/
+          rm -rf tests/e2e/wp-content/plugins/wp-user-frontend/tests/e2e
+
+      # Install test dependencies
+      - name: Install E2E test dependencies
+        working-directory: tests/e2e
+        run: npm ci
+
+      # Debug directory structure
+      - name: Debug directory structure
+        run: |
+          echo "Current structure:"
+          tree tests/e2e || true
           echo "\nContent of .wp-env.json:"
           cat tests/e2e/.wp-env.json
 

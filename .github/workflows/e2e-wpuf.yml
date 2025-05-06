@@ -45,7 +45,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
             node-version: 18
-            cache: npm
 
       # Debug initial directory
       - name: Check directory
@@ -142,14 +141,14 @@ jobs:
         working-directory: tests/e2e
         run: |
           echo "Active plugins:"
-          npx wp-env run cli "wp plugin list --status=deactive --allow-root"
+          npx wp-env run cli "wp plugin list --status=inactive --allow-root"
 
       # Debug initial directory
       - name: Check directory
         run: |
           echo "Initial working directory: $(pwd)"
           echo "Directory contents:"
-          ls -la1
+          ls -la
 
       # Run the tests
       - name: Run Playwright tests

@@ -22,20 +22,26 @@ jobs:
         with:
           php-version: "7.4"
 
-      # First checkout WPUF Lite (current repo)
-      - name: Checkout WPUF Lite
-        uses: actions/checkout@v4
-        with:
-          path: wp-content/plugins/wp-user-frontend
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
+      # Create directory structure
+      - name: Create directory structure
+        run: |
+          mkdir -p tests/e2e
+          mkdir -p tests/e2e/wp-content/plugins
+
+      # Checkout WPUF Lite (current repo)
+      - name: Checkout WPUF Lite
+        uses: actions/checkout@v4
+        with:
+          path: tests/e2e/wp-content/plugins/wp-user-frontend
+
       # Install WPUF Lite dependencies
       - name: Install wpuf-lite dependencies
-        working-directory: wp-content/plugins/wp-user-frontend
+        working-directory: tests/e2e/wp-content/plugins/wp-user-frontend
         run: |
           composer install
           composer dump-autoload -o
@@ -48,23 +54,22 @@ jobs:
         with:
           repository: weDevsOfficial/wpuf-pro
           token: ${{ secrets.ACCESS_TOKEN }}
-          path: wp-content/plugins/wpuf-pro
+          path: tests/e2e/wp-content/plugins/wpuf-pro
           ref: develop
 
       # Install WPUF Pro dependencies
       - name: Install wpuf-pro dependencies
-        working-directory: wp-content/plugins/wpuf-pro
+        working-directory: tests/e2e/wp-content/plugins/wpuf-pro
         run: |
           composer install
           composer dump-autoload -o
           npm install --legacy-peer-deps
           grunt
 
-      # Copy test files to correct location
+      # Copy test files
       - name: Copy test files
         run: |
-          mkdir -p tests/e2e
-          cp -r wp-content/plugins/wp-user-frontend/tests/e2e/* tests/e2e/
+          cp -r tests/e2e/wp-content/plugins/wp-user-frontend/tests/e2e/* tests/e2e/
 
       # Install test dependencies
       - name: Install E2E test dependencies
@@ -75,6 +80,15 @@ jobs:
       - name: Setup WordPress 
         working-directory: tests/e2e
         run: npm run wp-env:start
+
+      # Debug WordPress installation
+      - name: Debug WordPress installation
+        working-directory: tests/e2e
+        run: |
+          echo "WordPress plugin directory contents:"
+          ls -la .wp-env/*/wp-content/plugins/
+          echo "Plugin status:"
+          npm run wp-env run cli "wp plugin list"
 
       # Get Playwright version
       - name: Get installed Playwright version
@@ -126,15 +140,3 @@ jobs:
           publish_dir: tests/e2e/playwright-report
           publish_branch: gh-pages
           force_orphan: true
-
-      # Debug step - if needed
-      - name: Debug directory structure
-        if: failure()
-        run: |
-          echo "Current directory structure:"
-          pwd
-          ls -la
-          echo "WP-Content plugins directory:"
-          ls -la wp-content/plugins/
-          echo "Tests directory:"
-          ls -la tests/e2e/

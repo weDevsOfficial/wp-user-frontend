@@ -27,11 +27,40 @@ jobs:
         with:
           node-version: 18
 
-      # First checkout WPUF Lite into plugins directory
+      # First checkout your test suite
+      - name: Checkout Test Suite
+        uses: actions/checkout@v4
+        with:
+          path: tests/e2e
+
+      # Update .wp-env.json with correct paths
+      - name: Update wp-env.json
+        run: |
+          echo '{
+            "phpVersion": "7.4",
+            "plugins": [
+              "../../wp-content/plugins/wp-user-frontend",
+              "../../wp-content/plugins/wpuf-pro"
+            ],
+            "config": {
+              "WP_DEBUG": true,
+              "SCRIPT_DEBUG": true
+            }
+          }' > tests/e2e/.wp-env.json
+
+      # Install test dependencies
+      - name: Install E2E test dependencies
+        working-directory: tests/e2e
+        run: npm ci
+
+      # Checkout WPUF Lite
       - name: Checkout WPUF Lite
         uses: actions/checkout@v4
         with:
+          repository: weDevsOfficial/wp-user-frontend
+          token: ${{ secrets.ACCESS_TOKEN }}
           path: wp-content/plugins/wp-user-frontend
+          ref: develop
 
       # Install WPUF Lite dependencies
       - name: Install wpuf-lite dependencies
@@ -60,44 +89,24 @@ jobs:
           npm install --legacy-peer-deps
           grunt
 
-      # Create test directory and copy test files
-      - name: Setup test environment
-        run: |
-          mkdir -p tests/e2e
-          cp -r wp-content/plugins/wp-user-frontend/tests/e2e/* tests/e2e/
-          # Create wp-env.json in tests/e2e
-          echo '{
-            "phpVersion": "7.4",
-            "plugins": [
-              "../wp-content/plugins/wp-user-frontend",
-              "../wp-content/plugins/wpuf-pro"
-            ],
-            "config": {
-              "WP_DEBUG": true,
-              "SCRIPT_DEBUG": true
-            }
-          }' > tests/e2e/.wp-env.json
-
-      # Install test dependencies
-      - name: Install E2E test dependencies
-        working-directory: tests/e2e
-        run: npm ci
-
-      # Debug directory structure and wp-env.json
-      - name: Debug configuration
+      # Debug configuration before wp-env
+      - name: Debug pre-wp-env
         run: |
           echo "Directory structure:"
-          tree -L 3 || true
-          echo "\nContent of .wp-env.json:"
-          cat tests/e2e/.wp-env.json
+          ls -la
+          echo "\nTest directory contents:"
+          ls -la tests/e2e/
           echo "\nPlugin directory contents:"
           ls -la wp-content/plugins/
+          echo "\nContent of .wp-env.json:"
+          cat tests/e2e/.wp-env.json
 
       # Setup WordPress
       - name: Setup WordPress 
         working-directory: tests/e2e
         run: |
           npm run wp-env:start
+          sleep 5
           npm run wp-env run cli "wp plugin list"
 
       # Get Playwright version
@@ -128,7 +137,7 @@ jobs:
       - name: Run Playwright tests
         working-directory: tests/e2e
         run: |
-          npx playwright test e2eMain.spec.ts --project=chromium
+          DEBUG=pw:api npx playwright test e2eMain.spec.ts --project=chromium
         continue-on-error: true
 
       # Archive test artifacts

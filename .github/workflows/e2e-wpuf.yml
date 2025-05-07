@@ -1,213 +1,112 @@
-name: WP User Frontend E2E Tests
+name: Playwright tests/e2e
+
+
 on:
   workflow_dispatch:
+  # schedule:
+  #   - cron: "0 1 * * *"  # Run workflow at 8:00 AM UTC +6 every day
   push:
     branches: [develop]
   pull_request:
     branches: [develop]
 
-env:
-  CI: true
-  BASE_URL: ${{ secrets.QA_BASE_URL }}
-  ADMIN_USERNAME: ${{ secrets.QA_ADMIN_USERNAME }}
-  ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
-  ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-  WPUF_PRO_KEY: ${{ secrets.WPUF_PRO_KEY }}
-
 jobs:
   test:
-    timeout-minutes: 30
+    timeout-minutes: 5
     runs-on: ubuntu-latest    
     
     steps:
-      # Debug initial directory
-      - name: Check directory
-        run: |
-          echo "Initial working directory: $(pwd)"
-          echo "Directory contents:"
-          ls -la
-      
       # Setup PHP
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: "7.4"
-
-      # Debug initial directory
-      - name: Check directory
-        run: |
-          echo "Initial working directory: $(pwd)"
-          echo "Directory contents:"
-          ls -la
       
-      # Setup Node.js 18
+      # Checkout WP-User-Frontend repo
+      - name: Checkout testing repo
+        uses: actions/checkout@v4
+
+      # Use Node.js 18
       - name: Use desired version of NodeJS
         uses: actions/setup-node@v4
         with:
             node-version: 18
+            cache: npm
 
-      # Debug initial directory
-      - name: Check directory
+      # Build WP-User-Frontend
+      - name: Build WP-User-Frontend
         run: |
-          echo "Initial working directory: $(pwd)"
-          echo "Directory contents:"
-          ls -la
-
-    # First checkout test suite
-      - name: Checkout Test Suite
-        run: |
-          # Clone repository
-          git clone --depth 1 https://github.com/Rubaiyat-E-Mohammad/wp-user-frontend.git temp
+            composer install --no-dev --prefer-dist
+            composer dump-autoload -o
+            npm i
+            grunt release --force
+            grunt
           
-          # Copy only needed files
-          cp temp/tests/e2e/package.json .
-          cp temp/tests/e2e/package-lock.json .
-          cp temp/tests/e2e/.wp-env.json .
-          cp temp/tests/e2e/playwright.config.ts .
-          cp -r temp/tests/e2e/tests .
-          cp -r temp/tests/e2e/pages .
-          cp -r temp/tests/e2e/utils .
-          
-          # Cleanup
-          rm -rf temp
-          
-          # Debug
-          echo "Current directory contents:"
-          ls -la
+            
 
-      # Install test dependencies and setup WordPress
-      - name: Setup WordPress Environment
+      # Install test dependencies
+      - name: Install test dependencies
+        working-directory: tests/e2e
         run: |
-          ls -la
-          npm ci
-          npx wp-env start
-          sleep 20
-          echo "Current directory contents:"
-          ls -la
+            npm ci
 
-      # Debug WordPress installation
-      - name: WordPress setup
+      # Setup WordPress using wp-env
+      - name: Setup WordPress 
         run: |
-          echo "WordPress installation:"
-          npx wp-env run cli -- wp core version --allow-root
-          echo "\nPlugin directory:"
-          npx wp-env run cli -- wp plugin list --allow-root
-          echo "Current directory contents:"
-          ls -la
+          cd tests/e2e 
+          npm run wp-env start
 
-      # Now install WPUF Lite into WordPress
-      - name: Install WPUF Lite
+      # Install Playwright Browsers
+      - name: Get installed Playwright version
+        id: playwright-version
         run: |
-          git clone https://github.com/weDevsOfficial/wp-user-frontend.git .wp-env/WordPress/wp-content/plugins/wp-user-frontend
-          cd .wp-env/WordPress/wp-content/plugins/wp-user-frontend
-          composer install
-          composer dump-autoload -o
-          npm install
-          grunt release --force
-          grunt
-          ls -la
-          cd ../../../../../
-          echo "Current directory contents:"
-          ls -la
-          echo "wp directory contents:"
-          ls -la .wp-env/
+          cd tests/e2e
+          PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq -r '.dependencies["@playwright/test"].version')
+          echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> "$GITHUB_ENV"
 
-      # Install WPUF Pro
-      - name: Install WPUF Pro
-        run: |
-          git clone https://${{ secrets.ACCESS_TOKEN }}@github.com/weDevsOfficial/wpuf-pro.git .wp-env/WordPress/wp-content/plugins/wpuf-pro
-          cd .wp-env/WordPress/wp-content/plugins/wpuf-pro
-          composer install
-          composer dump-autoload -o
-          npm install --legacy-peer-deps
-          grunt
-          ls -la
-          cd ../../../../../
-          echo "Current directory contents:"
-          ls -la
-          echo "wp directory contents:"
-          ls -la .wp-env/
-      
-      - name: wpenv contents
-        run: |
-          echo "wp directory contents:"
-          ls -la .wp-env/
-          echo "WordPress directory contents:"
-          ls -la .wp-env/WordPress/
-          echo "WordPress plugins directory contents:"
-          ls -la .wp-env/WordPress/wp-content/plugins/
-          echo "Current directory contents:"
-          ls -la
 
-      # # Get Playwright version
-      # - name: Get installed Playwright version
-      #   run: |
-      #     PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq -r '.dependencies["@playwright/test"].version')
-      #     echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> "$GITHUB_ENV"
-      #     echo "Current directory contents:"
-      #     ls -la
+      - name: Cache playwright binaries
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+            path: |
+                ~/.cache/ms-playwright
+            key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
+            restore-keys: |
+                ${{ runner.os }}-playwright-
 
-      # # Cache Playwright binaries
-      # - name: Cache playwright binaries
-      #   id: playwright-cache
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: ~/.cache/ms-playwright
-      #     key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
-      #     restore-keys: ${{ runner.os }}-playwright-
-
-      - name: Verify and activate plugins
-        run: |
-          echo "Plugin status before activation:"
-          npx wp-env run cli -- wp plugin list --allow-root
-          
-          echo "\nActivating plugins:"
-          npx wp-env run cli -- wp plugin activate wp-user-frontend wpuf-pro --allow-root
-          
-          echo "\nVerifying WordPress and plugin setup:"
-          npx wp-env run cli -- wp core version --allow-root
-          npx wp-env run cli -- wp plugin list --allow-root
-          
-          echo "\nPlugin directory contents:"
-          ls -la .wp-env/WordPress/wp-content/plugins/
-
-      # Install Playwright
       - name: Install Playwright browser binaries & OS dependencies
+        id: pw-install
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: |
-          echo "WordPress plugins directory contents:"
-          ls -la .wp-env/WordPress/wp-content/plugins/
-          npx playwright install chromium --with-deps
+            cd tests/e2e
+            npx playwright install chromium --with-deps
 
-      # Run the tests
-      - name: Run Playwright tests
+      # Run Playwright tests/e2e
+      - name: Run Playwright tests/e2e
         run: |
+          cd tests/e2e
           npx playwright test e2eMain.spec.ts --project=chromium
-          echo "Current directory contents:"
-          ls -la
-        continue-on-error: true
 
-      # Archive test artifacts
-      - name: Archive playwright artifacts
-        if: always()
+        env:
+          BASE_URL: ${{ secrets.QA_BASE_URL }}
+          CI: true
+          ADMIN_USERNAME: ${{ secrets.QA_ADMIN_USERNAME }}
+          ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
+
+      # Archive Playwright artifacts (screenshots, HTML snapshots, videos)
+      - name: Archive playwright artifacts (screenshots, HTML snapshots, videos)
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: playwright-report
-          path: playwright-report
+          path: tests/e2e/playwright-report
           if-no-files-found: ignore
           retention-days: 3
 
-      # Debug initial directory
-      - name: Check initial directory
-        run: |
-          echo "Initial working directory: $(pwd)"
-          echo "Directory contents:"
-          ls -la
-
-      # Publish HTML report
       - name: Publish HTML report to GH Pages
-        if: always()
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: playwright-report
           publish_branch: gh-pages
+          publish_dir: tests/e2e/playwright-report

@@ -22,7 +22,7 @@ export class RegistrationFormsPage extends Base {
     /************************************************/
 
     //Registration forms page - only WPUF-Lite activated
-    async validateRegistrationFormsProFeatureLite() {
+    async validateRegistrationFormsProFeature() {
         // Visit Registration forms page
         const wpufRegistrationFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
         await Promise.all([
@@ -54,13 +54,17 @@ export class RegistrationFormsPage extends Base {
             this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }),
         ]);
 
-        //Validate Shortcode
-        const validateShortcode = await this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.validateShortcode);
-        expect(validateShortcode).toBeTruthy();
+        let storeShortcode: String = '';
 
+        //Validate Shortcode
+        const validateShortcode = await this.page.isVisible(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.validateShortcode);
+        if (validateShortcode == true) {
+            storeShortcode = await this.page.innerText(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.validateShortcode);
+        }else {
         //Copy Shortcode
-        const storeShortcode: String | null = await this.page.innerText(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.storeShortcode);
+        storeShortcode = await this.page.innerText(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.storeShortcode);
         console.log(storeShortcode);
+        }
 
         //Visit Pages
         const visitPagesAdminMenuOption = Urls.baseUrl + '/wp-admin/edit.php?post_type=page';
@@ -73,19 +77,15 @@ export class RegistrationFormsPage extends Base {
         await this.page.reload();
 
         // Check if the Choose Pattern Modal is visible
-        let closePatternModal = this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closePatternModal);
         try {
-            await closePatternModal.waitFor({ state: 'visible', timeout: 5000 });
-            await closePatternModal.click({ timeout: 5000 });
+            await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closePatternModal);
         } catch (error) {
             console.log('Pattern Modal not visible!');
         }
 
         // Check if the Welcome Modal is visible
-        let closeWelcomeModal = this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closeWelcomeModal);
         try {
-            await closeWelcomeModal.waitFor({ state: 'visible', timeout: 2000 });
-            await closeWelcomeModal.click({ timeout: 5000 });
+            await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closeWelcomeModal);
         } catch (error) {
             console.log('Welcome Modal not visible!');
         }

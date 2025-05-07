@@ -5,23 +5,21 @@
   "main": "index.js",
   "scripts": {
     "wp-env": "wp-env",
-    "wp-env:start": "wp-env start",
-    "wp-env:stop": "wp-env stop",
-    "test": "CI=false npx playwright test e2eMain.spec.ts --headed",
-    "test:ci": "npx playwright test e2eMain.spec.ts"
+    "test": "CI=false npx playwright test e2eMain.spec.ts --headed"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "@faker-js/faker": "^9.4.0",
     "@playwright/test": "^1.50.1",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^18.19.79",
-    "@wordpress/env": "^9.4.0",
-    "@wordpress/scripts": "^26.0.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.3",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@wordpress/env": "^9.4.0",
     "dotenv": "^16.4.5",
     "js-yaml": "^4.0.9"
   }

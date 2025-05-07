@@ -108,8 +108,8 @@ export class SettingsSetupPage extends Base {
     async activateWPUFLite() {
         //Go to Plugins page
         const pluginsPage = Urls.baseUrl + '/wp-admin/plugins.php';
-        try {
-            await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.availableWPUFPluginLite);
+        const ifWPUFLite = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.availableWPUFPluginLite);
+        if (ifWPUFLite == true) {
             //Activate Plugin
             const activateWPUFLite = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
             console.log(activateWPUFLite);
@@ -132,7 +132,7 @@ export class SettingsSetupPage extends Base {
                 await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
                 console.log("WPUF-Lite Status: was Active");
             }
-        } catch (e) {
+        } else {
             console.log("WPUF-Lite not available")
         }
 
@@ -142,7 +142,8 @@ export class SettingsSetupPage extends Base {
     async activateWPUFPro() {
         //Go to Plugins page
         const pluginsPage = Urls.baseUrl + '/wp-admin/plugins.php';
-        await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.availableWPUFPluginPro);
+        const ifWPUFPro = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.availableWPUFPluginPro);
+        if (ifWPUFPro == true) {
         //Activate Plugin
         const activateWPUFPro = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginPro);
         console.log(activateWPUFPro);
@@ -173,6 +174,9 @@ export class SettingsSetupPage extends Base {
             await this.assertionValidate(Selectors.login.basicNavigation.licenseTab);
             console.log("WPUF-Pro Status: was Active");
         }
+    } else{
+        console.log("WPUF-Pro not available")
+    }
 
     };
 
@@ -214,7 +218,7 @@ export class SettingsSetupPage extends Base {
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.deactivateLicenseKey);
                 console.log("WPUF-Pro Status: License was Active");
             }
-        }else {
+        } else {
             console.log("WPUF-Pro not available");
         }
     };

@@ -32,7 +32,7 @@ test.describe('Registration-Forms @Lite :-->', () => {
         const RegistrationFormsLite = new RegistrationFormsPage(page);
         //Basic login
         await BasicLogin.basicLoginAndPluginVisit(Users.adminUsername, Users.adminPassword);
-        await RegistrationFormsLite.validateRegistrationFormsProFeatureLite();
+        await RegistrationFormsLite.validateRegistrationFormsProFeature();
 
     });
 

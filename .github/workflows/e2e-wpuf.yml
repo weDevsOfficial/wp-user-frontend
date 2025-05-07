@@ -156,14 +156,27 @@ jobs:
       #     key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
       #     restore-keys: ${{ runner.os }}-playwright-
 
+      - name: Verify and activate plugins
+        run: |
+          echo "Plugin status before activation:"
+          npx wp-env run cli -- wp plugin list --allow-root
+          
+          echo "\nActivating plugins:"
+          npx wp-env run cli -- wp plugin activate wp-user-frontend wpuf-pro --allow-root
+          
+          echo "\nVerifying WordPress and plugin setup:"
+          npx wp-env run cli -- wp core version --allow-root
+          npx wp-env run cli -- wp plugin list --allow-root
+          
+          echo "\nPlugin directory contents:"
+          ls -la .wp-env/WordPress/wp-content/plugins/
+
       # Install Playwright
       - name: Install Playwright browser binaries & OS dependencies
         run: |
-          echo "wp directory contents:"
-          ls -la .wp-env/wordpress/
+          echo "WordPress plugins directory contents:"
+          ls -la .wp-env/WordPress/wp-content/plugins/
           npx playwright install chromium --with-deps
-          echo "Current directory contents:"
-          ls -la
 
       # Run the tests
       - name: Run Playwright tests

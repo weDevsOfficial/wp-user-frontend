@@ -94,8 +94,6 @@ jobs:
           npx wp-env run cli -- wp plugin list --allow-root
           echo "Current directory contents:"
           ls -la
-          echo "wp directory contents:"
-          ls -la .wp-env/
 
       # Now install WPUF Lite into WordPress
       - name: Install WPUF Lite
@@ -129,6 +127,17 @@ jobs:
           ls -la
           echo "wp directory contents:"
           ls -la .wp-env/
+      
+      - name: wpenv contents
+        run: |
+          echo "wp directory contents:"
+          ls -la .wp-env/
+          echo "WordPress directory contents:"
+          ls -la .wp-env/WordPress/
+          echo "WordPress plugins directory contents:"
+          ls -la .wp-env/WordPress/wp-content/plugins/
+          echo "Current directory contents:"
+          ls -la
 
       # # Get Playwright version
       # - name: Get installed Playwright version

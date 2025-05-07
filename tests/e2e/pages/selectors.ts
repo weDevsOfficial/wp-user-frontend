@@ -540,19 +540,19 @@ export const Selectors = {
 
             // Registration Form
             // First Name
-            rfFirstName: '//input[@type="reg_fname"]',
+            rfFirstName: '//input[@id="wpuf-user_fname"]',
             // Last Name
-            rfLastName: '//input[@type="reg_lname"]',
+            rfLastName: '//input[@id="wpuf-user_lname"]',
             // Email
-            rfEmail: '//input[@type="email"]',
+            rfEmail: '//input[@id="wpuf-user_email"]',
             // Username
             rfUserName: '//input[@id="wpuf-user_login"]',
             // Password
-            rfPassword: '(//input[@type="password"])[1]',
+            rfPassword: '//input[@id="wpuf-user_pass1"]',
             // Confirm Password
-            rfConfirmPassword: '(//input[@type="password"])[2]',
+            rfConfirmPassword: '//input[@id="wpuf-user_pass2"]',
             // Register button
-            rfRegisterButton: '//input[@type="submit"]',
+            rfRegisterButton: '//input[@id="wp-submit"]',
 
             // Validate Registered
             // Logout button

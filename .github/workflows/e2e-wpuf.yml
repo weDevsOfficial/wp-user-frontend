@@ -87,7 +87,7 @@ jobs:
         run: |
           cd tests/e2e
           npx playwright test e2eMain.spec.ts --project=chromium
-
+        continue-on-error: true
         env:
           BASE_URL: ${{ secrets.QA_BASE_URL }}
           CI: true

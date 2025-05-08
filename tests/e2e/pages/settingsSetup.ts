@@ -4,6 +4,7 @@ import { Dialog, expect, Page } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Urls } from '../utils/testData';
 import { Base } from './base';
+import path from 'path';
 export class SettingsSetupPage extends Base {
 
     constructor(page: Page) {
@@ -209,16 +210,20 @@ export class SettingsSetupPage extends Base {
             const activateWPUFPro = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickActivateLicense);
             console.log(activateWPUFPro);
             if (activateWPUFPro == true) {
-                await this.page.screenshot({ path: 'screenshot1.png', fullPage: true });
+                const screenshotPath1 = path.resolve('test-results', `screenshot1.png`);
+                await this.page.screenshot({ path: screenshotPath1, fullPage: true });
                 await this.page.waitForTimeout(2000);
                 await this.validateAndFillStrings(Selectors.settingsSetup.pluginStatusCheck.fillLicenseKey, process.env.WPUF_PRO_LICENSE_KEY?.toString() || '');
                 await this.page.waitForTimeout(2000);
-                await this.page.screenshot({ path: 'screenshot2.png', fullPage: true });
+                const screenshotPath2 = path.resolve('test-results', `screenshot2.png`);
+                await this.page.screenshot({ path: screenshotPath2, fullPage: true });
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.submitLicenseKey);
                 await this.page.waitForTimeout(3000);
-                await this.page.screenshot({ path: 'screenshot3.png', fullPage: true });
+                const screenshotPath3 = path.resolve('test-results', `screenshot3.png`);
+                await this.page.screenshot({ path: screenshotPath3, fullPage: true });
                 await this.page.reload();
-                await this.page.screenshot({ path: 'screenshot4.png', fullPage: true });
+                const screenshotPath4 = path.resolve('test-results', `screenshot4.png`);
+                await this.page.screenshot({ path: screenshotPath4, fullPage: true });
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.activationRemaining);
                 console.log("WPUF-Pro Status: License is Activated");
             }

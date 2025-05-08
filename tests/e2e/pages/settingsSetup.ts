@@ -109,6 +109,11 @@ export class SettingsSetupPage extends Base {
         //Go to Plugins page
         const pluginsPage = Urls.baseUrl + '/wp-admin/plugins.php';
         const ifWPUFLite = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.availableWPUFPluginLite);
+        await this.page.waitForTimeout(3000);
+        await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow1);
+        await this.page.waitForTimeout(2000);
+        await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow2);
+        await this.page.waitForTimeout(1000);
         if (ifWPUFLite == true) {
             //Activate Plugin
             const activateWPUFLite = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
@@ -123,16 +128,12 @@ export class SettingsSetupPage extends Base {
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginDeactivate);
 
                 await this.page.goto(Urls.baseUrl + '/wp-admin/');
-                await this.page.waitForTimeout(3000);
-                await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
                 await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
                 console.log("WPUF-Lite Status: is Activated");
             }
 
             else {
                 await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
-                await this.page.waitForTimeout(3000);
-                await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
                 console.log("WPUF-Lite Status: was Active");
             }
         } else {
@@ -176,8 +177,6 @@ export class SettingsSetupPage extends Base {
                 await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
                 await this.assertionValidate(Selectors.login.basicNavigation.licenseTab);
                 await this.page.goto(Urls.baseUrl + '/wp-admin/');
-                await this.page.waitForTimeout(3000);
-                await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
                 const dialogHandler = async (dialog: Dialog) => {
                     if (dialog.type() === 'confirm') {
                         await dialog.accept();
@@ -215,10 +214,6 @@ export class SettingsSetupPage extends Base {
                 await this.page.waitForTimeout(3000);
                 await this.page.reload();
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.activationRemaining);
-                console.log("WPUF-Pro License Activation Line 7 passed");
-                await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
-                console.log("WPUF-Pro License Activation Line 8 passed");
-                await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
                 console.log("WPUF-Pro Status: License is Activated");
             }
             else {
@@ -434,7 +429,7 @@ export class SettingsSetupPage extends Base {
         ]);
         await this.page.reload();
         await this.validateAndClick(Selectors.resetWordpreseSite.reActivateTheme);
-        // await this.validateAndClick(Selectors.resetWordpreseSite.reActivatePlugins);
+        await this.validateAndClick(Selectors.resetWordpreseSite.reActivatePlugins);
         await this.validateAndFillStrings(Selectors.resetWordpreseSite.wpResetInputBox, 'reset');
         await this.validateAndClick(Selectors.resetWordpreseSite.wpResetSubmitButton);
         await this.validateAndClick(Selectors.resetWordpreseSite.wpResetConfirmWordpressReset);

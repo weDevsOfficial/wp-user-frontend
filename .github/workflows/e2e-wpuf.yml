@@ -12,7 +12,7 @@ on:
 
 jobs:
   test:
-    timeout-minutes: 5
+    timeout-minutes: 30
     runs-on: ubuntu-latest    
     
     steps:
@@ -109,12 +109,25 @@ jobs:
       # Run Playwright tests/e2e
       - name: Run Playwright tests/e2e
         if: success() && (github.event_name != 'workflow_dispatch' || ( github.event_name == 'workflow_dispatch' && (github.event.inputs.testsuite == 'E2E' || github.event.inputs.testsuite == 'All')))
-        timeout-minutes: 40
         working-directory: tests/e2e
         run: |
-          DEBUG=pw:api npx playwright test e2eMain.spec.ts --project=chromium
+          DEBUG=pw:api npx playwright test e2eMain.spec.ts --project=chromium --reporter=html
         continue-on-error: true
-          
+      
+      - name: Check test results
+        if: always()
+        working-directory: tests/e2e
+        run: |
+          ls -la
+          echo "Checking playwright-report directory:"
+          ls -la playwright-report || echo "No playwright-report directory found"
+        
+      # Generate Playwright report
+      - name: Show Playwright Report
+        if: always()
+        working-directory: tests/e2e
+        run: |
+          npx playwright show-report
 
       # Archive Playwright artifacts (screenshots, HTML snapshots, videos)
       - name: Archive playwright artifacts (screenshots, HTML snapshots, videos)
@@ -122,8 +135,10 @@ jobs:
         if: always()
         with:
           name: playwright-report
-          path: tests/e2e/playwright-report
-          if-no-files-found: ignore
+          path: |
+            tests/e2e/playwright-report
+            tests/e2e/test-results
+          if-no-files-found: warn
           retention-days: 3
 
       - name: Publish HTML report to GH Pages

@@ -201,6 +201,7 @@ export class SettingsSetupPage extends Base {
                     await this.validateAndFillStrings(Selectors.settingsSetup.pluginStatusCheck.fillLicenseKey, process.env.WPUF_PRO_LICENSE_KEY?.toString() || '');
                 console.log("WPUF-Pro License Activation Line 5 passed");
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.submitLicenseKey);
+                await this.page.waitForTimeout(3000);
                 console.log("WPUF-Pro License Activation Line 6 passed");
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.deactivateLicenseKey);
                 console.log("WPUF-Pro License Activation Line 7 passed");

@@ -32,16 +32,34 @@ jobs:
         with:
             node-version: 18
             cache: npm
+       
+      # Clone wpuf-pro
+      - name: Clone wpuf-pro
+        id: clone-wpuf-pro
+        uses: actions/checkout@v4
+        with:
+          repository: weDevsOfficial/wpuf-pro
+          token: ${{ secrets.ACCESS_TOKEN }}
+          path: plugins/wpuf-pro
+          ref: develop
 
-      # Build WP-User-Frontend
-      - name: Build WP-User-Frontend
+      # Build wpuf-pro
+      - name: Build WPUF-pro
+        working-directory: plugins/wpuf-pro
         run: |
-            composer install --no-dev --prefer-dist
-            composer dump-autoload -o
-            npm i
-            grunt release --force
-            grunt
-          
+          composer i --no-dev -o
+          composer update --no-dev -o
+          npm ci || npm i
+          grunt  
+       
+       # Build wp-user-frontend
+      - name: Build wpuf-lite
+        run: |
+          composer i --no-dev -o
+          composer update --no-dev -o
+          npm ci || npm i
+          grunt release --force
+          grunt
             
 
       # Install test dependencies
@@ -50,19 +68,25 @@ jobs:
         run: |
             npm ci
 
-      # Setup WordPress using wp-env
-      - name: Setup WordPress 
-        run: |
-          cd tests/e2e 
-          npm run wp-env start
+      # Start wordpress environment
+      - name: Start WordPress Env
+        id: wp-env
+        if: success()
+        uses: nick-fields/retry@v3
+        with:
+            timeout_minutes: 4
+            max_attempts: 2
+            retry_on: error
+            command: |
+              cd tests/e2e
+              npm run wp-env start
 
       # Install Playwright Browsers
       - name: Get installed Playwright version
         id: playwright-version
+        working-directory: tests/e2e
         run: |
-          cd tests/e2e
-          PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq -r '.dependencies["@playwright/test"].version')
-          echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> "$GITHUB_ENV"
+          PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq -r '.dependencies["@playwright/test"].version') echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> "$GITHUB_ENV"
 
 
       - name: Cache playwright binaries
@@ -78,21 +102,19 @@ jobs:
       - name: Install Playwright browser binaries & OS dependencies
         id: pw-install
         if: steps.playwright-cache.outputs.cache-hit != 'true'
+        working-directory: tests/e2e
         run: |
-            cd tests/e2e
             npx playwright install chromium --with-deps
 
       # Run Playwright tests/e2e
       - name: Run Playwright tests/e2e
+        if: success() && (github.event_name != 'workflow_dispatch' || ( github.event_name == 'workflow_dispatch' && (github.event.inputs.testsuite == 'E2E' || github.event.inputs.testsuite == 'All')))
+        timeout-minutes: 40
+        working-directory: tests/e2e
         run: |
-          cd tests/e2e
           DEBUG=pw:api npx playwright test e2eMain.spec.ts --project=chromium
         continue-on-error: true
-        env:
-          BASE_URL: ${{ secrets.QA_BASE_URL }}
-          CI: true
-          ADMIN_USERNAME: ${{ secrets.QA_ADMIN_USERNAME }}
-          ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
+          
 
       # Archive Playwright artifacts (screenshots, HTML snapshots, videos)
       - name: Archive playwright artifacts (screenshots, HTML snapshots, videos)

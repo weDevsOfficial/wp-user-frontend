@@ -57,6 +57,7 @@ export const Selectors = {
             fillLicenseKey: '//input[@placeholder="Enter your license key to activate"]',
             submitLicenseKey: '//div[@class="license-input-key"]/following-sibling::button[1]',
             deactivateLicenseKey: '//button[normalize-space(text())="Deactivate License"]',
+            activationRemaining: '//h3[normalize-space()="Activations Remaining"]',
             
         },
 

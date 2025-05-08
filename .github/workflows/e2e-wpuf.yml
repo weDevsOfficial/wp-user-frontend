@@ -113,14 +113,6 @@ jobs:
         run: |
           DEBUG=pw:api npx playwright test e2eMain.spec.ts --project=chromium --reporter=html
         continue-on-error: true
-      
-      - name: Check test results
-        if: always()
-        working-directory: tests/e2e
-        run: |
-          ls -la
-          echo "Checking playwright-report directory:"
-          ls -la playwright-report || echo "No playwright-report directory found"
         
       # Generate Playwright report
       - name: Show Playwright Report
@@ -141,9 +133,9 @@ jobs:
           if-no-files-found: warn
           retention-days: 3
 
-      - name: Publish HTML report to GH Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: tests/e2e/playwright-report
+      # - name: Publish HTML report to GH Pages
+      #   uses: peaceiris/actions-gh-pages@v4
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     publish_branch: gh-pages
+      #     publish_dir: tests/e2e/playwright-report || tests/e2e/test-results

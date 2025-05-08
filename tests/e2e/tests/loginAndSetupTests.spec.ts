@@ -28,29 +28,29 @@ test.describe('Login and Setup :-->', () => {
  *  
  */
 
-    test.only('0001:[Login] Here, Admin is logging into Admin-Dashboard', async ({ page }) => {
+    test('0001:[Login] Here, Admin is logging into Admin-Dashboard', async ({ page }) => {
         const BasicLogin = new BasicLoginPage(page);
         await BasicLogin.basicLogin(Users.adminUsername, Users.adminPassword);
     });
 
 
-    test.only('0002:[Login] Here, Admin is checking Dashboard page reached', async ({ page }) => {
+    test('0002:[Login] Here, Admin is checking Dashboard page reached', async ({ page }) => {
         const BasicLogin = new BasicLoginPage(page);
         await BasicLogin.validateBasicLogin();
     });
 
 
-    test.only('0003:[Login] Here, Admin is checking Plugin Status - Lite Activation', async ({ page }) => {
+    test('0003:[Login] Here, Admin is checking Plugin Status - Lite Activation', async ({ page }) => {
         const SettingsSetup = new SettingsSetupPage(page);
         await SettingsSetup.pluginStatusCheckLite();
     });
 
-    test.only('0004:[Login] Here, Admin is checking Plugin Status - Pro Activation', async ({ page }) => {
+    test('0004:[Login] Here, Admin is checking Plugin Status - Pro Activation', async ({ page }) => {
         const SettingsSetup = new SettingsSetupPage(page);
         await SettingsSetup.pluginStatusCheckPro();
     });
 
-    test.only('0005:[Login] Here, Admin is activating license - Pro', async ({ page }) => {
+    test('0005:[Login] Here, Admin is activating license - Pro', async ({ page }) => {
         const SettingsSetup = new SettingsSetupPage(page);
         await SettingsSetup.licenseActivateWPUFPro();
     });

@@ -546,15 +546,15 @@ export const Selectors = {
             // Last Name
             rfLastName: '//input[@id="wpuf-user_lname"]',
             // Email
-            rfEmail: '//input[@id="wpuf-user_email"]',
+            rfEmail: '//input[@type="email"]',
             // Username
             rfUserName: '//input[@id="wpuf-user_login"]',
             // Password
-            rfPassword: '//input[@id="wpuf-user_pass1"]',
+            rfPassword: '(//input[@type="password"])[1]',
             // Confirm Password
-            rfConfirmPassword: '//input[@id="wpuf-user_pass2"]',
+            rfConfirmPassword: '(//input[@type="password"])[2]',
             // Register button
-            rfRegisterButton: '//input[@id="wp-submit"]',
+            rfRegisterButton: '//input[@value="Register"]',
 
             // Validate Registered
             // Logout button

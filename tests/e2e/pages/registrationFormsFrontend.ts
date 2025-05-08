@@ -47,31 +47,31 @@ export class RegistrationFormsFrontendPage extends Base {
         const validateRegistrationPage = await this.page.innerText(Selectors.registrationForms.completeUserRegistrationFormFrontend.validateRegistrationPage);
         expect(validateRegistrationPage).toContain('Registration Page');
 
-        try {
-            // Enter First Name
-            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfFirstName, firstName);
-        } catch (error) {
-            console.log("First Name field is not present");
-        }
+        // try {
+        //     // Enter First Name
+        //     await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfFirstName, firstName);
+        // } catch (error) {
+        //     console.log("First Name field is not present");
+        // }
 
-        try {
-            // Enter Last Name
-            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfLastName, lastName);
-        }catch (error) {
-            console.log("Last Name field is not present");
-        }
+        // try {
+        //     // Enter Last Name
+        //     await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfLastName, lastName);
+        // }catch (error) {
+        //     console.log("Last Name field is not present");
+        // }
         try {
             //Enter Email
         await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfEmail, email);
         }catch (error) {
             console.log("Email field is not present");
         }
-        try {
-            //Enter Username
-            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfUserName, userName);
-        }catch (error) {
-            console.log("Username field is not present");
-        }
+        // try {
+        //     //Enter Username
+        //     await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfUserName, userName);
+        // }catch (error) {
+        //     console.log("Username field is not present");
+        // }
         try {
             //Enter Password
             await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfPassword, password);

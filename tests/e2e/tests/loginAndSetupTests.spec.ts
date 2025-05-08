@@ -56,13 +56,13 @@ test.describe('Login and Setup :-->', () => {
     });
 
 
-    test.only('0006:[Login] Here, Admin is Completing WPUF setup', async ({ page }) => {
+    test('0006:[Login] Here, Admin is Completing WPUF setup', async ({ page }) => {
         const SettingsSetup = new SettingsSetupPage(page);
         await SettingsSetup.wpufSetup();
     });
 
 
-    test.only('0007:[Login] Here, Admin is visiting WPUF Page', async ({ page }) => {
+    test('0007:[Login] Here, Admin is visiting WPUF Page', async ({ page }) => {
         const SettingsSetup = new SettingsSetupPage(page);
         await SettingsSetup.pluginVisitWPUF();
     });

@@ -114,8 +114,8 @@ jobs:
           DEBUG=pw:api npx playwright test e2eMain.spec.ts --project=chromium --reporter=html
         continue-on-error: true
         env:
-          BASE_URL: ${{ secrets.QA_BASE_URL }}
           CI: true
+          BASE_URL: ${{ secrets.QA_BASE_URL }}
           ADMIN_USERNAME: ${{ secrets.QA_ADMIN_USERNAME }}
           ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
           WPUF_LICENSE_KEY: ${{ secrets.WPUF_LICENSE_KEY }}

@@ -131,6 +131,7 @@ export class SettingsSetupPage extends Base {
 
             else {
                 await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
+                await this.page.waitForTimeout(3000);
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
                 console.log("WPUF-Lite Status: was Active");
             }
@@ -174,8 +175,9 @@ export class SettingsSetupPage extends Base {
             else {
                 await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
                 await this.assertionValidate(Selectors.login.basicNavigation.licenseTab);
-                await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
                 await this.page.goto(Urls.baseUrl + '/wp-admin/');
+                await this.page.waitForTimeout(3000);
+                await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
                 const dialogHandler = async (dialog: Dialog) => {
                     if (dialog.type() === 'confirm') {
                         await dialog.accept();

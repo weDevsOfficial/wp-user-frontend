@@ -10,6 +10,15 @@ on:
   pull_request:
     branches: [develop]
 
+# workflow environment variables
+env:
+  BASE_URL: ${{ secrets.QA_BASE_URL }}
+  CI: true
+  ADMIN_USERNAME: ${{ secrets.QA_ADMIN_USERNAME }}
+  ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
+  WPUF_LICENSE_KEY: ${{ secrets.WPUF_LICENSE_KEY }}
+  ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
 jobs:
   test:
     timeout-minutes: 30

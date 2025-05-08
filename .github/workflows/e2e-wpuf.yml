@@ -108,18 +108,18 @@ jobs:
 
       # Run Playwright tests/e2e
       - name: Run Playwright tests/e2e
-        if: success() && (github.event_name != 'workflow_dispatch' || ( github.event_name == 'workflow_dispatch' && (github.event.inputs.testsuite == 'E2E' || github.event.inputs.testsuite == 'All')))
-        working-directory: tests/e2e
-        run: |
-          DEBUG=pw:api npx playwright test e2eMain.spec.ts --project=chromium --reporter=html
-        continue-on-error: true
         env:
           CI: true
           BASE_URL: ${{ secrets.QA_BASE_URL }}
           ADMIN_USERNAME: ${{ secrets.QA_ADMIN_USERNAME }}
           ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
-          WPUF_LICENSE_KEY: ${{ secrets.WPUF_LICENSE_KEY }}
+          WPUF_LICENSE_KEY: ${{ secrets.WPUF_PRO_LICENSE_KEY }}
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        if: success() && (github.event_name != 'workflow_dispatch' || ( github.event_name == 'workflow_dispatch' && (github.event.inputs.testsuite == 'E2E' || github.event.inputs.testsuite == 'All')))
+        working-directory: tests/e2e
+        run: |
+          DEBUG=pw:api npx playwright test e2eMain.spec.ts --project=chromium --reporter=html
+        continue-on-error: true
 
       # Archive Playwright artifacts (screenshots, HTML snapshots, videos)
       - name: Archive playwright artifacts (screenshots, HTML snapshots, videos)

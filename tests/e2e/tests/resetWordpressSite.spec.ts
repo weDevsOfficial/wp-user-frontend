@@ -11,7 +11,7 @@ export default function resetWordpressSite() {
 
     test.describe('TEST :-->', () => {
 
-        test('000:[Reset Local Site] Resetting Local Site', async ({ page }) => {
+        test.only('000:[Reset Local Site] Resetting Local Site', async ({ page }) => {
             const BasicLogin = new BasicLoginPage(page);
             const SettingsSetup = new SettingsSetupPage(page);
 

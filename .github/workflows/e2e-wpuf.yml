@@ -49,15 +49,15 @@ jobs:
         run: |
           composer i --no-dev -o
           composer update --no-dev -o
-          npm ci || npm i
-          grunt  
+          npm i --legacy-peer-deps
+          grunt
        
        # Build wp-user-frontend
       - name: Build wpuf-lite
         run: |
           composer i --no-dev -o
           composer update --no-dev -o
-          npm ci || npm i
+          npm i
           grunt release --force
           grunt
             

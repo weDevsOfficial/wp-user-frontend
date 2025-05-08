@@ -6,6 +6,4 @@
     </noscript>
 
     <h2><?php esc_html_e( 'Loading', 'wp-user-frontend' ); ?>...</h2>
-
-    <?php wpuf_load_headway_badge(); ?>
 </div>

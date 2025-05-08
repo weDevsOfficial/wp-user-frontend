@@ -225,6 +225,7 @@ export class SettingsSetupPage extends Base {
                 console.log(process.env.WPUF_PRO_LICENSE_KEY);
                 console.log(process.env.WPUF_PRO_LICENSE_KEY);
                 console.log(process.env.WPUF_PRO_LICENSE_KEY);
+                
                 await this.validateAndFillStrings(Selectors.settingsSetup.pluginStatusCheck.fillLicenseKey, process.env.WPUF_PRO_LICENSE_KEY?.toString() || '');
                 await this.page.waitForTimeout(2000);
                 const screenshotPath2 = path.resolve('test-results', `screenshot2.png`);

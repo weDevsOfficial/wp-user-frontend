@@ -209,12 +209,16 @@ export class SettingsSetupPage extends Base {
             const activateWPUFPro = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickActivateLicense);
             console.log(activateWPUFPro);
             if (activateWPUFPro == true) {
+                await this.page.screenshot({ path: 'screenshot1.png', fullPage: true });
                 await this.page.waitForTimeout(2000);
                 await this.validateAndFillStrings(Selectors.settingsSetup.pluginStatusCheck.fillLicenseKey, process.env.WPUF_PRO_LICENSE_KEY?.toString() || '');
                 await this.page.waitForTimeout(2000);
+                await this.page.screenshot({ path: 'screenshot2.png', fullPage: true });
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.submitLicenseKey);
                 await this.page.waitForTimeout(3000);
+                await this.page.screenshot({ path: 'screenshot3.png', fullPage: true });
                 await this.page.reload();
+                await this.page.screenshot({ path: 'screenshot4.png', fullPage: true });
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.activationRemaining);
                 console.log("WPUF-Pro Status: License is Activated");
             }

@@ -2626,6 +2626,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   margin-top: 0.5rem !important;
 }
 
+.\!wpuf-mt-2\.5 {
+  margin-top: 0.625rem !important;
+}
+
 .\!wpuf-mt-\[\.5px\] {
   margin-top: .5px !important;
 }

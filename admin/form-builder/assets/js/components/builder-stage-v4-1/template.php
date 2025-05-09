@@ -61,7 +61,7 @@
                 class="field-buttons group-hover:wpuf-opacity-100 wpuf-rounded-b-lg !wpuf-bg-green-600 wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out wpuf-flex wpuf-justify-around">
                 <div class="wpuf-flex wpuf-justify-around wpuf-text-green-200">
                     <template v-if="!is_failed_to_validate(field.template)">
-                        <span :class="action_button_classes">
+                        <span class="!wpuf-mt-2.5">
                             <i class="fa fa-arrows move wpuf-pr-2 wpuf-rounded-l-md hover:!wpuf-cursor-move wpuf-border-r wpuf-border-green-200 wpuf-text-[17px]"></i>
                         </span>
                         <span
@@ -140,7 +140,7 @@
                     <div class="wpuf-flex wpuf-justify-around wpuf-text-green-200">
                         <template v-if="!is_failed_to_validate(field.template)">
                             <span
-                                :class="action_button_classes"
+                                class="!wpuf-mt-2.5"
                                 @click="open_field_settings(field.id)">
                             <i
                                 class="fa fa-pencil"></i>

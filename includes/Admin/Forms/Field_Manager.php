@@ -120,7 +120,7 @@ class Field_Manager {
         $after_custom_fields  = apply_filters( 'wpuf_form_fields_section_after', [] );
         $groups               = array_merge( $groups, $after_custom_fields );
 
-        return $groups;
+        return apply_filters( 'wpuf_form_fields_groups', $groups );
     }
 
     /**

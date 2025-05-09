@@ -12,7 +12,7 @@ use WeDevs\Wpuf\Pro\Coupons;
 class Bank {
     public function __construct() {
         add_action( 'wpuf_gateway_bank', [$this, 'prepare_to_send'] );
-        add_action( 'wpuf_options_payment', [ $this, 'payment_options' ] );
+        add_filter( 'wpuf_options_payment', [ $this, 'payment_options' ] );
         add_action( 'wpuf_gateway_bank_order_submit', [$this, 'order_notify_admin'] );
         add_action( 'wpuf_gateway_bank_order_complete', [$this, 'order_notify_user'], 10, 2 );
     }
@@ -86,10 +86,10 @@ class Bank {
      * @param array $info payment information
      */
     public function order_notify_admin() {
-        $subject  = sprintf( 
+        $subject  = sprintf(
             // translators: %s is site name
             __( '[%s] New Bank Order Received', 'wp-user-frontend' ), get_bloginfo( 'name' ) );
-        $msg      = sprintf( 
+        $msg      = sprintf(
             // translators: %1$s is site name url and %2$s is wpuf transaction url
             __( 'New bank order received at %1$s, please check it out: %2$s', 'wp-user-frontend' ), get_bloginfo( 'name' ), admin_url( 'admin.php?page=wpuf_transaction' ) );
 
@@ -112,10 +112,10 @@ class Bank {
             return;
         }
 
-        $subject = sprintf( 
+        $subject = sprintf(
             // translators: %s is site name
             __( '[%s] Payment Received', 'wp-user-frontend' ), get_bloginfo( 'name' ) );
-        $msg     = sprintf( 
+        $msg     = sprintf(
             // translators: %s is displayname
             __( 'Hello %s,', 'wp-user-frontend' ), $user->display_name ) . "\r\n";
         $msg .= __( 'We have received your bank payment.', 'wp-user-frontend' ) . "\r\n\r\n";

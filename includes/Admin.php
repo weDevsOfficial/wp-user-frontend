@@ -89,6 +89,7 @@ class Admin {
                     'https://wedevs.com/contact/?utm_source=wpuf-subscription'
                 ),
                 'version'                      => WPUF_VERSION,
+                'pro_version'                  => defined( 'WPUF_PRO_VERSION' ) ? WPUF_PRO_VERSION : '',
                 'isProActive'                  => class_exists( 'WP_User_Frontend_Pro' ),
                 'protected_shortcodes'         => wpuf_get_protected_shortcodes(),
                 'protected_shortcodes_message' => sprintf(

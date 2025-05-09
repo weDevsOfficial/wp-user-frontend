@@ -638,7 +638,7 @@ function wpuf_settings_fields() {
 }
 
 function wpuf_settings_field_profile( $form ) {
-    $user_roles = wpuf_get_user_roles();
+    $user_roles = apply_filters( 'wpuf_settings_user_roles', wpuf_get_user_roles() );
     $forms      = get_posts(
         [
             'numberposts' => -1,
@@ -656,6 +656,8 @@ function wpuf_settings_field_profile( $form ) {
         $class      = 'class="pro-preview"';
         $disabled   = 'disabled';
     }
+
+    if ( ! empty( $user_roles ) ) {
         ?>
 
     <p style="padding-left: 10px; font-style: italic; font-size: 13px;">
@@ -693,6 +695,7 @@ function wpuf_settings_field_profile( $form ) {
         ?>
     </table>
         <?php
+    }
 }
 
 add_action( 'wsa_form_bottom_wpuf_profile', 'wpuf_settings_field_profile' );

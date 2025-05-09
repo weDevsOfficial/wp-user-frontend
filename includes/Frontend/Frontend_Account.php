@@ -220,7 +220,6 @@ class Frontend_Account {
             return;
         }
 
-
         $details_meta['payment_page'] = get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
         $details_meta['onclick']      = '';
         $details_meta['symbol']       = wpuf_get_currency( 'symbol' );
@@ -228,7 +227,6 @@ class Frontend_Account {
         $billing_amount = ( intval( $pack->meta_value['billing_amount'] ) > 0 ) ? $details_meta['symbol'] . $pack->meta_value['billing_amount'] : __( 'Free',
                                                                                                                                                       'wp-user-frontend' );
         if ( wpuf_is_checkbox_or_toggle_on( $pack->meta_value['recurring_pay'] ) ) {
-            error_log( print_r( $pack->meta_value, true ) );
             /* translators: %s: billing cycle number, %s: billing cycle period */
             $recurring_des = sprintf( __( 'For each', 'wp-user-frontend' ) . ' %s %s',
                                       $pack->meta_value['billing_cycle_number'],

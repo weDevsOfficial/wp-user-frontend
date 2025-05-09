@@ -20,7 +20,7 @@ class Paypal {
         $this->test_mode          = false;
 
         add_action( 'wpuf_gateway_paypal', [ $this, 'prepare_to_send' ] );
-        add_action( 'wpuf_options_payment', [ $this, 'payment_options' ] );
+        add_filter( 'wpuf_options_payment', [ $this, 'payment_options' ] );
         add_action( 'init', [ $this, 'check_response' ] );
         add_action( 'wpuf_paypal_ipn_success', [ $this, 'paypal_success' ] );
         add_action( 'wpuf_cancel_payment_paypal', [ $this, 'handle_cancel_subscription' ] );
@@ -142,7 +142,7 @@ class Paypal {
                 'METHOD'    => 'ManageRecurringPaymentsProfileStatus',
                 'PROFILEID' => $profile_id,
                 'ACTION'    => ucfirst( $new_status ),
-                'NOTE'      => sprintf( 
+                'NOTE'      => sprintf(
                     // translators: %1$s is status string and %2$s is site name
                     __( 'Subscription %1$s at %2$s', 'wp-user-frontend' ), $new_status_string, get_bloginfo( 'name' ) ),
             ]

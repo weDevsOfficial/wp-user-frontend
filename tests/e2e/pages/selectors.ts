@@ -489,6 +489,9 @@ export const Selectors = {
             checkProFeaturesText: '//h2[text()="Unlock PRO Features"]',
             // Check Setup
             checkUpgradeToProOption: '//a[contains(text(),"Upgrade to PRO")]',
+
+            // Check Core Updates
+            checkUpdateToLatest: '//a[normalize-space()="Update to Latest"]',
         },
 
         // Create Registration page using Shortcode

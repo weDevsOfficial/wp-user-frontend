@@ -5,9 +5,6 @@ import { Selectors } from './selectors';
 import { Urls } from '../utils/testData';
 import { Base } from './base';
 
-
-
-
 export class RegistrationFormsPage extends Base {
 
     constructor(page: Page) {
@@ -29,6 +26,11 @@ export class RegistrationFormsPage extends Base {
             this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }),
         ]);
 
+        let coreUpdateRequired = await this.page.isVisible(Selectors.registrationForms.validateRegistrationFormsProFeatureLite.checkUpdateToLatest);
+        if (coreUpdateRequired == true) {
+            console.log("Core Update Required");
+            return true;
+        }
 
         const validateWPUFProActivate = await this.page.isVisible(Selectors.registrationForms.navigatePage_RF.checkAddButton_RF);
         if (validateWPUFProActivate == true) {
@@ -43,6 +45,7 @@ export class RegistrationFormsPage extends Base {
             const checkUpgradeToProOption = await this.page.locator(Selectors.registrationForms.validateRegistrationFormsProFeatureLite.checkUpgradeToProOption);
             expect(checkUpgradeToProOption).toBeTruthy();
         }
+        return false;
     };
 
 

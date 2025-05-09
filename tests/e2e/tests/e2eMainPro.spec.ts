@@ -1,6 +1,6 @@
 import { test } from '@playwright/test';
 import loginAndSetupTests from './loginAndSetupTests.spec';
-import postFormsTests from './postFormsTests.spec';
+import postFormsTestsPro from './postFormsTestsPro.spec';
 import registrationFormsTestsPro from './registrationFormsTestsPro.spec';
 // import subscriptionsTests from './subscription.spec';
 import * as fs from "fs"; //Clear Cookie
@@ -55,7 +55,7 @@ clearState();
 test.describe(loginAndSetupTests);
 
 clearState();
-test.describe(postFormsTests);
+test.describe(postFormsTestsPro);
 
 clearState();
 test.describe(registrationFormsTestsPro);

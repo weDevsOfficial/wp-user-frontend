@@ -11,10 +11,10 @@ import * as fs from "fs"; //Clear Cookie
 
 
 
-export default function registrationFormsTests() {
+export default function registrationFormsTestsPro() {
 
 
-test.describe('Registration-Forms @Lite :-->', () => {
+test.describe('Registration-Forms @Pro :-->', () => {
 /**----------------------------------REGISTRATIONFORMS----------------------------------**
  * 
  * @TestScenario : [Reg-Forms]
@@ -26,32 +26,17 @@ test.describe('Registration-Forms @Lite :-->', () => {
  *  
  */
 
-let shouldSkipRemainingTests: boolean = false;
-
     test('0022:[Reg-Forms] Here, Admin is checking Registration Forms - Pro Feature Page', async ({ page }) => {
         const BasicLogin = new BasicLoginPage(page);
         const RegistrationFormsLite = new RegistrationFormsPage(page);
         //Basic login
         await BasicLogin.basicLoginAndPluginVisit(Users.adminUsername, Users.adminPassword);
-
-        try {
-            // Check if Core is updated
-            shouldSkipRemainingTests = await RegistrationFormsLite.validateRegistrationFormsProFeature();
-            
-            // If Pro Feature is available, set skip flag
-            if (shouldSkipRemainingTests) {
-                shouldSkipRemainingTests = true;
-                test.skip(true, 'Skipping tests due to Core is not updated');
-            }
-        } catch (error) {
-            console.error('Something went wrong');
-        }
+        await RegistrationFormsLite.validateRegistrationFormsProFeature();
 
     });
 
 
     test('0023:[Reg-Forms] Here, Admin is creating Registration Forms Page - using shortcode', async ({ page }) => {
-        test.skip(shouldSkipRemainingTests, 'Skipping tests due to Core is not updated');
         const RegistrationFormsLite = new RegistrationFormsPage(page);
         const SettingsSetup = new SettingsSetupPage(page);
         //Registration Forms page - Title
@@ -66,7 +51,6 @@ let shouldSkipRemainingTests: boolean = false;
 
 
     test('0024:[Reg-Forms] Here, User is registering using - Registration Form', async ({ page }) => {
-        test.skip(shouldSkipRemainingTests, 'Skipping tests due to Core is not updated');
         const RegistrationFormsFrontend = new RegistrationFormsFrontendPage(page);
         //FrontEnd
         //Complete FrontEnd Registration
@@ -77,7 +61,6 @@ let shouldSkipRemainingTests: boolean = false;
 
 
     test('0025:[Reg-Forms] Here, Admin is validating - Registered user', async ({ page }) => {
-        test.skip(shouldSkipRemainingTests, 'Skipping tests due to Core is not updated');
         const BasicLogin = new BasicLoginPage(page);
         const RegistrationFormsFrontend = new RegistrationFormsFrontendPage(page);
         //Basic Login

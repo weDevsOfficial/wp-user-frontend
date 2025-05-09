@@ -26,12 +26,6 @@ export class RegistrationFormsPage extends Base {
             this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }),
         ]);
 
-        let coreUpdateRequired = await this.page.isVisible(Selectors.registrationForms.validateRegistrationFormsProFeatureLite.checkUpdateToLatest);
-        if (coreUpdateRequired == true) {
-            console.log("Core Update Required");
-            return true;
-        }
-
         const validateWPUFProActivate = await this.page.isVisible(Selectors.registrationForms.navigatePage_RF.checkAddButton_RF);
         if (validateWPUFProActivate == true) {
             console.log("WPUF Pro is Activated");
@@ -45,7 +39,6 @@ export class RegistrationFormsPage extends Base {
             const checkUpgradeToProOption = await this.page.locator(Selectors.registrationForms.validateRegistrationFormsProFeatureLite.checkUpgradeToProOption);
             expect(checkUpgradeToProOption).toBeTruthy();
         }
-        return false;
     };
 
 
@@ -59,15 +52,9 @@ export class RegistrationFormsPage extends Base {
 
         let storeShortcode: String = '';
 
-        //Validate Shortcode
-        const validateShortcode = await this.page.isVisible(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.validateShortcode);
-        if (validateShortcode == true) {
-            storeShortcode = await this.page.innerText(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.validateShortcode);
-        }else {
         //Copy Shortcode
         storeShortcode = await this.page.innerText(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.storeShortcode);
         console.log(storeShortcode);
-        }
 
         //Visit Pages
         const visitPagesAdminMenuOption = Urls.baseUrl + '/wp-admin/edit.php?post_type=page';

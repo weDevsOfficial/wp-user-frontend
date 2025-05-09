@@ -3,6 +3,7 @@ module.exports = function( grunt) {
     const tailwindFileMap = {
         'admin/form-builder/views/form-builder-v4.1.php': 'admin/form-builder.css',
         'admin/form-builder/views/post-form-settings.php': 'admin/form-builder.css',
+        'assets/js/forms-list.js': 'admin/form-builder.css'
     }
 
     var formBuilderAssets = require('./admin/form-builder/assets/js/form-builder-assets.js');
@@ -110,6 +111,7 @@ module.exports = function( grunt) {
             vue: {
                 files: [
                     'assets/js/subscriptions.js',
+                    'assets/js/forms-list.js',
                     'assets/css/admin/subscriptions.css',
                     'assets/js/components/**/*.vue',
                     'assets/js/stores/**/*.js',
@@ -127,6 +129,7 @@ module.exports = function( grunt) {
                     'admin/form-builder/assets/js/**/*.js',
                     'includes/Admin/**/*.php',
                     'wpuf-functions.php',
+                    'assets/js/forms-list.js',
                 ],
                 tasks: ['shell:tailwind:src/css/admin/form-builder.css:assets/css/admin/form-builder.css'],
                 options: {

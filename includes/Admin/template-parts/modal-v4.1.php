@@ -3,7 +3,7 @@ use WeDevs\Wpuf\Free\Pro_Prompt;
 
 $form_type = ! empty( $form_type ) ?  $form_type : 'Post Form';
 ?>
-<div class="wpuf-form-template-modal wpuf-w-[calc(100%+20px)] !wpuf-h-[150vh] !wpuf--mb-[30px] wpuf-ml-[-20px] wpuf-bg-gray-100 wpuf-hidden">
+<div class="wpuf-form-template-modal wpuf-absolute wpuf-top-0 wpuf-left-0 wpuf-w-[calc(100%+20px)] !wpuf-h-[150vh] !wpuf--mb-[30px] wpuf-ml-[-20px] wpuf-bg-gray-100 wpuf-hidden">
     <div class="wpuf-relative wpuf-mx-auto wpuf-p-20">
         <button
             class="wpuf-absolute wpuf-right-4 wpuf-top-4 wpuf-text-gray-400 hover:wpuf-text-gray-600 focus:wpuf-outline-none wpuf-close-btn wpuf-border wpuf-border-gray-200 wpuf-rounded-3xl wpuf-p-2 hover:wpuf-border-gray-300">
@@ -134,15 +134,15 @@ $form_type = ! empty( $form_type ) ?  $form_type : 'Post Form';
                 </div>
             </div>
         </div>
-        </div>
+    </div>
 </div>
-
 
 <script type="text/javascript">
     ( function ( $ ) {
         var popup = {
             init: function () {
-                $( '.wrap' ).on( 'click', 'a.page-title-action.add-form', this.openModal );
+                $( 'a.new-wpuf-form' ).on( 'click', this.openModal );
+
                 $( '.wpuf-form-template-modal .wpuf-close-btn' ).on( 'click', $.proxy( this.closeModal, this ) );
 
                 $( 'body' ).on( 'keydown', $.proxy( this.onEscapeKey, this ) );
@@ -171,7 +171,7 @@ $form_type = ! empty( $form_type ) ?  $form_type : 'Post Form';
             }
         };
 
-        $( function () {
+        $( document ).ready( function () {
             popup.init();
         } );
 

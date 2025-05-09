@@ -443,7 +443,7 @@ function wpuf_help_related_articles( $articles ) {
                     printf(
                         wp_kses(
                             // translators: %1$s. Opening paragraph tag. %2$s Opening strong tag for "Frontend Dashboard". %3$s Closing strong tag. %4$s Opening strong tag for "My Account". %5$s Closing strong tag. %6$s Closing paragraph tag.
-                            __( '%1$sWP User Frontend generates %2$sFrontend Dashboard%3$s and %4$sMy Account%5$s page for all your users. Using these pages, they can get a list of their posts and subscriptions directly at frontend. They can also customize the details of their profile. You don’t need to give them access to the backend at all!%6$s', 'wp-user-frontend' ),
+                            __( '%1$sWP User Frontend generates %2$sFrontend Dashboard%3$s and %4$sMy Account%5$s page for all your users. Using these pages, they can get a list of their posts and subscriptions directly at frontend. They can also customize the details of their profile. You don\'t need to give them access to the backend at all!%6$s', 'wp-user-frontend' ),
                             array(
                                 'p'      => array(),
                                 'strong' => array()
@@ -611,8 +611,8 @@ function wpuf_help_related_articles( $articles ) {
                     <li><?php esc_html_e( 'This will enable some new settings. You have to specify post expiration time and the post status after the post expires.', 'wp-user-frontend' ); ?></li>
                     <li><?php esc_html_e( 'You can also notify users when a post expires. To do so, check the Send Mail option.', 'wp-user-frontend' ); ?></li>
                     <li><?php esc_html_e( 'Now, enter the message you want to send the user in the Post Expiration Message field.', 'wp-user-frontend' ); ?></li>
-                    <li><?php esc_html_e( 'You can specify the number of posts you are giving away with this subscription pack. If you want to provide unlimited posts, enter 1 in the number of posts field.', 'wp-user-frontend' ); ?></li>
-                    <li><?php esc_html_e( 'You can also set the number of pages and custom CSS. For unlimited value, enter 1.', 'wp-user-frontend' ); ?></li>
+                    <li><?php esc_html_e( 'You can specify the number of posts you are giving away with this subscription pack. If you want to provide unlimited posts, enter -1 in the number of posts field.', 'wp-user-frontend' ); ?></li>
+                    <li><?php esc_html_e( 'You can also set the number of pages and custom CSS. For unlimited value, enter −1', 'wp-user-frontend' ); ?></li>
                     <li><?php esc_html_e( 'WPUF offers you recurring payment while creating a Subscription pack. Enable this option if you want to set recurring payment for this pack. It will provide you some new options for the recurring payment.', 'wp-user-frontend' ); ?></li>
                     <li><?php esc_html_e( 'Now, select the billing cycle.', 'wp-user-frontend' ); ?></li>
                     <li><?php esc_html_e( 'You can also stop the billing cycle if you want. If you don\'t want to stop the cycle select Never.', 'wp-user-frontend' ); ?></li>
@@ -715,9 +715,9 @@ function wpuf_help_related_articles( $articles ) {
 
                 <ol>
                     <li><?php esc_html_e( 'Now, select the page that has the shortcode of the selected form.', 'wp-user-frontend' ); ?></li>
-                    <li><?php esc_html_e( 'Scroll down and you will find the <strong>WPUF Content Restriction</strong> settings.', 'wp-user-frontend' ); ?></li>
-                    <li><?php esc_html_e( 'You can set the form visible to three types of people: <strong>Everyone</strong>, <strong>Logged in users only</strong> or <strong>Subscription users only</strong>', 'wp-user-frontend' ); ?></li>
-                    <li><?php esc_html_e( 'You can also set <strong>subscription plans</strong> for the form. For this, check the box of relevant subscription pack.', 'wp-user-frontend' ); ?></li>
+                    <li><?php echo wp_kses_post( __( 'Scroll down and you will find the <strong>WPUF Content Restriction</strong> settings.', 'wp-user-frontend' ) ); ?></li>
+                    <li><?php echo wp_kses_post( __( 'You can set the form visible to three types of people: <strong>Everyone</strong>, <strong>Logged in users only</strong> or <strong>Subscription users only</strong>', 'wp-user-frontend' ) ); ?></li>
+                    <li><?php echo wp_kses_post( __( 'You can also set <strong>subscription plans</strong> for the form. For this, check the box of relevant subscription pack.', 'wp-user-frontend' ) ); ?></li>
                     <li><?php esc_html_e( 'Finally, update the page.', 'wp-user-frontend' ); ?></li>
                 </ol>
 

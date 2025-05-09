@@ -503,7 +503,7 @@ export const Selectors = {
             // Add New Page
             addNewPage: '//a[@class="page-title-action"]',
             // Close Pattern Modal
-            closePatternModal: '(//div[@class="components-modal__header"]//button)[2]',
+            closePatternModal: '(//div[@class="components-modal__header"]//button)[1]',
             // Close Welcome Modal
             closeWelcomeModal: '(//div[@class="components-modal__header"]//button)[1]',
             // Add Page Title

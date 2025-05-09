@@ -503,9 +503,9 @@ export const Selectors = {
             // Add New Page
             addNewPage: '//a[@class="page-title-action"]',
             // Close Pattern Modal
-            closePatternModal: '//h1[normalize-space(text())="Choose a pattern"]/../../button[@aria-label="Close"]',
+            closePatternModal: '(//div[@class="components-modal__header"]//button)[2]',
             // Close Welcome Modal
-            closeWelcomeModal: '//button[@aria-label="Close"]',
+            closeWelcomeModal: '(//div[@class="components-modal__header"]//button)[1]',
             // Add Page Title
             addPageTitle: '//h1[@aria-label="Add title"]',
             // Block Add Button

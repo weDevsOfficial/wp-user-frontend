@@ -66,13 +66,6 @@ export class RegistrationFormsPage extends Base {
         await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addNewPage);
         await this.page.reload();
 
-        // Check if the Welcome Modal is visible
-        try {
-            await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closeWelcomeModal);
-        } catch (error) {
-            console.log('Welcome Modal not visible!');
-        }
-
         await this.page.waitForTimeout(1000 * 5);
 
         // Check if the Choose Pattern Modal is visible
@@ -80,6 +73,13 @@ export class RegistrationFormsPage extends Base {
             await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closePatternModal);
         } catch (error) {
             console.log('Pattern Modal not visible!');
+        }
+
+        // Check if the Welcome Modal is visible
+        try {
+            await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closeWelcomeModal);
+        } catch (error) {
+            console.log('Welcome Modal not visible!');
         }
 
         //Add Page Title

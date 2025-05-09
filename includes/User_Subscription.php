@@ -56,9 +56,12 @@ class User_Subscription {
         if ( ! isset( $this->pack['pack_id'] ) ) {
             $pack_page = get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) );
 
-            return new WP_Error( 'no-pack', sprintf( 
+            return new WP_Error(
+                'no-pack', sprintf(
                 // translators: %s is the user pack page url
-                __( 'You must <a href="%s">purchase a subscription package</a> before posting', 'wp-user-frontend' ), $pack_page ) );
+                    __( 'You must <a href="%s">purchase a subscription package</a> before posting', 'wp-user-frontend' ), $pack_page
+                )
+            );
         }
 
         // seems like the user has a pack, now check expiration
@@ -199,11 +202,17 @@ class User_Subscription {
                 $user_meta['profile_id'] = $profile_id;
                 $user_meta['recurring']  = 'yes';
             } else {
-                $period_type            = $subscription->meta_value['expiration_period'];
-                $period_number          = $subscription->meta_value['expiration_number'];
-                $date                   = date( 'd-m-Y', strtotime( '+' . $period_number . $period_type . 's' ) ); // phpcs:ignore
-                $expired                = ( empty( $period_number ) || ( $period_number == 0 ) ) ? 'unlimited' : wpuf_date2mysql( $date );
-                $user_meta['expire']    = $expired;
+                $period_type = $subscription->meta_value['expiration_period'];
+                $period_number = $subscription->meta_value['expiration_number'];
+
+                if ( -1 === intval( $period_number ) ) {
+                    $expired = 'unlimited';
+                } else {
+                    $date = date('d-m-Y', strtotime('+' . $period_number . $period_type . 's'));
+                    $expired = ( empty($period_number ) || ( 0 === intval( $period_number ) ) ) ? 'unlimited' : wpuf_date2mysql($date);
+                }
+
+                $user_meta['expire'] = $expired;
                 $user_meta['recurring'] = 'no';
             }
 

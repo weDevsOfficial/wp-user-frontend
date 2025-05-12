@@ -4023,6 +4023,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   padding-right: 52px;
 }
 
+.wpuf-py-0 {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
 .wpuf-py-0\.5 {
   padding-top: 0.125rem;
   padding-bottom: 0.125rem;

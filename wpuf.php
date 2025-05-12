@@ -128,6 +128,7 @@ final class WP_User_Frontend {
      * @return void
      */
     public function init_hooks() {
+        add_action( 'plugins_loaded', [ $this, 'init_insights' ], 8 );
         add_action( 'plugins_loaded', [ $this, 'wpuf_loader' ] );
         add_action( 'plugins_loaded', [ $this, 'process_wpuf_pro_version' ] );
         add_action( 'plugins_loaded', [ $this, 'plugin_upgrades' ] );
@@ -139,6 +140,11 @@ final class WP_User_Frontend {
         add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), [ $this, 'plugin_action_links' ] );
 
         add_action( 'widgets_init', [ $this, 'register_widgets' ] );
+    }
+
+    public function init_insights() {
+        // Insight class instantiate
+        $this->container['tracker'] = new WeDevs\Wpuf\Lib\WeDevs_Insights( __FILE__ );
     }
 
     /**
@@ -182,8 +188,20 @@ final class WP_User_Frontend {
         }
 
         if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-            $this->container['ajax'] = new WeDevs\Wpuf\Ajax();
+            // Initialize the ajax class inside init hook for translation issue
+            add_action( 'init', [ $this, 'init_ajax' ] );
         }
+    }
+
+    /**
+     * Initialize the ajax class
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function init_ajax() {
+        $this->container['ajax'] = new WeDevs\Wpuf\Ajax();
     }
 
     /**
@@ -258,6 +276,10 @@ final class WP_User_Frontend {
             $this->is_pro = true;
         } else {
             $this->container['free_loader'] = new WeDevs\Wpuf\Free\Free_Loader();
+
+            $this->container['free_loader']->includes();
+            $this->container['free_loader']->instantiate();
+            $this->container['free_loader']->run_hooks();
         }
 
         // Remove the what's new option.
@@ -283,9 +305,6 @@ final class WP_User_Frontend {
      */
     public function load_textdomain() {
         load_plugin_textdomain( 'wp-user-frontend', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-
-        // Insight class instantiate
-        $this->container['tracker'] = new WeDevs\Wpuf\Lib\WeDevs_Insights( __FILE__ );
     }
 
     /**

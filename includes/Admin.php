@@ -75,7 +75,12 @@ class Admin {
         wp_enqueue_script( 'wpuf-sweetalert2' );
         wp_enqueue_script( 'wpuf-admin' );
 
-        wpuf_load_headway_badge();
+        $page = isset( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : '';
+        $selected_page = [ 'wpuf-post-forms', 'wpuf-profile-forms', 'wpuf_subscription', 'wpuf_transaction', 'wpuf_tools' ];
+
+        if ( in_array( $page, $selected_page ) ) {
+            wpuf_load_headway_badge();
+        }
 
         wp_localize_script(
             'wpuf-admin', 'wpuf_admin_script',
@@ -89,6 +94,7 @@ class Admin {
                     'https://wedevs.com/contact/?utm_source=wpuf-subscription'
                 ),
                 'version'                      => WPUF_VERSION,
+                'pro_version'                  => defined( 'WPUF_PRO_VERSION' ) ? WPUF_PRO_VERSION : '',
                 'isProActive'                  => class_exists( 'WP_User_Frontend_Pro' ),
                 'protected_shortcodes'         => wpuf_get_protected_shortcodes(),
                 'protected_shortcodes_message' => sprintf(

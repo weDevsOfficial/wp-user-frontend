@@ -11,7 +11,7 @@ class FormList extends WP_REST_Controller {
     /**
      * The namespace of this controller's route.
      *
-     * @since WPUF_SINCE
+     * @since 4.1.4
      *
      * @var string
      */
@@ -20,7 +20,7 @@ class FormList extends WP_REST_Controller {
     /**
      * Route name
      *
-     * @since WPUF_SINCE
+     * @since 4.1.4
      *
      * @var string
      */
@@ -29,7 +29,7 @@ class FormList extends WP_REST_Controller {
     /**
      * Register the routes for the objects of the controller.
      *
-     * @since WPUF_SINCE
+     * @since 4.1.4
      */
     public function register_routes() {
         register_rest_route(
@@ -46,7 +46,7 @@ class FormList extends WP_REST_Controller {
     /**
      * Retrieves a collection of posts.
      *
-     * @since WPUF_SINCE
+     * @since 4.1.4
      *
      * @param WP_REST_Request $request Full details about the request.
      *
@@ -142,7 +142,7 @@ class FormList extends WP_REST_Controller {
     /**
      * Get post count for a form
      *
-     * @since WPUF_SINCE
+     * @since 4.1.4
      *
      * @param int   $form_id  Form ID
      * @param array $settings Form settings
@@ -172,7 +172,7 @@ class FormList extends WP_REST_Controller {
     /**
      * Check permission for API request
      *
-     * @since WPUF_SINCE
+     * @since 4.1.4
      *
      * @return bool
      */

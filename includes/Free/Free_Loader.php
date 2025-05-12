@@ -14,7 +14,7 @@ class Free_Loader extends Pro_Prompt {
     /**
      * Run the hooks to load free elements on places
      *
-     * @since WPUF_SINCE
+     * @since 4.1.4
      *
      * @return void
      */

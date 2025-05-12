@@ -142,7 +142,7 @@ class Paypal {
                 'METHOD'    => 'ManageRecurringPaymentsProfileStatus',
                 'PROFILEID' => $profile_id,
                 'ACTION'    => ucfirst( $new_status ),
-                'NOTE'      => sprintf( 
+                'NOTE'      => sprintf(
                     // translators: %1$s is status string and %2$s is site name
                     __( 'Subscription %1$s at %2$s', 'wp-user-frontend' ), $new_status_string, get_bloginfo( 'name' ) ),
             ]

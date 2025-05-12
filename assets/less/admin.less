@@ -161,8 +161,10 @@ span {
 .wpuf-footer-help {
     box-sizing: border-box;
     width: auto;
-    margin: 2rem 0.8rem;
+    margin-left: -20px;
+    padding: 100px 0.8rem 2rem 0.8rem;
     text-align: center;
+    background: white;
     .wpuf-footer-help-content {
         border: 1px solid #ddd;
         border-radius: 30px;
@@ -895,6 +897,10 @@ a.wpuf-button.button-upgrade-to-pro {
     border-radius: 5px;
     text-decoration: none;
     border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
 }
 
 .pro-field-overlay a.wpuf-button.button-upgrade-to-pro {
@@ -910,8 +916,14 @@ a.wpuf-button.button-upgrade-to-pro:hover {
     background: #d07805;
 }
 
+span.pro-icon {
+    display: inline-flex;
+    align-items: center;
+}
+
 span.pro-icon svg {
     height: 1em;
+    margin-left: 5px;
 }
 
 span.pro-icon.icon-white svg path {
@@ -1219,6 +1231,10 @@ span.pro-icon:hover .wpuf-pro-field-tooltip {
     a.wpuf-button.button-upgrade-to-pro {
         padding: 10px;
     }
+}
+
+.plugin-card .desc>p, .plugin-card .name {
+    margin-left: 148px !important;
 }
 
 @import "help.less";

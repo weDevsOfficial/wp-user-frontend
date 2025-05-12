@@ -11,10 +11,14 @@ class Free_Loader extends Pro_Prompt {
 
     public $edit_profile = null;
 
-    public function __construct() {
-        $this->includes();
-        $this->instantiate();
-
+    /**
+     * Run the hooks to load free elements on places
+     *
+     * @since 4.1.4
+     *
+     * @return void
+     */
+    public function run_hooks() {
         add_action( 'add_meta_boxes_wpuf_forms', [ $this, 'add_meta_box_post' ], 99 );
 
         add_action( 'wpuf_form_buttons_custom', [ $this, 'wpuf_form_buttons_custom_runner' ] );

@@ -2,6 +2,7 @@
 
 namespace WeDevs\Wpuf;
 
+use WeDevs\Wpuf\Api\FormList;
 use WeDevs\Wpuf\Api\Subscription;
 use WeDevs\WpUtils\ContainerTrait;
 
@@ -10,7 +11,6 @@ use WeDevs\WpUtils\ContainerTrait;
  *
  * Handle API.
  */
-#[AllowDynamicProperties]
 class API {
     use ContainerTrait;
 
@@ -21,6 +21,7 @@ class API {
      */
     public function __construct() {
         $this->subscription = new Subscription();
+        $this->form_list    = new FormList();
 
         add_action( 'rest_api_init', [ $this, 'init_api' ] );
     }

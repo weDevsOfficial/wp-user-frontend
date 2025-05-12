@@ -4,7 +4,7 @@ Donate link: https://tareq.co/donate/
 Tags: frontend post, forms, user directory, profile builder, membership
 Requires at least: 4.0
 Tested up to: 6.8
-Stable tag: 4.1.3
+Stable tag: 4.1.4
 Requires PHP: 5.6
 License: GPLv2
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -281,6 +281,12 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 18. Set Payment Related Options
 
 == Changelog ==
+= v4.1.4 (12 May, 2025) =
+* Enhance - Post form list page UI and UX
+* Fix - Coupon functionality
+* Fix - Post submission when name email not required
+* Fix - Styling on multiple pages
+
 = v4.1.3 (23 April, 2025) =
 * Fix - Draft button does not appear
 * Fix - Post submission when name email not required

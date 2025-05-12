@@ -20,7 +20,7 @@ class Paypal {
         $this->test_mode          = false;
 
         add_action( 'wpuf_gateway_paypal', [ $this, 'prepare_to_send' ] );
-        add_action( 'wpuf_options_payment', [ $this, 'payment_options' ] );
+        add_filter( 'wpuf_options_payment', [ $this, 'payment_options' ] );
         add_action( 'init', [ $this, 'check_response' ] );
         add_action( 'wpuf_paypal_ipn_success', [ $this, 'paypal_success' ] );
         add_action( 'wpuf_cancel_payment_paypal', [ $this, 'handle_cancel_subscription' ] );

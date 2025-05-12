@@ -5461,7 +5461,7 @@ function wpuf_is_checkbox_or_toggle_on( $value ) {
 /**
  * Get the post forms count
  *
- * @since WPUF_SINCE
+ * @since 4.1.4
  *
  * @param string $post_type Post type to count
  * @return array Array of counts with labels

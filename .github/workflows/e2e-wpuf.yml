@@ -115,6 +115,11 @@ jobs:
           ADMIN_PASSWORD: ${{ secrets.QA_ADMIN_PASSWORD }}
           WPUF_PRO_LICENSE_KEY: ${{ secrets.WPUF_PRO_LICENSE_KEY }}
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          RECAPTCHA_SITE_KEY: ${{ secrets.RECAPTCHA_SITE_KEY }}
+          RECAPTCHA_SECRET_KEY: ${{ secrets.RECAPTCHA_SECRET_KEY }}
+          CLOUDFLARE_TURNSTILE_SITE_KEY: ${{ secrets.CLOUDFLARE_TURNSTILE_SITE_KEY }}
+          CLOUDFLARE_TURNSTILE_SECRET_KEY: ${{ secrets.CLOUDFLARE_TURNSTILE_SECRET_KEY }}
         if: success() && (github.event_name != 'workflow_dispatch' || ( github.event_name == 'workflow_dispatch' && (github.event.inputs.testsuite == 'E2E' || github.event.inputs.testsuite == 'All')))
         working-directory: tests/e2e
         run: |

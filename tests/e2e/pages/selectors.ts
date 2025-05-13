@@ -161,6 +161,20 @@ export const Selectors = {
             // Create User
             newUserSubmit: '//input[@type="submit"]',
         },
+
+        keys: {
+            // Keys
+            // SETTINGS > GENERAL
+            fillGoogleMapAPIKey:'(//input[@id="wpuf_general[gmap_api_key]"])[1]',
+            fillReCaptchaSiteKey: '(//input[@id="wpuf_general[recaptcha_public]"])[1]',
+            fillReCaptchaSecretKey: '(//input[@id="wpuf_general[recaptcha_private]"])[1]',
+            enableCloudflareTurnstile: '//label[@for="wpuf-wpuf_general[enable_turnstile]"]//span[1]',
+            fillCloudflareTurnstileSiteKey: '(//input[@id="wpuf_general[turnstile_site_key]"])[1]',
+            fillCloudflareTurnstileSecretKey: '(//input[@id="wpuf_general[turnstile_secret_key]"])[1]',
+            settingsTabGeneralSave: '//div[@id="wpuf_general"]//form[@method="post"]//div//input[@id="submit"]',
+            clickLoginOrRegistration: '//a[normalize-space(text())="Login / Registration"]',
+            enableCloudflareTurnstileLogin: '//label[@for="wpuf-wpuf_profile[login_form_turnstile]"]//span[1]'
+        },
     },
 
     /*********************************/
@@ -175,10 +189,6 @@ export const Selectors = {
 
             // Validate LOGOUT
             logoutSuccess: '//p[normalize-space(text())="You are now logged out."]',
-        },
-
-        validateBasicLogout: {
-            // Empty section
         },
     },
 
@@ -310,7 +320,6 @@ export const Selectors = {
             validateEmailAddress: '//label[@for="email_address"]/../..//div[@class="wpuf-fields"]',
             validateHiddenField: '(//li[contains(@class,"field-items wpuf-group/hidden-fields")]//div)[1]',
             validateImageUpload: '//label[@for="image_upload"]/../..//div[@class="wpuf-fields"]',
-            //div[contains(@class,'wpuf-flex wpuf-rounded-t-lg')]//div[1]
             // From___PRO
             validateRepeatField: '//label[@for="repeat_field"]/../..//div[@class="wpuf-fields"]',
             validateDateTime: '//label[@for="date___time"]/../..//div[@class="wpuf-fields"]',  // TODO: Date - Time has large underscore
@@ -320,7 +329,7 @@ export const Selectors = {
             validateNumericField: '//label[@for="numeric_field"]/../..//div[@class="wpuf-fields"]',
             validatePhoneField: '//label[@for="phone_field"]/../..//div[@class="wpuf-fields"]',
             validateAddressField: '//label[@for="address_field"]',
-            // validateGoogleMaps: '',           // TODO: Setup required
+            validateGoogleMaps: '//div[@class="wpuf-form-google-map"]',
             validateStepStart: '//div[@class="step-start-indicator"]/../..',
             validateEmbed: '//label[@for="embed"]/../..//div[@class="wpuf-fields"]',
         },

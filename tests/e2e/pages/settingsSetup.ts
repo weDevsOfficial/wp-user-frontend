@@ -111,11 +111,11 @@ export class SettingsSetupPage extends Base {
         //Go to Plugins page
         const pluginsPage = Urls.baseUrl + '/wp-admin/plugins.php';
         const ifWPUFLite = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.availableWPUFPluginLite);
-        await this.page.waitForTimeout(3000);
+        await this.page.waitForTimeout(500);
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow1);
-        await this.page.waitForTimeout(2000);
+        await this.page.waitForTimeout(500);
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow2);
-        await this.page.waitForTimeout(1000);
+        await this.page.waitForTimeout(500);
         if (ifWPUFLite == true) {
             //Activate Plugin
             const activateWPUFLite = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
@@ -266,6 +266,11 @@ export class SettingsSetupPage extends Base {
         //Save Login/Registration
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileSave);
 
+        await this.page.waitForTimeout(2000);
+        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPosting);
+        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.showCustomFields);
+        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPostingSave);
+
         await this.page.waitForLoadState('domcontentloaded');
     };
 
@@ -285,12 +290,8 @@ export class SettingsSetupPage extends Base {
         //Change Settings
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
         await this.page.reload();
-        //Validate Frontend Posting
-        await this.assertionValidate(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPosting);
         //Click Frontend Posting
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPosting);
-        //Turn On Custom Fields
-        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.showCustomFields);
         //Set Default Post Form 
         await this.page.selectOption(Selectors.settingsSetup.wpufSettingsPage.setDefaultPostForm, { label: 'FE PostForm' });
         //Save FrontEnd Posting
@@ -419,6 +420,58 @@ export class SettingsSetupPage extends Base {
         await this.validateAndClick(Selectors.settingsSetup.createNewUser.newUserSubmit);
     };
 
+    async addGoogleMapAPIKey(googleMapAPIKey: string) {
+        //Go to Settings - General page
+        const settingsGeneralPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-settings';
+        await Promise.all([
+            this.page.goto(settingsGeneralPage, { waitUntil: 'networkidle' }),
+        ]);
+
+        await this.page.reload();
+        //Google Map API Key
+        await this.validateAndFillStrings(Selectors.settingsSetup.keys.fillGoogleMapAPIKey, googleMapAPIKey);
+        //Save Settings
+        await this.validateAndClick(Selectors.settingsSetup.keys.settingsTabGeneralSave);
+    }
+
+    async addReCaptchaKeys(recaptchaSiteKey: string, recaptchaSecretKey: string) {
+        //Go to Settings - General page
+        const settingsGeneralPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-settings';
+        await Promise.all([
+            this.page.goto(settingsGeneralPage, { waitUntil: 'networkidle' }),
+        ]);
+
+        await this.page.reload();
+        //ReCaptcha site & secret Key
+        await this.validateAndFillStrings(Selectors.settingsSetup.keys.fillReCaptchaSiteKey, recaptchaSiteKey);
+        await this.validateAndFillStrings(Selectors.settingsSetup.keys.fillReCaptchaSecretKey, recaptchaSecretKey);
+        //Save Settings
+        await this.validateAndClick(Selectors.settingsSetup.keys.settingsTabGeneralSave);
+    }
+
+    async addCloudflareTurnstileKeys(turnstileSiteKey: string, turnstileSecretKey: string) {
+        //Go to Settings - General page
+        const settingsGeneralPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-settings';
+        await Promise.all([
+            this.page.goto(settingsGeneralPage, { waitUntil: 'networkidle' }),
+        ]);
+
+        await this.page.reload();
+        // Cloudflare Turnstile enable
+        await this.validateAndClick(Selectors.settingsSetup.keys.enableCloudflareTurnstile);
+        // Cloudflare Turnstile site & secret Key
+        await this.validateAndFillStrings(Selectors.settingsSetup.keys.fillCloudflareTurnstileSiteKey, turnstileSiteKey);
+        await this.validateAndFillStrings(Selectors.settingsSetup.keys.fillCloudflareTurnstileSecretKey, turnstileSecretKey);
+        //Save Settings
+        await this.validateAndClick(Selectors.settingsSetup.keys.settingsTabGeneralSave);
+        // Go to Settings - Login/Registration page
+        await this.validateAndClick(Selectors.settingsSetup.keys.clickLoginOrRegistration);
+        // Cloudflare Turnstile enable
+        await this.validateAndClick(Selectors.settingsSetup.keys.enableCloudflareTurnstileLogin);
+        //Save Settings
+        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileSave);
+    }
+
 
 
     /***********************************************/
@@ -436,7 +489,7 @@ export class SettingsSetupPage extends Base {
         await this.validateAndFillStrings(Selectors.resetWordpreseSite.wpResetInputBox, 'reset');
         await this.validateAndClick(Selectors.resetWordpreseSite.wpResetSubmitButton);
         await this.validateAndClick(Selectors.resetWordpreseSite.wpResetConfirmWordpressReset);
-        await this.page.waitForTimeout(4000);
+        await this.page.waitForTimeout(2000);
     };
 
 }

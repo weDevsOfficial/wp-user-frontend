@@ -363,11 +363,12 @@ function wpuf_help_related_articles( $articles ) {
                         <?php
                             printf(
                                 // translators: %1$s: {login_forms}, %2$s: {subscription_forms}, %3$s: {guest_posting}
-                                esc_html__( 'Add customized %1$slogin forms%2$s using simple shortcodes and override default WordPress login and registration.', 'wp-user-frontend' ),
-                                '<strong>',
-                                '</strong>'
-                            );
-                        ?>
+                                esc_html__(
+                                    'Add customized %1$slogin forms%2$s using simple shortcodes and override default WordPress login and registration.', 'wp-user-frontend' ),
+                                    '<strong>',
+                                    '</strong>'
+                                );
+                            ?>
                     </li>
                     <li>
                         <?php
@@ -641,11 +642,30 @@ function wpuf_help_related_articles( $articles ) {
                 <h2><?php esc_html_e('Payment &amp; Gateway Settings', 'wp-user-frontend'); ?></h2>
                 <p><?php esc_html_e('Post subscription and payment system is a module where you can add paid posting system with WP User Frontend. You can introduce two types of payment system. Pay per post and subscription pack based.', 'wp-user-frontend'); ?></p>
 
-                <h2><?php esc_html_e('Pay Per Post', 'wp-user-frontend'); ?></h2>
-
-                <p>
-                    <?php esc_html_e('With this you can introduce pay per post feature where users pay to publish their posts each post. When pay per post is enabled from "Settings → Payments → Charge for posting", users see a notice right before the post creation form in frontend about payment. When the submits a post, the post status gets pending and he is redirected to the payment page (to setup the payment page, create a Page Payment and select the page at "Settings → Payments → Payment Page". No shortcode is needed). Currently by default PayPal is only supported gateway. Upon selecting PayPal, he is redirected to PayPal for payment. After successful payment he is redirected back to the site and the post gets published.', 'wp-user-frontend'); ?>
-                </p>
+                <div class="wpuf-info-card pay-per-post-card">
+                    <h3 style="margin-top: 0;">
+                        <?php esc_html_e('Pay Per Post', 'wp-user-frontend'); ?>
+                    </h3>
+                    <p><?php esc_html_e('Pay Per Post lets you charge users per post. ', 'wp-user-frontend'); ?></p>
+                    <ol style="margin-left: 1.5em;">
+                        <li><?php esc_html_e('Go to Post Form Settings → Payment Settings.', 'wp-user-frontend'); ?></li>
+                        <li><?php esc_html_e('Toggle on "Enable Payment".', 'wp-user-frontend'); ?></li>
+                        <li><?php esc_html_e('Choose "Pay Per Post" from the dropdown.', 'wp-user-frontend'); ?></li>
+                        <li><?php esc_html_e('Set a price for each post.', 'wp-user-frontend'); ?></li>
+                        <li><?php esc_html_e('Select a Payment Success redirection Page.', 'wp-user-frontend'); ?></li>
+                        <li><?php esc_html_e('Save your settings.', 'wp-user-frontend'); ?></li>
+                    </ol>
+                    <ul style="margin-left: 1.5em; list-style: disc;">
+                        <li><?php esc_html_e('Users will see a payment notice before the form.', 'wp-user-frontend'); ?></li>
+                        <li><?php esc_html_e('After submitting, the post stays pending and redirects to the payment page.', 'wp-user-frontend'); ?></li>
+                        <li>
+                            <strong style="color: #d63638;">
+                                <?php esc_html_e('Currently, only PayPal is supported.', 'wp-user-frontend'); ?>
+                            </strong>
+                        </li>
+                        <li><?php esc_html_e('After successful payment, users return to the success page and the post gets published.', 'wp-user-frontend'); ?></li>
+                    </ul>
+                </div>
 
                 <h2><?php esc_html_e('Subscription Pack', 'wp-user-frontend'); ?></h2>
 

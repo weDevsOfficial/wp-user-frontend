@@ -105,6 +105,68 @@ export class SettingsSetupPage extends Base {
 
     };
 
+    async validateWPUFpages() {
+        await Promise.all([
+            this.page.goto(Urls.baseUrl + '/wp-admin/edit.php?post_type=page', { waitUntil: 'networkidle' }),
+        ]);
+        await this.page.reload();
+        await this.page.waitForLoadState('domcontentloaded');
+        //Validate WPUF Pages
+        await this.assertionValidate(Selectors.settingsSetup.wpufPages.accountPage);
+        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufAccountPage);
+        await this.assertionValidate(Selectors.settingsSetup.wpufPages.dashboardPage);
+        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufDashboardPage);
+        await this.assertionValidate(Selectors.settingsSetup.wpufPages.editPage);
+        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufEditPage);
+        await this.assertionValidate(Selectors.settingsSetup.wpufPages.loginPage);
+        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufLoginPage);
+        await this.assertionValidate(Selectors.settingsSetup.wpufPages.subscriptionPage);
+        await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufSubscriptionPage);
+        await this.assertionValidate(Selectors.settingsSetup.wpufPages.orderReceivedPage);
+        await this.assertionValidate(Selectors.settingsSetup.wpufPages.paymentPage);
+        await this.assertionValidate(Selectors.settingsSetup.wpufPages.thankYouPage);
+        console.log("WPUF Pages are validated. all pages created successfully");
+    }
+
+    async validateWPUFpagesFE() {
+        //Go to FrontEnd
+        await Promise.all([
+            this.page.goto(Urls.baseUrl, { waitUntil: 'networkidle' }),
+        ]);
+        await this.page.reload();
+        await this.page.waitForLoadState('domcontentloaded');
+        //Validate WPUF Pages
+        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.accountPageFE);
+        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.dashboardPageFE);
+        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.editPageFE);
+        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.loginPageFE);
+        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.subscriptionPageFE);
+        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.orderReceivedPageFE);
+        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.thankYouPageFE);
+    }
+
+    async validateAccountPageTabs(){
+
+        await Promise.all([
+            this.page.goto(Urls.baseUrl + '/account/', { waitUntil: 'networkidle' }),
+        ]);
+        await this.page.reload();
+        await this.page.waitForLoadState('domcontentloaded');
+        await this.validateAndClick(Selectors.settingsSetup.accountPageTabs.dashboardTab);
+        await this.assertionValidate(Selectors.settingsSetup.accountPageTabs.viewDashboardPara);
+        await this.validateAndClick(Selectors.settingsSetup.accountPageTabs.postsTab);
+        await this.assertionValidate(Selectors.settingsSetup.accountPageTabs.postsTableHeader);
+        await this.validateAndClick(Selectors.settingsSetup.accountPageTabs.editProfileTab);
+        await this.assertionValidate(Selectors.settingsSetup.accountPageTabs.updateProfileButton);
+        await this.validateAndClick(Selectors.settingsSetup.accountPageTabs.subscriptionTab);
+        await this.assertionValidate(Selectors.settingsSetup.accountPageTabs.noSubscriptionPara);
+        await this.validateAndClick(Selectors.settingsSetup.accountPageTabs.billingAddessTab);
+        await this.assertionValidate(Selectors.settingsSetup.accountPageTabs.updateBillingAddressButton);
+        await this.validateAndClick(Selectors.settingsSetup.accountPageTabs.submitPostTab);
+        await this.assertionValidate(Selectors.settingsSetup.accountPageTabs.submitPostButton);
+        await this.validateAndClick(Selectors.settingsSetup.accountPageTabs.invoiceTab);
+        await this.assertionValidate(Selectors.settingsSetup.accountPageTabs.invoiceTableHeader);
+    }
 
     //Plugin Activate - Lite
     async activateWPUFLite() {
@@ -419,6 +481,51 @@ export class SettingsSetupPage extends Base {
         //Create User
         await this.validateAndClick(Selectors.settingsSetup.createNewUser.newUserSubmit);
     };
+
+    async createPostCategories() {
+        //Go to Admin-Users
+        await Promise.all([
+            this.page.goto(Urls.baseUrl + '/wp-admin/edit-tags.php?taxonomy=category', { waitUntil: 'networkidle' }),
+        ]);
+        await this.page.reload();
+        await this.page.waitForLoadState('domcontentloaded');
+        //Add New Category
+        await this.validateAndClick(Selectors.settingsSetup.categories.clickCategoryMenu);
+        await this.page.waitForLoadState('domcontentloaded');
+        const categoryNames: string[] = ['Science', 'Music', 'Politics', 'Sports', 'Technology'];
+        const categorySlug: string[] = ['science', 'music', 'politics', 'sports', 'technology'];
+        for (let i = 0; i < categoryNames.length; i++) {
+            await this.validateAndFillStrings(Selectors.settingsSetup.categories.addNewCategory, categoryNames[i]);
+            await this.validateAndFillStrings(Selectors.settingsSetup.categories.addCategorySlug, categorySlug[i]);
+            await this.validateAndClick(Selectors.settingsSetup.categories.submitCategory);
+            await this.page.waitForTimeout(1000);
+            await this.page.waitForLoadState('domcontentloaded');
+            let validatedCategory = await this.page.innerText(Selectors.settingsSetup.categories.validateCategory);
+            await expect(validatedCategory).toContain(categoryNames[i]);
+        }
+    }
+    async createPostTags() {
+        //Go to Admin-Users
+        await Promise.all([
+            this.page.goto(Urls.baseUrl + '/wp-admin/edit-tags.php?taxonomy=post_tag', { waitUntil: 'networkidle' }),
+        ]);
+        await this.page.reload();
+        await this.page.waitForLoadState('domcontentloaded');
+        //Add New Category
+        await this.validateAndClick(Selectors.settingsSetup.tags.clickTagsMenu);
+        await this.page.waitForLoadState('domcontentloaded');
+        const tagNames: string[] = ['Physics', 'Chemistry', 'Genetics', 'Rock', 'Pop', 'Jazz', 'Democracy', 'Elections', 'Campaigns', 'Football', 'Cricket', 'Fitness', 'AI', 'Gadgets', 'Software'];
+        const tagSlug: string[] = ['physics', 'chemistry', 'genetics', 'rock', 'pop', 'jazz', 'democracy', 'elections', 'campaigns', 'football', 'cricket', 'fitness', 'ai', 'gadgets', 'software'];
+        for (let i = 0; i < tagNames.length; i++) {
+            await this.validateAndFillStrings(Selectors.settingsSetup.tags.addNewTag, tagNames[i]);
+            await this.validateAndFillStrings(Selectors.settingsSetup.tags.addTagSlug, tagSlug[i]);
+            await this.validateAndClick(Selectors.settingsSetup.tags.submitTag);
+            await this.page.waitForTimeout(1000);
+            await this.page.waitForLoadState('domcontentloaded');
+            let validatedtag = await this.page.innerText(Selectors.settingsSetup.tags.validateTag);
+            await expect(validatedtag).toContain(tagNames[i]);
+        }
+    }
 
     async addGoogleMapAPIKey(googleMapAPIKey: string) {
         //Go to Settings - General page

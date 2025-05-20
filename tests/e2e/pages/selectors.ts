@@ -73,6 +73,50 @@ export const Selectors = {
             postFormsPageFormTitleCheck: '//a[@class="row-title"][1]',
         },
 
+        wpufPages: {
+            accountPage: '//strong//a[normalize-space()="Account"]',
+            wpufAccountPage: '//a[normalize-space()="Account"]//..//span[normalize-space()="WPUF Account Page"]',
+            dashboardPage: '//strong//a[normalize-space()="Dashboard"]',
+            wpufDashboardPage: '//a[normalize-space()="Dashboard"]//..//span[normalize-space()="WPUF Dashboard Page"]',
+            editPage: '//strong//a[normalize-space()="Edit"]',
+            wpufEditPage: '//a[normalize-space()="Edit"]//..//span[normalize-space()="WPUF Post Edit Page"]',
+            subscriptionPage: '//strong//a[normalize-space()="Subscription"]',
+            wpufSubscriptionPage: '//a[normalize-space()="Subscription"]//..//span[normalize-space()="WPUF Subscription Page"]',
+            loginPage: '//strong//a[normalize-space()="Login"]',
+            wpufLoginPage: '//a[normalize-space()="Login"]//..//span[normalize-space()="WPUF Login Page"]',
+            orderReceivedPage: '//strong//a[normalize-space()="Order Received"]',
+            thankYouPage: '//strong//a[normalize-space()="Thank You"]',
+            paymentPage: '//strong//a[normalize-space()="Payment"]',
+        },
+
+        wpufPagesFE:{
+            accountPageFE: '//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Account"]',
+            dashboardPageFE: '//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Dashboard"]',
+            editPageFE: '//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Edit"]',
+            subscriptionPageFE: '//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Subscription"]',
+            loginPageFE: '//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Login"]',
+            orderReceivedPageFE: '//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Order Received"]',
+            thankYouPageFE: '//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Thank You"]',
+            paymentPageFE: '//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Payment"]',
+        },
+
+        accountPageTabs:{
+            dashboardTab: '//nav[@class="wpuf-dashboard-navigation"]//li//a[normalize-space()="Dashboard"]',
+            viewDashboardPara: '//p[contains(text(),"From your account dashboard you can view your dash")]',
+            postsTab: '//nav[@class="wpuf-dashboard-navigation"]//li//a[normalize-space()="Posts"]',
+            postsTableHeader: '//thead//tr[1]//th[text()="Title"]',
+            editProfileTab: '//nav[@class="wpuf-dashboard-navigation"]//li//a[normalize-space()="Edit Profile"]',
+            updateProfileButton: '//button[normalize-space(text())="Update Profile"]',
+            subscriptionTab: '//nav[@class="wpuf-dashboard-navigation"]//li//a[normalize-space()="Subscription"]',
+            noSubscriptionPara: '//p[normalize-space()="You have not subscribed to any package yet."]',
+            billingAddessTab: '//nav[@class="wpuf-dashboard-navigation"]//li//a[normalize-space()="Billing Address"]',
+            updateBillingAddressButton: '//input[@value="Update Billing Address"]',
+            submitPostTab: '//nav[@class="wpuf-dashboard-navigation"]//li//a[normalize-space()="Submit Post"]',
+            submitPostButton: '//input[@value="wpuf_submit_post"]/following-sibling::input[1]',
+            invoiceTab: '//nav[@class="wpuf-dashboard-navigation"]//li//a[normalize-space()="Invoices"]',
+            invoiceTableHeader: '//thead[contains(.,"Invoice")]'
+        },
+
         // WPUF Setup
         wpufSetup: {
             // WPUF Setup 
@@ -160,6 +204,22 @@ export const Selectors = {
             newUserSelectRoleCustomer: '//option[@value="customer"]',
             // Create User
             newUserSubmit: '//input[@type="submit"]',
+        },
+
+        categories: {
+            clickCategoryMenu: '//a[normalize-space()="Categories"]',
+            addNewCategory: '//input[@id="tag-name"]',
+            addCategorySlug: '//input[@id="tag-slug"]',
+            submitCategory: '//input[@id="submit"]',
+            validateCategory: '//tbody[@id="the-list"]//tr[1]//td[1]//strong//a',
+        },
+
+        tags: {
+            clickTagsMenu: '//a[normalize-space()="Tags"]',
+            addNewTag: '//input[@id="tag-name"]',
+            addTagSlug: '//input[@id="tag-slug"]',
+            submitTag: '//input[@id="submit"]',
+            validateTag: '//tbody[@id="the-list"]//tr[1]//td[1]//strong//a',
         },
 
         keys: {

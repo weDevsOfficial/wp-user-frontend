@@ -148,10 +148,11 @@ export class SettingsSetupPage extends Base {
     async validateAccountPageTabs(){
 
         await Promise.all([
-            this.page.goto(Urls.baseUrl + '/account/', { waitUntil: 'networkidle' }),
+            this.page.goto(Urls.baseUrl , { waitUntil: 'networkidle' }),
         ]);
         await this.page.reload();
         await this.page.waitForLoadState('domcontentloaded');
+        await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.accountPageFE);
         await this.validateAndClick(Selectors.settingsSetup.accountPageTabs.dashboardTab);
         await this.assertionValidate(Selectors.settingsSetup.accountPageTabs.viewDashboardPara);
         await this.validateAndClick(Selectors.settingsSetup.accountPageTabs.postsTab);

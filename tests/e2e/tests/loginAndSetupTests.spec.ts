@@ -9,7 +9,7 @@ import { Users } from '../utils/testData'
 export default function loginAndSetupTests() {
 
 
-test.describe('Login and Setup :-->', () => {
+test.describe('Login and Setup @Both :-->', () => {
 /**----------------------------------LOGIN----------------------------------**
  *
  * @Test_Scenarios : [LOGIN & SETUP] 

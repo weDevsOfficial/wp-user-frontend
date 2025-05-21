@@ -124,8 +124,15 @@ jobs:
         if: success() && (github.event_name != 'workflow_dispatch' || ( github.event_name == 'workflow_dispatch' && (github.event.inputs.testsuite == 'E2E' || github.event.inputs.testsuite == 'All')))
         working-directory: tests/e2e
         run: |
-          DEBUG=pw:api npx playwright test e2eMain.spec.ts --project=chromium --reporter=html
+          npx playwright test e2eMain.spec.ts --project=chromium --reporter=json,html --output=tests/e2e/test-results
+          mv playwright-report tests/e2e/playwright-report
         continue-on-error: true
+
+      # Generate and post advanced test summary
+      - name: Generate and post advanced test summary
+        if: always()
+        run: |
+          node tests/e2e/utils/generate-summary.ts
 
       # Archive Playwright artifacts (screenshots, HTML snapshots, videos)
       - name: Archive playwright artifacts (screenshots, HTML snapshots, videos)
@@ -138,6 +145,13 @@ jobs:
             tests/e2e/test-results
           if-no-files-found: warn
           retention-days: 3
+
+      # Upload Playwright HTML report
+      - name: Upload Playwright HTML report
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-html-report
+          path: tests/e2e/playwright-report
 
       # - name: Publish HTML report to GH Pages
       #   uses: peaceiris/actions-gh-pages@v4

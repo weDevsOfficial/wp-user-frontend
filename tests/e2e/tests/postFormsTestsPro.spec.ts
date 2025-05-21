@@ -13,7 +13,7 @@ import * as fs from "fs"; //Clear Cookie
 export default function postFormsTestsPro() {
 
 
-test.describe('Post-Forms @Lite :-->', () => {
+test.describe('Post-Forms @Pro :-->', () => {
 /**----------------------------------POSTFORMS----------------------------------**
  *
  * @TestScenario : [Post-Forms]

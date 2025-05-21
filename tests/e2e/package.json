@@ -8,7 +8,6 @@
     "wp-env": "wp-env",
     "test": "CI=false npx playwright test e2eMain.spec.ts --headed",
     "test:pro": "CI=false npx playwright test e2eMainPro.spec.ts --headed"
-
   },
   "keywords": [],
   "author": "",
@@ -17,8 +16,8 @@
     "@faker-js/faker": "^9.4.0",
     "@playwright/test": "^1.50.1",
     "@types/js-yaml": "^4.0.9",
-    "@types/node": "^18.19.79",
     "ts-node": "^10.9.2",
+    "@types/node": "^18.19.79",
     "typescript": "^5.7.3"
   },
   "dependencies": {

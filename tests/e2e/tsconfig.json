@@ -8,5 +8,8 @@
     "resolveJsonModule": true,
     "outDir": "dist"
   },
-  "include": ["utils/*.ts"]
-} 
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  }
+}

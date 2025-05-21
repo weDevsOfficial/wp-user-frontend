@@ -132,7 +132,9 @@ jobs:
       - name: Generate and post advanced test summary
         if: always()
         working-directory: tests/e2e
-        run: npx ts-node --loader ts-node/esm utils/generate-summary.ts
+        run: |
+          npx tsc utils/generate-summary.ts
+          node utils/generate-summary.js
 
       # Archive Playwright artifacts (screenshots, HTML snapshots, videos)
       - name: Archive playwright artifacts (screenshots, HTML snapshots, videos)

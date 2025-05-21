@@ -252,8 +252,8 @@ class Paypal {
     public function register_webhook_endpoint() {
         // Add rewrite rule for webhook endpoint
         add_rewrite_rule(
-            '^payment_capture_completed/?$',
-            'index.php?action=payment_capture_completed=1',
+            '^webhook_triggered/?$',
+            'index.php?action=webhook_triggered=1',
             'top'
         );
         
@@ -275,7 +275,7 @@ class Paypal {
             error_log('WPUF PayPal: Warning - Webhook ID is not configured');
         } else {
             error_log('WPUF PayPal: Webhook endpoint registered at: ' . 
-                home_url('/?action=payment_capture_completed'));
+                home_url('/?action=webhook_triggered'));
         }
     }
 
@@ -283,7 +283,7 @@ class Paypal {
      * Handle webhook request
      */
     public function handle_webhook_request() {
-        if ( 'payment_capture_completed' === get_query_var('action') && 
+        if ( 'webhook_triggered' === get_query_var('action') && 
             'POST' === $_SERVER['REQUEST_METHOD'] && 
             isset($_SERVER['HTTP_PAYPAL_TRANSMISSION_ID'])) {
 
@@ -1063,8 +1063,8 @@ class Paypal {
 // Register webhook endpoint
 add_action('init', function() {
     add_rewrite_rule(
-        '^payment_capture_completed/?$',
-        'index.php?action=payment_capture_completed=1',
+        '^webhook_triggered/?$',
+        'index.php?action=webhook_triggered=1',
         'top'
     );
 });
@@ -1077,7 +1077,7 @@ add_filter('query_vars', function($vars) {
 
 // Handle webhook request
 add_action('template_redirect', function() {
-    if ( 'payment_capture_completed' === get_query_var('action') ) {
+    if ( 'webhook_triggered' === get_query_var('action') ) {
         $paypal = new \WeDevs\Wpuf\Lib\Gateway\Paypal();
         $raw_input = file_get_contents('php://input');
         $paypal->process_webhook($raw_input);

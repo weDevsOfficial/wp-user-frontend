@@ -43,24 +43,24 @@ class Paypal {
             header('Content-Type: application/json');
             
             // Verify webhook signature
-            if ( ! $this->verify_webhook_signature_from_input($raw_input)) {
+            if (!$this->verify_webhook_signature_from_input($raw_input)) {
                 throw new \Exception('Webhook signature verification failed');
             }
 
             // Decode the webhook data
             $event = json_decode($raw_input, true);
-            if ( JSON_ERROR_NONE !== json_last_error() ) {
+            if (JSON_ERROR_NONE !== json_last_error()) {
                 throw new \Exception('Invalid JSON in webhook data');
             }
 
             // Process PAYMENT.CAPTURE.COMPLETED event
-            if ( 'PAYMENT.CAPTURE.COMPLETED' === $event['event_type'] && isset($event['resource'])) {
+            if ('PAYMENT.CAPTURE.COMPLETED' === $event['event_type'] && isset($event['resource'])) {
                 $payment = $event['resource'];
                 $this->process_payment_capture($payment);
             }
             
             // Process subscription payment events
-            if ( 'PAYMENT.SALE.COMPLETED' === $event['event_type'] && isset($event['resource'])) {
+            if ('PAYMENT.SALE.COMPLETED' === $event['event_type'] && isset($event['resource'])) {
                 $payment = $event['resource'];
                 
                 // Check if this is a recurring payment (has billing_agreement_id)
@@ -68,7 +68,7 @@ class Paypal {
                     // Let process_subscription_payment handle everything
                     $this->process_subscription_payment($payment);
                 }
-            } else if ( 'BILLING.SUBSCRIPTION.PAYMENT.SUCCEEDED' === $event['event_type'] && isset($event['resource'])) {
+            } else if ('BILLING.SUBSCRIPTION.PAYMENT.SUCCEEDED' === $event['event_type'] && isset($event['resource'])) {
                 // Process other subscription payments
                 $payment = $event['resource'];
                 $this->process_subscription_payment($payment);
@@ -96,12 +96,12 @@ class Paypal {
 
         try {
             // Get custom data from custom_id
-            if ( ! isset($payment['custom_id'])) {
+            if (!isset($payment['custom_id'])) {
                 throw new \Exception('Missing custom_id in payment');
             }
 
             $custom_data = json_decode($payment['custom_id'], true);
-            if ( ! $custom_data) {
+            if (!$custom_data) {
                 throw new \Exception('Invalid custom data');
             }
 
@@ -109,7 +109,7 @@ class Paypal {
             $payment_amount = number_format($payment['amount']['value'], 2, '.', '');
             $expected_amount = number_format($custom_data['subtotal'], 2, '.', '');
 
-            if ( $payment_amount !== $expected_amount ) {
+            if ($payment_amount !== $expected_amount) {
                 throw new \Exception('Payment amount mismatch');
             }
 
@@ -137,8 +137,8 @@ class Paypal {
                 'subtotal' => $payment['amount']['value'],
                 'tax' => isset($custom_data['tax']) ? $custom_data['tax'] : 0,
                 'cost' => $custom_data['subtotal'],
-                'post_id' => ($custom_data['type'] === 'post') ? $custom_data['item_number'] : 0,
-                'pack_id' => ($custom_data['type'] === 'pack') ? $custom_data['item_number'] : 0,
+                'post_id' => ('post' === $custom_data['type']) ? $custom_data['item_number'] : 0,
+                'pack_id' => ('pack' === $custom_data['type']) ? $custom_data['item_number'] : 0,
                 'payer_first_name' => $user->first_name,
                 'payer_last_name' => $user->last_name,
                 'payer_email' => $user->user_email,
@@ -152,7 +152,7 @@ class Paypal {
             
 
             // Handle subscription if needed
-            if ($custom_data['type'] === 'pack') {
+            if ('pack' === $custom_data['type']) {
                 $this->handle_subscription_purchase($custom_data['user_id'], $custom_data['item_number'], $payment['id']);
             }
 
@@ -201,7 +201,7 @@ class Paypal {
         }
 
         // Handle subscription
-        if ($custom_data['type'] === 'pack') {
+        if ('pack' === $custom_data['type']) {
             $this->handle_subscription_purchase($custom_data['user_id'], $custom_data['item_number'], $payment['id']);
         }
 
@@ -298,7 +298,7 @@ class Paypal {
      * Handle webhook request
      */
     public function handle_webhook_request() {
-        if ( 'webhook_triggered' === get_query_var('action') && 
+        if ('webhook_triggered' === get_query_var('action') && 
             'POST' === $_SERVER['REQUEST_METHOD'] && 
             isset($_SERVER['HTTP_PAYPAL_TRANSMISSION_ID'])) {
 
@@ -308,21 +308,21 @@ class Paypal {
             try {
                 // Log and basic checks
                 error_log('WPUF PayPal: Webhook received');
-                if ( empty($raw_input) ) {
+                if (empty($raw_input)) {
                     throw new \Exception('Empty webhook payload');
                 }
 
                 // Verify signature
-                if ( ! $this->verify_webhook_signature_from_input($raw_input)) {
+                if (!$this->verify_webhook_signature_from_input($raw_input)) {
                     throw new \Exception('Invalid webhook signature');
                 }
 
                 // Decode and validate
                 $webhook_data = json_decode($raw_input, true);
-                if ( JSON_ERROR_NONE !== json_last_error() ) {
+                if (JSON_ERROR_NONE !== json_last_error()) {
                     throw new \Exception('Invalid JSON');
                 }
-                if ( ! isset($webhook_data['event_type']) || 'PAYMENT.CAPTURE.COMPLETED' !== $webhook_data['event_type'] ) {
+                if (!isset($webhook_data['event_type']) || 'PAYMENT.CAPTURE.COMPLETED' !== $webhook_data['event_type']) {
                     throw new \Exception('Invalid event type');
                 }
 
@@ -376,14 +376,14 @@ class Paypal {
             ];
     
             foreach ($required_headers as $header) {
-                if ( empty($headers[$header]) ) {
+                if (empty($headers[$header])) {
                     error_log('WPUF PayPal: Missing required header: ' . $header);
                     return false;
                 }
             }
     
             $access_token = $this->get_access_token();
-            if ( ! $access_token) {
+            if (!$access_token) {
                 error_log('WPUF PayPal: Failed to get access token');
                 return false;
             }
@@ -1400,8 +1400,8 @@ class Paypal {
         $token = isset($_GET['token']) ? sanitize_text_field($_GET['token']) : '';
         $payer_id = isset($_GET['PayerID']) ? sanitize_text_field($_GET['PayerID']) : '';
         
-        if ( empty($token) || empty($payer_id) ) {
-            if ( isset($_GET['payment_status']) ) {
+        if (empty($token) || empty($payer_id)) {
+            if (isset($_GET['payment_status'])) {
                 return; // Just show success page
             }
             // Redirect to subscription page with error message
@@ -1472,11 +1472,11 @@ class Paypal {
      * Check PayPal return
      */
     public function check_paypal_return() {
-        if ( ! isset($_GET['action']) || 'wpuf_paypal_success' !== $_GET['action'] ) {
+        if (!isset($_GET['action']) || 'wpuf_paypal_success' !== $_GET['action']) {
             return;
         }
 
-        if ( isset($_GET['payment_completed']) ) {
+        if (isset($_GET['payment_completed'])) {
             return;
         }
 
@@ -1487,12 +1487,12 @@ class Paypal {
      * Add pending payment page handler
      */
     public function handle_pending_payment() {
-        if ( ! isset($_GET['action']) || 'wpuf_paypal_pending' !== $_GET['action'] ) {
+        if (!isset($_GET['action']) || 'wpuf_paypal_pending' !== $_GET['action']) {
             return;
         }
 
         $capture_id = isset($_GET['capture_id']) ? sanitize_text_field($_GET['capture_id']) : '';
-        if ( empty($capture_id) ) {
+        if (empty($capture_id)) {
             wp_redirect(home_url('/payment-error/?error=' . urlencode('Invalid capture ID')));
             exit;
         }
@@ -1520,7 +1520,7 @@ add_filter('query_vars', function($vars) {
 
 // Handle webhook request
 add_action('template_redirect', function() {
-    if ( 'webhook_triggered' === get_query_var('action') ) {
+    if ('webhook_triggered' === get_query_var('action')) {
         $paypal = new \WeDevs\Wpuf\Lib\Gateway\Paypal();
         $raw_input = file_get_contents('php://input');
         $paypal->process_webhook($raw_input);

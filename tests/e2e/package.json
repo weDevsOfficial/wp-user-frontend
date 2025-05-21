@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "wp-env": "wp-env",
     "test": "CI=false npx playwright test e2eMain.spec.ts --headed",

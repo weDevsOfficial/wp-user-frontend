@@ -36,7 +36,7 @@ export class RegistrationFormsPage extends Base {
             await expect(checkProFeaturesText).toContain('Unlock PRO Features');
 
             //Check Setup
-            const checkUpgradeToProOption = await this.page.locator(Selectors.registrationForms.validateRegistrationFormsProFeatureLite.checkUpgradeToProOption);
+            const checkUpgradeToProOption = this.page.locator(Selectors.registrationForms.validateRegistrationFormsProFeatureLite.checkUpgradeToProOption);
             expect(checkUpgradeToProOption).toBeTruthy();
         }
     }

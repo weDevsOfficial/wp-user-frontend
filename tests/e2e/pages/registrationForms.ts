@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 dotenv.config();
 import { expect, Page } from '@playwright/test';
 import { Selectors } from './selectors';
@@ -23,23 +23,23 @@ export class RegistrationFormsPage extends Base {
         // Visit Registration forms page
         const wpufRegistrationFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
         await Promise.all([
-            this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }),
+            this.page.goto(wpufRegistrationFormPage, { waitUntil: 'domcontentloaded' }),
         ]);
 
         const validateWPUFProActivate = await this.page.isVisible(Selectors.registrationForms.navigatePage_RF.checkAddButton_RF);
         if (validateWPUFProActivate == true) {
-            console.log("WPUF Pro is Activated");
+            console.log('WPUF Pro is Activated');
         }
         else {
             //Check Pro Features Header
             const checkProFeaturesText = await this.page.innerText(Selectors.registrationForms.validateRegistrationFormsProFeatureLite.checkProFeaturesText);
-            await expect(checkProFeaturesText).toContain("Unlock PRO Features");
+            await expect(checkProFeaturesText).toContain('Unlock PRO Features');
 
             //Check Setup
             const checkUpgradeToProOption = await this.page.locator(Selectors.registrationForms.validateRegistrationFormsProFeatureLite.checkUpgradeToProOption);
             expect(checkUpgradeToProOption).toBeTruthy();
         }
-    };
+    }
 
 
     //Create Registration page using Shortcode
@@ -47,10 +47,10 @@ export class RegistrationFormsPage extends Base {
         // Visit Registration forms page
         const wpufRegistrationFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
         await Promise.all([
-            this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }),
+            this.page.goto(wpufRegistrationFormPage, { waitUntil: 'domcontentloaded' }),
         ]);
 
-        let storeShortcode: String = '';
+        let storeShortcode: string = '';
 
         //Copy Shortcode
         storeShortcode = await this.page.innerText(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.storeShortcode);
@@ -59,7 +59,7 @@ export class RegistrationFormsPage extends Base {
         //Visit Pages
         const visitPagesAdminMenuOption = Urls.baseUrl + '/wp-admin/edit.php?post_type=page';
         await Promise.all([
-            this.page.goto(visitPagesAdminMenuOption, { waitUntil: 'networkidle' }),
+            this.page.goto(visitPagesAdminMenuOption, { waitUntil: 'domcontentloaded' }),
         ]);
 
         //Add New Page
@@ -102,7 +102,7 @@ export class RegistrationFormsPage extends Base {
 
         //Go to Pages 
         await Promise.all([
-            this.page.goto(visitPagesAdminMenuOption, { waitUntil: 'networkidle' }),
+            this.page.goto(visitPagesAdminMenuOption, { waitUntil: 'domcontentloaded' }),
         ]);
 
         //Validate Page Created
@@ -114,7 +114,7 @@ export class RegistrationFormsPage extends Base {
         const validatePageCreated = await this.page.innerText(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.validatePageCreated);
         expect(validatePageCreated).toContain(registrationFormPageTitle);
 
-    };
+    }
 
 
 
@@ -136,7 +136,7 @@ export class RegistrationFormsPage extends Base {
         //Visit Post Form Page
         const wpufRegistrationFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
         await Promise.all([
-            this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }),
+            this.page.goto(wpufRegistrationFormPage, { waitUntil: 'domcontentloaded' }),
         ]);
         //CreateNewRegistrationForm
 

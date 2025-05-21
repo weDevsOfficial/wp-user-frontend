@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 dotenv.config();
 import { expect, Page } from '@playwright/test';
 import { Selectors } from './selectors';
@@ -22,7 +22,7 @@ const postTags = RegistrationForm.rfUsername;
 export class PostFormsFrontendPage extends Base{
 
     constructor(page: Page) {
-        super(page)
+        super(page);
     }
 
 
@@ -38,7 +38,7 @@ export class PostFormsFrontendPage extends Base{
         //Go to Accounts page - FrontEnd
         const wpufRegistrationFormFage = Urls.baseUrl + '/account/';
         await Promise.all([
-            this.page.goto(wpufRegistrationFormFage, { waitUntil: 'networkidle' }),
+            this.page.goto(wpufRegistrationFormFage, { waitUntil: 'domcontentloaded' }),
         ]);
 
         //Go to Submit Post
@@ -64,7 +64,7 @@ export class PostFormsFrontendPage extends Base{
         //Validate Post Submitted
         const validatePostSubmitted = await this.page.innerText(`//h1[normalize-space(text())='${postFormTitle}']`);
         expect(validatePostSubmitted).toContain(postFormTitle);
-    };
+    }
 
 
 
@@ -86,12 +86,5 @@ export class PostFormsFrontendPage extends Base{
         //Validate created Post
         expect(validatePostCreated).toContain(postFormTitle);
 
-    };
-
-
-
-
-
-
-
+    }
 }

@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 dotenv.config();
 import { expect, Page } from '@playwright/test';
 import { Selectors } from './selectors';
@@ -27,7 +27,7 @@ export class PostFormsPage extends Base {
         //Visit Post Form Page
         const wpufPostFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
         await Promise.all([
-            this.page.goto(wpufPostFormPage, { waitUntil: 'networkidle' }),
+            this.page.goto(wpufPostFormPage, { waitUntil: 'domcontentloaded' }),
         ]);
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
@@ -51,7 +51,7 @@ export class PostFormsPage extends Base {
         //Click Tick/Confirm button
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.confirmNewNameTickButton);
 
-    };
+    }
 
 
     //PresetForm
@@ -59,7 +59,7 @@ export class PostFormsPage extends Base {
         //Visit Post Form Page
         const wpufPostFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
         await Promise.all([
-            this.page.goto(wpufPostFormPage, { waitUntil: 'networkidle' }),
+            this.page.goto(wpufPostFormPage, { waitUntil: 'domcontentloaded' }),
         ]);
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
@@ -85,7 +85,7 @@ export class PostFormsPage extends Base {
         //Click Tick/Confirm button
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.confirmNewNameTickButton);
 
-    };
+    }
 
 
     //PresetForm
@@ -93,7 +93,7 @@ export class PostFormsPage extends Base {
         //Visit Post Form Page
         const wpufPostFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
         await Promise.all([
-            this.page.goto(wpufPostFormPage, { waitUntil: 'networkidle' }),
+            this.page.goto(wpufPostFormPage, { waitUntil: 'domcontentloaded' }),
         ]);
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
@@ -138,9 +138,5 @@ export class PostFormsPage extends Base {
         //Save Form Settings
         await this.validateAndClick(Selectors.postForms.formSettings.saveFormSettings);
 
-    };
-
-
-
-
+    }
 }

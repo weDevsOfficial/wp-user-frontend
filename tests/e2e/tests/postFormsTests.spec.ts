@@ -1,14 +1,14 @@
-require('dotenv').config();
-import { test, Page } from '@playwright/test';
+import * as dotenv from 'dotenv';
+import { test } from '@playwright/test';
+
+dotenv.config();
 import { BasicLoginPage } from '../pages/basicLogin';
 import { PostFormsPage } from '../pages/postForms';
 import { FieldOptionsCommonPage } from '../pages/fieldOptionsCommon';
 import { PostFormsFrontendPage } from '../pages/postFormsFrontend';
 import { SettingsSetupPage } from '../pages/settingsSetup';
 import { Users, PostForm } from '../utils/testData';
-import * as fs from "fs"; //Clear Cookie
-
-
+import * as fs from 'fs'; //Clear Cookie
 
 export default function postFormsTests() {
 
@@ -212,4 +212,4 @@ test.describe('Post-Forms @Lite :-->', () => {
 });
 
 
-};
+}

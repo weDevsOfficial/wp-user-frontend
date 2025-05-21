@@ -1,0 +1,40 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:playwright/recommended"
+  ],
+  "overrides": [{
+    "files": ["*.spec.ts","*.ts"],
+    "rules": {
+      "@typescript-eslint/no-unused-vars": "off",
+      "no-unused-vars": "off",
+      "no-console": "off",
+      "playwright/expect-expect": "off",
+      "playwright/no-skipped-test": "off",
+      "playwright/no-focused-test": "off",
+      "playwright/no-wait-for-timeout": "off",
+      "playwright/no-wait-for-selector": "off"
+    }
+  }],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "playwright"
+  ],
+  "rules": {
+    "no-unused-vars": "warn",
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "max-len": ["warn", { "code": 240 }],
+    "no-console": "warn"
+  }
+}

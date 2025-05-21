@@ -1,9 +1,10 @@
-require('dotenv').config();
-import { test, Page } from '@playwright/test';
+import * as dotenv from 'dotenv';
+dotenv.config();
+import { test } from '@playwright/test';
 import { BasicLoginPage } from '../pages/basicLogin';
 import { BasicLogoutPage } from '../pages/basicLogout';
-import { SettingsSetupPage } from '../pages/settingsSetup'
-import { Users } from '../utils/testData'
+import { SettingsSetupPage } from '../pages/settingsSetup';
+import { Users } from '../utils/testData';
 
 
 export default function loginAndSetupTests() {
@@ -174,4 +175,4 @@ test.describe('Login and Setup @Both :-->', () => {
 });
 
 
-};
+}

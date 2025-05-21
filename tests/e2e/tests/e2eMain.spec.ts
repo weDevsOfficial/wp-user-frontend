@@ -3,13 +3,14 @@ import loginAndSetupTests from './loginAndSetupTests.spec';
 import postFormsTests from './postFormsTests.spec';
 import registrationFormsTestsPro from './registrationFormsTestsPro.spec';
 // import subscriptionsTests from './subscription.spec';
-import * as fs from "fs"; //Clear Cookie
+import * as fs from 'fs'; //Clear Cookie
 import resetWordpressSite from './resetWordpressSite.spec';
 
 // Clear state.json before each test group
 const clearState = () => {
     fs.writeFileSync('state.json', '{"cookies":[],"origins": []}');
 };
+// eslint-disable-next-line no-console
 console.log('CI:', process.env.CI); 
 //*---------------------------------------------------*/
 //*---------------------Reset WP---------------------*/

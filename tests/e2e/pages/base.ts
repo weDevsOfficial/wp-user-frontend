@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 dotenv.config();
 import { expect, Page } from '@playwright/test';
 
@@ -13,21 +13,21 @@ export class Base {
     async assertionValidate(locator: string) {
         await this.page.locator(locator).waitFor();
         return expect(this.page.locator(locator).isVisible).toBeTruthy();
-    };
+    }
 
     // Validate and Click
     async validateAndClick(locator: string) {
         await this.page.locator(locator).waitFor();
         expect(this.page.locator(locator).isVisible).toBeTruthy();
         await this.page.locator(locator).click();
-    };
+    }
 
     // Validate and Click by text
     async validateAndClickByText(locator: string) {
         await this.page.getByText(locator).waitFor();
         expect(this.page.getByText(locator).isVisible).toBeTruthy();
         await this.page.getByText(locator).click();
-    };
+    }
 
     // Validate and Click any
     async validateAndClickAny(locator: string) {
@@ -65,25 +65,25 @@ export class Base {
         await this.page.locator(locator).waitFor();
         expect(this.page.locator(locator).isVisible).toBeTruthy();
         await this.page.locator(locator).fill(value);
-    };
+    }
 
     // Validate and Fill Numbers
     async validateAndFillNumbers(locator: string, value: number) {
         await this.page.locator(locator).waitFor();
         expect(this.page.locator(locator).isVisible).toBeTruthy();
         await this.page.locator(locator).fill(value.toString());
-    };
+    }
 
     // Validate and CheckBox
     async validateAndCheckBox(locator: string) {
         await this.page.locator(locator).waitFor();
         expect(this.page.locator(locator).isVisible).toBeTruthy();
         await this.page.locator(locator).check();
-    };
+    }
 
     // Match Toast Notification message(s)
     async matchToastNotifications(extractedToast: string, matchWithToast: string) {
         expect(matchWithToast).toContain(extractedToast);
-    };
+    }
 
 }

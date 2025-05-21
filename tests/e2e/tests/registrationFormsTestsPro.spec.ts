@@ -1,4 +1,4 @@
-require('dotenv').config();
+import * as dotenv from 'dotenv';
 import { test } from '@playwright/test';
 import { BasicLoginPage } from '../pages/basicLogin';
 import { RegistrationFormsPage } from '../pages/registrationForms';
@@ -6,7 +6,7 @@ import { RegistrationFormsFrontendPage } from '../pages/registrationFormsFronten
 import { SettingsSetupPage } from '../pages/settingsSetup';
 import { Users } from '../utils/testData';
 
-import * as fs from "fs"; //Clear Cookie
+import * as fs from 'fs'; //Clear Cookie
 
 
 

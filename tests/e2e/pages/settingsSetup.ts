@@ -1,11 +1,9 @@
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 dotenv.config();
 import { Dialog, expect, Page } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Urls } from '../utils/testData';
 import { Base } from './base';
-import path from 'path';
-import { Console } from "console";
 export class SettingsSetupPage extends Base {
 
     constructor(page: Page) {
@@ -24,7 +22,7 @@ export class SettingsSetupPage extends Base {
         //WPUF Setup
         const wpufSetupPage = Urls.baseUrl + '/wp-admin/index.php?page=wpuf-setup';
         await Promise.all([
-            this.page.goto(wpufSetupPage, { waitUntil: 'networkidle' }),
+            this.page.goto(wpufSetupPage, { waitUntil: 'domcontentloaded' }),
         ]);
 
         const wpufSetup = await this.page.isVisible(Selectors.settingsSetup.wpufSetup.validateWPUFSetupPage);
@@ -35,7 +33,7 @@ export class SettingsSetupPage extends Base {
             await this.validateAndClick(Selectors.settingsSetup.wpufSetup.clickWPUFSetupEnd);
         }
 
-    };
+    }
 
 
 
@@ -49,36 +47,36 @@ export class SettingsSetupPage extends Base {
     async pluginStatusCheckLite() {
         //Go to AdminEnd
         await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/plugins.php', { waitUntil: 'networkidle' }),
+            this.page.goto(Urls.baseUrl + '/wp-admin/plugins.php', { waitUntil: 'domcontentloaded' }),
         ]);
 
         //Activate Lite
         await this.activateWPUFLite();
-    };
+    }
 
 
     //Plugin Activate - Pro
     async pluginStatusCheckPro() {
         //Go to AdminEnd
         await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/plugins.php', { waitUntil: 'networkidle' }),
+            this.page.goto(Urls.baseUrl + '/wp-admin/plugins.php', { waitUntil: 'domcontentloaded' }),
         ]);
 
         //Activate Pro
         await this.activateWPUFPro();
-    };
+    }
 
     // Plugin Activate - License
     //Plugin Activate - Pro
     async licenseActivateWPUFPro() {
         //Go to AdminEnd
         await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/plugins.php', { waitUntil: 'networkidle' }),
+            this.page.goto(Urls.baseUrl + '/wp-admin/plugins.php', { waitUntil: 'domcontentloaded' }),
         ]);
 
         //Activate Pro
         await this.activateLicenseWPUFPro();
-    };
+    }
 
 
 
@@ -90,7 +88,7 @@ export class SettingsSetupPage extends Base {
     async pluginVisitWPUF() {
         //Go to AdminEnd
         await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'networkidle' }),
+            this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'domcontentloaded' }),
         ]);
 
         await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
@@ -100,14 +98,14 @@ export class SettingsSetupPage extends Base {
         const availableText = await this.page.isVisible(Selectors.settingsSetup.pluginVisit.clickPostFormMenuOption);
         if (availableText == true) {
             const checkText = await this.page.innerText(Selectors.settingsSetup.pluginVisit.wpufPostFormCheckAddButton);
-            await expect(checkText).toContain("Add New");
+            await expect(checkText).toContain('Add New');
         }
 
-    };
+    }
 
     async validateWPUFpages() {
         await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/edit.php?post_type=page', { waitUntil: 'networkidle' }),
+            this.page.goto(Urls.baseUrl + '/wp-admin/edit.php?post_type=page', { waitUntil: 'domcontentloaded' }),
         ]);
         await this.page.reload();
         await this.page.waitForLoadState('domcontentloaded');
@@ -125,13 +123,13 @@ export class SettingsSetupPage extends Base {
         await this.assertionValidate(Selectors.settingsSetup.wpufPages.orderReceivedPage);
         await this.assertionValidate(Selectors.settingsSetup.wpufPages.paymentPage);
         await this.assertionValidate(Selectors.settingsSetup.wpufPages.thankYouPage);
-        console.log("WPUF Pages are validated. all pages created successfully");
+        console.log('WPUF Pages are validated. all pages created successfully');
     }
 
     async validateWPUFpagesFE() {
         //Go to FrontEnd
         await Promise.all([
-            this.page.goto(Urls.baseUrl, { waitUntil: 'networkidle' }),
+            this.page.goto(Urls.baseUrl, { waitUntil: 'domcontentloaded' }),
         ]);
         await this.page.reload();
         await this.page.waitForLoadState('domcontentloaded');
@@ -148,7 +146,7 @@ export class SettingsSetupPage extends Base {
     async validateAccountPageTabs(){
 
         await Promise.all([
-            this.page.goto(Urls.baseUrl , { waitUntil: 'networkidle' }),
+            this.page.goto(Urls.baseUrl , { waitUntil: 'domcontentloaded' }),
         ]);
         await this.page.reload();
         await this.page.waitForLoadState('domcontentloaded');
@@ -188,24 +186,24 @@ export class SettingsSetupPage extends Base {
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
                 await this.page.waitForTimeout(3000);
                 await Promise.all([
-                    this.page.goto(pluginsPage, { waitUntil: 'networkidle' }),
+                    this.page.goto(pluginsPage, { waitUntil: 'domcontentloaded' }),
                 ]);
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginDeactivate);
 
                 await this.page.goto(Urls.baseUrl + '/wp-admin/');
                 await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
-                console.log("WPUF-Lite Status: is Activated");
+                console.log('WPUF-Lite Status: is Activated');
             }
 
             else {
                 await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
-                console.log("WPUF-Lite Status: was Active");
+                console.log('WPUF-Lite Status: was Active');
             }
         } else {
-            console.log("WPUF-Lite not available")
+            console.log('WPUF-Lite not available');
         }
 
-    };
+    }
 
     //Plugin Activate - Pro
     async activateWPUFPro() {
@@ -221,7 +219,7 @@ export class SettingsSetupPage extends Base {
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginPro);
                 await this.page.waitForTimeout(3000);
                 await Promise.all([
-                    this.page.goto(pluginsPage, { waitUntil: 'networkidle' }),
+                    this.page.goto(pluginsPage, { waitUntil: 'domcontentloaded' }),
                 ]);
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginProDeactivate);
 
@@ -236,7 +234,7 @@ export class SettingsSetupPage extends Base {
                 this.page.off('dialog', dialogHandler);
                 await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
                 await this.assertionValidate(Selectors.login.basicNavigation.licenseTab);
-                console.log("WPUF-Pro Status: is Activated");
+                console.log('WPUF-Pro Status: is Activated');
             }
             else {
                 await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
@@ -250,13 +248,13 @@ export class SettingsSetupPage extends Base {
                 this.page.on('dialog', dialogHandler);
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickRunUpdater);
                 this.page.off('dialog', dialogHandler);
-                console.log("WPUF-Pro Status: was Active");
+                console.log('WPUF-Pro Status: was Active');
             }
         } else {
-            console.log("WPUF-Pro not available")
+            console.log('WPUF-Pro not available');
         }
 
-    };
+    }
 
     //Plugin Activate - Pro
     async activateLicenseWPUFPro() {
@@ -265,7 +263,7 @@ export class SettingsSetupPage extends Base {
             //Go to Plugins page
             const pluginsPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
             await Promise.all([
-                this.page.goto(pluginsPage, { waitUntil: 'networkidle' }),
+                this.page.goto(pluginsPage, { waitUntil: 'domcontentloaded' }),
             ]);
 
             await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
@@ -280,21 +278,18 @@ export class SettingsSetupPage extends Base {
                 await this.page.waitForTimeout(1000);
                 await this.page.reload();
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.activationRemaining);
-                console.log("WPUF-Pro Status: License is Activated");
+                console.log('WPUF-Pro Status: License is Activated');
             }
             else {
-                console.log("WPUF-Pro License Activation Line 10 passed");
                 await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
-                console.log("WPUF-Pro License Activation Line 11 passed");
                 await this.validateAndClick(Selectors.login.basicNavigation.licenseTab);
-                console.log("WPUF-Pro License Activation Line 12 passed");
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.deactivateLicenseKey);
-                console.log("WPUF-Pro Status: License was Active");
+                console.log('WPUF-Pro Status: License was Active');
             }
         } else {
-            console.log("WPUF-Pro not available");
+            console.log('WPUF-Pro not available');
         }
-    };
+    }
 
 
 
@@ -309,7 +304,7 @@ export class SettingsSetupPage extends Base {
         //Go to WPUF
         const wpufpostformpage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
         await Promise.all([
-            this.page.goto(wpufpostformpage, { waitUntil: 'networkidle' }),
+            this.page.goto(wpufpostformpage, { waitUntil: 'domcontentloaded' }),
         ]);
 
         //Change Settings
@@ -335,7 +330,7 @@ export class SettingsSetupPage extends Base {
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPostingSave);
 
         await this.page.waitForLoadState('domcontentloaded');
-    };
+    }
 
 
     /*********************************************************/
@@ -347,7 +342,7 @@ export class SettingsSetupPage extends Base {
         //Go to WPUF
         const wpufpostformpage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
         await Promise.all([
-            this.page.goto(wpufpostformpage, { waitUntil: 'networkidle' }),
+            this.page.goto(wpufpostformpage, { waitUntil: 'domcontentloaded' }),
         ]);
 
         //Change Settings
@@ -361,7 +356,7 @@ export class SettingsSetupPage extends Base {
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPostingSave);
 
         await this.page.waitForLoadState('domcontentloaded');
-    };
+    }
 
 
 
@@ -375,7 +370,7 @@ export class SettingsSetupPage extends Base {
         //Go to WPUF
         const wpufPostFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
         await Promise.all([
-            this.page.goto(wpufPostFormPage, { waitUntil: 'networkidle' }),
+            this.page.goto(wpufPostFormPage, { waitUntil: 'domcontentloaded' }),
         ]);
 
         //Change Settings
@@ -392,7 +387,7 @@ export class SettingsSetupPage extends Base {
 
         await this.page.waitForLoadState('domcontentloaded');
 
-    };
+    }
 
 
 
@@ -407,7 +402,7 @@ export class SettingsSetupPage extends Base {
         //Go to Settings - Permalink page
         const settingsPermalinkPage = Urls.baseUrl + '/wp-admin/options-permalink.php';
         await Promise.all([
-            this.page.goto(settingsPermalinkPage, { waitUntil: 'networkidle' }),
+            this.page.goto(settingsPermalinkPage, { waitUntil: 'domcontentloaded' }),
         ]);
 
         await this.page.reload();
@@ -415,8 +410,6 @@ export class SettingsSetupPage extends Base {
         await this.validateAndFillStrings(Selectors.settingsSetup.setPermalink.fillCustomStructure, '');
         //Set Post Name Permalink
         await this.validateAndClick(Selectors.settingsSetup.setPermalink.clickCustomStructurePostName);
-        //Validate Permalink - Postname select
-        const validatePermalinkPostname = await this.page.innerText(Selectors.settingsSetup.setPermalink.validatePermalinkPostname);
         //Save Permalink Settings
         await this.validateAndClick(Selectors.settingsSetup.setPermalink.savePermalinkSettings);
         await this.page.reload();
@@ -424,14 +417,14 @@ export class SettingsSetupPage extends Base {
         await this.validateAndClick(Selectors.settingsSetup.setPermalink.savePermalinkSettings);
 
 
-    };
+    }
 
 
     async allowRegistration() {
         //Go to Settings - General page
         const settingsGeneralPage = Urls.baseUrl + '/wp-admin/options-general.php';
         await Promise.all([
-            this.page.goto(settingsGeneralPage, { waitUntil: 'networkidle' }),
+            this.page.goto(settingsGeneralPage, { waitUntil: 'domcontentloaded' }),
         ]);
 
         await this.page.reload();
@@ -451,7 +444,7 @@ export class SettingsSetupPage extends Base {
     async createNewUserAdmin(userName, email, firstName, lastName, password) {
         const pluginsPage = Urls.baseUrl + '/wp-admin/';
         await Promise.all([
-            this.page.goto(pluginsPage, { waitUntil: 'networkidle' }),
+            this.page.goto(pluginsPage, { waitUntil: 'domcontentloaded' }),
         ]);
 
         //Go to Admin-Users
@@ -481,12 +474,12 @@ export class SettingsSetupPage extends Base {
 
         //Create User
         await this.validateAndClick(Selectors.settingsSetup.createNewUser.newUserSubmit);
-    };
+    }
 
     async createPostCategories() {
         //Go to Admin-Users
         await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/edit-tags.php?taxonomy=category', { waitUntil: 'networkidle' }),
+            this.page.goto(Urls.baseUrl + '/wp-admin/edit-tags.php?taxonomy=category', { waitUntil: 'domcontentloaded' }),
         ]);
         await this.page.reload();
         await this.page.waitForLoadState('domcontentloaded');
@@ -499,16 +492,16 @@ export class SettingsSetupPage extends Base {
             await this.validateAndFillStrings(Selectors.settingsSetup.categories.addNewCategory, categoryNames[i]);
             await this.validateAndFillStrings(Selectors.settingsSetup.categories.addCategorySlug, categorySlug[i]);
             await this.validateAndClick(Selectors.settingsSetup.categories.submitCategory);
-            await this.page.waitForTimeout(1000);
+            await this.page.waitForTimeout(2000);
             await this.page.waitForLoadState('domcontentloaded');
-            let validatedCategory = await this.page.innerText(Selectors.settingsSetup.categories.validateCategory);
+            const validatedCategory = await this.page.innerText(Selectors.settingsSetup.categories.validateCategory);
             await expect(validatedCategory).toContain(categoryNames[i]);
         }
     }
     async createPostTags() {
         //Go to Admin-Users
         await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/edit-tags.php?taxonomy=post_tag', { waitUntil: 'networkidle' }),
+            this.page.goto(Urls.baseUrl + '/wp-admin/edit-tags.php?taxonomy=post_tag', { waitUntil: 'domcontentloaded' }),
         ]);
         await this.page.reload();
         await this.page.waitForLoadState('domcontentloaded');
@@ -523,7 +516,7 @@ export class SettingsSetupPage extends Base {
             await this.validateAndClick(Selectors.settingsSetup.tags.submitTag);
             await this.page.waitForTimeout(1000);
             await this.page.waitForLoadState('domcontentloaded');
-            let validatedtag = await this.page.innerText(Selectors.settingsSetup.tags.validateTag);
+            const validatedtag = await this.page.innerText(Selectors.settingsSetup.tags.validateTag);
             await expect(validatedtag).toContain(tagNames[i]);
         }
     }
@@ -532,7 +525,7 @@ export class SettingsSetupPage extends Base {
         //Go to Settings - General page
         const settingsGeneralPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-settings';
         await Promise.all([
-            this.page.goto(settingsGeneralPage, { waitUntil: 'networkidle' }),
+            this.page.goto(settingsGeneralPage, { waitUntil: 'domcontentloaded' }),
         ]);
 
         await this.page.reload();
@@ -546,7 +539,7 @@ export class SettingsSetupPage extends Base {
         //Go to Settings - General page
         const settingsGeneralPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-settings';
         await Promise.all([
-            this.page.goto(settingsGeneralPage, { waitUntil: 'networkidle' }),
+            this.page.goto(settingsGeneralPage, { waitUntil: 'domcontentloaded' }),
         ]);
 
         await this.page.reload();
@@ -561,7 +554,7 @@ export class SettingsSetupPage extends Base {
         //Go to Settings - General page
         const settingsGeneralPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-settings';
         await Promise.all([
-            this.page.goto(settingsGeneralPage, { waitUntil: 'networkidle' }),
+            this.page.goto(settingsGeneralPage, { waitUntil: 'domcontentloaded' }),
         ]);
 
         await this.page.reload();
@@ -589,7 +582,7 @@ export class SettingsSetupPage extends Base {
     async resetWordpressSite() {
         //Go to AdminEnd
         await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/tools.php?page=wp-reset', { waitUntil: 'networkidle' }),
+            this.page.goto(Urls.baseUrl + '/wp-admin/tools.php?page=wp-reset', { waitUntil: 'domcontentloaded' }),
         ]);
         await this.page.reload();
         await this.validateAndClick(Selectors.resetWordpreseSite.reActivateTheme);
@@ -598,6 +591,6 @@ export class SettingsSetupPage extends Base {
         await this.validateAndClick(Selectors.resetWordpreseSite.wpResetSubmitButton);
         await this.validateAndClick(Selectors.resetWordpreseSite.wpResetConfirmWordpressReset);
         await this.page.waitForTimeout(2000);
-    };
+    }
 
 }

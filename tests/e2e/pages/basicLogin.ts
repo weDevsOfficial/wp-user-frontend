@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 dotenv.config();
 import { expect, Page } from '@playwright/test';
 import { Selectors } from './selectors';
@@ -24,7 +24,7 @@ export class BasicLoginPage extends Base {
 
         //Go to BackEnd
         await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'networkidle' }),
+            this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'domcontentloaded' }),
         ]);
 
         const emailStateCheck = await this.page.isVisible(Selectors.login.basicLogin.loginEmailField);
@@ -38,7 +38,7 @@ export class BasicLoginPage extends Base {
 
         //Store Cookie State
         await this.page.context().storageState({ path: 'state.json' });
-    };
+    }
 
     //Login and Plugin Visit
     async basicLoginAndPluginVisit(email: string, password: string) {
@@ -47,7 +47,7 @@ export class BasicLoginPage extends Base {
         const adminPassword = password;
 
         await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'networkidle' }),
+            this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'domcontentloaded' }),
         ]);
 
         const emailStateCheck = await this.page.isVisible(Selectors.login.basicLogin.loginEmailField);
@@ -65,20 +65,20 @@ export class BasicLoginPage extends Base {
 
         //Redirection to WPUF Home Page
         await SettingsSetup.pluginVisitWPUF();
-    };
+    }
 
     //Validate Login
     async validateBasicLogin() {
         //Go to BackEnd
         await Promise.all([
 
-            this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'networkidle' }),
+            this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'domcontentloaded' }),
         ]);
 
         //Validate LOGIN
         await this.page.waitForLoadState('domcontentloaded');
         await this.assertionValidate(Selectors.login.validateBasicLogin.logingSuccessDashboard);
-    };
+    }
 
 
 

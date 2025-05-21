@@ -261,10 +261,10 @@ export const Selectors = {
         navigatePage_PF: {
             // WPUF > Pages > Navigation
             checkAddButton_PF: '//a[contains(text(),"Add New")]',
-            postFormsPageFormsTitleCheck_PF: "(//input[@type='checkbox']/following-sibling::span)[1]",
+            postFormsPageFormsTitleCheck_PF: '(//input[@type="checkbox"]/following-sibling::span)[1]',
 
             // New_Created_NAME_Checker
-            newPostCreatedName_PF: "(//input[@type='checkbox']/following-sibling::span)[1]",
+            newPostCreatedName_PF: '(//input[@type="checkbox"]/following-sibling::span)[1]',
         },
 
         /* Locators creating Post > Blank Form */
@@ -358,9 +358,9 @@ export const Selectors = {
             customFieldsEmbed: '//p[normalize-space(text())="Embed"]',
 
             // prompt1
-            prompt1PopUpModalClose: "//div[@class='swal2-loader']/following-sibling::button[1]",
+            prompt1PopUpModalClose: '//div[@class="swal2-loader"]/following-sibling::button[1]',
             // prompt2
-            prompt2PopUpModalOk: "//button[@class='swal2-deny swal2-styled']/following-sibling::button[1]",
+            prompt2PopUpModalOk: '//button[@class="swal2-deny swal2-styled"]/following-sibling::button[1]',
             // Pro Check Pop Up
             checkProPopUp: '//button[text()="Get the Pro version"]',
             checkProPopUpCloseButton: '//button[@aria-label="Close this dialog"]',

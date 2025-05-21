@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 dotenv.config();
 import { expect, Page } from '@playwright/test';
 import { Selectors } from './selectors';
@@ -40,7 +40,7 @@ export class RegistrationFormsFrontendPage extends Base {
         //Go to Registration page - FrontEnd
         const wpufRegistrationFormPage = Urls.baseUrl + '/registration-page/';
         await Promise.all([
-            this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }),
+            this.page.goto(wpufRegistrationFormPage, { waitUntil: 'domcontentloaded' }),
         ]);
 
         //Validate Registration page
@@ -64,7 +64,7 @@ export class RegistrationFormsFrontendPage extends Base {
             //Enter Email
         await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfEmail, email);
         }catch (error) {
-            console.log("Email field is not present");
+            console.log('Email field is not present');
         }
         // try {
         //     //Enter Username
@@ -76,13 +76,13 @@ export class RegistrationFormsFrontendPage extends Base {
             //Enter Password
             await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfPassword, password);
         }catch (error) {
-            console.log("Password field is not present");
+            console.log('Password field is not present');
         }
         try {
             //Confirm Password
             await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfConfirmPassword, password);
         }catch (error) {
-            console.log("Confirm Password field is not present");
+            console.log('Confirm Password field is not present');
         }
         //Click Register
         await this.validateAndClick(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfRegisterButton);
@@ -103,7 +103,7 @@ export class RegistrationFormsFrontendPage extends Base {
     async validateUserRegisteredAdminEnd() {
         const wpufRegistrationFormPage = Urls.baseUrl + '/wp-admin/';
         await Promise.all([
-            this.page.goto(wpufRegistrationFormPage, { waitUntil: 'networkidle' }),
+            this.page.goto(wpufRegistrationFormPage, { waitUntil: 'domcontentloaded' }),
         ]);
 
         //Validate Registered User
@@ -120,7 +120,7 @@ export class RegistrationFormsFrontendPage extends Base {
         expect(validateUserCreated, `Expected user with email ${email} to be found in admin`).toBe(email);
         }
         catch (error) {
-            console.log("User not found in admin");
+            console.log('User not found in admin');
         }
 
     };

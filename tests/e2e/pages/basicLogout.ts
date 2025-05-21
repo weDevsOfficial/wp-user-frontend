@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 dotenv.config();
 import type { Page } from '@playwright/test';
 import { Selectors } from './selectors';
@@ -13,7 +13,7 @@ export class BasicLogoutPage extends Base {
 
     async logOut() {
         await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'networkidle' }),
+            this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'domcontentloaded' }),
         ]);
 
         await this.page.hover(Selectors.logout.basicLogout.logoutHoverUsername);
@@ -22,7 +22,7 @@ export class BasicLogoutPage extends Base {
 
         //Validate LOGOUT
         await this.assertionValidate(Selectors.logout.basicLogout.logoutSuccess);
-        console.log("LogOut Done");
+        console.log('LogOut Done');
 
 
     }

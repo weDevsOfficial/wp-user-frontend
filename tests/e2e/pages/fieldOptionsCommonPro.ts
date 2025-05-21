@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 dotenv.config();
 import { expect, Page } from '@playwright/test';
 import { Selectors } from './selectors';
@@ -25,7 +25,7 @@ export class FieldOptionsCommonProPage extends Base {
         await this.validateAndClick(Selectors.postForms.addPostFields_PF.postExcerptBlock);
         await this.validateAndClick(Selectors.postForms.addPostFields_PF.featuredImageBlock);
         await this.page.waitForLoadState('domcontentloaded');
-    };
+    }
 
     //Validate > PostFields
     async validatePostFields_PF_pro() {
@@ -39,7 +39,7 @@ export class FieldOptionsCommonProPage extends Base {
         //Featured Image
         await this.assertionValidate(Selectors.postForms.validatePostFields_PF.validateFeaturedImage);
 
-    };
+    }
 
 
 
@@ -51,7 +51,7 @@ export class FieldOptionsCommonProPage extends Base {
         await this.validateAndClick(Selectors.postForms.addTaxonomies_PF.tagsBlock);
 
         await this.page.waitForLoadState('domcontentloaded');
-    };
+    }
 
     //Validate > Taxonomies
     async validateTaxonomies_PF_pro() {
@@ -60,7 +60,7 @@ export class FieldOptionsCommonProPage extends Base {
         await this.assertionValidate(Selectors.postForms.validateTaxonomies_PF.validateCategory);
         //Tags
         await this.assertionValidate(Selectors.postForms.validateTaxonomies_PF.validateTags);
-    };
+    }
 
     async validateTaxonomiesPreset_PF_pro() {
         //Validate
@@ -68,7 +68,7 @@ export class FieldOptionsCommonProPage extends Base {
         await this.assertionValidate(Selectors.postForms.validateTaxonomiesPreset_PF.validateCategory);
         //Tags
         await this.assertionValidate(Selectors.postForms.validateTaxonomiesPreset_PF.validateTags);
-    };
+    }
 
 
 
@@ -89,7 +89,7 @@ export class FieldOptionsCommonProPage extends Base {
         const checkProPopUpCloseButton = await this.page.isVisible(Selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
         if (checkProPopUpCloseButton === true) {
             await this.validateAndClick(Selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
-            console.log("Pro: WPUF Pro is requred...")
+            console.log('Pro: WPUF Pro is requred...');
         }
         else {
             if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
@@ -126,7 +126,7 @@ export class FieldOptionsCommonProPage extends Base {
 
         }
 
-    };
+    }
 
     //Validate > CustomFields
     async validateCustomFields_Common_pro() {
@@ -161,12 +161,7 @@ export class FieldOptionsCommonProPage extends Base {
             await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateEmbed);
 
         }
-
-
-
-    };
-
-
+    }
     /********************* Others *********************/
     //Others
     async addOthers_Common_pro() {
@@ -176,7 +171,7 @@ export class FieldOptionsCommonProPage extends Base {
         const checkProPopUpCloseButton = await this.page.isVisible(Selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
         if (checkProPopUpCloseButton === true) {
             await this.validateAndClick(Selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
-            console.log("Pro: WPUF Pro is requred...")
+            console.log('Pro: WPUF Pro is requred...');
         }
 
         else {
@@ -200,7 +195,7 @@ export class FieldOptionsCommonProPage extends Base {
             await this.page.waitForLoadState('domcontentloaded');
         }
 
-    };
+    }
 
     //Validate > Others
     async validateOthers_Common_pro() {
@@ -224,7 +219,7 @@ export class FieldOptionsCommonProPage extends Base {
             //MathCaptcha
             await this.assertionValidate(Selectors.postForms.validateOthers_Common.validateMathCaptcha);
         }
-    };
+    }
 
 
     //Settings > MultiStep Check
@@ -234,16 +229,16 @@ export class FieldOptionsCommonProPage extends Base {
         await this.validateAndClick(Selectors.postForms.formSettings.clickFormEditorSettings);
         const proTextAlertInSettings = await this.page.isVisible(Selectors.postForms.addCustomFields_Common.proTextAlertInSettings);
         if (proTextAlertInSettings === true) {
-            console.log("Pro: WPUF Pro is requred...");
+            console.log('Pro: WPUF Pro is requred...');
         }
         else {
             await this.validateAndClick(Selectors.postForms.formSettings.checkMultiStepOption);
-            expect(await this.page.isChecked(Selectors.postForms.formSettings.checkMultiStepOption)).toBeTruthy();
+            await expect(this.page.isChecked(Selectors.postForms.formSettings.checkMultiStepOption)).toBeTruthy();
         }
 
         await this.validateAndClick(Selectors.postForms.formSettings.clickFormEditor);
         await this.page.waitForLoadState('domcontentloaded');
-    };
+    }
 
 
 
@@ -260,12 +255,12 @@ export class FieldOptionsCommonProPage extends Base {
         } catch (e) {
             console.log('not matched ');
         }
-        await this.page.waitForLoadState('networkidle');
+        await this.page.waitForLoadState('domcontentloaded');
 
         //Save Form
         await this.validateAndClick(Selectors.postForms.saveForm_Common.saveFormButton);
         await this.page.reload();
-    };
+    }
 
 
 
@@ -287,7 +282,7 @@ export class FieldOptionsCommonProPage extends Base {
             console.log('PF Name: ' + checkNewFormCreated_PF);
             console.log('PF List: ' + validateNewPostName_PF);
         }
-    };
+    }
 
 
 
@@ -319,7 +314,7 @@ export class FieldOptionsCommonProPage extends Base {
     //ProfileFields
     async addProfileFields_RF() {
         //PostFields
-        await this.page.waitForLoadState('domcontentloaded')
+        await this.page.waitForLoadState('domcontentloaded');
         await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFieldUsername);
         await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFieldFirstName);
         await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFieldLastName);
@@ -330,7 +325,7 @@ export class FieldOptionsCommonProPage extends Base {
         await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFielBioInfo);
         await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFieldPassword);
         await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFieldAvatar);
-    };
+    }
 
     /********************* Custom Fields *********************/
     //Same as Post Forms
@@ -357,7 +352,7 @@ export class FieldOptionsCommonProPage extends Base {
             console.log('RF Name: ' + checkNewFormCreated_RF);
             console.log('PF List: ' + validateNewPostName_RF);
         }
-    };
+    }
 
 
 

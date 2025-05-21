@@ -1,11 +1,11 @@
-import { faker } from "@faker-js/faker";
+import { faker } from '@faker-js/faker';
 
 
 
 /**---------------------------------*/
 /**-------DATA_SET: Base Url-------*/
 /**-------------------------------*/
-let Urls: {
+const Urls: {
     baseUrl: string;
 } = {
     //Main Site URL
@@ -17,7 +17,7 @@ let Urls: {
 /**-----------------------------------*/
 /**-------DATA_SET: Test Users-------*/
 /**---------------------------------*/
-let Users: {
+const Users: {
     //Admin Credentials
     adminUsername: string;
     adminPassword: string;
@@ -39,14 +39,14 @@ let Users: {
     userFirstName: process.env.QA_NEW_FIRSTNAME ? process.env.QA_NEW_FIRSTNAME : 'Test',
     userLastName: process.env.QA_NEW_LASTNAME ? process.env.QA_NEW_LASTNAME : 'User',
     userPassword: process.env.QA_NEW_PASSWORD ? process.env.QA_NEW_PASSWORD : 'Test@1234',
-}
+};
 
 
 
 /**----------------------------------*/
 /**-------DATA_SET: Post Form-------*/
 /**--------------------------------*/
-let PostForm: {
+const PostForm: {
     //Post Form Title
     pfPostName1: string;
     pfPostName2: string;
@@ -78,7 +78,7 @@ let PostForm: {
 const rfFirstName = faker.person.firstName();
 const rfLastName = faker.person.lastName();
 
-let RegistrationForm: {
+const RegistrationForm: {
     //Registration Form Title
     rfPostName1: string;
     rfPostName2: string;
@@ -109,7 +109,7 @@ let RegistrationForm: {
 /**------------------------------------------*/
 /**-------DATA_SET: Subscription Pack-------*/
 /**----------------------------------------*/
-let SubscriptionPack: {
+const SubscriptionPack: {
     //Basics
     subscriptionPackName: string;
     subscriptionPackDescription: string;

@@ -1,5 +1,5 @@
-import type { PlaywrightTestConfig } from "@playwright/test";
-import { devices } from "@playwright/test";
+import type { PlaywrightTestConfig } from '@playwright/test';
+import { devices } from '@playwright/test';
 
 /**
  * Read environment variables from file.
@@ -11,7 +11,7 @@ import { devices } from "@playwright/test";
  * See https://playwright.dev/docs/test-configuration.
  */
 const config: PlaywrightTestConfig = {
-    testDir: "./tests",
+    testDir: './tests',
     /* Maximum time one test can run for. */
     timeout: 60000, //60 sec
     expect: {
@@ -37,7 +37,7 @@ const config: PlaywrightTestConfig = {
             ['html', { outputFolder: './playwright-report', open: 'never' }]
         ]
         : [
-            ["html", { outputFolder: "./playwright-report", open: "never" }],
+            ['html', { outputFolder: './playwright-report', open: 'never' }],
         ],
     /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
     use: {
@@ -47,7 +47,7 @@ const config: PlaywrightTestConfig = {
         // baseURL: 'http://localhost:3000',
 
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-        trace: "off",
+        trace: 'off',
 
         // Browser options
         headless: true,
@@ -56,9 +56,9 @@ const config: PlaywrightTestConfig = {
         viewport: { width: 1280, height: 720 },
 
         // Artifacts
-        screenshot: "only-on-failure",
+        screenshot: 'only-on-failure',
 
-        video: "off",
+        video: 'off',
 
         //SlowMo
         launchOptions: {
@@ -69,10 +69,10 @@ const config: PlaywrightTestConfig = {
     /* Configure projects for major browsers */
     projects: [
         {
-            name: "chromium",
+            name: 'chromium',
             use: {
-                ...devices["Desktop Chrome"],
-                storageState: "state.json",
+                ...devices['Desktop Chrome'],
+                storageState: 'state.json',
             },
         },
     ],

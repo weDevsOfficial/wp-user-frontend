@@ -124,10 +124,9 @@ jobs:
         if: success() && (github.event_name != 'workflow_dispatch' || ( github.event_name == 'workflow_dispatch' && (github.event.inputs.testsuite == 'E2E' || github.event.inputs.testsuite == 'All')))
         working-directory: tests/e2e
         run: |
-          npx playwright test e2eMain.spec.ts --project=chromium --reporter=list,json,html --output=tests/e2e/test-results
-          mv playwright-report tests/e2e/playwright-report
+          mkdir -p test-results
+          npx playwright test e2eMain.spec.ts --project=chromium
         continue-on-error: true
-
       # Generate and post advanced test summary
       - name: Generate and post advanced test summary
         if: always()

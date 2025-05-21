@@ -1,9 +1,8 @@
 #!/usr/bin/env node
-
-import fs from 'fs/promises';
-import path from 'path';
+import * as fs from 'fs/promises';
+import * as path from 'path';
 import { fileURLToPath } from 'url';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -33,8 +32,17 @@ const resultsPath = path.join(__dirname, '../test-results/results.json');
 const featuresMapPath = path.join(__dirname, '../features-map/features-map.yml');
 const htmlReportPath = 'tests/e2e/playwright-report/index.html';
 
-async function generateSummary() {
+async function generateSummary(): Promise<void> {
   try {
+    function extractTests(suite: PlaywrightSuite): void {
+      if (suite.tests) {
+        allTests.push(...suite.tests.map(t => ({ title: t.title, status: t.status })));
+      }
+      if (suite.suites) {
+        suite.suites.forEach(extractTests);
+      }
+    }
+
     // Read test results
     const resultsJson = await fs.readFile(resultsPath, 'utf-8');
     const results: PlaywrightResults = JSON.parse(resultsJson);
@@ -45,14 +53,7 @@ async function generateSummary() {
 
     // Extract all test titles and statuses
     const allTests: { title: string; status: string }[] = [];
-    function extractTests(suite: PlaywrightSuite) {
-      if (suite.tests) {
-        allTests.push(...suite.tests.map(t => ({ title: t.title, status: t.status })));
-      }
-      if (suite.suites) {
-        suite.suites.forEach(extractTests);
-      }
-    }
+
     results.suites.forEach(extractTests);
 
     // Calculate statistics
@@ -68,16 +69,13 @@ async function generateSummary() {
 
     // Generate summary markdown
     const summary = `## 🎭 Playwright Test Summary
-
 ### 📊 Test Statistics
 - ✅ **${passedTests}** tests passed
 - ❌ **${failedTests}** tests failed
 - ⏭️ **${skippedTests}** tests skipped
 - 🕒 Duration: **${minutes}m ${seconds}s**
-
 ### 📝 Test Details
 ${allTests.map(test => `- ${test.status === 'passed' ? '✅' : test.status === 'failed' ? '❌' : '⏭️'} ${test.title}`).join('\n')}
-
 ### 📎 Artifacts
 - [HTML Report](${htmlReportPath})
 `;
@@ -88,11 +86,10 @@ ${allTests.map(test => `- ${test.status === 'passed' ? '✅' : test.status === '
     } else {
       console.log(summary);
     }
-
   } catch (error) {
     console.error('Error generating summary:', error);
     process.exit(1);
   }
 }
 
-generateSummary(); 
+generateSummary();

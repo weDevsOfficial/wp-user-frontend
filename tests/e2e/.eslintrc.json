@@ -14,6 +14,7 @@
       "@typescript-eslint/no-unused-vars": "off",
       "no-unused-vars": "off",
       "no-console": "off",
+      "no-inner-declarations": "off",
       "playwright/expect-expect": "off",
       "playwright/no-skipped-test": "off",
       "playwright/no-focused-test": "off",

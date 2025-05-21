@@ -1,40 +1,704 @@
 <?php
 
 namespace WeDevs\Wpuf\Lib\Gateway;
+use WeDevs\Wpuf\Frontend\Payment;
 
 /**
  * WP User Frontend PayPal gateway
  *
  * @since 0.8
+ * @updated 2024
  */
 class Paypal {
     private $gateway_url;
-
-    private $gateway_cancel_url;
-
     private $test_mode;
+    private $webhook_id;
+    private $api_version = '2.0';
 
     public function __construct() {
-        $this->gateway_url        = 'https://www.paypal.com/webscr/?';
-        $this->gateway_cancel_url = 'https://api-3t.paypal.com/nvp';
-        $this->test_mode          = false;
+        $this->gateway_url = 'https://www.paypal.com/webscr/?';
+        $this->test_mode = wpuf_get_option('paypal_test_mode', 'wpuf_payment') === 'test';
+        $this->webhook_id = wpuf_get_option('paypal_webhook_id', 'wpuf_payment');
 
-        add_action( 'wpuf_gateway_paypal', [ $this, 'prepare_to_send' ] );
-        add_filter( 'wpuf_options_payment', [ $this, 'payment_options' ] );
-        add_action( 'init', [ $this, 'check_response' ] );
-        add_action( 'wpuf_paypal_ipn_success', [ $this, 'paypal_success' ] );
-        add_action( 'wpuf_cancel_payment_paypal', [ $this, 'handle_cancel_subscription' ] );
-        add_action( 'wpuf_cancel_subscription_paypal', [ $this, 'handle_cancel_subscription' ] );
+        // Initialize hooks
+        add_action('wpuf_gateway_paypal', [$this, 'prepare_to_send']);
+        add_filter('wpuf_options_payment', [$this, 'payment_options']);
+        add_action('init', [$this, 'check_paypal_return'], 20);
+        add_action('wpuf_cancel_payment_paypal', [$this, 'cancel_subscription']);
+        add_action('wpuf_cancel_subscription_paypal', [$this, 'cancel_subscription']);
+        add_action('init', [$this, 'handle_pending_payment']);
+        add_action('wpuf_paypal_webhook', [$this, 'process_webhook']);
+        // Add webhook endpoint handler
+        add_action('init', [$this, 'register_webhook_endpoint']);
+        add_action('template_redirect', [$this, 'handle_webhook_request']);
     }
 
     /**
-     * Adds paypal specific options to the admin panel
-     *
-     * @param type $options
-     *
-     * @return string
+     * Main webhook processor
      */
-    public function payment_options( $options ) {
+    public function process_webhook($raw_input) {
+        try {
+            // Set headers for webhook acknowledgment
+            header('HTTP/1.1 200 OK');
+            header('Content-Type: application/json');
+            
+            // Verify webhook signature
+            if (!$this->verify_webhook_signature_from_input($raw_input)) {
+                throw new \Exception('Webhook signature verification failed');
+            }
+
+            // Decode the webhook data
+            $event = json_decode($raw_input, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new \Exception('Invalid JSON in webhook data');
+            }
+
+            // Process PAYMENT.CAPTURE.COMPLETED event
+            if ($event['event_type'] === 'PAYMENT.CAPTURE.COMPLETED' && isset($event['resource'])) {
+                $payment = $event['resource'];
+                $this->process_payment_capture($payment);
+            }
+
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Webhook processed successfully'
+            ]);
+
+        } catch (\Exception $e) {
+            error_log('WPUF PayPal: Webhook processing failed: ' . $e->getMessage());
+            echo json_encode([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    /**
+     * Process payment capture
+     */
+    private function process_payment_capture($payment) {
+        global $wpdb;
+
+        try {
+            // Get custom data from custom_id
+            if (!isset($payment['custom_id'])) {
+                throw new \Exception('Missing custom_id in payment');
+            }
+
+            $custom_data = json_decode($payment['custom_id'], true);
+            if (!$custom_data) {
+                throw new \Exception('Invalid custom data');
+            }
+
+            // Verify payment amount
+            $payment_amount = number_format($payment['amount']['value'], 2, '.', '');
+            $expected_amount = number_format($custom_data['subtotal'], 2, '.', '');
+
+            if ($payment_amount !== $expected_amount) {
+                throw new \Exception('Payment amount mismatch');
+            }
+
+            // Check if transaction already exists
+            $existing = $wpdb->get_var($wpdb->prepare(
+                "SELECT id FROM {$wpdb->prefix}wpuf_transaction 
+                WHERE transaction_id = %s",
+                $payment['id']
+            ));
+
+            if ($existing) {
+                return; // Exit if transaction already processed
+            }
+
+            // Get user
+            $user = get_user_by('id', $custom_data['user_id']);
+            if (!$user) {
+                throw new \Exception('Invalid user');
+            }
+
+            // Create payment record
+            $data = [
+                'user_id' => $custom_data['user_id'],
+                'status' => 'completed',
+                'subtotal' => $payment['amount']['value'],
+                'tax' => isset($custom_data['tax']) ? $custom_data['tax'] : 0,
+                'cost' => $custom_data['subtotal'],
+                'post_id' => ($custom_data['type'] === 'post') ? $custom_data['item_number'] : 0,
+                'pack_id' => ($custom_data['type'] === 'pack') ? $custom_data['item_number'] : 0,
+                'payer_first_name' => $user->first_name,
+                'payer_last_name' => $user->last_name,
+                'payer_email' => $user->user_email,
+                'payment_type' => 'PayPal',
+                'transaction_id' => $payment['id'],
+                'created' => current_time('mysql')
+            ];
+
+            // Insert payment record
+            Payment::insert_payment($data, $payment['id'], false);
+            
+
+            // Handle subscription if needed
+            if ($custom_data['type'] === 'pack') {
+                $this->handle_subscription_purchase($custom_data['user_id'], $custom_data['item_number'], $payment['id']);
+            }
+
+            // Handle coupon if present
+            if (!empty($custom_data['coupon_id'])) {
+                $this->update_coupon_usage($custom_data['coupon_id']);
+            }
+
+        } catch (\Exception $e) {
+            error_log('WPUF PayPal: Payment capture processing failed: ' . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    /**
+     * Get payer information
+     */
+    private function get_payer_info($payment, $user) {
+        $payer_info = [
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'email' => $user->user_email
+        ];
+
+        if (isset($payment['payer'])) {
+            if (isset($payment['payer']['name'])) {
+                $name_parts = explode(' ', $payment['payer']['name']);
+                $payer_info['first_name'] = $name_parts[0];
+                $payer_info['last_name'] = count($name_parts) > 1 ? implode(' ', array_slice($name_parts, 1)) : '';
+            }
+            if (isset($payment['payer']['email_address'])) {
+                $payer_info['email'] = $payment['payer']['email_address'];
+            }
+        }
+
+        return $payer_info;
+    }
+
+    /**
+     * Handle additional payment features
+     */
+    private function handle_payment_features($custom_data, $payment) {
+        // Handle coupon
+        if (!empty($custom_data['coupon_id'])) {
+            $this->update_coupon_usage($custom_data['coupon_id']);
+        }
+
+        // Handle subscription
+        if ($custom_data['type'] === 'pack') {
+            $this->handle_subscription_purchase($custom_data['user_id'], $custom_data['item_number'], $payment['id']);
+        }
+
+        // Verify payment amount
+        if ($payment['amount']['value'] != number_format($custom_data['subtotal'], 2, '.', '')) {
+            throw new \Exception('Payment amount mismatch');
+        }
+    }
+
+    /**
+     * Handle subscription purchase
+     */
+    private function handle_subscription_purchase($user_id, $pack_id, $transaction_id) {
+        global $wpdb;
+
+        // Check for existing subscription
+        $existing_sub = $wpdb->get_var($wpdb->prepare(
+            "SELECT id FROM {$wpdb->prefix}wpuf_subscribers 
+            WHERE transaction_id = %s",
+            $transaction_id
+        ));
+
+        if ($existing_sub) {
+            error_log('WPUF PayPal: Subscription already exists for transaction: ' . $transaction_id);
+            return;
+        }
+
+        $user = get_userdata($user_id);
+        $pack = get_post($pack_id);
+        $pack_meta = $pack ? get_post_meta($pack->ID, '_wpuf_subscription_pack', true) : [];
+        
+        $is_recurring = isset($pack_meta['recurring_pay']) && $pack_meta['recurring_pay'] === 'yes';
+        $expire_date = $is_recurring ? 'recurring' : date('Y-m-d H:i:s', strtotime('+1 year'));
+
+        // Insert subscriber data
+        $subscriber_data = [
+            'user_id' => $user_id,
+            'name' => $user->display_name,
+            'subscribtion_id' => (string)$pack_id,
+            'subscribtion_status' => 'active',
+            'gateway' => 'PayPal',
+            'transaction_id' => $transaction_id,
+            'starts_from' => $this->get_current_time_utc(),
+            'expire' => $expire_date
+        ];
+
+        $result = $wpdb->insert(
+            $wpdb->prefix . 'wpuf_subscribers',
+            $subscriber_data,
+            ['%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s']
+        );
+
+        if ($result) {
+            $this->update_user_subscription($user_id, $pack_id);
+        } else {
+            error_log('WPUF PayPal: Failed to insert subscriber data: ' . $wpdb->last_error);
+        }
+    }
+
+    /**
+     * Register webhook endpoint
+     */
+    public function register_webhook_endpoint() {
+        // Add rewrite rule for webhook endpoint
+        add_rewrite_rule(
+            '^payment_capture_completed/?$',
+            'index.php?action=payment_capture_completed=1',
+            'top'
+        );
+        
+        // Add query var filter
+        add_filter('query_vars', function($vars) {
+            $vars[] = 'action';
+            return $vars;
+        });
+        
+        // Flush rewrite rules only once
+        if (!get_option('wpuf_paypal_webhook_flushed')) {
+            flush_rewrite_rules();
+            update_option('wpuf_paypal_webhook_flushed', true);
+            error_log('WPUF PayPal: Webhook endpoint registered and rewrite rules flushed');
+        }
+        
+        // Verify webhook configuration
+        if (empty($this->webhook_id)) {
+            error_log('WPUF PayPal: Warning - Webhook ID is not configured');
+        } else {
+            error_log('WPUF PayPal: Webhook endpoint registered at: ' . 
+                home_url('/?action=payment_capture_completed'));
+        }
+    }
+
+    /**
+     * Handle webhook request
+     */
+    public function handle_webhook_request() {
+        if (get_query_var('action') === 'payment_capture_completed' && 
+            $_SERVER['REQUEST_METHOD'] === 'POST' && 
+            isset($_SERVER['HTTP_PAYPAL_TRANSMISSION_ID'])) {
+
+            $raw_input = file_get_contents('php://input');
+            $acknowledged = false;
+
+            try {
+                // Log and basic checks
+                error_log('WPUF PayPal: Webhook received');
+                if (empty($raw_input)) {
+                    throw new \Exception('Empty webhook payload');
+                }
+
+                // Verify signature
+                if (!$this->verify_webhook_signature_from_input($raw_input)) {
+                    throw new \Exception('Invalid webhook signature');
+                }
+
+                // Decode and validate
+                $webhook_data = json_decode($raw_input, true);
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    throw new \Exception('Invalid JSON');
+                }
+                if (!isset($webhook_data['event_type']) || $webhook_data['event_type'] !== 'PAYMENT.CAPTURE.COMPLETED') {
+                    throw new \Exception('Invalid event type');
+                }
+
+                // Save to DB (process payment)
+                $this->process_webhook($raw_input);
+
+                $acknowledged = true;
+            } catch (\Exception $e) {
+                error_log('WPUF PayPal: Webhook error: ' . $e->getMessage());
+                // Optionally, save the failed payload for manual review
+            }
+
+            // Always acknowledge to PayPal
+            http_response_code(200);
+            echo json_encode(['status' => $acknowledged ? 'ok' : 'error']);
+            exit;
+        }
+    }
+
+    /**
+     * Get current time in UTC
+     */
+    private function get_current_time_utc() {
+        // Get WordPress timezone setting
+        $timezone = wp_timezone();
+        
+        // Create DateTime object in WordPress timezone
+        $date = new \DateTime('now', $timezone);
+        
+        // Convert to UTC
+        $date->setTimezone(new \DateTimeZone('UTC'));
+        
+        return $date->format('Y-m-d H:i:s');
+    }
+
+    /**
+     * Verify webhook signature from raw input
+     */
+    private function verify_webhook_signature_from_input($raw_input) {
+        try {
+            // Get all headers, lowercased
+            $headers = array_change_key_case(getallheaders(), CASE_LOWER);
+    
+            // Required PayPal webhook headers
+            $required_headers = [
+                'paypal-transmission-id',
+                'paypal-transmission-time',
+                'paypal-transmission-sig',
+                'paypal-cert-url',
+                'paypal-auth-algo'
+            ];
+    
+            foreach ($required_headers as $header) {
+                if (empty($headers[$header])) {
+                    error_log('WPUF PayPal: Missing required header: ' . $header);
+                    return false;
+                }
+            }
+    
+            $access_token = $this->get_access_token();
+            if (!$access_token) {
+                error_log('WPUF PayPal: Failed to get access token');
+                return false;
+            }
+    
+            $verification_url = $this->test_mode ?
+                'https://api.sandbox.paypal.com/v1/notifications/verify-webhook-signature' :
+                'https://api.paypal.com/v1/notifications/verify-webhook-signature';
+    
+            $verification_data = [
+                'transmission_id'    => $headers['paypal-transmission-id'],
+                'transmission_time'  => $headers['paypal-transmission-time'],
+                'cert_url'           => $headers['paypal-cert-url'],
+                'webhook_id'         => $this->webhook_id,
+                'webhook_event'      => json_decode($raw_input, false),
+                'transmission_sig'   => $headers['paypal-transmission-sig'],
+                'auth_algo'          => $headers['paypal-auth-algo'],
+            ];
+    
+            error_log('WPUF PayPal: Verification data: ' . print_r($verification_data, true));
+    
+            $response = wp_remote_post($verification_url, [
+                'headers' => [
+                    'Content-Type'  => 'application/json',
+                    'Authorization' => 'Bearer ' . $access_token
+                ],
+                'body'    => json_encode($verification_data),
+                'timeout' => 30
+            ]);
+    
+            if (is_wp_error($response)) {
+                error_log('WPUF PayPal: Verification request failed: ' . $response->get_error_message());
+                return false;
+            }
+    
+            $body = json_decode(wp_remote_retrieve_body($response), true);
+            error_log('WPUF PayPal: Verification response: ' . print_r($body, true));
+    
+            $is_verified = isset($body['verification_status']) && $body['verification_status'] === 'SUCCESS';
+    
+            error_log('WPUF PayPal: Webhook verification ' . ($is_verified ? 'successful' : 'failed'));
+            error_log('WPUF PayPal: ===== Webhook Verification End =====');
+    
+            return $is_verified;
+    
+        } catch (\Exception $e) {
+            error_log('WPUF PayPal: Webhook verification error: ' . $e->getMessage());
+            error_log('WPUF PayPal: Stack trace: ' . $e->getTraceAsString());
+            return false;
+        }
+    }
+
+    /**
+     * Get PayPal access token
+     */
+    private function get_access_token() {
+        $client_id = wpuf_get_option('paypal_client_id', 'wpuf_payment');
+        $client_secret = wpuf_get_option('paypal_client_secret', 'wpuf_payment');
+
+        $token_url = $this->test_mode ? 
+            'https://api-m.sandbox.paypal.com/v1/oauth2/token' :
+            'https://api-m.paypal.com/v1/oauth2/token';
+
+        $response = wp_remote_post($token_url, [
+            'headers' => [
+                'Authorization' => 'Basic ' . base64_encode($client_id . ':' . $client_secret),
+                'Content-Type' => 'application/x-www-form-urlencoded'
+            ],
+            'body' => 'grant_type=client_credentials'
+        ]);
+
+        if (is_wp_error($response)) {
+            throw new \Exception('Failed to get access token: ' . $response->get_error_message());
+        }
+
+        $body = json_decode(wp_remote_retrieve_body($response), true);
+
+        return $body['access_token'];
+    }
+
+    /**
+     * Handle subscription creation
+     */
+    private function handle_subscription_created($subscription) {
+        try {
+            $custom_data = $subscription['custom'];
+            if (!$custom_data) {
+                throw new \Exception('Invalid custom data in subscription');
+            }
+
+            // Store subscription details
+            update_user_meta($custom_data['user_id'], '_wpuf_subscription_pack', [
+                'profile_id' => $subscription['id'],
+                'status' => 'active',
+                'created' => current_time('mysql')
+            ]);
+
+        } catch (\Exception $e) {
+            \WP_User_Frontend::log('paypal-webhook', 'Subscription creation handling failed: ' . $e->getMessage());
+            error_log('[WPUF PayPal Webhook] Subscription creation handling failed: ' . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    /**
+     * Handle subscription cancellation
+     */
+    public function cancel_subscription($data) {
+        try {
+            // Log the incoming data
+            error_log('WPUF PayPal: ===== Subscription Cancellation Debug Start =====');
+            error_log('WPUF PayPal: Incoming cancellation data: ' . print_r($data, true));
+
+            // Extract user_id from the input
+            $user_id = is_array($data) ? (isset($data['user_id']) ? $data['user_id'] : null) : $data;
+            
+            if (!$user_id || !is_numeric($user_id)) {
+                error_log('WPUF PayPal: Invalid user ID provided for cancellation: ' . print_r($data, true));
+                throw new \Exception('Invalid user ID provided for cancellation');
+            }
+
+            error_log('WPUF PayPal: Processing cancellation for user ID: ' . $user_id);
+
+            // Get all user meta for debugging
+            $all_user_meta = get_user_meta($user_id);
+            error_log('WPUF PayPal: All user meta: ' . print_r($all_user_meta, true));
+
+            // Get user's subscription data
+            $subscription = get_user_meta($user_id, '_wpuf_subscription_pack', true);
+            error_log('WPUF PayPal: Raw subscription data: ' . print_r($subscription, true));
+            
+            if (!$subscription) {
+                // Check if subscription exists in subscribers table
+                global $wpdb;
+                $subscriber_data = $wpdb->get_row($wpdb->prepare(
+                    "SELECT * FROM {$wpdb->prefix}wpuf_subscribers 
+                    WHERE user_id = %d AND gateway = 'PayPal' 
+                    ORDER BY id DESC LIMIT 1",
+                    $user_id
+                ));
+
+                if ($subscriber_data) {
+                    error_log('WPUF PayPal: Found subscription in subscribers table: ' . print_r($subscriber_data, true));
+                    // Update the subscription status in subscribers table
+                    $wpdb->update(
+                        $wpdb->prefix . 'wpuf_subscribers',
+                        [
+                            'subscribtion_status' => 'cancelled',
+                            'expire' => current_time('mysql')
+                        ],
+                        ['id' => $subscriber_data->id],
+                        ['%s', '%s'],
+                        ['%d']
+                    );
+                    
+                    // Update user meta
+                    update_user_meta($user_id, '_wpuf_subscription_pack', [
+                        'status' => 'cancelled',
+                        'updated' => current_time('mysql')
+                    ]);
+
+                    error_log('WPUF PayPal: Subscription cancelled in database only');
+                    return true;
+                }
+
+                error_log('WPUF PayPal: No subscription found for user: ' . $user_id);
+                throw new \Exception('No subscription found for this user');
+            }
+
+            // If we have subscription data but no profile_id, it might be a one-time payment
+            if (!isset($subscription['profile_id'])) {
+                error_log('WPUF PayPal: No profile_id found, checking for one-time payment');
+                
+                // Update subscription status in database
+                global $wpdb;
+                $wpdb->update(
+                    $wpdb->prefix . 'wpuf_subscribers',
+                    [
+                        'subscribtion_status' => 'cancelled',
+                        'expire' => current_time('mysql')
+                    ],
+                    [
+                        'user_id' => $user_id,
+                        'gateway' => 'PayPal'
+                    ],
+                    ['%s', '%s'],
+                    ['%d', '%s']
+                );
+
+                // Update user meta
+                update_user_meta($user_id, '_wpuf_subscription_pack', [
+                    'status' => 'cancelled',
+                    'updated' => current_time('mysql')
+                ]);
+
+                error_log('WPUF PayPal: One-time payment subscription cancelled in database');
+                return true;
+            }
+
+            $profile_id = $subscription['profile_id'];
+            error_log('WPUF PayPal: Found profile_id: ' . $profile_id);
+
+            // Get access token
+            $access_token = $this->get_access_token();
+
+            // Cancel the subscription in PayPal
+            $cancel_url = ($this->test_mode ? 
+                'https://api-m.sandbox.paypal.com' : 
+                'https://api-m.paypal.com') . '/v1/billing/subscriptions/' . $profile_id . '/cancel';
+
+            $response = wp_remote_post($cancel_url, [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $access_token,
+                    'Content-Type' => 'application/json'
+                ],
+                'body' => json_encode([
+                    'reason' => 'Customer requested cancellation'
+                ])
+            ]);
+
+            if (is_wp_error($response)) {
+                error_log('WPUF PayPal: Failed to cancel subscription: ' . $response->get_error_message());
+                throw new \Exception('Failed to cancel subscription: ' . $response->get_error_message());
+            }
+
+            $body = json_decode(wp_remote_retrieve_body($response), true);
+            
+            if (isset($body['error'])) {
+                error_log('WPUF PayPal: PayPal API error: ' . print_r($body['error'], true));
+                throw new \Exception('PayPal API error: ' . $body['error']['message']);
+            }
+
+            // Update local subscription status
+            $updated_subscription = [
+                'profile_id' => $profile_id,
+                'status' => 'cancelled',
+                'updated' => current_time('mysql')
+            ];
+            
+            update_user_meta($user_id, '_wpuf_subscription_pack', $updated_subscription);
+            error_log('WPUF PayPal: Updated subscription meta: ' . print_r($updated_subscription, true));
+
+            // Update subscriber table
+            $update_result = $wpdb->update(
+                $wpdb->prefix . 'wpuf_subscribers',
+                [
+                    'subscribtion_status' => 'cancelled',
+                    'expire' => current_time('mysql')
+                ],
+                [
+                    'user_id' => $user_id,
+                    'gateway' => 'PayPal'
+                ],
+                ['%s', '%s'],
+                ['%d', '%s']
+            );
+
+            if ($update_result === false) {
+                error_log('WPUF PayPal: Database error updating subscribers table: ' . $wpdb->last_error);
+            } else {
+                error_log('WPUF PayPal: Updated subscribers table. Rows affected: ' . $update_result);
+            }
+
+            error_log('WPUF PayPal: Subscription cancelled successfully for user: ' . $user_id);
+
+            // Trigger action for other plugins
+            do_action('wpuf_paypal_subscription_cancelled', $user_id, $profile_id);
+
+            error_log('WPUF PayPal: ===== Subscription Cancellation Debug End =====');
+            return true;
+
+        } catch (\Exception $e) {
+            error_log('WPUF PayPal: Subscription cancellation failed: ' . $e->getMessage());
+            error_log('WPUF PayPal: Stack trace: ' . $e->getTraceAsString());
+            throw $e;
+        }
+    }
+
+    /**
+     * Handle subscription payment
+     */
+    private function handle_subscription_payment($payment) {
+        try {
+            $subscription_id = $payment['billing_agreement_id'];
+            $user_id = $this->get_user_id_by_subscription($subscription_id);
+            
+            if (!$user_id) {
+                throw new \Exception('User not found for subscription: ' . $subscription_id);
+            }
+
+            $data = [
+                'user_id' => $user_id,
+                'status' => 'completed',
+                'subtotal' => $payment['amount']['total'],
+                'currency' => $payment['amount']['currency'],
+                'payment_type' => 'Paypal',
+                'transaction_id' => $payment['id'],
+                'created' => current_time('mysql')
+            ];
+
+            // Insert payment record
+            \WeDevs\Wpuf\Frontend\Payment::insert_payment($data, $payment['id'], true);
+
+        } catch (\Exception $e) {
+            \WP_User_Frontend::log('paypal-webhook', 'Subscription payment handling failed: ' . $e->getMessage());
+            error_log('[WPUF PayPal Webhook] Subscription payment handling failed: ' . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    /**
+     * Get user ID by subscription ID
+     */
+    private function get_user_id_by_subscription($subscription_id) {
+        global $wpdb;
+        
+        $user_id = $wpdb->get_var($wpdb->prepare(
+            "SELECT user_id FROM {$wpdb->usermeta} 
+            WHERE meta_key = '_wpuf_subscription_pack' 
+            AND meta_value LIKE %s",
+            '%' . $wpdb->esc_like($subscription_id) . '%'
+        ));
+
+        return $user_id;
+    }
+
+    /**
+     * Update payment options
+     */
+    public function payment_options($options) {
+        // Existing options
         $options[] = [
             'name'  => 'paypal_email',
             'label' => __( 'PayPal Email', 'wp-user-frontend' ),
@@ -47,6 +711,23 @@ class Paypal {
             'default' => "Pay via PayPal; you can pay with your credit card if you don't have a PayPal account",
         ];
 
+        // New REST API options
+        $options[] = [
+            'name' => 'paypal_client_id',
+            'label' => __('PayPal Client ID', 'wp-user-frontend'),
+        ];
+
+        $options[] = [
+            'name' => 'paypal_client_secret',
+            'label' => __('PayPal Client Secret', 'wp-user-frontend'),
+        ];
+
+        $options[] = [
+            'name' => 'paypal_webhook_id',
+            'label' => __('PayPal Webhook ID', 'wp-user-frontend'),
+        ];
+
+        // Legacy API options (keep for backward compatibility)
         $options[] = [
             'name'  => 'paypal_api_username',
             'label' => __( 'PayPal API username', 'wp-user-frontend' ),
@@ -59,13 +740,20 @@ class Paypal {
             'name'  => 'paypal_api_signature',
             'label' => __( 'PayPal API signature', 'wp-user-frontend' ),
         ];
-        /* $options[] = [
-             'name'    => 'paypal_endpoint',
-             'label'   => __('PayPal IPN endpoint', 'wp-user-frontend'),
-             'default' => home_url( '/action/wpuf_paypal_success', null ),
-             'desc'    => __('Set this to your notification IPN listener', 'wp-user-frontend'),
-             'class'   => 'disabled'
-         ];*/
+
+        // Replace sandbox mode checkbox with test mode radio button
+        $options[] = [
+            'name' => 'paypal_test_mode',
+            'label' => __('PayPal Mode', 'wp-user-frontend'),
+            'type' => 'radio',
+            'default' => 'live',
+            'options' => [
+                'live' => __('Live Mode', 'wp-user-frontend'),
+                'test' => __('Test Mode (Sandbox)', 'wp-user-frontend')
+            ],
+            'desc' => __('Choose whether to process real payments or test payments. Test mode uses PayPal Sandbox environment.', 'wp-user-frontend')
+        ];
+
         return $options;
     }
 
@@ -75,495 +763,327 @@ class Paypal {
     }
 
     /**
-     * Change PayPal recurring payment status
+     * Handle subscription suspension
+     */
+    private function handle_subscription_suspended($subscription) {
+        try {
+            $custom_data = $subscription['custom'];
+            if (!$custom_data) {
+                throw new \Exception('Invalid custom data in subscription');
+            }
+
+            update_user_meta($custom_data['user_id'], '_wpuf_subscription_pack', [
+                'profile_id' => $subscription['id'],
+                'status' => 'suspended',
+                'updated' => current_time('mysql')
+            ]);
+
+        } catch (\Exception $e) {
+            \WP_User_Frontend::log('paypal-webhook', 'Subscription suspension handling failed: ' . $e->getMessage());
+            error_log('[WPUF PayPal Webhook] Subscription suspension handling failed: ' . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    /**
+     * Update coupon usage count
+     *
+     * @param int $coupon_id
+     */
+    private function update_coupon_usage($coupon_id) {
+        if (empty($coupon_id)) {
+            return;
+        }
+
+        $pre_usage = get_post_meta($coupon_id, '_coupon_used', true);
+        $pre_usage = empty($pre_usage) ? 0 : $pre_usage;
+        $new_use = $pre_usage + 1;
+
+        update_post_meta($coupon_id, '_coupon_used', $new_use);
+    }
+
+    /**
+     * Update user subscription
      *
      * @param int $user_id
-     * @param string $status
-     *
-     * @return void
+     * @param int $pack_id
      */
-    public function recurring_change_status( $user_id, $status ) {
-        $user_id           = ! empty( $user_id ) ? $user_id : get_current_user_id();
-        $sub_info          = get_user_meta( $user_id, '_wpuf_subscription_pack', true );
-        $api_username      = wpuf_get_option( 'paypal_api_username', 'wpuf_payment' );
-        $api_password      = wpuf_get_option( 'paypal_api_password', 'wpuf_payment' );
-        $api_signature     = wpuf_get_option( 'paypal_api_signature', 'wpuf_payment' );
-        $profile_id        = isset( $sub_info['profile_id'] ) ? $sub_info['profile_id'] : '';
-        $new_status        = $status;
-        $new_status_string = $status;
-        $this->set_mode();
-        $args = [
-            'USER'      => $api_username,
-            'PWD'       => $api_password,
-            'SIGNATURE' => $api_signature,
-            'VERSION'   => '76.0',
-        ];
-
-        $params = [
-            'sslverify'  => true,
-            'timeout'    => 30,
-            'user-agent' => 'WP User Frontend Pro/' . WPUF_VERSION,
-        ];
-
-        if ( empty( $profile_id ) ) {
-            global $wpdb;
-            $sql = $wpdb->prepare(
-                'SELECT transaction_id FROM ' . $wpdb->prefix . 'wpuf_transaction
-            WHERE user_id = %d AND payment_type = %s Order by created desc limit 1', $user_id, 'Paypal'
-            );
-
-            $result = $wpdb->get_row( $wpdb->prepare(
-                    'SELECT transaction_id FROM ' . $wpdb->prefix . 'wpuf_transaction
-                    WHERE user_id = %d AND payment_type = %s Order by created desc limit 1', $user_id, 'Paypal'
-                ) );
-            $transaction_id = $result ? $result->transaction_id : 0;
-
-            $args_profile = array_merge(
-                $args, [
-                    'METHOD'    => 'GetTransactionDetails',
-                    'TRANSACTIONID' => $transaction_id,
-                ]
-            );
-
-            $params_profile = array_merge(
-                $params, [
-                    'body'       => $args_profile,
-                ]
-            );
-
-            $response = wp_remote_post( $this->gateway_cancel_url, $params_profile );
-            parse_str( $response['body'], $parsed_response );
-
-            $profile_id = ! empty( $parsed_response['SUBSCRIPTIONID'] ) ? $parsed_response['SUBSCRIPTIONID'] : 0;
+    private function update_user_subscription($user_id, $pack_id) {
+        if (empty($user_id) || empty($pack_id)) {
+            return;
         }
 
-        $args = array_merge(
-            $args, [
-                'METHOD'    => 'ManageRecurringPaymentsProfileStatus',
-                'PROFILEID' => $profile_id,
-                'ACTION'    => ucfirst( $new_status ),
-                'NOTE'      => sprintf(
-                    // translators: %1$s is status string and %2$s is site name
-                    __( 'Subscription %1$s at %2$s', 'wp-user-frontend' ), $new_status_string, get_bloginfo( 'name' ) ),
-            ]
-        );
+        wpuf_get_user($user_id)->subscription()->add_pack($pack_id, null, false, 'PayPal');
+        delete_user_meta($user_id, '_wpuf_user_active');
+        delete_user_meta($user_id, '_wpuf_activation_key');
+    }
 
-        // Send back post vars to paypal
-        $params = array_merge(
-            $params, [
-                'body'       => $args,
-            ]
-        );
+    /**
+     * Prepare and send payment to PayPal
+     *
+     * @param array $data Payment data
+     */
+    public function prepare_to_send($data) {
+        try {
+            $user_id = $data['user_info']['id'];
+            $return_url = add_query_arg([
+                'action' => 'wpuf_paypal_success',
+                'type' => $data['type'],
+                'item_number' => $data['item_number'],
+                'wpuf_payment_method' => 'paypal'
+            ], wpuf_payment_success_page([
+                'type' => isset($_GET['type']) ? sanitize_text_field($_GET['type']) : 'pack',
+                'item_number' => isset($_GET['item_number']) ? sanitize_text_field($_GET['item_number']) : '',
+                'wpuf_payment_method' => 'paypal'
+            ]));
+            
+            $cancel_url = $return_url;
 
-        $response = wp_remote_post( $this->gateway_cancel_url, $params );
+            $billing_amount = empty($data['price']) ? 0 : $data['price'];
 
-        parse_str( $response['body'], $parsed_response );
-        if ( strtolower( $parsed_response['ACK'] ) == 'success' ) {
-            $this->subscription_cancel( $user_id );
+            // Handle coupon if present
+            if (isset($_POST['coupon_id']) && !empty($_POST['coupon_id'])) {
+                $billing_amount = wpuf_pro()->coupon->discount($billing_amount, $_POST['coupon_id'], $data['item_number']);
+                $coupon_id = $_POST['coupon_id'];
+            } else {
+                $coupon_id = '';
+            }
+
+            $data['subtotal'] = $billing_amount;
+            $billing_amount = apply_filters('wpuf_payment_amount', $data['subtotal']);
+            $data['tax'] = $billing_amount - $data['subtotal'];
+
+            // Handle free payments
+            if ($billing_amount == 0) {
+                wpuf_get_user($user_id)->subscription()->add_pack($data['item_number'], null, false, 'Free');
+                wp_redirect($return_url);
+                exit();
+            }
+
+            // Get access token
+            $access_token = $this->get_access_token();
+
+            if ($data['type'] == 'pack' && wpuf_is_checkbox_or_toggle_on($data['custom']['recurring_pay'])) {
+                // Handle recurring payment setup
+                error_log('WPUF PayPal: Setting up recurring payment');
+                // Add recurring payment logic here
+            } else {
+                // Prepare payment data
+                $payment_data = [
+                    'intent' => 'CAPTURE',
+                    'purchase_units' => [[
+                        'amount' => [
+                            'currency_code' => $data['currency'],
+                            'value' => number_format($billing_amount, 2, '.', '')
+                        ],
+                        'description' => isset($data['custom']['post_title']) ? $data['custom']['post_title'] : $data['item_name'],
+                        'custom_id' => wp_json_encode([
+                            'type' => $data['type'],
+                            'user_id' => $user_id,
+                            'coupon_id' => $coupon_id,
+                            'subtotal' => $data['subtotal'],
+                            'tax' => $data['tax'],
+                            'item_number' => $data['item_number'],
+                            'first_name' => $data['user_info']['first_name'],
+                            'last_name' => $data['user_info']['last_name'],
+                            'email' => $data['user_info']['email']
+                        ])
+                    ]],
+                    'application_context' => [
+                        'return_url' => $return_url,
+                        'cancel_url' => $cancel_url,
+                        'brand_name' => get_bloginfo('name'),
+                        'landing_page' => 'LOGIN',
+                        'user_action' => 'PAY_NOW',
+                        'shipping_preference' => 'NO_SHIPPING'
+                    ]
+                ];
+            }
+
+            // Add debug logging
+            error_log('WPUF PayPal: Return URL: ' . $return_url);
+            error_log('WPUF PayPal: Payment Data: ' . print_r($payment_data, true));
+
+            // Create order
+            $response = wp_remote_post(
+                $this->test_mode ? 'https://api-m.sandbox.paypal.com/v2/checkout/orders' : 'https://api-m.paypal.com/v2/checkout/orders',
+                [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $access_token,
+                        'Content-Type' => 'application/json'
+                    ],
+                    'body' => wp_json_encode($payment_data)
+                ]
+            );
+
+            if (is_wp_error($response)) {
+                throw new \Exception('Failed to create PayPal order: ' . $response->get_error_message());
+            }
+
+            $body = json_decode(wp_remote_retrieve_body($response), true);
+            error_log('WPUF PayPal: PayPal response: ' . print_r($body, true));
+
+            if (!isset($body['id'])) {
+                throw new \Exception('Invalid response from PayPal - no order ID');
+            }
+
+            // Find approval URL
+            $approval_url = '';
+            foreach ($body['links'] as $link) {
+                if ($link['rel'] === 'approve') {
+                    $approval_url = $link['href'];
+                    break;
+                }
+            }
+
+            if (empty($approval_url)) {
+                throw new \Exception('Approval URL not found in PayPal response');
+            }
+
+            // Redirect to PayPal
+            wp_redirect($approval_url);
+            exit();
+
+        } catch (\Exception $e) {
+            error_log('WPUF PayPal: Payment preparation failed: ' . $e->getMessage());
+            wp_die($e->getMessage());
         }
     }
 
     /**
-     * Prepare the payment form and send to paypal
-     *
-     * @param array $data payment info
-     *
-     * @since 0.8
+     * Handle PayPal return
      */
-    public function prepare_to_send( $data ) {
-        $user_id          = $data['user_info']['id'];
-        $listener_url     = add_query_arg( 'action', 'wpuf_paypal_success', home_url( '' ) );
-        //$listener_url     = 'http://a53d2f68b609.ngrok.io/?action=wpuf_paypal_success';
-        //$listener_url     = 'https://wpuf.sharedwithexpose.com/?action=wpuf_paypal_success';
-        $return_url       = wpuf_payment_success_page( $data );
-
-        $billing_amount = empty( $data['price'] ) ? 0 : $data['price'];
-
-        if ( isset( $_POST['coupon_id'] ) && ! empty( $_POST['coupon_id'] ) ) {
-            $billing_amount = wpuf_pro()->coupon->discount( $billing_amount, $_POST['coupon_id'], $data['item_number'] );
-
-            $coupon_id = $_POST['coupon_id'];
-        } else {
-            $coupon_id = '';
+    public function handle_paypal_return() {
+        $token = isset($_GET['token']) ? sanitize_text_field($_GET['token']) : '';
+        $payer_id = isset($_GET['PayerID']) ? sanitize_text_field($_GET['PayerID']) : '';
+        
+        if (empty($token) || empty($payer_id)) {
+            if (isset($_GET['payment_status'])) {
+                return; // Just show success page
+            }
+            // Redirect to subscription page with error message
+            $error_url = add_query_arg([
+                'action' => 'wpuf_paypal_success',
+                'type' => isset($_GET['type']) ? sanitize_text_field($_GET['type']) : 'pack',
+                'item_number' => isset($_GET['item_number']) ? sanitize_text_field($_GET['item_number']) : '',
+                'wpuf_payment_method' => 'paypal',
+                'payment_status' => 'failed',
+                'error' => urlencode('Invalid payment session. Please try again.')
+            ], wpuf_payment_success_page([
+                'type' => isset($_GET['type']) ? sanitize_text_field($_GET['type']) : 'pack',
+                'item_number' => isset($_GET['item_number']) ? sanitize_text_field($_GET['item_number']) : '',
+                'wpuf_payment_method' => 'paypal'
+            ]));
+            
+            wp_redirect($error_url);
+            exit;
         }
 
-        $data['subtotal'] = $billing_amount;
-        $billing_amount   = apply_filters( 'wpuf_payment_amount', $data['subtotal'] );
-        $data['tax']      = $billing_amount - $data['subtotal'];
+        try {
+            // Get access token and capture payment
+            $access_token = $this->get_access_token();
+            $capture_url = ($this->test_mode ? 'https://api-m.sandbox.paypal.com' : 'https://api-m.paypal.com') . 
+                          '/v2/checkout/orders/' . $token . '/capture';
 
-        if ( $billing_amount == 0 ) {
-            wpuf_get_user( $user_id )->subscription()->add_pack( $data['item_number'], $profile_id = null, false, 'Free' );
-            wp_redirect( $return_url );
-            exit();
+            $response = wp_remote_post($capture_url, [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $access_token,
+                    'Content-Type' => 'application/json'
+                ]
+            ]);
+
+            if (is_wp_error($response)) {
+                throw new \Exception('Failed to capture PayPal payment');
+            }
+
+            $body = json_decode(wp_remote_retrieve_body($response), true);
+            
+            if (!isset($body['status']) || $body['status'] !== 'COMPLETED') {
+                throw new \Exception('Payment not completed');
+            }
+
+            // Redirect to success page
+            $success_url = add_query_arg([
+                'action' => 'wpuf_paypal_success',
+                'type' => isset($_GET['type']) ? sanitize_text_field($_GET['type']) : 'pack',
+                'item_number' => isset($_GET['item_number']) ? sanitize_text_field($_GET['item_number']) : '',
+                'wpuf_payment_method' => 'paypal',
+                'payment_status' => 'completed'
+            ], wpuf_payment_success_page([
+                'type' => isset($_GET['type']) ? sanitize_text_field($_GET['type']) : 'pack',
+                'item_number' => isset($_GET['item_number']) ? sanitize_text_field($_GET['item_number']) : '',
+                'wpuf_payment_method' => 'paypal'
+            ]));
+
+            wp_redirect($success_url);
+            exit;
+
+        } catch (\Exception $e) {
+            error_log('WPUF PayPal: Payment capture failed: ' . $e->getMessage());
+            wp_redirect(home_url('/payment-error/?error=' . urlencode($e->getMessage())));
+            exit;
+        }
+    }
+
+    /**
+     * Check PayPal return
+     */
+    public function check_paypal_return() {
+        if (!isset($_GET['action']) || $_GET['action'] !== 'wpuf_paypal_success') {
+            return;
         }
 
-        if ( $data['type'] == 'pack' && $data['custom']['recurring_pay'] == 'yes' ) {
-            if ( $data['custom']['cycle_period'] == 'day' ) {
-                $period = 'D';
-            } elseif ( $data['custom']['cycle_period'] == 'week' ) {
-                $period = 'W';
-            } elseif ( $data['custom']['cycle_period'] == 'month' ) {
-                $period = 'M';
-            } elseif ( $data['custom']['cycle_period'] == 'year' ) {
-                $period = 'Y';
-            }
-
-            if ( $data['custom']['trial_duration_type'] == 'day' ) {
-                $trial_period = 'D';
-            } elseif ( $data['custom']['trial_duration_type'] == 'week' ) {
-                $trial_period = 'W';
-            } elseif ( $data['custom']['trial_duration_type'] == 'month' ) {
-                $trial_period = 'M';
-            } elseif ( $data['custom']['trial_duration_type'] == 'year' ) {
-                $trial_period = 'Y';
-            }
-
-            $paypal_args = [
-                'cmd'           => '_xclick-subscriptions',
-                'business'      => wpuf_get_option( 'paypal_email', 'wpuf_payment' ),
-                'a3'            => $billing_amount,
-                'mc_amount3'    => $billing_amount,
-                'p3'            => ! empty( $data['custom']['billing_cycle_number'] ) ? $data['custom']['billing_cycle_number'] : '0',
-                't3'            => $period,
-                'item_name'     => $data['custom']['post_title'],
-                'custom'        => wp_json_encode(
-                    [
-                        'billing_amount' => $billing_amount,
-                        'type'           => $data['type'],
-                        'user_id'        => $user_id,
-                        'coupon_id'      => $coupon_id,
-                        'subtotal'       => $data['subtotal'],
-                        'tax'            => $data['tax'],
-                    ]
-                ),
-                'shipping'      => 0,
-                'no_note'       => 1,
-                'currency_code' => $data['currency'],
-                'item_number'   => $data['item_number'],
-                'rm'            => 2,
-                'return'        => $return_url,
-                'cancel_return' => $return_url,
-                'notify_url'    => $listener_url,
-                'src'           => 1,
-                'sra'           => 1,
-                'srt'           => intval( $data['custom']['billing_limit'] ),
-                'recurring'     => 1,
-            ];
-
-            if ( $data['custom']['trial_status'] == 'yes' ) {
-                $paypal_args['p1'] = $data['custom']['trial_duration'];
-                $paypal_args['t1'] = $trial_period;
-                $paypal_args['a1'] = 0;
-            }
-        } else {
-            $paypal_args = [
-                'cmd'           => '_xclick',
-                'business'      => wpuf_get_option( 'paypal_email', 'wpuf_payment' ),
-                'amount'        => $billing_amount,
-                'item_name'     => isset( $data['custom']['post_title'] ) ? $data['custom']['post_title'] : $data['item_name'],
-                'no_shipping'   => '1',
-                'shipping'      => '0',
-                'no_note'       => '1',
-                'currency_code' => $data['currency'],
-                'item_number'   => $data['item_number'],
-                'charset'       => 'UTF-8',
-                'rm'            => '2',
-                'custom'        => wp_json_encode(
-                    [
-                        'type'      => $data['type'],
-                        'user_id'   => $user_id,
-                        'coupon_id' => $coupon_id,
-                        'subtotal'  => $data['subtotal'],
-                        'tax'       => $data['tax'],
-                    ]
-                ),
-                'return'        => $return_url,
-                'notify_url'    => $listener_url,
-            ];
+        if (isset($_GET['payment_completed'])) {
+            return;
         }
-        $this->set_mode();
 
-        /**
-         * Filter: wpuf_paypal_args
-         *
-         * @since 3.1.13
-         */
-        $paypal_args = apply_filters( 'wpuf_paypal_args', $paypal_args );
+        $this->handle_paypal_return();
+    }
 
-        $paypal_url = $this->gateway_url . http_build_query( $paypal_args );
+    /**
+     * Add pending payment page handler
+     */
+    public function handle_pending_payment() {
+        if (!isset($_GET['action']) || $_GET['action'] !== 'wpuf_paypal_pending') {
+            return;
+        }
 
-        wp_redirect( $paypal_url );
+        $capture_id = isset($_GET['capture_id']) ? sanitize_text_field($_GET['capture_id']) : '';
+        if (empty($capture_id)) {
+            wp_redirect(home_url('/payment-error/?error=' . urlencode('Invalid capture ID')));
+            exit;
+        }
+
+        // Show pending payment page
+        include WPUF_ROOT . '/templates/payment-pending.php';
         exit;
     }
-
-    /**
-     * Set the payment mode to sandbox or live
-     *
-     * @since 0.8
-     */
-    public function set_mode() {
-        if ( wpuf_get_option( 'sandbox_mode', 'wpuf_payment' ) == 'on' ) {
-            $this->gateway_url        = 'https://www.sandbox.paypal.com/cgi-bin/webscr/?';
-            $this->gateway_cancel_url = 'https://api-3t.sandbox.paypal.com/nvp';
-            $this->test_mode          = true;
-        }
-    }
-
-    /**
-     * Check for PayPal IPN Response.
-     */
-    public function check_response() {
-        if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'wpuf_paypal_success' && $this->validateIpn() ) {
-            do_action( 'wpuf_paypal_ipn_success' );
-        }
-    }
-
-    /**
-     * Handle the payment info sent from paypal
-     *
-     * @since 0.8
-     */
-    public function paypal_success() {
-        global $wpdb;
-
-        $postdata = $_POST;
-
-        // when subscription expire
-        if ( isset( $postdata['txn_type'] ) && ( $postdata['txn_type'] == 'subscr_eot' ) ) {
-            $custom = json_decode( stripcslashes( $postdata['custom'] ) );
-            $this->subscription_cancel( $custom->user_id );
-
-            return;
-        }
-
-        // when subscription cancel
-        if ( isset( $postdata['txn_type'] ) && ( $postdata['txn_type'] == 'subscr_cancel' ) ) {
-            $custom = json_decode( stripcslashes( $postdata['custom'] ) );
-            $this->subscription_cancel( $custom->user_id );
-
-            return;
-        }
-
-        $insert_payment = false;
-
-        if ( isset( $_GET['action'] ) && $_GET['action'] == 'wpuf_paypal_success' ) {
-            \WP_User_Frontend::log( 'paypal-payment-info', print_r( $_POST, true ) );
-
-            $post_id = 0;
-            $pack_id = 0;
-
-            $postdata       = $_POST;
-            $type           = isset( $postdata['custom'] ) ? $postdata['custom'] : '';
-            $custom         = json_decode( stripcslashes( $type ) );
-            $item_number    = ! empty( $postdata['item_number'] ) ? $postdata['item_number'] : 0;
-
-            if ( property_exists( $custom, 'type' ) ) {
-                switch ( $custom->type ) {
-                    case 'post':
-                        $post_id = $item_number;
-                        break;
-
-                    case 'pack':
-                        $pack_id = $item_number;
-                        break;
-                }
-            }
-
-            $amount         = isset( $postdata['mc_gross'] ) ? $postdata['mc_gross'] : 0;
-            $is_recurring   = false;
-            $transaction_id = isset( $postdata['txn_id'] ) ? sanitize_text_field( $postdata['txn_id'] ) : '';
-
-            $coupon_id = isset( $custom->coupon_id ) ? $custom->coupon_id : false;
-
-            if ( ! empty( $postdata['period3'] ) ) {
-                update_user_meta( $custom->user_id, '_wpuf_used_trial', 'yes' );
-            }
-
-            if ( isset( $postdata['txn_type'] ) && ( $postdata['txn_type'] == 'subscr_signup' ) ) {
-                \WP_User_Frontend::log( 'paypal-recurring', 'got subscriber with email ' . $postdata['payer_email'] );
-
-                return;
-            }
-
-            if ( $transaction_id && $this->transaction_exists( $transaction_id ) ) {
-                $wpdb->update(
-                    $wpdb->prefix . 'wpuf_transaction',
-                    array( 'status' => strtolower( $postdata['payment_status'] ) ),
-                    array(
-                        'transaction_id' => $transaction_id,
-                    )
-                );
-            }
-
-            // check if recurring payment
-            if ( isset( $postdata['txn_type'] ) && ( $postdata['txn_type'] == 'subscr_payment' ) && ( strtolower( $postdata['payment_status'] ) == 'completed' ) ) {
-                if ( $postdata['mc_gross'] <= ceil( $custom->billing_amount ) ) {
-                    $insert_payment = true;
-                    $post_id        = 0;
-                    $pack_id        = $item_number;
-                    $is_recurring   = true;
-                    $status         = 'subscr_payment';
-
-                    \WP_User_Frontend::log( 'paypal-recurring', 'got subscr_payment, should insert of pack_id: ' . $pack_id );
-                } else {
-                    $this->subscription_cancel( $custom->user_id );
-
-                    \WP_User_Frontend::log( 'paypal-recurring', 'got subscr_payment. billing validation failed, cancel subscription. user_id: ' . $custom->user_id );
-                }
-            } elseif ( isset( $postdata['txn_type'] ) && ( $postdata['txn_type'] == 'web_accept' ) && ( strtolower( $postdata['payment_status'] ) == 'completed' ) ) {
-                \WP_User_Frontend::log( 'paypal', 'got web_accept. type: ' . $custom->type . '. item_number: ' . $item_number );
-
-                //verify payment
-                $status = 'web_accept';
-
-                switch ( $custom->type ) {
-                    case 'post':
-                        $post_id = $item_number;
-                        $pack_id = 0;
-                        break;
-
-                    case 'pack':
-                        $post_id = 0;
-                        $pack_id = $item_number;
-                        break;
-                }
-            } elseif (
-                isset( $postdata['verify_sign'] )
-                && ! empty( $postdata['verify_sign'] )
-                && isset( $postdata['payment_status'] )
-                && $postdata['payment_status'] == 'Pending'
-                && isset( $postdata['pending_reason'] )
-                && $postdata['pending_reason'] == 'multi_currency'
-                && isset( $postdata['txn_type'] )
-                && $postdata['txn_type'] == 'web_accept'
-            ) {
-                //verify payment
-                $status = 'web_accept';
-                switch ( $custom->type ) {
-                    case 'post':
-                        $post_id = $item_number;
-                        $pack_id = 0;
-                        break;
-
-                    case 'pack':
-                        $post_id = 0;
-                        $pack_id = $item_number;
-                        break;
-                }
-            } // payment type
-
-            $data = [
-                'user_id'          => property_exists( $custom, 'user_id' ) ? ( int) $custom->user_id : 0,
-                'status'           => ! empty( $postdata['payment_status'] ) ? strtolower( $postdata['payment_status'] ) : '',
-                'subtotal'         => ! empty( $postdata['mc_gross'] ) ? $postdata['mc_gross'] : '',
-                'tax'              => property_exists( $custom, 'tax' ) ? (float) $custom->tax : 0,
-                'cost'             => property_exists( $custom, 'subtotal' ) ? (float) $custom->subtotal : 0,
-                'post_id'          => isset( $post_id ) ? $post_id : 0,
-                'pack_id'          => isset( $pack_id ) ? $pack_id : 0,
-                'payer_first_name' => ! empty( $postdata['first_name'] ) ? $postdata['first_name'] : '',
-                'payer_last_name'  => ! empty( $postdata['last_name'] ) ? $postdata['last_name'] : '',
-                'payer_email'      => ! empty( $postdata['payer_email'] ) ? $postdata['payer_email'] : '',
-                'payment_type'     => 'Paypal',
-                'payer_address'    => isset( $postdata['residence_country'] ) ? $postdata['residence_country'] : null,
-                'transaction_id'   => $transaction_id,
-                'created'          => current_time( 'mysql' ),
-            ];
-
-            \WP_User_Frontend::log( 'payment', 'inserting payment to database. ' . print_r( $data, true ) );
-
-            \WeDevs\Wpuf\Frontend\Payment::insert_payment( $data, $transaction_id, $is_recurring );
-
-            if ( $coupon_id ) {
-                $pre_usage = get_post_meta( $coupon_id, '_coupon_used', true );
-                $pre_usage = ( empty( $pre_usage ) ) ? 0 : $pre_usage;
-                $new_use   = $pre_usage + 1;
-
-                update_post_meta( $coupon_id, '_coupon_used', $new_use );
-            }
-
-            if ( isset( $postdata['subscr_id'] ) ) {
-                $umeta = get_user_meta( $custom->user_id, '_wpuf_subscription_pack', true );
-                $umeta['profile_id'] = $postdata['subscr_id'];
-                update_user_meta( $custom->user_id, '_wpuf_subscription_pack', $umeta );
-            }
-
-            if ( is_object( $custom ) && $custom->user_id ) {
-                delete_user_meta( $custom->user_id, '_wpuf_user_active' );
-                delete_user_meta( $custom->user_id, '_wpuf_activation_key' );
-            }
-        }
-    }
-
-    /**
-     * Handle the cancel payment / subscription
-     *
-     * @return void
-     *
-     * @since  2.4.1
-     */
-    public function handle_cancel_subscription( $data ) {
-        $user_id = isset( $data['user_id'] ) ? $data['user_id'] : '';
-        $this->recurring_change_status( $user_id, 'Cancel' );
-    }
-
-    /**
-     * Validate the IPN notification
-     *
-     * @param none
-     *
-     * @return bool
-     */
-    public function validateIpn() {
-        \WP_User_Frontend::log( 'paypal', 'Checking if PayPal IPN response is valid' );
-
-        $this->set_mode();
-
-        // Get received values from post data
-        $validate_ipn = [ 'cmd' => '_notify-validate' ];
-        $validate_ipn += wp_unslash( $_POST );
-
-        // Send back post vars to paypal
-        $params = [
-            'body'        => $validate_ipn,
-            'timeout'     => 60,
-            'httpversion' => '1.1',
-            'compress'    => false,
-            'decompress'  => false,
-            'user-agent'  => 'WP User Frontend Pro/' . WPUF_VERSION,
-        ];
-
-        if ( wpuf_get_option( 'sandbox_mode', 'wpuf_payment' ) == 'on' ) {
-            $this->gateway_url = 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr';
-        } else {
-            $this->gateway_url = 'https://ipnpb.paypal.com/cgi-bin/webscr';
-        }
-        $response = wp_safe_remote_post( $this->gateway_url, $params );
-
-        \WP_User_Frontend::log( 'paypal', 'IPN Request: ' . print_r( $params, true ) );
-        \WP_User_Frontend::log( 'paypal', 'IPN Response: ' . print_r( $response, true ) );
-
-        // check to see if the request was valid
-        if ( ! is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 ) {
-            \WP_User_Frontend::log( 'paypal', 'Received valid response from PayPal' );
-
-            return true;
-        }
-
-        \WP_User_Frontend::log( 'paypal', 'Received invalid response from PayPal' );
-
-        if ( is_wp_error( $response ) ) {
-            \WP_User_Frontend::log( 'paypal', 'Error response: ' . $response->get_error_message() );
-        }
-
-        return false;
-    }
-
-    public function transaction_exists( $trns_id ) {
-        global $wpdb;
-
-        $query = $wpdb->prepare( "SELECT transaction_id FROM `{$wpdb->prefix}wpuf_transaction` WHERE transaction_id = %s LIMIT 0, 1", $trns_id );
-
-        return $wpdb->get_var( $wpdb->prepare( "SELECT transaction_id FROM `{$wpdb->prefix}wpuf_transaction` WHERE transaction_id = %s LIMIT 0, 1", $trns_id ) ) ? true : false;
-    }
-
 }
+
+// Register webhook endpoint
+add_action('init', function() {
+    add_rewrite_rule(
+        '^payment_capture_completed/?$',
+        'index.php?action=payment_capture_completed=1',
+        'top'
+    );
+});
+
+// Add query var
+add_filter('query_vars', function($vars) {
+    $vars[] = 'action';
+    return $vars;
+});
+
+// Handle webhook request
+add_action('template_redirect', function() {
+    if (get_query_var('action') === 'payment_capture_completed') {
+
+        $paypal = new \WeDevs\Wpuf\Lib\Gateway\Paypal();
+
+        $raw_input = file_get_contents('php://input');
+        
+        $paypal->process_webhook($raw_input);
+        exit;
+    }
+});

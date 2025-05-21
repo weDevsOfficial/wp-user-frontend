@@ -145,13 +145,6 @@ jobs:
           if-no-files-found: warn
           retention-days: 3
 
-      # Upload Playwright HTML report
-      - name: Upload Playwright HTML report
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-html-report
-          path: tests/e2e/playwright-report
-
       # - name: Publish HTML report to GH Pages
       #   uses: peaceiris/actions-gh-pages@v4
       #   with:

@@ -7,16 +7,19 @@ import yaml from 'js-yaml';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-interface PlaywrightResult {
+interface PlaywrightTestInstanceResult {
   status: string;
   duration: number;
   retry: number;
   errors: any[];
 }
+interface PlaywrightTestInstance {
+  results: PlaywrightTestInstanceResult[];
+}
 interface PlaywrightTest {
   title: string;
   ok: boolean;
-  tests: PlaywrightResult[];
+  tests: PlaywrightTestInstance[];
 }
 interface PlaywrightSuite {
   title: string;
@@ -51,13 +54,27 @@ function flattenTests(suites: PlaywrightSuite[], parentTitle = ''): { id: string
   for (const suite of suites) {
     if (suite.specs) {
       for (const spec of suite.specs) {
-        // Try to extract feature ID from the test title (e.g., LS0001, PF0001, etc.)
+        // Extract feature ID
         const match = spec.title.match(/([A-Z]+\d+(_PRO)?)/);
         let id = match ? match[1] : '';
         id = normalizeId(id);
-        const status = spec.tests.some(t => t.status === 'failed') ? 'failed' : (spec.tests.every(t => t.status === 'skipped') ? 'skipped' : 'passed');
-        const duration = spec.tests.reduce((acc, t) => acc + (t.duration || 0), 0);
-        const flaky = spec.tests.length > 1 && spec.tests.some(t => t.status === 'passed') && spec.tests.some(t => t.status === 'failed');
+
+        // Aggregate all results for this test
+        let allResults: PlaywrightTestInstanceResult[] = [];
+        for (const t of spec.tests) {
+          if (t.results) {
+            allResults = allResults.concat(t.results);
+          }
+        }
+        const duration = allResults.reduce((acc, r) => acc + (r.duration || 0), 0);
+        const statuses = allResults.map(r => r.status);
+        const status = statuses.includes('failed')
+          ? 'failed'
+          : statuses.every(s => s === 'skipped')
+            ? 'skipped'
+            : 'passed';
+        const flaky = allResults.length > 1 && statuses.includes('failed') && statuses.includes('passed');
+
         tests.push({
           id,
           name: spec.title,
@@ -133,12 +150,14 @@ async function generateSummary() {
 - 🕒 **Duration:** ${minutes}m ${seconds}s
 - 📈 **Coverage:** ${coverage}%
 
-## 📝 Feature Coverage Table
+## 📝 Test Scenario Coverage Table
 ${tableHeader}
 ${tableRows}
 
-## 📎 Artifacts
-- [HTML Report](${htmlReportPath})
+## 📦 Full Report
+> ℹ️ **To see full details, screenshots, and step-by-step results, please download the \`playwright-report\` artifact from the next section and open \`index.html\` locally.**
+>
+> _This gives you a beautiful, interactive HTML report with all test evidence and logs._
 `;
 
     // Write to GITHUB_STEP_SUMMARY if in CI
@@ -149,7 +168,6 @@ ${tableRows}
     }
   } catch (error) {
     console.error('Error generating summary:', error);
-    process.exit(1);
   }
 }
 

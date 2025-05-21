@@ -131,8 +131,7 @@ jobs:
       # Generate and post advanced test summary
       - name: Generate and post advanced test summary
         if: always()
-        run: |
-          node tests/e2e/utils/generate-summary.ts
+        run: npx ts-node tests/e2e/utils/generate-summary.ts
 
       # Archive Playwright artifacts (screenshots, HTML snapshots, videos)
       - name: Archive playwright artifacts (screenshots, HTML snapshots, videos)

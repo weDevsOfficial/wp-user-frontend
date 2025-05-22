@@ -42,7 +42,7 @@ interface Feature {
 }
 
 const resultsPath = path.join(__dirname, '../test-results/results.json');
-const featuresMapPath = path.join(__dirname, '../features-map/features-map.yml');
+const featuresMapPath = path.join(__dirname, '../features-map/features-map-pro.yml');
 const htmlReportPath = 'tests/e2e/playwright-report/index.html';
 
 function normalizeId(id: string): string {

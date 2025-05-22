@@ -18,10 +18,10 @@ test.describe('Registration-Forms @Pro :-->', () => {
 /**----------------------------------REGISTRATIONFORMS----------------------------------**
  * 
  * @TestScenario : [Reg-Forms]
- * @Test_RF0001 : Admin is checking Registration Forms - Pro Feature Page
- * @Test_RF0002 : Admin is creating Registration Forms - using shortcode
- * @Test_RF0003 : User is registering using - Registration Form
- * @Test_RF0004 : Admin is validating - Registered user
+ * @Test_RF0001_PRO : Admin is checking Registration Forms - Pro Feature Page
+ * @Test_RF0002_PRO : Admin is creating Registration Forms - using shortcode
+ * @Test_RF0003_PRO : User is registering using - Registration Form
+ * @Test_RF0004_PRO : Admin is validating - Registered user
  * 
  *  
  */

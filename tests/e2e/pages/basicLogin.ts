@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
-import { expect, Page } from '@playwright/test';
+import { expect, type Page } from '@playwright/test';
 import { Selectors } from './selectors';
 import { SettingsSetupPage } from '../pages/settingsSetup';
 import { Urls } from '../utils/testData';

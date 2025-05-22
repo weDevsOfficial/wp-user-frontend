@@ -41,25 +41,19 @@ features:
   - id: LS0020
     name: Admin is logging out succesfully
 
-  # Post Forms (Lite)
-  - id: PF0001
-    name: Admin is creating Blank Form with > PostFields
-  - id: PF0002
-    name: Admin is creating Blank Form with > Taxonomies
-  - id: PF0003
-    name: Admin is creating Blank Form with > CustomFields
-  - id: PF0004
-    name: Admin is creating Blank Form with > Others
-  - id: PF0005
-    name: Admin is creating a Blank Post Form with all Fields
-  - id: PF0006
-    name: Admin is creating a Preset Post Form
-  - id: PF0007
-    name: Admin is creating a Preset Post Form - with Guest Enabled
-  - id: PF0008
-    name: Admin is Updating Settings with default Post Form
-  - id: PF0009
-    name: User is Submitting Form from Frontend
+  # Post Forms (Pro)
+  - id: PF0001_PRO
+    name: Admin is creating Blank Form with > CustomFields Pro
+  - id: PF0002_PRO
+    name: Admin is creating Blank Form with > Others Pro
+  - id: PF0003_PRO
+    name: Admin is creating a Blank Post Form with all Pro Fields
+  - id: PF0004_PRO
+    name: Admin is creating a Preset Post Form - with Guest Enabled Pro
+  - id: PF0005_PRO
+    name: Admin is Updating Settings with default Post Form Pro
+  - id: PF0006_PRO
+    name: User is Submitting Form from Frontend Pro
 
   # Registration Forms (Pro)
   - id: RF0001_PRO
@@ -70,9 +64,3 @@ features:
     name: User is registering using - Registration Form
   - id: RF0004_PRO
     name: Admin is validating - Registered user
-
-  # Post Form Settings
-  - id: PFS0001
-    name: Admin is changing post type
-  - id: PFS0002
-    name: Admin is validating post type

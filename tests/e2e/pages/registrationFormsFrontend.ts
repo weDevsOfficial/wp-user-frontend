@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
-import { expect, Page } from '@playwright/test';
+import { expect, type Page } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Urls, RegistrationForm } from '../utils/testData';
 import { Base } from './base';
@@ -87,9 +87,9 @@ export class RegistrationFormsFrontendPage extends Base {
         //Click Register
         await this.validateAndClick(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfRegisterButton);
         //Validate User logged in
-        await expect(await this.page.locator(Selectors.registrationForms.completeUserRegistrationFormFrontend.validateRegisteredLogoutButton)).toBeTruthy();
+        await expect(this.page.locator(Selectors.registrationForms.completeUserRegistrationFormFrontend.validateRegisteredLogoutButton)).toBeTruthy();
 
-    };
+    }
 
 
 
@@ -123,7 +123,7 @@ export class RegistrationFormsFrontendPage extends Base {
             console.log('User not found in admin');
         }
 
-    };
+    }
 
 
 

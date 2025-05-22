@@ -5,6 +5,7 @@ import registrationFormsTestsPro from './registrationFormsTestsPro.spec';
 // import subscriptionsTests from './subscription.spec';
 import * as fs from 'fs'; //Clear Cookie
 import resetWordpressSite from './resetWordpressSite.spec';
+import postFormSettingsTests from './postFormSettingsTest.spec';
 
 // Clear state.json before each test group
 const clearState = () => {
@@ -60,3 +61,6 @@ test.describe(postFormsTests);
 
 clearState();
 test.describe(registrationFormsTestsPro);
+
+clearState();
+test.describe(postFormSettingsTests);

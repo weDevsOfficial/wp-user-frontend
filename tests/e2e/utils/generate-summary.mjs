@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -7,40 +6,11 @@ import yaml from 'js-yaml';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-interface PlaywrightTestInstanceResult {
-  status: string;
-  duration: number;
-  retry: number;
-  errors: any[];
-}
-interface PlaywrightTestInstance {
-  results: PlaywrightTestInstanceResult[];
-}
-interface PlaywrightTest {
-  title: string;
-  ok: boolean;
-  tests: PlaywrightTestInstance[];
-}
-interface PlaywrightSuite {
-  title: string;
-  specs?: PlaywrightTest[];
-  suites?: PlaywrightSuite[];
-}
-interface PlaywrightResults {
-  suites: PlaywrightSuite[];
-  stats?: { duration?: number };
-}
-interface Feature {
-  id: string;
-  name: string;
-}
-
 const resultsPath = path.join(__dirname, '../test-results/results.json');
 const featuresMapPath = path.join(__dirname, '../features-map/features-map.yml');
 const htmlReportPath = 'tests/e2e/playwright-report/index.html';
 
-function normalizeId(id: string): string {
-  // Match e.g. PF001, PF0001, LS01, LS0001, etc.
+function normalizeId(id) {
   const match = id.match(/^([A-Z]+)(\d+)(_PRO)?$/i);
   if (!match) return id;
   const prefix = match[1].toUpperCase();
@@ -49,18 +19,16 @@ function normalizeId(id: string): string {
   return `${prefix}${num}${pro}`;
 }
 
-function flattenTests(suites: PlaywrightSuite[], parentTitle = ''): { id: string, name: string, status: string, duration: number, flaky: boolean }[] {
-  let tests: { id: string, name: string, status: string, duration: number, flaky: boolean }[] = [];
+function flattenTests(suites, parentTitle = '') {
+  let tests = [];
   for (const suite of suites) {
     if (suite.specs) {
       for (const spec of suite.specs) {
-        // Extract feature ID
         const match = spec.title.match(/([A-Z]+\d+(_PRO)?)/);
         let id = match ? match[1] : '';
         id = normalizeId(id);
 
-        // Aggregate all results for this test
-        let allResults: PlaywrightTestInstanceResult[] = [];
+        let allResults = [];
         for (const t of spec.tests) {
           if (t.results) {
             allResults = allResults.concat(t.results);
@@ -94,7 +62,7 @@ function flattenTests(suites: PlaywrightSuite[], parentTitle = ''): { id: string
 async function generateSummary() {
   try {
     // Read test results
-    let results: PlaywrightResults;
+    let results;
     try {
       const resultsJson = await fs.readFile(resultsPath, 'utf-8');
       results = JSON.parse(resultsJson);
@@ -105,10 +73,10 @@ async function generateSummary() {
     }
 
     // Read features map
-    let features: Feature[] = [];
+    let features = [];
     try {
       const featuresYaml = await fs.readFile(featuresMapPath, 'utf-8');
-      const featuresMap = yaml.load(featuresYaml) as { features: Feature[] };
+      const featuresMap = yaml.load(featuresYaml);
       features = featuresMap.features.map(f => ({ ...f, id: normalizeId(f.id) }));
     } catch (error) {
       console.error('Error reading features map:', error);
@@ -188,4 +156,4 @@ ${tableRows}
 generateSummary().catch(error => {
   console.error('Unhandled error:', error);
   process.exit(1);
-});
+}); 

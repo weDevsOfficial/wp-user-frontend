@@ -10,9 +10,16 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 register({
     esm: true,
     experimentalSpecifierResolution: 'node',
-    transpileOnly: true
+    transpileOnly: true,
+    compilerOptions: {
+        module: 'ESNext',
+        moduleResolution: 'node'
+    }
 });
 
 // Import and run the generate-summary script
 const summaryPath = resolve(__dirname, './generate-summary.ts');
-import(summaryPath).catch(console.error); 
+await import(summaryPath).catch(err => {
+    console.error('Failed to run generate-summary:', err);
+    process.exit(1);
+}); 

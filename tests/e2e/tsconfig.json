@@ -15,5 +15,5 @@
     "esm": true,
     "experimentalSpecifierResolution": "node"
   },
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts", "utils/generate-summary.js", "utils/generate-summary-pro.js"]
 }

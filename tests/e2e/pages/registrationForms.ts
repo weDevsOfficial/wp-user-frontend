@@ -74,7 +74,7 @@ export class RegistrationFormsPage extends Base {
 
         // Check if the Choose Pattern Modal is visible
         try {
-            await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closePatternModal);
+            await this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closePatternModal).click({ timeout: 10000 });
         } catch (error) {
             console.log('Pattern Modal not visible!');
         }

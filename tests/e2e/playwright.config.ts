@@ -37,6 +37,7 @@ const config: PlaywrightTestConfig = {
             ['html', { outputFolder: './playwright-report', open: 'never' }]
         ]
         : [
+            ['json', { outputFile: './test-results/results.json' , open: 'never'}],
             ['html', { outputFolder: './playwright-report', open: 'never' }],
         ],
     /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */

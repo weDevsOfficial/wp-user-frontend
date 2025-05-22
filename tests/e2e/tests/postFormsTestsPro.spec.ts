@@ -29,7 +29,7 @@ test.describe('Post-Forms @Pro :-->', () => {
 //TODO: Create a BeforeAll for login
 
 
-    test('PF0001 : Admin is creating Blank Form with > CustomFields Pro', async ({ page }) => {
+    test('PF0001_PRO : Admin is creating Blank Form with > CustomFields Pro', async ({ page }) => {
         const BasicLogin = new BasicLoginPage(page);
         const PostFormsPro = new PostFormsProPage(page);
         const FieldOptionsCommonPro = new FieldOptionsCommonProPage(page);
@@ -52,7 +52,7 @@ test.describe('Post-Forms @Pro :-->', () => {
     });
 
 
-    test('PF0002 : Admin is creating Blank Form with > Others Pro', async ({ page }) => {
+    test('PF0002_PRO : Admin is creating Blank Form with > Others Pro', async ({ page }) => {
         const PostFormsPro = new PostFormsProPage(page);
         const FieldOptionsCommonPro = new FieldOptionsCommonProPage(page);
 
@@ -73,7 +73,7 @@ test.describe('Post-Forms @Pro :-->', () => {
     });
 
 
-    test('PF0003 : Admin is creating a Blank Post Form with all Pro Fields', async ({ page }) => {
+    test('PF0003_PRO : Admin is creating a Blank Post Form with all Pro Fields', async ({ page }) => {
         const PostFormsPro = new PostFormsProPage(page);
         const FieldOptionsCommonPro = new FieldOptionsCommonProPage(page);
 
@@ -96,7 +96,7 @@ test.describe('Post-Forms @Pro :-->', () => {
         await FieldOptionsCommonPro.validatePostFormCreatedPro(PostForm.pfPostName1);
     });
 
-    test('PF0004 : Admin is creating a Preset Post Form - with Guest Enabled Pro', async ({ page }) => {
+    test('PF0004_PRO : Admin is creating a Preset Post Form - with Guest Enabled Pro', async ({ page }) => {
         const PostFormsPro = new PostFormsProPage(page);
         const FieldOptionsCommonPro = new FieldOptionsCommonProPage(page);
 
@@ -116,7 +116,7 @@ test.describe('Post-Forms @Pro :-->', () => {
     });
 
 
-    test('PF0005 : Admin is Updating Settings with default Post Form Pro', async ({ page }) => {
+    test('PF0005_PRO : Admin is Updating Settings with default Post Form Pro', async ({ page }) => {
         const PostFormsPro = new PostFormsProPage(page);
         const SettingsSetup = new SettingsSetupPage(page);
 
@@ -128,7 +128,7 @@ test.describe('Post-Forms @Pro :-->', () => {
     });
 
 
-    test('PF0006 : User is Submitting Form from Frontend', async ({ page }) => {
+    test('PF0006_PRO : User is Submitting Form from Frontend', async ({ page }) => {
         const BasicLogin = new BasicLoginPage(page);
         const PostFormsFrontend = new PostFormsFrontendPage(page);
 

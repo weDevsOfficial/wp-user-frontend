@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -11,6 +12,7 @@ const featuresMapPath = path.join(__dirname, '../features-map/features-map.yml')
 const htmlReportPath = 'tests/e2e/playwright-report/index.html';
 
 function normalizeId(id) {
+  // Match e.g. PF001, PF0001, LS01, LS0001, etc.
   const match = id.match(/^([A-Z]+)(\d+)(_PRO)?$/i);
   if (!match) return id;
   const prefix = match[1].toUpperCase();
@@ -19,44 +21,71 @@ function normalizeId(id) {
   return `${prefix}${num}${pro}`;
 }
 
-function flattenTests(suites, parentTitle = '') {
-  let tests = [];
+function extractTestId(title, searchId) {
+  // Try various formats:
+  // 1. "RF0001 : Description"
+  let match = title.match(/^([A-Z]+\d+)(?:_PRO)?\s*:/i);
+  if (!match) {
+    // 2. "Description [RF0001_PRO]"
+    match = title.match(/([A-Z]+\d+(?:_PRO)?)/);
+  }
+  if (!match) {
+    // 3. Remove "Here, " prefix and try again
+    const titleWithoutHere = title.replace(/^Here,\s+/, '');
+    match = titleWithoutHere.match(/([A-Z]+\d+(?:_PRO)?)/);
+  }
+  
+  if (!match) return '';
+  
+  // Get the base ID without _PRO suffix
+  const baseId = normalizeId(match[1].replace(/_PRO$/, ''));
+  
+  // If we're searching for a PRO feature, also match the base ID
+  if (searchId.endsWith('_PRO') && baseId === searchId.replace(/_PRO$/, '')) {
+    return searchId;
+  }
+  
+  return normalizeId(match[1]);
+}
+
+function findTestByTitle(suites, searchId) {
   for (const suite of suites) {
     if (suite.specs) {
       for (const spec of suite.specs) {
-        const match = spec.title.match(/([A-Z]+\d+(_PRO)?)/);
-        let id = match ? match[1] : '';
-        id = normalizeId(id);
-
-        let allResults = [];
-        for (const t of spec.tests) {
-          if (t.results) {
-            allResults = allResults.concat(t.results);
-          }
+        const testId = extractTestId(spec.title, searchId);
+        if (testId === searchId) {
+          return spec;
         }
-        const duration = allResults.reduce((acc, r) => acc + (r.duration || 0), 0);
-        const statuses = allResults.map(r => r.status);
-        const status = statuses.includes('failed')
-          ? 'failed'
-          : statuses.every(s => s === 'skipped')
-            ? 'skipped'
-            : 'passed';
-        const flaky = allResults.length > 1 && statuses.includes('failed') && statuses.includes('passed');
-
-        tests.push({
-          id,
-          name: spec.title,
-          status,
-          duration,
-          flaky
-        });
       }
     }
     if (suite.suites) {
-      tests = tests.concat(flattenTests(suite.suites, suite.title));
+      const found = findTestByTitle(suite.suites, searchId);
+      if (found) return found;
     }
   }
-  return tests;
+  return null;
+}
+
+function getTestStatus(test) {
+  if (!test || !test.tests) return { status: 'not_covered', duration: 0, flaky: false };
+
+  let allResults = [];
+  for (const t of test.tests) {
+    if (t.results) {
+      allResults = allResults.concat(t.results);
+    }
+  }
+
+  const duration = allResults.reduce((acc, r) => acc + (r.duration || 0), 0);
+  const statuses = allResults.map(r => r.status);
+  const status = statuses.includes('failed')
+    ? 'failed'
+    : statuses.every(s => s === 'skipped')
+      ? 'skipped'
+      : allResults.length > 0 ? 'passed' : 'not_covered';
+  const flaky = allResults.length > 1 && statuses.includes('failed') && statuses.includes('passed');
+
+  return { status, duration, flaky };
 }
 
 async function generateSummary() {
@@ -83,18 +112,17 @@ async function generateSummary() {
       console.log('Using empty features array');
     }
 
-    // Flatten all test results
-    const allTests = flattenTests(results.suites);
-
     // Map feature coverage
     const featureRows = features.map(feature => {
-      const test = allTests.find(t => t.id === feature.id);
+      const test = findTestByTitle(results.suites, feature.id);
+      const { status, duration, flaky } = getTestStatus(test);
+      
       return {
         id: feature.id,
         name: feature.name,
-        status: test ? test.status : 'not_covered',
-        duration: test ? test.duration : 0,
-        flaky: test ? test.flaky : false
+        status,
+        duration,
+        flaky
       };
     });
 

@@ -7,17 +7,11 @@ import yaml from 'js-yaml';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-interface PlaywrightError {
-  message: string;
-  stack?: string;
-  value?: unknown;
-}
-
 interface PlaywrightTestInstanceResult {
   status: string;
   duration: number;
   retry: number;
-  errors: PlaywrightError[];
+  errors: any[];
 }
 interface PlaywrightTestInstance {
   results: PlaywrightTestInstanceResult[];

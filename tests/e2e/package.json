@@ -7,10 +7,7 @@
   "scripts": {
     "wp-env": "wp-env",
     "test": "CI=false npx playwright test e2eMain.spec.ts --headed",
-    "test:pro": "CI=false npx playwright test e2eMainPro.spec.ts --headed",
-    "test:CI_lite": "npx playwright test e2eMain.spec.ts --project=chromium",
-    "test:CI_pro": "npx playwright test e2eMainPro.spec.ts --project=chromium",
-    "generate-summary": "NODE_OPTIONS=\"--experimental-vm-modules\" node --loader ts-node/esm utils/generate-summary.ts"
+    "test:pro": "CI=false npx playwright test e2eMainPro.spec.ts --headed"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +16,7 @@
     "@faker-js/faker": "^9.4.0",
     "@playwright/test": "^1.52.0",
     "@types/js-yaml": "^4.0.9",
-    "@types/node": "^18.19.79",
+    "@types/node": "^18.19.80",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },

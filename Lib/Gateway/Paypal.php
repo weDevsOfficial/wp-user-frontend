@@ -43,35 +43,39 @@ class Paypal {
             header('Content-Type: application/json');
             
             // Verify webhook signature
-            if ( ! $this->verify_webhook_signature_from_input($raw_input)) {
+            if (!$this->verify_webhook_signature_from_input($raw_input)) {
                 throw new \Exception('Webhook signature verification failed');
             }
 
             // Decode the webhook data
             $event = json_decode($raw_input, true);
-            if ( JSON_ERROR_NONE !== json_last_error() ) {
+            if (JSON_ERROR_NONE !== json_last_error()) {
                 throw new \Exception('Invalid JSON in webhook data');
             }
 
-            // Process PAYMENT.CAPTURE.COMPLETED event
-            if ( 'PAYMENT.CAPTURE.COMPLETED' === $event['event_type'] && isset($event['resource'])) {
-                $payment = $event['resource'];
-                $this->process_payment_capture($payment);
-            }
-            
-            // Process subscription payment events
-            if ( 'PAYMENT.SALE.COMPLETED' === $event['event_type'] && isset($event['resource'])) {
-                $payment = $event['resource'];
-                
-                // Check if this is a recurring payment (has billing_agreement_id)
-                if (isset($payment['billing_agreement_id'])) {
-                    // Let process_subscription_payment handle everything
-                    $this->process_subscription_payment($payment);
-                }
-            } else if ( 'BILLING.SUBSCRIPTION.PAYMENT.SUCCEEDED' === $event['event_type'] && isset($event['resource'])) {
-                // Process other subscription payments
-                $payment = $event['resource'];
-                $this->process_subscription_payment($payment);
+            error_log('WPUF PayPal: Processing webhook event: ' . $event['event_type']);
+
+            switch ($event['event_type']) {
+                case 'BILLING.SUBSCRIPTION.CANCELLED':
+                    if (isset($event['resource'])) {
+                        $this->handle_subscription_cancelled($event['resource']);
+                    }
+                    break;
+
+                case 'BILLING.SUBSCRIPTION.CREATED':
+                    if (isset($event['resource'])) {
+                        $this->handle_subscription_created($event['resource']);
+                    }
+                    break;
+
+                case 'PAYMENT.SALE.COMPLETED':
+                    if (isset($event['resource'])) {
+                        $payment = $event['resource'];
+                        if (isset($payment['billing_agreement_id'])) {
+                            $this->process_subscription_payment($payment);
+                        }
+                    }
+                    break;
             }
 
             echo json_encode([
@@ -142,7 +146,7 @@ class Paypal {
                 'payer_first_name' => $user->first_name,
                 'payer_last_name' => $user->last_name,
                 'payer_email' => $user->user_email,
-                'payment_type' => 'PayPal',
+                'payment_type' => 'paypal',
                 'transaction_id' => $payment['id'],
                 'created' => current_time('mysql')
             ];
@@ -468,21 +472,61 @@ class Paypal {
      */
     private function handle_subscription_created($subscription) {
         try {
-            $custom_data = $subscription['custom'];
-            if (!$custom_data) {
+            error_log('WPUF PayPal: Processing subscription creation: ' . print_r($subscription, true));
+
+            // Extract custom data
+            $custom_data = [];
+            if (isset($subscription['custom_id'])) {
+                $custom_data = json_decode($subscription['custom_id'], true);
+            }
+
+            if (!$custom_data || !isset($custom_data['user_id'])) {
                 throw new \Exception('Invalid custom data in subscription');
             }
 
+            $user_id = $custom_data['user_id'];
+            $subscription_id = $subscription['id']; // This is the PayPal subscription ID
+
             // Store subscription details
-            update_user_meta($custom_data['user_id'], '_wpuf_subscription_pack', [
-                'profile_id' => $subscription['id'],
+            $subscription_data = [
+                'profile_id' => $subscription_id,
                 'status' => 'active',
-                'created' => current_time('mysql')
-            ]);
+                'created' => current_time('mysql'),
+                'recurring' => 'yes', // Mark as recurring subscription
+                'subscription_id' => $subscription_id // Store subscription ID separately
+            ];
+
+            // Add pack ID if available
+            if (isset($custom_data['item_number'])) {
+                $subscription_data['pack_id'] = $custom_data['item_number'];
+            }
+
+            // Update user meta with subscription data
+            update_user_meta($user_id, '_wpuf_subscription_pack', $subscription_data);
+
+            // Update subscribers table
+            global $wpdb;
+            $wpdb->insert(
+                $wpdb->prefix . 'wpuf_subscribers',
+                [
+                    'user_id' => $user_id,
+                    'name' => get_user_by('id', $user_id)->display_name,
+                    'subscribtion_id' => $subscription_data['pack_id'],
+                    'subscribtion_status' => 'active',
+                    'gateway' => 'PayPal',
+                    'transaction_id' => $subscription_id,
+                    'starts_from' => current_time('mysql'),
+                    'expire' => 'recurring'
+                ],
+                [
+                    '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s'
+                ]
+            );
+
+            error_log('WPUF PayPal: Subscription created successfully for user: ' . $user_id);
 
         } catch (\Exception $e) {
-            \WP_User_Frontend::log('paypal-webhook', 'Subscription creation handling failed: ' . $e->getMessage());
-            error_log('[WPUF PayPal Webhook] Subscription creation handling failed: ' . $e->getMessage());
+            error_log('WPUF PayPal: Subscription creation handling failed: ' . $e->getMessage());
             throw $e;
         }
     }
@@ -491,14 +535,21 @@ class Paypal {
      * Handle subscription cancellation
      */
     public function cancel_subscription($data) {
-        try {
-            // Log the incoming data
-            error_log('WPUF PayPal: ===== Subscription Cancellation Debug Start =====');
-            error_log('WPUF PayPal: Incoming cancellation data: ' . print_r($data, true));
+        error_log('WPUF PayPal: ===== Subscription Cancellation Debug Start =====');
+        error_log('WPUF PayPal: Raw input data: ' . print_r($data, true));
 
+        try {
+            global $wpdb;
             // Extract user_id from the input
-            $user_id = is_array($data) ? (isset($data['user_id']) ? $data['user_id'] : null) : $data;
+            $user_id = null;
             
+            // Get user ID from form data or current user
+            if (isset($data['user_id'])) {
+                $user_id = $data['user_id'];
+            } else {
+                $user_id = get_current_user_id();
+            }
+
             if (!$user_id || !is_numeric($user_id)) {
                 error_log('WPUF PayPal: Invalid user ID provided for cancellation: ' . print_r($data, true));
                 throw new \Exception('Invalid user ID provided for cancellation');
@@ -506,116 +557,79 @@ class Paypal {
 
             error_log('WPUF PayPal: Processing cancellation for user ID: ' . $user_id);
 
-            // Get all user meta for debugging
-            $all_user_meta = get_user_meta($user_id);
-            error_log('WPUF PayPal: All user meta: ' . print_r($all_user_meta, true));
-
-            // Get user's subscription data
+            // Get subscription data
             $subscription = get_user_meta($user_id, '_wpuf_subscription_pack', true);
             error_log('WPUF PayPal: Raw subscription data: ' . print_r($subscription, true));
+
+            // Get subscription ID from PayPal
+            $profile_id = '';
             
-            if (!$subscription) {
-                // Check if subscription exists in subscribers table
-                global $wpdb;
+            // First try to get from user meta
+            if (isset($subscription['profile_id']) && !empty($subscription['profile_id'])) {
+                $profile_id = $subscription['profile_id'];
+            }
+            
+            // If not in user meta, try to get from subscribers table
+            if (empty($profile_id)) {
                 $subscriber_data = $wpdb->get_row($wpdb->prepare(
-                    "SELECT * FROM {$wpdb->prefix}wpuf_subscribers 
-                    WHERE user_id = %d AND gateway = 'PayPal' 
+                    "SELECT transaction_id FROM {$wpdb->prefix}wpuf_subscribers 
+                    WHERE user_id = %d AND gateway = 'PayPal' AND subscribtion_status = 'active'
                     ORDER BY id DESC LIMIT 1",
                     $user_id
                 ));
-
-                if ($subscriber_data) {
-                    error_log('WPUF PayPal: Found subscription in subscribers table: ' . print_r($subscriber_data, true));
-                    // Update the subscription status in subscribers table
-                    $wpdb->update(
-                        $wpdb->prefix . 'wpuf_subscribers',
-                        [
-                            'subscribtion_status' => 'cancelled',
-                            'expire' => current_time('mysql')
-                        ],
-                        ['id' => $subscriber_data->id],
-                        ['%s', '%s'],
-                        ['%d']
-                    );
-                    
-                    // Update user meta
-                    update_user_meta($user_id, '_wpuf_subscription_pack', [
-                        'status' => 'cancelled',
-                        'updated' => current_time('mysql')
-                    ]);
-
-                    error_log('WPUF PayPal: Subscription cancelled in database only');
-                    return true;
-                }
-
-                error_log('WPUF PayPal: No subscription found for user: ' . $user_id);
-                throw new \Exception('No subscription found for this user');
-            }
-
-            // If we have subscription data but no profile_id, it might be a one-time payment
-            if (!isset($subscription['profile_id'])) {
-                error_log('WPUF PayPal: No profile_id found, checking for one-time payment');
                 
-                // Update subscription status in database
-                global $wpdb;
-                $wpdb->update(
-                    $wpdb->prefix . 'wpuf_subscribers',
-                    [
-                        'subscribtion_status' => 'cancelled',
-                        'expire' => current_time('mysql')
-                    ],
-                    [
-                        'user_id' => $user_id,
-                        'gateway' => 'PayPal'
-                    ],
-                    ['%s', '%s'],
-                    ['%d', '%s']
-                );
-
-                // Update user meta
-                update_user_meta($user_id, '_wpuf_subscription_pack', [
-                    'status' => 'cancelled',
-                    'updated' => current_time('mysql')
-                ]);
-
-                error_log('WPUF PayPal: One-time payment subscription cancelled in database');
-                return true;
+                if ($subscriber_data && !empty($subscriber_data->transaction_id)) {
+                    $profile_id = $subscriber_data->transaction_id;
+                }
             }
 
-            $profile_id = $subscription['profile_id'];
             error_log('WPUF PayPal: Found profile_id: ' . $profile_id);
 
-            // Get access token
-            $access_token = $this->get_access_token();
+            // If we have a profile ID, cancel in PayPal
+            if (!empty($profile_id)) {
+                try {
+                    // Get access token
+                    $access_token = $this->get_access_token();
 
-            // Cancel the subscription in PayPal
-            $cancel_url = ($this->test_mode ? 
-                'https://api-m.sandbox.paypal.com' : 
-                'https://api-m.paypal.com') . '/v1/billing/subscriptions/' . $profile_id . '/cancel';
+                    // Cancel the subscription in PayPal
+                    $cancel_url = ($this->test_mode ? 
+                        'https://api-m.sandbox.paypal.com' : 
+                        'https://api-m.paypal.com') . '/v1/billing/subscriptions/' . $profile_id . '/cancel';
 
-            $response = wp_remote_post($cancel_url, [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $access_token,
-                    'Content-Type' => 'application/json'
-                ],
-                'body' => json_encode([
-                    'reason' => 'Customer requested cancellation'
-                ])
-            ]);
+                    error_log('WPUF PayPal: Attempting to cancel subscription in PayPal with URL: ' . $cancel_url);
 
-            if (is_wp_error($response)) {
-                error_log('WPUF PayPal: Failed to cancel subscription: ' . $response->get_error_message());
-                throw new \Exception('Failed to cancel subscription: ' . $response->get_error_message());
+                    $response = wp_remote_post($cancel_url, [
+                        'headers' => [
+                            'Authorization' => 'Bearer ' . $access_token,
+                            'Content-Type' => 'application/json',
+                            'Prefer' => 'return=representation'
+                        ],
+                        'body' => json_encode([
+                            'reason' => 'Customer requested cancellation'
+                        ])
+                    ]);
+
+                    if (is_wp_error($response)) {
+                        error_log('WPUF PayPal: API Error: ' . $response->get_error_message());
+                        throw new \Exception('Failed to cancel subscription in PayPal: ' . $response->get_error_message());
+                    }
+
+                    $response_code = wp_remote_retrieve_response_code($response);
+                    $response_body = wp_remote_retrieve_body($response);
+                    error_log('WPUF PayPal: API Response Code: ' . $response_code);
+                    error_log('WPUF PayPal: API Response Body: ' . $response_body);
+
+                    if ($response_code !== 204) {
+                        throw new \Exception('Unexpected response from PayPal: ' . $response_body);
+                    }
+
+                } catch (\Exception $e) {
+                    error_log('WPUF PayPal: PayPal API error: ' . $e->getMessage());
+                    // Continue with local cancellation even if PayPal fails
+                }
             }
 
-            $body = json_decode(wp_remote_retrieve_body($response), true);
-            
-            if (isset($body['error'])) {
-                error_log('WPUF PayPal: PayPal API error: ' . print_r($body['error'], true));
-                throw new \Exception('PayPal API error: ' . $body['error']['message']);
-            }
-
-            // Update local subscription status
+            // Update local subscription status regardless of PayPal API result
             $updated_subscription = [
                 'profile_id' => $profile_id,
                 'status' => 'cancelled',
@@ -647,10 +661,6 @@ class Paypal {
             }
 
             error_log('WPUF PayPal: Subscription cancelled successfully for user: ' . $user_id);
-
-            // Trigger action for other plugins
-            do_action('wpuf_paypal_subscription_cancelled', $user_id, $profile_id);
-
             error_log('WPUF PayPal: ===== Subscription Cancellation Debug End =====');
             return true;
 
@@ -801,7 +811,7 @@ class Paypal {
                 'payer_first_name'  => $user->first_name,
                 'payer_last_name'   => $user->last_name,
                 'payer_email'       => $user->user_email,
-                'payment_type'      => 'PayPal Recurring',
+                'payment_type'      => 'paypal',
                 'transaction_id'    => $transaction_id,
                 'created'           => current_time('mysql')
             ];
@@ -927,9 +937,15 @@ class Paypal {
         return $options;
     }
 
-    public function subscription_cancel( $user_id ) {
-        $sub_meta = 'cancel';
-        wpuf_get_user( $user_id )->subscription()->update_meta( $sub_meta );
+    public function subscription_cancel($user_id) {
+        try {
+            $this->cancel_subscription(['user_id' => $user_id]);
+        } catch (\Exception $e) {
+            error_log('WPUF PayPal: Failed to cancel subscription for user ' . $user_id . ': ' . $e->getMessage());
+            // Update local meta even if PayPal API call fails
+            $sub_meta = 'cancel';
+            wpuf_get_user($user_id)->subscription()->update_meta($sub_meta);
+        }
     }
 
     /**
@@ -1500,6 +1516,63 @@ class Paypal {
         // Show pending payment page
         include WPUF_ROOT . '/templates/payment-pending.php';
         exit;
+    }
+
+    /**
+     * Handle subscription cancellation from webhook
+     */
+    private function handle_subscription_cancelled($subscription) {
+        try {
+            error_log('WPUF PayPal: Processing subscription cancellation webhook: ' . print_r($subscription, true));
+
+            // Extract custom data
+            $custom_data = [];
+            if (isset($subscription['custom_id'])) {
+                $custom_data = json_decode($subscription['custom_id'], true);
+            }
+
+            if (!$custom_data || !isset($custom_data['user_id'])) {
+                throw new \Exception('Invalid custom data in subscription');
+            }
+
+            $user_id = $custom_data['user_id'];
+            $subscription_id = $subscription['id'];
+
+            // Update subscription status in user meta
+            $subscription_data = [
+                'profile_id' => $subscription_id,
+                'status' => 'cancelled',
+                'updated' => current_time('mysql')
+            ];
+            
+            update_user_meta($user_id, '_wpuf_subscription_pack', $subscription_data);
+
+            // Update subscriber table
+            global $wpdb;
+            $wpdb->update(
+                $wpdb->prefix . 'wpuf_subscribers',
+                [
+                    'subscribtion_status' => 'cancelled',
+                    'expire' => current_time('mysql')
+                ],
+                [
+                    'user_id' => $user_id,
+                    'transaction_id' => $subscription_id,
+                    'gateway' => 'PayPal'
+                ],
+                ['%s', '%s'],
+                ['%d', '%s', '%s']
+            );
+
+            error_log('WPUF PayPal: Subscription cancelled via webhook for user: ' . $user_id);
+
+            // Trigger action for other plugins
+            do_action('wpuf_paypal_subscription_cancelled', $user_id, $subscription_id);
+
+        } catch (\Exception $e) {
+            error_log('WPUF PayPal: Webhook subscription cancellation failed: ' . $e->getMessage());
+            throw $e;
+        }
     }
 }
 

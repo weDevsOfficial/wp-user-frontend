@@ -338,7 +338,7 @@ export class SettingsSetupPage extends Base {
     /*******************************************************/
 
     //Change Settings - Login Page
-    async changeSettingsSetDefaultPostForm(postFormPresetFrontEndTitle) {
+    async changeSettingsSetDefaultPostForm(postFormPresetFrontEndTitle: string) {
         //Go to WPUF
         const wpufpostformpage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
         await Promise.all([
@@ -366,7 +366,7 @@ export class SettingsSetupPage extends Base {
     /*******************************************************/
 
     //Change Settings - Registration Page
-    async changeSettingsSetRegistrationPage(registrationFormPageTitle) {
+    async changeSettingsSetRegistrationPage(registrationFormPageTitle: string) {
         //Go to WPUF
         const wpufPostFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
         await Promise.all([
@@ -441,7 +441,7 @@ export class SettingsSetupPage extends Base {
 
     //Main Admin
     //New User Create
-    async createNewUserAdmin(userName, email, firstName, lastName, password) {
+    async createNewUserAdmin(userName:string, email:string, firstName:string, lastName:string, password:string) {
         const pluginsPage = Urls.baseUrl + '/wp-admin/';
         await Promise.all([
             this.page.goto(pluginsPage, { waitUntil: 'domcontentloaded' }),

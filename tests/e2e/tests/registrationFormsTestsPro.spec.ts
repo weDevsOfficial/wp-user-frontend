@@ -26,7 +26,7 @@ test.describe('Registration-Forms @Pro :-->', () => {
  *  
  */
 
-    test('RF0001 : Here, Admin is checking Registration Forms - Pro Feature Page', async ({ page }) => {
+    test('RF0001_PRO : Here, Admin is checking Registration Forms - Pro Feature Page', async ({ page }) => {
         const BasicLogin = new BasicLoginPage(page);
         const RegistrationFormsLite = new RegistrationFormsPage(page);
         //Basic login
@@ -36,7 +36,7 @@ test.describe('Registration-Forms @Pro :-->', () => {
     });
 
 
-    test('RF0002 : Here, Admin is creating Registration Forms Page - using shortcode', async ({ page }) => {
+    test('RF0002_PRO : Here, Admin is creating Registration Forms Page - using shortcode', async ({ page }) => {
         const RegistrationFormsLite = new RegistrationFormsPage(page);
         const SettingsSetup = new SettingsSetupPage(page);
         //Registration Forms page - Title
@@ -50,7 +50,7 @@ test.describe('Registration-Forms @Pro :-->', () => {
     });
 
 
-    test('RF0003 : Here, User is registering using - Registration Form', async ({ page }) => {
+    test('RF0003_PRO : Here, User is registering using - Registration Form', async ({ page }) => {
         const RegistrationFormsFrontend = new RegistrationFormsFrontendPage(page);
         //FrontEnd
         //Complete FrontEnd Registration
@@ -60,7 +60,7 @@ test.describe('Registration-Forms @Pro :-->', () => {
     });
 
 
-    test('RF0004 : Here, Admin is validating - Registered user', async ({ page }) => {
+    test('RF0004_PRO : Here, Admin is validating - Registered user', async ({ page }) => {
         const BasicLogin = new BasicLoginPage(page);
         const RegistrationFormsFrontend = new RegistrationFormsFrontendPage(page);
         //Basic Login

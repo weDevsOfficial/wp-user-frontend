@@ -1,3 +1,55 @@
 {
-  "cookies": [], "origins": []
+  "cookies": [
+    {
+      "name": "wordpress_c861136d60d8adec8ac4680f837cad3a",
+      "value": "Rubaiyat%20E%20Mohammad%7C1749142380%7CvXqypTudopv1ilS246PXWCsqdsdEeWVTrY8GveYMatL%7C8c8ebc1cdc96bc04f4fb304aca316942eeb4b396b2100bf64e4d9ba8f05fa859",
+      "domain": "wpufauto.test",
+      "path": "/wp-content/plugins",
+      "expires": 1749185580.930163,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "wordpress_c861136d60d8adec8ac4680f837cad3a",
+      "value": "Rubaiyat%20E%20Mohammad%7C1749142380%7CvXqypTudopv1ilS246PXWCsqdsdEeWVTrY8GveYMatL%7C8c8ebc1cdc96bc04f4fb304aca316942eeb4b396b2100bf64e4d9ba8f05fa859",
+      "domain": "wpufauto.test",
+      "path": "/wp-admin",
+      "expires": 1749185580.930179,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "wordpress_test_cookie",
+      "value": "WP%20Cookie%20check",
+      "domain": "wpufauto.test",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "wordpress_logged_in_c861136d60d8adec8ac4680f837cad3a",
+      "value": "Rubaiyat%20E%20Mohammad%7C1749142380%7CvXqypTudopv1ilS246PXWCsqdsdEeWVTrY8GveYMatL%7C406e0b343639c3e43f362c89770de370a36f9e853ab74534e970ba154bd65be7",
+      "domain": "wpufauto.test",
+      "path": "/",
+      "expires": 1749185580.930189,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "wp-settings-time-1",
+      "value": "1747932780",
+      "domain": "wpufauto.test",
+      "path": "/",
+      "expires": 1779468781.983893,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": []
 }

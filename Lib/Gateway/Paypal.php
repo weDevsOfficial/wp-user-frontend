@@ -571,8 +571,8 @@ class Paypal {
 
             error_log('WPUF PayPal: Found profile_id: ' . $profile_id);
 
-            // If we have a profile ID, cancel in PayPal
-            if (!empty($profile_id)) {
+            // If we have a profile ID and subscription is recurring
+            if (!empty($profile_id) && $profile_id !== 'Free' && $subscription['recurring'] === 'yes') {
                 try {
                     // Get access token
                     $access_token = $this->get_access_token();

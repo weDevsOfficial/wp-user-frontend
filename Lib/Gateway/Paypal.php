@@ -599,46 +599,39 @@ class Paypal {
                 throw new \Exception('Invalid user ID provided for cancellation');
             }
 
-            error_log('WPUF PayPal: Processing cancellation for user ID: ' . $user_id);
-
-            // Get subscription data
             $subscription = get_user_meta($user_id, '_wpuf_subscription_pack', true);
-            error_log('WPUF PayPal: Raw subscription data: ' . print_r($subscription, true));
-
-            // Get subscription ID from PayPal
-            $profile_id = '';
+            $subscription_id = get_user_meta($user_id, '_wpuf_paypal_subscription_id', true);
             
-            // First try to get from user meta
-            if (isset($subscription['subscription_id']) && !empty($subscription['subscription_id'])) {
-                $profile_id = $subscription['subscription_id'];
-            }
-            
-            // If not in user meta, try to get from subscribers table
-            if (empty($profile_id)) {
-                $subscriber_data = $wpdb->get_row($wpdb->prepare(
-                    "SELECT transaction_id FROM {$wpdb->prefix}wpuf_subscribers 
-                    WHERE user_id = %d AND gateway = 'paypal' AND subscribtion_status = 'completed'
-                    ORDER BY id DESC LIMIT 1",
-                    $user_id
-                ));
-                
-                if ($subscriber_data && !empty($subscriber_data->transaction_id)) {
-                    $profile_id = $subscriber_data->transaction_id;
-                }
-            }
-
-            error_log('WPUF PayPal: Found profile_id: ' . $profile_id);
-
             // If we have a profile ID and subscription is recurring
-            if (!empty($profile_id) && $profile_id !== 'Free' && $subscription['recurring'] === 'yes') {
+            if (!empty($subscription_id) && $subscription['recurring'] === 'yes') {
                 try {
                     // Get access token
                     $access_token = $this->get_access_token();
+                   
+
+                    $plan_id_url = ($this->test_mode ? 
+                        'https://api-m.sandbox.paypal.com' : 
+                        'https://api-m.paypal.com') . '/v1/billing/subscriptions/' . $subscription_id;
+                    $plan_id_response = wp_remote_get($plan_id_url, [
+                        'headers' => [
+                            'Authorization' => 'Bearer ' . $access_token,
+                        ]
+                    ]);
+                    if (is_wp_error($plan_id_response)) {
+                        error_log('WPUF PayPal: API Error: ' . $plan_id_response->get_error_message());
+                        throw new \Exception('Failed to get plan ID from PayPal: ' . $plan_id_response->get_error_message());
+                    }
+                    $plan_id = json_decode(wp_remote_retrieve_body($plan_id_response), true)['plan_id'];
+
+                    if(empty($plan_id)){
+                        error_log('WPUF PayPal: Plan ID not found for subscription: ' . $subscription_id);
+                        throw new \Exception('Plan ID not found for subscription: ' . $subscription_id);
+                    }
 
                     // Cancel the subscription in PayPal
                     $cancel_url = ($this->test_mode ? 
                         'https://api-m.sandbox.paypal.com' : 
-                        'https://api-m.paypal.com') . '/v1/billing/subscriptions/' . $profile_id . '/cancel';
+                        'https://api-m.paypal.com') . '/v1/billing/plans/' . $plan_id . '/deactivate';
 
                     error_log('WPUF PayPal: Attempting to cancel subscription in PayPal with URL: ' . $cancel_url);
 
@@ -675,7 +668,7 @@ class Paypal {
 
             // Update local subscription status regardless of PayPal API result
             $updated_subscription = [
-                'profile_id' => $profile_id,
+                'profile_id' => $subscription_id,
                 'status' => 'cancel',
                 'updated' => $this->get_current_time_utc()
             ];

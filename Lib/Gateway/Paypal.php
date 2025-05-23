@@ -170,8 +170,8 @@ class Paypal {
                 'subtotal' => $subtotal,
                 'tax' => $tax_amount,
                 'cost' => $payment['amount']['value'],
-                'post_id' => ($custom_data['type'] === 'post') ? $custom_data['item_number'] : 0,
-                'pack_id' => ($custom_data['type'] === 'pack') ? $custom_data['item_number'] : 0,
+                'post_id' => ('post' === $custom_data['type']) ? $custom_data['item_number'] : 0,
+                'pack_id' => ('pack' === $custom_data['type']) ? $custom_data['item_number'] : 0,
                 'payer_first_name' => $user->first_name,
                 'payer_last_name' => $user->last_name,
                 'payer_email' => $user->user_email,
@@ -271,7 +271,7 @@ class Paypal {
      * Handle webhook request
      */
     public function handle_webhook_request() {
-        if ( 'webhook_triggered' === get_query_var('action') && 
+        if ( 'action' === get_query_var('action') && 
             'POST' === $_SERVER['REQUEST_METHOD'] && 
             isset($_SERVER['HTTP_PAYPAL_TRANSMISSION_ID'])) {
 
@@ -465,7 +465,7 @@ class Paypal {
             $is_in_trial = false;
             if (isset($subscription['billing_info']['cycle_executions'])) {
                 foreach ($subscription['billing_info']['cycle_executions'] as $cycle) {
-                    if ($cycle['tenure_type'] === 'TRIAL' && $cycle['cycles_completed'] < $cycle['cycles_remaining']) {
+                    if ('TRIAL' === $cycle['tenure_type'] && $cycle['cycles_completed'] < $cycle['cycles_remaining']) {
                         $is_in_trial = true;
                         break;
                     }
@@ -495,7 +495,7 @@ class Paypal {
                 'total_feature_item' => isset($pack_meta['_total_feature_item']) ? $pack_meta['_total_feature_item'] : '-1',
                 'remove_feature_item' => isset($pack_meta['_remove_feature_item']) ? $pack_meta['_remove_feature_item'] : '-1',
                 'status' => 'completed',
-                'expire' => '',  // Will be calculated based on expiration settings
+                'expire' => isset($pack_meta['expire']) ? $pack_meta['expire'] : '',
                 'profile_id' => $subscription_id,
                 'recurring' => 'yes',
                 'cycle_period' => $period,
@@ -812,7 +812,7 @@ class Paypal {
             }
             
             // If pack ID not found in transient, try to get it from custom data or meta
-            if ($pack_id == 0) {
+            if (0 == $pack_id) {
                 if (isset($custom_data['item_number']) && isset($custom_data['type']) && $custom_data['type'] === 'pack') {
                     $pack_id = $custom_data['item_number'];
                 } else {
@@ -1058,7 +1058,7 @@ class Paypal {
             $access_token = $this->get_access_token();
 
             // Check if this is a recurring payment
-            if ($data['type'] === 'pack' && isset($data['custom']['recurring_pay']) && wpuf_is_checkbox_or_toggle_on($data['custom']['recurring_pay'])) {
+            if ('pack' === $data['type'] && isset($data['custom']['recurring_pay']) && wpuf_is_checkbox_or_toggle_on($data['custom']['recurring_pay'])) {
                 error_log('WPUF PayPal: Setting up recurring payment subscription');
                 
                 // Get subscription details from pack
@@ -1184,7 +1184,7 @@ class Paypal {
                 // Find approval URL
                 $approval_url = '';
                 foreach ($body['links'] as $link) {
-                    if ($link['rel'] === 'approve') {
+                    if ('approve' === $link['rel']) {
                         $approval_url = $link['href'];
                         break;
                     }
@@ -1259,7 +1259,7 @@ class Paypal {
                 // Find approval URL
                 $approval_url = '';
                 foreach ($body['links'] as $link) {
-                    if ($link['rel'] === 'approve') {
+                    if ('approve' === $link['rel']) {
                         $approval_url = $link['href'];
                         break;
                     }
@@ -1303,7 +1303,7 @@ class Paypal {
 
                 if (!is_wp_error($response)) {
                     $body = json_decode(wp_remote_retrieve_body($response), true);
-                    if (isset($body['status']) && $body['status'] === 'ACTIVE') {
+                    if (isset($body['status']) && 'ACTIVE' === $body['status']) {
                         return $plan_id;
                     }
                 }
@@ -1759,7 +1759,7 @@ add_filter('query_vars', function($vars) {
 
 // Handle webhook request
 add_action('template_redirect', function() {
-    if ( 'webhook_triggered' === get_query_var('action') ) {
+    if ( get_query_var('action') === 'webhook_triggered' ) {
         $paypal = new \WeDevs\Wpuf\Lib\Gateway\Paypal();
         $raw_input = file_get_contents('php://input');
         $paypal->process_webhook($raw_input);

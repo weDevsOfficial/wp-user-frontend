@@ -67,6 +67,13 @@ class Paypal {
                         $this->handle_subscription_created($event['resource']);
                     }
                     break;
+                    
+                case 'BILLING.SUBSCRIPTION.ACTIVATED':
+                    if (isset($event['resource'])) {
+                        // Handle when a subscription becomes active (after trial)
+                        $this->handle_subscription_activated($event['resource']);
+                    }
+                    break;
 
                 case 'PAYMENT.SALE.COMPLETED':
                     if (isset($event['resource'])) {
@@ -74,6 +81,12 @@ class Paypal {
                         if (isset($payment['billing_agreement_id'])) {
                             $this->process_subscription_payment($payment);
                         }
+                    }
+                    break;
+                    
+                case 'PAYMENT.CAPTURE.COMPLETED':
+                    if (isset($event['resource'])) {
+                        $this->process_payment_capture($event['resource']);
                     }
                     break;
             }
@@ -148,18 +161,12 @@ class Paypal {
                 'payer_email' => $user->user_email,
                 'payment_type' => 'paypal',
                 'transaction_id' => $payment['id'],
-                'created' => current_time('mysql')
+                'created' => $this->get_current_time_utc()
             ];
 
             // Insert payment record
             Payment::insert_payment($data, $payment['id'], false);
             
-
-            // Handle subscription if needed
-            if ($custom_data['type'] === 'pack') {
-                $this->handle_subscription_purchase($custom_data['user_id'], $custom_data['item_number'], $payment['id']);
-            }
-
             // Handle coupon if present
             if (!empty($custom_data['coupon_id'])) {
                 $this->update_coupon_usage($custom_data['coupon_id']);
@@ -204,66 +211,12 @@ class Paypal {
             $this->update_coupon_usage($custom_data['coupon_id']);
         }
 
-        // Handle subscription
-        if ($custom_data['type'] === 'pack') {
-            $this->handle_subscription_purchase($custom_data['user_id'], $custom_data['item_number'], $payment['id']);
-        }
-
         // Verify payment amount
         if ($payment['amount']['value'] != number_format($custom_data['subtotal'], 2, '.', '')) {
             throw new \Exception('Payment amount mismatch');
         }
     }
 
-    /**
-     * Handle subscription purchase
-     */
-    private function handle_subscription_purchase($user_id, $pack_id, $transaction_id) {
-        global $wpdb;
-
-        // Check for existing subscription
-        $existing_sub = $wpdb->get_var($wpdb->prepare(
-            "SELECT id FROM {$wpdb->prefix}wpuf_subscribers 
-            WHERE transaction_id = %s",
-            $transaction_id
-        ));
-
-        if ($existing_sub) {
-            error_log('WPUF PayPal: Subscription already exists for transaction: ' . $transaction_id);
-            return;
-        }
-
-        $user = get_userdata($user_id);
-        $pack = get_post($pack_id);
-        $pack_meta = $pack ? get_post_meta($pack->ID, '_wpuf_subscription_pack', true) : [];
-        
-        $is_recurring = isset($pack_meta['recurring_pay']) && $pack_meta['recurring_pay'] === 'yes';
-        $expire_date = $is_recurring ? 'recurring' : date('Y-m-d H:i:s', strtotime('+1 year'));
-
-        // Insert subscriber data
-        $subscriber_data = [
-            'user_id' => $user_id,
-            'name' => $user->display_name,
-            'subscribtion_id' => (string)$pack_id,
-            'subscribtion_status' => 'active',
-            'gateway' => 'PayPal',
-            'transaction_id' => $transaction_id,
-            'starts_from' => $this->get_current_time_utc(),
-            'expire' => $expire_date
-        ];
-
-        $result = $wpdb->insert(
-            $wpdb->prefix . 'wpuf_subscribers',
-            $subscriber_data,
-            ['%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s']
-        );
-
-        if ($result) {
-            $this->update_user_subscription($user_id, $pack_id);
-        } else {
-            error_log('WPUF PayPal: Failed to insert subscriber data: ' . $wpdb->last_error);
-        }
-    }
 
     /**
      * Register webhook endpoint
@@ -326,11 +279,14 @@ class Paypal {
                 if ( JSON_ERROR_NONE !== json_last_error() ) {
                     throw new \Exception('Invalid JSON');
                 }
-                if ( ! isset($webhook_data['event_type']) || 'PAYMENT.CAPTURE.COMPLETED' !== $webhook_data['event_type'] ) {
-                    throw new \Exception('Invalid event type');
+                if ( ! isset($webhook_data['event_type']) ) {
+                    throw new \Exception('Missing event type');
                 }
 
-                // Save to DB (process payment)
+                // Log the event type
+                error_log('WPUF PayPal: Received webhook event: ' . $webhook_data['event_type']);
+
+                // Process the webhook
                 $this->process_webhook($raw_input);
 
                 $acknowledged = true;
@@ -359,7 +315,7 @@ class Paypal {
         // Convert to UTC
         $date->setTimezone(new \DateTimeZone('UTC'));
         
-        return $date->format('Y-m-d H:i:s');
+        return $date->format('d-m-Y');
     }
 
     /**
@@ -486,14 +442,28 @@ class Paypal {
 
             $user_id = $custom_data['user_id'];
             $subscription_id = $subscription['id']; // This is the PayPal subscription ID
+            $trial_period_days = isset($custom_data['trial_period_days']) ? $custom_data['trial_period_days'] : 0;
+            $is_trial = $trial_period_days > 0;
+            
+            // Check if we're in a trial period
+            $is_in_trial = false;
+            if (isset($subscription['billing_info']['cycle_executions'])) {
+                foreach ($subscription['billing_info']['cycle_executions'] as $cycle) {
+                    if ($cycle['tenure_type'] === 'TRIAL' && $cycle['cycles_completed'] < $cycle['cycles_remaining']) {
+                        $is_in_trial = true;
+                        break;
+                    }
+                }
+            }
 
             // Store subscription details
             $subscription_data = [
                 'profile_id' => $subscription_id,
-                'status' => 'active',
-                'created' => current_time('mysql'),
+                'status' => 'completed',
+                'created' => $this->get_current_time_utc(),
                 'recurring' => 'yes', // Mark as recurring subscription
-                'subscription_id' => $subscription_id // Store subscription ID separately
+                'subscription_id' => $subscription_id, // Store subscription ID separately
+                'trial' => $is_trial ? 'yes' : 'no'
             ];
 
             // Add pack ID if available
@@ -504,31 +474,47 @@ class Paypal {
             // Update user meta with subscription data
             update_user_meta($user_id, '_wpuf_subscription_pack', $subscription_data);
 
-            // Update subscribers table
-            global $wpdb;
-            $wpdb->insert(
-                $wpdb->prefix . 'wpuf_subscribers',
-                [
-                    'user_id' => $user_id,
-                    'name' => get_user_by('id', $user_id)->display_name,
-                    'subscribtion_id' => $subscription_data['pack_id'],
-                    'subscribtion_status' => 'active',
-                    'gateway' => 'PayPal',
-                    'transaction_id' => $subscription_id,
-                    'starts_from' => current_time('mysql'),
-                    'expire' => 'recurring'
-                ],
-                [
-                    '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s'
-                ]
-            );
-
-            error_log('WPUF PayPal: Subscription created successfully for user: ' . $user_id);
-
+            // Create a trial subscription record with zero cost if this is a trial
+            if ($is_in_trial) {
+                $this->create_trial_payment_record($user_id, $custom_data['item_number'], $subscription_id);
+            }
+          
         } catch (\Exception $e) {
             error_log('WPUF PayPal: Subscription creation handling failed: ' . $e->getMessage());
             throw $e;
         }
+    }
+
+    /**
+     * Create a trial payment record with zero cost
+     */
+    private function create_trial_payment_record($user_id, $pack_id, $subscription_id) {
+        $user = get_user_by('id', $user_id);
+        
+        if (!$user) {
+            error_log('WPUF PayPal: Invalid user ID for trial payment: ' . $user_id);
+            return;
+        }
+        
+        // Create payment data with zero cost for trial
+        $payment_data = [
+            'user_id' => $user_id,
+            'status' => 'completed',
+            'subtotal' => 0,
+            'tax' => 0,
+            'cost' => 0,
+            'post_id' => 0,
+            'pack_id' => $pack_id,
+            'payer_first_name' => $user->first_name,
+            'payer_last_name' => $user->last_name,
+            'payer_email' => $user->user_email,
+            'payment_type' => 'PayPal',
+            'transaction_id' => $subscription_id . '_trial',
+            'created' => gmdate('Y-m-d H:i:s'),
+        ];
+        
+        \WeDevs\Wpuf\Frontend\Payment::insert_payment($payment_data, $subscription_id . '_trial', true);
+        error_log('WPUF PayPal: Trial payment record created for user: ' . $user_id);
     }
 
     /**
@@ -565,15 +551,15 @@ class Paypal {
             $profile_id = '';
             
             // First try to get from user meta
-            if (isset($subscription['profile_id']) && !empty($subscription['profile_id'])) {
-                $profile_id = $subscription['profile_id'];
+            if (isset($subscription['subscription_id']) && !empty($subscription['subscription_id'])) {
+                $profile_id = $subscription['subscription_id'];
             }
             
             // If not in user meta, try to get from subscribers table
             if (empty($profile_id)) {
                 $subscriber_data = $wpdb->get_row($wpdb->prepare(
                     "SELECT transaction_id FROM {$wpdb->prefix}wpuf_subscribers 
-                    WHERE user_id = %d AND gateway = 'PayPal' AND subscribtion_status = 'active'
+                    WHERE user_id = %d AND gateway = 'paypal' AND subscribtion_status = 'completed'
                     ORDER BY id DESC LIMIT 1",
                     $user_id
                 ));
@@ -632,8 +618,8 @@ class Paypal {
             // Update local subscription status regardless of PayPal API result
             $updated_subscription = [
                 'profile_id' => $profile_id,
-                'status' => 'cancelled',
-                'updated' => current_time('mysql')
+                'status' => 'cancel',
+                'updated' => $this->get_current_time_utc()
             ];
             
             update_user_meta($user_id, '_wpuf_subscription_pack', $updated_subscription);
@@ -643,12 +629,12 @@ class Paypal {
             $update_result = $wpdb->update(
                 $wpdb->prefix . 'wpuf_subscribers',
                 [
-                    'subscribtion_status' => 'cancelled',
-                    'expire' => current_time('mysql')
+                    'subscribtion_status' => 'cancel',
+                    'expire' => $this->get_current_time_utc()
                 ],
                 [
                     'user_id' => $user_id,
-                    'gateway' => 'PayPal'
+                    'gateway' => 'paypal'
                 ],
                 ['%s', '%s'],
                 ['%d', '%s']
@@ -660,7 +646,7 @@ class Paypal {
                 error_log('WPUF PayPal: Updated subscribers table. Rows affected: ' . $update_result);
             }
 
-            error_log('WPUF PayPal: Subscription cancelled successfully for user: ' . $user_id);
+            error_log('WPUF PayPal: Subscription cancel successfully for user: ' . $user_id);
             error_log('WPUF PayPal: ===== Subscription Cancellation Debug End =====');
             return true;
 
@@ -793,8 +779,8 @@ class Paypal {
             // If no subscriber record exists yet and we have all the data, create one
             if (!$existing_subscriber && $pack_id > 0) {
                 // Update user subscription status in WordPress - this should be the only record
-                wpuf_get_user($user_id)->subscription()->add_pack($pack_id, null, false, 'PayPal Recurring');
-                
+                wpuf_get_user($user_id)->subscription()->add_pack($pack_id, $subscription_id, true, 'recurring');
+                update_user_meta($user_id,'_wpuf_paypal_subscription_status', 'completed');
                 // Log subscription creation
                 error_log('WPUF PayPal: User subscription pack added for user: ' . $user_id . ', pack: ' . $pack_id);
             }
@@ -813,7 +799,7 @@ class Paypal {
                 'payer_email'       => $user->user_email,
                 'payment_type'      => 'paypal',
                 'transaction_id'    => $transaction_id,
-                'created'           => current_time('mysql')
+                'created'           => gmdate('Y-m-d H:i:s')
             ];
             
             // Add custom meta information if available
@@ -961,7 +947,7 @@ class Paypal {
             update_user_meta($custom_data['user_id'], '_wpuf_subscription_pack', [
                 'profile_id' => $subscription['id'],
                 'status' => 'suspended',
-                'updated' => current_time('mysql')
+                'updated' => $this->get_current_time_utc()
             ]);
 
         } catch (\Exception $e) {
@@ -988,21 +974,6 @@ class Paypal {
         update_post_meta($coupon_id, '_coupon_used', $new_use);
     }
 
-    /**
-     * Update user subscription
-     *
-     * @param int $user_id
-     * @param int $pack_id
-     */
-    private function update_user_subscription($user_id, $pack_id) {
-        if (empty($user_id) || empty($pack_id)) {
-            return;
-        }
-
-        wpuf_get_user($user_id)->subscription()->add_pack($pack_id, null, false, 'PayPal');
-        delete_user_meta($user_id, '_wpuf_user_active');
-        delete_user_meta($user_id, '_wpuf_activation_key');
-    }
 
     /**
      * Prepare and send payment to PayPal
@@ -1068,8 +1039,37 @@ class Paypal {
                 $period = isset($flattened_subscription_meta['_cycle_period']) ? $flattened_subscription_meta['_cycle_period'] : 'month';
                 $interval = isset($flattened_subscription_meta['_billing_cycle_number']) ? intval($flattened_subscription_meta['_billing_cycle_number']) : 1;
                 
+                // Handle trial period
+                $trial_period_days = 0;
+                
+                if (isset($data['custom']['trial_status']) && wpuf_is_checkbox_or_toggle_on($data['custom']['trial_status'])) {
+                    $trial_duration_type = $data['custom']['trial_duration_type'];
+                    $trial_duration = absint($data['custom']['trial_duration']);
+
+                    switch ($trial_duration_type) {
+                        case 'week':
+                            $trial_period_days = $trial_duration * 7;
+                            break;
+                        case 'month':
+                            $trial_period_days = $trial_duration * 30;
+                            break;
+                        case 'year':
+                            $trial_period_days = $trial_duration * 365;
+                            break;
+                        case 'day':
+                        default:
+                            $trial_period_days = $trial_duration;
+                            break;
+                    }
+                    
+                    // Set trial meta for once per user
+                    if (!get_user_meta($user_id, '_wpuf_used_trial', true)) {
+                        update_user_meta($user_id, '_wpuf_used_trial', 'yes');
+                    }
+                }
+                
                 // Create a plan if not exists
-                $plan_id = $this->get_or_create_plan($pack, $billing_amount, $period, $interval);
+                $plan_id = $this->get_or_create_plan($pack, $billing_amount, $period, $interval, $trial_period_days);
                 
                 if (!$plan_id) {
                     throw new \Exception('Failed to create or get subscription plan');
@@ -1092,6 +1092,7 @@ class Paypal {
                         'item_number' => $data['item_number'],
                         'subtotal' => $data['subtotal'],
                         'coupon_id' => $coupon_id,
+                        'trial_period_days' => $trial_period_days
                     ])
                 ];
 
@@ -1129,9 +1130,10 @@ class Paypal {
                         'pack_id' => $data['item_number'],
                         'subscription_id' => $body['id'],
                         'status' => 'pending',
-                        'created' => current_time('mysql')
+                        'created' => gmdate('Y-m-d H:i:s'),
+                        'trial_period_days' => $trial_period_days
                     ],
-                    DAY_IN_SECONDS * 2 // Expire after 2 days if not activated
+                    HOUR_IN_SECONDS * 24 // Expire after 24 hours
                 );
 
                 // Find approval URL
@@ -1152,7 +1154,6 @@ class Paypal {
                 exit();
 
             } else {
-                // Existing one-time payment logic
                 $payment_data = [
                     'intent' => 'CAPTURE',
                     'purchase_units' => [[
@@ -1237,7 +1238,7 @@ class Paypal {
     /**
      * Get or create a PayPal subscription plan
      */
-    private function get_or_create_plan($pack, $amount, $period, $interval) {
+    private function get_or_create_plan($pack, $amount, $period, $interval, $trial_period_days = 0) {
         try {
             $access_token = $this->get_access_token();
             $plan_name = 'WPUF-' . $pack->post_title . '-' . uniqid();
@@ -1294,6 +1295,31 @@ class Paypal {
                     'payment_failure_threshold' => 3
                 ]
             ];
+
+            // Add trial period if specified
+            if ($trial_period_days > 0) {
+                $plan_data['payment_preferences']['setup_fee_failure_action'] = 'CONTINUE';
+                
+                // Add trial period as a billing cycle before the regular one
+                array_unshift($plan_data['billing_cycles'], [
+                    'frequency' => [
+                        'interval_unit' => 'DAY',
+                        'interval_count' => $trial_period_days
+                    ],
+                    'tenure_type' => 'TRIAL',
+                    'sequence' => 1,
+                    'total_cycles' => 1,
+                    'pricing_scheme' => [
+                        'fixed_price' => [
+                            'value' => '0',
+                            'currency_code' => wpuf_get_option('currency', 'wpuf_payment', 'USD')
+                        ]
+                    ]
+                ]);
+                
+                // Update the regular billing cycle sequence
+                $plan_data['billing_cycles'][1]['sequence'] = 2;
+            }
 
             $response = wp_remote_post(
                 ($this->test_mode ? 'https://api-m.sandbox.paypal.com' : 'https://api-m.paypal.com') . '/v1/billing/plans',
@@ -1541,8 +1567,8 @@ class Paypal {
             // Update subscription status in user meta
             $subscription_data = [
                 'profile_id' => $subscription_id,
-                'status' => 'cancelled',
-                'updated' => current_time('mysql')
+                'status' => 'cancel',
+                'updated' => $this->get_current_time_utc()
             ];
             
             update_user_meta($user_id, '_wpuf_subscription_pack', $subscription_data);
@@ -1552,8 +1578,8 @@ class Paypal {
             $wpdb->update(
                 $wpdb->prefix . 'wpuf_subscribers',
                 [
-                    'subscribtion_status' => 'cancelled',
-                    'expire' => current_time('mysql')
+                    'subscribtion_status' => 'cancel',
+                    'expire' => $this->get_current_time_utc()
                 ],
                 [
                     'user_id' => $user_id,
@@ -1564,7 +1590,7 @@ class Paypal {
                 ['%d', '%s', '%s']
             );
 
-            error_log('WPUF PayPal: Subscription cancelled via webhook for user: ' . $user_id);
+            error_log('WPUF PayPal: Subscription cancel via webhook for user: ' . $user_id);
 
             // Trigger action for other plugins
             do_action('wpuf_paypal_subscription_cancelled', $user_id, $subscription_id);
@@ -1574,6 +1600,101 @@ class Paypal {
             throw $e;
         }
     }
+
+    /**
+     * Handle subscription activation (after trial period)
+     */
+    private function handle_subscription_activated($subscription) {
+        try {
+            error_log('WPUF PayPal: Processing subscription activation: ' . print_r($subscription, true));
+            
+            // Extract custom data
+            $custom_data = [];
+            if (isset($subscription['custom_id'])) {
+                $custom_data = json_decode($subscription['custom_id'], true);
+            }
+            
+            if (!$custom_data || !isset($custom_data['user_id'])) {
+                // Try to find the user based on subscription ID
+                $subscription_id = $subscription['id'];
+                $user_id = $this->get_user_id_by_subscription($subscription_id);
+                
+                if (!$user_id) {
+                    throw new \Exception('Could not find user for subscription: ' . $subscription_id);
+                }
+            } else {
+                $user_id = $custom_data['user_id'];
+            }
+            
+            // Get the subscription pack
+            $subscription_id = $subscription['id'];
+            $user_pack = get_user_meta($user_id, '_wpuf_subscription_pack', true);
+            
+            if (!$user_pack || !isset($user_pack['pack_id'])) {
+                throw new \Exception('No subscription pack found for user: ' . $user_id);
+            }
+            
+            $pack_id = $user_pack['pack_id'];
+            
+            // Update subscription status if needed
+            if (isset($user_pack['status']) && 'completed' !== $user_pack['status']) {
+                $user_pack['status'] = 'completed';
+                update_user_meta($user_id, '_wpuf_subscription_pack', $user_pack);
+                update_user_meta($user_id,'_wpuf_paypal_subscription_id', $subscription_id);
+            }
+            
+            // If this is the first payment after a trial, create a payment record
+            if (isset($user_pack['trial']) && 'yes' === $user_pack['trial']) {
+                // Get subscription details from PayPal
+                $access_token = $this->get_access_token();
+                $subscription_url = ($this->test_mode ? 'https://api-m.sandbox.paypal.com' : 'https://api-m.paypal.com') . 
+                                    '/v1/billing/subscriptions/' . $subscription_id;
+                
+                $response = wp_remote_get($subscription_url, [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $access_token,
+                        'Content-Type' => 'application/json'
+                    ]
+                ]);
+                
+                if (is_wp_error($response)) {
+                    throw new \Exception('Failed to fetch subscription details: ' . $response->get_error_message());
+                }
+                
+                $subscription_details = json_decode(wp_remote_retrieve_body($response), true);
+                
+                // Create payment record for the first real payment
+                if (isset($subscription_details['billing_info']['last_payment'])) {
+                    $payment = $subscription_details['billing_info']['last_payment'];
+                    
+                    $payment_data = [
+                        'user_id' => $user_id,
+                        'status' => 'completed',
+                        'subtotal' => $payment['amount']['value'],
+                        'tax' => 0, // You may need to calculate tax
+                        'cost' => $payment['amount']['value'],
+                        'post_id' => 0,
+                        'pack_id' => $pack_id,
+                        'payer_first_name' => get_user_meta($user_id, 'first_name', true),
+                        'payer_last_name' => get_user_meta($user_id, 'last_name', true),
+                        'payer_email' => get_user_by('id', $user_id)->user_email,
+                        'payment_type' => 'PayPal',
+                        'transaction_id' => $payment['id'],
+                        'created' => $this->get_current_time_utc(),
+                    ];
+                    
+                    \WeDevs\Wpuf\Frontend\Payment::insert_payment($payment_data, $payment['id'], true);
+                    error_log('WPUF PayPal: First payment after trial created for user: ' . $user_id);
+                }
+            }
+            
+            error_log('WPUF PayPal: Subscription activated successfully for user: ' . $user_id);
+            
+        } catch (\Exception $e) {
+            error_log('WPUF PayPal: Subscription activation handling failed: ' . $e->getMessage());
+        }
+    }
+
 }
 
 // Register webhook endpoint

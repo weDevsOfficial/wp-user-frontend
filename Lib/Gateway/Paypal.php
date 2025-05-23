@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf\Lib\Gateway;
 use WeDevs\Wpuf\Frontend\Payment;
+use WeDevs\Wpuf\Traits\TaxableTrait;
+use WeDevs\Wpuf\Admin\Subscription;
 
 /**
  * WP User Frontend PayPal gateway
@@ -10,6 +12,8 @@ use WeDevs\Wpuf\Frontend\Payment;
  * @updated 2024
  */
 class Paypal {
+    use TaxableTrait;
+
     private $gateway_url;
     private $test_mode;
     private $webhook_id;
@@ -147,13 +151,25 @@ class Paypal {
                 throw new \Exception('Invalid user');
             }
 
+            // Calculate tax
+            $tax_amount = 0;
+            if ($this->wpuf_tax_enabled()) {
+                $tax_rate = $this->wpuf_current_tax_rate();
+                $payment_amount = $payment['amount']['value'];
+                // Calculate tax from total amount
+                $tax_amount = ($payment_amount * $tax_rate) / (100 + $tax_rate);
+                $subtotal = $payment_amount - $tax_amount;
+            } else {
+                $subtotal = $payment['amount']['value'];
+            }
+
             // Create payment record
             $data = [
                 'user_id' => $custom_data['user_id'],
                 'status' => 'completed',
-                'subtotal' => $payment['amount']['value'],
-                'tax' => isset($custom_data['tax']) ? $custom_data['tax'] : 0,
-                'cost' => $custom_data['subtotal'],
+                'subtotal' => $subtotal,
+                'tax' => $tax_amount,
+                'cost' => $payment['amount']['value'],
                 'post_id' => ($custom_data['type'] === 'post') ? $custom_data['item_number'] : 0,
                 'pack_id' => ($custom_data['type'] === 'pack') ? $custom_data['item_number'] : 0,
                 'payer_first_name' => $user->first_name,
@@ -456,25 +472,67 @@ class Paypal {
                 }
             }
 
-            // Store subscription details
-            $subscription_data = [
-                'profile_id' => $subscription_id,
-                'status' => 'completed',
-                'created' => $this->get_current_time_utc(),
-                'recurring' => 'yes', // Mark as recurring subscription
-                'subscription_id' => $subscription_id, // Store subscription ID separately
-                'trial' => $is_trial ? 'yes' : 'no'
-            ];
+            // Get the pack details
+            $pack = get_post($custom_data['item_number']);
+            $pack_meta = array_map(function($value) {
+                return maybe_unserialize($value[0]);
+            }, get_post_meta($pack->ID));
 
-            // Add pack ID if available
-            if (isset($custom_data['item_number'])) {
-                $subscription_data['pack_id'] = $custom_data['item_number'];
+            // Get subscription period and interval from pack meta
+            $period = isset($pack_meta['_cycle_period']) ? $pack_meta['_cycle_period'] : 'month';
+            $interval = isset($pack_meta['_billing_cycle_number']) ? intval($pack_meta['_billing_cycle_number']) : 1;
+
+            // Get tax rate if enabled
+            $tax_rate = 0;
+            if ($this->wpuf_tax_enabled()) {
+                $tax_rate = $this->wpuf_current_tax_rate();
             }
 
-            // Update user meta with subscription data
+            // Create subscription data structure with all necessary meta
+            $subscription_data = [
+                'pack_id' => $custom_data['item_number'],
+                'posts' => isset($pack_meta['_post_types']) ? $pack_meta['_post_types'] : [],
+                'total_feature_item' => isset($pack_meta['_total_feature_item']) ? $pack_meta['_total_feature_item'] : '-1',
+                'remove_feature_item' => isset($pack_meta['_remove_feature_item']) ? $pack_meta['_remove_feature_item'] : '-1',
+                'status' => 'completed',
+                'expire' => '',  // Will be calculated based on expiration settings
+                'profile_id' => $subscription_id,
+                'recurring' => 'yes',
+                'cycle_period' => $period,
+                'cycle_number' => $interval,
+                'postnum_rollback_on_delete' => isset($pack_meta['_postnum_rollback_on_delete']) ? $pack_meta['_postnum_rollback_on_delete'] : '',
+                '_enable_post_expiration' => isset($pack_meta['_enable_post_expiration']) ? $pack_meta['_enable_post_expiration'] : 'no',
+                '_post_expiration_time' => isset($pack_meta['_post_expiration_time']) ? $pack_meta['_post_expiration_time'] : '',
+                '_expired_post_status' => isset($pack_meta['_expired_post_status']) ? $pack_meta['_expired_post_status'] : 'publish',
+                '_enable_mail_after_expired' => isset($pack_meta['_enable_mail_after_expired']) ? $pack_meta['_enable_mail_after_expired'] : 'no',
+                '_post_expiration_message' => isset($pack_meta['_post_expiration_message']) ? $pack_meta['_post_expiration_message'] : '',
+                'subscription_id' => $subscription_id,
+                'trial' => $is_trial ? 'yes' : 'no',
+                'created' => $this->get_current_time_utc()
+            ];
+
+            // If posts meta is empty, set default values
+            if (empty($subscription_data['posts'])) {
+                $subscription_data['posts'] = [
+                    'post' => '-1',
+                    'page' => '-1',
+                    'user_request' => '-1',
+                    'wp_block' => '-1',
+                    'wp_template' => '-1',
+                    'wp_template_part' => '-1',
+                    'wp_global_styles' => '-1',
+                    'wp_navigation' => '-1',
+                    'wp_font_family' => '-1',
+                    'wp_font_face' => '-1'
+                ];
+            }
+
+            error_log('WPUF PayPal: Current pack: ' . print_r($subscription_data, true));
+
+            // Update user meta with complete subscription data
             update_user_meta($user_id, '_wpuf_subscription_pack', $subscription_data);
 
-            // Create a trial subscription record with zero cost if this is a trial
+            // Create a trial payment record if this is a trial
             if ($is_in_trial) {
                 $this->create_trial_payment_record($user_id, $custom_data['item_number'], $subscription_id);
             }
@@ -623,6 +681,7 @@ class Paypal {
             ];
             
             update_user_meta($user_id, '_wpuf_subscription_pack', $updated_subscription);
+            update_user_meta($user_id,'_wpuf_paypal_subscription_status', 'cancel');
             error_log('WPUF PayPal: Updated subscription meta: ' . print_r($updated_subscription, true));
 
             // Update subscriber table
@@ -935,29 +994,6 @@ class Paypal {
     }
 
     /**
-     * Handle subscription suspension
-     */
-    private function handle_subscription_suspended($subscription) {
-        try {
-            $custom_data = $subscription['custom'];
-            if (!$custom_data) {
-                throw new \Exception('Invalid custom data in subscription');
-            }
-
-            update_user_meta($custom_data['user_id'], '_wpuf_subscription_pack', [
-                'profile_id' => $subscription['id'],
-                'status' => 'suspended',
-                'updated' => $this->get_current_time_utc()
-            ]);
-
-        } catch (\Exception $e) {
-            \WP_User_Frontend::log('paypal-webhook', 'Subscription suspension handling failed: ' . $e->getMessage());
-            error_log('[WPUF PayPal Webhook] Subscription suspension handling failed: ' . $e->getMessage());
-            throw $e;
-        }
-    }
-
-    /**
      * Update coupon usage count
      *
      * @param int $coupon_id
@@ -997,6 +1033,14 @@ class Paypal {
             $cancel_url = $return_url;
 
             $billing_amount = empty($data['price']) ? 0 : $data['price'];
+            $tax_amount = 0;
+
+            // Handle tax if enabled
+            if ($this->wpuf_tax_enabled()) {
+                $tax_rate = $this->wpuf_current_tax_rate();
+                $tax_amount = $billing_amount * ($tax_rate / 100);
+                $billing_amount = $billing_amount + $tax_amount;
+            }
 
             // Handle coupon if present
             if (isset($_POST['coupon_id']) && !empty($_POST['coupon_id'])) {
@@ -1006,9 +1050,9 @@ class Paypal {
                 $coupon_id = '';
             }
 
-            $data['subtotal'] = $billing_amount;
-            $billing_amount = apply_filters('wpuf_payment_amount', $data['subtotal']);
-            $data['tax'] = $billing_amount - $data['subtotal'];
+            $data['subtotal'] = $billing_amount - $tax_amount;
+            $data['tax'] = $tax_amount;
+            $billing_amount = apply_filters('wpuf_payment_amount', $billing_amount);
 
             // Handle free payments
             if ($billing_amount == 0) {
@@ -1075,6 +1119,12 @@ class Paypal {
                     throw new \Exception('Failed to create or get subscription plan');
                 }
 
+                // Get tax rate if enabled
+                $tax_rate = 0;
+                if ($this->wpuf_tax_enabled()) {
+                    $tax_rate = $this->wpuf_current_tax_rate();
+                }
+
                 // Prepare subscription data
                 $subscription_data = [
                     'plan_id' => $plan_id,
@@ -1091,6 +1141,8 @@ class Paypal {
                         'user_id' => $user_id,
                         'item_number' => $data['item_number'],
                         'subtotal' => $data['subtotal'],
+                        'tax_rate' => $tax_rate,
+                        'tax' => $data['tax'],
                         'coupon_id' => $coupon_id,
                         'trial_period_days' => $trial_period_days
                     ])

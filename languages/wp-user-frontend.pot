@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 4.1.4\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2025-05-12 10:26:12+00:00\n"
+"POT-Creation-Date: 2025-05-24 04:04:22+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -139,18 +139,18 @@ msgstr ""
 #: admin/form-builder/views/form-builder-v4.1.php:141
 #: admin/form-builder/views/form-builder.php:9
 #: includes/Admin/Admin_Settings.php:68 includes/Admin/Menu.php:92
-#: includes/Admin/Menu.php:367
+#: includes/Admin/Menu.php:368
 #: includes/Fields/Form_Field_Cloudflare_Turnstile.php:83
 #: includes/Fields/Form_Field_reCaptcha.php:134 includes/Setup_Wizard.php:156
 msgid "Settings"
 msgstr ""
 
-#: admin/class-admin-settings.php:123 includes/Admin/Admin_Subscription.php:297
+#: admin/class-admin-settings.php:123 includes/Admin/Admin_Subscription.php:298
 #: includes/Admin/Menu.php:86 includes/Admin/views/subscribers.php:14
 msgid "Subscribers"
 msgstr ""
 
-#: admin/class-admin-settings.php:466 includes/Admin/Menu.php:210
+#: admin/class-admin-settings.php:466 includes/Admin/Menu.php:211
 msgid "Number of items per page:"
 msgstr ""
 
@@ -171,15 +171,15 @@ msgid ""
 "vulnerability.%4$s"
 msgstr ""
 
-#: admin/class-admin-settings.php:537 includes/Admin/Menu.php:326
+#: admin/class-admin-settings.php:537 includes/Admin/Menu.php:327
 msgid "WPUF Import Forms"
 msgstr ""
 
-#: admin/class-admin-settings.php:538 includes/Admin/Menu.php:327
+#: admin/class-admin-settings.php:538 includes/Admin/Menu.php:328
 msgid "Add JSON file"
 msgstr ""
 
-#: admin/class-admin-settings.php:539 includes/Admin/Menu.php:328
+#: admin/class-admin-settings.php:539 includes/Admin/Menu.php:329
 msgid "Could not import forms."
 msgstr ""
 
@@ -396,7 +396,7 @@ msgid "Go To Module Page"
 msgstr ""
 
 #: admin/form-builder/views/post-form-settings.php:284
-#: class/subscription.php:876 includes/Admin/Admin_Subscription.php:938
+#: class/subscription.php:876 includes/Admin/Admin_Subscription.php:939
 #: includes/Admin/Forms/Admin_Form_Builder.php:308
 #: includes/Admin/Forms/Admin_Form_Builder.php:310
 #: includes/Admin/List_Table_Subscribers.php:146
@@ -441,8 +441,8 @@ msgid "Use Theme CSS"
 msgstr ""
 
 #: admin/html/form-settings-display.php:40 admin/template.php:64
-#: includes/Admin/Admin_Subscription.php:337
-#: includes/Admin/Admin_Subscription.php:831
+#: includes/Admin/Admin_Subscription.php:338
+#: includes/Admin/Admin_Subscription.php:832
 #: includes/Admin/Forms/Admin_Template.php:69
 #: includes/Fields/Field_Contract.php:301
 #: includes/Fields/Field_Contract.php:394
@@ -458,8 +458,8 @@ msgid "No"
 msgstr ""
 
 #: admin/html/form-settings-display.php:41 admin/template.php:63
-#: includes/Admin/Admin_Subscription.php:335
-#: includes/Admin/Admin_Subscription.php:831
+#: includes/Admin/Admin_Subscription.php:336
+#: includes/Admin/Admin_Subscription.php:832
 #: includes/Admin/Forms/Admin_Template.php:66
 #: includes/Fields/Field_Contract.php:300
 #: includes/Fields/Field_Contract.php:393
@@ -677,8 +677,8 @@ msgid "Learn More "
 msgstr ""
 
 #: admin/html/form-settings-post.php:56
-#: includes/Admin/Admin_Subscription.php:563
-#: includes/Admin/Admin_Subscription.php:1268
+#: includes/Admin/Admin_Subscription.php:564
+#: includes/Admin/Admin_Subscription.php:1269
 #: includes/Free/Form_Element.php:109
 msgid "Post Status"
 msgstr ""
@@ -1597,7 +1597,7 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: class/subscription.php:351 includes/Admin/Admin_Subscription.php:295
+#: class/subscription.php:351 includes/Admin/Admin_Subscription.php:296
 #: includes/Admin/Subscription.php:366
 msgid "Pack Name"
 msgstr ""
@@ -1719,8 +1719,8 @@ msgstr ""
 msgid "Sign Up"
 msgstr ""
 
-#: class/subscription.php:978 includes/Admin/Admin_Subscription.php:318
-#: includes/Admin/Admin_Subscription.php:729
+#: class/subscription.php:978 includes/Admin/Admin_Subscription.php:319
+#: includes/Admin/Admin_Subscription.php:730
 #: includes/Admin/Subscription.php:1004
 #: includes/Free/templates/page-registration-form.php:120
 #: includes/Frontend/Frontend_Account.php:227
@@ -1758,265 +1758,265 @@ msgid ""
 "period. Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:147
+#: includes/Admin/Admin_Subscription.php:148
 msgid "Pack Description"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:161
-#: includes/Admin/Admin_Subscription.php:164
+#: includes/Admin/Admin_Subscription.php:162
+#: includes/Admin/Admin_Subscription.php:165
 msgid "Subscription pack updated."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:162
+#: includes/Admin/Admin_Subscription.php:163
 msgid "Custom field updated."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:163
+#: includes/Admin/Admin_Subscription.php:164
 msgid "Custom field deleted."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:167
+#: includes/Admin/Admin_Subscription.php:168
 #. translators: %s is Revision
 msgid "Subscription pack restored to revision from %s"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:169
+#: includes/Admin/Admin_Subscription.php:170
 msgid "Subscription pack published."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:170
+#: includes/Admin/Admin_Subscription.php:171
 msgid "Subscription pack saved."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:171
+#: includes/Admin/Admin_Subscription.php:172
 msgid "Subscription pack submitted."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:173
+#: includes/Admin/Admin_Subscription.php:174
 msgid "Subscription pack draft updated."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:296
+#: includes/Admin/Admin_Subscription.php:297
 msgid "Amount"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:298 includes/WPUF_Privacy.php:491
+#: includes/Admin/Admin_Subscription.php:299 includes/WPUF_Privacy.php:491
 msgid "Recurring"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:299
+#: includes/Admin/Admin_Subscription.php:300
 msgid "Duration"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:433
-#: includes/Admin/Admin_Subscription.php:1050
+#: includes/Admin/Admin_Subscription.php:434
+#: includes/Admin/Admin_Subscription.php:1051
 #: includes/Admin/views/support.php:77 wpuf-functions.php:4873
 msgid "Payment Settings"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:440
+#: includes/Admin/Admin_Subscription.php:441
 msgid "Posting Restriction"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:454
+#: includes/Admin/Admin_Subscription.php:455
 msgid "Billing amount:"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:455
+#: includes/Admin/Admin_Subscription.php:456
 msgid "Billing amount each cycle:"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:463
+#: includes/Admin/Admin_Subscription.php:464
 msgid "Expires In:"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:482
-#: includes/Admin/Admin_Subscription.php:784
+#: includes/Admin/Admin_Subscription.php:483
+#: includes/Admin/Admin_Subscription.php:785
 msgid "Number of featured item"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:486
+#: includes/Admin/Admin_Subscription.php:487
 msgid "How many items a user can set as featured, including all post types"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:490
+#: includes/Admin/Admin_Subscription.php:491
 msgid "Remove featured item on subscription expiry"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:494
+#: includes/Admin/Admin_Subscription.php:495
 msgid "The featured item will be removed if the subscription expires"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:529
-#: includes/Admin/Admin_Subscription.php:1082 includes/Free/Form_Element.php:59
+#: includes/Admin/Admin_Subscription.php:530
+#: includes/Admin/Admin_Subscription.php:1083 includes/Free/Form_Element.php:59
 #: wpuf-functions.php:4899
 msgid "Post Expiration"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:534
-#: includes/Admin/Admin_Subscription.php:1210 includes/Free/Form_Element.php:63
+#: includes/Admin/Admin_Subscription.php:535
+#: includes/Admin/Admin_Subscription.php:1211 includes/Free/Form_Element.php:63
 #: includes/Free/Free_Loader.php:1688
 msgid "Enable Post Expiration"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:546
-#: includes/Admin/Admin_Subscription.php:841 includes/Free/Form_Element.php:78
+#: includes/Admin/Admin_Subscription.php:547
+#: includes/Admin/Admin_Subscription.php:842 includes/Free/Form_Element.php:78
 #: includes/Free/Free_Loader.php:1695
 msgid "Post Expiration Time"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:576 includes/Free/Form_Element.php:127
+#: includes/Admin/Admin_Subscription.php:577 includes/Free/Form_Element.php:127
 msgid "Status of post after post expiration time is over "
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:581
+#: includes/Admin/Admin_Subscription.php:582
 msgid "Expiration Mail"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:586
+#: includes/Admin/Admin_Subscription.php:587
 msgid "Send Expiration Email to Post Author"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:590
+#: includes/Admin/Admin_Subscription.php:591
 msgid "Send Mail to Author After Exceeding Post Expiration Time"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:595
-#: includes/Admin/Admin_Subscription.php:1296
+#: includes/Admin/Admin_Subscription.php:596
+#: includes/Admin/Admin_Subscription.php:1297
 msgid "Expiration Message"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:603 includes/Free/Form_Element.php:149
+#: includes/Admin/Admin_Subscription.php:604 includes/Free/Form_Element.php:149
 #. translators: %1$s: {post_author}, %2$s: {post_url}, %3$s: {blogname}, %4$s:
 #. {post_title}, %5$s: {post_status}
 msgid "You may use: %1$s %2$s %3$s %4$s %5$s"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:674
-#: includes/Admin/Admin_Subscription.php:1248
-#: includes/Admin/Admin_Subscription.php:1363
-#: includes/Free/Free_Loader.php:1703
-msgid "Day(s)"
-msgstr ""
-
 #: includes/Admin/Admin_Subscription.php:675
 #: includes/Admin/Admin_Subscription.php:1249
 #: includes/Admin/Admin_Subscription.php:1364
-#: includes/Free/Free_Loader.php:1704
-msgid "Week(s)"
+#: includes/Free/Free_Loader.php:1703
+msgid "Day(s)"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:676
 #: includes/Admin/Admin_Subscription.php:1250
 #: includes/Admin/Admin_Subscription.php:1365
-#: includes/Free/Free_Loader.php:1705
-msgid "Month(s)"
+#: includes/Free/Free_Loader.php:1704
+msgid "Week(s)"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:677
 #: includes/Admin/Admin_Subscription.php:1251
 #: includes/Admin/Admin_Subscription.php:1366
+#: includes/Free/Free_Loader.php:1705
+msgid "Month(s)"
+msgstr ""
+
+#: includes/Admin/Admin_Subscription.php:678
+#: includes/Admin/Admin_Subscription.php:1252
+#: includes/Admin/Admin_Subscription.php:1367
 msgid "Year(s)"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:721
+#: includes/Admin/Admin_Subscription.php:722
 msgid "WPUF Subscription Information"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:735
+#: includes/Admin/Admin_Subscription.php:736
 #. translators: %1$s and %2$s are Billing cycle number and Billing cycle period
 msgid "For each %1$s %2$s"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:738
+#: includes/Admin/Admin_Subscription.php:739
 #: includes/Frontend/Frontend_Account.php:237
 #. translators: %s is Billing limit
 #. translators: %s: number of installments
 msgid ", for %s installments"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:749
+#: includes/Admin/Admin_Subscription.php:750
 msgid "Subcription Name"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:759
+#: includes/Admin/Admin_Subscription.php:760
 msgid "Billing Info"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:773
+#: includes/Admin/Admin_Subscription.php:774
 msgid "This user is using recurring subscription pack"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:779
+#: includes/Admin/Admin_Subscription.php:780
 msgid "Remaining Posting Count"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:808
+#: includes/Admin/Admin_Subscription.php:809
 msgid "Subscription Expiration Info"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:817 includes/User_Subscription.php:373
+#: includes/Admin/Admin_Subscription.php:818 includes/User_Subscription.php:373
 #: templates/dashboard/subscription.php:50
 msgid "Expire date:"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:830
+#: includes/Admin/Admin_Subscription.php:831
 msgid "Post Expiration Enabled"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:867
+#: includes/Admin/Admin_Subscription.php:868
 msgid "Allowed Taxonomy Terms"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:937
+#: includes/Admin/Admin_Subscription.php:938
 msgid "Assign Package"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:944
+#: includes/Admin/Admin_Subscription.php:945
 msgid "Select Package:"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:947
+#: includes/Admin/Admin_Subscription.php:948
 #: includes/functions/settings-options.php:675 wpuf-functions.php:217
 #: wpuf-functions.php:1840 wpuf-functions.php:2105
 msgid "&mdash; Select &mdash;"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:951
+#: includes/Admin/Admin_Subscription.php:952
 msgid "Only non-recurring pack can be assigned"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:962
+#: includes/Admin/Admin_Subscription.php:963
 msgid "Delete Package"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1023
+#: includes/Admin/Admin_Subscription.php:1024
 #. translators: %s is a link about subscription payment
 msgid "Learn more about <a href=\"%s\" target=\"_blank\">Subscription</a>"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1046
+#: includes/Admin/Admin_Subscription.php:1047
 #: includes/User_Subscription.php:331 templates/dashboard/subscription.php:3
 msgid "Subscription Details"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1054
+#: includes/Admin/Admin_Subscription.php:1055
 msgid "Advanced Configuration"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1074
+#: includes/Admin/Admin_Subscription.php:1075
 msgid "Overview"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1078
+#: includes/Admin/Admin_Subscription.php:1079
 msgid "Access and Visibility"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1093
+#: includes/Admin/Admin_Subscription.php:1094
 msgid "Payment Details"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1098
+#: includes/Admin/Admin_Subscription.php:1099
 #. translators: %s: Payment Settings URL
 msgid ""
 "For subscriptions to work correctly, please ensure the payment gateway and "
@@ -2024,276 +2024,276 @@ msgid ""
 "Settings</a>"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1114
+#: includes/Admin/Admin_Subscription.php:1115
 msgid "Content Limit"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1118
+#: includes/Admin/Admin_Subscription.php:1119
 msgid "Design Elements"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1122
+#: includes/Admin/Admin_Subscription.php:1123
 msgid "Additional Options"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1148
+#: includes/Admin/Admin_Subscription.php:1149
 msgid "Plan Name"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1149
+#: includes/Admin/Admin_Subscription.php:1150
 msgid ""
 "Enter a name for this subscription plan. E.g., \"Featured Article "
 "Subscription\""
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1150
+#: includes/Admin/Admin_Subscription.php:1151
 msgid "Enter subscription name"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1160
+#: includes/Admin/Admin_Subscription.php:1161
 msgid "Plan Summary"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1161
+#: includes/Admin/Admin_Subscription.php:1162
 msgid ""
 "Provide a brief description of this subscription plan to help users "
 "understand key features or benefits"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1165
+#: includes/Admin/Admin_Subscription.php:1166
 msgid "Write briefly what this subscription is about"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1180
+#: includes/Admin/Admin_Subscription.php:1181
 msgid "Plan Slug"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1181
+#: includes/Admin/Admin_Subscription.php:1182
 msgid ""
 "Enter a unique slug for the subscription. Leave it blank for WordPress "
 "default slug"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1185
+#: includes/Admin/Admin_Subscription.php:1186
 msgid "Enter plan slug"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1194
+#: includes/Admin/Admin_Subscription.php:1195
 msgid "Publish Time"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1195
+#: includes/Admin/Admin_Subscription.php:1196
 msgid "Specify the time when you want the subscription to be published"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1211
+#: includes/Admin/Admin_Subscription.php:1212
 msgid ""
 "Enable post expiration for this subscription plan. If enabled, posts in "
 "this plan will expire after a certain period, as specified here"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1224
+#: includes/Admin/Admin_Subscription.php:1225
 msgid "Expiration Time"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1225
+#: includes/Admin/Admin_Subscription.php:1226
 msgid ""
 "Specify the duration after which your posts will automatically disappear "
 "from frontend"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1247
+#: includes/Admin/Admin_Subscription.php:1248
 msgid "Never"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1264
+#: includes/Admin/Admin_Subscription.php:1265
 msgid "Publish"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1265 wpuf-functions.php:68
+#: includes/Admin/Admin_Subscription.php:1266 wpuf-functions.php:68
 #: wpuf-functions.php:5033 wpuf-functions.php:5083
 msgid "Draft"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1266 wpuf-functions.php:5034
+#: includes/Admin/Admin_Subscription.php:1267 wpuf-functions.php:5034
 #: wpuf-functions.php:5084
 msgid "Pending Review"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1269
+#: includes/Admin/Admin_Subscription.php:1270
 msgid "Status of post after post expiration time is over"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1270
+#: includes/Admin/Admin_Subscription.php:1271
 msgid "Post status will be changed to the selected one when expiration time is over"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1283
+#: includes/Admin/Admin_Subscription.php:1284
 msgid "Send Expiration Mail"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1284
+#: includes/Admin/Admin_Subscription.php:1285
 msgid "Send an e-mail to the author after exceeding post expiration time"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1297
+#: includes/Admin/Admin_Subscription.php:1298
 msgid ""
 "Craft a personalized message that will be sent to users when their posts "
 "expire"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1301
+#: includes/Admin/Admin_Subscription.php:1302
 msgid "You may use: {post_author} {post_url} {blogname} {post_title} {post_status}"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1305
+#: includes/Admin/Admin_Subscription.php:1306
 msgid "Write the expiration message here"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1318
+#: includes/Admin/Admin_Subscription.php:1319
 msgid "Enable Post Number Rollback"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1319
+#: includes/Admin/Admin_Subscription.php:1320
 msgid "If enabled, number of posts will be restored if the post is deleted."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1336
+#: includes/Admin/Admin_Subscription.php:1337
 msgid "Billing Amount"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1337
+#: includes/Admin/Admin_Subscription.php:1338
 msgid ""
 "Enter the billing amount for the subscription that will be charged to users "
 "who subscribe to this plan"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1372
+#: includes/Admin/Admin_Subscription.php:1373
 msgid "Expire In"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1373
+#: includes/Admin/Admin_Subscription.php:1374
 msgid ""
 "Set the duration for the subscription to remain active before expiring. "
 "Enter -1 for no expiration"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1379
+#: includes/Admin/Admin_Subscription.php:1380
 #: includes/Free/Subscription_Element.php:20
 msgid "Enable Recurring Payment"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1380
+#: includes/Admin/Admin_Subscription.php:1381
 msgid ""
 "Enable recurring payments for this subscription. Users will be charged "
 "automatically at the end of each billing cycle until the subscription is "
 "canceled"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1400
+#: includes/Admin/Admin_Subscription.php:1401
 msgid "Maximum Number of Posts"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1401
+#: includes/Admin/Admin_Subscription.php:1402
 msgid ""
 "Set the maximum number of posts users can list within their subscription "
 "period. Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1414
+#: includes/Admin/Admin_Subscription.php:1415
 msgid "Maximum Number of Pages"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1415
+#: includes/Admin/Admin_Subscription.php:1416
 msgid ""
 "Set the maximum number of pages a user can list within the subscription "
 "period. Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1428
+#: includes/Admin/Admin_Subscription.php:1429
 msgid "Maximum Number of User Requests"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1429
+#: includes/Admin/Admin_Subscription.php:1430
 msgid ""
 "Set the maximum number of user requests allowed within the subscription "
 "period. Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1448
+#: includes/Admin/Admin_Subscription.php:1449
 msgid "Maximum Number of Reusable Block"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1449
+#: includes/Admin/Admin_Subscription.php:1450
 msgid ""
 "Set the maximum number of reusable blocks that users can create within the "
 "subscription period. Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1462
+#: includes/Admin/Admin_Subscription.php:1463
 msgid "Maximum Number of Templates"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1463
+#: includes/Admin/Admin_Subscription.php:1464
 msgid ""
 "Set the maximum number of templates users can use during the subscription "
 "period. Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1476
+#: includes/Admin/Admin_Subscription.php:1477
 msgid "Maximum Number of Template Parts"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1477
+#: includes/Admin/Admin_Subscription.php:1478
 msgid ""
 "Set maximum number of template parts that users can create within the "
 "subscription period. Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1490
+#: includes/Admin/Admin_Subscription.php:1491
 msgid "Maximum Number of Global Styles"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1491
+#: includes/Admin/Admin_Subscription.php:1492
 msgid ""
 "Set maximum number of global styles that users can use within the "
 "subscription period. Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1504
+#: includes/Admin/Admin_Subscription.php:1505
 msgid "Maximum Number of Navigation Menus"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1505
+#: includes/Admin/Admin_Subscription.php:1506
 msgid ""
 "Set maximum number of navigation menus that users can use within the "
 "subscription period. Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1523
+#: includes/Admin/Admin_Subscription.php:1524
 msgid "Maximum Number of Featured Items"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1524
+#: includes/Admin/Admin_Subscription.php:1525
 msgid ""
 "Limit the featured items users can display during their subscription. "
 "Featured items gain more visibility, enhancing content or product exposure. "
 "Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1536
+#: includes/Admin/Admin_Subscription.php:1537
 msgid "Remove Featured Item"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1537
+#: includes/Admin/Admin_Subscription.php:1538
 msgid "Remove featured items when plan expires"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1612
+#: includes/Admin/Admin_Subscription.php:1613
 msgid "Thank you for using <strong>WP User Frontend</strong>."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1615
+#: includes/Admin/Admin_Subscription.php:1616
 #. Translators: %s: link to the classic UI
 msgid "Use the <a href=\"%s\">classic UI</a>."
 msgstr ""
@@ -2705,7 +2705,7 @@ msgid "Payment type not selected for this form. Please contact admin."
 msgstr ""
 
 #: includes/Admin/Forms/Post/Templates/Form_Template.php:104
-#: includes/Admin/Menu.php:142
+#: includes/Admin/Menu.php:143
 #. translators: %s is support Mail
 #. translators: %s: mailto link
 msgid "Want a new integration? <a href=\"%s\" target=\"_blank\">Let us know</a>."
@@ -3013,7 +3013,7 @@ msgstr ""
 msgid "No transactions found."
 msgstr ""
 
-#: includes/Admin/Menu.php:374
+#: includes/Admin/Menu.php:375
 msgid "Submit Ideas"
 msgstr ""
 

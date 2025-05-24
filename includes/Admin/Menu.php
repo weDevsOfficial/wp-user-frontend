@@ -129,6 +129,7 @@ class Menu {
                         'post_counts' => wpuf_get_forms_counts_with_status(),
                         'rest_nonce'  => wp_create_nonce( 'wp_rest' ),
                         'bulk_nonce'  => wp_create_nonce( 'bulk-post-forms' ),
+                        'rest_url'    => esc_url_raw( rest_url() ),
                     ]
                 );
                 require_once WPUF_INCLUDES . '/Admin/views/post-forms-list-table-view.php';

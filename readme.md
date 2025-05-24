@@ -262,23 +262,19 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 ## Screenshots ##
 
 1. Create Forms with Powerful Builders
-2. 25+ Customizable Form Elements
-3. Fully Customizable Form Elements
-4. Frontend View of Your Forms
-5. Get Detailed List of your Forms
+2. 32+ Customizable Form Fields
+3. Customizable Form with Individual Post Settings
+4. Schedule Forms & Limit Entries with Time and Submission Controls
+5. Frontend View of Your Forms
 6. Let Your Users View Details of Their Posts
-7. Let Your users Edit Their Profiles from Frontend
-8. Allow Users to Buy Subscription Packs
-9. Create Subscription Packs Easily
-10. Configure Your Subscription Packs
-11. Set Up Pricings for Subscription Packs
-12. Show Subscribed Subscriptions Packs
-13. Customizable Form with Individual Post Settings
-14. Customize Your Post on the Fly
-15. Control and configure everything from
-16. Dashboard Settings to Configure Posts
-17. Login, Restriction, Frontend Security
-18. Set Payment Related Options
+7. Start Fast with Pre-Built Registration Templates
+8. Connect Your Registration Forms to Leading Marketing & CRM Platforms
+9. Let Your Users Edit Their Profiles from Frontend
+10. Allow users to buy subscription pack
+11. Configure Your Subscription Packs
+12. Control and configure everything from Powerful User Frontend Settings
+13. Login, Restriction, Frontend Security
+14. Customize your Forms in Gutenberg Editor
 
 ## Changelog ##
 ### v4.1.4 (12 May, 2025) ###

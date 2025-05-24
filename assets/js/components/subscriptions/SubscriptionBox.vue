@@ -72,10 +72,13 @@ const vClickOutside = {
 
 const getSubscribers = () => {
     const queryParams = {'subscription_id': subscription.value.ID};
+    
+    // Use the correct REST API root, including subdirectory if present
+    const restApiRoot = wpufSubscriptions.rest_url.replace(/\/$/, ''); // Remove trailing slash if any
 
     apiFetch(
         {
-            path: addQueryArgs( '/wp-json/wpuf/v1/wpuf_subscription/subscribers', queryParams ),
+            path: addQueryArgs( `${restApiRoot}/wpuf/v1/wpuf_subscription/subscribers`, queryParams ),
             method: 'GET',
             headers: {
                 'X-WP-Nonce': wpufSubscriptions.nonce,

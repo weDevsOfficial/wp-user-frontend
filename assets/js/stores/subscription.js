@@ -147,7 +147,9 @@ export const useSubscriptionStore = defineStore( 'subscription', {
             this.setMetaValue( '_sub_allowed_term_ids', uniqueTaxonomies );
 
             const subscription = this.currentSubscription;
-            let requestUrl = '/wp-json/wpuf/v1/wpuf_subscription';
+            // Use the correct REST API root, including subdirectory if present
+            const restApiRoot = wpufSubscriptions.rest_url.replace(/\/$/, ''); // Remove trailing slash if any
+            let requestUrl = `${restApiRoot}/wpuf/v1/wpuf_subscription`;
 
             if (subscription.ID) {
                 requestUrl += '/' + subscription.ID;
@@ -318,6 +320,9 @@ export const useSubscriptionStore = defineStore( 'subscription', {
             return !this.hasError();
         },
         deleteSubscription( id ) {
+            // Use the correct REST API root, including subdirectory if present
+            const restApiRoot = wpufSubscriptions.rest_url.replace(/\/$/, ''); // Remove trailing slash if any
+            
             const requestOptions = {
                 method: 'DELETE',
                 headers: {
@@ -326,7 +331,7 @@ export const useSubscriptionStore = defineStore( 'subscription', {
                 },
             };
 
-            return fetch( '/wp-json/wpuf/v1/wpuf_subscription/' + id, requestOptions )
+            return fetch( `${restApiRoot}/wpuf/v1/wpuf_subscription/${id}`, requestOptions )
                 .then( ( response ) => response.json() )
                 .catch( ( error ) => {
                     console.log( error );
@@ -342,9 +347,12 @@ export const useSubscriptionStore = defineStore( 'subscription', {
         async setSubscriptionsByStatus( status, offset = 0 ) {
             this.isSubscriptionLoading = true;
 
+            // Use the correct REST API root, including subdirectory if present
+            const restApiRoot = wpufSubscriptions.rest_url.replace(/\/$/, ''); // Remove trailing slash if any
+            
             const queryParams = {'per_page': wpufSubscriptions.perPage, 'offset': offset, 'post_status': status};
             return apiFetch( {
-                path: addQueryArgs( '/wp-json/wpuf/v1/wpuf_subscription', queryParams ),
+                path: addQueryArgs( `${restApiRoot}/wpuf/v1/wpuf_subscription`, queryParams ),
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -367,7 +375,9 @@ export const useSubscriptionStore = defineStore( 'subscription', {
             });
         },
         async getSubscriptionCount( status = 'all' ) {
-            let path = '/wp-json/wpuf/v1/wpuf_subscription/count';
+            // Use the correct REST API root, including subdirectory if present
+            const restApiRoot = wpufSubscriptions.rest_url.replace(/\/$/, ''); // Remove trailing slash if any
+            let path = `${restApiRoot}/wpuf/v1/wpuf_subscription/count`;
 
             if (status !== 'all') {
                 path += '/' + status;

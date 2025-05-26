@@ -177,7 +177,7 @@ class Paypal {
                 'payer_email' => $user->user_email,
                 'payment_type' => 'paypal',
                 'transaction_id' => $payment['id'],
-                'created' => $this->get_current_time_utc()
+                'created' => gmdate('Y-m-d H:i:s')
             ];
 
             // Insert payment record
@@ -508,7 +508,7 @@ class Paypal {
                 '_post_expiration_message' => isset($pack_meta['_post_expiration_message']) ? $pack_meta['_post_expiration_message'] : '',
                 'subscription_id' => $subscription_id,
                 'trial' => $is_trial ? 'yes' : 'no',
-                'created' => $this->get_current_time_utc()
+                'created' => gmdate('Y-m-d H:i:s')
             ];
 
             // If posts meta is empty, set default values
@@ -1725,7 +1725,7 @@ class Paypal {
                         'payer_email' => get_user_by('id', $user_id)->user_email,
                         'payment_type' => 'PayPal',
                         'transaction_id' => $payment['id'],
-                        'created' => $this->get_current_time_utc(),
+                        'created' => gmdate('Y-m-d H:i:s'),
                     ];
                     
                     \WeDevs\Wpuf\Frontend\Payment::insert_payment($payment_data, $payment['id'], true);

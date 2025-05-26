@@ -688,6 +688,8 @@ export const Selectors = {
         checkPageTitle: (title: string) => `//h1[normalize-space(text())='${title}']`,
         postTitleColumn: '//tbody//tr[1]//td[1]',
         postStatusColumn: '//tbody//tr[1]//td[2]//span[1]',
+        saveDraftButton: '//a[normalize-space(text())="Save Draft"]',
+        draftSavedAlert: '//span[@class="wpuf-draft-saved"]',
 
         // Post Settings Section
         postSettingsSection: {
@@ -718,6 +720,8 @@ export const Selectors = {
             postSubmissionStatusContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[5]',
             postSubmissionStatusDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[5]',
             postSubmissionStatusOption: (value: string) => `(//div[contains(@class,"selectize-dropdown-content")])//div[@data-value="${value}"]`,
+
+            savingAsDraftToggleOn: '//input[@id="draft_post"]/following-sibling::span[1]',
         },
 
         // Validation Messages

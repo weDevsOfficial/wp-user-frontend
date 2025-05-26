@@ -456,4 +456,51 @@ export class PostFormSettingsPage extends Base {
         }
         
     }
+
+    async setPostSavingAsDraft(formName: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
+
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.savingAsDraftToggleOn);
+
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        
+    }
+
+    async savingPostAsDraft(postTitle: string, postContent: string, postExcerpt: string, value: string) {
+        // Go to submit post page
+        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        // Fill post title
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
+        
+        // Enter Post Description
+        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
+            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
+        
+        // Submit the post
+        await this.validateAndClick(Selectors.postFormSettings.saveDraftButton);
+        await this.page.waitForTimeout(200);
+        await expect(this.page.locator(Selectors.postFormSettings.draftSavedAlert)).toBeVisible();
+
+        await this.page.goto(Urls.baseUrl + '/account/?section=post', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        const newPostTitle = await  this.page.innerText(Selectors.postFormSettings.postTitleColumn);
+        if (postTitle == newPostTitle) {
+            const newPostStatus = await this.page.innerText(Selectors.postFormSettings.postStatusColumn);
+            await expect(newPostStatus).toContain(value);
+        }
+    }
 }

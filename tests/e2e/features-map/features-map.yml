@@ -122,3 +122,7 @@ features:
     name: Admin is validating post submission status to draft - list
   - id: PFS0025
     name: Admin is checking post submission status to publish
+  - id: PFS0026
+    name: Admin is enabling post saving as draft
+  - id: PFS0027
+    name: Admin is saving post as draft

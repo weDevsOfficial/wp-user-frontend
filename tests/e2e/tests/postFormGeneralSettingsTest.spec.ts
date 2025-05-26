@@ -228,6 +228,19 @@ export default function postFormGeneralSettingsTests() {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.validateSubmittedPostStatusFE(postTitle, postContent, postExcerpt, 'Live');
         });
+
+        test('PFS0026 : Admin is enabling post saving as draft', async ({ page }) => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.setPostSavingAsDraft(formName);
+        });
+
+        test('PFS0027 : Admin is saving post as draft', async ({ page }) => {
+            const postTitle = faker.word.words(3);
+            const postContent = faker.lorem.paragraph();
+            const postExcerpt = faker.lorem.paragraph();
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.savingPostAsDraft(postTitle, postContent, postExcerpt, 'Offline');
+        });
     });
 
     

@@ -675,6 +675,7 @@ export const Selectors = {
         addNewButton: '//a[contains(text(),"Add New")]',
         saveButton: '//button[normalize-space(text())="Save"]',
         postTypeColumn: '//tbody/tr[1]/td[2]',
+        postSubmissionStatusColumn: '//tbody/tr[1]/td[3]',
         clickFormEditorSettings: '(//a[contains(@class,"wpuf-nav-tab wpuf-nav-tab-active")])[2]',
         clickBlankForm: '//a[@title="Blank Form" and contains(text(), "Create Form")]',
         confirmNewNameTickButton: '//input[@name="post_title"]/following-sibling::i[1]',
@@ -685,6 +686,8 @@ export const Selectors = {
         checkPostTitle: (title: string) => `//h1[normalize-space(text())='${title}']`,
         checkSuccessMessage: '//div[@class="wpuf-success"]',
         checkPageTitle: (title: string) => `//h1[normalize-space(text())='${title}']`,
+        postTitleColumn: '//tbody//tr[1]//td[1]',
+        postStatusColumn: '//tbody//tr[1]//td[2]//span[1]',
 
         // Post Settings Section
         postSettingsSection: {
@@ -709,8 +712,12 @@ export const Selectors = {
             postRedirectionPageContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[4]',
             postRedirectionPageDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[4]',
             postRedirectionPageOption: (text: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[contains(text(),"${text}")]`,
-            
+
             postRedirectionUrlInput: '//input[@id="url"]',
+
+            postSubmissionStatusContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[5]',
+            postSubmissionStatusDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[5]',
+            postSubmissionStatusOption: (value: string) => `(//div[contains(@class,"selectize-dropdown-content")])//div[@data-value="${value}"]`,
         },
 
         // Validation Messages

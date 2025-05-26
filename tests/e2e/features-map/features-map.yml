@@ -98,3 +98,27 @@ features:
     name: Admin is setting successful post redirection to a url
   - id: PFS0013
     name: Admin is checking post redirection to a url
+  - id: PFS0014
+    name: Admin is setting post submission status to draft
+  - id: PFS0015
+    name: Admin is validating post submission status to draft - list
+  - id: PFS0016
+    name: Admin is checking post submission status to draft - FE
+  - id: PFS0017
+    name: Admin is setting post submission status to pending
+  - id: PFS0018
+    name: Admin is validating post submission status to draft - list
+  - id: PFS0019
+    name: Admin is checking post submission status to pending
+  - id: PFS0020
+    name: Admin is setting post submission status to private
+  - id: PFS0021
+    name: Admin is validating post submission status to draft - list
+  - id: PFS0022
+    name: Admin is checking post submission status to private
+  - id: PFS0023
+    name: Admin is setting post submission status to publish
+  - id: PFS0024
+    name: Admin is validating post submission status to draft - list
+  - id: PFS0025
+    name: Admin is checking post submission status to publish

@@ -73,7 +73,7 @@ export class PostFormSettingsPage extends Base {
     }
 
     // Validate post type in list
-    async validatePostTypeInList(formName: string, expectedPostType: string) {
+    async validatePostTypeInList(expectedPostType: string) {
         // Go to post forms list
         await Promise.all([
             this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' }),
@@ -389,5 +389,71 @@ export class PostFormSettingsPage extends Base {
         await this.page.waitForTimeout(2000);
 
         await expect(this.page).toHaveURL(expectedUrl);
+    }
+
+    // Set post submission status
+    async setPostSubmissionStatus(formName: string, value: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
+
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postSubmissionStatusContainer);
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postSubmissionStatusDropdown);
+
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postSubmissionStatusOption(value));
+
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        
+    }
+
+    // Validate post type in list
+    async validatePostSubmissionStatusInList(expectedPostStatus: string) {
+        // Go to post forms list
+        await Promise.all([
+            this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' }),
+        ]);
+
+        // Find the row containing the form name
+        const postStatusText = await this.page.innerText(Selectors.postFormSettings.postSubmissionStatusColumn);
+        
+        // Verify post type matches expected
+        expect(postStatusText.toLowerCase()).toContain(expectedPostStatus.toLowerCase());
+    }
+
+    // Validate submitted post status
+    async validateSubmittedPostStatusFE(postTitle: string, postContent: string, postExcerpt: string, value: string) {
+        // Go to submit post page
+        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        // Fill post title
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
+        
+        // Enter Post Description
+        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
+            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
+        
+        // Submit the post
+        await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
+        await this.page.waitForTimeout(2000);
+
+        await this.page.goto(Urls.baseUrl + '/account/?section=post', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        const newPostTitle = await  this.page.innerText(Selectors.postFormSettings.postTitleColumn);
+        if (postTitle == newPostTitle) {
+            const newPostStatus = await this.page.innerText(Selectors.postFormSettings.postStatusColumn);
+            await expect(newPostStatus).toContain(value);
+        }
+        
     }
 }

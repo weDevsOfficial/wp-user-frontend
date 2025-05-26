@@ -26,6 +26,18 @@ export default function postFormGeneralSettingsTests() {
          * @Test_PFS0011 : Admin is checking post redirection to another page
          * @Test_PFS0012 : Admin is setting successful post redirection to a url
          * @Test_PFS0013 : Admin is checking post redirection to a url
+         * @Test_PFS0014 : Admin is setting post submission status to draft
+         * @Test_PFS0015 : Admin is validating post submission status to draft - list
+         * @Test_PFS0016 : Admin is checking post submission status to draft - FE
+         * @Test_PFS0017 : Admin is setting post submission status to pending
+         * @Test_PFS0018 : Admin is validating post submission status to draft - list
+         * @Test_PFS0019 : Admin is checking post submission status to pending
+         * @Test_PFS0020 : Admin is setting post submission status to private
+         * @Test_PFS0021 : Admin is validating post submission status to draft - list
+         * @Test_PFS0022 : Admin is checking post submission status to private
+         * @Test_PFS0023 : Admin is setting post submission status to publish
+         * @Test_PFS0024 : Admin is validating post submission status to draft - list
+         * @Test_PFS0025 : Admin is checking post submission status to publish
          *
          */
 
@@ -52,7 +64,7 @@ export default function postFormGeneralSettingsTests() {
             const postFormSettings = new PostFormSettingsPage(page);
 
             // Validate that the post type shows correctly in the list
-            await postFormSettings.validatePostTypeInList(formName, 'page');
+            await postFormSettings.validatePostTypeInList('page');
         });
 
         test('PFS0003 : Admin is validating post type from FE', async ({ page }) => {
@@ -134,6 +146,89 @@ export default function postFormGeneralSettingsTests() {
 
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.validateRedirectionToUrl(postTitle, postContent, postExcerpt, expectedUrl);
+            await postFormSettings.setPostRedirectionToPost(formName, 'post');
+        });
+
+        test('PFS0014 : Admin is setting post submission status to draft', async ({ page }) => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.setPostSubmissionStatus(formName, 'draft');
+        });
+
+        test('PFS0015 : Admin is validating post submission status to draft - list', async ({ page }) => {
+            const postFormSettings = new PostFormSettingsPage(page);
+
+            // Validate that the post type shows correctly in the list
+            await postFormSettings.validatePostSubmissionStatusInList('Draft');
+        });
+
+        test('PFS0016 : Admin is checking post submission status to draft - FE', async ({ page }) => {
+            const postTitle = faker.word.words(3);
+            const postContent = faker.lorem.paragraph();
+            const postExcerpt = faker.lorem.paragraph();
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.validateSubmittedPostStatusFE(postTitle, postContent, postExcerpt, 'Offline');
+        });
+
+        test('PFS0017 : Admin is setting post submission status to pending', async ({ page }) => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.setPostSubmissionStatus(formName, 'pending');
+        });
+
+        test('PFS0018 : Admin is validating post submission status to draft - list', async ({ page }) => {
+            const postFormSettings = new PostFormSettingsPage(page);
+
+            // Validate that the post type shows correctly in the list
+            await postFormSettings.validatePostSubmissionStatusInList('Pending Review');
+        });
+
+        test('PFS0019 : Admin is checking post submission status to pending', async ({ page }) => {
+            const postTitle = faker.word.words(3);
+            const postContent = faker.lorem.paragraph();
+            const postExcerpt = faker.lorem.paragraph();
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.validateSubmittedPostStatusFE(postTitle, postContent, postExcerpt, 'Awaiting Approval');
+        });
+
+        test('PFS0020 : Admin is setting post submission status to private', async ({ page }) => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.setPostSubmissionStatus(formName, 'private');
+        });
+
+        test('PFS0021 : Admin is validating post submission status to draft - list', async ({ page }) => {
+            const postFormSettings = new PostFormSettingsPage(page);
+
+            // Validate that the post type shows correctly in the list
+            await postFormSettings.validatePostSubmissionStatusInList('Private');
+        });
+
+        test('PFS0022 : Admin is checking post submission status to private', async ({ page }) => {
+            const postTitle = faker.word.words(3);
+            const postContent = faker.lorem.paragraph();
+            const postExcerpt = faker.lorem.paragraph();
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.validateSubmittedPostStatusFE(postTitle, postContent, postExcerpt, 'Private');
+        });
+
+        test('PFS0023 : Admin is setting post submission status to publish', async ({ page }) => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.setPostSubmissionStatus(formName, 'publish');
+        });
+        
+        test('PFS0024 : Admin is validating post submission status to draft - list', async ({ page }) => {
+            const postFormSettings = new PostFormSettingsPage(page);
+
+            // Validate that the post type shows correctly in the list
+            await postFormSettings.validatePostSubmissionStatusInList('Published');
+        });
+
+        test('PFS0025 : Admin is checking post submission status to publish', async ({ page }) => {
+            const postTitle = faker.word.words(3);
+            const postContent = faker.lorem.paragraph();
+            const postExcerpt = faker.lorem.paragraph();
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.validateSubmittedPostStatusFE(postTitle, postContent, postExcerpt, 'Live');
         });
     });
+
+    
 }

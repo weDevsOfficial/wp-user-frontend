@@ -486,7 +486,7 @@ export const Selectors = {
             // Create Post
             submitPostFormsFE: '//input[@value="Create Post"]',
             // Validate Post Submitted
-            validatePostSubmitted: '//h1[@class="wp-block-post-title"]',
+            validatePostSubmitted: (postFormTitle:string)=> `//h1[normalize-space(text())='${postFormTitle}']`,
         },
 
         postFormsFrontendValidate: {
@@ -678,6 +678,13 @@ export const Selectors = {
         clickFormEditorSettings: '(//a[contains(@class,"wpuf-nav-tab wpuf-nav-tab-active")])[2]',
         clickBlankForm: '//a[@title="Blank Form" and contains(text(), "Create Form")]',
         confirmNewNameTickButton: '//input[@name="post_title"]/following-sibling::i[1]',
+        clickForm: (formName: string) => `//span[normalize-space()="${formName}"]`,
+        postTypePage: (type: string) => `//a[normalize-space()="${type}"]`,
+        postCategory: (category: string) => `//a[normalize-space()="${category}"]`,
+        submitPostButton: '//input[@name="submit"]',
+        checkPostTitle: (title: string) => `//h1[normalize-space(text())='${title}']`,
+        checkSuccessMessage: '//div[@class="wpuf-success"]',
+        checkPageTitle: (title: string) => `//h1[normalize-space(text())='${title}']`,
 
         // Post Settings Section
         postSettingsSection: {
@@ -686,49 +693,29 @@ export const Selectors = {
             
             // Post Type Selectize Dropdown
             postTypeContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[1]',
-            postTypeInput: '//input[@id="post_type-selectized"]',
             postTypeDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[1]',
             postTypeOption: (type: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[@data-value="${type}"]`,
+
+            defaultCategoryContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[2]',
+            defaultCategoryDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[2]',
+            defaultCategoryOption: (type: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[contains(text(),"${type}")]`,
+
+            postRedirectionContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[3]',
+            postRedirectionDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[3]',
+            postRedirectionOption: (value: string) => `(//div[contains(@class,"selectize-dropdown-content")])//div[@data-value="${value}"]`,
+
+            postRedirectionMessage: '//textarea[@id="message"]',
+
+            postRedirectionPageContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[4]',
+            postRedirectionPageDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[4]',
+            postRedirectionPageOption: (text: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[contains(text(),"${text}")]`,
             
-            defaultCategorySelect: '//select[@id="default_category"]',
-            redirectToSelect: '//select[@id="redirect_to"]',
-            messageTextarea: '//textarea[@id="message"]',
-            pageSelect: '//select[@id="page_id"]',
-            customUrlInput: '//input[@id="url"]',
-            postStatusSelect: '//select[@id="post_status"]',
-            
-            // Draft Settings
-            draftPostToggle: '//input[@id="draft_post"]',
-            draftPostLabel: '//label[contains(text(),"Enable saving as draft")]',
-            
-            // Submit Button Settings
-            submitButtonText: '//input[@id="submit_text"]',
-            
-            // Form Template
-            formTemplateSection: '//div[@id="form_template"]',
-            formTemplatePostRadio: '//input[@value="post_form_template_post"]',
-            
-            // Multi-step Settings
-            enableMultistepToggle: '//input[@id="enable_multistep"]',
-            multistepProgressbarTypeSelect: '//select[@id="multistep_progressbar_type"]',
-            
-            // Color Settings
-            activeTextColor: '//input[@id="ms_ac_txt_color"]',
-            activeBackgroundColor: '//input[@id="ms_active_bgcolor"]',
-            backgroundColor: '//input[@id="ms_bgcolor"]'
+            postRedirectionUrlInput: '//input[@id="url"]',
         },
 
         // Validation Messages
         messages: {
             formSaved: '//div[normalize-space(text())="Saved form data"]',
-            templateWarning: '//div[contains(@class,"wpuf-bg-yellow-50")]//p'
         },
-
-        // Helper Elements
-        tooltips: {
-            postTypeTooltip: '//span[contains(@data-original-title,"Post Type")]',
-            defaultCategoryTooltip: '//span[contains(@data-original-title,"Default Category")]',
-            redirectToTooltip: '//span[contains(@data-original-title,"Successful Redirection")]'
-        }
     },
 };

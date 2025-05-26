@@ -1,11 +1,10 @@
 import { test } from '@playwright/test';
+import * as fs from 'fs'; //Clear Cookie
+import resetWordpressSite from './resetWordpressSite.spec';
 import loginAndSetupTests from './loginAndSetupTests.spec';
 import postFormsTests from './postFormsTests.spec';
 import registrationFormsTestsPro from './registrationFormsTestsPro.spec';
-// import subscriptionsTests from './subscription.spec';
-import * as fs from 'fs'; //Clear Cookie
-import resetWordpressSite from './resetWordpressSite.spec';
-import postFormSettingsTests from './postFormSettingsTest.spec';
+import postFormGeneralSettingsTests from './postFormGeneralSettingsTest.spec';
 
 // Clear state.json before each test group
 const clearState = () => {
@@ -63,4 +62,6 @@ clearState();
 test.describe(registrationFormsTestsPro);
 
 clearState();
-test.describe(postFormSettingsTests);
+test.describe(postFormGeneralSettingsTests);
+
+clearState();

@@ -37,7 +37,16 @@ export class PostFormSettingsPage extends Base {
     }
 
     // Change post type in form settings
-    async changePostType(postType: string) {
+    async changePostType(postType: string, formName: string) {
+        // Go to post forms page
+        await Promise.all([
+            this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' }),
+        ]);
+        
+        // Click on the form name
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+        
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
         
@@ -45,7 +54,7 @@ export class PostFormSettingsPage extends Base {
         await this.page.waitForTimeout(1000);
         
         // Click Post Settings section
-        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
         
         // Open the dropdown by clicking the container
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postTypeContainer);
@@ -77,47 +86,308 @@ export class PostFormSettingsPage extends Base {
         expect(postTypeText.toLowerCase()).toContain(expectedPostType.toLowerCase());
     }
 
-    // Configure form template
-    async configureFormTemplate(usePostTemplate: boolean = true) {
-        if (usePostTemplate) {
-            await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.formTemplatePostRadio);
-        }
-    }
 
-    // Enable multi-step form
-    async enableMultiStepForm(enable: boolean = true) {
-        const currentState = await this.page.isChecked(Selectors.postFormSettings.postSettingsSection.enableMultistepToggle);
-        if (currentState !== enable) {
-            await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.enableMultistepToggle);
-        }
-    }
+    // Submit a post from frontend and validate post type
+    async validatePostTypeFE(postTitle: string, postContent: string, postExcerpt: string) {
 
-    // Configure draft settings
-    async enableDraftSaving(enable: boolean = true) {
-        const currentState = await this.page.isChecked(Selectors.postFormSettings.postSettingsSection.draftPostToggle);
-        if (currentState !== enable) {
-            await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.draftPostToggle);
-        }
-    }
-
-    // Set submit button text
-    async setSubmitButtonText(text: string) {
-        await this.validateAndFillStrings(Selectors.postFormSettings.postSettingsSection.submitButtonText, text);
-    }
-
-    // Set post status
-    async setPostStatus(status: string) {
-        await this.page.selectOption(Selectors.postFormSettings.postSettingsSection.postStatusSelect, status);
-    }
-
-    // Configure redirection
-    async configureRedirection(redirectType: 'post' | 'page' | 'url', value?: string) {
-        await this.page.selectOption(Selectors.postFormSettings.postSettingsSection.redirectToSelect, redirectType);
+        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
         
-        if (redirectType === 'page' && value) {
-            await this.page.selectOption(Selectors.postFormSettings.postSettingsSection.pageSelect, value);
-        } else if (redirectType === 'url' && value) {
-            await this.validateAndFillStrings(Selectors.postFormSettings.postSettingsSection.customUrlInput, value);
-        }
+        // Fill post title
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
+        
+        //Enter Post Description
+        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
+            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
+        
+        // Submit the post
+        await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
+
+        await this.page.waitForTimeout(2000);
+        
+        // Wait for success message
+        await expect(this.assertionValidate(Selectors.postFormSettings.postTypePage(postTitle))).toBeTruthy();
+        
+    }
+
+    // Set default category
+    async setDefaultCategory(category: string, formName: string) {
+
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+        
+        // Wait for form list to load and click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+        
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
+        
+        // Open the dropdown by clicking the container
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postTypeContainer);
+        
+        // Wait for dropdown to be visible
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postTypeDropdown, { state: 'visible' });
+        
+        // Click the desired option
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postTypeOption('post'));
+        
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+        
+        // Wait for save and verify success message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        // Open the dropdown by clicking the container
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.defaultCategoryContainer);
+        
+        // Wait for dropdown to be visible
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.defaultCategoryDropdown, { state: 'visible' });
+        
+        // Click the desired option
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.defaultCategoryOption(category));
+        
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+        
+        // Wait for save and verify success message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+    }
+
+    // Submit a post and validate category
+    async submitAndValidateCategory(postTitle: string, postContent: string, postExcerpt: string, category: string) {
+        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
+        
+        // Fill post title
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
+        
+        //Enter Post Description
+        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
+            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
+        
+        // Submit the post
+        await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
+
+        await this.page.waitForTimeout(2000);
+        
+        // Wait for success message
+        await expect(this.assertionValidate(Selectors.postFormSettings.postCategory(category))).toBeTruthy();
+    }
+
+    // Set post redirection to newly created post
+    async setPostRedirectionToPost(formName: string, value: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+        
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+        
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
+        
+        // Open the dropdown by clicking the container
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionContainer);
+        
+        // Wait for dropdown to be visible
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown, { state: 'visible' });
+        
+        // Click the desired option
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionOption(value));
+        
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+    }
+
+    // Set post redirection to newly created post
+    async setPostRedirectionToSamePage(formName: string, value: string, message: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+        
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+        
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
+        
+        // Open the dropdown by clicking the container
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionContainer);
+        
+        // Wait for dropdown to be visible
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown, { state: 'visible' });
+        
+        // Click the desired option
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionOption(value));
+
+        await this.validateAndFillStrings(Selectors.postFormSettings.postSettingsSection.postRedirectionMessage, message);
+        
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+    }
+
+    // Set post redirection to another page
+    async setPostRedirectionToPage(formName: string, value: string, text: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+        
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+        
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
+        
+        // Select redirect to page
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionContainer);
+        
+        // Select the page
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown);
+        
+        // Set success message
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionOption(value));
+
+        await this.page.waitForTimeout(1000);
+
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionPageContainer);
+
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionPageDropdown);
+
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionPageOption(text));
+        
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+
+    }
+
+    // Set post redirection to URL
+    async setPostRedirectionToUrl(formName: string, value: string, url: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+        
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+        
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
+        
+        // Select redirect to URL
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionContainer);
+        
+        // Enter the URL
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown);
+
+        // Set success message
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionOption(value));
+        
+        await this.validateAndFillStrings(Selectors.postFormSettings.postSettingsSection.postRedirectionUrlInput, url);
+        
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+    }
+
+    // Validate redirection after post submission
+    async validateRedirectionToPost(postTitle: string, postContent: string, postExcerpt: string) {
+        // Go to submit post page
+        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
+        
+        // Fill post title
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
+        
+        // Enter Post Description
+        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
+            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
+        
+        // Submit the post
+        await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
+        await this.page.waitForTimeout(2000);
+
+        await expect(this.assertionValidate(Selectors.postFormSettings.checkPostTitle(postTitle))).toBeTruthy();
+    }
+
+    // Validate redirection after post submission
+    async validateRedirectionToSamePage(postTitle: string, postContent: string, postExcerpt: string, message: string) {
+        // Go to submit post page
+        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
+        
+        // Fill post title
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
+        
+        // Enter Post Description
+        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
+            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
+        
+        // Submit the post
+        await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
+        await this.page.waitForTimeout(2000);
+
+        const successMessage = await this.page.innerText(Selectors.postFormSettings.checkSuccessMessage);
+
+        expect(successMessage).toContain(message);
+    }
+
+    // Validate redirection after post submission
+    async validateRedirectionToPage(postTitle: string, postContent: string, postExcerpt: string, pageTitle: string) {
+        // Go to submit post page
+        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
+        
+        // Fill post title
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
+        
+        // Enter Post Description
+        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
+            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
+        
+        // Submit the post
+        await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
+        await this.page.waitForTimeout(2000);
+
+        await expect(this.assertionValidate(Selectors.postFormSettings.checkPageTitle(pageTitle))).toBeTruthy();
+    }
+
+    // Validate redirection after post submission
+    async validateRedirectionToUrl(postTitle: string, postContent: string, postExcerpt: string, expectedUrl: string) {
+        // Go to submit post page
+        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
+        
+        // Fill post title
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
+        
+        // Enter Post Description
+        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
+            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
+        
+        // Submit the post
+        await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
+        await this.page.waitForTimeout(2000);
+
+        await expect(this.page).toHaveURL(expectedUrl);
     }
 }

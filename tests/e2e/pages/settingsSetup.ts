@@ -351,7 +351,7 @@ export class SettingsSetupPage extends Base {
         //Click Frontend Posting
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPosting);
         //Set Default Post Form 
-        await this.page.selectOption(Selectors.settingsSetup.wpufSettingsPage.setDefaultPostForm, { label: 'FE PostForm' });
+        await this.page.selectOption(Selectors.settingsSetup.wpufSettingsPage.setDefaultPostForm, { label: postFormPresetFrontEndTitle });
         //Save FrontEnd Posting
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPostingSave);
 
@@ -492,7 +492,7 @@ export class SettingsSetupPage extends Base {
             await this.validateAndFillStrings(Selectors.settingsSetup.categories.addNewCategory, categoryNames[i]);
             await this.validateAndFillStrings(Selectors.settingsSetup.categories.addCategorySlug, categorySlug[i]);
             await this.validateAndClick(Selectors.settingsSetup.categories.submitCategory);
-            await this.page.waitForTimeout(2000);
+            await this.page.waitForTimeout(1000);
             await this.page.waitForLoadState('domcontentloaded');
             const validatedCategory = await this.page.innerText(Selectors.settingsSetup.categories.validateCategory);
             await expect(validatedCategory).toContain(categoryNames[i]);
@@ -508,8 +508,8 @@ export class SettingsSetupPage extends Base {
         //Add New Category
         await this.validateAndClick(Selectors.settingsSetup.tags.clickTagsMenu);
         await this.page.waitForLoadState('domcontentloaded');
-        const tagNames: string[] = ['Physics', 'Chemistry', 'Genetics', 'Rock', 'Pop', 'Jazz', 'Democracy', 'Elections', 'Campaigns', 'Football', 'Cricket', 'Fitness', 'AI', 'Gadgets', 'Software'];
-        const tagSlug: string[] = ['physics', 'chemistry', 'genetics', 'rock', 'pop', 'jazz', 'democracy', 'elections', 'campaigns', 'football', 'cricket', 'fitness', 'ai', 'gadgets', 'software'];
+        const tagNames: string[] = ['Physics', 'Rock', 'Democracy', 'Football', 'AI'];
+        const tagSlug: string[] = ['physics', 'rock', 'democracy', 'football', 'ai'];
         for (let i = 0; i < tagNames.length; i++) {
             await this.validateAndFillStrings(Selectors.settingsSetup.tags.addNewTag, tagNames[i]);
             await this.validateAndFillStrings(Selectors.settingsSetup.tags.addTagSlug, tagSlug[i]);

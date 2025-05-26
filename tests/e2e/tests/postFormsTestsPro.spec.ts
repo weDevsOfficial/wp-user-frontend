@@ -120,7 +120,7 @@ test.describe('Post-Forms @Pro :-->', () => {
         const PostFormsPro = new PostFormsProPage(page);
         const SettingsSetup = new SettingsSetupPage(page);
 
-        const postFormPresetFrontendTitle = 'FE PostForm - 0001';
+        const postFormPresetFrontendTitle = 'FE PostForm';
 
         await SettingsSetup.changeSettingsSetDefaultPostForm(postFormPresetFrontendTitle);
 

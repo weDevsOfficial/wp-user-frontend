@@ -62,7 +62,7 @@ export class PostFormsFrontendPage extends Base{
         //Create Post
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.submitPostFormsFE);
         //Validate Post Submitted
-        const validatePostSubmitted = await this.page.innerText(`//h1[normalize-space(text())='${postFormTitle}']`);
+        const validatePostSubmitted = await this.page.innerText(Selectors.postForms.postFormsFrontendCreate.validatePostSubmitted(postFormTitle));
         expect(validatePostSubmitted).toContain(postFormTitle);
     }
 

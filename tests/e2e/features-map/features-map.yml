@@ -76,3 +76,25 @@ features:
     name: Admin is changing post type
   - id: PFS0002
     name: Admin is validating post type
+  - id: PFS0003
+    name: Admin is validating post type from FE
+  - id: PFS0004
+    name: Admin is setting the default category
+  - id: PFS0005
+    name: Admin is validating default category from FE
+  - id: PFS0006
+    name: Admin is setting successful post redirection to newly created post
+  - id: PFS0007
+    name: Admin is checking post redirection to newly created post
+  - id: PFS0008
+    name: Admin is setting successful post redirection to same page
+  - id: PFS0009
+    name: Admin is checking post redirection to same page
+  - id: PFS0010
+    name: Admin is setting successful post redirection to another page
+  - id: PFS0011
+    name: Admin is checking post redirection to another page
+  - id: PFS0012
+    name: Admin is setting successful post redirection to a url
+  - id: PFS0013
+    name: Admin is checking post redirection to a url

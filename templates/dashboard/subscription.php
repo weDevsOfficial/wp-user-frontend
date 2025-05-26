@@ -52,9 +52,10 @@ if ( ! function_exists( 'wpuf_dashboard_get_subscription_data' ) ) {
 		$cycle_period = $subscription->meta_value['cycle_period'];
 
 		// Get trial details
-		$trial_status        = $subscription->meta_value['trial_status'];
-		$trial_duration      = $subscription->meta_value['trial_duration'];
-		$trial_duration_type = $subscription->meta_value['trial_duration_type'];
+		$trial_status        = $subscription->meta_value['_trial_status'];
+		$trial_duration      = $subscription->meta_value['_trial_duration'];
+		$trial_duration_type = $subscription->meta_value['_trial_duration_type'];
+    
 
 		return [
 			'payment_gateway'       => $payment_gateway,
@@ -82,7 +83,7 @@ function display_subscription_details( $subscription_data ) {
         <br>
 	<?php if ( ! empty( $subscription_data['trial_status'] ) && wpuf_is_checkbox_or_toggle_on( $subscription_data['trial_status'] ) ) : ?>
             <?php echo wp_kses_post( $trial_html ); ?>
-        <?php elseif ( ! empty( $subscription_data['trial_status'] ) && 'off' === $subscription_data['trial_status'] ) : ?>
+        <?php elseif ( ! empty( $subscription_data['trial_status'] ) && ! wpuf_is_checkbox_or_toggle_on( $subscription_data['trial_status'] ) ) : ?>
             <div class="wpuf-recurring-info">
                 <?php echo wp_kses_post( $billing_html ); ?>
             </div>
@@ -190,7 +191,7 @@ function get_next_billing_html( $subscription_data ) {
                 if ( ! empty( $user_sub['posts'] ) ) {
                     foreach ( $user_sub['posts'] as $key => $value ) {
                         $value = intval( $value );
-                        if ( 0 === $value || -1 === intval( $value ) ) {
+                        if ( $value === 0 ) {
                             continue;
                         }
                         $post_type_obj = get_post_type_object( $key );
@@ -207,6 +208,9 @@ function get_next_billing_html( $subscription_data ) {
                 if ( ! empty( $user_sub['posts'] ) ) {
                     foreach ( $user_sub['posts'] as $key => $value ) {
                         $value = intval( $value );
+                        if ( $value === 0 ) {
+                            continue;
+                        }
                         $post_type_obj = get_post_type_object( $key );
                         if ( ! $post_type_obj ) {
                             continue;

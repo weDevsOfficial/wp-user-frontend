@@ -96,6 +96,13 @@ const showField = computed(() => {
 });
 
 const modifySubscription = (event) => {
+
+    if (field.value.type === 'input-number') {
+        const min = field.value.min || 1;
+        const value = Math.max(min, Number(event.target.value));
+        event.target.value = value;
+    }
+
     switch (field.value.db_type) {
         case 'meta_serialized':
             subscriptionStore.modifyCurrentSubscription( field.value.db_key, event.target.value, field.value.serialize_key );
@@ -107,7 +114,6 @@ const modifySubscription = (event) => {
 
         default:
             subscriptionStore.setMetaValue( field.value.db_key, event.target.value );
-
     }
 };
 
@@ -120,6 +126,20 @@ const processInput = (event) => {
 const processNumber = (event) => {
     const allowedKeys = ['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight', '.'];
     if (!allowedKeys.includes(event.key) && isNaN(Number(event.key))) {
+        event.preventDefault();
+    }
+
+    // Prevent negative values
+    if (event.key === '-') {
+        event.preventDefault();
+    }
+
+    // Check if the resulting value would be less than min
+    const input = event.target;
+    const newValue = input.value + event.key;
+    const min = input.min || 1;
+    
+    if (!allowedKeys.includes(event.key) && Number(newValue) < min) {
         event.preventDefault();
     }
 }
@@ -268,7 +288,9 @@ onMounted(() => {
                 :placeholder="field.placeholder ? field.placeholder : ''"
                 @input="[modifySubscription($event), processInput($event)]"
                 @keydown="processNumber"
-                min="-1"
+                :min="field.min || 1"
+                :step="field.step || 1"
+                :default="field.default"
                 :class="subscriptionStore.errors[fieldId] ? '!wpuf-border-red-500' : '!wpuf-border-gray-300'"
                 class="placeholder:wpuf-text-gray-400 wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-primaryHover focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-primaryHover sm:wpuf-text-sm">
             <textarea

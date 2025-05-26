@@ -297,6 +297,27 @@
             } else {
                 $('.wpuf_subscription_expiration_field').hide();
             }
+        },
+
+        validateSubscriptionForm: function(e) {
+            var form = $(this),
+                trialStatus = form.find('input#wpuf-trial-status'),
+                trialDuration = form.find('select#wpuf-trial-duration'),
+                hasError = false;
+
+            if (trialStatus.is(':checked')) {
+                var duration = parseInt(trialDuration.val());
+                if (isNaN(duration) || duration < 1) {
+                    e.preventDefault();
+                    alert('Trial duration must be at least 1');
+                    trialDuration.focus();
+                    hasError = true;
+                }
+            }
+
+            if (hasError) {
+                return false;
+            }
         }
 
 	};

@@ -172,7 +172,7 @@ export class SettingsSetupPage extends Base {
         //Go to Plugins page
         const pluginsPage = Urls.baseUrl + '/wp-admin/plugins.php';
         const ifWPUFLite = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.availableWPUFPluginLite);
-        await this.page.waitForTimeout(500);
+        await this.page.waitForTimeout(200);
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow1);
         await this.page.waitForTimeout(500);
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow2);
@@ -275,7 +275,7 @@ export class SettingsSetupPage extends Base {
                 await this.validateAndFillStrings(Selectors.settingsSetup.pluginStatusCheck.fillLicenseKey, process.env.WPUF_PRO_LICENSE_KEY?.toString() || '');
                 await this.page.waitForTimeout(500);
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.submitLicenseKey);
-                await this.page.waitForTimeout(1000);
+                await this.page.waitForTimeout(500);
                 await this.page.reload();
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.activationRemaining);
                 console.log('WPUF-Pro Status: License is Activated');
@@ -324,7 +324,7 @@ export class SettingsSetupPage extends Base {
         //Save Login/Registration
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileSave);
 
-        await this.page.waitForTimeout(2000);
+        await this.page.waitForTimeout(1000);
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPosting);
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.showCustomFields);
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPostingSave);

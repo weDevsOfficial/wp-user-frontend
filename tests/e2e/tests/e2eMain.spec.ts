@@ -10,12 +10,6 @@ import postFormGeneralSettingsTests from './postFormGeneralSettingsTest.spec';
 const clearState = () => {
     fs.writeFileSync('state.json', '{"cookies":[],"origins": []}');
 };
-test.beforeEach(async () => {
-    clearState();
-});
-test.afterEach(async () => {
-    clearState();
-});
 // eslint-disable-next-line no-console
 console.log('CI:', process.env.CI); 
 //*---------------------------------------------------*/
@@ -35,6 +29,7 @@ console.log('CI:', process.env.CI);
 
 // Only run resetWordpressSite locally
 if (process.env.CI == 'false') {
+    clearState();
     test.describe(resetWordpressSite);
 }
 
@@ -57,10 +52,16 @@ if (process.env.CI == 'false') {
  *  - Clears cookies and origins before running any of the tests to maintain test isolation and avoid session interference.
  */
 
+clearState();
 test.describe(loginAndSetupTests);
 
+clearState();
 test.describe(postFormsTests);
 
+clearState();
 test.describe(registrationFormsTestsPro);
 
+clearState();
 test.describe(postFormGeneralSettingsTests);
+
+clearState();

@@ -51,7 +51,7 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
         
         // Wait for settings to load
-        await this.page.waitForTimeout(1000);
+        await this.page.waitForTimeout(500);
         
         // Click Post Settings section
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
@@ -104,7 +104,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(2000);
+        await this.page.waitForTimeout(1000);
         
         // Wait for success message
         await expect(this.assertionValidate(Selectors.postFormSettings.postTypePage(postTitle))).toBeTruthy();
@@ -172,7 +172,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(2000);
+        await this.page.waitForTimeout(1000);
         
         // Wait for success message
         await expect(this.assertionValidate(Selectors.postFormSettings.postCategory(category))).toBeTruthy();
@@ -261,7 +261,7 @@ export class PostFormSettingsPage extends Base {
         // Set success message
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionOption(value));
 
-        await this.page.waitForTimeout(1000);
+        await this.page.waitForTimeout(500);
 
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionPageContainer);
 
@@ -321,7 +321,7 @@ export class PostFormSettingsPage extends Base {
         
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
-        await this.page.waitForTimeout(2000);
+        await this.page.waitForTimeout(1000);
 
         await expect(this.assertionValidate(Selectors.postFormSettings.checkPostTitle(postTitle))).toBeTruthy();
     }
@@ -342,7 +342,7 @@ export class PostFormSettingsPage extends Base {
         
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
-        await this.page.waitForTimeout(2000);
+        await this.page.waitForTimeout(1000);
 
         const successMessage = await this.page.innerText(Selectors.postFormSettings.checkSuccessMessage);
 
@@ -365,7 +365,7 @@ export class PostFormSettingsPage extends Base {
         
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
-        await this.page.waitForTimeout(2000);
+        await this.page.waitForTimeout(1000);
 
         await expect(this.assertionValidate(Selectors.postFormSettings.checkPageTitle(pageTitle))).toBeTruthy();
     }
@@ -386,7 +386,7 @@ export class PostFormSettingsPage extends Base {
         
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
-        await this.page.waitForTimeout(2000);
+        await this.page.waitForTimeout(1000);
 
         await expect(this.page).toHaveURL(expectedUrl);
     }
@@ -444,7 +444,7 @@ export class PostFormSettingsPage extends Base {
         
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
-        await this.page.waitForTimeout(2000);
+        await this.page.waitForTimeout(1000);
 
         await this.page.goto(Urls.baseUrl + '/account/?section=post', { waitUntil: 'domcontentloaded' });
         await this.page.waitForLoadState('networkidle');

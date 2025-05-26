@@ -142,12 +142,9 @@ export class RegistrationFormsPage extends Base {
 
         await this.validateAndClick(Selectors.registrationForms.createBlankForm_RF.clickRegistrationFormMenuOption);
 
-        // await this.page.waitForTimeout(1000 * 5);
         //Start
         await this.assertionValidate(Selectors.registrationForms.createBlankForm_RF.clickRegistraionAddForm);
-        await this.validateAndClick(Selectors.registrationForms.createBlankForm_RF.clickRegistraionAddForm);    //TODO: Issue here
-        // await this.page.waitForTimeout(1000 * 5);
-
+        await this.validateAndClick(Selectors.registrationForms.createBlankForm_RF.clickRegistraionAddForm);
 
         //ClickBlankForm
         //Templates 

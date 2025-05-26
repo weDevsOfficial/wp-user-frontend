@@ -16,6 +16,7 @@ export class BasicLogoutPage extends Base {
             this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'domcontentloaded' }),
         ]);
 
+        await this.page.waitForTimeout(500);
         await this.page.hover(Selectors.logout.basicLogout.logoutHoverUsername);
         await this.page.waitForTimeout(500);
         await this.validateAndClick(Selectors.logout.basicLogout.logoutButton);

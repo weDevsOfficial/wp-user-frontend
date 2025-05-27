@@ -683,6 +683,7 @@ export const Selectors = {
         postTypePage: (type: string) => `//a[normalize-space()="${type}"]`,
         postCategory: (category: string) => `//a[normalize-space()="${category}"]`,
         submitPostButton: '//input[@name="submit"]',
+        submitPostButtonText:(value: string) => `//input[@value="${value}"]`,
         checkPostTitle: (title: string) => `//h1[normalize-space(text())='${title}']`,
         checkSuccessMessage: '//div[@class="wpuf-success"]',
         checkPageTitle: (title: string) => `//h1[normalize-space(text())='${title}']`,
@@ -722,6 +723,10 @@ export const Selectors = {
             postSubmissionStatusOption: (value: string) => `(//div[contains(@class,"selectize-dropdown-content")])//div[@data-value="${value}"]`,
 
             savingAsDraftToggleOn: '//input[@id="draft_post"]/following-sibling::span[1]',
+
+            submitButtonContainer: '(//label[normalize-space(text())="Submit Post Button Text"]/following::input)[1]',
+
+
         },
 
         // Validation Messages

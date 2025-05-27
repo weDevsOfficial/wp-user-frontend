@@ -126,3 +126,5 @@ features:
     name: Admin is enabling post saving as draft
   - id: PFS0027
     name: Admin is saving post as draft
+  - id: PFS0028
+    name: Admin is changing submit button text

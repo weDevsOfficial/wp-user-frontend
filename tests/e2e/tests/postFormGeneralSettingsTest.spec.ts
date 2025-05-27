@@ -38,6 +38,9 @@ export default function postFormGeneralSettingsTests() {
          * @Test_PFS0023 : Admin is setting post submission status to publish
          * @Test_PFS0024 : Admin is validating post submission status to draft - list
          * @Test_PFS0025 : Admin is checking post submission status to publish
+         * @Test_PFS0026 : Admin is enabling post saving as draft
+         * @Test_PFS0027 : Admin is saving post as draft
+         * @Test_PFS0028 : Admin is changing submit button text
          *
          */
 
@@ -240,6 +243,11 @@ export default function postFormGeneralSettingsTests() {
             const postExcerpt = faker.lorem.paragraph();
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.savingPostAsDraft(postTitle, postContent, postExcerpt, 'Offline');
+        });
+
+        test('PFS0028 : Admin is changing submit button text', async ({ page }) => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.changeSubmitButtonText(formName, 'Publish');
         });
     });
 

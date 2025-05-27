@@ -503,4 +503,26 @@ export class PostFormSettingsPage extends Base {
             await expect(newPostStatus).toContain(value);
         }
     }
+
+    async changeSubmitButtonText(formName: string, value: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
+
+        await this.validateAndFillStrings(Selectors.postFormSettings.postSettingsSection.submitButtonContainer, value);
+        
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+
+        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        await this.assertionValidate(Selectors.postFormSettings.submitPostButtonText(value));
+    }
 }

@@ -2588,11 +2588,6 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   margin-bottom: 0.5rem;
 }
 
-.wpuf-my-4 {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
-
 .wpuf-my-8 {
   margin-top: 2rem;
   margin-bottom: 2rem;

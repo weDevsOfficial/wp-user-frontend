@@ -204,11 +204,6 @@ class Payment {
                                                         $billing_amount = apply_filters( 'wpuf_payment_amount',
                                                                                          $pack->meta_value['billing_amount'] );
                                                         ?>
-
-                                                        <div id="wpuf_type"
-                                                             style="display: none"><?php echo 'pack'; ?></div>
-                                                        <div id="wpuf_id"
-                                                             style="display: none"><?php echo esc_attr( $pack_id ); ?></div>
                                                         <div><?php esc_html_e( 'Selected Pack',
                                                                                'wp-user-frontend' ); ?>:
                                                             <strong><?php echo esc_attr( $pack->post_title ); ?></strong>

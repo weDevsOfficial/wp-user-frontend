@@ -179,10 +179,22 @@ function get_next_billing_html( $subscription_data ) {
         </div>
 			<?php
         } else {
-			if ( ! empty( $user_sub['total_feature_item'] ) && -1 === intval( $user_sub['total_feature_item'] ) ) {
+
+			if ( ! empty( $user_sub['total_feature_item'] ) && -1 != intval( $user_sub['total_feature_item'] ) ) {
 				?>
                 <div><strong><?php esc_html_e( 'Number of featured item: ', 'wp-user-frontend' ); ?></strong><?php echo esc_html( $user_sub['total_feature_item'] ); ?></div>
+            <?php } else if ( ! empty( $user_sub['total_feature_item'] ) && -1 == intval( $user_sub['total_feature_item'] ) ) {
+                ?>
+                <div><strong><?php esc_html_e( 'Number of featured item: ', 'wp-user-frontend' ); ?></strong><?php esc_html_e( 'Unlimited', 'wp-user-frontend' ); ?></div>
+            <?php }
+             ?>
+            <?php if(!empty($user_sub['posts']['wp_block']) && -1 != intval( $user_sub['posts']['wp_block'] ) ){ ?>
+                <div><strong><?php esc_html_e( 'Number of reusable blocks: ', 'wp-user-frontend' ); ?></strong><?php echo esc_html( $user_sub['posts']['wp_block'] ); ?></div>
+            <?php } else if ( ! empty( $user_sub['posts']['wp_block'] ) && -1 == intval( $user_sub['posts']['wp_block'] ) ) {
+                ?>
+                <div><strong><?php esc_html_e( 'Number of reusable blocks: ', 'wp-user-frontend' ); ?></strong><?php esc_html_e( 'Unlimited', 'wp-user-frontend' ); ?></div>
             <?php } ?>
+        
             <div>
                 <strong><?php esc_html_e( 'Remaining post: ', 'wp-user-frontend' ); ?></strong>
                 <?php

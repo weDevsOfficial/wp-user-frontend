@@ -54,6 +54,11 @@ class Paypal {
             return;
         }
 
+        // Only show in admin area
+        if (!is_admin()) {
+            return;
+        }
+
         // Get the PayPal settings URL
         $settings_url = admin_url('admin.php?page=wpuf-settings&tab=wpuf_payment');
         $setup_guide_url = 'https://wedevs.com/docs/wp-user-frontend-pro/settings/paypal-payement-gateway/';
@@ -62,16 +67,18 @@ class Paypal {
         <div class="notice notice-info is-dismissible wpuf-paypal-notice" id="wpuf-paypal-settings-notice">
             <div class="wpuf-notice-content" style="display: flex; align-items: center; padding: 10px 0;">
                 <div class="wpuf-notice-icon" style="margin-right: 15px;">
-                    <img src="<?php echo esc_url(WPUF_ASSET_URI . '/images/paypal.png'); ?>" alt="PayPal" style="width: 45px; height: 32px;">
+                    <img src="<?php echo esc_url(WPUF_ASSET_URI . '/images/wpuf_paypal.png'); ?>" alt="PayPal" style="width: 45px; height: 45px;">
                 </div>
                 <div class="wpuf-notice-message" style="flex: 1;">
-                    <h3 style="margin: 0 0 5px 0;"><?php esc_html_e('PayPal Integration Enhanced', 'wp-user-frontend'); ?></h3>
+                    <h3 style="margin: 0 0 5px 0;"><?php esc_html_e('WPUF PayPal Integration Enhanced', 'wp-user-frontend'); ?></h3>
                     <p style="margin: 0;">
                         <?php 
-                        printf(
-                            /* translators: %s: PayPal setup guide URL */
-                            esc_html__("We've enhanced WPUF's PayPal integration to be more secure and reliable with webhook support. If you're using PayPal, please follow our %s to update your settings and ensure uninterrupted payments.", 'wp-user-frontend'),
-                            '<a href="' . esc_url($setup_guide_url) . '" target="_blank" rel="noopener noreferrer">' . esc_html__('PayPal setup guide', 'wp-user-frontend') . '</a>'
+                        echo wp_kses_post(
+                            sprintf(
+                                /* translators: %s: PayPal setup guide URL */
+                                __("We've enhanced <strong>WPUF's PayPal integration</strong> to be more secure and reliable with webhook support. If you're using PayPal, please follow our %s to update your settings and ensure uninterrupted payments.", 'wp-user-frontend'),
+                                '<a href="' . esc_url($setup_guide_url) . '" target="_blank" rel="noopener noreferrer">' . esc_html__('PayPal setup guide', 'wp-user-frontend') . '</a>'
+                            )
                         );
                         ?>
                     </p>
@@ -122,6 +129,10 @@ class Paypal {
         }
         .wpuf-paypal-notice a:hover {
             text-decoration: underline;
+        }
+        .wpuf-paypal-notice strong {
+            font-weight: 600;
+            color: #23282d;
         }
         </style>
         <?php

@@ -3,7 +3,6 @@
 namespace WeDevs\Wpuf\Lib\Gateway;
 use WeDevs\Wpuf\Frontend\Payment;
 use WeDevs\Wpuf\Traits\TaxableTrait;
-use WeDevs\Wpuf\Admin\Subscription;
 
 /**
  * WP User Frontend PayPal gateway
@@ -35,6 +34,117 @@ class Paypal {
         // Add webhook endpoint handler
         add_action('init', [$this, 'register_webhook_endpoint']);
         add_action('template_redirect', [$this, 'handle_webhook_request']);
+        
+        // Add admin notice for PayPal settings update
+        add_action('admin_notices', [$this, 'paypal_settings_update_notice']);
+        add_action('wp_ajax_wpuf_dismiss_paypal_notice', [$this, 'dismiss_paypal_notice']);
+    }
+
+    /**
+     * Display admin notice for PayPal settings update
+     */
+    public function paypal_settings_update_notice() {
+        // Only show to administrators
+        if (!current_user_can('manage_options')) {
+            return;
+        }
+
+        // Check if notice has been dismissed
+        if (get_option('wpuf_paypal_settings_notice_dismissed')) {
+            return;
+        }
+
+        // Get the PayPal settings URL
+        $settings_url = admin_url('admin.php?page=wpuf-settings&tab=wpuf_payment');
+        $setup_guide_url = 'https://wedevs.com/docs/wp-user-frontend-pro/settings/paypal-payement-gateway/';
+        
+        ?>
+        <div class="notice notice-info is-dismissible wpuf-paypal-notice" id="wpuf-paypal-settings-notice">
+            <div class="wpuf-notice-content" style="display: flex; align-items: center; padding: 10px 0;">
+                <div class="wpuf-notice-icon" style="margin-right: 15px;">
+                    <img src="<?php echo esc_url(WPUF_ASSET_URI . '/images/paypal.png'); ?>" alt="PayPal" style="width: 45px; height: 32px;">
+                </div>
+                <div class="wpuf-notice-message" style="flex: 1;">
+                    <h3 style="margin: 0 0 5px 0;"><?php esc_html_e('PayPal Integration Enhanced', 'wp-user-frontend'); ?></h3>
+                    <p style="margin: 0;">
+                        <?php 
+                        printf(
+                            /* translators: %s: PayPal setup guide URL */
+                            esc_html__("We've enhanced WPUF's PayPal integration to be more secure and reliable with webhook support. If you're using PayPal, please follow our %s to update your settings and ensure uninterrupted payments.", 'wp-user-frontend'),
+                            '<a href="' . esc_url($setup_guide_url) . '" target="_blank" rel="noopener noreferrer">' . esc_html__('PayPal setup guide', 'wp-user-frontend') . '</a>'
+                        );
+                        ?>
+                    </p>
+                </div>
+                <div class="wpuf-notice-action" style="margin-left: 15px;">
+                    <a href="<?php echo esc_url($settings_url); ?>" class="button button-primary">
+                        <?php esc_html_e('Update PayPal Settings', 'wp-user-frontend'); ?>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            $(document).on('click', '.wpuf-paypal-notice .notice-dismiss', function() {
+                $.ajax({
+                    url: ajaxurl,
+                    type: 'POST',
+                    data: {
+                        action: 'wpuf_dismiss_paypal_notice',
+                        nonce: '<?php echo wp_create_nonce('wpuf_dismiss_paypal_notice'); ?>'
+                    }
+                });
+            });
+        });
+        </script>
+        
+        <style>
+        .wpuf-paypal-notice {
+            border-left-color: #0073aa;
+        }
+        .wpuf-paypal-notice .wpuf-notice-content {
+            padding: 10px 0;
+        }
+        .wpuf-paypal-notice h3 {
+            color: #23282d;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .wpuf-paypal-notice p {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .wpuf-paypal-notice a {
+            color: #0073aa;
+            text-decoration: none;
+        }
+        .wpuf-paypal-notice a:hover {
+            text-decoration: underline;
+        }
+        </style>
+        <?php
+    }
+
+    /**
+     * Handle dismissal of PayPal settings notice
+     */
+    public function dismiss_paypal_notice() {
+        // Verify nonce
+        if (!wp_verify_nonce($_POST['nonce'], 'wpuf_dismiss_paypal_notice')) {
+            wp_die('Security check failed');
+        }
+
+        // Check user capabilities
+        if (!current_user_can('manage_options')) {
+            wp_die('Insufficient permissions');
+        }
+
+        // Mark notice as dismissed
+        update_option('wpuf_paypal_settings_notice_dismissed', true);
+        
+        wp_die();
     }
 
     /**

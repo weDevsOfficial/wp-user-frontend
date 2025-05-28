@@ -1728,7 +1728,8 @@ Vue.component('form-fields-v4-1', {
         },
 
         get_icon_url: function (field) {
-            if (!this.field_settings[field].icon) {
+            // return if icon is not set, undefined or empty
+            if (typeof this.field_settings[field] === 'undefined' || typeof this.field_settings[field].icon === 'undefined' || this.field_settings[field].icon === '') {
                 return '';
             }
 

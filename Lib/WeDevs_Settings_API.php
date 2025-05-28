@@ -481,6 +481,7 @@ class WeDevs_Settings_API {
                     name="<?php echo esc_attr( $name ); ?>"
                     value="off" />
                 <input
+                    style="opacity: 0;"
                     type="checkbox"
                     <?php echo $value === 'on' ? 'checked' : ''; ?>
                     <?php echo $disabled ? 'disabled' : ''; ?>

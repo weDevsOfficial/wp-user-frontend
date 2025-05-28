@@ -31,16 +31,13 @@ export class PostFormsPage {
         ]);
         //CreateNewPostForm
         await this.page.click(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
+        await this.page.reload();
         //Start
         //Click Add Form
         expect(await this.page.isVisible(Selectors.postForms.createBlankForm_PF.clickPostAddForm)).toBeTruthy();
         await this.page.click(Selectors.postForms.createBlankForm_PF.clickPostAddForm);
 
-        //ClickBlankForm
-        //Templates
-        //Hover over - Blank Form
-        // await this.page.waitForSelector(Selectors.postForms.createBlankForm_PF.hoverBlankForm);
-        // await this.page.hover(Selectors.postForms.createBlankForm_PF.hoverBlankForm);
+        
         //Click Blank Form
         await this.page.waitForSelector(Selectors.postForms.createBlankForm_PF.clickBlankForm);
         await this.page.click(Selectors.postForms.createBlankForm_PF.clickBlankForm);
@@ -66,6 +63,7 @@ export class PostFormsPage {
         ]);
         //CreateNewPostForm
         await this.page.click(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
+        await this.page.reload();
         //Start
         //Click Add Form
         await this.page.click(Selectors.postForms.createBlankForm_PF.clickPostAddForm);
@@ -99,6 +97,7 @@ export class PostFormsPage {
         ]);
         //CreateNewPostForm
         await this.page.click(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
+        await this.page.reload();
         //Start
         //Click Add Form
         await this.page.click(Selectors.postForms.createBlankForm_PF.clickPostAddForm);

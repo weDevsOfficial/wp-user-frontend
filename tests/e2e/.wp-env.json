@@ -1,7 +1,6 @@
 {
     "phpVersion": "7.4",
     "plugins": [
-      "https://downloads.wordpress.org/plugin/wp-reset.latest-stable.zip",
       "../../"
     ]
   }  

@@ -4,31 +4,31 @@ $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
 $pro_features = [
     [
         'icon' => 'icon-doc.svg',
-        'title' => sprintf( 
+        'title' => sprintf(
             // translators: %s is the line break HTML element
             esc_html__( 'Registration form %s builder', 'wp-user-frontend' ), '<span class="line-break"></span>' ),
     ],
     [
         'icon' => 'icon-profile.svg',
-        'title' => sprintf( 
+        'title' => sprintf(
             // translators: %s is the line break HTML element
             esc_html__( 'Profile form %s builder', 'wp-user-frontend' ), '<span class="line-break"></span>' ),
     ],
     [
         'icon' => 'icon-money.svg',
-        'title' => sprintf( 
+        'title' => sprintf(
             // translators: %1$s and %2$s are the line break HTML element
             esc_html__( 'Create & Sell %1$s Subscription %2$s Package', 'wp-user-frontend' ), '<span class="line-break"></span>', '<span class="line-break"></span>' ),
     ],
     [
         'icon' => 'icon-templates.svg',
-        'title' => sprintf( 
+        'title' => sprintf(
             // translators: %s is the line break HTML element
             esc_html__( 'Pre-defined %s Templates', 'wp-user-frontend' ), '<span class="line-break"></span>' ),
     ],
     [
         'icon' => 'icon-checked.svg',
-        'title' => sprintf( 
+        'title' => sprintf(
             // translators: %s is the line break HTML element
             esc_html__( 'Approval System %s after Registration', 'wp-user-frontend' ), '<span class="line-break"></span>' ),
     ],
@@ -42,13 +42,13 @@ $pro_features = [
     ],
     [
         'icon' => 'icon-buddypress.svg',
-        'title' => sprintf( 
+        'title' => sprintf(
             // translators: %s is the line break HTML element
             esc_html__( 'BuddyPress %s Support', 'wp-user-frontend' ), '<span class="line-break"></span>' ),
     ],
     [
         'icon' => 'icon-groups.svg',
-        'title' => sprintf( 
+        'title' => sprintf(
             // translators: %s is the line break HTML element
             esc_html__( 'Social Login & %s Registration', 'wp-user-frontend' ), '<span class="line-break"></span>' ),
     ],
@@ -57,37 +57,37 @@ $pro_features = [
 $email_integrations = [
     [
         'icon' => 'icon-mailchimp.svg',
-        'title' => sprintf( 
+        'title' => sprintf(
             // translators: %s is the line break HTML element
             esc_html__( 'Mailchimp %s Support', 'wp-user-frontend' ), '<span class="line-break"></span>' ),
     ],
     [
         'icon' => 'icon-getresponse.svg',
-        'title' => sprintf( 
+        'title' => sprintf(
             // translators: %s is the line break HTML element
             esc_html__( 'GetResponse %s Support', 'wp-user-frontend' ), '<span class="line-break"></span>' ),
     ],
     [
         'icon' => 'icon-convertkit.svg',
-        'title' => sprintf( 
+        'title' => sprintf(
             // translators: %s is the line break HTML element
             esc_html__( 'ConvertKit %s Support', 'wp-user-frontend' ), '<span class="line-break"></span>' ),
     ],
     [
         'icon' => 'icon-campaign-monitor.svg',
-        'title' => sprintf( 
+        'title' => sprintf(
             // translators: %s is the line break HTML element
             esc_html__( 'Campaign Monitor %s Support', 'wp-user-frontend' ), '<span class="line-break"></span>' ),
     ],
     [
         'icon' => 'icon-mailpoet.svg',
-        'title' => sprintf( 
+        'title' => sprintf(
             // translators: %s is the line break HTML element
             esc_html__( 'Mailpoet %s Support', 'wp-user-frontend' ), '<span class="line-break-tablet"></span>' ),
     ],
     [
         'icon' => 'icon-mailpoet3.svg',
-        'title' => sprintf( 
+        'title' => sprintf(
             // translators: %s is the line break HTML element
             esc_html__( 'Mailpoet 3 Support', 'wp-user-frontend' ), '<span class="line-break"></span>' ),
     ],
@@ -97,7 +97,7 @@ $email_integrations = [
 <div class="wpuf-registration-page-area">
     <header>
         <div class="wpuf-logo-area">
-        <img src="<?php echo wp_kses( WPUF_ASSET_URI . '/images/wpuf-pro-2.svg', array('svg' => [ 'xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true ], 'path' => [ 'd' => true, 'fill' => true ],) ); ?>" alt="WPUF Pro">
+            <img src="<?php echo wp_kses( WPUF_ASSET_URI . '/images/wpuf-pro-2.svg', array('svg' => [ 'xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true ], 'path' => [ 'd' => true, 'fill' => true ],) ); ?>" alt="WPUF Pro">
         </div>
         <div class="wpuf-menu-area">
             <ul>
@@ -119,7 +119,7 @@ $email_integrations = [
         <div class="wpuf-box-inner position-relative">
             <h3><?php esc_html_e( 'Registration Form', 'wp-user-frontend' ); ?><span class="capsule green text-white"><?php esc_html_e( 'Free', 'wp-user-frontend' ); ?></span></h3>
             <p class="text-gray heading-details">
-                <?php printf( 
+                <?php printf(
                     // translators: %1$s and %2$s are the line break HTML element
                     esc_html__( 'Use the following shortcode to add a %1$s simple and default WordPress %2$s registration form.', 'wp-user-frontend' ), '<span class="line-break"></span>', '<span class="line-break"></span>' ); ?>
             </p>
@@ -149,7 +149,7 @@ $email_integrations = [
             </div>
             <div class="titles">
                 <h2><?php esc_html_e( 'Unlock PRO Features', 'wp-user-frontend' ); ?></h2>
-                <p class="text-gray heading-details"><?php printf( 
+                <p class="text-gray heading-details"><?php printf(
                     // translators: %1$s and %2$s are the line break HTML element
                     esc_html__( 'Registration form builder is a two way form which can be used both for user registration %s and profile editing.', 'wp-user-frontend' ), '<span class="line-break"></span>' ); ?></p>
             </div>
@@ -172,7 +172,7 @@ $email_integrations = [
             foreach ( $email_integrations as $integration ) {
                 ?>
                 <div class="single-pro-feature">
-                    <img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/' . $integration['icon'] ); ?>">
+                    <img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/' . $integration['icon'] ); ?>" alt="" />
                     <p><?php echo wp_kses_post( $integration['title'] ); ?></p>
                 </div>
                 <?php

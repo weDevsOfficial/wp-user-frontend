@@ -27,7 +27,7 @@ export default function postFormGeneralSettingsTests() {
         page = await context.newPage();
     });
 
-    test.describe('Post Form Settings Tests @Lite :-->', () => {
+    test.describe('Post Form Settings Tests', () => {
         /**----------------------------------POST FORM SETTINGS----------------------------------**
          *
          * @TestScenario : [Post Form Settings]
@@ -68,7 +68,7 @@ export default function postFormGeneralSettingsTests() {
         const postExcerpt = faker.lorem.paragraph();
         const category = 'Music'; // Using one of the default categories from the screenshot
 
-        test('PFS0001 : Admin is changing post type', async () => {
+        test('PFS0001 : Admin is changing post type', { tag: ['@Lite'] }, async () => {
             formName = PostForm.pfPostName1 + faker.word.words(1);
             const basicLogin = new BasicLoginPage(page);
             await basicLogin.basicLoginAndPluginVisit(Users.adminUsername, Users.adminPassword);
@@ -81,25 +81,25 @@ export default function postFormGeneralSettingsTests() {
             await postFormSettings.changePostType('page', formName);
         });
 
-        test('PFS0002 : Admin is validating post type', async () => {
+        test('PFS0002 : Admin is validating post type', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             // Validate that the post type shows correctly in the list
             await postFormSettings.validatePostTypeInList('page');
         });
 
-        test('PFS0003 : Admin is validating post type from FE', async () => {
+        test('PFS0003 : Admin is validating post type from FE', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             // Submit a post and validate it appears as a page
             await postFormSettings.validatePostTypeFE(postTitle, postContent, postExcerpt);
         });
 
-        test('PFS0004 : Admin is setting the default category', async () => {
+        test('PFS0004 : Admin is setting the default category', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             // Set default category
             await postFormSettings.setDefaultCategory(category, formName);
         });
 
-        test('PFS0005 : Admin is validating default category from FE', async () => {
+        test('PFS0005 : Admin is validating default category from FE', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             const postTitle1 = faker.word.words(3);
             const postContent1 = faker.lorem.paragraph();
@@ -108,12 +108,12 @@ export default function postFormGeneralSettingsTests() {
             await postFormSettings.submitAndValidateCategory(postTitle1, postContent1, postExcerpt1, category);
         });
 
-        test('PFS0006 : Admin is setting successful post redirection to newly created post', async () => {
+        test('PFS0006 : Admin is setting successful post redirection to newly created post', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.setPostRedirectionToPost(formName, 'post');
         });
 
-        test('PFS0007 : Admin is checking post redirection to newly created post', async () => {
+        test('PFS0007 : Admin is checking post redirection to newly created post', { tag: ['@Lite'] }, async () => {
             const postTitle = faker.word.words(3);
             const postContent = faker.lorem.paragraph();
             const postExcerpt = faker.lorem.paragraph();
@@ -121,12 +121,12 @@ export default function postFormGeneralSettingsTests() {
             await postFormSettings.validateRedirectionToPost(postTitle, postContent, postExcerpt);
         });
 
-        test('PFS0008 : Admin is setting successful post redirection to same page', async () => {
+        test('PFS0008 : Admin is setting successful post redirection to same page', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.setPostRedirectionToSamePage(formName, 'same', 'Post published successfully');
         });
 
-        test('PFS0009 : Admin is checking post redirection to same page', async () => {
+        test('PFS0009 : Admin is checking post redirection to same page', { tag: ['@Lite'] }, async () => {
             const postTitle = faker.word.words(3);
             const postContent = faker.lorem.paragraph();
             const postExcerpt = faker.lorem.paragraph();
@@ -134,12 +134,12 @@ export default function postFormGeneralSettingsTests() {
             await postFormSettings.validateRedirectionToSamePage(postTitle, postContent, postExcerpt, 'Post published successfully');
         });
 
-        test('PFS0010 : Admin is setting successful post redirection to another page', async () => {
+        test('PFS0010 : Admin is setting successful post redirection to another page', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.setPostRedirectionToPage(formName, 'page', 'Dashboard');
         });
 
-        test('PFS0011 : Admin is checking post redirection to another page', async () => {
+        test('PFS0011 : Admin is checking post redirection to another page', { tag: ['@Lite'] }, async () => {
             const postTitle = faker.word.words(3);
             const postContent = faker.lorem.paragraph();
             const postExcerpt = faker.lorem.paragraph();
@@ -147,13 +147,13 @@ export default function postFormGeneralSettingsTests() {
             await postFormSettings.validateRedirectionToPage(postTitle, postContent, postExcerpt, 'Dashboard');
         });
 
-        test('PFS0012 : Admin is setting successful post redirection to a url', async () => {
+        test('PFS0012 : Admin is setting successful post redirection to a url', { tag: ['@Lite'] }, async () => {
             const redirectUrl = Urls.baseUrl + '/thank-you/';
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.setPostRedirectionToUrl(formName, 'url', redirectUrl);
         });
 
-        test('PFS0013 : Admin is checking post redirection to a url', async () => {
+        test('PFS0013 : Admin is checking post redirection to a url', { tag: ['@Lite'] }, async () => {
             const postTitle = faker.word.words(3);
             const postContent = faker.lorem.paragraph();
             const postExcerpt = faker.lorem.paragraph();
@@ -163,18 +163,18 @@ export default function postFormGeneralSettingsTests() {
             await postFormSettings.setPostRedirectionToPost(formName, 'post');
         });
 
-        test('PFS0014 : Admin is setting post submission status to draft', async () => {
+        test('PFS0014 : Admin is setting post submission status to draft', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.setPostSubmissionStatus(formName, 'draft');
         });
 
-        test('PFS0015 : Admin is validating post submission status to draft - list', async () => {
+        test('PFS0015 : Admin is validating post submission status to draft - list', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             // Validate that the post type shows correctly in the list
             await postFormSettings.validatePostSubmissionStatusInList('Draft');
         });
 
-        test('PFS0016 : Admin is checking post submission status to draft - FE', async () => {
+        test('PFS0016 : Admin is checking post submission status to draft - FE', { tag: ['@Lite'] }, async () => {
             const postTitle = faker.word.words(3);
             const postContent = faker.lorem.paragraph();
             const postExcerpt = faker.lorem.paragraph();
@@ -182,18 +182,18 @@ export default function postFormGeneralSettingsTests() {
             await postFormSettings.validateSubmittedPostStatusFE(postTitle, postContent, postExcerpt, 'Offline');
         });
 
-        test('PFS0017 : Admin is setting post submission status to pending', async () => {
+        test('PFS0017 : Admin is setting post submission status to pending', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.setPostSubmissionStatus(formName, 'pending');
         });
 
-        test('PFS0018 : Admin is validating post submission status to draft - list', async () => {
+        test('PFS0018 : Admin is validating post submission status to draft - list', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             // Validate that the post type shows correctly in the list
             await postFormSettings.validatePostSubmissionStatusInList('Pending Review');
         });
 
-        test('PFS0019 : Admin is checking post submission status to pending', async () => {
+        test('PFS0019 : Admin is checking post submission status to pending', { tag: ['@Lite'] }, async () => {
             const postTitle = faker.word.words(3);
             const postContent = faker.lorem.paragraph();
             const postExcerpt = faker.lorem.paragraph();
@@ -201,18 +201,18 @@ export default function postFormGeneralSettingsTests() {
             await postFormSettings.validateSubmittedPostStatusFE(postTitle, postContent, postExcerpt, 'Awaiting Approval');
         });
 
-        test('PFS0020 : Admin is setting post submission status to private', async () => {
+        test('PFS0020 : Admin is setting post submission status to private', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.setPostSubmissionStatus(formName, 'private');
         });
 
-        test('PFS0021 : Admin is validating post submission status to draft - list', async () => {
+        test('PFS0021 : Admin is validating post submission status to draft - list', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             // Validate that the post type shows correctly in the list
             await postFormSettings.validatePostSubmissionStatusInList('Private');
         });
 
-        test('PFS0022 : Admin is checking post submission status to private', async () => {
+        test('PFS0022 : Admin is checking post submission status to private', { tag: ['@Lite'] }, async () => {
             const postTitle = faker.word.words(3);
             const postContent = faker.lorem.paragraph();
             const postExcerpt = faker.lorem.paragraph();
@@ -220,18 +220,18 @@ export default function postFormGeneralSettingsTests() {
             await postFormSettings.validateSubmittedPostStatusFE(postTitle, postContent, postExcerpt, 'Private');
         });
 
-        test('PFS0023 : Admin is setting post submission status to publish', async () => {
+        test('PFS0023 : Admin is setting post submission status to publish', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.setPostSubmissionStatus(formName, 'publish');
         });
         
-        test('PFS0024 : Admin is validating post submission status to draft - list', async () => {
+        test('PFS0024 : Admin is validating post submission status to draft - list', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             // Validate that the post type shows correctly in the list
             await postFormSettings.validatePostSubmissionStatusInList('Published');
         });
 
-        test('PFS0025 : Admin is checking post submission status to publish', async () => {
+        test('PFS0025 : Admin is checking post submission status to publish', { tag: ['@Lite'] }, async () => {
             const postTitle = faker.word.words(3);
             const postContent = faker.lorem.paragraph();
             const postExcerpt = faker.lorem.paragraph();
@@ -239,12 +239,12 @@ export default function postFormGeneralSettingsTests() {
             await postFormSettings.validateSubmittedPostStatusFE(postTitle, postContent, postExcerpt, 'Live');
         });
 
-        test('PFS0026 : Admin is enabling post saving as draft', async () => {
+        test('PFS0026 : Admin is enabling post saving as draft', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.setPostSavingAsDraft(formName);
         });
 
-        test('PFS0027 : Admin is saving post as draft', async () => {
+        test('PFS0027 : Admin is saving post as draft', { tag: ['@Lite'] }, async () => {
             const postTitle = faker.word.words(3);
             const postContent = faker.lorem.paragraph();
             const postExcerpt = faker.lorem.paragraph();
@@ -252,7 +252,7 @@ export default function postFormGeneralSettingsTests() {
             await postFormSettings.savingPostAsDraft(postTitle, postContent, postExcerpt, 'Offline');
         });
 
-        test('PFS0028 : Admin is changing submit button text', async () => {
+        test('PFS0028 : Admin is changing submit button text', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.changeSubmitButtonText(formName, 'Publish');
         });

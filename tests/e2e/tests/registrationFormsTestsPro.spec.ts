@@ -31,7 +31,7 @@ export default function registrationFormsTestsPro() {
     });
 
 
-    test.describe('Registration-Forms @Pro :-->', () => {
+    test.describe('Registration-Forms', () => {
         /**----------------------------------REGISTRATIONFORMS----------------------------------**
          * 
          * @TestScenario : [Reg-Forms]
@@ -42,7 +42,7 @@ export default function registrationFormsTestsPro() {
          * 
          */
 
-        test('RF0001_PRO : Here, Admin is checking Registration Forms - Pro Feature Page', async () => {
+        test('RF0001_PRO : Here, Admin is checking Registration Forms - Pro Feature Page', { tag: ['@Pro'] }, async ({ page }) => {
             const BasicLogin = new BasicLoginPage(page);
             const RegistrationFormsLite = new RegistrationFormsPage(page);
             //Basic login
@@ -52,7 +52,7 @@ export default function registrationFormsTestsPro() {
         });
 
 
-        test('RF0002_PRO : Here, Admin is creating Registration Forms Page - using shortcode', async () => {
+        test('RF0002_PRO : Here, Admin is creating Registration Forms Page - using shortcode', { tag: ['@Pro'] }, async ({ page }) => {
             const RegistrationFormsLite = new RegistrationFormsPage(page);
             const SettingsSetup = new SettingsSetupPage(page);
             //Registration Forms page - Title
@@ -66,7 +66,7 @@ export default function registrationFormsTestsPro() {
         });
 
 
-        test('RF0003_PRO : Here, User is registering using - Registration Form', async () => {
+        test('RF0003_PRO : Here, User is registering using - Registration Form', { tag: ['@Pro'] }, async ({ page }) => {
             const RegistrationFormsFrontend = new RegistrationFormsFrontendPage(page);
             //FrontEnd
             //Complete FrontEnd Registration
@@ -74,7 +74,7 @@ export default function registrationFormsTestsPro() {
         });
 
 
-        test('RF0004_PRO : Here, Admin is validating - Registered user', async () => {
+        test('RF0004_PRO : Here, Admin is validating - Registered user', { tag: ['@Pro'] }, async ({ page }) => {
             const BasicLogin = new BasicLoginPage(page);
             const RegistrationFormsFrontend = new RegistrationFormsFrontendPage(page);
             //Basic Login

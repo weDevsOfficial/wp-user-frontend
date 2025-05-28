@@ -29,7 +29,7 @@ export default function postFormGeneralSettingsTestsPro() {
         page = await context.newPage();
     });
 
-    test.describe('Post Form Settings Tests @Lite :-->', () => {
+    test.describe('Post Form Settings Tests Pro', () => {
         /**----------------------------------POST FORM SETTINGS----------------------------------**
          *
          * @TestScenario : [Post Form Settings]
@@ -43,6 +43,7 @@ export default function postFormGeneralSettingsTestsPro() {
         const postExcerpt = faker.lorem.paragraph();
         const category = 'Music'; // Using one of the default categories from the screenshot
 
+        // Add your Pro-specific tests here with { tag: ['@Pro'] }
         
     });
 

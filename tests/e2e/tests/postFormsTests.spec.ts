@@ -50,7 +50,7 @@ export default function postFormsTests() {
 
         //TODO: Create a BeforeAll for login
 
-        test('PF001 : Admin is creating Blank Form with > PostFields', async () => {
+        test('PF001 : Admin is creating Blank Form with > PostFields', { tag: ['@Lite'] }, async ({ page }) => {
             const BasicLogin = new BasicLoginPage(page);
             const PostForms = new PostFormsPage(page);
             const FieldOptionsCommon = new FieldOptionsCommonPage(page);
@@ -71,7 +71,7 @@ export default function postFormsTests() {
         });
 
 
-        test('PF0002 : Admin is creating Blank Form with > Taxonomies', async () => {
+        test('PF0002 : Admin is creating Blank Form with > Taxonomies', { tag: ['@Lite'] }, async ({ page }) => {
             const PostForms = new PostFormsPage(page);
             const FieldOptionsCommon = new FieldOptionsCommonPage(page);
 
@@ -90,7 +90,7 @@ export default function postFormsTests() {
         });
 
 
-        test('PF0003 : Admin is creating Blank Form with > CustomFields', async () => {
+        test('PF0003 : Admin is creating Blank Form with > CustomFields', { tag: ['@Lite'] }, async ({ page }) => {
             const PostForms = new PostFormsPage(page);
             const FieldOptionsCommon = new FieldOptionsCommonPage(page);
 
@@ -110,7 +110,7 @@ export default function postFormsTests() {
         });
 
 
-        test('PF0004 : Admin is creating Blank Form with > Others', async () => {
+        test('PF0004 : Admin is creating Blank Form with > Others', { tag: ['@Lite'] }, async ({ page }) => {
             const PostForms = new PostFormsPage(page);
             const FieldOptionsCommon = new FieldOptionsCommonPage(page);
 
@@ -131,7 +131,7 @@ export default function postFormsTests() {
         });
 
 
-        test('PF0005 : Admin is creating a Blank Post Form with all Fields', async () => {
+        test('PF0005 : Admin is creating a Blank Post Form with all Fields', { tag: ['@Lite'] }, async ({ page }) => {
             const PostForms = new PostFormsPage(page);
             const FieldOptionsCommon = new FieldOptionsCommonPage(page);
 
@@ -158,7 +158,7 @@ export default function postFormsTests() {
         });
 
 
-        test('PF0006 : Admin is creating a Preset Post Form', async () => {
+        test('PF0006 : Admin is creating a Preset Post Form', { tag: ['@Lite'] }, async ({ page }) => {
             const PostForms = new PostFormsPage(page);
             const FieldOptionsCommon = new FieldOptionsCommonPage(page);
 
@@ -175,7 +175,7 @@ export default function postFormsTests() {
         });
 
 
-        test('PF0007 : Admin is creating a Preset Post Form - with Guest Enabled', async () => {
+        test('PF0007 : Admin is creating a Preset Post Form - with Guest Enabled', { tag: ['@Lite'] }, async ({ page }) => {
             const PostForms = new PostFormsPage(page);
             const FieldOptionsCommon = new FieldOptionsCommonPage(page);
 
@@ -195,7 +195,7 @@ export default function postFormsTests() {
         });
 
 
-        test('PF0008 : Admin is Updating Settings with default Post Form', async () => {
+        test('PF0008 : Admin is Updating Settings with default Post Form', { tag: ['@Lite'] }, async ({ page }) => {
             const SettingsSetup = new SettingsSetupPage(page);
 
             const postFormPresetFrontendTitle = 'FE PostForm';
@@ -206,7 +206,7 @@ export default function postFormsTests() {
         });
 
 
-        test('PF0009 : User is Submitting Form from Frontend', async () => {
+        test('PF0009 : User is Submitting Form from Frontend', { tag: ['@Lite'] }, async ({ page }) => {
             const BasicLogin = new BasicLoginPage(page);
             const PostFormsFrontend = new PostFormsFrontendPage(page);
 

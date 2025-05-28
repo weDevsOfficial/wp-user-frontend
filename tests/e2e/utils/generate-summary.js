@@ -96,28 +96,17 @@ function getTestStatus(test) {
 // Function to style tags as pills
 function formatTagAsPill(tag) {
   const tagType = tag.replace('@', '');
-  let color = '';
-  let bgColor = '';
   
   switch(tagType) {
     case 'Both':
-      color = '#FFB86C';
-      bgColor = '#382C1E';
-      break;
+      return `![Both](https://img.shields.io/badge/Both-orange?style=flat-square&labelColor=2d1b47&color=ffb86c)`;
     case 'Pro':
-      color = '#FF79C6';
-      bgColor = '#3C1A33';
-      break;
+      return `![Pro](https://img.shields.io/badge/Pro-pink?style=flat-square&labelColor=3c1a33&color=ff79c6)`;
     case 'Lite':
-      color = '#BD93F9';
-      bgColor = '#2D1B47';
-      break;
+      return `![Lite](https://img.shields.io/badge/Lite-purple?style=flat-square&labelColor=2d1b47&color=bd93f9)`;
     default:
-      color = '#F8F8F2';
-      bgColor = '#44475A';
+      return `![${tagType}](https://img.shields.io/badge/${tagType}-gray?style=flat-square&labelColor=44475a&color=f8f8f2)`;
   }
-  
-  return `<span style="color:${color};background-color:${bgColor};padding:3px 8px;border-radius:12px;font-size:12px">${tagType}</span>`;
 }
 
 async function generateSummary() {

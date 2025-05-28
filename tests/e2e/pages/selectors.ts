@@ -225,6 +225,7 @@ export const Selectors = {
         keys: {
             // Keys
             // SETTINGS > GENERAL
+            clickSettingsTabGeneral: '//a[@id="wpuf_general-tab"]',
             fillGoogleMapAPIKey:'(//input[@id="wpuf_general[gmap_api_key]"])[1]',
             fillReCaptchaSiteKey: '(//input[@id="wpuf_general[recaptcha_public]"])[1]',
             fillReCaptchaSecretKey: '(//input[@id="wpuf_general[recaptcha_private]"])[1]',

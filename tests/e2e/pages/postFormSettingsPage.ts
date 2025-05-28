@@ -107,7 +107,7 @@ export class PostFormSettingsPage extends Base {
         await this.page.waitForTimeout(1000);
         
         // Wait for success message
-        await expect(this.assertionValidate(Selectors.postFormSettings.postTypePage(postTitle))).toBeTruthy();
+        await expect(this.page.locator(Selectors.postFormSettings.postTypePage(postTitle))).toBeVisible();
         
     }
 
@@ -175,7 +175,7 @@ export class PostFormSettingsPage extends Base {
         await this.page.waitForTimeout(1000);
         
         // Wait for success message
-        await expect(this.assertionValidate(Selectors.postFormSettings.postCategory(category))).toBeTruthy();
+        await expect(this.page.locator(Selectors.postFormSettings.postCategory(category))).toBeVisible();
     }
 
     // Set post redirection to newly created post
@@ -323,7 +323,7 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
         await this.page.waitForTimeout(1000);
 
-        await expect(this.assertionValidate(Selectors.postFormSettings.checkPostTitle(postTitle))).toBeTruthy();
+        await expect(this.page.locator(Selectors.postFormSettings.checkPostTitle(postTitle))).toBeVisible();
     }
 
     // Validate redirection after post submission
@@ -367,7 +367,7 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
         await this.page.waitForTimeout(1000);
 
-        await expect(this.assertionValidate(Selectors.postFormSettings.checkPageTitle(pageTitle))).toBeTruthy();
+        await expect(this.page.locator(Selectors.postFormSettings.checkPageTitle(pageTitle))).toBeVisible();
     }
 
     // Validate redirection after post submission
@@ -523,6 +523,6 @@ export class PostFormSettingsPage extends Base {
         await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
         await this.page.waitForLoadState('networkidle');
 
-        await this.assertionValidate(Selectors.postFormSettings.submitPostButtonText(value));
+        await expect(this.page.locator(Selectors.postFormSettings.submitPostButtonText(value))).toBeVisible();
     }
 }

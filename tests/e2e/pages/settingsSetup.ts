@@ -525,6 +525,8 @@ export class SettingsSetupPage extends Base {
         ]);
 
         await this.page.reload();
+
+        await this.validateAndClick(Selectors.settingsSetup.keys.clickSettingsTabGeneral);
         //Google Map API Key
         await this.validateAndFillStrings(Selectors.settingsSetup.keys.fillGoogleMapAPIKey, googleMapAPIKey);
         //Save Settings
@@ -539,6 +541,8 @@ export class SettingsSetupPage extends Base {
         ]);
 
         await this.page.reload();
+
+        await this.validateAndClick(Selectors.settingsSetup.keys.clickSettingsTabGeneral);
         //ReCaptcha site & secret Key
         await this.validateAndFillStrings(Selectors.settingsSetup.keys.fillReCaptchaSiteKey, recaptchaSiteKey);
         await this.validateAndFillStrings(Selectors.settingsSetup.keys.fillReCaptchaSecretKey, recaptchaSecretKey);
@@ -554,6 +558,8 @@ export class SettingsSetupPage extends Base {
         ]);
 
         await this.page.reload();
+
+        await this.validateAndClick(Selectors.settingsSetup.keys.clickSettingsTabGeneral);
         // Cloudflare Turnstile enable
         await this.validateAndClick(Selectors.settingsSetup.keys.enableCloudflareTurnstile);
         // Cloudflare Turnstile site & secret Key

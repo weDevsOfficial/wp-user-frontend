@@ -94,6 +94,33 @@ function getTestStatus(test) {
   return { status, duration, flaky, tags };
 }
 
+// Function to style tags as pills
+function formatTagAsPill(tag) {
+  const tagType = tag.replace('@', '');
+  let color = '';
+  let bgColor = '';
+  
+  switch(tagType) {
+    case 'Both':
+      color = '#FFB86C';
+      bgColor = '#382C1E';
+      break;
+    case 'Pro':
+      color = '#FF79C6';
+      bgColor = '#3C1A33';
+      break;
+    case 'Lite':
+      color = '#BD93F9';
+      bgColor = '#2D1B47';
+      break;
+    default:
+      color = '#F8F8F2';
+      bgColor = '#44475A';
+  }
+  
+  return `<span style="color:${color};background-color:${bgColor};padding:3px 8px;border-radius:12px;font-size:12px">${tagType}</span>`;
+}
+
 async function generateSummary() {
   try {
     // Read test results
@@ -121,14 +148,15 @@ async function generateSummary() {
     // Map feature coverage
     const featureRows = features.map((feature) => {
       const test = findTestByTitle(results.suites, feature.id);
-      const { status, duration, flaky } = getTestStatus(test);
-
+      const { status, duration, flaky, tags } = getTestStatus(test);
+      
       return {
         id: feature.id,
         name: feature.name,
         status,
         duration,
         flaky,
+        tags: tags || [] // Ensure tags is always an array
       };
     });
 
@@ -158,7 +186,7 @@ async function generateSummary() {
     const tableRows = featureRows
       .map(
         (f) =>
-          `| ${f.id} | ${f.name} | ${f.status === 'passed' ? '✅ Passed' : f.status === 'failed' ? '❌ Failed' : f.status === 'skipped' ? '⏭️ Skipped' : '⚠️ Not Covered'} | ${(f.duration / 1000).toFixed(1)} | ${f.flaky ? '⚠️ Yes' : ''} | ${f.tags.join(' ')} |`,
+          `| ${f.id} | ${f.name} | ${f.status === 'passed' ? '✅ Passed' : f.status === 'failed' ? '❌ Failed' : f.status === 'skipped' ? '⏭️ Skipped' : '⚠️ Not Covered'} | ${(f.duration / 1000).toFixed(1)} | ${f.flaky ? '⚠️ Yes ' : '👍 No'} | ${(f.tags || []).map(formatTagAsPill).join(' ')} |`,
       )
       .join('\n');
 

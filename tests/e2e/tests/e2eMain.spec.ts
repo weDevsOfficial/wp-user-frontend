@@ -6,12 +6,6 @@ import postFormsTests from './postFormsTests.spec';
 import registrationFormsTestsPro from './registrationFormsTestsPro.spec';
 import postFormGeneralSettingsTests from './postFormGeneralSettingsTest.spec';
 
-// Clear state.json before each test group
-const clearState = () => {
-    fs.writeFileSync('state.json', '{"cookies":[],"origins": []}');
-};
-// eslint-disable-next-line no-console
-console.log('CI:', process.env.CI); 
 //*---------------------------------------------------*/
 //*---------------------Reset WP---------------------*/
 //*-------------------------------------------------*/
@@ -29,7 +23,6 @@ console.log('CI:', process.env.CI);
 
 // Only run resetWordpressSite locally
 if (process.env.CI == 'false') {
-    clearState();
     test.describe(resetWordpressSite);
 }
 
@@ -51,17 +44,7 @@ if (process.env.CI == 'false') {
  * @cleanup
  *  - Clears cookies and origins before running any of the tests to maintain test isolation and avoid session interference.
  */
-
-clearState();
 test.describe(loginAndSetupTests);
-
-clearState();
 test.describe(postFormsTests);
-
-clearState();
 test.describe(registrationFormsTestsPro);
-
-clearState();
 test.describe(postFormGeneralSettingsTests);
-
-clearState();

@@ -2,16 +2,11 @@ import { test } from '@playwright/test';
 import loginAndSetupTests from './loginAndSetupTests.spec';
 import postFormsTestsPro from './postFormsTestsPro.spec';
 import registrationFormsTestsPro from './registrationFormsTestsPro.spec';
+import postFormGeneralSettingsTestsPro from './postFormGeneralSettingsTestPro.spec';
 // import subscriptionsTests from './subscription.spec';
 import * as fs from 'fs'; //Clear Cookie
 import resetWordpressSite from './resetWordpressSite.spec';
 
-// Clear state.json before each test group
-const clearState = () => {
-    fs.writeFileSync('state.json', '{"cookies":[],"origins": []}');
-};
-// eslint-disable-next-line no-console
-console.log('CI:', process.env.CI); 
 //*---------------------------------------------------*/
 //*---------------------Reset WP---------------------*/
 //*-------------------------------------------------*/
@@ -29,7 +24,6 @@ console.log('CI:', process.env.CI);
 
 // Only run resetWordpressSite locally
 if (process.env.CI == 'false') {
-    clearState();
     test.describe(resetWordpressSite);
 }
 
@@ -51,12 +45,7 @@ if (process.env.CI == 'false') {
  * @cleanup
  *  - Clears cookies and origins before running any of the tests to maintain test isolation and avoid session interference.
  */
-
-clearState();
 test.describe(loginAndSetupTests);
-
-clearState();
 test.describe(postFormsTestsPro);
-
-clearState();
 test.describe(registrationFormsTestsPro);
+test.describe(postFormGeneralSettingsTestsPro);

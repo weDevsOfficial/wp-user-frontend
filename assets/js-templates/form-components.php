@@ -1,3 +1,4 @@
+<?php declare(strict_types=1); ?>
 <script type="text/x-template" id="tmpl-wpuf-builder-stage">
 <div id="form-preview-stage" class="wpuf-style">
     <h4 v-if="!form_fields.length" class="text-center">
@@ -1498,6 +1499,36 @@
         :placeholder="field.placeholder"
         :value="field.default"
         :size="field.size"
+    >
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-mb-0 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
+</div>
+</script>
+
+<script type="text/x-template" id="tmpl-wpuf-form-twitter_url">
+<div class="wpuf-fields">
+    <div v-if="field.show_icon === 'yes'" class="wpuf-twitter-field-wrapper">
+        <span class="wpuf-twitter-icon">
+            <i class="fab fa-twitter" aria-hidden="true"></i>
+        </span>
+        <input
+            type="text"
+            :class="builder_class_names('twitter')"
+            :placeholder="field.placeholder"
+            :value="field.default"
+            :size="field.size"
+            pattern="^@?[a-zA-Z0-9_]{1,15}$"
+            data-type="twitter_url"
+        >
+    </div>
+    <input
+        v-else
+        type="text"
+        :class="builder_class_names('twitter')"
+        :placeholder="field.placeholder"
+        :value="field.default"
+        :size="field.size"
+        pattern="^@?[a-zA-Z0-9_]{1,15}$"
+        data-type="twitter_url"
     >
     <p v-if="field.help" class="wpuf-mt-2 wpuf-mb-0 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>

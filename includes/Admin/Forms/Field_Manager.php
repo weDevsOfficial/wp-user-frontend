@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1); 
 
 namespace WeDevs\Wpuf\Admin\Forms;
 
@@ -23,6 +23,7 @@ use WeDevs\Wpuf\Fields\Form_Field_reCaptcha;
 use WeDevs\Wpuf\Fields\Form_Field_SectionBreak;
 use WeDevs\Wpuf\Fields\Form_Field_Text;
 use WeDevs\Wpuf\Fields\Form_Field_Textarea;
+use WeDevs\Wpuf\Fields\Form_Field_Twitter;
 use WeDevs\Wpuf\Fields\Form_Field_URL;
 
 /**
@@ -96,6 +97,7 @@ class Field_Manager {
             'dropdown_field'       => new Form_Field_Dropdown(),
             'multiple_select'      => new Form_Field_MultiDropdown(),
             'website_url'          => new Form_Field_URL(),
+            'twitter_url'          => new Form_Field_Twitter(),
             'column_field'         => new Form_Field_Column(),
             'section_break'        => new Form_Field_SectionBreak(),
             'custom_html'          => new Form_Field_HTML(),
@@ -116,6 +118,7 @@ class Field_Manager {
     public function get_field_groups() {
         $before_custom_fields = apply_filters( 'wpuf_form_fields_section_before', [] );
         $groups               = array_merge( $before_custom_fields, $this->get_custom_fields() );
+        $groups               = array_merge( $groups, $this->get_social_fields() );
         $groups               = array_merge( $groups, $this->get_others_fields() );
         $after_custom_fields  = apply_filters( 'wpuf_form_fields_section_after', [] );
         $groups               = array_merge( $groups, $after_custom_fields );
@@ -152,6 +155,30 @@ class Field_Manager {
             [
                 'title'  => __( 'Custom Fields', 'wp-user-frontend' ),
                 'id'     => 'custom-fields',
+                'fields' => $fields,
+            ],
+        ];
+    }
+
+    /**
+     * Social field section
+     *
+     * @since 3.6.0
+     *
+     * @return array
+     */
+    private function get_social_fields() {
+        $fields = apply_filters(
+            'wpuf_form_fields_social_fields',
+            [
+                'twitter_url',
+            ]
+        );
+
+        return [
+            [
+                'title'  => __( 'Social Fields', 'wp-user-frontend' ),
+                'id'     => 'social-fields',
                 'fields' => $fields,
             ],
         ];

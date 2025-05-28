@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Field Test</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/wpuf.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .test-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .test-case {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .test-case h3 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="test-container">
+        <h1>Twitter Field Validation Test</h1>
+
+        <div class="test-case">
+            <h3>Test Case 1: Twitter Field with Icon</h3>
+            <form class="wpuf-form">
+                <ul>
+                    <li class="wpuf-el">
+                        <div class="wpuf-label">
+                            <label for="twitter-test-1">Twitter Profile <span class="required">*</span></label>
+                        </div>
+                        <div class="wpuf-fields">
+                            <div class="wpuf-twitter-field-wrapper">
+                                <input type="url" id="twitter-test-1" name="twitter_test_1" data-type="twitter_url"
+                                    data-required="yes" placeholder="Enter your Twitter username or URL"
+                                    class="textfield">
+                                <i class="fab fa-twitter wpuf-twitter-icon"></i>
+                            </div>
+                            <p class="wpuf-help">Enter your Twitter username (e.g., @username) or full Twitter URL</p>
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+
+        <div class="test-case">
+            <h3>Test Case 2: Twitter Field without Icon</h3>
+            <form class="wpuf-form">
+                <ul>
+                    <li class="wpuf-el">
+                        <div class="wpuf-label">
+                            <label for="twitter-test-2">Twitter URL</label>
+                        </div>
+                        <div class="wpuf-fields">
+                            <div class="wpuf-twitter-field-wrapper">
+                                <input type="url" id="twitter-test-2" name="twitter_test_2" data-type="twitter_url"
+                                    placeholder="https://twitter.com/username" class="textfield">
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+
+        <div class="test-case">
+            <h3>Valid Test Values:</h3>
+            <ul>
+                <li>@username</li>
+                <li>username</li>
+                <li>https://twitter.com/username</li>
+                <li>https://x.com/username</li>
+                <li>http://twitter.com/username</li>
+            </ul>
+
+            <h3>Invalid Test Values:</h3>
+            <ul>
+                <li>@user-name (hyphens not allowed)</li>
+                <li>@user.name (dots not allowed)</li>
+                <li>@verylongusernamethatexceedslimit (too long)</li>
+                <li>https://facebook.com/username (wrong domain)</li>
+                <li>@ (just the @ symbol)</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Simplified version of the WPUF validation for testing
+        var WP_User_Frontend = {
+            isValidTwitterURL: function (url) {
+                // Check if it's a Twitter URL or just a username
+                var twitterUrlRegex = /^https?:\/\/(www\.)?(twitter\.com|x\.com)\/[a-zA-Z0-9_]{1,15}$/;
+                var twitterUsernameRegex = /^@?[a-zA-Z0-9_]{1,15}$/;
+
+                // If it's a full URL, validate Twitter URL format
+                if (url.indexOf('http') === 0) {
+                    return twitterUrlRegex.test(url);
+                }
+
+                // If it's just a username, validate username format
+                return twitterUsernameRegex.test(url);
+            },
+
+            validateTwitterField: function () {
+                var $field = $(this);
+                var value = $.trim($field.val());
+                var $container = $field.closest('.wpuf-fields');
+
+                // Remove any existing error messages
+                $container.find('.wpuf-error-msg').remove();
+                $container.removeClass('has-error');
+
+                // Skip validation if field is empty
+                if (value === '') {
+                    return;
+                }
+
+                // Validate Twitter URL/username
+                if (!WP_User_Frontend.isValidTwitterURL(value)) {
+                    $container.addClass('has-error');
+                    $container.append('<div class="wpuf-error-msg">Please enter a valid Twitter username (e.g., @username) or Twitter URL.</div>');
+                } else {
+                    console.log('Valid Twitter URL/username:', value);
+                }
+            }
+        };
+
+        $(document).ready(function () {
+            // Bind validation to Twitter fields
+            $('.wpuf-form').on('input blur', 'input[data-type="twitter_url"]', WP_User_Frontend.validateTwitterField);
+
+            console.log('Twitter field validation initialized');
+        });
+    </script>
+</body>
+
+</html>

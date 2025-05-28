@@ -3723,6 +3723,12 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   background-color: rgb(255 255 255 / var(--tw-bg-opacity)) !important;
 }
 
+
+.wpuf-bg-amber-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 144 0 / var(--tw-bg-opacity));
+}
+
 .wpuf-bg-amber-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(217 119 6 / var(--tw-bg-opacity));

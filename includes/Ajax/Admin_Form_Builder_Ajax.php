@@ -151,6 +151,18 @@ class Admin_Form_Builder_Ajax {
 
         $post_taxonomies = get_object_taxonomies( $post_type, 'objects' );
         $cat = '';
+
+        // Get current form settings to preserve existing values
+        $form_id = isset( $post_data['form_id'] ) ? absint( $post_data['form_id'] ) : 0;
+        $current_settings = [];
+
+        if ( $form_id ) {
+            $current_settings = get_post_meta( $form_id, 'wpuf_form_settings', true );
+            if ( ! is_array( $current_settings ) ) {
+                $current_settings = [];
+            }
+        }
+
         foreach ( $post_taxonomies as $tax ) {
             if ( $tax->hierarchical ) {
                 $args = [
@@ -159,17 +171,34 @@ class Admin_Form_Builder_Ajax {
                     'taxonomy'     => $tax->name,
                 ];
 
-                $cat .= '<div class="wpuf-mt-6 wpuf-input-container"><div class="wpuf-flex wpuf-items-center"><label for="default_category" class="wpuf-text-sm wpuf-text-gray-700 wpuf-my-2">' . __( 'Default ', 'wp-user-frontend' ) . $post_type . ' ' . $tax->name . '</label></div>';
+                $field_name = 'default_' . $tax->name;
+                $select_id = 'default_' . $tax->name . '_select';
+
+                // Get current value for this taxonomy
+                $current_value = isset( $current_settings[ $field_name ] ) ? $current_settings[ $field_name ] : [];
+                $data_value = is_array( $current_value ) ? implode( ',', $current_value ) : $current_value;
+
+                $cat .= '<div class="wpuf-mt-6 wpuf-input-container taxonomy-container" data-taxonomy="' . esc_attr( $tax->name ) . '">';
+                $cat .= '<div class="wpuf-flex wpuf-items-center">';
+                $cat .= '<label for="' . esc_attr( $select_id ) . '" class="wpuf-text-sm wpuf-text-gray-700 wpuf-my-2">';
+                $cat .= sprintf( __( 'Default %s %s', 'wp-user-frontend' ), $post_type, $tax->label );
+                $cat .= '</label></div>';
 
                 $cat .= '<select
                     multiple
-                    id="default_category"
-                    name="wpuf_settings[default_' . $tax->name . '][]"
-                    :class="[\'tax-list-selector\', setting_class_names(\'dropdown\')]">';
+                    id="' . esc_attr( $select_id ) . '"
+                    name="wpuf_settings[' . esc_attr( $field_name ) . '][]"
+                    data-value="' . esc_attr( $data_value ) . '"
+                    data-taxonomy="' . esc_attr( $tax->name ) . '"
+                    class="tax-list-selector wpuf-w-full wpuf-mt-2 wpuf-border-primary">';
+
                 $categories = get_terms( $args );
 
-                foreach ( $categories as $category ) {
-                    $cat .= '<option value="' . $category->term_id . '">' . $category->name . '</option>';
+                if ( ! is_wp_error( $categories ) && ! empty( $categories ) ) {
+                    foreach ( $categories as $category ) {
+                        $selected = in_array( $category->term_id, (array) $current_value ) ? 'selected="selected"' : '';
+                        $cat .= '<option value="' . esc_attr( $category->term_id ) . '" ' . $selected . '>' . esc_html( $category->name ) . '</option>';
+                    }
                 }
 
                 $cat .= '</select></div>';

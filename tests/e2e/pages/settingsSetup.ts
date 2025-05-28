@@ -487,10 +487,8 @@ export class SettingsSetupPage extends Base {
         await this.validateAndClick(Selectors.settingsSetup.categories.clickCategoryMenu);
         await this.page.waitForLoadState('domcontentloaded');
         const categoryNames: string[] = ['Science', 'Music', 'Politics', 'Sports', 'Technology'];
-        const categorySlug: string[] = ['science', 'music', 'politics', 'sports', 'technology'];
         for (let i = 0; i < categoryNames.length; i++) {
             await this.validateAndFillStrings(Selectors.settingsSetup.categories.addNewCategory, categoryNames[i]);
-            await this.validateAndFillStrings(Selectors.settingsSetup.categories.addCategorySlug, categorySlug[i]);
             await this.validateAndClick(Selectors.settingsSetup.categories.submitCategory);
             await this.page.waitForTimeout(1000);
             await this.page.waitForLoadState('domcontentloaded');
@@ -509,10 +507,8 @@ export class SettingsSetupPage extends Base {
         await this.validateAndClick(Selectors.settingsSetup.tags.clickTagsMenu);
         await this.page.waitForLoadState('domcontentloaded');
         const tagNames: string[] = ['Physics', 'Rock', 'Democracy', 'Football', 'AI'];
-        const tagSlug: string[] = ['physics', 'rock', 'democracy', 'football', 'ai'];
         for (let i = 0; i < tagNames.length; i++) {
             await this.validateAndFillStrings(Selectors.settingsSetup.tags.addNewTag, tagNames[i]);
-            await this.validateAndFillStrings(Selectors.settingsSetup.tags.addTagSlug, tagSlug[i]);
             await this.validateAndClick(Selectors.settingsSetup.tags.submitTag);
             await this.page.waitForTimeout(1000);
             await this.page.waitForLoadState('domcontentloaded');

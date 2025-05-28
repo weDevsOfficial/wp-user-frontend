@@ -138,6 +138,9 @@ async function generateSummary() {
     const seconds = ((totalDuration % 60000) / 1000).toFixed(0);
     const coverage = ((total - notCovered) / total * 100).toFixed(1);
 
+    const statHeader = `✅ Passed | ❌ Failed | ⏭️ Skipped | ⚠️ Not Covered | 🔁 Flaky | 🕒 Duration | 📈 Coverage`;
+    const statValues = `${passed} | ${failed} | ${skipped} | ${notCovered} | ${flaky} | ${minutes}m ${seconds}s | ${coverage}%`;
+
     // Markdown table
     const tableHeader = `| Feature ID | Name | Status | Duration (s) | Flaky? |
 |---|---|---|---|---|`;
@@ -149,16 +152,10 @@ async function generateSummary() {
     const summary = `# 🎭 Playwright Test Summary
 
 ## 📊 Test Statistics
-- **Total:** ${total}
-- ✅ **Passed:** ${passed}
-- ❌ **Failed:** ${failed}
-- ⏭️ **Skipped:** ${skipped}
-- ⚠️ **Not Covered:** ${notCovered}
-- 🔁 **Flaky:** ${flaky}
-- 🕒 **Duration:** ${minutes}m ${seconds}s
-- 📈 **Coverage:** ${coverage}%
+${statHeader}
+${statValues}
 
-## 📝 Test Scenario Coverage Table
+## 📝 Scenario Coverage Table
 ${tableHeader}
 ${tableRows}
 

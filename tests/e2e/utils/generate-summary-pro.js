@@ -54,7 +54,16 @@ function findTestByTitle(suites, searchId) {
       for (const spec of suite.specs) {
         const testId = extractTestId(spec.title, searchId);
         if (testId === searchId) {
-          return spec;
+          // Extract tags from test metadata instead of suite title
+          let tags = [];
+          if (spec.tests && spec.tests.length > 0) {
+            // Get tags from the first test's metadata
+            const test = spec.tests[0];
+            if (test.tags) {
+              tags = test.tags;
+            }
+          }
+          return { ...spec, tags };
         }
       }
     }
@@ -67,7 +76,7 @@ function findTestByTitle(suites, searchId) {
 }
 
 function getTestStatus(test) {
-  if (!test || !test.tests) return { status: 'not_covered', duration: 0, flaky: false };
+  if (!test || !test.tests) return { status: 'not_covered', duration: 0, flaky: false, tags: [] };
 
   let allResults = [];
   for (const t of test.tests) {
@@ -84,8 +93,36 @@ function getTestStatus(test) {
       ? 'skipped'
       : allResults.length > 0 ? 'passed' : 'not_covered';
   const flaky = allResults.length > 1 && statuses.includes('failed') && statuses.includes('passed');
+  const tags = test.tags || [];
 
-  return { status, duration, flaky };
+  return { status, duration, flaky, tags };
+}
+
+// Function to style tags as pills
+function formatTagAsPill(tag) {
+  const tagType = tag.replace('@', '');
+  let color = '';
+  let bgColor = '';
+  
+  switch(tagType) {
+    case 'Both':
+      color = '#FFB86C';
+      bgColor = '#382C1E';
+      break;
+    case 'Pro':
+      color = '#FF79C6';
+      bgColor = '#3C1A33';
+      break;
+    case 'Lite':
+      color = '#BD93F9';
+      bgColor = '#2D1B47';
+      break;
+    default:
+      color = '#F8F8F2';
+      bgColor = '#44475A';
+  }
+  
+  return `<span style="color:${color};background-color:${bgColor};padding:3px 8px;border-radius:12px;font-size:12px">${tagType}</span>`;
 }
 
 async function generateSummary() {
@@ -115,14 +152,15 @@ async function generateSummary() {
     // Map feature coverage
     const featureRows = features.map(feature => {
       const test = findTestByTitle(results.suites, feature.id);
-      const { status, duration, flaky } = getTestStatus(test);
+      const { status, duration, flaky, tags } = getTestStatus(test);
       
       return {
         id: feature.id,
         name: feature.name,
         status,
         duration,
-        flaky
+        flaky,
+        tags: tags || [] // Ensure tags is always an array
       };
     });
 
@@ -139,10 +177,10 @@ async function generateSummary() {
     const coverage = ((total - notCovered) / total * 100).toFixed(1);
 
     // Markdown table
-    const tableHeader = `| Feature ID | Name | Status | Duration (s) | Flaky? |
-|---|---|---|---|---|`;
+    const tableHeader = `| Feature ID | Name | Status | Duration (s) | Flaky? | Tags |
+|---|---|---|---|---|---|`;
     const tableRows = featureRows.map(f =>
-      `| ${f.id} | ${f.name} | ${f.status === 'passed' ? '✅ Passed' : f.status === 'failed' ? '❌ Failed' : f.status === 'skipped' ? '⏭️ Skipped' : '⚠️ Not Covered'} | ${(f.duration / 1000).toFixed(1)} | ${f.flaky ? '⚠️ Yes' : ''} |`
+      `| ${f.id} | ${f.name} | ${f.status === 'passed' ? '✅ Passed' : f.status === 'failed' ? '❌ Failed' : f.status === 'skipped' ? '⏭️ Skipped' : '⚠️ Not Covered'} | ${(f.duration / 1000).toFixed(1)} | ${f.flaky ? '⚠️ Yes' : '👍 No'} | ${(f.tags || []).map(formatTagAsPill).join(' ')} |`
     ).join('\n');
 
     // Summary

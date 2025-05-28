@@ -31,7 +31,7 @@ export default function postFormsTests() {
     });
 
 
-    test.describe('Post-Forms @Lite :-->', () => {
+    test.describe('Post-Forms', () => {
         /**----------------------------------POSTFORMS----------------------------------**
          *
          * @TestScenario : [Post-Forms]

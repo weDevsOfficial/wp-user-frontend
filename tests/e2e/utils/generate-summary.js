@@ -54,9 +54,15 @@ function findTestByTitle(suites, searchId) {
       for (const spec of suite.specs) {
         const testId = extractTestId(spec.title, searchId);
         if (testId === searchId) {
-          // Get the parent suite's title to extract tags
-          const suiteTitle = suite.title || '';
-          const tags = suiteTitle.match(/@(Both|Pro|Lite)/g) || [];
+          // Extract tags from test metadata instead of suite title
+          let tags = [];
+          if (spec.tests && spec.tests.length > 0) {
+            // Get tags from the first test's metadata
+            const test = spec.tests[0];
+            if (test.tags) {
+              tags = test.tags;
+            }
+          }
           return { ...spec, tags };
         }
       }

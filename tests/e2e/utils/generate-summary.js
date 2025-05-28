@@ -34,17 +34,17 @@ function extractTestId(title, searchId) {
     const titleWithoutHere = title.replace(/^Here,\s+/, '');
     match = titleWithoutHere.match(/([A-Z]+\d+(?:_PRO)?)/);
   }
-  
+
   if (!match) return '';
-  
+
   // Get the base ID without _PRO suffix
   const baseId = normalizeId(match[1].replace(/_PRO$/, ''));
-  
+
   // If we're searching for a PRO feature, also match the base ID
   if (searchId.endsWith('_PRO') && baseId === searchId.replace(/_PRO$/, '')) {
     return searchId;
   }
-  
+
   return normalizeId(match[1]);
 }
 
@@ -54,7 +54,10 @@ function findTestByTitle(suites, searchId) {
       for (const spec of suite.specs) {
         const testId = extractTestId(spec.title, searchId);
         if (testId === searchId) {
-          return spec;
+          // Get the parent suite's title to extract tags
+          const suiteTitle = suite.title || '';
+          const tags = suiteTitle.match(/@(Both|Pro|Lite)/g) || [];
+          return { ...spec, tags };
         }
       }
     }
@@ -67,7 +70,7 @@ function findTestByTitle(suites, searchId) {
 }
 
 function getTestStatus(test) {
-  if (!test || !test.tests) return { status: 'not_covered', duration: 0, flaky: false };
+  if (!test || !test.tests) return { status: 'not_covered', duration: 0, flaky: false, tags: [] };
 
   let allResults = [];
   for (const t of test.tests) {
@@ -77,15 +80,18 @@ function getTestStatus(test) {
   }
 
   const duration = allResults.reduce((acc, r) => acc + (r.duration || 0), 0);
-  const statuses = allResults.map(r => r.status);
+  const statuses = allResults.map((r) => r.status);
   const status = statuses.includes('failed')
     ? 'failed'
-    : statuses.every(s => s === 'skipped')
+    : statuses.every((s) => s === 'skipped')
       ? 'skipped'
-      : allResults.length > 0 ? 'passed' : 'not_covered';
+      : allResults.length > 0
+        ? 'passed'
+        : 'not_covered';
   const flaky = allResults.length > 1 && statuses.includes('failed') && statuses.includes('passed');
+  const tags = test.tags || [];
 
-  return { status, duration, flaky };
+  return { status, duration, flaky, tags };
 }
 
 async function generateSummary() {
@@ -106,54 +112,61 @@ async function generateSummary() {
     try {
       const featuresYaml = await fs.readFile(featuresMapPath, 'utf-8');
       const featuresMap = yaml.load(featuresYaml);
-      features = featuresMap.features.map(f => ({ ...f, id: normalizeId(f.id) }));
+      features = featuresMap.features.map((f) => ({ ...f, id: normalizeId(f.id) }));
     } catch (error) {
       console.error('Error reading features map:', error);
       console.log('Using empty features array');
     }
 
     // Map feature coverage
-    const featureRows = features.map(feature => {
+    const featureRows = features.map((feature) => {
       const test = findTestByTitle(results.suites, feature.id);
       const { status, duration, flaky } = getTestStatus(test);
-      
+
       return {
         id: feature.id,
         name: feature.name,
         status,
         duration,
-        flaky
+        flaky,
       };
     });
 
     // Calculate stats
     const total = featureRows.length;
-    const passed = featureRows.filter(f => f.status === 'passed').length;
-    const failed = featureRows.filter(f => f.status === 'failed').length;
-    const skipped = featureRows.filter(f => f.status === 'skipped').length;
-    const notCovered = featureRows.filter(f => f.status === 'not_covered').length;
-    const flaky = featureRows.filter(f => f.flaky).length;
+    const passed = featureRows.filter((f) => f.status === 'passed').length;
+    const failed = featureRows.filter((f) => f.status === 'failed').length;
+    const skipped = featureRows.filter((f) => f.status === 'skipped').length;
+    const notCovered = featureRows.filter((f) => f.status === 'not_covered').length;
+    const flaky = featureRows.filter((f) => f.flaky).length;
     const totalDuration = featureRows.reduce((acc, f) => acc + f.duration, 0);
     const minutes = Math.floor(totalDuration / 60000);
     const seconds = ((totalDuration % 60000) / 1000).toFixed(0);
-    const coverage = ((total - notCovered) / total * 100).toFixed(1);
+    const coverage = (((total - notCovered) / total) * 100).toFixed(1);
 
-    const statHeader = `✅ Passed | ❌ Failed | ⏭️ Skipped | ⚠️ Not Covered | 🔁 Flaky | 🕒 Duration | 📈 Coverage`;
-    const statValues = `${passed} | ${failed} | ${skipped} | ${notCovered} | ${flaky} | ${minutes}m ${seconds}s | ${coverage}%`;
+    // Create a table header and row for statistics
+    const statHeader = `| Test 📝 | Total 📊 | Passed ✅ | Failed ❌ | Flaky ⚠️ | Skipped ⏭️ | Duration ⏱️ | Coverage 📈 |
+|---|---|---|---|---|---|---|---|
+| E2E Tests | ${total} | ${passed} | ${failed} | ${flaky} | ${skipped} | ${minutes}m ${seconds}s | ${coverage}% |`;
 
-    // Markdown table
-    const tableHeader = `| Feature ID | Name | Status | Duration (s) | Flaky? |
-|---|---|---|---|---|`;
-    const tableRows = featureRows.map(f =>
-      `| ${f.id} | ${f.name} | ${f.status === 'passed' ? '✅ Passed' : f.status === 'failed' ? '❌ Failed' : f.status === 'skipped' ? '⏭️ Skipped' : '⚠️ Not Covered'} | ${(f.duration / 1000).toFixed(1)} | ${f.flaky ? '⚠️ Yes' : ''} |`
-    ).join('\n');
+    // Remove the old stat values line since we're incorporating it in the table
+    const statValues = '';
+
+    // Markdown table with tags column
+    const tableHeader = `| Feature ID | Name | Status | Duration (s) | Flaky? | Tags |
+|---|---|---|---|---|---|`;
+    const tableRows = featureRows
+      .map(
+        (f) =>
+          `| ${f.id} | ${f.name} | ${f.status === 'passed' ? '✅ Passed' : f.status === 'failed' ? '❌ Failed' : f.status === 'skipped' ? '⏭️ Skipped' : '⚠️ Not Covered'} | ${(f.duration / 1000).toFixed(1)} | ${f.flaky ? '⚠️ Yes' : ''} | ${f.tags.join(' ')} |`,
+      )
+      .join('\n');
 
     // Summary
     const summary = `# 🎭 Playwright Test Summary
 
 ## 📊 Test Statistics
 ${statHeader}
-${statValues}
 
 ## 📝 Scenario Coverage Table
 ${tableHeader}
@@ -178,7 +191,7 @@ ${tableRows}
 }
 
 // Run the main function
-generateSummary().catch(error => {
+generateSummary().catch((error) => {
   console.error('Unhandled error:', error);
   process.exit(1);
-}); 
+});

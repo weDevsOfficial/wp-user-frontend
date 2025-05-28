@@ -1110,46 +1110,66 @@
         $('#builder-form-fields').toggleClass('show');
     });
 
-    $('select#post_type').on('change', function() {
-        populate_default_categories(this);
+    // Initialize default categories on page load and bind change event
+    $(document).ready(function() {
+        var $postTypeSelect = $('select#post_type');
+        
+        // Load initial categories if post type select exists
+        if ($postTypeSelect.length) {
+            populate_default_categories($postTypeSelect[0], true);
+        }
+        
+        // Bind change event
+        $postTypeSelect.on('change', function() {
+            populate_default_categories(this, false);
+        });
     });
 
-    function populate_default_categories(obj) {
-        var post_type = $( obj ).val();
+    function populate_default_categories(obj, isInitialLoad) {
+        var post_type = $(obj).val();
+        
+        // Don't proceed if no post type is selected
+        if (!post_type) {
+            return;
+        }
+        
+        // Get form ID from the form
+        var form_id = $('input[name="wpuf_form_id"]').val() || 0;
+        
         wp.ajax.send('wpuf_form_setting_post', {
             data: {
                 post_type: post_type,
+                form_id: form_id,
                 wpuf_form_builder_setting_nonce: wpuf_form_builder.nonce
             },
             success: function (response) {
-                const default_category = 'select#default_category';
-                let default_category_name = default_category;
-
-                if ( post_type !== 'post' ) {
-                    default_category_name = 'select#default_' + post_type + '_cat';
+                // Remove all existing taxonomy containers
+                $('.taxonomy-container, .wpuf_settings_taxonomy, .wpuf-input-container:has(select[name*="default_"])').remove();
+                
+                // Find the container to append new content after
+                var $container = $(obj).closest('.wpuf-input-container');
+                
+                if ($container.length && response.data) {
+                    // Append the new taxonomy fields
+                    $container.after(response.data);
+                    
+                    // Initialize selectize for all new taxonomy selects
+                    $('.tax-list-selector:not(.selectized)').each(function() {
+                        var $select = $(this);
+                        
+                        // The select options are already set with selected attributes from PHP
+                        // so we don't need to manually set values here
+                        
+                        // Initialize selectize
+                        $select.selectize({
+                            plugins: ['remove_button'],
+                        });
+                    });
                 }
-
-                const value = $(default_category_name).data('value');
-
-                $(default_category).parent('.wpuf-my-4.wpuf-input-container').remove();
-                $('select#post_type').parent('.wpuf-my-4.wpuf-input-container').after(response.data);
-
-                if (value && ( typeof value === 'string' )) {
-                    $(default_category).val(value.split(","));
-                } else {
-                    $(default_category).val(value);
-                }
-
-                $(default_category).selectize({
-                    plugins: ['remove_button'],
-                });
-
             },
-            error: function ( error ) {
-                console.log(error);
+            error: function (error) {
+                console.log('Error loading default categories:', error);
             }
         });
     }
-
-
 })(jQuery);

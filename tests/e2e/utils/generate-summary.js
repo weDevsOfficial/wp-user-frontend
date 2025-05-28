@@ -93,6 +93,17 @@ function getTestStatus(test) {
   return { status, duration, flaky, tags };
 }
 
+// Function to get test type based on feature ID
+function getTestType(featureId) {
+  if (featureId.startsWith('LS0')) return 'Setup';
+  if (featureId.startsWith('PF0')) return 'Form Creation';
+  if (featureId.startsWith('RF0')) return 'Registration';
+  if (featureId.startsWith('PFS0')) return 'Post Form Set';
+  if (featureId.startsWith('RFS0')) return 'Reg Form Set';
+  if (featureId.startsWith('FOS0')) return 'Field Option Set';
+  return 'Other';
+}
+
 // Function to style tags as pills
 function formatTagAsPill(tag) {
   const tagType = tag.replace('@', '');
@@ -137,6 +148,7 @@ async function generateSummary() {
     const featureRows = features.map((feature) => {
       const test = findTestByTitle(results.suites, feature.id);
       const { status, duration, flaky, tags } = getTestStatus(test);
+      const testType = getTestType(feature.id);
       
       return {
         id: feature.id,
@@ -144,7 +156,8 @@ async function generateSummary() {
         status,
         duration,
         flaky,
-        tags: tags || [] // Ensure tags is always an array
+        tags: tags || [],
+        testType
       };
     });
 
@@ -159,22 +172,25 @@ async function generateSummary() {
     const minutes = Math.floor(totalDuration / 60000);
     const seconds = ((totalDuration % 60000) / 1000).toFixed(0);
     const coverage = (((total - notCovered) / total) * 100).toFixed(1);
+    const avgDuration = total > 0 ? (totalDuration / total / 1000).toFixed(1) : '0';
+    const browser = 'Chromium'; // Default browser from your setup
+    const lastRun = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
     // Create a table header and row for statistics
-    const statHeader = `| Test 📝 | Total 📊 | Passed ✅ | Failed ❌ | Flaky ⚠️ | Skipped ⏭️ | Duration ⏱️ | Coverage 📈 |
-|---|---|---|---|---|---|---|---|
-| E2E Tests | ${total} | ${passed} | ${failed} | ${flaky} | ${skipped} | ${minutes}m ${seconds}s | ${coverage}% |`;
+    const statHeader = `| Test 📝 | Total 📊 | Passed ✅ | Failed ❌ | Flaky ⚠️ | Skipped ⏭️ | Duration ⏱️ | Avg Duration ⏱️ | Browser 🌐 | Run Date 📅 | Coverage 📈 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| E2E Tests | ${total} | ${passed} | ${failed} | ${flaky} | ${skipped} | ${minutes}m ${seconds}s | ${avgDuration}s | ${browser} | ${lastRun} | ${coverage}% |`;
 
     // Remove the old stat values line since we're incorporating it in the table
     const statValues = '';
 
-    // Markdown table with tags column
-    const tableHeader = `| Feature ID | Name | Status | Duration (s) | Flaky? | Tags |
-|---|---|---|---|---|---|`;
+    // Markdown table with tags and type columns
+    const tableHeader = `| Feature ID | Name | Status | Duration (s) | Flaky? | Type | Tags |
+|---|---|---|---|---|---|---|`;
     const tableRows = featureRows
       .map(
         (f) =>
-          `| ${f.id} | ${f.name} | ${f.status === 'passed' ? '✅ Passed' : f.status === 'failed' ? '❌ Failed' : f.status === 'skipped' ? '⏭️ Skipped' : '⚠️ Not Covered'} | ${(f.duration / 1000).toFixed(1)} | ${f.flaky ? '⚠️ Yes ' : '👍 No'} | ${(f.tags || []).map(formatTagAsPill).join(' ')} |`,
+          `| ${f.id} | ${f.name} | ${f.status === 'passed' ? '✅ Passed' : f.status === 'failed' ? '❌ Failed' : f.status === 'skipped' ? '⏭️ Skipped' : '⚠️ Not Covered'} | ${(f.duration / 1000).toFixed(1)} | ${f.flaky ? '⚠️ Yes ' : '👍 No'} | ${f.testType} | ${(f.tags || []).map(formatTagAsPill).join(' ')} |`,
       )
       .join('\n');
 

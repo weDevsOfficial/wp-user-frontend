@@ -297,7 +297,7 @@
             } else {
                 $('.wpuf_subscription_expiration_field').hide();
             }
-        }
+        },
 
 	};
 

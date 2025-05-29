@@ -109,14 +109,14 @@ function formatTagAsPill(tag) {
   const tagType = tag.replace('@', '');
   
   switch(tagType) {
-    case 'Both':
-      return `![Both](https://img.shields.io/badge/Both-orange?style=for-the-badge&color=33ffd7)`;
+    case 'Basic':
+      return `![Basic](https://img.shields.io/badge/Basic-4dff00?style=plastic&logoColor=white)`;
     case 'Pro':
-      return `![Pro](https://img.shields.io/badge/Pro-pink?style=for-the-badge&color=99faff)`;
+      return `![Pro](https://img.shields.io/badge/Pro-8000ff?style=plastic&logoColor=white)`;
     case 'Lite':
-      return `![Lite](https://img.shields.io/badge/Lite-purple?style=for-the-badge&color=8000ff)`;
+      return `![Lite](https://img.shields.io/badge/Lite-ff7400?style=plastic&logoColor=white)`;
     default:
-      return `![${tagType}](https://img.shields.io/badge/${tagType}-gray?style=for-the-badge&color=d800ff)`;
+      return `![${tagType}](https://img.shields.io/badge/${tagType}-d800ff?style=plastic&logoColor=white)`;
   }
 }
 

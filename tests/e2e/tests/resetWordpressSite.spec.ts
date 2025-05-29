@@ -31,7 +31,7 @@ export default function resetWordpressSite() {
         // Create a single page
         page = await context.newPage();
     });
-    test.describe('Reset Site @Both :-->', () => {
+    test.describe('Reset Site', () => {
 
         test('RLS0001 : Admin is resetting Local Site', async () => {
             const BasicLogin = new BasicLoginPage(page);

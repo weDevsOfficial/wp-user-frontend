@@ -36,7 +36,9 @@ const fetchForms = async (page = 1, status = 'any', search = '') => {
   try {
     loading.value = true;
     currentPage.value = page;
-    let apiUrl = `/wp-json/wpuf/v1/wpuf_form?page=${page}&per_page=${perPage.value}&status=${status}&post_type=${postType}`;
+    // Use the correct REST API root, including subdirectory if present
+    const restApiRoot = wpuf_forms_list.rest_url.replace(/\/$/, ''); // Remove trailing slash if any
+    let apiUrl = `${restApiRoot}/wpuf/v1/wpuf_form?page=${page}&per_page=${perPage.value}&status=${status}&post_type=${postType}`;
     if (search) {
       apiUrl += `&s=${search}`;
     }

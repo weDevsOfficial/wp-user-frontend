@@ -120,6 +120,7 @@ class Admin_Subscription {
                     'https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=wpuf-subscription'
                 ),
                 'nonce'           => wp_create_nonce( 'wp_rest' ),
+                'rest_url'        => esc_url_raw( rest_url() ),
                 'sections'        => $this->get_sections(),
                 'subSections'     => $this->get_sub_sections(),
                 'fields'          => $this->get_fields(),

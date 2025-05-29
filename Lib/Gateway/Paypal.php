@@ -47,6 +47,31 @@ class Paypal {
         // Add admin notice for PayPal settings update
         add_action( 'admin_notices', [ $this, 'paypal_settings_update_notice' ] );
         add_action( 'wp_ajax_wpuf_dismiss_paypal_notice', [ $this, 'dismiss_paypal_notice' ] );
+        
+        // Add CSS for webhook configuration section
+        add_action( 'admin_head', [ $this, 'inject_webhook_css' ] );
+    }
+
+    /**
+     * Inject CSS for webhook configuration
+     */
+    public function inject_webhook_css() {
+        // Only inject on WPUF settings page
+        $screen = get_current_screen();
+        if ( ! $screen || false === strpos( $screen->base, 'wpuf' ) ) {
+            return;
+        }
+        ?>
+        <style>
+        .wpuf-paypal-webhook-container {
+            padding: 10px 15px 15px 15px !important;
+            border: 1px solid #ddd !important;
+            background-color: #f9f9f9 !important;
+            border-radius: 4px !important;
+            box-sizing: border-box !important;
+        }
+        </style>
+        <?php
     }
 
     /**
@@ -1079,30 +1104,61 @@ class Paypal {
         $options[] = [
             'name' => 'paypal_client_id',
             'label' => __( 'PayPal Client ID', 'wp-user-frontend' ),
+            'desc' => __( 'Enter your PayPal Client ID from your PayPal developer dashboard.', 'wp-user-frontend' ),
         ];
 
         $options[] = [
             'name' => 'paypal_client_secret',
             'label' => __( 'PayPal Client Secret', 'wp-user-frontend' ),
+            'desc' => __( 'Enter your PayPal Client Secret from your PayPal developer dashboard.', 'wp-user-frontend' ),
+        ];
+
+        // Webhook URL field (read-only, auto-generated)
+        $webhook_url = home_url( '/?action=webhook_triggered' );
+        $options[] = [
+            'name' => 'paypal_webhook_url',
+            'label' => __( 'PayPal Webhook URL', 'wp-user-frontend' ),
+            'type' => 'text',
+            'default' => $webhook_url,
+            'attr' => 'disabled',
+            'readonly' => true,
+            'desc' => sprintf(
+                /* translators: %s: webhook URL */
+                __( 'Copy this URL and add it to your PayPal webhook configuration in your PayPal developer dashboard. This URL is: <code>%s</code>', 'wp-user-frontend' ),
+                esc_html( $webhook_url )
+            ),
+            'css' => 'background-color: #f9f9f9; color: #666;',
         ];
 
         $options[] = [
             'name' => 'paypal_webhook_id',
             'label' => __( 'PayPal Webhook ID', 'wp-user-frontend' ),
+            'desc' => sprintf(
+                /* translators: %1$s: live dashboard link, %2$s: sandbox dashboard link */
+                __( 'Enter the Webhook ID provided by PayPal after creating the webhook. This is required for webhook verification. Find your webhook ID in your <a href="%1$s" target="_blank" rel="noopener noreferrer">PayPal dashboard</a>', 'wp-user-frontend' ),
+                'https://developer.paypal.com/'
+            ),
         ];
 
         // Legacy API options (keep for backward compatibility)
         $options[] = [
             'name'  => 'paypal_api_username',
             'label' => __( 'PayPal API username', 'wp-user-frontend' ),
+            'desc' => sprintf(
+                /* translators: %1$s: live dashboard link, %2$s: sandbox dashboard link */
+                __( '(Legacy) <a href="%1$s" target="_blank" rel="noopener noreferrer">PayPal API username</a> for older integrations.', 'wp-user-frontend' ),
+                'https://developer.paypal.com/'
+            ),
         ];
         $options[] = [
             'name'  => 'paypal_api_password',
             'label' => __( 'PayPal API password', 'wp-user-frontend' ),
+            'desc' => __( '(Legacy) PayPal API password for older integrations.', 'wp-user-frontend' ),
         ];
         $options[] = [
             'name'  => 'paypal_api_signature',
             'label' => __( 'PayPal API signature', 'wp-user-frontend' ),
+            'desc' => __( '(Legacy) PayPal API signature for older integrations.', 'wp-user-frontend' ),
         ];
 
         // Replace sandbox mode checkbox with test mode radio button
@@ -1115,10 +1171,36 @@ class Paypal {
                 'live' => __( 'Live Mode', 'wp-user-frontend' ),
                 'test' => __( 'Test Mode (Sandbox)', 'wp-user-frontend' ),
             ],
-            'desc' => __( 'Choose whether to process real payments or test payments. Test mode uses PayPal Sandbox environment.', 'wp-user-frontend' ),
+            'desc' => __( 'Choose whether to process real payments or test payments. Test mode uses PayPal Sandbox environment. Make sure to configure separate webhook URLs for each environment.', 'wp-user-frontend' ),
+        ];
+
+        // Add webhook events information
+        $options[] = [
+            'name' => 'paypal_webhook_events_info',
+            'label' => '', // Empty label since we have both headings in the description
+            'type' => 'html',
+            'desc' => $this->get_webhook_events_notice(),
         ];
 
         return $options;
+    }
+
+    /**
+     * Get webhook events notice HTML
+     */
+    private function get_webhook_events_notice() {
+        ob_start();
+        ?>
+        <div class="wpuf-paypal-webhook-container">
+            <p><?php esc_html_e( 'Setup Guide:', 'wp-user-frontend' ); ?>
+            <a href="<?php echo esc_url( $this->setup_guide_url ); ?>" target="_blank" rel="noopener noreferrer">
+                <?php esc_html_e( 'Follow our PayPal integration guide', 'wp-user-frontend' ); ?>
+            </a>
+            <?php esc_html_e( 'for step-by-step webhook configuration instructions.', 'wp-user-frontend' ); ?></p>
+        </div>
+        
+        <?php
+        return ob_get_clean();
     }
 
     public function subscription_cancel( $user_id ) {
@@ -1735,14 +1817,15 @@ class Paypal {
      * Check PayPal return
      */
     public function check_paypal_return() {
-        //nonce check
+        // Only check nonce if this is actually a PayPal return request
+        if ( ! isset( $_GET['action'] ) || 'wpuf_paypal_success' !== sanitize_text_field( wp_unslash( $_GET['action'] ) ) ) {
+            return;
+        }
+
+        // Now check nonce since we know this is a PayPal return
         if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'wpuf_paypal_return' ) ) {
             wp_safe_redirect( home_url( '/payment-error/?error=' . rawurlencode( 'Invalid nonce' ) ) );
             exit;
-        }
-
-        if ( ! isset( $_GET['action'] ) || 'wpuf_paypal_success' !== sanitize_text_field( wp_unslash( $_GET['action'] ) ) ) {
-            return;
         }
 
         if ( isset( $_GET['payment_completed'] ) ) {
@@ -1756,14 +1839,15 @@ class Paypal {
      * Add pending payment page handler
      */
     public function handle_pending_payment() {
-        //nonce check
+        // Only check nonce if this is actually a PayPal pending request
+        if ( ! isset( $_GET['action'] ) || 'wpuf_paypal_pending' !== sanitize_text_field( wp_unslash( $_GET['action'] ) ) ) {
+            return;
+        }
+
+        // Now check nonce since we know this is a PayPal pending request
         if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'wpuf_paypal_return' ) ) {
             wp_safe_redirect( home_url( '/payment-error/?error=' . rawurlencode( 'Invalid nonce' ) ) );
             exit;
-        }
-
-        if ( ! isset( $_GET['action'] ) || 'wpuf_paypal_pending' !== sanitize_text_field( wp_unslash( $_GET['action'] ) ) ) {
-            return;
         }
 
         $capture_id = isset( $_GET['capture_id'] ) ? sanitize_text_field( wp_unslash( $_GET['capture_id'] ) ) : '';

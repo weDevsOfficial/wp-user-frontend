@@ -13,37 +13,28 @@ const htmlReportPath = 'tests/e2e/playwright-report/index.html';
 
 function normalizeId(id) {
   // Match e.g. PF001, PF0001, LS01, LS0001, etc.
-  const match = id.match(/^([A-Z]+)(\d+)(_PRO)?$/i);
+  const match = id.match(/^([A-Z]+)(\d+)$/i);
   if (!match) return id;
   const prefix = match[1].toUpperCase();
   const num = match[2].padStart(4, '0');
-  const pro = match[3] || '';
-  return `${prefix}${num}${pro}`;
+  return `${prefix}${num}`;
 }
 
 function extractTestId(title, searchId) {
   // Try various formats:
   // 1. "RF0001 : Description"
-  let match = title.match(/^([A-Z]+\d+)(?:_PRO)?\s*:/i);
+  let match = title.match(/^([A-Z]+\d+)\s*:/i);
   if (!match) {
-    // 2. "Description [RF0001_PRO]"
-    match = title.match(/([A-Z]+\d+(?:_PRO)?)/);
+    // 2. "Description [RF0001]"
+    match = title.match(/([A-Z]+\d+)/);
   }
   if (!match) {
     // 3. Remove "Here, " prefix and try again
     const titleWithoutHere = title.replace(/^Here,\s+/, '');
-    match = titleWithoutHere.match(/([A-Z]+\d+(?:_PRO)?)/);
+    match = titleWithoutHere.match(/([A-Z]+\d+)/);
   }
 
   if (!match) return '';
-
-  // Get the base ID without _PRO suffix
-  const baseId = normalizeId(match[1].replace(/_PRO$/, ''));
-
-  // If we're searching for a PRO feature, also match the base ID
-  if (searchId.endsWith('_PRO') && baseId === searchId.replace(/_PRO$/, '')) {
-    return searchId;
-  }
 
   return normalizeId(match[1]);
 }
@@ -80,13 +71,20 @@ function getTestStatus(test) {
 
   const duration = allResults.reduce((acc, r) => acc + (r.duration || 0), 0);
   const statuses = allResults.map((r) => r.status);
-  const status = statuses.includes('failed')
+  
+  // Check for failed tests - include timedOut, failed, and check test.ok
+  const hasFailed = statuses.includes('failed') || 
+                   statuses.includes('timedOut') || 
+                   test.ok === false;
+  
+  const status = hasFailed
     ? 'failed'
     : statuses.every((s) => s === 'skipped')
       ? 'skipped'
       : allResults.length > 0
         ? 'passed'
         : 'not_covered';
+        
   const flaky = allResults.length > 1 && statuses.includes('failed') && statuses.includes('passed');
   const tags = test.tags || [];
 
@@ -190,7 +188,7 @@ async function generateSummary() {
     const tableRows = featureRows
       .map(
         (f) =>
-          `| ${f.id} | ${f.name} | ${f.status === 'passed' ? '✅' : f.status === 'failed' ? '❌' : f.status === 'skipped' ? '⏭️' : '🚫'} | ${(f.duration / 1000).toFixed(1)} s | ${f.flaky ? '⚠️ Yes ' : '👍 No'} | ${f.testType} | ${(f.tags || []).map(formatTagAsPill).join(' ')} |`,
+          `| ${f.id} | ${f.name} | ${f.status === 'passed' ? '✅' : f.status === 'failed' ? '❌' : f.status === 'skipped' ? '⏭️' : f.status === 'not_covered' ? '🚫' : '❓'} | ${(f.duration / 1000).toFixed(1)} s | ${f.flaky ? '⚠️ Yes ' : '👍 No'} | ${f.testType} | ${(f.tags || []).map(formatTagAsPill).join(' ')} |`,
       )
       .join('\n');
 

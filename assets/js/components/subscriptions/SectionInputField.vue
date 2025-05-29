@@ -96,6 +96,7 @@ const showField = computed(() => {
 });
 
 const modifySubscription = (event) => {
+
     switch (field.value.db_type) {
         case 'meta_serialized':
             subscriptionStore.modifyCurrentSubscription( field.value.db_key, event.target.value, field.value.serialize_key );
@@ -107,7 +108,6 @@ const modifySubscription = (event) => {
 
         default:
             subscriptionStore.setMetaValue( field.value.db_key, event.target.value );
-
     }
 };
 
@@ -268,7 +268,9 @@ onMounted(() => {
                 :placeholder="field.placeholder ? field.placeholder : ''"
                 @input="[modifySubscription($event), processInput($event)]"
                 @keydown="processNumber"
-                min="-1"
+                :min="field.min"
+                :step="field.step"
+                :default="field.default"
                 :class="subscriptionStore.errors[fieldId] ? '!wpuf-border-red-500' : '!wpuf-border-gray-300'"
                 class="placeholder:wpuf-text-gray-400 wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-primaryHover focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-primaryHover sm:wpuf-text-sm">
             <textarea

@@ -1481,20 +1481,6 @@ class Admin_Subscription {
                         ),
                         'default'       => '-1',
                     ],
-                    'number_of_global_styles'  => [
-                        'id'            => 'number-of-global-styles',
-                        'name'          => 'number-of-global-styles',
-                        'db_key'        => '_post_type_name',
-                        'db_type'       => 'meta_serialized',
-                        'serialize_key' => 'wp_global_styles',
-                        'type'          => 'input-number',
-                        'label'         => __( 'Maximum Number of Global Styles', 'wp-user-frontend' ),
-                        'tooltip'       => __(
-                            'Set maximum number of global styles that users can use within the subscription period. Enter -1 for unlimited',
-                            'wp-user-frontend'
-                        ),
-                        'default'       => '-1',
-                    ],
                     'number_of_menus'          => [
                         'id'            => 'number-of-menus',
                         'name'          => 'number-of-menus',

@@ -34,19 +34,19 @@ export default function postFormsTestsPro() {
         /**----------------------------------POSTFORMS----------------------------------**
          *
          * @TestScenario : [Post-Forms]
-         * @Test_PF0001_PRO : Admin is creating Blank Form with > PF + CustomFields Pro
-         * @Test_PF0002_PRO : Admin is creating Blank Form with > PF + Others Pro
-         * @Test_PF0003_PRO : Admin is creating a Blank Post Form with all Pro Fields
-         * @Test_PF0004_PRO : Admin is creating a Preset Post Form - with Guest Enabled Pro
-         * @Test_PF0005_PRO : Admin is Updating Settings with default Post Form Pro
-         * @Test_PF0006_PRO : Admin is Submitting Form from Frontend Pro
+         * @Test_PF0003 : Admin is creating Blank Form with > CustomFields
+         * @Test_PF0004 : Admin is creating Blank Form with > Others
+         * @Test_PF0005 : Admin is creating a Blank Post Form with all Fields
+         * @Test_PF0007 : Admin is creating a Preset Post Form - with Guest Enabled
+         * @Test_PF0008 : Admin is Updating Settings with default Post Form
+         * @Test_PF0009 : User is Submitting Form from Frontend
          *
          */
 
         //TODO: Create a BeforeAll for login
 
 
-        test('PF0001_PRO : Admin is creating Blank Form with > CustomFields Pro', { tag: ['@Pro'] }, async () => {
+        test('PF0003 : Admin is creating Blank Form with > CustomFields', { tag: ['@Pro'] }, async () => {
             const BasicLogin = new BasicLoginPage(page);
             const PostFormsPro = new PostFormsProPage(page);
             const FieldOptionsCommonPro = new FieldOptionsCommonProPage(page);
@@ -69,7 +69,7 @@ export default function postFormsTestsPro() {
         });
 
 
-        test('PF0002_PRO : Admin is creating Blank Form with > Others Pro', { tag: ['@Pro'] }, async () => {
+        test('PF0004 : Admin is creating Blank Form with > Others', { tag: ['@Pro'] }, async () => {
             const PostFormsPro = new PostFormsProPage(page);
             const FieldOptionsCommonPro = new FieldOptionsCommonProPage(page);
 
@@ -90,7 +90,7 @@ export default function postFormsTestsPro() {
         });
 
 
-        test('PF0003_PRO : Admin is creating a Blank Post Form with all Pro Fields', { tag: ['@Pro'] }, async () => {
+        test('PF0005 : Admin is creating a Blank Post Form with all Fields', { tag: ['@Pro'] }, async () => {
             const PostFormsPro = new PostFormsProPage(page);
             const FieldOptionsCommonPro = new FieldOptionsCommonProPage(page);
 
@@ -113,7 +113,7 @@ export default function postFormsTestsPro() {
             await FieldOptionsCommonPro.validatePostFormCreatedPro(PostForm.pfPostName1);
         });
 
-        test('PF0004_PRO : Admin is creating a Preset Post Form - with Guest Enabled Pro', { tag: ['@Pro'] }, async () => {
+        test('PF0007 : Admin is creating a Preset Post Form - with Guest Enabled', { tag: ['@Pro'] }, async () => {
             const PostFormsPro = new PostFormsProPage(page);
             const FieldOptionsCommonPro = new FieldOptionsCommonProPage(page);
 
@@ -133,7 +133,7 @@ export default function postFormsTestsPro() {
         });
 
 
-        test('PF0005_PRO : Admin is Updating Settings with default Post Form Pro', { tag: ['@Pro'] }, async () => {
+        test('PF0008 : Admin is Updating Settings with default Post Form', { tag: ['@Pro'] }, async () => {
             const PostFormsPro = new PostFormsProPage(page);
             const SettingsSetup = new SettingsSetupPage(page);
 
@@ -145,7 +145,7 @@ export default function postFormsTestsPro() {
         });
 
 
-        test('PF0006_PRO : User is Submitting Form from Frontend', { tag: ['@Pro'] }, async () => {
+        test('PF0009 : User is Submitting Form from Frontend', { tag: ['@Pro'] }, async () => {
             const BasicLogin = new BasicLoginPage(page);
             const PostFormsFrontend = new PostFormsFrontendPage(page);
 

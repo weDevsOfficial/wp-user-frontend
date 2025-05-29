@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import { expect, type Page, type Dialog } from '@playwright/test';
 import { Selectors } from './selectors';
-import { Urls } from '../utils/testData';
+import { Tokens, Urls } from '../utils/testData';
 import { Base } from './base';
 export class SettingsSetupPage extends Base {
 
@@ -272,7 +272,7 @@ export class SettingsSetupPage extends Base {
             const activateWPUFPro = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickActivateLicense);
             console.log(activateWPUFPro);
             if (activateWPUFPro == true) {
-                await this.validateAndFillStrings(Selectors.settingsSetup.pluginStatusCheck.fillLicenseKey, process.env.WPUF_PRO_LICENSE_KEY?.toString() || '');
+                await this.validateAndFillStrings(Selectors.settingsSetup.pluginStatusCheck.fillLicenseKey, Tokens.WPUF_PRO_LICENSE_KEY?.toString() || '');
                 await this.page.waitForTimeout(500);
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.submitLicenseKey);
                 await this.page.waitForTimeout(500);

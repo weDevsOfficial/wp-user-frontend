@@ -35,14 +35,14 @@ export default function registrationFormsTestsPro() {
         /**----------------------------------REGISTRATIONFORMS----------------------------------**
          * 
          * @TestScenario : [Reg-Forms]
-         * @Test_RF0001_PRO : Admin is checking Registration Forms - Pro Feature Page
-         * @Test_RF0002_PRO : Admin is creating Registration Forms - using shortcode
-         * @Test_RF0003_PRO : User is registering using - Registration Form
-         * @Test_RF0004_PRO : Admin is validating - Registered user
+         * @Test_RF0001 : Admin is checking Registration Forms - Pro Feature Page
+         * @Test_RF0002 : Admin is creating Registration Forms - using shortcode
+         * @Test_RF0003 : User is registering using - Registration Form
+         * @Test_RF0004 : Admin is validating - Registered user
          * 
          */
 
-        test('RF0001_PRO : Here, Admin is checking Registration Forms - Pro Feature Page', { tag: ['@Pro'] }, async () => {
+        test('RF0001 : Here, Admin is checking Registration Forms - Pro Feature Page', { tag: ['@Pro'] }, async () => {
             const BasicLogin = new BasicLoginPage(page);
             const RegistrationFormsLite = new RegistrationFormsPage(page);
             //Basic login
@@ -52,7 +52,7 @@ export default function registrationFormsTestsPro() {
         });
 
 
-        test('RF0002_PRO : Here, Admin is creating Registration Forms Page - using shortcode', { tag: ['@Pro'] }, async () => {
+        test('RF0002 : Here, Admin is creating Registration Forms Page - using shortcode', { tag: ['@Pro'] }, async () => {
             const RegistrationFormsLite = new RegistrationFormsPage(page);
             const SettingsSetup = new SettingsSetupPage(page);
             //Registration Forms page - Title
@@ -66,7 +66,7 @@ export default function registrationFormsTestsPro() {
         });
 
 
-        test('RF0003_PRO : Here, User is registering using - Registration Form', { tag: ['@Pro'] }, async () => {
+        test('RF0003 : Here, User is registering using - Registration Form', { tag: ['@Pro'] }, async () => {
             const RegistrationFormsFrontend = new RegistrationFormsFrontendPage(page);
             //FrontEnd
             //Complete FrontEnd Registration
@@ -74,7 +74,7 @@ export default function registrationFormsTestsPro() {
         });
 
 
-        test('RF0004_PRO : Here, Admin is validating - Registered user', { tag: ['@Pro'] }, async () => {
+        test('RF0004 : Here, Admin is validating - Registered user', { tag: ['@Pro'] }, async () => {
             const BasicLogin = new BasicLoginPage(page);
             const RegistrationFormsFrontend = new RegistrationFormsFrontendPage(page);
             //Basic Login

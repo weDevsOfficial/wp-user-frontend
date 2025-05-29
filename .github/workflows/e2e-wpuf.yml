@@ -108,7 +108,7 @@ jobs:
             npx playwright install chromium --with-deps
 
       # Run Playwright tests/e2e
-      - name: Run Playwright tests/e2e
+      - name: 🧪 Run e2e tests
         env:
           CI: true
           BASE_URL: ${{ secrets.QA_BASE_URL }}

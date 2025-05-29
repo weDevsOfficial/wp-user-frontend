@@ -8,7 +8,8 @@
     "wp-env": "wp-env",
     "test": "CI=false npx playwright test e2eMain.spec.ts --headed",
     "test:pro": "CI=false npx playwright test e2eMainPro.spec.ts --headed",
-    "generate-summary": "node utils/generate-summary.js"
+    "generate-summary": "node utils/generate-summary.js",
+    "generate-summary-pro": "node plugins/wp-user-frontend/tests/e2e/utils/generate-summary.js"
   },
   "keywords": [],
   "author": "",

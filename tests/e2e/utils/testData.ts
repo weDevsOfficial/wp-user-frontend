@@ -42,6 +42,30 @@ const Users: {
 };
 
 
+/**-----------------------------------*/
+/**-------DATA_SET: Test Tokens-------*/
+/**---------------------------------*/
+const Tokens: {
+    //Admin Token
+    ACCESS_TOKEN: string;
+    WPUF_PRO_LICENSE_KEY: string;
+    GOOGLE_MAP_API_KEY: string;
+    RECAPTCHA_SITE_KEY: string;
+    RECAPTCHA_SECRET_KEY: string;
+    CLOUDFLARE_TURNSTILE_SITE_KEY: string;
+    CLOUDFLARE_TURNSTILE_SECRET_KEY: string;
+} = {
+    //Admin Token
+    ACCESS_TOKEN: process.env.ACCESS_TOKEN ? process.env.ACCESS_TOKEN : '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',
+    WPUF_PRO_LICENSE_KEY: process.env.WPUF_PRO_LICENSE_KEY ? process.env.WPUF_PRO_LICENSE_KEY : '231cc869-d494-4d00-b45b-9bedab829647',
+    GOOGLE_MAP_API_KEY: process.env.GOOGLE_MAP_API_KEY ? process.env.GOOGLE_MAP_API_KEY : 'AIzaSyCiSPh9A7SYaO2sbZQ4qQo11AWyYB3UFvY',
+    RECAPTCHA_SITE_KEY: process.env.RECAPTCHA_SITE_KEY ? process.env.RECAPTCHA_SITE_KEY : '6LfZyTcrAAAAAPd3rTBB1Vjy-aMAdWvm6FDxqJKS',
+    RECAPTCHA_SECRET_KEY: process.env.RECAPTCHA_SECRET_KEY ? process.env.RECAPTCHA_SECRET_KEY : '6LfZyTcrAAAAAOngxwzHGJqo3o3bRtUNC_UpYTdf',
+    CLOUDFLARE_TURNSTILE_SITE_KEY: process.env.CLOUDFLARE_TURNSTILE_SITE_KEY ? process.env.CLOUDFLARE_TURNSTILE_SITE_KEY : '0x4AAAAAAAzWMKCx7ztjuLok',
+    CLOUDFLARE_TURNSTILE_SECRET_KEY: process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY ? process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY : '0x4AAAAAAAzWMOHM9q71or0uGan3Z92-9-c',
+};
+
+
 
 /**----------------------------------*/
 /**-------DATA_SET: Post Form-------*/
@@ -148,4 +172,5 @@ export {
     PostForm,
     RegistrationForm,
     SubscriptionPack,
+    Tokens,
 };

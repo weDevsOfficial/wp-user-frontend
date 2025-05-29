@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import fs from 'fs/promises';
+import { existsSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import yaml from 'js-yaml';
@@ -121,26 +122,18 @@ function formatTagAsPill(tag) {
 async function generateSummary() {
   try {
     // Read test results
-    let results;
-    try {
-      const resultsJson = await fs.readFile(resultsPath, 'utf-8');
-      results = JSON.parse(resultsJson);
-    } catch (error) {
-      console.error('Error reading results file:', error);
-      console.log('Creating empty results object');
-      results = { suites: [] };
+    if (!existsSync(resultsPath)) {
+      console.error('❌ Results file not found at:', resultsPath);
+      process.exit(1);
     }
+    
+    const resultsData = await fs.readFile(resultsPath, 'utf8');
+    const results = JSON.parse(resultsData);
 
     // Read features map
-    let features = [];
-    try {
-      const featuresYaml = await fs.readFile(featuresMapPath, 'utf-8');
-      const featuresMap = yaml.load(featuresYaml);
-      features = featuresMap.features.map((f) => ({ ...f, id: normalizeId(f.id) }));
-    } catch (error) {
-      console.error('Error reading features map:', error);
-      console.log('Using empty features array');
-    }
+    const featuresData = await fs.readFile(path.join(__dirname, '../features-map/features-map.yml'), 'utf8');
+    const featuresMap = yaml.load(featuresData);
+    const features = Array.isArray(featuresMap) ? featuresMap : featuresMap.features || [];
 
     // Map feature coverage
     const featureRows = features.map((feature) => {
@@ -154,7 +147,7 @@ async function generateSummary() {
         status,
         duration,
         flaky,
-        tags: tags || [],
+        tags: tags || [], // Ensure tags is always an array
         testType
       };
     });

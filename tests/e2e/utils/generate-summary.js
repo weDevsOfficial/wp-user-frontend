@@ -95,7 +95,7 @@ function getTestStatus(test) {
 
 // Function to get test type based on feature ID
 function getTestType(featureId) {
-  if (featureId.startsWith('LS0')) return 'Setup & Login';
+  if (featureId.startsWith('LS0')) return 'Setup';
   if (featureId.startsWith('PF0')) return 'Form Creation';
   if (featureId.startsWith('RF0')) return 'Registration';
   if (featureId.startsWith('PFS0')) return 'Post Form Settings';
@@ -110,13 +110,13 @@ function formatTagAsPill(tag) {
   
   switch(tagType) {
     case 'Both':
-      return `![Both](https://img.shields.io/badge/Both-orange?style=social&labelColor=2d1b47&color=ffb86c)`;
+      return `![Both](https://img.shields.io/badge/Both-orange?style=for-the-badge&color=33ffd7)`;
     case 'Pro':
-      return `![Pro](https://img.shields.io/badge/Pro-pink?style=social&labelColor=3c1a33&color=ff79c6)`;
+      return `![Pro](https://img.shields.io/badge/Pro-pink?style=for-the-badge&color=99faff)`;
     case 'Lite':
-      return `![Lite](https://img.shields.io/badge/Lite-purple?style=social&labelColor=2d1b47&color=bd93f9)`;
+      return `![Lite](https://img.shields.io/badge/Lite-purple?style=for-the-badge&color=8000ff)`;
     default:
-      return `![${tagType}](https://img.shields.io/badge/${tagType}-gray?style=social&labelColor=44475a&color=f8f8f2)`;
+      return `![${tagType}](https://img.shields.io/badge/${tagType}-gray?style=for-the-badge&color=d800ff)`;
   }
 }
 
@@ -177,9 +177,9 @@ async function generateSummary() {
     const lastRun = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
     // Create a table header and row for statistics
-    const statHeader = `| Test 📝 | Total 📊 | Passed ✅ | Failed ❌ | Flaky ⚠️ | Skipped ⏭️ | Duration ⏱️ | Average ⏱️ | Browser 🌐 | Date 📅 | Coverage 📈 |
+    const statHeader = `| Test 📝 | Total 📊 | Passed ✅ | Failed ❌ | Flaky ⚠️ | Skipped ⏭️ | Not Covered 🚫 | Coverage 📈 | Duration ⏱️ | Average ⏱️ | Date 📅 |
 |---|---|---|---|---|---|---|---|---|---|---|
-| E2E Tests | ${total} | ${passed} | ${failed} | ${flaky} | ${skipped} | ${minutes}m ${seconds}s | ${avgDuration}s | ${browser} | ${lastRun} | ${coverage}% |`;
+| E2E Tests | ${total} | ${passed} | ${failed} | ${flaky} | ${skipped} | ${notCovered} | ${coverage}% | ${minutes}m ${seconds}s | ${avgDuration}s | ${lastRun} |`;
 
     // Remove the old stat values line since we're incorporating it in the table
     const statValues = '';
@@ -190,7 +190,7 @@ async function generateSummary() {
     const tableRows = featureRows
       .map(
         (f) =>
-          `| ${f.id} | ${f.name} | ${f.status === 'passed' ? '✅ Passed' : f.status === 'failed' ? '❌ Failed' : f.status === 'skipped' ? '⏭️ Skipped' : '⚠️ Not Covered'} | ${(f.duration / 1000).toFixed(1)} s | ${f.flaky ? '⚠️ Yes ' : '👍 No'} | ${f.testType} | ${(f.tags || []).map(formatTagAsPill).join(' ')} |`,
+          `| ${f.id} | ${f.name} | ${f.status === 'passed' ? '✅' : f.status === 'failed' ? '❌' : f.status === 'skipped' ? '⏭️' : '🚫'} | ${(f.duration / 1000).toFixed(1)} s | ${f.flaky ? '⚠️ Yes ' : '👍 No'} | ${f.testType} | ${(f.tags || []).map(formatTagAsPill).join(' ')} |`,
       )
       .join('\n');
 

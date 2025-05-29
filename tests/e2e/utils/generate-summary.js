@@ -95,12 +95,12 @@ function getTestStatus(test) {
 
 // Function to get test type based on feature ID
 function getTestType(featureId) {
-  if (featureId.startsWith('LS0')) return 'Setup';
+  if (featureId.startsWith('LS0')) return 'Setup & Login';
   if (featureId.startsWith('PF0')) return 'Form Creation';
   if (featureId.startsWith('RF0')) return 'Registration';
-  if (featureId.startsWith('PFS0')) return 'Post Form Set';
-  if (featureId.startsWith('RFS0')) return 'Reg Form Set';
-  if (featureId.startsWith('FOS0')) return 'Field Option Set';
+  if (featureId.startsWith('PFS0')) return 'Post Form Settings';
+  if (featureId.startsWith('RFS0')) return 'Reg Form Settings';
+  if (featureId.startsWith('FOS0')) return 'Field Option Settings';
   return 'Other';
 }
 
@@ -110,13 +110,13 @@ function formatTagAsPill(tag) {
   
   switch(tagType) {
     case 'Both':
-      return `![Both](https://img.shields.io/badge/Both-orange?style=flat-square&labelColor=2d1b47&color=ffb86c)`;
+      return `![Both](https://img.shields.io/badge/Both-orange?style=social&labelColor=2d1b47&color=ffb86c)`;
     case 'Pro':
-      return `![Pro](https://img.shields.io/badge/Pro-pink?style=flat-square&labelColor=3c1a33&color=ff79c6)`;
+      return `![Pro](https://img.shields.io/badge/Pro-pink?style=social&labelColor=3c1a33&color=ff79c6)`;
     case 'Lite':
-      return `![Lite](https://img.shields.io/badge/Lite-purple?style=flat-square&labelColor=2d1b47&color=bd93f9)`;
+      return `![Lite](https://img.shields.io/badge/Lite-purple?style=social&labelColor=2d1b47&color=bd93f9)`;
     default:
-      return `![${tagType}](https://img.shields.io/badge/${tagType}-gray?style=flat-square&labelColor=44475a&color=f8f8f2)`;
+      return `![${tagType}](https://img.shields.io/badge/${tagType}-gray?style=social&labelColor=44475a&color=f8f8f2)`;
   }
 }
 
@@ -177,7 +177,7 @@ async function generateSummary() {
     const lastRun = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
     // Create a table header and row for statistics
-    const statHeader = `| Test 📝 | Total 📊 | Passed ✅ | Failed ❌ | Flaky ⚠️ | Skipped ⏭️ | Duration ⏱️ | Avg Duration ⏱️ | Browser 🌐 | Run Date 📅 | Coverage 📈 |
+    const statHeader = `| Test 📝 | Total 📊 | Passed ✅ | Failed ❌ | Flaky ⚠️ | Skipped ⏭️ | Duration ⏱️ | Average ⏱️ | Browser 🌐 | Date 📅 | Coverage 📈 |
 |---|---|---|---|---|---|---|---|---|---|---|
 | E2E Tests | ${total} | ${passed} | ${failed} | ${flaky} | ${skipped} | ${minutes}m ${seconds}s | ${avgDuration}s | ${browser} | ${lastRun} | ${coverage}% |`;
 
@@ -185,12 +185,12 @@ async function generateSummary() {
     const statValues = '';
 
     // Markdown table with tags and type columns
-    const tableHeader = `| Feature ID | Name | Status | Duration (s) | Flaky? | Type | Tags |
+    const tableHeader = `| Scenario ID | Name | Status | Duration | Flaky? | Type | Tags |
 |---|---|---|---|---|---|---|`;
     const tableRows = featureRows
       .map(
         (f) =>
-          `| ${f.id} | ${f.name} | ${f.status === 'passed' ? '✅ Passed' : f.status === 'failed' ? '❌ Failed' : f.status === 'skipped' ? '⏭️ Skipped' : '⚠️ Not Covered'} | ${(f.duration / 1000).toFixed(1)} | ${f.flaky ? '⚠️ Yes ' : '👍 No'} | ${f.testType} | ${(f.tags || []).map(formatTagAsPill).join(' ')} |`,
+          `| ${f.id} | ${f.name} | ${f.status === 'passed' ? '✅ Passed' : f.status === 'failed' ? '❌ Failed' : f.status === 'skipped' ? '⏭️ Skipped' : '⚠️ Not Covered'} | ${(f.duration / 1000).toFixed(1)} s | ${f.flaky ? '⚠️ Yes ' : '👍 No'} | ${f.testType} | ${(f.tags || []).map(formatTagAsPill).join(' ')} |`,
       )
       .join('\n');
 

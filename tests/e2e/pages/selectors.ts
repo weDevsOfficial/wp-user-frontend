@@ -45,7 +45,7 @@ export const Selectors = {
         pluginStatusCheck: {
             // Plugin Activate/Deactivate
             availableWPUFPluginLite: '//strong[normalize-space(text())="WP User Frontend"]',
-            availableWPUFPluginPro: '//strong[normalize-space(text())="WP User Frontend Pro"]',
+            availableWPUFPluginPro: '//strong[normalize-space(text())="WP User Frontend Pro - appsumo"]',
             clickPluginsSidebar: '//li[@id="menu-plugins"]',
             clickWPUFPluginLite: '//a[@id="activate-wp-user-frontend"]',
             clickWPUFPluginPro: '//a[@id="activate-wp-user-frontend-pro"]',
@@ -677,6 +677,7 @@ export const Selectors = {
         saveButton: '//button[normalize-space(text())="Save"]',
         postTypeColumn: '//tbody/tr[1]/td[2]',
         postSubmissionStatusColumn: '//tbody/tr[1]/td[3]',
+        clickFormEditor: '//a[contains(text(),"Form Editor")]',
         clickFormEditorSettings: '(//a[contains(@class,"wpuf-nav-tab wpuf-nav-tab-active")])[2]',
         clickBlankForm: '//a[@title="Blank Form" and contains(text(), "Create Form")]',
         confirmNewNameTickButton: '//input[@name="post_title"]/following-sibling::i[1]',
@@ -684,6 +685,7 @@ export const Selectors = {
         postTypePage: (type: string) => `//a[normalize-space()="${type}"]`,
         postCategory: (category: string) => `//a[normalize-space()="${category}"]`,
         submitPostButton: '//input[@name="submit"]',
+        updatePostButton: '//input[@name="submit"]',
         submitPostButtonText:(value: string) => `//input[@value="${value}"]`,
         checkPostTitle: (title: string) => `//h1[normalize-space(text())='${title}']`,
         checkSuccessMessage: '//div[@class="wpuf-success"]',
@@ -692,6 +694,15 @@ export const Selectors = {
         postStatusColumn: '//tbody//tr[1]//td[2]//span[1]',
         saveDraftButton: '//a[normalize-space(text())="Save Draft"]',
         draftSavedAlert: '//span[@class="wpuf-draft-saved"]',
+        multiStepProgressbar: '//div[normalize-space(text())="Step Start (100%)"]',
+        multiStepByStep: '//li[normalize-space(text())="Step Start"]',
+        removeStepStart: '//div[@class="step-start-indicator"]/../../../..//span[4]',
+        confirmDelete: '//button[normalize-space()="Yes, delete it"]',
+        editPostButton: '(//td[@data-label="Options: "]//a)[1]',
+        quickEditButton: '(//button[@class="button-link editinline"])[1]',
+        statusDropdown: '(//select[@name="_status"])[1]',
+        updateStatus: '(//input[@id="_inline_edit"]/following-sibling::button)[1]',
+
 
         // Post Settings Section
         postSettingsSection: {
@@ -727,6 +738,38 @@ export const Selectors = {
 
             submitButtonContainer: '(//label[normalize-space(text())="Submit Post Button Text"]/following::input)[1]',
 
+            // Multi-Step Settings
+            enableMultiStepToggle: '//input[@id="enable_multistep"]/following-sibling::span[1]',
+            enableMultiStepCheckbox: '//input[@id="enable_multistep"]',
+
+            progressbarTypeContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[6]',
+            progressbarTypeDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[6]',
+            progressbarTypeOption: (value: string) => `(//div[contains(@class,"selectize-dropdown-content")])//div[@data-value="${value}"]`,
+
+
+            // After Post Settings
+            postUpdateStatusContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[7]',
+            postUpdateStatusDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[7]',
+            postUpdateStatusOption: (status: string) => `(//div[contains(@class,"selectize-dropdown-content")])//div[@data-value="${status}"]`,
+            
+            postUpdateMessageContainer: '//textarea[@id="update_message"]',
+            
+            lockUserEditingAfterInput: '//input[@id="edit_post_lock_time"]',
+            
+            updatePostButtonTextInput: '//input[@id="update_post_text"]',
+
+            // Successful Redirection Settings (Update Post scenarios)
+            successfulRedirectionContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[7]',
+            successfulRedirectionDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[7]',
+            successfulRedirectionOption: (value: string) => `(//div[contains(@class,"selectize-dropdown-content")])//div[@data-value="${value}"]`,
+            
+            successfulRedirectionMessage: '//textarea[@id="update_message"]',
+            
+            successfulRedirectionPageContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[8]',
+            successfulRedirectionPageDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[8]',
+            successfulRedirectionPageOption: (text: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[contains(text(),"${text}")]`,
+            
+            successfulRedirectionUrlInput: '//input[@id="update_url"]',
 
         },
 

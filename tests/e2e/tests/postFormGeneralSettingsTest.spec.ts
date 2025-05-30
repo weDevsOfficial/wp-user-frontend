@@ -59,6 +59,33 @@ export default function postFormGeneralSettingsTests() {
          * @Test_PFS0026 : Admin is enabling post saving as draft
          * @Test_PFS0027 : Admin is saving post as draft
          * @Test_PFS0028 : Admin is changing submit button text
+         * @Test_PFS0029 : Admin is enabling multi-step form
+         * @Test_PFS0030 : Admin is validating multi-step progressbar
+         * @Test_PFS0031 : Admin is validating multi-step by step
+         * @Test_PFS0032 : Admin is disabling multi-step form
+         * @Test_PFS0033 : Admin is setting post update status to draft
+         * @Test_PFS0034 : Admin is validating post update status
+         * @Test_PFS0035 : Admin is setting post update status to pending review
+         * @Test_PFS0036 : Admin is validating post update status
+         * @Test_PFS0037 : Admin is setting post update status to private
+         * @Test_PFS0038 : Admin is validating post update status to private
+         * @Test_PFS0039 : Admin is setting post update status to no change
+         * @Test_PFS0040 : Admin is validating post update status to no change
+         * @Test_PFS0041 : Admin is setting post update status to published
+         * @Test_PFS0042 : Admin is validating post update status to published
+         * @Test_PFS0043 : Admin is setting successful redirection to updated post
+         * @Test_PFS0044 : Admin is validating successful redirection to updated post
+         * @Test_PFS0045 : Admin is setting successful redirection to same page
+         * @Test_PFS0046 : Admin is validating successful redirection to same page
+         * @Test_PFS0047 : Admin is setting successful redirection to a page
+         * @Test_PFS0048 : Admin is validating successful redirection to a page
+         * @Test_PFS0049 : Admin is setting successful redirection to custom URL
+         * @Test_PFS0050 : Admin is validating successful redirection to custom URL
+         * @Test_PFS0051 : Admin is setting post update message
+         * @Test_PFS0052 : Admin is validating post update message in form
+         * @Test_PFS0053 : Admin is setting lock user editing after time
+         * @Test_PFS0054 : Admin is setting update post button text
+         * @Test_PFS0055 : Admin is validating update post button text in form
          *
          */
 
@@ -255,6 +282,158 @@ export default function postFormGeneralSettingsTests() {
         test('PFS0028 : Admin is changing submit button text', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.changeSubmitButtonText(formName, 'Publish');
+        });
+
+        test('PFS0029 : Admin is enabling multi-step form', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.enableMultiStep(formName);
+        });
+
+        test('PFS0030 : Admin is validating multi-step progressbar', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.validateMultiStepProgessbar(formName);
+        });
+
+        test('PFS0031 : Admin is validating multi-step by step', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.validateMultiStepByStep(formName);
+        });
+
+        test('PFS0032 : Admin is disabling multi-step form', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.disableMultiStep(formName);
+        });
+
+        test('PFS0033 : Admin is setting post update status to draft', { tag: ['@Lite'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.setPostUpdateStatus(formName, 'draft');
+        });
+
+        test('PFS0034 : Admin is validating post update status for draft', { tag: ['@Lite'] }, async () => {
+            const postTitle = faker.word.words(3);
+            const postContent = faker.lorem.paragraph();
+            const postExcerpt = faker.lorem.paragraph();
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.validatePostUpdateStatusInForm(postTitle, postContent, postExcerpt, 'Offline');
+        });
+        test('PFS0035 : Admin is setting post update status to pending review', { tag: ['@Lite'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.setPostUpdateStatus(formName, 'pending');
+        });
+
+        test('PFS0036 : Admin is validating post update status for pending review', { tag: ['@Lite'] }, async () => {
+            const postTitle = faker.word.words(3);
+            const postContent = faker.lorem.paragraph();
+            const postExcerpt = faker.lorem.paragraph();
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.validatePostUpdateStatusInForm(postTitle, postContent, postExcerpt, 'Awaiting Approval');
+            await postFormSettings.pendingToLive();
+        });
+
+        test('PFS0037 : Admin is setting post update status to private', { tag: ['@Lite'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.setPostUpdateStatus(formName, 'private');
+        });
+
+        test('PFS0038 : Admin is validating post update status for private', { tag: ['@Lite'] }, async () => {
+            const postTitle = faker.word.words(3);
+            const postContent = faker.lorem.paragraph();
+            const postExcerpt = faker.lorem.paragraph();
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.validatePostUpdateStatusInForm(postTitle, postContent, postExcerpt, 'Private');
+        });
+
+        test('PFS0039 : Admin is setting post update status to no change', { tag: ['@Lite'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.setPostUpdateStatus(formName, '_nochange');
+        });
+
+        test('PFS0040 : Admin is validating post update status for no change', { tag: ['@Lite'] }, async () => {const postTitle = faker.word.words(3);
+            const postContent = faker.lorem.paragraph();
+            const postExcerpt = faker.lorem.paragraph();
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.validatePostUpdateStatusInForm(postTitle, postContent, postExcerpt, 'Private');
+        });
+
+        test('PFS0041 : Admin is setting post update status to published', { tag: ['@Lite'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.setPostUpdateStatus(formName, 'publish');
+        });
+
+        test('PFS0042 : Admin is validating post update status for published', { tag: ['@Lite'] }, async () => {
+            const postTitle = faker.word.words(3);
+            const postContent = faker.lorem.paragraph();
+            const postExcerpt = faker.lorem.paragraph();
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.validatePostUpdateStatusInForm(postTitle, postContent, postExcerpt, 'Live');
+        });
+
+        test.skip('PFS0043 : Admin is setting successful redirection to updated post', { tag: ['@Lite'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.setSuccessfulRedirectionToUpdatedPost(formName);
+        });
+
+        test.skip('PFS0044 : Admin is validating successful redirection to updated post', { tag: ['@Lite'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.validateSuccessfulRedirectionInForm('Updated post', formName);
+        });
+
+        test.skip('PFS0045 : Admin is setting successful redirection to same page', { tag: ['@Lite'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.setSuccessfulRedirectionToSamePage(formName, 'Post updated successfully');
+        });
+
+        test.skip('PFS0046 : Admin is validating successful redirection to same page', { tag: ['@Lite'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.validateSuccessfulRedirectionInForm('Same page', formName);
+        });
+
+        test.skip('PFS0047 : Admin is setting successful redirection to a page', { tag: ['@Lite'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.setSuccessfulRedirectionToPage(formName, 'Dashboard');
+        });
+
+        test.skip('PFS0048 : Admin is validating successful redirection to a page', { tag: ['@Lite'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.validateSuccessfulRedirectionInForm('To a page', formName);
+        });
+
+        test.skip('PFS0049 : Admin is setting successful redirection to custom URL', { tag: ['@Lite'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            const customUrl = Urls.baseUrl + '/success/';
+            await postFormSettings.setSuccessfulRedirectionToCustomUrl(formName, customUrl);
+        });
+
+        test.skip('PFS0050 : Admin is validating successful redirection to custom URL', { tag: ['@Lite'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.validateSuccessfulRedirectionInForm('To a custom URL', formName);
+        });
+
+        test.skip('PFS0051 : Admin is setting post update message', { tag: ['@Lite'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            const customMessage = 'Post has been updated successfully!';
+            await postFormSettings.setPostUpdateMessage(formName, customMessage);
+        });
+
+        test.skip('PFS0052 : Admin is validating post update message in form', { tag: ['@Lite'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            const customMessage = 'Post has been updated successfully!';
+            await postFormSettings.validatePostUpdateMessageInForm(customMessage, formName);
+        });
+
+        test.skip('PFS0053 : Admin is setting lock user editing after time', { tag: ['@Lite'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.setLockUserEditingAfter(formName, '24');
+        });
+
+        test.skip('PFS0054 : Admin is setting update post button text', { tag: ['@Lite'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.setUpdatePostButtonText(formName, 'Save Changes');
+        });
+
+        test.skip('PFS0055 : Admin is validating update post button text in form', { tag: ['@Lite'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.validateUpdatePostButtonTextInForm('Save Changes', formName);
         });
     });
 

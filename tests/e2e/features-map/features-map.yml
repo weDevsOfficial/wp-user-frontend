@@ -128,3 +128,57 @@ features:
     name: Admin is saving post as draft
   - id: PFS0028
     name: Admin is changing submit button text
+  - id: PFS0029
+    name: Admin is enabling multi-step form
+  - id: PFS0030
+    name: Admin is validating multi-step progressbar
+  - id: PFS0031
+    name: Admin is validating multi-step by step
+  - id: PFS0032
+    name: Admin is disabling multi-step form
+  - id: PFS0033
+    name: Admin is setting post update status to draft
+  - id: PFS0034
+    name: Admin is validating post update status for draft
+  - id: PFS0035
+    name: Admin is setting post update status to pending review
+  - id: PFS0036
+    name: Admin is validating post update status for pending review
+  - id: PFS0037
+    name: Admin is setting post update status to private
+  - id: PFS0038
+    name: Admin is validating post update status for private
+  - id: PFS0039
+    name: Admin is setting post update status to no change
+  - id: PFS0040
+    name: Admin is validating post update status for no change
+  - id: PFS0041
+    name: Admin is setting post update status to published
+  - id: PFS0042
+    name: Admin is validating post update status for published
+  - id: PFS0043
+    name: Admin is setting successful redirection to updated post
+  - id: PFS0044
+    name: Admin is validating successful redirection to updated post
+  - id: PFS0045
+    name: Admin is setting successful redirection to same page
+  - id: PFS0046
+    name: Admin is validating successful redirection to same page
+  - id: PFS0047
+    name: Admin is setting successful redirection to a page
+  - id: PFS0048
+    name: Admin is validating successful redirection to a page
+  - id: PFS0049
+    name: Admin is setting successful redirection to custom URL
+  - id: PFS0050
+    name: Admin is validating successful redirection to custom URL
+  - id: PFS0051
+    name: Admin is setting post update message
+  - id: PFS0052
+    name: Admin is validating post update message in form
+  - id: PFS0053
+    name: Admin is setting lock user editing after time
+  - id: PFS0054
+    name: Admin is setting update post button text
+  - id: PFS0055
+    name: Admin is validating update post button text in form

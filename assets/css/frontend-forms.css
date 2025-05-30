@@ -1191,7 +1191,7 @@ body body.rtl ul.wpuf-form li .wpuf-label {
     float: none;
     width: 30%;
   }
-}
+
 body .wpuf-form .required {
   color: red;
   font-weight: 700;
@@ -1797,4 +1797,49 @@ img.wpuf-eye {
   right: 1rem;
   top: 50%;
   transform: translateY(-50%) translateX(-6%);
+}
+
+/* Social Media Field Styles */
+.wpuf-twitter-field-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.wpuf-twitter-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.wpuf-twitter-field-wrapper .wpuf-twitter-field {
+    padding-left: 40px !important;
+}
+
+.wpuf-twitter-svg {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+}
+
+/* Twitter field data display styles */
+.wpuf-twitter-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    color: #1da1f2;
+}
+
+.wpuf-twitter-link:hover {
+    text-decoration: underline;
+}
+
+.wpuf-twitter-link svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
 }

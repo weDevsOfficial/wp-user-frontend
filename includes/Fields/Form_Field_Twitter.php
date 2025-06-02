@@ -31,8 +31,8 @@ class Form_Field_Twitter extends Form_Field_Social {
         // Set up platform-specific properties.
         $this->platform             = 'twitter';
         $this->platform_name        = 'X (Twitter)';
-        $this->icon_svg             = '<svg class="wpuf-twitter-svg" width="20" height="20" viewBox="0 0 24 24" fill="#1da1f2" xmlns="http://www.w3.org/2000/svg">
-            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+        $this->icon_svg             = '<svg class="wpuf-twitter-svg" style="display: inline-block; vertical-align: middle; margin-left: 8px; width: 20px; height: 20px;" width="20" height="20" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 16L10.1936 11.8065M10.1936 11.8065L6 6H8.77778L11.8065 10.1935M10.1936 11.8065L13.2222 16H16L11.8065 10.1935M16 6L11.8065 10.1935M1.5 11C1.5 6.52166 1.5 4.28249 2.89124 2.89124C4.28249 1.5 6.52166 1.5 11 1.5C15.4784 1.5 17.7175 1.5 19.1088 2.89124C20.5 4.28249 20.5 6.52166 20.5 11C20.5 15.4783 20.5 17.7175 19.1088 19.1088C17.7175 20.5 15.4784 20.5 11 20.5C6.52166 20.5 4.28249 20.5 2.89124 19.1088C1.5 17.7175 1.5 15.4783 1.5 11Z" stroke="#4B5563" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>';
         $this->base_url             = 'https://twitter.com/';
         $this->username_pattern     = '^@?[a-zA-Z0-9_]{1,15}$';
@@ -88,5 +88,19 @@ class Form_Field_Twitter extends Form_Field_Social {
         }
         
         return $settings;
+    }
+
+    /**
+     * Get platform-specific icon
+     *
+     * Returns the Twitter-specific SVG icon set in the constructor
+     * instead of the parent's default icon.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return string Twitter SVG icon markup.
+     */
+    protected function get_platform_icon() {
+        return $this->icon_svg;
     }
 }

@@ -128,6 +128,7 @@ class Menu {
                     [
                         'post_counts'            => wpuf_get_forms_counts_with_status(),
                         'rest_nonce'             => wp_create_nonce( 'wp_rest' ),
+                        'rest_url'               => esc_url_raw( rest_url() ),
                         'bulk_nonce'             => wp_create_nonce( 'bulk-post-forms' ),
                         'is_plain_permalink'     => empty( get_option( 'permalink_structure' ) ),
                         'permalink_settings_url' => admin_url( 'options-permalink.php' ),

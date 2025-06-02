@@ -13,7 +13,7 @@
     >
         <option
             class="checked:wpuf-bg-primary"
-            v-for="(option, key) in option_field.options"
+            v-for="(option, key) in dynamic_options"
             :value="key">{{ option }}</option>
     </select>
 </div>

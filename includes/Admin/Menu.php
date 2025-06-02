@@ -126,9 +126,12 @@ class Menu {
                 wp_enqueue_script( 'wpuf-forms-list' );
                 wp_localize_script('wpuf-forms-list', 'wpuf_forms_list',
                     [
-                        'post_counts' => wpuf_get_forms_counts_with_status(),
-                        'rest_nonce'  => wp_create_nonce( 'wp_rest' ),
-                        'bulk_nonce'  => wp_create_nonce( 'bulk-post-forms' ),
+                        'post_counts'            => wpuf_get_forms_counts_with_status(),
+                        'rest_nonce'             => wp_create_nonce( 'wp_rest' ),
+                        'rest_url'               => esc_url_raw( rest_url() ),
+                        'bulk_nonce'             => wp_create_nonce( 'bulk-post-forms' ),
+                        'is_plain_permalink'     => empty( get_option( 'permalink_structure' ) ),
+                        'permalink_settings_url' => admin_url( 'options-permalink.php' ),
                     ]
                 );
                 require_once WPUF_INCLUDES . '/Admin/views/post-forms-list-table-view.php';

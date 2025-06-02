@@ -8,6 +8,8 @@ import {HollowDotsSpinner} from 'epic-spinners';
 
 // store only counts without 0 values
 const postCounts = wpuf_forms_list.post_counts;
+const isPlainPermalink = wpuf_forms_list.is_plain_permalink;
+const permalinkUrl = wpuf_forms_list.permalink_settings_url;
 const postType = wpuf_forms_list.post_type ? wpuf_forms_list.post_type : 'wpuf_forms';
 const formType = postType === 'wpuf_forms' ? 'post' : 'profile';
 
@@ -34,7 +36,9 @@ const fetchForms = async (page = 1, status = 'any', search = '') => {
   try {
     loading.value = true;
     currentPage.value = page;
-    let apiUrl = `/wp-json/wpuf/v1/wpuf_form?page=${page}&per_page=${perPage.value}&status=${status}&post_type=${postType}`;
+    // Use the correct REST API root, including subdirectory if present
+    const restApiRoot = wpuf_forms_list.rest_url.replace(/\/$/, ''); // Remove trailing slash if any
+    let apiUrl = `${restApiRoot}/wpuf/v1/wpuf_form?page=${page}&per_page=${perPage.value}&status=${status}&post_type=${postType}`;
     if (search) {
       apiUrl += `&s=${search}`;
     }
@@ -309,6 +313,38 @@ onMounted(() => {
 
 <template>
   <Header utm="wpuf-form-builder" />
+
+  <!-- Permalink Notice -->
+  <div v-if="isPlainPermalink" class="wpuf-bg-yellow-50 wpuf-border wpuf-border-yellow-200 wpuf-rounded-md wpuf-p-4 wpuf-mt-6">
+    <div class="wpuf-flex">
+      <div class="wpuf-flex-shrink-0">
+        <svg class="wpuf-h-5 wpuf-w-5 wpuf-text-yellow-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div class="wpuf-ml-3">
+        <h3 class="wpuf-text-sm wpuf-font-medium wpuf-text-yellow-800">
+          {{ __( 'WordPress REST API Issue Detected', 'wp-user-frontend' ) }}
+        </h3>
+        <div class="wpuf-mt-2 wpuf-text-sm wpuf-text-yellow-700">
+          <p>
+            {{ __( 'Your WordPress permalinks are set to "Plain" which may cause issues with fetching the forms. For better functionality, please consider changing your permalink structure.', 'wp-user-frontend' ) }}
+          </p>
+        </div>
+        <div class="wpuf-mt-4">
+          <div class="wpuf-flex">
+            <a
+              :href="permalinkUrl"
+              class="wpuf-bg-yellow-50 wpuf-text-yellow-800 wpuf-rounded-md wpuf-border wpuf-border-yellow-300 wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-medium hover:wpuf-bg-yellow-100 focus:wpuf-outline-none focus:wpuf-ring-2 focus:wpuf-ring-offset-2 focus:wpuf-ring-yellow-500"
+            >
+              {{ __( 'Go to Permalink Settings', 'wp-user-frontend' ) }}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="wpuf-flex wpuf-justify-between wpuf-items-center wpuf-mt-9">
     <h3 class="wpuf-text-2xl wpuf-font-bold wpuf-m-0 wpuf-p-0 wpuf-leading-none">{{ __( 'Post Forms', 'wp-user-frontend' ) }}</h3>
     <div>

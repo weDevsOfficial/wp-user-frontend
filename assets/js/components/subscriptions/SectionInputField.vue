@@ -96,6 +96,7 @@ const showField = computed(() => {
 });
 
 const modifySubscription = (event) => {
+
     switch (field.value.db_type) {
         case 'meta_serialized':
             subscriptionStore.modifyCurrentSubscription( field.value.db_key, event.target.value, field.value.serialize_key );
@@ -107,7 +108,6 @@ const modifySubscription = (event) => {
 
         default:
             subscriptionStore.setMetaValue( field.value.db_key, event.target.value );
-
     }
 };
 
@@ -240,7 +240,7 @@ onMounted(() => {
                 class="wpuf-hidden wpuf-rounded-md group-hover:wpuf-flex group-hover:wpuf-cursor-pointer wpuf-absolute wpuf-items-center wpuf-justify-center wpuf-bg-black/25 wpuf-z-10 wpuf-p-4 wpuf-w-[104%] wpuf-h-[180%] wpuf-top-[-40%] wpuf-left-[-2%]">
                 <a href="https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=wpdashboard&amp;utm_medium=popup"
                    target="_blank"
-                   class="wpuf-inline-flex wpuf-align-center wpuf-p-2 wpuf-bg-amber-600 wpuf-text-white hover:wpuf-text-white wpuf-rounded-md">
+                   class="wpuf-inline-flex wpuf-align-center wpuf-p-2 wpuf-bg-amber-500 focus:wpuf-bg-amber-600 hover:wpuf-bg-amber-600 wpuf-text-white hover:wpuf-text-white wpuf-rounded-md">
                     {{ __( 'Upgrade to Pro', 'wp-user-frontend' ) }}
                     <span class="pro-icon icon-white">
                         <svg width="20" height="15" viewBox="0 0 20 15" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -268,7 +268,9 @@ onMounted(() => {
                 :placeholder="field.placeholder ? field.placeholder : ''"
                 @input="[modifySubscription($event), processInput($event)]"
                 @keydown="processNumber"
-                min="-1"
+                :min="field.min"
+                :step="field.step"
+                :default="field.default"
                 :class="subscriptionStore.errors[fieldId] ? '!wpuf-border-red-500' : '!wpuf-border-gray-300'"
                 class="placeholder:wpuf-text-gray-400 wpuf-w-full wpuf-rounded-md wpuf-bg-white wpuf-py-1 wpuf-pl-3 wpuf-pr-10 wpuf-text-left wpuf-shadow-sm focus:!wpuf-border-primaryHover focus:wpuf-outline-none focus:wpuf-ring-1 focus:wpuf-ring-primaryHover sm:wpuf-text-sm">
             <textarea

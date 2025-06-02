@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1); 
 
 namespace WeDevs\Wpuf;
 
@@ -56,9 +56,12 @@ class User_Subscription {
         if ( ! isset( $this->pack['pack_id'] ) ) {
             $pack_page = get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) );
 
-            return new WP_Error( 'no-pack', sprintf( 
+            return new WP_Error(
+                'no-pack', sprintf(
                 // translators: %s is the user pack page url
-                __( 'You must <a href="%s">purchase a subscription package</a> before posting', 'wp-user-frontend' ), $pack_page ) );
+                    __( 'You must <a href="%s">purchase a subscription package</a> before posting', 'wp-user-frontend' ), $pack_page
+                )
+            );
         }
 
         // seems like the user has a pack, now check expiration
@@ -85,7 +88,7 @@ class User_Subscription {
         $expired     = true;
 
         // phpcs:disable
-        if ( strtolower( $expire_date ) == 'unlimited' || empty( $expire_date ) ) {
+        if ( 'unlimited' === strtolower( $expire_date ) || empty( $expire_date ) || -1 === intval( $expire_date ) ) {
             $expired = false;
         } elseif ( strtotime( date( 'Y-m-d', strtotime( $expire_date ) ) ) >= strtotime( date( 'Y-m-d', time() ) ) ) {
             $expired = false;
@@ -184,16 +187,14 @@ class User_Subscription {
 
         if ( $this->user->id && $subscription ) {
             $user_meta = [
-                'pack_id' => $pack_id,
-                'posts'   => array_merge( $post_type_name, $additional_cpt_options ),
-                'total_feature_item' => $subscription->meta_value['_total_feature_item'],
+                'pack_id'             => $pack_id,
+                'posts'               => array_merge( $post_type_name, $additional_cpt_options ),
+                'total_feature_item'  => $subscription->meta_value['_total_feature_item'],
                 'remove_feature_item' => $subscription->meta_value['_remove_feature_item'],
-                'status'  => $status,
+                'status'              => $status,
             ];
 
-            // $recurring = get_post_meta( $pack_id, '_recurring_pay', true );
-
-            if ( $recurring ) {
+            if ( ! empty( $subscription->meta_value['recurring_pay'] ) && wpuf_is_checkbox_or_toggle_on( $subscription->meta_value['recurring_pay'] ) ) {
                 $totla_date              = date( 'd-m-Y', strtotime( '+' . $subscription->meta_value['billing_cycle_number'] . $subscription->meta_value['cycle_period'] . 's' ) ); // phpcs:ignore
                 $user_meta['expire']     = '';
                 $user_meta['profile_id'] = $profile_id;
@@ -202,7 +203,7 @@ class User_Subscription {
                 $period_type            = $subscription->meta_value['expiration_period'];
                 $period_number          = $subscription->meta_value['expiration_number'];
                 $date                   = date( 'd-m-Y', strtotime( '+' . $period_number . $period_type . 's' ) ); // phpcs:ignore
-                $expired                = ( empty( $period_number ) || ( $period_number == 0 ) ) ? 'unlimited' : wpuf_date2mysql( $date );
+                $expired                = ( empty( $period_number ) || ( 0 === $period_number || '-1' === $period_number ) ) ? 'unlimited' : wpuf_date2mysql( $date );
                 $user_meta['expire']    = $expired;
                 $user_meta['recurring'] = 'no';
             }
@@ -357,7 +358,7 @@ class User_Subscription {
                         if ( ! $post_type_obj ) {
                             continue;
                         }
-                        $value = ( $value == '-1' ) ? __( 'Unlimited', 'wp-user-frontend' ) : $value;
+                        $value = ( '-1' === $value ) ? __( 'Unlimited', 'wp-user-frontend' ) : $value;
                         ?>
                         <div><?php echo esc_html( $post_type_obj->labels->name . ': ' . $value ); ?></div>
                         <?php

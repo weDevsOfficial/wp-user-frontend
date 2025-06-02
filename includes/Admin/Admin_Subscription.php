@@ -120,6 +120,7 @@ class Admin_Subscription {
                     'https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=wpuf-subscription'
                 ),
                 'nonce'           => wp_create_nonce( 'wp_rest' ),
+                'rest_url'        => esc_url_raw( rest_url() ),
                 'sections'        => $this->get_sections(),
                 'subSections'     => $this->get_sub_sections(),
                 'fields'          => $this->get_fields(),
@@ -1476,20 +1477,6 @@ class Admin_Subscription {
                         'label'         => __( 'Maximum Number of Template Parts', 'wp-user-frontend' ),
                         'tooltip'       => __(
                             'Set maximum number of template parts that users can create within the subscription period. Enter -1 for unlimited',
-                            'wp-user-frontend'
-                        ),
-                        'default'       => '-1',
-                    ],
-                    'number_of_global_styles'  => [
-                        'id'            => 'number-of-global-styles',
-                        'name'          => 'number-of-global-styles',
-                        'db_key'        => '_post_type_name',
-                        'db_type'       => 'meta_serialized',
-                        'serialize_key' => 'wp_global_styles',
-                        'type'          => 'input-number',
-                        'label'         => __( 'Maximum Number of Global Styles', 'wp-user-frontend' ),
-                        'tooltip'       => __(
-                            'Set maximum number of global styles that users can use within the subscription period. Enter -1 for unlimited',
                             'wp-user-frontend'
                         ),
                         'default'       => '-1',

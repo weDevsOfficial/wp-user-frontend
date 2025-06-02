@@ -452,12 +452,12 @@ export default function postFormSettingsTest() {
             await postFormSettings.setUpdatePostButtonText(formName, 'Save Changes');
         });
 
-        test('PFS0055 : Admin is enabling pay per post', { tag: ['@Pro'] }, async () => {
+        test('PFS0055 : Admin is enabling pay per post', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.enablePayPerPost(formName, '2.00', 'Order Received');
         });
 
-        test('PFS0056 : Admin is creating post with payment', { tag: ['@Pro'] }, async () => {
+        test('PFS0056 : Admin is creating post with payment', { tag: ['@Lite'] }, async () => {
             const postTitle = faker.word.words(3);
             const postContent = faker.lorem.paragraph();
             const postExcerpt = faker.lorem.paragraph();
@@ -465,12 +465,12 @@ export default function postFormSettingsTest() {
             await postFormSettings.createPostWithPayment(postTitle, postContent, postExcerpt, '2.00', 'Order Received');
         });
 
-        test('PFS0057 : Admin is accepting payment for post', { tag: ['@Pro'] }, async () => {
+        test('PFS0057 : Admin is accepting payment for post', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.acceptPayment();
         });
 
-        test('PFS0058 : Admin is validating paid post is live', { tag: ['@Pro'] }, async () => {
+        test('PFS0058 : Admin is validating paid post is live', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.validatePayPerPost();
         });

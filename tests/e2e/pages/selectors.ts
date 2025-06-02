@@ -754,22 +754,22 @@ export const Selectors = {
             
             postUpdateMessageContainer: '//textarea[@id="update_message"]',
             
-            lockUserEditingAfterInput: '//input[@id="edit_post_lock_time"]',
+            lockUserEditingAfterInput: '//input[@id="lock_edit_post"]',
             
-            updatePostButtonTextInput: '//input[@id="update_post_text"]',
+            updatePostButtonTextInput: '//input[@id="update_text"]',
 
             // Successful Redirection Settings (Update Post scenarios)
-            successfulRedirectionContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[7]',
-            successfulRedirectionDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[7]',
-            successfulRedirectionOption: (value: string) => `(//div[contains(@class,"selectize-dropdown-content")])//div[@data-value="${value}"]`,
+            updatePostRedirectionContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[8]',
+            updatePostRedirectionDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[8]',
+            updatePostRedirectionOption: (value: string) => `(//div[contains(@class,"selectize-dropdown-content")])//div[@data-value="${value}"]`,
             
             successfulRedirectionMessage: '//textarea[@id="update_message"]',
             
-            successfulRedirectionPageContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[8]',
-            successfulRedirectionPageDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[8]',
-            successfulRedirectionPageOption: (text: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[contains(text(),"${text}")]`,
+            updatePostRedirectionPageContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[9]',
+            updatePostRedirectionPageDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[9]',
+            updatePostRedirectionPageOption: (text: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[contains(text(),"${text}")]`,
             
-            successfulRedirectionUrlInput: '//input[@id="update_url"]',
+            updatePostRedirectionUrlInput: '//input[@id="edit_url"]',
 
         },
 

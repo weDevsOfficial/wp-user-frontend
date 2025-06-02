@@ -368,72 +368,84 @@ export default function postFormGeneralSettingsTests() {
             await postFormSettings.validatePostUpdateStatusInForm(postTitle, postContent, postExcerpt, 'Live');
         });
 
-        test.skip('PFS0043 : Admin is setting successful redirection to updated post', { tag: ['@Lite'] }, async () => {
+        test('PFS0043 : Admin is setting successful redirection to updated post', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.setSuccessfulRedirectionToUpdatedPost(formName);
+            await postFormSettings.setUpdatePostRedirectionToUpdatedPost(formName);
         });
 
-        test.skip('PFS0044 : Admin is validating successful redirection to updated post', { tag: ['@Lite'] }, async () => {
+        test('PFS0044 : Admin is validating successful redirection to updated post', { tag: ['@Lite'] }, async () => {
+            const postTitle = faker.word.words(3);
+            const postContent = faker.lorem.paragraph();
+            const postExcerpt = faker.lorem.paragraph();
             const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.validateSuccessfulRedirectionInForm('Updated post', formName);
+            await postFormSettings.validateUpdatePostRedirectionToPost(postTitle, postContent, postExcerpt);
         });
 
-        test.skip('PFS0045 : Admin is setting successful redirection to same page', { tag: ['@Lite'] }, async () => {
+        test('PFS0045 : Admin is setting successful redirection to same page', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.setSuccessfulRedirectionToSamePage(formName, 'Post updated successfully');
+            await postFormSettings.setUpdatePostRedirectionToSamePage(formName, 'Post updated successfully');
         });
 
-        test.skip('PFS0046 : Admin is validating successful redirection to same page', { tag: ['@Lite'] }, async () => {
+        test('PFS0046 : Admin is validating successful redirection to same page', { tag: ['@Lite'] }, async () => {
+            const postTitle = faker.word.words(3);
+            const postContent = faker.lorem.paragraph();
+            const postExcerpt = faker.lorem.paragraph();
             const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.validateSuccessfulRedirectionInForm('Same page', formName);
+            await postFormSettings.validateUpdatePostRedirectionToSamePage(postTitle, postContent, postExcerpt, 'Post updated successfully');
         });
 
-        test.skip('PFS0047 : Admin is setting successful redirection to a page', { tag: ['@Lite'] }, async () => {
+        test('PFS0047 : Admin is setting successful redirection to a page', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.setSuccessfulRedirectionToPage(formName, 'Dashboard');
+            await postFormSettings.setUpdatePostRedirectionToPage(formName, 'Dashboard');
         });
 
-        test.skip('PFS0048 : Admin is validating successful redirection to a page', { tag: ['@Lite'] }, async () => {
+        test('PFS0048 : Admin is validating successful redirection to a page', { tag: ['@Lite'] }, async () => {
+            const postTitle = faker.word.words(3);
+            const postContent = faker.lorem.paragraph();
+            const postExcerpt = faker.lorem.paragraph();
             const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.validateSuccessfulRedirectionInForm('To a page', formName);
+            await postFormSettings.validateUpdatePostRedirectionToPage(postTitle, postContent, postExcerpt, 'Dashboard');
         });
 
-        test.skip('PFS0049 : Admin is setting successful redirection to custom URL', { tag: ['@Lite'] }, async () => {
+        test('PFS0049 : Admin is setting successful redirection to custom URL', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
-            const customUrl = Urls.baseUrl + '/success/';
-            await postFormSettings.setSuccessfulRedirectionToCustomUrl(formName, customUrl);
+            const customUrl = Urls.baseUrl + '/dashboard/';
+            await postFormSettings.setUpdatePostRedirectionToCustomUrl(formName, customUrl);
         });
 
-        test.skip('PFS0050 : Admin is validating successful redirection to custom URL', { tag: ['@Lite'] }, async () => {
+        test('PFS0050 : Admin is validating successful redirection to custom URL', { tag: ['@Lite'] }, async () => {
+            const postTitle = faker.word.words(3);
+            const postContent = faker.lorem.paragraph();
+            const postExcerpt = faker.lorem.paragraph();
+            const customUrl = Urls.baseUrl + '/dashboard/';
             const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.validateSuccessfulRedirectionInForm('To a custom URL', formName);
+            await postFormSettings.validateUpdatePostRedirectionToUrl(postTitle, postContent, postExcerpt, customUrl);
+            await postFormSettings.setUpdatePostRedirectionToSamePage(formName, 'Post updated successfully');
         });
 
-        test.skip('PFS0051 : Admin is setting post update message', { tag: ['@Lite'] }, async () => {
+        test('PFS0051 : Admin is setting post update message', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             const customMessage = 'Post has been updated successfully!';
             await postFormSettings.setPostUpdateMessage(formName, customMessage);
         });
 
-        test.skip('PFS0052 : Admin is validating post update message in form', { tag: ['@Lite'] }, async () => {
+        test('PFS0052 : Admin is validating post update message in form', { tag: ['@Lite'] }, async () => {
+            const postTitle = faker.word.words(3);
+            const postContent = faker.lorem.paragraph();
+            const postExcerpt = faker.lorem.paragraph();
             const postFormSettings = new PostFormSettingsPage(page);
             const customMessage = 'Post has been updated successfully!';
-            await postFormSettings.validatePostUpdateMessageInForm(customMessage, formName);
+            await postFormSettings.validatePostUpdateMessageInForm(postTitle, postContent, postExcerpt, customMessage);
         });
 
-        test.skip('PFS0053 : Admin is setting lock user editing after time', { tag: ['@Lite'] }, async () => {
+        test('PFS0053 : Admin is setting lock user editing after time', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.setLockUserEditingAfter(formName, '24');
         });
 
-        test.skip('PFS0054 : Admin is setting update post button text', { tag: ['@Lite'] }, async () => {
+        test('PFS0054 : Admin is setting update post button text', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.setUpdatePostButtonText(formName, 'Save Changes');
-        });
-
-        test.skip('PFS0055 : Admin is validating update post button text in form', { tag: ['@Lite'] }, async () => {
-            const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.validateUpdatePostButtonTextInForm('Save Changes', formName);
         });
     });
 

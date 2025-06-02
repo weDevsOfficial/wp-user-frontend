@@ -711,6 +711,14 @@ export class PostFormSettingsPage extends Base {
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+
+        await this.page.goto(Urls.baseUrl + '/account/?section=post', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        await this.validateAndClick(Selectors.postFormSettings.editPostButton);
+        await this.page.waitForLoadState('networkidle');
+
+        await expect(this.page.locator(Selectors.postFormSettings.submitPostButtonText(buttonText))).toBeVisible();
     }
 
     async validatePostUpdateStatusInForm(postTitle: string, postContent: string, postExcerpt: string, expectedStatus: string) {
@@ -756,39 +764,32 @@ export class PostFormSettingsPage extends Base {
         
     }
 
-    async validatePostUpdateMessageInForm(expectedMessage: string, formName: string) {
+    async validatePostUpdateMessageInForm(postTitle: string, postContent: string, postExcerpt: string, expectedMessage: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.goto(Urls.baseUrl + '/account/?section=post', { waitUntil: 'domcontentloaded' });
         await this.page.waitForLoadState('networkidle');
 
-        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.validateAndClick(Selectors.postFormSettings.editPostButton);
         await this.page.waitForLoadState('networkidle');
 
-        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
-        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.afterPostSettingsHeader);
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
+
+        // Enter Post Description
+        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
+            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
+
+
+        await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
 
         // Validate the message content
-        const messageValue = await this.page.locator(Selectors.postFormSettings.postSettingsSection.postUpdateMessageContainer).inputValue();
-        await expect(messageValue).toBe(expectedMessage);
+        const successMessage = await this.page.innerText(Selectors.postFormSettings.checkSuccessMessage);
+
+        expect(successMessage).toContain(expectedMessage);
     }
 
-    async validateUpdatePostButtonTextInForm(expectedButtonText: string, formName: string) {
-        // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
-
-        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
-
-        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
-        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.afterPostSettingsHeader);
-
-        // Validate the button text
-        const buttonTextValue = await this.page.locator(Selectors.postFormSettings.postSettingsSection.updatePostButtonTextInput).inputValue();
-        await expect(buttonTextValue).toBe(expectedButtonText);
-    }
-
-    async setSuccessfulRedirectionToUpdatedPost(formName: string) {
+    async setUpdatePostRedirectionToUpdatedPost(formName: string) {
         // Go to form edit page
         await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
         await this.page.waitForLoadState('networkidle');
@@ -800,17 +801,17 @@ export class PostFormSettingsPage extends Base {
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.afterPostSettingsHeader);
 
         // Click on successful redirection dropdown
-        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.successfulRedirectionContainer);
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.successfulRedirectionDropdown);
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionContainer);
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown);
 
         // Select "updated post"
-        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.successfulRedirectionOption('post'));
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionOption('post'));
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
     }
 
-    async setSuccessfulRedirectionToSamePage(formName: string, message: string) {
+    async setUpdatePostRedirectionToSamePage(formName: string, message: string) {
         // Go to form edit page
         await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
         await this.page.waitForLoadState('networkidle');
@@ -822,21 +823,17 @@ export class PostFormSettingsPage extends Base {
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.afterPostSettingsHeader);
 
         // Click on successful redirection dropdown
-        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.successfulRedirectionContainer);
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.successfulRedirectionDropdown);
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionContainer);
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown);
 
         // Select "same page"
-        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.successfulRedirectionOption('same'));
-
-        // Fill the message
-        await this.page.locator(Selectors.postFormSettings.postSettingsSection.successfulRedirectionMessage).clear();
-        await this.validateAndFillStrings(Selectors.postFormSettings.postSettingsSection.successfulRedirectionMessage, message);
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionOption('same'));
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
     }
 
-    async setSuccessfulRedirectionToPage(formName: string, pageName: string) {
+    async setUpdatePostRedirectionToPage(formName: string, pageName: string) {
         // Go to form edit page
         await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
         await this.page.waitForLoadState('networkidle');
@@ -848,24 +845,24 @@ export class PostFormSettingsPage extends Base {
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.afterPostSettingsHeader);
 
         // Click on successful redirection dropdown
-        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.successfulRedirectionContainer);
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.successfulRedirectionDropdown);
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionContainer);
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown);
 
         // Select "to a page"
-        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.successfulRedirectionOption('page'));
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionOption('page'));
 
         await this.page.waitForTimeout(500);
 
         // Select the specific page
-        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.successfulRedirectionPageContainer);
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.successfulRedirectionPageDropdown);
-        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.successfulRedirectionPageOption(pageName));
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionPageContainer);
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionPageDropdown);
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionPageOption(pageName));
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
     }
 
-    async setSuccessfulRedirectionToCustomUrl(formName: string, customUrl: string) {
+    async setUpdatePostRedirectionToCustomUrl(formName: string, customUrl: string) {
         // Go to form edit page
         await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
         await this.page.waitForLoadState('networkidle');
@@ -877,32 +874,112 @@ export class PostFormSettingsPage extends Base {
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.afterPostSettingsHeader);
 
         // Click on successful redirection dropdown
-        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.successfulRedirectionContainer);
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.successfulRedirectionDropdown);
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionContainer);
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown);
 
         // Select "to a custom URL"
-        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.successfulRedirectionOption('url'));
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionOption('url'));
 
         // Fill the custom URL
-        await this.validateAndFillStrings(Selectors.postFormSettings.postSettingsSection.successfulRedirectionUrlInput, customUrl);
+        await this.validateAndFillStrings(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionUrlInput, customUrl);
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
     }
 
-    async validateSuccessfulRedirectionInForm(expectedRedirection: string, formName: string) {
+    async validateUpdatePostRedirectionToPost(postTitle: string, postContent: string, postExcerpt: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.goto(Urls.baseUrl + '/account/?section=post', { waitUntil: 'domcontentloaded' });
         await this.page.waitForLoadState('networkidle');
 
-        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.validateAndClick(Selectors.postFormSettings.editPostButton);
         await this.page.waitForLoadState('networkidle');
 
-        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
-        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.afterPostSettingsHeader);
+        // Fill post title
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
 
-        // Validate the selected redirection option
-        const redirectionText = await this.page.locator(Selectors.postFormSettings.postSettingsSection.successfulRedirectionContainer).innerText();
-        await expect(redirectionText).toContain(expectedRedirection);
+        // Enter Post Description
+        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
+            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
+
+        // Submit the post
+        await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
+        await this.page.waitForTimeout(1000);
+
+        await expect(this.page.locator(Selectors.postFormSettings.checkPostTitle(postTitle))).toBeVisible();
+    }
+
+    async validateUpdatePostRedirectionToSamePage(postTitle: string, postContent: string, postExcerpt: string, message: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/account/?section=post', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        await this.validateAndClick(Selectors.postFormSettings.editPostButton);
+        await this.page.waitForLoadState('networkidle');
+        // Fill post title
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
+
+        // Enter Post Description
+        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
+            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
+
+        // Submit the post
+        await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
+        await this.page.waitForTimeout(1000);
+
+        const successMessage = await this.page.innerText(Selectors.postFormSettings.checkSuccessMessage);
+
+        expect(successMessage).toContain(message);
+    }
+
+    async validateUpdatePostRedirectionToPage(postTitle: string, postContent: string, postExcerpt: string, pageTitle: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/account/?section=post', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        await this.validateAndClick(Selectors.postFormSettings.editPostButton);
+        await this.page.waitForLoadState('networkidle');
+
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
+
+        // Enter Post Description
+        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
+            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
+
+        // Submit the post
+        await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
+        await this.page.waitForTimeout(1000);
+
+        await expect(this.page.locator(Selectors.postFormSettings.checkPageTitle(pageTitle))).toBeVisible();
+    }
+
+    async validateUpdatePostRedirectionToUrl(postTitle: string, postContent: string, postExcerpt: string, expectedUrl: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/account/?section=post', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        await this.validateAndClick(Selectors.postFormSettings.editPostButton);
+        await this.page.waitForLoadState('networkidle');
+
+        // Fill post title
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
+
+        // Enter Post Description
+        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
+            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
+
+        // Submit the post
+        await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
+        await this.page.waitForTimeout(1000);
+
+        await expect(this.page).toHaveURL(expectedUrl);
     }
 }

@@ -4,7 +4,7 @@ import { Browser, BrowserContext, Page, test, chromium } from "@playwright/test"
 import { BasicLoginPage } from '../pages/basicLogin';
 import { BasicLogoutPage } from '../pages/basicLogout';
 import { SettingsSetupPage } from '../pages/settingsSetup';
-import { Users, Tokens } from '../utils/testData';
+import { Users } from '../utils/testData';
 import * as fs from "fs";
 
 export default function loginAndSetupTests() {
@@ -140,21 +140,21 @@ export default function loginAndSetupTests() {
 
     test('LS0017 : Admin is adding credentils for Google Map', { tag: ['@Basic'] }, async () => {
         const SettingsSetup = new SettingsSetupPage(page);
-        const googleMapAPIKey = Tokens.GOOGLE_MAP_API_KEY;
+        const googleMapAPIKey = process.env.GOOGLE_MAP_API_KEY;
         await SettingsSetup.addGoogleMapAPIKey(googleMapAPIKey?.toString() || '');
     });
 
     test('LS0018 : Admin is adding credentils for ReCaptcha', { tag: ['@Basic'] }, async () => {
         const SettingsSetup = new SettingsSetupPage(page);
-        const reCaptchaSiteKey = Tokens.RECAPTCHA_SITE_KEY;
-        const reCaptchaSecretKey = Tokens.RECAPTCHA_SECRET_KEY;
+        const reCaptchaSiteKey = process.env.RECAPTCHA_SITE_KEY;
+        const reCaptchaSecretKey = process.env.RECAPTCHA_SECRET_KEY;
         await SettingsSetup.addReCaptchaKeys(reCaptchaSiteKey?.toString() || '', reCaptchaSecretKey?.toString() || '');
     });
 
     test('LS0019 : Admin is adding credentils for Cloudflare Turnstile', { tag: ['@Basic'] }, async () => {
         const SettingsSetup = new SettingsSetupPage(page);
-        const cloudflareTurnstileSiteKey = Tokens.CLOUDFLARE_TURNSTILE_SITE_KEY;
-        const cloudflareTurnstileSecretKey = Tokens.CLOUDFLARE_TURNSTILE_SECRET_KEY;
+        const cloudflareTurnstileSiteKey = process.env.CLOUDFLARE_TURNSTILE_SITE_KEY;
+        const cloudflareTurnstileSecretKey = process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY;
         await SettingsSetup.addCloudflareTurnstileKeys(cloudflareTurnstileSiteKey?.toString() || '', cloudflareTurnstileSecretKey?.toString() || '');
     });
 

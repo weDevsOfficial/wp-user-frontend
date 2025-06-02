@@ -70,16 +70,84 @@ class Form_Field_Twitter extends Form_Field_Social {
      *
      * Makes the Meta Key field visible but readonly in the admin/backend settings to prevent
      * administrators from changing the standardized meta key format while still showing the value.
+     * Also removes the size option from advanced settings.
      *
      * @since WPUF_SINCE
      *
-     * @return array Updated settings with readonly meta key field.
+     * @return array Updated settings with readonly meta key field and without size option.
      */
     public function get_options_settings() {
-        $settings = parent::get_options_settings();
+        $default_options = $this->get_default_option_settings();
+        $settings        = $this->get_default_text_option_settings( false ); // word_restriction = false
+        
+        // Remove the size option from advanced settings
+        $settings = array_filter( $settings, function( $setting ) {
+            return ! ( isset( $setting['name'] ) && 'size' === $setting['name'] );
+        });
+
+        $settings[] = [
+            'name'      => 'show_icon',
+            'title'     => sprintf( 
+                /* translators: %s: Platform name (e.g., Twitter, Facebook) */
+                __( 'Show %s Icon', 'wp-user-frontend' ), 
+                $this->platform_name 
+            ),
+            'type'      => 'radio',
+            'options'   => [
+                'yes' => __( 'Yes', 'wp-user-frontend' ),
+                'no'  => __( 'No', 'wp-user-frontend' ),
+            ],
+            'section'   => 'basic',
+            'default'   => 'no',
+            'inline'    => true,
+            'priority'  => 30,
+            'help_text' => sprintf( 
+                /* translators: %s: Platform name (e.g., Twitter, Facebook) */
+                __( 'Show %s icon beside the field label', 'wp-user-frontend' ), 
+                $this->platform_name 
+            ),
+        ];
+
+        $settings[] = [
+            'name'      => 'open_window',
+            'title'     => __( 'Open in : ', 'wp-user-frontend' ),
+            'type'      => 'radio',
+            'options'   => [
+                'same' => __( 'Same Window', 'wp-user-frontend' ),
+                'new'  => __( 'New Window', 'wp-user-frontend' ),
+            ],
+            'section'   => 'basic',
+            'default'   => 'new',
+            'inline'    => true,
+            'priority'  => 32,
+            'help_text' => __( 'Choose whether the link will open in new tab or same window', 'wp-user-frontend' ),
+        ];
+
+        $settings[] = [
+            'name'      => 'username_validation',
+            'title'     => __( 'Username Validation', 'wp-user-frontend' ),
+            'type'      => 'radio',
+            'options'   => [
+                'yes' => sprintf( 
+                    /* translators: %s: Platform name (e.g., Twitter, Facebook) */
+                    __( 'Strict (%s username format)', 'wp-user-frontend' ), 
+                    $this->platform_name 
+                ),
+                'no'  => __( 'Allow full URLs', 'wp-user-frontend' ),
+            ],
+            'section'   => 'basic',
+            'default'   => 'yes',
+            'inline'    => true,
+            'priority'  => 34,
+            'help_text' => sprintf( 
+                /* translators: %s: Platform name (e.g., Twitter, Facebook) */
+                __( 'Enforce %s username format or allow full URLs', 'wp-user-frontend' ), 
+                $this->platform_name 
+            ),
+        ];
         
         // Find the meta key setting and make it readonly while keeping it visible.
-        foreach ( $settings as &$setting ) {
+        foreach ( $default_options as &$setting ) {
             if ( isset( $setting['name'] ) && 'name' === $setting['name'] ) {
                 $setting['disabled']  = true;
                 $setting['css_class'] = 'wpuf-readonly-field';
@@ -88,7 +156,7 @@ class Form_Field_Twitter extends Form_Field_Social {
             }
         }
 
-        return $settings;
+        return array_merge( $default_options, $settings );
     }
 
     /**

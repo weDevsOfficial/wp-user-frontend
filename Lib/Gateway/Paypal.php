@@ -9,7 +9,7 @@ use WeDevs\Wpuf\Traits\TaxableTrait;
  * WP User Frontend PayPal gateway
  *
  * @since 0.8
- * @updated WPUF_SINCE
+ * @updated 4.1.5
  */
 class Paypal {
     use TaxableTrait;
@@ -47,7 +47,7 @@ class Paypal {
         // Add admin notice for PayPal settings update
         add_action( 'admin_notices', [ $this, 'paypal_settings_update_notice' ] );
         add_action( 'wp_ajax_wpuf_dismiss_paypal_notice', [ $this, 'dismiss_paypal_notice' ] );
-        
+
         // Add CSS for webhook configuration section
         add_action( 'admin_head', [ $this, 'inject_webhook_css' ] );
     }
@@ -120,7 +120,7 @@ class Paypal {
                 </div>
             </div>
         </div>
-        
+
         <script type="text/javascript">
         jQuery(document).ready(function($) {
             $(document).on('click', '.wpuf-paypal-notice .notice-dismiss', function() {
@@ -141,7 +141,7 @@ class Paypal {
             });
         });
         </script>
-        
+
         <style>
         .wpuf-paypal-notice {
             border-left-color: #0073aa;
@@ -308,7 +308,7 @@ class Paypal {
             // Check if transaction already exists
             $existing = $wpdb->get_var(
                 $wpdb->prepare(
-                    "SELECT id FROM {$wpdb->prefix}wpuf_transaction 
+                    "SELECT id FROM {$wpdb->prefix}wpuf_transaction
                 WHERE transaction_id = %s",
                     $payment['id']
                 )
@@ -897,7 +897,7 @@ class Paypal {
             // Check if transaction already exists
             $existing = $wpdb->get_var(
                 $wpdb->prepare(
-                    "SELECT id FROM {$wpdb->prefix}wpuf_transaction 
+                    "SELECT id FROM {$wpdb->prefix}wpuf_transaction
                 WHERE transaction_id = %s",
                     $transaction_id
                 )
@@ -992,7 +992,7 @@ class Paypal {
             // Check if a subscriber record already exists for this subscription
             $existing_subscriber = $wpdb->get_var(
                 $wpdb->prepare(
-                    "SELECT id FROM {$wpdb->prefix}wpuf_subscribers 
+                    "SELECT id FROM {$wpdb->prefix}wpuf_subscribers
                 WHERE user_id = %d AND transaction_id = %s",
                     $user_id, $subscription_id
                 )
@@ -1064,7 +1064,7 @@ class Paypal {
         // First try to get from subscribers table
         $pack_id = $wpdb->get_var(
             $wpdb->prepare(
-                "SELECT subscribtion_id FROM {$wpdb->prefix}wpuf_subscribers 
+                "SELECT subscribtion_id FROM {$wpdb->prefix}wpuf_subscribers
             WHERE user_id = %d AND transaction_id = %s",
                 $user_id, $subscription_id
             )
@@ -1198,7 +1198,7 @@ class Paypal {
             </a>
             <?php esc_html_e( 'for step-by-step webhook configuration instructions.', 'wp-user-frontend' ); ?></p>
         </div>
-        
+
         <?php
         return ob_get_clean();
     }
@@ -1700,7 +1700,7 @@ class Paypal {
         // First try from subscribers table
         $user_id = $wpdb->get_var(
             $wpdb->prepare(
-                "SELECT user_id FROM {$wpdb->prefix}wpuf_subscribers 
+                "SELECT user_id FROM {$wpdb->prefix}wpuf_subscribers
             WHERE transaction_id = %s",
                 $subscription_id
             )
@@ -1713,8 +1713,8 @@ class Paypal {
         // Then try from usermeta table
         $user_id = $wpdb->get_var(
             $wpdb->prepare(
-                "SELECT user_id FROM {$wpdb->usermeta} 
-            WHERE meta_key = '_wpuf_subscription_pack' 
+                "SELECT user_id FROM {$wpdb->usermeta}
+            WHERE meta_key = '_wpuf_subscription_pack'
             AND meta_value LIKE %s",
                 '%' . $wpdb->esc_like( $subscription_id ) . '%'
             )

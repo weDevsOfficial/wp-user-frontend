@@ -5,7 +5,7 @@ if ( ! function_exists( 'wpuf_dashboard_get_subscription_data' ) ) {
     /**
      * Get subscription data for dashboard
      *
-     * @since WPUF_SINCE
+     * @since 4.1.5
      *
      * @param array $user_sub User subscription data
      *
@@ -24,10 +24,10 @@ if ( ! function_exists( 'wpuf_dashboard_get_subscription_data' ) ) {
 		// Get payment gateway
 		$payment_gateway = $wpdb->get_var(
             $wpdb->prepare(
-                "SELECT payment_type 
-            FROM {$wpdb->prefix}wpuf_transaction 
-            WHERE user_id = %d 
-            AND status = 'completed' 
+                "SELECT payment_type
+            FROM {$wpdb->prefix}wpuf_transaction
+            WHERE user_id = %d
+            AND status = 'completed'
             ORDER BY created DESC",
                 $user_id
             )
@@ -37,11 +37,11 @@ if ( ! function_exists( 'wpuf_dashboard_get_subscription_data' ) ) {
 		// Get last payment date
 		$last_payment_date = $wpdb->get_var(
             $wpdb->prepare(
-                "SELECT created 
-            FROM {$wpdb->prefix}wpuf_transaction 
-            WHERE user_id = %d 
-            AND status = 'completed' 
-            ORDER BY created DESC 
+                "SELECT created
+            FROM {$wpdb->prefix}wpuf_transaction
+            WHERE user_id = %d
+            AND status = 'completed'
+            ORDER BY created DESC
             LIMIT 1",
                 $user_id
             )
@@ -55,7 +55,7 @@ if ( ! function_exists( 'wpuf_dashboard_get_subscription_data' ) ) {
 		$trial_status        = $subscription->meta_value['_trial_status'];
 		$trial_duration      = $subscription->meta_value['_trial_duration'];
 		$trial_duration_type = $subscription->meta_value['_trial_duration_type'];
-    
+
 
 		return [
 			'payment_gateway'       => $payment_gateway,
@@ -72,7 +72,7 @@ if ( ! function_exists( 'wpuf_dashboard_get_subscription_data' ) ) {
 /**
  * Display subscription details
  *
- * @since WPUF_SINCE
+ * @since 4.1.5
  *
  * @param array $subscription_data Subscription data
  */
@@ -88,7 +88,7 @@ function display_subscription_details( $subscription_data ) {
                 <?php echo wp_kses_post( $billing_html ); ?>
             </div>
         <?php endif; ?>
-        
+
         <p><i><?php esc_html_e( 'To cancel the pack, press the following cancel button.', 'wp-user-frontend' ); ?></i></p>
         <form action="" method="post" style="text-align: center;">
 		<?php wp_nonce_field( 'wpuf-sub-cancel' ); ?>
@@ -102,7 +102,7 @@ function display_subscription_details( $subscription_data ) {
 /**
  * Get trial expiration HTML
  *
- * @since WPUF_SINCE
+ * @since 4.1.5
  *
  * @param array $subscription_data Subscription data
  *
@@ -131,7 +131,7 @@ function get_trial_expiration_html( $subscription_data ) {
 /**
  * Get next billing HTML
  *
- * @since WPUF_SINCE
+ * @since 4.1.5
  *
  * @param array $subscription_data Subscription data
  *
@@ -194,7 +194,7 @@ function get_next_billing_html( $subscription_data ) {
                 ?>
                 <div><strong><?php esc_html_e( 'Number of reusable blocks: ', 'wp-user-frontend' ); ?></strong><?php esc_html_e( 'Unlimited', 'wp-user-frontend' ); ?></div>
             <?php } ?>
-        
+
             <div>
                 <strong><?php esc_html_e( 'Remaining post: ', 'wp-user-frontend' ); ?></strong>
                 <?php

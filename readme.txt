@@ -4,7 +4,7 @@ Donate link: https://tareq.co/donate/
 Tags: frontend post, forms, user directory, profile builder, membership
 Requires at least: 4.0
 Tested up to: 6.8
-Stable tag: 4.1.4
+Stable tag: 4.1.5
 Requires PHP: 5.6
 License: GPLv2
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -277,6 +277,19 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 14. Customize your Forms in Gutenberg Editor
 
 == Changelog ==
+= v4.1.5 (2 June, 2025) =
+* Enhancement - Added support for unlimited subscriptions.
+* Enhancement - Added trial period & next billing dates in subscription.
+* Enhancement - Added “Show More” button for subscriptions with many post types.
+* Enhancement - Support for PayPal REST API for payments.
+* Enhancement - Real-time PayPal Webhook support for payment events.
+* Enhancement - Added REST API credentials & test mode to Payment settings.
+* Fix - Forms list not loading issue fixed.
+* Fix - Fixed issues with null gateways causing errors.
+* Fix - Improved handling of duplicate PayPal transactions.
+* Fix - Fixed several subscription-related bugs.
+* Fix - Fixed tag auto-suggestions not appearing in post forms.
+
 = v4.1.4 (12 May, 2025) =
 * Enhance - Post form list page UI and UX
 * Fix - Coupon functionality

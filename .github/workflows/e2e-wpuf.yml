@@ -3,6 +3,15 @@ name: Playwright tests/e2e
 
 on:
   workflow_dispatch:
+    inputs:
+      testsuite:
+        description: 'Test suite to run'
+        required: true
+        default: 'E2E'
+        type: choice
+        options:
+          - 'E2E'
+          - 'All'
   schedule:
     # 1:00 AM Bangladesh Time
     - cron: '0 19 * * 0'
@@ -121,7 +130,7 @@ jobs:
           RECAPTCHA_SECRET_KEY: ${{ secrets.RECAPTCHA_SECRET_KEY }}
           CLOUDFLARE_TURNSTILE_SITE_KEY: ${{ secrets.CLOUDFLARE_TURNSTILE_SITE_KEY }}
           CLOUDFLARE_TURNSTILE_SECRET_KEY: ${{ secrets.CLOUDFLARE_TURNSTILE_SECRET_KEY }}
-        if: success() && (github.event_name != 'workflow_dispatch' || ( github.event_name == 'workflow_dispatch' && (github.event.inputs.testsuite == 'E2E' || github.event.inputs.testsuite == 'All')))
+        if: success()
         working-directory: tests/e2e
         run: |
           mkdir -p test-results

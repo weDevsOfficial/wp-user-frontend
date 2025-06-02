@@ -81,7 +81,7 @@ abstract class Form_Field_Social extends Form_Field_URL {
             'default'   => 'no',
             'inline'    => true,
             'priority'  => 30,
-            'help_text' => sprintf( __( 'Show %s icon before the input field', 'wp-user-frontend' ), $this->platform_name ),
+            'help_text' => sprintf( __( 'Show %s icon beside the field label', 'wp-user-frontend' ), $this->platform_name ),
         ];
 
         $settings[] = [
@@ -164,28 +164,14 @@ abstract class Form_Field_Social extends Form_Field_URL {
             $value = $field_settings['default'];
         }
 
-        $this->field_print_label( $field_settings, $form_id ); ?>
+        // Custom label rendering with icon support
+        if ( ! empty( $field_settings['show_icon'] ) && $field_settings['show_icon'] === 'yes' ) {
+            $this->field_print_label_with_icon( $field_settings, $form_id ); 
+        } else {
+            $this->field_print_label( $field_settings, $form_id );
+        }
+        ?>
             <div class="wpuf-fields">
-                <?php if ( ! empty( $field_settings['show_icon'] ) && $field_settings['show_icon'] === 'yes' ) : ?>
-                    <div class="wpuf-<?php echo esc_attr( $this->platform ); ?>-field-wrapper">
-                        <span class="wpuf-<?php echo esc_attr( $this->platform ); ?>-icon">
-                            <?php echo wp_kses( $this->icon_svg, [
-                                'svg' => [
-                                    'class' => [],
-                                    'width' => [],
-                                    'height' => [],
-                                    'viewBox' => [],
-                                    'fill' => [],
-                                    'xmlns' => [],
-                                ],
-                                'path' => [
-                                    'd' => [],
-                                    'fill' => [],
-                                ],
-                            ] ); ?>
-                        </span>
-                <?php endif; ?>
-                
                 <input
                     id="<?php echo esc_attr( $field_settings['name'] . '_' . $form_id ); ?>"
                     type="text" 
@@ -200,15 +186,62 @@ abstract class Form_Field_Social extends Form_Field_URL {
                     autocomplete="url"
                 />
                 
-                <?php if ( ! empty( $field_settings['show_icon'] ) && $field_settings['show_icon'] === 'yes' ) : ?>
-                    </div>
-                <?php endif; ?>
-                
                 <?php $this->help_text( $field_settings ); ?>
             </div>
 
         <?php
         $this->after_field_print_label();
+    }
+
+    /**
+     * Print label with icon support
+     */
+    protected function field_print_label_with_icon( $field, $form_id = 0 ) {
+        if ( is_admin() ) { ?>
+            <tr <?php $this->print_list_attributes( $field ); ?>> <th><strong> 
+                <?php if ( ! empty( $field['show_icon'] ) && $field['show_icon'] === 'yes' ) : ?>
+                    <?php echo wp_kses( $this->icon_svg, [
+                        'svg' => [
+                            'class' => [],
+                            'width' => [],
+                            'height' => [],
+                            'viewBox' => [],
+                            'fill' => [],
+                            'xmlns' => [],
+                        ],
+                        'path' => [
+                            'd' => [],
+                            'fill' => [],
+                        ],
+                    ] ); ?>
+                <?php endif; ?>
+                <?php echo wp_kses_post( $field['label'] . $this->required_mark( $field ) ); ?> 
+            </strong></th> <td>
+        <?php } else { ?>
+            <li <?php $this->print_list_attributes( $field ); ?>>
+            <div class="wpuf-label">
+                <label for="<?php echo isset( $field['name'] ) ? esc_attr( $field['name'] ) . '_' . esc_attr( $form_id ) : 'cls'; ?>">
+                    <?php if ( ! empty( $field['show_icon'] ) && $field['show_icon'] === 'yes' ) : ?>
+                        <?php echo wp_kses( $this->icon_svg, [
+                            'svg' => [
+                                'class' => [],
+                                'width' => [],
+                                'height' => [],
+                                'viewBox' => [],
+                                'fill' => [],
+                                'xmlns' => [],
+                            ],
+                            'path' => [
+                                'd' => [],
+                                'fill' => [],
+                            ],
+                        ] ); ?>
+                    <?php endif; ?>
+                    <?php echo wp_kses_post( $field['label'] . $this->required_mark( $field ) ); ?>
+                </label>
+            </div>
+        <?php
+        }
     }
 
     /**

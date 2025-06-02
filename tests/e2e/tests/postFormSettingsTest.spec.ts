@@ -8,7 +8,7 @@ import { Users, PostForm, Urls } from '../utils/testData';
 import { SettingsSetupPage } from '../pages/settingsSetup';
 import * as fs from "fs";
 
-export default function postFormGeneralSettingsTests() {
+export default function postFormSettingsTest() {
     let browser: Browser;
     let context: BrowserContext;
     let page: Page;
@@ -16,13 +16,13 @@ export default function postFormGeneralSettingsTests() {
     test.beforeAll(async () => {
         // Clear state file
         fs.writeFileSync('state.json', JSON.stringify({ cookies: [], origins: [] }));
-        
+
         // Launch browser
         browser = await chromium.launch();
-        
+
         // Create a single context
         context = await browser.newContext();
-        
+
         // Create a single page
         page = await context.newPage();
     });
@@ -85,7 +85,10 @@ export default function postFormGeneralSettingsTests() {
          * @Test_PFS0052 : Admin is validating post update message in form
          * @Test_PFS0053 : Admin is setting lock user editing after time
          * @Test_PFS0054 : Admin is setting update post button text
-         * @Test_PFS0055 : Admin is validating update post button text in form
+         * @Test_PFS0055 : Admin is enabling pay per post
+         * @Test_PFS0056 : Admin is creating post with payment
+         * @Test_PFS0057 : Admin is accepting payment for post
+         * @Test_PFS0058 : Admin is validating paid post is live
          *
          */
 
@@ -251,7 +254,7 @@ export default function postFormGeneralSettingsTests() {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.setPostSubmissionStatus(formName, 'publish');
         });
-        
+
         test('PFS0024 : Admin is validating post submission status to draft - list', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             // Validate that the post type shows correctly in the list
@@ -348,7 +351,8 @@ export default function postFormGeneralSettingsTests() {
             await postFormSettings.setPostUpdateStatus(formName, '_nochange');
         });
 
-        test('PFS0040 : Admin is validating post update status for no change', { tag: ['@Lite'] }, async () => {const postTitle = faker.word.words(3);
+        test('PFS0040 : Admin is validating post update status for no change', { tag: ['@Lite'] }, async () => {
+            const postTitle = faker.word.words(3);
             const postContent = faker.lorem.paragraph();
             const postExcerpt = faker.lorem.paragraph();
             const postFormSettings = new PostFormSettingsPage(page);
@@ -447,13 +451,36 @@ export default function postFormGeneralSettingsTests() {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.setUpdatePostButtonText(formName, 'Save Changes');
         });
-    });
 
-    test.afterAll(async () => {
-        // Clear state file after tests
-        fs.writeFileSync('state.json', JSON.stringify({ cookies: [], origins: [] }));
-        
-        // Close the browser
-        await browser.close();
+        test('PFS0055 : Admin is enabling pay per post', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.enablePayPerPost(formName, '2.00', 'Order Received');
+        });
+
+        test('PFS0056 : Admin is creating post with payment', { tag: ['@Pro'] }, async () => {
+            const postTitle = faker.word.words(3);
+            const postContent = faker.lorem.paragraph();
+            const postExcerpt = faker.lorem.paragraph();
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.createPostWithPayment(postTitle, postContent, postExcerpt, '2.00', 'Order Received');
+        });
+
+        test('PFS0057 : Admin is accepting payment for post', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.acceptPayment();
+        });
+
+        test('PFS0058 : Admin is validating paid post is live', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.validatePayPerPost();
+        });
+
+        test.afterAll(async () => {
+            // Clear state file after tests
+            fs.writeFileSync('state.json', JSON.stringify({ cookies: [], origins: [] }));
+
+            // Close the browser
+            await browser.close();
+        });
     });
 }

@@ -186,12 +186,12 @@ async function generateSummary() {
       .join('\n');
 
     // Summary
-    const summary = `# 🎭 Playwright Test Summary
+    const summary = `# 🎭 Test Summary
 
-## 📊 Test Statistics
+## 📊 Final Statistics
 ${statHeader}
 
-## 📝 Scenario Coverage Table
+## 📝 Covered Scenarios
 ${tableHeader}
 ${tableRows}
 

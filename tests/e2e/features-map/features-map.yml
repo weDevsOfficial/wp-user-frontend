@@ -39,6 +39,8 @@ features:
   - id: LS0019
     name: Admin is adding credentils for Cloudflare Turnstile
   - id: LS0020
+    name: Admin is enabling payment gateway bank
+  - id: LS0021
     name: Admin is logging out succesfully
 
   # Post Forms (Lite)
@@ -181,4 +183,10 @@ features:
   - id: PFS0054
     name: Admin is setting update post button text
   - id: PFS0055
-    name: Admin is validating update post button text in form
+    name: Admin is enabling pay per post
+  - id: PFS0056
+    name: Admin is creating post with payment
+  - id: PFS0057
+    name: Admin is accepting payment for post
+  - id: PFS0058
+    name: Admin is validating paid post is live

@@ -575,6 +575,18 @@ export class SettingsSetupPage extends Base {
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileSave);
     }
 
+    async enablePaymentGatewayBank() {
+        //Go to Settings - General page
+        const settingsGeneralPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-settings';
+        await Promise.all([
+            this.page.goto(settingsGeneralPage, { waitUntil: 'domcontentloaded' }),
+        ]);
+        await this.page.reload();
+        await this.validateAndClick(Selectors.settingsSetup.payment.clickPaymentTab);
+        await this.validateAndClick(Selectors.settingsSetup.payment.clickPaymentGatewayBank);
+        await this.validateAndClick(Selectors.settingsSetup.payment.settingsTabPaymentSave);
+    }
+
 
 
     /***********************************************/

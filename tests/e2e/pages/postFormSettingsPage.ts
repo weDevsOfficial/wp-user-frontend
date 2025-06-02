@@ -982,4 +982,88 @@ export class PostFormSettingsPage extends Base {
 
         await expect(this.page).toHaveURL(expectedUrl);
     }
+
+    async enablePayPerPost(formName: string, cost: string, successPage: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
+
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.paymentSettingsTab);
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.paymentEnableToggle);
+
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.paymentEnableToggle);
+
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.paymentOptionsContainer);
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.paymentOptionsDropdown);
+
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.payPerPostOption('enable_pay_per_post'));
+
+        await this.validateAndFillStrings(Selectors.postFormSettings.postSettingsSection.payPerPostCostContainer, cost);
+
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.paymentSuccessPageContainer);
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.paymentSuccessPageDropdown);
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.paymentSuccessPageOption(successPage));
+
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+    }
+
+    async createPostWithPayment(postTitle: string, postContent: string, postExcerpt: string, cost: string, successPage: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        const payPerPostInfo = await this.page.innerText(Selectors.postFormSettings.payPerPostInfo);
+        expect(payPerPostInfo).toContain(`There is a $${cost} charge to add a new post`);
+
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
+
+        // Enter Post Description
+        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
+            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
+
+        await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
+        await this.page.waitForTimeout(1000);
+
+        const validateCost = await this.page.innerText(Selectors.postFormSettings.validatePayPerPostCost);
+        expect(validateCost).toContain(`$${cost}`);
+
+        await this.validateAndClick(Selectors.postFormSettings.checkBankButton);
+        await this.page.waitForTimeout(1000);
+
+        await this.validateAndClick(Selectors.postFormSettings.proceedPaymentButton);
+
+        await this.assertionValidate(Selectors.postFormSettings.afterPaymentPageTitle(successPage));
+
+    }
+
+    async acceptPayment() {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf_transaction', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        await this.page.hover(Selectors.postFormSettings.transactionTableRow);
+
+        await this.validateAndClick(Selectors.postFormSettings.acceptPayment);
+        await this.page.waitForTimeout(1000);
+
+    }
+
+    async validatePayPerPost() {
+
+        await this.page.goto(Urls.baseUrl + '/account/?section=post', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        const newPostStatus = await this.page.innerText(Selectors.postFormSettings.postStatusColumn);
+        await expect(newPostStatus).toContain('Live');
+        
+    }
 }

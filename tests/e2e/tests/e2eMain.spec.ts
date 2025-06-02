@@ -4,7 +4,7 @@ import resetWordpressSite from './resetWordpressSite.spec';
 import loginAndSetupTests from './loginAndSetupTests.spec';
 import postFormsTests from './postFormsTests.spec';
 import registrationFormsTestsPro from './registrationFormsTestsPro.spec';
-import postFormGeneralSettingsTests from './postFormGeneralSettingsTest.spec';
+import postFormSettingsTest from './postFormSettingsTest.spec';
 
 //*---------------------------------------------------*/
 //*---------------------Reset WP---------------------*/
@@ -47,4 +47,4 @@ if (process.env.CI == 'false') {
 test.describe(loginAndSetupTests);
 test.describe(postFormsTests);
 test.describe(registrationFormsTestsPro);
-test.describe(postFormGeneralSettingsTests);
+test.describe(postFormSettingsTest);

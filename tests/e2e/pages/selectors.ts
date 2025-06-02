@@ -236,6 +236,13 @@ export const Selectors = {
             clickLoginOrRegistration: '//a[normalize-space(text())="Login / Registration"]',
             enableCloudflareTurnstileLogin: '//label[@for="wpuf-wpuf_profile[login_form_turnstile]"]//span[1]'
         },
+        payment: {
+            clickPaymentTab: '//a[@id="wpuf_payment-tab"]',
+            clickPaymentGatewayBank: '//input[@id="wpuf-wpuf_payment[active_gateways][bank]"]',
+            clickPaymentGatewayPaypal: '//input[@id="wpuf-wpuf_payment[active_gateways][paypal]"]',
+            clickPaymentGatewayStripe: '//input[@id="wpuf-wpuf_payment[active_gateways][stripe]"]',
+            settingsTabPaymentSave: '//div[@id="wpuf_payment"]//form[@method="post"]//div//input[@id="submit"]',
+        }
     },
 
     /*********************************/
@@ -702,6 +709,15 @@ export const Selectors = {
         quickEditButton: '(//button[@class="button-link editinline"])[1]',
         statusDropdown: '(//select[@name="_status"])[1]',
         updateStatus: '(//input[@id="_inline_edit"]/following-sibling::button)[1]',
+        payPerPostInfo: '//div[@class="wpuf-info"]',
+        paymentPageTitle: '//h1[normalize-space(text())="Payment"]',
+        validatePayPerPostCost: '//span[@id="wpuf_pay_page_cost"]',
+        checkBankButton: '//li[@class="wpuf-gateway-bank"]//input[1]',
+        proceedPaymentButton: '//input[@value="Proceed"]',
+        afterPaymentPageTitle: (successPage: string) => `//h1[normalize-space(text())="${successPage}"]`,
+        transactionTableRow: '//tbody//tr[1]',
+        acceptPayment: '//a[normalize-space()="Accept"]',
+
 
 
         // Post Settings Section
@@ -770,6 +786,17 @@ export const Selectors = {
             updatePostRedirectionPageOption: (text: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[contains(text(),"${text}")]`,
             
             updatePostRedirectionUrlInput: '//input[@id="edit_url"]',
+
+            paymentSettingsTab: '//li[@data-settings="payment_settings"]',
+            paymentEnableToggle: '//input[@id="payment_options"]/following-sibling::span[1]',
+            paymentOptionsContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[12]',
+            paymentOptionsDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[12]',
+            payPerPostOption: (value: string) => `(//div[contains(@class,"selectize-dropdown-content")])//div[@data-value="${value}"]`,
+            payPerPostCostContainer: '//input[@id="pay_per_post_cost"]',
+            paymentSuccessPageContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[13]',
+            paymentSuccessPageDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[13]',
+            paymentSuccessPageOption: (text: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[contains(text(),"${text}")]`,
+
 
         },
 

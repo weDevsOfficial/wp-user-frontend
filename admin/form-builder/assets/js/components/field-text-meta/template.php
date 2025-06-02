@@ -9,6 +9,9 @@
         <input
             type="text"
             v-model="value"
-            :class="builder_class_names('text')">
+            :class="builder_class_names('text') + (option_field.css_class ? ' ' + option_field.css_class : '')"
+            :readonly="option_field.readonly === true"
+            :style="option_field.custom_attrs && option_field.custom_attrs.style ? option_field.custom_attrs.style : ''"
+            :disabled="option_field.disabled === true">
     </div>
 </div>

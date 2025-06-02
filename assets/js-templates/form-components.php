@@ -1,4 +1,3 @@
-<?php declare(strict_types=1); ?>
 <script type="text/x-template" id="tmpl-wpuf-builder-stage">
 <div id="form-preview-stage" class="wpuf-style">
     <h4 v-if="!form_fields.length" class="text-center">
@@ -623,7 +622,10 @@
         <input
             type="text"
             v-model="value"
-            :class="builder_class_names('text')">
+            :class="builder_class_names('text') + (option_field.css_class ? ' ' + option_field.css_class : '')"
+            :readonly="option_field.readonly === true"
+            :style="option_field.custom_attrs && option_field.custom_attrs.style ? option_field.custom_attrs.style : ''"
+            :disabled="option_field.disabled === true">
     </div>
 </div>
 </script>
@@ -931,7 +933,7 @@
                                 <span :class="action_button_classes">
                                 <i
                                     class="fa fa-clone control-button-disabled wpuf--ml-1"></i>
-                                </span>
+                            </span>
                             </template>
                             <span :class="action_button_classes" @click="delete_column_field(innerIndex, column)">
                                 <svg class="wpuf-mr-2" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1512,21 +1514,6 @@
 </div>
 </script>
 
-<script type="text/x-template" id="tmpl-wpuf-form-twitter_url">
-<div class="wpuf-fields">
-    <input
-        type="text"
-        :class="builder_class_names('twitter')"
-        :placeholder="field.placeholder"
-        :value="field.default"
-        :size="field.size"
-        pattern="^@?[a-zA-Z0-9_]{1,15}$"
-        data-type="twitter_url"
-    >
-    <p v-if="field.help" class="wpuf-mt-2 wpuf-mb-0 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
-</div>
-</script>
-
 <script type="text/x-template" id="tmpl-wpuf-help-text">
 <span
     class="field-helper-text wpuf-ml-2"
@@ -1611,5 +1598,33 @@ wp_enqueue_style( 'skin-css', site_url() . '/wp-includes/js/tinymce/skins/lightg
             </div>
         </div>
     </div>
+</div>
+</script>
+
+<script type="text/x-template" id="tmpl-wpuf-form-twitter_url">
+<div class="wpuf-fields">
+    <div v-if="field.show_icon === 'yes'" class="wpuf-twitter-field-with-icon wpuf-flex wpuf-items-center">
+        <input
+            type="text"
+            :class="builder_class_names('text')"
+            :placeholder="field.placeholder"
+            :value="field.default"
+            :size="field.size"
+            pattern="^@?[a-zA-Z0-9_]{1,15}$"
+        >
+        <svg class="wpuf-twitter-svg" style="display: inline-block; vertical-align: middle; margin-left: 8px; width: 20px; height: 20px;" width="20" height="20" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 16L10.1936 11.8065M10.1936 11.8065L6 6H8.77778L11.8065 10.1935M10.1936 11.8065L13.2222 16H16L11.8065 10.1935M16 6L11.8065 10.1935M1.5 11C1.5 6.52166 1.5 4.28249 2.89124 2.89124C4.28249 1.5 6.52166 1.5 11 1.5C15.4784 1.5 17.7175 1.5 19.1088 2.89124C20.5 4.28249 20.5 6.52166 20.5 11C20.5 15.4783 20.5 17.7175 19.1088 19.1088C17.7175 20.5 15.4784 20.5 11 20.5C6.52166 20.5 4.28249 20.5 2.89124 19.1088C1.5 17.7175 1.5 15.4783 1.5 11Z" stroke="#4B5563" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </div>
+    <input
+        v-else
+        type="text"
+        :class="builder_class_names('text')"
+        :placeholder="field.placeholder"
+        :value="field.default"
+        :size="field.size"
+        pattern="^@?[a-zA-Z0-9_]{1,15}$"
+    >
+    <p v-if="field.help" class="wpuf-mt-2 wpuf-mb-0 wpuf-text-sm wpuf-text-gray-500" v-html="field.help"></p>
 </div>
 </script>

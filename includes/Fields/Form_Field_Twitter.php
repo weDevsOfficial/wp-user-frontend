@@ -66,10 +66,10 @@ class Form_Field_Twitter extends Form_Field_Social {
     }
 
     /**
-     * Override the get_options_settings to make meta key readonly
+     * Override the get_options_settings to make meta key readonly in backend
      *
-     * Prevents administrators from changing the standardized meta key format
-     * and provides helpful explanation about the naming convention.
+     * Makes the Meta Key field visible but readonly in the admin/backend settings to prevent
+     * administrators from changing the standardized meta key format while still showing the value.
      *
      * @since WPUF_SINCE
      *
@@ -78,15 +78,16 @@ class Form_Field_Twitter extends Form_Field_Social {
     public function get_options_settings() {
         $settings = parent::get_options_settings();
         
-        // Find the meta key setting and make it readonly.
+        // Find the meta key setting and make it readonly while keeping it visible.
         foreach ( $settings as &$setting ) {
             if ( isset( $setting['name'] ) && 'name' === $setting['name'] ) {
-                $setting['readonly']  = true;
-                $setting['help_text'] = __( 'This meta key is automatically set to follow the wpuf_social_{platform} format and cannot be changed', 'wp-user-frontend' );
+                $setting['disabled']  = true;
+                $setting['css_class'] = 'wpuf-readonly-field';
+                $setting['help_text'] = __( 'This meta key is automatically set to follow the wpuf_social_twitter format and cannot be changed', 'wp-user-frontend' );
                 break;
             }
         }
-        
+
         return $settings;
     }
 

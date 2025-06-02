@@ -504,14 +504,18 @@ ul.wpuf-category-checklist {
     width: 16px;
 }
 
-/* Twitter Field Frontend Styling */
+/* Social Media Fields Frontend Styling */
+.wpuf-form .wpuf-social-field-wrapper,
 .wpuf-form .wpuf-twitter-field-wrapper {
     position: relative;
     display: flex;
     align-items: center;
 }
 
-/* Style for Twitter icon next to label */
+/* Style for social media icons next to label */
+.wpuf-label svg.wpuf-social-svg,
+.wpuf-text-sm svg.wpuf-social-svg,
+label svg.wpuf-social-svg,
 .wpuf-label svg.wpuf-twitter-svg,
 .wpuf-text-sm svg.wpuf-twitter-svg,
 label svg.wpuf-twitter-svg {
@@ -522,6 +526,9 @@ label svg.wpuf-twitter-svg {
 }
 
 /* Icon positioning - before text (right margin) */
+.wpuf-label svg.wpuf-social-svg.wpuf-mr-2,
+.wpuf-text-sm svg.wpuf-social-svg.wpuf-mr-2,
+label svg.wpuf-social-svg.wpuf-mr-2,
 .wpuf-label svg.wpuf-twitter-svg.wpuf-mr-2,
 .wpuf-text-sm svg.wpuf-twitter-svg.wpuf-mr-2,
 label svg.wpuf-twitter-svg.wpuf-mr-2 {
@@ -529,6 +536,9 @@ label svg.wpuf-twitter-svg.wpuf-mr-2 {
 }
 
 /* Icon positioning - after text (left margin) */
+.wpuf-label svg.wpuf-social-svg.wpuf-ml-2,
+.wpuf-text-sm svg.wpuf-social-svg.wpuf-ml-2,
+label svg.wpuf-social-svg.wpuf-ml-2,
 .wpuf-label svg.wpuf-twitter-svg.wpuf-ml-2,
 .wpuf-text-sm svg.wpuf-twitter-svg.wpuf-ml-2,
 label svg.wpuf-twitter-svg.wpuf-ml-2 {
@@ -536,18 +546,23 @@ label svg.wpuf-twitter-svg.wpuf-ml-2 {
 }
 
 /* Ensure proper alignment in form builder */
+.wpuf-block svg.wpuf-social-svg,
 .wpuf-block svg.wpuf-twitter-svg {
     vertical-align: middle;
 }
 
+.wpuf-block svg.wpuf-social-svg.wpuf-mr-2,
 .wpuf-block svg.wpuf-twitter-svg.wpuf-mr-2 {
     margin-right: 6px;
 }
 
+.wpuf-block svg.wpuf-social-svg.wpuf-ml-2,
 .wpuf-block svg.wpuf-twitter-svg.wpuf-ml-2 {
     margin-left: 6px;
 }
 
+/* Social media input field styling */
+.wpuf-form .wpuf-social-field-wrapper input[type="text"],
 .wpuf-form .wpuf-twitter-field-wrapper input[type="text"] {
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -556,9 +571,27 @@ label svg.wpuf-twitter-svg.wpuf-ml-2 {
     width: 50%;
 }
 
+.wpuf-form .wpuf-social-field-wrapper input[type="text"]:focus,
 .wpuf-form .wpuf-twitter-field-wrapper input[type="text"]:focus {
     background: #f2f2f2;
     border-color: #1da1f2;
+}
+
+/* Specific platform focus colors */
+.wpuf-form .wpuf-facebook-field-wrapper input[type="text"]:focus {
+    border-color: #1877f2;
+}
+
+.wpuf-form .wpuf-linkedin-field-wrapper input[type="text"]:focus {
+    border-color: #0077b5;
+}
+
+.wpuf-form .wpuf-instagram-field-wrapper input[type="text"]:focus {
+    border-color: #E4405F;
+}
+
+.wpuf-form .wpuf-youtube-field-wrapper input[type="text"]:focus {
+    border-color: #FF0000;
 }
 
 /* Error styling for form validation */
@@ -584,7 +617,8 @@ label svg.wpuf-twitter-svg.wpuf-ml-2 {
     border-radius: 3px;
 }
 
-/* Twitter field specific error styling */
+/* Social media field specific error styling */
+.wpuf-form .has-error .wpuf-social-field-wrapper input,
 .wpuf-form .has-error .wpuf-twitter-field-wrapper input {
     border-color: #dc3232 !important;
     box-shadow: 0 0 0 1px #dc3232;

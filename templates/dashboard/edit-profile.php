@@ -7,7 +7,6 @@ $eye_icon_src = file_exists( WPUF_ROOT . '/assets/images/eye.svg' ) ? WPUF_ASSET
 wp_enqueue_script( 'zxcvbn' );
 wp_enqueue_script( 'password-strength-meter' );
 ?>
-?>
 
 <form class="wpuf-form wpuf-update-profile-form" action="" method="post">
 

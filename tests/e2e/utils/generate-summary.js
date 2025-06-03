@@ -177,7 +177,7 @@ async function generateSummary() {
 
     // Markdown table with tags and type columns
     const tableHeader = `| ID | Type | Title | Status | Duration | Tags |
-|---|---|---|---|---|---|---|`;
+|---|---|---|---|---|---|`;
     const tableRows = featureRows
       .map(
         (f) =>

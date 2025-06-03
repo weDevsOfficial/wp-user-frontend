@@ -242,6 +242,12 @@ export const Selectors = {
             clickPaymentGatewayPaypal: '//input[@id="wpuf-wpuf_payment[active_gateways][paypal]"]',
             clickPaymentGatewayStripe: '//input[@id="wpuf-wpuf_payment[active_gateways][stripe]"]',
             settingsTabPaymentSave: '//div[@id="wpuf_payment"]//form[@method="post"]//div//input[@id="submit"]',
+        },
+
+        pluginInstall: {
+            clickPluginInstall: (pluginName: string, pluginSlug: string) => `//a[contains(text(),"${pluginName}")]/../../..//a[@data-slug="${pluginSlug}"]`,
+            validatePluginInstalled: (pluginName: string) => `//strong[normalize-space()='${pluginName}']`,
+            validatePluginActived: (pluginSlug: string) => `//a[@id='deactivate-${pluginSlug}']`,
         }
     },
 
@@ -717,8 +723,8 @@ export const Selectors = {
         afterPaymentPageTitle: (successPage: string) => `//h1[normalize-space(text())="${successPage}"]`,
         transactionTableRow: '//tbody//tr[1]',
         acceptPayment: '//a[normalize-space()="Accept"]',
-
-
+        successMessage: '//div[@class="wpuf-success"]',
+        
 
         // Post Settings Section
         postSettingsSection: {
@@ -804,5 +810,101 @@ export const Selectors = {
         messages: {
             formSaved: '//div[normalize-space(text())="Saved form data"]',
         },
+
+        // Notification Settings Section
+        notificationSettingsSection: {
+            notificationSettingsHeader: '//p[contains(text(),"New Post Notification")]',
+            
+            // New Post Notification
+            newPostNotificationToggle: '//input[@name="wpuf_settings[notification][new]"]/following-sibling::span[1]',
+            newPostNotificationTo: '//input[@name="wpuf_settings[notification][new_to]"]',
+            newPostNotificationSubject: '//input[@name="wpuf_settings[notification][new_subject]"]',
+            newPostNotificationBody: '//textarea[@name="wpuf_settings[notification][new_body]"]',
+            
+            // Update Post Notification (PRO)
+            updatePostNotificationHeader: '//p[contains(text(),"Update Post Notification")]',
+            updatePostNotificationToggle: '//input[@name="wpuf_settings[notification_edit]"]',
+            updatePostNotificationTo: '//input[@name="wpuf_settings[notification_edit_to]"]',
+            updatePostNotificationSubject: '//input[@name="wpuf_settings[notification_edit_subject]"]',
+            updatePostNotificationBody: '//textarea[@name="wpuf_settings[notification_edit_body]"]',
+
+            templateTagPointer: (tag: string, point: string) => `(//span[@data-clipboard-text="${tag}"])[${point}]`,
+            sentEmailAddress: '//tbody/tr[1]/td[3]/div[1]',
+            sentEmailSubject: '//tbody/tr[1]/td[4]/div[1]',
+            viewEmailContent: '//tbody/tr[1]/td[3]/div[1]',
+            previewEmailContentBody: '(//div[@class="wml-body-wrapper"])[1]',
+
+            // Update Post Notification Section
+            updatePostNotificationDescription: '//p[contains(text(),"Enable this feature to receive email alerts")]',
+            updatePostNotificationToggleInput: '//input[@id="update_notification"]',
+            updatePostNotificationTemplateTags: '//p[contains(text(),"You may use in to, subject & message")]',
+            updatePostTemplateTagPostTitle: '//span[@data-content="{post_title}"]',
+            updatePostTemplateTagPostContent: '//span[@data-content="{post_content}"]',
+            updatePostTemplateTagPostExcerpt: '//span[@data-content="{post_excerpt}"]',
+            updatePostTemplateTagTags: '//span[@data-content="{tags}"]',
+            updatePostTemplateTagCategory: '//span[@data-content="{category}"]',
+            updatePostTemplateTagAuthor: '//span[@data-content="{author}"]',
+            updatePostTemplateTagAuthorEmail: '//span[@data-content="{author_email}"]',
+            updatePostTemplateTagAuthorBio: '//span[@data-content="{author_bio}"]',
+            updatePostTemplateTagSiteName: '//span[@data-content="{sitename}"]',
+            updatePostTemplateTagSiteUrl: '//span[@data-content="{siteurl}"]',
+            updatePostTemplateTagPermalink: '//span[@data-content="{permalink}"]',
+            updatePostTemplateTagEditLink: '//span[@data-content="{editlink}"]',
+        },
+
+        // Display Settings Section
+        displaySettingsSection: {
+            displaySettingsHeader: '//p[contains(text(),"Display Settings")]',
+            
+            // Form Labels
+            showFormLabelsToggle: '//input[@name="wpuf_settings[label_position]"]',
+            
+            // Field Icons
+            showFieldIconsToggle: '//input[@name="wpuf_settings[enable_field_icons]"]',
+            
+            // Required Asterisk
+            showRequiredAsteriskToggle: '//input[@name="wpuf_settings[required_asterisk]"]',
+            
+            // Form Theme
+            formThemeContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[1]',
+            formThemeDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[1]',
+            formThemeOption: (theme: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[@data-value="${theme}"]`,
+            
+            // Field Wrapper Class
+            fieldWrapperClass: '//input[@name="wpuf_settings[field_wrapper_class]"]',
+            
+            // Submit Button Class
+            submitButtonClass: '//input[@name="wpuf_settings[submit_button_class]"]',
+        },
+
+        // Advanced Settings Section
+        advancedSettingsSection: {
+            advancedSettingsHeader: '//p[contains(text(),"Advanced Settings")]',
+            
+            // Guest Posts
+            allowGuestPostsToggle: '//input[@name="wpuf_settings[guest_post]"]',
+            
+            // Username Generation
+            guestUsernameGeneration: '//input[@name="wpuf_settings[guest_details]"]',
+            
+            // Comment Status
+            commentStatusContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[1]',
+            commentStatusDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[1]',
+            commentStatusOption: (status: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[@data-value="${status}"]`,
+            
+            // Default Post Format
+            defaultPostFormatContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[2]',
+            defaultPostFormatDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[2]',
+            defaultPostFormatOption: (format: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[@data-value="${format}"]`,
+            
+            // Custom CSS
+            customCSS: '//textarea[@name="wpuf_settings[custom_css]"]',
+        },
+
+        // Navigation tabs
+        notificationSettingsTab: '//li[@data-settings="notification_settings"]',
+        paymentSettingsTab: '//li[@data-settings="payment_settings"]',
+        displaySettingsTab: '//li[@data-settings="display_settings"]',
+        advancedSettingsTab: '//li[@data-settings="advanced_settings"]',
     },
 };

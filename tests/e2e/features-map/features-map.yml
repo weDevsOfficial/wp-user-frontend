@@ -41,6 +41,8 @@ features:
   - id: LS0020
     name: Admin is enabling payment gateway bank
   - id: LS0021
+    name: Admin is enabling payment gateway stripe
+  - id: LS0022
     name: Admin is logging out succesfully
 
   # Post Forms (Lite)
@@ -190,3 +192,23 @@ features:
     name: Admin is accepting payment for post
   - id: PFS0058
     name: Admin is validating paid post is live
+  - id: PFS0059
+    name: Admin is disabling pay per post
+  - id: PFS0060
+    name: Admin is enabling new post notification
+  - id: PFS0061
+    name: Admin is validating new post notification settings enabled
+  - id: PFS0062
+    name: Admin is modifying notification email
+  - id: PFS0063
+    name: Admin is modifying notification subject
+  - id: PFS0064
+    name: Admin is modifying notification body with template tags
+  - id: PFS0065
+    name: Admin is clicking and validating template tags for notification
+  - id: PFS0066
+    name: Admin is setting multiple notification emails
+  - id: PFS0067
+    name: Admin is submitting post and validating notification from FE
+  - id: PFS0068
+    name: Admin is disabling new post notification

@@ -587,7 +587,26 @@ export class SettingsSetupPage extends Base {
         await this.validateAndClick(Selectors.settingsSetup.payment.settingsTabPaymentSave);
     }
 
+    async installPlugin(pluginName: string, pluginSlug: string, pluginSearch: string) {
+        //Go to Plugins page
+        const pluginsPage = Urls.baseUrl + `/wp-admin/plugin-install.php?s=${pluginSearch}&tab=search&type=term`;
+        await Promise.all([
+            this.page.goto(pluginsPage, { waitUntil: 'domcontentloaded' }),
+        ]);
+        await this.page.reload();
 
+        await this.validateAndClick(Selectors.settingsSetup.pluginInstall.clickPluginInstall(pluginName, pluginSlug));
+
+        await this.page.waitForTimeout(15000);
+
+        await this.validateAndClick(Selectors.settingsSetup.pluginInstall.clickPluginInstall(pluginName, pluginSlug));
+
+        await this.assertionValidate(Selectors.settingsSetup.pluginInstall.validatePluginInstalled(pluginName));
+
+        await this.assertionValidate(Selectors.settingsSetup.pluginInstall.validatePluginActived(pluginSlug));
+
+        //Install Email Log plugin
+    }
 
     /***********************************************/
     /********** @Rest WorPress Site ***************/

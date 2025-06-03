@@ -50,7 +50,8 @@ export default function loginAndSetupTests() {
          * @Test_LS0018 : Admin is adding credentils for ReCaptcha
          * @Test_LS0019 : Admin is adding credentils for Cloudflare Turnstile
          * @Test_LS0020 : Admin is enabling payment gateway bank
-         * @Test_LS0021 : Admin is logging out succesfully
+         * @Test_LS0021 : Admin installing Email-Log plugin
+         * @Test_LS0022 : Admin is logging out succesfully
          *  
          */
         test('LS0001 : Admin is logging into Admin-Dashboard', { tag: ['@Basic'] }, async () => {
@@ -164,7 +165,12 @@ export default function loginAndSetupTests() {
             await SettingsSetup.enablePaymentGatewayBank();
         });
 
-        test('LS0021 : Admin is logging out successfully', { tag: ['@Basic'] }, async () => {
+        test('LS0021 : Admin installing Email-Log plugin', { tag: ['@Basic'] }, async () => {
+            const SettingsSetup = new SettingsSetupPage(page);
+            await SettingsSetup.installPlugin('WP Mail Log', 'wp-mail-log', 'wp%2520mail%2520log');
+        });
+
+        test('LS0022 : Admin is logging out successfully', { tag: ['@Basic'] }, async () => {
             const BasicLogout = new BasicLogoutPage(page);
             await BasicLogout.logOut();
         });

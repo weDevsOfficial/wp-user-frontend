@@ -168,35 +168,35 @@ async function generateSummary() {
     const lastRun = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
     // Create a table header and row for statistics
-    const statHeader = `| Test 📝 | Total 📊 | Passed ✅ | Failed ❌ | Flaky ⚠️ | Skipped ⏭️ | Not Covered 🚫 | Coverage 📈 | Duration ⏱️ | Average ⏱️ | Date 📅 |
+    const statHeader = `| Test 🧪 | Total 📊 | Passed ✅ | Failed ❌ | Flaky ⚠️ | Skipped ⏭️ | Not Covered 🚫 | Coverage 📈 | Duration ⏱️ | Average ⌛ | Date 📅 |
 |---|---|---|---|---|---|---|---|---|---|---|
-| E2E Tests | ${total} | ${passed} | ${failed} | ${flaky} | ${skipped} | ${notCovered} | ${coverage}% | ${minutes}m ${seconds}s | ${avgDuration}s | ${lastRun} |`;
+| E2E | ${total} | ${passed} | ${failed} | ${flaky} | ${skipped} | ${notCovered} | ${coverage}% | ${minutes}m ${seconds}s | ${avgDuration}s | ${lastRun} |`;
 
     // Remove the old stat values line since we're incorporating it in the table
     const statValues = '';
 
     // Markdown table with tags and type columns
-    const tableHeader = `| Scenario ID | Name | Status | Duration | Flaky? | Type | Tags |
+    const tableHeader = `| ID | Type | Title | Status | Duration | Tags |
 |---|---|---|---|---|---|---|`;
     const tableRows = featureRows
       .map(
         (f) =>
-          `| ${f.id} | ${f.name} | ${f.status === 'passed' ? '✅' : f.status === 'failed' ? '❌' : f.status === 'skipped' ? '⏭️' : f.status === 'not_covered' ? '🚫' : '❓'} | ${(f.duration / 1000).toFixed(1)} s | ${f.flaky ? '⚠️ Yes ' : '👍 No'} | ${f.testType} | ${(f.tags || []).map(formatTagAsPill).join(' ')} |`,
+          `| ${f.id} | ${f.testType} | ${f.name} | ${f.status === 'passed' ? '✅' : f.status === 'failed' ? '❌' : f.status === 'skipped' ? '⏭️' : f.status === 'not_covered' ? '🚫' : '❓'} | ${(f.duration / 1000).toFixed(1)} s | ${(f.tags || []).map(formatTagAsPill).join(' ')} |`,
       )
       .join('\n');
 
     // Summary
-    const summary = `# 🎭 Test Summary
+    const summary = `# 🧪 Test Summary
 
 ## 📊 Final Statistics
 ${statHeader}
 
-## 📝 Covered Scenarios
+## 🎯 Covered Scenarios
 ${tableHeader}
 ${tableRows}
 
-## 📦 Full Report
-> ℹ️ **To see full details, screenshots, and step-by-step results, please download the \`playwright-report\` artifact from the next section and open \`index.html\` locally.**
+## 🎁 Full Report
+> 📌 **To see full details, screenshots, and step-by-step results, please download the \`playwright-report\` artifact from the next section and open \`index.html\` locally.**
 >
 > _This gives you a beautiful, interactive HTML report with all test evidence and logs._
 `;

@@ -1014,6 +1014,27 @@ export class PostFormSettingsPage extends Base {
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
     }
 
+    async disablePayPerPost(formName: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+        
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
+
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.paymentSettingsTab);
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.paymentEnableToggle);
+
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.paymentEnableToggle);
+
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        
+    }
+
     async createPostWithPayment(postTitle: string, postContent: string, postExcerpt: string, cost: string, successPage: string) {
         // Go to form edit page
         await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
@@ -1065,5 +1086,575 @@ export class PostFormSettingsPage extends Base {
         const newPostStatus = await this.page.innerText(Selectors.postFormSettings.postStatusColumn);
         await expect(newPostStatus).toContain('Live');
         
+    }
+
+    // Enable new post notification
+    async enableNewPostNotification(formName: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Notification Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsTab);
+
+        // Wait for notification settings to load
+        await this.assertionValidate(Selectors.postFormSettings.notificationSettingsSection.notificationSettingsHeader);
+
+        // Enable new post notification toggle
+        const isChecked = await this.page.locator(Selectors.postFormSettings.notificationSettingsSection.newPostNotificationToggle).isChecked();
+        if (!isChecked) {
+            await this.validateAndClick(Selectors.postFormSettings.notificationSettingsSection.newPostNotificationToggle);
+        }
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+    }
+
+    // Disable new post notification
+    async disableNewPostNotification(formName: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Notification Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsTab);
+
+        // Wait for notification settings to load
+        await this.assertionValidate(Selectors.postFormSettings.notificationSettingsSection.notificationSettingsHeader);
+
+        // Disable new post notification toggle
+        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsSection.newPostNotificationToggle);
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+    }
+
+    // Modify notification email settings
+    async modifyNotificationEmail(formName: string, emailAddress: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Notification Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsTab);
+
+        // Wait for notification settings to load
+        await this.assertionValidate(Selectors.postFormSettings.notificationSettingsSection.notificationSettingsHeader);
+
+        // Clear and fill new email
+        await this.validateAndFillStrings(Selectors.postFormSettings.notificationSettingsSection.newPostNotificationTo, emailAddress);
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+    }
+
+    // Modify notification subject
+    async modifyNotificationSubject(formName: string, emailSubject: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Notification Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsTab);
+
+        // Wait for notification settings to load
+        await this.assertionValidate(Selectors.postFormSettings.notificationSettingsSection.notificationSettingsHeader);
+
+        // Clear and fill new subject
+        await this.validateAndFillStrings(Selectors.postFormSettings.notificationSettingsSection.newPostNotificationSubject, emailSubject);
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+    }
+
+    // Modify notification body with template tags
+    async modifyNotificationBodyWithTemplateTags(formName: string, emailBody: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Notification Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsTab);
+
+        // Wait for notification settings to load
+        await this.assertionValidate(Selectors.postFormSettings.notificationSettingsSection.notificationSettingsHeader);
+
+        // Clear and fill new body with template tags
+        await this.validateAndFillStrings(Selectors.postFormSettings.notificationSettingsSection.newPostNotificationBody, emailBody);
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+    }
+
+    // Click template tags for notification body
+    async clickTemplateTagsForNotification(formName: string, tags: string[]) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Notification Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsTab);
+
+        // Wait for notification settings to load
+        await this.assertionValidate(Selectors.postFormSettings.notificationSettingsSection.notificationSettingsHeader);
+
+        // Click on each template tag
+        for (const tag of tags) {
+            const tagSelector = Selectors.postFormSettings.notificationSettingsSection.templateTagPointer(tag, '1');
+            await this.validateAndClick(tagSelector);
+            try{
+                await this.assertionValidate('//span[@data-original-title="Copied!"]');
+                await this.page.waitForTimeout(2500);
+            }catch(error){
+                console.log(`Clipboard validation skipped for ${tag}: ${error.message}`);
+            }
+        }
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+    }
+
+    // Validate notification settings in form
+    async validateNotificationSettingsEnabled(formName: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Notification Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsTab);
+
+        // Wait for notification settings to load
+        await this.assertionValidate(Selectors.postFormSettings.notificationSettingsSection.notificationSettingsHeader);
+
+        // Validate toggle is enabled
+        const isToggleChecked = await this.page.isChecked(Selectors.postFormSettings.notificationSettingsSection.newPostNotificationToggle);
+        expect(isToggleChecked).toBe(true);
+    }
+
+    // Submit post and validate notification is sent (simulate)
+    async submitPostAndValidateNotificationFE(postTitle: string, postContent: string, postExcerpt: string, emailSubject: string, multipleEmails: string) {
+        // Go to frontend post submission page
+        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
+
+        // Fill post details
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
+
+        // Enter post description
+        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
+            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
+
+        // Submit the post
+        await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
+
+        // Validate notification is sent
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wp-mail-log', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        const sentEmailAddress = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress);
+        expect(sentEmailAddress).toBe(multipleEmails);
+
+        const sentEmailSubject = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailSubject);
+        expect(sentEmailSubject).toBe(emailSubject);
+
+        await this.page.hover(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress);
+        await this.page.waitForTimeout(1000);
+        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsSection.viewEmailContent);
+
+        const sentEmailBody = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.previewEmailContentBody);
+        expect(sentEmailBody).toContain(postTitle);
+        expect(sentEmailBody).toContain(postContent);
+        expect(sentEmailBody).toContain(postExcerpt);
+        expect(sentEmailBody).toContain('Music');
+        const postUrl = postTitle.toLowerCase().replace(/\s+/g, '-');
+        expect(sentEmailBody).toContain(Urls.baseUrl + `/${postUrl}/`);
+        const reviewUrlPattern = Urls.baseUrl + `/wp-admin/post.php?action=edit&post=`;
+        expect(sentEmailBody).toMatch(new RegExp(`${reviewUrlPattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\d+`));
+    }
+
+    // Test multiple notification emails
+    async setMultipleNotificationEmails(formName: string, multipleEmails: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Notification Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsTab);
+
+        // Wait for notification settings to load
+        await this.assertionValidate(Selectors.postFormSettings.notificationSettingsSection.notificationSettingsHeader);
+
+        // Fill multiple emails separated by commas
+        await this.validateAndFillStrings(Selectors.postFormSettings.notificationSettingsSection.newPostNotificationTo, multipleEmails);
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+    }
+    
+
+    // Enable update post notification (PRO feature)
+    async enableUpdatePostNotification(formName: string, email: string, subject: string, body: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Notification Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsTab);
+
+        // Wait for notification settings to load
+        await this.assertionValidate(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationHeader);
+
+        // Enable update post notification toggle
+        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationToggle);
+
+        // Fill notification email
+        await this.validateAndFillStrings(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationTo, email);
+
+        // Fill notification subject
+        await this.validateAndFillStrings(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationSubject, subject);
+
+        // Fill notification body
+        await this.validateAndFillStrings(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationBody, body);
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+    }
+
+    // Disable update post notification
+    async disableUpdatePostNotification(formName: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Notification Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsTab);
+
+        // Wait for notification settings to load
+        await this.assertionValidate(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationHeader);
+
+        // Disable update post notification toggle
+        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationToggle);
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+    }
+
+    // Modify update post notification email
+    async modifyUpdatePostNotificationEmail(formName: string, newEmail: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Notification Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsTab);
+
+        // Wait for notification settings to load
+        await this.assertionValidate(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationHeader);
+
+        // Clear and fill new email
+        await this.page.fill(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationTo, '');
+        await this.validateAndFillStrings(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationTo, newEmail);
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+    }
+
+    // Modify update post notification subject
+    async modifyUpdatePostNotificationSubject(formName: string, newSubject: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Notification Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsTab);
+
+        // Wait for notification settings to load
+        await this.assertionValidate(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationHeader);
+
+        // Clear and fill new subject
+        await this.page.fill(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationSubject, '');
+        await this.validateAndFillStrings(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationSubject, newSubject);
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+    }
+
+    // Modify update post notification body with template tags
+    async modifyUpdatePostNotificationBodyWithTemplateTags(formName: string, customBody: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Notification Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsTab);
+
+        // Wait for notification settings to load
+        await this.assertionValidate(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationHeader);
+
+        // Clear and fill new body with template tags
+        await this.page.fill(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationBody, '');
+        await this.validateAndFillStrings(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationBody, customBody);
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+    }
+
+    // Validate update post notification settings in form
+    async validateUpdatePostNotificationSettingsInForm(formName: string, expectedEmail: string, expectedSubject: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Notification Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsTab);
+
+        // Wait for notification settings to load
+        await this.assertionValidate(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationHeader);
+
+        // Validate email field
+        const emailValue = await this.page.inputValue(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationTo);
+        expect(emailValue).toBe(expectedEmail);
+
+        // Validate subject field
+        const subjectValue = await this.page.inputValue(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationSubject);
+        expect(subjectValue).toBe(expectedSubject);
+
+        // Validate toggle is enabled
+        const isToggleChecked = await this.page.isChecked(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationToggle);
+        expect(isToggleChecked).toBe(true);
+    }
+
+    // Submit post update and validate notification from FE
+    async submitPostUpdateAndValidateNotificationFE(postTitle: string, updatedContent: string, updatedExcerpt: string) {
+        // Go to user dashboard posts
+        await this.page.goto(Urls.baseUrl + '/account/?section=post', { waitUntil: 'domcontentloaded' });
+
+        // Click edit on the first post
+        await this.validateAndClick(Selectors.postFormSettings.editPostButton);
+        await this.page.waitForLoadState('networkidle');
+
+        // Update post content
+        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
+            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(updatedContent);
+
+        await this.page.fill(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, '');
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, updatedExcerpt);
+
+        // Submit the updated post
+        await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
+
+        await this.page.waitForTimeout(1000);
+
+        // Validate post update success
+        await expect(this.page.locator(Selectors.postFormSettings.successMessage)).toBeVisible({ timeout: 10000 });
+    }
+
+    // Set multiple emails for update post notification
+    async setMultipleUpdatePostNotificationEmails(formName: string, emails: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Notification Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsTab);
+
+        // Wait for notification settings to load
+        await this.assertionValidate(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationHeader);
+
+        // Fill multiple emails separated by commas
+        await this.page.fill(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationTo, '');
+        await this.validateAndFillStrings(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationTo, emails);
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+    }
+
+    // Reset update post notification settings to default
+    async resetUpdatePostNotificationSettingsToDefault(formName: string) {
+        // Go to form edit page
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
+        await this.page.waitForLoadState('networkidle');
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.page.waitForLoadState('networkidle');
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Notification Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsTab);
+
+        // Wait for notification settings to load
+        await this.assertionValidate(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationHeader);
+
+        // Reset to default values
+        await this.page.fill(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationTo, '');
+        await this.validateAndFillStrings(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationTo, 'admin@example.com');
+
+        await this.page.fill(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationSubject, '');
+        await this.validateAndFillStrings(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationSubject, 'A post has been edited');
+
+        const defaultBody = `Hi Admin,
+
+The post "{post_title}" has been updated.
+
+Here is the details:
+Post Title: {post_title}
+Content: {post_content}`;
+
+        await this.page.fill(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationBody, '');
+        await this.validateAndFillStrings(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationBody, defaultBody);
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
     }
 }

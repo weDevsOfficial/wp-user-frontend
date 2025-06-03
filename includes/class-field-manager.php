@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1); 
 
 /**
  * Form field manager class
@@ -116,6 +116,7 @@ class WPUF_Field_Manager {
         require_once __DIR__ . '/fields/class-field-dropdown.php';
         require_once __DIR__ . '/fields/class-field-multidropdown.php';
         require_once __DIR__ . '/fields/class-field-url.php';
+        require_once __DIR__ . '/fields/class-field-twitter.php';
         require_once __DIR__ . '/fields/class-field-column.php';
         require_once __DIR__ . '/fields/class-field-sectionbreak.php';
         require_once __DIR__ . '/fields/class-field-html.php';
@@ -137,6 +138,7 @@ class WPUF_Field_Manager {
             'dropdown_field'      => new WPUF_Form_Field_Dropdown(),
             'multiple_select'     => new WPUF_Form_Field_MultiDropdown(),
             'website_url'         => new WPUF_Form_Field_URL(),
+            'twitter_url'         => new WPUF_Form_Field_Twitter(),
             'column_field'        => new WPUF_Form_Field_Column(),
             'section_break'       => new WPUF_Form_Field_SectionBreak(),
             'custom_html'         => new WPUF_Form_Field_HTML(),
@@ -176,7 +178,7 @@ class WPUF_Field_Manager {
         // $fields = apply_filters( 'wpuf-form-builder-fields-custom-fields', array(
         $fields = apply_filters( 'wpuf-form-fields-custom-fields', [
             'text_field', 'textarea_field', 'dropdown_field', 'multiple_select',
-            'radio_field', 'checkbox_field', 'website_url', 'email_address',
+            'radio_field', 'checkbox_field', 'website_url', 'twitter_url', 'email_address',
             'custom_hidden_field', 'image_upload',
         ] );
 

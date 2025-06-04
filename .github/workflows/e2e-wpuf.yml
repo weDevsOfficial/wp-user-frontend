@@ -11,7 +11,6 @@ on:
         type: choice
         options:
           - 'E2E'
-          - 'All'
   schedule:
     # 1:00 AM Bangladesh Time
     - cron: '0 19 * * 0'
@@ -122,18 +121,6 @@ jobs:
             command: |
               cd tests/e2e
               npm run wp-env start
-              # Wait for WordPress to be ready
-              sleep 30
-              
-              # Install plugins
-              npx wp-env wp plugin install \
-                plugins/dokan-lite \
-                plugins/woocommerce \
-                plugins/easy-digital-downloads \
-                plugins/wc-vendors \
-                plugins/wc-multivendor-membership
-              
-              # List installed plugins
               npx wp-env wp plugin list
 
       # Install Playwright Browsers

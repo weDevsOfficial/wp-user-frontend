@@ -79,9 +79,8 @@ jobs:
             npm ci
 
       - name: Prepare Plugins
-        working-directory: tests/e2e
+        working-directory: plugins/
         run: |
-              cd plugins
               
               # Download and extract Dokan
               wget https://downloads.wordpress.org/plugin/dokan-lite.latest-stable.zip

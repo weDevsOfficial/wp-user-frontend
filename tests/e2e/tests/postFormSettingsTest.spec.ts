@@ -99,6 +99,15 @@ export default function postFormSettingsTest() {
          * @Test_PFS0066 : Admin is setting multiple notification emails
          * @Test_PFS0067 : Admin is submitting post and validating notification from FE
          * @Test_PFS0068 : Admin is disabling new post notification
+         * @Test_PFS0069 : Admin is enabling updated post notification
+         * @Test_PFS0070 : Admin is validating updated post notification settings enabled
+         * @Test_PFS0071 : Admin is modifying updated post notification email
+         * @Test_PFS0072 : Admin is modifying updated post notification subject
+         * @Test_PFS0073 : Admin is modifying updated post notification body with template tags
+         * @Test_PFS0074 : Admin is clicking and validating template tags for updated post notification
+         * @Test_PFS0075 : Admin is setting multiple updated post notification emails
+         * @Test_PFS0076 : Admin is submitting post and validating updated post notification from FE
+         * @Test_PFS0077 : Admin is disabling updated post notification
          *
          */
 
@@ -556,111 +565,54 @@ export default function postFormSettingsTest() {
             await postFormSettings.disableNewPostNotification(formName);
         });
 
-        // PFS0071: Admin is enabling update post notification
-        test.skip('PFS0070 : Admin is enabling update post notification', { tag: ['@Pro'] }, async ({ page }) => {
-            const postFormSettingsPage = new PostFormSettingsPage(page);
-            const formName = process.env.POST_FORM_NAME;
-            const notificationEmail = 'admin@test.com';
-            const notificationSubject = 'Post Update Alert';
-            const notificationBody = 'Hi Admin, Post "{post_title}" has been updated by {author}. Check details at {permalink}';
-
-            // Enable update post notification
-            await postFormSettingsPage.enableUpdatePostNotification(formName, notificationEmail, notificationSubject, notificationBody);
+        test('PFS0069 : Admin is enabling updated post notification', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.enableUpdatedPostNotification(formName);
         });
 
-        // PFS0072: Admin is validating update post notification settings in form
-        test.skip('PFS0072 : Admin is validating update post notification settings in form', { tag: ['@Pro'] }, async ({ page }) => {
-            const postFormSettingsPage = new PostFormSettingsPage(page);
-            const formName = process.env.POST_FORM_NAME;
-            const expectedEmail = 'admin@test.com';
-            const expectedSubject = 'Post Update Alert';
-
-            // Validate update post notification settings
-            await postFormSettingsPage.validateUpdatePostNotificationSettingsInForm(formName, expectedEmail, expectedSubject);
+        test('PFS0070 : Admin is validating Updated post notification settings enabled', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.validateUpdatedNotificationSettingsEnabled(formName);
         });
 
-        // PFS0073: Admin is modifying update post notification email
-        test.skip('PFS0073 : Admin is modifying update post notification email', { tag: ['@Pro'] }, async ({ page }) => {
-            const postFormSettingsPage = new PostFormSettingsPage(page);
-            const formName = process.env.POST_FORM_NAME;
-            const newEmail = 'updatenotify@wedevs.com';
-
-            // Modify update post notification email
-            await postFormSettingsPage.modifyUpdatePostNotificationEmail(formName, newEmail);
+        test('PFS0071 : Admin is modifying Updated post notification email', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.modifyUpdatedNotificationEmail(formName, emailAddress);
         });
 
-        // PFS0074: Admin is modifying update post notification subject
-        test.skip('PFS0074 : Admin is modifying update post notification subject', { tag: ['@Pro'] }, async ({ page }) => {
-            const postFormSettingsPage = new PostFormSettingsPage(page);
-            const formName = process.env.POST_FORM_NAME;
-            const newSubject = 'Updated Post Alert - {post_title}';
-
-            // Modify update post notification subject
-            await postFormSettingsPage.modifyUpdatePostNotificationSubject(formName, newSubject);
+        test('PFS0072 : Admin is modifying Updated post notification subject', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.modifyUpdatedNotificationSubject(formName, emailSubject);
         });
 
-        // PFS0075: Admin is modifying update post notification body with template tags
-        test.skip('PFS0075 : Admin is modifying update post notification body with template tags', { tag: ['@Pro'] }, async ({ page }) => {
-            const postFormSettingsPage = new PostFormSettingsPage(page);
-            const formName = process.env.POST_FORM_NAME;
-            const customBody = `Hi {author},
-
-Your post "{post_title}" has been updated successfully.
-
-Post Details:
-Title: {post_title}
-Content: {post_content}
-Excerpt: {post_excerpt}
-Categories: {category}
-Tags: {tags}
-Author: {author} ({author_email})
-Site: {sitename} ({siteurl})
-Post URL: {permalink}
-Edit Link: {editlink}
-
-Thank you for your contribution!`;
-
-            // Modify update post notification body with template tags
-            await postFormSettingsPage.modifyUpdatePostNotificationBodyWithTemplateTags(formName, customBody);
+        test('PFS0073 : Admin is modifying Updated post notification body with template tags', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.modifyUpdatedNotificationBodyWithTemplateTags(formName, emailBody);
         });
 
-        // PFS0076: Admin is setting multiple notification emails for update post
-        test.skip('PFS0076 : Admin is setting multiple notification emails for update post', { tag: ['@Pro'] }, async ({ page }) => {
-            const postFormSettingsPage = new PostFormSettingsPage(page);
-            const formName = process.env.POST_FORM_NAME;
-            const multipleEmails = 'admin@wedevs.com, manager@wedevs.com, support@wedevs.com';
-
-            // Set multiple emails for update post notification
-            await postFormSettingsPage.setMultipleUpdatePostNotificationEmails(formName, multipleEmails);
+        test('PFS0074 : Admin is clicking and validating template tags for Updated post notification', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            const templateTags = ['{post_title}', '{post_content}', '{post_excerpt}', '{tags}', '{category}', 
+                '{author}', '{author_email}', '{author_bio}', '{sitename}', '{siteurl}', '{permalink}', '{editlink}'];
+            await postFormSettings.clickTemplateTagsForUpdatedNotification(formName, templateTags);
         });
 
-        // PFS0077: Admin is submitting post update and validating notification from FE
-        test.skip('PFS0077 : Admin is submitting post update and validating notification from FE', { tag: ['@Pro'] }, async ({ page }) => {
-            const postFormSettingsPage = new PostFormSettingsPage(page);
-            const postTitle = 'Updated Test Post';
-            const updatedContent = 'This post content has been updated with new information and details.';
-            const updatedExcerpt = 'Updated excerpt for the modified post content.';
-
-            // Submit post update and validate notification from FE
-            await postFormSettingsPage.submitPostUpdateAndValidateNotificationFE(postTitle, updatedContent, updatedExcerpt);
+        test('PFS0075 : Admin is setting multiple Updated post notification emails', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.setMultipleUpdatedNotificationEmails(formName, multipleEmails);
         });
 
-        // PFS0078: Admin is disabling update post notification
-        test.skip('PFS0078 : Admin is disabling update post notification', { tag: ['@Pro'] }, async ({ page }) => {
-            const postFormSettingsPage = new PostFormSettingsPage(page);
-            const formName = process.env.POST_FORM_NAME;
-
-            // Disable update post notification
-            await postFormSettingsPage.disableUpdatePostNotification(formName);
+        test.skip('PFS0076 : Admin is submitting post and validating Updated post notification from FE', { tag: ['@Pro'] }, async () => {
+            const postTitle = faker.word.words(3);
+            const postContent = faker.lorem.paragraph();
+            const postExcerpt = faker.lorem.paragraph();
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.submitPostAndValidateUpdatedNotificationFE(postTitle, postContent, postExcerpt, emailSubject, multipleEmails);
         });
 
-        // PFS0079: Admin is resetting update post notification settings to default
-        test.skip('PFS0079 : Admin is resetting update post notification settings to default', { tag: ['@Pro'] }, async ({ page }) => {
-            const postFormSettingsPage = new PostFormSettingsPage(page);
-            const formName = process.env.POST_FORM_NAME;
-
-            // Reset update post notification settings to default
-            await postFormSettingsPage.resetUpdatePostNotificationSettingsToDefault(formName);
+        test('PFS0077 : Admin is disabling updated post notification', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.disableUpdatedPostNotification(formName);
         });
 
         test.afterAll(async () => {

@@ -2,6 +2,12 @@
   "phpVersion": "7.4",
   "plugins": [
     "../../",
-    "../../plugins/wpuf-pro"
+    "../../plugins/wpuf-pro",
+    
+    "https://downloads.wordpress.org/plugin/dokan.latest-stable.zip",
+    "https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip",
+    "https://downloads.wordpress.org/plugin/easy-digital-downloads.latest-stable.zip",
+    "https://downloads.wordpress.org/plugin/wc-vendors.latest-stable.zip",
+    "https://downloads.wordpress.org/plugin/wc-multivendor-membership.latest-stable.zip"
   ]
-} 
+}

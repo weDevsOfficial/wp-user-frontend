@@ -41,7 +41,7 @@ features:
   - id: LS0020
     name: Admin is enabling payment gateway bank
   - id: LS0021
-    name: Admin is enabling payment gateway stripe
+    name: Admin installing Email-Log plugin
   - id: LS0022
     name: Admin is logging out succesfully
 
@@ -212,3 +212,21 @@ features:
     name: Admin is submitting post and validating notification from FE
   - id: PFS0068
     name: Admin is disabling new post notification
+  - id: PFS0069
+    name: Admin is enabling updated post notification
+  - id: PFS0070
+    name: Admin is validating updated post notification settings enabled
+  - id: PFS0071
+    name: Admin is modifying updated post notification email
+  - id: PFS0072
+    name: Admin is modifying updated post notification subject
+  - id: PFS0073
+    name: Admin is modifying updated post notification body with template tags
+  - id: PFS0074
+    name: Admin is clicking and validating template tags for updated post notification
+  - id: PFS0075
+    name: Admin is setting multiple updated post notification emails
+  - id: PFS0076
+    name: Admin is submitting post and validating updated post notification from FE
+  - id: PFS0077
+    name: Admin is disabling updated post notification

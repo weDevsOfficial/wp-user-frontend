@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import { expect, type Page, type Dialog } from '@playwright/test';
+import { expect, test, type Page, type Dialog } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Urls } from '../utils/testData';
 import { Base } from './base';
@@ -172,6 +172,17 @@ export class SettingsSetupPage extends Base {
         //Go to Plugins page
         const pluginsPage = Urls.baseUrl + '/wp-admin/plugins.php';
         const ifWPUFLite = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.availableWPUFPluginLite);
+        
+        // Take screenshot and attach to test report
+        const screenshot = await this.page.screenshot({ 
+            fullPage: true,
+            path: 'plugins-page-wpuf-lite-check.png'
+        });
+        await test.info().attach('Plugins Page - WPUF Lite Check', {
+            body: screenshot,
+            contentType: 'image/png'
+        });
+        
         await this.page.waitForTimeout(200);
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow1);
         await this.page.waitForTimeout(500);
@@ -210,6 +221,15 @@ export class SettingsSetupPage extends Base {
         //Go to Plugins page
         const pluginsPage = Urls.baseUrl + '/wp-admin/plugins.php';
         const ifWPUFPro = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.availableWPUFPluginPro);
+        // Take screenshot and attach to test report
+        const screenshot = await this.page.screenshot({ 
+            fullPage: true,
+            path: 'plugins-page-wpuf-pro-check.png'
+        });
+        await test.info().attach('Plugins Page - WPUF Pro Check', {
+            body: screenshot,
+            contentType: 'image/png'
+        });
         if (ifWPUFPro == true) {
             //Activate Plugin
             const activateWPUFPro = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginPro);
@@ -604,6 +624,16 @@ export class SettingsSetupPage extends Base {
         await this.assertionValidate(Selectors.settingsSetup.pluginInstall.validatePluginInstalled(pluginName));
 
         await this.assertionValidate(Selectors.settingsSetup.pluginInstall.validatePluginActived(pluginSlug));
+
+        // Take screenshot and attach to test report
+        const screenshot = await this.page.screenshot({ 
+            fullPage: true,
+            path: 'plugins1.png'
+        });
+        await test.info().attach('Plugins Page - WP Mail Log check', {
+            body: screenshot,
+            contentType: 'image/png'
+        });
 
         //Install Email Log plugin
     }

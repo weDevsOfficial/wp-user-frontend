@@ -814,6 +814,7 @@ export const Selectors = {
         // Notification Settings Section
         notificationSettingsSection: {
             notificationSettingsHeader: '//p[contains(text(),"New Post Notification")]',
+            updatedPostNotificationSettingsHeader: '//p[contains(text(),"Update Post Notification")]',
             
             // New Post Notification
             newPostNotificationToggle: '//input[@name="wpuf_settings[notification][new]"]/following-sibling::span[1]',
@@ -822,8 +823,7 @@ export const Selectors = {
             newPostNotificationBody: '//textarea[@name="wpuf_settings[notification][new_body]"]',
             
             // Update Post Notification (PRO)
-            updatePostNotificationHeader: '//p[contains(text(),"Update Post Notification")]',
-            updatePostNotificationToggle: '//input[@name="wpuf_settings[notification_edit]"]',
+            updatePostNotificationToggle: '//input[@name="wpuf_settings[notification_edit]"]/following-sibling::span[1]',
             updatePostNotificationTo: '//input[@name="wpuf_settings[notification_edit_to]"]',
             updatePostNotificationSubject: '//input[@name="wpuf_settings[notification_edit_subject]"]',
             updatePostNotificationBody: '//textarea[@name="wpuf_settings[notification_edit_body]"]',
@@ -834,22 +834,6 @@ export const Selectors = {
             viewEmailContent: '//tbody/tr[1]/td[3]/div[1]',
             previewEmailContentBody: '(//div[@class="wml-body-wrapper"])[1]',
 
-            // Update Post Notification Section
-            updatePostNotificationDescription: '//p[contains(text(),"Enable this feature to receive email alerts")]',
-            updatePostNotificationToggleInput: '//input[@id="update_notification"]',
-            updatePostNotificationTemplateTags: '//p[contains(text(),"You may use in to, subject & message")]',
-            updatePostTemplateTagPostTitle: '//span[@data-content="{post_title}"]',
-            updatePostTemplateTagPostContent: '//span[@data-content="{post_content}"]',
-            updatePostTemplateTagPostExcerpt: '//span[@data-content="{post_excerpt}"]',
-            updatePostTemplateTagTags: '//span[@data-content="{tags}"]',
-            updatePostTemplateTagCategory: '//span[@data-content="{category}"]',
-            updatePostTemplateTagAuthor: '//span[@data-content="{author}"]',
-            updatePostTemplateTagAuthorEmail: '//span[@data-content="{author_email}"]',
-            updatePostTemplateTagAuthorBio: '//span[@data-content="{author_bio}"]',
-            updatePostTemplateTagSiteName: '//span[@data-content="{sitename}"]',
-            updatePostTemplateTagSiteUrl: '//span[@data-content="{siteurl}"]',
-            updatePostTemplateTagPermalink: '//span[@data-content="{permalink}"]',
-            updatePostTemplateTagEditLink: '//span[@data-content="{editlink}"]',
         },
 
         // Display Settings Section

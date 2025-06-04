@@ -131,7 +131,7 @@ jobs:
               cat .wp-env.json
               
               # Verify plugin directories
-              ls -R plugins
+              ls -R ../../plugins
 
       # Install Playwright Browsers
       - name: Get installed Playwright version

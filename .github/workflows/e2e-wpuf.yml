@@ -84,8 +84,8 @@ jobs:
               
               # Download and extract Dokan
               wget https://downloads.wordpress.org/plugin/dokan-lite.latest-stable.zip
-              unzip dokan.latest-stable.zip
-              rm dokan.latest-stable.zip
+              unzip dokan-lite.latest-stable.zip
+              rm dokan-lite.latest-stable.zip
           
               # Download and extract WooCommerce
               wget https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip

@@ -21,7 +21,7 @@ on:
 
 jobs:
   test:
-    timeout-minutes: 30
+    timeout-minutes: 240
     runs-on: ubuntu-latest    
     
     steps:
@@ -121,7 +121,17 @@ jobs:
             command: |
               cd tests/e2e
               npm run wp-env start
+              # Wait for WordPress to be ready
+              sleep 120
+              
+              # List installed plugins
               npx wp-env wp plugin list
+              
+              # Check wp-env configuration
+              cat .wp-env.json
+              
+              # Verify plugin directories
+              ls -R plugins
 
       # Install Playwright Browsers
       - name: Get installed Playwright version

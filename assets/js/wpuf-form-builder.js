@@ -260,9 +260,9 @@
                                                     }
                                                 });
 
-                                                if ($advancedOptionsToggle && $advancedOptionsToggle.length) {
+                                                if ($advancedOptionsToggle?.length) {
                                                     var isContentVisible = false;
-                                                    if ($advancedOptionsContentDiv && $advancedOptionsContentDiv.length) {
+                                                    if ($advancedOptionsContentDiv?.length) {
                                                         isContentVisible = $advancedOptionsContentDiv.is(':visible');
                                                         
                                                     } else {
@@ -273,7 +273,7 @@
                                                         
                                                         $advancedOptionsToggle.trigger('click');
                                                         setTimeout(() => { 
-                                                            if ($advancedOptionsContentDiv && $advancedOptionsContentDiv.length) {
+                                                            if ($advancedOptionsContentDiv?.length) {
                                                                 
                                                             }
                                                         }, 150); 
@@ -281,7 +281,7 @@
                                                         
                                                     }
                                                     
-                                                    if (!$sectionToScroll || !$sectionToScroll.length) $sectionToScroll = $advancedOptionsToggle; 
+                                                    if (!$sectionToScroll?.length) $sectionToScroll = $advancedOptionsToggle; 
 
                                                     setTimeout(() => {
                                                         const elementToScrollTo = $sectionToScroll.get(0);

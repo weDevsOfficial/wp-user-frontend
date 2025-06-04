@@ -4,10 +4,10 @@
     "../../",
     "../../plugins/wpuf-pro",
     
-    "https://downloads.wordpress.org/plugin/dokan.latest-stable.zip",
-    "https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip",
-    "https://downloads.wordpress.org/plugin/easy-digital-downloads.latest-stable.zip",
-    "https://downloads.wordpress.org/plugin/wc-vendors.latest-stable.zip",
-    "https://downloads.wordpress.org/plugin/wc-multivendor-membership.latest-stable.zip"
+    "./plugins/dokan",
+    "./plugins/woocommerce",
+    "./plugins/easy-digital-downloads",
+    "./plugins/wc-vendors",
+    "./plugins/wc-multivendor-membership"
   ]
 }

@@ -78,6 +78,40 @@ jobs:
         run: |
             npm ci
 
+      - name: Prepare Plugins
+        working-directory: tests/e2e
+        run: |
+              mkdir -p plugins
+              cd plugins
+              
+              # Download and extract Dokan
+              wget https://downloads.wordpress.org/plugin/dokan.latest-stable.zip
+              unzip dokan.latest-stable.zip
+              rm dokan.latest-stable.zip
+          
+              # Download and extract WooCommerce
+              wget https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip
+              unzip woocommerce.latest-stable.zip
+              rm woocommerce.latest-stable.zip
+          
+              # Download and extract Easy Digital Downloads
+              wget https://downloads.wordpress.org/plugin/easy-digital-downloads.latest-stable.zip
+              unzip easy-digital-downloads.latest-stable.zip
+              rm easy-digital-downloads.latest-stable.zip
+          
+              # Download and extract WC Vendors
+              wget https://downloads.wordpress.org/plugin/wc-vendors.latest-stable.zip
+              unzip wc-vendors.latest-stable.zip
+              rm wc-vendors.latest-stable.zip
+          
+              # Download and extract WC Multivendor Membership
+              wget https://downloads.wordpress.org/plugin/wc-multivendor-membership.latest-stable.zip
+              unzip wc-multivendor-membership.latest-stable.zip
+              rm wc-multivendor-membership.latest-stable.zip
+          
+              # List downloaded plugins to verify
+              ls
+
       # Start wordpress environment
       - name: Start WordPress Env
         id: wp-env
@@ -90,6 +124,19 @@ jobs:
             command: |
               cd tests/e2e
               npm run wp-env start
+              # Wait for WordPress to be ready
+              sleep 30
+              
+              # Install plugins
+              npx wp-env wp plugin install \
+                plugins/dokan \
+                plugins/woocommerce \
+                plugins/easy-digital-downloads \
+                plugins/wc-vendors \
+                plugins/wc-multivendor-membership
+              
+              # List installed plugins
+              npx wp-env wp plugin list
 
       # Install Playwright Browsers
       - name: Get installed Playwright version

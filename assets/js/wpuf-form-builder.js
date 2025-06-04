@@ -198,19 +198,19 @@
                                 $(modal).find('a.wpuf-swal-action-link[data-action="open-advanced-options"]').on('click', function(e) {
                                     e.preventDefault();
                                     var fieldId = $(this).data('field-id');
-                                    console.log('WPUF Debug: Swal link clicked for field ID:', fieldId);
+                                    
 
                                     Swal.close();
 
                                     setTimeout(() => { 
                                         wpuf_form_builder_store.commit('open_field_settings', fieldId);
-                                        console.log('WPUF Debug: open_field_settings committed.');
+                                        
 
                                         Vue.nextTick(() => {
-                                            console.log('WPUF Debug: Vue.nextTick for toggling advanced options triggered.');
+                                            
                                             
                                             setTimeout(() => { // Single timeout after Vue.nextTick
-                                                console.log('WPUF Debug: Inner setTimeout fired, attempting to find and toggle panel elements.');
+                                                
 
                                                 let advancedOptionsTargetText = '';
                                                 if (typeof wpuf_form_builder_mixins !== 'undefined' &&
@@ -221,7 +221,7 @@
                                                     advancedOptionsTargetText = __('"Advanced Options".', 'wp-user-frontend');
                                                 }
                                                 advancedOptionsTargetText = advancedOptionsTargetText.replace(/"/g, '').replace(/\.$/, "").trim().toLowerCase();
-                                                console.log('WPUF Debug: Target Adv. Opt. Text (Normalized):', advancedOptionsTargetText);
+                                                
 
                                                 var $fieldOptionsMainContainer = $('div.wpuf-form-builder-field-options'); 
                                                 
@@ -235,11 +235,11 @@
                                                     return;
                                                 }
                                                 
-                                                console.log('WPUF Debug: Field options main container "div.wpuf-form-builder-field-options" found:', $fieldOptionsMainContainer[0]);
+                                                
 
                                                 var $advancedOptionsToggle, $advancedOptionsContentDiv, $sectionToScroll;
                                                 var $sections = $fieldOptionsMainContainer.find('.option-fields-section');
-                                                console.log('WPUF Debug: Found ' + $sections.length + ' .option-fields-section elements within the main container.');
+                                                
 
                                                 $sections.each(function(index) {
                                                     var $parentSection = $(this);
@@ -249,13 +249,13 @@
                                                     var rawH3Text = $h3.clone().children('i').remove().end().text(); 
                                                     var normalizedH3Text = rawH3Text.trim().toLowerCase().replace(/\.$/, "");
                                                     
-                                                    console.log('WPUF Debug: (Section ' + index + ') H3 raw: "' + rawH3Text + '", Normalized: "' + normalizedH3Text + '"');
+                                                    
 
                                                     if (normalizedH3Text === advancedOptionsTargetText) {
                                                         $advancedOptionsToggle = $h3;
                                                         $advancedOptionsContentDiv = $parentSection.find('div.option-field-section-fields').first(); 
                                                         $sectionToScroll = $parentSection;
-                                                        console.log('WPUF Debug: Matched h3 for "Advanced Options":', $advancedOptionsToggle[0]);
+                                                        
                                                         return false; 
                                                     }
                                                 });
@@ -264,21 +264,21 @@
                                                     var isContentVisible = false;
                                                     if ($advancedOptionsContentDiv && $advancedOptionsContentDiv.length) {
                                                         isContentVisible = $advancedOptionsContentDiv.is(':visible');
-                                                        console.log('WPUF Debug: Advanced Options content visible before click?', isContentVisible);
+                                                        
                                                     } else {
                                                          console.warn('WPUF Form Builder Debug: Advanced options content div (.option-field-section-fields) not found relative to matched h3.');
                                                     }
 
                                                     if (!isContentVisible) {
-                                                        console.log('WPUF Debug: Attempting to click "Advanced Options" h3 toggle.');
+                                                        
                                                         $advancedOptionsToggle.trigger('click');
                                                         setTimeout(() => { 
                                                             if ($advancedOptionsContentDiv && $advancedOptionsContentDiv.length) {
-                                                                console.log('WPUF Debug: Content visible after click and 150ms delay?', $advancedOptionsContentDiv.is(':visible'));
+                                                                
                                                             }
                                                         }, 150); 
                                                     } else {
-                                                        console.log('WPUF Debug: "Advanced Options" content already visible.');
+                                                        
                                                     }
                                                     
                                                     if (!$sectionToScroll || !$sectionToScroll.length) $sectionToScroll = $advancedOptionsToggle; 
@@ -287,7 +287,7 @@
                                                         const elementToScrollTo = $sectionToScroll.get(0);
                                                         if (elementToScrollTo && typeof elementToScrollTo.scrollIntoView === 'function') {
                                                             elementToScrollTo.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-                                                            console.log('WPUF Debug: Scrolled "Advanced Options" section into view.');
+                                                            
                                                         }
                                                     }, 350); 
                                                 } else {
@@ -1280,7 +1280,7 @@
                 }
             },
             error: function (error) {
-                console.log('Error loading default categories:', error);
+                
             }
         });
     }

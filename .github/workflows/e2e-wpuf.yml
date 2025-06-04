@@ -81,11 +81,10 @@ jobs:
       - name: Prepare Plugins
         working-directory: tests/e2e
         run: |
-              mkdir -p plugins
               cd plugins
               
               # Download and extract Dokan
-              wget https://downloads.wordpress.org/plugin/dokan.latest-stable.zip
+              wget https://downloads.wordpress.org/plugin/dokan-lite.latest-stable.zip
               unzip dokan.latest-stable.zip
               rm dokan.latest-stable.zip
           
@@ -129,7 +128,7 @@ jobs:
               
               # Install plugins
               npx wp-env wp plugin install \
-                plugins/dokan \
+                plugins/dokan-lite \
                 plugins/woocommerce \
                 plugins/easy-digital-downloads \
                 plugins/wc-vendors \

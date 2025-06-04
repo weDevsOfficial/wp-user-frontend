@@ -4,10 +4,10 @@
     "../../",
     "../../plugins/wpuf-pro",
     
-    "./plugins/dokan",
-    "./plugins/woocommerce",
-    "./plugins/easy-digital-downloads",
-    "./plugins/wc-vendors",
-    "./plugins/wc-multivendor-membership"
+    "../../plugins/dokan-lite",
+    "../../plugins/woocommerce",
+    "../../plugins/easy-digital-downloads",
+    "../../plugins/wc-vendors",
+    "../../plugins/wc-multivendor-membership"
   ]
 }

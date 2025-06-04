@@ -80,11 +80,11 @@ jobs:
       - name: Prepare Plugins
         working-directory: plugins/
         run: |
-              
-              # Download and extract Dokan
-              wget https://downloads.wordpress.org/plugin/dokan-lite.latest-stable.zip
-              unzip dokan-lite.latest-stable.zip
-              rm dokan-lite.latest-stable.zip
+
+              # Download and extract WP Mail Log
+              wget https://downloads.wordpress.org/plugin/wp-mail-log.latest-stable.zip
+              unzip wp-mail-log.latest-stable.zip
+              rm wp-mail-log.latest-stable.zip
           
               # Download and extract WooCommerce
               wget https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip
@@ -105,6 +105,11 @@ jobs:
               wget https://downloads.wordpress.org/plugin/wc-multivendor-membership.latest-stable.zip
               unzip wc-multivendor-membership.latest-stable.zip
               rm wc-multivendor-membership.latest-stable.zip
+
+              # Download and extract Dokan
+              wget https://downloads.wordpress.org/plugin/dokan-lite.latest-stable.zip
+              unzip dokan-lite.latest-stable.zip
+              rm dokan-lite.latest-stable.zip
           
               # List downloaded plugins to verify
               ls
@@ -121,17 +126,6 @@ jobs:
             command: |
               cd tests/e2e
               npm run wp-env start
-              # Wait for WordPress to be ready
-              sleep 120
-              
-              # List installed plugins
-              npx wp-env wp plugin list
-              
-              # Check wp-env configuration
-              cat .wp-env.json
-              
-              # Verify plugin directories
-              ls -R ../../plugins
 
       # Install Playwright Browsers
       - name: Get installed Playwright version

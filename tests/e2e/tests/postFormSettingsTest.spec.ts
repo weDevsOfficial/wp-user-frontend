@@ -201,7 +201,7 @@ export default function postFormSettingsTest() {
 
         test('PFS0010 : Admin is setting successful post redirection to another page', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.setPostRedirectionToPage(formName, 'page', 'Dashboard');
+            await postFormSettings.setPostRedirectionToPage(formName, 'page', 'Thank You');
         });
 
         test('PFS0011 : Admin is checking post redirection to another page', { tag: ['@Lite'] }, async () => {
@@ -209,7 +209,7 @@ export default function postFormSettingsTest() {
             const postContent = faker.lorem.paragraph();
             const postExcerpt = faker.lorem.paragraph();
             const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.validateRedirectionToPage(postTitle, postContent, postExcerpt, 'Dashboard');
+            await postFormSettings.validateRedirectionToPage(postTitle, postContent, postExcerpt, 'Thank You');
         });
 
         test('PFS0012 : Admin is setting successful post redirection to a url', { tag: ['@Lite'] }, async () => {
@@ -435,7 +435,7 @@ export default function postFormSettingsTest() {
 
         test('PFS0047 : Admin is setting successful redirection to a page', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.setUpdatePostRedirectionToPage(formName, 'Dashboard');
+            await postFormSettings.setUpdatePostRedirectionToPage(formName, 'Thank You');
         });
 
         test('PFS0048 : Admin is validating successful redirection to a page', { tag: ['@Lite'] }, async () => {
@@ -443,12 +443,12 @@ export default function postFormSettingsTest() {
             const postContent = faker.lorem.paragraph();
             const postExcerpt = faker.lorem.paragraph();
             const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.validateUpdatePostRedirectionToPage(postTitle, postContent, postExcerpt, 'Dashboard');
+            await postFormSettings.validateUpdatePostRedirectionToPage(postTitle, postContent, postExcerpt, 'Thank You');
         });
 
         test('PFS0049 : Admin is setting successful redirection to custom URL', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
-            const customUrl = Urls.baseUrl + '/dashboard/';
+            const customUrl = Urls.baseUrl + '/thank-you/';
             await postFormSettings.setUpdatePostRedirectionToCustomUrl(formName, customUrl);
         });
 
@@ -456,7 +456,7 @@ export default function postFormSettingsTest() {
             const postTitle = faker.word.words(3);
             const postContent = faker.lorem.paragraph();
             const postExcerpt = faker.lorem.paragraph();
-            const customUrl = Urls.baseUrl + '/dashboard/';
+            const customUrl = Urls.baseUrl + '/thank-you/';
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.validateUpdatePostRedirectionToUrl(postTitle, postContent, postExcerpt, customUrl);
             await postFormSettings.setUpdatePostRedirectionToSamePage(formName, 'Post updated successfully');

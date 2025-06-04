@@ -32,7 +32,7 @@ export const Selectors = {
             clickWPUFSidebar: '//div[normalize-space(text())="User Frontend"]',
             // Hover Settings Menu
             hoverSettings: '//div[text()="Settings"]',
-            licenseTab: '//a[normalize-space()="License"]',
+            licenseTab: '//li[@id="toplevel_page_wp-user-frontend"]//ul//li[normalize-space()="License"]',
         },
     },
 
@@ -44,15 +44,23 @@ export const Selectors = {
         // Plugin Status Check
         pluginStatusCheck: {
             // Plugin Activate/Deactivate
-            availableWPUFPluginLite: '//strong[normalize-space(text())="WP User Frontend"]',
-            availableWPUFPluginPro: '//strong[normalize-space(text())="WP User Frontend Pro"]',
+            availableWPUFPluginLite: '//strong[contains(text(),"WP User Frontend")]',
+            availableWPUFPluginPro: '//strong[contains(text(),"WP User Frontend Pro")]',
             clickPluginsSidebar: '//li[@id="menu-plugins"]',
             clickWPUFPluginLite: '//a[@id="activate-wp-user-frontend"]',
             clickWPUFPluginPro: '//a[@id="activate-wp-user-frontend-pro"]',
+            clickWCvendors: '//a[@id="activate-wc-vendors"]',
+            clickDokanLite: '//a[@id="activate-dokan-lite"]',
             clickWPUFPluginDeactivate: '//a[@id="deactivate-wp-user-frontend"]',
             clickWPUFPluginProDeactivate: '//a[@id="deactivate-wp-user-frontend-pro"]',
             clickAllow1: '(//a[normalize-space()="Allow"])[1]',
             clickAllow2: '//a[normalize-space()="Allow"]',
+            clickSkipSetup: '//a[normalize-space()="Skip setup"]',
+            clickDoNotAllow: '//a[normalize-space()="Do not allow"]',
+            clickSwitchCart: '//button[@id="wcv-switch-to-classic-cart-checkout"]',
+            clickDismiss: '//a[normalize-space()="Dismiss"]',
+            clickEDDnoticeCross: '//div[@id="edds-edd-stripe-core-notice"]//button[@type="button"]',
+            clickPayPalCross: '//div[@id="wpuf-paypal-settings-notice"]//button[@type="button"]',
             clickRunUpdater: '//a[normalize-space()="Run the updater"]',
             clickActivateLicense: '//button[normalize-space()="Activate License"]',
             fillLicenseKey: '//div[@class="license-input-key"]//input[1]',
@@ -74,24 +82,21 @@ export const Selectors = {
         },
 
         wpufPages: {
-            accountPage: '//strong//a[normalize-space()="Account"]',
             wpufAccountPage: '//a[normalize-space()="Account"]//..//span[normalize-space()="WPUF Account Page"]',
-            dashboardPage: '//strong//a[normalize-space()="Dashboard"]',
             wpufDashboardPage: '//a[normalize-space()="Dashboard"]//..//span[normalize-space()="WPUF Dashboard Page"]',
-            editPage: '//strong//a[normalize-space()="Edit"]',
             wpufEditPage: '//a[normalize-space()="Edit"]//..//span[normalize-space()="WPUF Post Edit Page"]',
-            subscriptionPage: '//strong//a[normalize-space()="Subscription"]',
             wpufSubscriptionPage: '//a[normalize-space()="Subscription"]//..//span[normalize-space()="WPUF Subscription Page"]',
-            loginPage: '//strong//a[normalize-space()="Login"]',
             wpufLoginPage: '//a[normalize-space()="Login"]//..//span[normalize-space()="WPUF Login Page"]',
             orderReceivedPage: '//strong//a[normalize-space()="Order Received"]',
+            wpufRegistrationPage: '//a[normalize-space()="Registration"]//..//span[normalize-space()="WPUF Registration Page"]',
             thankYouPage: '//strong//a[normalize-space()="Thank You"]',
             paymentPage: '//strong//a[normalize-space()="Payment"]',
+            clickNextPage: '(//span[text()="Next page"]/following-sibling::span)[2]',
         },
 
         wpufPagesFE:{
             accountPageFE: '//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Account"]',
-            dashboardPageFE: '//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Dashboard"]',
+            dashboardPageFE: '(//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Dashboard"])[2]',
             editPageFE: '//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Edit"]',
             subscriptionPageFE: '//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Subscription"]',
             loginPageFE: '//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Login"]',

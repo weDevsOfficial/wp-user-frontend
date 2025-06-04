@@ -41,8 +41,6 @@ features:
   - id: LS0020
     name: Admin is enabling payment gateway bank
   - id: LS0021
-    name: Admin installing Email-Log plugin
-  - id: LS0022
     name: Admin is logging out succesfully
 
   # Post Forms (Lite)

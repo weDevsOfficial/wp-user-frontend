@@ -140,10 +140,10 @@ export class SettingsSetupPage extends Base {
         await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.paymentPageFE);
     }
 
-    async validateAccountPageTabs(){
+    async validateAccountPageTabs() {
 
         await Promise.all([
-            this.page.goto(Urls.baseUrl , { waitUntil: 'domcontentloaded' }),
+            this.page.goto(Urls.baseUrl, { waitUntil: 'domcontentloaded' }),
         ]);
         await this.page.reload();
         await this.page.waitForLoadState('domcontentloaded');
@@ -169,6 +169,7 @@ export class SettingsSetupPage extends Base {
         //Go to Plugins page
         const pluginsPage = Urls.baseUrl + '/wp-admin/plugins.php';
         const ifWPUFLite = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.availableWPUFPluginLite);
+        console.log(ifWPUFLite);
         const dialogHandler = async (dialog: Dialog) => {
             if (dialog.type() === 'confirm') {
                 await dialog.accept();
@@ -229,6 +230,7 @@ export class SettingsSetupPage extends Base {
         //Go to Plugins page
         const pluginsPage = Urls.baseUrl + '/wp-admin/plugins.php';
         const ifWPUFPro = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.availableWPUFPluginPro);
+        console.log(ifWPUFPro);
         if (ifWPUFPro == true) {
             //Activate Plugin
             const activateWPUFPro = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginPro);
@@ -268,36 +270,31 @@ export class SettingsSetupPage extends Base {
 
     //Plugin Activate - Pro
     async activateLicenseWPUFPro() {
-        const ifWPUFPro = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.availableWPUFPluginPro);
-        if (ifWPUFPro == true) {
-            //Go to Plugins page
-            const pluginsPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
-            await Promise.all([
-                this.page.goto(pluginsPage, { waitUntil: 'domcontentloaded' }),
-            ]);
+        //Go to Plugins page
+        const pluginsPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
+        await Promise.all([
+            this.page.goto(pluginsPage, { waitUntil: 'domcontentloaded' }),
+        ]);
 
+        await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
+        await this.validateAndClick(Selectors.login.basicNavigation.licenseTab);
+        //Activate Plugin
+        const activateWPUFPro = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickActivateLicense);
+        console.log(activateWPUFPro);
+        if (activateWPUFPro == true) {
+            await this.validateAndFillStrings(Selectors.settingsSetup.pluginStatusCheck.fillLicenseKey, process.env.WPUF_PRO_LICENSE_KEY?.toString() || '');
+            await this.page.waitForTimeout(500);
+            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.submitLicenseKey);
+            await this.page.waitForTimeout(500);
+            await this.page.reload();
+            await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.activationRemaining);
+            console.log('WPUF-Pro Status: License is Activated');
+        }
+        else {
             await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
             await this.validateAndClick(Selectors.login.basicNavigation.licenseTab);
-            //Activate Plugin
-            const activateWPUFPro = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickActivateLicense);
-            console.log(activateWPUFPro);
-            if (activateWPUFPro == true) {
-                await this.validateAndFillStrings(Selectors.settingsSetup.pluginStatusCheck.fillLicenseKey, process.env.WPUF_PRO_LICENSE_KEY?.toString() || '');
-                await this.page.waitForTimeout(500);
-                await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.submitLicenseKey);
-                await this.page.waitForTimeout(500);
-                await this.page.reload();
-                await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.activationRemaining);
-                console.log('WPUF-Pro Status: License is Activated');
-            }
-            else {
-                await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
-                await this.validateAndClick(Selectors.login.basicNavigation.licenseTab);
-                await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.deactivateLicenseKey);
-                console.log('WPUF-Pro Status: License was Active');
-            }
-        } else {
-            console.log('WPUF-Pro not available');
+            await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.deactivateLicenseKey);
+            console.log('WPUF-Pro Status: License was Active');
         }
     }
 
@@ -451,7 +448,7 @@ export class SettingsSetupPage extends Base {
 
     //Main Admin
     //New User Create
-    async createNewUserAdmin(userName:string, email:string, firstName:string, lastName:string, password:string) {
+    async createNewUserAdmin(userName: string, email: string, firstName: string, lastName: string, password: string) {
         const pluginsPage = Urls.baseUrl + '/wp-admin/';
         await Promise.all([
             this.page.goto(pluginsPage, { waitUntil: 'domcontentloaded' }),
@@ -616,7 +613,7 @@ export class SettingsSetupPage extends Base {
         await this.assertionValidate(Selectors.settingsSetup.pluginInstall.validatePluginActived(pluginSlug));
 
         // Take screenshot and attach to test report
-        const screenshot = await this.page.screenshot({ 
+        const screenshot = await this.page.screenshot({
             fullPage: true,
             path: 'plugins1.png'
         });

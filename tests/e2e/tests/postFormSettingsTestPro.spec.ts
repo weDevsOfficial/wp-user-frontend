@@ -42,6 +42,22 @@ export default function postFormGeneralSettingsTestsPro() {
         const postContent = faker.lorem.paragraph();
         const postExcerpt = faker.lorem.paragraph();
         const category = 'Music'; // Using one of the default categories from the screenshot
+        const emailAddress = faker.internet.email();
+        const emailSubject = faker.word.words(3);
+        const emailBody = `Hi Admin,
+            A new post has been submitted to {sitename}.
+            Details:
+            Title: {post_title}
+            Author: {author} ({author_email})
+            Content: {post_content}
+            Excerpt: {post_excerpt}
+            Category: {category}
+            Tags: {tags}
+            Review URL: {editlink}
+            Public URL: {permalink}
+            Best regards,
+            Team {sitename}`;
+        const multipleEmails = `${faker.internet.email()}, ${faker.internet.email()}, ${faker.internet.email()}`;
 
         // Add your Pro-specific tests here with { tag: ['@Pro'] }
 
@@ -74,6 +90,56 @@ export default function postFormGeneralSettingsTestsPro() {
         test('PFS0032 : Admin is disabling multi-step form', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.disableMultiStep(formName);
+        });
+
+        test('PFS0069 : Admin is enabling updated post notification', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.enableUpdatedPostNotification(formName);
+        });
+
+        test('PFS0070 : Admin is validating Updated post notification settings enabled', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.validateUpdatedNotificationSettingsEnabled(formName);
+        });
+
+        test('PFS0071 : Admin is modifying Updated post notification email', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.modifyUpdatedNotificationEmail(formName, emailAddress);
+        });
+
+        test('PFS0072 : Admin is modifying Updated post notification subject', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.modifyUpdatedNotificationSubject(formName, emailSubject);
+        });
+
+        test('PFS0073 : Admin is modifying Updated post notification body with template tags', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.modifyUpdatedNotificationBodyWithTemplateTags(formName, emailBody);
+        });
+
+        test('PFS0074 : Admin is clicking and validating template tags for Updated post notification', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            const templateTags = ['{post_title}', '{post_content}', '{post_excerpt}'];
+            //, '{tags}', '{category}', '{author}', '{author_email}', '{author_bio}', '{sitename}', '{siteurl}', '{permalink}', '{editlink}'
+            await postFormSettings.clickTemplateTagsForUpdatedNotification(formName, templateTags);
+        });
+
+        test('PFS0075 : Admin is setting multiple Updated post notification emails', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.setMultipleUpdatedNotificationEmails(formName, multipleEmails);
+        });
+
+        test.skip('PFS0076 : Admin is submitting post and validating Updated post notification from FE', { tag: ['@Pro'] }, async () => {
+            const postTitle = faker.word.words(3);
+            const postContent = faker.lorem.paragraph();
+            const postExcerpt = faker.lorem.paragraph();
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.submitPostAndValidateUpdatedNotificationFE(postTitle, postContent, postExcerpt, emailSubject, multipleEmails);
+        });
+
+        test('PFS0077 : Admin is disabling updated post notification', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.disableUpdatedPostNotification(formName);
         });
         
     });

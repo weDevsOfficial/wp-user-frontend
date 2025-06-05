@@ -45,6 +45,6 @@ if (process.env.CI == 'false') {
  *  - Clears cookies and origins before running any of the tests to maintain test isolation and avoid session interference.
  */
 test.describe(loginAndSetupTests);
-// test.describe(postFormsTests);
+test.describe(postFormsTests);
 // test.describe(registrationFormsTestsPro);
 // test.describe(postFormSettingsTest);

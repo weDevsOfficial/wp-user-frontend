@@ -77,7 +77,7 @@ jobs:
         run: |
             npm ci
 
-      - name: Prepare Plugins
+      - name: Install Plugins
         working-directory: plugins/
         run: |
 
@@ -110,9 +110,6 @@ jobs:
               wget https://downloads.wordpress.org/plugin/dokan-lite.latest-stable.zip
               unzip dokan-lite.latest-stable.zip
               rm dokan-lite.latest-stable.zip
-          
-              # List downloaded plugins to verify
-              ls
 
       # Start wordpress environment
       - name: Start WordPress Env

@@ -190,10 +190,10 @@ export class SettingsSetupPage extends Base {
         await this.page.waitForTimeout(200);
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow1);
         await this.page.waitForTimeout(500);
-        await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow1);
-        await this.page.waitForTimeout(500);
-        // await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow2);
+        // await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow1);
         // await this.page.waitForTimeout(500);
+        await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow2);
+        await this.page.waitForTimeout(500);
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickSkipSetup);
         await this.page.waitForTimeout(500);
         // await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickDoNotAllow);

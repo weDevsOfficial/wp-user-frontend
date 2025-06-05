@@ -46,5 +46,5 @@ if (process.env.CI == 'false') {
  */
 test.describe(loginAndSetupTests);
 test.describe(postFormsTests);
-// test.describe(registrationFormsTestsPro);
-// test.describe(postFormSettingsTest);
+test.describe(registrationFormsTestsPro);
+test.describe(postFormSettingsTest);

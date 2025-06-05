@@ -96,7 +96,7 @@ export const Selectors = {
 
         wpufPagesFE:{
             accountPageFE: '//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Account"]',
-            dashboardPageFE: '(//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Dashboard"])[2]',
+            dashboardPageFE: '//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Dashboard"]',
             editPageFE: '//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Edit"]',
             subscriptionPageFE: '//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Subscription"]',
             loginPageFE: '//ul[@class="wp-block-page-list"]//li//a[normalize-space()="Login"]',

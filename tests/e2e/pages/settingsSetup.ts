@@ -668,11 +668,6 @@ export class SettingsSetupPage extends Base {
         await Promise.all([
             this.page.goto(Urls.baseUrl + '/wp-admin/plugins.php', { waitUntil: 'domcontentloaded' }),
         ]);
-        await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickDokanLite);
-        await this.page.waitForTimeout(1000);
-        await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/plugins.php', { waitUntil: 'domcontentloaded' }),
-        ]);
         await this.page.reload();
     }
 

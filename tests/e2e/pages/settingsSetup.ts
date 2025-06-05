@@ -168,6 +168,15 @@ export class SettingsSetupPage extends Base {
     async activateWPUFLite() {
         //Go to Plugins page
         const pluginsPage = Urls.baseUrl + '/wp-admin/plugins.php';
+        // Take screenshot and attach to test reportAdd commentMore actions
+        const screenshot = await this.page.screenshot({ 
+            fullPage: true,
+            path: 'plugins-page-wpuf-lite-check.png'
+        });
+        await test.info().attach('Plugins Page - WPUF Lite Check', {
+            body: screenshot,
+            contentType: 'image/png'
+        });
         const ifWPUFLite = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.availableWPUFPluginLite);
         console.log(ifWPUFLite);
         const dialogHandler = async (dialog: Dialog) => {
@@ -183,8 +192,8 @@ export class SettingsSetupPage extends Base {
         await this.page.waitForTimeout(500);
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow1);
         await this.page.waitForTimeout(500);
-        await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow2);
-        await this.page.waitForTimeout(500);
+        // await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow2);
+        // await this.page.waitForTimeout(500);
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickSkipSetup);
         await this.page.waitForTimeout(500);
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickDoNotAllow);
@@ -229,6 +238,15 @@ export class SettingsSetupPage extends Base {
     async activateWPUFPro() {
         //Go to Plugins page
         const pluginsPage = Urls.baseUrl + '/wp-admin/plugins.php';
+        // Take screenshot and attach to test reportAdd commentMore actions
+        const screenshot = await this.page.screenshot({ 
+            fullPage: true,
+            path: 'plugins-page-wpuf-lite-check.png'
+        });
+        await test.info().attach('Plugins Page - WPUF Lite Check', {
+            body: screenshot,
+            contentType: 'image/png'
+        });
         const ifWPUFPro = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.availableWPUFPluginPro);
         console.log(ifWPUFPro);
         if (ifWPUFPro == true) {

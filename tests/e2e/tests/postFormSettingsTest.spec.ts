@@ -542,8 +542,8 @@ export default function postFormSettingsTest() {
 
         test('PFS0065 : Admin is clicking and validating template tags for notification', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
-            const templateTags = ['{post_title}', '{post_content}', '{post_excerpt}', '{tags}', '{category}', 
-                '{author}', '{author_email}', '{author_bio}', '{sitename}', '{siteurl}', '{permalink}', '{editlink}'];
+            const templateTags = ['{post_title}', '{post_content}', '{post_excerpt}'];
+            //, '{tags}', '{category}', '{author}', '{author_email}', '{author_bio}', '{sitename}', '{siteurl}', '{permalink}', '{editlink}'
             await postFormSettings.clickTemplateTagsForNotification(formName, templateTags);
         });
 

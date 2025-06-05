@@ -1261,7 +1261,7 @@ export class PostFormSettingsPage extends Base {
             await this.validateAndClick(tagSelector);
             try{
                 await this.assertionValidate('//span[@data-original-title="Copied!"]');
-                await this.page.waitForTimeout(2500);
+                await this.page.waitForTimeout(2000);
             }catch(error){
                 console.log(`Clipboard validation skipped for ${tag}: ${error.message}`);
             }

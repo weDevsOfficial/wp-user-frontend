@@ -43,8 +43,10 @@ class Frontend_Form_Ajax {
         // Load notification settings and merge them with existing notification data
         $notifications = wpuf_get_form_notifications( $form_id );
         if ( ! empty( $notifications ) ) {
-            // Merge new notifications with existing legacy notification data to preserve both
             $existing_notifications = isset( $this->form_settings['notification'] ) ? $this->form_settings['notification'] : [];
+            if ( ! is_array( $existing_notifications ) ) {
+                $existing_notifications = [];
+            }
             $this->form_settings['notification'] = array_merge( $existing_notifications, $notifications );
         }
         $this->form_fields     = $form->get_fields();
@@ -444,38 +446,11 @@ class Frontend_Form_Ajax {
             do_action( 'wpuf_edit_post_after_update', $post_id, $form_id, $this->form_settings, $this->form_fields ); // plugin API to extend the functionality
 
             // send mail notification
-            $edit_enabled = false;
-            $edit_body = '';
-            $edit_to = '';
-            $edit_subject = '';
-
-            // --- Edit-notification, three possible layouts ---------------------------------
-            if ( isset( $this->form_settings['notification']['edit'] ) ) {
-                $edit_conf = $this->form_settings['notification']['edit'];
-
-                // 1) New builder: nested array including `enabled`
-                if ( is_array( $edit_conf ) && wpuf_is_checkbox_or_toggle_on( $edit_conf['enabled'] ?? '' ) ) {
-                    $edit_enabled = true;
-                    $edit_body    = $edit_conf['body']    ?? '';
-                    $edit_to      = $edit_conf['to']      ?? '';
-                    $edit_subject = $edit_conf['subject'] ?? '';
-
-                // 2) Legacy flat flag: string 'on' at notification['edit']
-                } elseif ( is_string( $edit_conf ) && wpuf_is_checkbox_or_toggle_on( $edit_conf ) ) {
-                    $edit_enabled = true;
-                    $edit_body    = $this->form_settings['notification']['edit_body']    ?? '';
-                    $edit_to      = $this->form_settings['notification']['edit_to']      ?? '';
-                    $edit_subject = $this->form_settings['notification']['edit_subject'] ?? '';
-                }
-            }
-            // 3) Very old separate fields
-            if ( ! $edit_enabled && ! empty( $this->form_settings['notification_edit'] )
-                 && wpuf_is_checkbox_or_toggle_on( $this->form_settings['notification_edit'] ) ) {
-                $edit_enabled = true;
-                $edit_body    = $this->form_settings['notification_edit_body']    ?? '';
-                $edit_to      = $this->form_settings['notification_edit_to']      ?? '';
-                $edit_subject = $this->form_settings['notification_edit_subject'] ?? '';
-            }
+            $edit_notification = $this->get_notification_settings( 'edit' );
+            $edit_enabled = $edit_notification['enabled'];
+            $edit_body = $edit_notification['body'];
+            $edit_to = $edit_notification['to'];
+            $edit_subject = $edit_notification['subject'];
 
             if ( $edit_enabled ) {
                 $mail_body = $this->prepare_mail_body( $edit_body, $post_author, $post_id );
@@ -492,10 +467,11 @@ class Frontend_Form_Ajax {
             $response = apply_filters( 'wpuf_edit_post_redirect', $response, $post_id, $form_id, $this->form_settings );
         } else {
             // send mail notification
-            if ( isset( $this->form_settings['notification']['new'] ) && wpuf_is_checkbox_or_toggle_on( $this->form_settings['notification']['new'] ) ) {
-                $mail_body = $this->prepare_mail_body( isset( $this->form_settings['notification']['new_body'] ) ? $this->form_settings['notification']['new_body'] : '', $post_author, $post_id );
-                $to        = $this->prepare_mail_body( isset( $this->form_settings['notification']['new_to'] ) ? $this->form_settings['notification']['new_to'] : '', $post_author, $post_id );
-                $subject   = $this->prepare_mail_body( isset( $this->form_settings['notification']['new_subject'] ) ? $this->form_settings['notification']['new_subject'] : '', $post_author, $post_id );
+            $new_notification = $this->get_notification_settings( 'new' );
+            if ( $new_notification['enabled'] ) {
+                $mail_body = $this->prepare_mail_body( $new_notification['body'], $post_author, $post_id );
+                $to        = $this->prepare_mail_body( $new_notification['to'], $post_author, $post_id );
+                $subject   = $this->prepare_mail_body( $new_notification['subject'], $post_author, $post_id );
                 $subject   = wp_strip_all_tags( $subject );
                 $mail_body = get_formatted_mail_body( $mail_body, $subject );
                 $headers   = [ 'Content-Type: text/html; charset=UTF-8' ];
@@ -511,6 +487,56 @@ class Frontend_Form_Ajax {
         do_action( 'wpuf_add_post_after_insert', $post_id, $form_id, $this->form_settings, $meta_vars ); // plugin API to extend the functionality
 
         return $response;
+    }
+
+    /**
+     * Helper method to extract notification settings for both new and edit notifications
+     * Supports all schema versions: new builder (nested array), legacy flat, and very old separate fields
+     *
+     * @param string $type 'new' or 'edit'
+     * @return array Array with keys: enabled, body, to, subject
+     */
+    private function get_notification_settings( $type ) {
+        $enabled = false;
+        $body = '';
+        $to = '';
+        $subject = '';
+
+        // Check if notification type exists in the main notification array
+        if ( isset( $this->form_settings['notification'][ $type ] ) ) {
+            $notification_conf = $this->form_settings['notification'][ $type ];
+
+            // 1) New builder: nested array including `enabled`
+            if ( is_array( $notification_conf ) && wpuf_is_checkbox_or_toggle_on( isset( $notification_conf['enabled'] ) ? $notification_conf['enabled'] : '' ) ) {
+                $enabled = true;
+                $body    = isset( $notification_conf['body'] ) ? $notification_conf['body'] : '';
+                $to      = isset( $notification_conf['to'] ) ? $notification_conf['to'] : '';
+                $subject = isset( $notification_conf['subject'] ) ? $notification_conf['subject'] : '';
+
+            // 2) Legacy flat flag: string 'on' at notification[type]
+            } elseif ( is_string( $notification_conf ) && wpuf_is_checkbox_or_toggle_on( $notification_conf ) ) {
+                $enabled = true;
+                $body    = isset( $this->form_settings['notification'][ $type . '_body' ] ) ? $this->form_settings['notification'][ $type . '_body' ] : '';
+                $to      = isset( $this->form_settings['notification'][ $type . '_to' ] ) ? $this->form_settings['notification'][ $type . '_to' ] : '';
+                $subject = isset( $this->form_settings['notification'][ $type . '_subject' ] ) ? $this->form_settings['notification'][ $type . '_subject' ] : '';
+            }
+        }
+
+        // 3) Very old separate fields (only for edit notifications)
+        if ( ! $enabled && 'edit' === $type && ! empty( $this->form_settings['notification_' . $type ] )
+             && wpuf_is_checkbox_or_toggle_on( $this->form_settings['notification_' . $type ] ) ) {
+            $enabled = true;
+            $body    = isset( $this->form_settings['notification_' . $type . '_body' ] ) ? $this->form_settings['notification_' . $type . '_body' ] : '';
+            $to      = isset( $this->form_settings['notification_' . $type . '_to' ] ) ? $this->form_settings['notification_' . $type . '_to' ] : '';
+            $subject = isset( $this->form_settings['notification_' . $type . '_subject' ] ) ? $this->form_settings['notification_' . $type . '_subject' ] : '';
+        }
+
+        return [
+            'enabled' => $enabled,
+            'body'    => $body,
+            'to'      => $to,
+            'subject' => $subject,
+        ];
     }
 
     public function wpuf_get_post_user() {

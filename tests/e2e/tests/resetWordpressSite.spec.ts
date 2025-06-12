@@ -33,7 +33,7 @@ export default function resetWordpressSite() {
     });
     test.describe('Reset Site', () => {
 
-        test('RS0001 : Admin is resetting Site', async () => {
+        test('RS0001 : Admin is resetting Site', { tag: ['@Basic'] }, async () => {
             const BasicLogin = new BasicLoginPage(page);
             const SettingsSetup = new SettingsSetupPage(page);
 

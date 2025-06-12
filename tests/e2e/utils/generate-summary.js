@@ -94,6 +94,7 @@ function getTestStatus(test) {
 
 // Function to get test type based on feature ID
 function getTestType(featureId) {
+  if (featureId.startsWith('RS0')) return 'Reset';
   if (featureId.startsWith('LS0')) return 'Setup';
   if (featureId.startsWith('PF0')) return 'Form Creation';
   if (featureId.startsWith('RF0')) return 'Registration';

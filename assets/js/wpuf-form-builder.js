@@ -170,7 +170,7 @@
                             html      += '</div>';
                             html      += '<div class="step-two">';
                             var fieldIdForLink = payload.field.id;
-                            html      += sprintf( '<p class="wpuf-text-base">%s<a href="#" class="wpuf-text-primary wpuf-swal-action-link wpuf-font-bold" data-action="open-advanced-options" data-field-id="%s">%s</a>%s<a href="#" class="wpuf-text-primary wpuf-swal-action-link wpuf-font-bold" data-action="open-advanced-options" data-field-id="%s">%s</a>%s</p>',
+                            html      += sprintf( '<p class="wpuf-text-base">%s<button type="button" class="wpuf-text-primary wpuf-swal-action-link wpuf-font-bold" data-action="open-advanced-options" data-field-id="%s">%s</button>%s<button type="button" class="wpuf-text-primary wpuf-swal-action-link wpuf-font-bold" data-action="open-advanced-options" data-field-id="%s">%s</button>%s</p>',
                                 __( 'Edit the custom field inside the post form and on the right side you will see ', 'wp-user-frontend' ),
                                 fieldIdForLink,
                                 __( '"Advanced Options".', 'wp-user-frontend' ),
@@ -185,7 +185,7 @@
                         Swal.fire({
                             title: __( 'Do you want to show custom field data inside your post ?', 'wp-user-frontend' ),
                             html: html,
-                            imageUrl: wpuf_form_builder.lock_icon,
+                            imageUrl: wpuf_form_builder.is_pro_active ? wpuf_form_builder.lock_icon : wpuf_form_builder.free_icon,
                             showCancelButton: true,
                             confirmButtonText: "Don't show again",
                             cancelButtonText: 'Okay',
@@ -195,7 +195,7 @@
                             },
                             cancelButtonColor: '#059669',
                             didOpen: (modal) => {
-                                $(modal).find('a.wpuf-swal-action-link[data-action="open-advanced-options"]').on('click', function(e) {
+                                $(modal).find('button.wpuf-swal-action-link[data-action="open-advanced-options"]').on('click', function(e) {
                                     e.preventDefault();
                                     var fieldId = $(this).data('field-id');
                                     

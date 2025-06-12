@@ -1,4 +1,7 @@
 features:
+  # Reset Site
+  - id: RS0001
+    name: Admin is resetting Site
   # Login and Setup
   - id: LS0001
     name: Admin is logging into Admin-Dashboard

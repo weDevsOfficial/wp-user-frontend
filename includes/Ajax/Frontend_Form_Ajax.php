@@ -449,28 +449,32 @@ class Frontend_Form_Ajax {
             $edit_to = '';
             $edit_subject = '';
 
-            // Check if edit notification is enabled - handle both old and new structures
-            if ( isset( $this->form_settings['notification']['edit'] ) && is_array( $this->form_settings['notification']['edit'] ) ) {
-                if ( isset( $this->form_settings['notification']['edit']['enabled'] ) && wpuf_is_checkbox_or_toggle_on( $this->form_settings['notification']['edit']['enabled'] ) ) {
+            // --- Edit-notification, three possible layouts ---------------------------------
+            if ( isset( $this->form_settings['notification']['edit'] ) ) {
+                $edit_conf = $this->form_settings['notification']['edit'];
+
+                // 1) New builder: nested array including `enabled`
+                if ( is_array( $edit_conf ) && wpuf_is_checkbox_or_toggle_on( $edit_conf['enabled'] ?? '' ) ) {
                     $edit_enabled = true;
-                    $edit_body = isset( $this->form_settings['notification']['edit']['edit_body'] ) ? $this->form_settings['notification']['edit']['edit_body'] : '';
-                    $edit_to = isset( $this->form_settings['notification']['edit']['edit_to'] ) ? $this->form_settings['notification']['edit']['edit_to'] : '';
-                    $edit_subject = isset( $this->form_settings['notification']['edit']['edit_subject'] ) ? $this->form_settings['notification']['edit']['edit_subject'] : '';
+                    $edit_body    = $edit_conf['body']    ?? '';
+                    $edit_to      = $edit_conf['to']      ?? '';
+                    $edit_subject = $edit_conf['subject'] ?? '';
+
+                // 2) Legacy flat flag: string 'on' at notification['edit']
+                } elseif ( is_string( $edit_conf ) && wpuf_is_checkbox_or_toggle_on( $edit_conf ) ) {
+                    $edit_enabled = true;
+                    $edit_body    = $this->form_settings['notification']['edit_body']    ?? '';
+                    $edit_to      = $this->form_settings['notification']['edit_to']      ?? '';
+                    $edit_subject = $this->form_settings['notification']['edit_subject'] ?? '';
                 }
             }
-            // Check old structure: notification['edit'] as string value
-            elseif ( isset( $this->form_settings['notification']['edit'] ) && wpuf_is_checkbox_or_toggle_on( $this->form_settings['notification']['edit'] ) ) {
+            // 3) Very old separate fields
+            if ( ! $edit_enabled && ! empty( $this->form_settings['notification_edit'] )
+                 && wpuf_is_checkbox_or_toggle_on( $this->form_settings['notification_edit'] ) ) {
                 $edit_enabled = true;
-                $edit_body = isset( $this->form_settings['notification']['edit_body'] ) ? $this->form_settings['notification']['edit_body'] : '';
-                $edit_to = isset( $this->form_settings['notification']['edit_to'] ) ? $this->form_settings['notification']['edit_to'] : '';
-                $edit_subject = isset( $this->form_settings['notification']['edit_subject'] ) ? $this->form_settings['notification']['edit_subject'] : '';
-            }
-            // Check legacy structure: notification_edit as separate field
-            elseif ( ! empty( $this->form_settings['notification_edit'] ) && wpuf_is_checkbox_or_toggle_on( $this->form_settings['notification_edit'] ) ) {
-                $edit_enabled = true;
-                $edit_body = isset( $this->form_settings['notification_edit_body'] ) ? $this->form_settings['notification_edit_body'] : '';
-                $edit_to = isset( $this->form_settings['notification_edit_to'] ) ? $this->form_settings['notification_edit_to'] : '';
-                $edit_subject = isset( $this->form_settings['notification_edit_subject'] ) ? $this->form_settings['notification_edit_subject'] : '';
+                $edit_body    = $this->form_settings['notification_edit_body']    ?? '';
+                $edit_to      = $this->form_settings['notification_edit_to']      ?? '';
+                $edit_subject = $this->form_settings['notification_edit_subject'] ?? '';
             }
 
             if ( $edit_enabled ) {

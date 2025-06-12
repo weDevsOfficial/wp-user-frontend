@@ -756,6 +756,7 @@ export class PostFormSettingsPage extends Base {
         await this.page.goto(Urls.baseUrl + '/wp-admin/edit.php', { waitUntil: 'domcontentloaded' });
         await this.page.waitForLoadState('networkidle');
 
+        await this.page.hover(Selectors.postFormSettings.quickEditButtonContainer);
         await this.validateAndClick(Selectors.postFormSettings.quickEditButton);
         await this.page.waitForLoadState('networkidle');
 

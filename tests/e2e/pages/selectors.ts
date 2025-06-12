@@ -717,6 +717,7 @@ export const Selectors = {
         removeStepStart: '//div[@class="step-start-indicator"]/../../../..//span[4]',
         confirmDelete: '//button[normalize-space()="Yes, delete it"]',
         editPostButton: '(//td[@data-label="Options: "]//a)[1]',
+        quickEditButtonContainer: '//tbody[@id="the-list"]//tr[1]',
         quickEditButton: '(//button[@class="button-link editinline"])[1]',
         statusDropdown: '(//select[@name="_status"])[1]',
         updateStatus: '(//input[@id="_inline_edit"]/following-sibling::button)[1]',

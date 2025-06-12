@@ -85,6 +85,11 @@ jobs:
               wget https://downloads.wordpress.org/plugin/wp-mail-log.latest-stable.zip
               unzip wp-mail-log.latest-stable.zip
               rm wp-mail-log.latest-stable.zip
+
+              # Download and extract WP Reset
+              wget https://downloads.wordpress.org/plugin/wp-reset.latest-stable.zip
+              unzip wp-reset.latest-stable.zip
+              rm wp-reset.latest-stable.zip
           
               # Download and extract WooCommerce
               wget https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip
@@ -167,7 +172,7 @@ jobs:
         working-directory: tests/e2e
         run: |
           mkdir -p test-results
-          npx playwright test e2eMain.spec.ts --project=chromium
+          npm run test:ci
         continue-on-error: true
       # Generate and post advanced test summary
       - name: Generate and post advanced test summary

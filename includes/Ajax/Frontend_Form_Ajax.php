@@ -444,46 +444,36 @@ class Frontend_Form_Ajax {
             do_action( 'wpuf_edit_post_after_update', $post_id, $form_id, $this->form_settings, $this->form_fields ); // plugin API to extend the functionality
 
             // send mail notification
-            $should_send_edit_email = false;
+            $edit_enabled = false;
             $edit_body = '';
             $edit_to = '';
             $edit_subject = '';
 
-            // Check if edit notification is enabled - try both old and new structures
-            if ( isset( $this->form_settings['notification']['edit'] ) && wpuf_is_checkbox_or_toggle_on( $this->form_settings['notification']['edit'] ) ) {
-                $should_send_edit_email = true;
-                // Check if edit settings are nested in notification['edit'] array (new structure)
-                if ( isset( $this->form_settings['notification']['edit']['edit_body'] ) ) {
-                    $edit_body = $this->form_settings['notification']['edit']['edit_body'];
-                } elseif ( isset( $this->form_settings['notification']['edit_body'] ) ) {
-                    $edit_body = $this->form_settings['notification']['edit_body'];
-                } else {
-                    $edit_body = '';
+            // Check if edit notification is enabled - handle both old and new structures
+            if ( isset( $this->form_settings['notification']['edit'] ) && is_array( $this->form_settings['notification']['edit'] ) ) {
+                if ( isset( $this->form_settings['notification']['edit']['enabled'] ) && wpuf_is_checkbox_or_toggle_on( $this->form_settings['notification']['edit']['enabled'] ) ) {
+                    $edit_enabled = true;
+                    $edit_body = isset( $this->form_settings['notification']['edit']['edit_body'] ) ? $this->form_settings['notification']['edit']['edit_body'] : '';
+                    $edit_to = isset( $this->form_settings['notification']['edit']['edit_to'] ) ? $this->form_settings['notification']['edit']['edit_to'] : '';
+                    $edit_subject = isset( $this->form_settings['notification']['edit']['edit_subject'] ) ? $this->form_settings['notification']['edit']['edit_subject'] : '';
                 }
-                
-                if ( isset( $this->form_settings['notification']['edit']['edit_to'] ) ) {
-                    $edit_to = $this->form_settings['notification']['edit']['edit_to'];
-                } elseif ( isset( $this->form_settings['notification']['edit_to'] ) ) {
-                    $edit_to = $this->form_settings['notification']['edit_to'];
-                } else {
-                    $edit_to = '';
-                }
-                
-                if ( isset( $this->form_settings['notification']['edit']['edit_subject'] ) ) {
-                    $edit_subject = $this->form_settings['notification']['edit']['edit_subject'];
-                } elseif ( isset( $this->form_settings['notification']['edit_subject'] ) ) {
-                    $edit_subject = $this->form_settings['notification']['edit_subject'];
-                } else {
-                    $edit_subject = '';
-                }
-            } elseif ( ! empty( $this->form_settings['notification_edit'] ) && wpuf_is_checkbox_or_toggle_on( $this->form_settings['notification_edit'] ) ) {
-                $should_send_edit_email = true;
+            }
+            // Check old structure: notification['edit'] as string value
+            elseif ( isset( $this->form_settings['notification']['edit'] ) && wpuf_is_checkbox_or_toggle_on( $this->form_settings['notification']['edit'] ) ) {
+                $edit_enabled = true;
+                $edit_body = isset( $this->form_settings['notification']['edit_body'] ) ? $this->form_settings['notification']['edit_body'] : '';
+                $edit_to = isset( $this->form_settings['notification']['edit_to'] ) ? $this->form_settings['notification']['edit_to'] : '';
+                $edit_subject = isset( $this->form_settings['notification']['edit_subject'] ) ? $this->form_settings['notification']['edit_subject'] : '';
+            }
+            // Check legacy structure: notification_edit as separate field
+            elseif ( ! empty( $this->form_settings['notification_edit'] ) && wpuf_is_checkbox_or_toggle_on( $this->form_settings['notification_edit'] ) ) {
+                $edit_enabled = true;
                 $edit_body = isset( $this->form_settings['notification_edit_body'] ) ? $this->form_settings['notification_edit_body'] : '';
                 $edit_to = isset( $this->form_settings['notification_edit_to'] ) ? $this->form_settings['notification_edit_to'] : '';
                 $edit_subject = isset( $this->form_settings['notification_edit_subject'] ) ? $this->form_settings['notification_edit_subject'] : '';
             }
-            
-            if ( $should_send_edit_email ) {
+
+            if ( $edit_enabled ) {
                 $mail_body = $this->prepare_mail_body( $edit_body, $post_author, $post_id );
                 $to        = $this->prepare_mail_body( $edit_to, $post_author, $post_id );
                 $subject   = $this->prepare_mail_body( $edit_subject, $post_author, $post_id );

@@ -86,10 +86,10 @@ jobs:
               unzip wp-mail-log.latest-stable.zip
               rm wp-mail-log.latest-stable.zip
 
-              # Download and extract WP Reset
-              wget https://downloads.wordpress.org/plugin/wp-reset.latest-stable.zip
-              unzip wp-reset.latest-stable.zip
-              rm wp-reset.latest-stable.zip
+              # # Download and extract WP Reset
+              # wget https://downloads.wordpress.org/plugin/wp-reset.latest-stable.zip
+              # unzip wp-reset.latest-stable.zip
+              # rm wp-reset.latest-stable.zip
           
               # Download and extract WooCommerce
               wget https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip

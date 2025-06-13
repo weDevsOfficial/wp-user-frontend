@@ -452,7 +452,7 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
-        await this.waitForLoading();
+        await this.page.waitForTimeout(300);
 
         await this.page.goto(Urls.baseUrl + '/account/?section=post' );
         await this.waitForLoading();
@@ -747,7 +747,7 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
-        await this.waitForLoading();
+        await this.page.waitForTimeout(300);
         // await this.assertionValidate(Selectors.postFormSettings.checkSuccessMessage);
 
         await this.page.goto(Urls.baseUrl + '/account/?section=post' );

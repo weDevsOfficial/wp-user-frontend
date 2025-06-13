@@ -23,7 +23,7 @@ export class RegistrationFormsPage extends Base {
         // Visit Registration forms page
         const wpufRegistrationFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
         await Promise.all([
-            this.page.goto(wpufRegistrationFormPage, { waitUntil: 'domcontentloaded' }),
+            this.page.goto(wpufRegistrationFormPage ),
         ]);
 
         const validateWPUFProActivate = await this.page.isVisible(Selectors.registrationForms.navigatePage_RF.checkAddButton_RF);
@@ -47,7 +47,7 @@ export class RegistrationFormsPage extends Base {
         // Visit Registration forms page
         const wpufRegistrationFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
         await Promise.all([
-            this.page.goto(wpufRegistrationFormPage, { waitUntil: 'domcontentloaded' }),
+            this.page.goto(wpufRegistrationFormPage ),
         ]);
 
         let storeShortcode: string = '';
@@ -59,7 +59,7 @@ export class RegistrationFormsPage extends Base {
         //Visit Pages
         const visitPagesAdminMenuOption = Urls.baseUrl + '/wp-admin/edit.php?post_type=page';
         await Promise.all([
-            this.page.goto(visitPagesAdminMenuOption, { waitUntil: 'domcontentloaded' }),
+            this.page.goto(visitPagesAdminMenuOption ),
         ]);
 
         //Add New Page
@@ -102,7 +102,7 @@ export class RegistrationFormsPage extends Base {
 
         //Go to Pages 
         await Promise.all([
-            this.page.goto(visitPagesAdminMenuOption, { waitUntil: 'domcontentloaded' }),
+            this.page.goto(visitPagesAdminMenuOption ),
         ]);
 
         //Validate Page Created
@@ -136,7 +136,7 @@ export class RegistrationFormsPage extends Base {
         //Visit Post Form Page
         const wpufRegistrationFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
         await Promise.all([
-            this.page.goto(wpufRegistrationFormPage, { waitUntil: 'domcontentloaded' }),
+            this.page.goto(wpufRegistrationFormPage ),
         ]);
         //CreateNewRegistrationForm
 

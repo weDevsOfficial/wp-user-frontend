@@ -4,7 +4,7 @@ import { Browser, BrowserContext, Page, test, chromium } from "@playwright/test"
 import { BasicLoginPage } from '../pages/basicLogin';
 import { BasicLogoutPage } from '../pages/basicLogout';
 import { SettingsSetupPage } from '../pages/settingsSetup';
-import { Users } from '../utils/testData';
+import { Urls, Users } from '../utils/testData';
 import * as fs from "fs";
 
 export default function loginAndSetupTests() {
@@ -17,7 +17,12 @@ export default function loginAndSetupTests() {
         fs.writeFileSync('state.json', JSON.stringify({ cookies: [], origins: [] }));
 
         // Launch browser
-        browser = await chromium.launch();
+        const args = ['--enable-experimental-web-platform-features'];
+        if (!Urls.baseUrl.startsWith('http://localhost')) {
+            args.push(`--unsafely-treat-insecure-origin-as-secure=${Urls.baseUrl}`);
+        }
+
+        browser = await chromium.launch({args});
 
         // Create a single context
         context = await browser.newContext();
@@ -164,7 +169,12 @@ export default function loginAndSetupTests() {
             await SettingsSetup.enablePaymentGatewayBank();
         });
 
-        test('LS0021 : Admin is logging out successfully', { tag: ['@Basic'] }, async () => {
+        test('LS0021 : Admin is activating dokan lite', { tag: ['@Basic'] }, async () => {
+            const SettingsSetup = new SettingsSetupPage(page);
+            await SettingsSetup.dokanLiteStatusCheck();
+        });
+
+        test('LS0022 : Admin is logging out successfully', { tag: ['@Basic'] }, async () => {
             const BasicLogout = new BasicLogoutPage(page);
             await BasicLogout.logOut();
         });

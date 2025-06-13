@@ -13,12 +13,13 @@ export class BasicLogoutPage extends Base {
 
     async logOut() {
         await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'domcontentloaded' }),
+            this.page.goto(Urls.baseUrl + '/wp-admin/' ),
         ]);
+        await this.waitForLoading();
 
-        await this.page.waitForTimeout(500);
+        await this.page.waitForTimeout(200);
         await this.page.hover(Selectors.logout.basicLogout.logoutHoverUsername);
-        await this.page.waitForTimeout(500);
+        await this.page.waitForTimeout(100);
         await this.validateAndClick(Selectors.logout.basicLogout.logoutButton);
 
         //Validate LOGOUT

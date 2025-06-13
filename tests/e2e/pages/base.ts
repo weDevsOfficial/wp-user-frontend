@@ -86,4 +86,10 @@ export class Base {
         expect(matchWithToast).toContain(extractedToast);
     }
 
+    // Wait for networkidle
+    async waitForLoading() {
+        await this.page.waitForLoadState('networkidle');
+        await this.page.waitForLoadState('domcontentloaded');
+    }
+
 }

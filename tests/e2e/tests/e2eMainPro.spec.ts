@@ -7,7 +7,9 @@ import postFormGeneralSettingsTestsPro from './postFormSettingsTestPro.spec';
 import * as fs from 'fs'; //Clear Cookie
 import resetWordpressSite from './resetWordpressSite.spec';
 
-test.describe(resetWordpressSite);
+if (process.env.CI == 'false') {
+    test.describe(resetWordpressSite);
+}
 test.describe(loginAndSetupTests);
 test.describe(postFormsTestsPro);
 test.describe(registrationFormsTestsPro);

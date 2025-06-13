@@ -38,7 +38,7 @@ export class PostFormsFrontendPage extends Base{
         //Go to Accounts page - FrontEnd
         const wpufRegistrationFormFage = Urls.baseUrl + '/account/';
         await Promise.all([
-            this.page.goto(wpufRegistrationFormFage, { waitUntil: 'domcontentloaded' }),
+            this.page.goto(wpufRegistrationFormFage ),
         ]);
 
         //Go to Submit Post

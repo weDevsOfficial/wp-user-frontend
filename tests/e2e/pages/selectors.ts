@@ -30,6 +30,7 @@ export const Selectors = {
         basicNavigation: {
             // Sidebar
             clickWPUFSidebar: '//div[normalize-space(text())="User Frontend"]',
+            clickDokanSidebar: '//div[normalize-space(text())="Dokan"]',
             // Hover Settings Menu
             hoverSettings: '//div[text()="Settings"]',
             licenseTab: '//li[@id="toplevel_page_wp-user-frontend"]//ul//li[normalize-space()="License"]',
@@ -46,6 +47,7 @@ export const Selectors = {
             // Plugin Activate/Deactivate
             availableWPUFPluginLite: '//tr[@data-slug="wp-user-frontend"]//strong[contains(text(),"WP User Frontend")]',
             availableWPUFPluginPro: '//tr[@data-slug="wp-user-frontend-pro"]//strong[contains(text(),"WP User Frontend Pro")]',
+            availableDokanLite: '//tr[@data-slug="dokan-lite"]//strong[contains(text(),"Dokan")]',
             clickPluginsSidebar: '//li[@id="menu-plugins"]',
             clickWPUFPluginLite: '//a[@id="activate-wp-user-frontend"]',
             clickWPUFPluginPro: '//a[@id="activate-wp-user-frontend-pro"]',
@@ -53,8 +55,9 @@ export const Selectors = {
             clickDokanLite: '//a[@id="activate-dokan-lite"]',
             clickWPUFPluginDeactivate: '//a[@id="deactivate-wp-user-frontend"]',
             clickWPUFPluginProDeactivate: '//a[@id="deactivate-wp-user-frontend-pro"]',
+            clickDokanLiteDeactivate: '//a[@id="deactivate-dokan-lite"]',
             clickAllow1: '(//a[normalize-space()="Allow"])[1]',
-            clickAllow2: '//a[normalize-space()="Allow"]',
+            clickAllow: '//a[normalize-space()="Allow"]',
             clickSkipSetup: '//a[normalize-space()="Skip setup"]',
             clickDoNotAllow: '//a[normalize-space()="Do not allow"]',
             clickSwitchCart: '//button[@id="wcv-switch-to-classic-cart-checkout"]',
@@ -216,7 +219,7 @@ export const Selectors = {
             addNewCategory: '//input[@id="tag-name"]',
             addCategorySlug: '//input[@id="tag-slug"]',
             submitCategory: '//input[@id="submit"]',
-            validateCategory: '//tbody[@id="the-list"]//tr[1]//td[1]//strong//a',
+            validateCategory: (categoryName: string) => `//tbody[@id="the-list"]//tr//td//strong//a[normalize-space()="${categoryName}"]`,
         },
 
         tags: {
@@ -224,7 +227,7 @@ export const Selectors = {
             addNewTag: '//input[@id="tag-name"]',
             addTagSlug: '//input[@id="tag-slug"]',
             submitTag: '//input[@id="submit"]',
-            validateTag: '//tbody[@id="the-list"]//tr[1]//td[1]//strong//a',
+            validateTag: (tagName: string) => `//tbody[@id="the-list"]//tr//td//strong//a[normalize-space()="${tagName}"]`,
         },
 
         keys: {

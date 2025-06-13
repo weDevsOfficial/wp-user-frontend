@@ -12,13 +12,24 @@ export default function postFormSettingsTest() {
     let browser: Browser;
     let context: BrowserContext;
     let page: Page;
+    let postTitle = "";
+    let postContent = "";
+    let postExcerpt = "";
 
     test.beforeAll(async () => {
         // Clear state file
         fs.writeFileSync('state.json', JSON.stringify({ cookies: [], origins: [] }));
 
         // Launch browser
-        browser = await chromium.launch();
+        // browser = await chromium.launch();
+
+        // Create a single context
+        const args = ['--enable-experimental-web-platform-features'];
+        if (!Urls.baseUrl.startsWith('http://localhost')) {
+            args.push(`--unsafely-treat-insecure-origin-as-secure=${Urls.baseUrl}`);
+        }
+
+        browser = await chromium.launch({args});
 
         // Create a single context
         context = await browser.newContext();
@@ -112,9 +123,9 @@ export default function postFormSettingsTest() {
          */
 
         let formName: string;
-        const postTitle = faker.word.words(3);
-        const postContent = faker.lorem.paragraph();
-        const postExcerpt = faker.lorem.paragraph();
+        postTitle = faker.word.words(3);
+        postContent = faker.lorem.paragraph();
+        postExcerpt = postContent;
         const category = 'Music'; // Using one of the default categories from the screenshot
         const emailAddress = faker.internet.email();
         const emailSubject = faker.word.words(3);
@@ -166,11 +177,11 @@ export default function postFormSettingsTest() {
 
         test('PFS0005 : Admin is validating default category from FE', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
-            const postTitle1 = faker.word.words(3);
-            const postContent1 = faker.lorem.paragraph();
-            const postExcerpt1 = faker.lorem.paragraph();
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             // Submit a post and validate its category
-            await postFormSettings.submitAndValidateCategory(postTitle1, postContent1, postExcerpt1, category);
+            await postFormSettings.submitAndValidateCategory(postTitle, postContent, postExcerpt, category);
         });
 
         test('PFS0006 : Admin is setting successful post redirection to newly created post', { tag: ['@Lite'] }, async () => {
@@ -179,9 +190,9 @@ export default function postFormSettingsTest() {
         });
 
         test('PFS0007 : Admin is checking post redirection to newly created post', { tag: ['@Lite'] }, async () => {
-            const postTitle = faker.word.words(3);
-            const postContent = faker.lorem.paragraph();
-            const postExcerpt = faker.lorem.paragraph();
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.validateRedirectionToPost(postTitle, postContent, postExcerpt);
         });
@@ -192,9 +203,9 @@ export default function postFormSettingsTest() {
         });
 
         test('PFS0009 : Admin is checking post redirection to same page', { tag: ['@Lite'] }, async () => {
-            const postTitle = faker.word.words(3);
-            const postContent = faker.lorem.paragraph();
-            const postExcerpt = faker.lorem.paragraph();
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.validateRedirectionToSamePage(postTitle, postContent, postExcerpt, 'Post published successfully');
         });
@@ -205,9 +216,9 @@ export default function postFormSettingsTest() {
         });
 
         test('PFS0011 : Admin is checking post redirection to another page', { tag: ['@Lite'] }, async () => {
-            const postTitle = faker.word.words(3);
-            const postContent = faker.lorem.paragraph();
-            const postExcerpt = faker.lorem.paragraph();
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.validateRedirectionToPage(postTitle, postContent, postExcerpt, 'Thank You');
         });
@@ -219,9 +230,9 @@ export default function postFormSettingsTest() {
         });
 
         test('PFS0013 : Admin is checking post redirection to a url', { tag: ['@Lite'] }, async () => {
-            const postTitle = faker.word.words(3);
-            const postContent = faker.lorem.paragraph();
-            const postExcerpt = faker.lorem.paragraph();
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             const expectedUrl = Urls.baseUrl + '/thank-you/';
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.validateRedirectionToUrl(postTitle, postContent, postExcerpt, expectedUrl);
@@ -240,9 +251,9 @@ export default function postFormSettingsTest() {
         });
 
         test('PFS0016 : Admin is checking post submission status to draft - FE', { tag: ['@Lite'] }, async () => {
-            const postTitle = faker.word.words(3);
-            const postContent = faker.lorem.paragraph();
-            const postExcerpt = faker.lorem.paragraph();
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.validateSubmittedPostStatusFE(postTitle, postContent, postExcerpt, 'Offline');
         });
@@ -259,9 +270,9 @@ export default function postFormSettingsTest() {
         });
 
         test('PFS0019 : Admin is checking post submission status to pending', { tag: ['@Lite'] }, async () => {
-            const postTitle = faker.word.words(3);
-            const postContent = faker.lorem.paragraph();
-            const postExcerpt = faker.lorem.paragraph();
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.validateSubmittedPostStatusFE(postTitle, postContent, postExcerpt, 'Awaiting Approval');
         });
@@ -278,9 +289,9 @@ export default function postFormSettingsTest() {
         });
 
         test('PFS0022 : Admin is checking post submission status to private', { tag: ['@Lite'] }, async () => {
-            const postTitle = faker.word.words(3);
-            const postContent = faker.lorem.paragraph();
-            const postExcerpt = faker.lorem.paragraph();
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.validateSubmittedPostStatusFE(postTitle, postContent, postExcerpt, 'Private');
         });
@@ -297,9 +308,9 @@ export default function postFormSettingsTest() {
         });
 
         test('PFS0025 : Admin is checking post submission status to publish', { tag: ['@Lite'] }, async () => {
-            const postTitle = faker.word.words(3);
-            const postContent = faker.lorem.paragraph();
-            const postExcerpt = faker.lorem.paragraph();
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.validateSubmittedPostStatusFE(postTitle, postContent, postExcerpt, 'Live');
         });
@@ -310,9 +321,9 @@ export default function postFormSettingsTest() {
         });
 
         test('PFS0027 : Admin is saving post as draft', { tag: ['@Lite'] }, async () => {
-            const postTitle = faker.word.words(3);
-            const postContent = faker.lorem.paragraph();
-            const postExcerpt = faker.lorem.paragraph();
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.savingPostAsDraft(postTitle, postContent, postExcerpt, 'Offline');
         });
@@ -348,9 +359,9 @@ export default function postFormSettingsTest() {
         });
 
         test('PFS0034 : Admin is validating post update status for draft', { tag: ['@Lite'] }, async () => {
-            const postTitle = faker.word.words(3);
-            const postContent = faker.lorem.paragraph();
-            const postExcerpt = faker.lorem.paragraph();
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.validatePostUpdateStatusInForm(postTitle, postContent, postExcerpt, 'Offline');
         });
@@ -360,9 +371,9 @@ export default function postFormSettingsTest() {
         });
 
         test('PFS0036 : Admin is validating post update status for pending review', { tag: ['@Lite'] }, async () => {
-            const postTitle = faker.word.words(3);
-            const postContent = faker.lorem.paragraph();
-            const postExcerpt = faker.lorem.paragraph();
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.validatePostUpdateStatusInForm(postTitle, postContent, postExcerpt, 'Awaiting Approval');
             await postFormSettings.pendingToLive();
@@ -374,9 +385,9 @@ export default function postFormSettingsTest() {
         });
 
         test('PFS0038 : Admin is validating post update status for private', { tag: ['@Lite'] }, async () => {
-            const postTitle = faker.word.words(3);
-            const postContent = faker.lorem.paragraph();
-            const postExcerpt = faker.lorem.paragraph();
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.validatePostUpdateStatusInForm(postTitle, postContent, postExcerpt, 'Private');
         });
@@ -387,9 +398,9 @@ export default function postFormSettingsTest() {
         });
 
         test('PFS0040 : Admin is validating post update status for no change', { tag: ['@Lite'] }, async () => {
-            const postTitle = faker.word.words(3);
-            const postContent = faker.lorem.paragraph();
-            const postExcerpt = faker.lorem.paragraph();
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.validatePostUpdateStatusInForm(postTitle, postContent, postExcerpt, 'Private');
         });
@@ -400,9 +411,9 @@ export default function postFormSettingsTest() {
         });
 
         test('PFS0042 : Admin is validating post update status for published', { tag: ['@Lite'] }, async () => {
-            const postTitle = faker.word.words(3);
-            const postContent = faker.lorem.paragraph();
-            const postExcerpt = faker.lorem.paragraph();
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.validatePostUpdateStatusInForm(postTitle, postContent, postExcerpt, 'Live');
         });
@@ -413,9 +424,9 @@ export default function postFormSettingsTest() {
         });
 
         test('PFS0044 : Admin is validating successful redirection to updated post', { tag: ['@Lite'] }, async () => {
-            const postTitle = faker.word.words(3);
-            const postContent = faker.lorem.paragraph();
-            const postExcerpt = faker.lorem.paragraph();
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.validateUpdatePostRedirectionToPost(postTitle, postContent, postExcerpt);
         });
@@ -426,9 +437,9 @@ export default function postFormSettingsTest() {
         });
 
         test('PFS0046 : Admin is validating successful redirection to same page', { tag: ['@Lite'] }, async () => {
-            const postTitle = faker.word.words(3);
-            const postContent = faker.lorem.paragraph();
-            const postExcerpt = faker.lorem.paragraph();
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.validateUpdatePostRedirectionToSamePage(postTitle, postContent, postExcerpt, 'Post updated successfully');
         });
@@ -439,9 +450,9 @@ export default function postFormSettingsTest() {
         });
 
         test('PFS0048 : Admin is validating successful redirection to a page', { tag: ['@Lite'] }, async () => {
-            const postTitle = faker.word.words(3);
-            const postContent = faker.lorem.paragraph();
-            const postExcerpt = faker.lorem.paragraph();
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.validateUpdatePostRedirectionToPage(postTitle, postContent, postExcerpt, 'Thank You');
         });
@@ -453,9 +464,9 @@ export default function postFormSettingsTest() {
         });
 
         test('PFS0050 : Admin is validating successful redirection to custom URL', { tag: ['@Lite'] }, async () => {
-            const postTitle = faker.word.words(3);
-            const postContent = faker.lorem.paragraph();
-            const postExcerpt = faker.lorem.paragraph();
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             const customUrl = Urls.baseUrl + '/thank-you/';
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.validateUpdatePostRedirectionToUrl(postTitle, postContent, postExcerpt, customUrl);
@@ -469,9 +480,9 @@ export default function postFormSettingsTest() {
         });
 
         test('PFS0052 : Admin is validating post update message in form', { tag: ['@Lite'] }, async () => {
-            const postTitle = faker.word.words(3);
-            const postContent = faker.lorem.paragraph();
-            const postExcerpt = faker.lorem.paragraph();
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             const postFormSettings = new PostFormSettingsPage(page);
             const customMessage = 'Post has been updated successfully!';
             await postFormSettings.validatePostUpdateMessageInForm(postTitle, postContent, postExcerpt, customMessage);
@@ -493,9 +504,9 @@ export default function postFormSettingsTest() {
         });
 
         test('PFS0056 : Admin is creating post with payment', { tag: ['@Lite'] }, async () => {
-            const postTitle = faker.word.words(3);
-            const postContent = faker.lorem.paragraph();
-            const postExcerpt = faker.lorem.paragraph();
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.createPostWithPayment(postTitle, postContent, postExcerpt, '2.00', 'Order Received');
         });
@@ -553,9 +564,9 @@ export default function postFormSettingsTest() {
         });
 
         test('PFS0067 : Admin is submitting post and validating notification from FE', { tag: ['@Lite'] }, async () => {
-            const postTitle = faker.word.words(3);
-            const postContent = faker.lorem.paragraph();
-            const postExcerpt = faker.lorem.paragraph();
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.submitPostAndValidateNotificationFE(postTitle, postContent, postExcerpt, emailSubject, multipleEmails);
         });
@@ -602,12 +613,13 @@ export default function postFormSettingsTest() {
             await postFormSettings.setMultipleUpdatedNotificationEmails(formName, multipleEmails);
         });
 
-        test.skip('PFS0076 : Admin is submitting post and validating Updated post notification from FE', { tag: ['@Pro'] }, async () => {
-            const postTitle = faker.word.words(3);
-            const postContent = faker.lorem.paragraph();
-            const postExcerpt = faker.lorem.paragraph();
+        test('PFS0076 : Admin is submitting post and validating Updated post notification from FE', { tag: ['@Pro'] }, async () => {
+            const previousPostTitle = postTitle;
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.submitPostAndValidateUpdatedNotificationFE(postTitle, postContent, postExcerpt, emailSubject, multipleEmails);
+            await postFormSettings.submitPostAndValidateUpdatedNotificationFE(previousPostTitle, postTitle, postContent, postExcerpt, emailSubject, multipleEmails);
         });
 
         test('PFS0077 : Admin is disabling updated post notification', { tag: ['@Pro'] }, async () => {

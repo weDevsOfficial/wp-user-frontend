@@ -27,7 +27,7 @@ export class PostFormsPage extends Base {
         //Visit Post Form Page
         const wpufPostFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
         await Promise.all([
-            this.page.goto(wpufPostFormPage, { waitUntil: 'domcontentloaded' }),
+            this.page.goto(wpufPostFormPage ),
         ]);
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
@@ -59,7 +59,7 @@ export class PostFormsPage extends Base {
         //Visit Post Form Page
         const wpufPostFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
         await Promise.all([
-            this.page.goto(wpufPostFormPage, { waitUntil: 'domcontentloaded' }),
+            this.page.goto(wpufPostFormPage ),
         ]);
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
@@ -93,7 +93,7 @@ export class PostFormsPage extends Base {
         //Visit Post Form Page
         const wpufPostFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
         await Promise.all([
-            this.page.goto(wpufPostFormPage, { waitUntil: 'domcontentloaded' }),
+            this.page.goto(wpufPostFormPage ),
         ]);
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);

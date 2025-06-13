@@ -17,8 +17,9 @@ export class PostFormSettingsPage extends Base {
         const FieldOptionsCommon = new FieldOptionsCommonPage(this.page);
         // Go to post forms page
         await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' }),
+            this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' ),
         ]);
+        await this.waitForLoading();
 
         // Click Add New button
         await this.validateAndClick(Selectors.postFormSettings.addNewButton);
@@ -40,8 +41,9 @@ export class PostFormSettingsPage extends Base {
     async changePostType(postType: string, formName: string) {
         // Go to post forms page
         await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' }),
+            this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' ),
         ]);
+        await this.waitForLoading();
 
         // Click on the form name
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -49,9 +51,7 @@ export class PostFormSettingsPage extends Base {
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
-
-        // Wait for settings to load
-        await this.page.waitForTimeout(500);
+        await this.waitForLoading();
 
         // Click Post Settings section
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
@@ -76,8 +76,9 @@ export class PostFormSettingsPage extends Base {
     async validatePostTypeInList(expectedPostType: string) {
         // Go to post forms list
         await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' }),
+            this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' ),
         ]);
+        await this.waitForLoading();
 
         // Find the row containing the form name
         const postTypeText = await this.page.innerText(Selectors.postFormSettings.postTypeColumn);
@@ -90,7 +91,8 @@ export class PostFormSettingsPage extends Base {
     // Submit a post from frontend and validate post type
     async validatePostTypeFE(postTitle: string, postContent: string, postExcerpt: string) {
 
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
+        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await this.waitForLoading();
 
         // Fill post title
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
@@ -104,7 +106,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(1000);
+        await this.waitForLoading();
 
         // Wait for success message
         await expect(this.page.locator(Selectors.postFormSettings.postTypePage(postTitle))).toBeVisible();
@@ -115,12 +117,12 @@ export class PostFormSettingsPage extends Base {
     async setDefaultCategory(category: string, formName: string) {
 
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         // Wait for form list to load and click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
@@ -158,7 +160,8 @@ export class PostFormSettingsPage extends Base {
 
     // Submit a post and validate category
     async submitAndValidateCategory(postTitle: string, postContent: string, postExcerpt: string, category: string) {
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
+        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await this.waitForLoading();
 
         // Fill post title
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
@@ -172,7 +175,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(1000);
+        await this.waitForLoading();
 
         // Wait for success message
         await expect(this.page.locator(Selectors.postFormSettings.postCategory(category))).toBeVisible();
@@ -181,12 +184,12 @@ export class PostFormSettingsPage extends Base {
     // Set post redirection to newly created post
     async setPostRedirectionToPost(formName: string, value: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
@@ -210,12 +213,12 @@ export class PostFormSettingsPage extends Base {
     // Set post redirection to newly created post
     async setPostRedirectionToSamePage(formName: string, value: string, message: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
@@ -241,12 +244,12 @@ export class PostFormSettingsPage extends Base {
     // Set post redirection to another page
     async setPostRedirectionToPage(formName: string, value: string, text: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
@@ -261,7 +264,7 @@ export class PostFormSettingsPage extends Base {
         // Set success message
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionOption(value));
 
-        await this.page.waitForTimeout(500);
+        await this.page.waitForTimeout(200);
 
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionPageContainer);
 
@@ -278,12 +281,12 @@ export class PostFormSettingsPage extends Base {
     // Set post redirection to URL
     async setPostRedirectionToUrl(formName: string, value: string, url: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
@@ -308,7 +311,8 @@ export class PostFormSettingsPage extends Base {
     // Validate redirection after post submission
     async validateRedirectionToPost(postTitle: string, postContent: string, postExcerpt: string) {
         // Go to submit post page
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
+        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await this.waitForLoading();
 
         // Fill post title
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
@@ -321,7 +325,7 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
-        await this.page.waitForTimeout(1000);
+        await this.waitForLoading();
 
         await expect(this.page.locator(Selectors.postFormSettings.checkPostTitle(postTitle))).toBeVisible();
     }
@@ -329,7 +333,8 @@ export class PostFormSettingsPage extends Base {
     // Validate redirection after post submission
     async validateRedirectionToSamePage(postTitle: string, postContent: string, postExcerpt: string, message: string) {
         // Go to submit post page
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
+        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await this.waitForLoading();
 
         // Fill post title
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
@@ -342,7 +347,7 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
-        await this.page.waitForTimeout(1000);
+        await this.waitForLoading();
 
         const successMessage = await this.page.innerText(Selectors.postFormSettings.checkSuccessMessage);
 
@@ -352,7 +357,8 @@ export class PostFormSettingsPage extends Base {
     // Validate redirection after post submission
     async validateRedirectionToPage(postTitle: string, postContent: string, postExcerpt: string, pageTitle: string) {
         // Go to submit post page
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
+        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await this.waitForLoading();
 
         // Fill post title
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
@@ -365,7 +371,7 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
-        await this.page.waitForTimeout(1000);
+        await this.waitForLoading();
 
         await expect(this.page.locator(Selectors.postFormSettings.checkPageTitle(pageTitle))).toBeVisible();
     }
@@ -373,7 +379,8 @@ export class PostFormSettingsPage extends Base {
     // Validate redirection after post submission
     async validateRedirectionToUrl(postTitle: string, postContent: string, postExcerpt: string, expectedUrl: string) {
         // Go to submit post page
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
+        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await this.waitForLoading();
 
         // Fill post title
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
@@ -386,7 +393,7 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
-        await this.page.waitForTimeout(1000);
+        await this.waitForLoading();
 
         await expect(this.page).toHaveURL(expectedUrl);
     }
@@ -394,11 +401,11 @@ export class PostFormSettingsPage extends Base {
     // Set post submission status
     async setPostSubmissionStatus(formName: string, value: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
@@ -417,8 +424,9 @@ export class PostFormSettingsPage extends Base {
     async validatePostSubmissionStatusInList(expectedPostStatus: string) {
         // Go to post forms list
         await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' }),
+            this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' ),
         ]);
+        await this.waitForLoading();
 
         // Find the row containing the form name
         const postStatusText = await this.page.innerText(Selectors.postFormSettings.postSubmissionStatusColumn);
@@ -430,8 +438,8 @@ export class PostFormSettingsPage extends Base {
     // Validate submitted post status
     async validateSubmittedPostStatusFE(postTitle: string, postContent: string, postExcerpt: string, value: string) {
         // Go to submit post page
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await this.waitForLoading();
 
         // Fill post title
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
@@ -444,10 +452,10 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
-        await this.page.waitForTimeout(1000);
+        await this.waitForLoading();
 
-        await this.page.goto(Urls.baseUrl + '/account/?section=post', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/account/?section=post' );
+        await this.waitForLoading();
 
         const newPostTitle = await this.page.innerText(Selectors.postFormSettings.postTitleColumn);
         if (postTitle == newPostTitle) {
@@ -459,11 +467,11 @@ export class PostFormSettingsPage extends Base {
 
     async setPostSavingAsDraft(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
@@ -477,8 +485,8 @@ export class PostFormSettingsPage extends Base {
 
     async savingPostAsDraft(postTitle: string, postContent: string, postExcerpt: string, value: string) {
         // Go to submit post page
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await this.waitForLoading();
 
         // Fill post title
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
@@ -494,8 +502,8 @@ export class PostFormSettingsPage extends Base {
         await this.page.waitForTimeout(200);
         await expect(this.page.locator(Selectors.postFormSettings.draftSavedAlert)).toBeVisible();
 
-        await this.page.goto(Urls.baseUrl + '/account/?section=post', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/account/?section=post' );
+        await this.waitForLoading();
 
         const newPostTitle = await this.page.innerText(Selectors.postFormSettings.postTitleColumn);
         if (postTitle == newPostTitle) {
@@ -506,11 +514,11 @@ export class PostFormSettingsPage extends Base {
 
     async changeSubmitButtonText(formName: string, value: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
@@ -520,19 +528,19 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
 
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await this.waitForLoading();
 
         await expect(this.page.locator(Selectors.postFormSettings.submitPostButtonText(value))).toBeVisible();
     }
 
     async enableMultiStep(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
@@ -549,11 +557,11 @@ export class PostFormSettingsPage extends Base {
 
     async validateMultiStepProgessbar(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsStepStart);
         if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
@@ -569,19 +577,19 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
 
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await this.waitForLoading();
 
         await expect(this.page.locator(Selectors.postFormSettings.multiStepProgressbar)).toBeVisible();
     }
 
     async validateMultiStepByStep(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
@@ -597,19 +605,19 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
 
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await this.waitForLoading();
 
         await expect(this.page.locator(Selectors.postFormSettings.multiStepByStep)).toBeVisible();
     }
 
     async disableMultiStep(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
@@ -636,11 +644,11 @@ export class PostFormSettingsPage extends Base {
 
     async setPostUpdateStatus(formName: string, status: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.afterPostSettingsHeader);
@@ -658,11 +666,11 @@ export class PostFormSettingsPage extends Base {
 
     async setPostUpdateMessage(formName: string, message: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.afterPostSettingsHeader);
@@ -677,11 +685,11 @@ export class PostFormSettingsPage extends Base {
 
     async setLockUserEditingAfter(formName: string, hours: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.afterPostSettingsHeader);
@@ -696,11 +704,11 @@ export class PostFormSettingsPage extends Base {
 
     async setUpdatePostButtonText(formName: string, buttonText: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.afterPostSettingsHeader);
@@ -712,22 +720,22 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
 
-        await this.page.goto(Urls.baseUrl + '/account/?section=post', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/account/?section=post' );
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         await expect(this.page.locator(Selectors.postFormSettings.submitPostButtonText(buttonText))).toBeVisible();
     }
 
     async validatePostUpdateStatusInForm(postTitle: string, postContent: string, postExcerpt: string, expectedStatus: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/account/?section=post', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/account/?section=post' );
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
 
@@ -739,11 +747,11 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
-        await this.page.waitForTimeout(1000);
+        await this.waitForLoading();
         // await this.assertionValidate(Selectors.postFormSettings.checkSuccessMessage);
 
-        await this.page.goto(Urls.baseUrl + '/account/?section=post', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/account/?section=post' );
+        await this.waitForLoading();
         const newPostTitle = await this.page.innerText(Selectors.postFormSettings.postTitleColumn);
         if (postTitle == newPostTitle) {
             const newPostStatus = await this.page.innerText(Selectors.postFormSettings.postStatusColumn);
@@ -753,12 +761,12 @@ export class PostFormSettingsPage extends Base {
 
     async pendingToLive() {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/edit.php', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/edit.php' );
+        await this.waitForLoading();
 
         await this.page.hover(Selectors.postFormSettings.quickEditButtonContainer);
         await this.validateAndClick(Selectors.postFormSettings.quickEditButton);
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         await this.page.selectOption(Selectors.postFormSettings.statusDropdown, 'publish');
         await this.validateAndClick(Selectors.postFormSettings.updateStatus);        
@@ -767,11 +775,11 @@ export class PostFormSettingsPage extends Base {
 
     async validatePostUpdateMessageInForm(postTitle: string, postContent: string, postExcerpt: string, expectedMessage: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/account/?section=post', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/account/?section=post' );
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
 
@@ -792,11 +800,11 @@ export class PostFormSettingsPage extends Base {
 
     async setUpdatePostRedirectionToUpdatedPost(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.afterPostSettingsHeader);
@@ -814,11 +822,11 @@ export class PostFormSettingsPage extends Base {
 
     async setUpdatePostRedirectionToSamePage(formName: string, message: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.afterPostSettingsHeader);
@@ -836,11 +844,11 @@ export class PostFormSettingsPage extends Base {
 
     async setUpdatePostRedirectionToPage(formName: string, pageName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.afterPostSettingsHeader);
@@ -852,7 +860,7 @@ export class PostFormSettingsPage extends Base {
         // Select "to a page"
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionOption('page'));
 
-        await this.page.waitForTimeout(500);
+        await this.page.waitForTimeout(200);
 
         // Select the specific page
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionPageContainer);
@@ -865,11 +873,11 @@ export class PostFormSettingsPage extends Base {
 
     async setUpdatePostRedirectionToCustomUrl(formName: string, customUrl: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.afterPostSettingsHeader);
@@ -890,11 +898,11 @@ export class PostFormSettingsPage extends Base {
 
     async validateUpdatePostRedirectionToPost(postTitle: string, postContent: string, postExcerpt: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/account/?section=post', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/account/?section=post' );
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         // Fill post title
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
@@ -907,18 +915,18 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
-        await this.page.waitForTimeout(1000);
+        await this.waitForLoading();
 
         await expect(this.page.locator(Selectors.postFormSettings.checkPostTitle(postTitle))).toBeVisible();
     }
 
     async validateUpdatePostRedirectionToSamePage(postTitle: string, postContent: string, postExcerpt: string, message: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/account/?section=post', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/account/?section=post' );
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
         // Fill post title
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
 
@@ -930,7 +938,7 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
-        await this.page.waitForTimeout(1000);
+        await this.waitForLoading();
 
         const successMessage = await this.page.innerText(Selectors.postFormSettings.checkSuccessMessage);
 
@@ -939,11 +947,11 @@ export class PostFormSettingsPage extends Base {
 
     async validateUpdatePostRedirectionToPage(postTitle: string, postContent: string, postExcerpt: string, pageTitle: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/account/?section=post', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/account/?section=post' );
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
 
@@ -955,18 +963,18 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
-        await this.page.waitForTimeout(1000);
+        await this.waitForLoading();
 
         await expect(this.page.locator(Selectors.postFormSettings.checkPageTitle(pageTitle))).toBeVisible();
     }
 
     async validateUpdatePostRedirectionToUrl(postTitle: string, postContent: string, postExcerpt: string, expectedUrl: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/account/?section=post', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/account/?section=post' );
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         // Fill post title
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
@@ -979,18 +987,18 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
-        await this.page.waitForTimeout(1000);
+        await this.waitForLoading();
 
         await expect(this.page).toHaveURL(expectedUrl);
     }
 
     async enablePayPerPost(formName: string, cost: string, successPage: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
@@ -1017,11 +1025,11 @@ export class PostFormSettingsPage extends Base {
 
     async disablePayPerPost(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
         
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
@@ -1038,8 +1046,8 @@ export class PostFormSettingsPage extends Base {
 
     async createPostWithPayment(postTitle: string, postContent: string, postExcerpt: string, cost: string, successPage: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await this.waitForLoading();
 
         const payPerPostInfo = await this.page.innerText(Selectors.postFormSettings.payPerPostInfo);
         expect(payPerPostInfo).toContain(`There is a $${cost} charge to add a new post`);
@@ -1053,13 +1061,13 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
-        await this.page.waitForTimeout(1000);
+        await this.waitForLoading();
 
         const validateCost = await this.page.innerText(Selectors.postFormSettings.validatePayPerPostCost);
         expect(validateCost).toContain(`$${cost}`);
 
         await this.validateAndClick(Selectors.postFormSettings.checkBankButton);
-        await this.page.waitForTimeout(1000);
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.proceedPaymentButton);
 
@@ -1069,20 +1077,20 @@ export class PostFormSettingsPage extends Base {
 
     async acceptPayment() {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf_transaction', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf_transaction' );
+        await this.waitForLoading();
 
         await this.page.hover(Selectors.postFormSettings.transactionTableRow);
 
         await this.validateAndClick(Selectors.postFormSettings.acceptPayment);
-        await this.page.waitForTimeout(1000);
+        await this.waitForLoading();
 
     }
 
     async validatePayPerPost() {
 
-        await this.page.goto(Urls.baseUrl + '/account/?section=post', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/account/?section=post' );
+        await this.waitForLoading();
 
         const newPostStatus = await this.page.innerText(Selectors.postFormSettings.postStatusColumn);
         await expect(newPostStatus).toContain('Live');
@@ -1092,12 +1100,12 @@ export class PostFormSettingsPage extends Base {
     // Enable new post notification
     async enableNewPostNotification(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
@@ -1124,12 +1132,12 @@ export class PostFormSettingsPage extends Base {
     // Disable new post notification
     async disableNewPostNotification(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
@@ -1153,12 +1161,12 @@ export class PostFormSettingsPage extends Base {
     // Modify notification email settings
     async modifyNotificationEmail(formName: string, emailAddress: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
@@ -1182,12 +1190,12 @@ export class PostFormSettingsPage extends Base {
     // Modify notification subject
     async modifyNotificationSubject(formName: string, emailSubject: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
@@ -1211,12 +1219,12 @@ export class PostFormSettingsPage extends Base {
     // Modify notification body with template tags
     async modifyNotificationBodyWithTemplateTags(formName: string, emailBody: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
@@ -1240,12 +1248,12 @@ export class PostFormSettingsPage extends Base {
     // Click template tags for notification body
     async clickTemplateTagsForNotification(formName: string, tags: string[]) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
@@ -1261,8 +1269,12 @@ export class PostFormSettingsPage extends Base {
             const tagSelector = Selectors.postFormSettings.notificationSettingsSection.templateTagPointer(tag, '1');
             await this.validateAndClick(tagSelector);
             try{
-                await this.assertionValidate('//span[@data-original-title="Copied!"]');
-                await this.page.waitForTimeout(2000);
+                // Clipboard validation (requires Chromium, headed mode, and --enable-experimental-web-platform-features)
+                const clipboardText = await this.page.evaluate(async () => {
+                    if (!navigator.clipboard) throw new Error('Clipboard API not available. Make sure to run Chromium with --enable-experimental-web-platform-features');
+                    return await navigator.clipboard.readText();
+                });
+                expect(clipboardText).toBe(tag);
             }catch(error){
                 console.log(`Clipboard validation skipped for ${tag}: ${error.message}`);
             }
@@ -1278,12 +1290,12 @@ export class PostFormSettingsPage extends Base {
     // Validate notification settings in form
     async validateNotificationSettingsEnabled(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
@@ -1302,7 +1314,8 @@ export class PostFormSettingsPage extends Base {
     // Submit post and validate notification is sent (simulate)
     async submitPostAndValidateNotificationFE(postTitle: string, postContent: string, postExcerpt: string, emailSubject: string, multipleEmails: string) {
         // Go to frontend post submission page
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post', { waitUntil: 'domcontentloaded' });
+        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await this.waitForLoading();
 
         // Fill post details
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
@@ -1315,11 +1328,11 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
-        await this.page.waitForTimeout(1000);
+        await this.page.waitForTimeout(500);
 
         // Validate notification is sent
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wp-mail-log', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wp-mail-log' );
+        await this.waitForLoading();
 
         const sentEmailAddress = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress);
         expect(sentEmailAddress).toBe(multipleEmails);
@@ -1328,7 +1341,6 @@ export class PostFormSettingsPage extends Base {
         expect(sentEmailSubject).toBe(emailSubject);
 
         await this.page.hover(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress);
-        await this.page.waitForTimeout(1000);
         await this.validateAndClick(Selectors.postFormSettings.notificationSettingsSection.viewEmailContent);
 
         const sentEmailBody = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.previewEmailContentBody);
@@ -1345,12 +1357,12 @@ export class PostFormSettingsPage extends Base {
     // Test multiple notification emails
     async setMultipleNotificationEmails(formName: string, multipleEmails: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
@@ -1374,12 +1386,12 @@ export class PostFormSettingsPage extends Base {
     // Enable new post notification
     async enableUpdatedPostNotification(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
@@ -1406,12 +1418,12 @@ export class PostFormSettingsPage extends Base {
     // Disable new post notification
     async disableUpdatedPostNotification(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
@@ -1435,12 +1447,12 @@ export class PostFormSettingsPage extends Base {
     // Modify notification email settings
     async modifyUpdatedNotificationEmail(formName: string, emailAddress: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
@@ -1464,12 +1476,12 @@ export class PostFormSettingsPage extends Base {
     // Modify notification subject
     async modifyUpdatedNotificationSubject(formName: string, emailSubject: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
@@ -1493,12 +1505,12 @@ export class PostFormSettingsPage extends Base {
     // Modify notification body with template tags
     async modifyUpdatedNotificationBodyWithTemplateTags(formName: string, emailBody: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
@@ -1522,12 +1534,12 @@ export class PostFormSettingsPage extends Base {
     // Click template tags for notification body
     async clickTemplateTagsForUpdatedNotification(formName: string, tags: string[]) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
@@ -1543,8 +1555,12 @@ export class PostFormSettingsPage extends Base {
             const tagSelector = Selectors.postFormSettings.notificationSettingsSection.templateTagPointer(tag, '2');
             await this.validateAndClick(tagSelector);
             try{
-                await this.assertionValidate('//span[@data-original-title="Copied!"]');
-                await this.page.waitForTimeout(2500);
+                // Clipboard validation (requires Chromium, headed mode, and --enable-experimental-web-platform-features)
+                const clipboardText = await this.page.evaluate(async () => {
+                    if (!navigator.clipboard) throw new Error('Clipboard API not available. Make sure to run Chromium with --enable-experimental-web-platform-features');
+                    return await navigator.clipboard.readText();
+                });
+                expect(clipboardText).toBe(tag);
             }catch(error){
                 console.log(`Clipboard validation skipped for ${tag}: ${error.message}`);
             }
@@ -1560,12 +1576,12 @@ export class PostFormSettingsPage extends Base {
     // Validate notification settings in form
     async validateUpdatedNotificationSettingsEnabled(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
@@ -1582,13 +1598,13 @@ export class PostFormSettingsPage extends Base {
     }
 
     // Submit post and validate notification is sent (simulate)
-    async submitPostAndValidateUpdatedNotificationFE(postTitle: string, postContent: string, postExcerpt: string, emailSubject: string, multipleEmails: string) {
+    async submitPostAndValidateUpdatedNotificationFE(previousPostTitle: string, postTitle: string, postContent: string, postExcerpt: string, emailSubject: string, multipleEmails: string) {
         // Go to frontend post submission page
-        await this.page.goto(Urls.baseUrl + '/account/?section=post', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/account/?section=post' );
+        await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         // Fill post details
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
@@ -1601,11 +1617,11 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
-        await this.page.waitForTimeout(1000);
+        await this.page.waitForTimeout(500);
 
         // Validate notification is sent
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wp-mail-log', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wp-mail-log');
+        await this.waitForLoading();
 
         const sentEmailAddress = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress);
         expect(sentEmailAddress).toBe(multipleEmails);
@@ -1614,7 +1630,6 @@ export class PostFormSettingsPage extends Base {
         expect(sentEmailSubject).toBe(emailSubject);
 
         await this.page.hover(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress);
-        await this.page.waitForTimeout(1000);
         await this.validateAndClick(Selectors.postFormSettings.notificationSettingsSection.viewEmailContent);
 
         const sentEmailBody = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.previewEmailContentBody);
@@ -1622,7 +1637,7 @@ export class PostFormSettingsPage extends Base {
         expect(sentEmailBody).toContain(postContent);
         expect(sentEmailBody).toContain(postExcerpt);
         expect(sentEmailBody).toContain('Music');
-        const postUrl = postTitle.toLowerCase().replace(/\s+/g, '-');
+        const postUrl = previousPostTitle.toLowerCase().replace(/\s+/g, '-');
         expect(sentEmailBody).toContain(Urls.baseUrl + `/${postUrl}/`);
         const reviewUrlPattern = Urls.baseUrl + `/wp-admin/post.php?action=edit&post=`;
         expect(sentEmailBody).toMatch(new RegExp(`${reviewUrlPattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\d+`));
@@ -1631,12 +1646,12 @@ export class PostFormSettingsPage extends Base {
     // Test multiple notification emails
     async setMultipleUpdatedNotificationEmails(formName: string, multipleEmails: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms', { waitUntil: 'domcontentloaded' });
-        await this.page.waitForLoadState('networkidle');
+        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await this.waitForLoading();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        await this.page.waitForLoadState('networkidle');
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);

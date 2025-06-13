@@ -24,8 +24,10 @@ export class BasicLoginPage extends Base {
 
         //Go to BackEnd
         await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'domcontentloaded' }),
+            this.page.goto(Urls.baseUrl + '/wp-admin/' ),
         ]);
+        await this.page.reload();
+        await this.waitForLoading();
 
         const emailStateCheck = await this.page.isVisible(Selectors.login.basicLogin.loginEmailField);
         //if in BackEnd or FrontEnd
@@ -47,8 +49,9 @@ export class BasicLoginPage extends Base {
         const adminPassword = password;
 
         await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'domcontentloaded' }),
+            this.page.goto(Urls.baseUrl + '/wp-admin/' ),
         ]);
+        await this.waitForLoading();
 
         const emailStateCheck = await this.page.isVisible(Selectors.login.basicLogin.loginEmailField);
         //if in BackEnd or FrontEnd
@@ -72,11 +75,9 @@ export class BasicLoginPage extends Base {
         //Go to BackEnd
         await Promise.all([
 
-            this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'domcontentloaded' }),
+            this.page.goto(Urls.baseUrl + '/wp-admin/' ),
         ]);
-
-        //Validate LOGIN
-        await this.page.waitForLoadState('domcontentloaded');
+        await this.waitForLoading();
         await this.assertionValidate(Selectors.login.validateBasicLogin.logingSuccessDashboard);
     }
 

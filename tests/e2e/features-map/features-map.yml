@@ -1,7 +1,4 @@
 features:
-  # Reset Site
-  - id: RS0001
-    name: Admin is resetting Site
   # Login and Setup
   - id: LS0001
     name: Admin is logging into Admin-Dashboard
@@ -44,9 +41,11 @@ features:
   - id: LS0020
     name: Admin is enabling payment gateway bank
   - id: LS0021
+    name: Admin is activating dokan lite
+  - id: LS0022
     name: Admin is logging out succesfully
 
-  # Post Forms (Lite)
+  # Post Forms
   - id: PF0001
     name: Admin is creating Blank Form with > PostFields
   - id: PF0002
@@ -66,7 +65,7 @@ features:
   - id: PF0009
     name: User is Submitting Form from Frontend
 
-  # Registration Forms (Pro)
+  # Registration Forms
   - id: RF0001
     name: Admin is checking Registration Forms - Pro Feature Page
   - id: RF0002

@@ -14,13 +14,21 @@ export default function postFormGeneralSettingsTestsPro() {
     let browser: Browser;
     let context: BrowserContext;
     let page: Page;
+    let postTitle: string = '';
+    let postContent: string = '';
+    let postExcerpt: string = '';
 
     test.beforeAll(async () => {
         // Clear state file
         fs.writeFileSync('state.json', JSON.stringify({ cookies: [], origins: [] }));
         
         // Launch browser
-        browser = await chromium.launch();
+        const args = ['--enable-experimental-web-platform-features'];
+        if (!Urls.baseUrl.startsWith('http://localhost')) {
+            args.push(`--unsafely-treat-insecure-origin-as-secure=${Urls.baseUrl}`);
+        }
+
+        browser = await chromium.launch({args});
         
         // Create a single context
         context = await browser.newContext();
@@ -38,9 +46,6 @@ export default function postFormGeneralSettingsTestsPro() {
          */
 
         let formName: string;
-        const postTitle = faker.word.words(3);
-        const postContent = faker.lorem.paragraph();
-        const postExcerpt = faker.lorem.paragraph();
         const category = 'Music'; // Using one of the default categories from the screenshot
         const emailAddress = faker.internet.email();
         const emailSubject = faker.word.words(3);
@@ -130,11 +135,12 @@ export default function postFormGeneralSettingsTestsPro() {
         });
 
         test.skip('PFS0076 : Admin is submitting post and validating Updated post notification from FE', { tag: ['@Pro'] }, async () => {
-            const postTitle = faker.word.words(3);
-            const postContent = faker.lorem.paragraph();
-            const postExcerpt = faker.lorem.paragraph();
+            let previousPostTitle = postTitle;
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.submitPostAndValidateUpdatedNotificationFE(postTitle, postContent, postExcerpt, emailSubject, multipleEmails);
+            await postFormSettings.submitPostAndValidateUpdatedNotificationFE(previousPostTitle, postTitle, postContent, postExcerpt, emailSubject, multipleEmails);
         });
 
         test('PFS0077 : Admin is disabling updated post notification', { tag: ['@Pro'] }, async () => {

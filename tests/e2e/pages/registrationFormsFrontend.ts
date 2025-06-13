@@ -40,7 +40,7 @@ export class RegistrationFormsFrontendPage extends Base {
         //Go to Registration page - FrontEnd
         const wpufRegistrationFormPage = Urls.baseUrl + '/registration-page/';
         await Promise.all([
-            this.page.goto(wpufRegistrationFormPage, { waitUntil: 'domcontentloaded' }),
+            this.page.goto(wpufRegistrationFormPage ),
         ]);
 
         //Validate Registration page
@@ -103,7 +103,7 @@ export class RegistrationFormsFrontendPage extends Base {
     async validateUserRegisteredAdminEnd() {
         const wpufRegistrationFormPage = Urls.baseUrl + '/wp-admin/';
         await Promise.all([
-            this.page.goto(wpufRegistrationFormPage, { waitUntil: 'domcontentloaded' }),
+            this.page.goto(wpufRegistrationFormPage ),
         ]);
 
         //Validate Registered User

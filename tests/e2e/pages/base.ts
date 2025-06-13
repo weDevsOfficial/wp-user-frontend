@@ -38,7 +38,7 @@ export class Base {
             const element = elements.nth(i);
             if (await element.isVisible()) {
                 await element.click();
-                return; // Exit the function once a visible element is clicked
+                //return; // Exit the function once a visible element is clicked
             }
         }
 

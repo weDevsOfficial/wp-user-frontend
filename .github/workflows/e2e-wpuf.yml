@@ -15,12 +15,13 @@ on:
     # 1:00 AM Bangladesh Time
     - cron: '0 19 * * 0'
   push:
-    branches: [develop]
+    branches: ['**']
   pull_request:
-    branches: [develop]
+    branches: ['**']
 
 jobs:
   test:
+    if: github.repository_owner != 'weDevsOfficial' || github.repository != 'weDevsOfficial/wp-user-frontend'
     timeout-minutes: 120
     runs-on: ubuntu-latest    
     

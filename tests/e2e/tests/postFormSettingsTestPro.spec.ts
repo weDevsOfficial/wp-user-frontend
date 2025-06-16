@@ -147,6 +147,22 @@ export default function postFormGeneralSettingsTestsPro() {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.disableUpdatedPostNotification(formName);
         });
+
+        test.skip('PFS0085 : Admin is enabling conditional logic on form submission', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            
+        });
+
+        test.skip('PFS0086 : Admin is validating conditional logic on form submission', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            
+        });
+
+        test('PFS0087 : Admin is enabling post expiration', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.enablePostExpiration(formName);
+        });
+
         
     });
 

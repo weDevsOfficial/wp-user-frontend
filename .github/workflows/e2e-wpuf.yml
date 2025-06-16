@@ -21,8 +21,8 @@ on:
 
 jobs:
   test:
-    if: github.repository_owner != 'weDevsOfficial' || github.repository != 'weDevsOfficial/wp-user-frontend'
-    
+    if: github.repository_owner != 'weDevsOfficial' || github.repository != 'weDevsOfficial/wp-user-frontend' || github.repository != 'weDevsOfficial/wpuf-pro'
+
     timeout-minutes: 120
     runs-on: ubuntu-latest    
     
@@ -35,9 +35,10 @@ jobs:
       
       # Checkout WP-User-Frontend repo
       - name: Checkout testing repo
+        id: clone-wp-user-prontend
         uses: actions/checkout@v4
 
-      # Use Node.js 18
+      # Use desired version of NodeJS
       - name: Use desired version of NodeJS
         uses: actions/setup-node@v4
         with:
@@ -139,6 +140,7 @@ jobs:
           PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq -r '.dependencies["@playwright/test"].version') echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> "$GITHUB_ENV"
 
 
+      # Cache browser binaries, cache key is based on Playwright version and OS
       - name: Cache playwright binaries
         id: playwright-cache
         uses: actions/cache@v4
@@ -149,6 +151,7 @@ jobs:
             restore-keys: |
                 ${{ runner.os }}-playwright-
 
+      # Install browser binaries & OS dependencies if cache missed
       - name: Install Playwright browser binaries & OS dependencies
         id: pw-install
         if: steps.playwright-cache.outputs.cache-hit != 'true'
@@ -170,7 +173,7 @@ jobs:
           RECAPTCHA_SECRET_KEY: ${{ secrets.RECAPTCHA_SECRET_KEY }}
           CLOUDFLARE_TURNSTILE_SITE_KEY: ${{ secrets.CLOUDFLARE_TURNSTILE_SITE_KEY }}
           CLOUDFLARE_TURNSTILE_SECRET_KEY: ${{ secrets.CLOUDFLARE_TURNSTILE_SECRET_KEY }}
-        if: success()
+        if: success() && (github.event_name != 'workflow_dispatch' || ( github.event_name == 'workflow_dispatch' && (github.event.inputs.testsuite == 'E2E' || github.event.inputs.testsuite == 'All')))
         working-directory: tests/e2e
         run: |
           mkdir -p test-results
@@ -193,10 +196,3 @@ jobs:
             tests/e2e/test-results
           if-no-files-found: warn
           retention-days: 3
-
-      # - name: Publish HTML report to GH Pages
-      #   uses: peaceiris/actions-gh-pages@v4
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     publish_branch: gh-pages
-      #     publish_dir: tests/e2e/playwright-report || tests/e2e/test-results

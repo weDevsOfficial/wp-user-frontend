@@ -3,7 +3,7 @@
     "plugins": [
         "../../",
         "../../../../",
-        "../../wp-mail-log",
+        "../../../../wp-mail-log",
         "../../../../dokan-lite",
         "../../../../woocommerce",
         "../../../../easy-digital-downloads",

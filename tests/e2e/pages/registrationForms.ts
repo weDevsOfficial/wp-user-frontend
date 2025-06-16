@@ -21,10 +21,7 @@ export class RegistrationFormsPage extends Base {
     //Registration forms page - only WPUF-Lite activated
     async validateRegistrationFormsProFeature() {
         // Visit Registration forms page
-        const wpufRegistrationFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
-        await Promise.all([
-            this.page.goto(wpufRegistrationFormPage ),
-        ]);
+        await Promise.all([this.page.goto(this.wpufRegistrationFormPage)]);
 
         const validateWPUFProActivate = await this.page.isVisible(Selectors.registrationForms.navigatePage_RF.checkAddButton_RF);
         if (validateWPUFProActivate == true) {
@@ -45,10 +42,7 @@ export class RegistrationFormsPage extends Base {
     //Create Registration page using Shortcode
     async createRegistrationPageUsingShortcodeLite(registrationFormPageTitle: string) {
         // Visit Registration forms page
-        const wpufRegistrationFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
-        await Promise.all([
-            this.page.goto(wpufRegistrationFormPage ),
-        ]);
+        await Promise.all([this.page.goto(this.wpufRegistrationFormPage)]);
 
         let storeShortcode: string = '';
 
@@ -57,10 +51,7 @@ export class RegistrationFormsPage extends Base {
         console.log(storeShortcode);
 
         //Visit Pages
-        const visitPagesAdminMenuOption = Urls.baseUrl + '/wp-admin/edit.php?post_type=page';
-        await Promise.all([
-            this.page.goto(visitPagesAdminMenuOption ),
-        ]);
+        await Promise.all([this.page.goto(this.pagesPage)]);
 
         //Add New Page
         await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addNewPage);
@@ -101,9 +92,7 @@ export class RegistrationFormsPage extends Base {
 
 
         //Go to Pages 
-        await Promise.all([
-            this.page.goto(visitPagesAdminMenuOption ),
-        ]);
+        await Promise.all([this.page.goto(this.pagesPage)]);
 
         //Validate Page Created
         //Search Page
@@ -134,10 +123,7 @@ export class RegistrationFormsPage extends Base {
     //BlankForm
     async createBlankForm_RF(newRegistrationName: string) {
         //Visit Post Form Page
-        const wpufRegistrationFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
-        await Promise.all([
-            this.page.goto(wpufRegistrationFormPage ),
-        ]);
+        await Promise.all([this.page.goto(this.wpufRegistrationFormPage)]);
         //CreateNewRegistrationForm
 
         await this.validateAndClick(Selectors.registrationForms.createBlankForm_RF.clickRegistrationFormMenuOption);

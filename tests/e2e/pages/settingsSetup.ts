@@ -20,10 +20,7 @@ export class SettingsSetupPage extends Base {
     //WPUF Setup
     async wpufSetup() {
         //WPUF Setup
-        const wpufSetupPage = Urls.baseUrl + '/wp-admin/index.php?page=wpuf-setup';
-        await Promise.all([
-            this.page.goto(wpufSetupPage ),
-        ]);
+        await Promise.all([this.page.goto(this.wpufSetupPage)]);
 
         const wpufSetup = await this.page.isVisible(Selectors.settingsSetup.wpufSetup.validateWPUFSetupPage);
         if (wpufSetup == true) {
@@ -46,9 +43,7 @@ export class SettingsSetupPage extends Base {
     //Plugin Activate - Lite
     async pluginStatusCheckLite() {
         //Go to AdminEnd
-        await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/plugins.php' ),
-        ]);
+        await Promise.all([this.page.goto(this.pluginsPage )]);
         await this.waitForLoading();
 
         //Activate Lite
@@ -59,9 +54,7 @@ export class SettingsSetupPage extends Base {
     //Plugin Activate - Pro
     async pluginStatusCheckPro() {
         //Go to AdminEnd
-        await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/plugins.php' ),
-        ]);
+        await Promise.all([this.page.goto(this.pluginsPage )]);
         await this.waitForLoading();
 
         //Activate Pro
@@ -72,9 +65,7 @@ export class SettingsSetupPage extends Base {
     //Plugin Activate - Pro
     async licenseActivateWPUFPro() {
         //Go to AdminEnd
-        await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/plugins.php' ),
-        ]);
+        await Promise.all([this.page.goto(this.pluginsPage )]);
         await this.waitForLoading();
 
         //Activate Pro
@@ -84,9 +75,7 @@ export class SettingsSetupPage extends Base {
     //Plugin Activate - Dokan Lite
     async dokanLiteStatusCheck() {
         //Go to AdminEnd
-        await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/plugins.php' ),
-        ]);
+        await Promise.all([this.page.goto(this.pluginsPage )]);
         await this.waitForLoading();
 
         //Activate Dokan Lite
@@ -100,9 +89,7 @@ export class SettingsSetupPage extends Base {
     //Plugin Page - Visit
     async pluginVisitWPUF() {
         //Go to AdminEnd
-        await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/' ),
-        ]);
+        await Promise.all([this.page.goto(this.wpAdminPage )]);
         await this.waitForLoading();
 
         await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
@@ -118,9 +105,7 @@ export class SettingsSetupPage extends Base {
     }
 
     async validateWPUFpages() {
-        await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/edit.php?post_type=page' ),
-        ]);
+        await Promise.all([this.page.goto(this.pagesPage )]);
         await this.waitForLoading();
         //Validate WPUF Pages
         await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufAccountPage);
@@ -137,9 +122,7 @@ export class SettingsSetupPage extends Base {
 
     async validateWPUFpagesFE() {
         //Go to FrontEnd
-        await Promise.all([
-            this.page.goto(Urls.baseUrl ),
-        ]);
+        await Promise.all([this.page.goto(Urls.baseUrl)]);
         await this.waitForLoading();
         //Validate WPUF Pages
         await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.accountPageFE);
@@ -154,9 +137,7 @@ export class SettingsSetupPage extends Base {
 
     async validateAccountPageTabs() {
 
-        await Promise.all([
-            this.page.goto(Urls.baseUrl ),
-        ]);
+        await Promise.all([this.page.goto(Urls.baseUrl)]);
         await this.waitForLoading();
         await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.accountPageFE);
         await this.validateAndClick(Selectors.settingsSetup.accountPageTabs.dashboardTab);
@@ -177,8 +158,6 @@ export class SettingsSetupPage extends Base {
 
     //Plugin Activate - Lite
     async activateWPUFLite() {
-        //Go to Plugins page
-        const pluginsPage = Urls.baseUrl + '/wp-admin/plugins.php';
         // Take screenshot and attach to test reportAdd commentMore actions
         const screenshot = await this.page.screenshot({ 
             fullPage: true,
@@ -222,11 +201,11 @@ export class SettingsSetupPage extends Base {
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
                 await this.waitForLoading();
                 await Promise.all([
-                    this.page.goto(pluginsPage ),
+                    this.page.goto(this.pluginsPage ),
                 ]);
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginDeactivate);
 
-                await this.page.goto(Urls.baseUrl + '/wp-admin/');
+                await Promise.all([this.page.goto(this.wpAdminPage )]);
                 await this.waitForLoading();
                 await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
                 console.log('WPUF-Lite Status: is Activated');
@@ -244,8 +223,6 @@ export class SettingsSetupPage extends Base {
 
     //Plugin Activate - Pro
     async activateWPUFPro() {
-        //Go to Plugins page
-        const pluginsPage = Urls.baseUrl + '/wp-admin/plugins.php';
         // Take screenshot and attach to test reportAdd commentMore actions
         const screenshot = await this.page.screenshot({ 
             fullPage: true,
@@ -265,12 +242,10 @@ export class SettingsSetupPage extends Base {
                 //Plugins were DeActive
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginPro);
                 await this.waitForLoading();
-                await Promise.all([
-                    this.page.goto(pluginsPage ),
-                ]);
+                await Promise.all([this.page.goto(this.pluginsPage)]);
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginProDeactivate);
 
-                await this.page.goto(Urls.baseUrl + '/wp-admin/');
+                await Promise.all([this.page.goto(this.wpAdminPage )]);
                 await this.waitForLoading();
                 const dialogHandler = async (dialog: Dialog) => {
                     if (dialog.type() === 'confirm') {
@@ -298,10 +273,7 @@ export class SettingsSetupPage extends Base {
     //Plugin Activate - Pro
     async activateLicenseWPUFPro() {
         //Go to Plugins page
-        const pluginsPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
-        await Promise.all([
-            this.page.goto(pluginsPage ),
-        ]);
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
 
         await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
         await this.validateAndClick(Selectors.login.basicNavigation.licenseTab);
@@ -327,7 +299,6 @@ export class SettingsSetupPage extends Base {
 
     async activateDokanLite() {
         //Go to Plugins page
-        const pluginsPage = Urls.baseUrl + '/wp-admin/plugins.php';
         
         const ifDokanLite = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.availableDokanLite);
         console.log(ifDokanLite);
@@ -340,15 +311,13 @@ export class SettingsSetupPage extends Base {
                 //Plugins is getting activated here
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickDokanLite);
                 await this.waitForLoading();
-                await Promise.all([
-                    this.page.goto(pluginsPage ),
-                ]);
+                await Promise.all([this.page.goto(this.pluginsPage)]);
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.clickDokanLiteDeactivate);
 
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
                 await this.waitForLoading();
 
-                await this.page.goto(Urls.baseUrl + '/wp-admin/');
+                await Promise.all([this.page.goto(this.wpAdminPage )]);
                 await this.waitForLoading();
                 await this.validateAndClick(Selectors.login.basicNavigation.clickDokanSidebar);
                 console.log('Dokan-Lite Status: is Activated');
@@ -374,10 +343,7 @@ export class SettingsSetupPage extends Base {
     //Change Settings - Login Page
     async changeSettingsSetLoginPageDefault() {
         //Go to WPUF
-        const wpufpostformpage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
-        await Promise.all([
-            this.page.goto(wpufpostformpage ),
-        ]);
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
 
         //Change Settings
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
@@ -412,10 +378,7 @@ export class SettingsSetupPage extends Base {
     //Change Settings - Login Page
     async changeSettingsSetDefaultPostForm(postFormPresetFrontEndTitle: string) {
         //Go to WPUF
-        const wpufpostformpage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
-        await Promise.all([
-            this.page.goto(wpufpostformpage ),
-        ]);
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
 
         //Change Settings
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
@@ -440,10 +403,7 @@ export class SettingsSetupPage extends Base {
     //Change Settings - Registration Page
     async changeSettingsSetRegistrationPage(registrationFormPageTitle: string) {
         //Go to WPUF
-        const wpufPostFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
-        await Promise.all([
-            this.page.goto(wpufPostFormPage ),
-        ]);
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
 
         //Change Settings
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
@@ -472,10 +432,7 @@ export class SettingsSetupPage extends Base {
     //Set Permalink
     async setPermalink() {
         //Go to Settings - Permalink page
-        const settingsPermalinkPage = Urls.baseUrl + '/wp-admin/options-permalink.php';
-        await Promise.all([
-            this.page.goto(settingsPermalinkPage ),
-        ]);
+        await Promise.all([this.page.goto(this.settingsPermalinkPage)]);
 
         await this.page.reload();
         //Custom structure - fill with empty
@@ -494,10 +451,7 @@ export class SettingsSetupPage extends Base {
 
     async allowRegistration() {
         //Go to Settings - General page
-        const settingsGeneralPage = Urls.baseUrl + '/wp-admin/options-general.php';
-        await Promise.all([
-            this.page.goto(settingsGeneralPage ),
-        ]);
+        await Promise.all([this.page.goto(this.settingsPage)]);
 
         await this.page.reload();
         //Allow anyone to register
@@ -514,10 +468,7 @@ export class SettingsSetupPage extends Base {
     //Main Admin
     //New User Create
     async createNewUserAdmin(userName: string, email: string, firstName: string, lastName: string, password: string) {
-        const pluginsPage = Urls.baseUrl + '/wp-admin/';
-        await Promise.all([
-            this.page.goto(pluginsPage ),
-        ]);
+        await Promise.all([this.page.goto(this.wpAdminPage)]);
 
         //Go to Admin-Users
         await this.validateAndClick(Selectors.settingsSetup.createNewUser.clickUserMenuAdmin);
@@ -550,9 +501,7 @@ export class SettingsSetupPage extends Base {
 
     async createPostCategories() {
         //Go to Admin-Users
-        await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/edit-tags.php?taxonomy=category' ),
-        ]);
+        await Promise.all([this.page.goto(this.categoriesPage)]);
         await this.waitForLoading();
         //Add New Category
         //await this.validateAndClick(Selectors.settingsSetup.categories.clickCategoryMenu);
@@ -567,9 +516,7 @@ export class SettingsSetupPage extends Base {
     }
     async createPostTags() {
         //Go to Admin-Users
-        await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/edit-tags.php?taxonomy=post_tag' ),
-        ]);
+        await Promise.all([this.page.goto(this.tagsPage)]);
         await this.waitForLoading();
         //Add New Category
         //await this.validateAndClick(Selectors.settingsSetup.tags.clickTagsMenu);
@@ -585,10 +532,7 @@ export class SettingsSetupPage extends Base {
 
     async addGoogleMapAPIKey(googleMapAPIKey: string) {
         //Go to Settings - General page
-        const settingsGeneralPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-settings';
-        await Promise.all([
-            this.page.goto(settingsGeneralPage ),
-        ]);
+        await Promise.all([this.page.goto(this.wpufSettingsPage)]);
 
         await this.page.reload();
 
@@ -601,10 +545,7 @@ export class SettingsSetupPage extends Base {
 
     async addReCaptchaKeys(recaptchaSiteKey: string, recaptchaSecretKey: string) {
         //Go to Settings - General page
-        const settingsGeneralPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-settings';
-        await Promise.all([
-            this.page.goto(settingsGeneralPage ),
-        ]);
+        await Promise.all([this.page.goto(this.wpufSettingsPage)]);
 
         await this.page.reload();
 
@@ -618,10 +559,7 @@ export class SettingsSetupPage extends Base {
 
     async addCloudflareTurnstileKeys(turnstileSiteKey: string, turnstileSecretKey: string) {
         //Go to Settings - General page
-        const settingsGeneralPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-settings';
-        await Promise.all([
-            this.page.goto(settingsGeneralPage ),
-        ]);
+        await Promise.all([this.page.goto(this.wpufSettingsPage)]);
 
         await this.page.reload();
 
@@ -643,10 +581,7 @@ export class SettingsSetupPage extends Base {
 
     async enablePaymentGatewayBank() {
         //Go to Settings - General page
-        const settingsGeneralPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-settings';
-        await Promise.all([
-            this.page.goto(settingsGeneralPage ),
-        ]);
+        await Promise.all([this.page.goto(this.wpufSettingsPage)]);
         await this.page.reload();
         await this.validateAndClick(Selectors.settingsSetup.payment.clickPaymentTab);
         await this.validateAndClick(Selectors.settingsSetup.payment.clickPaymentGatewayBank);
@@ -659,9 +594,7 @@ export class SettingsSetupPage extends Base {
 
     async resetWordpressSite() {
         //Go to AdminEnd
-        await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/tools.php?page=wp-reset' ),
-        ]);
+        await Promise.all([this.page.goto(this.wpResetPage)]);
         await this.waitForLoading();
         await this.page.reload();
         await this.validateAndClick(Selectors.resetWordpreseSite.reActivateTheme);
@@ -670,15 +603,14 @@ export class SettingsSetupPage extends Base {
         await this.validateAndClick(Selectors.resetWordpreseSite.wpResetSubmitButton);
         await this.validateAndClick(Selectors.resetWordpreseSite.wpResetConfirmWordpressReset);
         await this.page.waitForTimeout(10000);
-        await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/plugins.php' ),
-        ]);
+        await Promise.all([this.page.goto(this.pluginsPage )]);
         await this.waitForLoading();
+        await this.page.reload();
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWCvendors);
         await this.waitForLoading();
-        await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/plugins.php' ),
-        ]);
+        await Promise.all([this.page.goto(this.pluginsPage )]);
+        await this.waitForLoading();
+        await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickDoNotAllow);
         await this.waitForLoading();
     }
 

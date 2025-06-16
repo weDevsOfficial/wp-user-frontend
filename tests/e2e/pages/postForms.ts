@@ -25,10 +25,7 @@ export class PostFormsPage extends Base {
     async createBlankFormPostForm(newPostName: string) {
 
         //Visit Post Form Page
-        const wpufPostFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
-        await Promise.all([
-            this.page.goto(wpufPostFormPage ),
-        ]);
+        await Promise.all([this.page.goto(this.wpufPostFormPage )]);
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();
@@ -57,10 +54,7 @@ export class PostFormsPage extends Base {
     //PresetForm
     async createPresetPostForm(newPostName: string) {
         //Visit Post Form Page
-        const wpufPostFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
-        await Promise.all([
-            this.page.goto(wpufPostFormPage ),
-        ]);
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();
@@ -91,10 +85,7 @@ export class PostFormsPage extends Base {
     //PresetForm
     async createPresetPostFormWithGuestEnabled(newPostName: string) {
         //Visit Post Form Page
-        const wpufPostFormPage = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
-        await Promise.all([
-            this.page.goto(wpufPostFormPage ),
-        ]);
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();

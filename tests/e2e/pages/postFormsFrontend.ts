@@ -36,10 +36,7 @@ export class PostFormsFrontendPage extends Base{
     //Registration forms page - only WPUF-Lite activated
     async createPostFormFrontend(postFormTitle: string) {
         //Go to Accounts page - FrontEnd
-        const wpufRegistrationFormFage = Urls.baseUrl + '/account/';
-        await Promise.all([
-            this.page.goto(wpufRegistrationFormFage ),
-        ]);
+        await Promise.all([this.page.goto(this.accountPage)]);
 
         //Go to Submit Post
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.submitPostSideMenu);

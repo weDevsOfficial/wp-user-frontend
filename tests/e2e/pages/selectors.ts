@@ -271,6 +271,8 @@ export const Selectors = {
 
             // Validate LOGOUT
             logoutSuccess: '//p[normalize-space(text())="You are now logged out."]',
+            signOutButton: '//a[normalize-space()="Sign out"]',
+
         },
     },
 
@@ -724,7 +726,7 @@ export const Selectors = {
         quickEditButton: '(//button[@class="button-link editinline"])[1]',
         statusDropdown: '(//select[@name="_status"])[1]',
         updateStatus: '(//input[@id="_inline_edit"]/following-sibling::button)[1]',
-        payPerPostInfo: '//div[@class="wpuf-info"]',
+        wpufInfo: '//div[@class="wpuf-info"]',
         paymentPageTitle: '//h1[normalize-space(text())="Payment"]',
         validatePayPerPostCost: '//span[@id="wpuf_pay_page_cost"]',
         checkBankButton: '//li[@class="wpuf-gateway-bank"]//input[1]',
@@ -733,6 +735,7 @@ export const Selectors = {
         transactionTableRow: '//tbody//tr[1]',
         acceptPayment: '//a[normalize-space()="Accept"]',
         successMessage: '//div[@class="wpuf-success"]',
+        clickPost: (postTitle: string) => `//a[normalize-space(text())="${postTitle}"]`,
         
 
         // Post Settings Section
@@ -845,59 +848,40 @@ export const Selectors = {
 
         },
 
-        // Display Settings Section
-        displaySettingsSection: {
-            displaySettingsHeader: '//p[contains(text(),"Display Settings")]',
-            
-            // Form Labels
-            showFormLabelsToggle: '//input[@name="wpuf_settings[label_position]"]',
-            
-            // Field Icons
-            showFieldIconsToggle: '//input[@name="wpuf_settings[enable_field_icons]"]',
-            
-            // Required Asterisk
-            showRequiredAsteriskToggle: '//input[@name="wpuf_settings[required_asterisk]"]',
-            
-            // Form Theme
-            formThemeContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[1]',
-            formThemeDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[1]',
-            formThemeOption: (theme: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[@data-value="${theme}"]`,
-            
-            // Field Wrapper Class
-            fieldWrapperClass: '//input[@name="wpuf_settings[field_wrapper_class]"]',
-            
-            // Submit Button Class
-            submitButtonClass: '//input[@name="wpuf_settings[submit_button_class]"]',
-        },
-
         // Advanced Settings Section
         advancedSettingsSection: {
-            advancedSettingsHeader: '//p[contains(text(),"Advanced Settings")]',
-            
-            // Guest Posts
-            allowGuestPostsToggle: '//input[@name="wpuf_settings[guest_post]"]',
-            
-            // Username Generation
-            guestUsernameGeneration: '//input[@name="wpuf_settings[guest_details]"]',
+            advancedSettingsHeader: '//h2[normalize-space()="Advanced"]',
             
             // Comment Status
-            commentStatusContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[1]',
-            commentStatusDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[1]',
+            commentStatusContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[15]',
+            commentStatusDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[15]',
             commentStatusOption: (status: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[@data-value="${status}"]`,
             
-            // Default Post Format
-            defaultPostFormatContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[2]',
-            defaultPostFormatDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[2]',
-            defaultPostFormatOption: (format: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[@data-value="${format}"]`,
-            
-            // Custom CSS
-            customCSS: '//textarea[@name="wpuf_settings[custom_css]"]',
+            commentBox: '//textarea[@id="comment"]',
+            postCommentButton: '//input[@id="submit"]',
+            validateComment: '//ol//li[1]//div[@class="wp-block-comment-content"]',
+
+            limitFormEntriesToggle: '//input[@id="limit_entries"]/following-sibling::span[1]',
+            limitNumberInput: '//input[@id="limit_number"]',
+            limitMessage: '//textarea[@id="limit_message"]',
+
+
+        },
+
+        // Post Expiration Settings Section
+        postExpirationSettingsSection: {
+            postExpirationSettingsHeader: '//h2[normalize-space()="Post Expiration"]',
+            postExpirationToggle: '//input[@id="enable_post_expiration"]/following-sibling::span[1]',
+            postExpirationTime: '//input[@id="expiration_time_value"]',
+            enablePostExpirationMessage: '//input[@id="enable_mail_after_expired"]',
+            postExpirationMessage: '//textarea[@id="post_expiration_message"]',
         },
 
         // Navigation tabs
         notificationSettingsTab: '//li[@data-settings="notification_settings"]',
         paymentSettingsTab: '//li[@data-settings="payment_settings"]',
         displaySettingsTab: '//li[@data-settings="display_settings"]',
-        advancedSettingsTab: '//li[@data-settings="advanced_settings"]',
+        advancedSettingsTab: '//li[@data-settings="advanced"]',
+        postExpirationSettingsTab: '//li[normalize-space()="Post Expiration"]',
     },
 };

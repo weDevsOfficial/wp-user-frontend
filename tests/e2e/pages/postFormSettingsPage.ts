@@ -16,9 +16,7 @@ export class PostFormSettingsPage extends Base {
 
         const FieldOptionsCommon = new FieldOptionsCommonPage(this.page);
         // Go to post forms page
-        await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' ),
-        ]);
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         // Click Add New button
@@ -40,9 +38,7 @@ export class PostFormSettingsPage extends Base {
     // Change post type in form settings
     async changePostType(postType: string, formName: string) {
         // Go to post forms page
-        await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' ),
-        ]);
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         // Click on the form name
@@ -75,9 +71,7 @@ export class PostFormSettingsPage extends Base {
     // Validate post type in list
     async validatePostTypeInList(expectedPostType: string) {
         // Go to post forms list
-        await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' ),
-        ]);
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         // Find the row containing the form name
@@ -91,7 +85,7 @@ export class PostFormSettingsPage extends Base {
     // Submit a post from frontend and validate post type
     async validatePostTypeFE(postTitle: string, postContent: string, postExcerpt: string) {
 
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
         await this.waitForLoading();
 
         // Fill post title
@@ -117,7 +111,7 @@ export class PostFormSettingsPage extends Base {
     async setDefaultCategory(category: string, formName: string) {
 
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         // Wait for form list to load and click on the form
@@ -160,7 +154,7 @@ export class PostFormSettingsPage extends Base {
 
     // Submit a post and validate category
     async submitAndValidateCategory(postTitle: string, postContent: string, postExcerpt: string, category: string) {
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
         await this.waitForLoading();
 
         // Fill post title
@@ -184,7 +178,7 @@ export class PostFormSettingsPage extends Base {
     // Set post redirection to newly created post
     async setPostRedirectionToPost(formName: string, value: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         // Click on the form
@@ -213,7 +207,7 @@ export class PostFormSettingsPage extends Base {
     // Set post redirection to newly created post
     async setPostRedirectionToSamePage(formName: string, value: string, message: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         // Click on the form
@@ -244,7 +238,7 @@ export class PostFormSettingsPage extends Base {
     // Set post redirection to another page
     async setPostRedirectionToPage(formName: string, value: string, text: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         // Click on the form
@@ -259,7 +253,7 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionContainer);
 
         // Select the page
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown);
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown, { state: 'visible' });
 
         // Set success message
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionOption(value));
@@ -268,7 +262,7 @@ export class PostFormSettingsPage extends Base {
 
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionPageContainer);
 
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionPageDropdown);
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionPageDropdown, { state: 'visible' });
 
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionPageOption(text));
 
@@ -281,7 +275,7 @@ export class PostFormSettingsPage extends Base {
     // Set post redirection to URL
     async setPostRedirectionToUrl(formName: string, value: string, url: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         // Click on the form
@@ -296,7 +290,7 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionContainer);
 
         // Enter the URL
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown);
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown, { state: 'visible' });
 
         // Set success message
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionOption(value));
@@ -311,7 +305,7 @@ export class PostFormSettingsPage extends Base {
     // Validate redirection after post submission
     async validateRedirectionToPost(postTitle: string, postContent: string, postExcerpt: string) {
         // Go to submit post page
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
         await this.waitForLoading();
 
         // Fill post title
@@ -333,7 +327,7 @@ export class PostFormSettingsPage extends Base {
     // Validate redirection after post submission
     async validateRedirectionToSamePage(postTitle: string, postContent: string, postExcerpt: string, message: string) {
         // Go to submit post page
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
         await this.waitForLoading();
 
         // Fill post title
@@ -357,7 +351,7 @@ export class PostFormSettingsPage extends Base {
     // Validate redirection after post submission
     async validateRedirectionToPage(postTitle: string, postContent: string, postExcerpt: string, pageTitle: string) {
         // Go to submit post page
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
         await this.waitForLoading();
 
         // Fill post title
@@ -379,7 +373,7 @@ export class PostFormSettingsPage extends Base {
     // Validate redirection after post submission
     async validateRedirectionToUrl(postTitle: string, postContent: string, postExcerpt: string, expectedUrl: string) {
         // Go to submit post page
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
         await this.waitForLoading();
 
         // Fill post title
@@ -401,7 +395,7 @@ export class PostFormSettingsPage extends Base {
     // Set post submission status
     async setPostSubmissionStatus(formName: string, value: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -411,7 +405,7 @@ export class PostFormSettingsPage extends Base {
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
 
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postSubmissionStatusContainer);
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postSubmissionStatusDropdown);
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postSubmissionStatusDropdown, { state: 'visible' });
 
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postSubmissionStatusOption(value));
 
@@ -423,9 +417,7 @@ export class PostFormSettingsPage extends Base {
     // Validate post type in list
     async validatePostSubmissionStatusInList(expectedPostStatus: string) {
         // Go to post forms list
-        await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' ),
-        ]);
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         // Find the row containing the form name
@@ -438,7 +430,7 @@ export class PostFormSettingsPage extends Base {
     // Validate submitted post status
     async validateSubmittedPostStatusFE(postTitle: string, postContent: string, postExcerpt: string, value: string) {
         // Go to submit post page
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
         await this.waitForLoading();
 
         // Fill post title
@@ -452,9 +444,9 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
-        await this.page.waitForTimeout(300);
+        await this.page.waitForTimeout(1000);
 
-        await this.page.goto(Urls.baseUrl + '/account/?section=post' );
+        await Promise.all([this.page.goto(this.wpufPostPage)]);
         await this.waitForLoading();
 
         const newPostTitle = await this.page.innerText(Selectors.postFormSettings.postTitleColumn);
@@ -467,7 +459,7 @@ export class PostFormSettingsPage extends Base {
 
     async setPostSavingAsDraft(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -485,7 +477,7 @@ export class PostFormSettingsPage extends Base {
 
     async savingPostAsDraft(postTitle: string, postContent: string, postExcerpt: string, value: string) {
         // Go to submit post page
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
         await this.waitForLoading();
 
         // Fill post title
@@ -502,7 +494,7 @@ export class PostFormSettingsPage extends Base {
         await this.page.waitForTimeout(200);
         await expect(this.page.locator(Selectors.postFormSettings.draftSavedAlert)).toBeVisible();
 
-        await this.page.goto(Urls.baseUrl + '/account/?section=post' );
+        await Promise.all([this.page.goto(this.wpufPostPage)]);
         await this.waitForLoading();
 
         const newPostTitle = await this.page.innerText(Selectors.postFormSettings.postTitleColumn);
@@ -514,7 +506,7 @@ export class PostFormSettingsPage extends Base {
 
     async changeSubmitButtonText(formName: string, value: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -528,7 +520,7 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
 
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
         await this.waitForLoading();
 
         await expect(this.page.locator(Selectors.postFormSettings.submitPostButtonText(value))).toBeVisible();
@@ -536,7 +528,7 @@ export class PostFormSettingsPage extends Base {
 
     async enableMultiStep(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -557,7 +549,7 @@ export class PostFormSettingsPage extends Base {
 
     async validateMultiStepProgessbar(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -577,7 +569,7 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
 
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
         await this.waitForLoading();
 
         await expect(this.page.locator(Selectors.postFormSettings.multiStepProgressbar)).toBeVisible();
@@ -585,7 +577,7 @@ export class PostFormSettingsPage extends Base {
 
     async validateMultiStepByStep(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -605,7 +597,7 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
 
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
         await this.waitForLoading();
 
         await expect(this.page.locator(Selectors.postFormSettings.multiStepByStep)).toBeVisible();
@@ -613,7 +605,7 @@ export class PostFormSettingsPage extends Base {
 
     async disableMultiStep(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -644,7 +636,7 @@ export class PostFormSettingsPage extends Base {
 
     async setPostUpdateStatus(formName: string, status: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -655,7 +647,7 @@ export class PostFormSettingsPage extends Base {
 
         // Click on post update status dropdown
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postUpdateStatusContainer);
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postUpdateStatusDropdown);
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postUpdateStatusDropdown, { state: 'visible' });
 
         // Select the status
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postUpdateStatusOption(status));
@@ -666,7 +658,7 @@ export class PostFormSettingsPage extends Base {
 
     async setPostUpdateMessage(formName: string, message: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -685,7 +677,7 @@ export class PostFormSettingsPage extends Base {
 
     async setLockUserEditingAfter(formName: string, hours: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -704,7 +696,7 @@ export class PostFormSettingsPage extends Base {
 
     async setUpdatePostButtonText(formName: string, buttonText: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -720,7 +712,7 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
 
-        await this.page.goto(Urls.baseUrl + '/account/?section=post' );
+        await Promise.all([this.page.goto(this.wpufPostPage)]);
         await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
@@ -731,7 +723,7 @@ export class PostFormSettingsPage extends Base {
 
     async validatePostUpdateStatusInForm(postTitle: string, postContent: string, postExcerpt: string, expectedStatus: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/account/?section=post' );
+        await Promise.all([this.page.goto(this.wpufPostPage)]);
         await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
@@ -747,10 +739,10 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
-        await this.page.waitForTimeout(300);
+        await this.page.waitForTimeout(1000);
         // await this.assertionValidate(Selectors.postFormSettings.checkSuccessMessage);
 
-        await this.page.goto(Urls.baseUrl + '/account/?section=post' );
+        await Promise.all([this.page.goto(this.wpufPostPage)]);
         await this.waitForLoading();
         const newPostTitle = await this.page.innerText(Selectors.postFormSettings.postTitleColumn);
         if (postTitle == newPostTitle) {
@@ -761,7 +753,7 @@ export class PostFormSettingsPage extends Base {
 
     async pendingToLive() {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/edit.php' );
+        await Promise.all([this.page.goto(this.postsPage)]);
         await this.waitForLoading();
 
         await this.page.hover(Selectors.postFormSettings.quickEditButtonContainer);
@@ -775,7 +767,7 @@ export class PostFormSettingsPage extends Base {
 
     async validatePostUpdateMessageInForm(postTitle: string, postContent: string, postExcerpt: string, expectedMessage: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/account/?section=post' );
+        await Promise.all([this.page.goto(this.wpufPostPage)]);
         await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
@@ -800,7 +792,7 @@ export class PostFormSettingsPage extends Base {
 
     async setUpdatePostRedirectionToUpdatedPost(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -811,7 +803,7 @@ export class PostFormSettingsPage extends Base {
 
         // Click on successful redirection dropdown
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionContainer);
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown);
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown, { state: 'visible' });
 
         // Select "updated post"
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionOption('post'));
@@ -822,7 +814,7 @@ export class PostFormSettingsPage extends Base {
 
     async setUpdatePostRedirectionToSamePage(formName: string, message: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -833,7 +825,7 @@ export class PostFormSettingsPage extends Base {
 
         // Click on successful redirection dropdown
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionContainer);
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown);
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown, { state: 'visible' });
 
         // Select "same page"
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionOption('same'));
@@ -844,7 +836,7 @@ export class PostFormSettingsPage extends Base {
 
     async setUpdatePostRedirectionToPage(formName: string, pageName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -855,7 +847,7 @@ export class PostFormSettingsPage extends Base {
 
         // Click on successful redirection dropdown
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionContainer);
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown);
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown, { state: 'visible' });
 
         // Select "to a page"
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionOption('page'));
@@ -864,7 +856,7 @@ export class PostFormSettingsPage extends Base {
 
         // Select the specific page
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionPageContainer);
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionPageDropdown);
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionPageDropdown, { state: 'visible' });
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionPageOption(pageName));
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
@@ -873,7 +865,7 @@ export class PostFormSettingsPage extends Base {
 
     async setUpdatePostRedirectionToCustomUrl(formName: string, customUrl: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -884,7 +876,7 @@ export class PostFormSettingsPage extends Base {
 
         // Click on successful redirection dropdown
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionContainer);
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown);
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown, { state: 'visible' });
 
         // Select "to a custom URL"
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionOption('url'));
@@ -898,7 +890,7 @@ export class PostFormSettingsPage extends Base {
 
     async validateUpdatePostRedirectionToPost(postTitle: string, postContent: string, postExcerpt: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/account/?section=post' );
+        await Promise.all([this.page.goto(this.wpufPostPage)]);
         await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
@@ -922,7 +914,7 @@ export class PostFormSettingsPage extends Base {
 
     async validateUpdatePostRedirectionToSamePage(postTitle: string, postContent: string, postExcerpt: string, message: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/account/?section=post' );
+        await Promise.all([this.page.goto(this.wpufPostPage)]);
         await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
@@ -947,7 +939,7 @@ export class PostFormSettingsPage extends Base {
 
     async validateUpdatePostRedirectionToPage(postTitle: string, postContent: string, postExcerpt: string, pageTitle: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/account/?section=post' );
+        await Promise.all([this.page.goto(this.wpufPostPage)]);
         await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
@@ -970,7 +962,7 @@ export class PostFormSettingsPage extends Base {
 
     async validateUpdatePostRedirectionToUrl(postTitle: string, postContent: string, postExcerpt: string, expectedUrl: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/account/?section=post' );
+        await Promise.all([this.page.goto(this.wpufPostPage)]);
         await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
@@ -994,7 +986,7 @@ export class PostFormSettingsPage extends Base {
 
     async enablePayPerPost(formName: string, cost: string, successPage: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1009,14 +1001,14 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.paymentEnableToggle);
 
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.paymentOptionsContainer);
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.paymentOptionsDropdown);
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.paymentOptionsDropdown, { state: 'visible' });
 
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.payPerPostOption('enable_pay_per_post'));
 
         await this.validateAndFillStrings(Selectors.postFormSettings.postSettingsSection.payPerPostCostContainer, cost);
 
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.paymentSuccessPageContainer);
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.paymentSuccessPageDropdown);
+        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.paymentSuccessPageDropdown, { state: 'visible' });
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.paymentSuccessPageOption(successPage));
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
@@ -1025,7 +1017,7 @@ export class PostFormSettingsPage extends Base {
 
     async disablePayPerPost(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
         
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1046,10 +1038,10 @@ export class PostFormSettingsPage extends Base {
 
     async createPostWithPayment(postTitle: string, postContent: string, postExcerpt: string, cost: string, successPage: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
         await this.waitForLoading();
 
-        const payPerPostInfo = await this.page.innerText(Selectors.postFormSettings.payPerPostInfo);
+        const payPerPostInfo = await this.page.innerText(Selectors.postFormSettings.wpufInfo);
         expect(payPerPostInfo).toContain(`There is a $${cost} charge to add a new post`);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
@@ -1077,7 +1069,7 @@ export class PostFormSettingsPage extends Base {
 
     async acceptPayment() {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf_transaction' );
+        await Promise.all([this.page.goto(this.wpufTransactionPage)]);
         await this.waitForLoading();
 
         await this.page.hover(Selectors.postFormSettings.transactionTableRow);
@@ -1089,7 +1081,7 @@ export class PostFormSettingsPage extends Base {
 
     async validatePayPerPost() {
 
-        await this.page.goto(Urls.baseUrl + '/account/?section=post' );
+        await Promise.all([this.page.goto(this.wpufPostPage)]);
         await this.waitForLoading();
 
         const newPostStatus = await this.page.innerText(Selectors.postFormSettings.postStatusColumn);
@@ -1100,7 +1092,7 @@ export class PostFormSettingsPage extends Base {
     // Enable new post notification
     async enableNewPostNotification(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         // Click on the form
@@ -1132,7 +1124,7 @@ export class PostFormSettingsPage extends Base {
     // Disable new post notification
     async disableNewPostNotification(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         // Click on the form
@@ -1161,7 +1153,7 @@ export class PostFormSettingsPage extends Base {
     // Modify notification email settings
     async modifyNotificationEmail(formName: string, emailAddress: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         // Click on the form
@@ -1190,7 +1182,7 @@ export class PostFormSettingsPage extends Base {
     // Modify notification subject
     async modifyNotificationSubject(formName: string, emailSubject: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         // Click on the form
@@ -1219,7 +1211,7 @@ export class PostFormSettingsPage extends Base {
     // Modify notification body with template tags
     async modifyNotificationBodyWithTemplateTags(formName: string, emailBody: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         // Click on the form
@@ -1248,7 +1240,7 @@ export class PostFormSettingsPage extends Base {
     // Click template tags for notification body
     async clickTemplateTagsForNotification(formName: string, tags: string[]) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         // Click on the form
@@ -1290,7 +1282,7 @@ export class PostFormSettingsPage extends Base {
     // Validate notification settings in form
     async validateNotificationSettingsEnabled(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         // Click on the form
@@ -1314,7 +1306,7 @@ export class PostFormSettingsPage extends Base {
     // Submit post and validate notification is sent (simulate)
     async submitPostAndValidateNotificationFE(postTitle: string, postContent: string, postExcerpt: string, emailSubject: string, multipleEmails: string) {
         // Go to frontend post submission page
-        await this.page.goto(Urls.baseUrl + '/account/?section=submit-post' );
+        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
         await this.waitForLoading();
 
         // Fill post details
@@ -1331,7 +1323,7 @@ export class PostFormSettingsPage extends Base {
         await this.page.waitForTimeout(500);
 
         // Validate notification is sent
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wp-mail-log' );
+        await Promise.all([this.page.goto(this.wpMailLogPage)]);
         await this.waitForLoading();
 
         const sentEmailAddress = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress);
@@ -1357,7 +1349,7 @@ export class PostFormSettingsPage extends Base {
     // Test multiple notification emails
     async setMultipleNotificationEmails(formName: string, multipleEmails: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         // Click on the form
@@ -1386,7 +1378,7 @@ export class PostFormSettingsPage extends Base {
     // Enable new post notification
     async enableUpdatedPostNotification(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         // Click on the form
@@ -1418,7 +1410,7 @@ export class PostFormSettingsPage extends Base {
     // Disable new post notification
     async disableUpdatedPostNotification(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         // Click on the form
@@ -1447,7 +1439,7 @@ export class PostFormSettingsPage extends Base {
     // Modify notification email settings
     async modifyUpdatedNotificationEmail(formName: string, emailAddress: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         // Click on the form
@@ -1476,7 +1468,7 @@ export class PostFormSettingsPage extends Base {
     // Modify notification subject
     async modifyUpdatedNotificationSubject(formName: string, emailSubject: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         // Click on the form
@@ -1505,7 +1497,7 @@ export class PostFormSettingsPage extends Base {
     // Modify notification body with template tags
     async modifyUpdatedNotificationBodyWithTemplateTags(formName: string, emailBody: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         // Click on the form
@@ -1534,7 +1526,7 @@ export class PostFormSettingsPage extends Base {
     // Click template tags for notification body
     async clickTemplateTagsForUpdatedNotification(formName: string, tags: string[]) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         // Click on the form
@@ -1576,7 +1568,7 @@ export class PostFormSettingsPage extends Base {
     // Validate notification settings in form
     async validateUpdatedNotificationSettingsEnabled(formName: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         // Click on the form
@@ -1600,7 +1592,7 @@ export class PostFormSettingsPage extends Base {
     // Submit post and validate notification is sent (simulate)
     async submitPostAndValidateUpdatedNotificationFE(previousPostTitle: string, postTitle: string, postContent: string, postExcerpt: string, emailSubject: string, multipleEmails: string) {
         // Go to frontend post submission page
-        await this.page.goto(Urls.baseUrl + '/account/?section=post' );
+        await Promise.all([this.page.goto(this.wpufPostPage)]);
         await this.waitForLoading();
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
@@ -1620,7 +1612,7 @@ export class PostFormSettingsPage extends Base {
         await this.page.waitForTimeout(500);
 
         // Validate notification is sent
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wp-mail-log');
+        await Promise.all([this.page.goto(this.wpMailLogPage)]);
         await this.waitForLoading();
 
         const sentEmailAddress = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress);
@@ -1646,7 +1638,7 @@ export class PostFormSettingsPage extends Base {
     // Test multiple notification emails
     async setMultipleUpdatedNotificationEmails(formName: string, multipleEmails: string) {
         // Go to form edit page
-        await this.page.goto(Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms' );
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
 
         // Click on the form
@@ -1671,5 +1663,174 @@ export class PostFormSettingsPage extends Base {
         // Wait for save message
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
     }
-    
+
+    async settingUserComment(formName: string, status: string) {
+        // Go to form edit page
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
+        await this.waitForLoading();
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.waitForLoading();
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Notification Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.advancedSettingsTab);
+
+        // Wait for notification settings to load
+        await this.assertionValidate(Selectors.postFormSettings.advancedSettingsSection.advancedSettingsHeader);
+
+        // Disable new post notification toggle
+        await this.validateAndClick(Selectors.postFormSettings.advancedSettingsSection.commentStatusContainer);
+        await this.page.waitForSelector(Selectors.postFormSettings.advancedSettingsSection.commentStatusDropdown, { state: 'visible' });
+        await this.validateAndClick(Selectors.postFormSettings.advancedSettingsSection.commentStatusOption(status));
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+    }
+
+    async limitFormEntries(formName: string) {
+        // Go to form edit page
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
+        await this.waitForLoading();
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.waitForLoading();
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Advanced Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.advancedSettingsTab);
+
+        // Wait for notification settings to load
+        await this.assertionValidate(Selectors.postFormSettings.advancedSettingsSection.advancedSettingsHeader);
+
+        const isChecked = await this.page.locator(Selectors.postFormSettings.advancedSettingsSection.limitFormEntriesToggle).isChecked();
+        if (!isChecked) {
+            await this.validateAndClick(Selectors.postFormSettings.advancedSettingsSection.limitFormEntriesToggle);
+        }
+        await this.validateAndFillNumbers(Selectors.postFormSettings.advancedSettingsSection.limitNumberInput, 1);
+        await this.validateAndFillStrings(Selectors.postFormSettings.advancedSettingsSection.limitMessage, 'limit reached');
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+    }
+
+    async validateUserCommentEnabled(postTitle: string) {
+        // Go to frontend post submission page
+        await Promise.all([this.page.goto(Urls.baseUrl)]);
+        await this.waitForLoading();
+
+        // Click on the post
+        await this.validateAndClick(Selectors.postFormSettings.clickPost(postTitle));
+
+        await this.validateAndFillStrings(Selectors.postFormSettings.advancedSettingsSection.commentBox, 'Test comment');
+        await this.validateAndClick(Selectors.postFormSettings.advancedSettingsSection.postCommentButton);
+
+        await this.assertionValidate(Selectors.postFormSettings.advancedSettingsSection.validateComment);
+
+        await Promise.all([this.page.goto(this.accountPage)]);
+        await this.waitForLoading();
+
+        await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);
+        await this.waitForLoading();
+
+    }
+
+    async validateLimitFormEntries(postTitle: string, postContent: string, postExcerpt: string) {
+        // Go to frontend post submission page
+        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
+        await this.waitForLoading();
+
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
+
+        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
+            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
+
+        await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
+        await this.page.waitForTimeout(1000);
+
+        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
+        await this.waitForLoading();
+
+        const errorMessage = await this.page.innerText(Selectors.postFormSettings.wpufInfo);
+        expect(errorMessage).toBe('limit reached');
+
+    }
+
+    async unlimitFormEntries(formName: string) {
+        // Go to form edit page
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
+        await this.waitForLoading();
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.waitForLoading();
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Advanced Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.advancedSettingsTab);
+
+        // Wait for notification settings to load
+        await this.assertionValidate(Selectors.postFormSettings.advancedSettingsSection.advancedSettingsHeader);
+
+        const isChecked = await this.page.locator(Selectors.postFormSettings.advancedSettingsSection.limitFormEntriesToggle).isChecked();
+        if (isChecked) {
+            await this.validateAndClick(Selectors.postFormSettings.advancedSettingsSection.limitFormEntriesToggle);
+        }
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+    }
+
+    async enablePostExpiration(formName: string) {
+        // Go to form edit page
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
+        await this.waitForLoading();
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Advanced Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.postExpirationSettingsTab);
+
+        // Wait for notification settings to load
+        await this.assertionValidate(Selectors.postFormSettings.postExpirationSettingsSection.postExpirationSettingsHeader);
+
+        const isChecked = await this.page.locator(Selectors.postFormSettings.postExpirationSettingsSection.postExpirationToggle).isChecked();
+        if (!isChecked) {
+            await this.validateAndClick(Selectors.postFormSettings.postExpirationSettingsSection.postExpirationToggle);
+        }
+
+        // Enable post expiration message
+        await this.validateAndFillStrings(Selectors.postFormSettings.postExpirationSettingsSection.postExpirationTime, '1');
+        await this.validateAndClick(Selectors.postFormSettings.postExpirationSettingsSection.enablePostExpirationMessage);
+        await this.validateAndFillStrings(Selectors.postFormSettings.postExpirationSettingsSection.postExpirationMessage, 'Post expired');
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+    }
 }

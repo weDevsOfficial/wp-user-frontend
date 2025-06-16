@@ -12,9 +12,7 @@ export class BasicLogoutPage extends Base {
     }
 
     async logOut() {
-        await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/' ),
-        ]);
+        await Promise.all([this.page.goto(this.wpAdminPage )]);
         await this.waitForLoading();
 
         await this.page.waitForTimeout(200);

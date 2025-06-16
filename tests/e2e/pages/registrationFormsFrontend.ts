@@ -38,10 +38,7 @@ export class RegistrationFormsFrontendPage extends Base {
     //Registration forms page - only WPUF-Lite activated
     async completeUserRegistrationFormFrontend() {
         //Go to Registration page - FrontEnd
-        const wpufRegistrationFormPage = Urls.baseUrl + '/registration-page/';
-        await Promise.all([
-            this.page.goto(wpufRegistrationFormPage ),
-        ]);
+        await Promise.all([this.page.goto(this.wpufRegistrationPage)]);
 
         //Validate Registration page
         const validateRegistrationPage = await this.page.innerText(Selectors.registrationForms.completeUserRegistrationFormFrontend.validateRegistrationPage);
@@ -101,10 +98,7 @@ export class RegistrationFormsFrontendPage extends Base {
 
     //Validate in Admin - Registered Form Submitted
     async validateUserRegisteredAdminEnd() {
-        const wpufRegistrationFormPage = Urls.baseUrl + '/wp-admin/';
-        await Promise.all([
-            this.page.goto(wpufRegistrationFormPage ),
-        ]);
+        await Promise.all([this.page.goto(this.wpufRegistrationFormPage)]);
 
         //Validate Registered User
         //Go to Users List

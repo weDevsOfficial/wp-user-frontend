@@ -265,6 +265,21 @@ class Render_Form {
             ?>
             <form class="wpuf-form-add wpuf-form-<?php echo esc_attr( $layout ); ?> <?php echo ( $layout == 'layout1' ) ? esc_attr( $theme_css ) : 'wpuf-style'; ?>" action="" method="post">
 
+                <?php
+                // Display form title if enabled
+                if ( isset( $form_settings['show_form_title'] ) && wpuf_is_checkbox_or_toggle_on( $form_settings['show_form_title'] ) ) {
+                    $form_title = get_the_title( $form_id );
+                    if ( ! empty( $form_title ) ) {
+                        echo '<h2 class="wpuf-form-title">' . esc_html( $form_title ) . '</h2>';
+                    }
+                }
+
+                // Display form description if set
+                if ( isset( $form_settings['form_description'] ) && ! empty( $form_settings['form_description'] ) ) {
+                    echo '<div class="wpuf-form-description">' . wp_kses_post( $form_settings['form_description'] ) . '</div>';
+                }
+                ?>
+
                 <ul class="wpuf-form form-label-<?php echo esc_attr( $label_position ); ?>">
 
                     <?php

@@ -4977,6 +4977,16 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                         'wp-user-frontend'
                     ),
                     'fields' => [
+                        'show_form_title' => [
+                            'label'     => __( 'Show Form Title', 'wp-user-frontend' ),
+                            'type'      => 'toggle',
+                            'help_text' => __( 'Toggle whether the form title should be displayed on the frontend', 'wp-user-frontend' ),
+                        ],
+                        'form_description' => [
+                            'label'     => __( 'Form Description', 'wp-user-frontend' ),
+                            'type'      => 'textarea',
+                            'help_text' => __( 'Add a brief message or instruction that will be displayed before the form — helpful for guiding users before they start filling it out', 'wp-user-frontend' ),
+                        ],
                         'post_type'        => [
                             'label'     => __( 'Post Type', 'wp-user-frontend' ),
                             'type'      => 'select',

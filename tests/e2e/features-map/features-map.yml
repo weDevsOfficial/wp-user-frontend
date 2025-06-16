@@ -235,12 +235,18 @@ features:
   - id: PFS0079
     name: User is validating user comment is enabled
   - id: PFS0080
-    name: Admin is limiting form entries
-  - id: PFS0081
-    name: Admin is validating limit form entries
-  - id: PFS0082
-    name: Admin is unlimiting form entries
-  - id: PFS0083
     name: Admin is disabling user comment
+  - id: PFS0081
+    name: User is validating user comment is disabled
+  - id: PFS0082
+    name: Admin is limiting form entries
+  - id: PFS0083
+    name: Admin is validating limit form entries
   - id: PFS0084
+    name: Admin is unlimiting form entries
+  - id: PFS0085
+    name: Admin is enabling conditional logic on form submission
+  - id: PFS0086
+    name: Admin is validating conditional logic on form submission
+  - id: PFS0087
     name: Admin is enabling post expiration

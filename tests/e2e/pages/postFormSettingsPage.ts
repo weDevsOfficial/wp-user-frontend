@@ -169,6 +169,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
+
         await this.waitForLoading();
 
         // Wait for success message
@@ -319,6 +320,7 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
+
         await this.waitForLoading();
 
         await expect(this.page.locator(Selectors.postFormSettings.checkPostTitle(postTitle))).toBeVisible();
@@ -341,6 +343,7 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
+
         await this.waitForLoading();
 
         const successMessage = await this.page.innerText(Selectors.postFormSettings.checkSuccessMessage);
@@ -365,6 +368,7 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
+
         await this.waitForLoading();
 
         await expect(this.page.locator(Selectors.postFormSettings.checkPageTitle(pageTitle))).toBeVisible();
@@ -387,6 +391,7 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
+
         await this.waitForLoading();
 
         await expect(this.page).toHaveURL(expectedUrl);
@@ -444,6 +449,7 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
+
         await this.page.waitForTimeout(1000);
 
         await Promise.all([this.page.goto(this.wpufPostPage)]);
@@ -955,6 +961,7 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
+
         await this.waitForLoading();
 
         await expect(this.page.locator(Selectors.postFormSettings.checkPageTitle(pageTitle))).toBeVisible();
@@ -979,6 +986,7 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
+
         await this.waitForLoading();
 
         await expect(this.page).toHaveURL(expectedUrl);
@@ -1053,6 +1061,7 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
+
         await this.waitForLoading();
 
         const validateCost = await this.page.innerText(Selectors.postFormSettings.validatePayPerPostCost);
@@ -1320,6 +1329,7 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
+
         await this.page.waitForTimeout(500);
 
         // Validate notification is sent
@@ -1664,7 +1674,7 @@ export class PostFormSettingsPage extends Base {
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
     }
 
-    async settingUserComment(formName: string, status: string) {
+    async settingUserComment(formName: string, status: string, postTitle: string, postContent: string, postExcerpt: string) {
         // Go to form edit page
         await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
@@ -1692,6 +1702,59 @@ export class PostFormSettingsPage extends Base {
 
         // Wait for save message
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        
+        await this.page.goto(this.wpufPostSubmitPage);
+
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
+
+        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
+            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
+
+        await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
+
+        await this.page.waitForTimeout(1000);
+
+    }
+
+    async validateUserCommentEnabled(postTitle: string) {
+        // Go to frontend post submission page
+        await Promise.all([this.page.goto(Urls.baseUrl)]);
+        await this.waitForLoading();
+
+        // Click on the post
+        await this.validateAndClick(Selectors.postFormSettings.clickPost(postTitle));
+
+        await this.validateAndFillStrings(Selectors.postFormSettings.advancedSettingsSection.commentBox, 'Test comment');
+        await this.validateAndClick(Selectors.postFormSettings.advancedSettingsSection.postCommentButton);
+
+        await this.assertionValidate(Selectors.postFormSettings.advancedSettingsSection.validateComment);
+
+        await Promise.all([this.page.goto(this.accountPage)]);
+        await this.waitForLoading();
+
+        await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);
+        await this.waitForLoading();
+
+    }
+
+    async validateUserCommentDisabled(postTitle: string) {
+        // Go to frontend post submission page
+        await Promise.all([this.page.goto(Urls.baseUrl)]);
+        await this.waitForLoading();
+
+        // Click on the post
+        await this.validateAndClick(Selectors.postFormSettings.clickPost(postTitle));
+
+        await expect(this.page.locator(Selectors.postFormSettings.advancedSettingsSection.commentBox)).not.toBeVisible();
+
+        await Promise.all([this.page.goto(this.accountPage)]);
+        await this.waitForLoading();
+
+        await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);
+        await this.waitForLoading();
+
     }
 
     async limitFormEntries(formName: string) {
@@ -1726,41 +1789,21 @@ export class PostFormSettingsPage extends Base {
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
     }
 
-    async validateUserCommentEnabled(postTitle: string) {
-        // Go to frontend post submission page
-        await Promise.all([this.page.goto(Urls.baseUrl)]);
-        await this.waitForLoading();
-
-        // Click on the post
-        await this.validateAndClick(Selectors.postFormSettings.clickPost(postTitle));
-
-        await this.validateAndFillStrings(Selectors.postFormSettings.advancedSettingsSection.commentBox, 'Test comment');
-        await this.validateAndClick(Selectors.postFormSettings.advancedSettingsSection.postCommentButton);
-
-        await this.assertionValidate(Selectors.postFormSettings.advancedSettingsSection.validateComment);
-
-        await Promise.all([this.page.goto(this.accountPage)]);
-        await this.waitForLoading();
-
-        await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);
-        await this.waitForLoading();
-
-    }
-
     async validateLimitFormEntries(postTitle: string, postContent: string, postExcerpt: string) {
-        // Go to frontend post submission page
-        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
-        await this.waitForLoading();
+        // // Go to frontend post submission page
+        // await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
+        // await this.waitForLoading();
 
-        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
+        // await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
 
-        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+        // await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
+        //     .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
 
-        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
+        // await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
-        await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
-        await this.page.waitForTimeout(1000);
+        // await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
+
+        // await this.page.waitForTimeout(1000);
 
         await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
         await this.waitForLoading();

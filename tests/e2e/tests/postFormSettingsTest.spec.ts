@@ -122,12 +122,14 @@ export default function postFormSettingsTest() {
          * @Test_PFS0077 : Admin is disabling updated post notification
          * @Test_PFS0078 : Admin is enabling user comment
          * @Test_PFS0079 : User is validating user comment is enabled
-         * @Test_PFS0080 : Admin is limiting form entries
-         * @Test_PFS0081 : Admin is validating limit form entries
-         * @Test_PFS0082 : Admin is unlimiting form entries
-         * @Test_PFS0083 : Admin is disabling user comment
-         * @Test_PFS0084 : Admin is enabling post expiration
-         *
+         * @Test_PFS0080 : Admin is disabling user comment
+         * @Test_PFS0081 : User is validating user comment is disabled
+         * @Test_PFS0082 : Admin is limiting form entries
+         * @Test_PFS0083 : Admin is validating limit form entries
+         * @Test_PFS0084 : Admin is unlimiting form entries
+         * @Test_PFS0085 : Admin is enabling conditional logic on form submission
+         * @Test_PFS0086 : Admin is validating conditional logic on form submission
+         * @Test_PFS0087 : Admin is enabling post expiration
          */
 
         let formName: string;
@@ -636,8 +638,11 @@ export default function postFormSettingsTest() {
         });
 
         test('PFS0078 : Admin is enabling user comment', { tag: ['@Lite'] }, async () => {
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.settingUserComment(formName, 'open');
+            await postFormSettings.settingUserComment(formName, 'open', postTitle, postContent, postExcerpt);
             const BasicLogout = new BasicLogoutPage(page);
             await BasicLogout.logOut();
         });
@@ -652,12 +657,32 @@ export default function postFormSettingsTest() {
             await BasicLogin.basicLogin(Users.adminUsername, Users.adminPassword);
         });
 
-        test('PFS0080 : Admin is limiting form entries', { tag: ['@Lite'] }, async () => {
+        test('PFS0080 : Admin is disabling user comment', { tag: ['@Lite'] }, async () => {
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.settingUserComment(formName, 'closed', postTitle, postContent, postExcerpt);
+            const BasicLogout = new BasicLogoutPage(page);
+            await BasicLogout.logOut();
+        });
+
+        test('PFS0081 : User is validating user comment is disabled', { tag: ['@Lite'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            const BasicLogin = new BasicLoginPage(page);
+
+            //New User created Login
+            await BasicLogin.basicLogin(Users.userEmail, Users.userPassword);
+            await postFormSettings.validateUserCommentDisabled(postTitle);
+            await BasicLogin.basicLogin(Users.adminUsername, Users.adminPassword);
+        });
+
+        test('PFS0082 : Admin is limiting form entries', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.limitFormEntries(formName);
         });
 
-        test.skip('PFS0081 : Admin is validating limit form entries', { tag: ['@Lite'] }, async () => {
+        test('PFS0083 : Admin is validating limit form entries', { tag: ['@Lite'] }, async () => {
             postTitle = faker.word.words(3);
             postContent = faker.lorem.paragraph();
             postExcerpt = postContent;
@@ -665,17 +690,22 @@ export default function postFormSettingsTest() {
             await postFormSettings.validateLimitFormEntries(postTitle, postContent, postExcerpt);
         });
 
-        test('PFS0082 : Admin is unlimiting form entries', { tag: ['@Lite'] }, async () => {
+        test('PFS0084 : Admin is unlimiting form entries', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.unlimitFormEntries(formName);
         });
 
-        test('PFS0083 : Admin is disabling user comment', { tag: ['@Lite'] }, async () => {
+        test.skip('PFS0085 : Admin is enabling conditional logic on form submission', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.settingUserComment(formName, 'closed');
+            
         });
 
-        test('PFS0084 : Admin is enabling post expiration', { tag: ['@Lite'] }, async () => {
+        test.skip('PFS0086 : Admin is validating conditional logic on form submission', { tag: ['@Pro'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            
+        });
+
+        test('PFS0087 : Admin is enabling post expiration', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.enablePostExpiration(formName);
         });

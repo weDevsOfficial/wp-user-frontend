@@ -1,0 +1,274 @@
+features:
+  # Login and Setup
+  - id: LS0001
+    name: Admin is logging into Admin-Dashboard
+  - id: LS0002
+    name: Admin is checking Dashboard page reached
+  - id: LS0003
+    name: Admin is checking Plugin Status - Lite Activation
+  - id: LS0004
+    name: Admin is checking Plugin Status - Pro Activation
+  - id: LS0005
+    name: Admin is activating license - Pro
+  - id: LS0006
+    name: Admin is Completing WPUF setup
+  - id: LS0007
+    name: Admin is visiting WPUF Page
+  - id: LS0008
+    name: Admin is validating WPUF Pages
+  - id: LS0009
+    name: Admin is validating WPUF Pages from frontend
+  - id: LS0010
+    name: Admin is validating account page tabs from frontend
+  - id: LS0011
+    name: Admin is changing WPUF Settings
+  - id: LS0012
+    name: Admin is setting Permalink
+  - id: LS0013
+    name: Admin is allowing anyone to register
+  - id: LS0014
+    name: Admin is creating a New User
+  - id: LS0015
+    name: Admin is adding post categories
+  - id: LS0016
+    name: Admin is adding post tags
+  - id: LS0017
+    name: Admin is adding credentils for Google Map
+  - id: LS0018
+    name: Admin is adding credentils for ReCaptcha
+  - id: LS0019
+    name: Admin is adding credentils for Cloudflare Turnstile
+  - id: LS0020
+    name: Admin is enabling payment gateway bank
+  - id: LS0021
+    name: Admin is activating dokan lite
+  - id: LS0022
+    name: Admin is logging out succesfully
+
+  # Post Forms
+  - id: PF0001
+    name: Admin is creating Blank Form with > PostFields
+  - id: PF0002
+    name: Admin is creating Blank Form with > Taxonomies
+  - id: PF0003
+    name: Admin is creating Blank Form with > CustomFields
+  - id: PF0004
+    name: Admin is creating Blank Form with > Others
+  - id: PF0005
+    name: Admin is creating a Blank Post Form with all Fields
+  - id: PF0006
+    name: Admin is creating a Preset Post Form
+  - id: PF0007
+    name: Admin is creating a Preset Post Form - with Guest Enabled
+  - id: PF0008
+    name: Admin is Updating Settings with default Post Form
+  - id: PF0009
+    name: User is Submitting Form from Frontend
+
+  # Registration Forms
+  - id: RF0001
+    name: Admin is checking Registration Forms - Pro Feature Page
+  - id: RF0002
+    name: Admin is creating Registration Forms - using shortcode
+  - id: RF0003
+    name: User is registering using - Registration Form
+  - id: RF0004
+    name: Admin is validating - Registered user
+
+  # Post Form Settings
+  - id: PFS0001
+    name: Admin is changing post type
+  - id: PFS0002
+    name: Admin is validating post type
+  - id: PFS0003
+    name: Admin is validating post type from FE
+  - id: PFS0004
+    name: Admin is setting the default category
+  - id: PFS0005
+    name: Admin is validating default category from FE
+  - id: PFS0006
+    name: Admin is setting successful post redirection to newly created post
+  - id: PFS0007
+    name: Admin is checking post redirection to newly created post
+  - id: PFS0008
+    name: Admin is setting successful post redirection to same page
+  - id: PFS0009
+    name: Admin is checking post redirection to same page
+  - id: PFS0010
+    name: Admin is setting successful post redirection to another page
+  - id: PFS0011
+    name: Admin is checking post redirection to another page
+  - id: PFS0012
+    name: Admin is setting successful post redirection to a url
+  - id: PFS0013
+    name: Admin is checking post redirection to a url
+  - id: PFS0014
+    name: Admin is setting post submission status to draft
+  - id: PFS0015
+    name: Admin is validating post submission status to draft - list
+  - id: PFS0016
+    name: Admin is checking post submission status to draft - FE
+  - id: PFS0017
+    name: Admin is setting post submission status to pending
+  - id: PFS0018
+    name: Admin is validating post submission status to draft - list
+  - id: PFS0019
+    name: Admin is checking post submission status to pending
+  - id: PFS0020
+    name: Admin is setting post submission status to private
+  - id: PFS0021
+    name: Admin is validating post submission status to draft - list
+  - id: PFS0022
+    name: Admin is checking post submission status to private
+  - id: PFS0023
+    name: Admin is setting post submission status to publish
+  - id: PFS0024
+    name: Admin is validating post submission status to draft - list
+  - id: PFS0025
+    name: Admin is checking post submission status to publish
+  - id: PFS0026
+    name: Admin is enabling post saving as draft
+  - id: PFS0027
+    name: Admin is saving post as draft
+  - id: PFS0028
+    name: Admin is changing submit button text
+  - id: PFS0029
+    name: Admin is enabling multi-step form
+  - id: PFS0030
+    name: Admin is validating multi-step progressbar
+  - id: PFS0031
+    name: Admin is validating multi-step by step
+  - id: PFS0032
+    name: Admin is disabling multi-step form
+  - id: PFS0033
+    name: Admin is setting post update status to draft
+  - id: PFS0034
+    name: Admin is validating post update status for draft
+  - id: PFS0035
+    name: Admin is setting post update status to pending review
+  - id: PFS0036
+    name: Admin is validating post update status for pending review
+  - id: PFS0037
+    name: Admin is setting post update status to private
+  - id: PFS0038
+    name: Admin is validating post update status for private
+  - id: PFS0039
+    name: Admin is setting post update status to no change
+  - id: PFS0040
+    name: Admin is validating post update status for no change
+  - id: PFS0041
+    name: Admin is setting post update status to published
+  - id: PFS0042
+    name: Admin is validating post update status for published
+  - id: PFS0043
+    name: Admin is setting successful redirection to updated post
+  - id: PFS0044
+    name: Admin is validating successful redirection to updated post
+  - id: PFS0045
+    name: Admin is setting successful redirection to same page
+  - id: PFS0046
+    name: Admin is validating successful redirection to same page
+  - id: PFS0047
+    name: Admin is setting successful redirection to a page
+  - id: PFS0048
+    name: Admin is validating successful redirection to a page
+  - id: PFS0049
+    name: Admin is setting successful redirection to custom URL
+  - id: PFS0050
+    name: Admin is validating successful redirection to custom URL
+  - id: PFS0051
+    name: Admin is setting post update message
+  - id: PFS0052
+    name: Admin is validating post update message in form
+  - id: PFS0053
+    name: Admin is setting lock user editing after time
+  - id: PFS0054
+    name: Admin is setting update post button text
+  - id: PFS0055
+    name: Admin is enabling pay per post
+  - id: PFS0056
+    name: Admin is creating post with payment
+  - id: PFS0057
+    name: Admin is accepting payment for post
+  - id: PFS0058
+    name: Admin is validating paid post is live
+  - id: PFS0059
+    name: Admin is disabling pay per post
+  - id: PFS0060
+    name: Admin is enabling new post notification
+  - id: PFS0061
+    name: Admin is validating new post notification settings enabled
+  - id: PFS0062
+    name: Admin is modifying notification email
+  - id: PFS0063
+    name: Admin is modifying notification subject
+  - id: PFS0064
+    name: Admin is modifying notification body with template tags
+  - id: PFS0065
+    name: Admin is clicking and validating template tags for notification
+  - id: PFS0066
+    name: Admin is setting multiple notification emails
+  - id: PFS0067
+    name: Admin is submitting post and validating notification from FE
+  - id: PFS0068
+    name: Admin is disabling new post notification
+  - id: PFS0069
+    name: Admin is enabling updated post notification
+  - id: PFS0070
+    name: Admin is validating updated post notification settings enabled
+  - id: PFS0071
+    name: Admin is modifying updated post notification email
+  - id: PFS0072
+    name: Admin is modifying updated post notification subject
+  - id: PFS0073
+    name: Admin is modifying updated post notification body with template tags
+  - id: PFS0074
+    name: Admin is clicking and validating template tags for updated post notification
+  - id: PFS0075
+    name: Admin is setting multiple updated post notification emails
+  - id: PFS0076
+    name: Admin is submitting post and validating updated post notification from FE
+  - id: PFS0077
+    name: Admin is disabling updated post notification
+  - id: PFS0078
+    name: Admin is enabling user comment
+  - id: PFS0079
+    name: User is validating user comment is enabled
+  - id: PFS0080
+    name: Admin is disabling user comment
+  - id: PFS0081
+    name: User is validating user comment is disabled
+  - id: PFS0082
+    name: Admin is limiting form entries
+  - id: PFS0083
+    name: Admin is validating limit form entries
+  - id: PFS0084
+    name: Admin is unlimiting form entries
+  - id: PFS0085
+    name: Admin is enabling conditional logic on form submission
+  - id: PFS0086
+    name: Admin is validating conditional logic on form submission
+  - id: PFS0087
+    name: Admin is enabling post expiration
+
+  # Registration Form Settings
+  - id: RFS0001
+    name: Admin is setting newly registered user role to administrator
+  - id: RFS0002
+    name: Admin is validating newly registered user role to administrator
+  - id: RFS0003
+    name: Admin is setting newly registered user role to editor
+  - id: RFS0004
+    name: Admin is validating newly registered user role to editor
+  - id: RFS0005
+    name: Admin is setting newly registered user role to author
+  - id: RFS0006
+    name: Admin is validating newly registered user role to author
+  - id: RFS0007
+    name: Admin is setting newly registered user role to contributor
+  - id: RFS0008
+    name: Admin is validating newly registered user role to contributor
+  - id: RFS0009
+    name: Admin is setting newly registered user role to subscriber
+  - id: RFS0010
+    name: Admin is validating newly registered user role to subscriber

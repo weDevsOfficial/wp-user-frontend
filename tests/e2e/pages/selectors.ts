@@ -884,4 +884,8 @@ export const Selectors = {
         advancedSettingsTab: '//li[@data-settings="advanced"]',
         postExpirationSettingsTab: '//li[normalize-space()="Post Expiration"]',
     },
+
+    registrationFormSettings: {
+        
+    },
 };

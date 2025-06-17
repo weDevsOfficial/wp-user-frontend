@@ -130,7 +130,7 @@ jobs:
             retry_on: error
             command: |
               cd tests/e2e
-              npm run wp-env start
+              npx wp-env start
 
       # Install Playwright Browsers
       - name: Get installed Playwright version

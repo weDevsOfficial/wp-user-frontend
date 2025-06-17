@@ -1,13 +1,13 @@
 {
     "phpVersion": "7.4",
     "plugins": [
-        "../../",
         "../../../../",
-        "../../../../wp-mail-log",
-        "../../../../dokan-lite",
-        "../../../../woocommerce",
-        "../../../../easy-digital-downloads",
-        "../../../../wc-vendors",
-        "../../../../wc-multivendor-membership"
+        "../../../wp-user-frontend",
+        "../../../wp-mail-log",
+        "../../../dokan-lite",
+        "../../../woocommerce",
+        "../../../easy-digital-downloads",
+        "../../../wc-vendors",
+        "../../../wc-multivendor-membership"
     ]
 }

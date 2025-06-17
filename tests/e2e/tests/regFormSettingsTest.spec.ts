@@ -19,15 +19,7 @@ export default function regFormSettingsTest() {
         fs.writeFileSync('state.json', JSON.stringify({ cookies: [], origins: [] }));
 
         // Launch browser
-        // browser = await chromium.launch();
-
-        // Create a single context
-        const args = ['--enable-experimental-web-platform-features'];
-        if (!Urls.baseUrl.startsWith('http://localhost')) {
-            args.push(`--unsafely-treat-insecure-origin-as-secure=${Urls.baseUrl}`);
-        }
-
-        browser = await chromium.launch({args});
+        browser = await chromium.launch();
 
         // Create a single context
         context = await browser.newContext();
@@ -70,52 +62,52 @@ export default function regFormSettingsTest() {
             Team {sitename}`;
         const multipleEmails = `${faker.internet.email()}, ${faker.internet.email()}, ${faker.internet.email()}`;
 
-        test('RFS0001 : Admin is setting newly registered user role to administrator', { tag: ['@Lite'] }, async () => {
+        test('RFS0001 : Admin is setting newly registered user role to administrator', { tag: ['@Pro'] }, async () => {
             const regFormSettings = new RegFormSettingsPage(page);
             await regFormSettings.settingNewlyRegisteredUserRole(formName, 'administrator');
         });
 
-        test('RFS0002 : Admin is validating newly registered user role to administrator', { tag: ['@Lite'] }, async () => {
+        test('RFS0002 : Admin is validating newly registered user role to administrator', { tag: ['@Pro'] }, async () => {
             const regFormSettings = new RegFormSettingsPage(page);
             await regFormSettings.validateNewlyRegisteredUserRole(formName, 'administrator');
         });
 
-        test('RFS0003 : Admin is setting newly registered user role to editor', { tag: ['@Lite'] }, async () => {
+        test('RFS0003 : Admin is setting newly registered user role to editor', { tag: ['@Pro'] }, async () => {
             const regFormSettings = new RegFormSettingsPage(page);
             await regFormSettings.settingNewlyRegisteredUserRole(formName, 'editor');
         });
 
-        test('RFS0004 : Admin is validating newly registered user role to editor', { tag: ['@Lite'] }, async () => {
+        test('RFS0004 : Admin is validating newly registered user role to editor', { tag: ['@Pro'] }, async () => {
             const regFormSettings = new RegFormSettingsPage(page);
             await regFormSettings.validateNewlyRegisteredUserRole(formName, 'editor');
         });
 
-        test('RFS0005 : Admin is setting newly registered user role to author', { tag: ['@Lite'] }, async () => {
+        test('RFS0005 : Admin is setting newly registered user role to author', { tag: ['@Pro'] }, async () => {
             const regFormSettings = new RegFormSettingsPage(page);
             await regFormSettings.settingNewlyRegisteredUserRole(formName, 'author');
         });
 
-        test('RFS0006 : Admin is validating newly registered user role to author', { tag: ['@Lite'] }, async () => {
+        test('RFS0006 : Admin is validating newly registered user role to author', { tag: ['@Pro'] }, async () => {
             const regFormSettings = new RegFormSettingsPage(page);
             await regFormSettings.validateNewlyRegisteredUserRole(formName, 'author');
         });
 
-        test('RFS0007 : Admin is setting newly registered user role to contributor', { tag: ['@Lite'] }, async () => {
+        test('RFS0007 : Admin is setting newly registered user role to contributor', { tag: ['@Pro'] }, async () => {
             const regFormSettings = new RegFormSettingsPage(page);
             await regFormSettings.settingNewlyRegisteredUserRole(formName, 'contributor');
         });
 
-        test('RFS0008 : Admin is validating newly registered user role to contributor', { tag: ['@Lite'] }, async () => {
+        test('RFS0008 : Admin is validating newly registered user role to contributor', { tag: ['@Pro'] }, async () => {
             const regFormSettings = new RegFormSettingsPage(page);
             await regFormSettings.validateNewlyRegisteredUserRole(formName, 'contributor');
         });
 
-        test('RFS0009 : Admin is setting newly registered user role to subscriber', { tag: ['@Lite'] }, async () => {
+        test('RFS0009 : Admin is setting newly registered user role to subscriber', { tag: ['@Pro'] }, async () => {
             const regFormSettings = new RegFormSettingsPage(page);
             await regFormSettings.settingNewlyRegisteredUserRole(formName, 'subscriber');
         });
 
-        test('RFS0010 : Admin is validating newly registered user role to subscriber', { tag: ['@Lite'] }, async () => {
+        test('RFS0010 : Admin is validating newly registered user role to subscriber', { tag: ['@Pro'] }, async () => {
             const regFormSettings = new RegFormSettingsPage(page);
             await regFormSettings.validateNewlyRegisteredUserRole(formName, 'subscriber');
         });

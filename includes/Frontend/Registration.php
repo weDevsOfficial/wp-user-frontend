@@ -368,6 +368,12 @@ class Registration {
      * @return void
      */
     public function registration_page_redirects() {
+
+        $request_uri = $_SERVER['REQUEST_URI'] ?? '';
+        if( false !== strpos( $request_uri, 'sitemap.xml' ) || false !== strpos( $request_uri, '.xml' ) ) {
+            return;
+        }
+        
         global $post;
         $registration_page = wpuf_get_option( 'reg_override_page', 'wpuf_profile' );
         if ( ! isset( $post->ID ) || $post->ID !== absint( $registration_page ) ) {

@@ -1,11 +1,11 @@
-import { faker } from "@faker-js/faker";
+import { faker } from '@faker-js/faker';
 
 
 
 /**---------------------------------*/
 /**-------DATA_SET: Base Url-------*/
 /**-------------------------------*/
-let Urls: {
+const Urls: {
     baseUrl: string;
 } = {
     //Main Site URL
@@ -17,7 +17,7 @@ let Urls: {
 /**-----------------------------------*/
 /**-------DATA_SET: Test Users-------*/
 /**---------------------------------*/
-let Users: {
+const Users: {
     //Admin Credentials
     adminUsername: string;
     adminPassword: string;
@@ -39,14 +39,12 @@ let Users: {
     userFirstName: process.env.QA_NEW_FIRSTNAME ? process.env.QA_NEW_FIRSTNAME : 'Test',
     userLastName: process.env.QA_NEW_LASTNAME ? process.env.QA_NEW_LASTNAME : 'User',
     userPassword: process.env.QA_NEW_PASSWORD ? process.env.QA_NEW_PASSWORD : 'Test@1234',
-}
-
-
+};
 
 /**----------------------------------*/
 /**-------DATA_SET: Post Form-------*/
 /**--------------------------------*/
-let PostForm: {
+const PostForm: {
     //Post Form Title
     pfPostName1: string;
     pfPostName2: string;
@@ -59,12 +57,12 @@ let PostForm: {
     pfTags: string;
 } = {
     //Post Form Titles
-    pfPostName1: faker.lorem.sentence(2),
-    pfPostName2: faker.lorem.sentence(2),
-    pfPostName3: faker.lorem.sentence(2),
-    pfPostName4: faker.lorem.sentence(2),
+    pfPostName1: faker.lorem.sentence(1),
+    pfPostName2: faker.lorem.sentence(1),
+    pfPostName3: faker.lorem.sentence(1),
+    pfPostName4: faker.lorem.sentence(1),
     //Post Form Data
-    pfTitle: faker.lorem.words(2),
+    pfTitle: faker.lorem.words(1),
     pfPostDescription: faker.lorem.sentence(4),
     pfExcerpt: faker.lorem.word(3),
     pfTags: faker.lorem.word(),
@@ -78,7 +76,7 @@ let PostForm: {
 const rfFirstName = faker.person.firstName();
 const rfLastName = faker.person.lastName();
 
-let RegistrationForm: {
+const RegistrationForm: {
     //Registration Form Title
     rfPostName1: string;
     rfPostName2: string;
@@ -109,7 +107,7 @@ let RegistrationForm: {
 /**------------------------------------------*/
 /**-------DATA_SET: Subscription Pack-------*/
 /**----------------------------------------*/
-let SubscriptionPack: {
+const SubscriptionPack: {
     //Basics
     subscriptionPackName: string;
     subscriptionPackDescription: string;
@@ -131,11 +129,14 @@ let SubscriptionPack: {
     subscriptionFeaturedCount: 2,
 };
 
-
-
-
-
-
+/**------------------------------------------*/
+/**-------DATA_SET: Tokens/API Keys--------*/
+/**----------------------------------------*/
+const Tokens: {
+    WPUF_PRO_LICENSE_KEY?: string;
+} = {
+    WPUF_PRO_LICENSE_KEY: process.env.WPUF_PRO_LICENSE_KEY,
+};
 
 
 
@@ -148,4 +149,5 @@ export {
     PostForm,
     RegistrationForm,
     SubscriptionPack,
+    Tokens,
 };

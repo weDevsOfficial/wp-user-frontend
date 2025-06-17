@@ -48,6 +48,7 @@ abstract class Field_Contract {
                 'priority' => 15,
                 'inline' => true,
                 'default' => 'max',
+                'help_text' => __( 'Choose whether to enforce a minimum or maximum content limit', 'wp-user-frontend' ),
             ],
 
             [
@@ -62,6 +63,7 @@ abstract class Field_Contract {
                 'priority' => 15,
                 'inline' => true,
                 'default' => 'character',
+                'help_text' => __( 'Select whether the content restriction applies by character count or word count', 'wp-user-frontend' ),
             ],
 
             [
@@ -320,6 +322,7 @@ abstract class Field_Contract {
                 'priority'  => 21,
                 'default'   => 'large',
                 'inline'    => true,
+                'help_text' => __( 'Adjust the visual width of the input field on the front-end', 'wp-user-frontend' ),
             ],
 
             [

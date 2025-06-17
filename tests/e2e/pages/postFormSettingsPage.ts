@@ -1150,7 +1150,10 @@ export class PostFormSettingsPage extends Base {
         await this.assertionValidate(Selectors.postFormSettings.notificationSettingsSection.notificationSettingsHeader);
 
         // Disable new post notification toggle
-        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsSection.newPostNotificationToggle);
+        const isChecked = await this.page.locator(Selectors.postFormSettings.notificationSettingsSection.newPostNotificationToggle).isChecked();
+        if (isChecked) {
+            await this.validateAndClick(Selectors.postFormSettings.notificationSettingsSection.newPostNotificationToggle);
+        }
 
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
@@ -1265,17 +1268,11 @@ export class PostFormSettingsPage extends Base {
         // Wait for notification settings to load
         await this.assertionValidate(Selectors.postFormSettings.notificationSettingsSection.notificationSettingsHeader);
 
-        // Click on each template tag
         for (const tag of tags) {
-            const tagSelector = Selectors.postFormSettings.notificationSettingsSection.templateTagPointer(tag, '1');
-            await this.validateAndClick(tagSelector);
+            await this.validateAndClick(Selectors.postFormSettings.notificationSettingsSection.templateTagPointer(tag, '1'));
             try{
-                // Clipboard validation (requires Chromium, headed mode, and --enable-experimental-web-platform-features)
-                const clipboardText = await this.page.evaluate(async () => {
-                    if (!navigator.clipboard) throw new Error('Clipboard API not available. Make sure to run Chromium with --enable-experimental-web-platform-features');
-                    return await navigator.clipboard.readText();
-                });
-                expect(clipboardText).toBe(tag);
+                await this.assertionValidate(Selectors.postFormSettings.notificationSettingsSection.tagClickTooltip);
+                await this.page.waitForTimeout(2000);
             }catch(error){
                 console.log(`Clipboard validation skipped for ${tag}: ${error.message}`);
             }
@@ -1437,7 +1434,10 @@ export class PostFormSettingsPage extends Base {
         await this.assertionValidate(Selectors.postFormSettings.notificationSettingsSection.updatedPostNotificationSettingsHeader);
 
         // Disable new post notification toggle
-        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationToggle);
+        const isChecked = await this.page.locator(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationToggle).isChecked();
+        if (isChecked) {
+            await this.validateAndClick(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationToggle);
+        }
 
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
@@ -1554,15 +1554,10 @@ export class PostFormSettingsPage extends Base {
 
         // Click on each template tag
         for (const tag of tags) {
-            const tagSelector = Selectors.postFormSettings.notificationSettingsSection.templateTagPointer(tag, '2');
-            await this.validateAndClick(tagSelector);
+            await this.validateAndClick(Selectors.postFormSettings.notificationSettingsSection.templateTagPointer(tag, '2'));
             try{
-                // Clipboard validation (requires Chromium, headed mode, and --enable-experimental-web-platform-features)
-                const clipboardText = await this.page.evaluate(async () => {
-                    if (!navigator.clipboard) throw new Error('Clipboard API not available. Make sure to run Chromium with --enable-experimental-web-platform-features');
-                    return await navigator.clipboard.readText();
-                });
-                expect(clipboardText).toBe(tag);
+                await this.assertionValidate(Selectors.postFormSettings.notificationSettingsSection.tagClickTooltip);
+                await this.page.waitForTimeout(2000);
             }catch(error){
                 console.log(`Clipboard validation skipped for ${tag}: ${error.message}`);
             }

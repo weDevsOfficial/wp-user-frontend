@@ -841,11 +841,11 @@ export const Selectors = {
             updatePostNotificationBody: '//textarea[@name="wpuf_settings[notification_edit_body]"]',
 
             templateTagPointer: (tag: string, point: string) => `(//span[@data-clipboard-text="${tag}"])[${point}]`,
+            tagClickTooltip: '//span[@data-original-title="Copied!"]',
             sentEmailAddress: '//tbody/tr[1]/td[3]/div[1]',
             sentEmailSubject: '//tbody/tr[1]/td[4]/div[1]',
             viewEmailContent: '//tbody/tr[1]/td[3]/div[1]',
             previewEmailContentBody: '(//div[@class="wml-body-wrapper"])[1]',
-
         },
 
         // Advanced Settings Section

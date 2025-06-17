@@ -250,25 +250,3 @@ features:
     name: Admin is validating conditional logic on form submission
   - id: PFS0087
     name: Admin is enabling post expiration
-
-  # Registration Form Settings
-  - id: RFS0001
-    name: Admin is setting newly registered user role to administrator
-  - id: RFS0002
-    name: Admin is validating newly registered user role to administrator
-  - id: RFS0003
-    name: Admin is setting newly registered user role to editor
-  - id: RFS0004
-    name: Admin is validating newly registered user role to editor
-  - id: RFS0005
-    name: Admin is setting newly registered user role to author
-  - id: RFS0006
-    name: Admin is validating newly registered user role to author
-  - id: RFS0007
-    name: Admin is setting newly registered user role to contributor
-  - id: RFS0008
-    name: Admin is validating newly registered user role to contributor
-  - id: RFS0009
-    name: Admin is setting newly registered user role to subscriber
-  - id: RFS0010
-    name: Admin is validating newly registered user role to subscriber

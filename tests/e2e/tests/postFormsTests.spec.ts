@@ -21,12 +21,7 @@ export default function postFormsTests() {
         fs.writeFileSync('state.json', JSON.stringify({ cookies: [], origins: [] }));
 
         // Launch browser
-        const args = ['--enable-experimental-web-platform-features'];
-        if (!Urls.baseUrl.startsWith('http://localhost')) {
-            args.push(`--unsafely-treat-insecure-origin-as-secure=${Urls.baseUrl}`);
-        }
-
-        browser = await chromium.launch({args});
+        browser = await chromium.launch();
 
         // Create a single context
         context = await browser.newContext();

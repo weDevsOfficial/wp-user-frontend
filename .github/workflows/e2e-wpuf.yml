@@ -21,10 +21,9 @@ on:
 
 jobs:
   test:
-    if: github.repository_owner != 'weDevsOfficial' || github.repository != 'weDevsOfficial/wp-user-frontend' || github.repository != 'weDevsOfficial/wpuf-pro'
-
+    if: github.repository != 'weDevsOfficial/wp-user-frontend' && github.repository != 'weDevsOfficial/wpuf-pro'
     timeout-minutes: 120
-    runs-on: ubuntu-latest    
+    runs-on: ubuntu-latest
     
     steps:
       # Setup PHP

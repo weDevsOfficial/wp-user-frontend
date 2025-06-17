@@ -61,7 +61,7 @@ class Form_Field_Post_Tags extends Field_Contract {
               <script type="text/javascript">
                 ;(function($) {
                     $(document).ready( function(){
-                        $('li.tags input[name=tags]').suggest( wpuf_frontend.ajaxurl + '<?php echo esc_js( $query_string ); ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
+                        $('li.tags input[name=tags]').suggest( wpuf_frontend.ajaxurl + '<?php echo $query_string; ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
                     });
                 })(jQuery);
             </script>

@@ -1,28 +1,28 @@
-import dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 dotenv.config();
-import type { Page } from '@playwright/test';
+import { expect, Page } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Urls } from '../utils/testData';
+import { Base } from './base';
 
-export class BasicLogoutPage {
-    readonly page: Page;
+export class BasicLogoutPage extends Base {
 
     constructor(page: Page) {
-        this.page = page;
+        super(page);
     }
 
     async logOut() {
-        await Promise.all([
-            this.page.goto(Urls.baseUrl + '/wp-admin/', { waitUntil: 'networkidle' }),
-        ]);
+        await Promise.all([this.page.goto(this.wpAdminPage )]);
+        await this.waitForLoading();
 
+        await this.page.waitForTimeout(200);
         await this.page.hover(Selectors.logout.basicLogout.logoutHoverUsername);
-        await this.page.waitForTimeout(1000);
-        await this.page.click(Selectors.logout.basicLogout.logoutButton);
+        await this.page.waitForTimeout(100);
+        await this.validateAndClick(Selectors.logout.basicLogout.logoutButton);
 
         //Validate LOGOUT
-        await this.page.isVisible(Selectors.logout.basicLogout.logoutSuccess);
-        console.log("LogOut Done");
+        await this.assertionValidate(Selectors.logout.basicLogout.logoutSuccess);
+        console.log('LogOut Done');
 
 
     }

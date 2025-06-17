@@ -1,0 +1,23 @@
+{
+  "rules": [
+    {
+      "pattern": "*.ts",
+      "suggestions": [
+        "Use async/await for Playwright actions",
+        "Follow the Page Object Model (POM) for page structure.",
+        "Add comments for complex selectors and custom functions.",
+        "Keep test steps clear and concise.",
+        "Prefer data-test selectors for stability.",
+        "Group related tests using describe blocks."
+      ]
+    }
+  ],
+  "tips": [
+    "Run 'npm run lint' and 'npm run format' before pushing.",
+    "Write reusable functions for common actions.",
+    "Document new utilities in README.md.",
+    "Keep page objects small and focused",
+    "Use environment variables for sensitive data.",
+    "Review Playwright docs for new features and best practices."
+  ]
+} 

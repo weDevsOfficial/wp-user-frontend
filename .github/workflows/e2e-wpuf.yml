@@ -24,6 +24,7 @@ jobs:
     if: github.repository != 'weDevsOfficial/wp-user-frontend' && github.repository != 'weDevsOfficial/wpuf-pro'
     timeout-minutes: 120
     runs-on: ubuntu-latest
+   
     
     steps:
       # Setup PHP
@@ -129,7 +130,7 @@ jobs:
             retry_on: error
             command: |
               cd tests/e2e
-              npm run wp-env start
+              npx wp-env start
 
       # Install Playwright Browsers
       - name: Get installed Playwright version

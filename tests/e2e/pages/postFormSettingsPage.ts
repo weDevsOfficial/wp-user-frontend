@@ -1150,10 +1150,7 @@ export class PostFormSettingsPage extends Base {
         await this.assertionValidate(Selectors.postFormSettings.notificationSettingsSection.notificationSettingsHeader);
 
         // Disable new post notification toggle
-        const isChecked = await this.page.locator(Selectors.postFormSettings.notificationSettingsSection.newPostNotificationToggle).isChecked();
-        if (isChecked) {
-            await this.validateAndClick(Selectors.postFormSettings.notificationSettingsSection.newPostNotificationToggle);
-        }
+        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsSection.newPostNotificationToggle);
 
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
@@ -1434,10 +1431,7 @@ export class PostFormSettingsPage extends Base {
         await this.assertionValidate(Selectors.postFormSettings.notificationSettingsSection.updatedPostNotificationSettingsHeader);
 
         // Disable new post notification toggle
-        const isChecked = await this.page.locator(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationToggle).isChecked();
-        if (isChecked) {
-            await this.validateAndClick(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationToggle);
-        }
+        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsSection.updatePostNotificationToggle);
 
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);

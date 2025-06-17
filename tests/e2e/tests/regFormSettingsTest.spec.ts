@@ -62,24 +62,20 @@ export default function regFormSettingsTest() {
             Team {sitename}`;
         const multipleEmails = `${faker.internet.email()}, ${faker.internet.email()}, ${faker.internet.email()}`;
 
-
         test('RFS0001 : Admin is setting newly registered user role to administrator', { tag: ['@Pro'] }, async () => {
             const regFormSettings = new RegFormSettingsPage(page);
             await regFormSettings.settingNewlyRegisteredUserRole(formName, 'administrator');
         });
-
 
         test('RFS0002 : Admin is validating newly registered user role to administrator', { tag: ['@Pro'] }, async () => {
             const regFormSettings = new RegFormSettingsPage(page);
             await regFormSettings.validateNewlyRegisteredUserRole(formName, 'administrator');
         });
 
-
         test('RFS0003 : Admin is setting newly registered user role to editor', { tag: ['@Pro'] }, async () => {
             const regFormSettings = new RegFormSettingsPage(page);
             await regFormSettings.settingNewlyRegisteredUserRole(formName, 'editor');
         });
-
 
         test('RFS0004 : Admin is validating newly registered user role to editor', { tag: ['@Pro'] }, async () => {
             const regFormSettings = new RegFormSettingsPage(page);

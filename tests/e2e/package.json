@@ -5,7 +5,6 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "wp-env": "wp-env",
     "test": "CI=false npx playwright test e2eMain.spec.ts --headed",
     "test:pro": "CI=false npx playwright test e2eMainPro.spec.ts --headed",
     "test:ci": "npx playwright test e2eMain.spec.ts --project=chromium",

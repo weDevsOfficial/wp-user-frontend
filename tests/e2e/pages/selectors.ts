@@ -846,8 +846,6 @@ export const Selectors = {
             sentEmailSubject: '//tbody/tr[1]/td[4]/div[1]',
             viewEmailContent: '//tbody/tr[1]/td[3]/div[1]',
             previewEmailContentBody: '(//div[@class="wml-body-wrapper"])[1]',
-
-
         },
 
         // Advanced Settings Section

@@ -24,6 +24,7 @@ export default function postFormGeneralSettingsTestsPro() {
         
         // Launch browser
         browser = await chromium.launch();
+
         
         // Create a single context
         context = await browser.newContext();

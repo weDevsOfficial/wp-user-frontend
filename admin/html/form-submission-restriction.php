@@ -141,7 +141,7 @@ $limit_message   = ! empty( $form_settings['limit_message'] ) ? $form_settings['
                 <input type="text" name="wpuf_settings[schedule_start]" id="schedule_start" value="<?php echo esc_attr( $schedule_start ); ?>" class="datepicker">
                 <!-- <datepicker name="wpuf_settings[schedule_start]"></datepicker> -->
 
-                <?php esc_html_e( 'To', 'wp-user-frontend' ); ?>
+                <?php echo esc_html_x( 'To', 'date range', 'wp-user-frontend' ); ?>
                 <input type="text" name="wpuf_settings[schedule_end]" id="schedule_end" value="<?php echo esc_attr( $schedule_end ); ?>" class="datepicker">
                 <!-- <datepicker name="wpuf_settings[schedule_end]"></datepicker> -->
             </td>

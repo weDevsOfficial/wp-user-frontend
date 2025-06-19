@@ -22,8 +22,6 @@ class Dashboard_Metabox {
                     choosing WP User Frontend. Thanks in advance.
                 </p>';
 
-        add_action( 'wp_dashboard_setup', [ $this, 'add_metabox' ] );
-
         $survey = get_transient( self::SURVEY_KEY );
 
         if ( false === $survey ) {
@@ -42,12 +40,10 @@ class Dashboard_Metabox {
         $survey = str_replace( '\’', "'", $survey );
         $survey = json_decode( $survey, true );
 
-        if ( empty( $survey ) || ! is_array( $survey ) ) {
-            return;
-        }
-
         $this->banner  = ! empty( $survey['banner_image'] ) ? $survey['banner_image'] : BANNER;
         $this->message = ! empty( $survey['message'] ) ? $survey['message'] : $default_message;
+
+        add_action( 'wp_dashboard_setup', [ $this, 'add_metabox' ] );
     }
 
     public function add_metabox() {

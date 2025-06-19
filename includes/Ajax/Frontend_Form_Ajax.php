@@ -454,13 +454,27 @@ class Frontend_Form_Ajax {
 
             if ( $edit_enabled ) {
                 $mail_body = $this->prepare_mail_body( $edit_body, $post_author, $post_id );
-                $to        = $this->prepare_mail_body( $edit_to, $post_author, $post_id );
-                $subject   = $this->prepare_mail_body( $edit_subject, $post_author, $post_id );
-                $subject   = wp_strip_all_tags( $subject );
-                $mail_body = get_formatted_mail_body( $mail_body, $subject );
-                $headers   = [ 'Content-Type: text/html; charset=UTF-8' ];
+                // Validate & sanitise recipient addresses before sending
+                $to_raw = $this->prepare_mail_body( $edit_to, $post_author, $post_id );
+                $to     = implode(
+                    ',',
+                    array_filter(
+                        array_map( static function ( $addr ) {
+                            $addr = trim( $addr );
+                            return is_email( $addr ) ? $addr : null;
+                        }, explode( ',', $to_raw ) )
+                    )
+                );
+                if ( empty( $to ) ) {
+                    // Nothing valid to send to – skip mail sending
+                } else {
+                    $subject   = $this->prepare_mail_body( $edit_subject, $post_author, $post_id );
+                    $subject   = wp_strip_all_tags( $subject );
+                    $mail_body = get_formatted_mail_body( $mail_body, $subject );
+                    $headers   = [ 'Content-Type: text/html; charset=UTF-8' ];
 
-                wp_mail( $to, $subject, $mail_body, $headers );
+                    wp_mail( $to, $subject, $mail_body, $headers );
+                }
             }
 
             //now redirect the user
@@ -470,13 +484,27 @@ class Frontend_Form_Ajax {
             $new_notification = $this->get_notification_settings( 'new' );
             if ( $new_notification['enabled'] ) {
                 $mail_body = $this->prepare_mail_body( $new_notification['body'], $post_author, $post_id );
-                $to        = $this->prepare_mail_body( $new_notification['to'], $post_author, $post_id );
-                $subject   = $this->prepare_mail_body( $new_notification['subject'], $post_author, $post_id );
-                $subject   = wp_strip_all_tags( $subject );
-                $mail_body = get_formatted_mail_body( $mail_body, $subject );
-                $headers   = [ 'Content-Type: text/html; charset=UTF-8' ];
+                // Validate & sanitise recipient addresses before sending
+                $to_raw = $this->prepare_mail_body( $new_notification['to'], $post_author, $post_id );
+                $to     = implode(
+                    ',',
+                    array_filter(
+                        array_map( static function ( $addr ) {
+                            $addr = trim( $addr );
+                            return is_email( $addr ) ? $addr : null;
+                        }, explode( ',', $to_raw ) )
+                    )
+                );
+                if ( empty( $to ) ) {
+                    // Nothing valid to send to – skip mail sending
+                } else {
+                    $subject   = $this->prepare_mail_body( $new_notification['subject'], $post_author, $post_id );
+                    $subject   = wp_strip_all_tags( $subject );
+                    $mail_body = get_formatted_mail_body( $mail_body, $subject );
+                    $headers   = [ 'Content-Type: text/html; charset=UTF-8' ];
 
-                wp_mail( $to, $subject, $mail_body, $headers );
+                    wp_mail( $to, $subject, $mail_body, $headers );
+                }
             }
 
             //redirect the user

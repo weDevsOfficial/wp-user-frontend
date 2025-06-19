@@ -156,6 +156,7 @@ class FormList extends WP_REST_Controller {
             'post_type'      => $post_type,
             'post_status'    => 'any',
             'posts_per_page' => -1,
+            'fields'         => 'ids',
             'meta_query'     => [
                 [
                     'key'     => '_wpuf_form_id',

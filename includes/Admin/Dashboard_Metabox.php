@@ -8,9 +8,41 @@ use DomXPath;
 class Dashboard_Metabox {
     const URL = 'https://wedevs.com/category/user-frontend-pro';
     const OPT_KEY = 'wpuf_admin_db_mb';
+    const SURVEY_KEY = 'wpuf_dashboard_survey';
+
+    protected $banner;
+    protected $message;
 
     public function __construct() {
         define( 'BANNER', WPUF_ASSET_URI . '/images/wpuf-updates.png' );
+        $default_message = '<p>Could you please take a moment and <a
+                        href="https://wordpress.org/support/plugin/wp-user-frontend/reviews/?filter=5" target="_blank">share
+                        your
+                        opinion</a> on WP.org? It would motivate us a lot and help other users get decisive while
+                    choosing WP User Frontend. Thanks in advance.
+                </p>';
+
+        $survey = get_transient( self::SURVEY_KEY );
+
+        if ( false === $survey ) {
+            $survey_url = 'https://raw.githubusercontent.com/weDevsOfficial/wpuf-util/master/survey.json';
+            $response   = wp_remote_get( $survey_url, [ 'timeout' => 15 ] );
+            $survey     = wp_remote_retrieve_body( $response );
+
+            if ( is_wp_error( $response ) || 200 !== $response['response']['code'] ) {
+                $survey = '[]';
+            }
+
+            set_transient( self::SURVEY_KEY, $survey, DAY_IN_SECONDS );
+        }
+
+        // Before decoding, fix invalid characters
+        $survey = str_replace( '\’', "'", $survey );
+        $survey = json_decode( $survey, true );
+
+        $this->banner  = ! empty( $survey['banner_image'] ) ? $survey['banner_image'] : BANNER;
+        $this->message = ! empty( $survey['message'] ) ? $survey['message'] : $default_message;
+
         add_action( 'wp_dashboard_setup', [ $this, 'add_metabox' ] );
     }
 
@@ -52,14 +84,10 @@ class Dashboard_Metabox {
         </style>
         <div class="wpuf-db-widget">
             <div class="wpuf-db-banner">
-                <img src="<?php echo esc_url( BANNER ); ?>" alt="Rating Banner">
-                <p>
-                    Could you please take a moment and <a
-                        href="https://wordpress.org/support/plugin/wp-user-frontend/reviews/?filter=5" target="_blank">share
-                        your
-                        opinion</a> on WP.org? It would motivate us a lot and help other users get decisive while
-                    choosing WP User Frontend. Thanks in advance.
-                </p>
+                <img src="<?php echo esc_url( $this->banner ); ?>" alt="Banner">
+                <div style="margin-top: 1rem;">
+                    <?php echo wp_kses_post( $this->message ); ?>
+                </div>
             </div>
             <div class="wpuf-divider-bottom"></div>
             <div class="wpuf-db-latest-blog">

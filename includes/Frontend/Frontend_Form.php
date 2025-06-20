@@ -483,7 +483,7 @@ class Frontend_Form extends Frontend_Render_Form {
             $login        = wpuf()->frontend->simple_login->get_login_url();
             $register     = wpuf()->frontend->simple_login->get_registration_url();
             $replace      = [ "<a href='" . $login . "'>Login</a>", "<a href='" . $register . "'>Register</a>" ];
-            $placeholders = [ '%login%', '%register%' ];
+            $placeholders = [ '{login}', '{register}' ];
 
             $this->form_settings['message_restrict'] = str_replace( $placeholders, $replace, $this->form_settings['message_restrict'] );
         }

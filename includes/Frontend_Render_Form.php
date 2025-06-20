@@ -202,7 +202,14 @@ class Frontend_Render_Form {
             wp_enqueue_style( 'wpuf-' . $layout );
         }
         if ( ! is_user_logged_in() && ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' !== $this->form_settings['post_permission'] ) ) {
-            echo wp_kses_post( '<div class="wpuf-message">' . $this->form_settings['message_restrict'] . '</div>' );
+            $login        = wpuf()->frontend->simple_login->get_login_url();
+            $register     = wpuf()->frontend->simple_login->get_registration_url();
+            $replace      = [ "<a href='" . $login . "'>Login</a>", "<a href='" . $register . "'>Register</a>" ];
+            $placeholders = [ '{login}', '{register}' ];
+
+            $message_restrict = str_replace( $placeholders, $replace, $this->form_settings['message_restrict'] );
+
+            echo wp_kses_post( '<div class="wpuf-message">' . $message_restrict . '</div>' );
 
             return;
         }

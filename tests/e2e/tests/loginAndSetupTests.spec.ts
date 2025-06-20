@@ -50,7 +50,8 @@ export default function loginAndSetupTests() {
          * @Test_LS0018 : Admin is adding credentils for ReCaptcha
          * @Test_LS0019 : Admin is adding credentils for Cloudflare Turnstile
          * @Test_LS0020 : Admin is enabling payment gateway bank
-         * @Test_LS0021 : Admin is logging out succesfully
+         * @Test_LS0021 : Admin is activating dokan lite
+         * @Test_LS0022 : Admin is logging out succesfully
          *  
          */
         test('LS0001 : Admin is logging into Admin-Dashboard', { tag: ['@Basic'] }, async () => {

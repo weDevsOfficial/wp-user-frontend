@@ -350,9 +350,7 @@ export class SettingsSetupPage extends Base {
         await this.page.reload();
         //Validate Login/Registration
         await this.assertionValidate(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfile1);
-        console.log(await this.assertionValidate(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfile1));
         //Click Login/Registration
-        await this.page.waitForSelector(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfile2);
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfile2);
         //Set Login Page to default
         expect(await this.page.waitForSelector(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileLoginPage)).toBeTruthy();
@@ -368,6 +366,26 @@ export class SettingsSetupPage extends Base {
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPostingSave);
 
         await this.page.waitForLoadState('domcontentloaded');
+
+        await this.waitForLoading();
+        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccount);
+        await this.page.selectOption(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountPage, { label: 'Account' });
+
+        await this.page.selectOption(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountActiveTab, { label: 'Dashboard' });
+        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountSave);
+
+
+    }
+
+    async changeSettingsSetEditProfilePageDefault(label:string) {
+        await Promise.all([this.page.goto(this.wpufRegFormPage)]);
+
+        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
+
+        await this.waitForLoading();
+        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccount);
+        await this.page.selectOption(Selectors.settingsSetup.wpufSettingsPage.settingsTabEditProfile, { label: `${label}` });
+        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountSave);
     }
 
 
@@ -489,7 +507,7 @@ export class SettingsSetupPage extends Base {
         //Enter Password
         await this.validateAndFillStrings(Selectors.settingsSetup.createNewUser.newUserPassword, password);
         //Allow weak Password
-        await this.page.check(Selectors.settingsSetup.createNewUser.newUserWeakPasswordAllow);
+        // await this.page.check(Selectors.settingsSetup.createNewUser.newUserWeakPasswordAllow);
         //Select Role
         await this.page.waitForLoadState('domcontentloaded');
         await this.assertionValidate(Selectors.settingsSetup.createNewUser.newUserSelectRole);

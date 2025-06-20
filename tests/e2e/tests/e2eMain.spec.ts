@@ -5,6 +5,7 @@ import loginAndSetupTests from './loginAndSetupTests.spec';
 import postFormsTests from './postFormsTests.spec';
 import registrationFormsTestsPro from './registrationFormsTestsPro.spec';
 import postFormSettingsTest from './postFormSettingsTest.spec';
+import regFormSettingsTestPro from './regFormSettingsTestPro.spec';
 
 if (process.env.CI == 'false') {
     test.describe(resetWordpressSite);
@@ -13,3 +14,4 @@ test.describe(loginAndSetupTests);
 test.describe(postFormsTests);
 test.describe(registrationFormsTestsPro);
 test.describe(postFormSettingsTest);
+test.describe(regFormSettingsTestPro);

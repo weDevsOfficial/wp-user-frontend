@@ -125,9 +125,6 @@ export default function postFormSettingsTest() {
          */
 
         let formName: string;
-        postTitle = faker.word.words(3);
-        postContent = faker.lorem.paragraph();
-        postExcerpt = postContent;
         const category = 'Music'; // Using one of the default categories from the screenshot
         const emailAddress = faker.internet.email();
         const emailSubject = faker.word.words(3);
@@ -146,10 +143,13 @@ export default function postFormSettingsTest() {
             Team {sitename}`;
         const multipleEmails = `${faker.internet.email()}, ${faker.internet.email()}, ${faker.internet.email()}`;
 
-        test('PFS0001 : Admin is changing post type', { tag: ['@Lite'] }, async () => {
-            formName = PostForm.pfPostName1 + faker.word.words(1);
+        test.beforeAll(async () => {
             const basicLogin = new BasicLoginPage(page);
             await basicLogin.basicLoginAndPluginVisit(Users.adminUsername, Users.adminPassword);
+        });
+
+        test('PFS0001 : Admin is changing post type', { tag: ['@Lite'] }, async () => {
+            formName = PostForm.pfPostName1 + faker.word.words(1);
             const postFormSettings = new PostFormSettingsPage(page);
             // Create a new post form
             await postFormSettings.createPostForm(formName);
@@ -702,12 +702,13 @@ export default function postFormSettingsTest() {
             await postFormSettings.enablePostExpiration(formName);
         });
 
-        test.afterAll(async () => {
-            // Clear state file after tests
-            fs.writeFileSync('state.json', JSON.stringify({ cookies: [], origins: [] }));
+    });
 
-            // Close the browser
-            await browser.close();
-        });
+    test.afterAll(async () => {
+        // Clear state file after tests
+        fs.writeFileSync('state.json', JSON.stringify({ cookies: [], origins: [] }));
+
+        // Close the browser
+        await browser.close();
     });
 }

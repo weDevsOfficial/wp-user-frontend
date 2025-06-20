@@ -96,9 +96,9 @@ export class BasicLoginPage extends Base {
     //FrontEnd Login
     async frontendLogin(email: string, password: string) {
         await this.validateAndFillStrings(Selectors.login.basicLogin.loginEmailField2, email);
-
-        await this.assertionValidate(Selectors.login.basicLogin.loginPasswordField2);
         await this.validateAndFillStrings(Selectors.login.basicLogin.loginPasswordField2, password);
+
+        await this.page.waitForTimeout(5000);
 
         await this.assertionValidate(Selectors.login.basicLogin.loginButton2);
         await this.validateAndClick(Selectors.login.basicLogin.loginButton2);

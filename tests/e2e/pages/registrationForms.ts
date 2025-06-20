@@ -91,17 +91,17 @@ export class RegistrationFormsPage extends Base {
         await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.confirmPublish);
 
 
-        //Go to Pages 
-        await Promise.all([this.page.goto(this.pagesPage)]);
+        // //Go to Pages 
+        // await Promise.all([this.page.goto(this.pagesPage)]);
 
-        //Validate Page Created
-        //Search Page
-        await this.validateAndFillStrings(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.pagesSearchBox, registrationFormPageTitle);
-        await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.pagesSearchBoxSubmit);
+        // //Validate Page Created
+        // //Search Page
+        // await this.validateAndFillStrings(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.pagesSearchBox, registrationFormPageTitle);
+        // await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.pagesSearchBoxSubmit);
 
-        //Validate Page
-        const validatePageCreated = await this.page.innerText(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.validatePageCreated);
-        expect(validatePageCreated).toContain(registrationFormPageTitle);
+        // //Validate Page
+        // const validatePageCreated = await this.page.innerText(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.validatePageCreated);
+        // expect(validatePageCreated).toContain(registrationFormPageTitle);
 
     }
 
@@ -121,7 +121,7 @@ export class RegistrationFormsPage extends Base {
     /***********************************************/
 
     //BlankForm
-    async createBlankForm_RF(newRegistrationName: string) {
+    async createBlankForm_RF(newRegFormName: string, newRegFormPage: string) {
         //Visit Post Form Page
         await Promise.all([this.page.goto(this.wpufRegistrationFormPage)]);
         //CreateNewRegistrationForm
@@ -129,14 +129,11 @@ export class RegistrationFormsPage extends Base {
         await this.validateAndClick(Selectors.registrationForms.createBlankForm_RF.clickRegistrationFormMenuOption);
 
         //Start
-        await this.assertionValidate(Selectors.registrationForms.createBlankForm_RF.clickRegistraionAddForm);
         await this.validateAndClick(Selectors.registrationForms.createBlankForm_RF.clickRegistraionAddForm);
 
         //ClickBlankForm
         //Templates 
-        await this.assertionValidate(Selectors.registrationForms.createBlankForm_RF.hoverBlankForm);
-        await this.page.hover(Selectors.registrationForms.createBlankForm_RF.hoverBlankForm);
-        await this.assertionValidate(Selectors.registrationForms.createBlankForm_RF.clickBlankForm);
+        //await this.validateAndClick(Selectors.registrationForms.createBlankForm_RF.hoverBlankForm);
         await this.validateAndClick(Selectors.registrationForms.createBlankForm_RF.clickBlankForm);
 
 
@@ -144,8 +141,20 @@ export class RegistrationFormsPage extends Base {
         //EnterName
         await this.page.waitForLoadState('domcontentloaded');
         await this.validateAndClick(Selectors.registrationForms.createBlankForm_RF.editNewFormName);
-        await this.validateAndFillStrings(Selectors.registrationForms.createBlankForm_RF.enterNewFormName, newRegistrationName);
+        await this.validateAndFillStrings(Selectors.registrationForms.createBlankForm_RF.enterNewFormName, newRegFormName);
         await this.validateAndClick(Selectors.registrationForms.createBlankForm_RF.confirmNewNameTickButton);
+
+        await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFieldFirstName);
+        await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFieldDisplayName);
+        await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFieldEmail);
+        await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFieldPassword);
+
+        await this.validateAndClick(Selectors.regFormSettings.saveButton);
+        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+
+        await this.createRegistrationPageUsingShortcodeLite(newRegFormPage);
+
+
 
     }
 

@@ -8,6 +8,7 @@ import { PostFormsFrontendPage } from '../pages/postFormsFrontend';
 import { SettingsSetupPage } from '../pages/settingsSetup';
 import { Users, PostForm, Urls } from '../utils/testData';
 import * as fs from 'fs'; //Clear Cookie
+import { BasicLogoutPage } from '../pages/basicLogout';
 
 export default function postFormsTestsPro() {
 
@@ -134,14 +135,13 @@ export default function postFormsTestsPro() {
 
 
         test('PF0008 : Admin is Updating Settings with default Post Form', { tag: ['@Pro'] }, async () => {
-            const PostFormsPro = new PostFormsProPage(page);
             const SettingsSetup = new SettingsSetupPage(page);
 
             const postFormPresetFrontendTitle = 'FE PostForm';
 
             await SettingsSetup.changeSettingsSetDefaultPostForm(postFormPresetFrontendTitle);
 
-            fs.writeFile('state.json', '{"cookies":[],"origins": []}', function () { });
+            await new BasicLogoutPage(page).logOut();
         });
 
 

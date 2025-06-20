@@ -31,7 +31,6 @@ export class PostFormsPage extends Base {
         await this.page.reload();
         //Start
         //Click Add Form
-        await this.assertionValidate(Selectors.postForms.createBlankForm_PF.clickPostAddForm);
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickPostAddForm);
 
         

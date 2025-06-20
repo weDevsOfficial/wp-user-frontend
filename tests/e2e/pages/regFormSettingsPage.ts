@@ -508,5 +508,4 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);
     }
 
-
 }

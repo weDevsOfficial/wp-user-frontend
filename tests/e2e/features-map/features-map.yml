@@ -254,6 +254,10 @@ features:
     name: Admin is validating conditional logic on form submission
   - id: PFS0089
     name: Admin is enabling post expiration
+  - id: PFS0090
+    name: Admin is setting post permission to role based
+  - id: PFS0091
+    name: Admin is validating post permission role based
 
 # Registration Form Settings
   - id: RFS0001

@@ -5,6 +5,7 @@ import { Base } from './base';
 import { Urls } from '../utils/testData';
 import { Selectors } from './selectors';
 import { FieldOptionsCommonPage } from '../pages/fieldOptionsCommon';
+import { BasicLogoutPage } from './basicLogout';
 
 export class PostFormSettingsPage extends Base {
     constructor(page: Page) {
@@ -1938,5 +1939,74 @@ export class PostFormSettingsPage extends Base {
         const formDescription = await this.page.innerText(Selectors.postFormSettings.showFormDescription);
         expect(formDescription).toBe('Form Description');
         
+    }
+
+    async setPostPermissionRoleBased(formName: string) {
+        // Go to form edit page
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
+        await this.waitForLoading();
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Post Settings section
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.afterPostSettingsHeader);
+
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postPermissionContainer);
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postPermissionDropdown);
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postPermissionOption('role_base'));
+
+        await this.page.waitForTimeout(300);
+
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.roleSelectionContainer);
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.roleSelectionDropdown);
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.roleSelectionOption('subscriber'));
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+    }
+
+    async validatePostPermissionRoleBased(formName: string) {
+        // Go to form edit page
+        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
+        await this.waitForLoading();
+
+        // Click on the form
+        const errorMessage = await this.page.innerText(Selectors.postFormSettings.wpufMessage);
+        expect(errorMessage).toContain('You do not have sufficient permissions to access this form.');
+
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
+        await this.waitForLoading();
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Post Settings section
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.afterPostSettingsHeader);
+
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postPermissionContainer);
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postPermissionDropdown);
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postPermissionOption('role_base'));
+
+        await this.page.waitForTimeout(300);
+
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.roleSelectionContainer);
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.roleSelectionDropdown);
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.roleSelectionOption('administrator'));
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
     }
 }

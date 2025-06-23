@@ -124,6 +124,8 @@ export default function postFormSettingsTest() {
          * @Test_PFS0087 : Admin is enabling conditional logic on form submission
          * @Test_PFS0088 : Admin is validating conditional logic on form submission
          * @Test_PFS0089 : Admin is enabling post expiration
+         * @Test_PFS0090 : Admin is setting post permission to role based
+         * @Test_PFS0091 : Admin is validating post permission role based
          */
 
         let formName: string;
@@ -712,6 +714,16 @@ export default function postFormSettingsTest() {
         test('PFS0089 : Admin is enabling post expiration', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.enablePostExpiration(formName);
+        });
+
+        test('PFS0090 : Admin is setting post permission role based', { tag: ['@Lite'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.setPostPermissionRoleBased(formName);
+        });
+
+        test('PFS0091 : Admin is validating post permission restriction', { tag: ['@Lite'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.validatePostPermissionRoleBased(formName);
         });
 
     });

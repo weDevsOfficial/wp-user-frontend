@@ -746,6 +746,7 @@ export const Selectors = {
         transactionTableRow: '//tbody//tr[1]',
         acceptPayment: '//a[normalize-space()="Accept"]',
         successMessage: '//div[@class="wpuf-success"]',
+        wpufMessage: '//div[@class="wpuf-message"]',
         clickPost: (postTitle: string) => `//a[normalize-space(text())="${postTitle}"]`,
 
         showFormTitle: (formName: string) => `//h2[normalize-space()="${formName}"]`,
@@ -819,6 +820,14 @@ export const Selectors = {
             
             updatePostRedirectionUrlInput: '//input[@id="edit_url"]',
 
+            postPermissionContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[10]',
+            postPermissionDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[10]',
+            postPermissionOption: (text: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[contains(text(),"${text}")]`,
+
+            roleSelectionContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[11]',
+            roleSelectionDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[11]',
+            roleSelectionOption: (text: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[contains(text(),"${text}")]`,
+
             paymentSettingsTab: '//li[@data-settings="payment_settings"]',
             paymentEnableToggle: '//input[@id="payment_options"]/following-sibling::span[1]',
             paymentOptionsContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[12]',
@@ -831,7 +840,9 @@ export const Selectors = {
 
 
             formTitleToggle: '//input[@id="show_form_title"]/following-sibling::span[1]',
-            formDescriptionBox: '//textarea[@id="form_description"]'
+            formDescriptionBox: '//textarea[@id="form_description"]',
+
+            unAuthMsg: '//textarea[@id="message_restrict"]'
         },
 
         // Validation Messages

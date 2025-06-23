@@ -89,39 +89,41 @@ export default function postFormSettingsTest() {
          * @Test_PFS0052 : Admin is validating post update message in form
          * @Test_PFS0053 : Admin is setting lock user editing after time
          * @Test_PFS0054 : Admin is setting update post button text
-         * @Test_PFS0055 : Admin is enabling pay per post
-         * @Test_PFS0056 : Admin is creating post with payment
-         * @Test_PFS0057 : Admin is accepting payment for post
-         * @Test_PFS0058 : Admin is validating paid post is live
-         * @Test_PFS0059 : Admin is disabling pay per post
-         * @Test_PFS0060 : Admin is enabling new post notification
-         * @Test_PFS0061 : Admin is validating new post notification settings enabled
-         * @Test_PFS0062 : Admin is modifying notification email
-         * @Test_PFS0063 : Admin is modifying notification subject
-         * @Test_PFS0064 : Admin is modifying notification body with template tags
-         * @Test_PFS0065 : Admin is clicking and validating template tags for notification
-         * @Test_PFS0066 : Admin is setting multiple notification emails
-         * @Test_PFS0067 : Admin is submitting post and validating notification from FE
-         * @Test_PFS0068 : Admin is disabling new post notification
-         * @Test_PFS0069 : Admin is enabling updated post notification
-         * @Test_PFS0070 : Admin is validating updated post notification settings enabled
-         * @Test_PFS0071 : Admin is modifying updated post notification email
-         * @Test_PFS0072 : Admin is modifying updated post notification subject
-         * @Test_PFS0073 : Admin is modifying updated post notification body with template tags
-         * @Test_PFS0074 : Admin is clicking and validating template tags for updated post notification
-         * @Test_PFS0075 : Admin is setting multiple updated post notification emails
-         * @Test_PFS0076 : Admin is submitting post and validating updated post notification from FE
-         * @Test_PFS0077 : Admin is disabling updated post notification
-         * @Test_PFS0078 : Admin is enabling user comment
-         * @Test_PFS0079 : User is validating user comment is enabled
-         * @Test_PFS0080 : Admin is disabling user comment
-         * @Test_PFS0081 : User is validating user comment is disabled
-         * @Test_PFS0082 : Admin is limiting form entries
-         * @Test_PFS0083 : Admin is validating limit form entries
-         * @Test_PFS0084 : Admin is unlimiting form entries
-         * @Test_PFS0085 : Admin is enabling conditional logic on form submission
-         * @Test_PFS0086 : Admin is validating conditional logic on form submission
-         * @Test_PFS0087 : Admin is enabling post expiration
+         * @Test_PFS0055 : Admin is enabling form title showing
+         * @Test_PFS0056 : Admin is showing form description
+         * @Test_PFS0057 : Admin is enabling pay per post
+         * @Test_PFS0058 : Admin is creating post with payment
+         * @Test_PFS0059 : Admin is accepting payment for post
+         * @Test_PFS0060 : Admin is validating paid post is live
+         * @Test_PFS0061 : Admin is disabling pay per post
+         * @Test_PFS0062 : Admin is enabling new post notification
+         * @Test_PFS0063 : Admin is validating new post notification settings enabled
+         * @Test_PFS0064 : Admin is modifying notification email
+         * @Test_PFS0065 : Admin is modifying notification subject
+         * @Test_PFS0066 : Admin is modifying notification body with template tags
+         * @Test_PFS0067 : Admin is clicking and validating template tags for notification
+         * @Test_PFS0068 : Admin is setting multiple notification emails
+         * @Test_PFS0069 : Admin is submitting post and validating notification from FE
+         * @Test_PFS0070 : Admin is disabling new post notification
+         * @Test_PFS0071 : Admin is enabling updated post notification
+         * @Test_PFS0072 : Admin is validating updated post notification settings enabled
+         * @Test_PFS0073 : Admin is modifying updated post notification email
+         * @Test_PFS0074 : Admin is modifying updated post notification subject
+         * @Test_PFS0075 : Admin is modifying updated post notification body with template tags
+         * @Test_PFS0076 : Admin is clicking and validating template tags for updated post notification
+         * @Test_PFS0077 : Admin is setting multiple updated post notification emails
+         * @Test_PFS0078 : Admin is submitting post and validating updated post notification from FE
+         * @Test_PFS0079 : Admin is disabling updated post notification
+         * @Test_PFS0080 : Admin is enabling user comment
+         * @Test_PFS0081 : User is validating user comment is enabled
+         * @Test_PFS0082 : Admin is disabling user comment
+         * @Test_PFS0083 : User is validating user comment is disabled
+         * @Test_PFS0084 : Admin is limiting form entries
+         * @Test_PFS0085 : Admin is validating limit form entries
+         * @Test_PFS0086 : Admin is unlimiting form entries
+         * @Test_PFS0087 : Admin is enabling conditional logic on form submission
+         * @Test_PFS0088 : Admin is validating conditional logic on form submission
+         * @Test_PFS0089 : Admin is enabling post expiration
          */
 
         let formName: string;
@@ -500,12 +502,22 @@ export default function postFormSettingsTest() {
             await postFormSettings.setUpdatePostButtonText(formName, 'Save Changes');
         });
 
-        test('PFS0055 : Admin is enabling pay per post', { tag: ['@Lite'] }, async () => {
+        test.skip('PFS0055 : Admin is enabling and validating form title showing', { tag: ['@Lite'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.enableFormTitleShowing(formName);
+        });
+
+        test.skip('PFS0056 : Admin is setting and validating form description showing', { tag: ['@Lite'] }, async () => {
+            const postFormSettings = new PostFormSettingsPage(page);
+            await postFormSettings.showFormDescription(formName);
+        });
+
+        test('PFS0057 : Admin is enabling pay per post', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.enablePayPerPost(formName, '2.00', 'Order Received');
         });
 
-        test('PFS0056 : Admin is creating post with payment', { tag: ['@Lite'] }, async () => {
+        test('PFS0058 : Admin is creating post with payment', { tag: ['@Lite'] }, async () => {
             postTitle = faker.word.words(3);
             postContent = faker.lorem.paragraph();
             postExcerpt = postContent;
@@ -513,59 +525,59 @@ export default function postFormSettingsTest() {
             await postFormSettings.createPostWithPayment(postTitle, postContent, postExcerpt, '2.00', 'Order Received');
         });
 
-        test('PFS0057 : Admin is accepting payment for post', { tag: ['@Lite'] }, async () => {
+        test('PFS0059 : Admin is accepting payment for post', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.acceptPayment();
         });
 
-        test('PFS0058 : Admin is validating paid post is live', { tag: ['@Lite'] }, async () => {
+        test('PFS0060 : Admin is validating paid post is live', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.validatePayPerPost();
         });
 
-        test('PFS0059 : Admin is disabling pay per post', { tag: ['@Lite'] }, async () => {
+        test('PFS0061 : Admin is disabling pay per post', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.disablePayPerPost(formName);
         });
 
-        test('PFS0060 : Admin is enabling new post notification', { tag: ['@Lite'] }, async () => {
+        test('PFS0062 : Admin is enabling new post notification', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.enableNewPostNotification(formName);
         });
 
-        test('PFS0061 : Admin is validating new post notification settings enabled', { tag: ['@Lite'] }, async () => {
+        test('PFS0063 : Admin is validating new post notification settings enabled', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.validateNotificationSettingsEnabled(formName);
         });
 
-        test('PFS0062 : Admin is modifying notification email', { tag: ['@Lite'] }, async () => {
+        test('PFS0064 : Admin is modifying notification email', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.modifyNotificationEmail(formName, emailAddress);
         });
 
-        test('PFS0063 : Admin is modifying notification subject', { tag: ['@Lite'] }, async () => {
+        test('PFS0065 : Admin is modifying notification subject', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.modifyNotificationSubject(formName, emailSubject);
         });
 
-        test('PFS0064 : Admin is modifying notification body with template tags', { tag: ['@Lite'] }, async () => {
+        test('PFS0066 : Admin is modifying notification body with template tags', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.modifyNotificationBodyWithTemplateTags(formName, emailBody);
         });
 
-        test('PFS0065 : Admin is clicking and validating template tags for notification', { tag: ['@Lite'] }, async () => {
+        test('PFS0067 : Admin is clicking and validating template tags for notification', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             const templateTags = ['{post_title}', '{post_content}', '{post_excerpt}'];
             //, '{tags}', '{category}', '{author}', '{author_email}', '{author_bio}', '{sitename}', '{siteurl}', '{permalink}', '{editlink}'
             await postFormSettings.clickTemplateTagsForNotification(formName, templateTags);
         });
 
-        test('PFS0066 : Admin is setting multiple notification emails', { tag: ['@Lite'] }, async () => {
+        test('PFS0068 : Admin is setting multiple notification emails', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.setMultipleNotificationEmails(formName, multipleEmails);
         });
 
-        test('PFS0067 : Admin is submitting post and validating notification from FE', { tag: ['@Lite'] }, async () => {
+        test('PFS0069 : Admin is submitting post and validating notification from FE', { tag: ['@Lite'] }, async () => {
             postTitle = faker.word.words(3);
             postContent = faker.lorem.paragraph();
             postExcerpt = postContent;
@@ -573,49 +585,49 @@ export default function postFormSettingsTest() {
             await postFormSettings.submitPostAndValidateNotificationFE(postTitle, postContent, postExcerpt, emailSubject, multipleEmails);
         });
 
-        test('PFS0068 : Admin is disabling new post notification', { tag: ['@Lite'] }, async () => {
+        test('PFS0070 : Admin is disabling new post notification', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.disableNewPostNotification(formName);
         });
 
-        test('PFS0069 : Admin is enabling updated post notification', { tag: ['@Pro'] }, async () => {
+        test('PFS0071 : Admin is enabling updated post notification', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.enableUpdatedPostNotification(formName);
         });
 
-        test('PFS0070 : Admin is validating Updated post notification settings enabled', { tag: ['@Pro'] }, async () => {
+        test('PFS0072 : Admin is validating Updated post notification settings enabled', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.validateUpdatedNotificationSettingsEnabled(formName);
         });
 
-        test('PFS0071 : Admin is modifying Updated post notification email', { tag: ['@Pro'] }, async () => {
+        test('PFS0073 : Admin is modifying Updated post notification email', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.modifyUpdatedNotificationEmail(formName, emailAddress);
         });
 
-        test('PFS0072 : Admin is modifying Updated post notification subject', { tag: ['@Pro'] }, async () => {
+        test('PFS0074 : Admin is modifying Updated post notification subject', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.modifyUpdatedNotificationSubject(formName, emailSubject);
         });
 
-        test('PFS0073 : Admin is modifying Updated post notification body with template tags', { tag: ['@Pro'] }, async () => {
+        test('PFS0075 : Admin is modifying Updated post notification body with template tags', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.modifyUpdatedNotificationBodyWithTemplateTags(formName, emailBody);
         });
 
-        test('PFS0074 : Admin is clicking and validating template tags for Updated post notification', { tag: ['@Pro'] }, async () => {
+        test('PFS0076 : Admin is clicking and validating template tags for Updated post notification', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             const templateTags = ['{post_title}', '{post_content}', '{post_excerpt}'];
             //, '{tags}', '{category}', '{author}', '{author_email}', '{author_bio}', '{sitename}', '{siteurl}', '{permalink}', '{editlink}'
             await postFormSettings.clickTemplateTagsForUpdatedNotification(formName, templateTags);
         });
 
-        test('PFS0075 : Admin is setting multiple Updated post notification emails', { tag: ['@Pro'] }, async () => {
+        test('PFS0077 : Admin is setting multiple Updated post notification emails', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.setMultipleUpdatedNotificationEmails(formName, multipleEmails);
         });
 
-        test.skip('PFS0076 : Admin is submitting post and validating Updated post notification from FE', { tag: ['@Pro'] }, async () => {
+        test.skip('PFS0078 : Admin is submitting post and validating Updated post notification from FE', { tag: ['@Pro'] }, async () => {
             const previousPostTitle = postTitle;
             postTitle = faker.word.words(3);
             postContent = faker.lorem.paragraph();
@@ -624,12 +636,12 @@ export default function postFormSettingsTest() {
             await postFormSettings.submitPostAndValidateUpdatedNotificationFE(previousPostTitle, postTitle, postContent, postExcerpt, emailSubject, multipleEmails);
         });
 
-        test('PFS0077 : Admin is disabling updated post notification', { tag: ['@Pro'] }, async () => {
+        test('PFS0079 : Admin is disabling updated post notification', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.disableUpdatedPostNotification(formName);
         });
 
-        test('PFS0078 : Admin is enabling user comment', { tag: ['@Lite'] }, async () => {
+        test('PFS0080 : Admin is enabling user comment', { tag: ['@Lite'] }, async () => {
             postTitle = faker.word.words(3);
             postContent = faker.lorem.paragraph();
             postExcerpt = postContent;
@@ -639,7 +651,7 @@ export default function postFormSettingsTest() {
             await BasicLogout.logOut();
         });
 
-        test('PFS0079 : User is validating user comment is enabled', { tag: ['@Lite'] }, async () => {
+        test('PFS0081 : User is validating user comment is enabled', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             const BasicLogin = new BasicLoginPage(page);
 
@@ -649,7 +661,7 @@ export default function postFormSettingsTest() {
             await BasicLogin.basicLogin(Users.adminUsername, Users.adminPassword);
         });
 
-        test('PFS0080 : Admin is disabling user comment', { tag: ['@Lite'] }, async () => {
+        test('PFS0082 : Admin is disabling user comment', { tag: ['@Lite'] }, async () => {
             postTitle = faker.word.words(3);
             postContent = faker.lorem.paragraph();
             postExcerpt = postContent;
@@ -659,7 +671,7 @@ export default function postFormSettingsTest() {
             await BasicLogout.logOut();
         });
 
-        test('PFS0081 : User is validating user comment is disabled', { tag: ['@Lite'] }, async () => {
+        test('PFS0083 : User is validating user comment is disabled', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             const BasicLogin = new BasicLoginPage(page);
 
@@ -669,12 +681,12 @@ export default function postFormSettingsTest() {
             await BasicLogin.basicLogin(Users.adminUsername, Users.adminPassword);
         });
 
-        test('PFS0082 : Admin is limiting form entries', { tag: ['@Lite'] }, async () => {
+        test('PFS0084 : Admin is limiting form entries', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.limitFormEntries(formName);
         });
 
-        test('PFS0083 : Admin is validating limit form entries', { tag: ['@Lite'] }, async () => {
+        test('PFS0085 : Admin is validating limit form entries', { tag: ['@Lite'] }, async () => {
             postTitle = faker.word.words(3);
             postContent = faker.lorem.paragraph();
             postExcerpt = postContent;
@@ -682,22 +694,22 @@ export default function postFormSettingsTest() {
             await postFormSettings.validateLimitFormEntries(postTitle, postContent, postExcerpt);
         });
 
-        test('PFS0084 : Admin is unlimiting form entries', { tag: ['@Lite'] }, async () => {
+        test('PFS0086 : Admin is unlimiting form entries', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.unlimitFormEntries(formName);
         });
 
-        test.skip('PFS0085 : Admin is enabling conditional logic on form submission', { tag: ['@Pro'] }, async () => {
+        test.skip('PFS0087 : Admin is enabling conditional logic on form submission', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             
         });
 
-        test.skip('PFS0086 : Admin is validating conditional logic on form submission', { tag: ['@Pro'] }, async () => {
+        test.skip('PFS0088 : Admin is validating conditional logic on form submission', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             
         });
 
-        test('PFS0087 : Admin is enabling post expiration', { tag: ['@Pro'] }, async () => {
+        test('PFS0089 : Admin is enabling post expiration', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.enablePostExpiration(formName);
         });

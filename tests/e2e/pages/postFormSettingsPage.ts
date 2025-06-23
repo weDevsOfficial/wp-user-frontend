@@ -1865,4 +1865,78 @@ export class PostFormSettingsPage extends Base {
         // Wait for save message
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
     }
+
+    async enableFormTitleShowing(formName: string) {
+        // Go to form edit page
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
+        await this.waitForLoading();
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Post Settings section
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
+
+        const isChecked = await this.page.locator(Selectors.postFormSettings.postSettingsSection.formTitleToggle).isChecked();
+        if (!isChecked) {
+            await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.formTitleToggle);
+        }
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+
+        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
+        await this.waitForLoading();
+
+        await this.assertionValidate(Selectors.postFormSettings.showFormTitle(formName));
+        
+    }
+
+    async showFormDescription(formName: string) {
+        // Go to form edit page
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
+        await this.waitForLoading();
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Post Settings section
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
+
+        const isChecked = await this.page.locator(Selectors.postFormSettings.postSettingsSection.formTitleToggle).isChecked();
+        if (!isChecked) {
+            await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.formTitleToggle);
+            // Save settings
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+            // Wait for save message
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
+
+        await this.validateAndFillStrings(Selectors.postFormSettings.postSettingsSection.formDescriptionBox, 'Form Description');
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+
+        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
+        await this.waitForLoading();
+
+        await this.assertionValidate(Selectors.postFormSettings.showFormTitle(formName));
+
+        const formDescription = await this.page.innerText(Selectors.postFormSettings.showFormDescription);
+        expect(formDescription).toBe('Form Description');
+        
+    }
 }

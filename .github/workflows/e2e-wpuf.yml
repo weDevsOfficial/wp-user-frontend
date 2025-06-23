@@ -197,9 +197,41 @@ jobs:
           if-no-files-found: warn
           retention-days: 3
 
-      # - name: Publish HTML report to GH Pages
-      #   uses: peaceiris/actions-gh-pages@v4
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     publish_branch: gh-pages
-      #     publish_dir: tests/e2e/playwright-report || tests/e2e/test-results
+      # Send Email Report if passed
+      - name: Send Test Report on email (Passed)
+        if: success()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.SMTP_EMAIL_USERNAME }}
+          password: ${{ secrets.SMTP_EMAIL_PASSWORD }}
+          subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
+          body: |
+            ${{ github.job }} job in workflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}.
+            
+            Test was conducted on WPUF plugin.
+            
+            To View full test run, click on the following link: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          to: rubaiyat.mohammad@wedevs.com, nurul.ratul@wedevs.com, farazi@wedevs.com, anik@wedevs.com
+          from: wedevs.testing1@gmail.com
+
+      # Send Email Report if failed
+      - name: Send Test Report on email (Failed)
+        if: failure()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.SMTP_EMAIL_USERNAME }}
+          password: ${{ secrets.SMTP_EMAIL_PASSWORD }}
+          subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
+          body: |
+            ${{ github.job }} job in workflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}.
+            
+            Test was conducted on WPUF plugin.
+            
+            To View full test run, click on the following link: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          to: rubaiyat.mohammad@wedevs.com
+          from: wedevs.testing1@gmail.com
+          attachments: tests/e2e/playwright-report

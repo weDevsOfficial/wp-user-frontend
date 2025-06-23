@@ -185,56 +185,60 @@ features:
   - id: PFS0054
     name: Admin is setting update post button text
   - id: PFS0055
-    name: Admin is enabling pay per post
+    name: Admin is enabling form title showing
   - id: PFS0056
-    name: Admin is creating post with payment
+    name: Admin is showing form description
   - id: PFS0057
-    name: Admin is accepting payment for post
+    name: Admin is enabling pay per post
   - id: PFS0058
-    name: Admin is validating paid post is live
+    name: Admin is creating post with payment
   - id: PFS0059
-    name: Admin is disabling pay per post
+    name: Admin is accepting payment for post
   - id: PFS0060
-    name: Admin is enabling new post notification
+    name: Admin is validating paid post is live
   - id: PFS0061
-    name: Admin is validating new post notification settings enabled
+    name: Admin is disabling pay per post
   - id: PFS0062
-    name: Admin is modifying notification email
+    name: Admin is enabling new post notification
   - id: PFS0063
-    name: Admin is modifying notification subject
+    name: Admin is validating new post notification settings enabled
   - id: PFS0064
-    name: Admin is modifying notification body with template tags
+    name: Admin is modifying notification email
   - id: PFS0065
-    name: Admin is clicking and validating template tags for notification
+    name: Admin is modifying notification subject
   - id: PFS0066
-    name: Admin is setting multiple notification emails
+    name: Admin is modifying notification body with template tags
   - id: PFS0067
-    name: Admin is submitting post and validating notification from FE
+    name: Admin is clicking and validating template tags for notification
   - id: PFS0068
-    name: Admin is disabling new post notification
+    name: Admin is setting multiple notification emails
   - id: PFS0069
-    name: Admin is enabling updated post notification
+    name: Admin is submitting post and validating notification from FE
   - id: PFS0070
-    name: Admin is validating updated post notification settings enabled
+    name: Admin is disabling new post notification
   - id: PFS0071
-    name: Admin is modifying updated post notification email
+    name: Admin is enabling updated post notification
   - id: PFS0072
-    name: Admin is modifying updated post notification subject
+    name: Admin is validating updated post notification settings enabled
   - id: PFS0073
+    name: Admin is modifying updated post notification email
+  - id: PFS0074
+    name: Admin is modifying updated post notification subject
+  - id: PFS0075
     name: Admin is modifying updated post notification body with template tags
   - id: PFS0074
     name: Admin is clicking and validating template tags for updated post notification
-  - id: PFS0075
-    name: Admin is setting multiple updated post notification emails
-  - id: PFS0076
-    name: Admin is submitting post and validating updated post notification from FE
   - id: PFS0077
-    name: Admin is disabling updated post notification
+    name: Admin is setting multiple updated post notification emails
   - id: PFS0078
-    name: Admin is enabling user comment
+    name: Admin is submitting post and validating updated post notification from FE
   - id: PFS0079
-    name: User is validating user comment is enabled
+    name: Admin is disabling updated post notification
   - id: PFS0080
+    name: Admin is enabling user comment
+  - id: PFS0081
+    name: User is validating user comment is enabled
+  - id: PFS0082
     name: Admin is disabling user comment
   - id: PFS0081
     name: User is validating user comment is disabled
@@ -242,13 +246,13 @@ features:
     name: Admin is limiting form entries
   - id: PFS0083
     name: Admin is validating limit form entries
-  - id: PFS0084
-    name: Admin is unlimiting form entries
-  - id: PFS0085
-    name: Admin is enabling conditional logic on form submission
   - id: PFS0086
-    name: Admin is validating conditional logic on form submission
+    name: Admin is unlimiting form entries
   - id: PFS0087
+    name: Admin is enabling conditional logic on form submission
+  - id: PFS0088
+    name: Admin is validating conditional logic on form submission
+  - id: PFS0089
     name: Admin is enabling post expiration
 
 # Registration Form Settings
@@ -365,6 +369,8 @@ features:
   - id: RFS0056
     name: Admin is validating multi-step progressbar
   - id: RFS0057
-    name: Admin is validating multi-step by step
+    name: Admin is enabling multi-step form by step
   - id: RFS0058
+    name: Admin is validating multi-step by step
+  - id: RFS0059
     name: Admin is disabling multi-step form

@@ -747,6 +747,9 @@ export const Selectors = {
         acceptPayment: '//a[normalize-space()="Accept"]',
         successMessage: '//div[@class="wpuf-success"]',
         clickPost: (postTitle: string) => `//a[normalize-space(text())="${postTitle}"]`,
+
+        showFormTitle: (formName: string) => `//h2[normalize-space()="${formName}"]`,
+        showFormDescription: '//div[@class="wpuf-form-description"]',
         
 
         // Post Settings Section
@@ -827,6 +830,8 @@ export const Selectors = {
             paymentSuccessPageOption: (text: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[contains(text(),"${text}")]`,
 
 
+            formTitleToggle: '//input[@id="show_form_title"]/following-sibling::span[1]',
+            formDescriptionBox: '//textarea[@id="form_description"]'
         },
 
         // Validation Messages

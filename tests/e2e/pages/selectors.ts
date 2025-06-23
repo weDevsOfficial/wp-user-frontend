@@ -822,17 +822,18 @@ export const Selectors = {
 
             postPermissionContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[10]',
             postPermissionDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[10]',
-            postPermissionOption: (text: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[contains(text(),"${text}")]`,
+            postPermissionOption: (value: string) => `(//div[contains(@class,"selectize-dropdown-content")])//div[@data-value="${value}"]`,
 
             roleSelectionContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[11]',
             roleSelectionDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[11]',
-            roleSelectionOption: (text: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[contains(text(),"${text}")]`,
+            roleSelectionOption: (value: string) => `(//div[contains(@class,"selectize-dropdown-content")])//div[@data-value="${value}"]`,
 
             paymentSettingsTab: '//li[@data-settings="payment_settings"]',
             paymentEnableToggle: '//input[@id="payment_options"]/following-sibling::span[1]',
             paymentOptionsContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[12]',
             paymentOptionsDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[12]',
             payPerPostOption: (value: string) => `(//div[contains(@class,"selectize-dropdown-content")])//div[@data-value="${value}"]`,
+            
             payPerPostCostContainer: '//input[@id="pay_per_post_cost"]',
             paymentSuccessPageContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[13]',
             paymentSuccessPageDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[13]',

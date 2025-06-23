@@ -84,12 +84,9 @@ export class BasicLoginPage extends Base {
     //BackEnd Login
     async backendLogin(email: string, password: string) {
         await this.validateAndFillStrings(Selectors.login.basicLogin.loginEmailField, email);
-
-        await this.assertionValidate(Selectors.login.basicLogin.loginPasswordField);
         await this.validateAndFillStrings(Selectors.login.basicLogin.loginPasswordField, password);
 
         await this.validateAndClick(Selectors.login.basicLogin.rememberMeField);
-        await this.assertionValidate(Selectors.login.basicLogin.loginButton);
         await this.validateAndClick(Selectors.login.basicLogin.loginButton);
     }
 

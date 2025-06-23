@@ -322,3 +322,49 @@ features:
     name: Admin is setting update button text
   - id: RFS0035
     name: Admin is validating update button text
+  - id: RFS0036
+    name: Admin is enabling user notification
+  - id: RFS0037
+    name: Admin is setting email verification notification
+  - id: RFS0038
+    name: Admin is setting email verification notification subject
+  - id: RFS0039
+    name: Admin is setting email verification notification body
+  - id: RFS0040
+    name: Admin is clicking template tags for email verification notification
+  - id: RFS0041
+    name: User registers and validates email verification notification
+  - id: RFS0042
+    name: User clicks on activation link and validates email verification
+  - id: RFS0043
+    name: Admin is setting welcome email notification
+  - id: RFS0044
+    name: Admin is setting welcome email notification subject
+  - id: RFS0045
+    name: Admin is setting welcome email notification body
+  - id: RFS0046
+    name: Admin is clicking template tags for welcome email notification
+  - id: RFS0047
+    name: User registers and validates welcome email notification
+  - id: RFS0048
+    name: Admin is disabling user notification
+  - id: RFS0049
+    name: Admin is enabling admin notification
+  - id: RFS0050
+    name: Admin is setting admin email subject
+  - id: RFS0051
+    name: Admin is setting admin notification message
+  - id: RFS0052
+    name: Admin is clicking template tags for admin notification
+  - id: RFS0053
+    name: User registers and validates admin notification email
+  - id: RFS0054
+    name: Admin is disabling admin notification
+  - id: RFS0055
+    name: Admin is enabling multi-step form
+  - id: RFS0056
+    name: Admin is validating multi-step progressbar
+  - id: RFS0057
+    name: Admin is validating multi-step by step
+  - id: RFS0058
+    name: Admin is disabling multi-step form

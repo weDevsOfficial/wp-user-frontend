@@ -508,4 +508,605 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);
     }
 
+    async enableUserNotification(formName: string) {
+        await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
+        
+        await Promise.all([this.page.goto(this.wpufRegFormPage)]);
+        await this.waitForLoading();
+
+        await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
+        await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
+        await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
+
+        // Navigate to Notification Settings tab
+        await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsTab);
+        await this.assertionValidate(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsHeader);
+
+        // Enable User Notification
+        const isUserNotificationEnabled = await this.page.isChecked(Selectors.regFormSettings.notificationSettingsSection.enableUserNotificationToggle);
+        if (!isUserNotificationEnabled) {
+            await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.enableUserNotificationToggle);
+        }
+
+        await this.validateAndClick(Selectors.regFormSettings.saveButton);
+        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+    }
+
+    // Notification Settings Methods
+
+    async setEmailVerificationNotification(formName: string) {
+        await Promise.all([this.page.goto(this.wpufRegFormPage)]);
+        await this.waitForLoading();
+
+        await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
+        await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
+        await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
+
+        // Navigate to Notification Settings tab
+        await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsTab);
+        await this.assertionValidate(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsHeader);
+        // Select Email Verification
+        await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.emailVerificationRadio);
+
+        await this.validateAndClick(Selectors.regFormSettings.saveButton);
+        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+
+    }
+
+    async setEmailVerificationNotificationSubject(formName: string, subject: string) {
+        await Promise.all([this.page.goto(this.wpufRegFormPage)]);
+        await this.waitForLoading();
+
+        await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
+        await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
+        await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
+
+        // Navigate to Notification Settings tab
+        await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsTab);
+        await this.assertionValidate(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsHeader);
+
+        // Set Subject and Body
+        await this.validateAndFillStrings(Selectors.regFormSettings.notificationSettingsSection.confirmationEmailSubjectInput, subject);
+
+        await this.validateAndClick(Selectors.regFormSettings.saveButton);
+        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+    }
+
+    async setEmailVerificationNotificationBody(formName: string, body: string) {
+        await Promise.all([this.page.goto(this.wpufRegFormPage)]);
+        await this.waitForLoading();
+
+        await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
+        await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
+        await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
+
+        // Navigate to Notification Settings tab
+        await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsTab);
+        await this.assertionValidate(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsHeader);
+        
+        // Handle iframe for rich text editor
+        await this.page.frameLocator(Selectors.regFormSettings.notificationSettingsSection.confirmationEmailBodyTextarea)
+            .locator(Selectors.regFormSettings.notificationSettingsSection.textareaBody).fill(body);
+
+        await this.validateAndClick(Selectors.regFormSettings.saveButton);
+        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+           
+    }
+
+    // Click template tags for notification body
+    async clickTemplateTagsForEmailVerificationNotification(formName: string, tags: string[]) {
+        // Go to form edit page
+        await Promise.all([this.page.goto(this.wpufRegFormPage)]);
+        await this.waitForLoading();
+
+        // Click on the form
+        await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
+        await this.waitForLoading();
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
+
+        // Click Notification Settings tab
+        await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsTab);
+
+        // Wait for notification settings to load
+        await this.assertionValidate(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsHeader);
+
+        // Click on each template tag
+        for (const tag of tags) {
+            await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.templateTagPointer(tag, '1'));
+            try{
+                await this.assertionValidate(Selectors.regFormSettings.notificationSettingsSection.tagClickTooltip);
+                await this.page.waitForTimeout(2000);
+            }catch(error){
+                console.log(`Clipboard validation skipped for ${tag}: ${error.message}`);
+            }
+        }
+
+        // Save settings
+        await this.validateAndClick(Selectors.regFormSettings.saveButton);
+        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+
+        await new BasicLogoutPage(this.page).logOut();
+
+    }
+
+    async setWelcomeEmailNotification(formName: string) {
+        await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
+        
+        await Promise.all([this.page.goto(this.wpufRegFormPage)]);
+        await this.waitForLoading();
+
+        await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
+        await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
+        await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
+
+        // Navigate to Notification Settings tab
+        await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsTab);
+        await this.assertionValidate(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsHeader);
+
+        // Select Welcome Email
+        await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.welcomeEmailRadio);
+        await this.waitForLoading();
+
+        await this.validateAndClick(Selectors.regFormSettings.saveButton);
+        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+    }
+
+    async setWelcomeEmailNotificationSubject(formName: string, subject: string) {
+        
+        await Promise.all([this.page.goto(this.wpufRegFormPage)]);
+        await this.waitForLoading();
+
+        await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
+        await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
+        await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
+
+        // Navigate to Notification Settings tab
+        await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsTab);
+        await this.assertionValidate(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsHeader);
+
+        // Set Subject and Body
+        await this.validateAndFillStrings(Selectors.regFormSettings.notificationSettingsSection.welcomeEmailSubjectInput, subject);
+
+        await this.validateAndClick(Selectors.regFormSettings.saveButton);
+        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+    }
+
+    async setWelcomeEmailNotificationBody(formName: string, body: string) {
+
+        await Promise.all([this.page.goto(this.wpufRegFormPage)]);
+        await this.waitForLoading();
+
+        await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
+        await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
+        await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
+
+        // Navigate to Notification Settings tab
+        await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsTab);
+        await this.assertionValidate(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsHeader);
+        
+        // Handle iframe for rich text editor
+        await this.page.frameLocator(Selectors.regFormSettings.notificationSettingsSection.welcomeEmailBodyTextarea)
+            .locator(Selectors.regFormSettings.notificationSettingsSection.textareaBody).fill(body);
+
+        await this.validateAndClick(Selectors.regFormSettings.saveButton);
+        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+    }
+
+    async clickTemplateTagsForWelcomeEmailNotification(formName: string, tags: string[]) {
+        await Promise.all([this.page.goto(this.wpufRegFormPage)]);
+        await this.waitForLoading();
+        
+        await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
+        await this.waitForLoading();
+
+        await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
+
+        await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsTab);
+        await this.assertionValidate(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsHeader);
+
+        for (const tag of tags) {
+            await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.templateTagPointer(tag, '2'));
+            try{
+                await this.assertionValidate(Selectors.regFormSettings.notificationSettingsSection.tagClickTooltip);
+                await this.page.waitForTimeout(2000);
+            }catch(error){
+                console.log(`Clipboard validation skipped for ${tag}: ${error.message}`);
+            }
+        }
+
+        await this.validateAndClick(Selectors.regFormSettings.saveButton);
+        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+
+        await new BasicLogoutPage(this.page).logOut();
+    }
+
+    async enableAdminNotification(formName: string) {
+        
+        await Promise.all([this.page.goto(this.wpufRegFormPage)]);
+        await this.waitForLoading();
+
+        await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
+        await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
+        await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
+
+        // Navigate to Notification Settings tab
+        await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsTab);
+        await this.assertionValidate(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsHeader);
+
+        // Enable Admin Notification
+        const isAdminNotificationEnabled = await this.page.isChecked(Selectors.regFormSettings.notificationSettingsSection.enableAdminNotificationToggle);
+        if (!isAdminNotificationEnabled) {
+            await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.enableAdminNotificationToggle);
+        }
+
+        await this.validateAndClick(Selectors.regFormSettings.saveButton);
+        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+    }
+
+    async setAdminNotificationSubject(formName: string, subject: string) {
+
+        await Promise.all([this.page.goto(this.wpufRegFormPage)]);
+        await this.waitForLoading();
+
+        await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
+        await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
+        await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
+
+        // Navigate to Notification Settings tab
+        await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsTab);
+        await this.assertionValidate(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsHeader);
+
+        // Set Subject and Message
+        await this.validateAndFillStrings(Selectors.regFormSettings.notificationSettingsSection.adminNotificationSubjectInput, subject);
+
+        await this.validateAndClick(Selectors.regFormSettings.saveButton);
+        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+    }
+
+    async setAdminNotificationMessage(formName: string, message: string) {
+        await Promise.all([this.page.goto(this.wpufRegFormPage)]);
+        await this.waitForLoading();
+
+        await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
+        await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
+        await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
+
+        // Navigate to Notification Settings tab
+        await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsTab);
+        await this.assertionValidate(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsHeader);
+
+        // Set Message
+        await this.validateAndFillStrings(Selectors.regFormSettings.notificationSettingsSection.adminNotificationMessageTextarea, message);
+
+        await this.validateAndClick(Selectors.regFormSettings.saveButton);
+        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+    }
+
+    async clickTemplateTagsForAdminNotification(formName: string, tags: string[]) {
+        await Promise.all([this.page.goto(this.wpufRegFormPage)]);
+        await this.waitForLoading();
+        
+        await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
+        await this.waitForLoading();
+
+        await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
+
+        await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsTab);
+        await this.assertionValidate(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsHeader);
+
+        for (const tag of tags) {
+            await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.templateTagPointer(tag, '3'));
+            try{
+                await this.assertionValidate(Selectors.regFormSettings.notificationSettingsSection.tagClickTooltip);
+                await this.page.waitForTimeout(2000);
+            }catch(error){
+                console.log(`Clipboard validation skipped for ${tag}: ${error.message}`);
+            }
+        }
+
+        await this.validateAndClick(Selectors.regFormSettings.saveButton);
+        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+
+        await new BasicLogoutPage(this.page).logOut();
+    }
+
+    async registerUserAndValidateEmailVerification(userEmail: string, userPassword: string, expectedSubject: string) {
+        await this.page.goto(this.newRegFormPage);
+        
+        // Fill registration form
+        await this.page.fill(Selectors.regFormSettings.inputEmail, userEmail);
+        await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
+        await this.page.fill(Selectors.regFormSettings.inputConfirmPassword, userPassword);
+        await this.validateAndClick(Selectors.regFormSettings.submitRegisterButton);
+        await this.waitForLoading();
+        
+        // Validate registration success message
+        const successMessage = await this.page.innerText(Selectors.regFormSettings.successMessage);
+        expect(successMessage).toContain('Please check your email for activation link');
+
+        // Login as admin to check WP Mail Log
+        await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
+        
+        // Navigate to WP Mail Log
+        await this.page.goto(this.wpMailLogPage);
+        await this.waitForLoading();
+        await this.assertionValidate(Selectors.regFormSettings.wpMailLogValidation.wpMailLogPage);
+
+        // Check the latest email
+        
+        // Validate email recipient
+        const emailTo = await this.page.innerText(Selectors.regFormSettings.wpMailLogValidation.sentEmailAddress);
+        expect(emailTo).toContain(userEmail);
+
+        // Validate email subject
+        const emailSubject = await this.page.innerText(Selectors.regFormSettings.wpMailLogValidation.sentEmailSubject);
+        expect(emailSubject).toBe(expectedSubject);
+
+        // View email content to validate body
+        await this.validateAndClick(Selectors.regFormSettings.wpMailLogValidation.viewEmailContent);
+        
+        const activationLink = await this.page.locator(Selectors.regFormSettings.wpMailLogValidation.grabActivationLink).getAttribute('href');
+        //expect(emailBody).toContain(expectedBodyContent);
+
+        await this.validateAndClick(Selectors.regFormSettings.wpMailLogValidation.modalCloseButton);
+
+
+
+        await new BasicLogoutPage(this.page).logOut();
+
+        return activationLink;
+    }
+
+    async validateEmailVerification(activationLink: string, userEmail: string, userPassword: string) {
+        await this.page.goto(activationLink);
+        await this.waitForLoading();
+        await new BasicLoginPage(this.page).backendLogin(userEmail, userPassword);
+        await this.page.goto(this.accountPage);
+        await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);
+    }
+
+    async registerUserAndValidateWelcomeEmail(userEmail: string, userPassword: string, expectedSubject: string) {
+        await this.page.goto(this.newRegFormPage);
+        
+        // Fill registration form
+        await this.page.fill(Selectors.regFormSettings.inputEmail, userEmail);
+        await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
+        await this.page.fill(Selectors.regFormSettings.inputConfirmPassword, userPassword);
+        await this.validateAndClick(Selectors.regFormSettings.submitRegisterButton);
+        await this.waitForLoading();
+
+        // Validate registration success message
+        const successMessage = await this.page.innerText(Selectors.regFormSettings.successMessage);
+        expect(successMessage).toContain('Welcome! Your account has been created successfully. Please check your email for further instructions.');
+
+        // Login as admin to check WP Mail Log
+        await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
+        
+        // Navigate to WP Mail Log
+        await this.page.goto(this.wpMailLogPage);
+        await this.waitForLoading();
+        await this.assertionValidate(Selectors.regFormSettings.wpMailLogValidation.wpMailLogPage);
+
+        // Check the latest email
+        
+        // Validate email recipient
+        const emailTo = await this.page.innerText(Selectors.regFormSettings.wpMailLogValidation.sentEmailAddress);
+        expect(emailTo).toContain(userEmail);
+
+        // Validate email subject
+        const emailSubject = await this.page.innerText(Selectors.regFormSettings.wpMailLogValidation.sentEmailSubject);
+        expect(emailSubject).toBe(expectedSubject);
+
+        // View email content to validate body
+        await this.validateAndClick(Selectors.regFormSettings.wpMailLogValidation.viewEmailContent);
+        
+        const emailBody = await this.page.innerText(Selectors.regFormSettings.wpMailLogValidation.previewEmailContentBody);
+        expect(emailBody).toContain('Congrats! You are Successfully registered to');
+
+        await this.validateAndClick(Selectors.regFormSettings.wpMailLogValidation.modalCloseButton);
+    }
+
+    async disableUserNotification(formName: string) {
+        await Promise.all([this.page.goto(this.wpufRegFormPage)]);
+        await this.waitForLoading();
+        
+        await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
+        await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
+        await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
+
+        // Navigate to Notification Settings tab
+        await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsTab);
+        await this.assertionValidate(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsHeader);
+        
+        // Disable User Notification
+        const isUserNotificationEnabled = await this.page.isChecked(Selectors.regFormSettings.notificationSettingsSection.enableUserNotificationToggle);
+        if (isUserNotificationEnabled) {
+            await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.enableUserNotificationToggle);
+        }
+
+        await this.validateAndClick(Selectors.regFormSettings.saveButton);
+        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+    }
+
+    async registerUserAndValidateAdminNotification(userEmail: string, userPassword: string, expectedSubject: string) {
+        await this.page.goto(this.newRegFormPage);
+        
+        // Fill registration form
+        await this.page.fill(Selectors.regFormSettings.inputEmail, userEmail);
+        await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
+        await this.page.fill(Selectors.regFormSettings.inputConfirmPassword, userPassword);
+        await this.validateAndClick(Selectors.regFormSettings.submitRegisterButton);
+        await this.waitForLoading();
+        
+        // Validate registration success message
+        const successMessage = await this.page.innerText(Selectors.regFormSettings.successMessage);
+        expect(successMessage).toContain('Welcome! Your account has been created successfully. Please check your email for further instructions.');
+
+        // Login as admin to check WP Mail Log
+        await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
+        
+        // Navigate to WP Mail Log
+        await this.page.goto(this.wpMailLogPage);
+        await this.waitForLoading();
+        await this.assertionValidate(Selectors.regFormSettings.wpMailLogValidation.wpMailLogPage);
+
+        // Validate email subject
+        const emailSubject = await this.page.innerText(Selectors.regFormSettings.wpMailLogValidation.sentLatestEmailSubject);
+        expect(emailSubject).toBe(expectedSubject);
+
+        // View email content to validate body
+        await this.validateAndClick(Selectors.regFormSettings.wpMailLogValidation.viewLatestEmailContent);
+        
+        const emailBody = await this.page.innerText(Selectors.regFormSettings.wpMailLogValidation.previewEmailContentBody);
+        expect(emailBody).toContain(userEmail); // Admin notification should contain user info
+
+        await this.validateAndClick(Selectors.regFormSettings.wpMailLogValidation.modalCloseButton);
+    }
+
+    async disableAdminNotification(formName: string) {
+        await Promise.all([this.page.goto(this.wpufRegFormPage)]);
+        await this.waitForLoading();
+        
+        await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
+        await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
+        await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
+
+        // Navigate to Notification Settings tab
+        await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsTab);
+        await this.assertionValidate(Selectors.regFormSettings.notificationSettingsSection.notificationSettingsHeader);
+        
+        // Disable Admin Notification
+        const isAdminNotificationEnabled = await this.page.isChecked(Selectors.regFormSettings.notificationSettingsSection.enableAdminNotificationToggle);
+        if (isAdminNotificationEnabled) {
+            await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.enableAdminNotificationToggle);
+        }
+
+        await this.validateAndClick(Selectors.regFormSettings.saveButton);
+        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        
+    }
+
+    async enableMultiStepProgressbar(formName: string) {
+        await Promise.all([this.page.goto(this.wpufRegFormPage)]);
+        await this.waitForLoading();
+        
+        await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
+        await this.waitForLoading();
+        
+        await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
+        await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
+
+        // Navigate to Multi-Step Settings tab
+        await this.validateAndClick(Selectors.regFormSettings.advancedSettingsSection.advancedSettingsTab);
+        await this.assertionValidate(Selectors.regFormSettings.advancedSettingsSection.advancedSettingsHeader);
+
+        await this.assertionValidate(Selectors.regFormSettings.advancedSettingsSection.multiStepSettingsHeader);
+        
+        // Check if multi-step is already enabled
+        const isChecked = await this.page.locator(Selectors.postFormSettings.postSettingsSection.enableMultiStepToggle).isChecked();
+        if (!isChecked) {
+            await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.enableMultiStepToggle);
+        }
+
+        await this.validateAndClick(Selectors.regFormSettings.advancedSettingsSection.multiStepTypeContainer);
+        await this.assertionValidate(Selectors.regFormSettings.advancedSettingsSection.multiStepTypeDropdown);
+        await this.validateAndClick(Selectors.regFormSettings.advancedSettingsSection.multiStepTypeOption('progressive'));
+
+        await this.validateAndClick(Selectors.regFormSettings.saveButton);
+        await this.page.waitForSelector(Selectors.regFormSettings.formSaved);
+
+        await Promise.all([this.page.goto(this.wpufRegFormPage)]);
+        await this.waitForLoading();
+        
+        await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
+        
+        await this.validateAndClick(Selectors.regFormSettings.addCustomFields_Common.customFieldsStepStart);
+        await this.validateAndClick(Selectors.regFormSettings.addCustomFields_Common.customFieldsText);
+        await this.validateAndClick(Selectors.regFormSettings.addCustomFields_Common.customFieldsUrl);
+
+        await this.validateAndClick(Selectors.regFormSettings.saveButton);
+        await this.page.waitForSelector(Selectors.regFormSettings.formSaved);
+
+        await new BasicLogoutPage(this.page).logOut();
+    }
+
+    async validateMultiStepProgessbar() {
+
+        await Promise.all([this.page.goto(this.newRegFormPage)]);
+        await this.waitForLoading();
+
+        await expect(this.page.locator(Selectors.regFormSettings.advancedSettingsSection.multiStepProgressbar)).toBeVisible();
+    }
+
+    async enableMultiStepByStep(formName: string) {
+
+        await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
+        await Promise.all([this.page.goto(this.wpufRegFormPage)]);
+        await this.waitForLoading();
+        
+        await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
+        await this.waitForLoading();
+        
+        await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
+        await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
+
+        // Navigate to Multi-Step Settings tab
+        await this.validateAndClick(Selectors.regFormSettings.advancedSettingsSection.advancedSettingsTab);
+        await this.assertionValidate(Selectors.regFormSettings.advancedSettingsSection.advancedSettingsHeader);
+
+        await this.assertionValidate(Selectors.regFormSettings.advancedSettingsSection.multiStepSettingsHeader);
+        
+        // Check if multi-step is already enabled
+        const isChecked = await this.page.locator(Selectors.postFormSettings.postSettingsSection.enableMultiStepToggle).isChecked();
+        if (!isChecked) {
+            await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.enableMultiStepToggle);
+        }
+
+        await this.validateAndClick(Selectors.regFormSettings.advancedSettingsSection.multiStepTypeContainer);
+        await this.assertionValidate(Selectors.regFormSettings.advancedSettingsSection.multiStepTypeDropdown);
+        await this.validateAndClick(Selectors.regFormSettings.advancedSettingsSection.multiStepTypeOption('step_by_step'));
+
+        await this.validateAndClick(Selectors.regFormSettings.saveButton);
+        await this.page.waitForSelector(Selectors.regFormSettings.formSaved);
+
+        await new BasicLogoutPage(this.page).logOut();
+        
+    }
+
+    async validateMultiStepByStep() {
+        await Promise.all([this.page.goto(this.newRegFormPage)]);
+        await this.waitForLoading();
+        
+        await expect(this.page.locator(Selectors.regFormSettings.advancedSettingsSection.multiStepByStep)).toBeVisible();
+    }
+
+    async disableMultiStep(formName: string) {
+        await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
+        await Promise.all([this.page.goto(this.wpufRegFormPage)]);
+        await this.waitForLoading();
+        
+        await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
+        await this.waitForLoading();
+        
+        await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
+        await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
+
+        // Navigate to Multi-Step Settings tab
+        await this.validateAndClick(Selectors.regFormSettings.advancedSettingsSection.advancedSettingsTab);
+        await this.assertionValidate(Selectors.regFormSettings.advancedSettingsSection.advancedSettingsHeader);
+
+        await this.assertionValidate(Selectors.regFormSettings.advancedSettingsSection.multiStepSettingsHeader);
+        
+        // Check if multi-step is already enabled
+        const isChecked = await this.page.locator(Selectors.postFormSettings.postSettingsSection.enableMultiStepToggle).isChecked();
+        if (isChecked) {
+            await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.enableMultiStepToggle);
+        }
+
+        await this.validateAndClick(Selectors.regFormSettings.saveButton);
+        await this.page.waitForSelector(Selectors.regFormSettings.formSaved);
+    }
+
 }

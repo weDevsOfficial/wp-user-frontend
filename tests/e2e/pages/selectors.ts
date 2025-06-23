@@ -989,6 +989,80 @@ export const Selectors = {
             updateProfileSubmitButton: '//input[@name="submit"]',
             updateProfileSuccessMessage: '//div[@class="wpuf-success"]',
         },
-        
+
+        // Notification Settings Section  
+        notificationSettingsSection: {
+            notificationSettingsTab: '//span[normalize-space()="Notification Settings"]',
+            notificationSettingsHeader: '//h2[normalize-space()="Notification Settings"]',
+            
+            // User Notification
+            userNotificationHeader: '//p[normalize-space()="User Notification"]',
+            enableUserNotificationToggle: '//input[@id="user_notification"]/following-sibling::span[1]',
+            
+            // User Notification Type
+            emailVerificationRadio: '//input[@id="email_verification"]',
+            welcomeEmailRadio: '//input[@id="welcome_email"]',
+            
+            // Email Verification Settings
+            confirmationEmailSubjectInput: '//input[@id="verification_subject"]',
+            confirmationEmailBodyTextarea: '(//div[contains(@class,"mce-edit-area mce-container")]//iframe[1])[1]',
+            
+            // Welcome Email Settings
+            welcomeEmailSubjectInput: '//input[@id="welcome_email_subject"]',
+            welcomeEmailBodyTextarea: '(//div[contains(@class,"mce-edit-area mce-container")]//iframe[1])[2]',
+
+            textareaBody: '//body[@id="tinymce"]',
+
+            templateTagPointer: (tag: string, point: string) => `(//span[@data-clipboard-text="${tag}"])[${point}]`,
+            tagClickTooltip: '//span[@data-original-title="Copied!"]',
+            
+            // Admin Notification
+            adminNotificationHeader: '//h3[normalize-space()="Admin Notification"]',
+            enableAdminNotificationToggle: '//input[@id="admin_notification"]/following-sibling::span[1]',
+            adminNotificationSubjectInput: '//input[@id="admin_email_subject"]',
+            adminNotificationMessageTextarea: '//textarea[@id="admin_email_body"]',
+        },
+
+        // WP Mail Log validation selectors
+        wpMailLogValidation: {
+            wpMailLogPage: '//h2[normalize-space()="WP Mail Log"]',
+            
+            // First email row selectors
+            sentEmailAddress: '(//tbody/tr[2]/td[3]/div[1])[1]',
+            sentEmailSubject: '(//tbody/tr[2]/td[4]/div[1])[1]',
+            viewEmailContent: '(//tbody/tr[2]/td[3]/div[1])[1]',
+            previewEmailContentBody: '(//div[@class="wml-body-wrapper"])[1]',
+            grabActivationLink: '//a[normalize-space()="Activation Link"]',
+
+            modalCloseButton: '//button[@class="el-button el-button--danger"]',
+
+            sentLatestEmailAddress: '(//tbody/tr[1]/td[3]/div[1])[1]',
+            sentLatestEmailSubject: '(//tbody/tr[1]/td[4]/div[1])[1]',
+            viewLatestEmailContent: '(//tbody/tr[1]/td[3]/div[1])[1]',
+            
+            // Search and filter
+            emailSearchInput: '//input[@id="post-search-input"]',
+            emailSearchButton: '//input[@id="search-submit"]',
+        },
+
+        // Multi-Step Settings Section
+        advancedSettingsSection: {
+            advancedSettingsHeader: '//h2[normalize-space()="Advanced Settings"]',
+            advancedSettingsTab: '//span[normalize-space()="Advanced Settings"]',
+            multiStepSettingsHeader: '//p[normalize-space()="Multistep Form"]',
+            enableMultiStepToggle: '//input[@id="enable_multistep"]/following-sibling::span[1]',
+            multiStepTypeContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[8]',
+            multiStepTypeDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[8]',
+            multiStepTypeOption: (value: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[@data-value="${value}"]`,
+            multiStepProgressbar: '//div[normalize-space(text())="Step Start (100%)"]',
+            multiStepByStep: '//li[normalize-space(text())="Step Start"]',
+        },
+
+        // Custom Fields Section
+        addCustomFields_Common: {
+            customFieldsStepStart: '//p[normalize-space(text())="Step Start"]',
+            customFieldsText: '//p[normalize-space(text())="Text"]',
+            customFieldsUrl: '//p[normalize-space(text())="Website URL"]',
+        },
     },
 };

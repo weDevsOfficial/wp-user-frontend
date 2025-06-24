@@ -28,9 +28,16 @@
                     <label
                         v-if="!is_invisible(field)"
                         :for="'wpuf-' + field.name ? field.name : 'cls'"
-                        class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">
+                        class="wpuf-flex wpuf-items-center wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">
                         {{ field.label }} <span v-if="field.required && 'yes' === field.required"
                                                 class="required">*</span>
+                        <template v-if="field.show_icon === 'yes' && field.template && field.template.endsWith('_url')">
+                            <template v-if="field.template === 'twitter_url'">
+                                <svg class="wpuf-social-svg wpuf-twitter-svg wpuf-inline wpuf-ml-2" width="20" height="20" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6 16L10.1936 11.8065M10.1936 11.8065L6 6H8.77778L11.8065 10.1935M10.1936 11.8065L13.2222 16H16L11.8065 10.1935M16 6L11.8065 10.1935M1.5 11C1.5 6.52166 1.5 4.28249 2.89124 2.89124C4.28249 1.5 6.52166 1.5 11 1.5C15.4784 1.5 17.7175 1.5 19.1088 2.89124C20.5 4.28249 20.5 6.52166 20.5 11C20.5 15.4783 20.5 17.7175 19.1088 19.1088C17.7175 20.5 15.4784 20.5 11 20.5C6.52166 20.5 4.28249 20.5 2.89124 19.1088C1.5 17.7175 1.5 15.4783 1.5 11Z" stroke="#16A349" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </template>
+                        </template>
                     </label>
                 </div>
                 <div

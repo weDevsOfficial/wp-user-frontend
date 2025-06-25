@@ -504,12 +504,12 @@ export default function postFormSettingsTest() {
             await postFormSettings.setUpdatePostButtonText(formName, 'Save Changes');
         });
 
-        test.skip('PFS0055 : Admin is enabling and validating form title showing', { tag: ['@Lite'] }, async () => {
+        test('PFS0055 : Admin is enabling and validating form title showing', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.enableFormTitleShowing(formName);
         });
 
-        test.skip('PFS0056 : Admin is setting and validating form description showing', { tag: ['@Lite'] }, async () => {
+        test('PFS0056 : Admin is setting and validating form description showing', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.showFormDescription(formName);
         });

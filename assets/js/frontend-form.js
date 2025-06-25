@@ -1006,29 +1006,6 @@
             }
         },
 
-        validateTwitterField: function () {
-            var $field = $(this);
-            var value = $.trim($field.val());
-            var $container = $field.closest(".wpuf-fields");
-
-            // Remove any existing error messages
-            $container.find(".wpuf-error-msg").remove();
-            $container.removeClass("has-error");
-
-            // Skip validation if field is empty
-            if (value === "") {
-                return;
-            }
-
-            // Validate Twitter URL/username
-            if (!WP_User_Frontend.isValidTwitterURL(value)) {
-                $container.addClass("has-error");
-                $container.append(
-                    '<div class="wpuf-error-msg">Please enter a valid Twitter username (e.g., @username) or Twitter URL.</div>'
-                );
-            }
-        },
-
         insertImage: function(button, form_id) {
 
             var container = 'wpuf-insert-image-container';

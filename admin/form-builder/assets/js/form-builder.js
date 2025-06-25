@@ -165,18 +165,27 @@
                         var image_two  = wpuf_admin_script.asset_url + '/images/custom-fields/advance.png';
                         var html       = '<div class="wpuf-custom-field-instruction">';
                             html      += '<div class="step-one">';
-                            html      += sprintf( '<p class="wpuf-text-base">%s <span class="wpuf-text-primary">%s</span>%s"</p>', __( 'Navigate through', 'wp-user-frontend' ), __( 'WP-admin > WPUF > Settings > Frontend Posting', 'wp-user-frontend' ), __( '- there you have to check the checkbox: "Show custom field data in the post content area', 'wp-user-frontend' ) );
-                            html      += '<img src="'+ image_one +'" alt="settings">';
+                            html      += sprintf( '<p class="wpuf-text-base">%s <a href="%s" target="_blank" class="wpuf-text-primary wpuf-font-bold">%s</a>%s"</p>', __( 'Navigate through', 'wp-user-frontend' ), ajaxurl.replace('admin-ajax.php', '') + 'admin.php?page=wpuf-settings#wpuf_frontend_posting', __( 'WP-admin > WPUF > Settings > Frontend Posting', 'wp-user-frontend' ), __( '- there you have to check the checkbox: "Show custom field data in the post content area', 'wp-user-frontend' ) );
+                            html      += '<img src="'+ image_one +'" alt="settings" class="wpuf-rounded-md">';
                             html      += '</div>';
                             html      += '<div class="step-two">';
-                            html      += sprintf( '<p class="wpuf-text-base">%s<span class="wpuf-text-primary">%s</span>%s<span class="wpuf-text-primary">%s</span>%s</p>', __( 'Edit the custom field inside the post form and on the right side you will see', 'wp-user-frontend' ), __( '"Advanced Options".', 'wp-user-frontend' ), __( ' Expand that, scroll down and you will see ', 'wp-user-frontend' ), __( '"Show data on post"', 'wp-user-frontend' ), __( ' - set this yes.', 'wp-user-frontend' ) );
-                            html      += '<img src="' + image_two + '" alt="custom field data">';
+                            var fieldIdForLink = payload.field.id;
+                            html      += sprintf( '<p class="wpuf-text-base">%s<button type="button" class="wpuf-text-primary wpuf-swal-action-link wpuf-font-bold" data-action="open-advanced-options" data-field-id="%s">%s</button>%s<button type="button" class="wpuf-text-primary wpuf-swal-action-link wpuf-font-bold" data-action="open-advanced-options" data-field-id="%s">%s</button>%s</p>',
+                                __( 'Edit the custom field inside the post form and on the right side you will see ', 'wp-user-frontend' ),
+                                fieldIdForLink,
+                                __( '"Advanced Options".', 'wp-user-frontend' ),
+                                __( ' Expand that, scroll down and you will see ', 'wp-user-frontend' ),
+                                fieldIdForLink, 
+                                __( '"Show data on post"', 'wp-user-frontend' ),
+                                __( ' - set this yes.', 'wp-user-frontend' )
+                            );
+                            html      += '<img src="' + image_two + '" alt="custom field data" class="wpuf-rounded-md">';
                             html      += '</div>';
                             html      += '</div>';
                         Swal.fire({
                             title: __( 'Do you want to show custom field data inside your post ?', 'wp-user-frontend' ),
                             html: html,
-                            imageUrl: wpuf_form_builder.lock_icon,
+                            imageUrl: wpuf_form_builder.is_pro_active ? wpuf_form_builder.lock_icon : wpuf_form_builder.free_icon,
                             showCancelButton: true,
                             confirmButtonText: "Don't show again",
                             cancelButtonText: 'Okay',
@@ -184,12 +193,115 @@
                                 confirmButton: '!wpuf-bg-white !wpuf-text-black !wpuf-border !wpuf-border-solid !wpuf-border-gray-300 focus:!wpuf-shadow-none',
                                 cancelButton: '!wpuf-text-white',
                             },
-                            cancelButtonColor: '#16a34a'
+                            cancelButtonColor: '#059669',
+                            didOpen: (modal) => {
+                                $(modal).find('button.wpuf-swal-action-link[data-action="open-advanced-options"]').on('click', function(e) {
+                                    e.preventDefault();
+                                    var fieldId = $(this).data('field-id');
+                                    
+
+                                    Swal.close();
+
+                                    setTimeout(() => { 
+                                        wpuf_form_builder_store.commit('open_field_settings', fieldId);
+                                        
+
+                                        Vue.nextTick(() => {
+                                            
+                                            
+                                            setTimeout(() => { // Single timeout after Vue.nextTick
+                                                
+
+                                                let advancedOptionsTargetText = '';
+                                                if (typeof wpuf_form_builder_mixins !== 'undefined' &&
+                                                    typeof wpuf_form_builder_mixins(Vue.prototype).i18n !== 'undefined' &&
+                                                    wpuf_form_builder_mixins(Vue.prototype).i18n.advanced_options) {
+                                                    advancedOptionsTargetText = wpuf_form_builder_mixins(Vue.prototype).i18n.advanced_options;
+                                                } else { 
+                                                    advancedOptionsTargetText = __('"Advanced Options".', 'wp-user-frontend');
+                                                }
+                                                advancedOptionsTargetText = advancedOptionsTargetText.replace(/"/g, '').replace(/\.$/, "").trim().toLowerCase();
+                                                
+
+                                                var $fieldOptionsMainContainer = $('div.wpuf-form-builder-field-options'); 
+                                                
+                                                if (!$fieldOptionsMainContainer.length) {
+                                                    console.warn('WPUF Form Builder Debug: Field options main container "div.wpuf-form-builder-field-options" NOT FOUND after delay.');
+                                                    return;
+                                                }
+                                                 // Check if the loader/placeholder is still visible
+                                                if ($fieldOptionsMainContainer.find('> div:first-child[class*="text-center"]').is(':visible') && $fieldOptionsMainContainer.find('.option-fields-section').length === 0) {
+                                                    console.warn('WPUF Form Builder Debug: Loader/placeholder seems to be still visible or settings sections not rendered in .wpuf-form-builder-field-options. Action aborted.');
+                                                    return;
+                                                }
+                                                
+                                                
+
+                                                var $advancedOptionsToggle, $advancedOptionsContentDiv, $sectionToScroll;
+                                                var $sections = $fieldOptionsMainContainer.find('.option-fields-section');
+                                                
+
+                                                $sections.each(function(index) {
+                                                    var $parentSection = $(this);
+                                                    var $h3 = $parentSection.find('h3').first(); 
+                                                    if (!$h3.length) return true; 
+
+                                                    var rawH3Text = $h3.clone().children('i').remove().end().text(); 
+                                                    var normalizedH3Text = rawH3Text.trim().toLowerCase().replace(/\.$/, "");
+                                                    
+                                                    
+
+                                                    if (normalizedH3Text === advancedOptionsTargetText) {
+                                                        $advancedOptionsToggle = $h3;
+                                                        $advancedOptionsContentDiv = $parentSection.find('div.option-field-section-fields').first(); 
+                                                        $sectionToScroll = $parentSection;
+                                                        
+                                                        return false; 
+                                                    }
+                                                });
+
+                                                if ($advancedOptionsToggle?.length) {
+                                                    var isContentVisible = false;
+                                                    if ($advancedOptionsContentDiv?.length) {
+                                                        isContentVisible = $advancedOptionsContentDiv.is(':visible');
+                                                        
+                                                    } else {
+                                                         console.warn('WPUF Form Builder Debug: Advanced options content div (.option-field-section-fields) not found relative to matched h3.');
+                                                    }
+
+                                                    if (!isContentVisible) {
+                                                        
+                                                        $advancedOptionsToggle.trigger('click');
+                                                        setTimeout(() => { 
+                                                            if ($advancedOptionsContentDiv?.length) {
+                                                                
+                                                            }
+                                                        }, 150); 
+                                                    } else {
+                                                        
+                                                    }
+                                                    
+                                                    if (!$sectionToScroll?.length) $sectionToScroll = $advancedOptionsToggle; 
+
+                                                    setTimeout(() => {
+                                                        const elementToScrollTo = $sectionToScroll.get(0);
+                                                        if (elementToScrollTo && typeof elementToScrollTo.scrollIntoView === 'function') {
+                                                            elementToScrollTo.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                                                            
+                                                        }
+                                                    }, 350); 
+                                                } else {
+                                                    console.warn('WPUF Form Builder Debug: Could not find "Advanced Options" h3 toggle based on text: "' + advancedOptionsTargetText + '".');
+                                                }
+                                            }, 400); // Inner timeout duration (e.g., 400ms)
+
+                                        });
+                                    }, 250); 
+                                });
+                            }
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 state.show_custom_field_tooltip = false;
-                            } else {
-
                             }
                         } );
                     }
@@ -1168,7 +1280,7 @@
                 }
             },
             error: function (error) {
-                console.log('Error loading default categories:', error);
+                
             }
         });
     }

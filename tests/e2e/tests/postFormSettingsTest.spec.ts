@@ -2,9 +2,9 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import { Browser, BrowserContext, Page, test, chromium } from "@playwright/test";
 import { faker } from '@faker-js/faker';
-import { PostFormSettingsPage } from '../pages/postFormSettingsPage';
+import { PostFormSettingsPage } from '../pages/postFormSettings';
 import { BasicLoginPage } from '../pages/basicLogin';
-import { Users, PostForm, Urls } from '../utils/testData';
+import { Users, Urls } from '../utils/testData';
 import { SettingsSetupPage } from '../pages/settingsSetup';
 import * as fs from "fs";
 import { BasicLogoutPage } from '../pages/basicLogout';
@@ -13,9 +13,6 @@ export default function postFormSettingsTest() {
     let browser: Browser;
     let context: BrowserContext;
     let page: Page;
-    let postTitle = "";
-    let postContent = "";
-    let postExcerpt = "";
 
     test.beforeAll(async () => {
         // Clear state file
@@ -129,6 +126,9 @@ export default function postFormSettingsTest() {
          */
 
         let formName: string;
+        let postTitle: string;
+        let postContent: string;
+        let postExcerpt: string;
         const category = 'Music'; // Using one of the default categories from the screenshot
         const emailAddress = faker.internet.email();
         const emailSubject = faker.word.words(3);
@@ -153,7 +153,7 @@ export default function postFormSettingsTest() {
         });
 
         test('PFS0001 : Admin is changing post type', { tag: ['@Lite'] }, async () => {
-            formName = PostForm.pfPostName1 + faker.word.words(1);
+            formName = faker.word.words(3);
             const postFormSettings = new PostFormSettingsPage(page);
             // Create a new post form
             await postFormSettings.createPostForm(formName);
@@ -170,6 +170,9 @@ export default function postFormSettingsTest() {
         });
 
         test('PFS0003 : Admin is validating post type from FE', { tag: ['@Lite'] }, async () => {
+            postTitle = faker.word.words(3);
+            postContent = faker.lorem.paragraph();
+            postExcerpt = postContent;
             const postFormSettings = new PostFormSettingsPage(page);
             // Submit a post and validate it appears as a page
             await postFormSettings.validatePostTypeFE(postTitle, postContent, postExcerpt);

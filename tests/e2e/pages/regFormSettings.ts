@@ -2,9 +2,8 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import { expect, type Page } from '@playwright/test';
 import { Base } from './base';
-import { Urls, Users } from '../utils/testData';
+import { Users } from '../utils/testData';
 import { Selectors } from './selectors';
-import { FieldOptionsCommonPage } from '../pages/fieldOptionsCommon';
 import { BasicLogoutPage } from './basicLogout';
 import { BasicLoginPage } from './basicLogin';
 

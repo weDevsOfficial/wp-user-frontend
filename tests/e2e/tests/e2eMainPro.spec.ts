@@ -1,17 +1,16 @@
 import { test } from '@playwright/test';
-import loginAndSetupTests from './loginAndSetupTests.spec';
-import postFormsTestsPro from './postFormsTestsPro.spec';
-import registrationFormsTestsPro from './registrationFormsTestsPro.spec';
-import postFormGeneralSettingsTestsPro from './postFormSettingsTestPro.spec';
-import * as fs from 'fs';
-import resetWordpressSite from './resetWordpressSite.spec';
+import loginAndSetupTest from './loginAndSetupTest.spec';
+import postFormTestPro from './postFormTestPro.spec';
+import regFormTestPro from './regFormTestPro.spec';
+import postFormSettingsTestPro from './postFormSettingsTestPro.spec';
+import resetSite from './resetSite.spec';
 import regFormSettingsTestPro from './regFormSettingsTestPro.spec';
 
 if (process.env.CI == 'false') {
-    test.describe(resetWordpressSite);
+    test.describe(resetSite);
 }
-test.describe(loginAndSetupTests);
-test.describe(postFormsTestsPro);
-test.describe(registrationFormsTestsPro);
-test.describe(postFormGeneralSettingsTestsPro);
+test.describe(loginAndSetupTest);
+test.describe(postFormTestPro);
+test.describe(regFormTestPro);
+test.describe(postFormSettingsTestPro);
 test.describe(regFormSettingsTestPro);

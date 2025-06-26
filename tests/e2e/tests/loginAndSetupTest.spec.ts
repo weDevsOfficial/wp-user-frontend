@@ -4,10 +4,10 @@ import { Browser, BrowserContext, Page, test, chromium } from "@playwright/test"
 import { BasicLoginPage } from '../pages/basicLogin';
 import { BasicLogoutPage } from '../pages/basicLogout';
 import { SettingsSetupPage } from '../pages/settingsSetup';
-import { Urls, Users } from '../utils/testData';
+import { Users } from '../utils/testData';
 import * as fs from "fs";
 
-export default function loginAndSetupTests() {
+export default function loginAndSetupTest() {
     let browser: Browser;
     let context: BrowserContext;
     let page: Page;

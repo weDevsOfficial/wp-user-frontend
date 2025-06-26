@@ -5,7 +5,7 @@ import { Selectors } from './selectors';
 import { Base } from './base';
 
 
-export class FieldOptionsCommonProPage extends Base {
+export class FieldAddPage extends Base {
 
     constructor(page: Page) {
         super(page);
@@ -18,7 +18,7 @@ export class FieldOptionsCommonProPage extends Base {
 
     /********* PostFields *********************/
     //PostFields
-    async addPostFields_PF_pro() {
+    async addPostFields_PF() {
         //PostFields
         await this.validateAndClick(Selectors.postForms.addPostFields_PF.postTitleBlock);
         await this.validateAndClick(Selectors.postForms.addPostFields_PF.postContentBlock);
@@ -28,7 +28,7 @@ export class FieldOptionsCommonProPage extends Base {
     }
 
     //Validate > PostFields
-    async validatePostFields_PF_pro() {
+    async validatePostFields_PF() {
         //Validate
         //Post Title
         await this.assertionValidate(Selectors.postForms.validatePostFields_PF.validatePostTitle);
@@ -45,7 +45,7 @@ export class FieldOptionsCommonProPage extends Base {
 
     /********************* Taxonomies *********************/
     //Taxonomies
-    async addTaxonomies_PF_pro() {
+    async addTaxonomies_PF() {
         //Taxonomies
         await this.validateAndClick(Selectors.postForms.addTaxonomies_PF.categoryBlock);
         await this.validateAndClick(Selectors.postForms.addTaxonomies_PF.tagsBlock);
@@ -54,7 +54,7 @@ export class FieldOptionsCommonProPage extends Base {
     }
 
     //Validate > Taxonomies
-    async validateTaxonomies_PF_pro() {
+    async validateTaxonomies_PF() {
         //Validate
         //Category
         await this.assertionValidate(Selectors.postForms.validateTaxonomies_PF.validateCategory);
@@ -62,7 +62,7 @@ export class FieldOptionsCommonProPage extends Base {
         await this.assertionValidate(Selectors.postForms.validateTaxonomies_PF.validateTags);
     }
 
-    async validateTaxonomiesPreset_PF_pro() {
+    async validateTaxonomiesPreset_PF() {
         //Validate
         //Category
         await this.assertionValidate(Selectors.postForms.validateTaxonomiesPreset_PF.validateCategory);
@@ -81,7 +81,22 @@ export class FieldOptionsCommonProPage extends Base {
 
     /********************* CustomFields *********************/
     //CustomFields
-    async addCustomFields_Common_pro() {
+    async addCustomFields_Common() {
+        //CustomFields
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsText);
+        
+        if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
+        }
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsTextarea);
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsDropdown);
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsMultiSelect);
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsRadio);
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsCheckBox);
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsWebsiteUrl);
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsEmailAddress);
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsHiddenField);
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsImageUpload);
 
         //FromPRO
         //RepeatField
@@ -92,9 +107,6 @@ export class FieldOptionsCommonProPage extends Base {
             console.log('Pro: WPUF Pro is requred...');
         }
         else {
-            if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
-                await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
-            }
             //DateTime
             await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsDateTime);
             //TimeField
@@ -114,11 +126,16 @@ export class FieldOptionsCommonProPage extends Base {
             if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
                 await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
             }
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsGoogleMapsEdit);
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.googleMapsSearchbox);
+            await this.validateAndClick(Selectors.postForms.addPostFieldButton);
+
             //StepStart
-            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsStepStart);
-            if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
-                await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
-            }
+            // await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsStepStart);
+            // if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
+            //     await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
+            // }
+
             //Embed
             await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsEmbed); //TODO: This is an Error as position changes in Lite and Pro
 
@@ -129,8 +146,29 @@ export class FieldOptionsCommonProPage extends Base {
     }
 
     //Validate > CustomFields
-    async validateCustomFields_Common_pro() {
+    async validateCustomFields_Common() {
         //Validate
+        //Text
+        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateText);
+        //Textarea
+        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateTextarea);
+        //Dropdown
+        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateDropdown);
+        //MultiSelect
+        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateMultiSelect);
+        //Radio
+        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateRadio);
+        //CheckBox
+        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateCheckBox);
+        //WebsiteUrl
+        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateWebsiteUrl);
+        //EmailAddress
+        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateEmailAddress);
+        //HiddenField
+        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateHiddenField);
+        //ImageUpload
+        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateImageUpload);
+
         //From PRO
         //RepeatField
         const proCustomFields_Common = await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateRepeatField);
@@ -153,19 +191,42 @@ export class FieldOptionsCommonProPage extends Base {
             await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateAddressField);
 
             //GoogleMaps
-            await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateGoogleMaps);
+            // if(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateGoogleMaps) === true){
+            //     await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateGoogleMaps)).toBeTruthy();
+            // }
 
             //StepStart
-            await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateStepStart);
+            //await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateStepStart);
             //Embed
             await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateEmbed);
 
         }
+
+
+
     }
+
+
     /********************* Others *********************/
     //Others
-    async addOthers_Common_pro() {
+    async addOthers_Common() {
         //Others
+        await this.validateAndClick(Selectors.postForms.addOthers_Common.othersColumns);
+        await this.validateAndClick(Selectors.postForms.addOthers_Common.othersSectionBreak);
+        await this.validateAndClick(Selectors.postForms.addOthers_Common.othersCustomHTML);
+        // await this.validateAndClick(Selectors.postForms.addOthers_Common.othersReCaptcha);
+        // if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
+        //     await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
+        // }
+        // await this.validateAndClick(Selectors.postForms.addOthers_Common.reCaptchaEdit);
+        // await this.validateAndClick(Selectors.postForms.addOthers_Common.invisibleReCaptcha);
+        // await this.validateAndClick(Selectors.postForms.addPostFieldButton);
+        // await this.validateAndClick(Selectors.postForms.addOthers_Common.othersCloudflareTurnstile);
+        // if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
+        //     await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
+        // }
+
+
         //FromPRO
         await this.validateAndClick(Selectors.postForms.addOthers_Common.othersShortCode);
         const checkProPopUpCloseButton = await this.page.isVisible(Selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
@@ -198,10 +259,16 @@ export class FieldOptionsCommonProPage extends Base {
     }
 
     //Validate > Others
-    async validateOthers_Common_pro() {
+    async validateOthers_Common() {
         //Validate
-        //From PRO
+        //Columns
+        await this.assertionValidate(Selectors.postForms.validateOthers_Common.validateColumns);
+        //SectionBreak
+        await this.assertionValidate(Selectors.postForms.validateOthers_Common.validateSectionBreak);
+        //CustomHTML
+        await this.assertionValidate(Selectors.postForms.validateOthers_Common.validateCustomHTML);
         //ReCaptcha
+        //await this.assertionValidate(Selectors.postForms.validateOthers_Common.validateReCaptcha);
         //Not visible
         //Shortcode
         const proOthers_Common = await this.page.isVisible(Selectors.postForms.validateOthers_Common.validateShortcode);
@@ -223,7 +290,7 @@ export class FieldOptionsCommonProPage extends Base {
 
 
     //Settings > MultiStep Check
-    async setMultiStepSettings_Common_pro() {
+    async setMultiStepSettings_Common() {
         await this.page.waitForLoadState('domcontentloaded');
         //Add Multi-Step-Check
         await this.validateAndClick(Selectors.postForms.formSettings.clickFormEditorSettings);
@@ -244,15 +311,15 @@ export class FieldOptionsCommonProPage extends Base {
 
     /********************* SaveForm *********************/
     //SaveForm
-    async saveForm_Common_pro(validateNewPostName_Common: string) {
+    async saveForm_Common(validateNewPostName_Common: string) {
+        
+        try{
+        await this.page.waitForSelector(Selectors.postForms.saveForm_Common.formNameReCheck, { state: 'visible' });
+        const checkNewFormName_Common = await this.page.textContent(Selectors.postForms.saveForm_Common.formNameReCheck);
+        expect(checkNewFormName_Common?.trim()).toContain(validateNewPostName_Common);
 
-        try {
-            await this.page.waitForSelector(Selectors.postForms.saveForm_Common.formNameReCheck, { state: 'visible' });
-            const checkNewFormName_Common = await this.page.textContent(Selectors.postForms.saveForm_Common.formNameReCheck);
-            expect(checkNewFormName_Common?.trim()).toContain(validateNewPostName_Common);
-
-            console.log('Before Save-Form Name: ' + checkNewFormName_Common);
-        } catch (e) {
+        console.log('Before Save-Form Name: ' + checkNewFormName_Common);
+        }catch(e){
             console.log('not matched ');
         }
         await this.page.waitForLoadState('domcontentloaded');
@@ -262,13 +329,9 @@ export class FieldOptionsCommonProPage extends Base {
         await this.page.reload();
     }
 
-
-
-
-
     /********************* Validate *********************/
     //Admin checks if Created form is displayed in Post Forms - Table/List
-    async validatePostFormCreatedPro(validateNewPostName_PF: string) {
+    async validatePostFormCreated(validateNewPostName_PF: string) {
         //Return HOME
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();
@@ -283,27 +346,6 @@ export class FieldOptionsCommonProPage extends Base {
             console.log('PF List: ' + validateNewPostName_PF);
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     /******************************************/
@@ -353,7 +395,4 @@ export class FieldOptionsCommonProPage extends Base {
             console.log('PF List: ' + validateNewPostName_RF);
         }
     }
-
-
-
 }

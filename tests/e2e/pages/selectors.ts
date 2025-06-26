@@ -1,4 +1,3 @@
-import {Urls, Users, PostForm, RegistrationForm, SubscriptionPack} from '../utils/testData';
 export const Selectors = {
 
     /*********************************/
@@ -327,6 +326,8 @@ export const Selectors = {
 
         /* Locators for All Fields Options + Save */
         /********************* PostFields *********************/
+
+        addPostFieldButton: '//a[normalize-space()="Add Fields"]',
         addPostFields_PF: {
             // Post_Fields
             postTitleBlock: '//p[normalize-space(text())="Post Title"]',
@@ -387,6 +388,8 @@ export const Selectors = {
             customFieldsPhoneField: '//p[normalize-space(text())="Phone Field"]',
             customFieldsAddressField: '//p[normalize-space(text())="Address Field"]',
             customFieldsGoogleMaps: '//p[normalize-space(text())="Google Map"]',
+            customFieldsGoogleMapsEdit: '//div[@class="wpuf-form-google-map"]//..//..//..//..//..//span[normalize-space(text())="Edit"]',
+            googleMapsSearchbox: '//label[normalize-space()="Show address search box"]',
             customFieldsStepStart: '//p[normalize-space(text())="Step Start"]',
             customFieldsEmbed: '//p[normalize-space(text())="Embed"]',
 
@@ -435,6 +438,8 @@ export const Selectors = {
             othersCustomHTML: '//p[normalize-space(text())="Custom HTML"]',
             othersQrCode: '//p[normalize-space(text())="QR Code"]',
             othersReCaptcha: '//p[normalize-space(text())="reCaptcha"]',
+            reCaptchaEdit: '//label[@for="recaptcha"]//..//..//..//span[normalize-space()="Edit"]',
+            invisibleReCaptcha: '//input[@value="invisible_recaptcha"]',
             othersCloudflareTurnstile: '//p[normalize-space(text())="Cloudflare Turnstile"]',
 
             // From___PRO
@@ -474,6 +479,7 @@ export const Selectors = {
             validateColumns: '//li[contains(@class,"form-field-column_field")]',
             validateSectionBreak: '//li[contains(@class,"section_break")]',
             validateCustomHTML: '//div[text()="HTML Section"]/..//div[@class="wpuf-fields"]',
+            validateReCaptcha: '//label[@for="recaptcha"]',
 
             // validateReCaptcha: '',            // TODO: Setup required
             validateShortcode: '//label[@for="shortcode"]/../..//div[@class="wpuf-fields"]',
@@ -511,24 +517,111 @@ export const Selectors = {
             postDescriptionFormsFE1: '//div[contains(@class,"mce-edit-area mce-container")]//iframe[1]',
             postDescriptionFormsFE2: '//body[@id="tinymce"]',
             // Featured Photo
-            featuredPhotoFormsFE: '(//input[@type="file"])[2]',
+            featuredPhotoFormsFE: '//li[@data-label="Featured Image"]//input[@type="file"]',
             // Excerpt
             postExcerptFormsFE: '//textarea[@name="post_excerpt"]',
             // Tags
             postTagsFormsFE: '//input[@name="tags"]',
+            // Text
+            postTextFormsFE: '//input[@name="text"]',
+            // Textarea
+            postTextareaFormsFE: '//textarea[@name="textarea"]',
+            // Dropdown
+            postDropdownFormsFE: '//select[@name="dropdown"]',
+            // Multi Select
+            postMultiSelectFormsFE: '//select[@name="multi_select[]"]',
+            // Radio
+            postRadioFormsFE: '//input[@name="radio"]',
+            // Checkbox
+            postCheckboxFormsFE: '//input[@name="checkbox[]"]',
+            // Website URL
+            postWebsiteUrlFormsFE: '//input[@name="website_url"]',
+            // Email Address
+            postEmailAddressFormsFE: '//input[@name="email_address"]',
+            // Image Upload
+            postImageUploadFormsFE: '//li[@data-label="Image Upload"]//input[@type="file"]',
+            // Repeat Field
+            postRepeatFieldFormsFE: '//input[@name="repeat_field[]"]',
+            // Date / Time
+            postDateTimeFormsFE: {
+                dateTimeSelect: '//input[@name="date___time"]',
+                selectYear: '//select[@data-handler="selectYear"]',
+                selectMonth: '//select[@data-handler="selectMonth"]',
+                selectDay: '//a[@data-date="20"]',
+            },
+            // Time Field
+            postTimeFieldFormsFE: '//select[@name="time_field"]',
+            // File Upload
+            postFileUploadFormsFE: '//li[@data-label="File Upload"]//input[@type="file"]',
+            // Country List
+            postCountryListFormsFE: '//select[@name="country_list"]',
+            // Numeric Field
+            postNumericFieldFormsFE: '//input[@name="numeric_field"]',
+            // Phone Field
+            postPhoneFieldFormsFE: {
+                countryContainer: '(//div[@class="iti__flag-container"]//div)[1]',
+                countrySelect: '//li[@data-country-code="bd"]',
+                phoneNumber: '//input[@name="phone_field"]',
+            },
+            // Address Field
+            postAddressFieldFormsFE: {
+                addressLine1: '//input[@name="address_field[street_address]"]',
+                addressLine2: '//input[@name="address_field[street_address2]"]',
+                city: '//input[@name="address_field[city_name]"]',
+                state: '//select[@name="address_field[state]"]',
+                country: '//select[@name="address_field[country_select]"]',
+                zip: '//input[@name="address_field[zip]"]',
+            },
+            // Google Maps
+            postGoogleMapsFormsFE: '//input[@placeholder="Search address"]',
+            // Embed
+            postEmbedFormsFE: '//input[@name="embed"]',
+            // Terms and Conditions
+            postTermsAndConditionsFormsFE: '//input[@name="terms_and_conditions"]',
+            // Ratings
+            postRatingsFormsFE: '//select[@name="ratings"]',
+            // Math Captcha
+            postMathCaptchaFormsFE: {
+                operand1: '//span[@id="operand_one"]',
+                operand2: '//span[@id="operand_two"]',
+                operator: '//span[@id="operator"]',
+                mathCaptcha: '(//label[contains(.,"Math Captcha *")]/following::input)[1]',
+            },
             // Create Post
-            submitPostFormsFE: '//input[@value="Create Post"]',
+            submitPostFormsFE: '//input[@name="submit"]',
             // Validate Post Submitted
             validatePostSubmitted: (postFormTitle:string)=> `//h1[normalize-space(text())='${postFormTitle}']`,
         },
-
-        postFormsFrontendValidate: {
-            // Accounts - Top Menu
-            clickAccountsTopMenu: '//a[contains(text(), "Account")]',
-            // Post
-            clickPostsSideMenu: '//li[@class="wpuf-menu-item post"]//a[1]',
-            // Validate Title of Post Created
-            validatePostSubmittedFE: '(//td[@data-label="Title: "])[1]'
+        postFormData: {
+            title: (title:string)=> `//h1[normalize-space(text())='${title}']`,
+            description: (description:string)=> `//div[contains(@class,"entry-content")]//p[normalize-space(text())="${description}"]`,
+            featuredImage: '//figure[@class="wp-block-post-featured-image"]',
+            category: '//div[contains(@class,"taxonomy-category")]',
+            tags: '//div[contains(@class,"taxonomy-post_tag")]//a',
+            text: '//li[contains(@class,"wpuf-field-data-text_field")]',
+            textarea: '//li[contains(@class,"wpuf-field-data-textarea_field")]',
+            dropdown: '//li[contains(@class,"wpuf-field-data-dropdown_field")]',
+            multiSelect: '//li[contains(@class,"wpuf-field-data-multiple_select")]',
+            radio: '//li[contains(@class,"wpuf-field-data-radio_field")]',
+            checkbox: '//li[contains(@class,"wpuf-field-data-checkbox_field")]',
+            websiteUrl: '//li[contains(@class,"wpuf-field-data-website_url")]',
+            emailAddress: '//li[contains(@class,"wpuf-field-data-email_address")]',
+            imageUpload: '//label[text()="Image Upload:"]/following-sibling::a',
+            repeatField: (repeatField:string)=> `//li[contains(.,"Repeat Field: ${repeatField}")]`,
+            dateTime: (dateTime:string)=> `//li[contains(.,"Date / Time: ${dateTime}")]`,
+            timeField: (timeField:string)=> `//li[contains(.,"Time Field: ${timeField}")]`,
+            fileUpload: '//label[text()="File Upload:"]/following-sibling::a',
+            countryList: (countryList:string)=> `//li[contains(.,"Country List: ${countryList}")]`,
+            numericField: '//li[contains(@class,"wpuf-field-data-numeric_text_field")]',
+            phoneField: (phoneNumber:string)=> `//li[contains(.,"Phone Field: ${phoneNumber}")]`,
+            addressLine1: (addressLine1:string)=> `//li[normalize-space(text())="${addressLine1}"]`,
+            addressLine2: (addressLine2:string)=> `//li[normalize-space(text())="${addressLine2}"]`,
+            city: (city:string)=> `//li[normalize-space(text())="${city}"]`,
+            zip: (zip:string)=> `//li[normalize-space(text())="${zip}"]`,
+            country: (country:string)=> `//li[normalize-space(text())="${country}"][2]`,
+            state: (state:string)=> `//li[normalize-space(text())="${state}"]`,
+            embed: '//div[@class="wpuf-embed-preview"]//a',
+            ratings: '//li[contains(@class,"wpuf-field-data-ratings")]',
         }
     },
 

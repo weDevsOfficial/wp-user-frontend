@@ -41,34 +41,77 @@ const Users: {
     userPassword: process.env.QA_NEW_PASSWORD ? process.env.QA_NEW_PASSWORD : 'Testuser0001@yopmail.com',
 };
 
-/**----------------------------------*/
+/**-----------------------------------*/
 /**-------DATA_SET: Post Form-------*/
-/**--------------------------------*/
+/**---------------------------------*/
 const PostForm: {
-    //Post Form Title
-    pfPostName1: string;
-    pfPostName2: string;
-    pfPostName3: string;
-    pfPostName4: string;
     //Post Form Data
-    pfTitle: string;
-    pfPostDescription: string;
-    pfExcerpt: string;
-    pfTags: string;
+    formName: string;
+    title: string;
+    description: string;
+    excerpt: string;
+    featuredImage: string;
+    category: string;
+    tags: string;
+    text: string;
+    textarea: string;
+    dropdown: string;
+    multiSelect: string;
+    radio: string;
+    checkbox: string;
+    date: string;
+    websiteUrl: string;
+    emailAddress: string;
+    imageUpload: string;
+    repeatField: string;
+    time: string;
+    uploadFile: string;
+    countryList: string;
+    numeric: string;
+    phoneNumber: string;
+    addressLine1: string;
+    addressLine2: string;
+    city: string;
+    zip: string;
+    country: string;
+    state: string;
+    googleMaps: string;
+    embed: string;
+    ratings: string;
 } = {
-    //Post Form Titles
-    pfPostName1: faker.lorem.sentence(1),
-    pfPostName2: faker.lorem.sentence(1),
-    pfPostName3: faker.lorem.sentence(1),
-    pfPostName4: faker.lorem.sentence(1),
-    //Post Form Data
-    pfTitle: faker.lorem.words(1),
-    pfPostDescription: faker.lorem.sentence(4),
-    pfExcerpt: faker.lorem.word(3),
-    pfTags: faker.lorem.word(),
+    formName: '',
+    title: '',
+    description: '',
+    excerpt: '',
+    featuredImage: 'uploadeditems/sample_image.PNG',
+    category: 'Technology',
+    tags: 'AI',
+    text: '',
+    textarea: '',
+    dropdown: 'Option',
+    multiSelect: 'Option',
+    radio: 'Option',
+    checkbox: 'Option',
+    websiteUrl: '',
+    emailAddress: '',
+    imageUpload: 'uploadeditems/sample_image.PNG',
+    repeatField: '',
+    date: '20/08/2024',
+    time: '12:00 pm',
+    uploadFile: 'uploadeditems/sample_image.PNG',
+    countryList: 'Bangladesh',
+    numeric: '',
+    phoneNumber: '',
+    addressLine1: '',
+    addressLine2: '',
+    city: 'Dhaka',
+    zip: '1216',
+    country: 'Bangladesh',
+    state: '',
+    googleMaps: '',
+    embed: '',
+    ratings: '',
 };
-
-
 
 /**------------------------------------------*/
 /**-------DATA_SET: Registration Form-------*/
@@ -103,43 +146,6 @@ const RegistrationForm: {
 };
 
 
-
-/**------------------------------------------*/
-/**-------DATA_SET: Subscription Pack-------*/
-/**----------------------------------------*/
-const SubscriptionPack: {
-    //Basics
-    subscriptionPackName: string;
-    subscriptionPackDescription: string;
-    SubscriptionPackPrice: string;
-    SubscriptionPackExpiration: number;
-
-    //Posting Restrictions
-    //Featured
-    subscriptionFeaturedCount: number;
-} = {
-    //Basics
-    subscriptionPackName: faker.commerce.productName(),
-    subscriptionPackDescription: faker.commerce.productDescription(),
-    SubscriptionPackPrice: faker.commerce.price(),
-    SubscriptionPackExpiration: faker.number.int({ min: 1, max: 365 }),
-
-    //Posting Restrictions
-    //Featured
-    subscriptionFeaturedCount: 2,
-};
-
-/**------------------------------------------*/
-/**-------DATA_SET: Tokens/API Keys--------*/
-/**----------------------------------------*/
-const Tokens: {
-    WPUF_PRO_LICENSE_KEY?: string;
-} = {
-    WPUF_PRO_LICENSE_KEY: process.env.WPUF_PRO_LICENSE_KEY,
-};
-
-
-
 /**------------------------------*/
 /**-------Export DATA_SET-------*/
 /**----------------------------*/
@@ -148,6 +154,4 @@ export {
     Users,
     PostForm,
     RegistrationForm,
-    SubscriptionPack,
-    Tokens,
 };

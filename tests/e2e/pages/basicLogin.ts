@@ -2,8 +2,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import { expect, type Page } from '@playwright/test';
 import { Selectors } from './selectors';
-import { SettingsSetupPage } from '../pages/settingsSetup';
-import { Urls } from '../utils/testData';
+import { SettingsSetupPage } from './settingsSetup';
 import { Base } from './base';
 
 export class BasicLoginPage extends Base {

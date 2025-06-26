@@ -2,10 +2,9 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import { expect, type Page } from '@playwright/test';
 import { Selectors } from './selectors';
-import { Urls } from '../utils/testData';
 import { Base } from './base';
 
-export class RegistrationFormsPage extends Base {
+export class RegFormPage extends Base {
 
     constructor(page: Page) {
         super(page);

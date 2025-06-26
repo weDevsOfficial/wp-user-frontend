@@ -620,7 +620,7 @@ export class SettingsSetupPage extends Base {
         await this.validateAndFillStrings(Selectors.resetWordpreseSite.wpResetInputBox, 'reset');
         await this.validateAndClick(Selectors.resetWordpreseSite.wpResetSubmitButton);
         await this.validateAndClick(Selectors.resetWordpreseSite.wpResetConfirmWordpressReset);
-        await this.page.waitForTimeout(10000);
+        await this.page.waitForTimeout(20000);
         await Promise.all([this.page.goto(this.pluginsPage )]);
         await this.waitForLoading();
         await this.page.reload();

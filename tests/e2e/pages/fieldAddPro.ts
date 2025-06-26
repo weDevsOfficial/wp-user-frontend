@@ -5,7 +5,7 @@ import { Selectors } from './selectors';
 import { Base } from './base';
 
 
-export class FieldOptionsCommonPage extends Base {
+export class FieldAddProPage extends Base {
 
     constructor(page: Page) {
         super(page);
@@ -18,7 +18,7 @@ export class FieldOptionsCommonPage extends Base {
 
     /********* PostFields *********************/
     //PostFields
-    async addPostFields_PF() {
+    async addPostFields_PF_pro() {
         //PostFields
         await this.validateAndClick(Selectors.postForms.addPostFields_PF.postTitleBlock);
         await this.validateAndClick(Selectors.postForms.addPostFields_PF.postContentBlock);
@@ -28,7 +28,7 @@ export class FieldOptionsCommonPage extends Base {
     }
 
     //Validate > PostFields
-    async validatePostFields_PF() {
+    async validatePostFields_PF_pro() {
         //Validate
         //Post Title
         await this.assertionValidate(Selectors.postForms.validatePostFields_PF.validatePostTitle);
@@ -45,7 +45,7 @@ export class FieldOptionsCommonPage extends Base {
 
     /********************* Taxonomies *********************/
     //Taxonomies
-    async addTaxonomies_PF() {
+    async addTaxonomies_PF_pro() {
         //Taxonomies
         await this.validateAndClick(Selectors.postForms.addTaxonomies_PF.categoryBlock);
         await this.validateAndClick(Selectors.postForms.addTaxonomies_PF.tagsBlock);
@@ -54,7 +54,7 @@ export class FieldOptionsCommonPage extends Base {
     }
 
     //Validate > Taxonomies
-    async validateTaxonomies_PF() {
+    async validateTaxonomies_PF_pro() {
         //Validate
         //Category
         await this.assertionValidate(Selectors.postForms.validateTaxonomies_PF.validateCategory);
@@ -62,7 +62,7 @@ export class FieldOptionsCommonPage extends Base {
         await this.assertionValidate(Selectors.postForms.validateTaxonomies_PF.validateTags);
     }
 
-    async validateTaxonomiesPreset_PF() {
+    async validateTaxonomiesPreset_PF_pro() {
         //Validate
         //Category
         await this.assertionValidate(Selectors.postForms.validateTaxonomiesPreset_PF.validateCategory);
@@ -81,22 +81,7 @@ export class FieldOptionsCommonPage extends Base {
 
     /********************* CustomFields *********************/
     //CustomFields
-    async addCustomFields_Common() {
-        //CustomFields
-        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsText);
-        
-        if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
-            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
-        }
-        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsTextarea);
-        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsDropdown);
-        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsMultiSelect);
-        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsRadio);
-        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsCheckBox);
-        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsWebsiteUrl);
-        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsEmailAddress);
-        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsHiddenField);
-        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsImageUpload);
+    async addCustomFields_Common_pro() {
 
         //FromPRO
         //RepeatField
@@ -107,6 +92,9 @@ export class FieldOptionsCommonPage extends Base {
             console.log('Pro: WPUF Pro is requred...');
         }
         else {
+            if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
+                await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
+            }
             //DateTime
             await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsDateTime);
             //TimeField
@@ -141,29 +129,8 @@ export class FieldOptionsCommonPage extends Base {
     }
 
     //Validate > CustomFields
-    async validateCustomFields_Common() {
+    async validateCustomFields_Common_pro() {
         //Validate
-        //Text
-        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateText);
-        //Textarea
-        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateTextarea);
-        //Dropdown
-        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateDropdown);
-        //MultiSelect
-        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateMultiSelect);
-        //Radio
-        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateRadio);
-        //CheckBox
-        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateCheckBox);
-        //WebsiteUrl
-        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateWebsiteUrl);
-        //EmailAddress
-        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateEmailAddress);
-        //HiddenField
-        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateHiddenField);
-        //ImageUpload
-        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateImageUpload);
-
         //From PRO
         //RepeatField
         const proCustomFields_Common = await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateRepeatField);
@@ -185,10 +152,8 @@ export class FieldOptionsCommonPage extends Base {
             //AddressField
             await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateAddressField);
 
-            //GoogleMaps        //TODO: Setup required
-            // if(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateGoogleMaps) === true){
-            //     await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateGoogleMaps)).toBeTruthy();
-            // }
+            //GoogleMaps
+            await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateGoogleMaps);
 
             //StepStart
             await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateStepStart);
@@ -196,29 +161,11 @@ export class FieldOptionsCommonPage extends Base {
             await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateEmbed);
 
         }
-
-
-
     }
-
-
     /********************* Others *********************/
     //Others
-    async addOthers_Common() {
+    async addOthers_Common_pro() {
         //Others
-        await this.validateAndClick(Selectors.postForms.addOthers_Common.othersColumns);
-        await this.validateAndClick(Selectors.postForms.addOthers_Common.othersSectionBreak);
-        await this.validateAndClick(Selectors.postForms.addOthers_Common.othersCustomHTML);
-        await this.validateAndClick(Selectors.postForms.addOthers_Common.othersReCaptcha);
-        if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
-            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
-        }
-        await this.validateAndClick(Selectors.postForms.addOthers_Common.othersCloudflareTurnstile);
-        if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
-            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
-        }
-
-
         //FromPRO
         await this.validateAndClick(Selectors.postForms.addOthers_Common.othersShortCode);
         const checkProPopUpCloseButton = await this.page.isVisible(Selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
@@ -251,15 +198,8 @@ export class FieldOptionsCommonPage extends Base {
     }
 
     //Validate > Others
-    async validateOthers_Common() {
+    async validateOthers_Common_pro() {
         //Validate
-        //Columns
-        await this.assertionValidate(Selectors.postForms.validateOthers_Common.validateColumns);
-        //SectionBreak
-        await this.assertionValidate(Selectors.postForms.validateOthers_Common.validateSectionBreak);
-        //CustomHTML
-        await this.assertionValidate(Selectors.postForms.validateOthers_Common.validateCustomHTML);
-
         //From PRO
         //ReCaptcha
         //Not visible
@@ -283,7 +223,7 @@ export class FieldOptionsCommonPage extends Base {
 
 
     //Settings > MultiStep Check
-    async setMultiStepSettings_Common() {
+    async setMultiStepSettings_Common_pro() {
         await this.page.waitForLoadState('domcontentloaded');
         //Add Multi-Step-Check
         await this.validateAndClick(Selectors.postForms.formSettings.clickFormEditorSettings);
@@ -304,15 +244,15 @@ export class FieldOptionsCommonPage extends Base {
 
     /********************* SaveForm *********************/
     //SaveForm
-    async saveForm_Common(validateNewPostName_Common: string) {
-        
-        try{
-        await this.page.waitForSelector(Selectors.postForms.saveForm_Common.formNameReCheck, { state: 'visible' });
-        const checkNewFormName_Common = await this.page.textContent(Selectors.postForms.saveForm_Common.formNameReCheck);
-        expect(checkNewFormName_Common?.trim()).toContain(validateNewPostName_Common);
+    async saveForm_Common_pro(validateNewPostName_Common: string) {
 
-        console.log('Before Save-Form Name: ' + checkNewFormName_Common);
-        }catch(e){
+        try {
+            await this.page.waitForSelector(Selectors.postForms.saveForm_Common.formNameReCheck, { state: 'visible' });
+            const checkNewFormName_Common = await this.page.textContent(Selectors.postForms.saveForm_Common.formNameReCheck);
+            expect(checkNewFormName_Common?.trim()).toContain(validateNewPostName_Common);
+
+            console.log('Before Save-Form Name: ' + checkNewFormName_Common);
+        } catch (e) {
             console.log('not matched ');
         }
         await this.page.waitForLoadState('domcontentloaded');
@@ -328,7 +268,7 @@ export class FieldOptionsCommonPage extends Base {
 
     /********************* Validate *********************/
     //Admin checks if Created form is displayed in Post Forms - Table/List
-    async validatePostFormCreated(validateNewPostName_PF: string) {
+    async validatePostFormCreatedPro(validateNewPostName_PF: string) {
         //Return HOME
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();
@@ -413,4 +353,7 @@ export class FieldOptionsCommonPage extends Base {
             console.log('PF List: ' + validateNewPostName_RF);
         }
     }
+
+
+
 }

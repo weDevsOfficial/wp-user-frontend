@@ -4,7 +4,7 @@ import { expect, type Page } from '@playwright/test';
 import { Base } from './base';
 import { Urls } from '../utils/testData';
 import { Selectors } from './selectors';
-import { FieldOptionsCommonPage } from '../pages/fieldOptionsCommon';
+import { FieldAddPage } from './fieldAdd';
 import { BasicLogoutPage } from './basicLogout';
 
 export class PostFormSettingsPage extends Base {
@@ -15,7 +15,7 @@ export class PostFormSettingsPage extends Base {
     // Create a new post form
     async createPostForm(formName: string) {
 
-        const FieldOptionsCommon = new FieldOptionsCommonPage(this.page);
+        const FieldAdd = new FieldAddPage(this.page);
         // Go to post forms page
         await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
@@ -30,7 +30,7 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.postFormSettings.formNameInput, formName);
 
         // Add post fields
-        await FieldOptionsCommon.addPostFields_PF();
+        await FieldAdd.addPostFields_PF();
 
         // Save the form
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
@@ -1325,11 +1325,11 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(500);
+        await this.page.waitForTimeout(1000);
 
         // Validate notification is sent
         await Promise.all([this.page.goto(this.wpMailLogPage)]);
-        await this.waitForLoading();
+        await this.page.waitForTimeout(1000);
 
         const sentEmailAddress = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress);
         expect(sentEmailAddress).toBe(multipleEmails);

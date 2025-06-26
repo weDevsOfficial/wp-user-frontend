@@ -47,23 +47,19 @@ features:
 
   # Post Forms
   - id: PF0001
-    name: Admin is creating Blank Form with > PostFields
-  - id: PF0002
-    name: Admin is creating Blank Form with > Taxonomies
-  - id: PF0003
-    name: Admin is creating Blank Form with > CustomFields
-  - id: PF0004
-    name: Admin is creating Blank Form with > Others
-  - id: PF0005
     name: Admin is creating a Blank Post Form with all Fields
+  - id: PF0002
+    name: Admin is Updating Settings with default Post Form
+  - id: PF0003
+    name: User is Creating Post from Frontend
+  - id: PF0004
+    name: User is Validating Post created
+  - id: PF0005
+    name: User is validating Entered Data for Created Post
   - id: PF0006
     name: Admin is creating a Preset Post Form
   - id: PF0007
     name: Admin is creating a Preset Post Form - with Guest Enabled
-  - id: PF0008
-    name: Admin is Updating Settings with default Post Form
-  - id: PF0009
-    name: User is Submitting Form from Frontend
 
   # Registration Forms
   - id: RF0001

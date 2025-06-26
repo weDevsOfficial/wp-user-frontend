@@ -10,7 +10,7 @@ import { Base } from './base';
 
 
 
-export class PostFormsPage extends Base {
+export class PostFormProPage extends Base {
 
     constructor(page: Page) {
         super(page);
@@ -22,7 +22,7 @@ export class PostFormsPage extends Base {
     /********************************/
 
     //BlankForm
-    async createBlankFormPostForm(newPostName: string) {
+    async createBlankFormPostFormPro(newPostName: string) {
 
         //Visit Post Form Page
         await Promise.all([this.page.goto(this.wpufPostFormPage )]);
@@ -35,7 +35,6 @@ export class PostFormsPage extends Base {
 
         
         //Click Blank Form
-        await this.page.waitForSelector(Selectors.postForms.createBlankForm_PF.clickBlankForm);
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickBlankForm);
 
         //EnterName
@@ -51,7 +50,7 @@ export class PostFormsPage extends Base {
 
 
     //PresetForm
-    async createPresetPostForm(newPostName: string) {
+    async createPresetPostFormPro(newPostName: string) {
         //Visit Post Form Page
         await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         //CreateNewPostForm
@@ -82,7 +81,7 @@ export class PostFormsPage extends Base {
 
 
     //PresetForm
-    async createPresetPostFormWithGuestEnabled(newPostName: string) {
+    async createPresetPostFormWithGuestEnabledPro(newPostName: string) {
         //Visit Post Form Page
         await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         //CreateNewPostForm

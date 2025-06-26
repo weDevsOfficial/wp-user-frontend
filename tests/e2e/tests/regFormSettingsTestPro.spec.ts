@@ -2,13 +2,12 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import { Browser, BrowserContext, Page, test, chromium } from "@playwright/test";
 import { faker } from '@faker-js/faker';
-import { RegFormSettingsPage } from '../pages/regFormSettingsPage';
+import { RegFormSettingsPage } from '../pages/regFormSettings';
 import { BasicLoginPage } from '../pages/basicLogin';
-import { Users, PostForm, Urls } from '../utils/testData';
+import { Users, Urls } from '../utils/testData';
 import { SettingsSetupPage } from '../pages/settingsSetup';
 import * as fs from "fs";
-import { BasicLogoutPage } from '../pages/basicLogout';
-import { RegistrationFormsPage } from '../pages/registrationForms';
+import { RegFormPage } from '../pages/regForm';
 
 export default function regFormSettingsTestPro() {
     let browser: Browser;
@@ -109,7 +108,7 @@ export default function regFormSettingsTestPro() {
 
         test('RFS0001 : Admin is setting newly registered user role to administrator', { tag: ['@Pro'] }, async () => {
             formName = faker.word.words(2);
-            await new RegistrationFormsPage(page).createBlankForm_RF(formName, newRegFormPage);
+            await new RegFormPage(page).createBlankForm_RF(formName, newRegFormPage);
             await new SettingsSetupPage(page).changeSettingsSetEditProfilePageDefault(formName);
             const regFormSettings = new RegFormSettingsPage(page);
             await regFormSettings.settingNewlyRegisteredUserRole(formName, 'administrator');

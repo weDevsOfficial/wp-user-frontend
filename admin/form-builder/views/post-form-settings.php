@@ -540,6 +540,20 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                 <?php
             }
 
+            // Handle submit-button-conditional-logics Vue component
+            if ( 'submit-button-conditional-logics' === $field['type'] ) {
+                $submit_button_settings = isset( $form_settings['submit_button_cond'] ) ? $form_settings['submit_button_cond'] : array(
+                    'condition_status' => 'no',
+                    'cond_logic' => 'any',
+                    'conditions' => array()
+                );
+                ?>
+                <submit-button-conditional-logics
+                    :current-settings="<?php echo esc_attr( json_encode( $submit_button_settings ) ); ?>">
+                </submit-button-conditional-logics>
+                <?php
+            }
+
             if ( ! empty( $field['notice'] ) ) {
                 ?>
                 <div class="wpuf-bg-yellow-50 wpuf-border-l-4 wpuf-border-yellow-500 wpuf-text-yellow-700 wpuf-p-4">

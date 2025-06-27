@@ -101,7 +101,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.waitForLoading();
+        await this.page.waitForTimeout(2000);
 
         // Wait for success message
         await expect(this.page.locator(Selectors.postFormSettings.postTypePage(postTitle))).toBeVisible();
@@ -171,7 +171,7 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
 
-        await this.waitForLoading();
+        await this.page.waitForTimeout(2000);
 
         // Wait for success message
         await expect(this.page.locator(Selectors.postFormSettings.postCategory(category))).toBeVisible();
@@ -322,7 +322,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.waitForLoading();
+        await this.page.waitForTimeout(2000);
 
         await expect(this.page.locator(Selectors.postFormSettings.checkPostTitle(postTitle))).toBeVisible();
     }
@@ -345,7 +345,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.waitForLoading();
+        await this.page.waitForTimeout(2000);
 
         const successMessage = await this.page.innerText(Selectors.postFormSettings.checkSuccessMessage);
 
@@ -370,7 +370,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.waitForLoading();
+        await this.page.waitForTimeout(2000);
 
         await expect(this.page.locator(Selectors.postFormSettings.checkPageTitle(pageTitle))).toBeVisible();
     }
@@ -393,7 +393,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.waitForLoading();
+        await this.page.waitForTimeout(2000);
 
         await expect(this.page).toHaveURL(expectedUrl);
     }
@@ -451,7 +451,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(1000);
+        await this.page.waitForTimeout(2000);
 
         await Promise.all([this.page.goto(this.wpufPostPage)]);
         await this.waitForLoading();
@@ -746,8 +746,8 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
-        await this.page.waitForTimeout(1000);
-        // await this.assertionValidate(Selectors.postFormSettings.checkSuccessMessage);
+        await this.page.waitForTimeout(2000);
+        //await this.assertionValidate(Selectors.postFormSettings.checkSuccessMessage);
 
         await Promise.all([this.page.goto(this.wpufPostPage)]);
         await this.waitForLoading();
@@ -790,6 +790,7 @@ export class PostFormSettingsPage extends Base {
 
 
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
+        await this.page.waitForTimeout(2000);
 
         // Validate the message content
         const successMessage = await this.page.innerText(Selectors.postFormSettings.checkSuccessMessage);
@@ -914,7 +915,7 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
-        await this.waitForLoading();
+        await this.page.waitForTimeout(2000);
 
         await expect(this.page.locator(Selectors.postFormSettings.checkPostTitle(postTitle))).toBeVisible();
     }
@@ -937,7 +938,7 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
-        await this.waitForLoading();
+        await this.page.waitForTimeout(2000);
 
         const successMessage = await this.page.innerText(Selectors.postFormSettings.checkSuccessMessage);
 
@@ -963,7 +964,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.waitForLoading();
+        await this.page.waitForTimeout(2000);
 
         await expect(this.page.locator(Selectors.postFormSettings.checkPageTitle(pageTitle))).toBeVisible();
     }
@@ -988,7 +989,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.waitForLoading();
+        await this.page.waitForTimeout(2000);
 
         await expect(this.page).toHaveURL(expectedUrl);
     }
@@ -1063,7 +1064,7 @@ export class PostFormSettingsPage extends Base {
 
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.waitForLoading();
+        await this.page.waitForTimeout(2000);
 
         const validateCost = await this.page.innerText(Selectors.postFormSettings.validatePayPerPostCost);
         expect(validateCost).toContain(`$${cost}`);
@@ -1325,7 +1326,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(1000);
+        await this.page.waitForTimeout(2000);
 
         // Validate notification is sent
         await Promise.all([this.page.goto(this.wpMailLogPage)]);
@@ -1609,11 +1610,11 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
-        await this.page.waitForTimeout(500);
+        await this.page.waitForTimeout(2000);
 
         // Validate notification is sent
         await Promise.all([this.page.goto(this.wpMailLogPage)]);
-        await this.waitForLoading();
+        await this.page.waitForTimeout(2000);
 
         const sentEmailAddress = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress);
         expect(sentEmailAddress).toBe(multipleEmails);
@@ -1704,7 +1705,7 @@ export class PostFormSettingsPage extends Base {
 
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(1000);
+        await this.page.waitForTimeout(2000);
 
     }
 
@@ -1793,7 +1794,7 @@ export class PostFormSettingsPage extends Base {
 
         // await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        // await this.page.waitForTimeout(1000);
+        // await this.page.waitForTimeout(2000);
 
         await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
         await this.waitForLoading();

@@ -384,9 +384,10 @@ export class PostFormPage extends Base {
         await Promise.all([this.page.goto(this.pagesPage)]);
         //Create New Page
         await this.validateAndClick(Selectors.postForms.createPageWithShortcode.addNewPage);
+        await this.page.waitForTimeout(300);
         // Check if the Welcome Modal is visible
         try {
-            await this.page.locator(Selectors.postForms.createPageWithShortcode.closeWelcomeModal).click({ timeout: 1000 });
+            await this.validateAndClick(Selectors.postForms.createPageWithShortcode.closeWelcomeModal);
         } catch (error) {
             console.log('Welcome Modal not visible!');
         }

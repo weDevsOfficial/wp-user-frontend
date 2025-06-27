@@ -830,7 +830,7 @@ export class RegFormSettingsPage extends Base {
         
         // Navigate to WP Mail Log
         await this.page.goto(this.wpMailLogPage);
-        await this.waitForLoading();
+        await this.page.waitForTimeout(1000);
         await this.assertionValidate(Selectors.regFormSettings.wpMailLogValidation.wpMailLogPage);
 
         // Check the latest email
@@ -885,7 +885,7 @@ export class RegFormSettingsPage extends Base {
         
         // Navigate to WP Mail Log
         await this.page.goto(this.wpMailLogPage);
-        await this.waitForLoading();
+        await this.page.waitForTimeout(1000);
         await this.assertionValidate(Selectors.regFormSettings.wpMailLogValidation.wpMailLogPage);
 
         // Check the latest email
@@ -948,7 +948,7 @@ export class RegFormSettingsPage extends Base {
         
         // Navigate to WP Mail Log
         await this.page.goto(this.wpMailLogPage);
-        await this.waitForLoading();
+        await this.page.waitForTimeout(1000);
         await this.assertionValidate(Selectors.regFormSettings.wpMailLogValidation.wpMailLogPage);
 
         // Validate email subject

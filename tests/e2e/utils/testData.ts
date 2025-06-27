@@ -107,7 +107,7 @@ const PostForm: {
     city: 'Dhaka',
     zip: '1216',
     country: 'Bangladesh',
-    state: '',
+    state: 'Dhaka',
     googleMaps: '',
     embed: '',
     ratings: '',

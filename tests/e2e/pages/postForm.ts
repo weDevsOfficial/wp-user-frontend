@@ -210,7 +210,7 @@ export class PostFormPage extends Base {
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.city, PostForm.city);
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.zip, PostForm.zip);
         await this.page.selectOption(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.country, { value: 'BD' });
-        await this.page.selectOption(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.state, { value: PostForm.state='BD-13' });
+        await this.page.selectOption(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.state, { value: 'BD-13' });
         //Enter Google Maps
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postGoogleMapsFormsFE, PostForm.googleMaps='Dhaka, Bangladesh');
         await this.page.keyboard.press('Enter');

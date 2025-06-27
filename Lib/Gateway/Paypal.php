@@ -1499,7 +1499,7 @@ class Paypal {
                     10,
                     1
                 );
-
+                
                 // Redirect to PayPal
                 \WP_User_Frontend::log( 'PayPal: Redirecting to PayPal subscription approval URL: ' . $approval_url );
                 wp_safe_redirect( $approval_url );

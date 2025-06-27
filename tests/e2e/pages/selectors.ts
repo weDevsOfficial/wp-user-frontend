@@ -293,10 +293,8 @@ export const Selectors = {
         navigatePage_PF: {
             // WPUF > Pages > Navigation
             checkAddButton_PF: '//a[contains(text(),"Add New")]',
-            postFormsPageFormsTitleCheck_PF: '(//input[@type="checkbox"]/following-sibling::span)[1]',
-
-            // New_Created_NAME_Checker
-            newPostCreatedName_PF: '(//input[@type="checkbox"]/following-sibling::span)[1]',
+            postFormsPageFormsTitleCheck_PF: (formName:string)=> `//span[normalize-space()="${formName}"]`,
+            postFormShortCode: (formName:string)=> `//span[normalize-space()="${formName}"]//..//..//code`,
         },
 
         /* Locators creating Post > Blank Form */
@@ -468,6 +466,11 @@ export const Selectors = {
             setPostPermission: '//select[@name="wpuf_settings[post_permission]"]/following-sibling::div[1]',
             // Check Guest Enable
             enableGuestPost: '//div[@data-value="guest_post"]',
+            enterGuestDetails: '//input[@id="guest_details"]',
+            //Enter Name Label
+            enterNameLabel: '//input[@id="name_label"]',
+            //Enter Email Label
+            enterEmailLabel: '//input[@id="email_label"]',
 
             // Save Form Settings
             saveFormSettings: '//button[normalize-space(text())="Save"]',
@@ -587,6 +590,10 @@ export const Selectors = {
                 operator: '//span[@id="operator"]',
                 mathCaptcha: '(//label[contains(.,"Math Captcha *")]/following::input)[1]',
             },
+            // Guest name
+            guestName: '//input[@name="guest_name"]',
+            // Guest Email
+            guestEmail: '//input[@name="guest_email"]',
             // Create Post
             submitPostFormsFE: '//input[@name="submit"]',
             // Validate Post Submitted
@@ -622,6 +629,30 @@ export const Selectors = {
             state: (state:string)=> `//li[normalize-space(text())="${state}"]`,
             embed: '//div[@class="wpuf-embed-preview"]//a',
             ratings: '//li[contains(@class,"wpuf-field-data-ratings")]',
+        },
+        createPageWithShortcode: {
+            // Add New Page
+            addNewPage: '//a[@class="page-title-action"]',
+            // Close Pattern Modal
+            closePatternModal: '(//div[@class="components-modal__header"]//button)[1]',
+            // Close Welcome Modal
+            closeWelcomeModal: '(//div[@class="components-modal__header"]//button)[1]',
+            // Add Page Title
+            addPageTitle: '//h1[@aria-label="Add title"]',
+            // Block Add Button
+            blockAddButton: '//button[@aria-label="Add block"]', 
+            // Block Search box
+            blockSearchBox: '//input[@placeholder="Search"]',
+            // Block Add ShortCode Block
+            addShortCodeBlock: '//span[text()="Shortcode"]',
+            // Enter Shortcode
+            enterShortcode: '//textarea[@aria-label="Shortcode text"]',
+            // Click Publish Page
+            clickPublishPage: '//button[text()="Publish"]',
+            // Confirm Publish
+            confirmPublish: '//button[contains(@class,"components-button editor-post-publish-button")]',
+            // Validate Page Created
+            validatePageCreated: '//div[@class="post-publish-panel__postpublish-buttons"]//a[normalize-space(text())="View Page"]',
         }
     },
 
@@ -643,7 +674,7 @@ export const Selectors = {
         // Create Registration Forms - Blank
         createBlankForm_RF: {
             // Create_New_Post_Form
-            clickRegistrationFormMenuOption: '//a[contains(text(), "Registration Forms")]',
+            clickRegistrationFormMenuOption: '//li//a[contains(text(), "Registration Forms")]',
 
             // Profile_Name
             validateRegistrationFormPageName: '//h2[contains(text(), "Profile Forms")]',

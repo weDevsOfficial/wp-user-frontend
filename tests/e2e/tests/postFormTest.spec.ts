@@ -42,9 +42,13 @@ export default function postFormTest() {
          * @Test_PF0005 : User is validating Entered Data for Created Post
          * @Test_PF0006 : Admin is creating a Preset Post Form
          * @Test_PF0007 : Admin is creating a Preset Post Form - with Guest Enabled
+         * @Test_PF0008 : Admin is creating page with shortcode
+         * @Test_PF0009 : Guest is creating post from frontend
+         * @Test_PF0010 : Guest is validating post created
          *
          */
 
+        let pfShortCode:string;
         //TODO: Create a BeforeAll for login
 
         //Log into Admin Dashboard
@@ -137,7 +141,7 @@ export default function postFormTest() {
 
             //For Front-End
             //Create Post Form
-            const postFormPresetFrontendTitle = 'FE PostForm';
+            const postFormPresetFrontendTitle = 'Guest PostForm';
             //Post Preset Form
             await PostForm.createPresetPostFormWithGuestEnabled(postFormPresetFrontendTitle);
             //Validate
@@ -147,7 +151,28 @@ export default function postFormTest() {
             //Save
             await FieldAdd.saveForm_Common(postFormPresetFrontendTitle);
             //Validate
-            await FieldAdd.validatePostFormCreated(postFormPresetFrontendTitle);
+            pfShortCode = await FieldAdd.validatePostFormCreated(postFormPresetFrontendTitle);
+            console.log('PF Short Code: ' + pfShortCode);
+        });
+
+        test('PF0008 : Admin is creating page with shortcode ', { tag: ['@Lite'] }, async () => {
+            const PostForm = new PostFormPage(page);
+
+            await PostForm.createPageWithShortcode(pfShortCode, 'GuestPostForm');
+
+            await new BasicLogoutPage(page).logOut();
+        });
+
+        test('PF0009 : Guest is creating post from frontend', { tag: ['@Lite'] }, async () => {
+            const PostForm = new PostFormPage(page);
+            
+            await PostForm.createGuestPostFE();
+        });
+
+        test('PF0010 : Guest is validating post created', { tag: ['@Lite'] }, async () => {
+            const PostForm = new PostFormPage(page);
+            
+            await PostForm.validateGuestPostCreated();
         });
 
     });

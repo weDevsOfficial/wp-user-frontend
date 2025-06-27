@@ -4,7 +4,7 @@ import { expect, type Page } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Base } from './base';
 import { faker } from '@faker-js/faker';
-import { PostForm } from '../utils/testData';
+import { PostForm, Urls } from '../utils/testData';
 //import { TestData } from '../tests/testdata';
 
 
@@ -114,6 +114,12 @@ export class PostFormPage extends Base {
         //Enable Guest Post Submission
         await this.validateAndClick(Selectors.postForms.formSettings.setPostPermission);
         await this.validateAndClick(Selectors.postForms.formSettings.enableGuestPost);
+        //Enter Guest Details
+        await this.validateAndClick(Selectors.postForms.formSettings.enterGuestDetails);
+        //Enter Name Label
+        await this.validateAndFillStrings(Selectors.postForms.formSettings.enterNameLabel, 'Guest Name');
+        //Enter Email Label
+        await this.validateAndFillStrings(Selectors.postForms.formSettings.enterEmailLabel, 'Guest Email');
         //Save Form Settings
         await this.validateAndClick(Selectors.postForms.formSettings.saveFormSettings);
 
@@ -370,5 +376,82 @@ export class PostFormPage extends Base {
         await this.page.goto(this.accountPage);
         await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);
         console.log("Signed Out");
+    }
+
+    //Create Page with Shortcode
+    async createPageWithShortcode(shortcode: string, pageTitle: string) {
+        //Go to Pages page
+        await Promise.all([this.page.goto(this.pagesPage)]);
+        //Create New Page
+        await this.validateAndClick(Selectors.postForms.createPageWithShortcode.addNewPage);
+        // Check if the Welcome Modal is visible
+        try {
+            await this.page.locator(Selectors.postForms.createPageWithShortcode.closeWelcomeModal).click({ timeout: 2000 });
+        } catch (error) {
+            console.log('Welcome Modal not visible!');
+        }
+
+        // Check if the Choose Pattern Modal is visible
+        try {
+            await this.page.locator(Selectors.postForms.createPageWithShortcode.closePatternModal).click({ timeout: 10000 });
+        } catch (error) {
+            console.log('Pattern Modal not visible!');
+        }
+
+        await this.validateAndFillStrings(Selectors.postForms.createPageWithShortcode.addPageTitle, pageTitle);
+        //Click Add Block Button
+        await this.validateAndClick(Selectors.postForms.createPageWithShortcode.blockAddButton);
+        //Search and Add Shortcode block
+        await this.validateAndFillStrings(Selectors.postForms.createPageWithShortcode.blockSearchBox, 'Shortcode');
+        await this.validateAndClick(Selectors.postForms.createPageWithShortcode.addShortCodeBlock);
+        //Enter Shortcode
+        await this.validateAndFillStrings(Selectors.postForms.createPageWithShortcode.enterShortcode, shortcode);
+        //Click Publish Page
+        await this.validateAndClick(Selectors.postForms.createPageWithShortcode.clickPublishPage);
+        //Confirm Publish
+        await this.validateAndClick(Selectors.postForms.createPageWithShortcode.confirmPublish);
+        //Validate Page Created
+        await this.assertionValidate(Selectors.postForms.createPageWithShortcode.validatePageCreated);
+    }
+
+    async createGuestPostFE() {
+        let guestName:string;
+        let guestEmail:string;
+        //Go to Accounts page - FrontEnd
+        await Promise.all([this.page.goto(Urls.baseUrl + '/guestpostform/')]);
+
+        //Post Form process
+        //Enter Guest Name
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.guestName, guestName=faker.person.fullName());
+        console.log(guestName);
+        //Enter Guest Email
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.guestEmail, guestEmail=faker.internet.email());
+        console.log(guestEmail);
+        //Enter Post Title
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, PostForm.title=faker.word.words(2));
+        console.log(PostForm.title);
+        //Enter Post Description
+        await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
+            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(PostForm.description=faker.lorem.sentence(1));
+        console.log(PostForm.description);
+        //Enter Excerpt
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, PostForm.excerpt=faker.lorem.sentence(1));
+        console.log(PostForm.excerpt);
+        //Add Featured Photo
+        await this.page.setInputFiles(Selectors.postForms.postFormsFrontendCreate.featuredPhotoFormsFE, PostForm.featuredImage);
+        await this.page.waitForTimeout(500);
+        //Select Category
+        await this.page.selectOption(Selectors.postForms.postFormsFrontendCreate.categorySelectionFormsFE, { label: PostForm.category });
+        //Enter Tags
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTagsFormsFE, PostForm.tags);
+        //Create Post
+        await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.submitPostFormsFE);
+    }
+
+    //Validate Post Created
+    async validateGuestPostCreated() {
+        //Validate Post Submitted
+        const validatePostSubmitted = await this.page.innerText(Selectors.postForms.postFormsFrontendCreate.validatePostSubmitted(PostForm.title));
+        expect(validatePostSubmitted).toContain(PostForm.title);
     }
 }

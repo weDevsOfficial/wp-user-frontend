@@ -60,6 +60,12 @@ features:
     name: Admin is creating a Preset Post Form
   - id: PF0007
     name: Admin is creating a Preset Post Form - with Guest Enabled
+  - id: PF0008
+    name: Admin is creating page with shortcode
+  - id: PF0009
+    name: Guest is creating post from frontend
+  - id: PF0010
+    name: Guest is validating post created
 
   # Registration Forms
   - id: RF0001

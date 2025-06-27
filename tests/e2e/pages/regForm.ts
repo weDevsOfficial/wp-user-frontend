@@ -57,7 +57,7 @@ export class RegFormPage extends Base {
 
         // Check if the Welcome Modal is visible
         try {
-            await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closeWelcomeModal);
+            await this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closeWelcomeModal).click({ timeout: 1000 });
         } catch (error) {
             console.log('Welcome Modal not visible!');
         }

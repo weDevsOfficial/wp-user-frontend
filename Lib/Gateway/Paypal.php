@@ -1217,7 +1217,7 @@ class Paypal {
         if ( ! empty( $error_page_id ) && is_numeric( $error_page_id ) ) {
             $error_url = get_permalink( $error_page_id );
             if ( ! empty( $error_message ) ) {
-                $error_url = add_query_arg( 'error', rawurlencode( $error_message ), $error_url );
+                $error_url = add_query_arg( 'wpuf_paypal_error', rawurlencode( $error_message ), $error_url );
             }
             return $error_url;
         }
@@ -1257,6 +1257,20 @@ class Paypal {
             $sub_meta = 'cancel';
             wpuf_get_user( $user_id )->subscription()->update_meta( $sub_meta );
         }
+    }
+
+    /**
+     * Get PayPal allowed redirect hosts
+     *
+     * @return array Array of PayPal domains
+     */
+    private function get_paypal_allowed_hosts() {
+        return [
+            'www.paypal.com',
+            'paypal.com',
+            'www.sandbox.paypal.com',
+            'sandbox.paypal.com',
+        ];
     }
 
     /**
@@ -1478,13 +1492,7 @@ class Paypal {
 
                 // Add PayPal to allowed hosts just before redirect
                 add_filter( 'allowed_redirect_hosts', function( $hosts ) {
-                    $paypal_hosts = [
-                        'www.paypal.com',
-                        'paypal.com',
-                        'www.sandbox.paypal.com',
-                        'sandbox.paypal.com',
-                    ];
-                    return array_merge( $hosts, $paypal_hosts );
+                    return array_merge( $hosts, $this->get_paypal_allowed_hosts() );
                 }, 10, 1 );
 
                 // Redirect to PayPal
@@ -1566,13 +1574,7 @@ class Paypal {
                 
                 // Add PayPal to allowed hosts just before redirect
                 add_filter( 'allowed_redirect_hosts', function( $hosts ) {
-                    $paypal_hosts = [
-                        'www.paypal.com',
-                        'paypal.com',
-                        'www.sandbox.paypal.com',
-                        'sandbox.paypal.com',
-                    ];
-                    return array_merge( $hosts, $paypal_hosts );
+                    return array_merge( $hosts, $this->get_paypal_allowed_hosts() );
                 }, 10, 1 );
                 
                 wp_safe_redirect( $approval_url );

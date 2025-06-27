@@ -1094,10 +1094,28 @@ function wpuf_show_custom_fields( $content ) {
                     $address_html = '';
 
                     if ( isset( $field_value[0] ) && is_array( $field_value[0] ) ) {
+                        $country_state = new WeDevs\Wpuf\Data\Country_State();
+                        $country_value = isset( $field_value[0]['country_select'] ) ? $field_value[0]['country_select'] : '';
+                        
                         foreach ( $field_value[0] as $field_key => $value ) {
                             if ( 'country_select' === $field_key ) {
                                 if ( isset( $countries[ $value ] ) ) {
                                     $value = $countries[ $value ];
+                                }
+                            } elseif ( 'state' === $field_key && ! empty( $country_value ) ) {
+                                // Handle state field by looking up the full state name
+                                // First try PRO plugin states if available
+                                if ( wpuf()->is_pro() && file_exists( WPUF_PRO_INCLUDES . '/states.php' ) ) {
+                                    $pro_states = include WPUF_PRO_INCLUDES . '/states.php';
+                                    if ( isset( $pro_states[ $country_value ] ) && isset( $pro_states[ $country_value ][ $value ] ) ) {
+                                        $value = $pro_states[ $country_value ][ $value ];
+                                    }
+                                } else {
+                                    // Fallback to free plugin Country_State class
+                                    $state_name = $country_state->getStateName( $value, $country_value );
+                                    if ( $state_name ) {
+                                        $value = $state_name;
+                                    }
                                 }
                             }
 

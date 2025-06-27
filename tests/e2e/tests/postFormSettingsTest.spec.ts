@@ -632,7 +632,7 @@ export default function postFormSettingsTest() {
             await postFormSettings.setMultipleUpdatedNotificationEmails(formName, multipleEmails);
         });
 
-        test.skip('PFS0078 : Admin is submitting post and validating Updated post notification from FE', { tag: ['@Pro'] }, async () => {
+        test('PFS0078 : Admin is submitting post and validating Updated post notification from FE', { tag: ['@Pro'] }, async () => {
             const previousPostTitle = postTitle;
             postTitle = faker.word.words(3);
             postContent = faker.lorem.paragraph();

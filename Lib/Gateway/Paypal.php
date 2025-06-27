@@ -1353,7 +1353,7 @@ class Paypal {
 
             // Check if this is a recurring payment
             if ( 'pack' === $data['type'] && isset( $data['custom']['recurring_pay'] ) && wpuf_is_checkbox_or_toggle_on( $data['custom']['recurring_pay'] ) ) {
-                error_log( 'WPUF PayPal: Setting up recurring payment subscription' );
+                \WP_User_Frontend::log( 'PayPal: Setting up recurring payment subscription' );
 
                 // Get subscription details from pack
                 $pack = get_post( $data['item_number'] );
@@ -1491,12 +1491,17 @@ class Paypal {
                 }
 
                 // Add PayPal to allowed hosts just before redirect
-                add_filter( 'allowed_redirect_hosts', function( $hosts ) {
-                    return array_merge( $hosts, $this->get_paypal_allowed_hosts() );
-                }, 10, 1 );
+                add_filter(
+                    'allowed_redirect_hosts',
+                    function( $hosts ) {
+                        return array_merge( $hosts, $this->get_paypal_allowed_hosts() );
+                    },
+                    10,
+                    1
+                );
 
                 // Redirect to PayPal
-                error_log( 'WPUF PayPal: Redirecting to PayPal subscription approval URL: ' . $approval_url );
+                \WP_User_Frontend::log( 'PayPal: Redirecting to PayPal subscription approval URL: ' . $approval_url );
                 wp_safe_redirect( $approval_url );
                 exit();
             } else {
@@ -1570,12 +1575,18 @@ class Paypal {
                 if ( empty( $approval_url ) ) {
                     throw new \Exception( 'Approval URL not found in PayPal response' );
                 }
-                error_log( 'WPUF PayPal: Redirecting to PayPal' );
+                
+                \WP_User_Frontend::log( 'PayPal: Redirecting to PayPal for payment approval' );
                 
                 // Add PayPal to allowed hosts just before redirect
-                add_filter( 'allowed_redirect_hosts', function( $hosts ) {
-                    return array_merge( $hosts, $this->get_paypal_allowed_hosts() );
-                }, 10, 1 );
+                add_filter(
+                    'allowed_redirect_hosts',
+                    function( $hosts ) {
+                        return array_merge( $hosts, $this->get_paypal_allowed_hosts() );
+                    },
+                    10,
+                    1
+                );
                 
                 wp_safe_redirect( $approval_url );
                 exit();

@@ -4,11 +4,10 @@ $user_id = get_current_user_id();
 
 $address_fields = [];
 $countries      = [];
-$cs             = new CountryState();
+$cs             = new WeDevs\Wpuf\Data\Country_State();
 
 
 if ( isset( $_POST['update_billing_address'] ) ) {
-
     if ( ! isset( $_POST['wpuf_save_address_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['wpuf_save_address_nonce'] ), 'wpuf_address_ajax_action' ) ) {
         return;
     }
@@ -43,7 +42,7 @@ if ( isset( $_POST['update_billing_address'] ) ) {
 <form class="wpuf-form form-label-above" action="" method="post" id="wpuf-payment-gateway">
     <div class="wpuf-fields">
         <?php
-        wp_nonce_field( 'wpuf-ajax-address' );
+        wp_nonce_field( 'wpuf_ajax_address' );
         wp_nonce_field( 'wpuf_address_ajax_action', 'wpuf_save_address_nonce' );
         ?>
         <ul class="wpuf-form form-label-above">
@@ -134,14 +133,14 @@ if ( isset( $_POST['update_billing_address'] ) ) {
                 <div class="wpuf-label"><?php esc_html_e( 'Address Line 1 ', 'wp-user-frontend' ); ?><span
                         class="required">*</span></div>
                 <div class="wpuf-fields">
-                    <input data-required="yes" data-type="text" type="text" class="input" name="wpuf_biiling_add_line_1" id="wpuf_biiling_add_line_1" value="<?php echo $add_line_1; ?>"/>
+                    <input data-required="yes" data-type="text" type="text" class="input" name="wpuf_biiling_add_line_1" id="wpuf_biiling_add_line_1" value="<?php echo esc_attr( $add_line_1 ); ?>"/>
                 </div>
             </li>
 
             <li class="wpuf-el" data-label="<?php esc_attr_e( 'Address Line 2', 'wp-user-frontend' ); ?>">
                 <div class="wpuf-label"><?php esc_html_e( 'Address Line 2 ', 'wp-user-frontend' ); ?></div>
                 <div class="wpuf-fields">
-                    <input data-required="no" type="text" class="input" name="wpuf_biiling_add_line_2" id="wpuf_biiling_add_line_2" data-type="text" value="<?php echo $add_line_2; ?>"/>
+                    <input data-required="no" type="text" class="input" name="wpuf_biiling_add_line_2" id="wpuf_biiling_add_line_2" data-type="text" value="<?php echo esc_attr( $add_line_2 ); ?>"/>
                 </div>
             </li>
 
@@ -149,7 +148,7 @@ if ( isset( $_POST['update_billing_address'] ) ) {
                 <div class="wpuf-label"><?php esc_html_e( 'City', 'wp-user-frontend' ); ?> <span
                         class="required">*</span></div>
                 <div class="wpuf-fields">
-                    <input data-required="yes" type="text" class="input" name="wpuf_biiling_city" id="wpuf_biiling_city" data-type="text" value="<?php echo $city; ?>"/>
+                    <input data-required="yes" type="text" class="input" name="wpuf_biiling_city" id="wpuf_biiling_city" data-type="text" value="<?php echo esc_attr( $city ); ?>"/>
                 </div>
             </li>
 
@@ -158,7 +157,7 @@ if ( isset( $_POST['update_billing_address'] ) ) {
                     <?php esc_html_e( 'Postal/ZIP Code', 'wp-user-frontend' ); ?> <span
                         class="required">*</span></div>
                 <div class="wpuf-fields">
-                    <input data-required="yes" type="text" class="input" name="wpuf_biiling_zip_code" id="wpuf_biiling_zip_code" data-type="text" value="<?php echo $zip_code; ?>"/>
+                    <input data-required="yes" type="text" class="input" name="wpuf_biiling_zip_code" id="wpuf_biiling_zip_code" data-type="text" value="<?php echo esc_attr( $zip_code ); ?>"/>
                 </div>
             </li>
 

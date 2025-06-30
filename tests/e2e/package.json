@@ -1,0 +1,31 @@
+{
+  "name": "wpuf_automation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "CI=false npx playwright test e2eMain.spec.ts --headed",
+    "test:pro": "CI=false npx playwright test e2eMainPro.spec.ts --headed",
+    "test:ci": "npx playwright test e2eMain.spec.ts --project=chromium",
+    "test:ci:pro": "npx playwright test e2eMainPro.spec.ts --project=chromium",
+    "generate-summary": "node utils/generate-summary.js",
+    "generate-summary-pro": "node plugins/wp-user-frontend/tests/e2e/utils/generate-summary.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@faker-js/faker": "^9.4.0",
+    "@playwright/test": "^1.52.0",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^18.19.80",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@wordpress/env": "^9.4.0",
+    "dotenv": "^16.4.5",
+    "js-yaml": "^4.0.9"
+  }
+}

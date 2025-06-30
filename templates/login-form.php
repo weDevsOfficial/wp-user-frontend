@@ -11,12 +11,14 @@
     $message = apply_filters( 'login_message', '' );
 
     if ( !empty( $message ) ) {
-        echo $message . "\n";
+        echo wp_kses_post( $message ) . "\n";
     }
     ?>
 
-    <?php wpuf()->login->show_errors(); ?>
-    <?php wpuf()->login->show_messages(); ?>
+    <?php
+        wpuf()->frontend->simple_login->show_errors();
+        wpuf()->frontend->simple_login->show_messages();
+    ?>
 
     <form name="loginform" class="wpuf-login-form" id="loginform" action="<?php echo esc_attr( $action_url ); ?>" method="post">
         <p>
@@ -28,8 +30,13 @@
             <input type="password" name="pwd" id="wpuf-user_pass" class="input" value="" size="20" />
         </p>
 
-        <?php $recaptcha = wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off' ); ?>
-        <?php if ( $recaptcha == 'on' ) { ?>
+        <?php
+            $recaptcha = wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off' );
+            $turnstile = wpuf_get_option( 'login_form_turnstile', 'wpuf_profile', 'off' );
+
+            $turnstile_site_key = wpuf_get_option( 'turnstile_site_key', 'wpuf_general', '' );
+        ?>
+        <?php if ( $recaptcha === 'on' ) { ?>
             <p>
                 <div class="wpuf-fields">
                     <?php echo wp_kses( recaptcha_get_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ), true, null, is_ssl() ),[
@@ -66,6 +73,22 @@
             </p>
         <?php } ?>
 
+        <?php if ( $turnstile === 'on' ) { ?>
+            <div
+                id="wpuf-turnstile"
+                class="wpuf-turnstile"
+                data-sitekey="<?php echo esc_attr( $turnstile_site_key ); ?>"
+                data-callback="javascriptCallback"
+            ></div>
+            <script>
+                window.onloadTurnstileCallback = function () {
+                    turnstile.render("#wpuf-turnstile", {
+                        sitekey: "<?php echo esc_js( $turnstile_site_key ); ?>",
+                    });
+                };
+            </script>
+        <?php } ?>
+
         <p class="forgetmenot">
             <input name="rememberme" type="checkbox" id="wpuf-rememberme" value="forever" />
             <label for="wpuf-rememberme"><?php esc_html_e( 'Remember Me', 'wp-user-frontend' ); ?></label>
@@ -83,5 +106,5 @@
         </p>
     </form>
 
-    <?php echo wp_kses_post( wpuf()->login->get_action_links( [ 'login' => false ] ) ); ?>
+    <?php echo wp_kses_post( wpuf()->frontend->simple_login->get_action_links( [ 'login' => false ] ) ); ?>
 </div>

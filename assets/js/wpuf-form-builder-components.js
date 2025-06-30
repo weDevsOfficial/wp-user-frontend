@@ -38,7 +38,7 @@ Vue.component('builder-stage', {
         $('#form-preview-stage .wpuf-form.sortable-list').sortable({
             placeholder: 'form-preview-stage-dropzone',
             items: '.field-items',
-            handle: '.control-buttons .move',
+            handle: '.field-buttons .move',
             scroll: true,
             over: function() {
                 in_column_field = false;
@@ -79,7 +79,6 @@ Vue.component('builder-stage', {
 
                     self.$store.commit('swap_form_field_elements', payload);
                 }
-
             }
         });
     },
@@ -186,11 +185,193 @@ Vue.component('builder-stage', {
     }
 });
 
+Vue.component('builder-stage-v4-1', {
+    template: '#tmpl-wpuf-builder-stage-v4-1',
+
+    mixins: wpuf_form_builder_mixins(wpuf_mixins.builder_stage).concat(wpuf_mixins.add_form_field),
+
+    computed: {
+        form_fields: function () {
+            return this.$store.state.form_fields;
+        },
+
+        field_settings: function () {
+            return this.$store.state.field_settings;
+        },
+
+        hidden_fields: function () {
+            return this.$store.state.form_fields.filter(function (item) {
+                return 'custom_hidden_field' === item.template;
+            });
+        },
+
+        editing_form_id: function () {
+            return this.$store.state.editing_field_id;
+        },
+    },
+
+    mounted: function () {
+        var self = this,
+            in_column_field = false;
+
+        // bind jquery ui sortable
+        $('#form-preview-stage, #form-preview-stage .wpuf-form.sortable-list').sortable({
+            placeholder: 'form-preview-stage-dropzone',
+            items: '.field-items',
+            handle: '.field-buttons .move',
+            scroll: true,
+            over: function() {
+                in_column_field = false;
+
+                // if the field drop in column field, then stop field rendering in the builder stage
+                $(".wpuf-column-inner-fields" ).on( "drop", function(event) {
+                    var targetColumn = event.currentTarget.classList,
+                        isColumnExist = $.inArray(".wpuf-column-inner-fields", targetColumn);
+
+                    if ( isColumnExist ) {
+                        in_column_field = true;
+                    }
+                } );
+            },
+            update: function (e, ui) {
+                var item    = ui.item[0],
+                    data    = item.dataset,
+                    source  = data.source,
+                    toIndex = parseInt($(ui.item).index()),
+                    payload = {
+                        toIndex: toIndex
+                    };
+
+                if ('panel' === source) {
+                    // add new form element
+                    self.$store.state.index_to_insert = parseInt(toIndex);
+
+                    if ( ! in_column_field ) {
+                        var field_template  = ui.item[0].dataset.formField;
+                        self.add_form_field(field_template);
+                    }
+
+                    // remove button from stage
+                    $(this).find('.wpuf-field-button').remove();
+
+                } else if ('stage' === source) {
+                    payload.fromIndex = parseInt(data.index);
+
+                    self.$store.commit('swap_form_field_elements', payload);
+                }
+
+            }
+        });
+    },
+
+    methods: {
+        open_field_settings: function(field_id) {
+            this.$store.commit('open_field_settings', field_id);
+        },
+
+        clone_field: function(field_id, index) {
+            var payload = {
+                field_id: field_id,
+                index: index,
+                new_id: this.get_random_id()
+            };
+
+            // single instance checking
+            var field = _.find(this.$store.state.form_fields, function (item) {
+                return parseInt(item.id) === parseInt(payload.field_id);
+            });
+
+            // check if these are already inserted
+            if ( this.isSingleInstance( field.template ) && this.containsField( field.template ) ) {
+                Swal.fire({
+                    title: "Oops...",
+                    text: "You already have this field in the form"
+                });
+                return;
+            }
+
+            this.$store.commit('clone_form_field_element', payload);
+        },
+
+        delete_field: function(index) {
+            var self = this;
+            const icon_delete  = wpuf_admin_script.asset_url + '/images/delete-icon-rounded.svg';
+            const delete_icon_html = '<img src="' + icon_delete + '" alt="delete">';
+
+            (Swal.fire({
+                title: self.i18n.delete_field_warn_title,
+                html: '<span class="wpuf-text-gray-500 wpuf-font-medium">' +  self.i18n.delete_field_warn_msg + '</span>',
+                iconHtml: delete_icon_html,
+                showCancelButton: true,
+                confirmButtonText: self.i18n.yes_delete_it,
+                cancelButtonText: self.i18n.no_cancel_it,
+                cancelButtonColor: '#fff',
+                confirmButtonColor: '#EF4444',
+                reverseButtons: true
+            })).then((result) => {
+                if (result.isConfirmed) {
+                    self.$store.commit('delete_form_field_element', index);
+                }
+            });
+        },
+
+        delete_hidden_field: function (field_id) {
+            var i = 0;
+
+            for (i = 0; i < this.form_fields.length; i++) {
+                if (parseInt(field_id) === parseInt(this.form_fields[i].id)) {
+                    this.delete_field(i);
+                }
+            }
+        },
+
+        is_pro_feature: function (template) {
+            return ( this.field_settings[template] && this.field_settings[template].pro_feature ) ? true : false;
+        },
+
+        is_template_available: function (field) {
+            var template = field.template;
+
+            if (this.field_settings[template]) {
+                if (this.is_pro_preview(template)) {
+                    return false;
+                }
+
+                return true;
+            }
+
+            // for example see 'mixin_builder_stage' mixin's 'is_taxonomy_template_available' method
+            if (_.isFunction(this['is_' + template + '_template_available'])) {
+                return this['is_' + template + '_template_available'].call(this, field);
+            }
+
+            return false;
+        },
+
+        is_full_width: function (template) {
+            if (this.field_settings[template] && this.field_settings[template].is_full_width) {
+                return true;
+            }
+
+            return false;
+        },
+
+        is_invisible: function (field) {
+            return ( field.recaptcha_type && 'invisible_recaptcha' === field.recaptcha_type ) ? true : false;
+        },
+
+        get_field_name: function (template) {
+            return this.field_settings[template].title;
+        }
+    }
+});
+
 Vue.component('field-checkbox', {
     template: '#tmpl-wpuf-field-checkbox',
 
     mixins: [
-        wpuf_mixins.option_field_mixin
+        wpuf_mixins.option_field_mixin,
+        wpuf_mixins.form_field_mixin
     ],
 
     computed: {
@@ -260,6 +441,42 @@ Vue.component('field-multiselect', {
                     value: value
                 });
             }
+        },
+
+        // Dynamic options for taxonomy fields
+        dynamic_options: function () {
+            // Check if this is a Selection Terms field for a taxonomy
+            if (this.option_field.name === 'exclude' && 
+                this.editing_form_field && 
+                this.editing_form_field.input_type === 'taxonomy' &&
+                this.editing_form_field.name) {
+                
+                var taxonomy_name = this.editing_form_field.name;
+                
+                // Look for terms in the wp_post_types data
+                if (wpuf_form_builder && wpuf_form_builder.wp_post_types) {
+                    for (var post_type in wpuf_form_builder.wp_post_types) {
+                        var taxonomies = wpuf_form_builder.wp_post_types[post_type];
+                        
+                        if (taxonomies && taxonomies.hasOwnProperty(taxonomy_name)) {
+                            var tax_field = taxonomies[taxonomy_name];
+                            
+                            if (tax_field && tax_field.terms && tax_field.terms.length > 0) {
+                                var options = {};
+                                tax_field.terms.forEach(function(term) {
+                                    if (term && term.term_id && term.name) {
+                                        options[term.term_id] = term.name;
+                                    }
+                                });
+                                return options;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Return original options if not a taxonomy field or no dynamic options found
+            return this.option_field.options || {};
         }
     },
 
@@ -267,14 +484,27 @@ Vue.component('field-multiselect', {
         this.bind_selectize();
     },
 
+    watch: {
+        dynamic_options: function () {
+            // Refresh selectize when options change
+            this.$nextTick(function () {
+                this.bind_selectize();
+            });
+        }
+    },
+
     methods: {
         bind_selectize: function () {
             var self = this;
 
-            $(this.$el).find('.term-list-selector').selectize({}).on('change', function () {
-                var data = $(this).val();
+            // Destroy existing selectize if it exists
+            var $select = $(this.$el).find('.term-list-selector');
+            if ($select[0] && $select[0].selectize) {
+                $select[0].selectize.destroy();
+            }
 
-                self.value = data;
+            $select.selectize({}).on('change', function () {
+                self.value = $( this ).val();
             });
         },
     },
@@ -289,7 +519,8 @@ Vue.component('field-option-data', {
     template: '#tmpl-wpuf-field-option-data',
 
     mixins: [
-        wpuf_mixins.option_field_mixin
+        wpuf_mixins.option_field_mixin,
+        wpuf_mixins.form_field_mixin
     ],
 
     data: function () {
@@ -423,7 +654,7 @@ Vue.component('field-option-pro-feature-alert', {
 Vue.component('field-options', {
     template: '#tmpl-wpuf-field-options',
 
-    mixins: wpuf_form_builder_mixins(wpuf_mixins.field_options),
+    mixins: [wpuf_mixins.field_options, wpuf_mixins.form_field_mixin],
 
     data: function() {
         return {
@@ -532,7 +763,8 @@ Vue.component('field-radio', {
     template: '#tmpl-wpuf-field-radio',
 
     mixins: [
-        wpuf_mixins.option_field_mixin
+        wpuf_mixins.option_field_mixin,
+        wpuf_mixins.form_field_mixin
     ],
 
     computed: {
@@ -590,6 +822,13 @@ Vue.component('field-select', {
         wpuf_mixins.option_field_mixin
     ],
 
+    data: function () {
+        return {
+            showOptions: false,
+            selectedOption: 'Select an option',
+        };
+    },
+
     computed: {
         value: {
             get: function () {
@@ -603,7 +842,7 @@ Vue.component('field-select', {
                     value: value
                 });
             }
-        }
+        },
     }
 });
 
@@ -611,7 +850,8 @@ Vue.component('field-text', {
     template: '#tmpl-wpuf-field-text',
 
     mixins: [
-        wpuf_mixins.option_field_mixin
+        wpuf_mixins.option_field_mixin,
+        wpuf_mixins.form_field_mixin
     ],
 
     computed: {
@@ -640,7 +880,8 @@ Vue.component('field-text-meta', {
     template: '#tmpl-wpuf-field-text-meta',
 
     mixins: [
-        wpuf_mixins.option_field_mixin
+        wpuf_mixins.option_field_mixin,
+        wpuf_mixins.form_field_mixin
     ],
 
     computed: {
@@ -681,7 +922,8 @@ Vue.component('field-textarea', {
     template: '#tmpl-wpuf-field-textarea',
 
     mixins: [
-        wpuf_mixins.option_field_mixin
+        wpuf_mixins.option_field_mixin,
+        wpuf_mixins.form_field_mixin
     ],
 
     computed: {
@@ -701,7 +943,8 @@ Vue.component('field-visibility', {
     template: '#tmpl-wpuf-field-visibility',
 
     mixins: [
-        wpuf_mixins.option_field_mixin
+        wpuf_mixins.option_field_mixin,
+        wpuf_mixins.form_field_mixin,
     ],
 
     computed: {
@@ -754,6 +997,7 @@ Vue.component('field-visibility', {
         }
     }
 });
+
 /**
  * Field template: Checkbox
  */
@@ -766,10 +1010,48 @@ Vue.component('form-checkbox_field', {
 });
 
 /**
+ * Field template: Cloudflare Turnstile
+ */
+Vue.component('form-cloudflare_turnstile', {
+    template: '#tmpl-wpuf-form-cloudflare_turnstile',
+
+    mixins: [
+        wpuf_mixins.form_field_mixin
+    ],
+
+    computed: {
+        has_turnstile_api_keys: function () {
+            return wpuf_form_builder.turnstile_site && wpuf_form_builder.turnstile_secret;
+        },
+
+        no_api_keys_msg: function () {
+            return wpuf_form_builder.field_settings.turnstile.validator.msg;
+        },
+
+        turnstile_image: function () {
+            var base_url = wpuf_form_builder.asset_url + '/images/cloudflare-placeholder-';
+
+            if (this.field.turnstile_theme === 'dark') {
+                base_url += 'dark';
+            } else {
+                base_url += 'light';
+            }
+
+            if (this.field.turnstile_size === 'compact') {
+                base_url += '-compact';
+            }
+
+            return base_url + '.png';
+        }
+    }
+});
+
+/**
  * Field template: Column Field
  */
 const mixins = [
-    wpuf_mixins.form_field_mixin
+    wpuf_mixins.form_field_mixin,
+    wpuf_mixins.add_form_field
 ];
 
 if (window.wpuf_forms_mixin_builder_stage) {
@@ -785,12 +1067,6 @@ Vue.component('form-column_field', {
 
     mixins: mixins,
 
-    data() {
-        return{
-            columnClasses: ['column-1', 'column-2', 'column-3'] // don't edit class names
-        };
-    },
-
     mounted() {
         this.resizeColumns(this.field.columns);
 
@@ -799,12 +1075,11 @@ Vue.component('form-column_field', {
             sortableFields = $(self.$el).find('.wpuf-column-inner-fields .wpuf-column-fields-sortable-list'),
             sortableTriggered = 1,
             columnFieldArea = $('.wpuf-field-columns'),
-            columnFields = $(self.$el).find(".wpuf-column-field-inner-columns .wpuf-column-inner-fields");
+            columnFields = $(self.$el).find(".wpuf-field-columns .wpuf-column-inner-fields");
 
         columnFieldArea.mouseenter(function() {
             self.resizeColumns(self.field.columns);
         });
-
 
         columnFieldArea.mouseleave(function() {
             columnFields.unbind( "mouseup" );
@@ -827,13 +1102,13 @@ Vue.component('form-column_field', {
                     var payload = {
                         toIndex: parseInt($(ui.item).index()),
                         field_template: data.formField,
-                        to_column: $(this).parent().attr('class').split(' ')[0]
+                        to_column: $(this).parent().data('column')
                     };
 
                     self.add_column_inner_field(payload);
 
                     // remove button from stage
-                    $(this).find('.button.ui-draggable.ui-draggable-handle').remove();
+                    $(this).find('.wpuf-field-button').remove();
                 }
             },
             update: function (e, ui) {
@@ -887,6 +1162,21 @@ Vue.component('form-column_field', {
         field_settings: function () {
             return this.$store.state.field_settings;
         },
+
+        action_button_classes: function() {
+            return 'hover:wpuf-cursor-pointer hover:wpuf-text-white wpuf-flex wpuf-mr-2';
+        },
+
+        columnClasses: function() {
+            var columns_count = parseInt( this.field.columns );
+            var columns = [];
+
+            for (var i = 1; i <= columns_count; i++) {
+                columns.push('column-' + i);
+            }
+
+            return columns;
+        }
     },
 
     methods: {
@@ -894,7 +1184,7 @@ Vue.component('form-column_field', {
             var template = field.template;
 
             if (this.field_settings[template]) {
-                if (this.is_pro_feature(template)) {
+                if (this.is_pro_preview(template)) {
                     return false;
                 }
 
@@ -949,8 +1239,16 @@ Vue.component('form-column_field', {
 
             if (this.isAllowedInClolumnField(data.field_template)) {
                 Swal.fire({
-                    title: "Oops...",
-                    text: "You cannot add this field as inner column field"
+                    title: '<span class="wpuf-text-primary">Oops...</span>',
+                    html: '<p class="wpuf-text-gray-500 wpuf-text-xl wpuf-m-0 wpuf-p-0">You cannot add this field as inner column field</p>',
+                    imageUrl: wpuf_form_builder.asset_url + '/images/oops.svg',
+                    showCloseButton: true,
+                    padding: '1rem',
+                    width: '35rem',
+                    customClass: {
+                        confirmButton: "!wpuf-flex focus:!wpuf-shadow-none !wpuf-bg-primary",
+                        closeButton: "wpuf-absolute"
+                    },
                 });
                 return;
             }
@@ -958,8 +1256,16 @@ Vue.component('form-column_field', {
             // check if these are already inserted
             if ( this.isSingleInstance( data.field_template ) && this.containsField( data.field_template ) ) {
                 Swal.fire({
-                    title: "Oops...",
-                    text: "You already have this field in the form"
+                    title: '<span class="wpuf-text-primary">Oops...</span>',
+                    html: '<p class="wpuf-text-gray-500 wpuf-text-xl wpuf-m-0 wpuf-p-0">You already have this field in the form</p>',
+                    imageUrl: wpuf_form_builder.asset_url + '/images/oops.svg',
+                    showCloseButton: true,
+                    padding: '1rem',
+                    width: '35rem',
+                    customClass: {
+                        confirmButton: "!wpuf-flex focus:!wpuf-shadow-none !wpuf-bg-primary",
+                        closeButton: "wpuf-absolute"
+                    },
                 });
                 return;
             }
@@ -1043,18 +1349,20 @@ Vue.component('form-column_field', {
                     fromColumn: fromColumn
                 };
 
-            Swal.fire({
-                text: self.i18n.delete_field_warn_msg,
-                icon: 'warning',
+            const icon_delete  = wpuf_admin_script.asset_url + '/images/delete-icon-rounded.svg';
+            const delete_icon_html = '<img src="' + icon_delete + '" alt="delete">';
+
+            (Swal.fire({
+                title: self.i18n.delete_field_warn_title,
+                html: '<span class="wpuf-text-gray-500 wpuf-font-medium">' +  self.i18n.delete_field_warn_msg + '</span>',
+                iconHtml: delete_icon_html,
                 showCancelButton: true,
-                confirmButtonColor: '#d54e21',
                 confirmButtonText: self.i18n.yes_delete_it,
                 cancelButtonText: self.i18n.no_cancel_it,
-                customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-danger'
-                },
-            }).then((result) => {
+                cancelButtonColor: '#fff',
+                confirmButtonColor: '#EF4444',
+                reverseButtons: true
+            })).then((result) => {
                 if (result.isConfirmed) {
                     self.$store.commit('delete_column_field_element', payload);
                 }
@@ -1249,7 +1557,7 @@ Vue.component('form-fields', {
     mounted: function () {
         // bind jquery ui draggable
         $(this.$el).find('.panel-form-field-buttons .button').draggable({
-            connectToSortable: '#form-preview-stage .wpuf-form, .wpuf-column-inner-fields .wpuf-column-fields-sortable-list',
+            connectToSortable: '#form-preview-stage, #form-preview-stage .wpuf-form, .wpuf-column-inner-fields .wpuf-column-fields-sortable-list',
             helper: 'clone',
             revert: 'invalid',
             cancel: '.button-faded',
@@ -1274,7 +1582,7 @@ Vue.component('form-fields', {
                 icon: '',
                 showCancelButton: true,
                 cancelButtonText: this.i18n.close,
-                confirmButtonColor: '#46b450',
+                confirmButtonColor: '#059669',
                 confirmButtonText: this.i18n.upgrade_to_pro
             }).then(function (result) {
                 if (result.isConfirmed) {
@@ -1301,6 +1609,229 @@ Vue.component('form-fields', {
 
         get_invalidate_btn_class: function (field) {
             return this.field_settings[field].validator.button_class;
+        }
+    }
+});
+
+/**
+ * Sidebar form fields panel
+ */
+Vue.component('form-fields-v4-1', {
+    template: '#tmpl-wpuf-form-fields-v4-1',
+
+    mixins: wpuf_form_builder_mixins(wpuf_mixins.form_fields).concat(wpuf_mixins.add_form_field),
+
+    data: function () {
+        return {
+            searched_fields: '',
+            is_pro_active: wpuf_form_builder.is_pro_active,
+        };
+    },
+
+    computed: {
+        panel_sections: function () {
+            return this.$store.state.panel_sections;
+        },
+
+        field_settings: function () {
+            return this.$store.state.field_settings;
+        },
+
+        form_fields: function () {
+            return this.$store.state.form_fields;
+        },
+    },
+
+    mounted: function () {
+        var self = this;
+
+        // Bind jquery ui draggable. But first destroy any previous binding
+        Vue.nextTick(function () {
+            var buttons = $(self.$el).find('.panel-form-field-buttons .wpuf-field-button');
+
+            buttons.each(function () {
+                if ($(this).draggable('instance')) {
+                    $(this).draggable('destroy');
+                }
+            });
+
+            buttons.draggable({
+                connectToSortable: '#form-preview-stage, #form-preview-stage .wpuf-form, .wpuf-column-inner-fields .wpuf-column-fields-sortable-list',
+                helper: 'clone',
+                revert: 'invalid',
+                cancel: '.button-faded',
+            }).disableSelection();
+        });
+    },
+
+    methods: {
+        panel_toggle: function (index) {
+            this.$store.commit('panel_toggle', index);
+        },
+
+        is_pro_feature: function (field) {
+            return this.field_settings[field].pro_feature;
+        },
+
+        alert_pro_feature: function (field) {
+            var title = this.field_settings[field].title;
+            var iconHtml = '';
+
+            if ( this.i18n.pro_field_message[field] ) {
+                switch ( this.i18n.pro_field_message[field].asset_type ) {
+                    case 'image':
+                        iconHtml = `<img src="${this.i18n.pro_field_message[field].asset_url}" alt="${field}" loading="lazy" onload="this.closest('div').classList.add('wpuf-is-loaded')">`;
+                        break;
+
+                    case 'video':
+                        iconHtml = `<iframe onload="this.closest('div').classList.add('wpuf-is-loaded')" class="wpuf-w-full" src="${this.i18n.pro_field_message[field].asset_url}" title="${field}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></iframe>`;
+                        break;
+                }
+
+                var html = `<div class="wpuf-flex wpuf-text-left">
+                                        <div class="wpuf-w-1/2">
+                                            <img src="${wpuf_form_builder.lock_icon}" alt="">
+                                            <h2 class="wpuf-text-black"><span class="wpuf-text-primary">${title} </span>${this.i18n.is_a_pro_feature}</h2>
+                                            <p>${this.i18n.pro_feature_msg}</p>
+                                        </div>
+                                        <div class="wpuf-w-1/2">
+                                            <div class="wpuf-icon-container wpuf-flex wpuf-justify-center wpuf-items-center">
+                                                ${iconHtml}
+                                                <div class="wpuf-shimmer"></div>
+                                            </div>
+                                        </div>
+                                    </div>`;
+
+                Swal.fire({
+                    html: html,
+                    showCloseButton: true,
+                    customClass: {
+                        confirmButton: "!wpuf-flex focus:!wpuf-shadow-none",
+                        closeButton: "wpuf-absolute"
+                    },
+                    width: '50rem',
+                    padding: '1.5rem',
+                    confirmButtonColor: '#059669',
+                    confirmButtonText: this.i18n.upgrade_to_pro
+                }).then(function (result) {
+                    if (result.isConfirmed) {
+                        window.open(wpuf_form_builder.pro_link, '_blank');
+                    }
+
+                }, function() {});
+
+            } else {
+                Swal.fire({
+                    html: this.i18n.pro_feature_msg,
+                    showCloseButton: true,
+                    customClass: {
+                        confirmButton: "!wpuf-flex focus:!wpuf-shadow-none",
+                        closeButton: "wpuf-absolute"
+                    },
+                    width: '40rem',
+                    padding: '2rem 3rem',
+                    title: '<span class="wpuf-text-primary">' + title + '</span> ' + this.i18n.is_a_pro_feature,
+                    icon: '',
+                    imageUrl: wpuf_form_builder.lock_icon,
+                    confirmButtonColor: '#059669',
+                    confirmButtonText: this.i18n.upgrade_to_pro
+                }).then(function (result) {
+                    if (result.isConfirmed) {
+                        window.open(wpuf_form_builder.pro_link, '_blank');
+                    }
+
+                }, function() {});
+            }
+        },
+
+        alert_invalidate_msg: function (field) {
+            var validator = this.field_settings[field].validator;
+
+            if (validator && validator.msg) {
+                this.warn({
+                    title: validator.msg_title || '',
+                    color: validator.color || '#059669',
+                    html: validator.msg,
+                    showCancelButton: true,
+                    imageUrl: validator.icon || '',
+                    confirmButtonText: validator.cta || '',
+                    cancelButtonText: this.i18n.ok,
+                    showCloseButton: true,
+                    width: '40rem',
+                    padding: '2rem 3rem',
+                    type: 'warning',
+                    customClass: {
+                        confirmButton: '!wpuf-bg-white !wpuf-text-gray-700 focus:!wpuf-shadow-none !wpuf-p-0 hover:!wpuf-bg-none',
+                        closeButton: "wpuf-absolute wpuf-top-4 wpuf-right-4",
+                        cancelButton: "!wpuf-bg-primary !wpuf-text-white"
+                    },
+                });
+            }
+        },
+
+        get_invalidate_btn_class: function (field) {
+            return this.field_settings[field].validator.button_class;
+        },
+
+        set_default_panel_sections: function () {
+            this.$store.commit('set_default_panel_sections', this.panel_sections);
+        },
+
+        get_icon_url: function (field) {
+            // return if icon is not set, undefined or empty
+            if (typeof this.field_settings[field] === 'undefined' || typeof this.field_settings[field].icon === 'undefined' || this.field_settings[field].icon === '') {
+                return '';
+            }
+
+            if (this.is_pro_active === '1' && this.field_settings[field].pro_feature) {
+                return wpuf_form_builder.pro_asset_url + '/images/' + this.field_settings[field].icon + '.svg';
+            } else {
+                return wpuf_form_builder.asset_url + '/images/' + this.field_settings[field].icon + '.svg';
+            }
+        },
+    },
+
+    watch: {
+        searched_fields: function ( searchValue ) {
+            var self = this;
+
+            this.set_default_panel_sections();
+
+            // Bind jquery ui draggable. But first destroy any previous binding
+            Vue.nextTick(function () {
+                var buttons = $(self.$el).find('.panel-form-field-buttons .wpuf-field-button');
+
+                buttons.each(function () {
+
+                    if ($(this).draggable('instance')) {
+                        $(this).draggable('destroy');
+                    }
+                });
+
+                buttons.draggable({
+                    connectToSortable: '#form-preview-stage, #form-preview-stage .wpuf-form, .wpuf-column-inner-fields .wpuf-column-fields-sortable-list',
+                    helper: 'clone',
+                    revert: 'invalid',
+                    cancel: '.button-faded',
+                }).disableSelection();
+            });
+
+            if (this.searched_fields === '') {
+                return;
+            }
+
+            const matchedFields = Object.keys( self.field_settings ).filter( key =>
+                self.field_settings[key].title.toLowerCase().includes( searchValue.toLowerCase() )
+            );
+
+            const updatedStructure = self.panel_sections.map(section => ({
+                id: section.id,
+                title: section.title,
+                show: section.show,
+                fields: section.fields.filter(field => matchedFields.includes(field))
+            }));
+
+            this.$store.commit('set_panel_sections', updatedStructure);
         }
     }
 });
@@ -1660,7 +2191,10 @@ Vue.component('help-text', {
     },
 
     mounted: function () {
-        $(this.$el).tooltip();
+        $( this.$el ).tooltip({
+            title: this.text,
+            placement: 'auto top'
+        });
     }
 });
 

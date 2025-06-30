@@ -41,8 +41,8 @@
             urlstream_upload: true,
             file_data_name: 'wpuf_file',
             max_file_size: max_file_size + 'kb',
-            url: wpuf_frontend_upload.plupload.url + '&type=' + type,
-            flash_swf_url: wpuf_frontend_upload.flash_swf_url,
+            url: wpuf_upload.plupload.url + '&type=' + type,
+            flash_swf_url: wpuf_upload.flash_swf_url,
             filters: [{
                 title: 'Allowed Files',
                 extensions: allowed_type
@@ -76,9 +76,9 @@
             if ( this.count >= this.max) {
 
                 if ( this.count > this.max ) {
-                    $('#' + this.container + ' .wpuf-file-warning').html( wpuf_frontend_upload.warning );
+                    $('#' + this.container + ' .wpuf-file-warning').html( wpuf_upload.warning );
                 } else {
-                    $('#' + this.container + ' .wpuf-file-warning').html( wpuf_frontend_upload.warning );
+                    $('#' + this.container + ' .wpuf-file-warning').html( wpuf_upload.warning );
                 }
 
                 $('#' + this.container).find('.file-selector').hide();
@@ -125,11 +125,11 @@
             var msg = '';
             switch (error.code) {
                 case -600:
-                    msg = wpuf_frontend_upload.plupload.size_error;
+                    msg = wpuf_upload.plupload.size_error;
                     break;
 
                 case -601:
-                    msg = wpuf_frontend_upload.plupload.type_error;
+                    msg = wpuf_upload.plupload.type_error;
                     break;
 
                 default:
@@ -161,14 +161,12 @@
                 this.UploadedFiles++;
                 var $container = $('#' + this.container).find('.wpuf-attachment-list');
                 $container.append(response.response);
-
                 if ( this.perFileCount > this.max ) {
                     var attach_id = $('.wpuf-image-wrap:last a.attachment-delete',$container).data('attach-id');
                     self.removeExtraAttachment(attach_id);
                     $('.wpuf-image-wrap',$container).last().remove();
                     this.perFileCount--;
                 }
-
             } else {
                 alert(res.data.replace( /(<([^>]+)>)/ig, ''));
 
@@ -180,6 +178,8 @@
 
             var uploaded        = this.UploadedFiles,
                 FileProgress    = up.files.length;
+
+            this.count = $('#' + this.container).find('.wpuf-attachment-list > li').length;
 
             if ( this.count >= this.max ) {
                 $('#' + this.container).find('.file-selector').hide();
@@ -203,25 +203,28 @@
             el = $(e.currentTarget);
 
             Swal.fire({
-                text: wpuf_frontend_upload.confirmMsg,
+                text: wpuf_upload.confirmMsg,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d54e21',
-                confirmButtonText: wpuf_frontend_upload.delete_it,
-                cancelButtonText: wpuf_frontend_upload.cancel_it,
+                confirmButtonText: wpuf_upload.delete_it,
+                cancelButtonText: wpuf_upload.cancel_it,
                 customClass: {
                     confirmButton: 'btn btn-success',
                     cancelButton: 'btn btn-danger',
                 }
-            }).then(function () {
+            }).then(function (result) {
+                if (!result.isConfirmed) {
+                    return;
+                }
                 var data = {
                     'attach_id' : el.data('attach-id'),
-                    'nonce' : wpuf_frontend_upload.nonce,
+                    'nonce' : wpuf_upload.nonce,
                     'action' : 'wpuf_file_del'
                 };
                 self.removed_files.push(data);
                 jQuery('#del_attach').val(el.data('attach-id'));
-                jQuery.post(wpuf_frontend_upload.ajaxurl, data, function() {
+                jQuery.post(wpuf_upload.ajaxurl, data, function() {
                     self.perFileCount--;
                     el.parent().parent().remove();
 
@@ -237,11 +240,11 @@
 
             var data = {
                 'attach_id' : attach_id,
-                'nonce' : wpuf_frontend_upload.nonce,
+                'nonce' : wpuf_upload.nonce,
                 'action' : 'wpuf_file_del'
             };
             this.removed_files.push(data);
-            jQuery.post(wpuf_frontend_upload.ajaxurl, data, function() {
+            jQuery.post(wpuf_upload.ajaxurl, data, function() {
                 self.count -= 1;
                 self.showHide();
                 self.uploader.refresh();

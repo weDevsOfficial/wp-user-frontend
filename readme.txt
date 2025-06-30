@@ -4,7 +4,7 @@ Donate link: https://tareq.co/donate/
 Tags: frontend post, forms, user directory, profile builder, membership
 Requires at least: 4.0
 Tested up to: 6.8
-Stable tag: 4.1.5
+Stable tag: 4.1.6
 Requires PHP: 5.6
 License: GPLv2
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -277,6 +277,14 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 14. Customize your Forms in Gutenberg Editor
 
 == Changelog ==
+= v4.1.6 (30 June, 2025) =
+* Enhance: form title, description toggle added for post form
+* Enhance: separate translation context for date range "To"
+* Fix - PayPal redirection issues
+* Fix - Allowed memory size error on the Post Forms List Page
+* Fix - Improved registration page redirects to prevent interference with XML sitemap and XML file requests
+* Fix - Dynamic url for {login} and {register} in un-authorized message
+
 = v4.1.5 (2 June, 2025) =
 * Enhancement - Added support for unlimited subscriptions.
 * Enhancement - Added trial period & next billing dates in subscription.

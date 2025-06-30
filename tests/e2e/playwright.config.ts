@@ -1,5 +1,5 @@
-import type { PlaywrightTestConfig } from "@playwright/test";
-import { devices } from "@playwright/test";
+import type { PlaywrightTestConfig } from '@playwright/test';
+import { devices } from '@playwright/test';
 
 /**
  * Read environment variables from file.
@@ -11,20 +11,20 @@ import { devices } from "@playwright/test";
  * See https://playwright.dev/docs/test-configuration.
  */
 const config: PlaywrightTestConfig = {
-    testDir: "./tests",
+    testDir: './tests',
     /* Maximum time one test can run for. */
-    timeout: 6000 * 10, //60 sec
+    timeout: 60000, //10 sec
     expect: {
         /**
          * Maximum time expect() should wait for the condition to be met.
          * For example in `await expect(locator).toHaveText();`
          */
-        timeout: 3000 * 10, //30 sec
+        timeout: 30000, //10 sec
     },
     /* Run tests in files in parallel */
     fullyParallel: false,
     /* Fail the build on CI if you accidentally left test.only in the source code. */
-    forbidOnly: !!process.env.CI,
+    forbidOnly: false,
     /* Retry on CI only */
     retries: process.env.CI ? 0 : 0,
     /* Opt out of parallel tests on CI. */
@@ -32,11 +32,13 @@ const config: PlaywrightTestConfig = {
     /* Reporter to use. See https://playwright.dev/docs/test-reporters */
     reporter: process.env.CI
         ? [
-            ["list", { printSteps: true }],
-            ["html", { outputFolder: "./playwright-report", open: "never" }]
+            ['list', { printSteps: true }],
+            ['json', { outputFile: './test-results/results.json' , open: 'never'}],
+            ['html', { outputFolder: './playwright-report', open: 'never' }]
         ]
         : [
-            ["html", { outputFolder: "./playwright-report", open: "never" }],
+            ['json', { outputFile: './test-results/results.json' , open: 'never'}],
+            ['html', { outputFolder: './playwright-report', open: 'never' }],
         ],
     /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
     use: {
@@ -46,7 +48,7 @@ const config: PlaywrightTestConfig = {
         // baseURL: 'http://localhost:3000',
 
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-        trace: "off",
+        trace: 'off',
 
         // Browser options
         headless: true,
@@ -55,9 +57,9 @@ const config: PlaywrightTestConfig = {
         viewport: { width: 1280, height: 720 },
 
         // Artifacts
-        screenshot: "only-on-failure",
+        screenshot: 'only-on-failure',
 
-        video: "off",
+        video: 'off',
 
         //SlowMo
         launchOptions: {
@@ -68,10 +70,10 @@ const config: PlaywrightTestConfig = {
     /* Configure projects for major browsers */
     projects: [
         {
-            name: "chromium",
+            name: 'chromium',
             use: {
-                ...devices["Desktop Chrome"],
-                storageState: "state.json",
+                ...devices['Desktop Chrome'],
+                storageState: 'state.json',
             },
         },
     ],

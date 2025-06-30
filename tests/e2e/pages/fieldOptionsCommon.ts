@@ -1,14 +1,14 @@
-import dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 dotenv.config();
-import { expect, Page } from '@playwright/test';
+import { expect, type Page } from '@playwright/test';
 import { Selectors } from './selectors';
+import { Base } from './base';
 
 
-export class FieldOptionsCommonPage {
-    readonly page: Page;
+export class FieldOptionsCommonPage extends Base {
 
     constructor(page: Page) {
-        this.page = page;
+        super(page);
     }
 
 
@@ -20,26 +20,26 @@ export class FieldOptionsCommonPage {
     //PostFields
     async addPostFields_PF() {
         //PostFields
-        await this.page.click(Selectors.postForms.addPostFields_PF.postTitleBlock);
-        await this.page.click(Selectors.postForms.addPostFields_PF.postContentBlock);
-        await this.page.click(Selectors.postForms.addPostFields_PF.postExcerptBlock);
-        await this.page.click(Selectors.postForms.addPostFields_PF.featuredImageBlock);
+        await this.validateAndClick(Selectors.postForms.addPostFields_PF.postTitleBlock);
+        await this.validateAndClick(Selectors.postForms.addPostFields_PF.postContentBlock);
+        await this.validateAndClick(Selectors.postForms.addPostFields_PF.postExcerptBlock);
+        await this.validateAndClick(Selectors.postForms.addPostFields_PF.featuredImageBlock);
         await this.page.waitForLoadState('domcontentloaded');
-    };
+    }
 
     //Validate > PostFields
     async validatePostFields_PF() {
         //Validate
         //Post Title
-        await expect(await this.page.isVisible(Selectors.postForms.validatePostFields_PF.validatePostTitle)).toBeTruthy();
+        await this.assertionValidate(Selectors.postForms.validatePostFields_PF.validatePostTitle);
         //Post Description
-        await expect(await this.page.isVisible(Selectors.postForms.validatePostFields_PF.validatePostContent)).toBeTruthy();
+        await this.assertionValidate(Selectors.postForms.validatePostFields_PF.validatePostContent);
         //Excerpt
-        await expect(await this.page.isVisible(Selectors.postForms.validatePostFields_PF.validateExcerpt)).toBeTruthy();
+        await this.assertionValidate(Selectors.postForms.validatePostFields_PF.validateExcerpt);
         //Featured Image
-        await expect(await this.page.isVisible(Selectors.postForms.validatePostFields_PF.validateFeaturedImage)).toBeTruthy();
+        await this.assertionValidate(Selectors.postForms.validatePostFields_PF.validateFeaturedImage);
 
-    };
+    }
 
 
 
@@ -47,28 +47,28 @@ export class FieldOptionsCommonPage {
     //Taxonomies
     async addTaxonomies_PF() {
         //Taxonomies
-        await this.page.click(Selectors.postForms.addTaxonomies_PF.categoryBlock);
-        await this.page.click(Selectors.postForms.addTaxonomies_PF.tagsBlock);
+        await this.validateAndClick(Selectors.postForms.addTaxonomies_PF.categoryBlock);
+        await this.validateAndClick(Selectors.postForms.addTaxonomies_PF.tagsBlock);
 
         await this.page.waitForLoadState('domcontentloaded');
-    };
+    }
 
     //Validate > Taxonomies
     async validateTaxonomies_PF() {
         //Validate
         //Category
-        expect(await this.page.isVisible(Selectors.postForms.validateTaxonomies_PF.validateCategory)).toBeTruthy();
+        await this.assertionValidate(Selectors.postForms.validateTaxonomies_PF.validateCategory);
         //Tags
-        expect(await this.page.isVisible(Selectors.postForms.validateTaxonomies_PF.validateTags)).toBeTruthy();
-    };
+        await this.assertionValidate(Selectors.postForms.validateTaxonomies_PF.validateTags);
+    }
 
     async validateTaxonomiesPreset_PF() {
         //Validate
         //Category
-        await expect(await this.page.isVisible(Selectors.postForms.validateTaxonomiesPreset_PF.validateCategory)).toBeTruthy();
+        await this.assertionValidate(Selectors.postForms.validateTaxonomiesPreset_PF.validateCategory);
         //Tags
-        await expect(await this.page.isVisible(Selectors.postForms.validateTaxonomiesPreset_PF.validateTags)).toBeTruthy();
-    };
+        await this.assertionValidate(Selectors.postForms.validateTaxonomiesPreset_PF.validateTags);
+    }
 
 
 
@@ -83,178 +83,182 @@ export class FieldOptionsCommonPage {
     //CustomFields
     async addCustomFields_Common() {
         //CustomFields
-        await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsText);
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsText);
         
         if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
-            await this.page.click(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
         }
-        await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsTextarea);
-        await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsDropdown);
-        await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsMultiSelect);
-        await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsRadio);
-        await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsCheckBox);
-        await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsWebsiteUrl);
-        await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsEmailAddress);
-        await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsHiddenField);
-        await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsImageUpload);
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsTextarea);
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsDropdown);
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsMultiSelect);
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsRadio);
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsCheckBox);
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsWebsiteUrl);
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsEmailAddress);
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsHiddenField);
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsImageUpload);
 
         //FromPRO
         //RepeatField
-        await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsRepeatField);
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsRepeatField);
         const checkProPopUpCloseButton = await this.page.isVisible(Selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
         if (checkProPopUpCloseButton === true) {
-            await this.page.click(Selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
-            console.log("Pro: WPUF Pro is requred...")
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
+            console.log('Pro: WPUF Pro is requred...');
         }
         else {
             //DateTime
-            await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsDateTime);
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsDateTime);
             //TimeField
-            await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsTimeField);
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsTimeField);
             //FileUpload    
-            await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsFileUpload);
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsFileUpload);
             //CountryList
-            await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsCountryList);
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsCountryList);
             //NumericField
-            await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsNumericField);
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsNumericField);
             //PhoneField
-            await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsPhoneField);
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsPhoneField);
             //AddressField  
-            await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsAddressField);
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsAddressField);
             //GoogleMaps
-            await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsGoogleMaps);
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsGoogleMaps);
             if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
-                await this.page.click(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
+                await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
             }
             //StepStart
-            await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsStepStart);
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsStepStart);
             if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
-                await this.page.click(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
+                await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
             }
             //Embed
-            await this.page.click(Selectors.postForms.addCustomFields_Common.customFieldsEmbed); //TODO: This is an Error as position changes in Lite and Pro
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsEmbed); //TODO: This is an Error as position changes in Lite and Pro
 
             await this.page.waitForLoadState('domcontentloaded');
 
         }
 
-    };
+    }
 
     //Validate > CustomFields
     async validateCustomFields_Common() {
         //Validate
         //Text
-        await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateText)).toBeTruthy();
+        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateText);
         //Textarea
-        await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateTextarea)).toBeTruthy();
+        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateTextarea);
         //Dropdown
-        await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateDropdown)).toBeTruthy();
+        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateDropdown);
         //MultiSelect
-        await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateMultiSelect)).toBeTruthy();
+        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateMultiSelect);
         //Radio
-        await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateRadio)).toBeTruthy();
+        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateRadio);
         //CheckBox
-        await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateCheckBox)).toBeTruthy();
+        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateCheckBox);
         //WebsiteUrl
-        await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateWebsiteUrl)).toBeTruthy();
+        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateWebsiteUrl);
         //EmailAddress
-        await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateEmailAddress)).toBeTruthy();
+        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateEmailAddress);
         //HiddenField
-        await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateHiddenField)).toBeTruthy();
+        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateHiddenField);
         //ImageUpload
-        await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateImageUpload)).toBeTruthy();
+        await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateImageUpload);
 
         //From PRO
         //RepeatField
         const proCustomFields_Common = await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateRepeatField);
         if (proCustomFields_Common === true) {
             //RepeatField
-            await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateRepeatField)).toBeTruthy();
+            await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateRepeatField);
             //DateTime
-            await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateDateTime)).toBeTruthy();
+            await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateDateTime);
             //TimeField
-            await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateTimeField)).toBeTruthy();
+            await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateTimeField);
             //FileUpload
-            await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateFileUpload)).toBeTruthy();
+            await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateFileUpload);
             //CountryList
-            await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateCountryList)).toBeTruthy();
+            await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateCountryList);
             //NumericField
-            await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateNumericField)).toBeTruthy();
+            await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateNumericField);
             //PhoneField
-            await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validatePhoneField)).toBeTruthy();
+            await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validatePhoneField);
             //AddressField
-            await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateAddressField)).toBeTruthy();
+            await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateAddressField);
 
             //GoogleMaps        //TODO: Setup required
             // if(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateGoogleMaps) === true){
-            //     await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateGoogleMaps)).toBeTruthy();
+            //     await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateGoogleMaps)).toBeTruthy();
             // }
 
             //StepStart
-            await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateStepStart)).toBeTruthy();
+            await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateStepStart);
             //Embed
-            await expect(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateEmbed)).toBeTruthy();
+            await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateEmbed);
 
         }
 
 
 
-    };
+    }
 
 
     /********************* Others *********************/
     //Others
     async addOthers_Common() {
         //Others
-        await this.page.click(Selectors.postForms.addOthers_Common.othersColumns);
-        await this.page.click(Selectors.postForms.addOthers_Common.othersSectionBreak);
-        await this.page.click(Selectors.postForms.addOthers_Common.othersCustomHTML);
-        await this.page.click(Selectors.postForms.addOthers_Common.othersReCaptcha);
+        await this.validateAndClick(Selectors.postForms.addOthers_Common.othersColumns);
+        await this.validateAndClick(Selectors.postForms.addOthers_Common.othersSectionBreak);
+        await this.validateAndClick(Selectors.postForms.addOthers_Common.othersCustomHTML);
+        await this.validateAndClick(Selectors.postForms.addOthers_Common.othersReCaptcha);
         if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
-            await this.page.click(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
+        }
+        await this.validateAndClick(Selectors.postForms.addOthers_Common.othersCloudflareTurnstile);
+        if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
         }
 
 
         //FromPRO
-        await this.page.click(Selectors.postForms.addOthers_Common.othersShortCode);
+        await this.validateAndClick(Selectors.postForms.addOthers_Common.othersShortCode);
         const checkProPopUpCloseButton = await this.page.isVisible(Selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
         if (checkProPopUpCloseButton === true) {
-            await this.page.click(Selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
-            console.log("Pro: WPUF Pro is requred...")
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.checkProPopUpCloseButton);
+            console.log('Pro: WPUF Pro is requred...');
         }
 
         else {
             //ShortCode
             if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
-                await this.page.click(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
+                await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
             }
             //ActionHook
-            await this.page.click(Selectors.postForms.addOthers_Common.othersActionHook);
+            await this.validateAndClick(Selectors.postForms.addOthers_Common.othersActionHook);
             //TermsAndConditions
-            await this.page.click(Selectors.postForms.addOthers_Common.othersTermsAndConditions);
+            await this.validateAndClick(Selectors.postForms.addOthers_Common.othersTermsAndConditions);
             //Ratings
-            await this.page.click(Selectors.postForms.addOthers_Common.othersRatings);
+            await this.validateAndClick(Selectors.postForms.addOthers_Common.othersRatings);
             //ReallySimpleCaptcha
-            await this.page.click(Selectors.postForms.addOthers_Common.othersReallySimpleCaptcha);
+            await this.validateAndClick(Selectors.postForms.addOthers_Common.othersReallySimpleCaptcha);
             if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
-                await this.page.click(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
+                await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
             }
             //MathCaptcha
-            await this.page.click(Selectors.postForms.addOthers_Common.othersMathCaptcha);
+            await this.validateAndClick(Selectors.postForms.addOthers_Common.othersMathCaptcha);
             await this.page.waitForLoadState('domcontentloaded');
         }
 
-    };
+    }
 
     //Validate > Others
     async validateOthers_Common() {
         //Validate
         //Columns
-        await expect(await this.page.isVisible(Selectors.postForms.validateOthers_Common.validateColumns)).toBeTruthy();
+        await this.assertionValidate(Selectors.postForms.validateOthers_Common.validateColumns);
         //SectionBreak
-        await expect(await this.page.isVisible(Selectors.postForms.validateOthers_Common.validateSectionBreak)).toBeTruthy();
+        await this.assertionValidate(Selectors.postForms.validateOthers_Common.validateSectionBreak);
         //CustomHTML
-        await expect(await this.page.isVisible(Selectors.postForms.validateOthers_Common.validateCustomHTML)).toBeTruthy();
+        await this.assertionValidate(Selectors.postForms.validateOthers_Common.validateCustomHTML);
 
         //From PRO
         //ReCaptcha
@@ -263,38 +267,38 @@ export class FieldOptionsCommonPage {
         const proOthers_Common = await this.page.isVisible(Selectors.postForms.validateOthers_Common.validateShortcode);
         if (proOthers_Common === true) {
             //Shortcode
-            await expect(await this.page.isVisible(Selectors.postForms.validateOthers_Common.validateShortcode)).toBeTruthy();
+            await this.assertionValidate(Selectors.postForms.validateOthers_Common.validateShortcode);
             //ActionHook
-            await expect(await this.page.isVisible(Selectors.postForms.validateOthers_Common.validateActionHook)).toBeTruthy();
+            await this.validateAny(Selectors.postForms.validateOthers_Common.validateActionHook);
             //TermsAndConditions
-            await expect(await this.page.isVisible(Selectors.postForms.validateOthers_Common.validateTermsAndConditions)).toBeTruthy();
+            await this.assertionValidate(Selectors.postForms.validateOthers_Common.validateTermsAndConditions);
             //Ratings
-            await expect(await this.page.isVisible(Selectors.postForms.validateOthers_Common.validateRatings)).toBeTruthy();
+            await this.assertionValidate(Selectors.postForms.validateOthers_Common.validateRatings);
             //ReallySimpletCaptcha
             //Not visible
             //MathCaptcha
-            await expect(await this.page.isVisible(Selectors.postForms.validateOthers_Common.validateMathCaptcha)).toBeTruthy();
+            await this.assertionValidate(Selectors.postForms.validateOthers_Common.validateMathCaptcha);
         }
-    };
+    }
 
 
     //Settings > MultiStep Check
     async setMultiStepSettings_Common() {
         await this.page.waitForLoadState('domcontentloaded');
         //Add Multi-Step-Check
-        await this.page.click(Selectors.postForms.formSettings.clickFormEditorSettings);
+        await this.validateAndClick(Selectors.postForms.formSettings.clickFormEditorSettings);
         const proTextAlertInSettings = await this.page.isVisible(Selectors.postForms.addCustomFields_Common.proTextAlertInSettings);
         if (proTextAlertInSettings === true) {
-            console.log("Pro: WPUF Pro is requred...");
+            console.log('Pro: WPUF Pro is requred...');
         }
         else {
-            await this.page.click(Selectors.postForms.formSettings.checkMultiStepOption);
-            expect(await this.page.isChecked(Selectors.postForms.formSettings.checkMultiStepOption)).toBeTruthy();
+            await this.validateAndClick(Selectors.postForms.formSettings.checkMultiStepOption);
+            await expect(this.page.isChecked(Selectors.postForms.formSettings.checkMultiStepOption)).toBeTruthy();
         }
 
-        await this.page.click(Selectors.postForms.formSettings.clickFormEditor);
+        await this.validateAndClick(Selectors.postForms.formSettings.clickFormEditor);
         await this.page.waitForLoadState('domcontentloaded');
-    };
+    }
 
 
 
@@ -311,12 +315,12 @@ export class FieldOptionsCommonPage {
         }catch(e){
             console.log('not matched ');
         }
-        await this.page.waitForLoadState('networkidle');
+        await this.page.waitForLoadState('domcontentloaded');
 
         //Save Form
-        await this.page.click(Selectors.postForms.saveForm_Common.saveFormButton);
+        await this.validateAndClick(Selectors.postForms.saveForm_Common.saveFormButton);
         await this.page.reload();
-    };
+    }
 
 
 
@@ -326,7 +330,7 @@ export class FieldOptionsCommonPage {
     //Admin checks if Created form is displayed in Post Forms - Table/List
     async validatePostFormCreated(validateNewPostName_PF: string) {
         //Return HOME
-        await this.page.click(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
+        await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();
         await this.page.waitForLoadState('domcontentloaded');
 
@@ -338,7 +342,7 @@ export class FieldOptionsCommonPage {
             console.log('PF Name: ' + checkNewFormCreated_PF);
             console.log('PF List: ' + validateNewPostName_PF);
         }
-    };
+    }
 
 
 
@@ -370,18 +374,18 @@ export class FieldOptionsCommonPage {
     //ProfileFields
     async addProfileFields_RF() {
         //PostFields
-        await this.page.waitForLoadState('domcontentloaded')
-        await this.page.click(Selectors.registrationForms.addProfileFields_RF.profileFieldUsername);
-        await this.page.click(Selectors.registrationForms.addProfileFields_RF.profileFieldFirstName);
-        await this.page.click(Selectors.registrationForms.addProfileFields_RF.profileFieldLastName);
-        await this.page.click(Selectors.registrationForms.addProfileFields_RF.profileFieldDisplayName);
-        await this.page.click(Selectors.registrationForms.addProfileFields_RF.profileFieldNickName);
-        await this.page.click(Selectors.registrationForms.addProfileFields_RF.profileFieldEmail);
-        await this.page.click(Selectors.registrationForms.addProfileFields_RF.profileFieldWebsiteUrl);
-        await this.page.click(Selectors.registrationForms.addProfileFields_RF.profileFielBioInfo);
-        await this.page.click(Selectors.registrationForms.addProfileFields_RF.profileFieldPassword);
-        await this.page.click(Selectors.registrationForms.addProfileFields_RF.profileFieldAvatar);
-    };
+        await this.page.waitForLoadState('domcontentloaded');
+        await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFieldUsername);
+        await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFieldFirstName);
+        await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFieldLastName);
+        await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFieldDisplayName);
+        await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFieldNickName);
+        await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFieldEmail);
+        await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFieldWebsiteUrl);
+        await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFielBioInfo);
+        await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFieldPassword);
+        await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFieldAvatar);
+    }
 
     /********************* Custom Fields *********************/
     //Same as Post Forms
@@ -397,7 +401,7 @@ export class FieldOptionsCommonPage {
     //Admin checks if Created form is displayed in Post Forms - Table/List
     async validateRegistrtionFormCreated(validateNewPostName_RF) {
         //Return HOME
-        await this.page.click(Selectors.registrationForms.createBlankForm_RF.clickRegistrationFormMenuOption);
+        await this.validateAndClick(Selectors.registrationForms.createBlankForm_RF.clickRegistrationFormMenuOption);
         await this.page.waitForLoadState('domcontentloaded');
 
         //ASSERTION > Check if-VALID
@@ -408,8 +412,5 @@ export class FieldOptionsCommonPage {
             console.log('RF Name: ' + checkNewFormCreated_RF);
             console.log('PF List: ' + validateNewPostName_RF);
         }
-    };
-
-
-
+    }
 }

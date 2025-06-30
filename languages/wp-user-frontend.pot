@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 4.1.5\n"
+"Project-Id-Version: WP User Frontend 4.1.6\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2025-06-02 03:33:04+00:00\n"
+"POT-Creation-Date: 2025-06-30 12:20:07+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -179,15 +179,29 @@ msgid ""
 "for each environment."
 msgstr ""
 
-#: Lib/Gateway/Paypal.php:1195
+#: Lib/Gateway/Paypal.php:1180
+msgid "Payment Error Page"
+msgstr ""
+
+#: Lib/Gateway/Paypal.php:1183
+msgid ""
+"Select the page where users will be redirected when payment errors occur. "
+"If not set, users will be redirected to home page with error message."
+msgstr ""
+
+#: Lib/Gateway/Paypal.php:1202
+msgid "Select a page"
+msgstr ""
+
+#: Lib/Gateway/Paypal.php:1240
 msgid "Setup Guide:"
 msgstr ""
 
-#: Lib/Gateway/Paypal.php:1197
+#: Lib/Gateway/Paypal.php:1242
 msgid "Follow our PayPal integration guide"
 msgstr ""
 
-#: Lib/Gateway/Paypal.php:1199
+#: Lib/Gateway/Paypal.php:1244
 msgid "for step-by-step webhook configuration instructions."
 msgstr ""
 
@@ -311,120 +325,120 @@ msgstr ""
 msgid "Add fields by dragging the fields from the right sidebar to this area."
 msgstr ""
 
-#: admin/form-builder/assets/js/components/builder-stage/template.php:29
-#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:49
+#: admin/form-builder/assets/js/components/builder-stage/template.php:33
+#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:53
 #: admin/form-builder/assets/js/components/form-column_field/template.php:57
-#: assets/js-templates/form-components.php:30
-#: assets/js-templates/form-components.php:134
-#: assets/js-templates/form-components.php:888
+#: assets/js-templates/form-components.php:34
+#: assets/js-templates/form-components.php:142
+#: assets/js-templates/form-components.php:896
 msgid "is available in Pro Version"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/builder-stage/template.php:60
-#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:123
-#: assets/js-templates/form-components.php:61
-#: assets/js-templates/form-components.php:208
+#: admin/form-builder/assets/js/components/builder-stage/template.php:64
+#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:127
+#: assets/js-templates/form-components.php:65
+#: assets/js-templates/form-components.php:216
 msgid "Hidden Fields"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/builder-stage/template.php:67
-#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:133
-#: assets/js-templates/form-components.php:68
-#: assets/js-templates/form-components.php:218
+#: admin/form-builder/assets/js/components/builder-stage/template.php:71
+#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:137
+#: assets/js-templates/form-components.php:72
+#: assets/js-templates/form-components.php:226
 msgid "key"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/builder-stage/template.php:67
-#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:134
-#: assets/js-templates/form-components.php:68
-#: assets/js-templates/form-components.php:219
+#: admin/form-builder/assets/js/components/builder-stage/template.php:71
+#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:138
+#: assets/js-templates/form-components.php:72
+#: assets/js-templates/form-components.php:227
 msgid "value"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:4
-#: assets/js-templates/form-components.php:89
+#: assets/js-templates/form-components.php:93
 msgid "Add fields and build your desired form"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:6
-#: assets/js-templates/form-components.php:91
+#: assets/js-templates/form-components.php:95
 msgid "Add the necessary field and build your form."
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-data/template.php:15
-#: admin/template.php:231 assets/js-templates/form-components.php:316
+#: admin/template.php:231 assets/js-templates/form-components.php:324
 #: includes/Admin/Forms/Admin_Template.php:270
 msgid "Show values"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-data/template.php:23
-#: assets/js-templates/form-components.php:324
+#: assets/js-templates/form-components.php:332
 msgid "Sync values"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-data/template.php:28
-#: assets/js-templates/form-components.php:329
+#: assets/js-templates/form-components.php:337
 msgid "Label & Values"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-data/template.php:108
-#: assets/js-templates/form-components.php:409
+#: assets/js-templates/form-components.php:417
 msgid "Clear Selection"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-pro-feature-alert/template.php:5
-#: assets/js-templates/form-components.php:419
+#: assets/js-templates/form-components.php:427
 msgid "Available in PRO version"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-visibility/template.php:133
-#: assets/js-templates/form-components.php:766
+#: assets/js-templates/form-components.php:774
 msgid "No subscription plan found."
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-featured_image/template.php:7
 #: admin/form-builder/assets/js/components/form-image_upload/template.php:11
-#: assets/js-templates/form-components.php:1004
-#: assets/js-templates/form-components.php:1221 class/render-form.php:1670
+#: assets/js-templates/form-components.php:1012
+#: assets/js-templates/form-components.php:1229 class/render-form.php:1685
 #: includes/Fields/Form_Field_Featured_Image.php:128
 #: includes/Fields/Form_Field_Image.php:122
-#: includes/Fields/Form_Field_Image.php:143 includes/Render_Form.php:1527
+#: includes/Fields/Form_Field_Image.php:143 includes/Render_Form.php:1542
 msgid "Select Image"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-fields-v4-1/template.php:10
-#: assets/js-templates/form-components.php:1082
+#: assets/js-templates/form-components.php:1090
 msgid "Search Field"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-fields-v4-1/template.php:122
-#: assets/js-templates/form-components.php:1194
+#: assets/js-templates/form-components.php:1202
 msgid "Got an idea for a new field?"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-fields-v4-1/template.php:125
-#: assets/js-templates/form-components.php:1197
+#: assets/js-templates/form-components.php:1205
 msgid "We'd love to hear it!"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-fields-v4-1/template.php:131
-#: assets/js-templates/form-components.php:1203
+#: assets/js-templates/form-components.php:1211
 msgid "Share Your Idea"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-post_content/template.php:11
-#: assets/js-templates/form-components.php:1269 class/render-form.php:1058
-#: includes/Fields/Form_Field_Post_Content.php:72 includes/Render_Form.php:915
+#: assets/js-templates/form-components.php:1277 class/render-form.php:1073
+#: includes/Fields/Form_Field_Post_Content.php:72 includes/Render_Form.php:930
 msgid "Insert Photo"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-recaptcha/template.php:12
-#: assets/js-templates/form-components.php:1380
+#: assets/js-templates/form-components.php:1388
 msgid "Invisible reCaptcha"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-taxonomy/template.php:15
-#: assets/js-templates/form-components.php:1422
+#: assets/js-templates/form-components.php:1430
 msgid "— Select —"
 msgstr ""
 
@@ -436,7 +450,7 @@ msgstr ""
 
 #: admin/form-builder/views/form-builder-v4.1.php:82
 #: admin/form-builder/views/form-builder.php:50
-#: includes/Admin/Forms/Admin_Form_Builder.php:325
+#: includes/Admin/Forms/Admin_Form_Builder.php:327
 msgid "Click to copy shortcode"
 msgstr ""
 
@@ -484,7 +498,7 @@ msgstr ""
 #: admin/form-builder/views/post-form-settings.php:148
 #: admin/form-builder/views/post-form-settings.php:187
 #: admin/form-builder/views/post-form-settings.php:220
-#: includes/Admin/Forms/Admin_Form_Builder.php:321
+#: includes/Admin/Forms/Admin_Form_Builder.php:323
 #: includes/Admin/template-parts/modal-v4.1.php:124
 #: includes/Admin/template-parts/modal.php:109
 #: includes/Free/Free_Loader.php:1007 includes/Free/Free_Loader.php:1089
@@ -498,8 +512,8 @@ msgstr ""
 
 #: admin/form-builder/views/post-form-settings.php:284
 #: class/subscription.php:881 includes/Admin/Admin_Subscription.php:939
-#: includes/Admin/Forms/Admin_Form_Builder.php:308
 #: includes/Admin/Forms/Admin_Form_Builder.php:310
+#: includes/Admin/Forms/Admin_Form_Builder.php:312
 #: includes/Admin/List_Table_Subscribers.php:146
 #: includes/Admin/Subscription.php:906 includes/Frontend/Payment.php:241
 #: templates/dashboard/subscription.php:97
@@ -510,26 +524,26 @@ msgstr ""
 msgid "Learn More"
 msgstr ""
 
-#: admin/html/form-settings-display.php:11 wpuf-functions.php:5354
+#: admin/html/form-settings-display.php:11 wpuf-functions.php:5382
 msgid "Label Position"
 msgstr ""
 
-#: admin/html/form-settings-display.php:16 wpuf-functions.php:5357
+#: admin/html/form-settings-display.php:16 wpuf-functions.php:5385
 msgid "Above Element"
 msgstr ""
 
-#: admin/html/form-settings-display.php:17 wpuf-functions.php:5358
+#: admin/html/form-settings-display.php:17 wpuf-functions.php:5386
 msgid "Left of Element"
 msgstr ""
 
-#: admin/html/form-settings-display.php:18 wpuf-functions.php:5359
+#: admin/html/form-settings-display.php:18 wpuf-functions.php:5387
 msgid "Right of Element"
 msgstr ""
 
 #: admin/html/form-settings-display.php:19
 #: includes/Admin/Customizer_Options.php:119
-#: includes/Fields/Field_Contract.php:353
-#: includes/Fields/Form_Field_Column.php:112 wpuf-functions.php:5360
+#: includes/Fields/Field_Contract.php:356
+#: includes/Fields/Form_Field_Column.php:112 wpuf-functions.php:5388
 msgid "Hidden"
 msgstr ""
 
@@ -537,7 +551,7 @@ msgstr ""
 msgid "Where the labels of the form should display"
 msgstr ""
 
-#: admin/html/form-settings-display.php:35 wpuf-functions.php:5347
+#: admin/html/form-settings-display.php:35 wpuf-functions.php:5375
 msgid "Use Theme CSS"
 msgstr ""
 
@@ -545,10 +559,10 @@ msgstr ""
 #: includes/Admin/Admin_Subscription.php:338
 #: includes/Admin/Admin_Subscription.php:832
 #: includes/Admin/Forms/Admin_Template.php:69
-#: includes/Fields/Field_Contract.php:301
-#: includes/Fields/Field_Contract.php:394
-#: includes/Fields/Field_Contract.php:408
-#: includes/Fields/Field_Contract.php:472
+#: includes/Fields/Field_Contract.php:303
+#: includes/Fields/Field_Contract.php:397
+#: includes/Fields/Field_Contract.php:411
+#: includes/Fields/Field_Contract.php:475
 #: includes/Fields/Form_Field_Checkbox.php:84
 #: includes/Fields/Form_Field_Radio.php:89 includes/Free/Form_Element.php:525
 #: includes/Frontend.php:113 includes/functions/settings-options.php:123
@@ -562,10 +576,10 @@ msgstr ""
 #: includes/Admin/Admin_Subscription.php:336
 #: includes/Admin/Admin_Subscription.php:832
 #: includes/Admin/Forms/Admin_Template.php:66
-#: includes/Fields/Field_Contract.php:300
-#: includes/Fields/Field_Contract.php:393
-#: includes/Fields/Field_Contract.php:407
-#: includes/Fields/Field_Contract.php:471
+#: includes/Fields/Field_Contract.php:302
+#: includes/Fields/Field_Contract.php:396
+#: includes/Fields/Field_Contract.php:410
+#: includes/Fields/Field_Contract.php:474
 #: includes/Fields/Form_Field_Checkbox.php:83
 #: includes/Fields/Form_Field_Radio.php:88 includes/Free/Form_Element.php:524
 #: includes/Frontend.php:112 includes/functions/settings-options.php:122
@@ -588,7 +602,7 @@ msgid "Payment Options"
 msgstr ""
 
 #: admin/html/form-settings-payment.php:26 includes/Setup_Wizard.php:339
-#: includes/functions/settings-options.php:472 wpuf-functions.php:5229
+#: includes/functions/settings-options.php:472 wpuf-functions.php:5257
 msgid "Enable Payments"
 msgstr ""
 
@@ -653,7 +667,7 @@ msgid "Amount to be charged per post"
 msgstr ""
 
 #: admin/html/form-settings-payment.php:88
-#: includes/functions/settings-options.php:558 wpuf-functions.php:5263
+#: includes/functions/settings-options.php:558 wpuf-functions.php:5291
 msgid "Payment Success Page"
 msgstr ""
 
@@ -674,7 +688,7 @@ msgstr ""
 msgid "Set Post Status to"
 msgstr ""
 
-#: admin/html/form-settings-post-edit.php:24 wpuf-functions.php:5087
+#: admin/html/form-settings-post-edit.php:24 wpuf-functions.php:5115
 msgid "No Change"
 msgstr ""
 
@@ -684,7 +698,7 @@ msgid "Redirect To"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:36
-#: admin/html/form-settings-post.php:138 wpuf-functions.php:5008
+#: admin/html/form-settings-post.php:138 wpuf-functions.php:5036
 msgid "Newly created post"
 msgstr ""
 
@@ -695,13 +709,13 @@ msgstr ""
 
 #: admin/html/form-settings-post-edit.php:38
 #: admin/html/form-settings-post.php:140 includes/Free/Form_Element.php:422
-#: wpuf-functions.php:5010 wpuf-functions.php:5102
+#: wpuf-functions.php:5038 wpuf-functions.php:5130
 msgid "To a page"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:39
 #: admin/html/form-settings-post.php:141 includes/Free/Form_Element.php:423
-#: wpuf-functions.php:5011 wpuf-functions.php:5103
+#: wpuf-functions.php:5039 wpuf-functions.php:5131
 msgid "To a custom URL"
 msgstr ""
 
@@ -709,19 +723,19 @@ msgstr ""
 msgid "After successfull submit, where the page will redirect to"
 msgstr ""
 
-#: admin/html/form-settings-post-edit.php:54 wpuf-functions.php:5107
+#: admin/html/form-settings-post-edit.php:54 wpuf-functions.php:5135
 msgid "Post Update Message"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:61
 #: admin/html/form-settings-post.php:163 includes/Free/Form_Element.php:452
-#: wpuf-functions.php:5020 wpuf-functions.php:5121
+#: wpuf-functions.php:5048 wpuf-functions.php:5149
 msgid "Page"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:76
 #: admin/html/form-settings-post.php:178 includes/Free/Form_Element.php:475
-#: wpuf-functions.php:5026 wpuf-functions.php:5127
+#: wpuf-functions.php:5054 wpuf-functions.php:5155
 msgid "Custom URL"
 msgstr ""
 
@@ -750,7 +764,7 @@ msgstr ""
 msgid "This page is restricted. Please {login} / {register} to view this page."
 msgstr ""
 
-#: admin/html/form-settings-post.php:15 wpuf-functions.php:5017
+#: admin/html/form-settings-post.php:15 wpuf-functions.php:5045
 msgid "Post saved"
 msgstr ""
 
@@ -758,14 +772,14 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: admin/html/form-settings-post.php:22 class/render-form.php:761
+#: admin/html/form-settings-post.php:22 class/render-form.php:776
 #: includes/Admin/Forms/Admin_Form_Builder.php:83
-#: includes/Frontend_Render_Form.php:79 includes/Render_Form.php:618
+#: includes/Frontend_Render_Form.php:79 includes/Render_Form.php:633
 #: includes/class-frontend-render-form.php:183
 msgid "Save Draft"
 msgstr ""
 
-#: admin/html/form-settings-post.php:29 wpuf-functions.php:4981
+#: admin/html/form-settings-post.php:29 wpuf-functions.php:5009
 msgid "Post Type"
 msgstr ""
 
@@ -807,7 +821,7 @@ msgstr ""
 msgid "After successful submit, where the page will redirect to"
 msgstr ""
 
-#: admin/html/form-settings-post.php:156 wpuf-functions.php:5015
+#: admin/html/form-settings-post.php:156 wpuf-functions.php:5043
 msgid "Message to show"
 msgstr ""
 
@@ -815,11 +829,11 @@ msgstr ""
 msgid "Comment Status"
 msgstr ""
 
-#: admin/html/form-settings-post.php:188 wpuf-functions.php:5378
+#: admin/html/form-settings-post.php:188 wpuf-functions.php:5406
 msgid "Open"
 msgstr ""
 
-#: admin/html/form-settings-post.php:189 wpuf-functions.php:5379
+#: admin/html/form-settings-post.php:189 wpuf-functions.php:5407
 msgid "Closed"
 msgstr ""
 
@@ -841,7 +855,7 @@ msgstr ""
 
 #: admin/html/form-submission-restriction.php:11 admin/template-post.php:160
 #: includes/Admin/Forms/Template_Post.php:177
-#: includes/Fields/Field_Contract.php:486 includes/Free/Edit_Profile.php:103
+#: includes/Fields/Field_Contract.php:489 includes/Free/Edit_Profile.php:103
 #: templates/registration-form.php:31
 msgid "Name"
 msgstr ""
@@ -852,7 +866,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:29 wpuf-functions.php:5161
+#: admin/html/form-submission-restriction.php:29 wpuf-functions.php:5189
 msgid "Guest Post"
 msgstr ""
 
@@ -872,7 +886,7 @@ msgstr ""
 msgid "User Details"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:46 wpuf-functions.php:5170
+#: admin/html/form-submission-restriction.php:46 wpuf-functions.php:5198
 msgid "Require Name and Email address"
 msgstr ""
 
@@ -882,7 +896,7 @@ msgid ""
 "name and email address"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:53 wpuf-functions.php:5180
+#: admin/html/form-submission-restriction.php:53 wpuf-functions.php:5208
 msgid "Name Label"
 msgstr ""
 
@@ -890,7 +904,7 @@ msgstr ""
 msgid "Label text for name field"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:63 wpuf-functions.php:5188
+#: admin/html/form-submission-restriction.php:63 wpuf-functions.php:5216
 msgid "E-Mail Label"
 msgstr ""
 
@@ -931,7 +945,7 @@ msgid "Choose which roles can submit posts."
 msgstr ""
 
 #: admin/html/form-submission-restriction.php:117
-#: includes/functions/settings-options.php:333 wpuf-functions.php:5212
+#: includes/functions/settings-options.php:333 wpuf-functions.php:5240
 msgid "Unauthorized Message"
 msgstr ""
 
@@ -957,22 +971,15 @@ msgstr ""
 msgid "Schedule Period"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:140 wpuf-functions.php:5392
+#: admin/html/form-submission-restriction.php:140 wpuf-functions.php:5420
 msgid "From"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:144
-#: includes/Free/Form_Element.php:255 includes/Free/Form_Element.php:292
-#: includes/Free/Free_Loader.php:1574 wpuf-functions.php:5289
-#: wpuf-functions.php:5396
-msgid "To"
-msgstr ""
-
-#: admin/html/form-submission-restriction.php:151 wpuf-functions.php:5402
+#: admin/html/form-submission-restriction.php:151 wpuf-functions.php:5430
 msgid "Form Pending Message"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:158 wpuf-functions.php:5406
+#: admin/html/form-submission-restriction.php:158 wpuf-functions.php:5434
 msgid "Form Expired Message"
 msgstr ""
 
@@ -988,11 +995,11 @@ msgstr ""
 msgid "Limit the number of entries allowed for this form"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:180 wpuf-functions.php:5415
+#: admin/html/form-submission-restriction.php:180 wpuf-functions.php:5443
 msgid "Number of Entries"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:187 wpuf-functions.php:5420
+#: admin/html/form-submission-restriction.php:187 wpuf-functions.php:5448
 msgid "Limit Reached Message"
 msgstr ""
 
@@ -1021,7 +1028,7 @@ msgstr ""
 
 #: admin/installer.php:84 includes/Admin/Admin_Installer.php:86
 #: includes/Admin/Shortcodes_Button.php:85
-#: includes/functions/settings-options.php:24 wpuf-functions.php:2088
+#: includes/functions/settings-options.php:24 wpuf-functions.php:2106
 msgid "Dashboard"
 msgstr ""
 
@@ -1050,7 +1057,7 @@ msgstr ""
 #: includes/Admin/Admin_Installer.php:94
 #: includes/Admin/Shortcodes_Button.php:105 includes/Admin/Subscription.php:468
 #: includes/Admin/Subscription.php:487 includes/Admin/Subscription.php:488
-#: includes/Admin/Subscription.php:489 wpuf-functions.php:2071
+#: includes/Admin/Subscription.php:489 wpuf-functions.php:2089
 msgid "Subscription"
 msgstr ""
 
@@ -1096,41 +1103,41 @@ msgstr ""
 msgid "Sample Form"
 msgstr ""
 
-#: admin/posting.php:74 class/render-form.php:1688
+#: admin/posting.php:74 class/render-form.php:1703
 #: includes/Admin/Posting.php:84 includes/Admin.php:133
-#: includes/Fields/Field_Contract.php:932 includes/Frontend.php:72
-#: includes/Render_Form.php:1545
+#: includes/Fields/Field_Contract.php:935 includes/Frontend.php:72
+#: includes/Render_Form.php:1560
 msgid "Are you sure?"
 msgstr ""
 
-#: admin/posting.php:75 includes/Admin/Forms/Admin_Form_Builder.php:307
+#: admin/posting.php:75 includes/Admin/Forms/Admin_Form_Builder.php:309
 #: includes/Admin/Posting.php:85 includes/Admin.php:134
-#: includes/Fields/Field_Contract.php:933 includes/Frontend.php:73
+#: includes/Fields/Field_Contract.php:936 includes/Frontend.php:73
 msgid "Yes, delete it"
 msgstr ""
 
 #: admin/posting.php:76 includes/Admin/Posting.php:86 includes/Admin.php:135
-#: includes/Fields/Field_Contract.php:934 includes/Frontend.php:74
+#: includes/Fields/Field_Contract.php:937 includes/Frontend.php:74
 msgid "No, cancel it"
 msgstr ""
 
 #: admin/posting.php:82 includes/Admin/Posting.php:92 includes/Admin.php:143
-#: includes/Fields/Field_Contract.php:944 includes/Frontend.php:84
+#: includes/Fields/Field_Contract.php:947 includes/Frontend.php:84
 msgid "Allowed Files"
 msgstr ""
 
 #: admin/posting.php:85 includes/Admin/Posting.php:95 includes/Admin.php:149
-#: includes/Fields/Field_Contract.php:950 includes/Frontend.php:90
+#: includes/Fields/Field_Contract.php:953 includes/Frontend.php:90
 msgid "Maximum number of files reached!"
 msgstr ""
 
 #: admin/posting.php:86 includes/Admin/Posting.php:96 includes/Admin.php:150
-#: includes/Fields/Field_Contract.php:951 includes/Frontend.php:91
+#: includes/Fields/Field_Contract.php:954 includes/Frontend.php:91
 msgid "The file you have uploaded exceeds the file size limit. Please try again."
 msgstr ""
 
 #: admin/posting.php:87 includes/Admin/Posting.php:97 includes/Admin.php:151
-#: includes/Fields/Field_Contract.php:955 includes/Frontend.php:95
+#: includes/Fields/Field_Contract.php:958 includes/Frontend.php:95
 msgid "You have uploaded an incorrect file type. Please try again."
 msgstr ""
 
@@ -1227,7 +1234,7 @@ msgid "Max. file size"
 msgstr ""
 
 #: admin/template-post.php:147 includes/Admin/Forms/Template_Post.php:154
-#: includes/Fields/Field_Contract.php:443
+#: includes/Fields/Field_Contract.php:446
 msgid "Type"
 msgstr ""
 
@@ -1238,85 +1245,85 @@ msgid "Dropdown"
 msgstr ""
 
 #: admin/template-post.php:150 includes/Admin/Forms/Template_Post.php:159
-#: includes/Fields/Field_Contract.php:447
+#: includes/Fields/Field_Contract.php:450
 #: includes/Fields/Form_Field_MultiDropdown.php:11
 #: includes/Fields/Form_Field_MultiDropdown.php:81
 msgid "Multi Select"
 msgstr ""
 
 #: admin/template-post.php:151 includes/Admin/Forms/Template_Post.php:162
-#: includes/Fields/Field_Contract.php:448
+#: includes/Fields/Field_Contract.php:451
 #: includes/Fields/Form_Field_Checkbox.php:11
 msgid "Checkbox"
 msgstr ""
 
 #: admin/template-post.php:152 includes/Admin/Forms/Template_Post.php:165
-#: includes/Fields/Field_Contract.php:449
+#: includes/Fields/Field_Contract.php:452
 msgid "Text Input"
 msgstr ""
 
 #: admin/template-post.php:153 includes/Admin/Forms/Template_Post.php:168
-#: includes/Fields/Field_Contract.php:450
+#: includes/Fields/Field_Contract.php:453
 msgid "Ajax"
 msgstr ""
 
 #: admin/template-post.php:158 includes/Admin/Forms/Template_Post.php:175
-#: includes/Fields/Field_Contract.php:483
+#: includes/Fields/Field_Contract.php:486
 msgid "Order By"
 msgstr ""
 
 #: admin/template-post.php:161 includes/Admin/Forms/Template_Post.php:180
-#: includes/Fields/Field_Contract.php:487
+#: includes/Fields/Field_Contract.php:490
 msgid "Term ID"
 msgstr ""
 
 #: admin/template-post.php:162 includes/Admin/Forms/Template_Post.php:183
-#: includes/Fields/Field_Contract.php:488
+#: includes/Fields/Field_Contract.php:491
 msgid "Slug"
 msgstr ""
 
 #: admin/template-post.php:163 includes/Admin/Forms/Template_Post.php:186
-#: includes/Fields/Field_Contract.php:489
+#: includes/Fields/Field_Contract.php:492
 msgid "Count"
 msgstr ""
 
 #: admin/template-post.php:164 includes/Admin/Forms/Template_Post.php:189
-#: includes/Fields/Field_Contract.php:490
+#: includes/Fields/Field_Contract.php:493
 msgid "Term Group"
 msgstr ""
 
 #: admin/template-post.php:169 includes/Admin/Forms/Template_Post.php:196
-#: includes/Fields/Field_Contract.php:499
+#: includes/Fields/Field_Contract.php:502
 msgid "Order"
 msgstr ""
 
 #: admin/template-post.php:171 includes/Admin/Forms/Template_Post.php:198
-#: includes/Fields/Field_Contract.php:503
+#: includes/Fields/Field_Contract.php:506
 msgid "ASC"
 msgstr ""
 
 #: admin/template-post.php:172 includes/Admin/Forms/Template_Post.php:201
-#: includes/Fields/Field_Contract.php:504
+#: includes/Fields/Field_Contract.php:507
 msgid "DESC"
 msgstr ""
 
 #: admin/template-post.php:177 includes/Admin/Forms/Template_Post.php:208
-#: includes/Fields/Field_Contract.php:513
+#: includes/Fields/Field_Contract.php:516
 msgid "Selection Type"
 msgstr ""
 
 #: admin/template-post.php:179 includes/Admin/Forms/Template_Post.php:210
-#: includes/Fields/Field_Contract.php:516
+#: includes/Fields/Field_Contract.php:519
 msgid "Exclude"
 msgstr ""
 
 #: admin/template-post.php:180 includes/Admin/Forms/Template_Post.php:213
-#: includes/Fields/Field_Contract.php:517
+#: includes/Fields/Field_Contract.php:520
 msgid "Include"
 msgstr ""
 
 #: admin/template-post.php:181 includes/Admin/Forms/Template_Post.php:216
-#: includes/Fields/Field_Contract.php:518
+#: includes/Fields/Field_Contract.php:521
 msgid "Child of"
 msgstr ""
 
@@ -1333,18 +1340,18 @@ msgid "WooCommerce Attribute"
 msgstr ""
 
 #: admin/template-post.php:197 includes/Admin/Forms/Template_Post.php:237
-#: includes/Fields/Field_Contract.php:544
+#: includes/Fields/Field_Contract.php:547
 msgid "This taxonomy is a WooCommerce attribute"
 msgstr ""
 
 #: admin/template-post.php:203 includes/Admin/Forms/Template_Post.php:243
-#: includes/Fields/Field_Contract.php:348
+#: includes/Fields/Field_Contract.php:351
 #: includes/Fields/Form_Field_Column.php:107
 msgid "Visibility"
 msgstr ""
 
 #: admin/template-post.php:209 includes/Admin/Forms/Template_Post.php:250
-#: includes/Fields/Field_Contract.php:555
+#: includes/Fields/Field_Contract.php:558
 msgid "Visible on product page"
 msgstr ""
 
@@ -1395,24 +1402,24 @@ msgstr ""
 
 #: admin/template.php:60 includes/Admin/Customizer_Options.php:121
 #: includes/Admin/Forms/Admin_Template.php:61
-#: includes/Fields/Field_Contract.php:297
+#: includes/Fields/Field_Contract.php:299
 msgid "Required"
 msgstr ""
 
 #: admin/template.php:69 includes/Admin/Forms/Admin_Template.php:74
-#: includes/Fields/Field_Contract.php:279
+#: includes/Fields/Field_Contract.php:281
 msgid "Field Label"
 msgstr ""
 
 #: admin/template.php:70 includes/Admin/Forms/Admin_Template.php:77
-#: includes/Fields/Field_Contract.php:283
+#: includes/Fields/Field_Contract.php:285
 msgid "Enter a title of this field"
 msgstr ""
 
 #: admin/template.php:75 admin/template.php:550
 #: includes/Admin/Forms/Admin_Template.php:82
 #: includes/Admin/Forms/Admin_Template.php:627
-#: includes/Fields/Field_Contract.php:366
+#: includes/Fields/Field_Contract.php:369
 #: includes/Fields/Form_Field_Hidden.php:41
 msgid "Meta Key"
 msgstr ""
@@ -1420,23 +1427,23 @@ msgstr ""
 #: admin/template.php:76 admin/template.php:551
 #: includes/Admin/Forms/Admin_Template.php:85
 #: includes/Admin/Forms/Admin_Template.php:630
-#: includes/Fields/Field_Contract.php:370
+#: includes/Fields/Field_Contract.php:373
 #: includes/Fields/Form_Field_Hidden.php:45
 msgid "Name of the meta key this field will save to"
 msgstr ""
 
 #: admin/template.php:87 includes/Admin/Forms/Admin_Template.php:99
-#: includes/Fields/Field_Contract.php:288
+#: includes/Fields/Field_Contract.php:290
 msgid "Help text"
 msgstr ""
 
 #: admin/template.php:88 includes/Admin/Forms/Admin_Template.php:100
-#: includes/Fields/Field_Contract.php:292
+#: includes/Fields/Field_Contract.php:294
 msgid "Give the user some information about this field"
 msgstr ""
 
 #: admin/template.php:92 includes/Admin/Forms/Admin_Template.php:106
-#: includes/Fields/Field_Contract.php:327
+#: includes/Fields/Field_Contract.php:330
 #: includes/Fields/Form_Field_Column.php:95
 msgid "CSS Class Name"
 msgstr ""
@@ -1448,38 +1455,38 @@ msgstr ""
 #: admin/template.php:117 admin/template.php:175
 #: includes/Admin/Forms/Admin_Template.php:132
 #: includes/Admin/Forms/Admin_Template.php:200
-#: includes/Fields/Field_Contract.php:583
-#: includes/Fields/Field_Contract.php:667
+#: includes/Fields/Field_Contract.php:586
+#: includes/Fields/Field_Contract.php:670
 msgid "Placeholder text"
 msgstr ""
 
 #: admin/template.php:118 includes/Admin/Forms/Admin_Template.php:134
-#: includes/Fields/Field_Contract.php:589
-#: includes/Fields/Field_Contract.php:671
+#: includes/Fields/Field_Contract.php:592
+#: includes/Fields/Field_Contract.php:674
 msgid "Text for HTML5 placeholder attribute"
 msgstr ""
 
 #: admin/template.php:122 admin/template.php:180
 #: includes/Admin/Forms/Admin_Template.php:139
 #: includes/Admin/Forms/Admin_Template.php:206
-#: includes/Fields/Field_Contract.php:594
-#: includes/Fields/Field_Contract.php:679
+#: includes/Fields/Field_Contract.php:597
+#: includes/Fields/Field_Contract.php:682
 msgid "Default value"
 msgstr ""
 
 #: admin/template.php:123 includes/Admin/Forms/Admin_Template.php:141
-#: includes/Fields/Field_Contract.php:600
-#: includes/Fields/Field_Contract.php:683
+#: includes/Fields/Field_Contract.php:603
+#: includes/Fields/Field_Contract.php:686
 msgid "The default value this field will have"
 msgstr ""
 
 #: admin/template.php:127 includes/Admin/Forms/Admin_Template.php:146
-#: includes/Fields/Field_Contract.php:605
+#: includes/Fields/Field_Contract.php:608
 msgid "Size"
 msgstr ""
 
 #: admin/template.php:128 includes/Admin/Forms/Admin_Template.php:148
-#: includes/Fields/Field_Contract.php:610
+#: includes/Fields/Field_Contract.php:613
 msgid "Size of this input field"
 msgstr ""
 
@@ -1496,35 +1503,35 @@ msgid "Number of words the author to be restricted in"
 msgstr ""
 
 #: admin/template.php:165 includes/Admin/Forms/Admin_Template.php:188
-#: includes/Fields/Field_Contract.php:649
+#: includes/Fields/Field_Contract.php:652
 msgid "Rows"
 msgstr ""
 
 #: admin/template.php:170 includes/Admin/Forms/Admin_Template.php:194
-#: includes/Fields/Field_Contract.php:658
+#: includes/Fields/Field_Contract.php:661
 #: includes/Fields/Form_Field_Column.php:11
 msgid "Columns"
 msgstr ""
 
 #: admin/template.php:185 includes/Admin/Forms/Admin_Template.php:212
-#: includes/Fields/Field_Contract.php:688
+#: includes/Fields/Field_Contract.php:691
 #: includes/Fields/Form_Field_Textarea.php:12
 #: includes/Fields/Form_Field_Textarea.php:133
 msgid "Textarea"
 msgstr ""
 
 #: admin/template.php:188 includes/Admin/Forms/Admin_Template.php:217
-#: includes/Fields/Field_Contract.php:691
+#: includes/Fields/Field_Contract.php:694
 msgid "Normal"
 msgstr ""
 
 #: admin/template.php:189 includes/Admin/Forms/Admin_Template.php:220
-#: includes/Fields/Field_Contract.php:692
+#: includes/Fields/Field_Contract.php:695
 msgid "Rich textarea"
 msgstr ""
 
 #: admin/template.php:190 includes/Admin/Forms/Admin_Template.php:223
-#: includes/Fields/Field_Contract.php:693
+#: includes/Fields/Field_Contract.php:696
 msgid "Teeny Rich textarea"
 msgstr ""
 
@@ -1549,7 +1556,7 @@ msgstr ""
 #: includes/Admin/Forms/Admin_Template.php:461
 #: includes/Admin/Forms/Admin_Template.php:498
 #: includes/Admin/Forms/Admin_Template.php:535
-#: includes/Fields/Field_Contract.php:631 templates/dashboard/list.php:19
+#: includes/Fields/Field_Contract.php:634 templates/dashboard/list.php:19
 #: templates/dashboard/posts.php:109
 msgid "Options"
 msgstr ""
@@ -1557,7 +1564,7 @@ msgstr ""
 #: admin/template.php:417 admin/template.php:448
 #: includes/Admin/Forms/Admin_Template.php:478
 #: includes/Admin/Forms/Admin_Template.php:515
-#: includes/Fields/Field_Contract.php:463
+#: includes/Fields/Field_Contract.php:466
 #: includes/Fields/Form_Field_Dropdown.php:91
 msgid ""
 "First element of the select dropdown. Leave this empty if you don't want to "
@@ -1567,7 +1574,7 @@ msgstr ""
 #: admin/template.php:427 admin/template.php:458
 #: includes/Admin/Forms/Admin_Template.php:492
 #: includes/Admin/Forms/Admin_Template.php:529
-#: includes/Fields/Field_Contract.php:459
+#: includes/Fields/Field_Contract.php:462
 #: includes/Fields/Form_Field_Dropdown.php:87
 msgid "Select Text"
 msgstr ""
@@ -1671,29 +1678,29 @@ msgstr ""
 msgid "Please make sure you've published your form."
 msgstr ""
 
-#: class/render-form.php:1329 includes/Free/Edit_Profile.php:205
-#: includes/Render_Form.php:1186 templates/registration-form.php:70
+#: class/render-form.php:1344 includes/Free/Edit_Profile.php:205
+#: includes/Render_Form.php:1201 templates/registration-form.php:70
 msgid "Confirm Password"
 msgstr ""
 
-#: class/render-form.php:1351 includes/Free/Edit_Profile.php:214
-#: includes/Render_Form.php:1208 templates/dashboard/edit-profile.php:84
+#: class/render-form.php:1366 includes/Free/Edit_Profile.php:214
+#: includes/Render_Form.php:1223 templates/dashboard/edit-profile.php:83
 msgid "Strength indicator"
 msgstr ""
 
-#: class/render-form.php:1413 includes/Fields/Form_Field_Post_Taxonomy.php:144
+#: class/render-form.php:1428 includes/Fields/Form_Field_Post_Taxonomy.php:144
 #: includes/Fields/Form_Field_Post_Taxonomy.php:274
-#: includes/Render_Form.php:1270
+#: includes/Render_Form.php:1285
 msgid "-- Select --"
 msgstr ""
 
-#: class/render-form.php:1477 includes/Fields/Form_Field_Post_Taxonomy.php:83
-#: includes/Render_Form.php:1334
+#: class/render-form.php:1492 includes/Fields/Form_Field_Post_Taxonomy.php:83
+#: includes/Render_Form.php:1349
 msgid "This field is no longer available."
 msgstr ""
 
-#: class/render-form.php:1688 includes/Admin/List_Table_Transactions.php:142
-#: includes/Admin/List_Table_Transactions.php:210 includes/Render_Form.php:1545
+#: class/render-form.php:1703 includes/Admin/List_Table_Transactions.php:142
+#: includes/Admin/List_Table_Transactions.php:210 includes/Render_Form.php:1560
 #: includes/functions/user/edit-user.php:109
 msgid "Delete"
 msgstr ""
@@ -1911,7 +1918,7 @@ msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:434
 #: includes/Admin/Admin_Subscription.php:1051
-#: includes/Admin/views/support.php:77 wpuf-functions.php:4873
+#: includes/Admin/views/support.php:77 wpuf-functions.php:4891
 msgid "Payment Settings"
 msgstr ""
 
@@ -1950,7 +1957,7 @@ msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:530
 #: includes/Admin/Admin_Subscription.php:1083 includes/Free/Form_Element.php:59
-#: wpuf-functions.php:4899
+#: wpuf-functions.php:4917
 msgid "Post Expiration"
 msgstr ""
 
@@ -2079,7 +2086,7 @@ msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:948
 #: includes/functions/settings-options.php:675 wpuf-functions.php:217
-#: wpuf-functions.php:1840 wpuf-functions.php:2105
+#: wpuf-functions.php:1858 wpuf-functions.php:2123
 msgid "&mdash; Select &mdash;"
 msgstr ""
 
@@ -2212,12 +2219,12 @@ msgid "Publish"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:1266 wpuf-functions.php:68
-#: wpuf-functions.php:5033 wpuf-functions.php:5083
+#: wpuf-functions.php:5061 wpuf-functions.php:5111
 msgid "Draft"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1267 wpuf-functions.php:5034
-#: wpuf-functions.php:5084
+#: includes/Admin/Admin_Subscription.php:1267 wpuf-functions.php:5062
+#: wpuf-functions.php:5112
 msgid "Pending Review"
 msgstr ""
 
@@ -2395,8 +2402,8 @@ msgstr ""
 
 #: includes/Admin/Admin_Tools.php:55 includes/Admin/Admin_Tools.php:118
 #: includes/Admin/List_Table_Subscribers.php:144
-#: includes/Admin/List_Table_Transactions.php:97 wpuf-functions.php:3540
-#: wpuf-functions.php:5473
+#: includes/Admin/List_Table_Transactions.php:97 wpuf-functions.php:3558
+#: wpuf-functions.php:5501
 msgid "All"
 msgstr ""
 
@@ -2565,7 +2572,7 @@ msgid "Customize WPUF Settings"
 msgstr ""
 
 #: includes/Admin/Customizer_Options.php:75 includes/Frontend/Payment.php:156
-#: wpuf-functions.php:2072
+#: wpuf-functions.php:2090
 msgid "Billing Address"
 msgstr ""
 
@@ -2583,7 +2590,7 @@ msgstr ""
 msgid "Optional"
 msgstr ""
 
-#: includes/Admin/Dashboard_Metabox.php:19
+#: includes/Admin/Dashboard_Metabox.php:51
 msgid "WP User Frontend News & Updates"
 msgstr ""
 
@@ -2658,7 +2665,7 @@ msgstr ""
 #: includes/Admin/Forms/Admin_Form.php:254
 #: includes/Admin/Forms/Admin_Form.php:260
 #: includes/Admin/Forms/Post/Templates/Post_Form_Template_Post.php:46
-#: includes/Fields/Field_Contract.php:236
+#: includes/Fields/Field_Contract.php:238
 #: includes/Fields/Form_Field_Dropdown.php:110
 #: includes/Fields/Form_Field_MultiDropdown.php:85
 #: includes/Fields/Form_Field_Post_Taxonomy.php:471
@@ -2673,32 +2680,32 @@ msgstr ""
 msgid "Taxonomies"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:302
+#: includes/Admin/Forms/Admin_Form_Builder.php:304
 msgid "Advanced Options"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:303
+#: includes/Admin/Forms/Admin_Form_Builder.php:305
 msgid "Delete Field Confirmation"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:304
+#: includes/Admin/Forms/Admin_Form_Builder.php:306
 msgid "Are you sure you want to delete this field? This action cannot be undone."
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:309
+#: includes/Admin/Forms/Admin_Form_Builder.php:311
 msgid "Okay"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:311
+#: includes/Admin/Forms/Admin_Form_Builder.php:313
 #: includes/Admin/views/shortcode-builder.php:70
 msgid "Close"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:312
+#: includes/Admin/Forms/Admin_Form_Builder.php:314
 msgid "This field must contain at least one choice"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:313
+#: includes/Admin/Forms/Admin_Form_Builder.php:315
 #: includes/Fields/Form_Field_Checkbox.php:110
 #: includes/Fields/Form_Field_Dropdown.php:109
 #: includes/Fields/Form_Field_MultiDropdown.php:84
@@ -2706,34 +2713,34 @@ msgstr ""
 msgid "Option"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:314
+#: includes/Admin/Forms/Admin_Form_Builder.php:316
 msgid "Column"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:315
+#: includes/Admin/Forms/Admin_Form_Builder.php:317
 msgid "This field must contain at least one column"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:316
+#: includes/Admin/Forms/Admin_Form_Builder.php:318
 msgid "is a pro feature"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:317
+#: includes/Admin/Forms/Admin_Form_Builder.php:319
 msgid ""
 "<p class=\"wpuf-text-gray-500 wpuf-font-medium wpuf-text-xl\">Please "
 "upgrade to the Pro version to unlock all these awesome features</p>"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:322
-#: includes/Fields/Field_Contract.php:446
+#: includes/Admin/Forms/Admin_Form_Builder.php:324
+#: includes/Fields/Field_Contract.php:449
 msgid "Select"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:323
+#: includes/Admin/Forms/Admin_Form_Builder.php:325
 msgid "Saved form data"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:324
+#: includes/Admin/Forms/Admin_Form_Builder.php:326
 msgid "You have unsaved changes."
 msgstr ""
 
@@ -2811,7 +2818,7 @@ msgid "&mdash; No Template &mdash;"
 msgstr ""
 
 #: includes/Admin/Forms/Post/Templates/Form_Template.php:231
-#: includes/Free/Free_Loader.php:1644 wpuf-functions.php:5057
+#: includes/Free/Free_Loader.php:1644 wpuf-functions.php:5085
 msgid ""
 "If selected a form template, it will try to execute that integration "
 "options when new post created and updated."
@@ -2920,7 +2927,7 @@ msgstr ""
 #: includes/Admin/Menu.php:116 includes/Admin/views/shortcode-builder.php:8
 #: includes/Free/Free_Loader.php:1650 includes/Free/Free_Loader.php:1654
 #: includes/Free/Free_Loader.php:1658 includes/Free/Free_Loader.php:1662
-#: includes/Free/Free_Loader.php:1666 wpuf-functions.php:4947
+#: includes/Free/Free_Loader.php:1666 wpuf-functions.php:4965
 msgid "Post Form"
 msgstr ""
 
@@ -3331,7 +3338,7 @@ msgid ""
 msgstr ""
 
 #: includes/Admin/views/premium.php:71 includes/Admin/views/premium.php:74
-#: includes/Free/Form_Element.php:521 includes/Pro_Upgrades.php:85
+#: includes/Free/Form_Element.php:521 includes/Pro_Upgrades.php:87
 msgid "Conditional Logic"
 msgstr ""
 
@@ -3707,7 +3714,7 @@ msgid "Subscription &amp; Payment"
 msgstr ""
 
 #: includes/Admin/views/support.php:307 includes/Admin/views/support.php:701
-#: includes/Fields/Field_Contract.php:69
+#: includes/Fields/Field_Contract.php:71
 msgid "Content Restriction"
 msgstr ""
 
@@ -4289,53 +4296,53 @@ msgstr ""
 msgid "Choose who can submit post "
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:67
+#: includes/Ajax/Frontend_Form_Ajax.php:76
 #. translators: %1$d is number and %2$s is label
 msgid "Minimum %1$d character is required for %2$s"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:76
+#: includes/Ajax/Frontend_Form_Ajax.php:85
 #. translators: %1$d is number and %2$s is label
 msgid "Maximum %1$d character is allowed for %2$s"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:88
+#: includes/Ajax/Frontend_Form_Ajax.php:97
 #. translators: %1$d is number and %2$s is label
 msgid "Minimum %1$d word is required for %2$s"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:97
+#: includes/Ajax/Frontend_Form_Ajax.php:106
 #. translators: %1$d is number and %2$s is label
 msgid "Maximum %1$d word is allowed for %2$s"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:119
+#: includes/Ajax/Frontend_Form_Ajax.php:128
 #. translators: %s is shortcode
 msgid "Using %s as shortcode is restricted"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:349 includes/Api/Subscription.php:264
+#: includes/Ajax/Frontend_Form_Ajax.php:358 includes/Api/Subscription.php:264
 #: includes/Api/Subscription.php:294 includes/Api/Subscription.php:368
 msgid "Something went wrong"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:421
-#: includes/Ajax/Frontend_Form_Ajax.php:427
+#: includes/Ajax/Frontend_Form_Ajax.php:430
+#: includes/Ajax/Frontend_Form_Ajax.php:436
 msgid ""
 "Thank you for posting on our site. We have sent you an confirmation email. "
 "Please check your inbox!"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:504
+#: includes/Ajax/Frontend_Form_Ajax.php:594
 msgid "Invalid email address."
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:518
+#: includes/Ajax/Frontend_Form_Ajax.php:608
 msgid "You already have an account in our site. Please login to continue."
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:573
-#: includes/Frontend_Render_Form.php:215
+#: includes/Ajax/Frontend_Form_Ajax.php:663
+#: includes/Frontend_Render_Form.php:222
 #: includes/class-frontend-render-form.php:323
 msgid "You do not have sufficient permissions to access this form."
 msgstr ""
@@ -4421,45 +4428,59 @@ msgstr ""
 msgid "Maximum"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:55
+#: includes/Fields/Field_Contract.php:51
+msgid "Choose whether to enforce a minimum or maximum content limit"
+msgstr ""
+
+#: includes/Fields/Field_Contract.php:56
 msgid "Content restricted by"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:58
+#: includes/Fields/Field_Contract.php:59
 msgid "Character"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:59
+#: includes/Fields/Field_Contract.php:60
 msgid "Word"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:74
+#: includes/Fields/Field_Contract.php:66
+msgid ""
+"Select whether the content restriction applies by character count or word "
+"count"
+msgstr ""
+
+#: includes/Fields/Field_Contract.php:76
 msgid "Number of characters or words the author to be restricted in"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:307
+#: includes/Fields/Field_Contract.php:309
 msgid ""
 "Check this option to mark the field required. A form will not submit unless "
 "all required fields are provided."
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:312
+#: includes/Fields/Field_Contract.php:314
 msgid "Field Size"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:315
+#: includes/Fields/Field_Contract.php:317
 msgid "Small"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:316
+#: includes/Fields/Field_Contract.php:318
 msgid "Medium"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:317
+#: includes/Fields/Field_Contract.php:319
 msgid "Large"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:331
+#: includes/Fields/Field_Contract.php:325
+msgid "Adjust the visual width of the input field on the front-end"
+msgstr ""
+
+#: includes/Fields/Field_Contract.php:334
 #: includes/Fields/Form_Field_Column.php:99
 msgid ""
 "Provide a container class name for this field. Available classes: "
@@ -4467,92 +4488,92 @@ msgid ""
 "wpuf-col-one-third-last"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:352
+#: includes/Fields/Field_Contract.php:355
 #: includes/Fields/Form_Field_Column.php:111
 msgid "Everyone"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:354
+#: includes/Fields/Field_Contract.php:357
 #: includes/Fields/Form_Field_Column.php:113
 msgid "Logged in users only"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:355
+#: includes/Fields/Field_Contract.php:358
 #: includes/Fields/Form_Field_Column.php:114
 msgid "Subscription users only"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:359
+#: includes/Fields/Field_Contract.php:362
 #: includes/Fields/Form_Field_Column.php:118
 msgid "Select option"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:375
+#: includes/Fields/Field_Contract.php:378
 msgid "Read Only"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:378
+#: includes/Fields/Field_Contract.php:381
 msgid "Make this field read only "
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:382
+#: includes/Fields/Field_Contract.php:385
 msgid "Make this field read only"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:390
+#: includes/Fields/Field_Contract.php:393
 msgid "Show Data in Post"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:400
+#: includes/Fields/Field_Contract.php:403
 msgid "Select Yes if you want to show the field data in single post."
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:404
+#: includes/Fields/Field_Contract.php:407
 msgid "Hide Field Label in Post"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:414
+#: includes/Fields/Field_Contract.php:417
 msgid "Select Yes if you want to hide the field label in single post."
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:468
+#: includes/Fields/Field_Contract.php:471
 #: includes/Fields/Form_Field_Checkbox.php:80
 #: includes/Fields/Form_Field_Radio.php:85
 msgid "Show in inline list"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:478
+#: includes/Fields/Field_Contract.php:481
 #: includes/Fields/Form_Field_Checkbox.php:90
 #: includes/Fields/Form_Field_Radio.php:95
 msgid "Show this option in an inline list"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:527
+#: includes/Fields/Field_Contract.php:530
 msgid "Selection Terms"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:534
+#: includes/Fields/Field_Contract.php:537
 #. translators: %s: left and right arrow
 msgid "Search the terms name. use %1$s %2$s for navigate"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:636
+#: includes/Fields/Field_Contract.php:639
 msgid "Add options for the form field"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:653
+#: includes/Fields/Field_Contract.php:656
 msgid "Number of rows in textarea"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:662
+#: includes/Fields/Field_Contract.php:665
 msgid "Number of columns in textarea"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:701
+#: includes/Fields/Field_Contract.php:704
 msgid "Select buttons to exclude"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:710
+#: includes/Fields/Field_Contract.php:713
 #. translators: %1$s: left arrow, %2$s: right arrow
 msgid ""
 "Select button for exclude from frontend. Search button name. use %1$s %2$s "
@@ -4916,7 +4937,7 @@ msgid ""
 "be shown publicly."
 msgstr ""
 
-#: includes/Free/Edit_Profile.php:199 templates/dashboard/edit-profile.php:62
+#: includes/Free/Edit_Profile.php:199 templates/dashboard/edit-profile.php:61
 msgid "New Password"
 msgstr ""
 
@@ -4929,7 +4950,7 @@ msgid "Password Strength"
 msgstr ""
 
 #: includes/Free/Edit_Profile.php:240 includes/Free/Form_Element.php:381
-#: templates/dashboard/edit-profile.php:142
+#: templates/dashboard/edit-profile.php:141
 msgid "Update Profile"
 msgstr ""
 
@@ -5009,7 +5030,7 @@ msgstr ""
 msgid "Choose how you want the progressbar"
 msgstr ""
 
-#: includes/Free/Form_Element.php:227 wpuf-functions.php:5297
+#: includes/Free/Form_Element.php:227 wpuf-functions.php:5325
 msgid "New post created"
 msgstr ""
 
@@ -5017,8 +5038,8 @@ msgstr ""
 msgid "A post has been edited"
 msgstr ""
 
-#: includes/Free/Form_Element.php:236 wpuf-functions.php:5276
-#: wpuf-functions.php:5283
+#: includes/Free/Form_Element.php:236 wpuf-functions.php:5304
+#: wpuf-functions.php:5311
 msgid "New Post Notification"
 msgstr ""
 
@@ -5034,8 +5055,14 @@ msgstr ""
 msgid "Learn more about Email Notification"
 msgstr ""
 
+#: includes/Free/Form_Element.php:255 includes/Free/Form_Element.php:292
+#: includes/Free/Free_Loader.php:1574 wpuf-functions.php:5317
+#: wpuf-functions.php:5424
+msgid "To"
+msgstr ""
+
 #: includes/Free/Form_Element.php:262 includes/Free/Form_Element.php:297
-#: includes/Free/Free_Loader.php:1579 wpuf-functions.php:5295
+#: includes/Free/Free_Loader.php:1579 wpuf-functions.php:5323
 msgid "Subject"
 msgstr ""
 
@@ -5043,7 +5070,7 @@ msgstr ""
 msgid "Message"
 msgstr ""
 
-#: includes/Free/Form_Element.php:274 wpuf-functions.php:5325
+#: includes/Free/Form_Element.php:274 wpuf-functions.php:5353
 msgid "Update Post Notification"
 msgstr ""
 
@@ -5142,7 +5169,7 @@ msgid ""
 "key\">API</a> key is needed to render Google Maps"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:270 wpuf-functions.php:2070
+#: includes/Free/Free_Loader.php:270 wpuf-functions.php:2088
 msgid "Edit Profile"
 msgstr ""
 
@@ -5651,7 +5678,7 @@ msgstr ""
 msgid "Enable Update Post Notification"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1584 wpuf-functions.php:5301
+#: includes/Free/Free_Loader.php:1584 wpuf-functions.php:5329
 msgid "Email Body"
 msgstr ""
 
@@ -5659,7 +5686,7 @@ msgstr ""
 msgid "Conditional Logic on Submit"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1642 wpuf-functions.php:5340
+#: includes/Free/Free_Loader.php:1642 wpuf-functions.php:5368
 msgid "Choose Form Style"
 msgstr ""
 
@@ -5746,7 +5773,7 @@ msgid "Password is required."
 msgstr ""
 
 #: includes/Free/Simple_Login.php:556 includes/Traits/FieldableTrait.php:205
-#: includes/class-frontend-render-form.php:876
+#: includes/class-frontend-render-form.php:890
 msgid "Empty reCaptcha Field"
 msgstr ""
 
@@ -6288,7 +6315,7 @@ msgstr ""
 msgid "Hi, %s"
 msgstr ""
 
-#: includes/Frontend/Registration.php:382
+#: includes/Frontend/Registration.php:388
 msgid "Subscription Page settings not set in admin settings"
 msgstr ""
 
@@ -6375,14 +6402,14 @@ msgstr ""
 msgid "Please Cancel Your Currently Active Pack first!"
 msgstr ""
 
-#: includes/Frontend_Render_Form.php:300
-#: includes/class-frontend-render-form.php:909
+#: includes/Frontend_Render_Form.php:322
+#: includes/class-frontend-render-form.php:923
 #: templates/dashboard/posts.php:120
 msgid "Featured"
 msgstr ""
 
-#: includes/Frontend_Render_Form.php:307
-#: includes/class-frontend-render-form.php:916
+#: includes/Frontend_Render_Form.php:329
+#: includes/class-frontend-render-form.php:930
 #. translators: %1$s is Post type and %2$d is item
 #. translators: %1$s is Post type and %2$s is total feature item
 msgid "Mark the %1$s as featured (remaining %2$d)"
@@ -6392,8 +6419,8 @@ msgstr ""
 #: includes/Integrations/WPUF_ACF_Compatibility.php:90
 #: includes/Integrations/WPUF_ACF_Compatibility.php:156
 #: includes/Widgets/Login_Widget.php:36 includes/Widgets/Login_Widget.php:62
-#: includes/Widgets/Login_Widget.php:79 wpuf-functions.php:1539
-#: wpuf-functions.php:1788
+#: includes/Widgets/Login_Widget.php:79 wpuf-functions.php:1557
+#: wpuf-functions.php:1806
 msgid "Permission denied"
 msgstr ""
 
@@ -7661,35 +7688,35 @@ msgstr ""
 msgid "From your account dashboard you can view your dashboard, manage your %s"
 msgstr ""
 
-#: templates/dashboard/edit-profile.php:14
+#: templates/dashboard/edit-profile.php:13
 msgid "Profile updated successfully!"
 msgstr ""
 
-#: templates/dashboard/edit-profile.php:15
+#: templates/dashboard/edit-profile.php:14
 msgid "Something went wrong!"
 msgstr ""
 
-#: templates/dashboard/edit-profile.php:19
+#: templates/dashboard/edit-profile.php:18
 msgid "First Name "
 msgstr ""
 
-#: templates/dashboard/edit-profile.php:28
+#: templates/dashboard/edit-profile.php:27
 msgid "Last Name "
 msgstr ""
 
-#: templates/dashboard/edit-profile.php:38
+#: templates/dashboard/edit-profile.php:37
 msgid "Email Address "
 msgstr ""
 
-#: templates/dashboard/edit-profile.php:48
+#: templates/dashboard/edit-profile.php:47
 msgid "Current Password"
 msgstr ""
 
-#: templates/dashboard/edit-profile.php:56
+#: templates/dashboard/edit-profile.php:55
 msgid "Leave this field empty to keep your password unchanged."
 msgstr ""
 
-#: templates/dashboard/edit-profile.php:75
+#: templates/dashboard/edit-profile.php:74
 msgid "Confirm New Password"
 msgstr ""
 
@@ -7894,12 +7921,12 @@ msgstr ""
 msgid "Scheduled"
 msgstr ""
 
-#: wpuf-functions.php:44 wpuf-functions.php:5035 wpuf-functions.php:5085
+#: wpuf-functions.php:44 wpuf-functions.php:5063 wpuf-functions.php:5113
 msgid "Private"
 msgstr ""
 
-#: wpuf-functions.php:65 wpuf-functions.php:5036 wpuf-functions.php:5086
-#: wpuf-functions.php:5474
+#: wpuf-functions.php:65 wpuf-functions.php:5064 wpuf-functions.php:5114
+#: wpuf-functions.php:5502
 msgid "Published"
 msgstr ""
 
@@ -7939,513 +7966,531 @@ msgstr ""
 msgid "Directions »"
 msgstr ""
 
-#: wpuf-functions.php:2339
+#: wpuf-functions.php:2357
 msgid "United Arab Emirates Dirham"
 msgstr ""
 
-#: wpuf-functions.php:2344
+#: wpuf-functions.php:2362
 msgid "Australian Dollars"
 msgstr ""
 
-#: wpuf-functions.php:2349
+#: wpuf-functions.php:2367
 msgid "Argentine Peso"
 msgstr ""
 
-#: wpuf-functions.php:2354
+#: wpuf-functions.php:2372
 msgid "Bangladeshi Taka"
 msgstr ""
 
-#: wpuf-functions.php:2359
+#: wpuf-functions.php:2377
 msgid "Brazilian Real"
 msgstr ""
 
-#: wpuf-functions.php:2364
+#: wpuf-functions.php:2382
 msgid "Bulgarian Lev"
 msgstr ""
 
-#: wpuf-functions.php:2369
+#: wpuf-functions.php:2387
 msgid "Canadian Dollars"
 msgstr ""
 
-#: wpuf-functions.php:2374
+#: wpuf-functions.php:2392
 msgid "Chilean Peso"
 msgstr ""
 
-#: wpuf-functions.php:2379
+#: wpuf-functions.php:2397
 msgid "Chinese Yuan"
 msgstr ""
 
-#: wpuf-functions.php:2384
+#: wpuf-functions.php:2402
 msgid "Colombian Peso"
 msgstr ""
 
-#: wpuf-functions.php:2389
+#: wpuf-functions.php:2407
 msgid "Czech Koruna"
 msgstr ""
 
-#: wpuf-functions.php:2394
+#: wpuf-functions.php:2412
 msgid "Danish Krone"
 msgstr ""
 
-#: wpuf-functions.php:2399
+#: wpuf-functions.php:2417
 msgid "Dominican Peso"
 msgstr ""
 
-#: wpuf-functions.php:2404
+#: wpuf-functions.php:2422
 msgid "Algerian Dinar"
 msgstr ""
 
-#: wpuf-functions.php:2409
+#: wpuf-functions.php:2427
 msgid "Euros"
 msgstr ""
 
-#: wpuf-functions.php:2414
+#: wpuf-functions.php:2432
 msgid "Hong Kong Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2419
+#: wpuf-functions.php:2437
 msgid "Croatia kuna"
 msgstr ""
 
-#: wpuf-functions.php:2424
+#: wpuf-functions.php:2442
 msgid "Hungarian Forint"
 msgstr ""
 
-#: wpuf-functions.php:2429
+#: wpuf-functions.php:2447
 msgid "Icelandic krona"
 msgstr ""
 
-#: wpuf-functions.php:2434
+#: wpuf-functions.php:2452
 msgid "Indonesia Rupiah"
 msgstr ""
 
-#: wpuf-functions.php:2439
+#: wpuf-functions.php:2457
 msgid "Indian Rupee"
 msgstr ""
 
-#: wpuf-functions.php:2444
+#: wpuf-functions.php:2462
 msgid "Mauritian Rupee"
 msgstr ""
 
-#: wpuf-functions.php:2449
+#: wpuf-functions.php:2467
 msgid "Nepali Rupee"
 msgstr ""
 
-#: wpuf-functions.php:2454
+#: wpuf-functions.php:2472
 msgid "Israeli Shekel"
 msgstr ""
 
-#: wpuf-functions.php:2459
+#: wpuf-functions.php:2477
 msgid "Japanese Yen"
 msgstr ""
 
-#: wpuf-functions.php:2464
+#: wpuf-functions.php:2482
 msgid "Lao Kip"
 msgstr ""
 
-#: wpuf-functions.php:2469
+#: wpuf-functions.php:2487
 msgid "South Korean Won"
 msgstr ""
 
-#: wpuf-functions.php:2474
+#: wpuf-functions.php:2492
 msgid "Malaysian Ringgits"
 msgstr ""
 
-#: wpuf-functions.php:2479
+#: wpuf-functions.php:2497
 msgid "Mexican Peso"
 msgstr ""
 
-#: wpuf-functions.php:2484
+#: wpuf-functions.php:2502
 msgid "Nigerian Naira"
 msgstr ""
 
-#: wpuf-functions.php:2489
+#: wpuf-functions.php:2507
 msgid "Norwegian Krone"
 msgstr ""
 
-#: wpuf-functions.php:2494
+#: wpuf-functions.php:2512
 msgid "New Zealand Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2499
+#: wpuf-functions.php:2517
 msgid "Namibian dollar"
 msgstr ""
 
-#: wpuf-functions.php:2504
+#: wpuf-functions.php:2522
 msgid "Omani Rial"
 msgstr ""
 
-#: wpuf-functions.php:2509
+#: wpuf-functions.php:2527
 msgid "Iranian Rial"
 msgstr ""
 
-#: wpuf-functions.php:2514
+#: wpuf-functions.php:2532
 msgid "Pakistani Rupee"
 msgstr ""
 
-#: wpuf-functions.php:2519
+#: wpuf-functions.php:2537
 msgid "Paraguayan Guaraní"
 msgstr ""
 
-#: wpuf-functions.php:2524
+#: wpuf-functions.php:2542
 msgid "Philippine Pesos"
 msgstr ""
 
-#: wpuf-functions.php:2529
+#: wpuf-functions.php:2547
 msgid "Polish Zloty"
 msgstr ""
 
-#: wpuf-functions.php:2534
+#: wpuf-functions.php:2552
 msgid "Pounds Sterling"
 msgstr ""
 
-#: wpuf-functions.php:2539
+#: wpuf-functions.php:2557
 msgid "Romanian Leu"
 msgstr ""
 
-#: wpuf-functions.php:2544
+#: wpuf-functions.php:2562
 msgid "Russian Ruble"
 msgstr ""
 
-#: wpuf-functions.php:2549
+#: wpuf-functions.php:2567
 msgid "Saudi Riyal"
 msgstr ""
 
-#: wpuf-functions.php:2554
+#: wpuf-functions.php:2572
 msgid "Singapore Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2559
+#: wpuf-functions.php:2577
 msgid "South African rand"
 msgstr ""
 
-#: wpuf-functions.php:2564
+#: wpuf-functions.php:2582
 msgid "Swedish Krona"
 msgstr ""
 
-#: wpuf-functions.php:2569
+#: wpuf-functions.php:2587
 msgid "Swiss Franc"
 msgstr ""
 
-#: wpuf-functions.php:2574
+#: wpuf-functions.php:2592
 msgid "Taiwan New Dollars"
 msgstr ""
 
-#: wpuf-functions.php:2579
+#: wpuf-functions.php:2597
 msgid "Thai Baht"
 msgstr ""
 
-#: wpuf-functions.php:2584
+#: wpuf-functions.php:2602
 msgid "Turkish Lira"
 msgstr ""
 
-#: wpuf-functions.php:2589
+#: wpuf-functions.php:2607
 msgid "Trinidad and Tobago Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2594
+#: wpuf-functions.php:2612
 msgid "US Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2599
+#: wpuf-functions.php:2617
 msgid "Vietnamese Dong"
 msgstr ""
 
-#: wpuf-functions.php:2604
+#: wpuf-functions.php:2622
 msgid "Egyptian Pound"
 msgstr ""
 
-#: wpuf-functions.php:2609
+#: wpuf-functions.php:2627
 msgid "Jordanian dinar"
 msgstr ""
 
-#: wpuf-functions.php:3541
+#: wpuf-functions.php:3559
 msgid "None"
 msgstr ""
 
-#: wpuf-functions.php:4867
+#: wpuf-functions.php:4885
 msgid "General"
 msgstr ""
 
-#: wpuf-functions.php:4881
+#: wpuf-functions.php:4899
 msgid "Notification Settings"
 msgstr ""
 
-#: wpuf-functions.php:4887
+#: wpuf-functions.php:4905
 msgid "Display Settings"
 msgstr ""
 
-#: wpuf-functions.php:4893
+#: wpuf-functions.php:4911
 msgid "Advanced"
 msgstr ""
 
-#: wpuf-functions.php:4911
+#: wpuf-functions.php:4929
 msgid "Post Settings"
 msgstr ""
 
-#: wpuf-functions.php:4951
+#: wpuf-functions.php:4969
 msgid "WooCommerce Product Form"
 msgstr ""
 
-#: wpuf-functions.php:4955
+#: wpuf-functions.php:4973
 msgid "EDD Download Form"
 msgstr ""
 
-#: wpuf-functions.php:4974
+#: wpuf-functions.php:4992
 msgid "Before Post Settings"
 msgstr ""
 
-#: wpuf-functions.php:4975
+#: wpuf-functions.php:4993
 msgid ""
 "Configure how the form behaves before submission, including content type, "
 "default category, post status, draft-saving options, and submit button "
 "customization"
 msgstr ""
 
-#: wpuf-functions.php:4984
+#: wpuf-functions.php:4999
+msgid "Show Form Title"
+msgstr ""
+
+#: wpuf-functions.php:5001
+msgid "Toggle whether the form title should be displayed on the frontend"
+msgstr ""
+
+#: wpuf-functions.php:5004
+msgid "Form Description"
+msgstr ""
+
+#: wpuf-functions.php:5006
+msgid ""
+"Add a brief message or instruction that will be displayed before the form — "
+"helpful for guiding users before they start filling it out"
+msgstr ""
+
+#: wpuf-functions.php:5012
 msgid ""
 "Select the content type this form will create, like a post, product, or "
 "custom type"
 msgstr ""
 
-#: wpuf-functions.php:4993
+#: wpuf-functions.php:5021
 msgid "Default Category"
 msgstr ""
 
-#: wpuf-functions.php:4995
+#: wpuf-functions.php:5023
 msgid "Select the default category for posts submitted through this form"
 msgstr ""
 
-#: wpuf-functions.php:5001 wpuf-functions.php:5094
+#: wpuf-functions.php:5029 wpuf-functions.php:5122
 msgid "Successful Redirection"
 msgstr ""
 
-#: wpuf-functions.php:5003
+#: wpuf-functions.php:5031
 msgid "Select where users will be redirected after successfully submitting the form"
 msgstr ""
 
-#: wpuf-functions.php:5009 wpuf-functions.php:5101
+#: wpuf-functions.php:5037 wpuf-functions.php:5129
 msgid "Same page"
 msgstr ""
 
-#: wpuf-functions.php:5023 wpuf-functions.php:5124
+#: wpuf-functions.php:5051 wpuf-functions.php:5152
 msgid "Choose the default category for the post"
 msgstr ""
 
-#: wpuf-functions.php:5030
+#: wpuf-functions.php:5058
 msgid "Post Submission Status"
 msgstr ""
 
-#: wpuf-functions.php:5038
+#: wpuf-functions.php:5066
 msgid "Select the status of the post after submission"
 msgstr ""
 
-#: wpuf-functions.php:5041
+#: wpuf-functions.php:5069
 msgid "Enable saving as draft"
 msgstr ""
 
-#: wpuf-functions.php:5043
+#: wpuf-functions.php:5071
 msgid "Allow users to save posts before final submission"
 msgstr ""
 
-#: wpuf-functions.php:5048
+#: wpuf-functions.php:5076
 msgid "Submit Post Button Text"
 msgstr ""
 
-#: wpuf-functions.php:5050
+#: wpuf-functions.php:5078
 msgid "Customize the text on the 'Submit' button for this form"
 msgstr ""
 
-#: wpuf-functions.php:5055
+#: wpuf-functions.php:5083
 msgid "Choose Form Template"
 msgstr ""
 
-#: wpuf-functions.php:5064
+#: wpuf-functions.php:5092
 msgid ""
 "If you're building a post form from scratch, you don't need to pick a "
 "template (e.g., WooCommerce Product, EDD). Just double-click any selected "
 "template to uncheck it."
 msgstr ""
 
-#: wpuf-functions.php:5073
+#: wpuf-functions.php:5101
 msgid "After Post Settings"
 msgstr ""
 
-#: wpuf-functions.php:5074
+#: wpuf-functions.php:5102
 msgid ""
 "Manage what happens after submission, such as setting post update status, "
 "displaying success messages, redirecting users, limiting edit time, and "
 "customizing the update button"
 msgstr ""
 
-#: wpuf-functions.php:5080
+#: wpuf-functions.php:5108
 msgid "Post Update Status"
 msgstr ""
 
-#: wpuf-functions.php:5089
+#: wpuf-functions.php:5117
 msgid "Select the status the post will have after being updated"
 msgstr ""
 
-#: wpuf-functions.php:5096
+#: wpuf-functions.php:5124
 msgid "After successfully submit, where the page will redirect to"
 msgstr ""
 
-#: wpuf-functions.php:5100
+#: wpuf-functions.php:5128
 msgid "Updated post"
 msgstr ""
 
-#: wpuf-functions.php:5110
+#: wpuf-functions.php:5138
 msgid ""
 "Post has been updated successfully. <a target=\"_blank\" href=\"%s\">View "
 "post</a>"
 msgstr ""
 
-#: wpuf-functions.php:5115
+#: wpuf-functions.php:5143
 msgid "Customize the message displayed after a post is successfully updated"
 msgstr ""
 
-#: wpuf-functions.php:5131
+#: wpuf-functions.php:5159
 msgid "Lock User Editing After"
 msgstr ""
 
-#: wpuf-functions.php:5133
+#: wpuf-functions.php:5161
 msgid ""
 "Set the number of hours after which users can no longer edit their "
 "submitted post"
 msgstr ""
 
-#: wpuf-functions.php:5138
+#: wpuf-functions.php:5166
 msgid "Hours"
 msgstr ""
 
-#: wpuf-functions.php:5141
+#: wpuf-functions.php:5169
 msgid "Update Post Button Text"
 msgstr ""
 
-#: wpuf-functions.php:5143
+#: wpuf-functions.php:5171
 msgid "Customize the text on the 'Update' button for this form"
 msgstr ""
 
-#: wpuf-functions.php:5150
+#: wpuf-functions.php:5178
 msgid "Posting Control"
 msgstr ""
 
-#: wpuf-functions.php:5151
+#: wpuf-functions.php:5179
 msgid ""
 "Define who can submit posts using this form. Choose whether to allow guest "
 "submissions or restrict access based on user roles"
 msgstr ""
 
-#: wpuf-functions.php:5157
+#: wpuf-functions.php:5185
 msgid "Post Permission"
 msgstr ""
 
-#: wpuf-functions.php:5160
+#: wpuf-functions.php:5188
 msgid "- Select Post Permission -"
 msgstr ""
 
-#: wpuf-functions.php:5162
+#: wpuf-functions.php:5190
 msgid "Role Based Post"
 msgstr ""
 
-#: wpuf-functions.php:5164
+#: wpuf-functions.php:5192
 msgid ""
 "Select who can submit posts using this form, either guests or specific user "
 "roles"
 msgstr ""
 
-#: wpuf-functions.php:5172
+#: wpuf-functions.php:5200
 msgid ""
 "If enabled, guest users will be automatically registered using their name "
 "and email"
 msgstr ""
 
-#: wpuf-functions.php:5182
+#: wpuf-functions.php:5210
 msgid "Customize the label for the name field in guest submissions"
 msgstr ""
 
-#: wpuf-functions.php:5190
+#: wpuf-functions.php:5218
 msgid "Customize the label for the email field in guest submissions"
 msgstr ""
 
-#: wpuf-functions.php:5198
+#: wpuf-functions.php:5226
 msgid "Require email verification"
 msgstr ""
 
-#: wpuf-functions.php:5200
+#: wpuf-functions.php:5228
 msgid "If enabled, users must verify their email before submitting a post"
 msgstr ""
 
-#: wpuf-functions.php:5205
+#: wpuf-functions.php:5233
 msgid "Choose who can submit post"
 msgstr ""
 
-#: wpuf-functions.php:5207
+#: wpuf-functions.php:5235
 msgid "Select the user roles who can submit posts"
 msgstr ""
 
-#: wpuf-functions.php:5214
+#: wpuf-functions.php:5242
 msgid ""
 "Display this message to non-logged-in users. Use {login} and {register} "
 "placeholders to add login and registration links"
 msgstr ""
 
-#: wpuf-functions.php:5231
+#: wpuf-functions.php:5259
 msgid "Enable payments for this form to charge users for submissions"
 msgstr ""
 
-#: wpuf-functions.php:5236
+#: wpuf-functions.php:5264
 msgid "Choose Payment Option"
 msgstr ""
 
-#: wpuf-functions.php:5239
+#: wpuf-functions.php:5267
 msgid "Mandatory Subscription"
 msgstr ""
 
-#: wpuf-functions.php:5240
+#: wpuf-functions.php:5268
 msgid "Pay as you post"
 msgstr ""
 
-#: wpuf-functions.php:5242
+#: wpuf-functions.php:5270
 msgid "Select how users will pay for submitting posts"
 msgstr ""
 
-#: wpuf-functions.php:5247
+#: wpuf-functions.php:5275
 msgid "Pay-per-post billing when limit exceeds"
 msgstr ""
 
-#: wpuf-functions.php:5249
+#: wpuf-functions.php:5277
 msgid "Switch to pay-per-post billing if pack limit is exceeded"
 msgstr ""
 
-#: wpuf-functions.php:5252
+#: wpuf-functions.php:5280
 msgid "Cost for each additional post after pack limit is reached"
 msgstr ""
 
-#: wpuf-functions.php:5256
+#: wpuf-functions.php:5284
 msgid "Charge for each post"
 msgstr ""
 
-#: wpuf-functions.php:5258
+#: wpuf-functions.php:5286
 msgid "Set a fee for each post submission"
 msgstr ""
 
-#: wpuf-functions.php:5266
+#: wpuf-functions.php:5294
 msgid "Select the page users will be redirected to after a successful payment"
 msgstr ""
 
-#: wpuf-functions.php:5277
+#: wpuf-functions.php:5305
 msgid ""
 "Enable email alerts for new post submissions via the frontend form. This "
 "feature keeps you updated on user activity, allowing for timely review and "
 "approval of content"
 msgstr ""
 
-#: wpuf-functions.php:5285
+#: wpuf-functions.php:5313
 msgid "Enable email alerts for each new post submitted through this form"
 msgstr ""
 
-#: wpuf-functions.php:5326
+#: wpuf-functions.php:5354
 msgid ""
 "Enable this feature to receive email alerts whenever an existing post is "
 "updated through the frontend form. This ensures you're promptly informed "
@@ -8453,47 +8498,47 @@ msgid ""
 "updates"
 msgstr ""
 
-#: wpuf-functions.php:5341
+#: wpuf-functions.php:5369
 msgid ""
 "Customize the appearance and layout of your form. Select a form template "
 "that best suits your website's design for a cohesive look and feel"
 msgstr ""
 
-#: wpuf-functions.php:5349
+#: wpuf-functions.php:5377
 msgid "Apply your site's theme CSS for consistent styling and appearance"
 msgstr ""
 
-#: wpuf-functions.php:5362
+#: wpuf-functions.php:5390
 msgid ""
 "Customize the position of form labels for improved user navigation and "
 "clarity"
 msgstr ""
 
-#: wpuf-functions.php:5374
+#: wpuf-functions.php:5402
 msgid "Enable User Comment"
 msgstr ""
 
-#: wpuf-functions.php:5376
+#: wpuf-functions.php:5404
 msgid "Allow users to comment on posts submitted via this form"
 msgstr ""
 
-#: wpuf-functions.php:5383
+#: wpuf-functions.php:5411
 msgid "Enable Form Scheduling"
 msgstr ""
 
-#: wpuf-functions.php:5385
+#: wpuf-functions.php:5413
 msgid "Set specific dates and times for when the form will be accessible to users"
 msgstr ""
 
-#: wpuf-functions.php:5410
+#: wpuf-functions.php:5438
 msgid "Limit Form Entries"
 msgstr ""
 
-#: wpuf-functions.php:5412
+#: wpuf-functions.php:5440
 msgid "Limit the number of submissions allowed for the form"
 msgstr ""
 
-#: wpuf-functions.php:5475
+#: wpuf-functions.php:5503
 msgid "Trash"
 msgstr ""
 
@@ -8538,6 +8583,11 @@ msgstr ""
 
 #. Author URI of the plugin/theme
 msgid "https://wedevs.com/?utm_source=WPUF_Author_URI"
+msgstr ""
+
+#: admin/html/form-submission-restriction.php:144
+msgctxt "date range"
+msgid "To"
 msgstr ""
 
 #: includes/Setup_Wizard.php:58
@@ -8600,7 +8650,7 @@ msgctxt "enhanced select"
 msgid "Searching&hellip;"
 msgstr ""
 
-#: wpuf-functions.php:1554
+#: wpuf-functions.php:1572
 msgctxt "tag delimiter"
 msgid ","
 msgstr ""

@@ -483,7 +483,7 @@ class Frontend_Form extends Frontend_Render_Form {
             $login        = wpuf()->frontend->simple_login->get_login_url();
             $register     = wpuf()->frontend->simple_login->get_registration_url();
             $replace      = [ "<a href='" . $login . "'>Login</a>", "<a href='" . $register . "'>Register</a>" ];
-            $placeholders = [ '%login%', '%register%' ];
+            $placeholders = [ '{login}', '{register}' ];
 
             $this->form_settings['message_restrict'] = str_replace( $placeholders, $replace, $this->form_settings['message_restrict'] );
         }
@@ -524,7 +524,17 @@ class Frontend_Form extends Frontend_Render_Form {
         }
 
         $mail_body   = $this->prepare_mail_body( $this->form_settings['notification']['new_body'], $author_id, $post_id );
-        $to          = $this->prepare_mail_body( $this->form_settings['notification']['new_to'], $author_id, $post_id );
+        // Validate & sanitise recipient addresses before sending
+        $to_raw      = $this->prepare_mail_body( $this->form_settings['notification']['new_to'], $author_id, $post_id );
+        $to          = implode(
+            ',',
+            array_filter(
+                array_map( static function ( $addr ) {
+                    $addr = trim( $addr );
+                    return is_email( $addr ) ? $addr : null;
+                }, explode( ',', $to_raw ) )
+            )
+        );
         $subject     = $this->prepare_mail_body( $this->form_settings['notification']['new_subject'], $author_id, $post_id );
         $subject     = wp_strip_all_tags( $subject );
         $mail_body   = get_formatted_mail_body( $mail_body, $subject );
@@ -532,7 +542,9 @@ class Frontend_Form extends Frontend_Render_Form {
 
         // update the information for future to check if the email is already verified
         update_user_meta( $author_id, 'wpuf_guest_email_verified', 1 );
-        wp_mail( $to, $subject, $mail_body, $headers );
+        if ( ! empty( $to ) ) {
+            wp_mail( $to, $subject, $mail_body, $headers );
+        }
     }
 
     /**

@@ -43,9 +43,11 @@ class Pro_Upgrades {
         $pro_fields = [
             'repeat_field',
             'date_field',
+            'time_field',
             'file_upload',
             'country_list_field',
             'numeric_text_field',
+            'phone_field',
             'address_field',
             'google_map',
             'step_start',

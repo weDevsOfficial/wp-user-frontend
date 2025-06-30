@@ -1094,10 +1094,28 @@ function wpuf_show_custom_fields( $content ) {
                     $address_html = '';
 
                     if ( isset( $field_value[0] ) && is_array( $field_value[0] ) ) {
+                        $country_state = new WeDevs\Wpuf\Data\Country_State();
+                        $country_value = isset( $field_value[0]['country_select'] ) ? $field_value[0]['country_select'] : '';
+                        
                         foreach ( $field_value[0] as $field_key => $value ) {
                             if ( 'country_select' === $field_key ) {
                                 if ( isset( $countries[ $value ] ) ) {
                                     $value = $countries[ $value ];
+                                }
+                            } elseif ( 'state' === $field_key && ! empty( $country_value ) ) {
+                                // Handle state field by looking up the full state name
+                                // First try PRO plugin states if available
+                                if ( wpuf()->is_pro() && file_exists( WPUF_PRO_INCLUDES . '/states.php' ) ) {
+                                    $pro_states = include WPUF_PRO_INCLUDES . '/states.php';
+                                    if ( isset( $pro_states[ $country_value ] ) && isset( $pro_states[ $country_value ][ $value ] ) ) {
+                                        $value = $pro_states[ $country_value ][ $value ];
+                                    }
+                                } else {
+                                    // Fallback to free plugin Country_State class
+                                    $state_name = $country_state->getStateName( $value, $country_value );
+                                    if ( $state_name ) {
+                                        $value = $state_name;
+                                    }
                                 }
                             }
 
@@ -4977,6 +4995,16 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                         'wp-user-frontend'
                     ),
                     'fields' => [
+                        'show_form_title' => [
+                            'label'     => __( 'Show Form Title', 'wp-user-frontend' ),
+                            'type'      => 'toggle',
+                            'help_text' => __( 'Toggle whether the form title should be displayed on the frontend', 'wp-user-frontend' ),
+                        ],
+                        'form_description' => [
+                            'label'     => __( 'Form Description', 'wp-user-frontend' ),
+                            'type'      => 'textarea',
+                            'help_text' => __( 'Add a brief message or instruction that will be displayed before the form — helpful for guiding users before they start filling it out', 'wp-user-frontend' ),
+                        ],
                         'post_type'        => [
                             'label'     => __( 'Post Type', 'wp-user-frontend' ),
                             'type'      => 'select',

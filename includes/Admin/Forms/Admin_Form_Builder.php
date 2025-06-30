@@ -159,6 +159,7 @@ class Admin_Form_Builder {
         wpuf_require_once( WPUF_ROOT . '/includes/Free/Pro_Prompt.php' );
 
         $lock_icon = WPUF_ASSET_URI . '/images/crown-circle.svg';
+        $free_icon = WPUF_ASSET_URI . '/images/free-circle.svg';
 
         $wpuf_form_builder = apply_filters(
             'wpuf_form_builder_localize_script',
@@ -185,6 +186,7 @@ class Admin_Form_Builder {
                 'settings_titles'  => wpuf_get_post_form_builder_setting_menu_titles(),
                 'settings_items'   => wpuf_get_post_form_builder_setting_menu_contents(),
                 'lock_icon'        => $lock_icon,
+                'free_icon'        => $free_icon,
             ]
         );
         $wpuf_form_builder = wpuf_unset_conditional( $wpuf_form_builder );

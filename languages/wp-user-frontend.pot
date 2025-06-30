@@ -4,7 +4,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 4.1.5\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
+<<<<<<< Updated upstream
 "POT-Creation-Date: 2025-06-25 11:26:12+00:00\n"
+=======
+"POT-Creation-Date: 2025-06-23 05:19:57+00:00\n"
+>>>>>>> Stashed changes
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -353,7 +357,7 @@ msgstr ""
 
 #: admin/html/form-settings-display.php:19
 #: includes/Admin/Customizer_Options.php:119
-#: includes/Fields/Field_Contract.php:353
+#: includes/Fields/Field_Contract.php:356
 #: includes/Fields/Form_Field_Column.php:112 wpuf-functions.php:5360
 msgid "Hidden"
 msgstr ""
@@ -370,10 +374,10 @@ msgstr ""
 #: includes/Admin/Admin_Subscription.php:338
 #: includes/Admin/Admin_Subscription.php:832
 #: includes/Admin/Forms/Admin_Template.php:69
-#: includes/Fields/Field_Contract.php:301
-#: includes/Fields/Field_Contract.php:394
-#: includes/Fields/Field_Contract.php:408
-#: includes/Fields/Field_Contract.php:472
+#: includes/Fields/Field_Contract.php:303
+#: includes/Fields/Field_Contract.php:397
+#: includes/Fields/Field_Contract.php:411
+#: includes/Fields/Field_Contract.php:475
 #: includes/Fields/Form_Field_Checkbox.php:84
 #: includes/Fields/Form_Field_Radio.php:89 includes/Free/Form_Element.php:525
 #: includes/Frontend.php:113 includes/functions/settings-options.php:123
@@ -387,10 +391,10 @@ msgstr ""
 #: includes/Admin/Admin_Subscription.php:336
 #: includes/Admin/Admin_Subscription.php:832
 #: includes/Admin/Forms/Admin_Template.php:66
-#: includes/Fields/Field_Contract.php:300
-#: includes/Fields/Field_Contract.php:393
-#: includes/Fields/Field_Contract.php:407
-#: includes/Fields/Field_Contract.php:471
+#: includes/Fields/Field_Contract.php:302
+#: includes/Fields/Field_Contract.php:396
+#: includes/Fields/Field_Contract.php:410
+#: includes/Fields/Field_Contract.php:474
 #: includes/Fields/Form_Field_Checkbox.php:83
 #: includes/Fields/Form_Field_Radio.php:88 includes/Free/Form_Element.php:524
 #: includes/Frontend.php:112 includes/functions/settings-options.php:122
@@ -667,7 +671,7 @@ msgstr ""
 
 #: admin/html/form-submission-restriction.php:11 admin/template-post.php:160
 #: includes/Admin/Forms/Template_Post.php:177
-#: includes/Fields/Field_Contract.php:486 includes/Free/Edit_Profile.php:103
+#: includes/Fields/Field_Contract.php:489 includes/Free/Edit_Profile.php:103
 #: templates/registration-form.php:31
 msgid "Name"
 msgstr ""
@@ -925,39 +929,39 @@ msgstr ""
 
 #: admin/posting.php:74 class/render-form.php:1688
 #: includes/Admin/Posting.php:84 includes/Admin.php:133
-#: includes/Fields/Field_Contract.php:932 includes/Frontend.php:72
+#: includes/Fields/Field_Contract.php:935 includes/Frontend.php:72
 #: includes/Render_Form.php:1545
 msgid "Are you sure?"
 msgstr ""
 
 #: admin/posting.php:75 includes/Admin/Forms/Admin_Form_Builder.php:309
 #: includes/Admin/Posting.php:85 includes/Admin.php:134
-#: includes/Fields/Field_Contract.php:933 includes/Frontend.php:73
+#: includes/Fields/Field_Contract.php:936 includes/Frontend.php:73
 msgid "Yes, delete it"
 msgstr ""
 
 #: admin/posting.php:76 includes/Admin/Posting.php:86 includes/Admin.php:135
-#: includes/Fields/Field_Contract.php:934 includes/Frontend.php:74
+#: includes/Fields/Field_Contract.php:937 includes/Frontend.php:74
 msgid "No, cancel it"
 msgstr ""
 
 #: admin/posting.php:82 includes/Admin/Posting.php:92 includes/Admin.php:143
-#: includes/Fields/Field_Contract.php:944 includes/Frontend.php:84
+#: includes/Fields/Field_Contract.php:947 includes/Frontend.php:84
 msgid "Allowed Files"
 msgstr ""
 
 #: admin/posting.php:85 includes/Admin/Posting.php:95 includes/Admin.php:149
-#: includes/Fields/Field_Contract.php:950 includes/Frontend.php:90
+#: includes/Fields/Field_Contract.php:953 includes/Frontend.php:90
 msgid "Maximum number of files reached!"
 msgstr ""
 
 #: admin/posting.php:86 includes/Admin/Posting.php:96 includes/Admin.php:150
-#: includes/Fields/Field_Contract.php:951 includes/Frontend.php:91
+#: includes/Fields/Field_Contract.php:954 includes/Frontend.php:91
 msgid "The file you have uploaded exceeds the file size limit. Please try again."
 msgstr ""
 
 #: admin/posting.php:87 includes/Admin/Posting.php:97 includes/Admin.php:151
-#: includes/Fields/Field_Contract.php:955 includes/Frontend.php:95
+#: includes/Fields/Field_Contract.php:958 includes/Frontend.php:95
 msgid "You have uploaded an incorrect file type. Please try again."
 msgstr ""
 
@@ -1054,7 +1058,7 @@ msgid "Max. file size"
 msgstr ""
 
 #: admin/template-post.php:147 includes/Admin/Forms/Template_Post.php:154
-#: includes/Fields/Field_Contract.php:443
+#: includes/Fields/Field_Contract.php:446
 msgid "Type"
 msgstr ""
 
@@ -1065,85 +1069,85 @@ msgid "Dropdown"
 msgstr ""
 
 #: admin/template-post.php:150 includes/Admin/Forms/Template_Post.php:159
-#: includes/Fields/Field_Contract.php:447
+#: includes/Fields/Field_Contract.php:450
 #: includes/Fields/Form_Field_MultiDropdown.php:11
 #: includes/Fields/Form_Field_MultiDropdown.php:81
 msgid "Multi Select"
 msgstr ""
 
 #: admin/template-post.php:151 includes/Admin/Forms/Template_Post.php:162
-#: includes/Fields/Field_Contract.php:448
+#: includes/Fields/Field_Contract.php:451
 #: includes/Fields/Form_Field_Checkbox.php:11
 msgid "Checkbox"
 msgstr ""
 
 #: admin/template-post.php:152 includes/Admin/Forms/Template_Post.php:165
-#: includes/Fields/Field_Contract.php:449
+#: includes/Fields/Field_Contract.php:452
 msgid "Text Input"
 msgstr ""
 
 #: admin/template-post.php:153 includes/Admin/Forms/Template_Post.php:168
-#: includes/Fields/Field_Contract.php:450
+#: includes/Fields/Field_Contract.php:453
 msgid "Ajax"
 msgstr ""
 
 #: admin/template-post.php:158 includes/Admin/Forms/Template_Post.php:175
-#: includes/Fields/Field_Contract.php:483
+#: includes/Fields/Field_Contract.php:486
 msgid "Order By"
 msgstr ""
 
 #: admin/template-post.php:161 includes/Admin/Forms/Template_Post.php:180
-#: includes/Fields/Field_Contract.php:487
+#: includes/Fields/Field_Contract.php:490
 msgid "Term ID"
 msgstr ""
 
 #: admin/template-post.php:162 includes/Admin/Forms/Template_Post.php:183
-#: includes/Fields/Field_Contract.php:488
+#: includes/Fields/Field_Contract.php:491
 msgid "Slug"
 msgstr ""
 
 #: admin/template-post.php:163 includes/Admin/Forms/Template_Post.php:186
-#: includes/Fields/Field_Contract.php:489
+#: includes/Fields/Field_Contract.php:492
 msgid "Count"
 msgstr ""
 
 #: admin/template-post.php:164 includes/Admin/Forms/Template_Post.php:189
-#: includes/Fields/Field_Contract.php:490
+#: includes/Fields/Field_Contract.php:493
 msgid "Term Group"
 msgstr ""
 
 #: admin/template-post.php:169 includes/Admin/Forms/Template_Post.php:196
-#: includes/Fields/Field_Contract.php:499
+#: includes/Fields/Field_Contract.php:502
 msgid "Order"
 msgstr ""
 
 #: admin/template-post.php:171 includes/Admin/Forms/Template_Post.php:198
-#: includes/Fields/Field_Contract.php:503
+#: includes/Fields/Field_Contract.php:506
 msgid "ASC"
 msgstr ""
 
 #: admin/template-post.php:172 includes/Admin/Forms/Template_Post.php:201
-#: includes/Fields/Field_Contract.php:504
+#: includes/Fields/Field_Contract.php:507
 msgid "DESC"
 msgstr ""
 
 #: admin/template-post.php:177 includes/Admin/Forms/Template_Post.php:208
-#: includes/Fields/Field_Contract.php:513
+#: includes/Fields/Field_Contract.php:516
 msgid "Selection Type"
 msgstr ""
 
 #: admin/template-post.php:179 includes/Admin/Forms/Template_Post.php:210
-#: includes/Fields/Field_Contract.php:516
+#: includes/Fields/Field_Contract.php:519
 msgid "Exclude"
 msgstr ""
 
 #: admin/template-post.php:180 includes/Admin/Forms/Template_Post.php:213
-#: includes/Fields/Field_Contract.php:517
+#: includes/Fields/Field_Contract.php:520
 msgid "Include"
 msgstr ""
 
 #: admin/template-post.php:181 includes/Admin/Forms/Template_Post.php:216
-#: includes/Fields/Field_Contract.php:518
+#: includes/Fields/Field_Contract.php:521
 msgid "Child of"
 msgstr ""
 
@@ -1160,18 +1164,18 @@ msgid "WooCommerce Attribute"
 msgstr ""
 
 #: admin/template-post.php:197 includes/Admin/Forms/Template_Post.php:237
-#: includes/Fields/Field_Contract.php:544
+#: includes/Fields/Field_Contract.php:547
 msgid "This taxonomy is a WooCommerce attribute"
 msgstr ""
 
 #: admin/template-post.php:203 includes/Admin/Forms/Template_Post.php:243
-#: includes/Fields/Field_Contract.php:348
+#: includes/Fields/Field_Contract.php:351
 #: includes/Fields/Form_Field_Column.php:107
 msgid "Visibility"
 msgstr ""
 
 #: admin/template-post.php:209 includes/Admin/Forms/Template_Post.php:250
-#: includes/Fields/Field_Contract.php:555
+#: includes/Fields/Field_Contract.php:558
 msgid "Visible on product page"
 msgstr ""
 
@@ -1222,24 +1226,24 @@ msgstr ""
 
 #: admin/template.php:60 includes/Admin/Customizer_Options.php:121
 #: includes/Admin/Forms/Admin_Template.php:61
-#: includes/Fields/Field_Contract.php:297
+#: includes/Fields/Field_Contract.php:299
 msgid "Required"
 msgstr ""
 
 #: admin/template.php:69 includes/Admin/Forms/Admin_Template.php:74
-#: includes/Fields/Field_Contract.php:279
+#: includes/Fields/Field_Contract.php:281
 msgid "Field Label"
 msgstr ""
 
 #: admin/template.php:70 includes/Admin/Forms/Admin_Template.php:77
-#: includes/Fields/Field_Contract.php:283
+#: includes/Fields/Field_Contract.php:285
 msgid "Enter a title of this field"
 msgstr ""
 
 #: admin/template.php:75 admin/template.php:550
 #: includes/Admin/Forms/Admin_Template.php:82
 #: includes/Admin/Forms/Admin_Template.php:627
-#: includes/Fields/Field_Contract.php:366
+#: includes/Fields/Field_Contract.php:369
 #: includes/Fields/Form_Field_Hidden.php:41
 msgid "Meta Key"
 msgstr ""
@@ -1247,23 +1251,23 @@ msgstr ""
 #: admin/template.php:76 admin/template.php:551
 #: includes/Admin/Forms/Admin_Template.php:85
 #: includes/Admin/Forms/Admin_Template.php:630
-#: includes/Fields/Field_Contract.php:370
+#: includes/Fields/Field_Contract.php:373
 #: includes/Fields/Form_Field_Hidden.php:45
 msgid "Name of the meta key this field will save to"
 msgstr ""
 
 #: admin/template.php:87 includes/Admin/Forms/Admin_Template.php:99
-#: includes/Fields/Field_Contract.php:288
+#: includes/Fields/Field_Contract.php:290
 msgid "Help text"
 msgstr ""
 
 #: admin/template.php:88 includes/Admin/Forms/Admin_Template.php:100
-#: includes/Fields/Field_Contract.php:292
+#: includes/Fields/Field_Contract.php:294
 msgid "Give the user some information about this field"
 msgstr ""
 
 #: admin/template.php:92 includes/Admin/Forms/Admin_Template.php:106
-#: includes/Fields/Field_Contract.php:327
+#: includes/Fields/Field_Contract.php:330
 #: includes/Fields/Form_Field_Column.php:95
 msgid "CSS Class Name"
 msgstr ""
@@ -1275,38 +1279,38 @@ msgstr ""
 #: admin/template.php:117 admin/template.php:175
 #: includes/Admin/Forms/Admin_Template.php:132
 #: includes/Admin/Forms/Admin_Template.php:200
-#: includes/Fields/Field_Contract.php:583
-#: includes/Fields/Field_Contract.php:667
+#: includes/Fields/Field_Contract.php:586
+#: includes/Fields/Field_Contract.php:670
 msgid "Placeholder text"
 msgstr ""
 
 #: admin/template.php:118 includes/Admin/Forms/Admin_Template.php:134
-#: includes/Fields/Field_Contract.php:589
-#: includes/Fields/Field_Contract.php:671
+#: includes/Fields/Field_Contract.php:592
+#: includes/Fields/Field_Contract.php:674
 msgid "Text for HTML5 placeholder attribute"
 msgstr ""
 
 #: admin/template.php:122 admin/template.php:180
 #: includes/Admin/Forms/Admin_Template.php:139
 #: includes/Admin/Forms/Admin_Template.php:206
-#: includes/Fields/Field_Contract.php:594
-#: includes/Fields/Field_Contract.php:679
+#: includes/Fields/Field_Contract.php:597
+#: includes/Fields/Field_Contract.php:682
 msgid "Default value"
 msgstr ""
 
 #: admin/template.php:123 includes/Admin/Forms/Admin_Template.php:141
-#: includes/Fields/Field_Contract.php:600
-#: includes/Fields/Field_Contract.php:683
+#: includes/Fields/Field_Contract.php:603
+#: includes/Fields/Field_Contract.php:686
 msgid "The default value this field will have"
 msgstr ""
 
 #: admin/template.php:127 includes/Admin/Forms/Admin_Template.php:146
-#: includes/Fields/Field_Contract.php:605
+#: includes/Fields/Field_Contract.php:608
 msgid "Size"
 msgstr ""
 
 #: admin/template.php:128 includes/Admin/Forms/Admin_Template.php:148
-#: includes/Fields/Field_Contract.php:610
+#: includes/Fields/Field_Contract.php:613
 msgid "Size of this input field"
 msgstr ""
 
@@ -1323,35 +1327,35 @@ msgid "Number of words the author to be restricted in"
 msgstr ""
 
 #: admin/template.php:165 includes/Admin/Forms/Admin_Template.php:188
-#: includes/Fields/Field_Contract.php:649
+#: includes/Fields/Field_Contract.php:652
 msgid "Rows"
 msgstr ""
 
 #: admin/template.php:170 includes/Admin/Forms/Admin_Template.php:194
-#: includes/Fields/Field_Contract.php:658
+#: includes/Fields/Field_Contract.php:661
 #: includes/Fields/Form_Field_Column.php:11
 msgid "Columns"
 msgstr ""
 
 #: admin/template.php:185 includes/Admin/Forms/Admin_Template.php:212
-#: includes/Fields/Field_Contract.php:688
+#: includes/Fields/Field_Contract.php:691
 #: includes/Fields/Form_Field_Textarea.php:12
 #: includes/Fields/Form_Field_Textarea.php:133
 msgid "Textarea"
 msgstr ""
 
 #: admin/template.php:188 includes/Admin/Forms/Admin_Template.php:217
-#: includes/Fields/Field_Contract.php:691
+#: includes/Fields/Field_Contract.php:694
 msgid "Normal"
 msgstr ""
 
 #: admin/template.php:189 includes/Admin/Forms/Admin_Template.php:220
-#: includes/Fields/Field_Contract.php:692
+#: includes/Fields/Field_Contract.php:695
 msgid "Rich textarea"
 msgstr ""
 
 #: admin/template.php:190 includes/Admin/Forms/Admin_Template.php:223
-#: includes/Fields/Field_Contract.php:693
+#: includes/Fields/Field_Contract.php:696
 msgid "Teeny Rich textarea"
 msgstr ""
 
@@ -1376,7 +1380,7 @@ msgstr ""
 #: includes/Admin/Forms/Admin_Template.php:461
 #: includes/Admin/Forms/Admin_Template.php:498
 #: includes/Admin/Forms/Admin_Template.php:535
-#: includes/Fields/Field_Contract.php:631 templates/dashboard/list.php:19
+#: includes/Fields/Field_Contract.php:634 templates/dashboard/list.php:19
 #: templates/dashboard/posts.php:109
 msgid "Options"
 msgstr ""
@@ -1384,7 +1388,7 @@ msgstr ""
 #: admin/template.php:417 admin/template.php:448
 #: includes/Admin/Forms/Admin_Template.php:478
 #: includes/Admin/Forms/Admin_Template.php:515
-#: includes/Fields/Field_Contract.php:463
+#: includes/Fields/Field_Contract.php:466
 #: includes/Fields/Form_Field_Dropdown.php:91
 msgid ""
 "First element of the select dropdown. Leave this empty if you don't want to "
@@ -1394,7 +1398,7 @@ msgstr ""
 #: admin/template.php:427 admin/template.php:458
 #: includes/Admin/Forms/Admin_Template.php:492
 #: includes/Admin/Forms/Admin_Template.php:529
-#: includes/Fields/Field_Contract.php:459
+#: includes/Fields/Field_Contract.php:462
 #: includes/Fields/Form_Field_Dropdown.php:87
 msgid "Select Text"
 msgstr ""
@@ -2578,7 +2582,7 @@ msgstr ""
 #: includes/Admin/Forms/Admin_Form.php:254
 #: includes/Admin/Forms/Admin_Form.php:260
 #: includes/Admin/Forms/Post/Templates/Post_Form_Template_Post.php:46
-#: includes/Fields/Field_Contract.php:236
+#: includes/Fields/Field_Contract.php:238
 #: includes/Fields/Form_Field_Dropdown.php:110
 #: includes/Fields/Form_Field_MultiDropdown.php:85
 #: includes/Fields/Form_Field_Post_Taxonomy.php:471
@@ -2593,6 +2597,105 @@ msgstr ""
 msgid "Taxonomies"
 msgstr ""
 
+<<<<<<< Updated upstream
+=======
+#: includes/Admin/Forms/Admin_Form_Builder.php:302
+msgid "Advanced Options"
+msgstr ""
+
+#: includes/Admin/Forms/Admin_Form_Builder.php:303
+msgid "Delete Field Confirmation"
+msgstr ""
+
+#: includes/Admin/Forms/Admin_Form_Builder.php:304
+msgid "Are you sure you want to delete this field? This action cannot be undone."
+msgstr ""
+
+#: includes/Admin/Forms/Admin_Form_Builder.php:309
+msgid "Okay"
+msgstr ""
+
+#: includes/Admin/Forms/Admin_Form_Builder.php:311
+#: includes/Admin/views/shortcode-builder.php:70
+msgid "Close"
+msgstr ""
+
+#: includes/Admin/Forms/Admin_Form_Builder.php:312
+msgid "This field must contain at least one choice"
+msgstr ""
+
+#: includes/Admin/Forms/Admin_Form_Builder.php:313
+#: includes/Fields/Form_Field_Checkbox.php:110
+#: includes/Fields/Form_Field_Dropdown.php:109
+#: includes/Fields/Form_Field_MultiDropdown.php:84
+#: includes/Fields/Form_Field_Radio.php:114
+msgid "Option"
+msgstr ""
+
+#: includes/Admin/Forms/Admin_Form_Builder.php:314
+msgid "Column"
+msgstr ""
+
+#: includes/Admin/Forms/Admin_Form_Builder.php:315
+msgid "This field must contain at least one column"
+msgstr ""
+
+#: includes/Admin/Forms/Admin_Form_Builder.php:316
+msgid "is a pro feature"
+msgstr ""
+
+#: includes/Admin/Forms/Admin_Form_Builder.php:317
+msgid ""
+"<p class=\"wpuf-text-gray-500 wpuf-font-medium wpuf-text-xl\">Please "
+"upgrade to the Pro version to unlock all these awesome features</p>"
+msgstr ""
+
+#: includes/Admin/Forms/Admin_Form_Builder.php:322
+#: includes/Fields/Field_Contract.php:449
+msgid "Select"
+msgstr ""
+
+#: includes/Admin/Forms/Admin_Form_Builder.php:323
+msgid "Saved form data"
+msgstr ""
+
+#: includes/Admin/Forms/Admin_Form_Builder.php:324
+msgid "You have unsaved changes."
+msgstr ""
+
+#: includes/Admin/Forms/Admin_Form_Handler.php:350
+#: includes/Admin/Forms/Admin_Form_Handler.php:391
+#. translators: %d is the number of forms
+#. translators: %s is the form url
+msgid "%d form moved to the trash."
+msgid_plural "%d forms moved to the trash."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/Admin/Forms/Admin_Form_Handler.php:359
+#: includes/Admin/Forms/Admin_Form_Handler.php:400
+#. translators: %d is the number of forms
+msgid "%d form restored from the trash."
+msgid_plural "%d forms restored from the trash."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/Admin/Forms/Admin_Form_Handler.php:368
+#: includes/Admin/Forms/Admin_Form_Handler.php:409
+#. translators: %d is the number of forms
+#. translators: %d is the number of form
+msgid "%d form permanently deleted."
+msgid_plural "%d forms permanently deleted."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/Admin/Forms/Admin_Form_Handler.php:378
+#: includes/Admin/Forms/Admin_Form_Handler.php:419
+#. translators: %s is the form url
+msgid "Form duplicated successfully. <a href=\"%s\">View form.</a>"
+msgstr ""
+
+>>>>>>> Stashed changes
 #: includes/Admin/Forms/Field_Manager.php:153
 #: includes/class-field-manager.php:185
 msgid "Custom Fields"
@@ -3531,7 +3634,7 @@ msgid "Subscription &amp; Payment"
 msgstr ""
 
 #: includes/Admin/views/support.php:307 includes/Admin/views/support.php:701
-#: includes/Fields/Field_Contract.php:69
+#: includes/Fields/Field_Contract.php:71
 msgid "Content Restriction"
 msgstr ""
 
@@ -4262,45 +4365,59 @@ msgstr ""
 msgid "Maximum"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:55
+#: includes/Fields/Field_Contract.php:51
+msgid "Choose whether to enforce a minimum or maximum content limit"
+msgstr ""
+
+#: includes/Fields/Field_Contract.php:56
 msgid "Content restricted by"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:58
+#: includes/Fields/Field_Contract.php:59
 msgid "Character"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:59
+#: includes/Fields/Field_Contract.php:60
 msgid "Word"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:74
+#: includes/Fields/Field_Contract.php:66
+msgid ""
+"Select whether the content restriction applies by character count or word "
+"count"
+msgstr ""
+
+#: includes/Fields/Field_Contract.php:76
 msgid "Number of characters or words the author to be restricted in"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:307
+#: includes/Fields/Field_Contract.php:309
 msgid ""
 "Check this option to mark the field required. A form will not submit unless "
 "all required fields are provided."
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:312
+#: includes/Fields/Field_Contract.php:314
 msgid "Field Size"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:315
+#: includes/Fields/Field_Contract.php:317
 msgid "Small"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:316
+#: includes/Fields/Field_Contract.php:318
 msgid "Medium"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:317
+#: includes/Fields/Field_Contract.php:319
 msgid "Large"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:331
+#: includes/Fields/Field_Contract.php:325
+msgid "Adjust the visual width of the input field on the front-end"
+msgstr ""
+
+#: includes/Fields/Field_Contract.php:334
 #: includes/Fields/Form_Field_Column.php:99
 msgid ""
 "Provide a container class name for this field. Available classes: "
@@ -4308,92 +4425,92 @@ msgid ""
 "wpuf-col-one-third-last"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:352
+#: includes/Fields/Field_Contract.php:355
 #: includes/Fields/Form_Field_Column.php:111
 msgid "Everyone"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:354
+#: includes/Fields/Field_Contract.php:357
 #: includes/Fields/Form_Field_Column.php:113
 msgid "Logged in users only"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:355
+#: includes/Fields/Field_Contract.php:358
 #: includes/Fields/Form_Field_Column.php:114
 msgid "Subscription users only"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:359
+#: includes/Fields/Field_Contract.php:362
 #: includes/Fields/Form_Field_Column.php:118
 msgid "Select option"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:375
+#: includes/Fields/Field_Contract.php:378
 msgid "Read Only"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:378
+#: includes/Fields/Field_Contract.php:381
 msgid "Make this field read only "
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:382
+#: includes/Fields/Field_Contract.php:385
 msgid "Make this field read only"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:390
+#: includes/Fields/Field_Contract.php:393
 msgid "Show Data in Post"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:400
+#: includes/Fields/Field_Contract.php:403
 msgid "Select Yes if you want to show the field data in single post."
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:404
+#: includes/Fields/Field_Contract.php:407
 msgid "Hide Field Label in Post"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:414
+#: includes/Fields/Field_Contract.php:417
 msgid "Select Yes if you want to hide the field label in single post."
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:468
+#: includes/Fields/Field_Contract.php:471
 #: includes/Fields/Form_Field_Checkbox.php:80
 #: includes/Fields/Form_Field_Radio.php:85
 msgid "Show in inline list"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:478
+#: includes/Fields/Field_Contract.php:481
 #: includes/Fields/Form_Field_Checkbox.php:90
 #: includes/Fields/Form_Field_Radio.php:95
 msgid "Show this option in an inline list"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:527
+#: includes/Fields/Field_Contract.php:530
 msgid "Selection Terms"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:534
+#: includes/Fields/Field_Contract.php:537
 #. translators: %s: left and right arrow
 msgid "Search the terms name. use %1$s %2$s for navigate"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:636
+#: includes/Fields/Field_Contract.php:639
 msgid "Add options for the form field"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:653
+#: includes/Fields/Field_Contract.php:656
 msgid "Number of rows in textarea"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:662
+#: includes/Fields/Field_Contract.php:665
 msgid "Number of columns in textarea"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:701
+#: includes/Fields/Field_Contract.php:704
 msgid "Select buttons to exclude"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:710
+#: includes/Fields/Field_Contract.php:713
 #. translators: %1$s: left arrow, %2$s: right arrow
 msgid ""
 "Select button for exclude from frontend. Search button name. use %1$s %2$s "

@@ -622,6 +622,7 @@
         <input
             type="text"
             v-model="value"
+            :readonly="option_field.is_read_only"
             :class="builder_class_names('text')">
     </div>
 </div>

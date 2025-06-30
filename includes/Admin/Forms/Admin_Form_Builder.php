@@ -118,24 +118,32 @@ class Admin_Form_Builder {
         wp_enqueue_script( 'zxcvbn' );
         wp_enqueue_script( 'password-strength-meter' );
         wp_enqueue_script( 'wpuf-form-builder-wpuf-forms' );
-        $single_objects = [
-            'post_title',
-            'post_content',
-            'post_excerpt',
-            'featured_image',
-            'user_login',
-            'first_name',
-            'last_name',
-            'nickname',
-            'user_email',
-            'user_url',
-            'user_bio',
-            'password',
-            'user_avatar',
-            'taxonomy',
-            'cloudflare_turnstile',
-            'recaptcha',
-        ];
+        /**
+         * Unique fields list. Only 1 field can be added in a form.
+         */
+        $single_objects[] = 'profile_photo';
+
+        $single_objects = apply_filters(
+            'wpuf_single_form_field',
+                [
+                'post_title',
+                'post_content',
+                'post_excerpt',
+                'featured_image',
+                'user_login',
+                'first_name',
+                'last_name',
+                'nickname',
+                'user_email',
+                'user_url',
+                'user_bio',
+                'password',
+                'user_avatar',
+                'taxonomy',
+                'cloudflare_turnstile',
+                'recaptcha',
+            ]
+        );
         $taxonomy_terms = array_keys( get_taxonomies() );
         $single_objects = array_merge( $single_objects, $taxonomy_terms );
         wp_enqueue_script( 'wpuf-form-builder-mixins' );

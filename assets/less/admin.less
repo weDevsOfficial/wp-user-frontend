@@ -1238,6 +1238,18 @@ span.pro-icon:hover .wpuf-pro-field-tooltip {
     margin-left: 148px !important;
 }
 
+/* Hide WordPress default footer on WP User Frontend pages */
+body.toplevel_page_wp-user-frontend #wpfooter,
+body.user-frontend_page_wpuf-post-forms #wpfooter,
+body.post-type-wpuf_forms #wpfooter,
+body[class*="wpuf"] #wpfooter,
+body[class*="wp-user-frontend"] #wpfooter {
+    display: none !important;
+}
+
+#wpbody-content {
+    padding-bottom: unset !important;
+}
 @import "help.less";
 @import "whats-new.less";
 @import "metabox-tabs.less";

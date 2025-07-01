@@ -680,7 +680,7 @@ export const Selectors = {
             validateRegistrationFormPageName: '//h2[contains(text(), "Profile Forms")]',
 
             // Start
-            clickRegistraionAddForm: '//a[contains(text(),"Add New")]',
+            clickRegistraionAddForm: '//a[contains(@class,"new-wpuf-form")]',
             //hoverBlankForm: '(//a[contains(@class,"new-wpuf-form")])[1]',
             clickBlankForm: '//a[@title="Blank Form" and contains(text(), "Create Form")]',
 
@@ -831,7 +831,7 @@ export const Selectors = {
     postFormSettings: {
         // Navigation and Basic Elements
         formNameInput: '//input[@name="post_title"]',
-        addNewButton: '//a[contains(text(),"Add New")]',
+        addNewButton: '//a[contains(@class,"new-wpuf-form")]',
         saveButton: '//button[normalize-space(text())="Save"]',
         postTypeColumn: '//tbody/tr[1]/td[2]',
         postSubmissionStatusColumn: '//tbody/tr[1]/td[3]',

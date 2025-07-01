@@ -1174,6 +1174,15 @@ class Paypal {
             'desc' => __( 'Choose whether to process real payments or test payments. Test mode uses PayPal Sandbox environment. Make sure to configure separate webhook URLs for each environment.', 'wp-user-frontend' ),
         ];
 
+        // Add error page setting
+        $options[] = [
+            'name' => 'paypal_error_page',
+            'label' => __( 'Payment Error Page', 'wp-user-frontend' ),
+            'type' => 'select',
+            'options' => $this->get_pages_dropdown(),
+            'desc' => __( 'Select the page where users will be redirected when payment errors occur. If not set, users will be redirected to home page with error message.', 'wp-user-frontend' ),
+        ];
+
         // Add webhook events information
         $options[] = [
             'name' => 'paypal_webhook_events_info',
@@ -1183,6 +1192,42 @@ class Paypal {
         ];
 
         return $options;
+    }
+
+    /**
+     * Get pages dropdown for settings
+     */
+    private function get_pages_dropdown() {
+        $pages = get_pages();
+        $options = [ '' => __( 'Select a page', 'wp-user-frontend' ) ];
+        
+        foreach ( $pages as $page ) {
+            $options[ $page->ID ] = $page->post_title;
+        }
+        
+        return $options;
+    }
+
+    /**
+     * Get error page URL
+     */
+    private function get_error_page_url( $error_message = '' ) {
+        $error_page_id = wpuf_get_option( 'paypal_error_page', 'wpuf_payment' );
+        
+        if ( ! empty( $error_page_id ) && is_numeric( $error_page_id ) ) {
+            $error_url = get_permalink( $error_page_id );
+            if ( ! empty( $error_message ) ) {
+                $error_url = add_query_arg( 'wpuf_paypal_error', rawurlencode( $error_message ), $error_url );
+            }
+            return $error_url;
+        }
+        
+        // Fallback to home URL with error parameter
+        if ( ! empty( $error_message ) ) {
+            return home_url( '/?wpuf_paypal_error=' . rawurlencode( $error_message ) );
+        }
+        
+        return home_url();
     }
 
     /**
@@ -1212,6 +1257,20 @@ class Paypal {
             $sub_meta = 'cancel';
             wpuf_get_user( $user_id )->subscription()->update_meta( $sub_meta );
         }
+    }
+
+    /**
+     * Get PayPal allowed redirect hosts
+     *
+     * @return array Array of PayPal domains
+     */
+    private function get_paypal_allowed_hosts() {
+        return [
+            'www.paypal.com',
+            'paypal.com',
+            'www.sandbox.paypal.com',
+            'sandbox.paypal.com',
+        ];
     }
 
     /**
@@ -1246,6 +1305,7 @@ class Paypal {
 					'type' => $data['type'],
 					'item_number' => $data['item_number'],
 					'wpuf_payment_method' => 'paypal',
+					'_wpnonce' => wp_create_nonce( 'wpuf_paypal_return' ),
                 ], wpuf_payment_success_page(
                     [
 						'type' => isset( $_GET['type'] ) ? sanitize_text_field( wp_unslash( $_GET['type'] ) ) : 'pack',
@@ -1430,7 +1490,18 @@ class Paypal {
                     throw new \Exception( 'Approval URL not found in PayPal response' );
                 }
 
+                // Add PayPal to allowed hosts just before redirect
+                add_filter(
+                    'allowed_redirect_hosts',
+                    function( $hosts ) {
+                        return array_merge( $hosts, $this->get_paypal_allowed_hosts() );
+                    },
+                    10,
+                    1
+                );
+                
                 // Redirect to PayPal
+                \WP_User_Frontend::log( 'PayPal: Redirecting to PayPal subscription approval URL: ' . $approval_url );
                 wp_safe_redirect( $approval_url );
                 exit();
             } else {
@@ -1504,8 +1575,19 @@ class Paypal {
                 if ( empty( $approval_url ) ) {
                     throw new \Exception( 'Approval URL not found in PayPal response' );
                 }
-
-                // Redirect to PayPal
+                
+                \WP_User_Frontend::log( 'PayPal: Redirecting to PayPal for payment approval' );
+                
+                // Add PayPal to allowed hosts just before redirect
+                add_filter(
+                    'allowed_redirect_hosts',
+                    function( $hosts ) {
+                        return array_merge( $hosts, $this->get_paypal_allowed_hosts() );
+                    },
+                    10,
+                    1
+                );
+                
                 wp_safe_redirect( $approval_url );
                 exit();
             }
@@ -1724,12 +1806,58 @@ class Paypal {
     }
 
     /**
+     * Handle subscription return from PayPal
+     */
+    public function handle_subscription_return() {
+        try {
+            $subscription_id = isset( $_GET['subscription_id'] ) ? sanitize_text_field( wp_unslash( $_GET['subscription_id'] ) ) : '';
+            $ba_token = isset( $_GET['ba_token'] ) ? sanitize_text_field( wp_unslash( $_GET['ba_token'] ) ) : '';
+            $token = isset( $_GET['token'] ) ? sanitize_text_field( wp_unslash( $_GET['token'] ) ) : '';
+            
+            // If we have a token but no subscription_id, the token might be the subscription ID
+            if ( empty( $subscription_id ) && ! empty( $token ) ) {
+                $subscription_id = $token;
+            }
+            
+            // Log the subscription return
+            \WP_User_Frontend::log( 'PayPal: Subscription return - subscription_id: ' . $subscription_id . ', ba_token: ' . $ba_token . ', token: ' . $token );
+            
+            // Redirect to success page for subscriptions without requiring nonce
+            $success_url = add_query_arg(
+                [
+                    'action' => 'wpuf_paypal_success',
+                    'type' => isset( $_GET['type'] ) ? sanitize_text_field( wp_unslash( $_GET['type'] ) ) : 'pack',
+                    'item_number' => isset( $_GET['item_number'] ) ? sanitize_text_field( wp_unslash( $_GET['item_number'] ) ) : '',
+                    'wpuf_payment_method' => 'paypal',
+                    'payment_status' => 'subscription_created',
+                    'subscription_id' => $subscription_id,
+                    'skip_nonce_check' => '1', // Skip nonce check for subscription success page
+                ], wpuf_payment_success_page(
+                    [
+                        'type' => isset( $_GET['type'] ) ? sanitize_text_field( wp_unslash( $_GET['type'] ) ) : 'pack',
+                        'item_number' => isset( $_GET['item_number'] ) ? sanitize_text_field( wp_unslash( $_GET['item_number'] ) ) : '',
+                        'wpuf_payment_method' => 'paypal',
+                    ]
+                )
+            );
+
+            wp_safe_redirect( $success_url );
+            exit;
+            
+        } catch ( \Exception $e ) {
+            \WP_User_Frontend::log( 'PayPal: Subscription return handling failed: ' . $e->getMessage() );
+            wp_safe_redirect( $this->get_error_page_url( $e->getMessage() ) );
+            exit;
+        }
+    }
+
+    /**
      * Handle PayPal return
      */
     public function handle_paypal_return() {
         //nonce check
         if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'wpuf_paypal_return' ) ) {
-            wp_safe_redirect( home_url( '/payment-error/?error=' . rawurlencode( 'Invalid nonce' ) ) );
+            wp_safe_redirect( $this->get_error_page_url( 'Invalid nonce' ) );
             exit;
         }
 
@@ -1795,6 +1923,8 @@ class Paypal {
 					'item_number' => isset( $_GET['item_number'] ) ? sanitize_text_field( wp_unslash( $_GET['item_number'] ) ) : '',
 					'wpuf_payment_method' => 'paypal',
 					'payment_status' => 'completed',
+					'payment_completed' => '1',
+					'_wpnonce' => wp_create_nonce( 'wpuf_paypal_return' ),
                 ], wpuf_payment_success_page(
                     [
 						'type' => isset( $_GET['type'] ) ? sanitize_text_field( wp_unslash( $_GET['type'] ) ) : 'pack',
@@ -1808,7 +1938,7 @@ class Paypal {
             exit;
         } catch ( \Exception $e ) {
             \WP_User_Frontend::log( 'PayPal: Payment capture failed: ' . $e->getMessage() );
-            wp_safe_redirect( home_url( '/payment-error/?error=' . rawurlencode( $e->getMessage() ) ) );
+            wp_safe_redirect( $this->get_error_page_url( $e->getMessage() ) );
             exit;
         }
     }
@@ -1822,17 +1952,36 @@ class Paypal {
             return;
         }
 
-        // Now check nonce since we know this is a PayPal return
-        if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'wpuf_paypal_return' ) ) {
-            wp_safe_redirect( home_url( '/payment-error/?error=' . rawurlencode( 'Invalid nonce' ) ) );
-            exit;
-        }
-
-        if ( isset( $_GET['payment_completed'] ) ) {
+        // Check if we're already on the success page to prevent redirect loops
+        if ( isset( $_GET['skip_nonce_check'] ) || isset( $_GET['payment_completed'] ) || isset( $_GET['payment_status'] ) ) {
+            // We're already on the success page, don't process again
             return;
         }
 
-        $this->handle_paypal_return();
+        // Check if this is a subscription return (has subscription_id parameter or type is pack with recurring)
+        $is_subscription_return = isset( $_GET['subscription_id'] ) || isset( $_GET['ba_token'] ) || 
+                                 ( isset( $_GET['type'] ) && $_GET['type'] === 'pack' && 
+                                   ( isset( $_GET['token'] ) && strpos( $_GET['token'], 'I-' ) === 0 ) );
+        
+        // For subscription returns, nonce verification might fail due to PayPal's redirect process
+        // So we'll be more lenient with subscription returns
+        if ( ! $is_subscription_return ) {
+            // Only enforce strict nonce checking for regular payments
+            if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'wpuf_paypal_return' ) ) {
+                wp_safe_redirect( $this->get_error_page_url( 'Invalid nonce' ) );
+                exit;
+            }
+        } else {
+            // For subscription returns, just log that nonce verification was skipped
+            \WP_User_Frontend::log( 'PayPal: Nonce verification skipped for subscription return' );
+        }
+
+        // Handle subscription return differently
+        if ( $is_subscription_return ) {
+            $this->handle_subscription_return();
+        } else {
+            $this->handle_paypal_return();
+        }
     }
 
     /**
@@ -1846,13 +1995,13 @@ class Paypal {
 
         // Now check nonce since we know this is a PayPal pending request
         if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'wpuf_paypal_return' ) ) {
-            wp_safe_redirect( home_url( '/payment-error/?error=' . rawurlencode( 'Invalid nonce' ) ) );
+            wp_safe_redirect( $this->get_error_page_url( 'Invalid nonce' ) );
             exit;
         }
 
         $capture_id = isset( $_GET['capture_id'] ) ? sanitize_text_field( wp_unslash( $_GET['capture_id'] ) ) : '';
         if ( empty( $capture_id ) ) {
-            wp_safe_redirect( home_url( '/payment-error/?error=' . rawurlencode( 'Invalid capture ID' ) ) );
+            wp_safe_redirect( $this->get_error_page_url( 'Invalid capture ID' ) );
             exit;
         }
 

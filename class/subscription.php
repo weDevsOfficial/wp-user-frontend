@@ -45,6 +45,9 @@ class WPUF_Subscription {
         //Handle non recurring subscription when expired
         add_action( 'wp', [ $this, 'handle_non_recur_subs' ] );
         add_action( 'non_recur_subs_daily', [ $this, 'cancel_non_recurring_subscription' ] );
+        
+        // Migration hook for sort order
+        add_action( 'admin_init', [ $this, 'migrate_subscription_sort_order' ] );
     }
 
     /**
@@ -271,13 +274,6 @@ class WPUF_Subscription {
         if ( $posts ) {
             foreach ( $posts as $key => $post ) {
                 $post->meta_value = $this->get_subscription_meta( $post->ID, $posts );
-                
-                // Set default sort order if not set
-                if ( empty( $post->meta_value['_sort_order'] ) ) {
-                    $sort_order = 1;
-                    update_post_meta( $post->ID, '_sort_order', $sort_order );
-                    $post->meta_value['_sort_order'] = $sort_order;
-                }
             }
         }
 
@@ -1434,5 +1430,58 @@ class WPUF_Subscription {
                 }
             }
         }
+    }
+
+    /**
+     * Migrate subscription sort order data (runs once)
+     * 
+     * This method ensures that all existing subscription packs have a default sort order
+     * set if they don't already have one. It runs only once per site using a version check.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function migrate_subscription_sort_order() {
+        // Check if migration has already been run
+        $migration_version = get_option( 'wpuf_subscription_sort_order_migration', '0' );
+        $current_version = '1.0';
+        
+        if ( version_compare( $migration_version, $current_version, '>=' ) ) {
+            return;
+        }
+        
+        // Get all subscription packs that might need migration
+        $subscriptions = get_posts( [
+            'post_type'      => 'wpuf_subscription',
+            'posts_per_page' => -1,
+            'post_status'    => 'publish',
+            'meta_query'     => [
+                'relation' => 'OR',
+                [
+                    'key'     => '_sort_order',
+                    'compare' => 'NOT EXISTS'
+                ],
+                [
+                    'key'     => '_sort_order',
+                    'value'   => '',
+                    'compare' => '='
+                ]
+            ]
+        ] );
+        
+        if ( ! empty( $subscriptions ) ) {
+            foreach ( $subscriptions as $subscription ) {
+                $sort_order = get_post_meta( $subscription->ID, '_sort_order', true );
+                
+                // Set default sort order if not set or empty
+                if ( empty( $sort_order ) ) {
+                    update_post_meta( $subscription->ID, '_sort_order', 1 );
+                }
+            }
+        }
+        
+        // Mark migration as completed
+        update_option( 'wpuf_subscription_sort_order_migration', $current_version );
     }
 }

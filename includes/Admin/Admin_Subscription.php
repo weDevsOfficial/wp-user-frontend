@@ -1626,7 +1626,7 @@ class Admin_Subscription {
     /**
      * Set default sort order for existing subscriptions that don't have it
      *
-     * @since 4.0.11
+     * @since WPUF_SINCE
      */
     public function set_default_sort_order_for_existing_subscriptions() {
         // Check if we've already run this migration

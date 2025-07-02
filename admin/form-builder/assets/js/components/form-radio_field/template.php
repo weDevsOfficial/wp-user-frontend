@@ -20,11 +20,12 @@
         <div
             v-if="has_options" v-for="(label, val) in field.options"
             class="wpuf-flex wpuf-items-center">
-            <input type="radio" :class="builder_class_names('radio')">
+            <input
+                type="radio"
+                :class="builder_class_names('radio')">
             <label
                 :value="val"
-                :checked="is_selected(val)"
-                :class="builder_class_names('radio')">{{ label }}</label>
+                :checked="is_selected(val)">{{ label }}</label>
         </div>
     </div>
 

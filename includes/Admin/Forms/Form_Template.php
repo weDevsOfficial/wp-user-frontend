@@ -152,8 +152,8 @@ abstract class Form_Template {
      * @return void
      */
     public function after_insert( $post_id, $form_id, $form_settings ) {
-        // we can return form here if it is not a 'The Event Calendar' event
-        if ( class_exists( 'Tribe__Events__Main' ) && version_compare( Tribe__Events__Main::VERSION, 6, '<' ) ) {
+        // handle The Events Calendar data and for event calendar version below 6
+        if ( class_exists( 'Tribe__Events__Main' ) && version_compare( \Tribe__Events__Main::VERSION, 6, '<' ) ) {
             $timezone       = get_option( 'timezone_string', 'UTC+0' );
             $start_date     = wpuf_current_datetime()->format( self::TIB_DATETIME_FORMAT );
             $end_date       = wpuf_current_datetime()->format( self::TIB_DATETIME_FORMAT );
@@ -164,7 +164,7 @@ abstract class Form_Template {
             $meta_to_delete = [];
 
             if ( 'yes' === $post_data['_EventAllDay'] ) {
-                $p1d            = new DateInterval( 'PT23H59M59S' );
+                $p1d            = new \DateInterval( 'PT23H59M59S' );
                 $new_start_date = $start_date;
                 $new_end_date   = $end_date;
 
@@ -218,7 +218,7 @@ abstract class Form_Template {
          * @param int $post_id The post id, in other words, The Event
          */
         $event_data = apply_filters( 'wpuf_tib_event_meta', $event_data, $post_id );
-        Tribe__Events__API::saveEventMeta( $post_id, $event_data );
+        \Tribe__Events__API::saveEventMeta( $post_id, $event_data );
 
         /**
          * Hook fired just after WPUF is saved 'The Event Calendar' metadata to the DB

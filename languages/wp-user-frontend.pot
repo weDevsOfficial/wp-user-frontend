@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 4.1.6\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2025-06-30 12:20:07+00:00\n"
+"POT-Creation-Date: 2025-07-02 11:36:55+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -433,12 +433,12 @@ msgid "Insert Photo"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-recaptcha/template.php:12
-#: assets/js-templates/form-components.php:1388
+#: assets/js-templates/form-components.php:1389
 msgid "Invisible reCaptcha"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-taxonomy/template.php:15
-#: assets/js-templates/form-components.php:1430
+#: assets/js-templates/form-components.php:1431
 msgid "— Select —"
 msgstr ""
 
@@ -1104,56 +1104,56 @@ msgid "Sample Form"
 msgstr ""
 
 #: admin/posting.php:74 class/render-form.php:1703
-#: includes/Admin/Posting.php:84 includes/Admin.php:133
-#: includes/Fields/Field_Contract.php:935 includes/Frontend.php:72
+#: includes/Admin/Posting.php:118 includes/Admin.php:133
+#: includes/Fields/Field_Contract.php:937 includes/Frontend.php:72
 #: includes/Render_Form.php:1560
 msgid "Are you sure?"
 msgstr ""
 
 #: admin/posting.php:75 includes/Admin/Forms/Admin_Form_Builder.php:309
-#: includes/Admin/Posting.php:85 includes/Admin.php:134
-#: includes/Fields/Field_Contract.php:936 includes/Frontend.php:73
+#: includes/Admin/Posting.php:119 includes/Admin.php:134
+#: includes/Fields/Field_Contract.php:938 includes/Frontend.php:73
 msgid "Yes, delete it"
 msgstr ""
 
-#: admin/posting.php:76 includes/Admin/Posting.php:86 includes/Admin.php:135
-#: includes/Fields/Field_Contract.php:937 includes/Frontend.php:74
+#: admin/posting.php:76 includes/Admin/Posting.php:120 includes/Admin.php:135
+#: includes/Fields/Field_Contract.php:939 includes/Frontend.php:74
 msgid "No, cancel it"
 msgstr ""
 
-#: admin/posting.php:82 includes/Admin/Posting.php:92 includes/Admin.php:143
-#: includes/Fields/Field_Contract.php:947 includes/Frontend.php:84
+#: admin/posting.php:82 includes/Admin/Posting.php:126 includes/Admin.php:143
+#: includes/Fields/Field_Contract.php:949 includes/Frontend.php:84
 msgid "Allowed Files"
 msgstr ""
 
-#: admin/posting.php:85 includes/Admin/Posting.php:95 includes/Admin.php:149
-#: includes/Fields/Field_Contract.php:953 includes/Frontend.php:90
+#: admin/posting.php:85 includes/Admin/Posting.php:129 includes/Admin.php:149
+#: includes/Fields/Field_Contract.php:955 includes/Frontend.php:90
 msgid "Maximum number of files reached!"
 msgstr ""
 
-#: admin/posting.php:86 includes/Admin/Posting.php:96 includes/Admin.php:150
-#: includes/Fields/Field_Contract.php:954 includes/Frontend.php:91
+#: admin/posting.php:86 includes/Admin/Posting.php:130 includes/Admin.php:150
+#: includes/Fields/Field_Contract.php:956 includes/Frontend.php:91
 msgid "The file you have uploaded exceeds the file size limit. Please try again."
 msgstr ""
 
-#: admin/posting.php:87 includes/Admin/Posting.php:97 includes/Admin.php:151
-#: includes/Fields/Field_Contract.php:958 includes/Frontend.php:95
+#: admin/posting.php:87 includes/Admin/Posting.php:131 includes/Admin.php:151
+#: includes/Fields/Field_Contract.php:960 includes/Frontend.php:95
 msgid "You have uploaded an incorrect file type. Please try again."
 msgstr ""
 
-#: admin/posting.php:106 includes/Admin/Posting.php:116
+#: admin/posting.php:106 includes/Admin/Posting.php:150
 msgid "WPUF Form"
 msgstr ""
 
-#: admin/posting.php:134 includes/Admin/Posting.php:144
+#: admin/posting.php:134 includes/Admin/Posting.php:178
 msgid "Learn more"
 msgstr ""
 
-#: admin/posting.php:181 includes/Admin/Posting.php:191
+#: admin/posting.php:181 includes/Admin/Posting.php:225
 msgid "WPUF Lock User"
 msgstr ""
 
-#: admin/posting.php:209 includes/Admin/Posting.php:219
+#: admin/posting.php:209 includes/Admin/Posting.php:253
 #. translators: %s is the Post ID
 #. translators: %s is the post ID.
 msgid ""
@@ -1161,7 +1161,7 @@ msgid ""
 "id=\"wpuf_clear_schedule_lock\" data=\"%s\" href=\"#\">Click here</a>"
 msgstr ""
 
-#: admin/posting.php:218 includes/Admin/Posting.php:230
+#: admin/posting.php:218 includes/Admin/Posting.php:264
 #. translators: %1$s is local time and %2$ is Post ID
 #. translators: %1$s The time when the post edit access will be locked and %2$s
 #. The post ID.
@@ -1171,23 +1171,23 @@ msgid ""
 "Or,"
 msgstr ""
 
-#: admin/posting.php:239 includes/Admin/Posting.php:253
+#: admin/posting.php:239 includes/Admin/Posting.php:287
 msgid "Lock Post Permanently"
 msgstr ""
 
-#: admin/posting.php:244 includes/Admin/Posting.php:258
+#: admin/posting.php:244 includes/Admin/Posting.php:292
 msgid "Lock user from editing this post from the frontend dashboard"
 msgstr ""
 
-#: admin/posting.php:295 includes/Admin/Posting.php:309
+#: admin/posting.php:295 includes/Admin/Posting.php:343
 msgid "WPUF Custom Fields"
 msgstr ""
 
-#: admin/posting.php:352 includes/Admin/Posting.php:366
+#: admin/posting.php:352 includes/Admin/Posting.php:408
 msgid "No custom fields found."
 msgstr ""
 
-#: admin/posting.php:547 includes/Admin/Posting.php:561
+#: admin/posting.php:547 includes/Admin/Posting.php:607
 #: includes/Admin/Promotion.php:216 includes/Admin/Promotion.php:220
 #: includes/Admin/Promotion.php:224 includes/Admin/Promotion.php:301
 #: includes/Admin/Promotion.php:305 includes/Admin/Promotion.php:309
@@ -1456,13 +1456,13 @@ msgstr ""
 #: includes/Admin/Forms/Admin_Template.php:132
 #: includes/Admin/Forms/Admin_Template.php:200
 #: includes/Fields/Field_Contract.php:586
-#: includes/Fields/Field_Contract.php:670
+#: includes/Fields/Field_Contract.php:672
 msgid "Placeholder text"
 msgstr ""
 
 #: admin/template.php:118 includes/Admin/Forms/Admin_Template.php:134
 #: includes/Fields/Field_Contract.php:592
-#: includes/Fields/Field_Contract.php:674
+#: includes/Fields/Field_Contract.php:676
 msgid "Text for HTML5 placeholder attribute"
 msgstr ""
 
@@ -1470,13 +1470,13 @@ msgstr ""
 #: includes/Admin/Forms/Admin_Template.php:139
 #: includes/Admin/Forms/Admin_Template.php:206
 #: includes/Fields/Field_Contract.php:597
-#: includes/Fields/Field_Contract.php:682
+#: includes/Fields/Field_Contract.php:684
 msgid "Default value"
 msgstr ""
 
 #: admin/template.php:123 includes/Admin/Forms/Admin_Template.php:141
 #: includes/Fields/Field_Contract.php:603
-#: includes/Fields/Field_Contract.php:686
+#: includes/Fields/Field_Contract.php:688
 msgid "The default value this field will have"
 msgstr ""
 
@@ -1503,35 +1503,35 @@ msgid "Number of words the author to be restricted in"
 msgstr ""
 
 #: admin/template.php:165 includes/Admin/Forms/Admin_Template.php:188
-#: includes/Fields/Field_Contract.php:652
+#: includes/Fields/Field_Contract.php:654
 msgid "Rows"
 msgstr ""
 
 #: admin/template.php:170 includes/Admin/Forms/Admin_Template.php:194
-#: includes/Fields/Field_Contract.php:661
+#: includes/Fields/Field_Contract.php:663
 #: includes/Fields/Form_Field_Column.php:11
 msgid "Columns"
 msgstr ""
 
 #: admin/template.php:185 includes/Admin/Forms/Admin_Template.php:212
-#: includes/Fields/Field_Contract.php:691
+#: includes/Fields/Field_Contract.php:693
 #: includes/Fields/Form_Field_Textarea.php:12
 #: includes/Fields/Form_Field_Textarea.php:133
 msgid "Textarea"
 msgstr ""
 
 #: admin/template.php:188 includes/Admin/Forms/Admin_Template.php:217
-#: includes/Fields/Field_Contract.php:694
+#: includes/Fields/Field_Contract.php:696
 msgid "Normal"
 msgstr ""
 
 #: admin/template.php:189 includes/Admin/Forms/Admin_Template.php:220
-#: includes/Fields/Field_Contract.php:695
+#: includes/Fields/Field_Contract.php:697
 msgid "Rich textarea"
 msgstr ""
 
 #: admin/template.php:190 includes/Admin/Forms/Admin_Template.php:223
-#: includes/Fields/Field_Contract.php:696
+#: includes/Fields/Field_Contract.php:698
 msgid "Teeny Rich textarea"
 msgstr ""
 
@@ -4321,27 +4321,27 @@ msgstr ""
 msgid "Using %s as shortcode is restricted"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:358 includes/Api/Subscription.php:264
+#: includes/Ajax/Frontend_Form_Ajax.php:399 includes/Api/Subscription.php:264
 #: includes/Api/Subscription.php:294 includes/Api/Subscription.php:368
 msgid "Something went wrong"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:430
-#: includes/Ajax/Frontend_Form_Ajax.php:436
+#: includes/Ajax/Frontend_Form_Ajax.php:471
+#: includes/Ajax/Frontend_Form_Ajax.php:477
 msgid ""
 "Thank you for posting on our site. We have sent you an confirmation email. "
 "Please check your inbox!"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:594
+#: includes/Ajax/Frontend_Form_Ajax.php:635
 msgid "Invalid email address."
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:608
+#: includes/Ajax/Frontend_Form_Ajax.php:649
 msgid "You already have an account in our site. Please login to continue."
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:663
+#: includes/Ajax/Frontend_Form_Ajax.php:704
 #: includes/Frontend_Render_Form.php:222
 #: includes/class-frontend-render-form.php:323
 msgid "You do not have sufficient permissions to access this form."
@@ -4561,19 +4561,19 @@ msgstr ""
 msgid "Add options for the form field"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:656
+#: includes/Fields/Field_Contract.php:658
 msgid "Number of rows in textarea"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:665
+#: includes/Fields/Field_Contract.php:667
 msgid "Number of columns in textarea"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:704
+#: includes/Fields/Field_Contract.php:706
 msgid "Select buttons to exclude"
 msgstr ""
 
-#: includes/Fields/Field_Contract.php:713
+#: includes/Fields/Field_Contract.php:715
 #. translators: %1$s: left arrow, %2$s: right arrow
 msgid ""
 "Select button for exclude from frontend. Search button name. use %1$s %2$s "

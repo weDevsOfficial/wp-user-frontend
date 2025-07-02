@@ -194,8 +194,7 @@ export class PostFormPage extends Base {
         //Enter Country List
         await this.page.selectOption(Selectors.postForms.postFormsFrontendCreate.postCountryListFormsFE, { value: 'BD' });
         //Enter Numeric Field
-        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postNumericFieldFormsFE, PostForm.numeric=faker.string.numeric(3));
-        console.log(PostForm.numeric);
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postNumericFieldFormsFE, PostForm.numeric);
         //Enter Phone Field
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postPhoneFieldFormsFE.countryContainer);
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postPhoneFieldFormsFE.countrySelect);

@@ -100,7 +100,7 @@ const PostForm: {
     time: '12:00 pm',
     uploadFile: 'uploadeditems/sample_image.PNG',
     countryList: 'Bangladesh',
-    numeric: '',
+    numeric: '111',
     phoneNumber: '',
     addressLine1: '',
     addressLine2: '',

@@ -186,8 +186,8 @@ export class SettingsSetupPage extends Base {
         await this.waitForLoading();
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickSwitchCart);
         await this.waitForLoading();
-        await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickDismiss);
-        await this.waitForLoading();
+        // await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickDismiss);
+        // await this.waitForLoading();
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickEDDnoticeCross);
         await this.waitForLoading();
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickPayPalCross);

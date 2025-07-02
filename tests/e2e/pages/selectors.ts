@@ -729,7 +729,8 @@ export const Selectors = {
             // Add New Page
             addNewPage: '//a[@class="page-title-action"]',
             // Close Pattern Modal
-            closePatternModal: '(//div[@class="components-modal__header"]//button)[1]',
+            //closePatternModal: '(//div[@class="components-modal__header"]//button)[1]',
+            closePatternModal: '(//div[@data-wp-component="Spacer"]/following-sibling::button)[1]',
             // Close Welcome Modal
             closeWelcomeModal: '(//div[@class="components-modal__header"]//button)[1]',
             // Add Page Title

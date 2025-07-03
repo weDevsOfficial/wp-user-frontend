@@ -442,6 +442,11 @@ class Subscription extends WP_REST_Controller {
         $remove_feature_item    = ! empty( $subscription['meta_value']['_remove_feature_item'] ) ? sanitize_text_field(
             $subscription['meta_value']['_remove_feature_item']
         ) : '';
+        $sort_order = ! empty( $subscription['meta_value']['_sort_order'] ) ? (int) $subscription['meta_value']['_sort_order'] : 1;
+        
+        if ( $sort_order < 1 ) {
+            $sort_order = 1;
+        }
 
         if ( $recurring_pay !== 'no' && empty( $cycle_period ) ) {
             $cycle_period = 'day';
@@ -505,6 +510,7 @@ class Subscription extends WP_REST_Controller {
             update_post_meta( $id, '_post_expiration_message', $post_expire_msg );
             update_post_meta( $id, '_total_feature_item', $total_feature_item );
             update_post_meta( $id, '_remove_feature_item', $remove_feature_item );
+            update_post_meta( $id, '_sort_order', $sort_order );
 
             do_action( 'wpuf_after_update_subscription_pack_meta', $id, $request );
 

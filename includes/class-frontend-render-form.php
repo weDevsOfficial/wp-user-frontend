@@ -836,7 +836,7 @@ class WPUF_Frontend_Render_Form {
                     if ( is_array( $value_name ) && ! empty( $value_name ) ) {
                         $meta_key_value[ $value['name'] ] = implode( self::$separator, $value_name );
                     } else {
-                        $meta_key_value[ $value['name'] ] = $value_name[0];
+                        $meta_key_value[ $value['name'] ] = ! empty( $value_name[0] ) ? $value_name[0] : '';
                     }
                     break;
 

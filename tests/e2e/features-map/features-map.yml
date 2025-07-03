@@ -47,23 +47,25 @@ features:
 
   # Post Forms
   - id: PF0001
-    name: Admin is creating Blank Form with > PostFields
-  - id: PF0002
-    name: Admin is creating Blank Form with > Taxonomies
-  - id: PF0003
-    name: Admin is creating Blank Form with > CustomFields
-  - id: PF0004
-    name: Admin is creating Blank Form with > Others
-  - id: PF0005
     name: Admin is creating a Blank Post Form with all Fields
+  - id: PF0002
+    name: Admin is Updating Settings with default Post Form
+  - id: PF0003
+    name: User is Creating Post from Frontend
+  - id: PF0004
+    name: User is Validating Post created
+  - id: PF0005
+    name: User is validating Entered Data for Created Post
   - id: PF0006
     name: Admin is creating a Preset Post Form
   - id: PF0007
     name: Admin is creating a Preset Post Form - with Guest Enabled
   - id: PF0008
-    name: Admin is Updating Settings with default Post Form
+    name: Admin is creating page with shortcode
   - id: PF0009
-    name: User is Submitting Form from Frontend
+    name: Guest is creating post from frontend
+  - id: PF0010
+    name: Guest is validating post created
 
   # Registration Forms
   - id: RF0001
@@ -185,56 +187,60 @@ features:
   - id: PFS0054
     name: Admin is setting update post button text
   - id: PFS0055
-    name: Admin is enabling pay per post
+    name: Admin is enabling form title showing
   - id: PFS0056
-    name: Admin is creating post with payment
+    name: Admin is showing form description
   - id: PFS0057
-    name: Admin is accepting payment for post
+    name: Admin is enabling pay per post
   - id: PFS0058
-    name: Admin is validating paid post is live
+    name: Admin is creating post with payment
   - id: PFS0059
-    name: Admin is disabling pay per post
+    name: Admin is accepting payment for post
   - id: PFS0060
-    name: Admin is enabling new post notification
+    name: Admin is validating paid post is live
   - id: PFS0061
-    name: Admin is validating new post notification settings enabled
+    name: Admin is disabling pay per post
   - id: PFS0062
-    name: Admin is modifying notification email
+    name: Admin is enabling new post notification
   - id: PFS0063
-    name: Admin is modifying notification subject
+    name: Admin is validating new post notification settings enabled
   - id: PFS0064
-    name: Admin is modifying notification body with template tags
+    name: Admin is modifying notification email
   - id: PFS0065
-    name: Admin is clicking and validating template tags for notification
+    name: Admin is modifying notification subject
   - id: PFS0066
-    name: Admin is setting multiple notification emails
+    name: Admin is modifying notification body with template tags
   - id: PFS0067
-    name: Admin is submitting post and validating notification from FE
+    name: Admin is clicking and validating template tags for notification
   - id: PFS0068
-    name: Admin is disabling new post notification
+    name: Admin is setting multiple notification emails
   - id: PFS0069
-    name: Admin is enabling updated post notification
+    name: Admin is submitting post and validating notification from FE
   - id: PFS0070
-    name: Admin is validating updated post notification settings enabled
+    name: Admin is disabling new post notification
   - id: PFS0071
-    name: Admin is modifying updated post notification email
+    name: Admin is enabling updated post notification
   - id: PFS0072
-    name: Admin is modifying updated post notification subject
+    name: Admin is validating updated post notification settings enabled
   - id: PFS0073
+    name: Admin is modifying updated post notification email
+  - id: PFS0074
+    name: Admin is modifying updated post notification subject
+  - id: PFS0075
     name: Admin is modifying updated post notification body with template tags
   - id: PFS0074
     name: Admin is clicking and validating template tags for updated post notification
-  - id: PFS0075
-    name: Admin is setting multiple updated post notification emails
-  - id: PFS0076
-    name: Admin is submitting post and validating updated post notification from FE
   - id: PFS0077
-    name: Admin is disabling updated post notification
+    name: Admin is setting multiple updated post notification emails
   - id: PFS0078
-    name: Admin is enabling user comment
+    name: Admin is submitting post and validating updated post notification from FE
   - id: PFS0079
-    name: User is validating user comment is enabled
+    name: Admin is disabling updated post notification
   - id: PFS0080
+    name: Admin is enabling user comment
+  - id: PFS0081
+    name: User is validating user comment is enabled
+  - id: PFS0082
     name: Admin is disabling user comment
   - id: PFS0081
     name: User is validating user comment is disabled
@@ -242,11 +248,135 @@ features:
     name: Admin is limiting form entries
   - id: PFS0083
     name: Admin is validating limit form entries
-  - id: PFS0084
-    name: Admin is unlimiting form entries
-  - id: PFS0085
-    name: Admin is enabling conditional logic on form submission
   - id: PFS0086
-    name: Admin is validating conditional logic on form submission
+    name: Admin is unlimiting form entries
   - id: PFS0087
+    name: Admin is enabling conditional logic on form submission
+  - id: PFS0088
+    name: Admin is validating conditional logic on form submission
+  - id: PFS0089
     name: Admin is enabling post expiration
+  - id: PFS0090
+    name: Admin is setting post permission to role based
+  - id: PFS0091
+    name: Admin is validating post permission role based
+
+# Registration Form Settings
+  - id: RFS0001
+    name: Admin is setting newly registered user role to administrator
+  - id: RFS0002
+    name: Admin is validating newly registered user role to administrator
+  - id: RFS0003
+    name: Admin is setting newly registered user role to editor
+  - id: RFS0004
+    name: Admin is validating newly registered user role to editor
+  - id: RFS0005
+    name: Admin is setting newly registered user role to author
+  - id: RFS0006
+    name: Admin is validating newly registered user role to author
+  - id: RFS0007
+    name: Admin is setting newly registered user role to contributor
+  - id: RFS0008
+    name: Admin is validating newly registered user role to contributor
+  - id: RFS0009
+    name: Admin is setting newly registered user role to subscriber
+  - id: RFS0010
+    name: Admin is validating newly registered user role to subscriber
+  - id: RFS0011
+    name: Admin is enabling approval for new user registration
+  - id: RFS0012
+    name: Validating new user needs approval
+  - id: RFS0013
+    name: Validating new user can not login before approval
+  - id: RFS0014
+    name: Admin is approving new user
+  - id: RFS0015
+    name: Validating new user can login after approval
+  - id: RFS0016
+    name: Admin is setting after registration redirection to same page
+  - id: RFS0017
+    name: Admin is validating after registration redirection to same page
+  - id: RFS0018
+    name: Admin is setting after registration redirection to a page
+  - id: RFS0019
+    name: Admin is validating after registration redirection to a page
+  - id: RFS0020
+    name: Admin is setting after registration redirection to custom URL
+  - id: RFS0021
+    name: Admin is validating after registration redirection to custom URL
+  - id: RFS0022
+    name: Admin is setting registration success message
+  - id: RFS0023
+    name: Admin is validating registration success message
+  - id: RFS0024
+    name: Admin is setting submit button text
+  - id: RFS0025
+    name: Admin is validating submit button text
+  - id: RFS0026
+    name: Admin is setting after profile update redirection to same page
+  - id: RFS0027
+    name: Admin is validating after profile update redirection to same page
+  - id: RFS0028
+    name: Admin is setting after profile update redirection to a page
+  - id: RFS0029
+    name: Admin is validating after profile update redirection to a page
+  - id: RFS0030
+    name: Admin is setting after profile update redirection to custom URL
+  - id: RFS0031
+    name: Admin is validating after profile update redirection to custom URL
+  - id: RFS0032
+    name: Admin is setting update profile message
+  - id: RFS0033
+    name: Admin is validating update profile message
+  - id: RFS0034
+    name: Admin is setting update button text
+  - id: RFS0035
+    name: Admin is validating update button text
+  - id: RFS0036
+    name: Admin is enabling user notification
+  - id: RFS0037
+    name: Admin is setting email verification notification
+  - id: RFS0038
+    name: Admin is setting email verification notification subject
+  - id: RFS0039
+    name: Admin is setting email verification notification body
+  - id: RFS0040
+    name: Admin is clicking template tags for email verification notification
+  - id: RFS0041
+    name: User registers and validates email verification notification
+  - id: RFS0042
+    name: User clicks on activation link and validates email verification
+  - id: RFS0043
+    name: Admin is setting welcome email notification
+  - id: RFS0044
+    name: Admin is setting welcome email notification subject
+  - id: RFS0045
+    name: Admin is setting welcome email notification body
+  - id: RFS0046
+    name: Admin is clicking template tags for welcome email notification
+  - id: RFS0047
+    name: User registers and validates welcome email notification
+  - id: RFS0048
+    name: Admin is disabling user notification
+  - id: RFS0049
+    name: Admin is enabling admin notification
+  - id: RFS0050
+    name: Admin is setting admin email subject
+  - id: RFS0051
+    name: Admin is setting admin notification message
+  - id: RFS0052
+    name: Admin is clicking template tags for admin notification
+  - id: RFS0053
+    name: User registers and validates admin notification email
+  - id: RFS0054
+    name: Admin is disabling admin notification
+  - id: RFS0055
+    name: Admin is enabling multi-step form
+  - id: RFS0056
+    name: Admin is validating multi-step progressbar
+  - id: RFS0057
+    name: Admin is enabling multi-step form by step
+  - id: RFS0058
+    name: Admin is validating multi-step by step
+  - id: RFS0059
+    name: Admin is disabling multi-step form

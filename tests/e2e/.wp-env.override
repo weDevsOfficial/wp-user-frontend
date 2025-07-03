@@ -9,5 +9,6 @@
         "../../../easy-digital-downloads",
         "../../../wc-vendors",
         "../../../wc-multivendor-membership"
+        "../../../the-events-calendar"
     ]
 }

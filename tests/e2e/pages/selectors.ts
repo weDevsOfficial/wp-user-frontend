@@ -1,4 +1,3 @@
-import {Urls, Users, PostForm, RegistrationForm, SubscriptionPack} from '../utils/testData';
 export const Selectors = {
 
     /*********************************/
@@ -161,7 +160,16 @@ export const Selectors = {
             // Registration Page
             settingsTabProfileRegistrationPage: '//select[@id="wpuf_profile[reg_override_page]"]',
             // Login Registration Submit button
-            settingsTabProfileSave: '//div[@id="wpuf_profile"]//form[@method="post"]//div//input[@id="submit"]'
+            settingsTabProfileSave: '//div[@id="wpuf_profile"]//form[@method="post"]//div//input[@id="submit"]',
+
+            settingsTabAccount: '//a[@id="wpuf_my_account-tab"]',
+            settingsTabAccountPage: '//select[@name="wpuf_my_account[account_page]"]',
+            settingsTabAccountSave: '//div[@id="wpuf_my_account"]//form[@method="post"]//div//input[@id="submit"]',
+
+            settingsTabAccountActiveTab: '//select[@name="wpuf_my_account[account_page_active_tab]"]',
+
+            settingsTabEditProfile: '//select[@name="wpuf_my_account[edit_profile_form]"]',
+
         },
 
         // Set Permalink
@@ -285,10 +293,8 @@ export const Selectors = {
         navigatePage_PF: {
             // WPUF > Pages > Navigation
             checkAddButton_PF: '//a[contains(text(),"Add New")]',
-            postFormsPageFormsTitleCheck_PF: '(//input[@type="checkbox"]/following-sibling::span)[1]',
-
-            // New_Created_NAME_Checker
-            newPostCreatedName_PF: '(//input[@type="checkbox"]/following-sibling::span)[1]',
+            postFormsPageFormsTitleCheck_PF: (formName:string)=> `//span[normalize-space()="${formName}"]`,
+            postFormShortCode: (formName:string)=> `//span[normalize-space()="${formName}"]//..//..//code`,
         },
 
         /* Locators creating Post > Blank Form */
@@ -318,6 +324,8 @@ export const Selectors = {
 
         /* Locators for All Fields Options + Save */
         /********************* PostFields *********************/
+
+        addPostFieldButton: '//a[normalize-space()="Add Fields"]',
         addPostFields_PF: {
             // Post_Fields
             postTitleBlock: '//p[normalize-space(text())="Post Title"]',
@@ -378,6 +386,8 @@ export const Selectors = {
             customFieldsPhoneField: '//p[normalize-space(text())="Phone Field"]',
             customFieldsAddressField: '//p[normalize-space(text())="Address Field"]',
             customFieldsGoogleMaps: '//p[normalize-space(text())="Google Map"]',
+            customFieldsGoogleMapsEdit: '//div[@class="wpuf-form-google-map"]//..//..//..//..//..//span[normalize-space(text())="Edit"]',
+            googleMapsSearchbox: '//label[normalize-space()="Show address search box"]',
             customFieldsStepStart: '//p[normalize-space(text())="Step Start"]',
             customFieldsEmbed: '//p[normalize-space(text())="Embed"]',
 
@@ -426,6 +436,8 @@ export const Selectors = {
             othersCustomHTML: '//p[normalize-space(text())="Custom HTML"]',
             othersQrCode: '//p[normalize-space(text())="QR Code"]',
             othersReCaptcha: '//p[normalize-space(text())="reCaptcha"]',
+            reCaptchaEdit: '//label[@for="recaptcha"]//..//..//..//span[normalize-space()="Edit"]',
+            invisibleReCaptcha: '//input[@value="invisible_recaptcha"]',
             othersCloudflareTurnstile: '//p[normalize-space(text())="Cloudflare Turnstile"]',
 
             // From___PRO
@@ -454,6 +466,11 @@ export const Selectors = {
             setPostPermission: '//select[@name="wpuf_settings[post_permission]"]/following-sibling::div[1]',
             // Check Guest Enable
             enableGuestPost: '//div[@data-value="guest_post"]',
+            enterGuestDetails: '//input[@id="guest_details"]',
+            //Enter Name Label
+            enterNameLabel: '//input[@id="name_label"]',
+            //Enter Email Label
+            enterEmailLabel: '//input[@id="email_label"]',
 
             // Save Form Settings
             saveFormSettings: '//button[normalize-space(text())="Save"]',
@@ -465,6 +482,7 @@ export const Selectors = {
             validateColumns: '//li[contains(@class,"form-field-column_field")]',
             validateSectionBreak: '//li[contains(@class,"section_break")]',
             validateCustomHTML: '//div[text()="HTML Section"]/..//div[@class="wpuf-fields"]',
+            validateReCaptcha: '//label[@for="recaptcha"]',
 
             // validateReCaptcha: '',            // TODO: Setup required
             validateShortcode: '//label[@for="shortcode"]/../..//div[@class="wpuf-fields"]',
@@ -502,24 +520,139 @@ export const Selectors = {
             postDescriptionFormsFE1: '//div[contains(@class,"mce-edit-area mce-container")]//iframe[1]',
             postDescriptionFormsFE2: '//body[@id="tinymce"]',
             // Featured Photo
-            featuredPhotoFormsFE: '(//input[@type="file"])[2]',
+            featuredPhotoFormsFE: '//li[@data-label="Featured Image"]//input[@type="file"]',
             // Excerpt
             postExcerptFormsFE: '//textarea[@name="post_excerpt"]',
             // Tags
             postTagsFormsFE: '//input[@name="tags"]',
+            // Text
+            postTextFormsFE: '//input[@name="text"]',
+            // Textarea
+            postTextareaFormsFE: '//textarea[@name="textarea"]',
+            // Dropdown
+            postDropdownFormsFE: '//select[@name="dropdown"]',
+            // Multi Select
+            postMultiSelectFormsFE: '//select[@name="multi_select[]"]',
+            // Radio
+            postRadioFormsFE: '//input[@name="radio"]',
+            // Checkbox
+            postCheckboxFormsFE: '//input[@name="checkbox[]"]',
+            // Website URL
+            postWebsiteUrlFormsFE: '//input[@name="website_url"]',
+            // Email Address
+            postEmailAddressFormsFE: '//input[@name="email_address"]',
+            // Image Upload
+            postImageUploadFormsFE: '//li[@data-label="Image Upload"]//input[@type="file"]',
+            // Repeat Field
+            postRepeatFieldFormsFE: '//input[@name="repeat_field[]"]',
+            // Date / Time
+            postDateTimeFormsFE: {
+                dateTimeSelect: '//input[@name="date___time"]',
+                selectYear: '//select[@data-handler="selectYear"]',
+                selectMonth: '//select[@data-handler="selectMonth"]',
+                selectDay: '//a[@data-date="20"]',
+            },
+            // Time Field
+            postTimeFieldFormsFE: '//select[@name="time_field"]',
+            // File Upload
+            postFileUploadFormsFE: '//li[@data-label="File Upload"]//input[@type="file"]',
+            // Country List
+            postCountryListFormsFE: '//select[@name="country_list"]',
+            // Numeric Field
+            postNumericFieldFormsFE: '//input[@name="numeric_field"]',
+            // Phone Field
+            postPhoneFieldFormsFE: {
+                countryContainer: '(//div[@class="iti__flag-container"]//div)[1]',
+                countrySelect: '//li[@data-country-code="bd"]',
+                phoneNumber: '//input[@name="phone_field"]',
+            },
+            // Address Field
+            postAddressFieldFormsFE: {
+                addressLine1: '//input[@name="address_field[street_address]"]',
+                addressLine2: '//input[@name="address_field[street_address2]"]',
+                city: '//input[@name="address_field[city_name]"]',
+                state: '//select[@name="address_field[state]"]',
+                country: '//select[@name="address_field[country_select]"]',
+                zip: '//input[@name="address_field[zip]"]',
+            },
+            // Google Maps
+            postGoogleMapsFormsFE: '//input[@placeholder="Search address"]',
+            // Embed
+            postEmbedFormsFE: '//input[@name="embed"]',
+            // Terms and Conditions
+            postTermsAndConditionsFormsFE: '//input[@name="terms_and_conditions"]',
+            // Ratings
+            postRatingsFormsFE: '//select[@name="ratings"]',
+            // Math Captcha
+            postMathCaptchaFormsFE: {
+                operand1: '//span[@id="operand_one"]',
+                operand2: '//span[@id="operand_two"]',
+                operator: '//span[@id="operator"]',
+                mathCaptcha: '(//label[contains(.,"Math Captcha *")]/following::input)[1]',
+            },
+            // Guest name
+            guestName: '//input[@name="guest_name"]',
+            // Guest Email
+            guestEmail: '//input[@name="guest_email"]',
             // Create Post
-            submitPostFormsFE: '//input[@value="Create Post"]',
+            submitPostFormsFE: '//input[@name="submit"]',
             // Validate Post Submitted
             validatePostSubmitted: (postFormTitle:string)=> `//h1[normalize-space(text())='${postFormTitle}']`,
         },
-
-        postFormsFrontendValidate: {
-            // Accounts - Top Menu
-            clickAccountsTopMenu: '//a[contains(text(), "Account")]',
-            // Post
-            clickPostsSideMenu: '//li[@class="wpuf-menu-item post"]//a[1]',
-            // Validate Title of Post Created
-            validatePostSubmittedFE: '(//td[@data-label="Title: "])[1]'
+        postFormData: {
+            title: (title:string)=> `//h1[normalize-space(text())='${title}']`,
+            description: (description:string)=> `//div[contains(@class,"entry-content")]//p[normalize-space(text())="${description}"]`,
+            featuredImage: '//figure[@class="wp-block-post-featured-image"]',
+            category: '//div[contains(@class,"taxonomy-category")]',
+            tags: '//div[contains(@class,"taxonomy-post_tag")]//a',
+            text: '//li[contains(@class,"wpuf-field-data-text_field")]',
+            textarea: '//li[contains(@class,"wpuf-field-data-textarea_field")]',
+            dropdown: '//li[contains(@class,"wpuf-field-data-dropdown_field")]',
+            multiSelect: '//li[contains(@class,"wpuf-field-data-multiple_select")]',
+            radio: '//li[contains(@class,"wpuf-field-data-radio_field")]',
+            checkbox: '//li[contains(@class,"wpuf-field-data-checkbox_field")]',
+            websiteUrl: '//li[contains(@class,"wpuf-field-data-website_url")]',
+            emailAddress: '//li[contains(@class,"wpuf-field-data-email_address")]',
+            imageUpload: '//label[text()="Image Upload:"]/following-sibling::a',
+            repeatField: (repeatField:string)=> `//li[contains(.,"Repeat Field: ${repeatField}")]`,
+            dateTime: (dateTime:string)=> `//li[contains(.,"Date / Time: ${dateTime}")]`,
+            timeField: (timeField:string)=> `//li[contains(.,"Time Field: ${timeField}")]`,
+            fileUpload: '//label[text()="File Upload:"]/following-sibling::a',
+            countryList: (countryList:string)=> `//li[contains(.,"Country List: ${countryList}")]`,
+            numericField: '//li[contains(@class,"wpuf-field-data-numeric_text_field")]',
+            phoneField: (phoneNumber:string)=> `//li[contains(.,"Phone Field: ${phoneNumber}")]`,
+            addressLine1: (addressLine1:string)=> `//li[normalize-space(text())="${addressLine1}"]`,
+            addressLine2: (addressLine2:string)=> `//li[normalize-space(text())="${addressLine2}"]`,
+            city: (city:string)=> `//li[normalize-space(text())="${city}"]`,
+            zip: (zip:string)=> `//li[normalize-space(text())="${zip}"]`,
+            country: (country:string)=> `//li[normalize-space(text())="${country}"][2]`,
+            state: (state:string)=> `//li[normalize-space(text())="${state}"]`,
+            embed: '//div[@class="wpuf-embed-preview"]//a',
+            ratings: '//li[contains(@class,"wpuf-field-data-ratings")]',
+        },
+        createPageWithShortcode: {
+            // Add New Page
+            addNewPage: '//a[@class="page-title-action"]',
+            // Close Pattern Modal
+            closePatternModal: '(//div[@class="components-modal__header"]//button)[1]',
+            // Close Welcome Modal
+            closeWelcomeModal: '(//div[@class="components-modal__header"]//button)[1]',
+            // Add Page Title
+            addPageTitle: '//h1[@aria-label="Add title"]',
+            // Block Add Button
+            blockAddButton: '//button[@aria-label="Add block"]', 
+            // Block Search box
+            blockSearchBox: '//input[@placeholder="Search"]',
+            // Block Add ShortCode Block
+            addShortCodeBlock: '//span[text()="Shortcode"]',
+            // Enter Shortcode
+            enterShortcode: '//textarea[@aria-label="Shortcode text"]',
+            // Click Publish Page
+            clickPublishPage: '//button[text()="Publish"]',
+            // Confirm Publish
+            confirmPublish: '//button[contains(@class,"components-button editor-post-publish-button")]',
+            // Validate Page Created
+            validatePageCreated: '//div[@class="post-publish-panel__postpublish-buttons"]//a[normalize-space(text())="View Page"]',
         }
     },
 
@@ -541,35 +674,35 @@ export const Selectors = {
         // Create Registration Forms - Blank
         createBlankForm_RF: {
             // Create_New_Post_Form
-            clickRegistrationFormMenuOption: '//a[contains(text(), "Registration Forms")]',
+            clickRegistrationFormMenuOption: '//li//a[contains(text(), "Registration Forms")]',
 
             // Profile_Name
             validateRegistrationFormPageName: '//h2[contains(text(), "Profile Forms")]',
 
             // Start
-            clickRegistraionAddForm: '//a[@id="new-wpuf-profile-form" and contains(text(), "Add Form")]',
-            hoverBlankForm: '.blank-form',
+            clickRegistraionAddForm: '//a[contains(@class,"new-wpuf-form")]',
+            //hoverBlankForm: '(//a[contains(@class,"new-wpuf-form")])[1]',
             clickBlankForm: '//a[@title="Blank Form" and contains(text(), "Create Form")]',
 
             // Enter_NAME
-            editNewFormName: '//span[text()="Sample Registration Form"]',
-            enterNewFormName: '//header[@class="clearfix"]//span//input',  // TODO: Catch with Child
-            confirmNewNameTickButton: '//header[@class="clearfix"]//button',
+            editNewFormName: '//input[@name="post_title"]',
+            enterNewFormName: '//input[@name="post_title"]',  // TODO: Catch with Child
+            confirmNewNameTickButton: '//input[@name="post_title"]/following-sibling::i[1]',
         },
 
         // Create Registration Forms - Add Profile Fields
         addProfileFields_RF: {
             // Profile Fields
-            profileFieldUsername: '//li[@data-form-field="user_login"]',
-            profileFieldFirstName: '//li[@data-form-field="first_name"]',
-            profileFieldLastName: '//li[@data-form-field="last_name"]',
-            profileFieldDisplayName: '//li[@data-form-field="display_name"]',
-            profileFieldNickName: '//li[@data-form-field="nickname"]',
-            profileFieldEmail: '//li[@data-form-field="user_email"]',
-            profileFieldWebsiteUrl: '//li[@data-form-field="user_url"]',
-            profileFielBioInfo: '//li[@data-form-field="user_bio"]',
-            profileFieldPassword: '//li[@data-form-field="password"]',
-            profileFieldAvatar: '//li[@data-form-field="avatar"]',
+            profileFieldUsername: '//p[normalize-space()="Username"]',
+            profileFieldFirstName: '//p[normalize-space()="First Name"]',
+            profileFieldLastName: '//p[normalize-space()="Last Name"]',
+            profileFieldDisplayName: '//p[normalize-space()="Display Name"]',
+            profileFieldNickName: '//p[normalize-space()="Nickname"]',
+            profileFieldEmail: '//p[normalize-space(text())="E-mail"]',
+            profileFieldWebsiteUrl: '//p[normalize-space()="Website"]',
+            profileFielBioInfo: '//p[normalize-space()="Biographical Info"]',
+            profileFieldPassword: '//p[normalize-space(text())="Password"]',
+            profileFieldAvatar: '//p[normalize-space()="Avatar"]',
         },
 
         /******************************************************/
@@ -596,7 +729,8 @@ export const Selectors = {
             // Add New Page
             addNewPage: '//a[@class="page-title-action"]',
             // Close Pattern Modal
-            closePatternModal: '(//div[@class="components-modal__header"]//button)[1]',
+            //closePatternModal: '(//div[@class="components-modal__header"]//button)[1]',
+            closePatternModal: '(//div[@data-wp-component="Spacer"]/following-sibling::button)[1]',
             // Close Welcome Modal
             closeWelcomeModal: '(//div[@class="components-modal__header"]//button)[1]',
             // Add Page Title
@@ -668,6 +802,8 @@ export const Selectors = {
             adminUsersSearchButton: '//input[@id="search-submit"]',
             // Validate Email present
             validateUserCreated: '//td[@class="email column-email"]',
+            // Validate User Role
+            validateUserRole: '//td[@class="role column-role"]',
         },
     },
 
@@ -696,7 +832,7 @@ export const Selectors = {
     postFormSettings: {
         // Navigation and Basic Elements
         formNameInput: '//input[@name="post_title"]',
-        addNewButton: '//a[contains(text(),"Add New")]',
+        addNewButton: '//a[contains(@class,"new-wpuf-form")]',
         saveButton: '//button[normalize-space(text())="Save"]',
         postTypeColumn: '//tbody/tr[1]/td[2]',
         postSubmissionStatusColumn: '//tbody/tr[1]/td[3]',
@@ -735,7 +871,11 @@ export const Selectors = {
         transactionTableRow: '//tbody//tr[1]',
         acceptPayment: '//a[normalize-space()="Accept"]',
         successMessage: '//div[@class="wpuf-success"]',
+        wpufMessage: '//div[@class="wpuf-message"]',
         clickPost: (postTitle: string) => `//a[normalize-space(text())="${postTitle}"]`,
+
+        showFormTitle: (formName: string) => `//h2[normalize-space()="${formName}"]`,
+        showFormDescription: '//div[@class="wpuf-form-description"]',
         
 
         // Post Settings Section
@@ -805,17 +945,30 @@ export const Selectors = {
             
             updatePostRedirectionUrlInput: '//input[@id="edit_url"]',
 
+            postPermissionContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[10]',
+            postPermissionDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[10]',
+            postPermissionOption: (value: string) => `(//div[contains(@class,"selectize-dropdown-content")])//div[@data-value="${value}"]`,
+
+            roleSelectionContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[11]',
+            roleSelectionDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[11]',
+            roleSelectionOption: (value: string) => `(//div[contains(@class,"selectize-dropdown-content")])//div[@data-value="${value}"]`,
+
             paymentSettingsTab: '//li[@data-settings="payment_settings"]',
             paymentEnableToggle: '//input[@id="payment_options"]/following-sibling::span[1]',
             paymentOptionsContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[12]',
             paymentOptionsDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[12]',
             payPerPostOption: (value: string) => `(//div[contains(@class,"selectize-dropdown-content")])//div[@data-value="${value}"]`,
+            
             payPerPostCostContainer: '//input[@id="pay_per_post_cost"]',
             paymentSuccessPageContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[13]',
             paymentSuccessPageDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[13]',
             paymentSuccessPageOption: (text: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[contains(text(),"${text}")]`,
 
 
+            formTitleToggle: '//input[@id="show_form_title"]/following-sibling::span[1]',
+            formDescriptionBox: '//textarea[@id="form_description"]',
+
+            unAuthMsg: '//textarea[@id="message_restrict"]'
         },
 
         // Validation Messages
@@ -887,7 +1040,171 @@ export const Selectors = {
         postExpirationSettingsTab: '//li[normalize-space()="Post Expiration"]',
     },
 
-    registrationFormSettings: {
-        
+    regFormSettings: {
+
+        clickForm: (formName: string) => `//span[normalize-space()="${formName}"]`,
+        saveButton: '//button[normalize-space(text())="Save"]',
+        formSaved: '//div[normalize-space(text())="Saved form data"]',
+        clickFormEditor: '//a[contains(text(),"Form Editor")]',
+        clickFormEditorSettings: '(//a[contains(@class,"wpuf-nav-tab wpuf-nav-tab-active")])[2]',
+        inputEmail: '//input[@name="user_email"]',
+        inputPassword: '//input[@name="pass1"]',
+        inputConfirmPassword: '//input[@name="pass2"]',
+        submitRegisterButton: '//input[@name="submit"]',
+        submitRegisterButtonText:(value: string) => `//input[@value="${value}"]`,
+        checkPostTitle: (title: string) => `//h1[normalize-space(text())='${title}']`,
+        checkSuccessMessage: '//div[@class="wpuf-success"]',
+        saveDraftButton: '//a[normalize-space(text())="Save Draft"]',
+        draftSavedAlert: '//span[@class="wpuf-draft-saved"]',
+        confirmDelete: '//button[normalize-space()="Yes, delete it"]',
+        editPostButton: '(//td[@data-label="Options: "]//a)[1]',
+        quickEditButtonContainer: '//tbody[@id="the-list"]//tr[1]',
+        quickEditButton: '(//button[@class="button-link editinline"])[1]',
+        wpufInfo: '//div[@class="wpuf-info"]',
+        successMessage: '//div[@class="wpuf-success"]',
+        wpufMessage: '//div[@class="wpuf-message"]',
+        wpLoginErrorMessage: '//div[@id="login_error"]',
+
+        regSettingsSection: {
+            regSettingsHeader: '//h2[normalize-space()="General"]',
+
+            userRoleContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[1]',
+            userRoleDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[1]',
+            userRoleOption: (role: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[@data-value="${role}"]`,
+
+            approvalToggle: '//input[@id="user_status"]/following-sibling::span[1]',
+            approveUser: '//a[normalize-space()="Approve"]',
+        },
+
+        afterSignUpSettingsSection: {
+            afterSignUpSettingsHeader: '//label[contains(text(),"After Registration Successful Redirection")]',
+            
+            // After Registration Successful Redirection (looking for actual form field structure)
+            afterRegistrationRedirectionContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[2]',
+            afterRegistrationRedirectionDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[2]',
+            afterRegistrationRedirectionOption: (value: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[@data-value="${value}"]`,
+            
+            afterRegistrationRedirectionPageContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[3]',
+            afterRegistrationRedirectionPageDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[3]',
+            afterRegistrationRedirectionPageOption: (text: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[contains(text(),"${text}")]`,
+            
+            afterRegistrationRedirectionUrlInput: '//input[@id="registration_url"]',
+            
+            // Registration Success Message  
+            registrationSuccessMessageInput: '//textarea[@id="message"]',
+            
+            // Submit Button Text
+            submitButtonTextInput: '//input[@id="submit_text"]',
+            
+            // After Profile Update Successful Redirection
+            afterProfileUpdateRedirectionContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[4]',
+            afterProfileUpdateRedirectionDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[4]',
+            afterProfileUpdateRedirectionOption: (value: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[@data-value="${value}"]`,
+            
+            afterProfileUpdateRedirectionPageContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[5]',
+            afterProfileUpdateRedirectionPageDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[5]',
+            afterProfileUpdateRedirectionPageOption: (text: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[contains(text(),"${text}")]`,
+            
+            afterProfileUpdateRedirectionUrlInput: '//input[@id="profile_url"]',
+            
+            // Update Profile Message
+            updateProfileMessageInput: '//textarea[@id="update_message"]',
+            
+            // Update Button Text
+            updateButtonTextInput: '//input[@id="update_text"]',
+        },
+
+        // Frontend validation selectors
+        frontendValidation: {
+            registrationForm: '//form[@id="wpuf-registration-form"]',
+            registrationSubmitButton: '//input[@type="submit"]',
+            registrationSuccessMessage: '//div[@class="wpuf-success"]',
+            afterRegPageTitle: (pageTitle: string) => `//h1[normalize-space(text())='${pageTitle}']`,
+            
+            editProfileForm: '//form[@id="wpuf-edit-profile-form"]',
+            firstNameField: '//input[@name="first_name"]',
+            displayNameField: '//input[@name="display_name"]',
+            emailField: '//input[@name="user_email"]',
+            currentPasswordField: '//input[@name="current_password"]',
+            newPasswordField: '//input[@name="pass1"]',
+            confirmPasswordField: '//input[@name="pass2"]',
+            updateProfileSubmitButton: '//input[@name="submit"]',
+            updateProfileSuccessMessage: '//div[@class="wpuf-success"]',
+        },
+
+        // Notification Settings Section  
+        notificationSettingsSection: {
+            notificationSettingsTab: '//span[normalize-space()="Notification Settings"]',
+            notificationSettingsHeader: '//h2[normalize-space()="Notification Settings"]',
+            
+            // User Notification
+            userNotificationHeader: '//p[normalize-space()="User Notification"]',
+            enableUserNotificationToggle: '//input[@id="user_notification"]/following-sibling::span[1]',
+            
+            // User Notification Type
+            emailVerificationRadio: '//input[@id="email_verification"]',
+            welcomeEmailRadio: '//input[@id="welcome_email"]',
+            
+            // Email Verification Settings
+            confirmationEmailSubjectInput: '//input[@id="verification_subject"]',
+            confirmationEmailBodyTextarea: '(//div[contains(@class,"mce-edit-area mce-container")]//iframe[1])[1]',
+            
+            // Welcome Email Settings
+            welcomeEmailSubjectInput: '//input[@id="welcome_email_subject"]',
+            welcomeEmailBodyTextarea: '(//div[contains(@class,"mce-edit-area mce-container")]//iframe[1])[2]',
+
+            textareaBody: '//body[@id="tinymce"]',
+
+            templateTagPointer: (tag: string, point: string) => `(//span[@data-clipboard-text="${tag}"])[${point}]`,
+            tagClickTooltip: '//span[@data-original-title="Copied!"]',
+            
+            // Admin Notification
+            adminNotificationHeader: '//h3[normalize-space()="Admin Notification"]',
+            enableAdminNotificationToggle: '//input[@id="admin_notification"]/following-sibling::span[1]',
+            adminNotificationSubjectInput: '//input[@id="admin_email_subject"]',
+            adminNotificationMessageTextarea: '//textarea[@id="admin_email_body"]',
+        },
+
+        // WP Mail Log validation selectors
+        wpMailLogValidation: {
+            wpMailLogPage: '//h2[normalize-space()="WP Mail Log"]',
+            
+            // First email row selectors
+            sentEmailAddress: '(//tbody/tr[2]/td[3]/div[1])[1]',
+            sentEmailSubject: '(//tbody/tr[2]/td[4]/div[1])[1]',
+            viewEmailContent: '(//tbody/tr[2]/td[3]/div[1])[1]',
+            previewEmailContentBody: '(//div[@class="wml-body-wrapper"])[1]',
+            grabActivationLink: '//a[normalize-space()="Activation Link"]',
+
+            modalCloseButton: '//button[@class="el-button el-button--danger"]',
+
+            sentLatestEmailAddress: '(//tbody/tr[1]/td[3]/div[1])[1]',
+            sentLatestEmailSubject: '(//tbody/tr[1]/td[4]/div[1])[1]',
+            viewLatestEmailContent: '(//tbody/tr[1]/td[3]/div[1])[1]',
+            
+            // Search and filter
+            emailSearchInput: '//input[@id="post-search-input"]',
+            emailSearchButton: '//input[@id="search-submit"]',
+        },
+
+        // Multi-Step Settings Section
+        advancedSettingsSection: {
+            advancedSettingsHeader: '//h2[normalize-space()="Advanced Settings"]',
+            advancedSettingsTab: '//span[normalize-space()="Advanced Settings"]',
+            multiStepSettingsHeader: '//p[normalize-space()="Multistep Form"]',
+            enableMultiStepToggle: '//input[@id="enable_multistep"]/following-sibling::span[1]',
+            multiStepTypeContainer: '(//div[contains(@class,"selectize-control")]//div[contains(@class,"selectize-input")])[8]',
+            multiStepTypeDropdown: '(//div[contains(@class,"selectize-dropdown-content")])[8]',
+            multiStepTypeOption: (value: string) => `//div[contains(@class,"selectize-dropdown-content")]//div[@data-value="${value}"]`,
+            multiStepProgressbar: '//div[normalize-space(text())="Step Start (100%)"]',
+            multiStepByStep: '//li[normalize-space(text())="Step Start"]',
+        },
+
+        // Custom Fields Section
+        addCustomFields_Common: {
+            customFieldsStepStart: '//p[normalize-space(text())="Step Start"]',
+            customFieldsText: '//p[normalize-space(text())="Text"]',
+            customFieldsUrl: '//p[normalize-space(text())="Website URL"]',
+        },
     },
 };

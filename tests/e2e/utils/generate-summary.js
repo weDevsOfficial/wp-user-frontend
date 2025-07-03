@@ -101,7 +101,6 @@ function getTestType(featureId) {
   if (featureId.startsWith('PFS0')) return 'Post Form Settings';
   if (featureId.startsWith('RFS0')) return 'Reg Form Settings';
   if (featureId.startsWith('FOS0')) return 'Field Option Settings';
-  if (featureId.startsWith('RFS0')) return 'Reg Form Settings';
   return 'Other';
 }
 

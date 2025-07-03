@@ -4,10 +4,10 @@ import { Browser, BrowserContext, Page, test, chromium } from "@playwright/test"
 import { BasicLoginPage } from '../pages/basicLogin';
 import { BasicLogoutPage } from '../pages/basicLogout';
 import { SettingsSetupPage } from '../pages/settingsSetup';
-import { Urls, Users } from '../utils/testData';
+import { Users } from '../utils/testData';
 import * as fs from "fs";
 
-export default function loginAndSetupTests() {
+export default function loginAndSetupTest() {
     let browser: Browser;
     let context: BrowserContext;
     let page: Page;
@@ -50,7 +50,8 @@ export default function loginAndSetupTests() {
          * @Test_LS0018 : Admin is adding credentils for ReCaptcha
          * @Test_LS0019 : Admin is adding credentils for Cloudflare Turnstile
          * @Test_LS0020 : Admin is enabling payment gateway bank
-         * @Test_LS0021 : Admin is logging out succesfully
+         * @Test_LS0021 : Admin is activating dokan lite
+         * @Test_LS0022 : Admin is logging out succesfully
          *  
          */
         test('LS0001 : Admin is logging into Admin-Dashboard', { tag: ['@Basic'] }, async () => {

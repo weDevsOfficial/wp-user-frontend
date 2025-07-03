@@ -20,6 +20,7 @@ export class Base {
     readonly wpMailLogPage: string = Urls.baseUrl + '/wp-admin/admin.php?page=wp-mail-log';
     readonly wpResetPage: string = Urls.baseUrl + '/wp-admin/tools.php?page=wp-reset';
     readonly wpufPostFormPage: string = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
+    readonly wpufRegFormPage: string = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
     readonly wpufSetupPage: string = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-setup';
     readonly wpufSettingsPage: string = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-settings';
     readonly wpufSettingsGeneralPage: string = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-settings-general';
@@ -29,6 +30,8 @@ export class Base {
     readonly wpufTransactionPage: string = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf_transaction';
     readonly wpufRegistrationFormPage: string = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
     readonly wpufRegistrationPage: string = Urls.baseUrl + '/registration-page/';
+    readonly newRegFormPage: string = Urls.baseUrl + '/reg-here/';
+    readonly wpufLoginPage: string = Urls.baseUrl + '/login/';
 
     constructor(page: Page) {
         this.page = page;

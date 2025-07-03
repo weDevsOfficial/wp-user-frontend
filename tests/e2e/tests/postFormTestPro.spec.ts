@@ -4,7 +4,7 @@ import { Browser, BrowserContext, Page, test, chromium } from "@playwright/test"
 import { BasicLoginPage } from '../pages/basicLogin';
 import { PostFormPage } from '../pages/postForm';
 import { PostFormProPage } from '../pages/postFormPro';
-import { FieldAddProPage } from '../pages/fieldAddPro';
+import { FieldAddPage } from '../pages/fieldAdd';
 import { SettingsSetupPage } from '../pages/settingsSetup';
 import { Users, PostForm } from '../utils/testData';
 import * as fs from 'fs'; //Clear Cookie
@@ -54,26 +54,29 @@ export default function postFormTestPro() {
 
         test('PF0001 : Admin is creating a Blank Post Form with all Fields', { tag: ['@Pro'] }, async () => {
             const PostFormPro = new PostFormProPage(page);
-            const FieldAddPro = new FieldAddProPage(page);
+            const FieldAddPro = new FieldAddPage(page);
 
             PostForm.formName = faker.word.words(3);
             //Post Blank Form
             await PostFormPro.createBlankFormPostFormPro(PostForm.formName);
             //PostFields + Validate
-            await FieldAddPro.addPostFields_PF_pro();
-            await FieldAddPro.validatePostFields_PF_pro();
+            await FieldAddPro.addPostFields_PF();
+            await FieldAddPro.validatePostFields_PF();
+            //Category + Validate
+            await FieldAddPro.addTaxonomies_PF();
+            await FieldAddPro.validateTaxonomies_PF();
             //CustomFields + Validate
-            await FieldAddPro.addCustomFields_Common_pro();
-            await FieldAddPro.validateCustomFields_Common_pro();
+            await FieldAddPro.addCustomFields_Common();
+            await FieldAddPro.validateCustomFields_Common();
             //Others + Validate
-            await FieldAddPro.addOthers_Common_pro();
-            await FieldAddPro.validateOthers_Common_pro();
+            await FieldAddPro.addOthers_Common();
+            await FieldAddPro.validateOthers_Common();
             //await FieldOptionsCommon.setMultiStepSettings_Common();
 
             //Save
-            await FieldAddPro.saveForm_Common_pro(PostForm.formName);
+            await FieldAddPro.saveForm_Common(PostForm.formName);
             //Validate
-            await FieldAddPro.validatePostFormCreatedPro(PostForm.formName);
+            await FieldAddPro.validatePostFormCreated(PostForm.formName);
         });
 
         test('PF0002 : Admin is Updating Settings with default Post Form', { tag: ['@Pro'] }, async () => {

@@ -364,6 +364,7 @@ export class RegFormSettingsPage extends Base {
         await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
         await this.page.fill(Selectors.regFormSettings.inputConfirmPassword, userPassword);
         await this.validateAndClick(Selectors.regFormSettings.submitRegisterButton);
+        await this.page.waitForTimeout(1000);
 
         const successMessage = await this.page.innerText(Selectors.regFormSettings.frontendValidation.registrationSuccessMessage);
         expect(successMessage).toBe(expectedMessage);
@@ -377,8 +378,8 @@ export class RegFormSettingsPage extends Base {
         await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
         await this.page.fill(Selectors.regFormSettings.inputConfirmPassword, userPassword);
         await this.validateAndClick(Selectors.regFormSettings.submitRegisterButton);
-
         await this.waitForLoading();
+
         await expect(this.page.locator(Selectors.regFormSettings.frontendValidation.afterRegPageTitle(expectedPageTitle))).toBeVisible();
     }
 
@@ -390,8 +391,8 @@ export class RegFormSettingsPage extends Base {
         await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
         await this.page.fill(Selectors.regFormSettings.inputConfirmPassword, userPassword);
         await this.validateAndClick(Selectors.regFormSettings.submitRegisterButton);
-
         await this.waitForLoading();
+
         await expect(this.page).toHaveURL(expectedUrl);
     }
 
@@ -819,8 +820,8 @@ export class RegFormSettingsPage extends Base {
         await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
         await this.page.fill(Selectors.regFormSettings.inputConfirmPassword, userPassword);
         await this.validateAndClick(Selectors.regFormSettings.submitRegisterButton);
-        await this.waitForLoading();
-        
+        await this.page.waitForTimeout(1000);
+
         // Validate registration success message
         const successMessage = await this.page.innerText(Selectors.regFormSettings.successMessage);
         expect(successMessage).toContain('Please check your email for activation link');
@@ -874,7 +875,7 @@ export class RegFormSettingsPage extends Base {
         await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
         await this.page.fill(Selectors.regFormSettings.inputConfirmPassword, userPassword);
         await this.validateAndClick(Selectors.regFormSettings.submitRegisterButton);
-        await this.waitForLoading();
+        await this.page.waitForTimeout(1000);
 
         // Validate registration success message
         const successMessage = await this.page.innerText(Selectors.regFormSettings.successMessage);
@@ -937,8 +938,8 @@ export class RegFormSettingsPage extends Base {
         await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
         await this.page.fill(Selectors.regFormSettings.inputConfirmPassword, userPassword);
         await this.validateAndClick(Selectors.regFormSettings.submitRegisterButton);
-        await this.waitForLoading();
-        
+        await this.page.waitForTimeout(1000);
+
         // Validate registration success message
         const successMessage = await this.page.innerText(Selectors.regFormSettings.successMessage);
         expect(successMessage).toContain('Welcome! Your account has been created successfully. Please check your email for further instructions.');

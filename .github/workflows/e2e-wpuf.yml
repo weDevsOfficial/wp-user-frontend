@@ -120,9 +120,9 @@ jobs:
               rm dokan-lite.latest-stable.zip
 
               # Download and extract The Events Calendar
-              # wget https://downloads.wordpress.org/plugin/the-events-calendar.latest-stable.zip
-              # unzip the-events-calendar.latest-stable.zip
-              # rm the-events-calendar.latest-stable.zip
+              wget https://downloads.wordpress.org/plugin/the-events-calendar.latest-stable.zip
+              unzip the-events-calendar.latest-stable.zip
+              rm the-events-calendar.latest-stable.zip
 
       # Start wordpress environment
       - name: Start WordPress Env

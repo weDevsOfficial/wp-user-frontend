@@ -515,7 +515,7 @@ export const Selectors = {
             // Post Tile
             postTitleFormsFE: '//input[@name="post_title"]',
             // Category
-            categorySelectionFormsFE: '//select[@data-type="select"]',
+            categorySelectionFormsFE: '//select[@name="category"]',
             // Post Description
             postDescriptionFormsFE1: '//div[contains(@class,"mce-edit-area mce-container")]//iframe[1]',
             postDescriptionFormsFE2: '//body[@id="tinymce"]',

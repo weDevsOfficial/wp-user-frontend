@@ -24,7 +24,7 @@ export class PostFormPage extends Base {
     async createBlankFormPostForm(newPostName: string) {
 
         //Visit Post Form Page
-        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();
@@ -52,7 +52,7 @@ export class PostFormPage extends Base {
     //PresetForm
     async createPresetPostForm(newPostName: string) {
         //Visit Post Form Page
-        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();
@@ -80,7 +80,7 @@ export class PostFormPage extends Base {
     //PresetForm
     async createPresetPostFormWithGuestEnabled(newPostName: string) {
         //Visit Post Form Page
-        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();
@@ -136,7 +136,7 @@ export class PostFormPage extends Base {
 
     async createPostFE() {
         //Go to Accounts page - FrontEnd
-        await this.page.goto(this.wpufPostSubmitPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.wpufPostSubmitPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
         //Post Form process
         //Enter Post Title
@@ -372,7 +372,7 @@ export class PostFormPage extends Base {
         const postRatings = await this.page.innerText(Selectors.postForms.postFormData.ratings);
         expect(postRatings).toContain(PostForm.ratings);
         console.log("Ratings Validated");
-        await this.page.goto(this.accountPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.accountPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
         await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);
         console.log("Signed Out");
     }
@@ -380,23 +380,15 @@ export class PostFormPage extends Base {
     //Create Page with Shortcode
     async createPageWithShortcode(shortcode: string, pageTitle: string) {
         //Go to Pages page
-        await this.page.goto(this.pagesPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.pagesPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
         //Create New Page
         await this.validateAndClick(Selectors.postForms.createPageWithShortcode.addNewPage);
         await this.page.waitForTimeout(300);
         // Check if the Welcome Modal is visible
-        try {
-            await this.validateAndClick(Selectors.postForms.createPageWithShortcode.closeWelcomeModal);
-        } catch (error) {
-            console.log('Welcome Modal not visible!');
-        }
-
+        await this.page.click(Selectors.postForms.createPageWithShortcode.closeWelcomeModal);
+        
         // Check if the Choose Pattern Modal is visible
-        try {
-            await this.page.locator(Selectors.postForms.createPageWithShortcode.closePatternModal).click({ timeout: 10000 });
-        } catch (error) {
-            console.log('Pattern Modal not visible!');
-        }
+        await this.validateAndClick(Selectors.postForms.createPageWithShortcode.closePatternModal);
 
         await this.validateAndFillStrings(Selectors.postForms.createPageWithShortcode.addPageTitle, pageTitle);
         //Click Add Block Button
@@ -418,7 +410,7 @@ export class PostFormPage extends Base {
         let guestName:string;
         let guestEmail:string;
         //Go to Accounts page - FrontEnd
-        await this.page.goto(Urls.baseUrl + '/guestpostform/', { waitUntil: 'networkidle' });
+        await this.page.goto(Urls.baseUrl + '/guestpostform/', { waitUntil: 'domcontentloaded', timeout: 30000 });
 
         //Post Form process
         //Enter Guest Name

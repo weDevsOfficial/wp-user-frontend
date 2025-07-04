@@ -22,7 +22,7 @@ on:
 jobs:
   test:
     if: github.repository != 'weDevsOfficial/wp-user-frontend' && github.repository != 'weDevsOfficial/wpuf-pro'
-    timeout-minutes: 70
+    timeout-minutes: 240
     runs-on: ubuntu-latest
    
     

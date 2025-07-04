@@ -24,7 +24,7 @@ export class FieldAddPage extends Base {
         await this.validateAndClick(Selectors.postForms.addPostFields_PF.postContentBlock);
         await this.validateAndClick(Selectors.postForms.addPostFields_PF.postExcerptBlock);
         await this.validateAndClick(Selectors.postForms.addPostFields_PF.featuredImageBlock);
-        await this.waitForLoading();
+         
     }
 
     //Validate > PostFields
@@ -50,7 +50,7 @@ export class FieldAddPage extends Base {
         await this.validateAndClick(Selectors.postForms.addTaxonomies_PF.categoryBlock);
         await this.validateAndClick(Selectors.postForms.addTaxonomies_PF.tagsBlock);
 
-        await this.waitForLoading();
+         
     }
 
     //Validate > Taxonomies
@@ -139,7 +139,7 @@ export class FieldAddPage extends Base {
             //Embed
             await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsEmbed); //TODO: This is an Error as position changes in Lite and Pro
 
-            await this.waitForLoading();
+             
 
         }
 
@@ -253,7 +253,7 @@ export class FieldAddPage extends Base {
             }
             //MathCaptcha
             await this.validateAndClick(Selectors.postForms.addOthers_Common.othersMathCaptcha);
-            await this.waitForLoading();
+             
         }
 
     }
@@ -291,7 +291,7 @@ export class FieldAddPage extends Base {
 
     //Settings > MultiStep Check
     async setMultiStepSettings_Common() {
-        await this.waitForLoading();
+         
         //Add Multi-Step-Check
         await this.validateAndClick(Selectors.postForms.formSettings.clickFormEditorSettings);
         const proTextAlertInSettings = await this.page.isVisible(Selectors.postForms.addCustomFields_Common.proTextAlertInSettings);
@@ -304,7 +304,7 @@ export class FieldAddPage extends Base {
         }
 
         await this.validateAndClick(Selectors.postForms.formSettings.clickFormEditor);
-        await this.waitForLoading();
+         
     }
 
 
@@ -322,7 +322,7 @@ export class FieldAddPage extends Base {
         }catch(e){
             console.log('not matched ');
         }
-        await this.waitForLoading();
+         
 
         //Save Form
         await this.validateAndClick(Selectors.postForms.saveForm_Common.saveFormButton);
@@ -335,7 +335,7 @@ export class FieldAddPage extends Base {
         //Return HOME
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();
-        await this.waitForLoading();
+         
 
         //ASSERTION > Check if-VALID
         const checkNewBlankFormCreatedValid_PF = await this.page.isVisible(Selectors.postForms.navigatePage_PF.checkAddButton_PF);
@@ -357,7 +357,7 @@ export class FieldAddPage extends Base {
     //ProfileFields
     async addProfileFields_RF() {
         //PostFields
-        await this.waitForLoading();
+         
         await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFieldUsername);
         await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFieldFirstName);
         await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFieldLastName);
@@ -385,7 +385,7 @@ export class FieldAddPage extends Base {
     async validateRegistrtionFormCreated(validateNewPostName_RF) {
         //Return HOME
         await this.validateAndClick(Selectors.registrationForms.createBlankForm_RF.clickRegistrationFormMenuOption);
-        await this.waitForLoading();
+         
 
         //ASSERTION > Check if-VALID
         const checkNewBlankFormCreatedValid_RF = await this.page.isVisible(Selectors.registrationForms.navigatePage_RF.checkAddButton_RF);

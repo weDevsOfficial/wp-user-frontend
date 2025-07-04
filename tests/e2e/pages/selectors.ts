@@ -64,7 +64,6 @@ export const Selectors = {
             clickEDDnoticeCross: '//div[@id="edds-edd-stripe-core-notice"]//button[@type="button"]',
             clickPayPalCross: '//div[@id="wpuf-paypal-settings-notice"]//button[@type="button"]',
             clickRunUpdater: '//a[normalize-space()="Run the updater"]',
-            clickActivateLicense: '//button[normalize-space()="Activate License"]',
             fillLicenseKey: '//div[@class="license-input-key"]//input[1]',
             submitLicenseKey: '//div[@class="license-input-key"]/following-sibling::button[1]',
             deactivateLicenseKey: '//div[@class="license-input-key"]/following-sibling::button[1]',

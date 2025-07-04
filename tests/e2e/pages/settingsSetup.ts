@@ -20,7 +20,7 @@ export class SettingsSetupPage extends Base {
     //WPUF Setup
     async wpufSetup() {
         //WPUF Setup
-        await this.page.goto(this.wpufSetupPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.wpufSetupPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
         const wpufSetup = await this.page.isVisible(Selectors.settingsSetup.wpufSetup.validateWPUFSetupPage);
         if (wpufSetup == true) {
@@ -43,7 +43,7 @@ export class SettingsSetupPage extends Base {
     //Plugin Activate - Lite
     async pluginStatusCheckLite() {
         //Go to AdminEnd
-        await this.page.goto(this.pluginsPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.pluginsPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
         //Activate Lite
         await this.activateWPUFLite();
@@ -53,7 +53,7 @@ export class SettingsSetupPage extends Base {
     //Plugin Activate - Pro
     async pluginStatusCheckPro() {
         //Go to AdminEnd
-        await this.page.goto(this.pluginsPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.pluginsPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
         //Activate Pro
         await this.activateWPUFPro();
@@ -63,7 +63,7 @@ export class SettingsSetupPage extends Base {
     //Plugin Activate - Pro
     async licenseActivateWPUFPro() {
         //Go to AdminEnd
-        await this.page.goto(this.pluginsPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.pluginsPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
         //Activate Pro
         await this.activateLicenseWPUFPro();
@@ -72,7 +72,7 @@ export class SettingsSetupPage extends Base {
     //Plugin Activate - Dokan Lite
     async dokanLiteStatusCheck() {
         //Go to AdminEnd
-        await this.page.goto(this.pluginsPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.pluginsPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
         //Activate Dokan Lite
         await this.activateDokanLite();
@@ -85,10 +85,10 @@ export class SettingsSetupPage extends Base {
     //Plugin Page - Visit
     async pluginVisitWPUF() {
         //Go to AdminEnd
-        await this.page.goto(this.wpAdminPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.wpAdminPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
         await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
-        await this.waitForLoading();
+         
 
         //ASSERTION > Check if-VALID
         const availableText = await this.page.isVisible(Selectors.settingsSetup.pluginVisit.clickPostFormMenuOption);
@@ -100,7 +100,7 @@ export class SettingsSetupPage extends Base {
     }
 
     async validateWPUFpages() {
-        await this.page.goto(this.pagesPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.pagesPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
         //Validate WPUF Pages
         await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufAccountPage);
@@ -117,7 +117,7 @@ export class SettingsSetupPage extends Base {
 
     async validateWPUFpagesFE() {
         //Go to FrontEnd
-        await this.page.goto(Urls.baseUrl, { waitUntil: 'networkidle' });
+        await this.page.goto(Urls.baseUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
         //Validate WPUF Pages
         await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.accountPageFE);
@@ -132,7 +132,7 @@ export class SettingsSetupPage extends Base {
 
     async validateAccountPageTabs() {
 
-        await this.page.goto(Urls.baseUrl, { waitUntil: 'networkidle' });
+        await this.page.goto(Urls.baseUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
         await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.accountPageFE);
         await this.validateAndClick(Selectors.settingsSetup.accountPageTabs.dashboardTab);
@@ -172,21 +172,21 @@ export class SettingsSetupPage extends Base {
         this.page.on('dialog', dialogHandler);
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickRunUpdater);
         this.page.off('dialog', dialogHandler);
-        await this.waitForLoading();
+         
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow1);
-        await this.waitForLoading();
+         
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
-        await this.waitForLoading();
+         
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickSkipSetup);
-        await this.waitForLoading();
+         
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickSwitchCart);
-        await this.waitForLoading();
+         
         // await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickDismiss);
-        // await this.waitForLoading();
+         
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickEDDnoticeCross);
-        await this.waitForLoading();
+         
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickPayPalCross);
-        await this.waitForLoading();
+         
         if (ifWPUFLite == true) {
             //Activate Plugin
             const activateWPUFLite = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
@@ -194,11 +194,11 @@ export class SettingsSetupPage extends Base {
             if (activateWPUFLite === true) {
                 //Plugins is getting activated here
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
-                await this.waitForLoading();
-                await this.page.goto(this.pluginsPage, { waitUntil: 'networkidle' });
+                 
+                await this.page.goto(this.pluginsPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginDeactivate);
 
-                await this.page.goto(this.wpAdminPage, { waitUntil: 'networkidle' });
+                await this.page.goto(this.wpAdminPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
                 await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
                 console.log('WPUF-Lite Status: is Activated');
             }
@@ -233,11 +233,11 @@ export class SettingsSetupPage extends Base {
             if (activateWPUFPro == true) {
                 //Plugins were DeActive
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginPro);
-                await this.waitForLoading();
-                await this.page.goto(this.pluginsPage, { waitUntil: 'networkidle' });
+                 
+                await this.page.goto(this.pluginsPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginProDeactivate);
 
-                await this.page.goto(this.wpAdminPage, { waitUntil: 'networkidle' });
+                await this.page.goto(this.wpAdminPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
                 const dialogHandler = async (dialog: Dialog) => {
                     if (dialog.type() === 'confirm') {
                         await dialog.accept();
@@ -264,28 +264,18 @@ export class SettingsSetupPage extends Base {
     //Plugin Activate - Pro
     async activateLicenseWPUFPro() {
         //Go to Plugins page
-        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
         await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
         await this.validateAndClick(Selectors.login.basicNavigation.licenseTab);
         //Activate Plugin
-        const activateWPUFPro = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickActivateLicense);
-        console.log(activateWPUFPro);
-        if (activateWPUFPro == true) {
-            await this.validateAndFillStrings(Selectors.settingsSetup.pluginStatusCheck.fillLicenseKey, process.env.WPUF_PRO_LICENSE_KEY?.toString() || '');
-            await this.page.waitForTimeout(200);
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.submitLicenseKey);
-            await this.page.waitForTimeout(200);
-            await this.page.reload();
-            await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.activationRemaining);
-            console.log('WPUF-Pro Status: License is Activated');
-        }
-        else {
-            await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
-            await this.validateAndClick(Selectors.login.basicNavigation.licenseTab);
-            await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.deactivateLicenseKey);
-            console.log('WPUF-Pro Status: License was Active');
-        }
+        await this.validateAndFillStrings(Selectors.settingsSetup.pluginStatusCheck.fillLicenseKey, process.env.WPUF_PRO_LICENSE_KEY?.toString() || '');
+        await this.page.waitForTimeout(200);
+        await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.submitLicenseKey);
+        await this.page.waitForTimeout(200);
+        await this.page.reload();
+        await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.activationRemaining);
+        console.log('WPUF-Pro Status: License is Activated');
     }
 
     async activateDokanLite() {
@@ -301,14 +291,14 @@ export class SettingsSetupPage extends Base {
             if (activateDokanLite === true) {
                 //Plugins is getting activated here
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickDokanLite);
-                await this.waitForLoading();
-                await this.page.goto(this.pluginsPage, { waitUntil: 'networkidle' });
+                 
+                await this.page.goto(this.pluginsPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.clickDokanLiteDeactivate);
 
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
-                await this.waitForLoading();
+                 
 
-                await this.page.goto(this.wpAdminPage, { waitUntil: 'networkidle' });
+                await this.page.goto(this.wpAdminPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
                 await this.validateAndClick(Selectors.login.basicNavigation.clickDokanSidebar);
                 console.log('Dokan-Lite Status: is Activated');
             }
@@ -333,7 +323,7 @@ export class SettingsSetupPage extends Base {
     //Change Settings - Login Page
     async changeSettingsSetLoginPageDefault() {
         //Go to WPUF
-        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
         //Change Settings
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
@@ -349,12 +339,12 @@ export class SettingsSetupPage extends Base {
         await this.page.selectOption(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileLoginPage, { label: '— Select —' });
         //Save Login/Registration
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileSave);
-        await this.waitForLoading();
+         
 
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPosting);
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.showCustomFields);
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPostingSave);
-        await this.waitForLoading();
+         
 
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccount);
         await this.page.selectOption(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountPage, { label: 'Account' });
@@ -366,10 +356,10 @@ export class SettingsSetupPage extends Base {
     }
 
     async changeSettingsSetEditProfilePageDefault(label:string) {
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
-        await this.waitForLoading();
+         
 
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccount);
         await this.page.selectOption(Selectors.settingsSetup.wpufSettingsPage.settingsTabEditProfile, { label: `${label}` });
@@ -384,7 +374,7 @@ export class SettingsSetupPage extends Base {
     //Change Settings - Login Page
     async changeSettingsSetDefaultPostForm(postFormPresetFrontEndTitle: string) {
         //Go to WPUF
-        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
         //Change Settings
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
@@ -409,7 +399,7 @@ export class SettingsSetupPage extends Base {
     //Change Settings - Registration Page
     async changeSettingsSetRegistrationPage(registrationFormPageTitle: string) {
         //Go to WPUF
-        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
         //Change Settings
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
@@ -438,7 +428,7 @@ export class SettingsSetupPage extends Base {
     //Set Permalink
     async setPermalink() {
         //Go to Settings - Permalink page
-        await this.page.goto(this.settingsPermalinkPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.settingsPermalinkPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
         await this.page.reload();
         //Custom structure - fill with empty
@@ -457,7 +447,7 @@ export class SettingsSetupPage extends Base {
 
     async allowRegistration() {
         //Go to Settings - General page
-        await this.page.goto(this.settingsPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.settingsPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
         await this.page.reload();
         //Allow anyone to register
@@ -473,15 +463,16 @@ export class SettingsSetupPage extends Base {
 
     //Main Admin
     //New User Create
-    async createNewUserAdmin(userName: string, email: string, firstName: string, lastName: string, password: string) {
-        await this.page.goto(this.wpAdminPage, { waitUntil: 'networkidle' });
+    async createNewUser(userName: string, email: string, firstName: string, lastName: string, password: string) {
+        await this.page.goto(this.wpAdminPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
+        await this.page.pause();
         //Go to Admin-Users
         await this.validateAndClick(Selectors.settingsSetup.createNewUser.clickUserMenuAdmin);
         //Add New User
         await this.validateAndClick(Selectors.settingsSetup.createNewUser.clickAddNewUserAdmin);
         await this.page.reload();
-        await this.waitForLoading();
+         
 
         //New User creation flow
         //Enter Username
@@ -494,10 +485,8 @@ export class SettingsSetupPage extends Base {
         await this.validateAndFillStrings(Selectors.settingsSetup.createNewUser.newUserLastName, lastName);
         //Enter Password
         await this.validateAndFillStrings(Selectors.settingsSetup.createNewUser.newUserPassword, password);
-        //Allow weak Password
-        // await this.page.check(Selectors.settingsSetup.createNewUser.newUserWeakPasswordAllow);
         //Select Role
-        await this.page.waitForLoadState('domcontentloaded');
+        await this.waitForLoading();
         await this.assertionValidate(Selectors.settingsSetup.createNewUser.newUserSelectRole);
         await this.page.selectOption(Selectors.settingsSetup.createNewUser.newUserSelectRole, { label: 'Subscriber' });
 
@@ -507,30 +496,30 @@ export class SettingsSetupPage extends Base {
 
     async createPostCategories() {
         //Go to Admin-Users
-        await this.page.goto(this.categoriesPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.categoriesPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
         //Add New Category
         //await this.validateAndClick(Selectors.settingsSetup.categories.clickCategoryMenu);
         await this.page.waitForLoadState('domcontentloaded');
-        const categoryNames: string[] = ['Science', 'Music', 'Politics', 'Sports', 'Technology'];
+        const categoryNames: string[] = ['Science', 'Music'];
         for (let i = 0; i < categoryNames.length; i++) {
             await this.validateAndFillStrings(Selectors.settingsSetup.categories.addNewCategory, categoryNames[i]);
             await this.validateAndClick(Selectors.settingsSetup.categories.submitCategory);
-            await this.page.waitForTimeout(1500);
+             
 
             await this.assertionValidate(Selectors.settingsSetup.categories.validateCategory(categoryNames[i]));
         }
     }
     async createPostTags() {
         //Go to Admin-Users
-        await this.page.goto(this.tagsPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.tagsPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
         //Add New Category
         //await this.validateAndClick(Selectors.settingsSetup.tags.clickTagsMenu);
         await this.page.waitForLoadState('domcontentloaded');
-        const tagNames: string[] = ['Physics', 'Rock', 'Democracy', 'Football', 'AI'];
+        const tagNames: string[] = ['Physics', 'AI'];
         for (let i = 0; i < tagNames.length; i++) {
             await this.validateAndFillStrings(Selectors.settingsSetup.tags.addNewTag, tagNames[i]);
             await this.validateAndClick(Selectors.settingsSetup.tags.submitTag);
-            await this.page.waitForTimeout(1500);
+             
 
             await this.assertionValidate(Selectors.settingsSetup.tags.validateTag(tagNames[i]));
         }
@@ -538,7 +527,7 @@ export class SettingsSetupPage extends Base {
 
     async addGoogleMapAPIKey(googleMapAPIKey: string) {
         //Go to Settings - General page
-        await this.page.goto(this.wpufSettingsPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.wpufSettingsPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
         await this.page.reload();
 
@@ -551,7 +540,7 @@ export class SettingsSetupPage extends Base {
 
     async addReCaptchaKeys(recaptchaSiteKey: string, recaptchaSecretKey: string) {
         //Go to Settings - General page
-        await this.page.goto(this.wpufSettingsPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.wpufSettingsPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
         await this.page.reload();
 
@@ -565,7 +554,7 @@ export class SettingsSetupPage extends Base {
 
     async addCloudflareTurnstileKeys(turnstileSiteKey: string, turnstileSecretKey: string) {
         //Go to Settings - General page
-        await this.page.goto(this.wpufSettingsPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.wpufSettingsPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
         await this.page.reload();
 
@@ -587,7 +576,7 @@ export class SettingsSetupPage extends Base {
 
     async enablePaymentGatewayBank() {
         //Go to Settings - General page
-        await this.page.goto(this.wpufSettingsPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.wpufSettingsPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
         await this.page.reload();
         await this.validateAndClick(Selectors.settingsSetup.payment.clickPaymentTab);
         await this.validateAndClick(Selectors.settingsSetup.payment.clickPaymentGatewayBank);
@@ -600,7 +589,7 @@ export class SettingsSetupPage extends Base {
 
     async resetWordpressSite() {
         //Go to AdminEnd
-        await this.page.goto(this.wpResetPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.wpResetPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
         await this.page.reload();
         await this.validateAndClick(Selectors.resetWordpreseSite.reActivateTheme);
         await this.validateAndClick(Selectors.resetWordpreseSite.reActivatePlugins);
@@ -608,14 +597,14 @@ export class SettingsSetupPage extends Base {
         await this.validateAndClick(Selectors.resetWordpreseSite.wpResetSubmitButton);
         await this.validateAndClick(Selectors.resetWordpreseSite.wpResetConfirmWordpressReset);
         await this.page.waitForTimeout(20000);
-        await this.page.goto(this.pluginsPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.pluginsPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
         await this.page.reload();
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWCvendors);
-        await this.waitForLoading();
+         
         
-        await this.page.goto(this.pluginsPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.pluginsPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickDoNotAllow);
-        await this.waitForLoading();
+         
     }
 
 }

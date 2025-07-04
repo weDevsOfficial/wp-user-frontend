@@ -121,7 +121,7 @@ export default function loginAndSetupTest() {
 
         test('LS0014 : Admin is creating a New User', { tag: ['@Basic'] }, async () => {
             const SettingsSetup = new SettingsSetupPage(page);
-            await SettingsSetup.createNewUserAdmin(
+            await SettingsSetup.createNewUser(
                 Users.userName,
                 Users.userEmail,
                 Users.userFirstName,

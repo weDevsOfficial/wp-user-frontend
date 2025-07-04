@@ -22,8 +22,7 @@ export class BasicLoginPage extends Base {
         const adminPassword = password;
 
         //Go to BackEnd
-        await this.page.goto(this.wpAdminPage, { waitUntil: 'networkidle' });
-        await this.page.reload();
+        await this.page.goto(this.wpAdminPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
         const emailStateCheck = await this.page.isVisible(Selectors.login.basicLogin.loginEmailField);
         //if in BackEnd or FrontEnd
@@ -44,7 +43,7 @@ export class BasicLoginPage extends Base {
         const adminEmail = email;
         const adminPassword = password;
 
-        await this.page.goto(this.wpAdminPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.wpAdminPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
         const emailStateCheck = await this.page.isVisible(Selectors.login.basicLogin.loginEmailField);
         //if in BackEnd or FrontEnd
@@ -66,7 +65,7 @@ export class BasicLoginPage extends Base {
     //Validate Login
     async validateBasicLogin() {
         //Go to BackEnd
-        await this.page.goto(this.wpAdminPage, { waitUntil: 'networkidle' });
+        await this.page.goto(this.wpAdminPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
         await this.assertionValidate(Selectors.login.validateBasicLogin.logingSuccessDashboard);
     }
 

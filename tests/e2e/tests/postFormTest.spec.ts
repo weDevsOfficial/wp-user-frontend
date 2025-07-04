@@ -78,7 +78,7 @@ export default function postFormTest() {
             await FieldAdd.addOthers_Common();
             await FieldAdd.validateOthers_Common();
             //Save
-            await FieldAdd.saveForm_Common(PostForm.formName);
+            await FieldAdd.saveForm_Common();
             //Validate
             await FieldAdd.validatePostFormCreated(PostForm.formName);
         });
@@ -129,7 +129,7 @@ export default function postFormTest() {
             await FieldAdd.validateTaxonomiesPreset_PF();
 
             //Save
-            await FieldAdd.saveForm_Common('PF Preset');
+            await FieldAdd.saveForm_Common();
             //Validate
             await FieldAdd.validatePostFormCreated('PF Preset');
         });
@@ -149,7 +149,7 @@ export default function postFormTest() {
             await FieldAdd.validateTaxonomiesPreset_PF();
 
             //Save
-            await FieldAdd.saveForm_Common(postFormPresetFrontendTitle);
+            await FieldAdd.saveForm_Common();
             //Validate
             pfShortCode = await FieldAdd.validatePostFormCreated(postFormPresetFrontendTitle);
             console.log('PF Short Code: ' + pfShortCode);

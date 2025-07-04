@@ -311,22 +311,10 @@ export class FieldAddPage extends Base {
 
     /********************* SaveForm *********************/
     //SaveForm
-    async saveForm_Common(validateNewPostName_Common: string) {
-        
-        try{
-        await this.page.waitForSelector(Selectors.postForms.saveForm_Common.formNameReCheck, { state: 'visible' });
-        const checkNewFormName_Common = await this.page.textContent(Selectors.postForms.saveForm_Common.formNameReCheck);
-        expect(checkNewFormName_Common?.trim()).toContain(validateNewPostName_Common);
-
-        console.log('Before Save-Form Name: ' + checkNewFormName_Common);
-        }catch(e){
-            console.log('not matched ');
-        }
-         
-
+    async saveForm_Common() {
         //Save Form
         await this.validateAndClick(Selectors.postForms.saveForm_Common.saveFormButton);
-        await this.page.reload();
+
     }
 
     /********************* Validate *********************/

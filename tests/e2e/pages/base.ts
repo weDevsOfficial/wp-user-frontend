@@ -42,6 +42,7 @@ export class Base {
         try {
             await this.page.locator(locator).waitFor({ state: 'visible', timeout: 30000 });
             await expect(this.page.locator(locator)).toBeVisible();
+            await this.waitForLoading();
             return true;
         } catch (error) {
             throw new Error(`Element not visible: ${locator}. Error: ${error.message}`);
@@ -99,6 +100,7 @@ export class Base {
         for (let i = 0; i < count; i++) {
             const element = elements.nth(i);
             if (await element.isVisible()) {
+                await this.waitForLoading();
                 return; // Exit the function once a visible element is clicked
             }
         }
@@ -113,6 +115,7 @@ export class Base {
             await element.waitFor({ state: 'visible', timeout: 30000 });
             await expect(element).toBeVisible();
             await element.fill(value, { timeout: 10000 });
+            await this.waitForLoading();
         } catch (error) {
             throw new Error(`Failed to fill element: ${locator} with value: ${value}. Error: ${error.message}`);
         }
@@ -125,6 +128,7 @@ export class Base {
             await element.waitFor({ state: 'visible', timeout: 30000 });
             await expect(element).toBeVisible();
             await element.fill(value.toString(), { timeout: 10000 });
+            await this.waitForLoading();
         } catch (error) {
             throw new Error(`Failed to fill element: ${locator} with number: ${value}. Error: ${error.message}`);
         }
@@ -137,7 +141,8 @@ export class Base {
             await element.waitFor({ state: 'visible', timeout: 30000 });
             await expect(element).toBeVisible();
             await element.check({ timeout: 10000 });
-        } catch (error) {
+            await this.waitForLoading();
+            } catch (error) {
             throw new Error(`Failed to check checkbox: ${locator}. Error: ${error.message}`);
         }
     }
@@ -146,6 +151,7 @@ export class Base {
     async matchToastNotifications(extractedToast: string, matchWithToast: string) {
         try {
             expect(matchWithToast).toContain(extractedToast);
+            await this.waitForLoading();
         } catch (error) {
             throw new Error(`Toast message mismatch. Expected to contain: "${extractedToast}" but got: "${matchWithToast}"`);
         }

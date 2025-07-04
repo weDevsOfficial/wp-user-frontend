@@ -515,7 +515,7 @@ export class SettingsSetupPage extends Base {
         for (let i = 0; i < categoryNames.length; i++) {
             await this.validateAndFillStrings(Selectors.settingsSetup.categories.addNewCategory, categoryNames[i]);
             await this.validateAndClick(Selectors.settingsSetup.categories.submitCategory);
-            await this.waitForLoading();
+            await this.page.waitForTimeout(1500);
 
             await this.assertionValidate(Selectors.settingsSetup.categories.validateCategory(categoryNames[i]));
         }
@@ -530,7 +530,7 @@ export class SettingsSetupPage extends Base {
         for (let i = 0; i < tagNames.length; i++) {
             await this.validateAndFillStrings(Selectors.settingsSetup.tags.addNewTag, tagNames[i]);
             await this.validateAndClick(Selectors.settingsSetup.tags.submitTag);
-            await this.waitForLoading();
+            await this.page.waitForTimeout(1500);
 
             await this.assertionValidate(Selectors.settingsSetup.tags.validateTag(tagNames[i]));
         }

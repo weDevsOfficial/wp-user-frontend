@@ -337,7 +337,7 @@ class Admin_Form_Builder {
      *
      * @param array $data Contains form_fields, form_settings, form_settings_key data
      *
-     * @return bool
+     * @return array
      */
     public static function save_form( $data ) {
         $saved_wpuf_inputs = [];
@@ -373,6 +373,29 @@ class Admin_Form_Builder {
                 wp_delete_post( $delete_id, true );
             }
         }
+        
+        // Filter out pro notification settings if pro version is not active
+        if ( ! wpuf_is_pro_active() && isset( $data['form_settings']['notification'] ) ) {
+            // Remove update post notification settings for free version
+            if ( isset( $data['form_settings']['notification']['edit'] ) ) {
+                unset( $data['form_settings']['notification']['edit'] );
+            }
+            if ( isset( $data['form_settings']['notification']['edit_to'] ) ) {
+                unset( $data['form_settings']['notification']['edit_to'] );
+            }
+            if ( isset( $data['form_settings']['notification']['edit_subject'] ) ) {
+                unset( $data['form_settings']['notification']['edit_subject'] );
+            }
+            if ( isset( $data['form_settings']['notification']['edit_body'] ) ) {
+                unset( $data['form_settings']['notification']['edit_body'] );
+            }
+        }
+        
+        // Also filter out standalone notification_edit field if it exists
+        if ( ! wpuf_is_pro_active() && isset( $data['form_settings']['notification_edit'] ) ) {
+            unset( $data['form_settings']['notification_edit'] );
+        }
+        
         update_post_meta( $data['form_id'], $data['form_settings_key'], $data['form_settings'] );
         update_post_meta( $data['form_id'], 'notifications', $data['notifications'] );
         update_post_meta( $data['form_id'], 'integrations', $data['integrations'] );

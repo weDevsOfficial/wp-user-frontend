@@ -6,6 +6,7 @@ use WeDevs\Wpuf\Admin\Forms\Post\Templates\Post_Form_Template_Events_Calendar;
 use WeDevs\Wpuf\Admin\Forms\Post\Templates\Post_Form_Template_WooCommerce;
 use WeDevs\Wpuf\Admin\Forms\Post\Templates\Pro_Form_Preview_EDD;
 use WeDevs\Wpuf\Pro\Admin\Coupon_Elements;
+use WeDevs\Wpuf\Hooks\Form_Settings_Cleanup;
 
 class Free_Loader extends Pro_Prompt {
 
@@ -72,6 +73,7 @@ class Free_Loader extends Pro_Prompt {
     public function includes() {
         // class files to include pro elements
         require_once WPUF_INCLUDES . '/functions/user/edit-user.php';
+        require_once WPUF_INCLUDES . '/Hooks/Form_Settings_Cleanup.php';
     }
 
     public function instantiate() {
@@ -90,6 +92,7 @@ class Free_Loader extends Pro_Prompt {
 
             if ( $load_free ) {
                 new WPUF_Admin_Form_Free();
+                new Form_Settings_Cleanup();
             }
         }
     }

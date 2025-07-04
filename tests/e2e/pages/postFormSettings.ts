@@ -17,8 +17,7 @@ export class PostFormSettingsPage extends Base {
 
         const FieldAdd = new FieldAddPage(this.page);
         // Go to post forms page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click Add New button
         await this.validateAndClick(Selectors.postFormSettings.addNewButton);
@@ -39,8 +38,7 @@ export class PostFormSettingsPage extends Base {
     // Change post type in form settings
     async changePostType(postType: string, formName: string) {
         // Go to post forms page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form name
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -72,8 +70,7 @@ export class PostFormSettingsPage extends Base {
     // Validate post type in list
     async validatePostTypeInList(expectedPostType: string) {
         // Go to post forms list
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Find the row containing the form name
         const postTypeText = await this.page.innerText(Selectors.postFormSettings.postTypeColumn);
@@ -86,8 +83,7 @@ export class PostFormSettingsPage extends Base {
     // Submit a post from frontend and validate post type
     async validatePostTypeFE(postTitle: string, postContent: string, postExcerpt: string) {
 
-        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostSubmitPage, { waitUntil: 'networkidle' });
 
         // Fill post title
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
@@ -112,8 +108,7 @@ export class PostFormSettingsPage extends Base {
     async setDefaultCategory(category: string, formName: string) {
 
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Wait for form list to load and click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -155,8 +150,7 @@ export class PostFormSettingsPage extends Base {
 
     // Submit a post and validate category
     async submitAndValidateCategory(postTitle: string, postContent: string, postExcerpt: string, category: string) {
-        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostSubmitPage, { waitUntil: 'networkidle' });
 
         // Fill post title
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
@@ -180,8 +174,7 @@ export class PostFormSettingsPage extends Base {
     // Set post redirection to newly created post
     async setPostRedirectionToPost(formName: string, value: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -209,8 +202,7 @@ export class PostFormSettingsPage extends Base {
     // Set post redirection to newly created post
     async setPostRedirectionToSamePage(formName: string, value: string, message: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -240,8 +232,7 @@ export class PostFormSettingsPage extends Base {
     // Set post redirection to another page
     async setPostRedirectionToPage(formName: string, value: string, text: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -277,8 +268,7 @@ export class PostFormSettingsPage extends Base {
     // Set post redirection to URL
     async setPostRedirectionToUrl(formName: string, value: string, url: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -307,8 +297,7 @@ export class PostFormSettingsPage extends Base {
     // Validate redirection after post submission
     async validateRedirectionToPost(postTitle: string, postContent: string, postExcerpt: string) {
         // Go to submit post page
-        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostSubmitPage, { waitUntil: 'networkidle' });
 
         // Fill post title
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
@@ -330,8 +319,7 @@ export class PostFormSettingsPage extends Base {
     // Validate redirection after post submission
     async validateRedirectionToSamePage(postTitle: string, postContent: string, postExcerpt: string, message: string) {
         // Go to submit post page
-        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostSubmitPage, { waitUntil: 'networkidle' });
 
         // Fill post title
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
@@ -355,8 +343,7 @@ export class PostFormSettingsPage extends Base {
     // Validate redirection after post submission
     async validateRedirectionToPage(postTitle: string, postContent: string, postExcerpt: string, pageTitle: string) {
         // Go to submit post page
-        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostSubmitPage, { waitUntil: 'networkidle' });
 
         // Fill post title
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
@@ -378,8 +365,7 @@ export class PostFormSettingsPage extends Base {
     // Validate redirection after post submission
     async validateRedirectionToUrl(postTitle: string, postContent: string, postExcerpt: string, expectedUrl: string) {
         // Go to submit post page
-        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostSubmitPage, { waitUntil: 'networkidle' });
 
         // Fill post title
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
@@ -401,8 +387,7 @@ export class PostFormSettingsPage extends Base {
     // Set post submission status
     async setPostSubmissionStatus(formName: string, value: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
         await this.waitForLoading();
@@ -423,8 +408,7 @@ export class PostFormSettingsPage extends Base {
     // Validate post type in list
     async validatePostSubmissionStatusInList(expectedPostStatus: string) {
         // Go to post forms list
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Find the row containing the form name
         const postStatusText = await this.page.innerText(Selectors.postFormSettings.postSubmissionStatusColumn);
@@ -436,8 +420,7 @@ export class PostFormSettingsPage extends Base {
     // Validate submitted post status
     async validateSubmittedPostStatusFE(postTitle: string, postContent: string, postExcerpt: string, value: string) {
         // Go to submit post page
-        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostSubmitPage, { waitUntil: 'networkidle' });
 
         // Fill post title
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
@@ -453,8 +436,7 @@ export class PostFormSettingsPage extends Base {
 
         await this.page.waitForTimeout(2000);
 
-        await Promise.all([this.page.goto(this.wpufPostPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostPage, { waitUntil: 'networkidle' });
 
         const newPostTitle = await this.page.innerText(Selectors.postFormSettings.postTitleColumn);
         if (postTitle == newPostTitle) {
@@ -466,8 +448,7 @@ export class PostFormSettingsPage extends Base {
 
     async setPostSavingAsDraft(formName: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
         await this.waitForLoading();
@@ -484,8 +465,7 @@ export class PostFormSettingsPage extends Base {
 
     async savingPostAsDraft(postTitle: string, postContent: string, postExcerpt: string, value: string) {
         // Go to submit post page
-        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostSubmitPage, { waitUntil: 'networkidle' });
 
         // Fill post title
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
@@ -501,8 +481,7 @@ export class PostFormSettingsPage extends Base {
         await this.page.waitForTimeout(200);
         await expect(this.page.locator(Selectors.postFormSettings.draftSavedAlert)).toBeVisible();
 
-        await Promise.all([this.page.goto(this.wpufPostPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostPage, { waitUntil: 'networkidle' });
 
         const newPostTitle = await this.page.innerText(Selectors.postFormSettings.postTitleColumn);
         if (postTitle == newPostTitle) {
@@ -513,8 +492,7 @@ export class PostFormSettingsPage extends Base {
 
     async changeSubmitButtonText(formName: string, value: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
         await this.waitForLoading();
@@ -527,16 +505,14 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
 
-        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostSubmitPage, { waitUntil: 'networkidle' });
 
         await expect(this.page.locator(Selectors.postFormSettings.submitPostButtonText(value))).toBeVisible();
     }
 
     async enableMultiStep(formName: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
         await this.waitForLoading();
@@ -556,8 +532,7 @@ export class PostFormSettingsPage extends Base {
 
     async validateMultiStepProgessbar(formName: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
         await this.waitForLoading();
@@ -576,16 +551,14 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
 
-        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostSubmitPage, { waitUntil: 'networkidle' });
 
         await expect(this.page.locator(Selectors.postFormSettings.multiStepProgressbar)).toBeVisible();
     }
 
     async validateMultiStepByStep(formName: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
         await this.waitForLoading();
@@ -604,16 +577,14 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
 
-        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostSubmitPage, { waitUntil: 'networkidle' });
 
         await expect(this.page.locator(Selectors.postFormSettings.multiStepByStep)).toBeVisible();
     }
 
     async disableMultiStep(formName: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
         await this.waitForLoading();
@@ -643,8 +614,7 @@ export class PostFormSettingsPage extends Base {
 
     async setPostUpdateStatus(formName: string, status: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
         await this.waitForLoading();
@@ -665,8 +635,7 @@ export class PostFormSettingsPage extends Base {
 
     async setPostUpdateMessage(formName: string, message: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
         await this.waitForLoading();
@@ -684,8 +653,7 @@ export class PostFormSettingsPage extends Base {
 
     async setLockUserEditingAfter(formName: string, hours: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
         await this.waitForLoading();
@@ -703,8 +671,7 @@ export class PostFormSettingsPage extends Base {
 
     async setUpdatePostButtonText(formName: string, buttonText: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
         await this.waitForLoading();
@@ -719,19 +686,16 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
 
-        await Promise.all([this.page.goto(this.wpufPostPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
-        await this.waitForLoading();
 
         await expect(this.page.locator(Selectors.postFormSettings.submitPostButtonText(buttonText))).toBeVisible();
     }
 
     async validatePostUpdateStatusInForm(postTitle: string, postContent: string, postExcerpt: string, expectedStatus: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
         await this.waitForLoading();
@@ -749,8 +713,7 @@ export class PostFormSettingsPage extends Base {
         await this.page.waitForTimeout(2000);
         //await this.assertionValidate(Selectors.postFormSettings.checkSuccessMessage);
 
-        await Promise.all([this.page.goto(this.wpufPostPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostPage, { waitUntil: 'networkidle' });
         const newPostTitle = await this.page.innerText(Selectors.postFormSettings.postTitleColumn);
         if (postTitle == newPostTitle) {
             const newPostStatus = await this.page.innerText(Selectors.postFormSettings.postStatusColumn);
@@ -760,8 +723,7 @@ export class PostFormSettingsPage extends Base {
 
     async pendingToLive() {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.postsPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.postsPage, { waitUntil: 'networkidle' });
 
         await this.page.hover(Selectors.postFormSettings.quickEditButtonContainer);
         await this.validateAndClick(Selectors.postFormSettings.quickEditButton);
@@ -774,8 +736,7 @@ export class PostFormSettingsPage extends Base {
 
     async validatePostUpdateMessageInForm(postTitle: string, postContent: string, postExcerpt: string, expectedMessage: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
         await this.waitForLoading();
@@ -800,8 +761,7 @@ export class PostFormSettingsPage extends Base {
 
     async setUpdatePostRedirectionToUpdatedPost(formName: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
         await this.waitForLoading();
@@ -822,8 +782,7 @@ export class PostFormSettingsPage extends Base {
 
     async setUpdatePostRedirectionToSamePage(formName: string, message: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
         await this.waitForLoading();
@@ -844,8 +803,7 @@ export class PostFormSettingsPage extends Base {
 
     async setUpdatePostRedirectionToPage(formName: string, pageName: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
         await this.waitForLoading();
@@ -873,8 +831,7 @@ export class PostFormSettingsPage extends Base {
 
     async setUpdatePostRedirectionToCustomUrl(formName: string, customUrl: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
         await this.waitForLoading();
@@ -898,8 +855,7 @@ export class PostFormSettingsPage extends Base {
 
     async validateUpdatePostRedirectionToPost(postTitle: string, postContent: string, postExcerpt: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
         await this.waitForLoading();
@@ -922,8 +878,7 @@ export class PostFormSettingsPage extends Base {
 
     async validateUpdatePostRedirectionToSamePage(postTitle: string, postContent: string, postExcerpt: string, message: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
         await this.waitForLoading();
@@ -947,8 +902,7 @@ export class PostFormSettingsPage extends Base {
 
     async validateUpdatePostRedirectionToPage(postTitle: string, postContent: string, postExcerpt: string, pageTitle: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
         await this.waitForLoading();
@@ -971,8 +925,7 @@ export class PostFormSettingsPage extends Base {
 
     async validateUpdatePostRedirectionToUrl(postTitle: string, postContent: string, postExcerpt: string, expectedUrl: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
         await this.waitForLoading();
@@ -996,8 +949,7 @@ export class PostFormSettingsPage extends Base {
 
     async enablePayPerPost(formName: string, cost: string, successPage: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
         await this.waitForLoading();
@@ -1027,8 +979,7 @@ export class PostFormSettingsPage extends Base {
 
     async disablePayPerPost(formName: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
         
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
         await this.waitForLoading();
@@ -1048,8 +999,7 @@ export class PostFormSettingsPage extends Base {
 
     async createPostWithPayment(postTitle: string, postContent: string, postExcerpt: string, cost: string, successPage: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostSubmitPage, { waitUntil: 'networkidle' });
 
         const payPerPostInfo = await this.page.innerText(Selectors.postFormSettings.wpufInfo);
         expect(payPerPostInfo).toContain(`There is a $${cost} charge to add a new post`);
@@ -1080,8 +1030,7 @@ export class PostFormSettingsPage extends Base {
 
     async acceptPayment() {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufTransactionPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufTransactionPage, { waitUntil: 'networkidle' });
 
         await this.page.hover(Selectors.postFormSettings.transactionTableRow);
 
@@ -1092,8 +1041,7 @@ export class PostFormSettingsPage extends Base {
 
     async validatePayPerPost() {
 
-        await Promise.all([this.page.goto(this.wpufPostPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostPage, { waitUntil: 'networkidle' });
 
         const newPostStatus = await this.page.innerText(Selectors.postFormSettings.postStatusColumn);
         await expect(newPostStatus).toContain('Live');
@@ -1103,8 +1051,7 @@ export class PostFormSettingsPage extends Base {
     // Enable new post notification
     async enableNewPostNotification(formName: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1135,8 +1082,7 @@ export class PostFormSettingsPage extends Base {
     // Disable new post notification
     async disableNewPostNotification(formName: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1164,8 +1110,7 @@ export class PostFormSettingsPage extends Base {
     // Modify notification email settings
     async modifyNotificationEmail(formName: string, emailAddress: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1193,8 +1138,7 @@ export class PostFormSettingsPage extends Base {
     // Modify notification subject
     async modifyNotificationSubject(formName: string, emailSubject: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1222,8 +1166,7 @@ export class PostFormSettingsPage extends Base {
     // Modify notification body with template tags
     async modifyNotificationBodyWithTemplateTags(formName: string, emailBody: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1251,8 +1194,7 @@ export class PostFormSettingsPage extends Base {
     // Click template tags for notification body
     async clickTemplateTagsForNotification(formName: string, tags: string[]) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1287,8 +1229,7 @@ export class PostFormSettingsPage extends Base {
     // Validate notification settings in form
     async validateNotificationSettingsEnabled(formName: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1311,8 +1252,7 @@ export class PostFormSettingsPage extends Base {
     // Submit post and validate notification is sent (simulate)
     async submitPostAndValidateNotificationFE(postTitle: string, postContent: string, postExcerpt: string, emailSubject: string, multipleEmails: string) {
         // Go to frontend post submission page
-        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostSubmitPage, { waitUntil: 'networkidle' });
 
         // Fill post details
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
@@ -1329,7 +1269,7 @@ export class PostFormSettingsPage extends Base {
         await this.page.waitForTimeout(2000);
 
         // Validate notification is sent
-        await Promise.all([this.page.goto(this.wpMailLogPage)]);
+        await this.page.goto(this.wpMailLogPage, { waitUntil: 'networkidle' });
         await this.page.waitForTimeout(1000);
 
         const sentEmailAddress = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress);
@@ -1355,8 +1295,7 @@ export class PostFormSettingsPage extends Base {
     // Test multiple notification emails
     async setMultipleNotificationEmails(formName: string, multipleEmails: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1384,8 +1323,7 @@ export class PostFormSettingsPage extends Base {
     // Enable new post notification
     async enableUpdatedPostNotification(formName: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1416,8 +1354,7 @@ export class PostFormSettingsPage extends Base {
     // Disable new post notification
     async disableUpdatedPostNotification(formName: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1445,8 +1382,7 @@ export class PostFormSettingsPage extends Base {
     // Modify notification email settings
     async modifyUpdatedNotificationEmail(formName: string, emailAddress: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1474,8 +1410,7 @@ export class PostFormSettingsPage extends Base {
     // Modify notification subject
     async modifyUpdatedNotificationSubject(formName: string, emailSubject: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1503,8 +1438,7 @@ export class PostFormSettingsPage extends Base {
     // Modify notification body with template tags
     async modifyUpdatedNotificationBodyWithTemplateTags(formName: string, emailBody: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1532,8 +1466,7 @@ export class PostFormSettingsPage extends Base {
     // Click template tags for notification body
     async clickTemplateTagsForUpdatedNotification(formName: string, tags: string[]) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1569,8 +1502,7 @@ export class PostFormSettingsPage extends Base {
     // Validate notification settings in form
     async validateUpdatedNotificationSettingsEnabled(formName: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1593,8 +1525,7 @@ export class PostFormSettingsPage extends Base {
     // Submit post and validate notification is sent (simulate)
     async submitPostAndValidateUpdatedNotificationFE(previousPostTitle: string, postTitle: string, postContent: string, postExcerpt: string, emailSubject: string, multipleEmails: string) {
         // Go to frontend post submission page
-        await Promise.all([this.page.goto(this.wpufPostPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.postFormSettings.editPostButton);
         await this.waitForLoading();
@@ -1613,7 +1544,7 @@ export class PostFormSettingsPage extends Base {
         await this.page.waitForTimeout(2000);
 
         // Validate notification is sent
-        await Promise.all([this.page.goto(this.wpMailLogPage)]);
+        await this.page.goto(this.wpMailLogPage, { waitUntil: 'networkidle' });
         await this.page.waitForTimeout(2000);
 
         const sentEmailAddress = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress);
@@ -1639,8 +1570,7 @@ export class PostFormSettingsPage extends Base {
     // Test multiple notification emails
     async setMultipleUpdatedNotificationEmails(formName: string, multipleEmails: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1667,8 +1597,7 @@ export class PostFormSettingsPage extends Base {
 
     async settingUserComment(formName: string, status: string, postTitle: string, postContent: string, postExcerpt: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1694,7 +1623,7 @@ export class PostFormSettingsPage extends Base {
         // Wait for save message
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
         
-        await this.page.goto(this.wpufPostSubmitPage);
+        await this.page.goto(this.wpufPostSubmitPage, { waitUntil: 'networkidle' });
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
 
@@ -1711,8 +1640,7 @@ export class PostFormSettingsPage extends Base {
 
     async validateUserCommentEnabled(postTitle: string) {
         // Go to frontend post submission page
-        await Promise.all([this.page.goto(Urls.baseUrl)]);
-        await this.waitForLoading();
+        await this.page.goto(Urls.baseUrl, { waitUntil: 'networkidle' });
 
         // Click on the post
         await this.validateAndClick(Selectors.postFormSettings.clickPost(postTitle));
@@ -1722,8 +1650,7 @@ export class PostFormSettingsPage extends Base {
 
         await this.assertionValidate(Selectors.postFormSettings.advancedSettingsSection.validateComment);
 
-        await Promise.all([this.page.goto(this.accountPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.accountPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);
         await this.waitForLoading();
@@ -1732,16 +1659,14 @@ export class PostFormSettingsPage extends Base {
 
     async validateUserCommentDisabled(postTitle: string) {
         // Go to frontend post submission page
-        await Promise.all([this.page.goto(Urls.baseUrl)]);
-        await this.waitForLoading();
+        await this.page.goto(Urls.baseUrl, { waitUntil: 'networkidle' });
 
         // Click on the post
         await this.validateAndClick(Selectors.postFormSettings.clickPost(postTitle));
 
         await expect(this.page.locator(Selectors.postFormSettings.advancedSettingsSection.commentBox)).not.toBeVisible();
 
-        await Promise.all([this.page.goto(this.accountPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.accountPage, { waitUntil: 'networkidle' });
 
         await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);
         await this.waitForLoading();
@@ -1750,8 +1675,7 @@ export class PostFormSettingsPage extends Base {
 
     async limitFormEntries(formName: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1782,8 +1706,8 @@ export class PostFormSettingsPage extends Base {
 
     async validateLimitFormEntries(postTitle: string, postContent: string, postExcerpt: string) {
         // // Go to frontend post submission page
-        // await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
-        // await this.waitForLoading();
+        // await this.page.goto(this.wpufPostSubmitPage, { waitUntil: 'networkidle' });
+        
 
         // await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
 
@@ -1796,8 +1720,7 @@ export class PostFormSettingsPage extends Base {
 
         // await this.page.waitForTimeout(2000);
 
-        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostSubmitPage, { waitUntil: 'networkidle' });
 
         const errorMessage = await this.page.innerText(Selectors.postFormSettings.wpufInfo);
         expect(errorMessage).toBe('limit reached');
@@ -1806,8 +1729,7 @@ export class PostFormSettingsPage extends Base {
 
     async unlimitFormEntries(formName: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1836,11 +1758,11 @@ export class PostFormSettingsPage extends Base {
 
     async enablePostExpiration(formName: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
@@ -1870,11 +1792,11 @@ export class PostFormSettingsPage extends Base {
 
     async enableFormTitleShowing(formName: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
@@ -1893,20 +1815,20 @@ export class PostFormSettingsPage extends Base {
         // Wait for save message
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
 
-        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostSubmitPage, { waitUntil: 'networkidle' });
 
         await this.assertionValidate(Selectors.postFormSettings.showFormTitle(formName));
+        await this.waitForLoading();
         
     }
 
     async showFormDescription(formName: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
@@ -1932,10 +1854,10 @@ export class PostFormSettingsPage extends Base {
         // Wait for save message
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
 
-        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostSubmitPage, { waitUntil: 'networkidle' });
 
         await this.assertionValidate(Selectors.postFormSettings.showFormTitle(formName));
+        await this.waitForLoading();
 
         const formDescription = await this.page.innerText(Selectors.postFormSettings.showFormDescription);
         expect(formDescription).toBe('Form Description');
@@ -1944,11 +1866,11 @@ export class PostFormSettingsPage extends Base {
 
     async setPostPermissionRoleBased(formName: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
@@ -1975,18 +1897,17 @@ export class PostFormSettingsPage extends Base {
 
     async validatePostPermissionRoleBased(formName: string) {
         // Go to form edit page
-        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostSubmitPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         const errorMessage = await this.page.innerText(Selectors.postFormSettings.wpufMessage);
         expect(errorMessage).toContain('You do not have sufficient permissions to access this form.');
 
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+        await this.waitForLoading();
 
         // Click Settings tab
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);

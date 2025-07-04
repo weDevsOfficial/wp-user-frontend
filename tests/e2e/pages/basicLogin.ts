@@ -22,9 +22,8 @@ export class BasicLoginPage extends Base {
         const adminPassword = password;
 
         //Go to BackEnd
-        await Promise.all([this.page.goto(this.wpAdminPage )]);
+        await this.page.goto(this.wpAdminPage, { waitUntil: 'networkidle' });
         await this.page.reload();
-        await this.waitForLoading();
 
         const emailStateCheck = await this.page.isVisible(Selectors.login.basicLogin.loginEmailField);
         //if in BackEnd or FrontEnd
@@ -45,8 +44,7 @@ export class BasicLoginPage extends Base {
         const adminEmail = email;
         const adminPassword = password;
 
-        await Promise.all([this.page.goto(this.wpAdminPage )]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpAdminPage, { waitUntil: 'networkidle' });
 
         const emailStateCheck = await this.page.isVisible(Selectors.login.basicLogin.loginEmailField);
         //if in BackEnd or FrontEnd
@@ -68,8 +66,7 @@ export class BasicLoginPage extends Base {
     //Validate Login
     async validateBasicLogin() {
         //Go to BackEnd
-        await Promise.all([this.page.goto(this.wpAdminPage )]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpAdminPage, { waitUntil: 'networkidle' });
         await this.assertionValidate(Selectors.login.validateBasicLogin.logingSuccessDashboard);
     }
 
@@ -84,7 +81,6 @@ export class BasicLoginPage extends Base {
     async backendLogin(email: string, password: string) {
         await this.validateAndFillStrings(Selectors.login.basicLogin.loginEmailField, email);
         await this.validateAndFillStrings(Selectors.login.basicLogin.loginPasswordField, password);
-
         await this.validateAndClick(Selectors.login.basicLogin.rememberMeField);
         await this.validateAndClick(Selectors.login.basicLogin.loginButton);
     }
@@ -93,9 +89,6 @@ export class BasicLoginPage extends Base {
     async frontendLogin(email: string, password: string) {
         await this.validateAndFillStrings(Selectors.login.basicLogin.loginEmailField2, email);
         await this.validateAndFillStrings(Selectors.login.basicLogin.loginPasswordField2, password);
-
-        await this.page.waitForTimeout(5000);
-
         await this.assertionValidate(Selectors.login.basicLogin.loginButton2);
         await this.validateAndClick(Selectors.login.basicLogin.loginButton2);
     }

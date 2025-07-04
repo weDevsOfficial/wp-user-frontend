@@ -33,7 +33,7 @@ export class RegFormPage extends Base {
     //Registration forms page - only WPUF-Lite activated
     async validateRegistrationFormsProFeature() {
         // Visit Registration forms page
-        await Promise.all([this.page.goto(this.wpufRegistrationFormPage)]);
+        await this.page.goto(this.wpufRegistrationFormPage, { waitUntil: 'networkidle' });
 
         const validateWPUFProActivate = await this.page.isVisible(Selectors.registrationForms.navigatePage_RF.checkAddButton_RF);
         if (validateWPUFProActivate == true) {
@@ -54,7 +54,7 @@ export class RegFormPage extends Base {
     //Create Registration page using Shortcode
     async createRegistrationPageUsingShortcodeLite(registrationFormPageTitle: string) {
         // Visit Registration forms page
-        await Promise.all([this.page.goto(this.wpufRegistrationFormPage)]);
+        await this.page.goto(this.wpufRegistrationFormPage, { waitUntil: 'networkidle' });
 
         let storeShortcode: string = '';
 
@@ -63,7 +63,7 @@ export class RegFormPage extends Base {
         console.log(storeShortcode);
 
         //Visit Pages
-        await Promise.all([this.page.goto(this.pagesPage)]);
+        await this.page.goto(this.pagesPage, { waitUntil: 'networkidle' });
 
         //Add New Page
         await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addNewPage);
@@ -122,7 +122,7 @@ export class RegFormPage extends Base {
     //BlankForm
     async createBlankForm_RF(newRegFormName: string, newRegFormPage: string) {
         //Visit Post Form Page
-        await Promise.all([this.page.goto(this.wpufRegistrationFormPage)]);
+        await this.page.goto(this.wpufRegistrationFormPage, { waitUntil: 'networkidle' });
         //CreateNewRegistrationForm
 
         await this.validateAndClick(Selectors.registrationForms.createBlankForm_RF.clickRegistrationFormMenuOption);
@@ -165,7 +165,7 @@ export class RegFormPage extends Base {
     //Registration forms page - only WPUF-Lite activated
     async completeUserRegistrationFormFrontend() {
         //Go to Registration page - FrontEnd
-        await Promise.all([this.page.goto(this.wpufRegistrationPage)]);
+        await this.page.goto(this.wpufRegistrationPage, { waitUntil: 'networkidle' });
 
         //Validate Registration page
         const validateRegistrationPage = await this.page.innerText(Selectors.registrationForms.completeUserRegistrationFormFrontend.validateRegistrationPage);
@@ -225,7 +225,7 @@ export class RegFormPage extends Base {
 
     //Validate in Admin - Registered Form Submitted
     async validateUserRegisteredAdminEnd() {
-        await Promise.all([this.page.goto(this.wpufRegistrationFormPage)]);
+        await this.page.goto(this.wpufRegistrationFormPage, { waitUntil: 'networkidle' });
 
         //Validate Registered User
         //Go to Users List

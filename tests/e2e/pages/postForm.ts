@@ -24,7 +24,7 @@ export class PostFormPage extends Base {
     async createBlankFormPostForm(newPostName: string) {
 
         //Visit Post Form Page
-        await Promise.all([this.page.goto(this.wpufPostFormPage )]);
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();
@@ -52,7 +52,7 @@ export class PostFormPage extends Base {
     //PresetForm
     async createPresetPostForm(newPostName: string) {
         //Visit Post Form Page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();
@@ -80,7 +80,7 @@ export class PostFormPage extends Base {
     //PresetForm
     async createPresetPostFormWithGuestEnabled(newPostName: string) {
         //Visit Post Form Page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
+        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'networkidle' });
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();
@@ -136,7 +136,7 @@ export class PostFormPage extends Base {
 
     async createPostFE() {
         //Go to Accounts page - FrontEnd
-        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
+        await this.page.goto(this.wpufPostSubmitPage, { waitUntil: 'networkidle' });
 
         //Post Form process
         //Enter Post Title
@@ -372,7 +372,7 @@ export class PostFormPage extends Base {
         const postRatings = await this.page.innerText(Selectors.postForms.postFormData.ratings);
         expect(postRatings).toContain(PostForm.ratings);
         console.log("Ratings Validated");
-        await this.page.goto(this.accountPage);
+        await this.page.goto(this.accountPage, { waitUntil: 'networkidle' });
         await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);
         console.log("Signed Out");
     }
@@ -380,7 +380,7 @@ export class PostFormPage extends Base {
     //Create Page with Shortcode
     async createPageWithShortcode(shortcode: string, pageTitle: string) {
         //Go to Pages page
-        await Promise.all([this.page.goto(this.pagesPage)]);
+        await this.page.goto(this.pagesPage, { waitUntil: 'networkidle' });
         //Create New Page
         await this.validateAndClick(Selectors.postForms.createPageWithShortcode.addNewPage);
         await this.page.waitForTimeout(300);
@@ -418,7 +418,7 @@ export class PostFormPage extends Base {
         let guestName:string;
         let guestEmail:string;
         //Go to Accounts page - FrontEnd
-        await Promise.all([this.page.goto(Urls.baseUrl + '/guestpostform/')]);
+        await this.page.goto(Urls.baseUrl + '/guestpostform/', { waitUntil: 'networkidle' });
 
         //Post Form process
         //Enter Guest Name

@@ -12,8 +12,7 @@ export class BasicLogoutPage extends Base {
     }
 
     async logOut() {
-        await Promise.all([this.page.goto(this.wpAdminPage )]);
-        await this.waitForLoading();
+        await this.page.goto(this.wpAdminPage , { waitUntil: 'networkidle' });
 
         await this.page.waitForTimeout(200);
         await this.page.hover(Selectors.logout.basicLogout.logoutHoverUsername);

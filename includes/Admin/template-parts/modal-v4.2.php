@@ -285,6 +285,23 @@ if ( ! empty( $registry ) ) {
         height: 100vh !important;
         z-index: 999999 !important;
         background-color: #F8FAFC !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out !important;
+    }
+
+    .wpuf-form-template-modal.wpuf-modal-show {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .wpuf-form-template-modal .wpuf-relative {
+        transform: scale(0.95) !important;
+        transition: transform 0.3s ease-in-out !important;
+    }
+
+    .wpuf-form-template-modal.wpuf-modal-show .wpuf-relative {
+        transform: scale(1) !important;
     }
 
     .wpuf-modal-open {
@@ -304,6 +321,39 @@ if ( ! empty( $registry ) ) {
     }
     .wpuf-bg-gradient-to-br {
         background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
+    }
+
+    /* Animation for template items on load */
+    .wpuf-template-item {
+        animation: wpuf-fadeInUp 0.6s ease-out forwards;
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    .wpuf-template-item:nth-child(1) { animation-delay: 0.1s; }
+    .wpuf-template-item:nth-child(2) { animation-delay: 0.2s; }
+    .wpuf-template-item:nth-child(3) { animation-delay: 0.3s; }
+    .wpuf-template-item:nth-child(4) { animation-delay: 0.4s; }
+    .wpuf-template-item:nth-child(5) { animation-delay: 0.5s; }
+    .wpuf-template-item:nth-child(6) { animation-delay: 0.6s; }
+    .wpuf-template-item:nth-child(7) { animation-delay: 0.7s; }
+    .wpuf-template-item:nth-child(8) { animation-delay: 0.8s; }
+
+    @keyframes wpuf-fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Close button animation */
+    .wpuf-close-btn {
+        transform: scale(1);
+        transition: transform 0.2s ease-in-out !important;
+    }
+
+    .wpuf-close-btn:hover {
+        transform: scale(1.1) !important;
     }
 </style>
 
@@ -337,7 +387,15 @@ if ( ! empty( $registry ) ) {
 
             openModal: function ( e ) {
                 e.preventDefault();
-                $( '.wpuf-form-template-modal' ).show();
+                var $modal = $( '.wpuf-form-template-modal' );
+                $modal.show().removeClass( 'wpuf-hidden' );
+                
+                $modal[0].offsetHeight;
+                
+                setTimeout( function() {
+                    $modal.addClass( 'wpuf-modal-show' );
+                }, 10 );
+                
                 $( 'body' ).addClass( 'wpuf-modal-open' );
                 $( 'body' ).css( 'overflow', 'hidden' );
             },
@@ -352,7 +410,14 @@ if ( ! empty( $registry ) ) {
                 if (typeof e !== 'undefined') {
                     e.preventDefault();
                 }
-                $( '.wpuf-form-template-modal' ).hide();
+                
+                var $modal = $( '.wpuf-form-template-modal' );
+                $modal.removeClass( 'wpuf-modal-show' );
+                
+                setTimeout( function() {
+                    $modal.hide().addClass( 'wpuf-hidden' );
+                }, 300 ); // Match the CSS transition duration
+                
                 $( 'body' ).removeClass( 'wpuf-modal-open' );
                 $( 'body' ).css( 'overflow', '' );
             },

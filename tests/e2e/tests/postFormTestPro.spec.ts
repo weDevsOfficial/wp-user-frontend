@@ -74,7 +74,7 @@ export default function postFormTestPro() {
             //await FieldOptionsCommon.setMultiStepSettings_Common();
 
             //Save
-            await FieldAddPro.saveForm_Common(PostForm.formName);
+            await FieldAddPro.saveForm_Common();
             //Validate
             await FieldAddPro.validatePostFormCreated(PostForm.formName);
         });

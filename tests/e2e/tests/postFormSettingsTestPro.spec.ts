@@ -92,44 +92,44 @@ export default function postFormSettingsTestPro() {
             await postFormSettings.disableMultiStep(formName);
         });
 
-        test('PFS0069 : Admin is enabling updated post notification', { tag: ['@Pro'] }, async () => {
+        test('PFS0071 : Admin is enabling updated post notification', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.enableUpdatedPostNotification(formName);
         });
 
-        test('PFS0070 : Admin is validating Updated post notification settings enabled', { tag: ['@Pro'] }, async () => {
+        test('PFS0072 : Admin is validating Updated post notification settings enabled', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.validateUpdatedNotificationSettingsEnabled(formName);
         });
 
-        test('PFS0071 : Admin is modifying Updated post notification email', { tag: ['@Pro'] }, async () => {
+        test('PFS0073 : Admin is modifying Updated post notification email', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.modifyUpdatedNotificationEmail(formName, emailAddress);
         });
 
-        test('PFS0072 : Admin is modifying Updated post notification subject', { tag: ['@Pro'] }, async () => {
+        test('PFS0074 : Admin is modifying Updated post notification subject', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.modifyUpdatedNotificationSubject(formName, emailSubject);
         });
 
-        test('PFS0073 : Admin is modifying Updated post notification body with template tags', { tag: ['@Pro'] }, async () => {
+        test('PFS0075 : Admin is modifying Updated post notification body with template tags', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.modifyUpdatedNotificationBodyWithTemplateTags(formName, emailBody);
         });
 
-        test('PFS0074 : Admin is clicking and validating template tags for Updated post notification', { tag: ['@Pro'] }, async () => {
+        test('PFS0076 : Admin is clicking and validating template tags for Updated post notification', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             const templateTags = ['{post_title}', '{post_content}', '{post_excerpt}'];
             //, '{tags}', '{category}', '{author}', '{author_email}', '{author_bio}', '{sitename}', '{siteurl}', '{permalink}', '{editlink}'
             await postFormSettings.clickTemplateTagsForUpdatedNotification(formName, templateTags);
         });
 
-        test('PFS0075 : Admin is setting multiple Updated post notification emails', { tag: ['@Pro'] }, async () => {
+        test('PFS0077 : Admin is setting multiple Updated post notification emails', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.setMultipleUpdatedNotificationEmails(formName, multipleEmails);
         });
 
-        test.skip('PFS0076 : Admin is submitting post and validating Updated post notification from FE', { tag: ['@Pro'] }, async () => {
+        test.skip('PFS0078 : Admin is submitting post and validating Updated post notification from FE', { tag: ['@Pro'] }, async () => {
             let previousPostTitle = postTitle;
             postTitle = faker.word.words(3);
             postContent = faker.lorem.paragraph();
@@ -138,22 +138,22 @@ export default function postFormSettingsTestPro() {
             await postFormSettings.submitPostAndValidateUpdatedNotificationFE(previousPostTitle, postTitle, postContent, postExcerpt, emailSubject, multipleEmails);
         });
 
-        test('PFS0077 : Admin is disabling updated post notification', { tag: ['@Pro'] }, async () => {
+        test('PFS0079 : Admin is disabling updated post notification', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.disableUpdatedPostNotification(formName);
         });
 
-        test.skip('PFS0085 : Admin is enabling conditional logic on form submission', { tag: ['@Pro'] }, async () => {
+        test.skip('PFS0087 : Admin is enabling conditional logic on form submission', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             
         });
 
-        test.skip('PFS0086 : Admin is validating conditional logic on form submission', { tag: ['@Pro'] }, async () => {
+        test.skip('PFS0088 : Admin is validating conditional logic on form submission', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             
         });
 
-        test('PFS0087 : Admin is enabling post expiration', { tag: ['@Pro'] }, async () => {
+        test('PFS0089 : Admin is enabling post expiration', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
             await postFormSettings.enablePostExpiration(formName);
         });

@@ -3723,15 +3723,9 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   background-color: rgb(255 255 255 / var(--tw-bg-opacity)) !important;
 }
 
-
 .wpuf-bg-amber-500 {
   --tw-bg-opacity: 1;
-  background-color: rgb(255 144 0 / var(--tw-bg-opacity));
-}
-
-.wpuf-bg-amber-600 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(217 119 6 / var(--tw-bg-opacity));
+  background-color: rgb(245 158 11 / var(--tw-bg-opacity));
 }
 
 .wpuf-bg-black\/25 {
@@ -5318,6 +5312,11 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
   background-color: rgb(240 253 244 / var(--tw-bg-opacity)) !important;
 }
 
+.hover\:wpuf-bg-amber-600:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(217 119 6 / var(--tw-bg-opacity));
+}
+
 .hover\:wpuf-bg-blue-700:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(29 78 216 / var(--tw-bg-opacity));
@@ -5486,6 +5485,11 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
 
 .focus\:\!wpuf-border-transparent:focus {
   border-color: transparent !important;
+}
+
+.focus\:wpuf-bg-amber-600:focus {
+  --tw-bg-opacity: 1;
+  background-color: rgb(217 119 6 / var(--tw-bg-opacity));
 }
 
 .focus\:wpuf-bg-indigo-500:focus {

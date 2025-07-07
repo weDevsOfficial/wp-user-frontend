@@ -15,11 +15,11 @@ $categories = [
     ],
     'community'    => [
         'label'    => __( 'Community', 'wp-user-frontend' ),
-        'keywords' => [], // Add keywords for this category when templates are available
+        'keywords' => [],
     ],
     'associations' => [
         'label'    => __( 'Associations', 'wp-user-frontend' ),
-        'keywords' => [], // Add keywords for this category when templates are available
+        'keywords' => [],
     ],
 ];
 
@@ -105,7 +105,7 @@ if ( ! empty( $registry ) ) {
                                     <span><?php esc_html_e( 'All Templates', 'wp-user-frontend' ); ?></span>
                                     <span class="wpuf-border wpuf-border-primary wpuf-text-primary wpuf-text-sm wpuf-font-semibold wpuf-px-2.5 wpuf-py-0.5 wpuf-rounded-full">
                                         <?php
-                                        $total_count = count($registry) + 2; // +2 for blank form and create with AI
+                                        $total_count = count($registry) + 1; // +2 for blank form and create with AI
                                         if (!empty($pro_templates)) {
                                             $total_count += count($pro_templates);
                                         }
@@ -134,6 +134,7 @@ if ( ! empty( $registry ) ) {
                 <div class="wpuf-flex-1">
                     <!-- Templates Grid -->
                     <div class="wpuf-flex wpuf-flex-wrap wpuf-gap-4" id="templates-grid">
+                        <?php /*
                         <!-- Create with AI -->
                         <div class="template-box wpuf-template-item" data-category="ai" data-title="create with ai" style="width: calc(25% - 12px);">
                             <div class="wpuf-relative wpuf-group wpuf-bg-gradient-to-br wpuf-from-blue-500 wpuf-to-purple-600 wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-shadow-sm hover:wpuf-shadow-md wpuf-transition-all">
@@ -151,6 +152,7 @@ if ( ! empty( $registry ) ) {
                             </div>
                             <p class="wpuf-text-xs wpuf-text-gray-700 wpuf-mt-2 wpuf-text-center wpuf-font-medium"><?php echo esc_html( 'Create with AI' ); ?></p>
                         </div>
+                        */ ?>
                         <!-- Blank Form -->
                         <div class="template-box wpuf-template-item" data-category="registration" data-title="blank form" style="width: calc(25% - 12px);">
                             <div class="wpuf-relative wpuf-group wpuf-bg-white wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-shadow-sm hover:wpuf-shadow-md wpuf-transition-all">

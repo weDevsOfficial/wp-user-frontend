@@ -69,7 +69,7 @@ if ( ! empty( $registry ) ) {
             <div class="wpuf-mb-14 wpuf-mt-10 wpuf-ml-10">
                 <h1 class="wpuf-text-3xl wpuf-text-gray-900 wpuf-m-0 wpuf-p-0">
                     <?php
-                        esc_html_e( sprintf( 'Select a %s Template', $form_type ), 'wp-user-frontend' );
+                        echo esc_html( sprintf( __( 'Select a %s Template', 'wp-user-frontend' ), $form_type ) );
                     ?>
                 </h1>
                 <p class="wpuf-text-base wpuf-text-gray-500 wpuf-mt-3 wpuf-p-0">

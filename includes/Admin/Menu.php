@@ -149,7 +149,7 @@ class Menu {
                     break;
                 }
 
-                include WPUF_ROOT . '/includes/Admin/template-parts/modal-v4.1.php';
+                include WPUF_ROOT . '/includes/Admin/template-parts/modal-post-forms-v4.2.php';
 
                 break;
         }

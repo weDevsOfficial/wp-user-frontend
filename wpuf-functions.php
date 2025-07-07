@@ -1098,7 +1098,7 @@ function wpuf_show_custom_fields( $content ) {
                         $country_value = isset( $field_value[0]['country_select'] ) ? $field_value[0]['country_select'] : '';
                         
                         // Get countries array from Country_State class as fallback
-                        if ( ! isset( $countries ) || empty( $countries ) ) {
+                        if ( empty( $countries ) ) {
                             $countries = $country_state->countries();
                         }
                         
@@ -1112,7 +1112,7 @@ function wpuf_show_custom_fields( $content ) {
                                 
                                 if ( wpuf()->is_pro() && file_exists( WPUF_PRO_INCLUDES . '/states.php' ) ) {
                                     $pro_states = include WPUF_PRO_INCLUDES . '/states.php';
-                                    if ( isset( $pro_states[ $country_value ] ) && ! empty( $pro_states[ $country_value ] ) && isset( $pro_states[ $country_value ][ $value ] ) ) {
+                                    if ( ! empty( $pro_states[ $country_value ] ) && isset( $pro_states[ $country_value ][ $value ] ) ) {
                                         $value = $pro_states[ $country_value ][ $value ];
                                         $state_resolved = true;
                                     }

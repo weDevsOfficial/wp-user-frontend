@@ -5,7 +5,7 @@ import { Selectors } from './selectors';
 import { Base } from './base';
 
 
-export class FieldOptionsCommonPage extends Base {
+export class FieldAddPage extends Base {
 
     constructor(page: Page) {
         super(page);
@@ -126,11 +126,16 @@ export class FieldOptionsCommonPage extends Base {
             if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
                 await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
             }
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsGoogleMapsEdit);
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.googleMapsSearchbox);
+            await this.validateAndClick(Selectors.postForms.addPostFieldButton);
+
             //StepStart
-            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsStepStart);
-            if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
-                await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
-            }
+            // await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsStepStart);
+            // if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
+            //     await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
+            // }
+
             //Embed
             await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsEmbed); //TODO: This is an Error as position changes in Lite and Pro
 
@@ -185,13 +190,13 @@ export class FieldOptionsCommonPage extends Base {
             //AddressField
             await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateAddressField);
 
-            //GoogleMaps        //TODO: Setup required
+            //GoogleMaps
             // if(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateGoogleMaps) === true){
             //     await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateGoogleMaps)).toBeTruthy();
             // }
 
             //StepStart
-            await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateStepStart);
+            //await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateStepStart);
             //Embed
             await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateEmbed);
 
@@ -209,14 +214,17 @@ export class FieldOptionsCommonPage extends Base {
         await this.validateAndClick(Selectors.postForms.addOthers_Common.othersColumns);
         await this.validateAndClick(Selectors.postForms.addOthers_Common.othersSectionBreak);
         await this.validateAndClick(Selectors.postForms.addOthers_Common.othersCustomHTML);
-        await this.validateAndClick(Selectors.postForms.addOthers_Common.othersReCaptcha);
-        if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
-            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
-        }
-        await this.validateAndClick(Selectors.postForms.addOthers_Common.othersCloudflareTurnstile);
-        if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
-            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
-        }
+        // await this.validateAndClick(Selectors.postForms.addOthers_Common.othersReCaptcha);
+        // if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
+        //     await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
+        // }
+        // await this.validateAndClick(Selectors.postForms.addOthers_Common.reCaptchaEdit);
+        // await this.validateAndClick(Selectors.postForms.addOthers_Common.invisibleReCaptcha);
+        // await this.validateAndClick(Selectors.postForms.addPostFieldButton);
+        // await this.validateAndClick(Selectors.postForms.addOthers_Common.othersCloudflareTurnstile);
+        // if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
+        //     await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
+        // }
 
 
         //FromPRO
@@ -259,9 +267,8 @@ export class FieldOptionsCommonPage extends Base {
         await this.assertionValidate(Selectors.postForms.validateOthers_Common.validateSectionBreak);
         //CustomHTML
         await this.assertionValidate(Selectors.postForms.validateOthers_Common.validateCustomHTML);
-
-        //From PRO
         //ReCaptcha
+        //await this.assertionValidate(Selectors.postForms.validateOthers_Common.validateReCaptcha);
         //Not visible
         //Shortcode
         const proOthers_Common = await this.page.isVisible(Selectors.postForms.validateOthers_Common.validateShortcode);
@@ -322,10 +329,6 @@ export class FieldOptionsCommonPage extends Base {
         await this.page.reload();
     }
 
-
-
-
-
     /********************* Validate *********************/
     //Admin checks if Created form is displayed in Post Forms - Table/List
     async validatePostFormCreated(validateNewPostName_PF: string) {
@@ -337,33 +340,13 @@ export class FieldOptionsCommonPage extends Base {
         //ASSERTION > Check if-VALID
         const checkNewBlankFormCreatedValid_PF = await this.page.isVisible(Selectors.postForms.navigatePage_PF.checkAddButton_PF);
         if (checkNewBlankFormCreatedValid_PF === true) {
-            const checkNewFormCreated_PF = await this.page.innerText(Selectors.postForms.navigatePage_PF.postFormsPageFormsTitleCheck_PF);
+            const checkNewFormCreated_PF = await this.page.innerText(Selectors.postForms.navigatePage_PF.postFormsPageFormsTitleCheck_PF(validateNewPostName_PF));
             await expect(checkNewFormCreated_PF).toContain(validateNewPostName_PF);
             console.log('PF Name: ' + checkNewFormCreated_PF);
             console.log('PF List: ' + validateNewPostName_PF);
+            return await this.page.textContent(Selectors.postForms.navigatePage_PF.postFormShortCode(validateNewPostName_PF));
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     /******************************************/

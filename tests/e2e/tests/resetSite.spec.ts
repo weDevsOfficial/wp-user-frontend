@@ -1,7 +1,7 @@
 import { Browser, BrowserContext, Page, test, chromium } from "@playwright/test";
 import { BasicLoginPage } from '../pages/basicLogin';
 import { SettingsSetupPage } from '../pages/settingsSetup';
-import { Urls, Users } from '../utils/testData';
+import { Users } from '../utils/testData';
 import { BasicLogoutPage } from '../pages/basicLogout';
 import * as fs from "fs";
 
@@ -12,7 +12,7 @@ import * as fs from "fs";
  * 
  */
 
-export default function resetWordpressSite() {
+export default function resetSite() {
 
     let browser: Browser;
     let context: BrowserContext;

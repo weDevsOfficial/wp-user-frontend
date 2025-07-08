@@ -4,7 +4,8 @@ import { expect, type Page } from '@playwright/test';
 import { Base } from './base';
 import { Urls } from '../utils/testData';
 import { Selectors } from './selectors';
-import { FieldOptionsCommonPage } from '../pages/fieldOptionsCommon';
+import { FieldAddPage } from './fieldAdd';
+import { BasicLogoutPage } from './basicLogout';
 
 export class PostFormSettingsPage extends Base {
     constructor(page: Page) {
@@ -14,7 +15,7 @@ export class PostFormSettingsPage extends Base {
     // Create a new post form
     async createPostForm(formName: string) {
 
-        const FieldOptionsCommon = new FieldOptionsCommonPage(this.page);
+        const FieldAdd = new FieldAddPage(this.page);
         // Go to post forms page
         await Promise.all([this.page.goto(this.wpufPostFormPage)]);
         await this.waitForLoading();
@@ -29,7 +30,7 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.postFormSettings.formNameInput, formName);
 
         // Add post fields
-        await FieldOptionsCommon.addPostFields_PF();
+        await FieldAdd.addPostFields_PF();
 
         // Save the form
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
@@ -100,7 +101,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.waitForLoading();
+        await this.page.waitForTimeout(2000);
 
         // Wait for success message
         await expect(this.page.locator(Selectors.postFormSettings.postTypePage(postTitle))).toBeVisible();
@@ -170,7 +171,7 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
 
-        await this.waitForLoading();
+        await this.page.waitForTimeout(2000);
 
         // Wait for success message
         await expect(this.page.locator(Selectors.postFormSettings.postCategory(category))).toBeVisible();
@@ -321,7 +322,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.waitForLoading();
+        await this.page.waitForTimeout(2000);
 
         await expect(this.page.locator(Selectors.postFormSettings.checkPostTitle(postTitle))).toBeVisible();
     }
@@ -344,7 +345,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.waitForLoading();
+        await this.page.waitForTimeout(2000);
 
         const successMessage = await this.page.innerText(Selectors.postFormSettings.checkSuccessMessage);
 
@@ -369,7 +370,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.waitForLoading();
+        await this.page.waitForTimeout(2000);
 
         await expect(this.page.locator(Selectors.postFormSettings.checkPageTitle(pageTitle))).toBeVisible();
     }
@@ -392,7 +393,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.waitForLoading();
+        await this.page.waitForTimeout(2000);
 
         await expect(this.page).toHaveURL(expectedUrl);
     }
@@ -450,7 +451,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(1000);
+        await this.page.waitForTimeout(2000);
 
         await Promise.all([this.page.goto(this.wpufPostPage)]);
         await this.waitForLoading();
@@ -745,8 +746,8 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
-        await this.page.waitForTimeout(1000);
-        // await this.assertionValidate(Selectors.postFormSettings.checkSuccessMessage);
+        await this.page.waitForTimeout(2000);
+        //await this.assertionValidate(Selectors.postFormSettings.checkSuccessMessage);
 
         await Promise.all([this.page.goto(this.wpufPostPage)]);
         await this.waitForLoading();
@@ -789,6 +790,7 @@ export class PostFormSettingsPage extends Base {
 
 
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
+        await this.page.waitForTimeout(2000);
 
         // Validate the message content
         const successMessage = await this.page.innerText(Selectors.postFormSettings.checkSuccessMessage);
@@ -913,7 +915,7 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
-        await this.waitForLoading();
+        await this.page.waitForTimeout(2000);
 
         await expect(this.page.locator(Selectors.postFormSettings.checkPostTitle(postTitle))).toBeVisible();
     }
@@ -936,7 +938,7 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
-        await this.waitForLoading();
+        await this.page.waitForTimeout(2000);
 
         const successMessage = await this.page.innerText(Selectors.postFormSettings.checkSuccessMessage);
 
@@ -962,7 +964,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.waitForLoading();
+        await this.page.waitForTimeout(2000);
 
         await expect(this.page.locator(Selectors.postFormSettings.checkPageTitle(pageTitle))).toBeVisible();
     }
@@ -987,7 +989,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.waitForLoading();
+        await this.page.waitForTimeout(2000);
 
         await expect(this.page).toHaveURL(expectedUrl);
     }
@@ -1062,7 +1064,7 @@ export class PostFormSettingsPage extends Base {
 
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.waitForLoading();
+        await this.page.waitForTimeout(2000);
 
         const validateCost = await this.page.innerText(Selectors.postFormSettings.validatePayPerPostCost);
         expect(validateCost).toContain(`$${cost}`);
@@ -1324,11 +1326,11 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(500);
+        await this.page.waitForTimeout(2000);
 
         // Validate notification is sent
         await Promise.all([this.page.goto(this.wpMailLogPage)]);
-        await this.waitForLoading();
+        await this.page.waitForTimeout(1000);
 
         const sentEmailAddress = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress);
         expect(sentEmailAddress).toBe(multipleEmails);
@@ -1608,11 +1610,11 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
-        await this.page.waitForTimeout(500);
+        await this.page.waitForTimeout(2000);
 
         // Validate notification is sent
         await Promise.all([this.page.goto(this.wpMailLogPage)]);
-        await this.waitForLoading();
+        await this.page.waitForTimeout(2000);
 
         const sentEmailAddress = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress);
         expect(sentEmailAddress).toBe(multipleEmails);
@@ -1703,7 +1705,7 @@ export class PostFormSettingsPage extends Base {
 
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(1000);
+        await this.page.waitForTimeout(2000);
 
     }
 
@@ -1792,7 +1794,7 @@ export class PostFormSettingsPage extends Base {
 
         // await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        // await this.page.waitForTimeout(1000);
+        // await this.page.waitForTimeout(2000);
 
         await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
         await this.waitForLoading();
@@ -1858,6 +1860,149 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.postFormSettings.postExpirationSettingsSection.postExpirationTime, '1');
         await this.validateAndClick(Selectors.postFormSettings.postExpirationSettingsSection.enablePostExpirationMessage);
         await this.validateAndFillStrings(Selectors.postFormSettings.postExpirationSettingsSection.postExpirationMessage, 'Post expired');
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+    }
+
+    async enableFormTitleShowing(formName: string) {
+        // Go to form edit page
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
+        await this.waitForLoading();
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Post Settings section
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
+
+        const isChecked = await this.page.locator(Selectors.postFormSettings.postSettingsSection.formTitleToggle).isChecked();
+        if (!isChecked) {
+            await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.formTitleToggle);
+        }
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+
+        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
+        await this.waitForLoading();
+
+        await this.assertionValidate(Selectors.postFormSettings.showFormTitle(formName));
+        
+    }
+
+    async showFormDescription(formName: string) {
+        // Go to form edit page
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
+        await this.waitForLoading();
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Post Settings section
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
+
+        const isChecked = await this.page.locator(Selectors.postFormSettings.postSettingsSection.formTitleToggle).isChecked();
+        if (!isChecked) {
+            await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.formTitleToggle);
+            // Save settings
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+            // Wait for save message
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
+
+        await this.validateAndFillStrings(Selectors.postFormSettings.postSettingsSection.formDescriptionBox, 'Form Description');
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+
+        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
+        await this.waitForLoading();
+
+        await this.assertionValidate(Selectors.postFormSettings.showFormTitle(formName));
+
+        const formDescription = await this.page.innerText(Selectors.postFormSettings.showFormDescription);
+        expect(formDescription).toBe('Form Description');
+        
+    }
+
+    async setPostPermissionRoleBased(formName: string) {
+        // Go to form edit page
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
+        await this.waitForLoading();
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Post Settings section
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.afterPostSettingsHeader);
+
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postPermissionContainer);
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postPermissionDropdown);
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postPermissionOption('role_base'));
+
+        await this.page.waitForTimeout(300);
+
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.roleSelectionContainer);
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.roleSelectionDropdown);
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.roleSelectionOption('subscriber'));
+
+        // Save settings
+        await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+    }
+
+    async validatePostPermissionRoleBased(formName: string) {
+        // Go to form edit page
+        await Promise.all([this.page.goto(this.wpufPostSubmitPage)]);
+        await this.waitForLoading();
+
+        // Click on the form
+        const errorMessage = await this.page.innerText(Selectors.postFormSettings.wpufMessage);
+        expect(errorMessage).toContain('You do not have sufficient permissions to access this form.');
+
+        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
+        await this.waitForLoading();
+
+        // Click on the form
+        await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
+
+        // Click Settings tab
+        await this.validateAndClick(Selectors.postFormSettings.clickFormEditorSettings);
+
+        // Click Post Settings section
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.afterPostSettingsHeader);
+
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postPermissionContainer);
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postPermissionDropdown);
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postPermissionOption('role_base'));
+
+        await this.page.waitForTimeout(300);
+
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.roleSelectionContainer);
+        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.roleSelectionDropdown);
+        await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.roleSelectionOption('administrator'));
 
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);

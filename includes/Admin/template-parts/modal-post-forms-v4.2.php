@@ -1,7 +1,7 @@
 <?php
 use WeDevs\Wpuf\Free\Pro_Prompt;
 
-$form_type = ! empty( $form_type ) ?  $form_type : 'Registration Form';
+$form_type = ! empty( $form_type ) ?  $form_type : 'Post Form';
 
 // Define categories
 $categories = [
@@ -30,7 +30,7 @@ if ( ! function_exists( 'wpuf_get_template_category' ) ) {
             }
         }
 
-        return 'registration';
+        return 'post';
     }
 }
 
@@ -146,7 +146,7 @@ if ( ! empty( $registry ) ) {
                         </div>
                         */ ?>
                         <!-- Blank Form -->
-                        <div class="template-box wpuf-template-item" data-category="registration" data-title="blank form" style="width: calc(25% - 12px);">
+                        <div class="template-box wpuf-template-item" data-category="post" data-title="blank form" style="width: calc(25% - 12px);">
                             <div class="wpuf-relative wpuf-group wpuf-bg-white wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-shadow-sm hover:wpuf-shadow-md wpuf-transition-all">
                                 <div class="wpuf-aspect-square wpuf-flex wpuf-items-center wpuf-justify-center wpuf-p-6">
                                     <div class="wpuf-text-center">
@@ -236,7 +236,7 @@ if ( ! empty( $registry ) ) {
                                     $image = $template->get_image();
                                     $title = $template->get_title();
                                     ?>
-                                    <div class="template-box wpuf-template-item" data-category="registration" data-title="<?php echo esc_attr(strtolower($title)); ?>" style="width: calc(25% - 12px);">
+                                    <div class="template-box wpuf-template-item" data-category="post" data-title="<?php echo esc_attr(strtolower($title)); ?>" style="width: calc(25% - 12px);">
                                         <div class="wpuf-relative wpuf-group wpuf-bg-white wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-shadow-sm hover:wpuf-shadow-md wpuf-transition-all">
                                         <?php
                                             if ( $image ) {

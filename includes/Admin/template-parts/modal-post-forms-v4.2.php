@@ -1,6 +1,4 @@
 <?php
-use WeDevs\Wpuf\Free\Pro_Prompt;
-
 $form_type = ! empty( $form_type ) ?  $form_type : 'Post Form';
 
 // Define categories
@@ -250,7 +248,7 @@ if ( ! empty( $registry ) ) {
                                             <img class="wpuf-absolute wpuf-top-2 wpuf-right-2 wpuf-w-6 wpuf-h-6" src="<?php echo esc_attr( $pro_badge ); ?>" alt="Pro">
                                             <div class="wpuf-absolute wpuf-opacity-0 group-hover:wpuf-opacity-70 wpuf-transition-all wpuf-duration-200 wpuf-z-10 wpuf-text-center wpuf-flex wpuf-flex-col wpuf-justify-center wpuf-items-center wpuf-bg-emerald-900 wpuf-h-full wpuf-w-full wpuf-top-0 wpuf-left-0 wpuf-text-white wpuf-rounded-lg"></div>
                                             <a
-                                                href="<?php echo esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ); ?>"
+                                                href="<?php echo esc_url( class_exists( 'WeDevs\Wpuf\Free\Pro_Prompt' ) ? \WeDevs\Wpuf\Free\Pro_Prompt::get_upgrade_to_pro_popup_url() : '#' ); ?>"
                                                 target="_blank"
                                                 class="wpuf-btn-secondary wpuf-w-max wpuf-absolute wpuf-top-[50%] wpuf-left-[50%] wpuf--translate-y-[50%] wpuf--translate-x-[50%] wpuf-z-20 wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-border-transparent focus:wpuf-shadow-none wpuf-transition-all"
                                                 title="<?php echo esc_attr( $template->get_title() ); ?>" >

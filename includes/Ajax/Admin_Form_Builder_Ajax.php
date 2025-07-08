@@ -57,6 +57,11 @@ class Admin_Form_Builder_Ajax {
         $form_fields   = json_decode( $form_fields, true );
         $notifications = json_decode( $notifications, true );
 
+        // Server-side validation for fallback PPP cost
+        if ( $this->validate_fallback_ppp_cost_required( $settings ) ) {
+            wp_send_json_error( __( 'Cost for each additional post after pack limit is reached is required when Pay-per-post billing when limit exceeds is enabled.', 'wp-user-frontend' ) );
+        }
+
         $data = [
             'form_id'           => absint( $form_data['wpuf_form_id'] ),
             'post_title'        => sanitize_text_field( $form_data['post_title'] ),
@@ -236,5 +241,35 @@ class Admin_Form_Builder_Ajax {
                 'data'    => $html,
             ]
         );
+    }
+
+    /**
+     * Validate if fallback PPP cost is required and empty
+     *
+     * @param array $settings Form settings
+     * @return bool True if validation fails (cost is required but empty), false if validation passes
+     */
+    private function validate_fallback_ppp_cost_required( $settings ) {
+        // Check if payment options are enabled
+        if ( empty( $settings['payment_options'] ) || ! wpuf_is_checkbox_or_toggle_on( $settings['payment_options'] ) ) {
+            return false;
+        }
+
+        // Check if force pack purchase is selected
+        if ( empty( $settings['choose_payment_option'] ) || 'force_pack_purchase' !== $settings['choose_payment_option'] ) {
+            return false;
+        }
+
+        // Check if fallback PPP is enabled
+        if ( empty( $settings['fallback_ppp_enable'] ) || ! wpuf_is_checkbox_or_toggle_on( $settings['fallback_ppp_enable'] ) ) {
+            return false;
+        }
+
+        // Check if fallback cost is provided
+        if ( empty( $settings['fallback_ppp_cost'] ) || floatval( $settings['fallback_ppp_cost'] ) <= 0 ) {
+            return true;
+        }
+
+        return false;
     }
 }

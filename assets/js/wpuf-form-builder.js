@@ -532,6 +532,7 @@
             post_title_editing: false,
             isDirty: false,
             shortcodeCopied: false,
+            validation_error_msg: '',
             logoUrl: wpuf_form_builder.asset_url + '/images/wpuf-icon-circle.svg',
             settings_titles: wpuf_form_builder.settings_titles,
             settings_items: wpuf_form_builder.settings_items,
@@ -725,7 +726,7 @@
                 if (_.isFunction(this.validate_form_before_submit) && !this.validate_form_before_submit()) {
 
                     this.warn({
-                        title: 'Incomplete Post Form',
+                        title: 'Post Form Validation Error!',
                         html: this.validation_error_msg,
                         reverseButtons: true,
                         customClass: {
@@ -778,8 +779,22 @@
                         toastr.success(self.i18n.saved_form_data);
                     },
 
-                    error: function () {
+                    error: function (response) {
                         self.is_form_saving = false;
+
+                        // Handle server-side validation errors
+                        // WordPress AJAX sends errors in response.data
+                        if (response && response.data) {
+                            self.warn({
+                                title: 'Validation Error',
+                                html: response.data,
+                                reverseButtons: true,
+                                customClass: {
+                                    cancelButton: '!wpuf-bg-white !wpuf-text-black !wpuf-border !wpuf-border-solid !wpuf-border-gray-300 focus:!wpuf-shadow-none',
+                                    confirmButton: '!wpuf-text-white !wpuf-bg-primary',
+                                },
+                            });
+                        }
                     }
                 });
             },
@@ -813,8 +828,43 @@
                 }
             },
 
+            // Validate form before submitting
+            validate_form_before_submit: function () {
+                // Check if payment options are enabled
+                var paymentEnabled = $('[name="wpuf_settings[payment_options]"]').is(':checked');
+                if (!paymentEnabled) {
+                    return true; // Skip validation if payments are disabled
+                }
+
+                // Check if force pack purchase is selected
+                var choosePaymentOption = $('[name="wpuf_settings[choose_payment_option]"]').val();
+                if (choosePaymentOption !== 'force_pack_purchase') {
+                    return true; // Skip validation if not force pack purchase
+                }
+
+                // Check if fallback PPP is enabled
+                var fallbackEnabled = $('[name="wpuf_settings[fallback_ppp_enable]"]').is(':checked');
+                if (!fallbackEnabled) {
+                    return true; // Skip validation if fallback is not enabled
+                }
+
+                // Check if fallback cost is provided
+                var fallbackCost = $('[name="wpuf_settings[fallback_ppp_cost]"]').val();
+                if (!fallbackCost || fallbackCost.trim() === '' || parseFloat(fallbackCost) <= 0) {
+                    this.validation_error_msg = 'Cost for each additional post after pack limit is reached is required when Pay-per-post billing when limit exceeds is enabled.';
+                    return false; // Validation fails if cost is empty or zero
+                }
+
+                return true; // Validation passes
+            },
+
             switch_form_settings_pic_radio_item: function ( key, value ) {
                 this.form_settings[key] = value;
+            },
+
+            // Show warning dialog using SweetAlert2
+            warn: function (options) {
+                Swal.fire(options);
             }
         }
     });

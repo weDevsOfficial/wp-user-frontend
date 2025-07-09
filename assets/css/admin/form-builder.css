@@ -2990,10 +2990,6 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   height: 80vh;
 }
 
-.wpuf-h-auto {
-  height: auto;
-}
-
 .wpuf-h-full {
   height: 100%;
 }

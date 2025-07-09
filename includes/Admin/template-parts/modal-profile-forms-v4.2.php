@@ -57,7 +57,7 @@ if ( ! empty( $registry ) ) {
 <div class="wpuf-form-template-modal wpuf-hidden" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #F8FAFC; z-index: 999999;">
     <div class="wpuf-relative wpuf-mx-auto wpuf-p-8 wpuf-h-full wpuf-overflow-y-auto" style="max-width: 1400px;">
         <button
-            class="wpuf-absolute wpuf-right-4 wpuf-top-4 wpuf-text-gray-400 hover:wpuf-text-gray-600 focus:wpuf-outline-none wpuf-close-btn wpuf-border wpuf-border-gray-200 wpuf-rounded-full wpuf-p-2 hover:wpuf-border-gray-300 wpuf-bg-white wpuf-shadow-lg" style="z-index: 1000000;">
+            class="wpuf-absolute wpuf-right-4 wpuf-top-4 wpuf-text-gray-400 hover:wpuf-text-gray-600 focus:wpuf-outline-none wpuf-close-btn wpuf-border wpuf-border-gray-200 wpuf-rounded-full wpuf-p-2 hover:wpuf-border-gray-300 wpuf-bg-white" style="z-index: 1000000;">
             <svg xmlns="http://www.w3.org/2000/svg" class="wpuf-h-6 wpuf-w-6" fill="none" viewBox="0 0 24 24"
                  stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -101,7 +101,7 @@ if ( ! empty( $registry ) ) {
                     <div class="wpuf-mx-4">
                         <ul class="wpuf-space-y-2">
                             <li>
-                                <button class="wpuf-template-category wpuf-w-full wpuf-flex wpuf-items-center wpuf-justify-between wpuf-text-left wpuf-px-8 wpuf-py-2 wpuf-text-sm wpuf-font-medium wpuf-transition-all wpuf-duration-200 wpuf-text-primary" data-category="all">
+                                <button class="wpuf-template-category wpuf-w-full wpuf-flex wpuf-items-center wpuf-justify-between wpuf-text-left wpuf-px-8 wpuf-py-2 wpuf-text-sm wpuf-font-medium wpuf-transition-all wpuf-duration-200 wpuf-bg-gray-100 wpuf-text-primary wpuf-rounded-md" data-category="all">
                                     <span><?php esc_html_e( 'All Templates', 'wp-user-frontend' ); ?></span>
                                     <span class="wpuf-border wpuf-border-primary wpuf-text-primary wpuf-text-sm wpuf-font-semibold wpuf-px-2.5 wpuf-py-0.5 wpuf-rounded-full">
                                         <?php
@@ -116,7 +116,7 @@ if ( ! empty( $registry ) ) {
                             </li>
                             <?php foreach ( $categories as $slug => $category ) : ?>
                                 <li>
-                                    <button class="wpuf-template-category wpuf-w-full wpuf-flex wpuf-items-center wpuf-justify-between wpuf-text-left wpuf-px-8 wpuf-py-2 wpuf-text-sm wpuf-transition-all wpuf-duration-200 wpuf-text-gray-700 hover:wpuf-text-primary" data-category="<?php echo esc_attr( $slug ); ?>">
+                                    <button class="wpuf-template-category wpuf-w-full wpuf-flex wpuf-items-center wpuf-justify-between wpuf-text-left wpuf-px-8 wpuf-py-2 wpuf-text-sm wpuf-transition-all wpuf-duration-200 wpuf-text-gray-700 hover:wpuf-text-primary hover:wpuf-bg-gray-100 wpuf-rounded-md" data-category="<?php echo esc_attr( $slug ); ?>">
                                         <span><?php echo esc_html( $category['label'] ); ?></span>
                                         <span class="wpuf-text-gray-500 wpuf-px-2 wpuf-py-0.5 wpuf-text-sm">
                                             
@@ -155,20 +155,14 @@ if ( ! empty( $registry ) ) {
                         */ ?>
                         <!-- Blank Form -->
                         <div class="template-box wpuf-template-item" data-category="registration" data-title="blank form" style="width: calc(25% - 12px);">
-                            <div class="wpuf-relative wpuf-group wpuf-bg-white wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-shadow-sm hover:wpuf-shadow-md wpuf-transition-all">
-                                <div class="wpuf-aspect-square wpuf-flex wpuf-items-center wpuf-justify-center wpuf-p-6">
-                                    <div class="wpuf-text-center">
-                                        <svg class="wpuf-h-8 wpuf-w-8 wpuf-text-gray-400 wpuf-mx-auto wpuf-mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="wpuf-absolute wpuf-opacity-0 group-hover:wpuf-opacity-70 wpuf-transition-all wpuf-duration-200 wpuf-z-10 wpuf-text-center wpuf-flex wpuf-flex-col wpuf-justify-center wpuf-items-center wpuf-bg-emerald-900 wpuf-h-full wpuf-w-full wpuf-top-0 wpuf-left-0 wpuf-text-white wpuf-rounded-lg"></div>
-                                <a href="<?php echo esc_url( $blank_form_url ); ?>" class="wpuf-btn-secondary wpuf-w-max wpuf-absolute wpuf-top-[50%] wpuf-left-[50%] wpuf--translate-y-[50%] wpuf--translate-x-[50%] wpuf-z-20 wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-border-transparent focus:wpuf-shadow-none wpuf-transition-all" title="<?php echo esc_attr( 'Blank Form' ); ?>">
+                            <div class="wpuf-relative wpuf-group wpuf-shadow-base">
+                                <img src="<?php echo esc_attr( WPUF_ASSET_URI . '/images/templates/blank.svg' ); ?>" alt="Blank Form">
+                                <div class="wpuf-absolute wpuf-opacity-0 group-hover:wpuf-opacity-70 wpuf-transition-all wpuf-z-10 wpuf-text-center wpuf-flex wpuf-flex-col wpuf-justify-center wpuf-items-center wpuf-bg-emerald-900 wpuf-h-full wpuf-w-full wpuf-top-0 wpuf-left-0 wpuf-text-white wpuf-p-10 wpuf-rounded-md"></div>
+                                <a href="<?php echo esc_url( $blank_form_url ); ?>" class="wpuf-btn-secondary wpuf-w-max wpuf-absolute wpuf-top-[50%] wpuf-left-[50%] wpuf--translate-y-[50%] wpuf--translate-x-[50%] wpuf-z-20 wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-border-transparent focus:wpuf-shadow-none" title="<?php echo esc_attr( 'Blank Form' ); ?>">
                                     <?php esc_html_e( 'Create Form', 'wp-user-frontend' ); ?>
                                 </a>
                             </div>
-                            <p class="wpuf-text-xs wpuf-text-gray-700 wpuf-mt-2 wpuf-text-center wpuf-font-medium"><?php echo esc_html( 'Blank Form' ); ?></p>
+                            <p class="wpuf-text-sm wpuf-text-gray-700 wpuf-text-center wpuf-font-medium"><?php echo esc_html( 'Blank Form' ); ?></p>
                         </div>
 
                         <?php
@@ -180,7 +174,7 @@ if ( ! empty( $registry ) ) {
                                 $category = wpuf_get_template_category( $template_title, $categories );
                                 ?>
                                 <div class="template-box wpuf-template-item" data-category="<?php echo esc_attr($category); ?>" data-title="<?php echo esc_attr(strtolower($template_title)); ?>" style="width: calc(25% - 12px);">
-                                    <div class="wpuf-relative wpuf-group wpuf-bg-white wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-shadow-sm hover:wpuf-shadow-md wpuf-transition-all">
+                                    <div class="wpuf-relative wpuf-group">
                                     <?php
                                         $class     = 'template-active';
                                         $title     = $template->title;
@@ -203,14 +197,14 @@ if ( ! empty( $registry ) ) {
                                         }
 
                                         if ( $image ) {
-                                            printf( '<img src="%s" alt="%s" class="wpuf-w-full wpuf-h-auto wpuf-rounded-lg">', esc_attr( $image ), esc_attr( $title ) );
+                                            printf( '<img src="%s" alt="%s">', esc_attr( $image ), esc_attr( $title ) );
                                         } else {
                                             echo '<div class="wpuf-aspect-square wpuf-flex wpuf-items-center wpuf-justify-center wpuf-bg-gray-50 wpuf-rounded-lg">';
                                             printf( '<h2 class="wpuf-text-sm wpuf-font-semibold wpuf-text-gray-800 wpuf-text-center wpuf-px-2">%s</h2>', esc_html( $title ) );
                                             echo '</div>';
                                         }
                                     ?>
-                                        <div class="wpuf-absolute wpuf-opacity-0 group-hover:wpuf-opacity-70 wpuf-transition-all wpuf-duration-200 wpuf-z-10 wpuf-text-center wpuf-flex wpuf-flex-col wpuf-justify-center wpuf-items-center wpuf-bg-emerald-900 wpuf-h-full wpuf-w-full wpuf-top-0 wpuf-left-0 wpuf-text-white wpuf-rounded-lg"></div>
+                                        <div class="wpuf-absolute wpuf-opacity-0 group-hover:wpuf-opacity-70 wpuf-transition-all wpuf-z-10 wpuf-text-center wpuf-flex wpuf-flex-col wpuf-justify-center wpuf-items-center wpuf-bg-emerald-900 wpuf-h-full wpuf-w-full wpuf-top-0 wpuf-left-0 wpuf-text-white wpuf-p-5 wpuf-rounded-md"></div>
                                         <?php
                                         if ( ! $template->is_enabled() ) {
                                         ?>
@@ -232,7 +226,7 @@ if ( ! empty( $registry ) ) {
                                         }
                                         ?>
                                     </div>
-                                    <p class="wpuf-text-xs wpuf-text-gray-700 wpuf-mt-2 wpuf-text-center wpuf-font-medium"><?php echo esc_html( $title ); ?></p>
+                                    <p class="wpuf-text-sm wpuf-text-gray-700 wpuf-text-center wpuf-font-medium"><?php echo esc_html( $title ); ?></p>
                                 </div>
                             <?php
                             }
@@ -245,18 +239,18 @@ if ( ! empty( $registry ) ) {
                                     $title = $template->get_title();
                                     ?>
                                     <div class="template-box wpuf-template-item" data-category="registration" data-title="<?php echo esc_attr(strtolower($title)); ?>" style="width: calc(25% - 12px);">
-                                        <div class="wpuf-relative wpuf-group wpuf-bg-white wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-shadow-sm hover:wpuf-shadow-md wpuf-transition-all">
+                                        <div class="wpuf-relative wpuf-group">
                                         <?php
                                             if ( $image ) {
-                                                printf( '<img class="wpuf-opacity-50 wpuf-w-full wpuf-h-auto wpuf-rounded-lg" src="%s" alt="%s">', esc_attr( $image ), esc_attr( $title ) );
+                                                printf( '<img class="wpuf-opacity-50" src="%s" alt="%s">', esc_attr( $image ), esc_attr( $title ) );
                                             } else {
                                                 echo '<div class="wpuf-aspect-square wpuf-flex wpuf-items-center wpuf-justify-center wpuf-bg-gray-50 wpuf-rounded-lg wpuf-opacity-50">';
                                                 printf( '<h2 class="wpuf-text-sm wpuf-font-semibold wpuf-text-gray-800 wpuf-text-center wpuf-px-2">%s</h2>', esc_html( $title ) );
                                                 echo '</div>';
                                             }
                                         ?>
-                                            <img class="wpuf-absolute wpuf-top-2 wpuf-right-2 wpuf-w-6 wpuf-h-6" src="<?php echo esc_attr( $pro_badge ); ?>" alt="Pro">
-                                            <div class="wpuf-absolute wpuf-opacity-0 group-hover:wpuf-opacity-70 wpuf-transition-all wpuf-duration-200 wpuf-z-10 wpuf-text-center wpuf-flex wpuf-flex-col wpuf-justify-center wpuf-items-center wpuf-bg-emerald-900 wpuf-h-full wpuf-w-full wpuf-top-0 wpuf-left-0 wpuf-text-white wpuf-rounded-lg"></div>
+                                            <img class="wpuf-absolute wpuf-top-3 wpuf-right-3 wpuf-w-6 wpuf-h-6" src="<?php echo esc_attr( $pro_badge ); ?>" alt="Pro">
+                                            <div class="wpuf-absolute wpuf-opacity-0 group-hover:wpuf-opacity-70 wpuf-transition-all wpuf-z-10 wpuf-text-center wpuf-flex wpuf-flex-col wpuf-justify-center wpuf-items-center wpuf-bg-emerald-900 wpuf-h-full wpuf-w-full wpuf-top-0 wpuf-left-0 wpuf-text-white wpuf-p-5 wpuf-rounded-md"></div>
                                             <a
                                                 href="<?php echo esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ); ?>"
                                                 target="_blank"
@@ -265,7 +259,7 @@ if ( ! empty( $registry ) ) {
                                                 <?php esc_html_e( 'Upgrade to PRO', 'wp-user-frontend' ); ?>
                                             </a>
                                         </div>
-                                        <p class="wpuf-text-xs wpuf-text-gray-700 wpuf-mt-2 wpuf-text-center wpuf-font-medium"><?php echo esc_html( $title ); ?></p>
+                                        <p class="wpuf-text-sm wpuf-text-gray-700 wpuf-text-center wpuf-font-medium"><?php echo esc_html( $title ); ?></p>
                                     </div>
                                     <?php
                                 }
@@ -430,11 +424,11 @@ if ( ! empty( $registry ) ) {
 
                 if (searchTerm.length > 0) {
                     var $allButtons = $('.wpuf-template-category');
-                    $allButtons.removeClass( 'wpuf-text-primary wpuf-font-medium' ).addClass( 'wpuf-text-gray-700 hover:wpuf-text-primary' );
+                    $allButtons.removeClass( 'wpuf-bg-gray-100 wpuf-text-primary wpuf-font-medium' ).addClass( 'wpuf-text-gray-700 hover:wpuf-text-primary hover:wpuf-bg-gray-100' );
                     $allButtons.find('span:last-child').attr('class', 'wpuf-text-gray-500 wpuf-px-2 wpuf-py-0.5 wpuf-text-sm');
 
                     var $allCategoryButton = $allButtons.filter('[data-category="all"]');
-                    $allCategoryButton.removeClass( 'wpuf-text-gray-700 hover:wpuf-text-primary' ).addClass( 'wpuf-text-primary wpuf-font-medium' );
+                    $allCategoryButton.removeClass( 'wpuf-text-gray-700 hover:wpuf-text-primary hover:wpuf-bg-gray-100' ).addClass( 'wpuf-bg-gray-100 wpuf-text-primary wpuf-font-medium' );
                     $allCategoryButton.find('span:last-child').attr('class', 'wpuf-border wpuf-border-primary wpuf-text-primary wpuf-text-sm wpuf-font-semibold wpuf-px-2.5 wpuf-py-0.5 wpuf-rounded-full');
                 }
 
@@ -459,11 +453,11 @@ if ( ! empty( $registry ) ) {
                 var $allButtons = $('.wpuf-template-category');
                 
                 // Reset all buttons to inactive state
-                $allButtons.removeClass( 'wpuf-text-primary wpuf-font-medium' ).addClass( 'wpuf-text-gray-700 hover:wpuf-text-primary' );
+                $allButtons.removeClass( 'wpuf-bg-gray-100 wpuf-text-primary wpuf-font-medium' ).addClass( 'wpuf-text-gray-700 hover:wpuf-text-primary hover:wpuf-bg-gray-100' );
                 $allButtons.find('span:last-child').attr('class', 'wpuf-text-gray-500 wpuf-px-2 wpuf-py-0.5 wpuf-text-sm');
                 
                 // Set active state for the clicked button
-                $button.removeClass( 'wpuf-text-gray-700 hover:wpuf-text-primary' ).addClass( 'wpuf-text-primary wpuf-font-medium' );
+                $button.removeClass( 'wpuf-text-gray-700 hover:wpuf-text-primary hover:wpuf-bg-gray-100' ).addClass( 'wpuf-bg-gray-100 wpuf-text-primary wpuf-font-medium' );
                 $button.find('span:last-child').attr('class', 'wpuf-border wpuf-border-primary wpuf-text-primary wpuf-text-sm wpuf-font-semibold wpuf-px-2.5 wpuf-py-0.5 wpuf-rounded-full');
 
                 // Filter templates

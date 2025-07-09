@@ -54,7 +54,7 @@ if ( ! empty( $registry ) ) {
     }
 }
 ?>
-<div class="wpuf-form-template-modal wpuf-hidden" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #F8FAFC; z-index: 999999;">
+<div class="wpuf-form-template-modal wpuf-hidden" role="dialog" aria-modal="true" aria-labelledby="template-modal-title" aria-describedby="template-modal-description" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #F8FAFC; z-index: 999999;">
     <div class="wpuf-relative wpuf-mx-auto wpuf-p-8 wpuf-h-full wpuf-overflow-y-auto" style="max-width: 1400px;">
         <button
             class="wpuf-absolute wpuf-right-4 wpuf-top-4 wpuf-text-gray-400 hover:wpuf-text-gray-600 focus:wpuf-outline-none wpuf-close-btn wpuf-border wpuf-border-gray-200 wpuf-rounded-full wpuf-p-2 hover:wpuf-border-gray-300 wpuf-bg-white" style="z-index: 1000000;">
@@ -199,7 +199,7 @@ if ( ! empty( $registry ) ) {
                                         if ( $image ) {
                                             printf( '<img src="%s" alt="%s">', esc_attr( $image ), esc_attr( $title ) );
                                         } else {
-                                            echo '<div class="wpuf-aspect-square wpuf-flex wpuf-items-center wpuf-justify-center wpuf-bg-gray-50 wpuf-rounded-lg">';
+                                            echo '<div class="wpuf-aspect-square wpuf-flex wpuf-items-center wpuf-justify-center wpuf-bg-gray-50 wpuf-rounded-lg" role="img" aria-label="' . esc_attr( $title ) . '">';
                                             printf( '<h2 class="wpuf-text-sm wpuf-font-semibold wpuf-text-gray-800 wpuf-text-center wpuf-px-2">%s</h2>', esc_html( $title ) );
                                             echo '</div>';
                                         }

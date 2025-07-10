@@ -37,42 +37,34 @@ export class Base {
         this.page = page;
     }
 
+    // URL navigation
+    async navigateToURL(url: string) {
+        await this.page.goto(url);
+        await this.waitForLoading();
+        //await expect(this.page.url()).toBe(url);
+        return true;
+    }
+
     // Just Validate
     async assertionValidate(locator: string) {
-        try {
-            await this.page.locator(locator).waitFor({ state: 'visible', timeout: 30000 });
-            await expect(this.page.locator(locator)).toBeVisible();
-            await this.waitForLoading();
-            return true;
-        } catch (error) {
-            throw new Error(`Element not visible: ${locator}. Error: ${error.message}`);
-        }
+        await this.page.locator(locator).waitFor();
+        return expect(this.page.locator(locator).isVisible).toBeTruthy();
     }
 
     // Validate and Click
     async validateAndClick(locator: string) {
-        try {
-            const element = this.page.locator(locator);
-            await element.waitFor({ state: 'visible', timeout: 30000 });
-            await expect(element).toBeVisible();
-            await element.click({ timeout: 10000 });
-            await this.waitForLoading();
-        } catch (error) {
-            throw new Error(`Failed to click element: ${locator}. Error: ${error.message}`);
-        }
+        const element = this.page.locator(locator);
+        await element.waitFor();
+        expect(element.isVisible).toBeTruthy();
+        await element.click();
     }
 
     // Validate and Click by text
     async validateAndClickByText(locator: string) {
-        try {
-            const element = this.page.getByText(locator, { exact: false });
-            await element.waitFor({ state: 'visible', timeout: 30000 });
-            await expect(element).toBeVisible();
-            await element.click({ timeout: 10000 });
-            await this.waitForLoading();
-        } catch (error) {
-            throw new Error(`Failed to click text element: ${locator}. Error: ${error.message}`);
-        }
+        const element = this.page.getByText(locator, { exact: true });
+        await element.waitFor();
+        expect(element.isVisible).toBeTruthy();
+        await element.click();
     }
 
     // Validate and Click any
@@ -84,7 +76,6 @@ export class Base {
             const element = elements.nth(i);
             if (await element.isVisible()) {
                 await element.click();
-                await this.waitForLoading();
                 return; // Exit the function once a visible element is clicked
             }
         }
@@ -100,7 +91,6 @@ export class Base {
         for (let i = 0; i < count; i++) {
             const element = elements.nth(i);
             if (await element.isVisible()) {
-                await this.waitForLoading();
                 return; // Exit the function once a visible element is clicked
             }
         }
@@ -110,51 +100,31 @@ export class Base {
 
     // Validate and Fill Strings
     async validateAndFillStrings(locator: string, value: string) {
-        try {
-            const element = this.page.locator(locator);
-            await element.waitFor({ state: 'visible', timeout: 30000 });
-            await expect(element).toBeVisible();
-            await element.fill(value, { timeout: 10000 });
-            await this.waitForLoading();
-        } catch (error) {
-            throw new Error(`Failed to fill element: ${locator} with value: ${value}. Error: ${error.message}`);
-        }
+        const element = this.page.locator(locator);
+        await element.waitFor();
+        expect(element.isVisible).toBeTruthy();
+        await element.fill(value);
     }
 
     // Validate and Fill Numbers
     async validateAndFillNumbers(locator: string, value: number) {
-        try {
-            const element = this.page.locator(locator);
-            await element.waitFor({ state: 'visible', timeout: 30000 });
-            await expect(element).toBeVisible();
-            await element.fill(value.toString(), { timeout: 10000 });
-            await this.waitForLoading();
-        } catch (error) {
-            throw new Error(`Failed to fill element: ${locator} with number: ${value}. Error: ${error.message}`);
-        }
+        const element = this.page.locator(locator);
+        await element.waitFor();
+        expect(element.isVisible).toBeTruthy();
+        await element.fill(value.toString());
     }
 
     // Validate and CheckBox
     async validateAndCheckBox(locator: string) {
-        try {
-            const element = this.page.locator(locator);
-            await element.waitFor({ state: 'visible', timeout: 30000 });
-            await expect(element).toBeVisible();
-            await element.check({ timeout: 10000 });
-            await this.waitForLoading();
-            } catch (error) {
-            throw new Error(`Failed to check checkbox: ${locator}. Error: ${error.message}`);
-        }
+        const element = this.page.locator(locator);
+        await element.waitFor();
+        expect(element.isVisible).toBeTruthy();
+        await element.check();
     }
 
     // Match Toast Notification message(s)
     async matchToastNotifications(extractedToast: string, matchWithToast: string) {
-        try {
-            expect(matchWithToast).toContain(extractedToast);
-            await this.waitForLoading();
-        } catch (error) {
-            throw new Error(`Toast message mismatch. Expected to contain: "${extractedToast}" but got: "${matchWithToast}"`);
-        }
+        expect(matchWithToast).toContain(extractedToast);
     }
 
     // Wait for networkidle

@@ -24,7 +24,7 @@ export class PostFormPage extends Base {
     async createBlankFormPostForm(newPostName: string) {
 
         //Visit Post Form Page
-        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufPostFormPage);
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();
@@ -52,7 +52,7 @@ export class PostFormPage extends Base {
     //PresetForm
     async createPresetPostForm(newPostName: string) {
         //Visit Post Form Page
-        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufPostFormPage);
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();
@@ -80,7 +80,7 @@ export class PostFormPage extends Base {
     //PresetForm
     async createPresetPostFormWithGuestEnabled(newPostName: string) {
         //Visit Post Form Page
-        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufPostFormPage);
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();
@@ -136,7 +136,7 @@ export class PostFormPage extends Base {
 
     async createPostFE() {
         //Go to Accounts page - FrontEnd
-        await this.page.goto(this.wpufPostSubmitPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufPostSubmitPage);
 
         //Post Form process
         //Enter Post Title
@@ -372,7 +372,7 @@ export class PostFormPage extends Base {
         const postRatings = await this.page.innerText(Selectors.postForms.postFormData.ratings);
         expect(postRatings).toContain(PostForm.ratings);
         console.log("Ratings Validated");
-        await this.page.goto(this.accountPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.accountPage);
         await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);
         console.log("Signed Out");
     }
@@ -380,7 +380,7 @@ export class PostFormPage extends Base {
     //Create Page with Shortcode
     async createPageWithShortcode(shortcode: string, pageTitle: string) {
         //Go to Pages page
-        await this.page.goto(this.pagesPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.pagesPage);
         //Create New Page
         await this.validateAndClick(Selectors.postForms.createPageWithShortcode.addNewPage);
         await this.page.waitForTimeout(300);
@@ -410,7 +410,7 @@ export class PostFormPage extends Base {
         let guestName:string;
         let guestEmail:string;
         //Go to Accounts page - FrontEnd
-        await this.page.goto(Urls.baseUrl + '/guestpostform/', { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(Urls.baseUrl + '/guestpostform/');
 
         //Post Form process
         //Enter Guest Name

@@ -14,7 +14,7 @@ export class RegFormSettingsPage extends Base {
 
     async settingNewlyRegisteredUserRole(formName: string, role: string) {
         // Go to form edit page
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
 
         // Click on the form
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -35,7 +35,7 @@ export class RegFormSettingsPage extends Base {
 
     async validateNewlyRegisteredUserRole(userEmail: string, userPassword: string, role: string) {
         // Go to form edit page
-        await this.page.goto(this.newRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.newRegFormPage);
 
         // Click on the form
         await this.page.fill(Selectors.regFormSettings.inputEmail, userEmail);
@@ -45,7 +45,7 @@ export class RegFormSettingsPage extends Base {
         await this.assertionValidate(Selectors.regFormSettings.successMessage);
 
         if(role === 'subscriber'){
-            await this.page.goto(this.accountPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+            await this.navigateToURL(this.accountPage);
             await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);
             await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         }else{
@@ -73,7 +73,7 @@ export class RegFormSettingsPage extends Base {
 
     async enableRequireApproval(formName: string) {
         // Go to form edit page
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
 
         // Click on the form
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -94,7 +94,7 @@ export class RegFormSettingsPage extends Base {
 
     async validateApprovalEnabled(userEmail: string, userPassword: string) {
         // Go to form edit page
-        await this.page.goto(this.newRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.newRegFormPage);
         
         await this.page.fill(Selectors.regFormSettings.inputEmail, userEmail);
         await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
@@ -102,18 +102,18 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.regFormSettings.submitRegisterButton);
         await this.assertionValidate(Selectors.regFormSettings.successMessage);
 
-        await this.page.goto(this.accountPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.accountPage);
         const restrictionMessage = await this.page.innerText(Selectors.regFormSettings.wpufMessage);
         expect(restrictionMessage).toBe('This page is restricted. Please Log in to view this page.');
     }
 
     async validateLoginDenied(userEmail: string, userPassword: string) {
-        await this.page.goto(this.wpAdminPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpAdminPage);
         await new BasicLoginPage(this.page).backendLogin(userEmail, userPassword);
         const errorLoginMessage = await this.page.innerText(Selectors.regFormSettings.wpLoginErrorMessage);
         expect(errorLoginMessage).toBe('ERROR: Your account has to be approved by an administrator before you can login.');
 
-        await this.page.goto(this.wpufLoginPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufLoginPage);
         await new BasicLoginPage(this.page).frontendLogin(userEmail, userPassword);
         const errorWPUFLoginMessage = await this.page.innerText(Selectors.regFormSettings.wpLoginErrorMessage);
         expect(errorWPUFLoginMessage).toBe('ERROR: Your account has to be approved by an administrator before you can login.');
@@ -133,11 +133,11 @@ export class RegFormSettingsPage extends Base {
     }
 
     async validateLoginAfterApproval(userEmail: string, userPassword: string) {
-        await this.page.goto(this.wpufLoginPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufLoginPage);
         await new BasicLoginPage(this.page).frontendLogin(userEmail, userPassword);
         expect(this.page.url()).toBe(this.siteHomePage + '/');
 
-        await this.page.goto(this.accountPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.accountPage);
         await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);
 
     }
@@ -147,7 +147,7 @@ export class RegFormSettingsPage extends Base {
     async setAfterRegistrationRedirectionToSamePage(formName: string) {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
 
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -165,7 +165,7 @@ export class RegFormSettingsPage extends Base {
 
     async setAfterRegistrationRedirectionToPage(formName: string, pageName: string) {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -189,7 +189,7 @@ export class RegFormSettingsPage extends Base {
 
     async setAfterRegistrationRedirectionToUrl(formName: string, customUrl: string) {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -210,7 +210,7 @@ export class RegFormSettingsPage extends Base {
     async setRegistrationSuccessMessage(formName: string, message: string) {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -227,7 +227,7 @@ export class RegFormSettingsPage extends Base {
     async setSubmitButtonText(formName: string, buttonText: string) {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -244,7 +244,7 @@ export class RegFormSettingsPage extends Base {
     async setAfterProfileUpdateRedirectionToSamePage(formName: string) {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -263,7 +263,7 @@ export class RegFormSettingsPage extends Base {
     async setAfterProfileUpdateRedirectionToPage(formName: string, pageName: string) {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -288,7 +288,7 @@ export class RegFormSettingsPage extends Base {
     async setAfterProfileUpdateRedirectionToUrl(formName: string, customUrl: string) {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -309,7 +309,7 @@ export class RegFormSettingsPage extends Base {
     async setUpdateProfileMessage(formName: string, message: string) {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -326,7 +326,7 @@ export class RegFormSettingsPage extends Base {
     async setUpdateButtonText(formName: string, buttonText: string) {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -343,7 +343,7 @@ export class RegFormSettingsPage extends Base {
     // Validation Methods
 
     async validateAfterRegistrationRedirectionToSamePage(userEmail: string, userPassword: string, expectedMessage: string) {
-        await this.page.goto(this.newRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.newRegFormPage);
         
         await this.page.fill(Selectors.regFormSettings.inputEmail, userEmail);
         await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
@@ -356,7 +356,7 @@ export class RegFormSettingsPage extends Base {
     }
 
     async validateAfterRegistrationRedirectionToPage(userEmail: string, userPassword: string, expectedPageTitle: string) {
-        await this.page.goto(this.newRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.newRegFormPage);
         
         await this.page.fill(Selectors.regFormSettings.inputEmail, userEmail);
         await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
@@ -367,7 +367,7 @@ export class RegFormSettingsPage extends Base {
     }
 
     async validateAfterRegistrationRedirectionToUrl(userEmail: string, userPassword: string, expectedUrl: string) {
-        await this.page.goto(this.newRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.newRegFormPage);
         
         await this.page.fill(Selectors.regFormSettings.inputEmail, userEmail);
         await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
@@ -378,7 +378,7 @@ export class RegFormSettingsPage extends Base {
     }
 
     async validateRegistrationSuccessMessage(userEmail: string, userPassword: string, expectedMessage: string) {
-        await this.page.goto(this.newRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.newRegFormPage);
         
         await this.page.fill(Selectors.regFormSettings.inputEmail, userEmail);
         await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
@@ -390,7 +390,7 @@ export class RegFormSettingsPage extends Base {
     }
 
     async validateSubmitButtonText(expectedButtonText: string) {
-        await this.page.goto(this.newRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.newRegFormPage);
         
         await expect(this.page.locator(Selectors.regFormSettings.submitRegisterButtonText(expectedButtonText))).toBeVisible();
     }
@@ -398,7 +398,7 @@ export class RegFormSettingsPage extends Base {
     async validateAfterProfileUpdateRedirectionToSamePage(firstName: string, displayName: string, expectedMessage: string) {
         await new BasicLoginPage(this.page).basicLogin(Users.userName, Users.userPassword);
         
-        await this.page.goto(this.accountPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.accountPage);
         await this.validateAndClick(Selectors.settingsSetup.accountPageTabs.editProfileTab);
 
         await this.validateAndFillStrings(Selectors.regFormSettings.frontendValidation.firstNameField, firstName);
@@ -408,14 +408,14 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.regFormSettings.frontendValidation.updateProfileSubmitButton);
         const successMessage = await this.page.innerText(Selectors.regFormSettings.frontendValidation.updateProfileSuccessMessage);
         expect(successMessage).toBe(expectedMessage);
-        await this.page.goto(this.accountPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.accountPage);
         await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);
     }
 
     async validateAfterProfileUpdateRedirectionToPage(firstName: string, displayName: string, expectedPageTitle: string) {
         await new BasicLoginPage(this.page).basicLogin(Users.userName, Users.userPassword);
         
-        await this.page.goto(this.accountPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.accountPage);
         await this.validateAndClick(Selectors.settingsSetup.accountPageTabs.editProfileTab);
 
         await this.validateAndFillStrings(Selectors.regFormSettings.frontendValidation.firstNameField, firstName);
@@ -426,14 +426,14 @@ export class RegFormSettingsPage extends Base {
 
         await expect(this.page.locator(Selectors.regFormSettings.frontendValidation.afterRegPageTitle(expectedPageTitle))).toBeVisible();
 
-        await this.page.goto(this.accountPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.accountPage);
         await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);
     }
 
     async validateAfterProfileUpdateRedirectionToUrl(firstName: string, displayName: string, expectedUrl: string) {
         await new BasicLoginPage(this.page).basicLogin(Users.userName, Users.userPassword);
         
-        await this.page.goto(this.accountPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.accountPage);
         await this.validateAndClick(Selectors.settingsSetup.accountPageTabs.editProfileTab);
 
         await this.validateAndFillStrings(Selectors.regFormSettings.frontendValidation.firstNameField, firstName);
@@ -443,14 +443,14 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.regFormSettings.frontendValidation.updateProfileSubmitButton);
 
         await expect(this.page).toHaveURL(expectedUrl);
-        await this.page.goto(this.accountPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.accountPage);
         await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);
     }
 
     async validateUpdateProfileMessage(firstName: string, displayName: string, expectedMessage: string) {
         await new BasicLoginPage(this.page).basicLogin(Users.userName, Users.userPassword);
         
-        await this.page.goto(this.accountPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.accountPage);
         await this.validateAndClick(Selectors.settingsSetup.accountPageTabs.editProfileTab);
 
         await this.validateAndFillStrings(Selectors.regFormSettings.frontendValidation.firstNameField, firstName);
@@ -462,26 +462,26 @@ export class RegFormSettingsPage extends Base {
         const successMessage = await this.page.innerText(Selectors.regFormSettings.frontendValidation.updateProfileSuccessMessage);
         expect(successMessage).toBe(expectedMessage);
 
-        await this.page.goto(this.accountPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.accountPage);
         await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);
     }
 
     async validateUpdateButtonText(expectedButtonText: string) {
         await new BasicLoginPage(this.page).basicLogin(Users.userName, Users.userPassword);
         
-        await this.page.goto(this.accountPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.accountPage);
         await this.validateAndClick(Selectors.settingsSetup.accountPageTabs.editProfileTab);
         
         await expect(this.page.locator(Selectors.regFormSettings.submitRegisterButtonText(expectedButtonText))).toBeVisible();
 
-        await this.page.goto(this.accountPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.accountPage);
         await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);
     }
 
     async enableUserNotification(formName: string) {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -504,7 +504,7 @@ export class RegFormSettingsPage extends Base {
     // Notification Settings Methods
 
     async setEmailVerificationNotification(formName: string) {
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -522,7 +522,7 @@ export class RegFormSettingsPage extends Base {
     }
 
     async setEmailVerificationNotificationSubject(formName: string, subject: string) {
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -540,7 +540,7 @@ export class RegFormSettingsPage extends Base {
     }
 
     async setEmailVerificationNotificationBody(formName: string, body: string) {
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -562,7 +562,7 @@ export class RegFormSettingsPage extends Base {
     // Click template tags for notification body
     async clickTemplateTagsForEmailVerificationNotification(formName: string, tags: string[]) {
         // Go to form edit page
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
 
         // Click on the form
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -598,7 +598,7 @@ export class RegFormSettingsPage extends Base {
     async setWelcomeEmailNotification(formName: string) {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -617,7 +617,7 @@ export class RegFormSettingsPage extends Base {
 
     async setWelcomeEmailNotificationSubject(formName: string, subject: string) {
         
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -636,7 +636,7 @@ export class RegFormSettingsPage extends Base {
 
     async setWelcomeEmailNotificationBody(formName: string, body: string) {
 
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -655,7 +655,7 @@ export class RegFormSettingsPage extends Base {
     }
 
     async clickTemplateTagsForWelcomeEmailNotification(formName: string, tags: string[]) {
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
         
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
 
@@ -682,7 +682,7 @@ export class RegFormSettingsPage extends Base {
 
     async enableAdminNotification(formName: string) {
         
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -704,7 +704,7 @@ export class RegFormSettingsPage extends Base {
 
     async setAdminNotificationSubject(formName: string, subject: string) {
 
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -722,7 +722,7 @@ export class RegFormSettingsPage extends Base {
     }
 
     async setAdminNotificationMessage(formName: string, message: string) {
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -740,7 +740,7 @@ export class RegFormSettingsPage extends Base {
     }
 
     async clickTemplateTagsForAdminNotification(formName: string, tags: string[]) {
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
         
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
 
@@ -766,7 +766,7 @@ export class RegFormSettingsPage extends Base {
     }
 
     async registerUserAndValidateEmailVerification(userEmail: string, userPassword: string, expectedSubject: string) {
-        await this.page.goto(this.newRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.newRegFormPage);
         
         // Fill registration form
         await this.page.fill(Selectors.regFormSettings.inputEmail, userEmail);
@@ -783,7 +783,7 @@ export class RegFormSettingsPage extends Base {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         
         // Navigate to WP Mail Log
-        await this.page.goto(this.wpMailLogPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpMailLogPage);
         await this.page.waitForTimeout(1000);
         await this.assertionValidate(Selectors.regFormSettings.wpMailLogValidation.wpMailLogPage);
 
@@ -813,14 +813,14 @@ export class RegFormSettingsPage extends Base {
     }
 
     async validateEmailVerification(activationLink: string, userEmail: string, userPassword: string) {
-        await this.page.goto(activationLink, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(activationLink);
         await new BasicLoginPage(this.page).backendLogin(userEmail, userPassword);
-        await this.page.goto(this.accountPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.accountPage);
         await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);
     }
 
     async registerUserAndValidateWelcomeEmail(userEmail: string, userPassword: string, expectedSubject: string) {
-        await this.page.goto(this.newRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.newRegFormPage);
         
         // Fill registration form
         await this.page.fill(Selectors.regFormSettings.inputEmail, userEmail);
@@ -837,7 +837,7 @@ export class RegFormSettingsPage extends Base {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         
         // Navigate to WP Mail Log
-        await this.page.goto(this.wpMailLogPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpMailLogPage);
         await this.page.waitForTimeout(1000);
         await this.assertionValidate(Selectors.regFormSettings.wpMailLogValidation.wpMailLogPage);
 
@@ -861,7 +861,7 @@ export class RegFormSettingsPage extends Base {
     }
 
     async disableUserNotification(formName: string) {
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
         
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -882,7 +882,7 @@ export class RegFormSettingsPage extends Base {
     }
 
     async registerUserAndValidateAdminNotification(userEmail: string, userPassword: string, expectedSubject: string) {
-        await this.page.goto(this.newRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.newRegFormPage);
         
         // Fill registration form
         await this.page.fill(Selectors.regFormSettings.inputEmail, userEmail);
@@ -899,7 +899,7 @@ export class RegFormSettingsPage extends Base {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         
         // Navigate to WP Mail Log
-        await this.page.goto(this.wpMailLogPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpMailLogPage);
         await this.page.waitForTimeout(1000);
         await this.assertionValidate(Selectors.regFormSettings.wpMailLogValidation.wpMailLogPage);
 
@@ -917,7 +917,7 @@ export class RegFormSettingsPage extends Base {
     }
 
     async disableAdminNotification(formName: string) {
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
         
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -939,7 +939,7 @@ export class RegFormSettingsPage extends Base {
     }
 
     async enableMultiStepProgressbar(formName: string) {
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
         
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         
@@ -965,7 +965,7 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
         await this.page.waitForSelector(Selectors.regFormSettings.formSaved);
 
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
         
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         
@@ -981,7 +981,7 @@ export class RegFormSettingsPage extends Base {
 
     async validateMultiStepProgessbar() {
 
-        await this.page.goto(this.newRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.newRegFormPage);
 
         await expect(this.page.locator(Selectors.regFormSettings.advancedSettingsSection.multiStepProgressbar)).toBeVisible();
     }
@@ -989,7 +989,7 @@ export class RegFormSettingsPage extends Base {
     async enableMultiStepByStep(formName: string) {
 
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
         
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         
@@ -1020,14 +1020,14 @@ export class RegFormSettingsPage extends Base {
     }
 
     async validateMultiStepByStep() {
-        await this.page.goto(this.newRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.newRegFormPage);
         
         await expect(this.page.locator(Selectors.regFormSettings.advancedSettingsSection.multiStepByStep)).toBeVisible();
     }
 
     async disableMultiStep(formName: string) {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
-        await this.page.goto(this.wpufRegFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufRegFormPage);
         
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         

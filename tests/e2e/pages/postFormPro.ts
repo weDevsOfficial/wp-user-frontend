@@ -25,7 +25,7 @@ export class PostFormProPage extends Base {
     async createBlankFormPostFormPro(newPostName: string) {
 
         //Visit Post Form Page
-        await this.page.goto(this.wpufPostFormPage , { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufPostFormPage );
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();
@@ -52,7 +52,7 @@ export class PostFormProPage extends Base {
     //PresetForm
     async createPresetPostFormPro(newPostName: string) {
         //Visit Post Form Page
-        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufPostFormPage);
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();
@@ -83,7 +83,7 @@ export class PostFormProPage extends Base {
     //PresetForm
     async createPresetPostFormWithGuestEnabledPro(newPostName: string) {
         //Visit Post Form Page
-        await this.page.goto(this.wpufPostFormPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await this.navigateToURL(this.wpufPostFormPage);
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();

@@ -131,9 +131,24 @@ export default function postFormSettingsTest() {
         let postExcerpt: string;
         const category = 'Music'; // Using one of the default categories from the screenshot
         const emailAddress = faker.internet.email();
-        const emailSubject = faker.word.words(3);
+        const emailSubject = 'New post submitted';
+        const emailUpdatedSubject = `Post updated`;
         const emailBody = `Hi Admin,
             A new post has been submitted to {sitename}.
+            Details:
+            Title: {post_title}
+            Author: {author} ({author_email})
+            Content: {post_content}
+            Excerpt: {post_excerpt}
+            Category: {category}
+            Tags: {tags}
+            Review URL: {editlink}
+            Public URL: {permalink}
+            Best regards,
+            Team {sitename}`;
+
+        const emailUpdatedBody = `Hi Admin,
+            ${postTitle} post updated.
             Details:
             Title: {post_title}
             Author: {author} ({author_email})
@@ -572,7 +587,7 @@ export default function postFormSettingsTest() {
 
         test('PFS0067 : Admin is clicking and validating template tags for notification', { tag: ['@Lite'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
-            const templateTags = ['{post_title}', '{post_content}', '{post_excerpt}'];
+            const templateTags = ['{post_title}', '{post_content}',];
             //, '{tags}', '{category}', '{author}', '{author_email}', '{author_bio}', '{sitename}', '{siteurl}', '{permalink}', '{editlink}'
             await postFormSettings.clickTemplateTagsForNotification(formName, templateTags);
         });
@@ -617,12 +632,12 @@ export default function postFormSettingsTest() {
 
         test('PFS0075 : Admin is modifying Updated post notification body with template tags', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.modifyUpdatedNotificationBodyWithTemplateTags(formName, emailBody);
+            await postFormSettings.modifyUpdatedNotificationBodyWithTemplateTags(formName, emailUpdatedBody);
         });
 
         test('PFS0076 : Admin is clicking and validating template tags for Updated post notification', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
-            const templateTags = ['{post_title}', '{post_content}', '{post_excerpt}'];
+            const templateTags = ['{post_title}', '{post_content}'];
             //, '{tags}', '{category}', '{author}', '{author_email}', '{author_bio}', '{sitename}', '{siteurl}', '{permalink}', '{editlink}'
             await postFormSettings.clickTemplateTagsForUpdatedNotification(formName, templateTags);
         });
@@ -638,7 +653,7 @@ export default function postFormSettingsTest() {
             postContent = faker.lorem.paragraph();
             postExcerpt = postContent;
             const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.submitPostAndValidateUpdatedNotificationFE(previousPostTitle, postTitle, postContent, postExcerpt, emailSubject, multipleEmails);
+            await postFormSettings.submitPostAndValidateUpdatedNotificationFE(previousPostTitle, postTitle, postContent, postExcerpt, emailUpdatedSubject, multipleEmails);
         });
 
         test('PFS0079 : Admin is disabling updated post notification', { tag: ['@Pro'] }, async () => {

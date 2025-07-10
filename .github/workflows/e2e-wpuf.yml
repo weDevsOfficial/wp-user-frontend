@@ -62,6 +62,7 @@ jobs:
           composer i --no-dev -o
           composer update --no-dev -o
           npm i --legacy-peer-deps
+          npm run build
           grunt
        
        # Build wp-user-frontend
@@ -70,6 +71,7 @@ jobs:
           composer i --no-dev -o
           composer update --no-dev -o
           npm i
+          npm run build
           grunt release --force
           grunt
             
@@ -88,11 +90,6 @@ jobs:
               wget https://downloads.wordpress.org/plugin/wp-mail-log.latest-stable.zip
               unzip wp-mail-log.latest-stable.zip
               rm wp-mail-log.latest-stable.zip
-
-              # # Download and extract WP Reset
-              # wget https://downloads.wordpress.org/plugin/wp-reset.latest-stable.zip
-              # unzip wp-reset.latest-stable.zip
-              # rm wp-reset.latest-stable.zip
           
               # Download and extract WooCommerce
               wget https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip
@@ -184,7 +181,7 @@ jobs:
           mkdir -p test-results
           npm run test:ci
         # continue-on-error: true
-        
+
       # Generate and post advanced test summary
       - name: Generate and post advanced test summary
         if: always()
@@ -219,7 +216,7 @@ jobs:
             Test was conducted on WPUF plugin.
             
             To View full test run, click on the following link: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          to: rubaiyat.mohammad@wedevs.com, nurul.ratul@wedevs.com, farazi@wedevs.com, anik@wedevs.com
+          to: rubaiyat.mohammad@wedevs.com, nurul.ratul@wedevs.com, anik@wedevs.com
           from: wedevs.testing1@gmail.com
 
       # Send Email Report if failed
@@ -240,4 +237,3 @@ jobs:
             To View full test run, click on the following link: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           to: rubaiyat.mohammad@wedevs.com
           from: wedevs.testing1@gmail.com
-          attachments: tests/e2e/playwright-report

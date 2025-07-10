@@ -62,7 +62,6 @@ jobs:
           composer i --no-dev -o
           composer update --no-dev -o
           npm i --legacy-peer-deps
-          npm run build
           grunt
        
        # Build wp-user-frontend
@@ -74,7 +73,6 @@ jobs:
           npm run build
           grunt release --force
           grunt
-            
 
       # Install test dependencies
       - name: Install test dependencies

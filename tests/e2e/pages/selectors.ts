@@ -520,6 +520,7 @@ export const Selectors = {
             postDescriptionFormsFE2: '//body[@id="tinymce"]',
             // Featured Photo
             featuredPhotoFormsFE: '//li[@data-label="Featured Image"]//input[@type="file"]',
+            uploads: (upload:string)=> `(//div[@class='attachment-name']//img)[${upload}]`,
             // Excerpt
             postExcerptFormsFE: '//textarea[@name="post_excerpt"]',
             // Tags

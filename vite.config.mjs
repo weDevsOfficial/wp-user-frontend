@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import wpufPrefixPlugin from './wpuf-prefix-plugin.js';
 
 const input = {
     'subscriptions': './assets/js/subscriptions.js',
@@ -17,7 +18,7 @@ export default defineConfig(({ mode }) => {
     const entries = entryPoint ? { [entryPoint]: input[entryPoint] } : input;
 
     return {
-        plugins: [vue()],
+        plugins: [vue(), wpufPrefixPlugin()],
         build: {
             rollupOptions: {
                 input: entries,
@@ -40,6 +41,7 @@ export default defineConfig(({ mode }) => {
             emptyOutDir: false,
             sourcemap: true,
             assetsInlineLimit: 0,
+            minify: 'terser',
         },
     }
 });

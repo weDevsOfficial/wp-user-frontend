@@ -151,7 +151,7 @@ export class PostFormPage extends Base {
         console.log(PostForm.excerpt);
         //Add Featured Photo
         await this.page.setInputFiles(Selectors.postForms.postFormsFrontendCreate.featuredPhotoFormsFE, PostForm.featuredImage);
-        await this.page.waitForTimeout(500);
+        await this.page.waitForTimeout(1500);
         //Select Category
         await this.page.selectOption(Selectors.postForms.postFormsFrontendCreate.categorySelectionFormsFE, { label: PostForm.category });
         //Enter Tags
@@ -178,7 +178,7 @@ export class PostFormPage extends Base {
         console.log(PostForm.emailAddress);
         //Enter Image Upload
         await this.page.setInputFiles(Selectors.postForms.postFormsFrontendCreate.postImageUploadFormsFE, PostForm.imageUpload);
-        await this.page.waitForTimeout(500);
+        await this.page.waitForTimeout(1500);
         //Enter Repeat Field
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postRepeatFieldFormsFE, PostForm.repeatField=faker.word.words(1));
         console.log(PostForm.repeatField);
@@ -191,6 +191,7 @@ export class PostFormPage extends Base {
         await this.page.selectOption(Selectors.postForms.postFormsFrontendCreate.postTimeFieldFormsFE, { value: PostForm.time });
         //Enter File Upload
         await this.page.setInputFiles(Selectors.postForms.postFormsFrontendCreate.postFileUploadFormsFE, PostForm.uploadFile);
+        await this.page.waitForTimeout(1500);
         //Enter Country List
         await this.page.selectOption(Selectors.postForms.postFormsFrontendCreate.postCountryListFormsFE, { value: 'BD' });
         //Enter Numeric Field
@@ -268,7 +269,7 @@ export class PostFormPage extends Base {
         expect(postDescription).toContain(PostForm.description);
         console.log("Post Description Validated");
         //Validate Featured Image
-        expect(await this.page.isVisible(Selectors.postForms.postFormData.featuredImage)).toBe(true);
+        expect(await this.page.isVisible(Selectors.postForms.postFormData.featuredImage)).toBeTruthy();
         console.log("Featured Image Validated");
         //Validate Category
         const postCategory = await this.page.innerText(Selectors.postForms.postFormData.category);

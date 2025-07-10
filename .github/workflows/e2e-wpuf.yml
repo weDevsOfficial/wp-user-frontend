@@ -35,7 +35,7 @@ jobs:
       
       # Checkout WP-User-Frontend repo
       - name: Checkout testing repo
-        id: clone-wp-user-prontend
+        id: clone-wp-user-frontend
         uses: actions/checkout@v4
 
       # Use desired version of NodeJS
@@ -120,7 +120,7 @@ jobs:
               rm the-events-calendar.latest-stable.zip
 
       # Start wordpress environment
-      - name: Start WordPress Env
+      - name: Start WordPress Env and Show URL
         id: wp-env
         if: success()
         uses: nick-fields/retry@v3
@@ -131,6 +131,10 @@ jobs:
             command: |
               cd tests/e2e
               npx wp-env start
+              WP_URL=$(npx wp-env url)
+              echo "WordPress Local URL: $WP_URL"
+              echo "WP_LOCAL_URL=$WP_URL" >> $GITHUB_ENV
+              echo "::notice title=WordPress Site::$WP_URL"
 
       # Install Playwright Browsers
       - name: Get installed Playwright version

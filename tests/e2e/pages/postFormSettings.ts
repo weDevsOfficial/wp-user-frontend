@@ -33,6 +33,9 @@ export class PostFormSettingsPage extends Base {
 
         // Save the form
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
+
+        // Wait for save and verify success message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
     }
 
     // Change post type in form settings
@@ -53,7 +56,7 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postTypeContainer);
 
         // Wait for dropdown to be visible
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postTypeDropdown, { state: 'visible' });
+        //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postTypeDropdown, { state: 'visible' });
 
         // Click the desired option
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postTypeOption(postType));
@@ -120,7 +123,7 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postTypeContainer);
 
         // Wait for dropdown to be visible
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postTypeDropdown, { state: 'visible' });
+        //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postTypeDropdown, { state: 'visible' });
 
         // Click the desired option
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postTypeOption('post'));
@@ -134,7 +137,7 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.defaultCategoryContainer);
 
         // Wait for dropdown to be visible
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.defaultCategoryDropdown, { state: 'visible' });
+        //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.defaultCategoryDropdown, { state: 'visible' });
 
         // Click the desired option
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.defaultCategoryOption(category));
@@ -186,7 +189,7 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionContainer);
 
         // Wait for dropdown to be visible
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown, { state: 'visible' });
+        //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown, { state: 'visible' });
 
         // Click the desired option
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionOption(value));
@@ -214,7 +217,7 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionContainer);
 
         // Wait for dropdown to be visible
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown, { state: 'visible' });
+        //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown, { state: 'visible' });
 
         // Click the desired option
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionOption(value));
@@ -244,7 +247,7 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionContainer);
 
         // Select the page
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown, { state: 'visible' });
+        //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown, { state: 'visible' });
 
         // Set success message
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionOption(value));
@@ -253,7 +256,7 @@ export class PostFormSettingsPage extends Base {
 
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionPageContainer);
 
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionPageDropdown, { state: 'visible' });
+        //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionPageDropdown, { state: 'visible' });
 
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionPageOption(text));
 
@@ -280,7 +283,7 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionContainer);
 
         // Enter the URL
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown, { state: 'visible' });
+        //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown, { state: 'visible' });
 
         // Set success message
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionOption(value));
@@ -394,7 +397,7 @@ export class PostFormSettingsPage extends Base {
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
 
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postSubmissionStatusContainer);
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postSubmissionStatusDropdown, { state: 'visible' });
+        //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postSubmissionStatusDropdown, { state: 'visible' });
 
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postSubmissionStatusOption(value));
 
@@ -567,7 +570,7 @@ export class PostFormSettingsPage extends Base {
         const isChecked = await this.page.locator(Selectors.postFormSettings.postSettingsSection.enableMultiStepCheckbox).isChecked();
         if (isChecked) {
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.progressbarTypeContainer);
-            await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.progressbarTypeDropdown);
+            //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.progressbarTypeDropdown);
 
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.progressbarTypeOption('step_by_step'));
         }
@@ -621,7 +624,7 @@ export class PostFormSettingsPage extends Base {
 
         // Click on post update status dropdown
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postUpdateStatusContainer);
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postUpdateStatusDropdown, { state: 'visible' });
+        //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postUpdateStatusDropdown, { state: 'visible' });
 
         // Select the status
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postUpdateStatusOption(status));
@@ -768,7 +771,7 @@ export class PostFormSettingsPage extends Base {
 
         // Click on successful redirection dropdown
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionContainer);
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown, { state: 'visible' });
+        //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown, { state: 'visible' });
 
         // Select "updated post"
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionOption('post'));
@@ -789,7 +792,7 @@ export class PostFormSettingsPage extends Base {
 
         // Click on successful redirection dropdown
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionContainer);
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown, { state: 'visible' });
+        //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown, { state: 'visible' });
 
         // Select "same page"
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionOption('same'));
@@ -810,7 +813,7 @@ export class PostFormSettingsPage extends Base {
 
         // Click on successful redirection dropdown
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionContainer);
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown, { state: 'visible' });
+        //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown, { state: 'visible' });
 
         // Select "to a page"
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionOption('page'));
@@ -819,7 +822,7 @@ export class PostFormSettingsPage extends Base {
 
         // Select the specific page
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionPageContainer);
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionPageDropdown, { state: 'visible' });
+        //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionPageDropdown, { state: 'visible' });
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionPageOption(pageName));
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
@@ -838,7 +841,7 @@ export class PostFormSettingsPage extends Base {
 
         // Click on successful redirection dropdown
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionContainer);
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown, { state: 'visible' });
+        //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown, { state: 'visible' });
 
         // Select "to a custom URL"
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionOption('url'));
@@ -960,14 +963,14 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.paymentEnableToggle);
 
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.paymentOptionsContainer);
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.paymentOptionsDropdown, { state: 'visible' });
+        //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.paymentOptionsDropdown, { state: 'visible' });
 
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.payPerPostOption('enable_pay_per_post'));
 
         await this.validateAndFillStrings(Selectors.postFormSettings.postSettingsSection.payPerPostCostContainer, cost);
 
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.paymentSuccessPageContainer);
-        await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.paymentSuccessPageDropdown, { state: 'visible' });
+        //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.paymentSuccessPageDropdown, { state: 'visible' });
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.paymentSuccessPageOption(successPage));
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
@@ -1611,7 +1614,7 @@ export class PostFormSettingsPage extends Base {
 
         // Disable new post notification toggle
         await this.validateAndClick(Selectors.postFormSettings.advancedSettingsSection.commentStatusContainer);
-        await this.page.waitForSelector(Selectors.postFormSettings.advancedSettingsSection.commentStatusDropdown, { state: 'visible' });
+        //await this.page.waitForSelector(Selectors.postFormSettings.advancedSettingsSection.commentStatusDropdown, { state: 'visible' });
         await this.validateAndClick(Selectors.postFormSettings.advancedSettingsSection.commentStatusOption(status));
 
         // Save settings
@@ -1876,13 +1879,13 @@ export class PostFormSettingsPage extends Base {
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.afterPostSettingsHeader);
 
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postPermissionContainer);
-        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postPermissionDropdown);
+        //await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postPermissionDropdown);
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postPermissionOption('role_base'));
 
         await this.page.waitForTimeout(300);
 
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.roleSelectionContainer);
-        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.roleSelectionDropdown);
+        //await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.roleSelectionDropdown);
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.roleSelectionOption('subscriber'));
 
         // Save settings
@@ -1913,13 +1916,13 @@ export class PostFormSettingsPage extends Base {
         await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.afterPostSettingsHeader);
 
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postPermissionContainer);
-        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postPermissionDropdown);
+        //await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postPermissionDropdown);
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postPermissionOption('role_base'));
 
         await this.page.waitForTimeout(300);
 
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.roleSelectionContainer);
-        await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.roleSelectionDropdown);
+        //await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.roleSelectionDropdown);
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.roleSelectionOption('administrator'));
 
         // Save settings

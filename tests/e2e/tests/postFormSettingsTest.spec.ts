@@ -148,7 +148,7 @@ export default function postFormSettingsTest() {
             Team {sitename}`;
 
         const emailUpdatedBody = `Hi Admin,
-            ${postTitle} post updated.
+            Post updated.
             Details:
             Title: {post_title}
             Author: {author} ({author_email})
@@ -627,7 +627,7 @@ export default function postFormSettingsTest() {
 
         test('PFS0074 : Admin is modifying Updated post notification subject', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.modifyUpdatedNotificationSubject(formName, emailSubject);
+            await postFormSettings.modifyUpdatedNotificationSubject(formName, emailUpdatedSubject);
         });
 
         test('PFS0075 : Admin is modifying Updated post notification body with template tags', { tag: ['@Pro'] }, async () => {

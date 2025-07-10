@@ -210,8 +210,9 @@ export class RegFormPage extends Base {
         }
         //Click Register
         await this.validateAndClick(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfRegisterButton);
+        await this.page.waitForTimeout(1000);
         //Validate User logged in
-        await expect(this.page.locator(Selectors.registrationForms.completeUserRegistrationFormFrontend.validateRegisteredLogoutButton)).toBeTruthy();
+        expect(this.page.locator(Selectors.registrationForms.completeUserRegistrationFormFrontend.validateRegisteredLogoutButton)).toBeTruthy();
 
     }
 

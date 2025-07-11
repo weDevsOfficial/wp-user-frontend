@@ -1,4 +1,5 @@
 <?php
+use WeDevs\Wpuf\Free\Pro_Prompt;
 $form_type = ! empty( $form_type ) ?  $form_type : 'Post Form';
 
 // Define categories

@@ -145,7 +145,7 @@ if ( ! empty( $registry ) ) {
                         </div>
                         */ ?>
                         <!-- Blank Form -->
-                        <div class="template-box wpuf-template-item" data-category="registration" data-title="blank form" style="width: calc(25% - 12px);">
+                        <div class="template-box wpuf-template-item" data-category="post" data-title="blank form" style="width: calc(25% - 12px);">
                             <div class="wpuf-relative wpuf-group wpuf-shadow-base">
                                 <img src="<?php echo esc_attr( WPUF_ASSET_URI . '/images/templates/blank.svg' ); ?>" alt="Blank Form">
                                 <div class="wpuf-absolute wpuf-opacity-0 group-hover:wpuf-opacity-70 wpuf-transition-all wpuf-z-10 wpuf-text-center wpuf-flex wpuf-flex-col wpuf-justify-center wpuf-items-center wpuf-bg-emerald-900 wpuf-h-full wpuf-w-full wpuf-top-0 wpuf-left-0 wpuf-text-white wpuf-p-10 wpuf-rounded-md"></div>
@@ -229,7 +229,7 @@ if ( ! empty( $registry ) ) {
                                     $image = $template->get_image();
                                     $title = $template->get_title();
                                     ?>
-                                    <div class="template-box wpuf-template-item" data-category="registration" data-title="<?php echo esc_attr(strtolower($title)); ?>" style="width: calc(25% - 12px);">
+                                    <div class="template-box wpuf-template-item" data-category="post" data-title="<?php echo esc_attr(strtolower($title)); ?>" style="width: calc(25% - 12px);">
                                         <div class="wpuf-relative wpuf-group">
                                         <?php
                                             if ( $image ) {

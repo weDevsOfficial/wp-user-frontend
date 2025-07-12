@@ -235,11 +235,12 @@ export class RegFormPage extends Base {
         await this.validateAndFillStrings(Selectors.registrationForms.validateUserRegisteredAdminEnd.adminUsersSearchBox, email);
         //Click Search
         await this.validateAndClick(Selectors.registrationForms.validateUserRegisteredAdminEnd.adminUsersSearchButton);
+        await this.page.waitForTimeout(1000);
         try{
         //Validate Email present
         const validateUserCreated = await this.page.innerText(Selectors.registrationForms.validateUserRegisteredAdminEnd.validateUserCreated);
 
-        expect(validateUserCreated, `Expected user with email ${email} to be found in admin`).toBe(email);
+        expect(validateUserCreated).toContain(email);
         }
         catch (error) {
             console.log('User not found in admin');

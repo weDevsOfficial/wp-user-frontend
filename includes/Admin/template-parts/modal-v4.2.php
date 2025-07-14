@@ -1,22 +1,47 @@
 <?php
 use WeDevs\Wpuf\Free\Pro_Prompt;
+
 $form_type = ! empty( $form_type ) ?  $form_type : 'Post Form';
 
-// Define categories
-$categories = [
-    'ecommerce'    => [
-        'label'    => __( 'E-commerce', 'wp-user-frontend' ),
-        'keywords' => [ 'vendor', 'marketplace', 'product', 'WooCommerce','edd' ],
-    ],
-    'post'   => [
-        'label'    => __( 'Post Form', 'wp-user-frontend' ),
-        'keywords' => [ 'post', 'article', 'blog' ],
-    ],
-];
+// Define categories based on form type
+$categories = [];
+if ( strpos(strtolower($form_type), 'registration') !== false || strpos(strtolower($form_type), 'profile') !== false ) {
+    // Profile/Registration form categories
+    $categories = [
+        'ecommerce'    => [
+            'label'    => __( 'E-commerce', 'wp-user-frontend' ),
+            'keywords' => [ 'vendor', 'marketplace', 'product' ],
+        ],
+        'membership'   => [
+            'label'    => __( 'Membership', 'wp-user-frontend' ),
+            'keywords' => [ 'membership' ],
+        ],
+        'community'    => [
+            'label'    => __( 'Community', 'wp-user-frontend' ),
+            'keywords' => [],
+        ],
+        'associations' => [
+            'label'    => __( 'Associations', 'wp-user-frontend' ),
+            'keywords' => [],
+        ],
+    ];
+} else {
+    // Post form categories
+    $categories = [
+        'ecommerce'    => [
+            'label'    => __( 'E-commerce', 'wp-user-frontend' ),
+            'keywords' => [ 'vendor', 'marketplace', 'product', 'WooCommerce','edd' ],
+        ],
+        'post'   => [
+            'label'    => __( 'Post Form', 'wp-user-frontend' ),
+            'keywords' => [ 'post', 'article', 'blog' ],
+        ],
+    ];
+}
 
 // Helper function to determine a template's category based on its title
 if ( ! function_exists( 'wpuf_get_template_category' ) ) {
-    function wpuf_get_template_category( $template_title, $categories ) {
+    function wpuf_get_template_category( $template_title, $categories, $form_type = 'Post Form' ) {
         $template_title_lower = strtolower( $template_title );
 
         foreach ( $categories as $slug => $category ) {
@@ -29,7 +54,12 @@ if ( ! function_exists( 'wpuf_get_template_category' ) ) {
             }
         }
 
-        return 'post';
+        // Default category based on form type
+        if ( strpos(strtolower($form_type), 'registration') !== false || strpos(strtolower($form_type), 'profile') !== false ) {
+            return 'registration';
+        } else {
+            return 'post';
+        }
     }
 }
 
@@ -37,7 +67,7 @@ $category_counts = array_fill_keys( array_keys( $categories ), 0 );
 
 if ( ! empty( $registry ) ) {
     foreach ( $registry as $template ) {
-        $category = wpuf_get_template_category( $template->get_title(), $categories );
+        $category = wpuf_get_template_category( $template->get_title(), $categories, $form_type );
 
         if ( isset( $category_counts[ $category ] ) ) {
             $category_counts[ $category ]++;
@@ -45,7 +75,7 @@ if ( ! empty( $registry ) ) {
     }
 }
 ?>
-<div class="wpuf-form-template-modal wpuf-hidden" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #F8FAFC; z-index: 999999;">
+<div class="wpuf-form-template-modal wpuf-absolute wpuf-top-0 wpuf-left-0 wpuf-w-[calc(100%+20px)] !wpuf-h-[150vh] !wpuf--mb-[30px] wpuf-ml-[-20px] wpuf-bg-gray-100 wpuf-hidden" role="dialog" aria-modal="true" aria-labelledby="template-modal-title" aria-describedby="template-modal-description" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #F8FAFC; z-index: 999999;">
     <div class="wpuf-relative wpuf-mx-auto wpuf-p-8 wpuf-h-full wpuf-overflow-y-auto" style="max-width: 1400px;">
         <button
             class="wpuf-absolute wpuf-right-4 wpuf-top-4 wpuf-text-gray-400 hover:wpuf-text-gray-600 focus:wpuf-outline-none wpuf-close-btn wpuf-border wpuf-border-gray-200 wpuf-rounded-full wpuf-p-2 hover:wpuf-border-gray-300 wpuf-bg-white" style="z-index: 1000000;">
@@ -58,12 +88,12 @@ if ( ! empty( $registry ) ) {
         <div class="wpuf-max-w-full wpuf-mx-auto" style="position: relative; z-index: 999998;">
             <!-- Header -->
             <div class="wpuf-mb-14 wpuf-mt-10 wpuf-ml-10">
-                <h1 class="wpuf-text-3xl wpuf-text-gray-900 wpuf-m-0 wpuf-p-0">
+                <h1 class="wpuf-text-3xl wpuf-text-gray-900 wpuf-m-0 wpuf-p-0" id="template-modal-title">
                     <?php
                         echo esc_html( sprintf( __( 'Select a %s Template', 'wp-user-frontend' ), $form_type ) );
                     ?>
                 </h1>
-                <p class="wpuf-text-base wpuf-text-gray-500 wpuf-mt-3 wpuf-p-0">
+                <p class="wpuf-text-base wpuf-text-gray-500 wpuf-mt-3 wpuf-p-0" id="template-modal-description">
                     <?php esc_html_e( 'Select from a pre-defined template or from a blank form', 'wp-user-frontend' ); ?>
                 </p>
             </div>
@@ -96,7 +126,7 @@ if ( ! empty( $registry ) ) {
                                     <span><?php esc_html_e( 'All Templates', 'wp-user-frontend' ); ?></span>
                                     <span class="wpuf-border wpuf-border-primary wpuf-text-primary wpuf-text-sm wpuf-font-semibold wpuf-px-2.5 wpuf-py-0.5 wpuf-rounded-full">
                                         <?php
-                                        $total_count = count($registry) + 1; // +2 for blank form and create with AI
+                                        $total_count = count($registry) + 1; // +1 for blank form
                                         if (!empty($pro_templates)) {
                                             $total_count += count($pro_templates);
                                         }
@@ -110,7 +140,6 @@ if ( ! empty( $registry ) ) {
                                     <button class="wpuf-template-category wpuf-w-full wpuf-flex wpuf-items-center wpuf-justify-between wpuf-text-left wpuf-px-8 wpuf-py-2 wpuf-text-sm wpuf-transition-all wpuf-duration-200 wpuf-text-gray-700 hover:wpuf-text-primary hover:wpuf-bg-gray-100 wpuf-rounded-md" data-category="<?php echo esc_attr( $slug ); ?>">
                                         <span><?php echo esc_html( $category['label'] ); ?></span>
                                         <span class="wpuf-text-gray-500 wpuf-px-2 wpuf-py-0.5 wpuf-text-sm">
-                                            
                                             <?php echo esc_html( $category_counts[ $slug ] ); ?>
                                         </span>
                                     </button>
@@ -118,34 +147,17 @@ if ( ! empty( $registry ) ) {
                             <?php endforeach; ?>
                         </ul>
                     </div>
-                  
                 </div>
 
                 <!-- Right Content Area -->
                 <div class="wpuf-flex-1">
                     <!-- Templates Grid -->
                     <div class="wpuf-flex wpuf-flex-wrap wpuf-gap-4" id="templates-grid">
-                        <?php /*
-                        <!-- Create with AI -->
-                        <div class="template-box wpuf-template-item" data-category="ai" data-title="create with ai" style="width: calc(25% - 12px);">
-                            <div class="wpuf-relative wpuf-group wpuf-bg-gradient-to-br wpuf-from-blue-500 wpuf-to-purple-600 wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-shadow-sm hover:wpuf-shadow-md wpuf-transition-all">
-                                <div class="wpuf-aspect-square wpuf-flex wpuf-items-center wpuf-justify-center wpuf-p-6">
-                                    <div class="wpuf-text-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="wpuf-h-8 wpuf-w-8 wpuf-text-white wpuf-mx-auto wpuf-mb-2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.624L16.5 21.75l-.398-1.126a3.375 3.375 0 00-2.455-2.456L12.75 18l1.126-.398a3.375 3.375 0 002.455-2.456L16.5 14.25l.398 1.126a3.375 3.375 0 002.456 2.456L20.25 18l-1.126.398a3.375 3.375 0 00-2.456 2.456z" />
-                                        </svg>
-                                    </div>
-                                </div>
-                                 <div class="wpuf-absolute wpuf-opacity-0 group-hover:wpuf-opacity-70 wpuf-transition-all wpuf-duration-200 wpuf-z-10 wpuf-text-center wpuf-flex wpuf-flex-col wpuf-justify-center wpuf-items-center wpuf-bg-emerald-900 wpuf-h-full wpuf-w-full wpuf-top-0 wpuf-left-0 wpuf-text-white wpuf-rounded-lg"></div>
-                                <a href="#" class="wpuf-btn-secondary wpuf-w-max wpuf-absolute wpuf-top-[50%] wpuf-left-[50%] wpuf--translate-y-[50%] wpuf--translate-x-[50%] wpuf-z-20 wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-border-transparent focus:wpuf-shadow-none wpuf-transition-all" title="<?php echo esc_attr( 'Create with AI' ); ?>">
-                                    <?php esc_html_e( 'Create Form', 'wp-user-frontend' ); ?>
-                                </a>
-                            </div>
-                            <p class="wpuf-text-xs wpuf-text-gray-700 wpuf-mt-2 wpuf-text-center wpuf-font-medium"><?php echo esc_html( 'Create with AI' ); ?></p>
-                        </div>
-                        */ ?>
                         <!-- Blank Form -->
-                        <div class="template-box wpuf-template-item" data-category="post" data-title="blank form" style="width: calc(25% - 12px);">
+                        <?php 
+                        $blank_form_category = strpos(strtolower($form_type), 'registration') !== false || strpos(strtolower($form_type), 'profile') !== false ? 'registration' : 'post';
+                        ?>
+                        <div class="template-box wpuf-template-item" data-category="<?php echo esc_attr($blank_form_category); ?>" data-title="blank form" style="width: calc(25% - 12px);">
                             <div class="wpuf-relative wpuf-group wpuf-shadow-base">
                                 <img src="<?php echo esc_attr( WPUF_ASSET_URI . '/images/templates/blank.svg' ); ?>" alt="Blank Form">
                                 <div class="wpuf-absolute wpuf-opacity-0 group-hover:wpuf-opacity-70 wpuf-transition-all wpuf-z-10 wpuf-text-center wpuf-flex wpuf-flex-col wpuf-justify-center wpuf-items-center wpuf-bg-emerald-900 wpuf-h-full wpuf-w-full wpuf-top-0 wpuf-left-0 wpuf-text-white wpuf-p-10 wpuf-rounded-md"></div>
@@ -162,7 +174,7 @@ if ( ! empty( $registry ) ) {
 
                             foreach ( $registry as $key => $template ) {
                                 $template_title = $template->get_title();
-                                $category = wpuf_get_template_category( $template_title, $categories );
+                                $category = wpuf_get_template_category( $template_title, $categories, $form_type );
                                 ?>
                                 <div class="template-box wpuf-template-item" data-category="<?php echo esc_attr($category); ?>" data-title="<?php echo esc_attr(strtolower($template_title)); ?>" style="width: calc(25% - 12px);">
                                     <div class="wpuf-relative wpuf-group">
@@ -190,7 +202,7 @@ if ( ! empty( $registry ) ) {
                                         if ( $image ) {
                                             printf( '<img src="%s" alt="%s">', esc_attr( $image ), esc_attr( $title ) );
                                         } else {
-                                            echo '<div class="wpuf-aspect-square wpuf-flex wpuf-items-center wpuf-justify-center wpuf-bg-gray-50 wpuf-rounded-lg">';
+                                            echo '<div class="wpuf-aspect-square wpuf-flex wpuf-items-center wpuf-justify-center wpuf-bg-gray-50 wpuf-rounded-lg" role="img" aria-label="' . esc_attr( $title ) . '">';
                                             printf( '<h2 class="wpuf-text-sm wpuf-font-semibold wpuf-text-gray-800 wpuf-text-center wpuf-px-2">%s</h2>', esc_html( $title ) );
                                             echo '</div>';
                                         }
@@ -228,8 +240,9 @@ if ( ! empty( $registry ) ) {
                                     $class = 'template-inactive is-pro-template';
                                     $image = $template->get_image();
                                     $title = $template->get_title();
+                                    $pro_template_category = wpuf_get_template_category( $title, $categories, $form_type );
                                     ?>
-                                    <div class="template-box wpuf-template-item" data-category="post" data-title="<?php echo esc_attr(strtolower($title)); ?>" style="width: calc(25% - 12px);">
+                                    <div class="template-box wpuf-template-item" data-category="<?php echo esc_attr($pro_template_category); ?>" data-title="<?php echo esc_attr(strtolower($title)); ?>" style="width: calc(25% - 12px);">
                                         <div class="wpuf-relative wpuf-group">
                                         <?php
                                             if ( $image ) {
@@ -299,13 +312,16 @@ if ( ! empty( $registry ) ) {
     .wpuf-aspect-square {
         aspect-ratio: 1;
     }
+    
     .wpuf-from-blue-500 {
         --tw-gradient-from: #3b82f6;
         --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(59, 130, 246, 0));
     }
+    
     .wpuf-to-purple-600 {
         --tw-gradient-to: #9333ea;
     }
+    
     .wpuf-bg-gradient-to-br {
         background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
     }
@@ -353,9 +369,7 @@ if ( ! empty( $registry ) ) {
                 $( 'body' ).on( 'keydown', $.proxy( this.onEscapeKey, this ) );
 
                 $( '#template-search' ).on( 'input', this.searchTemplates );
-
                 $( '.wpuf-template-category' ).on( 'click', this.filterByCategory );
-
                 $( document ).on( 'keydown', $.proxy( this.handleKeyboardShortcuts, this ) );
             },
 
@@ -385,6 +399,7 @@ if ( ! empty( $registry ) ) {
                 
                 $( 'body' ).addClass( 'wpuf-modal-open' );
                 $( 'body' ).css( 'overflow', 'hidden' );
+                $( '#wpbody-content .wrap' ).hide();
             },
 
             onEscapeKey: function ( e ) {
@@ -407,6 +422,7 @@ if ( ! empty( $registry ) ) {
                 
                 $( 'body' ).removeClass( 'wpuf-modal-open' );
                 $( 'body' ).css( 'overflow', '' );
+                $( '#wpbody-content .wrap' ).show();
             },
 
             searchTemplates: function ( e ) {

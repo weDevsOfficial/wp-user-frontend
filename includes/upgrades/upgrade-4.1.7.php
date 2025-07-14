@@ -16,7 +16,7 @@ function wpuf_upgrade_4_1_7_subscription_sort_order_migration() {
         [
             'post_type'      => 'wpuf_subscription',
             'posts_per_page' => -1,
-            'post_status'    => 'publish',
+            'post_status'    => 'any',
             'meta_query'     => [
                 'relation' => 'OR',
                 [

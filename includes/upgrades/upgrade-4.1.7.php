@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Migrate subscription sort order data (runs once)
+ * Migrate subscription sort order data
  *
  * This function ensures that all existing subscription packs have a default sort order
  * set if they don't already have one.
@@ -11,14 +11,6 @@
  * @return void
  */
 function wpuf_upgrade_4_1_7_subscription_sort_order_migration() {
-
-    $migration_version = get_option( 'wpuf_subscription_sort_order_migration', '0' );
-    $current_version = '1.0';
-
-    if ( version_compare( $migration_version, $current_version, '>=' ) ) {
-        return;
-    }
-
     // Get all subscription packs that might need migration
     $subscriptions = get_posts(
         [
@@ -50,8 +42,6 @@ function wpuf_upgrade_4_1_7_subscription_sort_order_migration() {
             }
         }
     }
-
-    update_option( 'wpuf_subscription_sort_order_migration', $current_version );
 }
 
 wpuf_upgrade_4_1_7_subscription_sort_order_migration();

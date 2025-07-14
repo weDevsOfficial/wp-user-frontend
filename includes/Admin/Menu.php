@@ -122,6 +122,7 @@ class Menu {
                 break;
 
             default:
+                wp_enqueue_style( 'wpuf-admin' );
                 wp_enqueue_style( 'wpuf-forms-list' );
                 wp_enqueue_script( 'wpuf-forms-list' );
                 wp_localize_script('wpuf-forms-list', 'wpuf_forms_list',

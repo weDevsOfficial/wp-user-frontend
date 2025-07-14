@@ -79,13 +79,17 @@ class Payment {
         $action   = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) : '';
         $get_type = isset( $_REQUEST['type'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['type'] ) ) : '';
         $type     = ( $get_type === 'post' ) ? 'post' : 'pack';
-        if ( ! is_user_logged_in() && $action === 'wpuf_pay' && $type !== 'post' ) {
-            /* translators: %s: login url */
-            printf( esc_html( __( 'This page is restricted. Please %s to view this page.', 'wp-user-frontend' ) ),
-                    wp_loginout( '', false ) );
+        
+        // Remove login restriction for subscription payments
+        // Users can now purchase subscriptions without being logged in first
+        
+        // if ( ! is_user_logged_in() && $action === 'wpuf_pay' && $type === 'post' ) {
+        //     /* translators: %s: login url */
+        //     printf( esc_html( __( 'This page is restricted. Please %s to view this page.', 'wp-user-frontend' ) ),
+        //             wp_loginout( '', false ) );
 
-            return;
-        }
+        //     return;
+        // }
         if ( $action === 'wpuf_pay' && $pay_page === 0 ) {
             esc_html_e( 'Please select your payment page from admin panel', 'wp-user-frontend' );
 

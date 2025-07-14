@@ -31,7 +31,7 @@ class Form_Field_Cloudflare_Turnstile extends Field_Contract {
         $size             = ! empty( $field_settings['turnstile_size'] ) ? $field_settings['turnstile_size'] : 'normal';
         $action           = ! empty( $field_settings['turnstile_type'] ) ? $field_settings['turnstile_type'] : 'non-interactive';
 
-        if ( 'on' !== $enable_turnstile || empty( $site_key ) ) {
+        if ( wpuf_is_checkbox_or_toggle_on( $enable_turnstile ) || empty( $site_key ) ) {
             return;
         }
 

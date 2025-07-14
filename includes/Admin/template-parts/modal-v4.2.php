@@ -267,7 +267,7 @@ if ( ! empty( $registry ) ) {
                                             <img class="wpuf-absolute wpuf-top-3 wpuf-right-3 wpuf-w-6 wpuf-h-6" src="<?php echo esc_attr( $pro_badge ); ?>" alt="Pro">
                                             <div class="wpuf-absolute wpuf-opacity-0 group-hover:wpuf-opacity-70 wpuf-transition-all wpuf-z-10 wpuf-text-center wpuf-flex wpuf-flex-col wpuf-justify-center wpuf-items-center wpuf-bg-emerald-900 wpuf-h-full wpuf-w-full wpuf-top-0 wpuf-left-0 wpuf-text-white wpuf-p-5 wpuf-rounded-md"></div>
                                             <a
-                                                href="<?php echo esc_url( class_exists( 'WeDevs\Wpuf\Free\Pro_Prompt' ) ? Pro_Prompt::get_upgrade_to_pro_popup_url() : '#' ); ?>" ?>"
+                                                href="<?php echo esc_url( class_exists( 'WeDevs\Wpuf\Free\Pro_Prompt' ) ? Pro_Prompt::get_upgrade_to_pro_popup_url() : '#' ); ?>"
                                                 target="_blank"
                                                 class="wpuf-btn-secondary wpuf-w-max wpuf-absolute wpuf-top-[50%] wpuf-left-[50%] wpuf--translate-y-[50%] wpuf--translate-x-[50%] wpuf-z-20 wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-border-transparent focus:wpuf-shadow-none wpuf-transition-all"
                                                 title="<?php echo esc_attr( $template->get_title() ); ?>" >
@@ -287,7 +287,6 @@ if ( ! empty( $registry ) ) {
     </div>
 </div>
 
-<!-- Template Modal Styles moved to assets/less/admin.less file -->
 
 <script type="text/javascript">
     ( function ( $ ) {

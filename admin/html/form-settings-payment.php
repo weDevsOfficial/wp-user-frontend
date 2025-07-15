@@ -7,7 +7,7 @@ $payment_options       = isset( $form_settings['payment_options'] ) ? $form_sett
 $enable_pay_per_post   = isset( $form_settings['enable_pay_per_post'] ) ? $form_settings['enable_pay_per_post'] : 'false';
 $force_pack_purchase   = isset( $form_settings['force_pack_purchase'] ) ? $form_settings['force_pack_purchase'] : 'false';
 
-$pay_per_post_cost     = isset( $form_settings['pay_per_post_cost'] ) ? $form_settings['pay_per_post_cost'] : 2;
+$pay_per_post_cost     = ! empty( $form_settings['pay_per_post_cost'] ) ? $form_settings['pay_per_post_cost'] : 0;
 $fallback_ppp_enable   = isset( $form_settings['fallback_ppp_enable'] ) ? $form_settings['fallback_ppp_enable'] : 'false';
 $fallback_ppp_cost     = isset( $form_settings['fallback_ppp_cost'] ) ? $form_settings['fallback_ppp_cost'] : 1;
 $ppp_success_page      = isset( $form_settings['ppp_payment_success_page'] ) ? $form_settings['ppp_payment_success_page'] : '';

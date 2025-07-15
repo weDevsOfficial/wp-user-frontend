@@ -1097,21 +1097,28 @@ function wpuf_show_custom_fields( $content ) {
                         $country_state = new WeDevs\Wpuf\Data\Country_State();
                         $country_value = isset( $field_value[0]['country_select'] ) ? $field_value[0]['country_select'] : '';
                         
+                        // Get countries array from Country_State class as fallback
+                        if ( empty( $countries ) ) {
+                            $countries = $country_state->countries();
+                        }
+                        
                         foreach ( $field_value[0] as $field_key => $value ) {
                             if ( 'country_select' === $field_key ) {
                                 if ( isset( $countries[ $value ] ) ) {
                                     $value = $countries[ $value ];
                                 }
                             } elseif ( 'state' === $field_key && ! empty( $country_value ) ) {
-                                // Handle state field by looking up the full state name
-                                // First try PRO plugin states if available
+                                $state_resolved = false;
+                                
                                 if ( wpuf()->is_pro() && file_exists( WPUF_PRO_INCLUDES . '/states.php' ) ) {
                                     $pro_states = include WPUF_PRO_INCLUDES . '/states.php';
-                                    if ( isset( $pro_states[ $country_value ] ) && isset( $pro_states[ $country_value ][ $value ] ) ) {
+                                    if ( ! empty( $pro_states[ $country_value ] ) && isset( $pro_states[ $country_value ][ $value ] ) ) {
                                         $value = $pro_states[ $country_value ][ $value ];
+                                        $state_resolved = true;
                                     }
-                                } else {
-                                    // Fallback to free plugin Country_State class
+                                }
+                                
+                                if ( ! $state_resolved ) {
                                     $state_name = $country_state->getStateName( $value, $country_value );
                                     if ( $state_name ) {
                                         $value = $state_name;
@@ -5279,6 +5286,8 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
             'fallback_ppp_cost'        => [
                 'label' => __( 'Cost for each additional post after pack limit is reached', 'wp-user-frontend' ),
                 'type'  => 'number',
+                'required' => true,
+                'help_text' => __( 'This field is required when Pay-per-post billing when limit exceeds is enabled.', 'wp-user-frontend' ),
             ],
             'pay_per_post_cost'        => [
                 'label'     => __( 'Charge for each post', 'wp-user-frontend' ),

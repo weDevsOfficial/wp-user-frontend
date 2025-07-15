@@ -3,13 +3,13 @@ dotenv.config();
 import { Browser, BrowserContext, Page, test, chromium } from "@playwright/test";
 import { faker } from '@faker-js/faker';
 dotenv.config();
-import { PostFormSettingsPage } from '../pages/postFormSettingsPage';
+import { PostFormSettingsPage } from '../pages/postFormSettings';
 import { BasicLoginPage } from '../pages/basicLogin';
-import { Users, PostForm, Urls } from '../utils/testData';
+import { Users } from '../utils/testData';
 import { SettingsSetupPage } from '../pages/settingsSetup';
 import * as fs from "fs";
 
-export default function postFormGeneralSettingsTestsPro() {
+export default function postFormSettingsTestPro() {
 
     let browser: Browser;
     let context: BrowserContext;
@@ -62,7 +62,7 @@ export default function postFormGeneralSettingsTestsPro() {
         // Add your Pro-specific tests here with { tag: ['@Pro'] }
 
         test.beforeAll(async () => {
-            formName = PostForm.pfPostName1 + faker.word.words(1);
+            formName = faker.word.words(3);
             const basicLogin = new BasicLoginPage(page);
             await basicLogin.basicLoginAndPluginVisit(Users.adminUsername, Users.adminPassword);
             const postFormSettings = new PostFormSettingsPage(page);

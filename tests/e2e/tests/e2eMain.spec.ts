@@ -1,15 +1,16 @@
 import { test } from '@playwright/test';
-import * as fs from 'fs'; //Clear Cookie
-import resetWordpressSite from './resetWordpressSite.spec';
-import loginAndSetupTests from './loginAndSetupTests.spec';
-import postFormsTests from './postFormsTests.spec';
-import registrationFormsTestsPro from './registrationFormsTestsPro.spec';
+import resetSite from './resetSite.spec';
+import loginAndSetupTest from './loginAndSetupTest.spec';
+import postFormTest from './postFormTest.spec';
+import regFormTestPro from './regFormTestPro.spec';
 import postFormSettingsTest from './postFormSettingsTest.spec';
+import regFormSettingsTestPro from './regFormSettingsTestPro.spec';
 
 if (process.env.CI == 'false') {
-    test.describe(resetWordpressSite);
+    test.describe(resetSite);
 }
-test.describe(loginAndSetupTests);
-test.describe(postFormsTests);
-test.describe(registrationFormsTestsPro);
+test.describe(loginAndSetupTest);
+test.describe(postFormTest);
+test.describe(regFormTestPro);
 test.describe(postFormSettingsTest);
+test.describe(regFormSettingsTestPro);

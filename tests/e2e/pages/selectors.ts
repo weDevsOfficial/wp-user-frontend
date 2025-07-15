@@ -922,6 +922,8 @@ export const Selectors = {
             validateUserCreated: '//td[@class="email column-email"]',
             // Validate User Role
             validateUserRole: '//td[@class="role column-role"]',
+
+            validateUserEmail: (email:string)=> `//a[normalize-space()='${email}']`,
         },
     },
 

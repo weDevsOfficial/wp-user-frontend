@@ -16,6 +16,8 @@ const email = RegistrationForm.rfEmail;
 const userName = RegistrationForm.rfUsername;
 //Password
 const password = RegistrationForm.rfPassword;
+// new email
+let newEmail = '';
 
 export class RegFormPage extends Base {
 
@@ -104,17 +106,6 @@ export class RegFormPage extends Base {
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
     /************************************************* PRO *************************************************/
     /******* @Create Registration Forms - Pro *******/
     /***********************************************/
@@ -164,6 +155,7 @@ export class RegFormPage extends Base {
 
     //Registration forms page - only WPUF-Lite activated
     async completeUserRegistrationFormFrontend() {
+        newEmail = email;
         //Go to Registration page - FrontEnd
         await this.navigateToURL(this.wpufRegistrationPage);
 
@@ -186,7 +178,7 @@ export class RegFormPage extends Base {
         // }
         try {
             //Enter Email
-        await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfEmail, email);
+        await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfEmail, newEmail);
         }catch (error) {
             console.log('Email field is not present');
         }
@@ -231,20 +223,7 @@ export class RegFormPage extends Base {
         //Validate Registered User
         //Go to Users List
         await this.validateAndClick(Selectors.registrationForms.validateUserRegisteredAdminEnd.adminUsersList);
-        //Search Username
-        await this.validateAndFillStrings(Selectors.registrationForms.validateUserRegisteredAdminEnd.adminUsersSearchBox, email);
-        //Click Search
-        await this.validateAndClick(Selectors.registrationForms.validateUserRegisteredAdminEnd.adminUsersSearchButton);
-        await this.page.waitForTimeout(1000);
-        try{
-        //Validate Email present
-        const validateUserCreated = await this.page.innerText(Selectors.registrationForms.validateUserRegisteredAdminEnd.validateUserCreated);
-
-        expect(validateUserCreated).toContain(email);
-        }
-        catch (error) {
-            console.log('User not found in admin');
-        }
+        await this.assertionValidate(Selectors.registrationForms.validateUserRegisteredAdminEnd.validateUserEmail(newEmail));
 
     }
 

@@ -38,7 +38,7 @@ class Admin_Subscription {
         add_action( 'wpuf_load_subscription_page', [ $this, 'remove_notices' ] );
         add_action( 'wpuf_load_subscription_page', [ $this, 'enqueue_admin_scripts' ] );
         add_action( 'wpuf_load_subscription_page', [ $this, 'modify_admin_footer_text' ] );
-        
+
         add_action( 'admin_init', [ $this, 'set_default_sort_order_for_existing_subscriptions' ] );
     }
 
@@ -1626,7 +1626,7 @@ class Admin_Subscription {
     /**
      * Set default sort order for existing subscriptions that don't have it
      *
-     * @since WPUF_SINCE
+     * @since 4.1.7
      */
     public function set_default_sort_order_for_existing_subscriptions() {
         // Check if we've already run this migration

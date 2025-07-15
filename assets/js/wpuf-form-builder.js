@@ -638,7 +638,6 @@
             // primary nav tabs and their contents
             this.bind_tab_on_click($('#wpuf-form-builder > fieldset > .nav-tab-wrapper > a'), '#wpuf-form-builder');
 
-            
             // secondary settings tabs and their contents
             var settings_tabs = $('#wpuf-form-builder-settings .nav-tab'),
                 settings_tab_contents = $('#wpuf-form-builder-settings .tab-contents .group');
@@ -834,37 +833,7 @@
                     this.active_settings_title = this.settings_titles[menu].sub_items[submenu].label;
                 }
             },
-
-            // Validate form before submitting
-            validate_form_before_submit: function () {
-                // Check if payment options are enabled
-                var paymentEnabled = $('[name="wpuf_settings[payment_options]"]').is(':checked');
-                if (!paymentEnabled) {
-                    return true; // Skip validation if payments are disabled
-                }
-
-                // Check if force pack purchase is selected
-                var choosePaymentOption = $('[name="wpuf_settings[choose_payment_option]"]').val();
-                if (choosePaymentOption !== 'force_pack_purchase') {
-                    return true; // Skip validation if not force pack purchase
-                }
-
-                // Check if fallback PPP is enabled
-                var fallbackEnabled = $('[name="wpuf_settings[fallback_ppp_enable]"]').is(':checked');
-                if (!fallbackEnabled) {
-                    return true; // Skip validation if fallback is not enabled
-                }
-
-                // Check if fallback cost is provided
-                var fallbackCost = $('[name="wpuf_settings[fallback_ppp_cost]"]').val();
-                if (!fallbackCost || fallbackCost.trim() === '' || parseFloat(fallbackCost) <= 0) {
-                    this.validation_error_msg = 'Cost for each additional post after pack limit is reached is required when Pay-per-post billing when limit exceeds is enabled.';
-                    return false; // Validation fails if cost is empty or zero
-                }
-
-                return true; // Validation passes
-            },
-
+            
             switch_form_settings_pic_radio_item: function ( key, value ) {
                 this.form_settings[key] = value;
             },

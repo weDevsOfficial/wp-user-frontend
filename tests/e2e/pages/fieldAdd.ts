@@ -41,6 +41,48 @@ export class FieldAddPage extends Base {
 
     }
 
+    async validateProductPostFields_PF(){
+        // Validate
+        // Product Title
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateProductTitle);
+        //Product Category
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateProductCategory);
+        // Product Description
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateProductDescription);
+        // Product Price
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateProductShDescription);
+        // Regular Price
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateRegularPrice);
+        // Sale Price
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateSalePrice);
+        // Product Image
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateProductImage);
+        // Image Gallery
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateImageGallery);
+        // Catalog Visibility
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateCatalogVisibility);
+        // Purchase Note
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validatepurchaseNote);
+        // Product Reviews
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateProductReviews);
+        // Downloadable Product
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateDownloadableProduct);
+        // Downloadable Files
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateDownloadableFiles);
+        // Product Brand
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateProductBrand);
+        // Product Type
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateProductType);
+        // Product Visibility
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateProductVisibility);
+        // Product Tag
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateProductTag);
+        // Product Shipping Class
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateProductShippingClass);
+        // Product Attribute
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateProductAttribute);
+    }
+
 
 
     /********************* Taxonomies *********************/
@@ -68,6 +110,16 @@ export class FieldAddPage extends Base {
         await this.assertionValidate(Selectors.postForms.validateTaxonomiesPreset_PF.validateCategory);
         //Tags
         await this.assertionValidate(Selectors.postForms.validateTaxonomiesPreset_PF.validateTags);
+    }
+
+    async addProductTaxoFields_PF(){
+        //Taxonomies
+        await this.validateAndClick(Selectors.postForms.addProductTaxo_PF.brandBlock);
+        await this.validateAndClick(Selectors.postForms.addProductTaxo_PF.typeblock);
+        await this.validateAndClick(Selectors.postForms.addProductTaxo_PF.visibilityBlock);
+        await this.validateAndClick(Selectors.postForms.addProductTaxo_PF.tagBlock);
+        await this.validateAndClick(Selectors.postForms.addProductTaxo_PF.shippingBlock);
+        await this.validateAndClick(Selectors.postForms.addProductTaxo_PF.attributeBlock);
     }
 
 
@@ -322,6 +374,23 @@ export class FieldAddPage extends Base {
     /********************* Validate *********************/
     //Admin checks if Created form is displayed in Post Forms - Table/List
     async validatePostFormCreated(validateNewPostName_PF: string) {
+        //Return HOME
+        await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
+        await this.page.reload();
+         
+
+        //ASSERTION > Check if-VALID
+        const checkNewBlankFormCreatedValid_PF = await this.page.isVisible(Selectors.postForms.navigatePage_PF.checkAddButton_PF);
+        if (checkNewBlankFormCreatedValid_PF === true) {
+            const checkNewFormCreated_PF = await this.page.innerText(Selectors.postForms.navigatePage_PF.postFormsPageFormsTitleCheck_PF(validateNewPostName_PF));
+            expect(checkNewFormCreated_PF).toContain(validateNewPostName_PF);
+            console.log('PF Name: ' + checkNewFormCreated_PF);
+            console.log('PF List: ' + validateNewPostName_PF);
+            return await this.page.textContent(Selectors.postForms.navigatePage_PF.postFormShortCode(validateNewPostName_PF));
+        }
+    }
+
+    async validateProductPostFormCreated(validateNewPostName_PF: string) {
         //Return HOME
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();

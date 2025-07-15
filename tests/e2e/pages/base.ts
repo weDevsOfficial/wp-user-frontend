@@ -32,6 +32,11 @@ export class Base {
     readonly wpufRegistrationPage: string = Urls.baseUrl + '/registration-page/';
     readonly newRegFormPage: string = Urls.baseUrl + '/reg-here/';
     readonly wpufLoginPage: string = Urls.baseUrl + '/login/';
+    readonly productBrandPage: string = Urls.baseUrl + '/wp-admin/edit-tags.php?taxonomy=product_brand&post_type=product';
+    readonly productCategoryPage: string = Urls.baseUrl + '/wp-admin/edit-tags.php?taxonomy=product_cat&post_type=product';
+    readonly productTagPage: string = Urls.baseUrl + '/wp-admin/edit-tags.php?taxonomy=product_tag&post_type=product';
+    readonly productAttributePage: string = Urls.baseUrl + '/wp-admin/edit.php?post_type=product&page=product_attributes';
+    readonly addProductPage: string = Urls.baseUrl + '/add-product/';
 
     constructor(page: Page) {
         this.page = page;

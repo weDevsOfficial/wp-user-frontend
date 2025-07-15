@@ -4,7 +4,7 @@ import { expect, type Page } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Base } from './base';
 import { faker } from '@faker-js/faker';
-import { PostForm, Urls } from '../utils/testData';
+import { PostForm, ProductForm, Urls } from '../utils/testData';
 //import { TestData } from '../tests/testdata';
 
 
@@ -129,6 +129,33 @@ export class PostFormPage extends Base {
 
         //Save Form Settings
         await this.validateAndClick(Selectors.postForms.formSettings.saveFormSettings);
+
+    }
+
+    //PresetForm
+    async createProductPostForm() {
+        //Visit Post Form Page
+        await this.navigateToURL(this.wpufPostFormPage);
+        //CreateNewPostForm
+        await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
+        await this.page.reload();
+        //Start
+        //Click Add Form
+        await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickPostAddForm);
+
+        //ClickPostForm
+        //Templates 
+        //Click Product Form  
+        await this.validateAndClick(Selectors.postForms.createProduct_PF.clickProductForm);
+
+        //EnterName
+        await this.page.reload();
+        //Click Form Name Box
+        await this.validateAndClick(Selectors.postForms.createBlankForm_PF.editNewFormName);
+        // Save Form
+        await this.validateAndClick(Selectors.postForms.formSettings.saveFormSettings);
+        // Confirm Save
+        await this.assertionValidate(Selectors.postForms.formSettings.validateFormSettingsSaved);
 
     }
 
@@ -410,6 +437,33 @@ export class PostFormPage extends Base {
         await this.assertionValidate(Selectors.postForms.createPageWithShortcode.validatePageCreated);
     }
 
+    //Create Page with Shortcode general
+    async createPageWithShortcodeGeneral(shortcode: string, pageTitle: string) {
+        //Go to Pages page
+        await this.navigateToURL(this.pagesPage);
+        //Create New Page
+        await this.validateAndClick(Selectors.postForms.createPageWithShortcode.addNewPage);
+        await this.page.waitForTimeout(300);
+        
+        // Check if the Choose Pattern Modal is visible
+        await this.validateAndClick(Selectors.postForms.createPageWithShortcode.closePatternModal);
+
+        await this.validateAndFillStrings(Selectors.postForms.createPageWithShortcode.addPageTitle, pageTitle);
+        //Click Add Block Button
+        await this.validateAndClick(Selectors.postForms.createPageWithShortcode.blockAddButton);
+        //Search and Add Shortcode block
+        await this.validateAndFillStrings(Selectors.postForms.createPageWithShortcode.blockSearchBox, 'Shortcode');
+        await this.validateAndClick(Selectors.postForms.createPageWithShortcode.addShortCodeBlock);
+        //Enter Shortcode
+        await this.validateAndFillStrings(Selectors.postForms.createPageWithShortcode.enterShortcode, shortcode);
+        //Click Publish Page
+        await this.validateAndClick(Selectors.postForms.createPageWithShortcode.clickPublishPage);
+        //Confirm Publish
+        await this.validateAndClick(Selectors.postForms.createPageWithShortcode.confirmPublish);
+        //Validate Page Created
+        await this.assertionValidate(Selectors.postForms.createPageWithShortcode.validatePageCreated);
+    }
+
     async createGuestPostFE() {
         let guestName:string;
         let guestEmail:string;
@@ -449,5 +503,119 @@ export class PostFormPage extends Base {
         //Validate Post Submitted
         const validatePostSubmitted = await this.page.innerText(Selectors.postForms.postFormsFrontendCreate.validatePostSubmitted(PostForm.title));
         expect(validatePostSubmitted).toContain(PostForm.title);
+    }
+
+    async setupForWooProduct(){
+        //Visit WOO Pages
+        await this.navigateToURL(this.productBrandPage);
+        //Click Add New Page
+        await this.validateAndFillStrings(Selectors.postForms.productPostForm.addBrand, 'Apple');
+        await this.validateAndClick(Selectors.postForms.productPostForm.saveSubmit);
+        await this.page.waitForTimeout(1000);
+        //Visit WOO Pages
+        await this.navigateToURL(this.productCategoryPage);
+        //Check if the Welcome Modal is visible
+        await this.validateAndFillStrings(Selectors.postForms.productPostForm.addCategory, 'Electronics');
+        await this.validateAndClick(Selectors.postForms.productPostForm.saveSubmit);
+        await this.page.waitForTimeout(1000);
+        //Visit WOO Pages
+        await this.navigateToURL(this.productTagPage);
+        //Check if the Welcome Modal is visible
+        await this.validateAndFillStrings(Selectors.postForms.productPostForm.addTag, 'Smartphone');
+        await this.validateAndClick(Selectors.postForms.productPostForm.saveSubmit);
+        await this.page.waitForTimeout(1000);
+        //Visit WOO Pages
+        await this.navigateToURL(this.productAttributePage);
+        //Enter Page Title
+        await this.validateAndFillStrings(Selectors.postForms.productPostForm.addAttribute, 'Color');
+        await this.validateAndClick(Selectors.postForms.productPostForm.saveAttribute);
+        await this.page.waitForTimeout(1000);
+        //Configure Attribute Terms
+        await this.validateAndClick(Selectors.postForms.productPostForm.configureAttributeTerms);
+        await this.validateAndFillStrings(Selectors.postForms.productPostForm.addAttributeTerms, 'Red');
+        await this.validateAndClick(Selectors.postForms.productPostForm.saveSubmit);
+        await this.page.waitForTimeout(1000);
+        await this.validateAndFillStrings(Selectors.postForms.productPostForm.addAttributeTerms, 'Blue');
+        await this.validateAndClick(Selectors.postForms.productPostForm.saveSubmit);
+        await this.page.waitForTimeout(1000);
+
+    }
+
+    async createProductFE(){
+        //Go to Accounts page - FrontEnd
+        await this.navigateToURL(this.addProductPage);
+
+        //Post Form process
+        //Enter Product Name
+        await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.productTitleFE, ProductForm.title);
+        await this.page.selectOption(Selectors.postForms.productFrontendCreate.selectCategory, { label: ProductForm.category });
+        await this.page.frameLocator(Selectors.postForms.productFrontendCreate.productDescription1)
+            .locator(Selectors.postForms.productFrontendCreate.productDescription2).fill(ProductForm.description=faker.lorem.sentence(1));
+        await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.productExcerpt, ProductForm.excerpt=faker.lorem.sentence(1));
+        await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.productRegularPrice, ProductForm.regularPrice);
+        await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.productSalePrice, ProductForm.salePrice);
+        await this.page.setInputFiles(Selectors.postForms.productFrontendCreate.productImage, ProductForm.productImage);
+        await this.page.waitForTimeout(500);
+        await this.assertionValidate(Selectors.postForms.productFrontendCreate.uploads('1'));
+        await this.page.setInputFiles(Selectors.postForms.productFrontendCreate.productImageGallery, ProductForm.imageGallery1);
+        await this.page.waitForTimeout(500);
+        await this.assertionValidate(Selectors.postForms.productFrontendCreate.uploads('2'));
+        await this.page.setInputFiles(Selectors.postForms.productFrontendCreate.productImageGallery, ProductForm.imageGallery2);
+        await this.page.waitForTimeout(500);
+        await this.assertionValidate(Selectors.postForms.productFrontendCreate.uploads('3'));
+        await this.page.selectOption(Selectors.postForms.productFrontendCreate.catalogVisibility, { value: ProductForm.catalogVisibility });
+        await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.purchaseNote, ProductForm.purchaseNote=faker.lorem.sentence(1));
+        await this.validateAndClick(Selectors.postForms.productFrontendCreate.enableReviews);
+        await this.validateAndClick(Selectors.postForms.productFrontendCreate.downloadable);
+        await this.page.selectOption(Selectors.postForms.productFrontendCreate.selectBrand, { label: ProductForm.brand });
+        await this.page.selectOption(Selectors.postForms.productFrontendCreate.selectType, { label: ProductForm.type });
+        await this.page.selectOption(Selectors.postForms.productFrontendCreate.selectVisibility, { label: ProductForm.visibility });
+        await this.page.selectOption(Selectors.postForms.productFrontendCreate.selectTag, { label: ProductForm.tag });
+        await this.page.selectOption(Selectors.postForms.productFrontendCreate.selectShippingClass, { value: ProductForm.shippingClass });
+        await this.page.selectOption(Selectors.postForms.productFrontendCreate.selectColor, { label: ProductForm.color });
+        await this.validateAndClick(Selectors.postForms.productFrontendCreate.createProduct);
+        await this.page.waitForTimeout(1000);
+    }
+
+    async validateProductCreated(){
+        //Validate Product Submitted
+        const validateProductSubmitted = await this.page.innerText(Selectors.postForms.postFormsFrontendCreate.validatePostSubmitted(ProductForm.title));
+        expect(validateProductSubmitted).toContain(ProductForm.title);
+    }
+
+    async validateEnteredProductData(){
+        //Validate Product Title
+        const validateProductTitle = await this.page.innerText(Selectors.postForms.productFormData.title(ProductForm.title));
+        expect(validateProductTitle).toContain(ProductForm.title);
+        //Validate Product Description
+        const validateProductDescription = await this.page.innerText(Selectors.postForms.productFormData.description(ProductForm.description));
+        expect(validateProductDescription).toContain(ProductForm.description);
+        //Validate Product Excerpt
+        const validateProductExcerpt = await this.page.innerText(Selectors.postForms.productFormData.excerpt);
+        expect(validateProductExcerpt).toContain(ProductForm.excerpt);
+        // images
+        await this.assertionValidate(Selectors.postForms.productFormData.featuredImage);
+        await this.assertionValidate(Selectors.postForms.productFormData.galleryImage('1'));
+        await this.assertionValidate(Selectors.postForms.productFormData.galleryImage('2'));
+        await this.assertionValidate(Selectors.postForms.productFormData.galleryImage('3'));
+        //Validate Product Regular Price
+        const validateProductRegularPrice = await this.page.innerText(Selectors.postForms.productFormData.regularPrice);
+        expect(validateProductRegularPrice).toContain(ProductForm.regularPrice);
+        //Validate Product Sale Price
+        const validateProductSalePrice = await this.page.innerText(Selectors.postForms.productFormData.salePrice);
+        expect(validateProductSalePrice).toContain(ProductForm.salePrice);
+        //Validate Product Featured Image
+        expect(await this.page.isVisible(Selectors.postForms.productFormData.featuredImage)).toBeTruthy();
+        //Validate Product Category
+        const validateProductCategory = await this.page.innerText(Selectors.postForms.productFormData.category);
+        expect(validateProductCategory).toContain(ProductForm.category);
+        //Validate Product Tags
+        const validateProductTags = await this.page.innerText(Selectors.postForms.productFormData.tags);
+        expect(validateProductTags).toContain(ProductForm.tags);
+        //Validate Product Brand
+        const validateProductBrand = await this.page.innerText(Selectors.postForms.productFormData.brand);
+        expect(validateProductBrand).toContain(ProductForm.brand);
+        //Validate Product Reviews
+        await this.assertionValidate(Selectors.postForms.productFormData.reviews);
     }
 }

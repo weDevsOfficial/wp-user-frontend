@@ -109,6 +109,15 @@ export default function postFormTestPro() {
             await PostFormClass.validateEnteredData();
         });
 
+        test('PF0011 : Admin is setting necessary setup for product form', { tag: ['@Pro'] }, async () => {
+            const PostForm = new PostFormPage(page);
+
+            await new BasicLoginPage(page).basicLogin(Users.adminUsername, Users.adminPassword);
+
+            await PostForm.setupForWooProduct();
+            
+        });
+
     });
 
     test.afterAll(async () => {

@@ -94,9 +94,44 @@ export class SettingsSetupPage extends Base {
         const availableText = await this.page.isVisible(Selectors.settingsSetup.pluginVisit.clickPostFormMenuOption);
         if (availableText == true) {
             const checkText = await this.page.innerText(Selectors.settingsSetup.pluginVisit.wpufPostFormCheckAddButton);
-            await expect(checkText).toContain('Add New');
+            expect(checkText).toContain('Add New');
         }
+    }
 
+    async postFormListVisit(){
+        //Go to AdminEnd
+        await this.navigateToURL(this.wpAdminPage);
+
+        await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
+
+        await this.validateAndClick(Selectors.settingsSetup.pluginVisit.clickPostFormMenuOption);
+         
+
+        //ASSERTION > Check if-VALID
+        const availableText = await this.page.isVisible(Selectors.settingsSetup.pluginVisit.clickPostFormMenuOption);
+        if (availableText == true) {
+            const checkText = await this.page.innerText(Selectors.settingsSetup.pluginVisit.wpufPostFormCheckAddButton);
+            expect(checkText).toContain('Add New');
+            expect(this.page.locator(Selectors.settingsSetup.pluginVisit.noFormMsg)).not.toBeVisible();
+            await this.assertionValidate(Selectors.settingsSetup.pluginVisit.formTitleCheck('Sample Form'));
+        }
+    }
+
+    async regFormListVisit(){
+        //Go to AdminEnd
+        await this.navigateToURL(this.wpAdminPage);
+
+        await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
+        await this.validateAndClick(Selectors.settingsSetup.pluginVisit.clickRegFormListPage);
+
+        //ASSERTION > Check if-VALID
+        const availableText = await this.page.isVisible(Selectors.settingsSetup.pluginVisit.clickRegFormMenuOption);
+        if (availableText == true) {
+            const checkText = await this.page.innerText(Selectors.settingsSetup.pluginVisit.wpufPostFormCheckAddButton);
+            expect(checkText).toContain('Add New');
+            expect(this.page.locator(Selectors.settingsSetup.pluginVisit.noFormMsg)).not.toBeVisible();
+            await this.assertionValidate(Selectors.settingsSetup.pluginVisit.formTitleCheck('Registration'));
+        }
     }
 
     async validateWPUFpages() {
@@ -347,6 +382,7 @@ export class SettingsSetupPage extends Base {
          
 
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccount);
+        await this.page.waitForTimeout(200);
         await this.page.selectOption(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountPage, { label: 'Account' });
 
         await this.page.selectOption(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountActiveTab, { label: 'Dashboard' });

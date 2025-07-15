@@ -45,10 +45,17 @@ export default function postFormTest() {
          * @Test_PF0008 : Admin is creating page with shortcode
          * @Test_PF0009 : Guest is creating post from frontend
          * @Test_PF0010 : Guest is validating post created
+         * @Test_PF0011 : Admin is setting necessary setup for product form
+         * @Test_PF0012 : Admin is creating a product Post Form
+         * @Test_PF0013 : Admin is creating product page page with shortcode
+         * @Test_PF0014 : Admin is creating product from FE
+         * @Test_PF0015 : Admin is validating product created
+         * @Test_PF0016 : Admin is validating entered product data
          *
          */
 
         let pfShortCode:string;
+        let productShortCode:string;
         //TODO: Create a BeforeAll for login
 
         //Log into Admin Dashboard
@@ -173,6 +180,57 @@ export default function postFormTest() {
             const PostForm = new PostFormPage(page);
             
             await PostForm.validateGuestPostCreated();
+        });
+
+        test('PF0011 : Admin is setting necessary setup for product form', { tag: ['@Lite'] }, async () => {
+            const PostForm = new PostFormPage(page);
+
+            await new BasicLoginPage(page).basicLogin(Users.adminUsername, Users.adminPassword);
+            
+            await PostForm.setupForWooProduct();
+        });
+
+        test('PF0012 : Admin is creating a product Post Form', { tag: ['@Lite'] }, async () => {
+            const PostForm = new PostFormPage(page);
+            const FieldAdd = new FieldAddPage(page);
+
+            //Post Preset Form
+            await PostForm.createProductPostForm();
+            // Add
+            await FieldAdd.addProductTaxoFields_PF();
+            //Validate
+            await FieldAdd.validateProductPostFields_PF();
+
+            //Save
+            await FieldAdd.saveForm_Common();
+            //Validate
+            productShortCode = await FieldAdd.validatePostFormCreated('WooCommerce Product');
+            console.log('Product Short Code: ' + productShortCode);
+
+        });
+
+        test('PF0013 : Admin is creating product page with shortcode ', { tag: ['@Lite'] }, async () => {
+            const PostForm = new PostFormPage(page);
+
+            await PostForm.createPageWithShortcodeGeneral(productShortCode, 'Add Product');
+        });
+
+        test('PF0014 : Admin is creating product from FE ', { tag: ['@Lite'] }, async () => {
+            const PostForm = new PostFormPage(page);
+            
+            await PostForm.createProductFE();
+        });
+
+        test('PF0015 : Admin is validating product created', { tag: ['@Lite'] }, async () => {
+            const PostForm = new PostFormPage(page);
+            
+            await PostForm.validateProductCreated();
+        });
+
+        test('PF0016 : Admin is validating entered product data', { tag: ['@Lite'] }, async () => {
+            const PostForm = new PostFormPage(page);
+            
+            await PostForm.validateEnteredProductData();
         });
 
     });

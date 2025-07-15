@@ -113,6 +113,49 @@ const PostForm: {
     ratings: '',
 };
 
+const ProductForm: {
+    //Post Form Data
+    formName: string;
+    title: string;
+    description: string;
+    excerpt: string;
+    productImage: string;
+    tags: string;
+    regularPrice: string;
+    salePrice: string;
+    imageGallery1: string;
+    imageGallery2: string;
+    catalogVisibility: string;
+    purchaseNote: string;
+    brand: string;
+    category: string;
+    tag: string;
+    color: string;
+    visibility: string;
+    shippingClass: string;
+    type: string;
+} = {
+    formName: '',
+    title: 'iPhone 16 Pro Max',
+    description: '',
+    excerpt: '',
+    productImage: 'uploadeditems/iPhone_16_pro_max_1.jpg',
+    category: 'Electronics',
+    tags: 'Smartphone',
+    regularPrice: '100',
+    salePrice: '90',
+    imageGallery1: 'uploadeditems/iPhone_16_pro_max_2.jpeg',
+    imageGallery2: 'uploadeditems/iPhone_16_pro_max_3.png',
+    catalogVisibility: 'visible',
+    purchaseNote: '',
+    brand: 'Apple',
+    tag: 'Smartphone',
+    color: 'Red',
+    visibility: 'featured',
+    shippingClass: '-1',
+    type: 'simple',
+};
+
 /**------------------------------------------*/
 /**-------DATA_SET: Registration Form-------*/
 /**----------------------------------------*/
@@ -153,5 +196,6 @@ export {
     Urls,
     Users,
     PostForm,
+    ProductForm,
     RegistrationForm,
 };

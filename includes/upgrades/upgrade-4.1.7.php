@@ -6,7 +6,7 @@
  * This function ensures that all existing subscription packs have a default sort order
  * set if they don't already have one.
  *
- * @since WPUF_SINCE
+ * @since 4.1.7
  *
  * @return void
  */

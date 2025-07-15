@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 4.1.6\n"
+"Project-Id-Version: WP User Frontend 4.1.7\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2025-06-30 12:20:07+00:00\n"
+"POT-Creation-Date: 2025-07-15 08:02:36+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -260,7 +260,7 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: admin/class-admin-settings.php:123 includes/Admin/Admin_Subscription.php:298
+#: admin/class-admin-settings.php:123 includes/Admin/Admin_Subscription.php:300
 #: includes/Admin/Menu.php:86 includes/Admin/views/subscribers.php:14
 msgid "Subscribers"
 msgstr ""
@@ -501,7 +501,7 @@ msgstr ""
 #: includes/Admin/Forms/Admin_Form_Builder.php:323
 #: includes/Admin/template-parts/modal-v4.1.php:124
 #: includes/Admin/template-parts/modal.php:109
-#: includes/Free/Free_Loader.php:1007 includes/Free/Free_Loader.php:1089
+#: includes/Free/Free_Loader.php:1010 includes/Free/Free_Loader.php:1092
 #: includes/Free/templates/page-registration-form.php:193
 msgid "Upgrade to PRO"
 msgstr ""
@@ -511,39 +511,39 @@ msgid "Go To Module Page"
 msgstr ""
 
 #: admin/form-builder/views/post-form-settings.php:284
-#: class/subscription.php:881 includes/Admin/Admin_Subscription.php:939
+#: class/subscription.php:908 includes/Admin/Admin_Subscription.php:941
 #: includes/Admin/Forms/Admin_Form_Builder.php:310
 #: includes/Admin/Forms/Admin_Form_Builder.php:312
 #: includes/Admin/List_Table_Subscribers.php:146
-#: includes/Admin/Subscription.php:906 includes/Frontend/Payment.php:241
+#: includes/Admin/Subscription.php:940 includes/Frontend/Payment.php:241
 #: templates/dashboard/subscription.php:97
 msgid "Cancel"
 msgstr ""
 
-#: admin/form-builder/views/post-form-settings.php:361
+#: admin/form-builder/views/post-form-settings.php:366
 msgid "Learn More"
 msgstr ""
 
-#: admin/html/form-settings-display.php:11 wpuf-functions.php:5382
+#: admin/html/form-settings-display.php:11 wpuf-functions.php:5391
 msgid "Label Position"
 msgstr ""
 
-#: admin/html/form-settings-display.php:16 wpuf-functions.php:5385
+#: admin/html/form-settings-display.php:16 wpuf-functions.php:5394
 msgid "Above Element"
 msgstr ""
 
-#: admin/html/form-settings-display.php:17 wpuf-functions.php:5386
+#: admin/html/form-settings-display.php:17 wpuf-functions.php:5395
 msgid "Left of Element"
 msgstr ""
 
-#: admin/html/form-settings-display.php:18 wpuf-functions.php:5387
+#: admin/html/form-settings-display.php:18 wpuf-functions.php:5396
 msgid "Right of Element"
 msgstr ""
 
 #: admin/html/form-settings-display.php:19
 #: includes/Admin/Customizer_Options.php:119
 #: includes/Fields/Field_Contract.php:356
-#: includes/Fields/Form_Field_Column.php:112 wpuf-functions.php:5388
+#: includes/Fields/Form_Field_Column.php:112 wpuf-functions.php:5397
 msgid "Hidden"
 msgstr ""
 
@@ -551,13 +551,13 @@ msgstr ""
 msgid "Where the labels of the form should display"
 msgstr ""
 
-#: admin/html/form-settings-display.php:35 wpuf-functions.php:5375
+#: admin/html/form-settings-display.php:35 wpuf-functions.php:5384
 msgid "Use Theme CSS"
 msgstr ""
 
 #: admin/html/form-settings-display.php:40 admin/template.php:64
-#: includes/Admin/Admin_Subscription.php:338
-#: includes/Admin/Admin_Subscription.php:832
+#: includes/Admin/Admin_Subscription.php:340
+#: includes/Admin/Admin_Subscription.php:834
 #: includes/Admin/Forms/Admin_Template.php:69
 #: includes/Fields/Field_Contract.php:303
 #: includes/Fields/Field_Contract.php:397
@@ -573,8 +573,8 @@ msgid "No"
 msgstr ""
 
 #: admin/html/form-settings-display.php:41 admin/template.php:63
-#: includes/Admin/Admin_Subscription.php:336
-#: includes/Admin/Admin_Subscription.php:832
+#: includes/Admin/Admin_Subscription.php:338
+#: includes/Admin/Admin_Subscription.php:834
 #: includes/Admin/Forms/Admin_Template.php:66
 #: includes/Fields/Field_Contract.php:302
 #: includes/Fields/Field_Contract.php:396
@@ -602,7 +602,7 @@ msgid "Payment Options"
 msgstr ""
 
 #: admin/html/form-settings-payment.php:26 includes/Setup_Wizard.php:339
-#: includes/functions/settings-options.php:472 wpuf-functions.php:5257
+#: includes/functions/settings-options.php:472 wpuf-functions.php:5264
 msgid "Enable Payments"
 msgstr ""
 
@@ -667,7 +667,7 @@ msgid "Amount to be charged per post"
 msgstr ""
 
 #: admin/html/form-settings-payment.php:88
-#: includes/functions/settings-options.php:558 wpuf-functions.php:5291
+#: includes/functions/settings-options.php:558 wpuf-functions.php:5300
 msgid "Payment Success Page"
 msgstr ""
 
@@ -688,7 +688,7 @@ msgstr ""
 msgid "Set Post Status to"
 msgstr ""
 
-#: admin/html/form-settings-post-edit.php:24 wpuf-functions.php:5115
+#: admin/html/form-settings-post-edit.php:24 wpuf-functions.php:5122
 msgid "No Change"
 msgstr ""
 
@@ -698,7 +698,7 @@ msgid "Redirect To"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:36
-#: admin/html/form-settings-post.php:138 wpuf-functions.php:5036
+#: admin/html/form-settings-post.php:138 wpuf-functions.php:5043
 msgid "Newly created post"
 msgstr ""
 
@@ -709,13 +709,13 @@ msgstr ""
 
 #: admin/html/form-settings-post-edit.php:38
 #: admin/html/form-settings-post.php:140 includes/Free/Form_Element.php:422
-#: wpuf-functions.php:5038 wpuf-functions.php:5130
+#: wpuf-functions.php:5045 wpuf-functions.php:5137
 msgid "To a page"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:39
 #: admin/html/form-settings-post.php:141 includes/Free/Form_Element.php:423
-#: wpuf-functions.php:5039 wpuf-functions.php:5131
+#: wpuf-functions.php:5046 wpuf-functions.php:5138
 msgid "To a custom URL"
 msgstr ""
 
@@ -723,19 +723,19 @@ msgstr ""
 msgid "After successfull submit, where the page will redirect to"
 msgstr ""
 
-#: admin/html/form-settings-post-edit.php:54 wpuf-functions.php:5135
+#: admin/html/form-settings-post-edit.php:54 wpuf-functions.php:5142
 msgid "Post Update Message"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:61
 #: admin/html/form-settings-post.php:163 includes/Free/Form_Element.php:452
-#: wpuf-functions.php:5048 wpuf-functions.php:5149
+#: wpuf-functions.php:5055 wpuf-functions.php:5156
 msgid "Page"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:76
 #: admin/html/form-settings-post.php:178 includes/Free/Form_Element.php:475
-#: wpuf-functions.php:5054 wpuf-functions.php:5155
+#: wpuf-functions.php:5061 wpuf-functions.php:5162
 msgid "Custom URL"
 msgstr ""
 
@@ -764,7 +764,7 @@ msgstr ""
 msgid "This page is restricted. Please {login} / {register} to view this page."
 msgstr ""
 
-#: admin/html/form-settings-post.php:15 wpuf-functions.php:5045
+#: admin/html/form-settings-post.php:15 wpuf-functions.php:5052
 msgid "Post saved"
 msgstr ""
 
@@ -779,7 +779,7 @@ msgstr ""
 msgid "Save Draft"
 msgstr ""
 
-#: admin/html/form-settings-post.php:29 wpuf-functions.php:5009
+#: admin/html/form-settings-post.php:29 wpuf-functions.php:5016
 msgid "Post Type"
 msgstr ""
 
@@ -792,8 +792,8 @@ msgid "Learn More "
 msgstr ""
 
 #: admin/html/form-settings-post.php:56
-#: includes/Admin/Admin_Subscription.php:564
-#: includes/Admin/Admin_Subscription.php:1269
+#: includes/Admin/Admin_Subscription.php:566
+#: includes/Admin/Admin_Subscription.php:1287
 #: includes/Free/Form_Element.php:109
 msgid "Post Status"
 msgstr ""
@@ -821,7 +821,7 @@ msgstr ""
 msgid "After successful submit, where the page will redirect to"
 msgstr ""
 
-#: admin/html/form-settings-post.php:156 wpuf-functions.php:5043
+#: admin/html/form-settings-post.php:156 wpuf-functions.php:5050
 msgid "Message to show"
 msgstr ""
 
@@ -829,11 +829,11 @@ msgstr ""
 msgid "Comment Status"
 msgstr ""
 
-#: admin/html/form-settings-post.php:188 wpuf-functions.php:5406
+#: admin/html/form-settings-post.php:188 wpuf-functions.php:5415
 msgid "Open"
 msgstr ""
 
-#: admin/html/form-settings-post.php:189 wpuf-functions.php:5407
+#: admin/html/form-settings-post.php:189 wpuf-functions.php:5416
 msgid "Closed"
 msgstr ""
 
@@ -866,7 +866,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:29 wpuf-functions.php:5189
+#: admin/html/form-submission-restriction.php:29 wpuf-functions.php:5196
 msgid "Guest Post"
 msgstr ""
 
@@ -886,7 +886,7 @@ msgstr ""
 msgid "User Details"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:46 wpuf-functions.php:5198
+#: admin/html/form-submission-restriction.php:46 wpuf-functions.php:5205
 msgid "Require Name and Email address"
 msgstr ""
 
@@ -896,7 +896,7 @@ msgid ""
 "name and email address"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:53 wpuf-functions.php:5208
+#: admin/html/form-submission-restriction.php:53 wpuf-functions.php:5215
 msgid "Name Label"
 msgstr ""
 
@@ -904,7 +904,7 @@ msgstr ""
 msgid "Label text for name field"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:63 wpuf-functions.php:5216
+#: admin/html/form-submission-restriction.php:63 wpuf-functions.php:5223
 msgid "E-Mail Label"
 msgstr ""
 
@@ -945,7 +945,7 @@ msgid "Choose which roles can submit posts."
 msgstr ""
 
 #: admin/html/form-submission-restriction.php:117
-#: includes/functions/settings-options.php:333 wpuf-functions.php:5240
+#: includes/functions/settings-options.php:333 wpuf-functions.php:5247
 msgid "Unauthorized Message"
 msgstr ""
 
@@ -971,15 +971,15 @@ msgstr ""
 msgid "Schedule Period"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:140 wpuf-functions.php:5420
+#: admin/html/form-submission-restriction.php:140 wpuf-functions.php:5429
 msgid "From"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:151 wpuf-functions.php:5430
+#: admin/html/form-submission-restriction.php:151 wpuf-functions.php:5439
 msgid "Form Pending Message"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:158 wpuf-functions.php:5434
+#: admin/html/form-submission-restriction.php:158 wpuf-functions.php:5443
 msgid "Form Expired Message"
 msgstr ""
 
@@ -995,11 +995,11 @@ msgstr ""
 msgid "Limit the number of entries allowed for this form"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:180 wpuf-functions.php:5443
+#: admin/html/form-submission-restriction.php:180 wpuf-functions.php:5452
 msgid "Number of Entries"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:187 wpuf-functions.php:5448
+#: admin/html/form-submission-restriction.php:187 wpuf-functions.php:5457
 msgid "Limit Reached Message"
 msgstr ""
 
@@ -1028,7 +1028,7 @@ msgstr ""
 
 #: admin/installer.php:84 includes/Admin/Admin_Installer.php:86
 #: includes/Admin/Shortcodes_Button.php:85
-#: includes/functions/settings-options.php:24 wpuf-functions.php:2106
+#: includes/functions/settings-options.php:24 wpuf-functions.php:2113
 msgid "Dashboard"
 msgstr ""
 
@@ -1037,10 +1037,10 @@ msgstr ""
 msgid "Account"
 msgstr ""
 
-#: admin/installer.php:86 class/subscription.php:473
+#: admin/installer.php:86 class/subscription.php:485
 #: includes/Admin/Admin_Installer.php:88 includes/Admin/Forms/Admin_Form.php:79
 #: includes/Admin/Forms/Admin_Form.php:118
-#: includes/Admin/Shortcodes_Button.php:93 includes/Admin/Subscription.php:492
+#: includes/Admin/Shortcodes_Button.php:93 includes/Admin/Subscription.php:511
 #: includes/functions/user/edit-user.php:108
 #. translators: %s is the display name
 msgid "Edit"
@@ -1052,12 +1052,12 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-#: admin/installer.php:95 class/subscription.php:448 class/subscription.php:468
-#: class/subscription.php:469 class/subscription.php:470
+#: admin/installer.php:95 class/subscription.php:460 class/subscription.php:480
+#: class/subscription.php:481 class/subscription.php:482
 #: includes/Admin/Admin_Installer.php:94
-#: includes/Admin/Shortcodes_Button.php:105 includes/Admin/Subscription.php:468
-#: includes/Admin/Subscription.php:487 includes/Admin/Subscription.php:488
-#: includes/Admin/Subscription.php:489 wpuf-functions.php:2089
+#: includes/Admin/Shortcodes_Button.php:105 includes/Admin/Subscription.php:487
+#: includes/Admin/Subscription.php:506 includes/Admin/Subscription.php:507
+#: includes/Admin/Subscription.php:508 wpuf-functions.php:2096
 msgid "Subscription"
 msgstr ""
 
@@ -1194,12 +1194,12 @@ msgstr ""
 #: includes/Ajax/Admin_Form_Builder_Ajax.php:27
 #: includes/Ajax/Admin_Form_Builder_Ajax.php:31
 #: includes/Ajax/Admin_Form_Builder_Ajax.php:35
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:86
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:90
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:94
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:137
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:141
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:145
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:91
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:95
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:99
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:142
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:146
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:150
 #: includes/Integrations/WPUF_ACF_Compatibility.php:76
 #: includes/Integrations/WPUF_ACF_Compatibility.php:94
 #: includes/Integrations/WPUF_ACF_Compatibility.php:160
@@ -1705,131 +1705,131 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: class/subscription.php:353 includes/Admin/Admin_Subscription.php:296
-#: includes/Admin/Subscription.php:373
+#: class/subscription.php:357 includes/Admin/Admin_Subscription.php:298
+#: includes/Admin/Subscription.php:384
 msgid "Pack Name"
 msgstr ""
 
-#: class/subscription.php:471 includes/Admin/Subscription.php:490
+#: class/subscription.php:483 includes/Admin/Subscription.php:509
 #: includes/Admin/template-parts/subscription-no-item.php:19
 msgid "Add Subscription"
 msgstr ""
 
-#: class/subscription.php:472 includes/Admin/Subscription.php:491
+#: class/subscription.php:484 includes/Admin/Subscription.php:510
 msgid "Add New Subscription"
 msgstr ""
 
-#: class/subscription.php:474 includes/Admin/Subscription.php:493
+#: class/subscription.php:486 includes/Admin/Subscription.php:512
 msgid "Edit Subscription"
 msgstr ""
 
-#: class/subscription.php:475 includes/Admin/Subscription.php:494
+#: class/subscription.php:487 includes/Admin/Subscription.php:513
 msgid "New Subscription"
 msgstr ""
 
-#: class/subscription.php:476 class/subscription.php:477
-#: includes/Admin/Subscription.php:495 includes/Admin/Subscription.php:496
+#: class/subscription.php:488 class/subscription.php:489
+#: includes/Admin/Subscription.php:514 includes/Admin/Subscription.php:515
 msgid "View Subscription"
 msgstr ""
 
-#: class/subscription.php:478 includes/Admin/Subscription.php:497
+#: class/subscription.php:490 includes/Admin/Subscription.php:516
 msgid "Search Subscription"
 msgstr ""
 
-#: class/subscription.php:479 includes/Admin/Subscription.php:498
+#: class/subscription.php:491 includes/Admin/Subscription.php:517
 msgid "No Subscription Found"
 msgstr ""
 
-#: class/subscription.php:480 includes/Admin/Subscription.php:499
+#: class/subscription.php:492 includes/Admin/Subscription.php:518
 msgid "No Subscription Found in Trash"
 msgstr ""
 
-#: class/subscription.php:481 includes/Admin/Subscription.php:500
+#: class/subscription.php:493 includes/Admin/Subscription.php:519
 msgid "Parent Subscription"
 msgstr ""
 
-#: class/subscription.php:842 includes/Admin/Subscription.php:868
+#: class/subscription.php:869 includes/Admin/Subscription.php:902
 msgid "Payment is complete"
 msgstr ""
 
-#: class/subscription.php:842 includes/Admin/Subscription.php:868
+#: class/subscription.php:869 includes/Admin/Subscription.php:902
 msgid "Congratulations, your payment has been completed!"
 msgstr ""
 
-#: class/subscription.php:846 class/subscription.php:850
-#: includes/Admin/Subscription.php:872 includes/Admin/Subscription.php:876
+#: class/subscription.php:873 class/subscription.php:877
+#: includes/Admin/Subscription.php:906 includes/Admin/Subscription.php:910
 msgid "Please buy a subscription pack to post"
 msgstr ""
 
-#: class/subscription.php:870 includes/Admin/Subscription.php:895
+#: class/subscription.php:897 includes/Admin/Subscription.php:929
 msgid "<p><i>You have a subscription pack activated. </i></p>"
 msgstr ""
 
-#: class/subscription.php:872 includes/Admin/Subscription.php:897
+#: class/subscription.php:899 includes/Admin/Subscription.php:931
 #. translators: %s: pack title
 msgid "<p><i>Pack name: %s </i></p>"
 msgstr ""
 
-#: class/subscription.php:874 includes/Admin/Subscription.php:899
+#: class/subscription.php:901 includes/Admin/Subscription.php:933
 msgid "To cancel the pack, press the following cancel button"
 msgstr ""
 
-#: class/subscription.php:921 includes/Admin/Subscription.php:946
+#: class/subscription.php:948 includes/Admin/Subscription.php:980
 msgid "Day"
 msgid_plural "Days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:922 includes/Admin/Subscription.php:947
+#: class/subscription.php:949 includes/Admin/Subscription.php:981
 msgid "Week"
 msgid_plural "Weeks"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:923 includes/Admin/Subscription.php:948
+#: class/subscription.php:950 includes/Admin/Subscription.php:982
 msgid "Month"
 msgid_plural "Months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:924 includes/Admin/Subscription.php:949
+#: class/subscription.php:951 includes/Admin/Subscription.php:983
 msgid "Year"
 msgid_plural "Years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: class/subscription.php:956 includes/Admin/Subscription.php:979
+#: class/subscription.php:983 includes/Admin/Subscription.php:1013
 msgid "One time payment"
 msgstr ""
 
-#: class/subscription.php:963 includes/Admin/Subscription.php:988
+#: class/subscription.php:990 includes/Admin/Subscription.php:1022
 msgid "Every"
 msgstr ""
 
-#: class/subscription.php:964 includes/Admin/Subscription.php:991
+#: class/subscription.php:991 includes/Admin/Subscription.php:1025
 msgid "for"
 msgstr ""
 
-#: class/subscription.php:964 includes/Admin/Subscription.php:991
+#: class/subscription.php:991 includes/Admin/Subscription.php:1025
 msgid "installments"
 msgstr ""
 
-#: class/subscription.php:972 includes/Admin/Subscription.php:1001
+#: class/subscription.php:999 includes/Admin/Subscription.php:1035
 #. translators: %s: trial days
 msgid "Trial available for first %1$s %2$s"
 msgstr ""
 
-#: class/subscription.php:976 includes/Admin/Subscription.php:1005
+#: class/subscription.php:1003 includes/Admin/Subscription.php:1039
 msgid "Buy Now"
 msgstr ""
 
-#: class/subscription.php:980 includes/Admin/Subscription.php:1009
+#: class/subscription.php:1007 includes/Admin/Subscription.php:1043
 msgid "Sign Up"
 msgstr ""
 
-#: class/subscription.php:983 includes/Admin/Admin_Subscription.php:319
-#: includes/Admin/Admin_Subscription.php:730
-#: includes/Admin/Subscription.php:1012
+#: class/subscription.php:1010 includes/Admin/Admin_Subscription.php:321
+#: includes/Admin/Admin_Subscription.php:732
+#: includes/Admin/Subscription.php:1046
 #: includes/Free/templates/page-registration-form.php:120
 #: includes/Frontend/Frontend_Account.php:227
 #: includes/User_Subscription.php:322
@@ -1837,294 +1837,294 @@ msgstr ""
 msgid "Free"
 msgstr ""
 
-#: class/subscription.php:1048 includes/Admin/Subscription.php:1075
+#: class/subscription.php:1075 includes/Admin/Subscription.php:1109
 #. translators: %s: amount
 msgid "There is a <strong>%s</strong> charge to add a new post."
 msgstr ""
 
-#: class/subscription.php:1065 includes/Admin/Subscription.php:1092
+#: class/subscription.php:1092 includes/Admin/Subscription.php:1126
 #. translators: %s: amount
 msgid ""
 "Your Subscription pack is exhausted. There is a <strong>%s</strong> charge "
 "to add a new post."
 msgstr ""
 
-#: class/subscription.php:1111 includes/Admin/Subscription.php:1166
+#: class/subscription.php:1138 includes/Admin/Subscription.php:1200
 #. translators: %s: subscription link
 msgid "You must <a href=\"%s\">purchase a pack</a> before posting"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:77
+#: includes/Admin/Admin_Subscription.php:79
 #. translators: %s: post type label
 msgid "Number of %s"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:82
+#: includes/Admin/Admin_Subscription.php:84
 #. translators: %s: post type label
 msgid ""
 "Set the maximum number of %s users can create within their subscription "
 "period. Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:148
+#: includes/Admin/Admin_Subscription.php:150
 msgid "Pack Description"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:162
-#: includes/Admin/Admin_Subscription.php:165
+#: includes/Admin/Admin_Subscription.php:164
+#: includes/Admin/Admin_Subscription.php:167
 msgid "Subscription pack updated."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:163
+#: includes/Admin/Admin_Subscription.php:165
 msgid "Custom field updated."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:164
+#: includes/Admin/Admin_Subscription.php:166
 msgid "Custom field deleted."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:168
+#: includes/Admin/Admin_Subscription.php:170
 #. translators: %s is Revision
 msgid "Subscription pack restored to revision from %s"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:170
+#: includes/Admin/Admin_Subscription.php:172
 msgid "Subscription pack published."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:171
+#: includes/Admin/Admin_Subscription.php:173
 msgid "Subscription pack saved."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:172
+#: includes/Admin/Admin_Subscription.php:174
 msgid "Subscription pack submitted."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:174
+#: includes/Admin/Admin_Subscription.php:176
 msgid "Subscription pack draft updated."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:297
+#: includes/Admin/Admin_Subscription.php:299
 msgid "Amount"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:299 includes/WPUF_Privacy.php:491
+#: includes/Admin/Admin_Subscription.php:301 includes/WPUF_Privacy.php:491
 msgid "Recurring"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:300
+#: includes/Admin/Admin_Subscription.php:302
 msgid "Duration"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:434
-#: includes/Admin/Admin_Subscription.php:1051
-#: includes/Admin/views/support.php:77 wpuf-functions.php:4891
+#: includes/Admin/Admin_Subscription.php:436
+#: includes/Admin/Admin_Subscription.php:1053
+#: includes/Admin/views/support.php:77 wpuf-functions.php:4898
 msgid "Payment Settings"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:441
+#: includes/Admin/Admin_Subscription.php:443
 msgid "Posting Restriction"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:455
+#: includes/Admin/Admin_Subscription.php:457
 msgid "Billing amount:"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:456
+#: includes/Admin/Admin_Subscription.php:458
 msgid "Billing amount each cycle:"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:464
+#: includes/Admin/Admin_Subscription.php:466
 msgid "Expires In:"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:483
-#: includes/Admin/Admin_Subscription.php:785
+#: includes/Admin/Admin_Subscription.php:485
+#: includes/Admin/Admin_Subscription.php:787
 msgid "Number of featured item"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:487
+#: includes/Admin/Admin_Subscription.php:489
 msgid "How many items a user can set as featured, including all post types"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:491
+#: includes/Admin/Admin_Subscription.php:493
 msgid "Remove featured item on subscription expiry"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:495
+#: includes/Admin/Admin_Subscription.php:497
 msgid "The featured item will be removed if the subscription expires"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:530
-#: includes/Admin/Admin_Subscription.php:1083 includes/Free/Form_Element.php:59
-#: wpuf-functions.php:4917
+#: includes/Admin/Admin_Subscription.php:532
+#: includes/Admin/Admin_Subscription.php:1085 includes/Free/Form_Element.php:59
+#: wpuf-functions.php:4924
 msgid "Post Expiration"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:535
-#: includes/Admin/Admin_Subscription.php:1211 includes/Free/Form_Element.php:63
-#: includes/Free/Free_Loader.php:1688
+#: includes/Admin/Admin_Subscription.php:537
+#: includes/Admin/Admin_Subscription.php:1229 includes/Free/Form_Element.php:63
+#: includes/Free/Free_Loader.php:1691
 msgid "Enable Post Expiration"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:547
-#: includes/Admin/Admin_Subscription.php:842 includes/Free/Form_Element.php:78
-#: includes/Free/Free_Loader.php:1695
+#: includes/Admin/Admin_Subscription.php:549
+#: includes/Admin/Admin_Subscription.php:844 includes/Free/Form_Element.php:78
+#: includes/Free/Free_Loader.php:1698
 msgid "Post Expiration Time"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:577 includes/Free/Form_Element.php:127
+#: includes/Admin/Admin_Subscription.php:579 includes/Free/Form_Element.php:127
 msgid "Status of post after post expiration time is over "
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:582
+#: includes/Admin/Admin_Subscription.php:584
 msgid "Expiration Mail"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:587
+#: includes/Admin/Admin_Subscription.php:589
 msgid "Send Expiration Email to Post Author"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:591
+#: includes/Admin/Admin_Subscription.php:593
 msgid "Send Mail to Author After Exceeding Post Expiration Time"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:596
-#: includes/Admin/Admin_Subscription.php:1297
+#: includes/Admin/Admin_Subscription.php:598
+#: includes/Admin/Admin_Subscription.php:1315
 msgid "Expiration Message"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:604 includes/Free/Form_Element.php:149
+#: includes/Admin/Admin_Subscription.php:606 includes/Free/Form_Element.php:149
 #. translators: %1$s: {post_author}, %2$s: {post_url}, %3$s: {blogname}, %4$s:
 #. {post_title}, %5$s: {post_status}
 msgid "You may use: %1$s %2$s %3$s %4$s %5$s"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:675
-#: includes/Admin/Admin_Subscription.php:1249
-#: includes/Admin/Admin_Subscription.php:1364
-#: includes/Free/Free_Loader.php:1703
+#: includes/Admin/Admin_Subscription.php:677
+#: includes/Admin/Admin_Subscription.php:1267
+#: includes/Admin/Admin_Subscription.php:1382
+#: includes/Free/Free_Loader.php:1706
 msgid "Day(s)"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:676
-#: includes/Admin/Admin_Subscription.php:1250
-#: includes/Admin/Admin_Subscription.php:1365
-#: includes/Free/Free_Loader.php:1704
+#: includes/Admin/Admin_Subscription.php:678
+#: includes/Admin/Admin_Subscription.php:1268
+#: includes/Admin/Admin_Subscription.php:1383
+#: includes/Free/Free_Loader.php:1707
 msgid "Week(s)"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:677
-#: includes/Admin/Admin_Subscription.php:1251
-#: includes/Admin/Admin_Subscription.php:1366
-#: includes/Free/Free_Loader.php:1705
+#: includes/Admin/Admin_Subscription.php:679
+#: includes/Admin/Admin_Subscription.php:1269
+#: includes/Admin/Admin_Subscription.php:1384
+#: includes/Free/Free_Loader.php:1708
 msgid "Month(s)"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:678
-#: includes/Admin/Admin_Subscription.php:1252
-#: includes/Admin/Admin_Subscription.php:1367
+#: includes/Admin/Admin_Subscription.php:680
+#: includes/Admin/Admin_Subscription.php:1270
+#: includes/Admin/Admin_Subscription.php:1385
 msgid "Year(s)"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:722
+#: includes/Admin/Admin_Subscription.php:724
 msgid "WPUF Subscription Information"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:736
+#: includes/Admin/Admin_Subscription.php:738
 #. translators: %1$s and %2$s are Billing cycle number and Billing cycle period
 msgid "For each %1$s %2$s"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:739
+#: includes/Admin/Admin_Subscription.php:741
 #: includes/Frontend/Frontend_Account.php:237
 #. translators: %s is Billing limit
 #. translators: %s: number of installments
 msgid ", for %s installments"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:750
+#: includes/Admin/Admin_Subscription.php:752
 msgid "Subcription Name"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:760
+#: includes/Admin/Admin_Subscription.php:762
 msgid "Billing Info"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:774
+#: includes/Admin/Admin_Subscription.php:776
 msgid "This user is using recurring subscription pack"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:780
+#: includes/Admin/Admin_Subscription.php:782
 msgid "Remaining Posting Count"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:809
+#: includes/Admin/Admin_Subscription.php:811
 msgid "Subscription Expiration Info"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:818 includes/User_Subscription.php:374
+#: includes/Admin/Admin_Subscription.php:820 includes/User_Subscription.php:374
 #: templates/dashboard/subscription.php:266
 msgid "Expire date:"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:831
+#: includes/Admin/Admin_Subscription.php:833
 msgid "Post Expiration Enabled"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:868
+#: includes/Admin/Admin_Subscription.php:870
 msgid "Allowed Taxonomy Terms"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:938
+#: includes/Admin/Admin_Subscription.php:940
 msgid "Assign Package"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:945
+#: includes/Admin/Admin_Subscription.php:947
 msgid "Select Package:"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:948
+#: includes/Admin/Admin_Subscription.php:950
 #: includes/functions/settings-options.php:675 wpuf-functions.php:217
-#: wpuf-functions.php:1858 wpuf-functions.php:2123
+#: wpuf-functions.php:1865 wpuf-functions.php:2130
 msgid "&mdash; Select &mdash;"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:952
+#: includes/Admin/Admin_Subscription.php:954
 msgid "Only non-recurring pack can be assigned"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:963
+#: includes/Admin/Admin_Subscription.php:965
 msgid "Delete Package"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1024
+#: includes/Admin/Admin_Subscription.php:1026
 #. translators: %s is a link about subscription payment
 msgid "Learn more about <a href=\"%s\" target=\"_blank\">Subscription</a>"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1047
+#: includes/Admin/Admin_Subscription.php:1049
 #: includes/User_Subscription.php:332 templates/dashboard/subscription.php:168
 msgid "Subscription Details"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1055
+#: includes/Admin/Admin_Subscription.php:1057
 msgid "Advanced Configuration"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1075
+#: includes/Admin/Admin_Subscription.php:1077
 msgid "Overview"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1079
+#: includes/Admin/Admin_Subscription.php:1081
 msgid "Access and Visibility"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1094
+#: includes/Admin/Admin_Subscription.php:1096
 msgid "Payment Details"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1099
+#: includes/Admin/Admin_Subscription.php:1101
 #. translators: %s: Payment Settings URL
 msgid ""
 "For subscriptions to work correctly, please ensure the payment gateway and "
@@ -2132,266 +2132,280 @@ msgid ""
 "Settings</a>"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1115
+#: includes/Admin/Admin_Subscription.php:1117
 msgid "Content Limit"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1119
+#: includes/Admin/Admin_Subscription.php:1121
 msgid "Design Elements"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1123
+#: includes/Admin/Admin_Subscription.php:1125
 msgid "Additional Options"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1149
+#: includes/Admin/Admin_Subscription.php:1151
 msgid "Plan Name"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1150
+#: includes/Admin/Admin_Subscription.php:1152
 msgid ""
 "Enter a name for this subscription plan. E.g., \"Featured Article "
 "Subscription\""
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1151
+#: includes/Admin/Admin_Subscription.php:1153
 msgid "Enter subscription name"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1161
+#: includes/Admin/Admin_Subscription.php:1163
 msgid "Plan Summary"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1162
+#: includes/Admin/Admin_Subscription.php:1164
 msgid ""
 "Provide a brief description of this subscription plan to help users "
 "understand key features or benefits"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1166
+#: includes/Admin/Admin_Subscription.php:1168
 msgid "Write briefly what this subscription is about"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1181
+#: includes/Admin/Admin_Subscription.php:1183
 msgid "Plan Slug"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1182
+#: includes/Admin/Admin_Subscription.php:1184
 msgid ""
 "Enter a unique slug for the subscription. Leave it blank for WordPress "
 "default slug"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1186
+#: includes/Admin/Admin_Subscription.php:1188
 msgid "Enter plan slug"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1195
+#: includes/Admin/Admin_Subscription.php:1197
+msgid "Sort Order"
+msgstr ""
+
+#: includes/Admin/Admin_Subscription.php:1198
+msgid ""
+"Plans with lower numbers appear first on the frontend, keep default value "
+"1. Cannot keep it empty."
+msgstr ""
+
+#: includes/Admin/Admin_Subscription.php:1199
+msgid "Enter sort order"
+msgstr ""
+
+#: includes/Admin/Admin_Subscription.php:1213
 msgid "Publish Time"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1196
+#: includes/Admin/Admin_Subscription.php:1214
 msgid "Specify the time when you want the subscription to be published"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1212
+#: includes/Admin/Admin_Subscription.php:1230
 msgid ""
 "Enable post expiration for this subscription plan. If enabled, posts in "
 "this plan will expire after a certain period, as specified here"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1225
+#: includes/Admin/Admin_Subscription.php:1243
 msgid "Expiration Time"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1226
+#: includes/Admin/Admin_Subscription.php:1244
 msgid ""
 "Specify the duration after which your posts will automatically disappear "
 "from frontend"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1248
+#: includes/Admin/Admin_Subscription.php:1266
 msgid "Never"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1265
+#: includes/Admin/Admin_Subscription.php:1283
 msgid "Publish"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1266 wpuf-functions.php:68
-#: wpuf-functions.php:5061 wpuf-functions.php:5111
+#: includes/Admin/Admin_Subscription.php:1284 wpuf-functions.php:68
+#: wpuf-functions.php:5068 wpuf-functions.php:5118
 msgid "Draft"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1267 wpuf-functions.php:5062
-#: wpuf-functions.php:5112
+#: includes/Admin/Admin_Subscription.php:1285 wpuf-functions.php:5069
+#: wpuf-functions.php:5119
 msgid "Pending Review"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1270
+#: includes/Admin/Admin_Subscription.php:1288
 msgid "Status of post after post expiration time is over"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1271
+#: includes/Admin/Admin_Subscription.php:1289
 msgid "Post status will be changed to the selected one when expiration time is over"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1284
+#: includes/Admin/Admin_Subscription.php:1302
 msgid "Send Expiration Mail"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1285
+#: includes/Admin/Admin_Subscription.php:1303
 msgid "Send an e-mail to the author after exceeding post expiration time"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1298
+#: includes/Admin/Admin_Subscription.php:1316
 msgid ""
 "Craft a personalized message that will be sent to users when their posts "
 "expire"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1302
+#: includes/Admin/Admin_Subscription.php:1320
 msgid "You may use: {post_author} {post_url} {blogname} {post_title} {post_status}"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1306
+#: includes/Admin/Admin_Subscription.php:1324
 msgid "Write the expiration message here"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1319
+#: includes/Admin/Admin_Subscription.php:1337
 msgid "Enable Post Number Rollback"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1320
+#: includes/Admin/Admin_Subscription.php:1338
 msgid "If enabled, number of posts will be restored if the post is deleted."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1337
+#: includes/Admin/Admin_Subscription.php:1355
 msgid "Billing Amount"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1338
+#: includes/Admin/Admin_Subscription.php:1356
 msgid ""
 "Enter the billing amount for the subscription that will be charged to users "
 "who subscribe to this plan"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1373
+#: includes/Admin/Admin_Subscription.php:1391
 msgid "Expire In"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1374
+#: includes/Admin/Admin_Subscription.php:1392
 msgid ""
 "Set the duration for the subscription to remain active before expiring. "
 "Enter -1 for no expiration"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1380
+#: includes/Admin/Admin_Subscription.php:1398
 #: includes/Free/Subscription_Element.php:20
 msgid "Enable Recurring Payment"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1381
+#: includes/Admin/Admin_Subscription.php:1399
 msgid ""
 "Enable recurring payments for this subscription. Users will be charged "
 "automatically at the end of each billing cycle until the subscription is "
 "canceled"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1401
+#: includes/Admin/Admin_Subscription.php:1419
 msgid "Maximum Number of Posts"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1402
+#: includes/Admin/Admin_Subscription.php:1420
 msgid ""
 "Set the maximum number of posts users can list within their subscription "
 "period. Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1415
+#: includes/Admin/Admin_Subscription.php:1433
 msgid "Maximum Number of Pages"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1416
+#: includes/Admin/Admin_Subscription.php:1434
 msgid ""
 "Set the maximum number of pages a user can list within the subscription "
 "period. Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1429
+#: includes/Admin/Admin_Subscription.php:1447
 msgid "Maximum Number of User Requests"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1430
+#: includes/Admin/Admin_Subscription.php:1448
 msgid ""
 "Set the maximum number of user requests allowed within the subscription "
 "period. Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1449
+#: includes/Admin/Admin_Subscription.php:1467
 msgid "Maximum Number of Reusable Block"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1450
+#: includes/Admin/Admin_Subscription.php:1468
 msgid ""
 "Set the maximum number of reusable blocks that users can create within the "
 "subscription period. Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1463
+#: includes/Admin/Admin_Subscription.php:1481
 msgid "Maximum Number of Templates"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1464
+#: includes/Admin/Admin_Subscription.php:1482
 msgid ""
 "Set the maximum number of templates users can use during the subscription "
 "period. Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1477
+#: includes/Admin/Admin_Subscription.php:1495
 msgid "Maximum Number of Template Parts"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1478
+#: includes/Admin/Admin_Subscription.php:1496
 msgid ""
 "Set maximum number of template parts that users can create within the "
 "subscription period. Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1491
+#: includes/Admin/Admin_Subscription.php:1509
 msgid "Maximum Number of Navigation Menus"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1492
+#: includes/Admin/Admin_Subscription.php:1510
 msgid ""
 "Set maximum number of navigation menus that users can use within the "
 "subscription period. Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1510
+#: includes/Admin/Admin_Subscription.php:1528
 msgid "Maximum Number of Featured Items"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1511
+#: includes/Admin/Admin_Subscription.php:1529
 msgid ""
 "Limit the featured items users can display during their subscription. "
 "Featured items gain more visibility, enhancing content or product exposure. "
 "Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1523
+#: includes/Admin/Admin_Subscription.php:1541
 msgid "Remove Featured Item"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1524
+#: includes/Admin/Admin_Subscription.php:1542
 msgid "Remove featured items when plan expires"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1599
+#: includes/Admin/Admin_Subscription.php:1617
 msgid "Thank you for using <strong>WP User Frontend</strong>."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1602
+#: includes/Admin/Admin_Subscription.php:1620
 #. Translators: %s: link to the classic UI
 msgid "Use the <a href=\"%s\">classic UI</a>."
 msgstr ""
@@ -2402,8 +2416,8 @@ msgstr ""
 
 #: includes/Admin/Admin_Tools.php:55 includes/Admin/Admin_Tools.php:118
 #: includes/Admin/List_Table_Subscribers.php:144
-#: includes/Admin/List_Table_Transactions.php:97 wpuf-functions.php:3558
-#: wpuf-functions.php:5501
+#: includes/Admin/List_Table_Transactions.php:97 wpuf-functions.php:3565
+#: wpuf-functions.php:5510
 msgid "All"
 msgstr ""
 
@@ -2572,7 +2586,7 @@ msgid "Customize WPUF Settings"
 msgstr ""
 
 #: includes/Admin/Customizer_Options.php:75 includes/Frontend/Payment.php:156
-#: wpuf-functions.php:2090
+#: wpuf-functions.php:2097
 msgid "Billing Address"
 msgstr ""
 
@@ -2657,8 +2671,8 @@ msgstr ""
 msgid "Registraton Forms"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form.php:114 includes/Free/Free_Loader.php:101
-#: includes/Free/Free_Loader.php:102
+#: includes/Admin/Forms/Admin_Form.php:114 includes/Free/Free_Loader.php:104
+#: includes/Free/Free_Loader.php:105
 msgid "Registration Forms"
 msgstr ""
 
@@ -2818,7 +2832,7 @@ msgid "&mdash; No Template &mdash;"
 msgstr ""
 
 #: includes/Admin/Forms/Post/Templates/Form_Template.php:231
-#: includes/Free/Free_Loader.php:1644 wpuf-functions.php:5085
+#: includes/Free/Free_Loader.php:1647 wpuf-functions.php:5092
 msgid ""
 "If selected a form template, it will try to execute that integration "
 "options when new post created and updated."
@@ -2925,9 +2939,9 @@ msgstr ""
 
 #: includes/Admin/Forms/Post/Templates/Post_Form_Template_Post.php:16
 #: includes/Admin/Menu.php:116 includes/Admin/views/shortcode-builder.php:8
-#: includes/Free/Free_Loader.php:1650 includes/Free/Free_Loader.php:1654
-#: includes/Free/Free_Loader.php:1658 includes/Free/Free_Loader.php:1662
-#: includes/Free/Free_Loader.php:1666 wpuf-functions.php:4965
+#: includes/Free/Free_Loader.php:1653 includes/Free/Free_Loader.php:1657
+#: includes/Free/Free_Loader.php:1661 includes/Free/Free_Loader.php:1665
+#: includes/Free/Free_Loader.php:1669 wpuf-functions.php:4972
 msgid "Post Form"
 msgstr ""
 
@@ -3065,7 +3079,7 @@ msgid "Subtotal"
 msgstr ""
 
 #: includes/Admin/List_Table_Transactions.php:51
-#: includes/Free/Free_Loader.php:209 includes/Traits/TaxableTrait.php:589
+#: includes/Free/Free_Loader.php:212 includes/Traits/TaxableTrait.php:589
 #: includes/WPUF_Privacy.php:347
 msgid "Tax"
 msgstr ""
@@ -3139,15 +3153,15 @@ msgstr ""
 msgid " Add Form"
 msgstr ""
 
-#: includes/Admin/Upgrades.php:122
+#: includes/Admin/Upgrades.php:123
 msgid "WPUF Data Update Required"
 msgstr ""
 
-#: includes/Admin/Upgrades.php:123
+#: includes/Admin/Upgrades.php:124
 msgid "Run the updater"
 msgstr ""
 
-#: includes/Admin/Upgrades.php:128
+#: includes/Admin/Upgrades.php:129
 msgid ""
 "It is strongly recommended that you backup your database before proceeding. "
 "Are you sure you wish to run the updater now?"
@@ -3358,8 +3372,8 @@ msgid ""
 "Long and lengthy forms are uninviting, why build one?"
 msgstr ""
 
-#: includes/Admin/views/premium.php:93 includes/Free/Free_Loader.php:107
-#: includes/Free/Free_Loader.php:1048 includes/Free/Free_Loader.php:1735
+#: includes/Admin/views/premium.php:93 includes/Free/Free_Loader.php:110
+#: includes/Free/Free_Loader.php:1051 includes/Free/Free_Loader.php:1738
 msgid "Modules"
 msgstr ""
 
@@ -3372,7 +3386,7 @@ msgstr ""
 msgid "BuddyPress Profile"
 msgstr ""
 
-#: includes/Admin/views/premium.php:104 includes/Free/Free_Loader.php:188
+#: includes/Admin/views/premium.php:104 includes/Free/Free_Loader.php:191
 msgid "Social Login"
 msgstr ""
 
@@ -3383,7 +3397,7 @@ msgid ""
 msgstr ""
 
 #: includes/Admin/views/premium.php:111 includes/Admin/views/premium.php:114
-#: includes/Free/Free_Loader.php:195
+#: includes/Free/Free_Loader.php:198
 msgid "User Directory"
 msgstr ""
 
@@ -4279,20 +4293,26 @@ msgstr ""
 msgid "Invalid form id"
 msgstr ""
 
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:98
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:149
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:62
+msgid ""
+"Cost for each additional post after pack limit is reached is required when "
+"Pay-per-post billing when limit exceeds is enabled."
+msgstr ""
+
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:103
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:154
 msgid "Invalid post type"
 msgstr ""
 
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:111
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:116
 msgid "Default "
 msgstr ""
 
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:184
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:189
 msgid "Default %s %s"
 msgstr ""
 
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:219
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:224
 msgid "Choose who can submit post "
 msgstr ""
 
@@ -4396,7 +4416,7 @@ msgstr ""
 msgid "Failed to update subscription"
 msgstr ""
 
-#: includes/Api/Subscription.php:343 includes/Api/Subscription.php:467
+#: includes/Api/Subscription.php:343 includes/Api/Subscription.php:472
 msgid "Subscription updated successfully"
 msgstr ""
 
@@ -4404,11 +4424,11 @@ msgstr ""
 msgid "Subscription name cannot contain #"
 msgstr ""
 
-#: includes/Api/Subscription.php:469
+#: includes/Api/Subscription.php:474
 msgid "Subscription added successfully"
 msgstr ""
 
-#: includes/Api/Subscription.php:480
+#: includes/Api/Subscription.php:485
 msgid "Failed to insert post"
 msgstr ""
 
@@ -4714,7 +4734,7 @@ msgid "Image Upload"
 msgstr ""
 
 #: includes/Fields/Form_Field_Post_Content.php:11
-#: includes/Free/Free_Loader.php:824
+#: includes/Free/Free_Loader.php:827
 msgid "Post Content"
 msgstr ""
 
@@ -5022,24 +5042,24 @@ msgstr ""
 msgid " Learn more about Multistep"
 msgstr ""
 
-#: includes/Free/Form_Element.php:188 includes/Free/Free_Loader.php:1526
+#: includes/Free/Form_Element.php:188 includes/Free/Free_Loader.php:1529
 msgid "Multistep Progressbar Type"
 msgstr ""
 
-#: includes/Free/Form_Element.php:198 includes/Free/Free_Loader.php:1528
+#: includes/Free/Form_Element.php:198 includes/Free/Free_Loader.php:1531
 msgid "Choose how you want the progressbar"
 msgstr ""
 
-#: includes/Free/Form_Element.php:227 wpuf-functions.php:5325
+#: includes/Free/Form_Element.php:227 wpuf-functions.php:5334
 msgid "New post created"
 msgstr ""
 
-#: includes/Free/Form_Element.php:232 includes/Free/Free_Loader.php:1581
+#: includes/Free/Form_Element.php:232 includes/Free/Free_Loader.php:1584
 msgid "A post has been edited"
 msgstr ""
 
-#: includes/Free/Form_Element.php:236 wpuf-functions.php:5304
-#: wpuf-functions.php:5311
+#: includes/Free/Form_Element.php:236 wpuf-functions.php:5313
+#: wpuf-functions.php:5320
 msgid "New Post Notification"
 msgstr ""
 
@@ -5056,13 +5076,13 @@ msgid "Learn more about Email Notification"
 msgstr ""
 
 #: includes/Free/Form_Element.php:255 includes/Free/Form_Element.php:292
-#: includes/Free/Free_Loader.php:1574 wpuf-functions.php:5317
-#: wpuf-functions.php:5424
+#: includes/Free/Free_Loader.php:1577 wpuf-functions.php:5326
+#: wpuf-functions.php:5433
 msgid "To"
 msgstr ""
 
 #: includes/Free/Form_Element.php:262 includes/Free/Form_Element.php:297
-#: includes/Free/Free_Loader.php:1579 wpuf-functions.php:5323
+#: includes/Free/Free_Loader.php:1582 wpuf-functions.php:5332
 msgid "Subject"
 msgstr ""
 
@@ -5070,7 +5090,7 @@ msgstr ""
 msgid "Message"
 msgstr ""
 
-#: includes/Free/Form_Element.php:274 wpuf-functions.php:5353
+#: includes/Free/Form_Element.php:274 wpuf-functions.php:5362
 msgid "Update Post Notification"
 msgstr ""
 
@@ -5124,585 +5144,585 @@ msgstr ""
 msgid "Update Button text"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:151 includes/Free/Free_Loader.php:152
-#: includes/Free/Free_Loader.php:1433
+#: includes/Free/Free_Loader.php:154 includes/Free/Free_Loader.php:155
+#: includes/Free/Free_Loader.php:1436
 msgid "Coupons"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:181
+#: includes/Free/Free_Loader.php:184
 msgid "SMS"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:202
+#: includes/Free/Free_Loader.php:205
 msgid "Invoices"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:216
+#: includes/Free/Free_Loader.php:219
 msgid "Content Filtering"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:239
+#: includes/Free/Free_Loader.php:242
 msgid "Comments Per Page"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:241
+#: includes/Free/Free_Loader.php:244
 msgid "Show how many comments per page in comments add-on"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:249
+#: includes/Free/Free_Loader.php:252
 msgid "Ipstack API Key"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:253
+#: includes/Free/Free_Loader.php:256
 #. translators: %1$s: opening anchor tag, %2$s: closing anchor tag
 msgid "%1$sRegister here%2$s to get your free ipstack api key"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:261
+#: includes/Free/Free_Loader.php:264
 msgid "Google Map API"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:263
+#: includes/Free/Free_Loader.php:266
 msgid ""
 "<a target=\"_blank\" "
 "href=\"https://developers.google.com/maps/documentation/javascript/get-api-"
 "key\">API</a> key is needed to render Google Maps"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:270 wpuf-functions.php:2088
+#: includes/Free/Free_Loader.php:273 wpuf-functions.php:2095
 msgid "Edit Profile"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:272
+#: includes/Free/Free_Loader.php:275
 msgid "Allow user to update their profile information from the account page"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:281
+#: includes/Free/Free_Loader.php:284
 msgid "Profile Form"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:283
+#: includes/Free/Free_Loader.php:286
 msgid "User will use this form to update their information from the account page,"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:292
+#: includes/Free/Free_Loader.php:295
 msgid "Avatar Size"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:294
+#: includes/Free/Free_Loader.php:297
 msgid ""
 "Avatar size to crop when upload using the registration/profile "
 "form.(e.g:100x100)"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:303
+#: includes/Free/Free_Loader.php:306
 msgid "Pending User Message"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:305
+#: includes/Free/Free_Loader.php:308
 msgid "Pending user will see this message when try to log in."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:306
+#: includes/Free/Free_Loader.php:309
 msgid ""
 "<strong>ERROR:</strong> Your account has to be approved by an administrator "
 "before you can login."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:314
+#: includes/Free/Free_Loader.php:317
 msgid "Denied User Message"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:316
+#: includes/Free/Free_Loader.php:319
 msgid "Denied user will see this message when try to log in."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:317
+#: includes/Free/Free_Loader.php:320
 msgid ""
 "<strong>ERROR:</strong> Your account has been denied by an administrator, "
 "please contact admin to approve your account."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:325
+#: includes/Free/Free_Loader.php:328
 msgid "<span class=\"dashicons dashicons-money\"></span> Subscription"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:333
+#: includes/Free/Free_Loader.php:336
 msgid "<span class=\"dashicons dashicons-admin-generic\"></span> Template Settings"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:341
+#: includes/Free/Free_Loader.php:344
 msgid "<span class=\"dashicons dashicons-unlock\"></span> Reset Email"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:349
+#: includes/Free/Free_Loader.php:352
 msgid ""
 "<span class=\"dashicons dashicons-email-alt\"></span> Resend Confirmation "
 "Email"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:357
+#: includes/Free/Free_Loader.php:360
 msgid "<span class=\"dashicons dashicons-groups\"></span> Pending User Email"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:365
+#: includes/Free/Free_Loader.php:368
 msgid "<span class=\"dashicons dashicons-dismiss\"></span> Denied User Email"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:373
+#: includes/Free/Free_Loader.php:376
 msgid "<span class=\"dashicons dashicons-smiley\"></span> Approved User Email"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:381
+#: includes/Free/Free_Loader.php:384
 msgid "<span class=\"dashicons dashicons-smiley\"></span> Account Activated Email"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:389
+#: includes/Free/Free_Loader.php:392
 msgid "<span class=\"dashicons dashicons-saved\"></span> Approved Post Email"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:398 includes/Free/Free_Loader.php:399
+#: includes/Free/Free_Loader.php:401 includes/Free/Free_Loader.php:402
 msgid "Clickatell name"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:405 includes/Free/Free_Loader.php:406
+#: includes/Free/Free_Loader.php:408 includes/Free/Free_Loader.php:409
 msgid "Clickatell Password"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:412 includes/Free/Free_Loader.php:413
+#: includes/Free/Free_Loader.php:415 includes/Free/Free_Loader.php:416
 msgid "Clickatell api"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:419 includes/Free/Free_Loader.php:420
+#: includes/Free/Free_Loader.php:422 includes/Free/Free_Loader.php:423
 msgid "SMSGlobal Name"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:426 includes/Free/Free_Loader.php:427
+#: includes/Free/Free_Loader.php:429 includes/Free/Free_Loader.php:430
 msgid "SMSGlobal Passord"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:433 includes/Free/Free_Loader.php:434
+#: includes/Free/Free_Loader.php:436 includes/Free/Free_Loader.php:437
 msgid "Nexmo API"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:440 includes/Free/Free_Loader.php:441
+#: includes/Free/Free_Loader.php:443 includes/Free/Free_Loader.php:444
 msgid "Nexmo API Secret"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:447 includes/Free/Free_Loader.php:448
+#: includes/Free/Free_Loader.php:450 includes/Free/Free_Loader.php:451
 msgid "Twillo From Number"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:454 includes/Free/Free_Loader.php:455
+#: includes/Free/Free_Loader.php:457 includes/Free/Free_Loader.php:458
 msgid "Twillo Account SID"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:461 includes/Free/Free_Loader.php:462
+#: includes/Free/Free_Loader.php:464 includes/Free/Free_Loader.php:465
 msgid "Twillo Authro Token"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:470
+#: includes/Free/Free_Loader.php:473
 msgid "Enable Social Login"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:472
+#: includes/Free/Free_Loader.php:475
 msgid ""
 "Enabling this will add Social Icons under registration form to allow users "
 "to login or register using Social Profiles"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:478
+#: includes/Free/Free_Loader.php:481
 msgid "Facebook App Settings"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:480 includes/Free/Free_Loader.php:507
-#: includes/Free/Free_Loader.php:535 includes/Free/Free_Loader.php:563
-#: includes/Free/Free_Loader.php:591
+#: includes/Free/Free_Loader.php:483 includes/Free/Free_Loader.php:510
+#: includes/Free/Free_Loader.php:538 includes/Free/Free_Loader.php:566
+#: includes/Free/Free_Loader.php:594
 msgid "Create an App"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:481
+#: includes/Free/Free_Loader.php:484
 msgid " if you don't have one and fill App ID and App Secret below. "
 msgstr ""
 
-#: includes/Free/Free_Loader.php:486 includes/Free/Free_Loader.php:542
-#: includes/Free/Free_Loader.php:598
+#: includes/Free/Free_Loader.php:489 includes/Free/Free_Loader.php:545
+#: includes/Free/Free_Loader.php:601
 msgid "Redirect URI"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:493
+#: includes/Free/Free_Loader.php:496
 msgid "App Id"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:499
+#: includes/Free/Free_Loader.php:502
 msgid "App Secret"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:505
+#: includes/Free/Free_Loader.php:508
 msgid "Twitter App Settings"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:508
+#: includes/Free/Free_Loader.php:511
 msgid " if you don't have one and fill Consumer key and Consumer Secret below."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:514
+#: includes/Free/Free_Loader.php:517
 msgid "Callback URL"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:521
+#: includes/Free/Free_Loader.php:524
 msgid "Consumer Key"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:527
+#: includes/Free/Free_Loader.php:530
 msgid "Consumer Secret"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:533
+#: includes/Free/Free_Loader.php:536
 msgid "Google App Settings"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:536 includes/Free/Free_Loader.php:564
-#: includes/Free/Free_Loader.php:592
+#: includes/Free/Free_Loader.php:539 includes/Free/Free_Loader.php:567
+#: includes/Free/Free_Loader.php:595
 msgid " if you don't have one and fill Client ID and Client Secret below."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:549 includes/Free/Free_Loader.php:577
-#: includes/Free/Free_Loader.php:605
+#: includes/Free/Free_Loader.php:552 includes/Free/Free_Loader.php:580
+#: includes/Free/Free_Loader.php:608
 msgid "Client ID"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:555
+#: includes/Free/Free_Loader.php:558
 msgid "Client secret"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:561
+#: includes/Free/Free_Loader.php:564
 msgid "Linkedin App Settings"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:570
+#: includes/Free/Free_Loader.php:573
 msgid "Redirect URL"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:583 includes/Free/Free_Loader.php:611
+#: includes/Free/Free_Loader.php:586 includes/Free/Free_Loader.php:614
 msgid "Client Secret"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:589
+#: includes/Free/Free_Loader.php:592
 msgid "Instagram App Settings"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:619
+#: includes/Free/Free_Loader.php:622
 msgid "Profile Gallery Image Size "
 msgstr ""
 
-#: includes/Free/Free_Loader.php:620
+#: includes/Free/Free_Loader.php:623
 msgid "Set the image size of picture gallery in frontend"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:627
+#: includes/Free/Free_Loader.php:630
 msgid "Avatar Size "
 msgstr ""
 
-#: includes/Free/Free_Loader.php:628
+#: includes/Free/Free_Loader.php:631
 msgid "Set the image size of profile picture in frontend"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:635
+#: includes/Free/Free_Loader.php:638
 msgid "Profile Header Template"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:647
+#: includes/Free/Free_Loader.php:650
 msgid "User Listing Template"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:664
+#: includes/Free/Free_Loader.php:667
 msgid "Enable Invoices"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:665
+#: includes/Free/Free_Loader.php:668
 msgid "Enable sending invoices for completed payments"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:672
+#: includes/Free/Free_Loader.php:675
 msgid "Show Invoices"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:673
+#: includes/Free/Free_Loader.php:676
 msgid "Show Invoices option where <code>[wpuf_account]</code> is located"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:681
+#: includes/Free/Free_Loader.php:684
 msgid "Set Invoice Logo"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:682
+#: includes/Free/Free_Loader.php:685
 msgid "This sets the company Logo to be used in Invoice"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:689
+#: includes/Free/Free_Loader.php:692
 msgid "Set Invoice Color"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:690
+#: includes/Free/Free_Loader.php:693
 msgid "Set color code to be used in invoice"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:697
+#: includes/Free/Free_Loader.php:700
 msgid "From Address"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:698
+#: includes/Free/Free_Loader.php:701
 msgid ""
 "This sets the provider information of the Invoice. Note: use the <xmp "
 "class=\"wpuf-xmp-tag\"><br></xmp> tag to enter line breaks."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:705
+#: includes/Free/Free_Loader.php:708
 msgid "Invoice Title"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:706
+#: includes/Free/Free_Loader.php:709
 msgid "This sets the payment information title of the Invoice"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:712
+#: includes/Free/Free_Loader.php:715
 msgid "Invoice Paragraph"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:713
+#: includes/Free/Free_Loader.php:716
 msgid "This sets the payment information paragraph of the Invoice"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:720
+#: includes/Free/Free_Loader.php:723
 msgid "Invoice Footer"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:721
+#: includes/Free/Free_Loader.php:724
 msgid "This sets the footer of the Invoice"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:727
+#: includes/Free/Free_Loader.php:730
 msgid "Invoice Filename Prefix"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:728
+#: includes/Free/Free_Loader.php:731
 msgid "This sets the filename prefix of the Invoice"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:734
+#: includes/Free/Free_Loader.php:737
 msgid "Set Invoice Mail Subject"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:735
+#: includes/Free/Free_Loader.php:738
 msgid "This sets the mail subject of the Invoice"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:741
+#: includes/Free/Free_Loader.php:744
 msgid "Set Invoice Mail Body"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:742
+#: includes/Free/Free_Loader.php:745
 msgid "This sets the mail body of the Invoice"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:750
+#: includes/Free/Free_Loader.php:753
 msgid "Need help?"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:753
+#: includes/Free/Free_Loader.php:756
 #. translators: %1$s: opening anchor tag, %2$s: closing anchor tag
 msgid "Visit the %1$sTax setup documentation%2$s for guidance on how to setup tax."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:760
+#: includes/Free/Free_Loader.php:763
 msgid "Enable Tax"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:761
+#: includes/Free/Free_Loader.php:764
 msgid "Enable tax on payments"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:768
+#: includes/Free/Free_Loader.php:771
 msgid "Base Country and State"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:769
+#: includes/Free/Free_Loader.php:772
 msgid "Select your base country and state"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:774
+#: includes/Free/Free_Loader.php:777
 msgid "Tax Rates"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:775
+#: includes/Free/Free_Loader.php:778
 msgid "Add tax rates for specific regions. Enter a percentage, such as 5 for 5%"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:781
+#: includes/Free/Free_Loader.php:784
 msgid "Fallback Tax Rate"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:782
+#: includes/Free/Free_Loader.php:785
 msgid ""
 "Customers not in a specific rate will be charged this tax rate. Enter a "
 "percentage, such as 5 for 5%"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:790 includes/Free/Free_Loader.php:795
+#: includes/Free/Free_Loader.php:793 includes/Free/Free_Loader.php:798
 msgid "Show prices with tax"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:791
+#: includes/Free/Free_Loader.php:794
 msgid "If frontend prices will include tax or not"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:796
+#: includes/Free/Free_Loader.php:799
 msgid "Show prices without tax"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:804
+#: includes/Free/Free_Loader.php:807
 msgid "Enable Content Filtering"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:805
+#: includes/Free/Free_Loader.php:808
 msgid "Enable Content Filtering in frontend"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:812
+#: includes/Free/Free_Loader.php:815
 msgid "Keyword Dictionary"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:813
+#: includes/Free/Free_Loader.php:816
 msgid "Enter Keywords to Remove. Separate keywords with commas."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:819
+#: includes/Free/Free_Loader.php:822
 msgid "Filter main content"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:820
+#: includes/Free/Free_Loader.php:823
 msgid "Choose which content to filter."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:823
+#: includes/Free/Free_Loader.php:826
 msgid "Post Titles"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:840
+#: includes/Free/Free_Loader.php:843
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1280
+#: includes/Free/Free_Loader.php:1283
 #. translators: %s is the crown symbol
 msgid "Credit Card %s"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1283
+#: includes/Free/Free_Loader.php:1286
 msgid "Credit Card"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1305
+#: includes/Free/Free_Loader.php:1308
 msgid "Taxonomy Restriction "
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1323
+#: includes/Free/Free_Loader.php:1326
 msgid "Choose the taxonomy terms you want to enable for this pack:"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1437
+#: includes/Free/Free_Loader.php:1440
 msgid "Use Coupon codes for subscription for discounts."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1441
+#: includes/Free/Free_Loader.php:1444
 msgid "This feature is only available in the Pro Version."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1445
+#: includes/Free/Free_Loader.php:1448
 msgid "Upgrade to Pro Version"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1446
+#: includes/Free/Free_Loader.php:1449
 msgid "Learn more about Coupons"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1465
+#: includes/Free/Free_Loader.php:1468
 msgid "Taxonomy Access"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1466
+#: includes/Free/Free_Loader.php:1469
 msgid "(Control user access to specific taxonomies)"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1515
+#: includes/Free/Free_Loader.php:1518
 msgid "Enable Multi-Step"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1518
+#: includes/Free/Free_Loader.php:1521
 msgid "If checked, form will be displayed in frontend in multiple steps."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1530
+#: includes/Free/Free_Loader.php:1533
 msgid "Progressbar"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1531
+#: includes/Free/Free_Loader.php:1534
 msgid "Step by Step"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1535
+#: includes/Free/Free_Loader.php:1538
 msgid "Active Text Color"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1537
+#: includes/Free/Free_Loader.php:1540
 msgid "Text color for active step."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1541
+#: includes/Free/Free_Loader.php:1544
 msgid "Active Background Color"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1543
+#: includes/Free/Free_Loader.php:1546
 msgid "Background color for progressbar or active step."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1547
+#: includes/Free/Free_Loader.php:1550
 msgid "Background Color"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1549
+#: includes/Free/Free_Loader.php:1552
 msgid "Background color for normal steps."
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1569
+#: includes/Free/Free_Loader.php:1572
 msgid "Enable Update Post Notification"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1584 wpuf-functions.php:5329
+#: includes/Free/Free_Loader.php:1587 wpuf-functions.php:5338
 msgid "Email Body"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1621
+#: includes/Free/Free_Loader.php:1624
 msgid "Conditional Logic on Submit"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1642 wpuf-functions.php:5368
+#: includes/Free/Free_Loader.php:1645 wpuf-functions.php:5377
 msgid "Choose Form Style"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1700
+#: includes/Free/Free_Loader.php:1703
 msgid "Duration Type"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1711
+#: includes/Free/Free_Loader.php:1714
 msgid "Send post expiration email to author"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1713
+#: includes/Free/Free_Loader.php:1716
 msgid "Verification of email addresses will be mandatory"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1716
+#: includes/Free/Free_Loader.php:1719
 msgid "From Expired Message"
 msgstr ""
 
@@ -6419,8 +6439,8 @@ msgstr ""
 #: includes/Integrations/WPUF_ACF_Compatibility.php:90
 #: includes/Integrations/WPUF_ACF_Compatibility.php:156
 #: includes/Widgets/Login_Widget.php:36 includes/Widgets/Login_Widget.php:62
-#: includes/Widgets/Login_Widget.php:79 wpuf-functions.php:1557
-#: wpuf-functions.php:1806
+#: includes/Widgets/Login_Widget.php:79 wpuf-functions.php:1564
+#: wpuf-functions.php:1813
 msgid "Permission denied"
 msgstr ""
 
@@ -7921,12 +7941,12 @@ msgstr ""
 msgid "Scheduled"
 msgstr ""
 
-#: wpuf-functions.php:44 wpuf-functions.php:5063 wpuf-functions.php:5113
+#: wpuf-functions.php:44 wpuf-functions.php:5070 wpuf-functions.php:5120
 msgid "Private"
 msgstr ""
 
-#: wpuf-functions.php:65 wpuf-functions.php:5064 wpuf-functions.php:5114
-#: wpuf-functions.php:5502
+#: wpuf-functions.php:65 wpuf-functions.php:5071 wpuf-functions.php:5121
+#: wpuf-functions.php:5511
 msgid "Published"
 msgstr ""
 
@@ -7966,531 +7986,537 @@ msgstr ""
 msgid "Directions »"
 msgstr ""
 
-#: wpuf-functions.php:2357
+#: wpuf-functions.php:2364
 msgid "United Arab Emirates Dirham"
 msgstr ""
 
-#: wpuf-functions.php:2362
+#: wpuf-functions.php:2369
 msgid "Australian Dollars"
 msgstr ""
 
-#: wpuf-functions.php:2367
+#: wpuf-functions.php:2374
 msgid "Argentine Peso"
 msgstr ""
 
-#: wpuf-functions.php:2372
+#: wpuf-functions.php:2379
 msgid "Bangladeshi Taka"
 msgstr ""
 
-#: wpuf-functions.php:2377
+#: wpuf-functions.php:2384
 msgid "Brazilian Real"
 msgstr ""
 
-#: wpuf-functions.php:2382
+#: wpuf-functions.php:2389
 msgid "Bulgarian Lev"
 msgstr ""
 
-#: wpuf-functions.php:2387
+#: wpuf-functions.php:2394
 msgid "Canadian Dollars"
 msgstr ""
 
-#: wpuf-functions.php:2392
+#: wpuf-functions.php:2399
 msgid "Chilean Peso"
 msgstr ""
 
-#: wpuf-functions.php:2397
+#: wpuf-functions.php:2404
 msgid "Chinese Yuan"
 msgstr ""
 
-#: wpuf-functions.php:2402
+#: wpuf-functions.php:2409
 msgid "Colombian Peso"
 msgstr ""
 
-#: wpuf-functions.php:2407
+#: wpuf-functions.php:2414
 msgid "Czech Koruna"
 msgstr ""
 
-#: wpuf-functions.php:2412
+#: wpuf-functions.php:2419
 msgid "Danish Krone"
 msgstr ""
 
-#: wpuf-functions.php:2417
+#: wpuf-functions.php:2424
 msgid "Dominican Peso"
 msgstr ""
 
-#: wpuf-functions.php:2422
+#: wpuf-functions.php:2429
 msgid "Algerian Dinar"
 msgstr ""
 
-#: wpuf-functions.php:2427
+#: wpuf-functions.php:2434
 msgid "Euros"
 msgstr ""
 
-#: wpuf-functions.php:2432
+#: wpuf-functions.php:2439
 msgid "Hong Kong Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2437
+#: wpuf-functions.php:2444
 msgid "Croatia kuna"
 msgstr ""
 
-#: wpuf-functions.php:2442
+#: wpuf-functions.php:2449
 msgid "Hungarian Forint"
 msgstr ""
 
-#: wpuf-functions.php:2447
+#: wpuf-functions.php:2454
 msgid "Icelandic krona"
 msgstr ""
 
-#: wpuf-functions.php:2452
+#: wpuf-functions.php:2459
 msgid "Indonesia Rupiah"
 msgstr ""
 
-#: wpuf-functions.php:2457
+#: wpuf-functions.php:2464
 msgid "Indian Rupee"
 msgstr ""
 
-#: wpuf-functions.php:2462
+#: wpuf-functions.php:2469
 msgid "Mauritian Rupee"
 msgstr ""
 
-#: wpuf-functions.php:2467
+#: wpuf-functions.php:2474
 msgid "Nepali Rupee"
 msgstr ""
 
-#: wpuf-functions.php:2472
+#: wpuf-functions.php:2479
 msgid "Israeli Shekel"
 msgstr ""
 
-#: wpuf-functions.php:2477
+#: wpuf-functions.php:2484
 msgid "Japanese Yen"
 msgstr ""
 
-#: wpuf-functions.php:2482
+#: wpuf-functions.php:2489
 msgid "Lao Kip"
 msgstr ""
 
-#: wpuf-functions.php:2487
+#: wpuf-functions.php:2494
 msgid "South Korean Won"
 msgstr ""
 
-#: wpuf-functions.php:2492
+#: wpuf-functions.php:2499
 msgid "Malaysian Ringgits"
 msgstr ""
 
-#: wpuf-functions.php:2497
+#: wpuf-functions.php:2504
 msgid "Mexican Peso"
 msgstr ""
 
-#: wpuf-functions.php:2502
+#: wpuf-functions.php:2509
 msgid "Nigerian Naira"
 msgstr ""
 
-#: wpuf-functions.php:2507
+#: wpuf-functions.php:2514
 msgid "Norwegian Krone"
 msgstr ""
 
-#: wpuf-functions.php:2512
+#: wpuf-functions.php:2519
 msgid "New Zealand Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2517
+#: wpuf-functions.php:2524
 msgid "Namibian dollar"
 msgstr ""
 
-#: wpuf-functions.php:2522
+#: wpuf-functions.php:2529
 msgid "Omani Rial"
 msgstr ""
 
-#: wpuf-functions.php:2527
+#: wpuf-functions.php:2534
 msgid "Iranian Rial"
 msgstr ""
 
-#: wpuf-functions.php:2532
+#: wpuf-functions.php:2539
 msgid "Pakistani Rupee"
 msgstr ""
 
-#: wpuf-functions.php:2537
+#: wpuf-functions.php:2544
 msgid "Paraguayan Guaraní"
 msgstr ""
 
-#: wpuf-functions.php:2542
+#: wpuf-functions.php:2549
 msgid "Philippine Pesos"
 msgstr ""
 
-#: wpuf-functions.php:2547
+#: wpuf-functions.php:2554
 msgid "Polish Zloty"
 msgstr ""
 
-#: wpuf-functions.php:2552
+#: wpuf-functions.php:2559
 msgid "Pounds Sterling"
 msgstr ""
 
-#: wpuf-functions.php:2557
+#: wpuf-functions.php:2564
 msgid "Romanian Leu"
 msgstr ""
 
-#: wpuf-functions.php:2562
+#: wpuf-functions.php:2569
 msgid "Russian Ruble"
 msgstr ""
 
-#: wpuf-functions.php:2567
+#: wpuf-functions.php:2574
 msgid "Saudi Riyal"
 msgstr ""
 
-#: wpuf-functions.php:2572
+#: wpuf-functions.php:2579
 msgid "Singapore Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2577
+#: wpuf-functions.php:2584
 msgid "South African rand"
 msgstr ""
 
-#: wpuf-functions.php:2582
+#: wpuf-functions.php:2589
 msgid "Swedish Krona"
 msgstr ""
 
-#: wpuf-functions.php:2587
+#: wpuf-functions.php:2594
 msgid "Swiss Franc"
 msgstr ""
 
-#: wpuf-functions.php:2592
+#: wpuf-functions.php:2599
 msgid "Taiwan New Dollars"
 msgstr ""
 
-#: wpuf-functions.php:2597
+#: wpuf-functions.php:2604
 msgid "Thai Baht"
 msgstr ""
 
-#: wpuf-functions.php:2602
+#: wpuf-functions.php:2609
 msgid "Turkish Lira"
 msgstr ""
 
-#: wpuf-functions.php:2607
+#: wpuf-functions.php:2614
 msgid "Trinidad and Tobago Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2612
+#: wpuf-functions.php:2619
 msgid "US Dollar"
 msgstr ""
 
-#: wpuf-functions.php:2617
+#: wpuf-functions.php:2624
 msgid "Vietnamese Dong"
 msgstr ""
 
-#: wpuf-functions.php:2622
+#: wpuf-functions.php:2629
 msgid "Egyptian Pound"
 msgstr ""
 
-#: wpuf-functions.php:2627
+#: wpuf-functions.php:2634
 msgid "Jordanian dinar"
 msgstr ""
 
-#: wpuf-functions.php:3559
+#: wpuf-functions.php:3566
 msgid "None"
 msgstr ""
 
-#: wpuf-functions.php:4885
+#: wpuf-functions.php:4892
 msgid "General"
 msgstr ""
 
-#: wpuf-functions.php:4899
+#: wpuf-functions.php:4906
 msgid "Notification Settings"
 msgstr ""
 
-#: wpuf-functions.php:4905
+#: wpuf-functions.php:4912
 msgid "Display Settings"
 msgstr ""
 
-#: wpuf-functions.php:4911
+#: wpuf-functions.php:4918
 msgid "Advanced"
 msgstr ""
 
-#: wpuf-functions.php:4929
+#: wpuf-functions.php:4936
 msgid "Post Settings"
 msgstr ""
 
-#: wpuf-functions.php:4969
+#: wpuf-functions.php:4976
 msgid "WooCommerce Product Form"
 msgstr ""
 
-#: wpuf-functions.php:4973
+#: wpuf-functions.php:4980
 msgid "EDD Download Form"
 msgstr ""
 
-#: wpuf-functions.php:4992
+#: wpuf-functions.php:4999
 msgid "Before Post Settings"
 msgstr ""
 
-#: wpuf-functions.php:4993
+#: wpuf-functions.php:5000
 msgid ""
 "Configure how the form behaves before submission, including content type, "
 "default category, post status, draft-saving options, and submit button "
 "customization"
 msgstr ""
 
-#: wpuf-functions.php:4999
+#: wpuf-functions.php:5006
 msgid "Show Form Title"
 msgstr ""
 
-#: wpuf-functions.php:5001
+#: wpuf-functions.php:5008
 msgid "Toggle whether the form title should be displayed on the frontend"
 msgstr ""
 
-#: wpuf-functions.php:5004
+#: wpuf-functions.php:5011
 msgid "Form Description"
 msgstr ""
 
-#: wpuf-functions.php:5006
+#: wpuf-functions.php:5013
 msgid ""
 "Add a brief message or instruction that will be displayed before the form — "
 "helpful for guiding users before they start filling it out"
 msgstr ""
 
-#: wpuf-functions.php:5012
+#: wpuf-functions.php:5019
 msgid ""
 "Select the content type this form will create, like a post, product, or "
 "custom type"
 msgstr ""
 
-#: wpuf-functions.php:5021
+#: wpuf-functions.php:5028
 msgid "Default Category"
 msgstr ""
 
-#: wpuf-functions.php:5023
+#: wpuf-functions.php:5030
 msgid "Select the default category for posts submitted through this form"
 msgstr ""
 
-#: wpuf-functions.php:5029 wpuf-functions.php:5122
+#: wpuf-functions.php:5036 wpuf-functions.php:5129
 msgid "Successful Redirection"
 msgstr ""
 
-#: wpuf-functions.php:5031
+#: wpuf-functions.php:5038
 msgid "Select where users will be redirected after successfully submitting the form"
 msgstr ""
 
-#: wpuf-functions.php:5037 wpuf-functions.php:5129
+#: wpuf-functions.php:5044 wpuf-functions.php:5136
 msgid "Same page"
 msgstr ""
 
-#: wpuf-functions.php:5051 wpuf-functions.php:5152
+#: wpuf-functions.php:5058 wpuf-functions.php:5159
 msgid "Choose the default category for the post"
 msgstr ""
 
-#: wpuf-functions.php:5058
+#: wpuf-functions.php:5065
 msgid "Post Submission Status"
 msgstr ""
 
-#: wpuf-functions.php:5066
+#: wpuf-functions.php:5073
 msgid "Select the status of the post after submission"
 msgstr ""
 
-#: wpuf-functions.php:5069
+#: wpuf-functions.php:5076
 msgid "Enable saving as draft"
 msgstr ""
 
-#: wpuf-functions.php:5071
+#: wpuf-functions.php:5078
 msgid "Allow users to save posts before final submission"
 msgstr ""
 
-#: wpuf-functions.php:5076
+#: wpuf-functions.php:5083
 msgid "Submit Post Button Text"
 msgstr ""
 
-#: wpuf-functions.php:5078
+#: wpuf-functions.php:5085
 msgid "Customize the text on the 'Submit' button for this form"
 msgstr ""
 
-#: wpuf-functions.php:5083
+#: wpuf-functions.php:5090
 msgid "Choose Form Template"
 msgstr ""
 
-#: wpuf-functions.php:5092
+#: wpuf-functions.php:5099
 msgid ""
 "If you're building a post form from scratch, you don't need to pick a "
 "template (e.g., WooCommerce Product, EDD). Just double-click any selected "
 "template to uncheck it."
 msgstr ""
 
-#: wpuf-functions.php:5101
+#: wpuf-functions.php:5108
 msgid "After Post Settings"
 msgstr ""
 
-#: wpuf-functions.php:5102
+#: wpuf-functions.php:5109
 msgid ""
 "Manage what happens after submission, such as setting post update status, "
 "displaying success messages, redirecting users, limiting edit time, and "
 "customizing the update button"
 msgstr ""
 
-#: wpuf-functions.php:5108
+#: wpuf-functions.php:5115
 msgid "Post Update Status"
 msgstr ""
 
-#: wpuf-functions.php:5117
+#: wpuf-functions.php:5124
 msgid "Select the status the post will have after being updated"
 msgstr ""
 
-#: wpuf-functions.php:5124
+#: wpuf-functions.php:5131
 msgid "After successfully submit, where the page will redirect to"
 msgstr ""
 
-#: wpuf-functions.php:5128
+#: wpuf-functions.php:5135
 msgid "Updated post"
 msgstr ""
 
-#: wpuf-functions.php:5138
+#: wpuf-functions.php:5145
 msgid ""
 "Post has been updated successfully. <a target=\"_blank\" href=\"%s\">View "
 "post</a>"
 msgstr ""
 
-#: wpuf-functions.php:5143
+#: wpuf-functions.php:5150
 msgid "Customize the message displayed after a post is successfully updated"
 msgstr ""
 
-#: wpuf-functions.php:5159
+#: wpuf-functions.php:5166
 msgid "Lock User Editing After"
 msgstr ""
 
-#: wpuf-functions.php:5161
+#: wpuf-functions.php:5168
 msgid ""
 "Set the number of hours after which users can no longer edit their "
 "submitted post"
 msgstr ""
 
-#: wpuf-functions.php:5166
+#: wpuf-functions.php:5173
 msgid "Hours"
 msgstr ""
 
-#: wpuf-functions.php:5169
+#: wpuf-functions.php:5176
 msgid "Update Post Button Text"
 msgstr ""
 
-#: wpuf-functions.php:5171
+#: wpuf-functions.php:5178
 msgid "Customize the text on the 'Update' button for this form"
 msgstr ""
 
-#: wpuf-functions.php:5178
+#: wpuf-functions.php:5185
 msgid "Posting Control"
 msgstr ""
 
-#: wpuf-functions.php:5179
+#: wpuf-functions.php:5186
 msgid ""
 "Define who can submit posts using this form. Choose whether to allow guest "
 "submissions or restrict access based on user roles"
 msgstr ""
 
-#: wpuf-functions.php:5185
+#: wpuf-functions.php:5192
 msgid "Post Permission"
 msgstr ""
 
-#: wpuf-functions.php:5188
+#: wpuf-functions.php:5195
 msgid "- Select Post Permission -"
 msgstr ""
 
-#: wpuf-functions.php:5190
+#: wpuf-functions.php:5197
 msgid "Role Based Post"
 msgstr ""
 
-#: wpuf-functions.php:5192
+#: wpuf-functions.php:5199
 msgid ""
 "Select who can submit posts using this form, either guests or specific user "
 "roles"
 msgstr ""
 
-#: wpuf-functions.php:5200
+#: wpuf-functions.php:5207
 msgid ""
 "If enabled, guest users will be automatically registered using their name "
 "and email"
 msgstr ""
 
-#: wpuf-functions.php:5210
+#: wpuf-functions.php:5217
 msgid "Customize the label for the name field in guest submissions"
 msgstr ""
 
-#: wpuf-functions.php:5218
+#: wpuf-functions.php:5225
 msgid "Customize the label for the email field in guest submissions"
 msgstr ""
 
-#: wpuf-functions.php:5226
+#: wpuf-functions.php:5233
 msgid "Require email verification"
 msgstr ""
 
-#: wpuf-functions.php:5228
+#: wpuf-functions.php:5235
 msgid "If enabled, users must verify their email before submitting a post"
 msgstr ""
 
-#: wpuf-functions.php:5233
+#: wpuf-functions.php:5240
 msgid "Choose who can submit post"
 msgstr ""
 
-#: wpuf-functions.php:5235
+#: wpuf-functions.php:5242
 msgid "Select the user roles who can submit posts"
 msgstr ""
 
-#: wpuf-functions.php:5242
+#: wpuf-functions.php:5249
 msgid ""
 "Display this message to non-logged-in users. Use {login} and {register} "
 "placeholders to add login and registration links"
 msgstr ""
 
-#: wpuf-functions.php:5259
+#: wpuf-functions.php:5266
 msgid "Enable payments for this form to charge users for submissions"
 msgstr ""
 
-#: wpuf-functions.php:5264
+#: wpuf-functions.php:5271
 msgid "Choose Payment Option"
 msgstr ""
 
-#: wpuf-functions.php:5267
+#: wpuf-functions.php:5274
 msgid "Mandatory Subscription"
 msgstr ""
 
-#: wpuf-functions.php:5268
+#: wpuf-functions.php:5275
 msgid "Pay as you post"
 msgstr ""
 
-#: wpuf-functions.php:5270
+#: wpuf-functions.php:5277
 msgid "Select how users will pay for submitting posts"
 msgstr ""
 
-#: wpuf-functions.php:5275
+#: wpuf-functions.php:5282
 msgid "Pay-per-post billing when limit exceeds"
 msgstr ""
 
-#: wpuf-functions.php:5277
+#: wpuf-functions.php:5284
 msgid "Switch to pay-per-post billing if pack limit is exceeded"
 msgstr ""
 
-#: wpuf-functions.php:5280
+#: wpuf-functions.php:5287
 msgid "Cost for each additional post after pack limit is reached"
 msgstr ""
 
-#: wpuf-functions.php:5284
+#: wpuf-functions.php:5290
+msgid ""
+"This field is required when Pay-per-post billing when limit exceeds is "
+"enabled."
+msgstr ""
+
+#: wpuf-functions.php:5293
 msgid "Charge for each post"
 msgstr ""
 
-#: wpuf-functions.php:5286
+#: wpuf-functions.php:5295
 msgid "Set a fee for each post submission"
 msgstr ""
 
-#: wpuf-functions.php:5294
+#: wpuf-functions.php:5303
 msgid "Select the page users will be redirected to after a successful payment"
 msgstr ""
 
-#: wpuf-functions.php:5305
+#: wpuf-functions.php:5314
 msgid ""
 "Enable email alerts for new post submissions via the frontend form. This "
 "feature keeps you updated on user activity, allowing for timely review and "
 "approval of content"
 msgstr ""
 
-#: wpuf-functions.php:5313
+#: wpuf-functions.php:5322
 msgid "Enable email alerts for each new post submitted through this form"
 msgstr ""
 
-#: wpuf-functions.php:5354
+#: wpuf-functions.php:5363
 msgid ""
 "Enable this feature to receive email alerts whenever an existing post is "
 "updated through the frontend form. This ensures you're promptly informed "
@@ -8498,47 +8524,47 @@ msgid ""
 "updates"
 msgstr ""
 
-#: wpuf-functions.php:5369
+#: wpuf-functions.php:5378
 msgid ""
 "Customize the appearance and layout of your form. Select a form template "
 "that best suits your website's design for a cohesive look and feel"
 msgstr ""
 
-#: wpuf-functions.php:5377
+#: wpuf-functions.php:5386
 msgid "Apply your site's theme CSS for consistent styling and appearance"
 msgstr ""
 
-#: wpuf-functions.php:5390
+#: wpuf-functions.php:5399
 msgid ""
 "Customize the position of form labels for improved user navigation and "
 "clarity"
 msgstr ""
 
-#: wpuf-functions.php:5402
+#: wpuf-functions.php:5411
 msgid "Enable User Comment"
 msgstr ""
 
-#: wpuf-functions.php:5404
+#: wpuf-functions.php:5413
 msgid "Allow users to comment on posts submitted via this form"
 msgstr ""
 
-#: wpuf-functions.php:5411
+#: wpuf-functions.php:5420
 msgid "Enable Form Scheduling"
 msgstr ""
 
-#: wpuf-functions.php:5413
+#: wpuf-functions.php:5422
 msgid "Set specific dates and times for when the form will be accessible to users"
 msgstr ""
 
-#: wpuf-functions.php:5438
+#: wpuf-functions.php:5447
 msgid "Limit Form Entries"
 msgstr ""
 
-#: wpuf-functions.php:5440
+#: wpuf-functions.php:5449
 msgid "Limit the number of submissions allowed for the form"
 msgstr ""
 
-#: wpuf-functions.php:5503
+#: wpuf-functions.php:5512
 msgid "Trash"
 msgstr ""
 
@@ -8650,7 +8676,7 @@ msgctxt "enhanced select"
 msgid "Searching&hellip;"
 msgstr ""
 
-#: wpuf-functions.php:1572
+#: wpuf-functions.php:1579
 msgctxt "tag delimiter"
 msgid ","
 msgstr ""

@@ -4,7 +4,7 @@ import { Browser, BrowserContext, Page, test, chromium } from "@playwright/test"
 import { BasicLoginPage } from '../pages/basicLogin';
 import { PostFormPage } from '../pages/postForm';
 import { PostFormProPage } from '../pages/postFormPro';
-import { FieldAddProPage } from '../pages/fieldAddPro';
+import { FieldAddPage } from '../pages/fieldAdd';
 import { SettingsSetupPage } from '../pages/settingsSetup';
 import { Users, PostForm } from '../utils/testData';
 import * as fs from 'fs'; //Clear Cookie
@@ -41,10 +41,16 @@ export default function postFormTestPro() {
          * @Test_PF0003 : User is Creating Post from Frontend
          * @Test_PF0004 : User is Validating Post created
          * @Test_PF0005 : User is validating Entered Data for Created Post
-         *
+         * @Test_PF0011 : Admin is setting necessary setup for product form
+         * @Test_PF0012 : Admin is creating a product Post Form
+         * @Test_PF0013 : Admin is creating product page page with shortcode
+         * @Test_PF0014 : Admin is creating product from FE
+         * @Test_PF0015 : Admin is validating product created
+         * @Test_PF0016 : Admin is validating entered product data
          */
 
         //TODO: Create a BeforeAll for login
+        let productShortCode:string;
 
         //Log into Admin Dashboard
         test.beforeAll(async () => {
@@ -54,26 +60,29 @@ export default function postFormTestPro() {
 
         test('PF0001 : Admin is creating a Blank Post Form with all Fields', { tag: ['@Pro'] }, async () => {
             const PostFormPro = new PostFormProPage(page);
-            const FieldAddPro = new FieldAddProPage(page);
+            const FieldAddPro = new FieldAddPage(page);
 
             PostForm.formName = faker.word.words(3);
             //Post Blank Form
             await PostFormPro.createBlankFormPostFormPro(PostForm.formName);
             //PostFields + Validate
-            await FieldAddPro.addPostFields_PF_pro();
-            await FieldAddPro.validatePostFields_PF_pro();
+            await FieldAddPro.addPostFields_PF();
+            await FieldAddPro.validatePostFields_PF();
+            //Category + Validate
+            await FieldAddPro.addTaxonomies_PF();
+            await FieldAddPro.validateTaxonomies_PF();
             //CustomFields + Validate
-            await FieldAddPro.addCustomFields_Common_pro();
-            await FieldAddPro.validateCustomFields_Common_pro();
+            await FieldAddPro.addCustomFields_Common();
+            await FieldAddPro.validateCustomFields_Common();
             //Others + Validate
-            await FieldAddPro.addOthers_Common_pro();
-            await FieldAddPro.validateOthers_Common_pro();
+            await FieldAddPro.addOthers_Common();
+            await FieldAddPro.validateOthers_Common();
             //await FieldOptionsCommon.setMultiStepSettings_Common();
 
             //Save
-            await FieldAddPro.saveForm_Common_pro(PostForm.formName);
+            await FieldAddPro.saveForm_Common();
             //Validate
-            await FieldAddPro.validatePostFormCreatedPro(PostForm.formName);
+            await FieldAddPro.validatePostFormCreated(PostForm.formName);
         });
 
         test('PF0002 : Admin is Updating Settings with default Post Form', { tag: ['@Pro'] }, async () => {
@@ -104,6 +113,57 @@ export default function postFormTestPro() {
             const PostFormClass = new PostFormPage(page);
 
             await PostFormClass.validateEnteredData();
+        });
+
+        test('PF0011 : Admin is setting necessary setup for product form', { tag: ['@Lite'] }, async () => {
+            const PostForm = new PostFormPage(page);
+
+            await new BasicLoginPage(page).basicLogin(Users.adminUsername, Users.adminPassword);
+            
+            await PostForm.setupForWooProduct();
+        });
+
+        test('PF0012 : Admin is creating a product Post Form', { tag: ['@Lite'] }, async () => {
+            const PostForm = new PostFormPage(page);
+            const FieldAdd = new FieldAddPage(page);
+
+            //Post Preset Form
+            await PostForm.createProductPostForm();
+            // Add
+            await FieldAdd.addProductTaxoFields_PF();
+            //Validate
+            await FieldAdd.validateProductPostFields_PF();
+
+            //Save
+            await FieldAdd.saveForm_Common();
+            //Validate
+            productShortCode = await FieldAdd.validatePostFormCreated('WooCommerce Product');
+            console.log('Product Short Code: ' + productShortCode);
+
+        });
+
+        test('PF0013 : Admin is creating product page with shortcode ', { tag: ['@Lite'] }, async () => {
+            const PostForm = new PostFormPage(page);
+
+            await PostForm.createPageWithShortcodeGeneral(productShortCode, 'Add Product');
+        });
+
+        test('PF0014 : Admin is creating product from FE ', { tag: ['@Lite'] }, async () => {
+            const PostForm = new PostFormPage(page);
+            
+            await PostForm.createProductFE();
+        });
+
+        test('PF0015 : Admin is validating product created', { tag: ['@Lite'] }, async () => {
+            const PostForm = new PostFormPage(page);
+            
+            await PostForm.validateProductCreated();
+        });
+
+        test('PF0016 : Admin is validating entered product data', { tag: ['@Lite'] }, async () => {
+            const PostForm = new PostFormPage(page);
+            
+            await PostForm.validateEnteredProductData();
         });
 
     });

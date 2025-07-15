@@ -36,22 +36,23 @@ export default function loginAndSetupTest() {
          * @Test_LS0004 : Admin is checking Plugin Status - Pro Activation
          * @Test_LS0005 : Admin is activating license - Pro
          * @Test_LS0006 : Admin is Completing WPUF setup
-         * @Test_LS0007 : Admin is visiting WPUF Page
-         * @Test_LS0008 : Admin is validating WPUF Pages
-         * @Test_LS0009 : Admin is validating WPUF Pages from frontend
-         * @Test_LS0010 : Admin is validating account page tabs from frontend
-         * @Test_LS0011 : Admin is changing WPUF Settings
-         * @Test_LS0012 : Admin is setting Permalink
-         * @Test_LS0013 : Admin is allowing anyone to register
-         * @Test_LS0014 : Admin is creating a New User
-         * @Test_LS0015 : Admin is adding post categories
-         * @Test_LS0016 : Admin is adding post tags
-         * @Test_LS0017 : Admin is adding credentils for Google Map
-         * @Test_LS0018 : Admin is adding credentils for ReCaptcha
-         * @Test_LS0019 : Admin is adding credentils for Cloudflare Turnstile
-         * @Test_LS0020 : Admin is enabling payment gateway bank
-         * @Test_LS0021 : Admin is activating dokan lite
-         * @Test_LS0022 : Admin is logging out succesfully
+         * @Test_LS0007 : Admin is setting Permalink
+         * @Test_LS0008 : Admin is visiting WPUF Post Form List
+         * @Test_LS0009 : Admin is visiting WPUF Registration Form List
+         * @Test_LS0010 : Admin is validating WPUF Pages
+         * @Test_LS0011 : Admin is validating WPUF Pages from frontend
+         * @Test_LS0012 : Admin is validating account page tabs from frontend
+         * @Test_LS0013 : Admin is changing WPUF Settings
+         * @Test_LS0014 : Admin is allowing anyone to register
+         * @Test_LS0015 : Admin is creating a New User
+         * @Test_LS0016 : Admin is adding post categories
+         * @Test_LS0017 : Admin is adding post tags
+         * @Test_LS0018 : Admin is adding credentils for Google Map
+         * @Test_LS0019 : Admin is adding credentils for ReCaptcha
+         * @Test_LS0020 : Admin is adding credentils for Cloudflare Turnstile
+         * @Test_LS0021 : Admin is enabling payment gateway bank
+         * @Test_LS0022 : Admin is activating dokan lite
+         * @Test_LS0023 : Admin is logging out succesfully
          *  
          */
         test('LS0001 : Admin is logging into Admin-Dashboard', { tag: ['@Basic'] }, async () => {
@@ -84,44 +85,49 @@ export default function loginAndSetupTest() {
             await SettingsSetup.wpufSetup();
         });
 
-        test('LS0007 : Admin is visiting WPUF Page', { tag: ['@Basic'] }, async () => {
-            const SettingsSetup = new SettingsSetupPage(page);
-            await SettingsSetup.pluginVisitWPUF();
-        });
-
-        test('LS0008 : Admin is validating WPUF Pages', { tag: ['@Basic'] }, async () => {
-            const SettingsSetup = new SettingsSetupPage(page);
-            await SettingsSetup.validateWPUFpages();
-        });
-
-        test('LS0009 : Admin is validating WPUF Pages from frontend', { tag: ['@Basic'] }, async () => {
-            const SettingsSetup = new SettingsSetupPage(page);
-            await SettingsSetup.validateWPUFpagesFE();
-        });
-
-        test('LS0010 : Admin is validating account page tabs from frontend', { tag: ['@Basic'] }, async () => {
-            const SettingsSetup = new SettingsSetupPage(page);
-            await SettingsSetup.validateAccountPageTabs();
-        });
-
-        test('LS0011 : Admin is changing WPUF Settings', { tag: ['@Basic'] }, async () => {
-            const SettingsSetup = new SettingsSetupPage(page);
-            await SettingsSetup.changeSettingsSetLoginPageDefault();
-        });
-
-        test('LS0012 : Admin is setting Permalink', { tag: ['@Basic'] }, async () => {
+        test('LS0007 : Admin is setting Permalink', { tag: ['@Basic'] }, async () => {
             const SettingsSetup = new SettingsSetupPage(page);
             await SettingsSetup.setPermalink();
         });
 
-        test('LS0013 : Admin is allowing anyone to register', { tag: ['@Basic'] }, async () => {
+        test('LS0008 : Admin is visiting WPUF Post Form List', { tag: ['@Basic'] }, async () => {
+            const SettingsSetup = new SettingsSetupPage(page);
+            await SettingsSetup.postFormListVisit();
+        });
+
+        test('LS0009 : Admin is visiting WPUF Registration Form List', { tag: ['@Basic'] }, async () => {
+            const SettingsSetup = new SettingsSetupPage(page);
+            await SettingsSetup.regFormListVisit();
+        });
+
+        test('LS0010 : Admin is validating WPUF Pages', { tag: ['@Basic'] }, async () => {
+            const SettingsSetup = new SettingsSetupPage(page);
+            await SettingsSetup.validateWPUFpages();
+        });
+
+        test('LS0011 : Admin is validating WPUF Pages from frontend', { tag: ['@Basic'] }, async () => {
+            const SettingsSetup = new SettingsSetupPage(page);
+            await SettingsSetup.validateWPUFpagesFE();
+        });
+
+        test('LS0012 : Admin is validating account page tabs from frontend', { tag: ['@Basic'] }, async () => {
+            const SettingsSetup = new SettingsSetupPage(page);
+            await SettingsSetup.validateAccountPageTabs();
+        });
+
+        test('LS0013 : Admin is changing WPUF Settings', { tag: ['@Basic'] }, async () => {
+            const SettingsSetup = new SettingsSetupPage(page);
+            await SettingsSetup.changeSettingsSetLoginPageDefault();
+        });
+
+        test('LS0014 : Admin is allowing anyone to register', { tag: ['@Basic'] }, async () => {
             const SettingsSetup = new SettingsSetupPage(page);
             await SettingsSetup.allowRegistration();
         });
 
-        test('LS0014 : Admin is creating a New User', { tag: ['@Basic'] }, async () => {
+        test('LS0015 : Admin is creating a New User', { tag: ['@Basic'] }, async () => {
             const SettingsSetup = new SettingsSetupPage(page);
-            await SettingsSetup.createNewUserAdmin(
+            await SettingsSetup.createNewUser(
                 Users.userName,
                 Users.userEmail,
                 Users.userFirstName,
@@ -130,47 +136,47 @@ export default function loginAndSetupTest() {
             );
         });
 
-        test('LS0015 : Admin is adding post categories', { tag: ['@Basic'] }, async () => {
+        test('LS0016 : Admin is adding post categories', { tag: ['@Basic'] }, async () => {
             const SettingsSetup = new SettingsSetupPage(page);
             await SettingsSetup.createPostCategories();
         });
 
-        test('LS0016 : Admin is adding post tags', { tag: ['@Basic'] }, async () => {
+        test('LS0017 : Admin is adding post tags', { tag: ['@Basic'] }, async () => {
             const SettingsSetup = new SettingsSetupPage(page);
             await SettingsSetup.createPostTags();
         });
 
-        test('LS0017 : Admin is adding credentils for Google Map', { tag: ['@Basic'] }, async () => {
+        test('LS0018 : Admin is adding credentils for Google Map', { tag: ['@Basic'] }, async () => {
             const SettingsSetup = new SettingsSetupPage(page);
             const googleMapAPIKey = process.env.GOOGLE_MAP_API_KEY;
             await SettingsSetup.addGoogleMapAPIKey(googleMapAPIKey?.toString() || '');
         });
 
-        test('LS0018 : Admin is adding credentils for ReCaptcha', { tag: ['@Basic'] }, async () => {
+        test('LS0019 : Admin is adding credentils for ReCaptcha', { tag: ['@Basic'] }, async () => {
             const SettingsSetup = new SettingsSetupPage(page);
             const reCaptchaSiteKey = process.env.RECAPTCHA_SITE_KEY;
             const reCaptchaSecretKey = process.env.RECAPTCHA_SECRET_KEY;
             await SettingsSetup.addReCaptchaKeys(reCaptchaSiteKey?.toString() || '', reCaptchaSecretKey?.toString() || '');
         });
 
-        test('LS0019 : Admin is adding credentils for Cloudflare Turnstile', { tag: ['@Basic'] }, async () => {
+        test('LS0020 : Admin is adding credentils for Cloudflare Turnstile', { tag: ['@Basic'] }, async () => {
             const SettingsSetup = new SettingsSetupPage(page);
             const cloudflareTurnstileSiteKey = process.env.CLOUDFLARE_TURNSTILE_SITE_KEY;
             const cloudflareTurnstileSecretKey = process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY;
             await SettingsSetup.addCloudflareTurnstileKeys(cloudflareTurnstileSiteKey?.toString() || '', cloudflareTurnstileSecretKey?.toString() || '');
         });
 
-        test('LS0020 : Admin is enabling payment gateway bank', { tag: ['@Basic'] }, async () => {
+        test('LS0021 : Admin is enabling payment gateway bank', { tag: ['@Basic'] }, async () => {
             const SettingsSetup = new SettingsSetupPage(page);
             await SettingsSetup.enablePaymentGatewayBank();
         });
 
-        test('LS0021 : Admin is activating dokan lite', { tag: ['@Basic'] }, async () => {
+        test('LS0022 : Admin is activating dokan lite', { tag: ['@Basic'] }, async () => {
             const SettingsSetup = new SettingsSetupPage(page);
             await SettingsSetup.dokanLiteStatusCheck();
         });
 
-        test('LS0022 : Admin is logging out successfully', { tag: ['@Basic'] }, async () => {
+        test('LS0023 : Admin is logging out successfully', { tag: ['@Basic'] }, async () => {
             const BasicLogout = new BasicLogoutPage(page);
             await BasicLogout.logOut();
         });

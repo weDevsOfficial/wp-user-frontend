@@ -64,7 +64,6 @@ export const Selectors = {
             clickEDDnoticeCross: '//div[@id="edds-edd-stripe-core-notice"]//button[@type="button"]',
             clickPayPalCross: '//div[@id="wpuf-paypal-settings-notice"]//button[@type="button"]',
             clickRunUpdater: '//a[normalize-space()="Run the updater"]',
-            clickActivateLicense: '//button[normalize-space()="Activate License"]',
             fillLicenseKey: '//div[@class="license-input-key"]//input[1]',
             submitLicenseKey: '//div[@class="license-input-key"]/following-sibling::button[1]',
             deactivateLicenseKey: '//div[@class="license-input-key"]/following-sibling::button[1]',
@@ -78,9 +77,13 @@ export const Selectors = {
             // Sidebar
             // PostFormPage
             clickPostFormMenuOption: '//h3[normalize-space(text())="Post Forms"]',
+            clickRegFormMenuOption: '//h3[normalize-space()="Registration Forms"]',
             wpufPostFormCheckAddButton: ' //a[contains(text(),"Add New")]',
-            wpufRegistrationFormCheckAddButton: '//a[@id="new-wpuf-profile-form"]',
             postFormsPageFormTitleCheck: '//a[@class="row-title"][1]',
+            noFormMsg: '//h2[normalize-space()="No Post Forms Created Yet"]',
+            formTitleCheck: (formName:string) => `//span[normalize-space(text())='${formName}']`,
+            clickRegFormListPage: '//a[normalize-space()="Registration Forms"]'
+
         },
 
         wpufPages: {
@@ -322,6 +325,14 @@ export const Selectors = {
             editNewFormName: '//input[@name="post_title"]',
         },
 
+        createProduct_PF: {
+            // Start > Preset Form
+            clickProductForm: '//a[@title="WooCommerce Product" and contains(text(), "Create Form")]',
+
+            // Enter_NAME
+            editNewFormName: '//input[@name="post_title"]',
+        },
+
         /* Locators for All Fields Options + Save */
         /********************* PostFields *********************/
 
@@ -341,6 +352,28 @@ export const Selectors = {
             validateFeaturedImage: '//label[@for="featured_image"]/../..//div[@class="wpuf-fields"]',
         },
 
+        validateProductPostFields_PF:{
+            validateProductTitle: '//label[@for="post_title"]/../..//div[@class="wpuf-fields"]',
+            validateProductCategory: '//label[@for="product_cat"]/../..//div[@class="wpuf-fields"]',
+            validateProductDescription: '//label[@for="post_content"]/../..//div[@class="wpuf-fields"]',
+            validateProductShDescription: '//label[@for="post_excerpt"]/../..//div[@class="wpuf-fields"]',
+            validateRegularPrice: '//label[@for="_regular_price"]/../..//div[@class="wpuf-fields"]',
+            validateSalePrice: '//label[@for="_sale_price"]/../..//div[@class="wpuf-fields"]',
+            validateProductImage: '//label[@for="featured_image"]/../..//div[@class="wpuf-fields"]',
+            validateImageGallery: '//label[@for="_product_image"]/../..//div[@class="wpuf-fields"]',
+            validateCatalogVisibility: '//label[@for="_visibility"]/../..//div[@class="wpuf-fields"]',
+            validatepurchaseNote: '//label[@for="_purchase_note"]/../..//div[@class="wpuf-fields"]',
+            validateProductReviews: '//label[@for="product_reviews"]/../..//div[@class="wpuf-fields"]',
+            validateDownloadableProduct: '//label[@for="_downloadable"]/../..//div[@class="wpuf-fields"]',
+            validateDownloadableFiles: '//label[@for="_woo_files"]/../..//div[@class="wpuf-fields"]',
+            validateProductBrand: '//label[@for="product_brand"]/../..//div[@class="wpuf-fields"]',
+            validateProductType: '//label[@for="product_type"]/../..//div[@class="wpuf-fields"]',
+            validateProductVisibility: '//label[@for="product_visibility"]/../..//div[@class="wpuf-fields"]',
+            validateProductTag: '//label[@for="product_tag"]/../..//div[@class="wpuf-fields"]',
+            validateProductShippingClass: '//label[@for="product_shipping_class"]/../..//div[@class="wpuf-fields"]',
+            validateProductAttribute: '//label[@for="pa_color"]/../..//div[@class="wpuf-fields"]',
+        },
+
         /********************* Taxonomies *********************/
         addTaxonomies_PF: {
             // Taxonomies
@@ -356,6 +389,16 @@ export const Selectors = {
         validateTaxonomiesPreset_PF: {
             validateCategory: '//label[@for="category"]/../..//div[@class="wpuf-fields"]',
             validateTags: '//label[@for="tags"]/../..//div[@class="wpuf-fields"]',
+        },
+
+        addProductTaxo_PF: {
+            brandBlock: '//p[normalize-space()="Product_brand"]',
+            typeblock: '//p[normalize-space()="Product_type"]',
+            visibilityBlock: '//p[normalize-space()="Product_visibility"]',
+            categoryBlock: '//p[normalize-space()="Product_cat"]',
+            tagBlock: '//p[normalize-space()="Product_tag"]',
+            shippingBlock: '//p[normalize-space()="Product_shipping_class"]',
+            attributeBlock: '//p[normalize-space()="Pa_color"]'
         },
 
         /***********************************************/
@@ -515,12 +558,13 @@ export const Selectors = {
             // Post Tile
             postTitleFormsFE: '//input[@name="post_title"]',
             // Category
-            categorySelectionFormsFE: '//select[@data-type="select"]',
+            categorySelectionFormsFE: '//select[@name="category"]',
             // Post Description
             postDescriptionFormsFE1: '//div[contains(@class,"mce-edit-area mce-container")]//iframe[1]',
             postDescriptionFormsFE2: '//body[@id="tinymce"]',
             // Featured Photo
             featuredPhotoFormsFE: '//li[@data-label="Featured Image"]//input[@type="file"]',
+            uploads: (upload:string)=> `(//div[@class='attachment-name']//img)[${upload}]`,
             // Excerpt
             postExcerptFormsFE: '//textarea[@name="post_excerpt"]',
             // Tags
@@ -599,6 +643,54 @@ export const Selectors = {
             // Validate Post Submitted
             validatePostSubmitted: (postFormTitle:string)=> `//h1[normalize-space(text())='${postFormTitle}']`,
         },
+
+        productFrontendCreate: {
+            // Product Create
+
+            // Start Form Submission
+            // Post Tile
+            productTitleFE: '//input[@name="post_title"]',
+            // Post Description
+            productDescription1: '//div[contains(@class,"mce-edit-area mce-container")]//iframe[1]',
+            productDescription2: '//body[@id="tinymce"]',
+            // Featured Photo
+            productImage: '//li[@data-label="Product Image"]//input[@type="file"]',
+            uploads: (upload:string)=> `(//div[@class='attachment-name']//img)[${upload}]`,
+            // Excerpt
+            productExcerpt: '//textarea[@name="post_excerpt"]',
+            //Regular Price
+            productRegularPrice: '//input[@id="_regular_price"]',
+            // sale preice
+            productSalePrice: '//input[@id="_sale_price"]',
+            // image Gallery
+            productImageGallery: '//li[@data-label="Product Image Gallery"]//input[@type="file"]',
+            //visibility
+            catalogVisibility: '//select[@name="_visibility"]',
+            // purchase Note
+            purchaseNote: '//textarea[@name="_purchase_note"]',
+            // reviews
+            enableReviews: '//input[@value="_enable_reviews"]',
+            // downloadable
+            downloadable: '//input[@value="no"]',
+            // brand
+            selectBrand: '//select[@id="product_brand"]',
+            // category
+            selectCategory: '//select[@id="product_cat"]',
+            // tag
+            selectTag: '//select[@id="product_tag"]',
+            // attribute
+            selectShippingClass: '//select[@id="product_shipping_class"]',
+            // type
+            selectType: '//select[@id="product_type"]',
+            // visibility
+            selectVisibility: '//select[@id="product_visibility"]',
+            // color
+            selectColor: '//select[@id="pa_color"]',
+            //create
+            createProduct: '//input[@name="submit"]'
+
+        },
+
         postFormData: {
             title: (title:string)=> `//h1[normalize-space(text())='${title}']`,
             description: (description:string)=> `//div[contains(@class,"entry-content")]//p[normalize-space(text())="${description}"]`,
@@ -630,6 +722,21 @@ export const Selectors = {
             embed: '//div[@class="wpuf-embed-preview"]//a',
             ratings: '//li[contains(@class,"wpuf-field-data-ratings")]',
         },
+
+        productFormData:{
+            title: (title:string)=> `//h1[normalize-space(text())='${title}']`,
+            description: (description:string)=> `//div[contains(@class,"entry-content")]//p[normalize-space(text())="${description}"]`,
+            excerpt: '//div[@class="wp-block-post-excerpt"]//p[1]',
+            regularPrice: '(//span[@class="woocommerce-Price-amount amount"]//bdi)[1]',
+            salePrice: '(//span[@class="woocommerce-Price-amount amount"]//bdi)[2]',
+            featuredImage: '//div[@class="wp-block-woocommerce-product-image-gallery "]//div[3]',
+            galleryImage: (number:string)=> `(//ol[@class="flex-control-nav flex-control-thumbs"]//img)[${number}]`,
+            category: '//span[text()="Category: "]/following-sibling::a',
+            tags: '//span[text()="Tags: "]/following-sibling::a',
+            brand: '//span[text()="Brands: "]/following-sibling::a',
+            reviews: '//a[normalize-space()="Reviews (0)"]',
+        },
+
         createPageWithShortcode: {
             // Add New Page
             addNewPage: '//a[@class="page-title-action"]',
@@ -653,6 +760,17 @@ export const Selectors = {
             confirmPublish: '//button[contains(@class,"components-button editor-post-publish-button")]',
             // Validate Page Created
             validatePageCreated: '//div[@class="post-publish-panel__postpublish-buttons"]//a[normalize-space(text())="View Page"]',
+        },
+
+        productPostForm: {
+            addBrand: '//input[@id="tag-name"]',
+            addCategory: '//input[@id="tag-name"]',
+            addTag: '//input[@id="tag-name"]',
+            addAttribute: '//input[@id="attribute_label"]',
+            saveSubmit: '//input[@id="submit"]',
+            saveAttribute: '//button[@id="submit"]',
+            configureAttributeTerms: '//a[normalize-space()="Configure terms"]',
+            addAttributeTerms: '//input[@id="tag-name"]',
         }
     },
 

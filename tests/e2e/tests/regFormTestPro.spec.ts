@@ -77,11 +77,9 @@ export default function regFormTestPro() {
             const BasicLogin = new BasicLoginPage(page);
             const RegForm = new RegFormPage(page);
             //Basic Login
-            await BasicLogin.basicLoginAndPluginVisit(Users.adminUsername, Users.adminPassword);
+            await BasicLogin.basicLogin(Users.adminUsername, Users.adminPassword);
             //Validate FrontEnd Registered
             await RegForm.validateUserRegisteredAdminEnd();
-
-            await new BasicLogoutPage(page).logOut();
         });
 
     });

@@ -103,7 +103,7 @@ if ( ! empty( $registry ) ) {
                     ?>
                 </h1>
                 <p class="wpuf-text-base wpuf-text-gray-500 wpuf-mt-3 wpuf-p-0" id="template-modal-description">
-                    <?php esc_html_e( 'Select from a pre-defined template or from a blank form', 'wp-user-frontend' ); ?>
+                    <?php esc_html_e( 'Select from a pre-defined template to get started quickly, or start from a blank form to build your own from scratch', 'wp-user-frontend' ); ?>
                 </p>
             </div>
 
@@ -117,7 +117,7 @@ if ( ! empty( $registry ) ) {
                                 type="text"
                                 id="template-search"
                                 placeholder="<?php esc_attr_e( 'Search Templates', 'wp-user-frontend' ); ?>"
-                                class="wpuf-w-full !wpuf-py-[4px] !wpuf-px-[14px] wpuf-border !wpuf-border-gray-300 wpuf-rounded-lg wpuf-text-base wpuf-bg-white wpuf-transition-all wpuf-duration-200 focus:wpuf-outline-none focus:wpuf-border-primary focus:wpuf-ring-1 focus:wpuf-ring-primary placeholder:wpuf-text-gray-400"
+                                class="wpuf-w-full !wpuf-py-[4px] !wpuf-px-[14px] wpuf-border !wpuf-border-gray-300 wpuf-rounded-lg wpuf-text-base wpuf-bg-white wpuf-transition-all wpuf-duration-200 focus:wpuf-outline-none focus:!wpuf-border-[#10b981] focus:wpuf-ring-1  placeholder:wpuf-text-gray-400 wpuf-shadow-primary"
                             />
                             <div class="wpuf-absolute wpuf-right-4 wpuf-top-1/2 wpuf--translate-y-1/2 wpuf-pointer-events-none">
                                 <svg class="wpuf-h-5 wpuf-w-5 wpuf-text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -131,9 +131,9 @@ if ( ! empty( $registry ) ) {
                     <div class="wpuf-mx-4">
                         <ul class="wpuf-space-y-2">
                             <li>
-                                <button class="wpuf-template-category wpuf-w-full wpuf-flex wpuf-items-center wpuf-justify-between wpuf-text-left wpuf-px-8 wpuf-py-2 wpuf-text-sm wpuf-font-medium wpuf-transition-all wpuf-duration-200 wpuf-bg-gray-100 wpuf-text-primary wpuf-rounded-md" data-category="all">
+                                <button class="wpuf-template-category wpuf-w-64 wpuf-flex wpuf-items-center wpuf-justify-between wpuf-text-left wpuf-py-2 wpuf-text-sm wpuf-font-medium wpuf-transition-all wpuf-duration-200 wpuf-bg-gray-100 wpuf-text-primary wpuf-rounded-md !wpuf-ml-6 !wpuf-mr-10 wpuf-pl-4 wpuf-pr-4" data-category="all">
                                     <span><?php esc_html_e( 'All Templates', 'wp-user-frontend' ); ?></span>
-                                    <span class="wpuf-border wpuf-border-primary wpuf-text-primary wpuf-text-sm wpuf-font-semibold wpuf-px-2.5 wpuf-py-0.5 wpuf-rounded-full">
+                                    <span class="wpuf-border wpuf-border-primary wpuf-text-primary wpuf-text-sm wpuf-font-semibold wpuf-px-2.5 wpuf-py-0.5 wpuf-rounded-full wpuf-ml-6">
                                         <?php
                                         $total_count = count($registry) + 1; // +1 for blank form
                                         if (!empty($pro_templates)) {
@@ -146,9 +146,10 @@ if ( ! empty( $registry ) ) {
                             </li>
                             <?php foreach ( $categories as $slug => $category ) : ?>
                                 <li>
-                                    <button class="wpuf-template-category wpuf-w-full wpuf-flex wpuf-items-center wpuf-justify-between wpuf-text-left wpuf-px-8 wpuf-py-2 wpuf-text-sm wpuf-transition-all wpuf-duration-200 wpuf-text-gray-700 hover:wpuf-text-primary hover:wpuf-bg-gray-100 wpuf-rounded-md" data-category="<?php echo esc_attr( $slug ); ?>">
+
+                                    <button class="wpuf-template-category wpuf-w-64 wpuf-flex wpuf-items-center wpuf-justify-between wpuf-text-left wpuf-py-2 wpuf-text-sm wpuf-transition-all wpuf-duration-200 wpuf-text-gray-700 hover:wpuf-text-primary hover:wpuf-bg-gray-100 wpuf-rounded-md !wpuf-ml-6 !wpuf-mr-10 wpuf-pl-4 wpuf-pr-4" data-category="<?php echo esc_attr( $slug ); ?>">
                                         <span><?php echo esc_html( $category['label'] ); ?></span>
-                                        <span class="wpuf-text-gray-500 wpuf-px-2 wpuf-py-0.5 wpuf-text-sm">
+                                        <span class="wpuf-text-gray-500 wpuf-px-2 wpuf-py-0.5 wpuf-text-sm wpuf-ml-6">
                                             <?php echo esc_html( $category_counts[ $slug ] ); ?>
                                         </span>
                                     </button>
@@ -358,11 +359,11 @@ if ( ! empty( $registry ) ) {
                 if (searchTerm.length > 0) {
                     var $allButtons = $('.wpuf-template-category');
                     $allButtons.removeClass( 'wpuf-bg-gray-100 wpuf-text-primary wpuf-font-medium' ).addClass( 'wpuf-text-gray-700 hover:wpuf-text-primary hover:wpuf-bg-gray-100' );
-                    $allButtons.find('span:last-child').attr('class', 'wpuf-text-gray-500 wpuf-px-2 wpuf-py-0.5 wpuf-text-sm');
+                    $allButtons.find('span:last-child').attr('class', 'wpuf-text-gray-500 wpuf-px-2 wpuf-py-0.5 wpuf-text-sm wpuf-ml-6');
 
                     var $allCategoryButton = $allButtons.filter('[data-category="all"]');
                     $allCategoryButton.removeClass( 'wpuf-text-gray-700 hover:wpuf-text-primary hover:wpuf-bg-gray-100' ).addClass( 'wpuf-bg-gray-100 wpuf-text-primary wpuf-font-medium' );
-                    $allCategoryButton.find('span:last-child').attr('class', 'wpuf-border wpuf-border-primary wpuf-text-primary wpuf-text-sm wpuf-font-semibold wpuf-px-2.5 wpuf-py-0.5 wpuf-rounded-full');
+                    $allCategoryButton.find('span:last-child').attr('class', 'wpuf-border wpuf-border-primary wpuf-text-primary wpuf-text-sm wpuf-font-semibold wpuf-px-2.5 wpuf-py-0.5 wpuf-rounded-full wpuf-ml-6');
                 }
 
                 $templates.each( function() {
@@ -387,11 +388,11 @@ if ( ! empty( $registry ) ) {
                 
                 // Reset all buttons to inactive state
                 $allButtons.removeClass( 'wpuf-bg-gray-100 wpuf-text-primary wpuf-font-medium' ).addClass( 'wpuf-text-gray-700 hover:wpuf-text-primary hover:wpuf-bg-gray-100' );
-                $allButtons.find('span:last-child').attr('class', 'wpuf-text-gray-500 wpuf-px-2 wpuf-py-0.5 wpuf-text-sm');
+                $allButtons.find('span:last-child').attr('class', 'wpuf-text-gray-500 wpuf-px-2 wpuf-py-0.5 wpuf-text-sm wpuf-ml-6');
                 
                 // Set active state for the clicked button
                 $button.removeClass( 'wpuf-text-gray-700 hover:wpuf-text-primary hover:wpuf-bg-gray-100' ).addClass( 'wpuf-bg-gray-100 wpuf-text-primary wpuf-font-medium' );
-                $button.find('span:last-child').attr('class', 'wpuf-border wpuf-border-primary wpuf-text-primary wpuf-text-sm wpuf-font-semibold wpuf-px-2.5 wpuf-py-0.5 wpuf-rounded-full');
+                $button.find('span:last-child').attr('class', 'wpuf-border wpuf-border-primary wpuf-text-primary wpuf-text-sm wpuf-font-semibold wpuf-px-2.5 wpuf-py-0.5 wpuf-rounded-full wpuf-ml-6');
 
                 // Filter templates
                 var $templates = $( '.wpuf-template-item' );

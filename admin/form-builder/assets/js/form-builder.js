@@ -538,6 +538,7 @@
             post_title_editing: false,
             isDirty: false,
             shortcodeCopied: false,
+            validation_error_msg: '',
             logoUrl: wpuf_form_builder.asset_url + '/images/wpuf-icon-circle.svg',
             settings_titles: wpuf_form_builder.settings_titles,
             settings_items: wpuf_form_builder.settings_items,
@@ -731,7 +732,7 @@
                 if (_.isFunction(this.validate_form_before_submit) && !this.validate_form_before_submit()) {
 
                     this.warn({
-                        title: 'Incomplete Post Form',
+                        title: 'Post Form Validation Error!',
                         html: this.validation_error_msg,
                         reverseButtons: true,
                         customClass: {
@@ -784,8 +785,22 @@
                         toastr.success(self.i18n.saved_form_data);
                     },
 
-                    error: function () {
+                    error: function (response) {
                         self.is_form_saving = false;
+
+                        // Handle server-side validation errors
+                        // WordPress AJAX sends errors in response.data
+                        if (response && response.data) {
+                            self.warn({
+                                title: 'Validation Error',
+                                html: response.data,
+                                reverseButtons: true,
+                                customClass: {
+                                    cancelButton: '!wpuf-bg-white !wpuf-text-black !wpuf-border !wpuf-border-solid !wpuf-border-gray-300 focus:!wpuf-shadow-none',
+                                    confirmButton: '!wpuf-text-white !wpuf-bg-primary',
+                                },
+                            });
+                        }
                     }
                 });
             },
@@ -818,9 +833,14 @@
                     this.active_settings_title = this.settings_titles[menu].sub_items[submenu].label;
                 }
             },
-
+            
             switch_form_settings_pic_radio_item: function ( key, value ) {
                 this.form_settings[key] = value;
+            },
+
+            // Show warning dialog using SweetAlert2
+            warn: function (options) {
+                Swal.fire(options);
             }
         }
     });

@@ -20,7 +20,7 @@ features:
     name: Admin is visiting WPUF Registration Form List
   - id: LS0010
     name: Admin is validating WPUF Pages
-  - id: LS00011
+  - id: LS0011
     name: Admin is validating WPUF Pages from frontend
   - id: LS0012
     name: Admin is validating account page tabs from frontend
@@ -45,7 +45,7 @@ features:
   - id: LS0022
     name: Admin is activating dokan lite
   - id: LS0023
-    name: Admin is logging out succesfully
+    name: Admin is logging out successfully
 
   # Post Forms
   - id: PF0001

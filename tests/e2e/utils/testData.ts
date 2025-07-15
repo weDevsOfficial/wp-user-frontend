@@ -34,11 +34,11 @@ const Users: {
     adminPassword: process.env.QA_ADMIN_PASSWORD ? process.env.QA_ADMIN_PASSWORD : 'password',
 
     //New User Credentials
-    userName: process.env.QA_NEW_USERNAME ? process.env.QA_NEW_USERNAME : 'Testuser0001',
-    userEmail: process.env.QA_NEW_USEREMAIL ? process.env.QA_NEW_USEREMAIL : 'Testuser0001@yopmail.com',
-    userFirstName: process.env.QA_NEW_FIRSTNAME ? process.env.QA_NEW_FIRSTNAME : 'Test',
-    userLastName: process.env.QA_NEW_LASTNAME ? process.env.QA_NEW_LASTNAME : 'User',
-    userPassword: process.env.QA_NEW_PASSWORD ? process.env.QA_NEW_PASSWORD : 'Testuser0001@yopmail.com',
+    userName: 'Testuser0001',
+    userEmail: 'Testuser0001@yopmail.com',
+    userFirstName: 'Test',
+    userLastName: 'User',
+    userPassword: 'Testuser0001@yopmail.com',
 };
 
 /**-----------------------------------*/
@@ -84,7 +84,7 @@ const PostForm: {
     description: '',
     excerpt: '',
     featuredImage: 'uploadeditems/sample_image.PNG',
-    category: 'Technology',
+    category: 'Science',
     tags: 'AI',
     text: '',
     textarea: '',
@@ -111,6 +111,49 @@ const PostForm: {
     googleMaps: '',
     embed: '',
     ratings: '',
+};
+
+const ProductForm: {
+    //Post Form Data
+    formName: string;
+    title: string;
+    description: string;
+    excerpt: string;
+    productImage: string;
+    tags: string;
+    regularPrice: string;
+    salePrice: string;
+    imageGallery1: string;
+    imageGallery2: string;
+    catalogVisibility: string;
+    purchaseNote: string;
+    brand: string;
+    category: string;
+    tag: string;
+    color: string;
+    visibility: string;
+    shippingClass: string;
+    type: string;
+} = {
+    formName: '',
+    title: 'iPhone 16 Pro Max',
+    description: '',
+    excerpt: '',
+    productImage: 'uploadeditems/iPhone_16_pro_max_1.jpg',
+    category: 'Electronics',
+    tags: 'Smartphone',
+    regularPrice: '100',
+    salePrice: '90',
+    imageGallery1: 'uploadeditems/iPhone_16_pro_max_2.jpeg',
+    imageGallery2: 'uploadeditems/iPhone_16_pro_max_3.png',
+    catalogVisibility: 'visible',
+    purchaseNote: '',
+    brand: 'Apple',
+    tag: 'Smartphone',
+    color: 'Red',
+    visibility: 'featured',
+    shippingClass: '-1',
+    type: 'simple',
 };
 
 /**------------------------------------------*/
@@ -153,5 +196,6 @@ export {
     Urls,
     Users,
     PostForm,
+    ProductForm,
     RegistrationForm,
 };

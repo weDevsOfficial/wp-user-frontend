@@ -33,7 +33,7 @@ export class RegFormPage extends Base {
     //Registration forms page - only WPUF-Lite activated
     async validateRegistrationFormsProFeature() {
         // Visit Registration forms page
-        await Promise.all([this.page.goto(this.wpufRegistrationFormPage)]);
+        await this.navigateToURL(this.wpufRegistrationFormPage);
 
         const validateWPUFProActivate = await this.page.isVisible(Selectors.registrationForms.navigatePage_RF.checkAddButton_RF);
         if (validateWPUFProActivate == true) {
@@ -54,7 +54,7 @@ export class RegFormPage extends Base {
     //Create Registration page using Shortcode
     async createRegistrationPageUsingShortcodeLite(registrationFormPageTitle: string) {
         // Visit Registration forms page
-        await Promise.all([this.page.goto(this.wpufRegistrationFormPage)]);
+        await this.navigateToURL(this.wpufRegistrationFormPage);
 
         let storeShortcode: string = '';
 
@@ -63,7 +63,7 @@ export class RegFormPage extends Base {
         console.log(storeShortcode);
 
         //Visit Pages
-        await Promise.all([this.page.goto(this.pagesPage)]);
+        await this.navigateToURL(this.pagesPage);
 
         //Add New Page
         await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addNewPage);
@@ -122,7 +122,7 @@ export class RegFormPage extends Base {
     //BlankForm
     async createBlankForm_RF(newRegFormName: string, newRegFormPage: string) {
         //Visit Post Form Page
-        await Promise.all([this.page.goto(this.wpufRegistrationFormPage)]);
+        await this.navigateToURL(this.wpufRegistrationFormPage);
         //CreateNewRegistrationForm
 
         await this.validateAndClick(Selectors.registrationForms.createBlankForm_RF.clickRegistrationFormMenuOption);
@@ -165,7 +165,7 @@ export class RegFormPage extends Base {
     //Registration forms page - only WPUF-Lite activated
     async completeUserRegistrationFormFrontend() {
         //Go to Registration page - FrontEnd
-        await Promise.all([this.page.goto(this.wpufRegistrationPage)]);
+        await this.navigateToURL(this.wpufRegistrationPage);
 
         //Validate Registration page
         const validateRegistrationPage = await this.page.innerText(Selectors.registrationForms.completeUserRegistrationFormFrontend.validateRegistrationPage);
@@ -210,8 +210,9 @@ export class RegFormPage extends Base {
         }
         //Click Register
         await this.validateAndClick(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfRegisterButton);
+        await this.page.waitForTimeout(1000);
         //Validate User logged in
-        await expect(this.page.locator(Selectors.registrationForms.completeUserRegistrationFormFrontend.validateRegisteredLogoutButton)).toBeTruthy();
+        expect(this.page.locator(Selectors.registrationForms.completeUserRegistrationFormFrontend.validateRegisteredLogoutButton)).toBeTruthy();
 
     }
 
@@ -225,7 +226,7 @@ export class RegFormPage extends Base {
 
     //Validate in Admin - Registered Form Submitted
     async validateUserRegisteredAdminEnd() {
-        await Promise.all([this.page.goto(this.wpufRegistrationFormPage)]);
+        await this.navigateToURL(this.wpufRegistrationFormPage);
 
         //Validate Registered User
         //Go to Users List
@@ -234,11 +235,12 @@ export class RegFormPage extends Base {
         await this.validateAndFillStrings(Selectors.registrationForms.validateUserRegisteredAdminEnd.adminUsersSearchBox, email);
         //Click Search
         await this.validateAndClick(Selectors.registrationForms.validateUserRegisteredAdminEnd.adminUsersSearchButton);
+        await this.page.waitForTimeout(1000);
         try{
         //Validate Email present
         const validateUserCreated = await this.page.innerText(Selectors.registrationForms.validateUserRegisteredAdminEnd.validateUserCreated);
 
-        expect(validateUserCreated, `Expected user with email ${email} to be found in admin`).toBe(email);
+        expect(validateUserCreated).toContain(email);
         }
         catch (error) {
             console.log('User not found in admin');

@@ -3,8 +3,8 @@ Contributors: tareq1988, nizamuddinbabu, wedevs
 Donate link: https://tareq.co/donate/
 Tags: frontend post, forms, user directory, profile builder, membership
 Requires at least: 4.0
-Tested up to: 6.8
-Stable tag: 4.1.6
+Tested up to: 6.8.1
+Stable tag: 4.1.7
 Requires PHP: 5.6
 License: GPLv2
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -277,9 +277,16 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 14. Customize your Forms in Gutenberg Editor
 
 == Changelog ==
+= v4.1.7 (15 July, 2025) =
+* New - Add Sort Order for subscription
+* Enhancement - Update country list and improve state handling
+* Fix - Conflict with email log plugin
+* Fix - Disable "Update Post Notification" pro features preview
+* Fix - CSS on long form lists
+
 = v4.1.6 (30 June, 2025) =
-* Enhance: form title, description toggle added for post form
-* Enhance: separate translation context for date range "To"
+* Enhancement - form title, description toggle added for post form
+* Enhancement - separate translation context for date range "To"
 * Fix - PayPal redirection issues
 * Fix - Allowed memory size error on the Post Forms List Page
 * Fix - Improved registration page redirects to prevent interference with XML sitemap and XML file requests

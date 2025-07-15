@@ -25,13 +25,13 @@ class Form_Field_Cloudflare_Turnstile extends Field_Contract {
      * @return void
      */
     public function render( $field_settings, $form_id, $type = 'post', $post_id = null ) {
-        $turnstile = wpuf_get_option( 'login_form_turnstile', 'wpuf_profile', 'off' );
-        $site_key  = wpuf_get_option( 'turnstile_site_key', 'wpuf_general', '' );
-        $theme     = ! empty( $field_settings['turnstile_theme'] ) ? $field_settings['turnstile_theme'] : 'light';
-        $size      = ! empty( $field_settings['turnstile_size'] ) ? $field_settings['turnstile_size'] : 'normal';
-        $action    = ! empty( $field_settings['turnstile_type'] ) ? $field_settings['turnstile_type'] : 'non-interactive';
+        $enable_turnstile = wpuf_get_option( 'enable_turnstile', 'wpuf_general', 'off' );
+        $site_key         = wpuf_get_option( 'turnstile_site_key', 'wpuf_general', '' );
+        $theme            = ! empty( $field_settings['turnstile_theme'] ) ? $field_settings['turnstile_theme'] : 'light';
+        $size             = ! empty( $field_settings['turnstile_size'] ) ? $field_settings['turnstile_size'] : 'normal';
+        $action           = ! empty( $field_settings['turnstile_type'] ) ? $field_settings['turnstile_type'] : 'non-interactive';
 
-        if ( 'off' === $turnstile || empty( $site_key ) ) {
+        if ( wpuf_is_checkbox_or_toggle_on( $enable_turnstile ) || empty( $site_key ) ) {
             return;
         }
 

@@ -1,0 +1,39 @@
+---
+alwaysApply: false
+---
+[
+  {
+    "name": "Discover WordPress Action Hooks",
+    "description": "Detect all 'do_action' hooks and log them for documentation.",
+    "trigger": "code",
+    "pattern": "do_action\\(\\s*['\"]([^'\"]+)['\"](.*?)\\);?",
+    "comment": "Action Hook '{{1}}' found. Document this in /docs/hooks/actions.md using the standard Markdown format.",
+    "actions": []
+  },
+  {
+    "name": "Discover WordPress Filter Hooks",
+    "description": "Detect all 'apply_filters' hooks and log them for documentation.",
+    "trigger": "code",
+    "pattern": "apply_filters\\(\\s*['\"]([^'\"]+)['\"](.*?)\\);?",
+    "comment": "Filter Hook '{{1}}' found. Document this in /docs/hooks/filters.md using the standard Markdown format.",
+    "actions": []
+  }
+]
+[
+  {
+    "name": "Discover WordPress Action Hooks",
+    "description": "Detect all 'do_action' hooks and log them for documentation.",
+    "trigger": "code",
+    "pattern": "do_action\\(\\s*['\"]([^'\"]+)['\"](.*?)\\);?",
+    "comment": "Action Hook '{{1}}' found. Document this in /docs/hooks/actions.md using the standard Markdown format.",
+    "actions": []
+  },
+  {
+    "name": "Discover WordPress Filter Hooks",
+    "description": "Detect all 'apply_filters' hooks and log them for documentation.",
+    "trigger": "code",
+    "pattern": "apply_filters\\(\\s*['\"]([^'\"]+)['\"](.*?)\\);?",
+    "comment": "Filter Hook '{{1}}' found. Document this in /docs/hooks/filters.md using the standard Markdown format.",
+    "actions": []
+  }
+]

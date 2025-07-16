@@ -1,0 +1,31 @@
+---
+alwaysApply: true
+---
+{
+  "name": "Document WP Hook to Markdown",
+  "description": "Generate documentation for a WordPress hook and append it to the appropriate Markdown file in /docs/hooks/",
+  "scope": "code",
+  "body": [
+    "You are documenting a WordPress hook found in this code. Read the code context and extract the following:",
+    "- Hook type: Action or Filter",
+    "- Hook name",
+    "- Parameters (names, types, descriptions — infer from usage if not explicitly documented)",
+    "- Optional: @since if available or known from comments/context",
+    "- Short description (based on what this hook does in the plugin)",
+    "",
+    "Generate a Markdown block in the following format:",
+    "",
+    "## {hook_name}",
+    "",
+    "**Type**: {Action|Filter}  ",
+    "**Parameters**:",
+    "{List parameters like}",
+    "- `$param` *(type)*: Description",
+    "",
+    "{If since is known}",
+    "**Since**: x.x.x  ",
+    "**Description**: {What the hook does}",
+    "",
+    "Append this block to either `/docs/hooks/actions.md` or `/docs/hooks/filters.md` based on the hook type. Do not modify the source code."
+  ]
+}

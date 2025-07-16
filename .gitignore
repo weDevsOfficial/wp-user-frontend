@@ -5,7 +5,7 @@ export.sh
 .idea
 .vscode
 .github/prompts
-.cursor
+cursor
 /.DS_Store
 nbproject
 node_modules

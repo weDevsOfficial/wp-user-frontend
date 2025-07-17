@@ -4,7 +4,7 @@ import { expect, type Page } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Base } from './base';
 import { faker } from '@faker-js/faker';
-import { PostForm, ProductForm, Urls } from '../utils/testData';
+import { DownloadsForm, PostForm, ProductForm, Urls } from '../utils/testData';
 //import { TestData } from '../tests/testdata';
 
 
@@ -148,6 +148,30 @@ export class PostFormPage extends Base {
         //Click Product Form  
         await this.validateAndClick(Selectors.postForms.createProduct_PF.clickProductForm);
 
+        //EnterName
+        await this.page.reload();
+        //Click Form Name Box
+        await this.validateAndClick(Selectors.postForms.createBlankForm_PF.editNewFormName);
+        // Save Form
+        await this.validateAndClick(Selectors.postForms.formSettings.saveFormSettings);
+        // Confirm Save
+        await this.assertionValidate(Selectors.postForms.formSettings.validateFormSettingsSaved);
+
+    }
+
+    async createDownloadsPostForm() {
+        //Visit Post Form Page
+        await this.navigateToURL(this.wpufPostFormPage);
+        //CreateNewPostForm
+        await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
+        await this.page.reload();
+        //Start
+        //Click Add Form
+        await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickPostAddForm);
+        //ClickPostForm
+        //Templates 
+        //Click Product Form  
+        await this.validateAndClick(Selectors.postForms.createDownloads_PF.clickDownloadsForm);
         //EnterName
         await this.page.reload();
         //Click Form Name Box
@@ -541,6 +565,24 @@ export class PostFormPage extends Base {
 
     }
 
+    async setupForEDDProduct() {
+        await this.navigateToURL(this.eddCatPage);
+
+        await this.validateAndFillStrings(Selectors.postForms.eddPostForm.addCategory, 'plugins');
+        await this.validateAndClick(Selectors.postForms.eddPostForm.saveSubmit);
+        await this.page.waitForTimeout(1000);
+
+        await this.navigateToURL(this.eddTagPage);
+
+        await this.validateAndFillStrings(Selectors.postForms.eddPostForm.addTag, 'wpuf');
+        await this.validateAndClick(Selectors.postForms.eddPostForm.saveSubmit);
+        await this.page.waitForTimeout(1000);
+
+        await this.validateAndFillStrings(Selectors.postForms.eddPostForm.addTag, 'wpuf-pro');
+        await this.validateAndClick(Selectors.postForms.eddPostForm.saveSubmit);
+        await this.page.waitForTimeout(1000);
+    }
+
     async createProductFE(){
         //Go to Accounts page - FrontEnd
         await this.navigateToURL(this.addProductPage);
@@ -549,6 +591,7 @@ export class PostFormPage extends Base {
         //Enter Product Name
         await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.productTitleFE, ProductForm.title);
         await this.selectOptionWithLabel(Selectors.postForms.productFrontendCreate.selectCategory, ProductForm.category );
+        await this.page.waitForTimeout(1000);
         await this.page.frameLocator(Selectors.postForms.productFrontendCreate.productDescription1)
             .locator(Selectors.postForms.productFrontendCreate.productDescription2).fill(ProductForm.description=faker.lorem.sentence(1));
         await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.productExcerpt, ProductForm.excerpt=faker.lorem.sentence(1));
@@ -577,10 +620,41 @@ export class PostFormPage extends Base {
         await this.page.waitForTimeout(1000);
     }
 
+    async createDownloadsFE(){
+        //Go to Accounts page - FrontEnd
+        await this.navigateToURL(this.addDownloadsPage);
+
+        //Post Form process
+        //Enter Product Name
+        await this.validateAndFillStrings(Selectors.postForms.downloadsFrontendCreate.downloadsTitleFE, DownloadsForm.title);
+        await this.selectOptionWithLabel(Selectors.postForms.downloadsFrontendCreate.downloadCategory, DownloadsForm.category );
+        await this.page.waitForTimeout(1000);
+        await this.page.frameLocator(Selectors.postForms.downloadsFrontendCreate.downloadsDescription1)
+            .locator(Selectors.postForms.downloadsFrontendCreate.downloadsDescription2).fill(DownloadsForm.description=faker.lorem.sentence(1));
+        await this.validateAndFillStrings(Selectors.postForms.downloadsFrontendCreate.downloadsExcerpt, DownloadsForm.excerpt=faker.lorem.sentence(1));
+        await this.validateAndFillStrings(Selectors.postForms.downloadsFrontendCreate.downloadsRegularPrice, DownloadsForm.regularPrice);
+        await this.page.setInputFiles(Selectors.postForms.downloadsFrontendCreate.downloadsImage, DownloadsForm.downloadsImage);
+        await this.page.waitForTimeout(500);
+        await this.assertionValidate(Selectors.postForms.downloadsFrontendCreate.uploads('1'));
+        await this.validateAndFillStrings(Selectors.postForms.downloadsFrontendCreate.purchaseNote, DownloadsForm.purchaseNote=faker.lorem.sentence(1));
+        await this.page.setInputFiles(Selectors.postForms.downloadsFrontendCreate.downloadableFiles, DownloadsForm.downloadableFiles);
+        await this.page.waitForTimeout(500);
+        await this.assertionValidate(Selectors.postForms.downloadsFrontendCreate.uploads('2'));
+        await this.selectOptionWithLabel(Selectors.postForms.downloadsFrontendCreate.downloadsTag, DownloadsForm.tags );
+        await this.validateAndClick(Selectors.postForms.downloadsFrontendCreate.createDownloads);
+        await this.page.waitForTimeout(1000);
+    }
+
     async validateProductCreated(){
         //Validate Product Submitted
         const validateProductSubmitted = await this.page.innerText(Selectors.postForms.postFormsFrontendCreate.validatePostSubmitted(ProductForm.title));
         expect(validateProductSubmitted).toContain(ProductForm.title);
+    }
+
+    async validateDownloadsCreated(){
+        //Validate Product Submitted
+        const validateProductSubmitted = await this.page.innerText(Selectors.postForms.postFormsFrontendCreate.validatePostSubmitted(DownloadsForm.title));
+        expect(validateProductSubmitted).toContain(DownloadsForm.title);
     }
 
     async validateEnteredProductData(){
@@ -617,5 +691,37 @@ export class PostFormPage extends Base {
         expect(validateProductBrand).toContain(ProductForm.brand);
         //Validate Product Reviews
         await this.assertionValidate(Selectors.postForms.productFormData.reviews);
+    }
+
+    async validateEnteredDownloadsData(){
+        //Validate Product Title
+        const validateProductTitle = await this.page.innerText(Selectors.postForms.downloadsFormData.title(DownloadsForm.title));
+        expect(validateProductTitle).toContain(DownloadsForm.title);
+        //Validate Product Description
+        const validateProductDescription = await this.page.innerText(Selectors.postForms.downloadsFormData.description(DownloadsForm.description));
+        expect(validateProductDescription).toContain(DownloadsForm.description);
+        // images
+        await this.assertionValidate(Selectors.postForms.downloadsFormData.downloadsImage);
+        //Validate Product Purchase Button
+        await this.assertionValidate(Selectors.postForms.downloadsFormData.purchaseButton);
+    }
+
+    async validateEnteredDownloadsDataBE(){
+        await this.navigateToURL(this.downloadsPage);
+        //Validate Product Title
+        await this.validateAndClick(Selectors.postForms.downloadsFormData.titleBE(DownloadsForm.title));
+        await this.page.waitForTimeout(1000);
+        //Validate Product Price
+        await this.assertionValidate(Selectors.postForms.downloadsFormData.price(DownloadsForm.regularPrice));
+        //Validate Product Excerpt
+        await this.assertionValidate(Selectors.postForms.downloadsFormData.excerpt(DownloadsForm.excerpt));
+        //Validate Product Category
+        await this.validateAndClick(Selectors.postForms.downloadsFormData.clickDownload);
+        await this.page.waitForTimeout(300);
+        await this.validateAndClick(Selectors.postForms.downloadsFormData.clickCategory);
+        await this.assertionValidate(Selectors.postForms.downloadsFormData.categoryBE(DownloadsForm.category));
+        //Validate Product Tags
+        await this.validateAndClick(Selectors.postForms.downloadsFormData.clickTag);
+        await this.assertionValidate(Selectors.postForms.downloadsFormData.tagBE(DownloadsForm.tags));
     }
 }

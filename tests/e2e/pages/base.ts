@@ -37,6 +37,11 @@ export class Base {
     readonly productTagPage: string = Urls.baseUrl + '/wp-admin/edit-tags.php?taxonomy=product_tag&post_type=product';
     readonly productAttributePage: string = Urls.baseUrl + '/wp-admin/edit.php?post_type=product&page=product_attributes';
     readonly addProductPage: string = Urls.baseUrl + '/add-product/';
+    readonly eddCatPage: string = Urls.baseUrl + '/wp-admin/edit-tags.php?taxonomy=download_category&post_type=download';
+    readonly eddTagPage: string = Urls.baseUrl + '/wp-admin/edit-tags.php?taxonomy=download_tag&post_type=download';
+    readonly addDownloadsPage: string = Urls.baseUrl + '/add-downloads/';
+    readonly downloadsPage: string = Urls.baseUrl + '/wp-admin/edit.php?post_type=download';
+
 
     constructor(page: Page) {
         this.page = page;

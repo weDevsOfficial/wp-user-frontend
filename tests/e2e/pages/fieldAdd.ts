@@ -83,6 +83,28 @@ export class FieldAddPage extends Base {
         await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateProductAttribute);
     }
 
+    async validateDownloadsPostFields_PF(){
+        // Validate
+        // Downloads Title
+        await this.assertionValidate(Selectors.postForms.validateDownloadsPostFields_PF.validateDownloadsTitle);
+        //Downloads Category
+        await this.assertionValidate(Selectors.postForms.validateDownloadsPostFields_PF.validateDownloadsCategory);
+        // Downloads Description
+        await this.assertionValidate(Selectors.postForms.validateDownloadsPostFields_PF.validateDownloadsDescription);
+        // Downloads Price
+        await this.assertionValidate(Selectors.postForms.validateDownloadsPostFields_PF.validateDownloadsShDescription);
+        // Regular Price
+        await this.assertionValidate(Selectors.postForms.validateDownloadsPostFields_PF.validateRegularPrice);
+        // Downloads Image
+        await this.assertionValidate(Selectors.postForms.validateDownloadsPostFields_PF.validateDownloadsImage);
+        // Purchase Note
+        await this.assertionValidate(Selectors.postForms.validateDownloadsPostFields_PF.validatepurchaseNote);
+        // Downloadable Files
+        await this.assertionValidate(Selectors.postForms.validateDownloadsPostFields_PF.validateDownloadableFiles);
+        // Product Tag
+        await this.assertionValidate(Selectors.postForms.validateDownloadsPostFields_PF.validateProductTag);
+    }
+
 
 
     /********************* Taxonomies *********************/
@@ -122,6 +144,10 @@ export class FieldAddPage extends Base {
         await this.validateAndClick(Selectors.postForms.addProductTaxo_PF.attributeBlock);
     }
 
+    async addDownloadsTaxoFields_PF(){
+        //Taxonomies
+        await this.validateAndClick(Selectors.postForms.addDownloadsTaxo_PF.tagBlock);
+    }
 
 
 

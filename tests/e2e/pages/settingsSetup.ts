@@ -371,7 +371,7 @@ export class SettingsSetupPage extends Base {
         expect(await this.page.waitForSelector(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileLoginPage)).toBeTruthy();
         //Again - Click Login/Registration
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfile2);
-        await this.page.selectOption(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileLoginPage, { label: '— Select —' });
+        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileLoginPage, '— Select —' );
         //Save Login/Registration
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileSave);
          
@@ -383,9 +383,9 @@ export class SettingsSetupPage extends Base {
 
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccount);
         await this.page.waitForTimeout(200);
-        await this.page.selectOption(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountPage, { label: 'Account' });
+        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountPage, 'Account' );
 
-        await this.page.selectOption(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountActiveTab, { label: 'Dashboard' });
+        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountActiveTab, 'Dashboard' );
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountSave);
 
 
@@ -398,7 +398,7 @@ export class SettingsSetupPage extends Base {
          
 
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccount);
-        await this.page.selectOption(Selectors.settingsSetup.wpufSettingsPage.settingsTabEditProfile, { label: `${label}` });
+        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabEditProfile, `${label}` );
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountSave);
     }
 
@@ -418,7 +418,7 @@ export class SettingsSetupPage extends Base {
         //Click Frontend Posting
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPosting);
         //Set Default Post Form 
-        await this.page.selectOption(Selectors.settingsSetup.wpufSettingsPage.setDefaultPostForm, { label: postFormPresetFrontEndTitle });
+        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.setDefaultPostForm, postFormPresetFrontEndTitle );
         //Save FrontEnd Posting
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPostingSave);
 
@@ -445,7 +445,7 @@ export class SettingsSetupPage extends Base {
         //Click Login/Registration
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfile2);
         //Set Registration Page Form
-        await this.page.selectOption(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileRegistrationPage, { label: registrationFormPageTitle });
+        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileRegistrationPage, registrationFormPageTitle );
         //Save Login/Registration
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileSave);
 
@@ -526,7 +526,7 @@ export class SettingsSetupPage extends Base {
         await this.page.waitForTimeout(200);
         //Select Role
         await this.assertionValidate(Selectors.settingsSetup.createNewUser.newUserSelectRole);
-        await this.page.selectOption(Selectors.settingsSetup.createNewUser.newUserSelectRole, { label: 'Subscriber' });
+        await this.selectOptionWithLabel(Selectors.settingsSetup.createNewUser.newUserSelectRole, 'Subscriber' );
         await this.page.waitForTimeout(200);
         //Create User
         await this.validateAndClick(Selectors.settingsSetup.createNewUser.newUserSubmit);
@@ -543,7 +543,7 @@ export class SettingsSetupPage extends Base {
         for (let i = 0; i < categoryNames.length; i++) {
             await this.validateAndFillStrings(Selectors.settingsSetup.categories.addNewCategory, categoryNames[i]);
             await this.validateAndClick(Selectors.settingsSetup.categories.submitCategory);
-            await this.page.waitForTimeout(200);
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.settingsSetup.categories.validateCategory(categoryNames[i]));
         }
     }
@@ -557,7 +557,7 @@ export class SettingsSetupPage extends Base {
         for (let i = 0; i < tagNames.length; i++) {
             await this.validateAndFillStrings(Selectors.settingsSetup.tags.addNewTag, tagNames[i]);
             await this.validateAndClick(Selectors.settingsSetup.tags.submitTag);
-            await this.page.waitForTimeout(200);
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.settingsSetup.tags.validateTag(tagNames[i]));
         }
     }

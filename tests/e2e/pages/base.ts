@@ -132,6 +132,22 @@ export class Base {
         expect(matchWithToast).toContain(extractedToast);
     }
 
+    //SelectOptionWithLabel
+    async selectOptionWithLabel(locator: string, label: string) {
+        const element = this.page.locator(locator);
+        await element.waitFor();
+        expect(element.isVisible).toBeTruthy();
+        await this.page.selectOption(locator, { label: label });
+    }
+
+    //SelectOptionWithLabel
+    async selectOptionWithValue(locator: string, value: string) {
+        const element = this.page.locator(locator);
+        await element.waitFor();
+        expect(element.isVisible).toBeTruthy();
+        await this.page.selectOption(locator, { value: value });
+    }
+
     // Wait for networkidle
     async waitForLoading() {
         await this.page.waitForLoadState('domcontentloaded', { timeout: 30000 });

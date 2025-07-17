@@ -313,6 +313,8 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
     $value = ! empty( $field['default'] ) ? $field['default'] : '';
     $value = ! empty( $field['value'] ) ? $field['value'] : $value;                           // default value
 
+    $is_pro_preview = ! empty( $field['pro_preview'] ) || ( ! wpuf_is_pro_active() && in_array( $field_key, [ 'notification_edit', 'notification_edit_to', 'notification_edit_subject', 'notification_edit_body' ] ) );
+
     // replace default value if already saved in DB
     if ( ! empty( $field['name'] ) ) {
         preg_match('/wpuf_settings\[(.*?)\]\[(.*?)\]/', $field['name'], $matches);
@@ -327,7 +329,9 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
     }
 
     // if the field is a pro fields preview, no need to load fields from db
-    if ( empty( $field['pro_preview'] ) ) {
+    if ( $is_pro_preview ) {
+        $value = ! empty( $field['value'] ) ? $field['value'] : $value;
+    } else {
         $value = isset( $form_settings[ $field_key ] ) ? $form_settings[ $field_key ] : $value;   // checking with isset because saved value can be empty string
     }
 
@@ -342,8 +346,9 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                     <input
                         :class="[setting_class_names('checkbox'), '!wpuf-mr-2']"
                         type="checkbox"
-                        name="<?php echo $name; ?>"
+                        name="<?php echo $is_pro_preview ? '' : $name; ?>"
                         <?php echo esc_attr( checked( $value, 'on', false ) ); ?>
+                        <?php echo $is_pro_preview ? 'disabled' : ''; ?>
                         id="<?php echo $field_key; ?>"/>
                 <?php } ?>
                 <?php
@@ -373,15 +378,22 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                     echo '</div>';
                 }
                 ?>
-                <?php if ( 'toggle' === $field['type'] ) { ?>
+                <?php if ( 'toggle' === $field['type'] ) { 
+                    // For pro preview notification fields, always show as 'off' (unchecked)
+                    $toggle_value = $value;
+                    if ( $is_pro_preview && strpos( $field_key, 'notification_' ) === 0 ) {
+                        $toggle_value = 'off';
+                    }
+                ?>
                     <label
                         for="<?php echo $field_key; ?>"
                         class="wpuf-relative wpuf-inline-flex wpuf-items-center wpuf-cursor-pointer wpuf-ml-2">
                         <input
                             type="checkbox"
                             id="<?php echo $field_key; ?>"
-                            name="<?php echo $name; ?>"
-                            <?php echo esc_attr( checked( $value, 'on', false ) ); ?>
+                            name="<?php echo $is_pro_preview ? '' : $name; ?>"
+                            <?php echo esc_attr( checked( $toggle_value, 'on', false ) ); ?>
+                            <?php echo $is_pro_preview ? 'disabled' : ''; ?>
                             class="wpuf-sr-only wpuf-peer">
                         <span class="wpuf-flex wpuf-items-center wpuf-w-10 wpuf-h-4 wpuf-bg-gray-300 wpuf-rounded-full wpuf-peer peer-checked:wpuf-bg-primary after:wpuf-w-6 after:wpuf-h-6 after:wpuf-bg-white after:wpuf-rounded-full after:wpuf-shadow-md after:wpuf-duration-300 peer-checked:after:wpuf-translate-x-4 after:wpuf-border after:wpuf-border-solid after:wpuf-border-gray-50"></span>
                     </label>
@@ -458,8 +470,9 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                 <input
                     :class="setting_class_names('text')"
                     type="<?php echo $field['type']; ?>"
-                    name="<?php echo $name; ?>"
+                    name="<?php echo $is_pro_preview ? '' : $name; ?>"
                     <?php echo ! empty( $field['placeholder'] ) ? 'placeholder=' . $field['placeholder'] : ''; ?>
+                    <?php echo $is_pro_preview ? 'disabled' : ''; ?>
                     id="<?php echo $field_key; ?>"
                     value="<?php echo $value; ?>"/>
             <?php } ?>
@@ -470,7 +483,8 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                 <textarea
                     :class="setting_class_names('textarea')"
                     rows="6"
-                    name="<?php echo $name; ?>"
+                    name="<?php echo $is_pro_preview ? '' : $name; ?>"
+                    <?php echo $is_pro_preview ? 'disabled' : ''; ?>
                     id="<?php echo $field_key; ?>"><?php echo $value; ?></textarea>
             <?php } ?>
 

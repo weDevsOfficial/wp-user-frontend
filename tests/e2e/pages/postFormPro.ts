@@ -10,7 +10,7 @@ import { Base } from './base';
 
 
 
-export class PostFormsPage extends Base {
+export class PostFormProPage extends Base {
 
     constructor(page: Page) {
         super(page);
@@ -22,21 +22,19 @@ export class PostFormsPage extends Base {
     /********************************/
 
     //BlankForm
-    async createBlankFormPostForm(newPostName: string) {
+    async createBlankFormPostFormPro(newPostName: string) {
 
         //Visit Post Form Page
-        await Promise.all([this.page.goto(this.wpufPostFormPage )]);
+        await this.navigateToURL(this.wpufPostFormPage );
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();
         //Start
         //Click Add Form
-        await this.assertionValidate(Selectors.postForms.createBlankForm_PF.clickPostAddForm);
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickPostAddForm);
 
         
         //Click Blank Form
-        await this.page.waitForSelector(Selectors.postForms.createBlankForm_PF.clickBlankForm);
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickBlankForm);
 
         //EnterName
@@ -52,9 +50,9 @@ export class PostFormsPage extends Base {
 
 
     //PresetForm
-    async createPresetPostForm(newPostName: string) {
+    async createPresetPostFormPro(newPostName: string) {
         //Visit Post Form Page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
+        await this.navigateToURL(this.wpufPostFormPage);
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();
@@ -83,9 +81,9 @@ export class PostFormsPage extends Base {
 
 
     //PresetForm
-    async createPresetPostFormWithGuestEnabled(newPostName: string) {
+    async createPresetPostFormWithGuestEnabledPro(newPostName: string) {
         //Visit Post Form Page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
+        await this.navigateToURL(this.wpufPostFormPage);
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();

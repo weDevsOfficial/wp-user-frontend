@@ -3731,6 +3731,7 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 .wpuf-bg-amber-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(217 119 6 / var(--tw-bg-opacity));
+  background-color: rgb(245 158 11 / var(--tw-bg-opacity));
 }
 
 .wpuf-bg-black\/25 {

@@ -20,6 +20,7 @@ export class Base {
     readonly wpMailLogPage: string = Urls.baseUrl + '/wp-admin/admin.php?page=wp-mail-log';
     readonly wpResetPage: string = Urls.baseUrl + '/wp-admin/tools.php?page=wp-reset';
     readonly wpufPostFormPage: string = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms';
+    readonly wpufRegFormPage: string = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
     readonly wpufSetupPage: string = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-setup';
     readonly wpufSettingsPage: string = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-settings';
     readonly wpufSettingsGeneralPage: string = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-settings-general';
@@ -29,9 +30,24 @@ export class Base {
     readonly wpufTransactionPage: string = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf_transaction';
     readonly wpufRegistrationFormPage: string = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';
     readonly wpufRegistrationPage: string = Urls.baseUrl + '/registration-page/';
+    readonly newRegFormPage: string = Urls.baseUrl + '/reg-here/';
+    readonly wpufLoginPage: string = Urls.baseUrl + '/login/';
+    readonly productBrandPage: string = Urls.baseUrl + '/wp-admin/edit-tags.php?taxonomy=product_brand&post_type=product';
+    readonly productCategoryPage: string = Urls.baseUrl + '/wp-admin/edit-tags.php?taxonomy=product_cat&post_type=product';
+    readonly productTagPage: string = Urls.baseUrl + '/wp-admin/edit-tags.php?taxonomy=product_tag&post_type=product';
+    readonly productAttributePage: string = Urls.baseUrl + '/wp-admin/edit.php?post_type=product&page=product_attributes';
+    readonly addProductPage: string = Urls.baseUrl + '/add-product/';
 
     constructor(page: Page) {
         this.page = page;
+    }
+
+    // URL navigation
+    async navigateToURL(url: string) {
+        await this.page.goto(url);
+        await this.waitForLoading();
+        //await expect(this.page.url()).toBe(url);
+        return true;
     }
 
     // Just Validate
@@ -42,16 +58,18 @@ export class Base {
 
     // Validate and Click
     async validateAndClick(locator: string) {
-        await this.page.locator(locator).waitFor();
-        expect(this.page.locator(locator).isVisible).toBeTruthy();
-        await this.page.locator(locator).click();
+        const element = this.page.locator(locator);
+        await element.waitFor();
+        expect(element.isVisible).toBeTruthy();
+        await element.click();
     }
 
     // Validate and Click by text
     async validateAndClickByText(locator: string) {
-        await this.page.getByText(locator).waitFor();
-        expect(this.page.getByText(locator).isVisible).toBeTruthy();
-        await this.page.getByText(locator).click();
+        const element = this.page.getByText(locator, { exact: true });
+        await element.waitFor();
+        expect(element.isVisible).toBeTruthy();
+        await element.click();
     }
 
     // Validate and Click any
@@ -87,23 +105,26 @@ export class Base {
 
     // Validate and Fill Strings
     async validateAndFillStrings(locator: string, value: string) {
-        await this.page.locator(locator).waitFor();
-        expect(this.page.locator(locator).isVisible).toBeTruthy();
-        await this.page.locator(locator).fill(value);
+        const element = this.page.locator(locator);
+        await element.waitFor();
+        expect(element.isVisible).toBeTruthy();
+        await element.fill(value);
     }
 
     // Validate and Fill Numbers
     async validateAndFillNumbers(locator: string, value: number) {
-        await this.page.locator(locator).waitFor();
-        expect(this.page.locator(locator).isVisible).toBeTruthy();
-        await this.page.locator(locator).fill(value.toString());
+        const element = this.page.locator(locator);
+        await element.waitFor();
+        expect(element.isVisible).toBeTruthy();
+        await element.fill(value.toString());
     }
 
     // Validate and CheckBox
     async validateAndCheckBox(locator: string) {
-        await this.page.locator(locator).waitFor();
-        expect(this.page.locator(locator).isVisible).toBeTruthy();
-        await this.page.locator(locator).check();
+        const element = this.page.locator(locator);
+        await element.waitFor();
+        expect(element.isVisible).toBeTruthy();
+        await element.check();
     }
 
     // Match Toast Notification message(s)
@@ -113,8 +134,7 @@ export class Base {
 
     // Wait for networkidle
     async waitForLoading() {
-        await this.page.waitForLoadState('networkidle');
-        await this.page.waitForLoadState('domcontentloaded');
+        await this.page.waitForLoadState('domcontentloaded', { timeout: 30000 });
     }
 
 }

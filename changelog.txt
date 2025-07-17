@@ -1,3 +1,18 @@
+= v4.1.7 (15 July, 2025) =
+* New - Add Sort Order for subscription
+* Enhancement - Update country list and improve state handling
+* Fix - Conflict with email log plugin
+* Fix - Disable "Update Post Notification" pro features preview
+* Fix - CSS on long form lists
+
+= v4.1.6 (30 June, 2025) =
+* Enhancement - Form title, description toggle added for post form
+* Enhancement - Separate translation context for date range "To"
+* Fix - PayPal redirection issues
+* Fix - Allowed memory size error on the Post Forms List Page
+* Fix - Improved registration page redirects to prevent interference with XML sitemap and XML file requests
+* Fix - Dynamic url for {login} and {register} in un-authorized message
+
 = v4.1.5 (2 June, 2025) =
 * Enhancement - Added support for unlimited subscriptions.
 * Enhancement - Added trial period & next billing dates in subscription.

@@ -32,47 +32,100 @@ const debouncedFetchForms = _.debounce((page, status, search) => {
   fetchForms(page, status, search);
 }, 500);
 
+// Helper function to extract JSON from response with PHP notices
+const parseJsonFromResponse = (responseText) => {
+  try {
+    return JSON.parse(responseText);
+  } catch (initialError) {
+    // Extract JSON from HTML response with error notices
+    const lines = responseText.split('\n');
+    
+    // Find complete JSON line
+    for (let i = lines.length - 1; i >= 0; i--) {
+      const line = lines[i].trim();
+      if (line.startsWith('{') && line.endsWith('}')) {
+        return JSON.parse(line);
+      }
+    }
+    
+    // Fallback: extract by brace counting
+    let startIndex = -1;
+    let braceCount = 0;
+    
+    for (let i = 0; i < responseText.length; i++) {
+      if (responseText[i] === '{') {
+        if (startIndex === -1) startIndex = i;
+        braceCount++;
+      } else if (responseText[i] === '}') {
+        braceCount--;
+        if (braceCount === 0 && startIndex !== -1) {
+          return JSON.parse(responseText.substring(startIndex, i + 1));
+        }
+      }
+    }
+    
+    throw new Error('Invalid JSON response from server');
+  }
+};
+
+// Helper function to clear form state
+const clearFormsState = () => {
+  forms.value = [];
+  totalPages.value = 0;
+  selectedForms.value = [];
+  selectAllChecked.value = false;
+};
+
 const fetchForms = async (page = 1, status = 'any', search = '') => {
   try {
     loading.value = true;
     currentPage.value = page;
-    // Use the correct REST API root, including subdirectory if present
-    const restApiRoot = wpuf_forms_list.rest_url.replace(/\/$/, ''); // Remove trailing slash if any
-    let apiUrl = `${restApiRoot}/wpuf/v1/wpuf_form?page=${page}&per_page=${perPage.value}&status=${status}&post_type=${postType}`;
+    
+    // Build API URL
+    const restApiRoot = wpuf_forms_list.rest_url.replace(/\/$/, '');
+    const params = new URLSearchParams({
+      page: page.toString(),
+      per_page: perPage.value.toString(),
+      status,
+      post_type: postType
+    });
+    
     if (search) {
-      apiUrl += `&s=${search}`;
+      params.append('s', search);
     }
-    const response = await fetch(apiUrl,
-     {
+    
+    const apiUrl = `${restApiRoot}/wpuf/v1/wpuf_form?${params.toString()}`;
+    
+    const response = await fetch(apiUrl, {
       headers: {
         'X-WP-Nonce': wpuf_forms_list.rest_nonce,
       },
     });
-    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const responseText = await response.text();
+    const data = parseJsonFromResponse(responseText);
 
-    if (data.success) {
+    if (data.success && data.result) {
       forms.value = data.result;
-      if (data.pagination) {
-        totalPages.value = data.pagination.total_pages;
-      } else {
-        totalPages.value = 0;
-      }
-
-      // Reset selection when forms data changes
+      totalPages.value = data.pagination?.total_pages || 0;
+      
+      // Reset selections
       selectedForms.value = [];
       selectAllChecked.value = false;
+    
     } else {
-      forms.value = [];
-      totalPages.value = 0;
-      selectedForms.value = [];
-      selectAllChecked.value = false;
+      clearFormsState();
+      if (!data.success) {
+        console.warn('API returned success: false');
+      }
     }
   } catch (error) {
     console.error('Error fetching forms:', error);
-    forms.value = [];
-    totalPages.value = 0;
-    selectedForms.value = [];
-    selectAllChecked.value = false;
+    clearFormsState();
   } finally {
     loading.value = false;
   }
@@ -114,24 +167,24 @@ watch(searchTerm, (newSearch) => {
 });
 
 const paginationRange = computed(() => {
+  if (totalPages.value <= 1) return [];
+  
   const range = [];
   const delta = 2; // Number of pages to show before and after current page
+  const start = Math.max(1, currentPage.value - delta);
+  const end = Math.min(totalPages.value, currentPage.value + delta);
 
-  for (
-    let i = Math.max(1, currentPage.value - delta);
-    i <= Math.min(totalPages.value, currentPage.value + delta);
-    i++
-  ) {
+  for (let i = start; i <= end; i++) {
     range.push(i);
   }
 
   return range;
 });
 
-// Add computed property for menu items
+// Memoized menu items to avoid recreation on every render
 const menuItems = computed(() => {
-  if (currentTab.value === 'trash') {
-    return [
+  const baseItems = {
+    trash: [
       {
         label: __('Restore', 'wp-user-frontend'),
         action: 'restore',
@@ -144,28 +197,30 @@ const menuItems = computed(() => {
         class: 'wpuf-text-red-600',
         activeClass: 'wpuf-bg-red-500 wpuf-text-white'
       }
-    ];
-  }
-  return [
-    {
-      label: __('Edit', 'wp-user-frontend'),
-      action: 'edit',
-      class: 'wpuf-text-gray-900',
-      activeClass: 'wpuf-bg-primary wpuf-text-white'
-    },
-    {
-      label: __('Duplicate', 'wp-user-frontend'),
-      action: 'duplicate',
-      class: 'wpuf-text-gray-900',
-      activeClass: 'wpuf-bg-primary wpuf-text-white'
-    },
-    {
-      label: __('Trash', 'wp-user-frontend'),
-      action: 'trash',
-      class: 'wpuf-text-red-600',
-      activeClass: 'wpuf-bg-red-500 wpuf-text-white'
-    }
-  ];
+    ],
+    default: [
+      {
+        label: __('Edit', 'wp-user-frontend'),
+        action: 'edit',
+        class: 'wpuf-text-gray-900',
+        activeClass: 'wpuf-bg-primary wpuf-text-white'
+      },
+      {
+        label: __('Duplicate', 'wp-user-frontend'),
+        action: 'duplicate',
+        class: 'wpuf-text-gray-900',
+        activeClass: 'wpuf-bg-primary wpuf-text-white'
+      },
+      {
+        label: __('Trash', 'wp-user-frontend'),
+        action: 'trash',
+        class: 'wpuf-text-red-600',
+        activeClass: 'wpuf-bg-red-500 wpuf-text-white'
+      }
+    ]
+  };
+  
+  return currentTab.value === 'trash' ? baseItems.trash : baseItems.default;
 });
 
 const copyToClipboard = async (shortcode, $event) => {
@@ -191,62 +246,43 @@ const getShortcode = (formId) => {
   return `[wpuf_form id="${formId}"]`;
 };
 
+// Helper function to construct admin URLs
+const buildAdminUrl = (formId, action) => {
+  const params = new URLSearchParams({
+    page: 'wpuf-post-forms',
+    id: formId.toString(),
+    action
+  });
+  
+
+  if (action !== 'edit') {
+    params.append('_wpnonce', wpuf_forms_list.bulk_nonce);
+  }
+  
+  return `${wpuf_admin_script.admin_url}admin.php?${params.toString()}`;
+};
+
 const handleEdit = (formId) => {
-  // Construct the edit URL
-  const editUrl = `${wpuf_admin_script.admin_url}admin.php?page=wpuf-post-forms&action=edit&id=${formId}`;
-  // Navigate to the edit page
-  window.location.href = editUrl;
+  window.location.href = buildAdminUrl(formId, 'edit');
 };
 
 const handleDuplicate = (formId) => {
-  // Generate WordPress nonce for security
-  const wpnonce = wpuf_forms_list.bulk_nonce;
-  // Construct the base admin URL with nonce
-  const adminUrl = `${wpuf_admin_script.admin_url}admin.php?page=wpuf-post-forms&id=${formId}&_wpnonce=${wpnonce}`;
-  // Construct the duplicate URL
-  const duplicateUrl = `${adminUrl}&action=duplicate`;
-  // Redirect to the duplicate URL
-  window.location.href = duplicateUrl;
+  window.location.href = buildAdminUrl(formId, 'duplicate');
 };
 
 const handleTrash = (formId) => {
-  // Generate WordPress nonce for security
-  const wpnonce = wpuf_forms_list.bulk_nonce;
-  // Construct the base admin URL with nonce
-  const adminUrl = `${wpuf_admin_script.admin_url}admin.php?page=wpuf-post-forms&id=${formId}&_wpnonce=${wpnonce}`;
-  // Construct the trash URL
-  const trashUrl = `${adminUrl}&action=trash`;
-  // Redirect to the trash URL
-  window.location.href = trashUrl;
+  window.location.href = buildAdminUrl(formId, 'trash');
 };
 
-// Add new handler for restore action
 const handleRestore = (formId) => {
-  // Generate WordPress nonce for security
-  const wpnonce = wpuf_forms_list.bulk_nonce;
-  // Construct the base admin URL with nonce
-  const adminUrl = `${wpuf_admin_script.admin_url}admin.php?page=wpuf-post-forms&id=${formId}&_wpnonce=${wpnonce}`;
-  // Construct the restore URL
-  const restoreUrl = `${adminUrl}&action=restore`;
-  // Redirect to the restore URL
-  window.location.href = restoreUrl;
+  window.location.href = buildAdminUrl(formId, 'restore');
 };
 
-// Add new handler for delete permanently action
 const handleDelete = (formId) => {
-  // Show confirmation dialog
   if (!confirm(__('Are you sure you want to delete this form permanently? This action cannot be undone.', 'wp-user-frontend'))) {
     return;
   }
-
-  // Generate WordPress nonce for security
-  const wpnonce = wpuf_forms_list.bulk_nonce;
-  // Construct the base admin URL with nonce
-  const adminUrl = `${wpuf_admin_script.admin_url}admin.php?page=wpuf-post-forms&id=${formId}&_wpnonce=${wpnonce}`;
-  // Construct the delete URL
-  const deleteUrl = `${adminUrl}&action=delete`;
-  // Redirect to the delete URL
-  window.location.href = deleteUrl;
+  window.location.href = buildAdminUrl(formId, 'delete');
 };
 
 const handleBulkAction = () => {
@@ -254,42 +290,33 @@ const handleBulkAction = () => {
     return;
   }
 
-  // Construct the base URL
-  let url = `${wpuf_admin_script.admin_url}admin.php?page=wpuf-post-forms`;
+  const params = new URLSearchParams({
+    page: 'wpuf-post-forms',
+    _wpnonce: wpuf_forms_list.bulk_nonce,
+    _wp_http_referer: window.location.href,
+    action: selectedBulkAction.value,
+    action2: selectedBulkAction.value,
+    bulk_action: 'Apply',
+    paged: currentPage.value.toString()
+  });
 
-  // Add search parameter if exists
+  // Add search term if exists
   if (searchTerm.value) {
-    url += `&s=${encodeURIComponent(searchTerm.value)}`;
+    params.append('s', searchTerm.value);
   }
-
-  // Add nonce
-  url += `&_wpnonce=${wpuf_forms_list.bulk_nonce}`;
-
-  // Add referer
-  const referer = encodeURIComponent(window.location.href);
-  url += `&_wp_http_referer=${referer}`;
-
-  // Add action and bulk action
-  url += `&action=${selectedBulkAction.value}&bulk_action=Apply`;
-
-  // Add current page
-  url += `&paged=${currentPage.value}`;
 
   // Add post status if in trash
   if (currentTab.value === 'trash') {
-    url += '&post_status=trash';
+    params.append('post_status', 'trash');
   }
 
   // Add selected form IDs
   selectedForms.value.forEach(formId => {
-    url += `&post[]=${formId}`;
+    params.append('post[]', formId.toString());
   });
 
-  // Add action2 (same as action)
-  url += `&action2=${selectedBulkAction.value}`;
-
   // Navigate to the constructed URL
-  window.location.href = url;
+  window.location.href = `${wpuf_admin_script.admin_url}admin.php?${params.toString()}`;
 };
 
 const openModal = (event) => {
@@ -312,10 +339,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <Header utm="wpuf-form-builder" />
+  <div>
+    <Header utm="wpuf-form-builder" />
 
-  <!-- Permalink Notice -->
-  <div v-if="isPlainPermalink" class="wpuf-bg-yellow-50 wpuf-border wpuf-border-yellow-200 wpuf-rounded-md wpuf-p-4 wpuf-mt-6">
+    <!-- Permalink Notice -->
+    <div v-if="isPlainPermalink" class="wpuf-bg-yellow-50 wpuf-border wpuf-border-yellow-200 wpuf-rounded-md wpuf-p-4 wpuf-mt-6">
     <div class="wpuf-flex">
       <div class="wpuf-flex-shrink-0">
         <svg class="wpuf-h-5 wpuf-w-5 wpuf-text-yellow-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -645,4 +673,5 @@ onMounted(() => {
       </div>
     </div>
     </div>
+  </div>
 </template>

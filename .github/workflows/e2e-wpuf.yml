@@ -22,7 +22,7 @@ on:
 jobs:
   test:
     if: github.repository != 'weDevsOfficial/wp-user-frontend' && github.repository != 'weDevsOfficial/wpuf-pro'
-    timeout-minutes: 120
+    timeout-minutes: 240
     runs-on: ubuntu-latest
    
     
@@ -35,7 +35,7 @@ jobs:
       
       # Checkout WP-User-Frontend repo
       - name: Checkout testing repo
-        id: clone-wp-user-prontend
+        id: clone-wp-user-frontend
         uses: actions/checkout@v4
 
       # Use desired version of NodeJS
@@ -70,9 +70,9 @@ jobs:
           composer i --no-dev -o
           composer update --no-dev -o
           npm i
+          npm run build
           grunt release --force
           grunt
-            
 
       # Install test dependencies
       - name: Install test dependencies
@@ -88,11 +88,6 @@ jobs:
               wget https://downloads.wordpress.org/plugin/wp-mail-log.latest-stable.zip
               unzip wp-mail-log.latest-stable.zip
               rm wp-mail-log.latest-stable.zip
-
-              # # Download and extract WP Reset
-              # wget https://downloads.wordpress.org/plugin/wp-reset.latest-stable.zip
-              # unzip wp-reset.latest-stable.zip
-              # rm wp-reset.latest-stable.zip
           
               # Download and extract WooCommerce
               wget https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip
@@ -119,8 +114,13 @@ jobs:
               unzip dokan-lite.latest-stable.zip
               rm dokan-lite.latest-stable.zip
 
+              # Download and extract The Events Calendar
+              wget https://downloads.wordpress.org/plugin/the-events-calendar.latest-stable.zip
+              unzip the-events-calendar.latest-stable.zip
+              rm the-events-calendar.latest-stable.zip
+
       # Start wordpress environment
-      - name: Start WordPress Env
+      - name: Start WordPress Env and Show URL
         id: wp-env
         if: success()
         uses: nick-fields/retry@v3
@@ -131,14 +131,6 @@ jobs:
             command: |
               cd tests/e2e
               npx wp-env start
-
-      # Install Playwright Browsers
-      - name: Get installed Playwright version
-        id: playwright-version
-        working-directory: tests/e2e
-        run: |
-          PLAYWRIGHT_VERSION=$(npm ls @playwright/test --json | jq -r '.dependencies["@playwright/test"].version') echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> "$GITHUB_ENV"
-
 
       # Cache browser binaries, cache key is based on Playwright version and OS
       - name: Cache playwright binaries
@@ -178,7 +170,8 @@ jobs:
         run: |
           mkdir -p test-results
           npm run test:ci
-        continue-on-error: true
+        # continue-on-error: true
+
       # Generate and post advanced test summary
       - name: Generate and post advanced test summary
         if: always()
@@ -197,9 +190,40 @@ jobs:
           if-no-files-found: warn
           retention-days: 3
 
-      # - name: Publish HTML report to GH Pages
-      #   uses: peaceiris/actions-gh-pages@v4
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     publish_branch: gh-pages
-      #     publish_dir: tests/e2e/playwright-report || tests/e2e/test-results
+      # Send Email Report if passed
+      - name: Send Test Report on email (Passed)
+        if: success()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.SMTP_EMAIL_USERNAME }}
+          password: ${{ secrets.SMTP_EMAIL_PASSWORD }}
+          subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
+          body: |
+            ${{ github.job }} job in workflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}.
+            
+            Test was conducted on WPUF plugin.
+            
+            To View full test run, click on the following link: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          to: rubaiyat.mohammad@wedevs.com, nurul.ratul@wedevs.com, anik@wedevs.com
+          from: wedevs.testing1@gmail.com
+
+      # Send Email Report if failed
+      - name: Send Test Report on email (Failed)
+        if: failure()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.SMTP_EMAIL_USERNAME }}
+          password: ${{ secrets.SMTP_EMAIL_PASSWORD }}
+          subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
+          body: |
+            ${{ github.job }} job in workflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}.
+            
+            Test was conducted on WPUF plugin.
+            
+            To View full test run, click on the following link: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          to: rubaiyat.mohammad@wedevs.com
+          from: wedevs.testing1@gmail.com

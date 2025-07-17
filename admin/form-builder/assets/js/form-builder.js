@@ -41,6 +41,7 @@
             field_settings: wpuf_form_builder.field_settings,
             notifications: wpuf_form_builder.notifications,
             settings: wpuf_form_builder.form_settings,
+            integrations: wpuf_form_builder.integrations || {},
             current_panel: 'form-fields-v4-1',
             editing_field_id: 0,
             show_custom_field_tooltip: true,
@@ -175,7 +176,7 @@
                                 fieldIdForLink,
                                 __( '"Advanced Options".', 'wp-user-frontend' ),
                                 __( ' Expand that, scroll down and you will see ', 'wp-user-frontend' ),
-                                fieldIdForLink, 
+                                fieldIdForLink,
                                 __( '"Show data on post"', 'wp-user-frontend' ),
                                 __( ' - set this yes.', 'wp-user-frontend' )
                             );
@@ -198,33 +199,33 @@
                                 $(modal).find('button.wpuf-swal-action-link[data-action="open-advanced-options"]').on('click', function(e) {
                                     e.preventDefault();
                                     var fieldId = $(this).data('field-id');
-                                    
+
 
                                     Swal.close();
 
-                                    setTimeout(() => { 
+                                    setTimeout(() => {
                                         wpuf_form_builder_store.commit('open_field_settings', fieldId);
-                                        
+
 
                                         Vue.nextTick(() => {
-                                            
-                                            
+
+
                                             setTimeout(() => { // Single timeout after Vue.nextTick
-                                                
+
 
                                                 let advancedOptionsTargetText = '';
                                                 if (typeof wpuf_form_builder_mixins !== 'undefined' &&
                                                     typeof wpuf_form_builder_mixins(Vue.prototype).i18n !== 'undefined' &&
                                                     wpuf_form_builder_mixins(Vue.prototype).i18n.advanced_options) {
                                                     advancedOptionsTargetText = wpuf_form_builder_mixins(Vue.prototype).i18n.advanced_options;
-                                                } else { 
+                                                } else {
                                                     advancedOptionsTargetText = __('"Advanced Options".', 'wp-user-frontend');
                                                 }
                                                 advancedOptionsTargetText = advancedOptionsTargetText.replace(/"/g, '').replace(/\.$/, "").trim().toLowerCase();
-                                                
 
-                                                var $fieldOptionsMainContainer = $('div.wpuf-form-builder-field-options'); 
-                                                
+
+                                                var $fieldOptionsMainContainer = $('div.wpuf-form-builder-field-options');
+
                                                 if (!$fieldOptionsMainContainer.length) {
                                                     console.warn('WPUF Form Builder Debug: Field options main container "div.wpuf-form-builder-field-options" NOT FOUND after delay.');
                                                     return;
@@ -234,29 +235,29 @@
                                                     console.warn('WPUF Form Builder Debug: Loader/placeholder seems to be still visible or settings sections not rendered in .wpuf-form-builder-field-options. Action aborted.');
                                                     return;
                                                 }
-                                                
-                                                
+
+
 
                                                 var $advancedOptionsToggle, $advancedOptionsContentDiv, $sectionToScroll;
                                                 var $sections = $fieldOptionsMainContainer.find('.option-fields-section');
-                                                
+
 
                                                 $sections.each(function(index) {
                                                     var $parentSection = $(this);
-                                                    var $h3 = $parentSection.find('h3').first(); 
-                                                    if (!$h3.length) return true; 
+                                                    var $h3 = $parentSection.find('h3').first();
+                                                    if (!$h3.length) return true;
 
-                                                    var rawH3Text = $h3.clone().children('i').remove().end().text(); 
+                                                    var rawH3Text = $h3.clone().children('i').remove().end().text();
                                                     var normalizedH3Text = rawH3Text.trim().toLowerCase().replace(/\.$/, "");
-                                                    
-                                                    
+
+
 
                                                     if (normalizedH3Text === advancedOptionsTargetText) {
                                                         $advancedOptionsToggle = $h3;
-                                                        $advancedOptionsContentDiv = $parentSection.find('div.option-field-section-fields').first(); 
+                                                        $advancedOptionsContentDiv = $parentSection.find('div.option-field-section-fields').first();
                                                         $sectionToScroll = $parentSection;
-                                                        
-                                                        return false; 
+
+                                                        return false;
                                                     }
                                                 });
 
@@ -264,39 +265,39 @@
                                                     var isContentVisible = false;
                                                     if ($advancedOptionsContentDiv?.length) {
                                                         isContentVisible = $advancedOptionsContentDiv.is(':visible');
-                                                        
+
                                                     } else {
                                                          console.warn('WPUF Form Builder Debug: Advanced options content div (.option-field-section-fields) not found relative to matched h3.');
                                                     }
 
                                                     if (!isContentVisible) {
-                                                        
+
                                                         $advancedOptionsToggle.trigger('click');
-                                                        setTimeout(() => { 
+                                                        setTimeout(() => {
                                                             if ($advancedOptionsContentDiv?.length) {
-                                                                
+
                                                             }
-                                                        }, 150); 
+                                                        }, 150);
                                                     } else {
-                                                        
+
                                                     }
-                                                    
-                                                    if (!$sectionToScroll?.length) $sectionToScroll = $advancedOptionsToggle; 
+
+                                                    if (!$sectionToScroll?.length) $sectionToScroll = $advancedOptionsToggle;
 
                                                     setTimeout(() => {
                                                         const elementToScrollTo = $sectionToScroll.get(0);
                                                         if (elementToScrollTo && typeof elementToScrollTo.scrollIntoView === 'function') {
                                                             elementToScrollTo.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-                                                            
+
                                                         }
-                                                    }, 350); 
+                                                    }, 350);
                                                 } else {
                                                     console.warn('WPUF Form Builder Debug: Could not find "Advanced Options" h3 toggle based on text: "' + advancedOptionsTargetText + '".');
                                                 }
                                             }, 400); // Inner timeout duration (e.g., 400ms)
 
                                         });
-                                    }, 250); 
+                                    }, 250);
                                 });
                             }
                         }).then((result) => {
@@ -511,6 +512,11 @@
             // set default panel sections
             set_default_panel_sections: function ( state ) {
                 state.panel_sections = wpuf_form_builder.panel_sections;
+            },
+
+            // update integration settings
+            updateIntegration: function(state, payload) {
+                Vue.set(state.integrations, payload.index, payload.value);
             }
         }
     });
@@ -532,6 +538,7 @@
             post_title_editing: false,
             isDirty: false,
             shortcodeCopied: false,
+            validation_error_msg: '',
             logoUrl: wpuf_form_builder.asset_url + '/images/wpuf-icon-circle.svg',
             settings_titles: wpuf_form_builder.settings_titles,
             settings_items: wpuf_form_builder.settings_items,
@@ -602,7 +609,7 @@
                 // attach selectize to the dropdowns after settings tab changes
                 handler: function() {
                     setTimeout(function() {
-                        $('.wpuf-settings-container select').selectize({
+                        $('.wpuf-settings-container select:not(.wpuf-no-selectize)').selectize({
                             plugins: ['remove_button'],
                         });
                     }, 100);
@@ -615,7 +622,7 @@
 
             Vue.nextTick(function () {
                 // selectize for all the dropdowns
-                $('.wpuf-settings-container select').selectize({
+                $('.wpuf-settings-container select:not(.wpuf-no-selectize)').selectize({
                     plugins: ['remove_button'],
                 });
             });
@@ -725,7 +732,7 @@
                 if (_.isFunction(this.validate_form_before_submit) && !this.validate_form_before_submit()) {
 
                     this.warn({
-                        title: 'Incomplete Post Form',
+                        title: 'Post Form Validation Error!',
                         html: this.validation_error_msg,
                         reverseButtons: true,
                         customClass: {
@@ -778,8 +785,22 @@
                         toastr.success(self.i18n.saved_form_data);
                     },
 
-                    error: function () {
+                    error: function (response) {
                         self.is_form_saving = false;
+
+                        // Handle server-side validation errors
+                        // WordPress AJAX sends errors in response.data
+                        if (response && response.data) {
+                            self.warn({
+                                title: 'Validation Error',
+                                html: response.data,
+                                reverseButtons: true,
+                                customClass: {
+                                    cancelButton: '!wpuf-bg-white !wpuf-text-black !wpuf-border !wpuf-border-solid !wpuf-border-gray-300 focus:!wpuf-shadow-none',
+                                    confirmButton: '!wpuf-text-white !wpuf-bg-primary',
+                                },
+                            });
+                        }
                     }
                 });
             },
@@ -812,9 +833,14 @@
                     this.active_settings_title = this.settings_titles[menu].sub_items[submenu].label;
                 }
             },
-
+            
             switch_form_settings_pic_radio_item: function ( key, value ) {
                 this.form_settings[key] = value;
+            },
+
+            // Show warning dialog using SweetAlert2
+            warn: function (options) {
+                Swal.fire(options);
             }
         }
     });
@@ -1225,12 +1251,12 @@
     // Initialize default categories on page load and bind change event
     $(document).ready(function() {
         var $postTypeSelect = $('select#post_type');
-        
+
         // Load initial categories if post type select exists
         if ($postTypeSelect.length) {
             populate_default_categories($postTypeSelect[0], true);
         }
-        
+
         // Bind change event
         $postTypeSelect.on('change', function() {
             populate_default_categories(this, false);
@@ -1239,15 +1265,15 @@
 
     function populate_default_categories(obj, isInitialLoad) {
         var post_type = $(obj).val();
-        
+
         // Don't proceed if no post type is selected
         if (!post_type) {
             return;
         }
-        
+
         // Get form ID from the form
         var form_id = $('input[name="wpuf_form_id"]').val() || 0;
-        
+
         wp.ajax.send('wpuf_form_setting_post', {
             data: {
                 post_type: post_type,
@@ -1257,21 +1283,21 @@
             success: function (response) {
                 // Remove all existing taxonomy containers
                 $('.taxonomy-container, .wpuf_settings_taxonomy, .wpuf-input-container:has(select[name*="default_"])').remove();
-                
+
                 // Find the container to append new content after
                 var $container = $(obj).closest('.wpuf-input-container');
-                
+
                 if ($container.length && response.data) {
                     // Append the new taxonomy fields
                     $container.after(response.data);
-                    
+
                     // Initialize selectize for all new taxonomy selects
                     $('.tax-list-selector:not(.selectized)').each(function() {
                         var $select = $(this);
-                        
+
                         // The select options are already set with selected attributes from PHP
                         // so we don't need to manually set values here
-                        
+
                         // Initialize selectize
                         $select.selectize({
                             plugins: ['remove_button'],
@@ -1280,7 +1306,7 @@
                 }
             },
             error: function (error) {
-                
+
             }
         });
     }

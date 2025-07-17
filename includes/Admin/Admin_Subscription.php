@@ -38,6 +38,8 @@ class Admin_Subscription {
         add_action( 'wpuf_load_subscription_page', [ $this, 'remove_notices' ] );
         add_action( 'wpuf_load_subscription_page', [ $this, 'enqueue_admin_scripts' ] );
         add_action( 'wpuf_load_subscription_page', [ $this, 'modify_admin_footer_text' ] );
+
+        add_action( 'admin_init', [ $this, 'set_default_sort_order_for_existing_subscriptions' ] );
     }
 
     /**
@@ -1186,6 +1188,22 @@ class Admin_Subscription {
                         'placeholder' => __( 'Enter plan slug', 'wp-user-frontend' ),
                         'default'     => '',
                     ],
+                    'sort_order'   => [
+                        'id'          => 'sort-order',
+                        'name'        => 'sort_order',
+                        'db_key'      => '_sort_order',
+                        'db_type'     => 'meta',
+                        'type'        => 'input-number',
+                        'label'       => __( 'Sort Order', 'wp-user-frontend' ),
+                        'tooltip'     => __( 'Plans with lower numbers appear first on the frontend, keep default value 1. Cannot keep it empty.', 'wp-user-frontend' ),
+                        'placeholder' => __( 'Enter sort order', 'wp-user-frontend' ),
+                        'is_required' => true,
+                        'default'     => '1',
+                        'validation'  => [
+                            'required' => true,
+                            'min'      => 1,
+                        ],
+                    ],
                     'publish_time' => [
                         'id'          => 'publish-time',
                         'name'        => 'publish-time',
@@ -1603,5 +1621,50 @@ class Admin_Subscription {
         );
 
         return $footer_text;
+    }
+
+    /**
+     * Set default sort order for existing subscriptions that don't have it
+     *
+     * @since 4.1.7
+     */
+    public function set_default_sort_order_for_existing_subscriptions() {
+        // Check if we've already run this migration
+        if ( get_transient( 'wpuf_sort_order_migration_done' ) ) {
+            return;
+        }
+
+        $args = [
+            'post_type'      => 'wpuf_subscription',
+            'posts_per_page' => -1,
+            'post_status'    => ['publish', 'draft', 'private'],
+            'meta_query'     => [
+                'relation' => 'OR',
+                [
+                    'key'     => '_sort_order',
+                    'compare' => 'NOT EXISTS',
+                ],
+                [
+                    'key'     => '_sort_order',
+                    'value'   => '',
+                    'compare' => '=',
+                ],
+                [
+                    'key'     => '_sort_order',
+                    'value'   => 0,
+                    'compare' => '<=',
+                ],
+            ],
+        ];
+
+        $subscriptions = get_posts( $args );
+
+        if ( $subscriptions ) {
+            foreach ( $subscriptions as $subscription ) {
+                update_post_meta( $subscription->ID, '_sort_order', 1 );
+            }
+        }
+
+        set_transient( 'wpuf_sort_order_migration_done', true, WEEK_IN_SECONDS );
     }
 }

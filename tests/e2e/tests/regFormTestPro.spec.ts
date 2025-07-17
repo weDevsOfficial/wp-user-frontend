@@ -2,15 +2,14 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import { Browser, BrowserContext, Page, test, chromium } from "@playwright/test";
 import { BasicLoginPage } from '../pages/basicLogin';
-import { RegistrationFormsPage } from '../pages/registrationForms';
-import { RegistrationFormsFrontendPage } from '../pages/registrationFormsFrontend';
+import { RegFormPage } from '../pages/regForm';
 import { SettingsSetupPage } from '../pages/settingsSetup';
 import { Urls, Users } from '../utils/testData';
 import { BasicLogoutPage } from '../pages/basicLogout';
 import * as fs from 'fs'; //Clear Cookie
 
 
-export default function registrationFormsTestsPro() {
+export default function regFormTestPro() {
 
     let browser: Browser;
     let context: BrowserContext;
@@ -44,45 +43,43 @@ export default function registrationFormsTestsPro() {
 
         test('RF0001 : Here, Admin is checking Registration Forms - Pro Feature Page', { tag: ['@Pro'] }, async () => {
             const BasicLogin = new BasicLoginPage(page);
-            const RegistrationFormsLite = new RegistrationFormsPage(page);
+            const RegForm = new RegFormPage(page);
             //Basic login
             await BasicLogin.basicLoginAndPluginVisit(Users.adminUsername, Users.adminPassword);
-            await RegistrationFormsLite.validateRegistrationFormsProFeature();
+            await RegForm.validateRegistrationFormsProFeature();
 
         });
 
 
         test('RF0002 : Here, Admin is creating Registration Forms Page - using shortcode', { tag: ['@Pro'] }, async () => {
-            const RegistrationFormsLite = new RegistrationFormsPage(page);
+            const RegForm = new RegFormPage(page);
             const SettingsSetup = new SettingsSetupPage(page);
             //Registration Forms page - Title
-            const registrationFormPageTitle = 'Registration Page';
+            const regFormPageTitle = 'Registration Page';
             //Create Registration Forms page
-            await RegistrationFormsLite.createRegistrationPageUsingShortcodeLite(registrationFormPageTitle);
+            await RegForm.createRegistrationPageUsingShortcodeLite(regFormPageTitle);
             //Change Registration settings
-            await SettingsSetup.changeSettingsSetRegistrationPage(registrationFormPageTitle);
+            await SettingsSetup.changeSettingsSetRegistrationPage(regFormPageTitle);
 
             await new BasicLogoutPage(page).logOut();
         });
 
 
         test('RF0003 : Here, User is registering using - Registration Form', { tag: ['@Pro'] }, async () => {
-            const RegistrationFormsFrontend = new RegistrationFormsFrontendPage(page);
+            const RegForm = new RegFormPage(page);
             //FrontEnd
             //Complete FrontEnd Registration
-            await RegistrationFormsFrontend.completeUserRegistrationFormFrontend();
+            await RegForm.completeUserRegistrationFormFrontend();
         });
 
 
         test('RF0004 : Here, Admin is validating - Registered user', { tag: ['@Pro'] }, async () => {
             const BasicLogin = new BasicLoginPage(page);
-            const RegistrationFormsFrontend = new RegistrationFormsFrontendPage(page);
+            const RegForm = new RegFormPage(page);
             //Basic Login
-            await BasicLogin.basicLoginAndPluginVisit(Users.adminUsername, Users.adminPassword);
+            await BasicLogin.basicLogin(Users.adminUsername, Users.adminPassword);
             //Validate FrontEnd Registered
-            await RegistrationFormsFrontend.validateUserRegisteredAdminEnd();
-
-            await new BasicLogoutPage(page).logOut();
+            await RegForm.validateUserRegisteredAdminEnd();
         });
 
     });

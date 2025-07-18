@@ -41,11 +41,29 @@ export default function postFormSettingsTestPro() {
          */
 
         let formName: string;
+        let postTitle: string;
+        let postContent: string;
+        let postExcerpt: string;
         const category = 'Music'; // Using one of the default categories from the screenshot
         const emailAddress = faker.internet.email();
-        const emailSubject = faker.word.words(3);
+        const emailSubject = 'New post submitted';
+        const emailUpdatedSubject = `Post updated`;
         const emailBody = `Hi Admin,
             A new post has been submitted to {sitename}.
+            Details:
+            Title: {post_title}
+            Author: {author} ({author_email})
+            Content: {post_content}
+            Excerpt: {post_excerpt}
+            Category: {category}
+            Tags: {tags}
+            Review URL: {editlink}
+            Public URL: {permalink}
+            Best regards,
+            Team {sitename}`;
+
+        const emailUpdatedBody = `Hi Admin,
+            Post updated.
             Details:
             Title: {post_title}
             Author: {author} ({author_email})
@@ -114,7 +132,7 @@ export default function postFormSettingsTestPro() {
 
         test('PFS0075 : Admin is modifying Updated post notification body with template tags', { tag: ['@Pro'] }, async () => {
             const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.modifyUpdatedNotificationBodyWithTemplateTags(formName, emailBody);
+            await postFormSettings.modifyUpdatedNotificationBodyWithTemplateTags(formName, emailUpdatedBody);
         });
 
         test('PFS0076 : Admin is clicking and validating template tags for Updated post notification', { tag: ['@Pro'] }, async () => {
@@ -130,12 +148,12 @@ export default function postFormSettingsTestPro() {
         });
 
         test('PFS0078 : Admin is submitting post and validating Updated post notification from FE', { tag: ['@Pro'] }, async () => {
-            let previousPostTitle = postTitle;
+            const previousPostTitle = postTitle;
             postTitle = faker.word.words(3);
             postContent = faker.lorem.paragraph();
             postExcerpt = postContent;
             const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.submitPostAndValidateUpdatedNotificationFE(previousPostTitle, postTitle, postContent, postExcerpt, emailSubject, multipleEmails);
+            await postFormSettings.submitPostAndValidateUpdatedNotificationFE(previousPostTitle, postTitle, postContent, postExcerpt, emailUpdatedSubject, multipleEmails);
         });
 
         test('PFS0079 : Admin is disabling updated post notification', { tag: ['@Pro'] }, async () => {

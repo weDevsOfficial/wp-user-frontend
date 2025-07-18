@@ -558,21 +558,27 @@ class Payment {
         // Set transient to prevent duplicate notifications (expires in 1 hour)
         set_transient( $notification_key, true, HOUR_IN_SECONDS );
 
-        // Check if invoices are enabled and generate/send invoice
-        $this->wpuf_send_invoice( $info, $user );
-
-        // Determine payment type and create appropriate message
-        $payment_type = $this->determine_user_payment_type( $info );
-        $subject_msg = $this->get_user_notification_content( $payment_type, $user, $info );
+        // Check if Pro is available and invoices are enabled
+        $enable_invoices = wpuf_get_option( 'enable_invoices', 'wpuf_payment_invoices', 'off' );
+        $pro_available = class_exists( 'WeDevs\Wpuf\Pro\Admin\Invoice' );
         
-        $subject = $subject_msg['subject'];
-        $message = $subject_msg['message'];
+        if ( $pro_available && wpuf_is_checkbox_or_toggle_on( $enable_invoices ) ) {
+            // Pro is available and invoices are enabled - send invoice email only
+            $this->wpuf_send_invoice( $info, $user );
+        } else {
+            // Pro not available or invoices disabled - send normal payment confirmation email
+            $payment_type = $this->determine_user_payment_type( $info );
+            $subject_msg = $this->get_user_notification_content( $payment_type, $user, $info );
+            
+            $subject = $subject_msg['subject'];
+            $message = $subject_msg['message'];
 
-        // Set proper headers
-        $headers = 'From: ' . get_bloginfo( 'name' ) . ' <' . get_bloginfo( 'admin_email' ) . '>' . "\r\n";
-        $headers .= 'Content-Type: text/html; charset=UTF-8' . "\r\n";
+            // Set proper headers
+            $headers = 'From: ' . get_bloginfo( 'name' ) . ' <' . get_bloginfo( 'admin_email' ) . '>' . "\r\n";
+            $headers .= 'Content-Type: text/html; charset=UTF-8' . "\r\n";
 
-        wp_mail( $user->user_email, $subject, $message, $headers );
+            wp_mail( $user->user_email, $subject, $message, $headers );
+        }
         
     }
 
@@ -667,23 +673,11 @@ class Payment {
      * @param \WP_User $user user object
      */
     private function wpuf_send_invoice( $info, $user ) {
-        // Check if invoices are enabled
-        $enable_invoices = wpuf_get_option( 'enable_invoices', 'wpuf_payment_invoices', 'off' );
-        
-        if ( $enable_invoices !== 'on' ) {
-            return;
-        }
-
         // Create a unique key for this invoice to prevent duplicates
         $invoice_key = 'wpuf_invoice_sent_' . $info['user_id'] . '_' . $info['transaction_id'];
         
         // Check if invoice has already been sent for this transaction
         if ( get_transient( $invoice_key ) ) {
-            return;
-        }
-
-        // Check if WPUF Pro is available and has Invoice class
-        if ( ! class_exists( 'WeDevs\Wpuf\Pro\Admin\Invoice' ) ) {
             return;
         }
 
@@ -792,7 +786,7 @@ class Payment {
         update_user_meta( $inv_u_id, '_invoice_link' . $inv_id, $dl_link );
 
         // Send invoice via email
-        $this->send_invoice_email( $pdf_file, $user->user_email );
+        $this->send_invoice_email( $pdf_file, $user->user_email, $info );
 
     }
 
@@ -826,39 +820,99 @@ class Payment {
      *
      * @param string $pdf_file path to PDF file
      * @param string $user_email user email address
+     * @param array $data payment data for placeholder replacement
      */
-    private function send_invoice_email( $pdf_file, $user_email ) {
+    private function send_invoice_email( $pdf_file, $user_email, $data = array() ) {
         if ( ! file_exists( $pdf_file ) ) {
             return false;
         }
 
         $subj = wpuf_get_option( 'set_mail_sub', 'wpuf_payment_invoices' );
         $text_body = wpuf_get_option( 'set_mail_body', 'wpuf_payment_invoices' );
+        $send_attachment = wpuf_get_option( 'send_attachment', 'wpuf_payment_invoices', 'on' );
 
         if ( empty( $subj ) ) {
             $subj = sprintf( __( '[%s] Your Payment Invoice', 'wp-user-frontend' ), get_bloginfo( 'name' ) );
         }
 
         if ( empty( $text_body ) ) {
-            $text_body = sprintf( 
-                __( 'Dear Customer,<br><br>Please find attached your payment invoice.<br><br>Thank you for your business!<br><br>%s', 'wp-user-frontend' ),
-                get_bloginfo( 'name' )
-            );
+            $text_body = 'Hi {username},<br><br>Thank you for your recent payment.<br><br>Please find your invoice details below:<br>Invoice ID: {invoice_id}<br>Payment Amount: {payment_amount}<br>Payment Method: {payment_type} ({payment_type_label})<br><br>We appreciate doing business with you!<br><br>Best regards,<br>Admin.';
         }
 
-        $headers = 'From: ' . get_bloginfo( 'name' ) . ' <' . get_bloginfo( 'admin_email' ) . '>' . "\r\n";
+        // Add payment_type_label for template
+        if ( ! empty( $data ) ) {
+            $subj = $this->replace_email_placeholders( $subj, $data );
+            $text_body = $this->replace_email_placeholders( $text_body, $data );
+        }
+
+        // If not HTML, convert newlines to <br>
+        if ( strpos( $text_body, '<' ) === false ) {
+            $text_body = nl2br( $text_body );
+        }
+
+        $headers  = "MIME-Version: 1.0\r\n";
+        $headers .= 'From: ' . get_bloginfo( 'name' ) . ' <' . get_bloginfo( 'admin_email' ) . ">\r\n";
         $headers .= 'Content-Type: text/html; charset=UTF-8' . "\r\n";
 
-        // Check if get_formatted_mail_body function exists
-        if ( function_exists( 'get_formatted_mail_body' ) ) {
-            $mail_body = get_formatted_mail_body( $text_body, $subj );
-        } else {
-            $mail_body = $text_body;
-        }
+        $attach = ( wpuf_is_checkbox_or_toggle_on( $send_attachment ) ) ? array( $pdf_file ) : array();
 
-        $sent = wp_mail( $user_email, $subj, $mail_body, $headers, $pdf_file );
+        $mail_body = function_exists( 'get_formatted_mail_body' ) ? get_formatted_mail_body( $text_body, $subj ) : $text_body;
+
+        $sent = wp_mail( $user_email, $subj, $mail_body, $headers, $attach );
 
         return $sent;
+    }
+
+    /**
+     * Replace email placeholders with actual values
+     *
+     * @param string $content The email content with placeholders
+     * @param array $data The payment data
+     *
+     * @return string The content with placeholders replaced
+     */
+    private function replace_email_placeholders( $content, $data ) {
+        if ( empty( $data ) || empty( $content ) ) {
+            return $content;
+        }
+
+        // Get user information
+        $user_id = isset( $data['user_id'] ) ? $data['user_id'] : 0;
+        if ( $user_id ) {
+            $user = get_userdata( $user_id );
+            $username = $user ? $user->user_login : '';
+            $user_email = $user ? $user->user_email : '';
+            $display_name = $user ? $user->display_name : '';
+        } else {
+            $username = isset( $data['payer_first_name'] ) ? $data['payer_first_name'] : '';
+            $user_email = isset( $data['payer_email'] ) ? $data['payer_email'] : '';
+            $display_name = '';
+            if ( isset( $data['payer_first_name'] ) && isset( $data['payer_last_name'] ) ) {
+                $display_name = $data['payer_first_name'] . ' ' . $data['payer_last_name'];
+            }
+        }
+
+        // Get payment information
+        $invoice_id = isset( $data['transaction_id'] ) ? $data['transaction_id'] : '';
+        $payment_amount = isset( $data['cost'] ) ? wpuf_format_price( $data['cost'] ) : '';
+        $payment_type = isset( $data['payment_type'] ) ? $data['payment_type'] : '';
+
+        // Define replacements
+        $replacements = array(
+            '{username}'           => $username,
+            '{user_email}'         => $user_email,
+            '{display_name}'       => $display_name,
+            '{invoice_id}'         => $invoice_id,
+            '{payment_amount}'     => $payment_amount,
+            '{payment_type}'       => $payment_type,
+        );
+
+        // Replace placeholders
+        foreach ( $replacements as $placeholder => $value ) {
+            $content = str_replace( $placeholder, $value, $content );
+        }
+
+        return $content;
     }
 
     /**

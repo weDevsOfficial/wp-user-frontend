@@ -610,6 +610,7 @@ export class PostFormPage extends Base {
         await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.purchaseNote, ProductForm.purchaseNote=faker.lorem.sentence(1));
         await this.validateAndClick(Selectors.postForms.productFrontendCreate.enableReviews);
         await this.validateAndClick(Selectors.postForms.productFrontendCreate.downloadable);
+        await this.page.waitForTimeout(1000);
         await this.selectOptionWithLabel(Selectors.postForms.productFrontendCreate.selectBrand, ProductForm.brand );
         await this.selectOptionWithLabel(Selectors.postForms.productFrontendCreate.selectType, ProductForm.type );
         await this.selectOptionWithLabel(Selectors.postForms.productFrontendCreate.selectVisibility, ProductForm.visibility );

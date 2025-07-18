@@ -174,13 +174,13 @@ export default function postFormTestPro() {
             await PostForm.validateEnteredProductData();
         });
 
-        test('PF0017 : Admin is setting necessary setup for downloads form', { tag: ['@Lite'] }, async () => {
+        test('PF0017 : Admin is setting necessary setup for downloads form', { tag: ['@Pro'] }, async () => {
             const PostForm = new PostFormPage(page);
             
             await PostForm.setupForEDDProduct();
         });
 
-        test('PF0018 : Admin is creating a downloads Post Form', { tag: ['@Lite'] }, async () => {
+        test('PF0018 : Admin is creating a downloads Post Form', { tag: ['@Pro'] }, async () => {
             const PostForm = new PostFormPage(page);
             const FieldAdd = new FieldAddPage(page);
 
@@ -199,31 +199,31 @@ export default function postFormTestPro() {
 
         });
 
-        test('PF0019 : Admin is creating add downloads page with shortcode ', { tag: ['@Lite'] }, async () => {
+        test('PF0019 : Admin is creating add downloads page with shortcode ', { tag: ['@Pro'] }, async () => {
             const PostForm = new PostFormPage(page);
 
             await PostForm.createPageWithShortcodeGeneral(downloadsShortCode, 'Add Downloads');
         });
 
-        test('PF0020 : Admin is creating downloads from FE ', { tag: ['@Lite'] }, async () => {
+        test('PF0020 : Admin is creating downloads from FE ', { tag: ['@Pro'] }, async () => {
             const PostForm = new PostFormPage(page);
             
             await PostForm.createDownloadsFE();
         });
 
-        test('PF0021 : Admin is validating downloads created', { tag: ['@Lite'] }, async () => {
+        test('PF0021 : Admin is validating downloads created', { tag: ['@Pro'] }, async () => {
             const PostForm = new PostFormPage(page);
             
             await PostForm.validateDownloadsCreated();
         });
 
-        test('PF0022 : Admin is validating entered downloads data', { tag: ['@Lite'] }, async () => {
+        test('PF0022 : Admin is validating entered downloads data', { tag: ['@Pro'] }, async () => {
             const PostForm = new PostFormPage(page);
             
             await PostForm.validateEnteredDownloadsData();
         });
 
-        test('PF0023 : Admin is validating entered downloads data BE', { tag: ['@Lite'] }, async () => {
+        test('PF0023 : Admin is validating entered downloads data BE', { tag: ['@Pro'] }, async () => {
             const PostForm = new PostFormPage(page);
             
             await PostForm.validateEnteredDownloadsDataBE();

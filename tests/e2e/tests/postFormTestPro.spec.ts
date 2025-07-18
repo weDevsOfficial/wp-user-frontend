@@ -110,7 +110,7 @@ export default function postFormTestPro() {
             await PostFormPro.createPostFE();
         });
 
-        test('PF0004 : User is Validating Post created', { tag: ['@Lite'] }, async () => {
+        test('PF0004 : User is Validating Post created', { tag: ['@Pro'] }, async () => {
             const PostFormClass = new PostFormPage(page);
             
             await PostFormClass.validatePostCreated();
@@ -123,7 +123,7 @@ export default function postFormTestPro() {
             await PostFormClass.validateEnteredData();
         });
 
-        test('PF0011 : Admin is setting necessary setup for product form', { tag: ['@Lite'] }, async () => {
+        test('PF0011 : Admin is setting necessary setup for product form', { tag: ['@Pro'] }, async () => {
             const PostForm = new PostFormPage(page);
 
             await new BasicLoginPage(page).basicLogin(Users.adminUsername, Users.adminPassword);
@@ -131,7 +131,7 @@ export default function postFormTestPro() {
             await PostForm.setupForWooProduct();
         });
 
-        test('PF0012 : Admin is creating a product Post Form', { tag: ['@Lite'] }, async () => {
+        test('PF0012 : Admin is creating a product Post Form', { tag: ['@Pro'] }, async () => {
             const PostForm = new PostFormPage(page);
             const FieldAdd = new FieldAddPage(page);
 
@@ -150,25 +150,25 @@ export default function postFormTestPro() {
 
         });
 
-        test('PF0013 : Admin is creating product page with shortcode ', { tag: ['@Lite'] }, async () => {
+        test('PF0013 : Admin is creating product page with shortcode ', { tag: ['@Pro'] }, async () => {
             const PostForm = new PostFormPage(page);
 
             await PostForm.createPageWithShortcodeGeneral(productShortCode, 'Add Product');
         });
 
-        test('PF0014 : Admin is creating product from FE ', { tag: ['@Lite'] }, async () => {
+        test('PF0014 : Admin is creating product from FE ', { tag: ['@Pro'] }, async () => {
             const PostForm = new PostFormPage(page);
             
             await PostForm.createProductFE();
         });
 
-        test('PF0015 : Admin is validating product created', { tag: ['@Lite'] }, async () => {
+        test('PF0015 : Admin is validating product created', { tag: ['@Pro'] }, async () => {
             const PostForm = new PostFormPage(page);
             
             await PostForm.validateProductCreated();
         });
 
-        test('PF0016 : Admin is validating entered product data', { tag: ['@Lite'] }, async () => {
+        test('PF0016 : Admin is validating entered product data', { tag: ['@Pro'] }, async () => {
             const PostForm = new PostFormPage(page);
             
             await PostForm.validateEnteredProductData();

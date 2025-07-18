@@ -4,7 +4,7 @@ import { expect, type Page } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Base } from './base';
 import { faker } from '@faker-js/faker';
-import { PostForm, ProductForm, Urls } from '../utils/testData';
+import { DownloadsForm, PostForm, ProductForm, Urls } from '../utils/testData';
 //import { TestData } from '../tests/testdata';
 
 
@@ -159,6 +159,30 @@ export class PostFormPage extends Base {
 
     }
 
+    async createDownloadsPostForm() {
+        //Visit Post Form Page
+        await this.navigateToURL(this.wpufPostFormPage);
+        //CreateNewPostForm
+        await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
+        await this.page.reload();
+        //Start
+        //Click Add Form
+        await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickPostAddForm);
+        //ClickPostForm
+        //Templates 
+        //Click Product Form  
+        await this.validateAndClick(Selectors.postForms.createDownloads_PF.clickDownloadsForm);
+        //EnterName
+        await this.page.reload();
+        //Click Form Name Box
+        await this.validateAndClick(Selectors.postForms.createBlankForm_PF.editNewFormName);
+        // Save Form
+        await this.validateAndClick(Selectors.postForms.formSettings.saveFormSettings);
+        // Confirm Save
+        await this.assertionValidate(Selectors.postForms.formSettings.validateFormSettingsSaved);
+
+    }
+
     /******* @Create Post > FrontEnd **********/
 
     async createPostFE() {
@@ -181,7 +205,7 @@ export class PostFormPage extends Base {
         await this.page.waitForLoadState('domcontentloaded', { timeout: 10000 });
         await this.assertionValidate(Selectors.postForms.postFormsFrontendCreate.uploads('1'));
         //Select Category
-        await this.page.selectOption(Selectors.postForms.postFormsFrontendCreate.categorySelectionFormsFE, { label: PostForm.category });
+        await this.selectOptionWithLabel(Selectors.postForms.postFormsFrontendCreate.categorySelectionFormsFE, PostForm.category);
         //Enter Tags
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTagsFormsFE, PostForm.tags);
         //Enter Text
@@ -191,9 +215,9 @@ export class PostFormPage extends Base {
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE, PostForm.textarea=faker.lorem.sentence(1));
         console.log(PostForm.textarea);
         //Enter Dropdown
-        await this.page.selectOption(Selectors.postForms.postFormsFrontendCreate.postDropdownFormsFE, { value: PostForm.dropdown });
+        await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postDropdownFormsFE, PostForm.dropdown);
         //Enter Multi Select
-        await this.page.selectOption(Selectors.postForms.postFormsFrontendCreate.postMultiSelectFormsFE, { value: PostForm.multiSelect });
+        await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postMultiSelectFormsFE, PostForm.multiSelect);
         //Enter Radio
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postRadioFormsFE);
         //Enter Checkbox
@@ -213,17 +237,17 @@ export class PostFormPage extends Base {
         console.log(PostForm.repeatField);
         //Enter Date / Time
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.dateTimeSelect);
-        await this.page.selectOption(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.selectYear, { value: '2024' });
-        await this.page.selectOption(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.selectMonth, { value: '7' });
+        await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.selectYear, '2024' );
+        await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.selectMonth, '7');
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.selectDay);
         //Enter Time Field
-        await this.page.selectOption(Selectors.postForms.postFormsFrontendCreate.postTimeFieldFormsFE, { value: PostForm.time });
+        await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postTimeFieldFormsFE, PostForm.time);
         //Enter File Upload
         await this.page.setInputFiles(Selectors.postForms.postFormsFrontendCreate.postFileUploadFormsFE, PostForm.uploadFile);
         await this.page.waitForLoadState('domcontentloaded', { timeout: 10000 });
         await this.assertionValidate(Selectors.postForms.postFormsFrontendCreate.uploads('3'));
         //Enter Country List
-        await this.page.selectOption(Selectors.postForms.postFormsFrontendCreate.postCountryListFormsFE, { value: 'BD' });
+        await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postCountryListFormsFE, 'BD');
         //Enter Numeric Field
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postNumericFieldFormsFE, PostForm.numeric);
         //Enter Phone Field
@@ -239,8 +263,8 @@ export class PostFormPage extends Base {
         console.log(PostForm.addressLine2);
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.city, PostForm.city);
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.zip, PostForm.zip);
-        await this.page.selectOption(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.country, { value: 'BD' });
-        await this.page.selectOption(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.state, { value: 'BD-13' });
+        await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.country, 'BD');
+        await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.state, 'BD-13');
         //Enter Google Maps
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postGoogleMapsFormsFE, PostForm.googleMaps='Dhaka, Bangladesh');
         await this.page.keyboard.press('Enter');
@@ -250,7 +274,7 @@ export class PostFormPage extends Base {
         //Enter Terms and Conditions
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postTermsAndConditionsFormsFE);
         //Enter Ratings
-        await this.page.selectOption(Selectors.postForms.postFormsFrontendCreate.postRatingsFormsFE, { value: PostForm.ratings='5' });
+        await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postRatingsFormsFE, PostForm.ratings='5');
         console.log(PostForm.ratings);
         // Math Captcha
         const operand1 = await this.page.innerText(Selectors.postForms.postFormsFrontendCreate.postMathCaptchaFormsFE.operand1);
@@ -491,7 +515,7 @@ export class PostFormPage extends Base {
         await this.page.setInputFiles(Selectors.postForms.postFormsFrontendCreate.featuredPhotoFormsFE, PostForm.featuredImage);
         await this.page.waitForTimeout(500);
         //Select Category
-        await this.page.selectOption(Selectors.postForms.postFormsFrontendCreate.categorySelectionFormsFE, { label: PostForm.category });
+        await this.selectOptionWithLabel(Selectors.postForms.postFormsFrontendCreate.categorySelectionFormsFE, PostForm.category );
         //Enter Tags
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTagsFormsFE, PostForm.tags);
         //Create Post
@@ -541,6 +565,24 @@ export class PostFormPage extends Base {
 
     }
 
+    async setupForEDDProduct() {
+        await this.navigateToURL(this.eddCatPage);
+
+        await this.validateAndFillStrings(Selectors.postForms.eddPostForm.addCategory, 'plugins');
+        await this.validateAndClick(Selectors.postForms.eddPostForm.saveSubmit);
+        await this.page.waitForTimeout(1000);
+
+        await this.navigateToURL(this.eddTagPage);
+
+        await this.validateAndFillStrings(Selectors.postForms.eddPostForm.addTag, 'wpuf');
+        await this.validateAndClick(Selectors.postForms.eddPostForm.saveSubmit);
+        await this.page.waitForTimeout(1000);
+
+        await this.validateAndFillStrings(Selectors.postForms.eddPostForm.addTag, 'wpuf-pro');
+        await this.validateAndClick(Selectors.postForms.eddPostForm.saveSubmit);
+        await this.page.waitForTimeout(1000);
+    }
+
     async createProductFE(){
         //Go to Accounts page - FrontEnd
         await this.navigateToURL(this.addProductPage);
@@ -548,7 +590,8 @@ export class PostFormPage extends Base {
         //Post Form process
         //Enter Product Name
         await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.productTitleFE, ProductForm.title);
-        await this.page.selectOption(Selectors.postForms.productFrontendCreate.selectCategory, { label: ProductForm.category });
+        await this.selectOptionWithLabel(Selectors.postForms.productFrontendCreate.selectCategory, ProductForm.category );
+        await this.page.waitForTimeout(1000);
         await this.page.frameLocator(Selectors.postForms.productFrontendCreate.productDescription1)
             .locator(Selectors.postForms.productFrontendCreate.productDescription2).fill(ProductForm.description=faker.lorem.sentence(1));
         await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.productExcerpt, ProductForm.excerpt=faker.lorem.sentence(1));
@@ -563,17 +606,43 @@ export class PostFormPage extends Base {
         await this.page.setInputFiles(Selectors.postForms.productFrontendCreate.productImageGallery, ProductForm.imageGallery2);
         await this.page.waitForTimeout(500);
         await this.assertionValidate(Selectors.postForms.productFrontendCreate.uploads('3'));
-        await this.page.selectOption(Selectors.postForms.productFrontendCreate.catalogVisibility, { value: ProductForm.catalogVisibility });
+        await this.selectOptionWithValue(Selectors.postForms.productFrontendCreate.catalogVisibility, ProductForm.catalogVisibility );
         await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.purchaseNote, ProductForm.purchaseNote=faker.lorem.sentence(1));
         await this.validateAndClick(Selectors.postForms.productFrontendCreate.enableReviews);
         await this.validateAndClick(Selectors.postForms.productFrontendCreate.downloadable);
-        await this.page.selectOption(Selectors.postForms.productFrontendCreate.selectBrand, { label: ProductForm.brand });
-        await this.page.selectOption(Selectors.postForms.productFrontendCreate.selectType, { label: ProductForm.type });
-        await this.page.selectOption(Selectors.postForms.productFrontendCreate.selectVisibility, { label: ProductForm.visibility });
-        await this.page.selectOption(Selectors.postForms.productFrontendCreate.selectTag, { label: ProductForm.tag });
-        await this.page.selectOption(Selectors.postForms.productFrontendCreate.selectShippingClass, { value: ProductForm.shippingClass });
-        await this.page.selectOption(Selectors.postForms.productFrontendCreate.selectColor, { label: ProductForm.color });
+        await this.page.waitForTimeout(1000);
+        await this.selectOptionWithLabel(Selectors.postForms.productFrontendCreate.selectBrand, ProductForm.brand );
+        await this.selectOptionWithLabel(Selectors.postForms.productFrontendCreate.selectType, ProductForm.type );
+        await this.selectOptionWithLabel(Selectors.postForms.productFrontendCreate.selectVisibility, ProductForm.visibility );
+        await this.selectOptionWithLabel(Selectors.postForms.productFrontendCreate.selectTag, ProductForm.tag );
+        await this.selectOptionWithValue(Selectors.postForms.productFrontendCreate.selectShippingClass, ProductForm.shippingClass );
+        await this.selectOptionWithLabel(Selectors.postForms.productFrontendCreate.selectColor, ProductForm.color );
         await this.validateAndClick(Selectors.postForms.productFrontendCreate.createProduct);
+        await this.page.waitForTimeout(1000);
+    }
+
+    async createDownloadsFE(){
+        //Go to Accounts page - FrontEnd
+        await this.navigateToURL(this.addDownloadsPage);
+
+        //Post Form process
+        //Enter Product Name
+        await this.validateAndFillStrings(Selectors.postForms.downloadsFrontendCreate.downloadsTitleFE, DownloadsForm.title);
+        await this.selectOptionWithLabel(Selectors.postForms.downloadsFrontendCreate.downloadCategory, DownloadsForm.category );
+        await this.page.waitForTimeout(1000);
+        await this.page.frameLocator(Selectors.postForms.downloadsFrontendCreate.downloadsDescription1)
+            .locator(Selectors.postForms.downloadsFrontendCreate.downloadsDescription2).fill(DownloadsForm.description=faker.lorem.sentence(1));
+        await this.validateAndFillStrings(Selectors.postForms.downloadsFrontendCreate.downloadsExcerpt, DownloadsForm.excerpt=faker.lorem.sentence(1));
+        await this.validateAndFillStrings(Selectors.postForms.downloadsFrontendCreate.downloadsRegularPrice, DownloadsForm.regularPrice);
+        await this.page.setInputFiles(Selectors.postForms.downloadsFrontendCreate.downloadsImage, DownloadsForm.downloadsImage);
+        await this.page.waitForTimeout(500);
+        await this.assertionValidate(Selectors.postForms.downloadsFrontendCreate.uploads('1'));
+        await this.validateAndFillStrings(Selectors.postForms.downloadsFrontendCreate.purchaseNote, DownloadsForm.purchaseNote=faker.lorem.sentence(1));
+        await this.page.setInputFiles(Selectors.postForms.downloadsFrontendCreate.downloadableFiles, DownloadsForm.downloadableFiles);
+        await this.page.waitForTimeout(500);
+        await this.assertionValidate(Selectors.postForms.downloadsFrontendCreate.uploads('2'));
+        await this.selectOptionWithLabel(Selectors.postForms.downloadsFrontendCreate.downloadsTag, DownloadsForm.tags );
+        await this.validateAndClick(Selectors.postForms.downloadsFrontendCreate.createDownloads);
         await this.page.waitForTimeout(1000);
     }
 
@@ -581,6 +650,12 @@ export class PostFormPage extends Base {
         //Validate Product Submitted
         const validateProductSubmitted = await this.page.innerText(Selectors.postForms.postFormsFrontendCreate.validatePostSubmitted(ProductForm.title));
         expect(validateProductSubmitted).toContain(ProductForm.title);
+    }
+
+    async validateDownloadsCreated(){
+        //Validate Product Submitted
+        const validateProductSubmitted = await this.page.innerText(Selectors.postForms.postFormsFrontendCreate.validatePostSubmitted(DownloadsForm.title));
+        expect(validateProductSubmitted).toContain(DownloadsForm.title);
     }
 
     async validateEnteredProductData(){
@@ -617,5 +692,37 @@ export class PostFormPage extends Base {
         expect(validateProductBrand).toContain(ProductForm.brand);
         //Validate Product Reviews
         await this.assertionValidate(Selectors.postForms.productFormData.reviews);
+    }
+
+    async validateEnteredDownloadsData(){
+        //Validate Product Title
+        const validateProductTitle = await this.page.innerText(Selectors.postForms.downloadsFormData.title(DownloadsForm.title));
+        expect(validateProductTitle).toContain(DownloadsForm.title);
+        //Validate Product Description
+        const validateProductDescription = await this.page.innerText(Selectors.postForms.downloadsFormData.description(DownloadsForm.description));
+        expect(validateProductDescription).toContain(DownloadsForm.description);
+        // images
+        await this.assertionValidate(Selectors.postForms.downloadsFormData.downloadsImage);
+        //Validate Product Purchase Button
+        await this.assertionValidate(Selectors.postForms.downloadsFormData.purchaseButton);
+    }
+
+    async validateEnteredDownloadsDataBE(){
+        await this.navigateToURL(this.downloadsPage);
+        //Validate Product Title
+        await this.validateAndClick(Selectors.postForms.downloadsFormData.titleBE(DownloadsForm.title));
+        await this.page.waitForTimeout(1000);
+        //Validate Product Price
+        await this.assertionValidate(Selectors.postForms.downloadsFormData.price(DownloadsForm.regularPrice));
+        //Validate Product Excerpt
+        await this.assertionValidate(Selectors.postForms.downloadsFormData.excerpt(DownloadsForm.excerpt));
+        //Validate Product Category
+        await this.validateAndClick(Selectors.postForms.downloadsFormData.clickDownload);
+        await this.page.waitForTimeout(300);
+        await this.validateAndClick(Selectors.postForms.downloadsFormData.clickCategory);
+        await this.assertionValidate(Selectors.postForms.downloadsFormData.categoryBE(DownloadsForm.category));
+        //Validate Product Tags
+        await this.validateAndClick(Selectors.postForms.downloadsFormData.clickTag);
+        await this.assertionValidate(Selectors.postForms.downloadsFormData.tagBE(DownloadsForm.tags));
     }
 }

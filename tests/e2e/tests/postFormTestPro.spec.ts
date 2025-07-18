@@ -47,10 +47,18 @@ export default function postFormTestPro() {
          * @Test_PF0014 : Admin is creating product from FE
          * @Test_PF0015 : Admin is validating product created
          * @Test_PF0016 : Admin is validating entered product data
+         * @Test_PF0017 : Admin is setting necessary setup for downloads form
+         * @Test_PF0018 : Admin is creating a downloads Post Form
+         * @Test_PF0019 : Admin is creating downloads page with shortcode
+         * @Test_PF0020 : Admin is creating downloads from FE
+         * @Test_PF0021 : Admin is validating downloads created
+         * @Test_PF0022 : Admin is validating entered downloads data
+         * @Test_PF0023 : Admin is validating entered downloads data BE
+         *
          */
 
-        //TODO: Create a BeforeAll for login
         let productShortCode:string;
+        let downloadsShortCode:string;
 
         //Log into Admin Dashboard
         test.beforeAll(async () => {
@@ -102,7 +110,7 @@ export default function postFormTestPro() {
             await PostFormPro.createPostFE();
         });
 
-        test('PF0004 : User is Validating Post created', { tag: ['@Lite'] }, async () => {
+        test('PF0004 : User is Validating Post created', { tag: ['@Pro'] }, async () => {
             const PostFormClass = new PostFormPage(page);
             
             await PostFormClass.validatePostCreated();
@@ -115,7 +123,7 @@ export default function postFormTestPro() {
             await PostFormClass.validateEnteredData();
         });
 
-        test('PF0011 : Admin is setting necessary setup for product form', { tag: ['@Lite'] }, async () => {
+        test('PF0011 : Admin is setting necessary setup for product form', { tag: ['@Pro'] }, async () => {
             const PostForm = new PostFormPage(page);
 
             await new BasicLoginPage(page).basicLogin(Users.adminUsername, Users.adminPassword);
@@ -123,7 +131,7 @@ export default function postFormTestPro() {
             await PostForm.setupForWooProduct();
         });
 
-        test('PF0012 : Admin is creating a product Post Form', { tag: ['@Lite'] }, async () => {
+        test('PF0012 : Admin is creating a product Post Form', { tag: ['@Pro'] }, async () => {
             const PostForm = new PostFormPage(page);
             const FieldAdd = new FieldAddPage(page);
 
@@ -142,28 +150,83 @@ export default function postFormTestPro() {
 
         });
 
-        test('PF0013 : Admin is creating product page with shortcode ', { tag: ['@Lite'] }, async () => {
+        test('PF0013 : Admin is creating product page with shortcode ', { tag: ['@Pro'] }, async () => {
             const PostForm = new PostFormPage(page);
 
             await PostForm.createPageWithShortcodeGeneral(productShortCode, 'Add Product');
         });
 
-        test('PF0014 : Admin is creating product from FE ', { tag: ['@Lite'] }, async () => {
+        test('PF0014 : Admin is creating product from FE ', { tag: ['@Pro'] }, async () => {
             const PostForm = new PostFormPage(page);
             
             await PostForm.createProductFE();
         });
 
-        test('PF0015 : Admin is validating product created', { tag: ['@Lite'] }, async () => {
+        test('PF0015 : Admin is validating product created', { tag: ['@Pro'] }, async () => {
             const PostForm = new PostFormPage(page);
             
             await PostForm.validateProductCreated();
         });
 
-        test('PF0016 : Admin is validating entered product data', { tag: ['@Lite'] }, async () => {
+        test('PF0016 : Admin is validating entered product data', { tag: ['@Pro'] }, async () => {
             const PostForm = new PostFormPage(page);
             
             await PostForm.validateEnteredProductData();
+        });
+
+        test('PF0017 : Admin is setting necessary setup for downloads form', { tag: ['@Pro'] }, async () => {
+            const PostForm = new PostFormPage(page);
+            
+            await PostForm.setupForEDDProduct();
+        });
+
+        test('PF0018 : Admin is creating a downloads Post Form', { tag: ['@Pro'] }, async () => {
+            const PostForm = new PostFormPage(page);
+            const FieldAdd = new FieldAddPage(page);
+
+            //Post Preset Form
+            await PostForm.createDownloadsPostForm();
+            // Add
+            await FieldAdd.addDownloadsTaxoFields_PF();
+            //Validate
+            await FieldAdd.validateDownloadsPostFields_PF();
+
+            //Save
+            await FieldAdd.saveForm_Common();
+            //Validate
+            downloadsShortCode = await FieldAdd.validatePostFormCreated('EDD Download');
+            console.log('Downloads Short Code: ' + downloadsShortCode);
+
+        });
+
+        test('PF0019 : Admin is creating add downloads page with shortcode ', { tag: ['@Pro'] }, async () => {
+            const PostForm = new PostFormPage(page);
+
+            await PostForm.createPageWithShortcodeGeneral(downloadsShortCode, 'Add Downloads');
+        });
+
+        test('PF0020 : Admin is creating downloads from FE ', { tag: ['@Pro'] }, async () => {
+            const PostForm = new PostFormPage(page);
+            
+            await PostForm.createDownloadsFE();
+        });
+
+        test('PF0021 : Admin is validating downloads created', { tag: ['@Pro'] }, async () => {
+            const PostForm = new PostFormPage(page);
+            
+            await PostForm.validateDownloadsCreated();
+        });
+
+        test('PF0022 : Admin is validating entered downloads data', { tag: ['@Pro'] }, async () => {
+            const PostForm = new PostFormPage(page);
+            
+            await PostForm.validateEnteredDownloadsData();
+        });
+
+        test('PF0023 : Admin is validating entered downloads data BE', { tag: ['@Pro'] }, async () => {
+            const PostForm = new PostFormPage(page);
+            
+            await PostForm.validateEnteredDownloadsDataBE();
         });
 
     });

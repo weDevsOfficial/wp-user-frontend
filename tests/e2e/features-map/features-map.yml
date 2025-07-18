@@ -80,6 +80,20 @@ features:
     name: Admin is validating product created
   - id: PF0016
     name: Admin is validating entered product data
+  - id: PF0017
+    name: Admin is setting necessary setup for downloads form
+  - id: PF0018
+    name: Admin is creating a downloads Post Form
+  - id: PF0019
+    name: Admin is creating downloads page with shortcode
+  - id: PF0020
+    name: Admin is creating downloads from FE
+  - id: PF0021
+    name: Admin is validating downloads created
+  - id: PF0022
+    name: Admin is validating entered downloads data
+  - id: PF0023
+    name: Admin is validating entered downloads data BE
 
   # Registration Forms
   - id: RF0001

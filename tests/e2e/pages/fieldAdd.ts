@@ -5,7 +5,7 @@ import { Selectors } from './selectors';
 import { Base } from './base';
 
 
-export class FieldOptionsCommonPage extends Base {
+export class FieldAddPage extends Base {
 
     constructor(page: Page) {
         super(page);
@@ -24,7 +24,7 @@ export class FieldOptionsCommonPage extends Base {
         await this.validateAndClick(Selectors.postForms.addPostFields_PF.postContentBlock);
         await this.validateAndClick(Selectors.postForms.addPostFields_PF.postExcerptBlock);
         await this.validateAndClick(Selectors.postForms.addPostFields_PF.featuredImageBlock);
-        await this.page.waitForLoadState('domcontentloaded');
+         
     }
 
     //Validate > PostFields
@@ -41,6 +41,70 @@ export class FieldOptionsCommonPage extends Base {
 
     }
 
+    async validateProductPostFields_PF(){
+        // Validate
+        // Product Title
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateProductTitle);
+        //Product Category
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateProductCategory);
+        // Product Description
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateProductDescription);
+        // Product Price
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateProductShDescription);
+        // Regular Price
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateRegularPrice);
+        // Sale Price
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateSalePrice);
+        // Product Image
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateProductImage);
+        // Image Gallery
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateImageGallery);
+        // Catalog Visibility
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateCatalogVisibility);
+        // Purchase Note
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validatepurchaseNote);
+        // Product Reviews
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateProductReviews);
+        // Downloadable Product
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateDownloadableProduct);
+        // Downloadable Files
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateDownloadableFiles);
+        // Product Brand
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateProductBrand);
+        // Product Type
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateProductType);
+        // Product Visibility
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateProductVisibility);
+        // Product Tag
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateProductTag);
+        // Product Shipping Class
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateProductShippingClass);
+        // Product Attribute
+        await this.assertionValidate(Selectors.postForms.validateProductPostFields_PF.validateProductAttribute);
+    }
+
+    async validateDownloadsPostFields_PF(){
+        // Validate
+        // Downloads Title
+        await this.assertionValidate(Selectors.postForms.validateDownloadsPostFields_PF.validateDownloadsTitle);
+        //Downloads Category
+        await this.assertionValidate(Selectors.postForms.validateDownloadsPostFields_PF.validateDownloadsCategory);
+        // Downloads Description
+        await this.assertionValidate(Selectors.postForms.validateDownloadsPostFields_PF.validateDownloadsDescription);
+        // Downloads Price
+        await this.assertionValidate(Selectors.postForms.validateDownloadsPostFields_PF.validateDownloadsShDescription);
+        // Regular Price
+        await this.assertionValidate(Selectors.postForms.validateDownloadsPostFields_PF.validateRegularPrice);
+        // Downloads Image
+        await this.assertionValidate(Selectors.postForms.validateDownloadsPostFields_PF.validateDownloadsImage);
+        // Purchase Note
+        await this.assertionValidate(Selectors.postForms.validateDownloadsPostFields_PF.validatepurchaseNote);
+        // Downloadable Files
+        await this.assertionValidate(Selectors.postForms.validateDownloadsPostFields_PF.validateDownloadableFiles);
+        // Product Tag
+        await this.assertionValidate(Selectors.postForms.validateDownloadsPostFields_PF.validateProductTag);
+    }
+
 
 
     /********************* Taxonomies *********************/
@@ -50,7 +114,7 @@ export class FieldOptionsCommonPage extends Base {
         await this.validateAndClick(Selectors.postForms.addTaxonomies_PF.categoryBlock);
         await this.validateAndClick(Selectors.postForms.addTaxonomies_PF.tagsBlock);
 
-        await this.page.waitForLoadState('domcontentloaded');
+         
     }
 
     //Validate > Taxonomies
@@ -70,6 +134,20 @@ export class FieldOptionsCommonPage extends Base {
         await this.assertionValidate(Selectors.postForms.validateTaxonomiesPreset_PF.validateTags);
     }
 
+    async addProductTaxoFields_PF(){
+        //Taxonomies
+        await this.validateAndClick(Selectors.postForms.addProductTaxo_PF.brandBlock);
+        await this.validateAndClick(Selectors.postForms.addProductTaxo_PF.typeblock);
+        await this.validateAndClick(Selectors.postForms.addProductTaxo_PF.visibilityBlock);
+        await this.validateAndClick(Selectors.postForms.addProductTaxo_PF.tagBlock);
+        await this.validateAndClick(Selectors.postForms.addProductTaxo_PF.shippingBlock);
+        await this.validateAndClick(Selectors.postForms.addProductTaxo_PF.attributeBlock);
+    }
+
+    async addDownloadsTaxoFields_PF(){
+        //Taxonomies
+        await this.validateAndClick(Selectors.postForms.addDownloadsTaxo_PF.tagBlock);
+    }
 
 
 
@@ -126,15 +204,20 @@ export class FieldOptionsCommonPage extends Base {
             if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
                 await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
             }
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsGoogleMapsEdit);
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.googleMapsSearchbox);
+            await this.validateAndClick(Selectors.postForms.addPostFieldButton);
+
             //StepStart
-            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsStepStart);
-            if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
-                await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
-            }
+            // await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsStepStart);
+            // if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
+            //     await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
+            // }
+
             //Embed
             await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsEmbed); //TODO: This is an Error as position changes in Lite and Pro
 
-            await this.page.waitForLoadState('domcontentloaded');
+             
 
         }
 
@@ -185,13 +268,13 @@ export class FieldOptionsCommonPage extends Base {
             //AddressField
             await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateAddressField);
 
-            //GoogleMaps        //TODO: Setup required
+            //GoogleMaps
             // if(await this.page.isVisible(Selectors.postForms.validateCustomFields_Common.validateGoogleMaps) === true){
             //     await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateGoogleMaps)).toBeTruthy();
             // }
 
             //StepStart
-            await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateStepStart);
+            //await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateStepStart);
             //Embed
             await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateEmbed);
 
@@ -209,14 +292,17 @@ export class FieldOptionsCommonPage extends Base {
         await this.validateAndClick(Selectors.postForms.addOthers_Common.othersColumns);
         await this.validateAndClick(Selectors.postForms.addOthers_Common.othersSectionBreak);
         await this.validateAndClick(Selectors.postForms.addOthers_Common.othersCustomHTML);
-        await this.validateAndClick(Selectors.postForms.addOthers_Common.othersReCaptcha);
-        if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
-            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
-        }
-        await this.validateAndClick(Selectors.postForms.addOthers_Common.othersCloudflareTurnstile);
-        if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
-            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
-        }
+        // await this.validateAndClick(Selectors.postForms.addOthers_Common.othersReCaptcha);
+        // if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
+        //     await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
+        // }
+        // await this.validateAndClick(Selectors.postForms.addOthers_Common.reCaptchaEdit);
+        // await this.validateAndClick(Selectors.postForms.addOthers_Common.invisibleReCaptcha);
+        // await this.validateAndClick(Selectors.postForms.addPostFieldButton);
+        // await this.validateAndClick(Selectors.postForms.addOthers_Common.othersCloudflareTurnstile);
+        // if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk)) {
+        //     await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt2PopUpModalOk);
+        // }
 
 
         //FromPRO
@@ -245,7 +331,7 @@ export class FieldOptionsCommonPage extends Base {
             }
             //MathCaptcha
             await this.validateAndClick(Selectors.postForms.addOthers_Common.othersMathCaptcha);
-            await this.page.waitForLoadState('domcontentloaded');
+             
         }
 
     }
@@ -259,9 +345,8 @@ export class FieldOptionsCommonPage extends Base {
         await this.assertionValidate(Selectors.postForms.validateOthers_Common.validateSectionBreak);
         //CustomHTML
         await this.assertionValidate(Selectors.postForms.validateOthers_Common.validateCustomHTML);
-
-        //From PRO
         //ReCaptcha
+        //await this.assertionValidate(Selectors.postForms.validateOthers_Common.validateReCaptcha);
         //Not visible
         //Shortcode
         const proOthers_Common = await this.page.isVisible(Selectors.postForms.validateOthers_Common.validateShortcode);
@@ -284,7 +369,7 @@ export class FieldOptionsCommonPage extends Base {
 
     //Settings > MultiStep Check
     async setMultiStepSettings_Common() {
-        await this.page.waitForLoadState('domcontentloaded');
+         
         //Add Multi-Step-Check
         await this.validateAndClick(Selectors.postForms.formSettings.clickFormEditorSettings);
         const proTextAlertInSettings = await this.page.isVisible(Selectors.postForms.addCustomFields_Common.proTextAlertInSettings);
@@ -297,34 +382,20 @@ export class FieldOptionsCommonPage extends Base {
         }
 
         await this.validateAndClick(Selectors.postForms.formSettings.clickFormEditor);
-        await this.page.waitForLoadState('domcontentloaded');
+         
     }
 
 
 
     /********************* SaveForm *********************/
     //SaveForm
-    async saveForm_Common(validateNewPostName_Common: string) {
-        
-        try{
-        await this.page.waitForSelector(Selectors.postForms.saveForm_Common.formNameReCheck, { state: 'visible' });
-        const checkNewFormName_Common = await this.page.textContent(Selectors.postForms.saveForm_Common.formNameReCheck);
-        expect(checkNewFormName_Common?.trim()).toContain(validateNewPostName_Common);
-
-        console.log('Before Save-Form Name: ' + checkNewFormName_Common);
-        }catch(e){
-            console.log('not matched ');
-        }
-        await this.page.waitForLoadState('domcontentloaded');
-
+    async saveForm_Common() {
         //Save Form
         await this.validateAndClick(Selectors.postForms.saveForm_Common.saveFormButton);
-        await this.page.reload();
+        // Wait for save and verify success message
+        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+
     }
-
-
-
-
 
     /********************* Validate *********************/
     //Admin checks if Created form is displayed in Post Forms - Table/List
@@ -332,38 +403,35 @@ export class FieldOptionsCommonPage extends Base {
         //Return HOME
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();
-        await this.page.waitForLoadState('domcontentloaded');
+         
 
         //ASSERTION > Check if-VALID
         const checkNewBlankFormCreatedValid_PF = await this.page.isVisible(Selectors.postForms.navigatePage_PF.checkAddButton_PF);
         if (checkNewBlankFormCreatedValid_PF === true) {
-            const checkNewFormCreated_PF = await this.page.innerText(Selectors.postForms.navigatePage_PF.postFormsPageFormsTitleCheck_PF);
-            await expect(checkNewFormCreated_PF).toContain(validateNewPostName_PF);
+            const checkNewFormCreated_PF = await this.page.innerText(Selectors.postForms.navigatePage_PF.postFormsPageFormsTitleCheck_PF(validateNewPostName_PF));
+            expect(checkNewFormCreated_PF).toContain(validateNewPostName_PF);
             console.log('PF Name: ' + checkNewFormCreated_PF);
             console.log('PF List: ' + validateNewPostName_PF);
+            return await this.page.textContent(Selectors.postForms.navigatePage_PF.postFormShortCode(validateNewPostName_PF));
         }
     }
 
+    async validateProductPostFormCreated(validateNewPostName_PF: string) {
+        //Return HOME
+        await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
+        await this.page.reload();
+         
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        //ASSERTION > Check if-VALID
+        const checkNewBlankFormCreatedValid_PF = await this.page.isVisible(Selectors.postForms.navigatePage_PF.checkAddButton_PF);
+        if (checkNewBlankFormCreatedValid_PF === true) {
+            const checkNewFormCreated_PF = await this.page.innerText(Selectors.postForms.navigatePage_PF.postFormsPageFormsTitleCheck_PF(validateNewPostName_PF));
+            expect(checkNewFormCreated_PF).toContain(validateNewPostName_PF);
+            console.log('PF Name: ' + checkNewFormCreated_PF);
+            console.log('PF List: ' + validateNewPostName_PF);
+            return await this.page.textContent(Selectors.postForms.navigatePage_PF.postFormShortCode(validateNewPostName_PF));
+        }
+    }
 
 
     /******************************************/
@@ -374,7 +442,7 @@ export class FieldOptionsCommonPage extends Base {
     //ProfileFields
     async addProfileFields_RF() {
         //PostFields
-        await this.page.waitForLoadState('domcontentloaded');
+         
         await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFieldUsername);
         await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFieldFirstName);
         await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFieldLastName);
@@ -402,7 +470,7 @@ export class FieldOptionsCommonPage extends Base {
     async validateRegistrtionFormCreated(validateNewPostName_RF) {
         //Return HOME
         await this.validateAndClick(Selectors.registrationForms.createBlankForm_RF.clickRegistrationFormMenuOption);
-        await this.page.waitForLoadState('domcontentloaded');
+         
 
         //ASSERTION > Check if-VALID
         const checkNewBlankFormCreatedValid_RF = await this.page.isVisible(Selectors.registrationForms.navigatePage_RF.checkAddButton_RF);

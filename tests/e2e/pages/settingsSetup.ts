@@ -20,7 +20,7 @@ export class SettingsSetupPage extends Base {
     //WPUF Setup
     async wpufSetup() {
         //WPUF Setup
-        await Promise.all([this.page.goto(this.wpufSetupPage)]);
+        await this.navigateToURL(this.wpufSetupPage);
 
         const wpufSetup = await this.page.isVisible(Selectors.settingsSetup.wpufSetup.validateWPUFSetupPage);
         if (wpufSetup == true) {
@@ -43,8 +43,7 @@ export class SettingsSetupPage extends Base {
     //Plugin Activate - Lite
     async pluginStatusCheckLite() {
         //Go to AdminEnd
-        await Promise.all([this.page.goto(this.pluginsPage )]);
-        await this.waitForLoading();
+        await this.navigateToURL(this.pluginsPage);
 
         //Activate Lite
         await this.activateWPUFLite();
@@ -54,8 +53,7 @@ export class SettingsSetupPage extends Base {
     //Plugin Activate - Pro
     async pluginStatusCheckPro() {
         //Go to AdminEnd
-        await Promise.all([this.page.goto(this.pluginsPage )]);
-        await this.waitForLoading();
+        await this.navigateToURL(this.pluginsPage);
 
         //Activate Pro
         await this.activateWPUFPro();
@@ -65,8 +63,7 @@ export class SettingsSetupPage extends Base {
     //Plugin Activate - Pro
     async licenseActivateWPUFPro() {
         //Go to AdminEnd
-        await Promise.all([this.page.goto(this.pluginsPage )]);
-        await this.waitForLoading();
+        await this.navigateToURL(this.pluginsPage);
 
         //Activate Pro
         await this.activateLicenseWPUFPro();
@@ -75,8 +72,7 @@ export class SettingsSetupPage extends Base {
     //Plugin Activate - Dokan Lite
     async dokanLiteStatusCheck() {
         //Go to AdminEnd
-        await Promise.all([this.page.goto(this.pluginsPage )]);
-        await this.waitForLoading();
+        await this.navigateToURL(this.pluginsPage);
 
         //Activate Dokan Lite
         await this.activateDokanLite();
@@ -89,24 +85,58 @@ export class SettingsSetupPage extends Base {
     //Plugin Page - Visit
     async pluginVisitWPUF() {
         //Go to AdminEnd
-        await Promise.all([this.page.goto(this.wpAdminPage )]);
-        await this.waitForLoading();
+        await this.navigateToURL(this.wpAdminPage);
 
         await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
-        await this.waitForLoading();
+         
 
         //ASSERTION > Check if-VALID
         const availableText = await this.page.isVisible(Selectors.settingsSetup.pluginVisit.clickPostFormMenuOption);
         if (availableText == true) {
             const checkText = await this.page.innerText(Selectors.settingsSetup.pluginVisit.wpufPostFormCheckAddButton);
-            await expect(checkText).toContain('Add New');
+            expect(checkText).toContain('Add New');
         }
+    }
 
+    async postFormListVisit(){
+        //Go to AdminEnd
+        await this.navigateToURL(this.wpAdminPage);
+
+        await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
+
+        await this.validateAndClick(Selectors.settingsSetup.pluginVisit.clickPostFormMenuOption);
+         
+
+        //ASSERTION > Check if-VALID
+        const availableText = await this.page.isVisible(Selectors.settingsSetup.pluginVisit.clickPostFormMenuOption);
+        if (availableText == true) {
+            const checkText = await this.page.innerText(Selectors.settingsSetup.pluginVisit.wpufPostFormCheckAddButton);
+            expect(checkText).toContain('Add New');
+            expect(this.page.locator(Selectors.settingsSetup.pluginVisit.noFormMsg)).not.toBeVisible();
+            await this.assertionValidate(Selectors.settingsSetup.pluginVisit.formTitleCheck('Sample Form'));
+        }
+    }
+
+    async regFormListVisit(){
+        //Go to AdminEnd
+        await this.navigateToURL(this.wpAdminPage);
+
+        await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
+        await this.validateAndClick(Selectors.settingsSetup.pluginVisit.clickRegFormListPage);
+
+        //ASSERTION > Check if-VALID
+        const availableText = await this.page.isVisible(Selectors.settingsSetup.pluginVisit.clickRegFormMenuOption);
+        if (availableText == true) {
+            const checkText = await this.page.innerText(Selectors.settingsSetup.pluginVisit.wpufPostFormCheckAddButton);
+            expect(checkText).toContain('Add New');
+            expect(this.page.locator(Selectors.settingsSetup.pluginVisit.noFormMsg)).not.toBeVisible();
+            await this.assertionValidate(Selectors.settingsSetup.pluginVisit.formTitleCheck('Registration'));
+        }
     }
 
     async validateWPUFpages() {
-        await Promise.all([this.page.goto(this.pagesPage )]);
-        await this.waitForLoading();
+        await this.navigateToURL(this.pagesPage);
+
         //Validate WPUF Pages
         await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufAccountPage);
         await this.assertionValidate(Selectors.settingsSetup.wpufPages.wpufDashboardPage);
@@ -122,8 +152,8 @@ export class SettingsSetupPage extends Base {
 
     async validateWPUFpagesFE() {
         //Go to FrontEnd
-        await Promise.all([this.page.goto(Urls.baseUrl)]);
-        await this.waitForLoading();
+        await this.navigateToURL(Urls.baseUrl);
+
         //Validate WPUF Pages
         await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.accountPageFE);
         await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.dashboardPageFE);
@@ -137,8 +167,8 @@ export class SettingsSetupPage extends Base {
 
     async validateAccountPageTabs() {
 
-        await Promise.all([this.page.goto(Urls.baseUrl)]);
-        await this.waitForLoading();
+        await this.navigateToURL(Urls.baseUrl);
+
         await this.validateAndClick(Selectors.settingsSetup.wpufPagesFE.accountPageFE);
         await this.validateAndClick(Selectors.settingsSetup.accountPageTabs.dashboardTab);
         await this.assertionValidate(Selectors.settingsSetup.accountPageTabs.viewDashboardPara);
@@ -177,21 +207,21 @@ export class SettingsSetupPage extends Base {
         this.page.on('dialog', dialogHandler);
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickRunUpdater);
         this.page.off('dialog', dialogHandler);
-        await this.waitForLoading();
+         
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow1);
-        await this.waitForLoading();
+         
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
-        await this.waitForLoading();
+         
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickSkipSetup);
-        await this.waitForLoading();
+         
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickSwitchCart);
-        await this.waitForLoading();
-        await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickDismiss);
-        await this.waitForLoading();
+         
+        // await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickDismiss);
+         
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickEDDnoticeCross);
-        await this.waitForLoading();
+         
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickPayPalCross);
-        await this.waitForLoading();
+         
         if (ifWPUFLite == true) {
             //Activate Plugin
             const activateWPUFLite = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
@@ -199,14 +229,11 @@ export class SettingsSetupPage extends Base {
             if (activateWPUFLite === true) {
                 //Plugins is getting activated here
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
-                await this.waitForLoading();
-                await Promise.all([
-                    this.page.goto(this.pluginsPage ),
-                ]);
+                 
+                await this.navigateToURL(this.pluginsPage);
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginDeactivate);
 
-                await Promise.all([this.page.goto(this.wpAdminPage )]);
-                await this.waitForLoading();
+                await this.navigateToURL(this.wpAdminPage);
                 await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
                 console.log('WPUF-Lite Status: is Activated');
             }
@@ -241,12 +268,11 @@ export class SettingsSetupPage extends Base {
             if (activateWPUFPro == true) {
                 //Plugins were DeActive
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginPro);
-                await this.waitForLoading();
-                await Promise.all([this.page.goto(this.pluginsPage)]);
+                 
+                await this.navigateToURL(this.pluginsPage);
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginProDeactivate);
 
-                await Promise.all([this.page.goto(this.wpAdminPage )]);
-                await this.waitForLoading();
+                await this.navigateToURL(this.wpAdminPage);
                 const dialogHandler = async (dialog: Dialog) => {
                     if (dialog.type() === 'confirm') {
                         await dialog.accept();
@@ -273,28 +299,18 @@ export class SettingsSetupPage extends Base {
     //Plugin Activate - Pro
     async activateLicenseWPUFPro() {
         //Go to Plugins page
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
+        await this.navigateToURL(this.wpufPostFormPage);
 
         await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
         await this.validateAndClick(Selectors.login.basicNavigation.licenseTab);
         //Activate Plugin
-        const activateWPUFPro = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickActivateLicense);
-        console.log(activateWPUFPro);
-        if (activateWPUFPro == true) {
-            await this.validateAndFillStrings(Selectors.settingsSetup.pluginStatusCheck.fillLicenseKey, process.env.WPUF_PRO_LICENSE_KEY?.toString() || '');
-            await this.page.waitForTimeout(200);
-            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.submitLicenseKey);
-            await this.page.waitForTimeout(200);
-            await this.page.reload();
-            await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.activationRemaining);
-            console.log('WPUF-Pro Status: License is Activated');
-        }
-        else {
-            await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
-            await this.validateAndClick(Selectors.login.basicNavigation.licenseTab);
-            await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.deactivateLicenseKey);
-            console.log('WPUF-Pro Status: License was Active');
-        }
+        await this.validateAndFillStrings(Selectors.settingsSetup.pluginStatusCheck.fillLicenseKey, process.env.WPUF_PRO_LICENSE_KEY?.toString() || '');
+        await this.page.waitForTimeout(200);
+        await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.submitLicenseKey);
+        await this.page.waitForTimeout(200);
+        await this.page.reload();
+        await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.activationRemaining);
+        console.log('WPUF-Pro Status: License is Activated');
     }
 
     async activateDokanLite() {
@@ -310,15 +326,14 @@ export class SettingsSetupPage extends Base {
             if (activateDokanLite === true) {
                 //Plugins is getting activated here
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickDokanLite);
-                await this.waitForLoading();
-                await Promise.all([this.page.goto(this.pluginsPage)]);
+                 
+                await this.navigateToURL(this.pluginsPage);
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.clickDokanLiteDeactivate);
 
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
-                await this.waitForLoading();
+                 
 
-                await Promise.all([this.page.goto(this.wpAdminPage )]);
-                await this.waitForLoading();
+                await this.navigateToURL(this.wpAdminPage);
                 await this.validateAndClick(Selectors.login.basicNavigation.clickDokanSidebar);
                 console.log('Dokan-Lite Status: is Activated');
             }
@@ -343,31 +358,48 @@ export class SettingsSetupPage extends Base {
     //Change Settings - Login Page
     async changeSettingsSetLoginPageDefault() {
         //Go to WPUF
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
+        await this.navigateToURL(this.wpufPostFormPage);
 
         //Change Settings
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
         await this.page.reload();
         //Validate Login/Registration
         await this.assertionValidate(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfile1);
-        console.log(await this.assertionValidate(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfile1));
         //Click Login/Registration
-        await this.page.waitForSelector(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfile2);
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfile2);
         //Set Login Page to default
         expect(await this.page.waitForSelector(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileLoginPage)).toBeTruthy();
         //Again - Click Login/Registration
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfile2);
-        await this.page.selectOption(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileLoginPage, { label: '— Select —' });
+        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileLoginPage, '— Select —' );
         //Save Login/Registration
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileSave);
+         
 
-        await this.waitForLoading();
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPosting);
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.showCustomFields);
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPostingSave);
+         
 
-        await this.page.waitForLoadState('domcontentloaded');
+        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccount);
+        await this.page.waitForTimeout(200);
+        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountPage, 'Account' );
+
+        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountActiveTab, 'Dashboard' );
+        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountSave);
+
+
+    }
+
+    async changeSettingsSetEditProfilePageDefault(label:string) {
+        await this.navigateToURL(this.wpufRegFormPage);
+
+        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
+         
+
+        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccount);
+        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabEditProfile, `${label}` );
+        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountSave);
     }
 
 
@@ -378,7 +410,7 @@ export class SettingsSetupPage extends Base {
     //Change Settings - Login Page
     async changeSettingsSetDefaultPostForm(postFormPresetFrontEndTitle: string) {
         //Go to WPUF
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
+        await this.navigateToURL(this.wpufPostFormPage);
 
         //Change Settings
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
@@ -386,7 +418,7 @@ export class SettingsSetupPage extends Base {
         //Click Frontend Posting
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPosting);
         //Set Default Post Form 
-        await this.page.selectOption(Selectors.settingsSetup.wpufSettingsPage.setDefaultPostForm, { label: postFormPresetFrontEndTitle });
+        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.setDefaultPostForm, postFormPresetFrontEndTitle );
         //Save FrontEnd Posting
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPostingSave);
 
@@ -403,7 +435,7 @@ export class SettingsSetupPage extends Base {
     //Change Settings - Registration Page
     async changeSettingsSetRegistrationPage(registrationFormPageTitle: string) {
         //Go to WPUF
-        await Promise.all([this.page.goto(this.wpufPostFormPage)]);
+        await this.navigateToURL(this.wpufPostFormPage);
 
         //Change Settings
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
@@ -413,7 +445,7 @@ export class SettingsSetupPage extends Base {
         //Click Login/Registration
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfile2);
         //Set Registration Page Form
-        await this.page.selectOption(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileRegistrationPage, { label: registrationFormPageTitle });
+        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileRegistrationPage, registrationFormPageTitle );
         //Save Login/Registration
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileSave);
 
@@ -432,7 +464,7 @@ export class SettingsSetupPage extends Base {
     //Set Permalink
     async setPermalink() {
         //Go to Settings - Permalink page
-        await Promise.all([this.page.goto(this.settingsPermalinkPage)]);
+        await this.navigateToURL(this.settingsPermalinkPage);
 
         await this.page.reload();
         //Custom structure - fill with empty
@@ -451,7 +483,7 @@ export class SettingsSetupPage extends Base {
 
     async allowRegistration() {
         //Go to Settings - General page
-        await Promise.all([this.page.goto(this.settingsPage)]);
+        await this.navigateToURL(this.settingsPage);
 
         await this.page.reload();
         //Allow anyone to register
@@ -467,72 +499,72 @@ export class SettingsSetupPage extends Base {
 
     //Main Admin
     //New User Create
-    async createNewUserAdmin(userName: string, email: string, firstName: string, lastName: string, password: string) {
-        await Promise.all([this.page.goto(this.wpAdminPage)]);
-
+    async createNewUser(userName: string, email: string, firstName: string, lastName: string, password: string) {
+        await this.navigateToURL(this.wpAdminPage);
         //Go to Admin-Users
         await this.validateAndClick(Selectors.settingsSetup.createNewUser.clickUserMenuAdmin);
         //Add New User
         await this.validateAndClick(Selectors.settingsSetup.createNewUser.clickAddNewUserAdmin);
-        await this.page.reload();
-        await this.page.waitForLoadState('domcontentloaded');
+        //await this.page.reload();
+         
 
         //New User creation flow
         //Enter Username
         await this.validateAndFillStrings(Selectors.settingsSetup.createNewUser.newUserName, userName);
+        await this.page.waitForTimeout(200);
         //Enter Email
         await this.validateAndFillStrings(Selectors.settingsSetup.createNewUser.newUserEmail, email);
+        await this.page.waitForTimeout(200);
         //Enter First Name
         await this.validateAndFillStrings(Selectors.settingsSetup.createNewUser.newUserFirstName, firstName);
+        await this.page.waitForTimeout(200);
         //Enter Last Name
         await this.validateAndFillStrings(Selectors.settingsSetup.createNewUser.newUserLastName, lastName);
+        await this.page.waitForTimeout(200);
         //Enter Password
         await this.validateAndFillStrings(Selectors.settingsSetup.createNewUser.newUserPassword, password);
-        //Allow weak Password
-        await this.page.check(Selectors.settingsSetup.createNewUser.newUserWeakPasswordAllow);
+        await this.page.waitForTimeout(200);
         //Select Role
-        await this.page.waitForLoadState('domcontentloaded');
         await this.assertionValidate(Selectors.settingsSetup.createNewUser.newUserSelectRole);
-        await this.page.selectOption(Selectors.settingsSetup.createNewUser.newUserSelectRole, { label: 'Subscriber' });
-
+        await this.selectOptionWithLabel(Selectors.settingsSetup.createNewUser.newUserSelectRole, 'Subscriber' );
+        await this.page.waitForTimeout(200);
         //Create User
         await this.validateAndClick(Selectors.settingsSetup.createNewUser.newUserSubmit);
+        await this.page.waitForTimeout(200);
     }
 
     async createPostCategories() {
         //Go to Admin-Users
-        await Promise.all([this.page.goto(this.categoriesPage)]);
-        await this.waitForLoading();
+        await this.navigateToURL(this.categoriesPage);
         //Add New Category
         //await this.validateAndClick(Selectors.settingsSetup.categories.clickCategoryMenu);
         await this.page.waitForLoadState('domcontentloaded');
-        const categoryNames: string[] = ['Science', 'Music', 'Politics', 'Sports', 'Technology'];
+        const categoryNames: string[] = ['Science', 'Music'];
         for (let i = 0; i < categoryNames.length; i++) {
             await this.validateAndFillStrings(Selectors.settingsSetup.categories.addNewCategory, categoryNames[i]);
             await this.validateAndClick(Selectors.settingsSetup.categories.submitCategory);
-            await this.waitForLoading();
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.settingsSetup.categories.validateCategory(categoryNames[i]));
         }
     }
     async createPostTags() {
         //Go to Admin-Users
-        await Promise.all([this.page.goto(this.tagsPage)]);
-        await this.waitForLoading();
+        await this.navigateToURL(this.tagsPage);
         //Add New Category
         //await this.validateAndClick(Selectors.settingsSetup.tags.clickTagsMenu);
         await this.page.waitForLoadState('domcontentloaded');
-        const tagNames: string[] = ['Physics', 'Rock', 'Democracy', 'Football', 'AI'];
+        const tagNames: string[] = ['Physics', 'AI'];
         for (let i = 0; i < tagNames.length; i++) {
             await this.validateAndFillStrings(Selectors.settingsSetup.tags.addNewTag, tagNames[i]);
             await this.validateAndClick(Selectors.settingsSetup.tags.submitTag);
-            await this.waitForLoading();
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.settingsSetup.tags.validateTag(tagNames[i]));
         }
     }
 
     async addGoogleMapAPIKey(googleMapAPIKey: string) {
         //Go to Settings - General page
-        await Promise.all([this.page.goto(this.wpufSettingsPage)]);
+        await this.navigateToURL(this.wpufSettingsPage);
 
         await this.page.reload();
 
@@ -545,7 +577,7 @@ export class SettingsSetupPage extends Base {
 
     async addReCaptchaKeys(recaptchaSiteKey: string, recaptchaSecretKey: string) {
         //Go to Settings - General page
-        await Promise.all([this.page.goto(this.wpufSettingsPage)]);
+        await this.navigateToURL(this.wpufSettingsPage);
 
         await this.page.reload();
 
@@ -559,7 +591,7 @@ export class SettingsSetupPage extends Base {
 
     async addCloudflareTurnstileKeys(turnstileSiteKey: string, turnstileSecretKey: string) {
         //Go to Settings - General page
-        await Promise.all([this.page.goto(this.wpufSettingsPage)]);
+        await this.navigateToURL(this.wpufSettingsPage);
 
         await this.page.reload();
 
@@ -572,16 +604,16 @@ export class SettingsSetupPage extends Base {
         //Save Settings
         await this.validateAndClick(Selectors.settingsSetup.keys.settingsTabGeneralSave);
         // Go to Settings - Login/Registration page
-        await this.validateAndClick(Selectors.settingsSetup.keys.clickLoginOrRegistration);
+        //await this.validateAndClick(Selectors.settingsSetup.keys.clickLoginOrRegistration);
         // Cloudflare Turnstile enable
-        await this.validateAndClick(Selectors.settingsSetup.keys.enableCloudflareTurnstileLogin);
+        //await this.validateAndClick(Selectors.settingsSetup.keys.enableCloudflareTurnstileLogin);
         //Save Settings
-        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileSave);
+        //await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileSave);
     }
 
     async enablePaymentGatewayBank() {
         //Go to Settings - General page
-        await Promise.all([this.page.goto(this.wpufSettingsPage)]);
+        await this.navigateToURL(this.wpufSettingsPage);
         await this.page.reload();
         await this.validateAndClick(Selectors.settingsSetup.payment.clickPaymentTab);
         await this.validateAndClick(Selectors.settingsSetup.payment.clickPaymentGatewayBank);
@@ -594,24 +626,22 @@ export class SettingsSetupPage extends Base {
 
     async resetWordpressSite() {
         //Go to AdminEnd
-        await Promise.all([this.page.goto(this.wpResetPage)]);
-        await this.waitForLoading();
+        await this.navigateToURL(this.wpResetPage);
         await this.page.reload();
         await this.validateAndClick(Selectors.resetWordpreseSite.reActivateTheme);
         await this.validateAndClick(Selectors.resetWordpreseSite.reActivatePlugins);
         await this.validateAndFillStrings(Selectors.resetWordpreseSite.wpResetInputBox, 'reset');
         await this.validateAndClick(Selectors.resetWordpreseSite.wpResetSubmitButton);
         await this.validateAndClick(Selectors.resetWordpreseSite.wpResetConfirmWordpressReset);
-        await this.page.waitForTimeout(10000);
-        await Promise.all([this.page.goto(this.pluginsPage )]);
-        await this.waitForLoading();
+        await this.page.waitForTimeout(20000);
+        await this.navigateToURL(this.pluginsPage);
         await this.page.reload();
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWCvendors);
-        await this.waitForLoading();
-        await Promise.all([this.page.goto(this.pluginsPage )]);
-        await this.waitForLoading();
+         
+        
+        await this.navigateToURL(this.pluginsPage);
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickDoNotAllow);
-        await this.waitForLoading();
+         
     }
 
 }

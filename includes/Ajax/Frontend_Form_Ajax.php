@@ -136,40 +136,6 @@ class Frontend_Form_Ajax {
 
         [ $post_vars, $taxonomy_vars, $meta_vars ] = $this->get_input_fields( $this->form_fields );
 
-        // let events calendar handle their data on their format
-        if ( class_exists( 'Tribe__Events__Main' ) && version_compare( \Tribe__Events__Main::VERSION, 6, '>=' ) ) {
-            $meta_vars = array_filter( $meta_vars, function( $field ) {
-                $tribe_events_custom_fields = [
-                    '_EventAllDay',
-                    '_EventStartDate',
-                    '_EventEndDate',
-                    '_EventStartDateUTC',
-                    '_EventEndDateUTC',
-                    '_EventDuration',
-                    '_EventVenueID',
-                    '_EventShowMapLink',
-                    '_EventShowMap',
-                    '_EventCurrencySymbol',
-                    '_EventCurrencyCode',
-                    '_EventCurrencyPosition',
-                    '_EventCost',
-                    '_EventCostMin',
-                    '_EventCostMax',
-                    '_EventURL',
-                    '_EventOrganizerID',
-                    '_EventPhone',
-                    '_EventHideFromUpcoming',
-                    '_EventTimezone',
-                    '_EventTimezoneAbbr',
-                    '_tribe_events_errors',
-                    '_EventOrigin',
-                    '_tribe_featured',
-                ];
-
-                return !in_array( $field['name'], $tribe_events_custom_fields );
-            } );
-        }
-
         if ( ! isset( $_POST['post_id'] ) ) {
             $has_limit = isset( $this->form_settings['limit_entries'] ) && ( 'true' === $this->form_settings['limit_entries'] || 'on' === $this->form_settings['limit_entries'] );
 
@@ -326,7 +292,23 @@ class Frontend_Form_Ajax {
 
         $postarr = $this->adjust_thumbnail_id( $postarr );
 
-        $post_id = wp_insert_post( $postarr );
+        // If this is an Events Calendar event, delegate to the integration handler
+        if ( isset( $postarr['post_type'] ) && $postarr['post_type'] === 'tribe_events' ) {
+            if ( class_exists( '\WeDevs\Wpuf\Integrations\Events_Calendar\Handlers\Event_Handler' ) ) {
+                $tec_handler = new \WeDevs\Wpuf\Integrations\Events_Calendar\Handlers\Event_Handler( new \WeDevs\Wpuf\Integrations\Events_Calendar\Compatibility\TEC_Compatibility_Manager() );
+                $post_id = $tec_handler->create_event_via_tec_api( $postarr, $meta_vars, $form_id, $this->form_settings );
+            } else {
+                // Fallback: fail gracefully if handler is missing
+                $post_id = wp_insert_post( $postarr );
+            }
+        } else {
+            $post_id = wp_insert_post( $postarr );
+        }
+
+        // Hook for post type specific processing after post creation
+        if ( $post_id ) {
+            do_action( 'wpuf_post_created_' . $this->form_settings['post_type'], $post_id, $postarr, $meta_vars );
+        }
 
         // add post revision when post edit from the frontend
         wpuf_frontend_post_revision( $post_id, $this->form_settings );
@@ -343,13 +325,6 @@ class Frontend_Form_Ajax {
         }
 
         if ( $post_id ) {
-            // Handle The Events Calendar event data using TEC's actual API
-            if ( class_exists( 'Tribe__Events__Main' ) &&
-                 version_compare( \Tribe__Events__Main::VERSION, 6, '>=' ) &&
-                 $this->form_settings['post_type'] === 'tribe_events' ) {
-                $this->handle_events_calendar_data( $post_id, $is_update );
-            }
-
             $this->update_post_meta( $meta_vars, $post_id );
             // set the post form_id for later usage
             update_post_meta( $post_id, self::$config_id, $form_id );
@@ -871,342 +846,4 @@ class Frontend_Form_Ajax {
         return $content;
     }
 
-    /**
-     * Handle The Events Calendar event data using TEC's actual API
-     *
-     * @since WPUF_SINCE
-     *
-     * @param int  $post_id   The post ID
-     * @param bool $is_update Whether this is an update operation
-     * @return void
-     */
-    public function handle_events_calendar_data( $post_id, $is_update ) {
-        // Build TEC event args in the format expected by their API
-        $event_args = $this->build_tec_api_args( $post_id );
-
-        if ( empty( $event_args ) ) {
-            return;
-        }
-
-        try {
-            // Use TEC's actual API method that they use in their own REST endpoints
-            // This handles all event meta including dates, timezones, venues, organizers
-            $result = \Tribe__Events__API::saveEventMeta( $post_id, $event_args, get_post( $post_id ) );
-
-            if ( false === $result ) {
-                error_log( 'WPUF TEC Integration: saveEventMeta failed for post ID ' . $post_id );
-            }
-
-        } catch ( \Exception $e ) {
-            error_log( 'WPUF TEC Integration Exception: ' . $e->getMessage() );
-        }
-    }
-
-     /**
-     * Build The Events Calendar event arguments in the format expected by their API
-     * 
-     * @since WPUF_SINCE
-     *
-     * @param int $post_id The post ID
-     * @return array TEC API arguments
-     */
-    private function build_tec_api_args( $post_id ) {
-        $args = [];
-
-        // TEC date format constant
-        $date_format = 'Y-m-d H:i:s';
-
-        // Get site timezone for proper conversion
-        $site_timezone = wp_timezone();
-
-        // Initialize date objects
-        $start_date = null;
-        $end_date = null;
-
-        // Event start date (required)
-        if ( ! empty( $_POST['_EventStartDate'] ) ) {
-            $start_date_input = sanitize_text_field( wp_unslash( $_POST['_EventStartDate'] ) );
-
-            try {
-                // Create DateTime object with site timezone
-                $start_date = new \DateTimeImmutable( $start_date_input, $site_timezone );
-                $start_date_utc = $start_date->setTimezone( new \DateTimeZone( 'UTC' ) );
-
-                // Format dates for TEC
-                $args['EventStartDate'] = $start_date->format( $date_format );
-                $args['EventStartDateUTC'] = $start_date_utc->format( $date_format );
-
-            } catch ( \Exception $e ) {
-                error_log( 'WPUF TEC Integration: Invalid start date format - ' . $e->getMessage() );
-                return [];
-            }
-        } else {
-            // Start date is required for TEC events
-            return [];
-        }
-
-        // Event end date (required)
-        if ( ! empty( $_POST['_EventEndDate'] ) ) {
-            $end_date_input = sanitize_text_field( wp_unslash( $_POST['_EventEndDate'] ) );
-
-            try {
-                // Create DateTime object with site timezone
-                $end_date = new \DateTimeImmutable( $end_date_input, $site_timezone );
-                $end_date_utc = $end_date->setTimezone( new \DateTimeZone( 'UTC' ) );
-
-                // Format dates for TEC
-                $args['EventEndDate'] = $end_date->format( $date_format );
-                $args['EventEndDateUTC'] = $end_date_utc->format( $date_format );
-
-                // Calculate duration if both dates are available
-                if ( $start_date && $end_date ) {
-                    $args['EventDuration'] = $end_date->getTimestamp() - $start_date->getTimestamp();
-                }
-
-            } catch ( \Exception $e ) {
-                error_log( 'WPUF TEC Integration: Invalid end date format - ' . $e->getMessage() );
-                return [];
-            }
-        } else {
-            // End date is required for TEC events
-            return [];
-        }
-
-        // All day event handling
-        $is_all_day = ! empty( $_POST['_EventAllDay'] ) && 'yes' === $_POST['_EventAllDay'];
-        if ( $is_all_day ) {
-            $args['EventAllDay'] = 'yes';
-
-            // For all-day events, TEC expects the end date to be 23:59:59 of the start date
-            if ( $start_date ) {
-                try {
-                    $all_day_interval = new \DateInterval( 'PT23H59M59S' );
-                    $all_day_end = $start_date->add( $all_day_interval );
-                    $all_day_end_utc = $all_day_end->setTimezone( new \DateTimeZone( 'UTC' ) );
-
-                    // Override end date for all-day events
-                    $args['EventEndDate'] = $all_day_end->format( $date_format );
-                    $args['EventEndDateUTC'] = $all_day_end_utc->format( $date_format );
-                    $args['EventDuration'] = $all_day_end->getTimestamp() - $start_date->getTimestamp();
-
-                } catch ( \Exception $e ) {
-                    error_log( 'WPUF TEC Integration: Error setting all-day end date - ' . $e->getMessage() );
-                }
-            }
-        }
-
-        // Event cost
-        if ( ! empty( $_POST['_EventCost'] ) ) {
-            $cost = sanitize_text_field( wp_unslash( $_POST['_EventCost'] ) );
-            if ( is_numeric( $cost ) ) {
-                $args['EventCost'] = $cost;
-            }
-        }
-
-        // Currency symbol
-        if ( ! empty( $_POST['_EventCurrencySymbol'] ) ) {
-            $args['EventCurrencySymbol'] = sanitize_text_field( wp_unslash( $_POST['_EventCurrencySymbol'] ) );
-        }
-
-        // Event URL
-        if ( ! empty( $_POST['_EventURL'] ) ) {
-            $args['EventURL'] = esc_url_raw( wp_unslash( $_POST['_EventURL'] ) );
-        }
-
-        // Handle venue data
-        $venue_data = $this->handle_tec_venue_api();
-        if ( ! empty( $venue_data ) ) {
-            $args['venue'] = $venue_data;
-        }
-
-        // Handle organizer data
-        $organizer_data = $this->handle_tec_organizer_api();
-        if ( ! empty( $organizer_data ) ) {
-            $args['organizer'] = $organizer_data;
-        }
-
-        // Show map settings
-        if ( ! empty( $_POST['_EventShowMap'] ) ) {
-            $show_map = is_array( $_POST['_EventShowMap'] ) && in_array( '1', $_POST['_EventShowMap'] );
-            if ( $show_map ) {
-                $args['venue']['EventShowMap'] = true;
-            }
-        }
-
-        if ( ! empty( $_POST['_EventShowMapLink'] ) ) {
-            $show_map_link = is_array( $_POST['_EventShowMapLink'] ) && in_array( '1', $_POST['_EventShowMapLink'] );
-            if ( $show_map_link ) {
-                $args['venue']['EventShowMapLink'] = true;
-            }
-        }
-
-        // Event timezone - use site timezone or specified timezone
-        if ( ! empty( $_POST['_EventTimezone'] ) ) {
-            $args['EventTimezone'] = sanitize_text_field( wp_unslash( $_POST['_EventTimezone'] ) );
-        } else {
-            // Use site timezone if TEC Timezones class is available
-            if ( class_exists( 'Tribe__Timezones' ) ) {
-                $args['EventTimezone'] = \Tribe__Timezones::wp_timezone_string();
-            } else {
-                $args['EventTimezone'] = wp_timezone_string();
-            }
-        }
-
-        // Add timezone string for TEC's timezone mode detection
-        if ( class_exists( 'Tribe__Timezones' ) && \Tribe__Timezones::is_mode( 'site' ) ) {
-            $args['EventTimezoneAbbr'] = '';
-        }
-
-        return $args;
-    }
-
-    /**
-     * Handle venue creation or selection for TEC events using their API
-     * 
-     * @since WPUF_SINCE
-     *
-     * @return array|null Venue data array or null if no venue
-     */
-    private function handle_tec_venue_api() {
-        // Check if existing venue is selected
-        if ( ! empty( $_POST['_EventVenueID'] ) && is_numeric( $_POST['_EventVenueID'] ) ) {
-            return [ 'VenueID' => intval( $_POST['_EventVenueID'] ) ];
-        }
-
-        // Check if we need to create a new venue
-        if ( ! empty( $_POST['venue'] ) && 'create' === $_POST['venue'] && ! empty( $_POST['venue_name'] ) ) {
-            return $this->create_tec_venue_api();
-        }
-
-        return null;
-    }
-
-    /**
-     * Create a new venue using TEC's API
-     * 
-     * @since WPUF_SINCE
-     *
-     * @return array|null Venue data array or null on failure
-     */
-    private function create_tec_venue_api() {
-        $venue_data = [
-            'Venue' => sanitize_text_field( wp_unslash( $_POST['venue_name'] ) ),
-        ];
-
-        // Add venue address if provided
-        if ( ! empty( $_POST['venue_address'] ) && is_array( $_POST['venue_address'] ) ) {
-            $address = $_POST['venue_address'];
-
-            if ( ! empty( $address['street_address'] ) ) {
-                $venue_data['Address'] = sanitize_text_field( wp_unslash( $address['street_address'] ) );
-            }
-
-            if ( ! empty( $address['city_name'] ) ) {
-                $venue_data['City'] = sanitize_text_field( wp_unslash( $address['city_name'] ) );
-            }
-
-            if ( ! empty( $address['state'] ) ) {
-                $venue_data['State'] = sanitize_text_field( wp_unslash( $address['state'] ) );
-            }
-
-            if ( ! empty( $address['zip'] ) ) {
-                $venue_data['Zip'] = sanitize_text_field( wp_unslash( $address['zip'] ) );
-            }
-
-            if ( ! empty( $address['country_select'] ) ) {
-                $venue_data['Country'] = sanitize_text_field( wp_unslash( $address['country_select'] ) );
-            }
-        }
-
-        // Add venue phone if provided
-        if ( ! empty( $_POST['venue_phone'] ) ) {
-            $venue_data['Phone'] = sanitize_text_field( wp_unslash( $_POST['venue_phone'] ) );
-        }
-
-        // Add venue website if provided
-        if ( ! empty( $_POST['venue_website'] ) ) {
-            $venue_data['Website'] = esc_url_raw( wp_unslash( $_POST['venue_website'] ) );
-        }
-
-        try {
-            // Use TEC's actual API method
-            $venue_id = Tribe__Events__API::createVenue( $venue_data );
-
-            if ( is_wp_error( $venue_id ) ) {
-                error_log( 'WPUF TEC Venue Creation Error: ' . $venue_id->get_error_message() );
-                return null;
-            }
-
-            return [ 'VenueID' => $venue_id ];
-
-        } catch ( \Exception $e ) {
-            error_log( 'WPUF TEC Venue Creation Exception: ' . $e->getMessage() );
-            return null;
-        }
-    }
-
-    /**
-     * Handle organizer creation or selection for TEC events using their API
-     * 
-     * @since WPUF_SINCE
-     *
-     * @return array|null Organizer data array or null if no organizer
-     */
-    private function handle_tec_organizer_api() {
-        // Check if existing organizer is selected
-        if ( ! empty( $_POST['_EventOrganizerID'] ) && is_numeric( $_POST['_EventOrganizerID'] ) ) {
-            return [ 'OrganizerID' => intval( $_POST['_EventOrganizerID'] ) ];
-        }
-
-        // Check if we need to create a new organizer
-        if ( ! empty( $_POST['organizer'] ) && 'create' === $_POST['organizer'] && ! empty( $_POST['organizer_name'] ) ) {
-            return $this->create_tec_organizer_api();
-        }
-
-        return null;
-    }
-
-    /**
-     * Create a new organizer using TEC's API
-     * 
-     * @since WPUF_SINCE
-     *
-     * @return array|null Organizer data array or null on failure
-     */
-    private function create_tec_organizer_api() {
-        $organizer_data = [
-            'Organizer' => sanitize_text_field( wp_unslash( $_POST['organizer_name'] ) ),
-        ];
-
-        // Add organizer phone if provided
-        if ( ! empty( $_POST['organizer_phone'] ) ) {
-            $organizer_data['Phone'] = sanitize_text_field( wp_unslash( $_POST['organizer_phone'] ) );
-        }
-
-        // Add organizer website if provided
-        if ( ! empty( $_POST['organizer_website'] ) ) {
-            $organizer_data['Website'] = esc_url_raw( wp_unslash( $_POST['organizer_website'] ) );
-        }
-
-        // Add organizer email if provided
-        if ( ! empty( $_POST['organizer_email'] ) ) {
-            $organizer_data['Email'] = sanitize_email( wp_unslash( $_POST['organizer_email'] ) );
-        }
-
-        try {
-            // Use TEC's actual API method
-            $organizer_id = Tribe__Events__API::createOrganizer( $organizer_data );
-
-            if ( is_wp_error( $organizer_id ) ) {
-                error_log( 'WPUF TEC Organizer Creation Error: ' . $organizer_id->get_error_message() );
-                return null;
-            }
-
-            return [ 'OrganizerID' => $organizer_id ];
-
-        } catch ( \Exception $e ) {
-            error_log( 'WPUF TEC Organizer Creation Exception: ' . $e->getMessage() );
-            return null;
-        }
-    }
 }

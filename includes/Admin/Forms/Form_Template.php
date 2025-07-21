@@ -155,6 +155,7 @@ abstract class Form_Template {
         // handle The Events Calendar data and for event calendar version below 6
         if ( class_exists( 'Tribe__Events__Main' ) && version_compare( \Tribe__Events__Main::VERSION, 6, '<' ) ) {
             $timezone       = get_option( 'timezone_string', 'UTC+0' );
+            $timezone       = new \DateTimeZone( $timezone );
             $start_date     = wpuf_current_datetime()->format( self::TIB_DATETIME_FORMAT );
             $end_date       = wpuf_current_datetime()->format( self::TIB_DATETIME_FORMAT );
             $start_date_utc = wpuf_current_datetime()->setTimezone( $timezone )->format( self::TIB_DATETIME_FORMAT );
@@ -199,20 +200,22 @@ abstract class Form_Template {
         ];
 
         if ( 'no' === $event_data['EventAllDay'] ) {
-            $event_data = [
+            $event_data = array_merge( $event_data, [
                 'EventStartTime' => wpuf_current_datetime()->modify( $event_data['EventStartDate'] )->format( 'h:ia' ),
                 'EventEndTime'   => wpuf_current_datetime()->modify( $event_data['EventEndDate'] )->format( 'h:ia' ),
-            ];
+            ] );
         }
 
         $tribe_api = WP_PLUGIN_DIR . '/the-events-calendar/src/Tribe/API.php';
 
-        require_once $tribe_api;
+        if ( ! file_exists( $tribe_api ) ) {
+            require_once $tribe_api;
+        }
 
         /**
          * Opportunity to change 'The Event Calendar' metadata just before WPUF is saving it to DB
          *
-         * @since WPUFPRO_SINCE
+         * @since WPUF_SINCE
          *
          * @param array $event_data The event metadata
          * @param int $post_id The post id, in other words, The Event

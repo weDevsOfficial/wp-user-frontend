@@ -334,6 +334,14 @@ trait FieldableTrait {
          */
         do_action( 'wpuf_before_updating_post_meta_fields', $post_id, $meta_key_value, $multi_repeated, $files );
 
+        if ( ! in_array( $this->form_settings['post_type'], [ 'tribe_events' ] ) ) {
+            // Events Calendar compatibility - convert date fields to proper format
+            $meta_key_value = $this->convert_events_calendar_dates( $meta_key_value, $post_id );
+                    
+            // Validate Events Calendar dates to prevent conflicts
+            $meta_key_value = $this->validate_events_calendar_dates( $meta_key_value, $post_id );
+        }
+
         // @codingStandardsIgnoreStart
         $wpuf_files = isset( $_POST['wpuf_files'] ) ? $_POST['wpuf_files'] : [];
 
@@ -644,9 +652,11 @@ trait FieldableTrait {
                 case 'text':
                 case 'email':
                 case 'number':
+                    $meta_key_value[ $value['name'] ] = $value_name;
+                    break;
+
                 case 'date':
                     $meta_key_value[ $value['name'] ] = $value_name;
-
                     break;
 
                 case 'textarea':
@@ -749,4 +759,6 @@ trait FieldableTrait {
             'is_taxonomy'  => 1,
         ];
     }
+
+
 }

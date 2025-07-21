@@ -29,8 +29,11 @@ class Form_Field_Text extends Field_Contract {
                 $value = $this->get_meta( $post_id, $field_settings['name'], $type );
             }
         } else {
-            $value = $field_settings['default'];
+            $value = ! empty( $field_settings['default'] ) ? $field_settings['default'] : '';
         }
+
+        $placeholder = ! empty( $field_settings['placeholder'] ) ? $field_settings['placeholder'] : '';
+        $size = ! empty( $field_settings['size'] ) ? $field_settings['size'] : 40;
 
         $this->field_print_label( $field_settings, $form_id ); ?>
 
@@ -41,9 +44,9 @@ class Form_Field_Text extends Field_Contract {
                     type="text"
                     data-required="<?php echo esc_attr( $field_settings['required'] ); ?>"
                     data-type="text" name="<?php echo esc_attr( $field_settings['name'] ); ?>"
-                    placeholder="<?php echo esc_attr( $field_settings['placeholder'] ); ?>"
+                    placeholder="<?php echo esc_attr( $placeholder ); ?>"
                     value="<?php echo esc_attr( $value ); ?>"
-                    size="<?php echo esc_attr( $field_settings['size'] ); ?>"
+                    size="<?php echo esc_attr( $size ); ?>"
                 />
 
                 <span class="wpuf-wordlimit-message wpuf-help"></span>

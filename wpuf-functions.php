@@ -214,7 +214,7 @@ function wpuf_list_users() {
  * @return string HTML content, if not displaying
  */
 function wpuf_get_pages( $post_type = 'page' ) {
-    $array = [ '' => __( '&mdash; Select &mdash;', 'wp-user-frontend' ) ];
+    $array = [ '' => __( '-- Select --', 'wp-user-frontend' ) ];
     $pages = get_posts(
         [
             'post_type'              => $post_type,
@@ -1096,12 +1096,12 @@ function wpuf_show_custom_fields( $content ) {
                     if ( isset( $field_value[0] ) && is_array( $field_value[0] ) ) {
                         $country_state = new WeDevs\Wpuf\Data\Country_State();
                         $country_value = isset( $field_value[0]['country_select'] ) ? $field_value[0]['country_select'] : '';
-                        
+
                         // Get countries array from Country_State class as fallback
                         if ( empty( $countries ) ) {
                             $countries = $country_state->countries();
                         }
-                        
+
                         foreach ( $field_value[0] as $field_key => $value ) {
                             if ( 'country_select' === $field_key ) {
                                 if ( isset( $countries[ $value ] ) ) {
@@ -1109,7 +1109,7 @@ function wpuf_show_custom_fields( $content ) {
                                 }
                             } elseif ( 'state' === $field_key && ! empty( $country_value ) ) {
                                 $state_resolved = false;
-                                
+
                                 if ( wpuf()->is_pro() && file_exists( WPUF_PRO_INCLUDES . '/states.php' ) ) {
                                     $pro_states = include WPUF_PRO_INCLUDES . '/states.php';
                                     if ( ! empty( $pro_states[ $country_value ] ) && isset( $pro_states[ $country_value ][ $value ] ) ) {
@@ -1117,7 +1117,7 @@ function wpuf_show_custom_fields( $content ) {
                                         $state_resolved = true;
                                     }
                                 }
-                                
+
                                 if ( ! $state_resolved ) {
                                     $state_name = $country_state->getStateName( $value, $country_value );
                                     if ( $state_name ) {

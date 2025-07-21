@@ -339,7 +339,63 @@ async function generateShardedSummary() {
   // Get current date
   const currentDate = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   
-  // Final Statistics table
+  // Function to style tags as pills (from generate-summary.js)
+  function formatTagAsPill(tag) {
+    const tagType = tag.replace('@', '');
+    
+    switch(tagType) {
+      case 'Basic':
+        return `![Basic](https://img.shields.io/badge/Basic-4dff00?style=plastic&logoColor=white)`;
+      case 'Pro':
+        return `![Pro](https://img.shields.io/badge/Pro-8000ff?style=plastic&logoColor=white)`;
+      case 'Lite':
+        return `![Lite](https://img.shields.io/badge/Lite-ff7400?style=plastic&logoColor=white)`;
+      default:
+        return `![${tagType}](https://img.shields.io/badge/${tagType}-d800ff?style=plastic&logoColor=white)`;
+    }
+  }
+  
+  // Build the markdown report using the same system as generate-summary.js
+  const statHeader = `| Test 🧪 | Total 📊 | Passed ✅ | Failed ❌ | Flaky ⚠️ | Skipped ⏭️ | Not Covered 🚫 | Coverage 📈 | Duration ⏱️ | Average ⌛ | Date 📅 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| E2E | ${allTests.length} | ${passed} | ${failed} | ${flaky} | ${skipped} | ${uncovered} | ${coverage}% | ${formatTotalDuration(totalWallClockDuration)} | ${formatAverageDuration(averageDuration)} | ${currentDate} |`;
+
+  // Covered Scenarios table
+  const tableHeader = `| ID | Type | Title | Status | Duration | Tags |
+|---|---|---|---|---|---|`;
+  
+  const tableRows = allTests
+    .sort((a, b) => a.id.localeCompare(b.id))
+    .map((test) => {
+      const { category } = getFeatureCategory(test.id, featuresMap);
+      const statusIcon = test.status === 'expected' || test.status === 'passed' ? '✅' : 
+                        test.status === 'failed' || test.status === 'unexpected' ? '❌' : 
+                        test.status === 'flaky' ? '⚠️' : 
+                        test.status === 'skipped' ? '⏭️' : '🚫';
+      const duration = `${(test.duration / 1000).toFixed(1)} s`;
+      const tagPills = (test.tags || []).map(formatTagAsPill).join(' ');
+      
+      return `| ${test.id} | ${category} | ${test.title} | ${statusIcon} | ${duration} | ${tagPills} |`;
+    })
+    .join('\n');
+
+  // Complete summary (same format as generate-summary.js)
+  const markdownReport = `# 🧪 Test Summary
+
+## 📊 Final Statistics
+${statHeader}
+
+## 🎯 Covered Scenarios
+${tableHeader}
+${tableRows}
+
+## 🎁 Full Report
+> 📌 **To see full details, screenshots, and step-by-step results, please download the \`playwright-report\` artifact from the next section and open \`index.html\` locally.**
+>
+> _This gives you a beautiful, interactive HTML report with all test evidence and logs._
+`;
+  
+  // Output to console (for local runs)
   console.log('📊 Final Statistics');
   console.log('');
   console.log('| Test | Total | Passed | Failed | Flaky | Skipped | Not Covered | Coverage | Duration | Average | Date |');
@@ -347,7 +403,6 @@ async function generateShardedSummary() {
   console.log(`| E2E  | ${allTests.length} | ${passed} | ${failed} | ${flaky} | ${skipped} | ${uncovered} | ${coverage}% | ${formatTotalDuration(totalWallClockDuration)} | ${formatAverageDuration(averageDuration)} | ${currentDate} |`);
   console.log('');
   
-  // Covered Scenarios table
   console.log('🎯 Covered Scenarios');
   console.log('');
   console.log('| ID | Type | Title | Status | Duration | Tags |');
@@ -360,6 +415,11 @@ async function generateShardedSummary() {
     const tags = test.tags.join(' ');
     
     console.log(`| ${test.id} | ${category} | ${test.title} | ${statusIcon} | ${duration} | ${tags} |`);
+  }
+  
+  // Write to GitHub Actions Step Summary (if running in CI)
+  if (process.env.GITHUB_STEP_SUMMARY) {
+    await fs.writeFile(process.env.GITHUB_STEP_SUMMARY, markdownReport);
   }
   
   // Save merged results

@@ -2,8 +2,6 @@
 
 namespace WeDevs\Wpuf\Integrations\Events_Calendar\Compatibility;
 
-use WeDevs\Wpuf\Integrations\Events_Calendar\Utils\TEC_Logger;
-
 /**
  * TEC Compatibility Manager
  *
@@ -28,17 +26,9 @@ class TEC_Compatibility_Manager {
     private $compatibility_handler;
 
     /**
-     * Logger instance
-     *
-     * @var TEC_Logger
-     */
-    private $logger;
-
-    /**
      * Constructor
      */
     public function __construct() {
-        $this->logger = new TEC_Logger();
         $this->tec_version = $this->get_tec_version();
         $this->compatibility_handler = $this->get_compatibility_handler();
     }
@@ -66,11 +56,9 @@ class TEC_Compatibility_Manager {
      */
     private function get_compatibility_handler() {
         if ( version_compare( $this->tec_version, '6.0', '<' ) ) {
-            $this->logger->log( 'Using TEC v5 compatibility handler for version: ' . $this->tec_version );
             return new TEC_V5_Compatibility();
         }
 
-        $this->logger->log( 'Using TEC v6 compatibility handler for version: ' . $this->tec_version );
         return new TEC_V6_Compatibility();
     }
 
@@ -85,7 +73,6 @@ class TEC_Compatibility_Manager {
      */
     public function save_event( $post_id, $event_data ) {
         if ( ! $this->compatibility_handler ) {
-            $this->logger->log( 'No compatibility handler available for TEC version: ' . $this->tec_version );
             return false;
         }
 
@@ -102,7 +89,6 @@ class TEC_Compatibility_Manager {
      */
     public function create_venue( $venue_data ) {
         if ( ! $this->compatibility_handler ) {
-            $this->logger->log( 'No compatibility handler available for venue creation' );
             return false;
         }
 
@@ -119,7 +105,6 @@ class TEC_Compatibility_Manager {
      */
     public function create_organizer( $organizer_data ) {
         if ( ! $this->compatibility_handler ) {
-            $this->logger->log( 'No compatibility handler available for organizer creation' );
             return false;
         }
 

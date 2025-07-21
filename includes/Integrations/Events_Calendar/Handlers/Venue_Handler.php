@@ -5,7 +5,6 @@ namespace WeDevs\Wpuf\Integrations\Events_Calendar\Handlers;
 use WeDevs\Wpuf\Integrations\Events_Calendar\Compatibility\TEC_Compatibility_Manager;
 use WeDevs\Wpuf\Integrations\Events_Calendar\Utils\TEC_Constants;
 use WeDevs\Wpuf\Integrations\Events_Calendar\Utils\TEC_Helper;
-use WeDevs\Wpuf\Integrations\Events_Calendar\Utils\TEC_Logger;
 
 /**
  * Venue Handler for Events Calendar
@@ -24,20 +23,12 @@ class Venue_Handler {
     private $compatibility_manager;
 
     /**
-     * Logger instance
-     *
-     * @var TEC_Logger
-     */
-    private $logger;
-
-    /**
      * Constructor
      *
      * @param TEC_Compatibility_Manager $compatibility_manager
      */
     public function __construct( $compatibility_manager ) {
         $this->compatibility_manager = $compatibility_manager;
-        $this->logger = new TEC_Logger();
     }
 
     /**
@@ -342,4 +333,4 @@ class Venue_Handler {
 
         return array_filter( $contact );
     }
-} 
+}

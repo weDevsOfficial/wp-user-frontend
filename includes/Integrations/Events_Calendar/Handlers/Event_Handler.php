@@ -53,7 +53,6 @@ class Event_Handler {
         $this->compatibility_manager = $compatibility_manager;
         $this->venue_handler = new Venue_Handler( $compatibility_manager );
         $this->organizer_handler = new Organizer_Handler( $compatibility_manager );
-        $this->logger = new TEC_Logger();
 
         // Hook into WPUF's post creation for tribe_events
         add_action( 'wpuf_post_created_tribe_events', [ $this, 'handle_event_creation' ], 10, 3 );
@@ -71,22 +70,15 @@ class Event_Handler {
      * @param WP_Post $post
      */
     public function prevent_tec_event_processing( $post_id, $post ) {
-        error_log( print_r( $post->post_type, true ) );
         // Only handle tribe_events post type
         if ( $post->post_type !== 'tribe_events' ) {
-            error_log( print_r( 'returning', true ) );
             return;
         }
 
         // Check if this is a WPUF form submission
         if ( $this->is_wpuf_form_submission() ) {
-            error_log( print_r( 'is_wpuf_form_submission', true ) );
             // Remove TEC's event meta processing to prevent conflicts
             remove_action( 'save_post', [ 'Tribe__Events__Main', 'addEventMeta' ], 15 );
-
-            $this->logger->info( 'Prevented TEC event processing for WPUF submission - post ID: ' . $post_id );
-        } else {
-            error_log( print_r( '! is_wpuf_form_submission', true ) );
         }
     }
 
@@ -140,20 +132,16 @@ class Event_Handler {
             return true;
         }
 
-        $this->logger->info( 'Handling event submission for post ID: ' . $post_id );
-
         // Build event data
         $event_data = $this->build_event_data( $post_id );
 
         if ( empty( $event_data ) ) {
-            $this->logger->error( 'Failed to build event data for post ID: ' . $post_id );
             return false;
         }
 
         // Prepare data for TEC's save_post hook
         $this->prepare_data_for_tec_save_post( $event_data );
 
-        $this->logger->info( 'Event data prepared for TEC save_post hook for post ID: ' . $post_id );
         return true;
     }
 
@@ -172,20 +160,16 @@ class Event_Handler {
             return true;
         }
 
-        $this->logger->info( 'Handling event update for post ID: ' . $post_id );
-
         // Build event data
         $event_data = $this->build_event_data( $post_id );
 
         if ( empty( $event_data ) ) {
-            $this->logger->error( 'Failed to build event data for post ID: ' . $post_id );
             return false;
         }
 
         // Prepare data for TEC's save_post hook
         $this->prepare_data_for_tec_save_post( $event_data );
 
-        $this->logger->info( 'Event data prepared for TEC save_post hook for post ID: ' . $post_id );
         return true;
     }
 
@@ -204,20 +188,16 @@ class Event_Handler {
             return true;
         }
 
-        $this->logger->info( 'Preparing event data for form ID: ' . $form_id );
-
         // Convert form data to ORM format
         $orm_args = $this->convert_form_data_to_orm_format( $form_data );
 
         if ( empty( $orm_args ) ) {
-            $this->logger->error( 'Failed to convert form data to ORM format for form ID: ' . $form_id );
             return false;
         }
 
         // Prepare data for TEC's save_post hook
         $this->prepare_data_for_tec_save_post_from_orm( $orm_args );
 
-        $this->logger->info( 'Event data prepared for TEC save_post hook for form ID: ' . $form_id );
         return true;
     }
 
@@ -398,77 +378,54 @@ class Event_Handler {
      * @return bool
      */
     public function handle_event_creation( $post_id, $form_data, $meta_vars ) {
-        $this->logger->info( 'Handling event creation using ORM for post ID: ' . $post_id );
 
         try {
             // Convert form data directly to ORM format
             $orm_args = $this->convert_form_data_to_orm_format( $form_data, $meta_vars );
 
             if ( empty( $orm_args ) ) {
-                $this->logger->error( 'Failed to convert form data to ORM format for post ID: ' . $post_id );
                 return false;
             }
 
             // Validate ORM requirements before saving
             if ( ! $this->validate_orm_requirements( $orm_args ) ) {
-                $this->logger->error( 'ORM requirements validation failed for post ID: ' . $post_id );
                 return false;
             }
 
             // Temporarily disable TEC's save_post hooks to prevent conflicts
             $this->temporarily_disable_tec_hooks();
 
-                        // Use direct WordPress update and TEC meta saving
-            $this->logger->info( 'Attempting direct WordPress update with args: ' . print_r( $orm_args, true ) );
+            // Use direct WordPress update and TEC meta saving
+            $post_data = [
+                'ID' => $post_id,
+                'post_type' => 'tribe_events',
+            ];
 
-            try {
-                // Prepare post data for WordPress update
-                $post_data = [
-                    'ID' => $post_id,
-                    'post_type' => 'tribe_events',
-                ];
-
-                // Add basic post fields
-                if ( isset( $orm_args['title'] ) ) {
-                    $post_data['post_title'] = $orm_args['title'];
-                }
-
-                if ( isset( $orm_args['description'] ) ) {
-                    $post_data['post_content'] = $orm_args['description'];
-                }
-
-                if ( isset( $orm_args['excerpt'] ) ) {
-                    $post_data['post_excerpt'] = $orm_args['excerpt'];
-                }
-
-                // Update the post first
-                $post_result = wp_update_post( $post_data, true );
-
-                if ( is_wp_error( $post_result ) ) {
-                    $this->logger->error( 'WordPress post update failed: ' . $post_result->get_error_message() );
-                    $result = false;
-                } else {
-                    // Now save the event meta using TEC's API
-                    $meta_result = $this->save_event_meta( $post_id, $orm_args );
-                    $result = $meta_result;
-
-                    $this->logger->info( 'WordPress update and TEC meta save result: ' . ( $result ? 'success' : 'failed' ) );
-                }
-
-                if ( ! $result ) {
-                    $this->logger->error( 'Event update failed for post ID: ' . $post_id );
-                }
-            } catch ( \Exception $e ) {
-                $this->logger->error( 'Exception during event update: ' . $e->getMessage() );
-                $this->logger->error( 'Exception trace: ' . $e->getTraceAsString() );
-                $result = false;
+            // Add basic post fields
+            if ( isset( $orm_args['title'] ) ) {
+                $post_data['post_title'] = $orm_args['title'];
             }
 
-            // Re-enable TEC's save_post hooks
-            // $this->restore_tec_hooks();
+            if ( isset( $orm_args['description'] ) ) {
+                $post_data['post_content'] = $orm_args['description'];
+            }
+
+            if ( isset( $orm_args['excerpt'] ) ) {
+                $post_data['post_excerpt'] = $orm_args['excerpt'];
+            }
+
+            // Update the post first
+            $post_result = wp_update_post( $post_data, true );
+
+            if ( is_wp_error( $post_result ) ) {
+                return false;
+            } else {
+                // Now save the event meta using TEC's API
+                $meta_result = $this->save_event_meta( $post_id, $orm_args );
+                $result = $meta_result;
+            }
 
             if ( ! $result ) {
-                $this->logger->error( 'Failed to update event using ORM for post ID: ' . $post_id );
                 return false;
             }
 
@@ -482,11 +439,9 @@ class Event_Handler {
                 $this->handle_organizer_creation( $post_id, $orm_args['organizer'] );
             }
 
-            $this->logger->info( 'Event created successfully using ORM for post ID: ' . $post_id );
             return true;
 
         } catch ( \Exception $e ) {
-            $this->logger->error( 'Exception during event creation: ' . $e->getMessage() );
             return false;
         }
     }
@@ -507,10 +462,8 @@ class Event_Handler {
         // Convert WPUF data to TEC ORM format
         $args = $this->convert_form_data_to_orm_format( $postarr, $meta_vars );
         if ( empty( $args ) || ! is_array( $args ) ) {
-            $this->logger->error( 'Failed to convert form data to TEC ORM format. Postarr: ' . print_r( $postarr, true ) . ' Meta: ' . print_r( $meta_vars, true ) );
             return 0;
         }
-        $this->logger->info( 'TEC ORM args for create: ' . print_r( $args, true ) );
         // Remove ID if present (should not be set for new posts)
         if ( isset( $args['ID'] ) ) {
             unset( $args['ID'] );
@@ -520,18 +473,14 @@ class Event_Handler {
             if ( function_exists( 'tribe_events' ) ) {
                 $event = tribe_events()->set_args( $args )->create();
                 if ( $event instanceof \WP_Post ) {
-                    $this->logger->info( 'Event created via TEC API: ' . $event->ID );
                     return $event->ID;
                 } else {
-                    $this->logger->error( 'TEC API did not return WP_Post. Args: ' . print_r( $args, true ) );
                     return 0;
                 }
             } else {
-                $this->logger->error( 'tribe_events() function not found.' );
                 return 0;
             }
         } catch ( \Exception $e ) {
-            $this->logger->error( 'Exception during TEC event creation: ' . $e->getMessage() );
             return 0;
         }
     }
@@ -550,22 +499,6 @@ class Event_Handler {
 
         // Merge form data with meta vars for comprehensive data access
         $all_data = array_merge( $form_data, $meta_vars );
-
-        // Log the incoming data for debugging
-        $this->logger->info( 'Converting form data to ORM format' );
-        $this->logger->info( 'Form data keys: ' . implode( ', ', array_keys( $form_data ) ) );
-        $this->logger->info( 'Meta vars keys: ' . implode( ', ', array_keys( $meta_vars ) ) );
-
-        // Log specific date fields
-        if ( isset( $all_data['_EventStartDate'] ) ) {
-            $this->logger->info( 'Start date raw: ' . $all_data['_EventStartDate'] );
-        }
-        if ( isset( $all_data['_EventEndDate'] ) ) {
-            $this->logger->info( 'End date raw: ' . $all_data['_EventEndDate'] );
-        }
-        if ( isset( $all_data['_EventAllDay'] ) ) {
-            $this->logger->info( 'All day raw: ' . print_r( $all_data['_EventAllDay'], true ) );
-        }
 
         // Required fields
         if ( ! empty( $all_data['post_title'] ) ) {
@@ -586,32 +519,40 @@ class Event_Handler {
         if ( ! empty( $all_data['_EventStartDate'] ) ) {
             $start_date = $this->format_date_for_tec( $all_data['_EventStartDate'] );
             if ( $start_date ) {
-                $orm_args['start_date'] = $start_date;
-                $this->logger->info( 'Formatted start date: ' . $start_date );
+                // Enforce Y-m-d H:i:s format
+                $dt = \DateTime::createFromFormat( 'Y-m-d H:i:s', $start_date );
+                if ( $dt ) {
+                    $orm_args['start_date'] = $dt->format( 'Y-m-d H:i:s' );
+                } else {
+                    return false;
+                }
             } else {
-                $this->logger->error( 'Failed to format start date: ' . $all_data['_EventStartDate'] );
+                return false;
             }
         } else {
             // Fallback: create a default start date if none provided
             $default_start = current_time( 'Y-m-d H:i:s' );
             $orm_args['start_date'] = $default_start;
-            $this->logger->info( 'Using default start date: ' . $default_start );
         }
 
         if ( ! empty( $all_data['_EventEndDate'] ) ) {
             $end_date = $this->format_date_for_tec( $all_data['_EventEndDate'] );
             if ( $end_date ) {
-                $orm_args['end_date'] = $end_date;
-                $this->logger->info( 'Formatted end date: ' . $end_date );
+                // Enforce Y-m-d H:i:s format
+                $dt = \DateTime::createFromFormat( 'Y-m-d H:i:s', $end_date );
+                if ( $dt ) {
+                    $orm_args['end_date'] = $dt->format( 'Y-m-d H:i:s' );
+                } else {
+                    return false;
+                }
             } else {
-                $this->logger->error( 'Failed to format end date: ' . $all_data['_EventEndDate'] );
+                return false;
             }
         } else {
             // Fallback: create a default end date if none provided
             if ( ! empty( $orm_args['start_date'] ) ) {
                 $default_end = date( 'Y-m-d H:i:s', strtotime( $orm_args['start_date'] ) + 3600 ); // 1 hour later
                 $orm_args['end_date'] = $default_end;
-                $this->logger->info( 'Using default end date: ' . $default_end );
             }
         }
 
@@ -621,9 +562,7 @@ class Event_Handler {
             try {
                 $start_datetime = new \DateTime( $orm_args['start_date'], new \DateTimeZone( $timezone ) );
                 $orm_args['start_date_utc'] = $start_datetime->setTimezone( new \DateTimeZone( 'UTC' ) )->format( 'Y-m-d H:i:s' );
-                $this->logger->info( 'Added start_date_utc: ' . $orm_args['start_date_utc'] . ' from timezone: ' . $timezone );
             } catch ( \Exception $e ) {
-                $this->logger->error( 'Failed to convert start date to UTC: ' . $e->getMessage() );
                 // Fallback: use the same time as UTC
                 $orm_args['start_date_utc'] = $orm_args['start_date'];
             }
@@ -634,9 +573,7 @@ class Event_Handler {
             try {
                 $end_datetime = new \DateTime( $orm_args['end_date'], new \DateTimeZone( $timezone ) );
                 $orm_args['end_date_utc'] = $end_datetime->setTimezone( new \DateTimeZone( 'UTC' ) )->format( 'Y-m-d H:i:s' );
-                $this->logger->info( 'Added end_date_utc: ' . $orm_args['end_date_utc'] . ' from timezone: ' . $timezone );
             } catch ( \Exception $e ) {
-                $this->logger->error( 'Failed to convert end date to UTC: ' . $e->getMessage() );
                 // Fallback: use the same time as UTC
                 $orm_args['end_date_utc'] = $orm_args['end_date'];
             }
@@ -691,24 +628,18 @@ class Event_Handler {
             // Validate timezone
             if ( in_array( $timezone, timezone_identifiers_list() ) ) {
                 $orm_args['timezone'] = $timezone;
-                $this->logger->info( 'Using timezone: ' . $timezone );
             } else {
-                $this->logger->error( 'Invalid timezone: ' . $timezone );
                 // Use default timezone as fallback
                 $orm_args['timezone'] = wp_timezone_string();
-                $this->logger->info( 'Using fallback timezone: ' . $orm_args['timezone'] );
             }
         } else {
             // Use default timezone if none provided
             $orm_args['timezone'] = wp_timezone_string();
-            $this->logger->info( 'Using default timezone: ' . $orm_args['timezone'] );
         }
 
         // Ensure timezone is valid for TEC
         if ( ! in_array( $orm_args['timezone'], timezone_identifiers_list() ) ) {
-            $this->logger->error( 'Invalid timezone for TEC: ' . $orm_args['timezone'] );
             $orm_args['timezone'] = 'UTC';
-            $this->logger->info( 'Using UTC as fallback timezone' );
         }
 
         // Map URL field using ORM field alias
@@ -754,8 +685,13 @@ class Event_Handler {
             $orm_args['organizer'] = $organizer_data;
         }
 
-        // Log the final ORM args for debugging
-        $this->logger->info( 'Final ORM args: ' . print_r( $orm_args, true ) );
+        // After all date handling, ensure start_date and end_date are set and valid
+        if ( empty( $orm_args['start_date'] ) ) {
+            $orm_args['start_date'] = current_time( 'Y-m-d H:i:s' );
+        }
+        if ( empty( $orm_args['end_date'] ) ) {
+            $orm_args['end_date'] = date( 'Y-m-d H:i:s', strtotime( $orm_args['start_date'] ) + 3600 );
+        }
 
         return $orm_args;
     }
@@ -789,7 +725,6 @@ class Event_Handler {
             // Fallback to direct formatting
             return $this->format_date_for_tec( $date_string );
         } catch ( \Exception $e ) {
-            $this->logger->error( 'Failed to convert datepicker format: ' . $date_string . ' - ' . $e->getMessage() );
             return false;
         }
     }
@@ -802,7 +737,7 @@ class Event_Handler {
      * @param string $date_string
      * @return string|false
      */
-    private function format_date_for_tec( $date_string ) {
+    public function format_date_for_tec( $date_string ) {
         if ( empty( $date_string ) ) {
             return false;
         }
@@ -828,7 +763,6 @@ class Event_Handler {
                 $date_object = \Tribe__Date_Utils::build_date_object( $date_string );
                 if ( $date_object ) {
                     $formatted = $date_object->format( \Tribe__Date_Utils::DBDATETIMEFORMAT );
-                    $this->logger->info( 'TEC formatted date: ' . $formatted . ' from: ' . $date_string );
                     return $formatted;
                 }
             }
@@ -838,7 +772,6 @@ class Event_Handler {
                 $date_object = \DateTime::createFromFormat( $format, $date_string );
                 if ( $date_object ) {
                     $formatted = $date_object->format( 'Y-m-d H:i:s' );
-                    $this->logger->info( 'Parsed date with format ' . $format . ': ' . $formatted . ' from: ' . $date_string );
                     return $formatted;
                 }
             }
@@ -847,14 +780,11 @@ class Event_Handler {
             $timestamp = strtotime( $date_string );
             if ( $timestamp !== false ) {
                 $formatted = date( 'Y-m-d H:i:s', $timestamp );
-                $this->logger->info( 'WordPress parsed date: ' . $formatted . ' from: ' . $date_string );
                 return $formatted;
             }
 
-            $this->logger->error( 'Could not parse date: ' . $date_string );
             return false;
         } catch ( \Exception $e ) {
-            $this->logger->error( 'Failed to format date: ' . $date_string . ' - ' . $e->getMessage() );
             return false;
         }
     }
@@ -870,7 +800,6 @@ class Event_Handler {
     private function validate_orm_requirements( $orm_args ) {
         // Title is always required
         if ( empty( $orm_args['title'] ) ) {
-            $this->logger->error( 'Event title is required' );
             return false;
         }
 
@@ -882,23 +811,19 @@ class Event_Handler {
 
         // Must have start_date AND (end_date OR duration OR all_day)
         if ( ! $has_start_date ) {
-            $this->logger->error( 'Event start date is required' );
             return false;
         }
 
         if ( ! $has_end_date && ! $has_duration && ! $is_all_day ) {
-            $this->logger->error( 'Event must have either end date, duration, or be marked as all-day' );
             return false;
         }
 
         // Validate date formats if present
         if ( $has_start_date && ! $this->is_valid_date_format( $orm_args['start_date'] ) ) {
-            $this->logger->error( 'Invalid start date format: ' . $orm_args['start_date'] );
             return false;
         }
 
         if ( $has_end_date && ! $this->is_valid_date_format( $orm_args['end_date'] ) ) {
-            $this->logger->error( 'Invalid end date format: ' . $orm_args['end_date'] );
             return false;
         }
 
@@ -908,12 +833,10 @@ class Event_Handler {
             $end_timestamp = strtotime( $orm_args['end_date'] );
 
             if ( $start_timestamp === false || $end_timestamp === false ) {
-                $this->logger->error( 'Invalid date timestamps' );
                 return false;
             }
 
             if ( $end_timestamp <= $start_timestamp ) {
-                $this->logger->error( 'End date must be after start date' );
                 return false;
             }
         }
@@ -966,7 +889,6 @@ class Event_Handler {
                 }
             } catch ( \Exception $e ) {
                 // Service not bound, skip this hook
-                $this->logger->info( 'TEC custom tables service not available, skipping hook removal' );
             }
         }
 
@@ -975,8 +897,6 @@ class Event_Handler {
         if ( $linked_posts ) {
             remove_action( 'save_post', [ $linked_posts, 'handle_submission' ], 10 );
         }
-
-        $this->logger->info( 'Temporarily disabled TEC save_post hooks' );
     }
 
     /**
@@ -1003,7 +923,6 @@ class Event_Handler {
                 }
             } catch ( \Exception $e ) {
                 // Service not bound, skip this hook
-                $this->logger->info( 'TEC custom tables service not available, skipping hook restoration' );
             }
         }
 
@@ -1014,7 +933,6 @@ class Event_Handler {
         }
 
         $this->tec_hooks_disabled = false;
-        $this->logger->info( 'Restored TEC save_post hooks' );
     }
 
     /**
@@ -1031,7 +949,6 @@ class Event_Handler {
         $venue_result = $this->compatibility_manager->handle_venue_creation( $venue_data );
 
         if ( is_wp_error( $venue_result ) ) {
-            $this->logger->error( 'Venue creation failed: ' . $venue_result->get_error_message() );
             return false;
         }
 
@@ -1040,11 +957,9 @@ class Event_Handler {
             $association_result = $this->compatibility_manager->associate_venue_with_event( $post_id, $venue_result['venue_id'] );
 
             if ( is_wp_error( $association_result ) ) {
-                $this->logger->error( 'Venue association failed: ' . $association_result->get_error_message() );
                 return false;
             }
 
-            $this->logger->info( 'Venue created and associated successfully with event ID: ' . $post_id );
             return true;
         }
 
@@ -1146,8 +1061,6 @@ class Event_Handler {
             $tec_args['organizer'] = $orm_args['organizer'];
         }
 
-        $this->logger->info( 'Converted to TEC API format: ' . print_r( $tec_args, true ) );
-
         return $tec_args;
     }
 
@@ -1226,8 +1139,6 @@ class Event_Handler {
                 $meta_data['_thumbnail_id'] = $orm_args['image'];
             }
 
-            $this->logger->info( 'Saving event meta: ' . print_r( $meta_data, true ) );
-
             // Save each meta field
             foreach ( $meta_data as $meta_key => $meta_value ) {
                 update_post_meta( $post_id, $meta_key, $meta_value );
@@ -1243,11 +1154,9 @@ class Event_Handler {
                 $this->handle_organizer_creation( $post_id, $orm_args['organizer'] );
             }
 
-            $this->logger->info( 'Event meta saved successfully for post ID: ' . $post_id );
             return true;
 
         } catch ( \Exception $e ) {
-            $this->logger->error( 'Failed to save event meta: ' . $e->getMessage() );
             return false;
         }
     }
@@ -1266,7 +1175,6 @@ class Event_Handler {
         $organizer_result = $this->compatibility_manager->handle_organizer_creation( $organizer_data );
 
         if ( is_wp_error( $organizer_result ) ) {
-            $this->logger->error( 'Organizer creation failed: ' . $organizer_result->get_error_message() );
             return false;
         }
 
@@ -1275,11 +1183,9 @@ class Event_Handler {
             $association_result = $this->compatibility_manager->associate_organizer_with_event( $post_id, $organizer_result['organizer_id'] );
 
             if ( is_wp_error( $association_result ) ) {
-                $this->logger->error( 'Organizer association failed: ' . $association_result->get_error_message() );
                 return false;
             }
 
-            $this->logger->info( 'Organizer created and associated successfully with event ID: ' . $post_id );
             return true;
         }
 

@@ -2,8 +2,6 @@
 
 namespace WeDevs\Wpuf\Integrations\Events_Calendar\Compatibility;
 
-use WeDevs\Wpuf\Integrations\Events_Calendar\Utils\TEC_Logger;
-
 /**
  * TEC v6 Compatibility Handler
  *
@@ -13,20 +11,6 @@ use WeDevs\Wpuf\Integrations\Events_Calendar\Utils\TEC_Logger;
  * @since WPUF_SINCE
  */
 class TEC_V6_Compatibility {
-
-    /**
-     * Logger instance
-     *
-     * @var TEC_Logger
-     */
-    private $logger;
-
-    /**
-     * Constructor
-     */
-    public function __construct() {
-        $this->logger = new TEC_Logger();
-    }
 
     /**
      * Save event using TEC v6 ORM API
@@ -40,8 +24,6 @@ class TEC_V6_Compatibility {
      */
     public function save_event( $post_id, $event_data ) {
         try {
-            $this->logger->log( 'TEC v6: Starting event save process for post ID ' . $post_id );
-
             // Check if this is a new event or existing event
             $post = get_post( $post_id );
             $is_new_event = ! $post || $post->post_type !== 'tribe_events';
@@ -55,7 +37,6 @@ class TEC_V6_Compatibility {
             }
             
             if ( is_wp_error( $result ) ) {
-                $this->logger->log( 'TEC v6: Event save failed - ' . $result->get_error_message() );
                 return $result;
             }
 
@@ -70,18 +51,15 @@ class TEC_V6_Compatibility {
             $custom_tables_result = $this->update_custom_tables( $event_id );
             
             if ( is_wp_error( $custom_tables_result ) ) {
-                $this->logger->log( 'TEC v6: Custom tables update failed - ' . $custom_tables_result->get_error_message() );
                 return $custom_tables_result;
             }
 
             // Step 3: Perform post-creation actions
             $this->perform_post_creation_actions( $event_id );
 
-            $this->logger->log( 'TEC v6: Event saved successfully for event ID ' . $event_id );
             return $event_id;
 
         } catch ( \Exception $e ) {
-            $this->logger->log( 'TEC v6 ORM Exception: ' . $e->getMessage() );
             return new \WP_Error( 'tec_v6_orm_error', $e->getMessage() );
         }
     }
@@ -110,7 +88,6 @@ class TEC_V6_Compatibility {
                 return new \WP_Error( 'tec_api_exception', 'Failed to create event using ORM API' );
             }
 
-            $this->logger->log( 'TEC v6: Event created successfully using ORM API with ID ' . $event_id );
             return $event_id;
 
         } catch ( \Exception $e ) {
@@ -144,7 +121,6 @@ class TEC_V6_Compatibility {
                 return new \WP_Error( 'tec_api_exception', 'Failed to update event using ORM API' );
             }
 
-            $this->logger->log( 'TEC v6: Event updated successfully using ORM API for ID ' . $post_id );
             return true;
 
         } catch ( \Exception $e ) {
@@ -177,7 +153,6 @@ class TEC_V6_Compatibility {
                 return new \WP_Error( 'tec_api_exception', 'Failed to create event using ORM API' );
             }
 
-            $this->logger->log( 'TEC v6: Event created successfully using ORM API with ID ' . $event_id );
             return true;
 
         } catch ( \Exception $e ) {
@@ -237,14 +212,12 @@ class TEC_V6_Compatibility {
         $post = get_post( $post_id );
         if ( $post ) {
             if ( empty( $tec_data['_EventStartDate'] ) ) {
-                $this->logger->log( 'TEC v6: Missing required start date, using current time' );
                 $now = new \DateTimeImmutable( 'now', wp_timezone() );
                 $tec_data['_EventStartDate'] = $now->format( 'Y-m-d H:i:s' );
                 $tec_data['_EventStartDateUTC'] = $now->setTimezone( new \DateTimeZone( 'UTC' ) )->format( 'Y-m-d H:i:s' );
             }
 
             if ( empty( $tec_data['_EventEndDate'] ) ) {
-                $this->logger->log( 'TEC v6: Missing required end date, using start date + 1 hour' );
                 if ( ! empty( $tec_data['_EventStartDate'] ) ) {
                     $start_date = new \DateTimeImmutable( $tec_data['_EventStartDate'], wp_timezone() );
                     $end_date = $start_date->modify( '+1 hour' );
@@ -275,7 +248,6 @@ class TEC_V6_Compatibility {
         try {
             // Check if custom tables are available (TEC v6.0+)
             if ( ! class_exists( 'TEC\Events\Custom_Tables\V1\Updates\Events' ) ) {
-                $this->logger->log( 'TEC v6: Custom tables not available, skipping custom table update' );
                 return true;
             }
 
@@ -287,7 +259,6 @@ class TEC_V6_Compatibility {
                 return new \WP_Error( 'custom_tables_error', 'Failed to update custom tables' );
             }
 
-            $this->logger->log( 'TEC v6: Custom tables updated successfully for post ID ' . $post_id );
             return true;
 
         } catch ( \Exception $e ) {
@@ -306,7 +277,6 @@ class TEC_V6_Compatibility {
             if ( class_exists( 'Tribe__Events__Dates__Known_Range' ) ) {
                 $known_range = \Tribe__Events__Dates__Known_Range::instance();
                 $known_range->maybe_update_known_range();
-                $this->logger->log( 'TEC v6: Known date range updated' );
             }
 
             // 2. Publish associated venues and organizers
@@ -315,10 +285,8 @@ class TEC_V6_Compatibility {
             // 3. Clear caches
             $this->clear_event_caches( $post_id );
 
-            $this->logger->log( 'TEC v6: Post-creation actions completed for post ID ' . $post_id );
-
         } catch ( \Exception $e ) {
-            $this->logger->log( 'TEC v6: Post-creation actions failed - ' . $e->getMessage() );
+            // No logging removed
         }
     }
 
@@ -354,7 +322,6 @@ class TEC_V6_Compatibility {
                 }
 
                 wp_publish_post( $linked_post_id );
-                $this->logger->log( "TEC v6: Published linked {$type} with ID {$linked_post_id}" );
             }
         }
     }
@@ -377,8 +344,6 @@ class TEC_V6_Compatibility {
         if ( class_exists( 'Tribe__Events__Cache_Listener' ) ) {
             \Tribe__Events__Cache_Listener::instance()->save_post( $post_id );
         }
-
-        $this->logger->log( 'TEC v6: Event caches cleared for post ID ' . $post_id );
     }
 
     /**
@@ -395,7 +360,6 @@ class TEC_V6_Compatibility {
             $orm_venue_data = $this->prepare_venue_data_for_orm( $venue_data );
             
             if ( empty( $orm_venue_data ) ) {
-                $this->logger->log( 'TEC v6 ORM: No valid venue data to create' );
                 return new \WP_Error( 'tec_v6_venue_error', 'No valid venue data provided' );
             }
 
@@ -405,15 +369,12 @@ class TEC_V6_Compatibility {
                 ->create();
 
             if ( ! $venue_id ) {
-                $this->logger->log( 'TEC v6 ORM Venue Creation Error: Failed to create venue' );
                 return new \WP_Error( 'tec_v6_venue_error', 'Failed to create venue' );
             }
 
-            $this->logger->log( 'TEC v6 ORM: Venue created successfully with ID ' . $venue_id );
             return $venue_id;
 
         } catch ( \Exception $e ) {
-            $this->logger->log( 'TEC v6 ORM Venue Creation Exception: ' . $e->getMessage() );
             return new \WP_Error( 'tec_v6_venue_error', $e->getMessage() );
         }
     }
@@ -432,7 +393,6 @@ class TEC_V6_Compatibility {
             $orm_organizer_data = $this->prepare_organizer_data_for_orm( $organizer_data );
             
             if ( empty( $orm_organizer_data ) ) {
-                $this->logger->log( 'TEC v6 ORM: No valid organizer data to create' );
                 return new \WP_Error( 'tec_v6_organizer_error', 'No valid organizer data provided' );
             }
 
@@ -442,15 +402,12 @@ class TEC_V6_Compatibility {
                 ->create();
 
             if ( ! $organizer_id ) {
-                $this->logger->log( 'TEC v6 ORM Organizer Creation Error: Failed to create organizer' );
                 return new \WP_Error( 'tec_v6_organizer_error', 'Failed to create organizer' );
             }
 
-            $this->logger->log( 'TEC v6 ORM: Organizer created successfully with ID ' . $organizer_id );
             return $organizer_id;
 
         } catch ( \Exception $e ) {
-            $this->logger->log( 'TEC v6 ORM Organizer Creation Exception: ' . $e->getMessage() );
             return new \WP_Error( 'tec_v6_organizer_error', $e->getMessage() );
         }
     }
@@ -469,7 +426,6 @@ class TEC_V6_Compatibility {
             $venue = tribe_venues()->by( 'ID', $venue_id )->first();
             return $venue ? $venue->to_array() : false;
         } catch ( \Exception $e ) {
-            $this->logger->log( 'TEC v6 ORM Get Venue Exception: ' . $e->getMessage() );
             return false;
         }
     }
@@ -488,7 +444,6 @@ class TEC_V6_Compatibility {
             $organizer = tribe_organizers()->by( 'ID', $organizer_id )->first();
             return $organizer ? $organizer->to_array() : false;
         } catch ( \Exception $e ) {
-            $this->logger->log( 'TEC v6 ORM Get Organizer Exception: ' . $e->getMessage() );
             return false;
         }
     }
@@ -506,7 +461,6 @@ class TEC_V6_Compatibility {
             $venues = tribe_venues()->per_page( -1 )->all();
             return $venues ? $venues->to_array() : [];
         } catch ( \Exception $e ) {
-            $this->logger->log( 'TEC v6 ORM Get All Venues Exception: ' . $e->getMessage() );
             return [];
         }
     }
@@ -524,7 +478,6 @@ class TEC_V6_Compatibility {
             $organizers = tribe_organizers()->per_page( -1 )->all();
             return $organizers ? $organizers->to_array() : [];
         } catch ( \Exception $e ) {
-            $this->logger->log( 'TEC v6 ORM Get All Organizers Exception: ' . $e->getMessage() );
             return [];
         }
     }
@@ -766,7 +719,6 @@ class TEC_V6_Compatibility {
             $test_query = tribe_events()->per_page( 1 );
             return $test_query instanceof \Tribe__Repository__Interface;
         } catch ( \Exception $e ) {
-            $this->logger->log( 'TEC v6 ORM API test failed: ' . $e->getMessage() );
             return false;
         }
     }

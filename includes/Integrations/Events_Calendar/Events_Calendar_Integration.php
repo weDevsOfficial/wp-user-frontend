@@ -6,7 +6,6 @@ use WeDevs\Wpuf\Integrations\Events_Calendar\Compatibility\TEC_Compatibility_Man
 use WeDevs\Wpuf\Integrations\Events_Calendar\Handlers\Event_Handler;
 use WeDevs\Wpuf\Integrations\Events_Calendar\Handlers\Venue_Handler;
 use WeDevs\Wpuf\Integrations\Events_Calendar\Handlers\Organizer_Handler;
-use WeDevs\Wpuf\Integrations\Events_Calendar\Utils\TEC_Logger;
 
 /**
  * Main Events Calendar Integration Class
@@ -44,13 +43,6 @@ class Events_Calendar_Integration {
     private $compatibility_manager;
 
     /**
-     * Logger instance
-     *
-     * @var TEC_Logger
-     */
-    private $logger;
-
-    /**
      * Constructor
      */
     public function __construct() {
@@ -64,8 +56,6 @@ class Events_Calendar_Integration {
      * @since WPUF_SINCE
      */
     private function init_handlers() {
-        $this->logger = new TEC_Logger();
-
         // Only initialize if TEC is active
         if ( ! $this->is_tec_active() ) {
             return;
@@ -205,16 +195,5 @@ class Events_Calendar_Integration {
      */
     public function get_compatibility_manager() {
         return $this->compatibility_manager;
-    }
-
-    /**
-     * Get logger instance
-     *
-     * @since WPUF_SINCE
-     *
-     * @return TEC_Logger
-     */
-    public function get_logger() {
-        return $this->logger;
     }
 }

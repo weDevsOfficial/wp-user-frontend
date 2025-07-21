@@ -19,18 +19,16 @@ export default function resetSite() {
     let page: Page;
 
     test.beforeAll(async () => {
-        // Clear state file
-        fs.writeFileSync('state.json', JSON.stringify({ cookies: [], origins: [] }));
-        
         // Launch browser
         browser = await chromium.launch();
-        
+
         // Create a single context
         context = await browser.newContext();
-        
+
         // Create a single page
         page = await context.newPage();
     });
+
     test.describe('Reset Site', () => {
 
         test('RS0001 : Admin is resetting Site', { tag: ['@Basic'] }, async () => {
@@ -46,9 +44,6 @@ export default function resetSite() {
     });
 
     test.afterAll(async () => {
-        // Clear state file after tests
-        fs.writeFileSync('state.json', JSON.stringify({ cookies: [], origins: [] }));
-        
         // Close the browser
         await browser.close();
     });

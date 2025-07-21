@@ -915,7 +915,7 @@ export const Selectors = {
             // Validate Shortcode
             validateShortcode: '//code[text()="[wpuf-registration]"]',
             // Shortcode
-            storeShortcode: '(//div[@class="wpuf-mb-4 wpuf-flex"]//code)[1]',
+            storeShortcode: (formName:string)=> `(//span[normalize-space()='${formName}']//..//..//code)[1]`,
             // Add New Page
             addNewPage: '//a[@class="page-title-action"]',
             // Close Pattern Modal
@@ -1187,9 +1187,11 @@ export const Selectors = {
 
             templateTagPointer: (tag: string, point: string) => `(//span[@data-clipboard-text="${tag}"])[${point}]`,
             tagClickTooltip: '//span[@data-original-title="Copied!"]',
-            sentEmailAddress: '//tbody/tr[1]/td[3]/div[1]',
-            sentEmailSubject: '//tbody/tr[1]/td[4]/div[1]',
-            viewEmailContent: '//tbody/tr[1]/td[3]/div[1]',
+            sentEmailAddress: (emails:string)=> `(//div[normalize-space()='${emails}'])[1]`,
+            sentEmailSubjectSubmitted: '//div[normalize-space()="New post submitted"]',
+            viewEmailContentSubmitted: '//div[normalize-space()="New post submitted"]',
+            sentEmailSubjectUpdated: '//div[normalize-space()="Post updated"]',
+            viewEmailContentUpdated: '//div[normalize-space()="Post updated"]',
             previewEmailContentBody: '(//div[@class="wml-body-wrapper"])[1]',
 
 
@@ -1362,17 +1364,16 @@ export const Selectors = {
             wpMailLogPage: '//h2[normalize-space()="WP Mail Log"]',
             
             // First email row selectors
-            sentEmailAddress: '(//tbody/tr[2]/td[3]/div[1])[1]',
-            sentEmailSubject: '(//tbody/tr[2]/td[4]/div[1])[1]',
-            viewEmailContent: '(//tbody/tr[2]/td[3]/div[1])[1]',
+            sentEmailAddress: (emails:string)=> `(//div[normalize-space()='${emails}'])[1]`,
+            sentEmailSubject: (subject:string)=> `(//div[normalize-space()='${subject}'])[1]`,
+            viewEmailContent: (subject:string)=> `(//div[normalize-space()='${subject}'])[1]`,
             previewEmailContentBody: '(//div[@class="wml-body-wrapper"])[1]',
             grabActivationLink: '//a[normalize-space()="Activation Link"]',
 
             modalCloseButton: '//button[@class="el-button el-button--danger"]',
 
-            sentLatestEmailAddress: '(//tbody/tr[1]/td[3]/div[1])[1]',
-            sentLatestEmailSubject: '(//tbody/tr[1]/td[4]/div[1])[1]',
-            viewLatestEmailContent: '(//tbody/tr[1]/td[3]/div[1])[1]',
+            sentLatestEmailSubject: (subject:string)=> `(//div[normalize-space()='${subject}'])[1]`,
+            viewLatestEmailContent: (subject:string)=> `(//div[normalize-space()='${subject}'])[1]`,
             
             // Search and filter
             emailSearchInput: '//input[@id="post-search-input"]',

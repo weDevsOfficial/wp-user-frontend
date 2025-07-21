@@ -300,6 +300,7 @@ export class SettingsSetupPage extends Base {
     async activateLicenseWPUFPro() {
         //Go to Plugins page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
         await this.validateAndClick(Selectors.login.basicNavigation.licenseTab);
@@ -359,6 +360,7 @@ export class SettingsSetupPage extends Base {
     async changeSettingsSetLoginPageDefault() {
         //Go to WPUF
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         //Change Settings
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
@@ -411,6 +413,7 @@ export class SettingsSetupPage extends Base {
     async changeSettingsSetDefaultPostForm(postFormPresetFrontEndTitle: string) {
         //Go to WPUF
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         //Change Settings
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
@@ -436,6 +439,7 @@ export class SettingsSetupPage extends Base {
     async changeSettingsSetRegistrationPage(registrationFormPageTitle: string) {
         //Go to WPUF
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         //Change Settings
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);

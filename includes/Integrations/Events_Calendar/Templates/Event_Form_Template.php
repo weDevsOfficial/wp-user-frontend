@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf\Integrations\Events_Calendar\Templates;
 
+use DateTime;
+use DateTimeZone;
 use WeDevs\Wpuf\Admin\Forms\Form_Template;
 use WeDevs\Wpuf\Integrations\Events_Calendar\Utils\TEC_Constants;
 use WeDevs\Wpuf\Integrations\Events_Calendar\Utils\TEC_Helper;
@@ -69,9 +71,9 @@ class Event_Form_Template extends Form_Template {
                 'text_editor_control' => [],
             ],
             [
-                'input_type' => 'date',
-                'template'   => 'date_field',
-                'required'   => 'yes',
+                'input_type' => 'text',
+                'template'   => 'text_field',
+                'required'   => 'no',
                 'label'      => __( 'Event Start', 'wp-user-frontend' ),
                 'name'       => '_EventStartDate',
                 'is_meta'    => 'yes',
@@ -79,11 +81,36 @@ class Event_Form_Template extends Form_Template {
                 'format'     => 'yy-mm-dd',
                 'time'       => 'yes',
                 'default'    => current_time( 'Y-m-d H:i:s' ),
+                'css'        => 'wpuf_hidden_field',
                 'wpuf_cond'  => $this->conditionals,
             ],
             [
-                'input_type' => 'date',
-                'template'   => 'date_field',
+                'input_type' => 'text',
+                'template'   => 'text_field',
+                'required'   => 'no',
+                'label'      => __( 'Event Start UTC', 'wp-user-frontend' ),
+                'name'       => '_EventStartDateUTC',
+                'is_meta'    => 'yes',
+                'width'      => 'large',
+                'default'    => $this->get_utc_time(),
+                'css'        => 'wpuf_hidden_field',
+                'wpuf_cond'  => $this->conditionals,
+            ],
+            [
+                'input_type' => 'text',
+                'template'   => 'text_field',
+                'required'   => 'no',
+                'label'      => __( 'Event End UTC', 'wp-user-frontend' ),
+                'name'       => '_EventEndDateUTC',
+                'is_meta'    => 'yes',
+                'width'      => 'large',
+                'default'    => $this->get_utc_time( '+2 hours' ),
+                'css'        => 'wpuf_hidden_field',
+                'wpuf_cond'  => $this->conditionals,
+            ],
+            [
+                'input_type' => 'text',
+                'template'   => 'text_field',
                 'required'   => 'yes',
                 'label'      => __( 'Event End', 'wp-user-frontend' ),
                 'name'       => '_EventEndDate',
@@ -91,7 +118,8 @@ class Event_Form_Template extends Form_Template {
                 'width'      => 'large',
                 'format'     => 'yy-mm-dd',
                 'time'       => 'yes',
-                'default'    => current_time( 'Y-m-d H:i:s', true ),
+                'default'    => date( 'Y-m-d H:i:s', strtotime( '+2 hours', current_time( 'timestamp' ) ) ),
+                'css'        => 'wpuf_hidden_field',
                 'wpuf_cond'  => $this->conditionals,
             ],
             [
@@ -231,6 +259,23 @@ class Event_Form_Template extends Form_Template {
                 'wpuf_cond'   => $this->conditionals,
             ],
         ];
+    }
+
+    /**
+     * Get UTC time
+     *
+     * @since WPUF_SINCE
+     *
+     * @return string
+     */
+    private function get_utc_time( $offset = '0 hours' ) {
+        $local = new DateTime( current_time( 'Y-m-d H:i:s' ), new DateTimeZone( wp_timezone_string() ) );
+        $utc   = clone $local;
+
+        $utc->setTimezone( new DateTimeZone( 'UTC' ) );
+        $utc->modify( $offset );
+
+        return $utc->format('Y-m-d H:i:s');
     }
 
     /**

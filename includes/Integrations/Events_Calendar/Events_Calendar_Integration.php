@@ -87,6 +87,34 @@ class Events_Calendar_Integration {
 
         // Meta field processing
         add_filter( 'wpuf_before_updating_post_meta_fields', [ $this, 'process_tec_meta_fields' ], 10, 4 );
+
+        // Prevent TEC custom table sync during WPUF AJAX event submissions if meta is not ready
+        add_filter( 'tec_events_custom_tables_v1_should_update_custom_tables', [ $this, 'maybe_block_tec_custom_table_sync' ], 10, 3 );
+    }
+
+    /**
+     * Prevent TEC custom table sync during WPUF AJAX event submissions if meta is not ready
+     *
+     * @param bool $update
+     * @param int $post_id
+     * @param WP_REST_Request|null $request
+     * @return bool
+     */
+    public function maybe_block_tec_custom_table_sync( $update, $post_id, $request ) {
+        // Only block during WPUF AJAX event submissions
+        if ( defined( 'DOING_AJAX' ) && DOING_AJAX && isset( $_POST['action'] ) && strpos( $_POST['action'], 'wpuf' ) === 0 ) {
+            // Check if this is a tribe_events post
+            if ( get_post_type( $post_id ) === 'tribe_events' ) {
+                // Check if required meta is present (start/end date)
+                $start = get_post_meta( $post_id, '_EventStartDate', true );
+                $end = get_post_meta( $post_id, '_EventEndDate', true );
+                if ( empty( $start ) || empty( $end ) ) {
+                    // Block TEC custom table sync if meta is not ready
+                    return false;
+                }
+            }
+        }
+        return $update;
     }
 
     /**

@@ -4,7 +4,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 /**
- * Playwright configuration for PARALLEL LITE TWO phase
+ * Playwright configuration for PARALLEL LITE ONE phase
  */
 export default defineConfig({
     testDir: './tests',
@@ -17,12 +17,12 @@ export default defineConfig({
     reporter: process.env.CI
         ? [
             ['list', { printSteps: true }],
-            ['json', { outputFile: './parallel-two/parallel-lite-two-results.json' }],
-            ['html', { outputFolder: './playwright-report/parallel-lite-two-report', open: 'never' }]
+            ['json', { outputFile: './parallel-one/parallel-one-results.json' }],
+            ['html', { outputFolder: './playwright-report/parallel-one-report', open: 'never' }]
         ]
         : [
-            ['json', { outputFile: './parallel-two/parallel-lite-two-results.json' }],
-            ['html', { outputFolder: './playwright-report/parallel-lite-two-report', open: 'never' }],
+            ['json', { outputFile: './parallel-one/parallel-one-results.json' }],
+            ['html', { outputFolder: './playwright-report/parallel-one-report', open: 'never' }],
         ],
     use: {
         actionTimeout: 0,
@@ -34,10 +34,10 @@ export default defineConfig({
     },
     projects: [
         {
-            name: 'parallel-lite-two',
+            name: 'parallel-lite-one',
             testMatch: [
-                'tests/postFormSettingsTest.spec.ts',
-                'tests/regFormSettingsTestPro.spec.ts',
+                'tests/postFormTest.spec.ts',
+                'tests/regFormTestPro.spec.ts',
             ],
             use: { ...devices['Desktop Chrome'] },
         },

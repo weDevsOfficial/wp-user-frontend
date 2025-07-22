@@ -1348,10 +1348,11 @@
             class="wpuf-flex wpuf-items-center">
             <input
                 type="radio"
-                :class="builder_class_names('radio')">
-            <label
                 :value="val"
-                :checked="is_selected(val)">{{ label }}</label>
+                :checked="is_selected(val)"
+                :id="'radio-' + field.name + "
+                :class="builder_class_names('radio')">
+            <label>{{ label }}</label>
         </div>
     </div>
 
@@ -1363,10 +1364,11 @@
             class="wpuf-flex wpuf-items-center">
             <input
                 type="radio"
-                :class="builder_class_names('radio')">
-            <label
                 :value="val"
-                :checked="is_selected(val)">{{ label }}</label>
+                :checked="is_selected(val)"
+                :id="'radio-' + field.name + "
+                :class="builder_class_names('radio')">
+            <label>{{ label }}</label>
         </div>
     </div>
 

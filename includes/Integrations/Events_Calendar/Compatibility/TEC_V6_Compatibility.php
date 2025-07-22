@@ -273,34 +273,6 @@ class TEC_V6_Compatibility {
     }
 
     /**
-     * Temporarily disable TEC's save_post hooks to prevent conflicts
-     *
-     * @since WPUF_SINCE
-     */
-    private function temporarily_disable_tec_hooks() {
-        // Store the current state
-        $this->tec_hooks_disabled = true;
-        // Remove TEC's main event meta processing
-        remove_action( 'save_post', [ 'Tribe__Events__Main', 'addEventMeta' ], 15 );
-        // Remove TEC's custom tables update hook if it exists
-        if ( class_exists( 'TEC\Events\Custom_Tables\V1\Updates\Events' ) ) {
-            try {
-                $tec_updates = tribe( 'tec.events.custom-tables.v1.updates.events' );
-                if ( $tec_updates ) {
-                    remove_action( 'save_post', [ $tec_updates, 'update' ], 10 );
-                }
-            } catch ( \Exception $e ) {
-                // Service not bound, skip this hook
-            }
-        }
-        // Remove TEC's linked posts processing - use instance method
-        $linked_posts = tribe( 'tec.linked-posts' );
-        if ( $linked_posts ) {
-            remove_action( 'save_post', [ $linked_posts, 'handle_submission' ], 10 );
-        }
-    }
-
-    /**
      * Prevent TEC from processing event creation when we're handling it through WPUF
      *
      * @since WPUF_SINCE

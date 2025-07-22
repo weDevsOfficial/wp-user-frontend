@@ -30,7 +30,18 @@ class Posting {
             '_EventStartDateUTC',
             '_EventEndDateUTC',
             '_EventDuration',
+            'venue',
             '_EventVenueID',
+            'venue_name',
+            'venue_website',
+            'venue_phone',
+            'venue_address',
+            'organizer',
+            '_EventOrganizerID',
+            'organizer_name',
+            'organizer_website',
+            'organizer_email',
+            'organizer_phone',
             '_EventShowMapLink',
             '_EventShowMap',
             '_EventCurrencySymbol',
@@ -400,7 +411,7 @@ class Posting {
         if ( 'tribe_events' === $post->post_type ) {
             // remove the custom fields that are in the tribe_events_custom_fields array
             $custom_fields = array_filter( $custom_fields, function( $field ) {
-                return !in_array( $field['name'], $this->tribe_events_custom_fields );
+                return ! in_array( $field['name'], $this->tribe_events_custom_fields );
             } );
         }
 

@@ -34,7 +34,7 @@ export default defineConfig({
     },
     projects: [
         {
-            name: 'parallel-lite-one',
+            name: 'parallel-one',
             testMatch: [
                 'tests/postFormTest.spec.ts',
                 'tests/regFormTestPro.spec.ts',

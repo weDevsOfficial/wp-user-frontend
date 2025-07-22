@@ -32,9 +32,6 @@ export class BasicLoginPage extends Base {
         else {
             await this.frontendLogin(adminEmail, adminPassword);
         }
-
-        //Store Cookie State
-        await this.page.context().storageState({ path: 'state.json' });
     }
 
     //Login and Plugin Visit
@@ -53,10 +50,6 @@ export class BasicLoginPage extends Base {
         else {
             await this.frontendLogin(adminEmail, adminPassword);
         }
-
-
-        //Store Cookie State
-        await this.page.context().storageState({ path: 'state.json' });
 
         //Redirection to WPUF Home Page
         await SettingsSetup.pluginVisitWPUF();

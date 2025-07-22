@@ -6,6 +6,7 @@ import { BasicLogoutPage } from '../pages/basicLogout';
 import { SettingsSetupPage } from '../pages/settingsSetup';
 import { Users } from '../utils/testData';
 import * as fs from "fs";
+import { PostFormPage } from '../pages/postForm';
 
 export default function loginAndSetupTest() {
     let browser: Browser;
@@ -13,9 +14,6 @@ export default function loginAndSetupTest() {
     let page: Page;
 
     test.beforeAll(async () => {
-        // Clear state file
-        fs.writeFileSync('state.json', JSON.stringify({ cookies: [], origins: [] }));
-
         // Launch browser
         browser = await chromium.launch();
 
@@ -52,7 +50,8 @@ export default function loginAndSetupTest() {
          * @Test_LS0020 : Admin is adding credentils for Cloudflare Turnstile
          * @Test_LS0021 : Admin is enabling payment gateway bank
          * @Test_LS0022 : Admin is activating dokan lite
-         * @Test_LS0023 : Admin is logging out succesfully
+         * @Test_LS0023 : Admin is making user directory page
+         * @Test_LS0024 : Admin is logging out succesfully
          *  
          */
         test('LS0001 : Admin is logging into Admin-Dashboard', { tag: ['@Basic'] }, async () => {
@@ -176,16 +175,19 @@ export default function loginAndSetupTest() {
             await SettingsSetup.dokanLiteStatusCheck();
         });
 
-        test('LS0023 : Admin is logging out successfully', { tag: ['@Basic'] }, async () => {
+        test('LS0023 : Admin is making user directory page', { tag: ['@Basic'] }, async () => {
+            const PostForm = new PostFormPage(page);
+
+            await PostForm.createPageWithShortcode('[wpuf_user_listing]', 'Users');
+        });
+
+        test('LS0024 : Admin is logging out successfully', { tag: ['@Basic'] }, async () => {
             const BasicLogout = new BasicLogoutPage(page);
             await BasicLogout.logOut();
         });
     });
 
     test.afterAll(async () => {
-        // Clear state file after tests
-        fs.writeFileSync('state.json', JSON.stringify({ cookies: [], origins: [] }));
-
         // Close the browser
         await browser.close();
     });

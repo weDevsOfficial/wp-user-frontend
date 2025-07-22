@@ -791,15 +791,15 @@ export class RegFormSettingsPage extends Base {
         // Check the latest email
         
         // Validate email recipient
-        const emailTo = await this.page.innerText(Selectors.regFormSettings.wpMailLogValidation.sentEmailAddress);
+        const emailTo = await this.page.innerText(Selectors.regFormSettings.wpMailLogValidation.sentEmailAddress(userEmail));
         expect(emailTo).toContain(userEmail);
 
         // Validate email subject
-        const emailSubject = await this.page.innerText(Selectors.regFormSettings.wpMailLogValidation.sentEmailSubject);
+        const emailSubject = await this.page.innerText(Selectors.regFormSettings.wpMailLogValidation.sentEmailSubject(expectedSubject));
         expect(emailSubject).toBe(expectedSubject);
 
         // View email content to validate body
-        await this.validateAndClick(Selectors.regFormSettings.wpMailLogValidation.viewEmailContent);
+        await this.validateAndClick(Selectors.regFormSettings.wpMailLogValidation.viewEmailContent(expectedSubject));
         
         const activationLink = await this.page.locator(Selectors.regFormSettings.wpMailLogValidation.grabActivationLink).getAttribute('href');
         //expect(emailBody).toContain(expectedBodyContent);
@@ -844,15 +844,15 @@ export class RegFormSettingsPage extends Base {
         // Check the latest email
         
         // Validate email recipient
-        const emailTo = await this.page.innerText(Selectors.regFormSettings.wpMailLogValidation.sentEmailAddress);
+        const emailTo = await this.page.innerText(Selectors.regFormSettings.wpMailLogValidation.sentEmailAddress(userEmail));
         expect(emailTo).toContain(userEmail);
 
         // Validate email subject
-        const emailSubject = await this.page.innerText(Selectors.regFormSettings.wpMailLogValidation.sentEmailSubject);
+        const emailSubject = await this.page.innerText(Selectors.regFormSettings.wpMailLogValidation.sentEmailSubject(expectedSubject));
         expect(emailSubject).toBe(expectedSubject);
 
         // View email content to validate body
-        await this.validateAndClick(Selectors.regFormSettings.wpMailLogValidation.viewEmailContent);
+        await this.validateAndClick(Selectors.regFormSettings.wpMailLogValidation.viewEmailContent(expectedSubject));
         
         const emailBody = await this.page.innerText(Selectors.regFormSettings.wpMailLogValidation.previewEmailContentBody);
         expect(emailBody).toContain('Congrats! You are Successfully registered to');
@@ -903,11 +903,11 @@ export class RegFormSettingsPage extends Base {
         await this.assertionValidate(Selectors.regFormSettings.wpMailLogValidation.wpMailLogPage);
 
         // Validate email subject
-        const emailSubject = await this.page.innerText(Selectors.regFormSettings.wpMailLogValidation.sentLatestEmailSubject);
+        const emailSubject = await this.page.innerText(Selectors.regFormSettings.wpMailLogValidation.sentLatestEmailSubject(expectedSubject));
         expect(emailSubject).toBe(expectedSubject);
 
         // View email content to validate body
-        await this.validateAndClick(Selectors.regFormSettings.wpMailLogValidation.viewLatestEmailContent);
+        await this.validateAndClick(Selectors.regFormSettings.wpMailLogValidation.viewLatestEmailContent(expectedSubject));
         
         const emailBody = await this.page.innerText(Selectors.regFormSettings.wpMailLogValidation.previewEmailContentBody);
         expect(emailBody).toContain(userEmail); // Admin notification should contain user info

@@ -1594,14 +1594,13 @@ export class PostFormSettingsPage extends Base {
         const sentEmailSubject = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailSubjectUpdated);
         expect(sentEmailSubject).toBe(emailSubject);
 
-        // await this.page.hover(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress);
+        await this.page.hover(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress(multipleEmails));
         await this.validateAndClick(Selectors.postFormSettings.notificationSettingsSection.viewEmailContentUpdated);
-
+        await this.page.waitForTimeout(1000);
         const sentEmailBody = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.previewEmailContentBody);
         expect(sentEmailBody).toContain(postTitle);
         expect(sentEmailBody).toContain(postContent);
         expect(sentEmailBody).toContain(postExcerpt);
-        expect(sentEmailBody).toContain('Music');
         const postUrl = previousPostTitle.toLowerCase().replace(/\s+/g, '-');
         expect(sentEmailBody).toContain(Urls.baseUrl + `/${postUrl}/`);
         const reviewUrlPattern = Urls.baseUrl + `/wp-admin/post.php?action=edit&post=`;

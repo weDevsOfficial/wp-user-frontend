@@ -51,26 +51,12 @@ test.describe('Post Form Settings Tests Pro', () => {
      */
 
     let formName: string;
-    let postTitle: string;
+    let postTitle: string = 'Hello World';
     let postContent: string;
     let postExcerpt: string;
     const category = 'Music'; // Using one of the default categories from the screenshot
     const emailAddress = faker.internet.email();
-    const emailSubject = 'New post submitted';
     const emailUpdatedSubject = `Post updated`;
-    const emailBody = `Hi Admin,
-            A new post has been submitted to {sitename}.
-            Details:
-            Title: {post_title}
-            Author: {author} ({author_email})
-            Content: {post_content}
-            Excerpt: {post_excerpt}
-            Category: {category}
-            Tags: {tags}
-            Review URL: {editlink}
-            Public URL: {permalink}
-            Best regards,
-            Team {sitename}`;
 
     const emailUpdatedBody = `Hi Admin,
             Post updated.
@@ -88,7 +74,6 @@ test.describe('Post Form Settings Tests Pro', () => {
     const multipleEmails = `${faker.internet.email()}, ${faker.internet.email()}, ${faker.internet.email()}`;
 
     test('PFS0029 : Admin is enabling multi-step form', { tag: ['@Pro'] }, async () => {
-
         formName = 'PF Settings';
         await new BasicLoginPage(page).basicLoginAndPluginVisit(Users.adminUsername, Users.adminPassword);
         const postFormSettings = new PostFormSettingsPage(page);
@@ -132,7 +117,7 @@ test.describe('Post Form Settings Tests Pro', () => {
 
     test('PFS0074 : Admin is modifying Updated post notification subject', { tag: ['@Pro'] }, async () => {
         const postFormSettings = new PostFormSettingsPage(page);
-        await postFormSettings.modifyUpdatedNotificationSubject(formName, emailSubject);
+        await postFormSettings.modifyUpdatedNotificationSubject(formName, emailUpdatedSubject);
     });
 
     test('PFS0075 : Admin is modifying Updated post notification body with template tags', { tag: ['@Pro'] }, async () => {

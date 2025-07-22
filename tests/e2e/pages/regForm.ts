@@ -65,11 +65,8 @@ export class RegFormPage extends Base {
         console.log(storeShortcode);
 
         //Visit Pages
-        await this.navigateToURL(this.pagesPage);
-
-        //Add New Page
-        await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addNewPage);
-        await this.page.reload();
+        await this.navigateToURL(this.newPagePage);
+        //await this.page.reload();
         // // Check if the Welcome Modal is visible
         // try {
         //     await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closeWelcomeModal);

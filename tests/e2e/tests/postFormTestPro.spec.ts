@@ -52,6 +52,7 @@ test.describe('Post-Forms Pro', () => {
      *
      */
 
+    let pfShortCode: string;
     let productShortCode: string;
     let downloadsShortCode: string;
 
@@ -60,7 +61,7 @@ test.describe('Post-Forms Pro', () => {
         const PostFormPro = new PostFormProPage(page);
         const FieldAddPro = new FieldAddPage(page);
 
-        PostForm.formName = faker.word.words(3);
+        PostForm.formName = 'PostForm';
         //Post Blank Form
         await PostFormPro.createBlankFormPostFormPro(PostForm.formName);
         //PostFields + Validate
@@ -80,23 +81,26 @@ test.describe('Post-Forms Pro', () => {
         //Save
         await FieldAddPro.saveForm_Common();
         //Validate
-        await FieldAddPro.validatePostFormCreated(PostForm.formName);
+        pfShortCode = await FieldAddPro.validatePostFormCreated(PostForm.formName);
+        console.log('PF Short Code: ' + pfShortCode);
     });
 
-    test('PF0002 : Admin is Updating Settings with default Post Form', { tag: ['@Pro'] }, async () => {
-        const SettingsSetup = new SettingsSetupPage(page);
+    test('PF0002 : Admin is creating page with shortcode for Post Form', { tag: ['@Pro'] }, async () => {
+        const PostFormClass = new PostFormPage(page);
 
-        await SettingsSetup.changeSettingsSetDefaultPostForm(PostForm.formName);
+        await PostFormClass.createPageWithShortcodeGeneral(pfShortCode, 'Post Here');
 
         await new BasicLogoutPage(page).logOut();
     });
 
 
-    test('PF0003 : User is Submitting Form from Frontend', { tag: ['@Pro'] }, async () => {
+    test('PF0003 : User is Creating Post from Frontend', { tag: ['@Pro'] }, async () => {
         const PostFormPro = new PostFormPage(page);
 
         await new BasicLoginPage(page).basicLogin(Users.userEmail, Users.userPassword);
 
+        //Complete Post from Frontend
+        PostForm.title = faker.word.words(3);
         await PostFormPro.createPostFE();
     });
 

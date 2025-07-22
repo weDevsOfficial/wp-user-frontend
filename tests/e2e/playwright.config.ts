@@ -72,9 +72,9 @@ const config: PlaywrightTestConfig = {
         {
             name: 'chromium',
             testMatch: [
-                //'tests/alphaSetup.spec.ts',
-                //'tests/postFormTest.spec.ts',
-                //'tests/postFormSettingsTest.spec.ts',
+                'tests/alphaSetup.spec.ts',
+                'tests/postFormTestPro.spec.ts',
+                'tests/postFormSettingsTestPro.spec.ts',
                 'tests/regFormTestPro.spec.ts',
                 'tests/regFormSettingsTestPro.spec.ts',
             ],

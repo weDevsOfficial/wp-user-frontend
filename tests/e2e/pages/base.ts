@@ -12,6 +12,7 @@ export class Base {
     readonly usersPage: string = Urls.baseUrl + '/wp-admin/users.php';
     readonly postsPage: string = Urls.baseUrl + '/wp-admin/edit.php';
     readonly pagesPage: string = Urls.baseUrl + '/wp-admin/edit.php?post_type=page';
+    readonly newPagePage: string = Urls.baseUrl + '/wp-admin/post-new.php?post_type=page';
     readonly mediaPage: string = Urls.baseUrl + '/wp-admin/upload.php';
     readonly accountPage: string = Urls.baseUrl + '/account/';
     readonly settingsPermalinkPage: string = Urls.baseUrl + '/wp-admin/options-permalink.php';

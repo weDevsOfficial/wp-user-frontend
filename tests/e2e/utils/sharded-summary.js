@@ -315,9 +315,8 @@ async function generateShardedSummary() {
   const parallelOneDuration = mergedParallelResults.parallelOneDuration || 0;
   const parallelTwoDuration = mergedParallelResults.parallelTwoDuration || 0;
   
-  // Total sharded duration is setup + max(parallel shards) since parallel shards run simultaneously
-  const parallelDuration = Math.max(parallelOneDuration, parallelTwoDuration);
-  const totalWallClockDuration = setupDuration + parallelDuration;
+  // Total sharded duration is setup + parallelOne + parallelTwo
+  const totalWallClockDuration = setupDuration + parallelOneDuration + parallelTwoDuration;
   
   // Calculate average based on sum of all individual test durations
   const totalTestDuration = allTests.reduce((sum, test) => sum + test.duration, 0);

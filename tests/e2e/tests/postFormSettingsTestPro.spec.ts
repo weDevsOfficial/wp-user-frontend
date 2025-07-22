@@ -9,43 +9,57 @@ import { Users } from '../utils/testData';
 import { SettingsSetupPage } from '../pages/settingsSetup';
 import * as fs from "fs";
 
-export default function postFormSettingsTestPro() {
+let browser: Browser;
+let context: BrowserContext;
+let page: Page;
+let postTitle: string = '';
+let postContent: string = '';
+let postExcerpt: string = '';
 
-    let browser: Browser;
-    let context: BrowserContext;
-    let page: Page;
-    let postTitle: string = '';
-    let postContent: string = '';
-    let postExcerpt: string = '';
+test.beforeAll(async () => {
+    // Launch browser
+    browser = await chromium.launch();
 
-    test.beforeAll(async () => {
-        // Clear state file
-        fs.writeFileSync('state.json', JSON.stringify({ cookies: [], origins: [] }));
-        
-        // Launch browser
-        browser = await chromium.launch();
-        
-        // Create a single context
-        context = await browser.newContext();
-        
-        // Create a single page
-        page = await context.newPage();
-    });
+    // Create a single context
+    context = await browser.newContext();
 
-    test.describe('Post Form Settings Tests Pro', () => {
-        /**----------------------------------POST FORM SETTINGS----------------------------------**
-         *
-         * @TestScenario : [Post Form Settings]
-         * @Test_PFS0001 : Admin is changing post type
-         *
-         */
+    // Create a single page
+    page = await context.newPage();
+});
 
-        let formName: string;
-        const category = 'Music'; // Using one of the default categories from the screenshot
-        const emailAddress = faker.internet.email();
-        const emailSubject = faker.word.words(3);
-        const emailBody = `Hi Admin,
-            A new post has been submitted to {sitename}.
+test.describe('Post Form Settings Tests Pro', () => {
+    /**----------------------------------POST FORM SETTINGS----------------------------------**
+     *
+     * @TestScenario : [Post Form Settings]
+     * @Test_PFS0029 : Admin is enabling multi-step form
+     * @Test_PFS0030 : Admin is validating multi-step progressbar
+     * @Test_PFS0031 : Admin is validating multi-step by step
+     * @Test_PFS0032 : Admin is disabling multi-step form
+     * @Test_PFS0071 : Admin is enabling updated post notification
+     * @Test_PFS0072 : Admin is validating Updated post notification settings enabled
+     * @Test_PFS0073 : Admin is modifying Updated post notification email
+     * @Test_PFS0074 : Admin is modifying Updated post notification subject
+     * @Test_PFS0075 : Admin is modifying Updated post notification body with template tags
+     * @Test_PFS0076 : Admin is clicking and validating template tags for Updated post notification
+     * @Test_PFS0077 : Admin is setting multiple Updated post notification emails
+     * @Test_PFS0078 : Admin is submitting post and validating Updated post notification from FE
+     * @Test_PFS0079 : Admin is disabling updated post notification
+     * @Test_PFS0087 : Admin is enabling conditional logic on form submission
+     * @Test_PFS0088 : Admin is validating conditional logic on form submission
+     * @Test_PFS0089 : Admin is enabling post expiration
+     *
+     */
+
+    let formName: string;
+    let postTitle: string = 'Hello World';
+    let postContent: string;
+    let postExcerpt: string;
+    const category = 'Music'; // Using one of the default categories from the screenshot
+    const emailAddress = faker.internet.email();
+    const emailUpdatedSubject = `Post updated`;
+
+    const emailUpdatedBody = `Hi Admin,
+            Post updated.
             Details:
             Title: {post_title}
             Author: {author} ({author_email})
@@ -57,117 +71,105 @@ export default function postFormSettingsTestPro() {
             Public URL: {permalink}
             Best regards,
             Team {sitename}`;
-        const multipleEmails = `${faker.internet.email()}, ${faker.internet.email()}, ${faker.internet.email()}`;
+    const multipleEmails = `${faker.internet.email()}, ${faker.internet.email()}, ${faker.internet.email()}`;
 
-        // Add your Pro-specific tests here with { tag: ['@Pro'] }
+    test('PFS0029 : Admin is enabling multi-step form', { tag: ['@Pro'] }, async () => {
+        formName = 'PF Settings';
+        await new BasicLoginPage(page).basicLoginAndPluginVisit(Users.adminUsername, Users.adminPassword);
+        const postFormSettings = new PostFormSettingsPage(page);
+        // Create a new post form
+        await postFormSettings.createPostForm(formName);
+        const settingsSetup = new SettingsSetupPage(page);
+        await settingsSetup.changeSettingsSetDefaultPostForm(formName);
 
-        test.beforeAll(async () => {
-            formName = faker.word.words(3);
-            const basicLogin = new BasicLoginPage(page);
-            await basicLogin.basicLoginAndPluginVisit(Users.adminUsername, Users.adminPassword);
-            const postFormSettings = new PostFormSettingsPage(page);
-            // Create a new post form
-            await postFormSettings.createPostForm(formName);
-            const settingsSetup = new SettingsSetupPage(page);
-            await settingsSetup.changeSettingsSetDefaultPostForm(formName);
-        });
-        
-        test('PFS0029 : Admin is enabling multi-step form', { tag: ['@Pro'] }, async () => {
-            const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.enableMultiStep(formName);
-        });
-
-        test('PFS0030 : Admin is validating multi-step progressbar', { tag: ['@Pro'] }, async () => {
-            const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.validateMultiStepProgessbar(formName);
-        });
-
-        test('PFS0031 : Admin is validating multi-step by step', { tag: ['@Pro'] }, async () => {
-            const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.validateMultiStepByStep(formName);
-        });
-
-        test('PFS0032 : Admin is disabling multi-step form', { tag: ['@Pro'] }, async () => {
-            const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.disableMultiStep(formName);
-        });
-
-        test('PFS0071 : Admin is enabling updated post notification', { tag: ['@Pro'] }, async () => {
-            const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.enableUpdatedPostNotification(formName);
-        });
-
-        test('PFS0072 : Admin is validating Updated post notification settings enabled', { tag: ['@Pro'] }, async () => {
-            const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.validateUpdatedNotificationSettingsEnabled(formName);
-        });
-
-        test('PFS0073 : Admin is modifying Updated post notification email', { tag: ['@Pro'] }, async () => {
-            const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.modifyUpdatedNotificationEmail(formName, emailAddress);
-        });
-
-        test('PFS0074 : Admin is modifying Updated post notification subject', { tag: ['@Pro'] }, async () => {
-            const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.modifyUpdatedNotificationSubject(formName, emailSubject);
-        });
-
-        test('PFS0075 : Admin is modifying Updated post notification body with template tags', { tag: ['@Pro'] }, async () => {
-            const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.modifyUpdatedNotificationBodyWithTemplateTags(formName, emailBody);
-        });
-
-        test('PFS0076 : Admin is clicking and validating template tags for Updated post notification', { tag: ['@Pro'] }, async () => {
-            const postFormSettings = new PostFormSettingsPage(page);
-            const templateTags = ['{post_title}', '{post_content}', '{post_excerpt}'];
-            //, '{tags}', '{category}', '{author}', '{author_email}', '{author_bio}', '{sitename}', '{siteurl}', '{permalink}', '{editlink}'
-            await postFormSettings.clickTemplateTagsForUpdatedNotification(formName, templateTags);
-        });
-
-        test('PFS0077 : Admin is setting multiple Updated post notification emails', { tag: ['@Pro'] }, async () => {
-            const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.setMultipleUpdatedNotificationEmails(formName, multipleEmails);
-        });
-
-        test('PFS0078 : Admin is submitting post and validating Updated post notification from FE', { tag: ['@Pro'] }, async () => {
-            let previousPostTitle = postTitle;
-            postTitle = faker.word.words(3);
-            postContent = faker.lorem.paragraph();
-            postExcerpt = postContent;
-            const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.submitPostAndValidateUpdatedNotificationFE(previousPostTitle, postTitle, postContent, postExcerpt, emailSubject, multipleEmails);
-        });
-
-        test('PFS0079 : Admin is disabling updated post notification', { tag: ['@Pro'] }, async () => {
-            const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.disableUpdatedPostNotification(formName);
-        });
-
-        test.skip('PFS0087 : Admin is enabling conditional logic on form submission', { tag: ['@Pro'] }, async () => {
-            const postFormSettings = new PostFormSettingsPage(page);
-            
-        });
-
-        test.skip('PFS0088 : Admin is validating conditional logic on form submission', { tag: ['@Pro'] }, async () => {
-            const postFormSettings = new PostFormSettingsPage(page);
-            
-        });
-
-        test('PFS0089 : Admin is enabling post expiration', { tag: ['@Pro'] }, async () => {
-            const postFormSettings = new PostFormSettingsPage(page);
-            await postFormSettings.enablePostExpiration(formName);
-        });
-
-        
+        await postFormSettings.enableMultiStep(formName);
     });
 
-    test.afterAll(async () => {
-        // Clear state file after tests
-        fs.writeFileSync('state.json', JSON.stringify({ cookies: [], origins: [] }));
-        
-        // Close the browser
-        await browser.close();
+    test('PFS0030 : Admin is validating multi-step progressbar', { tag: ['@Pro'] }, async () => {
+        const postFormSettings = new PostFormSettingsPage(page);
+        await postFormSettings.validateMultiStepProgessbar(formName);
     });
 
-    
-}
+    test('PFS0031 : Admin is validating multi-step by step', { tag: ['@Pro'] }, async () => {
+        const postFormSettings = new PostFormSettingsPage(page);
+        await postFormSettings.validateMultiStepByStep(formName);
+    });
+
+    test('PFS0032 : Admin is disabling multi-step form', { tag: ['@Pro'] }, async () => {
+        const postFormSettings = new PostFormSettingsPage(page);
+        await postFormSettings.disableMultiStep(formName);
+    });
+
+    test('PFS0071 : Admin is enabling updated post notification', { tag: ['@Pro'] }, async () => {
+        const postFormSettings = new PostFormSettingsPage(page);
+        await postFormSettings.enableUpdatedPostNotification(formName);
+    });
+
+    test('PFS0072 : Admin is validating Updated post notification settings enabled', { tag: ['@Pro'] }, async () => {
+        const postFormSettings = new PostFormSettingsPage(page);
+        await postFormSettings.validateUpdatedNotificationSettingsEnabled(formName);
+    });
+
+    test('PFS0073 : Admin is modifying Updated post notification email', { tag: ['@Pro'] }, async () => {
+        const postFormSettings = new PostFormSettingsPage(page);
+        await postFormSettings.modifyUpdatedNotificationEmail(formName, emailAddress);
+    });
+
+    test('PFS0074 : Admin is modifying Updated post notification subject', { tag: ['@Pro'] }, async () => {
+        const postFormSettings = new PostFormSettingsPage(page);
+        await postFormSettings.modifyUpdatedNotificationSubject(formName, emailUpdatedSubject);
+    });
+
+    test('PFS0075 : Admin is modifying Updated post notification body with template tags', { tag: ['@Pro'] }, async () => {
+        const postFormSettings = new PostFormSettingsPage(page);
+        await postFormSettings.modifyUpdatedNotificationBodyWithTemplateTags(formName, emailUpdatedBody);
+    });
+
+    test('PFS0076 : Admin is clicking and validating template tags for Updated post notification', { tag: ['@Pro'] }, async () => {
+        const postFormSettings = new PostFormSettingsPage(page);
+        const templateTags = ['{post_title}', '{post_content}', '{post_excerpt}'];
+        //, '{tags}', '{category}', '{author}', '{author_email}', '{author_bio}', '{sitename}', '{siteurl}', '{permalink}', '{editlink}'
+        await postFormSettings.clickTemplateTagsForUpdatedNotification(formName, templateTags);
+    });
+
+    test('PFS0077 : Admin is setting multiple Updated post notification emails', { tag: ['@Pro'] }, async () => {
+        const postFormSettings = new PostFormSettingsPage(page);
+        await postFormSettings.setMultipleUpdatedNotificationEmails(formName, multipleEmails);
+    });
+
+    test('PFS0078 : Admin is submitting post and validating Updated post notification from FE', { tag: ['@Pro'] }, async () => {
+        const previousPostTitle = postTitle;
+        postTitle = faker.word.words(3);
+        postContent = faker.lorem.paragraph();
+        postExcerpt = postContent;
+        const postFormSettings = new PostFormSettingsPage(page);
+        await postFormSettings.submitPostAndValidateUpdatedNotificationFE(previousPostTitle, postTitle, postContent, postExcerpt, emailUpdatedSubject, multipleEmails);
+    });
+
+    test('PFS0079 : Admin is disabling updated post notification', { tag: ['@Pro'] }, async () => {
+        const postFormSettings = new PostFormSettingsPage(page);
+        await postFormSettings.disableUpdatedPostNotification(formName);
+    });
+
+    test.skip('PFS0087 : Admin is enabling conditional logic on form submission', { tag: ['@Pro'] }, async () => {
+        const postFormSettings = new PostFormSettingsPage(page);
+
+    });
+
+    test.skip('PFS0088 : Admin is validating conditional logic on form submission', { tag: ['@Pro'] }, async () => {
+        const postFormSettings = new PostFormSettingsPage(page);
+
+    });
+
+    test('PFS0089 : Admin is enabling post expiration', { tag: ['@Pro'] }, async () => {
+        const postFormSettings = new PostFormSettingsPage(page);
+        await postFormSettings.enablePostExpiration(formName);
+    });
+
+
+});
+
+test.afterAll(async () => {
+    // Close the browser
+    await browser.close();
+});

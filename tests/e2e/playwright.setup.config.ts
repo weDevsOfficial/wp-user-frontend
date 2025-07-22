@@ -1,16 +1,13 @@
-import type { PlaywrightTestConfig } from '@playwright/test';
-import { devices } from '@playwright/test';
+import { defineConfig, devices } from '@playwright/test';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 /**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
+ * Playwright configuration for SETUP phase
+ * This runs loginAndSetupTest.spec.ts with a single worker
  */
-// require('dotenv').config();
-
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
-const config: PlaywrightTestConfig = {
+export default defineConfig({
     testDir: './tests',
     /* Maximum time one test can run for. */
     timeout: 60000, //10 sec
@@ -27,20 +24,20 @@ const config: PlaywrightTestConfig = {
     forbidOnly: false,
     /* Retry on CI only */
     retries: process.env.CI ? 0 : 0,
-    /* Opt out of parallel tests on CI. */
-    workers: process.env.CI ? 1 : undefined,
+    /* Single worker for setup phase */
+    workers: process.env.CI ? 1 : 1,
     /* Reporter to use. See https://playwright.dev/docs/test-reporters */
     reporter: process.env.CI
         ? [
             ['list', { printSteps: true }],
-            ['json', { outputFile: './test-results/results.json' , open: 'never'}],
-            ['html', { outputFolder: './playwright-report', open: 'never' }]
+            ['json', { outputFile: './setup/setup-results.json' }],
+            ['html', { outputFolder: './playwright-report/setup-report', open: 'never' }]
         ]
         : [
-            ['json', { outputFile: './test-results/results.json' , open: 'never'}],
-            ['html', { outputFolder: './playwright-report', open: 'never' }],
+            ['json', { outputFile: './setup/setup-results.json' }],
+            ['html', { outputFolder: './playwright-report/setup-report', open: 'never' }],
         ],
-    /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+    /* Shared settings for all the projects below. */
     use: {
         /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
         actionTimeout: 0,
@@ -60,29 +57,16 @@ const config: PlaywrightTestConfig = {
         screenshot: 'only-on-failure',
 
         video: 'off',
-
-        //SlowMo
-        launchOptions: {
-            //slowMo: 1000,
-        },
     },
 
     /* Configure projects for major browsers */
     projects: [
         {
-            name: 'chromium',
-            testMatch: [
-                'tests/alphaSetup.spec.ts',
-                'tests/postFormTestPro.spec.ts',
-                'tests/postFormSettingsTestPro.spec.ts',
-                'tests/regFormTestPro.spec.ts',
-                'tests/regFormSettingsTestPro.spec.ts',
-            ],
+            name: 'setup',
+            testMatch: 'tests/alphaSetup.spec.ts',
             use: {
                 ...devices['Desktop Chrome'],
             },
         },
     ],
-};
-
-export default config;
+}); 

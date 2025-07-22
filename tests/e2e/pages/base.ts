@@ -12,6 +12,7 @@ export class Base {
     readonly usersPage: string = Urls.baseUrl + '/wp-admin/users.php';
     readonly postsPage: string = Urls.baseUrl + '/wp-admin/edit.php';
     readonly pagesPage: string = Urls.baseUrl + '/wp-admin/edit.php?post_type=page';
+    readonly newPagePage: string = Urls.baseUrl + '/wp-admin/post-new.php?post_type=page';
     readonly mediaPage: string = Urls.baseUrl + '/wp-admin/upload.php';
     readonly accountPage: string = Urls.baseUrl + '/account/';
     readonly settingsPermalinkPage: string = Urls.baseUrl + '/wp-admin/options-permalink.php';
@@ -26,6 +27,7 @@ export class Base {
     readonly wpufSettingsGeneralPage: string = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-settings-general';
     readonly wpufPostSubmitPage: string = Urls.baseUrl + '/account/?section=submit-post';
     readonly wpufPostPage: string = Urls.baseUrl + '/account/?section=post';
+    readonly postHerePage: string = Urls.baseUrl + '/post-here/';
     readonly siteHomePage: string = Urls.baseUrl;
     readonly wpufTransactionPage: string = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf_transaction';
     readonly wpufRegistrationFormPage: string = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-profile-forms';

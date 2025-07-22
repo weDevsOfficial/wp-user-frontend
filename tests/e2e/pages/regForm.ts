@@ -54,22 +54,19 @@ export class RegFormPage extends Base {
 
 
     //Create Registration page using Shortcode
-    async createRegistrationPageUsingShortcodeLite(registrationFormPageTitle: string) {
+    async createRegistrationPageUsingShortcodeLite(regFormName: string, registrationFormPageTitle: string) {
         // Visit Registration forms page
         await this.navigateToURL(this.wpufRegistrationFormPage);
 
         let storeShortcode: string = '';
 
         //Copy Shortcode
-        storeShortcode = await this.page.innerText(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.storeShortcode);
+        storeShortcode = await this.page.innerText(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.storeShortcode(regFormName));
         console.log(storeShortcode);
 
         //Visit Pages
-        await this.navigateToURL(this.pagesPage);
-
-        //Add New Page
-        await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.addNewPage);
-        //await this.page.waitForTimeout(300);
+        await this.navigateToURL(this.newPagePage);
+        await this.page.reload();
         // // Check if the Welcome Modal is visible
         // try {
         //     await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closeWelcomeModal);
@@ -142,7 +139,7 @@ export class RegFormPage extends Base {
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
         await this.assertionValidate(Selectors.regFormSettings.formSaved);
 
-        await this.createRegistrationPageUsingShortcodeLite(newRegFormPage);
+        await this.createRegistrationPageUsingShortcodeLite(newRegFormName, newRegFormPage);
 
 
 
@@ -223,6 +220,8 @@ export class RegFormPage extends Base {
         //Validate Registered User
         //Go to Users List
         await this.validateAndClick(Selectors.registrationForms.validateUserRegisteredAdminEnd.adminUsersList);
+        await this.page.reload();
+        await this.page.waitForTimeout(1000);
         await this.assertionValidate(Selectors.registrationForms.validateUserRegisteredAdminEnd.validateUserEmail(newEmail));
 
     }

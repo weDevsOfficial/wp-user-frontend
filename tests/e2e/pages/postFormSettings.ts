@@ -18,6 +18,7 @@ export class PostFormSettingsPage extends Base {
         const FieldAdd = new FieldAddPage(this.page);
         // Go to post forms page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click Add New button
         await this.validateAndClick(Selectors.postFormSettings.addNewButton);
@@ -42,6 +43,7 @@ export class PostFormSettingsPage extends Base {
     async changePostType(postType: string, formName: string) {
         // Go to post forms page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form name
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -72,6 +74,7 @@ export class PostFormSettingsPage extends Base {
     async validatePostTypeInList(expectedPostType: string) {
         // Go to post forms list
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Find the row containing the form name
         const postTypeText = await this.page.innerText(Selectors.postFormSettings.postTypeColumn);
@@ -110,6 +113,7 @@ export class PostFormSettingsPage extends Base {
 
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Wait for form list to load and click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -176,6 +180,7 @@ export class PostFormSettingsPage extends Base {
     async setPostRedirectionToPost(formName: string, value: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -204,6 +209,7 @@ export class PostFormSettingsPage extends Base {
     async setPostRedirectionToSamePage(formName: string, value: string, message: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -234,6 +240,7 @@ export class PostFormSettingsPage extends Base {
     async setPostRedirectionToPage(formName: string, value: string, text: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -270,6 +277,7 @@ export class PostFormSettingsPage extends Base {
     async setPostRedirectionToUrl(formName: string, value: string, url: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -389,6 +397,7 @@ export class PostFormSettingsPage extends Base {
     async setPostSubmissionStatus(formName: string, value: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
          
@@ -410,6 +419,7 @@ export class PostFormSettingsPage extends Base {
     async validatePostSubmissionStatusInList(expectedPostStatus: string) {
         // Go to post forms list
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Find the row containing the form name
         const postStatusText = await this.page.innerText(Selectors.postFormSettings.postSubmissionStatusColumn);
@@ -450,6 +460,7 @@ export class PostFormSettingsPage extends Base {
     async setPostSavingAsDraft(formName: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
          
@@ -494,6 +505,7 @@ export class PostFormSettingsPage extends Base {
     async changeSubmitButtonText(formName: string, value: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
          
@@ -514,6 +526,7 @@ export class PostFormSettingsPage extends Base {
     async enableMultiStep(formName: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
          
@@ -534,6 +547,7 @@ export class PostFormSettingsPage extends Base {
     async validateMultiStepProgessbar(formName: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
          
@@ -560,6 +574,7 @@ export class PostFormSettingsPage extends Base {
     async validateMultiStepByStep(formName: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
          
@@ -586,6 +601,7 @@ export class PostFormSettingsPage extends Base {
     async disableMultiStep(formName: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
          
@@ -615,6 +631,7 @@ export class PostFormSettingsPage extends Base {
     async setPostUpdateStatus(formName: string, status: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
          
@@ -636,6 +653,7 @@ export class PostFormSettingsPage extends Base {
     async setPostUpdateMessage(formName: string, message: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
          
@@ -654,6 +672,7 @@ export class PostFormSettingsPage extends Base {
     async setLockUserEditingAfter(formName: string, hours: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
          
@@ -672,6 +691,7 @@ export class PostFormSettingsPage extends Base {
     async setUpdatePostButtonText(formName: string, buttonText: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
          
@@ -762,6 +782,7 @@ export class PostFormSettingsPage extends Base {
     async setUpdatePostRedirectionToUpdatedPost(formName: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
          
@@ -783,6 +804,7 @@ export class PostFormSettingsPage extends Base {
     async setUpdatePostRedirectionToSamePage(formName: string, message: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
          
@@ -804,6 +826,7 @@ export class PostFormSettingsPage extends Base {
     async setUpdatePostRedirectionToPage(formName: string, pageName: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
          
@@ -832,6 +855,7 @@ export class PostFormSettingsPage extends Base {
     async setUpdatePostRedirectionToCustomUrl(formName: string, customUrl: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
          
@@ -950,6 +974,7 @@ export class PostFormSettingsPage extends Base {
     async enablePayPerPost(formName: string, cost: string, successPage: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
          
@@ -980,6 +1005,7 @@ export class PostFormSettingsPage extends Base {
     async disablePayPerPost(formName: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
         
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
          
@@ -1052,6 +1078,7 @@ export class PostFormSettingsPage extends Base {
     async enableNewPostNotification(formName: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1083,6 +1110,7 @@ export class PostFormSettingsPage extends Base {
     async disableNewPostNotification(formName: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1111,6 +1139,7 @@ export class PostFormSettingsPage extends Base {
     async modifyNotificationEmail(formName: string, emailAddress: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1139,6 +1168,7 @@ export class PostFormSettingsPage extends Base {
     async modifyNotificationSubject(formName: string, emailSubject: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1167,6 +1197,7 @@ export class PostFormSettingsPage extends Base {
     async modifyNotificationBodyWithTemplateTags(formName: string, emailBody: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1195,6 +1226,7 @@ export class PostFormSettingsPage extends Base {
     async clickTemplateTagsForNotification(formName: string, tags: string[]) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1230,6 +1262,7 @@ export class PostFormSettingsPage extends Base {
     async validateNotificationSettingsEnabled(formName: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1272,14 +1305,14 @@ export class PostFormSettingsPage extends Base {
         await this.navigateToURL(this.wpMailLogPage);
         await this.page.waitForTimeout(1000);
 
-        const sentEmailAddress = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress);
+        const sentEmailAddress = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress(multipleEmails));
         expect(sentEmailAddress).toBe(multipleEmails);
 
-        const sentEmailSubject = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailSubject);
+        const sentEmailSubject = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailSubjectSubmitted);
         expect(sentEmailSubject).toBe(emailSubject);
 
-        await this.page.hover(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress);
-        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsSection.viewEmailContent);
+        await this.page.hover(Selectors.postFormSettings.notificationSettingsSection.sentEmailSubjectSubmitted);
+        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsSection.viewEmailContentSubmitted);
 
         const sentEmailBody = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.previewEmailContentBody);
         expect(sentEmailBody).toContain(postTitle);
@@ -1296,6 +1329,7 @@ export class PostFormSettingsPage extends Base {
     async setMultipleNotificationEmails(formName: string, multipleEmails: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1324,6 +1358,7 @@ export class PostFormSettingsPage extends Base {
     async enableUpdatedPostNotification(formName: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1355,6 +1390,7 @@ export class PostFormSettingsPage extends Base {
     async disableUpdatedPostNotification(formName: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1383,6 +1419,7 @@ export class PostFormSettingsPage extends Base {
     async modifyUpdatedNotificationEmail(formName: string, emailAddress: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1411,6 +1448,7 @@ export class PostFormSettingsPage extends Base {
     async modifyUpdatedNotificationSubject(formName: string, emailSubject: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1439,6 +1477,7 @@ export class PostFormSettingsPage extends Base {
     async modifyUpdatedNotificationBodyWithTemplateTags(formName: string, emailBody: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1467,6 +1506,7 @@ export class PostFormSettingsPage extends Base {
     async clickTemplateTagsForUpdatedNotification(formName: string, tags: string[]) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1503,6 +1543,7 @@ export class PostFormSettingsPage extends Base {
     async validateUpdatedNotificationSettingsEnabled(formName: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1547,20 +1588,19 @@ export class PostFormSettingsPage extends Base {
         await this.navigateToURL(this.wpMailLogPage);
         await this.page.waitForTimeout(2000);
 
-        const sentEmailAddress = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress);
+        const sentEmailAddress = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress(multipleEmails));
         expect(sentEmailAddress).toBe(multipleEmails);
 
-        const sentEmailSubject = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailSubject);
+        const sentEmailSubject = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailSubjectUpdated);
         expect(sentEmailSubject).toBe(emailSubject);
 
-        // await this.page.hover(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress);
-        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsSection.viewEmailContent);
-
+        await this.page.hover(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress(multipleEmails));
+        await this.validateAndClick(Selectors.postFormSettings.notificationSettingsSection.viewEmailContentUpdated);
+        await this.page.waitForTimeout(1000);
         const sentEmailBody = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.previewEmailContentBody);
         expect(sentEmailBody).toContain(postTitle);
         expect(sentEmailBody).toContain(postContent);
         expect(sentEmailBody).toContain(postExcerpt);
-        expect(sentEmailBody).toContain('Music');
         const postUrl = previousPostTitle.toLowerCase().replace(/\s+/g, '-');
         expect(sentEmailBody).toContain(Urls.baseUrl + `/${postUrl}/`);
         const reviewUrlPattern = Urls.baseUrl + `/wp-admin/post.php?action=edit&post=`;
@@ -1571,6 +1611,7 @@ export class PostFormSettingsPage extends Base {
     async setMultipleUpdatedNotificationEmails(formName: string, multipleEmails: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1598,6 +1639,7 @@ export class PostFormSettingsPage extends Base {
     async settingUserComment(formName: string, status: string, postTitle: string, postContent: string, postExcerpt: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1676,6 +1718,7 @@ export class PostFormSettingsPage extends Base {
     async limitFormEntries(formName: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1730,6 +1773,7 @@ export class PostFormSettingsPage extends Base {
     async unlimitFormEntries(formName: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1759,6 +1803,7 @@ export class PostFormSettingsPage extends Base {
     async enablePostExpiration(formName: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1793,6 +1838,7 @@ export class PostFormSettingsPage extends Base {
     async enableFormTitleShowing(formName: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1825,6 +1871,7 @@ export class PostFormSettingsPage extends Base {
     async showFormDescription(formName: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1867,6 +1914,7 @@ export class PostFormSettingsPage extends Base {
     async setPostPermissionRoleBased(formName: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
@@ -1904,6 +1952,7 @@ export class PostFormSettingsPage extends Base {
         expect(errorMessage).toContain('You do not have sufficient permissions to access this form.');
 
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));

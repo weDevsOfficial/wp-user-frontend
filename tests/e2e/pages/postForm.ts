@@ -187,12 +187,13 @@ export class PostFormPage extends Base {
 
     async createPostFE() {
         //Go to Accounts page - FrontEnd
-        await this.navigateToURL(this.wpufPostSubmitPage);
+        await this.navigateToURL(this.postHerePage);
 
         //Post Form process
         //Enter Post Title
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, PostForm.title=faker.word.words(2));
         console.log(PostForm.title);
+        await this.page.waitForTimeout(1000);
         //Enter Post Description
         await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
             .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(PostForm.description=faker.lorem.sentence(1));
@@ -435,15 +436,17 @@ export class PostFormPage extends Base {
     //Create Page with Shortcode
     async createPageWithShortcode(shortcode: string, pageTitle: string) {
         //Go to Pages page
-        await this.navigateToURL(this.pagesPage);
-        //Create New Page
-        await this.validateAndClick(Selectors.postForms.createPageWithShortcode.addNewPage);
+        await this.navigateToURL(this.newPagePage);
         await this.page.waitForTimeout(300);
+        await this.page.reload();
         // Check if the Welcome Modal is visible
         await this.page.click(Selectors.postForms.createPageWithShortcode.closeWelcomeModal);
-        
         // Check if the Choose Pattern Modal is visible
-        await this.validateAndClick(Selectors.postForms.createPageWithShortcode.closePatternModal);
+        try {
+            await this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closePatternModal).click({ timeout: 10000 });
+        } catch (error) {
+            console.log('Pattern Modal not visible!');
+        }
 
         await this.validateAndFillStrings(Selectors.postForms.createPageWithShortcode.addPageTitle, pageTitle);
         //Click Add Block Button
@@ -464,13 +467,15 @@ export class PostFormPage extends Base {
     //Create Page with Shortcode general
     async createPageWithShortcodeGeneral(shortcode: string, pageTitle: string) {
         //Go to Pages page
-        await this.navigateToURL(this.pagesPage);
-        //Create New Page
-        await this.validateAndClick(Selectors.postForms.createPageWithShortcode.addNewPage);
-        await this.page.waitForTimeout(300);
+        await this.navigateToURL(this.newPagePage);
+        await this.page.reload();
         
         // Check if the Choose Pattern Modal is visible
-        await this.validateAndClick(Selectors.postForms.createPageWithShortcode.closePatternModal);
+        try {
+            await this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closePatternModal).click({ timeout: 10000 });
+        } catch (error) {
+            console.log('Pattern Modal not visible!');
+        }
 
         await this.validateAndFillStrings(Selectors.postForms.createPageWithShortcode.addPageTitle, pageTitle);
         //Click Add Block Button

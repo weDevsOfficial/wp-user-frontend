@@ -45,6 +45,8 @@ features:
   - id: LS0022
     name: Admin is activating dokan lite
   - id: LS0023
+    name: Admin is making user directory page
+  - id: LS0024
     name: Admin is logging out successfully
 
   # Post Forms
@@ -256,7 +258,7 @@ features:
     name: Admin is modifying updated post notification subject
   - id: PFS0075
     name: Admin is modifying updated post notification body with template tags
-  - id: PFS0074
+  - id: PFS0076
     name: Admin is clicking and validating template tags for updated post notification
   - id: PFS0077
     name: Admin is setting multiple updated post notification emails

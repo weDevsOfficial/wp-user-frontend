@@ -17,12 +17,12 @@ export default defineConfig({
     reporter: process.env.CI
         ? [
             ['list', { printSteps: true }],
-            ['json', { outputFile: './parallel-two/parallel-lite-two-results.json' }],
-            ['html', { outputFolder: './playwright-report/parallel-lite-two-report', open: 'never' }]
+            ['json', { outputFile: './parallel-two/parallel-two-results.json' }],
+            ['html', { outputFolder: './playwright-report/parallel-two-report', open: 'never' }]
         ]
         : [
-            ['json', { outputFile: './parallel-two/parallel-lite-two-results.json' }],
-            ['html', { outputFolder: './playwright-report/parallel-lite-two-report', open: 'never' }],
+            ['json', { outputFile: './parallel-two/parallel-two-results.json' }],
+            ['html', { outputFolder: './playwright-report/parallel-two-report', open: 'never' }],
         ],
     use: {
         actionTimeout: 0,
@@ -34,7 +34,7 @@ export default defineConfig({
     },
     projects: [
         {
-            name: 'parallel-lite-two',
+            name: 'parallel-two',
             testMatch: [
                 'tests/postFormSettingsTest.spec.ts',
                 'tests/regFormSettingsTestPro.spec.ts',

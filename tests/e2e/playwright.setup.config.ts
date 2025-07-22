@@ -63,7 +63,7 @@ export default defineConfig({
     projects: [
         {
             name: 'setup',
-            testMatch: 'tests/alphaSetup.spec.ts',
+            testMatch: 'tests/alphaSetupTest.spec.ts',
             use: {
                 ...devices['Desktop Chrome'],
             },

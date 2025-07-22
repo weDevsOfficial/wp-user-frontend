@@ -66,7 +66,7 @@ export class RegFormPage extends Base {
 
         //Visit Pages
         await this.navigateToURL(this.newPagePage);
-        //await this.page.reload();
+        await this.page.reload();
         // // Check if the Welcome Modal is visible
         // try {
         //     await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closeWelcomeModal);

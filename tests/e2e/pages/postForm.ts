@@ -437,7 +437,8 @@ export class PostFormPage extends Base {
     async createPageWithShortcode(shortcode: string, pageTitle: string) {
         //Go to Pages page
         await this.navigateToURL(this.newPagePage);
-        //await this.page.reload();
+        await this.page.waitForTimeout(300);
+        await this.page.reload();
         // Check if the Welcome Modal is visible
         await this.page.click(Selectors.postForms.createPageWithShortcode.closeWelcomeModal);
         // Check if the Choose Pattern Modal is visible
@@ -467,7 +468,7 @@ export class PostFormPage extends Base {
     async createPageWithShortcodeGeneral(shortcode: string, pageTitle: string) {
         //Go to Pages page
         await this.navigateToURL(this.newPagePage);
-        //await this.page.reload();
+        await this.page.reload();
         
         // Check if the Choose Pattern Modal is visible
         try {

@@ -147,25 +147,7 @@ class TEC_Helper {
         return in_array( $post_type, TEC_Constants::TEC_POST_TYPES, true );
     }
 
-    /**
-     * Get all venues
-     *
-     * @since WPUF_SINCE
-     *
-     * @return array
-     */
-    public static function get_all_venues() {
-        if ( ! self::is_tec_active() ) {
-            return [];
-        }
 
-        try {
-            // Use the correct TEC function to get venues
-            return tribe_get_venues( false, -1, true );
-        } catch ( \Exception $e ) {
-            return [];
-        }
-    }
 
     /**
      * Get all organizers
@@ -208,51 +190,7 @@ class TEC_Helper {
         }
     }
 
-    /**
-     * Sanitize venue data
-     *
-     * @since WPUF_SINCE
-     *
-     * @param array $venue_data
-     * @return array
-     */
-    public static function sanitize_venue_data( $venue_data ) {
-        $sanitized = [];
 
-        if ( ! empty( $venue_data['Venue'] ) ) {
-            $sanitized['Venue'] = sanitize_text_field( $venue_data['Venue'] );
-        }
-
-        if ( ! empty( $venue_data['Address'] ) ) {
-            $sanitized['Address'] = sanitize_text_field( $venue_data['Address'] );
-        }
-
-        if ( ! empty( $venue_data['City'] ) ) {
-            $sanitized['City'] = sanitize_text_field( $venue_data['City'] );
-        }
-
-        if ( ! empty( $venue_data['State'] ) ) {
-            $sanitized['State'] = sanitize_text_field( $venue_data['State'] );
-        }
-
-        if ( ! empty( $venue_data['Zip'] ) ) {
-            $sanitized['Zip'] = sanitize_text_field( $venue_data['Zip'] );
-        }
-
-        if ( ! empty( $venue_data['Country'] ) ) {
-            $sanitized['Country'] = sanitize_text_field( $venue_data['Country'] );
-        }
-
-        if ( ! empty( $venue_data['Phone'] ) ) {
-            $sanitized['Phone'] = sanitize_text_field( $venue_data['Phone'] );
-        }
-
-        if ( ! empty( $venue_data['Website'] ) ) {
-            $sanitized['Website'] = esc_url_raw( $venue_data['Website'] );
-        }
-
-        return $sanitized;
-    }
 
     /**
      * Sanitize organizer data

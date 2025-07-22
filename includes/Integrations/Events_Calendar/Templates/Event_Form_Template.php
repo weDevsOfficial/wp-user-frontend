@@ -135,54 +135,6 @@ class Event_Form_Template extends Form_Template {
                 'wpuf_cond'  => $this->conditionals,
             ],
             [
-                'input_type' => 'select',
-                'template'   => 'dropdown_field',
-                'required'   => 'no',
-                'label'      => __( 'Venue', 'wp-user-frontend' ),
-                'name'       => '_EventVenueID',
-                'is_meta'    => 'yes',
-                'options'    => $this->get_venue_options(),
-                'wpuf_cond'  => $this->conditionals,
-            ],
-            [
-                'input_type' => 'text',
-                'template'   => 'text_field',
-                'required'   => 'no',
-                'label'      => __( 'Create New Venue', 'wp-user-frontend' ),
-                'name'       => 'venue_name',
-                'is_meta'    => 'yes',
-                'help'       => __( 'Leave empty to use existing venue above', 'wp-user-frontend' ),
-                'css'        => '',
-                'placeholder' => __( 'Enter venue name', 'wp-user-frontend' ),
-                'default'    => '',
-                'size'       => '40',
-                'wpuf_cond'  => $this->conditionals,
-            ],
-            [
-                'input_type' => 'select',
-                'template'   => 'dropdown_field',
-                'required'   => 'no',
-                'label'      => __( 'Organizer', 'wp-user-frontend' ),
-                'name'       => '_EventOrganizerID',
-                'is_meta'    => 'yes',
-                'options'    => $this->get_organizer_options(),
-                'wpuf_cond'  => $this->conditionals,
-            ],
-            [
-                'input_type' => 'text',
-                'template'   => 'text_field',
-                'required'   => 'no',
-                'label'      => __( 'Create New Organizer', 'wp-user-frontend' ),
-                'name'       => 'organizer_name',
-                'is_meta'    => 'yes',
-                'help'       => __( 'Leave empty to use existing organizer above', 'wp-user-frontend' ),
-                'css'        => '',
-                'placeholder' => __( 'Enter organizer name', 'wp-user-frontend' ),
-                'default'    => '',
-                'size'       => '40',
-                'wpuf_cond'  => $this->conditionals,
-            ],
-            [
                 'input_type' => 'url',
                 'template'   => 'website_url',
                 'required'   => 'no',
@@ -278,30 +230,7 @@ class Event_Form_Template extends Form_Template {
         return $utc->format('Y-m-d H:i:s');
     }
 
-    /**
-     * Get venue options for select field
-     *
-     * @since WPUF_SINCE
-     *
-     * @return array
-     */
-    private function get_venue_options() {
-        $venues = TEC_Helper::get_all_venues();
-        $options = [ '' => __( 'Select a venue', 'wp-user-frontend' ) ];
 
-        if ( ! empty( $venues ) ) {
-            foreach ( $venues as $venue ) {
-                // Handle both WP_Post objects and arrays
-                if ( is_object( $venue ) && isset( $venue->ID, $venue->post_title ) ) {
-                    $options[ $venue->ID ] = $venue->post_title;
-                } elseif ( is_array( $venue ) && isset( $venue['ID'], $venue['post_title'] ) ) {
-                    $options[ $venue['ID'] ] = $venue['post_title'];
-                }
-            }
-        }
-
-        return $options;
-    }
 
     /**
      * Get organizer options for select field

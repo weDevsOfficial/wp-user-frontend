@@ -37,7 +37,7 @@ class TEC_Constants {
      */
     const TEC_POST_TYPES = [
         'tribe_events',
-        'tribe_venue',
+
         'tribe_organizer',
     ];
 
@@ -59,27 +59,11 @@ class TEC_Constants {
         '_EventTimezone',
         '_EventShowMap',
         '_EventShowMapLink',
-        '_EventVenueID',
+
         '_EventOrganizerID',
     ];
 
-    /**
-     * TEC venue meta fields
-     *
-     * @since WPUF_SINCE
-     */
-    const VENUE_META_FIELDS = [
-        '_VenueName',
-        '_VenueAddress',
-        '_VenueCity',
-        '_VenueState',
-        '_VenueZip',
-        '_VenueCountry',
-        '_VenuePhone',
-        '_VenueWebsite',
-        '_VenueShowMap',
-        '_VenueShowMapLink',
-    ];
+
 
     /**
      * TEC organizer meta fields

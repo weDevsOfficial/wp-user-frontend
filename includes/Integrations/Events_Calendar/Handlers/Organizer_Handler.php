@@ -275,4 +275,33 @@ class Organizer_Handler {
 
         return array_filter( $contact );
     }
+
+    /**
+     * Create an organizer using the compatibility manager and return the result.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $organizer_data
+     * @return array|\WP_Error
+     */
+    public function handle_organizer_creation( $organizer_data ) {
+        $organizer_id = $this->compatibility_manager->create_organizer( $organizer_data );
+        if ( is_wp_error( $organizer_id ) ) {
+            return $organizer_id;
+        }
+        return [ 'organizer_id' => $organizer_id ];
+    }
+
+    /**
+     * Associate an organizer with an event using the compatibility manager.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int $event_id
+     * @param int $organizer_id
+     * @return bool|\WP_Error
+     */
+    public function associate_organizer_with_event( $event_id, $organizer_id ) {
+        return $this->compatibility_manager->associate_organizer_with_event( $event_id, $organizer_id );
+    }
 }

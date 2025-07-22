@@ -23,12 +23,7 @@ class Event_Handler {
      */
     private $compatibility_manager;
 
-    /**
-     * Venue handler instance
-     *
-     * @var Venue_Handler
-     */
-    private $venue_handler;
+
 
     /**
      * Organizer handler instance
@@ -51,8 +46,8 @@ class Event_Handler {
      */
     public function __construct( $compatibility_manager ) {
         $this->compatibility_manager = $compatibility_manager;
-        $this->venue_handler = new Venue_Handler( $compatibility_manager );
-        $this->organizer_handler = new Organizer_Handler( $compatibility_manager );
+
+        $this->organizer_handler     = new Organizer_Handler( $compatibility_manager );
 
         // Hook into WPUF's post creation for tribe_events
         add_action( 'wpuf_post_created_tribe_events', [ $this, 'handle_event_creation' ], 10, 3 );
@@ -118,62 +113,6 @@ class Event_Handler {
     }
 
     /**
-     * Handle event submission
-     *
-     * @since WPUF_SINCE
-     *
-     * @param int   $post_id
-     * @param int   $form_id
-     * @param array $form_settings
-     * @return bool
-     */
-    public function handle_event_submission( $post_id, $form_id, $form_settings ) {
-        if ( $form_settings['post_type'] !== 'tribe_events' ) {
-            return true;
-        }
-
-        // Build event data
-        $event_data = $this->build_event_data( $post_id );
-
-        if ( empty( $event_data ) ) {
-            return false;
-        }
-
-        // Prepare data for TEC's save_post hook
-        $this->prepare_data_for_tec_save_post( $event_data );
-
-        return true;
-    }
-
-    /**
-     * Handle event update
-     *
-     * @since WPUF_SINCE
-     *
-     * @param int   $post_id
-     * @param int   $form_id
-     * @param array $form_settings
-     * @return bool
-     */
-    public function handle_event_update( $post_id, $form_id, $form_settings ) {
-        if ( $form_settings['post_type'] !== 'tribe_events' ) {
-            return true;
-        }
-
-        // Build event data
-        $event_data = $this->build_event_data( $post_id );
-
-        if ( empty( $event_data ) ) {
-            return false;
-        }
-
-        // Prepare data for TEC's save_post hook
-        $this->prepare_data_for_tec_save_post( $event_data );
-
-        return true;
-    }
-
-    /**
      * Prepare event data before post creation
      *
      * @since WPUF_SINCE
@@ -228,12 +167,7 @@ class Event_Handler {
             }
         }
 
-        // Handle venue data
-        if ( isset( $orm_args['venue'] ) ) {
-            if ( isset( $orm_args['venue']['VenueID'] ) ) {
-                $_POST['_EventVenueID'] = $orm_args['venue']['VenueID'];
-            }
-        }
+
 
         // Handle organizer data
         if ( isset( $orm_args['organizer'] ) ) {
@@ -241,130 +175,6 @@ class Event_Handler {
                 $_POST['_EventOrganizerID'] = $orm_args['organizer']['OrganizerID'];
             }
         }
-    }
-
-
-
-    /**
-     * Ensure all required fields are present for TEC API
-     *
-     * @since WPUF_SINCE
-     *
-     * @param array $args
-     * @param int   $post_id
-     * @return array
-     */
-    private function ensure_required_fields( $args, $post_id ) {
-        // Get post data
-        $post = get_post( $post_id );
-        if ( ! $post ) {
-            return $args;
-        }
-
-        // Ensure post type is set
-        $args['post_type'] = 'tribe_events';
-
-        // Ensure post status is set
-        if ( empty( $args['post_status'] ) ) {
-            $args['post_status'] = 'publish';
-        }
-
-        // Ensure post title is set
-        if ( empty( $args['post_title'] ) && ! empty( $post->post_title ) ) {
-            $args['post_title'] = $post->post_title;
-        }
-
-        // Ensure post content is set
-        if ( empty( $args['post_content'] ) && ! empty( $post->post_content ) ) {
-            $args['post_content'] = $post->post_content;
-        }
-
-        // Ensure post excerpt is set
-        if ( empty( $args['post_excerpt'] ) && ! empty( $post->post_excerpt ) ) {
-            $args['post_excerpt'] = $post->post_excerpt;
-        }
-
-        // Ensure post author is set
-        if ( empty( $args['post_author'] ) && ! empty( $post->post_author ) ) {
-            $args['post_author'] = $post->post_author;
-        }
-
-        // Ensure featured image is handled
-        if ( ! empty( $_POST['featured_image'] ) ) {
-            $args['FeaturedImage'] = intval( $_POST['featured_image'] );
-        }
-
-        // Ensure timezone is set
-        if ( empty( $args['EventTimezone'] ) ) {
-            $args['EventTimezone'] = wp_timezone_string();
-        }
-
-        // Ensure all-day event flag is set
-        if ( ! isset( $args['EventAllDay'] ) ) {
-            $args['EventAllDay'] = 'no';
-        }
-
-        return $args;
-    }
-
-    /**
-     * Validate ORM args
-     *
-     * @since WPUF_SINCE
-     *
-     * @param array $orm_args
-     * @return bool
-     */
-    public function validate_orm_args( $orm_args ) {
-        // Validate venue if present
-        if ( ! empty( $orm_args['venue'] ) ) {
-            if ( ! $this->venue_handler->validate_venue_data( $orm_args['venue'] ) ) {
-                return false;
-            }
-        }
-
-        // Validate organizer if present
-        if ( ! empty( $orm_args['organizer'] ) ) {
-            if ( ! $this->organizer_handler->validate_organizer_data( $orm_args['organizer'] ) ) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Get event data for a post
-     *
-     * @since WPUF_SINCE
-     *
-     * @param int $post_id
-     * @return array
-     */
-    public function get_event_data( $post_id ) {
-        $event_data = [];
-
-        foreach ( TEC_Constants::EVENT_META_FIELDS as $field ) {
-            $value = get_post_meta( $post_id, $field, true );
-            if ( ! empty( $value ) ) {
-                $event_data[ $field ] = $value;
-            }
-        }
-
-        return $event_data;
-    }
-
-    /**
-     * Check if post is a TEC event
-     *
-     * @since WPUF_SINCE
-     *
-     * @param int $post_id
-     * @return bool
-     */
-    public function is_tec_event( $post_id ) {
-        $post_type = get_post_type( $post_id );
-        return $post_type === 'tribe_events';
     }
 
     /**
@@ -429,14 +239,20 @@ class Event_Handler {
                 return false;
             }
 
-            // Handle venue creation if needed
-            if ( ! empty( $orm_args['venue'] ) ) {
-                $this->handle_venue_creation( $post_id, $orm_args['venue'] );
-            }
+
 
             // Handle organizer creation if needed
             if ( ! empty( $orm_args['organizer'] ) ) {
-                $this->handle_organizer_creation( $post_id, $orm_args['organizer'] );
+                $organizer_result = $this->organizer_handler->handle_organizer_creation( $orm_args['organizer'] );
+                if ( is_wp_error( $organizer_result ) ) {
+                    return false;
+                }
+                if ( ! empty( $organizer_result['organizer_id'] ) ) {
+                    $association_result = $this->organizer_handler->associate_organizer_with_event( $post_id, $organizer_result['organizer_id'] );
+                    if ( is_wp_error( $association_result ) ) {
+                        return false;
+                    }
+                }
             }
 
             return true;
@@ -673,16 +489,18 @@ class Event_Handler {
             $orm_args['duration'] = intval( $all_data['_EventDuration'] );
         }
 
-        // Handle venue data
-        $venue_data = $this->venue_handler->handle_venue_data_from_form_data( $all_data );
-        if ( ! empty( $venue_data ) ) {
-            $orm_args['venue'] = $venue_data;
-        }
 
-        // Handle organizer data
-        $organizer_data = $this->organizer_handler->handle_organizer_data_from_form_data( $all_data );
-        if ( ! empty( $organizer_data ) ) {
-            $orm_args['organizer'] = $organizer_data;
+
+        // Handle organizer data (use $_POST directly)
+        if ( ! empty( $_POST['organizer_name'] ) ) {
+            $orm_args['organizer'] = [
+                'OrganizerName' => sanitize_text_field( $_POST['organizer_name'] ),
+                // Add more fields if needed
+            ];
+        } elseif ( ! empty( $_POST['_EventOrganizerID'] ) ) {
+            $orm_args['organizer'] = [
+                'OrganizerID' => intval( $_POST['_EventOrganizerID'] ),
+            ];
         }
 
         // After all date handling, ensure start_date and end_date are set and valid
@@ -900,171 +718,6 @@ class Event_Handler {
     }
 
     /**
-     * Restore TEC's save_post hooks
-     *
-     * @since WPUF_SINCE
-     */
-    private function restore_tec_hooks() {
-        // Only restore if we disabled them
-        if ( ! isset( $this->tec_hooks_disabled ) || ! $this->tec_hooks_disabled ) {
-            return;
-        }
-
-        // Re-add TEC's main event meta processing
-        add_action( 'save_post', [ 'Tribe__Events__Main', 'addEventMeta' ], 15, 2 );
-
-        // Re-add TEC's custom tables update hook if it exists
-        if ( class_exists( 'TEC\Events\Custom_Tables\V1\Updates\Events' ) ) {
-            try {
-                // Use instance method instead of static call
-                $tec_updates = tribe( 'tec.events.custom-tables.v1.updates.events' );
-                if ( $tec_updates ) {
-                    add_action( 'save_post', [ $tec_updates, 'update' ], 10, 1 );
-                }
-            } catch ( \Exception $e ) {
-                // Service not bound, skip this hook
-            }
-        }
-
-        // Re-add TEC's linked posts processing - use instance method
-        $linked_posts = tribe( 'tec.linked-posts' );
-        if ( $linked_posts ) {
-            add_action( 'save_post', [ $linked_posts, 'handle_submission' ], 10, 2 );
-        }
-
-        $this->tec_hooks_disabled = false;
-    }
-
-    /**
-     * Handle venue creation and association
-     *
-     * @since WPUF_SINCE
-     *
-     * @param int   $post_id
-     * @param array $venue_data
-     * @return bool
-     */
-    private function handle_venue_creation( $post_id, $venue_data ) {
-        // Use the compatibility manager to handle venue creation
-        $venue_result = $this->compatibility_manager->handle_venue_creation( $venue_data );
-
-        if ( is_wp_error( $venue_result ) ) {
-            return false;
-        }
-
-        if ( ! empty( $venue_result['venue_id'] ) ) {
-            // Associate venue with event using compatibility manager
-            $association_result = $this->compatibility_manager->associate_venue_with_event( $post_id, $venue_result['venue_id'] );
-
-            if ( is_wp_error( $association_result ) ) {
-                return false;
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Convert ORM args to TEC API format
-     *
-     * @since WPUF_SINCE
-     *
-     * @param array $orm_args
-     * @return array
-     */
-    private function convert_orm_args_to_tec_api_format( $orm_args ) {
-        $tec_args = [];
-
-        // Map basic post fields
-        if ( isset( $orm_args['title'] ) ) {
-            $tec_args['post_title'] = $orm_args['title'];
-        }
-
-        if ( isset( $orm_args['description'] ) ) {
-            $tec_args['post_content'] = $orm_args['description'];
-        }
-
-        if ( isset( $orm_args['excerpt'] ) ) {
-            $tec_args['post_excerpt'] = $orm_args['excerpt'];
-        }
-
-        // Map event-specific fields to TEC API format
-        if ( isset( $orm_args['start_date'] ) ) {
-            $tec_args['EventStartDate'] = $orm_args['start_date'];
-        }
-
-        if ( isset( $orm_args['end_date'] ) ) {
-            $tec_args['EventEndDate'] = $orm_args['end_date'];
-        }
-
-        if ( isset( $orm_args['start_date_utc'] ) ) {
-            $tec_args['EventStartDateUTC'] = $orm_args['start_date_utc'];
-        }
-
-        if ( isset( $orm_args['end_date_utc'] ) ) {
-            $tec_args['EventEndDateUTC'] = $orm_args['end_date_utc'];
-        }
-
-        if ( isset( $orm_args['timezone'] ) ) {
-            $tec_args['EventTimezone'] = $orm_args['timezone'];
-        }
-
-        if ( isset( $orm_args['all_day'] ) ) {
-            $tec_args['EventAllDay'] = $orm_args['all_day'] ? 'yes' : 'no';
-        }
-
-        if ( isset( $orm_args['cost'] ) ) {
-            $tec_args['EventCost'] = $orm_args['cost'];
-        }
-
-        if ( isset( $orm_args['currency_symbol'] ) ) {
-            $tec_args['EventCurrencySymbol'] = $orm_args['currency_symbol'];
-        }
-
-        if ( isset( $orm_args['currency_position'] ) ) {
-            $tec_args['EventCurrencyPosition'] = $orm_args['currency_position'];
-        }
-
-        if ( isset( $orm_args['url'] ) ) {
-            $tec_args['EventURL'] = $orm_args['url'];
-        }
-
-        if ( isset( $orm_args['show_map'] ) ) {
-            $tec_args['EventShowMap'] = $orm_args['show_map'] ? '1' : '0';
-        }
-
-        if ( isset( $orm_args['show_map_link'] ) ) {
-            $tec_args['EventShowMapLink'] = $orm_args['show_map_link'] ? '1' : '0';
-        }
-
-        if ( isset( $orm_args['hide_from_upcoming'] ) ) {
-            $tec_args['EventHideFromUpcoming'] = $orm_args['hide_from_upcoming'] ? '1' : '0';
-        }
-
-        if ( isset( $orm_args['featured'] ) ) {
-            $tec_args['EventFeatured'] = $orm_args['featured'] ? '1' : '0';
-        }
-
-        if ( isset( $orm_args['image'] ) ) {
-            $tec_args['FeaturedImage'] = $orm_args['image'];
-        }
-
-        // Handle venue data
-        if ( isset( $orm_args['venue'] ) ) {
-            $tec_args['venue'] = $orm_args['venue'];
-        }
-
-        // Handle organizer data
-        if ( isset( $orm_args['organizer'] ) ) {
-            $tec_args['organizer'] = $orm_args['organizer'];
-        }
-
-        return $tec_args;
-    }
-
-    /**
      * Save event meta using TEC's API
      *
      * @since WPUF_SINCE
@@ -1144,14 +797,20 @@ class Event_Handler {
                 update_post_meta( $post_id, $meta_key, $meta_value );
             }
 
-            // Handle venue data
-            if ( isset( $orm_args['venue'] ) ) {
-                $this->handle_venue_creation( $post_id, $orm_args['venue'] );
-            }
+
 
             // Handle organizer data
             if ( isset( $orm_args['organizer'] ) ) {
-                $this->handle_organizer_creation( $post_id, $orm_args['organizer'] );
+                $organizer_result = $this->organizer_handler->handle_organizer_creation( $orm_args['organizer'] );
+                if ( is_wp_error( $organizer_result ) ) {
+                    return false;
+                }
+                if ( ! empty( $organizer_result['organizer_id'] ) ) {
+                    $association_result = $this->organizer_handler->associate_organizer_with_event( $post_id, $organizer_result['organizer_id'] );
+                    if ( is_wp_error( $association_result ) ) {
+                        return false;
+                    }
+                }
             }
 
             return true;
@@ -1159,36 +818,5 @@ class Event_Handler {
         } catch ( \Exception $e ) {
             return false;
         }
-    }
-
-    /**
-     * Handle organizer creation and association
-     *
-     * @since WPUF_SINCE
-     *
-     * @param int   $post_id
-     * @param array $organizer_data
-     * @return bool
-     */
-    private function handle_organizer_creation( $post_id, $organizer_data ) {
-        // Use the compatibility manager to handle organizer creation
-        $organizer_result = $this->compatibility_manager->handle_organizer_creation( $organizer_data );
-
-        if ( is_wp_error( $organizer_result ) ) {
-            return false;
-        }
-
-        if ( ! empty( $organizer_result['organizer_id'] ) ) {
-            // Associate organizer with event using compatibility manager
-            $association_result = $this->compatibility_manager->associate_organizer_with_event( $post_id, $organizer_result['organizer_id'] );
-
-            if ( is_wp_error( $association_result ) ) {
-                return false;
-            }
-
-            return true;
-        }
-
-        return false;
     }
 }

@@ -79,21 +79,7 @@ class TEC_Compatibility_Manager {
         return $this->compatibility_handler->save_event( $post_id, $event_data );
     }
 
-    /**
-     * Create venue using appropriate compatibility handler
-     *
-     * @since WPUF_SINCE
-     *
-     * @param array $venue_data
-     * @return int|\WP_Error
-     */
-    public function create_venue( $venue_data ) {
-        if ( ! $this->compatibility_handler ) {
-            return false;
-        }
 
-        return $this->compatibility_handler->create_venue( $venue_data );
-    }
 
     /**
      * Create organizer using appropriate compatibility handler

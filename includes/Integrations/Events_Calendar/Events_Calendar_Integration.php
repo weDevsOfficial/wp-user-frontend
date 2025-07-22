@@ -4,7 +4,7 @@ namespace WeDevs\Wpuf\Integrations\Events_Calendar;
 
 use WeDevs\Wpuf\Integrations\Events_Calendar\Compatibility\TEC_Compatibility_Manager;
 use WeDevs\Wpuf\Integrations\Events_Calendar\Handlers\Event_Handler;
-use WeDevs\Wpuf\Integrations\Events_Calendar\Handlers\Venue_Handler;
+
 use WeDevs\Wpuf\Integrations\Events_Calendar\Handlers\Organizer_Handler;
 
 /**
@@ -21,12 +21,7 @@ class Events_Calendar_Integration {
      */
     private $event_handler;
 
-    /**
-     * Venue handler instance
-     *
-     * @var Venue_Handler
-     */
-    private $venue_handler;
+
 
     /**
      * Organizer handler instance
@@ -63,7 +58,7 @@ class Events_Calendar_Integration {
 
         $this->compatibility_manager = new TEC_Compatibility_Manager();
         $this->event_handler = new Event_Handler( $this->compatibility_manager );
-        $this->venue_handler = new Venue_Handler( $this->compatibility_manager );
+
         $this->organizer_handler = new Organizer_Handler( $this->compatibility_manager );
     }
 
@@ -173,7 +168,7 @@ class Events_Calendar_Integration {
         }
 
         $post_type = get_post_type( $post_id );
-        if ( ! in_array( $post_type, [ 'tribe_events', 'tribe_venue', 'tribe_organizer' ], true ) ) {
+        if ( ! in_array( $post_type, [ 'tribe_events' ], true ) ) {
             return;
         }
 
@@ -192,16 +187,7 @@ class Events_Calendar_Integration {
         return $this->event_handler;
     }
 
-    /**
-     * Get venue handler instance
-     *
-     * @since WPUF_SINCE
-     *
-     * @return Venue_Handler|null
-     */
-    public function get_venue_handler() {
-        return $this->venue_handler;
-    }
+
 
     /**
      * Get organizer handler instance

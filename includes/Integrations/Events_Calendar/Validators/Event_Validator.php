@@ -63,11 +63,7 @@ class Event_Validator {
             $errors = array_merge( $errors, $date_errors );
         }
 
-        // Validate venue data
-        $venue_errors = $this->validate_venue_data( $event_data );
-        if ( !empty( $venue_errors ) ) {
-            $errors = array_merge( $errors, $venue_errors );
-        }
+
 
         // Validate organizer data
         $organizer_errors = $this->validate_organizer_data( $event_data );
@@ -183,48 +179,7 @@ class Event_Validator {
         return $errors;
     }
 
-    /**
-     * Validate venue data
-     *
-     * @param array $event_data Event data
-     * @return array Array of errors
-     */
-    private function validate_venue_data( $event_data ) {
-        $errors = [];
 
-        // If venue is being created, validate required fields
-        if ( isset( $event_data['venue'] ) && is_array( $event_data['venue'] ) ) {
-            $venue = $event_data['venue'];
-
-            // Check if venue name is provided
-            if ( isset( $venue['Venue'] ) && empty( $venue['Venue'] ) ) {
-                $errors[] = __( 'Venue name is required when creating a new venue.', 'wp-user-frontend' );
-            }
-
-            // Validate venue address if provided
-            if ( isset( $venue['Address'] ) && !empty( $venue['Address'] ) ) {
-                if ( !is_string( $venue['Address'] ) || strlen( $venue['Address'] ) > 255 ) {
-                    $errors[] = __( 'Venue address must be a string and cannot exceed 255 characters.', 'wp-user-frontend' );
-                }
-            }
-
-            // Validate venue phone if provided
-            if ( isset( $venue['Phone'] ) && !empty( $venue['Phone'] ) ) {
-                if ( !$this->is_valid_phone( $venue['Phone'] ) ) {
-                    $errors[] = __( 'Venue phone number is not valid.', 'wp-user-frontend' );
-                }
-            }
-
-            // Validate venue website if provided
-            if ( isset( $venue['Website'] ) && !empty( $venue['Website'] ) ) {
-                if ( !$this->is_valid_url( $venue['Website'] ) ) {
-                    $errors[] = __( 'Venue website URL is not valid.', 'wp-user-frontend' );
-                }
-            }
-        }
-
-        return $errors;
-    }
 
     /**
      * Validate organizer data

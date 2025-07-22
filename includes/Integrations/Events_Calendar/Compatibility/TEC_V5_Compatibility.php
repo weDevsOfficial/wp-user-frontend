@@ -36,29 +36,7 @@ class TEC_V5_Compatibility {
         }
     }
 
-    /**
-     * Create venue using TEC v5 API
-     *
-     * @since WPUF_SINCE
-     *
-     * @param array $venue_data
-     * @return int|WP_Error
-     */
-    public function create_venue( $venue_data ) {
-        try {
-            // Use TEC's v5 API method
-            $venue_id = \Tribe__Events__API::createVenue( $venue_data );
 
-            if ( is_wp_error( $venue_id ) ) {
-                return $venue_id;
-            }
-
-            return $venue_id;
-
-        } catch ( \Exception $e ) {
-            return new \WP_Error( 'tec_v5_venue_error', $e->getMessage() );
-        }
-    }
 
     /**
      * Create organizer using TEC v5 API
@@ -84,23 +62,7 @@ class TEC_V5_Compatibility {
         }
     }
 
-    /**
-     * Get venue data using TEC v5 API
-     *
-     * @since WPUF_SINCE
-     *
-     * @param int $venue_id
-     * @return array|false
-     */
-    public function get_venue_data( $venue_id ) {
-        try {
-            // Use the correct TEC function to get venue object
-            $venue = tribe_get_venue_object( $venue_id, ARRAY_A );
-            return $venue;
-        } catch ( \Exception $e ) {
-            return false;
-        }
-    }
+
 
     /**
      * Get organizer data using TEC v5 API
@@ -120,22 +82,7 @@ class TEC_V5_Compatibility {
         }
     }
 
-    /**
-     * Get all venues using TEC v5 API
-     *
-     * @since WPUF_SINCE
-     *
-     * @return array
-     */
-    public function get_all_venues() {
-        try {
-            // Use the correct TEC function to get venues
-            $venues = tribe_get_venues( false, -1, true );
-            return $venues;
-        } catch ( \Exception $e ) {
-            return [];
-        }
-    }
+
 
     /**
      * Get all organizers using TEC v5 API

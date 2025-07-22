@@ -83,6 +83,22 @@ class TEC_V6_Compatibility {
         $orm_args = [];
         // Merge form data with meta vars for comprehensive data access
         $all_data = array_merge( $form_data, $meta_vars );
+
+        /**
+         * Opportunity to modify form data before converting to TEC ORM format
+         *
+         * This filter allows developers to modify the raw form data before it's processed
+         * into TEC ORM format. Useful for data validation, transformation, or integration
+         * with custom form fields.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array $all_data The merged form data and meta variables
+         * @param array $form_data The original form data from WPUF
+         * @param array $meta_vars The original meta variables from WPUF
+         */
+        $all_data = apply_filters( 'wpuf_tec_before_convert_form_data', $all_data, $form_data, $meta_vars );
+
         // Required fields
         if ( ! empty( $all_data['post_title'] ) ) {
             $orm_args['title'] = sanitize_text_field( $all_data['post_title'] );
@@ -246,6 +262,22 @@ class TEC_V6_Compatibility {
         if ( ! empty( $all_data['_EventDuration'] ) ) {
             $orm_args['duration'] = intval( $all_data['_EventDuration'] );
         }
+
+        /**
+         * Opportunity to modify TEC ORM arguments after conversion from form data
+         *
+         * This filter allows developers to modify the ORM arguments before they're validated
+         * and saved. Useful for custom field mapping, data transformation, or integration
+         * with third-party services.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array $orm_args The ORM arguments ready for TEC API
+         * @param array $all_data The original merged form data
+         * @param array $form_data The original form data from WPUF
+         * @param array $meta_vars The original meta variables from WPUF
+         */
+        $orm_args = apply_filters( 'wpuf_tec_after_convert_form_data', $orm_args, $all_data, $form_data, $meta_vars );
 
         return $orm_args;
     }
@@ -453,6 +485,24 @@ class TEC_V6_Compatibility {
         if ( isset( $args['ID'] ) ) {
             unset( $args['ID'] );
         }
+
+        /**
+         * Opportunity to modify TEC ORM arguments before creating the event
+         *
+         * This filter allows developers to modify the final ORM arguments before the event
+         * is created via TEC's API. Useful for last-minute data validation, transformation,
+         * or integration with external services.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array $args         The ORM arguments ready for TEC API
+         * @param array $postarr      The original WordPress post array
+         * @param array $meta_vars    The original meta variables from WPUF
+         * @param int   $form_id      The WPUF form ID
+         * @param array $form_settings The WPUF form settings
+         */
+        $args = apply_filters( 'wpuf_tec_before_create_event', $args, $postarr, $meta_vars, $form_id, $form_settings );
+
         // Call the TEC ORM API
         try {
             if ( function_exists( 'tribe_events' ) ) {
@@ -465,6 +515,24 @@ class TEC_V6_Compatibility {
                             'post_status' => $post_status,
                         ]
                     );
+
+                    /**
+                     * Opportunity to perform actions after event creation
+                     *
+                     * This action allows developers to perform additional operations after
+                     * an event has been successfully created. Useful for notifications,
+                     * integrations, or custom post-processing.
+                     *
+                     * @since WPUF_SINCE
+                     *
+                     * @param int   $event_id      The created event post ID
+                     * @param array $args          The ORM arguments used to create the event
+                     * @param array $postarr       The original WordPress post array
+                     * @param array $meta_vars     The original meta variables from WPUF
+                     * @param int   $form_id      The WPUF form ID
+                     * @param array $form_settings The WPUF form settings
+                     */
+                    do_action( 'wpuf_tec_after_create_event', $event->ID, $args, $postarr, $meta_vars, $form_id, $form_settings );
 
                     return $event->ID;
                 } else {
@@ -622,6 +690,19 @@ class TEC_V6_Compatibility {
             if ( isset( $orm_args['image'] ) ) {
                 $meta_data['_thumbnail_id'] = $orm_args['image'];
             }
+
+            /**
+             * This filter allows developers to add, modify, or remove event metadata before it's saved.
+             * Useful for custom event fields, validation, or integration with other plugins.
+             *
+             * @since WPUF_SINCE
+             *
+             * @param array $meta_data The event metadata array with keys like '_EventStartDate', '_EventEndDate', etc.
+             * @param int   $post_id   The event post ID
+             * @param array $orm_args  The original ORM arguments used to generate the metadata
+             */
+            $meta_data = apply_filters( 'wpuf_tec_event_meta', $meta_data, $post_id, $orm_args );
+
             // Save each meta field
             foreach ( $meta_data as $meta_key => $meta_value ) {
                 update_post_meta( $post_id, $meta_key, $meta_value );

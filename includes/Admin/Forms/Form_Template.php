@@ -212,25 +212,7 @@ abstract class Form_Template {
             require_once $tribe_api;
         }
 
-        /**
-         * Opportunity to change 'The Event Calendar' metadata just before WPUF is saving it to DB
-         *
-         * @since WPUF_SINCE
-         *
-         * @param array $event_data The event metadata
-         * @param int $post_id The post id, in other words, The Event
-         */
-        $event_data = apply_filters( 'wpuf_tib_event_meta', $event_data, $post_id );
         \Tribe__Events__API::saveEventMeta( $post_id, $event_data );
-
-        /**
-         * Hook fired just after WPUF is saved 'The Event Calendar' metadata to the DB
-         *
-         * @since WPUFPRO_SINCE
-         *
-         * @param int $post_id The post_id, in other words, the event_id
-         */
-        do_action( 'wpuf_tib_after_saving_event_meta', $post_id );
     }
 
     /**

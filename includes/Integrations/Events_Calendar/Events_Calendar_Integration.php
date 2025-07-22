@@ -47,6 +47,21 @@ class Events_Calendar_Integration {
 
         $this->compatibility_manager = new TEC_Compatibility_Manager();
         $this->event_handler = new Event_Handler( $this->compatibility_manager );
+
+        /**
+         * Opportunity to perform actions after Events Calendar integration initialization
+         *
+         * This action allows developers to perform additional setup after the TEC integration
+         * has been initialized. Useful for custom handlers, compatibility layers, or
+         * integration with other plugins.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param Events_Calendar_Integration $this The integration instance
+         * @param TEC_Compatibility_Manager $compatibility_manager The compatibility manager instance
+         * @param Event_Handler $event_handler The event handler instance
+         */
+        do_action( 'wpuf_tec_integration_ready', $this, $this->compatibility_manager, $this->event_handler );
     }
 
     /**
@@ -158,6 +173,22 @@ class Events_Calendar_Integration {
         if ( ! in_array( $post_type, [ 'tribe_events' ], true ) ) {
             return;
         }
+
+        /**
+         * Opportunity to modify TEC meta fields before WPUF processes them
+         *
+         * This filter allows developers to modify the meta key-value pairs before
+         * WPUF processes them for TEC events. Useful for custom field mapping,
+         * validation, or integration with other plugins.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array $meta_key_value The meta key-value pairs from the form
+         * @param int   $post_id        The event post ID
+         * @param array $multi_repeated Multi-repeated field data
+         * @param array $files          File upload data
+         */
+        $meta_key_value = apply_filters( 'wpuf_tec_process_meta_fields', $meta_key_value, $post_id, $multi_repeated, $files );
 
         // Process meta fields without date handling
         return $meta_key_value;

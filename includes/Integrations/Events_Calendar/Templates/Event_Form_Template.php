@@ -36,7 +36,7 @@ class Event_Form_Template extends Form_Template {
      * @return array
      */
     public function get_form_fields() {
-        return [
+        $form_fields = [
             [
                 'input_type'  => 'text',
                 'template'    => 'post_title',
@@ -211,6 +211,22 @@ class Event_Form_Template extends Form_Template {
                 'wpuf_cond'   => $this->conditionals,
             ],
         ];
+
+        /**
+         * Opportunity to modify TEC form fields before they're used
+         *
+         * This filter allows developers to add, modify, or remove form fields from
+         * the Events Calendar form template. Useful for custom event fields,
+         * integration with other plugins, or custom field types.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array $form_fields The array of form field definitions
+         * @param Event_Form_Template $this The form template instance
+         */
+        $form_fields = apply_filters( 'wpuf_tec_form_fields', $form_fields, $this );
+
+        return $form_fields;
     }
 
     /**

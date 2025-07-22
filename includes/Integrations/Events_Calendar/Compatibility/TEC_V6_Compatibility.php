@@ -12,64 +12,6 @@ namespace WeDevs\Wpuf\Integrations\Events_Calendar\Compatibility;
  */
 class TEC_V6_Compatibility {
     /**
-     * Handle event creation using TEC ORM
-     *
-     * @since WPUF_SINCE
-     *
-     * @param int   $post_id
-     * @param array $form_data
-     * @param array $meta_vars
-     *
-     * @return bool
-     */
-    public function handle_event_creation( $post_id, $form_data, $meta_vars ) {
-        try {
-            // Convert form data directly to ORM format
-            $orm_args = $this->convert_form_data_to_orm_format( $form_data, $meta_vars );
-            if ( empty( $orm_args ) ) {
-                return false;
-            }
-            // Validate ORM requirements before saving
-            if ( ! $this->validate_orm_requirements( $orm_args ) ) {
-                return false;
-            }
-            // Temporarily disable TEC's save_post hooks to prevent conflicts
-            $this->temporarily_disable_tec_hooks();
-            // Use direct WordPress update and TEC meta saving
-            $post_data = [
-                'ID'        => $post_id,
-                'post_type' => 'tribe_events',
-            ];
-            // Add basic post fields
-            if ( isset( $orm_args['title'] ) ) {
-                $post_data['post_title'] = $orm_args['title'];
-            }
-            if ( isset( $orm_args['description'] ) ) {
-                $post_data['post_content'] = $orm_args['description'];
-            }
-            if ( isset( $orm_args['excerpt'] ) ) {
-                $post_data['post_excerpt'] = $orm_args['excerpt'];
-            }
-            // Update the post first
-            $post_result = wp_update_post( $post_data, true );
-            if ( is_wp_error( $post_result ) ) {
-                return false;
-            } else {
-                // Now save the event meta using TEC's API
-                $meta_result = $this->save_event_meta( $post_id, $orm_args );
-                $result      = $meta_result;
-            }
-            if ( ! $result ) {
-                return false;
-            }
-
-            return true;
-        } catch ( \Exception $e ) {
-            return false;
-        }
-    }
-
-    /**
      * Convert form data directly to ORM format
      *
      * @since WPUF_SINCE

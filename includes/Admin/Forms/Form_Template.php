@@ -152,67 +152,7 @@ abstract class Form_Template {
      * @return void
      */
     public function after_insert( $post_id, $form_id, $form_settings ) {
-        // handle The Events Calendar data and for event calendar version below 6
-        if ( class_exists( 'Tribe__Events__Main' ) && version_compare( \Tribe__Events__Main::VERSION, 6, '<' ) ) {
-            $timezone       = get_option( 'timezone_string', 'UTC+0' );
-            $timezone       = new \DateTimeZone( $timezone );
-            $start_date     = wpuf_current_datetime()->format( self::TIB_DATETIME_FORMAT );
-            $end_date       = wpuf_current_datetime()->format( self::TIB_DATETIME_FORMAT );
-            $start_date_utc = wpuf_current_datetime()->setTimezone( $timezone )->format( self::TIB_DATETIME_FORMAT );
-            $end_date_utc   = wpuf_current_datetime()->setTimezone( $timezone )->format( self::TIB_DATETIME_FORMAT );
 
-            $meta_to_update = [];
-            $meta_to_delete = [];
-
-            if ( 'yes' === $post_data['_EventAllDay'] ) {
-                $p1d            = new \DateInterval( 'PT23H59M59S' );
-                $new_start_date = $start_date;
-                $new_end_date   = $end_date;
-
-                $meta_to_update['_EventAllDay']       = $post_data['_EventAllDay'];
-                $meta_to_update['_EventStartDate']    = $new_start_date;
-                $meta_to_update['_EventEndDate']      = $new_end_date;
-                $meta_to_update['_EventStartDateUTC'] = $start_date_utc;
-                $meta_to_update['_EventEndDateUTC']   = $end_date_utc;
-            } else {
-                $meta_to_delete[]                     = '_EventAllDay';
-                $meta_to_update['_EventStartDate']    = $start_date;
-                $meta_to_update['_EventEndDate']      = $end_date;
-                $meta_to_update['_EventStartDateUTC'] = $start_date_utc;
-                $meta_to_update['_EventEndDateUTC']   = $end_date_utc;
-                $meta_to_update['_EventDuration']     = 32400;
-            }
-
-            foreach ( $meta_to_update as $meta_key => $meta_value ) {
-                update_post_meta( $post_id, $meta_key, $meta_value );
-            }
-
-            foreach ( $meta_to_delete as $meta_key ) {
-                delete_post_meta( $post_id, $meta_key );
-            }
-        }
-
-        $event_data = [
-            'EventAllDay'    => ! empty( $post_data['_EventAllDay'] ) ? $post_data['_EventAllDay'] : 'yes',
-            'EventStartDate' => ! empty( $post_data['_EventStartDate'] ) ? $post_data['_EventStartDate'] : wpuf_current_datetime()->format( self::TIB_DATETIME_FORMAT ),
-            'EventEndDate'   => ! empty( $post_data['_EventEndDate'] ) ? $post_data['_EventEndDate'] : wpuf_current_datetime()->format( self::TIB_DATETIME_FORMAT ),
-            'EventTimezone'  => ! empty( $post_data['_EventTimeZone'] ) ? $post_data['_EventTimeZone'] : get_option( 'timezone_string', 'UTC+0' ),
-        ];
-
-        if ( 'no' === $event_data['EventAllDay'] ) {
-            $event_data = array_merge( $event_data, [
-                'EventStartTime' => wpuf_current_datetime()->modify( $event_data['EventStartDate'] )->format( 'h:ia' ),
-                'EventEndTime'   => wpuf_current_datetime()->modify( $event_data['EventEndDate'] )->format( 'h:ia' ),
-            ] );
-        }
-
-        $tribe_api = WP_PLUGIN_DIR . '/the-events-calendar/src/Tribe/API.php';
-
-        if ( ! file_exists( $tribe_api ) ) {
-            require_once $tribe_api;
-        }
-
-        \Tribe__Events__API::saveEventMeta( $post_id, $event_data );
     }
 
     /**

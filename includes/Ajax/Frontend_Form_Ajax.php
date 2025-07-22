@@ -293,22 +293,21 @@ class Frontend_Form_Ajax {
         $postarr = $this->adjust_thumbnail_id( $postarr );
 
         // If this is an Events Calendar event, delegate to the integration handler
-        if ( isset( $postarr['post_type'] ) && $postarr['post_type'] === 'tribe_events' ) {
-            // Use WPUF's integration container pattern
-            $tec_integration = wpuf()->integrations->tribe__events__main;
-
-            if ( $tec_integration ) {
-                $event_handler = $tec_integration->event_handler;
-                if ( $event_handler ) {
-                    // Let the Event_Handler handle compatibility routing internally
-                    $post_id = $event_handler->handle_event_submission( $postarr, $meta_vars, $form_id, $this->form_settings );
-                } else {
-                    // Fallback: fail gracefully if handler is missing
-                    $post_id = wp_insert_post( $postarr );
-                }
+        if ( isset( $postarr['post_type'] ) && 'tribe_events' === $postarr['post_type'] ) {
+            // Prefer Pro integration if available
+            if ( wpuf_is_pro_active() ) {
+                $event_handler = wpuf_pro()->integrations->tribe__events__main->event_handler;
+                $post_id = $event_handler->handle_event_submission( $postarr, $meta_vars, $form_id, $this->form_settings );
             } else {
-                // Fallback: fail gracefully if integration is missing
-                $post_id = wp_insert_post( $postarr );
+                // Fallback to free integration handler
+                $event_handler = wpuf()->integrations->tribe__events__main->event_handler;
+                $post_id       = $event_handler->handle_event_submission(
+                    $postarr, $meta_vars, $form_id, $this->form_settings
+                );
+            }
+
+            if ( ! $post_id ) {
+                wp_insert_post( $postarr );
             }
         } else {
             $post_id = wp_insert_post( $postarr );

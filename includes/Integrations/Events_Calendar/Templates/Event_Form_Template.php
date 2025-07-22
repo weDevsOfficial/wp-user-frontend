@@ -20,11 +20,13 @@ class Event_Form_Template extends Form_Template {
      */
     public function __construct() {
         parent::__construct();
-        $this->enabled     = TEC_Helper::is_tec_active();
-        $this->title       = __( 'The Events Calendar', 'wp-user-frontend' );
-        $this->description = __( 'Form for creating events. The Events Calendar plugin is required.', 'wp-user-frontend' );
-        $this->image       = WPUF_ASSET_URI . '/images/templates/post.svg';
-        $this->form_fields = $this->get_form_fields();
+        $this->enabled       = TEC_Helper::is_tec_active();
+        $this->title         = __( 'The Events Calendar', 'wp-user-frontend' );
+        $this->description   = __(
+            'Form for creating events. The Events Calendar plugin is required.', 'wp-user-frontend'
+        );
+        $this->image         = WPUF_ASSET_URI . '/images/templates/post.svg';
+        $this->form_fields   = $this->get_form_fields();
         $this->form_settings = $this->get_form_settings();
     }
 

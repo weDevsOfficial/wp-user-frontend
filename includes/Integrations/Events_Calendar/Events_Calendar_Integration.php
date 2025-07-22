@@ -31,7 +31,6 @@ class Events_Calendar_Integration {
      */
     public function __construct() {
         $this->init_handlers();
-        $this->register_hooks();
     }
 
     /**
@@ -65,56 +64,6 @@ class Events_Calendar_Integration {
     }
 
     /**
-     * Register WordPress hooks
-     *
-     * @since WPUF_SINCE
-     */
-    private function register_hooks() {
-        // Only register hooks if TEC is active
-        if ( ! $this->is_tec_active() ) {
-            return;
-        }
-
-        // Hook into form submission BEFORE post creation
-        add_action( 'wpuf_form_submit_before', [ $this->event_handler, 'prepare_event_data' ], 10, 3 );
-        add_action( 'wpuf_form_edit_before', [ $this->event_handler, 'prepare_event_data' ], 10, 3 );
-
-        // Dashboard compatibility
-        add_action( 'wpuf_dashboard_shortcode_init', [ $this, 'remove_tribe_pre_get_posts' ] );
-
-        // Meta field processing
-        add_filter( 'wpuf_before_updating_post_meta_fields', [ $this, 'process_tec_meta_fields' ], 10, 4 );
-
-        // Prevent TEC custom table sync during WPUF AJAX event submissions if meta is not ready
-        add_filter( 'tec_events_custom_tables_v1_should_update_custom_tables', [ $this, 'maybe_block_tec_custom_table_sync' ], 10, 3 );
-    }
-
-    /**
-     * Prevent TEC custom table sync during WPUF AJAX event submissions if meta is not ready
-     *
-     * @param bool $update
-     * @param int $post_id
-     * @param \WP_REST_Request|null $request
-     * @return bool
-     */
-    public function maybe_block_tec_custom_table_sync( $update, $post_id, $request ) {
-        // Only block during WPUF AJAX event submissions
-        if ( defined( 'DOING_AJAX' ) && DOING_AJAX && isset( $_POST['action'] ) && strpos( $_POST['action'], 'wpuf' ) === 0 ) {
-            // Check if this is a tribe_events post
-            if ( get_post_type( $post_id ) === 'tribe_events' ) {
-                // Check if required meta is present (start/end date)
-                $start = get_post_meta( $post_id, '_EventStartDate', true );
-                $end = get_post_meta( $post_id, '_EventEndDate', true );
-                if ( empty( $start ) || empty( $end ) ) {
-                    // Block TEC custom table sync if meta is not ready
-                    return false;
-                }
-            }
-        }
-        return $update;
-    }
-
-    /**
      * Check if The Events Calendar is active
      *
      * @since WPUF_SINCE
@@ -123,100 +72,5 @@ class Events_Calendar_Integration {
      */
     private function is_tec_active() {
         return class_exists( 'Tribe__Events__Main' );
-    }
-
-    /**
-     * Register the Events Calendar form template
-     *
-     * @since WPUF_SINCE
-     *
-     * @param array $templates
-     * @return array
-     */
-    /*
-    public function register_form_template( $templates ) {
-        if ( $this->is_tec_active() ) {
-            $templates['post_form_template_events_calendar'] = new Templates\Event_Form_Template();
-        }
-
-        return $templates;
-    }
-    */
-
-    /**
-     * Remove TEC's pre_get_posts filter for dashboard compatibility
-     *
-     * @since WPUF_SINCE
-     */
-    public function remove_tribe_pre_get_posts() {
-        if ( class_exists( 'Tribe__Events__Query' ) ) {
-            remove_action( 'pre_get_posts', [ \Tribe__Events__Query::class, 'pre_get_posts' ], 50 );
-        }
-    }
-
-    /**
-     * Process TEC meta fields before saving
-     *
-     * @since WPUF_SINCE
-     *
-     * @param int   $post_id
-     * @param array $meta_key_value
-     * @param array $multi_repeated
-     * @param array $files
-     */
-    public function process_tec_meta_fields( $post_id, $meta_key_value, $multi_repeated, $files ) {
-        if ( ! $this->is_tec_active() ) {
-            return;
-        }
-
-        $post_type = get_post_type( $post_id );
-        if ( ! in_array( $post_type, [ 'tribe_events' ], true ) ) {
-            return;
-        }
-
-        /**
-         * Opportunity to modify TEC meta fields before WPUF processes them
-         *
-         * This filter allows developers to modify the meta key-value pairs before
-         * WPUF processes them for TEC events. Useful for custom field mapping,
-         * validation, or integration with other plugins.
-         *
-         * @since WPUF_SINCE
-         *
-         * @param array $meta_key_value The meta key-value pairs from the form
-         * @param int   $post_id        The event post ID
-         * @param array $multi_repeated Multi-repeated field data
-         * @param array $files          File upload data
-         */
-        $meta_key_value = apply_filters( 'wpuf_tec_process_meta_fields', $meta_key_value, $post_id, $multi_repeated, $files );
-
-        // Process meta fields without date handling
-        return $meta_key_value;
-    }
-
-    /**
-     * Check if integration is properly initialized
-     *
-     * @since WPUF_SINCE
-     *
-     * @return bool
-     */
-    public function is_initialized() {
-        return $this->event_handler !== null && $this->compatibility_manager !== null;
-    }
-
-    /**
-     * Get integration status
-     *
-     * @since WPUF_SINCE
-     *
-     * @return array
-     */
-    public function get_status() {
-        return [
-            'active' => $this->is_tec_active(),
-            'initialized' => $this->is_initialized(),
-            'version' => $this->compatibility_manager ? $this->compatibility_manager->get_tec_version() : 'unknown',
-        ];
     }
 }

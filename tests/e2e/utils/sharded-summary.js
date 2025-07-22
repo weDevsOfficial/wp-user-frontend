@@ -9,12 +9,64 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const setupResultsPath = path.join(__dirname, '../setup/setup-results.json');
-const parallelResultsPaths = [
-  path.join(__dirname, '../parallel-one/parallel-lite-one-results.json'),
-  path.join(__dirname, '../parallel-two/parallel-lite-two-results.json'),
-  path.join(__dirname, '../parallel-one/parallel-pro-one-results.json'),
-  path.join(__dirname, '../parallel-two/parallel-pro-two-results.json'),
-];
+
+// Get all available result files (Pro or Lite, whatever exists)
+function getAllAvailableResultFiles() {
+  const allPossibleFiles = [
+    path.join(__dirname, '../parallel-one/parallel-lite-one-results.json'),
+    path.join(__dirname, '../parallel-two/parallel-lite-two-results.json'),
+    path.join(__dirname, '../parallel-one/parallel-pro-one-results.json'),
+    path.join(__dirname, '../parallel-two/parallel-pro-two-results.json'),
+  ];
+  
+  // Return only files that actually exist
+  return allPossibleFiles.filter(file => existsSync(file));
+}
+
+const parallelResultsPaths = getAllAvailableResultFiles();
+
+// Function to clean up all result files and directories after processing
+async function cleanupResultFiles() {
+  const allResultPaths = [
+    setupResultsPath,
+    ...parallelResultsPaths
+  ];
+  
+  const directoriesToClean = [
+    path.join(__dirname, '../setup'),
+    path.join(__dirname, '../parallel-one'),
+    path.join(__dirname, '../parallel-two')
+  ];
+  
+  // Remove JSON files
+  for (const filePath of allResultPaths) {
+    try {
+      if (existsSync(filePath)) {
+        await fs.unlink(filePath);
+      }
+    } catch (error) {
+      // Ignore cleanup errors
+    }
+  }
+  
+  // Remove directories (even if not empty)
+  for (const dirPath of directoriesToClean) {
+    try {
+      if (existsSync(dirPath)) {
+        const files = await fs.readdir(dirPath);
+        // Remove any remaining files first
+        for (const file of files) {
+          const filePath = path.join(dirPath, file);
+          await fs.unlink(filePath);
+        }
+        // Then remove the directory
+        await fs.rmdir(dirPath);
+      }
+    } catch (error) {
+      // Ignore errors when removing directories
+    }
+  }
+}
 const featuresMapPath = path.join(__dirname, '../features-map/features-map.yml');
 
 function normalizeId(id) {
@@ -439,6 +491,9 @@ ${tableRows}
   };
   
   await fs.writeFile(mergedResultsPath, JSON.stringify(mergedResults, null, 2));
+  
+  // Clean up all result files and directories after successful summary generation
+  await cleanupResultFiles();
 }
 
 // Run the summary generation

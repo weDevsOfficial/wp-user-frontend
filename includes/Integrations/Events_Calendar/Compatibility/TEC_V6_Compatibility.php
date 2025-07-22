@@ -11,331 +11,626 @@ namespace WeDevs\Wpuf\Integrations\Events_Calendar\Compatibility;
  * @since WPUF_SINCE
  */
 class TEC_V6_Compatibility {
-
     /**
-     * Save event using TEC v6 ORM API
-     * Following the complete event creation process as documented in event-creation-process.md
+     * Handle event creation using TEC ORM
      *
      * @since WPUF_SINCE
      *
      * @param int   $post_id
-     * @param array $event_data
-     * @return bool|WP_Error
+     * @param array $form_data
+     * @param array $meta_vars
+     *
+     * @return bool
      */
-    public function save_event( $post_id, $event_data ) {
+    public function handle_event_creation( $post_id, $form_data, $meta_vars ) {
         try {
-            // Check if this is a new event or existing event
-            $post = get_post( $post_id );
-            $is_new_event = ! $post || $post->post_type !== 'tribe_events';
-
-            if ( $is_new_event ) {
-                // Create new event using ORM API
-                return $this->create_event_using_orm( $event_data );
+            // Convert form data directly to ORM format
+            $orm_args = $this->convert_form_data_to_orm_format( $form_data, $meta_vars );
+            if ( empty( $orm_args ) ) {
+                return false;
+            }
+            // Validate ORM requirements before saving
+            if ( ! $this->validate_orm_requirements( $orm_args ) ) {
+                return false;
+            }
+            // Temporarily disable TEC's save_post hooks to prevent conflicts
+            $this->temporarily_disable_tec_hooks();
+            // Use direct WordPress update and TEC meta saving
+            $post_data = [
+                'ID'        => $post_id,
+                'post_type' => 'tribe_events',
+            ];
+            // Add basic post fields
+            if ( isset( $orm_args['title'] ) ) {
+                $post_data['post_title'] = $orm_args['title'];
+            }
+            if ( isset( $orm_args['description'] ) ) {
+                $post_data['post_content'] = $orm_args['description'];
+            }
+            if ( isset( $orm_args['excerpt'] ) ) {
+                $post_data['post_excerpt'] = $orm_args['excerpt'];
+            }
+            // Update the post first
+            $post_result = wp_update_post( $post_data, true );
+            if ( is_wp_error( $post_result ) ) {
+                return false;
             } else {
-                // Update existing event using ORM API
-                return $this->update_event_using_orm( $post_id, $event_data );
+                // Now save the event meta using TEC's API
+                $meta_result = $this->save_event_meta( $post_id, $orm_args );
+                $result      = $meta_result;
+            }
+            if ( ! $result ) {
+                return false;
             }
 
-        } catch ( \Exception $e ) {
-            return new \WP_Error( 'tec_v6_orm_error', $e->getMessage() );
-        }
-    }
-
-    /**
-     * Create new event using TEC v6 ORM API
-     * Following the official ORM documentation: https://docs.theeventscalendar.com/apis/orm/create/events/
-     *
-     * @param array $event_data
-     * @return int|WP_Error
-     */
-    private function create_event_using_orm( $event_data ) {
-        try {
-            // Convert our data format to ORM API format
-            $orm_data = $this->prepare_event_data_for_orm( $event_data );
-
-            if ( empty( $orm_data ) ) {
-                return new \WP_Error( 'tec_api_exception', 'No valid event data to create' );
-            }
-
-            // Create event using ORM API - following official documentation
-            $event = tribe_events()->set( $orm_data )->create();
-
-            if ( ! $event ) {
-                return new \WP_Error( 'tec_api_exception', 'Failed to create event using ORM API' );
-            }
-
-            return $event->ID;
-
-        } catch ( \Exception $e ) {
-            return new \WP_Error( 'tec_api_exception', $e->getMessage() );
-        }
-    }
-
-    /**
-     * Update existing event using TEC v6 ORM API
-     * Following the official ORM documentation: https://docs.theeventscalendar.com/apis/orm/create/events/
-     *
-     * @param int   $post_id
-     * @param array $event_data
-     * @return bool|WP_Error
-     */
-    private function update_event_using_orm( $post_id, $event_data ) {
-        try {
-            // Convert our data format to ORM API format
-            $orm_data = $this->prepare_event_data_for_orm( $event_data );
-
-            if ( empty( $orm_data ) ) {
-                return new \WP_Error( 'tec_api_exception', 'No valid event data to update' );
-            }
-
-            // Update event using ORM API - following official documentation
-            $result = tribe_events()
-                ->by( 'ID', $post_id )
-                ->set( $orm_data )
-                ->save();
-
-            if ( false === $result ) {
-                return new \WP_Error( 'tec_api_exception', 'Failed to update event using ORM API' );
-            }
-
-            return $post_id;
-
-        } catch ( \Exception $e ) {
-            return new \WP_Error( 'tec_api_exception', $e->getMessage() );
-        }
-    }
-
-
-
-
-
-
-
-
-
-    /**
-     * Create organizer using TEC v6 ORM API
-     *
-     * @since WPUF_SINCE
-     *
-     * @param array $organizer_data
-     * @return int|WP_Error
-     */
-    public function create_organizer( $organizer_data ) {
-        try {
-            // Convert organizer data to ORM API format
-            $orm_organizer_data = $this->prepare_organizer_data_for_orm( $organizer_data );
-
-            if ( empty( $orm_organizer_data ) ) {
-                return new \WP_Error( 'tec_v6_organizer_error', 'No valid organizer data provided' );
-            }
-
-            // Create organizer using ORM API
-            $organizer_id = tribe_organizers()
-                ->set( $orm_organizer_data )
-                ->create();
-
-            if ( ! $organizer_id ) {
-                return new \WP_Error( 'tec_v6_organizer_error', 'Failed to create organizer' );
-            }
-
-            return $organizer_id;
-
-        } catch ( \Exception $e ) {
-            return new \WP_Error( 'tec_v6_organizer_error', $e->getMessage() );
-        }
-    }
-
-
-
-    /**
-     * Get organizer data using TEC v6 ORM API
-     *
-     * @since WPUF_SINCE
-     *
-     * @param int $organizer_id
-     * @return array|false
-     */
-    public function get_organizer_data( $organizer_id ) {
-        try {
-            // Use the ORM API to get organizer data
-            $organizer = tribe_organizers()->by( 'ID', $organizer_id )->first();
-            return $organizer ? $organizer->to_array() : false;
+            return true;
         } catch ( \Exception $e ) {
             return false;
         }
     }
 
-
-
     /**
-     * Get all organizers using TEC v6 ORM API
+     * Convert form data directly to ORM format
      *
      * @since WPUF_SINCE
      *
+     * @param array $form_data
+     * @param array $meta_vars
+     *
      * @return array
      */
-    public function get_all_organizers() {
-        try {
-            // Use the ORM API to get all organizers
-            $organizers = tribe_organizers()->per_page( -1 )->all();
-            return $organizers ? $organizers->to_array() : [];
-        } catch ( \Exception $e ) {
-            return [];
+    private function convert_form_data_to_orm_format( $form_data, $meta_vars = [] ) {
+        $orm_args = [];
+        // Merge form data with meta vars for comprehensive data access
+        $all_data = array_merge( $form_data, $meta_vars );
+        // Required fields
+        if ( ! empty( $all_data['post_title'] ) ) {
+            $orm_args['title'] = sanitize_text_field( $all_data['post_title'] );
         }
+        // Map basic fields
+        if ( ! empty( $all_data['post_content'] ) ) {
+            $orm_args['description'] = wp_kses_post( $all_data['post_content'] );
+        }
+        if ( ! empty( $all_data['post_excerpt'] ) ) {
+            $orm_args['excerpt'] = sanitize_textarea_field( $all_data['post_excerpt'] );
+        }
+        // Handle date fields - these are critical for TEC ORM
+        // Use TEC ORM field aliases instead of meta field names
+        if ( ! empty( $all_data['_EventStartDate'] ) ) {
+            $start_date = $this->format_date_for_tec( $all_data['_EventStartDate'] );
+            if ( $start_date ) {
+                // Enforce Y-m-d H:i:s format
+                $dt = \DateTime::createFromFormat( 'Y-m-d H:i:s', $start_date );
+                if ( $dt ) {
+                    $orm_args['start_date'] = $dt->format( 'Y-m-d H:i:s' );
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            // Fallback: create a default start date if none provided
+            $default_start          = current_time( 'Y-m-d H:i:s' );
+            $orm_args['start_date'] = $default_start;
+        }
+        if ( ! empty( $all_data['_EventEndDate'] ) ) {
+            $end_date = $this->format_date_for_tec( $all_data['_EventEndDate'] );
+            if ( $end_date ) {
+                // Enforce Y-m-d H:i:s format
+                $dt = \DateTime::createFromFormat( 'Y-m-d H:i:s', $end_date );
+                if ( $dt ) {
+                    $orm_args['end_date'] = $dt->format( 'Y-m-d H:i:s' );
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            // Fallback: create a default end date if none provided
+            if ( ! empty( $orm_args['start_date'] ) ) {
+                $default_end          = date(
+                    'Y-m-d H:i:s', strtotime( $orm_args['start_date'] ) + 3600
+                ); // 1 hour later
+                $orm_args['end_date'] = $default_end;
+            }
+        }
+        // Add UTC dates for TEC v6 compatibility using ORM field aliases
+        if ( ! empty( $orm_args['start_date'] ) ) {
+            $timezone = isset( $orm_args['timezone'] ) ? $orm_args['timezone'] : 'UTC';
+            try {
+                $start_datetime             = new \DateTime( $orm_args['start_date'], new \DateTimeZone( $timezone ) );
+                $orm_args['start_date_utc'] = $start_datetime->setTimezone( new \DateTimeZone( 'UTC' ) )->format(
+                    'Y-m-d H:i:s'
+                );
+            } catch ( \Exception $e ) {
+                // Fallback: use the same time as UTC
+                $orm_args['start_date_utc'] = $orm_args['start_date'];
+            }
+        }
+        if ( ! empty( $orm_args['end_date'] ) ) {
+            $timezone = isset( $orm_args['timezone'] ) ? $orm_args['timezone'] : 'UTC';
+            try {
+                $end_datetime             = new \DateTime( $orm_args['end_date'], new \DateTimeZone( $timezone ) );
+                $orm_args['end_date_utc'] = $end_datetime->setTimezone( new \DateTimeZone( 'UTC' ) )->format(
+                    'Y-m-d H:i:s'
+                );
+            } catch ( \Exception $e ) {
+                // Fallback: use the same time as UTC
+                $orm_args['end_date_utc'] = $orm_args['end_date'];
+            }
+        }
+        // Handle all-day events using ORM field alias
+        if ( ! empty( $all_data['_EventAllDay'] ) ) {
+            $is_all_day          = is_array( $all_data['_EventAllDay'] ) && in_array( '1', $all_data['_EventAllDay'] );
+            $orm_args['all_day'] = $is_all_day;
+            // For all-day events, if no end date is provided, set it to the same day
+            if ( $is_all_day && ! empty( $orm_args['start_date'] ) && empty( $orm_args['end_date'] ) ) {
+                $start_date = $this->format_date_for_tec( $all_data['_EventStartDate'] );
+                if ( $start_date ) {
+                    // Set end date to same day at 23:59:59
+                    $end_date             = date( 'Y-m-d 23:59:59', strtotime( $start_date ) );
+                    $orm_args['end_date'] = $end_date;
+                }
+            }
+        }
+        if ( isset( $all_data['EventFeatured'] ) ) {
+            $orm_args['featured'] = tribe_is_truthy( $all_data['EventFeatured'] );
+        }
+        if ( isset( $all_data['EventSticky'] ) ) {
+            $orm_args['sticky'] = tribe_is_truthy( $all_data['EventSticky'] );
+        }
+        // Map cost field (int or float) - handle properly for ORM API
+        if ( ! empty( $all_data['_EventCost'] ) ) {
+            $cost = sanitize_text_field( $all_data['_EventCost'] );
+            // Remove any currency symbols and clean the cost value
+            $cost = preg_replace( '/[^0-9.]/', '', $cost );
+            if ( is_numeric( $cost ) && floatval( $cost ) > 0 ) {
+                $orm_args['cost'] = floatval( $cost );
+            }
+        }
+        // Map currency fields using ORM field aliases
+        if ( ! empty( $all_data['_EventCurrencySymbol'] ) ) {
+            $orm_args['currency_symbol'] = sanitize_text_field( $all_data['_EventCurrencySymbol'] );
+        }
+        if ( ! empty( $all_data['_EventCurrencyPosition'] ) ) {
+            $orm_args['currency_position'] = sanitize_text_field( $all_data['_EventCurrencyPosition'] );
+        }
+        // Map timezone
+        if ( ! empty( $all_data['_EventTimezone'] ) ) {
+            $timezone = sanitize_text_field( $all_data['_EventTimezone'] );
+            // Validate timezone
+            if ( in_array( $timezone, timezone_identifiers_list() ) ) {
+                $orm_args['timezone'] = $timezone;
+            } else {
+                // Use default timezone as fallback
+                $orm_args['timezone'] = wp_timezone_string();
+            }
+        } else {
+            // Use default timezone if none provided
+            $orm_args['timezone'] = wp_timezone_string();
+        }
+        // Ensure timezone is valid for TEC
+        if ( ! in_array( $orm_args['timezone'], timezone_identifiers_list() ) ) {
+            $orm_args['timezone'] = 'UTC';
+        }
+        // Map URL field using ORM field alias
+        if ( ! empty( $all_data['_EventURL'] ) ) {
+            $orm_args['url'] = esc_url_raw( $all_data['_EventURL'] );
+        }
+        // Map image field
+        if ( ! empty( $all_data['featured_image'] ) ) {
+            $orm_args['image'] = intval( $all_data['featured_image'] );
+        }
+        // Map presentation fields using ORM field aliases
+        if ( ! empty( $all_data['_EventShowMap'] ) ) {
+            $show_map             = is_array( $all_data['_EventShowMap'] ) && in_array(
+                    '1', $all_data['_EventShowMap']
+                );
+            $orm_args['show_map'] = $show_map;
+        }
+        if ( ! empty( $all_data['_EventShowMapLink'] ) ) {
+            $show_map_link             = is_array( $all_data['_EventShowMapLink'] ) && in_array(
+                    '1', $all_data['_EventShowMapLink']
+                );
+            $orm_args['show_map_link'] = $show_map_link;
+        }
+        if ( ! empty( $all_data['_EventHideFromUpcoming'] ) ) {
+            $hide_from_upcoming             = is_array( $all_data['_EventHideFromUpcoming'] ) && in_array(
+                    '1', $all_data['_EventHideFromUpcoming']
+                );
+            $orm_args['hide_from_upcoming'] = $hide_from_upcoming;
+        }
+        // Map duration if available
+        if ( ! empty( $all_data['_EventDuration'] ) ) {
+            $orm_args['duration'] = intval( $all_data['_EventDuration'] );
+        }
+
+        return $orm_args;
     }
 
     /**
-     * Prepare event data for ORM API
-     * Based on TEC ORM API documentation: https://docs.theeventscalendar.com/apis/orm/create/events/
+     * Validate ORM requirements before saving
      *
      * @since WPUF_SINCE
      *
-     * @param array $event_data
-     * @return array
+     * @param array $orm_args
+     *
+     * @return bool
      */
-    private function prepare_event_data_for_orm( $event_data ) {
-        $orm_data = [];
-
-        // Required fields according to ORM API documentation
-        if ( ! empty( $event_data['post_title'] ) ) {
-            $orm_data['title'] = $event_data['post_title'];
+    private function validate_orm_requirements( $orm_args ) {
+        // Title is always required
+        if ( empty( $orm_args['title'] ) ) {
+            return false;
         }
-
-        if ( ! empty( $event_data['post_content'] ) ) {
-            $orm_data['content'] = $event_data['post_content'];
+        // Check date requirements
+        $has_start_date = ! empty( $orm_args['start_date'] );
+        $has_end_date   = ! empty( $orm_args['end_date'] );
+        $has_duration   = ! empty( $orm_args['duration'] );
+        $is_all_day     = ! empty( $orm_args['all_day'] ) && $orm_args['all_day'];
+        // Must have start_date AND (end_date OR duration OR all_day)
+        if ( ! $has_start_date ) {
+            return false;
         }
-
-        if ( ! empty( $event_data['post_status'] ) ) {
-            $orm_data['status'] = $event_data['post_status'];
-        } else {
-            $orm_data['status'] = 'publish';
+        if ( ! $has_end_date && ! $has_duration && ! $is_all_day ) {
+            return false;
         }
-
-        // Handle all-day events - convert 'yes'/'no' to boolean
-        if ( isset( $event_data['_EventAllDay'] ) ) {
-            $orm_data['all_day'] = ( 'yes' === $event_data['_EventAllDay'] );
+        // Validate date formats if present
+        if ( $has_start_date && ! $this->is_valid_date_format( $orm_args['start_date'] ) ) {
+            return false;
         }
-
-        // Handle start_date - maps to _EventStartDate
-        if ( isset( $event_data['_EventStartDate'] ) ) {
-            $orm_data['start_date'] = $event_data['_EventStartDate'];
+        if ( $has_end_date && ! $this->is_valid_date_format( $orm_args['end_date'] ) ) {
+            return false;
         }
-
-        // Handle end_date - maps to _EventEndDate
-        if ( isset( $event_data['_EventEndDate'] ) ) {
-            $orm_data['end_date'] = $event_data['_EventEndDate'];
-        }
-
-        // Handle start_date_utc - maps to _EventStartDateUTC
-        if ( isset( $event_data['_EventStartDateUTC'] ) ) {
-            $orm_data['start_date_utc'] = $event_data['_EventStartDateUTC'];
-        }
-
-        // Handle end_date_utc - maps to _EventEndDateUTC
-        if ( isset( $event_data['_EventEndDateUTC'] ) ) {
-            $orm_data['end_date_utc'] = $event_data['_EventEndDateUTC'];
-        }
-
-        // Handle duration - maps to _EventDuration
-        if ( isset( $event_data['_EventDuration'] ) ) {
-            $orm_data['duration'] = intval( $event_data['_EventDuration'] );
-        }
-
-        // Handle timezone - maps to _EventTimezone
-        if ( isset( $event_data['_EventTimezone'] ) ) {
-            $orm_data['timezone'] = $event_data['_EventTimezone'];
-        }
-
-        // Handle cost - maps to _EventCost
-        if ( isset( $event_data['_EventCost'] ) ) {
-            $cost = floatval( $event_data['_EventCost'] );
-            if ( $cost > 0 ) {
-                $orm_data['cost'] = $cost;
+        // Validate that end date is after start date
+        if ( $has_start_date && $has_end_date ) {
+            $start_timestamp = strtotime( $orm_args['start_date'] );
+            $end_timestamp   = strtotime( $orm_args['end_date'] );
+            if ( $start_timestamp === false || $end_timestamp === false ) {
+                return false;
+            }
+            if ( $end_timestamp <= $start_timestamp ) {
+                return false;
             }
         }
 
-        // Handle currency symbol - maps to _EventCurrencySymbol
-        if ( isset( $event_data['_EventCurrencySymbol'] ) ) {
-            $orm_data['currency_symbol'] = $event_data['_EventCurrencySymbol'];
-        }
-
-        // Handle currency position - maps to _EventCurrencyPosition
-        if ( isset( $event_data['_EventCurrencyPosition'] ) ) {
-            $orm_data['currency_position'] = $event_data['_EventCurrencyPosition'];
-        }
-
-        // Handle event URL - maps to _EventURL
-        if ( isset( $event_data['_EventURL'] ) ) {
-            $orm_data['website'] = $event_data['_EventURL'];
-        }
-
-        // Handle featured image
-        if ( isset( $event_data['featured_image'] ) ) {
-            $orm_data['featured_image'] = $event_data['featured_image'];
-        }
-
-        // Handle organizer data
-        if ( isset( $event_data['organizer'] ) ) {
-            $orm_data['organizer'] = $event_data['organizer'];
-        }
-
-        // Handle event settings
-        if ( isset( $event_data['_EventShowMap'] ) ) {
-            $orm_data['show_map'] = ( 'yes' === $event_data['_EventShowMap'] );
-        }
-
-        if ( isset( $event_data['_EventShowMapLink'] ) ) {
-            $orm_data['show_map_link'] = ( 'yes' === $event_data['_EventShowMapLink'] );
-        }
-
-        if ( isset( $event_data['_EventHideFromUpcoming'] ) ) {
-            $orm_data['hide_from_listings'] = ( 'yes' === $event_data['_EventHideFromUpcoming'] );
-        }
-
-        if ( isset( $event_data['_EventShowInCalendar'] ) ) {
-            $orm_data['sticky'] = ( 'yes' === $event_data['_EventShowInCalendar'] );
-        }
-
-        if ( isset( $event_data['featured'] ) ) {
-            $orm_data['featured'] = ( 'yes' === $event_data['featured'] );
-        }
-
-        return $orm_data;
+        return true;
     }
 
-
+    /**
+     * Temporarily disable TEC's save_post hooks to prevent conflicts
+     *
+     * @since WPUF_SINCE
+     */
+    private function temporarily_disable_tec_hooks() {
+        // Store the current state
+        $this->tec_hooks_disabled = true;
+        // Remove TEC's main event meta processing
+        remove_action( 'save_post', [ 'Tribe__Events__Main', 'addEventMeta' ], 15 );
+        // Remove TEC's custom tables update hook if it exists
+        if ( class_exists( 'TEC\Events\Custom_Tables\V1\Updates\Events' ) ) {
+            try {
+                $tec_updates = tribe( 'tec.events.custom-tables.v1.updates.events' );
+                if ( $tec_updates ) {
+                    remove_action( 'save_post', [ $tec_updates, 'update' ], 10 );
+                }
+            } catch ( \Exception $e ) {
+                // Service not bound, skip this hook
+            }
+        }
+        // Remove TEC's linked posts processing - use instance method
+        $linked_posts = tribe( 'tec.linked-posts' );
+        if ( $linked_posts ) {
+            remove_action( 'save_post', [ $linked_posts, 'handle_submission' ], 10 );
+        }
+    }
 
     /**
-     * Prepare organizer data for ORM API
+     * Prevent TEC from processing event creation when we're handling it through WPUF
      *
      * @since WPUF_SINCE
      *
-     * @param array $organizer_data
-     * @return array
+     * @param int      $post_id
+     * @param \WP_Post $post
      */
-    private function prepare_organizer_data_for_orm( $organizer_data ) {
-        $orm_organizer_data = [];
+    public function prevent_tec_event_processing( $post_id, $post ) {
+        // Only handle tribe_events post type
+        if ( $post->post_type !== 'tribe_events' ) {
+            return;
+        }
+        // Check if this is a WPUF form submission
+        if ( $this->is_wpuf_form_submission() ) {
+            // Remove TEC's event meta processing to prevent conflicts
+            remove_action( 'save_post', [ 'Tribe__Events__Main', 'addEventMeta' ], 15 );
+        }
+    }
 
-        // Required field: title
-        if ( isset( $organizer_data['Organizer'] ) ) {
-            $orm_organizer_data['title'] = $organizer_data['Organizer'];
+    /**
+     * Check if current request is a WPUF form submission
+     *
+     * @since WPUF_SINCE
+     *
+     * @return bool
+     */
+    private function is_wpuf_form_submission() {
+        // Check for WPUF form submission indicators
+        $wpuf_indicators = [
+            'wpuf_form_submit',
+            'wpuf_post_new',
+            'wpuf_edit_post',
+            'wpuf_ajax_submit',
+        ];
+        foreach ( $wpuf_indicators as $indicator ) {
+            if ( isset( $_POST[ $indicator ] ) || isset( $_REQUEST[ $indicator ] ) ) {
+                return true;
+            }
+        }
+        // Check for WPUF nonce
+        if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( $_POST['_wpnonce'], 'wpuf_form_add' ) ) {
+            return true;
+        }
+        // Check for WPUF AJAX action
+        if ( isset( $_POST['action'] ) && strpos( $_POST['action'], 'wpuf' ) === 0 ) {
+            return true;
         }
 
-        // Optional fields
-        if ( isset( $organizer_data['Phone'] ) ) {
-            $orm_organizer_data['phone'] = $organizer_data['Phone'];
-        }
+        return false;
+    }
 
-        if ( isset( $organizer_data['Email'] ) ) {
-            $orm_organizer_data['email'] = $organizer_data['Email'];
+    /**
+     * Prepare event data before post creation
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int   $form_id
+     * @param array $form_settings
+     * @param array $form_data
+     *
+     * @return bool
+     */
+    public function prepare_event_data( $form_id, $form_settings, $form_data ) {
+        if ( $form_settings['post_type'] !== 'tribe_events' ) {
+            return true;
         }
-
-        if ( isset( $organizer_data['Website'] ) ) {
-            $orm_organizer_data['website'] = $organizer_data['Website'];
+        // Convert form data to ORM format
+        $orm_args = $this->convert_form_data_to_orm_format( $form_data );
+        if ( empty( $orm_args ) ) {
+            return false;
         }
+        // Prepare data for TEC's save_post hook
+        $this->prepare_data_for_tec_save_post_from_orm( $orm_args );
 
-        return $orm_organizer_data;
+        return true;
+    }
+
+    /**
+     * Prepare data for TEC's save_post hook from ORM format
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $orm_args
+     */
+    private function prepare_data_for_tec_save_post_from_orm( $orm_args ) {
+        // Convert ORM field names to TEC's expected field names
+        $field_mapping = [
+            'all_day'            => '_EventAllDay',
+            'timezone'           => '_EventTimezone',
+            'cost'               => '_EventCost',
+            'currency_symbol'    => '_EventCurrencySymbol',
+            'url'                => '_EventURL',
+            'show_map'           => '_EventShowMap',
+            'show_map_link'      => '_EventShowMapLink',
+            'hide_from_upcoming' => '_EventHideFromUpcoming',
+        ];
+        // Convert field names and add to $_POST for TEC's save_post hook
+        foreach ( $field_mapping as $orm_field => $tec_field ) {
+            if ( isset( $orm_args[ $orm_field ] ) ) {
+                $_POST[ $tec_field ] = $orm_args[ $orm_field ];
+            }
+        }
+    }
+
+    /**
+     * Save event using TEC v6 ORM API
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $postarr       The post array (title, content, etc.)
+     * @param array $meta_vars     The meta fields from the form
+     * @param int   $form_id       The WPUF form ID
+     * @param array $form_settings The WPUF form settings
+     *
+     * @return int|false The created event post ID on success, 0 or false on failure
+     */
+    public function save_event( $postarr, $meta_vars, $form_id, $form_settings ) {
+        // Convert WPUF data to TEC ORM format
+        $args = $this->convert_form_data_to_orm_format( $postarr, $meta_vars );
+        if ( empty( $args ) || ! is_array( $args ) ) {
+            return 0;
+        }
+        // Remove ID if present (should not be set for new posts)
+        if ( isset( $args['ID'] ) ) {
+            unset( $args['ID'] );
+        }
+        // Call the TEC ORM API
+        try {
+            if ( function_exists( 'tribe_events' ) ) {
+                $event = tribe_events()->set_args( $args )->create();
+                if ( $event instanceof \WP_Post ) {
+                    $post_status = ! empty( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'draft';
+                    wp_update_post(
+                        [
+                            'ID'          => $event->ID,
+                            'post_status' => $post_status,
+                        ]
+                    );
+
+                    return $event->ID;
+                } else {
+                    return 0;
+                }
+            } else {
+                return 0;
+            }
+        } catch ( \Exception $e ) {
+            return 0;
+        }
+    }
+
+    /**
+     * Format date for TEC ORM
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $date_string
+     *
+     * @return string|false
+     */
+    public function format_date_for_tec( $date_string ) {
+        if ( empty( $date_string ) ) {
+            return false;
+        }
+        try {
+            // Try multiple date formats that WPUF might use
+            $formats_to_try = [
+                'Y-m-d H:i:s',           // Standard MySQL format
+                'Y-m-d H:i',             // Without seconds
+                'Y-m-d',                 // Date only
+                'm/d/Y H:i:s',           // US format with time
+                'm/d/Y H:i',             // US format without seconds
+                'm/d/Y',                 // US date only
+                'd/m/Y H:i:s',           // European format with time
+                'd/m/Y H:i',             // European format without time
+                'd/m/Y',                 // European date only
+                'Y-m-d\TH:i:s',          // ISO format
+                'Y-m-d\TH:i',            // ISO format without seconds
+            ];
+            // First try TEC's build_date_object function
+            if ( class_exists( 'Tribe__Date_Utils' ) ) {
+                $date_object = \Tribe__Date_Utils::build_date_object( $date_string );
+                if ( $date_object ) {
+                    $formatted = $date_object->format( \Tribe__Date_Utils::DBDATETIMEFORMAT );
+
+                    return $formatted;
+                }
+            }
+            // Try parsing with different formats
+            foreach ( $formats_to_try as $format ) {
+                $date_object = \DateTime::createFromFormat( $format, $date_string );
+                if ( $date_object ) {
+                    $formatted = $date_object->format( 'Y-m-d H:i:s' );
+
+                    return $formatted;
+                }
+            }
+            // Fallback to WordPress date parsing
+            $timestamp = strtotime( $date_string );
+            if ( $timestamp !== false ) {
+                $formatted = date( 'Y-m-d H:i:s', $timestamp );
+
+                return $formatted;
+            }
+
+            return false;
+        } catch ( \Exception $e ) {
+            return false;
+        }
+    }
+
+    /**
+     * Check if date string is in valid format
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $date_string
+     *
+     * @return bool
+     */
+    private function is_valid_date_format( $date_string ) {
+        if ( empty( $date_string ) ) {
+            return false;
+        }
+        // Check if it's in Y-m-d H:i:s format
+        $pattern = '/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/';
+        if ( preg_match( $pattern, $date_string ) ) {
+            return true;
+        }
+        // Check if it's a valid date string
+        $timestamp = strtotime( $date_string );
+
+        return $timestamp !== false;
+    }
+
+    /**
+     * Save event meta using TEC's API
+     *
+     * @since WPUF_SINCE
+     *
+     * @param int   $post_id
+     * @param array $orm_args
+     *
+     * @return bool
+     */
+    private function save_event_meta( $post_id, $orm_args ) {
+        try {
+            // Convert ORM args to TEC meta format
+            $meta_data = [];
+            // Map event-specific fields to TEC meta format
+            if ( isset( $orm_args['start_date'] ) ) {
+                $meta_data['_EventStartDate'] = $orm_args['start_date'];
+            }
+            if ( isset( $orm_args['end_date'] ) ) {
+                $meta_data['_EventEndDate'] = $orm_args['end_date'];
+            }
+            if ( isset( $orm_args['start_date_utc'] ) ) {
+                $meta_data['_EventStartDateUTC'] = $orm_args['start_date_utc'];
+            }
+            if ( isset( $orm_args['end_date_utc'] ) ) {
+                $meta_data['_EventEndDateUTC'] = $orm_args['end_date_utc'];
+            }
+            if ( isset( $orm_args['timezone'] ) ) {
+                $meta_data['_EventTimezone'] = $orm_args['timezone'];
+            }
+            if ( isset( $orm_args['all_day'] ) ) {
+                $meta_data['_EventAllDay'] = $orm_args['all_day'] ? 'yes' : 'no';
+            }
+            if ( isset( $orm_args['cost'] ) ) {
+                $meta_data['_EventCost'] = $orm_args['cost'];
+            }
+            if ( isset( $orm_args['currency_symbol'] ) ) {
+                $meta_data['_EventCurrencySymbol'] = $orm_args['currency_symbol'];
+            }
+            if ( isset( $orm_args['currency_position'] ) ) {
+                $meta_data['_EventCurrencyPosition'] = $orm_args['currency_position'];
+            }
+            if ( isset( $orm_args['url'] ) ) {
+                $meta_data['_EventURL'] = $orm_args['url'];
+            }
+            if ( isset( $orm_args['show_map'] ) ) {
+                $meta_data['_EventShowMap'] = $orm_args['show_map'] ? '1' : '0';
+            }
+            if ( isset( $orm_args['show_map_link'] ) ) {
+                $meta_data['_EventShowMapLink'] = $orm_args['show_map_link'] ? '1' : '0';
+            }
+            if ( isset( $orm_args['hide_from_upcoming'] ) ) {
+                $meta_data['_EventHideFromUpcoming'] = $orm_args['hide_from_upcoming'] ? '1' : '0';
+            }
+            if ( isset( $orm_args['featured'] ) ) {
+                $meta_data['_tribe_featured'] = $orm_args['featured'] ? '1' : '0';
+            }
+            if ( isset( $orm_args['image'] ) ) {
+                $meta_data['_thumbnail_id'] = $orm_args['image'];
+            }
+            // Save each meta field
+            foreach ( $meta_data as $meta_key => $meta_value ) {
+                update_post_meta( $post_id, $meta_key, $meta_value );
+            }
+
+            return true;
+        } catch ( \Exception $e ) {
+            return false;
+        }
     }
 
     /**
@@ -347,22 +642,5 @@ class TEC_V6_Compatibility {
      */
     public function is_active() {
         return class_exists( 'Tribe__Events__Main' ) && function_exists( 'tribe_events' );
-    }
-
-    /**
-     * Test ORM API functionality
-     *
-     * @since WPUF_SINCE
-     *
-     * @return bool
-     */
-    public function test_orm_api() {
-        try {
-            // Test if ORM API is available
-            $test_query = tribe_events()->per_page( 1 );
-            return $test_query instanceof \Tribe__Repository__Interface;
-        } catch ( \Exception $e ) {
-            return false;
-        }
     }
 }

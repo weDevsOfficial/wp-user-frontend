@@ -5,8 +5,6 @@ namespace WeDevs\Wpuf\Integrations\Events_Calendar;
 use WeDevs\Wpuf\Integrations\Events_Calendar\Compatibility\TEC_Compatibility_Manager;
 use WeDevs\Wpuf\Integrations\Events_Calendar\Handlers\Event_Handler;
 
-use WeDevs\Wpuf\Integrations\Events_Calendar\Handlers\Organizer_Handler;
-
 /**
  * Main Events Calendar Integration Class
  *
@@ -19,16 +17,7 @@ class Events_Calendar_Integration {
      *
      * @var Event_Handler
      */
-    private $event_handler;
-
-
-
-    /**
-     * Organizer handler instance
-     *
-     * @var Organizer_Handler
-     */
-    private $organizer_handler;
+    public $event_handler;
 
     /**
      * Compatibility manager instance
@@ -58,8 +47,6 @@ class Events_Calendar_Integration {
 
         $this->compatibility_manager = new TEC_Compatibility_Manager();
         $this->event_handler = new Event_Handler( $this->compatibility_manager );
-
-        $this->organizer_handler = new Organizer_Handler( $this->compatibility_manager );
     }
 
     /**
@@ -92,7 +79,7 @@ class Events_Calendar_Integration {
      *
      * @param bool $update
      * @param int $post_id
-     * @param WP_REST_Request|null $request
+     * @param \WP_REST_Request|null $request
      * @return bool
      */
     public function maybe_block_tec_custom_table_sync( $update, $post_id, $request ) {
@@ -177,37 +164,28 @@ class Events_Calendar_Integration {
     }
 
     /**
-     * Get event handler instance
+     * Check if integration is properly initialized
      *
      * @since WPUF_SINCE
      *
-     * @return Event_Handler|null
+     * @return bool
      */
-    public function get_event_handler() {
-        return $this->event_handler;
-    }
-
-
-
-    /**
-     * Get organizer handler instance
-     *
-     * @since WPUF_SINCE
-     *
-     * @return Organizer_Handler|null
-     */
-    public function get_organizer_handler() {
-        return $this->organizer_handler;
+    public function is_initialized() {
+        return $this->event_handler !== null && $this->compatibility_manager !== null;
     }
 
     /**
-     * Get compatibility manager instance
+     * Get integration status
      *
      * @since WPUF_SINCE
      *
-     * @return TEC_Compatibility_Manager|null
+     * @return array
      */
-    public function get_compatibility_manager() {
-        return $this->compatibility_manager;
+    public function get_status() {
+        return [
+            'active' => $this->is_tec_active(),
+            'initialized' => $this->is_initialized(),
+            'version' => $this->compatibility_manager ? $this->compatibility_manager->get_tec_version() : 'unknown',
+        ];
     }
 }

@@ -16,88 +16,32 @@ class TEC_V5_Compatibility {
      *
      * @since WPUF_SINCE
      *
-     * @param int   $post_id
-     * @param array $event_data
-     * @return bool|WP_Error
+     * @param array $postarr      The post array (title, content, etc.)
+     * @param array $meta_vars    The meta fields from the form
+     * @param int   $form_id      The WPUF form ID
+     * @param array $form_settings The WPUF form settings
+     * @return int|false The created event post ID on success, 0 or false on failure
      */
-    public function save_event( $post_id, $event_data ) {
+    public function save_event( $postarr, $meta_vars, $form_id, $form_settings ) {
         try {
-            // Use TEC's v5 API method
-            $result = \Tribe__Events__API::saveEventMeta( $post_id, $event_data, get_post( $post_id ) );
+            // First create the WordPress post
+            $post_id = wp_insert_post( $postarr );
+
+            if ( is_wp_error( $post_id ) || ! $post_id ) {
+                return false;
+            }
+
+            // Use TEC's v5 API method to save event meta
+            $result = \Tribe__Events__API::saveEventMeta( $post_id, $meta_vars, get_post( $post_id ) );
 
             if ( false === $result ) {
                 return false;
             }
 
-            return true;
+            return $post_id;
 
-        } catch ( \Exception $e ) {
-            return new \WP_Error( 'tec_v5_error', $e->getMessage() );
-        }
-    }
-
-
-
-    /**
-     * Create organizer using TEC v5 API
-     *
-     * @since WPUF_SINCE
-     *
-     * @param array $organizer_data
-     * @return int|WP_Error
-     */
-    public function create_organizer( $organizer_data ) {
-        try {
-            // Use TEC's v5 API method
-            $organizer_id = \Tribe__Events__API::createOrganizer( $organizer_data );
-
-            if ( is_wp_error( $organizer_id ) ) {
-                return $organizer_id;
-            }
-
-            return $organizer_id;
-
-        } catch ( \Exception $e ) {
-            return new \WP_Error( 'tec_v5_organizer_error', $e->getMessage() );
-        }
-    }
-
-
-
-    /**
-     * Get organizer data using TEC v5 API
-     *
-     * @since WPUF_SINCE
-     *
-     * @param int $organizer_id
-     * @return array|false
-     */
-    public function get_organizer_data( $organizer_id ) {
-        try {
-            // Use the correct TEC function to get organizer object
-            $organizer = tribe_get_organizer_object( $organizer_id, ARRAY_A );
-            return $organizer;
         } catch ( \Exception $e ) {
             return false;
-        }
-    }
-
-
-
-    /**
-     * Get all organizers using TEC v5 API
-     *
-     * @since WPUF_SINCE
-     *
-     * @return array
-     */
-    public function get_all_organizers() {
-        try {
-            // Use the correct TEC function to get organizers
-            $organizers = tribe_get_organizers( false, -1, true );
-            return $organizers;
-        } catch ( \Exception $e ) {
-            return [];
         }
     }
 
@@ -111,4 +55,4 @@ class TEC_V5_Compatibility {
     public function is_active() {
         return class_exists( 'Tribe__Events__API' ) && class_exists( 'Tribe__Events__Main' );
     }
-} 
+}

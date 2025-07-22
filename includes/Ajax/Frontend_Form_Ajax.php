@@ -294,11 +294,20 @@ class Frontend_Form_Ajax {
 
         // If this is an Events Calendar event, delegate to the integration handler
         if ( isset( $postarr['post_type'] ) && $postarr['post_type'] === 'tribe_events' ) {
-            if ( class_exists( '\WeDevs\Wpuf\Integrations\Events_Calendar\Handlers\Event_Handler' ) ) {
-                $tec_handler = new \WeDevs\Wpuf\Integrations\Events_Calendar\Handlers\Event_Handler( new \WeDevs\Wpuf\Integrations\Events_Calendar\Compatibility\TEC_Compatibility_Manager() );
-                $post_id = $tec_handler->create_event_via_tec_api( $postarr, $meta_vars, $form_id, $this->form_settings );
+            // Use WPUF's integration container pattern
+            $tec_integration = wpuf()->integrations->tribe__events__main;
+
+            if ( $tec_integration ) {
+                $event_handler = $tec_integration->event_handler;
+                if ( $event_handler ) {
+                    // Let the Event_Handler handle compatibility routing internally
+                    $post_id = $event_handler->handle_event_submission( $postarr, $meta_vars, $form_id, $this->form_settings );
+                } else {
+                    // Fallback: fail gracefully if handler is missing
+                    $post_id = wp_insert_post( $postarr );
+                }
             } else {
-                // Fallback: fail gracefully if handler is missing
+                // Fallback: fail gracefully if integration is missing
                 $post_id = wp_insert_post( $postarr );
             }
         } else {

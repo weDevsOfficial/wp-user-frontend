@@ -63,14 +63,6 @@ class Event_Validator {
             $errors = array_merge( $errors, $date_errors );
         }
 
-
-
-        // Validate organizer data
-        $organizer_errors = $this->validate_organizer_data( $event_data );
-        if ( !empty( $organizer_errors ) ) {
-            $errors = array_merge( $errors, $organizer_errors );
-        }
-
         // Validate event details
         $detail_errors = $this->validate_event_details( $event_data );
         if ( !empty( $detail_errors ) ) {
@@ -173,51 +165,6 @@ class Event_Validator {
 
             if ( $end_datetime <= $start_datetime ) {
                 $errors[] = __( 'Event end date/time must be after start date/time.', 'wp-user-frontend' );
-            }
-        }
-
-        return $errors;
-    }
-
-
-
-    /**
-     * Validate organizer data
-     *
-     * @param array $event_data Event data
-     * @return array Array of errors
-     */
-    private function validate_organizer_data( $event_data ) {
-        $errors = [];
-
-        // If organizer is being created, validate required fields
-        if ( isset( $event_data['organizer'] ) && is_array( $event_data['organizer'] ) ) {
-            $organizer = $event_data['organizer'];
-
-            // Check if organizer name is provided
-            if ( isset( $organizer['Organizer'] ) && empty( $organizer['Organizer'] ) ) {
-                $errors[] = __( 'Organizer name is required when creating a new organizer.', 'wp-user-frontend' );
-            }
-
-            // Validate organizer email if provided
-            if ( isset( $organizer['Email'] ) && !empty( $organizer['Email'] ) ) {
-                if ( !is_email( $organizer['Email'] ) ) {
-                    $errors[] = __( 'Organizer email address is not valid.', 'wp-user-frontend' );
-                }
-            }
-
-            // Validate organizer phone if provided
-            if ( isset( $organizer['Phone'] ) && !empty( $organizer['Phone'] ) ) {
-                if ( !$this->is_valid_phone( $organizer['Phone'] ) ) {
-                    $errors[] = __( 'Organizer phone number is not valid.', 'wp-user-frontend' );
-                }
-            }
-
-            // Validate organizer website if provided
-            if ( isset( $organizer['Website'] ) && !empty( $organizer['Website'] ) ) {
-                if ( !$this->is_valid_url( $organizer['Website'] ) ) {
-                    $errors[] = __( 'Organizer website URL is not valid.', 'wp-user-frontend' );
-                }
             }
         }
 

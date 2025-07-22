@@ -37,8 +37,6 @@ class TEC_Constants {
      */
     const TEC_POST_TYPES = [
         'tribe_events',
-
-        'tribe_organizer',
     ];
 
     /**
@@ -59,22 +57,6 @@ class TEC_Constants {
         '_EventTimezone',
         '_EventShowMap',
         '_EventShowMapLink',
-
-        '_EventOrganizerID',
-    ];
-
-
-
-    /**
-     * TEC organizer meta fields
-     *
-     * @since WPUF_SINCE
-     */
-    const ORGANIZER_META_FIELDS = [
-        '_OrganizerName',
-        '_OrganizerEmail',
-        '_OrganizerPhone',
-        '_OrganizerWebsite',
     ];
 
     /**

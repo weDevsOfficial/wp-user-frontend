@@ -230,33 +230,6 @@ class Event_Form_Template extends Form_Template {
         return $utc->format('Y-m-d H:i:s');
     }
 
-
-
-    /**
-     * Get organizer options for select field
-     *
-     * @since WPUF_SINCE
-     *
-     * @return array
-     */
-    private function get_organizer_options() {
-        $organizers = TEC_Helper::get_all_organizers();
-        $options = [ '' => __( 'Select an organizer', 'wp-user-frontend' ) ];
-
-        if ( ! empty( $organizers ) ) {
-            foreach ( $organizers as $organizer ) {
-                // Handle both WP_Post objects and arrays
-                if ( is_object( $organizer ) && isset( $organizer->ID, $organizer->post_title ) ) {
-                    $options[ $organizer->ID ] = $organizer->post_title;
-                } elseif ( is_array( $organizer ) && isset( $organizer['ID'], $organizer['post_title'] ) ) {
-                    $options[ $organizer['ID'] ] = $organizer['post_title'];
-                }
-            }
-        }
-
-        return $options;
-    }
-
     /**
      * Get form settings
      *

@@ -147,28 +147,6 @@ class TEC_Helper {
         return in_array( $post_type, TEC_Constants::TEC_POST_TYPES, true );
     }
 
-
-
-    /**
-     * Get all organizers
-     *
-     * @since WPUF_SINCE
-     *
-     * @return array
-     */
-    public static function get_all_organizers() {
-        if ( ! self::is_tec_active() ) {
-            return [];
-        }
-
-        try {
-            // Use the correct TEC function to get organizers
-            return tribe_get_organizers( false, -1, true );
-        } catch ( \Exception $e ) {
-            return [];
-        }
-    }
-
     /**
      * Check if timezone is valid
      *
@@ -188,37 +166,5 @@ class TEC_Helper {
         } catch ( \Exception $e ) {
             return false;
         }
-    }
-
-
-
-    /**
-     * Sanitize organizer data
-     *
-     * @since WPUF_SINCE
-     *
-     * @param array $organizer_data
-     * @return array
-     */
-    public static function sanitize_organizer_data( $organizer_data ) {
-        $sanitized = [];
-
-        if ( ! empty( $organizer_data['Organizer'] ) ) {
-            $sanitized['Organizer'] = sanitize_text_field( $organizer_data['Organizer'] );
-        }
-
-        if ( ! empty( $organizer_data['Email'] ) ) {
-            $sanitized['Email'] = sanitize_email( $organizer_data['Email'] );
-        }
-
-        if ( ! empty( $organizer_data['Phone'] ) ) {
-            $sanitized['Phone'] = sanitize_text_field( $organizer_data['Phone'] );
-        }
-
-        if ( ! empty( $organizer_data['Website'] ) ) {
-            $sanitized['Website'] = esc_url_raw( $organizer_data['Website'] );
-        }
-
-        return $sanitized;
     }
 } 

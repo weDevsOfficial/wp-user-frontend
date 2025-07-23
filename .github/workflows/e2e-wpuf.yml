@@ -169,7 +169,7 @@ jobs:
         working-directory: tests/e2e
         run: |
           mkdir -p test-results
-          npm run test:sharded:lite:ci
+          npm run test:sharded:ci
         # continue-on-error: true
 
       # Generate and post advanced test summary

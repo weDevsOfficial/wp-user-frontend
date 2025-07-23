@@ -81,7 +81,7 @@ npx playwright install chromium
 
 Running a specific test file
 
-    npx playwright test loginAndSetupTests.spec.ts
+    npx playwright test alphaSetupTests.spec.ts
 
 Running a specific test file in headed form
 

@@ -13,10 +13,8 @@ const setupResultsPath = path.join(__dirname, '../setup/setup-results.json');
 // Get all available result files (Pro or Lite, whatever exists)
 function getAllAvailableResultFiles() {
   const allPossibleFiles = [
-    path.join(__dirname, '../parallel-one/parallel-lite-one-results.json'),
-    path.join(__dirname, '../parallel-two/parallel-lite-two-results.json'),
-    path.join(__dirname, '../parallel-one/parallel-pro-one-results.json'),
-    path.join(__dirname, '../parallel-two/parallel-pro-two-results.json'),
+    path.join(__dirname, '../parallel-one/parallel-one-results.json'),
+    path.join(__dirname, '../parallel-two/parallel-two-results.json'),
   ];
   
   // Return only files that actually exist
@@ -160,9 +158,9 @@ async function mergeParallelResults() {
 
     // Store individual shard durations
     const fileName = path.basename(filePath);
-    if (fileName.includes('parallel-lite-one') && results.stats?.duration) {
+    if (fileName.includes('parallel-one') && results.stats?.duration) {
       allResults.parallelOneDuration = results.stats.duration;
-    } else if (fileName.includes('parallel-lite-two') && results.stats?.duration) {
+    } else if (fileName.includes('parallel-two') && results.stats?.duration) {
       allResults.parallelTwoDuration = results.stats.duration;
     }
 

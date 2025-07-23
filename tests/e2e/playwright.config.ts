@@ -71,13 +71,6 @@ const config: PlaywrightTestConfig = {
     projects: [
         {
             name: 'chromium',
-            testMatch: [
-                'tests/alphaSetup.spec.ts',
-                'tests/postFormTestPro.spec.ts',
-                'tests/postFormSettingsTestPro.spec.ts',
-                'tests/regFormTestPro.spec.ts',
-                'tests/regFormSettingsTestPro.spec.ts',
-            ],
             use: {
                 ...devices['Desktop Chrome'],
             },

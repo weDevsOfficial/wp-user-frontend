@@ -199,10 +199,8 @@ export class RegFormPage extends Base {
         }
         //Click Register
         await this.validateAndClick(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfRegisterButton);
-        await this.page.waitForTimeout(1000);
-        //Validate User logged in
-        expect(this.page.locator(Selectors.registrationForms.completeUserRegistrationFormFrontend.validateRegisteredLogoutButton)).toBeTruthy();
-
+        await this.page.waitForTimeout(2000);
+        await this.assertionValidate(Selectors.regFormSettings.checkSuccessMessage);
     }
 
 
@@ -220,7 +218,6 @@ export class RegFormPage extends Base {
         //Validate Registered User
         //Go to Users List
         await this.validateAndClick(Selectors.registrationForms.validateUserRegisteredAdminEnd.adminUsersList);
-        await this.page.reload();
         await this.page.waitForTimeout(1000);
         await this.assertionValidate(Selectors.registrationForms.validateUserRegisteredAdminEnd.validateUserEmail(newEmail));
 

@@ -172,7 +172,7 @@ test.describe('Post Form Settings Tests', () => {
     test('PFS0002 : Admin is validating post type', { tag: ['@Lite'] }, async () => {
         const postFormSettings = new PostFormSettingsPage(page);
         // Validate that the post type shows correctly in the list
-        await postFormSettings.validatePostTypeInList('page');
+        await postFormSettings.validatePostTypeInList('page', formName);
     });
 
     test('PFS0003 : Admin is validating post type from FE', { tag: ['@Lite'] }, async () => {
@@ -262,7 +262,7 @@ test.describe('Post Form Settings Tests', () => {
     test('PFS0015 : Admin is validating post submission status to draft - list', { tag: ['@Lite'] }, async () => {
         const postFormSettings = new PostFormSettingsPage(page);
         // Validate that the post type shows correctly in the list
-        await postFormSettings.validatePostSubmissionStatusInList('Draft');
+        await postFormSettings.validatePostSubmissionStatusInList('Draft', formName);
     });
 
     test('PFS0016 : Admin is checking post submission status to draft - FE', { tag: ['@Lite'] }, async () => {
@@ -281,7 +281,7 @@ test.describe('Post Form Settings Tests', () => {
     test('PFS0018 : Admin is validating post submission status to draft - list', { tag: ['@Lite'] }, async () => {
         const postFormSettings = new PostFormSettingsPage(page);
         // Validate that the post type shows correctly in the list
-        await postFormSettings.validatePostSubmissionStatusInList('Pending Review');
+        await postFormSettings.validatePostSubmissionStatusInList('Pending Review', formName);
     });
 
     test('PFS0019 : Admin is checking post submission status to pending', { tag: ['@Lite'] }, async () => {
@@ -300,7 +300,7 @@ test.describe('Post Form Settings Tests', () => {
     test('PFS0021 : Admin is validating post submission status to draft - list', { tag: ['@Lite'] }, async () => {
         const postFormSettings = new PostFormSettingsPage(page);
         // Validate that the post type shows correctly in the list
-        await postFormSettings.validatePostSubmissionStatusInList('Private');
+        await postFormSettings.validatePostSubmissionStatusInList('Private', formName);
     });
 
     test('PFS0022 : Admin is checking post submission status to private', { tag: ['@Lite'] }, async () => {
@@ -319,7 +319,7 @@ test.describe('Post Form Settings Tests', () => {
     test('PFS0024 : Admin is validating post submission status to draft - list', { tag: ['@Lite'] }, async () => {
         const postFormSettings = new PostFormSettingsPage(page);
         // Validate that the post type shows correctly in the list
-        await postFormSettings.validatePostSubmissionStatusInList('Published');
+        await postFormSettings.validatePostSubmissionStatusInList('Published', formName);
     });
 
     test('PFS0025 : Admin is checking post submission status to publish', { tag: ['@Lite'] }, async () => {
@@ -391,7 +391,7 @@ test.describe('Post Form Settings Tests', () => {
         postExcerpt = postContent;
         const postFormSettings = new PostFormSettingsPage(page);
         await postFormSettings.validatePostUpdateStatusInForm(postTitle, postContent, postExcerpt, 'Awaiting Approval');
-        await postFormSettings.pendingToLive();
+        await postFormSettings.pendingToLive(postTitle,'Live');
     });
 
     test('PFS0037 : Admin is setting post update status to private', { tag: ['@Lite'] }, async () => {

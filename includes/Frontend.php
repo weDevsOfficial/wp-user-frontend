@@ -135,7 +135,11 @@ class Frontend {
                             'wp-user-frontend'
                         ),
                         'protected_shortcodes'         => wpuf_get_protected_shortcodes(),
+                        // translators: %shortcode% is the shortcode name
                         'protected_shortcodes_message' => __( 'Using %shortcode% is restricted', 'wp-user-frontend' ),
+                        'password_warning_weak'        => __( 'Your password should be at least weak in strength', 'wp-user-frontend' ),
+                        'password_warning_medium'      => __( 'Your password needs to be medium strength for better protection', 'wp-user-frontend' ),
+                        'password_warning_strong'      => __( 'Create a strong password for maximum security', 'wp-user-frontend' ),
                     ]
                 )
             );
@@ -146,6 +150,15 @@ class Frontend {
                     'validation' => __( 'is not valid', 'wp-user-frontend' ),
                 ]
             );
+
+            wp_localize_script(
+                'wpuf-subscriptions', 'wpuf_subscription', apply_filters(
+                    'wpuf_subscription_js_data', [
+                        'pack_notice'  => __( 'Please Cancel Your Currently Active Pack first!', 'wp-user-frontend' ),
+                    ]
+                )
+            );
+
             wp_localize_script(
                 'wpuf-billing-address',
                 'ajax_object',
@@ -167,11 +180,8 @@ class Frontend {
     private function dokan_is_seller_dashboard() {
         return class_exists( 'WeDevs_Dokan' )
                 && function_exists( 'dokan_is_seller_dashboard' )
-                && dokan_is_seller_dashboard()
-                && ! empty( $wp->query_vars['posts'] );
+                && dokan_is_seller_dashboard();
     }
-
-
 
     /**
      * Show/hide admin bar to the permitted user level

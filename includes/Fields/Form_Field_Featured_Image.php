@@ -12,7 +12,7 @@ class Form_Field_Featured_Image extends Field_Contract {
     public function __construct() {
         $this->name       = __( 'Featured Image', 'wp-user-frontend' );
         $this->input_type = 'featured_image';
-        $this->icon       = 'file-image-o';
+        $this->icon       = 'photograph';
     }
 
     /**
@@ -110,7 +110,7 @@ class Form_Field_Featured_Image extends Field_Contract {
      * @return array
      */
     public function get_options_settings() {
-        $default_options      = $this->get_default_option_settings( false, ['dynamic'] ); // exclude dynamic
+        $default_options = $this->get_default_option_settings( false, [ 'dynamic', 'width' ] ); // exclude dynamic
 
         $settings = [
             [

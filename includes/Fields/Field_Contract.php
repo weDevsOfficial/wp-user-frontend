@@ -48,6 +48,7 @@ abstract class Field_Contract {
                 'priority' => 15,
                 'inline' => true,
                 'default' => 'max',
+                'help_text' => __( 'Choose whether to enforce a minimum or maximum content limit', 'wp-user-frontend' ),
             ],
 
             [
@@ -62,14 +63,16 @@ abstract class Field_Contract {
                 'priority' => 15,
                 'inline' => true,
                 'default' => 'character',
+                'help_text' => __( 'Select whether the content restriction applies by character count or word count', 'wp-user-frontend' ),
             ],
 
             [
-                'name' => 'content_restriction',
-                'title' => __( 'Content Restriction', 'wp-user-frontend' ),
-                'type' => 'text',
-                'section' => 'advanced',
-                'priority' => 16,
+                'name'      => 'content_restriction',
+                'title'     => __( 'Content Restriction', 'wp-user-frontend' ),
+                'type'      => 'text',
+                'variation' => 'number',
+                'section'   => 'advanced',
+                'priority'  => 16,
                 'help_text' => __( 'Number of characters or words the author to be restricted in', 'wp-user-frontend' ),
             ],
         ];
@@ -232,7 +235,7 @@ abstract class Field_Contract {
             'condition_status'  => 'no',
             'cond_field'        => [],
             'cond_operator'     => [ '=' ],
-            'cond_option'       => [ __( '- select -', 'wp-user-frontend' ) ],
+            'cond_option'       => [ __( '- Select -', 'wp-user-frontend' ) ],
             'cond_logic'        => 'all',
         ];
     }
@@ -319,6 +322,7 @@ abstract class Field_Contract {
                 'priority'  => 21,
                 'default'   => 'large',
                 'inline'    => true,
+                'help_text' => __( 'Adjust the visual width of the input field on the front-end', 'wp-user-frontend' ),
             ],
 
             [
@@ -378,7 +382,7 @@ abstract class Field_Contract {
                 ],
                 'section'   => 'basic',
                 'priority'  => 21,
-                'help_text' => __( 'Read only', 'wp-user-frontend' ),
+                'help_text' => __( 'Make this field read only', 'wp-user-frontend' ),
             ];
 
             if ( is_wpuf_post_form_builder() ) {
@@ -527,7 +531,11 @@ abstract class Field_Contract {
                 'type'      => 'multiselect',
                 'section'   => 'advanced',
                 'priority'  => 27,
-                'help_text' => __( 'Search the terms name. use ⇦ ⇨ for navigate', 'wp-user-frontend' ),
+                // translators: %1$s: left arrow, %2$s: right arrow
+                'help_text' => sprintf(
+                    // translators: %s: left and right arrow
+                    __( 'Search the terms name. use %1$s %2$s for navigate', 'wp-user-frontend' ), '⇦', '⇨'
+                ),
                 'options'   => wpuf_get_terms( $tax_name ),
             ],
 
@@ -700,7 +708,10 @@ abstract class Field_Contract {
                 'dependencies' => [
                     'rich' => [ 'yes', 'teeny' ],
                 ],
-                'help_text' => __( 'Select button for exclude from frontend. Search button name. use ⇦ ⇨ for navigate', 'wp-user-frontend' ),
+                'help_text' => sprintf(
+                    // translators: %1$s: left arrow, %2$s: right arrow
+                    __( 'Select button for exclude from frontend. Search button name. use %1$s %2$s for navigate', 'wp-user-frontend' ), '⇦', '⇨'
+                ),
                 'options'   => wpuf_get_editor_buttons(),
             ],
         ];
@@ -831,7 +842,7 @@ abstract class Field_Contract {
             $cond_inputs['type']    = isset( $form_field['input_type'] ) ? $form_field['input_type'] : '';
             $cond_inputs['name']    = isset( $form_field['name'] ) ? $form_field['name'] : $form_field['template'] . '_' . $form_field['id'];
             $cond_inputs['form_id'] = $form_id;
-            $condition              = json_encode( $cond_inputs );
+            $condition              = wp_json_encode( $cond_inputs );
         } else {
             $condition = '';
         }
@@ -839,7 +850,7 @@ abstract class Field_Contract {
         //taxnomy name create unique
         if ( $form_field['input_type'] === 'taxonomy' ) {
             $cond_inputs['name'] = $form_field['name'] . '_' . $form_field['type'] . '_' . $form_field['id'];
-            $condition           = json_encode( $cond_inputs );
+            $condition           = wp_json_encode( $cond_inputs );
         }
         ?>
         <script type="text/javascript">

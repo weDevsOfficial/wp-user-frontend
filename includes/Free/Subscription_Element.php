@@ -13,16 +13,16 @@ class Subscription_Element extends Pro_Prompt {
         }
         ?>
         <tr class="wpuf-subscription-recurring pro-preview">
-            <th><label><?php esc_html_e( 'Recurring ', 'wp-user-frontend' ); echo $crown; ?></label></th>
+            <th><label><?php esc_html_e( 'Recurring ', 'wp-user-frontend' ); echo wp_kses( $crown, array('svg' => ['xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true,], 'path' => ['d' => true, 'fill' => true, ] ) ); ?></label></th>
             <td>
                 <label for="wpuf-recuring-pay">
                     <input type="checkbox" disabled size="20" style="" id="wpuf-recuring-pay" value="no" />
                     <?php esc_html_e( 'Enable Recurring Payment', 'wp-user-frontend' ); ?>
                 </label>
-                <?php echo wpuf_get_pro_preview_html(); ?>
+                <?php echo wp_kses_post( wpuf_get_pro_preview_html() ); ?>
             </td>
         </tr>
     <?php
-        echo wpuf_get_pro_preview_tooltip();
+        echo wp_kses_post( wpuf_get_pro_preview_tooltip() );
     }
 }

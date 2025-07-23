@@ -48,6 +48,30 @@
                     }
                 });
 
+                 // Check if payment options are enabled
+                 var paymentEnabled = $('[name="wpuf_settings[payment_options]"]').is(':checked');
+                 if (!paymentEnabled) {
+                    return is_valid; // Skip validation if payments are disabled
+                 }
+ 
+                 // Check if force pack purchase is selected
+                 var choosePaymentOption = $('[name="wpuf_settings[choose_payment_option]"]').val();
+                 if (choosePaymentOption !== 'force_pack_purchase') {
+                    return is_valid; // Skip validation if not force pack purchase
+                 }
+ 
+                 // Check if fallback PPP is enabled
+                 var fallbackEnabled = $('[name="wpuf_settings[fallback_ppp_enable]"]').is(':checked');
+                 if (!fallbackEnabled) {
+                    return is_valid;
+                 }
+ 
+                 // Check if fallback cost is provided
+                 var fallbackCost = $('[name="wpuf_settings[fallback_ppp_cost]"]').val();
+                 if (!fallbackCost || fallbackCost.trim() === '' || parseFloat(fallbackCost) <= 0) {
+                    return false;
+                 }
+ 
                 return is_valid;
             }
         }
@@ -108,9 +132,9 @@
                     fields: tax_names
                 });
 
-                // Bind jquery ui draggable. But first destory any previous binding
+                // Bind jquery ui draggable. But first destroy any previous binding
                 Vue.nextTick(function () {
-                    var buttons = $('#panel-form-field-buttons-taxonomies .button');
+                    var buttons = $('#panel-form-field-buttons-taxonomies .wpuf-field-button');
 
                     buttons.each(function () {
                         if ($(this).draggable('instance')) {
@@ -119,7 +143,7 @@
                     });
 
                     buttons.draggable({
-                        connectToSortable: '#form-preview-stage .wpuf-form,  .wpuf-column-inner-fields .wpuf-column-fields-sortable-list',
+                        connectToSortable: '#form-preview-stage, #form-preview-stage .wpuf-form, .wpuf-column-inner-fields .wpuf-column-fields-sortable-list',
                         helper: 'clone',
                         revert: 'invalid',
                         cancel: '.button-faded',

@@ -13,14 +13,15 @@ class Admin_Subscription {
      * The constructor
      */
     public function __construct() {
-        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
         add_filter( 'manage_wpuf_subscription_posts_columns', [ $this, 'subscription_columns_head' ] );
+        add_filter( 'post_updated_messages', [ $this, 'form_updated_message' ] );
+        add_filter( 'wpuf_subscription_additional_fields', [ $this, 'third_party_cpt_options' ] );
+
+        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
         add_action( 'manage_wpuf_subscription_posts_custom_column', [ $this, 'subscription_columns_content' ], 10, 2 );
 
         // new subscription metabox hooks
         add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes' ] );
-
-        add_filter( 'post_updated_messages', [ $this, 'form_updated_message' ] );
 
         add_action( 'show_user_profile', [ $this, 'profile_subscription_details' ], 30 );
         add_action( 'edit_user_profile', [ $this, 'profile_subscription_details' ], 30 );
@@ -33,6 +34,113 @@ class Admin_Subscription {
         // new subscription metabox hooks
         add_action( 'admin_print_styles-post-new.php', [ $this, 'enqueue_scripts' ] );
         add_action( 'admin_print_styles-post.php', [ $this, 'enqueue_scripts' ] );
+
+        add_action( 'wpuf_load_subscription_page', [ $this, 'remove_notices' ] );
+        add_action( 'wpuf_load_subscription_page', [ $this, 'enqueue_admin_scripts' ] );
+        add_action( 'wpuf_load_subscription_page', [ $this, 'modify_admin_footer_text' ] );
+
+        add_action( 'admin_init', [ $this, 'set_default_sort_order_for_existing_subscriptions' ] );
+    }
+
+    /**
+     * Add third party plugins (i.e.: WooCommerce, Elementor etc.) custom post type options
+     *
+     * @return array
+     */
+    public function third_party_cpt_options( $additional_options ) {
+        $post_types = wpuf()->subscription->get_all_post_type();
+
+        $ignore_list = [
+            'post',
+            'page',
+            'user_request',
+            'wp_navigation',
+            'wp_template',
+            'wp_template_part',
+        ];
+
+        foreach ( $post_types as $key => $name ) {
+            $post_type_object = get_post_type_object( $key );
+
+            if ( in_array( $key, $ignore_list, true ) ) {
+                continue;
+            }
+
+            if ( $post_type_object ) {
+                $additional_options['additional'][ $key ] = [
+                    'id'            => $key,
+                    'name'          => $key,
+                    'db_key'        => 'additional_cpt_options',
+                    'db_type'       => 'meta_serialized',
+                    'serialize_key' => $key,
+                    'type'          => 'input-number',
+                    'label'         => sprintf(
+                        // translators: %s: post type label
+                        __( 'Number of %s', 'wp-user-frontend' ),
+                        esc_html( $post_type_object->label )
+                    ),
+                    'tooltip' => sprintf(
+                        // translators: %s: post type label
+                        __(
+                            'Set the maximum number of %s users can create within their subscription period. Enter -1 for unlimited',
+                            'wp-user-frontend'
+                        ),
+                        esc_html( $key )
+                    ),
+                    'default'       => '-1',
+                ];
+            }
+        }
+
+        return $additional_options;
+    }
+
+    /**
+     * Enqueue scripts for subscription page
+     *
+     * @since 4.0.11
+     *
+     * @return void
+     */
+    public function enqueue_admin_scripts() {
+        wp_enqueue_script( 'wpuf-admin-subscriptions' );
+        wp_enqueue_script( 'wpuf-subscriptions' );
+        wp_enqueue_style( 'wpuf-admin-subscriptions' );
+
+        wp_localize_script(
+            'wpuf-admin-subscriptions', 'wpufSubscriptions',
+            [
+                'version'         => WPUF_VERSION,
+                'assetUrl'        => WPUF_ASSET_URI,
+                'siteUrl'         => site_url(),
+                'currencySymbol'  => wpuf_get_currency( 'symbol' ),
+                'supportUrl'      => esc_url(
+                    'https://wedevs.com/contact/?utm_source=wpuf-subscription'
+                ),
+                'isProActive'     => class_exists( 'WP_User_Frontend_Pro' ),
+                'upgradeUrl'      => esc_url(
+                    'https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=wpuf-subscription'
+                ),
+                'nonce'           => wp_create_nonce( 'wp_rest' ),
+                'rest_url'        => esc_url_raw( rest_url() ),
+                'sections'        => $this->get_sections(),
+                'subSections'     => $this->get_sub_sections(),
+                'fields'          => $this->get_fields(),
+                'dependentFields' => $this->get_dependent_fields(),
+                'perPage'         => apply_filters( 'wpuf_subscription_per_page', 9 ),
+            ]
+        );
+    }
+
+    /**
+     * Remove admin notices from this page
+     *
+     * @since 4.0.11
+     *
+     * @return void
+     */
+    public function remove_notices() {
+        add_action( 'in_admin_header', 'wpuf_remove_admin_notices' );
     }
 
     /**
@@ -57,7 +165,10 @@ class Admin_Subscription {
             2  => __( 'Custom field updated.', 'wp-user-frontend' ),
             3  => __( 'Custom field deleted.', 'wp-user-frontend' ),
             4  => __( 'Subscription pack updated.', 'wp-user-frontend' ),
-            5  => isset( $_GET['revision'] ) ? sprintf( __( 'Subscription pack restored to revision from %s', 'wp-user-frontend' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+            5  => isset( $_GET['revision'] ) ? sprintf(
+                // translators: %s is Revision
+                __( 'Subscription pack restored to revision from %s', 'wp-user-frontend' ), wp_post_revision_title( (int) $_GET['revision'],
+                false ) ) : false,
             6  => __( 'Subscription pack published.', 'wp-user-frontend' ),
             7  => __( 'Subscription pack saved.', 'wp-user-frontend' ),
             8  => __( 'Subscription pack submitted.', 'wp-user-frontend' ),
@@ -126,7 +237,7 @@ class Admin_Subscription {
                 echo esc_html( $user_pack['_post_expiration_time'] );
             }
 
-            if ( isset( $user_pack['recurring'] ) && $user_pack['recurring'] == 'yes' ) {
+            if ( isset( $user_pack['recurring'] ) && wpuf_is_option_on( $user_pack['recurring'] ) ) {
                 foreach ( $user_pack['posts'] as $type => $value ) {
                     $user_pack['posts'][ $type ] = isset( $_POST[ $type ] ) ? sanitize_text_field( wp_unslash( $_POST[ $type ] ) ) : 0;
                 }
@@ -143,7 +254,7 @@ class Admin_Subscription {
             }
 
             $user_info      = get_userdata( $user_id );
-            $cost           = $pack->meta_value['billing_amount'];
+            $cost           = isset( $pack->meta_value['billing_amount'] ) ? (float) $pack->meta_value['billing_amount'] : 0;
             $billing_amount = apply_filters( 'wpuf_payment_amount', $cost );
             $tax_amount     = $billing_amount - $cost;
 
@@ -167,7 +278,7 @@ class Admin_Subscription {
 
             $is_recurring = false;
 
-            if ( isset( $user_pack['recurring'] ) && $user_pack['recurring'] == 'yes' ) {
+            if ( isset( $user_pack['recurring'] ) && wpuf_is_option_on( $user_pack['recurring'] ) ) {
                 $is_recurring = true;
             }
 
@@ -223,7 +334,7 @@ class Admin_Subscription {
             case 'recurring':
                 $recurring = get_post_meta( $post_ID, '_recurring_pay', true );
 
-                if ( $recurring == 'yes' ) {
+                if ( wpuf_is_option_on( $recurring ) ) {
                     esc_html_e( 'Yes', 'wp-user-frontend' );
                 } else {
                     esc_html_e( 'No', 'wp-user-frontend' );
@@ -235,7 +346,7 @@ class Admin_Subscription {
                 $billing_cycle_number = get_post_meta( $post_ID, '_billing_cycle_number', true );
                 $cycle_period         = get_post_meta( $post_ID, '_cycle_period', true );
 
-                if ( $recurring_pay == 'yes' ) {
+                if ( wpuf_is_option_on( $recurring_pay ) ) {
                     echo esc_attr( $billing_cycle_number . ' ' . $cycle_period ) . '\'s (cycle)';
                 } else {
                     $expiration_number    = get_post_meta( $post_ID, '_expiration_number', true );
@@ -300,16 +411,16 @@ class Admin_Subscription {
 
         $sub_meta = wpuf()->subscription->get_subscription_meta( $post->ID, $post );
 
-        $hidden_recurring_class       = ( $sub_meta['recurring_pay'] != 'yes' ) ? 'none' : '';
-        $hidden_trial_class           = ( $sub_meta['trial_status'] != 'yes' ) ? 'none' : '';
-        $hidden_expire                = ( $sub_meta['recurring_pay'] == 'yes' ) ? 'none' : '';
-        $is_post_exp_selected         = isset( $sub_meta['_enable_post_expiration'] ) && $sub_meta['_enable_post_expiration'] == 'on' ? 'checked' : '';
+        $hidden_recurring_class       = ! wpuf_is_option_on( $sub_meta['_recurring_pay'] ) ? 'none' : '';
+        $hidden_trial_class           = ! wpuf_is_option_on( $sub_meta['_trial_status'] ) ? 'none' : '';
+        $hidden_expire                = ! wpuf_is_option_on( $sub_meta['_recurring_pay'] ) ? 'none' : '';
+        $is_post_exp_selected         = isset( $sub_meta['_enable_post_expiration'] ) && wpuf_is_option_on( $sub_meta['_enable_post_expiration'] ) ? 'checked' : '';
         $_post_expiration_time        = explode( ' ', isset( $sub_meta['_post_expiration_time'] ) ? $sub_meta['_post_expiration_time'] : ' ' );
         $time_value                   = isset( $_post_expiration_time[0] ) ? $_post_expiration_time[0] : 1;
         $time_type                    = isset( $_post_expiration_time[1] ) ? $_post_expiration_time[1] : 'day';
 
         $expired_post_status          = isset( $sub_meta['_expired_post_status'] ) ? $sub_meta['_expired_post_status'] : '';
-        $is_enable_mail_after_expired = isset( $sub_meta['_enable_mail_after_expired'] ) && $sub_meta['_enable_mail_after_expired'] == 'on' ? 'checked' : '';
+        $is_enable_mail_after_expired = isset( $sub_meta['_enable_mail_after_expired'] ) && wpuf_is_option_on( $sub_meta['_enable_mail_after_expired'] ) ? 'checked' : '';
         $post_expiration_message      = isset( $sub_meta['_post_expiration_message'] ) ? $sub_meta['_post_expiration_message'] : '';
         $featured_item                = ! empty( $sub_meta['_total_feature_item'] ) ? $sub_meta['_total_feature_item'] : 0;
         $remove_featured_item         = ! empty( $sub_meta['_remove_feature_item'] ) ? $sub_meta['_remove_feature_item'] : 0;
@@ -382,7 +493,7 @@ class Admin_Subscription {
                             <th><label for="wpuf-sticky-item"><?php esc_html_e( 'Remove featured item on subscription expiry', 'wp-user-frontend' ); ?></label></th>
                             <td>
                                 <label for="">
-                                    <input type="checkbox"  value="on" <?php echo esc_attr( 'on' === $remove_featured_item ? 'checked' : '' ); ?> name="remove_feature_item" />
+                                    <input type="checkbox"  value="on" <?php echo esc_attr( wpuf_is_option_on( $remove_featured_item ) ? 'checked' : '' ); ?> name="remove_feature_item" />
                                     <?php esc_html_e( 'The featured item will be removed if the subscription expires', 'wp-user-frontend' ); ?>
                                 </label>
                             </td>
@@ -437,7 +548,7 @@ class Admin_Subscription {
                                 ?>
                                 <th class="wpuf-post-exp-time"> <?php esc_html_e( 'Post Expiration Time', 'wp-user-frontend' ); ?> </th>
                                 <td class="wpuf-post-exp-time">
-                                    <input type="number" name="post_expiration_settings[expiration_time_value]" id="wpuf-expiration_time_value" value="<?php echo $time_value; ?>" id="wpuf-expiration_time_value" min="1">
+                                    <input type="number" name="post_expiration_settings[expiration_time_value]" id="wpuf-expiration_time_value" value="<?php echo esc_attr( $time_value ); ?>" id="wpuf-expiration_time_value" min="1">
                                     <select name="post_expiration_settings[expiration_time_type]" id="wpuf-expiration_time_type">
                                         <?php
                                         foreach ( $timeType_array as $each_time_type ) {
@@ -487,7 +598,21 @@ class Admin_Subscription {
                                 <th><?php esc_html_e( 'Expiration Message', 'wp-user-frontend' ); ?></th>
                                 <td>
                                     <textarea name="post_expiration_settings[post_expiration_message]" id="wpuf-post_expiration_message" cols="50" rows="5"><?php echo esc_attr( $post_expiration_message ); ?></textarea>
-                                    <p class="description"><strong><?php echo esc_html( __( 'You may use: {post_author} {post_url} {blogname} {post_title} {post_status}', 'wp-user-frontend' ) ); ?></strong></p>
+                                    <p class="description">
+                                        <strong>
+                                            <?php
+                                            printf(
+                                            // translators: %1$s: {post_author}, %2$s: {post_url}, %3$s: {blogname}, %4$s: {post_title}, %5$s: {post_status}
+                                            esc_html__( 'You may use: %1$s %2$s %3$s %4$s %5$s', 'wp-user-frontend' ),
+                                                '{post_author}',
+                                                '{post_url}',
+                                                '{blogname}',
+                                                '{post_title}',
+                                                '{post_status}'
+                                            )
+                                            ?>
+                                        </strong>
+                                    </p>
                                 </td>
                             </tr>
 
@@ -562,7 +687,7 @@ class Admin_Subscription {
         foreach ( $packs as $key => $pack ) {
             $recurring = isset( $pack->meta_value['recurring_pay'] ) ? $pack->meta_value['recurring_pay'] : '';
 
-            if ( $recurring == 'yes' ) {
+            if ( wpuf_is_option_on( $recurring ) ) {
                 continue;
             }
             ?>
@@ -605,11 +730,15 @@ class Admin_Subscription {
                 $details_meta = wpuf()->subscription->get_details_meta_value();
 
                 $billing_amount = ( isset( $pack->meta_value['billing_amount'] ) && intval( $pack->meta_value['billing_amount'] ) > 0 ) ? $details_meta['symbol'] . $pack->meta_value['billing_amount'] : __( 'Free', 'wp-user-frontend' );
-                $recurring_pay  = ( isset( $pack->meta_value['recurring_pay'] ) && $pack->meta_value['recurring_pay'] == 'yes' ) ? true : false;
+                $recurring_pay  = isset( $pack->meta_value['recurring_pay'] ) && wpuf_is_option_on( $pack->meta_value['recurring_pay'] );
 
                 if ( $billing_amount && $recurring_pay ) {
-                    $recurring_des = sprintf( __( 'For each %1$s %2$s', 'wp-user-frontend' ), $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
-                    $recurring_des .= ! empty( $pack->meta_value['billing_limit'] ) ? sprintf( __( ', for %s installments', 'wp-user-frontend' ), $pack->meta_value['billing_limit'] ) : '';
+                    $recurring_des = sprintf(
+                        // translators: %1$s and %2$s are Billing cycle number and Billing cycle period
+                        __( 'For each %1$s %2$s', 'wp-user-frontend' ), $pack->meta_value['billing_cycle_number'], $pack->meta_value['cycle_period'], $pack->meta_value['trial_duration_type'] );
+                    $recurring_des .= ! empty( $pack->meta_value['billing_limit'] ) ? sprintf(
+                        // translators: %s is Billing limit
+                        __( ', for %s installments', 'wp-user-frontend' ), $pack->meta_value['billing_limit'] ) : '';
                     $recurring_des = $recurring_des;
                 } else {
                     $recurring_des = '';
@@ -642,7 +771,7 @@ class Admin_Subscription {
                             </span>
                         </div>
 
-                        <?php if ( isset( $user_sub['recurring'] ) && $user_sub['recurring'] == 'yes' ) { ?>
+                        <?php if ( isset( $user_sub['recurring'] ) && wpuf_is_option_on( $user_sub['recurring'] ) ) { ?>
                             <div class="info">
                                 <p><?php esc_html_e( 'This user is using recurring subscription pack', 'wp-user-frontend' ); ?></p>
                             </div>
@@ -683,7 +812,7 @@ class Admin_Subscription {
 
                         <table class="form-table">
                             <?php
-                            if ( $user_sub['recurring'] != 'yes' ) {
+                            if ( wpuf_is_option_on( $user_sub['recurring'] ) ) {
                                 if ( ! empty( $user_sub['expire'] ) ) {
                                     $expire = ( $user_sub['expire'] == 'unlimited' ) ? ucfirst( 'unlimited' ) : wpuf_get_date( wpuf_date2mysql( $user_sub['expire'] ) );
                                     ?>
@@ -702,7 +831,7 @@ class Admin_Subscription {
                             ?>
                             <tr>
                                 <th><label><?php esc_html_e( 'Post Expiration Enabled', 'wp-user-frontend' ); ?></label></th>
-                                <td><?php $is_post_exp_selected ? _e( 'Yes', 'wp-user-frontend' ) : _e( 'No', 'wp-user-frontend' ); ?></td>
+                                <td><?php $is_post_exp_selected ? esc_html_e( 'Yes', 'wp-user-frontend' ) : esc_html_e( 'No', 'wp-user-frontend' ); ?></td>
                             </tr>
                             <tr class="wpuf-post-exp-time">
                                 <?php
@@ -804,7 +933,7 @@ class Admin_Subscription {
             }
             ?>
 
-            <?php if ( ! isset( $user_sub['recurring'] ) || $user_sub['recurring'] != 'yes' ) { ?>
+            <?php if ( ! isset( $user_sub['recurring'] ) || wpuf_is_option_on( $user_sub['recurring'] ) ) { ?>
 
                 <?php if ( empty( $user_sub ) ) { ?>
                     <div class="wpuf-sub-actions">
@@ -892,7 +1021,9 @@ class Admin_Subscription {
         <div class="wpuf-footer-help">
             <span class="wpuf-footer-help-content">
                 <span class="dashicons dashicons-editor-help"></span>
-                <?php printf( wp_kses_post( __( 'Learn more about <a href="%s" target="_blank">Subscription</a>', 'wp-user-frontend' ) ), 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/?utm_source=wpuf-footer-help&utm_medium=text-link&utm_campaign=learn-more-subscription' ); ?>
+                <?php printf(
+                    // translators: %s is a link about subscription payment
+                    wp_kses_post( __( 'Learn more about <a href="%s" target="_blank">Subscription</a>', 'wp-user-frontend' ) ), 'https://wedevs.com/docs/wp-user-frontend-pro/subscription-payment/?utm_source=wpuf-footer-help&utm_medium=text-link&utm_campaign=learn-more-subscription' ); ?>
             </span>
         </div>
 
@@ -902,5 +1033,638 @@ class Admin_Subscription {
             });
         </script>
         <?php
+    }
+
+    /**
+     * Get all the sections of the subscription settings
+     *
+     * @since 4.0.11
+     *
+     * @return array
+     */
+    public function get_sections() {
+        $sections = [
+            [
+                'id'    => 'subscription_details',
+                'title' => __( 'Subscription Details', 'wp-user-frontend' ),
+            ],
+            [
+                'id'    => 'payment_settings',
+                'title' => __( 'Payment Settings', 'wp-user-frontend' ),
+            ],
+            [
+                'id'    => 'advanced_configuration',
+                'title' => __( 'Advanced Configuration', 'wp-user-frontend' ),
+            ],
+        ];
+
+        return apply_filters( 'wpuf_subscriptions_sections', $sections );
+    }
+
+    /**
+     * Get all the sub-sections of the subscription settings
+     *
+     * @since 4.0.11
+     *
+     * @return array
+     */
+    public function get_sub_sections() {
+        $subscription_details = apply_filters(
+            'wpuf_subscription_section_details', [
+                'subscription_details' => [
+                    [
+                        'id'    => 'overview',
+                        'label' => __( 'Overview', 'wp-user-frontend' ),
+                    ],
+                    [
+                        'id'    => 'access_and_visibility',
+                        'label' => __( 'Access and Visibility', 'wp-user-frontend' ),
+                    ],
+                    [
+                        'id'    => 'post_expiration',
+                        'label' => __( 'Post Expiration', 'wp-user-frontend' ),
+                    ],
+                ],
+            ]
+        );
+
+        $payment = apply_filters(
+            'wpuf_subscription_section_payment', [
+                'payment_settings' => [
+                    [
+                        'id'     => 'payment_details',
+                        'label'  => __( 'Payment Details', 'wp-user-frontend' ),
+                        'notice' => [
+                            'type'    => 'attention',
+                            'message' => sprintf(
+                                // translators: %s: Payment Settings URL
+                                __(
+                                    'For subscriptions to work correctly, please ensure the payment gateway and related settings are properly configured in the <a href="%s">Payment Settings</a>',
+                                    'wp-user-frontend'
+                                ), admin_url( 'admin.php?page=wpuf-settings' )
+                            ),
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        $advanced = apply_filters(
+            'wpuf_subscription_section_advanced', [
+                'advanced_configuration' => [
+                    [
+                        'id'    => 'content_limit',
+                        'label' => __( 'Content Limit', 'wp-user-frontend' ),
+                    ],
+                    [
+                        'id'    => 'design_elements',
+                        'label' => __( 'Design Elements', 'wp-user-frontend' ),
+                    ],
+                    [
+                        'id'    => 'additional',
+                        'label' => __( 'Additional Options', 'wp-user-frontend' ),
+                    ],
+                ],
+            ]
+        );
+
+        return apply_filters( 'wpuf_subscription_sub_sections', array_merge( $subscription_details, $payment, $advanced ) );
+    }
+
+    /**
+     * Returns all the subscription fields that are used in the sections
+     *
+     * @since 4.0.11
+     *
+     * @return array
+     */
+    public function get_fields() {
+        $overview           = apply_filters(
+            'wpuf_subscription_overview_fields', [
+                'overview' => [
+                    'plan_name'    => [
+                        'id'          => 'plan-name',
+                        'name'        => 'plan-name',
+                        'db_key'      => 'post_title',
+                        'db_type'     => 'post',
+                        'type'        => 'input-text',
+                        'label'       => __( 'Plan Name', 'wp-user-frontend' ),
+                        'tooltip'     => __( 'Enter a name for this subscription plan. E.g., "Featured Article Subscription"', 'wp-user-frontend' ),
+                        'placeholder' => __( 'Enter subscription name', 'wp-user-frontend' ),
+                        'is_required' => true,
+                        'default'     => '',
+                    ],
+                    'plan_summary' => [
+                        'id'          => 'plan-summary',
+                        'name'        => 'plan-summary',
+                        'db_key'      => 'post_content',
+                        'db_type'     => 'post',
+                        'type'        => 'textarea',
+                        'label'       => __( 'Plan Summary', 'wp-user-frontend' ),
+                        'tooltip'     => __(
+                            'Provide a brief description of this subscription plan to help users understand key features or benefits',
+                            'wp-user-frontend'
+                        ),
+                        'placeholder' => __( 'Write briefly what this subscription is about', 'wp-user-frontend' ),
+                        'default'     => '',
+                    ],
+                ],
+            ]
+        );
+        $access             = apply_filters(
+            'wpuf_subscription_access_fields', [
+                'access_and_visibility' => [
+                    'plan_slug'    => [
+                        'id'          => 'plan-slug',
+                        'name'        => 'plan-slug',
+                        'db_key'      => 'post_name',
+                        'db_type'     => 'post',
+                        'type'        => 'input-text',
+                        'label'       => __( 'Plan Slug', 'wp-user-frontend' ),
+                        'tooltip'     => __(
+                            'Enter a unique slug for the subscription. Leave it blank for WordPress default slug',
+                            'wp-user-frontend'
+                        ),
+                        'placeholder' => __( 'Enter plan slug', 'wp-user-frontend' ),
+                        'default'     => '',
+                    ],
+                    'sort_order'   => [
+                        'id'          => 'sort-order',
+                        'name'        => 'sort_order',
+                        'db_key'      => '_sort_order',
+                        'db_type'     => 'meta',
+                        'type'        => 'input-number',
+                        'label'       => __( 'Sort Order', 'wp-user-frontend' ),
+                        'tooltip'     => __( 'Plans with lower numbers appear first on the frontend, keep default value 1. Cannot keep it empty.', 'wp-user-frontend' ),
+                        'placeholder' => __( 'Enter sort order', 'wp-user-frontend' ),
+                        'is_required' => true,
+                        'default'     => '1',
+                        'validation'  => [
+                            'required' => true,
+                            'min'      => 1,
+                        ],
+                    ],
+                    'publish_time' => [
+                        'id'          => 'publish-time',
+                        'name'        => 'publish-time',
+                        'db_key'      => 'post_date',
+                        'db_type'     => 'post',
+                        'type'        => 'time-date',
+                        'label'       => __( 'Publish Time', 'wp-user-frontend' ),
+                        'tooltip'     => __( 'Specify the time when you want the subscription to be published', 'wp-user-frontend' ),
+                        'default'     => wpuf_current_datetime()->format( 'Y-m-d H:i:s' ),
+                    ],
+                ],
+            ]
+        );
+        $expiration         = apply_filters(
+            'wpuf_subscription_expiration_fields', [
+                'post_expiration' => [
+                    'post_expiration'      => [
+                        'id'      => 'post-expiration',
+                        'name'    => 'post-expiration',
+                        'db_key'  => '_enable_post_expiration',
+                        'db_type' => 'meta',
+                        'type'    => 'switcher',
+                        'label'   => __( 'Enable Post Expiration', 'wp-user-frontend' ),
+                        'tooltip' => __(
+                            'Enable post expiration for this subscription plan. If enabled, posts in this plan will expire after a certain period, as specified here',
+                            'wp-user-frontend'
+                        ),
+                        'default' => false,
+                    ],
+                    'expiration_time'      => [
+                        'id'      => 'expiration-time',
+                        'name'    => 'expiration-time',
+                        'type'    => 'inline',
+                        'db_key'  => '_post_expiration_time',
+                        'db_type' => 'meta',
+                        'key_id'  => 'expiration_time',
+                        'label'   => __( 'Expiration Time', 'wp-user-frontend' ),
+                        'tooltip' => __(
+                            'Specify the duration after which your posts will automatically disappear from frontend',
+                            'wp-user-frontend'
+                        ),
+                        'fields'  => [
+                            'expiration_value' => [
+                                'id'      => 'post-expiration-value',
+                                'name'    => 'post-expiration-value',
+                                'type'    => 'input-number',
+                                'db_key'  => '_post_expiration_number',
+                                'db_type' => 'meta',
+                                'key_id'  => 'expiration_value',
+                                'default' => -1,
+                            ],
+                            'expiration_unit'  => [
+                                'id'      => 'post-expiration-unit',
+                                'name'    => 'post-expiration-unit',
+                                'type'    => 'select',
+                                'db_key'  => '_post_expiration_period',
+                                'db_type' => 'meta',
+                                'key_id'  => 'expiration_unit',
+                                'options' => [
+                                    'forever' => __( 'Never', 'wp-user-frontend' ),
+                                    'day'     => __( 'Day(s)', 'wp-user-frontend' ),
+                                    'week'    => __( 'Week(s)', 'wp-user-frontend' ),
+                                    'month'   => __( 'Month(s)', 'wp-user-frontend' ),
+                                    'year'    => __( 'Year(s)', 'wp-user-frontend' ),
+                                ],
+                                'default' => 'day',
+                            ],
+                        ],
+                    ],
+                    'post_status'          => [
+                        'id'          => 'post-status',
+                        'name'        => 'post-status',
+                        'db_key'      => '_expired_post_status',
+                        'db_type'     => 'meta',
+                        'type'        => 'select',
+                        'options'     => [
+                            'publish' => __( 'Publish', 'wp-user-frontend' ),
+                            'draft'   => __( 'Draft', 'wp-user-frontend' ),
+                            'pending' => __( 'Pending Review', 'wp-user-frontend' ),
+                        ],
+                        'label'       => __( 'Post Status', 'wp-user-frontend' ),
+                        'tooltip'     => __( 'Status of post after post expiration time is over', 'wp-user-frontend' ),
+                        'placeholder' => __(
+                            'Post status will be changed to the selected one when expiration time is over',
+                            'wp-user-frontend'
+                        ),
+                        'key_id'      => 'post_status',
+                        'default'     => 'publish',
+                    ],
+                    'send_mail'            => [
+                        'id'      => 'is-send-mail',
+                        'name'    => 'is-send-mail',
+                        'db_key'  => '_enable_mail_after_expired',
+                        'db_type' => 'meta',
+                        'type'    => 'switcher',
+                        'label'   => __( 'Send Expiration Mail', 'wp-user-frontend' ),
+                        'tooltip' => __(
+                            'Send an e-mail to the author after exceeding post expiration time', 'wp-user-frontend'
+                        ),
+                        'key_id'  => 'send_mail',
+                        'default' => '',
+                    ],
+                    'expiration_message'   => [
+                        'id'          => 'expiration-message',
+                        'name'        => 'expiration-message',
+                        'db_key'      => '_post_expiration_message',
+                        'db_type'     => 'meta',
+                        'type'        => 'textarea',
+                        'label'       => __( 'Expiration Message', 'wp-user-frontend' ),
+                        'tooltip'     => __(
+                            'Craft a personalized message that will be sent to users when their posts expire',
+                            'wp-user-frontend'
+                        ),
+                        'description' => __(
+                            'You may use: {post_author} {post_url} {blogname} {post_title} {post_status}',
+                            'wp-user-frontend'
+                        ),
+                        'placeholder' => __(
+                            'Write the expiration message here',
+                            'wp-user-frontend'
+                        ),
+                        'key_id'      => 'expiration_message',
+                        'default'     => '',
+                    ],
+                    'post_number_rollback' => [
+                        'id'      => 'post-number-rollback',
+                        'name'    => 'post-number-rollback',
+                        'db_key'  => 'postnum_rollback_on_delete',
+                        'db_type' => 'meta',
+                        'type'    => 'switcher',
+                        'label'   => __( 'Enable Post Number Rollback', 'wp-user-frontend' ),
+                        'tooltip' => __(
+                            'If enabled, number of posts will be restored if the post is deleted.', 'wp-user-frontend'
+                        ),
+                        'default' => false,
+                    ],
+                ],
+            ]
+        );
+        $payment            = apply_filters(
+            'wpuf_subscription_payment_fields', [
+                'payment_details' => [
+                    'billing_amount'   => [
+                        'id'      => 'billing-amount',
+                        'name'    => 'billing-amount',
+                        'db_key'  => '_billing_amount',
+                        'db_type' => 'meta',
+                        'type'    => 'input-number',
+                        'label'   => __( 'Billing Amount', 'wp-user-frontend' ),
+                        'tooltip' => __(
+                            'Enter the billing amount for the subscription that will be charged to users who subscribe to this plan',
+                            'wp-user-frontend'
+                        ),
+                        'default' => 0,
+                    ],
+                    'expire_in'        => [
+                        'id'      => 'subs-expiration-time',
+                        'name'    => 'subs-expiration-time',
+                        'type'    => 'inline',
+                        'fields'  => [
+                            'subs_expiration_value' => [
+                                'id'      => 'wpuf-expiration-number',
+                                'name'    => 'wpuf-expiration-number',
+                                'type'    => 'input-number',
+                                'db_key'  => '_expiration_number',
+                                'db_type' => 'meta',
+                                'default' => -1,
+                            ],
+                            'subs_expiration_unit'  => [
+                                'id'      => 'subs-expiration-unit',
+                                'name'    => 'subs-expiration-unit',
+                                'db_key'  => '_expiration_period',
+                                'db_type' => 'meta',
+                                'type'    => 'select',
+                                'options' => [
+                                    'day'   => __( 'Day(s)', 'wp-user-frontend' ),
+                                    'week'  => __( 'Week(s)', 'wp-user-frontend' ),
+                                    'month' => __( 'Month(s)', 'wp-user-frontend' ),
+                                    'year'  => __( 'Year(s)', 'wp-user-frontend' ),
+                                ],
+                                'default' => 'day',
+                            ],
+                        ],
+                        'key_id'  => 'expiration_time',
+                        'label'   => __( 'Expire In', 'wp-user-frontend' ),
+                        'tooltip' => __(
+                            'Set the duration for the subscription to remain active before expiring. Enter -1 for no expiration', 'wp-user-frontend'
+                        ),
+                    ],
+                    'enable_recurring' => [
+                        'type'    => 'switcher',
+                        'label'   => __( 'Enable Recurring Payment', 'wp-user-frontend' ),
+                        'tooltip' => __(
+                            'Enable recurring payments for this subscription. Users will be charged automatically at the end of each billing cycle until the subscription is canceled',
+                            'wp-user-frontend'
+                        ),
+                        'default' => false,
+                        'is_pro'  => true,
+                    ],
+                ],
+            ]
+        );
+        $content_limit      = apply_filters(
+            'wpuf_subscription_content_limits_fields', [
+                'content_limit' => [
+                    'number_of_posts'         => [
+                        'id'            => 'number-of-posts',
+                        'name'          => 'number-of-posts',
+                        'db_key'        => '_post_type_name',
+                        'db_type'       => 'meta_serialized',
+                        'serialize_key' => 'post',
+                        'type'          => 'input-number',
+                        'label'         => __( 'Maximum Number of Posts', 'wp-user-frontend' ),
+                        'tooltip'       => __(
+                            'Set the maximum number of posts users can list within their subscription period. Enter -1 for unlimited',
+                            'wp-user-frontend'
+                        ),
+                        'default'       => '-1',
+                    ],
+                    'number_of_pages'         => [
+                        'id'            => 'number-of-pages',
+                        'name'          => 'number-of-pages',
+                        'db_key'        => '_post_type_name',
+                        'db_type'       => 'meta_serialized',
+                        'serialize_key' => 'page',
+                        'type'          => 'input-number',
+                        'label'         => __( 'Maximum Number of Pages', 'wp-user-frontend' ),
+                        'tooltip'       => __(
+                            'Set the maximum number of pages a user can list within the subscription period. Enter -1 for unlimited',
+                            'wp-user-frontend'
+                        ),
+                        'default'       => '-1',
+                    ],
+                    'number_of_user_requests' => [
+                        'id'            => 'number-of-user-requests',
+                        'name'          => 'number-of-user-requests',
+                        'db_key'        => '_post_type_name',
+                        'db_type'       => 'meta_serialized',
+                        'serialize_key' => 'user_request',
+                        'type'          => 'input-number',
+                        'label'         => __( 'Maximum Number of User Requests', 'wp-user-frontend' ),
+                        'tooltip'       => __(
+                            'Set the maximum number of user requests allowed within the subscription period. Enter -1 for unlimited',
+                            'wp-user-frontend'
+                        ),
+                        'default'       => '-1',
+                    ],
+                ],
+            ]
+        );
+        $design_element     = apply_filters(
+            'wpuf_subscription_design_elements_fields', [
+                'design_elements' => [
+                    'number_of_blocks'         => [
+                        'id'            => 'number-of-blocks',
+                        'name'          => 'number-of-blocks',
+                        'db_key'        => '_post_type_name',
+                        'db_type'       => 'meta_serialized',
+                        'serialize_key' => 'wp_block',
+                        'type'          => 'input-number',
+                        'label'         => __( 'Maximum Number of Reusable Block', 'wp-user-frontend' ),
+                        'tooltip'       => __(
+                            'Set the maximum number of reusable blocks that users can create within the subscription period. Enter -1 for unlimited',
+                            'wp-user-frontend'
+                        ),
+                        'default'       => '-1',
+                    ],
+                    'number_of_templates'      => [
+                        'id'            => 'number-of-templates',
+                        'name'          => 'number-of-templates',
+                        'db_key'        => '_post_type_name',
+                        'db_type'       => 'meta_serialized',
+                        'serialize_key' => 'wp_template',
+                        'type'          => 'input-number',
+                        'label'         => __( 'Maximum Number of Templates', 'wp-user-frontend' ),
+                        'tooltip'       => __(
+                            'Set the maximum number of templates users can use during the subscription period. Enter -1 for unlimited',
+                            'wp-user-frontend'
+                        ),
+                        'default'       => '-1',
+                    ],
+                    'number_of_template_parts' => [
+                        'id'            => 'number-of-template-parts',
+                        'name'          => 'number-of-template-parts',
+                        'db_key'        => '_post_type_name',
+                        'db_type'       => 'meta_serialized',
+                        'serialize_key' => 'wp_template_part',
+                        'type'          => 'input-number',
+                        'label'         => __( 'Maximum Number of Template Parts', 'wp-user-frontend' ),
+                        'tooltip'       => __(
+                            'Set maximum number of template parts that users can create within the subscription period. Enter -1 for unlimited',
+                            'wp-user-frontend'
+                        ),
+                        'default'       => '-1',
+                    ],
+                    'number_of_menus'          => [
+                        'id'            => 'number-of-menus',
+                        'name'          => 'number-of-menus',
+                        'db_key'        => '_post_type_name',
+                        'db_type'       => 'meta_serialized',
+                        'serialize_key' => 'wp_navigation',
+                        'type'          => 'input-number',
+                        'label'         => __( 'Maximum Number of Navigation Menus', 'wp-user-frontend' ),
+                        'tooltip'       => __(
+                            'Set maximum number of navigation menus that users can use within the subscription period. Enter -1 for unlimited',
+                            'wp-user-frontend'
+                        ),
+                        'default'       => '-1',
+                    ],
+                ],
+            ]
+        );
+        $additional_options = apply_filters(
+            'wpuf_subscription_additional_fields', [
+                'additional' => [
+                    'number_of_featured_items' => [
+                        'id'      => 'number-of-featured-items',
+                        'name'    => 'number-of-featured-items',
+                        'db_key'  => '_total_feature_item',
+                        'db_type' => 'meta',
+                        'type'    => 'input-number',
+                        'label'   => __( 'Maximum Number of Featured Items', 'wp-user-frontend' ),
+                        'tooltip' => __(
+                            'Limit the featured items users can display during their subscription. Featured items gain more visibility, enhancing content or product exposure. Enter -1 for unlimited',
+                            'wp-user-frontend'
+                        ),
+                        'default' => '-1',
+                    ],
+                    'remove_featured_item'     => [
+                        'id'      => 'remove-featured-item',
+                        'name'    => 'remove-featured-item',
+                        'db_key'  => '_remove_feature_item',
+                        'db_type' => 'meta',
+                        'type'    => 'switcher',
+                        'label'   => __( 'Remove Featured Item', 'wp-user-frontend' ),
+                        'tooltip' => __( 'Remove featured items when plan expires', 'wp-user-frontend' ),
+                        'default' => '-1',
+                    ],
+                ],
+            ]
+        );
+
+        $fields = [
+            'subscription_details'   => array_merge( $overview, $access, $expiration ),
+            'payment_settings'       => $payment,
+            'advanced_configuration' => array_merge( $content_limit, $design_element, $additional_options ),
+        ];
+
+        return apply_filters( 'wpuf_subscriptions_fields', $fields );
+    }
+
+    /**
+     * Get all the fields that depend on other fields
+     *
+     * @since 4.0.11
+     *
+     * @return array
+     */
+    public function get_dependent_fields() {
+        $fields = [
+            'post_expiration'  => [
+                'expiration_time'    => true,
+                'post_status'        => true,
+                'send_mail'          => true,
+                'expiration_message' => true,
+            ],
+            'send_mail'        => [
+                'expiration_message' => true,
+            ],
+            'enable_recurring' => [
+                'payment_cycle'       => true,
+                'stop_cycle'          => true,
+                'billing_limit'       => true,
+                'trial'               => true,
+                'trial_period'        => true,
+                'billing_cycle'       => true,
+                'expire_in'           => false,
+            ],
+            'stop_cycle'       => [
+                'billing_limit' => true,
+            ],
+            'trial'            => [
+                'trial_period' => true,
+            ],
+        ];
+
+        return apply_filters( 'wpuf_subscriptions_dependent_fields', $fields );
+    }
+
+    /**
+     * Modify the admin footer text
+     *
+     * @since 4.0.11
+     *
+     * @return void
+     */
+    public function modify_admin_footer_text() {
+        add_action( 'admin_footer_text', [ $this, 'admin_footer_text' ] );
+    }
+
+    /**
+     * Modify the admin footer text
+     *
+     * @since 4.0.11
+     *
+     * @param string $footer_text
+     *
+     * @return string
+     */
+    public function admin_footer_text( $footer_text ) {
+        $footer_text = __( 'Thank you for using <strong>WP User Frontend</strong>.', 'wp-user-frontend' );
+        $footer_text .= ' ' . sprintf(
+            // Translators: %s: link to the classic UI
+            __( 'Use the <a href="%s">classic UI</a>.', 'wp-user-frontend' ), admin_url( 'edit.php?post_type=wpuf_subscription' )
+        );
+
+        return $footer_text;
+    }
+
+    /**
+     * Set default sort order for existing subscriptions that don't have it
+     *
+     * @since 4.1.7
+     */
+    public function set_default_sort_order_for_existing_subscriptions() {
+        // Check if we've already run this migration
+        if ( get_transient( 'wpuf_sort_order_migration_done' ) ) {
+            return;
+        }
+
+        $args = [
+            'post_type'      => 'wpuf_subscription',
+            'posts_per_page' => -1,
+            'post_status'    => ['publish', 'draft', 'private'],
+            'meta_query'     => [
+                'relation' => 'OR',
+                [
+                    'key'     => '_sort_order',
+                    'compare' => 'NOT EXISTS',
+                ],
+                [
+                    'key'     => '_sort_order',
+                    'value'   => '',
+                    'compare' => '=',
+                ],
+                [
+                    'key'     => '_sort_order',
+                    'value'   => 0,
+                    'compare' => '<=',
+                ],
+            ],
+        ];
+
+        $subscriptions = get_posts( $args );
+
+        if ( $subscriptions ) {
+            foreach ( $subscriptions as $subscription ) {
+                update_post_meta( $subscription->ID, '_sort_order', 1 );
+            }
+        }
+
+        set_transient( 'wpuf_sort_order_migration_done', true, WEEK_IN_SECONDS );
     }
 }

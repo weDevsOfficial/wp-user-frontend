@@ -3,8 +3,8 @@ Contributors: tareq1988, nizamuddinbabu, wedevs
 Donate link: https://tareq.co/donate/
 Tags: frontend post, forms, user directory, profile builder, membership
 Requires at least: 4.0
-Tested up to: 6.6.1
-Stable tag: 4.0.10
+Tested up to: 6.8.1
+Stable tag: 4.1.7
 Requires PHP: 5.6
 License: GPLv2
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -262,25 +262,110 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 == Screenshots ==
 
 1. Create Forms with Powerful Builders
-2. 25+ Customizable Form Elements
-3. Fully Customizable Form Elements
-4. Frontend View of Your Forms
-5. Get Detailed List of your Forms
+2. 32+ Customizable Form Fields
+3. Customizable Form with Individual Post Settings
+4. Schedule Forms & Limit Entries with Time and Submission Controls
+5. Frontend View of Your Forms
 6. Let Your Users View Details of Their Posts
-7. Let Your users Edit Their Profiles from Frontend
-8. Allow Users to Buy Subscription Packs
-9. Create Subscription Packs Easily
-10. Configure Your Subscription Packs
-11. Set Up Pricings for Subscription Packs
-12. Show Subscribed Subscriptions Packs
-13. Customizable Form with Individual Post Settings
-14. Customize Your Post on the Fly
-15. Control and configure everything from
-16. Dashboard Settings to Configure Posts
-17. Login, Restriction, Frontend Security
-18. Set Payment Related Options
+7. Start Fast with Pre-Built Registration Templates
+8. Connect Your Registration Forms to Leading Marketing & CRM Platforms
+9. Let Your Users Edit Their Profiles from Frontend
+10. Allow users to buy subscription pack
+11. Configure Your Subscription Packs
+12. Control and configure everything from Powerful User Frontend Settings
+13. Login, Restriction, Frontend Security
+14. Customize your Forms in Gutenberg Editor
 
 == Changelog ==
+= v4.1.7 (15 July, 2025) =
+* New - Add Sort Order for subscription
+* Enhancement - Update country list and improve state handling
+* Fix - Conflict with email log plugin
+* Fix - Disable "Update Post Notification" pro features preview
+* Fix - CSS on long form lists
+
+= v4.1.6 (30 June, 2025) =
+* Enhancement - form title, description toggle added for post form
+* Enhancement - separate translation context for date range "To"
+* Fix - PayPal redirection issues
+* Fix - Allowed memory size error on the Post Forms List Page
+* Fix - Improved registration page redirects to prevent interference with XML sitemap and XML file requests
+* Fix - Dynamic url for {login} and {register} in un-authorized message
+
+= v4.1.5 (2 June, 2025) =
+* Enhancement - Added support for unlimited subscriptions.
+* Enhancement - Added trial period & next billing dates in subscription.
+* Enhancement - Added “Show More” button for subscriptions with many post types.
+* Enhancement - Support for PayPal REST API for payments.
+* Enhancement - Real-time PayPal Webhook support for payment events.
+* Enhancement - Added REST API credentials & test mode to Payment settings.
+* Fix - Forms list not loading issue fixed.
+* Fix - Fixed issues with null gateways causing errors.
+* Fix - Improved handling of duplicate PayPal transactions.
+* Fix - Fixed several subscription-related bugs.
+* Fix - Fixed tag auto-suggestions not appearing in post forms.
+
+= v4.1.4 (12 May, 2025) =
+* Enhance - Post form list page UI and UX
+* Fix - Coupon functionality
+* Fix - Post submission when name email not required
+* Fix - Styling on multiple pages
+
+= v4.1.3 (23 April, 2025) =
+* Fix - Draft button does not appear
+* Fix - Post submission when name email not required
+* Fix - Subscription number not showing
+* Fix - Image upload button condition
+* Fix - Email body not respecting spaces
+* Fix - Show recurring and trial info on subscription
+* Fix - Minor css and styling
+
+= v4.1.2 (16 April, 2025) =
+* Fix - Help page of profile editing has duplicated text
+* Fix - Warning message not showing when guest post submitted with duplicate email, username
+
+= v4.1.1 (27 March, 2025) =
+* Fix - Resolved validation issue with error (!) after form submission.
+* Fix - Improve template selection UX to uncheck a selected post form template.
+
+= v4.1.0 (20 March, 2025) =
+* Enhance - Redesigned Post Form Builder UI/UX
+* Enhance - Reorganized Forms Settings for better structure
+* Enhance - Added a search bar for quick field filtering
+* Enhance - Added new field & feature request submission area
+* Enhance - Improved field grouping & customization
+
+= v4.0.15 (19 March, 2025) =
+* Fix - Security vulnerabilities: escaped variables & sanitized inputs
+* Fix - Reverted SweetAlert2 to v11.4.8 for compliance
+* Fix - Removed unnecessary files
+
+= v4.0.14 (23 Nov, 2024) =
+* Fix - Error in login page
+* Fix - Support situations in which (WPUF) translations are loaded too early
+
+= v4.0.13 (14 Nov, 2024) =
+* Enhance - Cloudflare Turnstile field on form builder
+* Enhance - Cloudflare Turnstile on login form
+* Fix - Events calendar post form integration
+* Fix - Post form submission with same email
+* Fix - Post description image broken for block theme
+
+= v4.0.12 (14 Oct, 2024) =
+* Enhance - Decimal value for subscription pack
+* Fix - Required asterisk on password label
+* Fix - Field overlapping in address field
+* Fix - Read-only does not work for 'Teeny Rich textarea'
+* Fix - Integrations not loading properly for Dokan, ACF, WC Vendors
+
+= v4.0.11 (12 Sep, 2024) =
+* Enhance - Subscription design revamp
+* Enhance - Consistent format in email templates
+* Enhance - Move newsletter subscription to weMail
+* Fix - Translation for password strength
+* Fix - Different languages breaking design
+* Fix - State field is not changing
+
 = v4.0.10 (08 Aug, 2024) =
 * Fix - Error on WC post template
 * Fix - Move login validation to pro

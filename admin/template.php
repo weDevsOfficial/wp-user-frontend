@@ -133,7 +133,7 @@ class WPUF_Admin_Template {
 
             <div class="wpuf-form-sub-fields">
                 <label>
-                    <input type="text" class="smallipopInput" name="<?php echo esc_attr( $word_restriction_name ); ?>" value="<?php echo esc_attr( $word_restriction_value ); ?>" title="<?php esc_attr_e( 'Numebr of words the author to be restricted in', 'wp-user-frontend' ); ?>" />
+                    <input type="text" class="smallipopInput" name="<?php echo esc_attr( $word_restriction_name ); ?>" value="<?php echo esc_attr( $word_restriction_value ); ?>" title="<?php esc_attr_e( 'Number of words the author to be restricted in', 'wp-user-frontend' ); ?>" />
                 </label>
             </div>
         </div> <!-- .wpuf-form-rows -->
@@ -196,7 +196,7 @@ class WPUF_Admin_Template {
 
             <div class="wpuf-form-sub-fields">
                 <label>
-                    <input type="text" class="smallipopInput" name="<?php echo esc_attr( $word_restriction_name ); ?>" value="<?php echo esc_attr( $word_restriction_value ); ?>" title="<?php esc_attr_e( 'Numebr of words the author to be restricted in', 'wp-user-frontend' ); ?>" />
+                    <input type="text" class="smallipopInput" name="<?php echo esc_attr( $word_restriction_name ); ?>" value="<?php echo esc_attr( $word_restriction_value ); ?>" title="<?php esc_attr_e( 'Number of words the author to be restricted in', 'wp-user-frontend' ); ?>" />
                 </label>
             </div>
         </div> <!-- .wpuf-form-rows -->
@@ -413,7 +413,7 @@ class WPUF_Admin_Template {
 
     public static function dropdown_field( $field_id, $label, $values = [] ) {
         $first_name  = sprintf( '%s[%d][first]', self::$input_name, $field_id );
-        $first_value = $values ? $values['first'] : ' - select -';
+        $first_value = $values ? $values['first'] : ' - Select -';
         $help        = esc_attr( __( 'First element of the select dropdown. Leave this empty if you don\'t want to show this field', 'wp-user-frontend' ) ); ?>
         <li class="custom-field dropdown_field wpuf-conditional">
             <?php self::legend( $label, $values, $field_id ); ?>
@@ -444,7 +444,7 @@ class WPUF_Admin_Template {
 
     public static function multiple_select( $field_id, $label, $values = [] ) {
         $first_name  = sprintf( '%s[%d][first]', esc_attr( self::$input_name ), esc_attr( $field_id ) );
-        $first_value = $values ? $values['first'] : ' - select -';
+        $first_value = $values ? $values['first'] : ' - Select -';
         $help        = esc_attr( __( 'First element of the select dropdown. Leave this empty if you don\'t want to show this field', 'wp-user-frontend' ) ); ?>
         <li class="custom-field multiple_select">
             <?php self::legend( $label, $values, $field_id ); ?>
@@ -659,7 +659,9 @@ class WPUF_Admin_Template {
                         <input type="text" class="smallipopInput" title="Title of the section" name="<?php echo esc_attr( $title_name ); ?>" value="<?php echo esc_attr( $title_value ); ?>" />
 
                         <div class="description" style="margin-top: 8px;">
-                            <?php printf( esc_html( __( "Insert your public key and private key in <a href='%s'>plugin settings</a>. <a href='%s' target='_blank'>Register</a> first if you don't have any keys.", 'wp-user-frontend' ) ), esc_url( admin_url( 'admin.php?page=wpuf-settings' ) ), 'https://www.google.com/recaptcha/' ); ?>
+                            <?php printf( esc_html(
+                                // translators: %1$s is Admin settings url and %2$s is recaptcha
+                                __( "Insert your public key and private key in <a href='%1\$s'>plugin settings</a>. <a href='%2\$s' target='_blank'>Register</a> first if you don't have any keys.", 'wp-user-frontend' ) ), esc_url( admin_url( 'admin.php?page=wpuf-settings' ) ), 'https://www.google.com/recaptcha/' ); ?>
                         </div>
                     </div> <!-- .wpuf-form-rows -->
                 </div>

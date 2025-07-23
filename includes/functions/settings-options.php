@@ -126,8 +126,15 @@ function wpuf_settings_fields() {
             [
                 'name'    => 'wpuf_compatibility_acf',
                 'label'   => __( 'ACF Compatibility', 'wp-user-frontend' ),
-                'desc'    => __( 'Select <strong>Yes</strong> if you want to make compatible WPUF custom fields data with advanced custom fields.',
-                                 'wp-user-frontend' ),
+                'desc' => sprintf(
+                    // translators: %1$s and %2$s are strong tags
+                    __(
+                        'Select %1$sYes%2$s if you want to make compatible WPUF custom fields data with advanced custom fields.',
+                        'wp-user-frontend'
+                    ),
+                    '<strong>',
+                    '</strong>'
+                ),
                 'type'    => 'select',
                 'default' => 'no',
                 'options' => [
@@ -151,6 +158,29 @@ function wpuf_settings_fields() {
                 'label' => __( 'reCAPTCHA Secret Key', 'wp-user-frontend' ),
                 'desc'  => __( '<a target="_blank" href="https://www.google.com/recaptcha/">Register here</a> to get reCaptcha Site and Secret keys.',
                                'wp-user-frontend' ),
+            ],
+            [
+                'name'    => 'enable_turnstile',
+                'label'   => __( 'Enable Turnstile', 'wp-user-frontend' ),
+                'type'    => 'toggle',
+                'default' => 'off',
+            ],
+            [
+                'name'       => 'turnstile_site_key',
+                'label'      => __( 'Turnstile Site Key', 'wp-user-frontend' ),
+                'depends_on' => 'enable_turnstile',
+            ],
+            [
+                'name'       => 'turnstile_secret_key',
+                'label'      => __( 'Turnstile Secret Key', 'wp-user-frontend' ),
+                'depends_on' => 'enable_turnstile',
+                'desc'       => sprintf(
+                    // translators: %s is a link
+                    __(
+                        '<a target="_blank" href="%1$s">Register here</a> to get Turnstile Site and Secret keys.',
+                        'wp-user-frontend'
+                    ), esc_url( 'https://developers.cloudflare.com/turnstile/' )
+                ),
             ],
             [
                 'name'  => 'custom_css',
@@ -424,6 +454,17 @@ function wpuf_settings_fields() {
                 'type'    => 'checkbox',
                 'default' => 'off',
             ],
+            [
+                'name'       => 'login_form_turnstile',
+                'label'      => __( 'Turnstile in Login Form', 'wp-user-frontend' ),
+                'desc'       => __(
+                    'If enabled, users have to verify Cloudflare Turnstile in login page. Also, make sure that Turnstile is configured properly from <b>General Options</b>',
+                    'wp-user-frontend'
+                ),
+                'type'       => 'toggle',
+                'default'    => 'off',
+                'depends_on' => 'enable_turnstile',
+            ],
         ] ),
         'wpuf_payment'          => apply_filters( 'wpuf_options_payment', [
             [
@@ -597,7 +638,7 @@ function wpuf_settings_fields() {
 }
 
 function wpuf_settings_field_profile( $form ) {
-    $user_roles = wpuf_get_user_roles();
+    $user_roles = apply_filters( 'wpuf_settings_user_roles', wpuf_get_user_roles() );
     $forms      = get_posts(
         [
             'numberposts' => -1,
@@ -615,6 +656,8 @@ function wpuf_settings_field_profile( $form ) {
         $class      = 'class="pro-preview"';
         $disabled   = 'disabled';
     }
+
+    if ( ! empty( $user_roles ) ) {
         ?>
 
     <p style="padding-left: 10px; font-style: italic; font-size: 13px;">
@@ -625,8 +668,8 @@ function wpuf_settings_field_profile( $form ) {
         foreach ( $user_roles as $role => $name ) {
             $current = isset( $val['roles'][ $role ] ) ? $val['roles'][ $role ] : '';
             ?>
-            <tr valign="top" <?php echo $class; ?>>
-                <th scrope="row"><?php echo esc_attr( $name ) . $crown_icon; ?></th>
+            <tr valign="top" <?php echo esc_attr( $class ); ?>>
+                <th scrope="row"><?php echo esc_attr( $name ) . wp_kses( $crown_icon, array('svg' => [ 'xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true ], 'path' => [ 'd' => true, 'fill' => true ], 'circle' => [ 'cx' => true, 'cy' => true, 'r' => true ], ) ); ?></th>
                 <td>
                     <select name="wpuf_profile[roles][<?php echo esc_attr( $role ); ?>]" class="regular" style="min-width: 300px;" <?php echo esc_attr( $disabled ); ?>>
                         <option value=""><?php esc_html_e( '&mdash; Select &mdash;', 'wp-user-frontend' ); ?></option>
@@ -642,7 +685,7 @@ function wpuf_settings_field_profile( $form ) {
                     </select>
                     <?php
                     if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {
-                        echo wpuf_get_pro_preview_html();
+                        echo wp_kses_post( wpuf_get_pro_preview_html() );
                     }
                     ?>
                 </td>
@@ -652,6 +695,7 @@ function wpuf_settings_field_profile( $form ) {
         ?>
     </table>
         <?php
+    }
 }
 
 add_action( 'wsa_form_bottom_wpuf_profile', 'wpuf_settings_field_profile' );

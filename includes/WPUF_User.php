@@ -195,7 +195,7 @@ class WPUF_User {
         global $wpdb;
 
         $sql      = "SELECT * FROM {$wpdb->prefix}wpuf_transaction WHERE user_id = $this->id";
-        $txn_data = $wpdb->get_results( $sql, ARRAY_A );
+        $txn_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}wpuf_transaction WHERE user_id = %d", $this->id ), ARRAY_A );
 
         return apply_filters( 'wpuf_privacy_transaction_export_data', $txn_data );
     }

@@ -14,7 +14,7 @@ class Post_Form_Template_WooCommerce extends Form_Template {
         $this->enabled     = class_exists( 'WooCommerce' );
         $this->title       = __( 'WooCommerce Product', 'wp-user-frontend' );
         $this->description = __( 'Create a simple product form for WooCommerce.', 'wp-user-frontend' );
-        $this->image       = WPUF_ASSET_URI . '/images/templates/woocommerce.png';
+        $this->image       = WPUF_ASSET_URI . '/images/templates/woocommerce.svg';
         $this->form_fields = [
             [
                 'input_type'  => 'text',
@@ -137,7 +137,7 @@ class Post_Form_Template_WooCommerce extends Form_Template {
                 'is_meta'    => 'yes',
                 'help'       => 'Choose where this product should be displayed in your catalog. The product will always be accessible directly.',
                 'css'        => '',
-                'first'      => ' - select -',
+                'first'      => ' - Select -',
                 'options'    => [
                     'visible' => 'Catalog/search',
                     'catalog' => 'Catalog',
@@ -183,8 +183,9 @@ class Post_Form_Template_WooCommerce extends Form_Template {
             'post_type'        => 'product',
             'post_status'      => 'publish',
             'default_cat'      => '-1',
+            'post_permission'  => '-1',
             'guest_post'       => 'false',
-            'message_restrict' => 'This page is restricted. Please %login% / %register% to view this page.',
+            'message_restrict' => 'This page is restricted. Please {login} / {register} to view this page.',
             'redirect_to'      => 'post',
             'comment_status'   => 'open',
             'submit_text'      => 'Create Product',
@@ -280,7 +281,7 @@ Edit URL: {editlink}'
         $status  = ! empty( $reviews ) ? 'open' : 'closed';
         // wp_update_post( array( 'ID' => $post_id, 'comment_status' => $status ) );
         $comment_sql = "UPDATE {$wpdb->prefix}posts SET comment_status='{$status}' WHERE ID={$post_id} AND post_status='publish' AND post_type='product'";
-        $wpdb->get_results( $comment_sql );
+        $wpdb->get_results( $wpdb->prepare( "UPDATE {$wpdb->prefix}posts SET comment_status=%s WHERE ID=%d AND post_status='publish' AND post_type='product'", $status, $post_id ) );
     }
 
     /**
@@ -332,6 +333,7 @@ Edit URL: {editlink}'
         if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '2.7', '<' ) ) {
             return;
         }
+
         $visibility = get_post_meta( $post_id, '_visibility', true );
         $product = wc_get_product( $post_id );
 

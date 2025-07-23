@@ -11,7 +11,9 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 /**
  * List table class
  */
+#[AllowDynamicProperties]
 class List_Table_Subscribers extends WP_List_Table {
+    protected $page_status;
 
     public function __construct() {
         parent::__construct(
@@ -175,16 +177,30 @@ class List_Table_Subscribers extends WP_List_Table {
             $args['order']   = sanitize_text_field( wp_unslash( $_REQUEST['order'] ) );
         }
 
-        $post_ID = isset( $_REQUEST['post_ID'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['post_ID'] ) ) : '';
-        $status = isset( $_REQUEST['status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) : '';
+        // start with a fresh query
+        $sql            = 'SELECT * FROM ' . $wpdb->prefix . 'wpuf_subscribers';
+        $where_clauses  = [];
+        $prepare_values = [];
 
+        // Add conditional WHERE clauses if params exist
+        if ( ! empty( $_REQUEST['post_ID'] ) ) {
+            $where_clauses[]  = 'subscribtion_id = %d';
+            $prepare_values[] = intval( sanitize_text_field( wp_unslash( $_REQUEST['post_ID'] ) ) );
+        }
 
-        $sql = 'SELECT * FROM ' . $wpdb->prefix . 'wpuf_subscribers';
-        $sql .= isset( $_REQUEST['post_ID'] ) ? ' WHERE subscribtion_id = ' . intval( sanitize_text_field( wp_unslash( $_REQUEST['post_ID'] ) ) ): '';
+        if ( ! empty( $_REQUEST['status'] ) ) {
+            $where_clauses[]  = 'subscribtion_status = %d';
+            $prepare_values[] = sanitize_key( wp_unslash( $_REQUEST['status'] ) );
+        }
 
-        $sql .= isset( $_REQUEST['status'] ) ? ' AND subscribtion_status = "' . sanitize_key( wp_unslash( $_REQUEST['status'] ) ) . '"' : '';
+        // Combine WHERE clauses if any exist
+        if ( ! empty( $where_clauses ) ) {
+            $sql .= ' WHERE ' . implode( ' AND ', $where_clauses );
+        }
 
-        $this->items  = $wpdb->get_results( $sql, OBJECT );
+        // Prepare and execute the query safely
+        $prepared_query = $wpdb->prepare( $sql, $prepare_values );
+        $this->items    = $wpdb->get_results( $prepared_query );
 
         $this->set_pagination_args( [
             'total_items' => count( $this->items ),

@@ -21,6 +21,13 @@ class Frontend_Form_Ajax {
     private $post_expiration_message = 'wpuf-post_expiration_message';
 
     /**
+     *  An array of form fields retrieved from the form configuration.
+     *
+     * @var array
+     */
+    private $form_fields;
+
+    /**
      * New/Edit post submit handler
      *
      * @return void
@@ -33,8 +40,17 @@ class Frontend_Form_Ajax {
         $form_id               = isset( $_POST['form_id'] ) ? intval( wp_unslash( $_POST['form_id'] ) ) : 0;
         $form                  = new Form( $form_id );
         $this->form_settings   = $form->get_settings();
+        // Load notification settings and merge them with existing notification data
+        $notifications = wpuf_get_form_notifications( $form_id );
+        if ( ! empty( $notifications ) ) {
+            $existing_notifications = isset( $this->form_settings['notification'] ) ? $this->form_settings['notification'] : [];
+            if ( ! is_array( $existing_notifications ) ) {
+                $existing_notifications = [];
+            }
+            $this->form_settings['notification'] = array_merge( $existing_notifications, $notifications );
+        }
         $this->form_fields     = $form->get_fields();
-        $guest_mode            = isset( $this->form_settings['guest_post'] ) ? $this->form_settings['guest_post'] : '';
+        $guest_mode            = isset( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ? $this->form_settings['post_permission'] : '';
         $guest_verify          = isset( $this->form_settings['guest_email_verify'] ) ? $this->form_settings['guest_email_verify'] : 'false';
         $attachments_to_delete = isset( $_POST['delete_attachments'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['delete_attachments'] ) ) : [];
 
@@ -56,7 +72,8 @@ class Frontend_Form_Ajax {
                 if ( strlen( $current_data ) > 0 && strlen( $current_data ) < $restricted_num ) {
                     wpuf()->ajax->send_error(
                         sprintf(
-                            __( 'Minimum %d character is required for %s', 'wp-user-frontend' ), $restricted_num, $label
+                            // translators: %1$d is number and %2$s is label
+                            __( 'Minimum %1$d character is required for %2$s', 'wp-user-frontend' ), $restricted_num, $label
                         )
                     );
                 }
@@ -64,7 +81,8 @@ class Frontend_Form_Ajax {
                 if ( strlen( $current_data ) > 0 && strlen( $current_data ) > $restricted_num ) {
                     wpuf()->ajax->send_error(
                         sprintf(
-                            __( 'Maximum %d character is allowed for %s', 'wp-user-frontend' ), $restricted_num, $label
+                            // translators: %1$d is number and %2$s is label
+                            __( 'Maximum %1$d character is allowed for %2$s', 'wp-user-frontend' ), $restricted_num, $label
                         )
                     );
                 }
@@ -75,7 +93,8 @@ class Frontend_Form_Ajax {
                 if ( str_word_count( $current_data ) > 0 && str_word_count( $current_data ) < $restricted_num ) {
                     wpuf()->ajax->send_error(
                         sprintf(
-                            __( 'Minimum %d word is required for %s', 'wp-user-frontend' ), $restricted_num, $label
+                            // translators: %1$d is number and %2$s is label
+                            __( 'Minimum %1$d word is required for %2$s', 'wp-user-frontend' ), $restricted_num, $label
                         )
                     );
                 }
@@ -83,7 +102,8 @@ class Frontend_Form_Ajax {
                 if ( str_word_count( $current_data ) > 0 && str_word_count( $current_data ) > $restricted_num ) {
                     wpuf()->ajax->send_error(
                         sprintf(
-                            __( 'Maximum %d word is allowed for %s', 'wp-user-frontend' ), $restricted_num, $label
+                            // translators: %1$d is number and %2$s is label
+                            __( 'Maximum %1$d word is allowed for %2$s', 'wp-user-frontend' ), $restricted_num, $label
                         )
                     );
                 }
@@ -103,7 +123,9 @@ class Frontend_Form_Ajax {
             foreach ( $protected_shortcodes as $shortcode ) {
                 $search_for = '[' . $shortcode;
                 if ( strpos( $current_data, $search_for ) !== false ) {
-                    wpuf()->ajax->send_error( sprintf( __( 'Using %s as shortcode is restricted', 'wp-user-frontend' ), $shortcode ) );
+                    wpuf()->ajax->send_error( sprintf(
+                        // translators: %s is shortcode
+                        __( 'Using %s as shortcode is restricted', 'wp-user-frontend' ), $shortcode ) );
                 }
             }
         }
@@ -115,7 +137,7 @@ class Frontend_Form_Ajax {
         [ $post_vars, $taxonomy_vars, $meta_vars ] = $this->get_input_fields( $this->form_fields );
 
         if ( ! isset( $_POST['post_id'] ) ) {
-            $has_limit = isset( $this->form_settings['limit_entries'] ) && $this->form_settings['limit_entries'] === 'true';
+            $has_limit = isset( $this->form_settings['limit_entries'] ) && ( 'true' === $this->form_settings['limit_entries'] || 'on' === $this->form_settings['limit_entries'] );
 
             if ( $has_limit ) {
                 $limit        = (int) ! empty( $this->form_settings['limit_number'] ) ? $this->form_settings['limit_number'] : 0;
@@ -155,9 +177,9 @@ class Frontend_Form_Ajax {
             $charging_enabled = 'yes';
         }
 
-        if ( $guest_mode === 'true' && $guest_verify === 'true' && ! is_user_logged_in() && $charging_enabled === 'yes' ) {
+        if ( 'true' === $guest_mode && 'true' === $guest_verify && ! is_user_logged_in() && 'yes' === $charging_enabled ) {
             $postarr['post_status'] = wpuf_get_draft_post_status( $this->form_settings );
-        } elseif ( $guest_mode === 'true' && $guest_verify === 'true' && ! is_user_logged_in() ) {
+        } elseif ( 'true' === $guest_mode && 'true' === $guest_verify && ! is_user_logged_in() ) {
             $postarr['post_status'] = 'draft';
         }
         //if date is set and assigned as publish date
@@ -270,7 +292,7 @@ class Frontend_Form_Ajax {
 
         $postarr = $this->adjust_thumbnail_id( $postarr );
 
-        $post_id = wp_insert_post( $postarr, $wp_error = false );
+        $post_id = wp_insert_post( $postarr );
 
         // add post revision when post edit from the frontend
         wpuf_frontend_post_revision( $post_id, $this->form_settings );
@@ -294,516 +316,46 @@ class Frontend_Form_Ajax {
             $this->wpuf_user_subscription_pack( $this->form_settings, $post_id );
             // set the post form_id for later usage
             update_post_meta( $post_id, self::$config_id, $form_id );
+
             // save post formats if have any
             if ( isset( $this->form_settings['post_format'] ) && $this->form_settings['post_format'] !== '0' ) {
                 if ( post_type_supports( $this->form_settings['post_type'], 'post-formats' ) ) {
                     set_post_format( $post_id, $this->form_settings['post_format'] );
                 }
             }
+
             // find our if any images in post content and associate them
             if ( ! empty( $postarr['post_content'] ) ) {
                 $dom = new DOMDocument();
                 @$dom->loadHTML( $postarr['post_content'] );
                 $images = $dom->getElementsByTagName( 'img' );
+
                 if ( $images->length ) {
                     foreach ( $images as $img ) {
-                        $url = $img->getAttribute( 'src' );
-                        $url = str_replace( [ '"', "'", '\\' ], '', $url );
+                        $url           = $img->getAttribute( 'src' );
+                        $url           = str_replace( [ '"', "'", '\\' ], '', $url );
                         $attachment_id = wpuf_get_attachment_id_from_url( $url );
+
                         if ( $attachment_id ) {
                             wpuf_associate_attachment( $attachment_id, $post_id );
                         }
                     }
                 }
             }
+
             if ( ! empty( $taxonomy_vars ) ) {
                 $this->set_custom_taxonomy( $post_id, $taxonomy_vars );
             } else {
                 $this->set_default_taxonomy( $post_id );
             }
-            $response = $this->send_mail_for_guest(
-                $charging_enabled, $post_id, $form_id, $is_update, $post_author, $meta_vars
-            );
+
+            $response = $this->send_mail_for_guest( $charging_enabled, $post_id, $form_id, $is_update, $post_author, $meta_vars );
             wpuf_clear_buffer();
+
             wp_send_json( $response );
         }
-        $this->send_error( __( 'Something went wrong', 'wp-user-frontend' ) );
-    }
 
-    public function wpuf_get_post_user() {
-        $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
-
-        if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf_form_add' ) ) {
-            return;
-        }
-
-        $default_post_author = wpuf_get_option( 'default_post_owner', 'wpuf_frontend_posting', 1 );
-
-        if ( ! is_user_logged_in() ) {
-            if ( isset( $this->form_settings['guest_post'] ) && $this->form_settings['guest_post'] === 'true' && $this->form_settings['guest_details'] === 'true' ) {
-                $guest_name = isset( $_POST['guest_name'] ) ? sanitize_text_field( wp_unslash( $_POST['guest_name'] ) ) : '';
-
-                $guest_email = isset( $_POST['guest_email'] ) ? sanitize_email( wp_unslash( $_POST['guest_email'] ) ) : '';
-                $page_id = isset( $_POST['page_id'] ) ? sanitize_text_field( wp_unslash( $_POST['page_id'] ) ) : '';
-
-                // is valid email?
-                if ( ! is_email( $guest_email ) ) {
-                    $this->send_error( __( 'Invalid email address.', 'wp-user-frontend' ) );
-                }
-
-                // check if the user email already exists
-                $user = get_user_by( 'email', $guest_email );
-
-                if ( $user ) {
-                    // $post_author = $user->ID;
-                    wp_send_json(
-                        [
-                            'success'     => false,
-                            'error'       => __( "You already have an account in our site. Please login to continue.\n\nClicking 'OK' will redirect you to the login page and you will lose the form data.\nClick 'Cancel' to stay at this page.", 'wp-user-frontend' ),
-                            'type'        => 'login',
-                            'redirect_to' => wp_login_url( get_permalink( $page_id ) ),
-                        ]
-                    );
-                } else {
-
-                    // user not found, lets register him
-                    // username from email address
-                    $username = $this->guess_username( $guest_email );
-
-                    $user_pass = wp_generate_password( 12, false );
-
-                    $errors = new WP_Error();
-
-                    do_action( 'register_post', $username, $guest_email, $errors );
-
-                    $user_id = wp_create_user( $username, $user_pass, $guest_email );
-
-                    // if its a success and no errors found
-
-                    if ( $user_id && ! is_wp_error( $user_id ) ) {
-                        update_user_option( $user_id, 'default_password_nag', true, true ); //Set up the Password change nag.
-
-                        if ( class_exists( 'Theme_My_Login_Custom_Email' ) ) {
-                            do_action( 'tml_new_user_registered', $user_id, $user_pass );
-                        } else {
-                            wp_send_new_user_notifications( $user_id );
-                        }
-
-                        // update display name to full name
-                        wp_update_user(
-                            [
-                                'ID' => $user_id,
-                                'display_name' => $guest_name,
-                            ]
-                        );
-
-                        $post_author = $user_id;
-                    } else {
-                        //something went wrong creating the user, set post author to the default author
-                        $post_author = $default_post_author;
-                    }
-                }
-
-                // guest post is enabled and details are off
-            } elseif ( isset( $this->form_settings['guest_post'] ) && $this->form_settings['guest_post'] === 'true' && $this->form_settings['guest_details'] === 'false' ) {
-                $post_author = $default_post_author;
-            } elseif ( isset( $this->form_settings['guest_post'] ) && $this->form_settings['guest_post'] !== 'true' ) {
-                $this->send_error( $this->form_settings['message_restrict'] );
-            }
-
-            // the user must be logged in already
-        } elseif ( isset( $this->form_settings['role_base'] ) && $this->form_settings['role_base'] === 'true' && ! wpuf_user_has_roles( $this->form_settings['roles'] ) ) {
-                $this->send_error( __( 'You do not have sufficient permissions to access this form.', 'wp-user-frontend' ) );
-        } else {
-            $post_author = get_current_user_id();
-        }
-
-        return $post_author;
-    }
-
-    /**
-     * Add post shortcode handler
-     *
-     * @param array $atts
-     * @return string
-    */
-
-    public function add_post_shortcode( $atts ) {
-        add_filter( 'wpuf-form-fields', [ $this, 'add_field_settings' ] );
-
-        // @codingStandardsIgnoreStart
-        extract( shortcode_atts( [ 'id' => 0 ], $atts ) );
-
-        // @codingStandardsIgnoreEnd
-        ob_start();
-        $form                         = new WPUF_Form( $id );
-        $this->form_fields            = $form->get_fields();
-        $this->form_settings          = $form->get_settings();
-        $this->generate_auth_link(); // Translate tag %login% %registration% to login registartion url
-	    [ $user_can_post, $info ] = $form->is_submission_open( $form, $this->form_settings );
-        $info                         = apply_filters( 'wpuf_addpost_notice', $info, $id, $this->form_settings );
-        $user_can_post                = apply_filters( 'wpuf_can_post', $user_can_post, $id, $this->form_settings );
-
-        if ( $user_can_post === 'yes' ) {
-            $this->render_form( $id, null, $atts, $form );
-        } else {
-            echo wp_kses_post( '<div class="wpuf-info">' . $info . '</div>' );
-        }
-        $content = ob_get_contents();
-        ob_end_clean();
-
-        return $content;
-    }
-
-    public static function update_post_meta( $meta_vars, $post_id ) {
-        // check_ajax_referer( 'wpuf_form_add' );
-        // prepare the meta vars
-	    [ $meta_key_value, $multi_repeated, $files ] = self::prepare_meta_fields( $meta_vars );
-        // set featured image if there's any
-
-        // @codingStandardsIgnoreStart
-        $wpuf_files = isset( $_POST['wpuf_files'] ) ? $_POST['wpuf_files'] : [];
-
-        if ( isset( $wpuf_files['featured_image'] ) ) {
-            $attachment_id = $wpuf_files['featured_image'][0];
-
-            wpuf_associate_attachment( $attachment_id, $post_id );
-            set_post_thumbnail( $post_id, $attachment_id );
-
-            $file_data = isset( $_POST['wpuf_files_data'][ $attachment_id ] ) ? $_POST['wpuf_files_data'][ $attachment_id ] : false;
-
-        // @codingStandardsIgnoreEnd
-            if ( $file_data ) {
-                $args = [
-                    'ID'           => $attachment_id,
-                    'post_title'   => $file_data['title'],
-                    'post_content' => $file_data['desc'],
-                    'post_excerpt' => $file_data['caption'],
-                ];
-                wpuf_update_post( $args );
-
-                update_post_meta( $attachment_id, '_wp_attachment_image_alt', $file_data['title'] );
-            }
-        }
-
-
-        if ( ! empty( $multi_repeated ) ) {
-            $fields_meta = ! empty( $multi_repeated['sub_fields'] ) ? $multi_repeated['sub_fields'] : [];
-            $parent      = ! empty( $multi_repeated['parent'] ) ? $multi_repeated['parent'] : '';
-
-            if ( ! empty( $parent ) && ! empty( $fields_meta ) ) {
-                // get how many rows previously saved
-                $row_num = get_post_meta( $post_id, $parent, true );
-
-                // delete previous repeat values
-                foreach ( $fields_meta as $sub_field ) {
-                    for ( $i = 0; $i < $row_num; $i++ ) {
-                        $tmp_meta = $parent . '_' . $i . '_' . $sub_field;
-                        delete_post_meta( $post_id, $tmp_meta );
-                        delete_post_meta( $post_id, '_' . $tmp_meta );
-                    }
-                }
-
-                $row_number = ! empty( $multi_repeated['row_number'] ) ? $multi_repeated['row_number'] : 0;
-                $sub_fields = ! empty( $multi_repeated['fields'] ) ? $multi_repeated['fields'] : [];
-
-                // save new data
-                for ( $i = 0; $i < $row_number; $i++ ) {
-                    foreach ( $sub_fields as $key => $value ) {
-                        update_post_meta( $post_id, $key, $value );
-                        update_post_meta( $post_id, '_' . $key, uniqid( 'field_' ) );
-                    }
-                }
-
-                update_post_meta( $post_id, $parent, $row_number );
-            }
-        }
-
-        // save all custom fields
-        foreach ( $meta_key_value as $meta_key => $meta_value ) {
-            update_post_meta( $post_id, $meta_key, $meta_value );
-        }
-
-        // save any files attached
-        foreach ( $files as $file_input ) {
-            // delete any previous value
-            delete_post_meta( $post_id, $file_input['name'] );
-
-            $image_ids = '';
-
-            if ( count( $file_input['value'] ) > 1 ) {
-                $image_ids = $file_input['value'];
-            }
-
-            if ( count( $file_input['value'] ) === 1 ) {
-                $image_ids = $file_input['value'][0];
-            }
-
-            if ( ! empty( $image_ids ) ) {
-                add_post_meta( $post_id, $file_input['name'], $image_ids );
-            }
-
-            //to track how many files are being uploaded
-            $file_numbers = 0;
-
-            foreach ( $file_input['value'] as $attachment_id ) {
-
-                //if file numbers are greated than allowed number, prevent it from being uploaded
-                if ( $file_numbers >= $file_input['count'] ) {
-                    wp_delete_attachment( $attachment_id );
-                    continue;
-                }
-
-                wpuf_associate_attachment( $attachment_id, $post_id );
-                //add_post_meta( $post_id, $file_input['name'], $attachment_id );
-
-                // file title, caption, desc update
-
-                // @codingStandardsIgnoreStart
-                $file_data = isset( $_POST['wpuf_files_data'][ $attachment_id ] ) ? wp_unslash( $_POST['wpuf_files_data'][ $attachment_id ] ) : false;
-
-                // @codingStandardsIgnoreEnd
-                if ( $file_data ) {
-                    $args = [
-                        'ID'           => $attachment_id,
-                        'post_title'   => $file_data['title'],
-                        'post_content' => $file_data['desc'],
-                        'post_excerpt' => $file_data['caption'],
-                    ];
-                    wpuf_update_post( $args );
-
-                    update_post_meta( $attachment_id, '_wp_attachment_image_alt', $file_data['title'] );
-                }
-                $file_numbers++;
-            }
-        }
-    }
-
-    public function prepare_mail_body( $content, $user_id, $post_id ) {
-        $user = get_user_by( 'id', $user_id );
-        $post = get_post( $post_id );
-
-        $post_field_search = [
-            '%post_title%',
-            '%post_content%',
-            '%post_excerpt%',
-            '%tags%',
-            '%category%',
-            '%author%',
-            '%author_email%',
-            '%author_bio%',
-            '%sitename%',
-            '%siteurl%',
-            '%permalink%',
-            '%editlink%',
-        ];
-
-        $home_url = sprintf( '<a href="%s">%s</a>', home_url(), home_url() );
-        $post_url = sprintf( '<a href="%s">%s</a>', get_permalink( $post_id ), get_permalink( $post_id ) );
-        $post_edit_link = sprintf( '<a href="%s">%s</a>', admin_url( 'post.php?action=edit&post=' . $post_id ), admin_url( 'post.php?action=edit&post=' . $post_id ) );
-
-        $post_field_replace = [
-            $post->post_title,
-            $post->post_content,
-            $post->post_excerpt,
-            get_the_term_list( $post_id, 'post_tag', '', ', ' ),
-            get_the_term_list( $post_id, 'category', '', ', ' ),
-            $user->display_name,
-            $user->user_email,
-            ( $user->description ) ? $user->description : 'not available',
-            get_bloginfo( 'name' ),
-            $home_url,
-            $post_url,
-            $post_edit_link,
-        ];
-
-        if ( class_exists( 'WooCommerce' ) ) {
-            $post_field_search[] = '%product_cat%';
-            $post_field_replace[] = get_the_term_list( $post_id, 'product_cat', '', ', ' );
-        }
-
-        $content = str_replace( $post_field_search, $post_field_replace, $content );
-
-        // custom fields
-        preg_match_all( '/%custom_([\w-]*)\b%/', $content, $matches );
-	    [ $search, $replace ] = $matches;
-
-        if ( $replace ) {
-            foreach ( $replace as $index => $meta_key ) {
-                $value = get_post_meta( $post_id, $meta_key, false );
-
-                if ( isset( $value[0] ) && is_array( $value[0] ) ) {
-                    $new_value = implode( '; ', $value[0] );
-                } else {
-                    $new_value = implode( '; ', $value );
-                }
-
-                $original_value = '';
-                $meta_val       = '';
-
-                if ( count( $value ) > 1 ) {
-                    $is_first = true;
-
-                    foreach ( $value as $val ) {
-                        if ( $is_first ) {
-                            if ( get_post_mime_type( (int) $val ) ) {
-                                $meta_val = wp_get_attachment_url( $val );
-                            } else {
-                                $meta_val = $val;
-                            }
-                            $is_first = false;
-                        } else {
-                            if ( get_post_mime_type( (int) $val ) ) {
-                                $meta_val = $meta_val . ', ' . wp_get_attachment_url( $val );
-                            } else {
-                                $meta_val = $meta_val . ', ' . $val;
-                            }
-                        }
-
-                        if ( get_post_mime_type( (int) $val ) ) {
-                            $meta_val = $meta_val . ',' . wp_get_attachment_url( $val );
-                        } else {
-                            $meta_val = $meta_val . ',' . $val;
-                        }
-                    }
-                    $original_value = $original_value . $meta_val;
-                } else {
-                    if ( 'address_field' === $meta_key ) {
-                        $value     = get_post_meta( $post_id, $meta_key, true );
-                        $new_value = implode( ', ', $value );
-                    }
-
-                    if ( get_post_mime_type( (int) $new_value ) ) {
-                        $original_value = wp_get_attachment_url( $new_value );
-                    } else {
-                        $original_value = $new_value;
-                    }
-                }
-
-                $content = str_replace( $search[ $index ], $original_value, $content );
-            }
-        }
-
-        return $content;
-    }
-
-    public function woo_attribute( $taxonomy ) {
-        check_ajax_referer( 'wpuf_form_add' );
-        $taxonomy_name = isset( $_POST[ $taxonomy['name'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $taxonomy['name'] ] ) ) : '';
-
-        return [
-            'name'         => $taxonomy['name'],
-            'value'        => $taxonomy_name,
-            'is_visible'   => $taxonomy['woo_attr_vis'] === 'yes' ? 1 : 0,
-            'is_variation' => 0,
-            'is_taxonomy'  => 1,
-        ];
-    }
-
-    /**
-     * Hook to publish verified guest post with payment
-     *
-     * @since 2.5.8
-     */
-    public function publish_guest_post() {
-        $post_msg = isset( $_GET['post_msg'] ) ? sanitize_text_field( wp_unslash( $_GET['post_msg'] ) ) : '';
-        $pid      = isset( $_GET['p_id'] ) ? sanitize_text_field( wp_unslash( $_GET['p_id'] ) ) : '';
-        $fid      = isset( $_GET['f_id'] ) ? sanitize_text_field( wp_unslash( $_GET['f_id'] ) ) : '';
-
-        if ( $post_msg === 'verified' ) {
-            $response       = [];
-            $post_id        = wpuf_decryption( $pid );
-            $form_id        = wpuf_decryption( $fid );
-            $form_settings  = wpuf_get_form_settings( $form_id );
-            $post_author_id = get_post_field( 'post_author', $post_id );
-            $payment_status = new WPUF_Subscription();
-            $form           = new WPUF_Form( $form_id );
-            $pay_per_post   = $form->is_enabled_pay_per_post();
-            $force_pack     = $form->is_enabled_force_pack();
-
-            if ( $form->is_charging_enabled() && $pay_per_post ) {
-                if ( ( $payment_status->get_payment_status( $post_id ) ) === 'pending' ) {
-                    $response['show_message'] = true;
-                    $response['redirect_to']  = add_query_arg(
-                        [
-                            'action'  => 'wpuf_pay',
-                            'type'    => 'post',
-                            'post_id' => $post_id,
-                        ],
-                        get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) )
-                    );
-
-                    wp_redirect( $response['redirect_to'] );
-                    wpuf_clear_buffer();
-                    wp_send_json( $response );
-                }
-            } else {
-                $p_status = get_post_status( $post_id );
-
-                if ( $p_status ) {
-                    wp_update_post(
-                        [
-                            'ID'          => $post_id,
-                            'post_status' => isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish',
-                        ]
-                    );
-
-                    echo wp_kses_post( "<div class='wpuf-success' style='text-align:center'>" . __( 'Email successfully verified. Please Login.', 'wp-user-frontend' ) . '</div>' );
-                }
-            }
-        }
-    }
-
-    public function wpuf_user_subscription_pack( $form_settings, $post_id = null ) {
-
-        // if user has a subscription pack
-        $user_wpuf_subscription_pack = get_user_meta( get_current_user_id(), '_wpuf_subscription_pack', true );
-        $wpuf_user               = wpuf_get_user();
-        $user_subscription       = new WPUF_User_Subscription( $wpuf_user );
-        if ( ! empty( $user_wpuf_subscription_pack ) && isset( $user_wpuf_subscription_pack['_enable_post_expiration'] )
-            && isset( $user_wpuf_subscription_pack['expire'] ) && strtotime( $user_wpuf_subscription_pack['expire'] ) >= time() ) {
-            $expire_date = gmdate( 'Y-m-d', strtotime( '+' . $user_wpuf_subscription_pack['_post_expiration_time'] ) );
-            update_post_meta( $post_id, $this->post_expiration_date, $expire_date );
-            // save post status after expiration
-            $expired_post_status = $user_wpuf_subscription_pack['_expired_post_status'];
-            update_post_meta( $post_id, $this->expired_post_status, $expired_post_status );
-            // if mail active
-            if ( isset( $user_wpuf_subscription_pack['_enable_mail_after_expired'] ) && $user_wpuf_subscription_pack['_enable_mail_after_expired'] === 'on' ) {
-                $post_expiration_message = $user_subscription->get_subscription_exp_msg( $user_wpuf_subscription_pack['pack_id'] );
-                update_post_meta( $post_id, $this->post_expiration_message, $post_expiration_message );
-            }
-        } elseif ( ! empty( $user_wpuf_subscription_pack ) && isset( $user_wpuf_subscription_pack['expire'] ) && strtotime( $user_wpuf_subscription_pack['expire'] ) <= time() ) {
-            if ( isset( $form_settings['expiration_settings']['enable_post_expiration'] ) ) {
-                $expire_date = gmdate( 'Y-m-d', strtotime( '+' . $form_settings['expiration_settings']['expiration_time_value'] . ' ' . $form_settings['expiration_settings']['expiration_time_type'] . '' ) );
-
-                update_post_meta( $post_id, $this->post_expiration_date, $expire_date );
-                // save post status after expiration
-                $expired_post_status = $form_settings['expiration_settings']['expired_post_status'];
-                update_post_meta( $post_id, $this->expired_post_status, $expired_post_status );
-                // if mail active
-                if ( isset( $form_settings['expiration_settings']['enable_mail_after_expired'] ) && $form_settings['expiration_settings']['enable_mail_after_expired'] === 'on' ) {
-                    $post_expiration_message = $form_settings['expiration_settings']['post_expiration_message'];
-                    update_post_meta( $post_id, $this->post_expiration_message, $post_expiration_message );
-                }
-            }
-        } elseif ( empty( $user_wpuf_subscription_pack ) || $user_wpuf_subscription_pack === 'Cancel' || $user_wpuf_subscription_pack === 'cancel' ) {
-            if ( isset( $form_settings['expiration_settings']['enable_post_expiration'] ) ) {
-                $expire_date = gmdate( 'Y-m-d', strtotime( '+' . $form_settings['expiration_settings']['expiration_time_value'] . ' ' . $form_settings['expiration_settings']['expiration_time_type'] . '' ) );
-                update_post_meta( $post_id, $this->post_expiration_date, $expire_date );
-                // save post status after expiration
-                $expired_post_status = $form_settings['expiration_settings']['expired_post_status'];
-                update_post_meta( $post_id, $this->expired_post_status, $expired_post_status );
-                // if mail active
-                if ( isset( $form_settings['expiration_settings']['enable_mail_after_expired'] ) && $form_settings['expiration_settings']['enable_mail_after_expired'] === 'on' ) {
-                    $post_expiration_message = $form_settings['expiration_settings']['post_expiration_message'];
-                    update_post_meta( $post_id, $this->post_expiration_message, $post_expiration_message );
-                }
-            }
-        }
-
-        //Handle featured item when edit
-        $sub_meta = $user_subscription->handle_featured_item( $post_id, $user_wpuf_subscription_pack );
-        $user_subscription->update_meta( $sub_meta );
+        wpuf()->ajax->send_error( __( 'Something went wrong', 'wp-user-frontend' ) );
     }
 
     public function send_mail_for_guest( $charging_enabled, $post_id, $form_id, $is_update, $post_author, $meta_vars ) {
@@ -843,8 +395,8 @@ class Frontend_Form_Ajax {
             }
         }
 
-        if ( $charging_enabled === 'yes' && isset( $this->form_settings['enable_pay_per_post'] )
-             && wpuf_validate_boolean( $this->form_settings['enable_pay_per_post'] )
+        if ( $charging_enabled === 'yes' && isset( $this->form_settings['payment_options'] )
+             && 'enable_pay_per_post' === $this->form_settings['payment_options']
              && ! $is_update
         ) {
             $redirect_to = add_query_arg(
@@ -864,8 +416,8 @@ class Frontend_Form_Ajax {
             'message'      => $this->form_settings['message'],
         ];
 
-        $guest_mode     = isset( $this->form_settings['guest_post'] ) ? $this->form_settings['guest_post'] : '';
-        $guest_verify   = isset( $this->form_settings['guest_email_verify'] ) ? $this->form_settings['guest_email_verify'] : 'false';
+        $guest_mode     = isset( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ? $this->form_settings['post_permission'] : '';
+        $guest_verify   = isset( $this->form_settings['guest_email_verify'] ) ? $this->form_settings['guest_email_verify'] : '';
 
         if ( $guest_mode === 'true' && $guest_verify === 'true' && ! is_user_logged_in() && $charging_enabled !== 'yes' ) {
             $post_id_encoded          = wpuf_encryption( $post_id );
@@ -887,37 +439,72 @@ class Frontend_Form_Ajax {
             wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, 'yes', 2 );
         }
 
-        if ( $guest_mode === 'true' && $guest_verify === 'true' && ! is_user_logged_in() ) {
+        if ( wpuf_is_checkbox_or_toggle_on( $guest_mode ) && wpuf_is_checkbox_or_toggle_on( $guest_verify ) && ! is_user_logged_in() ) {
             $response = apply_filters( 'wpuf_edit_post_redirect', $response, $post_id, $form_id, $this->form_settings );
         } elseif ( $is_update ) {
             //now perform some post related actions
             do_action( 'wpuf_edit_post_after_update', $post_id, $form_id, $this->form_settings, $this->form_fields ); // plugin API to extend the functionality
 
-            //send mail notification
-            if ( isset( $this->form_settings['notification'] ) && $this->form_settings['notification']['edit'] === 'on' ) {
-                $mail_body = $this->prepare_mail_body( $this->form_settings['notification']['edit_body'], $post_author, $post_id );
-                $to        = $this->prepare_mail_body( $this->form_settings['notification']['edit_to'], $post_author, $post_id );
-                $subject   = $this->prepare_mail_body( $this->form_settings['notification']['edit_subject'], $post_author, $post_id );
-                $subject   = wp_strip_all_tags( $subject );
-                $mail_body = get_formatted_mail_body( $mail_body, $subject );
-                $headers   = [ 'Content-Type: text/html; charset=UTF-8' ];
+            // send mail notification
+            $edit_notification = $this->get_notification_settings( 'edit' );
+            $edit_enabled = $edit_notification['enabled'];
+            $edit_body = $edit_notification['body'];
+            $edit_to = $edit_notification['to'];
+            $edit_subject = $edit_notification['subject'];
 
-                wp_mail( $to, $subject, $mail_body, $headers );
+            if ( $edit_enabled ) {
+                $mail_body = $this->prepare_mail_body( $edit_body, $post_author, $post_id );
+                // Validate & sanitise recipient addresses before sending
+                $to_raw = $this->prepare_mail_body( $edit_to, $post_author, $post_id );
+                $to     = implode(
+                    ',',
+                    array_filter(
+                        array_map( static function ( $addr ) {
+                            $addr = trim( $addr );
+                            return is_email( $addr ) ? $addr : null;
+                        }, explode( ',', $to_raw ) )
+                    )
+                );
+                if ( empty( $to ) ) {
+                    // Nothing valid to send to – skip mail sending
+                } else {
+                    $subject   = $this->prepare_mail_body( $edit_subject, $post_author, $post_id );
+                    $subject   = wp_strip_all_tags( $subject );
+                    $mail_body = get_formatted_mail_body( $mail_body, $subject );
+                    $headers   = [ 'Content-Type: text/html; charset=UTF-8' ];
+
+                    wp_mail( $to, $subject, $mail_body, $headers );
+                }
             }
 
             //now redirect the user
             $response = apply_filters( 'wpuf_edit_post_redirect', $response, $post_id, $form_id, $this->form_settings );
         } else {
             // send mail notification
-            if ( isset( $this->form_settings['notification'] ) && $this->form_settings['notification']['new'] === 'on' ) {
-                $mail_body = $this->prepare_mail_body( $this->form_settings['notification']['new_body'], $post_author, $post_id );
-                $to        = $this->prepare_mail_body( $this->form_settings['notification']['new_to'], $post_author, $post_id );
-                $subject   = $this->prepare_mail_body( $this->form_settings['notification']['new_subject'], $post_author, $post_id );
-                $subject   = wp_strip_all_tags( $subject );
-                $mail_body = get_formatted_mail_body( $mail_body, $subject );
-                $headers   = [ 'Content-Type: text/html; charset=UTF-8' ];
+            $new_notification = $this->get_notification_settings( 'new' );
+            if ( $new_notification['enabled'] ) {
+                $mail_body = $this->prepare_mail_body( $new_notification['body'], $post_author, $post_id );
+                // Validate & sanitise recipient addresses before sending
+                $to_raw = $this->prepare_mail_body( $new_notification['to'], $post_author, $post_id );
+                $to     = implode(
+                    ',',
+                    array_filter(
+                        array_map( static function ( $addr ) {
+                            $addr = trim( $addr );
+                            return is_email( $addr ) ? $addr : null;
+                        }, explode( ',', $to_raw ) )
+                    )
+                );
+                if ( empty( $to ) ) {
+                    // Nothing valid to send to – skip mail sending
+                } else {
+                    $subject   = $this->prepare_mail_body( $new_notification['subject'], $post_author, $post_id );
+                    $subject   = wp_strip_all_tags( $subject );
+                    $mail_body = get_formatted_mail_body( $mail_body, $subject );
+                    $headers   = [ 'Content-Type: text/html; charset=UTF-8' ];
 
-                wp_mail( $to, $subject, $mail_body, $headers );
+                    wp_mail( $to, $subject, $mail_body, $headers );
+                }
             }
 
             //redirect the user
@@ -930,6 +517,56 @@ class Frontend_Form_Ajax {
         return $response;
     }
 
+    /**
+     * Helper method to extract notification settings for both new and edit notifications
+     * Supports all schema versions: new builder (nested array), legacy flat, and very old separate fields
+     *
+     * @param string $type 'new' or 'edit'
+     * @return array Array with keys: enabled, body, to, subject
+     */
+    private function get_notification_settings( $type ) {
+        $enabled = false;
+        $body = '';
+        $to = '';
+        $subject = '';
+
+        // Check if notification type exists in the main notification array
+        if ( isset( $this->form_settings['notification'][ $type ] ) ) {
+            $notification_conf = $this->form_settings['notification'][ $type ];
+
+            // 1) New builder: nested array including `enabled`
+            if ( is_array( $notification_conf ) && wpuf_is_checkbox_or_toggle_on( isset( $notification_conf['enabled'] ) ? $notification_conf['enabled'] : '' ) ) {
+                $enabled = true;
+                $body    = isset( $notification_conf['body'] ) ? $notification_conf['body'] : '';
+                $to      = isset( $notification_conf['to'] ) ? $notification_conf['to'] : '';
+                $subject = isset( $notification_conf['subject'] ) ? $notification_conf['subject'] : '';
+
+            // 2) Legacy flat flag: string 'on' at notification[type]
+            } elseif ( is_string( $notification_conf ) && wpuf_is_checkbox_or_toggle_on( $notification_conf ) ) {
+                $enabled = true;
+                $body    = isset( $this->form_settings['notification'][ $type . '_body' ] ) ? $this->form_settings['notification'][ $type . '_body' ] : '';
+                $to      = isset( $this->form_settings['notification'][ $type . '_to' ] ) ? $this->form_settings['notification'][ $type . '_to' ] : '';
+                $subject = isset( $this->form_settings['notification'][ $type . '_subject' ] ) ? $this->form_settings['notification'][ $type . '_subject' ] : '';
+            }
+        }
+
+        // 3) Very old separate fields (only for edit notifications)
+        if ( ! $enabled && 'edit' === $type && ! empty( $this->form_settings['notification_' . $type ] )
+             && wpuf_is_checkbox_or_toggle_on( $this->form_settings['notification_' . $type ] ) ) {
+            $enabled = true;
+            $body    = isset( $this->form_settings['notification_' . $type . '_body' ] ) ? $this->form_settings['notification_' . $type . '_body' ] : '';
+            $to      = isset( $this->form_settings['notification_' . $type . '_to' ] ) ? $this->form_settings['notification_' . $type . '_to' ] : '';
+            $subject = isset( $this->form_settings['notification_' . $type . '_subject' ] ) ? $this->form_settings['notification_' . $type . '_subject' ] : '';
+        }
+
+        return [
+            'enabled' => $enabled,
+            'body'    => $body,
+            'to'      => $to,
+            'subject' => $subject,
+        ];
+    }
+
     public function wpuf_get_post_user() {
         $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 
@@ -940,15 +577,18 @@ class Frontend_Form_Ajax {
         $default_post_author = wpuf_get_option( 'default_post_owner', 'wpuf_frontend_posting', 1 );
 
         if ( ! is_user_logged_in() ) {
-            if ( isset( $this->form_settings['guest_post'] ) && $this->form_settings['guest_post'] === 'true' && $this->form_settings['guest_details'] === 'true' ) {
+            if ( isset( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] && ! empty( $this->form_settings['guest_details'] ) && wpuf_is_checkbox_or_toggle_on(
+                $this->form_settings['guest_details']
+            )) {
                 $guest_name = isset( $_POST['guest_name'] ) ? sanitize_text_field( wp_unslash( $_POST['guest_name'] ) ) : '';
-
-                $guest_email = isset( $_POST['guest_email'] ) ? sanitize_email( wp_unslash( $_POST['guest_email'] ) ) : '';
-                $page_id = isset( $_POST['page_id'] ) ? sanitize_text_field( wp_unslash( $_POST['page_id'] ) ) : '';
+                $guest_email = isset( $_POST['guest_email'] ) ? sanitize_email(
+                    wp_unslash( $_POST['guest_email'] )
+                ) : '';
+                $page_id     = isset( $_POST['page_id'] ) ? sanitize_text_field( wp_unslash( $_POST['page_id'] ) ) : '';
 
                 // is valid email?
                 if ( ! is_email( $guest_email ) ) {
-                    echo json_encode(
+                    echo wp_json_encode(
                         [
                             'success' => false,
                             'error'   => __( 'Invalid email address.', 'wp-user-frontend' ),
@@ -956,17 +596,6 @@ class Frontend_Form_Ajax {
                     );
 
                     die();
-
-//                    $this->send_error( __( 'Invalid email address.', 'wp-user-frontend' ) );
-//                    wp_send_json(
-//                        [
-//                            'success'     => false,
-//                            'error'       => __( "You already have an account in our site. Please login to continue.\n\nClicking 'OK' will redirect you to the login page and you will lose the form data.\nClick 'Cancel' to stay at this page.", 'wp-user-frontend' ),
-//                            'type'        => 'login',
-//                            'redirect_to' => wp_login_url( get_permalink( $page_id ) ),
-//                        ]
-//                    );
-                    // wpuf()->ajax->send_error( __( 'Invalid email address.', 'wp-user-frontend' ) );
                 }
 
                 // check if the user email already exists
@@ -974,10 +603,9 @@ class Frontend_Form_Ajax {
 
                 if ( $user ) {
                     // $post_author = $user->ID;
-                    wp_send_json(
+                    wp_send_json_error(
                         [
-                            'success'     => false,
-                            'error'       => __( "You already have an account in our site. Please login to continue.\n\nClicking 'OK' will redirect you to the login page and you will lose the form data.\nClick 'Cancel' to stay at this page.", 'wp-user-frontend' ),
+                            'error'       => __( 'You already have an account in our site. Please login to continue.', 'wp-user-frontend' ),
                             'type'        => 'login',
                             'redirect_to' => wp_login_url( get_permalink( $page_id ) ),
                         ]
@@ -1023,14 +651,15 @@ class Frontend_Form_Ajax {
                 }
 
                 // guest post is enabled and details are off
-            } elseif ( isset( $this->form_settings['guest_post'] ) && $this->form_settings['guest_post'] === 'true' && $this->form_settings['guest_details'] === 'false' ) {
+            } elseif ( ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) && ! wpuf_is_checkbox_or_toggle_on( $this->form_settings['guest_details'] ) ) {
                 $post_author = $default_post_author;
-            } elseif ( isset( $this->form_settings['guest_post'] ) && $this->form_settings['guest_post'] !== 'true' ) {
+            } elseif ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) {
                 wpuf()->ajax->send_error( $this->form_settings['message_restrict'] );
             }
 
             // the user must be logged in already
-        } elseif ( isset( $this->form_settings['role_base'] ) && $this->form_settings['role_base'] === 'true' && ! wpuf_user_has_roles( $this->form_settings['roles'] ) ) {
+        } elseif ( ( ! empty( $this->form_settings['post_permission'] ) && 'role_base' === $this->form_settings['post_permission'] )
+                   && ( ! empty( $this->form_settings['roles'] ) && ! wpuf_user_has_roles( $this->form_settings['roles'] ) ) ) {
             wpuf()->ajax->send_error( __( 'You do not have sufficient permissions to access this form.', 'wp-user-frontend' ) );
         } else {
             $post_author = get_current_user_id();
@@ -1135,6 +764,8 @@ class Frontend_Form_Ajax {
         }
 
         $content = str_replace( $post_field_search, $post_field_replace, $content );
+        // replace line breaks with proper html tags
+        $content = str_replace( [ "\r\n", "\n", "\r" ], '<br />', $content );
 
         // custom fields
         preg_match_all( '/{custom_([\w-]*)\b}/', $content, $matches );

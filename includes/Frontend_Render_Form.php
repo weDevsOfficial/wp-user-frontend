@@ -27,7 +27,7 @@ class Frontend_Render_Form {
      * @param string $error
      */
     public function send_error( $error ) {
-        echo json_encode(
+        echo wp_json_encode(
             [
                 'success' => false,
                 'error'   => $error,
@@ -75,8 +75,8 @@ class Frontend_Render_Form {
                 <input type="submit" class="wpuf-submit-button wpuf_submit_<?php echo esc_attr( $form_id ); ?>" name="submit" value="<?php echo esc_attr( $form_settings['submit_text'] ); ?>" />
             <?php } ?>
 
-            <?php if ( isset( $form_settings['draft_post'] ) && $form_settings['draft_post'] == 'true' ) { ?>
-                <a href="#" class="btn" id="wpuf-post-draft"><?php esc_html_e( 'Save Draft', 'wp-user-frontend' ); ?></a>
+            <?php if ( isset( $form_settings['draft_post'] ) && wpuf_is_checkbox_or_toggle_on( $form_settings['draft_post'] ) ) { ?>
+                <a href="#" class="btn" style="margin-left: 0.5rem;" id="wpuf-post-draft"><?php esc_html_e( 'Save Draft', 'wp-user-frontend' ); ?></a>
             <?php } ?>
         </li>
 
@@ -121,41 +121,42 @@ class Frontend_Render_Form {
         $form_id = isset( $_GET['form_id'] ) ? intval( wp_unslash( $_GET['form_id'] ) ) : 0;
 
         if ( $form_id ) {
+            wp_enqueue_script( 'jquery' );
+            wp_enqueue_style( 'wpuf-frontend-forms' );
             ?>
 
             <!doctype html>
             <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <title>__( 'Form Preview', 'wp-user-frontend' )</title>
-                    <link rel="stylesheet" href="<?php echo esc_url( plugins_url( 'assets/css/frontend-forms.css', __DIR__ ) ); ?>">
+            <head>
+                <meta charset="UTF-8">
+                <title>__( 'Form Preview', 'wp-user-frontend' )</title>
+                <link rel="stylesheet" href="<?php echo esc_url( plugins_url( 'assets/css/frontend-forms.css', __DIR__ ) ); ?>">
 
-                    <style type="text/css">
-                        body {
-                            margin: 0;
-                            padding: 0;
-                            background: #eee;
-                        }
+                <style type="text/css">
+                    body {
+                        margin: 0;
+                        padding: 0;
+                        background: #eee;
+                    }
+                    .container {
+                        width: 700px;
+                        margin: 0 auto;
+                        margin-top: 20px;
+                        padding: 20px;
+                        background: #fff;
+                        border: 1px solid #DFDFDF;
+                        -webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+                        box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+                    }
+                </style>
 
-                        .container {
-                            width: 700px;
-                            margin: 0 auto;
-                            margin-top: 20px;
-                            padding: 20px;
-                            background: #fff;
-                            border: 1px solid #DFDFDF;
-                            -webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-                            box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-                        }
-                    </style>
-
-                    <script type="text/javascript" src="<?php echo esc_url( includes_url( 'js/jquery/jquery.js' ) ); ?>"></script>
-                </head>
-                <body>
-                    <div class="container">
-                        <?php $this->render_form( $form_id, null, null, null ); ?>
-                    </div>
-                </body>
+                <script type="text/javascript" src="<?php echo esc_url( includes_url( 'js/jquery/jquery.js' ) ); ?>"></script>
+            </head>
+            <body>
+            <div class="container">
+                <?php $this->render_form( $form_id, null, null, null ); ?>
+            </div>
+            </body>
             </html>
 
             <?php
@@ -183,7 +184,7 @@ class Frontend_Render_Form {
             return;
         }
 
-        if ( $form_status != 'publish' ) {
+        if ( 'publish' !== $form_status ) {
             echo wp_kses_post( '<div class="wpuf-message">' . __( "Please make sure you've published your form.", 'wp-user-frontend' ) . '</div>' );
 
             return;
@@ -200,18 +201,23 @@ class Frontend_Render_Form {
         if ( ! empty( $layout ) ) {
             wp_enqueue_style( 'wpuf-' . $layout );
         }
+        if ( ! is_user_logged_in() && ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' !== $this->form_settings['post_permission'] ) ) {
+            $login        = wpuf()->frontend->simple_login->get_login_url();
+            $register     = wpuf()->frontend->simple_login->get_registration_url();
+            $replace      = [ "<a href='" . $login . "'>Login</a>", "<a href='" . $register . "'>Register</a>" ];
+            $placeholders = [ '{login}', '{register}' ];
 
-        if ( ! is_user_logged_in() && $this->form_settings['guest_post'] !== 'true' ) {
-            echo wp_kses_post( '<div class="wpuf-message">' . $this->form_settings['message_restrict'] . '</div>' );
+            $message_restrict = str_replace( $placeholders, $replace, $this->form_settings['message_restrict'] );
+
+            echo wp_kses_post( '<div class="wpuf-message">' . $message_restrict . '</div>' );
 
             return;
         }
 
         if (
-                isset( $this->form_settings['role_base'] )
-                && wpuf_validate_boolean( $this->form_settings['role_base'] )
-                && ! wpuf_user_has_roles( $this->form_settings['roles'] )
-            ) {
+            ( ! empty( $this->form_settings['post_permission'] ) && 'role_base' === $this->form_settings['post_permission'] )
+            && ( ! empty( $this->form_settings['roles'] ) && ! wpuf_user_has_roles( $this->form_settings['roles'] ) )
+        ) {
             ?>
             <div class="wpuf-message"><?php esc_html_e( 'You do not have sufficient permissions to access this form.', 'wp-user-frontend' ); ?></div>
             <?php
@@ -222,44 +228,60 @@ class Frontend_Render_Form {
         if ( $this->form_fields ) {
             ?>
 
-                <form class="wpuf-form-add wpuf-form-<?php echo esc_attr( $layout ); ?> <?php echo ( $layout == 'layout1' ) ? esc_html( $theme_css ) : 'wpuf-style'; ?>" action="" method="post">
+            <form class="wpuf-form-add wpuf-form-<?php echo esc_attr( $layout ); ?> <?php echo ( 'layout1' === $layout ) ? esc_html( $theme_css ) : 'wpuf-style'; ?>" action="" method="post">
 
+                <?php
+                // Display form title if enabled
+                if ( isset( $this->form_settings['show_form_title'] ) && wpuf_is_checkbox_or_toggle_on( $this->form_settings['show_form_title'] ) ) {
+                    $form_title = get_the_title( $form_id );
+                    if ( ! empty( $form_title ) ) {
+                        echo '<h2 class="wpuf-form-title">' . esc_html( $form_title ) . '</h2>';
+                    }
+                }
 
-                   <script type="text/javascript">
-                        if ( typeof wpuf_conditional_items === 'undefined' ) {
-                            wpuf_conditional_items = [];
-                        }
+                // Display form description if set
+                if ( isset( $this->form_settings['form_description'] ) && ! empty( $this->form_settings['form_description'] ) ) {
+                    echo '<div class="wpuf-form-description">' . wp_kses_post( $this->form_settings['form_description'] ) . '</div>';
+                }
+                ?>
 
-                        if ( typeof wpuf_plupload_items === 'undefined' ) {
-                            wpuf_plupload_items = [];
-                        }
+                <script type="text/javascript">
+                    if ( typeof wpuf_conditional_items === 'undefined' ) {
+                        wpuf_conditional_items = [];
+                    }
 
-                        if ( typeof wpuf_map_items === 'undefined' ) {
-                            wpuf_map_items = [];
-                        }
-                    </script>
+                    if ( typeof wpuf_plupload_items === 'undefined' ) {
+                        wpuf_plupload_items = [];
+                    }
 
-                    <ul class="wpuf-form form-label-<?php echo esc_attr( $label_position ); ?>">
+                    if ( typeof wpuf_map_items === 'undefined' ) {
+                        wpuf_map_items = [];
+                    }
+                </script>
+
+                <ul class="wpuf-form form-label-<?php echo esc_attr( $label_position ); ?>">
 
                     <?php
 
-                        do_action( 'wpuf_form_fields_top', $form, $this->form_fields );
+                    do_action( 'wpuf_form_fields_top', $form, $this->form_fields );
 
                     if ( ! $post_id ) {
                         do_action( 'wpuf_add_post_form_top', $form_id, $this->form_settings );
                     } else {
                         do_action( 'wpuf_edit_post_form_top', $form_id, $post_id, $this->form_settings );
                     }
-
-                    if ( ! is_user_logged_in() && $this->form_settings['guest_post'] == 'true' && $this->form_settings['guest_details'] == 'true' ) {
+                    if ( ! is_user_logged_in(
+                        ) && ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) && ( ! empty( $this->form_settings['guest_details'] ) && wpuf_is_checkbox_or_toggle_on(
+                                $this->form_settings['guest_details']
+                            ) ) ) {
                         $this->guest_fields( $this->form_settings );
                     }
 
-                        $this->render_featured_field( $post_id );
+                    $this->render_featured_field( $post_id );
 
-                        wpuf()->fields->render_fields( $this->form_fields, $form_id, $atts, $type = 'post', $post_id );
+                    wpuf()->fields->render_fields( $this->form_fields, $form_id, $atts, $type = 'post', $post_id );
 
-                        $this->submit_button( $form_id, $this->form_settings, $post_id );
+                    $this->submit_button( $form_id, $this->form_settings, $post_id );
 
                     if ( ! $post_id ) {
                         do_action( 'wpuf_add_post_form_bottom', $form_id, $this->form_settings );
@@ -269,11 +291,11 @@ class Frontend_Render_Form {
 
                     ?>
 
-                    </ul>
+                </ul>
 
-                </form>
+            </form>
 
-                <?php
+            <?php
         } //endif
 
         do_action( 'wpuf_after_form_render', $form_id );
@@ -302,7 +324,9 @@ class Frontend_Render_Form {
                 <div >
                     <label >
                          <input type="checkbox" class="wpuf_is_featured" name="is_featured_item" value="1" <?php echo $is_featured ? 'checked' : ''; ?> >
-                         <span class="wpuf-items-table-containermessage-box" id="remaining-feature-item"> <?php echo sprintf( __( 'Mark the %s as featured (remaining %d)', 'wp-user-frontend' ), $post_type, $featured_item ); ?></span>
+                         <span class="wpuf-items-table-containermessage-box" id="remaining-feature-item"> <?php echo sprintf(
+                            // translators: %1$s is Post type and %2$d is item
+                            wp_kses_post( __( 'Mark the %1$s as featured (remaining %2$d)', 'wp-user-frontend' ) ), esc_html( $post_type ), esc_html( $featured_item ) ); ?></span>
                     </label>
                 </div>
             </li>

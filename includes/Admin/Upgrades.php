@@ -24,7 +24,10 @@ class Upgrades {
         '2.9.2'  => 'upgrades/upgrade-2.9.2.php',
         '3.6.0'  => 'upgrades/upgrade-3.6.0.php',
         '4.0.4'  => 'upgrades/upgrade-4.0.4.php',
+        '4.0.8'  => 'upgrades/upgrade-4.0.8.php',
         '4.0.11' => 'upgrades/upgrade-4.0.11.php',
+        '4.1.0'  => 'upgrades/upgrade-4.1.0.php',
+        '4.1.7'  => 'upgrades/upgrade-4.1.7.php',
     ];
 
     /**

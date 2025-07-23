@@ -177,9 +177,13 @@ class WPUF_ACF_Compatibility {
             return;
         } ?>
         <div class="notice notice-info">
-            <p><strong><?php printf( esc_html( __( '%s Detected', 'wp-user-frontend' ) ),
+            <p><strong><?php printf( 
+                // translators: %s is Title
+                esc_html( __( '%s Detected', 'wp-user-frontend' ) ),
                         esc_html( $this->title ) ); ?></strong></p>
-            <p><?php printf( wp_kses_post( __( 'Hey, looks like you have <strong>%s</strong> installed. What do you want to do with WPUF?',
+            <p><?php printf( wp_kses_post( 
+                // translators: %s is Title
+                __( 'Hey, looks like you have <strong>%s</strong> installed. What do you want to do with WPUF?',
                     'wp-user-frontend' ) ), esc_html( $this->title ) ); ?></p>
             <p><i><strong
                         style="color:#46b450;">Compatible: </strong><?php printf( esc_html( __( 'It will update compatibility option only, so existing custom fields data format will not change.',

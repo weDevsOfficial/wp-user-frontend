@@ -324,6 +324,16 @@ trait FieldableTrait {
         [ $meta_key_value, $multi_repeated, $files ] = self::prepare_meta_fields( $meta_vars );
         // set featured image if there's any
 
+        /**
+         * Fires before updating post meta fields
+         *
+         * @param int $post_id
+         * @param array $meta_key_value
+         * @param array $multi_repeated
+         * @param array $files
+         */
+        do_action( 'wpuf_before_updating_post_meta_fields', $post_id, $meta_key_value, $multi_repeated, $files );
+
         // @codingStandardsIgnoreStart
         $wpuf_files = isset( $_POST['wpuf_files'] ) ? $_POST['wpuf_files'] : [];
 

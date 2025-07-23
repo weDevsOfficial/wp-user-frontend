@@ -199,26 +199,26 @@ class Frontend_Account {
         $wpuf_user = wpuf_get_user();
         $sub_id    = $wpuf_user->subscription()->current_pack_id();
         if ( ! $sub_id ) {
-            echo wp_kses_post( __( '<p>You have not subscribed to any package yet.</p>', 'wp-user-frontend' ) );
+            echo '<p>' . esc_html__( 'You have not subscribed to any package yet.', 'wp-user-frontend' ) . '</p>';
 
             return;
         }
         $user_subscription = new User_Subscription( $wpuf_user );
         $user_sub          = $user_subscription->current_pack();
         if ( ! is_wp_error( $user_sub ) && $user_sub['status'] !== 'completed' && $user_sub['status'] !== 'Free' ) {
-            esc_html_e( '<p>You may have processed your payment, but the pack is not active yet.</p>',
-                        'wp-user-frontend' );
+            echo '<p>' . esc_html__( 'You may have processed your payment, but the pack is not active yet.', 'wp-user-frontend' ) . '</p>';
 
             return;
         }
         $pack = wpuf()->subscription->get_subscription( $sub_id );
 
         if ( ! $pack ) {
-            echo wp_kses_post( sprintf( __( '%sYour subscription pack is not exists. Please contact admin.%s', 'wp-user-frontend' ), '<p>', '</p>' ) );
+            echo wp_kses_post( sprintf(
+                // translators: %1$s and %2$s are HTML tags
+                __( '%1$sYour subscription pack is not exists. Please contact admin.%2$s', 'wp-user-frontend' ), '<p>', '</p>' ) );
 
             return;
         }
-
 
         $details_meta['payment_page'] = get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) );
         $details_meta['onclick']      = '';
@@ -226,15 +226,15 @@ class Frontend_Account {
         $recurring_des = '';
         $billing_amount = ( intval( $pack->meta_value['billing_amount'] ) > 0 ) ? $details_meta['symbol'] . $pack->meta_value['billing_amount'] : __( 'Free',
                                                                                                                                                       'wp-user-frontend' );
-        if ( $pack->meta_value['recurring_pay'] === 'yes' ) {
+        if ( wpuf_is_checkbox_or_toggle_on( $pack->meta_value['recurring_pay'] ) ) {
             /* translators: %s: billing cycle number, %s: billing cycle period */
             $recurring_des = sprintf( __( 'For each', 'wp-user-frontend' ) . ' %s %s',
                                       $pack->meta_value['billing_cycle_number'],
                                       Subscription::get_cycle_label( $pack->meta_value['cycle_period'],
                                                                           $pack->meta_value['billing_cycle_number'] ),
-                                      $pack->meta_value['trial_duration_type'] );
+                                      $pack->meta_value['_trial_duration_type'] );
             /* translators: %s: number of installments */
-            $recurring_des .= ! empty( $pack->meta_value['billing_limit'] ) ? sprintf( __( ', for %s installments',
+            $recurring_des .= ! empty( $pack->meta_value['billing_limit'] ) && -1 ===  $pack->meta_value['billing_limit'] ? sprintf( __( ', for %s installments',
                                                                                            'wp-user-frontend' ),
                                                                                        $pack->meta_value['billing_limit'] ) : '';
         }

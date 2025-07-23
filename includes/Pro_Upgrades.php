@@ -43,9 +43,11 @@ class Pro_Upgrades {
         $pro_fields = [
             'repeat_field',
             'date_field',
+            'time_field',
             'file_upload',
             'country_list_field',
             'numeric_text_field',
+            'phone_field',
             'address_field',
             'google_map',
             'step_start',
@@ -61,13 +63,13 @@ class Pro_Upgrades {
      */
     public function add_to_others_fields( $fields ) {
         $pro_fields = [
-            'shortcode',
-            'action_hook',
-            'toc',
-            'ratings',
-            'embed',
             'really_simple_captcha',
             'math_captcha',
+            'toc',
+            'shortcode',
+            'action_hook',
+            'ratings',
+            'embed',
             'qr_code',
         ];
 

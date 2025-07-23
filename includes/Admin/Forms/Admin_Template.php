@@ -156,7 +156,7 @@ class Admin_Template {
                 <label>
                     <input type="text" class="smallipopInput" name="<?php echo esc_attr( $word_restriction_name ); ?>"
                            value="<?php echo esc_attr( $word_restriction_value ); ?>" title="<?php esc_attr_e(
-                        'Numebr of words the author to be restricted in', 'wp-user-frontend'
+                        'Number of words the author to be restricted in', 'wp-user-frontend'
                     ); ?>"/>
                 </label>
             </div>
@@ -231,7 +231,7 @@ class Admin_Template {
                 <label>
                     <input type="text" class="smallipopInput" name="<?php echo esc_attr( $word_restriction_name ); ?>"
                            value="<?php echo esc_attr( $word_restriction_value ); ?>" title="<?php esc_attr_e(
-                        'Numebr of words the author to be restricted in', 'wp-user-frontend'
+                        'Number of words the author to be restricted in', 'wp-user-frontend'
                     ); ?>"/>
                 </label>
             </div>
@@ -473,7 +473,7 @@ class Admin_Template {
 
     public static function dropdown_field( $field_id, $label, $values = [] ) {
         $first_name  = sprintf( '%s[%d][first]', self::$input_name, $field_id );
-        $first_value = $values ? $values['first'] : ' - select -';
+        $first_value = $values ? $values['first'] : ' - Select -';
         $help        = esc_attr(
             __(
                 'First element of the select dropdown. Leave this empty if you don\'t want to show this field',
@@ -510,7 +510,7 @@ class Admin_Template {
 
     public static function multiple_select( $field_id, $label, $values = [] ) {
         $first_name  = sprintf( '%s[%d][first]', esc_attr( self::$input_name ), esc_attr( $field_id ) );
-        $first_value = $values ? $values['first'] : ' - select -';
+        $first_value = $values ? $values['first'] : ' - Select -';
         $help        = esc_attr(
             __(
                 'First element of the select dropdown. Leave this empty if you don\'t want to show this field',
@@ -752,9 +752,10 @@ class Admin_Template {
 
                         <div class="description" style="margin-top: 8px;">
                             <?php printf(
+                                // translators: %s is url of settings and recaptcha
                                 esc_html(
                                     __(
-                                        "Insert your public key and private key in <a href='%s'>plugin settings</a>. <a href='%s' target='_blank'>Register</a> first if you don't have any keys.",
+                                        "Insert your public key and private key in <a href='%1\$s'>plugin settings</a>. <a href='%2\$s' target='_blank'>Register</a> first if you don't have any keys.",
                                         'wp-user-frontend'
                                     )
                                 ), esc_url( admin_url( 'admin.php?page=wpuf-settings' ) ),

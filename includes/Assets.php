@@ -106,71 +106,81 @@ class Assets {
      */
     public function get_styles() {
         $styles = [
-            'frontend-forms'     => [
+            'frontend-forms'      => [
                 'src' => WPUF_ASSET_URI . '/css/frontend-forms.css',
             ],
-            'layout1'            => [
+            'layout1'             => [
                 'src' => WPUF_ASSET_URI . '/css/frontend-form/layout1.css',
             ],
-            'layout2'            => [
+            'layout2'             => [
                 'src' => WPUF_ASSET_URI . '/css/frontend-form/layout2.css',
             ],
-            'layout3'            => [
+            'layout3'             => [
                 'src' => WPUF_ASSET_URI . '/css/frontend-form/layout3.css',
             ],
-            'layout4'            => [
+            'layout4'             => [
                 'src' => WPUF_ASSET_URI . '/css/frontend-form/layout4.css',
             ],
-            'layout5'            => [
+            'layout5'             => [
                 'src' => WPUF_ASSET_URI . '/css/frontend-form/layout5.css',
             ],
-            'jquery-ui'          => [
+            'jquery-ui'           => [
                 'src'     => WPUF_ASSET_URI . '/css/jquery-ui-1.9.1.custom.css',
                 'version' => '1.9.1',
             ],
             'sweetalert2'        => [
-                'src'     => WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.css',
-                'version' => '11.4.19',
+                'src'     => WPUF_ASSET_URI . '/vendor/sweetalert2/sweetalert2.css',
+                'version' => '11.4.8',
             ],
-            'font-awesome'       => [
+            'font-awesome'        => [
                 'src'     => WPUF_ASSET_URI . '/vendor/font-awesome/css/font-awesome.min.css',
                 'version' => '4.7.0',
             ],
-            'selectize'          => [
+            'selectize'           => [
                 'src'     => WPUF_ASSET_URI . '/vendor/selectize/css/selectize.default.css',
                 'version' => '0.12.4',
             ],
-            'toastr'             => [
+            'toastr'              => [
                 'src'     => WPUF_ASSET_URI . '/vendor/toastr/toastr.min.css',
                 'version' => '2.1.3',
             ],
-            'tooltip'            => [
+            'tooltip'             => [
                 'src'     => WPUF_ASSET_URI . '/vendor/tooltip/tooltip.css',
                 'version' => '3.3.7',
             ],
-            'form-builder'       => [
+            'form-builder'        => [
                 'src'  => WPUF_ASSET_URI . '/css/wpuf-form-builder.css',
                 'deps' => $this->form_builder_css_deps,
             ],
-            'admin'              => [
+            'admin-form-builder'  => [
+                'src'  => WPUF_ASSET_URI . '/css/admin/form-builder.css',
+                'deps' => $this->form_builder_css_deps,
+            ],
+            'admin'               => [
                 'src' => WPUF_ASSET_URI . '/css/admin.css',
             ],
-            'registration-forms' => [
+            'admin-subscriptions' => [
+                'src' => WPUF_ASSET_URI . '/css/admin/subscriptions.min.css',
+            ],
+            'registration-forms'  => [
                 'src' => WPUF_ASSET_URI . '/css/registration-forms.css',
             ],
-            'module'             => [
+            'module'              => [
                 'src' => WPUF_ASSET_URI . '/css/admin/wpuf-module.css',
             ],
-            'swiffy-slider'      => [
+            'swiffy-slider'       => [
                 'src'     => WPUF_ASSET_URI . '/vendor/swiffy-slider/swiffy-slider.min.css',
                 'version' => '1.6.0',
             ],
-            'setup'              => [
+            'setup'               => [
                 'src'  => WPUF_ASSET_URI . '/css/admin/wpuf-setup.css',
                 'deps' => [ 'dashicons', 'install' ],
             ],
-            'whats-new'          => [
-                'src'  => WPUF_ASSET_URI . '/css/admin/whats-new.css',
+            'whats-new'           => [
+                'src' => WPUF_ASSET_URI . '/css/admin/whats-new.css',
+            ],
+            'forms-list'           => [
+                'src' => WPUF_ASSET_URI . '/css/forms-list.min.css',
             ],
         ];
 
@@ -212,15 +222,20 @@ class Assets {
                 'in_footer' => true,
                 'version'   => '2.2.4',
             ],
+            'vue-3'                    => [
+                'src'       => WPUF_ASSET_URI . '/vendor/vue-3/vue.esm-browser.js',
+                'in_footer' => true,
+                'version'   => '3.4.19',
+            ],
             'vuex'                     => [
                 'src'       => WPUF_ASSET_URI . '/vendor/vuex/vuex' . $this->suffix . '.js',
                 'in_footer' => true,
                 'version'   => '2.2.1',
             ],
             'sweetalert2'              => [
-                'src'       => WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2' . $this->suffix . '.js',
+                'src'       => WPUF_ASSET_URI . '/vendor/sweetalert2/sweetalert2.js',
                 'in_footer' => true,
-                'version'   => '11.4.19',
+                'version'   => '11.4.8',
                 'deps'      => [ 'jquery' ],
             ],
             'jquery-scrollTo'          => [
@@ -270,8 +285,12 @@ class Assets {
                 'deps' => [ 'jquery' ],
             ],
             'subscriptions'            => [
-                'src'       => WPUF_ASSET_URI . '/js/subscriptions.js',
+                'src'       => WPUF_ASSET_URI . '/js/subscriptions-old.js',
                 'deps'      => [ 'jquery' ],
+                'in_footer' => true,
+            ],
+            'admin-subscriptions'      => [
+                'src'       => WPUF_ASSET_URI . '/js/subscriptions.min.js',
                 'in_footer' => true,
             ],
             'timepicker'               => [
@@ -306,7 +325,7 @@ class Assets {
                 'version'   => '1.6.0',
                 'in_footer' => true,
             ],
-            'admin-shortcode'                => [
+            'admin-shortcode'          => [
                 'src'  => WPUF_ASSET_URI . '/js/admin-shortcode.js',
                 'deps' => [ 'jquery' ],
             ],
@@ -358,6 +377,20 @@ class Assets {
             'ajax_login'               => [
                 'src'  => WPUF_ASSET_URI . '/js/wpuf-login-widget.js',
                 'deps' => [ 'jquery' ],
+            ],
+            'headway'                  => [
+                'src'  => '//cdn.headwayapp.co/widget.js',
+            ],
+            'turnstile'                  => [
+                'src'  => 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback',
+            ],
+            'headway-script'         => [
+                'src' => WPUF_ASSET_URI . '/vendor/headway.js',
+                'deps' => [ 'jquery' ],
+            ],
+            'forms-list'         => [
+                'src'       => WPUF_ASSET_URI . '/js/forms-list.min.js',
+                'in_footer' => true,
             ],
         ];
 

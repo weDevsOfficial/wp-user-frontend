@@ -210,7 +210,15 @@ class WPUF_Privacy {
         global $wpdb;
         $ids   = sprintf( '(%s)', implode( ',', $post_ids ) );
         $query = "Update `$wpdb->posts` Set `post_author` = 0 WHERE `ID` in $ids";
-        $wpdb->query( $query );
+
+        if ( ! empty( $post_ids ) ) {
+            $placeholders = implode( ',', array_fill( 0, count( $post_ids ), '%d' ) );
+
+            $wpdb->query( $wpdb->prepare(
+                "UPDATE `$wpdb->posts` SET `post_author` = 0 WHERE `ID` IN ($placeholders)",
+                $post_ids
+            ));
+        }
 
         $erased = apply_filters( 'wpuf_erase_user_data', [
             'items_removed'  => true,

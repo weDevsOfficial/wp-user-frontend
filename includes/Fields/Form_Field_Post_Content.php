@@ -10,7 +10,28 @@ class Form_Field_Post_Content extends Field_Contract {
     public function __construct() {
         $this->name       = __( 'Post Content', 'wp-user-frontend' );
         $this->input_type = 'post_content';
-        $this->icon       = 'text-width';
+        $this->icon       = 'queue-list';
+
+        // check if block theme is active
+        if ( function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() ) {
+            add_filter( 'format_for_editor', [ $this, 'format_for_editor' ], 10, 2 );
+        }
+    }
+
+    /**
+     * Format the content for editor. Need to do this for block theme support
+     *
+     * @param string $content
+     * @param string $default_editor
+     *
+     * @return string
+     */
+    public function format_for_editor( $content, $default_editor ) {
+        if ( 'tinymce' !== $default_editor ) {
+            return $content;
+        }
+
+        return htmlspecialchars_decode( $content, ENT_NOQUOTES );
     }
 
     /**
@@ -126,6 +147,7 @@ class Form_Field_Post_Content extends Field_Contract {
             );
         }
         ?>
+        </div>
         </li>
         <?php
     }

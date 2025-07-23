@@ -107,7 +107,7 @@ class WeDevs_Settings_API {
 
             if ( isset($section['desc']) && !empty($section['desc']) ) {
                 $section['desc'] = '<div class="inside">' . $section['desc'] . '</div>';
-                $callback = create_function('', 'echo "' . str_replace( '"', '\"', $section['desc'] ) . '";');
+                $callback = create_function('', 'echo "' . str_replace( '"', '\"', $section['desc'] ) . '";'); // phpcs:ignore
             } else if ( isset( $section['callback'] ) ) {
                 $callback = $section['callback'];
             } else {
@@ -140,6 +140,7 @@ class WeDevs_Settings_API {
                     'max'               => isset( $option['max'] ) ? $option['max'] : '',
                     'step'              => isset( $option['step'] ) ? $option['step'] : '',
                     'is_pro_preview'    => ! empty( $option['is_pro_preview'] ) ? $option['is_pro_preview'] : false,
+                    'depends_on'        => ! empty( $option['depends_on'] ) ? $option['depends_on'] : '',
                 );
 
                 add_settings_field( $section . '[' . $option['name'] . ']', $option['label'], (isset($option['callback']) ? $option['callback'] : array($this, 'callback_' . $type )), $section, $section, $args );
@@ -173,21 +174,24 @@ class WeDevs_Settings_API {
      * @param array   $args settings field args
      */
     function callback_text( $args ) {
-
         $value       = esc_attr( $this->get_option( $args['id'], $args['section'], $args['std'] ) );
         $size        = isset( $args['size'] ) && !is_null( $args['size'] ) ? $args['size'] : 'regular';
         $type        = isset( $args['type'] ) ? $args['type'] : 'text';
         $placeholder = empty( $args['placeholder'] ) ? '' : ' placeholder="' . $args['placeholder'] . '"';
         $disabled    = ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ? 'disabled' : '';
+        $depends_on  = ! empty( $args['depends_on'] ) ? $args['depends_on'] : '';
 
-        $html        = sprintf( '<input type="%1$s" class="%2$s-text" id="%3$s[%4$s]" name="%3$s[%4$s]" value="%5$s"%6$s %7$s/>', $type, $size, $args['section'], $args['id'], $value, $placeholder, $disabled );
+        $html        = sprintf(
+            '<input type="%1$s" class="%2$s-text" id="%3$s[%4$s]" name="%3$s[%4$s]" value="%5$s"%6$s %7$s data-depends-on="%8$s" />',
+            $type, $size, $args['section'], $args['id'], $value, $placeholder, $disabled, $depends_on
+        );
         $html       .= $this->get_field_description( $args );
 
         if ( ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ) {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo $html;
+        echo wp_kses( $html, array('input' => ['type' => [],'class' => [],'id' => [],'name' => [],'value' => [],'disabled' => [],'data-depends-on' => []], 'p' => ['class' => []], 'div' => ['class' => []], 'a' => ['href' => [],'target' => [],'class' => []], 'span' => ['class' => []], 'svg' => ['width' => [],'height' => [],'viewBox' => [],'fill' => [],'xmlns' => [],],));
     }
 
     /**
@@ -221,7 +225,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo $html;
+        echo wp_kses( $html, array('input' => ['type' => [],'class' => [],'id' => [],'name' => [],'value' => [],'disabled' => [],],'p' => ['class' => [],],'div' => ['class' => [],],'a' => ['href' => [],'target' => [],'class' => [],],'span' => ['class' => [],],'svg' => ['width' => [],'height' => [],'viewBox' => [],'fill' => [],'xmlns' => [],],'path' => ['d' => [],'fill' => [],],) );
     }
 
     /**
@@ -244,7 +248,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo $html;
+        echo wp_kses( $html, array('fieldset' => [],'label' => ['for' => [],],'input' => ['type' => [],'class' => [],'id' => [],'name' => [],'value' => [],'checked' => [], 'disabled' => []], 'div' => ['class' => [] ], 'a' => ['href' => [],'target' => [],'class' => [] ], 'span' => ['class' => [] ],'svg' => ['width' => [],'height' => [],'viewBox' => [],'fill' => [],'xmlns' => [] ], 'path' => ['d' => [], 'fill' => [] ], 'br' => [],) );
     }
 
     /**
@@ -273,7 +277,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo $html;
+        echo wp_kses( $html, array('fieldset' => [],'label' => ['for' => []],'input' => ['type' => [],'class' => [],'id' => [],'name' => [],'value' => [],'checked' => [],],'br' => [],'span' => ['class' => []],'svg' => ['width' => [],'height' => [],'viewBox' => [],'fill' => [],'xmlns' => [],],'path' => ['d' => [], 'fill' => []],'p' => ['class' => [] ] ) );
     }
 
     /**
@@ -299,7 +303,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo $html;
+        echo wp_kses( $html, array('fieldset' => [], 'label' => ['for' => []], 'input' => ['type' => [], 'class' => [], 'id' => [], 'name' => [], 'value' => [], 'checked' => [], 'disabled' => []], 'img' => ['class' => [], 'src' => [], 'alt' => []], 'br' => [], 'div' => ['class' => []], 'a' => ['href' => [], 'target' => [], 'class' => []], 'span' => ['class' => []], 'svg' => ['width' => [], 'height' => [], 'viewBox' => [], 'fill' => [], 'xmlns' => []], 'path' => ['d' => [], 'fill' => [] ] ) );
     }
 
     /**
@@ -325,7 +329,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo $html;
+        echo wp_kses( $html, array('select' => ['class' => [], 'name' => [], 'id' => [], 'disabled' => []], 'option' => ['value' => [], 'selected' => []], 'p' => ['class' => []], 'div' => ['class' => []], 'a' => ['href' => [], 'target' => [], 'class' => []], 'span' => ['class' => []], 'svg' => ['width' => [], 'height' => [], 'viewBox' => [], 'fill' => [], 'xmlns' => []], 'path' => ['d' => [], 'fill' => [] ] ) );
     }
 
     /**
@@ -347,7 +351,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo $html;
+        echo wp_kses_post( $html );
     }
 
     /**
@@ -363,7 +367,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo $html;
+        echo wp_kses( $html, array('p' => ['class' => []], 'input' => ['class' => [],'type' => [],'disabled' => [],'value' => []], 'div' => ['class' => []], 'a' => ['href' => [],'target' => [],'class' => []], 'span' => ['class' => []], 'svg' => ['width' => [],'height' => [],'viewBox' => [],'fill' => [],'xmlns' => [],], 'path' => ['d' => [], 'fill' => []],) );
     }
 
     /**
@@ -376,7 +380,7 @@ class WeDevs_Settings_API {
         $value = $this->get_option( $args['id'], $args['section'], $args['std'] );
         $size  = isset( $args['size'] ) && !is_null( $args['size'] ) ? $args['size'] : '500px';
 
-        echo '<div style="max-width: ' . $size . ';">';
+        echo '<div style="max-width: ' . esc_attr( $size ) . ';">';
 
         $editor_settings = array(
             'teeny'          => true,
@@ -393,7 +397,7 @@ class WeDevs_Settings_API {
 
         echo '</div>';
 
-        echo $this->get_field_description( $args );
+        echo wp_kses_post( $this->get_field_description( $args ) );
     }
 
     /**
@@ -417,7 +421,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo $html;
+        echo wp_kses( $html, array('input' => ['type' => [],'class' => [],'id' => [],'name' => [],'value' => [],'disabled' => []], 'p' => ['class' => []], 'div' => ['class' => []], 'a' => ['href' => [],'target' => [],'class' => []], 'span' => ['class' => []], 'svg' => ['width' => [],'height' => [],'viewBox' => [],'fill' => [],'xmlns' => [],], 'path' => ['d' => [], 'fill' => []],) );
     }
 
     /**
@@ -437,7 +441,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo $html;
+        echo wp_kses_post( $html );
     }
 
     /**
@@ -457,7 +461,40 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo $html;
+        echo wp_kses_post( $html );
+    }
+
+    /**
+     * Displays a toggle field for a settings field
+     *
+     * @param array   $args settings field args
+     */
+    public function callback_toggle( $args ) {
+        $value    = esc_attr( $this->get_option( $args['id'], $args['section'], $args['std'] ) );
+        $disabled = ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ? 'disabled' : '';
+        $name = $args['section'] . '[' . $args['id'] . ']';
+        ?>
+        <fieldset>
+            <label for="<?php echo 'wpuf-' . esc_attr( $name ); ?>" class="wpuf-toggle-switch">
+                <input
+                    type="hidden"
+                    name="<?php echo esc_attr( $name ); ?>"
+                    value="off" />
+                <input
+                    style="opacity: 0;"
+                    type="checkbox"
+                    <?php echo $value === 'on' ? 'checked' : ''; ?>
+                    <?php echo $disabled ? 'disabled' : ''; ?>
+                    id="<?php echo 'wpuf-' . esc_attr( $name ); ?>"
+                    name="<?php echo esc_attr( $name ); ?>"
+                    class="wpuf-toggle-module checkbox"
+                    value="on">
+                <span class="slider round"></span>
+            </label>
+        </fieldset>
+
+        <?php echo wp_kses_post( $args['desc'] ); ?>
+        <?php
     }
 
     /**
@@ -538,7 +575,7 @@ class WeDevs_Settings_API {
     function show_navigation() {
         $html = '<h2 class="nav-tab-wrapper">';
         $html .= '<div id="wpuf-search-section">
-        <input type="text" id="wpuf-settings-search" placeholder="Search in settings">
+        <input type="text" id="wpuf-settings-search" placeholder="'. esc_attr__( 'Search in settings', 'wp-user-frontend' ) .'">
         <span class="dashicons dashicons-no-alt"></span>
     </div>';
         $count = count( $this->settings_sections );
@@ -554,7 +591,29 @@ class WeDevs_Settings_API {
 
         $html .= '</h2>';
 
-        echo $html;
+        $allowed_html = [
+            'h2'    => [
+                'class' => true,
+            ],
+            'div'   => [
+                'id' => true,
+            ],
+            'input' => [
+                'type'        => true,
+                'id'          => true,
+                'placeholder' => true,
+            ],
+            'span'  => [
+                'class' => true,
+            ],
+            'a'     => [
+                'href'  => true,
+                'class' => true,
+                'id'    => true,
+            ],
+        ];
+
+        echo wp_kses( $html, $allowed_html );
     }
 
     /**
@@ -568,7 +627,7 @@ class WeDevs_Settings_API {
             <?php foreach ( $this->settings_sections as $form ) {
                 $class = ! empty( $form['class'] ) ? esc_attr( $form['class'] ) : '';
                 ?>
-                <div id="<?php echo $form['id']; ?>" class="group <?php echo $class; ?>" style="display: none;">
+                <div id="<?php echo esc_attr( $form['id'] ); ?>" class="group <?php echo esc_attr( $class ); ?>" style="display: none;">
                     <form method="post" action="options.php">
                         <?php
                         do_action( 'wsa_form_top_' . $form['id'], $form );
@@ -586,8 +645,8 @@ class WeDevs_Settings_API {
             <?php
             }
             if ( ! wpuf()->is_pro() ) {
-                echo wpuf_get_pro_preview_html();
-                echo wpuf_get_pro_preview_tooltip();
+                echo wp_kses_post( wpuf_get_pro_preview_html() );
+                echo wp_kses_post( wpuf_get_pro_preview_tooltip() );
             }
             ?>
         </div>
@@ -673,6 +732,44 @@ class WeDevs_Settings_API {
 
                 // disable the pro preview checkboxes
                 $('span.pro-icon-title').siblings('input[type="checkbox"]').prop('disabled', true);
+
+                var fields = $('table.form-table input, table.form-table select, table.form-table textarea');
+
+                // iterate over each field and check if it depends on another field
+                fields.each(function() {
+                    var $this = $(this);
+                    var data_depends_on = $this.data('depends-on');
+
+                    if (!data_depends_on) {
+                        return;
+                    }
+
+                    var $depends_on = $("input[id*='"+ data_depends_on +"']");
+                    var $depends_on_type = $depends_on.attr('type');
+
+                    if ($depends_on_type === 'checkbox') {
+                        if ($depends_on.is(':checked')) {
+                            $this.closest('tr').show();
+                        } else {
+                            $this.closest('tr').hide();
+                        }
+                        $depends_on.on('change', function() {
+                            if ($(this).is(':checked')) {
+                                $this.closest('tr').show();
+                            } else {
+                                $this.closest('tr').hide();
+                            }
+                        });
+                    } else {
+                        $depends_on.on('keyup change', function() {
+                            if ($(this).val() === $this.data('depends-on-value')) {
+                                $this.closest('tr').show();
+                            } else {
+                                $this.closest('tr').hide();
+                            }
+                        });
+                    }
+                });
             });
         </script>
 

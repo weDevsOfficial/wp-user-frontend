@@ -1,5 +1,6 @@
 h2.swal2-title {
   line-height: 1.2em;
+  color: #000000 !important;
 }
 .wpuf-admin fieldset {
   border: 1px solid #E3E3E3;
@@ -122,8 +123,10 @@ span.wpuf-loading {
 .wpuf-footer-help {
   box-sizing: border-box;
   width: auto;
-  margin: 2rem 0.8rem;
+  margin-left: -20px;
+  padding: 100px 0.8rem 2rem 0.8rem;
   text-align: center;
+  background: white;
 }
 .wpuf-footer-help .wpuf-footer-help-content {
   border: 1px solid #ddd;
@@ -584,16 +587,8 @@ ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .
   position: relative;
 }
 ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields-sortable-list {
-  border: 1px dashed #ffb900;
-  background: rgba(255, 185, 0, 0.08);
   margin: 0;
   padding: 0 0 50px 0;
-}
-ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields-sortable-list li.column-field-items {
-  background: #fff;
-  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  position: relative;
 }
 ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields ul.wpuf-column-fields-sortable-list li.column-field-items.current-editing {
   background-color: rgba(255, 185, 0, 0.15);
@@ -700,6 +695,10 @@ a.wpuf-button.button-upgrade-to-pro {
   border-radius: 5px;
   text-decoration: none;
   border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
 }
 .pro-field-overlay a.wpuf-button.button-upgrade-to-pro {
   position: absolute;
@@ -712,8 +711,13 @@ a.wpuf-button.button-upgrade-to-pro {
 a.wpuf-button.button-upgrade-to-pro:hover {
   background: #d07805;
 }
+span.pro-icon {
+  display: inline-flex;
+  align-items: center;
+}
 span.pro-icon svg {
   height: 1em;
+  margin-left: 5px;
 }
 span.pro-icon.icon-white svg path {
   fill: #fff;
@@ -751,7 +755,7 @@ img.user-listing.active {
 .wpuf-pro-field-tooltip {
   background: #000;
   width: max-content;
-  padding: 25px 50px 20px 20px;
+  padding: 25px 35px 30px 20px;
   border-radius: 5px;
   color: #fff;
   position: absolute;
@@ -770,6 +774,7 @@ img.user-listing.active {
 }
 h3.tooltip-header {
   color: #fff;
+  font-size: 1.3rem;
 }
 .wpuf-subscription-pack-settings nav ul .wpuf-pro-field-tooltip ul li span.tooltip-check svg path,
 .wpuf-pro-field-tooltip ul li span.tooltip-check svg path {
@@ -781,8 +786,7 @@ h3.tooltip-header {
 }
 .wpuf-subscription-pack-settings nav ul .wpuf-pro-field-tooltip ul li,
 .wpuf-pro-field-tooltip ul li {
-  font-size: 1.2em;
-  line-height: 1.5em;
+  line-height: 1.5rem;
   font-weight: 400;
   margin-bottom: 6px;
 }
@@ -945,10 +949,62 @@ span.pro-icon:hover .wpuf-pro-field-tooltip {
 .wrap h2.with-headway-icon #HW_frame_cont {
   top: 78px !important;
 }
+.wpuf-toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+.wpuf-toggle-switch input {
+  display: none;
+}
+.wpuf-toggle-switch input:checked + .slider {
+  background-color: #0073aa;
+}
+.wpuf-toggle-switch input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+.wpuf-toggle-switch input:checked + .slider:before {
+  transform: translateX(26px);
+}
+.wpuf-toggle-switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .2s;
+}
+.wpuf-toggle-switch .slider.round {
+  border-radius: 34px;
+}
+.wpuf-toggle-switch .slider.round:before {
+  border-radius: 50%;
+}
+.wpuf-toggle-switch .slider::before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 4px;
+  background-color: white;
+  transition: .2s;
+}
 @media only screen and (max-width: 1399px) {
   a.wpuf-button.button-upgrade-to-pro {
     padding: 10px;
   }
+}
+.plugin-card .desc > p,
+.plugin-card .name {
+  margin-left: 148px !important;
+}
+#wpcontent,
+#wpfooter {
+  height: unset !important;
 }
 .wpuf-help-tabbed {
   display: flex;

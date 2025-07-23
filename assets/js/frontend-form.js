@@ -489,7 +489,7 @@
                 submitButton = form.find('input[type=submit]'),
                 form_data = WP_User_Frontend.validateForm(form);
 
-            if ( form_data == false ) {
+            if (!form_data) {
                 WP_User_Frontend.addErrorNotice( self, 'bottom' );
             }
             return form_data;
@@ -510,38 +510,78 @@
 
                 $.post(wpuf_frontend.ajaxurl, form_data, function(res) {
                     // var res = $.parseJSON(res);
-
                     if ( res.success) {
-
                         // enable external plugins to use events
                         $('body').trigger('wpuf:postform:success', res);
 
-                        if ( res.show_message == true) {
-                            form.before( '<div class="wpuf-success">' + res.message + '</div>');
-                            form.slideUp( 'fast', function() {
-                                form.remove();
-                            });
+                        if ( res.data ) {
+                            if ( res.data.show_message ) {
+                                form.before( '<div class="wpuf-success">' + res.data.message + '</div>');
+                                form.slideUp( 'fast', function() {
+                                    form.remove();
+                                });
 
-                            //focus
-                            $('html, body').animate({
-                                scrollTop: $('.wpuf-success').offset().top - 100
-                            }, 'fast');
+                                //focus
+                                $('html, body').animate({
+                                    scrollTop: $('.wpuf-success').offset().top - 100
+                                }, 'fast');
 
+                            } else {
+                                window.location = res.data.redirect_to;
+                            }
                         } else {
-                            window.location = res.redirect_to;
+                            if ( res.show_message ) {
+                                form.before( '<div class="wpuf-success">' + res.message + '</div>');
+                                form.slideUp( 'fast', function() {
+                                    form.remove();
+                                });
+
+                                //focus
+                                $('html, body').animate({
+                                    scrollTop: $('.wpuf-success').offset().top - 100
+                                }, 'fast');
+
+                            } else {
+                                window.location = res.redirect_to;
+                            }
+                        }
+                    } else {
+                        if ( typeof res.data.type !== 'undefined' && res.data.type === 'login' ) {
+                            Swal.fire({
+                                text: res.error,
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#3085d6",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "OK"
+                            } ).then( function ( result ) {
+                                if (result.isConfirmed) {
+                                    window.location = res.redirect_to;
+                                } else {
+                                    submitButton.removeAttr('disabled');
+                                    submitButton.removeClass('button-primary-disabled');
+                                    form.find('span.wpuf-loading').remove();
+                                }
+                            });
                         }
 
-                    } else {
-
                         if ( typeof res.type !== 'undefined' && res.type === 'login' ) {
-
-                            if ( confirm(res.data.error) ) {
-                                window.location = res.redirect_to;
-                            } else {
-                                submitButton.removeAttr('disabled');
-                                submitButton.removeClass('button-primary-disabled');
-                                form.find('span.wpuf-loading').remove();
-                            }
+                            Swal.fire({
+                                text: res.error,
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#3085d6",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "OK"
+                            }).then(function(result) {
+                                if (result.isConfirmed) {
+                                    window.location = res.redirect_to;
+                                } else {
+                                    submitButton.removeAttr('disabled');
+                                    submitButton.removeClass('button-primary-disabled');
+                                    form.find('span.wpuf-loading').remove();
+                                }
+                            });
 
                             return;
                         } else {
@@ -549,8 +589,10 @@
                                 grecaptcha.reset();
                             }
 
+                            const errorMsg = res.error ? res.error : res.data.error;
+
                             Swal.fire({
-                                html: res.data.error,
+                                html: errorMsg,
                                 icon: 'warning',
                                 showCancelButton: false,
                                 confirmButtonColor: '#d54e21',
@@ -747,19 +789,19 @@
                                 errors.push({
                                     type: 'custom',
                                     container: item,
-                                    message: 'Password minimum strength should be weak'
+                                    message: wpuf_frontend.password_warning_weak
                                 });
                             } else if (strength === 'medium' && strengthMeter < 3) {
                                 errors.push({
                                     type: 'custom',
                                     container: item,
-                                    message: 'Password minimum strength should be medium'
+                                    message: wpuf_frontend.password_warning_medium
                                 });
                             } else if (strength === 'strong' && strengthMeter < 4) {
                                 errors.push({
                                     type: 'custom',
                                     container: item,
-                                    message: 'Password strength should be strong'
+                                    message: wpuf_frontend.password_warning_strong
                                 });
                             }
                         }

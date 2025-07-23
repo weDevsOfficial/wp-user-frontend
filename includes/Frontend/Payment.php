@@ -204,11 +204,6 @@ class Payment {
                                                         $billing_amount = apply_filters( 'wpuf_payment_amount',
                                                                                          $pack->meta_value['billing_amount'] );
                                                         ?>
-
-                                                        <div id="wpuf_type"
-                                                             style="display: none"><?php echo 'pack'; ?></div>
-                                                        <div id="wpuf_id"
-                                                             style="display: none"><?php echo esc_attr( $pack_id ); ?></div>
                                                         <div><?php esc_html_e( 'Selected Pack',
                                                                                'wp-user-frontend' ); ?>:
                                                             <strong><?php echo esc_attr( $pack->post_title ); ?></strong>
@@ -482,7 +477,9 @@ class Payment {
         $sql = $wpdb->prepare( 'SELECT transaction_id
             FROM ' . $wpdb->prefix . 'wpuf_transaction
             WHERE transaction_id = %s LIMIT 1', $transaction_id );
-        $result = $wpdb->get_row( $sql );
+        $result = $wpdb->get_row( $wpdb->prepare( 'SELECT transaction_id
+            FROM ' . $wpdb->prefix . 'wpuf_transaction
+            WHERE transaction_id = %s LIMIT 1', $transaction_id ) );
         if ( $recurring !== false ) {
             $profile_id = $data['profile_id'];
         }

@@ -37,8 +37,10 @@ class Setup_Wizard {
      * @return void
      */
     public function custom_admin_bar_styles() {
-        if ( is_admin_bar_showing() ) {
+        if ( function_exists( 'wp_enqueue_admin_bar_header_styles' ) ) {
             wp_enqueue_admin_bar_header_styles();
+        } else {
+            wp_admin_bar_header();
         }
     }
 
@@ -308,7 +310,14 @@ class Setup_Wizard {
     public function wpuf_setup_introduction() {
         ?>
         <h1><?php esc_html_e( 'Welcome to the world of WPUF!', 'wp-user-frontend' ); ?></h1>
-        <p><?php echo wp_kses_post( __( 'Thank you for choosing WPUF to power your websites frontend! This quick setup wizard will help you configure the basic settings. <strong>It’s completely optional and shouldn’t take longer than a minute.</strong>', 'wp-user-frontend' ) ); ?></p>
+        <p>
+            <?php
+            echo wp_kses_post(
+                // translators: %1$s and %2$s are strong tags
+                sprintf( __( 'Thank you for choosing WPUF to power your websites frontend! This quick setup wizard will help you configure the basic settings. %1$sIt’s completely optional and shouldn’t take longer than a minute%2$s', 'wp-user-frontend' ), '<strong>', '<strong />' )
+            );
+            ?>
+        </p>
         <p><?php esc_html_e( 'No time right now? If you don’t want to go through the wizard, you can skip and return to the WordPress dashboard. Come back anytime if you change your mind!', 'wp-user-frontend' ); ?></p>
         <p class="wpuf-setup-actions step">
             <a href="<?php echo esc_url( $this->get_next_step_link() ); ?>" class="button-primary button button-large button-next"><?php esc_html_e( 'Let\'s Go!', 'wp-user-frontend' ); ?></a>
@@ -350,7 +359,7 @@ class Setup_Wizard {
                     <a class="wpuf-insights-data-we-collect" href="#">What we collect</a>                </span>
                 <p id="collection-info" class="description" style="display:none;">
                     Server environment details (php, mysql, server, WordPress versions), Number of users in your site, Site language, Number of active and inactive plugins, Site name and url, Your name and email address. No sensitive data is tracked.                    We are using <a href="https://appsero.com" target="_blank">Appsero</a> to collect your data. <a href="https://appsero.com/privacy-policy/" target="_blank">Learn more</a> about how <a href="https://appsero.com" target="_blank">Appsero</a> collects and handle your data.                </p>'; ?>
-                        <label for="share_wpuf_essentials"><?php echo wp_kses( __( $share, 'wp-user-frontend' ),
+                        <label for="share_wpuf_essentials"><?php echo wp_kses( $share,
                             [
                                 'span'      => [
                                     'class' => []

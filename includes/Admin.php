@@ -25,17 +25,21 @@ class Admin {
         $this->container['settings']              = new Admin\Admin_Settings();
         $this->container['forms']                 = new Admin\Forms\Form_Manager();
         $this->container['gutenberg_block']       = new Frontend\Form_Gutenberg_Block();
-        $this->container['promotion']             = new Admin\Promotion();
         $this->container['plugin_upgrade_notice'] = new Admin\Plugin_Upgrade_Notice();
         $this->container['posting']               = new Admin\Posting();
         $this->container['shortcodes_button']     = new Admin\Shortcodes_Button();
         $this->container['tools']                 = new Admin\Admin_Tools();
 
+        // only free users will see the promotion
+        if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {
+            $this->container['promotion'] = new Admin\Promotion();
+        }
+
         // dynamic hook. format: "admin_action_{$action}". more details: wp-admin/admin.php
         add_action( 'admin_action_post_form_template', [ $this, 'create_post_form_from_template' ] );
 
         // enqueue common scripts that will load throughout WordPress dashboard. notice, what's new etc.
-        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_common_scripts' ] );
+        add_action( 'init', [ $this, 'enqueue_common_scripts' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_cpt_page_scripts' ] );
 
         // block admin access as per wpuf settings
@@ -61,28 +65,50 @@ class Admin {
      * @return void
      */
     public function enqueue_common_scripts() {
+        if ( ! is_admin() ) {
+            return;
+        }
+
         wp_enqueue_style( 'wpuf-whats-new' );
         wp_enqueue_style( 'wpuf-admin' );
         wp_enqueue_style( 'wpuf-sweetalert2' );
         wp_enqueue_script( 'wpuf-sweetalert2' );
         wp_enqueue_script( 'wpuf-admin' );
 
+        $page = isset( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : '';
+        $selected_page = [ 'wpuf-post-forms', 'wpuf-profile-forms', 'wpuf_subscription', 'wpuf_transaction', 'wpuf_tools' ];
+
+        if ( in_array( $page, $selected_page ) ) {
+            wpuf_load_headway_badge();
+        }
+
         wp_localize_script(
             'wpuf-admin', 'wpuf_admin_script',
             [
-                'ajaxurl'               => admin_url( 'admin-ajax.php' ),
-                'nonce'                 => wp_create_nonce( 'wpuf_nonce' ),
-                'cleared_schedule_lock' => __( 'Post lock has been cleared', 'wp-user-frontend' ),
-                'asset_url' => WPUF_ASSET_URI,
+                'ajaxurl'                      => admin_url( 'admin-ajax.php' ),
+                'nonce'                        => wp_create_nonce( 'wpuf_nonce' ),
+                'cleared_schedule_lock'        => __( 'Post lock has been cleared', 'wp-user-frontend' ),
+                'asset_url'                    => WPUF_ASSET_URI,
+                'admin_url'                    => admin_url(),
+                'support_url'                  => esc_url(
+                    'https://wedevs.com/contact/?utm_source=wpuf-subscription'
+                ),
+                'version'                      => WPUF_VERSION,
+                'pro_version'                  => defined( 'WPUF_PRO_VERSION' ) ? WPUF_PRO_VERSION : '',
+                'isProActive'                  => class_exists( 'WP_User_Frontend_Pro' ),
                 'protected_shortcodes'         => wpuf_get_protected_shortcodes(),
                 'protected_shortcodes_message' => sprintf(
-                    __( '%sThis post contains a sensitive short-code %s, that may allow others to sign-up with distinguished roles. If unsure, remove the short-code before publishing (recommended) %sas this may be exploited as a security vulnerability.%s', 'wp-user-frontend' ),
+                    // translators: %1$s is the opening div tag, %2$s is the shortcode [wpuf-registration], %3$s is the opening strong tag, %4$s is the closing strong tag, %5$s is the closing div tag
+                    __( '%1$sThis post contains a sensitive short-code %2$s, that may allow others to sign-up with distinguished roles. If unsure, remove the short-code before publishing (recommended) %3$sas this may be exploited as a security vulnerability.%4$s', 'wp-user-frontend' ),
                     '<div style="font-size: 1em; text-align: justify; color: darkgray">',
                     '[wpuf-registration]',
                     '<strong>',
                     '</strong>',
                     '</div>'
-                )
+                ),
+                'upgradeUrl'                   => esc_url(
+                    'https://wedevs.com/wp-user-frontend-pro/pricing/'
+                ),
             ]
         );
     }

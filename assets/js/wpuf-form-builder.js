@@ -926,10 +926,16 @@
                 },
                 guest_email_verify: {
                     type: 'text',
-                    dependsOn: [{
-                        field: 'post_permission',
-                        value: 'guest_post'
-                    }]
+                    dependsOn: [
+                        {
+                            field: 'post_permission',
+                            value: 'guest_post'
+                        },
+                        {
+                            field: 'guest_details',
+                            value: true
+                        }
+                    ]
                 },
                 name_label: {
                     type: 'text',

@@ -41,7 +41,7 @@ Vue.component('form-fields-v4-1', {
             });
 
             buttons.draggable({
-                connectToSortable: '#form-preview-stage, #form-preview-stage .wpuf-form, .wpuf-column-inner-fields .wpuf-column-fields-sortable-list',
+                connectToSortable: '#form-preview-stage, #form-preview-stage .wpuf-form, .wpuf-column-inner-fields .wpuf-column-fields-sortable-list, .wpuf-repeat-fields-sortable-list',
                 helper: 'clone',
                 revert: 'invalid',
                 cancel: '.button-faded',

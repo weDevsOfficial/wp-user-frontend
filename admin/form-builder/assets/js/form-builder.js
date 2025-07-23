@@ -130,8 +130,8 @@
 
                     }
 
-                    // check if the editing field belong to a column field or repeat field
-                    if (state.form_fields[i].template.match(/^(column|repeat)_field$/)) {
+                    // check if the editing field belongs to a column field
+                    if (state.form_fields[i].template === 'column_field') {
                         var innerColumnFields = state.form_fields[i].inner_fields;
 
                         for (const columnFields in innerColumnFields) {
@@ -406,6 +406,16 @@
                 } else {
                     state.form_fields[columnFieldIndex].inner_fields[payload.toWhichColumn].splice( payload.toIndex, 0, payload.field );
                 }
+            },
+
+            // add new form field element to repeat field
+            add_repeat_inner_field_element: function (state, payload) {
+                var repeatFieldIndex = state.form_fields.findIndex(field => field.id === payload.toWhichRepeatField);
+                if (repeatFieldIndex === -1) return;
+                if (!state.form_fields[repeatFieldIndex].inner_fields) {
+                    Vue.set(state.form_fields[repeatFieldIndex], 'inner_fields', []);
+                }
+                state.form_fields[repeatFieldIndex].inner_fields.splice(payload.toIndex, 0, payload.field);
             },
 
             move_column_inner_fields: function(state, payload) {
@@ -839,7 +849,7 @@
                     this.active_settings_title = this.settings_titles[menu].sub_items[submenu].label;
                 }
             },
-            
+
             switch_form_settings_pic_radio_item: function ( key, value ) {
                 this.form_settings[key] = value;
             },

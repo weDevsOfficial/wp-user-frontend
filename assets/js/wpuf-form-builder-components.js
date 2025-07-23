@@ -362,7 +362,19 @@ Vue.component('builder-stage-v4-1', {
 
         get_field_name: function (template) {
             return this.field_settings[template].title;
-        }
+        },
+
+        openRepeatFieldPicker(fieldId) {
+            // Find the repeat field component by ref and call openFieldPicker()
+            const refName = 'repeatFieldComponent_' + fieldId;
+            const comp = this.$refs[refName];
+            // Vue 2: $refs[refName] is an array if used in v-for, so get first
+            if (Array.isArray(comp) && comp.length > 0) {
+                comp[0].openFieldPicker();
+            } else if (comp && typeof comp.openFieldPicker === 'function') {
+                comp.openFieldPicker();
+            }
+        },
     }
 });
 
@@ -704,6 +716,10 @@ Vue.component('field-options', {
         },
 
         settings: function() {
+            if (!this.editing_form_field) {
+                return [];
+            }
+            
             var settings = [],
                 template = this.editing_form_field.template;
 
@@ -737,6 +753,10 @@ Vue.component('field-options', {
         },
 
         form_field_type_title: function() {
+            if (!this.editing_form_field) {
+                return '';
+            }
+            
             var template = this.editing_form_field.template;
 
             if (_.isFunction(this['form_field_' + template + '_title'])) {
@@ -1557,7 +1577,7 @@ Vue.component('form-fields', {
     mounted: function () {
         // bind jquery ui draggable
         $(this.$el).find('.panel-form-field-buttons .button').draggable({
-            connectToSortable: '#form-preview-stage, #form-preview-stage .wpuf-form, .wpuf-column-inner-fields .wpuf-column-fields-sortable-list',
+            connectToSortable: '#form-preview-stage, #form-preview-stage .wpuf-form, .wpuf-column-inner-fields .wpuf-column-fields-sortable-list, .wpuf-repeat-fields-sortable-list',
             helper: 'clone',
             revert: 'invalid',
             cancel: '.button-faded',
@@ -1656,7 +1676,7 @@ Vue.component('form-fields-v4-1', {
             });
 
             buttons.draggable({
-                connectToSortable: '#form-preview-stage, #form-preview-stage .wpuf-form, .wpuf-column-inner-fields .wpuf-column-fields-sortable-list',
+                connectToSortable: '#form-preview-stage, #form-preview-stage .wpuf-form, .wpuf-column-inner-fields .wpuf-column-fields-sortable-list, .wpuf-repeat-fields-sortable-list',
                 helper: 'clone',
                 revert: 'invalid',
                 cancel: '.button-faded',

@@ -175,6 +175,18 @@ Vue.component('builder-stage-v4-1', {
 
         get_field_name: function (template) {
             return this.field_settings[template].title;
-        }
+        },
+
+        openRepeatFieldPicker(fieldId) {
+            // Find the repeat field component by ref and call openFieldPicker()
+            const refName = 'repeatFieldComponent_' + fieldId;
+            const comp = this.$refs[refName];
+            // Vue 2: $refs[refName] is an array if used in v-for, so get first
+            if (Array.isArray(comp) && comp.length > 0) {
+                comp[0].openFieldPicker();
+            } else if (comp && typeof comp.openFieldPicker === 'function') {
+                comp.openFieldPicker();
+            }
+        },
     }
 });

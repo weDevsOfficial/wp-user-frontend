@@ -55,6 +55,10 @@ Vue.component('field-options', {
         },
 
         settings: function() {
+            if (!this.editing_form_field) {
+                return [];
+            }
+            
             var settings = [],
                 template = this.editing_form_field.template;
 
@@ -88,6 +92,10 @@ Vue.component('field-options', {
         },
 
         form_field_type_title: function() {
+            if (!this.editing_form_field) {
+                return '';
+            }
+            
             var template = this.editing_form_field.template;
 
             if (_.isFunction(this['form_field_' + template + '_title'])) {

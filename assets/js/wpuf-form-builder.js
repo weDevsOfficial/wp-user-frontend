@@ -418,6 +418,16 @@
                 state.form_fields[repeatFieldIndex].inner_fields.splice(payload.toIndex, 0, payload.field);
             },
 
+            // sorting inside repeat field
+            swap_repeat_field_elements: function (state, payload) {
+                var repeatFieldIndex = state.form_fields.findIndex(field => field.id === payload.field_id),
+                    fieldObj         = state.form_fields[repeatFieldIndex].inner_fields[payload.fromIndex];
+
+                // swap the field object to the new position
+                state.form_fields[repeatFieldIndex].inner_fields.splice(payload.fromIndex, 1);
+                state.form_fields[repeatFieldIndex].inner_fields.splice(payload.toIndex, 0, fieldObj);
+            },
+
             move_column_inner_fields: function(state, payload) {
                 var columnFieldIndex = state.form_fields.findIndex(field => field.id === payload.field_id),
                     innerFields  = payload.inner_fields,

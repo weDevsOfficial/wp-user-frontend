@@ -71,13 +71,13 @@ export class PostFormSettingsPage extends Base {
     }
 
     // Validate post type in list
-    async validatePostTypeInList(expectedPostType: string) {
+    async validatePostTypeInList(expectedPostType: string, formName: string) {
         // Go to post forms list
         await this.navigateToURL(this.wpufPostFormPage);
         await this.page.reload();
 
         // Find the row containing the form name
-        const postTypeText = await this.page.innerText(Selectors.postFormSettings.postTypeColumn);
+        const postTypeText = await this.page.innerText(Selectors.postFormSettings.postTypeColumn(formName, expectedPostType.toLowerCase()));
 
         // Verify post type matches expected
         expect(postTypeText.toLowerCase()).toContain(expectedPostType.toLowerCase());
@@ -416,13 +416,13 @@ export class PostFormSettingsPage extends Base {
     }
 
     // Validate post type in list
-    async validatePostSubmissionStatusInList(expectedPostStatus: string) {
+    async validatePostSubmissionStatusInList(expectedPostStatus: string, formName: string) {
         // Go to post forms list
         await this.navigateToURL(this.wpufPostFormPage);
         await this.page.reload();
 
         // Find the row containing the form name
-        const postStatusText = await this.page.innerText(Selectors.postFormSettings.postSubmissionStatusColumn);
+        const postStatusText = await this.page.innerText(Selectors.postFormSettings.postSubmissionStatusColumn(formName, expectedPostStatus));
 
         // Verify post type matches expected
         expect(postStatusText.toLowerCase()).toContain(expectedPostStatus.toLowerCase());
@@ -625,7 +625,6 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
         await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
         
-        
     }
 
     async setPostUpdateStatus(formName: string, status: string) {
@@ -741,7 +740,7 @@ export class PostFormSettingsPage extends Base {
         }
     }
 
-    async pendingToLive() {
+    async pendingToLive(postTitle: string, expectedStatus: string) {
         // Go to form edit page
         await this.navigateToURL(this.postsPage);
 
@@ -750,7 +749,17 @@ export class PostFormSettingsPage extends Base {
          
 
         await this.page.selectOption(Selectors.postFormSettings.statusDropdown, 'publish');
-        await this.validateAndClick(Selectors.postFormSettings.updateStatus);        
+        await this.validateAndClick(Selectors.postFormSettings.updateStatus); 
+        await this.page.waitForTimeout(1000);
+
+        await this.navigateToURL(this.wpufPostPage);
+        const newPostTitle = await this.page.innerText(Selectors.postFormSettings.postTitleColumn);
+        if (postTitle == newPostTitle) {
+            const newPostStatus = await this.page.innerText(Selectors.postFormSettings.postStatusColumn);
+            await expect(newPostStatus).toContain(expectedStatus);
+
+            console.log('\x1b[32m%s\x1b[0m', `Post Status changed to ${newPostStatus} for post ${newPostTitle} via quick edit`);
+        }
         
     }
 

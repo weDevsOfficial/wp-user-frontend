@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "CI=false npx playwright test --headed --config=playwright.config.ts",
-    "test:ci": "npx playwright test --headed --config=playwright.config.ts",
+    "test:ci": "npx playwright test --config=playwright.config.ts",
 
     "generate-summary": "node utils/generate-summary.js",
     

@@ -1711,6 +1711,7 @@ export class PostFormSettingsPage extends Base {
     async validateUserCommentDisabled(postTitle: string) {
         // Go to frontend post submission page
         await this.navigateToURL(Urls.baseUrl);
+        await this.page.waitForTimeout(1000);
 
         // Click on the post
         await this.validateAndClick(Selectors.postFormSettings.clickPost(postTitle));

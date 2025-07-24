@@ -157,7 +157,7 @@ export class Base {
 
     // Wait for networkidle
     async waitForLoading() {
-        await this.page.waitForLoadState('domcontentloaded', { timeout: 30000 });
+        await this.page.waitForLoadState('domcontentloaded', { timeout: 60000 });
     }
 
 }

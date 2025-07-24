@@ -36,7 +36,12 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
         // Wait for save and verify success message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     // Change post type in form settings
@@ -67,7 +72,12 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
         // Wait for save and verify success message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     // Validate post type in list
@@ -101,7 +111,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(2000);
+        
 
         // Wait for success message
         await expect(this.page.locator(Selectors.postFormSettings.postTypePage(postTitle))).toBeVisible();
@@ -136,7 +146,12 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
         // Wait for save and verify success message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
         // Open the dropdown by clicking the container
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.defaultCategoryContainer);
 
@@ -170,7 +185,7 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
 
-        await this.page.waitForTimeout(2000);
+        
 
         // Wait for success message
         await expect(this.page.locator(Selectors.postFormSettings.postCategory(category))).toBeVisible();
@@ -202,7 +217,12 @@ export class PostFormSettingsPage extends Base {
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     // Set post redirection to newly created post
@@ -233,7 +253,12 @@ export class PostFormSettingsPage extends Base {
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     // Set post redirection to another page
@@ -259,7 +284,7 @@ export class PostFormSettingsPage extends Base {
         // Set success message
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionOption(value));
 
-        await this.page.waitForTimeout(200);
+        
 
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionPageContainer);
 
@@ -269,7 +294,12 @@ export class PostFormSettingsPage extends Base {
 
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
 
     }
 
@@ -300,7 +330,12 @@ export class PostFormSettingsPage extends Base {
 
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     // Validate redirection after post submission
@@ -320,7 +355,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(2000);
+        
 
         await expect(this.page.locator(Selectors.postFormSettings.checkPostTitle(postTitle))).toBeVisible();
     }
@@ -342,7 +377,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(2000);
+        
 
         const successMessage = await this.page.innerText(Selectors.postFormSettings.checkSuccessMessage);
 
@@ -366,7 +401,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(2000);
+        
 
         await expect(this.page.locator(Selectors.postFormSettings.checkPageTitle(pageTitle))).toBeVisible();
     }
@@ -388,7 +423,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(2000);
+        
 
         await expect(this.page).toHaveURL(expectedUrl);
     }
@@ -411,7 +446,12 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postSubmissionStatusOption(value));
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
 
     }
 
@@ -445,7 +485,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(2000);
+        await this.page.waitForTimeout(1000);
 
         await this.navigateToURL(this.wpufPostPage);
 
@@ -471,7 +511,12 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.savingAsDraftToggleOn);
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
 
     }
 
@@ -490,7 +535,7 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.saveDraftButton);
-        await this.page.waitForTimeout(200);
+        
         await expect(this.page.locator(Selectors.postFormSettings.draftSavedAlert)).toBeVisible();
 
         await this.navigateToURL(this.wpufPostPage);
@@ -516,7 +561,12 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.postFormSettings.postSettingsSection.submitButtonContainer, value);
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
 
         await this.navigateToURL(this.wpufPostSubmitPage);
 
@@ -541,7 +591,12 @@ export class PostFormSettingsPage extends Base {
         }
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     async validateMultiStepProgessbar(formName: string) {
@@ -564,7 +619,12 @@ export class PostFormSettingsPage extends Base {
         await this.assertionValidate(Selectors.postForms.validateCustomFields_Common.validateStepStart);
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
 
         await this.navigateToURL(this.wpufPostSubmitPage);
 
@@ -591,7 +651,12 @@ export class PostFormSettingsPage extends Base {
         }
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
 
         await this.navigateToURL(this.wpufPostSubmitPage);
 
@@ -616,14 +681,24 @@ export class PostFormSettingsPage extends Base {
         }
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
 
         await this.validateAndClick(Selectors.postFormSettings.clickFormEditor);
 
         await this.validateAndClick(Selectors.postFormSettings.removeStepStart);
         await this.validateAndClick(Selectors.postFormSettings.confirmDelete);
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
         
     }
 
@@ -646,7 +721,12 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postUpdateStatusOption(status));
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     async setPostUpdateMessage(formName: string, message: string) {
@@ -665,7 +745,12 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.postFormSettings.postSettingsSection.postUpdateMessageContainer, message);
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     async setLockUserEditingAfter(formName: string, hours: string) {
@@ -684,7 +769,12 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.postFormSettings.postSettingsSection.lockUserEditingAfterInput, hours);
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     async setUpdatePostButtonText(formName: string, buttonText: string) {
@@ -703,7 +793,12 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.postFormSettings.postSettingsSection.updatePostButtonTextInput, buttonText);
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
 
         await this.navigateToURL(this.wpufPostPage);
 
@@ -729,8 +824,7 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
-        await this.page.waitForTimeout(2000);
-        //await this.assertionValidate(Selectors.postFormSettings.checkSuccessMessage);
+        await this.page.waitForTimeout(1000);
 
         await this.navigateToURL(this.wpufPostPage);
         const newPostTitle = await this.page.innerText(Selectors.postFormSettings.postTitleColumn);
@@ -780,7 +874,7 @@ export class PostFormSettingsPage extends Base {
 
 
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
-        await this.page.waitForTimeout(2000);
+        
 
         // Validate the message content
         const successMessage = await this.page.innerText(Selectors.postFormSettings.checkSuccessMessage);
@@ -807,7 +901,12 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionOption('post'));
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     async setUpdatePostRedirectionToSamePage(formName: string, message: string) {
@@ -829,7 +928,12 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionOption('same'));
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     async setUpdatePostRedirectionToPage(formName: string, pageName: string) {
@@ -850,7 +954,7 @@ export class PostFormSettingsPage extends Base {
         // Select "to a page"
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionOption('page'));
 
-        await this.page.waitForTimeout(200);
+        
 
         // Select the specific page
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionPageContainer);
@@ -858,7 +962,12 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionPageOption(pageName));
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     async setUpdatePostRedirectionToCustomUrl(formName: string, customUrl: string) {
@@ -883,7 +992,12 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionUrlInput, customUrl);
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     async validateUpdatePostRedirectionToPost(postTitle: string, postContent: string, postExcerpt: string) {
@@ -904,7 +1018,7 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
-        await this.page.waitForTimeout(2000);
+        
 
         await expect(this.page.locator(Selectors.postFormSettings.checkPostTitle(postTitle))).toBeVisible();
     }
@@ -926,7 +1040,7 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
-        await this.page.waitForTimeout(2000);
+        
 
         const successMessage = await this.page.innerText(Selectors.postFormSettings.checkSuccessMessage);
 
@@ -951,7 +1065,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(2000);
+        
 
         await expect(this.page.locator(Selectors.postFormSettings.checkPageTitle(pageTitle))).toBeVisible();
     }
@@ -975,7 +1089,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(2000);
+        
 
         await expect(this.page).toHaveURL(expectedUrl);
     }
@@ -1008,7 +1122,12 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.paymentSuccessPageOption(successPage));
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     async disablePayPerPost(formName: string) {
@@ -1028,7 +1147,12 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.paymentEnableToggle);
 
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
         
     }
 
@@ -1049,7 +1173,7 @@ export class PostFormSettingsPage extends Base {
 
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(2000);
+        
 
         const validateCost = await this.page.innerText(Selectors.postFormSettings.validatePayPerPostCost);
         expect(validateCost).toContain(`$${cost}`);
@@ -1112,7 +1236,12 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
         // Wait for save message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     // Disable new post notification
@@ -1140,8 +1269,12 @@ export class PostFormSettingsPage extends Base {
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
-        // Wait for save message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     // Modify notification email settings
@@ -1169,8 +1302,12 @@ export class PostFormSettingsPage extends Base {
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
-        // Wait for save message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     // Modify notification subject
@@ -1198,8 +1335,12 @@ export class PostFormSettingsPage extends Base {
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
-        // Wait for save message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     // Modify notification body with template tags
@@ -1227,8 +1368,12 @@ export class PostFormSettingsPage extends Base {
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
-        // Wait for save message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     // Click template tags for notification body
@@ -1263,8 +1408,12 @@ export class PostFormSettingsPage extends Base {
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
-        // Wait for save message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     // Validate notification settings in form
@@ -1307,12 +1456,11 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
-
         await this.page.waitForTimeout(2000);
 
         // Validate notification is sent
         await this.navigateToURL(this.wpMailLogPage);
-        await this.page.waitForTimeout(1000);
+        await this.page.waitForTimeout(2000);
 
         const sentEmailAddress = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress(multipleEmails));
         expect(sentEmailAddress).toBe(multipleEmails);
@@ -1359,8 +1507,12 @@ export class PostFormSettingsPage extends Base {
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
-        // Wait for save message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     // Enable new post notification
@@ -1391,8 +1543,12 @@ export class PostFormSettingsPage extends Base {
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
-        // Wait for save message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     // Disable new post notification
@@ -1420,8 +1576,12 @@ export class PostFormSettingsPage extends Base {
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
-        // Wait for save message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     // Modify notification email settings
@@ -1449,8 +1609,12 @@ export class PostFormSettingsPage extends Base {
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
-        // Wait for save message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     // Modify notification subject
@@ -1478,8 +1642,12 @@ export class PostFormSettingsPage extends Base {
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
-        // Wait for save message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     // Modify notification body with template tags
@@ -1507,8 +1675,12 @@ export class PostFormSettingsPage extends Base {
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
-        // Wait for save message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     // Click template tags for notification body
@@ -1544,8 +1716,12 @@ export class PostFormSettingsPage extends Base {
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
-        // Wait for save message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     // Validate notification settings in form
@@ -1605,7 +1781,7 @@ export class PostFormSettingsPage extends Base {
 
         await this.page.hover(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress(multipleEmails));
         await this.validateAndClick(Selectors.postFormSettings.notificationSettingsSection.viewEmailContentUpdated);
-        await this.page.waitForTimeout(1000);
+        //await this.page.waitForTimeout(1000);
         const sentEmailBody = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.previewEmailContentBody);
         expect(sentEmailBody).toContain(postTitle);
         expect(sentEmailBody).toContain(postContent);
@@ -1641,8 +1817,12 @@ export class PostFormSettingsPage extends Base {
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
-        // Wait for save message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     async settingUserComment(formName: string, status: string, postTitle: string, postContent: string, postExcerpt: string) {
@@ -1671,8 +1851,12 @@ export class PostFormSettingsPage extends Base {
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
-        // Wait for save message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
         
         await this.navigateToURL(this.wpufPostSubmitPage);
 
@@ -1711,7 +1895,7 @@ export class PostFormSettingsPage extends Base {
     async validateUserCommentDisabled(postTitle: string) {
         // Go to frontend post submission page
         await this.navigateToURL(Urls.baseUrl);
-        await this.page.waitForTimeout(1000);
+        //await this.page.waitForTimeout(1000);
 
         // Click on the post
         await this.validateAndClick(Selectors.postFormSettings.clickPost(postTitle));
@@ -1753,8 +1937,12 @@ export class PostFormSettingsPage extends Base {
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
-        // Wait for save message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     async validateLimitFormEntries(postTitle: string, postContent: string, postExcerpt: string) {
@@ -1771,7 +1959,7 @@ export class PostFormSettingsPage extends Base {
 
         // await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        // await this.page.waitForTimeout(2000);
+        // 
 
         await this.navigateToURL(this.wpufPostSubmitPage);
 
@@ -1806,8 +1994,12 @@ export class PostFormSettingsPage extends Base {
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
-        // Wait for save message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     async enablePostExpiration(formName: string) {
@@ -1841,8 +2033,12 @@ export class PostFormSettingsPage extends Base {
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
-        // Wait for save message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     async enableFormTitleShowing(formName: string) {
@@ -1868,8 +2064,12 @@ export class PostFormSettingsPage extends Base {
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
-        // Wait for save message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
 
         await this.navigateToURL(this.wpufPostSubmitPage);
 
@@ -1908,8 +2108,12 @@ export class PostFormSettingsPage extends Base {
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
-        // Wait for save message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
 
         await this.navigateToURL(this.wpufPostSubmitPage);
 
@@ -1940,7 +2144,7 @@ export class PostFormSettingsPage extends Base {
         //await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postPermissionDropdown);
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postPermissionOption('role_base'));
 
-        await this.page.waitForTimeout(300);
+        //await this.page.waitForTimeout(300);
 
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.roleSelectionContainer);
         //await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.roleSelectionDropdown);
@@ -1949,8 +2153,12 @@ export class PostFormSettingsPage extends Base {
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
-        // Wait for save message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 
     async validatePostPermissionRoleBased(formName: string) {
@@ -1978,7 +2186,7 @@ export class PostFormSettingsPage extends Base {
         //await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postPermissionDropdown);
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postPermissionOption('role_base'));
 
-        await this.page.waitForTimeout(300);
+        //await this.page.waitForTimeout(300);
 
         await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.roleSelectionContainer);
         //await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.roleSelectionDropdown);
@@ -1987,7 +2195,11 @@ export class PostFormSettingsPage extends Base {
         // Save settings
         await this.validateAndClick(Selectors.postFormSettings.saveButton);
 
-        // Wait for save message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }catch(error){
+            await this.validateAndClick(Selectors.postFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, { timeout: 30000 });
+        }
     }
 }

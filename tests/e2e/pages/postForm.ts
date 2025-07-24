@@ -32,7 +32,7 @@ export class PostFormPage extends Base {
         //Click Add Form
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickPostAddForm);
 
-        
+
         //Click Blank Form
         await this.page.waitForSelector(Selectors.postForms.createBlankForm_PF.clickBlankForm);
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickBlankForm);
@@ -191,15 +191,15 @@ export class PostFormPage extends Base {
 
         //Post Form process
         //Enter Post Title
-        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, PostForm.title=faker.word.words(2));
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, PostForm.title = faker.word.words(2));
         console.log(PostForm.title);
-        await this.page.waitForTimeout(1000);
+
         //Enter Post Description
         await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(PostForm.description=faker.lorem.sentence(1));
+            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(PostForm.description = faker.lorem.sentence(1));
         console.log(PostForm.description);
         //Enter Excerpt
-        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, PostForm.excerpt=faker.lorem.sentence(1));
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, PostForm.excerpt = faker.lorem.sentence(1));
         console.log(PostForm.excerpt);
         //Add Featured Photo
         await this.page.setInputFiles(Selectors.postForms.postFormsFrontendCreate.featuredPhotoFormsFE, PostForm.featuredImage);
@@ -210,10 +210,10 @@ export class PostFormPage extends Base {
         //Enter Tags
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTagsFormsFE, PostForm.tags);
         //Enter Text
-        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTextFormsFE, PostForm.text=faker.lorem.sentence(1));
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTextFormsFE, PostForm.text = faker.lorem.sentence(1));
         console.log(PostForm.text);
         //Enter Textarea
-        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE, PostForm.textarea=faker.lorem.sentence(1));
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTextareaFormsFE, PostForm.textarea = faker.lorem.sentence(1));
         console.log(PostForm.textarea);
         //Enter Dropdown
         await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postDropdownFormsFE, PostForm.dropdown);
@@ -224,21 +224,21 @@ export class PostFormPage extends Base {
         //Enter Checkbox
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postCheckboxFormsFE);
         //Enter Website URL
-        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postWebsiteUrlFormsFE, PostForm.websiteUrl=faker.internet.url());
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postWebsiteUrlFormsFE, PostForm.websiteUrl = faker.internet.url());
         console.log(PostForm.websiteUrl);
         //Enter Email Address
-        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postEmailAddressFormsFE, PostForm.emailAddress=faker.internet.email());
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postEmailAddressFormsFE, PostForm.emailAddress = faker.internet.email());
         console.log(PostForm.emailAddress);
         //Enter Image Upload
         await this.page.setInputFiles(Selectors.postForms.postFormsFrontendCreate.postImageUploadFormsFE, PostForm.imageUpload);
         await this.page.waitForLoadState('domcontentloaded', { timeout: 10000 });
         await this.assertionValidate(Selectors.postForms.postFormsFrontendCreate.uploads('2'));
         //Enter Repeat Field
-        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postRepeatFieldFormsFE, PostForm.repeatField=faker.word.words(1));
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postRepeatFieldFormsFE, PostForm.repeatField = faker.word.words(1));
         console.log(PostForm.repeatField);
         //Enter Date / Time
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.dateTimeSelect);
-        await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.selectYear, '2024' );
+        await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.selectYear, '2024');
         await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.selectMonth, '7');
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.selectDay);
         //Enter Time Field
@@ -254,28 +254,28 @@ export class PostFormPage extends Base {
         //Enter Phone Field
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postPhoneFieldFormsFE.countryContainer);
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postPhoneFieldFormsFE.countrySelect);
-        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postPhoneFieldFormsFE.phoneNumber, PostForm.phoneNumber=`016${faker.string.numeric(8)}`);
-        PostForm.phoneNumber='+88'+PostForm.phoneNumber;
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postPhoneFieldFormsFE.phoneNumber, PostForm.phoneNumber = `016${faker.string.numeric(8)}`);
+        PostForm.phoneNumber = '+88' + PostForm.phoneNumber;
         console.log(PostForm.phoneNumber);
         //Enter Address Field
-        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.addressLine1, PostForm.addressLine1=faker.location.streetAddress());
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.addressLine1, PostForm.addressLine1 = faker.location.streetAddress());
         console.log(PostForm.addressLine1);
-        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.addressLine2, PostForm.addressLine2=faker.location.secondaryAddress());
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.addressLine2, PostForm.addressLine2 = faker.location.secondaryAddress());
         console.log(PostForm.addressLine2);
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.city, PostForm.city);
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.zip, PostForm.zip);
         await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.country, 'BD');
         await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postAddressFieldFormsFE.state, 'BD-13');
         //Enter Google Maps
-        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postGoogleMapsFormsFE, PostForm.googleMaps='Dhaka, Bangladesh');
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postGoogleMapsFormsFE, PostForm.googleMaps = 'Dhaka, Bangladesh');
         await this.page.keyboard.press('Enter');
         //Enter Embed
-        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postEmbedFormsFE, PostForm.embed=faker.internet.url());
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postEmbedFormsFE, PostForm.embed = faker.internet.url());
         console.log(PostForm.embed);
         //Enter Terms and Conditions
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postTermsAndConditionsFormsFE);
         //Enter Ratings
-        await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postRatingsFormsFE, PostForm.ratings='5');
+        await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postRatingsFormsFE, PostForm.ratings = '5');
         console.log(PostForm.ratings);
         // Math Captcha
         const operand1 = await this.page.innerText(Selectors.postForms.postFormsFrontendCreate.postMathCaptchaFormsFE.operand1);
@@ -437,15 +437,30 @@ export class PostFormPage extends Base {
     async createPageWithShortcode(shortcode: string, pageTitle: string) {
         //Go to Pages page
         await this.navigateToURL(this.newPagePage);
-        await this.page.waitForTimeout(300);
-        await this.page.reload();
-        // Check if the Welcome Modal is visible
-        await this.page.click(Selectors.postForms.createPageWithShortcode.closeWelcomeModal);
+
+        let welcomeModalVisible = false;
+        // Check if the Choose Welcome Modal is visible
+         while (welcomeModalVisible == false) {
+            try {
+                await this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closeWelcomeModal).click({ timeout: 10000 });
+                welcomeModalVisible = true;
+            } catch (error) {
+                console.log('Welcome Modal not visible!, trying again');
+                await this.page.reload();
+            }
+        }
+
         // Check if the Choose Pattern Modal is visible
-        try {
-            await this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closePatternModal).click({ timeout: 10000 });
-        } catch (error) {
-            console.log('Pattern Modal not visible!');
+        let patternModalVisible = false;
+        // Check if the Choose Pattern Modal is visible
+         while (patternModalVisible == false) {
+            try {
+                await this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closePatternModal).click({ timeout: 10000 });
+                patternModalVisible = true;
+            } catch (error) {
+                console.log('Pattern Modal not visible!, trying again');
+                await this.page.reload();
+            }
         }
 
         await this.validateAndFillStrings(Selectors.postForms.createPageWithShortcode.addPageTitle, pageTitle);
@@ -468,13 +483,17 @@ export class PostFormPage extends Base {
     async createPageWithShortcodeGeneral(shortcode: string, pageTitle: string) {
         //Go to Pages page
         await this.navigateToURL(this.newPagePage);
-        await this.page.reload();
-        
+
+        let patternModalVisible = false;
         // Check if the Choose Pattern Modal is visible
-        try {
-            await this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closePatternModal).click({ timeout: 10000 });
-        } catch (error) {
-            console.log('Pattern Modal not visible!');
+         while (patternModalVisible == false) {
+            try {
+                await this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closePatternModal).click({ timeout: 10000 });
+                patternModalVisible = true;
+            } catch (error) {
+                console.log('Pattern Modal not visible!, trying again');
+                await this.page.reload();
+            }
         }
 
         await this.validateAndFillStrings(Selectors.postForms.createPageWithShortcode.addPageTitle, pageTitle);
@@ -494,33 +513,33 @@ export class PostFormPage extends Base {
     }
 
     async createGuestPostFE() {
-        let guestName:string;
-        let guestEmail:string;
+        let guestName: string;
+        let guestEmail: string;
         //Go to Accounts page - FrontEnd
         await this.navigateToURL(Urls.baseUrl + '/guestpostform/');
 
         //Post Form process
         //Enter Guest Name
-        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.guestName, guestName=faker.person.fullName());
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.guestName, guestName = faker.person.fullName());
         console.log(guestName);
         //Enter Guest Email
-        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.guestEmail, guestEmail=faker.internet.email());
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.guestEmail, guestEmail = faker.internet.email());
         console.log(guestEmail);
         //Enter Post Title
-        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, PostForm.title=faker.word.words(2));
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, PostForm.title = faker.word.words(2));
         console.log(PostForm.title);
         //Enter Post Description
         await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(PostForm.description=faker.lorem.sentence(1));
+            .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(PostForm.description = faker.lorem.sentence(1));
         console.log(PostForm.description);
         //Enter Excerpt
-        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, PostForm.excerpt=faker.lorem.sentence(1));
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, PostForm.excerpt = faker.lorem.sentence(1));
         console.log(PostForm.excerpt);
         //Add Featured Photo
         await this.page.setInputFiles(Selectors.postForms.postFormsFrontendCreate.featuredPhotoFormsFE, PostForm.featuredImage);
-        await this.page.waitForTimeout(500);
+
         //Select Category
-        await this.selectOptionWithLabel(Selectors.postForms.postFormsFrontendCreate.categorySelectionFormsFE, PostForm.category );
+        await this.selectOptionWithLabel(Selectors.postForms.postFormsFrontendCreate.categorySelectionFormsFE, PostForm.category);
         //Enter Tags
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTagsFormsFE, PostForm.tags);
         //Create Post
@@ -534,39 +553,39 @@ export class PostFormPage extends Base {
         expect(validatePostSubmitted).toContain(PostForm.title);
     }
 
-    async setupForWooProduct(){
+    async setupForWooProduct() {
         //Visit WOO Pages
         await this.navigateToURL(this.productBrandPage);
         //Click Add New Page
         await this.validateAndFillStrings(Selectors.postForms.productPostForm.addBrand, 'Apple');
         await this.validateAndClick(Selectors.postForms.productPostForm.saveSubmit);
-        await this.page.waitForTimeout(1000);
+
         //Visit WOO Pages
         await this.navigateToURL(this.productCategoryPage);
         //Check if the Welcome Modal is visible
         await this.validateAndFillStrings(Selectors.postForms.productPostForm.addCategory, 'Electronics');
         await this.validateAndClick(Selectors.postForms.productPostForm.saveSubmit);
-        await this.page.waitForTimeout(1000);
+
         //Visit WOO Pages
         await this.navigateToURL(this.productTagPage);
         //Check if the Welcome Modal is visible
         await this.validateAndFillStrings(Selectors.postForms.productPostForm.addTag, 'Smartphone');
         await this.validateAndClick(Selectors.postForms.productPostForm.saveSubmit);
-        await this.page.waitForTimeout(1000);
+
         //Visit WOO Pages
         await this.navigateToURL(this.productAttributePage);
         //Enter Page Title
         await this.validateAndFillStrings(Selectors.postForms.productPostForm.addAttribute, 'Color');
         await this.validateAndClick(Selectors.postForms.productPostForm.saveAttribute);
-        await this.page.waitForTimeout(1000);
+
         //Configure Attribute Terms
         await this.validateAndClick(Selectors.postForms.productPostForm.configureAttributeTerms);
         await this.validateAndFillStrings(Selectors.postForms.productPostForm.addAttributeTerms, 'Red');
         await this.validateAndClick(Selectors.postForms.productPostForm.saveSubmit);
-        await this.page.waitForTimeout(1000);
+
         await this.validateAndFillStrings(Selectors.postForms.productPostForm.addAttributeTerms, 'Blue');
         await this.validateAndClick(Selectors.postForms.productPostForm.saveSubmit);
-        await this.page.waitForTimeout(1000);
+
 
     }
 
@@ -575,95 +594,95 @@ export class PostFormPage extends Base {
 
         await this.validateAndFillStrings(Selectors.postForms.eddPostForm.addCategory, 'plugins');
         await this.validateAndClick(Selectors.postForms.eddPostForm.saveSubmit);
-        await this.page.waitForTimeout(1000);
+
 
         await this.navigateToURL(this.eddTagPage);
 
         await this.validateAndFillStrings(Selectors.postForms.eddPostForm.addTag, 'wpuf');
         await this.validateAndClick(Selectors.postForms.eddPostForm.saveSubmit);
-        await this.page.waitForTimeout(1000);
+
 
         await this.validateAndFillStrings(Selectors.postForms.eddPostForm.addTag, 'wpuf-pro');
         await this.validateAndClick(Selectors.postForms.eddPostForm.saveSubmit);
-        await this.page.waitForTimeout(1000);
+
     }
 
-    async createProductFE(){
+    async createProductFE() {
         //Go to Accounts page - FrontEnd
         await this.navigateToURL(this.addProductPage);
 
         //Post Form process
         //Enter Product Name
         await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.productTitleFE, ProductForm.title);
-        await this.selectOptionWithLabel(Selectors.postForms.productFrontendCreate.selectCategory, ProductForm.category );
-        await this.page.waitForTimeout(1000);
+        await this.selectOptionWithLabel(Selectors.postForms.productFrontendCreate.selectCategory, ProductForm.category);
+
         await this.page.frameLocator(Selectors.postForms.productFrontendCreate.productDescription1)
-            .locator(Selectors.postForms.productFrontendCreate.productDescription2).fill(ProductForm.description=faker.lorem.sentence(1));
-        await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.productExcerpt, ProductForm.excerpt=faker.lorem.sentence(1));
+            .locator(Selectors.postForms.productFrontendCreate.productDescription2).fill(ProductForm.description = faker.lorem.sentence(1));
+        await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.productExcerpt, ProductForm.excerpt = faker.lorem.sentence(1));
         await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.productRegularPrice, ProductForm.regularPrice);
         await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.productSalePrice, ProductForm.salePrice);
         await this.page.setInputFiles(Selectors.postForms.productFrontendCreate.productImage, ProductForm.productImage);
-        await this.page.waitForTimeout(500);
+
         await this.assertionValidate(Selectors.postForms.productFrontendCreate.uploads('1'));
         await this.page.setInputFiles(Selectors.postForms.productFrontendCreate.productImageGallery, ProductForm.imageGallery1);
-        await this.page.waitForTimeout(500);
+
         await this.assertionValidate(Selectors.postForms.productFrontendCreate.uploads('2'));
         await this.page.setInputFiles(Selectors.postForms.productFrontendCreate.productImageGallery, ProductForm.imageGallery2);
-        await this.page.waitForTimeout(500);
+
         await this.assertionValidate(Selectors.postForms.productFrontendCreate.uploads('3'));
-        await this.selectOptionWithValue(Selectors.postForms.productFrontendCreate.catalogVisibility, ProductForm.catalogVisibility );
-        await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.purchaseNote, ProductForm.purchaseNote=faker.lorem.sentence(1));
+        await this.selectOptionWithValue(Selectors.postForms.productFrontendCreate.catalogVisibility, ProductForm.catalogVisibility);
+        await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.purchaseNote, ProductForm.purchaseNote = faker.lorem.sentence(1));
         await this.validateAndClick(Selectors.postForms.productFrontendCreate.enableReviews);
         await this.validateAndClick(Selectors.postForms.productFrontendCreate.downloadable);
-        await this.page.waitForTimeout(1000);
-        await this.selectOptionWithLabel(Selectors.postForms.productFrontendCreate.selectBrand, ProductForm.brand );
-        await this.selectOptionWithLabel(Selectors.postForms.productFrontendCreate.selectType, ProductForm.type );
-        await this.selectOptionWithLabel(Selectors.postForms.productFrontendCreate.selectVisibility, ProductForm.visibility );
-        await this.selectOptionWithLabel(Selectors.postForms.productFrontendCreate.selectTag, ProductForm.tag );
-        await this.selectOptionWithValue(Selectors.postForms.productFrontendCreate.selectShippingClass, ProductForm.shippingClass );
-        await this.selectOptionWithLabel(Selectors.postForms.productFrontendCreate.selectColor, ProductForm.color );
+
+        await this.selectOptionWithLabel(Selectors.postForms.productFrontendCreate.selectBrand, ProductForm.brand);
+        await this.selectOptionWithLabel(Selectors.postForms.productFrontendCreate.selectType, ProductForm.type);
+        await this.selectOptionWithLabel(Selectors.postForms.productFrontendCreate.selectVisibility, ProductForm.visibility);
+        await this.selectOptionWithLabel(Selectors.postForms.productFrontendCreate.selectTag, ProductForm.tag);
+        await this.selectOptionWithValue(Selectors.postForms.productFrontendCreate.selectShippingClass, ProductForm.shippingClass);
+        await this.selectOptionWithLabel(Selectors.postForms.productFrontendCreate.selectColor, ProductForm.color);
         await this.validateAndClick(Selectors.postForms.productFrontendCreate.createProduct);
-        await this.page.waitForTimeout(1000);
+
     }
 
-    async createDownloadsFE(){
+    async createDownloadsFE() {
         //Go to Accounts page - FrontEnd
         await this.navigateToURL(this.addDownloadsPage);
 
         //Post Form process
         //Enter Product Name
         await this.validateAndFillStrings(Selectors.postForms.downloadsFrontendCreate.downloadsTitleFE, DownloadsForm.title);
-        await this.selectOptionWithLabel(Selectors.postForms.downloadsFrontendCreate.downloadCategory, DownloadsForm.category );
-        await this.page.waitForTimeout(1000);
+        await this.selectOptionWithLabel(Selectors.postForms.downloadsFrontendCreate.downloadCategory, DownloadsForm.category);
+
         await this.page.frameLocator(Selectors.postForms.downloadsFrontendCreate.downloadsDescription1)
-            .locator(Selectors.postForms.downloadsFrontendCreate.downloadsDescription2).fill(DownloadsForm.description=faker.lorem.sentence(1));
-        await this.validateAndFillStrings(Selectors.postForms.downloadsFrontendCreate.downloadsExcerpt, DownloadsForm.excerpt=faker.lorem.sentence(1));
+            .locator(Selectors.postForms.downloadsFrontendCreate.downloadsDescription2).fill(DownloadsForm.description = faker.lorem.sentence(1));
+        await this.validateAndFillStrings(Selectors.postForms.downloadsFrontendCreate.downloadsExcerpt, DownloadsForm.excerpt = faker.lorem.sentence(1));
         await this.validateAndFillStrings(Selectors.postForms.downloadsFrontendCreate.downloadsRegularPrice, DownloadsForm.regularPrice);
         await this.page.setInputFiles(Selectors.postForms.downloadsFrontendCreate.downloadsImage, DownloadsForm.downloadsImage);
-        await this.page.waitForTimeout(500);
+
         await this.assertionValidate(Selectors.postForms.downloadsFrontendCreate.uploads('1'));
-        await this.validateAndFillStrings(Selectors.postForms.downloadsFrontendCreate.purchaseNote, DownloadsForm.purchaseNote=faker.lorem.sentence(1));
+        await this.validateAndFillStrings(Selectors.postForms.downloadsFrontendCreate.purchaseNote, DownloadsForm.purchaseNote = faker.lorem.sentence(1));
         await this.page.setInputFiles(Selectors.postForms.downloadsFrontendCreate.downloadableFiles, DownloadsForm.downloadableFiles);
-        await this.page.waitForTimeout(500);
+
         await this.assertionValidate(Selectors.postForms.downloadsFrontendCreate.uploads('2'));
-        await this.selectOptionWithLabel(Selectors.postForms.downloadsFrontendCreate.downloadsTag, DownloadsForm.tags );
+        await this.selectOptionWithLabel(Selectors.postForms.downloadsFrontendCreate.downloadsTag, DownloadsForm.tags);
         await this.validateAndClick(Selectors.postForms.downloadsFrontendCreate.createDownloads);
-        await this.page.waitForTimeout(1000);
+
     }
 
-    async validateProductCreated(){
+    async validateProductCreated() {
         //Validate Product Submitted
         const validateProductSubmitted = await this.page.innerText(Selectors.postForms.postFormsFrontendCreate.validatePostSubmitted(ProductForm.title));
         expect(validateProductSubmitted).toContain(ProductForm.title);
     }
 
-    async validateDownloadsCreated(){
+    async validateDownloadsCreated() {
         //Validate Product Submitted
         const validateProductSubmitted = await this.page.innerText(Selectors.postForms.postFormsFrontendCreate.validatePostSubmitted(DownloadsForm.title));
         expect(validateProductSubmitted).toContain(DownloadsForm.title);
     }
 
-    async validateEnteredProductData(){
+    async validateEnteredProductData() {
         //Validate Product Title
         const validateProductTitle = await this.page.innerText(Selectors.postForms.productFormData.title(ProductForm.title));
         expect(validateProductTitle).toContain(ProductForm.title);
@@ -699,7 +718,7 @@ export class PostFormPage extends Base {
         await this.assertionValidate(Selectors.postForms.productFormData.reviews);
     }
 
-    async validateEnteredDownloadsData(){
+    async validateEnteredDownloadsData() {
         //Validate Product Title
         const validateProductTitle = await this.page.innerText(Selectors.postForms.downloadsFormData.title(DownloadsForm.title));
         expect(validateProductTitle).toContain(DownloadsForm.title);
@@ -712,18 +731,18 @@ export class PostFormPage extends Base {
         await this.assertionValidate(Selectors.postForms.downloadsFormData.purchaseButton);
     }
 
-    async validateEnteredDownloadsDataBE(){
+    async validateEnteredDownloadsDataBE() {
         await this.navigateToURL(this.downloadsPage);
         //Validate Product Title
         await this.validateAndClick(Selectors.postForms.downloadsFormData.titleBE(DownloadsForm.title));
-        await this.page.waitForTimeout(1000);
+
         //Validate Product Price
         //await this.assertionValidate(Selectors.postForms.downloadsFormData.price(DownloadsForm.regularPrice));
         //Validate Product Excerpt
         await this.assertionValidate(Selectors.postForms.downloadsFormData.excerpt(DownloadsForm.excerpt));
         //Validate Product Category
         await this.validateAndClick(Selectors.postForms.downloadsFormData.clickDownload);
-        await this.page.waitForTimeout(300);
+
         await this.validateAndClick(Selectors.postForms.downloadsFormData.clickCategory);
         await this.assertionValidate(Selectors.postForms.downloadsFormData.categoryBE(DownloadsForm.category));
         //Validate Product Tags

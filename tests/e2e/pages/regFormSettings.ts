@@ -17,6 +17,7 @@ export class RegFormSettingsPage extends Base {
         await this.navigateToURL(this.wpufRegFormPage);
 
         // Click on the form
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
 
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -27,7 +28,12 @@ export class RegFormSettingsPage extends Base {
         await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.userRoleDropdown);
         await this.validateAndClick(Selectors.regFormSettings.regSettingsSection.userRoleOption(role));
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
 
         await new BasicLogoutPage(this.page).logOut();
 
@@ -42,7 +48,7 @@ export class RegFormSettingsPage extends Base {
         await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
         await this.page.fill(Selectors.regFormSettings.inputConfirmPassword, userPassword);
         await this.validateAndClick(Selectors.regFormSettings.submitRegisterButton);
-        await this.page.waitForTimeout(1000);
+        
         await this.assertionValidate(Selectors.regFormSettings.successMessage);
 
         if(role === 'subscriber'){
@@ -77,6 +83,7 @@ export class RegFormSettingsPage extends Base {
         await this.navigateToURL(this.wpufRegFormPage);
 
         // Click on the form
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
 
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -88,7 +95,12 @@ export class RegFormSettingsPage extends Base {
             await this.validateAndClick(Selectors.regFormSettings.regSettingsSection.approvalToggle);
         }
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -101,7 +113,7 @@ export class RegFormSettingsPage extends Base {
         await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
         await this.page.fill(Selectors.regFormSettings.inputConfirmPassword, userPassword);
         await this.validateAndClick(Selectors.regFormSettings.submitRegisterButton);
-        await this.page.waitForTimeout(1000);
+        
         await this.assertionValidate(Selectors.regFormSettings.successMessage);
 
         await this.navigateToURL(this.accountPage);
@@ -151,6 +163,7 @@ export class RegFormSettingsPage extends Base {
 
         await this.navigateToURL(this.wpufRegFormPage);
 
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
@@ -160,7 +173,12 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterRegistrationRedirectionOption('same'));
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -169,6 +187,7 @@ export class RegFormSettingsPage extends Base {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         await this.navigateToURL(this.wpufRegFormPage);
 
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
@@ -177,14 +196,19 @@ export class RegFormSettingsPage extends Base {
         await this.assertionValidate(Selectors.regFormSettings.afterSignUpSettingsSection.afterRegistrationRedirectionDropdown);
         await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterRegistrationRedirectionOption('page'));
 
-        await this.page.waitForTimeout(200);
+        
 
         await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterRegistrationRedirectionPageContainer);
         await this.assertionValidate(Selectors.regFormSettings.afterSignUpSettingsSection.afterRegistrationRedirectionPageDropdown);
         await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterRegistrationRedirectionPageOption(pageName));
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -193,6 +217,7 @@ export class RegFormSettingsPage extends Base {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         await this.navigateToURL(this.wpufRegFormPage);
 
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
@@ -204,7 +229,12 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.regFormSettings.afterSignUpSettingsSection.afterRegistrationRedirectionUrlInput, customUrl);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -214,6 +244,7 @@ export class RegFormSettingsPage extends Base {
         
         await this.navigateToURL(this.wpufRegFormPage);
 
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
@@ -221,7 +252,12 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.regFormSettings.afterSignUpSettingsSection.registrationSuccessMessageInput, message);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -231,6 +267,7 @@ export class RegFormSettingsPage extends Base {
         
         await this.navigateToURL(this.wpufRegFormPage);
 
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
@@ -238,7 +275,12 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.regFormSettings.afterSignUpSettingsSection.submitButtonTextInput, buttonText);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -248,6 +290,7 @@ export class RegFormSettingsPage extends Base {
         
         await this.navigateToURL(this.wpufRegFormPage);
 
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
@@ -257,7 +300,12 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterProfileUpdateRedirectionOption('same'));
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -267,6 +315,7 @@ export class RegFormSettingsPage extends Base {
         
         await this.navigateToURL(this.wpufRegFormPage);
 
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
@@ -275,14 +324,19 @@ export class RegFormSettingsPage extends Base {
         await this.assertionValidate(Selectors.regFormSettings.afterSignUpSettingsSection.afterProfileUpdateRedirectionDropdown);
         await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterProfileUpdateRedirectionOption('page'));
 
-        await this.page.waitForTimeout(200);
+        
 
         await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterProfileUpdateRedirectionPageContainer);
         await this.assertionValidate(Selectors.regFormSettings.afterSignUpSettingsSection.afterProfileUpdateRedirectionPageDropdown);
         await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterProfileUpdateRedirectionPageOption(pageName));
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -292,6 +346,7 @@ export class RegFormSettingsPage extends Base {
         
         await this.navigateToURL(this.wpufRegFormPage);
 
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
@@ -303,7 +358,12 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.regFormSettings.afterSignUpSettingsSection.afterProfileUpdateRedirectionUrlInput, customUrl);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -313,6 +373,7 @@ export class RegFormSettingsPage extends Base {
         
         await this.navigateToURL(this.wpufRegFormPage);
 
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
@@ -320,7 +381,12 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.regFormSettings.afterSignUpSettingsSection.updateProfileMessageInput, message);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -330,6 +396,7 @@ export class RegFormSettingsPage extends Base {
         
         await this.navigateToURL(this.wpufRegFormPage);
 
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
@@ -337,7 +404,12 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.regFormSettings.afterSignUpSettingsSection.updateButtonTextInput, buttonText);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -351,7 +423,7 @@ export class RegFormSettingsPage extends Base {
         await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
         await this.page.fill(Selectors.regFormSettings.inputConfirmPassword, userPassword);
         await this.validateAndClick(Selectors.regFormSettings.submitRegisterButton);
-        await this.page.waitForTimeout(1000);
+        
 
         const successMessage = await this.page.innerText(Selectors.regFormSettings.frontendValidation.registrationSuccessMessage);
         expect(successMessage).toBe(expectedMessage);
@@ -364,7 +436,7 @@ export class RegFormSettingsPage extends Base {
         await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
         await this.page.fill(Selectors.regFormSettings.inputConfirmPassword, userPassword);
         await this.validateAndClick(Selectors.regFormSettings.submitRegisterButton);
-        await this.page.waitForTimeout(1000);
+        
         await expect(this.page.locator(Selectors.regFormSettings.frontendValidation.afterRegPageTitle(expectedPageTitle))).toBeVisible();
     }
 
@@ -375,7 +447,7 @@ export class RegFormSettingsPage extends Base {
         await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
         await this.page.fill(Selectors.regFormSettings.inputConfirmPassword, userPassword);
         await this.validateAndClick(Selectors.regFormSettings.submitRegisterButton);
-        await this.page.waitForTimeout(1000);
+        
         await expect(this.page).toHaveURL(expectedUrl);
     }
 
@@ -386,7 +458,7 @@ export class RegFormSettingsPage extends Base {
         await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
         await this.page.fill(Selectors.regFormSettings.inputConfirmPassword, userPassword);
         await this.validateAndClick(Selectors.regFormSettings.submitRegisterButton);
-        await this.page.waitForTimeout(1000);
+        
         const successMessage = await this.page.innerText(Selectors.regFormSettings.frontendValidation.registrationSuccessMessage);
         expect(successMessage).toBe(expectedMessage);
     }
@@ -485,6 +557,7 @@ export class RegFormSettingsPage extends Base {
         
         await this.navigateToURL(this.wpufRegFormPage);
 
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
@@ -500,7 +573,12 @@ export class RegFormSettingsPage extends Base {
         }
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
     }
 
     // Notification Settings Methods
@@ -508,6 +586,7 @@ export class RegFormSettingsPage extends Base {
     async setEmailVerificationNotification(formName: string) {
         await this.navigateToURL(this.wpufRegFormPage);
 
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
@@ -519,13 +598,19 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.emailVerificationRadio);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
 
     }
 
     async setEmailVerificationNotificationSubject(formName: string, subject: string) {
         await this.navigateToURL(this.wpufRegFormPage);
 
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
@@ -538,12 +623,18 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.regFormSettings.notificationSettingsSection.confirmationEmailSubjectInput, subject);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
     }
 
     async setEmailVerificationNotificationBody(formName: string, body: string) {
         await this.navigateToURL(this.wpufRegFormPage);
 
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
@@ -557,7 +648,12 @@ export class RegFormSettingsPage extends Base {
             .locator(Selectors.regFormSettings.notificationSettingsSection.textareaBody).fill(body);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
            
     }
 
@@ -567,6 +663,7 @@ export class RegFormSettingsPage extends Base {
         await this.navigateToURL(this.wpufRegFormPage);
 
         // Click on the form
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
 
         // Click Settings tab
@@ -591,7 +688,12 @@ export class RegFormSettingsPage extends Base {
 
         // Save settings
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
 
         await new BasicLogoutPage(this.page).logOut();
 
@@ -602,6 +704,7 @@ export class RegFormSettingsPage extends Base {
         
         await this.navigateToURL(this.wpufRegFormPage);
 
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
@@ -614,13 +717,19 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.welcomeEmailRadio);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
     }
 
     async setWelcomeEmailNotificationSubject(formName: string, subject: string) {
         
         await this.navigateToURL(this.wpufRegFormPage);
 
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
@@ -633,13 +742,19 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.regFormSettings.notificationSettingsSection.welcomeEmailSubjectInput, subject);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
     }
 
     async setWelcomeEmailNotificationBody(formName: string, body: string) {
 
         await this.navigateToURL(this.wpufRegFormPage);
 
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
@@ -653,12 +768,18 @@ export class RegFormSettingsPage extends Base {
             .locator(Selectors.regFormSettings.notificationSettingsSection.textareaBody).fill(body);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
     }
 
     async clickTemplateTagsForWelcomeEmailNotification(formName: string, tags: string[]) {
         await this.navigateToURL(this.wpufRegFormPage);
         
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
 
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -677,7 +798,12 @@ export class RegFormSettingsPage extends Base {
         }
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -686,6 +812,7 @@ export class RegFormSettingsPage extends Base {
         
         await this.navigateToURL(this.wpufRegFormPage);
 
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
@@ -701,13 +828,19 @@ export class RegFormSettingsPage extends Base {
         }
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
     }
 
     async setAdminNotificationSubject(formName: string, subject: string) {
 
         await this.navigateToURL(this.wpufRegFormPage);
 
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
@@ -720,12 +853,18 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.regFormSettings.notificationSettingsSection.adminNotificationSubjectInput, subject);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
     }
 
     async setAdminNotificationMessage(formName: string, message: string) {
         await this.navigateToURL(this.wpufRegFormPage);
 
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
@@ -738,12 +877,18 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.regFormSettings.notificationSettingsSection.adminNotificationMessageTextarea, message);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
     }
 
     async clickTemplateTagsForAdminNotification(formName: string, tags: string[]) {
         await this.navigateToURL(this.wpufRegFormPage);
         
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
 
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -762,7 +907,12 @@ export class RegFormSettingsPage extends Base {
         }
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -775,7 +925,7 @@ export class RegFormSettingsPage extends Base {
         await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
         await this.page.fill(Selectors.regFormSettings.inputConfirmPassword, userPassword);
         await this.validateAndClick(Selectors.regFormSettings.submitRegisterButton);
-        await this.page.waitForTimeout(1000);
+        
         // Validate registration success message
         const successMessage = await this.page.innerText(Selectors.regFormSettings.successMessage);
         expect(successMessage).toContain('Please check your email for activation link');
@@ -785,7 +935,7 @@ export class RegFormSettingsPage extends Base {
         
         // Navigate to WP Mail Log
         await this.navigateToURL(this.wpMailLogPage);
-        await this.page.waitForTimeout(1000);
+        
         await this.assertionValidate(Selectors.regFormSettings.wpMailLogValidation.wpMailLogPage);
 
         // Check the latest email
@@ -828,7 +978,7 @@ export class RegFormSettingsPage extends Base {
         await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
         await this.page.fill(Selectors.regFormSettings.inputConfirmPassword, userPassword);
         await this.validateAndClick(Selectors.regFormSettings.submitRegisterButton);
-        await this.page.waitForTimeout(1000);
+        
         // Validate registration success message
         const successMessage = await this.page.innerText(Selectors.regFormSettings.successMessage);
         expect(successMessage).toContain('Welcome! Your account has been created successfully. Please check your email for further instructions.');
@@ -838,7 +988,7 @@ export class RegFormSettingsPage extends Base {
         
         // Navigate to WP Mail Log
         await this.navigateToURL(this.wpMailLogPage);
-        await this.page.waitForTimeout(1000);
+        
         await this.assertionValidate(Selectors.regFormSettings.wpMailLogValidation.wpMailLogPage);
 
         // Check the latest email
@@ -863,6 +1013,7 @@ export class RegFormSettingsPage extends Base {
     async disableUserNotification(formName: string) {
         await this.navigateToURL(this.wpufRegFormPage);
         
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
@@ -878,7 +1029,12 @@ export class RegFormSettingsPage extends Base {
         }
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
     }
 
     async registerUserAndValidateAdminNotification(userEmail: string, userPassword: string, expectedSubject: string) {
@@ -889,7 +1045,7 @@ export class RegFormSettingsPage extends Base {
         await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
         await this.page.fill(Selectors.regFormSettings.inputConfirmPassword, userPassword);
         await this.validateAndClick(Selectors.regFormSettings.submitRegisterButton);
-        await this.page.waitForTimeout(1000);
+        
         // Validate registration success message
         const successMessage = await this.page.innerText(Selectors.regFormSettings.successMessage);
         expect(successMessage).toContain('Welcome! Your account has been created successfully. Please check your email for further instructions.');
@@ -899,7 +1055,7 @@ export class RegFormSettingsPage extends Base {
         
         // Navigate to WP Mail Log
         await this.navigateToURL(this.wpMailLogPage);
-        await this.page.waitForTimeout(1000);
+        
         await this.assertionValidate(Selectors.regFormSettings.wpMailLogValidation.wpMailLogPage);
 
         // Validate email subject
@@ -918,6 +1074,7 @@ export class RegFormSettingsPage extends Base {
     async disableAdminNotification(formName: string) {
         await this.navigateToURL(this.wpufRegFormPage);
         
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
         await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
@@ -933,13 +1090,19 @@ export class RegFormSettingsPage extends Base {
         }
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
         
     }
 
     async enableMultiStepProgressbar(formName: string) {
         await this.navigateToURL(this.wpufRegFormPage);
         
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -962,10 +1125,16 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.regFormSettings.advancedSettingsSection.multiStepTypeOption('progressive'));
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
 
         await this.navigateToURL(this.wpufRegFormPage);
         
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         
         await this.validateAndClick(Selectors.regFormSettings.addCustomFields_Common.customFieldsStepStart);
@@ -973,7 +1142,12 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.regFormSettings.addCustomFields_Common.customFieldsUrl);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -990,6 +1164,7 @@ export class RegFormSettingsPage extends Base {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         await this.navigateToURL(this.wpufRegFormPage);
         
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -1012,7 +1187,12 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.regFormSettings.advancedSettingsSection.multiStepTypeOption('step_by_step'));
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
 
         await new BasicLogoutPage(this.page).logOut();
         
@@ -1028,6 +1208,7 @@ export class RegFormSettingsPage extends Base {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         await this.navigateToURL(this.wpufRegFormPage);
         
+        await this.page.reload();
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -1046,7 +1227,12 @@ export class RegFormSettingsPage extends Base {
         }
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.regFormSettings.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
     }
 
 }

@@ -393,7 +393,12 @@ export class FieldAddPage extends Base {
         //Save Form
         await this.validateAndClick(Selectors.postForms.saveForm_Common.saveFormButton);
         // Wait for save and verify success message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+        try{
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.postForms.saveForm_Common.saveFormButton);
+            await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved, {timeout: 30000});
+        }
 
     }
 

@@ -66,19 +66,17 @@ export class RegFormPage extends Base {
 
         //Visit Pages
         await this.navigateToURL(this.newPagePage);
-        await this.page.reload();
-        // // Check if the Welcome Modal is visible
-        // try {
-        //     await this.validateAndClick(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closeWelcomeModal);
-        // } catch (error) {
-        //     console.log('Welcome Modal not visible!');
-        // }
 
+        let patternModalVisible = false;
         // Check if the Choose Pattern Modal is visible
-        try {
-            await this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closePatternModal).click({ timeout: 10000 });
-        } catch (error) {
-            console.log('Pattern Modal not visible!');
+        while (patternModalVisible == false) {
+            try {
+                await this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closePatternModal).click({ timeout: 10000 });
+                patternModalVisible = true;
+            } catch (error) {
+                console.log('Pattern Modal not visible!, trying again');
+                await this.page.reload();
+            }
         }
 
         //Add Page Title
@@ -137,7 +135,14 @@ export class RegFormPage extends Base {
         await this.validateAndClick(Selectors.registrationForms.addProfileFields_RF.profileFieldPassword);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+
+        try{
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }catch(error){
+            await this.validateAndClick(Selectors.regFormSettings.saveButton);
+            await this.page.waitForSelector(Selectors.regFormSettings.formSaved, {timeout: 30000});
+        }
+
 
         await this.createRegistrationPageUsingShortcodeLite(newRegFormName, newRegFormPage);
 
@@ -199,7 +204,7 @@ export class RegFormPage extends Base {
         }
         //Click Register
         await this.validateAndClick(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfRegisterButton);
-        await this.page.waitForTimeout(2000);
+        
         await this.assertionValidate(Selectors.regFormSettings.checkSuccessMessage);
     }
 
@@ -218,7 +223,7 @@ export class RegFormPage extends Base {
         //Validate Registered User
         //Go to Users List
         await this.validateAndClick(Selectors.registrationForms.validateUserRegisteredAdminEnd.adminUsersList);
-        await this.page.waitForTimeout(1000);
+        
         await this.assertionValidate(Selectors.registrationForms.validateUserRegisteredAdminEnd.validateUserEmail(newEmail));
 
     }

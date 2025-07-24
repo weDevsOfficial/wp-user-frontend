@@ -306,9 +306,9 @@ export class SettingsSetupPage extends Base {
         await this.validateAndClick(Selectors.login.basicNavigation.licenseTab);
         //Activate Plugin
         await this.validateAndFillStrings(Selectors.settingsSetup.pluginStatusCheck.fillLicenseKey, process.env.WPUF_PRO_LICENSE_KEY?.toString() || '');
-        await this.page.waitForTimeout(200);
+        
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.submitLicenseKey);
-        await this.page.waitForTimeout(200);
+        
         await this.page.reload();
         await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.activationRemaining);
         console.log('WPUF-Pro Status: License is Activated');
@@ -384,7 +384,7 @@ export class SettingsSetupPage extends Base {
          
 
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccount);
-        await this.page.waitForTimeout(200);
+        
         await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountPage, 'Account' );
 
         await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountActiveTab, 'Dashboard' );
@@ -515,26 +515,26 @@ export class SettingsSetupPage extends Base {
         //New User creation flow
         //Enter Username
         await this.validateAndFillStrings(Selectors.settingsSetup.createNewUser.newUserName, userName);
-        await this.page.waitForTimeout(200);
+        
         //Enter Email
         await this.validateAndFillStrings(Selectors.settingsSetup.createNewUser.newUserEmail, email);
-        await this.page.waitForTimeout(200);
+        
         //Enter First Name
         await this.validateAndFillStrings(Selectors.settingsSetup.createNewUser.newUserFirstName, firstName);
-        await this.page.waitForTimeout(200);
+        
         //Enter Last Name
         await this.validateAndFillStrings(Selectors.settingsSetup.createNewUser.newUserLastName, lastName);
-        await this.page.waitForTimeout(200);
+        
         //Enter Password
         await this.validateAndFillStrings(Selectors.settingsSetup.createNewUser.newUserPassword, password);
-        await this.page.waitForTimeout(200);
+        
         //Select Role
         await this.assertionValidate(Selectors.settingsSetup.createNewUser.newUserSelectRole);
         await this.selectOptionWithLabel(Selectors.settingsSetup.createNewUser.newUserSelectRole, 'Subscriber' );
-        await this.page.waitForTimeout(200);
+        
         //Create User
         await this.validateAndClick(Selectors.settingsSetup.createNewUser.newUserSubmit);
-        await this.page.waitForTimeout(200);
+        
     }
 
     async createPostCategories() {
@@ -547,7 +547,7 @@ export class SettingsSetupPage extends Base {
         for (let i = 0; i < categoryNames.length; i++) {
             await this.validateAndFillStrings(Selectors.settingsSetup.categories.addNewCategory, categoryNames[i]);
             await this.validateAndClick(Selectors.settingsSetup.categories.submitCategory);
-            await this.page.waitForTimeout(500);
+            
             await this.assertionValidate(Selectors.settingsSetup.categories.validateCategory(categoryNames[i]));
         }
     }
@@ -561,7 +561,7 @@ export class SettingsSetupPage extends Base {
         for (let i = 0; i < tagNames.length; i++) {
             await this.validateAndFillStrings(Selectors.settingsSetup.tags.addNewTag, tagNames[i]);
             await this.validateAndClick(Selectors.settingsSetup.tags.submitTag);
-            await this.page.waitForTimeout(500);
+            
             await this.assertionValidate(Selectors.settingsSetup.tags.validateTag(tagNames[i]));
         }
     }

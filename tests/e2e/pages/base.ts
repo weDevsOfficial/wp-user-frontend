@@ -59,28 +59,36 @@ export class Base {
 
     // Just Validate
     async assertionValidate(locator: string) {
+        await this.waitForLoading();
         await this.page.locator(locator).waitFor();
         return expect(this.page.locator(locator).isVisible).toBeTruthy();
     }
 
     // Validate and Click
     async validateAndClick(locator: string) {
+        await this.waitForLoading();
         const element = this.page.locator(locator);
         await element.waitFor();
         expect(element.isVisible).toBeTruthy();
         await element.click();
+        await this.waitForLoading();
+        return true;
     }
 
     // Validate and Click by text
     async validateAndClickByText(locator: string) {
+        await this.waitForLoading();
         const element = this.page.getByText(locator, { exact: true });
         await element.waitFor();
         expect(element.isVisible).toBeTruthy();
         await element.click();
+        await this.waitForLoading();
+        return true;
     }
 
     // Validate and Click any
     async validateAndClickAny(locator: string) {
+        await this.waitForLoading();
         const elements = this.page.locator(locator);
         const count = await elements.count();
 
@@ -88,6 +96,7 @@ export class Base {
             const element = elements.nth(i);
             if (await element.isVisible()) {
                 await element.click();
+                await this.waitForLoading();
                 return; // Exit the function once a visible element is clicked
             }
         }
@@ -97,12 +106,14 @@ export class Base {
 
     // Validate any
     async validateAny(locator: string) {
+        await this.waitForLoading();
         const elements = this.page.locator(locator);
         const count = await elements.count();
 
         for (let i = 0; i < count; i++) {
             const element = elements.nth(i);
             if (await element.isVisible()) {
+                await this.waitForLoading();
                 return; // Exit the function once a visible element is clicked
             }
         }
@@ -112,47 +123,63 @@ export class Base {
 
     // Validate and Fill Strings
     async validateAndFillStrings(locator: string, value: string) {
+        await this.waitForLoading();
         const element = this.page.locator(locator);
         await element.waitFor();
         expect(element.isVisible).toBeTruthy();
         await element.fill(value);
+        await this.waitForLoading
     }
 
     // Validate and Fill Numbers
     async validateAndFillNumbers(locator: string, value: number) {
+        await this.waitForLoading();
         const element = this.page.locator(locator);
         await element.waitFor();
         expect(element.isVisible).toBeTruthy();
         await element.fill(value.toString());
+        await this.waitForLoading();
     }
 
     // Validate and CheckBox
     async validateAndCheckBox(locator: string) {
+        await this.waitForLoading();
         const element = this.page.locator(locator);
         await element.waitFor();
         expect(element.isVisible).toBeTruthy();
         await element.check();
+        await this.waitForLoading();
+        return true;
     }
 
     // Match Toast Notification message(s)
     async matchToastNotifications(extractedToast: string, matchWithToast: string) {
+        await this.waitForLoading();
         expect(matchWithToast).toContain(extractedToast);
+        await this.waitForLoading();
+        return true;
     }
 
     //SelectOptionWithLabel
     async selectOptionWithLabel(locator: string, label: string) {
+        await this.waitForLoading();
         const element = this.page.locator(locator);
         await element.waitFor();
         expect(element.isVisible).toBeTruthy();
         await this.page.selectOption(locator, { label: label });
+        await this.waitForLoading();
+        return true;
     }
 
     //SelectOptionWithLabel
     async selectOptionWithValue(locator: string, value: string) {
+        await this.waitForLoading();
         const element = this.page.locator(locator);
         await element.waitFor();
         expect(element.isVisible).toBeTruthy();
         await this.page.selectOption(locator, { value: value });
+        await this.waitForLoading();
+        return true;
     }
 
     // Wait for networkidle

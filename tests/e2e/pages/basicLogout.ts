@@ -14,9 +14,7 @@ export class BasicLogoutPage extends Base {
     async logOut() {
         await this.navigateToURL(this.wpAdminPage );
 
-        await this.page.waitForTimeout(200);
         await this.page.hover(Selectors.logout.basicLogout.logoutHoverUsername);
-        await this.page.waitForTimeout(100);
         await this.validateAndClick(Selectors.logout.basicLogout.logoutButton);
 
         //Validate LOGOUT

@@ -391,7 +391,31 @@ class Posting {
 
             <?php
             $atts = [];
-            wpuf()->fields->render_fields( $custom_fields, $form_id, $atts, $type = 'post', $post->ID );
+
+            // Render all fields including repeat fields
+            if ( ! empty( $custom_fields ) ) {
+                foreach ( $custom_fields as $field ) {
+                    // Check if this is a repeat field
+                    if ( isset( $field['template'] ) && $field['template'] === 'repeat_field' &&
+                         isset( $field['input_type'] ) && $field['input_type'] === 'repeat' ) {
+                        // Use special admin metabox rendering for repeat fields
+                        if ( class_exists( 'WeDevs\Wpuf\Pro\Fields\Field_Repeat' ) ) {
+                            $repeat_field_obj = new \WeDevs\Wpuf\Pro\Fields\Field_Repeat();
+                            $repeat_field_obj->render_admin_metabox( $field, $form_id, 'post', $post->ID );
+                        }
+                    } else {
+                        // Render other fields normally
+                        if ( $field_object = wpuf()->fields->field_exists( $field['template'] ) ) {
+                            if ( wpuf()->fields->check_field_visibility( $field ) ) {
+                                if ( is_object( $field_object ) ) {
+                                    $field_object->render( $field, $form_id, 'post', $post->ID );
+                                    $field_object->conditional_logic( $field, $form_id );
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             // wp_nonce_field( 'wpuf_form_add' ); ?>
             </tbody>
         </table>
@@ -408,6 +432,7 @@ class Posting {
                         $('.wpuf-cf-table').on('click', 'img.wpuf-clone-field', this.cloneField);
                         $('.wpuf-cf-table').on('click', 'img.wpuf-remove-field', this.removeField);
                         $('.wpuf-cf-table').on('click', 'a.wpuf-delete-avatar', this.deleteAvatar);
+                        this.initRepeatField();
                     },
                     cloneField: function(e) {
                         e.preventDefault();
@@ -447,6 +472,123 @@ class Posting {
                                 window.location.reload();
                             });
                         }
+                    },
+
+                    initRepeatField: function() {
+                        $('.wpuf-repeat-container').each(function() {
+                            var $container = $(this);
+                            var fieldName = $container.data('field-name');
+                            var maxRepeats = parseInt($container.data('max-repeats')) || -1;
+
+                            wpuf.updateRepeatButtons($container);
+
+                            $container.on('click', '.wpuf-add-repeat', function() {
+                                wpuf.addRepeatInstance($container, fieldName, maxRepeats);
+                            });
+
+                            $container.on('click', '.wpuf-remove-repeat', function() {
+                                wpuf.removeRepeatInstance($(this).closest('.wpuf-repeat-instance'), $container);
+                            });
+                        });
+                    },
+
+                    addRepeatInstance: function($container, fieldName, maxRepeats) {
+                        var $instances = $container.find('.wpuf-repeat-instance');
+                        var currentInstances = $instances.length;
+
+                        if (maxRepeats !== -1 && currentInstances >= maxRepeats) {
+                            return;
+                        }
+
+                        var $firstInstance = $instances.first();
+                        var $newInstance = $firstInstance.clone();
+                        var newInstanceIndex = currentInstances;
+
+                        $newInstance.attr('data-instance', newInstanceIndex);
+
+                        // Clear all input/textarea/select values in the new instance
+                        $newInstance.find('input, textarea, select').each(function() {
+                            var $input = $(this);
+                            if ($input.is(':checkbox') || $input.is(':radio')) {
+                                $input.prop('checked', false);
+                            } else {
+                                $input.val('');
+                            }
+                        });
+                        // Also clear any textareas' inner text (for browsers that don't use .val() for <textarea>)
+                        $newInstance.find('textarea').text('');
+
+                        // Update names and ids for the new instance
+                        $newInstance.find('[name], [id], [for]').each(function() {
+                            var $element = $(this);
+                            var originalName = $element.attr('name');
+                            var originalId = $element.attr('id');
+                            var originalFor = $element.attr('for');
+
+                            if (originalName && originalName.includes('[')) {
+                                var newName = originalName.replace(/\[\d+\]/, '[' + newInstanceIndex + ']');
+                                $element.attr('name', newName);
+                            }
+                            if (originalId && originalId.includes('[')) {
+                                var newId = originalId.replace(/\[\d+\]/, '[' + newInstanceIndex + ']');
+                                $element.attr('id', newId);
+                            }
+                            if (originalFor && originalFor.includes('[')) {
+                                var newFor = originalFor.replace(/\[\d+\]/, '[' + newInstanceIndex + ']');
+                                $element.attr('for', newFor);
+                            }
+                        });
+
+                        $container.append($newInstance);
+                        wpuf.reindexInstances($container, fieldName);
+                        wpuf.updateRepeatButtons($container);
+                    },
+
+                    removeRepeatInstance: function($instance, $container) {
+                        var fieldName = $container.data('field-name');
+                        $instance.remove();
+                        wpuf.reindexInstances($container, fieldName);
+                        wpuf.updateRepeatButtons($container);
+                    },
+
+                    reindexInstances: function($container, fieldName) {
+                        $container.find('.wpuf-repeat-instance').each(function(index) {
+                            var $instance = $(this);
+                            $instance.attr('data-instance', index);
+
+                            $instance.find('[name], [id], [for]').each(function() {
+                                var $element = $(this);
+                                var originalName = $element.attr('name');
+                                var originalId = $element.attr('id');
+                                var originalFor = $element.attr('for');
+
+                                if (originalName && originalName.includes('[')) {
+                                    var newName = originalName.replace(/\[\d+\]/, '[' + index + ']');
+                                    $element.attr('name', newName);
+                                }
+
+                                if (originalId && originalId.includes('[')) {
+                                    var newId = originalId.replace(/\[\d+\]/, '[' + index + ']');
+                                    $element.attr('id', newId);
+                                }
+
+                                if (originalFor && originalFor.includes('[')) {
+                                    var newFor = originalFor.replace(/\[\d+\]/, '[' + index + ']');
+                                    $element.attr('for', newFor);
+                                }
+                            });
+                        });
+                    },
+
+                    updateRepeatButtons: function($container) {
+                        var $instances = $container.find('.wpuf-repeat-instance');
+                        var count = $instances.length;
+
+                        $instances.each(function(i) {
+                            var $controls = $(this).find('.wpuf-repeat-controls');
+                            $controls.find('.wpuf-add-repeat').toggle(i === count - 1);
+                            $controls.find('.wpuf-remove-repeat').toggle(count > 1);
+                        });
                     }
                 };
 
@@ -454,7 +596,7 @@ class Posting {
             });
 
         </script>
-        <style type="text/css">
+        <style>
             ul.wpuf-attachment-list li {
                 display: inline-block;
                 border: 1px solid #dfdfdf;
@@ -492,7 +634,6 @@ class Posting {
                 background-color: #fff !important;
                 text-overflow: ellipsis !important;
                 width: 170px !important;
-                font-family: Roboto !important;
                 font-size: 15px !important;
                 font-weight: 300 !important;
                 padding: 0 11px 0 13px !important;
@@ -506,6 +647,49 @@ class Posting {
             }
             .wpuf-form-google-map-container.hide-search-box .gm-style input[type="text"].wpuf-google-map-search {
                 display: none;
+            }
+
+            /* Repeat field styles for admin metabox */
+            .wpuf-repeat-container {
+                margin: 10px 0;
+            }
+
+            .wpuf-repeat-instance {
+                position: relative;
+                border: 1px solid #ddd;
+                padding: 15px;
+                margin-bottom: 10px;
+                background: #f9f9f9;
+                border-radius: 4px;
+            }
+
+            .wpuf-repeat-controls {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+            }
+
+            .wpuf-repeat-controls button {
+                border: 1px solid #ccc !important;
+                background: #fff;
+                padding: 2px 8px;
+                margin-left: 5px;
+                border-radius: 3px;
+                cursor: pointer;
+                font-size: 12px;
+                line-height: 1.4;
+            }
+
+            .wpuf-repeat-controls button:hover {
+                background: #f0f0f0;
+            }
+
+            .wpuf-repeat-controls .wpuf-add-repeat {
+                color: #0073aa;
+            }
+
+            .wpuf-repeat-controls .wpuf-remove-repeat {
+                color: #dc3232;
             }
 
         </style>
@@ -543,7 +727,7 @@ class Posting {
             return $post_id;
         }
 
-        list( $post_vars, $tax_vars, $meta_vars ) = self::get_input_fields( $wpuf_cf_form_id );
+        list( $post_vars, $tax_vars, $meta_vars ) = ( new Posting )->get_input_fields( $wpuf_cf_form_id );
 
         // WPUF_Frontend_Form_Post::update_post_meta( $meta_vars, $post_id );
         $this->update_post_meta( $meta_vars, $post_id );

@@ -1,4 +1,4 @@
-name: Playwright tests/e2e
+name: Playwright e2e tests for WPUF Lite
 
 
 on:

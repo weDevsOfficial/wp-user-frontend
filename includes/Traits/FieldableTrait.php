@@ -595,25 +595,29 @@ trait FieldableTrait {
                     break;
 
                 case 'repeat':
-                    $repeater_value = isset($_POST[$value['name']]) ? wp_unslash($_POST[$value['name']]) : array();
-
+                    $repeater_value = isset( $_POST[ $value['name'] ] ) ? wp_unslash( $_POST[ $value['name'] ] ) : [];
                     // If this repeat field has inner_fields and the value is an array of rows (ACF-style)
-                    if (!empty($value['inner_fields']) && is_array($repeater_value) && isset($repeater_value[0]) && is_array($repeater_value[0])) {
-                        $rows = array();
-                        foreach ($repeater_value as $row) {
-                            $sanitized_row = array();
-                            foreach ($value['inner_fields'] as $inner_field) {
+                    if ( ! empty( $value['inner_fields'] ) && is_array(
+                            $repeater_value
+                        ) && isset( $repeater_value[0] ) && is_array( $repeater_value[0] ) ) {
+                        $rows = [];
+                        foreach ( $repeater_value as $row ) {
+                            $sanitized_row = [];
+                            foreach ( $value['inner_fields'] as $inner_field ) {
                                 $fname = $inner_field['name'];
-                                $sanitized_row[$fname] = isset($row[$fname]) ? sanitize_text_field($row[$fname]) : '';
+                                $sanitized_row[ $fname ] = isset( $row[ $fname ] ) ? sanitize_text_field(
+                                    $row[ $fname ]
+                                ) : '';
                             }
                             $rows[] = $sanitized_row;
                         }
-                        $meta_key_value[$value['name']] = $rows;
+                        $meta_key_value[ $value['name'] ] = $rows;
                     } else {
                         // Fallback to old logic for single-field repeaters or legacy structure
-                        $meta_key_value[$value['name']] = is_array($repeater_value) ? implode(self::$separator, $repeater_value) : '';
+                        $meta_key_value[ $value['name'] ] = is_array( $repeater_value ) ? implode(
+                            self::$separator, $repeater_value
+                        ) : '';
                     }
-
                     break;
 
                 case 'address':

@@ -171,7 +171,6 @@ Vue.component('form-column_field', {
             return ( field.recaptcha_type && 'invisible_recaptcha' === field.recaptcha_type ) ? true : false;
         },
 
-
         isAllowedInColumnField: function(field_template) {
             var restrictedFields = ['column_field', 'custom_hidden_field', 'step_start'];
 

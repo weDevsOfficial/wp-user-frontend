@@ -35,17 +35,31 @@ Vue.component('field-options', {
 
                 // check if the editing field belong to column field or repeat field
                 if (self.$store.state.form_fields[i].template.match(/^(column|repeat)_field$/)) {
-                    var innerColumnFields = self.$store.state.form_fields[i].inner_fields;
+                    var innerFields = self.$store.state.form_fields[i].inner_fields;
 
-                    for (const columnFields in innerColumnFields) {
-                        if (innerColumnFields.hasOwnProperty(columnFields)) {
-                            var columnFieldIndex = 0;
+                    // Handle column fields (inner_fields is an object with column keys)
+                    if (self.$store.state.form_fields[i].template === 'column_field') {
+                        for (const columnFields in innerFields) {
+                            if (innerFields.hasOwnProperty(columnFields)) {
+                                var columnFieldIndex = 0;
 
-                            while (columnFieldIndex < innerColumnFields[columnFields].length) {
-                                if (innerColumnFields[columnFields][columnFieldIndex].id === self.editing_field_id) {
-                                    return innerColumnFields[columnFields][columnFieldIndex];
+                                while (columnFieldIndex < innerFields[columnFields].length) {
+                                    if (innerFields[columnFields][columnFieldIndex].id === self.editing_field_id) {
+                                        return innerFields[columnFields][columnFieldIndex];
+                                    }
+                                    columnFieldIndex++;
                                 }
-                                columnFieldIndex++;
+                            }
+                        }
+                    }
+                    
+                    // Handle repeat fields (inner_fields is an array)
+                    if (self.$store.state.form_fields[i].template === 'repeat_field') {
+                        if (Array.isArray(innerFields)) {
+                            for (var repeatFieldIndex = 0; repeatFieldIndex < innerFields.length; repeatFieldIndex++) {
+                                if (innerFields[repeatFieldIndex].id === self.editing_field_id) {
+                                    return innerFields[repeatFieldIndex];
+                                }
                             }
                         }
                     }

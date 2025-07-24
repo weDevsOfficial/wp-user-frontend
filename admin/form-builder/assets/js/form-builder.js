@@ -453,6 +453,22 @@
                 state.form_fields[repeatFieldIndex].inner_fields.splice(payload.index, 1);
             },
 
+            // clone a repeat inner field element
+            clone_repeat_inner_field_element: function (state, payload) {
+                var repeatFieldIndex = state.form_fields.findIndex(field => field.id === payload.field_id);
+                if (repeatFieldIndex === -1) return;
+
+                var field = state.form_fields[repeatFieldIndex].inner_fields[payload.index];
+                var clone = $.extend(true, {}, field);
+                var newIndex = parseInt(payload.index) + 1;
+
+                clone.id = payload.new_id;
+                clone.name = clone.name + '_copy';
+                clone.is_new = true;
+
+                state.form_fields[repeatFieldIndex].inner_fields.splice(newIndex, 0, clone);
+            },
+
             move_column_inner_fields: function(state, payload) {
                 var columnFieldIndex = state.form_fields.findIndex(field => field.id === payload.field_id),
                     innerFields  = payload.inner_fields,

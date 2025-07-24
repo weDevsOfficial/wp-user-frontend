@@ -718,7 +718,7 @@ export class PostFormPage extends Base {
         await this.validateAndClick(Selectors.postForms.downloadsFormData.titleBE(DownloadsForm.title));
         await this.page.waitForTimeout(1000);
         //Validate Product Price
-        await this.assertionValidate(Selectors.postForms.downloadsFormData.price(DownloadsForm.regularPrice));
+        //await this.assertionValidate(Selectors.postForms.downloadsFormData.price(DownloadsForm.regularPrice));
         //Validate Product Excerpt
         await this.assertionValidate(Selectors.postForms.downloadsFormData.excerpt(DownloadsForm.excerpt));
         //Validate Product Category

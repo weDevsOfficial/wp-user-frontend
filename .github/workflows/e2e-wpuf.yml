@@ -1,4 +1,4 @@
-name: Playwright e2e tests for WPUF Lite
+name: Playwright e2e tests for WP-User-Frontend
 
 
 on:

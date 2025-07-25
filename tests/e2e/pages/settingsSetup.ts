@@ -395,6 +395,7 @@ export class SettingsSetupPage extends Base {
 
     async changeSettingsSetEditProfilePageDefault(label:string) {
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
          

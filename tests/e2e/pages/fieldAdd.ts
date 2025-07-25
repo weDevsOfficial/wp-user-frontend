@@ -392,8 +392,8 @@ export class FieldAddPage extends Base {
     async saveForm_Common() {
         //Save Form
         await this.validateAndClick(Selectors.postForms.saveForm_Common.saveFormButton);
-        // Wait for save and verify success message
-        await this.page.waitForSelector(Selectors.postFormSettings.messages.formSaved);
+
+        await this.waitForFormSaved(Selectors.postFormSettings.messages.formSaved, Selectors.postForms.saveForm_Common.saveFormButton);
 
     }
 

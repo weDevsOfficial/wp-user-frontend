@@ -31,6 +31,7 @@ export default defineConfig({
         viewport: { width: 1280, height: 720 },
         screenshot: 'only-on-failure',
         video: 'off',
+        ignoreHTTPSErrors: true,
     },
     projects: [
         {

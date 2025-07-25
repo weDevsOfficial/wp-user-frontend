@@ -51,32 +51,40 @@ export class Base {
 
     // URL navigation
     async navigateToURL(url: string) {
+        await this.waitForLoading();
         await this.page.goto(url);
         await this.waitForLoading();
-        //await expect(this.page.url()).toBe(url);
+        console.log('\x1b[34m%s\x1b[0m', `✅ Navigated to ${url}`);
         return true;
     }
 
     // Just Validate
     async assertionValidate(locator: string) {
+        await this.waitForLoading();
         await this.page.locator(locator).waitFor();
+        console.log('\x1b[34m%s\x1b[0m', `✅ Asserted ${locator}`);
         return expect(this.page.locator(locator).isVisible).toBeTruthy();
     }
 
     // Validate and Click
     async validateAndClick(locator: string) {
+        await this.waitForLoading();
         const element = this.page.locator(locator);
         await element.waitFor();
         expect(element.isVisible).toBeTruthy();
         await element.click();
+        await this.waitForLoading();
+        console.log('\x1b[35m%s\x1b[0m', `✅ Clicked on ${locator}`);
     }
 
     // Validate and Click by text
     async validateAndClickByText(locator: string) {
+        await this.waitForLoading();
         const element = this.page.getByText(locator, { exact: true });
         await element.waitFor();
         expect(element.isVisible).toBeTruthy();
         await element.click();
+        await this.waitForLoading();
     }
 
     // Validate and Click any
@@ -112,47 +120,64 @@ export class Base {
 
     // Validate and Fill Strings
     async validateAndFillStrings(locator: string, value: string) {
+        await this.waitForLoading();
         const element = this.page.locator(locator);
         await element.waitFor();
         expect(element.isVisible).toBeTruthy();
         await element.fill(value);
+        await this.waitForLoading();
+        console.log('\x1b[35m%s\x1b[0m', `✅ Filled ${locator} with ${value}`);
     }
 
     // Validate and Fill Numbers
     async validateAndFillNumbers(locator: string, value: number) {
+        await this.waitForLoading();
         const element = this.page.locator(locator);
         await element.waitFor();
         expect(element.isVisible).toBeTruthy();
         await element.fill(value.toString());
+        await this.waitForLoading();
+        console.log('\x1b[35m%s\x1b[0m', `✅ Filled ${locator} with ${value}`);
     }
 
     // Validate and CheckBox
     async validateAndCheckBox(locator: string) {
+        await this.waitForLoading();
         const element = this.page.locator(locator);
         await element.waitFor();
         expect(element.isVisible).toBeTruthy();
         await element.check();
+        await this.waitForLoading();
+        console.log('\x1b[35m%s\x1b[0m', `✅ Checked ${locator}`);
     }
 
     // Match Toast Notification message(s)
     async matchToastNotifications(extractedToast: string, matchWithToast: string) {
+        await this.waitForLoading();
         expect(matchWithToast).toContain(extractedToast);
+        await this.waitForLoading();
     }
 
     //SelectOptionWithLabel
     async selectOptionWithLabel(locator: string, label: string) {
+        await this.waitForLoading();
         const element = this.page.locator(locator);
         await element.waitFor();
         expect(element.isVisible).toBeTruthy();
         await this.page.selectOption(locator, { label: label });
+        await this.waitForLoading();
+        console.log('\x1b[33m%s\x1b[0m', `✅ Selected ${locator} with ${label}`);
     }
 
     //SelectOptionWithLabel
     async selectOptionWithValue(locator: string, value: string) {
+        await this.waitForLoading();
         const element = this.page.locator(locator);
         await element.waitFor();
         expect(element.isVisible).toBeTruthy();
         await this.page.selectOption(locator, { value: value });
+        await this.waitForLoading();
+        console.log('\x1b[33m%s\x1b[0m', `✅ Selected ${locator} with ${value}`);
     }
 
     // Wait for networkidle
@@ -160,4 +185,20 @@ export class Base {
         await this.page.waitForLoadState('domcontentloaded', { timeout: 30000 });
     }
 
+    async waitForFormSaved(formSavedLocator: string, saveButtonLocator: string) {
+        let formNotSaved = true;
+        while (formNotSaved) {
+            try {
+                await this.waitForLoading();
+                await this.page.waitForSelector(formSavedLocator, { timeout: 30000 });
+                await this.waitForLoading();
+                formNotSaved = false;
+            } catch (error) {
+                await this.waitForLoading();
+                await this.validateAndClick(saveButtonLocator);
+                await this.waitForLoading();
+            }
+        }
+        console.log('\x1b[32m%s\x1b[0m', `✅ Form saved`);
+    }
 }

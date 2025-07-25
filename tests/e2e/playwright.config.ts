@@ -28,7 +28,7 @@ const config: PlaywrightTestConfig = {
     /* Retry on CI only */
     retries: process.env.CI ? 0 : 0,
     /* Opt out of parallel tests on CI. */
-    workers: process.env.CI ? 1 : undefined,
+    workers: process.env.CI ? 1 : 1,
     /* Reporter to use. See https://playwright.dev/docs/test-reporters */
     reporter: process.env.CI
         ? [
@@ -55,6 +55,9 @@ const config: PlaywrightTestConfig = {
 
         // Context options
         viewport: { width: 1280, height: 720 },
+        
+        // Ignore SSL certificate errors for local development
+        ignoreHTTPSErrors: true,
 
         // Artifacts
         screenshot: 'only-on-failure',

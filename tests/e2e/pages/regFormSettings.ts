@@ -15,6 +15,7 @@ export class RegFormSettingsPage extends Base {
     async settingNewlyRegisteredUserRole(formName: string, role: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -27,7 +28,7 @@ export class RegFormSettingsPage extends Base {
         await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.userRoleDropdown);
         await this.validateAndClick(Selectors.regFormSettings.regSettingsSection.userRoleOption(role));
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
 
         await new BasicLogoutPage(this.page).logOut();
 
@@ -75,7 +76,7 @@ export class RegFormSettingsPage extends Base {
     async enableRequireApproval(formName: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufRegFormPage);
-
+        await this.page.reload();
         // Click on the form
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
 
@@ -88,7 +89,7 @@ export class RegFormSettingsPage extends Base {
             await this.validateAndClick(Selectors.regFormSettings.regSettingsSection.approvalToggle);
         }
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -150,6 +151,7 @@ export class RegFormSettingsPage extends Base {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
 
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -160,7 +162,7 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterRegistrationRedirectionOption('same'));
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -168,6 +170,7 @@ export class RegFormSettingsPage extends Base {
     async setAfterRegistrationRedirectionToPage(formName: string, pageName: string) {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -184,7 +187,7 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterRegistrationRedirectionPageOption(pageName));
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -192,6 +195,7 @@ export class RegFormSettingsPage extends Base {
     async setAfterRegistrationRedirectionToUrl(formName: string, customUrl: string) {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -204,7 +208,7 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.regFormSettings.afterSignUpSettingsSection.afterRegistrationRedirectionUrlInput, customUrl);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -213,6 +217,7 @@ export class RegFormSettingsPage extends Base {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -221,7 +226,7 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.regFormSettings.afterSignUpSettingsSection.registrationSuccessMessageInput, message);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -230,6 +235,7 @@ export class RegFormSettingsPage extends Base {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -238,7 +244,7 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.regFormSettings.afterSignUpSettingsSection.submitButtonTextInput, buttonText);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -247,6 +253,7 @@ export class RegFormSettingsPage extends Base {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -257,7 +264,7 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterProfileUpdateRedirectionOption('same'));
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -266,6 +273,7 @@ export class RegFormSettingsPage extends Base {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -282,7 +290,7 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterProfileUpdateRedirectionPageOption(pageName));
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -291,6 +299,7 @@ export class RegFormSettingsPage extends Base {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -303,7 +312,7 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.regFormSettings.afterSignUpSettingsSection.afterProfileUpdateRedirectionUrlInput, customUrl);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -312,6 +321,7 @@ export class RegFormSettingsPage extends Base {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -320,7 +330,7 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.regFormSettings.afterSignUpSettingsSection.updateProfileMessageInput, message);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -329,6 +339,7 @@ export class RegFormSettingsPage extends Base {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -337,7 +348,7 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.regFormSettings.afterSignUpSettingsSection.updateButtonTextInput, buttonText);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -484,6 +495,7 @@ export class RegFormSettingsPage extends Base {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -500,13 +512,14 @@ export class RegFormSettingsPage extends Base {
         }
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
     }
 
     // Notification Settings Methods
 
     async setEmailVerificationNotification(formName: string) {
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -519,12 +532,13 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.emailVerificationRadio);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
 
     }
 
     async setEmailVerificationNotificationSubject(formName: string, subject: string) {
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -538,11 +552,12 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.regFormSettings.notificationSettingsSection.confirmationEmailSubjectInput, subject);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
     }
 
     async setEmailVerificationNotificationBody(formName: string, body: string) {
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -557,7 +572,7 @@ export class RegFormSettingsPage extends Base {
             .locator(Selectors.regFormSettings.notificationSettingsSection.textareaBody).fill(body);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
            
     }
 
@@ -565,6 +580,7 @@ export class RegFormSettingsPage extends Base {
     async clickTemplateTagsForEmailVerificationNotification(formName: string, tags: string[]) {
         // Go to form edit page
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
 
         // Click on the form
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -591,7 +607,7 @@ export class RegFormSettingsPage extends Base {
 
         // Save settings
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
 
         await new BasicLogoutPage(this.page).logOut();
 
@@ -601,6 +617,7 @@ export class RegFormSettingsPage extends Base {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -614,12 +631,13 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.regFormSettings.notificationSettingsSection.welcomeEmailRadio);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
     }
 
     async setWelcomeEmailNotificationSubject(formName: string, subject: string) {
         
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -633,12 +651,13 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.regFormSettings.notificationSettingsSection.welcomeEmailSubjectInput, subject);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
     }
 
     async setWelcomeEmailNotificationBody(formName: string, body: string) {
 
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -653,11 +672,12 @@ export class RegFormSettingsPage extends Base {
             .locator(Selectors.regFormSettings.notificationSettingsSection.textareaBody).fill(body);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
     }
 
     async clickTemplateTagsForWelcomeEmailNotification(formName: string, tags: string[]) {
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
         
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
 
@@ -677,7 +697,7 @@ export class RegFormSettingsPage extends Base {
         }
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -685,6 +705,7 @@ export class RegFormSettingsPage extends Base {
     async enableAdminNotification(formName: string) {
         
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -701,12 +722,13 @@ export class RegFormSettingsPage extends Base {
         }
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
     }
 
     async setAdminNotificationSubject(formName: string, subject: string) {
 
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -720,11 +742,12 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.regFormSettings.notificationSettingsSection.adminNotificationSubjectInput, subject);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
     }
 
     async setAdminNotificationMessage(formName: string, message: string) {
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
 
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -738,11 +761,12 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.regFormSettings.notificationSettingsSection.adminNotificationMessageTextarea, message);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
     }
 
     async clickTemplateTagsForAdminNotification(formName: string, tags: string[]) {
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
         
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
 
@@ -762,7 +786,7 @@ export class RegFormSettingsPage extends Base {
         }
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -862,6 +886,7 @@ export class RegFormSettingsPage extends Base {
 
     async disableUserNotification(formName: string) {
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
         
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -878,7 +903,7 @@ export class RegFormSettingsPage extends Base {
         }
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
     }
 
     async registerUserAndValidateAdminNotification(userEmail: string, userPassword: string, expectedSubject: string) {
@@ -917,6 +942,7 @@ export class RegFormSettingsPage extends Base {
 
     async disableAdminNotification(formName: string) {
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
         
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
@@ -933,12 +959,13 @@ export class RegFormSettingsPage extends Base {
         }
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.assertionValidate(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
         
     }
 
     async enableMultiStepProgressbar(formName: string) {
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
         
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         
@@ -962,9 +989,10 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.regFormSettings.advancedSettingsSection.multiStepTypeOption('progressive'));
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
 
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
         
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         
@@ -973,7 +1001,7 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.regFormSettings.addCustomFields_Common.customFieldsUrl);
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
 
         await new BasicLogoutPage(this.page).logOut();
     }
@@ -989,6 +1017,7 @@ export class RegFormSettingsPage extends Base {
 
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
         
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         
@@ -1012,7 +1041,7 @@ export class RegFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.regFormSettings.advancedSettingsSection.multiStepTypeOption('step_by_step'));
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
 
         await new BasicLogoutPage(this.page).logOut();
         
@@ -1027,6 +1056,7 @@ export class RegFormSettingsPage extends Base {
     async disableMultiStep(formName: string) {
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
         await this.navigateToURL(this.wpufRegFormPage);
+        await this.page.reload();
         
         await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
         
@@ -1046,7 +1076,7 @@ export class RegFormSettingsPage extends Base {
         }
 
         await this.validateAndClick(Selectors.regFormSettings.saveButton);
-        await this.page.waitForSelector(Selectors.regFormSettings.formSaved);
+        await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
     }
 
 }

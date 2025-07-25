@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
-import { expect, type Page } from '@playwright/test';
+import { expect, request, type Page } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Base } from './base';
 import { faker } from '@faker-js/faker';
@@ -25,9 +25,10 @@ export class PostFormPage extends Base {
 
         //Visit Post Form Page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
+        
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
-        await this.page.reload();
         //Start
         //Click Add Form
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickPostAddForm);
@@ -53,6 +54,7 @@ export class PostFormPage extends Base {
     async createPresetPostForm(newPostName: string) {
         //Visit Post Form Page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();
@@ -81,6 +83,7 @@ export class PostFormPage extends Base {
     async createPresetPostFormWithGuestEnabled(newPostName: string) {
         //Visit Post Form Page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();
@@ -136,6 +139,7 @@ export class PostFormPage extends Base {
     async createProductPostForm() {
         //Visit Post Form Page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();
@@ -162,6 +166,7 @@ export class PostFormPage extends Base {
     async createDownloadsPostForm() {
         //Visit Post Form Page
         await this.navigateToURL(this.wpufPostFormPage);
+        await this.page.reload();
         //CreateNewPostForm
         await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
         await this.page.reload();
@@ -435,62 +440,112 @@ export class PostFormPage extends Base {
 
     //Create Page with Shortcode
     async createPageWithShortcode(shortcode: string, pageTitle: string) {
-        //Go to Pages page
-        await this.navigateToURL(this.newPagePage);
-        await this.page.waitForTimeout(300);
-        await this.page.reload();
-        // Check if the Welcome Modal is visible
-        await this.page.click(Selectors.postForms.createPageWithShortcode.closeWelcomeModal);
-        // Check if the Choose Pattern Modal is visible
-        try {
-            await this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closePatternModal).click({ timeout: 10000 });
-        } catch (error) {
-            console.log('Pattern Modal not visible!');
-        }
 
-        await this.validateAndFillStrings(Selectors.postForms.createPageWithShortcode.addPageTitle, pageTitle);
-        //Click Add Block Button
-        await this.validateAndClick(Selectors.postForms.createPageWithShortcode.blockAddButton);
-        //Search and Add Shortcode block
-        await this.validateAndFillStrings(Selectors.postForms.createPageWithShortcode.blockSearchBox, 'Shortcode');
-        await this.validateAndClick(Selectors.postForms.createPageWithShortcode.addShortCodeBlock);
-        //Enter Shortcode
-        await this.validateAndFillStrings(Selectors.postForms.createPageWithShortcode.enterShortcode, shortcode);
-        //Click Publish Page
-        await this.validateAndClick(Selectors.postForms.createPageWithShortcode.clickPublishPage);
-        //Confirm Publish
-        await this.validateAndClick(Selectors.postForms.createPageWithShortcode.confirmPublish);
-        //Validate Page Created
-        await this.assertionValidate(Selectors.postForms.createPageWithShortcode.validatePageCreated);
+        // Get nonce for REST API authentication
+        let nonce = await this.page.evaluate(() => {
+            return (window as any).wpApiSettings?.nonce || '';
+        });
+        
+        // If nonce not found, try to get it from the admin area
+        if (!nonce) {
+            // Navigate to admin dashboard to get nonce
+            await this.navigateToURL(this.wpAdminPage);
+            nonce = await this.page.evaluate(() => {
+                return (window as any).wpApiSettings?.nonce || '';
+            });
+        }
+        
+        //console.log('REST API Nonce:', nonce);
+
+        const storageState = await this.page.context().storageState();
+        // Create a new request context with auth cookies and nonce
+        const apiContext = await request.newContext({
+            baseURL: Urls.baseUrl,
+            storageState: storageState,
+            extraHTTPHeaders: {
+                'Content-Type': 'application/json',
+                'X-WP-Nonce': nonce,
+            },
+            ignoreHTTPSErrors: true,
+        });
+
+        // Create page using REST API with auth session cookie and nonce
+        const res = await apiContext.post('/wp-json/wp/v2/pages', {
+            data: {
+                title: pageTitle,
+                content: shortcode,
+                status: 'publish',
+            },
+        });
+
+        // Debug: Log response details
+        console.log('API Response Status:', res.status());
+        //console.log('API Response Headers:', await res.headersArray());
+        
+        if (!res.ok()) {
+            const errorBody = await res.text();
+            console.log('API Error Response Body:', errorBody);
+            throw new Error(`API request failed with status ${res.status()}: ${errorBody}`);
+        }
+        
+        const pageData = await res.json();
+        console.log('Page created:', pageData.link);
+
     }
 
     //Create Page with Shortcode general
     async createPageWithShortcodeGeneral(shortcode: string, pageTitle: string) {
-        //Go to Pages page
-        await this.navigateToURL(this.newPagePage);
-        await this.page.reload();
-        
-        // Check if the Choose Pattern Modal is visible
-        try {
-            await this.page.locator(Selectors.registrationForms.createRegistrationPageUsingShortcodeLite.closePatternModal).click({ timeout: 10000 });
-        } catch (error) {
-            console.log('Pattern Modal not visible!');
-        }
 
-        await this.validateAndFillStrings(Selectors.postForms.createPageWithShortcode.addPageTitle, pageTitle);
-        //Click Add Block Button
-        await this.validateAndClick(Selectors.postForms.createPageWithShortcode.blockAddButton);
-        //Search and Add Shortcode block
-        await this.validateAndFillStrings(Selectors.postForms.createPageWithShortcode.blockSearchBox, 'Shortcode');
-        await this.validateAndClick(Selectors.postForms.createPageWithShortcode.addShortCodeBlock);
-        //Enter Shortcode
-        await this.validateAndFillStrings(Selectors.postForms.createPageWithShortcode.enterShortcode, shortcode);
-        //Click Publish Page
-        await this.validateAndClick(Selectors.postForms.createPageWithShortcode.clickPublishPage);
-        //Confirm Publish
-        await this.validateAndClick(Selectors.postForms.createPageWithShortcode.confirmPublish);
-        //Validate Page Created
-        await this.assertionValidate(Selectors.postForms.createPageWithShortcode.validatePageCreated);
+        // Get nonce for REST API authentication
+        let nonce = await this.page.evaluate(() => {
+            return (window as any).wpApiSettings?.nonce || '';
+        });
+        
+        // If nonce not found, try to get it from the admin area
+        if (!nonce) {
+            // Navigate to admin dashboard to get nonce
+            await this.navigateToURL(this.wpAdminPage);
+            nonce = await this.page.evaluate(() => {
+                return (window as any).wpApiSettings?.nonce || '';
+            });
+        }
+        
+        //console.log('REST API Nonce:', nonce);
+
+        const storageState = await this.page.context().storageState();
+        // Create a new request context with auth cookies and nonce
+        const apiContext = await request.newContext({
+            baseURL: Urls.baseUrl,
+            storageState: storageState,
+            extraHTTPHeaders: {
+                'Content-Type': 'application/json',
+                'X-WP-Nonce': nonce,
+            },
+            ignoreHTTPSErrors: true,
+        });
+
+        // Create page using REST API with auth session cookie and nonce
+        const res = await apiContext.post('/wp-json/wp/v2/pages', {
+            data: {
+                title: pageTitle,
+                content: shortcode,
+                status: 'publish',
+            },
+        });
+
+        // Debug: Log response details
+        console.log('API Response Status:', res.status());
+        //console.log('API Response Headers:', await res.headersArray());
+        
+        if (!res.ok()) {
+            const errorBody = await res.text();
+            console.log('API Error Response Body:', errorBody);
+            throw new Error(`API request failed with status ${res.status()}: ${errorBody}`);
+        }
+        
+        const pageData = await res.json();
+        console.log('Page created:', pageData.link);
+
     }
 
     async createGuestPostFE() {
@@ -509,6 +564,7 @@ export class PostFormPage extends Base {
         //Enter Post Title
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, PostForm.title=faker.word.words(2));
         console.log(PostForm.title);
+        await this.page.waitForTimeout(1000);
         //Enter Post Description
         await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
             .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(PostForm.description=faker.lorem.sentence(1));
@@ -717,6 +773,7 @@ export class PostFormPage extends Base {
         //Validate Product Title
         await this.validateAndClick(Selectors.postForms.downloadsFormData.titleBE(DownloadsForm.title));
         await this.page.waitForTimeout(1000);
+        await this.validateAndClick(Selectors.postForms.createPageWithShortcode.closeWelcomeModal);
         //Validate Product Price
         await this.assertionValidate(Selectors.postForms.downloadsFormData.price(DownloadsForm.regularPrice));
         //Validate Product Excerpt

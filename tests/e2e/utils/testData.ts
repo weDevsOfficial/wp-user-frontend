@@ -104,7 +104,7 @@ const PostForm: {
     phoneNumber: '',
     addressLine1: '',
     addressLine2: '',
-    city: 'Dhaka',
+    city: 'Capital Dhaka',
     zip: '1216',
     country: 'Bangladesh',
     state: 'Dhaka',

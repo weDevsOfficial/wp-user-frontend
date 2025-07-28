@@ -26,11 +26,17 @@ export default defineConfig({
         ],
     use: {
         actionTimeout: 0,
-        trace: 'off',
+
         headless: true,
+
         viewport: { width: 1280, height: 720 },
+
+        trace: 'retain-on-failure',
+
         screenshot: 'only-on-failure',
-        video: 'off',
+
+        video: 'retain-on-failure',
+        
         ignoreHTTPSErrors: true,
     },
     projects: [

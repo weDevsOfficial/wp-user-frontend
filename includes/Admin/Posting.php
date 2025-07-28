@@ -20,7 +20,7 @@ class Posting {
         add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes'] );
         add_action( 'add_meta_boxes', [ $this, 'add_meta_box_form_select'] );
         add_action( 'add_meta_boxes', [ $this, 'add_meta_box_post_lock'] );
-        // add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_script'] );
+        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_script'] );
         add_action( 'wpuf_load_post_forms', [ $this, 'enqueue_script' ] );
         // add_action( 'admin_enqueue_scripts', [ $this, 'dequeue_assets' ] );
         add_action( 'wpuf_load_registration_forms', [ $this, 'enqueue_script' ] );
@@ -97,6 +97,26 @@ class Posting {
                 'type_error'       => __( 'You have uploaded an incorrect file type. Please try again.', 'wp-user-frontend' ),
             ],
         ] );
+
+        // Enqueue field initialization script for admin metabox
+        
+        // Enqueue Selectize for country fields
+        wp_enqueue_style( 'wpuf-selectize' );
+        wp_enqueue_script( 'wpuf-selectize' );
+        
+        // Enqueue international telephone input for phone fields
+        wp_enqueue_style( 'wpuf-intlTelInput' );
+        wp_enqueue_script( 'wpuf-intlTelInput' );
+        
+        // Try to load the field initialization script using the registered handle
+        wp_enqueue_script( 'wpuf-field-initialization' );
+        
+        // Localize script with asset URI
+        wp_localize_script( 'wpuf-field-initialization', 'wpuf_field_initializer', [
+            'asset_uri' => defined( 'WPUF_PRO_ASSET_URI' ) ? WPUF_PRO_ASSET_URI : '',
+        ] );
+        
+
     }
 
     /**
@@ -375,19 +395,23 @@ class Posting {
         <table class="form-table wpuf-cf-table">
             <tbody>
 
-            <script type="text/javascript">
-                if ( typeof wpuf_conditional_items === 'undefined' ) {
-                    wpuf_conditional_items = [];
-                }
+                    <script type="text/javascript">
+            if ( typeof wpuf_conditional_items === 'undefined' ) {
+                wpuf_conditional_items = [];
+            }
 
-                if ( typeof wpuf_plupload_items === 'undefined' ) {
-                    wpuf_plupload_items = [];
-                }
+            if ( typeof wpuf_plupload_items === 'undefined' ) {
+                wpuf_plupload_items = [];
+            }
 
-                if ( typeof wpuf_map_items === 'undefined' ) {
-                    wpuf_map_items = [];
-                }
-            </script>
+            if ( typeof wpuf_map_items === 'undefined' ) {
+                wpuf_map_items = [];
+            }
+            
+            // Test if field initialization script is loaded
+            console.log('Admin metabox script loaded');
+            console.log('WPUF_Field_Initializer available:', typeof WPUF_Field_Initializer !== 'undefined');
+        </script>
 
             <?php
             $atts = [];
@@ -548,6 +572,11 @@ class Posting {
                         $container.append($newInstance);
                         wpuf.reindexInstances($container, fieldName);
                         wpuf.updateRepeatButtons($container);
+
+                        // Initialize fields in the new instance
+                        if (typeof WPUF_Field_Initializer !== 'undefined') {
+                            WPUF_Field_Initializer.init();
+                        }
                     },
 
                     removeRepeatInstance: function($instance, $container) {
@@ -592,13 +621,29 @@ class Posting {
 
                         $instances.each(function(i) {
                             var $controls = $(this).find('.wpuf-repeat-controls');
-                            $controls.find('.wpuf-add-repeat').toggle(i === count - 1);
-                            $controls.find('.wpuf-remove-repeat').toggle(count > 1);
+                            var isLast = i === count - 1;
+                            var isOnlyOne = count === 1;
+                            
+                            // Show add button only on the last instance
+                            $controls.find('.wpuf-add-repeat').toggle(isLast);
+                            
+                            // Show remove button on all instances except when there's only one instance
+                            $controls.find('.wpuf-remove-repeat').toggle(!isOnlyOne);
                         });
                     }
                 };
 
                 wpuf.init();
+
+                // Initialize fields after the form is rendered with a delay to ensure DOM is ready
+                setTimeout(function() {
+                    if (typeof WPUF_Field_Initializer !== 'undefined') {
+                        console.log('Calling WPUF_Field_Initializer.init() from admin metabox');
+                        WPUF_Field_Initializer.init();
+                    } else {
+                        console.log('WPUF_Field_Initializer is not defined');
+                    }
+                }, 500);
             });
 
         </script>
@@ -666,9 +711,11 @@ class Posting {
                 margin-bottom: 10px;
                 background: #f9f9f9;
                 border-radius: 4px;
+                position: relative;
             }
 
             .wpuf-repeat-controls {
+                position: absolute;
                 top: 10px;
                 right: 10px;
             }
@@ -694,6 +741,21 @@ class Posting {
 
             .wpuf-repeat-controls .wpuf-remove-repeat {
                 color: #dc3232;
+            }
+
+            /* Field initialization styles for admin metabox */
+            .wpuf-cf-table .wpuf-date-field,
+            .wpuf-cf-table .wpuf-ratings,
+            .wpuf-cf-table select[data-countries] {
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .wpuf-cf-table .wpuf-repeat-instance .wpuf-date-field,
+            .wpuf-cf-table .wpuf-repeat-instance .wpuf-ratings,
+            .wpuf-cf-table .wpuf-repeat-instance select[data-countries] {
+                width: 100%;
+                max-width: 100%;
             }
 
         </style>

@@ -116,7 +116,7 @@ trait FieldableTrait {
 
         foreach ( $form_vars as $key => $value ) {
             // get column field input fields
-            if ( $value['input_type'] == 'column_field' ) {
+            if ( 'column_field' === $value['input_type'] ) {
                 $inner_fields = $value['inner_fields'];
 
                 foreach ( $inner_fields as $column_key => $column_fields ) {
@@ -128,12 +128,12 @@ trait FieldableTrait {
                             }
 
                             //separate the post and custom fields
-                            if ( isset( $column_field['is_meta'] ) && $column_field['is_meta'] == 'yes' ) {
+                            if ( isset( $column_field['is_meta'] ) && 'yes' === $column_field['is_meta'] ) {
                                 $meta_vars[] = $column_field;
                                 continue;
                             }
 
-                            if ( $column_field['input_type'] == 'taxonomy' ) {
+                            if ( 'taxonomy' === $column_field['input_type'] ) {
 
                                 // don't add "category"
                                 // if ( $column_field['name'] == 'category' ) {
@@ -156,17 +156,31 @@ trait FieldableTrait {
             }
 
             //separate the post and custom fields
-            if ( isset( $value['is_meta'] ) && $value['is_meta'] == 'yes' ) {
+            if ( isset( $value['is_meta'] ) && 'yes' === $value['is_meta'] ) {
                 $meta_vars[] = $value;
                 continue;
             }
 
-            if ( $value['input_type'] == 'taxonomy' ) {
+            if ( 'taxonomy' === $value['input_type'] ) {
+                // Handle product categories and other WooCommerce taxonomies
+                if ( 'product_cat' === $value['name'] || 'product_category' === $value['name'] ) {
+                    $value['name'] = 'product_cat'; // Normalize to WooCommerce's taxonomy name
+                    $value['is_woocommerce'] = true;
+                }
+                
+                // Handle product tags
+                if ( 'product_tag' === $value['name'] ) {
+                    $value['is_woocommerce'] = true;
+                }
 
-                // don't add "category"
-                // if ( $value['name'] == 'category' ) {
-                //     continue;
-                // }
+                // Handle shipping class
+                if ( 'product_shipping_class' === $value['name'] ) {
+                    $value['is_woocommerce'] = true;
+                    $value['hierarchical'] = true;
+                    if ( empty( $value['type'] ) ) {
+                        $value['type'] = 'select';
+                    }
+                }
 
                 $taxonomy_vars[] = $value;
             } else {
@@ -205,10 +219,10 @@ trait FieldableTrait {
                     wpuf()->ajax->send_error( __( 'Empty reCaptcha Field', 'wp-user-frontend' ) );
                 }
 
-                if ( $recaptcha_type == 'enable_no_captcha' ) {
+                if ( 'enable_no_captcha' === $recaptcha_type ) {
                     $no_captcha        = 1;
                     $invisible_captcha = 0;
-                } elseif ( $recaptcha_type == 'invisible_recaptcha' ) {
+                } elseif ( 'invisible_recaptcha' === $recaptcha_type ) {
                     $invisible_captcha = 1;
                     $no_captcha        = 0;
                 } else {
@@ -262,7 +276,7 @@ trait FieldableTrait {
         $remote_addr          = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
         $g_recaptcha_response = isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '';
 
-        if ( $no_captcha == 1 && 0 == $invisible ) {
+        if ( 1 === $no_captcha && 0 === $invisible ) {
             if ( ! class_exists( 'WPUF_ReCaptcha' ) ) {
                 require_once WPUF_ROOT . '/Lib/recaptchalib_noCaptcha.php';
             }
@@ -278,7 +292,7 @@ trait FieldableTrait {
             if ( ! $resp->success ) {
                 $this->send_error( __( 'noCaptcha reCAPTCHA validation failed', 'wp-user-frontend' ) );
             }
-        } elseif ( $no_captcha == 0 && 0 == $invisible ) {
+        } elseif ( 0 === $no_captcha && 0 === $invisible ) {
             $recap_challenge = isset( $_POST['recaptcha_challenge_field'] ) ? sanitize_text_field( wp_unslash( $_POST['recaptcha_challenge_field'] ) ) : '';
             $recap_response  = isset( $_POST['recaptcha_response_field'] ) ? sanitize_text_field( wp_unslash( $_POST['recaptcha_response_field'] ) ) : '';
 
@@ -287,14 +301,14 @@ trait FieldableTrait {
             if ( ! $resp->is_valid ) {
                 $this->send_error( __( 'reCAPTCHA validation failed', 'wp-user-frontend' ) );
             }
-        } elseif ( $no_captcha == 0 && 1 == $invisible ) {
+        } elseif ( 0 === $no_captcha && 1 === $invisible ) {
             $response  = null;
             $recaptcha = isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '';
             $object    = new Invisible_Recaptcha( $site_key, $private_key );
 
             $response = $object->verifyResponse( $recaptcha );
 
-            if ( isset( $response['success'] ) and $response['success'] != true ) {
+            if ( isset( $response['success'] ) && true !== $response['success'] ) {
                 $this->send_error( __( 'Invisible reCAPTCHA validation failed', 'wp-user-frontend' ) );
             }
         }
@@ -439,101 +453,207 @@ trait FieldableTrait {
     public function set_custom_taxonomy( $post_id, $taxonomy_vars ) {
         check_ajax_referer( 'wpuf_form_add' );
         // save any custom taxonomies
-        $woo_attr = [];
 
         foreach ( $taxonomy_vars as $taxonomy ) {
-            if ( isset( $_POST[ $taxonomy['name'] ] ) && is_array( $_POST[ $taxonomy['name'] ] ) ) {
-                $taxonomy_name = array_map( 'sanitize_text_field', wp_unslash( $_POST[ $taxonomy['name'] ] ) );
+            $taxonomy_name = $taxonomy['name'];
+            
+            // Get posted terms or default terms
+            $posted_terms = isset( $_POST[$taxonomy_name] ) ? wp_unslash( $_POST[$taxonomy_name] ) : null;
+
+            // Use default terms if no terms posted
+            if ( empty( $posted_terms ) && isset( $taxonomy['default'] ) && ! empty( $taxonomy['default'] ) ) {
+                $posted_terms = $taxonomy['default'];
             }
 
-            if ( isset( $_POST[ $taxonomy['name'] ] ) && ! is_array( $_POST[ $taxonomy['name'] ] ) ) {
-                $taxonomy_name = sanitize_text_field( wp_unslash( $_POST[ $taxonomy['name'] ] ) );
-
-                if ( 'text' === $taxonomy['type'] ) {
-                    $terms = explode( ',', $taxonomy_name );
-                    $terms = array_map(
-                        function ( $term_name ) use ( $taxonomy ) {
-                            $term = get_term_by( 'name', $term_name, $taxonomy['name'] );
-
-                            if ( empty( $term_name ) ) {
-                                return null;
-                            }
-
-                            if ( $term instanceof \WP_Term ) {
-                                return $term->term_id;
-                            }
-
-                            $new_term = wp_insert_term( $term_name, $taxonomy['name'] );
-
-                            return $new_term['term_id'];
-                        }, $terms
-                    );
-
-                    $taxonomy_name = array_filter( $terms );
-                }
+            // Skip if still no terms available
+            if ( empty( $posted_terms ) ) {
+                continue;
             }
+            
+            // Check if this is a WooCommerce enabled taxonomy
+            $is_woo_taxonomy = isset( $taxonomy['is_woocommerce'] ) && wpuf_is_checkbox_or_toggle_on( $taxonomy['is_woocommerce'] );
 
-            // At this point $taxonomy_name should be a single id or array of ids
-            if ( isset( $taxonomy_name ) && $taxonomy_name != 0 && $taxonomy_name != -1 ) {
-                if ( is_object_in_taxonomy( $this->form_settings['post_type'], $taxonomy['name'] ) ) {
-                    $tax = $taxonomy_name;
-                    // if it's not an array, make it one
-                    if ( ! is_array( $tax ) ) {
-                        $tax = [ $tax ];
-                    }
-
-                    if ( $taxonomy['type'] == 'text' ) {
-                        wp_set_object_terms( $post_id, $taxonomy_name, $taxonomy['name'] );
-
-                        // woocommerce check
-                        if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && ! empty( $taxonomy_name ) ) {
-                            $woo_attr[ $taxonomy['name'] ] = $this->woo_attribute( $taxonomy );
-                        }
-                    } else {
-                        if ( is_taxonomy_hierarchical( $taxonomy['name'] ) ) {
-                            wp_set_post_terms( $post_id, $taxonomy_name, $taxonomy['name'] );
-
-                            // woocommerce check
-                            if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && ! empty( $taxonomy_name ) ) {
-                                $woo_attr[ $taxonomy['name'] ] = $this->woo_attribute( $taxonomy );
-                            }
-                        } else {
-                            if ( $tax ) {
-                                $non_hierarchical = [];
-
-                                foreach ( $tax as $value ) {
-                                    $term = get_term_by( 'id', $value, $taxonomy['name'] );
-
-                                    if ( $term && ! is_wp_error( $term ) ) {
-                                        $non_hierarchical[] = $term->name;
+            // Special handling for product categories if WooCommerce is enabled
+            if ( $is_woo_taxonomy && 'product_cat' === $taxonomy_name ) {
+                $term_ids = [];
+                if ( ! empty( $posted_terms ) ) {
+                    if ( is_array( $posted_terms ) ) {
+                        foreach ( $posted_terms as $term ) {
+                            if ( is_numeric( $term ) ) {
+                                $term_obj = get_term( $term, 'product_cat' );
+                                if ( $term_obj && ! is_wp_error( $term_obj ) ) {
+                                    $term_ids[] = (int) $term;
+                                }
+                            } else {
+                                $existing_term = term_exists( $term, 'product_cat' );
+                                if ( $existing_term ) {
+                                    $term_ids[] = $existing_term['term_id'];
+                                } else {
+                                    $new_term = wp_insert_term( $term, 'product_cat' );
+                                    if ( ! is_wp_error( $new_term ) ) {
+                                        $term_ids[] = $new_term['term_id'];
                                     }
                                 }
-
-                                wp_set_post_terms( $post_id, $non_hierarchical, $taxonomy['name'] );
-
-                                // woocommerce check
-                                if ( isset( $taxonomy['woo_attr'] ) && $taxonomy['woo_attr'] == 'yes' && ! empty( $_POST[ $taxonomy['name'] ] ) ) {
-                                    $woo_attr[ $taxonomy['name'] ] = $this->woo_attribute( $taxonomy );
+                            }
+                        }
+                    } else {
+                        // Handle single term
+                        if ( is_numeric( $posted_terms ) ) {
+                            $term_obj = get_term( $posted_terms, 'product_cat' );
+                            if ( $term_obj && ! is_wp_error( $term_obj ) ) {
+                                $term_ids[] = (int) $posted_terms;
+                            }
+                        } else {
+                            $existing_term = term_exists( $posted_terms, 'product_cat' );
+                            if ( $existing_term ) {
+                                $term_ids[] = $existing_term['term_id'];
+                            } else {
+                                $new_term = wp_insert_term( $posted_terms, 'product_cat' );
+                                if ( !is_wp_error($new_term) ) {
+                                    $term_ids[] = $new_term['term_id'];
                                 }
                             }
-                        } // hierarchical
-                    } // is text
-                } // is object tax
-            } // isset tax
+                        }
+                    }
+                }
+                wp_set_object_terms( $post_id, $term_ids, 'product_cat' );
+                continue;
+            }
 
-            else {
-                if ( isset( $taxonomy_name ) && 0 === absint( $taxonomy_name ) ) {
-                    wp_set_post_terms( $post_id, $taxonomy_name, $taxonomy['name'] );
+            // Handle product tags if WooCommerce is enabled
+            if ( $is_woo_taxonomy && 'product_tag' === $taxonomy_name ) {
+                if ( empty( $posted_terms ) ) {
+                    wp_set_object_terms( $post_id, [], 'product_tag' );
+                    continue;
                 }
 
-                if ( ! isset( $taxonomy['woo_attr'] ) ) {
-                    $this->set_default_taxonomy( $post_id );
+                $terms_to_set = [];
+                $terms_array = is_array( $posted_terms ) ? $posted_terms : [ $posted_terms ];
+
+                foreach ( $terms_array as $term ) {
+                    if ( is_numeric( $term ) ) {
+                        // If ID is provided, get the term name
+                        $term_obj = get_term( $term, 'product_tag' );
+                        if ( $term_obj && ! is_wp_error( $term_obj ) ) {
+                            $terms_to_set[] = $term_obj->name;
+                        }
+                    } else {
+                        // If name is provided, use it directly
+                        $terms_to_set[] = $term;
+                    }
+                }
+
+                if ( ! empty( $terms_to_set ) ) {
+                    wp_set_post_terms( $post_id, $terms_to_set, 'product_tag', false );
+                }
+                continue;
+            }
+
+            // Handle other WooCommerce taxonomies if WooCommerce is enabled
+            if ( $is_woo_taxonomy && (
+                'pa_' === substr( $taxonomy_name, 0, 3 ) || 
+                in_array( $taxonomy_name, [ 'product_shipping_class', 'product_type', 'product_visibility' ] )
+            ) ) {
+                // Special handling for shipping class
+                if ( 'product_shipping_class' === $taxonomy_name ) {
+                    if ( empty( $posted_terms ) || '0' === $posted_terms || '' === $posted_terms ) {
+                        wp_set_object_terms( $post_id, [], 'product_shipping_class' );
+                    } else {
+                        wp_set_object_terms( $post_id, $posted_terms, 'product_shipping_class' );
+                    }
+                } else {
+                    wp_set_object_terms( $post_id, $posted_terms, $taxonomy_name );
+                }
+                
+                // For product attributes, add to WooCommerce attributes
+                if ( 'pa_' === substr( $taxonomy_name, 0, 3 ) ) {
+                    $woo_attr[$taxonomy_name] = [
+                        'name'         => $taxonomy_name,
+                        'value'        => '',
+                        'is_visible'   => isset( $taxonomy['woo_attr_vis'] ) && 'yes' === $taxonomy['woo_attr_vis'] ? 1 : 0,
+                        'is_variation' => 0,
+                        'is_taxonomy'  => 1,
+                        'position'     => 0
+                    ];
+                }
+                continue;
+            }
+
+            $is_hierarchical = is_taxonomy_hierarchical( $taxonomy_name );
+            
+            // Process terms based on taxonomy type and input format
+            if ( 'text' === $taxonomy['type'] ) {
+                // Handle free text input
+                $terms = is_array( $posted_terms ) ? $posted_terms : explode( ',', $posted_terms );
+                $terms = array_map( 'trim', $terms );
+                $term_ids = [];
+
+                foreach ( $terms as $term ) {
+                    if ( empty( $term ) ) {
+                        continue;
+                    }
+
+                    $existing = term_exists( $term, $taxonomy_name );
+                    if ( ! $existing ) {
+                        $new_term = wp_insert_term( $term, $taxonomy_name );
+                        if ( ! is_wp_error( $new_term ) ) {
+                            $term_ids[] = $new_term['term_id'];
+                        }
+                    } else {
+                        $term_ids[] = $existing['term_id'];
+                    }
+                }
+
+                if ( ! empty( $term_ids ) ) {
+                    wp_set_object_terms( $post_id, $term_ids, $taxonomy_name );
+                }
+            } else {
+                // Handle select/multiselect/checkbox inputs
+                $terms = is_array( $posted_terms ) ? $posted_terms : [ $posted_terms ];
+                $term_ids = array();
+
+                foreach ( $terms as $term ) {
+                    if ( is_numeric( $term ) ) {
+                        // If term ID is provided
+                        $term_ids[] = intval( $term );
+                    } else {
+                        // If term name is provided
+                        $existing = term_exists( $term, $taxonomy_name );
+                        if ( $existing ) {
+                            $term_ids[] = $existing['term_id'];
+                        }
+                    }
+                }
+
+                if ( ! empty( $term_ids ) ) {
+                    if ( $is_hierarchical ) {
+                        wp_set_object_terms( $post_id, $term_ids, $taxonomy_name );
+                    } else {
+                        // For non-hierarchical taxonomies like tags
+                        $terms = array();
+                        foreach ( $term_ids as $term_id ) {
+                            $term = get_term( $term_id, $taxonomy_name );
+                            if ( $term && ! is_wp_error( $term ) ) {
+                                $terms[] = $term->name;
+                            }
+                        }
+                        wp_set_post_terms( $post_id, $terms, $taxonomy_name );
+                    }
+
+                    // Handle WooCommerce attributes if needed
+                    if ( isset( $taxonomy['woo_attr'] ) && 'yes' === $taxonomy['woo_attr'] ) {
+                        $woo_attr[ $taxonomy_name ] = $this->woo_attribute( [
+                            'name' => $taxonomy_name,
+                            'terms' => $term_ids,
+                            'woo_attr_vis' => $taxonomy['woo_attr_vis'] ?? 'yes'
+                        ] );
+                    }
                 }
             }
         }
 
-        // if a woocommerce attribute
-        if ( $woo_attr ) {
+        // Update WooCommerce attributes if any
+        if ( ! empty( $woo_attr ) ) {
             update_post_meta( $post_id, '_product_attributes', $woo_attr );
         }
 
@@ -598,7 +718,7 @@ trait FieldableTrait {
                     $repeater_value = wp_unslash( $_POST[ $value['name'] ] ); // WPCS: sanitization ok.
 
                     // if it is a multi column repeat field
-                    if ( isset( $value['multiple'] ) && $value['multiple'] == 'true' ) {
+                    if ( isset( $value['multiple'] ) && 'true' === $value['multiple'] ) {
 
                         // if there's any items in the array, process it
                         if ( $repeater_value ) {
@@ -682,9 +802,9 @@ trait FieldableTrait {
                     if ( ! empty( $value_name ) && is_array( $value_name ) ) {
                         $acf_compatibility = wpuf_get_option( 'wpuf_compatibility_acf', 'wpuf_general', 'no' );
 
-                        if ( $value['input_type'] == 'address' ) {
+                        if ( 'address' === $value['input_type'] ) {
                             $meta_key_value[ $value['name'] ] = $value_name;
-                        } elseif ( ! empty( $acf_compatibility ) && $acf_compatibility == 'yes' ) {
+                        } elseif ( ! empty( $acf_compatibility ) && 'yes' === $acf_compatibility ) {
                             $meta_key_value[ $value['name'] ] = $value_name;
                         } else {
                             $meta_key_value[ $value['name'] ] = implode( self::$separator, $value_name );
@@ -739,14 +859,51 @@ trait FieldableTrait {
      */
     public function woo_attribute( $taxonomy ) {
         check_ajax_referer( 'wpuf_form_add' );
-        $taxonomy_name = isset( $_POST[ $taxonomy['name'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $taxonomy['name'] ] ) ) : '';
-
+        
+        // Special handling for product categories
+        if ( 'product_cat' === $taxonomy['name'] ) {
+            return [];
+        }
+        
+        $terms = $taxonomy['terms'] ?? [];
+        
+        if ( ! is_array( $terms ) ) {
+            $terms = [ $terms ];
+        }
+        
+        // Convert term IDs to term values for WooCommerce
+        $term_values = [];
+        foreach ( $terms as $term ) {
+            if ( empty( $term ) ) {
+                continue;
+            }
+            
+            if ( is_numeric( $term ) ) {
+                $term_obj = get_term( $term, $taxonomy['name'] );
+                if ( $term_obj && ! is_wp_error( $term_obj ) ) {
+                    $term_values[] = $term_obj->name;
+                }
+            } else {
+                // For text inputs, check if term exists or create it
+                $existing_term = term_exists( $term, $taxonomy['name'] );
+                if ( ! $existing_term ) {
+                    $new_term = wp_insert_term( $term, $taxonomy['name'] );
+                    if ( ! is_wp_error( $new_term ) ) {
+                        $term_values[] = $term;
+                    }
+                } else {
+                    $term_values[] = $term;
+                }
+            }
+        }
+        
         return [
-            'name'         => ! empty( $taxonomy['name'] ) ? $taxonomy['name'] : '',
-            'value'        => $taxonomy_name,
+            'name'         => $taxonomy['name'],
+            'value'        => implode( ' | ', array_filter( $term_values ) ),
             'is_visible'   => ! empty( $taxonomy['woo_attr_vis'] ) && ( 'yes' === $taxonomy['woo_attr_vis'] ) ? 1 : 0,
             'is_variation' => 0,
             'is_taxonomy'  => 1,
+            'position'     => 0,
         ];
     }
 }

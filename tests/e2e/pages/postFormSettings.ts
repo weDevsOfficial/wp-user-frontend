@@ -77,10 +77,7 @@ export class PostFormSettingsPage extends Base {
         await this.page.reload();
 
         // Find the row containing the form name
-        const postTypeText = await this.page.innerText(Selectors.postFormSettings.postTypeColumn(formName, expectedPostType.toLowerCase()));
-
-        // Verify post type matches expected
-        expect(postTypeText.toLowerCase()).toContain(expectedPostType.toLowerCase());
+        await this.checkElementText(Selectors.postFormSettings.postTypeColumn(formName, expectedPostType.toLowerCase()), expectedPostType.toLowerCase());
     }
 
 
@@ -348,9 +345,7 @@ export class PostFormSettingsPage extends Base {
 
         await this.page.waitForTimeout(2000);
 
-        const successMessage = await this.page.innerText(Selectors.postFormSettings.checkSuccessMessage);
-
-        expect(successMessage).toContain(message);
+        await this.checkElementText(Selectors.postFormSettings.checkSuccessMessage, message);
     }
 
     // Validate redirection after post submission
@@ -428,10 +423,7 @@ export class PostFormSettingsPage extends Base {
         await this.page.reload();
 
         // Find the row containing the form name
-        const postStatusText = await this.page.innerText(Selectors.postFormSettings.postSubmissionStatusColumn(formName, expectedPostStatus));
-
-        // Verify post type matches expected
-        expect(postStatusText.toLowerCase()).toContain(expectedPostStatus.toLowerCase());
+        await this.checkElementText(Selectors.postFormSettings.postSubmissionStatusColumn(formName, expectedPostStatus), expectedPostStatus);
     }
 
     // Validate submitted post status
@@ -456,10 +448,9 @@ export class PostFormSettingsPage extends Base {
 
         await this.navigateToURL(this.wpufPostPage);
 
-        const newPostTitle = await this.page.innerText(Selectors.postFormSettings.postTitleColumn);
-        if (postTitle == newPostTitle) {
-            const newPostStatus = await this.page.innerText(Selectors.postFormSettings.postStatusColumn);
-            await expect(newPostStatus).toContain(value);
+        const validate = await this.checkElementText(Selectors.postFormSettings.postTitleColumn, postTitle);
+        if (validate) {
+            await this.checkElementText(Selectors.postFormSettings.postStatusColumn, value);
         }
 
     }
@@ -503,10 +494,9 @@ export class PostFormSettingsPage extends Base {
 
         await this.navigateToURL(this.wpufPostPage);
 
-        const newPostTitle = await this.page.innerText(Selectors.postFormSettings.postTitleColumn);
-        if (postTitle == newPostTitle) {
-            const newPostStatus = await this.page.innerText(Selectors.postFormSettings.postStatusColumn);
-            await expect(newPostStatus).toContain(value);
+        const validate = await this.checkElementText(Selectors.postFormSettings.postTitleColumn, postTitle);
+        if (validate) {
+            await this.checkElementText(Selectors.postFormSettings.postStatusColumn, value);
         }
     }
 
@@ -742,10 +732,9 @@ export class PostFormSettingsPage extends Base {
         //await this.assertionValidate(Selectors.postFormSettings.checkSuccessMessage);
 
         await this.navigateToURL(this.wpufPostPage);
-        const newPostTitle = await this.page.innerText(Selectors.postFormSettings.postTitleColumn);
-        if (postTitle == newPostTitle) {
-            const newPostStatus = await this.page.innerText(Selectors.postFormSettings.postStatusColumn);
-            await expect(newPostStatus).toContain(expectedStatus);
+        const validate = await this.checkElementText(Selectors.postFormSettings.postTitleColumn, postTitle);
+        if (validate) {
+            await this.checkElementText(Selectors.postFormSettings.postStatusColumn, expectedStatus);
         }
     }
 
@@ -762,12 +751,9 @@ export class PostFormSettingsPage extends Base {
         await this.page.waitForTimeout(1000);
 
         await this.navigateToURL(this.wpufPostPage);
-        const newPostTitle = await this.page.innerText(Selectors.postFormSettings.postTitleColumn);
-        if (postTitle == newPostTitle) {
-            const newPostStatus = await this.page.innerText(Selectors.postFormSettings.postStatusColumn);
-            await expect(newPostStatus).toContain(expectedStatus);
-
-            console.log('\x1b[32m%s\x1b[0m', `Post Status changed to ${newPostStatus} for post ${newPostTitle} via quick edit`);
+        const validate = await this.checkElementText(Selectors.postFormSettings.postTitleColumn, postTitle);
+        if (validate) {
+            await this.checkElementText(Selectors.postFormSettings.postStatusColumn, expectedStatus);
         }
 
     }
@@ -793,9 +779,7 @@ export class PostFormSettingsPage extends Base {
         await this.page.waitForTimeout(2000);
 
         // Validate the message content
-        const successMessage = await this.page.innerText(Selectors.postFormSettings.checkSuccessMessage);
-
-        expect(successMessage).toContain(expectedMessage);
+        await this.checkElementText(Selectors.postFormSettings.checkSuccessMessage, expectedMessage);
     }
 
     async setUpdatePostRedirectionToUpdatedPost(formName: string) {
@@ -940,9 +924,7 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
         await this.page.waitForTimeout(2000);
 
-        const successMessage = await this.page.innerText(Selectors.postFormSettings.checkSuccessMessage);
-
-        expect(successMessage).toContain(message);
+        await this.checkElementText(Selectors.postFormSettings.checkSuccessMessage, message);
     }
 
     async validateUpdatePostRedirectionToPage(postTitle: string, postContent: string, postExcerpt: string, pageTitle: string) {
@@ -1050,8 +1032,7 @@ export class PostFormSettingsPage extends Base {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostSubmitPage);
 
-        const payPerPostInfo = await this.page.innerText(Selectors.postFormSettings.wpufInfo);
-        expect(payPerPostInfo).toContain(`There is a $${cost} charge to add a new post`);
+        await this.checkElementText(Selectors.postFormSettings.wpufInfo, `There is a $${cost} charge to add a new post`);
 
         await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
 
@@ -1066,8 +1047,7 @@ export class PostFormSettingsPage extends Base {
 
         await this.page.waitForTimeout(2000);
 
-        const validateCost = await this.page.innerText(Selectors.postFormSettings.validatePayPerPostCost);
-        expect(validateCost).toContain(`$${cost}`);
+        await this.checkElementText(Selectors.postFormSettings.validatePayPerPostCost, `$${cost}`);
 
         await this.validateAndClick(Selectors.postFormSettings.checkBankButton);
 
@@ -1093,8 +1073,7 @@ export class PostFormSettingsPage extends Base {
 
         await this.navigateToURL(this.wpufPostPage);
 
-        const newPostStatus = await this.page.innerText(Selectors.postFormSettings.postStatusColumn);
-        await expect(newPostStatus).toContain('Live');
+        await this.checkElementText(Selectors.postFormSettings.postStatusColumn, 'Live');
 
     }
 
@@ -1329,12 +1308,9 @@ export class PostFormSettingsPage extends Base {
         // Validate notification is sent
         await this.navigateToURL(this.wpMailLogPage);
         await this.page.waitForTimeout(1000);
+        await this.checkElementText(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress(multipleEmails), multipleEmails);
 
-        const sentEmailAddress = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress(multipleEmails));
-        expect(sentEmailAddress).toBe(multipleEmails);
-
-        const sentEmailSubject = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailSubjectSubmitted);
-        expect(sentEmailSubject).toBe(emailSubject);
+        await this.checkElementText(Selectors.postFormSettings.notificationSettingsSection.sentEmailSubjectSubmitted, emailSubject);
 
         await this.page.hover(Selectors.postFormSettings.notificationSettingsSection.sentEmailSubjectSubmitted);
         await this.validateAndClick(Selectors.postFormSettings.notificationSettingsSection.viewEmailContentSubmitted);
@@ -1614,11 +1590,9 @@ export class PostFormSettingsPage extends Base {
         await this.navigateToURL(this.wpMailLogPage);
         await this.page.waitForTimeout(2000);
 
-        const sentEmailAddress = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress(multipleEmails));
-        expect(sentEmailAddress).toBe(multipleEmails);
+        const sentEmailAddress = await this.checkElementText(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress(multipleEmails), multipleEmails);
 
-        const sentEmailSubject = await this.page.innerText(Selectors.postFormSettings.notificationSettingsSection.sentEmailSubjectUpdated);
-        expect(sentEmailSubject).toBe(emailSubject);
+        const sentEmailSubject = await this.checkElementText(Selectors.postFormSettings.notificationSettingsSection.sentEmailSubjectUpdated, emailSubject);
 
         await this.page.hover(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress(multipleEmails));
         await this.validateAndClick(Selectors.postFormSettings.notificationSettingsSection.viewEmailContentUpdated);
@@ -1792,8 +1766,7 @@ export class PostFormSettingsPage extends Base {
 
         await this.navigateToURL(this.wpufPostSubmitPage);
 
-        const errorMessage = await this.page.innerText(Selectors.postFormSettings.wpufInfo);
-        expect(errorMessage).toBe('limit reached');
+        await this.checkElementText(Selectors.postFormSettings.wpufInfo, 'limit reached');
 
     }
 
@@ -1932,10 +1905,7 @@ export class PostFormSettingsPage extends Base {
 
         await this.assertionValidate(Selectors.postFormSettings.showFormTitle(formName));
 
-
-        const formDescription = await this.page.innerText(Selectors.postFormSettings.showFormDescription);
-        expect(formDescription).toBe('Form Description');
-
+        await this.checkElementText(Selectors.postFormSettings.showFormDescription, 'Form Description');
     }
 
     async setPostPermissionRoleBased(formName: string) {
@@ -1975,8 +1945,7 @@ export class PostFormSettingsPage extends Base {
         await this.navigateToURL(this.wpufPostSubmitPage);
 
         // Click on the form
-        const errorMessage = await this.page.innerText(Selectors.postFormSettings.wpufMessage);
-        expect(errorMessage).toContain('You do not have sufficient permissions to access this form.');
+        await this.checkElementText(Selectors.postFormSettings.wpufMessage, 'You do not have sufficient permissions to access this form.');
 
         await this.navigateToURL(this.wpufPostFormPage);
         await this.page.reload();

@@ -283,9 +283,9 @@ export class PostFormPage extends Base {
         await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postRatingsFormsFE, PostForm.ratings='5');
         console.log(PostForm.ratings);
         // Math Captcha
-        const operand1 = await this.page.innerText(Selectors.postForms.postFormsFrontendCreate.postMathCaptchaFormsFE.operand1);
-        const operand2 = await this.page.innerText(Selectors.postForms.postFormsFrontendCreate.postMathCaptchaFormsFE.operand2);
-        const operator = await this.page.innerText(Selectors.postForms.postFormsFrontendCreate.postMathCaptchaFormsFE.operator);
+        const operand1 = await this.page.textContent(Selectors.postForms.postFormsFrontendCreate.postMathCaptchaFormsFE.operand1);
+        const operand2 = await this.page.textContent(Selectors.postForms.postFormsFrontendCreate.postMathCaptchaFormsFE.operand2);
+        const operator = await this.page.textContent(Selectors.postForms.postFormsFrontendCreate.postMathCaptchaFormsFE.operator);
         let result: number;
         switch (operator) {
             case '+':
@@ -314,125 +314,69 @@ export class PostFormPage extends Base {
     //Validate Post Created
     async validatePostCreated() {
         //Validate Post Submitted
-        const validatePostSubmitted = await this.page.innerText(Selectors.postForms.postFormsFrontendCreate.validatePostSubmitted(PostForm.title));
-        expect(validatePostSubmitted).toContain(PostForm.title);
+        await this.checkElementText(Selectors.postForms.postFormsFrontendCreate.validatePostSubmitted(PostForm.title), PostForm.title);
     }
 
     //Validate Entered Data
     async validateEnteredData() {
         //Validate Post Title
-        const postTitle = await this.page.innerText(Selectors.postForms.postFormData.title(PostForm.title));
-        expect(postTitle).toContain(PostForm.title);
-        console.log("Post Title Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.title(PostForm.title), PostForm.title);
         //Validate Post Description
-        const postDescription = await this.page.innerText(Selectors.postForms.postFormData.description(PostForm.description));
-        expect(postDescription).toContain(PostForm.description);
-        console.log("Post Description Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.description(PostForm.description), PostForm.description);
         //Validate Featured Image
         expect(await this.page.isVisible(Selectors.postForms.postFormData.featuredImage)).toBeTruthy();
-        console.log("Featured Image Validated");
         //Validate Category
-        const postCategory = await this.page.innerText(Selectors.postForms.postFormData.category);
-        expect(postCategory).toContain(PostForm.category);
-        console.log("Category Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.category, PostForm.category);
         //Validate Tags
-        const postTags = await this.page.innerText(Selectors.postForms.postFormData.tags);
-        expect(postTags).toContain(PostForm.tags);
-        console.log("Tags Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.tags, PostForm.tags);
         //Validate Text
-        const postText = await this.page.innerText(Selectors.postForms.postFormData.text);
-        expect(postText).toContain(PostForm.text);
-        console.log("Text Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.text, PostForm.text);
         //Validate Textarea
-        const postTextarea = await this.page.innerText(Selectors.postForms.postFormData.textarea);
-        expect(postTextarea).toContain(PostForm.textarea);
-        console.log("Textarea Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.textarea, PostForm.textarea);
         //Validate Dropdown
-        const postDropdown = await this.page.innerText(Selectors.postForms.postFormData.dropdown);
-        expect(postDropdown).toContain(PostForm.dropdown);
-        console.log("Dropdown Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.dropdown, PostForm.dropdown);
         //Validate Multi Select
-        const postMultiSelect = await this.page.innerText(Selectors.postForms.postFormData.multiSelect);
-        expect(postMultiSelect).toContain(PostForm.multiSelect);
-        console.log("Multi Select Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.multiSelect, PostForm.multiSelect);
         //Validate Radio
-        const postRadio = await this.page.innerText(Selectors.postForms.postFormData.radio);
-        expect(postRadio).toContain(PostForm.radio);
-        console.log("Radio Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.radio, PostForm.radio);
         //Validate Checkbox
-        const postCheckbox = await this.page.innerText(Selectors.postForms.postFormData.checkbox);
-        expect(postCheckbox).toContain(PostForm.checkbox);
-        console.log("Checkbox Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.checkbox, PostForm.checkbox);
         //Validate Website URL
-        const postWebsiteUrl = await this.page.innerText(Selectors.postForms.postFormData.websiteUrl);
-        expect(postWebsiteUrl).toContain(PostForm.websiteUrl);
-        console.log("Website URL Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.websiteUrl, PostForm.websiteUrl);
         //Validate Email Address
-        const postEmailAddress = await this.page.innerText(Selectors.postForms.postFormData.emailAddress);
-        expect(postEmailAddress).toContain(PostForm.emailAddress);
-        console.log("Email Address Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.emailAddress, PostForm.emailAddress);
         //Validate Image Upload
         expect(await this.page.isVisible(Selectors.postForms.postFormData.imageUpload)).toBe(true);
-        console.log("Image Upload Validated");
         //Validate Repeat Field
-        const postRepeatField = await this.page.innerText(Selectors.postForms.postFormData.repeatField(PostForm.repeatField));
-        expect(postRepeatField).toContain(PostForm.repeatField);
-        console.log("Repeat Field Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.repeatField(PostForm.repeatField), PostForm.repeatField);
         //Validate Date / Time
-        const postDateTime = await this.page.innerText(Selectors.postForms.postFormData.dateTime(PostForm.date));
-        expect(postDateTime).toContain(PostForm.date);
-        console.log("Date / Time Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.dateTime(PostForm.date), PostForm.date);
         //Validate Time Field
-        const postTimeField = await this.page.innerText(Selectors.postForms.postFormData.timeField(PostForm.time));
-        expect(postTimeField).toContain(PostForm.time);
-        console.log("Time Field Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.timeField(PostForm.time), PostForm.time);
         //Validate File Upload
         expect(await this.page.isVisible(Selectors.postForms.postFormData.fileUpload)).toBe(true);
-        console.log("File Upload Validated");
         //Validate Country List
-        const postCountryList = await this.page.innerText(Selectors.postForms.postFormData.countryList(PostForm.countryList));
-        expect(postCountryList).toContain(PostForm.countryList);
-        console.log("Country List Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.countryList(PostForm.countryList), PostForm.countryList);
         //Validate Numeric Field
-        const postNumericField = await this.page.innerText(Selectors.postForms.postFormData.numericField);
-        expect(postNumericField).toContain(PostForm.numeric);
-        console.log("Numeric Field Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.numericField, PostForm.numeric);
         //Validate Phone Field
-        const postPhoneField = await this.page.innerText(Selectors.postForms.postFormData.phoneField(PostForm.phoneNumber));
-        expect(postPhoneField).toContain(PostForm.phoneNumber);
-        console.log("Phone Field Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.phoneField(PostForm.phoneNumber), PostForm.phoneNumber);
         //Validate Address Line 1
-        const postAddressLine1 = await this.page.innerText(Selectors.postForms.postFormData.addressLine1(PostForm.addressLine1));
-        expect(postAddressLine1).toContain(PostForm.addressLine1);
-        console.log("Address Line 1 Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.addressLine1(PostForm.addressLine1), PostForm.addressLine1);
         //Validate Address Line 2
-        const postAddressLine2 = await this.page.innerText(Selectors.postForms.postFormData.addressLine2(PostForm.addressLine2));
-        expect(postAddressLine2).toContain(PostForm.addressLine2);
-        console.log("Address Line 2 Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.addressLine2(PostForm.addressLine2), PostForm.addressLine2);
         //Validate City
-        const postCity = await this.page.innerText(Selectors.postForms.postFormData.city(PostForm.city));
-        expect(postCity).toContain(PostForm.city);
-        console.log("City Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.city(PostForm.city), PostForm.city);
         //Validate Zip
-        const postZip = await this.page.innerText(Selectors.postForms.postFormData.zip(PostForm.zip));
-        expect(postZip).toContain(PostForm.zip);
-        console.log("Zip Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.zip(PostForm.zip), PostForm.zip);
         //Validate Country
-        const postCountry = await this.page.innerText(Selectors.postForms.postFormData.country(PostForm.country));
-        expect(postCountry).toContain(PostForm.country);
-        console.log("Country Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.country(PostForm.country), PostForm.country);
         //Validate State
-        const postState = await this.page.innerText(Selectors.postForms.postFormData.state(PostForm.state));
-        expect(postState).toContain(PostForm.state);
-        console.log("State Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.state(PostForm.state), PostForm.state);
         //Validate Embed
-        const postEmbed = await this.page.innerText(Selectors.postForms.postFormData.embed);
-        expect(postEmbed).toContain(PostForm.embed);
-        console.log("Embed Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.embed, PostForm.embed);
         //Validate Ratings
-        const postRatings = await this.page.innerText(Selectors.postForms.postFormData.ratings);
-        expect(postRatings).toContain(PostForm.ratings);
-        console.log("Ratings Validated");
+        await this.checkElementText(Selectors.postForms.postFormData.ratings, PostForm.ratings);
         await this.navigateToURL(this.accountPage);
         await this.validateAndClick(Selectors.logout.basicLogout.signOutButton);
         console.log("Signed Out");
@@ -586,8 +530,7 @@ export class PostFormPage extends Base {
     //Validate Post Created
     async validateGuestPostCreated() {
         //Validate Post Submitted
-        const validatePostSubmitted = await this.page.innerText(Selectors.postForms.postFormsFrontendCreate.validatePostSubmitted(PostForm.title));
-        expect(validatePostSubmitted).toContain(PostForm.title);
+        await this.checkElementText(Selectors.postForms.postFormsFrontendCreate.validatePostSubmitted(PostForm.title), PostForm.title);
     }
 
     async setupForWooProduct(){
@@ -702,6 +645,7 @@ export class PostFormPage extends Base {
         await this.page.setInputFiles(Selectors.postForms.downloadsFrontendCreate.downloadableFiles, DownloadsForm.downloadableFiles);
         await this.page.waitForTimeout(500);
         await this.assertionValidate(Selectors.postForms.downloadsFrontendCreate.uploads('2'));
+        await this.waitForLoading();
         await this.selectOptionWithLabel(Selectors.postForms.downloadsFrontendCreate.downloadsTag, DownloadsForm.tags );
         await this.validateAndClick(Selectors.postForms.downloadsFrontendCreate.createDownloads);
         await this.page.waitForTimeout(1000);
@@ -709,59 +653,47 @@ export class PostFormPage extends Base {
 
     async validateProductCreated(){
         //Validate Product Submitted
-        const validateProductSubmitted = await this.page.innerText(Selectors.postForms.postFormsFrontendCreate.validatePostSubmitted(ProductForm.title));
-        expect(validateProductSubmitted).toContain(ProductForm.title);
+        await this.checkElementText(Selectors.postForms.postFormsFrontendCreate.validatePostSubmitted(ProductForm.title), ProductForm.title);
     }
 
     async validateDownloadsCreated(){
         //Validate Product Submitted
-        const validateProductSubmitted = await this.page.innerText(Selectors.postForms.postFormsFrontendCreate.validatePostSubmitted(DownloadsForm.title));
-        expect(validateProductSubmitted).toContain(DownloadsForm.title);
+        await this.checkElementText(Selectors.postForms.postFormsFrontendCreate.validatePostSubmitted(DownloadsForm.title), DownloadsForm.title);
     }
 
     async validateEnteredProductData(){
         //Validate Product Title
-        const validateProductTitle = await this.page.innerText(Selectors.postForms.productFormData.title(ProductForm.title));
-        expect(validateProductTitle).toContain(ProductForm.title);
+        await this.checkElementText(Selectors.postForms.productFormData.title(ProductForm.title), ProductForm.title);
         //Validate Product Description
-        const validateProductDescription = await this.page.innerText(Selectors.postForms.productFormData.description(ProductForm.description));
-        expect(validateProductDescription).toContain(ProductForm.description);
+        await this.checkElementText(Selectors.postForms.productFormData.description(ProductForm.description), ProductForm.description);
         //Validate Product Excerpt
-        const validateProductExcerpt = await this.page.innerText(Selectors.postForms.productFormData.excerpt);
-        expect(validateProductExcerpt).toContain(ProductForm.excerpt);
+        await this.checkElementText(Selectors.postForms.productFormData.excerpt, ProductForm.excerpt);
         // images
         await this.assertionValidate(Selectors.postForms.productFormData.featuredImage);
         await this.assertionValidate(Selectors.postForms.productFormData.galleryImage('1'));
         await this.assertionValidate(Selectors.postForms.productFormData.galleryImage('2'));
         await this.assertionValidate(Selectors.postForms.productFormData.galleryImage('3'));
         //Validate Product Regular Price
-        const validateProductRegularPrice = await this.page.innerText(Selectors.postForms.productFormData.regularPrice);
-        expect(validateProductRegularPrice).toContain(ProductForm.regularPrice);
+        await this.checkElementText(Selectors.postForms.productFormData.regularPrice, ProductForm.regularPrice);
         //Validate Product Sale Price
-        const validateProductSalePrice = await this.page.innerText(Selectors.postForms.productFormData.salePrice);
-        expect(validateProductSalePrice).toContain(ProductForm.salePrice);
+        await this.checkElementText(Selectors.postForms.productFormData.salePrice, ProductForm.salePrice);
         //Validate Product Featured Image
         expect(await this.page.isVisible(Selectors.postForms.productFormData.featuredImage)).toBeTruthy();
         //Validate Product Category
-        const validateProductCategory = await this.page.innerText(Selectors.postForms.productFormData.category);
-        expect(validateProductCategory).toContain(ProductForm.category);
+        await this.checkElementText(Selectors.postForms.productFormData.category, ProductForm.category);
         //Validate Product Tags
-        const validateProductTags = await this.page.innerText(Selectors.postForms.productFormData.tags);
-        expect(validateProductTags).toContain(ProductForm.tags);
+        await this.checkElementText(Selectors.postForms.productFormData.tags, ProductForm.tags);
         //Validate Product Brand
-        const validateProductBrand = await this.page.innerText(Selectors.postForms.productFormData.brand);
-        expect(validateProductBrand).toContain(ProductForm.brand);
+        await this.checkElementText(Selectors.postForms.productFormData.brand, ProductForm.brand);
         //Validate Product Reviews
         await this.assertionValidate(Selectors.postForms.productFormData.reviews);
     }
 
     async validateEnteredDownloadsData(){
         //Validate Product Title
-        const validateProductTitle = await this.page.innerText(Selectors.postForms.downloadsFormData.title(DownloadsForm.title));
-        expect(validateProductTitle).toContain(DownloadsForm.title);
+        await this.checkElementText(Selectors.postForms.downloadsFormData.title(DownloadsForm.title), DownloadsForm.title);
         //Validate Product Description
-        const validateProductDescription = await this.page.innerText(Selectors.postForms.downloadsFormData.description(DownloadsForm.description));
-        expect(validateProductDescription).toContain(DownloadsForm.description);
+        await this.checkElementText(Selectors.postForms.downloadsFormData.description(DownloadsForm.description), DownloadsForm.description);
         // images
         await this.assertionValidate(Selectors.postForms.downloadsFormData.downloadsImage);
         //Validate Product Purchase Button

@@ -124,7 +124,7 @@ test.describe('Post Form Settings Tests', () => {
     let postTitle: string;
     let postContent: string;
     let postExcerpt: string;
-    const category = 'Music'; // Using one of the default categories from the screenshot
+    const category = 'Music';
     const emailAddress = faker.internet.email();
     const emailSubject = 'New post submitted';
     const emailUpdatedSubject = `Post updated`;

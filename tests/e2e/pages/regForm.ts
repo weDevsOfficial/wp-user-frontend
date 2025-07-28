@@ -43,8 +43,7 @@ export class RegFormPage extends Base {
         }
         else {
             //Check Pro Features Header
-            const checkProFeaturesText = await this.page.innerText(Selectors.registrationForms.validateRegistrationFormsProFeatureLite.checkProFeaturesText);
-            await expect(checkProFeaturesText).toContain('Unlock PRO Features');
+            await this.checkElementText(Selectors.registrationForms.validateRegistrationFormsProFeatureLite.checkProFeaturesText, 'Unlock PRO Features');
 
             //Check Setup
             const checkUpgradeToProOption = this.page.locator(Selectors.registrationForms.validateRegistrationFormsProFeatureLite.checkUpgradeToProOption);
@@ -214,8 +213,7 @@ export class RegFormPage extends Base {
     await this.navigateToURL(this.wpufRegistrationPage);
 
     //Validate Registration page
-    const validateRegistrationPage = await this.page.innerText(Selectors.registrationForms.completeUserRegistrationFormFrontend.validateRegistrationPage);
-    expect(validateRegistrationPage).toContain('Registration Page');
+    await this.checkElementText(Selectors.registrationForms.completeUserRegistrationFormFrontend.validateRegistrationPage, 'Registration Page');
 
     // try {
     //     // Enter First Name

@@ -78,7 +78,7 @@ export const Selectors = {
             // PostFormPage
             clickPostFormMenuOption: '//h3[normalize-space(text())="Post Forms"]',
             clickRegFormMenuOption: '//h3[normalize-space()="Registration Forms"]',
-            wpufPostFormCheckAddButton: ' //a[contains(text(),"Add New")]',
+            wpufPostFormCheckAddButton: ' //a[contains(@class,"new-wpuf-form")]',
             postFormsPageFormTitleCheck: '//a[@class="row-title"][1]',
             noFormMsg: '//h2[normalize-space()="No Post Forms Created Yet"]',
             formTitleCheck: (formName:string) => `//span[normalize-space(text())='${formName}']`,

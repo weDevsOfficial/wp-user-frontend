@@ -177,9 +177,9 @@ class Frontend_Form_Ajax {
             $charging_enabled = 'yes';
         }
 
-        if ( 'true' === $guest_mode && 'true' === $guest_verify && ! is_user_logged_in() && 'yes' === $charging_enabled ) {
+        if ( 'guest_post' === $guest_mode && wpuf_is_checkbox_or_toggle_on( $guest_verify ) && ! is_user_logged_in() && 'yes' === $charging_enabled ) {
             $postarr['post_status'] = wpuf_get_draft_post_status( $this->form_settings );
-        } elseif ( 'true' === $guest_mode && 'true' === $guest_verify && ! is_user_logged_in() ) {
+        } elseif ( 'guest_post' === $guest_mode && wpuf_is_checkbox_or_toggle_on( $guest_verify ) && ! is_user_logged_in() ) {
             $postarr['post_status'] = 'draft';
         }
         //if date is set and assigned as publish date
@@ -419,7 +419,7 @@ class Frontend_Form_Ajax {
         $guest_mode     = isset( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ? $this->form_settings['post_permission'] : '';
         $guest_verify   = isset( $this->form_settings['guest_email_verify'] ) ? $this->form_settings['guest_email_verify'] : '';
 
-        if ( $guest_mode === 'true' && $guest_verify === 'true' && ! is_user_logged_in() && $charging_enabled !== 'yes' ) {
+        if ( 'guest_post' === $guest_mode && wpuf_is_checkbox_or_toggle_on( $guest_verify ) && ! is_user_logged_in() && 'yes' === $charging_enabled ) {
             $post_id_encoded          = wpuf_encryption( $post_id );
             $form_id_encoded          = wpuf_encryption( $form_id );
 
@@ -428,7 +428,7 @@ class Frontend_Form_Ajax {
             $response['show_message'] = true;
             $response['redirect_to']  = add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
             $response['message']      = __( 'Thank you for posting on our site. We have sent you an confirmation email. Please check your inbox!', 'wp-user-frontend' );
-        } elseif ( $guest_mode === 'true' && $guest_verify === 'true' && ! is_user_logged_in() && $charging_enabled === 'yes' ) {
+        } elseif ( 'guest_post' === $guest_mode && wpuf_is_checkbox_or_toggle_on( $guest_verify ) && ! is_user_logged_in() && 'yes' === $charging_enabled ) {
             $post_id_encoded          = wpuf_encryption( $post_id );
             $form_id_encoded          = wpuf_encryption( $form_id );
             $response['show_message'] = true;

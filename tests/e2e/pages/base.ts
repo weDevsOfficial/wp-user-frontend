@@ -297,21 +297,4 @@ export class Base {
             return false;
         }
     }
-
-    async waitForFormSaved(formSavedLocator: string, saveButtonLocator: string) {
-        let formNotSaved = true;
-        while (formNotSaved) {
-            try {
-                await this.waitForLoading();
-                await this.page.waitForSelector(formSavedLocator, { timeout: 30000 });
-                await this.waitForLoading();
-                formNotSaved = false;
-            } catch (error) {
-                await this.waitForLoading();
-                await this.validateAndClick(saveButtonLocator);
-                await this.waitForLoading();
-            }
-        }
-        console.log('\x1b[32m%s\x1b[0m', `✅ Form saved`);
-    }
 }

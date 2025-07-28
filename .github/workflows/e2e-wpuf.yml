@@ -206,7 +206,7 @@ jobs:
             Test was conducted on WPUF plugin.
             
             To View full test run, click on the following link: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          to: rubaiyat.mohammad@wedevs.com, nurul.ratul@wedevs.com, anik@wedevs.com
+          to: rubaiyat.mohammad@wedevs.com, anik@wedevs.com
           from: wedevs.testing1@gmail.com
 
       # Send Email Report if failed

@@ -15,7 +15,7 @@ const config: PlaywrightTestConfig = {
     retries: process.env.CI ? 0 : 0,
 
     workers: process.env.CI ? 1 : 1,
-
+  
     reporter: process.env.CI
         ? [
             ['list', { printSteps: true }],
@@ -33,6 +33,9 @@ const config: PlaywrightTestConfig = {
         headless: true,
 
         viewport: { width: 1280, height: 720 },
+        
+        // Ignore SSL certificate errors for local development
+        ignoreHTTPSErrors: true,
 
         ignoreHTTPSErrors: true,
 

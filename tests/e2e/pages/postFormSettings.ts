@@ -1905,9 +1905,7 @@ export class PostFormSettingsPage extends Base {
 
         await this.assertionValidate(Selectors.postFormSettings.showFormTitle(formName));
 
-
         await this.checkElementText(Selectors.postFormSettings.showFormDescription, 'Form Description');
-
     }
 
     async setPostPermissionRoleBased(formName: string) {

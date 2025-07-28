@@ -9,6 +9,7 @@ import { Users, PostForm } from '../utils/testData';
 import * as fs from 'fs'; //Clear Cookie
 import { BasicLogoutPage } from '../pages/basicLogout';
 import { faker } from '@faker-js/faker';
+import { configureSpecFailFast } from '../utils/specFailFast';
 
 let browser: Browser;
 let context: BrowserContext;
@@ -27,6 +28,9 @@ test.beforeAll(async () => {
 
 
 test.describe('Post-Forms', () => {
+    // Configure fail-fast behavior for this spec file
+    configureSpecFailFast();
+    
     /**----------------------------------POSTFORM----------------------------------**
      *
      * @TestScenario : [Post-Forms]

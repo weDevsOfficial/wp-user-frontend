@@ -8,6 +8,7 @@ import { Users, Urls } from '../utils/testData';
 import { SettingsSetupPage } from '../pages/settingsSetup';
 import * as fs from "fs";
 import { RegFormPage } from '../pages/regForm';
+import { configureSpecFailFast } from '../utils/specFailFast';
 
 let browser: Browser;
 let context: BrowserContext;
@@ -30,6 +31,8 @@ test.beforeAll(async () => {
 });
 
 test.describe('Reg Form Settings Tests', () => {
+    // Configure fail-fast behavior for this spec file
+    configureSpecFailFast();
 
     /**----------------------------------REGISTRATION FORM SETTINGS----------------------------------**
      *

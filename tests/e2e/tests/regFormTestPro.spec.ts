@@ -6,6 +6,7 @@ import { RegFormPage } from '../pages/regForm';
 import { SettingsSetupPage } from '../pages/settingsSetup';
 import { Urls, Users } from '../utils/testData';
 import { BasicLogoutPage } from '../pages/basicLogout';
+import { configureSpecFailFast } from '../utils/specFailFast';
 import * as fs from 'fs'; //Clear Cookie
 
 let browser: Browser;
@@ -25,6 +26,9 @@ test.beforeAll(async () => {
 
 
 test.describe('Registration-Forms', () => {
+    // Configure fail-fast behavior for this spec file
+    configureSpecFailFast();
+    
     /**----------------------------------REGISTRATIONFORMS----------------------------------**
      * 
      * @TestScenario : [Reg-Forms]

@@ -7,6 +7,7 @@ import { BasicLoginPage } from '../pages/basicLogin';
 import { Users, Urls } from '../utils/testData';
 import { SettingsSetupPage } from '../pages/settingsSetup';
 import { BasicLogoutPage } from '../pages/basicLogout';
+import { configureSpecFailFast } from '../utils/specFailFast';
 
 let browser: Browser;
 let context: BrowserContext;
@@ -24,6 +25,9 @@ test.beforeAll(async () => {
 });
 
 test.describe('Post Form Settings Tests', () => {
+
+    configureSpecFailFast();
+    
     /**----------------------------------POST FORM SETTINGS----------------------------------**
      *
      * @TestScenario : [Post Form Settings]

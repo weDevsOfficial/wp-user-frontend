@@ -419,6 +419,12 @@ class Posting {
             // wp_nonce_field( 'wpuf_form_add' ); ?>
             </tbody>
         </table>
+        <style>
+            .wpuf-add-repeat.button {
+                margin-right: 5px;
+            }
+        </style>
+
         <?php
         $this->scripts_styles();
     }
@@ -655,7 +661,6 @@ class Posting {
             }
 
             .wpuf-repeat-instance {
-                position: relative;
                 border: 1px solid #ddd;
                 padding: 15px;
                 margin-bottom: 10px;
@@ -664,7 +669,6 @@ class Posting {
             }
 
             .wpuf-repeat-controls {
-                position: absolute;
                 top: 10px;
                 right: 10px;
             }

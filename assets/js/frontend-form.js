@@ -53,7 +53,10 @@
             $('.wpuf-form').on('step-change-fieldset', function(event, number, step) {
                 if ( wpuf_plupload_items.length ) {
                     for (var i = wpuf_plupload_items.length - 1; i >= 0; i--) {
-                        wpuf_plupload_items[i].refresh();
+                        // Check if the item has a refresh method (plupload.Uploader instance)
+                        if ( wpuf_plupload_items[i] && typeof wpuf_plupload_items[i].refresh === 'function' ) {
+                            wpuf_plupload_items[i].refresh();
+                        }
                     }
                 }
                 if ( wpuf_map_items.length ) {

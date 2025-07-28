@@ -596,6 +596,7 @@ trait FieldableTrait {
 
                 case 'repeat':
                     $repeater_value = isset( $_POST[ $value['name'] ] ) ? wp_unslash( $_POST[ $value['name'] ] ) : [];
+                    
                     // If this repeat field has inner_fields and the value is an array of rows (ACF-style)
                     if ( ! empty( $value['inner_fields'] ) && is_array(
                             $repeater_value
@@ -605,9 +606,23 @@ trait FieldableTrait {
                             $sanitized_row = [];
                             foreach ( $value['inner_fields'] as $inner_field ) {
                                 $fname = $inner_field['name'];
-                                $sanitized_row[ $fname ] = isset( $row[ $fname ] ) ? sanitize_text_field(
-                                    $row[ $fname ]
-                                ) : '';
+                                
+                                // Handle different field types appropriately
+                                if ( isset( $row[ $fname ] ) ) {
+                                    if ( in_array( $inner_field['template'], [ 'checkbox_field', 'multiple_select' ] ) ) {
+                                        // For checkbox and multiselect, keep as array and sanitize each element
+                                        if ( is_array( $row[ $fname ] ) ) {
+                                            $sanitized_row[ $fname ] = array_map( 'sanitize_text_field', $row[ $fname ] );
+                                        } else {
+                                            $sanitized_row[ $fname ] = sanitize_text_field( $row[ $fname ] );
+                                        }
+                                    } else {
+                                        // For other fields, sanitize as string
+                                        $sanitized_row[ $fname ] = sanitize_text_field( $row[ $fname ] );
+                                    }
+                                } else {
+                                    $sanitized_row[ $fname ] = '';
+                                }
                             }
                             $rows[] = $sanitized_row;
                         }

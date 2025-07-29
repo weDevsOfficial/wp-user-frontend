@@ -169,14 +169,14 @@ jobs:
         working-directory: tests/e2e
         run: |
           mkdir -p test-results
-          npm run test:sharded:ci
+          npm run test:ci
         # continue-on-error: true
 
       # Generate and post advanced test summary
       - name: Generate and post advanced test summary
         if: always()
         working-directory: tests/e2e
-        run: npm run sharded-summary
+        run: npm run generate-summary
 
       # ✅ Upload Playwright HTML report (always)
       - name: Upload Playwright HTML Report

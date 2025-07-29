@@ -119,13 +119,13 @@ features:
   - id: PFS0005
     name: Admin is validating default category from FE
   - id: PFS0006
-    name: Admin is setting successful post redirection to newly created post
-  - id: PFS0007
-    name: Admin is checking post redirection to newly created post
-  - id: PFS0008
     name: Admin is setting successful post redirection to same page
-  - id: PFS0009
+  - id: PFS0007
     name: Admin is checking post redirection to same page
+  - id: PFS0008
+    name: Admin is setting successful post redirection to newly created post
+  - id: PFS0009
+    name: Admin is checking post redirection to newly created post
   - id: PFS0010
     name: Admin is setting successful post redirection to another page
   - id: PFS0011

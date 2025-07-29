@@ -21,10 +21,16 @@ export class PostFormSettingsPage extends Base {
             const FieldAdd = new FieldAddPage(this.page);
             // Go to post forms page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
-            // Click Add New button
-            await this.validateAndClick(Selectors.postFormSettings.addNewButton);
+            // Wait for form list to load and click on the form
+            try {
+                // Click Add New button
+                await this.validateAndClick(Selectors.postFormSettings.addNewButton);
+            } catch (error) {
+                await this.navigateToURL(this.wpufPostFormPage);
+                // Click Add New button
+                await this.validateAndClick(Selectors.postFormSettings.addNewButton);
+            }
 
             // Click Blank Form
             await this.validateAndClick(Selectors.postFormSettings.clickBlankForm);
@@ -52,12 +58,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to post forms page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form name
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -72,7 +77,7 @@ export class PostFormSettingsPage extends Base {
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postTypeContainer);
 
             // Wait for dropdown to be visible
-            //await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postTypeDropdown, { state: 'visible' });
+            await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postTypeDropdown);
 
             // Click the desired option
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postTypeOption(postType));
@@ -87,12 +92,18 @@ export class PostFormSettingsPage extends Base {
 
     // Validate post type in list
     async validatePostTypeInList(expectedPostType: string, formName: string) {
-        // Go to post forms list
+        // Go to post forms page
         await this.navigateToURL(this.wpufPostFormPage);
-        await this.page.reload();
 
-        // Find the row containing the form name
-        await this.checkElementText(Selectors.postFormSettings.postTypeColumn(formName, expectedPostType.toLowerCase()), expectedPostType.toLowerCase());
+        // Wait for form list to load and click on the form
+        try {
+            // Find the row containing the form name
+            await this.checkElementText(Selectors.postFormSettings.postTypeColumn(formName, expectedPostType.toLowerCase()), expectedPostType.toLowerCase());
+        } catch (error) {
+            await this.navigateToURL(this.wpufPostFormPage);
+            // Find the row containing the form name
+            await this.checkElementText(Selectors.postFormSettings.postTypeColumn(formName, expectedPostType.toLowerCase()), expectedPostType.toLowerCase());
+        }
     }
 
 
@@ -114,10 +125,8 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(2000);
-
         // Wait for success message
-        await expect(this.page.locator(Selectors.postFormSettings.postTypePage(postTitle))).toBeVisible();
+        await this.assertionValidate(Selectors.postFormSettings.postTypePage(postTitle));
 
     }
 
@@ -129,12 +138,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Wait for form list to load and click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -148,7 +156,7 @@ export class PostFormSettingsPage extends Base {
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postTypeContainer);
 
             // Wait for dropdown to be visible
-            //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postTypeDropdown, { state: 'visible' });
+            await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postTypeDropdown);
 
             // Click the desired option
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postTypeOption('post'));
@@ -169,9 +177,9 @@ export class PostFormSettingsPage extends Base {
                 await this.page.reload();
 
                 // Wait for form list to load and click on the form
-                try{
+                try {
                     await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-                }catch(error){
+                } catch (error) {
                     await this.navigateToURL(this.wpufPostFormPage);
                     await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
                 }
@@ -182,9 +190,10 @@ export class PostFormSettingsPage extends Base {
                 await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
                 // Open the dropdown by clicking the container
                 await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.defaultCategoryContainer);
+                await this.page.waitForTimeout(2000);
 
                 // Wait for dropdown to be visible
-                //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.defaultCategoryDropdown, { state: 'visible' });
+                await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.defaultCategoryDropdown);
 
                 // Click the desired option
                 await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.defaultCategoryOption(category));
@@ -216,10 +225,11 @@ export class PostFormSettingsPage extends Base {
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
 
-        await this.page.waitForTimeout(2000);
+        //await this.page.waitForTimeout(2000);
+        await this.assertionValidate(Selectors.postFormSettings.checkPostTitle(postTitle));
 
         // Wait for success message
-        await expect(this.page.locator(Selectors.postFormSettings.postCategory(category))).toBeVisible();
+        await this.assertionValidate(Selectors.postFormSettings.postCategory(category));
     }
 
     // Set post redirection to newly created post
@@ -230,12 +240,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -249,7 +258,7 @@ export class PostFormSettingsPage extends Base {
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionContainer);
 
             // Wait for dropdown to be visible
-            //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown, { state: 'visible' });
+            await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown);
 
             // Click the desired option
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionOption(value));
@@ -271,12 +280,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -290,7 +298,7 @@ export class PostFormSettingsPage extends Base {
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionContainer);
 
             // Wait for dropdown to be visible
-            //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown, { state: 'visible' });
+            await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown);
 
             // Click the desired option
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionOption(value));
@@ -305,12 +313,11 @@ export class PostFormSettingsPage extends Base {
             while (flag == true) {
                 // Go to form edit page
                 await this.navigateToURL(this.wpufPostFormPage);
-                await this.page.reload();
 
                 // Click on the form
-                try{
+                try {
                     await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-                }catch(error){
+                } catch (error) {
                     await this.navigateToURL(this.wpufPostFormPage);
                     await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
                 }
@@ -337,12 +344,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -356,7 +362,7 @@ export class PostFormSettingsPage extends Base {
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionContainer);
 
             // Select the page
-            //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown, { state: 'visible' });
+            await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown);
 
             // Set success message
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionOption(value));
@@ -365,7 +371,7 @@ export class PostFormSettingsPage extends Base {
 
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionPageContainer);
 
-            //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionPageDropdown, { state: 'visible' });
+            await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postRedirectionPageDropdown);
 
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionPageOption(text));
 
@@ -385,12 +391,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -404,7 +409,7 @@ export class PostFormSettingsPage extends Base {
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionContainer);
 
             // Enter the URL
-            //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown, { state: 'visible' });
+            await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown);
 
             // Set success message
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionOption(value));
@@ -436,9 +441,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(2000);
-
-        await expect(this.page.locator(Selectors.postFormSettings.checkPostTitle(postTitle))).toBeVisible();
+        await this.assertionValidate(Selectors.postFormSettings.checkPostTitle(postTitle));
     }
 
     // Validate redirection after post submission
@@ -459,7 +462,7 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(2000);
+        //await this.page.waitForTimeout(2000);
 
         await this.checkElementText(Selectors.postFormSettings.checkSuccessMessage, message);
     }
@@ -482,9 +485,9 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(2000);
+        //await this.page.waitForTimeout(2000);
 
-        await expect(this.page.locator(Selectors.postFormSettings.checkPageTitle(pageTitle))).toBeVisible();
+        await this.assertionValidate(Selectors.postFormSettings.checkPageTitle(pageTitle));
     }
 
     // Validate redirection after post submission
@@ -518,11 +521,10 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -532,7 +534,7 @@ export class PostFormSettingsPage extends Base {
             await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
 
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postSubmissionStatusContainer);
-            //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postSubmissionStatusDropdown, { state: 'visible' });
+            await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postSubmissionStatusDropdown);
 
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postSubmissionStatusOption(value));
 
@@ -544,12 +546,18 @@ export class PostFormSettingsPage extends Base {
 
     // Validate post type in list
     async validatePostSubmissionStatusInList(expectedPostStatus: string, formName: string) {
-        // Go to post forms list
+        // Go to post forms page
         await this.navigateToURL(this.wpufPostFormPage);
-        await this.page.reload();
 
-        // Find the row containing the form name
-        await this.checkElementText(Selectors.postFormSettings.postSubmissionStatusColumn(formName, expectedPostStatus), expectedPostStatus);
+        // Wait for form list to load and click on the form
+        try {
+            // Find the row containing the form name
+            await this.checkElementText(Selectors.postFormSettings.postSubmissionStatusColumn(formName, expectedPostStatus), expectedPostStatus);
+        } catch (error) {
+            await this.navigateToURL(this.wpufPostFormPage);
+            // Find the row containing the form name
+            await this.checkElementText(Selectors.postFormSettings.postSubmissionStatusColumn(formName, expectedPostStatus), expectedPostStatus);
+        }
     }
 
     // Validate submitted post status
@@ -570,7 +578,11 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(1000);
+        if (value == 'Private') {
+            await this.assertionValidate(Selectors.postFormSettings.checkPostTitle('Private: ' + postTitle));
+        } else {
+            await this.assertionValidate(Selectors.postFormSettings.checkPostTitle(postTitle));
+        }
 
         await this.navigateToURL(this.wpufPostPage);
 
@@ -594,11 +606,10 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -648,11 +659,10 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -682,11 +692,10 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -714,11 +723,10 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -753,11 +761,10 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -769,7 +776,7 @@ export class PostFormSettingsPage extends Base {
             const isChecked = await this.page.locator(Selectors.postFormSettings.postSettingsSection.enableMultiStepCheckbox).isChecked();
             if (isChecked) {
                 await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.progressbarTypeContainer);
-                //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.progressbarTypeDropdown);
+                await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.progressbarTypeDropdown);
 
                 await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.progressbarTypeOption('step_by_step'));
             }
@@ -793,11 +800,10 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -839,11 +845,10 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -854,7 +859,7 @@ export class PostFormSettingsPage extends Base {
 
             // Click on post update status dropdown
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postUpdateStatusContainer);
-            //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.postUpdateStatusDropdown, { state: 'visible' });
+            await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postUpdateStatusDropdown);
 
             // Select the status
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postUpdateStatusOption(status));
@@ -871,11 +876,10 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -900,11 +904,10 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -929,11 +932,10 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -977,8 +979,13 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
-        await this.page.waitForTimeout(2000);
-        //await this.assertionValidate(Selectors.postFormSettings.checkSuccessMessage);
+        //await this.page.waitForTimeout(2000);
+
+        if (value == 'Awaiting Approval') {
+            await this.assertionValidate(Selectors.postFormSettings.pendingMessage);
+        } else {
+            await this.assertionValidate(Selectors.postFormSettings.checkSuccessMessage);
+        }
 
         await this.navigateToURL(this.wpufPostPage);
         if (value == 'Private') {
@@ -1037,7 +1044,7 @@ export class PostFormSettingsPage extends Base {
 
 
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
-        await this.page.waitForTimeout(2000);
+        //await this.page.waitForTimeout(2000);
 
         // Validate the message content
         await this.checkElementText(Selectors.postFormSettings.checkSuccessMessage, expectedMessage);
@@ -1050,11 +1057,10 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -1065,7 +1071,7 @@ export class PostFormSettingsPage extends Base {
 
             // Click on successful redirection dropdown
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionContainer);
-            //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown, { state: 'visible' });
+            await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown);
 
             // Select "updated post"
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionOption('post'));
@@ -1083,11 +1089,10 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -1098,7 +1103,7 @@ export class PostFormSettingsPage extends Base {
 
             // Click on successful redirection dropdown
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionContainer);
-            //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown, { state: 'visible' });
+            await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown);
 
             // Select "same page"
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionOption('same'));
@@ -1116,11 +1121,10 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -1131,7 +1135,7 @@ export class PostFormSettingsPage extends Base {
 
             // Click on successful redirection dropdown
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionContainer);
-            //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown, { state: 'visible' });
+            await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown);
 
             // Select "to a page"
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionOption('page'));
@@ -1140,7 +1144,7 @@ export class PostFormSettingsPage extends Base {
 
             // Select the specific page
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionPageContainer);
-            //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionPageDropdown, { state: 'visible' });
+            await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionPageDropdown);
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionPageOption(pageName));
 
             await this.validateAndClick(Selectors.postFormSettings.saveButton);
@@ -1156,11 +1160,10 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -1171,7 +1174,7 @@ export class PostFormSettingsPage extends Base {
 
             // Click on successful redirection dropdown
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionContainer);
-            //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown, { state: 'visible' });
+            await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown);
 
             // Select "to a custom URL"
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionOption('url'));
@@ -1204,9 +1207,9 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
-        await this.page.waitForTimeout(2000);
+        //await this.page.waitForTimeout(2000);
 
-        await expect(this.page.locator(Selectors.postFormSettings.checkPostTitle(postTitle))).toBeVisible();
+        await this.assertionValidate(Selectors.postFormSettings.checkPostTitle(postTitle));
     }
 
     async validateUpdatePostRedirectionToSamePage(postTitle: string, postContent: string, postExcerpt: string, message: string) {
@@ -1227,7 +1230,7 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
-        await this.page.waitForTimeout(2000);
+        //await this.page.waitForTimeout(2000);
 
         await this.checkElementText(Selectors.postFormSettings.checkSuccessMessage, message);
     }
@@ -1251,9 +1254,9 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(2000);
+        //await this.page.waitForTimeout(2000);
 
-        await expect(this.page.locator(Selectors.postFormSettings.checkPageTitle(pageTitle))).toBeVisible();
+        await this.assertionValidate(Selectors.postFormSettings.checkPageTitle(pageTitle));
     }
 
     async validateUpdatePostRedirectionToUrl(postTitle: string, postContent: string, postExcerpt: string, expectedUrl: string) {
@@ -1288,11 +1291,10 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -1307,14 +1309,14 @@ export class PostFormSettingsPage extends Base {
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.paymentEnableToggle);
 
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.paymentOptionsContainer);
-            //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.paymentOptionsDropdown, { state: 'visible' });
+            await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.paymentOptionsDropdown);
 
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.payPerPostOption('enable_pay_per_post'));
 
             await this.validateAndFillStrings(Selectors.postFormSettings.postSettingsSection.payPerPostCostContainer, cost);
 
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.paymentSuccessPageContainer);
-            //await this.page.waitForSelector(Selectors.postFormSettings.postSettingsSection.paymentSuccessPageDropdown, { state: 'visible' });
+            await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.paymentSuccessPageDropdown);
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.paymentSuccessPageOption(successPage));
 
             await this.validateAndClick(Selectors.postFormSettings.saveButton);
@@ -1330,11 +1332,10 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -1372,7 +1373,7 @@ export class PostFormSettingsPage extends Base {
 
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(2000);
+        //await this.page.waitForTimeout(2000);
 
         await this.checkElementText(Selectors.postFormSettings.validatePayPerPostCost, `$${cost}`);
 
@@ -1412,12 +1413,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -1455,12 +1455,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -1495,12 +1494,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -1535,12 +1533,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -1575,12 +1572,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -1615,12 +1611,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -1658,12 +1653,11 @@ export class PostFormSettingsPage extends Base {
     async validateNotificationSettingsEnabled(formName: string) {
         // Go to form edit page
         await this.navigateToURL(this.wpufPostFormPage);
-        await this.page.reload();
 
         // Click on the form
-        try{
+        try {
             await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        }catch(error){
+        } catch (error) {
             await this.navigateToURL(this.wpufPostFormPage);
             await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
         }
@@ -1701,7 +1695,9 @@ export class PostFormSettingsPage extends Base {
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-        await this.page.waitForTimeout(2000);
+        //await this.page.waitForTimeout(2000);
+
+        await this.assertionValidate(Selectors.postFormSettings.checkPostTitle(postTitle));
 
         // Validate notification is sent
         await this.navigateToURL(this.wpMailLogPage);
@@ -1732,12 +1728,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -1772,12 +1767,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -1815,12 +1809,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -1855,12 +1848,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -1895,12 +1887,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -1935,12 +1926,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -1975,12 +1965,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -2022,9 +2011,9 @@ export class PostFormSettingsPage extends Base {
         await this.page.reload();
 
         // Click on the form
-        try{
+        try {
             await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-        }catch(error){
+        } catch (error) {
             await this.navigateToURL(this.wpufPostFormPage);
             await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
         }
@@ -2064,11 +2053,13 @@ export class PostFormSettingsPage extends Base {
 
         // Submit the post
         await this.validateAndClick(Selectors.postFormSettings.updatePostButton);
-        await this.page.waitForTimeout(2000);
+        //await this.page.waitForTimeout(2000);
+
+        await this.assertionValidate(Selectors.postFormSettings.checkSuccessMessage);
 
         // Validate notification is sent
         await this.navigateToURL(this.wpMailLogPage);
-        await this.page.waitForTimeout(2000);
+        //await this.page.waitForTimeout(2000);
 
         const sentEmailAddress = await this.checkElementText(Selectors.postFormSettings.notificationSettingsSection.sentEmailAddress(multipleEmails), multipleEmails);
 
@@ -2095,12 +2086,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -2134,12 +2124,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -2156,7 +2145,7 @@ export class PostFormSettingsPage extends Base {
 
             // Disable new post notification toggle
             await this.validateAndClick(Selectors.postFormSettings.advancedSettingsSection.commentStatusContainer);
-            //await this.page.waitForSelector(Selectors.postFormSettings.advancedSettingsSection.commentStatusDropdown, { state: 'visible' });
+            await this.assertionValidate(Selectors.postFormSettings.advancedSettingsSection.commentStatusDropdown);
             await this.validateAndClick(Selectors.postFormSettings.advancedSettingsSection.commentStatusOption(status));
 
             // Save settings
@@ -2168,19 +2157,21 @@ export class PostFormSettingsPage extends Base {
         }
 
         if (flag == false) {
-                await this.navigateToURL(this.wpufPostSubmitPage);
+            await this.navigateToURL(this.wpufPostSubmitPage);
 
-                await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
+            await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postTitleFormsFE, postTitle);
 
-                await this.page.waitForTimeout(1000);
-                await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
-                    .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
+            await this.page.waitForTimeout(1000);
+            await this.page.frameLocator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE1)
+                .locator(Selectors.postForms.postFormsFrontendCreate.postDescriptionFormsFE2).fill(postContent);
 
-                await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
+            await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postExcerptFormsFE, postExcerpt);
 
-                await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
+            await this.validateAndClick(Selectors.postFormSettings.submitPostButton);
 
-                await this.page.waitForTimeout(2000);
+            //await this.page.waitForTimeout(2000);
+
+            await this.assertionValidate(Selectors.postFormSettings.checkPostTitle(postTitle));
         }
 
     }
@@ -2227,12 +2218,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -2278,12 +2268,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -2319,12 +2308,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -2365,12 +2353,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -2410,12 +2397,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -2461,12 +2447,11 @@ export class PostFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -2479,13 +2464,13 @@ export class PostFormSettingsPage extends Base {
             await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.afterPostSettingsHeader);
 
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postPermissionContainer);
-            //await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postPermissionDropdown);
+            await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postPermissionDropdown);
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postPermissionOption('role_base'));
 
             await this.page.waitForTimeout(300);
 
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.roleSelectionContainer);
-            //await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.roleSelectionDropdown);
+            await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.roleSelectionDropdown);
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.roleSelectionOption('subscriber'));
 
             // Save settings
@@ -2509,12 +2494,11 @@ export class PostFormSettingsPage extends Base {
             await this.checkElementText(Selectors.postFormSettings.wpufMessage, 'You do not have sufficient permissions to access this form.');
 
             await this.navigateToURL(this.wpufPostFormPage);
-            await this.page.reload();
 
             // Click on the form
-            try{
+            try {
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
-            }catch(error){
+            } catch (error) {
                 await this.navigateToURL(this.wpufPostFormPage);
                 await this.validateAndClick(Selectors.postFormSettings.clickForm(formName));
             }
@@ -2527,13 +2511,13 @@ export class PostFormSettingsPage extends Base {
             await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.afterPostSettingsHeader);
 
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postPermissionContainer);
-            //await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postPermissionDropdown);
+            await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postPermissionDropdown);
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postPermissionOption('role_base'));
 
             await this.page.waitForTimeout(300);
 
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.roleSelectionContainer);
-            //await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.roleSelectionDropdown);
+            await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.roleSelectionDropdown);
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.roleSelectionOption('administrator'));
 
             // Save settings

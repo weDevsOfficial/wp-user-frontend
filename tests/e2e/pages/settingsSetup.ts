@@ -88,7 +88,7 @@ export class SettingsSetupPage extends Base {
         await this.navigateToURL(this.wpAdminPage);
 
         await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
-         
+
 
         //ASSERTION > Check if-VALID
         const availableText = await this.page.isVisible(Selectors.settingsSetup.pluginVisit.clickPostFormMenuOption);
@@ -97,14 +97,14 @@ export class SettingsSetupPage extends Base {
         }
     }
 
-    async postFormListVisit(){
+    async postFormListVisit() {
         //Go to AdminEnd
         await this.navigateToURL(this.wpAdminPage);
 
         await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
 
         await this.validateAndClick(Selectors.settingsSetup.pluginVisit.clickPostFormMenuOption);
-         
+
 
         //ASSERTION > Check if-VALID
         const availableText = await this.page.isVisible(Selectors.settingsSetup.pluginVisit.clickPostFormMenuOption);
@@ -115,7 +115,7 @@ export class SettingsSetupPage extends Base {
         }
     }
 
-    async regFormListVisit(){
+    async regFormListVisit() {
         //Go to AdminEnd
         await this.navigateToURL(this.wpAdminPage);
 
@@ -204,21 +204,21 @@ export class SettingsSetupPage extends Base {
         this.page.on('dialog', dialogHandler);
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickRunUpdater);
         this.page.off('dialog', dialogHandler);
-         
+
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow1);
-         
+
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
-         
+
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickSkipSetup);
-         
+
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickSwitchCart);
-         
+
         // await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickDismiss);
-         
+
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickEDDnoticeCross);
-         
+
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickPayPalCross);
-         
+
         if (ifWPUFLite == true) {
             //Activate Plugin
             const activateWPUFLite = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
@@ -226,7 +226,7 @@ export class SettingsSetupPage extends Base {
             if (activateWPUFLite === true) {
                 //Plugins is getting activated here
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginLite);
-                 
+
                 await this.navigateToURL(this.pluginsPage);
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginDeactivate);
 
@@ -265,7 +265,7 @@ export class SettingsSetupPage extends Base {
             if (activateWPUFPro == true) {
                 //Plugins were DeActive
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginPro);
-                 
+
                 await this.navigateToURL(this.pluginsPage);
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.clickWPUFPluginProDeactivate);
 
@@ -295,11 +295,16 @@ export class SettingsSetupPage extends Base {
 
     //Plugin Activate - Pro
     async activateLicenseWPUFPro() {
-        //Go to Plugins page
+        // Go to post forms page
         await this.navigateToURL(this.wpufPostFormPage);
-        await this.page.reload();
 
-        await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
+        // Wait for form list to load and click on the form
+        try {
+            await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
+        } catch (error) {
+            await this.navigateToURL(this.wpufPostFormPage);
+            await this.validateAndClick(Selectors.login.basicNavigation.clickWPUFSidebar);
+        }
         await this.validateAndClick(Selectors.login.basicNavigation.licenseTab);
         //Activate Plugin
         await this.validateAndFillStrings(Selectors.settingsSetup.pluginStatusCheck.fillLicenseKey, process.env.WPUF_PRO_LICENSE_KEY?.toString() || '');
@@ -313,10 +318,10 @@ export class SettingsSetupPage extends Base {
 
     async activateDokanLite() {
         //Go to Plugins page
-        
+
         const ifDokanLite = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.availableDokanLite);
         console.log(ifDokanLite);
-        
+
         if (ifDokanLite == true) {
             //Activate Plugin
             const activateDokanLite = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.clickDokanLite);
@@ -324,12 +329,12 @@ export class SettingsSetupPage extends Base {
             if (activateDokanLite === true) {
                 //Plugins is getting activated here
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickDokanLite);
-                 
+
                 await this.navigateToURL(this.pluginsPage);
                 await this.assertionValidate(Selectors.settingsSetup.pluginStatusCheck.clickDokanLiteDeactivate);
 
                 await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
-                 
+
 
                 await this.navigateToURL(this.wpAdminPage);
                 await this.validateAndClick(Selectors.login.basicNavigation.clickDokanSidebar);
@@ -355,12 +360,18 @@ export class SettingsSetupPage extends Base {
 
     //Change Settings - Login Page
     async changeSettingsSetLoginPageDefault() {
-        //Go to WPUF
+        // Go to post forms page
         await this.navigateToURL(this.wpufPostFormPage);
-        await this.page.reload();
 
-        //Change Settings
-        await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
+        // Wait for form list to load and click on the form
+        try {
+            //Change Settings
+            await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
+        } catch (error) {
+            await this.navigateToURL(this.wpufPostFormPage);
+            //Change Settings
+            await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
+        }
         await this.page.reload();
         //Validate Login/Registration
         await this.assertionValidate(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfile1);
@@ -370,35 +381,35 @@ export class SettingsSetupPage extends Base {
         expect(await this.page.waitForSelector(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileLoginPage)).toBeTruthy();
         //Again - Click Login/Registration
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfile2);
-        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileLoginPage, '— Select —' );
+        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileLoginPage, '— Select —');
         //Save Login/Registration
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileSave);
-         
+
 
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPosting);
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.showCustomFields);
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPostingSave);
-         
+
 
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccount);
         await this.page.waitForTimeout(200);
-        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountPage, 'Account' );
+        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountPage, 'Account');
 
-        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountActiveTab, 'Dashboard' );
+        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountActiveTab, 'Dashboard');
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountSave);
 
 
     }
 
-    async changeSettingsSetEditProfilePageDefault(label:string) {
+    async changeSettingsSetEditProfilePageDefault(label: string) {
         await this.navigateToURL(this.wpufRegFormPage);
         await this.page.reload();
 
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
-         
+
 
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccount);
-        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabEditProfile, `${label}` );
+        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabEditProfile, `${label}`);
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabAccountSave);
     }
 
@@ -409,9 +420,18 @@ export class SettingsSetupPage extends Base {
 
     //Change Settings - Login Page
     async changeSettingsSetDefaultPostForm(postFormPresetFrontEndTitle: string) {
-        //Go to WPUF
+        // Go to post forms page
         await this.navigateToURL(this.wpufPostFormPage);
-        await this.page.reload();
+
+        // Wait for form list to load and click on the form
+        try {
+            //Change Settings
+            await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
+        } catch (error) {
+            await this.navigateToURL(this.wpufPostFormPage);
+            //Change Settings
+            await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
+        }
 
         //Change Settings
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
@@ -419,7 +439,7 @@ export class SettingsSetupPage extends Base {
         //Click Frontend Posting
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPosting);
         //Set Default Post Form 
-        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.setDefaultPostForm, postFormPresetFrontEndTitle );
+        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.setDefaultPostForm, postFormPresetFrontEndTitle);
         //Save FrontEnd Posting
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsFrontendPostingSave);
 
@@ -435,9 +455,18 @@ export class SettingsSetupPage extends Base {
 
     //Change Settings - Registration Page
     async changeSettingsSetRegistrationPage(registrationFormPageTitle: string) {
-        //Go to WPUF
+        // Go to post forms page
         await this.navigateToURL(this.wpufPostFormPage);
-        await this.page.reload();
+
+        // Wait for form list to load and click on the form
+        try {
+            //Change Settings
+            await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
+        } catch (error) {
+            await this.navigateToURL(this.wpufPostFormPage);
+            //Change Settings
+            await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
+        }
 
         //Change Settings
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTab);
@@ -447,7 +476,7 @@ export class SettingsSetupPage extends Base {
         //Click Login/Registration
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfile2);
         //Set Registration Page Form
-        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileRegistrationPage, registrationFormPageTitle );
+        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileRegistrationPage, registrationFormPageTitle);
         //Save Login/Registration
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileSave);
 
@@ -508,7 +537,7 @@ export class SettingsSetupPage extends Base {
         //Add New User
         await this.validateAndClick(Selectors.settingsSetup.createNewUser.clickAddNewUserAdmin);
         //await this.page.reload();
-         
+
 
         //New User creation flow
         //Enter Username
@@ -528,7 +557,7 @@ export class SettingsSetupPage extends Base {
         await this.page.waitForTimeout(200);
         //Select Role
         await this.assertionValidate(Selectors.settingsSetup.createNewUser.newUserSelectRole);
-        await this.selectOptionWithLabel(Selectors.settingsSetup.createNewUser.newUserSelectRole, 'Subscriber' );
+        await this.selectOptionWithLabel(Selectors.settingsSetup.createNewUser.newUserSelectRole, 'Subscriber');
         await this.page.waitForTimeout(200);
         //Create User
         await this.validateAndClick(Selectors.settingsSetup.createNewUser.newUserSubmit);
@@ -639,11 +668,11 @@ export class SettingsSetupPage extends Base {
         await this.navigateToURL(this.pluginsPage);
         await this.page.reload();
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWCvendors);
-         
-        
+
+
         await this.navigateToURL(this.pluginsPage);
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickDoNotAllow);
-         
+
     }
 
 }

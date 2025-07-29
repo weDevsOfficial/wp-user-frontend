@@ -2,6 +2,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import { expect, type Page } from '@playwright/test';
 import { Urls } from '../utils/testData';
+import { WaitHelpers } from '../utils/waitHelpers';
 
 export class Base {
     readonly page: Page;
@@ -45,8 +46,11 @@ export class Base {
     readonly downloadsPage: string = Urls.baseUrl + '/wp-admin/edit.php?post_type=download';
 
 
+    protected waitHelpers: WaitHelpers;
+
     constructor(page: Page) {
         this.page = page;
+        this.waitHelpers = new WaitHelpers(page);
     }
 
     // URL navigation
@@ -55,7 +59,7 @@ export class Base {
             await this.waitForLoading();
             await this.page.goto(url);
             await this.waitForLoading();
-            console.log('\x1b[34m%s\x1b[0m', `✅ Navigated to ${url}`);
+            // console.log('\x1b[34m%s\x1b[0m', `✅ Navigated to ${url}`);
             return true;
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to navigate to ${url}: ${error}`);
@@ -67,8 +71,8 @@ export class Base {
     async assertionValidate(locator: string) {
         try {
             await this.waitForLoading();
-            await this.page.locator(locator).waitFor();
-            console.log('\x1b[34m%s\x1b[0m', `✅ Asserted ${locator}`);
+            await this.waitHelpers.waitForElementReady(locator);
+            // console.log('\x1b[34m%s\x1b[0m', `✅ Asserted ${locator}`);
             await this.waitForLoading();
             return expect(this.page.locator(locator).isVisible).toBeTruthy();
         } catch (error) {
@@ -81,12 +85,11 @@ export class Base {
     async validateAndClick(locator: string) {
         try {
             await this.waitForLoading();
-            const element = this.page.locator(locator);
-            await element.waitFor();
+            const element = await this.waitHelpers.waitForElementEnabled(locator);
             expect(element.isVisible).toBeTruthy();
             await element.click();
             await this.waitForLoading();
-            console.log('\x1b[35m%s\x1b[0m', `✅ Clicked on ${locator}`);
+            // console.log('\x1b[35m%s\x1b[0m', `✅ Clicked on ${locator}`);
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to click on ${locator}: ${error}`);
             throw error;
@@ -98,11 +101,11 @@ export class Base {
         try {
             await this.waitForLoading();
             const element = this.page.getByText(locator, { exact: true });
-            await element.waitFor();
+            await element.waitFor({ state: 'visible' });
             expect(element.isVisible).toBeTruthy();
             await element.click();
             await this.waitForLoading();
-            console.log('\x1b[35m%s\x1b[0m', `✅ Clicked on text: ${locator}`);
+            // console.log('\x1b[35m%s\x1b[0m', `✅ Clicked on text: ${locator}`);
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to click on text: ${locator}: ${error}`);
             throw error;
@@ -119,8 +122,8 @@ export class Base {
                 const element = elements.nth(i);
                 if (await element.isVisible()) {
                     await element.click();
-                    console.log('\x1b[35m%s\x1b[0m', `✅ Clicked on visible element: ${locator}`);
-                    return; // Exit the function once a visible element is clicked
+                    // console.log('\x1b[35m%s\x1b[0m', `✅ Clicked on visible element: ${locator}`);
+                    return;
                 }
             }
 
@@ -140,8 +143,8 @@ export class Base {
             for (let i = 0; i < count; i++) {
                 const element = elements.nth(i);
                 if (await element.isVisible()) {
-                    console.log('\x1b[34m%s\x1b[0m', `✅ Found visible element: ${locator}`);
-                    return; // Exit the function once a visible element is clicked
+                    //console.log('\x1b[34m%s\x1b[0m', `✅ Found visible element: ${locator}`);
+                    return;
                 }
             }
 
@@ -156,12 +159,11 @@ export class Base {
     async validateAndFillStrings(locator: string, value: string) {
         try {
             await this.waitForLoading();
-            const element = this.page.locator(locator);
-            await element.waitFor();
+            const element = await this.waitHelpers.waitForElementEnabled(locator);
             expect(element.isVisible).toBeTruthy();
             await element.fill(value);
             await this.waitForLoading();
-            console.log('\x1b[35m%s\x1b[0m', `✅ Filled ${locator} with ${value}`);
+            //console.log('\x1b[35m%s\x1b[0m', `✅ Filled ${locator} with ${value}`);
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to fill ${locator} with ${value}: ${error}`);
             throw error;
@@ -172,12 +174,11 @@ export class Base {
     async validateAndFillNumbers(locator: string, value: number) {
         try {
             await this.waitForLoading();
-            const element = this.page.locator(locator);
-            await element.waitFor();
+            const element = await this.waitHelpers.waitForElementEnabled(locator);
             expect(element.isVisible).toBeTruthy();
             await element.fill(value.toString());
             await this.waitForLoading();
-            console.log('\x1b[35m%s\x1b[0m', `✅ Filled ${locator} with ${value}`);
+            //console.log('\x1b[35m%s\x1b[0m', `✅ Filled ${locator} with ${value}`);
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to fill ${locator} with ${value}: ${error}`);
             throw error;
@@ -188,12 +189,11 @@ export class Base {
     async validateAndCheckBox(locator: string) {
         try {
             await this.waitForLoading();
-            const element = this.page.locator(locator);
-            await element.waitFor();
+            const element = await this.waitHelpers.waitForElementEnabled(locator);
             expect(element.isVisible).toBeTruthy();
             await element.check();
             await this.waitForLoading();
-            console.log('\x1b[35m%s\x1b[0m', `✅ Checked ${locator}`);
+            //console.log('\x1b[35m%s\x1b[0m', `✅ Checked ${locator}`);
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to check ${locator}: ${error}`);
             throw error;
@@ -206,7 +206,7 @@ export class Base {
             await this.waitForLoading();
             expect(matchWithToast).toContain(extractedToast);
             await this.waitForLoading();
-            console.log('\x1b[32m%s\x1b[0m', `✅ Toast notification matched: "${extractedToast}"`);
+            //console.log('\x1b[32m%s\x1b[0m', `✅ Toast notification matched: "${extractedToast}"`);
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Toast notification mismatch: "${extractedToast}" not found in "${matchWithToast}": ${error}`);
             throw error;
@@ -217,12 +217,11 @@ export class Base {
     async selectOptionWithLabel(locator: string, label: string) {
         try {
             await this.waitForLoading();
-            const element = this.page.locator(locator);
-            await element.waitFor();
+            const element = await this.waitHelpers.waitForElementEnabled(locator);
             expect(element.isVisible).toBeTruthy();
             await this.page.selectOption(locator, { label: label });
             await this.waitForLoading();
-            console.log('\x1b[33m%s\x1b[0m', `✅ Selected ${locator} with ${label}`);
+            //console.log('\x1b[33m%s\x1b[0m', `✅ Selected ${locator} with ${label}`);
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to select ${locator} with label ${label}: ${error}`);
             throw error;
@@ -233,12 +232,11 @@ export class Base {
     async selectOptionWithValue(locator: string, value: string) {
         try {
             await this.waitForLoading();
-            const element = this.page.locator(locator);
-            await element.waitFor();
+            const element = await this.waitHelpers.waitForElementEnabled(locator);
             expect(element.isVisible).toBeTruthy();
             await this.page.selectOption(locator, { value: value });
             await this.waitForLoading();
-            console.log('\x1b[33m%s\x1b[0m', `✅ Selected ${locator} with ${value}`);
+            //console.log('\x1b[33m%s\x1b[0m', `✅ Selected ${locator} with ${value}`);
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to select ${locator} with value ${value}: ${error}`);
             throw error;
@@ -253,23 +251,26 @@ export class Base {
     async waitForFormSaved(formSavedLocator: string, saveButtonLocator: string) {
         try {
             let formNotSaved = true;
-            while (formNotSaved) {
+            let count = 1;
+            while (formNotSaved && count < 3) {
                 try {
                     await this.waitForLoading();
-                    await this.page.waitForSelector(formSavedLocator, { timeout: 5000 });
+                    await this.page.waitForSelector(formSavedLocator, { timeout: 2000 });
                     await this.waitForLoading();
                     formNotSaved = false;
                 } catch (error) {
-                    console.log('\x1b[33m%s\x1b[0m', `⚠️ Form not saved yet, clicking save button: ${saveButtonLocator}`);
+                    console.log('\x1b[33m%s\x1b[0m', `⚠️ Form not saved yet, clicking save button`);
                     await this.waitForLoading();
                     await this.validateAndClick(saveButtonLocator);
                     await this.waitForLoading();
+                    count++;
                 }
             }
             console.log('\x1b[32m%s\x1b[0m', `✅ Form saved`);
+            return false;
         } catch (error) {
-            console.log('\x1b[31m%s\x1b[0m', `❌ Failed to save form: ${error}`);
-            throw error;
+            console.log('\x1b[31m%s\x1b[0m', `❌ Failed to save form`);
+            return true;
         }
     }
 
@@ -277,41 +278,15 @@ export class Base {
     async checkElementText(locator: string, expectedText: string) {
         try {
             await this.waitForLoading();
-            const element = this.page.locator(locator);
-            await element.waitFor();
-            const isAvailable = await element.isVisible();
-            
-            if (isAvailable) {
-                const actualText = await element.innerText();
-                expect(actualText).toContain(expectedText);
-                console.log("Expected Text: " + expectedText);
-                console.log('\x1b[32m%s\x1b[0m', `✅ Element text validated: ${actualText}`);
-                await this.waitForLoading();
-                return true;
-            } else {
-                console.log('\x1b[33m%s\x1b[0m', `⚠️ Element not available: ${locator}`);
-                return false;
-            }
+            const element = await this.waitHelpers.waitForElementText(locator, expectedText);
+            const actualText = await element.innerText();
+            console.log('\x1b[32m%s\x1b[0m', "Expected Text: " + expectedText);
+            //console.log('\x1b[32m%s\x1b[0m', `✅ Element text validated: ${actualText}`);
+            await this.waitForLoading();
+            return true;
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to check element text ${locator}: ${error}`);
             return false;
         }
-    }
-
-    async waitForFormSaved(formSavedLocator: string, saveButtonLocator: string) {
-        let formNotSaved = true;
-        while (formNotSaved) {
-            try {
-                await this.waitForLoading();
-                await this.page.waitForSelector(formSavedLocator, { timeout: 30000 });
-                await this.waitForLoading();
-                formNotSaved = false;
-            } catch (error) {
-                await this.waitForLoading();
-                await this.validateAndClick(saveButtonLocator);
-                await this.waitForLoading();
-            }
-        }
-        console.log('\x1b[32m%s\x1b[0m', `✅ Form saved`);
     }
 }

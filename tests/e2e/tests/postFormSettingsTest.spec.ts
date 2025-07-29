@@ -7,6 +7,7 @@ import { BasicLoginPage } from '../pages/basicLogin';
 import { Users, Urls } from '../utils/testData';
 import { SettingsSetupPage } from '../pages/settingsSetup';
 import { BasicLogoutPage } from '../pages/basicLogout';
+import { configureSpecFailFast } from '../utils/specFailFast';
 
 let browser: Browser;
 let context: BrowserContext;
@@ -24,6 +25,9 @@ test.beforeAll(async () => {
 });
 
 test.describe('Post Form Settings Tests', () => {
+
+    configureSpecFailFast();
+    
     /**----------------------------------POST FORM SETTINGS----------------------------------**
      *
      * @TestScenario : [Post Form Settings]
@@ -32,10 +36,10 @@ test.describe('Post Form Settings Tests', () => {
      * @Test_PFS0003 : Admin is validating post type from FE
      * @Test_PFS0004 : Admin is setting the default category
      * @Test_PFS0005 : Admin is validating default category from FE
-     * @Test_PFS0006 : Admin is setting successful post redirection to newly created post
-     * @Test_PFS0007 : Admin is checking post redirection to newly created post
-     * @Test_PFS0008 : Admin is setting successful post redirection to same page
-     * @Test_PFS0009 : Admin is checking post redirection to same page
+     * @Test_PFS0006 : Admin is setting successful post redirection to same page
+     * @Test_PFS0007 : Admin is checking post redirection to same page
+     * @Test_PFS0008 : Admin is setting successful post redirection to newly created post
+     * @Test_PFS0009 : Admin is checking post redirection to newly created post
      * @Test_PFS0010 : Admin is setting successful post redirection to another page
      * @Test_PFS0011 : Admin is checking post redirection to another page
      * @Test_PFS0012 : Admin is setting successful post redirection to a url
@@ -199,30 +203,30 @@ test.describe('Post Form Settings Tests', () => {
         await postFormSettings.submitAndValidateCategory(postTitle, postContent, postExcerpt, category);
     });
 
-    test('PFS0006 : Admin is setting successful post redirection to newly created post', { tag: ['@Lite'] }, async () => {
-        const postFormSettings = new PostFormSettingsPage(page);
-        await postFormSettings.setPostRedirectionToPost(formName, 'post');
-    });
-
-    test('PFS0007 : Admin is checking post redirection to newly created post', { tag: ['@Lite'] }, async () => {
-        postTitle = faker.word.words(3);
-        postContent = faker.lorem.paragraph();
-        postExcerpt = postContent;
-        const postFormSettings = new PostFormSettingsPage(page);
-        await postFormSettings.validateRedirectionToPost(postTitle, postContent, postExcerpt);
-    });
-
-    test('PFS0008 : Admin is setting successful post redirection to same page', { tag: ['@Lite'] }, async () => {
+    test('PFS0006 : Admin is setting successful post redirection to same page', { tag: ['@Lite'] }, async () => {
         const postFormSettings = new PostFormSettingsPage(page);
         await postFormSettings.setPostRedirectionToSamePage(formName, 'same', 'Post published successfully');
     });
 
-    test('PFS0009 : Admin is checking post redirection to same page', { tag: ['@Lite'] }, async () => {
+    test('PFS0007 : Admin is checking post redirection to same page', { tag: ['@Lite'] }, async () => {
         postTitle = faker.word.words(3);
         postContent = faker.lorem.paragraph();
         postExcerpt = postContent;
         const postFormSettings = new PostFormSettingsPage(page);
         await postFormSettings.validateRedirectionToSamePage(postTitle, postContent, postExcerpt, 'Post published successfully');
+    });
+
+    test('PFS0008 : Admin is setting successful post redirection to newly created post', { tag: ['@Lite'] }, async () => {
+        const postFormSettings = new PostFormSettingsPage(page);
+        await postFormSettings.setPostRedirectionToPost(formName, 'post');
+    });
+
+    test('PFS0009 : Admin is checking post redirection to newly created post', { tag: ['@Lite'] }, async () => {
+        postTitle = faker.word.words(3);
+        postContent = faker.lorem.paragraph();
+        postExcerpt = postContent;
+        const postFormSettings = new PostFormSettingsPage(page);
+        await postFormSettings.validateRedirectionToPost(postTitle, postContent, postExcerpt);
     });
 
     test('PFS0010 : Admin is setting successful post redirection to another page', { tag: ['@Lite'] }, async () => {
@@ -543,7 +547,7 @@ test.describe('Post Form Settings Tests', () => {
 
     test('PFS0060 : Admin is validating paid post is live', { tag: ['@Lite'] }, async () => {
         const postFormSettings = new PostFormSettingsPage(page);
-        await postFormSettings.validatePayPerPost();
+        await postFormSettings.validatePayPerPost(postTitle);
     });
 
     test('PFS0061 : Admin is disabling pay per post', { tag: ['@Lite'] }, async () => {

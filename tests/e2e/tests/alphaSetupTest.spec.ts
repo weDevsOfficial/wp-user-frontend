@@ -6,6 +6,7 @@ import { BasicLogoutPage } from '../pages/basicLogout';
 import { SettingsSetupPage } from '../pages/settingsSetup';
 import { Users } from '../utils/testData';
 import { PostFormPage } from '../pages/postForm';
+import { configureSpecFailFast } from '../utils/specFailFast';
 
 let browser: Browser;
 let context: BrowserContext;
@@ -23,6 +24,9 @@ test.beforeAll(async () => {
 });
 
 test.describe('Login and Setup', () => {
+    // Configure fail-fast behavior for this spec file
+    configureSpecFailFast();
+    
     /**----------------------------------LOGIN----------------------------------**
      *
      * @Test_Scenarios : [LOGIN & SETUP] 

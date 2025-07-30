@@ -586,7 +586,10 @@ class Payment {
     /**
      * Determine the payment type for user notification
      *
+     * @since WPUF_SINCE
+     * 
      * @param array $info payment information
+     * 
      * @return string payment type
      */
     private function determine_user_payment_type( $info ) {
@@ -611,9 +614,12 @@ class Payment {
     /**
      * Get notification content for user
      *
+     * @since WPUF_SINCE
+     * 
      * @param string $payment_type type of payment
      * @param \WP_User $user user object
      * @param array $info payment information
+     * 
      * @return array subject and message
      */
     private function get_user_notification_content( $payment_type, $user, $info ) {
@@ -670,6 +676,8 @@ class Payment {
     /**
      * Send invoice if invoices are enabled
      *
+     * @since WPUF_SINCE
+     * 
      * @param array $info payment information
      * @param \WP_User $user user object
      */
@@ -696,6 +704,8 @@ class Payment {
     /**
      * Generate and send invoice
      *
+     * @since WPUF_SINCE
+     * 
      * @param array $info payment information
      * @param \WP_User $user user object
      */
@@ -794,7 +804,10 @@ class Payment {
     /**
      * Get invoice item name based on payment info
      *
+     * @since WPUF_SINCE
+     * 
      * @param array $info payment information
+     * 
      * @return string item name
      */
     private function get_invoice_item_name( $info ) {
@@ -819,6 +832,8 @@ class Payment {
     /**
      * Send invoice via email
      *
+     * @since WPUF_SINCE
+     * 
      * @param string $pdf_file path to PDF file
      * @param string $user_email user email address
      * @param array $data payment data for placeholder replacement
@@ -867,6 +882,8 @@ class Payment {
     /**
      * Replace email placeholders with actual values
      *
+     * @since WPUF_SINCE
+     * 
      * @param string $content The email content with placeholders
      * @param array $data The payment data
      *
@@ -919,7 +936,10 @@ class Payment {
     /**
      * Check if invoice image file exists
      *
+     * @since WPUF_SINCE
+     * 
      * @param string $url The url to the remote image
+     * 
      * @return bool Whether the remote image exists
      */
     private function is_invoice_image_exists( $url ) {

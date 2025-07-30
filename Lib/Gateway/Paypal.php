@@ -221,8 +221,6 @@ class Paypal {
                 throw new \Exception( 'Invalid JSON in webhook data' );
             }
 
-            \WP_User_Frontend::log( 'PayPal: Processing webhook event: ' . $event['event_type'] );
-
             switch ( $event['event_type'] ) {
                 case 'BILLING.SUBSCRIPTION.CANCELLED':
                     if ( isset( $event['resource'] ) ) {
@@ -266,7 +264,6 @@ class Paypal {
 				]
             );
         } catch ( \Exception $e ) {
-            \WP_User_Frontend::log( 'PayPal: Webhook processing failed: ' . $e->getMessage() );
             echo wp_json_encode(
                 [
 					'status' => 'error',
@@ -361,7 +358,6 @@ class Paypal {
                 $this->update_coupon_usage( $custom_data['coupon_id'] );
             }
         } catch ( \Exception $e ) {
-            \WP_User_Frontend::log( 'PayPal: Payment capture processing failed: ' . $e->getMessage() );
             throw $e;
         }
     }
@@ -429,14 +425,6 @@ class Paypal {
         if ( ! get_option( 'wpuf_paypal_webhook_flushed' ) ) {
             flush_rewrite_rules();
             update_option( 'wpuf_paypal_webhook_flushed', true );
-            \WP_User_Frontend::log( 'PayPal: Webhook endpoint registered and rewrite rules flushed' );
-        }
-
-        // Verify webhook configuration
-        if ( empty( $this->webhook_id ) ) {
-            \WP_User_Frontend::log( 'PayPal: Warning - Webhook ID is not configured' );
-        } else {
-            \WP_User_Frontend::log( 'PayPal: Webhook endpoint registered at: ' . home_url( '/?action=webhook_triggered' ) );
         }
     }
 
@@ -452,7 +440,6 @@ class Paypal {
 
             try {
                 // Log and basic checks
-                \WP_User_Frontend::log( 'PayPal: Webhook received' );
                 if ( empty( $raw_input ) ) {
                     throw new \Exception( 'Empty webhook payload' );
                 }
@@ -472,15 +459,13 @@ class Paypal {
                 }
 
                 // Log the event type
-                \WP_User_Frontend::log( 'PayPal: Received webhook event: ' . $webhook_data['event_type'] );
-
+                
                 // Process the webhook
                 $this->process_webhook( $raw_input );
 
                 $acknowledged = true;
             } catch ( \Exception $e ) {
-                \WP_User_Frontend::log( 'PayPal: Webhook error: ' . $e->getMessage() );
-                // Optionally, save the failed payload for manual review
+               throw new \Exception( 'Webhook processing failed: ' . $e->getMessage() );
             }
 
             // Always acknowledge to PayPal
@@ -517,7 +502,6 @@ class Paypal {
 
             $access_token = $this->get_access_token();
             if ( ! $access_token ) {
-                \WP_User_Frontend::log( 'PayPal: Failed to get access token' );
                 return false;
             }
 
@@ -547,7 +531,6 @@ class Paypal {
             );
 
             if ( is_wp_error( $response ) ) {
-                \WP_User_Frontend::log( 'PayPal: Verification request failed: ' . $response->get_error_message() );
                 return false;
             }
 
@@ -555,13 +538,8 @@ class Paypal {
 
             $is_verified = isset( $body['verification_status'] ) && $body['verification_status'] === 'SUCCESS';
 
-            \WP_User_Frontend::log( 'PayPal: Webhook verification ' . ( $is_verified ? 'successful' : 'failed' ) );
-            \WP_User_Frontend::log( 'PayPal: ===== Webhook Verification End =====' );
-
             return $is_verified;
         } catch ( \Exception $e ) {
-            \WP_User_Frontend::log( 'PayPal: Webhook verification error: ' . $e->getMessage() );
-            \WP_User_Frontend::log( 'PayPal: Stack trace: ' . $e->getTraceAsString() );
             return false;
         }
     }
@@ -601,8 +579,6 @@ class Paypal {
      */
     private function handle_subscription_created( $subscription ) {
         try {
-            \WP_User_Frontend::log( 'PayPal: Processing subscription creation: ' . print_r( $subscription, true ) );
-
             // Extract custom data
             $custom_data = [];
             if ( isset( $subscription['custom_id'] ) ) {
@@ -686,8 +662,6 @@ class Paypal {
                 ];
             }
 
-            \WP_User_Frontend::log( 'PayPal: Current pack: ' . print_r( $subscription_data, true ) );
-
             // Update user meta with complete subscription data
             update_user_meta( $user_id, '_wpuf_subscription_pack', $subscription_data );
 
@@ -696,7 +670,6 @@ class Paypal {
                 $this->create_trial_payment_record( $user_id, $custom_data['item_number'], $subscription_id );
             }
         } catch ( \Exception $e ) {
-            \WP_User_Frontend::log( 'PayPal: Subscription creation handling failed: ' . $e->getMessage() );
             throw $e;
         }
     }
@@ -708,7 +681,6 @@ class Paypal {
         $user = get_user_by( 'id', $user_id );
 
         if ( ! $user ) {
-            \WP_User_Frontend::log( 'PayPal: Invalid user ID for trial payment: ' . $user_id );
             return;
         }
 
@@ -730,16 +702,12 @@ class Paypal {
         ];
 
         Payment::insert_payment( $payment_data, $subscription_id . '_trial', true );
-        \WP_User_Frontend::log( 'PayPal: Trial payment record created for user: ' . $user_id );
     }
 
     /**
      * Handle subscription cancellation
      */
     public function cancel_subscription( $data ) {
-        \WP_User_Frontend::log( 'PayPal: ===== Subscription Cancellation Debug Start =====' );
-        \WP_User_Frontend::log( 'PayPal: Raw input data: ' . print_r( $data, true ) );
-
         try {
             global $wpdb;
             // Extract user_id from the input
@@ -753,7 +721,6 @@ class Paypal {
             }
 
             if ( ! $user_id || ! is_numeric( $user_id ) ) {
-                \WP_User_Frontend::log( 'PayPal: Invalid user ID provided for cancellation: ' . print_r( $data, true ) );
                 throw new \Exception( 'Invalid user ID provided for cancellation' );
             }
 
@@ -777,20 +744,17 @@ class Paypal {
 						]
                     );
                     if ( is_wp_error( $plan_id_response ) ) {
-                        \WP_User_Frontend::log( 'PayPal: API Error: ' . $plan_id_response->get_error_message() );
                         throw new \Exception( 'Failed to get plan ID from PayPal: ' . $plan_id_response->get_error_message() );
                     }
 
                     $plan_response_body = json_decode( wp_remote_retrieve_body( $plan_id_response ), true );
                     if ( ! $plan_response_body || ! isset( $plan_response_body['plan_id'] ) ) {
-                        \WP_User_Frontend::log( 'PayPal: Invalid plan response: ' . wp_remote_retrieve_body( $plan_id_response ) );
                         throw new \Exception( 'Invalid plan response from PayPal' );
                     }
 
                     $plan_id = $plan_response_body['plan_id'];
 
                     if ( empty( $plan_id ) ) {
-                        \WP_User_Frontend::log( 'PayPal: Plan ID not found for subscription: ' . $subscription_id );
                         throw new \Exception( 'Plan ID not found for subscription: ' . $subscription_id );
                     }
 
@@ -798,8 +762,6 @@ class Paypal {
                     $cancel_url = ( $this->test_mode ?
                         'https://api-m.sandbox.paypal.com' :
                         'https://api-m.paypal.com' ) . '/v1/billing/plans/' . $plan_id . '/deactivate';
-
-                    \WP_User_Frontend::log( 'PayPal: Attempting to cancel subscription in PayPal with URL: ' . $cancel_url );
 
                     $response = wp_remote_post(
                         $cancel_url, [
@@ -817,7 +779,6 @@ class Paypal {
                     );
 
                     if ( is_wp_error( $response ) ) {
-                        \WP_User_Frontend::log( 'PayPal: API Error: ' . $response->get_error_message() );
                         throw new \Exception( 'Failed to cancel subscription in PayPal: ' . $response->get_error_message() );
                     }
 
@@ -828,8 +789,7 @@ class Paypal {
                         throw new \Exception( 'Unexpected response from PayPal: ' . $response_body );
                     }
                 } catch ( \Exception $e ) {
-                    \WP_User_Frontend::log( 'PayPal: PayPal API error: ' . $e->getMessage() );
-                    // Continue with local cancellation even if PayPal fails
+                    throw new \Exception( 'PayPal cancellation failed: ' . $e->getMessage() );
                 }
             }
 
@@ -842,7 +802,6 @@ class Paypal {
 
             update_user_meta( $user_id, '_wpuf_subscription_pack', $updated_subscription );
             update_user_meta( $user_id, '_wpuf_paypal_subscription_status', 'cancel' );
-            \WP_User_Frontend::log( 'PayPal: Updated subscription meta: ' . print_r( $updated_subscription, true ) );
 
             // Update subscriber table
             $update_result = $wpdb->update(
@@ -859,18 +818,8 @@ class Paypal {
                 [ '%d', '%s' ]
             );
 
-            if ( $update_result === false ) {
-                \WP_User_Frontend::log( 'PayPal: Database error updating subscribers table: ' . $wpdb->last_error );
-            } else {
-                \WP_User_Frontend::log( 'PayPal: Updated subscribers table. Rows affected: ' . $update_result );
-            }
-
-            \WP_User_Frontend::log( 'PayPal: Subscription cancel successfully for user: ' . $user_id );
-            \WP_User_Frontend::log( 'PayPal: ===== Subscription Cancellation Debug End =====' );
             return true;
         } catch ( \Exception $e ) {
-            \WP_User_Frontend::log( 'PayPal: Subscription cancellation failed: ' . $e->getMessage() );
-            \WP_User_Frontend::log( 'PayPal: Stack trace: ' . $e->getTraceAsString() );
             throw $e;
         }
     }
@@ -890,7 +839,6 @@ class Paypal {
 
             // If no subscription ID or transaction ID, exit
             if ( empty( $subscription_id ) || empty( $transaction_id ) ) {
-                \WP_User_Frontend::log( 'PayPal: Missing subscription ID or transaction ID in payment data' );
                 return;
             }
 
@@ -904,7 +852,6 @@ class Paypal {
             );
 
             if ( $existing ) {
-                \WP_User_Frontend::log( 'PayPal: Transaction already processed: ' . $transaction_id );
                 // Even if transaction exists, clean up any transients
                 $this->clean_up_transients( $subscription_id );
                 return; // Exit if transaction already processed
@@ -964,7 +911,6 @@ class Paypal {
             }
 
             if ( ! $user_id ) {
-                \WP_User_Frontend::log( 'PayPal: User not found for subscription: ' . $subscription_id );
                 // Clean up any transients even if user not found
                 $this->clean_up_transients( $subscription_id );
                 return;
@@ -973,8 +919,6 @@ class Paypal {
             // Get user data
             $user = get_user_by( 'id', $user_id );
             if ( ! $user ) {
-                \WP_User_Frontend::log( 'PayPal: Invalid user ID: ' . $user_id );
-                // Clean up any transients even if user invalid
                 $this->clean_up_transients( $subscription_id );
                 return;
             }
@@ -1004,7 +948,6 @@ class Paypal {
                 wpuf_get_user( $user_id )->subscription()->add_pack( $pack_id, $subscription_id, true, 'recurring' );
                 update_user_meta( $user_id, '_wpuf_paypal_subscription_status', 'completed' );
                 // Log subscription creation
-                \WP_User_Frontend::log( 'PayPal: User subscription pack added for user: ' . $user_id . ', pack: ' . $pack_id );
             }
 
             // Prepare payment data
@@ -1035,8 +978,6 @@ class Paypal {
             // Final cleanup of any transients after successful processing
             $this->clean_up_transients( $subscription_id );
         } catch ( \Exception $e ) {
-            \WP_User_Frontend::log( 'PayPal: Subscription payment processing failed: ' . $e->getMessage() );
-
             // Even in case of error, try to clean up transients
             if ( isset( $subscription_id ) ) {
                 $this->clean_up_transients( $subscription_id );
@@ -1050,9 +991,6 @@ class Paypal {
     private function clean_up_transients( $subscription_id ) {
         // Delete the specific transient
         delete_transient( 'wpuf_paypal_pending_' . $subscription_id );
-
-        // Log cleanup
-        \WP_User_Frontend::log( 'PayPal: Cleaned up transients for subscription: ' . $subscription_id );
     }
 
     /**
@@ -1252,7 +1190,6 @@ class Paypal {
         try {
             $this->cancel_subscription( [ 'user_id' => $user_id ] );
         } catch ( \Exception $e ) {
-            \WP_User_Frontend::log( 'PayPal: Failed to cancel subscription for user ' . $user_id . ': ' . $e->getMessage() );
             // Update local meta even if PayPal API call fails
             $sub_meta = 'cancel';
             wpuf_get_user( $user_id )->subscription()->update_meta( $sub_meta );
@@ -1353,8 +1290,6 @@ class Paypal {
 
             // Check if this is a recurring payment
             if ( 'pack' === $data['type'] && isset( $data['custom']['recurring_pay'] ) && wpuf_is_checkbox_or_toggle_on( $data['custom']['recurring_pay'] ) ) {
-                \WP_User_Frontend::log( 'PayPal: Setting up recurring payment subscription' );
-
                 // Get subscription details from pack
                 $pack = get_post( $data['item_number'] );
 
@@ -1457,7 +1392,6 @@ class Paypal {
                 }
 
                 $body = json_decode( wp_remote_retrieve_body( $response ), true );
-                \WP_User_Frontend::log( 'PayPal: Subscription response: ' . print_r( $body, true ) );
 
                 if ( ! isset( $body['id'] ) ) {
                     throw new \Exception( 'Invalid response from PayPal - no subscription ID' );
@@ -1501,7 +1435,6 @@ class Paypal {
                 );
                 
                 // Redirect to PayPal
-                \WP_User_Frontend::log( 'PayPal: Redirecting to PayPal subscription approval URL: ' . $approval_url );
                 wp_safe_redirect( $approval_url );
                 exit();
             } else {
@@ -1557,7 +1490,6 @@ class Paypal {
                 }
 
                 $body = json_decode( wp_remote_retrieve_body( $response ), true );
-                \WP_User_Frontend::log( 'PayPal: PayPal response: ' . print_r( $body, true ) );
 
                 if ( ! isset( $body['id'] ) ) {
                     throw new \Exception( 'Invalid response from PayPal - no order ID' );
@@ -1576,8 +1508,6 @@ class Paypal {
                     throw new \Exception( 'Approval URL not found in PayPal response' );
                 }
                 
-                \WP_User_Frontend::log( 'PayPal: Redirecting to PayPal for payment approval' );
-                
                 // Add PayPal to allowed hosts just before redirect
                 add_filter(
                     'allowed_redirect_hosts',
@@ -1592,7 +1522,6 @@ class Paypal {
                 exit();
             }
         } catch ( \Exception $e ) {
-            \WP_User_Frontend::log( 'PayPal: Payment preparation failed: ' . $e->getMessage() );
             wp_die( $e->getMessage() );
         }
     }
@@ -1716,7 +1645,6 @@ class Paypal {
 
             return $body['id'];
         } catch ( \Exception $e ) {
-            \WP_User_Frontend::log( 'PayPal: Plan creation failed: ' . $e->getMessage() );
             return false;
         }
     }
@@ -1768,7 +1696,6 @@ class Paypal {
 
             return $body['id'];
         } catch ( \Exception $e ) {
-            \WP_User_Frontend::log( 'PayPal: Product creation failed: ' . $e->getMessage() );
             return false;
         }
     }
@@ -1819,9 +1746,6 @@ class Paypal {
                 $subscription_id = $token;
             }
             
-            // Log the subscription return
-            \WP_User_Frontend::log( 'PayPal: Subscription return - subscription_id: ' . $subscription_id . ', ba_token: ' . $ba_token . ', token: ' . $token );
-            
             // Redirect to success page for subscriptions without requiring nonce
             $success_url = add_query_arg(
                 [
@@ -1845,7 +1769,6 @@ class Paypal {
             exit;
             
         } catch ( \Exception $e ) {
-            \WP_User_Frontend::log( 'PayPal: Subscription return handling failed: ' . $e->getMessage() );
             wp_safe_redirect( $this->get_error_page_url( $e->getMessage() ) );
             exit;
         }
@@ -1937,7 +1860,6 @@ class Paypal {
             wp_safe_redirect( $success_url );
             exit;
         } catch ( \Exception $e ) {
-            \WP_User_Frontend::log( 'PayPal: Payment capture failed: ' . $e->getMessage() );
             wp_safe_redirect( $this->get_error_page_url( $e->getMessage() ) );
             exit;
         }
@@ -1971,9 +1893,6 @@ class Paypal {
                 wp_safe_redirect( $this->get_error_page_url( 'Invalid nonce' ) );
                 exit;
             }
-        } else {
-            // For subscription returns, just log that nonce verification was skipped
-            \WP_User_Frontend::log( 'PayPal: Nonce verification skipped for subscription return' );
         }
 
         // Handle subscription return differently
@@ -2015,8 +1934,6 @@ class Paypal {
      */
     private function handle_subscription_cancelled( $subscription ) {
         try {
-            \WP_User_Frontend::log( 'PayPal: Processing subscription cancellation webhook: ' . print_r( $subscription, true ) );
-
             // Extract custom data
             $custom_data = [];
             if ( isset( $subscription['custom_id'] ) ) {
@@ -2056,12 +1973,9 @@ class Paypal {
                 [ '%d', '%s', '%s' ]
             );
 
-            \WP_User_Frontend::log( 'PayPal: Subscription cancel via webhook for user: ' . $user_id );
-
             // Trigger action for other plugins
             do_action( 'wpuf_paypal_subscription_cancelled', $user_id, $subscription_id );
         } catch ( \Exception $e ) {
-            \WP_User_Frontend::log( 'PayPal: Webhook subscription cancellation failed: ' . $e->getMessage() );
             throw $e;
         }
     }
@@ -2071,8 +1985,6 @@ class Paypal {
      */
     private function handle_subscription_activated( $subscription ) {
         try {
-            \WP_User_Frontend::log( 'PayPal: Processing subscription activation: ' . print_r( $subscription, true ) );
-
             // Extract custom data
             $custom_data = [];
             if ( isset( $subscription['custom_id'] ) ) {
@@ -2151,13 +2063,10 @@ class Paypal {
                     ];
 
                     Payment::insert_payment( $payment_data, $payment['id'], true );
-                    \WP_User_Frontend::log( 'PayPal: First payment after trial created for user: ' . $user_id );
                 }
             }
-
-            \WP_User_Frontend::log( 'PayPal: Subscription activated successfully for user: ' . $user_id );
         } catch ( \Exception $e ) {
-            \WP_User_Frontend::log( 'PayPal: Subscription activation handling failed: ' . $e->getMessage() );
+            throw new \Exception( 'Error handling subscription activation: ' . $e->getMessage() );
         }
     }
 }

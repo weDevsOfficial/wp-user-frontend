@@ -2,7 +2,6 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import { expect, type Page } from '@playwright/test';
 import { Urls } from '../utils/testData';
-import { WaitHelpers } from '../utils/waitHelpers';
 
 export class Base {
     readonly page: Page;
@@ -45,12 +44,8 @@ export class Base {
     readonly addDownloadsPage: string = Urls.baseUrl + '/add-downloads/';
     readonly downloadsPage: string = Urls.baseUrl + '/wp-admin/edit.php?post_type=download';
 
-
-    protected waitHelpers: WaitHelpers;
-
     constructor(page: Page) {
         this.page = page;
-        this.waitHelpers = new WaitHelpers(page);
     }
 
     // URL navigation
@@ -94,6 +89,49 @@ export class Base {
             console.log('\x1b[35m%s\x1b[0m', `✅ Clicked on ${locator}`);
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to click on ${locator}: ${error}`);
+            throw error;
+        }
+    }
+
+    // Validate and Click any
+    async validateAndClickAny(locator: string) {
+        try {
+            const elements = this.page.locator(locator);
+            const count = await elements.count();
+
+            for (let i = 0; i < count; i++) {
+                const element = elements.nth(i);
+                if (await element.isVisible()) {
+                    await element.click();
+                    console.log('\x1b[35m%s\x1b[0m', `✅ Clicked on visible element: ${locator}`);
+                    return;
+                }
+            }
+
+            throw new Error(`No visible elements found for locator: ${locator}`);
+        } catch (error) {
+            console.log('\x1b[31m%s\x1b[0m', `❌ Failed to click any element: ${locator}: ${error}`);
+            throw error;
+        }
+    }
+
+    // Validate any
+    async validateAny(locator: string) {
+        try {
+            const elements = this.page.locator(locator);
+            const count = await elements.count();
+
+            for (let i = 0; i < count; i++) {
+                const element = elements.nth(i);
+                if (await element.isVisible()) {
+                    console.log('\x1b[34m%s\x1b[0m', `✅ Found visible element: ${locator}`);
+                    return;
+                }
+            }
+
+            throw new Error(`No visible elements found for locator: ${locator}`);
+        } catch (error) {
+            console.log('\x1b[31m%s\x1b[0m', `❌ Failed to validate any element: ${locator}: ${error}`);
             throw error;
         }
     }
@@ -199,7 +237,7 @@ export class Base {
     async waitForFormSaved(formSavedLocator: string, saveButtonLocator: string) {
         try {
             let formNotSaved = true;
-            let count = 2;
+            let count = 1;
             while (formNotSaved && count < 3) {
                 try {
                     await this.waitForLoading();

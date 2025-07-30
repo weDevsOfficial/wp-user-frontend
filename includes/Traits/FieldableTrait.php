@@ -566,7 +566,7 @@ trait FieldableTrait {
                 }
                 
                 // For product attributes, add to WooCommerce attributes
-                if ( $is_woo_taxonomy && 'pa_' === substr( $taxonomy_name, 0, 3 ) ) {
+                if ( $is_woo_taxonomy ) {
                     $woo_attr[$taxonomy_name] = [
                         'name'         => $taxonomy_name,
                         'value'        => '',

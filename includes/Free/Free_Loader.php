@@ -1623,7 +1623,7 @@ class Free_Loader extends Pro_Prompt {
             'conditional_logic' => [
                 'label' => __( 'Conditional Logic on Submit', 'wp-user-frontend' ),
                 'type'  => 'toggle',
-                'value' => 'on',
+                'value' => 'off',
             ],
         ];
 

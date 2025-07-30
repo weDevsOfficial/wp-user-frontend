@@ -78,7 +78,7 @@ export const Selectors = {
             // PostFormPage
             clickPostFormMenuOption: '//h3[normalize-space(text())="Post Forms"]',
             clickRegFormMenuOption: '//h3[normalize-space()="Registration Forms"]',
-            wpufPostFormCheckAddButton: ' //a[contains(text(),"Add New")]',
+            wpufPostFormCheckAddButton: ' //a[contains(@class,"new-wpuf-form")]',
             postFormsPageFormTitleCheck: '//a[@class="row-title"][1]',
             noFormMsg: '//h2[normalize-space()="No Post Forms Created Yet"]',
             formTitleCheck: (formName:string) => `//span[normalize-space(text())='${formName}']`,
@@ -333,6 +333,14 @@ export const Selectors = {
             editNewFormName: '//input[@name="post_title"]',
         },
 
+        createDownloads_PF: {
+            // Start > Preset Form
+            clickDownloadsForm: '//a[@title="EDD Download" and contains(text(), "Create Form")]',
+
+            // Enter_NAME
+            editNewFormName: '//input[@name="post_title"]',
+        },
+
         /* Locators for All Fields Options + Save */
         /********************* PostFields *********************/
 
@@ -374,6 +382,18 @@ export const Selectors = {
             validateProductAttribute: '//label[@for="pa_color"]/../..//div[@class="wpuf-fields"]',
         },
 
+        validateDownloadsPostFields_PF:{
+            validateDownloadsTitle: '//label[@for="post_title"]/../..//div[@class="wpuf-fields"]',
+            validateDownloadsCategory: '(//div[@class="wpuf-fields"]//select)[1]',
+            validateDownloadsDescription: '//label[@for="post_content"]/../..//div[@class="wpuf-fields"]',
+            validateDownloadsShDescription: '//label[@for="post_excerpt"]/../..//div[@class="wpuf-fields"]',
+            validateRegularPrice: '//input[@placeholder="Regular price of your download"]',
+            validateDownloadsImage: '//a[normalize-space()="Select Image"]',
+            validatepurchaseNote: '//textarea[@default="default"]',
+            validateDownloadableFiles: '//a[normalize-space()="Select Files"]',
+            validateProductTag: '(//div[@class="wpuf-fields"]//select)[2]',
+        },
+
         /********************* Taxonomies *********************/
         addTaxonomies_PF: {
             // Taxonomies
@@ -399,6 +419,10 @@ export const Selectors = {
             tagBlock: '//p[normalize-space()="Product_tag"]',
             shippingBlock: '//p[normalize-space()="Product_shipping_class"]',
             attributeBlock: '//p[normalize-space()="Pa_color"]'
+        },
+
+        addDownloadsTaxo_PF:{
+            tagBlock: '//p[normalize-space()="Download_tag"]',
         },
 
         /***********************************************/
@@ -691,6 +715,33 @@ export const Selectors = {
 
         },
 
+        downloadsFrontendCreate: {
+            // Downloads Create
+            // Start Form Submission
+            // Post Tile
+            downloadsTitleFE: '//input[@name="post_title"]',
+            // Post Description
+            downloadsDescription1: '//div[contains(@class,"mce-edit-area mce-container")]//iframe[1]',
+            downloadsDescription2: '//body[@id="tinymce"]',
+            // Featured Photo
+            downloadsImage: '//li[@data-label="Download Image"]//input[@type="file"]',
+            uploads: (upload:string)=> `(//div[@class='attachment-name']//img)[${upload}]`,
+            // Excerpt
+            downloadsExcerpt: '//textarea[@name="post_excerpt"]',
+            // Regular Price
+            downloadsRegularPrice: '//input[@id="edd_price"]',
+            // Purchase Note
+            purchaseNote: '//textarea[@name="edd_product_notes"]',
+            // Downloadable files
+            downloadableFiles: '//li[@data-label="Downloadable Files"]//input[@type="file"]',
+            // Category
+            downloadCategory: '//select[@id="download_category"]',
+            // Tag
+            downloadsTag: '//select[@id="download_tag"]',
+            // Create
+            createDownloads: '//input[@name="submit"]'
+        },
+
         postFormData: {
             title: (title:string)=> `//h1[normalize-space(text())='${title}']`,
             description: (description:string)=> `//div[contains(@class,"entry-content")]//p[normalize-space(text())="${description}"]`,
@@ -737,6 +788,21 @@ export const Selectors = {
             reviews: '//a[normalize-space()="Reviews (0)"]',
         },
 
+        downloadsFormData:{
+            title: (title:string)=> `//h1[normalize-space(text())='${title}']`,
+            description: (description:string)=> `//div[contains(@class,"entry-content")]//p[normalize-space(text())="${description}"]`,
+            purchaseButton: '//span[@class="edd-add-to-cart-label"]',
+            downloadsImage: '//figure[@class="wp-block-post-featured-image"]',
+            titleBE: (title:string)=> `//a[normalize-space()='${title}']`,
+            price: (price:string)=> `(//input[@id="edd_price" and @value="${price}.00" ])[2]`,
+            clickDownload: '//span[normalize-space()="Download"]',
+            clickCategory: '//button[normalize-space()="Categories"]',
+            categoryBE: (category:string)=> `//label[normalize-space()='${category}']`,
+            clickTag: '//button[normalize-space()="Tags"]',
+            tagBE: (tag:string)=> `//span[normalize-space()='${tag}']`,
+            excerpt: (excerpt:string)=> `//span[normalize-space(text())='${excerpt}']`,
+        },
+
         createPageWithShortcode: {
             // Add New Page
             addNewPage: '//a[@class="page-title-action"]',
@@ -771,7 +837,13 @@ export const Selectors = {
             saveAttribute: '//button[@id="submit"]',
             configureAttributeTerms: '//a[normalize-space()="Configure terms"]',
             addAttributeTerms: '//input[@id="tag-name"]',
-        }
+        },
+
+        eddPostForm: {
+            addCategory: '//input[@id="tag-name"]',
+            addTag: '//input[@id="tag-name"]',
+            saveSubmit: '//input[@id="submit"]',
+        },
     },
 
     /****************************************************/
@@ -843,7 +915,7 @@ export const Selectors = {
             // Validate Shortcode
             validateShortcode: '//code[text()="[wpuf-registration]"]',
             // Shortcode
-            storeShortcode: '(//div[@class="wpuf-mb-4 wpuf-flex"]//code)[1]',
+            storeShortcode: (formName:string)=> `(//span[normalize-space()='${formName}']//..//..//code)[1]`,
             // Add New Page
             addNewPage: '//a[@class="page-title-action"]',
             // Close Pattern Modal
@@ -922,6 +994,8 @@ export const Selectors = {
             validateUserCreated: '//td[@class="email column-email"]',
             // Validate User Role
             validateUserRole: '//td[@class="role column-role"]',
+
+            validateUserEmail: (email:string)=> `//a[normalize-space()='${email}']`,
         },
     },
 
@@ -952,8 +1026,8 @@ export const Selectors = {
         formNameInput: '//input[@name="post_title"]',
         addNewButton: '//a[contains(@class,"new-wpuf-form")]',
         saveButton: '//button[normalize-space(text())="Save"]',
-        postTypeColumn: '//tbody/tr[1]/td[2]',
-        postSubmissionStatusColumn: '//tbody/tr[1]/td[3]',
+        postTypeColumn: (formName: string, postType: string) => `//span[normalize-space()="${formName}"]//..//..//td[normalize-space()="${postType}"]`,
+        postSubmissionStatusColumn: (formName: string, status: string) => `//span[normalize-space()="${formName}"]//..//..//td[normalize-space()="${status}"]`,
         clickFormEditor: '//a[contains(text(),"Form Editor")]',
         clickFormEditorSettings: '(//a[contains(@class,"wpuf-nav-tab wpuf-nav-tab-active")])[2]',
         clickBlankForm: '//a[@title="Blank Form" and contains(text(), "Create Form")]',
@@ -967,8 +1041,8 @@ export const Selectors = {
         checkPostTitle: (title: string) => `//h1[normalize-space(text())='${title}']`,
         checkSuccessMessage: '//div[@class="wpuf-success"]',
         checkPageTitle: (title: string) => `//h1[normalize-space(text())='${title}']`,
-        postTitleColumn: '//tbody//tr[1]//td[1]',
-        postStatusColumn: '//tbody//tr[1]//td[2]//span[1]',
+        postTitleColumn: (title: string, a: string) => `//td${a}[normalize-space(text())="${title}"]`,
+        postStatusColumn: (title:string, status: string, a: string, b: string) => `//td${a}[normalize-space(text())="${title}"]//..${b}//span[normalize-space(text())="${status}"]`,
         saveDraftButton: '//a[normalize-space(text())="Save Draft"]',
         draftSavedAlert: '//span[@class="wpuf-draft-saved"]',
         multiStepProgressbar: '//div[normalize-space(text())="Step Start (100%)"]',
@@ -1091,7 +1165,7 @@ export const Selectors = {
 
         // Validation Messages
         messages: {
-            formSaved: '//div[normalize-space(text())="Saved form data"]',
+            formSaved: '(//div[normalize-space(text())="Saved form data"])[1]',
         },
 
         // Notification Settings Section
@@ -1113,9 +1187,11 @@ export const Selectors = {
 
             templateTagPointer: (tag: string, point: string) => `(//span[@data-clipboard-text="${tag}"])[${point}]`,
             tagClickTooltip: '//span[@data-original-title="Copied!"]',
-            sentEmailAddress: '//tbody/tr[1]/td[3]/div[1]',
-            sentEmailSubject: '//tbody/tr[1]/td[4]/div[1]',
-            viewEmailContent: '//tbody/tr[1]/td[3]/div[1]',
+            sentEmailAddress: (emails:string)=> `(//div[normalize-space()='${emails}'])[1]`,
+            sentEmailSubjectSubmitted: '//div[normalize-space()="New post submitted"]',
+            viewEmailContentSubmitted: '//div[normalize-space()="New post submitted"]',
+            sentEmailSubjectUpdated: '//div[normalize-space()="Post updated"]',
+            viewEmailContentUpdated: '//div[normalize-space()="Post updated"]',
             previewEmailContentBody: '(//div[@class="wml-body-wrapper"])[1]',
 
 
@@ -1288,17 +1364,16 @@ export const Selectors = {
             wpMailLogPage: '//h2[normalize-space()="WP Mail Log"]',
             
             // First email row selectors
-            sentEmailAddress: '(//tbody/tr[2]/td[3]/div[1])[1]',
-            sentEmailSubject: '(//tbody/tr[2]/td[4]/div[1])[1]',
-            viewEmailContent: '(//tbody/tr[2]/td[3]/div[1])[1]',
+            sentEmailAddress: (emails:string)=> `(//div[normalize-space()='${emails}'])[1]`,
+            sentEmailSubject: (subject:string)=> `(//div[normalize-space()='${subject}'])[1]`,
+            viewEmailContent: (subject:string)=> `(//div[normalize-space()='${subject}'])[1]`,
             previewEmailContentBody: '(//div[@class="wml-body-wrapper"])[1]',
             grabActivationLink: '//a[normalize-space()="Activation Link"]',
 
             modalCloseButton: '//button[@class="el-button el-button--danger"]',
 
-            sentLatestEmailAddress: '(//tbody/tr[1]/td[3]/div[1])[1]',
-            sentLatestEmailSubject: '(//tbody/tr[1]/td[4]/div[1])[1]',
-            viewLatestEmailContent: '(//tbody/tr[1]/td[3]/div[1])[1]',
+            sentLatestEmailSubject: (subject:string)=> `(//div[normalize-space()='${subject}'])[1]`,
+            viewLatestEmailContent: (subject:string)=> `(//div[normalize-space()='${subject}'])[1]`,
             
             // Search and filter
             emailSearchInput: '//input[@id="post-search-input"]',

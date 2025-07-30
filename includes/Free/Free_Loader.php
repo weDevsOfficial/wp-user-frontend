@@ -1736,7 +1736,7 @@ class Free_Loader extends Pro_Prompt {
                 'help_text' => __( 'Verification of email addresses will be mandatory', 'wp-user-frontend' ),
             ],
             'post_expiration_message'   => [
-                'label' => __( 'From Expired Message', 'wp-user-frontend' ),
+                'label' => __( 'Form Expired Message', 'wp-user-frontend' ),
                 'type'  => 'textarea',
             ],
         ];

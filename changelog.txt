@@ -1,5 +1,6 @@
 = v4.1.8
 * Invoice Generation and Email Integration for payment gateway
+* Template filtering search in post form
 
 = v4.1.7 (15 July, 2025) =
 * New - Add Sort Order for subscription

@@ -154,9 +154,6 @@ jobs:
       - name: 🧪 Run e2e tests
         env:
           CI: true
-          # Performance optimizations
-          NODE_OPTIONS: "--max-old-space-size=4096"
-          PLAYWRIGHT_BROWSERS_PATH: "~/.cache/ms-playwright"
           # Test environment variables
           BASE_URL: ${{ secrets.QA_BASE_URL }}
           ADMIN_USERNAME: ${{ secrets.QA_ADMIN_USERNAME }}

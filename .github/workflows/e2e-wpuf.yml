@@ -61,7 +61,7 @@ jobs:
           composer i --no-dev -o
           composer update --no-dev -o
           npm i --legacy-peer-deps
-          grunt
+          grunt --force
        
        # Build wp-user-frontend
       - name: Build wpuf-lite
@@ -71,7 +71,7 @@ jobs:
           npm i
           npm run build
           grunt release --force
-          grunt
+          grunt --force
 
       # Install test dependencies with performance optimizations
       - name: Install test dependencies

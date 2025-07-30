@@ -1243,6 +1243,124 @@ span.pro-icon:hover .wpuf-pro-field-tooltip {
 	height: unset !important;
 }
 
+// ==========================================================================
+// Template Modal Styles
+// Target: includes/Admin/template-parts/modal-v4.2.php
+// ==========================================================================
+
+/* Modal Base Styles - High specificity to override admin styles */
+#wpwrap .wpuf-form-template-modal[role="dialog"] {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999999;
+    background-color: #f8fafc;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+
+    /* Modal Show State */
+    &.wpuf-modal-show {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Modal Content Container Animation */
+    .wpuf-relative {
+        transform: scale(0.95);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    &.wpuf-modal-show .wpuf-relative {
+        transform: scale(1);
+    }
+}
+
+/* Body Modal Open State */
+body.wpuf-modal-open {
+    overflow: hidden;
+}
+
+/* Template Modal Components */
+.wpuf-form-template-modal {
+    /* Custom aspect ratio for square cards */
+    .wpuf-aspect-square {
+        aspect-ratio: 1;
+    }
+
+    /* Tailwind gradient utility classes for template cards */
+    .wpuf-from-blue-500 {
+        --tw-gradient-from: #3b82f6;
+        --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(59, 130, 246, 0));
+    }
+
+    .wpuf-to-purple-600 {
+        --tw-gradient-to: #9333ea;
+    }
+
+    .wpuf-bg-gradient-to-br {
+        background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
+    }
+
+    /* Template Items Animation on Load */
+    .wpuf-template-item {
+        animation: wpuf-fadeInUp 0.6s ease-out forwards;
+        opacity: 0;
+        transform: translateY(20px);
+
+        /* Staggered animation delays for template items */
+        &:nth-child(1) { animation-delay: 0.1s; }
+        &:nth-child(2) { animation-delay: 0.2s; }
+        &:nth-child(3) { animation-delay: 0.3s; }
+        &:nth-child(4) { animation-delay: 0.4s; }
+        &:nth-child(5) { animation-delay: 0.5s; }
+        &:nth-child(6) { animation-delay: 0.6s; }
+        &:nth-child(7) { animation-delay: 0.7s; }
+        &:nth-child(8) { animation-delay: 0.8s; }
+    }
+
+    /* Close Button Animation - Better specificity */
+    .wpuf-close-btn {
+        transform: scale(1);
+        transition: transform 0.2s ease-in-out;
+
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+}
+
+/* Fade in up animation keyframes */
+@keyframes wpuf-fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    #wpwrap .wpuf-form-template-modal[role="dialog"] .wpuf-relative {
+        padding: 1rem;
+    }
+
+    .wpuf-form-template-modal .wpuf-template-item {
+        width: calc(50% - 8px);
+    }
+}
+
+@media (max-width: 480px) {
+    .wpuf-form-template-modal .wpuf-template-item {
+        width: 100%;
+    }
+}
+
+// ==========================================================================
+// End Template Modal Styles
+// ==========================================================================
+
 @import "help.less";
 @import "whats-new.less";
 @import "metabox-tabs.less";

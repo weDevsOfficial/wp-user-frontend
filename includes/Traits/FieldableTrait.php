@@ -471,7 +471,7 @@ trait FieldableTrait {
             }
             
             // Check if this is a WooCommerce enabled taxonomy
-            $is_woo_taxonomy = isset( $taxonomy['is_woocommerce'] ) && wpuf_is_checkbox_or_toggle_on( $taxonomy['is_woocommerce'] );
+            $is_woo_taxonomy = isset( $taxonomy['woo_attr'] ) && wpuf_is_checkbox_or_toggle_on( $taxonomy['woo_attr'] );
 
             // Special handling for product categories if WooCommerce is enabled
             if ( $is_woo_taxonomy && 'product_cat' === $taxonomy_name ) {
@@ -566,7 +566,7 @@ trait FieldableTrait {
                 }
                 
                 // For product attributes, add to WooCommerce attributes
-                if ( 'pa_' === substr( $taxonomy_name, 0, 3 ) ) {
+                if ( $is_woo_taxonomy && 'pa_' === substr( $taxonomy_name, 0, 3 ) ) {
                     $woo_attr[$taxonomy_name] = [
                         'name'         => $taxonomy_name,
                         'value'        => '',

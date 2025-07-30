@@ -37,7 +37,7 @@ const config: PlaywrightTestConfig = {
         // Ignore SSL certificate errors for local development
         ignoreHTTPSErrors: true,
 
-        trace: 'retain-on-failure',
+        trace: 'on',
 
         screenshot: 'off',
 

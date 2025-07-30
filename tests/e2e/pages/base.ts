@@ -71,7 +71,8 @@ export class Base {
     async assertionValidate(locator: string) {
         try {
             await this.waitForLoading();
-            await this.waitHelpers.waitForElementReady(locator);
+            const element = this.page.locator(locator);
+            await element.waitFor();
             console.log('\x1b[34m%s\x1b[0m', `✅ Asserted ${locator}`);
             await this.waitForLoading();
             return expect(this.page.locator(locator).isVisible).toBeTruthy();
@@ -85,7 +86,8 @@ export class Base {
     async validateAndClick(locator: string) {
         try {
             await this.waitForLoading();
-            const element = await this.waitHelpers.waitForElementEnabled(locator);
+            const element = this.page.locator(locator);
+            await element.waitFor();
             expect(element.isVisible).toBeTruthy();
             await element.click();
             await this.waitForLoading();
@@ -96,70 +98,12 @@ export class Base {
         }
     }
 
-    // Validate and Click by text
-    async validateAndClickByText(locator: string) {
-        try {
-            await this.waitForLoading();
-            const element = this.page.getByText(locator, { exact: true });
-            await element.waitFor({ state: 'visible' });
-            expect(element.isVisible).toBeTruthy();
-            await element.click();
-            await this.waitForLoading();
-            console.log('\x1b[35m%s\x1b[0m', `✅ Clicked on text: ${locator}`);
-        } catch (error) {
-            console.log('\x1b[31m%s\x1b[0m', `❌ Failed to click on text: ${locator}: ${error}`);
-            throw error;
-        }
-    }
-
-    // Validate and Click any
-    async validateAndClickAny(locator: string) {
-        try {
-            const elements = this.page.locator(locator);
-            const count = await elements.count();
-
-            for (let i = 0; i < count; i++) {
-                const element = elements.nth(i);
-                if (await element.isVisible()) {
-                    await element.click();
-                    console.log('\x1b[35m%s\x1b[0m', `✅ Clicked on visible element: ${locator}`);
-                    return;
-                }
-            }
-
-            throw new Error(`No visible elements found for locator: ${locator}`);
-        } catch (error) {
-            console.log('\x1b[31m%s\x1b[0m', `❌ Failed to click any element: ${locator}: ${error}`);
-            throw error;
-        }
-    }
-
-    // Validate any
-    async validateAny(locator: string) {
-        try {
-            const elements = this.page.locator(locator);
-            const count = await elements.count();
-
-            for (let i = 0; i < count; i++) {
-                const element = elements.nth(i);
-                if (await element.isVisible()) {
-                    console.log('\x1b[34m%s\x1b[0m', `✅ Found visible element: ${locator}`);
-                    return;
-                }
-            }
-
-            throw new Error(`No visible elements found for locator: ${locator}`);
-        } catch (error) {
-            console.log('\x1b[31m%s\x1b[0m', `❌ Failed to validate any element: ${locator}: ${error}`);
-            throw error;
-        }
-    }
-
     // Validate and Fill Strings
     async validateAndFillStrings(locator: string, value: string) {
         try {
             await this.waitForLoading();
-            const element = await this.waitHelpers.waitForElementEnabled(locator);
+            const element = this.page.locator(locator);
+            await element.waitFor();
             expect(element.isVisible).toBeTruthy();
             await element.fill(value);
             await this.waitForLoading();
@@ -174,7 +118,8 @@ export class Base {
     async validateAndFillNumbers(locator: string, value: number) {
         try {
             await this.waitForLoading();
-            const element = await this.waitHelpers.waitForElementEnabled(locator);
+            const element = this.page.locator(locator);
+            await element.waitFor();
             expect(element.isVisible).toBeTruthy();
             await element.fill(value.toString());
             await this.waitForLoading();
@@ -189,7 +134,8 @@ export class Base {
     async validateAndCheckBox(locator: string) {
         try {
             await this.waitForLoading();
-            const element = await this.waitHelpers.waitForElementEnabled(locator);
+            const element = this.page.locator(locator);
+            await element.waitFor();
             expect(element.isVisible).toBeTruthy();
             await element.check();
             await this.waitForLoading();
@@ -217,7 +163,8 @@ export class Base {
     async selectOptionWithLabel(locator: string, label: string) {
         try {
             await this.waitForLoading();
-            const element = await this.waitHelpers.waitForElementEnabled(locator);
+            const element = this.page.locator(locator);
+            await element.waitFor();
             expect(element.isVisible).toBeTruthy();
             await this.page.selectOption(locator, { label: label });
             await this.waitForLoading();
@@ -232,7 +179,8 @@ export class Base {
     async selectOptionWithValue(locator: string, value: string) {
         try {
             await this.waitForLoading();
-            const element = await this.waitHelpers.waitForElementEnabled(locator);
+            const element = this.page.locator(locator);
+            await element.waitFor();
             expect(element.isVisible).toBeTruthy();
             await this.page.selectOption(locator, { value: value });
             await this.waitForLoading();
@@ -251,7 +199,7 @@ export class Base {
     async waitForFormSaved(formSavedLocator: string, saveButtonLocator: string) {
         try {
             let formNotSaved = true;
-            let count = 1;
+            let count = 2;
             while (formNotSaved && count < 3) {
                 try {
                     await this.waitForLoading();
@@ -278,7 +226,9 @@ export class Base {
     async checkElementText(locator: string, expectedText: string) {
         try {
             await this.waitForLoading();
-            const element = await this.waitHelpers.waitForElementText(locator, expectedText);
+            const element = this.page.locator(locator);
+            await element.waitFor();
+            await expect(element).toContainText(expectedText);
             const actualText = await element.innerText();
             console.log('\x1b[32m%s\x1b[0m', "Expected Text: " + expectedText);
             console.log('\x1b[32m%s\x1b[0m', `✅ Element text validated: ${actualText}`);

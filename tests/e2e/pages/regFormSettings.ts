@@ -19,7 +19,6 @@ export class RegFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             // Click on the form
             try {
@@ -34,6 +33,7 @@ export class RegFormSettingsPage extends Base {
             await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
 
             await this.validateAndClick(Selectors.regFormSettings.regSettingsSection.userRoleContainer);
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.userRoleDropdown);
             await this.validateAndClick(Selectors.regFormSettings.regSettingsSection.userRoleOption(role));
             await this.validateAndClick(Selectors.regFormSettings.saveButton);
@@ -92,7 +92,6 @@ export class RegFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
             // Click on the form
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -112,16 +111,35 @@ export class RegFormSettingsPage extends Base {
             await this.validateAndClick(Selectors.regFormSettings.saveButton);
             flag = await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
 
-            // Take full screenshot after form save
-            await this.page.screenshot({ 
-                path: 'screenshots/approvalEnabled.png',
-                fullPage: true 
-            });
+            if (flag == false) {
+                await this.navigateToURL(this.wpufRegFormPage);
+                // Click on the form
+                try {
+                    await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
+                } catch (error) {
+                    await this.navigateToURL(this.wpufRegFormPage);
+                    await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
+                }
+
+                await this.validateAndClick(Selectors.regFormSettings.clickFormEditorSettings);
+
+                await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
+
+                const validateApprovalEnabled = await this.page.locator(Selectors.regFormSettings.regSettingsSection.approvalToggle).isChecked();
+                expect(validateApprovalEnabled).toBeTruthy();
+
+                // Take full screenshot after form save
+                await this.page.screenshot({ 
+                    path: 'screenshots/approvalEnabled.png',
+                    fullPage: true 
+                });
+            }
 
         }
 
         if (flag == false) {
             await new BasicLogoutPage(this.page).logOut();
+            await this.page.waitForTimeout(2000);
         }
     }
 
@@ -133,12 +151,12 @@ export class RegFormSettingsPage extends Base {
         await this.page.fill(Selectors.regFormSettings.inputPassword, userPassword);
         await this.page.fill(Selectors.regFormSettings.inputConfirmPassword, userPassword);
         await this.validateAndClick(Selectors.regFormSettings.submitRegisterButton);
-        await this.page.waitForTimeout(1000);
+        await this.page.waitForTimeout(2000);
         await this.assertionValidate(Selectors.regFormSettings.successMessage);
 
         await this.navigateToURL(this.accountPage);
         const restrictionMessage = await this.page.innerText(Selectors.regFormSettings.wpufMessage);
-        expect(restrictionMessage).toBe('This page is restricted. Please Log in to view this page.');
+        expect.soft(restrictionMessage).toBe('This page is restricted. Please Log in to view this page.');
     }
 
     async validateLoginDenied(userEmail: string, userPassword: string) {
@@ -186,7 +204,6 @@ export class RegFormSettingsPage extends Base {
             await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
 
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -198,6 +215,7 @@ export class RegFormSettingsPage extends Base {
             await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
 
             await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterRegistrationRedirectionContainer);
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.regFormSettings.afterSignUpSettingsSection.afterRegistrationRedirectionDropdown);
             await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterRegistrationRedirectionOption('same'));
 
@@ -218,7 +236,6 @@ export class RegFormSettingsPage extends Base {
         while (flag == true) {
             await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -230,12 +247,14 @@ export class RegFormSettingsPage extends Base {
             await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
 
             await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterRegistrationRedirectionContainer);
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.regFormSettings.afterSignUpSettingsSection.afterRegistrationRedirectionDropdown);
             await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterRegistrationRedirectionOption('page'));
 
-            await this.page.waitForTimeout(200);
+            await this.page.waitForTimeout(500);
 
             await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterRegistrationRedirectionPageContainer);
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.regFormSettings.afterSignUpSettingsSection.afterRegistrationRedirectionPageDropdown);
             await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterRegistrationRedirectionPageOption(pageName));
 
@@ -256,7 +275,6 @@ export class RegFormSettingsPage extends Base {
         while (flag == true) {
             await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -268,6 +286,7 @@ export class RegFormSettingsPage extends Base {
             await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
 
             await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterRegistrationRedirectionContainer);
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.regFormSettings.afterSignUpSettingsSection.afterRegistrationRedirectionDropdown);
             await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterRegistrationRedirectionOption('url'));
 
@@ -291,7 +310,6 @@ export class RegFormSettingsPage extends Base {
             await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
 
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -321,7 +339,6 @@ export class RegFormSettingsPage extends Base {
             await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
 
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -352,7 +369,6 @@ export class RegFormSettingsPage extends Base {
             await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
 
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -364,6 +380,7 @@ export class RegFormSettingsPage extends Base {
             await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
 
             await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterProfileUpdateRedirectionContainer);
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.regFormSettings.afterSignUpSettingsSection.afterProfileUpdateRedirectionDropdown);
             await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterProfileUpdateRedirectionOption('same'));
 
@@ -385,7 +402,6 @@ export class RegFormSettingsPage extends Base {
             await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
 
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -397,12 +413,14 @@ export class RegFormSettingsPage extends Base {
             await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
 
             await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterProfileUpdateRedirectionContainer);
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.regFormSettings.afterSignUpSettingsSection.afterProfileUpdateRedirectionDropdown);
             await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterProfileUpdateRedirectionOption('page'));
 
             await this.page.waitForTimeout(200);
 
             await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterProfileUpdateRedirectionPageContainer);
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.regFormSettings.afterSignUpSettingsSection.afterProfileUpdateRedirectionPageDropdown);
             await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterProfileUpdateRedirectionPageOption(pageName));
 
@@ -424,7 +442,6 @@ export class RegFormSettingsPage extends Base {
             await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
 
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -436,6 +453,7 @@ export class RegFormSettingsPage extends Base {
             await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
 
             await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterProfileUpdateRedirectionContainer);
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.regFormSettings.afterSignUpSettingsSection.afterProfileUpdateRedirectionDropdown);
             await this.validateAndClick(Selectors.regFormSettings.afterSignUpSettingsSection.afterProfileUpdateRedirectionOption('url'));
 
@@ -459,7 +477,6 @@ export class RegFormSettingsPage extends Base {
             await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
 
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -490,7 +507,6 @@ export class RegFormSettingsPage extends Base {
             await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
 
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -658,7 +674,6 @@ export class RegFormSettingsPage extends Base {
             await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
 
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -691,7 +706,6 @@ export class RegFormSettingsPage extends Base {
 
         while (flag == true) {
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -718,7 +732,6 @@ export class RegFormSettingsPage extends Base {
 
         while (flag == true) {
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -746,7 +759,6 @@ export class RegFormSettingsPage extends Base {
 
         while (flag == true) {
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -777,7 +789,6 @@ export class RegFormSettingsPage extends Base {
         while (flag == true) {
             // Go to form edit page
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             // Click on the form
             try {
@@ -824,7 +835,6 @@ export class RegFormSettingsPage extends Base {
             await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
 
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -852,7 +862,6 @@ export class RegFormSettingsPage extends Base {
 
         while (flag == true) {
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -880,7 +889,6 @@ export class RegFormSettingsPage extends Base {
 
         while (flag == true) {
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -909,7 +917,6 @@ export class RegFormSettingsPage extends Base {
 
         while (flag == true) {
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -947,7 +954,6 @@ export class RegFormSettingsPage extends Base {
 
         while (flag == true) {
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -979,7 +985,6 @@ export class RegFormSettingsPage extends Base {
         while (flag == true) {
 
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -1007,7 +1012,6 @@ export class RegFormSettingsPage extends Base {
 
         while (flag == true) {
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -1035,7 +1039,6 @@ export class RegFormSettingsPage extends Base {
 
         while (flag == true) {
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -1166,7 +1169,6 @@ export class RegFormSettingsPage extends Base {
 
         while (flag == true) {
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -1231,7 +1233,6 @@ export class RegFormSettingsPage extends Base {
 
         while (flag == true) {
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -1263,7 +1264,6 @@ export class RegFormSettingsPage extends Base {
 
         while (flag == true) {
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -1288,6 +1288,7 @@ export class RegFormSettingsPage extends Base {
             }
 
             await this.validateAndClick(Selectors.regFormSettings.advancedSettingsSection.multiStepTypeContainer);
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.regFormSettings.advancedSettingsSection.multiStepTypeDropdown);
             await this.validateAndClick(Selectors.regFormSettings.advancedSettingsSection.multiStepTypeOption('progressive'));
 
@@ -1332,7 +1333,6 @@ export class RegFormSettingsPage extends Base {
         while (flag == true) {
             await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));
@@ -1357,6 +1357,7 @@ export class RegFormSettingsPage extends Base {
             }
 
             await this.validateAndClick(Selectors.regFormSettings.advancedSettingsSection.multiStepTypeContainer);
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.regFormSettings.advancedSettingsSection.multiStepTypeDropdown);
             await this.validateAndClick(Selectors.regFormSettings.advancedSettingsSection.multiStepTypeOption('step_by_step'));
 
@@ -1381,7 +1382,6 @@ export class RegFormSettingsPage extends Base {
         while (flag == true) {
             await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
             await this.navigateToURL(this.wpufRegFormPage);
-            await this.page.reload();
 
             try {
                 await this.validateAndClick(Selectors.regFormSettings.clickForm(formName));

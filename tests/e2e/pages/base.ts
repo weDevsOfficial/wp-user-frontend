@@ -89,7 +89,7 @@ export class Base {
             expect(element.isVisible).toBeTruthy();
             await element.click();
             await this.waitForLoading();
-            // console.log('\x1b[35m%s\x1b[0m', `✅ Clicked on ${locator}`);
+            console.log('\x1b[35m%s\x1b[0m', `✅ Clicked on ${locator}`);
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to click on ${locator}: ${error}`);
             throw error;
@@ -105,7 +105,7 @@ export class Base {
             expect(element.isVisible).toBeTruthy();
             await element.click();
             await this.waitForLoading();
-            // console.log('\x1b[35m%s\x1b[0m', `✅ Clicked on text: ${locator}`);
+            console.log('\x1b[35m%s\x1b[0m', `✅ Clicked on text: ${locator}`);
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to click on text: ${locator}: ${error}`);
             throw error;
@@ -122,7 +122,7 @@ export class Base {
                 const element = elements.nth(i);
                 if (await element.isVisible()) {
                     await element.click();
-                    // console.log('\x1b[35m%s\x1b[0m', `✅ Clicked on visible element: ${locator}`);
+                    console.log('\x1b[35m%s\x1b[0m', `✅ Clicked on visible element: ${locator}`);
                     return;
                 }
             }
@@ -143,7 +143,7 @@ export class Base {
             for (let i = 0; i < count; i++) {
                 const element = elements.nth(i);
                 if (await element.isVisible()) {
-                    //console.log('\x1b[34m%s\x1b[0m', `✅ Found visible element: ${locator}`);
+                    console.log('\x1b[34m%s\x1b[0m', `✅ Found visible element: ${locator}`);
                     return;
                 }
             }
@@ -163,7 +163,7 @@ export class Base {
             expect(element.isVisible).toBeTruthy();
             await element.fill(value);
             await this.waitForLoading();
-            //console.log('\x1b[35m%s\x1b[0m', `✅ Filled ${locator} with ${value}`);
+            console.log('\x1b[35m%s\x1b[0m', `✅ Filled ${locator} with ${value}`);
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to fill ${locator} with ${value}: ${error}`);
             throw error;
@@ -178,7 +178,7 @@ export class Base {
             expect(element.isVisible).toBeTruthy();
             await element.fill(value.toString());
             await this.waitForLoading();
-            //console.log('\x1b[35m%s\x1b[0m', `✅ Filled ${locator} with ${value}`);
+            console.log('\x1b[35m%s\x1b[0m', `✅ Filled ${locator} with ${value}`);
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to fill ${locator} with ${value}: ${error}`);
             throw error;
@@ -193,7 +193,7 @@ export class Base {
             expect(element.isVisible).toBeTruthy();
             await element.check();
             await this.waitForLoading();
-            //console.log('\x1b[35m%s\x1b[0m', `✅ Checked ${locator}`);
+            console.log('\x1b[35m%s\x1b[0m', `✅ Checked ${locator}`);
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to check ${locator}: ${error}`);
             throw error;
@@ -206,7 +206,7 @@ export class Base {
             await this.waitForLoading();
             expect(matchWithToast).toContain(extractedToast);
             await this.waitForLoading();
-            //console.log('\x1b[32m%s\x1b[0m', `✅ Toast notification matched: "${extractedToast}"`);
+            console.log('\x1b[32m%s\x1b[0m', `✅ Toast notification matched: "${extractedToast}"`);
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Toast notification mismatch: "${extractedToast}" not found in "${matchWithToast}": ${error}`);
             throw error;
@@ -221,7 +221,7 @@ export class Base {
             expect(element.isVisible).toBeTruthy();
             await this.page.selectOption(locator, { label: label });
             await this.waitForLoading();
-            //console.log('\x1b[33m%s\x1b[0m', `✅ Selected ${locator} with ${label}`);
+            console.log('\x1b[33m%s\x1b[0m', `✅ Selected ${locator} with ${label}`);
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to select ${locator} with label ${label}: ${error}`);
             throw error;
@@ -236,7 +236,7 @@ export class Base {
             expect(element.isVisible).toBeTruthy();
             await this.page.selectOption(locator, { value: value });
             await this.waitForLoading();
-            //console.log('\x1b[33m%s\x1b[0m', `✅ Selected ${locator} with ${value}`);
+            console.log('\x1b[33m%s\x1b[0m', `✅ Selected ${locator} with ${value}`);
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to select ${locator} with value ${value}: ${error}`);
             throw error;
@@ -281,7 +281,7 @@ export class Base {
             const element = await this.waitHelpers.waitForElementText(locator, expectedText);
             const actualText = await element.innerText();
             console.log('\x1b[32m%s\x1b[0m', "Expected Text: " + expectedText);
-            //console.log('\x1b[32m%s\x1b[0m', `✅ Element text validated: ${actualText}`);
+            console.log('\x1b[32m%s\x1b[0m', `✅ Element text validated: ${actualText}`);
             await this.waitForLoading();
             return true;
         } catch (error) {

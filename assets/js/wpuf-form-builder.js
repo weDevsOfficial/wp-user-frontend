@@ -538,7 +538,6 @@
             post_title_editing: false,
             isDirty: false,
             shortcodeCopied: false,
-            validation_error_msg: '',
             logoUrl: wpuf_form_builder.asset_url + '/images/wpuf-icon-circle.svg',
             settings_titles: wpuf_form_builder.settings_titles,
             settings_items: wpuf_form_builder.settings_items,

@@ -5286,14 +5286,13 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
             'fallback_ppp_cost'        => [
                 'label' => __( 'Cost for each additional post after pack limit is reached', 'wp-user-frontend' ),
                 'type'  => 'number',
-                'required' => true,
                 'help_text' => __( 'This field is required when Pay-per-post billing when limit exceeds is enabled.', 'wp-user-frontend' ),
             ],
             'pay_per_post_cost'        => [
                 'label'     => __( 'Charge for each post', 'wp-user-frontend' ),
                 'type'      => 'number',
                 'help_text' => __(
-                    'Set a fee for each post submission', 'wp-user-frontend'
+                    'Set a fee for each post submission. This field is required when Pay as you post is selected.', 'wp-user-frontend'
                 ),
             ],
             'ppp_payment_success_page' => [

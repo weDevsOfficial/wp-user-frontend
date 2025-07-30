@@ -185,11 +185,6 @@ export class SettingsSetupPage extends Base {
 
     //Plugin Activate - Lite
     async activateWPUFLite() {
-        // Take full screenshot after form save
-        await this.page.screenshot({
-            path: 'screenshots/activateWPUFLite.png',
-            fullPage: true 
-        });
         
         const ifWPUFLite = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.availableWPUFPluginLite);
         console.log(ifWPUFLite);

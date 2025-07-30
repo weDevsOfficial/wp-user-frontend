@@ -238,10 +238,10 @@ export class Base {
         try {
             let formNotSaved = true;
             let count = 1;
-            while (formNotSaved && count < 3) {
+            while (formNotSaved && count < 2) {
                 try {
                     await this.waitForLoading();
-                    await this.page.waitForSelector(formSavedLocator, { timeout: 2000 });
+                    await this.page.locator(formSavedLocator).waitFor({ timeout: 5000 });
                     await this.waitForLoading();
                     formNotSaved = false;
                 } catch (error) {

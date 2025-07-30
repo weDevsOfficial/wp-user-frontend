@@ -187,15 +187,6 @@ jobs:
           path: tests/e2e/playwright-report
           retention-days: 1
 
-      # ✅ Upload traces for all runs (always)
-      - name: Upload Traces (All Runs)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-traces
-          path: tests/e2e/test-results
-          retention-days: 1
-
       # Send Email Report if passed
       - name: Send Test Report on email (Passed)
         if: success()

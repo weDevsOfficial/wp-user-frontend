@@ -129,12 +129,6 @@ export class RegFormSettingsPage extends Base {
                 if(validateApprovalEnabled == false) {
                     flag = true;
                 }
-
-                // Take full screenshot after form save
-                await this.page.screenshot({ 
-                    path: 'screenshots/approvalEnabled.png',
-                    fullPage: true 
-                });
             }
 
         }

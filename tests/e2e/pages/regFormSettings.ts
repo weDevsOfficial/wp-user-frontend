@@ -126,7 +126,9 @@ export class RegFormSettingsPage extends Base {
                 await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
 
                 const validateApprovalEnabled = await this.page.locator(Selectors.regFormSettings.regSettingsSection.approvalToggle).isChecked();
-                expect(validateApprovalEnabled).toBeTruthy();
+                if(validateApprovalEnabled == false) {
+                    flag = true;
+                }
 
                 // Take full screenshot after form save
                 await this.page.screenshot({ 

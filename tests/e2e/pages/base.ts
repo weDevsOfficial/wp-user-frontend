@@ -59,7 +59,7 @@ export class Base {
             await this.waitForLoading();
             await this.page.goto(url);
             await this.waitForLoading();
-            // console.log('\x1b[34m%s\x1b[0m', `✅ Navigated to ${url}`);
+            console.log('\x1b[34m%s\x1b[0m', `✅ Navigated to ${url}`);
             return true;
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to navigate to ${url}: ${error}`);
@@ -72,7 +72,7 @@ export class Base {
         try {
             await this.waitForLoading();
             await this.waitHelpers.waitForElementReady(locator);
-            // console.log('\x1b[34m%s\x1b[0m', `✅ Asserted ${locator}`);
+            console.log('\x1b[34m%s\x1b[0m', `✅ Asserted ${locator}`);
             await this.waitForLoading();
             return expect(this.page.locator(locator).isVisible).toBeTruthy();
         } catch (error) {

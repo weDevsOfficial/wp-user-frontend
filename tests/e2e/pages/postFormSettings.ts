@@ -76,6 +76,7 @@ export class PostFormSettingsPage extends Base {
             // Open the dropdown by clicking the container
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postTypeContainer);
 
+            await this.page.waitForTimeout(500);
             // Wait for dropdown to be visible
             await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postTypeDropdown);
 
@@ -154,7 +155,10 @@ export class PostFormSettingsPage extends Base {
 
             // Open the dropdown by clicking the container
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postTypeContainer);
+            
 
+            
+            await this.page.waitForTimeout(500);
             // Wait for dropdown to be visible
             await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postTypeDropdown);
 
@@ -190,8 +194,8 @@ export class PostFormSettingsPage extends Base {
                 await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
                 // Open the dropdown by clicking the container
                 await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.defaultCategoryContainer);
-                await this.page.waitForTimeout(2000);
 
+                await this.page.waitForTimeout(500);
                 // Wait for dropdown to be visible
                 await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.defaultCategoryDropdown);
 
@@ -256,7 +260,8 @@ export class PostFormSettingsPage extends Base {
 
             // Open the dropdown by clicking the container
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionContainer);
-
+     
+            await this.page.waitForTimeout(500);
             // Wait for dropdown to be visible
             await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown);
 
@@ -297,6 +302,7 @@ export class PostFormSettingsPage extends Base {
             // Open the dropdown by clicking the container
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionContainer);
 
+            await this.page.waitForTimeout(500);
             // Wait for dropdown to be visible
             await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown);
 
@@ -361,6 +367,7 @@ export class PostFormSettingsPage extends Base {
             // Select redirect to page
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionContainer);
 
+            await this.page.waitForTimeout(500);
             // Select the page
             await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown);
 
@@ -371,6 +378,7 @@ export class PostFormSettingsPage extends Base {
 
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionPageContainer);
 
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postRedirectionPageDropdown);
 
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionPageOption(text));
@@ -408,6 +416,7 @@ export class PostFormSettingsPage extends Base {
             // Select redirect to URL
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postRedirectionContainer);
 
+            await this.page.waitForTimeout(500);
             // Enter the URL
             await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postRedirectionDropdown);
 
@@ -534,6 +543,8 @@ export class PostFormSettingsPage extends Base {
             await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.beforePostSettingsHeader);
 
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postSubmissionStatusContainer);
+            
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postSubmissionStatusDropdown);
 
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postSubmissionStatusOption(value));
@@ -776,6 +787,8 @@ export class PostFormSettingsPage extends Base {
             const isChecked = await this.page.locator(Selectors.postFormSettings.postSettingsSection.enableMultiStepCheckbox).isChecked();
             if (isChecked) {
                 await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.progressbarTypeContainer);
+                
+                await this.page.waitForTimeout(500);
                 await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.progressbarTypeDropdown);
 
                 await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.progressbarTypeOption('step_by_step'));
@@ -859,6 +872,7 @@ export class PostFormSettingsPage extends Base {
 
             // Click on post update status dropdown
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.postUpdateStatusContainer);
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.postUpdateStatusDropdown);
 
             // Select the status
@@ -1007,7 +1021,7 @@ export class PostFormSettingsPage extends Base {
         await this.page.hover(Selectors.postFormSettings.quickEditButtonContainer);
         await this.validateAndClick(Selectors.postFormSettings.quickEditButton);
 
-
+        await this.page.waitForTimeout(500);
         await this.page.selectOption(Selectors.postFormSettings.statusDropdown, 'publish');
         await this.validateAndClick(Selectors.postFormSettings.updateStatus);
         await this.page.waitForTimeout(1000);
@@ -1071,6 +1085,8 @@ export class PostFormSettingsPage extends Base {
 
             // Click on successful redirection dropdown
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionContainer);
+
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown);
 
             // Select "updated post"
@@ -1103,6 +1119,8 @@ export class PostFormSettingsPage extends Base {
 
             // Click on successful redirection dropdown
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionContainer);
+
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown);
 
             // Select "same page"
@@ -1135,6 +1153,8 @@ export class PostFormSettingsPage extends Base {
 
             // Click on successful redirection dropdown
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionContainer);
+
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown);
 
             // Select "to a page"
@@ -1144,6 +1164,8 @@ export class PostFormSettingsPage extends Base {
 
             // Select the specific page
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionPageContainer);
+
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionPageDropdown);
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionPageOption(pageName));
 
@@ -1174,6 +1196,7 @@ export class PostFormSettingsPage extends Base {
 
             // Click on successful redirection dropdown
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionContainer);
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.updatePostRedirectionDropdown);
 
             // Select "to a custom URL"
@@ -1309,6 +1332,7 @@ export class PostFormSettingsPage extends Base {
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.paymentEnableToggle);
 
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.paymentOptionsContainer);
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.paymentOptionsDropdown);
 
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.payPerPostOption('enable_pay_per_post'));
@@ -1316,6 +1340,7 @@ export class PostFormSettingsPage extends Base {
             await this.validateAndFillStrings(Selectors.postFormSettings.postSettingsSection.payPerPostCostContainer, cost);
 
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.paymentSuccessPageContainer);
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.paymentSuccessPageDropdown);
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.paymentSuccessPageOption(successPage));
 
@@ -2470,6 +2495,7 @@ export class PostFormSettingsPage extends Base {
             await this.page.waitForTimeout(300);
 
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.roleSelectionContainer);
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.roleSelectionDropdown);
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.roleSelectionOption('subscriber'));
 
@@ -2517,6 +2543,8 @@ export class PostFormSettingsPage extends Base {
             await this.page.waitForTimeout(300);
 
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.roleSelectionContainer);
+            
+            await this.page.waitForTimeout(500);
             await this.assertionValidate(Selectors.postFormSettings.postSettingsSection.roleSelectionDropdown);
             await this.validateAndClick(Selectors.postFormSettings.postSettingsSection.roleSelectionOption('administrator'));
 

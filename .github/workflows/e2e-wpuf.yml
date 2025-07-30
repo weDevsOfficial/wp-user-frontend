@@ -114,10 +114,10 @@ jobs:
               unzip dokan-lite.latest-stable.zip
               rm dokan-lite.latest-stable.zip
 
-              # Download and extract The Events Calendar
-              wget https://downloads.wordpress.org/plugin/the-events-calendar.latest-stable.zip
-              unzip the-events-calendar.latest-stable.zip
-              rm the-events-calendar.latest-stable.zip
+              # # Download and extract The Events Calendar
+              # wget https://downloads.wordpress.org/plugin/the-events-calendar.latest-stable.zip
+              # unzip the-events-calendar.latest-stable.zip
+              # rm the-events-calendar.latest-stable.zip
 
       # Start wordpress environment
       - name: Start WordPress Env and Show URL
@@ -183,7 +183,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-html-report
+          name: playwright-report
           path: tests/e2e/playwright-report
           retention-days: 1
 
@@ -192,8 +192,17 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-failure-artifacts
+          name: failure-results
           path: tests/e2e/test-results
+          retention-days: 1
+
+      # ✅ Upload custom screenshots (always)
+      - name: Upload Custom Screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: tests/e2e/screenshots
           retention-days: 1
 
 

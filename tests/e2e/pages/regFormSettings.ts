@@ -105,12 +105,18 @@ export class RegFormSettingsPage extends Base {
 
             await this.assertionValidate(Selectors.regFormSettings.regSettingsSection.regSettingsHeader);
 
-            const isApprovalEnabled = await this.page.isChecked(Selectors.regFormSettings.regSettingsSection.approvalToggle);
+            const isApprovalEnabled = await this.page.locator(Selectors.regFormSettings.regSettingsSection.approvalToggle).isChecked();
             if (!isApprovalEnabled) {
                 await this.validateAndClick(Selectors.regFormSettings.regSettingsSection.approvalToggle);
             }
             await this.validateAndClick(Selectors.regFormSettings.saveButton);
             flag = await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
+
+            // Take full screenshot after form save
+            await this.page.screenshot({ 
+                path: 'screenshots/approvalEnabled.png',
+                fullPage: true 
+            });
 
         }
 

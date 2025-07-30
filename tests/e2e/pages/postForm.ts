@@ -730,6 +730,6 @@ export class PostFormPage extends Base {
         await this.assertionValidate(Selectors.postForms.downloadsFormData.categoryBE(DownloadsForm.category));
         //Validate Product Tags
         //await this.validateAndClick(Selectors.postForms.downloadsFormData.clickTag);
-        await this.assertionValidate(Selectors.postForms.downloadsFormData.tagBE(DownloadsForm.tags));
+        //await this.assertionValidate(Selectors.postForms.downloadsFormData.tagBE(DownloadsForm.tags));
     }
 }

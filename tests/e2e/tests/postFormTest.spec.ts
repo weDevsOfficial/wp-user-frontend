@@ -204,6 +204,15 @@ test.describe('Post-Forms', () => {
 
         //Save
         await FieldAdd.saveForm_Common();
+
+        // Take full screenshot after form save (only if test fails)
+        await page.screenshot({ 
+            path: 'screenshots/productForm.png',
+            fullPage: true 
+        });
+
+        await page.waitForTimeout(5000);
+        
         //Validate
         productShortCode = await FieldAdd.validatePostFormCreated('WooCommerce Product');
         console.log('Product Short Code: ' + productShortCode);
@@ -253,6 +262,14 @@ test.describe('Post-Forms', () => {
 
         //Save
         await FieldAdd.saveForm_Common();
+
+        // Take full screenshot after form save
+        await page.screenshot({ 
+            path: 'screenshots/downloadsForm.png',
+            fullPage: true 
+        });
+        
+        await page.waitForTimeout(5000);
         //Validate
         downloadsShortCode = await FieldAdd.validatePostFormCreated('EDD Download');
         console.log('Downloads Short Code: ' + downloadsShortCode);

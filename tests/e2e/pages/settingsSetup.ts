@@ -185,15 +185,12 @@ export class SettingsSetupPage extends Base {
 
     //Plugin Activate - Lite
     async activateWPUFLite() {
-        // Take screenshot and attach to test reportAdd commentMore actions
-        // const screenshot = await this.page.screenshot({ 
-        //     fullPage: true,
-        //     path: 'plugins-page-wpuf-lite-check.png'
-        // });
-        // await test.info().attach('Plugins Page - WPUF Lite Check', {
-        //     body: screenshot,
-        //     contentType: 'image/png'
-        // });
+        // Take full screenshot after form save
+        await this.page.screenshot({
+            path: 'screenshots/activateWPUFLite.png',
+            fullPage: true 
+        });
+        
         const ifWPUFLite = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.availableWPUFPluginLite);
         console.log(ifWPUFLite);
         const dialogHandler = async (dialog: Dialog) => {

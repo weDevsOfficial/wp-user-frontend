@@ -201,7 +201,7 @@ test.describe('Reg Form Settings Tests', () => {
     test('RFS0017 : Admin is validating after registration redirection to same page', { tag: ['@Pro'] }, async () => {
         userEmail = faker.internet.email();
         userPassword = userEmail;
-        const expectedMessage = 'Registration successful';
+        const expectedMessage = 'Registration successful. Please wait for admin approval';
         const regFormSettings = new RegFormSettingsPage(page);
         await regFormSettings.validateAfterRegistrationRedirectionToSamePage(userEmail, userPassword, expectedMessage);
     });

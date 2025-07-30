@@ -87,7 +87,7 @@ class Payment {
 
             return;
         }
-        if ( $action === 'wpuf_pay' && $pay_page === 0 ) {
+        if ( $action === 'wpuf_pay' && 0 === intval( $pay_page ) ) {
             esc_html_e( 'Please select your payment page from admin panel', 'wp-user-frontend' );
 
             return;
@@ -530,11 +530,12 @@ class Payment {
 
     /**
      * Send payment confirmation mail to user
+     * 
+     * @since WPUF_SINCE
      *
      * @param array $info payment information
-     * @param bool $recurring whether this is a recurring payment
      */
-    public function payment_notify_user( $info, $recurring = false ) {
+    public function payment_notify_user( $info ) {
         // Validate user_id exists and is numeric
         if ( ! isset( $info['user_id'] ) || ! is_numeric( $info['user_id'] ) ) {
             return;
@@ -590,7 +591,7 @@ class Payment {
      */
     private function determine_user_payment_type( $info ) {
         // Check if it's a trial payment (zero cost)
-        if ( isset( $info['cost'] ) && floatval( $info['cost'] ) == 0 ) {
+        if ( isset( $info['cost'] ) && 0 === intval( $info['cost'] ) ) {
             return 'trial';
         }
 
@@ -720,12 +721,12 @@ class Payment {
 
         // Prepare invoice data
         $inv_u_id = $info['user_id'];
-        $inv_status = isset( $info['status'] ) ? $info['status'] : 'completed';
-        $inv_subtotal = isset( $info['subtotal'] ) ? $info['subtotal'] : $info['cost'];
+        $inv_status = ! empty( $info['status'] ) ? $info['status'] : 'completed';
+        $inv_subtotal = ! empty( $info['subtotal'] ) ? $info['subtotal'] : $info['cost'];
         $inv_cost = $info['cost'];
-        $inv_id = isset( $info['transaction_id'] ) ? $info['transaction_id'] : uniqid();
-        $inv_date = isset( $info['created'] ) ? date( 'Y-m-d', strtotime( $info['created'] ) ) : date( 'Y-m-d' );
-        $inv_payment_type = isset( $info['payment_type'] ) ? $info['payment_type'] : 'Unknown';
+        $inv_id = ! empty( $info['transaction_id'] ) ? $info['transaction_id'] : uniqid();
+        $inv_date = ! empty( $info['created'] ) ? wp_date( 'Y-m-d', strtotime( $info['created'] ) ) : wp_date( 'Y-m-d' );
+        $inv_payment_type = ! empty( $info['payment_type'] ) ? $info['payment_type'] : 'Unknown';
 
         $currency = wpuf_get_option( 'currency', 'wpuf_payment', 'USD' );
 
@@ -898,14 +899,14 @@ class Payment {
         $payment_type = isset( $data['payment_type'] ) ? $data['payment_type'] : '';
 
         // Define replacements
-        $replacements = array(
+        $replacements = [
             '{username}'           => $username,
             '{user_email}'         => $user_email,
             '{display_name}'       => $display_name,
             '{invoice_id}'         => $invoice_id,
             '{payment_amount}'     => $payment_amount,
             '{payment_type}'       => $payment_type,
-        );
+        ];
 
         // Replace placeholders
         foreach ( $replacements as $placeholder => $value ) {

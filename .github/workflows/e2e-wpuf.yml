@@ -169,26 +169,33 @@ jobs:
         working-directory: tests/e2e
         run: |
           mkdir -p test-results
-          npm run test:sharded:ci
+          npm run test:ci
         # continue-on-error: true
 
       # Generate and post advanced test summary
       - name: Generate and post advanced test summary
         if: always()
         working-directory: tests/e2e
-        run: npm run sharded-summary
+        run: npm run generate-summary
 
-      # Archive Playwright artifacts (screenshots, HTML snapshots, videos)
-      - name: Archive playwright artifacts (screenshots, HTML snapshots, videos)
-        uses: actions/upload-artifact@v4
+      # ✅ Upload Playwright HTML report (always)
+      - name: Upload Playwright HTML Report
         if: always()
+        uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
-          path: |
-            tests/e2e/playwright-report
-            tests/e2e/test-results
-          if-no-files-found: warn
-          retention-days: 3
+          name: playwright-html-report
+          path: tests/e2e/playwright-report
+          retention-days: 1
+
+      # ✅ Upload failure debug artifacts (screenshots, videos, traces)
+      - name: Upload Failure Artifacts (Videos, Traces, Screenshots)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-failure-artifacts
+          path: tests/e2e/test-results
+          retention-days: 1
+
 
       # Send Email Report if passed
       - name: Send Test Report on email (Passed)
@@ -206,7 +213,7 @@ jobs:
             Test was conducted on WPUF plugin.
             
             To View full test run, click on the following link: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          to: rubaiyat.mohammad@wedevs.com, nurul.ratul@wedevs.com, anik@wedevs.com
+          to: rubaiyat.mohammad@wedevs.com, anik@wedevs.com
           from: wedevs.testing1@gmail.com
 
       # Send Email Report if failed

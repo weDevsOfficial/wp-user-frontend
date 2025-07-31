@@ -5286,14 +5286,13 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
             'fallback_ppp_cost'        => [
                 'label' => __( 'Cost for each additional post after pack limit is reached', 'wp-user-frontend' ),
                 'type'  => 'number',
-                'required' => true,
                 'help_text' => __( 'This field is required when Pay-per-post billing when limit exceeds is enabled.', 'wp-user-frontend' ),
             ],
             'pay_per_post_cost'        => [
                 'label'     => __( 'Charge for each post', 'wp-user-frontend' ),
                 'type'      => 'number',
                 'help_text' => __(
-                    'Set a fee for each post submission', 'wp-user-frontend'
+                    'Set a fee for each post submission. This field is required when Pay as you post is selected.', 'wp-user-frontend'
                 ),
             ],
             'ppp_payment_success_page' => [
@@ -5539,4 +5538,67 @@ function wpuf_get_forms_counts_with_status( $post_type = 'wpuf_forms' ) {
     }
 
     return $status_count;
+}
+
+/**
+ * Fallback function for profile photo allowed extensions
+ * Only used when Pro version is not active
+ *
+ * @since WPUF_SINCE
+ *
+ * @return array
+ */
+if ( ! function_exists( 'wpuf_field_profile_photo_allowed_extensions' ) ) {
+    function wpuf_field_profile_photo_allowed_extensions() {
+        $allowed_extensions = [
+            'jpg'  => __( 'JPG', 'wpuf-pro' ),
+            'jpeg' => __( 'JPEG', 'wpuf-pro' ),
+            'png'  => __( 'PNG', 'wpuf-pro' ),
+            'gif'  => __( 'GIF', 'wpuf-pro' ),
+        ];
+
+        /**
+         * Filter allowed profile photo extensions
+         *
+         * @since WPUF_PRO
+         *
+         * @param array $allowed_extensions Array of extension => label pairs
+         */
+        return apply_filters( 'wpuf_field_profile_photo_allowed_extensions', $allowed_extensions );
+    }
+}
+
+/**
+ * Fallback function for profile photo allowed MIME types
+ * Only used when Pro version is not active
+ *
+ * @since WPUF_SINCE
+ *
+ * @return array
+ */
+if ( ! function_exists( 'wpuf_field_profile_photo_allowed_mimes' ) ) {
+    function wpuf_field_profile_photo_allowed_mimes() {
+        // Get WordPress core allowed mime types for consistency
+        $wp_mimes = get_allowed_mime_types();
+
+        // Define our basic allowed image types
+        $allowed_mimes = [
+            'image/jpeg',
+            'image/jpg',
+            'image/png',
+            'image/gif',
+        ];
+
+        // Only include mimes that are allowed by WordPress
+        $profile_photo_mimes = array_intersect( $allowed_mimes, $wp_mimes );
+
+        /**
+         * Filter allowed profile photo MIME types
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array $profile_photo_mimes Array of allowed MIME types for profile photos
+         */
+        return apply_filters( 'wpuf_field_profile_photo_allowed_mimes', $profile_photo_mimes );
+    }
 }

@@ -11,6 +11,8 @@
 
 Frontend post, content restriction, user login & registration, subscription & membership, forms, user directory & profile builder for your website.
 
+**[Try Inside WordPress Playground](https://playground.wordpress.net/?mode=seamless#{%22landingPage%22:%22/wp-admin/%22,%22preferredVersions%22:{%22php%22:%227.4%22,%22wp%22:%225.9%22},%22plugins%22:[%22wp-user-frontend%22],%22steps%22:[{%22step%22:%22login%22,%22username%22:%22admin%22}]})**
+
 ## Description ##
 
 WP User Frontend makes the frontend better for you! It includes frontend dashboard, frontend editor, publishing, and uploader for WordPress user profile, post submissions, and memberships.

@@ -78,7 +78,7 @@ export const Selectors = {
             // PostFormPage
             clickPostFormMenuOption: '//h3[normalize-space(text())="Post Forms"]',
             clickRegFormMenuOption: '//h3[normalize-space()="Registration Forms"]',
-            wpufPostFormCheckAddButton: ' //a[contains(text(),"Add New")]',
+            wpufPostFormCheckAddButton: ' //a[contains(@class,"new-wpuf-form")]',
             postFormsPageFormTitleCheck: '//a[@class="row-title"][1]',
             noFormMsg: '//h2[normalize-space()="No Post Forms Created Yet"]',
             formTitleCheck: (formName:string) => `//span[normalize-space(text())='${formName}']`,
@@ -1041,8 +1041,8 @@ export const Selectors = {
         checkPostTitle: (title: string) => `//h1[normalize-space(text())='${title}']`,
         checkSuccessMessage: '//div[@class="wpuf-success"]',
         checkPageTitle: (title: string) => `//h1[normalize-space(text())='${title}']`,
-        postTitleColumn: '//tbody//tr[1]//td[1]',
-        postStatusColumn: '//tbody//tr[1]//td[2]//span[1]',
+        postTitleColumn: (title: string, a: string) => `//td${a}[normalize-space(text())="${title}"]`,
+        postStatusColumn: (title:string, status: string, a: string, b: string) => `//td${a}[normalize-space(text())="${title}"]//..${b}//span[normalize-space(text())="${status}"]`,
         saveDraftButton: '//a[normalize-space(text())="Save Draft"]',
         draftSavedAlert: '//span[@class="wpuf-draft-saved"]',
         multiStepProgressbar: '//div[normalize-space(text())="Step Start (100%)"]',
@@ -1165,7 +1165,7 @@ export const Selectors = {
 
         // Validation Messages
         messages: {
-            formSaved: '//div[normalize-space(text())="Saved form data"]',
+            formSaved: '(//div[normalize-space(text())="Saved form data"])[1]',
         },
 
         // Notification Settings Section

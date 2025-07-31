@@ -93,8 +93,7 @@ export class SettingsSetupPage extends Base {
         //ASSERTION > Check if-VALID
         const availableText = await this.page.isVisible(Selectors.settingsSetup.pluginVisit.clickPostFormMenuOption);
         if (availableText == true) {
-            const checkText = await this.page.innerText(Selectors.settingsSetup.pluginVisit.wpufPostFormCheckAddButton);
-            expect(checkText).toContain('Add New');
+            await this.checkElementText(Selectors.settingsSetup.pluginVisit.wpufPostFormCheckAddButton, 'Add New');
         }
     }
 
@@ -110,8 +109,7 @@ export class SettingsSetupPage extends Base {
         //ASSERTION > Check if-VALID
         const availableText = await this.page.isVisible(Selectors.settingsSetup.pluginVisit.clickPostFormMenuOption);
         if (availableText == true) {
-            const checkText = await this.page.innerText(Selectors.settingsSetup.pluginVisit.wpufPostFormCheckAddButton);
-            expect(checkText).toContain('Add New');
+            await this.checkElementText(Selectors.settingsSetup.pluginVisit.wpufPostFormCheckAddButton, 'Add New');
             expect(this.page.locator(Selectors.settingsSetup.pluginVisit.noFormMsg)).not.toBeVisible();
             await this.assertionValidate(Selectors.settingsSetup.pluginVisit.formTitleCheck('Sample Form'));
         }
@@ -127,8 +125,7 @@ export class SettingsSetupPage extends Base {
         //ASSERTION > Check if-VALID
         const availableText = await this.page.isVisible(Selectors.settingsSetup.pluginVisit.clickRegFormMenuOption);
         if (availableText == true) {
-            const checkText = await this.page.innerText(Selectors.settingsSetup.pluginVisit.wpufPostFormCheckAddButton);
-            expect(checkText).toContain('Add New');
+            await this.checkElementText(Selectors.settingsSetup.pluginVisit.wpufPostFormCheckAddButton, 'Add New');
             expect(this.page.locator(Selectors.settingsSetup.pluginVisit.noFormMsg)).not.toBeVisible();
             await this.assertionValidate(Selectors.settingsSetup.pluginVisit.formTitleCheck('Registration'));
         }
@@ -189,14 +186,14 @@ export class SettingsSetupPage extends Base {
     //Plugin Activate - Lite
     async activateWPUFLite() {
         // Take screenshot and attach to test reportAdd commentMore actions
-        const screenshot = await this.page.screenshot({ 
-            fullPage: true,
-            path: 'plugins-page-wpuf-lite-check.png'
-        });
-        await test.info().attach('Plugins Page - WPUF Lite Check', {
-            body: screenshot,
-            contentType: 'image/png'
-        });
+        // const screenshot = await this.page.screenshot({ 
+        //     fullPage: true,
+        //     path: 'plugins-page-wpuf-lite-check.png'
+        // });
+        // await test.info().attach('Plugins Page - WPUF Lite Check', {
+        //     body: screenshot,
+        //     contentType: 'image/png'
+        // });
         const ifWPUFLite = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.availableWPUFPluginLite);
         console.log(ifWPUFLite);
         const dialogHandler = async (dialog: Dialog) => {
@@ -251,14 +248,14 @@ export class SettingsSetupPage extends Base {
     //Plugin Activate - Pro
     async activateWPUFPro() {
         // Take screenshot and attach to test reportAdd commentMore actions
-        const screenshot = await this.page.screenshot({ 
-            fullPage: true,
-            path: 'plugins-page-wpuf-lite-check.png'
-        });
-        await test.info().attach('Plugins Page - WPUF Lite Check', {
-            body: screenshot,
-            contentType: 'image/png'
-        });
+        // const screenshot = await this.page.screenshot({ 
+        //     fullPage: true,
+        //     path: 'plugins-page-wpuf-lite-check.png'
+        // });
+        // await test.info().attach('Plugins Page - WPUF Lite Check', {
+        //     body: screenshot,
+        //     contentType: 'image/png'
+        // });
         const ifWPUFPro = await this.page.isVisible(Selectors.settingsSetup.pluginStatusCheck.availableWPUFPluginPro);
         console.log(ifWPUFPro);
         if (ifWPUFPro == true) {

@@ -423,12 +423,12 @@ class Frontend_Form_Ajax {
             $post_id_encoded          = wpuf_encryption( $post_id );
             $form_id_encoded          = wpuf_encryption( $form_id );
 
-            wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, 'no', 1 );
+            wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, 'yes', 1 );
 
             $response['show_message'] = true;
             $response['redirect_to']  = add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
             $response['message']      = __( 'Thank you for posting on our site. We have sent you an confirmation email. Please check your inbox!', 'wp-user-frontend' );
-        } elseif ( 'guest_post' === $guest_mode && wpuf_is_checkbox_or_toggle_on( $guest_verify ) && ! is_user_logged_in() && 'yes' === $charging_enabled ) {
+        } elseif ( 'guest_post' === $guest_mode && wpuf_is_checkbox_or_toggle_on( $guest_verify ) && ! is_user_logged_in() && 'no' === $charging_enabled ) {
             $post_id_encoded          = wpuf_encryption( $post_id );
             $form_id_encoded          = wpuf_encryption( $form_id );
             $response['show_message'] = true;
@@ -436,7 +436,7 @@ class Frontend_Form_Ajax {
             $response['message']      = __( 'Thank you for posting on our site. We have sent you an confirmation email. Please check your inbox!', 'wp-user-frontend' );
 
             update_post_meta( $post_id, '_wpuf_payment_status', 'pending' );
-            wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, 'yes', 2 );
+            wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, 'no', 2 );
         }
 
         if ( wpuf_is_checkbox_or_toggle_on( $guest_mode ) && wpuf_is_checkbox_or_toggle_on( $guest_verify ) && ! is_user_logged_in() ) {

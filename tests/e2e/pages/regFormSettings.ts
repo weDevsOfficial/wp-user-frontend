@@ -1402,13 +1402,7 @@ export class RegFormSettingsPage extends Base {
             }
 
             await this.validateAndClick(Selectors.regFormSettings.saveButton);
-            await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
-
-            await this.page.waitForTimeout(3000);
-        }
-
-        if (flag == false) {
-            await new BasicLogoutPage(this.page).logOut();
+            flag = await this.waitForFormSaved(Selectors.regFormSettings.formSaved, Selectors.regFormSettings.saveButton);
         }
     }
 

@@ -6,23 +6,17 @@
   "type": "module",
   "scripts": {
     "test": "CI=false npx playwright test --headed --config=playwright.config.ts",
+    "test:ci": "npx playwright test --config=playwright.config.ts",
 
     "generate-summary": "node utils/generate-summary.js",
-
     
     "test:setup": "CI=false npx playwright test --config=playwright.setup.config.ts",
-    "test:parallel:lite": "CI=false npx playwright test --config=playwright.parallel-lite-one.config.ts; CI=false npx playwright test --config=playwright.parallel-lite-two.config.ts",
-    "test:parallel:pro": "CI=false npx playwright test --config=playwright.parallel-pro-one.config.ts; CI=false npx playwright test --config=playwright.parallel-pro-two.config.ts",
-
-    "test:sharded:lite": "npm run test:setup; npm run test:parallel:lite",
-    "test:sharded:pro": "npm run test:setup; npm run test:parallel:pro",
+    "test:parallel": "CI=false npx playwright test --config=playwright.parallel-one.config.ts; CI=false npx playwright test --config=playwright.parallel-two.config.ts",
+    "test:sharded": "npm run test:setup; npm run test:parallel",
 
     "test:setup:ci": "npx playwright test --config=playwright.setup.config.ts",
-    "test:parallel:lite:ci": "npx playwright test --config=playwright.parallel-lite-one.config.ts; npx playwright test --config=playwright.parallel-lite-two.config.ts",
-    "test:parallel:pro:ci": "npx playwright test --config=playwright.parallel-pro-one.config.ts; npx playwright test --config=playwright.parallel-pro-two.config.ts",
-
-    "test:sharded:lite:ci": "npm run test:setup:ci; npm run test:parallel:lite:ci",
-    "test:sharded:pro:ci": "npm run test:setup:ci; npm run test:parallel:pro:ci",
+    "test:parallel:ci": "npx playwright test --config=playwright.parallel-one.config.ts; npx playwright test --config=playwright.parallel-two.config.ts",
+    "test:sharded:ci": "npm run test:setup:ci; npm run test:parallel:ci",
 
     "sharded-summary": "node utils/sharded-summary.js"
   },

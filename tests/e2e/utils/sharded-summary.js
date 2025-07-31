@@ -13,10 +13,8 @@ const setupResultsPath = path.join(__dirname, '../setup/setup-results.json');
 // Get all available result files (Pro or Lite, whatever exists)
 function getAllAvailableResultFiles() {
   const allPossibleFiles = [
-    path.join(__dirname, '../parallel-one/parallel-lite-one-results.json'),
-    path.join(__dirname, '../parallel-two/parallel-lite-two-results.json'),
-    path.join(__dirname, '../parallel-one/parallel-pro-one-results.json'),
-    path.join(__dirname, '../parallel-two/parallel-pro-two-results.json'),
+    path.join(__dirname, '../parallel-one/parallel-one-results.json'),
+    path.join(__dirname, '../parallel-two/parallel-two-results.json'),
   ];
   
   // Return only files that actually exist
@@ -160,9 +158,9 @@ async function mergeParallelResults() {
 
     // Store individual shard durations
     const fileName = path.basename(filePath);
-    if (fileName.includes('parallel-lite-one') && results.stats?.duration) {
+    if (fileName.includes('parallel-one') && results.stats?.duration) {
       allResults.parallelOneDuration = results.stats.duration;
-    } else if (fileName.includes('parallel-lite-two') && results.stats?.duration) {
+    } else if (fileName.includes('parallel-two') && results.stats?.duration) {
       allResults.parallelTwoDuration = results.stats.duration;
     }
 
@@ -333,6 +331,105 @@ function getStatusIcon(status) {
   }
 }
 
+// Function to get spec file statistics from merged results
+function getSpecFileStatsFromMergedResults(setupResults, mergedParallelResults) {
+  const specStats = {};
+  
+  function processSuites(suites, parentTitle = '') {
+    for (const suite of suites) {
+      const suiteTitle = parentTitle ? `${parentTitle} › ${suite.title}` : suite.title;
+      
+      if (suite.specs && suite.specs.length > 0) {
+        // This is a spec file level
+        const specFileName = suite.title;
+        
+        if (!specStats[specFileName]) {
+          specStats[specFileName] = {
+            total: 0,
+            passed: 0,
+            failed: 0,
+            skipped: 0,
+            notCovered: 0,
+            totalDuration: 0
+          };
+        }
+        
+        for (const spec of suite.specs) {
+          // Get test result status and duration from the first test result
+          const firstResult = spec.tests?.[0]?.results?.[0];
+          let status = 'not-covered';
+          let duration = 0;
+          
+          if (firstResult?.status) {
+            switch (firstResult.status) {
+              case 'passed':
+                status = 'passed';
+                break;
+              case 'failed':
+                status = 'failed';
+                break;
+              case 'timedOut':
+                status = 'failed';
+                break;
+              case 'skipped':
+                status = 'skipped';
+                break;
+              case 'interrupted':
+                status = 'failed';
+                break;
+              default:
+                status = firstResult.status;
+            }
+            duration = firstResult.duration || 0;
+          } else if (spec.tests?.[0]?.outcome) {
+            status = spec.tests[0].outcome;
+          } else if (!spec.tests || spec.tests.length === 0) {
+            status = 'not-covered';
+          }
+          
+          specStats[specFileName].total++;
+          specStats[specFileName].totalDuration += duration;
+          
+          switch (status) {
+            case 'passed':
+            case 'expected':
+              specStats[specFileName].passed++;
+              break;
+            case 'failed':
+            case 'unexpected':
+              specStats[specFileName].failed++;
+              break;
+            case 'skipped':
+              specStats[specFileName].skipped++;
+              break;
+            case 'not-covered':
+            case 'not_covered':
+              specStats[specFileName].notCovered++;
+              break;
+          }
+        }
+      }
+      
+      // Continue traversing nested suites
+      if (suite.suites && suite.suites.length > 0) {
+        processSuites(suite.suites, suiteTitle);
+      }
+    }
+  }
+  
+  // Process setup results
+  if (setupResults && setupResults.suites) {
+    processSuites(setupResults.suites);
+  }
+  
+  // Process parallel results
+  if (mergedParallelResults && mergedParallelResults.suites) {
+    processSuites(mergedParallelResults.suites);
+  }
+  
+  return specStats;
+}
+
 async function generateShardedSummary() {
   
   // Load setup results
@@ -347,6 +444,9 @@ async function generateShardedSummary() {
   // Extract tests from both phases
   const setupTests = setupResults ? extractTestsFromResults(setupResults, 'Setup') : [];
   const parallelTests = extractTestsFromResults(mergedParallelResults, 'Parallel');
+  
+  // Get spec file statistics
+  const specStats = getSpecFileStatsFromMergedResults(setupResults, mergedParallelResults);
   
   // Filter tests to only include those in the features map
   const allTests = [...setupTests, ...parallelTests].filter(test => validTestIds.has(test.id));
@@ -411,6 +511,21 @@ async function generateShardedSummary() {
 |---|---|---|---|---|---|---|---|---|---|---|
 | E2E | ${allTests.length} | ${passed} | ${failed} | ${flaky} | ${skipped} | ${uncovered} | ${coverage}% | ${formatTotalDuration(totalWallClockDuration)} | ${formatAverageDuration(averageDuration)} | ${currentDate} |`;
 
+  // Spec file statistics table
+  const specTableHeader = `| Spec File 📁 | Total 📊 | Passed ✅ | Failed ❌ | Skipped ⏭️ | Not Covered 🚫 | Total Time ⏱️ | Avg Time ⌛ |
+|---|---|---|---|---|---|---|---|`;
+  
+  const specTableRows = Object.entries(specStats)
+    .map(([specFile, stats]) => {
+      const totalTimeSeconds = Math.floor(stats.totalDuration / 1000);
+      const totalTime = totalTimeSeconds >= 60 ? 
+        `${Math.floor(totalTimeSeconds / 60)}m ${totalTimeSeconds % 60}s` : 
+        `${totalTimeSeconds}s`;
+      const avgTime = stats.total > 0 ? (stats.totalDuration / stats.total / 1000).toFixed(1) : '0';
+      return `| ${specFile} | ${stats.total} | ${stats.passed} | ${stats.failed} | ${stats.skipped} | ${stats.notCovered} | ${totalTime} | ${avgTime}s |`;
+    })
+    .join('\n');
+
   // Covered Scenarios table
   const tableHeader = `| ID | Type | Title | Status | Duration | Tags |
 |---|---|---|---|---|---|`;
@@ -436,6 +551,10 @@ async function generateShardedSummary() {
 ## 📊 Final Statistics
 ${statHeader}
 
+## 📁 Spec File Statistics
+${specTableHeader}
+${specTableRows}
+
 ## 🎯 Covered Scenarios
 ${tableHeader}
 ${tableRows}
@@ -454,6 +573,21 @@ ${tableRows}
   console.log(`| E2E  | ${allTests.length} | ${passed} | ${failed} | ${flaky} | ${skipped} | ${uncovered} | ${coverage}% | ${formatTotalDuration(totalWallClockDuration)} | ${formatAverageDuration(averageDuration)} | ${currentDate} |`);
   console.log('');
   
+  console.log('📁 Spec File Statistics');
+  console.log('');
+  console.log('| Spec File | Total | Passed | Failed | Skipped | Not Covered | Total Time | Avg Time |');
+  console.log('|-----------|-------|--------|--------|---------|-------------|------------|----------|');
+  
+  for (const [specFile, stats] of Object.entries(specStats)) {
+    const totalTimeSeconds = Math.floor(stats.totalDuration / 1000);
+    const totalTime = totalTimeSeconds >= 60 ? 
+      `${Math.floor(totalTimeSeconds / 60)}m ${totalTimeSeconds % 60}s` : 
+      `${totalTimeSeconds}s`;
+    const avgTime = stats.total > 0 ? (stats.totalDuration / stats.total / 1000).toFixed(1) : '0';
+    console.log(`| ${specFile} | ${stats.total} | ${stats.passed} | ${stats.failed} | ${stats.skipped} | ${stats.notCovered} | ${totalTime} | ${avgTime}s |`);
+  }
+  
+  console.log('');
   console.log('🎯 Covered Scenarios');
   console.log('');
   console.log('| ID | Type | Title | Status | Duration | Tags |');

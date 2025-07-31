@@ -4,7 +4,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 /**
- * Playwright configuration for PARALLEL LITE TWO phase
+ * Playwright configuration for PARALLEL LITE ONE phase
  */
 export default defineConfig({
     testDir: './tests',
@@ -17,27 +17,32 @@ export default defineConfig({
     reporter: process.env.CI
         ? [
             ['list', { printSteps: true }],
-            ['json', { outputFile: './parallel-two/parallel-lite-two-results.json' }],
-            ['html', { outputFolder: './playwright-report/parallel-lite-two-report', open: 'never' }]
+            ['json', { outputFile: './parallel-one/parallel-one-results.json' }],
+            ['html', { outputFolder: './playwright-report/parallel-one-report', open: 'never' }]
         ]
         : [
-            ['json', { outputFile: './parallel-two/parallel-lite-two-results.json' }],
-            ['html', { outputFolder: './playwright-report/parallel-lite-two-report', open: 'never' }],
+            ['json', { outputFile: './parallel-one/parallel-one-results.json' }],
+            ['html', { outputFolder: './playwright-report/parallel-one-report', open: 'never' }],
         ],
     use: {
         actionTimeout: 0,
-        trace: 'off',
         headless: true,
         viewport: { width: 1280, height: 720 },
+
+        trace: 'retain-on-failure',
+
         screenshot: 'only-on-failure',
+
         video: 'off',
+
+        ignoreHTTPSErrors: true,
     },
     projects: [
         {
-            name: 'parallel-lite-two',
+            name: 'parallel-one',
             testMatch: [
-                'tests/postFormSettingsTest.spec.ts',
-                'tests/regFormSettingsTestPro.spec.ts',
+                'tests/postFormTest.spec.ts',
+                'tests/regFormTestPro.spec.ts',
             ],
             use: { ...devices['Desktop Chrome'] },
         },

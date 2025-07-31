@@ -9,6 +9,7 @@ import { Users, PostForm } from '../utils/testData';
 import * as fs from 'fs'; //Clear Cookie
 import { BasicLogoutPage } from '../pages/basicLogout';
 import { faker } from '@faker-js/faker';
+import { configureSpecFailFast } from '../utils/specFailFast';
 
 let browser: Browser;
 let context: BrowserContext;
@@ -27,6 +28,9 @@ test.beforeAll(async () => {
 
 
 test.describe('Post-Forms', () => {
+    // Configure fail-fast behavior for this spec file
+    configureSpecFailFast();
+    
     /**----------------------------------POSTFORM----------------------------------**
      *
      * @TestScenario : [Post-Forms]
@@ -200,6 +204,9 @@ test.describe('Post-Forms', () => {
 
         //Save
         await FieldAdd.saveForm_Common();
+
+        await page.waitForTimeout(5000);
+        
         //Validate
         productShortCode = await FieldAdd.validatePostFormCreated('WooCommerce Product');
         console.log('Product Short Code: ' + productShortCode);
@@ -249,6 +256,8 @@ test.describe('Post-Forms', () => {
 
         //Save
         await FieldAdd.saveForm_Common();
+        
+        await page.waitForTimeout(5000);
         //Validate
         downloadsShortCode = await FieldAdd.validatePostFormCreated('EDD Download');
         console.log('Downloads Short Code: ' + downloadsShortCode);

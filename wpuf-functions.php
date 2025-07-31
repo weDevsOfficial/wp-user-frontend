@@ -909,7 +909,16 @@ function wpuf_show_custom_fields( $content ) {
                     if ( ! empty( $column_fields ) ) {
                         // ignore section break and HTML input type
                         foreach ( $column_fields as $column_field_key => $column_field ) {
-                            if ( isset( $column_field['show_in_post'] ) && 'yes' === $column_field['show_in_post'] ) {
+                            // Skip if input type is not set
+                            if ( ! isset( $column_field['input_type'] ) ) {
+                                continue;
+                            }
+                            
+                            // Check if it's a map field
+                            $is_map_field = in_array( $column_field['input_type'], [ 'map', 'google_map' ], true );
+                            
+                            // Include field if it's a map or if show_in_post is enabled
+                            if ( $is_map_field || ( isset( $column_field['show_in_post'] ) && wpuf_is_checkbox_or_toggle_on( $column_field['show_in_post'] ) ) ) {
                                 $meta[] = $column_field;
                             }
                         }
@@ -918,7 +927,16 @@ function wpuf_show_custom_fields( $content ) {
                 continue;
             }
 
-            if ( isset( $attr['show_in_post'] ) && 'yes' === $attr['show_in_post'] ) {
+            // Skip if input type is not set
+            if ( ! isset( $attr['input_type'] ) ) {
+                continue;
+            }
+            
+            // Check if it's a map field
+            $is_map_field = in_array( $attr['input_type'], [ 'map', 'google_map' ], true );
+            
+            // Include field if it's a map or if show_in_post is enabled
+            if ( $is_map_field || ( isset( $attr['show_in_post'] ) && wpuf_is_checkbox_or_toggle_on( $attr['show_in_post'] ) ) ) {
                 $meta[] = $attr;
             }
         }

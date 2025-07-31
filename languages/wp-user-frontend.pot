@@ -2689,7 +2689,6 @@ msgstr[1] ""
 msgid "Form duplicated successfully. <a href=\"%s\">View form.</a>"
 msgstr ""
 
->>>>>>> Stashed changes
 #: includes/Admin/Forms/Field_Manager.php:153
 #: includes/class-field-manager.php:185
 msgid "Custom Fields"

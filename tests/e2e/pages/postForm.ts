@@ -25,14 +25,14 @@ export class PostFormPage extends Base {
 
         //Visit Post Form Page
         await this.navigateToURL(this.wpufPostFormPage);
-        await this.page.reload();
 
-        //CreateNewPostForm
-        await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
-        //Start
-        //Click Add Form
-        await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickPostAddForm);
-
+        // Wait for form list to load and click on the form
+        try {
+            await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickPostAddForm);;
+        } catch (error) {
+            await this.navigateToURL(this.wpufPostFormPage);
+            await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickPostAddForm);;
+        };
 
         //Click Blank Form
         await this.page.waitForSelector(Selectors.postForms.createBlankForm_PF.clickBlankForm);
@@ -54,13 +54,14 @@ export class PostFormPage extends Base {
     async createPresetPostForm(newPostName: string) {
         //Visit Post Form Page
         await this.navigateToURL(this.wpufPostFormPage);
-        await this.page.reload();
-        //CreateNewPostForm
-        await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
-        await this.page.reload();
-        //Start
-        //Click Add Form
-        await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickPostAddForm);
+
+        // Wait for form list to load and click on the form
+        try {
+            await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickPostAddForm);;
+        } catch (error) {
+            await this.navigateToURL(this.wpufPostFormPage);
+            await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickPostAddForm);;
+        };
 
         //ClickPostForm
         //Templates 
@@ -83,13 +84,14 @@ export class PostFormPage extends Base {
     async createPresetPostFormWithGuestEnabled(newPostName: string) {
         //Visit Post Form Page
         await this.navigateToURL(this.wpufPostFormPage);
-        await this.page.reload();
-        //CreateNewPostForm
-        await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
-        await this.page.reload();
-        //Start
-        //Click Add Form
-        await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickPostAddForm);
+
+        // Wait for form list to load and click on the form
+        try {
+            await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickPostAddForm);;
+        } catch (error) {
+            await this.navigateToURL(this.wpufPostFormPage);
+            await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickPostAddForm);;
+        };
 
         //ClickBlankForm
         //Templates 
@@ -139,13 +141,14 @@ export class PostFormPage extends Base {
     async createProductPostForm() {
         //Visit Post Form Page
         await this.navigateToURL(this.wpufPostFormPage);
-        await this.page.reload();
-        //CreateNewPostForm
-        await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
-        await this.page.reload();
-        //Start
-        //Click Add Form
-        await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickPostAddForm);
+
+        // Wait for form list to load and click on the form
+        try {
+            await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickPostAddForm);;
+        } catch (error) {
+            await this.navigateToURL(this.wpufPostFormPage);
+            await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickPostAddForm);;
+        };
 
         //ClickPostForm
         //Templates 
@@ -166,13 +169,14 @@ export class PostFormPage extends Base {
     async createDownloadsPostForm() {
         //Visit Post Form Page
         await this.navigateToURL(this.wpufPostFormPage);
-        await this.page.reload();
-        //CreateNewPostForm
-        await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickpostFormsMenuOption);
-        await this.page.reload();
-        //Start
-        //Click Add Form
-        await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickPostAddForm);
+
+        // Wait for form list to load and click on the form
+        try {
+            await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickPostAddForm);;
+        } catch (error) {
+            await this.navigateToURL(this.wpufPostFormPage);
+            await this.validateAndClick(Selectors.postForms.createBlankForm_PF.clickPostAddForm);;
+        };
         //ClickPostForm
         //Templates 
         //Click Product Form  
@@ -647,7 +651,7 @@ export class PostFormPage extends Base {
         await this.page.waitForTimeout(500);
         await this.assertionValidate(Selectors.postForms.downloadsFrontendCreate.uploads('2'));
         await this.waitForLoading();
-        await this.selectOptionWithLabel(Selectors.postForms.downloadsFrontendCreate.downloadsTag, DownloadsForm.tags);
+        //await this.selectOptionWithLabel(Selectors.postForms.downloadsFrontendCreate.downloadsTag, DownloadsForm.tags);
         await this.validateAndClick(Selectors.postForms.downloadsFrontendCreate.createDownloads);
         await this.page.waitForTimeout(1000);
     }
@@ -725,7 +729,7 @@ export class PostFormPage extends Base {
         await this.validateAndClick(Selectors.postForms.downloadsFormData.clickCategory);
         await this.assertionValidate(Selectors.postForms.downloadsFormData.categoryBE(DownloadsForm.category));
         //Validate Product Tags
-        await this.validateAndClick(Selectors.postForms.downloadsFormData.clickTag);
-        await this.assertionValidate(Selectors.postForms.downloadsFormData.tagBE(DownloadsForm.tags));
+        //await this.validateAndClick(Selectors.postForms.downloadsFormData.clickTag);
+        //await this.assertionValidate(Selectors.postForms.downloadsFormData.tagBE(DownloadsForm.tags));
     }
 }

@@ -55,3 +55,4 @@ tests/chrome_recordings
 *.min.js.*
 *.min.css.*
 tests/e2e/plugins-page-wpuf-lite-check.png
+tests/e2e/screenshots

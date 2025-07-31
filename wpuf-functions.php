@@ -909,7 +909,16 @@ function wpuf_show_custom_fields( $content ) {
                     if ( ! empty( $column_fields ) ) {
                         // ignore section break and HTML input type
                         foreach ( $column_fields as $column_field_key => $column_field ) {
-                            if ( isset( $column_field['show_in_post'] ) && 'yes' === $column_field['show_in_post'] ) {
+                            // Skip if input type is not set
+                            if ( ! isset( $column_field['input_type'] ) ) {
+                                continue;
+                            }
+                            
+                            // Check if it's a map field
+                            $is_map_field = in_array( $column_field['input_type'], [ 'map', 'google_map' ], true );
+                            
+                            // Include field if it's a map or if show_in_post is enabled
+                            if ( $is_map_field || ( isset( $column_field['show_in_post'] ) && wpuf_is_checkbox_or_toggle_on( $column_field['show_in_post'] ) ) ) {
                                 $meta[] = $column_field;
                             }
                         }
@@ -918,7 +927,16 @@ function wpuf_show_custom_fields( $content ) {
                 continue;
             }
 
-            if ( isset( $attr['show_in_post'] ) && 'yes' === $attr['show_in_post'] ) {
+            // Skip if input type is not set
+            if ( ! isset( $attr['input_type'] ) ) {
+                continue;
+            }
+            
+            // Check if it's a map field
+            $is_map_field = in_array( $attr['input_type'], [ 'map', 'google_map' ], true );
+            
+            // Include field if it's a map or if show_in_post is enabled
+            if ( $is_map_field || ( isset( $attr['show_in_post'] ) && wpuf_is_checkbox_or_toggle_on( $attr['show_in_post'] ) ) ) {
                 $meta[] = $attr;
             }
         }
@@ -3297,17 +3315,17 @@ function wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, $charging_
         return;
     }
 
-    $noce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
-
-    if ( isset( $nonce ) && ! wp_verify_nonce( $noce, 'wpuf_edit' ) ) {
-        return;
-    }
+    // Skip nonce verification for guest email verification as it's called programmatically
+    // $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+    // if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf_edit' ) ) {
+    //     return;
+    // }
 
     if ( $charging_enabled ) {
         $encoded_guest_url = add_query_arg(
             [
-                'p_id'     => $post_id_encoded,
-                'f_id'     => $form_id_encoded,
+                'p_id'     => urlencode( $post_id_encoded ),
+                'f_id'     => urlencode( $form_id_encoded ),
                 'post_msg' => 'verified',
                 'f'        => 2,
             ], get_home_url()
@@ -3315,15 +3333,15 @@ function wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, $charging_
     } else {
         $encoded_guest_url = add_query_arg(
             [
-                'p_id'     => $post_id_encoded,
-                'f_id'     => $form_id_encoded,
+                'p_id'     => urlencode( $post_id_encoded ),
+                'f_id'     => urlencode( $form_id_encoded ),
                 'post_msg' => 'verified',
                 'f'        => 1,
             ], get_home_url()
         );
     }
 
-    $default_body     = 'Hey There, <br> <br> We just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process. <br> <br> Please click the link below to verify: <br> <br> <a href="' . $encoded_guest_url . '">Publish Post</a> <br> <br> Regards, <br> <br>' . bloginfo( 'name' );
+    $default_body     = 'Hey There, <br> <br> We just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process. <br> <br> Please click the link below to verify: <br> <br> <a href="' . esc_url( $encoded_guest_url ) . '">Publish Post</a> <br> <br> Regards, <br> <br>' . bloginfo( 'name' );
     $to               = isset( $_POST['guest_email'] ) ? sanitize_email( wp_unslash( $_POST['guest_email'] ) ) : '';
     $guest_email_sub  = wpuf_get_option( 'guest_email_subject', 'wpuf_mails', 'Please Confirm Your Email to Get the Post Published!' );
     $subject          = $guest_email_sub;
@@ -3334,7 +3352,7 @@ function wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, $charging_
         $field_search = [ '{activation_link}', '{sitename}' ];
 
         $field_replace = [
-            '<a href="' . $encoded_guest_url . '">Publish Post</a>',
+            '<a href="' . esc_url( $encoded_guest_url ) . '">Publish Post</a>',
             $blogname,
         ];
 

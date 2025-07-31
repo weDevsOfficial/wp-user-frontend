@@ -8,7 +8,6 @@
     "../../plugins/woocommerce",
     "../../plugins/easy-digital-downloads",
     "../../plugins/wc-vendors",
-    "../../plugins/wc-multivendor-membership",
-    "../../plugins/the-events-calendar"
+    "../../plugins/wc-multivendor-membership"
   ]
 }

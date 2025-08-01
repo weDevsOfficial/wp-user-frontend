@@ -35,6 +35,12 @@ class Frontend_Form_Ajax {
     public function submit_post() {
         check_ajax_referer( 'wpuf_form_add' );
         add_filter( 'wpuf_form_fields', [ $this, 'add_field_settings' ] );
+        
+        // Initialize WooCommerce hooks for proper attribute display
+        if ( method_exists( $this, 'init_woocommerce_hooks' ) ) {
+            $this->init_woocommerce_hooks();
+        }
+        
         @header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 
         $form_id               = isset( $_POST['form_id'] ) ? intval( wp_unslash( $_POST['form_id'] ) ) : 0;

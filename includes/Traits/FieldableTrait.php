@@ -561,20 +561,66 @@ trait FieldableTrait {
                     } else {
                         wp_set_object_terms( $post_id, $posted_terms, 'product_shipping_class' );
                     }
+                } elseif ( 'product_visibility' === $taxonomy_name ) {
+                    // For product visibility, always replace existing terms (don't append)
+                    // Clear all existing visibility terms first, then set the new one
+                    wp_set_object_terms( $post_id, [], 'product_visibility' );
+                    if ( ! empty( $posted_terms ) ) {
+                        wp_set_object_terms( $post_id, $posted_terms, 'product_visibility', false );
+                    }
                 } else {
                     wp_set_object_terms( $post_id, $posted_terms, $taxonomy_name );
                 }
                 
                 // For product attributes, add to WooCommerce attributes
                 if ( $is_woo_taxonomy ) {
-                    $woo_attr[$taxonomy_name] = [
-                        'name'         => $taxonomy_name,
-                        'value'        => '',
-                        'is_visible'   => isset( $taxonomy['woo_attr_vis'] ) && 'yes' === $taxonomy['woo_attr_vis'] ? 1 : 0,
-                        'is_variation' => 0,
-                        'is_taxonomy'  => 1,
-                        'position'     => 0
-                    ];
+                    // Only exclude main categories and tags from additional information display
+                    $excluded_taxonomies = [ 'product_cat', 'product_tag' ];
+                    $should_exclude = in_array( $taxonomy_name, $excluded_taxonomies );
+                    
+                    // Special handling for product_brand - exclude if not specifically marked as visible
+                    if ( 'product_brand' === $taxonomy_name && ! isset( $taxonomy['woo_attr_vis'] ) ) {
+                        $should_exclude = true;
+                    }
+                    
+                    if ( ! $should_exclude ) {
+                        // Use form-level label first, then fallback to other methods
+                        $attribute_label = '';
+                        
+                        // First priority: Use the label from the form field configuration
+                        if ( ! empty( $taxonomy['label'] ) ) {
+                            $attribute_label = $taxonomy['label'];
+                        } else {
+                            // Second priority: Try WooCommerce attribute label
+                            $attribute_label = wc_attribute_label( $taxonomy_name );
+                            if ( empty( $attribute_label ) ) {
+                                // Final fallback: Create proper labels for core WooCommerce taxonomies
+                                switch ( $taxonomy_name ) {
+                                    case 'product_shipping_class':
+                                        $attribute_label = 'Product Shipping Class';
+                                        break;
+                                    case 'product_visibility':
+                                        $attribute_label = 'Product Visibility';
+                                        break;
+                                    case 'product_type':
+                                        $attribute_label = 'Product Type';
+                                        break;
+                                    default:
+                                        $attribute_label = ucwords( str_replace( [ '_', 'pa_' ], ' ', $taxonomy_name ) );
+                                }
+                            }
+                        }
+                        
+                        $woo_attr[$taxonomy_name] = [
+                            'name'         => $taxonomy_name,
+                            'value'        => '',
+                            'is_visible'   => isset( $taxonomy['woo_attr_vis'] ) && wpuf_is_checkbox_or_toggle_on( $taxonomy['woo_attr_vis'] ) ? 1 : 0,
+                            'is_variation' => 0,
+                            'is_taxonomy'  => 1,
+                            'position'     => 0,
+                            'label'        => $attribute_label,
+                        ];
+                    }
                 }
                 continue;
             }
@@ -860,8 +906,14 @@ trait FieldableTrait {
     public function woo_attribute( $taxonomy ) {
         check_ajax_referer( 'wpuf_form_add' );
         
-        // Special handling for product categories
-        if ( 'product_cat' === $taxonomy['name'] ) {
+        // Only exclude main categories and tags from additional information display
+        $excluded_taxonomies = [ 'product_cat', 'product_tag', 'product_brand' ];
+        if ( in_array( $taxonomy['name'], $excluded_taxonomies ) ) {
+            return [];
+        }
+        
+        // Special handling for product_brand - exclude if not specifically marked as visible
+        if ( 'product_brand' === $taxonomy['name'] && empty( $taxonomy['woo_attr_vis'] ) ) {
             return [];
         }
         
@@ -897,6 +949,21 @@ trait FieldableTrait {
             }
         }
         
+        // Get proper attribute label - prioritize form field label
+        $attribute_label = '';
+        
+        // First priority: Use the label from the form field configuration
+        if ( ! empty( $taxonomy['label'] ) ) {
+            $attribute_label = $taxonomy['label'];
+        } else {
+            // Second priority: Try WooCommerce attribute label
+            $attribute_label = wc_attribute_label( $taxonomy['name'] );
+            if ( empty( $attribute_label ) ) {
+                // Final fallback: format the taxonomy name
+                $attribute_label = ucwords( str_replace( [ '_', 'pa_' ], ' ', $taxonomy['name'] ) );
+            }
+        }
+        
         return [
             'name'         => $taxonomy['name'],
             'value'        => implode( ' | ', array_filter( $term_values ) ),
@@ -904,6 +971,203 @@ trait FieldableTrait {
             'is_variation' => 0,
             'is_taxonomy'  => 1,
             'position'     => 0,
+            'label'        => $attribute_label, // Use form-level label
         ];
+    }
+
+    /**
+     * Initialize WooCommerce hooks
+     * Call this method when using the trait to set up required filters
+     *
+     * @since 4.0.6
+     */
+    public function init_woocommerce_hooks() {
+        if ( class_exists( 'WooCommerce' ) ) {
+            add_filter( 'woocommerce_display_product_attributes', [ $this, 'filter_woocommerce_product_attributes' ], 10, 2 );
+        }
+    }
+
+    /**
+     * Filter WooCommerce product attributes to exclude main taxonomies and show proper labels
+     *
+     * @param array $product_attributes
+     * @param WC_Product $product
+     * @return array
+     */
+    public function filter_woocommerce_product_attributes( $product_attributes, $product ) {
+        // Remove product categories, tags, and brands from additional information
+        $unwanted_keys = [ 'product_cat', 'product_tag', 'product_brand', 'attribute_product_brand' ];
+        foreach ( $unwanted_keys as $unwanted ) {
+            unset( $product_attributes[ $unwanted ] );
+        }
+
+        // For WPUF products, do additional processing
+        $form_id = get_post_meta( $product->get_id(), '_wpuf_form_id', true );
+        if ( ! $form_id ) {
+            return $product_attributes;
+        }
+
+        // Get form configuration to access field labels
+        $form_fields = get_post_meta( $form_id, 'wpuf_form', true );
+        $field_labels = [];
+        
+        // Extract field labels for taxonomy fields
+        if ( ! empty( $form_fields ) && is_array( $form_fields ) ) {
+            foreach ( $form_fields as $field ) {
+                if ( isset( $field['input_type'] ) && $field['input_type'] === 'taxonomy' && ! empty( $field['name'] ) && ! empty( $field['label'] ) ) {
+                    $field_labels[ $field['name'] ] = $field['label'];
+                }
+            }
+        }
+
+        // Process remaining attributes to ensure proper labels and values
+        foreach ( $product_attributes as $key => &$attribute ) {
+            // Skip weight and dimensions as they're handled by WooCommerce
+            if ( in_array( $key, [ 'weight', 'dimensions' ] ) ) {
+                continue;
+            }
+
+            // For attributes with 'attribute_' prefix, extract the actual taxonomy name
+            $taxonomy_name = $key;
+            if ( strpos( $key, 'attribute_' ) === 0 ) {
+                $taxonomy_name = substr( $key, 10 ); // Remove 'attribute_' prefix
+            }
+            
+            // Ensure proper labels for taxonomies - prioritize form-level labels
+            if ( ! empty( $field_labels[ $taxonomy_name ] ) ) {
+                // Use form-level label first
+                $attribute['label'] = $field_labels[ $taxonomy_name ];
+            } else {
+                // Fallback to predefined labels for core WooCommerce taxonomies
+                switch ( $taxonomy_name ) {
+                    case 'product_shipping_class':
+                        $attribute['label'] = 'Product Shipping Class';
+                        break;
+                    case 'product_visibility':
+                        $attribute['label'] = 'Product Visibility';
+                        break;
+                    case 'product_type':
+                        $attribute['label'] = 'Product Type';
+                        break;
+                    default:
+                        // For other taxonomies, ensure proper label is displayed
+                        if ( taxonomy_exists( $taxonomy_name ) ) {
+                            $taxonomy_obj = get_taxonomy( $taxonomy_name );
+                            if ( $taxonomy_obj && ! empty( $taxonomy_obj->labels->name ) ) {
+                                $attribute['label'] = $taxonomy_obj->labels->name;
+                            } else {
+                                // Fallback to WooCommerce attribute label function
+                                $wc_label = wc_attribute_label( $taxonomy_name );
+                                if ( $wc_label && $wc_label !== $taxonomy_name ) {
+                                    $attribute['label'] = $wc_label;
+                                } else {
+                                    // Final fallback: format the taxonomy name
+                                    $attribute['label'] = ucwords( str_replace( [ '_', '-', 'pa_' ], ' ', $taxonomy_name ) );
+                                }
+                            }
+                        }
+                }
+            }
+
+            // Strip HTML tags from values first (WooCommerce may wrap values in HTML)
+            if ( ! empty( $attribute['value'] ) ) {
+                $attribute['value'] = wp_strip_all_tags( $attribute['value'] );
+            }
+            
+            // Ensure values are displayed as term names, not IDs
+            if ( taxonomy_exists( $taxonomy_name ) ) {
+                
+                $terms = get_the_terms( $product->get_id(), $taxonomy_name );
+                if ( $terms && ! is_wp_error( $terms ) ) {
+                    $term_names = [];
+                    foreach ( $terms as $term ) {
+                        // Special handling for certain taxonomies
+                        if ( 'product_shipping_class' === $taxonomy_name && '-1' === $term->name ) {
+                            $term_names[] = 'No shipping class';
+                        } elseif ( 'product_shipping_class' === $taxonomy_name && is_numeric( $term->name ) ) {
+                            // If shipping class term name is numeric, it might be referencing another term ID
+                            $real_term = get_term( intval( $term->name ), $taxonomy_name );
+                            if ( $real_term && ! is_wp_error( $real_term ) ) {
+                                $term_names[] = $real_term->name;
+                            } else {
+                                $term_names[] = $term->name;
+                            }
+                        } elseif ( 'product_visibility' === $taxonomy_name ) {
+                            // Map WooCommerce visibility terms to user-friendly names
+                            switch ( $term->name ) {
+                                case 'exclude-from-catalog':
+                                    $term_names[] = 'Exclude from catalog';
+                                    break;
+                                case 'exclude-from-search':
+                                    $term_names[] = 'Exclude from search';
+                                    break;
+                                case 'outofstock':
+                                    $term_names[] = 'Out of stock';
+                                    break;
+                                case 'featured':
+                                    $term_names[] = 'Featured';
+                                    break;
+                                case 'rated-1':
+                                    $term_names[] = 'Rated 1';
+                                    break;
+                                case 'rated-2':
+                                    $term_names[] = 'Rated 2';
+                                    break;
+                                case 'rated-3':
+                                    $term_names[] = 'Rated 3';
+                                    break;
+                                case 'rated-4':
+                                    $term_names[] = 'Rated 4';
+                                    break;
+                                case 'rated-5':
+                                    $term_names[] = 'Rated 5';
+                                    break;
+                                default:
+                                    $term_names[] = ucwords( str_replace( '-', ' ', $term->name ) );
+                            }
+                        } else {
+                            $term_names[] = $term->name;
+                        }
+                    }
+                    if ( ! empty( $term_names ) ) {
+                        $attribute['value'] = implode( ', ', $term_names );
+                    }
+                } else {
+                    // If no terms found via get_the_terms, but attribute has a value,
+                    // try to convert ID values to term names
+                    if ( ! empty( $attribute['value'] ) ) {
+                        $value_parts = explode( ', ', $attribute['value'] );
+                        $converted_values = [];
+                        
+                        foreach ( $value_parts as $part ) {
+                            $part = trim( $part );
+                            // Check if it's a numeric ID
+                            if ( is_numeric( $part ) ) {
+                                $term = get_term( $part, $taxonomy_name );
+                                if ( $term && ! is_wp_error( $term ) ) {
+                                    if ( 'product_shipping_class' === $taxonomy_name && '-1' === $term->name ) {
+                                        $converted_values[] = 'No shipping class';
+                                    } elseif ( 'product_visibility' === $taxonomy_name ) {
+                                        $converted_values[] = ucwords( str_replace( '-', ' ', $term->name ) );
+                                    } else {
+                                        $converted_values[] = $term->name;
+                                    }
+                                } else {
+                                    $converted_values[] = $part; // Keep original if conversion fails
+                                }
+                            } else {
+                                $converted_values[] = $part; // Keep original if not numeric
+                            }
+                        }
+                        
+                        if ( ! empty( $converted_values ) ) {
+                            $attribute['value'] = implode( ', ', $converted_values );
+                        }
+                    }
+                }
+            }
+        }
+
+        return $product_attributes;
     }
 }

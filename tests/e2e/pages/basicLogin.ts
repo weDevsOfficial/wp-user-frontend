@@ -32,9 +32,6 @@ export class BasicLoginPage extends Base {
         else {
             await this.frontendLogin(adminEmail, adminPassword);
         }
-
-        //Store Cookie State
-        await this.page.context().storageState({ path: 'state.json' });
     }
 
     //Login and Plugin Visit
@@ -53,10 +50,6 @@ export class BasicLoginPage extends Base {
         else {
             await this.frontendLogin(adminEmail, adminPassword);
         }
-
-
-        //Store Cookie State
-        await this.page.context().storageState({ path: 'state.json' });
 
         //Redirection to WPUF Home Page
         await SettingsSetup.pluginVisitWPUF();
@@ -79,15 +72,20 @@ export class BasicLoginPage extends Base {
     //BackEnd Login
     async backendLogin(email: string, password: string) {
         await this.validateAndFillStrings(Selectors.login.basicLogin.loginEmailField, email);
+        await this.page.waitForTimeout(500);
         await this.validateAndFillStrings(Selectors.login.basicLogin.loginPasswordField, password);
+        await this.page.waitForTimeout(500);
         await this.validateAndClick(Selectors.login.basicLogin.rememberMeField);
+        await this.page.waitForTimeout(500);
         await this.validateAndClick(Selectors.login.basicLogin.loginButton);
     }
 
     //FrontEnd Login
     async frontendLogin(email: string, password: string) {
         await this.validateAndFillStrings(Selectors.login.basicLogin.loginEmailField2, email);
+        await this.page.waitForTimeout(500);
         await this.validateAndFillStrings(Selectors.login.basicLogin.loginPasswordField2, password);
+        await this.page.waitForTimeout(500);
         await this.assertionValidate(Selectors.login.basicLogin.loginButton2);
         await this.validateAndClick(Selectors.login.basicLogin.loginButton2);
     }

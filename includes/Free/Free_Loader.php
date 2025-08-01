@@ -742,8 +742,28 @@ class Free_Loader extends Pro_Prompt {
             [
                 'name'           => 'set_mail_body',
                 'label'          => __( 'Set Invoice Mail Body', 'wp-user-frontend' ),
-                'desc'           => __( 'This sets the mail body of the Invoice', 'wp-user-frontend' ),
-                'type'           => 'textarea',
+                'desc'           => sprintf(
+                    /* translators: 1: line break, 2: strong tag open, 3: strong tag close, 4-9: code tags for invoice placeholders */
+                    __( 'This sets the mail body of the Invoice.%1$s%2$sYou may use:%3$s %4$s %5$s %6$s %7$s %8$s %9$s', 'wp-user-frontend' ),
+                    '<br>',
+                    '<strong>',
+                    '</strong>',
+                    '<code>{username}</code>',
+                    '<code>{user_email}</code>',
+                    '<code>{display_name}</code>',
+                    '<code>{invoice_id}</code>',
+                    '<code>{payment_amount}</code>',
+                    '<code>{payment_type}</code>',
+                ),
+                'type'           => 'wysiwyg',
+                'is_pro_preview' => true,
+            ],
+            [
+                'name'           => 'send_attachment',
+                'label'          => __( 'Send Invoice as Attachment', 'wp-user-frontend' ),
+                'desc'           => __( 'Enable to send the invoice PDF as an email attachment', 'wp-user-frontend' ),
+                'type'           => 'checkbox',
+                'default'        => 'on',
                 'is_pro_preview' => true,
             ],
         ];
@@ -1623,7 +1643,7 @@ class Free_Loader extends Pro_Prompt {
             'conditional_logic' => [
                 'label' => __( 'Conditional Logic on Submit', 'wp-user-frontend' ),
                 'type'  => 'toggle',
-                'value' => 'on',
+                'value' => 'off',
             ],
         ];
 
@@ -1716,7 +1736,7 @@ class Free_Loader extends Pro_Prompt {
                 'help_text' => __( 'Verification of email addresses will be mandatory', 'wp-user-frontend' ),
             ],
             'post_expiration_message'   => [
-                'label' => __( 'From Expired Message', 'wp-user-frontend' ),
+                'label' => __( 'Form Expired Message', 'wp-user-frontend' ),
                 'type'  => 'textarea',
             ],
         ];

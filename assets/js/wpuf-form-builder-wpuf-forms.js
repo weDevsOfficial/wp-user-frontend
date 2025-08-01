@@ -54,22 +54,30 @@
                     return is_valid; // Skip validation if payments are disabled
                  }
  
-                 // Check if force pack purchase is selected
+                 // Get the selected payment option
                  var choosePaymentOption = $('[name="wpuf_settings[choose_payment_option]"]').val();
-                 if (choosePaymentOption !== 'force_pack_purchase') {
-                    return is_valid; // Skip validation if not force pack purchase
+                 
+                 // Check if force pack purchase is selected
+                 if (choosePaymentOption === 'force_pack_purchase') {
+                     // Check if fallback PPP is enabled
+                     var fallbackEnabled = $('[name="wpuf_settings[fallback_ppp_enable]"]').is(':checked');
+                     if (fallbackEnabled) {
+                         // Check if fallback cost is provided
+                         var fallbackCost = $('[name="wpuf_settings[fallback_ppp_cost]"]').val();
+                         if (!fallbackCost || fallbackCost.trim() === '' || parseFloat(fallbackCost) <= 0) {
+                             this.validation_error_msg = 'Cost for each additional post after pack limit is reached is required when Pay-per-post billing when limit exceeds is enabled.';
+                             return false;
+                         }
+                     }
                  }
- 
-                 // Check if fallback PPP is enabled
-                 var fallbackEnabled = $('[name="wpuf_settings[fallback_ppp_enable]"]').is(':checked');
-                 if (!fallbackEnabled) {
-                    return is_valid;
-                 }
- 
-                 // Check if fallback cost is provided
-                 var fallbackCost = $('[name="wpuf_settings[fallback_ppp_cost]"]').val();
-                 if (!fallbackCost || fallbackCost.trim() === '' || parseFloat(fallbackCost) <= 0) {
-                    return false;
+
+                 // Check if enable_pay_per_post is selected and validate pay_per_post_cost
+                 if (choosePaymentOption === 'enable_pay_per_post') {
+                     var payPerPostCost = $('[name="wpuf_settings[pay_per_post_cost]"]').val();
+                     if (!payPerPostCost || payPerPostCost.trim() === '' || parseFloat(payPerPostCost) <= 0) {
+                         this.validation_error_msg = 'Charge for each post is required when Pay as you post is selected.';
+                         return false;
+                     }
                  }
  
                 return is_valid;

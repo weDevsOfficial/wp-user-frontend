@@ -104,7 +104,7 @@ const PostForm: {
     phoneNumber: '',
     addressLine1: '',
     addressLine2: '',
-    city: 'Dhaka',
+    city: 'Capital Dhaka',
     zip: '1216',
     country: 'Bangladesh',
     state: 'Dhaka',
@@ -156,6 +156,31 @@ const ProductForm: {
     type: 'simple',
 };
 
+const DownloadsForm: {
+    //Post Form Data
+    formName: string;
+    title: string;
+    description: string;
+    excerpt: string;
+    downloadsImage: string;
+    downloadableFiles: string;
+    tags: string;
+    regularPrice: string;
+    purchaseNote: string;
+    category: string;
+} = {
+    formName: '',
+    title: 'WP User Frontend',
+    description: '',
+    excerpt: '',
+    downloadsImage: 'uploadeditems/wp-user-frontend.png',
+    downloadableFiles: 'uploadeditems/wpuf.zip',
+    category: 'plugins',
+    tags: 'wpuf',
+    regularPrice: '100',
+    purchaseNote: '',
+};
+
 /**------------------------------------------*/
 /**-------DATA_SET: Registration Form-------*/
 /**----------------------------------------*/
@@ -197,5 +222,6 @@ export {
     Users,
     PostForm,
     ProductForm,
+    DownloadsForm,
     RegistrationForm,
 };

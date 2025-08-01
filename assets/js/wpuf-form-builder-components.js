@@ -828,6 +828,59 @@ Vue.component('field-select', {
         };
     },
 
+    mounted: function() {
+        // Initialize selectedOption when component mounts
+        this.initializeSelectedOption();
+    },
+
+    watch: {
+        value: {
+            handler: function(newVal) {
+                // Update selectedOption when value changes
+                
+                this.initializeSelectedOption();
+            },
+            immediate: true
+        },
+        'editing_form_field': {
+            handler: function(newVal, oldVal) {
+                // When the entire editing_form_field object changes (like on data load)
+                this.initializeSelectedOption();
+            },
+            deep: true
+        },
+        'option_field.options': {
+            handler: function(newVal) {
+                // When options change, reinitialize
+                this.initializeSelectedOption();
+            },
+            deep: true
+        }
+    },
+
+    methods: {
+        initializeSelectedOption: function() {
+            var self = this;
+            this.$nextTick(function() {
+                // Get the current value
+                var currentValue = self.editing_form_field[self.option_field.name];
+                
+                if (currentValue && self.option_field.options && self.option_field.options[currentValue]) {
+                    self.selectedOption = self.option_field.options[currentValue];
+                } else if (!currentValue && self.option_field.default && self.option_field.options && self.option_field.options[self.option_field.default]) {
+                    // If no value but there's a default, show the default
+                    self.selectedOption = self.option_field.options[self.option_field.default];
+                    // Also set the value to default if there's no current value
+                    if (!currentValue) {
+                        self.value = self.option_field.default;
+                    }
+                } else {
+                    self.selectedOption = 'Select an option';
+                }
+            });
+        }
+    },
+
     computed: {
         value: {
             get: function () {
@@ -1971,6 +2024,16 @@ Vue.component('form-taxonomy', {
             }
 
             return [];
+        },
+
+        should_show_text_input: function () {
+            // Show text input for ajax type
+            return this.field.type === 'ajax';
+        },
+
+        should_show_ajax_dropdown: function () {
+            // Never show ajax dropdown - always use text input for ajax type
+            return false;
         },
 
         sorted_terms: function () {

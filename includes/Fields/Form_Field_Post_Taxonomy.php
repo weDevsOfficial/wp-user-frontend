@@ -97,7 +97,9 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
 
         switch ( $this->field_settings['type'] ) {
             case 'ajax':
-                $this->tax_ajax( $post_id );
+                // Use text input with ajax search for all taxonomies
+                $post_id = null;
+                $this->tax_input( $post_id, $field_settings );
                 break;
 
             case 'select':
@@ -420,7 +422,8 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
 
     public function tax_input( $post_id = null, $field_settings = [] ) {
         $attr = $this->field_settings;
-        $query_string = '?action=wpuf_ajax_tag_search&tax=' . $attr['name'];
+        $nonce = wp_create_nonce( 'wpuf_ajax_tag_search' );
+        $query_string = '?action=wpuf_ajax_tag_search&tax=' . $attr['name'] . '&nonce=' . $nonce;
 
         if ( 'child_of' === $this->exclude_type ) {
             $exclude = wpuf_get_field_settings_excludes( $this->field_settings, $this->exclude_type );

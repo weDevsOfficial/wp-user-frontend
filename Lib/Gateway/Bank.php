@@ -106,6 +106,12 @@ class Bank {
      * @param array $info payment information
      */
     public function order_notify_user( $transaction, $order_id ) {
+        // If Pro is active, do not send this email (invoice email will be sent)
+        if ( class_exists( 'WeDevs\Wpuf\Pro\Admin\Invoice' ) ) {
+            wp_delete_post( $order_id, true );
+            return;
+        }
+
         $user = get_user_by( 'id', $transaction['user_id'] );
 
         if ( !$user ) {
@@ -118,7 +124,7 @@ class Bank {
         $msg     = sprintf(
             // translators: %s is displayname
             __( 'Hello %s,', 'wp-user-frontend' ), $user->display_name ) . "\r\n";
-        $msg .= __( 'We have received your bank payment.', 'wp-user-frontend' ) . "\r\n\r\n";
+        $msg .= sprintf( __( 'We have received your payment amount of %s through bank . ', 'wp-user-frontend' ), $transaction['cost'] ) . "\r\n\r\n";
         $msg .= __( 'Thanks for being with us.', 'wp-user-frontend' ) . "\r\n";
 
         $subject = apply_filters( 'wpuf_mail_bank_user_subject', $subject );

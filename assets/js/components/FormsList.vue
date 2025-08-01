@@ -324,8 +324,21 @@ const openModal = (event) => {
 
   // Trigger the jQuery modal
   if (window.jQuery) {
-    window.jQuery('.wpuf-form-template-modal').show();
-    window.jQuery('#wpbody-content .wrap').hide();
+  
+    const $ = window.jQuery;
+    const $modal = $('.wpuf-form-template-modal');
+    
+    $modal.show().removeClass('wpuf-hidden');
+    
+    $modal[0].offsetHeight;
+    
+    setTimeout(function() {
+      $modal.addClass('wpuf-modal-show');
+    }, 10);
+    
+    $('body').addClass('wpuf-modal-open');
+    $('body').css('overflow', 'hidden');
+    $('#wpbody-content .wrap').hide();
   } else {
     // Fallback if jQuery is not available
     window.location.href = newFormUrl;
@@ -621,7 +634,7 @@ onMounted(() => {
         </div>
 
         <!-- Pagination -->
-        <div v-if="totalPages > 1" class="wpuf-flex wpuf-items-center wpuf-justify-center wpuf-mt-8">
+        <div v-if="totalPages > 1" class="wpuf-flex wpuf-items-center wpuf-justify-center wpuf-mt-20">
           <nav class="wpuf-flex wpuf-items-center wpuf-w-full">
             <div>
               <button

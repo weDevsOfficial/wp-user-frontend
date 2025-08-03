@@ -136,7 +136,7 @@
                             });
                         }
 
-                        if ( ( payload.field_name === 'name'  && payload.value.length - 2 < payload.field_name.length ) || ! state.form_fields[i].hasOwnProperty('is_new') ) {
+                        if ( payload.field_name === 'name'  && payload.value.length - 2 < payload.field_name.length ) {
                             continue;
                         } else {
                             state.form_fields[i][payload.field_name] = payload.value;

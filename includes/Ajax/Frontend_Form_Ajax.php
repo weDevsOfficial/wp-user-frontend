@@ -515,13 +515,6 @@ class Frontend_Form_Ajax {
         // now perform some post related actions. it should be done after other action. either count related problem emerge
         do_action( 'wpuf_add_post_after_insert', $post_id, $form_id, $this->form_settings, $meta_vars ); // plugin API to extend the functionality
 
-        // Debug: Check final taxonomy values after all hooks
-        if ( 'product' === get_post_type( $post_id ) ) {
-            $final_type = wp_get_object_terms( $post_id, 'product_type', array( 'fields' => 'slugs' ) );
-            $final_visibility = wp_get_object_terms( $post_id, 'product_visibility', array( 'fields' => 'slugs' ) );
-            error_log( 'WPUF After all hooks - Product Type: ' . print_r( $final_type, true ) );
-            error_log( 'WPUF After all hooks - Product Visibility: ' . print_r( $final_visibility, true ) );
-        }
 
         return $response;
     }

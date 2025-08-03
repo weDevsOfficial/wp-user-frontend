@@ -516,11 +516,9 @@ trait FieldableTrait {
                 
                 // Check what product type is actually saved in the database
                 $saved_types = wp_get_object_terms( $post_id, 'product_type', array( 'fields' => 'slugs' ) );
-                error_log( 'WPUF Final Product Type Terms in DB: ' . print_r( $saved_types, true ) );
                 
                 // Also check visibility terms
                 $saved_visibility = wp_get_object_terms( $post_id, 'product_visibility', array( 'fields' => 'slugs' ) );
-                error_log( 'WPUF Final Product Visibility Terms in DB: ' . print_r( $saved_visibility, true ) );
                 
                 // Check if we have an intended product type stored
                 $intended_type = get_post_meta( $post_id, '_wpuf_intended_product_type', true );
@@ -529,7 +527,6 @@ trait FieldableTrait {
                     if ( empty( $saved_types ) || ! in_array( $intended_type, $saved_types ) ) {
                         wp_set_object_terms( $post_id, $intended_type, 'product_type', false );
                         $this->sync_product_type_data( $post_id, $intended_type );
-                        error_log( 'WPUF Product Type - Restored intended type: ' . $intended_type );
                         
                         // Clear the caches again
                         wp_cache_delete( 'product-' . $post_id, 'products' );
@@ -541,7 +538,6 @@ trait FieldableTrait {
                     // If no product type is set and no intended type, default to simple
                     wp_set_object_terms( $post_id, 'simple', 'product_type', false );
                     $this->sync_product_type_data( $post_id, 'simple' );
-                    error_log( 'WPUF Product Type - No type found, defaulted to simple' );
                 }
             }
         }
@@ -622,7 +618,6 @@ trait FieldableTrait {
      */
     protected function handle_product_type( $post_id, $taxonomy_name, $posted_terms ) {
         // Log incoming data
-        error_log( 'WPUF Product Type - Input: ' . print_r( $posted_terms, true ) );
         
         // First, completely clear ALL existing product types
         $existing_types = wp_get_object_terms( $post_id, 'product_type', array( 'fields' => 'ids' ) );
@@ -650,13 +645,11 @@ trait FieldableTrait {
         // Check if it's a known term ID
         if ( isset( $type_map[ strval( $product_type ) ] ) ) {
             $product_type = $type_map[ strval( $product_type ) ];
-            error_log( 'WPUF Product Type - Mapped from ID to: ' . $product_type );
         } elseif ( is_numeric( $product_type ) ) {
             // Convert any other term ID to slug
             $term = get_term( $product_type, 'product_type' );
             if ( $term && ! is_wp_error( $term ) ) {
                 $product_type = $term->slug;
-                error_log( 'WPUF Product Type - Got slug from term: ' . $product_type );
             }
         } else {
             // Handle term name (like "Variable" or "variable")
@@ -675,7 +668,6 @@ trait FieldableTrait {
             }
         }
         
-        error_log( 'WPUF Product Type - Final slug: ' . $product_type );
         
         // Remove all existing product types first
         wp_remove_object_terms( $post_id, array( 'simple', 'variable', 'grouped', 'external' ), 'product_type' );
@@ -684,11 +676,9 @@ trait FieldableTrait {
         $term = get_term_by( 'slug', $product_type, 'product_type' );
         if ( $term && ! is_wp_error( $term ) ) {
             $result = wp_set_object_terms( $post_id, intval( $term->term_id ), 'product_type', false );
-            error_log( 'WPUF Product Type - Set using term ID ' . $term->term_id . ', result: ' . print_r( $result, true ) );
         } else {
             // Fallback to slug
             $result = wp_set_object_terms( $post_id, $product_type, 'product_type', false );
-            error_log( 'WPUF Product Type - Set using slug, result: ' . print_r( $result, true ) );
         }
         
         // Sync product type specific data with WooCommerce
@@ -708,7 +698,6 @@ trait FieldableTrait {
         
         // Final verification
         $saved_types = wp_get_object_terms( $post_id, 'product_type', array( 'fields' => 'slugs' ) );
-        error_log( 'WPUF Product Type - Final saved types: ' . print_r( $saved_types, true ) );
         
         // Store the intended product type in meta to preserve it
         update_post_meta( $post_id, '_wpuf_intended_product_type', $product_type );
@@ -979,7 +968,6 @@ trait FieldableTrait {
      * Handle product visibility
      */
     protected function handle_product_visibility( $post_id, $taxonomy_name, $posted_terms ) {
-        error_log( 'WPUF Product Visibility - Input: ' . print_r( $posted_terms, true ) );
         
         // Clear ALL existing visibility terms first
         $existing_terms = wp_get_object_terms( $post_id, 'product_visibility', array( 'fields' => 'ids' ) );
@@ -1002,7 +990,6 @@ trait FieldableTrait {
             $visibility_map[ strval( $term->term_id ) ] = $term->slug;
         }
         
-        error_log( 'WPUF Product Visibility - Term map: ' . print_r( $visibility_map, true ) );
         
         // Handle both single and multiple visibility terms
         $terms_to_set = array();
@@ -1014,7 +1001,6 @@ trait FieldableTrait {
             // Check if it's a known term ID
             if ( isset( $visibility_map[ strval( $term ) ] ) ) {
                 $slug = $visibility_map[ strval( $term ) ];
-                error_log( 'WPUF Product Visibility - Mapped ID ' . $term . ' to slug: ' . $slug );
             } elseif ( is_numeric( $term ) ) {
                 // Try to get term by ID
                 $term_obj = get_term( $term, 'product_visibility' );
@@ -1039,17 +1025,14 @@ trait FieldableTrait {
             }
         }
         
-        error_log( 'WPUF Product Visibility - Setting terms: ' . print_r( $terms_to_set, true ) );
         
         if ( ! empty( $terms_to_set ) ) {
             $result = wp_set_object_terms( $post_id, $terms_to_set, 'product_visibility', false );
-            error_log( 'WPUF Product Visibility - Set result: ' . print_r( $result, true ) );
             
             // Update WooCommerce meta values based on visibility terms
             // Handle stock status
             if ( in_array( 'outofstock', $terms_to_set ) ) {
                 update_post_meta( $post_id, '_stock_status', 'outofstock' );
-                error_log( 'WPUF Product Visibility - Set stock status to outofstock' );
             } else {
                 // Don't change stock status if not explicitly set to outofstock
                 // This preserves the existing stock status
@@ -1064,27 +1047,22 @@ trait FieldableTrait {
             
             if ( in_array( 'exclude-from-catalog', $terms_to_set ) && in_array( 'exclude-from-search', $terms_to_set ) ) {
                 update_post_meta( $post_id, '_visibility', 'hidden' );
-                error_log( 'WPUF Product Visibility - Set visibility to hidden' );
             } elseif ( in_array( 'exclude-from-catalog', $terms_to_set ) ) {
                 update_post_meta( $post_id, '_visibility', 'search' );
-                error_log( 'WPUF Product Visibility - Set visibility to search' );
             } elseif ( in_array( 'exclude-from-search', $terms_to_set ) ) {
                 update_post_meta( $post_id, '_visibility', 'catalog' );
-                error_log( 'WPUF Product Visibility - Set visibility to catalog' );
             } else {
                 // If no exclusion terms, set to visible
                 if ( ! in_array( 'featured', $terms_to_set ) && ! in_array( 'outofstock', $terms_to_set ) && 
                      ! preg_grep( '/^rated-/', $terms_to_set ) ) {
                     // Only set to visible if there are no other special visibility terms
                     update_post_meta( $post_id, '_visibility', 'visible' );
-                    error_log( 'WPUF Product Visibility - Set visibility to visible' );
                 }
             }
         }
         
         // Verify what was saved
         $saved_terms = wp_get_object_terms( $post_id, 'product_visibility', array( 'fields' => 'slugs' ) );
-        error_log( 'WPUF Product Visibility - Final saved terms: ' . print_r( $saved_terms, true ) );
     }
 
     /**

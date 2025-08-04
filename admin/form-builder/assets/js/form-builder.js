@@ -122,7 +122,21 @@
                             state.form_fields[i]['read_only'] = false;
                         }
 
-                        if (payload.field_name === 'name'  && ! state.form_fields[i].hasOwnProperty('is_new') ) {
+                        let meta_exist = state.form_fields.filter( function (field) {
+                            return 'yes' === field.is_meta && field.name === payload.value;
+                        });
+
+                        if ( meta_exist.length ) {
+                            swal({
+                                text: 'Duplicate Meta Key',
+                                type: 'warning',
+                                confirmButtonColor: '#d54e21',
+                                confirmButtonText: 'Enter another key',
+                                confirmButtonClass: 'btn btn-success',
+                            });
+                        }
+
+                        if ( ( payload.field_name === 'name'  && payload.value.length - 2 < payload.field_name.length ) || ! state.form_fields[i].hasOwnProperty('is_new') ) {
                             continue;
                         } else {
                             state.form_fields[i][payload.field_name] = payload.value;
@@ -538,7 +552,6 @@
             post_title_editing: false,
             isDirty: false,
             shortcodeCopied: false,
-            validation_error_msg: '',
             logoUrl: wpuf_form_builder.asset_url + '/images/wpuf-icon-circle.svg',
             settings_titles: wpuf_form_builder.settings_titles,
             settings_items: wpuf_form_builder.settings_items,
@@ -926,10 +939,16 @@
                 },
                 guest_email_verify: {
                     type: 'text',
-                    dependsOn: [{
-                        field: 'post_permission',
-                        value: 'guest_post'
-                    }]
+                    dependsOn: [
+                        {
+                            field: 'post_permission',
+                            value: 'guest_post'
+                        },
+                        {
+                            field: 'guest_details',
+                            value: true
+                        }
+                    ]
                 },
                 name_label: {
                     type: 'text',

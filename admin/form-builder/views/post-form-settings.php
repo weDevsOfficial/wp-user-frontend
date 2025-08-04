@@ -378,7 +378,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                     echo '</div>';
                 }
                 ?>
-                <?php if ( 'toggle' === $field['type'] ) { 
+                <?php if ( 'toggle' === $field['type'] ) {
                     // For pro preview notification fields, always show as 'off' (unchecked)
                     $toggle_value = $value;
                     if ( $is_pro_preview && strpos( $field_key, 'notification_' ) === 0 ) {
@@ -551,6 +551,20 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                     name="<?php echo $name; ?>"
                     id="<?php echo $field_key; ?>"
                     value="<?php echo $value; ?>"/>
+                <?php
+            }
+
+            // Handle submit-button-conditional-logics Vue component
+            if ( 'submit-button-conditional-logics' === $field['type'] ) {
+                $submit_button_settings = isset( $form_settings['submit_button_cond'] ) ? $form_settings['submit_button_cond'] : [
+                    'condition_status' => 'no',
+                    'cond_logic'       => 'any',
+                    'conditions'       => [],
+                ];
+                ?>
+                <submit-button-conditional-logics
+                    :current-settings="<?php echo esc_attr( wp_json_encode( $submit_button_settings ) ); ?>">
+                </submit-button-conditional-logics>
                 <?php
             }
 

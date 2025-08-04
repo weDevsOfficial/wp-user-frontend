@@ -45,6 +45,8 @@ features:
   - id: LS0022
     name: Admin is activating dokan lite
   - id: LS0023
+    name: Admin is making user directory page
+  - id: LS0024
     name: Admin is logging out successfully
 
   # Post Forms
@@ -117,13 +119,13 @@ features:
   - id: PFS0005
     name: Admin is validating default category from FE
   - id: PFS0006
-    name: Admin is setting successful post redirection to newly created post
-  - id: PFS0007
-    name: Admin is checking post redirection to newly created post
-  - id: PFS0008
     name: Admin is setting successful post redirection to same page
-  - id: PFS0009
+  - id: PFS0007
     name: Admin is checking post redirection to same page
+  - id: PFS0008
+    name: Admin is setting successful post redirection to newly created post
+  - id: PFS0009
+    name: Admin is checking post redirection to newly created post
   - id: PFS0010
     name: Admin is setting successful post redirection to another page
   - id: PFS0011
@@ -256,7 +258,7 @@ features:
     name: Admin is modifying updated post notification subject
   - id: PFS0075
     name: Admin is modifying updated post notification body with template tags
-  - id: PFS0074
+  - id: PFS0076
     name: Admin is clicking and validating template tags for updated post notification
   - id: PFS0077
     name: Admin is setting multiple updated post notification emails

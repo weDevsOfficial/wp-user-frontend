@@ -912,10 +912,10 @@ function wpuf_show_custom_fields( $content ) {
                             if ( ! isset( $column_field['input_type'] ) ) {
                                 continue;
                             }
-                            
+
                             // Check if it's a map field
                             $is_map_field = in_array( $column_field['input_type'], [ 'map', 'google_map' ], true );
-                            
+
                             // Include field if it's a map or if show_in_post is enabled
                             if ( $is_map_field || ( isset( $column_field['show_in_post'] ) && wpuf_is_checkbox_or_toggle_on( $column_field['show_in_post'] ) ) ) {
                                 $meta[] = $column_field;
@@ -930,48 +930,13 @@ function wpuf_show_custom_fields( $content ) {
             if ( ! isset( $attr['input_type'] ) ) {
                 continue;
             }
-            
+
             // Check if it's a map field
             $is_map_field = in_array( $attr['input_type'], [ 'map', 'google_map' ], true );
-            
+
             // Include field if it's a map or if show_in_post is enabled
             if ( $is_map_field || ( isset( $attr['show_in_post'] ) && wpuf_is_checkbox_or_toggle_on( $attr['show_in_post'] ) ) ) {
                 $meta[] = $attr;
-            }
-
-            // get repeat field inner fields
-            if ( 'repeat' === $attr['input_type'] ) {
-                $inner_fields = $attr['inner_fields'];
-                foreach ( $inner_fields as $column_key => $column_fields ) {
-                    if ( ! empty( $column_fields ) ) {
-                        // ignore section break and HTML input type
-                        foreach ( $column_fields as $column_field_key => $column_field ) {
-                            if ( isset( $column_field['show_in_post'] ) && 'yes' === $column_field['show_in_post'] ) {
-                                $repeat_field_name = ! empty( $attr['name'] ) ? $attr['name'] : '';
-                                $repeat_rows       = get_post_meta( $post->ID, $repeat_field_name, true );
-
-                                if ( ! empty( $repeat_rows ) ) {
-                                    for ( $index = 0; $index < $repeat_rows; $index++ ) {
-                                        $field_value = get_post_meta( $post->ID, $repeat_field_name . '_' . $index . '_' . $column_field['name'], true );
-                                        $hide_label  = ! empty( $column_field['hide_field_label'] ) ? $column_field['hide_field_label'] : 'no';
-
-                                        if ( is_array( $field_value ) ) {
-                                            $field_value = implode( ', ', $field_value );
-                                        }
-
-                                        $html .= '<li>';
-
-                                        if ( 'no' === $hide_label ) {
-                                            $html .= '<label>' . $column_field['label'] . ': </label>';
-                                        }
-
-                                        $html .= make_clickable( $field_value ) . '</li>';
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
             }
         }
 
@@ -1148,12 +1113,12 @@ function wpuf_show_custom_fields( $content ) {
                     if ( isset( $field_value[0] ) && is_array( $field_value[0] ) ) {
                         $country_state = new WeDevs\Wpuf\Data\Country_State();
                         $country_value = isset( $field_value[0]['country_select'] ) ? $field_value[0]['country_select'] : '';
-                        
+
                         // Get countries array from Country_State class as fallback
                         if ( empty( $countries ) ) {
                             $countries = $country_state->countries();
                         }
-                        
+
                         foreach ( $field_value[0] as $field_key => $value ) {
                             if ( 'country_select' === $field_key ) {
                                 if ( isset( $countries[ $value ] ) ) {
@@ -1161,7 +1126,7 @@ function wpuf_show_custom_fields( $content ) {
                                 }
                             } elseif ( 'state' === $field_key && ! empty( $country_value ) ) {
                                 $state_resolved = false;
-                                
+
                                 if ( wpuf()->is_pro() && file_exists( WPUF_PRO_INCLUDES . '/states.php' ) ) {
                                     $pro_states = include WPUF_PRO_INCLUDES . '/states.php';
                                     if ( ! empty( $pro_states[ $country_value ] ) && isset( $pro_states[ $country_value ][ $value ] ) ) {
@@ -1169,7 +1134,7 @@ function wpuf_show_custom_fields( $content ) {
                                         $state_resolved = true;
                                     }
                                 }
-                                
+
                                 if ( ! $state_resolved ) {
                                     $state_name = $country_state->getStateName( $value, $country_value );
                                     if ( $state_name ) {
@@ -1194,6 +1159,71 @@ function wpuf_show_custom_fields( $content ) {
                     break;
 
                 case 'repeat':
+                    $repeat_data = get_post_meta( $post->ID, $attr['name'], true );
+
+                    if ( empty( $repeat_data ) ) {
+                        break;
+                    }
+
+                    // Unserialize if needed
+                    if ( is_serialized( $repeat_data ) ) {
+                        $repeat_data = maybe_unserialize( $repeat_data );
+                    }
+
+                    if ( ! is_array( $repeat_data ) ) {
+                        break;
+                    }
+
+                    $repeat_html = '<li>';
+
+                    if ( 'no' === $hide_label ) {
+                        $repeat_html .= '<label>' . $attr['label'] . ':</label>';
+                    }
+
+                                        $repeat_html .= '<ul class="wpuf-repeat-field-data">';
+                    
+                    foreach ( $repeat_data as $repeat_entry ) {
+                        $repeat_html .= '<li class="wpuf-repeat-entry">';
+                        $repeat_html .= '<ul class="wpuf-repeat-entry-fields">';
+                        
+                        foreach ( $attr['inner_fields'] as $inner_field ) {
+                            $inner_field_name = $inner_field['name'];
+                            
+                            if ( isset( $repeat_entry[ $inner_field_name ] ) ) {
+                                $inner_field_value = $repeat_entry[ $inner_field_name ];
+                                
+                                if ( ! empty( $inner_field_value ) ) {
+                                    $repeat_html .= '<li>';
+                                    
+                                    if ( 'no' === $inner_field['hide_field_label'] ) {
+                                        $repeat_html .= '<label>' . $inner_field['label'] . ':</label> ';
+                                    }
+                                    
+                                    // Handle different field types
+                                    if ( 'checkbox' === $inner_field['input_type'] && is_array( $inner_field_value ) ) {
+                                        // For checkbox fields, join multiple values
+                                        $repeat_html .= '<span>' . make_clickable( implode( ', ', $inner_field_value ) ) . '</span>';
+                                    } elseif ( 'radio' === $inner_field['input_type'] || 'select' === $inner_field['input_type'] ) {
+                                        // For radio and select fields, display single value
+                                        $repeat_html .= '<span>' . make_clickable( $inner_field_value ) . '</span>';
+                                    } else {
+                                        // For text and other fields
+                                        $repeat_html .= '<span>' . make_clickable( $inner_field_value ) . '</span>';
+                                    }
+                                    
+                                    $repeat_html .= '</li>';
+                                }
+                            }
+                        }
+                        
+                        $repeat_html .= '</ul>';
+                        $repeat_html .= '</li>';
+                    }
+                    
+                    $repeat_html .= '</ul>';
+                    $repeat_html .= '</li>';
+
+                    $html .= $repeat_html;
                     break;
 
                 case 'url':

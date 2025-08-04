@@ -1435,15 +1435,17 @@
         v-html ="get_term_dropdown_options()">
     </select>
 
-    <input
-        v-if="'ajax' === field.type"
-        type="text"
-        :class="builder_class_names('text')"
-        :placeholder="field.placeholder || 'Type to search ' + field.label"
-        :size="field.size"
-        value=""
-        autocomplete="off"
-    >
+    <div v-if="'ajax' === field.type" class="category-wrap">
+        <div>
+            <select
+                :class="builder_class_names('select')"
+                class="!wpuf-text-base"
+            >
+                <option class="wpuf-text-base !wpuf-leading-none"><?php esc_html_e( '— Select —', 'wp-user-frontend' ); ?></option>
+                <option v-for="term in sorted_terms" :value="term.id">{{ term.name }}</option>
+            </select>
+        </div>
+    </div>
 
     <div v-if="'multiselect' === field.type" class="category-wrap">
         <select

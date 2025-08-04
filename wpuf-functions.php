@@ -913,10 +913,10 @@ function wpuf_show_custom_fields( $content ) {
                             if ( ! isset( $column_field['input_type'] ) ) {
                                 continue;
                             }
-                            
+
                             // Check if it's a map field
                             $is_map_field = in_array( $column_field['input_type'], [ 'map', 'google_map' ], true );
-                            
+
                             // Include field if it's a map or if show_in_post is enabled
                             if ( $is_map_field || ( isset( $column_field['show_in_post'] ) && wpuf_is_checkbox_or_toggle_on( $column_field['show_in_post'] ) ) ) {
                                 $meta[] = $column_field;
@@ -931,10 +931,10 @@ function wpuf_show_custom_fields( $content ) {
             if ( ! isset( $attr['input_type'] ) ) {
                 continue;
             }
-            
+
             // Check if it's a map field
             $is_map_field = in_array( $attr['input_type'], [ 'map', 'google_map' ], true );
-            
+
             // Include field if it's a map or if show_in_post is enabled
             if ( $is_map_field || ( isset( $attr['show_in_post'] ) && wpuf_is_checkbox_or_toggle_on( $attr['show_in_post'] ) ) ) {
                 $meta[] = $attr;
@@ -1114,12 +1114,12 @@ function wpuf_show_custom_fields( $content ) {
                     if ( isset( $field_value[0] ) && is_array( $field_value[0] ) ) {
                         $country_state = new WeDevs\Wpuf\Data\Country_State();
                         $country_value = isset( $field_value[0]['country_select'] ) ? $field_value[0]['country_select'] : '';
-                        
+
                         // Get countries array from Country_State class as fallback
                         if ( empty( $countries ) ) {
                             $countries = $country_state->countries();
                         }
-                        
+
                         foreach ( $field_value[0] as $field_key => $value ) {
                             if ( 'country_select' === $field_key ) {
                                 if ( isset( $countries[ $value ] ) ) {
@@ -1127,7 +1127,7 @@ function wpuf_show_custom_fields( $content ) {
                                 }
                             } elseif ( 'state' === $field_key && ! empty( $country_value ) ) {
                                 $state_resolved = false;
-                                
+
                                 if ( wpuf()->is_pro() && file_exists( WPUF_PRO_INCLUDES . '/states.php' ) ) {
                                     $pro_states = include WPUF_PRO_INCLUDES . '/states.php';
                                     if ( ! empty( $pro_states[ $country_value ] ) && isset( $pro_states[ $country_value ][ $value ] ) ) {
@@ -1135,7 +1135,7 @@ function wpuf_show_custom_fields( $content ) {
                                         $state_resolved = true;
                                     }
                                 }
-                                
+
                                 if ( ! $state_resolved ) {
                                     $state_name = $country_state->getStateName( $value, $country_value );
                                     if ( $state_name ) {
@@ -5562,7 +5562,7 @@ function wpuf_get_forms_counts_with_status( $post_type = 'wpuf_forms' ) {
  * Fallback function for profile photo allowed extensions
  * Only used when Pro version is not active
  *
- * @since WPUF_SINCE
+ * @since 4.1.8
  *
  * @return array
  */
@@ -5590,7 +5590,7 @@ if ( ! function_exists( 'wpuf_field_profile_photo_allowed_extensions' ) ) {
  * Fallback function for profile photo allowed MIME types
  * Only used when Pro version is not active
  *
- * @since WPUF_SINCE
+ * @since 4.1.8
  *
  * @return array
  */
@@ -5613,7 +5613,7 @@ if ( ! function_exists( 'wpuf_field_profile_photo_allowed_mimes' ) ) {
         /**
          * Filter allowed profile photo MIME types
          *
-         * @since WPUF_SINCE
+         * @since 4.1.8
          *
          * @param array $profile_photo_mimes Array of allowed MIME types for profile photos
          */

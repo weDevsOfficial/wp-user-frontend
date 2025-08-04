@@ -530,8 +530,8 @@ class Payment {
 
     /**
      * Send payment confirmation mail to user
-     * 
-     * @since WPUF_SINCE
+     *
+     * @since 4.1.8
      *
      * @param array $info payment information
      */
@@ -543,14 +543,14 @@ class Payment {
 
         // Get user data
         $user = get_userdata( $info['user_id'] );
-        
+
         if ( ! $user ) {
             return;
         }
 
         // Create a unique key for this notification to prevent duplicates
         $notification_key = 'wpuf_payment_notification_' . $info['user_id'] . '_' . $info['transaction_id'];
-        
+
         // Check if notification has already been sent for this transaction
         if ( get_transient( $notification_key ) ) {
             return;
@@ -562,7 +562,7 @@ class Payment {
         // Check if Pro is available and invoices are enabled
         $enable_invoices = wpuf_get_option( 'enable_invoices', 'wpuf_payment_invoices', 'off' );
         $pro_available = class_exists( 'WeDevs\Wpuf\Pro\Admin\Invoice' );
-        
+
         if ( $pro_available && wpuf_is_checkbox_or_toggle_on( $enable_invoices ) ) {
             // Pro is available and invoices are enabled - send invoice email only
             $this->wpuf_send_invoice( $info, $user );
@@ -570,7 +570,7 @@ class Payment {
             // Pro not available or invoices disabled - send normal payment confirmation email
             $payment_type = $this->determine_user_payment_type( $info );
             $subject_msg = $this->get_user_notification_content( $payment_type, $user, $info );
-            
+
             $subject = $subject_msg['subject'];
             $message = $subject_msg['message'];
 
@@ -580,16 +580,16 @@ class Payment {
 
             wp_mail( $user->user_email, $subject, $message, $headers );
         }
-        
+
     }
 
     /**
      * Determine the payment type for user notification
      *
-     * @since WPUF_SINCE
-     * 
+     * @since 4.1.8
+     *
      * @param array $info payment information
-     * 
+     *
      * @return string payment type
      */
     private function determine_user_payment_type( $info ) {
@@ -614,51 +614,51 @@ class Payment {
     /**
      * Get notification content for user
      *
-     * @since WPUF_SINCE
-     * 
+     * @since 4.1.8
+     *
      * @param string $payment_type type of payment
      * @param \WP_User $user user object
      * @param array $info payment information
-     * 
+     *
      * @return array subject and message
      */
     private function get_user_notification_content( $payment_type, $user, $info ) {
         $site_name = get_bloginfo( 'name' );
         $amount = isset( $info['cost'] ) ? wpuf_format_price( $info['cost'] ) : '';
-        
+
         switch ( $payment_type ) {
             case 'trial':
                 $subject = sprintf( __( '[%s] Your Trial Subscription is Active', 'wp-user-frontend' ), $site_name );
-                $message = sprintf( 
+                $message = sprintf(
                     __( 'Hello %s,<br><br>Your trial subscription has been activated successfully at %s.<br><br>Thank you!', 'wp-user-frontend' ),
                     $user->display_name,
                     $site_name
                 );
                 break;
-                
+
             case 'subscription':
                 $subject = sprintf( __( '[%s] Payment Confirmation - Subscription', 'wp-user-frontend' ), $site_name );
-                $message = sprintf( 
+                $message = sprintf(
                     __( 'Hello %s,<br><br>Thank you for your payment of %s for your subscription at %s.<br><br>Your subscription is now active.<br><br>Thank you!', 'wp-user-frontend' ),
                     $user->display_name,
                     $amount,
                     $site_name
                 );
                 break;
-                
+
             case 'post':
                 $subject = sprintf( __( '[%s] Payment Confirmation - Post Submission', 'wp-user-frontend' ), $site_name );
-                $message = sprintf( 
+                $message = sprintf(
                     __( 'Hello %s,<br><br>Thank you for your payment of %s for post submission at %s.<br><br>Your post has been submitted successfully.<br><br>Thank you!', 'wp-user-frontend' ),
                     $user->display_name,
                     $amount,
                     $site_name
                 );
                 break;
-                
+
             default:
                 $subject = sprintf( __( '[%s] Payment Confirmation', 'wp-user-frontend' ), $site_name );
-                $message = sprintf( 
+                $message = sprintf(
                     __( 'Hello %s,<br><br>Thank you for your payment of %s at %s.<br><br>Thank you!', 'wp-user-frontend' ),
                     $user->display_name,
                     $amount,
@@ -676,15 +676,15 @@ class Payment {
     /**
      * Send invoice if invoices are enabled
      *
-     * @since WPUF_SINCE
-     * 
+     * @since 4.1.8
+     *
      * @param array $info payment information
      * @param \WP_User $user user object
      */
     private function wpuf_send_invoice( $info, $user ) {
         // Create a unique key for this invoice to prevent duplicates
         $invoice_key = 'wpuf_invoice_sent_' . $info['user_id'] . '_' . $info['transaction_id'];
-        
+
         // Check if invoice has already been sent for this transaction
         if ( get_transient( $invoice_key ) ) {
             return;
@@ -693,7 +693,7 @@ class Payment {
         try {
             // Generate and send invoice using the Pro Invoice class
             $this->generate_and_send_invoice( $info, $user );
-            
+
             // Set transient to prevent duplicate invoices (expires in 24 hours)
             set_transient( $invoice_key, true, DAY_IN_SECONDS );
         } catch ( \Exception $e ) {
@@ -704,15 +704,15 @@ class Payment {
     /**
      * Generate and send invoice
      *
-     * @since WPUF_SINCE
-     * 
+     * @since 4.1.8
+     *
      * @param array $info payment information
      * @param \WP_User $user user object
      */
     private function generate_and_send_invoice( $info, $user ) {
-        
+
         $invoicr_path = WP_CONTENT_DIR . '/plugins/wp-user-frontend-pro/lib/invoicr/invoicr.php';
-        
+
         if ( ! file_exists( $invoicr_path ) ) {
             return;
         }
@@ -769,15 +769,15 @@ class Payment {
         $invoice->addTotal( __( 'Payment Type', 'wp-user-frontend' ), $inv_payment_type );
         $invoice->addTotal( __( 'Total due', 'wp-user-frontend' ), $inv_cost, true );
         $invoice->addBadge( ucfirst( $inv_status ) );
-        
+
         if ( $inv_title ) {
             $invoice->addTitle( $inv_title );
         }
-        
+
         if ( $inv_para ) {
             $invoice->addParagraph( $inv_para );
         }
-        
+
         if ( $inv_foot ) {
             $invoice->setFooternote( $inv_foot );
         }
@@ -804,10 +804,10 @@ class Payment {
     /**
      * Get invoice item name based on payment info
      *
-     * @since WPUF_SINCE
-     * 
+     * @since 4.1.8
+     *
      * @param array $info payment information
-     * 
+     *
      * @return string item name
      */
     private function get_invoice_item_name( $info ) {
@@ -832,8 +832,8 @@ class Payment {
     /**
      * Send invoice via email
      *
-     * @since WPUF_SINCE
-     * 
+     * @since 4.1.8
+     *
      * @param string $pdf_file path to PDF file
      * @param string $user_email user email address
      * @param array $data payment data for placeholder replacement
@@ -882,8 +882,8 @@ class Payment {
     /**
      * Replace email placeholders with actual values
      *
-     * @since WPUF_SINCE
-     * 
+     * @since 4.1.8
+     *
      * @param string $content The email content with placeholders
      * @param array $data The payment data
      *
@@ -936,10 +936,10 @@ class Payment {
     /**
      * Check if invoice image file exists
      *
-     * @since WPUF_SINCE
-     * 
+     * @since 4.1.8
+     *
      * @param string $url The url to the remote image
-     * 
+     *
      * @return bool Whether the remote image exists
      */
     private function is_invoice_image_exists( $url ) {

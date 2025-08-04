@@ -4,7 +4,7 @@ Donate link: https://tareq.co/donate/
 Tags: frontend post, forms, user directory, profile builder, membership
 Requires at least: 4.0
 Tested up to: 6.8.1
-Stable tag: 4.1.7
+Stable tag: 4.1.8
 Requires PHP: 5.6
 License: GPLv2
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -277,6 +277,18 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 14. Customize your Forms in Gutenberg Editor
 
 == Changelog ==
+= v4.1.8 (04 August, 2025) =
+* New - Template filtering search in post form
+* Fix - Invoice and email not sent for payment gateways
+* Fix - Product tag suggestion for WooCommerce
+* Fix - Guest Post Email Verification Issue
+* Fix - Namespaced global JS to prevent conflicts with other plugins
+* Fix - Ensure Google Map fields display on frontend posts
+* Fix - Required field validation for 'Pay as you post' to prevent empty submission
+* Fix - Conditionally show 'Require email verification' only when 'Require Name and Email address' is checked
+* Fix - A typo From Expired Message → Form Expired Message
+* Fix - Post forms list table CSS
+
 = v4.1.7 (15 July, 2025) =
 * New - Add Sort Order for subscription
 * Enhancement - Update country list and improve state handling

@@ -92,6 +92,66 @@ function getTestStatus(test) {
   return { status, duration, flaky, tags };
 }
 
+// Function to get spec file statistics
+function getSpecFileStats(results) {
+  const specStats = {};
+  
+  function processSuites(suites, parentTitle = '') {
+    for (const suite of suites) {
+      const suiteTitle = parentTitle ? `${parentTitle} › ${suite.title}` : suite.title;
+      
+      if (suite.specs && suite.specs.length > 0) {
+        // This is a spec file level
+        const specFileName = suite.title;
+        
+        if (!specStats[specFileName]) {
+          specStats[specFileName] = {
+            total: 0,
+            passed: 0,
+            failed: 0,
+            skipped: 0,
+            notCovered: 0,
+            totalDuration: 0
+          };
+        }
+        
+        for (const spec of suite.specs) {
+          const { status, duration } = getTestStatus(spec);
+          
+          specStats[specFileName].total++;
+          specStats[specFileName].totalDuration += duration;
+          
+          switch (status) {
+            case 'passed':
+              specStats[specFileName].passed++;
+              break;
+            case 'failed':
+              specStats[specFileName].failed++;
+              break;
+            case 'skipped':
+              specStats[specFileName].skipped++;
+              break;
+            case 'not_covered':
+              specStats[specFileName].notCovered++;
+              break;
+          }
+        }
+      }
+      
+      // Continue traversing nested suites
+      if (suite.suites && suite.suites.length > 0) {
+        processSuites(suite.suites, suiteTitle);
+      }
+    }
+  }
+  
+  if (results.suites) {
+    processSuites(results.suites);
+  }
+  
+  return specStats;
+}
+
 // Function to get test type based on feature ID
 function getTestType(featureId) {
   if (featureId.startsWith('RS0')) return 'Reset';
@@ -168,6 +228,9 @@ async function generateSummary() {
     const browser = 'Chromium'; // Default browser from your setup
     const lastRun = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
+    // Get spec file statistics
+    const specStats = getSpecFileStats(results);
+
     // Create a table header and row for statistics
     const statHeader = `| Test 🧪 | Total 📊 | Passed ✅ | Failed ❌ | Flaky ⚠️ | Skipped ⏭️ | Not Covered 🚫 | Coverage 📈 | Duration ⏱️ | Average ⌛ | Date 📅 |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -186,11 +249,30 @@ async function generateSummary() {
       )
       .join('\n');
 
+    // Spec file statistics table
+    const specTableHeader = `| Spec File 📁 | Total 📊 | Passed ✅ | Failed ❌ | Skipped ⏭️ | Not Covered 🚫 | Total Time ⏱️ | Avg Time ⌛ |
+|---|---|---|---|---|---|---|---|`;
+    
+    const specTableRows = Object.entries(specStats)
+      .map(([specFile, stats]) => {
+        const totalTimeSeconds = Math.floor(stats.totalDuration / 1000);
+        const totalTime = totalTimeSeconds >= 60 ? 
+          `${Math.floor(totalTimeSeconds / 60)}m ${totalTimeSeconds % 60}s` : 
+          `${totalTimeSeconds}s`;
+        const avgTime = stats.total > 0 ? (stats.totalDuration / stats.total / 1000).toFixed(1) : '0';
+        return `| ${specFile} | ${stats.total} | ${stats.passed} | ${stats.failed} | ${stats.skipped} | ${stats.notCovered} | ${totalTime} | ${avgTime}s |`;
+      })
+      .join('\n');
+
     // Summary
     const summary = `# 🧪 Test Summary
 
 ## 📊 Final Statistics
 ${statHeader}
+
+## 📁 Spec File Statistics
+${specTableHeader}
+${specTableRows}
 
 ## 🎯 Covered Scenarios
 ${tableHeader}

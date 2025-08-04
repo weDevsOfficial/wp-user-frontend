@@ -20,5 +20,7 @@
         v-model="value"
         @focusout="on_focusout"
         @keyup="on_keyup"
+        :disabled="option_field.disabled"
+        :readonly="option_field.readonly"
         :class="builder_class_names('text')">
 </div>

@@ -18,6 +18,7 @@ class Payment {
     public function __construct() {
         add_action( 'init', [ $this, 'send_to_gateway' ] );
         add_action( 'wpuf_payment_received', [ $this, 'payment_notify_admin' ] );
+        add_action( 'wpuf_payment_received', [ $this, 'payment_notify_user' ] );
         add_filter( 'the_content', [ $this, 'payment_page' ] );
         add_action( 'init', [ $this, 'handle_cancel_payment' ] );
     }
@@ -86,7 +87,7 @@ class Payment {
 
             return;
         }
-        if ( $action === 'wpuf_pay' && $pay_page === 0 ) {
+        if ( $action === 'wpuf_pay' && 0 === intval( $pay_page ) ) {
             esc_html_e( 'Please select your payment page from admin panel', 'wp-user-frontend' );
 
             return;
@@ -525,6 +526,429 @@ class Payment {
         $msg = sprintf( __( 'New payment received at %s', 'wp-user-frontend' ), get_bloginfo( 'name' ) );
         $receiver = get_bloginfo( 'admin_email' );
         wp_mail( $receiver, $subject, $msg, $headers );
+    }
+
+    /**
+     * Send payment confirmation mail to user
+     *
+     * @since 4.1.8
+     *
+     * @param array $info payment information
+     */
+    public function payment_notify_user( $info ) {
+        // Validate user_id exists and is numeric
+        if ( ! isset( $info['user_id'] ) || ! is_numeric( $info['user_id'] ) ) {
+            return;
+        }
+
+        // Get user data
+        $user = get_userdata( $info['user_id'] );
+
+        if ( ! $user ) {
+            return;
+        }
+
+        // Create a unique key for this notification to prevent duplicates
+        $notification_key = 'wpuf_payment_notification_' . $info['user_id'] . '_' . $info['transaction_id'];
+
+        // Check if notification has already been sent for this transaction
+        if ( get_transient( $notification_key ) ) {
+            return;
+        }
+
+        // Set transient to prevent duplicate notifications (expires in 1 hour)
+        set_transient( $notification_key, true, HOUR_IN_SECONDS );
+
+        // Check if Pro is available and invoices are enabled
+        $enable_invoices = wpuf_get_option( 'enable_invoices', 'wpuf_payment_invoices', 'off' );
+        $pro_available = class_exists( 'WeDevs\Wpuf\Pro\Admin\Invoice' );
+
+        if ( $pro_available && wpuf_is_checkbox_or_toggle_on( $enable_invoices ) ) {
+            // Pro is available and invoices are enabled - send invoice email only
+            $this->wpuf_send_invoice( $info, $user );
+        } else {
+            // Pro not available or invoices disabled - send normal payment confirmation email
+            $payment_type = $this->determine_user_payment_type( $info );
+            $subject_msg = $this->get_user_notification_content( $payment_type, $user, $info );
+
+            $subject = $subject_msg['subject'];
+            $message = $subject_msg['message'];
+
+            // Set proper headers
+            $headers = 'From: ' . get_bloginfo( 'name' ) . ' <' . get_bloginfo( 'admin_email' ) . '>' . "\r\n";
+            $headers .= 'Content-Type: text/html; charset=UTF-8' . "\r\n";
+
+            wp_mail( $user->user_email, $subject, $message, $headers );
+        }
+
+    }
+
+    /**
+     * Determine the payment type for user notification
+     *
+     * @since 4.1.8
+     *
+     * @param array $info payment information
+     *
+     * @return string payment type
+     */
+    private function determine_user_payment_type( $info ) {
+        // Check if it's a trial payment (zero cost)
+        if ( isset( $info['cost'] ) && 0 === intval( $info['cost'] ) ) {
+            return 'trial';
+        }
+
+        // Check if it's a subscription/pack payment
+        if ( isset( $info['pack_id'] ) && $info['pack_id'] > 0 ) {
+            return 'subscription';
+        }
+
+        // Check if it's a post payment
+        if ( isset( $info['post_id'] ) && $info['post_id'] > 0 ) {
+            return 'post';
+        }
+
+        return 'general';
+    }
+
+    /**
+     * Get notification content for user
+     *
+     * @since 4.1.8
+     *
+     * @param string $payment_type type of payment
+     * @param \WP_User $user user object
+     * @param array $info payment information
+     *
+     * @return array subject and message
+     */
+    private function get_user_notification_content( $payment_type, $user, $info ) {
+        $site_name = get_bloginfo( 'name' );
+        $amount = isset( $info['cost'] ) ? wpuf_format_price( $info['cost'] ) : '';
+
+        switch ( $payment_type ) {
+            case 'trial':
+                $subject = sprintf( __( '[%s] Your Trial Subscription is Active', 'wp-user-frontend' ), $site_name );
+                $message = sprintf(
+                    __( 'Hello %s,<br><br>Your trial subscription has been activated successfully at %s.<br><br>Thank you!', 'wp-user-frontend' ),
+                    $user->display_name,
+                    $site_name
+                );
+                break;
+
+            case 'subscription':
+                $subject = sprintf( __( '[%s] Payment Confirmation - Subscription', 'wp-user-frontend' ), $site_name );
+                $message = sprintf(
+                    __( 'Hello %s,<br><br>Thank you for your payment of %s for your subscription at %s.<br><br>Your subscription is now active.<br><br>Thank you!', 'wp-user-frontend' ),
+                    $user->display_name,
+                    $amount,
+                    $site_name
+                );
+                break;
+
+            case 'post':
+                $subject = sprintf( __( '[%s] Payment Confirmation - Post Submission', 'wp-user-frontend' ), $site_name );
+                $message = sprintf(
+                    __( 'Hello %s,<br><br>Thank you for your payment of %s for post submission at %s.<br><br>Your post has been submitted successfully.<br><br>Thank you!', 'wp-user-frontend' ),
+                    $user->display_name,
+                    $amount,
+                    $site_name
+                );
+                break;
+
+            default:
+                $subject = sprintf( __( '[%s] Payment Confirmation', 'wp-user-frontend' ), $site_name );
+                $message = sprintf(
+                    __( 'Hello %s,<br><br>Thank you for your payment of %s at %s.<br><br>Thank you!', 'wp-user-frontend' ),
+                    $user->display_name,
+                    $amount,
+                    $site_name
+                );
+                break;
+        }
+
+        return [
+            'subject' => $subject,
+            'message' => $message
+        ];
+    }
+
+    /**
+     * Send invoice if invoices are enabled
+     *
+     * @since 4.1.8
+     *
+     * @param array $info payment information
+     * @param \WP_User $user user object
+     */
+    private function wpuf_send_invoice( $info, $user ) {
+        // Create a unique key for this invoice to prevent duplicates
+        $invoice_key = 'wpuf_invoice_sent_' . $info['user_id'] . '_' . $info['transaction_id'];
+
+        // Check if invoice has already been sent for this transaction
+        if ( get_transient( $invoice_key ) ) {
+            return;
+        }
+
+        try {
+            // Generate and send invoice using the Pro Invoice class
+            $this->generate_and_send_invoice( $info, $user );
+
+            // Set transient to prevent duplicate invoices (expires in 24 hours)
+            set_transient( $invoice_key, true, DAY_IN_SECONDS );
+        } catch ( \Exception $e ) {
+           return;
+        }
+    }
+
+    /**
+     * Generate and send invoice
+     *
+     * @since 4.1.8
+     *
+     * @param array $info payment information
+     * @param \WP_User $user user object
+     */
+    private function generate_and_send_invoice( $info, $user ) {
+
+        $invoicr_path = WP_CONTENT_DIR . '/plugins/wp-user-frontend-pro/lib/invoicr/invoicr.php';
+
+        if ( ! file_exists( $invoicr_path ) ) {
+            return;
+        }
+
+        require_once $invoicr_path;
+
+        // Get invoice settings
+        $inv_logo = wpuf_get_option( 'set_logo', 'wpuf_payment_invoices' );
+        $inv_color = wpuf_get_option( 'set_color', 'wpuf_payment_invoices', '#e435226' );
+        $inv_from_addr = wpuf_get_option( 'set_from_address', 'wpuf_payment_invoices' );
+        $inv_from_addr = explode( '<br>', $inv_from_addr );
+        $inv_title = wpuf_get_option( 'set_title', 'wpuf_payment_invoices' );
+        $inv_para = wpuf_get_option( 'set_paragraph', 'wpuf_payment_invoices' );
+        $inv_foot = wpuf_get_option( 'set_footernote', 'wpuf_payment_invoices' );
+        $inv_filename = wpuf_get_option( 'set_filename', 'wpuf_payment_invoices', 'invoice' );
+
+        // Prepare invoice data
+        $inv_u_id = $info['user_id'];
+        $inv_status = ! empty( $info['status'] ) ? $info['status'] : 'completed';
+        $inv_subtotal = ! empty( $info['subtotal'] ) ? $info['subtotal'] : $info['cost'];
+        $inv_cost = $info['cost'];
+        $inv_id = ! empty( $info['transaction_id'] ) ? $info['transaction_id'] : uniqid();
+        $inv_date = ! empty( $info['created'] ) ? wp_date( 'Y-m-d', strtotime( $info['created'] ) ) : wp_date( 'Y-m-d' );
+        $inv_payment_type = ! empty( $info['payment_type'] ) ? $info['payment_type'] : 'Unknown';
+
+        $currency = wpuf_get_option( 'currency', 'wpuf_payment', 'USD' );
+
+        // Create invoice instance
+        $invoice = new \invoicr( 'A4', $currency, 'en' );
+        $invoice->setNumberFormat( '.', ',' );
+
+        // Set logo if exists
+        if ( $inv_logo && $this->is_invoice_image_exists( $inv_logo ) ) {
+            $invoice->setLogo( $inv_logo, 100, 88 );
+        }
+
+        // Prepare "To" address
+        $inv_to_addr = array();
+        $inv_to_addr[] = $user->display_name;
+        $inv_to_addr[] = $user->user_email;
+
+        // Get item name based on payment type
+        $item_name = $this->get_invoice_item_name( $info );
+
+        // Set invoice details
+        $invoice->setColor( $inv_color );
+        $invoice->setType( __( 'Invoice', 'wp-user-frontend' ) );
+        $invoice->setReference( $inv_id );
+        $invoice->setDate( $inv_date );
+        $invoice->setFrom( $inv_from_addr );
+        $invoice->setTo( $inv_to_addr );
+        $invoice->addItem( $item_name, false, $inv_subtotal, '0%', $inv_cost, false, $inv_subtotal );
+        $invoice->addTotal( __( 'Subtotal', 'wp-user-frontend' ), $inv_subtotal );
+        $invoice->addTotal( __( 'Payment Type', 'wp-user-frontend' ), $inv_payment_type );
+        $invoice->addTotal( __( 'Total due', 'wp-user-frontend' ), $inv_cost, true );
+        $invoice->addBadge( ucfirst( $inv_status ) );
+
+        if ( $inv_title ) {
+            $invoice->addTitle( $inv_title );
+        }
+
+        if ( $inv_para ) {
+            $invoice->addParagraph( $inv_para );
+        }
+
+        if ( $inv_foot ) {
+            $invoice->setFooternote( $inv_foot );
+        }
+
+        // Create invoice directory
+        $inv_dir = WP_CONTENT_DIR . '/uploads/wpuf-invoices/';
+        if ( ! file_exists( $inv_dir ) ) {
+            wp_mkdir_p( $inv_dir );
+        }
+
+        // Generate PDF file
+        $pdf_file = $inv_dir . "{$inv_u_id}_{$inv_filename}_{$inv_id}.pdf";
+        $invoice->render( $pdf_file, 'F' );
+
+        // Save download link
+        $dl_link = content_url() . '/uploads/wpuf-invoices/' . "{$inv_u_id}_{$inv_filename}_{$inv_id}.pdf";
+        update_user_meta( $inv_u_id, '_invoice_link' . $inv_id, $dl_link );
+
+        // Send invoice via email
+        $this->send_invoice_email( $pdf_file, $user->user_email, $info );
+
+    }
+
+    /**
+     * Get invoice item name based on payment info
+     *
+     * @since 4.1.8
+     *
+     * @param array $info payment information
+     *
+     * @return string item name
+     */
+    private function get_invoice_item_name( $info ) {
+        if ( isset( $info['post_id'] ) && $info['post_id'] > 0 ) {
+            $post = get_post( $info['post_id'] );
+            if ( $post ) {
+                $item_name = mb_strimwidth( $post->post_title, 0, 40, '...' );
+                return sprintf( __( 'Payment for post submission (%s)', 'wp-user-frontend' ), $item_name );
+            }
+        }
+
+        if ( isset( $info['pack_id'] ) && $info['pack_id'] > 0 ) {
+            $pack = get_post( $info['pack_id'] );
+            if ( $pack ) {
+                return sprintf( __( 'Subscription: %s', 'wp-user-frontend' ), $pack->post_title );
+            }
+        }
+
+        return __( 'Payment', 'wp-user-frontend' );
+    }
+
+    /**
+     * Send invoice via email
+     *
+     * @since 4.1.8
+     *
+     * @param string $pdf_file path to PDF file
+     * @param string $user_email user email address
+     * @param array $data payment data for placeholder replacement
+     */
+    private function send_invoice_email( $pdf_file, $user_email, $data = array() ) {
+        if ( ! file_exists( $pdf_file ) ) {
+            return false;
+        }
+
+        $subj = wpuf_get_option( 'set_mail_sub', 'wpuf_payment_invoices' );
+        $text_body = wpuf_get_option( 'set_mail_body', 'wpuf_payment_invoices' );
+        $send_attachment = wpuf_get_option( 'send_attachment', 'wpuf_payment_invoices', 'on' );
+
+        if ( empty( $subj ) ) {
+            $subj = sprintf( __( '[%s] Your Payment Invoice', 'wp-user-frontend' ), get_bloginfo( 'name' ) );
+        }
+
+        if ( empty( $text_body ) ) {
+            $text_body = 'Hi {username},<br><br>Thank you for your recent payment.<br><br>Please find your invoice details below:<br>Invoice ID: {invoice_id}<br>Payment Amount: {payment_amount}<br>Payment Method: {payment_type} ({payment_type_label})<br><br>We appreciate doing business with you!<br><br>Best regards,<br>Admin.';
+        }
+
+        // Add payment_type_label for template
+        if ( ! empty( $data ) ) {
+            $subj = $this->replace_email_placeholders( $subj, $data );
+            $text_body = $this->replace_email_placeholders( $text_body, $data );
+        }
+
+        // If not HTML, convert newlines to <br>
+        if ( strpos( $text_body, '<' ) === false ) {
+            $text_body = nl2br( $text_body );
+        }
+
+        $headers  = "MIME-Version: 1.0\r\n";
+        $headers .= 'From: ' . get_bloginfo( 'name' ) . ' <' . get_bloginfo( 'admin_email' ) . ">\r\n";
+        $headers .= 'Content-Type: text/html; charset=UTF-8' . "\r\n";
+
+        $attach = ( wpuf_is_checkbox_or_toggle_on( $send_attachment ) ) ? array( $pdf_file ) : array();
+
+        $mail_body = function_exists( 'get_formatted_mail_body' ) ? get_formatted_mail_body( $text_body, $subj ) : $text_body;
+
+        $sent = wp_mail( $user_email, $subj, $mail_body, $headers, $attach );
+
+        return $sent;
+    }
+
+    /**
+     * Replace email placeholders with actual values
+     *
+     * @since 4.1.8
+     *
+     * @param string $content The email content with placeholders
+     * @param array $data The payment data
+     *
+     * @return string The content with placeholders replaced
+     */
+    private function replace_email_placeholders( $content, $data ) {
+        if ( empty( $data ) || empty( $content ) ) {
+            return $content;
+        }
+
+        // Get user information
+        $user_id = isset( $data['user_id'] ) ? $data['user_id'] : 0;
+        if ( $user_id ) {
+            $user = get_userdata( $user_id );
+            $username = $user ? $user->user_login : '';
+            $user_email = $user ? $user->user_email : '';
+            $display_name = $user ? $user->display_name : '';
+        } else {
+            $username = isset( $data['payer_first_name'] ) ? $data['payer_first_name'] : '';
+            $user_email = isset( $data['payer_email'] ) ? $data['payer_email'] : '';
+            $display_name = '';
+            if ( isset( $data['payer_first_name'] ) && isset( $data['payer_last_name'] ) ) {
+                $display_name = $data['payer_first_name'] . ' ' . $data['payer_last_name'];
+            }
+        }
+
+        // Get payment information
+        $invoice_id = isset( $data['transaction_id'] ) ? $data['transaction_id'] : '';
+        $payment_amount = isset( $data['cost'] ) ? wpuf_format_price( $data['cost'] ) : '';
+        $payment_type = isset( $data['payment_type'] ) ? $data['payment_type'] : '';
+
+        // Define replacements
+        $replacements = [
+            '{username}'           => $username,
+            '{user_email}'         => $user_email,
+            '{display_name}'       => $display_name,
+            '{invoice_id}'         => $invoice_id,
+            '{payment_amount}'     => $payment_amount,
+            '{payment_type}'       => $payment_type,
+        ];
+
+        // Replace placeholders
+        foreach ( $replacements as $placeholder => $value ) {
+            $content = str_replace( $placeholder, $value, $content );
+        }
+
+        return $content;
+    }
+
+    /**
+     * Check if invoice image file exists
+     *
+     * @since 4.1.8
+     *
+     * @param string $url The url to the remote image
+     *
+     * @return bool Whether the remote image exists
+     */
+    private function is_invoice_image_exists( $url ) {
+        if ( empty( $url ) ) {
+            return false;
+        }
+
+        $response = wp_remote_head( $url );
+        return 200 === wp_remote_retrieve_response_code( $response );
     }
 
     /**

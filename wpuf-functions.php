@@ -909,7 +909,16 @@ function wpuf_show_custom_fields( $content ) {
                     if ( ! empty( $column_fields ) ) {
                         // ignore section break and HTML input type
                         foreach ( $column_fields as $column_field_key => $column_field ) {
-                            if ( isset( $column_field['show_in_post'] ) && 'yes' === $column_field['show_in_post'] ) {
+                            // Skip if input type is not set
+                            if ( ! isset( $column_field['input_type'] ) ) {
+                                continue;
+                            }
+
+                            // Check if it's a map field
+                            $is_map_field = in_array( $column_field['input_type'], [ 'map', 'google_map' ], true );
+
+                            // Include field if it's a map or if show_in_post is enabled
+                            if ( $is_map_field || ( isset( $column_field['show_in_post'] ) && wpuf_is_checkbox_or_toggle_on( $column_field['show_in_post'] ) ) ) {
                                 $meta[] = $column_field;
                             }
                         }
@@ -918,7 +927,16 @@ function wpuf_show_custom_fields( $content ) {
                 continue;
             }
 
-            if ( isset( $attr['show_in_post'] ) && 'yes' === $attr['show_in_post'] ) {
+            // Skip if input type is not set
+            if ( ! isset( $attr['input_type'] ) ) {
+                continue;
+            }
+
+            // Check if it's a map field
+            $is_map_field = in_array( $attr['input_type'], [ 'map', 'google_map' ], true );
+
+            // Include field if it's a map or if show_in_post is enabled
+            if ( $is_map_field || ( isset( $attr['show_in_post'] ) && wpuf_is_checkbox_or_toggle_on( $attr['show_in_post'] ) ) ) {
                 $meta[] = $attr;
             }
         }
@@ -1096,12 +1114,12 @@ function wpuf_show_custom_fields( $content ) {
                     if ( isset( $field_value[0] ) && is_array( $field_value[0] ) ) {
                         $country_state = new WeDevs\Wpuf\Data\Country_State();
                         $country_value = isset( $field_value[0]['country_select'] ) ? $field_value[0]['country_select'] : '';
-                        
+
                         // Get countries array from Country_State class as fallback
                         if ( empty( $countries ) ) {
                             $countries = $country_state->countries();
                         }
-                        
+
                         foreach ( $field_value[0] as $field_key => $value ) {
                             if ( 'country_select' === $field_key ) {
                                 if ( isset( $countries[ $value ] ) ) {
@@ -1109,7 +1127,7 @@ function wpuf_show_custom_fields( $content ) {
                                 }
                             } elseif ( 'state' === $field_key && ! empty( $country_value ) ) {
                                 $state_resolved = false;
-                                
+
                                 if ( wpuf()->is_pro() && file_exists( WPUF_PRO_INCLUDES . '/states.php' ) ) {
                                     $pro_states = include WPUF_PRO_INCLUDES . '/states.php';
                                     if ( ! empty( $pro_states[ $country_value ] ) && isset( $pro_states[ $country_value ][ $value ] ) ) {
@@ -1117,7 +1135,7 @@ function wpuf_show_custom_fields( $content ) {
                                         $state_resolved = true;
                                     }
                                 }
-                                
+
                                 if ( ! $state_resolved ) {
                                     $state_name = $country_state->getStateName( $value, $country_value );
                                     if ( $state_name ) {
@@ -3297,17 +3315,17 @@ function wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, $charging_
         return;
     }
 
-    $noce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
-
-    if ( isset( $nonce ) && ! wp_verify_nonce( $noce, 'wpuf_edit' ) ) {
-        return;
-    }
+    // Skip nonce verification for guest email verification as it's called programmatically
+    // $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+    // if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf_edit' ) ) {
+    //     return;
+    // }
 
     if ( $charging_enabled ) {
         $encoded_guest_url = add_query_arg(
             [
-                'p_id'     => $post_id_encoded,
-                'f_id'     => $form_id_encoded,
+                'p_id'     => urlencode( $post_id_encoded ),
+                'f_id'     => urlencode( $form_id_encoded ),
                 'post_msg' => 'verified',
                 'f'        => 2,
             ], get_home_url()
@@ -3315,15 +3333,15 @@ function wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, $charging_
     } else {
         $encoded_guest_url = add_query_arg(
             [
-                'p_id'     => $post_id_encoded,
-                'f_id'     => $form_id_encoded,
+                'p_id'     => urlencode( $post_id_encoded ),
+                'f_id'     => urlencode( $form_id_encoded ),
                 'post_msg' => 'verified',
                 'f'        => 1,
             ], get_home_url()
         );
     }
 
-    $default_body     = 'Hey There, <br> <br> We just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process. <br> <br> Please click the link below to verify: <br> <br> <a href="' . $encoded_guest_url . '">Publish Post</a> <br> <br> Regards, <br> <br>' . bloginfo( 'name' );
+    $default_body     = 'Hey There, <br> <br> We just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process. <br> <br> Please click the link below to verify: <br> <br> <a href="' . esc_url( $encoded_guest_url ) . '">Publish Post</a> <br> <br> Regards, <br> <br>' . bloginfo( 'name' );
     $to               = isset( $_POST['guest_email'] ) ? sanitize_email( wp_unslash( $_POST['guest_email'] ) ) : '';
     $guest_email_sub  = wpuf_get_option( 'guest_email_subject', 'wpuf_mails', 'Please Confirm Your Email to Get the Post Published!' );
     $subject          = $guest_email_sub;
@@ -3334,7 +3352,7 @@ function wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, $charging_
         $field_search = [ '{activation_link}', '{sitename}' ];
 
         $field_replace = [
-            '<a href="' . $encoded_guest_url . '">Publish Post</a>',
+            '<a href="' . esc_url( $encoded_guest_url ) . '">Publish Post</a>',
             $blogname,
         ];
 
@@ -5286,14 +5304,13 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
             'fallback_ppp_cost'        => [
                 'label' => __( 'Cost for each additional post after pack limit is reached', 'wp-user-frontend' ),
                 'type'  => 'number',
-                'required' => true,
                 'help_text' => __( 'This field is required when Pay-per-post billing when limit exceeds is enabled.', 'wp-user-frontend' ),
             ],
             'pay_per_post_cost'        => [
                 'label'     => __( 'Charge for each post', 'wp-user-frontend' ),
                 'type'      => 'number',
                 'help_text' => __(
-                    'Set a fee for each post submission', 'wp-user-frontend'
+                    'Set a fee for each post submission. This field is required when Pay as you post is selected.', 'wp-user-frontend'
                 ),
             ],
             'ppp_payment_success_page' => [
@@ -5539,4 +5556,67 @@ function wpuf_get_forms_counts_with_status( $post_type = 'wpuf_forms' ) {
     }
 
     return $status_count;
+}
+
+/**
+ * Fallback function for profile photo allowed extensions
+ * Only used when Pro version is not active
+ *
+ * @since 4.1.8
+ *
+ * @return array
+ */
+if ( ! function_exists( 'wpuf_field_profile_photo_allowed_extensions' ) ) {
+    function wpuf_field_profile_photo_allowed_extensions() {
+        $allowed_extensions = [
+            'jpg'  => __( 'JPG', 'wpuf-pro' ),
+            'jpeg' => __( 'JPEG', 'wpuf-pro' ),
+            'png'  => __( 'PNG', 'wpuf-pro' ),
+            'gif'  => __( 'GIF', 'wpuf-pro' ),
+        ];
+
+        /**
+         * Filter allowed profile photo extensions
+         *
+         * @since WPUF_PRO
+         *
+         * @param array $allowed_extensions Array of extension => label pairs
+         */
+        return apply_filters( 'wpuf_field_profile_photo_allowed_extensions', $allowed_extensions );
+    }
+}
+
+/**
+ * Fallback function for profile photo allowed MIME types
+ * Only used when Pro version is not active
+ *
+ * @since 4.1.8
+ *
+ * @return array
+ */
+if ( ! function_exists( 'wpuf_field_profile_photo_allowed_mimes' ) ) {
+    function wpuf_field_profile_photo_allowed_mimes() {
+        // Get WordPress core allowed mime types for consistency
+        $wp_mimes = get_allowed_mime_types();
+
+        // Define our basic allowed image types
+        $allowed_mimes = [
+            'image/jpeg',
+            'image/jpg',
+            'image/png',
+            'image/gif',
+        ];
+
+        // Only include mimes that are allowed by WordPress
+        $profile_photo_mimes = array_intersect( $allowed_mimes, $wp_mimes );
+
+        /**
+         * Filter allowed profile photo MIME types
+         *
+         * @since 4.1.8
+         *
+         * @param array $profile_photo_mimes Array of allowed MIME types for profile photos
+         */
+        return apply_filters( 'wpuf_field_profile_photo_allowed_mimes', $profile_photo_mimes );
+    }
 }

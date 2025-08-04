@@ -2855,6 +2855,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   margin-top: 0.5rem;
 }
 
+.wpuf-mt-20 {
+  margin-top: 5rem;
+}
+
 .wpuf-mt-3 {
   margin-top: 0.75rem;
 }

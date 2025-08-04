@@ -35,6 +35,7 @@ class Frontend_Form_Ajax {
     public function submit_post() {
         check_ajax_referer( 'wpuf_form_add' );
         add_filter( 'wpuf_form_fields', [ $this, 'add_field_settings' ] );
+        
         @header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 
         $form_id               = isset( $_POST['form_id'] ) ? intval( wp_unslash( $_POST['form_id'] ) ) : 0;
@@ -513,6 +514,7 @@ class Frontend_Form_Ajax {
 
         // now perform some post related actions. it should be done after other action. either count related problem emerge
         do_action( 'wpuf_add_post_after_insert', $post_id, $form_id, $this->form_settings, $meta_vars ); // plugin API to extend the functionality
+
 
         return $response;
     }

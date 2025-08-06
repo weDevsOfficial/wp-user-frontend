@@ -25,14 +25,14 @@ if ( strpos( strtolower( $form_type ), 'registration' ) !== false || strpos( str
             'label'    => __( 'Membership', 'wp-user-frontend' ),
             'keywords' => [ 'membership' ],
         ],
-        'community'    => [
-            'label'    => __( 'Community', 'wp-user-frontend' ),
-            'keywords' => [],
-        ],
-        'associations' => [
-            'label'    => __( 'Associations', 'wp-user-frontend' ),
-            'keywords' => [],
-        ],
+        // 'community'    => [
+        //     'label'    => __( 'Community', 'wp-user-frontend' ),
+        //     'keywords' => [],
+        // ],
+        // 'associations' => [
+        //     'label'    => __( 'Associations', 'wp-user-frontend' ),
+        //     'keywords' => [],
+        // ],
     ];
 } else {
     // Post form categories
@@ -85,15 +85,15 @@ if ( ! empty( $registry ) ) {
 }
 ?>
 <div class="wpuf-form-template-modal wpuf-fixed wpuf-top-0 wpuf-left-0 wpuf-w-screen wpuf-h-screen wpuf-bg-gray-100 wpuf-hidden wpuf-z-[999999]" role="dialog" aria-modal="true" aria-labelledby="template-modal-title" aria-describedby="template-modal-description" style="background-color: #F8FAFC;">
+    <button
+        class="wpuf-absolute wpuf-right-8 wpuf-top-4 wpuf-text-gray-400 hover:wpuf-text-gray-600 focus:wpuf-outline-none wpuf-close-btn wpuf-border wpuf-border-gray-200 wpuf-rounded-full wpuf-p-2 hover:wpuf-border-gray-300 wpuf-bg-white wpuf-z-[1000000]">
+        <svg xmlns="http://www.w3.org/2000/svg" class="wpuf-h-6 wpuf-w-6" fill="none" viewBox="0 0 24 24"
+             stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+    </button>
+    
     <div class="wpuf-relative wpuf-mx-auto wpuf-p-8 wpuf-h-full wpuf-overflow-y-auto wpuf-max-w-[1400px]">
-        <button
-            class="wpuf-absolute wpuf-right-4 wpuf-top-4 wpuf-text-gray-400 hover:wpuf-text-gray-600 focus:wpuf-outline-none wpuf-close-btn wpuf-border wpuf-border-gray-200 wpuf-rounded-full wpuf-p-2 hover:wpuf-border-gray-300 wpuf-bg-white wpuf-z-[1000000]">
-            <svg xmlns="http://www.w3.org/2000/svg" class="wpuf-h-6 wpuf-w-6" fill="none" viewBox="0 0 24 24"
-                 stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-        </button>
-
         <div class="wpuf-max-w-full wpuf-mx-auto wpuf-relative wpuf-z-[999998]">
             <!-- Header -->
             <div class="wpuf-mb-14 wpuf-mt-10 wpuf-ml-10">

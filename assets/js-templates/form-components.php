@@ -28,7 +28,7 @@
                 </span>
                 <span v-if="field.template === 'facebook_url' && field.show_icon === 'yes'" class="wpuf-social-label-icon wpuf-inline-flex wpuf-items-center wpuf-ml-2">
                     <svg class="wpuf-facebook-svg" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Facebook" role="img">
-                        <path d="M14.1061 6.68815H11.652C10.7822 6.68815 10.0752 7.3899 10.0688 8.25975L9.99768 17.8552M8.40234 11.6676H12.4046M2.08398 9.9987C2.08398 6.26675 2.08398 4.40077 3.24335 3.2414C4.40273 2.08203 6.2687 2.08203 10.0007 2.08203C13.7326 2.08203 15.5986 2.08203 16.758 3.2414C17.9173 4.40077 17.9173 6.26675 17.9173 9.9987C17.9173 13.7306 17.9173 15.5966 16.758 16.756C15.5986 17.9154 13.7326 17.9154 10.0007 17.9154C6.2687 17.9154 4.40273 17.9154 3.24335 16.756C2.08398 15.5966 2.08398 13.7306 2.08398 9.9987Z" stroke="#1877F3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M14.1061 6.68815H11.652C10.7822 6.68815 10.0752 7.3899 10.0688 8.25975L9.99768 17.8552M8.40234 11.6676H12.4046M2.08398 9.9987C2.08398 6.26675 2.08398 4.40077 3.24335 3.2414C4.40273 2.08203 6.2687 2.08203 10.0007 2.08203C13.7326 2.08203 15.5986 2.08203 16.758 3.2414C17.9173 4.40077 17.9173 6.26675 17.9173 9.9987C17.9173 13.7306 17.9173 15.5966 16.758 16.756C15.5986 17.9154 13.7326 17.9154 10.0007 17.9154C6.2687 17.9154 4.40273 17.9154 3.24335 16.756C2.08398 15.5966 2.08398 13.7306 2.08398 9.9987Z" stroke="#079669" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </span>
             </div>
@@ -134,7 +134,7 @@
                     </span>
                     <span v-if="field.template === 'facebook_url' && field.show_icon === 'yes'" class="wpuf-social-label-icon wpuf-inline-flex wpuf-items-center wpuf-ml-2">
                         <svg class="wpuf-facebook-svg" width="20" height="25" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Facebook" role="img">
-                            <path d="M14.1061 6.68815H11.652C10.7822 6.68815 10.0752 7.3899 10.0688 8.25975L9.99768 17.8552M8.40234 11.6676H12.4046M2.08398 9.9987C2.08398 6.26675 2.08398 4.40077 3.24335 3.2414C4.40273 2.08203 6.2687 2.08203 10.0007 2.08203C13.7326 2.08203 15.5986 2.08203 16.758 3.2414C17.9173 4.40077 17.9173 6.26675 17.9173 9.9987C17.9173 13.7306 17.9173 15.5966 16.758 16.756C15.5986 17.9154 13.7326 17.9154 10.0007 17.9154C6.2687 17.9154 4.40273 17.9154 3.24335 16.756C2.08398 15.5966 2.08398 13.7306 2.08398 9.9987Z" stroke="#1877F3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M14.1061 6.68815H11.652C10.7822 6.68815 10.0752 7.3899 10.0688 8.25975L9.99768 17.8552M8.40234 11.6676H12.4046M2.08398 9.9987C2.08398 6.26675 2.08398 4.40077 3.24335 3.2414C4.40273 2.08203 6.2687 2.08203 10.0007 2.08203C13.7326 2.08203 15.5986 2.08203 16.758 3.2414C17.9173 4.40077 17.9173 6.26675 17.9173 9.9987C17.9173 13.7306 17.9173 15.5966 16.758 16.756C15.5986 17.9154 13.7326 17.9154 10.0007 17.9154C6.2687 17.9154 4.40273 17.9154 3.24335 16.756C2.08398 15.5966 2.08398 13.7306 2.08398 9.9987Z" stroke="#079669" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </span>
                 </div>
@@ -1439,15 +1439,17 @@
         v-html ="get_term_dropdown_options()">
     </select>
 
-    <input
-        v-if="'ajax' === field.type"
-        type="text"
-        :class="builder_class_names('text')"
-        :placeholder="field.placeholder || 'Type to search ' + field.label"
-        :size="field.size"
-        value=""
-        autocomplete="off"
-    >
+    <div v-if="'ajax' === field.type" class="category-wrap">
+        <div>
+            <select
+                :class="builder_class_names('select')"
+                class="!wpuf-text-base"
+            >
+                <option class="wpuf-text-base !wpuf-leading-none"><?php esc_html_e( '— Select —', 'wp-user-frontend' ); ?></option>
+                <option v-for="term in sorted_terms" :value="term.id">{{ term.name }}</option>
+            </select>
+        </div>
+    </div>
 
     <div v-if="'multiselect' === field.type" class="category-wrap">
         <select

@@ -101,10 +101,14 @@ features:
   - id: RF0001
     name: Admin is checking Registration Forms - Pro Feature Page
   - id: RF0002
-    name: Admin is creating Registration Forms - using shortcode
+    name: Admin is adding fields to Registration Forms
   - id: RF0003
-    name: User is registering using - Registration Form
+    name: Admin is validating fields to Registration Forms
   - id: RF0004
+    name: Admin is creating Registration Forms - using shortcode
+  - id: RF0005
+    name: User is registering using - Registration Form
+  - id: RF0006
     name: Admin is validating - Registered user
 
   # Post Form Settings

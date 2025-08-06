@@ -19,6 +19,13 @@ class TEC_Compatibility_Manager {
     private $tec_version;
 
     /**
+     * Compatibility handler instance
+     *
+     * @var TEC_V5_Compatibility|TEC_V6_Compatibility|null
+     */
+    private $compatibility_handler;
+
+    /**
      * Constructor
      */
     public function __construct() {

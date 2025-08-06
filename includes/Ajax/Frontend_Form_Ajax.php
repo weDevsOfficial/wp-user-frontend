@@ -295,9 +295,20 @@ class Frontend_Form_Ajax {
         // If this is an Events Calendar event, delegate to the integration handler
         if ( isset( $postarr['post_type'] ) && 'tribe_events' === $postarr['post_type'] ) {
             // Prefer Pro integration if available
-            if ( wpuf_is_pro_active() ) {
-                $event_handler = wpuf_pro()->integrations->tribe__events__main->event_handler;
-                $post_id = $event_handler->handle_event_submission( $postarr, $meta_vars, $form_id, $this->form_settings );
+            if ( wpuf_is_pro_active() && wpuf_pro()->integrations ) {
+                // The key is lowercase
+                $integration = wpuf_pro()->integrations->tribe__events__main;
+                
+                if ($integration && isset($integration->event_handler)) {
+                    $event_handler = $integration->event_handler;
+                    $post_id = $event_handler->handle_event_submission( $postarr, $meta_vars, $form_id, $this->form_settings );
+                } else {
+                    // Fallback to free integration handler
+                    $event_handler = wpuf()->integrations->tribe__events__main->event_handler;
+                    $post_id       = $event_handler->handle_event_submission(
+                        $postarr, $meta_vars, $form_id, $this->form_settings
+                    );
+                }
             } else {
                 // Fallback to free integration handler
                 $event_handler = wpuf()->integrations->tribe__events__main->event_handler;

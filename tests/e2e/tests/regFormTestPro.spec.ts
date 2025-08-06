@@ -39,7 +39,7 @@ test.describe('Registration-Forms', () => {
      * 
      */
 
-    test('RF0001 : Here, Admin is checking Registration Forms - Pro Feature Page', { tag: ['@Pro'] }, async () => {
+    test('RF0001 : Admin is checking Registration Forms - Pro Feature Page', { tag: ['@Pro'] }, async () => {
         await page.waitForTimeout(15000);
         const BasicLogin = new BasicLoginPage(page);
         const RegForm = new RegFormPage(page);
@@ -49,8 +49,23 @@ test.describe('Registration-Forms', () => {
 
     });
 
+    test('RF0002 : Admin is adding fields to Registration Forms ', { tag: ['@Pro'] }, async () => {
+        const RegForm = new RegFormPage(page);
+        const regFormName = 'Registration';
+        //FrontEnd
+        //Complete FrontEnd Registration
+        await RegForm.addFieldsToRegistrationForm(regFormName);
+    });
 
-    test('RF0002 : Here, Admin is creating Registration Forms Page - using shortcode', { tag: ['@Pro'] }, async () => {
+    test('RF0003 : Admin is validating fields to Registration Forms ', { tag: ['@Pro'] }, async () => {
+        const RegForm = new RegFormPage(page);
+        const regFormName = 'Registration';
+        //FrontEnd
+        //Complete FrontEnd Registration
+        await RegForm.validateFieldsToRegistrationForm(regFormName);
+    });
+
+    test('RF0004 : Admin is creating Registration Forms Page - using shortcode', { tag: ['@Pro'] }, async () => {
         const RegForm = new RegFormPage(page);
         const SettingsSetup = new SettingsSetupPage(page);
         //Registration Forms page - Title
@@ -65,7 +80,7 @@ test.describe('Registration-Forms', () => {
     });
 
 
-    test('RF0003 : Here, User is registering using - Registration Form', { tag: ['@Pro'] }, async () => {
+    test('RF0005 : User is registering using - Registration Form', { tag: ['@Pro'] }, async () => {
         const RegForm = new RegFormPage(page);
         //FrontEnd
         //Complete FrontEnd Registration
@@ -73,7 +88,7 @@ test.describe('Registration-Forms', () => {
     });
 
 
-    test('RF0004 : Here, Admin is validating - Registered user', { tag: ['@Pro'] }, async () => {
+    test('RF0006 : Admin is validating - Registered user', { tag: ['@Pro'] }, async () => {
         const BasicLogin = new BasicLoginPage(page);
         const RegForm = new RegFormPage(page);
         //Basic Login
@@ -81,6 +96,8 @@ test.describe('Registration-Forms', () => {
         //Validate FrontEnd Registered
         await RegForm.validateUserRegisteredAdminEnd();
     });
+
+
 
 });
 

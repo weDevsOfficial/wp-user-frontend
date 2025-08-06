@@ -880,6 +880,16 @@ export const Selectors = {
             confirmNewNameTickButton: '//input[@name="post_title"]/following-sibling::i[1]',
         },
 
+        addFields: {
+            clickForm: (formName: string) => `//span[normalize-space()="${formName}"]`,
+            clickFormEditor: '//a[contains(text(),"Form Editor")]',
+            clickFormEditorSettings: '(//a[contains(@class,"wpuf-nav-tab wpuf-nav-tab-active")])[2]',
+            clickBlankForm: '//a[@title="Blank Form" and contains(text(), "Create Form")]',
+            useField: (field: string) => `//p[normalize-space()="${field}"]`,
+            clickAddFieldButton: '//a[contains(text(),"Add Field")]',
+            validateField: (field: string) => `//label[@for="${field}"]/../..//div[@class="wpuf-fields"]`,
+        },
+
         // Create Registration Forms - Add Profile Fields
         addProfileFields_RF: {
             // Profile Fields
@@ -962,17 +972,26 @@ export const Selectors = {
 
             // Registration Form
             // First Name
-            rfFirstName: '//input[@id="wpuf-user_fname"]',
+            rfUserName: '//input[@name="user_login"]',
+            rfFirstName: '//input[@name="first_name"]',
             // Last Name
-            rfLastName: '//input[@id="wpuf-user_lname"]',
+            rfLastName: '//input[@name="last_name"]',
             // Email
-            rfEmail: '//input[@type="email"]',
-            // Username
-            rfUserName: '//input[@id="wpuf-user_login"]',
+            rfEmail: '//input[@name="user_email"]',
             // Password
-            rfPassword: '(//input[@type="password"])[1]',
+            rfPassword: '//input[@name="pass1"]',
             // Confirm Password
-            rfConfirmPassword: '(//input[@type="password"])[2]',
+            rfConfirmPassword: '//input[@name="pass2"]',
+            rfDisplayName: '//input[@name="display_name"]',
+            rfNickname: '//input[@name="nickname"]',
+            rfWebsite: '//input[@name="user_url"]',
+            rfBiographicalInfo: '//textarea[@name="description"]',
+            rfAvatar: '//li[@data-label="Avatar"]//input[@type="file"]',
+            rfProfilePhoto: '//li[@data-label="Profile Photo"]//input[@type="file"]',
+            rfXtwitter: '//input[@name="wpuf_social_twitter"]',
+            rfFacebook: '//input[@name="wpuf_social_facebook"]',
+            rfLinkedIn: '//input[@name="wpuf_social_linkedin"]',
+            rfInstagram: '//input[@name="wpuf_social_instagram"]',
             // Register button
             rfRegisterButton: '//input[@value="Register"]',
 

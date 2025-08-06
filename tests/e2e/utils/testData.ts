@@ -198,7 +198,16 @@ const RegistrationForm: {
     rfLastName: string;
     rfUsername: string;
     rfEmail: string;
-    rfPassword: string;
+    rfDisplayName: string;
+    rfNickname: string;
+    rfWebsite: string;
+    rfBiographicalInfo: string;
+    rfAvatar: string;
+    rfProfilePhoto: string;
+    rfXtwitter: string;
+    rfFacebook: string;
+    rfLinkedIn: string;
+    rfInstagram: string;
 } = {
     //Registration Form Titles
     rfPostName1: faker.lorem.sentence(2),
@@ -210,7 +219,16 @@ const RegistrationForm: {
     rfLastName: rfLastName,
     rfUsername: faker.internet.displayName(),
     rfEmail: faker.internet.email(),
-    rfPassword: faker.internet.password()
+    rfDisplayName: faker.internet.displayName(),
+    rfNickname: faker.internet.displayName(),
+    rfWebsite: faker.internet.url(),
+    rfBiographicalInfo: faker.lorem.sentence(5),
+    rfAvatar: 'uploadeditems/avatar.png',
+    rfProfilePhoto: 'uploadeditems/profile_photo.jpg',
+    rfXtwitter: faker.word.noun(),
+    rfFacebook: faker.word.noun(),
+    rfLinkedIn: faker.word.noun(),
+    rfInstagram: faker.word.noun(),
 };
 
 

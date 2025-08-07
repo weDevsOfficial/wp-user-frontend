@@ -23,7 +23,7 @@ jobs:
   test:
     if: github.repository != 'weDevsOfficial/wp-user-frontend' && github.repository != 'weDevsOfficial/wpuf-pro'
     timeout-minutes: 240
-    runs-on: ['self-hosted', 'macOS', 'ARM64']
+    runs-on: ubuntu-22.04
    
     steps:
       # Setup PHP

@@ -69,6 +69,15 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
      * @return void
      */
     public function render( $field_settings, $form_id, $type = 'post', $post_id = null ) {
+        // Check if this is a custom taxonomy and pro is not active
+        $builtin_taxonomies = array( 'category', 'post_tag' );
+        $taxonomy_name = isset( $field_settings['name'] ) ? $field_settings['name'] : $this->tax_name;
+        
+        if ( ! in_array( $taxonomy_name, $builtin_taxonomies, true ) && ! wpuf_is_pro_active() ) {
+            // Don't render custom taxonomies on frontend when pro is not active
+            return;
+        }
+
         $this->field_settings = $field_settings;
         $this->form_id = $form_id; ?>
 

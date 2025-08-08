@@ -9,7 +9,7 @@
                 type="radio"
                 :value="val"
                 :checked="is_selected(val)"
-                :id="'radio-' + field.name + "
+                :id="'radio-' + field.name + '-' + val"
                 :class="builder_class_names('radio')">
             <label>{{ label }}</label>
         </div>
@@ -25,7 +25,7 @@
                 type="radio"
                 :value="val"
                 :checked="is_selected(val)"
-                :id="'radio-' + field.name + "
+                :id="'radio-' + field.name + '-' + val"
                 :class="builder_class_names('radio')">
             <label>{{ label }}</label>
         </div>

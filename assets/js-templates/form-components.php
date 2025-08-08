@@ -519,6 +519,7 @@
                 class="wpuf-block text-sm/6 wpuf-font-medium wpuf-text-gray-900 !wpuf-mb-0">
                 <input
                     type="radio"
+                    :name="'radio_' + editing_form_field.id + '_' + option_field.name"
                     :value="key"
                     v-model="value"
                     :class="builder_class_names('radio')">
@@ -534,6 +535,7 @@
         <label class="!wpuf-mb-0">
             <input
                 type="radio"
+                :name="'radio_' + editing_form_field.id + '_' + option_field.name"
                 :value="key"
                 v-model="value"
                 :class="builder_class_names('radio')">
@@ -1365,7 +1367,7 @@
                 type="radio"
                 :value="val"
                 :checked="is_selected(val)"
-                :id="'radio-' + field.name + "
+                :id="'radio-' + field.name + '-' + val"
                 :class="builder_class_names('radio')">
             <label>{{ label }}</label>
         </div>
@@ -1381,7 +1383,7 @@
                 type="radio"
                 :value="val"
                 :checked="is_selected(val)"
-                :id="'radio-' + field.name + "
+                :id="'radio-' + field.name + '-' + val"
                 :class="builder_class_names('radio')">
             <label>{{ label }}</label>
         </div>

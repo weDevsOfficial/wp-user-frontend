@@ -45,6 +45,8 @@ class Form_Field_URL extends Form_Field_Text {
                     placeholder="<?php echo esc_attr( $placeholder ); ?>"
                     value="<?php echo esc_attr( $value ); ?>" size="<?php echo esc_attr( $field_settings['size'] ); ?>"
                     autocomplete="url"
+                    oninvalid="this.setCustomValidity('Please enter website with https://')"
+                    oninput="this.setCustomValidity('')"
                 />
                 <?php $this->help_text( $field_settings ); ?>
             </div>

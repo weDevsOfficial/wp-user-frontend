@@ -672,6 +672,7 @@
             class="wpuf-block text-sm/6 wpuf-font-medium wpuf-text-gray-900">
             <input
                 type="radio"
+                :name="'visibility_' + editing_form_field.id"
                 :value="key"
                 v-model="selected"
                 class="checked:!wpuf-bg-primary checked:before:!wpuf-bg-transparent">
@@ -688,6 +689,7 @@
                 class="wpuf-block wpuf-my-1 wpuf-mr-2 wpuf-font-medium wpuf-text-gray-900">
                 <input
                     type="radio"
+                    :name="'visibility_' + editing_form_field.id"
                     :value="key"
                     v-model="selected"
                     :class="builder_class_names('radio')">

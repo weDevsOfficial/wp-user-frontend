@@ -1325,6 +1325,13 @@ class Render_Form {
      * @param int|null $post_id
      */
     public function taxonomy( $attr, $post_id, $form_id ) {
+        // Check if this is a custom taxonomy and pro is not active
+        $builtin_taxonomies = array( 'category', 'post_tag' );
+        if ( ! in_array( $attr['name'], $builtin_taxonomies, true ) && ! wpuf_is_pro_active() ) {
+            // Don't render custom taxonomies when pro is not active
+            return;
+        }
+
         $exclude_type       = isset( $attr['exclude_type'] ) ? esc_attr( $attr['exclude_type'] ) : 'exclude';
         // $exclude            = $attr['exclude'];
         $exclude            = isset( $attr['exclude'] ) ? esc_attr( $attr['exclude'] ) : '';

@@ -648,6 +648,35 @@
         },
 
         mounted: function () {
+            // Check if there are hidden custom taxonomy fields and show warning
+            if (wpuf_form_builder.has_hidden_taxonomies && !wpuf_form_builder.is_pro_active) {
+                var self = this;
+                setTimeout(function() {
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            title: '<span style="color: #111827; font-size: 18px; font-weight: 600;">Pro Fields Hidden</span>',
+                            html: '<div style="text-align: left; color: #374151; font-size: 14px; line-height: 1.5; margin: 20px 0;"><p style="margin: 0 0 10px 0;">This form includes custom taxonomy fields from third-party plugins. These are Pro-only and are hidden in both the builder and frontend until WPUF Pro is activated.</p></div>',
+                            imageUrl: wpuf_form_builder.asset_url + '/images/free-circle.svg',
+                            imageWidth: 80,
+                            imageHeight: 80,
+                            showCancelButton: false,
+                            showConfirmButton: true,
+                            confirmButtonColor: '#059669',
+                            confirmButtonText: 'Okay',
+                            customClass: {
+                                popup: 'wpuf-pro-taxonomy-warning',
+                                confirmButton: 'btn btn-success'
+                            },
+                            padding: '2rem',
+                            width: '500px'
+                        });
+                    } else {
+                        // Fallback to alert if SweetAlert is not available
+                        alert('This form includes custom taxonomy fields from third-party plugins. These are Pro-only and are hidden in both the builder and frontend until WPUF Pro is activated.');
+                    }
+                }, 500); // Small delay to ensure page is fully loaded
+            }
+
             // primary nav tabs and their contents
             this.bind_tab_on_click($('#wpuf-form-builder > fieldset > .nav-tab-wrapper > a'), '#wpuf-form-builder');
 

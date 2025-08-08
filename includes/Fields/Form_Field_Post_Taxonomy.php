@@ -42,6 +42,23 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
     }
 
     /**
+     * Check if this field should be treated as a pro feature
+     *
+     * @return bool
+     */
+    public function is_pro() {
+        // Built-in WordPress taxonomies that are always available
+        $builtin_taxonomies = array( 'category', 'post_tag' );
+        
+        // If this is a custom taxonomy (not built-in) and pro is not active, treat it as a pro feature
+        if ( ! in_array( $this->tax_name, $builtin_taxonomies, true ) && ! wpuf_is_pro_active() ) {
+            return true;
+        }
+        
+        return false;
+    }
+
+    /**
      * Render the Post Taxonomy field
      *
      * @param array  $field_settings

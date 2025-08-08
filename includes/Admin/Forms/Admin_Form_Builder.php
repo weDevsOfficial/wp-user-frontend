@@ -378,6 +378,7 @@ class Admin_Form_Builder {
                 $field_id = wpuf_insert_form_field( $data['form_id'], $field, $field_id, $order );
                 $new_wpuf_input_ids[] = $field_id;
                 $field['id'] = $field_id;
+                $field['is_new'] = false;  // Mark as saved field
                 $saved_wpuf_inputs[] = $field;
             }
         }

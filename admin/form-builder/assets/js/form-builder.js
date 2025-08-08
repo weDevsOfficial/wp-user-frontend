@@ -1,3 +1,4 @@
+/* global wpuf_admin_script, ajaxurl, Swal, tinyMCE */
 ;(function($) {
     'use strict';
 
@@ -115,11 +116,11 @@
                     // check if the editing field exist in normal fields
                     if (state.form_fields[i].id === parseInt(payload.editing_field_id)) {
                         if ( 'read_only' === payload.field_name && payload.value ) {
-                            state.form_fields[i]['required'] = 'no';
+                            state.form_fields[i].required = 'no';
                         }
 
                         if ( 'required' === payload.field_name && 'yes' === payload.value ) {
-                            state.form_fields[i]['read_only'] = false;
+                            state.form_fields[i].read_only = false;
                         }
 
                         let meta_exist = state.form_fields.filter( function (field) {
@@ -171,10 +172,12 @@
                 var sprintf = wp.i18n.sprintf;
                 var __ = wp.i18n.__;
                 // bring newly added element into viewport, do not show for reg form
-                if ( window.location.search.substring(1).split('&').includes('page=wpuf-profile-forms') ) return;
+                if ( window.location.search.substring(1).split('&').includes('page=wpuf-profile-forms') ) {
+                    return;
+                }
                 Vue.nextTick(function () {
                     var el = $('#form-preview-stage .wpuf-form .field-items').eq(payload.toIndex);
-                    if ('yes' == payload.field.is_meta && state.show_custom_field_tooltip) {
+                    if ('yes' === payload.field.is_meta && state.show_custom_field_tooltip) {
 
                         var image_one  = wpuf_admin_script.asset_url + '/images/custom-fields/settings.png';
                         var image_two  = wpuf_admin_script.asset_url + '/images/custom-fields/advance.png';
@@ -256,10 +259,12 @@
                                                 var $sections = $fieldOptionsMainContainer.find('.option-fields-section');
 
 
-                                                $sections.each(function(index) {
+                                                $sections.each(function() {
                                                     var $parentSection = $(this);
                                                     var $h3 = $parentSection.find('h3').first();
-                                                    if (!$h3.length) return true;
+                                                    if (!$h3.length) {
+                                                        return true;
+                                                    }
 
                                                     var rawH3Text = $h3.clone().children('i').remove().end().text();
                                                     var normalizedH3Text = rawH3Text.trim().toLowerCase().replace(/\.$/, "");
@@ -275,9 +280,9 @@
                                                     }
                                                 });
 
-                                                if ($advancedOptionsToggle?.length) {
+                                                if ($advancedOptionsToggle && $advancedOptionsToggle.length) {
                                                     var isContentVisible = false;
-                                                    if ($advancedOptionsContentDiv?.length) {
+                                                    if ($advancedOptionsContentDiv && $advancedOptionsContentDiv.length) {
                                                         isContentVisible = $advancedOptionsContentDiv.is(':visible');
 
                                                     } else {
@@ -287,8 +292,8 @@
                                                     if (!isContentVisible) {
 
                                                         $advancedOptionsToggle.trigger('click');
-                                                        setTimeout(() => {
-                                                            if ($advancedOptionsContentDiv?.length) {
+                                                        setTimeout(function() {
+                                                            if ($advancedOptionsContentDiv && $advancedOptionsContentDiv.length) {
 
                                                             }
                                                         }, 150);
@@ -296,10 +301,12 @@
 
                                                     }
 
-                                                    if (!$sectionToScroll?.length) $sectionToScroll = $advancedOptionsToggle;
+                                                    if (!$sectionToScroll || !$sectionToScroll.length) {
+                                                        $sectionToScroll = $advancedOptionsToggle;
+                                                    }
 
-                                                    setTimeout(() => {
-                                                        const elementToScrollTo = $sectionToScroll.get(0);
+                                                    setTimeout(function() {
+                                                        var elementToScrollTo = $sectionToScroll.get(0);
                                                         if (elementToScrollTo && typeof elementToScrollTo.scrollIntoView === 'function') {
                                                             elementToScrollTo.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
 
@@ -314,11 +321,11 @@
                                     }, 250);
                                 });
                             }
-                        }).then((result) => {
+                        }).then(function(result) {
                             if (result.isConfirmed) {
                                 state.show_custom_field_tooltip = false;
                             }
-                        } );
+                        });
                     }
 
                     if (el && !is_element_in_viewport(el.get(0))) {
@@ -595,7 +602,7 @@
                     }
                 });
 
-                return meta_key.map(function(name) { return '{' + name +'}' }).join( );
+                return meta_key.map(function(name) { return '{' + name +'}'; }).join( );
             },
 
             settings_titles: function() {
@@ -904,13 +911,14 @@
         //     resizeBuilderContainer();
         // });
 
-        function resizeBuilderContainer() {
-            if ($(document.body).hasClass('folded')) {
-                $("#wpuf-form-builder").css("width", "calc(100% - 80px)");
-            } else {
-                $("#wpuf-form-builder").css("width", "calc(100% - 200px)");
-            }
-        }
+        // Commented out - not currently used
+        // function resizeBuilderContainer() {
+        //     if ($(document.body).hasClass('folded')) {
+        //         $("#wpuf-form-builder").css("width", "calc(100% - 80px)");
+        //     } else {
+        //         $("#wpuf-form-builder").css("width", "calc(100% - 200px)");
+        //     }
+        // }
 
         SettingsTab.init();
 
@@ -1225,9 +1233,11 @@
                 const fieldName = field.attr('name');
                 const radioFields = $(`input[name="${fieldName}"]`);
 
-                radioFields.each((index, radio) => {
-                    $(radio).on('change', () => this.checkAllDependencies());
-                });
+                radioFields.each(function(_, radio) {
+                    $(radio).on('change', function() {
+                        this.checkAllDependencies();
+                    }.bind(this));
+                }.bind(this));
             }
         }
 
@@ -1311,7 +1321,7 @@
         });
     });
 
-    function populate_default_categories(obj, isInitialLoad) {
+    function populate_default_categories(obj) {  // isInitialLoad parameter removed - not used
         var post_type = $(obj).val();
 
         // Don't proceed if no post type is selected
@@ -1353,8 +1363,8 @@
                     });
                 }
             },
-            error: function (error) {
-
+            error: function () {
+                // Error handler - currently no specific error handling
             }
         });
     }

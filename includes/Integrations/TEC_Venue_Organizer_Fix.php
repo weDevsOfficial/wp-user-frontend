@@ -267,14 +267,202 @@ class TEC_Venue_Organizer_Fix {
                 if ( isset( $address['zip'] ) ) {
                     update_post_meta( $venue_id, '_VenueZip', sanitize_text_field( $address['zip'] ) );
                 }
+                // Handle country field - TEC expects 2-letter ISO country codes
+                $country_value = '';
                 if ( isset( $address['country_select'] ) ) {
-                    update_post_meta( $venue_id, '_VenueCountry', sanitize_text_field( $address['country_select'] ) );
+                    $country_value = sanitize_text_field( $address['country_select'] );
+                } elseif ( isset( $address['country'] ) ) {
+                    $country_value = sanitize_text_field( $address['country'] );
+                }
+                
+                if ( ! empty( $country_value ) ) {
+                    // Ensure we have the 2-letter ISO code that TEC expects
+                    $country_code = $this->normalize_country_code( $country_value );
+                    if ( $country_code ) {
+                        update_post_meta( $venue_id, '_VenueCountry', $country_code );
+                    }
                 }
             }
             
             return $venue_id;
         }
         
+        return false;
+    }
+    
+    /**
+     * Normalize country value to 2-letter ISO code
+     * 
+     * @param string $country_value The country value from the form
+     * @return string|false The 2-letter ISO code or false if not found
+     */
+    private function normalize_country_code( $country_value ) {
+        // If empty, return false
+        if ( empty( $country_value ) ) {
+            return false;
+        }
+        
+        // Convert to uppercase for comparison
+        $country_value = strtoupper( trim( $country_value ) );
+        
+        // Get WPUF's country list
+        $country_state = new \WeDevs\Wpuf\Data\Country_State();
+        $wpuf_countries = $country_state->countries();
+        
+        // If it's already a valid 2-letter code in our list, return it
+        if ( strlen( $country_value ) === 2 && isset( $wpuf_countries[ $country_value ] ) ) {
+            return $country_value;
+        }
+        
+        // If it's a 3-letter code or longer, check if it's a valid code
+        if ( isset( $wpuf_countries[ $country_value ] ) ) {
+            return $country_value;
+        }
+        
+        // Try to find the country code by matching the full name
+        foreach ( $wpuf_countries as $code => $name ) {
+            if ( strtoupper( $name ) === $country_value ) {
+                return $code;
+            }
+        }
+        
+        // Special cases for common variations and differences between WPUF and TEC
+        $country_mappings = [
+            // United States variations
+            'UNITED STATES' => 'US',
+            'UNITED STATES OF AMERICA' => 'US',
+            'USA' => 'US',
+            
+            // United Kingdom variations
+            'UNITED KINGDOM' => 'GB',
+            'UK' => 'GB',
+            'GREAT BRITAIN' => 'GB',
+            
+            // Netherlands variations
+            'NETHERLANDS' => 'NL',
+            'HOLLAND' => 'NL',
+            
+            // Russia variations
+            'RUSSIA' => 'RU',
+            'RUSSIAN FEDERATION' => 'RU',
+            
+            // Korea variations
+            'SOUTH KOREA' => 'KR',
+            'KOREA, REPUBLIC OF' => 'KR',
+            'REPUBLIC OF KOREA' => 'KR',
+            'NORTH KOREA' => 'KP',
+            'KOREA, DEMOCRATIC PEOPLE\'S REPUBLIC OF' => 'KP',
+            'KOREA DEMOCRATIC PEOPLE\'S REPUBLIC OF' => 'KP',
+            
+            // Vietnam variations
+            'VIETNAM' => 'VN',
+            'VIET NAM' => 'VN',
+            
+            // UAE variations
+            'UAE' => 'AE',
+            'UNITED ARAB EMIRATES' => 'AE',
+            
+            // Modern country names (2024 updates)
+            'TÜRKIYE' => 'TR',
+            'TURKIYE' => 'TR',
+            'TURKEY' => 'TR', // Old name still supported
+            'CABO VERDE' => 'CV',
+            'CAPE VERDE' => 'CV', // Old name still supported
+            'ESWATINI' => 'SZ',
+            'SWAZILAND' => 'SZ', // Old name still supported
+            'CZECHIA' => 'CZ',
+            'CZECH REPUBLIC' => 'CZ', // Full name still supported
+            
+            // Country name differences between WPUF and TEC
+            'BOLIVIA PLURINATIONAL STATE OF' => 'BO',
+            'BOLIVIA' => 'BO',
+            'BONAIRE SINT EUSTATIUS AND SABA' => 'BQ',
+            'CONGO THE DEMOCRATIC REPUBLIC OF THE' => 'CD',
+            'CONGO, DEMOCRATIC REPUBLIC OF THE' => 'CD',
+            'DEMOCRATIC REPUBLIC OF THE CONGO' => 'CD',
+            'DEMOCRATIC REPUBLIC OF CONGO' => 'CD',
+            'IVORY COAST' => 'CI',
+            'COTE D\'IVOIRE' => 'CI',
+            'CÔTE D\'IVOIRE' => 'CI',
+            'FALKLAND ISLANDS' => 'FK',
+            'FALKLAND ISLANDS (MALVINAS)' => 'FK',
+            'IRAN ISLAMIC REPUBLIC OF' => 'IR',
+            'IRAN, ISLAMIC REPUBLIC OF' => 'IR',
+            'IRAN' => 'IR',
+            'LAO PEOPLE\'S DEMOCRATIC REPUBLIC' => 'LA',
+            'LAOS' => 'LA',
+            'LIBYA' => 'LY',
+            'LIBYAN ARAB JAMAHIRIYA' => 'LY',
+            'MACEDONIA THE FORMER YUGOSLAV REPUBLIC OF' => 'MK',
+            'NORTH MACEDONIA' => 'MK',
+            'MACEDONIA' => 'MK',
+            'MICRONESIA FEDERATED STATES OF' => 'FM',
+            'MICRONESIA' => 'FM',
+            'MOLDOVA REPUBLIC OF' => 'MD',
+            'MOLDOVA' => 'MD',
+            'PALESTINE STATE OF' => 'PS',
+            'PALESTINE' => 'PS',
+            'PALESTINIAN TERRITORY OCCUPIED' => 'PS',
+            'SAINT BARTHELEMY' => 'BL',
+            'SAINT BARTHÉLEMY' => 'BL',
+            'SAINT MARTIN [FRENCH PART]' => 'MF',
+            'COLLECTIVITY OF SAINT MARTIN' => 'MF',
+            'SAINT VINCENT AND THE GRENADINES' => 'VC',
+            'SAO TOME AND PRINCIPE' => 'ST',
+            'SÃO TOMÉ AND PRÍNCIPE' => 'ST',
+            'SINT MAARTEN [DUTCH PART]' => 'SX',
+            'SINT MAARTEN' => 'SX',
+            'SGSSI' => 'GS',
+            'SOUTH GEORGIA, SOUTH SANDWICH ISLANDS' => 'GS',
+            'SOUTH GEORGIA AND THE SOUTH SANDWICH ISLANDS' => 'GS',
+            'SOUTH SUDAN' => 'SS',
+            'SVALBARD AND JAN MAYEN' => 'SJ',
+            'SVALBARD AND JAN MAYEN ISLANDS' => 'SJ',
+            'SYRIAN ARAB REPUBLIC' => 'SY',
+            'SYRIA' => 'SY',
+            'TANZANIA UNITED REPUBLIC OF' => 'TZ',
+            'TANZANIA, UNITED REPUBLIC OF' => 'TZ',
+            'TANZANIA' => 'TZ',
+            'TIMOR-LESTE' => 'TL',
+            'EAST TIMOR' => 'TL',
+            'VENEZUELA BOLIVARIAN REPUBLIC OF' => 'VE',
+            'VENEZUELA, BOLIVARIAN REPUBLIC OF' => 'VE',
+            'VENEZUELA' => 'VE',
+            'VIRGIN ISLANDS BRITISH' => 'VG',
+            'VIRGIN ISLANDS U.S.' => 'VI',
+            'VIRGIN ISLANDS US' => 'VI',
+            'HOLY SEE (VATICAN CITY STATE)' => 'VA',
+            'VATICAN CITY' => 'VA',
+            'VATICAN' => 'VA',
+            'CROATIA (LOCAL NAME: HRVATSKA)' => 'HR',
+            'CROATIA' => 'HR',
+            'CURACAO' => 'CW',
+            'CURAÇAO' => 'CW',
+            'SLOVAKIA (SLOVAK REPUBLIC)' => 'SK',
+            'SLOVAKIA' => 'SK',
+        ];
+        
+        // Check against special mappings
+        if ( isset( $country_mappings[ $country_value ] ) ) {
+            return $country_mappings[ $country_value ];
+        }
+        
+        // If still not found, check partial matches (less strict)
+        foreach ( $wpuf_countries as $code => $name ) {
+            // Check if the input contains the country name or vice versa
+            if ( strpos( strtoupper( $name ), $country_value ) !== false || 
+                 strpos( $country_value, strtoupper( $name ) ) !== false ) {
+                return $code;
+            }
+        }
+        
+        // Last resort: if it's exactly 2 characters, assume it's a country code
+        // even if not in our list (let TEC handle validation)
+        if ( 2 === strlen( $country_value ) ) {
+            return $country_value;
+        }
+        
+        // Could not determine country code
         return false;
     }
     

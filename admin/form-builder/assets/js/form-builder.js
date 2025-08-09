@@ -827,6 +827,11 @@
                         self.is_form_saving = false;
                         self.is_form_saved = true;
 
+                        // Check if currently on field-options panel and switch to form-fields after save
+                        if (self.$store.state.current_panel === 'field-options') {
+                            self.$store.commit('set_current_panel', 'form-fields-v4-1');
+                        }
+
                         setTimeout(function(){
                             self.isDirty = false;
                         }, 500);

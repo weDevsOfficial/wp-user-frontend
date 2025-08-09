@@ -52,6 +52,8 @@ class Event_Form_Template extends Form_Template {
                 'default'     => '',
                 'size'        => '40',
                 'wpuf_cond'   => $this->conditionals,
+                'id'          => uniqid('wpuf_', true),
+                'is_new'     => true
             ],
             [
                 'input_type'          => 'textarea',
@@ -71,6 +73,8 @@ class Event_Form_Template extends Form_Template {
                 'word_restriction'    => '',
                 'wpuf_cond'           => $this->conditionals,
                 'text_editor_control' => [],
+                'id'                   => uniqid('wpuf_', true),
+                'is_new'               => true
             ],
             [
                 'input_type' => 'text',
@@ -85,6 +89,8 @@ class Event_Form_Template extends Form_Template {
                 'default'    => current_time( 'Y-m-d H:i:s' ),
                 'css'        => 'wpuf_hidden_field',
                 'wpuf_cond'  => $this->conditionals,
+                'id'         => uniqid('wpuf_', true),
+                'is_new'    => true
             ],
             [
                 'input_type' => 'text',
@@ -97,6 +103,8 @@ class Event_Form_Template extends Form_Template {
                 'default'    => $this->get_utc_time(),
                 'css'        => 'wpuf_hidden_field',
                 'wpuf_cond'  => $this->conditionals,
+                'id'         => uniqid('wpuf_', true),
+                'is_new'    => true
             ],
             [
                 'input_type' => 'text',
@@ -109,6 +117,8 @@ class Event_Form_Template extends Form_Template {
                 'default'    => $this->get_utc_time( '+2 hours' ),
                 'css'        => 'wpuf_hidden_field',
                 'wpuf_cond'  => $this->conditionals,
+                'id'         => uniqid('wpuf_', true),
+                'is_new'    => true
             ],
             [
                 'input_type' => 'text',
@@ -123,6 +133,8 @@ class Event_Form_Template extends Form_Template {
                 'default'    => date( 'Y-m-d H:i:s', strtotime( '+2 hours', current_time( 'timestamp' ) ) ),
                 'css'        => 'wpuf_hidden_field',
                 'wpuf_cond'  => $this->conditionals,
+                'id'         => uniqid('wpuf_', true),
+                'is_new'    => true
             ],
             [
                 'input_type' => 'checkbox',
@@ -135,6 +147,8 @@ class Event_Form_Template extends Form_Template {
                     '1' => __( 'All Day Event', 'wp-user-frontend' ),
                 ],
                 'wpuf_cond'  => $this->conditionals,
+                'id'         => uniqid('wpuf_', true),
+                'is_new'    => true
             ],
             [
                 'input_type' => 'url',
@@ -146,6 +160,8 @@ class Event_Form_Template extends Form_Template {
                 'width'      => 'large',
                 'size'       => 40,
                 'wpuf_cond'  => $this->conditionals,
+                'id'         => uniqid('wpuf_', true),
+                'is_new'    => true
             ],
             [
                 'input_type' => 'text',
@@ -156,6 +172,8 @@ class Event_Form_Template extends Form_Template {
                 'is_meta'    => 'yes',
                 'size'       => 40,
                 'wpuf_cond'  => $this->conditionals,
+                'id'         => uniqid('wpuf_', true),
+                'is_new'    => true
             ],
             [
                 'input_type' => 'text',
@@ -165,6 +183,8 @@ class Event_Form_Template extends Form_Template {
                 'name'       => '_EventCost',
                 'is_meta'    => 'yes',
                 'wpuf_cond'  => $this->conditionals,
+                'id'         => uniqid('wpuf_', true),
+                'is_new'    => true
             ],
             [
                 'input_type'   => 'image_upload',
@@ -179,12 +199,14 @@ class Event_Form_Template extends Form_Template {
                 'css'          => '',
                 'max_size'     => '1024',
                 'wpuf_cond'    => $this->conditionals,
+                'id'           => uniqid('wpuf_', true),
+                'is_new'      => true
             ],
             [
                 'input_type'          => 'textarea',
                 'template'            => 'post_excerpt',
                 'required'            => 'no',
-                'label'               => __( 'Excerpt', 'wp-user-frontend' ),
+                'label'               => __( 'Short Description', 'wp-user-frontend' ),
                 'name'                => 'post_excerpt',
                 'is_meta'             => 'no',
                 'help'                => __( 'Provide a short description of this event (optional)',
@@ -197,6 +219,8 @@ class Event_Form_Template extends Form_Template {
                 'rich'                => 'no',
                 'wpuf_cond'           => $this->conditionals,
                 'text_editor_control' => [],
+                'id'                   => uniqid('wpuf_', true),
+                'is_new'               => true
             ],
             [
                 'input_type'  => 'text',
@@ -211,6 +235,8 @@ class Event_Form_Template extends Form_Template {
                 'default'     => '',
                 'size'        => '40',
                 'wpuf_cond'   => $this->conditionals,
+                'id'          => uniqid('wpuf_', true),
+                'is_new'     => true
             ],
         ];
 

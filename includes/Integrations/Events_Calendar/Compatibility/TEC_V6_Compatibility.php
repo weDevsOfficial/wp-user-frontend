@@ -11,6 +11,7 @@ namespace WeDevs\Wpuf\Integrations\Events_Calendar\Compatibility;
  * @since WPUF_SINCE
  */
 class TEC_V6_Compatibility {
+    
     /**
      * Convert form data directly to ORM format
      *
@@ -19,12 +20,37 @@ class TEC_V6_Compatibility {
      * @param array $form_data
      * @param array $meta_vars
      *
-     * @return array
+     * @return array|false
      */
     private function convert_form_data_to_orm_format( $form_data, $meta_vars = [] ) {
         $orm_args = [];
         // Merge form data with meta vars for comprehensive data access
         $all_data = array_merge( $form_data, $meta_vars );
+        
+        // Extract taxonomy data directly from $_POST since WPUF doesn't pass it in form_data
+        // Check for tribe_events_cat taxonomy field - can be array of IDs or comma-separated string
+        if ( isset( $_POST['tribe_events_cat'] ) && ! isset( $all_data['tribe_events_cat'] ) ) {
+            if ( is_array( $_POST['tribe_events_cat'] ) ) {
+                $all_data['tribe_events_cat'] = array_map( 'intval', $_POST['tribe_events_cat'] );
+            } else {
+                // Could be comma-separated string of IDs or names
+                $all_data['tribe_events_cat'] = sanitize_text_field( $_POST['tribe_events_cat'] );
+            }
+        }
+        
+        // Check for tags if not already in form_data
+        if ( ! isset( $all_data['tags'] ) && ! isset( $all_data['tags_input'] ) && isset( $_POST['tags'] ) ) {
+            $all_data['tags'] = sanitize_text_field( $_POST['tags'] );
+        }
+        
+        // Debug logging
+        if ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
+            error_log( 'WPUF TEC Debug - form_data keys: ' . print_r( array_keys( $form_data ), true ) );
+            error_log( 'WPUF TEC Debug - all_data tags: ' . print_r( isset($all_data['tags']) ? $all_data['tags'] : 'not set', true ) );
+            error_log( 'WPUF TEC Debug - all_data tags_input: ' . print_r( isset($all_data['tags_input']) ? $all_data['tags_input'] : 'not set', true ) );
+            error_log( 'WPUF TEC Debug - $_POST tags: ' . print_r( isset($_POST['tags']) ? $_POST['tags'] : 'not set', true ) );
+        }
+        
 
         /**
          * Opportunity to modify form data before converting to TEC ORM format
@@ -88,9 +114,9 @@ class TEC_V6_Compatibility {
         } else {
             // Fallback: create a default end date if none provided
             if ( ! empty( $orm_args['start_date'] ) ) {
-                $default_end          = date(
-                    'Y-m-d H:i:s', strtotime( $orm_args['start_date'] ) + 3600
-                ); // 1 hour later
+                $start_datetime = new \DateTime( $orm_args['start_date'] );
+                $start_datetime->add( new \DateInterval( 'PT1H' ) ); // Add 1 hour
+                $default_end = $start_datetime->format( 'Y-m-d H:i:s' );
                 $orm_args['end_date'] = $default_end;
             }
         }
@@ -142,10 +168,15 @@ class TEC_V6_Compatibility {
         // Map cost field (int or float) - handle properly for ORM API
         if ( ! empty( $all_data['_EventCost'] ) ) {
             $cost = sanitize_text_field( $all_data['_EventCost'] );
-            // Remove any currency symbols and clean the cost value
-            $cost = preg_replace( '/[^0-9.]/', '', $cost );
-            if ( is_numeric( $cost ) && floatval( $cost ) > 0 ) {
-                $orm_args['cost'] = floatval( $cost );
+            // Remove currency symbols while preserving optional negative sign and single decimal point
+            $cost = preg_replace( '/[^0-9.\-]/', '', $cost );
+            
+            // Ensure only one decimal point and optional leading negative sign
+            if ( preg_match( '/^-?\d*\.?\d+$/', $cost ) ) {
+                // Valid format: optional negative, digits, optional single decimal point, more digits
+                if ( is_numeric( $cost ) ) {
+                    $orm_args['cost'] = floatval( $cost );
+                }
             }
         }
         // Map currency fields using ORM field aliases
@@ -204,6 +235,38 @@ class TEC_V6_Compatibility {
         if ( ! empty( $all_data['_EventDuration'] ) ) {
             $orm_args['duration'] = intval( $all_data['_EventDuration'] );
         }
+        
+        // Map tags if available - check both 'tags' and 'tags_input'
+        if ( ! empty( $all_data['tags_input'] ) ) {
+            // WPUF already processed tags into tags_input format
+            $orm_args['tags_input'] = $all_data['tags_input'];
+        } elseif ( ! empty( $all_data['tags'] ) ) {
+            // Handle tags - can be string (comma-separated) or array
+            if ( is_string( $all_data['tags'] ) ) {
+                // Convert comma-separated string to array
+                $tags = array_map( 'trim', explode( ',', $all_data['tags'] ) );
+                $orm_args['tags_input'] = $tags;
+            } else if ( is_array( $all_data['tags'] ) ) {
+                $orm_args['tags_input'] = $all_data['tags'];
+            }
+        }
+        
+        // Map event categories if available
+        if ( ! empty( $all_data['tribe_events_cat'] ) ) {
+            // Handle different formats - could be array of IDs, comma-separated string, or text
+            if ( is_array( $all_data['tribe_events_cat'] ) ) {
+                $orm_args['categories'] = $all_data['tribe_events_cat'];
+            } else if ( is_string( $all_data['tribe_events_cat'] ) ) {
+                // Check if it's comma-separated IDs or names
+                if ( preg_match( '/^\d+(,\d+)*$/', $all_data['tribe_events_cat'] ) ) {
+                    // Comma-separated IDs
+                    $orm_args['categories'] = array_map( 'intval', explode( ',', $all_data['tribe_events_cat'] ) );
+                } else {
+                    // Assume it's category names/slugs
+                    $orm_args['categories'] = array_map( 'trim', explode( ',', $all_data['tribe_events_cat'] ) );
+                }
+            }
+        }
 
         /**
          * Opportunity to modify TEC ORM arguments after conversion from form data
@@ -220,6 +283,11 @@ class TEC_V6_Compatibility {
          * @param array $meta_vars The original meta variables from WPUF
          */
         $orm_args = apply_filters( 'wpuf_tec_after_convert_form_data', $orm_args, $all_data, $form_data, $meta_vars );
+
+        // Validate ORM requirements before returning
+        if ( ! $this->validate_orm_requirements( $orm_args ) ) {
+            return false;
+        }
 
         return $orm_args;
     }
@@ -341,7 +409,7 @@ class TEC_V6_Compatibility {
         }
         // Convert form data to ORM format
         $orm_args = $this->convert_form_data_to_orm_format( $form_data );
-        if ( empty( $orm_args ) ) {
+        if ( empty( $orm_args ) || $orm_args === false ) {
             return false;
         }
         // Prepare data for TEC's save_post hook
@@ -429,6 +497,16 @@ class TEC_V6_Compatibility {
                             'post_status' => $post_status,
                         ]
                     );
+                    
+                    // Add tags if they exist - use wp_set_post_tags for better reliability
+                    if ( ! empty( $args['tags_input'] ) ) {
+                        wp_set_post_tags( $event->ID, $args['tags_input'], false );
+                    }
+                    
+                    // Add event categories if they exist
+                    if ( ! empty( $args['categories'] ) ) {
+                        wp_set_post_terms( $event->ID, $args['categories'], 'tribe_events_cat', false );
+                    }
 
                     /**
                      * Opportunity to perform actions after event creation

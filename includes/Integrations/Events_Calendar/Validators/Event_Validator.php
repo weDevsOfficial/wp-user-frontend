@@ -150,9 +150,24 @@ class Event_Validator {
 
         foreach ( $time_fields as $field ) {
             $value = $event_data[ $field ];
-            if ( !is_numeric( $value ) || $value < 0 || $value > 59 ) {
+            
+            // Determine if this is an hour or minute field
+            $is_hour_field = strpos( $field, 'Hour' ) !== false;
+            $is_minute_field = strpos( $field, 'Minute' ) !== false;
+            
+            if ( !is_numeric( $value ) || $value < 0 ) {
                 $errors[] = sprintf( 
-                    __( 'Time field "%s" must be a valid number between 0 and 59.', 'wp-user-frontend' ),
+                    __( 'Time field "%s" must be a valid number.', 'wp-user-frontend' ),
+                    $field
+                );
+            } elseif ( $is_hour_field && $value > 23 ) {
+                $errors[] = sprintf( 
+                    __( 'Hour field "%s" must be between 0 and 23.', 'wp-user-frontend' ),
+                    $field
+                );
+            } elseif ( $is_minute_field && $value > 59 ) {
+                $errors[] = sprintf( 
+                    __( 'Minute field "%s" must be between 0 and 59.', 'wp-user-frontend' ),
                     $field
                 );
             }
@@ -299,12 +314,30 @@ class Event_Validator {
                 break;
 
             case 'EventStartHour':
-            case 'EventStartMinute':
             case 'EventEndHour':
+                if ( !isset( $event_data[ $field ] ) || !is_numeric( $event_data[ $field ] ) ) {
+                    $errors[] = sprintf( 
+                        __( 'Event %s must be a valid number.', 'wp-user-frontend' ),
+                        str_replace( 'Event', '', $field )
+                    );
+                } elseif ( $event_data[ $field ] < 0 || $event_data[ $field ] > 23 ) {
+                    $errors[] = sprintf( 
+                        __( 'Event %s must be between 0 and 23.', 'wp-user-frontend' ),
+                        str_replace( 'Event', '', $field )
+                    );
+                }
+                break;
+
+            case 'EventStartMinute':
             case 'EventEndMinute':
                 if ( !isset( $event_data[ $field ] ) || !is_numeric( $event_data[ $field ] ) ) {
                     $errors[] = sprintf( 
                         __( 'Event %s must be a valid number.', 'wp-user-frontend' ),
+                        str_replace( 'Event', '', $field )
+                    );
+                } elseif ( $event_data[ $field ] < 0 || $event_data[ $field ] > 59 ) {
+                    $errors[] = sprintf( 
+                        __( 'Event %s must be between 0 and 59.', 'wp-user-frontend' ),
                         str_replace( 'Event', '', $field )
                     );
                 }

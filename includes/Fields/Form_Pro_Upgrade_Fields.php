@@ -57,7 +57,35 @@ class Form_Field_Country extends Form_Field_Pro {
  */
 class Form_Field_Date extends Form_Field_Pro {
     public function __construct() {
-        $this->name       = __( 'Date / Time', 'wp-user-frontend' );
+        // Check if we're in Events Calendar context by multiple indicators
+        $is_events_calendar = false;
+        
+        // Check if post_type parameter is tribe_events
+        if ( isset( $_GET['post_type'] ) && 'tribe_events' === $_GET['post_type'] ) {
+            $is_events_calendar = true;
+        }
+        
+        // Check if we're on the wpuf-post-forms page editing a form
+        if ( isset( $_GET['page'] ) && 'wpuf-post-forms' === $_GET['page'] && isset( $_GET['action'] ) && 'edit' === $_GET['action'] && isset( $_GET['id'] ) ) {
+            $form_id = intval( $_GET['id'] );
+            $form_settings = get_post_meta( $form_id, 'wpuf_form_settings', true );
+
+            // Check if form is configured for tribe_events post type
+            if ( ! empty( $form_settings['post_type'] ) && 'tribe_events' === $form_settings['post_type'] ) {
+                $is_events_calendar = true;
+            }
+            
+            // Also check if form template is Events Calendar
+            if ( ! empty( $form_settings['form_template'] ) && 'post_form_template_events_calendar' === $form_settings['form_template'] ) {
+                $is_events_calendar = true;
+            }
+        }
+        
+        // Set the appropriate name based on context
+        $this->name = $is_events_calendar 
+            ? __( 'Event Date / Event Time', 'wp-user-frontend' ) 
+            : __( 'Date / Time', 'wp-user-frontend' );
+        
         $this->input_type = 'date_field';
         $this->icon       = 'clock';
     }

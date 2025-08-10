@@ -77,17 +77,16 @@ class Event_Form_Template extends Form_Template {
                 'is_new'               => true
             ],
             [
-                'input_type' => 'text',
-                'template'   => 'text_field',
-                'required'   => 'no',
+                'input_type' => 'date',
+                'template'   => 'date_field',
+                'required'   => 'yes',
                 'label'      => __( 'Event Start', 'wp-user-frontend' ),
                 'name'       => '_EventStartDate',
                 'is_meta'    => 'yes',
+                'help'       => '',
                 'width'      => 'large',
                 'format'     => 'yy-mm-dd',
                 'time'       => 'yes',
-                'default'    => current_time( 'Y-m-d H:i:s' ),
-                'css'        => 'wpuf_hidden_field',
                 'wpuf_cond'  => $this->conditionals,
                 'id'         => uniqid('wpuf_', true),
                 'is_new'    => true
@@ -121,17 +120,16 @@ class Event_Form_Template extends Form_Template {
                 'is_new'    => true
             ],
             [
-                'input_type' => 'text',
-                'template'   => 'text_field',
+                'input_type' => 'date',
+                'template'   => 'date_field',
                 'required'   => 'yes',
                 'label'      => __( 'Event End', 'wp-user-frontend' ),
                 'name'       => '_EventEndDate',
                 'is_meta'    => 'yes',
+                'help'       => '',
                 'width'      => 'large',
                 'format'     => 'yy-mm-dd',
                 'time'       => 'yes',
-                'default'    => date( 'Y-m-d H:i:s', strtotime( '+2 hours', current_time( 'timestamp' ) ) ),
-                'css'        => 'wpuf_hidden_field',
                 'wpuf_cond'  => $this->conditionals,
                 'id'         => uniqid('wpuf_', true),
                 'is_new'    => true

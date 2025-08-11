@@ -6,7 +6,6 @@ use DateTime;
 use DateTimeZone;
 use WeDevs\Wpuf\Admin\Forms\Form_Template;
 use WeDevs\Wpuf\Integrations\Events_Calendar\Utils\TEC_Constants;
-use WeDevs\Wpuf\Integrations\Events_Calendar\Utils\TEC_Helper;
 
 /**
  * The Events Calendar Integration Template
@@ -20,7 +19,7 @@ class Event_Form_Template extends Form_Template {
      */
     public function __construct() {
         parent::__construct();
-        $this->enabled       = TEC_Helper::is_tec_active();
+        $this->enabled       = class_exists( 'Tribe__Events__Main' );
         $this->title         = __( 'The Events Calendar', 'wp-user-frontend' );
         $this->description   = __(
             'Form for creating events. The Events Calendar plugin is required.', 'wp-user-frontend'

@@ -311,25 +311,29 @@ class Event_Form_Template extends Form_Template {
                 'new_body'     => 'Hi,
 A new event has been created in your site {sitename} ({siteurl}).
 
-Here is the details:
+Here are the details:
 Event Title: {post_title}
 Description: {post_content}
 Short Description: {post_excerpt}
 Author: {author}
 Post URL: {permalink}
 Edit URL: {editlink}',
-                'edit'         => 'off',
+                'edit'         => 'on',
                 'edit_to'      => get_option( 'admin_email' ),
-                'edit_subject' => 'Post has been edited',
-                'edit_body'    => 'Hi,
-The event "{post_title}" has been updated
+                'edit_subject' => 'An event has been updated',
+                'edit_body'    => 'Hi Admin,
+The event "{post_title}" has been updated.
 
-Here is the details:
+Here are the event details:
 Event Title: {post_title}
+Event Start: {custom__EventStartDate}
+Event End: {custom__EventEndDate}
+Event Website: {custom__EventURL}
+Event Cost: {custom__EventCost}
 Description: {post_content}
 Short Description: {post_excerpt}
 Author: {author}
-Post URL: {permalink}
+Event URL: {permalink}
 Edit URL: {editlink}'
             ],
         ];

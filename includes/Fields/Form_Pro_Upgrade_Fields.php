@@ -57,34 +57,17 @@ class Form_Field_Country extends Form_Field_Pro {
  */
 class Form_Field_Date extends Form_Field_Pro {
     public function __construct() {
-        // Check if we're in Events Calendar context by multiple indicators
-        $is_events_calendar = false;
+        // Check if we're in Events Calendar context using centralized helper
+        $is_events_calendar = class_exists( '\WeDevs\Wpuf\Integrations\Events_Calendar\Utils\Events_Calendar_Context' )
+            ? \WeDevs\Wpuf\Integrations\Events_Calendar\Utils\Events_Calendar_Context::is_current_context()
+            : false;
         
-        // Check if post_type parameter is tribe_events
-        if ( isset( $_GET['post_type'] ) && 'tribe_events' === $_GET['post_type'] ) {
-            $is_events_calendar = true;
-        }
-        
-        // Check if we're on the wpuf-post-forms page editing a form
-        if ( isset( $_GET['page'] ) && 'wpuf-post-forms' === $_GET['page'] && isset( $_GET['action'] ) && 'edit' === $_GET['action'] && isset( $_GET['id'] ) ) {
-            $form_id = intval( $_GET['id'] );
-            $form_settings = get_post_meta( $form_id, 'wpuf_form_settings', true );
-
-            // Check if form is configured for tribe_events post type
-            if ( ! empty( $form_settings['post_type'] ) && 'tribe_events' === $form_settings['post_type'] ) {
-                $is_events_calendar = true;
-            }
-            
-            // Also check if form template is Events Calendar
-            if ( ! empty( $form_settings['form_template'] ) && 'post_form_template_events_calendar' === $form_settings['form_template'] ) {
-                $is_events_calendar = true;
-            }
-        }
-        
-        // Set the appropriate name based on context
-        $this->name = $is_events_calendar 
+        // Set the appropriate name based on context with filter for customization
+        $default_label = $is_events_calendar 
             ? __( 'Event Date / Event Time', 'wp-user-frontend' ) 
             : __( 'Date / Time', 'wp-user-frontend' );
+            
+        $this->name = apply_filters( 'wpuf_date_field_label', $default_label, $is_events_calendar );
         
         $this->input_type = 'date_field';
         $this->icon       = 'clock';

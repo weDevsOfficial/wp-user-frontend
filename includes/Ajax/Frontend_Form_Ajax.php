@@ -296,7 +296,7 @@ class Frontend_Form_Ajax {
         $post_id = null;
         
         // Check if this is an Events Calendar event
-        if ( isset( $postarr['post_type'] ) && 'tribe_events' === $postarr['post_type'] ) {
+        if ( isset( $postarr['post_type'] ) && $this->is_events_calendar_post_type( $postarr['post_type'] ) ) {
             $post_id = $this->handle_tribe_events_submission( $postarr, $meta_vars, $form_id );
         }
         
@@ -573,6 +573,21 @@ class Frontend_Form_Ajax {
         }
         
         return $post_id;
+    }
+
+    /**
+     * Check if post type is an Events Calendar post type
+     *
+     * @param string $post_type Post type to check
+     * @return bool True if Events Calendar post type
+     */
+    private function is_events_calendar_post_type( $post_type ) {
+        if ( class_exists( '\WeDevs\Wpuf\Integrations\Events_Calendar\Utils\TEC_Constants' ) ) {
+            return in_array( $post_type, \WeDevs\Wpuf\Integrations\Events_Calendar\Utils\TEC_Constants::TEC_POST_TYPES, true );
+        }
+        
+        // Fallback for backward compatibility
+        return 'tribe_events' === $post_type;
     }
 
     /**

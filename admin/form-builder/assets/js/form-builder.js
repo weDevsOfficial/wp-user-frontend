@@ -115,11 +115,11 @@
                 for (i = 0; i < state.form_fields.length; i++) {
                     // check if the editing field exist in normal fields
                     if (state.form_fields[i].id === parseInt(payload.editing_field_id)) {
-                        if ( 'read_only' === payload.field_name && payload.value ) {
-                            state.form_fields[i].required = 'no';
+                        if ( 'read_only' === payload.field_name && (payload.value === true || payload.value === 'yes') ) {
+                            state.form_fields[i].required = false;
                         }
 
-                        if ( 'required' === payload.field_name && 'yes' === payload.value ) {
+                        if ( 'required' === payload.field_name && (payload.value === true || payload.value === 'yes') ) {
                             state.form_fields[i].read_only = false;
                         }
 
@@ -658,39 +658,50 @@
             // Check if there are hidden custom taxonomy fields and show warning
             if (wpuf_form_builder.has_hidden_taxonomies && !wpuf_form_builder.is_pro_active) {
                 var self = this;
+                // Check if warning has already been shown in this session
+                // Temporarily disabled for testing - uncomment to enable session check
+                // if (sessionStorage.getItem('wpuf_pro_taxonomy_warning_shown')) {
+                //     return;
+                // }
                 setTimeout(function() {
+                    var __ = (wp && wp.i18n && wp.i18n.__) ? wp.i18n.__ : function(text) { return text; };
                     if (typeof Swal !== 'undefined') {    
                         Swal.fire({
                             title: '',
-                            html: '<div style="display: flex; align-items: flex-start; gap: 60px;">' +
-                                  '<div style="flex: 1; text-align: left;">' +
-                                  '<div style="background: #d4f4dd; border-radius: 50%; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">' +
-                                  '<img src="' + wpuf_form_builder.asset_url + '/images/free-circle.svg" alt="warning">' +
+                            html: '<div class="wpuf-pro-modal-content">' +
+                                  '<div class="wpuf-pro-modal-left">' +
+                                  '<div class="wpuf-pro-modal-icon">' +
+                                  '<img src="' + wpuf_form_builder.asset_url + '/images/free-circle.svg" alt="' + __('Pro upgrade notification icon', 'wp-user-frontend') + '">' +
                                   '</div>' +
-                                  '<h2 style="font-size: 24px; font-weight: 500; color: #1a1a1a; margin: 0 0 15px 0;">Pro Fields Hidden</h2>' +
-                                  '<p style="font-size: 20px; color: #6b7280; line-height: 28px; margin: 0; font-weight: 500;">This form includes custom taxonomy fields from third-party plugins. These are Pro-only and are hidden in both the builder and frontend until WPUF Pro is activated.</p>' +
+                                  '<h2 class="wpuf-pro-modal-title">' + __('Pro Fields Hidden', 'wp-user-frontend') + '</h2>' +
+                                  '<p class="wpuf-pro-modal-text">' + __('This form includes custom taxonomy fields from third-party plugins. These are Pro-only and are hidden in both the builder and frontend until WPUF Pro is activated.', 'wp-user-frontend') + '</p>' +
                                   '</div>' +
-                                  '<div style="flex: 0 0 auto; background: #FFF7ED; border-radius: 9.86px; padding: 23px 28px; position: relative;">' +
-                                  '<img src="' + wpuf_form_builder.asset_url + '/images/event-pro-field.jpeg" alt="Event Pro Field" style="width: auto; height: 320px; border-radius: 6px; display: block;">' +
+                                  '<div class="wpuf-pro-modal-right">' +
+                                  '<img src="' + wpuf_form_builder.asset_url + '/images/event-pro-field.jpeg" alt="' + __('Event Pro Field preview', 'wp-user-frontend') + '">' +
                                   '</div>' +
                                   '</div>',
                             icon: false,
                             showCancelButton: false,
                             showConfirmButton: true,
                             confirmButtonColor: '#059669',
-                            confirmButtonText: 'Okay',
+                            confirmButtonText: __('Okay', 'wp-user-frontend'),
                             customClass: {
                                 popup: 'wpuf-pro-taxonomy-warning',
-                                confirmButton: 'btn btn-success',
+                                confirmButton: 'wpuf-btn-primary',
                                 icon: 'wpuf-warning-icon'
                             },
                             width: '1038px',
                             height: '512px',
-                            padding: '36px'
+                            padding: '36px',
+                            imageAlt: __('Pro upgrade notification', 'wp-user-frontend')
                         });
+                        // Mark warning as shown in this session
+                        sessionStorage.setItem('wpuf_pro_taxonomy_warning_shown', 'true');
                     } else {
                         // Fallback to alert if SweetAlert is not available
-                        alert('This form includes custom taxonomy fields from third-party plugins. These are Pro-only and are hidden in both the builder and frontend until WPUF Pro is activated.');
+                        alert(__('This form includes custom taxonomy fields from third-party plugins. These are Pro-only and are hidden in both the builder and frontend until WPUF Pro is activated.', 'wp-user-frontend'));
+                        // Mark warning as shown in this session
+                        sessionStorage.setItem('wpuf_pro_taxonomy_warning_shown', 'true');
                     }
                 }, 500); // Small delay to ensure page is fully loaded
             }

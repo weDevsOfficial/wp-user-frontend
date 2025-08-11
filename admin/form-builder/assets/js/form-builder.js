@@ -122,21 +122,7 @@
                             state.form_fields[i]['read_only'] = false;
                         }
 
-                        let meta_exist = state.form_fields.filter( function (field) {
-                            return 'yes' === field.is_meta && field.name === payload.value;
-                        });
-
-                        if ( meta_exist.length ) {
-                            swal({
-                                text: 'Duplicate Meta Key',
-                                type: 'warning',
-                                confirmButtonColor: '#d54e21',
-                                confirmButtonText: 'Enter another key',
-                                confirmButtonClass: 'btn btn-success',
-                            });
-                        }
-
-                        if ( ( payload.field_name === 'name'  && payload.value.length - 2 < payload.field_name.length ) || ! state.form_fields[i].hasOwnProperty('is_new') ) {
+                        if (payload.field_name === 'name'  && ! state.form_fields[i].hasOwnProperty('is_new') ) {
                             continue;
                         } else {
                             state.form_fields[i][payload.field_name] = payload.value;

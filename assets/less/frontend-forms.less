@@ -5,9 +5,9 @@
 @mediaMD: 1200px;
 /* DivTable.com */
 body {
-    font-family: 'Open Sans', sans-serif;
-#wpfooter {
-    position: fixed  !important
+.has-error {
+    background: #FFE4E4;
+    padding: 10px;
 }
 .wpufTable{
     display: table;
@@ -113,7 +113,7 @@ body {
     background-color: #f2dede;
     color: #a94442;
     border: 1px solid #ebccd1;
-    margin: 10px 10px 20px;
+    margin: 10px 0 20px 0;
     padding: 10px;
     .border-radius(3px);
     font-size: 13px;
@@ -208,6 +208,11 @@ body {
                 }
             }
 
+            .wpuf-fields-inline {
+                display: flex;
+                justify-content: space-between;
+            }
+
             .wpuf-submit{
 
                 input[type=submit] {
@@ -251,10 +256,15 @@ ul.wpuf-form {
         }
 
         .wp-editor-wrap {
-            border: 1px solid @borderColor;
+            border: none;
         }
 
-        &.wpuf_hidden_field {
+        &wpuf-el {
+            position: relative;
+            display: flex;
+        }
+
+        &.wpuf_hidden_field.wpuf-el {
             display: none;
         }
 
@@ -266,24 +276,6 @@ ul.wpuf-form {
 
             .required {
                 color: red;
-            }
-        }
-        &.field-size-large {
-            .wpuf-fields {
-                float: left;
-                width: 70%;
-            }
-        }
-        &.field-size-medium {
-            .wpuf-fields {
-                float: left;
-                width: 50%;
-            }
-        }
-        &.field-size-small {
-            .wpuf-fields {
-                float: left;
-                width: 30%;
             }
         }
 
@@ -301,31 +293,6 @@ ul.wpuf-form {
             .wpuf-checkbox-block{
                 display: block;
                 margin-bottom: 6px;
-            }
-
-            a.file-selector {
-                display: inline;
-                text-decoration: none;
-                padding: 5px 12px;
-                margin: 0;
-                height: 30px;
-                line-height: 28px;
-                border: 1px solid #ccc;
-                .border-radius(3px);
-                background: #fafafa;
-                color: #23282d;
-                box-shadow: 0 1px 0 #cccccc;
-                vertical-align: top;
-                cursor: pointer;
-                -webkit-appearance: none;
-                white-space: nowrap;
-
-                &:hover,
-                &:focus {
-                    background: #fafafa;
-                    border-color: #999;
-                    color: #23282d;
-                }
             }
 
             .google-map {
@@ -384,7 +351,8 @@ ul.wpuf-form {
                 }
             }
 
-            .wpuf-help {
+            .wpuf-help,
+            .wpuf-wordlimit-message {
                 color: #666;
                 margin: 2px 0 5px 0;
                 font-size: 12px;
@@ -590,14 +558,6 @@ ul.wpuf-form {
             margin-bottom: 10px;
 
             &.city_name,
-            &.state,
-            &.zip,
-            &.country_select {
-                float: left;
-                width: 47%;
-            }
-
-            &.city_name,
             &.zip {
                 margin-right: 4%;
             }
@@ -609,7 +569,6 @@ ul.wpuf-form {
 
         .wpuf-section-wrap {
             border-bottom: 1px solid #ccc;
-            margin: 15px 0;
 
             h2.wpuf-section-title {
                 margin: 0;
@@ -1037,10 +996,6 @@ ul.wpuf_packs {
     }
 }
 
-.password[type="text"]{
-  display: none;
-}
-
 table.wpuf-table {
     border: 1px solid #E7E7E7;
     margin: 0 0px 10px 0;
@@ -1209,16 +1164,33 @@ table.wpuf-table {
         display: block;
     }
 
-    .wpuf-multistep-prev-btn,
-    .wpuf-multistep-next-btn {
+    button.wpuf-multistep-next-btn.btn.btn-primary {
         position: absolute;
-        bottom: 5px;
+        bottom: 0;
+        right: 0;
     }
-    .wpuf-multistep-prev-btn {
-        left: 10px;
+
+    button.wpuf-multistep-prev-btn.btn.btn-primary {
+        position: absolute;
+        bottom: 0;
+        left: 0;
     }
-    .wpuf-multistep-next-btn {
-        right: 10px;
+
+    a#wpuf-post-draft {
+        position: absolute;
+        bottom: 0;
+        right: ~"calc(50% - 35px)";
+    }
+
+    span.wpuf-draft-saved {
+        position: absolute;
+        bottom: 0;
+        right: ~"calc(50% - 150px)";
+    }
+    span.wpuf-loading {
+        position: absolute;
+        bottom: 8px;
+        right: ~"calc(50% - 60px)";
     }
 }
 
@@ -1371,7 +1343,6 @@ body.rtl{
     }
 }
 .wpuf-dashboard-container {
-    font-family: 'Open Sans', sans-serif;
     max-width: 85rem !important;
     .clearfix();
     .wpuf-dashboard-navigation {
@@ -1381,7 +1352,6 @@ body.rtl{
         a {
             text-decoration: none;
             box-shadow: none;
-            font-family: 'Open Sans', sans-serif;
             font-size: 16px;
             font-weight: bold;
             color: #000;
@@ -1435,6 +1405,12 @@ body.rtl{
             }
         }
 
+        .wpuf-fields {
+            input[type="radio"] {
+                    width: initial;
+            }
+        }
+
     }
 
     .items-table-container,
@@ -1446,7 +1422,6 @@ body.rtl{
         width: 100%;
         margin-top: 0px;
         border: 1.0218px solid #DAE1F5;
-        font-family: 'Open Sans', sans-serif !important;
         color: #000 !important;
         font-size: 16px !important;
         font-weight: 400 !important;
@@ -1655,7 +1630,6 @@ input[type="text"].wpuf-google-map-search {
     background-color: #fff !important;
     text-overflow: ellipsis !important;
     width: 170px !important;
-    font-family: Roboto !important;
     font-size: 15px !important;
     font-weight: 300 !important;
     padding: 0 11px 0 13px !important;
@@ -1886,10 +1860,6 @@ ul.wpuf-form .ui-state-default.wpuf-image-wrap .caption span:hover{
   padding: 6px 0;
 }
 
-ul.wpuf-form .wpuf-el{
-  position: relative;
-}
-
 ul.wpuf-form .weforms-frontend-field-points{
     position: absolute;
     top: 0;
@@ -1911,12 +1881,13 @@ ul.wpuf-form .weforms-frontend-field-points{
 }
 
 /* Front End Posts List Tools */
-.wpuf-posts-options{
-    display: inline-block;
-    padding: 7px 7px;
-    border-radius: 100%;
-    // margin: 0px 5px;
+.wpuf-posts-edit,
+.wpuf-posts-delete {
+    float: left;
+    padding: 10px;
+    border-radius: 50%;
 }
+
 .wpuf-posts-edit:hover{
     background-color: #5C5CFB;
 }
@@ -2006,6 +1977,7 @@ ul.wpuf-form{
                 padding: 0;
                 border: 0;
                 float: none;
+                display: flex;
                 width: 100%;
                 overflow: hidden;
 
@@ -2038,6 +2010,7 @@ ul.wpuf-form{
                             input[type="datetime-local"],
                             input[type="color"], textarea{
                                 width: 100%;
+                                max-width: fit-content;
                             }
                         }
                     }
@@ -2093,4 +2066,19 @@ ul.wpuf-form{
 }
 .wpuf-el.terms_and_conditions  label > input[type=checkbox]{
     width: auto !important;
+}
+/* field specific style to override our default padding*/
+.iti--allow-dropdown input[type="text"] {
+    padding-left: 52px !important;
+}
+.form-preview-stage-dropzone {
+    background-color: #f0fdf4;
+    border: 1px solid #4ade80;
+    height: 50px;
+}
+img.wpuf-eye {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%) translateX(-6%);
 }

@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.wpuf-inline-input .wpuf-p-4 {
+    padding: 0;
+}
+.wpuf-inline-input > *:first-child {
+    margin-right: 1rem;
+}
+body.user-frontend_page_wpuf_subscription {
+    background: #fff;
+}

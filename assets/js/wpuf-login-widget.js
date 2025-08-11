@@ -58,6 +58,7 @@ jQuery( function($) {
         })
         .done( function( response, textStatus, jqXHR ) {
             $('.wpuf-ajax-reset-password-form .wpuf-ajax-message p').html(response.data.message);
+            $('.wpuf-ajax-reset-password-form .wpuf-ajax-message').addClass('wpuf-message');
         } )
         .fail( function( jqXHR, textStatus, errorThrown ) {
             console.log( 'AJAX failed', errorThrown );
@@ -74,6 +75,7 @@ jQuery( function($) {
             dataType: 'json',
             data: {
                 action: 'wpuf_ajax_logout',
+                nonce: '<?php echo esc_attr( wp_create_nonce( "wpuf_acf_compatibility" ) ); ?>'
             },
             success: function(data) {
                 $('.wpuf-ajax-logout .wpuf-ajax-errors').html(data.message);

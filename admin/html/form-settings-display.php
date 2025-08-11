@@ -79,7 +79,7 @@ $theme_css      = isset( $form_settings['use_theme_css'] ) ? $form_settings['use
                         $output .= '<img src="' . $image . '" alt="">';
                         $output .= '</li>';
 
-                        echo $output; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+                        echo $output; // phpcs:ignore
                     }
                     ?>
                 </ul>

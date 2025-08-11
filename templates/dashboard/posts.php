@@ -1,6 +1,6 @@
 <?php
 
-$post_type = $_GET['section'];
+$post_type = ! empty( $_GET['section'] ) ? sanitize_text_field( wp_unslash( $_GET['section'] ) ) : 'post';
 
 global $userdata;
 
@@ -87,16 +87,6 @@ $post_type_obj   = get_post_type_object( $post_type );
     $featured_img_size = wpuf_get_option( 'ft_img_size', 'wpuf_dashboard' );
     $payment_column    = wpuf_get_option( 'show_payment_column', 'wpuf_dashboard', 'on' );
     $enable_payment    = wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' );
-    $current_user      = wpuf_get_user();
-    $user_subscription = new WPUF_User_Subscription( $current_user );
-    $user_sub          = $user_subscription->current_pack();
-    $sub_id            = $current_user->subscription()->current_pack_id();
-
-    if ( $sub_id ) {
-        $subs_expired = $user_subscription->expired();
-    } else {
-        $subs_expired = false;
-    }
     ?>
     <div class="items-table-container">
         <table class="items-table <?php echo esc_attr( $post_type ); ?>" cellpadding="0" cellspacing="0">
@@ -122,11 +112,14 @@ $post_type_obj   = get_post_type_object( $post_type );
             <tbody>
                 <?php
                 global $post;
-
+                $stickies      = get_option( 'sticky_posts' );
                 while ( $dashboard_query->have_posts() ) {
                     $dashboard_query->the_post();
                     $show_link        = !in_array( $post->post_status, ['draft', 'future', 'pending'] );
-                    $payment_status   = get_post_meta( $post->ID, '_wpuf_payment_status', true ); ?>
+                    $payment_status   = get_post_meta( $post->ID, '_wpuf_payment_status', true );
+                    $is_featured      = in_array( intval( $post->ID ), $stickies, true ) ? ' - ' . esc_html__( 'Featured', 'wp-user-frontend' ) . ucfirst( $post_type ) : '';
+                    $title            = wp_trim_words( get_the_title(), 5 ) . $is_featured;
+                    ?>
                     <tr>
                         <?php if ( 'on' == $featured_img ) { ?>
                             <td data-label="<?php esc_attr_e( 'Featured Image: ', 'wp-user-frontend' ); ?>">
@@ -149,11 +142,13 @@ $post_type_obj   = get_post_type_object( $post_type );
                         <td data-label="<?php esc_attr_e( 'Title: ', 'wp-user-frontend' ); ?>" class="<?php echo 'on' === $featured_img ? 'data-column' : '' ; ?>">
                             <?php if ( ! $show_link ) { ?>
 
-                                <?php echo wp_trim_words( get_the_title(), 5 ); ?>
+                                <?php echo esc_html( $title ); ?>
 
                             <?php } else { ?>
 
-                                <a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wp-user-frontend' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php echo wp_trim_words( get_the_title(), 5 ); ?></a>
+                                <a href="<?php the_permalink(); ?>" title="<?php printf( 
+                                    // translators: %s is title
+                                    esc_attr__( 'Permalink to %s', 'wp-user-frontend' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php echo esc_html( $title ); ?></a>
 
                             <?php } ?>
                             <?php if ( 'on' !== $featured_img ){?>
@@ -163,7 +158,23 @@ $post_type_obj   = get_post_type_object( $post_type );
                             <?php }?>
                         </td>
                         <td data-label="<?php esc_attr_e( 'Status: ', 'wp-user-frontend' ); ?>" class="data-column">
-                            <?php wpuf_show_post_status( $post->post_status ); ?>
+                            <?php
+                            $current_post_status = $post->post_status;
+                            if ( 'publish' === $current_post_status ) {
+                                $link_text = esc_html__( 'View', 'wp-user-frontend' );
+                                $the_link  = get_permalink();
+                            } else {
+                                $link_text = esc_html__( 'Preview', 'wp-user-frontend' );
+                                $the_link  = get_preview_post_link();
+                            }
+                            wpuf_show_post_status( $current_post_status );
+                            echo esc_html( apply_filters( 'wpuf_preview_link_separator', '&nbsp;|&nbsp;' ) );
+                            printf(
+                                '<a href="%s" target="_blank">%s</a>',
+                                esc_url( $the_link ),
+                                esc_url( $link_text )
+                            );
+                            ?>
                         </td>
 
                         <?php do_action( 'wpuf_account_posts_row_col', $args, $post ); ?>
@@ -173,7 +184,8 @@ $post_type_obj   = get_post_type_object( $post_type );
                                 <?php if ( empty( $payment_status ) ) { ?>
                                     <?php esc_html_e( 'Not Applicable', 'wp-user-frontend' ); ?>
                                     <?php } elseif ( $payment_status != 'completed' ) { ?>
-                                        <a href="<?php echo esc_attr( trailingslashit( get_permalink( wpuf_get_option( 'payment_page', 'wpuf_payment' ) ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo esc_attr( $post->ID ); ?>"><?php esc_html_e( 'Pay Now', 'wp-user-frontend' ); ?></a>
+                                        <a href="<?php echo esc_attr( trailingslashit( get_permalink( wpuf_get_option( 'payment_page',
+                                                                                                                       'wpuf_payment' ) ) ) ); ?>?action=wpuf_pay&type=post&post_id=<?php echo esc_attr( $post->ID ); ?>"><?php esc_html_e( 'Pay Now', 'wp-user-frontend' ); ?></a>
                                         <?php } elseif ( $payment_status == 'completed' ) { ?>
                                             <?php esc_html_e( 'Completed', 'wp-user-frontend' ); ?>
                                         <?php } ?>
@@ -182,31 +194,14 @@ $post_type_obj   = get_post_type_object( $post_type );
 
                                 <td data-label="<?php esc_attr_e( 'Options: ', 'wp-user-frontend' ); ?>" class="data-column">
                                     <?php
-                                    if ( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) == 'yes' ) {
-                                        $disable_pending_edit = wpuf_get_option( 'disable_pending_edit', 'wpuf_dashboard', 'on' );
-                                        $edit_page            = (int) wpuf_get_option( 'edit_page_id', 'wpuf_frontend_posting' );
-                                        $url                  = add_query_arg( ['pid' => $post->ID], get_permalink( $edit_page ) );
-
-                                        $show_edit = true;
-
-                                        if ( $post->post_status == 'pending' && $disable_pending_edit == 'on' ) {
-                                            $show_edit  = false;
-                                        }
-
-                                        if ( ( $post->post_status == 'draft' || $post->post_status == 'pending' ) && ( !empty( $payment_status ) && $payment_status != 'completed' ) ) {
-                                            $show_edit  = false;
-                                        }
-
-                                        if ( $subs_expired ) {
-                                            $show_edit  = false;
-                                        }
-
-                                        if ( $show_edit ) {
+                                        if ( wpuf_is_post_editable( $post ) ) {
+                                            $edit_page = (int) wpuf_get_option( 'edit_page_id', 'wpuf_frontend_posting' );
+                                            $url = add_query_arg( [ 'pid' => $post->ID ], get_permalink( $edit_page ) );
                                             ?>
                                             <a class="wpuf-posts-options wpuf-posts-edit" href="<?php echo esc_url( wp_nonce_url( $url, 'wpuf_edit' ) ); ?>"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.2175 0.232507L14.0736 2.08857C14.3836 2.39858 14.3836 2.90335 14.0736 3.21336L12.6189 4.66802L9.63808 1.68716L11.0927 0.232507C11.4027 -0.0775022 11.9075 -0.0775022 12.2175 0.232507ZM0 14.3061V11.3253L8.7955 2.52974L11.7764 5.5106L2.98086 14.3061H0Z" fill="#B7C4E7"/></svg></a>
                                             <?php
                                         }
-                                    } ?>
+                                     ?>
 
                                     <?php
                                     if ( wpuf_get_option( 'enable_post_del', 'wpuf_dashboard', 'yes' ) == 'yes' ) {
@@ -256,7 +251,11 @@ $post_type_obj   = get_post_type_object( $post_type );
 
             <?php
         } else {
-            printf( '<div class="wpuf-message">' . esc_attr( __( 'No %s found', 'wp-user-frontend' ) ) . '</div>', esc_html( $post_type_obj->label ) );
+            printf( 
+                // translators: %s is label
+                '<div class="wpuf-message">' . esc_attr( __( 'No %s found', 'wp-user-frontend' ) ) . '</div>', 
+                esc_html( $post_type_obj->label ) 
+            );
             do_action( 'wpuf_account_posts_nopost', $userdata->ID, $post_type_obj );
         }
 

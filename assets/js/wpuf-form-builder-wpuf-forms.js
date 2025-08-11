@@ -48,6 +48,38 @@
                     }
                 });
 
+                 // Check if payment options are enabled
+                 var paymentEnabled = $('[name="wpuf_settings[payment_options]"]').is(':checked');
+                 if (!paymentEnabled) {
+                    return is_valid; // Skip validation if payments are disabled
+                 }
+ 
+                 // Get the selected payment option
+                 var choosePaymentOption = $('[name="wpuf_settings[choose_payment_option]"]').val();
+                 
+                 // Check if force pack purchase is selected
+                 if (choosePaymentOption === 'force_pack_purchase') {
+                     // Check if fallback PPP is enabled
+                     var fallbackEnabled = $('[name="wpuf_settings[fallback_ppp_enable]"]').is(':checked');
+                     if (fallbackEnabled) {
+                         // Check if fallback cost is provided
+                         var fallbackCost = $('[name="wpuf_settings[fallback_ppp_cost]"]').val();
+                         if (!fallbackCost || fallbackCost.trim() === '' || parseFloat(fallbackCost) <= 0) {
+                             this.validation_error_msg = 'Cost for each additional post after pack limit is reached is required when Pay-per-post billing when limit exceeds is enabled.';
+                             return false;
+                         }
+                     }
+                 }
+
+                 // Check if enable_pay_per_post is selected and validate pay_per_post_cost
+                 if (choosePaymentOption === 'enable_pay_per_post') {
+                     var payPerPostCost = $('[name="wpuf_settings[pay_per_post_cost]"]').val();
+                     if (!payPerPostCost || payPerPostCost.trim() === '' || parseFloat(payPerPostCost) <= 0) {
+                         this.validation_error_msg = 'Charge for each post is required when Pay as you post is selected.';
+                         return false;
+                     }
+                 }
+ 
                 return is_valid;
             }
         }
@@ -108,9 +140,9 @@
                     fields: tax_names
                 });
 
-                // Bind jquery ui draggable. But first destory any previous binding
+                // Bind jquery ui draggable. But first destroy any previous binding
                 Vue.nextTick(function () {
-                    var buttons = $('#panel-form-field-buttons-taxonomies .button');
+                    var buttons = $('#panel-form-field-buttons-taxonomies .wpuf-field-button');
 
                     buttons.each(function () {
                         if ($(this).draggable('instance')) {
@@ -119,7 +151,7 @@
                     });
 
                     buttons.draggable({
-                        connectToSortable: '#form-preview-stage .wpuf-form,  .wpuf-column-inner-fields .wpuf-column-fields-sortable-list',
+                        connectToSortable: '#form-preview-stage, #form-preview-stage .wpuf-form, .wpuf-column-inner-fields .wpuf-column-fields-sortable-list',
                         helper: 'clone',
                         revert: 'invalid',
                         cancel: '.button-faded',

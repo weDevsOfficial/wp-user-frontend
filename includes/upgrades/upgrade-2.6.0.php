@@ -1,5 +1,7 @@
 <?php
 
+use WeDevs\Wpuf\Admin\Subscription;
+
 /**
  * Move 'Custom fields in post' option from global to individual field settings
  *
@@ -64,13 +66,14 @@ function wpuf_upgrade_2_6_create_subscribers_table() {
  */
 function wpuf_upgrade_2_6_insert_subscribers() {
     global $wpdb;
-    $users = WPUF_Subscription::init()->subscription_pack_users();
+    $users = (new Subscription())->subscription_pack_users();
 
     foreach ( $users as $user ) {
         $sub_data               = get_user_meta( $user->data->ID, '_wpuf_subscription_pack', true );
         $sql                    = $wpdb->prepare( 'SELECT * FROM ' . $wpdb->prefix . 'wpuf_transaction
         WHERE user_id = %d AND pack_id = %d LIMIT 1', $user->data->ID, $sub_data['pack_id'] );
-        $result = $wpdb->get_row( $sql );
+        $result = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . $wpdb->prefix . 'wpuf_transaction
+            WHERE user_id = %d AND pack_id = %d LIMIT 1', $user->data->ID, $sub_data['pack_id'] ) );
 
         if ( $result ) {
             $table_data = [

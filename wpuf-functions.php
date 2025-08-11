@@ -1,5 +1,10 @@
 <?php
 
+use WeDevs\Wpuf\Admin\Subscription;
+use WeDevs\Wpuf\Encryption_Helper;
+use WeDevs\Wpuf\Free\Pro_Prompt;
+use WeDevs\Wpuf\Frontend\Payment;
+
 /**
  * Start output buffering
  *
@@ -54,6 +59,8 @@ function wpuf_show_post_status( $status ) {
  * @author Tareq Hasan
  */
 function wpuf_admin_post_status( $status ) {
+    $fontcolor = '#000';
+    $title = '';
     if ( 'publish' === $status ) {
         $title     = __( 'Published', 'wp-user-frontend' );
         $fontcolor = '#009200';
@@ -177,7 +184,7 @@ function wpuf_get_post_types( $args = [] ) {
         }
     }
 
-    return apply_filters( 'wpuf-get-post-types', $post_types );
+    return apply_filters( 'wpuf_get_post_types', $post_types );
 }
 
 /**
@@ -341,6 +348,12 @@ class WPUF_Walker_Category_Checklist extends Walker {
     public function start_el( &$output, $category, $depth = 0, $args = [], $current_object_id = 0 ) {
         $taxonomy = $args['taxonomy'];
 
+        $required = '';
+
+        if ( ! empty( $args['required'] ) && 'yes' === $args['required'] ) {
+            $required = ' data-required="yes" ';
+        }
+
         if ( empty( $taxonomy ) ) {
             $taxonomy = 'category';
         }
@@ -358,7 +371,14 @@ class WPUF_Walker_Category_Checklist extends Walker {
         }
 
         $class = isset( $args['class'] ) ? $args['class'] : '';
-        $output .= "\n<li class='" . $inline_class . "' id='{$taxonomy}-{$category->term_id}'>" . '<label class="selectit"><input class="' . $class . '" value="' . $category->term_id . '" type="checkbox" name="' . $name . '[]" id="in-' . $taxonomy . '-' . $category->term_id . '"' . checked( in_array( $category->term_id, $args['selected_cats'], true ), true, false ) . disabled( empty( $args['disabled'] ), false, false ) . ' /> ' . esc_html( apply_filters( 'the_category', $category->name ) ) . '</label>';
+        $category_name = esc_html( apply_filters( 'the_category', $category->name ) );
+
+        $output .= sprintf(
+            '<li class="%s" id="%s-%s" data-label="%s"><label class="selectit"><input class="%s" value="%s" type="checkbox" data-type="checkbox" name="%s[]" id="in-%s-%s" %s %s %s /> %s</label>',
+            esc_attr( $inline_class ), esc_attr( $taxonomy ), esc_attr( $category->term_id ), esc_attr( $args['label'] ), esc_attr( $class ), esc_attr( $category->term_id ), esc_attr( $name ), esc_attr( $taxonomy ), esc_attr( $category->term_id ),
+            checked( in_array( $category->term_id, $args['selected_cats'], true ), true, false ),
+            disabled( empty( $args['disabled'] ), false, false ), $required, esc_html( $category_name )
+        );
     }
 
     public function end_el( &$output, $category, $depth = 0, $args = [] ) {
@@ -397,9 +417,10 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
         $args['selected_cats'] = [];
     }
 
-    $args['show_inline'] = $attr['show_inline'];
-
-    $args['class'] = $class;
+    $args['show_inline'] = ! empty( $attr['show_inline'] ) ? $attr['show_inline'] : '';
+    $args['class']       = $class;
+    $args['required']    = ! empty( $attr['required'] ) ? $attr['required'] : 'no';
+    $args['label']       = ! empty( $attr['label'] ) ? $attr['label'] : '';
 
     $tax_args = [
         'taxonomy'    => $tax,
@@ -417,18 +438,22 @@ function wpuf_category_checklist( $post_id = 0, $selected_cats = false, $attr = 
     echo wp_kses(
         call_user_func_array( [ &$walker, 'walk' ], [ $categories, 0, $args ] ), [
             'li'    => [
-                'class' => [],
+                'class'      => [],
+                'id'         => [],
+                'data-label' => [],
             ],
             'label' => [
                 'class' => [],
             ],
             'input' => [
-                'class'   => [],
-                'type'    => [],
-                'value'   => [],
-                'name'    => [],
-                'id'      => [],
-                'checked' => [],
+                'class'         => [],
+                'type'          => [],
+                'value'         => [],
+                'name'          => [],
+                'id'            => [],
+                'checked'       => [],
+                'data-required' => [],
+                'data-type'     => [],
             ],
             'ul'    => [
                 'class' => [],
@@ -592,13 +617,13 @@ function wpuf_associate_attachment( $attachment_id, $post_id ) {
 function wpuf_update_post( $args ) {
     if ( ! wp_is_post_revision( $args['ID'] ) ) {
         // unhook this function so it doesn't loop infinitely
-        remove_action( 'save_post', [ WPUF_Admin_Posting::init(), 'save_meta' ], 1 );
+        remove_action( 'save_post', [ WeDevs\Wpuf\Admin\Posting::init(), 'save_meta' ], 1 );
 
         // update the post, which calls save_post again
         wp_update_post( $args );
 
         // re-hook this function
-        add_action( 'save_post', [ WPUF_Admin_Posting::init(), 'save_meta' ], 1 );
+        add_action( 'save_post', [ WeDevs\Wpuf\Admin\Posting::init(), 'save_meta' ], 1 );
     }
 }
 
@@ -816,7 +841,7 @@ function wpuf_admin_role() {
  * @return array
  */
 function wpuf_get_gateways( $context = 'admin' ) {
-    $gateways = WPUF_Payment::get_payment_gateways();
+    $gateways = Payment::get_payment_gateways();
     $return   = [];
 
     foreach ( $gateways as $id => $gate ) {
@@ -824,8 +849,9 @@ function wpuf_get_gateways( $context = 'admin' ) {
             $return[ $id ] = $gate['admin_label'];
         } else {
             $return[ $id ] = [
-                'label' => $gate['checkout_label'],
-                'icon'  => isset( $gate['icon'] ) ? $gate['icon'] : '',
+                'label'          => $gate['checkout_label'],
+                'icon'           => isset( $gate['icon'] ) ? $gate['icon'] : '',
+                'is_pro_preview' => ! empty( $gate['is_pro_preview'] ) ? esc_attr( $gate['is_pro_preview'] ) : false,
             ];
         }
     }
@@ -849,6 +875,10 @@ function wpuf_get_gateways( $context = 'admin' ) {
  */
 function wpuf_show_custom_fields( $content ) {
     global $post;
+
+    if ( ! is_a( $post, '\WP_Post' ) ) {
+        return $content;
+    }
 
     $show_custom = wpuf_get_option( 'cf_show_front', 'wpuf_frontend_posting' );
 
@@ -879,7 +909,16 @@ function wpuf_show_custom_fields( $content ) {
                     if ( ! empty( $column_fields ) ) {
                         // ignore section break and HTML input type
                         foreach ( $column_fields as $column_field_key => $column_field ) {
-                            if ( isset( $column_field['show_in_post'] ) && 'yes' === $column_field['show_in_post'] ) {
+                            // Skip if input type is not set
+                            if ( ! isset( $column_field['input_type'] ) ) {
+                                continue;
+                            }
+
+                            // Check if it's a map field
+                            $is_map_field = in_array( $column_field['input_type'], [ 'map', 'google_map' ], true );
+
+                            // Include field if it's a map or if show_in_post is enabled
+                            if ( $is_map_field || ( isset( $column_field['show_in_post'] ) && wpuf_is_checkbox_or_toggle_on( $column_field['show_in_post'] ) ) ) {
                                 $meta[] = $column_field;
                             }
                         }
@@ -888,7 +927,16 @@ function wpuf_show_custom_fields( $content ) {
                 continue;
             }
 
-            if ( isset( $attr['show_in_post'] ) && 'yes' === $attr['show_in_post'] ) {
+            // Skip if input type is not set
+            if ( ! isset( $attr['input_type'] ) ) {
+                continue;
+            }
+
+            // Check if it's a map field
+            $is_map_field = in_array( $attr['input_type'], [ 'map', 'google_map' ], true );
+
+            // Include field if it's a map or if show_in_post is enabled
+            if ( $is_map_field || ( isset( $attr['show_in_post'] ) && wpuf_is_checkbox_or_toggle_on( $attr['show_in_post'] ) ) ) {
                 $meta[] = $attr;
             }
         }
@@ -924,7 +972,7 @@ function wpuf_show_custom_fields( $content ) {
                         }
                         $cond_field_value = isset( $post_terms[0] ) ? $post_terms[0]->term_id : '';
                     } else {
-                        $cond_field_value = get_post_meta( $post->ID, $cond_field_name, 'true' );
+                        $cond_field_value = get_post_meta( $post->ID, $cond_field_name, true );
                     }
 
                     if ( isset( $attr['wpuf_cond']['cond_option'][ $field_key ] ) ) {
@@ -954,7 +1002,7 @@ function wpuf_show_custom_fields( $content ) {
                 continue;
             }
 
-            if ( method_exists( $wpuf_field, 'render_field_data' ) ) {
+            if ( ! empty( $wpuf_field ) && method_exists( $wpuf_field, 'render_field_data' ) ) {
                 $html .= $wpuf_field->render_field_data( $field_value, $attr );
                 continue;
             }
@@ -1043,6 +1091,8 @@ function wpuf_show_custom_fields( $content ) {
                     ob_start();
                     wpuf_shortcode_map_post( $attr['name'], $post->ID );
 
+                    wp_enqueue_script( 'wpuf-google-maps' );
+
                     if ( isset( $attr['directions'] ) && $attr['directions'] ) {
                         $location   = get_post_meta( $post->ID, $attr['name'], true );
                         $def_lat    = isset( $location['lat'] ) ? $location['lat'] : 40.7143528;
@@ -1057,15 +1107,40 @@ function wpuf_show_custom_fields( $content ) {
                     break;
 
                 case 'address':
-                    include_once __DIR__ . '/includes/countries.php';
+                    include_once WPUF_ROOT . '/includes/Data/countries.php';
 
                     $address_html = '';
 
                     if ( isset( $field_value[0] ) && is_array( $field_value[0] ) ) {
+                        $country_state = new WeDevs\Wpuf\Data\Country_State();
+                        $country_value = isset( $field_value[0]['country_select'] ) ? $field_value[0]['country_select'] : '';
+
+                        // Get countries array from Country_State class as fallback
+                        if ( empty( $countries ) ) {
+                            $countries = $country_state->countries();
+                        }
+
                         foreach ( $field_value[0] as $field_key => $value ) {
                             if ( 'country_select' === $field_key ) {
                                 if ( isset( $countries[ $value ] ) ) {
                                     $value = $countries[ $value ];
+                                }
+                            } elseif ( 'state' === $field_key && ! empty( $country_value ) ) {
+                                $state_resolved = false;
+
+                                if ( wpuf()->is_pro() && file_exists( WPUF_PRO_INCLUDES . '/states.php' ) ) {
+                                    $pro_states = include WPUF_PRO_INCLUDES . '/states.php';
+                                    if ( ! empty( $pro_states[ $country_value ] ) && isset( $pro_states[ $country_value ][ $value ] ) ) {
+                                        $value = $pro_states[ $country_value ][ $value ];
+                                        $state_resolved = true;
+                                    }
+                                }
+
+                                if ( ! $state_resolved ) {
+                                    $state_name = $country_state->getStateName( $value, $country_value );
+                                    if ( $state_name ) {
+                                        $value = $state_name;
+                                    }
                                 }
                             }
 
@@ -1163,7 +1238,7 @@ function wpuf_show_custom_fields( $content ) {
 
                 case 'country_list':
                     $value         = get_post_meta( $post->ID, $attr['name'], true );
-                    $country_state = new CountryState();
+                    $country_state = new WeDevs\Wpuf\Data\Country_State();
                     $countries     = $country_state->countries();
 
                     if ( isset( $countries[ $value ] ) ) {
@@ -1237,7 +1312,7 @@ function wpuf_show_custom_fields( $content ) {
     return $content . $html;
 }
 
-add_filter( 'the_content', 'wpuf_show_custom_fields', 10 );
+add_filter( 'the_content', 'wpuf_show_custom_fields' );
 
 /**
  * Map display shortcode
@@ -1402,8 +1477,6 @@ function wpuf_meta_shortcode( $atts ) {
     }
 }
 
-add_shortcode( 'wpuf-meta', 'wpuf_meta_shortcode' );
-
 /**
  * Get the value of a settings field
  *
@@ -1504,11 +1577,15 @@ function wpuf_get_attachment_id_from_url( $attachment_url = '' ) {
  *
  * @global object $wpdb
  */
-function wpufe_ajax_tag_search() {
+function wpuf_ajax_tag_search() {
+    if ( ! isset( $_REQUEST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_REQUEST['nonce'] ) ), 'wpuf_ajax_tag_search' ) ) {
+        wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
+    }
+
     global $wpdb;
 
     $taxonomy = isset( $_GET['tax'] ) ? sanitize_text_field( wp_unslash( $_GET['tax'] ) ) : '';
-    $term_ids = isset( $_GET['term_ids'] ) ? sanitize_text_field( wp_unslash( $_GET['term_ids'] ) ) : '';
+    $term_ids = ! empty( $_GET['term_ids'] ) ? sanitize_key( wp_unslash( $_GET['term_ids'] ) ) : '';
     $tax      = get_taxonomy( $taxonomy );
 
     if ( ! $tax ) {
@@ -1540,12 +1617,9 @@ function wpufe_ajax_tag_search() {
     } else {
         $results = $wpdb->get_col( $wpdb->prepare( "SELECT t.name FROM $wpdb->term_taxonomy AS tt INNER JOIN $wpdb->terms AS t ON tt.term_id = t.term_id WHERE tt.taxonomy = %s AND t.name LIKE (%s)", $taxonomy, '%' . $wpdb->esc_like( $s ) . '%' ) );
     }
-    echo esc_html( join( $results, "\n" ) );
+    echo esc_html( join( "\n", $results ) );
     wp_die();
 }
-
-add_action( 'wp_ajax_wpuf-ajax-tag-search', 'wpufe_ajax_tag_search' );
-add_action( 'wp_ajax_nopriv_wpuf-ajax-tag-search', 'wpufe_ajax_tag_search' );
 
 /**
  * Option dropdown helper
@@ -1589,7 +1663,7 @@ function wpuf_load_template( $file, $args = [] ) {
         include $child_theme_dir . $file;
     } elseif ( file_exists( $parent_theme_dir . $file ) ) {
         include $parent_theme_dir . $file;
-    } else {
+    } elseif ( file_exists( $wpuf_dir . $file ) ) {
         include $wpuf_dir . $file;
     }
 }
@@ -1601,10 +1675,11 @@ function wpuf_load_template( $file, $args = [] ) {
  * lods from pro plugin folder
  *
  * @since 3.1.11
+ * @since 3.5.27_PRO function moved to pro
  *
  * @param string $file file name or path to file
  */
-function wpuf_load_pro_template( $file, $args = [] ) {
+/*function wpuf_load_pro_template( $file, $args = [] ) {
     //phpcs:ignore
     if ( $args && is_array( $args ) ) {
         extract( $args );
@@ -1623,7 +1698,7 @@ function wpuf_load_pro_template( $file, $args = [] ) {
             include $wpuf_pro_dir . $file;
         }
     }
-}
+}*/
 
 /**
  * Helper function for formatting date field
@@ -1700,9 +1775,10 @@ function wpuf_get_form_fields( $form_id ) {
     $form_fields = [];
 
     foreach ( $fields as $key => $content ) {
-        $field = maybe_unserialize( $content->post_content );
+        $field = (array) maybe_unserialize( $content->post_content );
 
         $field['id'] = $content->ID;
+        $field['input_type'] = isset( $field['input_type'] ) ? $field['input_type'] : '';
 
         // Add inline property for radio and checkbox fields
         $inline_supported_fields = [ 'radio', 'checkbox' ];
@@ -1742,9 +1818,6 @@ function wpuf_get_form_fields( $form_id ) {
     return $form_fields;
 }
 
-add_action( 'wp_ajax_wpuf_get_child_cat', 'wpuf_get_child_cats' );
-add_action( 'wp_ajax_nopriv_wpuf_get_child_cat', 'wpuf_get_child_cats' );
-
 /**
  * Returns child category dropdown on ajax request
  */
@@ -1754,7 +1827,9 @@ function wpuf_get_child_cats() {
     $parent_cat  = isset( $_POST['catID'] ) ? sanitize_text_field( wp_unslash( $_POST['catID'] ) ) : '';
     $field_attr = isset( $_POST['field_attr'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['field_attr'] ) ) : [];
 
-    wp_verify_nonce( $nonce, 'wpuf_nonce' );
+    if ( ! wp_verify_nonce( $nonce, 'wpuf_nonce' ) ) {
+        wp_send_json_error( __( 'Permission denied', 'wp-user-frontend' ) );
+    }
 
     $allowed_tags = wp_kses_allowed_html( 'post' );
 
@@ -1838,14 +1913,14 @@ function taxnomy_select( $terms, $attr ) {
     ];
     $attr = apply_filters( 'wpuf_taxonomy_checklist_args', $attr );
     ?>
-    <span data-taxonomy=<?php echo json_encode( $attr ); ?>></span>
+    <span data-taxonomy=<?php echo wp_json_encode( $attr ); ?>></span>
     <?php
 }
 
 /**
  * Returns form setting value
  *
- * @param init   $form_id
+ * @param int   $form_id
  * @param boolen $status
  *
  * @return array
@@ -1982,12 +2057,29 @@ function wpuf_is_license_expired() {
  * @return array
  */
 function wpuf_get_post_form_templates() {
-    require_once WPUF_ROOT . '/class/post-form-templates/post.php';
-
-    $integrations                                 = [];
-    $integrations['WPUF_Post_Form_Template_Post'] = new WPUF_Post_Form_Template_Post();
+    $integrations['post_form_template_post'] = new WeDevs\Wpuf\Admin\Forms\Post\Templates\Post_Form_Template_Post();
 
     return apply_filters( 'wpuf_get_post_form_templates', $integrations );
+}
+
+/**
+ * Get the pro form templates list
+ *
+ * @since 3.6.0
+ *
+ * @return mixed|null
+ */
+function wpuf_get_pro_form_previews() {
+    $template_names = [];
+
+    /**
+     * Filter pro post form templates to preview
+     *
+     * @since 3.6.0
+     *
+     * @param array $template_names
+     */
+    return apply_filters( 'wpuf_get_pro_form_previews', $template_names );
 }
 
 /**
@@ -2000,10 +2092,10 @@ function wpuf_get_post_form_templates() {
  * @return array|string
  */
 function wpuf_get_countries( $type = 'array' ) {
-    $countries = include __DIR__ . '/includes/countries-formated.php';
+    $countries = include WPUF_ROOT . '/includes/Data/countries-formated.php';
 
     if ( 'json' === $type ) {
-        $countries = json_encode( $countries );
+        $countries = wp_json_encode( $countries );
     }
 
     return $countries;
@@ -2035,7 +2127,7 @@ function wpuf_get_account_sections() {
     }
 
     $sections = array_merge(
-        // dashboard should be the first item
+    // dashboard should be the first item
         [ 'dashboard' => __( 'Dashboard', 'wp-user-frontend' ) ],
         $cpt_sections,
         $sections
@@ -2064,14 +2156,17 @@ function wpuf_get_account_sections_list( $post_type = 'page' ) {
     return $array;
 }
 /**
- * Get all transactions
+ * Get all completed transactions
  *
  * @since 2.4.2
  *
- * @return array
+ * @return array|string
  */
-function wpuf_get_transactions( $args = [] ) {
+function wpuf_get_completed_transactions( $args = [] ) {
     global $wpdb;
+
+    $orderby = [ 'id', 'status', 'created' ];
+    $order   = [ 'asc', 'desc' ];
 
     $defaults = [
         'number'  => 20,
@@ -2083,10 +2178,18 @@ function wpuf_get_transactions( $args = [] ) {
 
     $args = wp_parse_args( $args, $defaults );
 
+    if ( ! in_array( $args['orderby'], $orderby ) ) {
+        $args['orderby'] = 'id';
+    }
+
+    if ( ! in_array( $args['order'], $order ) ) {
+        $args['order'] = 'DESC';
+    }
+
     if ( $args['count'] ) {
         return $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}wpuf_transaction" );
     }
-    //phpcs:ignore
+
     $result = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wpuf_transaction ORDER BY `{$args['orderby']}` {$args['order']} LIMIT {$args['offset']}, {$args['number']}", OBJECT );
 
     return $result;
@@ -2102,6 +2205,9 @@ function wpuf_get_transactions( $args = [] ) {
 function wpuf_get_pending_transactions( $args = [] ) {
     global $wpdb;
 
+    $orderby = [ 'id', 'status', 'created' ];
+    $order   = [ 'asc', 'desc' ];
+
     $defaults = [
         'number'  => 20,
         'offset'  => 0,
@@ -2111,6 +2217,14 @@ function wpuf_get_pending_transactions( $args = [] ) {
     ];
 
     $args = wp_parse_args( $args, $defaults );
+
+    if ( ! in_array( $args['orderby'], $orderby ) ) {
+        $args['orderby'] = 'id';
+    }
+
+    if ( ! in_array( $args['order'], $order ) ) {
+        $args['order'] = 'DESC';
+    }
 
     $pending_args = [
         'post_type'      => 'wpuf_order',
@@ -2134,12 +2248,20 @@ function wpuf_get_pending_transactions( $args = [] ) {
     foreach ( $transactions as $transaction ) {
         $info = get_post_meta( $transaction->ID, '_data', true );
 
+        if ( ! $info ) {
+            continue;
+        }
+
+        $tax      = ! empty( $info['tax'] ) ? $info['tax'] : 0;
+        $subtotal = ! empty( $info['cost'] ) ? $info['cost'] : $info['price'];
+
         $items[] = (object) [
             'id'               => $transaction->ID,
             'user_id'          => $info['user_info']['id'],
             'status'           => 'pending',
-            'cost'             => $info['price'],
-            'tax'              => isset( $info['tax'] ) ? $info['tax'] : 0,
+            'subtotal'         => $subtotal,
+            'cost'             => $subtotal - $tax,
+            'tax'              => $tax,
             'post_id'          => ( $info['type'] === 'post' ) ? $info['item_number'] : 0,
             'pack_id'          => ( $info['type'] === 'pack' ) ? $info['item_number'] : 0,
             'payer_first_name' => $info['user_info']['first_name'],
@@ -2154,6 +2276,96 @@ function wpuf_get_pending_transactions( $args = [] ) {
     wp_reset_postdata();
 
     return $items;
+}
+
+/**
+ * Get all pending and completed transactions
+ *
+ * @since 3.5.27
+ *
+ * @param $args
+ *
+ * @return array|int|void
+ */
+function wpuf_get_all_transactions( $args = [] ) {
+    global $wpdb;
+    $transaction_table = $wpdb->prefix . 'wpuf_transaction';
+
+    $defaults = [
+        'number'  => 20,
+        'offset'  => 0,
+        'orderby' => 'id',
+        'order'   => 'DESC',
+        'count'   => false,
+    ];
+
+    $orderby_keys = ['id', 'status', 'created'];
+    $order_keys = ['asc', 'desc'];
+
+    $args = wp_parse_args( $args, $defaults );
+
+    if ( $args['count'] ) {
+        return ( int ) $wpdb->get_var(
+            "SELECT SUM(AllCount)
+            FROM ((SELECT COUNT(*) AS AllCount FROM {$transaction_table})
+            UNION ALL
+                (SELECT COUNT(*) AS AllCount FROM {$wpdb->posts}
+                    WHERE post_type = 'wpuf_order'
+                    AND post_status IN('pending', 'publish'))) AS post_table"
+        );
+    }
+
+    $orderby       = in_array( $args['orderby'], $orderby_keys ) ? $args['orderby'] : 'id';
+    $sorting_order = in_array( $args['order'], $order_keys ) ? $args['order'] : 'DESC';
+    $offset        = ( int ) sanitize_key( $args['offset'] );
+    $number        = ( int ) sanitize_key( $args['number'] );
+
+    // get all the completed transaction from transaction table
+    // and pending transaction from post table
+    $transactions = $wpdb->get_results(
+        $wpdb->prepare(
+            "(SELECT id, user_id, status, tax, cost, post_id, pack_id, payer_first_name, payer_last_name, payer_email, payment_type, transaction_id, created FROM {$transaction_table})
+            UNION ALL
+            (SELECT ID AS id, post_author AS user_id, null AS status, null AS tax, null AS cost, ID as post_id, null AS pack_id, null AS payer_first_name, null AS payer_last_name, null AS payer_email, null AS payment_type, 0 AS transaction_id, post_date AS created FROM {$wpdb->posts}
+            WHERE post_type = %s)
+            ORDER BY {$orderby} {$sorting_order}
+            LIMIT %d, %d",
+            'wpuf_order', $offset, $number
+        )
+    );
+
+    if ( ! $transactions ) {
+        return;
+    }
+
+    foreach ( $transactions as $transaction ) {
+        if ( $transaction->status ) {
+            continue;
+        }
+
+        // get metadata for pending transactions
+        $info = get_post_meta( $transaction->id, '_data', true );
+        $payment_method = isset( $info['post_data']['wpuf_payment_method'] ) ? $info['post_data']['wpuf_payment_method'] : '';
+
+        $type = isset( $info['type'] ) ? $info['type'] : '';
+        $item_number = isset( $info['item_number'] ) ? $info['item_number'] : 0;
+
+        // attach data to pending transactions
+        $transaction->user_id          = isset( $info['user_info']['id'] ) ? $info['user_info']['id'] : 0;
+        $transaction->status           = 'pending';
+        $transaction->cost             = isset( $info['price'] ) ? $info['price'] : 0;
+        $transaction->tax              = isset( $info['tax'] ) ? $info['tax'] : 0;
+        $transaction->post_id          = ( 'post' === $type ) ? $item_number : 0;
+        $transaction->pack_id          = ( 'pack' === $type ) ? $item_number : 0;
+        $transaction->payer_first_name = isset( $info['user_info']['first_name'] ) ? $info['user_info']['first_name'] : '';
+        $transaction->payer_last_name  = isset( $info['user_info']['last_name'] ) ? $info['user_info']['last_name'] : '';
+        $transaction->payer_email      = isset( $info['user_info']['email'] ) ? $info['user_info']['email'] : '';
+        $transaction->payment_type     = ( 'bank' === $payment_method ) ? 'Bank/Manual' : ucwords( $payment_method );
+        $transaction->transaction_id   = 0;
+        $transaction->created          = isset( $info['date'] ) ? $info['date'] : '';
+    }
+
+    return $transactions;
 }
 
 /**
@@ -2562,17 +2774,17 @@ function wpuf_trim_zeros( $price ) {
  */
 function wpuf_format_price( $price, $formated = true, $args = [] ) {
 
-      $price_args = apply_filters(
-            'wpuf_price_args', wp_parse_args(
-                $args, [
-                    'currency'           => $formated ? wpuf_get_currency( 'symbol' ) : '',
-                    'decimal_separator'  => wpuf_get_price_decimal_separator(),
-                    'thousand_separator' => $formated ? wpuf_get_price_thousand_separator() : '',
-                    'decimals'           => wpuf_get_price_decimals(),
-                    'price_format'       => get_wpuf_price_format(),
-                ]
-            )
-        );
+    $price_args = apply_filters(
+        'wpuf_price_args', wp_parse_args(
+            $args, [
+                'currency'           => $formated ? wpuf_get_currency( 'symbol' ) : '',
+                'decimal_separator'  => wpuf_get_price_decimal_separator(),
+                'thousand_separator' => $formated ? wpuf_get_price_thousand_separator() : '',
+                'decimals'           => wpuf_get_price_decimals(),
+                'price_format'       => get_wpuf_price_format(),
+            ]
+        )
+    );
 
     $currency = $price_args['currency'];
     $decimal_separator = $price_args['decimal_separator'];
@@ -2766,7 +2978,7 @@ function wpuf_create_sample_form( $post_title = 'Sample Form', $post_type = 'wpu
             'guest_details'       => 'true',
             'name_label'          => 'Name',
             'email_label'         => 'Email',
-            'message_restrict'    => 'This page is restricted. Please %login% / %register% to view this page.',
+            'message_restrict'    => 'This page is restricted. Please {login} / {register} to view this page.',
             'redirect_to'         => 'post',
             'message'             => 'Post saved',
             'page_id'             => '',
@@ -2796,11 +3008,11 @@ function wpuf_create_sample_form( $post_title = 'Sample Form', $post_type = 'wpu
                 'new'          => 'on',
                 'new_to'       => get_option( 'admin_email' ),
                 'new_subject'  => 'New post created',
-                'new_body'     => "Hi Admin, \r\n\r\nA new post has been created in your site %sitename% (%siteurl%). \r\n\r\nHere is the details: \r\nPost Title: %post_title% \r\nContent: %post_content% \r\nAuthor: %author% \r\nPost URL: %permalink% \r\nEdit URL: %editlink%",
+                'new_body'     => "Hi Admin, \r\n\r\nA new post has been created in your site {sitename} ({siteurl}). \r\n\r\nHere is the details: \r\nPost Title: {post_title} \r\nContent: {post_content} \r\nAuthor: {author} \r\nPost URL: {permalink} \r\nEdit URL: {editlink}",
                 'edit'         => 'off',
                 'edit_to'      => get_option( 'admin_email' ),
                 'edit_subject' => 'A post has been edited',
-                'edit_body'    => "Hi Admin, \r\n\r\nThe post \"%post_title%\" has been updated. \r\n\r\nHere is the details: \r\nPost Title: %post_title% \r\nContent: %post_content% \r\nAuthor: %author% \r\nPost URL: %permalink% \r\nEdit URL: %editlink%",
+                'edit_body'    => "Hi Admin, \r\n\r\nThe post \"{post_title}\" has been updated. \r\n\r\nHere is the details: \r\nPost Title: {post_title} \r\nContent: {post_content} \r\nAuthor: {author} \r\nPost URL: {permalink} \r\nEdit URL: {editlink}",
             ],
         ];
     }
@@ -2962,8 +3174,8 @@ function wpuf_get_draft_post_status( $form_settings ) {
  *
  * @since 2.6.0
  *
- * @param array    $state
- * @param \WP_Post $post
+ * @param array   $state
+ * @param WP_Post $post
  *
  * @return array
  */
@@ -3015,42 +3227,78 @@ add_filter( 'display_post_states', 'wpuf_admin_page_states', 10, 2 );
  * Encryption function for various usage
  *
  * @since 2.5.8
+ * @since 2.5.29 param $nonce added
  *
  * @param string $id
+ * @param string $nonce
  *
- * @return string $encoded_id
+ * @return string|bool encoded string or false if encryption failed
  */
-function wpuf_encryption( $id ) {
-    $secret_key     = AUTH_KEY;
-    $secret_iv      = AUTH_SALT;
+function wpuf_encryption( $id, $nonce = null ) {
+    $auth_keys  = WeDevs\Wpuf\Encryption_Helper::get_encryption_auth_keys();
+    $secret_key = $auth_keys['auth_key'];
+    $secret_iv  = ! empty( $nonce ) ? base64_decode( $nonce ) : $auth_keys['auth_salt'];
 
-    $encrypt_method = 'AES-256-CBC';
-    $key            = hash( 'sha256', $secret_key );
-    $iv             = substr( hash( 'sha256', $secret_iv ), 0, 16 );
-    $encoded_id     = base64_encode( openssl_encrypt( $id, $encrypt_method, $key, 0, $iv ) );
+    if ( function_exists( 'sodium_crypto_secretbox' ) ) {
+        try {
+            return base64_encode( sodium_crypto_secretbox( $id, $secret_iv, $secret_key ) );
+        } catch ( Exception $e ) {
+            delete_option( 'wpuf_auth_keys' );
+            return false;
+        }
+    }
 
-    return $encoded_id;
+    $ciphertext_raw = openssl_encrypt( $id, Encryption_Helper::get_encryption_method(), $secret_key, OPENSSL_RAW_DATA, $secret_iv );
+    $hmac           = hash_hmac( 'sha256', $ciphertext_raw, $secret_key, true );
+
+    return base64_encode( $secret_iv.$hmac.$ciphertext_raw );
 }
 
 /**
  * Decryption function for various usage
  *
  * @since 2.5.8
+ * @since 2.5.29 param $nonce added
  *
  * @param string $id
+ * @param string $nonce
  *
- * @return string $encoded_id
+ * @return string|bool decrypted string or false if decryption failed
  */
-function wpuf_decryption( $id ) {
-    $secret_key     = AUTH_KEY;
-    $secret_iv      = AUTH_SALT;
+function wpuf_decryption( $id, $nonce = null ) {
+    // get auth keys
+    $auth_keys = Encryption_Helper::get_encryption_auth_keys();
+    if ( empty( $auth_keys ) ) {
+        return false;
+    }
 
-    $encrypt_method = 'AES-256-CBC';
-    $key            = hash( 'sha256', $secret_key );
-    $iv             = substr( hash( 'sha256', $secret_iv ), 0, 16 );
-    $decoded_id     = openssl_decrypt( base64_decode( $id ), $encrypt_method, $key, 0, $iv );
+    $secret_key = $auth_keys['auth_key'];
+    $secret_iv  = ! empty( $nonce ) ? base64_decode( $nonce ) : $auth_keys['auth_salt'];
 
-    return $decoded_id;
+    // should we use sodium_crypto_secretbox_open
+    if ( function_exists( 'sodium_crypto_secretbox_open') ) {
+        try {
+            return sodium_crypto_secretbox_open( base64_decode( $id ), $secret_iv, $secret_key );
+        } catch ( Exception $e ) {
+            delete_option( 'wpuf_auth_keys' );
+            return false;
+        }
+    }
+
+    $c              = base64_decode( $id );
+    $ivlen          = Encryption_Helper::get_encryption_nonce_length();
+    $secret_iv      = substr( $c, 0, $ivlen );
+    $hmac           = substr( $c, $ivlen, 32 );
+    $ciphertext_raw = substr( $c, $ivlen + 32 );
+    $original_text  = openssl_decrypt( $ciphertext_raw, Encryption_Helper::get_encryption_method(), $secret_key, OPENSSL_RAW_DATA, $secret_iv );
+    $calcmac        = hash_hmac( 'sha256', $ciphertext_raw, $secret_key, true );
+
+    // timing attack safe comparison
+    if ( hash_equals( $hmac, $calcmac ) ) {
+        return $original_text;
+    }
+
+    return false;
 }
 
 /**
@@ -3067,17 +3315,17 @@ function wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, $charging_
         return;
     }
 
-    $noce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
-
-    if ( isset( $nonce ) && ! wp_verify_nonce( $noce, 'wpuf_edit' ) ) {
-        return;
-    }
+    // Skip nonce verification for guest email verification as it's called programmatically
+    // $nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+    // if ( isset( $nonce ) && ! wp_verify_nonce( $nonce, 'wpuf_edit' ) ) {
+    //     return;
+    // }
 
     if ( $charging_enabled ) {
         $encoded_guest_url = add_query_arg(
             [
-                'p_id'     => $post_id_encoded,
-                'f_id'     => $form_id_encoded,
+                'p_id'     => urlencode( $post_id_encoded ),
+                'f_id'     => urlencode( $form_id_encoded ),
                 'post_msg' => 'verified',
                 'f'        => 2,
             ], get_home_url()
@@ -3085,15 +3333,15 @@ function wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, $charging_
     } else {
         $encoded_guest_url = add_query_arg(
             [
-                'p_id'     => $post_id_encoded,
-                'f_id'     => $form_id_encoded,
+                'p_id'     => urlencode( $post_id_encoded ),
+                'f_id'     => urlencode( $form_id_encoded ),
                 'post_msg' => 'verified',
                 'f'        => 1,
             ], get_home_url()
         );
     }
 
-    $default_body     = 'Hey There, <br> <br> We just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process. <br> <br> Please click the link below to verify: <br> <br> <a href="' . $encoded_guest_url . '">Publish Post</a> <br> <br> Regards, <br> <br>' . bloginfo( 'name' );
+    $default_body     = 'Hey There, <br> <br> We just received your guest post and now we want you to confirm your email so that we can verify the content and move on to the publishing process. <br> <br> Please click the link below to verify: <br> <br> <a href="' . esc_url( $encoded_guest_url ) . '">Publish Post</a> <br> <br> Regards, <br> <br>' . bloginfo( 'name' );
     $to               = isset( $_POST['guest_email'] ) ? sanitize_email( wp_unslash( $_POST['guest_email'] ) ) : '';
     $guest_email_sub  = wpuf_get_option( 'guest_email_subject', 'wpuf_mails', 'Please Confirm Your Email to Get the Post Published!' );
     $subject          = $guest_email_sub;
@@ -3104,7 +3352,7 @@ function wpuf_send_mail_to_guest( $post_id_encoded, $form_id_encoded, $charging_
         $field_search = [ '{activation_link}', '{sitename}' ];
 
         $field_replace = [
-            '<a href="' . $encoded_guest_url . '">Publish Post</a>',
+            '<a href="' . esc_url( $encoded_guest_url ) . '">Publish Post</a>',
             $blogname,
         ];
 
@@ -3151,14 +3399,14 @@ function is_wpuf_profile_form_builder() {
  *
  * @param int|WP_User $user_id
  *
- * @return \WPUF_User
+ * @return WeDevs\Wpuf\WPUF_User
  */
 function wpuf_get_user( $user = null ) {
     if ( ! $user ) {
         $user = wp_get_current_user();
     }
 
-    return new WPUF_User( $user );
+    return new WeDevs\Wpuf\WPUF_User( $user );
 }
 
 /**
@@ -3170,7 +3418,7 @@ function wpuf_get_user( $user = null ) {
  */
 function wpuf_set_all_terms_as_allowed() {
     if ( class_exists( 'WP_User_Frontend_Pro' ) ) {
-        $subscriptions  = WPUF_Subscription::init()->get_subscriptions();
+        $subscriptions  = ( new Subscription() )->get_subscriptions();
         $allowed_term   = [];
 
         foreach ( $subscriptions as $pack ) {
@@ -3224,20 +3472,19 @@ function wpuf_set_all_terms_as_allowed() {
  *
  * @param int $form_id
  *
- * @return List of WP_Post objects
+ * @return int[]|WP_Post[]
  */
 function wpuf_posts_submitted_by( $form_id ) {
     $settings = wpuf_get_form_settings( $form_id );
-    $settings['post_type'];
+
     $args = [
         'meta_key'         => '_wpuf_form_id',
         'meta_value'       => $form_id,
         'post_type'        => $settings['post_type'],
         'post_status'      => 'publish',
     ];
-    $posts_array = get_posts( $args );
 
-    return $posts_array;
+    return get_posts( $args );
 }
 
 /**
@@ -3270,11 +3517,9 @@ function get_formatted_mail_body( $message, $subject ) {
 
         if ( empty( $header ) ) {
             ob_start();
-
-            wpuf_load_pro_template(
-                'email/header.php',
-                [ 'subject' => $subject ]
-            );
+            if ( function_exists( 'wpuf_load_pro_template' ) ) {
+                wpuf_load_pro_template( 'email/header.php', [ 'subject' => $subject ] );
+            }
 
             $header = ob_get_clean();
         }
@@ -3282,39 +3527,37 @@ function get_formatted_mail_body( $message, $subject ) {
         if ( empty( $footer ) ) {
             ob_start();
 
-            wpuf_load_pro_template(
-                'email/footer.php',
-                []
-            );
+            if ( function_exists( 'wpuf_load_pro_template' ) ) {
+                wpuf_load_pro_template( 'email/footer.php', [] );
+            }
 
             $footer = ob_get_clean();
         }
 
         ob_start();
 
-        wpuf_load_pro_template(
-            'email/style.php',
-            []
-        );
+        if ( function_exists( 'wpuf_load_pro_template' ) ) {
+            wpuf_load_pro_template( 'email/style.php', [] );
+        }
 
         $css = apply_filters( 'wpuf_email_style', ob_get_clean() );
 
         $content = $header . '<pre>' . $message . '</pre>' . $footer;
 
         if ( ! class_exists( 'Emogrifier' ) ) {
-            require_once WPUF_PRO_INCLUDES . '/libs/Emogrifier.php';
+            require_once WPUF_PRO_ROOT . '/assets/vendor/Emogrifier.php';
         }
 
         try {
-
             // apply CSS styles inline for picky email clients
             $emogrifier = new Emogrifier( $content, $css );
-            $content    = $emogrifier->emogrify();
+            $emogrifier->enableCssToHtmlMapping();
+
+            return $emogrifier->emogrify();
         } catch ( Exception $e ) {
             echo esc_html( $e->getMessage() );
         }
 
-        return $content;
     }
 
     return $message;
@@ -3546,10 +3789,10 @@ function wpuf_get_terms( $taxonomy = 'category' ) {
  * @return void
  */
 function wpuf_ajax_get_states_field() {
-    check_ajax_referer( 'wpuf-ajax-address' );
+    check_ajax_referer( 'wpuf_ajax_address' );
 
     $country = isset( $_POST['country'] ) ? sanitize_text_field( wp_unslash( $_POST['country'] ) ) : '';
-    $cs        = new CountryState();
+    $cs        = new WeDevs\Wpuf\Data\Country_State();
     $countries = $cs->countries();
     $states    = $cs->getStates( $countries[ $country ] );
 
@@ -3570,8 +3813,6 @@ function wpuf_ajax_get_states_field() {
 
     wp_send_json( $response ); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
 }
-add_action( 'wp_ajax_wpuf-ajax-address', 'wpuf_ajax_get_states_field' );
-add_action( 'wp_ajax_nopriv_wpuf-ajax-address', 'wpuf_ajax_get_states_field' );
 
 /**
  * Performs tax calculations and updates billing address
@@ -3579,7 +3820,7 @@ add_action( 'wp_ajax_nopriv_wpuf-ajax-address', 'wpuf_ajax_get_states_field' );
  * @return void
  */
 function wpuf_update_billing_address() {
-    check_ajax_referer( 'wpuf-ajax-address' );
+    check_ajax_referer( 'wpuf_ajax_address' );
 
     ob_start();
 
@@ -3617,8 +3858,6 @@ function wpuf_update_billing_address() {
         die();
     }
 }
-add_action( 'wp_ajax_wpuf_update_billing_address', 'wpuf_update_billing_address' );
-add_action( 'wp_ajax_nopriv_wpuf_update_billing_address', 'wpuf_update_billing_address' );
 
 /**
  * Retrieve user address
@@ -3670,6 +3909,8 @@ function wpuf_get_user_address( $user_id = 0 ) {
  * @param array $args settings field args
  */
 function wpuf_settings_multiselect( $args ) {
+    wpuf_require_once( WPUF_ROOT . '/Lib/WeDevs_Settings_API.php' );
+
     $settings = new WeDevs_Settings_API();
     $value    = $settings->get_option( $args['id'], $args['section'], $args['std'] );
     $value    = is_array( $value ) ? (array) $value : [];
@@ -3709,8 +3950,8 @@ function wpuf_settings_multiselect( $args ) {
  * @param int $form_id
  */
 function wpuf_show_form_schedule_message( $form_id ) {
-    $form_settings   = wpuf_get_form_settings( $form_id );
-    $is_scheduled    = ( isset( $form_settings['schedule_form'] ) && $form_settings['schedule_form'] === 'true' ) ? true : false;
+    $form_settings = wpuf_get_form_settings( $form_id );
+    $is_scheduled  = isset( $form_settings['schedule_form'] ) && wpuf_is_checkbox_or_toggle_on( $form_settings['schedule_form'] );
 
     if ( $is_scheduled ) {
         $start_time   = ! empty( $form_settings['schedule_start'] ) ? strtotime( $form_settings['schedule_start'] ) : 0;
@@ -3728,11 +3969,11 @@ function wpuf_show_form_schedule_message( $form_id ) {
             echo wp_kses_post( '<div class="wpuf-message">' . $form_settings['form_expired_message'] . '</div>' );
         }
         ?>
-            <script>
-                jQuery( function($) {
-                    $(".wpuf-submit-button").attr("disabled", "disabled");
-                });
-            </script>
+        <script>
+            jQuery( function($) {
+                $(".wpuf-submit-button").attr("disabled", "disabled");
+            });
+        </script>
         <?php
         return;
     }
@@ -3748,11 +3989,11 @@ add_action( 'wpuf_before_form_render', 'wpuf_show_form_schedule_message' );
  */
 function wpuf_show_form_limit_message( $form_id ) {
     $form_settings  = wpuf_get_form_settings( $form_id );
-    $has_limit      = ( isset( $form_settings['limit_entries'] ) && $form_settings['limit_entries'] === 'true' ) ? true : false;
+    $has_limit      = isset( $form_settings['limit_entries'] ) && wpuf_is_checkbox_or_toggle_on( $form_settings['limit_entries'] );
     $post_to_check  = get_post( get_the_ID() );
     $is_edit_page   = false;
 
-    if ( stripos( $post_to_check->post_content, '[wpuf_edit' ) !== false ) {
+    if ( $post_to_check && stripos( $post_to_check->post_content, '[wpuf_edit' ) !== false ) {
         $is_edit_page = true;
     }
 
@@ -3786,9 +4027,10 @@ add_action( 'wpuf_before_form_render', 'wpuf_show_form_limit_message' );
  * @return void
  */
 function wpuf_frontend_post_revision( $post_id, $form_settings ) {
-    $post = get_post( $post_id );
+    $post      = get_post( $post_id );
+    $post_type = ! empty( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
 
-    if ( post_type_supports( $form_settings['post_type'], 'revisions' ) ) {
+    if ( post_type_supports( $post_type, 'revisions' ) ) {
         $revisions = wp_get_post_revisions(
             $post_id, [
                 'order' => 'ASC',
@@ -3969,7 +4211,7 @@ function wpuf_recursive_sanitize_text_field($arr){
 /**
  * Determine page after payment success
  *
- * @since WPUF_PRO
+ * @since 3.5.27_PRO
  *
  * @param $data
  *
@@ -3977,9 +4219,17 @@ function wpuf_recursive_sanitize_text_field($arr){
  */
 function wpuf_payment_success_page( $data ){
     $gateway          = ! empty( $data['wpuf_payment_method'] ) ? $data['wpuf_payment_method'] : '';
-    $success_query    = "wpuf_${gateway}_success";
+    $success_query    = 'wpuf_' . $gateway . '_success';
     $redirect_page    = '';
-    $redirect_page_id = wpuf_get_option( 'payment_success', 'wpuf_payment' );
+    $redirect_page_id = 0;
+    $payment_method   = ! empty( $data['post_data']['wpuf_payment_method'] ) ? $data['post_data']['wpuf_payment_method'] : '';
+
+    if ( 'bank' === $payment_method ) {
+        $redirect_page_id = wpuf_get_option( 'bank_success', 'wpuf_payment' );
+    } else {
+        $redirect_page_id = wpuf_get_option( 'payment_success', 'wpuf_payment' );
+    }
+
     if ( 'post' === $data['type'] ){
         $post_id           = array_key_exists( 'item_number', $data ) && ! empty( $data['item_number'] ) ? $data['item_number'] : $_GET['post_id'];
         $form_id           = get_post_meta( $post_id, '_wpuf_form_id', true );
@@ -3988,9 +4238,1385 @@ function wpuf_payment_success_page( $data ){
         $redirect_page_id  = $ppp_success_page ? $ppp_success_page : $redirect_page_id;
     }
 
-    $redirect_page = $redirect_page_id ? add_query_arg( 'action', $success_query,  untrailingslashit( get_permalink( $redirect_page_id ) ) ) : add_query_arg( 'action', $success_query, untrailingslashit( get_permalink( wpuf_get_option( 'subscription_page', 'wpuf_payment' ) ) ) );
+    $redirect_page = $redirect_page_id ? add_query_arg( 'action', $success_query,  untrailingslashit( get_permalink( $redirect_page_id ) ) ) : add_query_arg( 'action', $success_query, untrailingslashit( get_permalink( wpuf_get_option( 'subscription_page',
+        'wpuf_payment' ) ) ) );
     //for bank
-    $redirect_page =  ! empty( $data['wpuf_payment_method'] ) && 'bank' === $data['wpuf_payment_method'] ? get_permalink( wpuf_get_option( 'bank_success', 'wpuf_payment' ) ) : $redirect_page;
+    $redirect_page =  ! empty( $data['wpuf_payment_method'] ) && 'bank' === $data['wpuf_payment_method'] ? get_permalink( wpuf_get_option( 'bank_success',
+        'wpuf_payment' ) ) : $redirect_page;
 
     return $redirect_page;
+}
+
+/**
+ * Function current_datetime() compatibility for wp version < 5.3
+ *
+ * @since 3.5.27
+ *
+ * @return DateTimeImmutable
+ */
+function wpuf_current_datetime() {
+    if ( function_exists( 'current_datetime' ) ) {
+        return current_datetime();
+    }
+
+    return new DateTimeImmutable( 'now', wpuf_wp_timezone() );
+}
+
+/**
+ * Function wp_timezone() compatibility for wp version < 5.3
+ *
+ * @since 3.5.27
+ *
+ * @return DateTimeZone
+ */
+function wpuf_wp_timezone() {
+    if ( function_exists( 'wp_timezone' ) ) {
+        return wp_timezone();
+    }
+
+    return new DateTimeZone( wpuf_wp_timezone_string() );
+}
+
+/**
+ * Function wp_timezone_string() compatibility for wp version < 5.3
+ *
+ * @since 3.5.27
+ *
+ * @return string
+ */
+function wpuf_timezone_string() {
+    if ( function_exists( 'wp_timezone_string' ) ) {
+        return wp_timezone_string();
+    }
+
+    $timezone_string = get_option( 'timezone_string' );
+
+    if ( $timezone_string ) {
+        return $timezone_string;
+    }
+
+    $offset  = (float) get_option( 'gmt_offset' );
+    $hours   = (int) $offset;
+    $minutes = ( $offset - $hours );
+
+    $sign      = ( $offset < 0 ) ? '-' : '+';
+    $abs_hour  = abs( $hours );
+    $abs_mins  = abs( $minutes * 60 );
+    $tz_offset = sprintf( '%s%02d:%02d', $sign, $abs_hour, $abs_mins );
+
+    return $tz_offset;
+}
+
+/*
+ * Editor toolbar primary button list
+ *
+ * @param string $type
+ *
+ * @return array
+ */
+function wpuf_get_editor_buttons( $type = 'rich' ){
+    $common = [
+        'bold'        => 'bold',
+        'italic'      => 'italic',
+        'bullist'     => 'bullist',
+        'numlist'     => 'numlist',
+        'blockquote'  => 'blockquote',
+        'alignleft'   => 'alignleft',
+        'aligncenter' => 'aligncenter',
+        'alignright'  => 'alignright',
+        'link'        => 'link',
+    ];
+
+    $rich = [
+        'formatselect' => 'formatselect',
+        'wp_more'      => 'wp_more',
+        'spellchecker' => 'spellchecker',
+    ];
+
+    $teeny = [
+        'underline'     => 'underline',
+        'strikethrough' => 'strikethrough',
+        'undo'          => 'undo',
+        'redo'          => 'redo',
+        'fullscreen'    => 'fullscreen',
+    ];
+
+    return 'rich' === $type || 'yes' === $type ? array_merge( $rich, $common ) : array_merge( $common, $teeny );
+
+}
+
+/**
+ * Filter editor buttons
+ *
+ * @param $field_settings
+ *
+ * @return array
+ */
+function wpuf_filter_editor_toolbar( $field_settings ){
+    $tinymce_settings = [];
+
+    if ( ! empty( $field_settings['text_editor_control'] ) ) {
+        $exclude_button = $field_settings['text_editor_control'];
+
+        $tinymce_settings['toolbar1'] = implode(
+            ',', array_filter(
+                wpuf_get_editor_buttons( $field_settings['rich'] ), function ( $key ) use ( $exclude_button ) {
+                return ! in_array( $key, $exclude_button, true );
+            }, ARRAY_FILTER_USE_KEY
+            )
+        );
+    }
+
+    return ! empty( $tinymce_settings['toolbar1'] ) ? $tinymce_settings : [];
+}
+
+/**
+ *  Inconsistency with keys, remap keys, Back compat with keys
+ *
+ * @param $address_fields
+ *
+ * @return array
+ */
+function wpuf_map_address_fields( $address_fields ) {
+    if ( array_key_exists( 'billing_country', $address_fields ) ) {
+        foreach ( $address_fields as $key => $val ) {
+            unset( $address_fields[$key] );
+            $address_fields[str_replace( ['billing_', 'line1', 'line2', 'zip'], ['', 'line_1', 'line_2', 'zip_code'], $key ) ] = $val;
+        }
+    }
+
+    return $address_fields;
+}
+
+/**
+ * Retrieves paginated links for queried pages
+ * uses WordPress paginate_links() function for the final output
+ *
+ * @since 3.5.27_PRO
+ *
+ * @param int $total_items
+ * @param int $per_page
+ * @param array $pagination_args
+ *
+ * @return string
+ */
+function wpuf_pagination( $total_items, $per_page, $pagination_args = [] ) {
+    $pagenum = isset( $_GET['pagenum'] ) ? absint( $_GET['pagenum'] ) : 1;
+    $num_of_pages = ceil( $total_items / $per_page );
+
+    $defaults = [
+        'base'      => add_query_arg( 'pagenum', '%#%' ),
+        'format'    => '',
+        'prev_text' => '<svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M0.248874 7.05115L7.19193 0.244361C7.35252 0.086801 7.56688 0 7.79545 0C8.02403 0 8.23839 0.086801 8.39898 0.244361L8.91029 0.745519C9.243 1.07208 9.243 1.60283 8.91029 1.9289L3.08003 7.64483L8.91675 13.3671C9.07734 13.5247 9.166 13.7347 9.166 13.9587C9.166 14.1829 9.07734 14.3929 8.91675 14.5506L8.40545 15.0517C8.24474 15.2092 8.0305 15.296 7.80192 15.296C7.57335 15.296 7.35898 15.2092 7.1984 15.0517L0.248874 8.23864C0.0879093 8.08058 -0.000500916 7.86955 2.13498e-06 7.64521C-0.000500916 7.42 0.0879093 7.20909 0.248874 7.05115Z" fill="#545D7A"/>
+            </svg>',
+        'next_text' => '<svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.97963 7.05115L2.03657 0.244361C1.87599 0.086801 1.66162 0 1.43305 0C1.20448 0 0.99011 0.086801 0.829525 0.244361L0.318217 0.745519C-0.0144943 1.07208 -0.0144943 1.60283 0.318217 1.9289L6.14847 7.64483L0.311748 13.3671C0.151164 13.5247 0.0625 13.7347 0.0625 13.9587C0.0625 14.1829 0.151164 14.3929 0.311748 14.5506L0.823056 15.0517C0.983767 15.2092 1.19801 15.296 1.42658 15.296C1.65515 15.296 1.86952 15.2092 2.0301 15.0517L8.97963 8.23864C9.14059 8.08058 9.229 7.86955 9.2285 7.64521C9.229 7.42 9.14059 7.20909 8.97963 7.05115Z" fill="#545D7A"/>
+            </svg>',
+        'total'     => $num_of_pages,
+        'current'   => $pagenum,
+    ];
+
+    $args = wp_parse_args( $pagination_args, $defaults );
+
+    $page_links = paginate_links( $args );
+
+    if ( $page_links ) {
+        return '<div class="wpuf-pagination">' . $page_links . '</div>';
+    }
+}
+
+/**
+ * Remove conditional from form builder for selected fields
+ *
+ * @param $settings
+ *
+ * @return array
+ */
+function wpuf_unset_conditional( $settings ) {
+    $remove_cond_field = [ 'action_hook', 'step_start' ];
+
+    $field_settings = array_map(
+        function ( $field ) use ( $remove_cond_field ) {
+            if ( in_array( $field['template'], $remove_cond_field, true ) ) {
+                $index = array_filter(
+                    $field['settings'], function ( $settings ) {
+                    return $settings['name'] === 'wpuf_cond';
+                }
+                );
+
+                if ( ! empty( $index ) ) {
+                    unset( $field['settings'][ array_keys( $index )[0] ] );
+                }
+            }
+
+            return $field;
+        }, $settings['field_settings']
+    );
+
+    $settings['field_settings'] = $field_settings;
+
+    return $settings;
+}
+
+/**
+ * Check if current post is editable
+ *
+ * @param $post
+ *
+ * @since 3.5.27
+ *
+ * @return bool
+ */
+function wpuf_is_post_editable( $post ) {
+    $show_edit = false;
+
+    $current_user      = wpuf_get_user();
+    $user_subscription = new WeDevs\Wpuf\User_Subscription( $current_user );
+    $user_sub          = $user_subscription->current_pack();
+    $sub_id            = $current_user->subscription()->current_pack_id();
+
+    if ( $sub_id ) {
+        $subs_expired = $user_subscription->expired();
+    } else {
+        $subs_expired = false;
+    }
+
+    if ( wpuf_get_option( 'enable_post_edit', 'wpuf_dashboard', 'yes' ) == 'yes' ) {
+        $disable_pending_edit = wpuf_get_option( 'disable_pending_edit', 'wpuf_dashboard', 'on' );
+        $disable_publish_edit = wpuf_get_option( 'disable_publish_edit', 'wpuf_dashboard', 'off' );
+
+        $show_edit = true;
+        if ( ( 'pending' === $post->post_status && 'on' === $disable_pending_edit ) || ( 'publish' === $post->post_status && 'off' !==  $disable_publish_edit ) ) {
+            $show_edit = false;
+        }
+
+        if ( ( $post->post_status == 'draft' || $post->post_status == 'pending' ) && ( ! empty( $payment_status ) && $payment_status != 'completed' ) ) {
+            $show_edit = false;
+        }
+
+        if ( $subs_expired ) {
+            $show_edit = false;
+        }
+    }
+
+    return $show_edit;
+}
+
+/**
+ * Get an array of available image sizes with height and weight
+ *
+ * @since 3.5.27
+ *
+ * @param $size     string      size of the image. thumbnail, medium, large etc.
+ *
+ * @return array                single image size returned if parameter size is passed
+ *                              full array of all the sizes will return otherwise
+ */
+function wpuf_get_image_sizes_array( $size = '' ) {
+    $additional_image_sizes   = wp_get_additional_image_sizes();
+    $intermediate_image_sizes = get_intermediate_image_sizes();
+    $sizes = [];
+
+    // Create the full array with sizes and crop info
+    foreach ( $intermediate_image_sizes as $_size ) {
+        if ( in_array( $_size, [ 'thumbnail', 'medium', 'large', 'medium_large' ], true ) ) {
+            $sizes[ $_size ]['width']  = get_option( $_size . '_size_w' );
+            $sizes[ $_size ]['height'] = get_option( $_size . '_size_h' );
+            $sizes[ $_size ]['crop']   = (bool) get_option( $_size . '_crop' );
+        } elseif ( isset( $additional_image_sizes[ $_size ] ) ) {
+            $sizes[ $_size ] = [
+                'width'  => $additional_image_sizes[ $_size ]['width'],
+                'height' => $additional_image_sizes[ $_size ]['height'],
+                'crop'   => $additional_image_sizes[ $_size ]['crop'],
+            ];
+        }
+    }
+
+    // Get only 1 size if found
+    if ( $size ) {
+        if ( isset( $sizes[ $size ] ) ) {
+            return $sizes[ $size ];
+        } else {
+            return false;
+        }
+    }
+    return $sizes;
+}
+
+/**
+ * The HTML preview part when hovering over a pro settings field
+ *
+ * @since 3.6.0
+ *
+ * @return string
+ */
+function wpuf_get_pro_preview_html() {
+    $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
+    return sprintf( '<div class="pro-field-overlay">
+                        <a href="%1$s" target="%2$s" class="%3$s">Upgrade to PRO<span class="pro-icon icon-white"> %4$s</span></a>
+                    </div>', esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro',
+        file_get_contents( $crown_icon ) );
+}
+
+/**
+ * The HTML tooltip when hovering over a pro settings field
+ *
+ * @since 3.6.0
+ *
+ * @return string
+ */
+function wpuf_get_pro_preview_tooltip() {
+    $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
+    $check_icon = WPUF_ROOT . '/assets/images/check.svg';
+    $features = [
+        '24/7 Priority Support',
+        '20+ Premium Modules',
+        'User Activity and Reports',
+        'Private Messaging Option',
+        'License for 20 websites',
+    ];
+    $html = '<div class="wpuf-pro-field-tooltip">';
+    $html .= '<h3 class="tooltip-header">Available in Pro. Also enjoy:</h3>';
+    $html .= '<ul>';
+
+    foreach ( $features as $feature ) {
+        $html .= sprintf(
+            '<li><span class="tooltip-check">%1$s</span> %2$s</li>',
+            file_get_contents( $check_icon ),
+            esc_html( $feature )
+        );
+    }
+
+    $html .= '</ul>';
+    $html .= sprintf( '<div class="pro-link"><a href="%1$s" target="%2$s" class="%3$s">Upgrade to PRO<span class="pro-icon icon-white"> %4$s</span></a></div>',
+        esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro',
+        file_get_contents( $crown_icon ) );
+
+    $html .= '<i></i>';
+    $html .= '</div>';
+
+    return $html;
+}
+
+/**
+ * Get post forms created by WPUF
+ *
+ * @since 2.9.0
+ * @since 4.0.0 moved to wpuf-functions.php from WPUF_Frontend_Account.php
+ *
+ * @return array $forms
+ *
+ */
+function wpuf_get_post_forms() {
+    $args = [
+        'post_type'   => 'wpuf_forms',
+        'post_status' => 'any',
+        'orderby'     => 'DESC',
+        'order'       => 'ID',
+        'numberposts' => - 1,
+    ];
+    $posts = get_posts( $args );
+    $forms = [];
+    if ( ! empty( $posts ) ) {
+        foreach ( $posts as $post ) {
+            $forms[ $post->ID ] = $post->post_title;
+        }
+    }
+
+    return $forms;
+}
+
+/**
+ * require_once a file upon checking the existence of the file
+ *
+ * @since 4.0.0
+ *
+ * @param $file_location
+ *
+ * @return void
+ */
+function wpuf_require_once( $file_location ) {
+    if ( file_exists( $file_location ) ) {
+        require_once $file_location;
+    }
+}
+
+/**
+ * include_once a file upon checking the existence of the file
+ *
+ * @since 4.0.0
+ *
+ * @param $file_location
+ *
+ * @return void
+ */
+function wpuf_include_once( $file_location ) {
+    if ( file_exists( $file_location ) ) {
+        include_once $file_location;
+    }
+}
+
+/**
+ * Guess a suitable username for registration based on email address
+ *
+ * @param string $email email address
+ *
+ * @return string username
+ */
+function wpuf_guess_username( $email ) {
+    // username from email address
+    $username = sanitize_user( substr( $email, 0, strpos( $email, '@' ) ) );
+
+    if ( ! username_exists( $username ) ) {
+        return $username;
+    }
+
+    // try to add some random number in username
+    // and may be we got our username
+    $username .= rand( 1, 199 );
+
+    if ( ! username_exists( $username ) ) {
+        return $username;
+    }
+}
+
+/**
+ * Clear Schedule lock
+ *
+ * @since 3.0.2
+ */
+function wpuf_clear_schedule_lock() {
+    check_ajax_referer( 'wpuf_nonce', 'nonce' );
+
+    $post_id = isset( $_POST['post_id'] ) ? intval( wp_unslash( $_POST['post_id'] ) ) : '';
+
+    if ( ! empty( $post_id ) ) {
+        update_post_meta( $post_id, '_wpuf_lock_user_editing_post_time', '' );
+        update_post_meta( $post_id, '_wpuf_lock_editing_post', 'no' );
+    }
+    exit;
+}
+
+/**
+ * Get the shortcodes that are protected on the post form.
+ * User cannot submit post containing those shortcodes.
+ *
+ * @since 3.6.6
+ *
+ * @return array
+ */
+function wpuf_get_protected_shortcodes() {
+    return [
+        'wpuf-registration',
+    ];
+}
+
+/**
+ * Get the current users roles as an array
+ *
+ * @since 3.6.6
+ *
+ * @return array|bool
+ */
+function wpuf_get_single_user_roles( $user_id ) {
+    if ( ! is_numeric( $user_id ) ) {
+        return false;
+    }
+
+    $user = get_user_by( 'id', $user_id );
+
+    if ( ! $user ) {
+        return [];
+    }
+
+    return ( array ) $user->roles;
+}
+
+/**
+ * Check and modify the post content not to render shortcode values
+ * in the frontend for any user except admin.
+ *
+ * @since 3.6.6
+ *
+ * @return string
+ */
+function wpuf_modify_shortcodes( $content ) {
+    global $pagenow;
+
+    $post = get_post();
+
+    if ( ! ( $post instanceof WP_Post ) ) {
+        return $content;
+    }
+
+    if ( 'post.php' === $pagenow ) {
+        return $content;
+    }
+
+    // get the id of the user who last edited the post
+    $user_id = get_post_meta( get_post()->ID, '_edit_last', true );
+
+    $roles = wpuf_get_single_user_roles( $user_id );
+
+    if ( empty( $roles ) ) {
+        return $content;
+    }
+
+    // last modified by an admin, returns the content as it is
+    if ( in_array( 'administrator', $roles ) ) {
+        return $content;
+    }
+
+    $protected_shortcodes = wpuf_get_protected_shortcodes();
+
+    foreach ( $protected_shortcodes as $shortcode ) {
+        $search_for = '[' . $shortcode;
+
+        if ( strpos( $content, $search_for ) !== false ) {
+            $pattern = '/\[' . $shortcode . '(.*?)\]/';
+
+            $content = preg_replace_callback(
+                $pattern, function( $matches ) {
+                return str_replace( [ '[', ']' ], [ '&lbrack;', '&rbrack;' ], $matches[0] );
+            }, $content );
+        }
+    }
+
+    return $content;
+}
+
+// @todo: move this to frontend class
+add_filter( 'the_content', 'wpuf_modify_shortcodes' );
+
+/**
+ * Hide the Google map button
+ *
+ * @since 4.0.0 function moved from Posting class
+ *
+ * @return void
+ */
+function wpuf_hide_google_map_button() {
+    echo wp_kses( "<style>
+                button.button[data-name='custom_map'] {
+                    display: none;
+                }
+              </style>", [
+        'style' =>  [],
+        'button'    =>  []
+    ] );
+}
+
+/**
+ * Remove all kinds of admin notices from admin dashboard
+ *
+ * Since we don't have much space left on top of the page,
+ * we have to remove all kinds of admin notices
+ *
+ * @since 2.5
+ *
+ * @since 4.0.11 function moved to wpuf-functions.php
+ *
+ * @return void
+ */
+function wpuf_remove_admin_notices() {
+    remove_all_actions( 'network_admin_notices' );
+    remove_all_actions( 'user_admin_notices' );
+    remove_all_actions( 'admin_notices' );
+    remove_all_actions( 'all_admin_notices' );
+}
+
+/**
+ * Load the Headway badge
+ *
+ * @since 4.0.11
+ *
+ * @return void
+ */
+function wpuf_load_headway_badge( $selector = '#wpuf-headway-icon' ) {
+    wp_enqueue_script( 'wpuf-headway-script' );
+    ?>
+    <script>
+        const selector = '<?php echo $selector; ?>';
+        const badgeCount = selector + ' ul li.headway-icon span#HW_badge_cont.HW_visible';
+
+        const HW_config = {
+            selector: selector,
+            account: 'JPqPQy',
+            callbacks: {
+                onWidgetReady: function ( widget ) {
+                    if ( widget.getUnseenCount() === 0 ) {
+                        document.querySelector(badgeCount).style = 'opacity: 0';
+                    }
+                },
+                onHideWidget: function(){
+                    document.querySelector(badgeCount).style = 'opacity: 0';
+                }
+            }
+        };
+
+    </script>
+
+    <?php
+}
+
+/**
+ * Check if the option is on
+ *
+ * @since 4.0.11
+ *
+ * @param $option
+ *
+ * @return bool
+ */
+function wpuf_is_option_on( $option ) {
+    return 'on' === $option || 'yes' === $option;
+}
+
+/**
+ * Get the pro icon link
+ *
+ * @since 4.1.0
+ *
+ * @return string
+ */
+function wpuf_get_pro_icon() {
+    return WPUF_ASSET_URI . '/images/pro-badge.svg';
+}
+
+/**
+ * Check if the pro version is active
+ *
+ * @since 4.1.0
+ *
+ * @return bool
+ */
+function wpuf_is_pro_active() {
+    return class_exists( 'WP_User_Frontend_Pro' );
+}
+
+/**
+ * Get the post form builder setting menu titles. The titles will show on Post forms > Settings > left side menu
+ *
+ * @since 4.1.0
+ *
+ * @return mixed|null
+ */
+function wpuf_get_post_form_builder_setting_menu_titles() {
+    $post_settings_fields = apply_filters(
+        'wpuf_post_form_builder_setting_menu_titles',
+        [
+            'general'               => [
+                'label' => __( 'General', 'wp-user-frontend' ),
+                'icon'  => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="custom-stroke">
+                                <path d="M8.75 5L16.875 5M8.75 5C8.75 5.69036 8.19036 6.25 7.5 6.25C6.80964 6.25 6.25 5.69036 6.25 5M8.75 5C8.75 4.30964 8.19036 3.75 7.5 3.75C6.80964 3.75 6.25 4.30964 6.25 5M3.125 5H6.25M8.75 15H16.875M8.75 15C8.75 15.6904 8.19036 16.25 7.5 16.25C6.80964 16.25 6.25 15.6904 6.25 15M8.75 15C8.75 14.3096 8.19036 13.75 7.5 13.75C6.80964 13.75 6.25 14.3096 6.25 15M3.125 15L6.25 15M13.75 10L16.875 10M13.75 10C13.75 10.6904 13.1904 11.25 12.5 11.25C11.8096 11.25 11.25 10.6904 11.25 10M13.75 10C13.75 9.30964 13.1904 8.75 12.5 8.75C11.8096 8.75 11.25 9.30964 11.25 10M3.125 10H11.25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>',
+            ],
+            'payment_settings'      => [
+                'label' => __( 'Payment Settings', 'wp-user-frontend' ),
+                'icon'  => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="custom-stroke">
+                                <path d="M3.125 5H16.875C17.5654 5 18.125 5.55964 18.125 6.25V13.75C18.125 14.4404 17.5654 15 16.875 15H3.125C2.43464 15 1.875 14.4404 1.875 13.75V6.25C1.875 5.55964 2.43464 5 3.125 5Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M5 15V10H15V15" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 10V5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>',
+            ],
+            'notification_settings' => [
+                'label' => __( 'Notification Settings', 'wp-user-frontend' ),
+                'icon'  => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="custom-stroke">
+                    <path d="M14.8559 17.0817C16.7504 16.857 18.5773 16.4116 20.3102 15.7719C18.8734 14.177 17.9988 12.0656 17.9988 9.75V9.04919C17.999 9.03281 17.999 9.01641 17.999 9C17.999 5.68629 15.3127 3 11.999 3C8.68531 3 5.99902 5.68629 5.99902 9L5.99883 9.75C5.99883 12.0656 5.1243 14.177 3.6875 15.7719C5.42043 16.4116 7.24746 16.857 9.14216 17.0818M14.8559 17.0817C13.919 17.1928 12.9656 17.25 11.9988 17.25C11.0322 17.25 10.0789 17.1929 9.14216 17.0818M14.8559 17.0817C14.9488 17.3711 14.999 17.6797 14.999 18C14.999 19.6569 13.6559 21 11.999 21C10.3422 21 8.99902 19.6569 8.99902 18C8.99902 17.6797 9.04921 17.3712 9.14216 17.0818" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>',
+            ],
+            'display_settings'      => [
+                'label' => __( 'Display Settings', 'wp-user-frontend' ),
+                'icon'  => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="custom-stroke">
+                            <path d="M9 17.25V18.2574C9 19.053 8.68393 19.8161 8.12132 20.3787L7.5 21H16.5L15.8787 20.3787C15.3161 19.8161 15 19.053 15 18.2574V17.25M21 5.25V15C21 16.2426 19.9926 17.25 18.75 17.25H5.25C4.00736 17.25 3 16.2426 3 15V5.25M21 5.25C21 4.00736 19.9926 3 18.75 3H5.25C4.00736 3 3 4.00736 3 5.25M21 5.25V12C21 13.2426 19.9926 14.25 18.75 14.25H5.25C4.00736 14.25 3 13.2426 3 12V5.25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>',
+            ],
+            'advanced'              => [
+                'label' => __( 'Advanced', 'wp-user-frontend' ),
+                'icon'  => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="custom-stroke">
+                                <path d="M4.5 11.9993C4.5 16.1414 7.85786 19.4993 12 19.4993C16.1421 19.4993 19.5 16.1414 19.5 11.9993M4.5 11.9993C4.5 7.85712 7.85786 4.49925 12 4.49925C16.1421 4.49926 19.5 7.85712 19.5 11.9993M4.5 11.9993L3 11.9993M19.5 11.9993L21 11.9993M19.5 11.9993L12 11.9993M3.54256 15.0774L4.9521 14.5644M19.0475 9.43411L20.457 8.92108M5.10547 17.785L6.25454 16.8208M17.7452 7.17897L18.8943 6.21479M7.4999 19.7943L8.2499 18.4952M15.7499 5.50484L16.4999 4.2058M10.4371 20.8633L10.6975 19.386M13.3023 4.61393L13.5627 3.13672M13.5627 20.8633L13.3023 19.3861M10.6976 4.61397L10.4371 3.13676M16.4999 19.7941L15.7499 18.4951M7.49995 4.20565L12 11.9993M18.8944 17.7843L17.7454 16.8202M6.25469 7.17835L5.10562 6.21417M20.4573 15.0776L19.0477 14.5646M4.95235 9.43426L3.54281 8.92123M12 11.9993L8.25 18.4944"  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>',
+            ],
+            'post_expiration'       => [
+                'label' => __( 'Post Expiration', 'wp-user-frontend' ),
+                'icon'  => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="custom-stroke">
+<path d="M6.75 3V5.25M17.25 3V5.25M3 18.75V7.5C3 6.25736 4.00736 5.25 5.25 5.25H18.75C19.9926 5.25 21 6.25736 21 7.5V18.75M3 18.75C3 19.9926 4.00736 21 5.25 21H18.75C19.9926 21 21 19.9926 21 18.75M3 18.75V11.25C3 10.0074 4.00736 9 5.25 9H18.75C19.9926 9 21 10.0074 21 11.25V18.75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>',
+            ],
+        ]
+    );
+
+    return apply_filters(
+        'wpuf_form_builder_post_settings_menu_items',
+        [
+            'post_settings' => [
+                'label'     => __( 'Post Settings', 'wp-user-frontend' ),
+                'icon'      => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.34332 1.94005C8.43373 1.39759 8.90307 1 9.45302 1H10.547C11.0969 1 11.5663 1.39759 11.6567 1.94005L11.8056 2.83386C11.8764 3.25813 12.1893 3.59838 12.5865 3.76332C12.9839 3.92832 13.4403 3.90629 13.7904 3.65617L14.528 3.12933C14.9755 2.80969 15.5885 2.86042 15.9774 3.24929L16.751 4.02284C17.1398 4.41171 17.1906 5.02472 16.8709 5.47223L16.3439 6.21007C16.0938 6.56012 16.0718 7.01633 16.2367 7.41363C16.4016 7.81078 16.7418 8.12363 17.166 8.19433L18.0599 8.34332C18.6024 8.43373 19 8.90307 19 9.45302V10.547C19 11.0969 18.6024 11.5663 18.0599 11.6567L17.1661 11.8056C16.7419 11.8764 16.4016 12.1893 16.2367 12.5865C16.0717 12.9839 16.0937 13.4403 16.3438 13.7904L16.8706 14.5278C17.1902 14.9753 17.1395 15.5884 16.7506 15.9772L15.9771 16.7508C15.5882 17.1396 14.9752 17.1904 14.5277 16.8707L13.7901 16.3439C13.44 16.0938 12.9837 16.0718 12.5864 16.2367C12.1892 16.4016 11.8764 16.7418 11.8057 17.166L11.6567 18.0599C11.5663 18.6024 11.0969 19 10.547 19H9.45302C8.90307 19 8.43373 18.6024 8.34332 18.0599L8.19435 17.1661C8.12364 16.7419 7.81072 16.4016 7.41349 16.2367C7.01608 16.0717 6.55975 16.0937 6.2096 16.3438L5.47198 16.8707C5.02447 17.1904 4.41146 17.1396 4.02259 16.7507L3.24904 15.9772C2.86017 15.5883 2.80944 14.9753 3.12909 14.5278L3.65612 13.79C3.90616 13.4399 3.92821 12.9837 3.76326 12.5864C3.59837 12.1892 3.25819 11.8764 2.83402 11.8057L1.94005 11.6567C1.39759 11.5663 1 11.0969 1 10.547V9.45302C1 8.90307 1.39759 8.43373 1.94005 8.34332L2.83386 8.19436C3.25813 8.12364 3.59838 7.81071 3.76332 7.41347C3.92833 7.01605 3.90629 6.5597 3.65618 6.20954L3.12948 5.47216C2.80983 5.02465 2.86057 4.41164 3.24943 4.02277L4.02298 3.24922C4.41185 2.86036 5.02486 2.80962 5.47237 3.12927L6.20997 3.65613C6.56004 3.90618 7.01628 3.92822 7.4136 3.76326C7.81077 3.59837 8.12364 3.25819 8.19433 2.834L8.34332 1.94005Z" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M13.0007 10C13.0007 11.6569 11.6576 13 10.0007 13C8.34384 13 7.0007 11.6569 7.0007 10C7.0007 8.34317 8.34384 7.00002 10.0007 7.00002C11.6576 7.00002 13.0007 8.34317 13.0007 10Z" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>',
+                'sub_items' => $post_settings_fields,
+            ],
+        ]
+    );
+}
+
+/**
+ * Get the post form builder setting menu contents
+ *
+ * @since 4.1.0
+ *
+ * @return array
+ */
+function wpuf_get_post_form_builder_setting_menu_contents() {
+    $post_types = get_post_types();
+    $pages      = wpuf_get_pages();
+
+    unset( $post_types['attachment'] );
+    unset( $post_types['revision'] );
+    unset( $post_types['nav_menu_item'] );
+    unset( $post_types['wpuf_forms'] );
+    unset( $post_types['wpuf_profile'] );
+    unset( $post_types['wpuf_input'] );
+    unset( $post_types['wpuf_subscription'] );
+    unset( $post_types['custom_css'] );
+    unset( $post_types['customize_changeset'] );
+    unset( $post_types['wpuf_coupon'] );
+    unset( $post_types['oembed_cache'] );
+
+    $template_options = [
+        'post_form_template_post'            => [
+            'label' => __( 'Post Form', 'wp-user-frontend' ),
+            'image' => WPUF_ASSET_URI . '/images/templates/post.svg',
+        ],
+        'post_form_template_woocommerce'     => [
+            'label' => __( 'WooCommerce Product Form', 'wp-user-frontend' ),
+            'image' => WPUF_ASSET_URI . '/images/templates/woocommerce.svg',
+        ],
+        'post_form_template_edd'             => [
+            'label' => __( 'EDD Download Form', 'wp-user-frontend' ),
+            'image' => WPUF_ASSET_URI . '/images/templates/edd.svg',
+        ],
+    ];
+
+    $registry = wpuf_get_post_form_templates();
+
+    foreach ( $registry as $key => $template ) {
+        if ( ! $template->is_enabled() ) {
+            // remove the template if it's not enabled from $template_options
+            unset( $template_options[ $key ] );
+        }
+    }
+
+    $general = apply_filters(
+        'wpuf_form_builder_settings_general',
+        [
+            'section' => [
+                'before_post_settings' => [
+                    'label'  => __( 'Before Post Settings', 'wp-user-frontend' ),
+                    'desc'   => __(
+                        'Configure how the form behaves before submission, including content type, default category, post status, draft-saving options, and submit button customization',
+                        'wp-user-frontend'
+                    ),
+                    'fields' => [
+                        'show_form_title' => [
+                            'label'     => __( 'Show Form Title', 'wp-user-frontend' ),
+                            'type'      => 'toggle',
+                            'help_text' => __( 'Toggle whether the form title should be displayed on the frontend', 'wp-user-frontend' ),
+                        ],
+                        'form_description' => [
+                            'label'     => __( 'Form Description', 'wp-user-frontend' ),
+                            'type'      => 'textarea',
+                            'help_text' => __( 'Add a brief message or instruction that will be displayed before the form — helpful for guiding users before they start filling it out', 'wp-user-frontend' ),
+                        ],
+                        'post_type'        => [
+                            'label'     => __( 'Post Type', 'wp-user-frontend' ),
+                            'type'      => 'select',
+                            'options'   => $post_types,
+                            'help_text' => __(
+                                'Select the content type this form will create, like a post, product, or custom type',
+                                'wp-user-frontend'
+                            ),
+                            'link'      => esc_url_raw(
+                                'https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/different-custom-post-type-submission-2/'
+                            ),
+                        ],
+                        'default_category' => [
+                            'label'     => __( 'Default Category', 'wp-user-frontend' ),
+                            'type'      => 'multi-select',
+                            'help_text' => __(
+                                'Select the default category for posts submitted through this form', 'wp-user-frontend'
+                            ),
+                            'options'   => wpuf_get_terms(),
+                        ],
+                        'redirect_to'      => [
+                            'label'     => __( 'Successful Redirection', 'wp-user-frontend' ),
+                            'type'      => 'select',
+                            'help_text' => __(
+                                'Select where users will be redirected after successfully submitting the form',
+                                'wp-user-frontend'
+                            ),
+                            'options'   => [
+                                'post' => __( 'Newly created post', 'wp-user-frontend' ),
+                                'same' => __( 'Same page', 'wp-user-frontend' ),
+                                'page' => __( 'To a page', 'wp-user-frontend' ),
+                                'url'  => __( 'To a custom URL', 'wp-user-frontend' ),
+                            ],
+                        ],
+                        'message'          => [
+                            'label'   => __( 'Message to show', 'wp-user-frontend' ),
+                            'type'    => 'textarea',
+                            'default' => __( 'Post saved', 'wp-user-frontend' ),
+                        ],
+                        'page_id'          => [
+                            'label'     => __( 'Page', 'wp-user-frontend' ),
+                            'type'      => 'select',
+                            'options'   => $pages,
+                            'help_text' => __( 'Choose the default category for the post', 'wp-user-frontend' ),
+                        ],
+                        'url'              => [
+                            'label' => __( 'Custom URL', 'wp-user-frontend' ),
+                            'type'  => 'text',
+                        ],
+                        'post_status'      => [
+                            'label'     => __( 'Post Submission Status', 'wp-user-frontend' ),
+                            'type'      => 'select',
+                            'options'   => [
+                                'draft'          => __( 'Draft', 'wp-user-frontend' ),
+                                'pending'        => __( 'Pending Review', 'wp-user-frontend' ),
+                                'private'        => __( 'Private', 'wp-user-frontend' ),
+                                'publish'        => __( 'Published', 'wp-user-frontend' ),
+                            ],
+                            'help_text' => __( 'Select the status of the post after submission', 'wp-user-frontend' ),
+                        ],
+                        'draft_post'       => [
+                            'label'     => __( 'Enable saving as draft', 'wp-user-frontend' ),
+                            'type'      => 'toggle',
+                            'help_text' => __(
+                                'Allow users to save posts before final submission', 'wp-user-frontend'
+                            ),
+                        ],
+                        'submit_text'      => [
+                            'label'     => __( 'Submit Post Button Text', 'wp-user-frontend' ),
+                            'type'      => 'text',
+                            'help_text' => __(
+                                'Customize the text on the \'Submit\' button for this form', 'wp-user-frontend'
+                            ),
+                        ],
+                        'form_template'    => [
+                            'label'     => __( 'Choose Form Template', 'wp-user-frontend' ),
+                            'type'      => 'pic-radio',
+                            'help_text' => __(
+                                'If selected a form template, it will try to execute that integration options when new post created and updated.',
+                                'wp-user-frontend'
+                            ),
+                            'options'   => $template_options,
+                            'notice'    => [
+                                'type' => 'info',
+                                'text' => __(
+                                    'If you\'re building a post form from scratch, you don\'t need to pick a template (e.g., WooCommerce Product, EDD). Just double-click any selected template to uncheck it.',
+                                    'wp-user-frontend'
+                                ),
+                            ],
+                        ],
+                    ],
+                ],
+                'after_post_settings'  => [
+                    'label'  => __( 'After Post Settings', 'wp-user-frontend' ),
+                    'desc'   => __(
+                        'Manage what happens after submission, such as setting post update status, displaying success messages, redirecting users, limiting edit time, and customizing the update button',
+                        'wp-user-frontend'
+                    ),
+                    'fields' => [
+                        'edit_post_status' => [
+                            'label'     => __( 'Post Update Status', 'wp-user-frontend' ),
+                            'type'      => 'select',
+                            'options'   => [
+                                'draft'     => __( 'Draft', 'wp-user-frontend' ),
+                                'pending'   => __( 'Pending Review', 'wp-user-frontend' ),
+                                'private'   => __( 'Private', 'wp-user-frontend' ),
+                                'publish'   => __( 'Published', 'wp-user-frontend' ),
+                                '_nochange' => __( 'No Change', 'wp-user-frontend' ),
+                            ],
+                            'help_text' => __(
+                                'Select the status the post will have after being updated', 'wp-user-frontend'
+                            ),
+                        ],
+                        'edit_redirect_to' => [
+                            'label'     => __( 'Successful Redirection', 'wp-user-frontend' ),
+                            'type'      => 'select',
+                            'help_text' => __(
+                                'After successfully submit, where the page will redirect to', 'wp-user-frontend'
+                            ),
+                            'options'   => [
+                                'post' => __( 'Updated post', 'wp-user-frontend' ),
+                                'same' => __( 'Same page', 'wp-user-frontend' ),
+                                'page' => __( 'To a page', 'wp-user-frontend' ),
+                                'url'  => __( 'To a custom URL', 'wp-user-frontend' ),
+                            ],
+                        ],
+                        'update_message'   => [
+                            'label'     => __( 'Post Update Message', 'wp-user-frontend' ),
+                            'type'      => 'textarea',
+                            'default'   => sprintf(
+                                __(
+                                    'Post has been updated successfully. <a target="_blank" href="%s">View post</a>',
+                                    'wp-user-frontend'
+                                ), '{link}'
+                            ),
+                            'help_text' => __(
+                                'Customize the message displayed after a post is successfully updated',
+                                'wp-user-frontend'
+                            ),
+                        ],
+                        'edit_page_id'     => [
+                            'label'     => __( 'Page', 'wp-user-frontend' ),
+                            'type'      => 'select',
+                            'options'   => $pages,
+                            'help_text' => __( 'Choose the default category for the post', 'wp-user-frontend' ),
+                        ],
+                        'edit_url'         => [
+                            'label' => __( 'Custom URL', 'wp-user-frontend' ),
+                            'type'  => 'text',
+                        ],
+                        'lock_edit_post'   => [
+                            'label'         => __( 'Lock User Editing After', 'wp-user-frontend' ),
+                            'type'          => 'trailing-text',
+                            'help_text'     => __(
+                                'Set the number of hours after which users can no longer edit their submitted post',
+                                'wp-user-frontend'
+                            ),
+                            'trailing_type' => 'number',
+                            'trailing_text' => __( 'Hours', 'wp-user-frontend' ),
+                        ],
+                        'update_text'      => [
+                            'label'     => __( 'Update Post Button Text', 'wp-user-frontend' ),
+                            'type'      => 'text',
+                            'help_text' => __(
+                                'Customize the text on the \'Update\' button for this form', 'wp-user-frontend'
+                            ),
+                        ],
+                    ],
+                ],
+                'posting_control'      => [
+                    'label'  => __( 'Posting Control', 'wp-user-frontend' ),
+                    'desc'   => __(
+                        'Define who can submit posts using this form. Choose whether to allow guest submissions or restrict access based on user roles',
+                        'wp-user-frontend'
+                    ),
+                    'fields' => [
+                        'post_permission'    => [
+                            'label'     => __( 'Post Permission', 'wp-user-frontend' ),
+                            'type'      => 'select',
+                            'options'   => [
+                                'everyone'   => __( '- Select Post Permission -', 'wp-user-frontend' ),
+                                'guest_post' => __( 'Guest Post', 'wp-user-frontend' ),
+                                'role_base'  => __( 'Role Based Post', 'wp-user-frontend' ),
+                            ],
+                            'help_text' => __(
+                                'Select who can submit posts using this form, either guests or specific user roles',
+                                'wp-user-frontend'
+                            ),
+                        ],
+                        'guest_details'      => [
+                            'label'     => __( 'Require Name and Email address', 'wp-user-frontend' ),
+                            'type'      => 'checkbox',
+                            'sub_label' => __(
+                                'If enabled, guest users will be automatically registered using their name and email',
+                                'wp-user-frontend'
+                            ),
+                        ],
+                        'inline_fields'      => [
+                            'fields' => [
+                                'name_label'  => [
+                                    'label'     => __( 'Name Label', 'wp-user-frontend' ),
+                                    'type'      => 'text',
+                                    'help_text' => __(
+                                        'Customize the label for the name field in guest submissions',
+                                        'wp-user-frontend'
+                                    ),
+                                ],
+                                'email_label' => [
+                                    'label'     => __( 'E-Mail Label', 'wp-user-frontend' ),
+                                    'type'      => 'text',
+                                    'help_text' => __(
+                                        'Customize the label for the email field in guest submissions',
+                                        'wp-user-frontend'
+                                    ),
+                                ],
+                            ],
+                        ],
+                        'guest_email_verify' => [
+                            'label'     => __( 'Require email verification', 'wp-user-frontend' ),
+                            'type'      => 'checkbox',
+                            'sub_label' => __(
+                                'If enabled, users must verify their email before submitting a post', 'wp-user-frontend'
+                            ),
+                        ],
+                        'roles'              => [
+                            'label'           => __( 'Choose who can submit post', 'wp-user-frontend' ),
+                            'type'            => 'multi-select',
+                            'help_text'       => __( 'Select the user roles who can submit posts', 'wp-user-frontend' ),
+                            'options'         => wpuf_get_user_roles(),
+                            'always_selected' => [ 'administrator' ],
+                        ],
+                        'message_restrict'   => [
+                            'label'     => __( 'Unauthorized Message', 'wp-user-frontend' ),
+                            'type'      => 'textarea',
+                            'help_text' => __(
+                                'Display this message to non-logged-in users. Use {login} and {register} placeholders to add login and registration links',
+                                'wp-user-frontend'
+                            ),
+                        ],
+                    ],
+                ],
+            ],
+        ]
+    );
+
+    $payment = apply_filters(
+        'wpuf_form_builder_settings_payment',
+        [
+            'payment_options'          => [
+                'label'     => __( 'Enable Payments', 'wp-user-frontend' ),
+                'type'      => 'toggle',
+                'help_text' => __(
+                    'Enable payments for this form to charge users for submissions', 'wp-user-frontend'
+                ),
+            ],
+            'choose_payment_option'    => [
+                'label'   => __( 'Choose Payment Option', 'wp-user-frontend' ),
+                'type'    => 'select',
+                'options' => [
+                    'force_pack_purchase' => __( 'Mandatory Subscription', 'wp-user-frontend' ),
+                    'enable_pay_per_post' => __( 'Pay as you post', 'wp-user-frontend' ),
+                ],
+                'help_text' => __(
+                    'Select how users will pay for submitting posts', 'wp-user-frontend'
+                ),
+            ],
+            'fallback_ppp_enable'      => [
+                'label'     => __( 'Pay-per-post billing when limit exceeds', 'wp-user-frontend' ),
+                'type'      => 'checkbox',
+                'sub_label' => __( 'Switch to pay-per-post billing if pack limit is exceeded', 'wp-user-frontend' ),
+            ],
+            'fallback_ppp_cost'        => [
+                'label' => __( 'Cost for each additional post after pack limit is reached', 'wp-user-frontend' ),
+                'type'  => 'number',
+                'help_text' => __( 'This field is required when Pay-per-post billing when limit exceeds is enabled.', 'wp-user-frontend' ),
+            ],
+            'pay_per_post_cost'        => [
+                'label'     => __( 'Charge for each post', 'wp-user-frontend' ),
+                'type'      => 'number',
+                'help_text' => __(
+                    'Set a fee for each post submission. This field is required when Pay as you post is selected.', 'wp-user-frontend'
+                ),
+            ],
+            'ppp_payment_success_page' => [
+                'label'   => __( 'Payment Success Page', 'wp-user-frontend' ),
+                'type'    => 'select',
+                'options' => $pages,
+                'help'    => __( 'Select the page users will be redirected to after a successful payment', 'wp-user-frontend' ),
+            ],
+        ]
+    );
+
+    $notification = apply_filters(
+        'wpuf_form_builder_settings_notification',
+        [
+            'section' => [
+                'new_post' => [
+                    'label'  => __( 'New Post Notification', 'wp-user-frontend' ),
+                    'desc'   => __(
+                        'Enable email alerts for new post submissions via the frontend form. This feature keeps you updated on user activity, allowing for timely review and approval of content',
+                        'wp-user-frontend'
+                    ),
+                    'fields' => [
+                        'new'         => [
+                            'label' => __( 'New Post Notification', 'wp-user-frontend' ),
+                            'type'  => 'toggle',
+                            'help'  => __( 'Enable email alerts for each new post submitted through this form', 'wp-user-frontend' ),
+                            'name'  => 'wpuf_settings[notification][new]',
+                        ],
+                        'new_to'      => [
+                            'label' => __( 'To', 'wp-user-frontend' ),
+                            'type'  => 'text',
+                            'value' => get_option( 'admin_email' ),
+                            'name'  => 'wpuf_settings[notification][new_to]',
+                        ],
+                        'new_subject' => [
+                            'label' => __( 'Subject', 'wp-user-frontend' ),
+                            'type'  => 'text',
+                            'value' => __( 'New post created', 'wp-user-frontend' ),
+                            'name'  => 'wpuf_settings[notification][new_subject]',
+                        ],
+                        'new_body'    => [
+                            'label'     => __( 'Email Body', 'wp-user-frontend' ),
+                            'type'      => 'textarea',
+                            'name'      => 'wpuf_settings[notification][new_body]',
+                            'value'     => "Hi Admin, \r\n\r\nA new post has been created in your site {sitename} ({siteurl}). \r\n\r\nHere is the details: \r\nPost Title: {post_title} \r\nContent: {post_content} \r\nAuthor: {author} \r\nPost URL: {permalink} \r\nEdit URL: {editlink}",
+                            'long_help' => '<h4 class="wpuf-mt-[24px] wpuf-mb-0">You may use in to, subject & message:</h4>
+                                         <p class="wpuf-leading-8 !wpuf-ml-0">
+                                         <span data-clipboard-text="{post_title}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{post_title}</span>
+                                         <span data-clipboard-text="{post_content}" class="wpuf-post-content wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{post_content}</span>
+                                         <span data-clipboard-text="{post_excerpt}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{post_excerpt}</span>
+                                         <span data-clipboard-text="{tags}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{tags}</span>
+                                         <span data-clipboard-text="{category}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{category}</span>
+                                         <span data-clipboard-text="{author}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{author}</span>
+                                         <span data-clipboard-text="{author_email}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{author_email}</span>
+                                         <span data-clipboard-text="{author_bio}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{author_bio}</span>
+                                         <span data-clipboard-text="{sitename}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{sitename}</span>
+                                         <span data-clipboard-text="{siteurl}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{siteurl}</span>
+                                         <span data-clipboard-text="{permalink}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{permalink}</span>
+                                         <span data-clipboard-text="{editlink}" class="wpuf-pill-green hover:wpuf-cursor-pointer wpuf-template-text">{editlink}</span>
+                                         <span class="wpuf-pill-green">{custom_{NAME_OF_CUSTOM_FIELD}}</span>
+                                         e.g: <span class="wpuf-pill-green">{custom_website_url}</span> for <i>website_url</i> meta field</p>',
+                        ],
+                    ],
+                ],
+                'update_post' => [
+                    'label'  => __( 'Update Post Notification', 'wp-user-frontend' ),
+                    'desc'   => __(
+                        'Enable this feature to receive email alerts whenever an existing post is updated through the frontend form. This ensures you\'re promptly informed about any changes made by users, allowing you to review and manage content updates',
+                        'wp-user-frontend'
+                    ),
+                ],
+            ],
+        ]
+    );
+
+    $display = apply_filters(
+        'wpuf_form_builder_settings_display',
+        [
+            'section' => [
+                'custom_form_style' => [
+                    'label'  => __( 'Choose Form Style', 'wp-user-frontend' ),
+                    'desc'   => __(
+                        'Customize the appearance and layout of your form. Select a form template that best suits your website\'s design for a cohesive look and feel',
+                        'wp-user-frontend'
+                    ),
+                    'fields' => [
+                        'use_theme_css'           => [
+                            'label'     => __( 'Use Theme CSS', 'wp-user-frontend' ),
+                            'type'      => 'toggle',
+                            'help_text' => __(
+                                'Apply your site\'s theme CSS for consistent styling and appearance', 'wp-user-frontend'
+                            ),
+                        ],
+                        'label_position' => [
+                            'label'   => __( 'Label Position', 'wp-user-frontend' ),
+                            'type'    => 'select',
+                            'options' => [
+                                'above'   => __( 'Above Element', 'wp-user-frontend' ),
+                                'left'    => __( 'Left of Element', 'wp-user-frontend' ),
+                                'right'   => __( 'Right of Element', 'wp-user-frontend' ),
+                                'hidden'  => __( 'Hidden', 'wp-user-frontend' ),
+                            ],
+                            'help'    => __( 'Customize the position of form labels for improved user navigation and clarity', 'wp-user-frontend' ),
+                        ],
+                    ],
+                ],
+            ],
+        ]
+    );
+
+    $advanced = apply_filters(
+        'wpuf_form_builder_settings_advanced',
+        [
+            'comment_status'       => [
+                'label' => __( 'Enable User Comment', 'wp-user-frontend' ),
+                'type'  => 'select',
+                'help'    => __( 'Allow users to comment on posts submitted via this form', 'wp-user-frontend' ),
+                'options' => [
+                    'open'   => __( 'Open', 'wp-user-frontend' ),
+                    'closed'   => __( 'Closed', 'wp-user-frontend' ),
+                ],
+            ],
+            'schedule_form'        => [
+                'label'     => __( 'Enable Form Scheduling', 'wp-user-frontend' ),
+                'type'      => 'toggle',
+                'help_text' => __(
+                    'Set specific dates and times for when the form will be accessible to users', 'wp-user-frontend'
+                ),
+            ],
+            'inline_fields'        => [
+                'fields' => [
+                    'schedule_start' => [
+                        'label' => __( 'From', 'wp-user-frontend' ),
+                        'type'  => 'date',
+                    ],
+                    'schedule_end'   => [
+                        'label' => __( 'To', 'wp-user-frontend' ),
+                        'type'  => 'date',
+                    ],
+                ],
+            ],
+            'form_pending_message' => [
+                'label' => __( 'Form Pending Message', 'wp-user-frontend' ),
+                'type'  => 'textarea',
+            ],
+            'form_expired_message' => [
+                'label' => __( 'Form Expired Message', 'wp-user-frontend' ),
+                'type'  => 'textarea',
+            ],
+            'limit_entries'        => [
+                'label'     => __( 'Limit Form Entries', 'wp-user-frontend' ),
+                'type'      => 'toggle',
+                'help_text' => __( 'Limit the number of submissions allowed for the form', 'wp-user-frontend' ),
+            ],
+            'limit_number'         => [
+                'label'   => __( 'Number of Entries', 'wp-user-frontend' ),
+                'type'    => 'number',
+                'default' => 100,
+            ],
+            'limit_message'        => [
+                'label' => __( 'Limit Reached Message', 'wp-user-frontend' ),
+                'type'  => 'textarea',
+            ],
+        ]
+    );
+
+    $post_expiration = apply_filters(
+        'wpuf_form_builder_settings_post_expiration', []
+    );
+
+    $post_settings['post_settings'] = apply_filters(
+        'wpuf_form_builder_post_settings',
+        [
+            'general'               => $general,
+            'payment_settings'      => $payment,
+            'notification_settings' => $notification,
+            'display_settings'      => $display,
+            'advanced'              => $advanced,
+            'post_expiration'       => $post_expiration,
+        ]
+    );
+
+    return apply_filters(
+        'wpuf_post_form_builder_setting_menu_contents',
+        $post_settings
+    );
+}
+
+/**
+ * Check if a checkbox or toggle is on
+ *
+ * @since 4.1.0
+ *
+ * @param string $value
+ *
+ * @return bool
+ */
+function wpuf_is_checkbox_or_toggle_on( $value ) {
+    return 'on' === $value || 'yes' === $value || 'true' === $value || '1' === $value;
+}
+
+/**
+ * Get the post forms count
+ *
+ * @since 4.1.4
+ *
+ * @param string $post_type Post type to count
+ * @return array Array of counts with labels
+ */
+function wpuf_get_forms_counts_with_status( $post_type = 'wpuf_forms' ) {
+    $post_counts = (array) wp_count_posts( $post_type );
+
+    $post_statuses = apply_filters( 'wpuf_post_forms_list_table_post_statuses', [
+        'all'     => __( 'All', 'wp-user-frontend' ),
+        'publish' => __( 'Published', 'wp-user-frontend' ),
+        'trash'   => __( 'Trash', 'wp-user-frontend' ),
+    ] );
+
+    $status_count = [];
+    $total_count = 0;
+
+    // Calculate total count (excluding trash)
+    foreach ( $post_counts as $status => $count ) {
+        if ( 'trash' !== $status ) {
+            $total_count += (int) $count;
+        }
+    }
+
+    // Set up the counts array
+    foreach ( $post_statuses as $key => $label ) {
+        if ( 'all' === $key ) {
+            $status_count[ $key ] = [
+                'label' => $label,
+                'count' => $total_count,
+            ];
+        } else {
+            $count = isset( $post_counts[ $key ] ) ? (int) $post_counts[ $key ] : 0;
+            $status_count[ $key ] = [
+                'label' => $label,
+                'count' => $count,
+            ];
+        }
+    }
+
+    return $status_count;
+}
+
+/**
+ * Fallback function for profile photo allowed extensions
+ * Only used when Pro version is not active
+ *
+ * @since 4.1.8
+ *
+ * @return array
+ */
+if ( ! function_exists( 'wpuf_field_profile_photo_allowed_extensions' ) ) {
+    function wpuf_field_profile_photo_allowed_extensions() {
+        $allowed_extensions = [
+            'jpg'  => __( 'JPG', 'wpuf-pro' ),
+            'jpeg' => __( 'JPEG', 'wpuf-pro' ),
+            'png'  => __( 'PNG', 'wpuf-pro' ),
+            'gif'  => __( 'GIF', 'wpuf-pro' ),
+        ];
+
+        /**
+         * Filter allowed profile photo extensions
+         *
+         * @since WPUF_PRO
+         *
+         * @param array $allowed_extensions Array of extension => label pairs
+         */
+        return apply_filters( 'wpuf_field_profile_photo_allowed_extensions', $allowed_extensions );
+    }
+}
+
+/**
+ * Fallback function for profile photo allowed MIME types
+ * Only used when Pro version is not active
+ *
+ * @since 4.1.8
+ *
+ * @return array
+ */
+if ( ! function_exists( 'wpuf_field_profile_photo_allowed_mimes' ) ) {
+    function wpuf_field_profile_photo_allowed_mimes() {
+        // Get WordPress core allowed mime types for consistency
+        $wp_mimes = get_allowed_mime_types();
+
+        // Define our basic allowed image types
+        $allowed_mimes = [
+            'image/jpeg',
+            'image/jpg',
+            'image/png',
+            'image/gif',
+        ];
+
+        // Only include mimes that are allowed by WordPress
+        $profile_photo_mimes = array_intersect( $allowed_mimes, $wp_mimes );
+
+        /**
+         * Filter allowed profile photo MIME types
+         *
+         * @since 4.1.8
+         *
+         * @param array $profile_photo_mimes Array of allowed MIME types for profile photos
+         */
+        return apply_filters( 'wpuf_field_profile_photo_allowed_mimes', $profile_photo_mimes );
+    }
 }

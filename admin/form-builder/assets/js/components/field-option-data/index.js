@@ -6,7 +6,8 @@ Vue.component('field-option-data', {
     template: '#tmpl-wpuf-field-option-data',
 
     mixins: [
-        wpuf_mixins.option_field_mixin
+        wpuf_mixins.option_field_mixin,
+        wpuf_mixins.form_field_mixin
     ],
 
     data: function () {
@@ -106,7 +107,7 @@ Vue.component('field-option-data', {
                     i = 0;
 
                 for (i = 0; i < new_opts.length; i++) {
-                    options[new_opts[i].value] = new_opts[i].label;
+                    options['' + new_opts[i].value] = new_opts[i].label;
                 }
 
                 this.update_value('options', options);

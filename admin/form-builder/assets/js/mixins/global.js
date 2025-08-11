@@ -5,6 +5,14 @@ Vue.mixin({
     computed: {
         i18n: function () {
             return wpuf_form_builder.i18n;
+        },
+
+        is_pro_active: function () {
+            return wpuf_form_builder.is_pro_active === '1';
+        },
+
+        pro_link: function () {
+            return wpuf_form_builder.pro_link;
         }
     },
 
@@ -27,7 +35,7 @@ Vue.mixin({
                 cancelButtonText: this.i18n.cancel,
             }, settings);
 
-            swal(settings, callback);
+            Swal.fire(settings, callback);
         },
 
         is_failed_to_validate: function (template) {
@@ -42,6 +50,10 @@ Vue.mixin({
 
         has_recaptcha_api_keys: function () {
             return (wpuf_form_builder.recaptcha_site && wpuf_form_builder.recaptcha_secret) ? true : false;
+        },
+
+        has_turnstile_api_keys: function () {
+            return wpuf_form_builder.turnstile_site && wpuf_form_builder.turnstile_secret;
         },
 
         containsField: function(field_name) {

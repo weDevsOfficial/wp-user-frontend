@@ -266,7 +266,7 @@
 }
 
 .selectize-dropdown .active {
-    background-color: @wpBlue;
+    background-color: @wpufPrimary;
     color: #fff;
 }
 
@@ -309,12 +309,6 @@
 // Form Builder
 // --------------------------------------------------
 #wpuf-form-builder {
-    width: ~"calc(100% - 200px)";
-    padding-top: 10px;
-    position: fixed;
-    top: 25px;
-    background: #f1f1f1;
-
     & * {
         box-sizing: border-box;
     }
@@ -674,8 +668,8 @@
     }
 
     .form-preview-stage-dropzone {
-        background-color: fade(@wpYellow, 30%) !important;
-        border: 1px solid @wpYellow;
+        background-color: #f0fdf4;
+        border: 1px solid #4ade80;
         height: 50px;
     }
 
@@ -715,27 +709,6 @@
 // Panel: Form Fields
 // --------------------------------------------------
 .panel-form-field-group {
-    margin-bottom: 15px;
-
-    h3 {
-        margin: 0;
-        font-size: 15px;
-        border-bottom: 1px solid #eee;
-        padding-bottom: 10px;
-        cursor: pointer;
-
-        i {
-            float: right;
-        }
-    }
-
-    .panel-form-field-buttons {
-        opacity: 1;
-        max-height: 100vh;
-        overflow: hidden;
-        margin: 15px 0 0;
-    }
-
     .button {
         display: block;
         width: 48%;
@@ -784,90 +757,6 @@
         height: auto;
         opacity: 1;
     }
-
-    .panel-field-opt {
-        margin-bottom: 15px;
-
-        .field-helper-text {
-            color: fadeout(@wpBlack, 50%);
-            margin-left: 6px;
-        }
-
-        &.panel-field-opt-text {
-
-            input[type="text"],
-            input[type="range"],
-            input[type="number"] {
-                display: block;
-                width: 100%;
-                margin: 5px 0 0;
-                line-height: 1.75;
-            }
-        }
-
-        &.panel-field-opt-radio {
-
-            & > label {
-                display: block;
-                margin-bottom: 5px;
-            }
-
-            & > ul {
-                margin-top: 0;
-                margin-bottom: 0;
-            }
-        }
-
-        &.panel-field-opt-select {
-
-            select {
-                width: 100%;
-                height: 32px;
-                margin: 4px 0 0;
-            }
-
-        }
-
-        .chosen-select + .chosen-container {
-            margin-top: 10px;
-        }
-
-        .label-title-block {
-            display: block;
-            margin-bottom: 3px;
-        }
-
-        .field-option-actions {
-            margin: 0;
-            line-height: 1.2;
-
-            li {
-                position: relative;
-                margin: 0;
-
-                &:not(:last-child):after {
-                    content: "|";
-                    position: absolute;
-                    top: 0;
-                    right: -3px;
-                    opacity: .5;
-                }
-            }
-
-            .field-helper-text {
-                position: relative;
-                top: 1px;
-                margin-left: 0;
-            }
-
-            .tooltip {
-
-                .tooltip-inner {
-                    width: 200px;
-                }
-            }
-        }
-    }
 }
 
 .option-field-option-chooser {
@@ -887,10 +776,6 @@
 
     .selector {
         width: 25px;
-
-        input {
-            margin-top: 14px;
-        }
     }
 
     .sort-handler {
@@ -898,7 +783,6 @@
         cursor: ns-resize;
 
         i {
-            margin-top: 14px;
             font-size: 15px;
         }
     }
@@ -923,23 +807,11 @@
     }
 
     .action-buttons {
-        width: 36px;
-
         i {
             cursor: pointer;
             font-size: 16px;
             margin-top: 13px;
         }
-    }
-
-    .plus-buttons {
-        padding: 5px;
-        font-size: 18px;
-        text-align: center;
-        cursor: pointer;
-        border: 1px solid #ccc;
-        width: 61%;
-        margin-left: 14%;
     }
 }
 
@@ -1127,15 +999,9 @@ ul.wpuf-form li .wpuf-password-field:after {
 
 .wpuf-form-template-modal {
     background: #fff;
-    position: fixed;
-    top: 5%;
-    bottom: 5%;
-    right: 10%;
-    left: 10%;
-    // display: block;
     display: none;
     box-shadow: 0 1px 20px 5px rgba(0, 0, 0, 0.1);
-    z-index: 160000;
+    height: 100vh;
 
     &.show {
         display: block;
@@ -1226,7 +1092,7 @@ ul.wpuf-form li .wpuf-password-field:after {
                 text-align: center;
                 min-height: 280px;
                 width: 220px;
-                border: 0px;
+                border: 0;
                 box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.1);
                 position: relative;
                 border-radius: 3px;
@@ -1354,6 +1220,11 @@ ul.wpuf-form li .wpuf-password-field:after {
                     }
                 }
 
+                &.template-inactive h3 {
+                    display: flex;
+                    justify-content: space-between;
+                }
+
                 &.blank-form {
                     text-align: center;
 
@@ -1372,6 +1243,18 @@ ul.wpuf-form li .wpuf-password-field:after {
                     span.label {
 
                     }
+                }
+
+                a.wpuf-button.button-upgrade-to-pro {
+                    padding: 10px 15px;
+                    background: #ff9000;
+                    color: #fff;
+                    min-height: auto;
+                    border-radius: 5px;
+                }
+
+                a.wpuf-button.button-upgrade-to-pro:hover {
+                    background: #d07805;
                 }
             }
         }
@@ -1645,6 +1528,13 @@ and (max-device-width : 480px) {
     width: 100%;
     padding: 10px;
     display: none;
+}
+
+span.pro-icon svg {
+    height: 1em;
+}
+span.pro-icon svg path {
+    fill: #fff;
 }
 
 @import "builder-responsive.less";

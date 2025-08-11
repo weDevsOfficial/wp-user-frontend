@@ -35,7 +35,7 @@ Vue.component('builder-stage', {
         $('#form-preview-stage .wpuf-form.sortable-list').sortable({
             placeholder: 'form-preview-stage-dropzone',
             items: '.field-items',
-            handle: '.control-buttons .move',
+            handle: '.field-buttons .move',
             scroll: true,
             over: function() {
                 in_column_field = false;
@@ -76,7 +76,6 @@ Vue.component('builder-stage', {
 
                     self.$store.commit('swap_form_field_elements', payload);
                 }
-
             }
         });
     },
@@ -101,7 +100,7 @@ Vue.component('builder-stage', {
 
             // check if these are already inserted
             if ( this.isSingleInstance( field.template ) && this.containsField( field.template ) ) {
-                swal({
+                Swal.fire({
                     title: "Oops...",
                     text: "You already have this field in the form"
                 });
@@ -114,19 +113,21 @@ Vue.component('builder-stage', {
         delete_field: function(index) {
             var self = this;
 
-            swal({
+            (Swal.fire({
                 text: self.i18n.delete_field_warn_msg,
-                type: 'warning',
+                icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d54e21',
                 confirmButtonText: self.i18n.yes_delete_it,
                 cancelButtonText: self.i18n.no_cancel_it,
-                confirmButtonClass: 'btn btn-success',
-                cancelButtonClass: 'btn btn-danger',
-            }).then(function () {
-                self.$store.commit('delete_form_field_element', index);
-            }, function() {
-
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger',
+                }
+            })).then((result) => {
+                if (result.isConfirmed) {
+                    self.$store.commit('delete_form_field_element', index);
+                }
             });
         },
 

@@ -27,7 +27,7 @@ class WPUF_Frontend_Render_Form {
      * @param string $error
      */
     public function send_error( $error ) {
-        echo json_encode(
+        echo wp_json_encode(
             [
                 'success' => false,
                 'error'   => $error,
@@ -179,7 +179,7 @@ class WPUF_Frontend_Render_Form {
                 <input type="submit" class="wpuf-submit-button wpuf_submit_<?php echo esc_attr( $form_id ); ?>" name="submit" value="<?php echo esc_attr( $form_settings['submit_text'] ); ?>" />
             <?php } ?>
 
-            <?php if ( isset( $form_settings['draft_post'] ) && $form_settings['draft_post'] == 'true' ) { ?>
+            <?php if ( isset( $form_settings['draft_post'] ) && wpuf_is_checkbox_or_toggle_on( $form_settings['draft_post'] ) ) { ?>
                 <a href="#" class="btn" id="wpuf-post-draft"><?php esc_html_e( 'Save Draft', 'wp-user-frontend' ); ?></a>
             <?php } ?>
         </li>
@@ -224,7 +224,13 @@ class WPUF_Frontend_Render_Form {
     public function preview_form() {
         $form_id = isset( $_GET['form_id'] ) ? intval( wp_unslash( $_GET['form_id'] ) ) : 0;
 
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
         if ( $form_id ) {
+            wp_enqueue_script( 'jquery' );
+            wp_enqueue_style( 'wpuf-frontend-forms' );
             ?>
 
             <!doctype html>
@@ -232,7 +238,6 @@ class WPUF_Frontend_Render_Form {
                 <head>
                     <meta charset="UTF-8">
                     <title>__( 'Form Preview', 'wp-user-frontend' )</title>
-                    <link rel="stylesheet" href="<?php echo esc_url( plugins_url( 'assets/css/frontend-forms.css', __DIR__ ) ); ?>">
 
                     <style type="text/css">
                         body {
@@ -253,7 +258,6 @@ class WPUF_Frontend_Render_Form {
                         }
                     </style>
 
-                    <script type="text/javascript" src="<?php echo esc_url( includes_url( 'js/jquery/jquery.js' ) ); ?>"></script>
                 </head>
                 <body>
                     <div class="container">
@@ -305,23 +309,15 @@ class WPUF_Frontend_Render_Form {
             wp_enqueue_style( 'wpuf-' . $layout );
         }
 
-        if ( ! is_user_logged_in() && $this->form_settings['guest_post'] !== 'true' ) {
-            $login         = wpuf()->login->get_login_url();
-            $register      = wpuf()->login->get_registration_url();
-            $replace       = [ "<a href='" . $login . "'>Login</a>", "<a href='" . $register . "'>Register</a>" ];
-            $placeholders  = [ '%login%', '%register%' ];
-
-            $restrict_message = str_replace( $placeholders, $replace, $this->form_settings['message_restrict'] );
-
-            echo wp_kses_post( '<div class="wpuf-message">' . $restrict_message . '</div>' );
+        if ( ! is_user_logged_in() && ( isset( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) ) {
+            echo wp_kses_post( '<div class="wpuf-message">' . $this->form_settings['message_restrict'] . '</div>' );
 
             return;
         }
 
         if (
-                isset( $this->form_settings['role_base'] )
-                && wpuf_validate_boolean( $this->form_settings['role_base'] )
-                && ! wpuf_user_has_roles( $this->form_settings['roles'] )
+            ( ! empty( $this->form_settings['post_permission'] ) && 'role_base' === $this->form_settings['post_permission'] )
+            && ( ! empty( $this->form_settings['roles'] ) && ! wpuf_user_has_roles( $this->form_settings['roles'] ) )
             ) {
             ?>
             <div class="wpuf-message"><?php esc_html_e( 'You do not have sufficient permissions to access this form.', 'wp-user-frontend' ); ?></div>
@@ -335,6 +331,20 @@ class WPUF_Frontend_Render_Form {
 
                 <form class="wpuf-form-add wpuf-form-<?php echo esc_attr( $layout ); ?> <?php echo ( $layout == 'layout1' ) ? esc_html( $theme_css ) : 'wpuf-style'; ?>" action="" method="post">
 
+                    <?php
+                    // Display form title if enabled
+                    if ( isset( $this->form_settings['show_form_title'] ) && wpuf_is_checkbox_or_toggle_on( $this->form_settings['show_form_title'] ) ) {
+                        $form_title = get_the_title( $form_id );
+                        if ( ! empty( $form_title ) ) {
+                            echo '<h2 class="wpuf-form-title">' . esc_html( $form_title ) . '</h2>';
+                        }
+                    }
+
+                    // Display form description if set
+                    if ( isset( $this->form_settings['form_description'] ) && ! empty( $this->form_settings['form_description'] ) ) {
+                        echo '<div class="wpuf-form-description">' . wp_kses_post( $this->form_settings['form_description'] ) . '</div>';
+                    }
+                    ?>
 
                    <script type="text/javascript">
                         if ( typeof wpuf_conditional_items === 'undefined' ) {
@@ -362,9 +372,11 @@ class WPUF_Frontend_Render_Form {
                         do_action( 'wpuf_edit_post_form_top', $form_id, $post_id, $this->form_settings );
                     }
 
-                    if ( ! is_user_logged_in() && $this->form_settings['guest_post'] == 'true' && $this->form_settings['guest_details'] == 'true' ) {
+                    if ( isset( $this->form_settings['post_permission'] ) && 'guest_post' === $this->form_settings['post_permission'] ) {
                         $this->guest_fields( $this->form_settings );
                     }
+
+                        $this->render_featured_field( $post_id );
 
                         wpuf()->fields->render_fields( $this->form_fields, $form_id, $atts, $type = 'post', $post_id );
 
@@ -446,7 +458,7 @@ class WPUF_Frontend_Render_Form {
 
         // try to add some random number in username
         // and may be we got our username
-        $username .= rand( 1, 199 );
+        $username .= wp_rand( 1, 199 );
 
         if ( ! username_exists( $username ) ) {
             return $username;
@@ -660,6 +672,10 @@ class WPUF_Frontend_Render_Form {
             } // isset tax
 
             else {
+                if ( isset( $taxonomy_name ) && 0 === absint( $taxonomy_name ) ) {
+                    wp_set_post_terms( $post_id, $taxonomy_name, $taxonomy['name'] );
+                }
+
                 if ( ! isset( $taxonomy['woo_attr'] ) ) {
                     $this->set_default_taxonomy( $post_id );
                 }
@@ -723,6 +739,10 @@ class WPUF_Frontend_Render_Form {
                 $wpuf_files = isset( $post_data['wpuf_files'] ) ? array_map( 'sanitize_text_field', wp_unslash( $post_data['wpuf_files'][ $value['name'] ] ) ) : [];
             } else {
                 $wpuf_files = [];
+            }
+
+            if ( '_downloadable' === $value['name'] && 'on' === $value_name ) {
+                $value_name = 'yes';
             }
 
             switch ( $value['input_type'] ) {
@@ -813,7 +833,7 @@ class WPUF_Frontend_Render_Form {
                     break;
 
                 case 'checkbox':
-                    if ( count( $value_name ) > 1 ) {
+                    if ( is_array( $value_name ) && ! empty( $value_name ) ) {
                         $meta_key_value[ $value['name'] ] = implode( self::$separator, $value_name );
                     } else {
                         $meta_key_value[ $value['name'] ] = $value_name[0];
@@ -882,6 +902,49 @@ class WPUF_Frontend_Render_Form {
                 }
             }
             $this->validate_re_captcha( $no_captcha, $invisible_captcha );
+        }
+    }
+
+    /**
+     * Render a checkbox for enabling feature item
+     */
+    public function render_featured_field( $post_id = null ) {
+        $user_sub = WPUF_Subscription::get_user_pack( get_current_user_id() );
+        $is_featured = false;
+        if ( $post_id ) {
+            $stickies = get_option( 'sticky_posts' );
+            $is_featured   = in_array( intval( $post_id ), $stickies, true );
+        }
+
+        if ( ! empty( $user_sub['total_feature_item'] ) || $is_featured ) {
+            ?>
+            <li class="wpuf-el field-size-large" data-label="Is featured">
+                <div class="wpuf-label">
+                    <label for="wpuf_is_featured"><?php esc_html_e( 'Featured', 'wp-user-frontend' ); ?></label>
+                </div>
+                <div >
+                    <label >
+                         <input type="checkbox" class="wpuf_is_featured" name="is_featured_item" value="1" <?php echo $is_featured ? 'checked' : ''; ?> >
+                         <span class="wpuf-items-table-containermessage-box" id="remaining-feature-item"> <?php echo sprintf( 
+                            // translators: %1$s is Post type and %2$s is total feature item
+                            wp_kses_post(__( 'Mark the %1$s as featured (remaining %2$d)', 'wp-user-frontend' ), esc_html ($this->form_settings['post_type'] ), esc_html( $user_sub['total_feature_item'] ) )); ?></span>
+                    </label>
+                </div>
+            </li>
+            <script>
+                (function ($) {
+                    $('.wpuf_is_featured').on('change', function (e) {
+                        var counter = $('.wpuf-message-box');
+                        var count = parseInt( counter.text().match(/\d+/) );
+                        if ($(this).is(':checked')) {
+                            counter.text( counter.text().replace( /\d+/, count - 1 ) );
+                        } else {
+                            counter.text( counter.text().replace( /\d+/, count + 1 ) );
+                        }
+                    })
+                })(jQuery)
+            </script>
+            <?php
         }
     }
 }

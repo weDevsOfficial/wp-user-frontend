@@ -1,3 +1,298 @@
+= v4.1.8 (04 August, 2025) =
+* New - Template filtering search in post form
+* Fix - Invoice and email not sent for payment gateways
+* Fix - Product tag suggestion for WooCommerce
+* Fix - Guest Post Email Verification Issue
+* Fix - Namespaced global JS to prevent conflicts with other plugins
+* Fix - Ensure Google Map fields display on frontend posts
+* Fix - Required field validation for 'Pay as you post' to prevent empty submission
+* Fix - Conditionally show 'Require email verification' only when 'Require Name and Email address' is checked
+* Fix - A typo From Expired Message → Form Expired Message
+* Fix - Post forms list table CSS
+
+= v4.1.7 (15 July, 2025) =
+* New - Add Sort Order for subscription
+* Enhancement - Update country list and improve state handling
+* Fix - Conflict with email log plugin
+* Fix - Disable "Update Post Notification" pro features preview
+* Fix - CSS on long form lists
+
+= v4.1.6 (30 June, 2025) =
+* Enhancement - Form title, description toggle added for post form
+* Enhancement - Separate translation context for date range "To"
+* Fix - PayPal redirection issues
+* Fix - Allowed memory size error on the Post Forms List Page
+* Fix - Improved registration page redirects to prevent interference with XML sitemap and XML file requests
+* Fix - Dynamic url for {login} and {register} in un-authorized message
+
+= v4.1.5 (2 June, 2025) =
+* Enhancement - Added support for unlimited subscriptions.
+* Enhancement - Added trial period & next billing dates in subscription.
+* Enhancement - Added “Show More” button for subscriptions with many post types.
+* Enhancement - Support for PayPal REST API for payments.
+* Enhancement - Real-time PayPal Webhook support for payment events.
+* Enhancement - Added REST API credentials & test mode to Payment settings.
+* Fix - Forms list not loading issue fixed.
+* Fix - Fixed issues with null gateways causing errors.
+* Fix - Improved handling of duplicate PayPal transactions.
+* Fix - Fixed several subscription-related bugs.
+* Fix - Fixed tag auto-suggestions not appearing in post forms.
+
+= v4.1.4 (12 May, 2025) =
+* Enhance - Post form list page UI and UX
+* Fix - Coupon functionality
+* Fix - Post submission when name email not required
+* Fix - Styling on multiple pages
+
+= v4.1.3 (23 April, 2025) =
+* Fix - Draft button does not appear
+* Fix - Post submission when name email not required
+* Fix - Subscription number not showing
+* Fix - Image upload button condition
+* Fix - Email body not respecting spaces
+* Fix - Show recurring and trial info on subscription
+* Fix - Minor css and styling
+
+= v4.1.2 (16 April, 2025) =
+* Fix - Help page of profile editing has duplicated text
+* Fix - Warning message not showing when guest post submitted with duplicate email, username
+
+= v4.1.1 (27 March, 2025) =
+* Fix - Resolved validation issue with error (!) after form submission.
+* Fix - Improve template selection UX to uncheck a selected post form template.
+
+= v4.1.0 (20 March, 2025) =
+* Enhance - Redesigned Post Form Builder UI/UX
+* Enhance - Reorganized Forms Settings for better structure
+* Enhance - Added a search bar for quick field filtering
+* Enhance - Added new field & feature request submission area
+* Enhance - Improved field grouping & customization
+
+= v4.0.15 (19 March, 2025) =
+* Fix - Security vulnerabilities: escaped variables & sanitized inputs
+* Fix - Reverted SweetAlert2 to v11.4.8 for compliance
+* Fix - Removed unnecessary files
+
+= v4.0.14 (23 Nov, 2024) =
+* Fix - Error in login page
+* Fix - Support situations in which (WPUF) translations are loaded too early
+
+= v4.0.13 (14 Nov, 2024) =
+* Enhance - Cloudflare Turnstile field on form builder
+* Enhance - Cloudflare Turnstile on login form
+* Fix - Events calendar post form integration
+* Fix - Post form submission with same email
+* Fix - Post description image broken for block theme
+
+= v4.0.12 (14 Oct, 2024) =
+* Enhance - Decimal value for subscription pack
+* Fix - Required asterisk on password label
+* Fix - Field overlapping in address field
+* Fix - Read-only does not work for 'Teeny Rich textarea'
+* Fix - Integrations not loading properly for Dokan, ACF, WC Vendors
+
+= v4.0.11 (12 Sep, 2024) =
+* Enhance - Subscription design revamp
+* Enhance - Consistent format in email templates
+* Enhance - Move newsletter subscription to weMail
+* Fix - Translation for password strength
+* Fix - Different languages breaking design
+* Fix - State field is not changing
+
+= v4.0.10 (08 Aug, 2024) =
+* Fix - Error on WC post template
+* Fix - Move login validation to pro
+
+= v4.0.9 (17 Jul, 2024) =
+* Fix - Remove PHP AllowDynamicProperties warning on plugin pages
+* Fix - Remove print_emoji_styles is deprecated message from setup page
+
+= v4.0.8 (03 Jul, 2024) =
+* Fix - Optimized the script loading process by removing a Promise polyfill
+* Fix - Added validation on the transaction page
+
+= v4.0.7 (11 Jun, 2024) =
+* Enhance - Remove what's new page
+* Fix - Pending user can log in
+* Fix - Error when multiple password fields in form
+* Fix - Error when using CPT on post form
+* Fix - File upload problem using page builders
+* Fix - Conflict with WC Stripe Gateway plugin
+* Fix - Edit link on mail not working
+* Fix - Form import is not working
+
+= v4.0.6 (13 Feb, 2024) =
+* Enhance - Update deprecated uses for PHP versions and latest WordPress
+* Enhance - Eye icon inside password field
+* Fix - Error after PayPal payment
+* Fix - Reset password not working
+* Fix - Subscription posting restriction not working
+
+= v4.0.5 (31 Jan, 2024) =
+* Enhance - Integrate headway and canny
+
+= v4.0.4 (25 Jan, 2024) =
+* Enhance - Add visibility to the Columns field
+* Fix - Login with reCAPTCHA gives error
+* Fix - AJAX image upload
+* Fix - Error on multi select form custom taxonomy
+* Fix - Frontend registration form is not showing
+* Fix - Handle email for guest post
+* Fix - Default form template not selecting
+* Fix - Error in setup wizard
+
+= v4.0.3 (05 Jan, 2024) =
+* Enhance - Restructure plugin codes
+* Fix - Error when editing the featured post
+* Fix - add/edit post forms if the site language is set to Simplified Chinese
+* Fix - Errors with Post Form Conditional Logic
+
+= v4.0.2 (03 Jan, 2024) =
+* Enhance - Restructure plugin codes
+* Fix - Error when editing the featured post
+* Fix - add/edit post forms if the site language is set to Simplified Chinese
+* Fix - Errors with Post Form Conditional Logic
+
+= v4.0.1 (03 Jan, 2024) =
+* Enhance - Restructure plugin codes
+* Fix - Error when editing the featured post
+* Fix - add/edit post forms if the site language is set to Simplified Chinese
+* Fix - Errors with Post Form Conditional Logic
+
+= v4.0.0 (02 Jan, 2024) =
+* Enhance - Restructure plugin codes
+* Fix - Error when editing the featured post
+* Fix - add/edit post forms if the site language is set to Simplified Chinese
+* Fix - Errors with Post Form Conditional Logic
+
+= v3.6.9 (11 Sep, 2023) =
+
+* Enhance - add capabilities check on AJAX actions
+
+= v3.6.8 (31 Aug, 2023) =
+
+* Fix - Delete upload file even after clicking cancel button
+* Fix - Taxonomy data not showing for checkbox
+* Fix - Some validation for AJAX actions
+
+= v3.6.7 (09 Aug, 2023) =
+
+* Fix - conflicts with Advanced Custom Fields Pro Plugin
+* Fix - conflicts with the Classic Editor Plugin
+* Fix - multiple HTML field inside column field
+
+= v3.6.6 (27 Jul, 2023) =
+
+* Enhancement - Restrict shortcode in post form
+* Enhancement - Add custom note on plugin update page
+
+= v3.6.5 (25 May, 2023) =
+
+* Enhancement - Revamp registration page design
+
+* Fix - Expiration time not showing for admin
+* Fix - Error when editing user profile
+
+= v3.6.4 (4 Apr, 2023) =
+
+* Fix - Post submission for dokan vendors
+* Fix - Paypal transaction not showing
+* Fix - Predefined category field not working
+* Fix - Field visibility not working
+
+= v3.6.3 (13 Feb, 2023) =
+
+* Fix - Error if Dokan not installed
+* Fix - Style conflict with LearnPress
+
+= v3.6.2 (8 Feb, 2023) =
+
+* Fix - Post submission for the Dokan Vendors
+
+= v3.6.1 (2 Jan, 2023) =
+
+* Enhancement - Add responsiveness to the upgrade-to-pro popup widget
+* Enhancement - Update Appsero SDK to the latest version
+* Enhancement - warning before updating a subscription package
+
+* Fix - Subscription shouldn't be editable from user's profile
+* Fix - Text field append '0' when character exceeds content restriction limit
+* Fix - Fields within column doesn't behave as expected in forms
+* Fix - Change sweetalert2 to v11.4.19 to remove anti-war message
+
+= v3.6.0 (23 Nov, 2022) =
+
+* Enhancement - Admin dashboard news and update meta-box added
+* Enhancement - Upgrade prompts design
+
+* Fix - Email style handled
+* Fix - text-area type selection(Normal, Rich text-area, Teeny Rich text-area) bug in field options
+* Fix - Frontend form validation
+* Fix - Default value not saving for radio, dropdown, checkbox
+
+* Update - sweetalert2 version
+
+v3.5.29 (15 Sep, 2022) =
+
+* Enhancement - Short-code encryption updated for registration page
+
+= v3.5.28 (17 Jun, 2022) =
+
+* Tweak - Updated compatibility with the latest version of WordPress 6.0
+* Tweak - Improved some backend implementations
+
+= v3.5.27 (15 Mar, 2022) =
+
+* Enhancement - Email template enhanced for after activation
+* Enhancement - Read only option for custom field
+* Enhancement - Editor toolbar exclude option enhanced
+* Enhancement - Preview option enhanced  for user profile
+* Enhancement - Meta key enhanced for user email notification
+* Enhancement - Global option for disable post edit on account
+* Enhancement - Filter for conditional logic for fields added
+* Fix - PHP 8 compatibility handled
+* Fix - Address / Billing address inconsistency handled
+* Fix - Content restriction several issue fixed
+* Fix - Tax calculation properly handled for all areas
+* Fix - Validation added for invalid email and URL formats
+* Fix - Special character password handled for login
+* Fix - Reset password handled for sidebar widget
+* Fix - Required google map issues handled
+* Fix - Translation related issue handled for admin menu
+* Fix - Label & query enhanced for transaction table
+* Fix - Template override for child theme fixed
+* Fix - Custom field modal handled for registration form
+* Fix - Redundant CSS issues handled
+* Fix - Address field inconsistency fixed
+* Fix - Plugin page spin loading issue handled
+* Fix - Warning on exit for draft post fixed
+* Fix - Unlimited expire on admin user profile handled
+* Fix - No value checkbox issue handled
+* Fix - Tag search security Vulnerability handled
+* Fix - Multi dropdown field error handled
+
+
+= v3.5.25 (18 Nov, 2021) =
+
+* Enhancement - Promotion notice enhanced through api
+
+= v3.5.25 (18 Nov, 2021) =
+
+* Fix - Security Vulnerability fixed
+
+= v3.5.22 (28 Oct, 2021) =
+
+* Enhancement - Settings page search implemented
+* Enhancement - Featured item for subscriber
+* Enhancement - Warning added for unsaved form data on frontend
+* Enhancement - Editor added for registration form email template
+* Fix - Fallback pay per post not working with when draft enabled
+* Fix - User Dashboard responsive issues fixed
+* Fix - Showing wrong license expire message handled
+* Fix - Remove expire cron handled for once daily
+* Fix - Billing address validation handled
+* Update - Promotion notice restricted for WPUF menu
+
 = v3.5.21 (21 Oct, 2021) =
 
 * Fix - reCaptcha issue with other plugin handled

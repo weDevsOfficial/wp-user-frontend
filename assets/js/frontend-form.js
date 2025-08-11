@@ -69,21 +69,51 @@
             $( ':submit[name="wpuf_user_subscription_cancel"]').click(function(e){
                 e.preventDefault();
 
-                swal({
+                Swal.fire({
                     text: wpuf_frontend.cancelSubMsg,
-                    type: 'warning',
+                    icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#d54e21',
                     confirmButtonText: wpuf_frontend.delete_it,
                     cancelButtonText: wpuf_frontend.cancel_it,
-                    confirmButtonClass: 'btn btn-success',
-                    cancelButtonClass: 'btn btn-danger',
-                }).then(function ( isConfirmed ) {
-                    if ( !isConfirmed ) {
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger'
+                    }
+                }).then(function ( result ) {
+                    if ( !result.isConfirmed ) {
                         return false;
                     }
                     $('#wpuf_cancel_subscription').submit();
                 });
+            });
+
+            this.warningOnExit();
+            this.handleReadOnly();
+        },
+
+        warningOnExit: function () {
+            $('input[name="submit"], #wpuf-post-draft').on('click', function () {
+                window.onbeforeunload = null;
+                return;
+            });
+
+            $('.wpuf-form-add').on( 'change', function(){
+                $('.wpuf-form-add input, .wpuf-form-add select, .wpuf-form-add textarea').each(function (index) {
+                    if ( 'hidden' !== $(this).attr('type') || 'submit' !== $(this).attr('type') || -1 !== $(this).val() ){
+                        window.onbeforeunload = function () {
+                            return 'you have changes';//changing  return values doesnt have any impact due to security
+                        }
+                    }
+                })
+            });
+        },
+
+        handleReadOnly: function(){
+            $('.wpuf-form .read-only').each( function () {
+                $('input, select, textarea', this).each( function () {
+                    $(this).attr( 'disabled', true );
+                }) ;
             });
         },
 
@@ -101,7 +131,7 @@
 
             if ( typeof wp.passwordStrength != 'undefined' ) {
 
-                strength = wp.passwordStrength.meter( pass1, wp.passwordStrength.userInputBlacklist(), pass1 );
+                strength = wp.passwordStrength.meter( pass1, wp.passwordStrength.userInputDisallowedList(), pass1 );
 
                 switch ( strength ) {
                     case 2:
@@ -225,7 +255,7 @@
             $('.wpuf-ms-bar-active').addClass('active-step');
 
             var legend = $('fieldset.wpuf-multistep-fieldset').eq(step_number).find('legend').text();
-                legend = $.trim( legend );
+            legend = $.trim( legend );
 
             if ( progressbar_type == 'progressive' && $('.wpuf-form .wpuf-multistep-fieldset').length != 0 ) {
                 var progress_percent = ( step_number + 1 ) * 100 / $('fieldset.wpuf-multistep-fieldset').length ;
@@ -305,7 +335,7 @@
         removeField: function() {
             //check if it's the only item
             var $parent = $(this).closest('tr');
-            var items = $parent.siblings().andSelf().length;
+            var items = $parent.siblings().addBack().length;
 
             if( items > 1 ) {
                 $parent.remove();
@@ -332,7 +362,7 @@
                 post_id = form.find('input[type="hidden"][name="post_id"]').val();
 
             var rich_texts = [],
-                    val;
+                val;
 
             // grab rich texts from tinyMCE
             $('.wpuf-rich-validation').each(function (index, item) {
@@ -353,16 +383,16 @@
                 // console.log(res, post_id);
                 if ( typeof post_id === 'undefined') {
                     var html = '<input type="hidden" name="post_id" value="' + res.post_id +'">';
-                        html += '<input type="hidden" name="post_date" value="' + res.date +'">';
-                        html += '<input type="hidden" name="post_author" value="' + res.post_author +'">';
-                        html += '<input type="hidden" name="comment_status" value="' + res.comment_status +'">';
+                    html += '<input type="hidden" name="post_date" value="' + res.date +'">';
+                    html += '<input type="hidden" name="post_author" value="' + res.post_author +'">';
+                    html += '<input type="hidden" name="comment_status" value="' + res.comment_status +'">';
 
                     form.append( html );
                 }
 
                 self.next('span.wpuf-loading').remove();
 
-                self.after('<span class="wpuf-draft-saved">&nbsp; Post Saved</span>');
+                self.after('<span class="wpuf-draft-saved">&nbsp; ' + res.message + '</span>');
                 $('.wpuf-draft-saved').delay(2500).fadeOut('fast', function(){
                     $(this).remove();
                 });
@@ -388,13 +418,13 @@
 
         formStepCheck : function(e,fieldset) {
             var form = fieldset,
-                submitButton = form.find('input[type=submit]');
+                submitButton = form.find('input[type=submit]'),
                 form_data = WP_User_Frontend.validateForm(form);
 
-                if ( form_data == false ) {
-                    WP_User_Frontend.addErrorNotice( self, 'bottom' );
-                }
-                return form_data;
+            if (!form_data) {
+                WP_User_Frontend.addErrorNotice( self, 'bottom' );
+            }
+            return form_data;
         },
 
         formSubmit: function(e) {
@@ -402,7 +432,7 @@
 
             var form = $(this),
                 submitButton = form.find('input[type=submit]')
-                form_data = WP_User_Frontend.validateForm(form);
+            form_data = WP_User_Frontend.validateForm(form);
 
             if (form_data) {
 
@@ -412,38 +442,78 @@
 
                 $.post(wpuf_frontend.ajaxurl, form_data, function(res) {
                     // var res = $.parseJSON(res);
-
                     if ( res.success) {
-
                         // enable external plugins to use events
                         $('body').trigger('wpuf:postform:success', res);
 
-                        if ( res.show_message == true) {
-                            form.before( '<div class="wpuf-success">' + res.message + '</div>');
-                            form.slideUp( 'fast', function() {
-                                form.remove();
-                            });
+                        if ( res.data ) {
+                            if ( res.data.show_message ) {
+                                form.before( '<div class="wpuf-success">' + res.data.message + '</div>');
+                                form.slideUp( 'fast', function() {
+                                    form.remove();
+                                });
 
-                            //focus
-                            $('html, body').animate({
-                                scrollTop: $('.wpuf-success').offset().top - 100
-                            }, 'fast');
+                                //focus
+                                $('html, body').animate({
+                                    scrollTop: $('.wpuf-success').offset().top - 100
+                                }, 'fast');
 
+                            } else {
+                                window.location = res.data.redirect_to;
+                            }
                         } else {
-                            window.location = res.redirect_to;
+                            if ( res.show_message ) {
+                                form.before( '<div class="wpuf-success">' + res.message + '</div>');
+                                form.slideUp( 'fast', function() {
+                                    form.remove();
+                                });
+
+                                //focus
+                                $('html, body').animate({
+                                    scrollTop: $('.wpuf-success').offset().top - 100
+                                }, 'fast');
+
+                            } else {
+                                window.location = res.redirect_to;
+                            }
+                        }
+                    } else {
+                        if ( typeof res.data.type !== 'undefined' && res.data.type === 'login' ) {
+                            Swal.fire({
+                                text: res.error,
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#3085d6",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "OK"
+                            } ).then( function ( result ) {
+                                if (result.isConfirmed) {
+                                    window.location = res.redirect_to;
+                                } else {
+                                    submitButton.removeAttr('disabled');
+                                    submitButton.removeClass('button-primary-disabled');
+                                    form.find('span.wpuf-loading').remove();
+                                }
+                            });
                         }
 
-                    } else {
-
                         if ( typeof res.type !== 'undefined' && res.type === 'login' ) {
-
-                            if ( confirm(res.error) ) {
-                                window.location = res.redirect_to;
-                            } else {
-                                submitButton.removeAttr('disabled');
-                                submitButton.removeClass('button-primary-disabled');
-                                form.find('span.wpuf-loading').remove();
-                            }
+                            Swal.fire({
+                                text: res.error,
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#3085d6",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "OK"
+                            }).then(function(result) {
+                                if (result.isConfirmed) {
+                                    window.location = res.redirect_to;
+                                } else {
+                                    submitButton.removeAttr('disabled');
+                                    submitButton.removeClass('button-primary-disabled');
+                                    form.find('span.wpuf-loading').remove();
+                                }
+                            });
 
                             return;
                         } else {
@@ -451,13 +521,17 @@
                                 grecaptcha.reset();
                             }
 
-                            swal({
-                                html: res.error,
-                                type: 'warning',
+                            const errorMsg = res.error ? res.error : res.data.error;
+
+                            Swal.fire({
+                                html: errorMsg,
+                                icon: 'warning',
                                 showCancelButton: false,
                                 confirmButtonColor: '#d54e21',
                                 confirmButtonText: 'OK',
-                                cancelButtonClass: 'btn btn-danger',
+                                customClass: {
+                                    cancelButton: 'btn btn-danger',
+                                }
                             });
 
                         }
@@ -471,217 +545,359 @@
             }
         },
 
-        validateForm: function( self ) {
+        isTelephoneField: function( item ) {
+            return ( $(item).hasClass('wpuf_telephone') && $(item).data('show-list') === 'yes' );
+        },
 
-            var temp,
-                temp_val    = '',
-                error       = false,
-                error_items = [];
-                error_type  = '';
+        validateForm: function( self ) {
+            var richTexts = [];
+            var errors = [];
 
             // remove all initial errors if any
-            WP_User_Frontend.removeErrors(self);
-            WP_User_Frontend.removeErrorNotice(self);
+            WP_User_Frontend.removeErrors( self );
+            WP_User_Frontend.removeErrorNotice( self );
 
-            // ===== Validate: Text and Textarea ========
-            var required = self.find('[data-required="yes"]:visible');
+            // get all the visible fields
+            var visibleFields = self.find( 'input:visible, textarea:visible, select:visible, div.br-widget:visible, .wpuf-rich-validation:visible, div.wpuf-attachment-upload-filelist:visible' );
 
-            required.each(function(i, item) {
-                // temp_val = $.trim($(item).val());
+            visibleFields.each( function( i, item ) {
+                var container = '';
+                var dataType = $( item ).data( 'type' );
+                var required = $( item ).data( 'required' );
 
-                // console.log( $(item).data('type') );
-                var data_type = $(item).data('type')
-                    val = '';
-
-                switch(data_type) {
+                switch( dataType ) {
                     case 'rich':
-                        var name = $(item).data('id')
-                        val = $.trim( tinyMCE.get(name).getContent() );
+                        var editor_id = $( item ).data( 'id' );
+                        var item_name = $( item ).data( 'name' );
+                        val = $.trim( tinyMCE.get( editor_id ).getContent() );
 
-                        if ( val === '') {
-                            error = true;
-
-                            // make it warn collor
-                            WP_User_Frontend.markError(item);
+                        if ( required === 'yes' && val === '' ) {
+                            errors.push({
+                                type: 'required',
+                                container: item
+                            });
                         }
-                        break;
 
+                        var isRestrictionFailed = WP_User_Frontend.editorLimit.isRestrictionFailed( item );
+
+                        if ( isRestrictionFailed ) {
+                            errors.push({
+                                type: 'limit',
+                                container: item
+                            });
+
+                            break;
+                        }
+
+                        var containingShortcode = WP_User_Frontend.editorContainingShortcode(item);
+
+                        if ( containingShortcode.shortcodeFound ) {
+                            errors.push({
+                                type: 'custom',
+                                container: item,
+                                message: wpuf_frontend.protected_shortcodes_message
+                                    .replace('%shortcode%', '[' + containingShortcode.shortcode + ']')
+                            });
+
+                            break;
+                        }
+
+                        richTexts.push( item_name + '=' + encodeURIComponent( val ) );
+
+                        break;
                     case 'textarea':
                     case 'text':
+                        val = $.trim( $( item ).val() );
 
-                        val = $.trim( $(item).val() );
+                        if ( required === 'yes' && val === '' ) {
+                            errors.push({
+                                type: 'required',
+                                container: item
+                            });
 
-                        if ( val === '') {
-                            error = true;
-                            error_type = 'required';
+                            break;
+                        }
 
-                            // make it warn collor
-                            WP_User_Frontend.markError( item, error_type );
+                        var isRestrictionFailed = WP_User_Frontend.editorLimit.isRestrictionFailed( item );
+
+                        if ( isRestrictionFailed ) {
+                            errors.push({
+                                type: 'limit',
+                                container: item
+                            });
+
+                            break;
+                        }
+
+                        if ( WP_User_Frontend.isTelephoneField( item ) ) {
+                            // Get intlTelInput instance
+                            var iti = window.intlTelInputGlobals.getInstance( item );
+                            if ( '' !== iti.getNumber() && ! iti.isValidNumber() ) {
+                                errors.push({
+                                    type: 'validation',
+                                    container: item
+                                });
+
+                                break;
+                            }
+
+                            var name = $( item ).attr( 'name' );
+                            var value = iti.getNumber();
+
+                            // append the mobile number with country code
+                            $( '<input>' )
+                                .attr( 'type', 'hidden' )
+                                .attr( 'name', name )
+                                .attr( 'value', value )
+                                .appendTo( self );
+
+                            break;
+                        }
+
+                        break;
+                    case 'url':
+                        val = $.trim( $( item ).val() );
+
+                        if ( required === 'yes' && val === '' ) {
+                            errors.push({
+                                type: 'required',
+                                container: item
+                            });
+
+                            break;
+                        }
+
+                        if ( val !== '' && ! WP_User_Frontend.isValidURL( val ) ) {
+                            errors.push({
+                                type: 'validation',
+                                container: item
+                            });
+
+                            break;
                         }
                         break;
-
                     case 'password':
                     case 'confirm_password':
                         var hasRepeat = $(item).data('repeat');
+                        var strength = $(item).data('strength');
+                        var min_length = $(item).data('minimum-length');
 
                         val = $.trim( $(item).val() );
 
-                        if ( val === '') {
-                            error = true;
-                            error_type = 'required';
+                        if ( required === 'yes' && val === '' ) {
+                            errors.push({
+                                type: 'required',
+                                container: item
+                            });
 
-                            // make it warn collor
-                            WP_User_Frontend.markError( item, error_type );
+                            break;
                         }
 
-                        if ( hasRepeat ) {
-                            var repeatItem = $('[data-type="confirm_password"]').eq(0);;
+                        if ( val.length < min_length ) {
+                            errors.push({
+                                type: 'custom',
+                                container: item,
+                                message: 'Minimum ' + min_length + ' character is required'
+                            });
 
-                            if ( repeatItem.val() != val ) {
-                                error = true;
-                                error_type = 'mismatch';
+                            break;
+                        }
 
-                                WP_User_Frontend.markError( repeatItem, error_type );
+                        if ( hasRepeat === 'yes' ) {
+                            var repeatItem = $(item).closest('.wpuf-form').find('[data-type="confirm_password"]').eq(0);
+
+                            if ( repeatItem.val() !== val ) {
+                                errors.push({
+                                    error_type: 'mismatch',
+                                    container: item
+                                });
+                            }
+                        }
+
+                        if ( strength ) {
+                            var strengthMeter = wp.passwordStrength.meter(val, wp.passwordStrength.userInputDisallowedList());
+
+                            if (strength === 'weak' && strengthMeter < 2) {
+                                errors.push({
+                                    type: 'custom',
+                                    container: item,
+                                    message: wpuf_frontend.password_warning_weak
+                                });
+                            } else if (strength === 'medium' && strengthMeter < 3) {
+                                errors.push({
+                                    type: 'custom',
+                                    container: item,
+                                    message: wpuf_frontend.password_warning_medium
+                                });
+                            } else if (strength === 'strong' && strengthMeter < 4) {
+                                errors.push({
+                                    type: 'custom',
+                                    container: item,
+                                    message: wpuf_frontend.password_warning_strong
+                                });
                             }
                         }
 
                         break;
-
                     case 'select':
                         val = $(item).val();
 
-                        // console.log(val);
-                        if ( !val || val === '-1' ) {
-                            error = true;
-                            error_type = 'required';
-
-                            // make it warn collor
-                            WP_User_Frontend.markError( item, error_type );
+                        if ( required === 'yes' && val === '-1' ) {
+                            errors.push({
+                                type: 'required',
+                                container: item
+                            });
                         }
                         break;
-
                     case 'multiselect':
-                        val = $(item).val();
+                        val = $( item ).val();
 
-                        if ( val === null || val.length === 0 ) {
-                            error = true;
-                            error_type = 'required';
-
-                            // make it warn collor
-                            WP_User_Frontend.markError( item,  error_type );
+                        if ( required === 'yes' && val.length === 0 ) {
+                            errors.push({
+                                type: 'required',
+                                container: item
+                            });
                         }
                         break;
-
                     case 'tax-checkbox':
                         var length = $(item).children().find('input:checked').length;
 
-                        if ( !length ) {
-                            error = true;
-                            error_type = 'required';
-
-                            // make it warn collor
-                            WP_User_Frontend.markError( item,  error_type );
+                        if ( required === 'yes' && ! length ) {
+                            errors.push({
+                                type: 'required',
+                                container: item
+                            });
                         }
                         break;
-
                     case 'radio':
-                        var length = $(item).find('input:checked').length;
+                    case 'checkbox':
+                        container = $( item ).parents( '.wpuf-fields' );
+                        length = $( container ).find( 'input:checked' ).length;
 
-                        if ( !length ) {
-                            error = true;
-                            error_type = 'required';
-
-                            // make it warn collor
-                            WP_User_Frontend.markError( item,  error_type );
+                        if ( required === 'yes' && ! length ) {
+                            errors.push({
+                                type: 'required',
+                                container: item
+                            });
                         }
-                        break;
 
+                        break;
                     case 'file':
-                        var length = $(item).find('ul').children().length;
+                        var length = $( item ).find('ul').children().length;
 
-                        if ( !length ) {
-                            error = true;
-                            error_type = 'required';
-
-                            // make it warn collor
-                            WP_User_Frontend.markError( item,  error_type );
+                        if ( required === 'yes' && ! length ) {
+                            errors.push({
+                                type: 'required',
+                                container: $( item ).closest( '.wpuf-fields' )
+                            });
                         }
                         break;
-
                     case 'email':
-                        var val = $(item).val();
+                        val = $( item ).val();
 
-                        if ( val !== '' ) {
-                            //run the validation
-                            if( !WP_User_Frontend.isValidEmail( val ) ) {
-                                error = true;
-                                error_type = 'validation';
+                        if ( required === 'yes' && val === '' ) {
+                            errors.push({
+                                type: 'required',
+                                container: item
+                            });
 
-                                WP_User_Frontend.markError( item,  error_type );
-                            }
-                        } else if( val === '' ) {
-                            error = true;
-                            error_type = 'required';
+                            break;
+                        }
 
-                            WP_User_Frontend.markError( item,  error_type );
+                        if ( val !== '' && ! WP_User_Frontend.isValidEmail( val ) ) {
+                            errors.push({
+                                type: 'validation',
+                                container: item
+                            });
                         }
                         break;
-
-
                     case 'url':
                         var val = $(item).val();
 
-                        if ( val !== '' ) {
-                            //run the validation
-                            if( !WP_User_Frontend.isValidURL( val ) ) {
-                                error = true;
-                                error_type = 'validation';
+                        if ( required === 'yes' && val === '' ) {
+                            errors.push({
+                                type: 'validation',
+                                container: item
+                            });
 
-                                WP_User_Frontend.markError( item,  error_type );
-                            }
+                            break;
+                        }
+
+                        if ( val !== '' && ! WP_User_Frontend.isValidURL( val ) ) {
+                            errors.push({
+                                type: 'validation',
+                                container: item
+                            });
                         }
                         break;
+                    default:    // Google map etc.
+                        // if this is a Google map
+                        if ( $( item ).attr( 'id' ) && $( item ).attr( 'id' ).startsWith( 'wpuf-map' ) ) {
+                            var mapContainer = $( item ).parents( '.wpuf-form-google-map-container' );
+                            mapField = $( mapContainer ).find( 'input[id^="wpuf-map-lat"]' );
+                            required = $( mapField ).data( 'required' );
+                            val = $( mapField ).val(); // needs to grab from parent to get all the data
 
-                };
+                            if ( required === 'yes' && val === '' ) {
+                                errors.push({
+                                    type: 'required',
+                                    container: mapContainer
+                                });
+                            }
+                        }
 
-            });
+                        // if rating field
+                        if ( $( item ).hasClass( 'br-widget' ) ) {
+                            container = $( item ).parents('.wpuf-fields');
+                            required = $( container ).find( 'select.wpuf-ratings' ).data( 'required' );
+                            length = $( item ).find('.br-selected').length;
 
-            //check Google Map is required
-            var map_required = self.find('[data-required="yes"]').parents('.wpuf-form-google-map-container');
-            $.each(map_required, function(index, map){
-                var val = $(map).val();
-                if ( val == '' ) {
-                    error = true;
-                    error_type = 'required';
-
-                    WP_User_Frontend.markError( map,  error_type );
+                            if ( required === 'yes' && ! length ) {
+                                errors.push({
+                                    type: 'required',
+                                    container: item
+                                });
+                            }
+                        }
                 }
+
             });
 
-            // if already some error found, bail out
-            if (error) {
-                // add error notice
-                WP_User_Frontend.addErrorNotice(self,'end');
+            if ( errors.length ) {
+                var i;
+                var length = errors.length;
+                for ( i = 0; i < length; i++ ) {
+                    WP_User_Frontend.markError( errors[i].container, errors[i].type, errors[i].message );
+                }
+
+                WP_User_Frontend.addErrorNotice( self,'end' );
+                $( errors[0].container ).focus();
 
                 return false;
             }
 
-            var form_data = self.serialize(),
-                rich_texts = [];
+            // Fields that are conditionally hidden
+            var conditionallyHiddenFields = self.find( 'li.wpuf-el[style*="display: none"] input' );
 
-            // grab rich texts from tinyMCE
-            $('.wpuf-rich-validation', self).each(function (index, item) {
-                var item      = $(item);
-                var editor_id = item.data('id');
-                var item_name = item.data('name');
-                var val       = $.trim( tinyMCE.get(editor_id).getContent() );
+            conditionallyHiddenFields.each( function( i, item ) {
+                var inputType = $( item ).attr( 'type' );
 
-                rich_texts.push(item_name + '=' + encodeURIComponent( val ) );
+                switch ( inputType ) {
+                    case 'url':
+                    case 'email':
+                        // removing conditionally hidden fields value
+                        // so that default HTML validation don't restrict those fields
+                        $( item ).val( '' );
+                }
             });
 
+            var disable_fields = self.find(":disabled").removeAttr("disabled");
+            var formData = self.serialize();
+            disable_fields.attr("disabled", "disabled");
+
             // append them to the form var
-            form_data = form_data + '&' + rich_texts.join('&');
-            return form_data;
+            formData = formData + '&' + richTexts.join( '&' );
+            return formData;
         },
 
         /**
@@ -702,32 +918,47 @@
             $(form).find('.wpuf-errors').remove();
         },
 
-        markError: function(item, error_type) {
+        markError: function(item, error_type, error_message) {
+            $(item).closest('div').addClass('has-error');
 
-            var error_string = '';
-            $(item).closest('li').addClass('has-error');
-
-            if ( error_type ) {
-                error_string = $(item).closest('li').data('label');
-                switch ( error_type ) {
-                    case 'required' :
-                        error_string = error_string + ' ' + error_str_obj[error_type];
-                        break;
-                    case 'mismatch' :
-                        error_string = error_string + ' ' +error_str_obj[error_type];
-                        break;
-                    case 'validation' :
-                        error_string = error_string + ' ' + error_str_obj[error_type];
-                        break
-                    case 'limit':
-                        error_string = '';
-                        break
-                }
-                $(item).siblings('.wpuf-error-msg').remove();
-                $(item).after('<div class="wpuf-error-msg">'+ error_string +'</div>')
+            if ( ! error_type ) {
+                return;
             }
 
-            $(item).focus();
+            var error_string = '';
+            var address_field_label = $( item ).data( 'label' );
+            if ( address_field_label ) {
+                error_string = address_field_label;
+            } else {
+                error_string = $(item).closest('li').data('label');
+            }
+            switch ( error_type ) {
+                case 'required' :
+                    error_string = error_string + ' ' + error_str_obj[error_type];
+                    break;
+                case 'mismatch' :
+                    error_string = error_string + ' ' + error_str_obj[error_type];
+                    break;
+                case 'validation' :
+                    error_string = error_string + ' ' + error_str_obj[error_type];
+                    break;
+                case 'limit':
+                    error_string = '';
+                    break;
+                case 'custom' :
+                    error_string = error_message;
+                    break;
+            }
+            $(item).siblings('.wpuf-error-msg').remove();
+
+            // for address fields
+            if ( $( item ).closest( '.wpuf-fields.wpuf-fields-address' ).length ) {
+                $( item ).closest( 'div.wpuf-sub-fields' ).find( 'div.wpuf-error-msg' ).remove();
+                $( item ).closest( 'div.wpuf-sub-fields' ).append( '<div class="wpuf-error-msg">' + error_string + '</div>' );
+            } else {
+                $( item ).closest( 'div.wpuf-fields' ).find( 'div.wpuf-error-msg' ).remove();
+                $( item ).closest( 'div.wpuf-fields' ).append( '<div class="wpuf-error-msg">' + error_string + '</div>' );
+            }
         },
 
         removeErrors: function(item) {
@@ -741,7 +972,7 @@
         },
 
         isValidURL: function(url) {
-            var urlregex = new RegExp("^(http:\/\/www.|https:\/\/www.|ftp:\/\/www.|www.|http:\/\/|https:\/\/){1}([0-9A-Za-z]+\.)");
+            var urlregex = new RegExp("^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/){1}[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,20}(:[0-9]{1,20})?(\\/.*)?$");
             return urlregex.test(url);
         },
 
@@ -766,9 +997,9 @@
                 multi_selection: false,
                 urlstream_upload: true,
                 file_data_name: 'wpuf_file',
-                max_file_size: wpuf_frontend_upload.max_filesize,
-                url: wpuf_frontend_upload.plupload.url,
-                flash_swf_url: wpuf_frontend_upload.flash_swf_url,
+                max_file_size: wpuf_upload.max_filesize,
+                url: wpuf_upload.plupload.url,
+                flash_swf_url: wpuf_upload.flash_swf_url,
                 filters: [{
                     title: 'Allowed Files',
                     extensions: 'jpg,jpeg,gif,png,bmp'
@@ -856,11 +1087,15 @@
             bind: function(limit, field, type, limit_type, limit_to ) {
                 if ( type === 'no' ) {
                     // it's a textarea
-                    $('textarea#' +  field).keydown( function(event) {
+                    $('textarea#' +  field).keyup( function(event) {
                         WP_User_Frontend.editorLimit.textLimit.call(this, event, limit, limit_type, limit_to );
                     });
 
-                    $('input#' +  field).keydown( function(event) {
+                    $('input#' +  field).keyup( function(event) {
+                        WP_User_Frontend.editorLimit.textLimit.call(this, event, limit, limit_type, limit_to );
+                    });
+
+                    $('input#' +  field).change( function(event) {
                         WP_User_Frontend.editorLimit.textLimit.call(this, event, limit, limit_type, limit_to );
                     });
 
@@ -883,8 +1118,8 @@
                 } else {
                     // it's a rich textarea
                     setTimeout(function () {
-                        tinyMCE.get(field).onKeyDown.add(function(ed, event) {
-                            WP_User_Frontend.editorLimit.tinymce.onKeyDown(ed, event, limit, limit_type, limit_to );
+                        tinyMCE.get(field).onKeyUp.add(function(ed, event) {
+                            WP_User_Frontend.editorLimit.tinymce.onKeyUp(ed, event, limit, limit_type, limit_to );
                         } );
 
                         tinyMCE.get(field).onPaste.add(function(ed, event) {
@@ -897,75 +1132,232 @@
                 }
             },
 
+            checkTinyMCERestriction: function(field, data, ed) {
+                var numWords = 0;
+
+                var limit = (typeof(data[0]) !== "undefined" && data[0] !== null) ? parseInt(data[0]) : 0;
+                var fieldId = (typeof(data[1]) !== "undefined" && data[1] !== null) ? (data[1]).trim() : '';
+                var fieldType = (typeof(data[2]) !== "undefined" && data[2] !== null) ? (data[2]).trim() : '';
+                var limit_type = (typeof(data[3]) !== "undefined" && data[3] !== null) ? (data[3]).trim() : '';
+                var limit_to = (typeof(data[4]) !== "undefined" && data[4] !== null) ? (data[4]).trim() : '';
+                var limit_label = '';
+
+                if ( 'word' === limit_type ) {
+                    numWords = WP_User_Frontend.editorLimit.tinymce.getStats(ed).words;
+                    limit_label = 'word_' + limit_to;
+                } else {
+                    numWords = WP_User_Frontend.editorLimit.tinymce.getStats(ed).chars;
+                    limit_label = 'char_' + limit_to;
+                }
+
+                var errorMessage = wpuf_frontend['word_'+limit_to ] + ' ' + limit;
+
+                // if blank field, no need to check for content restriction
+                if ( numWords ===  0 ) {
+                    return false;
+                }
+
+                if ( (numWords > limit) && ('max' === limit_to) ) {
+                    WP_User_Frontend.markError( field, 'limit' );
+                    jQuery('.mce-path-item.mce-last', ed.container).html( wpuf_frontend[ limit_label ] + ' ' + numWords +'/'+ limit );
+
+                    return true;
+                } else if ( (numWords < limit) && ('min' === limit_to) ) {
+                    WP_User_Frontend.markError( field, 'limit' );
+                    WP_User_Frontend.contentLimitMessage( $(field), limit_type, limit_to, limit );
+
+                    return true;
+                }
+            },
+
+            isRestrictionFailed: function( field ) {
+                var fieldId = $( field ).data( 'id' );
+                var fieldType = $( field ).data( 'type' );
+                var isTinymce = false;
+                var ed = null;
+                var numChars = 0;
+                var numWords = 0;
+                var data = '';
+
+                // clear previous style
+                if ( $( field ).closest( 'div.wpuf-fields' ).hasClass( 'has-error' ) ) {
+                    $( field ).closest( 'div.wpuf-fields' ).removeClass( 'has-error' )
+                }
+
+                if ( typeof tinyMCE !== 'undefined' && tinyMCE.get(fieldId) !== null ) {
+                    isTinymce = true;
+                    ed = tinyMCE.get( fieldId );
+
+                    ed.focus();
+                }
+
+                // For content restriction, we are passing the information below the fields inside a <script> tag
+                // For example: the field type, restriction type(word or character), min/max allowed etc.
+                // Extracting required data from the script tag
+                if ( $(field).closest('li.wpuf-el').find('script').html() ) {
+                    var fieldScript = $(field).closest('li.wpuf-el').find('script').html();
+                    data = fieldScript.match(/(?:bind\()(.*?(?=\)))/) ? fieldScript.match(/(?:bind\()(.*?(?=\)))/)[1].replace(/['"]/g, '').split(',') : '';
+                }
+
+                if ( isTinymce ) {
+                    return WP_User_Frontend.editorLimit.checkTinyMCERestriction(field, data, ed);
+                }
+
+                var limit = (typeof(data[0]) !== "undefined" && data[0] !== null) ? parseInt(data[0]) : 0;
+                var limit_type = (typeof(data[3]) !== "undefined" && data[3] !== null) ? (data[3]).trim() : '';
+                var limit_to = (typeof(data[4]) !== "undefined" && data[4] !== null) ? (data[4]).trim() : '';
+                var limit_label = ( 'word' === limit_type ) ? 'Word Limit : ' : 'Character Limit : ';
+
+                numChars = $(field).val().trim().length;
+                numWords = $(field).val().trim().split(' ').length;
+
+                // if blank field, no need to check for content restriction
+                if ( numChars ===  0 ) {
+                    return false;
+                }
+
+                if ( limit_type === 'word' ) {
+                    if ( ( numWords > limit ) && ( 'max' === limit_to ) ) {
+                        WP_User_Frontend.markError( field, 'limit' );
+
+                        return true;
+                    } else if ( ( numWords < limit ) && ( 'min' === limit_to ) ) {
+                        WP_User_Frontend.markError( field, 'limit' );
+
+                        return true;
+                    }
+                } else {
+                    if ( ( numChars > limit ) && ( 'max' === limit_to ) ) {
+                        WP_User_Frontend.markError( field, 'limit' );
+
+                        return true;
+                    } else if ( ( numChars < limit ) && ( 'min' === limit_to ) ) {
+                        WP_User_Frontend.markError( field, 'limit' );
+
+                        return true;
+                    }
+                }
+
+                return false;
+
+            },
+
             tinymce: {
 
                 getStats: function(ed) {
-                    var body = ed.getBody(), text = tinymce.trim(body.innerText || body.textContent);
+                    var text = ed.getContent({format: 'text'});
 
                     return {
                         chars: text.length,
-                        words: text.split(/[\w\u2019\'-]+/).length
+                        words: text.split(' ').length
                     };
                 },
 
-                onKeyDown: function(ed, event, limit, limit_type, limit_to ) {
-                    field = $('.post_content');
+                onKeyUp: function(ed, event, limit, limit_type, limit_to ) {
+                    var field = $( '.wpuf-fields.wpuf_' + ed.id );
 
-                    var numWords    = WP_User_Frontend.editorLimit.tinymce.getStats(ed).chars + 1,
-                        limit_label = ( 'word' === limit_type ) ? 'Word Limit : ' : 'Character Limit : ';
-
-                    if ( 'word' === limit_type ) {
-                        numWords = WP_User_Frontend.editorLimit.tinymce.getStats(ed).words;
+                    // remove previous errors
+                    if ( $(field.closest('.wpuf-fields')).hasClass('has-error') ) {
+                        field.removeClass('has-error');
                     }
 
-                    if ( limit && numWords > limit && 'max' === limit_to ) {
-                        WP_User_Frontend.editorLimit.blockTyping(event);
+                    var numChars = WP_User_Frontend.editorLimit.tinymce.getStats(ed).chars;
+
+                    // if the fields is empty, no need to check for char/word limit
+                    if ( ! numChars ) {
+                        field.closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html('');
+
+                        return;
+                    }
+
+                    if ( 'word' === limit_type ) {
+                        numChars = WP_User_Frontend.editorLimit.tinymce.getStats(ed).words;
+                    }
+
+
+                    if ( limit && numChars > limit && 'max' === limit_to ) {
                         WP_User_Frontend.markError( field, 'limit' );
-                        jQuery('.mce-path-item.mce-last', ed.container).html( wpuf_frontend['word_'+limit_to ] + numWords +'/'+ limit );
-                    }else if ( limit && numWords < limit && 'min' === limit_to ) {
+                        WP_User_Frontend.contentLimitMessage( $(field), limit_type, limit_to, limit );
+                    } else if ( limit && numChars < limit && 'min' === limit_to ) {
                         WP_User_Frontend.markError( field, 'limit' );
-                        jQuery('.mce-path-item.mce-last', ed.container).html( wpuf_frontend['word_'+limit_to ] + numWords +'/'+ limit );
-                    }else {
-                        field.removeClass('has-error')
+                        WP_User_Frontend.contentLimitMessage( $(field), limit_type, limit_to, limit );
+                    } else {
                         jQuery('.mce-path-item.mce-last', ed.container).html('');
+                        field.closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html('');
                     }
                 },
 
-                onPaste: function(ed, event, limit) {
-                    var editorContent = ed.getContent().split(' ').slice(0, limit).join(' ');
+                onPaste: function(ed, event, limit, limit_type, limit_to) {
+                    var editorContent = ed.getContent({format: 'text'});
+                    var contentLength = editorContent.length;
+                    var field = $( '.wpuf-fields.wpuf_' + ed.id );
 
-                    // Let TinyMCE do the heavy lifting for inserting that content into the editor.
-                    // ed.insertContent(content); //ed.execCommand('mceInsertContent', false, content);
-                    ed.setContent(editorContent);
+                    // remove previous errors
+                    if ( field.closest('.wpuf-fields').hasClass('has-error') ) {
+                        field.closest('.wpuf-fields').removeClass('has-error');
+                    }
+
+                    // field is empty. no need to check for word/char limit
+                    if ( ! contentLength ) {
+                        return;
+                    }
+
+                    if ( 'word' === limit_type ) {
+                        contentLength = editorContent.split(' ').length;
+                    }
+
+                    if ( limit && contentLength > limit && 'max' === limit_to ) {
+                        WP_User_Frontend.contentLimitMessage( field, limit_type, limit_to, limit );
+                        WP_User_Frontend.markError( field, 'limit' );
+                    } else if ( limit && contentLength < limit && 'min' === limit_to ) {
+                        WP_User_Frontend.contentLimitMessage( field, limit_type, limit_to, limit );
+                        WP_User_Frontend.markError( field, 'limit' );
+                    } else {
+                        field.closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html('');
+                    }
 
                     WP_User_Frontend.editorLimit.make_media_embed_code(editorContent, ed);
                 }
             },
 
             textLimit: function(event, limit, limit_type, limit_to ) {
-                var self = $(this),
-                    content_length = self.val().length + 1;
+                var self = $(this);
+                var contentLength = self.val().length;
 
-                    if ( 'word' === limit_type ) {
-                        content_length = self.val().split(' ').length;
-                    }
+                // remove previous errors
+                if ( self.closest('.wpuf-fields').hasClass('has-error') ) {
+                    self.closest('.wpuf-fields').removeClass('has-error');
+                }
 
-                if ( limit && content_length > limit && 'max' === limit_to ) {
-                    WP_User_Frontend.content_limit_message( self, limit_type, limit_to, limit )
-                    WP_User_Frontend.editorLimit.blockTyping(event);
-                }else if ( limit && content_length < limit && 'min' === limit_to ) {
-                    WP_User_Frontend.content_limit_message( self, limit_type, limit_to, limit )
-                }else {
-                    self.closest('li').removeClass('has-error')
+                // field is empty. no need to check for word/char limit
+                if ( ! contentLength ) {
+                    return;
+                }
+
+                if ( 'word' === limit_type ) {
+                    contentLength = self.val().split(' ').length;
+                }
+
+                if ( limit && contentLength > limit && 'max' === limit_to ) {
+                    WP_User_Frontend.contentLimitMessage( self, limit_type, limit_to, limit );
+                    WP_User_Frontend.markError( self, 'limit' );
+                } else if ( limit && contentLength < limit && 'min' === limit_to ) {
+                    WP_User_Frontend.contentLimitMessage( self, limit_type, limit_to, limit )
+                    WP_User_Frontend.markError( self, 'limit' );
+                } else {
                     self.closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html('');
                 }
 
                 // handle the paste event
                 if ( event.type === 'paste' ) {
-                    self.val( content.substring( 0, limit) );
-
-                    if ( 'word' === limit_type ) {
-                        self.val( content.slice(0, limit).join( ' ' ) );
+                    if ( limit && contentLength > limit && 'max' === limit_to ) {
+                        WP_User_Frontend.contentLimitMessage( self, limit_type, limit_to, limit );
+                        WP_User_Frontend.markError( self, 'limit' );
+                    } else if ( limit && contentLength < limit && 'min' === limit_to ) {
+                        WP_User_Frontend.contentLimitMessage( self, limit_type, limit_to, limit );
+                        WP_User_Frontend.markError( self, 'limit' );
+                    } else {
+                        self.closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html('');
                     }
                 }
             },
@@ -987,11 +1379,10 @@
 
             make_media_embed_code: function(content, editor){
                 $.post( ajaxurl, {
-                        action:'make_media_embed_code',
+                        action:'wpuf_make_media_embed_code',
                         content: content
                     },
                     function(data){
-                        // console.log(data);
                         editor.setContent(editor.getContent() + editor.setContent(data));
                     }
                 )
@@ -1002,18 +1393,54 @@
             el.checked = false;
         },
 
-        content_limit_message: function( field, content_limit_type, limit_to, limit ) {
-            WP_User_Frontend.markError( field, 'limit' );
-
+        contentLimitMessage: function( field, content_limit_type, limit_to, limit ) {
+            var limitMessage = '';
             if ( 'word' === content_limit_type ){
-                limit_message = wpuf_frontend['word_'+limit_to ] + limit;
+                if ( limit_to === 'min' ) {
+                    limitMessage = wpuf_frontend.word_min_title + '<br>';
+                    limitMessage += wpuf_frontend.word_min_details.replace( '%number%', limit );
+                } else {
+                    limitMessage = wpuf_frontend.word_max_title + '<br>';
+                    limitMessage += wpuf_frontend.word_max_details.replace( '%number%', limit );
+                }
+            } else {
+                if ( limit_to === 'min' ) {
+                    limitMessage = wpuf_frontend.char_min_title + '<br>';
+                    limitMessage += wpuf_frontend.char_min_details.replace( '%number%', limit );
+                } else {
+                    limitMessage = wpuf_frontend.char_max_title + '<br>';
+                    limitMessage += wpuf_frontend.char_max_details.replace( '%number%', limit );
+                }
             }
 
-            if ( 'character' === content_limit_type ){
-                limit_message = wpuf_frontend['char_'+limit_to] + limit ;
+            field.closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html( limitMessage );
+        },
+
+        editorContainingShortcode: function( field ) {
+            var item = $( field );
+            var editor_id = item.data( 'id' );
+            var postContent = $.trim( tinyMCE.get( editor_id ).getContent() ).toLowerCase();
+            var shortcodes = wpuf_frontend.protected_shortcodes;
+
+            if ( ! shortcodes) {
+                return {
+                    shortcodeFound: false,
+                };
+            }
+            for ( var i = 0; i < shortcodes.length; i++) {
+                var shortcode = shortcodes[i];
+                var regex = new RegExp(shortcode);
+                if (regex.test(postContent)) {
+                    return {
+                        shortcodeFound: true,
+                        shortcode: shortcode,
+                    };
+                }
             }
 
-            field.closest('.wpuf-fields').find('span.wpuf-wordlimit-message').html( limit_message );
+            return {
+                shortcodeFound: false,
+            };
         }
     };
 
@@ -1061,12 +1488,12 @@
 
             // Allow: backspace, delete, tab, escape, enter and .
             if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 91, 109, 110, 173, 189, 190]) !== -1 ||
-                 // Allow: Ctrl+A
+                // Allow: Ctrl+A
                 (e.keyCode == 65 && e.ctrlKey === true) ||
-                 // Allow: home, end, left, right
+                // Allow: home, end, left, right
                 (e.keyCode >= 35 && e.keyCode <= 39)) {
-                     // let it happen, don't do anything
-                    return;
+                // let it happen, don't do anything
+                return;
             }
 
             if ((e.shiftKey || (e.keyCode < 65 || e.keyCode > 90) && (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105) ) {
@@ -1080,11 +1507,11 @@
 
         $('.wpuf-form-add input[name="shopurl"]').on('focusout', function() {
             var self = $(this),
-            data = {
-                action : 'shop_url',
-                url_slug : self.val(),
-                _nonce : dokan.nonce,
-            };
+                data = {
+                    action : 'shop_url',
+                    url_slug : self.val(),
+                    _nonce : dokan.nonce,
+                };
 
             if ( self.val() === '' ) {
                 return;
@@ -1108,4 +1535,18 @@
         $(".wpuf-form-add #wpuf-map-add-location").attr("name", "find_address");
     });
 
+    $(function($) {
+        // eye icon for password field
+        $(document).on('click', '.wpuf-eye', function () {
+            const input = $( this ).siblings( 'input' );
+
+            if ( input.attr("type") === "password" ) {
+                input.attr( "type", "text" );
+                $( this ).attr( "src", wpuf_frontend.asset_url + '/images/eye-close.svg' );
+            } else {
+                input.attr( "type", "password" );
+                $( this ).attr( "src", wpuf_frontend.asset_url + '/images/eye.svg' );
+            }
+        });
+    });
 })(jQuery, window);

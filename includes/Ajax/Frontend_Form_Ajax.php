@@ -292,35 +292,16 @@ class Frontend_Form_Ajax {
 
         $postarr = $this->adjust_thumbnail_id( $postarr );
 
-        // If this is an Events Calendar event, delegate to the integration handler
+        // Handle Events Calendar integration or standard post creation
+        $post_id = null;
+        
+        // Check if this is an Events Calendar event
         if ( isset( $postarr['post_type'] ) && 'tribe_events' === $postarr['post_type'] ) {
-            // Prefer Pro integration if available
-            if ( wpuf_is_pro_active() && wpuf_pro()->integrations ) {
-                // The key is lowercase
-                $integration = wpuf_pro()->integrations->tribe__events__main;
-                
-                if ($integration && isset($integration->event_handler)) {
-                    $event_handler = $integration->event_handler;
-                    $post_id = $event_handler->handle_event_submission( $postarr, $meta_vars, $form_id, $this->form_settings );
-                } else {
-                    // Fallback to free integration handler
-                    $event_handler = wpuf()->integrations->tribe__events__main->event_handler;
-                    $post_id       = $event_handler->handle_event_submission(
-                        $postarr, $meta_vars, $form_id, $this->form_settings
-                    );
-                }
-            } else {
-                // Fallback to free integration handler
-                $event_handler = wpuf()->integrations->tribe__events__main->event_handler;
-                $post_id       = $event_handler->handle_event_submission(
-                    $postarr, $meta_vars, $form_id, $this->form_settings
-                );
-            }
-
-            if ( ! $post_id ) {
-                wp_insert_post( $postarr );
-            }
-        } else {
+            $post_id = $this->handle_tribe_events_submission( $postarr, $meta_vars, $form_id );
+        }
+        
+        // Use standard post creation if no post_id was created or not an event
+        if ( ! $post_id ) {
             $post_id = wp_insert_post( $postarr );
         }
 
@@ -550,6 +531,48 @@ class Frontend_Form_Ajax {
         do_action( 'wpuf_add_post_after_insert', $post_id, $form_id, $this->form_settings, $meta_vars ); // plugin API to extend the functionality
 
         return $response;
+    }
+
+    /**
+     * Handle Events Calendar (Tribe Events) post submission with proper validation
+     *
+     * @param array $postarr Post data array
+     * @param array $meta_vars Meta variables
+     * @param int $form_id Form ID
+     * @return int|null Post ID if successful, null if failed
+     */
+    private function handle_tribe_events_submission( $postarr, $meta_vars, $form_id ) {
+        $post_id = null;
+        
+        // Try Pro integration handler first if available
+        if ( wpuf_is_pro_active() && wpuf_pro() && wpuf_pro()->integrations ) {
+            $integration = wpuf_pro()->integrations->tribe__events__main ?? null;
+            
+            if ( $integration && isset( $integration->event_handler ) ) {
+                $event_handler = $integration->event_handler;
+                
+                // Validate that handle_event_submission method exists and is callable
+                if ( is_callable( [ $event_handler, 'handle_event_submission' ] ) ) {
+                    $post_id = $event_handler->handle_event_submission( $postarr, $meta_vars, $form_id, $this->form_settings );
+                }
+            }
+        }
+        
+        // Fallback to free integration handler if Pro handler failed or unavailable
+        if ( ! $post_id && wpuf() && wpuf()->integrations ) {
+            $integration = wpuf()->integrations->tribe__events__main ?? null;
+            
+            if ( $integration && isset( $integration->event_handler ) ) {
+                $event_handler = $integration->event_handler;
+                
+                // Validate that handle_event_submission method exists and is callable
+                if ( is_callable( [ $event_handler, 'handle_event_submission' ] ) ) {
+                    $post_id = $event_handler->handle_event_submission( $postarr, $meta_vars, $form_id, $this->form_settings );
+                }
+            }
+        }
+        
+        return $post_id;
     }
 
     /**

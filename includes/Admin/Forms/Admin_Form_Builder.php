@@ -173,6 +173,7 @@ class Admin_Form_Builder {
         $original_fields = wpuf_get_form_fields( $post->ID );
         $filtered_fields = $this->filter_pro_taxonomy_fields( $original_fields );
         $has_hidden_taxonomies = $this->has_filtered_taxonomies( $original_fields, $filtered_fields );
+        $hidden_taxonomy_ids = $this->get_hidden_taxonomy_ids( $original_fields, $filtered_fields );
 
         $wpuf_form_builder = apply_filters(
             'wpuf_form_builder_localize_script',
@@ -182,6 +183,7 @@ class Admin_Form_Builder {
                 'form_type'        => $post->post_type,
                 'form_fields'      => $filtered_fields,
                 'has_hidden_taxonomies' => $has_hidden_taxonomies,
+                'hidden_taxonomy_ids' => $hidden_taxonomy_ids,
                 'panel_sections'   => wpuf()->fields->get_field_groups(),
                 'field_settings'   => wpuf()->fields->get_js_settings(),
                 'form_settings'    => wpuf_get_form_settings( $post->ID ),
@@ -483,32 +485,78 @@ class Admin_Form_Builder {
     }
 
     /**
-     * Check if any custom taxonomy fields were filtered out
+     * Check if any custom taxonomy fields exist that would be filtered out
      *
      * @param array $original_fields
-     * @param array $filtered_fields
+     * @param array $filtered_fields (unused but kept for backward compatibility)
      * @return bool
      */
     protected function has_filtered_taxonomies( $original_fields, $filtered_fields ) {
-        // If pro is active, nothing was filtered
         if ( wpuf_is_pro_active() ) {
             return false;
         }
+        $builtin = [ 'category', 'post_tag' ];
+        $stack = is_array($original_fields) ? $original_fields : [];
+        while ( $stack ) {
+            $f = array_pop( $stack );
+            if ( isset( $f['template'] ) && $f['template'] === 'column_field' && ! empty( $f['inner_fields'] ) && is_array( $f['inner_fields'] ) ) {
+                foreach ( $f['inner_fields'] as $inner ) {
+                    if ( is_array($inner) ) {
+                        foreach ( $inner as $child ) {
+                            $stack[] = $child;
+                        }
+                    }
+                }
+            } elseif ( ! empty( $f['inner_fields'] ) && is_array( $f['inner_fields'] ) ) {
+                foreach ( $f['inner_fields'] as $child ) {
+                    $stack[] = $child;
+                }
+            }
+            if ( isset( $f['input_type'] ) && $f['input_type'] === 'taxonomy' ) {
+                $slug = $f['name'] ?? ($f['taxonomy'] ?? null);
+                if ( $slug && ! in_array( $slug, $builtin, true ) ) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-        // Check if any fields were removed
-        if ( count( $original_fields ) > count( $filtered_fields ) ) {
-            // Check specifically for custom taxonomy fields
-            $builtin_taxonomies = array( 'category', 'post_tag' );
-            
-            foreach ( $original_fields as $field ) {
-                if ( isset( $field['input_type'] ) && $field['input_type'] === 'taxonomy' ) {
-                    if ( isset( $field['name'] ) && ! in_array( $field['name'], $builtin_taxonomies, true ) ) {
-                        return true; // Found at least one custom taxonomy
+    /**
+     * Extract IDs of hidden taxonomy fields for client-side preservation
+     *
+     * @param array $original_fields
+     * @param array $filtered_fields
+     * @return array Array of hidden taxonomy field IDs
+     */
+    protected function get_hidden_taxonomy_ids( $original_fields, $filtered_fields ) {
+        // If pro is active, no fields are hidden
+        if ( wpuf_is_pro_active() ) {
+            return array();
+        }
+
+        $hidden_ids = array();
+        $builtin_taxonomies = array( 'category', 'post_tag' );
+        
+        // Extract IDs from filtered fields for quick lookup
+        $filtered_ids = array();
+        foreach ( $filtered_fields as $field ) {
+            if ( isset( $field['id'] ) ) {
+                $filtered_ids[] = $field['id'];
+            }
+        }
+        
+        // Find original fields that are custom taxonomy fields and were filtered out
+        foreach ( $original_fields as $field ) {
+            if ( isset( $field['input_type'] ) && $field['input_type'] === 'taxonomy' ) {
+                if ( isset( $field['name'] ) && ! in_array( $field['name'], $builtin_taxonomies, true ) ) {
+                    if ( isset( $field['id'] ) && ! in_array( $field['id'], $filtered_ids, true ) ) {
+                        $hidden_ids[] = $field['id'];
                     }
                 }
             }
         }
         
-        return false;
+        return $hidden_ids;
     }
 }

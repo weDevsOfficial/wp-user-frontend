@@ -1292,17 +1292,31 @@
                 const controlField = $(`#${dep.field}`);
 
                 if (controlField.length === 0) {
-                    return;
+                    return false;
                 }
 
                 const fieldType = controlField.attr('type') || controlField.prop('tagName').toLowerCase();
 
-                if (fieldType === 'checkbox' || fieldType === 'radio') {
+                if (fieldType === 'checkbox') {
+                    // For checkboxes, check if the field is checked
                     return controlField.is(':checked') === dep.value;
+                } else if (fieldType === 'radio') {
+                    // For radio groups, find the checked radio with the same name
+                    const radioName = controlField.attr('name');
+                    const checkedRadio = $(`input[name="${radioName}"]:checked`);
+                    
+                    if (checkedRadio.length === 0) {
+                        return dep.value === false || dep.value === '';
+                    }
+                    
+                    return checkedRadio.val() === dep.value;
                 } else if (fieldType === 'select') {
+                    // For selects, compare the selected value
+                    return controlField.val() === dep.value;
+                } else {
+                    // For text inputs and other field types
                     return controlField.val() === dep.value;
                 }
-                return false;
             });
         }
 

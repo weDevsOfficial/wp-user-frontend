@@ -665,13 +665,13 @@
                             html: '<div style="display: flex; align-items: flex-start; gap: 60px;">' +
                                   '<div style="flex: 1; text-align: left;">' +
                                   '<div style="background: #d4f4dd; border-radius: 50%; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">' +
-                                  '<img src="' + wpuf_form_builder.asset_url + '/images/free-circle.svg" alt="warning" style="width: auto; height: 320px;">' +
+                                  '<img src="' + wpuf_form_builder.asset_url + '/images/free-circle.svg" alt="warning">' +
                                   '</div>' +
                                   '<h2 style="font-size: 24px; font-weight: 500; color: #1a1a1a; margin: 0 0 15px 0;">Pro Fields Hidden</h2>' +
                                   '<p style="font-size: 20px; color: #6b7280; line-height: 28px; margin: 0; font-weight: 500;">This form includes custom taxonomy fields from third-party plugins. These are Pro-only and are hidden in both the builder and frontend until WPUF Pro is activated.</p>' +
                                   '</div>' +
                                   '<div style="flex: 0 0 auto; background: #FFF7ED; border-radius: 9.86px; padding: 23px 28px; position: relative;">' +
-                                  '<img src="' + wpuf_form_builder.asset_url + '/images/event-pro-field.jpeg" alt="Event Pro Field" style="width: autopx; height: 322px; border-radius: 6px; display: block;">' +
+                                  '<img src="' + wpuf_form_builder.asset_url + '/images/event-pro-field.jpeg" alt="Event Pro Field" style="width: auto; height: 320px; border-radius: 6px; display: block;">' +
                                   '</div>' +
                                   '</div>',
                             icon: false,

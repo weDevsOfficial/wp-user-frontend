@@ -1371,7 +1371,7 @@
                 :checked="is_selected(val)"
                 :id="'radio-' + field.name + '-' + val"
                 :class="builder_class_names('radio')">
-            <label>{{ label }}</label>
+            <label :for="'radio-' + field.name + '-' + val">{{ label }}</label>
         </div>
     </div>
 
@@ -1387,7 +1387,7 @@
                 :checked="is_selected(val)"
                 :id="'radio-' + field.name + '-' + val"
                 :class="builder_class_names('radio')">
-            <label>{{ label }}</label>
+            <label :for="'radio-' + field.name + '-' + val">{{ label }}</label>
         </div>
     </div>
 

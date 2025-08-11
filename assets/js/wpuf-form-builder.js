@@ -659,23 +659,34 @@
             if (wpuf_form_builder.has_hidden_taxonomies && !wpuf_form_builder.is_pro_active) {
                 var self = this;
                 setTimeout(function() {
-                    if (typeof Swal !== 'undefined') {
+                    if (typeof Swal !== 'undefined') {    
                         Swal.fire({
-                            title: '<span style="color: #111827; font-size: 18px; font-weight: 600;">Pro Fields Hidden</span>',
-                            html: '<div style="text-align: left; color: #374151; font-size: 14px; line-height: 1.5; margin: 20px 0;"><p style="margin: 0 0 10px 0;">This form includes custom taxonomy fields from third-party plugins. These are Pro-only and are hidden in both the builder and frontend until WPUF Pro is activated.</p></div>',
-                            imageUrl: wpuf_form_builder.asset_url + '/images/free-circle.svg',
-                            imageWidth: 80,
-                            imageHeight: 80,
+                            title: '',
+                            html: '<div style="display: flex; align-items: flex-start; gap: 60px;">' +
+                                  '<div style="flex: 1; text-align: left;">' +
+                                  '<div style="background: #d4f4dd; border-radius: 50%; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">' +
+                                  '<img src="' + wpuf_form_builder.asset_url + '/images/free-circle.svg" alt="warning" style="width: auto; height: 320px;">' +
+                                  '</div>' +
+                                  '<h2 style="font-size: 24px; font-weight: 500; color: #1a1a1a; margin: 0 0 15px 0;">Pro Fields Hidden</h2>' +
+                                  '<p style="font-size: 20px; color: #6b7280; line-height: 28px; margin: 0; font-weight: 500;">This form includes custom taxonomy fields from third-party plugins. These are Pro-only and are hidden in both the builder and frontend until WPUF Pro is activated.</p>' +
+                                  '</div>' +
+                                  '<div style="flex: 0 0 auto; background: #FFF7ED; border-radius: 9.86px; padding: 23px 28px; position: relative;">' +
+                                  '<img src="' + wpuf_form_builder.asset_url + '/images/event-pro-field.jpeg" alt="Event Pro Field" style="width: autopx; height: 322px; border-radius: 6px; display: block;">' +
+                                  '</div>' +
+                                  '</div>',
+                            icon: false,
                             showCancelButton: false,
                             showConfirmButton: true,
                             confirmButtonColor: '#059669',
                             confirmButtonText: 'Okay',
                             customClass: {
                                 popup: 'wpuf-pro-taxonomy-warning',
-                                confirmButton: 'btn btn-success'
+                                confirmButton: 'btn btn-success',
+                                icon: 'wpuf-warning-icon'
                             },
-                            padding: '2rem',
-                            width: '500px'
+                            width: '1038px',
+                            height: '512px',
+                            padding: '36px'
                         });
                     } else {
                         // Fallback to alert if SweetAlert is not available

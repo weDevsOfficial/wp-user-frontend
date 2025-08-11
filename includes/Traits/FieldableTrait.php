@@ -69,6 +69,12 @@ trait FieldableTrait {
     public function set_wp_post_types() {
         $args = [ '_builtin' => true ];
         $wpuf_post_types = wpuf_get_post_types( $args );
+        
+        // Add tribe_events if The Events Calendar is active
+        if ( class_exists( 'Tribe__Events__Main' ) && ! in_array( 'tribe_events', $wpuf_post_types ) ) {
+            $wpuf_post_types[] = 'tribe_events';
+        }
+        
         $ignore_taxonomies = apply_filters( 'wpuf-ignore-taxonomies', [
             'post_format',
         ] );
@@ -86,6 +92,16 @@ trait FieldableTrait {
                         'hide_empty' => false,
                     ] );
                 }
+            }
+            
+            // Special handling for tribe_events to include post_tags in free version
+            if ( 'tribe_events' === $post_type && ! isset( $this->wp_post_types[ $post_type ]['post_tag'] ) ) {
+                // Add post_tags as a special field for Event Calendar forms
+                $this->wp_post_types[ $post_type ]['post_tags'] = [
+                    'title'        => __( 'Tags', 'wp-user-frontend' ),
+                    'hierarchical' => false,
+                    'terms'        => [],
+                ];
             }
         }
     }

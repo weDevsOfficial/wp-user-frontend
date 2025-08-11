@@ -4998,6 +4998,10 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
             'label' => __( 'EDD Download Form', 'wp-user-frontend' ),
             'image' => WPUF_ASSET_URI . '/images/templates/edd.svg',
         ],
+        'event_form_template' => [
+            'label' => __( 'Event Form', 'wpuf-user-frontend' ),
+            'image' => WPUF_ASSET_URI . '/images/templates/event.svg',
+        ],
     ];
 
     $registry = wpuf_get_post_form_templates();

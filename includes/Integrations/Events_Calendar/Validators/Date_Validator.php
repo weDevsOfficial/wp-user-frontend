@@ -2,8 +2,6 @@
 
 namespace WeDevs\Wpuf\Integrations\Events_Calendar\Validators;
 
-use WeDevs\Wpuf\Integrations\Events_Calendar\Utils\TEC_Logger;
-
 /**
  * Date Validator Class
  * 
@@ -12,13 +10,6 @@ use WeDevs\Wpuf\Integrations\Events_Calendar\Utils\TEC_Logger;
  * @since 3.6.0
  */
 class Date_Validator {
-
-    /**
-     * Logger instance
-     *
-     * @var TEC_Logger
-     */
-    private $logger;
 
     /**
      * Supported date formats
@@ -34,13 +25,6 @@ class Date_Validator {
         'Y-m-d\TH:i:s',
         'Y-m-d\TH:i:sP'
     ];
-
-    /**
-     * Constructor
-     */
-    public function __construct() {
-        $this->logger = new TEC_Logger();
-    }
 
     /**
      * Validate complete date/time data
@@ -76,10 +60,6 @@ class Date_Validator {
         }
 
         if ( !empty( $errors ) ) {
-            $this->logger->log_error( 'Date validation failed', [
-                'errors' => $errors,
-                'date_data' => $date_data
-            ] );
             return $errors;
         }
 

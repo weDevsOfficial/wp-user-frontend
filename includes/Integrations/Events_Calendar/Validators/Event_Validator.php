@@ -2,8 +2,6 @@
 
 namespace WeDevs\Wpuf\Integrations\Events_Calendar\Validators;
 
-use WeDevs\Wpuf\Integrations\Events_Calendar\Utils\TEC_Logger;
-
 /**
  * Event Validator Class
  * 
@@ -12,13 +10,6 @@ use WeDevs\Wpuf\Integrations\Events_Calendar\Utils\TEC_Logger;
  * @since 3.6.0
  */
 class Event_Validator {
-
-    /**
-     * Logger instance
-     *
-     * @var TEC_Logger
-     */
-    private $logger;
 
     /**
      * Required fields for event creation
@@ -34,13 +25,6 @@ class Event_Validator {
         'EventEndHour',
         'EventEndMinute'
     ];
-
-    /**
-     * Constructor
-     */
-    public function __construct() {
-        $this->logger = new TEC_Logger();
-    }
 
     /**
      * Validate complete event data
@@ -70,10 +54,6 @@ class Event_Validator {
         }
 
         if ( !empty( $errors ) ) {
-            $this->logger->log_error( 'Event validation failed', [
-                'errors' => $errors,
-                'event_data' => $event_data
-            ] );
             return $errors;
         }
 

@@ -32,9 +32,9 @@
                         {{ field.label }} <span v-if="field.required && 'yes' === field.required"
                                                 class="required">*</span>
                     </label>
-                    <span v-if="isSocialField(field.template) && field.show_icon === 'yes'" 
-                          class="wpuf-social-label-icon wpuf-inline-flex wpuf-items-center wpuf-ml-2"
-                          v-html="getSocialIcon(field.template)">
+                    <span v-if="field.icon && field.show_icon === 'yes'" 
+                          class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-ml-2"
+                          v-html="field.icon">
                     </span>
                 </div>
                 <div

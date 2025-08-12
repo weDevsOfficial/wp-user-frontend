@@ -509,6 +509,7 @@
                     type="radio"
                     :name="'radio_' + editing_form_field.id + '_' + option_field.name"
                     :value="key"
+                    :name="option_field.name"
                     v-model="value"
                     :class="builder_class_names('radio')">
                 {{ option }}

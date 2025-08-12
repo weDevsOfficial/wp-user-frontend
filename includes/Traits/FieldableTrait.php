@@ -69,6 +69,12 @@ trait FieldableTrait {
     public function set_wp_post_types() {
         $args = [ '_builtin' => true ];
         $wpuf_post_types = wpuf_get_post_types( $args );
+        
+        // Add tribe_events if The Events Calendar post type is registered
+        if ( post_type_exists( 'tribe_events' ) && ! in_array( 'tribe_events', $wpuf_post_types, true ) ) {
+            $wpuf_post_types[] = 'tribe_events';
+        }
+        
         $ignore_taxonomies = apply_filters( 'wpuf-ignore-taxonomies', [
             'post_format',
         ] );
@@ -86,6 +92,16 @@ trait FieldableTrait {
                         'hide_empty' => false,
                     ] );
                 }
+            }
+            
+            // Special handling for tribe_events to include post_tag in free version
+            if ( 'tribe_events' === $post_type && ! isset( $this->wp_post_types[ $post_type ]['post_tag'] ) ) {
+                // Add post_tag as a canonical field for Event Calendar forms
+                $this->wp_post_types[ $post_type ]['post_tag'] = [
+                    'title'        => __( 'Tags', 'wp-user-frontend' ),
+                    'hierarchical' => false,
+                    'terms'        => [],
+                ];
             }
         }
     }
@@ -475,6 +491,13 @@ trait FieldableTrait {
 
             // At this point $taxonomy_name should be a single id or array of ids
             if ( isset( $taxonomy_name ) && $taxonomy_name != 0 && $taxonomy_name != -1 ) {
+                // Auto-register post_tag taxonomy for tribe_events if not already registered
+                if ( 'tribe_events' === $this->form_settings['post_type'] && 
+                     'post_tag' === $taxonomy['name'] && 
+                     ! is_object_in_taxonomy( $this->form_settings['post_type'], $taxonomy['name'] ) ) {
+                    register_taxonomy_for_object_type( 'post_tag', 'tribe_events' );
+                }
+                
                 if ( is_object_in_taxonomy( $this->form_settings['post_type'], $taxonomy['name'] ) ) {
                     $tax = $taxonomy_name;
                     // if it's not an array, make it one
@@ -644,9 +667,11 @@ trait FieldableTrait {
                 case 'text':
                 case 'email':
                 case 'number':
+                    $meta_key_value[ $value['name'] ] = $value_name;
+                    break;
+
                 case 'date':
                     $meta_key_value[ $value['name'] ] = $value_name;
-
                     break;
 
                 case 'textarea':
@@ -749,4 +774,6 @@ trait FieldableTrait {
             'is_taxonomy'  => 1,
         ];
     }
+
+
 }

@@ -292,7 +292,23 @@ class Frontend_Form_Ajax {
 
         $postarr = $this->adjust_thumbnail_id( $postarr );
 
-        $post_id = wp_insert_post( $postarr );
+        // Handle Events Calendar integration or standard post creation
+        $post_id = null;
+        
+        // Check if this is an Events Calendar event
+        if ( isset( $postarr['post_type'] ) && $this->is_events_calendar_post_type( $postarr['post_type'] ) ) {
+            $post_id = $this->handle_tribe_events_submission( $postarr, $meta_vars, $form_id );
+        }
+        
+        // Use standard post creation if no post_id was created or not an event
+        if ( ! $post_id ) {
+            $post_id = wp_insert_post( $postarr );
+        }
+
+        // Hook for post type specific processing after post creation
+        if ( $post_id ) {
+            do_action( 'wpuf_post_created_' . $this->form_settings['post_type'], $post_id, $postarr, $meta_vars );
+        }
 
         // add post revision when post edit from the frontend
         wpuf_frontend_post_revision( $post_id, $this->form_settings );
@@ -515,6 +531,63 @@ class Frontend_Form_Ajax {
         do_action( 'wpuf_add_post_after_insert', $post_id, $form_id, $this->form_settings, $meta_vars ); // plugin API to extend the functionality
 
         return $response;
+    }
+
+    /**
+     * Handle Events Calendar (Tribe Events) post submission with proper validation
+     *
+     * @param array $postarr Post data array
+     * @param array $meta_vars Meta variables
+     * @param int $form_id Form ID
+     * @return int|null Post ID if successful, null if failed
+     */
+    private function handle_tribe_events_submission( $postarr, $meta_vars, $form_id ) {
+        $post_id = null;
+        
+        // Try Pro integration handler first if available
+        if ( wpuf_is_pro_active() && wpuf_pro() && wpuf_pro()->integrations ) {
+            $integration = wpuf_pro()->integrations->tribe__events__main ?? null;
+            
+            if ( $integration && isset( $integration->event_handler ) ) {
+                $event_handler = $integration->event_handler;
+                
+                // Validate that handle_event_submission method exists and is callable
+                if ( is_callable( [ $event_handler, 'handle_event_submission' ] ) ) {
+                    $post_id = $event_handler->handle_event_submission( $postarr, $meta_vars, $form_id, $this->form_settings );
+                }
+            }
+        }
+        
+        // Fallback to free integration handler if Pro handler failed or unavailable
+        if ( ! $post_id && wpuf() && wpuf()->integrations ) {
+            $integration = wpuf()->integrations->tribe__events__main ?? null;
+            
+            if ( $integration && isset( $integration->event_handler ) ) {
+                $event_handler = $integration->event_handler;
+                
+                // Validate that handle_event_submission method exists and is callable
+                if ( is_callable( [ $event_handler, 'handle_event_submission' ] ) ) {
+                    $post_id = $event_handler->handle_event_submission( $postarr, $meta_vars, $form_id, $this->form_settings );
+                }
+            }
+        }
+        
+        return $post_id;
+    }
+
+    /**
+     * Check if post type is an Events Calendar post type
+     *
+     * @param string $post_type Post type to check
+     * @return bool True if Events Calendar post type
+     */
+    private function is_events_calendar_post_type( $post_type ) {
+        if ( class_exists( '\WeDevs\Wpuf\Integrations\Events_Calendar\Utils\TEC_Constants' ) ) {
+            return in_array( $post_type, \WeDevs\Wpuf\Integrations\Events_Calendar\Utils\TEC_Constants::TEC_POST_TYPES, true );
+        }
+        
+        // Fallback for backward compatibility
+        return 'tribe_events' === $post_type;
     }
 
     /**
@@ -829,4 +902,5 @@ class Frontend_Form_Ajax {
 
         return $content;
     }
+
 }

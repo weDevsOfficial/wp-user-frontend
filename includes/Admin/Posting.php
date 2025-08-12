@@ -15,7 +15,52 @@ class Posting {
 
     private static $_instance;
 
+    /**
+     * Tribe events custom fields
+     *
+     * @var array
+     */
+    protected $tribe_events_custom_fields = [];
+
     public function __construct() {
+        $this->tribe_events_custom_fields = [
+            '_EventAllDay',
+            '_EventStartDate',
+            '_EventEndDate',
+            '_EventStartDateUTC',
+            '_EventEndDateUTC',
+            '_EventDuration',
+            'venue',
+            '_EventVenueID',
+            'venue_name',
+            'venue_website',
+            'venue_phone',
+            'venue_address',
+            'organizer',
+            '_EventOrganizerID',
+            'organizer_name',
+            'organizer_website',
+            'organizer_email',
+            'organizer_phone',
+            '_EventShowMapLink',
+            '_EventShowMap',
+            '_EventCurrencySymbol',
+            '_EventCurrencyCode',
+            '_EventCurrencyPosition',
+            '_EventCost',
+            '_EventCostMin',
+            '_EventCostMax',
+            '_EventURL',
+            '_EventOrganizerID',
+            '_EventPhone',
+            '_EventHideFromUpcoming',
+            '_EventTimezone',
+            '_EventTimezoneAbbr',
+            '_tribe_events_errors',
+            '_EventOrigin',
+            '_tribe_featured',
+        ];
+
         // meta boxes
         add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes'] );
         add_action( 'add_meta_boxes', [ $this, 'add_meta_box_form_select'] );
@@ -362,6 +407,14 @@ class Posting {
 
         list( $post_fields, $taxonomy_fields, $custom_fields ) = $this->get_input_fields( $form_id );
 
+        // check if this is an event post type
+        if ( 'tribe_events' === $post->post_type ) {
+            // remove the custom fields that are in the tribe_events_custom_fields array
+            $custom_fields = array_filter( $custom_fields, function( $field ) {
+                return ! in_array( $field['name'], $this->tribe_events_custom_fields );
+            } );
+        }
+
         if ( empty( $custom_fields ) ) {
             esc_html_e( 'No custom fields found.', 'wp-user-frontend' );
 
@@ -544,6 +597,10 @@ class Posting {
         }
 
         list( $post_vars, $tax_vars, $meta_vars ) = self::get_input_fields( $wpuf_cf_form_id );
+
+        $meta_vars = array_filter( $meta_vars, function( $field ) {
+            return !in_array( $field['name'], $this->tribe_events_custom_fields );
+        } );
 
         // WPUF_Frontend_Form_Post::update_post_meta( $meta_vars, $post_id );
         $this->update_post_meta( $meta_vars, $post_id );

@@ -5198,6 +5198,67 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
 
 /*tooltip*/
 
+/* WPUF Pro Modal Styles */
+
+.wpuf-pro-modal-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 4rem;
+}
+
+.wpuf-pro-modal-left {
+  flex: 1 1 0%;
+  text-align: left;
+}
+
+.wpuf-pro-modal-icon {
+  margin-bottom: 1.25rem;
+  display: flex;
+  height: 6rem;
+  width: 6rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  --tw-bg-opacity: 1;
+  background-color: rgb(209 250 229 / var(--tw-bg-opacity));
+}
+
+.wpuf-pro-modal-title {
+  margin-bottom: 1rem;
+  margin-top: 0px;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 500;
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity));
+}
+
+.wpuf-pro-modal-text {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.75rem;
+  --tw-text-opacity: 1;
+  color: rgb(107 114 128 / var(--tw-text-opacity));
+}
+
+.wpuf-pro-modal-right {
+  position: relative;
+  flex-shrink: 0;
+  border-radius: 0.5rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 247 237 / var(--tw-bg-opacity));
+  padding: 1.5rem;
+}
+
+.wpuf-pro-modal-right img {
+  display: block;
+  height: 20rem;
+  width: auto;
+  border-radius: 0.25rem;
+}
+
 .placeholder\:wpuf-text-gray-400::-moz-placeholder {
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity));

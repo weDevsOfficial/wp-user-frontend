@@ -934,8 +934,8 @@ class Free_Loader extends Pro_Prompt {
     public function post_form_templates( $integrations ) {
         $integrations['post_form_template_woocommerce']     = new Post_Form_Template_WooCommerce();
 
-        // turning off events calendar for their breaking changes
-        // $integrations['post_form_template_events_calendar'] = new Post_Form_Template_Events_Calendar();
+        // Re-enabled Events Calendar template
+        $integrations['post_form_template_events_calendar'] = new Post_Form_Template_Events_Calendar();
 
         return $integrations;
     }

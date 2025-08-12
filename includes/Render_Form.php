@@ -496,6 +496,11 @@ class Render_Form {
                 continue;
             }
 
+            // Skip gated taxonomy fields to prevent empty list items and orphaned labels
+            if ( $this->is_taxonomy_field_gated( $form_field ) ) {
+                continue;
+            }
+
             if ( $form_field['input_type'] != 'step_start' && $form_field['input_type'] != 'step_end' ) {
                 $this->render_item_before( $form_field, $post_id );
             }
@@ -1319,12 +1324,41 @@ class Render_Form {
     }
 
     /**
+     * Check if a taxonomy field is gated (custom taxonomy when pro is not active)
+     *
+     * @param array $form_field Field configuration
+     * @return bool True if field is gated and should be skipped
+     */
+    private function is_taxonomy_field_gated( $form_field ) {
+        // Only check taxonomy fields
+        if ( $form_field['input_type'] !== 'taxonomy' ) {
+            return false;
+        }
+        
+        // If pro is active, no fields are gated
+        if ( wpuf_is_pro_active() ) {
+            return false;
+        }
+        
+        // Check if this is a custom taxonomy
+        $builtin_taxonomies = apply_filters( 'wpuf_builtin_taxonomies_free', array( 'category', 'post_tag' ) );
+        return ! in_array( $form_field['name'], $builtin_taxonomies, true );
+    }
+
+    /**
      * Prints a taxonomy field
      *
      * @param array    $attr
      * @param int|null $post_id
      */
     public function taxonomy( $attr, $post_id, $form_id ) {
+        // Check if this is a custom taxonomy and pro is not active
+        $builtin_taxonomies = apply_filters( 'wpuf_builtin_taxonomies_free', array( 'category', 'post_tag' ) );
+        if ( ! in_array( $attr['name'], $builtin_taxonomies, true ) && ! wpuf_is_pro_active() ) {
+            // Don't render custom taxonomies when pro is not active
+            return;
+        }
+
         $exclude_type       = isset( $attr['exclude_type'] ) ? esc_attr( $attr['exclude_type'] ) : 'exclude';
         // $exclude            = $attr['exclude'];
         $exclude            = isset( $attr['exclude'] ) ? esc_attr( $attr['exclude'] ) : '';

@@ -214,7 +214,7 @@ function wpuf_list_users() {
  * @return string HTML content, if not displaying
  */
 function wpuf_get_pages( $post_type = 'page' ) {
-    $array = [ '' => __( '&mdash; Select &mdash;', 'wp-user-frontend' ) ];
+    $array = [ '' => __( '-- Select --', 'wp-user-frontend' ) ];
     $pages = get_posts(
         [
             'post_type'              => $post_type,
@@ -4997,6 +4997,10 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
         'post_form_template_edd'             => [
             'label' => __( 'EDD Download Form', 'wp-user-frontend' ),
             'image' => WPUF_ASSET_URI . '/images/templates/edd.svg',
+        ],
+        'post_form_template_events_calendar' => [
+            'label' => __( 'Event Form', 'wpuf-user-frontend' ),
+            'image' => WPUF_ASSET_URI . '/images/templates/event.svg',
         ],
     ];
 

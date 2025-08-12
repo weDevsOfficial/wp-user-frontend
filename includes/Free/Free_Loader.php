@@ -2,7 +2,6 @@
 
 namespace WeDevs\Wpuf\Free;
 
-use WeDevs\Wpuf\Admin\Forms\Post\Templates\Post_Form_Template_Events_Calendar;
 use WeDevs\Wpuf\Admin\Forms\Post\Templates\Post_Form_Template_WooCommerce;
 use WeDevs\Wpuf\Admin\Forms\Post\Templates\Pro_Form_Preview_EDD;
 use WeDevs\Wpuf\Pro\Admin\Coupon_Elements;
@@ -934,8 +933,10 @@ class Free_Loader extends Pro_Prompt {
     public function post_form_templates( $integrations ) {
         $integrations['post_form_template_woocommerce']     = new Post_Form_Template_WooCommerce();
 
-        // turning off events calendar for their breaking changes
-        // $integrations['post_form_template_events_calendar'] = new Post_Form_Template_Events_Calendar();
+        // Enable Events Calendar template with new integration
+        if ( class_exists( 'Tribe__Events__Main' ) ) {
+            $integrations['post_form_template_events_calendar'] = new \WeDevs\Wpuf\Integrations\Events_Calendar\Templates\Event_Form_Template();
+        }
 
         return $integrations;
     }

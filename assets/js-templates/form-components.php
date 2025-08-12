@@ -507,6 +507,7 @@
                 class="wpuf-block text-sm/6 wpuf-font-medium wpuf-text-gray-900 !wpuf-mb-0">
                 <input
                     type="radio"
+                    :name="'radio_' + editing_form_field.id + '_' + option_field.name"
                     :value="key"
                     v-model="value"
                     :class="builder_class_names('radio')">
@@ -522,6 +523,7 @@
         <label class="!wpuf-mb-0">
             <input
                 type="radio"
+                :name="'radio_' + editing_form_field.id + '_' + option_field.name"
                 :value="key"
                 v-model="value"
                 :class="builder_class_names('radio')">
@@ -658,6 +660,7 @@
             class="wpuf-block text-sm/6 wpuf-font-medium wpuf-text-gray-900">
             <input
                 type="radio"
+                :name="'visibility_' + editing_form_field.id"
                 :value="key"
                 v-model="selected"
                 class="checked:!wpuf-bg-primary checked:before:!wpuf-bg-transparent">
@@ -674,6 +677,7 @@
                 class="wpuf-block wpuf-my-1 wpuf-mr-2 wpuf-font-medium wpuf-text-gray-900">
                 <input
                     type="radio"
+                    :name="'visibility_' + editing_form_field.id"
                     :value="key"
                     v-model="selected"
                     :class="builder_class_names('radio')">
@@ -1351,10 +1355,11 @@
             class="wpuf-flex wpuf-items-center">
             <input
                 type="radio"
-                :class="builder_class_names('radio')">
-            <label
                 :value="val"
-                :checked="is_selected(val)">{{ label }}</label>
+                :checked="is_selected(val)"
+                :id="'radio-' + field.name + '-' + val"
+                :class="builder_class_names('radio')">
+            <label :for="'radio-' + field.name + '-' + val">{{ label }}</label>
         </div>
     </div>
 
@@ -1364,11 +1369,13 @@
         <div
             v-if="has_options" v-for="(label, val) in field.options"
             class="wpuf-flex wpuf-items-center">
-            <input type="radio" :class="builder_class_names('radio')">
-            <label
+            <input
+                type="radio"
                 :value="val"
                 :checked="is_selected(val)"
-                :class="builder_class_names('radio')">{{ label }}</label>
+                :id="'radio-' + field.name + '-' + val"
+                :class="builder_class_names('radio')">
+            <label :for="'radio-' + field.name + '-' + val">{{ label }}</label>
         </div>
     </div>
 

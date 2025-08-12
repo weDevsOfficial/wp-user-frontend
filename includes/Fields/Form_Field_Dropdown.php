@@ -33,13 +33,13 @@ class Form_Field_Dropdown extends Field_Contract {
         }
 
         /* Workaround for Events calendar venue and organizer field render in wpuf custom fields metabox */
-        if ( 'tribe_events' == get_post_type( $post_id ) ) {
+        // if ( 'tribe_events' == get_post_type( $post_id ) ) {
             if ( '_EventVenueID' == $field_settings['name'] ) {
                 $field_settings['options'] = $this->get_posts( 'tribe_venue' );
             } else if ( '_EventOrganizerID' == $field_settings['name'] ) {
                 $field_settings['options'] = $this->get_posts( 'tribe_organizer' );
             }
-        }
+        // }
 
         $name  = $field_settings['name'];
 

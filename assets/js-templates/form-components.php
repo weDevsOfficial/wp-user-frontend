@@ -21,9 +21,9 @@
                 <label v-if="!is_invisible(field)" :for="'wpuf-' + field.name ? field.name : 'cls'">
                     {{ field.label }} <span v-if="field.required && 'yes' === field.required" class="required">*</span>
                 </label>
-                <span v-if="isSocialField(field.template) && field.show_icon === 'yes'" 
-                      class="wpuf-social-label-icon wpuf-inline-flex wpuf-items-center wpuf-ml-2"
-                      v-html="getSocialIcon(field.template)">
+                <span v-if="field.icon && field.show_icon === 'yes'" 
+                      class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-ml-2"
+                      v-html="field.icon">
                 </span>
             </div>
 
@@ -121,9 +121,9 @@
                         {{ field.label }} <span v-if="field.required && 'yes' === field.required"
                                                 class="required">*</span>
                     </label>
-                    <span v-if="isSocialField(field.template) && field.show_icon === 'yes'" 
-                          class="wpuf-social-label-icon wpuf-inline-flex wpuf-items-center wpuf-ml-2"
-                          v-html="getSocialIcon(field.template)">
+                    <span v-if="field.icon && field.show_icon === 'yes'" 
+                          class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-ml-2"
+                          v-html="field.icon">
                     </span>
                 </div>
                 <div
@@ -509,6 +509,7 @@
                     type="radio"
                     :name="'radio_' + editing_form_field.id + '_' + option_field.name"
                     :value="key"
+                    :name="option_field.name"
                     v-model="value"
                     :class="builder_class_names('radio')">
                 {{ option }}

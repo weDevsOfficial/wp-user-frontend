@@ -7,7 +7,7 @@ namespace WeDevs\Wpuf\Integrations\Events_Calendar\Utils;
  *
  * Centralizes all Events Calendar context detection logic
  *
- * @since WPUF_SINCE
+ * @since 4.1.9
  */
 class Events_Calendar_Context {
 
@@ -24,24 +24,24 @@ class Events_Calendar_Context {
         }
 
         // Use provided params or sanitize $_GET inputs
-        $post_type = isset( $params['post_type'] ) 
-            ? $params['post_type'] 
+        $post_type = isset( $params['post_type'] )
+            ? $params['post_type']
             : ( isset( $_GET['post_type'] ) ? sanitize_key( wp_unslash( $_GET['post_type'] ) ) : '' );
-            
-        $page = isset( $params['page'] ) 
-            ? $params['page'] 
+
+        $page = isset( $params['page'] )
+            ? $params['page']
             : ( isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '' );
-            
-        $action = isset( $params['action'] ) 
-            ? $params['action'] 
+
+        $action = isset( $params['action'] )
+            ? $params['action']
             : ( isset( $_GET['action'] ) ? sanitize_key( wp_unslash( $_GET['action'] ) ) : '' );
-            
-        $form_id = isset( $params['id'] ) 
-            ? (int) $params['id'] 
+
+        $form_id = isset( $params['id'] )
+            ? (int) $params['id']
             : ( isset( $_GET['id'] ) ? absint( $_GET['id'] ) : 0 );
-            
-        $template = isset( $params['template'] ) 
-            ? $params['template'] 
+
+        $template = isset( $params['template'] )
+            ? $params['template']
             : ( isset( $_GET['template'] ) ? sanitize_text_field( wp_unslash( $_GET['template'] ) ) : '' );
 
         // Check if post_type parameter is tribe_events

@@ -8,14 +8,14 @@ namespace WeDevs\Wpuf\Integrations\Events_Calendar\Compatibility;
  * Handles The Events Calendar v6.x API calls using the new ORM API
  * Documentation: https://docs.theeventscalendar.com/apis/orm/create/events/
  *
- * @since WPUF_SINCE
+ * @since 4.1.9
  */
 class TEC_V6_Compatibility {
-    
+
     /**
      * Convert form data directly to ORM format
      *
-     * @since WPUF_SINCE
+     * @since 4.1.9
      *
      * @param array $form_data
      * @param array $meta_vars
@@ -26,7 +26,7 @@ class TEC_V6_Compatibility {
         $orm_args = [];
         // Merge form data with meta vars for comprehensive data access
         $all_data = array_merge( $form_data, $meta_vars );
-        
+
         // Extract taxonomy data directly from $_POST since WPUF doesn't pass it in form_data
         // Check for tribe_events_cat taxonomy field - can be array of IDs or comma-separated string
         if ( isset( $_POST['tribe_events_cat'] ) && ! isset( $all_data['tribe_events_cat'] ) ) {
@@ -37,12 +37,12 @@ class TEC_V6_Compatibility {
                 $all_data['tribe_events_cat'] = sanitize_text_field( $_POST['tribe_events_cat'] );
             }
         }
-        
+
         // Check for tags if not already in form_data
         if ( ! isset( $all_data['tags'] ) && ! isset( $all_data['tags_input'] ) && isset( $_POST['tags'] ) ) {
             $all_data['tags'] = sanitize_text_field( $_POST['tags'] );
         }
-        
+
         // Debug logging
         if ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
             error_log( 'WPUF TEC Debug - form_data keys: ' . print_r( array_keys( $form_data ), true ) );
@@ -50,7 +50,7 @@ class TEC_V6_Compatibility {
             error_log( 'WPUF TEC Debug - all_data tags_input: ' . print_r( isset($all_data['tags_input']) ? $all_data['tags_input'] : 'not set', true ) );
             error_log( 'WPUF TEC Debug - $_POST tags: ' . print_r( isset($_POST['tags']) ? $_POST['tags'] : 'not set', true ) );
         }
-        
+
 
         /**
          * Opportunity to modify form data before converting to TEC ORM format
@@ -59,7 +59,7 @@ class TEC_V6_Compatibility {
          * into TEC ORM format. Useful for data validation, transformation, or integration
          * with custom form fields.
          *
-         * @since WPUF_SINCE
+         * @since 4.1.9
          *
          * @param array $all_data The merged form data and meta variables
          * @param array $form_data The original form data from WPUF
@@ -170,7 +170,7 @@ class TEC_V6_Compatibility {
             $cost = sanitize_text_field( $all_data['_EventCost'] );
             // Remove currency symbols while preserving optional negative sign and single decimal point
             $cost = preg_replace( '/[^0-9.\-]/', '', $cost );
-            
+
             // Ensure only one decimal point and optional leading negative sign
             if ( preg_match( '/^-?\d*\.?\d+$/', $cost ) ) {
                 // Valid format: optional negative, digits, optional single decimal point, more digits
@@ -235,7 +235,7 @@ class TEC_V6_Compatibility {
         if ( ! empty( $all_data['_EventDuration'] ) ) {
             $orm_args['duration'] = intval( $all_data['_EventDuration'] );
         }
-        
+
         // Map tags if available - check both 'tags' and 'tags_input'
         if ( ! empty( $all_data['tags_input'] ) ) {
             // WPUF already processed tags into tags_input format
@@ -250,7 +250,7 @@ class TEC_V6_Compatibility {
                 $orm_args['tags_input'] = $all_data['tags'];
             }
         }
-        
+
         // Map event categories if available
         if ( ! empty( $all_data['tribe_events_cat'] ) ) {
             // Handle different formats - could be array of IDs, comma-separated string, or text
@@ -275,7 +275,7 @@ class TEC_V6_Compatibility {
          * and saved. Useful for custom field mapping, data transformation, or integration
          * with third-party services.
          *
-         * @since WPUF_SINCE
+         * @since 4.1.9
          *
          * @param array $orm_args The ORM arguments ready for TEC API
          * @param array $all_data The original merged form data
@@ -295,7 +295,7 @@ class TEC_V6_Compatibility {
     /**
      * Validate ORM requirements before saving
      *
-     * @since WPUF_SINCE
+     * @since 4.1.9
      *
      * @param array $orm_args
      *
@@ -343,7 +343,7 @@ class TEC_V6_Compatibility {
     /**
      * Prevent TEC from processing event creation when we're handling it through WPUF
      *
-     * @since WPUF_SINCE
+     * @since 4.1.9
      *
      * @param int      $post_id
      * @param \WP_Post $post
@@ -363,7 +363,7 @@ class TEC_V6_Compatibility {
     /**
      * Check if current request is a WPUF form submission
      *
-     * @since WPUF_SINCE
+     * @since 4.1.9
      *
      * @return bool
      */
@@ -395,7 +395,7 @@ class TEC_V6_Compatibility {
     /**
      * Prepare event data before post creation
      *
-     * @since WPUF_SINCE
+     * @since 4.1.9
      *
      * @param int   $form_id
      * @param array $form_settings
@@ -421,7 +421,7 @@ class TEC_V6_Compatibility {
     /**
      * Prepare data for TEC's save_post hook from ORM format
      *
-     * @since WPUF_SINCE
+     * @since 4.1.9
      *
      * @param array $orm_args
      */
@@ -448,7 +448,7 @@ class TEC_V6_Compatibility {
     /**
      * Save event using TEC v6 ORM API
      *
-     * @since WPUF_SINCE
+     * @since 4.1.9
      *
      * @param array $postarr       The post array (title, content, etc.)
      * @param array $meta_vars     The meta fields from the form
@@ -475,7 +475,7 @@ class TEC_V6_Compatibility {
          * is created via TEC's API. Useful for last-minute data validation, transformation,
          * or integration with external services.
          *
-         * @since WPUF_SINCE
+         * @since 4.1.9
          *
          * @param array $args         The ORM arguments ready for TEC API
          * @param array $postarr      The original WordPress post array
@@ -497,12 +497,12 @@ class TEC_V6_Compatibility {
                             'post_status' => $post_status,
                         ]
                     );
-                    
+
                     // Add tags if they exist - use wp_set_post_tags for better reliability
                     if ( ! empty( $args['tags_input'] ) ) {
                         wp_set_post_tags( $event->ID, $args['tags_input'], false );
                     }
-                    
+
                     // Add event categories if they exist
                     if ( ! empty( $args['categories'] ) ) {
                         wp_set_post_terms( $event->ID, $args['categories'], 'tribe_events_cat', false );
@@ -515,7 +515,7 @@ class TEC_V6_Compatibility {
                      * an event has been successfully created. Useful for notifications,
                      * integrations, or custom post-processing.
                      *
-                     * @since WPUF_SINCE
+                     * @since 4.1.9
                      *
                      * @param int   $event_id      The created event post ID
                      * @param array $args          The ORM arguments used to create the event
@@ -541,7 +541,7 @@ class TEC_V6_Compatibility {
     /**
      * Format date for TEC ORM
      *
-     * @since WPUF_SINCE
+     * @since 4.1.9
      *
      * @param string $date_string
      *
@@ -601,7 +601,7 @@ class TEC_V6_Compatibility {
     /**
      * Check if date string is in valid format
      *
-     * @since WPUF_SINCE
+     * @since 4.1.9
      *
      * @param string $date_string
      *
@@ -625,7 +625,7 @@ class TEC_V6_Compatibility {
     /**
      * Save event meta using TEC's API
      *
-     * @since WPUF_SINCE
+     * @since 4.1.9
      *
      * @param int   $post_id
      * @param array $orm_args
@@ -687,7 +687,7 @@ class TEC_V6_Compatibility {
              * This filter allows developers to add, modify, or remove event metadata before it's saved.
              * Useful for custom event fields, validation, or integration with other plugins.
              *
-             * @since WPUF_SINCE
+             * @since 4.1.9
              *
              * @param array $meta_data The event metadata array with keys like '_EventStartDate', '_EventEndDate', etc.
              * @param int   $post_id   The event post ID
@@ -709,7 +709,7 @@ class TEC_V6_Compatibility {
     /**
      * Check if TEC v6 is active
      *
-     * @since WPUF_SINCE
+     * @since 4.1.9
      *
      * @return bool
      */

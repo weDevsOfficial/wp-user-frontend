@@ -147,24 +147,19 @@ class Upload_Ajax {
     /**
      * Generic function to upload a file
      *
-     * @param string $field_name file input field name
+     * @param array $upload_data file upload data
      *
-     * @return bool|int attachment id on success, bool false instead
+     * @return array attachment result with success status and attach_id
      */
     public function handle_upload( $upload_data ) {
-        $check_duplicate = $this->duplicate_upload( $upload_data );
-        if ( isset( $check_duplicate['duplicate'] ) && $check_duplicate['duplicate'] ) {
-            return [
-                'success'   => true,
-                'attach_id' => $check_duplicate['duplicate'],
-            ];
-        }
+        // Always make filenames unique to prevent conflicts between users
+        $upload_data['name'] = $this->wpuf_filename_unique( $upload_data['name'] );
+        
         $uploaded_file = wp_handle_upload( $upload_data, [ 'test_form' => false ] );
         // If the wp_handle_upload call returned a local path for the image
         if ( isset( $uploaded_file['file'] ) ) {
             $file_loc    = $uploaded_file['file'];
-            $file_name   = basename( $upload_data['name'] );
-            $upload_hash = md5( $upload_data['name'] . $upload_data['size'] );
+            $file_name   = basename( $uploaded_file['file'] );
             $file_type   = wp_check_filetype( $file_name );
             $attachment = [
                 'post_mime_type' => $file_type['type'],
@@ -175,7 +170,6 @@ class Upload_Ajax {
             $attach_id   = wp_insert_attachment( $attachment, $file_loc );
             $attach_data = wp_generate_attachment_metadata( $attach_id, $file_loc );
             wp_update_attachment_metadata( $attach_id, $attach_data );
-            update_post_meta( $attach_id, 'wpuf_file_hash', $upload_hash );
 
             return [
                 'success'   => true,
@@ -300,24 +294,33 @@ class Upload_Ajax {
     }
 
     /**
-     * Check if duplicate file
+     * Make filename unique by appending timestamp and unique ID
      *
-     * @param array $file
+     * @since WPUF_SINCE
+     * 
+     * @param string $filename
      *
-     * @return mixed
+     * @return string
      */
-    function duplicate_upload( $file ) {
-        global $wpdb;
-        $upload_hash = md5( $file['name'] . $file['size'] );
-
-        $match = $wpdb->get_var( $wpdb->prepare(
-            "SELECT post_id FROM $wpdb->postmeta m JOIN $wpdb->posts p ON p.ID = m.post_id WHERE m.meta_key = 'wpuf_file_hash' AND m.meta_value = %s AND p.post_status != 'trash' LIMIT 1;",
-            $upload_hash
-        ) );
-        if ( $match ) {
-            $file['duplicate'] = $match;
-        }
-
-        return $file;
+    private function wpuf_filename_unique( $filename ) {
+        $info = pathinfo( $filename );
+        $ext  = empty( $info['extension'] ) ? '' : '.' . $info['extension'];
+        $name = basename( $filename, $ext );
+        
+        // Sanitize the base name
+        $name = sanitize_file_name( $name );
+        
+        // Add wpuf prefix, timestamp and unique ID to ensure uniqueness
+        $unique_suffix = 'wpuf-' . time() . '-' . uniqid();
+        
+        // Apply filter to allow customization of the unique filename
+        $new_filename = apply_filters( 'wpuf_upload_file_name', $name . '-' . $unique_suffix . $ext, [
+            'original_name' => $filename,
+            'base_name'     => $name,
+            'extension'     => $ext,
+            'unique_suffix' => $unique_suffix,
+        ] );
+        
+        return $new_filename;
     }
 }

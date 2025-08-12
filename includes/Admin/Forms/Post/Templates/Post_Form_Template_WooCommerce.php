@@ -29,6 +29,10 @@ class Post_Form_Template_WooCommerce extends Form_Template {
                 'default'     => '',
                 'size'        => '40',
                 'wpuf_cond'   => $this->conditionals,
+                'wpuf_visibility' => $this->get_default_visibility_prop(),
+                'restriction_to'   => 'max',
+                'restriction_type' => 'character',
+                'width'           => 'large',
             ],
             [
                 'input_type'          => 'textarea',
@@ -47,7 +51,11 @@ class Post_Form_Template_WooCommerce extends Form_Template {
                 'insert_image'        => 'yes',
                 'word_restriction'    => '',
                 'wpuf_cond'           => $this->conditionals,
+                'wpuf_visibility'     => $this->get_default_visibility_prop(),
+                'restriction_to'      => 'max',
+                'restriction_type'    => 'character',
                 'text_editor_control' => [],
+                'width'               => 'large',
             ],
             [
                 'input_type'          => 'textarea',
@@ -64,7 +72,11 @@ class Post_Form_Template_WooCommerce extends Form_Template {
                 'default'             => '',
                 'rich'                => 'no',
                 'wpuf_cond'           => $this->conditionals,
+                'wpuf_visibility'     => $this->get_default_visibility_prop(),
+                'restriction_to'      => 'max',
+                'restriction_type'    => 'character',
                 'text_editor_control' => [],
+                'width'               => 'large',
             ],
             [
                 'input_type'      => 'text',
@@ -82,6 +94,8 @@ class Post_Form_Template_WooCommerce extends Form_Template {
                 'min_value_field' => '0',
                 'max_value_field' => '',
                 'wpuf_cond'       => $this->conditionals,
+                'wpuf_visibility' => $this->get_default_visibility_prop(),
+                'width'           => 'large',
             ],
             [
                 'input_type'      => 'text',
@@ -99,6 +113,8 @@ class Post_Form_Template_WooCommerce extends Form_Template {
                 'min_value_field' => '0',
                 'max_value_field' => '',
                 'wpuf_cond'       => $this->conditionals,
+                'wpuf_visibility' => $this->get_default_visibility_prop(),
+                'width'           => 'large',
             ],
             [
                 'input_type'   => 'image_upload',
@@ -113,6 +129,8 @@ class Post_Form_Template_WooCommerce extends Form_Template {
                 'css'          => '',
                 'max_size'     => '1024',
                 'wpuf_cond'    => $this->conditionals,
+                'wpuf_visibility' => $this->get_default_visibility_prop(),
+                'width'           => 'large',
             ],
             [
                 'input_type'   => 'image_upload',
@@ -145,6 +163,8 @@ class Post_Form_Template_WooCommerce extends Form_Template {
                     'hidden'  => 'Hidden',
                 ],
                 'wpuf_cond'  => $this->conditionals,
+                'wpuf_visibility' => $this->get_default_visibility_prop(),
+                'width'           => 'large',
             ],
             [
                 'input_type'          => 'textarea',
@@ -162,7 +182,11 @@ class Post_Form_Template_WooCommerce extends Form_Template {
                 'rich'                => 'no',
                 'word_restriction'    => '',
                 'wpuf_cond'           => $this->conditionals,
+                'wpuf_visibility'     => $this->get_default_visibility_prop(),
+                'restriction_to'      => 'max',
+                'restriction_type'    => 'character',
                 'text_editor_control' => [],
+                'width'               => 'large',
             ],
             [
                 'input_type' => 'checkbox',
@@ -177,6 +201,8 @@ class Post_Form_Template_WooCommerce extends Form_Template {
                     '_enable_reviews' => 'Enable reviews',
                 ],
                 'wpuf_cond'  => $this->conditionals,
+                'wpuf_visibility' => $this->get_default_visibility_prop(),
+                'width'           => 'large',
             ],
         ];
         $this->form_settings = [

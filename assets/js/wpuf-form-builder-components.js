@@ -528,7 +528,8 @@ Vue.component('field-option-data', {
             show_value: false,
             sync_value: true,
             options: [],
-            selected: []
+            selected: [],
+            display: !this.editing_form_field.hide_option_data // hide this field for the events calendar
         };
     },
 

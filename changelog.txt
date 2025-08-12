@@ -1,3 +1,6 @@
+= v4.1.9 (12 August, 2025) =
+* Fix - The Events Calendar integration
+
 = v4.1.8 (04 August, 2025) =
 * New - Template filtering search in post form
 * Fix - Invoice and email not sent for payment gateways

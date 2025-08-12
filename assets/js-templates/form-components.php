@@ -520,6 +520,7 @@
                 <input
                     type="radio"
                     :value="key"
+                    :name="option_field.name"
                     v-model="value"
                     :class="builder_class_names('radio')">
                 {{ option }}

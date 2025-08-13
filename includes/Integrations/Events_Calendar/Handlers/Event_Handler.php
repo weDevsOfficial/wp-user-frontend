@@ -9,7 +9,7 @@ use WeDevs\Wpuf\Integrations\Events_Calendar\Compatibility\TEC_Compatibility_Man
  *
  * Handles all event creation and editing operations
  *
- * @since WPUF_SINCE
+ * @since 4.1.9
  */
 class Event_Handler {
     /**
@@ -32,7 +32,7 @@ class Event_Handler {
      * This is a thin delegation layer that routes to the appropriate TEC version handler.
      * All the actual logic is handled by the compatibility classes.
      *
-     * @since WPUF_SINCE
+     * @since 4.1.9
      *
      * @param array $postarr       WordPress post array (title, content, status, etc.)
      * @param array $meta_vars     Form meta fields (event dates, cost, URL, etc.)
@@ -57,7 +57,7 @@ class Event_Handler {
     /**
      * Get the compatibility manager instance
      *
-     * @since WPUF_SINCE
+     * @since 4.1.9
      *
      * @return TEC_Compatibility_Manager
      */

@@ -8,7 +8,7 @@ use WeDevs\Wpuf\Integrations\Events_Calendar\Handlers\Event_Handler;
 /**
  * Main Events Calendar Integration Class
  *
- * @since WPUF_SINCE
+ * @since 4.1.9
  */
 class Events_Calendar_Integration {
 
@@ -36,7 +36,7 @@ class Events_Calendar_Integration {
     /**
      * Initialize all handlers
      *
-     * @since WPUF_SINCE
+     * @since 4.1.9
      */
     private function init_handlers() {
         // Only initialize if TEC is active
@@ -54,7 +54,7 @@ class Events_Calendar_Integration {
          * has been initialized. Useful for custom handlers, compatibility layers, or
          * integration with other plugins.
          *
-         * @since WPUF_SINCE
+         * @since 4.1.9
          *
          * @param Events_Calendar_Integration $this The integration instance
          * @param TEC_Compatibility_Manager $compatibility_manager The compatibility manager instance
@@ -66,7 +66,7 @@ class Events_Calendar_Integration {
     /**
      * Check if The Events Calendar is active
      *
-     * @since WPUF_SINCE
+     * @since 4.1.9
      *
      * @return bool
      */

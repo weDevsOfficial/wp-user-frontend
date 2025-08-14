@@ -225,19 +225,19 @@ test.describe('Registration-Forms', () => {
         await new BasicLogoutPage(page).logOut();
     });
 
-    test.skip('RF0021 : User registering as WCFM Member and validates email verification', { tag: ['@Pro', '@Vendor'] }, async () => {
+    test('RF0021 : User registering as WCFM Member and validates email verification', { tag: ['@Pro', '@Vendor'] }, async () => {
         const RegForm = new RegFormPage(page);
         
         // Complete WCFM Membership Registration Frontend
         activationLink = await RegForm.completeWcfmMemberRegistrationFrontend();
     });
 
-    test.skip('RF0022 : User clicks on activation link and logging in as WCFM member', { tag: ['@Pro'] }, async () => {
+    test('RF0022 : User clicks on activation link and logging in as WCFM member', { tag: ['@Pro'] }, async () => {
         const regForm = new RegFormPage(page);
         await regForm.validateEmailVerification(activationLink, VendorRegistrationForm.wcfmMemberEmail, VendorRegistrationForm.wcfmMemberPassword);
     });
 
-    test.skip('RF0023 : Admin validating WCFM Membership registration as default', { tag: ['@Pro', '@Vendor'] }, async () => {
+    test('RF0023 : Admin validating WCFM Membership registration as default', { tag: ['@Pro', '@Vendor'] }, async () => {
         const BasicLogin = new BasicLoginPage(page);
         const RegForm = new RegFormPage(page);
         

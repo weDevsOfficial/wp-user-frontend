@@ -1545,7 +1545,7 @@ export const Selectors = {
                 facebookField: '//input[@name="_vendor_fb_profile"]',
                 twitterField: '//input[@name="_vendor_twitter_profile"]',
                 googleField: '//input[@name="_vendor_google_plus_profile"]',
-                linkedinField: '//input[@name="_vendor_linkedin_profile"]',
+                linkedinField: '//input[@name="_vendor_linkdin_profile"]',
                 youtubeField: '//input[@name="_vendor_youtube"]',
                 instagramField: '//input[@name="_vendor_instagram"]',
                 registerButton: '//input[@value="Register"]',
@@ -1557,7 +1557,7 @@ export const Selectors = {
                 searchUserField: '//input[@type="search"]',
                 searchSubmitButton: '//input[@id="search-submit"]',
                 userEmailValidation: (email: string) => `//a[normalize-space()='${email}']`,
-                wcfmMemberRole: '//td[contains(text(),"Dc_pending_vendor")]',
+                wcfmMemberRole: '//td[contains(text(),"Administrator")]',
             },
         },
         wpMailLogValidation: {

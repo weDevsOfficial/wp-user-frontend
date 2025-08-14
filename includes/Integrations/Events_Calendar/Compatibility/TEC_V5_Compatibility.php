@@ -7,14 +7,14 @@ namespace WeDevs\Wpuf\Integrations\Events_Calendar\Compatibility;
  *
  * Handles The Events Calendar v5.x API calls and functionality
  *
- * @since WPUF_SINCE
+ * @since 4.1.9
  */
 class TEC_V5_Compatibility {
 
     /**
      * Save event using TEC v5 API
      *
-     * @since WPUF_SINCE
+     * @since 4.1.9
      *
      * @param array $postarr      The post array (title, content, etc.)
      * @param array $meta_vars    The meta fields from the form
@@ -31,7 +31,7 @@ class TEC_V5_Compatibility {
              * creating the event post. Useful for custom post fields, validation,
              * or integration with other plugins.
              *
-             * @since WPUF_SINCE
+             * @since 4.1.9
              *
              * @param array $postarr      The WordPress post array (title, content, etc.)
              * @param array $meta_vars    The meta fields from the form
@@ -54,7 +54,7 @@ class TEC_V5_Compatibility {
              * saved using TEC's v5 API. Useful for custom event fields, validation,
              * or data transformation.
              *
-             * @since WPUF_SINCE
+             * @since 4.1.9
              *
              * @param array $meta_vars    The meta fields from the form
              * @param int   $post_id      The created event post ID
@@ -78,7 +78,7 @@ class TEC_V5_Compatibility {
              * an event has been successfully created using TEC v5 API. Useful for
              * notifications, integrations, or custom post-processing.
              *
-             * @since WPUF_SINCE
+             * @since 4.1.9
              *
              * @param int   $post_id      The created event post ID
              * @param array $meta_vars    The meta fields that were saved
@@ -98,7 +98,7 @@ class TEC_V5_Compatibility {
     /**
      * Check if TEC v5 is active
      *
-     * @since WPUF_SINCE
+     * @since 4.1.9
      *
      * @return bool
      */

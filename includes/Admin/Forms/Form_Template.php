@@ -70,7 +70,7 @@ abstract class Form_Template {
     /**
      * The datetime format for The Event Calender
      *
-     * @since WPUF_SINCE
+     * @since 4.1.9
      *
      * @var string
      */

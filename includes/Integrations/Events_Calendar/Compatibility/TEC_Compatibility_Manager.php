@@ -7,7 +7,7 @@ namespace WeDevs\Wpuf\Integrations\Events_Calendar\Compatibility;
  *
  * Handles version detection and routes to appropriate compatibility handler
  *
- * @since WPUF_SINCE
+ * @since 4.1.9
  */
 class TEC_Compatibility_Manager {
 
@@ -36,7 +36,7 @@ class TEC_Compatibility_Manager {
     /**
      * Get TEC version
      *
-     * @since WPUF_SINCE
+     * @since 4.1.9
      *
      * @return string
      */
@@ -50,7 +50,7 @@ class TEC_Compatibility_Manager {
     /**
      * Get current TEC version
      *
-     * @since WPUF_SINCE
+     * @since 4.1.9
      *
      * @return string
      */
@@ -61,7 +61,7 @@ class TEC_Compatibility_Manager {
     /**
      * Get appropriate compatibility handler based on TEC version
      *
-     * @since WPUF_SINCE
+     * @since 4.1.9
      *
      * @return TEC_V5_Compatibility|TEC_V6_Compatibility
      */

@@ -10,7 +10,7 @@ use WeDevs\Wpuf\Integrations\Events_Calendar\Utils\TEC_Constants;
 /**
  * The Events Calendar Integration Template
  *
- * @since WPUF_SINCE
+ * @since 4.1.9
  */
 class Event_Form_Template extends Form_Template {
 
@@ -32,7 +32,7 @@ class Event_Form_Template extends Form_Template {
     /**
      * Get form fields
      *
-     * @since WPUF_SINCE
+     * @since 4.1.9
      *
      * @return array
      */
@@ -244,7 +244,7 @@ class Event_Form_Template extends Form_Template {
          * the Events Calendar form template. Useful for custom event fields,
          * integration with other plugins, or custom field types.
          *
-         * @since WPUF_SINCE
+         * @since 4.1.9
          *
          * @param array $form_fields The array of form field definitions
          * @param Event_Form_Template $this The form template instance
@@ -257,7 +257,7 @@ class Event_Form_Template extends Form_Template {
     /**
      * Get UTC time
      *
-     * @since WPUF_SINCE
+     * @since 4.1.9
      *
      * @return string
      */
@@ -274,7 +274,7 @@ class Event_Form_Template extends Form_Template {
     /**
      * Get form settings
      *
-     * @since WPUF_SINCE
+     * @since 4.1.9
      *
      * @return array
      */

@@ -880,6 +880,16 @@ export const Selectors = {
             confirmNewNameTickButton: '//input[@name="post_title"]/following-sibling::i[1]',
         },
 
+        addFields: {
+            clickForm: (formName: string) => `//span[normalize-space()="${formName}"]`,
+            clickFormEditor: '//a[contains(text(),"Form Editor")]',
+            clickFormEditorSettings: '(//a[contains(@class,"wpuf-nav-tab wpuf-nav-tab-active")])[2]',
+            clickBlankForm: '//a[@title="Blank Form" and contains(text(), "Create Form")]',
+            useField: (field: string) => `//p[normalize-space()="${field}"]`,
+            clickAddFieldButton: '//a[contains(text(),"Add Field")]',
+            validateField: (field: string) => `//label[@for="${field}"]/../..//div[@class="wpuf-fields"]`,
+        },
+
         // Create Registration Forms - Add Profile Fields
         addProfileFields_RF: {
             // Profile Fields
@@ -962,17 +972,26 @@ export const Selectors = {
 
             // Registration Form
             // First Name
-            rfFirstName: '//input[@id="wpuf-user_fname"]',
+            rfUserName: '//input[@name="user_login"]',
+            rfFirstName: '//input[@name="first_name"]',
             // Last Name
-            rfLastName: '//input[@id="wpuf-user_lname"]',
+            rfLastName: '//input[@name="last_name"]',
             // Email
-            rfEmail: '//input[@type="email"]',
-            // Username
-            rfUserName: '//input[@id="wpuf-user_login"]',
+            rfEmail: '//input[@name="user_email"]',
             // Password
-            rfPassword: '(//input[@type="password"])[1]',
+            rfPassword: '//input[@name="pass1"]',
             // Confirm Password
-            rfConfirmPassword: '(//input[@type="password"])[2]',
+            rfConfirmPassword: '//input[@name="pass2"]',
+            rfDisplayName: '//input[@name="display_name"]',
+            rfNickname: '//input[@name="nickname"]',
+            rfWebsite: '//input[@name="user_url"]',
+            rfBiographicalInfo: '//textarea[@name="description"]',
+            rfAvatar: '//li[@data-label="Avatar"]//input[@type="file"]',
+            rfProfilePhoto: '//li[@data-label="Profile Photo"]//input[@type="file"]',
+            rfXtwitter: '//input[@name="wpuf_social_twitter"]',
+            rfFacebook: '//input[@name="wpuf_social_facebook"]',
+            rfLinkedIn: '//input[@name="wpuf_social_linkedin"]',
+            rfInstagram: '//input[@name="wpuf_social_instagram"]',
             // Register button
             rfRegisterButton: '//input[@value="Register"]',
 
@@ -1400,5 +1419,155 @@ export const Selectors = {
             customFieldsText: '//p[normalize-space(text())="Text"]',
             customFieldsUrl: '//p[normalize-space(text())="Website URL"]',
         },
+    },
+
+    /****************************************************/
+    /********** @Vendor Registration Forms Selectors ***********/
+    /****************************************************/
+
+    vendorRegistrationForms: {
+        // Dokan Vendor Registration Form Selectors
+        dokanVendor: {
+            // Form Creation
+            createDokanVendorForm: '//a[@title="Dokan Vendor Registration Form" and contains(text(), "Create Form")]',
+            
+            // Profile Fields
+            validateField: (field: string) => `//label[@for="${field}"]/../..//div[@class="wpuf-fields"]`,
+            validateAddressField: '//label[@for="dokan_address"]',
+            validatePasswordField: '(//label[@for="password"])[1]',
+            validateConfirmPasswordField: '(//label[@for="password"])[2]',
+            
+            // Frontend Registration Form
+            frontendForm: {
+                firstNameField: '//input[@name="first_name"]',
+                lastNameField: '//input[@name="last_name"]',
+                emailField: '//input[@name="user_email"]',
+                shopUrlField: '//input[@name="shopurl"]',
+                shopNameField: '//input[@name="dokan_store_name"]',
+                phoneField: '//input[@name="dokan_store_phone"]',
+                addressLine1Field: '//input[@name="dokan_address[street_1]"]',
+                addressLine2Field: '//input[@name="dokan_address[street_2]"]',
+                cityField: '//input[@name="dokan_address[city]"]',
+                stateField: '//select[@name="dokan_address[state]"]',
+                zipField: '//input[@name="dokan_address[zip]"]',
+                countryField: '//select[@name="dokan_address[country_select]"]',
+                storeLogoField: '(//li[@data-label="Profile Picture"]//input[@type="file"])[1]',
+                storeBannerField: '(//li[@data-label="Upload Banner"]//input[@type="file"])[1]',
+                passwordField: '//input[@name="pass1"]',
+                confirmPasswordField: '//input[@name="pass2"]',
+                registerButton: '//input[@value="Register"]',
+                successMessage: '//div[@class="wpuf-success"]',
+            },
+            
+            // Admin Validation
+            adminValidation: {
+                searchUserField: '//input[@type="search"]',
+                searchSubmitButton: '//input[@id="search-submit"]',
+                userEmailValidation: (email: string) => `//a[normalize-space()='${email}']`,
+                dokanVendorRole: '//td[contains(text(),"Vendor")]',
+            },
+            dokanValidation: {
+                searchVendorField: '//input[@id="post-search-input"]',
+                vendorName: (name: string) => `//a[normalize-space()="${name}"]`,
+                vendorValidation: (name: string) => `//h2[normalize-space()='${name}']`,
+                validateVendorPhone: (number:string)=> `//li[normalize-space(text())='${number}']`,
+                validateAddress: (address:string)=> `//span[normalize-space(text())='${address},']`,
+                validateStateZip: '//span[normalize-space(text())="BD-13 1216"]',
+                validateVendorEnabled: '//button[normalize-space()="Enabled"]',
+            }
+        },
+
+        // WC Vendors Registration Form Selectors
+        wcVendor: {
+            // Form Creation
+            createWcVendorForm: '//a[@title="WC Vendors Registration Form" and contains(text(), "Create Form")]',
+            wcVendorFormName: '//input[@name="post_title"]',
+            wcVendorFormEditor: '//a[contains(text(),"Form Editor")]',
+            
+            // Profile Fields
+            validateField: (field: string) => `//label[@for="${field}"]/../..//div[@class="wpuf-fields"]`,
+            validatePasswordField: '(//label[@for="password"])[1]',
+            validateConfirmPasswordField: '(//label[@for="password"])[2]',
+            
+            // Frontend Registration Form
+            frontendForm: {
+                emailField: '//input[@name="user_email"]',
+                paypalField: '//input[@name="pv_paypal"]',
+                shopNameField: '//input[@name="pv_shop_name"]',
+                sellerInfo: '//textarea[@name="pv_seller_info"]',
+                shortDescription: '//textarea[@name="pv_shop_description"]',
+                passwordField: '//input[@name="pass1"]',
+                confirmPasswordField: '//input[@name="pass2"]',
+            },
+            
+            // Admin Validation
+            adminValidation: {
+                searchUserField: '//input[@type="search"]',
+                searchSubmitButton: '//input[@id="search-submit"]',
+                userEmailValidation: (email: string) => `//a[normalize-space()='${email}']`,
+                wcVendorRole: '//td[contains(text(),"Pending Vendor")]',
+            },
+
+            wcValidation: {
+                vendorValidation: (name: string) => `//td[@class='ant-table-cell']//a[normalize-space()='${name}']`,
+                vendorStatusValidation: (name: string) => `//td[@class='ant-table-cell']//a[normalize-space()='${name}']//..//..//span[text()='Active']`,
+            }
+        },
+
+        // WCFM Membership Registration Form Selectors
+        wcfmMember: {
+            // Form Creation
+            createWcfmMemberForm: '//a[@title="WCFM Membership Registration Form" and contains(text(), "Create Form")]',
+            
+            // Profile Fields
+            validateField: (field: string) => `//label[@for="${field}"]/../..//div[@class="wpuf-fields"]`,
+            validateAddressField: '//label[@for="_vendor_address"]',
+            validatePasswordField: '(//label[@for="password"])[1]',
+            
+            // Frontend Registration Form
+            frontendForm: {
+                storeNameField: '//input[@name="user_login"]',
+                phoneField: '//input[@id="_vendor_phone"]',
+                emailField: '//input[@name="user_email"]',
+                passwordField: '//input[@name="pass1"]',
+                confirmPasswordField: '//input[@name="pass2"]',
+                websiteField: '//input[@name="user_url"]',
+                descriptionField: '//textarea[@name="_vendor_description"]',
+                nextButton: '//button[normalize-space()="Next"]',
+                addressLine1Field: '//input[@name="_vendor_address[street_address]"]',
+                addressLine2Field: '//input[@name="_vendor_address[street_address2]"]',
+                cityField: '//input[@name="_vendor_address[city_name]"]',
+                stateField: '//input[@name="_vendor_address[state]"]',
+                zipField: '//input[@name="_vendor_address[zip]"]',
+                countryField: '//select[@name="_vendor_address[country_select]"]',
+                storeLogoField: '//li[@data-label="Store Logo"]//input[@type="file"]',
+                storeBannerField: '//li[@data-label="Store Banner"]//input[@type="file"]',
+                facebookField: '//input[@name="_vendor_fb_profile"]',
+                twitterField: '//input[@name="_vendor_twitter_profile"]',
+                googleField: '//input[@name="_vendor_google_plus_profile"]',
+                linkedinField: '//input[@name="_vendor_linkedin_profile"]',
+                youtubeField: '//input[@name="_vendor_youtube"]',
+                instagramField: '//input[@name="_vendor_instagram"]',
+                registerButton: '//input[@value="Register"]',
+                successMessage: '//div[@class="wpuf-success"]',
+            },
+            
+            // Admin Validation
+            adminValidation: {
+                searchUserField: '//input[@type="search"]',
+                searchSubmitButton: '//input[@id="search-submit"]',
+                userEmailValidation: (email: string) => `//a[normalize-space()='${email}']`,
+                wcfmMemberRole: '//td[contains(text(),"Dc_pending_vendor")]',
+            },
+        },
+        wpMailLogValidation: {
+            wpMailLogPage: '//h2[normalize-space()="WP Mail Log"]',
+            sentEmailAddress: (emails: string) => `(//div[normalize-space()='${emails}'])[1]`,
+            viewEmailContent: (emails: string) => `(//div[normalize-space()='${emails}'])[2]`,
+            previewEmailContentBody: '(//div[@class="wml-body-wrapper"])[1]',
+            grabActivationLink: '//a[normalize-space()="Activation Link"]',
+
+            modalCloseButton: '//button[@class="el-button el-button--danger"]',
+        }
     },
 };

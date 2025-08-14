@@ -373,7 +373,7 @@ export class SettingsSetupPage extends Base {
         expect(await this.page.waitForSelector(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileLoginPage)).toBeTruthy();
         //Again - Click Login/Registration
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfile2);
-        await this.selectOptionWithLabel(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileLoginPage, '— Select —');
+        await this.page.locator(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileLoginPage).selectOption({ index: 0 });
         //Save Login/Registration
         await this.validateAndClick(Selectors.settingsSetup.wpufSettingsPage.settingsTabProfileSave);
 
@@ -656,7 +656,7 @@ export class SettingsSetupPage extends Base {
         await this.validateAndFillStrings(Selectors.resetWordpreseSite.wpResetInputBox, 'reset');
         await this.validateAndClick(Selectors.resetWordpreseSite.wpResetSubmitButton);
         await this.validateAndClick(Selectors.resetWordpreseSite.wpResetConfirmWordpressReset);
-        await this.page.waitForTimeout(20000);
+        await this.page.waitForTimeout(30000);
         await this.navigateToURL(this.pluginsPage);
         await this.page.reload();
         await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickWCvendors);

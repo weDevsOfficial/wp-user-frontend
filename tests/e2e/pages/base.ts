@@ -2,8 +2,12 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import { expect, type Page } from '@playwright/test';
 import { Urls } from '../utils/testData';
+import { faker } from '@faker-js/faker';
 
 export class Base {
+    static generateWordWithMinLength(arg0: number): string {
+        throw new Error('Method not implemented.');
+    }
     readonly page: Page;
     readonly wpAdminPage: string = Urls.baseUrl + '/wp-admin/';
     readonly pluginsPage: string = Urls.baseUrl + '/wp-admin/plugins.php';
@@ -281,5 +285,14 @@ export class Base {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to check element text ${locator}: ${error}`);
             return false;
         }
+    }
+
+    // Helper function to generate words with minimum length
+    generateWordWithMinLength(minLength: number = 5): string {
+        let word = faker.word.words(1);
+        while (word.length < minLength) {
+            word = faker.word.words(1);
+        }
+        return word;
     }
 }

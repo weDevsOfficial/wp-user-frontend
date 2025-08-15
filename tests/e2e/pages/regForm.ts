@@ -8,35 +8,6 @@ import { faker } from '@faker-js/faker';
 import { BasicLoginPage } from './basicLogin';
 import { BasicLogoutPage } from './basicLogout';
 
-//Store data
-//First Name
-const firstName = RegistrationForm.rfFirstName;
-//Last Name
-const lastName = RegistrationForm.rfLastName;
-//Email
-const email = RegistrationForm.rfEmail;
-//Username
-const userName = RegistrationForm.rfUsername;
-//Display Name
-const displayName = RegistrationForm.rfDisplayName;
-//Nickname
-const nickname = RegistrationForm.rfNickname;
-//Website
-const website = RegistrationForm.rfWebsite;
-//Biographical Info
-const biographicalInfo = RegistrationForm.rfBiographicalInfo;
-//Avatar
-const avatar = RegistrationForm.rfAvatar;
-//Profile Photo
-const profilePhoto = RegistrationForm.rfProfilePhoto;
-//X (Twitter)
-const xTwitter = RegistrationForm.rfXtwitter;
-//Facebook
-const facebook = RegistrationForm.rfFacebook;
-//LinkedIn
-const linkedIn = RegistrationForm.rfLinkedIn;
-//Instagram
-const instagram = RegistrationForm.rfInstagram;
 // new email
 let newEmail = '';
 
@@ -249,7 +220,7 @@ export class RegFormPage extends Base {
 
     //Registration forms page - only WPUF-Lite activated
     async completeUserRegistrationFormFrontend() {
-        newEmail = email;
+        newEmail = RegistrationForm.rfEmail;
         //Go to Registration page - FrontEnd
         await this.navigateToURL(this.wpufRegistrationPage);
 
@@ -275,48 +246,48 @@ export class RegFormPage extends Base {
         }
         try {
             //Enter Username
-            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfUserName, userName);
+            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfUserName, RegistrationForm.rfUsername);
         } catch (error) {
             console.log("Username field is not present");
         }
         try {
             // Enter First Name
-            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfFirstName, firstName);
+            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfFirstName, RegistrationForm.rfFirstName);
         } catch (error) {
             console.log("First Name field is not present");
         }
 
         try {
             // Enter Last Name
-            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfLastName, lastName);
+            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfLastName, RegistrationForm.rfLastName);
         } catch (error) {
             console.log("Last Name field is not present");
         }
 
         try {
             // Enter Display Name
-            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfDisplayName, displayName);
+            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfDisplayName, RegistrationForm.rfDisplayName);
         } catch (error) {
             console.log("Display Name field is not present");
         }
 
         try {
             // Enter Nickname
-            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfNickname, nickname);
+            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfNickname, RegistrationForm.rfNickname);
         } catch (error) {
             console.log("Nickname field is not present");
         }
 
         try {
             // Enter Website
-            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfWebsite, website);
+            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfWebsite, RegistrationForm.rfWebsite);
         } catch (error) {
             console.log("Website field is not present");
         }
 
         try {
             // Enter Biographical Info
-            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfBiographicalInfo, biographicalInfo);
+            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfBiographicalInfo, RegistrationForm.rfBiographicalInfo);
         } catch (error) {
             console.log("Biographical Info field is not present");
         }
@@ -324,7 +295,7 @@ export class RegFormPage extends Base {
 
         try {
             // Enter Avatar
-            await this.page.setInputFiles(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfAvatar, avatar);
+            await this.page.setInputFiles(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfAvatar, RegistrationForm.rfAvatar);
             await this.page.waitForTimeout(2000);
         } catch (error) {
             console.log("Avatar field is not present");
@@ -332,7 +303,7 @@ export class RegFormPage extends Base {
 
         try {
             // Enter Profile Photo
-            await this.page.setInputFiles(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfProfilePhoto, profilePhoto);
+            await this.page.setInputFiles(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfProfilePhoto, RegistrationForm.rfProfilePhoto);
             await this.page.waitForTimeout(2000)
         } catch (error) {
             console.log("Profile Photo field is not present");
@@ -340,46 +311,45 @@ export class RegFormPage extends Base {
 
         try {
             // Enter X (Twitter)
-            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfXtwitter, xTwitter);
+            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfXtwitter, RegistrationForm.rfXtwitter);
         } catch (error) {
             console.log("X (Twitter) field is not present");
         }
 
         try {
             // Enter Facebook
-            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfFacebook, facebook);
+            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfFacebook, RegistrationForm.rfFacebook);
         } catch (error) {
             console.log("Facebook field is not present");
         }
 
         try {
             // Enter X (Twitter)
-            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfLinkedIn, linkedIn);
+            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfLinkedIn, RegistrationForm.rfLinkedIn = this.generateWordWithMinLength(5));
         } catch (error) {
             console.log("Linkedin field is not present");
         }
 
         try {
             // Enter Facebook
-            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfInstagram, instagram);
+            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfInstagram, RegistrationForm.rfInstagram = this.generateWordWithMinLength(5));
         } catch (error) {
             console.log("Instagram field is not present");
         }
 
+        try {
+            // Enter LinkedIn
+            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfLinkedIn, RegistrationForm.rfLinkedIn = this.generateWordWithMinLength(5));
+        } catch (error) {
+            console.log("LinkedIn field is not present");
+        }
 
-        // try {
-        //     // Enter LinkedIn
-        //     await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfLinkedIn, linkedIn);
-        // } catch (error) {
-        //     console.log("LinkedIn field is not present");
-        // }
-
-        // try {
-        //     // Enter Instagram
-        //     await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfInstagram, instagram);
-        // } catch (error) {
-        //     console.log("Instagram field is not present");
-        // }
+        try {
+            // Enter Instagram
+            await this.validateAndFillStrings(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfInstagram, RegistrationForm.rfInstagram = this.generateWordWithMinLength(5));
+        } catch (error) {
+            console.log("Instagram field is not present");
+        }
 
         //Click Register
         await this.validateAndClick(Selectors.registrationForms.completeUserRegistrationFormFrontend.rfRegisterButton);
@@ -742,12 +712,12 @@ export class RegFormPage extends Base {
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.cityField, VendorRegistrationForm.wcfmMemberCity);
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.zipField, VendorRegistrationForm.wcfmMemberZip);
         await this.selectOptionWithLabel(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.countryField, VendorRegistrationForm.wcfmMemberCountry);
-        await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.facebookField, VendorRegistrationForm.wcfmMemberFacebook = `https://www.facebook.com/${faker.word.words(1)}`);
-        await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.twitterField, VendorRegistrationForm.wcfmMemberTwitter = `https://www.x.com/${faker.word.words(1)}`);
-        await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.googleField, VendorRegistrationForm.wcfmMemberGoogle = `https://www.google.com/${faker.word.words(1)}`);
-        await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.linkedinField, VendorRegistrationForm.wcfmMemberLiknkedin = `https://www.linkedin.com/${faker.word.words(1)}`);
-        await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.youtubeField, VendorRegistrationForm.wcfmMemberYoutube = `https://www.youtube.com/${faker.word.words(1)}`);
-        await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.instagramField, VendorRegistrationForm.wcfmMemberInstagram = `https://www.instagram.com/${faker.word.words(1)}`);
+        await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.facebookField, VendorRegistrationForm.wcfmMemberFacebook = `https://www.facebook.com/${this.generateWordWithMinLength(5)}`);
+        await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.twitterField, VendorRegistrationForm.wcfmMemberTwitter = `https://www.x.com/${this.generateWordWithMinLength(5)}`);
+        await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.googleField, VendorRegistrationForm.wcfmMemberGoogle = `https://www.google.com/${this.generateWordWithMinLength(5)}`);
+        await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.linkedinField, VendorRegistrationForm.wcfmMemberLiknkedin = `https://www.linkedin.com/${this.generateWordWithMinLength(5)}`);
+        await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.youtubeField, VendorRegistrationForm.wcfmMemberYoutube = `https://www.youtube.com/${this.generateWordWithMinLength(5)}`);
+        await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.instagramField, VendorRegistrationForm.wcfmMemberInstagram = `https://www.instagram.com/${this.generateWordWithMinLength(5)}`);
         await this.validateAndFillStrings(Selectors.vendorRegistrationForms.wcfmMember.frontendForm.passwordField, VendorRegistrationForm.wcfmMemberPassword = VendorRegistrationForm.wcfmMemberEmail);
 
         await this.validateAndClick(Selectors.vendorRegistrationForms.dokanVendor.frontendForm.registerButton);

@@ -6,7 +6,6 @@ import { RegFormSettingsPage } from '../pages/regFormSettings';
 import { BasicLoginPage } from '../pages/basicLogin';
 import { Users, Urls } from '../utils/testData';
 import { SettingsSetupPage } from '../pages/settingsSetup';
-import * as fs from "fs";
 import { RegFormPage } from '../pages/regForm';
 import { configureSpecFailFast } from '../utils/specFailFast';
 

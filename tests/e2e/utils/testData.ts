@@ -1,7 +1,4 @@
 import { faker } from '@faker-js/faker';
-
-
-
 /**---------------------------------*/
 /**-------DATA_SET: Base Url-------*/
 /**-------------------------------*/
@@ -225,10 +222,10 @@ const RegistrationForm: {
     rfBiographicalInfo: faker.lorem.sentence(5),
     rfAvatar: 'uploadeditems/avatar.png',
     rfProfilePhoto: 'uploadeditems/profile_photo.jpg',
-    rfXtwitter: faker.word.words(1),
-    rfFacebook: faker.word.words(1),
-    rfLinkedIn: faker.word.words(1),
-    rfInstagram: faker.word.words(1),
+    rfXtwitter: '',
+    rfFacebook: '',
+    rfLinkedIn: '',
+    rfInstagram: '',
 };
 
 

@@ -1164,7 +1164,7 @@ function wpuf_show_custom_fields( $content ) {
                     $newvalue = [];
 
                     foreach ( $value as $i => $str ) {
-                        if ( preg_match( '/[^\|\s]/', $str ) ) {
+                        if ( is_string( $str ) && preg_match( '/[^\|\s]/', $str ) ) {
                             $newvalue[] = $str;
                         }
                     }

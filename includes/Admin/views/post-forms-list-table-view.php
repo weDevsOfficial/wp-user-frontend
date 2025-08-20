@@ -1,4 +1,4 @@
-<div id="wpuf-post-forms-list-table-view" class="wpuf-h-100vh wpuf-bg-white wpuf-ml-[-20px] wpuf-py-0 wpuf-px-[20px] wpuf-overflow-hidden">
+<div id="wpuf-post-forms-list-table-view" class="wpuf-h-100vh wpuf-bg-white wpuf-ml-[-20px] wpuf-py-0 wpuf-px-[20px]">
     <noscript>
         <strong>
             <?php esc_html_e( "We're sorry but this page doesn't work properly without JavaScript. Please enable it to continue.", 'wp-user-frontend' ); ?>

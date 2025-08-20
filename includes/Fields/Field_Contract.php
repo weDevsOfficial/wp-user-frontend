@@ -629,7 +629,7 @@ abstract class Field_Contract {
      * @return array
      */
     public function get_default_option_dropdown_settings( $is_multiple = false ) {
-        return [
+        $defaults = [
             'name'          => 'options',
             'title'         => __( 'Options', 'wp-user-frontend' ),
             'type'          => 'option-data',
@@ -638,6 +638,8 @@ abstract class Field_Contract {
             'priority'      => 12,
             'help_text'     => __( 'Add options for the form field', 'wp-user-frontend' ),
         ];
+
+        return apply_filters( 'get_default_option_dropdown_settings', $defaults );
     }
 
     /**

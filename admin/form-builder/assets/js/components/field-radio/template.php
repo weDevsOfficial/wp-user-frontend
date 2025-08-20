@@ -15,7 +15,9 @@
                 class="wpuf-block text-sm/6 wpuf-font-medium wpuf-text-gray-900 !wpuf-mb-0">
                 <input
                     type="radio"
+                    :name="'radio_' + editing_form_field.id + '_' + option_field.name"
                     :value="key"
+                    :name="option_field.name"
                     v-model="value"
                     :class="builder_class_names('radio')">
                 {{ option }}
@@ -30,8 +32,10 @@
         <label class="!wpuf-mb-0">
             <input
                 type="radio"
+                :name="'radio_' + editing_form_field.id + '_' + option_field.name"
                 :value="key"
                 v-model="value"
+                :name="option_field.name"
                 :class="builder_class_names('radio')">
             {{ option }}
         </label>

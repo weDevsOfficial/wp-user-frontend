@@ -5097,6 +5097,10 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
             'label' => __( 'EDD Download Form', 'wp-user-frontend' ),
             'image' => WPUF_ASSET_URI . '/images/templates/edd.svg',
         ],
+        'post_form_template_events_calendar' => [
+            'label' => __( 'Event Form', 'wpuf-user-frontend' ),
+            'image' => WPUF_ASSET_URI . '/images/templates/event.svg',
+        ],
     ];
 
     $registry = wpuf_get_post_form_templates();
@@ -5661,7 +5665,7 @@ function wpuf_get_forms_counts_with_status( $post_type = 'wpuf_forms' ) {
  * Fallback function for profile photo allowed extensions
  * Only used when Pro version is not active
  *
- * @since WPUF_SINCE
+ * @since 4.1.8
  *
  * @return array
  */
@@ -5689,7 +5693,7 @@ if ( ! function_exists( 'wpuf_field_profile_photo_allowed_extensions' ) ) {
  * Fallback function for profile photo allowed MIME types
  * Only used when Pro version is not active
  *
- * @since WPUF_SINCE
+ * @since 4.1.8
  *
  * @return array
  */
@@ -5712,7 +5716,7 @@ if ( ! function_exists( 'wpuf_field_profile_photo_allowed_mimes' ) ) {
         /**
          * Filter allowed profile photo MIME types
          *
-         * @since WPUF_SINCE
+         * @since 4.1.8
          *
          * @param array $profile_photo_mimes Array of allowed MIME types for profile photos
          */

@@ -288,3 +288,32 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
     font-size: .75rem;
 }
 /*tooltip*/
+
+/* WPUF Pro Modal Styles */
+.wpuf-pro-modal-content {
+    @apply wpuf-flex wpuf-items-start wpuf-gap-16;
+}
+
+.wpuf-pro-modal-left {
+    @apply wpuf-flex-1 wpuf-text-left;
+}
+
+.wpuf-pro-modal-icon {
+    @apply wpuf-bg-emerald-100 wpuf-rounded-full wpuf-w-24 wpuf-h-24 wpuf-flex wpuf-items-center wpuf-justify-center wpuf-mb-5;
+}
+
+.wpuf-pro-modal-title {
+    @apply wpuf-text-2xl wpuf-font-medium wpuf-text-gray-900 wpuf-mb-4 wpuf-mt-0;
+}
+
+.wpuf-pro-modal-text {
+    @apply wpuf-text-xl wpuf-text-gray-500 wpuf-leading-7 wpuf-mt-0 wpuf-mb-0 wpuf-font-medium;
+}
+
+.wpuf-pro-modal-right {
+    @apply wpuf-flex-shrink-0 wpuf-bg-orange-50 wpuf-rounded-lg wpuf-p-6 wpuf-relative;
+}
+
+.wpuf-pro-modal-right img {
+    @apply wpuf-w-auto wpuf-h-80 wpuf-rounded wpuf-block;
+}

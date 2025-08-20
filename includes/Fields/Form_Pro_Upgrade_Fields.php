@@ -57,7 +57,18 @@ class Form_Field_Country extends Form_Field_Pro {
  */
 class Form_Field_Date extends Form_Field_Pro {
     public function __construct() {
-        $this->name       = __( 'Date / Time', 'wp-user-frontend' );
+        // Check if we're in Events Calendar context using centralized helper
+        $is_events_calendar = class_exists( '\WeDevs\Wpuf\Integrations\Events_Calendar\Utils\Events_Calendar_Context' )
+            ? \WeDevs\Wpuf\Integrations\Events_Calendar\Utils\Events_Calendar_Context::is_current_context()
+            : false;
+        
+        // Set the appropriate name based on context with filter for customization
+        $default_label = $is_events_calendar 
+            ? __( 'Event Date / Event Time', 'wp-user-frontend' ) 
+            : __( 'Date / Time', 'wp-user-frontend' );
+            
+        $this->name = apply_filters( 'wpuf_date_field_label', $default_label, $is_events_calendar );
+        
         $this->input_type = 'date_field';
         $this->icon       = 'clock';
     }

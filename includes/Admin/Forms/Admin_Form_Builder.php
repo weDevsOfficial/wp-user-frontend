@@ -169,13 +169,21 @@ class Admin_Form_Builder {
         $lock_icon = WPUF_ASSET_URI . '/images/crown-circle.svg';
         $free_icon = WPUF_ASSET_URI . '/images/free-circle.svg';
 
+        // Filter pro taxonomy fields and check if any were removed
+        $original_fields = wpuf_get_form_fields( $post->ID );
+        $filtered_fields = $this->filter_pro_taxonomy_fields( $original_fields );
+        $has_hidden_taxonomies = $this->has_filtered_taxonomies( $original_fields, $filtered_fields );
+        $hidden_taxonomy_ids = $this->get_hidden_taxonomy_ids( $original_fields, $filtered_fields );
+
         $wpuf_form_builder = apply_filters(
             'wpuf_form_builder_localize_script',
             [
                 'i18n'             => $this->i18n(),
                 'post'             => $post,
                 'form_type'        => $post->post_type,
-                'form_fields'      => wpuf_get_form_fields( $post->ID ),
+                'form_fields'      => $filtered_fields,
+                'has_hidden_taxonomies' => $has_hidden_taxonomies,
+                'hidden_taxonomy_ids' => $hidden_taxonomy_ids,
                 'panel_sections'   => wpuf()->fields->get_field_groups(),
                 'field_settings'   => wpuf()->fields->get_js_settings(),
                 'form_settings'    => wpuf_get_form_settings( $post->ID ),
@@ -372,6 +380,7 @@ class Admin_Form_Builder {
                 $field_id = wpuf_insert_form_field( $data['form_id'], $field, $field_id, $order );
                 $new_wpuf_input_ids[] = $field_id;
                 $field['id'] = $field_id;
+                $field['is_new'] = false;  // Mark as saved field
                 $saved_wpuf_inputs[] = $field;
             }
         }
@@ -440,5 +449,114 @@ class Admin_Form_Builder {
         }
 
         return $info;
+    }
+
+    /**
+     * Filter out custom taxonomy fields when pro is not active
+     *
+     * @param array $form_fields
+     * @return array
+     */
+    protected function filter_pro_taxonomy_fields( $form_fields ) {
+        // If pro is active, return all fields
+        if ( wpuf_is_pro_active() ) {
+            return $form_fields;
+        }
+
+        // Built-in taxonomies that should always be available
+        $builtin_taxonomies = array( 'category', 'post_tag' );
+        
+        // Filter out custom taxonomy fields
+        $filtered_fields = array();
+        
+        foreach ( $form_fields as $field ) {
+            // Skip custom taxonomy fields when pro is not active
+            if ( isset( $field['input_type'] ) && $field['input_type'] === 'taxonomy' ) {
+                if ( isset( $field['name'] ) && ! in_array( $field['name'], $builtin_taxonomies, true ) ) {
+                    continue; // Skip this custom taxonomy field
+                }
+            }
+            
+            // Keep all other fields including built-in taxonomies
+            $filtered_fields[] = $field;
+        }
+        
+        return $filtered_fields;
+    }
+
+    /**
+     * Check if any custom taxonomy fields exist that would be filtered out
+     *
+     * @param array $original_fields
+     * @param array $filtered_fields (unused but kept for backward compatibility)
+     * @return bool
+     */
+    protected function has_filtered_taxonomies( $original_fields, $filtered_fields ) {
+        if ( wpuf_is_pro_active() ) {
+            return false;
+        }
+        $builtin = [ 'category', 'post_tag' ];
+        $stack = is_array($original_fields) ? $original_fields : [];
+        while ( $stack ) {
+            $f = array_pop( $stack );
+            if ( isset( $f['template'] ) && $f['template'] === 'column_field' && ! empty( $f['inner_fields'] ) && is_array( $f['inner_fields'] ) ) {
+                foreach ( $f['inner_fields'] as $inner ) {
+                    if ( is_array($inner) ) {
+                        foreach ( $inner as $child ) {
+                            $stack[] = $child;
+                        }
+                    }
+                }
+            } elseif ( ! empty( $f['inner_fields'] ) && is_array( $f['inner_fields'] ) ) {
+                foreach ( $f['inner_fields'] as $child ) {
+                    $stack[] = $child;
+                }
+            }
+            if ( isset( $f['input_type'] ) && $f['input_type'] === 'taxonomy' ) {
+                $slug = $f['name'] ?? ($f['taxonomy'] ?? null);
+                if ( $slug && ! in_array( $slug, $builtin, true ) ) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Extract IDs of hidden taxonomy fields for client-side preservation
+     *
+     * @param array $original_fields
+     * @param array $filtered_fields
+     * @return array Array of hidden taxonomy field IDs
+     */
+    protected function get_hidden_taxonomy_ids( $original_fields, $filtered_fields ) {
+        // If pro is active, no fields are hidden
+        if ( wpuf_is_pro_active() ) {
+            return array();
+        }
+
+        $hidden_ids = array();
+        $builtin_taxonomies = array( 'category', 'post_tag' );
+        
+        // Extract IDs from filtered fields for quick lookup
+        $filtered_ids = array();
+        foreach ( $filtered_fields as $field ) {
+            if ( isset( $field['id'] ) ) {
+                $filtered_ids[] = $field['id'];
+            }
+        }
+        
+        // Find original fields that are custom taxonomy fields and were filtered out
+        foreach ( $original_fields as $field ) {
+            if ( isset( $field['input_type'] ) && $field['input_type'] === 'taxonomy' ) {
+                if ( isset( $field['name'] ) && ! in_array( $field['name'], $builtin_taxonomies, true ) ) {
+                    if ( isset( $field['id'] ) && ! in_array( $field['id'], $filtered_ids, true ) ) {
+                        $hidden_ids[] = $field['id'];
+                    }
+                }
+            }
+        }
+        
+        return $hidden_ids;
     }
 }

@@ -67,6 +67,15 @@ abstract class Form_Template {
      */
     protected $form_notifications;
 
+    /**
+     * The datetime format for The Event Calender
+     *
+     * @since 4.1.9
+     *
+     * @var string
+     */
+    const TIB_DATETIME_FORMAT = 'Y-m-d H:i:s';
+
     public function __construct() {
         $this->conditionals = [
             'condition_status' => 'no',
@@ -143,6 +152,7 @@ abstract class Form_Template {
      * @return void
      */
     public function after_insert( $post_id, $form_id, $form_settings ) {
+
     }
 
     /**

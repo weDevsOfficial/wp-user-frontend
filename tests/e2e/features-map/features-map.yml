@@ -101,11 +101,49 @@ features:
   - id: RF0001
     name: Admin is checking Registration Forms - Pro Feature Page
   - id: RF0002
-    name: Admin is creating Registration Forms - using shortcode
+    name: Admin is adding fields to Registration Forms
   - id: RF0003
-    name: User is registering using - Registration Form
+    name: Admin is validating fields to Registration Forms
   - id: RF0004
+    name: Admin is creating Registration Forms - using shortcode
+  - id: RF0005
+    name: User is registering using - Registration Form
+  - id: RF0006
     name: Admin is validating - Registered user
+  - id: RF0007
+    name: Admin is creating Dokan Vendor Registration Form
+  - id: RF0008
+    name: Admin is creating dokan vendor registration page using shortcode
+  - id: RF0009
+    name: User registering as Dokan Vendor FE
+  - id: RF0010
+    name: Admin validating Dokan Vendor registration as default
+  - id: RF0011
+    name: Admin validating Dokan Vendor registration in dokan
+  - id: RF0012
+    name: Admin is creating WC Vendors Registration Form
+  - id: RF0013
+    name: Admin is creating WC Vendors registration page using shortcode
+  - id: RF0014
+    name: User registering as WC Vendor and validates email verification
+  - id: RF0015
+    name: User clicks on activation link and logging in as WC Vendor
+  - id: RF0016
+    name: Admin validating WC Vendor registration as default
+  - id: RF0017
+    name: Admin validating WC Vendor registration in WC
+  - id: RF0018
+    name: Admin is creating WCFM Membership Registration Form
+  - id: RF0019
+    name: Admin is enabling multi-step for WCFM Membership Registration Form
+  - id: RF0020
+    name: Admin is creating WCFM member registration page using shortcode
+  - id: RF0021
+    name: User registering as WCFM Member and validates email verification
+  - id: RF0022
+    name: User clicks on activation link and logging in as WCFM member
+  - id: RF0023
+    name: Admin validating WCFM Membership registration as default
 
   # Post Form Settings
   - id: PFS0001

@@ -29,8 +29,10 @@ class Form_Field_URL extends Form_Field_Text {
                 $value = $this->get_meta( $post_id, $field_settings['name'], $type );
             }
         } else {
-            $value = $field_settings['default'];
+            $value = ! empty( $field_settings['default'] ) ? $field_settings['default'] : '';
         }
+
+        $placeholder = ! empty( $field_settings['placeholder'] ) ? $field_settings['placeholder'] : '';
 
         $this->field_print_label( $field_settings, $form_id ); ?>
             <div class="wpuf-fields">
@@ -40,9 +42,11 @@ class Form_Field_URL extends Form_Field_Text {
                     data-required="<?php echo esc_attr( $field_settings['required'] ); ?>"
                     data-type="url"
                     name="<?php echo esc_attr( $field_settings['name'] ); ?>"
-                    placeholder="<?php echo esc_attr( $field_settings['placeholder'] ); ?>"
+                    placeholder="<?php echo esc_attr( $placeholder ); ?>"
                     value="<?php echo esc_attr( $value ); ?>" size="<?php echo esc_attr( $field_settings['size'] ); ?>"
                     autocomplete="url"
+                    oninvalid="this.setCustomValidity('Please enter website with https://')"
+                    oninput="this.setCustomValidity('')"
                 />
                 <?php $this->help_text( $field_settings ); ?>
             </div>

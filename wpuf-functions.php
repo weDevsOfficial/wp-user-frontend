@@ -214,7 +214,7 @@ function wpuf_list_users() {
  * @return string HTML content, if not displaying
  */
 function wpuf_get_pages( $post_type = 'page' ) {
-    $array = [ '' => __( '&mdash; Select &mdash;', 'wp-user-frontend' ) ];
+    $array = [ '' => __( '-- Select --', 'wp-user-frontend' ) ];
     $pages = get_posts(
         [
             'post_type'              => $post_type,
@@ -1170,6 +1170,12 @@ function wpuf_show_custom_fields( $content ) {
                         $repeat_data = maybe_unserialize( $repeat_data );
                     }
 
+                    foreach ( $value as $i => $str ) {
+                        if ( is_string( $str ) && preg_match( '/[^\|\s]/', $str ) ) {
+                            $newvalue[] = $str;
+                        }
+                    }
+
                     if ( ! is_array( $repeat_data ) ) {
                         break;
                     }
@@ -1181,24 +1187,24 @@ function wpuf_show_custom_fields( $content ) {
                     }
 
                                         $repeat_html .= '<ul class="wpuf-repeat-field-data">';
-                    
+
                     foreach ( $repeat_data as $repeat_entry ) {
                         $repeat_html .= '<li class="wpuf-repeat-entry">';
                         $repeat_html .= '<ul class="wpuf-repeat-entry-fields">';
-                        
+
                         foreach ( $attr['inner_fields'] as $inner_field ) {
                             $inner_field_name = $inner_field['name'];
-                            
+
                             if ( isset( $repeat_entry[ $inner_field_name ] ) ) {
                                 $inner_field_value = $repeat_entry[ $inner_field_name ];
-                                
+
                                 if ( ! empty( $inner_field_value ) ) {
                                     $repeat_html .= '<li>';
-                                    
+
                                     if ( 'no' === $inner_field['hide_field_label'] ) {
                                         $repeat_html .= '<label>' . $inner_field['label'] . ':</label> ';
                                     }
-                                    
+
                                     // Handle different field types
                                     if ( 'checkbox' === $inner_field['input_type'] && is_array( $inner_field_value ) ) {
                                         // For checkbox fields, join multiple values
@@ -1210,16 +1216,16 @@ function wpuf_show_custom_fields( $content ) {
                                         // For text and other fields
                                         $repeat_html .= '<span>' . make_clickable( $inner_field_value ) . '</span>';
                                     }
-                                    
+
                                     $repeat_html .= '</li>';
                                 }
                             }
                         }
-                        
+
                         $repeat_html .= '</ul>';
                         $repeat_html .= '</li>';
                     }
-                    
+
                     $repeat_html .= '</ul>';
                     $repeat_html .= '</li>';
 

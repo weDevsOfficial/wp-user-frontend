@@ -5108,22 +5108,6 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                                 'Customize the text on the \'Submit\' button for this form', 'wp-user-frontend'
                             ),
                         ],
-                        'form_template'    => [
-                            'label'     => __( 'Choose Form Template', 'wp-user-frontend' ),
-                            'type'      => 'pic-radio',
-                            'help_text' => __(
-                                'If selected a form template, it will try to execute that integration options when new post created and updated.',
-                                'wp-user-frontend'
-                            ),
-                            'options'   => $template_options,
-                            'notice'    => [
-                                'type' => 'info',
-                                'text' => __(
-                                    'If you\'re building a post form from scratch, you don\'t need to pick a template (e.g., WooCommerce Product, EDD). Just double-click any selected template to uncheck it.',
-                                    'wp-user-frontend'
-                                ),
-                            ],
-                        ],
                     ],
                 ],
                 'after_post_settings'  => [

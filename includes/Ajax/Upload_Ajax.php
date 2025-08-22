@@ -294,7 +294,8 @@ class Upload_Ajax {
     }
 
     /**
-     * Make filename unique by appending timestamp and unique ID
+     * Make filename unique by adding user ID prefix to prevent conflicts between users
+     * while still allowing WordPress to handle duplicates for the same user
      *
      * @since WPUF_SINCE
      * 
@@ -310,15 +311,32 @@ class Upload_Ajax {
         // Sanitize the base name
         $name = sanitize_file_name( $name );
         
-        // Add wpuf prefix, timestamp and unique ID to ensure uniqueness
-        $unique_suffix = 'wpuf-' . time() . '-' . uniqid();
+        // Get current user ID for user isolation
+        $user_id = get_current_user_id();
+        
+        // For logged-in users, add user ID prefix to prevent cross-user conflicts
+        // For guests, add a session-based or timestamp prefix
+        if ( $user_id > 0 ) {
+            // Add user ID prefix to isolate files between users
+            // Format: u123-filename.ext (WordPress will handle duplicates as u123-filename-1.ext)
+            $unique_prefix = 'u' . $user_id;
+        } else {
+            // For guest uploads, use timestamp to ensure uniqueness
+            // This prevents guests from overwriting each other's files
+            $unique_prefix = 'guest-' . time() . '-' . substr( uniqid(), -4 );
+        }
+        
+        // Combine prefix with filename
+        // This ensures user isolation while preserving WordPress duplicate handling
+        $new_filename = $unique_prefix . '-' . $name . $ext;
         
         // Apply filter to allow customization of the unique filename
-        $new_filename = apply_filters( 'wpuf_upload_file_name', $name . '-' . $unique_suffix . $ext, [
+        $new_filename = apply_filters( 'wpuf_upload_file_name', $new_filename, [
             'original_name' => $filename,
             'base_name'     => $name,
             'extension'     => $ext,
-            'unique_suffix' => $unique_suffix,
+            'user_id'       => $user_id,
+            'unique_prefix' => $unique_prefix,
         ] );
         
         return $new_filename;

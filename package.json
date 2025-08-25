@@ -7,12 +7,14 @@
   "private": true,
   "scripts": {
     "release": "grunt release",
-    "build": "npm run build:forms-list && npm run build:subscriptions",
+    "build": "npm run build:forms-list && npm run build:subscriptions && npm run build:frontend-subscriptions",
     "build:forms-list": "ENTRY=forms-list vite build",
-    "build:subscriptions": "ENTRY=subscriptions vite build"
+    "build:subscriptions": "ENTRY=subscriptions vite build",
+    "build:frontend-subscriptions": "ENTRY=frontend-subscriptions vite build"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^18.11.18",
     "@vitejs/plugin-vue": "^5.0.4",
     "autoprefixer": "^10.4.16",

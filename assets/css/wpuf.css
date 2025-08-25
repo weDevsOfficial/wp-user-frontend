@@ -307,44 +307,6 @@ table.wpuf-table td {
 }
 
 
-ul.wpuf_packs {
-    overflow: hidden;
-    margin: 35px 0 15px;
-}
-
-ul.wpuf_packs li {
-    background: #EEEEEE;
-    border: 1px solid #DDDDDD;
-    border-radius: 5px 5px 5px 5px;
-    float: left;
-    list-style: none outside none;
-    margin: 25px 25px 10px 0;
-    padding: 5px;
-    position: relative;
-    width: 200px;
-}
-
-ul.wpuf_packs h3 {
-    padding: 10px !important;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-ul.wpuf_packs p {
-    padding: 0 10px;
-    margin-bottom: 8px;
-}
-
-.wpuf_packs .cost {
-    background: red;
-    border-radius: 30px 30px 30px 30px;
-    color: #FFFFFF;
-    margin: -16px -12px 0 0;
-    padding: 10px 8px 8px;
-    position: absolute;
-    right: 0;
-    top: 0;
-}
 
 .wpuf-loading {
     height: 16px;

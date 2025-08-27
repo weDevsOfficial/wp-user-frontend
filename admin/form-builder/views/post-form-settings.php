@@ -672,6 +672,6 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
         <?php
     }
 
-    do_action( 'wpuf_after_post_form_settings_field_' . $field_key, $field, $value );
-    do_action( 'wpuf_after_post_form_settings_field', $field, $value );
+    do_action( 'wpuf_after_post_form_settings_field_' . $field_key, $field, $value, $form_settings );
+    do_action( 'wpuf_after_post_form_settings_field', $field, $value, $form_settings );
 }

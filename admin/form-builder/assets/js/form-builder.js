@@ -131,7 +131,7 @@
 
                     }
 
-                    // check if the editing field belong to a column field
+                    // check if the editing field belongs to a column field
                     if (state.form_fields[i].template === 'column_field') {
                         var innerColumnFields = state.form_fields[i].inner_fields;
 
@@ -140,10 +140,42 @@
                                 var columnFieldIndex = 0;
 
                                 while (columnFieldIndex < innerColumnFields[columnFields].length) {
+                                    // don't modify existing meta key
+                                    if (payload.field_name === 'name'  && ! innerColumnFields[columnFields][columnFieldIndex].hasOwnProperty('is_new') ) {
+                                        columnFieldIndex++;
+                                        continue;
+                                    }
+
                                     if (innerColumnFields[columnFields][columnFieldIndex].id === parseInt(payload.editing_field_id)) {
                                        innerColumnFields[columnFields][columnFieldIndex][payload.field_name] = payload.value;
                                     }
                                     columnFieldIndex++;
+                                }
+                            }
+                        }
+                    }
+
+                    // check if the editing field belongs to a repeat field
+                    if (state.form_fields[i].template === 'repeat_field') {
+                        var innerRepeatFields = state.form_fields[i].inner_fields;
+
+                        if (Array.isArray(innerRepeatFields)) {
+                            for (var repeatFieldIndex = 0; repeatFieldIndex < innerRepeatFields.length; repeatFieldIndex++) {
+                                // don't modify existing meta key
+                                if (payload.field_name === 'name' && !innerRepeatFields[repeatFieldIndex].hasOwnProperty('is_new')) {
+                                    continue;
+                                }
+
+                                if (innerRepeatFields[repeatFieldIndex].id === parseInt(payload.editing_field_id)) {
+                                    if ('read_only' === payload.field_name && payload.value) {
+                                        innerRepeatFields[repeatFieldIndex]['required'] = 'no';
+                                    }
+
+                                    if ('required' === payload.field_name && 'yes' === payload.value) {
+                                        innerRepeatFields[repeatFieldIndex]['read_only'] = false;
+                                    }
+
+                                    innerRepeatFields[repeatFieldIndex][payload.field_name] = payload.value;
                                 }
                             }
                         }
@@ -409,6 +441,41 @@
                 }
             },
 
+            // add new form field element to repeat field
+            add_repeat_inner_field_element: function (state, payload) {
+                var repeatFieldIndex = state.form_fields.findIndex(field => field.id === payload.toWhichRepeatField);
+                if (repeatFieldIndex === -1) return;
+                if (!state.form_fields[repeatFieldIndex].inner_fields) {
+                    Vue.set(state.form_fields[repeatFieldIndex], 'inner_fields', []);
+                }
+                state.form_fields[repeatFieldIndex].inner_fields.splice(payload.toIndex, 0, payload.field);
+            },
+
+            // delete a repeat inner field element
+            delete_repeat_inner_field_element: function (state, payload) {
+                var repeatFieldIndex = state.form_fields.findIndex(field => field.id === payload.field_id);
+                if (repeatFieldIndex === -1) return;
+                
+                state.current_panel = 'form-fields-v4-1';
+                state.form_fields[repeatFieldIndex].inner_fields.splice(payload.index, 1);
+            },
+
+            // clone a repeat inner field element
+            clone_repeat_inner_field_element: function (state, payload) {
+                var repeatFieldIndex = state.form_fields.findIndex(field => field.id === payload.field_id);
+                if (repeatFieldIndex === -1) return;
+
+                var field = state.form_fields[repeatFieldIndex].inner_fields[payload.index];
+                var clone = $.extend(true, {}, field);
+                var newIndex = parseInt(payload.index) + 1;
+
+                clone.id = payload.new_id;
+                clone.name = clone.name + '_copy';
+                clone.is_new = true;
+
+                state.form_fields[repeatFieldIndex].inner_fields.splice(newIndex, 0, clone);
+            },
+
             move_column_inner_fields: function(state, payload) {
                 var columnFieldIndex = state.form_fields.findIndex(field => field.id === payload.field_id),
                     innerFields  = payload.inner_fields,
@@ -478,6 +545,27 @@
                     state.editing_field_type = 'column_field';
                     state.editing_column_field_id = payload.field_id;
                     state.edting_field_column = payload.column;
+                    state.editing_inner_field_index = payload.index;
+
+                    setTimeout(function () {
+                        state.editing_field_id = field.id;
+                    }, 400);
+                }
+            },
+
+            // open repeat field settings panel
+            open_repeat_field_settings: function (state, payload) {
+                var field = payload.repeat_field;
+
+                if ('field-options' === state.current_panel && field.id === state.editing_field_id) {
+                    return;
+                }
+
+                if (field) {
+                    state.editing_field_id = field.id;
+                    state.current_panel = 'field-options';
+                    state.editing_field_type = 'repeat_field';
+                    state.editing_repeat_field_id = payload.field_id;
                     state.editing_inner_field_index = payload.index;
 
                     setTimeout(function () {
@@ -895,7 +983,7 @@
                     this.active_settings_title = this.settings_titles[menu].sub_items[submenu].label;
                 }
             },
-            
+
             switch_form_settings_pic_radio_item: function ( key, value ) {
                 this.form_settings[key] = value;
             },

@@ -18,12 +18,15 @@
             //enable multistep
             this.enableMultistep(this);
 
+            var form = $('.wpuf-form');
             // clone and remove repeated field
-            $('.wpuf-form').on('click', 'img.wpuf-clone-field', this.cloneField);
-            $('.wpuf-form').on('click', 'img.wpuf-remove-field', this.removeField);
-            $('.wpuf-form').on('click', 'a.wpuf-delete-avatar', this.deleteAvatar);
-            $('.wpuf-form').on('click', 'a#wpuf-post-draft', this.draftPost);
-            $('.wpuf-form').on('click', 'button#wpuf-account-update-profile', this.account_update_profile);
+            form.on('click', 'img.wpuf-clone-field', this.cloneField);
+            form.on('click', 'img.wpuf-clone-repeat-field', this.cloneRepeatField);
+            form.on('click', 'img.wpuf-remove-field', this.removeField);
+            form.on('click', 'img.wpuf-remove-repeat-field', this.removeRepeatField);
+            form.on('click', 'a.wpuf-delete-avatar', this.deleteAvatar);
+            form.on('click', 'a#wpuf-post-draft', this.draftPost);
+            form.on('click', 'button#wpuf-account-update-profile', this.account_update_profile);
 
             $('.wpuf-form-add').on('submit', this.formSubmit);
             $('form#post').on('submit', this.adminPostSubmit);
@@ -50,7 +53,10 @@
             $('.wpuf-form').on('step-change-fieldset', function(event, number, step) {
                 if ( wpuf_plupload_items.length ) {
                     for (var i = wpuf_plupload_items.length - 1; i >= 0; i--) {
-                        wpuf_plupload_items[i].refresh();
+                        // Check if the item has a refresh method (plupload.Uploader instance)
+                        if ( wpuf_plupload_items[i] && typeof wpuf_plupload_items[i].refresh === 'function' ) {
+                            wpuf_plupload_items[i].refresh();
+                        }
                     }
                 }
                 if ( wpuf_map_items.length ) {
@@ -340,6 +346,71 @@
             if( items > 1 ) {
                 $parent.remove();
             }
+        },
+
+        cloneRepeatField: function( e ) {
+            e.preventDefault();
+
+            var div = $( this ).closest( '.wpuf-column-field-inner-columns.column-repeat' );
+            var clone = div.clone();
+
+            // clear the inputs
+            clone.find( 'input:not(:checkbox):not(:radio)' ).val( '' );
+            clone.find( 'textarea' ).val( '' );
+            clone.find( ':checked' ).prop( 'checked', false );
+            div.after( clone );
+
+            WP_User_Frontend.calculateFieldsName( $( this ).parents( '.wpuf-field-columns' ) );
+            WP_User_Frontend.setRowNumber( $( this ).closest( '.wpuf-field-columns' ) );
+        },
+
+        removeRepeatField: function () {
+            //check if it's the only item
+            var parent = $( this ).closest( '.wpuf-column-field-inner-columns.column-repeat' );
+            var allItems = parent.siblings().addBack();
+            var itemsLength = allItems.length;
+
+            var fieldIndex = $( allItems ).index( $( this ).closest( '.wpuf-column-field-inner-columns.column-repeat' ) );
+
+            if ( itemsLength > 1 ) {
+                WP_User_Frontend.setRowNumber( $( parent ).closest( '.wpuf-field-columns' ), itemsLength - 1 );
+                parent.remove();
+            }
+
+            // calculate only if the removed item is not the last item
+            if ( fieldIndex + 1 !== itemsLength ) {
+                WP_User_Frontend.calculateFieldsName( parent );
+            }
+        },
+
+        setRowNumber: function ( parent, length ) {
+            if ( ! length ) {
+                length = $( parent ).children().length;
+            }
+
+            $( parent ).parent( '.wpuf-fields' ).find( 'input.repeat_row_numbers' ).val( length );
+        },
+
+        calculateFieldsName: function( parentItem ) {
+            var field_rows = parentItem.children();
+            var field_names = [];
+            var field_ids = [];
+            var field_classes = [];
+            var fields_selector = '.wpuf-column input, .wpuf-column textarea, .wpuf-column select, .wpuf-column .wpuf-rich-validation';
+
+            $( field_rows[0] ).find( fields_selector ).each( function ( i, item ) {
+                field_names.push( $( item ).attr( 'name' ).split( '_0_' ) );
+                field_ids.push( $( item ).attr( 'id' ).split( '_0_' ) );
+                field_classes.push( $( item ).attr( 'class' ).split( '_0_' ) );
+            });
+
+            field_rows.each( function( i, row ) {
+                $( row ).find( fields_selector ).each( function( y, field ) {
+                    $( field ).attr( 'name', field_names[y][0] + '_' + i + '_' + field_names[y][1] );
+                    $( field ).attr( 'id', field_ids[y][0] + '_' + i + '_' + field_ids[y][1] );
+                    $( field ).attr( 'class', field_classes[y][0] + '_' + i + '_' + field_classes[y][1] );
+                });
+            });
         },
 
         adminPostSubmit: function(e) {

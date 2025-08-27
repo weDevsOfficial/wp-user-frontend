@@ -22,26 +22,34 @@
                 var is_valid = false;
 
                 _.each(this.form_fields, function (form_field) {
+                    // Check if form_field exists and has template property
+                    if (!form_field || !form_field.template) {
+                        return;
+                    }
+
                     if (_.indexOf(['post_title', 'post_content', 'post_excerpt'], form_field.template) >= 0) {
                         is_valid = true;
                         return;
                     }
 
                     // check in column field
-                    if (form_field.template === 'column_field' ) {
+                    if (form_field.template.match(/^(column|repeat)_field$/)) {
                         var innerColumnFields = form_field.inner_fields;
 
-                        for (const columnFields in innerColumnFields) {
-                            if (innerColumnFields.hasOwnProperty(columnFields)) {
-                                var columnFieldIndex = 0;
+                        if (innerColumnFields) {
+                            for (const columnFields in innerColumnFields) {
+                                if (innerColumnFields.hasOwnProperty(columnFields)) {
+                                    var columnFieldIndex = 0;
 
-                                //console.log(innerColumnFields[columnFields].length);
-                                while (columnFieldIndex < innerColumnFields[columnFields].length) {
-                                    if (_.indexOf(['post_title', 'post_content', 'post_excerpt'], innerColumnFields[columnFields][columnFieldIndex].template) >= 0) {
-                                        is_valid = true;
-                                        return;
+                                    //console.log(innerColumnFields[columnFields].length);
+                                    while (columnFieldIndex < innerColumnFields[columnFields].length) {
+                                        var innerField = innerColumnFields[columnFields][columnFieldIndex];
+                                        if (innerField && innerField.template && _.indexOf(['post_title', 'post_content', 'post_excerpt'], innerField.template) >= 0) {
+                                            is_valid = true;
+                                            return;
+                                        }
+                                        columnFieldIndex++;
                                     }
-                                    columnFieldIndex++;
                                 }
                             }
                         }

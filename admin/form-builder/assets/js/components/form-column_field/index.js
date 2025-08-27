@@ -171,7 +171,7 @@ Vue.component('form-column_field', {
             return ( field.recaptcha_type && 'invisible_recaptcha' === field.recaptcha_type ) ? true : false;
         },
 
-        isAllowedInClolumnField: function(field_template) {
+        isAllowedInColumnField: function(field_template) {
             var restrictedFields = ['column_field', 'custom_hidden_field', 'step_start'];
 
             if ( $.inArray(field_template, restrictedFields) >= 0 ) {
@@ -189,7 +189,7 @@ Vue.component('form-column_field', {
                 toWhichColumn: data.to_column
             };
 
-            if (this.isAllowedInClolumnField(data.field_template)) {
+            if (this.isAllowedInColumnField(data.field_template)) {
                 Swal.fire({
                     title: '<span class="wpuf-text-primary">Oops...</span>',
                     html: '<p class="wpuf-text-gray-500 wpuf-text-xl wpuf-m-0 wpuf-p-0">You cannot add this field as inner column field</p>',

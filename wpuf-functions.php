@@ -904,7 +904,6 @@ function wpuf_show_custom_fields( $content ) {
             // get column field input fields
             if ( 'column_field' === $attr['input_type'] ) {
                 $inner_fields = $attr['inner_fields'];
-
                 foreach ( $inner_fields as $column_key => $column_fields ) {
                     if ( ! empty( $column_fields ) ) {
                         // ignore section break and HTML input type
@@ -1160,8 +1159,16 @@ function wpuf_show_custom_fields( $content ) {
                     break;
 
                 case 'repeat':
-                    $value    = get_post_meta( $post->ID, $attr['name'] );
-                    $newvalue = [];
+                    $repeat_data = get_post_meta( $post->ID, $attr['name'], true );
+
+                    if ( empty( $repeat_data ) ) {
+                        break;
+                    }
+
+                    // Unserialize if needed
+                    if ( is_serialized( $repeat_data ) ) {
+                        $repeat_data = maybe_unserialize( $repeat_data );
+                    }
 
                     foreach ( $value as $i => $str ) {
                         if ( is_string( $str ) && preg_match( '/[^\|\s]/', $str ) ) {
@@ -1169,17 +1176,60 @@ function wpuf_show_custom_fields( $content ) {
                         }
                     }
 
-                    $new = implode( ', ', $newvalue );
+                    if ( ! is_array( $repeat_data ) ) {
+                        break;
+                    }
 
-                    if ( $new ) {
-                        $html .= '<li>';
+                    $repeat_html = '<li>';
 
-                        if ( 'no' === $hide_label ) {
-                            $html .= '<label>' . $attr['label'] . ': </label>';
+                    if ( 'no' === $hide_label ) {
+                        $repeat_html .= '<label>' . $attr['label'] . ':</label>';
+                    }
+
+                                        $repeat_html .= '<ul class="wpuf-repeat-field-data">';
+
+                    foreach ( $repeat_data as $repeat_entry ) {
+                        $repeat_html .= '<li class="wpuf-repeat-entry">';
+                        $repeat_html .= '<ul class="wpuf-repeat-entry-fields">';
+
+                        foreach ( $attr['inner_fields'] as $inner_field ) {
+                            $inner_field_name = $inner_field['name'];
+
+                            if ( isset( $repeat_entry[ $inner_field_name ] ) ) {
+                                $inner_field_value = $repeat_entry[ $inner_field_name ];
+
+                                if ( ! empty( $inner_field_value ) ) {
+                                    $repeat_html .= '<li>';
+
+                                    if ( 'no' === $inner_field['hide_field_label'] ) {
+                                        $repeat_html .= '<label>' . $inner_field['label'] . ':</label> ';
+                                    }
+
+                                    // Handle different field types
+                                    if ( 'checkbox' === $inner_field['input_type'] && is_array( $inner_field_value ) ) {
+                                        // For checkbox fields, join multiple values
+                                        $repeat_html .= '<span>' . make_clickable( implode( ', ', $inner_field_value ) ) . '</span>';
+                                    } elseif ( 'radio' === $inner_field['input_type'] || 'select' === $inner_field['input_type'] ) {
+                                        // For radio and select fields, display single value
+                                        $repeat_html .= '<span>' . make_clickable( $inner_field_value ) . '</span>';
+                                    } else {
+                                        // For text and other fields
+                                        $repeat_html .= '<span>' . make_clickable( $inner_field_value ) . '</span>';
+                                    }
+
+                                    $repeat_html .= '</li>';
+                                }
+                            }
                         }
 
-                        $html .= make_clickable( $new ) . '</li>';
+                        $repeat_html .= '</ul>';
+                        $repeat_html .= '</li>';
                     }
+
+                    $repeat_html .= '</ul>';
+                    $repeat_html .= '</li>';
+
+                    $html .= $repeat_html;
                     break;
 
                 case 'url':
@@ -1803,8 +1853,43 @@ function wpuf_get_form_fields( $form_id ) {
         }
 
         // Add 'multiple' key for input_type:repeat
-        if ( 'repeat' === $field['input_type'] && ! isset( $field['multiple'] ) ) {
-            $field['multiple'] = '';
+        if ( 'repeat' === $field['input_type'] ) {
+            if ( ! isset( $field['multiple'] ) ) {
+                $field['multiple'] = '';
+            }
+
+            // if old repeat field format
+            if ( empty( $field['inner_fields'] ) ) {
+                $old_id            = $field['id'];
+                $old_meta          = $field['name'];
+                $old_label         = $field['label'];
+                $new_id            = wpuf_form_field_id_generator();
+                $field['template'] = 'text_field';
+
+                // set the new compatible values
+                $field['id']                       = $new_id;
+                $field['name']                     = $old_meta . '_' . $new_id;
+                $field['label']                    = '';
+                $field['inner_fields']['column-1'] = [ $field ];
+                $field['inner_fields']['column-2'] = [];
+                $field['inner_fields']['column-3'] = [];
+                $field['template']                 = 'repeat_field';
+                $field['columns']                  = 1;
+                $field['min_column']               = 1;
+                $field['max_column']               = 3;
+                $field['column_space']             = 5;
+
+                $field['id']    = $old_id;
+                $field['label'] = $old_label;
+                $field['name']  = $old_meta;
+            }
+
+            // if old repeat field format
+            if ( empty( $field['inner_columns_size'] ) ) {
+                $field['inner_columns_size']['column-1'] = '100%';
+                $field['inner_columns_size']['column-2'] = '100%';
+                $field['inner_columns_size']['column-3'] = '100%';
+            }
         }
 
         if ( 'recaptcha' === $field['input_type'] ) {
@@ -1816,6 +1901,20 @@ function wpuf_get_form_fields( $form_id ) {
     }
 
     return $form_fields;
+}
+
+add_action( 'wp_ajax_wpuf_get_child_cat', 'wpuf_get_child_cats' );
+add_action( 'wp_ajax_nopriv_wpuf_get_child_cat', 'wpuf_get_child_cats' );
+
+/*
+ * Generates a random integer for WPUF form field id like wpuf-form-builder-mixins.js
+ *
+ * @since WPUF
+ *
+ * @return int
+ */
+function wpuf_form_field_id_generator( $min = 999999, $max = 9999000001 ) {
+    return rand( $min, $max );
 }
 
 /**

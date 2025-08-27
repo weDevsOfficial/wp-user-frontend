@@ -531,7 +531,7 @@ function wpuf_get_image_sizes() {
 function wpuf_allowed_extensions() {
     $extesions = [
         'images' => [
-            'ext' => 'jpg,jpeg,gif,png,bmp',
+            'ext' => 'jpg,jpeg,gif,png,bmp,webp',
             'label' => __( 'Images', 'wp-user-frontend' ),
         ],
         'audio'  => [

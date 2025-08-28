@@ -70,40 +70,284 @@
         </a>
     </div>
     
-    <?php if ( isset( $pack->meta_value['features'] ) && is_array( $pack->meta_value['features'] ) ) { ?>
-        <ul role="list" class="wpuf-mt-8 wpuf-space-y-3 wpuf-text-sm wpuf-text-gray-600 xl:wpuf-mt-10 wpuf-leading-6">
-            <?php foreach ( $pack->meta_value['features'] as $feature ) { ?>
-                <li class="wpuf-flex wpuf-gap-x-3">
-                    <svg viewBox="0 0 20 20" fill="currentColor" class="wpuf-h-6 wpuf-w-5 wpuf-flex-none wpuf-text-indigo-600" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clip-rule="evenodd" />
-                    </svg>
-                    <?php echo esc_html( $feature ); ?>
-                </li>
-            <?php } ?>
-        </ul>
-    <?php } ?>
+    <!-- Features List -->
+    <?php 
+    // Start collecting all features to be shown
+    $features_list = [];
     
-    <?php if ( !isset( $pack->meta_value['features'] ) ) { ?>
-        <ul role="list" class="wpuf-mt-8 wpuf-space-y-3 wpuf-text-sm wpuf-text-gray-600 xl:wpuf-mt-10 wpuf-leading-6">
-            <?php if ( isset( $pack->meta_value['post_count'] ) && $pack->meta_value['post_count'] > 0 ) { ?>
-                <li class="wpuf-flex wpuf-gap-x-3">
-                    <svg viewBox="0 0 20 20" fill="currentColor" class="wpuf-h-6 wpuf-w-5 wpuf-flex-none wpuf-text-indigo-600" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clip-rule="evenodd" />
-                    </svg>
-                    <?php printf( esc_html__( '%d posts allowed', 'wp-user-frontend' ), intval( $pack->meta_value['post_count'] ) ); ?>
-                </li>
-            <?php } ?>
-            <?php if ( isset( $pack->meta_value['post_expiration_settings']['enabled'] ) && $pack->meta_value['post_expiration_settings']['enabled'] == 'on' ) { ?>
-                <li class="wpuf-flex wpuf-gap-x-3">
-                    <svg viewBox="0 0 20 20" fill="currentColor" class="wpuf-h-6 wpuf-w-5 wpuf-flex-none wpuf-text-indigo-600" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clip-rule="evenodd" />
-                    </svg>
-                    <?php esc_html_e( 'Post expiration enabled', 'wp-user-frontend' ); ?>
-                </li>
-            <?php } ?>
-        </ul>
-    <?php } ?>
+    // Check if custom features are set, if so show them
+    if ( isset( $pack->meta_value['features'] ) && is_array( $pack->meta_value['features'] ) && !empty( $pack->meta_value['features'] ) ) {
+        foreach ( $pack->meta_value['features'] as $feature ) {
+            $features_list[] = esc_html( $feature );
+        }
+    } else {
+        // Show default features from advanced configuration
+        $post_type_limits = isset( $pack->meta_value['_post_type_name'] ) ? maybe_unserialize( $pack->meta_value['_post_type_name'] ) : [];
+        $additional_cpt = isset( $pack->meta_value['additional_cpt_options'] ) ? maybe_unserialize( $pack->meta_value['additional_cpt_options'] ) : [];
+        $all_limits = array_merge( (array) $post_type_limits, (array) $additional_cpt );
+        
+        // Collect all features into array
+        // Show Posts limit
+        if ( isset( $all_limits['post'] ) && $all_limits['post'] !== '0' ) {
+            if ( $all_limits['post'] === '-1' ) {
+                $features_list[] = __( 'Unlimited posts', 'wp-user-frontend' );
+            } else {
+                $features_list[] = sprintf( __( '%d posts allowed', 'wp-user-frontend' ), intval( $all_limits['post'] ) );
+            }
+        }
+        
+        // Show Pages limit
+        if ( isset( $all_limits['page'] ) && $all_limits['page'] !== '0' ) {
+            if ( $all_limits['page'] === '-1' ) {
+                $features_list[] = __( 'Unlimited pages', 'wp-user-frontend' );
+            } else {
+                $features_list[] = sprintf( __( '%d pages allowed', 'wp-user-frontend' ), intval( $all_limits['page'] ) );
+            }
+        }
+        
+        // Show User Requests limit
+        if ( isset( $all_limits['user_request'] ) && $all_limits['user_request'] !== '0' ) {
+            if ( $all_limits['user_request'] === '-1' ) {
+                $features_list[] = __( 'Unlimited user requests', 'wp-user-frontend' );
+            } else {
+                $features_list[] = sprintf( __( '%d user requests allowed', 'wp-user-frontend' ), intval( $all_limits['user_request'] ) );
+            }
+        }
+        
+        // Show WooCommerce Products limit if exists
+        if ( isset( $all_limits['product'] ) && $all_limits['product'] !== '0' ) {
+            if ( $all_limits['product'] === '-1' ) {
+                $features_list[] = __( 'Unlimited products', 'wp-user-frontend' );
+            } else {
+                $features_list[] = sprintf( __( '%d products allowed', 'wp-user-frontend' ), intval( $all_limits['product'] ) );
+            }
+        }
+        
+        // Show Reusable Blocks limit (Design Elements)
+        if ( isset( $all_limits['wp_block'] ) && $all_limits['wp_block'] !== '0' ) {
+            if ( $all_limits['wp_block'] === '-1' ) {
+                $features_list[] = __( 'Unlimited reusable blocks', 'wp-user-frontend' );
+            } else {
+                $features_list[] = sprintf( __( '%d reusable blocks allowed', 'wp-user-frontend' ), intval( $all_limits['wp_block'] ) );
+            }
+        }
+        
+        // Show Templates limit (Design Elements)
+        if ( isset( $all_limits['wp_template'] ) && $all_limits['wp_template'] !== '0' ) {
+            if ( $all_limits['wp_template'] === '-1' ) {
+                $features_list[] = __( 'Unlimited templates', 'wp-user-frontend' );
+            } else {
+                $features_list[] = sprintf( __( '%d templates allowed', 'wp-user-frontend' ), intval( $all_limits['wp_template'] ) );
+            }
+        }
+        
+        // Show Template Parts limit (Design Elements)
+        if ( isset( $all_limits['wp_template_part'] ) && $all_limits['wp_template_part'] !== '0' ) {
+            if ( $all_limits['wp_template_part'] === '-1' ) {
+                $features_list[] = __( 'Unlimited template parts', 'wp-user-frontend' );
+            } else {
+                $features_list[] = sprintf( __( '%d template parts allowed', 'wp-user-frontend' ), intval( $all_limits['wp_template_part'] ) );
+            }
+        }
+        
+        // Show Navigation Menus limit (Design Elements)
+        if ( isset( $all_limits['wp_navigation'] ) && $all_limits['wp_navigation'] !== '0' ) {
+            if ( $all_limits['wp_navigation'] === '-1' ) {
+                $features_list[] = __( 'Unlimited navigation menus', 'wp-user-frontend' );
+            } else {
+                $features_list[] = sprintf( __( '%d navigation menus allowed', 'wp-user-frontend' ), intval( $all_limits['wp_navigation'] ) );
+            }
+        }
+        
+        // Show Global Styles limit (Additional Options)
+        if ( isset( $all_limits['wp_global_styles'] ) && $all_limits['wp_global_styles'] !== '0' ) {
+            if ( $all_limits['wp_global_styles'] === '-1' ) {
+                $features_list[] = __( 'Unlimited global styles', 'wp-user-frontend' );
+            } else {
+                $features_list[] = sprintf( __( '%d global styles allowed', 'wp-user-frontend' ), intval( $all_limits['wp_global_styles'] ) );
+            }
+        }
+        
+        // Show Font Families limit (Additional Options)
+        if ( isset( $all_limits['wp_font_family'] ) && $all_limits['wp_font_family'] !== '0' ) {
+            if ( $all_limits['wp_font_family'] === '-1' ) {
+                $features_list[] = __( 'Unlimited font families', 'wp-user-frontend' );
+            } else {
+                $features_list[] = sprintf( __( '%d font families allowed', 'wp-user-frontend' ), intval( $all_limits['wp_font_family'] ) );
+            }
+        }
+        
+        // Show Font Faces limit (Additional Options)
+        if ( isset( $all_limits['wp_font_face'] ) && $all_limits['wp_font_face'] !== '0' ) {
+            if ( $all_limits['wp_font_face'] === '-1' ) {
+                $features_list[] = __( 'Unlimited font faces', 'wp-user-frontend' );
+            } else {
+                $features_list[] = sprintf( __( '%d font faces allowed', 'wp-user-frontend' ), intval( $all_limits['wp_font_face'] ) );
+            }
+        }
+        
+        // Show Product Variations limit (WooCommerce)
+        if ( isset( $all_limits['product_variation'] ) && $all_limits['product_variation'] !== '0' ) {
+            if ( $all_limits['product_variation'] === '-1' ) {
+                $features_list[] = __( 'Unlimited product variations', 'wp-user-frontend' );
+            } else {
+                $features_list[] = sprintf( __( '%d product variations allowed', 'wp-user-frontend' ), intval( $all_limits['product_variation'] ) );
+            }
+        }
+        
+        // Show Shop Orders limit (WooCommerce)
+        if ( isset( $all_limits['shop_order'] ) && $all_limits['shop_order'] !== '0' ) {
+            if ( $all_limits['shop_order'] === '-1' ) {
+                $features_list[] = __( 'Unlimited shop orders', 'wp-user-frontend' );
+            } else {
+                $features_list[] = sprintf( __( '%d shop orders allowed', 'wp-user-frontend' ), intval( $all_limits['shop_order'] ) );
+            }
+        }
+        
+        // Show Shop Refunds limit (WooCommerce)
+        if ( isset( $all_limits['shop_order_refund'] ) && $all_limits['shop_order_refund'] !== '0' ) {
+            if ( $all_limits['shop_order_refund'] === '-1' ) {
+                $features_list[] = __( 'Unlimited shop refunds', 'wp-user-frontend' );
+            } else {
+                $features_list[] = sprintf( __( '%d shop refunds allowed', 'wp-user-frontend' ), intval( $all_limits['shop_order_refund'] ) );
+            }
+        }
+        
+        // Show Shop Coupons limit (WooCommerce)
+        if ( isset( $all_limits['shop_coupon'] ) && $all_limits['shop_coupon'] !== '0' ) {
+            if ( $all_limits['shop_coupon'] === '-1' ) {
+                $features_list[] = __( 'Unlimited shop coupons', 'wp-user-frontend' );
+            } else {
+                $features_list[] = sprintf( __( '%d shop coupons allowed', 'wp-user-frontend' ), intval( $all_limits['shop_coupon'] ) );
+            }
+        }
+        
+        // Show Featured items limit
+        if ( isset( $pack->meta_value['_total_feature_item'] ) && $pack->meta_value['_total_feature_item'] !== '0' ) {
+            if ( $pack->meta_value['_total_feature_item'] === '-1' ) {
+                $features_list[] = __( 'Unlimited featured items', 'wp-user-frontend' );
+            } else {
+                $features_list[] = sprintf( __( '%d featured items', 'wp-user-frontend' ), intval( $pack->meta_value['_total_feature_item'] ) );
+            }
+        }
+        
+        // Show Post expiration
+        if ( isset( $pack->meta_value['_enable_post_expiration'] ) && $pack->meta_value['_enable_post_expiration'] === 'yes' ) {
+            $expiry_period = isset( $pack->meta_value['_post_expiration_number'] ) ? intval( $pack->meta_value['_post_expiration_number'] ) : 0;
+            $expiry_type = isset( $pack->meta_value['_post_expiration_period'] ) ? $pack->meta_value['_post_expiration_period'] : 'day';
+            
+            if ( $expiry_period > 0 ) {
+                $features_list[] = sprintf( __( 'Posts expire after %d %s', 'wp-user-frontend' ), $expiry_period, $expiry_type . ($expiry_period > 1 ? 's' : '') );
+            } else {
+                $features_list[] = __( 'Post expiration enabled', 'wp-user-frontend' );
+            }
+        }
+        
+        // Show Recurring payment feature
+        if ( isset( $pack->meta_value['_recurring_pay'] ) && $pack->meta_value['_recurring_pay'] === 'yes' ) {
+            $features_list[] = __( 'Recurring subscription', 'wp-user-frontend' );
+        }
+        
+        // Show Trial period if available
+        if ( isset( $pack->meta_value['_trial_status'] ) && $pack->meta_value['_trial_status'] === 'yes' ) {
+            $trial_duration = isset( $pack->meta_value['_trial_duration'] ) ? intval( $pack->meta_value['_trial_duration'] ) : 0;
+            $trial_type = isset( $pack->meta_value['_trial_duration_type'] ) ? $pack->meta_value['_trial_duration_type'] : 'day';
+            
+            if ( $trial_duration > 0 ) {
+                $features_list[] = sprintf( __( '%d %s free trial', 'wp-user-frontend' ), $trial_duration, $trial_type . ($trial_duration > 1 ? 's' : '') );
+            } else {
+                $features_list[] = __( 'Free trial available', 'wp-user-frontend' );
+            }
+        }
+        
+        // Show Mail notification on expiry
+        if ( isset( $pack->meta_value['_enable_mail_after_expired'] ) && $pack->meta_value['_enable_mail_after_expired'] === 'yes' ) {
+            $features_list[] = __( 'Email notifications on post expiry', 'wp-user-frontend' );
+        }
+        
+        // If no features found, show a basic feature
+        if ( empty( $features_list ) ) {
+            $features_list[] = __( 'Full website access', 'wp-user-frontend' );
+        }
+    }
+    
+    // Show the features list with expandable functionality
+    if ( ! empty( $features_list ) ) :
+        $features_count = count( $features_list );
+        $initial_display_count = 5; // Show first 5 features initially
+        ?>
+        <div class="wpuf-mt-6">
+            <ul class="wpuf-text-sm wpuf-leading-6 wpuf-text-gray-600 wpuf-space-y-3" id="wpuf-features-list-<?php echo esc_attr( $pack->ID ); ?>">
+                <?php foreach ( $features_list as $index => $feature ) : ?>
+                    <li class="wpuf-flex wpuf-gap-x-3 <?php echo $index >= $initial_display_count ? 'wpuf-hidden wpuf-expandable-feature' : ''; ?>">
+                        <svg viewBox="0 0 20 20" fill="currentColor" class="wpuf-h-6 wpuf-w-5 wpuf-flex-none wpuf-text-indigo-600" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clip-rule="evenodd" />
+                        </svg>
+                        <?php echo esc_html( $feature ); ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+            
+            <?php if ( $features_count > $initial_display_count ) : ?>
+                <div class="wpuf-mt-3">
+                    <button 
+                        type="button" 
+                        class="wpuf-text-sm wpuf-font-medium wpuf-text-indigo-600 hover:wpuf-text-indigo-500 wpuf-transition-colors wpuf-duration-200" 
+                        onclick="wpufToggleFeatures(this, <?php echo esc_js( $pack->ID ); ?>)"
+                        data-pack-id="<?php echo esc_attr( $pack->ID ); ?>"
+                        data-hidden-count="<?php echo esc_attr( $features_count - $initial_display_count ); ?>"
+                        id="wpuf-see-more-btn-<?php echo esc_attr( $pack->ID ); ?>"
+                    >
+                        <?php printf( esc_html__( 'See %d more features', 'wp-user-frontend' ), $features_count - $initial_display_count ); ?>
+                    </button>
+                    <button 
+                        type="button" 
+                        class="wpuf-text-sm wpuf-font-medium wpuf-text-indigo-600 hover:wpuf-text-indigo-500 wpuf-transition-colors wpuf-duration-200 wpuf-hidden" 
+                        onclick="wpufToggleFeatures(this, <?php echo esc_js( $pack->ID ); ?>)"
+                        data-pack-id="<?php echo esc_attr( $pack->ID ); ?>"
+                        data-hidden-count="<?php echo esc_attr( $features_count - $initial_display_count ); ?>"
+                        id="wpuf-see-less-btn-<?php echo esc_attr( $pack->ID ); ?>"
+                    >
+                        <?php esc_html_e( 'See less', 'wp-user-frontend' ); ?>
+                    </button>
+                </div>
+            <?php endif; ?>
+        </div>
+        
+    <?php endif; ?>
 </div>
+
+<script>
+function wpufToggleFeatures(clickedButton, packId) {
+    // Get the specific pack's elements using the pack ID
+    const featuresList = document.getElementById('wpuf-features-list-' + packId);
+    const seeMoreBtn = document.getElementById('wpuf-see-more-btn-' + packId);
+    const seeLessBtn = document.getElementById('wpuf-see-less-btn-' + packId);
+    
+    // Only get expandable features from this specific pack
+    const expandableFeatures = featuresList.querySelectorAll('.wpuf-expandable-feature');
+    
+    // Check if we're currently showing all features (see more button is hidden)
+    const isShowingAll = seeMoreBtn.classList.contains('wpuf-hidden');
+    
+    if (isShowingAll) {
+        // Currently showing all, hide extra features
+        expandableFeatures.forEach(function(feature) {
+            feature.classList.add('wpuf-hidden');
+        });
+        seeMoreBtn.classList.remove('wpuf-hidden');
+        seeLessBtn.classList.add('wpuf-hidden');
+    } else {
+        // Currently showing limited, show all features
+        expandableFeatures.forEach(function(feature) {
+            feature.classList.remove('wpuf-hidden');
+        });
+        seeMoreBtn.classList.add('wpuf-hidden');
+        seeLessBtn.classList.remove('wpuf-hidden');
+    }
+}
+</script>
+
 <?php
 $action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
 

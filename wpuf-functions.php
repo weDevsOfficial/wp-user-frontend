@@ -1170,12 +1170,6 @@ function wpuf_show_custom_fields( $content ) {
                         $repeat_data = maybe_unserialize( $repeat_data );
                     }
 
-                    foreach ( $value as $i => $str ) {
-                        if ( is_string( $str ) && preg_match( '/[^\|\s]/', $str ) ) {
-                            $newvalue[] = $str;
-                        }
-                    }
-
                     if ( ! is_array( $repeat_data ) ) {
                         break;
                     }
@@ -1186,7 +1180,7 @@ function wpuf_show_custom_fields( $content ) {
                         $repeat_html .= '<label>' . $attr['label'] . ':</label>';
                     }
 
-                                        $repeat_html .= '<ul class="wpuf-repeat-field-data">';
+                    $repeat_html .= '<ul class="wpuf-repeat-field-data">';
 
                     foreach ( $repeat_data as $repeat_entry ) {
                         $repeat_html .= '<li class="wpuf-repeat-entry">';

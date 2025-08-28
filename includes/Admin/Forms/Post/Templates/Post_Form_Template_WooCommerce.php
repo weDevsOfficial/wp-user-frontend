@@ -290,7 +290,6 @@ Edit URL: {editlink}'
     public function handle_form_updates( $post_id, $form_id, $form_settings ) {
         $this->update_reviews( $post_id );
         $this->update_price( $post_id );
-        $this->update_gallery_images( $post_id );
         $this->update_meta( $post_id );
     }
 
@@ -305,8 +304,6 @@ Edit URL: {editlink}'
         global $wpdb;
         $reviews = get_post_meta( $post_id, 'product_reviews', true );
         $status  = ! empty( $reviews ) ? 'open' : 'closed';
-        // wp_update_post( array( 'ID' => $post_id, 'comment_status' => $status ) );
-        $comment_sql = "UPDATE {$wpdb->prefix}posts SET comment_status='{$status}' WHERE ID={$post_id} AND post_status='publish' AND post_type='product'";
         $wpdb->get_results( $wpdb->prepare( "UPDATE {$wpdb->prefix}posts SET comment_status=%s WHERE ID=%d AND post_status='publish' AND post_type='product'", $status, $post_id ) );
     }
 
@@ -324,26 +321,6 @@ Edit URL: {editlink}'
             update_post_meta( $post_id, '_price', $sale_price );
         } else {
             update_post_meta( $post_id, '_price', $regular_price );
-        }
-    }
-
-    /**
-     * Update image gallery
-     *
-     * @param int $post_id
-     *
-     * @return void
-     */
-    public function update_gallery_images( $post_id ) {
-        $images = get_post_meta( $post_id, '_product_image' );
-        if ( ! empty( $images ) ) {
-            if ( is_array( $images[0] ) ) {
-                $images = $images[0];
-            }
-            if ( is_serialized( $images[0] ) ) {
-                $images = maybe_unserialize( $images[0] );
-            }
-            update_post_meta( $post_id, '_product_image_gallery', implode( ',', $images ) );
         }
     }
 

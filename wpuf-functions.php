@@ -1203,6 +1203,8 @@ function wpuf_show_custom_fields( $content ) {
                                     if ( 'checkbox' === $inner_field['input_type'] && is_array( $inner_field_value ) ) {
                                         // For checkbox fields, join multiple values
                                         $repeat_html .= '<span>' . make_clickable( implode( ', ', $inner_field_value ) ) . '</span>';
+                                    } elseif ( 'multiselect' === $inner_field['input_type'] && is_array( $inner_field_value ) ) {
+                                        $repeat_html .= '<span>' . make_clickable( implode( ', ', $inner_field_value ) ) . '</span>';
                                     } elseif ( 'radio' === $inner_field['input_type'] || 'select' === $inner_field['input_type'] ) {
                                         // For radio and select fields, display single value
                                         $repeat_html .= '<span>' . make_clickable( $inner_field_value ) . '</span>';

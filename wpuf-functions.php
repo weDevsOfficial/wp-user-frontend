@@ -5085,22 +5085,11 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
     unset( $post_types['oembed_cache'] );
 
     $template_options = [
-        'post_form_template_post'            => [
-            'label' => __( 'Post Form', 'wp-user-frontend' ),
-            'image' => WPUF_ASSET_URI . '/images/templates/post.svg',
-        ],
-        'post_form_template_woocommerce'     => [
-            'label' => __( 'WooCommerce Product Form', 'wp-user-frontend' ),
-            'image' => WPUF_ASSET_URI . '/images/templates/woocommerce.svg',
-        ],
-        'post_form_template_edd'             => [
-            'label' => __( 'EDD Download Form', 'wp-user-frontend' ),
-            'image' => WPUF_ASSET_URI . '/images/templates/edd.svg',
-        ],
-        'post_form_template_events_calendar' => [
-            'label' => __( 'Event Form', 'wpuf-user-frontend' ),
-            'image' => WPUF_ASSET_URI . '/images/templates/event.svg',
-        ],
+        ''                                   => __( '-- Select Template --', 'wp-user-frontend' ),
+        'post_form_template_post'            => __( 'Post Form', 'wp-user-frontend' ),
+        'post_form_template_woocommerce'     => __( 'WooCommerce Product Form', 'wp-user-frontend' ),
+        'post_form_template_edd'             => __( 'EDD Download Form', 'wp-user-frontend' ),
+        'post_form_template_events_calendar' => __( 'Event Form', 'wp-user-frontend' ),
     ];
 
     $registry = wpuf_get_post_form_templates();
@@ -5206,6 +5195,15 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                             'help_text' => __(
                                 'Customize the text on the \'Submit\' button for this form', 'wp-user-frontend'
                             ),
+                        ],
+                         'form_template'    => [
+                            'label'     => __( 'Choose Form Template', 'wp-user-frontend' ),
+                            'type'      => 'select',
+                            'help_text' => __(
+                                'If selected a form template, it will try to execute that integration options when new post created and updated.',
+                                'wp-user-frontend'
+                            ),
+                            'options'   => $template_options,
                         ],
                     ],
                 ],

@@ -40,41 +40,57 @@ if ( $packs ) {
     echo wp_kses_post( '</ul>' );
     ?>
     <script>
-    // Define the toggle function only once for all subscription packs
-    if (typeof wpufToggleFeatures === 'undefined') {
-        function wpufToggleFeatures(clickedButton, packId) {
-            // Get the specific pack's elements using the pack ID
-            const featuresList = document.getElementById('wpuf-features-list-' + packId);
-            const seeMoreBtn = document.getElementById('wpuf-see-more-btn-' + packId);
-            const seeLessBtn = document.getElementById('wpuf-see-less-btn-' + packId);
+    (function() {
+        // Use event delegation to handle all toggle clicks
+        document.addEventListener('DOMContentLoaded', function() {
+            // Only initialize once
+            if (window.wpufFeaturesInitialized) return;
+            window.wpufFeaturesInitialized = true;
             
-            if (!featuresList || !seeMoreBtn || !seeLessBtn) {
-                return; // Exit if elements not found
-            }
-            
-            // Only get expandable features from this specific pack
-            const expandableFeatures = featuresList.querySelectorAll('.wpuf-expandable-feature');
-            
-            // Check if we're currently showing all features (see more button is hidden)
-            const isShowingAll = seeMoreBtn.classList.contains('wpuf-hidden');
-            
-            if (isShowingAll) {
-                // Currently showing all, hide extra features
-                expandableFeatures.forEach(function(feature) {
-                    feature.classList.add('wpuf-hidden');
-                });
-                seeMoreBtn.classList.remove('wpuf-hidden');
-                seeLessBtn.classList.add('wpuf-hidden');
-            } else {
-                // Currently showing limited, show all features
-                expandableFeatures.forEach(function(feature) {
-                    feature.classList.remove('wpuf-hidden');
-                });
-                seeMoreBtn.classList.add('wpuf-hidden');
-                seeLessBtn.classList.remove('wpuf-hidden');
-            }
-        }
-    }
+            // Add event listener to the document
+            document.addEventListener('click', function(e) {
+                // Check if clicked element has the toggle features data attribute
+                if (e.target && e.target.hasAttribute('data-wpuf-toggle-features')) {
+                    e.preventDefault();
+                    
+                    const packId = e.target.getAttribute('data-wpuf-pack-id');
+                    if (!packId) return;
+                    
+                    // Get the specific pack's elements using the unique pack ID
+                    const featuresList = document.getElementById('wpuf-features-list-' + packId);
+                    const seeMoreBtn = document.getElementById('wpuf-see-more-btn-' + packId);
+                    const seeLessBtn = document.getElementById('wpuf-see-less-btn-' + packId);
+                    
+                    if (!featuresList || !seeMoreBtn || !seeLessBtn) {
+                        console.warn('Elements not found for pack ID:', packId);
+                        return;
+                    }
+                    
+                    // Only get expandable features from this specific pack
+                    const expandableFeatures = featuresList.querySelectorAll('.wpuf-expandable-feature');
+                    
+                    // Toggle visibility based on current state
+                    const isExpanded = e.target.getAttribute('data-expanded') === 'true';
+                    
+                    if (isExpanded) {
+                        // Currently expanded, collapse it
+                        expandableFeatures.forEach(function(feature) {
+                            feature.classList.add('wpuf-hidden');
+                        });
+                        seeMoreBtn.classList.remove('wpuf-hidden');
+                        seeLessBtn.classList.add('wpuf-hidden');
+                    } else {
+                        // Currently collapsed, expand it
+                        expandableFeatures.forEach(function(feature) {
+                            feature.classList.remove('wpuf-hidden');
+                        });
+                        seeMoreBtn.classList.add('wpuf-hidden');
+                        seeLessBtn.classList.remove('wpuf-hidden');
+                    }
+                }
+            });
+        });
+    })();
     </script>
     <?php
 }

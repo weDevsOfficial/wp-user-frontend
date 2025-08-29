@@ -28,7 +28,7 @@
     </div>
     
     <?php if ( ! empty( $pack->post_content ) ) : ?>
-    <div class="wpuf-mt-3 wpuf-text-sm wpuf-leading-5 wpuf-text-gray-600 wpuf-flex-grow">
+    <div class="wpuf-mt-3 wpuf-text-sm wpuf-leading-5 wpuf-text-gray-600">
         <?php echo wp_kses_post( wpautop( $pack->post_content ) ); ?>
     </div>
     <?php endif; ?>
@@ -293,8 +293,9 @@
                     <button 
                         type="button" 
                         class="wpuf-text-sm wpuf-font-medium wpuf-text-indigo-600 hover:wpuf-text-indigo-500 wpuf-transition-colors wpuf-duration-200" 
-                        onclick="wpufToggleFeatures(this, <?php echo esc_js( $pack->ID ); ?>)"
-                        data-pack-id="<?php echo esc_attr( $pack->ID ); ?>"
+                        data-wpuf-toggle-features="true"
+                        data-wpuf-pack-id="<?php echo esc_attr( $pack->ID ); ?>"
+                        data-expanded="false"
                         data-hidden-count="<?php echo esc_attr( $features_count - $initial_display_count ); ?>"
                         id="wpuf-see-more-btn-<?php echo esc_attr( $pack->ID ); ?>"
                     >
@@ -303,8 +304,9 @@
                     <button 
                         type="button" 
                         class="wpuf-text-sm wpuf-font-medium wpuf-text-indigo-600 hover:wpuf-text-indigo-500 wpuf-transition-colors wpuf-duration-200 wpuf-hidden" 
-                        onclick="wpufToggleFeatures(this, <?php echo esc_js( $pack->ID ); ?>)"
-                        data-pack-id="<?php echo esc_attr( $pack->ID ); ?>"
+                        data-wpuf-toggle-features="true"
+                        data-wpuf-pack-id="<?php echo esc_attr( $pack->ID ); ?>"
+                        data-expanded="true"
                         data-hidden-count="<?php echo esc_attr( $features_count - $initial_display_count ); ?>"
                         id="wpuf-see-less-btn-<?php echo esc_attr( $pack->ID ); ?>"
                     >

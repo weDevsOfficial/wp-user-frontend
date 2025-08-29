@@ -23,7 +23,6 @@ class Integrations {
         'WCMp'                => 'WPUF_WCMp_Integration',
         'ACF'                 => 'WPUF_ACF_Compatibility',
         'Tribe__Events__Main' => 'Events_Calendar\Events_Calendar_Integration',
-        'WooCommerce'         => 'WPUF_WooCommerce_Gallery_Sync',
     ];
 
     public function __construct() {

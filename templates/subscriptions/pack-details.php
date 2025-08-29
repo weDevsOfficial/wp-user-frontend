@@ -13,8 +13,22 @@
  * @var $current_pack_id
  * @var $button_name
  */
+
+// Get the button color from settings
+$button_color = wpuf_get_option( 'button_color', 'wpuf_subscription_settings', '#4f46e5' );
 ?>
-<div class="wpuf-rounded-xl wpuf-p-6 wpuf-ring-1 wpuf-ring-gray-200 wpuf-bg-white wpuf-shadow-md hover:wpuf-shadow-lg wpuf-transition-all wpuf-duration-300 wpuf-relative wpuf-h-full wpuf-flex wpuf-flex-col wpuf-mt-2">
+<style>
+/* Critical inline styles to prevent FOUC */
+.wpuf-pack-<?php echo esc_attr( $pack->ID ); ?> svg {
+    width: 1.25rem !important;
+    height: 1.5rem !important;
+    flex-shrink: 0 !important;
+}
+.wpuf-pack-<?php echo esc_attr( $pack->ID ); ?> .wpuf-hidden {
+    display: none !important;
+}
+</style>
+<div class="wpuf-rounded-xl wpuf-p-6 wpuf-ring-1 wpuf-ring-gray-200 wpuf-bg-white wpuf-shadow-md hover:wpuf-shadow-lg wpuf-transition-all wpuf-duration-300 wpuf-relative wpuf-mt-2">
     <!-- Header Section -->
     <div class="wpuf-flex wpuf-items-center wpuf-justify-between wpuf-gap-x-4">
         <h3 class="wpuf-text-lg wpuf-font-semibold wpuf-text-gray-900 wpuf-leading-8">
@@ -34,7 +48,7 @@
     <?php endif; ?>
     
     <!-- Price Section -->
-    <div class="wpuf-mt-auto wpuf-pt-4">
+    <div class="wpuf-mt-4">
     <div class="wpuf-flex wpuf-items-baseline wpuf-gap-x-1">
         <?php if ( $billing_amount != '0.00' ) { ?>
             <span class="wpuf-text-3xl wpuf-font-bold wpuf-tracking-tight wpuf-text-gray-900">
@@ -61,13 +75,25 @@
     
     <!-- Button Section -->
     <div class="wpuf-mt-6">
-        <a <?php echo ( esc_attr( $current_pack_status ) == 'completed' ) ? 
-            'class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-px-3 wpuf-py-2 wpuf-text-center wpuf-text-sm wpuf-font-semibold wpuf-text-gray-400 wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 wpuf-cursor-not-allowed wpuf-bg-gray-100 wpuf-leading-6"' : 
-            'class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-px-3 wpuf-py-2 wpuf-text-center wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-bg-indigo-600 hover:wpuf-bg-indigo-500 wpuf-shadow-sm wpuf-ring-0 focus-visible:wpuf-outline focus-visible:wpuf-outline-2 focus-visible:wpuf-outline-offset-2 focus-visible:wpuf-outline-indigo-600 wpuf-transition-colors wpuf-duration-200 wpuf-leading-6"'; ?> 
-           href="<?php echo ( esc_attr( $current_pack_status ) == 'completed' ) ? 'javascript:void(0)' : esc_attr( add_query_arg( $query_args, esc_url( $query_url ) ) ); ?>" 
-           onclick="<?php echo esc_attr( $details_meta['onclick'] ); ?>">
-            <?php echo esc_html( $button_name ); ?>
-        </a>
+        <?php if ( esc_attr( $current_pack_status ) == 'completed' ) : ?>
+            <a class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-px-3 wpuf-py-2 wpuf-text-center wpuf-text-sm wpuf-font-semibold wpuf-text-gray-400 wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 wpuf-cursor-not-allowed wpuf-bg-gray-100 wpuf-leading-6"
+               href="javascript:void(0)" 
+               onclick="<?php echo esc_attr( $details_meta['onclick'] ); ?>">
+                <?php echo esc_html( $button_name ); ?>
+            </a>
+        <?php else : ?>
+            <style>
+                .wpuf-pack-<?php echo esc_attr( $pack->ID ); ?> .wpuf-subscription-buy-btn:hover {
+                    filter: brightness(0.9);
+                }
+            </style>
+            <a class="wpuf-subscription-buy-btn wpuf-block wpuf-w-full wpuf-rounded-md wpuf-px-3 wpuf-py-2 wpuf-text-center wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm wpuf-ring-0 wpuf-transition-all wpuf-duration-200 wpuf-leading-6"
+               style="background-color: <?php echo esc_attr( $button_color ); ?>;"
+               href="<?php echo esc_attr( add_query_arg( $query_args, esc_url( $query_url ) ) ); ?>" 
+               onclick="<?php echo esc_attr( $details_meta['onclick'] ); ?>">
+                <?php echo esc_html( $button_name ); ?>
+            </a>
+        <?php endif; ?>
     </div>
     
     <!-- Features List -->
@@ -280,7 +306,7 @@
             <ul class="wpuf-text-sm wpuf-leading-6 wpuf-text-gray-600 wpuf-space-y-3" id="wpuf-features-list-<?php echo esc_attr( $pack->ID ); ?>">
                 <?php foreach ( $features_list as $index => $feature ) : ?>
                     <li class="wpuf-flex wpuf-gap-x-3 <?php echo $index >= $initial_display_count ? 'wpuf-hidden wpuf-expandable-feature' : ''; ?>">
-                        <svg viewBox="0 0 20 20" fill="currentColor" class="wpuf-h-6 wpuf-w-5 wpuf-flex-none wpuf-text-indigo-600" aria-hidden="true">
+                        <svg viewBox="0 0 20 20" fill="<?php echo esc_attr( $button_color ); ?>" class="wpuf-h-6 wpuf-w-5 wpuf-flex-none" style="width: 1.25rem; height: 1.5rem; flex-shrink: 0;" width="20" height="24" aria-hidden="true">
                             <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clip-rule="evenodd" />
                         </svg>
                         <?php echo esc_html( $feature ); ?>
@@ -292,7 +318,10 @@
                 <div class="wpuf-mt-3">
                     <button 
                         type="button" 
-                        class="wpuf-text-sm wpuf-font-medium wpuf-text-indigo-600 hover:wpuf-text-indigo-500 wpuf-transition-colors wpuf-duration-200" 
+                        class="wpuf-text-sm wpuf-font-medium wpuf-transition-colors wpuf-duration-200" 
+                        style="color: <?php echo esc_attr( $button_color ); ?>;"
+                        onmouseover="this.style.opacity='0.8'" 
+                        onmouseout="this.style.opacity='1'"
                         data-wpuf-toggle-features="true"
                         data-wpuf-pack-id="<?php echo esc_attr( $pack->ID ); ?>"
                         data-expanded="false"
@@ -303,7 +332,10 @@
                     </button>
                     <button 
                         type="button" 
-                        class="wpuf-text-sm wpuf-font-medium wpuf-text-indigo-600 hover:wpuf-text-indigo-500 wpuf-transition-colors wpuf-duration-200 wpuf-hidden" 
+                        class="wpuf-text-sm wpuf-font-medium wpuf-transition-colors wpuf-duration-200 wpuf-hidden" 
+                        style="color: <?php echo esc_attr( $button_color ); ?>;"
+                        onmouseover="this.style.opacity='0.8'" 
+                        onmouseout="this.style.opacity='1'"
                         data-wpuf-toggle-features="true"
                         data-wpuf-pack-id="<?php echo esc_attr( $pack->ID ); ?>"
                         data-expanded="true"

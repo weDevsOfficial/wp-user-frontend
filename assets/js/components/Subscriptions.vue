@@ -11,6 +11,7 @@ import List from './subscriptions/List.vue';
 import Empty from './subscriptions/Empty.vue';
 import Edit from './subscriptions/Edit.vue';
 import New from './subscriptions/New.vue';
+import Preferences from './subscriptions/Preferences.vue';
 import QuickEdit from './subscriptions/QuickEdit.vue';
 import {useQuickEditStore} from '../stores/quickEdit';
 import Notice from './subscriptions/Notice.vue';
@@ -47,7 +48,16 @@ onBeforeMount( () => {
 } );
 
 const checkIsDirty = ( subscriptionStatus = 'all' ) => {
-    if (subscriptionStore.isDirty) {
+    if (subscriptionStatus === 'preferences') {
+        // Handle preferences separately
+        if (subscriptionStore.isDirty) {
+            subscriptionStore.isUnsavedPopupOpen = true;
+            tempSubscriptionStatus.value = subscriptionStatus;
+        } else {
+            componentStore.setCurrentComponent( 'Preferences' );
+            subscriptionStore.currentSubscriptionStatus = 'preferences';
+        }
+    } else if (subscriptionStore.isDirty) {
         subscriptionStore.isUnsavedPopupOpen = true;
         tempSubscriptionStatus.value = subscriptionStatus;
     } else {
@@ -89,6 +99,9 @@ watch(
                 break;
             case 'New':
                 component.value = New;
+                break;
+            case 'Preferences':
+                component.value = Preferences;
                 break;
             default:
                 component.value = Empty;

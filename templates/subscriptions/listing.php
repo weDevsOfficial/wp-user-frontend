@@ -12,16 +12,28 @@
  * @var $current_pack
  */
 do_action( 'wpuf_before_subscription_listing', $packs );
-
+?>
+<style>
+/* Prevent FOUC - Critical inline styles */
+.wpuf_packs svg {
+    width: 1.25rem !important;
+    height: 1.5rem !important;
+    flex-shrink: 0 !important;
+}
+.wpuf_packs .wpuf-hidden {
+    display: none !important;
+}
+</style>
+<?php
 if ( $packs ) {
-    echo wp_kses_post( '<ul class="wpuf_packs wpuf-grid wpuf-grid-cols-1 md:wpuf-grid-cols-2 lg:wpuf-grid-cols-3 wpuf-gap-4 wpuf-max-w-5xl wpuf-mx-auto wpuf-px-4 wpuf-items-stretch wpuf-mt-6">' );
+    echo wp_kses_post( '<ul class="wpuf_packs wpuf-grid wpuf-grid-cols-1 md:wpuf-grid-cols-2 lg:wpuf-grid-cols-3 wpuf-gap-4 wpuf-max-w-5xl wpuf-mx-auto wpuf-px-4 wpuf-items-start wpuf-mt-6">' );
 
     if ( isset( $args['include'] ) && $args['include'] != '' ) {
         for ( $i = 0; $i < count( $pack_order ); $i++ ) {
             foreach ( $packs as $pack ) {
                 if (  (int) $pack->ID == $pack_order[$i] ) {
                     $class = 'wpuf-pack-' . $pack->ID; ?>
-                    <li class="<?php echo esc_attr( $class ); ?> wpuf-h-full">
+                    <li class="<?php echo esc_attr( $class ); ?>">
                         <?php $subscription->pack_details( $pack, $details_meta, isset( $current_pack['pack_id'] ) ? $current_pack['pack_id'] : '' ); ?>
                     </li>
                     <?php
@@ -31,7 +43,7 @@ if ( $packs ) {
     } else {
         foreach ( $packs as $pack ) {
             $class = 'wpuf-pack-' . $pack->ID; ?>
-            <li class="<?php echo esc_attr( $class ); ?> wpuf-h-full">
+            <li class="<?php echo esc_attr( $class ); ?>">
                 <?php $subscription->pack_details( $pack, $details_meta, isset( $current_pack['pack_id'] ) ? $current_pack['pack_id'] : '' ); ?>
             </li>
             <?php

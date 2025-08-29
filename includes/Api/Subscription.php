@@ -97,6 +97,23 @@ class Subscription extends WP_REST_Controller {
                 ],
             ]
         );
+
+        // Register subscription settings endpoints
+        register_rest_route(
+            $this->namespace,
+            '/subscription-settings', [
+                [
+                    'methods'             => WP_REST_Server::READABLE,
+                    'callback'            => [ $this, 'get_subscription_settings' ],
+                    'permission_callback' => [ $this, 'permission_check' ],
+                ],
+                [
+                    'methods'             => WP_REST_Server::CREATABLE,
+                    'callback'            => [ $this, 'update_subscription_settings' ],
+                    'permission_callback' => [ $this, 'permission_check' ],
+                ],
+            ]
+        );
     }
 
     /**
@@ -528,6 +545,50 @@ class Subscription extends WP_REST_Controller {
                 ]
             );
         }
+    }
+
+    /**
+     * Get subscription settings
+     *
+     * @since 4.1.8
+     *
+     * @param WP_REST_Request $request
+     *
+     * @return WP_REST_Response
+     */
+    public function get_subscription_settings( $request ) {
+        $settings = [
+            'button_color' => wpuf_get_option( 'button_color', 'wpuf_subscription_settings', '#4f46e5' ),
+        ];
+
+        return rest_ensure_response( $settings );
+    }
+
+    /**
+     * Update subscription settings
+     *
+     * @since 4.1.8
+     *
+     * @param WP_REST_Request $request
+     *
+     * @return WP_REST_Response
+     */
+    public function update_subscription_settings( $request ) {
+        $params = $request->get_params();
+        
+        // Only keep button_color, remove old settings
+        $settings = [];
+        
+        if ( isset( $params['button_color'] ) ) {
+            $settings['button_color'] = sanitize_hex_color( $params['button_color'] );
+        }
+        
+        update_option( 'wpuf_subscription_settings', $settings );
+        
+        return rest_ensure_response( [
+            'success' => true,
+            'settings' => $settings,
+        ] );
     }
 
     /**

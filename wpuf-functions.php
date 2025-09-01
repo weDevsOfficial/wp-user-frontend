@@ -1170,12 +1170,6 @@ function wpuf_show_custom_fields( $content ) {
                         $repeat_data = maybe_unserialize( $repeat_data );
                     }
 
-                    foreach ( $value as $i => $str ) {
-                        if ( is_string( $str ) && preg_match( '/[^\|\s]/', $str ) ) {
-                            $newvalue[] = $str;
-                        }
-                    }
-
                     if ( ! is_array( $repeat_data ) ) {
                         break;
                     }
@@ -1186,7 +1180,7 @@ function wpuf_show_custom_fields( $content ) {
                         $repeat_html .= '<label>' . $attr['label'] . ':</label>';
                     }
 
-                                        $repeat_html .= '<ul class="wpuf-repeat-field-data">';
+                    $repeat_html .= '<ul class="wpuf-repeat-field-data">';
 
                     foreach ( $repeat_data as $repeat_entry ) {
                         $repeat_html .= '<li class="wpuf-repeat-entry">';
@@ -1208,6 +1202,8 @@ function wpuf_show_custom_fields( $content ) {
                                     // Handle different field types
                                     if ( 'checkbox' === $inner_field['input_type'] && is_array( $inner_field_value ) ) {
                                         // For checkbox fields, join multiple values
+                                        $repeat_html .= '<span>' . make_clickable( implode( ', ', $inner_field_value ) ) . '</span>';
+                                    } elseif ( 'multiselect' === $inner_field['input_type'] && is_array( $inner_field_value ) ) {
                                         $repeat_html .= '<span>' . make_clickable( implode( ', ', $inner_field_value ) ) . '</span>';
                                     } elseif ( 'radio' === $inner_field['input_type'] || 'select' === $inner_field['input_type'] ) {
                                         // For radio and select fields, display single value

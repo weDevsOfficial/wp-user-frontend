@@ -384,6 +384,10 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                     if ( $is_pro_preview && strpos( $field_key, 'notification_' ) === 0 ) {
                         $toggle_value = 'off';
                     }
+                    // Convert various "on" values to 'on' for the toggle
+                    if ( wpuf_is_checkbox_or_toggle_on( $toggle_value ) ) {
+                        $toggle_value = 'on';
+                    }
                 ?>
                     <label
                         for="<?php echo $field_key; ?>"

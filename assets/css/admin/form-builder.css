@@ -819,6 +819,64 @@ html {
   --tw-contain-style:  ;
 }
 
+.wpuf-form-input,.wpuf-form-textarea,.wpuf-form-select,.wpuf-form-multiselect {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background-color: #fff;
+  border-color: #6b7280;
+  border-width: 1px;
+  border-radius: 0px;
+  padding-top: 0.5rem;
+  padding-right: 0.75rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  --tw-shadow: 0 0 #0000;
+}
+
+.wpuf-form-input:focus, .wpuf-form-textarea:focus, .wpuf-form-select:focus, .wpuf-form-multiselect:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  --tw-ring-inset: var(--tw-empty,/*!*/ /*!*/);
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: #2563eb;
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  border-color: #2563eb;
+}
+
+.wpuf-form-input::-moz-placeholder, .wpuf-form-textarea::-moz-placeholder {
+  color: #6b7280;
+  opacity: 1;
+}
+
+.wpuf-form-input::placeholder,.wpuf-form-textarea::placeholder {
+  color: #6b7280;
+  opacity: 1;
+}
+
+.wpuf-form-input::-webkit-datetime-edit-fields-wrapper {
+  padding: 0;
+}
+
+.wpuf-form-input::-webkit-date-and-time-value {
+  min-height: 1.5em;
+  text-align: inherit;
+}
+
+.wpuf-form-input::-webkit-datetime-edit {
+  display: inline-flex;
+}
+
+.wpuf-form-input::-webkit-datetime-edit,.wpuf-form-input::-webkit-datetime-edit-year-field,.wpuf-form-input::-webkit-datetime-edit-month-field,.wpuf-form-input::-webkit-datetime-edit-day-field,.wpuf-form-input::-webkit-datetime-edit-hour-field,.wpuf-form-input::-webkit-datetime-edit-minute-field,.wpuf-form-input::-webkit-datetime-edit-second-field,.wpuf-form-input::-webkit-datetime-edit-millisecond-field,.wpuf-form-input::-webkit-datetime-edit-meridiem-field {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 .wpuf-avatar {
   position: relative;
   display: inline-flex;
@@ -2712,6 +2770,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   margin-right: 1rem;
 }
 
+.wpuf-mx-5 {
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
+}
+
 .wpuf-mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -2823,6 +2886,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-mb-14 {
   margin-bottom: 3.5rem;
+}
+
+.wpuf-mb-16 {
+  margin-bottom: 4rem;
 }
 
 .wpuf-mb-2 {
@@ -3116,6 +3183,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   height: 80vh;
 }
 
+.wpuf-h-auto {
+  height: auto;
+}
+
 .wpuf-h-full {
   height: 100%;
 }
@@ -3318,6 +3389,14 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   min-width: 0px;
 }
 
+.wpuf-min-w-\[101px\] {
+  min-width: 101px;
+}
+
+.wpuf-min-w-\[158px\] {
+  min-width: 158px;
+}
+
 .wpuf-min-w-full {
   min-width: 100%;
 }
@@ -3348,6 +3427,14 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-max-w-lg {
   max-width: 32rem;
+}
+
+.wpuf-max-w-md {
+  max-width: 28rem;
+}
+
+.wpuf-max-w-xl {
+  max-width: 36rem;
 }
 
 .wpuf-max-w-xs {
@@ -3467,6 +3554,26 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
+@keyframes wpuf-pulse {
+  50% {
+    opacity: .5;
+  }
+}
+
+.wpuf-animate-pulse {
+  animation: wpuf-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes wpuf-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.wpuf-animate-spin {
+  animation: wpuf-spin 1s linear infinite;
+}
+
 .wpuf-cursor-not-allowed {
   cursor: not-allowed;
 }
@@ -3477,6 +3584,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-cursor-wait {
   cursor: wait;
+}
+
+.wpuf-resize-none {
+  resize: none;
 }
 
 .wpuf-list-none {
@@ -3545,6 +3656,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-justify-evenly {
   justify-content: space-evenly;
+}
+
+.wpuf-justify-items-center {
+  justify-items: center;
 }
 
 .wpuf-gap-1 {
@@ -3907,6 +4022,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   border-color: rgb(167 243 208 / var(--tw-border-opacity));
 }
 
+.wpuf-border-emerald-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(5 150 105 / var(--tw-border-opacity));
+}
+
 .wpuf-border-gray-100 {
   --tw-border-opacity: 1;
   border-color: rgb(243 244 246 / var(--tw-border-opacity));
@@ -3961,6 +4081,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   border-color: transparent;
 }
 
+.wpuf-border-white {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity));
+}
+
 .wpuf-border-yellow-200 {
   --tw-border-opacity: 1;
   border-color: rgb(254 240 138 / var(--tw-border-opacity));
@@ -3979,6 +4104,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 .wpuf-border-zinc-300 {
   --tw-border-opacity: 1;
   border-color: rgb(212 212 216 / var(--tw-border-opacity));
+}
+
+.wpuf-border-t-transparent {
+  border-top-color: transparent;
 }
 
 .\!wpuf-bg-green-600 {
@@ -4028,6 +4157,16 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 .wpuf-bg-emerald-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(5 150 105 / var(--tw-bg-opacity));
+}
+
+.wpuf-bg-emerald-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity));
+}
+
+.wpuf-bg-emerald-700 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(4 120 87 / var(--tw-bg-opacity));
 }
 
 .wpuf-bg-emerald-900 {
@@ -4151,6 +4290,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 .wpuf-bg-yellow-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(254 252 232 / var(--tw-bg-opacity));
+}
+
+.wpuf-bg-opacity-50 {
+  --tw-bg-opacity: 0.5;
 }
 
 .wpuf-bg-opacity-75 {
@@ -4851,6 +4994,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-opacity-100 {
   opacity: 1;
+}
+
+.wpuf-opacity-40 {
+  opacity: 0.4;
 }
 
 .wpuf-opacity-50 {
@@ -5707,6 +5854,11 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
   border-color: rgb(29 78 216 / var(--tw-border-opacity));
 }
 
+.hover\:wpuf-border-emerald-600:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(5 150 105 / var(--tw-border-opacity));
+}
+
 .hover\:wpuf-border-gray-300:hover {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
@@ -5742,9 +5894,14 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
   background-color: rgb(29 78 216 / var(--tw-bg-opacity));
 }
 
-.hover\:wpuf-bg-emerald-100:hover {
+.hover\:wpuf-bg-emerald-700:hover {
   --tw-bg-opacity: 1;
-  background-color: rgb(209 250 229 / var(--tw-bg-opacity));
+  background-color: rgb(4 120 87 / var(--tw-bg-opacity));
+}
+
+.hover\:wpuf-bg-emerald-800:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(6 95 70 / var(--tw-bg-opacity));
 }
 
 .hover\:wpuf-bg-gray-100:hover {
@@ -5823,6 +5980,11 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
 .hover\:\!wpuf-text-gray-700:hover {
   --tw-text-opacity: 1 !important;
   color: rgb(55 65 81 / var(--tw-text-opacity)) !important;
+}
+
+.hover\:wpuf-text-emerald-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(4 120 87 / var(--tw-text-opacity));
 }
 
 .hover\:wpuf-text-gray-500:hover {
@@ -5943,9 +6105,9 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
   border-color: transparent !important;
 }
 
-.focus\:wpuf-border-primary:focus {
+.focus\:wpuf-border-emerald-500:focus {
   --tw-border-opacity: 1;
-  border-color: rgb(5 150 105 / var(--tw-border-opacity));
+  border-color: rgb(16 185 129 / var(--tw-border-opacity));
 }
 
 .focus\:wpuf-bg-amber-600:focus {
@@ -6025,6 +6187,11 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
 .focus\:wpuf-ring-blue-200:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(191 219 254 / var(--tw-ring-opacity));
+}
+
+.focus\:wpuf-ring-emerald-200:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(167 243 208 / var(--tw-ring-opacity));
 }
 
 .focus\:wpuf-ring-gray-300:focus {
@@ -6129,6 +6296,10 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
   --tw-shadow: 0 0 #0000;
   --tw-shadow-colored: 0 0 #0000;
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.disabled\:wpuf-cursor-not-allowed:disabled {
+  cursor: not-allowed;
 }
 
 .disabled\:wpuf-opacity-50:disabled {

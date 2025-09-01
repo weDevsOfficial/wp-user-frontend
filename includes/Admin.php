@@ -20,6 +20,7 @@ class Admin {
         $this->container['form_template']         = new Admin\Forms\Post\Templates\Form_Template();
         $this->container['admin_form']            = new Admin\Forms\Admin_Form();
         $this->container['admin_form_handler']    = new Admin\Forms\Admin_Form_Handler();
+        $this->container['ai_form_handler']       = new Admin\Forms\AI_Form_Handler();
         $this->container['admin_subscription']    = new Admin\Admin_Subscription();
         $this->container['admin_installer']       = new Admin\Admin_Installer();
         $this->container['settings']              = new Admin\Admin_Settings();
@@ -54,6 +55,15 @@ class Admin {
      * @return void
      */
     public function create_post_form_from_template() {
+        // Check if this is an AI form template
+        $template_name = isset( $_GET['template'] ) ? sanitize_text_field( wp_unslash( $_GET['template'] ) ) : '';
+        
+        if ( $template_name === 'ai_form' ) {
+            $this->container['ai_form_handler']->handle_ai_form_template();
+            return;
+        }
+        
+        // Otherwise, handle normal templates
         $this->container['form_template']->create_post_form_from_template();
     }
 

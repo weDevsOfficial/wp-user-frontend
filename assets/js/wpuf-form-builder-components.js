@@ -362,7 +362,19 @@ Vue.component('builder-stage-v4-1', {
 
         get_field_name: function (template) {
             return this.field_settings[template].title;
-        }
+        },
+
+        openRepeatFieldPicker(fieldId) {
+            // Find the repeat field component by ref and call openFieldPicker()
+            const refName = 'repeatFieldComponent_' + fieldId;
+            const comp = this.$refs[refName];
+            // Vue 2: $refs[refName] is an array if used in v-for, so get first
+            if (Array.isArray(comp) && comp.length > 0) {
+                comp[0].openFieldPicker();
+            } else if (comp && typeof comp.openFieldPicker === 'function') {
+                comp.openFieldPicker();
+            }
+        },
     }
 });
 
@@ -683,19 +695,33 @@ Vue.component('field-options', {
                     return self.$store.state.form_fields[i];
                 }
 
-                // check if the editing field belong to column field
-                if (self.$store.state.form_fields[i].template === 'column_field') {
-                    var innerColumnFields = self.$store.state.form_fields[i].inner_fields;
+                // check if the editing field belong to column field or repeat field
+                if (self.$store.state.form_fields[i].template.match(/^(column|repeat)_field$/)) {
+                    var innerFields = self.$store.state.form_fields[i].inner_fields;
 
-                    for (const columnFields in innerColumnFields) {
-                        if (innerColumnFields.hasOwnProperty(columnFields)) {
-                            var columnFieldIndex = 0;
+                    // Handle column fields (inner_fields is an object with column keys)
+                    if (self.$store.state.form_fields[i].template === 'column_field') {
+                        for (const columnFields in innerFields) {
+                            if (innerFields.hasOwnProperty(columnFields)) {
+                                var columnFieldIndex = 0;
 
-                            while (columnFieldIndex < innerColumnFields[columnFields].length) {
-                                if (innerColumnFields[columnFields][columnFieldIndex].id === self.editing_field_id) {
-                                    return innerColumnFields[columnFields][columnFieldIndex];
+                                while (columnFieldIndex < innerFields[columnFields].length) {
+                                    if (innerFields[columnFields][columnFieldIndex].id === self.editing_field_id) {
+                                        return innerFields[columnFields][columnFieldIndex];
+                                    }
+                                    columnFieldIndex++;
                                 }
-                                columnFieldIndex++;
+                            }
+                        }
+                    }
+                    
+                    // Handle repeat fields (inner_fields is an array)
+                    if (self.$store.state.form_fields[i].template === 'repeat_field') {
+                        if (Array.isArray(innerFields)) {
+                            for (var repeatFieldIndex = 0; repeatFieldIndex < innerFields.length; repeatFieldIndex++) {
+                                if (innerFields[repeatFieldIndex].id === self.editing_field_id) {
+                                    return innerFields[repeatFieldIndex];
+                                }
                             }
                         }
                     }
@@ -705,6 +731,10 @@ Vue.component('field-options', {
         },
 
         settings: function() {
+            if (!this.editing_form_field) {
+                return [];
+            }
+            
             var settings = [],
                 template = this.editing_form_field.template;
 
@@ -738,6 +768,10 @@ Vue.component('field-options', {
         },
 
         form_field_type_title: function() {
+            if (!this.editing_form_field) {
+                return '';
+            }
+            
             var template = this.editing_form_field.template;
 
             if (_.isFunction(this['form_field_' + template + '_title'])) {
@@ -1272,7 +1306,7 @@ Vue.component('form-column_field', {
             return ( field.recaptcha_type && 'invisible_recaptcha' === field.recaptcha_type ) ? true : false;
         },
 
-        isAllowedInClolumnField: function(field_template) {
+        isAllowedInColumnField: function(field_template) {
             var restrictedFields = ['column_field', 'custom_hidden_field', 'step_start'];
 
             if ( $.inArray(field_template, restrictedFields) >= 0 ) {
@@ -1290,7 +1324,7 @@ Vue.component('form-column_field', {
                 toWhichColumn: data.to_column
             };
 
-            if (this.isAllowedInClolumnField(data.field_template)) {
+            if (this.isAllowedInColumnField(data.field_template)) {
                 Swal.fire({
                     title: '<span class="wpuf-text-primary">Oops...</span>',
                     html: '<p class="wpuf-text-gray-500 wpuf-text-xl wpuf-m-0 wpuf-p-0">You cannot add this field as inner column field</p>',
@@ -1610,7 +1644,7 @@ Vue.component('form-fields', {
     mounted: function () {
         // bind jquery ui draggable
         $(this.$el).find('.panel-form-field-buttons .button').draggable({
-            connectToSortable: '#form-preview-stage, #form-preview-stage .wpuf-form, .wpuf-column-inner-fields .wpuf-column-fields-sortable-list',
+            connectToSortable: '#form-preview-stage, #form-preview-stage .wpuf-form, .wpuf-column-inner-fields .wpuf-column-fields-sortable-list, .wpuf-repeat-fields-sortable-list',
             helper: 'clone',
             revert: 'invalid',
             cancel: '.button-faded',
@@ -1709,7 +1743,7 @@ Vue.component('form-fields-v4-1', {
             });
 
             buttons.draggable({
-                connectToSortable: '#form-preview-stage, #form-preview-stage .wpuf-form, .wpuf-column-inner-fields .wpuf-column-fields-sortable-list',
+                connectToSortable: '#form-preview-stage, #form-preview-stage .wpuf-form, .wpuf-column-inner-fields .wpuf-column-fields-sortable-list, .wpuf-repeat-fields-sortable-list',
                 helper: 'clone',
                 revert: 'invalid',
                 cancel: '.button-faded',

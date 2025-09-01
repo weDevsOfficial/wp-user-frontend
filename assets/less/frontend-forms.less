@@ -516,15 +516,21 @@ ul.wpuf-form {
                 }
             }
 
-            table.wpuf-repeatable-field {
+            .wpuf-repeatable-field {
                 border-collapse: collapse;
+
+                &.wpuf-field-columns {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+
+                .wpuf-column-field-inner-columns {
+                    width: 100%;
+                }
 
                 & * {
                     box-sizing: border-box;
-                }
-
-                input {
-                    width: 100%;
                 }
 
                 .wpuf-repeater-buttons {
@@ -1979,7 +1985,6 @@ ul.wpuf-form{
                 float: none;
                 display: flex;
                 width: 100%;
-                overflow: hidden;
 
                 .wpuf-column-inner-fields{
                     padding: 0 5px 0 0;

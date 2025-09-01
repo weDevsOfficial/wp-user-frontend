@@ -618,41 +618,44 @@ trait FieldableTrait {
                     break;
 
                 case 'repeat':
-                    $repeater_value = wp_unslash( $_POST[ $value['name'] ] ); // WPCS: sanitization ok.
-
-                    // if it is a multi column repeat field
-                    if ( isset( $value['multiple'] ) && $value['multiple'] == 'true' ) {
-
-                        // if there's any items in the array, process it
-                        if ( $repeater_value ) {
-                            $ref_arr = array();
-                            $cols    = count( $value['columns'] );
-                            $values  = array_values( $repeater_value );
-                            $first   = array_shift( $values ); //first element
-                            $rows    = count( $first );
-
-                            // loop through columns
-                            for ( $i = 0; $i < $rows; $i++ ) {
-
-                                // loop through the rows and store in a temp array
-                                $temp = array();
-                                for ( $j = 0; $j < $cols; $j++ ) {
-                                    $temp[] = $repeater_value[ $j ][ $i ];
+                    $repeater_value = isset( $_POST[ $value['name'] ] ) ? wp_unslash( $_POST[ $value['name'] ] ) : [];
+                    
+                    // If this repeat field has inner_fields and the value is an array of rows (ACF-style)
+                    if ( ! empty( $value['inner_fields'] ) && is_array(
+                            $repeater_value
+                        ) && isset( $repeater_value[0] ) && is_array( $repeater_value[0] ) ) {
+                        $rows = [];
+                        foreach ( $repeater_value as $row ) {
+                            $sanitized_row = [];
+                            foreach ( $value['inner_fields'] as $inner_field ) {
+                                $fname = $inner_field['name'];
+                                
+                                // Handle different field types appropriately
+                                if ( isset( $row[ $fname ] ) ) {
+                                    if ( in_array( $inner_field['template'], [ 'checkbox_field', 'multiple_select' ] ) ) {
+                                        // For checkbox and multiselect, keep as array and sanitize each element
+                                        if ( is_array( $row[ $fname ] ) ) {
+                                            $sanitized_row[ $fname ] = array_map( 'sanitize_text_field', $row[ $fname ] );
+                                        } else {
+                                            $sanitized_row[ $fname ] = sanitize_text_field( $row[ $fname ] );
+                                        }
+                                    } else {
+                                        // For other fields, sanitize as string
+                                        $sanitized_row[ $fname ] = sanitize_text_field( $row[ $fname ] );
+                                    }
+                                } else {
+                                    $sanitized_row[ $fname ] = '';
                                 }
-
-                                // store all fields in a row with self::$separator separated
-                                $ref_arr[] = implode( self::$separator, $temp );
                             }
-
-                            // now, if we found anything in $ref_arr, store to $multi_repeated
-                            if ( $ref_arr ) {
-                                $multi_repeated[ $value['name'] ] = array_slice( $ref_arr, 0, $rows );
-                            }
+                            $rows[] = $sanitized_row;
                         }
+                        $meta_key_value[ $value['name'] ] = $rows;
                     } else {
-                        $meta_key_value[ $value['name'] ] = implode( self::$separator, $repeater_value );
+                        // Fallback to old logic for single-field repeaters or legacy structure
+                        $meta_key_value[ $value['name'] ] = is_array( $repeater_value ) ? implode(
+                            self::$separator, $repeater_value
+                        ) : '';
                     }
-
                     break;
 
                 case 'address':

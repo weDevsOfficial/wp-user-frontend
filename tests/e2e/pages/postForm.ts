@@ -7,8 +7,6 @@ import { faker } from '@faker-js/faker';
 import { DownloadsForm, PostForm, ProductForm, Urls } from '../utils/testData';
 //import { TestData } from '../tests/testdata';
 
-
-
 export class PostFormPage extends Base {
 
     constructor(page: Page) {
@@ -243,7 +241,7 @@ export class PostFormPage extends Base {
         await this.page.waitForLoadState('domcontentloaded', { timeout: 10000 });
         await this.assertionValidate(Selectors.postForms.postFormsFrontendCreate.uploads('2'));
         //Enter Repeat Field
-        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postRepeatFieldFormsFE, PostForm.repeatField = faker.word.words(1));
+        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postRepeatFieldFormsFE, PostForm.repeatField = this.generateWordWithMinLength(5));
         console.log(PostForm.repeatField);
         //Enter Date / Time
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.dateTimeSelect);

@@ -2,8 +2,12 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import { expect, type Page } from '@playwright/test';
 import { Urls } from '../utils/testData';
+import { faker } from '@faker-js/faker';
 
 export class Base {
+    static generateWordWithMinLength(arg0: number): string {
+        throw new Error('Method not implemented.');
+    }
     readonly page: Page;
     readonly wpAdminPage: string = Urls.baseUrl + '/wp-admin/';
     readonly pluginsPage: string = Urls.baseUrl + '/wp-admin/plugins.php';
@@ -43,6 +47,11 @@ export class Base {
     readonly eddTagPage: string = Urls.baseUrl + '/wp-admin/edit-tags.php?taxonomy=download_tag&post_type=download';
     readonly addDownloadsPage: string = Urls.baseUrl + '/add-downloads/';
     readonly downloadsPage: string = Urls.baseUrl + '/wp-admin/edit.php?post_type=download';
+    readonly dokanVendorRegistrationPage: string = Urls.baseUrl + '/reg-vendor/';
+    readonly dokanVendorStorePage: string = Urls.baseUrl + '/wp-admin/admin.php?page=dokan#/vendors';
+    readonly wcVendorRegistrationPage: string = Urls.baseUrl + '/reg-wc-vendor/';
+    readonly wcVendorsPage: string = Urls.baseUrl + '/wp-admin/admin.php?page=wcv-all-vendors#/';
+    readonly wcfmMemberRegistrationPage: string = Urls.baseUrl + '/reg-member/';
 
     constructor(page: Page) {
         this.page = page;
@@ -276,5 +285,14 @@ export class Base {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to check element text ${locator}: ${error}`);
             return false;
         }
+    }
+
+    // Helper function to generate words with minimum length
+    generateWordWithMinLength(minLength: number = 5): string {
+        let word = faker.word.words(1);
+        while (word.length < minLength) {
+            word = faker.word.words(1);
+        }
+        return word;
     }
 }

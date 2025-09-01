@@ -24,17 +24,13 @@ class Form_Field_Radio extends Form_Field_Checkbox {
      * @return void
      */
     public function render( $field_settings, $form_id, $type = 'post', $post_id = null ) {
-        $selected = isset( $field_settings['selected'] ) ? $field_settings['selected'] : '';
-
         if ( isset( $post_id ) && $post_id != '0'  ) {
             if ( $this->is_meta( $field_settings ) ) {
                 $selected = $this->get_meta( $post_id, $field_settings['name'], $type );
             }
+        } else {
+            $selected = isset( $field_settings['selected'] ) ? $field_settings['selected'] : '';
         }
-        // else {
-
-        //     $selected = isset( $field_settings['selected'] ) ? $field_settings['selected'] : '';
-        // }
 
         $this->field_print_label( $field_settings, $form_id );
 
@@ -51,6 +47,7 @@ class Form_Field_Radio extends Form_Field_Checkbox {
                         <label <?php echo $field_settings['inline'] == 'yes' ? 'class="wpuf-radio-inline"' : 'class="wpuf-radio-block"'; ?>>
                             <input
                                 name="<?php echo esc_attr( $field_settings['name'] ); ?>"
+                                id="<?php echo esc_attr( $field_settings['name'] ); ?>"
                                 class="<?php echo esc_attr( 'wpuf_' . $field_settings['name'] . '_' . $form_id ); ?>"
                                 type="radio"
                                 data-type="radio"

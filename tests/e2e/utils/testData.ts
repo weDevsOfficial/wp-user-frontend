@@ -1,7 +1,4 @@
 import { faker } from '@faker-js/faker';
-
-
-
 /**---------------------------------*/
 /**-------DATA_SET: Base Url-------*/
 /**-------------------------------*/
@@ -198,7 +195,16 @@ const RegistrationForm: {
     rfLastName: string;
     rfUsername: string;
     rfEmail: string;
-    rfPassword: string;
+    rfDisplayName: string;
+    rfNickname: string;
+    rfWebsite: string;
+    rfBiographicalInfo: string;
+    rfAvatar: string;
+    rfProfilePhoto: string;
+    rfXtwitter: string;
+    rfFacebook: string;
+    rfLinkedIn: string;
+    rfInstagram: string;
 } = {
     //Registration Form Titles
     rfPostName1: faker.lorem.sentence(2),
@@ -210,9 +216,133 @@ const RegistrationForm: {
     rfLastName: rfLastName,
     rfUsername: faker.internet.displayName(),
     rfEmail: faker.internet.email(),
-    rfPassword: faker.internet.password()
+    rfDisplayName: faker.internet.displayName(),
+    rfNickname: faker.internet.displayName(),
+    rfWebsite: faker.internet.url(),
+    rfBiographicalInfo: faker.lorem.sentence(5),
+    rfAvatar: 'uploadeditems/avatar.png',
+    rfProfilePhoto: 'uploadeditems/profile_photo.jpg',
+    rfXtwitter: '',
+    rfFacebook: '',
+    rfLinkedIn: '',
+    rfInstagram: '',
 };
 
+
+/**------------------------------------------*/
+/**-------DATA_SET: Vendor Registration Forms-------*/
+/**----------------------------------------*/
+const VendorRegistrationForm: {
+    // Dokan Vendor Registration Form
+    dokanVendorFormName: string;
+    dokanVendorPageTitle: string;
+    dokanVendorEmail: string;
+    dokanVendorFirstName: string;
+    dokanVendorLastName: string;
+    dokanShopName: string;
+    dokanVendorPassword: string;
+    dokanShopUrl: string;
+    dokanVendorStoreLogo: string;
+    dokanVendorStoreBanner: string;
+    dokanVendorPhone: string;
+    dokanVendorStreet1Address: string;
+    dokanVendorStreet2Address: string;
+    dokanVendorCity: string;
+    dokanVendorState: string;
+    dokanVendorZip: string;
+    dokanVendorCountry: string;
+    dokanVendorGoogleMaps: string;
+
+    // WC Vendors Registration Form
+    wcVendorFormName: string;
+    wcVendorPageTitle: string;
+    wcVendorEmail: string;
+    wcVendorpaypalName: string;
+    wcVendorShopName: string;
+    wcVendorSellerInfo: string;
+    wcVendorShortDescription: string;
+    wcVendorPassword: string;
+    wcVendorConfirmPassword: string;
+
+    // WCFM Membership Registration Form
+    wcfmMemberFormName: string;
+    wcfmMemberPageTitle: string;
+    wcfmMemberEmail: string;
+    wcfmMemberPassword: string;
+    wcfmMemberWebsite: string;
+    description: string;
+    wcfmMemberPhone: string;
+    wcfmMemberAddress: string;
+    wcfmMemberAddress2: string;
+    wcfmMemberCity: string;
+    wcfmMemberState: string;
+    wcfmMemberZip: string;
+    wcfmMemberCountry: string;
+    wcfmMemberStoreName: string;
+    wcfmMemberStoreLogo: string;
+    wcfmMemberStoreBanner: string;
+    wcfmMemberFacebook: string;
+    wcfmMemberTwitter: string;
+    wcfmMemberGoogle: string;
+    wcfmMemberLiknkedin: string;
+    wcfmMemberYoutube: string;
+    wcfmMemberInstagram: string;
+} = {
+    // Dokan Vendor Registration Form
+    dokanVendorFormName: 'Dokan Vendor Registration Form',
+    dokanVendorPageTitle: 'Reg Vendor',
+    dokanVendorEmail: '',
+    dokanVendorFirstName: '',
+    dokanVendorLastName: '',
+    dokanShopName: '',
+    dokanVendorPassword: '',
+    dokanShopUrl: '',
+    dokanVendorStoreLogo: 'uploadeditems/store_logo.png',
+    dokanVendorStoreBanner: 'uploadeditems/store_banner.png',
+    dokanVendorPhone: '',
+    dokanVendorStreet1Address: 'Mirpur',
+    dokanVendorStreet2Address: 'DOHS',
+    dokanVendorCity: 'Capital Dhaka',
+    dokanVendorState: 'Dhaka',
+    dokanVendorZip: '1216',
+    dokanVendorCountry: 'Bangladesh',
+    dokanVendorGoogleMaps: 'Dhaka, Bangladesh',
+
+    // WC Vendors Registration Form
+    wcVendorFormName: 'WC Vendors Registration Form',
+    wcVendorPageTitle: 'Reg WC Vendor',
+    wcVendorEmail: '',
+    wcVendorpaypalName: '',
+    wcVendorShopName: '',
+    wcVendorSellerInfo: '',
+    wcVendorShortDescription: '',
+    wcVendorPassword: '',
+    wcVendorConfirmPassword: '',
+
+    // WCFM Membership Registration Form
+    wcfmMemberFormName: 'WCFM Membership Registration Form',
+    wcfmMemberPageTitle: 'Reg Member',
+    wcfmMemberEmail: '',
+    wcfmMemberPassword: '',
+    wcfmMemberWebsite: '',
+    description: '',
+    wcfmMemberPhone: '',
+    wcfmMemberAddress: 'Mirpur',
+    wcfmMemberAddress2: 'DOHS',
+    wcfmMemberCity: 'Capital Dhaka',
+    wcfmMemberState: 'Dhaka',
+    wcfmMemberZip: '1216',
+    wcfmMemberCountry: 'Bangladesh',
+    wcfmMemberStoreName: '',
+    wcfmMemberStoreLogo: 'uploadeditems/wcfm_logo.jpg',
+    wcfmMemberStoreBanner: 'uploadeditems/wcfm_banner.jpg',
+    wcfmMemberFacebook: '',
+    wcfmMemberTwitter: '',
+    wcfmMemberGoogle: '',
+    wcfmMemberLiknkedin: '',
+    wcfmMemberYoutube: '',
+    wcfmMemberInstagram: '',
+};
 
 /**------------------------------*/
 /**-------Export DATA_SET-------*/
@@ -224,4 +354,5 @@ export {
     ProductForm,
     DownloadsForm,
     RegistrationForm,
+    VendorRegistrationForm,
 };

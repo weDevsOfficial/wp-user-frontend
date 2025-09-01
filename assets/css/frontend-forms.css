@@ -464,24 +464,29 @@ body ul.wpuf-form li .wpuf-fields .wpuf-fields-list.wpuf-list-inline li {
   padding-left: 5px;
   padding-right: 5px;
 }
-body ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field {
+body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field {
   border-collapse: collapse;
 }
-body ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field * {
-  box-sizing: border-box;
+body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field.wpuf-field-columns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-body ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field input {
+body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field .wpuf-column-field-inner-columns {
   width: 100%;
 }
-body ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field .wpuf-repeater-buttons {
+body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field * {
+  box-sizing: border-box;
+}
+body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field .wpuf-repeater-buttons {
   width: 75px;
   padding-left: 12px;
 }
-body ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field .wpuf-repeater-buttons img {
+body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field .wpuf-repeater-buttons img {
   width: 100%;
   height: auto;
 }
-body ul.wpuf-form li .wpuf-fields table.wpuf-repeatable-field .wpuf-repeater-buttons i {
+body ul.wpuf-form li .wpuf-fields .wpuf-repeatable-field .wpuf-repeater-buttons i {
   display: inline-block;
   width: 15px;
   height: 15px;
@@ -1708,7 +1713,6 @@ body ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-col
   float: none;
   display: flex;
   width: 100%;
-  overflow: hidden;
 }
 body ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .wpuf-column-inner-fields {
   padding: 0 5px 0 0;

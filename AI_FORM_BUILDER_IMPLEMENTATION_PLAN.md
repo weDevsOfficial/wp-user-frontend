@@ -3,11 +3,17 @@
 ## 📋 Overview
 This document outlines the comprehensive implementation plan for integrating AI-powered form generation into the WP User Frontend plugin. The system will allow users to generate forms using natural language prompts with support for multiple AI providers where users can bring their own API keys.
 
-## ✅ Leveraging Existing Composer Setup + WPForms Analysis
-WPUF already has Composer configured with PSR-4 autoloading. We'll leverage the existing setup while learning from WPForms' approach:
+## ✅ Leveraging Existing Composer Setup + WordPress PHP AI Client
+WPUF already has Composer configured with PSR-4 autoloading. We'll leverage the existing setup while using the official WordPress PHP AI Client SDK:
 - **Existing Composer**: `/vendor/autoload.php` already loaded in main plugin file
 - **PSR-4 Mapping**: `WeDevs\Wpuf\` → `includes/` and `WeDevs\Wpuf\Lib\` → `Lib/`
 - **Lib Folder**: Already contains third-party packages (Appsero, Gateway, etc.)
+
+### 🎯 **Lightweight Implementation Approach**
+- **WordPress Native HTTP API**: Using `wp_remote_post()` and `wp_safe_remote_request()`
+- **No External Dependencies**: Zero composer packages beyond existing WPUF setup
+- **Provider Agnostic**: Custom implementation supporting multiple AI providers
+- **BYOK Compatible**: Users can bring their own API keys for any provider
 
 ### 📊 **WPForms Analysis Insights:**
 - **Centralized Service**: WPForms uses their own API (`wpformsapi.com`) - users are locked to their service

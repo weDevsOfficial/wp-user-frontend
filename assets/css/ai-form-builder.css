@@ -4406,6 +4406,10 @@ details.wpuf-collapse summary::-webkit-details-marker {
   height: 4rem;
 }
 
+.wpuf-h-2 {
+  height: 0.5rem;
+}
+
 .wpuf-h-3 {
   height: 0.75rem;
 }
@@ -4498,6 +4502,10 @@ details.wpuf-collapse summary::-webkit-details-marker {
 
 .wpuf-min-h-16 {
   min-height: 4rem;
+}
+
+.wpuf-min-h-\[100px\] {
+  min-height: 100px;
 }
 
 .wpuf-min-h-\[416px\] {
@@ -5325,6 +5333,16 @@ details.wpuf-collapse summary::-webkit-details-marker {
   border-color: transparent !important;
 }
 
+.wpuf-border-blue-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(191 219 254 / var(--tw-border-opacity));
+}
+
+.wpuf-border-blue-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(147 197 253 / var(--tw-border-opacity));
+}
+
 .wpuf-border-blue-500 {
   --tw-border-opacity: 1;
   border-color: rgb(59 130 246 / var(--tw-border-opacity));
@@ -5388,6 +5406,16 @@ details.wpuf-collapse summary::-webkit-details-marker {
 .wpuf-border-primary {
   --tw-border-opacity: 1;
   border-color: rgb(5 150 105 / var(--tw-border-opacity));
+}
+
+.wpuf-border-purple-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(216 180 254 / var(--tw-border-opacity));
+}
+
+.wpuf-border-red-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(254 202 202 / var(--tw-border-opacity));
 }
 
 .wpuf-border-red-500 {
@@ -5470,6 +5498,16 @@ details.wpuf-collapse summary::-webkit-details-marker {
 
 .wpuf-bg-black\/25 {
   background-color: rgb(0 0 0 / 0.25);
+}
+
+.wpuf-bg-blue-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity));
+}
+
+.wpuf-bg-blue-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity));
 }
 
 .wpuf-bg-blue-500 {
@@ -5575,6 +5613,11 @@ details.wpuf-collapse summary::-webkit-details-marker {
 .wpuf-bg-primaryHover {
   --tw-bg-opacity: 1;
   background-color: rgb(16 185 129 / var(--tw-bg-opacity));
+}
+
+.wpuf-bg-purple-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(250 245 255 / var(--tw-bg-opacity));
 }
 
 .wpuf-bg-red-100 {
@@ -6040,6 +6083,10 @@ details.wpuf-collapse summary::-webkit-details-marker {
   vertical-align: middle;
 }
 
+.wpuf-font-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
 .wpuf-font-sans {
   font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
@@ -6222,6 +6269,16 @@ details.wpuf-collapse summary::-webkit-details-marker {
   color: rgb(0 0 0 / var(--tw-text-opacity));
 }
 
+.wpuf-text-blue-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity));
+}
+
+.wpuf-text-blue-800 {
+  --tw-text-opacity: 1;
+  color: rgb(30 64 175 / var(--tw-text-opacity));
+}
+
 .wpuf-text-emerald-200 {
   --tw-text-opacity: 1;
   color: rgb(167 243 208 / var(--tw-text-opacity));
@@ -6240,6 +6297,11 @@ details.wpuf-collapse summary::-webkit-details-marker {
 .wpuf-text-emerald-800 {
   --tw-text-opacity: 1;
   color: rgb(6 95 70 / var(--tw-text-opacity));
+}
+
+.wpuf-text-gray-300 {
+  --tw-text-opacity: 1;
+  color: rgb(209 213 219 / var(--tw-text-opacity));
 }
 
 .wpuf-text-gray-400 {
@@ -6307,6 +6369,16 @@ details.wpuf-collapse summary::-webkit-details-marker {
   color: rgb(5 150 105 / var(--tw-text-opacity));
 }
 
+.wpuf-text-purple-500 {
+  --tw-text-opacity: 1;
+  color: rgb(168 85 247 / var(--tw-text-opacity));
+}
+
+.wpuf-text-purple-600 {
+  --tw-text-opacity: 1;
+  color: rgb(147 51 234 / var(--tw-text-opacity));
+}
+
 .wpuf-text-purple-800 {
   --tw-text-opacity: 1;
   color: rgb(107 33 168 / var(--tw-text-opacity));
@@ -6355,6 +6427,11 @@ details.wpuf-collapse summary::-webkit-details-marker {
 .wpuf-text-yellow-500 {
   --tw-text-opacity: 1;
   color: rgb(234 179 8 / var(--tw-text-opacity));
+}
+
+.wpuf-text-yellow-600 {
+  --tw-text-opacity: 1;
+  color: rgb(202 138 4 / var(--tw-text-opacity));
 }
 
 .wpuf-text-yellow-700 {

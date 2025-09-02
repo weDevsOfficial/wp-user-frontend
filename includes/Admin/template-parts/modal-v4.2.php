@@ -181,7 +181,7 @@ if ( ! empty( $registry ) ) {
                         <div class="template-box wpuf-template-item" data-category="<?php echo esc_attr($blank_form_category); ?>" data-title="blank form" style="width: calc(25% - 12px);">
                             <div class="wpuf-relative wpuf-group wpuf-shadow-base">
                                 <img src="<?php echo esc_attr( WPUF_ASSET_URI . '/images/templates/blank.svg' ); ?>" alt="Blank Form">
-                                <div class="wpuf-absolute wpuf-opacity-0 group-hover:wpuf-opacity-70 wpuf-transition-all wpuf-z-10 wpuf-text-center wpuf-flex wpuf-flex-col wpuf-justify-center wpuf-items-center wpuf-bg-emerald-900 wpuf-top-0 wpuf-left-0 wpuf-text-white wpuf-p-10 wpuf-rounded-md"></div>
+                                <div class="wpuf-absolute wpuf-opacity-0 group-hover:wpuf-opacity-70 wpuf-transition-all wpuf-z-10 wpuf-text-center wpuf-flex wpuf-flex-col wpuf-justify-center wpuf-items-center wpuf-bg-emerald-900 wpuf-h-full wpuf-w-full wpuf-top-0 wpuf-left-0 wpuf-text-white wpuf-p-10 wpuf-rounded-md"></div>
                                 <a href="<?php echo esc_url( $blank_form_url ); ?>" class="wpuf-btn-secondary wpuf-w-max wpuf-absolute wpuf-top-[50%] wpuf-left-[50%] wpuf--translate-y-[50%] wpuf--translate-x-[50%] wpuf-z-20 wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-border-transparent focus:wpuf-shadow-none" title="<?php echo esc_attr( 'Blank Form' ); ?>">
                                     <?php esc_html_e( 'Create Form', 'wp-user-frontend' ); ?>
                                 </a>

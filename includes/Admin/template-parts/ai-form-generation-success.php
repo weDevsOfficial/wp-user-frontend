@@ -13,42 +13,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 $form_id = isset( $_GET['form_id'] ) && ! empty( $_GET['form_id'] ) ? sanitize_text_field( wp_unslash( $_GET['form_id'] ) ) : '';
 $form_title = isset( $_GET['form_title'] ) && ! empty( $_GET['form_title'] ) ? sanitize_text_field( wp_unslash( $_GET['form_title'] ) ) : 'Portfolio Submission';
 
-// Remove admin notices
-remove_all_actions( 'admin_notices' );
-remove_all_actions( 'all_admin_notices' );
-
 // Load WordPress admin but hide header/footer  
 require_once ABSPATH . 'wp-admin/admin-header.php';
 ?>
 
 <style>
-    
-    /* Adjust body for no admin bar */
-    html.wp-toolbar {
-        padding-top: 0 !important;
-    }
-    
-    body.wp-admin {
-        margin: 0;
-        padding: 0;
-    }
-    
-    /* Adjust main content area to account for sidebar */
-    #wpcontent {
-        padding: 0 !important;
-        margin-top: 0 !important;
-    }
-    
-    #wpbody-content {
-        padding: 20px !important;
-        padding-bottom: 80px !important; /* Increased to account for fixed footer */
-    }
-    
-    /* Hide notices */
-    .notice, .error, .updated {
-        display: none !important;
-    }
-    
     /* Custom styles for our content */
     .wpuf-success-content {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -79,8 +48,8 @@ require_once ABSPATH . 'wp-admin/admin-header.php';
     .wpuf-chat-box {
         width: 100%;
         height: auto;
-        background: white;
-        border: 1px solid #e5e7eb;
+        background: #F8FAFC;
+        border: 1px solid #E2E8F0;
         border-radius: 8px;
         padding: 36px;
         display: flex;
@@ -211,6 +180,37 @@ require_once ABSPATH . 'wp-admin/admin-header.php';
         resize: vertical;
     }
     
+    /* Custom scrollbar styling */
+    .wpuf-chat-scrollable::-webkit-scrollbar {
+        width: 2px;
+    }
+    
+    .wpuf-chat-scrollable::-webkit-scrollbar-track {
+        background: #f3f4f6;
+        border-radius: 2px;
+    }
+    
+    .wpuf-chat-scrollable::-webkit-scrollbar-thumb {
+        background: #34D399;
+        border-radius: 2px;
+    }
+    
+    .wpuf-chat-scrollable::-webkit-scrollbar-thumb:hover {
+        background: #10B981;
+    }
+    
+    /* Firefox scrollbar styling */
+    .wpuf-chat-scrollable {
+        scrollbar-width: thin;
+        scrollbar-color: #34D399 #f3f4f6;
+    }
+    
+    /* Chat input focus style */
+    .wpuf-chat-input:focus {
+        border-color: #34D399 !important;
+        box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.1);
+    }
+    
     /* Mobile responsiveness */
     @media (max-width: 782px) {
         #adminmenumain {
@@ -227,6 +227,40 @@ require_once ABSPATH . 'wp-admin/admin-header.php';
     <div class="wpuf-ai-form-container">
         <div class="wpuf-ai-form-content wpuf-bg-white wpuf-rounded-lg">
             
+            <!-- Header Section -->
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px 0; margin-bottom: 24px;">
+                <!-- Left Side - Logo and Text -->
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="18" cy="18" r="18" fill="#10B981"/>
+                        <path d="M19.8822 18.2098V20.3821C19.8822 21.6281 18.8677 22.6426 17.6217 22.6426C16.3757 22.6426 15.3612 21.6281 15.3612 20.3821V18.2098H12.8747V20.3821C12.8747 23.001 15.0029 25.1292 17.6217 25.1292C20.2406 25.1292 22.3688 23.001 22.3688 20.3821V18.2098H19.8822Z" fill="white"/>
+                        <path d="M15.368 11H9L9.74982 13.4865H15.368V11Z" fill="white"/>
+                        <path d="M23.8896 11H19.8924V13.4865H23.8896C24.2315 13.4865 24.5127 13.7622 24.5127 14.1096C24.5127 14.4514 24.237 14.7271 23.8896 14.7271H19.8924V17.2136H23.8896C25.6043 17.2136 26.9992 15.8187 26.9992 14.104C26.9992 12.3949 25.6043 11 23.8896 11Z" fill="white"/>
+                        <path d="M15.3767 14.7296H10.2548L11.0046 17.2161H15.3767V14.7296Z" fill="white"/>
+                    </svg>
+                    <div>
+                        <h1 style="font-size: 24px; font-weight: 600; color: #1f2937; margin: 0;"><?php esc_html_e( 'AI Form Builder', 'wp-user-frontend' ); ?></h1>
+                        <p style="font-size: 14px; color: #6b7280; margin: 0;"><?php esc_html_e( 'Generate forms instantly with AI assistance', 'wp-user-frontend' ); ?></p>
+                    </div>
+                </div>
+                
+                <!-- Right Side - Buttons -->
+                <div style="display: flex; gap: 12px;">
+                    <button style="width: 153px; height: 42px; background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 6px; padding: 9px 17px 9px 17px; display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 14px; font-weight: 500; color: #374151; cursor: pointer; transition: background-color 0.2s;">
+                        <?php esc_html_e( 'Regenerate', 'wp-user-frontend' ); ?>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13.3523 7.79032H17.5128V7.78884M2.48682 16.3703V12.2098M2.48682 12.2098L6.64735 12.2098M2.48682 12.2098L5.13756 14.8622C5.963 15.6892 7.01055 16.3166 8.22034 16.6408C11.8879 17.6235 15.6577 15.447 16.6405 11.7794M3.35898 8.22068C4.3417 4.5531 8.11152 2.37659 11.7791 3.35932C12.9889 3.68348 14.0365 4.31091 14.8619 5.1379L17.5128 7.78884M17.5128 3.62982V7.78884" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button style="width: 170px; height: 42px; background: #059669; border: none; border-radius: 6px; padding: 9px 15px 9px 17px; display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 14px; font-weight: 500; color: white; cursor: pointer; transition: background-color 0.2s;" @click="editForm">
+                        <?php esc_html_e( 'Edit in Builder', 'wp-user-frontend' ); ?>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16.8898 3.11019L17.4201 2.57986V2.57986L16.8898 3.11019ZM5.41667 17.5296V18.2796C5.61558 18.2796 5.80634 18.2005 5.947 18.0599L5.41667 17.5296ZM2.5 17.5296H1.75C1.75 17.9438 2.08579 18.2796 2.5 18.2796V17.5296ZM2.5 14.5537L1.96967 14.0233C1.82902 14.164 1.75 14.3548 1.75 14.5537H2.5ZM13.9435 3.11019L14.4738 3.64052C14.9945 3.11983 15.8387 3.11983 16.3594 3.64052L16.8898 3.11019L17.4201 2.57986C16.3136 1.47338 14.5196 1.47338 13.4132 2.57986L13.9435 3.11019ZM16.8898 3.11019L16.3594 3.64052C16.8801 4.16122 16.8801 5.00544 16.3594 5.52614L16.8898 6.05647L17.4201 6.5868C18.5266 5.48032 18.5266 3.68635 17.4201 2.57986L16.8898 3.11019ZM16.8898 6.05647L16.3594 5.52614L4.88634 16.9992L5.41667 17.5296L5.947 18.0599L17.4201 6.5868L16.8898 6.05647ZM5.41667 17.5296V16.7796H2.5V17.5296V18.2796H5.41667V17.5296ZM13.9435 3.11019L13.4132 2.57986L1.96967 14.0233L2.5 14.5537L3.03033 15.084L14.4738 3.64052L13.9435 3.11019ZM2.5 14.5537H1.75V17.5296H2.5H3.25V14.5537H2.5ZM12.6935 4.36019L12.1632 4.89052L15.1094 7.8368L15.6398 7.30647L16.1701 6.77614L13.2238 3.82986L12.6935 4.36019Z" fill="white"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
             <div class="wpuf-grid-container">
                 <!-- Left Side - Chat Box -->
                 <div class="wpuf-chat-box">
@@ -235,39 +269,108 @@ require_once ABSPATH . 'wp-admin/admin-header.php';
                         <svg style="width: 20px; height: 20px; color: #6b7280;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M8 12H16M8 16H13M7 20L3 16V4C3 3.44772 3.44772 3 4 3H20C20.5523 3 21 3.44772 21 4V16C21 16.5523 20.5523 17 20 17H7.58579C7.21071 17 6.85196 17.1464 6.58579 17.4126L7 20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
-                        <h2 class="wpuf-success-title"><?php esc_html_e( 'Form Generation Chat', 'wp-user-frontend' ); ?></h2>
+                        <h2 class="wpuf-success-title"><?php esc_html_e( 'WPUF Form Generation Chat', 'wp-user-frontend' ); ?></h2>
                     </div>
-                    <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #059669; font-weight: 500;">
-                        <div style="width: 8px; height: 8px; background: #059669; border-radius: 50%;"></div>
-                        <?php esc_html_e( 'Completed', 'wp-user-frontend' ); ?>
-                    </span>
                 </div>
                 
-                <div style="flex: 1; display: flex; flex-direction: column; gap: 24px; overflow-y: auto; padding-right: 8px;">
-                    <!-- User Message -->
+                <div class="wpuf-chat-scrollable" style="flex: 1; overflow-y: auto; padding-right: 8px;">
+                    <div style="display: flex; flex-direction: column; gap: 24px;">
+                    
+                    <!-- Chat 1: User Message -->
                     <div style="display: flex; flex-direction: row-reverse; gap: 12px;">
-                        <div style="width: 28px; height: 28px; background: #3b82f6; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <svg style="width: 16px; height: 16px; color: white;" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                            </svg>
-                        </div>
                         <div style="flex: 1; min-width: 0; text-align: right;">
-                            <div style="background: #3b82f6; color: white; border-radius: 16px; padding: 12px 16px; margin-bottom: 4px;">
-                                <p style="font-size: 14px; line-height: 1.5; margin: 0;">{{ formTitle }}</p>
+                            <div style="background: #ECFDF5; border: 1px solid #34D399; border-top-left-radius: 30px; border-bottom-right-radius: 30px; border-bottom-left-radius: 30px; padding: 12px 20px; margin-bottom: 4px; color: #1f2937;">
+                                <p style="font-size: 14px; line-height: 1.5; margin: 0;">Create a contact form</p>
                             </div>
-                            <span style="font-size: 12px; color: #6b7280;"><?php esc_html_e( 'Just now', 'wp-user-frontend' ); ?></span>
                         </div>
                     </div>
                     
-                    <!-- AI Response -->
+                    <!-- Chat 2: AI Response -->
                     <div style="display: flex; gap: 12px;">
-                        <div style="width: 28px; height: 28px; background: #059669; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <svg style="width: 16px; height: 16px; color: white;" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1.5V3.5L21 9ZM3 5.5L9 11H3V5.5ZM3 19V13H9L15 19H3ZM21 19C21 19 21 19 21 19L15 13.5V15.5L21 19Z"/>
-                            </svg>
-                        </div>
+                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
+                            <circle cx="18" cy="18" r="18" fill="#10B981"/>
+                            <path d="M19.8822 18.2098V20.3821C19.8822 21.6281 18.8677 22.6426 17.6217 22.6426C16.3757 22.6426 15.3612 21.6281 15.3612 20.3821V18.2098H12.8747V20.3821C12.8747 23.001 15.0029 25.1292 17.6217 25.1292C20.2406 25.1292 22.3688 23.001 22.3688 20.3821V18.2098H19.8822Z" fill="white"/>
+                            <path d="M15.368 11H9L9.74982 13.4865H15.368V11Z" fill="white"/>
+                            <path d="M23.8896 11H19.8924V13.4865H23.8896C24.2315 13.4865 24.5127 13.7622 24.5127 14.1096C24.5127 14.4514 24.237 14.7271 23.8896 14.7271H19.8924V17.2136H23.8896C25.6043 17.2136 26.9992 15.8187 26.9992 14.104C26.9992 12.3949 25.6043 11 23.8896 11Z" fill="white"/>
+                            <path d="M15.3767 14.7296H10.2548L11.0046 17.2161H15.3767V14.7296Z" fill="white"/>
+                        </svg>
                         <div style="flex: 1; min-width: 0;">
-                            <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 16px; padding: 12px 16px; margin-bottom: 4px;">
+                            <div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-top-right-radius: 30px; border-bottom-right-radius: 30px; border-bottom-left-radius: 30px; padding: 12px 20px; margin-bottom: 4px; gap: 16px;">
+                                <p style="font-size: 14px; line-height: 1.5; margin: 0;">I'll create a contact form for you. What fields would you like to include?</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat 3: User Message -->
+                    <div style="display: flex; flex-direction: row-reverse; gap: 12px;">
+                        <div style="flex: 1; min-width: 0; text-align: right;">
+                            <div style="background: #ECFDF5; border: 1px solid #34D399; border-top-left-radius: 30px; border-bottom-right-radius: 30px; border-bottom-left-radius: 30px; padding: 12px 20px; margin-bottom: 4px; color: #1f2937;">
+                                <p style="font-size: 14px; line-height: 1.5; margin: 0;">Add name, email, phone, and message fields</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat 4: AI Response -->
+                    <div style="display: flex; gap: 12px;">
+                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
+                            <circle cx="18" cy="18" r="18" fill="#10B981"/>
+                            <path d="M19.8822 18.2098V20.3821C19.8822 21.6281 18.8677 22.6426 17.6217 22.6426C16.3757 22.6426 15.3612 21.6281 15.3612 20.3821V18.2098H12.8747V20.3821C12.8747 23.001 15.0029 25.1292 17.6217 25.1292C20.2406 25.1292 22.3688 23.001 22.3688 20.3821V18.2098H19.8822Z" fill="white"/>
+                            <path d="M15.368 11H9L9.74982 13.4865H15.368V11Z" fill="white"/>
+                            <path d="M23.8896 11H19.8924V13.4865H23.8896C24.2315 13.4865 24.5127 13.7622 24.5127 14.1096C24.5127 14.4514 24.237 14.7271 23.8896 14.7271H19.8924V17.2136H23.8896C25.6043 17.2136 26.9992 15.8187 26.9992 14.104C26.9992 12.3949 25.6043 11 23.8896 11Z" fill="white"/>
+                            <path d="M15.3767 14.7296H10.2548L11.0046 17.2161H15.3767V14.7296Z" fill="white"/>
+                        </svg>
+                        <div style="flex: 1; min-width: 0;">
+                            <div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-top-right-radius: 30px; border-bottom-right-radius: 30px; border-bottom-left-radius: 30px; padding: 12px 20px; margin-bottom: 4px; gap: 16px;">
+                                <p style="font-size: 14px; line-height: 1.5; margin: 0;">Great! I'm adding those fields. Should the phone field be required?</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat 5: User Message -->
+                    <div style="display: flex; flex-direction: row-reverse; gap: 12px;">
+                        <div style="flex: 1; min-width: 0; text-align: right;">
+                            <div style="background: #ECFDF5; border: 1px solid #34D399; border-top-left-radius: 30px; border-bottom-right-radius: 30px; border-bottom-left-radius: 30px; padding: 12px 20px; margin-bottom: 4px; color: #1f2937;">
+                                <p style="font-size: 14px; line-height: 1.5; margin: 0;">No, make it optional. Also add a subject dropdown</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat 6: AI Response -->
+                    <div style="display: flex; gap: 12px;">
+                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
+                            <circle cx="18" cy="18" r="18" fill="#10B981"/>
+                            <path d="M19.8822 18.2098V20.3821C19.8822 21.6281 18.8677 22.6426 17.6217 22.6426C16.3757 22.6426 15.3612 21.6281 15.3612 20.3821V18.2098H12.8747V20.3821C12.8747 23.001 15.0029 25.1292 17.6217 25.1292C20.2406 25.1292 22.3688 23.001 22.3688 20.3821V18.2098H19.8822Z" fill="white"/>
+                            <path d="M15.368 11H9L9.74982 13.4865H15.368V11Z" fill="white"/>
+                            <path d="M23.8896 11H19.8924V13.4865H23.8896C24.2315 13.4865 24.5127 13.7622 24.5127 14.1096C24.5127 14.4514 24.237 14.7271 23.8896 14.7271H19.8924V17.2136H23.8896C25.6043 17.2136 26.9992 15.8187 26.9992 14.104C26.9992 12.3949 25.6043 11 23.8896 11Z" fill="white"/>
+                            <path d="M15.3767 14.7296H10.2548L11.0046 17.2161H15.3767V14.7296Z" fill="white"/>
+                        </svg>
+                        <div style="flex: 1; min-width: 0;">
+                            <div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-top-right-radius: 30px; border-bottom-right-radius: 30px; border-bottom-left-radius: 30px; padding: 12px 20px; margin-bottom: 4px; gap: 16px;">
+                                <p style="font-size: 14px; line-height: 1.5; margin: 0;">Perfect! I've added a subject dropdown with options: General Inquiry, Support, Sales, and Feedback. Phone is now optional.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat 7: User Message -->
+                    <div style="display: flex; flex-direction: row-reverse; gap: 12px;">
+                        <div style="flex: 1; min-width: 0; text-align: right;">
+                            <div style="background: #ECFDF5; border: 1px solid #34D399; border-top-left-radius: 30px; border-bottom-right-radius: 30px; border-bottom-left-radius: 30px; padding: 12px 20px; margin-bottom: 4px; color: #1f2937;">
+                                <p style="font-size: 14px; line-height: 1.5; margin: 0;">{{ formTitle }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat 8: AI Response with buttons -->
+                    <div style="display: flex; gap: 12px;">
+                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
+                            <circle cx="18" cy="18" r="18" fill="#10B981"/>
+                            <path d="M19.8822 18.2098V20.3821C19.8822 21.6281 18.8677 22.6426 17.6217 22.6426C16.3757 22.6426 15.3612 21.6281 15.3612 20.3821V18.2098H12.8747V20.3821C12.8747 23.001 15.0029 25.1292 17.6217 25.1292C20.2406 25.1292 22.3688 23.001 22.3688 20.3821V18.2098H19.8822Z" fill="white"/>
+                            <path d="M15.368 11H9L9.74982 13.4865H15.368V11Z" fill="white"/>
+                            <path d="M23.8896 11H19.8924V13.4865H23.8896C24.2315 13.4865 24.5127 13.7622 24.5127 14.1096C24.5127 14.4514 24.237 14.7271 23.8896 14.7271H19.8924V17.2136H23.8896C25.6043 17.2136 26.9992 15.8187 26.9992 14.104C26.9992 12.3949 25.6043 11 23.8896 11Z" fill="white"/>
+                            <path d="M15.3767 14.7296H10.2548L11.0046 17.2161H15.3767V14.7296Z" fill="white"/>
+                        </svg>
+                        <div style="flex: 1; min-width: 0;">
+                            <div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-top-right-radius: 30px; border-bottom-right-radius: 30px; border-bottom-left-radius: 30px; padding: 12px 20px; margin-bottom: 4px; gap: 16px;">
                                 <p style="font-size: 14px; line-height: 1.5; margin: 0 0 8px 0;"><?php esc_html_e( 'Perfect! I\'ve created a Portfolio Submission form for you with the following fields:', 'wp-user-frontend' ); ?></p>
                                 <ul style="font-size: 14px; margin: 8px 0; padding-left: 20px;">
                                     <li style="margin-bottom: 4px;"><?php esc_html_e( 'First Name - Text input for personal identification', 'wp-user-frontend' ); ?></li>
@@ -275,50 +378,32 @@ require_once ABSPATH . 'wp-admin/admin-header.php';
                                     <li style="margin-bottom: 4px;"><?php esc_html_e( 'File Upload - For portfolio files (PDF, images)', 'wp-user-frontend' ); ?></li>
                                     <li style="margin-bottom: 4px;"><?php esc_html_e( 'Comment - Optional field for additional information', 'wp-user-frontend' ); ?></li>
                                 </ul>
-                                <p style="font-size: 14px; line-height: 1.5; margin: 0;"><?php esc_html_e( 'The form is ready and you can customize it further in the form builder!', 'wp-user-frontend' ); ?></p>
+                                <p style="font-size: 14px; line-height: 1.5; margin: 0 0 12px 0;"><?php esc_html_e( 'The form is ready and you can customize it further in the form builder!', 'wp-user-frontend' ); ?></p>
+                                <div style="display: flex; gap: 8px;">
+                                    <button style="background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 6px; padding: 9px 13px; font-size: 14px; color: #374151; cursor: pointer; transition: background-color 0.2s;">
+                                        <?php esc_html_e( 'Apply', 'wp-user-frontend' ); ?>
+                                    </button>
+                                    <button style="background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 6px; padding: 9px 13px; font-size: 14px; color: #374151; cursor: pointer; transition: background-color 0.2s;">
+                                        <?php esc_html_e( 'Reject', 'wp-user-frontend' ); ?>
+                                    </button>
+                                </div>
                             </div>
-                            <span style="font-size: 12px; color: #6b7280;"><?php esc_html_e( 'Just now', 'wp-user-frontend' ); ?></span>
+                            <div style="display: flex; justify-content: flex-end; margin-top: 4px;">
+                                <span style="font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-weight: 400; font-style: italic; font-size: 14px; line-height: 24px; color: #059669; text-align: right;"><?php esc_html_e( 'Successfully applied the instruction.', 'wp-user-frontend' ); ?></span>
+                            </div>
                         </div>
+                    </div>
                     </div>
                 </div>
                 
-                <div style="padding-top: 24px; border-top: 1px solid #f3f4f6; display: grid; gap: 24px;">
-                    <div style="display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 16px; padding: 20px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px;">
-                        <div style="width: 32px; height: 32px; background: #dcfce7; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <svg style="width: 16px; height: 16px; color: #059669;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <div style="padding-top: 24px; border-top: 1px solid #f3f4f6;">
+                    <div style="position: relative; width: 100%; height: 148px;">
+                        <textarea class="wpuf-chat-input" placeholder="<?php esc_attr_e( 'Type your message here...', 'wp-user-frontend' ); ?>" style="width: 100%; height: 100%; padding: 12px 60px 12px 16px; border: 1px solid #E5E7EB; border-radius: 8px; font-size: 14px; outline: none; background: #FFFFFF; resize: none; font-family: inherit; transition: border-color 0.2s, box-shadow 0.2s;"></textarea>
+                        <button style="position: absolute; right: 8px; bottom: 8px; width: 42px; height: 42px; background: #059669; border: none; border-radius: 21px; padding: 9px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background-color 0.2s;">
+                            <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3.99972 10L1.2688 1.12451C7.88393 3.04617 14.0276 6.07601 19.4855 9.99974C14.0276 13.9235 7.884 16.9535 1.26889 18.8752L3.99972 10ZM3.99972 10L11.5 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                        </div>
-                        <div>
-                            <h3 style="font-size: 16px; font-weight: 600; color: #1f2937; margin: 0 0 4px 0;"><?php esc_html_e( 'Form Generated Successfully!', 'wp-user-frontend' ); ?></h3>
-                            <p style="font-size: 14px; color: #6b7280; margin: 0;"><?php esc_html_e( 'Your AI-generated form is ready to use', 'wp-user-frontend' ); ?></p>
-                        </div>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                        <a href="#" class="wpuf-btn-primary" @click="editForm">
-                            <svg style="width: 16px; height: 16px; flex-shrink: 0;" viewBox="0 0 20 20" fill="currentColor">
-                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
-                            </svg>
-                            <?php esc_html_e( 'Edit in Builder', 'wp-user-frontend' ); ?>
-                        </a>
-                        <a href="#" class="wpuf-btn-secondary" @click="previewForm">
-                            <svg style="width: 16px; height: 16px; flex-shrink: 0;" viewBox="0 0 20 20" fill="currentColor">
-                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
-                                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
-                            </svg>
-                            <?php esc_html_e( 'Preview Form', 'wp-user-frontend' ); ?>
-                        </a>
-                    </div>
-                    
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 14px;">
-                        <a href="#" style="color: #6b7280; text-decoration: none;" @click="viewAllForms">
-                            <?php esc_html_e( 'View All Forms', 'wp-user-frontend' ); ?>
-                        </a>
-                        <span style="color: #d1d5db;">•</span>
-                        <a href="#" style="color: #6b7280; text-decoration: none;" @click="createAnother">
-                            <?php esc_html_e( 'Create Another Form', 'wp-user-frontend' ); ?>
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>

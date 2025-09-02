@@ -161,6 +161,9 @@ final class WP_User_Frontend {
             require_once __DIR__ . '/Lib/recaptchalib.php';
             require_once __DIR__ . '/Lib/invisible_recaptcha.php';
         }
+        
+        // AI Form Builder includes
+        require_once __DIR__ . '/includes/class-ai-manager.php';
     }
 
     /**
@@ -177,6 +180,7 @@ final class WP_User_Frontend {
         $this->container['paypal']       = new WeDevs\Wpuf\Lib\Gateway\Paypal();
         $this->container['api']          = new WeDevs\Wpuf\API();
         $this->container['integrations'] = new WeDevs\Wpuf\Integrations();
+        $this->container['ai_manager']   = new WeDevs\Wpuf\AI_Manager();
 
         if ( is_admin() ) {
             $this->container['admin']        = new WeDevs\Wpuf\Admin();

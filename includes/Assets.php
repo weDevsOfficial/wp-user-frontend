@@ -159,6 +159,9 @@ class Assets {
                 'src'  => WPUF_ASSET_URI . '/css/admin/form-builder.css',
                 'deps' => $this->form_builder_css_deps,
             ],
+            'ai-form-builder'     => [
+                'src'  => WPUF_ASSET_URI . '/css/ai-form-builder.css',
+            ],
             'admin'               => [
                 'src' => WPUF_ASSET_URI . '/css/admin.css',
             ],
@@ -294,6 +297,10 @@ class Assets {
             ],
             'admin-subscriptions'      => [
                 'src'       => WPUF_ASSET_URI . '/js/subscriptions.min.js',
+                'in_footer' => true,
+            ],
+            'ai-form-builder'          => [
+                'src'       => WPUF_ASSET_URI . '/js/ai-form-builder.min.js',
                 'in_footer' => true,
             ],
             'timepicker'               => [

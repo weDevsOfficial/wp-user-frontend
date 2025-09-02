@@ -39,12 +39,11 @@ class AI_Form_Handler {
         remove_all_actions( 'admin_notices' );
         remove_all_actions( 'all_admin_notices' );
         
-        // Load CSS exactly like form builder
-        wp_enqueue_style( 'wpuf-admin-form-builder' );
+        // Load CSS
+        wp_enqueue_style( 'wpuf-ai-form-builder' );
         
-        // Load Vue exactly like form builder - make sure they load in footer
-        wp_enqueue_script( 'wpuf-vue' );
-        wp_enqueue_script( 'wpuf-vuex' );
+        // Load scripts
+        wp_enqueue_script( 'wpuf-ai-form-builder' );
         
         // Set up proper admin page variables
         set_current_screen( 'wpuf-ai-form-generation' );
@@ -53,8 +52,14 @@ class AI_Form_Handler {
         $parent_file = 'wpuf-post-forms';
         $submenu_file = 'wpuf-ai-form-generation';
         
-        // Include the AI form generation template
-        include WPUF_ROOT . '/includes/Admin/template-parts/ai-form-generation.php';
+        // Include admin header
+        require_once ABSPATH . 'wp-admin/admin-header.php';
+        
+        // Include the unified AI form builder template
+        include WPUF_ROOT . '/includes/Admin/template-parts/ai-form-builder.php';
+        
+        // Include admin footer
+        require_once ABSPATH . 'wp-admin/admin-footer.php';
         exit;
     }
     
@@ -76,11 +81,9 @@ class AI_Form_Handler {
         remove_all_actions( 'admin_notices' );
         remove_all_actions( 'all_admin_notices' );
         
-        // Load CSS exactly like form builder
-        wp_enqueue_style( 'wpuf-admin-form-builder' );
-        
-        // Load Vue exactly like form builder
-        wp_enqueue_script( 'wpuf-vue' );
+        // Load CSS and scripts
+        wp_enqueue_style( 'wpuf-ai-form-builder' );
+        wp_enqueue_script( 'wpuf-ai-form-builder' );
         
         // Set up proper admin page variables
         set_current_screen( 'wpuf-ai-form-generating' );
@@ -89,8 +92,14 @@ class AI_Form_Handler {
         $parent_file = 'wpuf-post-forms';
         $submenu_file = 'wpuf-ai-form-generation';
         
-        // Include the AI form generating template
-        include WPUF_ROOT . '/includes/Admin/template-parts/ai-form-generating.php';
+        // Include admin header
+        require_once ABSPATH . 'wp-admin/admin-header.php';
+        
+        // Include the unified AI form builder template
+        include WPUF_ROOT . '/includes/Admin/template-parts/ai-form-builder.php';
+        
+        // Include admin footer
+        require_once ABSPATH . 'wp-admin/admin-footer.php';
         exit;
     }
     
@@ -107,11 +116,9 @@ class AI_Form_Handler {
         remove_all_actions( 'admin_notices' );
         remove_all_actions( 'all_admin_notices' );
         
-        // Load CSS exactly like form builder
-        wp_enqueue_style( 'wpuf-admin-form-builder' );
-        
-        // Load Vue exactly like form builder
-        wp_enqueue_script( 'wpuf-vue' );
+        // Load CSS and scripts
+        wp_enqueue_style( 'wpuf-ai-form-builder' );
+        wp_enqueue_script( 'wpuf-ai-form-builder' );
         
         // Set up proper admin page variables
         set_current_screen( 'wpuf-ai-form-success' );
@@ -120,8 +127,14 @@ class AI_Form_Handler {
         $parent_file = 'wpuf-post-forms';
         $submenu_file = 'wpuf-ai-form-success';
         
-        // Include the AI form success template
-        include WPUF_ROOT . '/includes/Admin/template-parts/ai-form-generation-success.php';
+        // Include admin header
+        require_once ABSPATH . 'wp-admin/admin-header.php';
+        
+        // Include the unified AI form builder template
+        include WPUF_ROOT . '/includes/Admin/template-parts/ai-form-builder.php';
+        
+        // Include admin footer
+        require_once ABSPATH . 'wp-admin/admin-footer.php';
         exit;
     }
 }

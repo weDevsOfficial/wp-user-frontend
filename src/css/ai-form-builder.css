@@ -1,0 +1,467 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* AI Form Builder specific styles - Full content without scrolling */
+.wpuf-ai-form-wrapper {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #fff;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Loading state like subscription */
+.wpuf-ai-form-loading {
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Main layout like subscription */
+.wpuf-ai-form-layout {
+    display: flex;
+    padding-top: 40px;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+/* Chat sidebar (like subscription sidebar) */
+.wpuf-ai-chat-sidebar {
+    flex-basis: 20%; /* 1/5 like subscription */
+    border-right: 2px solid #e5e7eb;
+    padding-right: 20px;
+}
+
+/* Form content area (like subscription content) */
+.wpuf-ai-form-content-area {
+    flex-basis: 80%; /* 4/5 like subscription */
+    padding-left: 20px;
+}
+
+/* Legacy container - now simplified */
+.wpuf-ai-form-container {
+    width: 100%;
+    padding: 20px;
+}
+
+/* Success stage layout - now using flex layout like subscription */
+.wpuf-grid-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+}
+
+/* On smaller screens, stack vertically */
+@media (max-width: 1024px) {
+    .wpuf-grid-container {
+        flex-direction: column;
+    }
+}
+
+.wpuf-chat-box {
+    width: 100%;
+    height: auto;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    padding: 36px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+    .wpuf-chat-box {
+        height: 1072px;
+    }
+}
+
+.wpuf-form-preview {
+    width: 100%;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    height: 1072px;
+    position: relative;
+}
+
+/* Button styles */
+.wpuf-prompt-btn-active {
+    background-color: #059669 !important;
+    color: white !important;
+    border-color: #059669 !important;
+}
+
+.wpuf-btn-regenerate {
+    background: white;
+    color: #6B7280;
+    border: 1px solid #D1D5DB;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.wpuf-btn-regenerate:hover {
+    background: #F3F4F6;
+    border-color: #9CA3AF;
+}
+
+.wpuf-btn-edit-builder {
+    background: #10B981;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s;
+}
+
+.wpuf-btn-edit-builder:hover {
+    background: #059669;
+}
+
+/* Animations */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.wpuf-animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Confetti animation */
+.wpuf-confetti-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Chat interface styles */
+.wpuf-chat-header {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #E2E8F0;
+}
+
+.wpuf-success-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1F2937;
+    margin: 0;
+}
+
+.wpuf-chat-scrollable {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 16px;
+    max-height: calc(100vh - 300px);
+}
+
+.wpuf-chat-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.wpuf-message-user {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.wpuf-ai-message {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.wpuf-ai-icon {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+}
+
+.wpuf-flex-1 {
+    flex: 1;
+}
+
+.wpuf-message-bubble {
+    padding: 12px 16px;
+    border-radius: 16px;
+    max-width: 80%;
+}
+
+.wpuf-message-bubble-user {
+    background: #34D399;
+    color: #065F46;
+    border-bottom-right-radius: 4px;
+    font-family: Inter;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    opacity: 0.4;
+}
+
+.wpuf-message-bubble-ai {
+    background: #F3F4F6;
+    color: #1F2937;
+    border-bottom-left-radius: 4px;
+}
+
+.wpuf-message-bubble p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.wpuf-message-bubble ul {
+    margin: 8px 0 0 0;
+    padding-left: 20px;
+}
+
+.wpuf-message-bubble li {
+    margin-bottom: 4px;
+}
+
+.wpuf-message-actions {
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+}
+
+.wpuf-btn-apply {
+    background: #10B981;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.wpuf-btn-apply:hover {
+    background: #059669;
+}
+
+.wpuf-btn-reject {
+    background: #EF4444;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.wpuf-btn-reject:hover {
+    background: #DC2626;
+}
+
+.wpuf-message-status {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #6B7280;
+    font-style: italic;
+}
+
+.wpuf-chat-input-container {
+    border-top: 1px solid #E2E8F0;
+    padding-top: 16px;
+}
+
+.wpuf-chat-input-wrapper {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+}
+
+.wpuf-chat-input {
+    flex: 1;
+    border: 1px solid #D1D5DB;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 14px;
+    resize: none;
+    min-height: 44px;
+    max-height: 120px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.wpuf-chat-input:focus {
+    border-color: #10B981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.wpuf-send-button {
+    background: #10B981;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    flex-shrink: 0;
+}
+
+.wpuf-send-button:hover {
+    background: #059669;
+}
+
+/* Form preview styles */
+.wpuf-form-header {
+    border-bottom: 1px solid #E5E7EB;
+    padding-bottom: 16px;
+}
+
+.wpuf-form-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 8px 0;
+}
+
+.wpuf-form-description {
+    color: #6B7280;
+    margin: 0;
+    font-size: 14px;
+}
+
+.wpuf-form-scrollable {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 16px;
+}
+
+.wpuf-form-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.wpuf-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.wpuf-form-label {
+    font-weight: 500;
+    color: #374151;
+    font-size: 14px;
+}
+
+.wpuf-form-input {
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 14px;
+    color: #9CA3AF;
+    background: #F9FAFB;
+}
+
+.wpuf-form-input.wpuf-select {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.wpuf-select-icon {
+    width: 16px;
+    height: 16px;
+    color: #6B7280;
+}
+
+.wpuf-form-file {
+    border: 2px dashed #D1D5DB;
+    border-radius: 6px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    background: #F9FAFB;
+    color: #6B7280;
+    text-align: center;
+    font-size: 14px;
+}
+
+.wpuf-file-icon {
+    width: 24px;
+    height: 24px;
+    color: #9CA3AF;
+}
+
+.wpuf-form-textarea {
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 14px;
+    color: #9CA3AF;
+    background: #F9FAFB;
+    min-height: 80px;
+}
+
+.wpuf-form-footer {
+    border-top: 1px solid #E5E7EB;
+    padding-top: 16px;
+}
+
+.wpuf-btn-edit-full {
+    background: #10B981;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s;
+    width: 100%;
+    justify-content: center;
+}
+
+.wpuf-btn-edit-full:hover {
+    background: #059669;
+}
+
+/* Utility classes - these will be replaced by Tailwind utilities with wpuf- prefix */

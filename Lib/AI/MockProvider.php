@@ -274,7 +274,8 @@ class MockProvider {
                     'type' => 'date',
                     'label' => 'Expiration Date',
                     'name' => 'expiration_date',
-                    'required' => true
+                    'required' => true,
+                    'format' => 'mm/dd/yy'
                 ],
                 [
                     'id' => 6,
@@ -429,7 +430,8 @@ class MockProvider {
                     'type' => 'date',
                     'label' => 'Publication Date',
                     'name' => 'publication_date',
-                    'required' => true
+                    'required' => true,
+                    'format' => 'mm/dd/yy'
                 ],
                 [
                     'id' => 6,
@@ -882,6 +884,14 @@ class MockProvider {
                 $wpuf_field['step_text_field'] = '1';
                 $wpuf_field['min_value_field'] = '0';
                 $wpuf_field['max_value_field'] = '';
+                break;
+
+            case 'date':
+                // Set default format for date field
+                $wpuf_field['format'] = isset($field['format']) ? $field['format'] : 'mm/dd/yy';
+                $wpuf_field['time'] = 'no';
+                $wpuf_field['mintime'] = '';
+                $wpuf_field['maxtime'] = '';
                 break;
 
             case 'text':

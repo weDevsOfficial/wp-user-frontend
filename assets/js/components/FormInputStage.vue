@@ -94,13 +94,24 @@ export default {
             selectedPrompt: this.initialSelectedPrompt,
             isGenerating: this.generating,
             promptTemplates: [
-                this.__('Event Registration', 'wp-user-frontend'),
-                this.__('Customer Feedback', 'wp-user-frontend'),
-                this.__('Support Ticket', 'wp-user-frontend'),
-                this.__('Guest Post', 'wp-user-frontend'),
-                this.__('Job Application', 'wp-user-frontend'),
-                this.__('Contact Us', 'wp-user-frontend')
-            ]
+                this.__('Paid Guest Post', 'wp-user-frontend'),
+                this.__('Portfolio Submission', 'wp-user-frontend'),
+                this.__('Classified Ads', 'wp-user-frontend'),
+                this.__('Coupon Submission', 'wp-user-frontend'),
+                this.__('Real Estate Property Listing', 'wp-user-frontend'),
+                this.__('News/Press Release Submission', 'wp-user-frontend'),
+                this.__('Product Listing', 'wp-user-frontend')
+            ],
+            // AI prompts for each template (not shown in UI - used for AI generation)
+            promptAIInstructions: {
+                'Paid Guest Post': 'Create a form for paid guest post submissions with fields for author information, post content, payment details, publication preferences, and content guidelines acceptance.',
+                'Portfolio Submission': 'Create a portfolio submission form with fields for personal information, project showcase, file uploads for portfolio items, skills, experience level, and contact preferences.',
+                'Classified Ads': 'Create a classified ads submission form with fields for ad title, description, category selection, pricing, location, contact information, and ad duration preferences.',
+                'Coupon Submission': 'Create a coupon submission form with fields for business information, coupon details, discount amount, expiration date, terms and conditions, and promotional content.',
+                'Real Estate Property Listing': 'Create a real estate property listing form with fields for property details, location, pricing, features, images upload, contact information, and listing preferences.',
+                'News/Press Release Submission': 'Create a news/press release submission form with fields for headline, content body, media attachments, publication date, author information, and distribution preferences.',
+                'Product Listing': 'Create a product listing form with fields for product name, description, category, pricing, images, inventory details, shipping information, and seller contact details.'
+            }
         };
     },
     watch: {
@@ -113,9 +124,11 @@ export default {
         
         selectPrompt(template) {
             this.selectedPrompt = template;
-            this.formDescription = template;
+            // Use the detailed AI instruction instead of just the template name
+            const aiInstruction = this.promptAIInstructions[template] || template;
+            this.formDescription = aiInstruction;
             this.$emit('update:selectedPrompt', template);
-            this.$emit('update:formDescription', template);
+            this.$emit('update:formDescription', aiInstruction);
         },
         
         goBack() {

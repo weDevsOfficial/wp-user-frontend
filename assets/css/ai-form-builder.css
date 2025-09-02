@@ -4708,10 +4708,6 @@ details.wpuf-collapse summary::-webkit-details-marker {
   max-width: 768px;
 }
 
-.wpuf-max-w-\[80\%\] {
-  max-width: 80%;
-}
-
 .wpuf-max-w-full {
   max-width: 100%;
 }
@@ -5457,6 +5453,11 @@ details.wpuf-collapse summary::-webkit-details-marker {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity)) !important;
 }
 
+.wpuf-bg-\[\#ECFDF5\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(236 253 245 / var(--tw-bg-opacity));
+}
+
 .wpuf-bg-amber-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(245 158 11 / var(--tw-bg-opacity));
@@ -5479,6 +5480,11 @@ details.wpuf-collapse summary::-webkit-details-marker {
 .wpuf-bg-emerald-300 {
   --tw-bg-opacity: 1;
   background-color: rgb(110 231 183 / var(--tw-bg-opacity));
+}
+
+.wpuf-bg-emerald-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(52 211 153 / var(--tw-bg-opacity));
 }
 
 .wpuf-bg-emerald-50 {
@@ -5902,6 +5908,10 @@ details.wpuf-collapse summary::-webkit-details-marker {
   padding-bottom: 0px;
 }
 
+.wpuf-pb-3 {
+  padding-bottom: 0.75rem;
+}
+
 .wpuf-pb-4 {
   padding-bottom: 1rem;
 }
@@ -6166,8 +6176,16 @@ details.wpuf-collapse summary::-webkit-details-marker {
   line-height: 2rem;
 }
 
+.wpuf-leading-9 {
+  line-height: 2.25rem;
+}
+
 .wpuf-leading-none {
   line-height: 1;
+}
+
+.wpuf-tracking-normal {
+  letter-spacing: 0em;
 }
 
 .wpuf-tracking-tight {
@@ -6858,11 +6876,6 @@ details.wpuf-collapse summary::-webkit-details-marker {
   background-color: rgb(29 78 216 / var(--tw-bg-opacity));
 }
 
-.hover\:wpuf-bg-emerald-600:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(5 150 105 / var(--tw-bg-opacity));
-}
-
 .hover\:wpuf-bg-emerald-700:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(4 120 87 / var(--tw-bg-opacity));
@@ -6913,14 +6926,14 @@ details.wpuf-collapse summary::-webkit-details-marker {
   background-color: rgb(239 68 68 / var(--tw-bg-opacity));
 }
 
-.hover\:wpuf-bg-red-600:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(220 38 38 / var(--tw-bg-opacity));
-}
-
 .hover\:wpuf-bg-red-700:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(185 28 28 / var(--tw-bg-opacity));
+}
+
+.hover\:wpuf-bg-red-800:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(153 27 27 / var(--tw-bg-opacity));
 }
 
 .hover\:wpuf-bg-slate-100:hover {

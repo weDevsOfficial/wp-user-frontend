@@ -42,6 +42,7 @@ class Admin {
         // enqueue common scripts that will load throughout WordPress dashboard. notice, what's new etc.
         add_action( 'init', [ $this, 'enqueue_common_scripts' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_cpt_page_scripts' ] );
+        add_action( 'wpuf_load_ai_form_builder_page', [ $this, 'enqueue_ai_form_builder_scripts' ] );
 
         // block admin access as per wpuf settings
         add_action( 'admin_init', [ $this, 'block_admin_access' ] );
@@ -163,6 +164,29 @@ class Admin {
                 ]
             );
         }
+    }
+
+    /**
+     * Enqueue scripts for AI form builder page
+     *
+     * @since 4.0.0
+     *
+     * @return void
+     */
+    public function enqueue_ai_form_builder_scripts() {
+        wp_enqueue_script( 'wpuf-ai-form-builder' );
+        wp_enqueue_style( 'wpuf-ai-form-builder' );
+
+        wp_localize_script(
+            'wpuf-ai-form-builder', 'wpufAIFormBuilder',
+            [
+                'version'    => WPUF_VERSION,
+                'assetUrl'   => WPUF_ASSET_URI,
+                'siteUrl'    => site_url(),
+                'nonce'      => wp_create_nonce( 'wp_rest' ),
+                'rest_url'   => esc_url_raw( rest_url() ),
+            ]
+        );
     }
 
     /**

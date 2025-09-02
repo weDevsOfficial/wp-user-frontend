@@ -7,9 +7,10 @@
   "private": true,
   "scripts": {
     "release": "grunt release",
-    "build": "npm run build:forms-list && npm run build:subscriptions",
+    "build": "npm run build:forms-list && npm run build:subscriptions && npm run build:ai-form-builder",
     "build:forms-list": "ENTRY=forms-list vite build",
-    "build:subscriptions": "ENTRY=subscriptions vite build"
+    "build:subscriptions": "ENTRY=subscriptions vite build",
+    "build:ai-form-builder": "ENTRY=ai-form-builder vite build"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",

@@ -70,9 +70,9 @@ These fields are available in the free version of WPUF:
 
 #### Advanced Text Fields (PRO)
 - `numeric_text_field` - Number only input (PRO)
-- `phone_number` - Phone number with validation (PRO)
-- `address_field` - Complete address input (PRO)
-- `country_list_field` - Country dropdown (PRO)
+- `phone_field` - Phone number with validation (PRO)
+- `address_field` - Complete address input with street, city, state, zip (PRO)
+- `country_list_field` - Country dropdown with all countries (PRO)
 - `repeat_field` - Repeatable field groups (PRO)
 
 #### Date & Time (PRO)
@@ -123,12 +123,15 @@ When a user requests a PRO field, respond with:
 When users request PRO fields, suggest these FREE alternatives:
 - `date_field` → Use `text_field` with placeholder "MM/DD/YYYY"
 - `time_field` → Use `text_field` with placeholder "HH:MM"
-- `phone_number` → Use `text_field` with placeholder "Phone number"
+- `phone_field` → Use `text_field` with placeholder "Phone number"
+- `address_field` → Use multiple `text_field` for address, city, state, zip
 - `file_upload` → Use `image_upload` for images, or suggest using post content
 - `multiple_select` → Use multiple `checkbox_field` options
 - `google_map` → Use `text_field` for address input
 - `ratings` → Use `radio_field` with 1-5 options
 - `country_list_field` → Use `dropdown_field` with country options
+- `toc` → Use `checkbox_field` with terms text in label
+- `numeric_text_field` → Use `text_field` with number validation placeholder
 
 ## RESPONSE FORMAT
 
@@ -203,6 +206,29 @@ For these field types, `options` array is REQUIRED:
 - `multiple_select`
 - `radio_field`
 - `checkbox_field`
+
+## FIELD MAPPING RULES
+
+### Location/Address Fields
+When users request location, address, or geographic fields:
+- **FIRST CHOICE (PRO)**: Use `address_field` for complete address with street, city, state, zip components
+- **FALLBACK (FREE)**: Use multiple text fields: "Address", "City", "State", "Zip Code"
+- **Country only**: Use `country_list_field` (PRO) or `dropdown_field` with major countries (FREE)
+
+### Terms and Conditions
+When users request terms, conditions, agreements, or legal acceptance:
+- **FIRST CHOICE (PRO)**: Use `toc` field type with proper terms content
+- **FALLBACK (FREE)**: Use `checkbox_field` with label like "I agree to the terms and conditions"
+
+### Phone Numbers
+When users request phone or contact number fields:
+- **FIRST CHOICE (PRO)**: Use `phone_field` with proper validation
+- **FALLBACK (FREE)**: Use `text_field` with placeholder like "(555) 123-4567"
+
+### Date and Time
+When users request dates, birth dates, appointment times:
+- **FIRST CHOICE (PRO)**: Use `date_field` or `time_field`
+- **FALLBACK (FREE)**: Use `text_field` with placeholder like "MM/DD/YYYY" or "HH:MM AM/PM"
 
 ## COMMON PATTERNS
 

@@ -5808,6 +5808,10 @@ details.wpuf-collapse summary::-webkit-details-marker {
   --tw-bg-opacity: 0.75;
 }
 
+.wpuf-bg-opacity-80 {
+  --tw-bg-opacity: 0.8;
+}
+
 .\!wpuf-stroke-primary {
   stroke: #059669 !important;
 }
@@ -6583,12 +6587,20 @@ details.wpuf-collapse summary::-webkit-details-marker {
   opacity: 1;
 }
 
+.wpuf-opacity-25 {
+  opacity: 0.25;
+}
+
 .wpuf-opacity-40 {
   opacity: 0.4;
 }
 
 .wpuf-opacity-50 {
   opacity: 0.5;
+}
+
+.wpuf-opacity-75 {
+  opacity: 0.75;
 }
 
 .\!wpuf-shadow-none {
@@ -7880,6 +7892,11 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
 
 .disabled\:wpuf-cursor-not-allowed:disabled {
   cursor: not-allowed;
+}
+
+.disabled\:wpuf-bg-gray-400:disabled {
+  --tw-bg-opacity: 1;
+  background-color: rgb(156 163 175 / var(--tw-bg-opacity));
 }
 
 .disabled\:wpuf-opacity-50:disabled {

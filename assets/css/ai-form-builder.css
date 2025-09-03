@@ -4520,10 +4520,6 @@ details.wpuf-collapse summary::-webkit-details-marker {
   min-height: 672px;
 }
 
-.wpuf-min-h-\[80px\] {
-  min-height: 80px;
-}
-
 .wpuf-min-h-full {
   min-height: 100%;
 }

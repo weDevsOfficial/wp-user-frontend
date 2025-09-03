@@ -3,21 +3,21 @@
 namespace WeDevs\Wpuf\Lib\AI;
 
 /**
- * Mock Provider for AI Form Builder Testing
+ * Predefined Provider for AI Form Builder Testing
  * 
  * Provides predefined form responses for testing without external API calls
  * Supports all the new prompt templates from the UI
  * 
  * @since 1.0.0
  */
-class MockProvider {
+class PredefinedProvider {
 
     /**
-     * Mock form responses for different form types
+     * Predefined form responses for different form types
      *
      * @var array
      */
-    private $mock_responses = [
+    private $predefined_responses = [
         'paid_guest_post' => [
             'form_title' => 'Paid Guest Post Submission',
             'form_description' => 'Submit your guest post for publication on our platform',
@@ -565,23 +565,23 @@ class MockProvider {
         // Match prompt to appropriate form template
         if (strpos($prompt_lower, 'paid guest post') !== false || 
             strpos($prompt_lower, 'guest post') !== false) {
-            $response = $this->mock_responses['paid_guest_post'];
+            $response = $this->predefined_responses['paid_guest_post'];
         } elseif (strpos($prompt_lower, 'portfolio') !== false) {
-            $response = $this->mock_responses['portfolio_submission'];
+            $response = $this->predefined_responses['portfolio_submission'];
         } elseif (strpos($prompt_lower, 'classified') !== false || 
                   strpos($prompt_lower, 'classified ad') !== false) {
-            $response = $this->mock_responses['classified_ads'];
+            $response = $this->predefined_responses['classified_ads'];
         } elseif (strpos($prompt_lower, 'coupon') !== false) {
-            $response = $this->mock_responses['coupon_submission'];
+            $response = $this->predefined_responses['coupon_submission'];
         } elseif (strpos($prompt_lower, 'real estate') !== false || 
                   strpos($prompt_lower, 'property') !== false) {
-            $response = $this->mock_responses['real_estate_listing'];
+            $response = $this->predefined_responses['real_estate_listing'];
         } elseif (strpos($prompt_lower, 'news') !== false || 
                   strpos($prompt_lower, 'press release') !== false) {
-            $response = $this->mock_responses['news_press_release'];
+            $response = $this->predefined_responses['news_press_release'];
         } elseif (strpos($prompt_lower, 'product') !== false || 
                   strpos($prompt_lower, 'product listing') !== false) {
-            $response = $this->mock_responses['product_listing'];
+            $response = $this->predefined_responses['product_listing'];
         } else {
             // Default fallback response
             $response = [
@@ -622,8 +622,8 @@ class MockProvider {
 
         // Add metadata and WPUF format
         $response['session_id'] = $session_id ?: uniqid('wpuf_ai_session_');
-        $response['response_id'] = uniqid('mock_resp_');
-        $response['provider'] = 'mock';
+        $response['response_id'] = uniqid('predefined_resp_');
+        $response['provider'] = 'predefined';
         $response['processing_time'] = '1.2s';
         $response['generated_at'] = current_time('mysql');
         $response['success'] = true;

@@ -163,7 +163,7 @@ final class WP_User_Frontend {
         }
         
         // AI Form Builder includes
-        require_once __DIR__ . '/includes/class-ai-manager.php';
+        require_once __DIR__ . '/includes/AI_Manager.php';
     }
 
     /**

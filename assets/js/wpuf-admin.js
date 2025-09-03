@@ -217,4 +217,65 @@ jQuery(function($) {
             $('.wpuf-fields input[type="radio"][name="_downloadable"][value="no"]').prop('checked', true);
         }
     });
+
+    // AI Provider change event listener to filter AI Models
+    $('#wpuf_ai\\[ai_provider\\]').on('change', function() {
+        var selectedProvider = $(this).val();
+        var aiModelSelect = $('#wpuf_ai\\[ai_model\\]');
+        var allOptions = aiModelSelect.find('option').clone();
+        
+        // Store all options for restoration if needed
+        if (!aiModelSelect.data('all-options')) {
+            aiModelSelect.data('all-options', allOptions);
+        }
+        
+        // Clear current options
+        aiModelSelect.empty();
+        
+        // Add default option
+        aiModelSelect.append('<option value="">Select AI Model</option>');
+        
+        // Filter and add relevant options based on provider
+        aiModelSelect.data('all-options').each(function() {
+            var option = $(this);
+            var optionText = option.text();
+            var optionValue = option.val();
+            
+            // Skip empty value option
+            if (!optionValue) return;
+            
+            // Check if option belongs to selected provider
+            if (selectedProvider === 'openai' && optionText.includes('(OpenAI)')) {
+                aiModelSelect.append(option.clone());
+            } else if (selectedProvider === 'anthropic' && optionText.includes('(Anthropic)')) {
+                aiModelSelect.append(option.clone());
+            } else if (selectedProvider === 'google' && optionText.includes('(Google)')) {
+                aiModelSelect.append(option.clone());
+            } else if (selectedProvider === 'others' && optionText.includes('(Others)')) {
+                aiModelSelect.append(option.clone());
+            }
+        });
+        
+        // Check if there's a pre-selected value from database
+        var currentDbValue = aiModelSelect.attr('data-current-value') || aiModelSelect.val();
+        
+        // Set default model for the selected provider
+        var defaultModels = {
+            'openai': 'gpt-3.5-turbo',
+            'anthropic': 'claude-3-haiku',
+            'google': 'gemini-pro',
+            'others': 'llama'
+        };
+        
+        // First try to keep the current DB value if it's valid for the selected provider
+        if (currentDbValue && aiModelSelect.find('option[value="' + currentDbValue + '"]').length > 0) {
+            aiModelSelect.val(currentDbValue);
+        } else if (defaultModels[selectedProvider]) {
+            // Fall back to default model for the provider
+            aiModelSelect.val(defaultModels[selectedProvider]);
+        }
+    });
+
+    // Trigger change event on page load to filter models based on pre-selected provider
+    $('#wpuf_ai\\[ai_provider\\]').trigger('change');
 });

@@ -3,11 +3,13 @@
 ## 📋 Overview
 This document outlines the comprehensive implementation plan for integrating AI-powered form generation into the WP User Frontend plugin. The system will allow users to generate forms using natural language prompts with support for multiple AI providers where users can bring their own API keys.
 
-## ✅ Implementation Status: COMPLETED
+## ✅ Implementation Status: IN PROGRESS - Settings Integration Phase
 ### Current Implementation Overview
 - **WordPress PHP AI Client SDK**: Successfully integrated at `Lib/AI/php-ai-client/`
 - **AI Client Loader**: Custom autoloader implemented without Composer dependency
 - **Provider Support**: Predefined, OpenAI, and Anthropic providers fully functional
+- **Settings Integration**: WPUF settings system integrated from sapayth:feat/settings_for_ai branch
+- **Model Management**: Updated to use only SDK-supported models
 - **REST API**: Complete REST endpoints for form generation
 - **Vue Components**: Full UI implementation with three-stage process
 
@@ -1517,9 +1519,12 @@ const providerSelector = {
 - [x] Form preview - Live preview with editing
 
 ### 🔄 Phase 4: Settings & Polish (IN PROGRESS)
-- [ ] Admin settings page - Need to create settings UI
-- [ ] API key management - Store and validate API keys
-- [ ] Provider selection UI - Admin interface for provider selection
+- [x] Admin settings page - Settings integrated from sapayth:feat/settings_for_ai branch
+- [x] API key management - Using WPUF settings system (`wpuf_ai` option)
+- [x] Provider selection UI - Admin interface for provider selection in settings
+- [x] Model selection - SDK-supported models only (removed unsupported models)
+- [ ] Chat form updates - Implement real-time form modifications via chat
+- [ ] Loading states - Add loading overlay with blur effect during updates
 - [ ] Usage analytics - Track API usage
 - [ ] Rate limiting - Implement per-user rate limits
 
@@ -1563,13 +1568,27 @@ const providerSelector = {
 
 ## 📚 Implementation Without Composer - Summary
 
-### Key Changes from Composer-based Approach:
+### Key Implementation Details:
 
-1. **HTTP Requests**: Use `wp_remote_post()` and `wp_remote_request()` instead of Guzzle or other HTTP clients
-2. **Autoloading**: Simple custom autoloader instead of Composer autoload
-3. **Libraries**: Manual inclusion in `/lib` folder instead of `/vendor`
-4. **Dependencies**: Zero external dependencies - everything uses WordPress core functions
-5. **Error Handling**: WordPress `WP_Error` class instead of external exception libraries
+1. **Smart Provider Selection**: 
+   - Use predefined templates for exact prompt matches (saves API costs)
+   - Only call real AI provider when prompt is modified or unique
+   - Fallback mechanism from AI Client to direct HTTP API
+
+2. **Settings Management**:
+   - Uses WPUF settings system (`wpuf_ai` option)
+   - Provider: openai, anthropic, google, others
+   - Model selection limited to SDK-supported models
+   - API key storage and validation
+
+3. **SDK-Supported Models**:
+   - **OpenAI**: gpt-4o, gpt-4o-mini, gpt-4-turbo, gpt-4, gpt-3.5-turbo, o1-preview, o1-mini
+   - **Anthropic**: claude-3-5-sonnet-20241022, claude-3-5-haiku-20241022, claude-3-opus-20240229, claude-3-sonnet-20240229, claude-3-haiku-20240307
+   - **Google**: gemini-pro, gemini-1.5-pro, gemini-1.5-flash
+
+4. **HTTP Requests**: Use `wp_remote_post()` and `wp_remote_request()` instead of Guzzle
+5. **Autoloading**: Custom AI Client loader without Composer
+6. **Error Handling**: WordPress `WP_Error` class with comprehensive fallbacks
 
 ### File Loading Strategy:
 ```php
@@ -1604,8 +1623,8 @@ $data = json_decode($body, true);
 
 ---
 
-**Document Version:** 5.0  
-**Last Updated:** September 2, 2025  
+**Document Version:** 6.0  
+**Last Updated:** September 3, 2025  
 **Author:** AI Form Builder Team  
 **Status:** IMPLEMENTATION COMPLETE - Testing Phase  
 **Approach:** WordPress PHP AI Client SDK with HTTP API Fallback
@@ -1613,13 +1632,19 @@ $data = json_decode($body, true);
 ## 🎯 Next Steps
 
 ### Immediate Tasks
-1. **Create Admin Settings Page**
-   - UI for API key input
-   - Provider selection dropdown
-   - Model selection per provider
-   - Test connection button
+1. ✅ **Settings Integration (COMPLETED)**
+   - Integrated settings from sapayth:feat/settings_for_ai branch
+   - Provider selection (OpenAI, Anthropic, Google)
+   - Model selection with SDK-supported models only
+   - API key management via WPUF settings system
 
-2. **Testing with Real APIs**
+2. **Chat Interface Updates (IN PROGRESS)**
+   - Implement real-time form modifications via chat
+   - Add loading overlay with blur effect during updates
+   - Handle Apply/Reject buttons properly (not on first response)
+   - Test iterative form refinement
+
+3. **Testing with Real APIs**
    - Test OpenAI integration with real API key
    - Test Anthropic integration with real API key
    - Verify error handling and fallbacks
@@ -1632,18 +1657,13 @@ $data = json_decode($body, true);
    - Troubleshooting guide
 
 ### Future Enhancements
-1. **Additional Providers**
-   - Google Gemini support
-   - Cohere support
-   - Custom provider support
-
-2. **Advanced Features**
+1. **Advanced Features**
    - Form templates library
    - Prompt suggestions
    - Field validation rules
    - Conditional logic support
 
-3. **Analytics & Monitoring**
+2. **Analytics & Monitoring**
    - API usage tracking
    - Cost estimation
    - Performance metrics

@@ -10,7 +10,7 @@ This document outlines the comprehensive implementation plan for integrating AI-
 - **Provider Support**: Predefined, OpenAI, Anthropic, and Google providers fully functional
 - **Settings Integration**: WPUF settings system integrated from sapayth:feat/settings_for_ai branch
 - **Model Management**: Updated to use only SDK-supported models
-- **Google Gemini**: ✅ Tested and working with free API (AIzaSyB4CgVA1tpcJMHmP-2RgzBb7z9QKhkFRN0)
+- **Google Gemini**: ✅ Tested and working with free API (requires API key)
 - **REST API**: Complete REST endpoints for form generation
 - **Vue Components**: Full UI implementation with three-stage process
 

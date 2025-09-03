@@ -74,12 +74,8 @@
                                             <div class="wpuf-message-bubble wpuf-message-bubble-ai wpuf-py-3 wpuf-px-4 wpuf-rounded-2xl wpuf-w-full wpuf-bg-white wpuf-text-gray-600 wpuf-rounded-bl wpuf-text-base" style="color: #4B5563 !important; font-size: 1rem !important;">
                                                 <p class="wpuf-text-gray-600 wpuf-text-base wpuf-m-0" v-html="message.content"></p>
                                                 <div v-if="message.showButtons" class="wpuf-message-actions wpuf-mt-3 wpuf-flex wpuf-gap-2">
-                                                    <button @click="handleApply" :disabled="isApplying" class="wpuf-btn-apply wpuf-bg-emerald-600 wpuf-text-white wpuf-border-none wpuf-py-1.5 wpuf-px-3 wpuf-rounded wpuf-text-sm wpuf-cursor-pointer wpuf-transition-colors hover:wpuf-bg-emerald-800 disabled:wpuf-bg-gray-400 disabled:wpuf-cursor-not-allowed wpuf-flex wpuf-items-center wpuf-gap-1">
-                                                        <svg v-if="isApplying" class="wpuf-animate-spin wpuf-w-4 wpuf-h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                            <circle class="wpuf-opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                                            <path class="wpuf-opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                                        </svg>
-                                                        {{ isApplying ? __('Applying...', 'wp-user-frontend') : __('Apply', 'wp-user-frontend') }}
+                                                    <button @click="handleAccept" :disabled="isApplying" class="wpuf-btn-accept wpuf-bg-emerald-600 wpuf-text-white wpuf-border-none wpuf-py-1.5 wpuf-px-3 wpuf-rounded wpuf-text-sm wpuf-cursor-pointer wpuf-transition-colors hover:wpuf-bg-emerald-800 disabled:wpuf-bg-gray-400 disabled:wpuf-cursor-not-allowed">
+                                                        {{ __('Accept', 'wp-user-frontend') }}
                                                     </button>
                                                     <button @click="handleReject" :disabled="isApplying" class="wpuf-btn-reject wpuf-bg-red-600 wpuf-text-white wpuf-border-none wpuf-py-1.5 wpuf-px-3 wpuf-rounded wpuf-text-sm wpuf-cursor-pointer wpuf-transition-colors hover:wpuf-bg-red-800 disabled:wpuf-bg-gray-400 disabled:wpuf-cursor-not-allowed">{{ __('Reject', 'wp-user-frontend') }}</button>
                                                 </div>
@@ -474,6 +470,8 @@ export default {
             },
             chatMessages: this.initializeChatMessages(),
             formFields: this.initializeFormFields(),
+            previousFormFields: this.initializeFormFields(), // Store previous state for reject
+            pendingChanges: null, // Store pending changes from chat
             isApplying: false,
             isFormUpdating: false
         };
@@ -788,6 +786,39 @@ export default {
                         setTimeout(() => {
                             this.isFormUpdating = false;
                         }, 300);
+                    } else if (response.data && response.data.modification_type === 'add_field' && response.data.changes && response.data.changes.field) {
+                        // Store previous form state before making changes
+                        this.previousFormFields = JSON.parse(JSON.stringify(this.formFields));
+                        
+                        // Handle chat API field additions - store as pending changes
+                        const newField = response.data.changes.field;
+                        const formattedField = {
+                            id: newField.id || `field_${this.formFields.length + 1}`,
+                            type: newField.type || 'text_field',
+                            label: newField.label || 'New Field',
+                            name: newField.name || newField.label?.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') || 'new_field',
+                            required: newField.required || false,
+                            placeholder: newField.placeholder || '',
+                            help_text: newField.help || '',
+                            options: newField.options || [],
+                            default: newField.default || ''
+                        };
+                        
+                        // Store pending changes instead of applying immediately
+                        this.pendingChanges = {
+                            type: 'add_field',
+                            field: formattedField,
+                            originalResponse: response.data
+                        };
+                        
+                        // Apply changes to preview temporarily (will be reverted on reject)
+                        this.formFields.push(formattedField);
+                        console.log('📝 Stored pending field addition:', formattedField);
+                        
+                        // Add a small delay before removing blur to show the update visually
+                        setTimeout(() => {
+                            this.isFormUpdating = false;
+                        }, 300);
                     } else {
                         // No form changes, remove blur immediately
                         this.isFormUpdating = false;
@@ -929,17 +960,43 @@ export default {
                 const formData = {
                     form_title: this.formTitle || 'AI Generated Form',
                     form_description: this.formDescription || 'Form created with AI assistance',
-                    wpuf_fields: this.formFields.map((field, index) => ({
-                        id: field.id || `field_${index + 1}`,
-                        type: field.type,
-                        label: field.label,
-                        name: field.label ? field.label.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') : `field_${index + 1}`,
-                        required: field.required === true || field.required === 'yes',
-                        placeholder: field.placeholder || '',
-                        help: field.help_text || '',
-                        options: field.options || [],
-                        default: field.default || ''
-                    })),
+                    wpuf_fields: this.formFields.map((field, index) => {
+                        // If field already has full WPUF structure (from predefined), use it as-is
+                        if (field.input_type && field.template && field.wpuf_cond) {
+                            return field;
+                        }
+                        
+                        // Otherwise, convert to full WPUF structure (for chat-added fields)
+                        const fieldType = field.type || 'text_field';
+                        return {
+                            id: field.id || `field_${index + 1}`,
+                            type: fieldType,
+                            input_type: this.mapToInputType(fieldType),
+                            template: fieldType,
+                            required: field.required === true || field.required === 'yes' ? 'yes' : 'no',
+                            label: field.label || 'New Field',
+                            name: field.name || (field.label ? field.label.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') : `field_${index + 1}`),
+                            is_meta: this.shouldBeMeta(field.name || field.label) ? 'yes' : 'no',
+                            help: field.help_text || field.help || '',
+                            css: field.css || '',
+                            placeholder: field.placeholder || '',
+                            default: field.default || '',
+                            size: field.size || '40',
+                            width: field.width || 'large',
+                            options: field.options || [],
+                            wpuf_cond: field.wpuf_cond || {
+                                condition_status: 'no',
+                                cond_field: [],
+                                cond_operator: ['='],
+                                cond_option: ['- Select -'],
+                                cond_logic: 'all'
+                            },
+                            wpuf_visibility: field.wpuf_visibility || {
+                                selected: 'everyone',
+                                choices: []
+                            }
+                        };
+                    }),
                     form_settings: this.formSettings || {
                         submit_text: 'Submit',
                         success_message: 'Form submitted successfully!',
@@ -994,7 +1051,73 @@ export default {
         },
         
         handleReject() {
-            this.$emit('reject-form');
+            // Revert to previous form state if there are pending changes
+            if (this.pendingChanges && this.previousFormFields) {
+                this.formFields = JSON.parse(JSON.stringify(this.previousFormFields));
+                console.log('🔄 Reverted form to previous state');
+                
+                // Clear pending changes
+                this.pendingChanges = null;
+                this.previousFormFields = null;
+            }
+            
+            // Hide buttons from the current chat message
+            this.hideLastMessageButtons();
+        },
+        
+        handleAccept() {
+            // Accept the pending changes (they're already applied to formFields)
+            if (this.pendingChanges) {
+                console.log('✅ Accepted pending changes:', this.pendingChanges);
+                
+                // Clear pending changes but keep the current form state
+                this.pendingChanges = null;
+                this.previousFormFields = null;
+            }
+            
+            // Hide buttons from the current chat message
+            this.hideLastMessageButtons();
+        },
+        
+        hideLastMessageButtons() {
+            // Find the last message with buttons and hide them
+            for (let i = this.chatMessages.length - 1; i >= 0; i--) {
+                if (this.chatMessages[i].showButtons) {
+                    this.chatMessages[i].showButtons = false;
+                    break;
+                }
+            }
+        },
+        
+        mapToInputType(fieldType) {
+            // Map WPUF field types to input types
+            const typeMap = {
+                'text_field': 'text',
+                'email_address': 'email', 
+                'website_url': 'url',
+                'numeric_text_field': 'number',
+                'phone_field': 'tel',
+                'textarea_field': 'textarea',
+                'dropdown_field': 'select',
+                'radio_field': 'radio',
+                'checkbox_field': 'checkbox',
+                'multiple_select': 'multiselect',
+                'file_upload': 'file_upload',
+                'date_field': 'date',
+                'time_field': 'time',
+                'address_field': 'address_field',
+                'country_list_field': 'select',
+                'toc': 'checkbox',
+                'google_map': 'google_map',
+                'ratings': 'ratings'
+            };
+            return typeMap[fieldType] || 'text';
+        },
+        
+        shouldBeMeta(fieldName) {
+            // Standard WordPress meta fields
+            const metaFields = ['title', 'content', 'excerpt', 'author', 'category', 'tags'];
+            return !metaFields.includes(fieldName?.toLowerCase());
         },
         
         handleRegenerate() {

@@ -200,11 +200,11 @@ class PredefinedProvider {
                 ],
                 [
                     'id' => 5,
-                    'type' => 'text',
+                    'type' => 'address_field',
                     'label' => 'Location',
                     'name' => 'location',
                     'required' => true,
-                    'placeholder' => 'City, State'
+                    'placeholder' => 'Enter your address'
                 ],
                 [
                     'id' => 6,
@@ -554,6 +554,10 @@ class PredefinedProvider {
      * @return array Generated form data
      */
     public function generateForm($prompt, $session_id = '') {
+        // Debug: Ensure we're using the updated version
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('WPUF AI DEBUG: PredefinedProvider generateForm called with updated convertToWPUFFormat method');
+        }
         // Simulate AI processing delay
         sleep(1);
 
@@ -633,9 +637,18 @@ class PredefinedProvider {
         $response['form_settings'] = $form_settings;
         $response['metadata'] = [
             'prompt_length' => strlen($prompt),
-            'field_count' => count($response['fields']),
+            'field_count' => count($wpuf_fields), // Use wpuf_fields count, not response['fields']
             'wpuf_format' => true
         ];
+        
+        // Update the response fields to show the converted WPUF fields in debug logs
+        // This ensures RestController logs show the correct field structure
+        $response['fields'] = $wpuf_fields;
+        
+        // Debug: Log the actual field structure we're returning
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('WPUF AI DEBUG: PredefinedProvider returning field structure: ' . wp_json_encode($response['fields'][0] ?? []));
+        }
 
         return $response;
     }
@@ -666,6 +679,8 @@ class PredefinedProvider {
         
         foreach ($fields as $index => $field) {
             $wpuf_field = [
+                'id' => 'field_' . ($index + 1), // Generate proper WPUF field IDs like "field_1", "field_2"
+                'type' => $this->mapToWPUFTemplate($field['type']), // Use 'type' instead of 'template' for consistency
                 'input_type' => $this->mapToWPUFInputType($field['type']),
                 'template' => $this->mapToWPUFTemplate($field['type']),
                 'required' => $field['required'] ? 'yes' : 'no',
@@ -679,7 +694,6 @@ class PredefinedProvider {
                 'wpuf_cond' => $this->getDefaultConditionals(),
                 'wpuf_visibility' => $this->getDefaultVisibility(),
                 'width' => 'large' // Default width like WPUF templates
-                // Note: 'id' will be set automatically by WPUF when loading from child posts
             ];
 
             // Add field-specific properties
@@ -744,8 +758,10 @@ class PredefinedProvider {
             'phone' => 'text',
             'country' => 'select',
             'address' => 'address_field',
+            'address_field' => 'address_field',
             'map' => 'google_map',
             'rating' => 'ratings',
+            'toc' => 'checkbox',
             
             // Free image fields
             'image' => 'image_upload',
@@ -781,8 +797,10 @@ class PredefinedProvider {
             'phone' => 'phone_field',              // Pro field
             'country' => 'country_list_field',     // Pro field
             'address' => 'address_field',          // Pro field
+            'address_field' => 'address_field',    // Pro field - direct mapping
             'map' => 'google_map',                 // Pro field
             'rating' => 'ratings',                 // Pro field
+            'toc' => 'toc',                        // Pro field - Terms & Conditions
             
             // Free image fields
             'image' => 'image_upload',             // Free field

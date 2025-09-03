@@ -67,11 +67,16 @@ class RestController {
                     'type' => 'string',
                     'sanitize_callback' => 'sanitize_text_field'
                 ],
+                'conversation_context' => [
+                    'required' => false,
+                    'type' => 'object',
+                    'default' => []
+                ],
                 'provider' => [
                     'required' => false,
                     'type' => 'string',
                     'default' => 'predefined',
-                    'enum' => ['predefined', 'openai', 'anthropic']
+                    'enum' => ['predefined', 'openai', 'anthropic', 'google']
                 ],
                 'temperature' => [
                     'required' => false,
@@ -175,6 +180,7 @@ class RestController {
     public function generate_form(WP_REST_Request $request) {
         $prompt = $request->get_param('prompt');
         $session_id = $request->get_param('session_id');
+        $conversation_context = $request->get_param('conversation_context') ?? [];
         $provider = $request->get_param('provider');
         $temperature = $request->get_param('temperature');
         $max_tokens = $request->get_param('max_tokens');
@@ -191,6 +197,7 @@ class RestController {
         try {
             $options = [
                 'session_id' => $session_id,
+                'conversation_context' => $conversation_context,
                 'provider' => $provider,
                 'temperature' => $temperature,
                 'max_tokens' => $max_tokens

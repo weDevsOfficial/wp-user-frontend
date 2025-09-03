@@ -139,7 +139,7 @@
                                             <span class="wpuf-text-gray-400">{{ field.placeholder || __('Select an option', 'wp-user-frontend') }}</span>
                                             <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M13.25 0.875001L7 7.125L0.75 0.875001" stroke="#4B5563" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
+                                            </svg> 
                                         </div>
                                         <div v-if="field.options && field.options.length" class="wpuf-select-options wpuf-mt-2 wpuf-text-sm wpuf-text-gray-600">
                                             <strong>{{ __('Options:', 'wp-user-frontend') }}</strong>
@@ -446,7 +446,7 @@ export default {
                         <li>Comment - Optional field for additional information</li>
                     </ul>
                     The form is ready and you can customize it further in the form builder!`,
-                    showButtons: true,
+                    showButtons: false,  // Don't show buttons for initial form creation
                     status: 'Successfully applied the instruction.'
                 }
             ],
@@ -472,11 +472,13 @@ export default {
             
             this.$emit('send-message', this.userInput);
             
-            // Simulate AI response
+            // Simulate AI response with buttons for subsequent messages
             setTimeout(() => {
                 this.chatMessages.push({
                     type: 'ai',
-                    content: '....'
+                    content: '....',
+                    showButtons: true,  // Show buttons for subsequent AI responses
+                    status: 'Processing your request...'
                 });
                 this.scrollToBottom();
             }, 500);

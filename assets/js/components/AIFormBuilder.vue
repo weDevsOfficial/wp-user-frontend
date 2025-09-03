@@ -210,7 +210,7 @@ export default {
                     content: `Perfect! I've created a "${this.formTitle}" form for you with the following fields:
                     <ul>${fieldsList}</ul>
                     ${this.generatedFormData.form_description || 'The form is ready and you can customize it further in the form builder!'}`,
-                    showButtons: true,
+                    showButtons: false,  // Don't show buttons for initial form creation
                     status: 'Successfully created the form.'
                 };
                 

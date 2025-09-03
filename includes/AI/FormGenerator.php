@@ -76,6 +76,16 @@ class FormGenerator {
                 'claude-3-haiku-20240307' => 'Claude 3 Haiku'
             ],
             'requires_key' => true
+        ],
+        'google' => [
+            'name' => 'Google Gemini',
+            'endpoint' => 'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent',
+            'models' => [
+                'gemini-1.5-flash' => 'Gemini 1.5 Flash (Free)',
+                'gemini-1.5-pro' => 'Gemini 1.5 Pro',
+                'gemini-pro' => 'Gemini Pro'
+            ],
+            'requires_key' => true
         ]
     ];
 
@@ -88,25 +98,40 @@ class FormGenerator {
     }
 
     /**
-     * Check if prompt matches predefined templates exactly
+     * Check if prompt matches predefined templates (using same logic as PredefinedProvider)
      * 
      * @param string $prompt
      * @return bool
      */
     private function isPredefinedPrompt($prompt) {
-        // List of exact prompts that have predefined templates
-        $predefined_prompts = [
-            'Paid Guest Post Submission',
-            'Portfolio Submission',
-            'Classified Ad Submission',
-            'Coupon Submission',
-            'Real Estate Property Listing',
-            'News/Press Release Submission',
-            'Product Listing'
+        // Convert to lowercase for consistent matching
+        $prompt_lower = strtolower($prompt);
+        
+        // Define keyword patterns that match predefined templates
+        $predefined_patterns = [
+            'paid guest post',
+            'guest post',
+            'portfolio',
+            'classified ad',
+            'classified',
+            'coupon',
+            'real estate',
+            'property listing',
+            'property',
+            'news',
+            'press release',
+            'product listing',
+            'product'
         ];
         
-        // Check for exact match (case-insensitive)
-        return in_array(strtolower(trim($prompt)), array_map('strtolower', $predefined_prompts));
+        // Check if prompt contains any predefined pattern
+        foreach ($predefined_patterns as $pattern) {
+            if (strpos($prompt_lower, $pattern) !== false) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     /**
@@ -133,14 +158,24 @@ class FormGenerator {
      * Generate form based on prompt
      *
      * @param string $prompt User prompt
-     * @param array $options Additional options
+     * @param array $options Additional options including conversation context
      * @return array Generated form data
      */
     public function generate_form($prompt, $options = []) {
         try {
-            // Check if prompt matches predefined templates exactly
-            if ($this->isPredefinedPrompt($prompt)) {
-                // Use predefined provider for exact matches (saves API costs)
+            // Check if prompt matches predefined templates
+            $is_predefined = $this->isPredefinedPrompt($prompt);
+            
+            // Debug log
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('WPUF AI: Checking prompt "' . $prompt . '" - Is predefined: ' . ($is_predefined ? 'YES' : 'NO'));
+            }
+            
+            if ($is_predefined) {
+                // Use predefined provider for matching prompts (saves API costs)
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log('WPUF AI: Using predefined provider for prompt: ' . $prompt);
+                }
                 $predefined_provider = new PredefinedProvider();
                 return $predefined_provider->generateForm($prompt, $options['session_id'] ?? '');
             }
@@ -151,7 +186,10 @@ class FormGenerator {
                 return $predefined_provider->generateForm($prompt, $options['session_id'] ?? '');
             }
 
-            // Try to use WordPress AI Client first if available
+            // Skip AI Client for now due to dependency issues
+            // The AI Client SDK requires HTTP Discovery packages that aren't available
+            // Using direct API implementation instead
+            /*
             if ($this->ai_client_loader->is_available() && !empty($this->api_key)) {
                 try {
                     $ai_options = array_merge($options, [
@@ -165,6 +203,7 @@ class FormGenerator {
                     error_log('WPUF AI Client failed, falling back to manual implementation: ' . $e->getMessage());
                 }
             }
+            */
 
             // Use manual AI provider implementation as fallback
             switch ($this->current_provider) {
@@ -173,6 +212,9 @@ class FormGenerator {
 
                 case 'anthropic':
                     return $this->generate_with_anthropic($prompt, $options);
+
+                case 'google':
+                    return $this->generate_with_google($prompt, $options);
 
                 default:
                     throw new \Exception('Unsupported AI provider: ' . $this->current_provider);
@@ -198,7 +240,8 @@ class FormGenerator {
      * @return array Generated form data
      */
     private function generate_with_openai($prompt, $options = []) {
-        $system_prompt = $this->get_system_prompt();
+        $context = $options['conversation_context'] ?? [];
+        $system_prompt = $this->get_system_prompt($context);
 
         $body = [
             'model' => $this->current_model,
@@ -270,7 +313,8 @@ class FormGenerator {
      * @return array Generated form data
      */
     private function generate_with_anthropic($prompt, $options = []) {
-        $system_prompt = $this->get_system_prompt();
+        $context = $options['conversation_context'] ?? [];
+        $system_prompt = $this->get_system_prompt($context);
 
         $body = [
             'model' => $this->current_model,
@@ -343,69 +387,138 @@ class FormGenerator {
     }
 
     /**
+     * Generate form using Google Gemini
+     *
+     * @param string $prompt User prompt
+     * @param array $options Additional options
+     * @return array Generated form data
+     */
+    private function generate_with_google($prompt, $options = []) {
+        $context = $options['conversation_context'] ?? [];
+        $system_prompt = $this->get_system_prompt($context);
+        
+        // Build endpoint with model
+        $endpoint = str_replace('{model}', $this->current_model, $this->provider_configs['google']['endpoint']);
+        $endpoint .= '?key=' . $this->api_key;
+
+        $body = [
+            'contents' => [
+                [
+                    'parts' => [
+                        ['text' => $system_prompt . "\n\nUser request: " . $prompt]
+                    ]
+                ]
+            ],
+            'generationConfig' => [
+                'temperature' => floatval($options['temperature'] ?? 0.7),
+                'maxOutputTokens' => intval($options['max_tokens'] ?? 2000),
+                'responseMimeType' => 'application/json'
+            ]
+        ];
+
+        $args = [
+            'method' => 'POST',
+            'headers' => [
+                'Content-Type' => 'application/json'
+            ],
+            'body' => json_encode($body),
+            'timeout' => 120
+        ];
+
+        $response = wp_safe_remote_request($endpoint, $args);
+
+        if (is_wp_error($response)) {
+            throw new \Exception('Google API request failed: ' . $response->get_error_message());
+        }
+
+        $status_code = wp_remote_retrieve_response_code($response);
+        if ($status_code !== 200) {
+            $error_body = wp_remote_retrieve_body($response);
+            throw new \Exception("Google API returned HTTP {$status_code}: {$error_body}");
+        }
+
+        $body = wp_remote_retrieve_body($response);
+        $data = json_decode($body, true);
+
+        if (isset($data['error'])) {
+            throw new \Exception('Google API Error: ' . ($data['error']['message'] ?? 'Unknown error'));
+        }
+
+        if (!isset($data['candidates'][0]['content']['parts'][0]['text'])) {
+            throw new \Exception('Invalid Google response format');
+        }
+
+        $content = $data['candidates'][0]['content']['parts'][0]['text'];
+        
+        // Extract JSON from content
+        if (preg_match('/\{.*\}/s', $content, $matches)) {
+            $json_content = $matches[0];
+        } else {
+            $json_content = $content;
+        }
+
+        $form_data = json_decode($json_content, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \Exception('Failed to parse AI response JSON');
+        }
+
+        // Add metadata
+        $form_data['session_id'] = $options['session_id'] ?? uniqid('wpuf_ai_session_');
+        $form_data['response_id'] = uniqid('google_resp_');
+        $form_data['provider'] = 'google';
+        $form_data['model'] = $this->current_model;
+        $form_data['generated_at'] = current_time('mysql');
+        $form_data['success'] = true;
+
+        return $form_data;
+    }
+
+    /**
      * Get system prompt for AI form generation
      *
+     * @param array $context Conversation context
      * @return string System prompt
      */
-    private function get_system_prompt() {
-        return 'You are an expert form builder assistant for WPUF (WP User Frontend). Your task is to generate structured form data based on user requirements using WPUF\'s native field types.
-
-IMPORTANT: You must respond with ONLY valid JSON in the exact format specified below. Do not include any explanations, markdown formatting, or additional text.
-
-Response Format:
-{
-    "form_title": "Descriptive title for the form",
-    "form_description": "Brief description of the form\'s purpose",
-    "fields": [
-        {
-            "id": 1,
-            "type": "text_field|email_address|website_url|textarea_field|dropdown_field|radio_field|checkbox_field|multiple_select|image_upload",
-            "label": "Field label visible to users",
-            "name": "field_name_underscore_format",
-            "required": true or false,
-            "placeholder": "Placeholder text (optional)",
-            "help_text": "Help text for the field (optional)",
-            "default": "Default value (optional)",
-            "options": [
-                {"value": "option_value", "label": "Option Label"}
-            ]
+    private function get_system_prompt($context = []) {
+        // Load the comprehensive system prompt
+        $prompt_file = plugin_dir_path(dirname(__FILE__)) . 'AI/system-prompt.md';
+        $system_prompt = file_exists($prompt_file) ? file_get_contents($prompt_file) : '';
+        
+        // Add conversation context if provided
+        if (!empty($context)) {
+            $system_prompt .= "\n\n## CURRENT CONVERSATION CONTEXT\n";
+            $system_prompt .= json_encode($context, JSON_PRETTY_PRINT);
         }
-    ],
-    "settings": {
-        "submit_button_text": "Submit button text",
-        "success_message": "Message shown after successful submission"
+        
+        // Fallback to basic prompt if file not found
+        if (empty($system_prompt)) {
+            $system_prompt = $this->get_fallback_system_prompt();
+        }
+        
+        return $system_prompt;
     }
+    
+    /**
+     * Get fallback system prompt
+     *
+     * @return string Basic system prompt
+     */
+    private function get_fallback_system_prompt() {
+        return 'You are an expert form builder assistant for WPUF (WP User Frontend). 
+
+CRITICAL: You can ONLY help with form-related requests. For ANY non-form request, respond with:
+{
+  "error": true,
+  "error_type": "invalid_request",
+  "message": "I can only help you create and modify forms. Please provide a form-related request."
 }
 
-WPUF Field Type Guidelines (use these exact field types):
-- Use "text_field" for single-line text inputs (names, titles, addresses, etc.)
-- Use "email_address" for email addresses
-- Use "website_url" for website URLs
-- Use "textarea_field" for multi-line text (comments, descriptions, messages)
-- Use "dropdown_field" for dropdown menus (single selection)
-- Use "multiple_select" for multi-selection dropdowns
-- Use "radio_field" for single choice from multiple options (radio buttons)
-- Use "checkbox_field" for multiple choices or single yes/no checkboxes
-- Use "image_upload" for image file uploads
-- Use "featured_image" for featured image uploads
+For valid form requests, respond with proper JSON structure for form creation or modification.
 
-Additional WPUF field types available:
-- "post_title" for post/article titles
-- "post_content" for post/article content
-- "post_tags" for post tags
-- "taxonomy" for category selections
-- "custom_html" for HTML content blocks
-- "section_break" for form sections
-- "column_field" for column layouts
+WPUF Field Types: text_field, email_address, website_url, textarea_field, dropdown_field, radio_field, checkbox_field, multiple_select, image_upload, file_upload, date_field, time_field, phone_number, numeric_text_field, post_title, post_content, taxonomy, section_break, custom_html
 
-Always include appropriate field IDs starting from 1.
-For required fields, set "required": true.
-Use descriptive, user-friendly labels.
-Field names should be lowercase with underscores (e.g., "first_name", "email_address").
-Include options array only for dropdown_field, multiple_select, radio_field, and checkbox_field.
-For options, use format: [{"value": "option1", "label": "Option 1"}, {"value": "option2", "label": "Option 2"}]
-
-Generate the form based on the user\'s request below:';
+Always validate requests and maintain conversation context for modifications.';
     }
 
     /**

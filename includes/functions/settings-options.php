@@ -674,10 +674,10 @@ function wpuf_settings_fields() {
                     'claude-3-sonnet-20240229' => 'Claude 3 Sonnet (Anthropic)',
                     'claude-3-haiku-20240307' => 'Claude 3 Haiku (Anthropic)',
                     
-                    // Google Models
-                    'gemini-pro' => 'Gemini Pro (Google)',
+                    // Google Models (Free tier available!)
+                    'gemini-1.5-flash' => 'Gemini 1.5 Flash - Free Tier (Google)',
                     'gemini-1.5-pro' => 'Gemini 1.5 Pro (Google)',
-                    'gemini-1.5-flash' => 'Gemini 1.5 Flash (Google)',
+                    'gemini-pro' => 'Gemini Pro (Google)',
                     
                 ]),
                 'default' => 'gpt-3.5-turbo',

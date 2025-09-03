@@ -74,8 +74,14 @@
                                             <div class="wpuf-message-bubble wpuf-message-bubble-ai wpuf-py-3 wpuf-px-4 wpuf-rounded-2xl wpuf-w-full wpuf-bg-white wpuf-text-gray-600 wpuf-rounded-bl wpuf-text-base" style="color: #4B5563 !important; font-size: 1rem !important;">
                                                 <p class="wpuf-text-gray-600 wpuf-text-base wpuf-m-0" v-html="message.content"></p>
                                                 <div v-if="message.showButtons" class="wpuf-message-actions wpuf-mt-3 wpuf-flex wpuf-gap-2">
-                                                    <button @click="handleApply" class="wpuf-btn-apply wpuf-bg-emerald-600 wpuf-text-white wpuf-border-none wpuf-py-1.5 wpuf-px-3 wpuf-rounded wpuf-text-sm wpuf-cursor-pointer wpuf-transition-colors hover:wpuf-bg-emerald-800">{{ __('Apply', 'wp-user-frontend') }}</button>
-                                                    <button @click="handleReject" class="wpuf-btn-reject wpuf-bg-red-600 wpuf-text-white wpuf-border-none wpuf-py-1.5 wpuf-px-3 wpuf-rounded wpuf-text-sm wpuf-cursor-pointer wpuf-transition-colors hover:wpuf-bg-red-800">{{ __('Reject', 'wp-user-frontend') }}</button>
+                                                    <button @click="handleApply" :disabled="isApplying" class="wpuf-btn-apply wpuf-bg-emerald-600 wpuf-text-white wpuf-border-none wpuf-py-1.5 wpuf-px-3 wpuf-rounded wpuf-text-sm wpuf-cursor-pointer wpuf-transition-colors hover:wpuf-bg-emerald-800 disabled:wpuf-bg-gray-400 disabled:wpuf-cursor-not-allowed wpuf-flex wpuf-items-center wpuf-gap-1">
+                                                        <svg v-if="isApplying" class="wpuf-animate-spin wpuf-w-4 wpuf-h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                            <circle class="wpuf-opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                            <path class="wpuf-opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                        </svg>
+                                                        {{ isApplying ? __('Applying...', 'wp-user-frontend') : __('Apply', 'wp-user-frontend') }}
+                                                    </button>
+                                                    <button @click="handleReject" :disabled="isApplying" class="wpuf-btn-reject wpuf-bg-red-600 wpuf-text-white wpuf-border-none wpuf-py-1.5 wpuf-px-3 wpuf-rounded wpuf-text-sm wpuf-cursor-pointer wpuf-transition-colors hover:wpuf-bg-red-800 disabled:wpuf-bg-gray-400 disabled:wpuf-cursor-not-allowed">{{ __('Reject', 'wp-user-frontend') }}</button>
                                                 </div>
                                             </div>
                                             <div v-if="message.status" class="wpuf-message-status wpuf-mt-2 wpuf-font-normal wpuf-italic wpuf-text-sm wpuf-leading-6 wpuf-tracking-normal wpuf-text-right wpuf-text-emerald-600">
@@ -105,7 +111,18 @@
                     </div>
                     
                     <!-- Right Side - Form Preview -->
-                    <div class="wpuf-form-preview wpuf-w-full wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-rounded-lg wpuf-p-4 sm:wpuf-p-6 lg:wpuf-p-8 wpuf-flex wpuf-flex-col wpuf-gap-6 wpuf-shadow-md wpuf-h-[60vh] sm:wpuf-h-[70vh] md:wpuf-h-[75vh] lg:wpuf-h-[80vh] xl:wpuf-h-[85vh] wpuf-max-h-[1072px] wpuf-relative">
+                    <div class="wpuf-form-preview wpuf-w-full wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-rounded-lg wpuf-p-4 sm:wpuf-p-6 lg:wpuf-p-8 wpuf-flex wpuf-flex-col wpuf-gap-6 wpuf-shadow-md wpuf-h-[60vh] sm:wpuf-h-[70vh] md:wpuf-h-[75vh] lg:wpuf-h-[80vh] xl:wpuf-h-[85vh] wpuf-max-h-[1072px] wpuf-relative" 
+                         :class="{ 'wpuf-form-updating': isFormUpdating }">
+                        
+                        <!-- Form Updating Overlay -->
+                        <div v-if="isFormUpdating" class="wpuf-form-updating-overlay wpuf-absolute wpuf-inset-0 wpuf-bg-white wpuf-bg-opacity-80 wpuf-flex wpuf-flex-col wpuf-items-center wpuf-justify-center wpuf-z-10 wpuf-rounded-lg">
+                            <svg class="wpuf-animate-spin wpuf-w-8 wpuf-h-8 wpuf-text-emerald-600 wpuf-mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="wpuf-opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="wpuf-opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <p class="wpuf-text-emerald-600 wpuf-font-medium wpuf-text-lg">{{ __('Generating...', 'wp-user-frontend') }}</p>
+                            <p class="wpuf-text-gray-500 wpuf-text-sm">{{ __('Updating your form fields', 'wp-user-frontend') }}</p>
+                        </div>
                         <div class="wpuf-form-header wpuf-border-b wpuf-border-gray-200 wpuf-pb-4 wpuf-flex-shrink-0">
                             <h3 class="wpuf-form-title wpuf-font-bold wpuf-text-3xl wpuf-leading-9 wpuf-tracking-normal wpuf-text-center wpuf-text-gray-900 wpuf-m-0 wpuf-mb-2">{{ formTitle }}</h3>
                             <p class="wpuf-form-description wpuf-font-normal wpuf-text-lg wpuf-leading-6 wpuf-tracking-normal wpuf-text-center wpuf-text-gray-500 wpuf-m-0">{{ __('Please complete all information below', 'wp-user-frontend') }}</p>
@@ -381,6 +398,42 @@
 .wpuf-form-scrollable::-webkit-scrollbar-thumb:hover {
     background: #e4e4e4;
 }
+
+/* Loading spinner animation */
+@keyframes wpuf-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.wpuf-animate-spin {
+    animation: wpuf-spin 1s linear infinite;
+}
+
+/* Form updating blur effect */
+.wpuf-form-updating {
+    transition: filter 0.3s ease-in-out;
+}
+
+.wpuf-form-updating .wpuf-form-header,
+.wpuf-form-updating .wpuf-form-scrollable {
+    filter: blur(2px);
+    transition: filter 0.3s ease-in-out;
+}
+
+.wpuf-form-updating-overlay {
+    backdrop-filter: blur(1px);
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Ensure overlay text is crisp */
+.wpuf-form-updating-overlay p,
+.wpuf-form-updating-overlay svg {
+    filter: none;
+}
 </style>
 
 <script>
@@ -407,85 +460,453 @@ export default {
     data() {
         return {
             userInput: '',
-            chatMessages: this.initialMessages.length > 0 ? this.initialMessages : [
-                {
-                    type: 'user',
-                    content: 'Create a contact form'
-                },
-                {
-                    type: 'ai',
-                    content: "I'll create a contact form for you. What fields would you like to include?"
-                },
-                {
-                    type: 'user',
-                    content: 'Add name, email, phone, and message fields'
-                },
-                {
-                    type: 'ai',
-                    content: "Great! I'm adding those fields. Should the phone field be required?"
-                },
-                {
-                    type: 'user',
-                    content: 'No, make it optional. Also add a subject dropdown'
-                },
-                {
-                    type: 'ai',
-                    content: "Perfect! I've added a subject dropdown with options: General Inquiry, Support, Sales, and Feedback. Phone is now optional."
-                },
-                {
-                    type: 'user',
-                    content: 'Portfolio Submission'
-                },
-                {
-                    type: 'ai',
-                    content: `Perfect! I've created a Portfolio Submission form for you with the following fields:
-                    <ul>
-                        <li>First Name - Text input for personal identification</li>
-                        <li>Email - Required field for communication</li>
-                        <li>File Upload - For portfolio files (PDF, images)</li>
-                        <li>Comment - Optional field for additional information</li>
-                    </ul>
-                    The form is ready and you can customize it further in the form builder!`,
-                    showButtons: false,  // Don't show buttons for initial form creation
-                    status: 'Successfully applied the instruction.'
-                }
-            ],
-            formFields: this.initialFormFields.length > 0 ? this.initialFormFields : [
-                { id: 1, type: 'text', label: 'First Name', placeholder: 'Enter your first name' },
-                { id: 2, type: 'email', label: 'Email', placeholder: 'Enter email address' },
-                { id: 3, type: 'select', label: 'Select File Types', placeholder: 'Select File Types' },
-                { id: 4, type: 'file', label: 'File Upload', placeholder: 'Only JPEG, PNG and PDF files and max size of (025*300 or larger recommended, up to 5MB each)' },
-                { id: 5, type: 'textarea', label: 'Comment', placeholder: 'Write here your Comment' }
-            ]
+            formDescription: '',
+            formSettings: {},
+            sessionId: this.generateSessionId(),
+            conversationState: {
+                original_prompt: '',
+                form_created: false,
+                modifications_count: 0,
+                context_history: [],
+                is_predefined_template: false,
+                template_modified: false,
+                original_form_hash: null
+            },
+            chatMessages: this.initializeChatMessages(),
+            formFields: this.initializeFormFields(),
+            isApplying: false,
+            isFormUpdating: false
         };
     },
     methods: {
         __: window.__ || ((text) => text),
         
-        handleSendMessage() {
-            if (!this.userInput.trim()) return;
+        generateSessionId() {
+            return 'wpuf_chat_session_' + Date.now() + '_' + Math.random().toString(36).substring(2, 11);
+        },
+        
+        initializeChatMessages() {
+            // If we have initial messages from props, use them
+            if (this.initialMessages && this.initialMessages.length > 0) {
+                return [...this.initialMessages];
+            }
             
-            this.chatMessages.push({
-                type: 'user',
-                content: this.userInput
+            // Otherwise start with empty chat
+            return [];
+        },
+        
+        initializeFormFields() {
+            // If we have initial form fields from props, use them
+            if (this.initialFormFields && this.initialFormFields.length > 0) {
+                return [...this.initialFormFields];
+            }
+            
+            // Otherwise start with basic portfolio submission form
+            return [
+                { id: 1, type: 'text_field', label: 'First Name', placeholder: 'Enter your first name', required: true },
+                { id: 2, type: 'email_address', label: 'Email', placeholder: 'Enter email address', required: true },
+                { id: 3, type: 'dropdown_field', label: 'Subject', placeholder: 'Select subject', required: false, options: [
+                    { label: 'General Inquiry', value: 'general' },
+                    { label: 'Portfolio Review', value: 'portfolio' },
+                    { label: 'Collaboration', value: 'collaboration' }
+                ]},
+                { id: 4, type: 'file_upload', label: 'Portfolio Files', placeholder: 'Upload your portfolio files (PDF, images)', required: false },
+                { id: 5, type: 'textarea_field', label: 'Message', placeholder: 'Tell us about your work', required: false }
+            ];
+        },
+        
+        updateConversationState(userMessage, aiResponse) {
+            this.conversationState.context_history.push({
+                timestamp: new Date().toISOString(),
+                user_message: userMessage,
+                ai_response: aiResponse,
+                form_state: {
+                    title: this.formTitle,
+                    fields_count: this.formFields.length,
+                    field_types: this.formFields.map(f => f.type)
+                }
             });
             
-            this.$emit('send-message', this.userInput);
+            // Keep only last 10 interactions to avoid memory issues
+            if (this.conversationState.context_history.length > 10) {
+                this.conversationState.context_history = this.conversationState.context_history.slice(-10);
+            }
             
-            // Simulate AI response with buttons for subsequent messages
-            setTimeout(() => {
-                this.chatMessages.push({
-                    type: 'ai',
-                    content: '....',
-                    showButtons: true,  // Show buttons for subsequent AI responses
-                    status: 'Processing your request...'
+            this.conversationState.modifications_count++;
+        },
+        
+        convertFieldsToPreview(apiFields) {
+            // Convert API response fields to preview format
+            return apiFields.map((field, index) => ({
+                id: field.id || index + 1,
+                type: field.type || 'text_field',
+                label: field.label || field.name || 'Untitled Field',
+                placeholder: field.placeholder || field.help || '',
+                required: field.required || false,
+                options: field.options || [],
+                default: field.default || '',
+                help_text: field.help || field.description || ''
+            }));
+        },
+        
+        /**
+         * Check if a prompt matches predefined template patterns
+         */
+        isPredefinedPrompt(prompt) {
+            const prompt_lower = prompt.toLowerCase();
+            const predefined_patterns = [
+                'paid guest post',
+                'guest post', 
+                'portfolio',
+                'classified ad',
+                'classified',
+                'coupon',
+                'real estate',
+                'property listing',
+                'property',
+                'news',
+                'press release',
+                'product listing',
+                'product'
+            ];
+            
+            return predefined_patterns.some(pattern => prompt_lower.includes(pattern));
+        },
+        
+        /**
+         * Generate a hash of the current form state for change detection
+         */
+        generateFormHash() {
+            const formState = {
+                title: this.formTitle,
+                fields: this.formFields.map(field => ({
+                    type: field.type,
+                    label: field.label,
+                    required: field.required,
+                    options: field.options
+                }))
+            };
+            
+            // Simple hash generation
+            return JSON.stringify(formState).split('').reduce((hash, char) => {
+                return ((hash << 5) - hash + char.charCodeAt(0)) & 0xffffffff;
+            }, 0);
+        },
+        
+        /**
+         * Initialize conversation state based on the original prompt
+         */
+        initializeConversationState(originalPrompt) {
+            if (originalPrompt) {
+                this.conversationState.original_prompt = originalPrompt;
+                this.conversationState.is_predefined_template = this.isPredefinedPrompt(originalPrompt);
+                this.conversationState.original_form_hash = this.generateFormHash();
+                this.conversationState.form_created = true;
+                
+                console.log('🔍 Form initialized:', {
+                    prompt: originalPrompt,
+                    is_predefined: this.conversationState.is_predefined_template,
+                    form_hash: this.conversationState.original_form_hash
                 });
-                this.scrollToBottom();
-            }, 500);
+            }
+        },
+        
+        /**
+         * Check if the current form has been modified from the original predefined template
+         */
+        hasTemplateBeenModified() {
+            if (!this.conversationState.is_predefined_template) {
+                return false; // Not a predefined template, always allow API calls
+            }
             
+            const currentHash = this.generateFormHash();
+            const isModified = currentHash !== this.conversationState.original_form_hash;
+            
+            if (isModified && !this.conversationState.template_modified) {
+                this.conversationState.template_modified = true;
+                console.log('📝 Predefined template has been modified, enabling API calls');
+            }
+            
+            return isModified;
+        },
+        
+        /**
+         * Determine if an API call is necessary based on template state and user message
+         */
+        shouldMakeAPICall(userMessage) {
+            // Always make API call if not a predefined template
+            if (!this.conversationState.is_predefined_template) {
+                return true;
+            }
+            
+            // If template has been modified, make API calls
+            if (this.conversationState.template_modified || this.hasTemplateBeenModified()) {
+                return true;
+            }
+            
+            // Check if user message requests modifications
+            if (this.isModificationRequest(userMessage)) {
+                this.conversationState.template_modified = true;
+                console.log('🔧 User requested modifications, enabling API calls');
+                return true;
+            }
+            
+            // For predefined templates that haven't been modified, 
+            // provide helpful responses without API calls
+            return false;
+        },
+        
+        /**
+         * Check if user message contains modification requests
+         */
+        isModificationRequest(message) {
+            const modificationKeywords = [
+                'add', 'remove', 'delete', 'change', 'modify', 'update', 'edit', 
+                'replace', 'include', 'exclude', 'insert', 'new field', 
+                'another field', 'more fields', 'different', 'custom',
+                'need to add', 'can you add', 'please add', 'also add',
+                'make it', 'instead of', 'rather than', 'without the'
+            ];
+            
+            const messageLower = message.toLowerCase();
+            return modificationKeywords.some(keyword => messageLower.includes(keyword));
+        },
+        
+        /**
+         * Generate a helpful response for predefined templates without making API calls
+         */
+        generatePredefinedResponse() {
+            const responses = [
+                "This form is based on our predefined template. The current fields are optimized for this type of submission. If you'd like to modify the form, please let me know what changes you need and I'll help customize it for you.",
+                "I can see you're working with our predefined template. The form looks good as it is! If you need to add, remove, or modify any fields, just tell me what changes you'd like to make.",
+                "This form uses our predefined structure which works well for most cases. Would you like me to add any additional fields or modify the existing ones?",
+                "The current form is optimized for this type of submission. If you need any customizations, please let me know what specific changes you'd like me to make."
+            ];
+            
+            // Return a random helpful response
+            const randomIndex = Math.floor(Math.random() * responses.length);
+            return responses[randomIndex];
+        },
+        
+        async handleSendMessage() {
+            if (!this.userInput.trim()) return;
+            
+            const userMessage = this.userInput.trim();
             this.userInput = '';
+            
+            // Store original prompt if this is the first message
+            if (!this.conversationState.form_created && this.chatMessages.length === 0) {
+                this.initializeConversationState(userMessage);
+            }
+            
+            // Check if we need to make an API call or can provide a predefined response
+            const shouldCallAPI = this.shouldMakeAPICall(userMessage);
+            
+            console.log('💭 Chat message analysis:', {
+                message: userMessage,
+                is_predefined_template: this.conversationState.is_predefined_template,
+                template_modified: this.conversationState.template_modified,
+                should_call_api: shouldCallAPI
+            });
+            
+            // Add user message to chat
+            this.chatMessages.push({
+                type: 'user',
+                content: userMessage,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Add processing indicator
+            const processingMessage = {
+                type: 'ai',
+                content: 'Processing your request...',
+                showButtons: false,
+                isProcessing: true,
+                timestamp: new Date().toISOString()
+            };
+            this.chatMessages.push(processingMessage);
+            this.scrollToBottom();
+            
+            try {
+                let response;
+                
+                if (shouldCallAPI) {
+                    // Enable form updating blur effect for API calls
+                    this.isFormUpdating = true;
+                    
+                    // Make real API call for modified templates or non-predefined forms
+                    response = await this.callChatAPI(userMessage);
+                } else {
+                    // Provide predefined response without API call
+                    response = {
+                        success: true,
+                        message: this.generatePredefinedResponse(),
+                        action: 'info',
+                        form_data: null // No form changes
+                    };
+                    
+                    console.log('🚀 Using predefined response (no API call needed)');
+                }
+                
+                // Remove processing message
+                const processingIndex = this.chatMessages.findIndex(msg => msg.isProcessing);
+                if (processingIndex !== -1) {
+                    this.chatMessages.splice(processingIndex, 1);
+                }
+                
+                // Add AI response
+                if (response.success) {
+                    const aiMessage = {
+                        type: 'ai',
+                        content: response.message || 'Form has been updated successfully.',
+                        showButtons: this.chatMessages.length > 1, // Show buttons for subsequent messages
+                        response_data: response,
+                        timestamp: new Date().toISOString()
+                    };
+                    
+                    this.chatMessages.push(aiMessage);
+                    
+                    // Update conversation state
+                    this.updateConversationState(userMessage, aiMessage);
+                    
+                    // If form was modified, update the preview
+                    if (response.form_data) {
+                        if (response.form_data.wpuf_fields) {
+                            this.formFields = this.convertFieldsToPreview(response.form_data.wpuf_fields);
+                        } else if (response.form_data.fields) {
+                            this.formFields = this.convertFieldsToPreview(response.form_data.fields);
+                        }
+                        
+                        if (response.form_data.form_title) {
+                            this.$emit('title-updated', response.form_data.form_title);
+                        }
+                        
+                        // Emit form update event
+                        this.$emit('form-updated', response.form_data);
+                        
+                        // Add a small delay before removing blur to show the update visually
+                        setTimeout(() => {
+                            this.isFormUpdating = false;
+                        }, 300);
+                    } else {
+                        // No form changes, remove blur immediately
+                        this.isFormUpdating = false;
+                    }
+                } else {
+                    const errorMessage = {
+                        type: 'ai',
+                        content: response.message || 'Sorry, I could not process your request. Please try again.',
+                        showButtons: false,
+                        isError: true,
+                        timestamp: new Date().toISOString()
+                    };
+                    
+                    this.chatMessages.push(errorMessage);
+                    this.updateConversationState(userMessage, errorMessage);
+                }
+                
+            } catch (error) {
+                console.error('Chat API error:', error);
+                
+                // Remove processing message
+                const processingIndex = this.chatMessages.findIndex(msg => msg.isProcessing);
+                if (processingIndex !== -1) {
+                    this.chatMessages.splice(processingIndex, 1);
+                }
+                
+                // Remove form updating blur
+                this.isFormUpdating = false;
+                
+                // Add error message
+                const errorMessage = {
+                    type: 'ai',
+                    content: 'Sorry, there was an error processing your request. Please check your connection and try again.',
+                    showButtons: false,
+                    isError: true,
+                    timestamp: new Date().toISOString()
+                };
+                
+                this.chatMessages.push(errorMessage);
+                this.updateConversationState(userMessage, errorMessage);
+            }
+            
             this.scrollToBottom();
         },
+        
+        async callChatAPI(message) {
+            const config = window.wpufAIFormBuilder || {};
+            const restUrl = config.restUrl || (window.location.origin + '/wp-json/');
+            const nonce = config.nonce || '';
+            
+            // Build comprehensive conversation context
+            const conversationContext = {
+                session_id: this.sessionId,
+                conversation_state: this.conversationState,
+                current_form: {
+                    form_title: this.formTitle,
+                    form_description: this.formDescription,
+                    wpuf_fields: this.formFields.map(field => ({
+                        name: field.label,
+                        type: field.type,
+                        label: field.label,
+                        placeholder: field.placeholder,
+                        help: field.help_text,
+                        required: field.required ? 'yes' : 'no',
+                        options: field.options || [],
+                        default: field.default || ''
+                    })),
+                    settings: this.formSettings || {}
+                },
+                // Send cleaned chat history (without processing/error messages)
+                chat_history: this.chatMessages
+                    .filter(msg => !msg.isProcessing && !msg.isError && msg.type)
+                    .slice(-8) // Last 8 messages for context
+                    .map(msg => ({
+                        type: msg.type,
+                        content: msg.content,
+                        timestamp: msg.timestamp
+                    }))
+            };
+            
+            console.log('🚀 Sending chat API request:', {
+                prompt: message,
+                context_summary: {
+                    session_id: this.sessionId,
+                    form_title: this.formTitle,
+                    fields_count: this.formFields.length,
+                    messages_count: conversationContext.chat_history.length,
+                    modifications_count: this.conversationState.modifications_count
+                }
+            });
+            
+            const response = await fetch(restUrl + 'wpuf/v1/ai-form-builder/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-WP-Nonce': nonce
+                },
+                body: JSON.stringify({
+                    prompt: message,
+                    conversation_context: conversationContext
+                })
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                console.error('❌ Chat API Error:', {
+                    status: response.status,
+                    statusText: response.statusText,
+                    error: errorData
+                });
+                throw new Error(`HTTP ${response.status}: ${errorData.message || response.statusText}`);
+            }
+            
+            const result = await response.json();
+            console.log('✅ Chat API Response:', result);
+            
+            return result;
+        },
+        
         
         scrollToBottom() {
             this.$nextTick(() => {
@@ -495,8 +916,81 @@ export default {
             });
         },
         
-        handleApply() {
-            this.$emit('apply-form');
+        async handleApply() {
+            // Apply the current form state and create the actual WPUF form
+            this.isApplying = true;
+            
+            try {
+                const config = window.wpufAIFormBuilder || {};
+                const restUrl = config.restUrl || (window.location.origin + '/wp-json/');
+                const nonce = config.nonce || '';
+                
+                // Prepare form data in WPUF format
+                const formData = {
+                    form_title: this.formTitle || 'AI Generated Form',
+                    form_description: this.formDescription || 'Form created with AI assistance',
+                    wpuf_fields: this.formFields.map((field, index) => ({
+                        id: field.id || `field_${index + 1}`,
+                        type: field.type,
+                        label: field.label,
+                        name: field.label ? field.label.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') : `field_${index + 1}`,
+                        required: field.required === true || field.required === 'yes',
+                        placeholder: field.placeholder || '',
+                        help: field.help_text || '',
+                        options: field.options || [],
+                        default: field.default || ''
+                    })),
+                    form_settings: this.formSettings || {
+                        submit_text: 'Submit',
+                        success_message: 'Form submitted successfully!',
+                        form_template: 'default'
+                    }
+                };
+                
+                console.log('🚀 Applying form with data:', formData);
+                
+                // Call the create form API
+                const response = await fetch(restUrl + 'wpuf/v1/ai-form-builder/create-form', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-WP-Nonce': nonce
+                    },
+                    body: JSON.stringify({ form_data: formData })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    console.error('❌ Apply Form Error:', errorData);
+                    throw new Error(`HTTP ${response.status}: ${errorData.message || response.statusText}`);
+                }
+                
+                const result = await response.json();
+                console.log('✅ Form Applied Successfully:', result);
+                
+                // Emit success event with form ID
+                this.$emit('form-applied', {
+                    form_id: result.form_id,
+                    edit_url: result.edit_url
+                });
+                
+            } catch (error) {
+                console.error('❌ Apply Form Error:', error);
+                
+                // Show error to user
+                this.chatMessages.push({
+                    type: 'ai',
+                    content: `Error applying form: ${error.message}. Please try again.`,
+                    showButtons: false,
+                    isError: true,
+                    timestamp: new Date().toISOString()
+                });
+                
+                this.scrollToBottom();
+            } finally {
+                this.isApplying = false;
+                this.isFormUpdating = false; // Ensure blur is removed in any case
+            }
         },
         
         handleReject() {
@@ -508,11 +1002,185 @@ export default {
         },
         
         handleEditInBuilder() {
+            // Check if form has pro fields and show notification
+            if (this.checkForProFields()) {
+                this.showProNotification();
+            }
+            // Always proceed to edit
             this.$emit('edit-in-builder', this.formId);
         },
         
         handleEditWithBuilder() {
+            // Check if form has pro fields and show notification
+            if (this.checkForProFields()) {
+                this.showProNotification();
+            }
+            // Always proceed to edit
             this.$emit('edit-with-builder', this.formId);
+        },
+        
+        checkForProFields() {
+            // List of pro field types
+            const proFields = [
+                'numeric_text_field', 'phone_number', 'address_field', 'country_list_field',
+                'repeat_field', 'date_field', 'time_field', 'datetime_field',
+                'multiple_select', 'checkbox_grid', 'multiple_choice_grid',
+                'file_upload', 'audio_upload', 'video_upload',
+                'google_map', 'really_simple_captcha', 'recaptcha',
+                'ratings', 'linear_scale', 'qr_code', 'embed',
+                'shortcode', 'action_hook', 'toc', 'column_field', 'step_start'
+            ];
+            
+            // Check if any field in the form is a pro field
+            return this.formFields.some(field => proFields.includes(field.type));
+        },
+        
+        showProNotification() {
+            // Create a simple notification popup
+            const notificationContainer = document.createElement('div');
+            notificationContainer.className = 'wpuf-pro-notification';
+            notificationContainer.innerHTML = `
+                <div class="wpuf-pro-notification-content">
+                    <span class="dashicons dashicons-info-outline"></span>
+                    <div class="wpuf-pro-notification-text">
+                        <strong>${this.__('Pro Fields Detected', 'wp-user-frontend')}</strong>
+                        <p>${this.__('This form contains pro fields. Some features may be limited without WPUF Pro.', 'wp-user-frontend')}</p>
+                    </div>
+                    <button class="wpuf-pro-notification-close">×</button>
+                </div>
+            `;
+            
+            document.body.appendChild(notificationContainer);
+            
+            // Add styles if not already present
+            if (!document.getElementById('wpuf-pro-notification-styles')) {
+                const style = document.createElement('style');
+                style.id = 'wpuf-pro-notification-styles';
+                style.textContent = `
+                    .wpuf-pro-notification {
+                        position: fixed;
+                        top: 100px;
+                        right: 20px;
+                        z-index: 999999;
+                        animation: slideInRight 0.3s ease;
+                    }
+                    .wpuf-pro-notification-content {
+                        background: white;
+                        border-left: 4px solid #f0b849;
+                        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                        border-radius: 4px;
+                        padding: 15px 40px 15px 15px;
+                        max-width: 400px;
+                        display: flex;
+                        align-items: start;
+                        gap: 12px;
+                        position: relative;
+                    }
+                    .wpuf-pro-notification-content .dashicons {
+                        color: #f0b849;
+                        font-size: 24px;
+                        width: 24px;
+                        height: 24px;
+                        flex-shrink: 0;
+                        margin-top: 2px;
+                    }
+                    .wpuf-pro-notification-text strong {
+                        display: block;
+                        color: #23282d;
+                        margin-bottom: 4px;
+                        font-size: 14px;
+                    }
+                    .wpuf-pro-notification-text p {
+                        margin: 0;
+                        color: #666;
+                        font-size: 13px;
+                        line-height: 1.4;
+                    }
+                    .wpuf-pro-notification-close {
+                        position: absolute;
+                        top: 8px;
+                        right: 8px;
+                        background: none;
+                        border: none;
+                        font-size: 24px;
+                        color: #999;
+                        cursor: pointer;
+                        padding: 0;
+                        width: 24px;
+                        height: 24px;
+                        line-height: 20px;
+                    }
+                    .wpuf-pro-notification-close:hover {
+                        color: #666;
+                    }
+                    @keyframes slideInRight {
+                        from { 
+                            transform: translateX(100%);
+                            opacity: 0;
+                        }
+                        to { 
+                            transform: translateX(0);
+                            opacity: 1;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            // Auto-close after 5 seconds
+            setTimeout(() => {
+                if (notificationContainer && notificationContainer.parentNode) {
+                    notificationContainer.remove();
+                }
+            }, 5000);
+            
+            // Close on button click
+            notificationContainer.querySelector('.wpuf-pro-notification-close').addEventListener('click', () => {
+                notificationContainer.remove();
+            });
+        },
+        
+        getProFieldsList() {
+            const proFieldsMap = {
+                'numeric_text_field': 'Numeric Text Field',
+                'phone_number': 'Phone Number',
+                'address_field': 'Address Field',
+                'country_list_field': 'Country List',
+                'repeat_field': 'Repeatable Field',
+                'date_field': 'Date Picker',
+                'time_field': 'Time Picker',
+                'datetime_field': 'Date & Time',
+                'multiple_select': 'Multiple Select',
+                'checkbox_grid': 'Checkbox Grid',
+                'multiple_choice_grid': 'Radio Grid',
+                'file_upload': 'File Upload',
+                'audio_upload': 'Audio Upload',
+                'video_upload': 'Video Upload',
+                'google_map': 'Google Maps',
+                'really_simple_captcha': 'Simple Captcha',
+                'recaptcha': 'reCAPTCHA',
+                'ratings': 'Star Rating',
+                'linear_scale': 'Linear Scale',
+                'qr_code': 'QR Code',
+                'embed': 'Embed',
+                'shortcode': 'Shortcode',
+                'action_hook': 'Action Hook',
+                'toc': 'Terms & Conditions',
+                'column_field': 'Column Layout',
+                'step_start': 'Multi-step Form'
+            };
+            
+            // Get unique pro fields in this form
+            const proFieldsInForm = this.formFields
+                .filter(field => proFieldsMap[field.type])
+                .map(field => `<li>${field.label} <span class="field-type">${proFieldsMap[field.type]}</span></li>`)
+                .slice(0, 5); // Show max 5 fields
+            
+            if (proFieldsInForm.length === 0) {
+                return '<li>No pro fields detected</li>';
+            }
+            
+            return proFieldsInForm.join('');
         },
         
         // WPUF field type helper methods
@@ -650,6 +1318,20 @@ export default {
     },
     mounted() {
         this.scrollToBottom();
+        
+        // Initialize conversation state if we have initial messages
+        if (this.initialMessages && this.initialMessages.length > 0) {
+            // Find the first user message to determine if it was from a predefined template
+            const firstUserMessage = this.initialMessages.find(msg => msg.type === 'user');
+            if (firstUserMessage) {
+                this.initializeConversationState(firstUserMessage.content);
+            }
+        }
+        
+        // If formTitle suggests a predefined template, initialize accordingly  
+        if (this.formTitle && !this.conversationState.form_created) {
+            this.initializeConversationState(this.formTitle);
+        }
     }
 };
 </script>

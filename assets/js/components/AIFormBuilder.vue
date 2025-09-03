@@ -146,7 +146,20 @@ export default {
                     }, 1000);
                 } else {
                     console.error('Form generation failed:', result);
-                    this.handleGenerationError(result.message || 'Form generation failed');
+                    
+                    // Check for specific error types
+                    if (result.code === 'invalid_request' || result.code === 'generation_failed') {
+                        // Non-form request error
+                        this.handleGenerationError(
+                            result.message || 'Form generation failed',
+                            'invalid_request'
+                        );
+                    } else if (result.warning && result.warning_type === 'pro_field_requested') {
+                        // Pro field warning - still generate the form
+                        this.handleProFieldWarning(result);
+                    } else {
+                        this.handleGenerationError(result.message || 'Form generation failed');
+                    }
                 }
             } catch (error) {
                 console.error('API call failed:', error);
@@ -162,10 +175,219 @@ export default {
             }
         },
         
-        handleGenerationError(message) {
+        handleGenerationError(message, errorType = 'general') {
             this.isGenerating = false;
             this.currentStage = 'input';
-            alert(this.__('Error: ') + message);
+            
+            // Show styled error message instead of alert
+            const config = window.wpufAIFormBuilder || {};
+            const i18n = config.i18n || {};
+            
+            // Create a modal-like error display
+            const errorContainer = document.createElement('div');
+            errorContainer.className = 'wpuf-ai-error-modal';
+            errorContainer.innerHTML = `
+                <div class="wpuf-ai-error-overlay"></div>
+                <div class="wpuf-ai-error-content">
+                    <h3 class="wpuf-ai-error-title">
+                        ${errorType === 'invalid_request' ? (i18n.invalidRequest || 'Invalid Request') : (i18n.errorTitle || 'Error')}
+                    </h3>
+                    <p class="wpuf-ai-error-message">${message}</p>
+                    ${errorType === 'invalid_request' ? `
+                        <p class="wpuf-ai-error-hint">
+                            ${i18n.nonFormRequest || 'I can only help with form creation. Try: "Create a contact form"'}
+                        </p>
+                    ` : ''}
+                    <button class="wpuf-ai-error-close button button-primary">
+                        ${i18n.tryAgain || 'Try Again'}
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(errorContainer);
+            
+            // Add styles if not already present
+            if (!document.getElementById('wpuf-ai-error-styles')) {
+                const style = document.createElement('style');
+                style.id = 'wpuf-ai-error-styles';
+                style.textContent = `
+                    .wpuf-ai-error-modal {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        z-index: 999999;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                    .wpuf-ai-error-overlay {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background: rgba(0, 0, 0, 0.5);
+                    }
+                    .wpuf-ai-error-content {
+                        position: relative;
+                        background: white;
+                        padding: 30px;
+                        border-radius: 8px;
+                        max-width: 500px;
+                        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+                    }
+                    .wpuf-ai-error-title {
+                        color: #dc3545;
+                        margin: 0 0 15px 0;
+                        font-size: 20px;
+                    }
+                    .wpuf-ai-error-message {
+                        color: #333;
+                        margin: 0 0 10px 0;
+                        line-height: 1.5;
+                    }
+                    .wpuf-ai-error-hint {
+                        color: #666;
+                        font-style: italic;
+                        margin: 10px 0 20px 0;
+                        padding: 10px;
+                        background: #f8f9fa;
+                        border-left: 3px solid #007cba;
+                    }
+                    .wpuf-ai-error-close {
+                        margin-top: 15px;
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            // Close on button click
+            errorContainer.querySelector('.wpuf-ai-error-close').addEventListener('click', () => {
+                errorContainer.remove();
+            });
+            
+            // Close on overlay click
+            errorContainer.querySelector('.wpuf-ai-error-overlay').addEventListener('click', () => {
+                errorContainer.remove();
+            });
+        },
+        
+        handleProFieldWarning(result) {
+            // Only show warning if Pro is not active
+            const config = window.wpufAIFormBuilder || {};
+            const isProActive = config.isProActive || false;
+            
+            console.warn('Pro field requested:', result.message);
+            
+            if (result.form_data) {
+                this.generatedFormData = result.form_data;
+                this.formTitle = result.form_data.form_title || 'Generated Form';
+                this.formFields = this.convertFieldsToPreview(result.form_data.fields || []);
+                
+                setTimeout(() => {
+                    this.handleGenerationComplete();
+                    
+                    // Only show pro field warning if Pro is not active
+                    if (!isProActive) {
+                        setTimeout(() => {
+                            this.showProFieldModal(result.message);
+                        }, 500);
+                    } else {
+                        console.log('Pro is active, no need to show warning');
+                    }
+                }, 1000);
+            }
+        },
+        
+        showProFieldModal(message) {
+            const config = window.wpufAIFormBuilder || {};
+            const i18n = config.i18n || {};
+            
+            // Create modal overlay
+            const overlay = document.createElement('div');
+            overlay.className = 'wpuf-pro-modal-overlay';
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 100000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            `;
+            
+            // Create modal content
+            const modal = document.createElement('div');
+            modal.className = 'wpuf-pro-modal';
+            modal.style.cssText = `
+                background: white;
+                border-radius: 8px;
+                max-width: 500px;
+                width: 90%;
+                max-height: 90vh;
+                overflow-y: auto;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            `;
+            
+            modal.innerHTML = `
+                <div style="padding: 24px;">
+                    <div style="display: flex; align-items: center; margin-bottom: 16px;">
+                        <span style="color: #f39c12; font-size: 24px; margin-right: 12px;">⚡</span>
+                        <h3 style="margin: 0; font-size: 20px; color: #333;">${i18n.proFieldWarning || 'Pro Feature Required'}</h3>
+                    </div>
+                    <p style="color: #666; margin-bottom: 20px; line-height: 1.5;">
+                        ${i18n.proFieldMessage || 'This field type requires WP User Frontend Pro. You can continue without it or upgrade to Pro for full functionality.'}
+                    </p>
+                    <div style="background: #f8f9fa; padding: 12px; border-radius: 4px; margin-bottom: 20px; font-size: 14px; color: #666;">
+                        ${message}
+                    </div>
+                    <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                        <button id="wpuf-continue-without-pro" style="
+                            padding: 8px 16px;
+                            border: 1px solid #ddd;
+                            background: white;
+                            color: #666;
+                            border-radius: 4px;
+                            cursor: pointer;
+                            font-size: 14px;
+                        ">${i18n.continueWithoutPro || 'Continue without Pro'}</button>
+                        <a href="https://wedevs.com/wp-user-frontend-pro/pricing/" target="_blank" style="
+                            padding: 8px 16px;
+                            background: #0073aa;
+                            color: white;
+                            text-decoration: none;
+                            border-radius: 4px;
+                            font-size: 14px;
+                        ">${i18n.upgradeToPro || 'Upgrade to Pro'}</a>
+                    </div>
+                </div>
+            `;
+            
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+            
+            // Close modal handlers
+            const closeModal = () => {
+                if (overlay.parentNode) {
+                    overlay.parentNode.removeChild(overlay);
+                }
+            };
+            
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    closeModal();
+                }
+            });
+            
+            document.getElementById('wpuf-continue-without-pro').addEventListener('click', closeModal);
+            
+            // Auto-close after 15 seconds
+            setTimeout(closeModal, 15000);
         },
         
         convertFieldsToPreview(fields) {
@@ -181,7 +403,7 @@ export default {
         
         getSessionId() {
             if (!this.sessionId) {
-                this.sessionId = 'wpuf_ai_session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                this.sessionId = 'wpuf_ai_session_' + Date.now() + '_' + Math.random().toString(36).substring(2, 11);
             }
             return this.sessionId;
         },
@@ -269,7 +491,10 @@ export default {
                 });
 
                 if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    // Get error details from response
+                    const errorData = await response.json().catch(() => ({}));
+                    console.error('API Error Response:', errorData);
+                    throw new Error(`HTTP ${response.status}: ${errorData.message || response.statusText}`);
                 }
 
                 const result = await response.json();
@@ -319,6 +544,17 @@ export default {
                 const nonce = config.nonce || '';
 
                 console.log('Creating form from AI data...');
+                console.log('Original form data:', this.generatedFormData);
+
+                // Prepare form data for API (convert fields to wpuf_fields)
+                const formDataForAPI = {
+                    form_title: this.generatedFormData.form_title,
+                    form_description: this.generatedFormData.form_description || '',
+                    wpuf_fields: this.generatedFormData.fields || [], // API expects wpuf_fields
+                    form_settings: this.generatedFormData.settings || {}
+                };
+
+                console.log('Sending to API:', formDataForAPI);
 
                 const response = await fetch(restUrl + 'wpuf/v1/ai-form-builder/create-form', {
                     method: 'POST',
@@ -327,12 +563,15 @@ export default {
                         'X-WP-Nonce': nonce
                     },
                     body: JSON.stringify({
-                        form_data: this.generatedFormData
+                        form_data: formDataForAPI
                     })
                 });
 
                 if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    // Get error details from response
+                    const errorData = await response.json().catch(() => ({}));
+                    console.error('API Error Response:', errorData);
+                    throw new Error(`HTTP ${response.status}: ${errorData.message || response.statusText}`);
                 }
 
                 const result = await response.json();

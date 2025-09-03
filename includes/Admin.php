@@ -177,6 +177,9 @@ class Admin {
         wp_enqueue_script( 'wpuf-ai-form-builder' );
         wp_enqueue_style( 'wpuf-ai-form-builder' );
 
+        // Get AI settings
+        $ai_settings = get_option('wpuf_ai', []);
+        
         wp_localize_script(
             'wpuf-ai-form-builder', 'wpufAIFormBuilder',
             [
@@ -185,6 +188,25 @@ class Admin {
                 'siteUrl'    => site_url(),
                 'nonce'      => wp_create_nonce( 'wp_rest' ),
                 'rest_url'   => esc_url_raw( rest_url() ),
+                'restUrl'    => esc_url_raw( rest_url() ), // Some components use restUrl
+                'provider'   => $ai_settings['ai_provider'] ?? 'google',
+                'model'      => $ai_settings['ai_model'] ?? 'gemini-1.5-flash',
+                'hasApiKey'  => !empty($ai_settings['ai_api_key']),
+                'isProActive' => class_exists( 'WP_User_Frontend_Pro' ),
+                'temperature' => 0.7,
+                'maxTokens'  => 2000,
+                'i18n' => [
+                    'errorTitle' => __('Error', 'wp-user-frontend'),
+                    'errorMessage' => __('Something went wrong. Please try again.', 'wp-user-frontend'),
+                    'invalidRequest' => __('Invalid Request', 'wp-user-frontend'),
+                    'nonFormRequest' => __('I can only help with form creation. Try: "Create a contact form"', 'wp-user-frontend'),
+                    'proFieldWarning' => __('Pro Feature Required', 'wp-user-frontend'),
+                    'proFieldMessage' => __('This field type requires WP User Frontend Pro. You can continue without it or upgrade to Pro for full functionality.', 'wp-user-frontend'),
+                    'continueWithoutPro' => __('Continue without Pro', 'wp-user-frontend'),
+                    'upgradeToPro' => __('Upgrade to Pro', 'wp-user-frontend'),
+                    'tryAgain' => __('Try Again', 'wp-user-frontend'),
+                    'close' => __('Close', 'wp-user-frontend'),
+                ]
             ]
         );
     }

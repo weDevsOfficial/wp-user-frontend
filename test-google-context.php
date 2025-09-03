@@ -3,7 +3,7 @@
  * Test Google Gemini with WPUF System Prompt
  */
 
-$API_KEY = 'AIzaSyB4CgVA1tpcJMHmP-2RgzBb7z9QKhkFRN0';
+$API_KEY = 'YOUR_GOOGLE_GEMINI_API_KEY_HERE';
 
 // Load system prompt
 $system_prompt = file_get_contents(__DIR__ . '/includes/AI/system-prompt.md');

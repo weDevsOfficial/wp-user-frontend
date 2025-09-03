@@ -163,6 +163,29 @@ class RestController {
             ]
         ]);
 
+        // Modify form from AI data endpoint
+        register_rest_route($this->namespace, '/' . $this->rest_base . '/modify-form', [
+            'methods' => WP_REST_Server::CREATABLE,
+            'callback' => [$this, 'modify_form_from_ai'],
+            'permission_callback' => [$this, 'check_permission'],
+            'args' => [
+                'form_id' => [
+                    'required' => true,
+                    'type' => 'integer'
+                ],
+                'modification_data' => [
+                    'required' => true,
+                    'type' => 'object',
+                    'properties' => [
+                        'action' => ['type' => 'string'],
+                        'modification_type' => ['type' => 'string'],
+                        'target' => ['type' => 'string'],
+                        'changes' => ['type' => 'object']
+                    ]
+                ]
+            ]
+        ]);
+
         // Get settings endpoint
         register_rest_route($this->namespace, '/' . $this->rest_base . '/settings', [
             'methods' => WP_REST_Server::READABLE,
@@ -456,6 +479,9 @@ class RestController {
             
             // Create child posts for each field (WPUF's storage method)
             foreach ($wpuf_fields as $order => $field) {
+                // Ensure field has full WPUF structure
+                $field = $this->ensure_full_wpuf_structure($field, $order);
+                
                 $field_post = array(
                     'post_type' => 'wpuf_input',
                     'post_status' => 'publish',
@@ -472,7 +498,12 @@ class RestController {
             }
             
             // Also save as meta for compatibility (some functions might still use this)
-            update_post_meta($form_id, 'wpuf_form_fields', $wpuf_fields);
+            // Convert all fields to full WPUF structure for meta storage too
+            $converted_fields = [];
+            foreach ($wpuf_fields as $order => $field) {
+                $converted_fields[] = $this->ensure_full_wpuf_structure($field, $order);
+            }
+            update_post_meta($form_id, 'wpuf_form_fields', $converted_fields);
             
             // Add form version for compatibility
             update_post_meta($form_id, 'wpuf_form_version', WPUF_VERSION);
@@ -522,6 +553,401 @@ class RestController {
     }
 
     /**
+     * Modify existing form using AI data
+     *
+     * @param WP_REST_Request $request REST request object
+     * @return WP_REST_Response|WP_Error Response object
+     */
+    public function modify_form_from_ai(WP_REST_Request $request) {
+        try {
+            $form_id = $request->get_param('form_id');
+            $modification_data = $request->get_param('modification_data');
+
+            // Validate form exists and user has permission
+            $form = get_post($form_id);
+            if (!$form || $form->post_type !== 'wpuf_forms') {
+                return new WP_Error(
+                    'form_not_found',
+                    __('Form not found', 'wp-user-frontend'),
+                    ['status' => 404]
+                );
+            }
+
+            // Extract prompt and current form data
+            $prompt = $modification_data['prompt'] ?? '';
+            $current_form = $modification_data['current_form'] ?? [];
+            $conversation_context = $modification_data['conversation_context'] ?? [];
+            
+            if (empty($prompt)) {
+                return new WP_Error(
+                    'missing_prompt',
+                    __('Modification prompt is required', 'wp-user-frontend'),
+                    ['status' => 400]
+                );
+            }
+
+            // Prepare enhanced prompt for AI with current form context
+            $enhanced_prompt = $this->prepare_modification_prompt($prompt, $current_form);
+            
+            // Call AI to get modification instructions
+            $ai_response = $this->form_generator->generate_form($enhanced_prompt, [
+                'session_id' => $modification_data['session_id'] ?? $this->generate_session_id(),
+                'provider' => get_option('wpuf_ai')['ai_provider'] ?? 'predefined',
+                'temperature' => 0.3, // Lower temperature for more consistent modifications
+                'context' => $conversation_context
+            ]);
+
+            if (!$ai_response || !$ai_response['success']) {
+                return new WP_Error(
+                    'ai_generation_failed',
+                    $ai_response['message'] ?? __('Failed to process modification request', 'wp-user-frontend'),
+                    ['status' => 500]
+                );
+            }
+
+            $ai_data = $ai_response['data'];
+
+            // Process AI response - could be direct modification instructions or new form data
+            if (isset($ai_data['action']) && $ai_data['action'] === 'modify') {
+                // Direct modification instructions from AI
+                $current_fields = get_post_meta($form_id, 'wpuf_form_fields', true);
+                if (!is_array($current_fields)) {
+                    $current_fields = [];
+                }
+
+                $modification_type = $ai_data['modification_type'] ?? '';
+                $target = $ai_data['target'] ?? '';
+                $changes = $ai_data['changes'] ?? [];
+
+                switch ($modification_type) {
+                    case 'add_field':
+                        $current_fields = $this->add_field_to_form($current_fields, $changes);
+                        break;
+
+                    case 'remove_field':
+                        $current_fields = $this->remove_field_from_form($current_fields, $target);
+                        break;
+
+                    case 'update_field':
+                        $current_fields = $this->update_field_in_form($current_fields, $target, $changes);
+                        break;
+
+                    case 'update_settings':
+                        $this->update_form_settings($form_id, $target, $changes);
+                        break;
+
+                    default:
+                        return new WP_Error(
+                            'invalid_modification_type',
+                            __('Invalid modification type from AI', 'wp-user-frontend'),
+                            ['status' => 400]
+                        );
+                }
+
+                // Update form fields if they were modified
+                if (in_array($modification_type, ['add_field', 'remove_field', 'update_field'])) {
+                    // Ensure all fields have full WPUF structure
+                    $converted_fields = [];
+                    foreach ($current_fields as $order => $field) {
+                        $converted_fields[] = $this->ensure_full_wpuf_structure($field, $order);
+                    }
+
+                    // Update form meta
+                    update_post_meta($form_id, 'wpuf_form_fields', $converted_fields);
+
+                    // Also update child posts
+                    $this->update_form_field_posts($form_id, $converted_fields);
+                }
+
+                $response_data = [
+                    'success' => true,
+                    'form_id' => $form_id,
+                    'form_data' => [
+                        'wpuf_fields' => $converted_fields ?? $current_fields,
+                        'form_title' => $form->post_title,
+                        'form_description' => $form->post_content
+                    ],
+                    'message' => $ai_data['message'] ?? __('Form modified successfully', 'wp-user-frontend')
+                ];
+
+            } elseif (isset($ai_data['fields']) || isset($ai_data['wpuf_fields'])) {
+                // AI returned complete modified form - update entire form
+                $new_fields = $ai_data['wpuf_fields'] ?? $ai_data['fields'] ?? [];
+                
+                // Ensure all fields have full WPUF structure
+                $converted_fields = [];
+                foreach ($new_fields as $order => $field) {
+                    $converted_fields[] = $this->ensure_full_wpuf_structure($field, $order);
+                }
+
+                // Update form meta
+                update_post_meta($form_id, 'wpuf_form_fields', $converted_fields);
+
+                // Also update child posts
+                $this->update_form_field_posts($form_id, $converted_fields);
+
+                // Update form title/description if provided
+                if (isset($ai_data['form_title'])) {
+                    wp_update_post([
+                        'ID' => $form_id,
+                        'post_title' => sanitize_text_field($ai_data['form_title'])
+                    ]);
+                }
+
+                if (isset($ai_data['form_description'])) {
+                    wp_update_post([
+                        'ID' => $form_id,
+                        'post_content' => sanitize_textarea_field($ai_data['form_description'])
+                    ]);
+                }
+
+                $response_data = [
+                    'success' => true,
+                    'form_id' => $form_id,
+                    'form_data' => [
+                        'wpuf_fields' => $converted_fields,
+                        'form_title' => $ai_data['form_title'] ?? $form->post_title,
+                        'form_description' => $ai_data['form_description'] ?? $form->post_content
+                    ],
+                    'message' => $ai_data['message'] ?? __('Form updated successfully', 'wp-user-frontend')
+                ];
+            } else {
+                return new WP_Error(
+                    'invalid_ai_response',
+                    __('AI response format not recognized', 'wp-user-frontend'),
+                    ['status' => 500]
+                );
+            }
+
+            // Log the modification
+            $this->log_form_modification($form_id, [
+                'prompt' => $prompt,
+                'action' => $ai_data['action'] ?? 'modify',
+                'modification_type' => $ai_data['modification_type'] ?? 'update_form'
+            ]);
+
+            return new WP_REST_Response($response_data);
+
+        } catch (\Exception $e) {
+            error_log('WPUF AI Form Modification Error: ' . $e->getMessage());
+            return new WP_Error(
+                'modification_error',
+                __('Form modification failed', 'wp-user-frontend'),
+                ['status' => 500]
+            );
+        }
+    }
+
+    /**
+     * Prepare modification prompt with current form context
+     */
+    private function prepare_modification_prompt($prompt, $current_form) {
+        $form_title = $current_form['form_title'] ?? 'Current Form';
+        $form_description = $current_form['form_description'] ?? '';
+        $fields = $current_form['wpuf_fields'] ?? [];
+
+        $context = "CURRENT FORM CONTEXT:\n";
+        $context .= "Form Title: {$form_title}\n";
+        $context .= "Form Description: {$form_description}\n";
+        $context .= "Current Fields:\n";
+        
+        foreach ($fields as $index => $field) {
+            $required = $field['required'] ? ' (Required)' : ' (Optional)';
+            $type = $this->get_human_readable_field_type($field['type'] ?? 'text');
+            $context .= "- {$field['label']}{$required} - {$type}\n";
+        }
+
+        $context .= "\nUSER REQUEST: {$prompt}\n\n";
+        $context .= "Please provide the modification instructions or updated form structure.";
+
+        return $context;
+    }
+
+    /**
+     * Get human readable field type
+     */
+    private function get_human_readable_field_type($type) {
+        $types = [
+            'text_field' => 'Text Input',
+            'email_address' => 'Email Field',
+            'textarea_field' => 'Text Area',
+            'dropdown_field' => 'Dropdown',
+            'radio_field' => 'Radio Buttons',
+            'checkbox_field' => 'Checkboxes',
+            'file_upload' => 'File Upload',
+            'date_field' => 'Date Picker',
+            'time_field' => 'Time Picker',
+            'phone_field' => 'Phone Number',
+            'address_field' => 'Address',
+            'ratings' => 'Star Rating',
+            'toc' => 'Terms & Conditions'
+        ];
+
+        return $types[$type] ?? ucfirst(str_replace('_', ' ', $type));
+    }
+
+    /**
+     * Generate session ID
+     */
+    private function generate_session_id() {
+        return 'wpuf_ai_session_' . time() . '_' . wp_generate_uuid4();
+    }
+
+    /**
+     * Add field to form
+     *
+     * @param array $fields Current fields
+     * @param array $changes Changes containing new field
+     * @return array Updated fields
+     */
+    private function add_field_to_form($fields, $changes) {
+        if (isset($changes['field'])) {
+            $new_field = $changes['field'];
+            $new_field = $this->ensure_full_wpuf_structure($new_field, count($fields));
+            $fields[] = $new_field;
+        }
+        return $fields;
+    }
+
+    /**
+     * Remove field from form
+     *
+     * @param array $fields Current fields
+     * @param string $target Field name to remove
+     * @return array Updated fields
+     */
+    private function remove_field_from_form($fields, $target) {
+        return array_filter($fields, function($field) use ($target) {
+            return ($field['name'] ?? '') !== $target && ($field['label'] ?? '') !== $target;
+        });
+    }
+
+    /**
+     * Update field in form
+     *
+     * @param array $fields Current fields
+     * @param string $target Field name to update
+     * @param array $changes Changes to apply
+     * @return array Updated fields
+     */
+    private function update_field_in_form($fields, $target, $changes) {
+        foreach ($fields as &$field) {
+            if (($field['name'] ?? '') === $target || ($field['label'] ?? '') === $target) {
+                // If we're replacing the entire field
+                if (isset($changes['field'])) {
+                    $field = $this->ensure_full_wpuf_structure($changes['field'], 0);
+                } else {
+                    // Apply individual property changes
+                    foreach ($changes as $key => $value) {
+                        $field[$key] = $value;
+                    }
+                    $field = $this->ensure_full_wpuf_structure($field, 0);
+                }
+                break;
+            }
+        }
+        return $fields;
+    }
+
+    /**
+     * Update form settings
+     *
+     * @param int $form_id Form ID
+     * @param string $target Setting to update
+     * @param array $changes Changes to apply
+     */
+    private function update_form_settings($form_id, $target, $changes) {
+        if ($target === 'form_title' && isset($changes['form_title'])) {
+            wp_update_post([
+                'ID' => $form_id,
+                'post_title' => sanitize_text_field($changes['form_title'])
+            ]);
+        }
+
+        if ($target === 'form_description' && isset($changes['form_description'])) {
+            wp_update_post([
+                'ID' => $form_id,
+                'post_content' => sanitize_textarea_field($changes['form_description'])
+            ]);
+        }
+
+        // Update other form settings
+        $current_settings = get_post_meta($form_id, 'wpuf_form_settings', true);
+        if (!is_array($current_settings)) {
+            $current_settings = [];
+        }
+
+        foreach ($changes as $key => $value) {
+            if ($key !== 'form_title' && $key !== 'form_description') {
+                $current_settings[$key] = $value;
+            }
+        }
+
+        update_post_meta($form_id, 'wpuf_form_settings', $current_settings);
+    }
+
+    /**
+     * Update form field child posts
+     *
+     * @param int $form_id Form ID
+     * @param array $fields Updated fields
+     */
+    private function update_form_field_posts($form_id, $fields) {
+        // Delete existing field posts
+        $existing_posts = get_posts([
+            'post_type' => 'wpuf_input',
+            'post_parent' => $form_id,
+            'posts_per_page' => -1,
+            'post_status' => 'any'
+        ]);
+
+        foreach ($existing_posts as $post) {
+            wp_delete_post($post->ID, true);
+        }
+
+        // Create new field posts
+        foreach ($fields as $order => $field) {
+            $field_post = array(
+                'post_type' => 'wpuf_input',
+                'post_status' => 'publish',
+                'post_parent' => $form_id,
+                'menu_order' => $order,
+                'post_content' => serialize($field)
+            );
+
+            wp_insert_post($field_post);
+        }
+    }
+
+    /**
+     * Log form modification for monitoring
+     *
+     * @param int $form_id Modified form ID
+     * @param array $modification_data Modification data
+     */
+    private function log_form_modification($form_id, $modification_data) {
+        $log_data = [
+            'form_id' => $form_id,
+            'user_id' => get_current_user_id(),
+            'timestamp' => current_time('mysql'),
+            'modification_type' => $modification_data['modification_type'] ?? 'unknown',
+            'target' => $modification_data['target'] ?? '',
+            'action' => $modification_data['action'] ?? ''
+        ];
+
+        // Log to WordPress debug log if enabled
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('WPUF AI Form Modified: ' . wp_json_encode($log_data));
+        }
+
+        // Keep a log in WordPress options
+        $modification_log = get_option('wpuf_ai_form_modification_log', []);
+        array_unshift($modification_log, $log_data);
+        $modification_log = array_slice($modification_log, 0, 50);
+        update_option('wpuf_ai_form_modification_log', $modification_log);
+    }
+
+    /**
      * Log form creation for monitoring
      *
      * @param int $form_id Created form ID
@@ -547,6 +973,275 @@ class RestController {
         array_unshift($creation_log, $log_data);
         $creation_log = array_slice($creation_log, 0, 50);
         update_option('wpuf_ai_form_creation_log', $creation_log);
+    }
+
+    /**
+     * Ensure field has full WPUF structure required by form builder
+     *
+     * @param array $field Field data
+     * @param int $order Field order
+     * @return array Full WPUF field structure
+     */
+    private function ensure_full_wpuf_structure($field, $order) {
+        // If field already has full WPUF structure, return as-is
+        if (isset($field['input_type']) && isset($field['template']) && isset($field['wpuf_cond'])) {
+            return $field;
+        }
+
+        // Debug log the conversion
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('WPUF AI: Converting simplified field to full WPUF structure: ' . wp_json_encode($field));
+        }
+
+        // Convert simplified field to full WPUF structure
+        $field_type = $field['type'] ?? 'text_field';
+        $field_id = $field['id'] ?? 'field_' . ($order + 1);
+        $field_name = $field['name'] ?? ($field['label'] ? sanitize_title($field['label']) : 'field_' . ($order + 1));
+
+        $full_field = [
+            'id' => $field_id,
+            'type' => $field_type,
+            'input_type' => $this->map_to_input_type($field_type),
+            'template' => $field_type,
+            'required' => $field['required'] === true || $field['required'] === 'yes' ? 'yes' : 'no',
+            'label' => $field['label'] ?? 'New Field',
+            'name' => $field_name,
+            'is_meta' => $this->should_be_meta($field_name) ? 'yes' : 'no',
+            'help' => $field['help_text'] ?? $field['help'] ?? '',
+            'css' => $field['css'] ?? '',
+            'placeholder' => $field['placeholder'] ?? '',
+            'default' => $field['default'] ?? '',
+            'size' => $field['size'] ?? '40',
+            'width' => $field['width'] ?? 'large',
+            'wpuf_cond' => [
+                'condition_status' => 'no',
+                'cond_field' => [],
+                'cond_operator' => ['='],
+                'cond_option' => ['- Select -'],
+                'cond_logic' => 'all'
+            ],
+            'wpuf_visibility' => [
+                'selected' => 'everyone',
+                'choices' => []
+            ]
+        ];
+
+        // Add field-specific properties
+        if (in_array($field_type, ['dropdown_field', 'radio_field', 'checkbox_field', 'multiple_select'])) {
+            $full_field['first'] = '- Select -';
+            $full_field['options'] = $field['options'] ?? [];
+            
+            // For radio and checkbox fields, add additional properties
+            if ($field_type === 'radio_field' || $field_type === 'checkbox_field') {
+                $full_field['show_inline'] = false;
+                
+                // Ensure options are in correct format for WPUF
+                if (is_array($full_field['options']) && !empty($full_field['options'])) {
+                    $formatted_options = [];
+                    foreach ($full_field['options'] as $key => $value) {
+                        if (is_string($key)) {
+                            $formatted_options[$key] = $value;
+                        } else {
+                            $formatted_options[$value] = $value;
+                        }
+                    }
+                    $full_field['options'] = $formatted_options;
+                }
+            }
+        }
+
+        if ($field_type === 'textarea_field') {
+            $full_field['rows'] = '5';
+            $full_field['cols'] = '25';
+            $full_field['rich'] = 'no';
+        }
+
+        if ($field_type === 'date_field') {
+            $full_field['format'] = 'mm/dd/yy';
+            $full_field['time'] = 'no';
+        }
+
+        if ($field_type === 'file_upload') {
+            $full_field['max_size'] = '1024';
+            $full_field['count'] = '1';
+            $full_field['extension'] = ['images'];
+        }
+
+        if ($field_type === 'numeric_text_field') {
+            $full_field['step_text_field'] = '1';
+            $full_field['min_value_field'] = '0';
+            $full_field['max_value_field'] = '';
+        }
+
+        if ($field_type === 'toc') {
+            $full_field['toc_text'] = $field['toc_text'] ?? 'Please read and accept our terms and conditions.';
+            $full_field['show_checkbox'] = 'yes';
+            $full_field['required_text'] = 'You must agree to the terms and conditions to continue.';
+        }
+
+        if ($field_type === 'time_field') {
+            $full_field['format'] = '24'; // 24 hour format
+            $full_field['show_in_post'] = 'yes';
+        }
+
+        if ($field_type === 'ratings') {
+            $full_field['max'] = '5';
+            $full_field['selected'] = '0';
+        }
+
+        if ($field_type === 'linear_scale') {
+            $full_field['max'] = '10';
+            $full_field['min'] = '1';
+            $full_field['step'] = '1';
+        }
+
+        if ($field_type === 'google_map') {
+            $full_field['address'] = 'yes';
+            $full_field['zoom'] = '12';
+            $full_field['center_lat'] = '40.7128';
+            $full_field['center_lng'] = '-74.0060';
+        }
+
+        if ($field_type === 'address_field') {
+            $full_field['address'] = [
+                'street' => ['show' => 'yes', 'required' => 'yes', 'label' => 'Street Address'],
+                'city' => ['show' => 'yes', 'required' => 'yes', 'label' => 'City'],
+                'state' => ['show' => 'yes', 'required' => 'yes', 'label' => 'State'],
+                'zip' => ['show' => 'yes', 'required' => 'yes', 'label' => 'Zip Code'],
+                'country_select' => [
+                    'show' => 'yes',
+                    'required' => 'yes',
+                    'label' => 'Country',
+                    'country_list_visibility_opt_name' => 'all'
+                ]
+            ];
+        }
+
+        if ($field_type === 'phone_field') {
+            $full_field['auto_placeholder'] = 'yes';
+            $full_field['country_list'] = [];
+            $full_field['national_mode'] = 'yes';
+        }
+
+        if ($field_type === 'step_start') {
+            $full_field['step_name'] = 'Step 1';
+            $full_field['prev_button_text'] = 'Previous';
+            $full_field['next_button_text'] = 'Next';
+        }
+
+        if ($field_type === 'shortcode') {
+            $full_field['shortcode'] = '[your_shortcode]';
+        }
+
+        if ($field_type === 'custom_html') {
+            $full_field['html'] = '<p>Custom HTML content goes here</p>';
+        }
+
+        if ($field_type === 'section_break') {
+            $full_field['section_title'] = $field['label'] ?? 'Section Title';
+            $full_field['section_description'] = '';
+        }
+
+        if ($field_type === 'repeat_field') {
+            $full_field['repeat_type'] = 'single';
+            $full_field['multiple_column'] = [];
+        }
+
+        if (in_array($field_type, ['really_simple_captcha', 'math_captcha'])) {
+            $full_field['recaptcha_type'] = 'image';
+            $full_field['recaptcha_theme'] = 'light';
+        }
+
+        if ($field_type === 'qr_code') {
+            $full_field['qr_text'] = $field['default'] ?? 'QR Code Text';
+            $full_field['qr_size'] = '128';
+        }
+
+        return $full_field;
+    }
+
+    /**
+     * Map field type to WPUF input type
+     *
+     * @param string $field_type
+     * @return string
+     */
+    private function map_to_input_type($field_type) {
+        $mapping = [
+            // Free WPUF fields
+            'text_field' => 'text',
+            'email_address' => 'email',
+            'website_url' => 'url',
+            'textarea_field' => 'textarea',
+            'dropdown_field' => 'select',
+            'radio_field' => 'radio',
+            'checkbox_field' => 'checkbox',
+            'image_upload' => 'image_upload',
+            'featured_image' => 'image_upload',
+            'custom_html' => 'html',
+            'custom_hidden_field' => 'hidden',
+            'section_break' => 'section_break',
+            'post_title' => 'text',
+            'post_content' => 'textarea',
+            'post_excerpt' => 'textarea',
+            'post_tags' => 'text',
+            'taxonomy' => 'select',
+            'recaptcha' => 'recaptcha',
+            'cloudflare_turnstile' => 'cloudflare_turnstile',
+            
+            // Pro WPUF fields
+            'file_upload' => 'file_upload',
+            'date_field' => 'date',
+            'time_field' => 'time',
+            'numeric_text_field' => 'numeric_text',
+            'phone_field' => 'text',
+            'address_field' => 'address_field',
+            'country_list_field' => 'select',
+            'multiple_select' => 'multiselect',
+            'toc' => 'toc',
+            'google_map' => 'google_map',
+            'ratings' => 'ratings',
+            'linear_scale' => 'linear_scale',
+            'repeat_field' => 'repeat',
+            'step_start' => 'step_start',
+            'shortcode' => 'shortcode',
+            'embed' => 'embed',
+            'action_hook' => 'action_hook',
+            'really_simple_captcha' => 'really_simple_captcha',
+            'math_captcha' => 'math_captcha',
+            'qr_code' => 'qr_code',
+            'checkbox_grid' => 'checkbox_grid',
+            'multiple_choice_grid' => 'multiple_choice_grid',
+            
+            // User Profile fields (Pro)
+            'user_login' => 'text',
+            'user_email' => 'email',
+            'user_url' => 'url',
+            'user_bio' => 'textarea',
+            'password' => 'password',
+            'first_name' => 'text',
+            'last_name' => 'text',
+            'display_name' => 'text',
+            'nickname' => 'text',
+            'profile_photo' => 'profile_photo',
+            'facebook_url' => 'facebook_url',
+            'twitter_url' => 'twitter_url',
+            'linkedin_url' => 'linkedin_url',
+            'instagram_url' => 'instagram_url'
+        ];
+
+        return $mapping[$field_type] ?? 'text';
+    }
+
+    /**
+     * Determine if field should be meta
+     *
+     * @param string $field_name
+     * @return bool
+     */
+    private function should_be_meta($field_name) {
+        $post_fields = ['post_title', 'post_content', 'post_excerpt', 'post_tags', 'post_category'];
+        return !in_array($field_name, $post_fields);
     }
 
     /**

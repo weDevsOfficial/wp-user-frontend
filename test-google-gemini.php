@@ -8,7 +8,7 @@
  */
 
 // Your Google Gemini API key
-$API_KEY = 'AIzaSyB4CgVA1tpcJMHmP-2RgzBb7z9QKhkFRN0';
+$API_KEY = 'YOUR_GOOGLE_GEMINI_API_KEY_HERE';
 
 // Test endpoint
 $model = 'gemini-1.5-flash';

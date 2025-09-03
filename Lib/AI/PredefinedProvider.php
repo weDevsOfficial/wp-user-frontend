@@ -78,10 +78,12 @@ class PredefinedProvider {
                 ],
                 [
                     'id' => 7,
-                    'type' => 'checkbox',
+
+                    'type' => 'toc',
                     'label' => 'I agree to the publication guidelines',
                     'name' => 'guidelines_agreement',
-                    'required' => true
+                    'required' => true,
+                    'toc_text' => 'By submitting this form, you agree to our publication guidelines and terms of service. Your guest post will be reviewed before publication.'
                 ]
             ]
         ],
@@ -459,6 +461,161 @@ class PredefinedProvider {
             ]
         ],
 
+        'event_registration' => [
+            'form_title' => 'Event Registration Form',
+            'form_description' => 'Register for our upcoming event',
+            'fields' => [
+                [
+                    'id' => 1,
+                    'type' => 'text',
+                    'label' => 'Full Name',
+                    'name' => 'full_name',
+                    'required' => true,
+                    'placeholder' => 'Enter your full name'
+                ],
+                [
+                    'id' => 2,
+                    'type' => 'email',
+                    'label' => 'Email Address',
+                    'name' => 'email',
+                    'required' => true,
+                    'placeholder' => 'your@email.com'
+                ],
+                [
+                    'id' => 3,
+                    'type' => 'phone',
+                    'label' => 'Phone Number',
+                    'name' => 'phone',
+                    'required' => true,
+                    'placeholder' => 'Your phone number'
+                ],
+                [
+                    'id' => 4,
+                    'type' => 'date',
+                    'label' => 'Preferred Session Date',
+                    'name' => 'session_date',
+                    'required' => true,
+                    'format' => 'mm/dd/yy'
+                ],
+                [
+                    'id' => 5,
+                    'type' => 'time',
+                    'label' => 'Preferred Time',
+                    'name' => 'session_time',
+                    'required' => false,
+                    'format' => '24'
+                ],
+                [
+                    'id' => 6,
+                    'type' => 'select',
+                    'label' => 'Session Type',
+                    'name' => 'session_type',
+                    'required' => true,
+                    'options' => [
+                        'workshop' => 'Workshop Session',
+                        'seminar' => 'Seminar',
+                        'networking' => 'Networking Event',
+                        'conference' => 'Full Conference'
+                    ]
+                ],
+                [
+                    'id' => 7,
+                    'type' => 'number',
+                    'label' => 'Number of Attendees',
+                    'name' => 'attendee_count',
+                    'required' => true,
+                    'placeholder' => '1'
+                ],
+                [
+                    'id' => 8,
+                    'type' => 'textarea',
+                    'label' => 'Dietary Requirements',
+                    'name' => 'dietary_requirements',
+                    'required' => false,
+                    'placeholder' => 'Any special dietary needs or allergies...'
+                ],
+                [
+                    'id' => 9,
+                    'type' => 'toc',
+                    'label' => 'I agree to the event terms and conditions',
+                    'name' => 'terms_agreement',
+                    'required' => true,
+                    'toc_text' => 'By registering for this event, you agree to our terms and conditions. Cancellation policy: Full refund available up to 48 hours before the event.'
+                ]
+            ]
+        ],
+
+        'survey_form' => [
+            'form_title' => 'Customer Survey Form',
+            'form_description' => 'Help us improve by sharing your feedback',
+            'fields' => [
+                [
+                    'id' => 1,
+                    'type' => 'text',
+                    'label' => 'Full Name',
+                    'name' => 'full_name',
+                    'required' => true,
+                    'placeholder' => 'Enter your full name'
+                ],
+                [
+                    'id' => 2,
+                    'type' => 'email',
+                    'label' => 'Email Address',
+                    'name' => 'email',
+                    'required' => true,
+                    'placeholder' => 'your@email.com'
+                ],
+                [
+                    'id' => 3,
+                    'type' => 'radio',
+                    'label' => 'Overall Satisfaction',
+                    'name' => 'satisfaction',
+                    'required' => true,
+                    'options' => [
+                        'very_satisfied' => 'Very Satisfied',
+                        'satisfied' => 'Satisfied',
+                        'neutral' => 'Neutral',
+                        'dissatisfied' => 'Dissatisfied',
+                        'very_dissatisfied' => 'Very Dissatisfied'
+                    ]
+                ],
+                [
+                    'id' => 4,
+                    'type' => 'checkbox',
+                    'label' => 'Which features do you use most?',
+                    'name' => 'features_used',
+                    'required' => false,
+                    'options' => [
+                        'feature1' => 'User Dashboard',
+                        'feature2' => 'Form Builder',
+                        'feature3' => 'File Uploads',
+                        'feature4' => 'Payment Integration',
+                        'feature5' => 'User Registration'
+                    ]
+                ],
+                [
+                    'id' => 5,
+                    'type' => 'textarea',
+                    'label' => 'Additional Comments',
+                    'name' => 'comments',
+                    'required' => false,
+                    'placeholder' => 'Share any additional feedback...'
+                ],
+                [
+                    'id' => 6,
+                    'type' => 'radio',
+                    'label' => 'Would you recommend us?',
+                    'name' => 'recommend',
+                    'required' => true,
+                    'options' => [
+                        'yes' => 'Yes, definitely',
+                        'maybe' => 'Maybe',
+                        'no' => 'No'
+                    ]
+                ]
+            ]
+        ],
+
         'product_listing' => [
             'form_title' => 'Product Listing',
             'form_description' => 'List your product for sale',
@@ -583,6 +740,14 @@ class PredefinedProvider {
         } elseif (strpos($prompt_lower, 'news') !== false || 
                   strpos($prompt_lower, 'press release') !== false) {
             $response = $this->predefined_responses['news_press_release'];
+        } elseif (strpos($prompt_lower, 'event') !== false || 
+                  strpos($prompt_lower, 'registration') !== false ||
+                  strpos($prompt_lower, 'event registration') !== false) {
+            $response = $this->predefined_responses['event_registration'];
+        } elseif (strpos($prompt_lower, 'survey') !== false || 
+                  strpos($prompt_lower, 'feedback') !== false ||
+                  strpos($prompt_lower, 'customer survey') !== false) {
+            $response = $this->predefined_responses['survey_form'];
         } elseif (strpos($prompt_lower, 'product') !== false || 
                   strpos($prompt_lower, 'product listing') !== false) {
             $response = $this->predefined_responses['product_listing'];
@@ -761,7 +926,7 @@ class PredefinedProvider {
             'address_field' => 'address_field',
             'map' => 'google_map',
             'rating' => 'ratings',
-            'toc' => 'checkbox',
+            'toc' => 'toc',
             
             // Free image fields
             'image' => 'image_upload',
@@ -861,8 +1026,9 @@ class PredefinedProvider {
                     }
                 }
                 
-                // Special handling for taxonomy fields
-                if ($wpuf_field['name'] === 'category' || $wpuf_field['name'] === 'post_category') {
+                // Special handling for taxonomy fields - but only if not explicitly set to radio_field
+                if (($wpuf_field['name'] === 'category' || $wpuf_field['name'] === 'post_category') && 
+                    $wpuf_field['type'] !== 'radio_field' && $wpuf_field['type'] !== 'checkbox_field') {
                     $wpuf_field['input_type'] = 'taxonomy';
                     $wpuf_field['template'] = 'taxonomy';
                     $wpuf_field['type'] = 'select';
@@ -910,6 +1076,13 @@ class PredefinedProvider {
                 $wpuf_field['time'] = 'no';
                 $wpuf_field['mintime'] = '';
                 $wpuf_field['maxtime'] = '';
+                break;
+
+            case 'toc':
+                // Terms of Conditions field specific properties
+                $wpuf_field['toc_text'] = $field['toc_text'] ?? 'Please read and accept our terms and conditions.';
+                $wpuf_field['show_checkbox'] = 'yes';
+                $wpuf_field['required_text'] = 'You must agree to the terms and conditions to continue.';
                 break;
 
             case 'text':

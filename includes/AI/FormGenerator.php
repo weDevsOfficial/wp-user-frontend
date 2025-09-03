@@ -85,18 +85,42 @@ class FormGenerator {
     }
 
     /**
+     * Check if prompt matches predefined templates exactly
+     * 
+     * @param string $prompt
+     * @return bool
+     */
+    private function isPredefinedPrompt($prompt) {
+        // List of exact prompts that have predefined templates
+        $predefined_prompts = [
+            'Paid Guest Post Submission',
+            'Portfolio Submission',
+            'Classified Ad Submission',
+            'Coupon Submission',
+            'Real Estate Property Listing',
+            'News/Press Release Submission',
+            'Product Listing'
+        ];
+        
+        // Check for exact match (case-insensitive)
+        return in_array(strtolower(trim($prompt)), array_map('strtolower', $predefined_prompts));
+    }
+
+    /**
      * Load settings from WordPress options
      */
     private function load_settings() {
-        $settings = get_option('wpuf_ai_settings', []);
+        // Get settings from WPUF settings system
+        $settings = get_option('wpuf_ai', []);
 
-        // Default to predefined provider for testing
-        $this->current_provider = $settings['provider'] ?? 'predefined';
-        $this->current_model = $settings['model'] ?? 'predefined';
-        $this->api_key = $settings['api_key'] ?? '';
+        // Get individual settings
+        $this->current_provider = $settings['ai_provider'] ?? 'predefined';
+        $this->current_model = $settings['ai_model'] ?? 'gpt-3.5-turbo';
+        $this->api_key = $settings['ai_api_key'] ?? '';
 
-        // Force predefined provider if no API key is provided for other providers
-        if ($this->current_provider !== 'predefined' && empty($this->api_key)) {
+        // If no provider is set or no API key for non-predefined providers, use predefined
+        if (empty($this->current_provider) || 
+            ($this->current_provider !== 'predefined' && empty($this->api_key))) {
             $this->current_provider = 'predefined';
             $this->current_model = 'predefined';
         }
@@ -111,7 +135,14 @@ class FormGenerator {
      */
     public function generate_form($prompt, $options = []) {
         try {
-            // Use predefined provider for testing or when no API key
+            // Check if prompt matches predefined templates exactly
+            if ($this->isPredefinedPrompt($prompt)) {
+                // Use predefined provider for exact matches (saves API costs)
+                $predefined_provider = new PredefinedProvider();
+                return $predefined_provider->generateForm($prompt, $options['session_id'] ?? '');
+            }
+            
+            // Use predefined provider if explicitly set or no API key
             if ($this->current_provider === 'predefined') {
                 $predefined_provider = new PredefinedProvider();
                 return $predefined_provider->generateForm($prompt, $options['session_id'] ?? '');

@@ -272,22 +272,18 @@ class RestController {
         $provider = $request->get_param('provider');
         $model = $request->get_param('model');
         $api_key = $request->get_param('api_key');
-        $temperature = $request->get_param('temperature');
-        $max_tokens = $request->get_param('max_tokens');
 
+        // Get existing settings
+        $existing = get_option('wpuf_ai', []);
+
+        // Update with new values
         $settings = [
-            'provider' => $provider,
-            'model' => $model ?: 'predefined',
-            'temperature' => $temperature ?: 0.7,
-            'max_tokens' => $max_tokens ?: 2000
+            'ai_provider' => $provider ?: ($existing['ai_provider'] ?? 'predefined'),
+            'ai_model' => $model ?: ($existing['ai_model'] ?? 'gpt-3.5-turbo'),
+            'ai_api_key' => !empty($api_key) ? $api_key : ($existing['ai_api_key'] ?? '')
         ];
 
-        // Only save API key if provided and not empty
-        if (!empty($api_key)) {
-            $settings['api_key'] = $api_key;
-        }
-
-        $saved = update_option('wpuf_ai_settings', $settings);
+        $saved = update_option('wpuf_ai', $settings);
 
         if ($saved) {
             return new WP_REST_Response([
@@ -309,13 +305,17 @@ class RestController {
      * @return WP_REST_Response Response object
      */
     public function get_settings(WP_REST_Request $request) {
-        $settings = get_option('wpuf_ai_settings', [
-            'provider' => 'predefined',
-            'model' => 'predefined',
+        // Get settings from WPUF settings system
+        $wpuf_ai_settings = get_option('wpuf_ai', []);
+        
+        // Map to expected format
+        $settings = [
+            'provider' => $wpuf_ai_settings['ai_provider'] ?? 'predefined',
+            'model' => $wpuf_ai_settings['ai_model'] ?? 'gpt-3.5-turbo',
             'temperature' => 0.7,
             'max_tokens' => 2000,
-            'api_key' => ''
-        ]);
+            'api_key' => $wpuf_ai_settings['ai_api_key'] ?? ''
+        ];
 
         // Don't expose the actual API key, just whether it's set
         $settings['has_api_key'] = !empty($settings['api_key']);

@@ -119,7 +119,7 @@ export default {
                     body: JSON.stringify({
                         prompt: prompt,
                         session_id: this.getSessionId(),
-                        provider: config.provider || 'mock',
+                        provider: config.provider || 'predefined',
                         temperature: config.temperature || 0.7,
                         max_tokens: config.maxTokens || 2000
                     })

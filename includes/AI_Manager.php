@@ -84,7 +84,7 @@ class AI_Manager {
         wp_localize_script('wpuf-form-builder-mixins', 'wpufAIFormBuilder', [
             'restUrl' => rest_url('/'),
             'nonce' => wp_create_nonce('wp_rest'),
-            'provider' => get_option('wpuf_ai_settings')['provider'] ?? 'mock',
+            'provider' => get_option('wpuf_ai_settings')['provider'] ?? 'predefined',
             'temperature' => get_option('wpuf_ai_settings')['temperature'] ?? 0.7,
             'maxTokens' => get_option('wpuf_ai_settings')['max_tokens'] ?? 2000,
             'assetUrl' => WPUF_ASSET_URI,
@@ -102,7 +102,7 @@ class AI_Manager {
                 wp_localize_script($script_handle, 'wpufAIFormBuilder', [
                     'restUrl' => rest_url('/'),
                     'nonce' => wp_create_nonce('wp_rest'),
-                    'provider' => get_option('wpuf_ai_settings')['provider'] ?? 'mock',
+                    'provider' => get_option('wpuf_ai_settings')['provider'] ?? 'predefined',
                     'temperature' => get_option('wpuf_ai_settings')['temperature'] ?? 0.7,
                     'maxTokens' => get_option('wpuf_ai_settings')['max_tokens'] ?? 2000,
                     'assetUrl' => WPUF_ASSET_URI,
@@ -123,7 +123,7 @@ class AI_Manager {
             'restUrl' => rest_url('/'),
             'nonce' => wp_create_nonce('wp_rest'),
             'ajaxUrl' => admin_url('admin-ajax.php'),
-            'provider' => get_option('wpuf_ai_settings')['provider'] ?? 'mock',
+            'provider' => get_option('wpuf_ai_settings')['provider'] ?? 'predefined',
             'hasApiKey' => !empty(get_option('wpuf_ai_settings')['api_key']),
             'strings' => [
                 'testConnection' => __('Test Connection', 'wp-user-frontend'),
@@ -199,8 +199,8 @@ class AI_Manager {
      */
     public function get_ai_settings() {
         return get_option('wpuf_ai_settings', [
-            'provider' => 'mock',
-            'model' => 'mock',
+            'provider' => 'predefined',
+            'model' => 'predefined',
             'temperature' => 0.7,
             'max_tokens' => 2000,
             'api_key' => ''
@@ -215,8 +215,8 @@ class AI_Manager {
     public function is_ai_available() {
         $settings = $this->get_ai_settings();
         
-        // Mock provider is always available
-        if ($settings['provider'] === 'mock') {
+        // Predefined provider is always available
+        if ($settings['provider'] === 'predefined') {
             return true;
         }
 

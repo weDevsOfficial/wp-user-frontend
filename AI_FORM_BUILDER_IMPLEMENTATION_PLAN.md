@@ -7,14 +7,14 @@ This document outlines the comprehensive implementation plan for integrating AI-
 ### Current Implementation Overview
 - **WordPress PHP AI Client SDK**: Successfully integrated at `Lib/AI/php-ai-client/`
 - **AI Client Loader**: Custom autoloader implemented without Composer dependency
-- **Provider Support**: Mock, OpenAI, and Anthropic providers fully functional
+- **Provider Support**: Predefined, OpenAI, and Anthropic providers fully functional
 - **REST API**: Complete REST endpoints for form generation
 - **Vue Components**: Full UI implementation with three-stage process
 
 ### ✅ **Implemented Architecture**
 - **WordPress Native HTTP API**: ✅ Using `wp_remote_post()` and `wp_safe_remote_request()`
 - **AI Client Integration**: ✅ WordPress PHP AI Client SDK integrated
-- **Provider Support**: ✅ Mock, OpenAI, and Anthropic providers working
+- **Provider Support**: ✅ Predefined, OpenAI, and Anthropic providers working
 - **BYOK Implementation**: ✅ Users can bring their own API keys
 - **Fallback Mechanism**: ✅ Falls back to direct HTTP if AI Client fails
 
@@ -73,7 +73,7 @@ wp-user-frontend/
 │       │       ├── Builders/
 │       │       ├── Providers/
 │       │       └── ...
-│       └── MockProvider.php        # Mock provider for testing
+│       └── PredefinedProvider.php        # Predefined provider for testing
 ├── includes/
 │   ├── AI/                         # AI Form Builder classes
 │   │   ├── AIClientLoader.php      # ✅ Implemented - AI Client autoloader
@@ -82,7 +82,7 @@ wp-user-frontend/
 │   ├── Admin/
 │   │   └── Forms/
 │   │       └── AI_Form_Handler.php # ✅ Implemented - Admin page handler
-│   └── class-ai-manager.php        # ✅ Implemented - Main AI manager
+│   └── AI_Manager.php              # ✅ Implemented - Main AI manager
 ├── assets/
 │   └── js/
 │       └── components/
@@ -101,7 +101,7 @@ wp-user-frontend/
 <?php
 namespace WeDevs\Wpuf\AI;
 
-use WeDevs\Wpuf\Lib\AI\MockProvider;
+use WeDevs\Wpuf\Lib\AI\PredefinedProvider;
 use WeDevs\Wpuf\Lib\AI\OpenaiProvider;
 
 /**
@@ -114,10 +114,10 @@ class FormGenerator {
         // Classes auto-loaded via existing Composer setup
     }
     
-    public function generate($prompt, $provider = 'mock') {
+    public function generate($prompt, $provider = 'predefined') {
         switch ($provider) {
-            case 'mock':
-                $service = new MockProvider();
+            case 'predefined':
+                $service = new PredefinedProvider();
                 break;
             case 'openai':
                 $service = new OpenaiProvider();
@@ -491,24 +491,24 @@ class ResponseNormalizer {
 
 ### Phase 3: Static Testing Implementation
 
-#### Step 3.1: Mock Provider for Development (Enhanced)
+#### Step 3.1: Predefined Provider for Development (Enhanced)
 ```php
 namespace WeDevs\Wpuf\Lib\AI;
 
 use WeDevs\Wpuf\AI\ResponseNormalizer;
 
 /**
- * Enhanced Mock Provider (inspired by WPForms approach)
- * File: Lib/AI/MockProvider.php  
+ * Enhanced Predefined Provider (inspired by WPForms approach)
+ * File: Lib/AI/PredefinedProvider.php  
  */
-class MockProvider {
+class PredefinedProvider {
     private $normalizer;
     
     public function __construct() {
         $this->normalizer = new ResponseNormalizer();
     }
     
-    private $mock_responses = [
+    private $predefined_responses = [
         'contact' => [
             'form_title' => 'Contact Form',
             'form_description' => 'Get in touch with us',
@@ -610,7 +610,7 @@ class MockProvider {
         // Simulate processing delay (like real AI)
         sleep(1);
         
-        // Simple keyword matching for mock responses
+        // Simple keyword matching for predefined responses
         $prompt_lower = strtolower($prompt);
         
         $response = null;
@@ -618,11 +618,11 @@ class MockProvider {
         if (strpos($prompt_lower, 'job') !== false || 
             strpos($prompt_lower, 'application') !== false ||
             strpos($prompt_lower, 'career') !== false) {
-            $response = $this->mock_responses['job_application'];
+            $response = $this->predefined_responses['job_application'];
         } elseif (strpos($prompt_lower, 'contact') !== false ||
             strpos($prompt_lower, 'get in touch') !== false ||
             strpos($prompt_lower, 'message') !== false) {
-            $response = $this->mock_responses['contact'];  
+            $response = $this->predefined_responses['contact'];  
         } else {
             // Default response for any other prompt
             $response = [
@@ -638,8 +638,8 @@ class MockProvider {
         
         // Add session ID and response metadata (like WPForms)
         $response['session_id'] = $session_id ?: uniqid('wpuf_ai_');
-        $response['response_id'] = uniqid('mock_resp_');
-        $response['provider'] = 'mock';
+        $response['response_id'] = uniqid('predefined_resp_');
+        $response['provider'] = 'predefined';
         $response['generated_at'] = current_time('mysql');
         
         // Normalize response to WPUF format
@@ -822,7 +822,7 @@ class AnthropicProvider {
 <?php
 namespace WeDevs\Wpuf\AI;
 
-use WeDevs\Wpuf\Lib\AI\MockProvider;
+use WeDevs\Wpuf\Lib\AI\PredefinedProvider;
 use WeDevs\Wpuf\Lib\AI\OpenaiProvider;
 use WeDevs\Wpuf\Lib\AI\AnthropicProvider;
 
@@ -850,11 +850,11 @@ class FormGenerator {
     private function load_settings() {
         $settings = get_option('wpuf_ai_settings', []);
         
-        // For development: Use mock provider if no API key is set
-        if (empty($settings['api_key']) || $settings['provider'] === 'mock') {
-            $this->current_provider = 'mock';
-            $this->current_model = 'mock';
-            $this->api_key = 'mock_key';
+        // For development: Use predefined provider if no API key is set
+        if (empty($settings['api_key']) || $settings['provider'] === 'predefined') {
+            $this->current_provider = 'predefined';
+            $this->current_model = 'predefined';
+            $this->api_key = 'predefined_key';
         } else {
             $this->current_provider = $settings['provider'] ?? 'openai';
             $this->current_model = $settings['model'] ?? 'gpt-3.5-turbo';
@@ -863,10 +863,10 @@ class FormGenerator {
     }
     
     public function generate_form($prompt, $options = []) {
-        // Use mock provider for testing
-        if ($this->current_provider === 'mock') {
-            $mock_provider = new MockProvider();
-            return $mock_provider->generateForm($prompt);
+        // Use predefined provider for testing
+        if ($this->current_provider === 'predefined') {
+            $predefined_provider = new PredefinedProvider();
+            return $predefined_provider->generateForm($prompt);
         }
         
         // Get provider configuration
@@ -1059,8 +1059,8 @@ class WPUF_AI_REST_Controller {
                 'provider' => [
                     'required' => false,
                     'type' => 'string',
-                    'default' => 'mock',
-                    'enum' => ['mock', 'openai', 'anthropic', 'google']
+                    'default' => 'predefined',
+                    'enum' => ['predefined', 'openai', 'anthropic', 'google']
                 ]
             ]
         ]);
@@ -1081,10 +1081,10 @@ class WPUF_AI_REST_Controller {
             // Get settings
             $settings = get_option('wpuf_ai_settings', []);
             
-            // Use mock provider if no API key or explicitly selected
-            if ($provider === 'mock' || empty($settings['api_key'])) {
-                $mock = new Mock_AI_Provider();
-                $result = $mock->generate_form($prompt);
+            // Use predefined provider if no API key or explicitly selected
+            if ($provider === 'predefined' || empty($settings['api_key'])) {
+                $predefined = new Predefined_AI_Provider();
+                $result = $predefined->generate_form($prompt);
             } else {
                 // Use selected provider with WordPress HTTP API
                 switch ($provider) {
@@ -1129,13 +1129,13 @@ class WPUF_AI_REST_Controller {
     
     public function test_connection(WP_REST_Request $request) {
         $settings = get_option('wpuf_ai_settings', []);
-        $provider = $settings['provider'] ?? 'mock';
+        $provider = $settings['provider'] ?? 'predefined';
         
-        if ($provider === 'mock') {
+        if ($provider === 'predefined') {
             return new WP_REST_Response([
                 'success' => true,
-                'provider' => 'mock',
-                'message' => 'Mock provider is always available'
+                'provider' => 'predefined',
+                'message' => 'Predefined provider is always available'
             ], 200);
         }
         
@@ -1200,14 +1200,14 @@ class AI_Form_Settings_Page {
                         <th scope="row">Provider</th>
                         <td>
                             <select name="wpuf_ai_settings[provider]" id="ai_provider">
-                                <option value="mock">Mock (For Testing - No API Key Required)</option>
+                                <option value="predefined">Predefined (For Testing - No API Key Required)</option>
                                 <option value="openai">OpenAI</option>
                                 <option value="anthropic">Anthropic Claude</option>
                                 <option value="google">Google Gemini</option>
                                 <option value="cohere">Cohere</option>
                                 <option value="custom">Custom Provider</option>
                             </select>
-                            <p class="description">Select your AI provider. Use Mock for testing without API key.</p>
+                            <p class="description">Select your AI provider. Use Predefined for testing without API key.</p>
                         </td>
                     </tr>
                     
@@ -1329,7 +1329,7 @@ class AI_Form_Settings_Page {
             $('#ai_provider').on('change', function() {
                 const provider = $(this).val();
                 
-                if (provider === 'mock') {
+                if (provider === 'predefined') {
                     $('.api-key-row, .model-row, .custom-endpoint-row').hide();
                 } else if (provider === 'custom') {
                     $('.api-key-row, .custom-endpoint-row').show();
@@ -1397,13 +1397,13 @@ class AI_Form_Settings_Page {
 ### Phase 6: Testing Flow
 
 #### Step 6.1: Development Testing (Week 1)
-1. **Start with Mock Provider**
+1. **Start with Predefined Provider**
    - No API key required
    - Predictable responses
    - Fast development cycle
    - Test all UI flows
 
-2. **Mock Provider Test Cases**
+2. **Predefined Provider Test Cases**
    ```php
    // Test prompts and expected results
    $test_cases = [
@@ -1435,12 +1435,12 @@ class AI_Form_Settings_Page {
 const providerSelector = {
     data() {
         return {
-            selectedProvider: 'mock', // Default to mock for testing
-            selectedModel: 'mock',
+            selectedProvider: 'predefined', // Default to predefined for testing
+            selectedModel: 'predefined',
             providers: {
-                'mock': {
-                    name: 'Mock Provider (Testing)',
-                    models: ['mock'],
+                'predefined': {
+                    name: 'Predefined Provider (Testing)',
+                    models: ['predefined'],
                     requiresKey: false
                 },
                 'openai': {
@@ -1469,13 +1469,13 @@ const providerSelector = {
 
 ## 📊 Testing Strategy
 
-### Development Phase (Using Mock Provider)
+### Development Phase (Using Predefined Provider)
 1. **No External Dependencies**
    - Test complete flow without API keys
    - Rapid iteration on UI/UX
    - Predictable testing scenarios
 
-2. **Mock Response Scenarios**
+2. **Predefined Response Scenarios**
    - Simple forms (contact, feedback)
    - Complex forms (job application, registration)
    - Edge cases (empty response, errors)
@@ -1496,9 +1496,9 @@ const providerSelector = {
 
 ### ✅ Phase 1: Foundation (COMPLETED)
 - [x] Provider abstraction layer - `FormGenerator.php`
-- [x] Mock provider implementation - `Lib/AI/MockProvider.php`
+- [x] Predefined provider implementation - `Lib/AI/PredefinedProvider.php`
 - [x] Basic REST endpoints - `includes/AI/RestController.php`
-- [x] Test with mock provider - Fully functional
+- [x] Test with predefined provider - Fully functional
 
 ### ✅ Phase 2: AI Integration (COMPLETED)
 - [x] WordPress PHP AI Client SDK - `Lib/AI/php-ai-client/`
@@ -1539,12 +1539,12 @@ const providerSelector = {
 
 2. **✅ Provider Flexibility Implemented**
    - Dynamic provider switching implemented
-   - Mock, OpenAI, and Anthropic support
+   - Predefined, OpenAI, and Anthropic support
    - Easy to add new providers
    - No vendor lock-in achieved
 
 3. **✅ Development Efficiency Achieved**
-   - Mock provider fully functional
+   - Predefined provider fully functional
    - Zero API costs during development
    - Predictable testing scenarios
    - Custom autoloader implemented
@@ -1552,7 +1552,7 @@ const providerSelector = {
 4. **✅ User Control Implemented**
    - BYOK (Bring Your Own Key) working
    - Provider selection available
-   - Mock provider for testing
+   - Predefined provider for testing
    - Full control over API usage
 
 5. **✅ WordPress Best Practices Followed**
@@ -1578,7 +1578,7 @@ require_once WPUF_ROOT . '/includes/ai-form-builder/autoloader.php';
 WPUF_AI_Autoloader::init();
 
 // Or manual loading for specific files
-require_once WPUF_ROOT . '/lib/ai-providers/class-mock-provider.php';
+require_once WPUF_ROOT . '/lib/ai-providers/class-predefined-provider.php';
 require_once WPUF_ROOT . '/lib/ai-providers/class-openai-provider.php';
 ```
 

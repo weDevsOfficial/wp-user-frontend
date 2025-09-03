@@ -70,8 +70,8 @@ class RestController {
                 'provider' => [
                     'required' => false,
                     'type' => 'string',
-                    'default' => 'mock',
-                    'enum' => ['mock', 'openai', 'anthropic']
+                    'default' => 'predefined',
+                    'enum' => ['predefined', 'openai', 'anthropic']
                 ],
                 'temperature' => [
                     'required' => false,
@@ -113,7 +113,7 @@ class RestController {
                 'provider' => [
                     'required' => true,
                     'type' => 'string',
-                    'enum' => ['mock', 'openai', 'anthropic']
+                    'enum' => ['predefined', 'openai', 'anthropic']
                 ],
                 'model' => [
                     'required' => false,
@@ -277,7 +277,7 @@ class RestController {
 
         $settings = [
             'provider' => $provider,
-            'model' => $model ?: 'mock',
+            'model' => $model ?: 'predefined',
             'temperature' => $temperature ?: 0.7,
             'max_tokens' => $max_tokens ?: 2000
         ];
@@ -310,8 +310,8 @@ class RestController {
      */
     public function get_settings(WP_REST_Request $request) {
         $settings = get_option('wpuf_ai_settings', [
-            'provider' => 'mock',
-            'model' => 'mock',
+            'provider' => 'predefined',
+            'model' => 'predefined',
             'temperature' => 0.7,
             'max_tokens' => 2000,
             'api_key' => ''

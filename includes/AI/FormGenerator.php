@@ -2,7 +2,7 @@
 
 namespace WeDevs\Wpuf\AI;
 
-use WeDevs\Wpuf\Lib\AI\MockProvider;
+use WeDevs\Wpuf\Lib\AI\PredefinedProvider;
 
 /**
  * AI Form Generator Service
@@ -48,10 +48,10 @@ class FormGenerator {
      * @var array
      */
     private $provider_configs = [
-        'mock' => [
-            'name' => 'Mock Provider (Testing)',
+        'predefined' => [
+            'name' => 'Predefined Provider (Testing)',
             'endpoint' => '',
-            'models' => ['mock'],
+            'models' => ['predefined'],
             'requires_key' => false
         ],
         'openai' => [
@@ -90,15 +90,15 @@ class FormGenerator {
     private function load_settings() {
         $settings = get_option('wpuf_ai_settings', []);
 
-        // Default to mock provider for testing
-        $this->current_provider = $settings['provider'] ?? 'mock';
-        $this->current_model = $settings['model'] ?? 'mock';
+        // Default to predefined provider for testing
+        $this->current_provider = $settings['provider'] ?? 'predefined';
+        $this->current_model = $settings['model'] ?? 'predefined';
         $this->api_key = $settings['api_key'] ?? '';
 
-        // Force mock provider if no API key is provided for other providers
-        if ($this->current_provider !== 'mock' && empty($this->api_key)) {
-            $this->current_provider = 'mock';
-            $this->current_model = 'mock';
+        // Force predefined provider if no API key is provided for other providers
+        if ($this->current_provider !== 'predefined' && empty($this->api_key)) {
+            $this->current_provider = 'predefined';
+            $this->current_model = 'predefined';
         }
     }
 
@@ -111,10 +111,10 @@ class FormGenerator {
      */
     public function generate_form($prompt, $options = []) {
         try {
-            // Use mock provider for testing or when no API key
-            if ($this->current_provider === 'mock') {
-                $mock_provider = new MockProvider();
-                return $mock_provider->generateForm($prompt, $options['session_id'] ?? '');
+            // Use predefined provider for testing or when no API key
+            if ($this->current_provider === 'predefined') {
+                $predefined_provider = new PredefinedProvider();
+                return $predefined_provider->generateForm($prompt, $options['session_id'] ?? '');
             }
 
             // Try to use WordPress AI Client first if available
@@ -398,11 +398,11 @@ Generate the form based on the user\'s request below:';
      * @return array Test result
      */
     public function test_connection() {
-        if ($this->current_provider === 'mock') {
+        if ($this->current_provider === 'predefined') {
             return [
                 'success' => true,
-                'provider' => 'mock',
-                'message' => 'Mock provider is always available'
+                'provider' => 'predefined',
+                'message' => 'Predefined provider is always available'
             ];
         }
 

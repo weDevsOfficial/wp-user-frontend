@@ -58,8 +58,10 @@ class FormGenerator {
             'name' => 'OpenAI',
             'endpoint' => 'https://api.openai.com/v1/chat/completions',
             'models' => [
+                'gpt-4o' => 'GPT-4o',
+                'gpt-4o-mini' => 'GPT-4o Mini',
+                'gpt-4-turbo' => 'GPT-4 Turbo',
                 'gpt-4' => 'GPT-4',
-                'gpt-4-turbo-preview' => 'GPT-4 Turbo',
                 'gpt-3.5-turbo' => 'GPT-3.5 Turbo'
             ],
             'requires_key' => true
@@ -68,9 +70,10 @@ class FormGenerator {
             'name' => 'Anthropic Claude',
             'endpoint' => 'https://api.anthropic.com/v1/messages',
             'models' => [
-                'claude-3-haiku-20240307' => 'Claude 3 Haiku',
+                'claude-3-5-sonnet-20241022' => 'Claude 3.5 Sonnet',
+                'claude-3-opus-20240229' => 'Claude 3 Opus',
                 'claude-3-sonnet-20240229' => 'Claude 3 Sonnet',
-                'claude-3-opus-20240229' => 'Claude 3 Opus'
+                'claude-3-haiku-20240307' => 'Claude 3 Haiku'
             ],
             'requires_key' => true
         ]

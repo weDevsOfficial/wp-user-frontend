@@ -49,7 +49,7 @@ const saveSettings = async () => {
         if (response.ok) {
             noticeStore.addNotice({
                 type: 'success',
-                message: __('Settings saved successfully', 'wp-user-frontend')
+                message: __('Preferences saved successfully', 'wp-user-frontend')
             });
         } else {
             throw new Error('Failed to save settings');
@@ -69,10 +69,10 @@ const saveSettings = async () => {
     <div class="wpuf-p-10 wpuf-max-w-4xl">
         <div class="wpuf-mb-6">
             <h2 class="wpuf-text-2xl wpuf-font-semibold wpuf-text-gray-900 wpuf-mb-2">
-                {{ __('Subscription Settings', 'wp-user-frontend') }}
+                {{ __('Subscription Preferences', 'wp-user-frontend') }}
             </h2>
             <p class="wpuf-text-sm wpuf-text-gray-600">
-                {{ __('Configure subscription appearance settings', 'wp-user-frontend') }}
+                {{ __('Configure subscription appearance preferences', 'wp-user-frontend') }}
             </p>
         </div>
         
@@ -130,7 +130,7 @@ const saveSettings = async () => {
                         :disabled="isSaving"
                         type="button"
                         class="wpuf-rounded-md wpuf-bg-primary wpuf-px-4 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-primaryHover focus-visible:wpuf-outline focus-visible:wpuf-outline-2 focus-visible:wpuf-outline-offset-2 focus-visible:wpuf-outline-primary disabled:wpuf-opacity-50">
-                        {{ isSaving ? __('Saving...', 'wp-user-frontend') : __('Save Settings', 'wp-user-frontend') }}
+                        {{ isSaving ? __('Saving...', 'wp-user-frontend') : __('Save Preferences', 'wp-user-frontend') }}
                     </button>
                 </div>
             </div>

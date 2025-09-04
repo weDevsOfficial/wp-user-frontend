@@ -18,7 +18,7 @@ const status = [
         'trash': __( 'Trash', 'wp-user-frontend' )
     },
     {
-        'preferences': __( 'Settings', 'wp-user-frontend' )
+        'preferences': __( 'Preferences', 'wp-user-frontend' )
     }
 ];
 

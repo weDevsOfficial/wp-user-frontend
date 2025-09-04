@@ -34,6 +34,7 @@ class Post_Form_Template_Video extends Form_Template {
                 'restriction_to'   => 'max',
                 'restriction_type' => 'character',
                 'width'            => 'large',
+                'show_in_post'     => 'yes',
             ],
             [
                 'input_type'          => 'textarea',
@@ -56,6 +57,7 @@ class Post_Form_Template_Video extends Form_Template {
                 'restriction_type'    => 'character',
                 'text_editor_control' => [],
                 'width'               => 'large',
+                'show_in_post'        => 'yes',
             ],
             [
                 'input_type'      => 'website_url',
@@ -64,14 +66,15 @@ class Post_Form_Template_Video extends Form_Template {
                 'label'           => __( 'Video URL', 'wp-user-frontend' ),
                 'name'            => 'video_url',
                 'is_meta'         => 'yes',
-                'help'            => __( 'Paste the link to your video (e.g., from YouTube or Vimeo). This link will be used to embed the video.', 'wp-user-frontend' ),
+                'help'            => __( 'Paste the link to your video (e.g., from YouTube or Vimeo). This will be automatically embedded in your post.', 'wp-user-frontend' ),
                 'css'             => '',
-                'placeholder'     => __( 'Enter video content URL', 'wp-user-frontend' ),
+                'placeholder'     => __( 'https://youtube.com/watch?v=... or https://vimeo.com/...', 'wp-user-frontend' ),
                 'default'         => '',
                 'size'            => '40',
                 'wpuf_cond'       => $this->conditionals,
                 'wpuf_visibility' => $this->get_default_visibility_prop(),
                 'width'           => 'large',
+                'show_in_post'    => 'yes',
             ],
             [
                 'input_type'      => 'image_upload',
@@ -88,6 +91,7 @@ class Post_Form_Template_Video extends Form_Template {
                 'wpuf_cond'       => $this->conditionals,
                 'wpuf_visibility' => $this->get_default_visibility_prop(),
                 'width'           => 'large',
+                'show_in_post'    => 'yes',
             ],
             [
                 'input_type'      => 'taxonomy',
@@ -111,6 +115,7 @@ class Post_Form_Template_Video extends Form_Template {
                 'wpuf_visibility' => $this->get_default_visibility_prop(),
                 'width'           => 'large',
                 'show_inline'     => false,
+                'show_in_post'     => 'yes',
             ],
             [
                 'input_type'      => 'text',
@@ -127,6 +132,7 @@ class Post_Form_Template_Video extends Form_Template {
                 'wpuf_cond'       => $this->conditionals,
                 'wpuf_visibility' => $this->get_default_visibility_prop(),
                 'width'           => 'large',
+                'show_in_post'    => 'yes',
             ],
             [
                 'input_type'       => 'text',
@@ -143,6 +149,7 @@ class Post_Form_Template_Video extends Form_Template {
                 'wpuf_cond'        => $this->conditionals,
                 'wpuf_visibility'  => $this->get_default_visibility_prop(),
                 'width'            => 'large',
+                'show_in_post'     => 'yes',
             ],
         ];
 

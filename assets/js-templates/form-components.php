@@ -21,7 +21,7 @@
                 <label v-if="!is_invisible(field)" :for="'wpuf-' + field.name ? field.name : 'cls'">
                     {{ field.label }} <span v-if="field.required && 'yes' === field.required" class="required">*</span>
                 </label>
-                <span v-if="field.icon && field.show_icon === 'yes'" 
+                <span v-if="field.icon && field.show_icon === 'yes'"
                       class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-ml-2"
                       v-html="field.icon">
                 </span>
@@ -120,7 +120,7 @@
                         {{ field.label }} <span v-if="field.required && 'yes' === field.required"
                                                 class="required">*</span>
                     </label>
-                    <span v-if="field.icon && field.show_icon === 'yes'" 
+                    <span v-if="field.icon && field.show_icon === 'yes'"
                           class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-ml-2"
                           v-html="field.icon">
                     </span>
@@ -506,7 +506,6 @@
                 class="wpuf-block text-sm/6 wpuf-font-medium wpuf-text-gray-900 !wpuf-mb-0">
                 <input
                     type="radio"
-                    :name="'radio_' + editing_form_field.id + '_' + option_field.name"
                     :value="key"
                     :name="option_field.name"
                     v-model="value"
@@ -523,7 +522,6 @@
         <label class="!wpuf-mb-0">
             <input
                 type="radio"
-                :name="'radio_' + editing_form_field.id + '_' + option_field.name"
                 :value="key"
                 v-model="value"
                 :name="option_field.name"

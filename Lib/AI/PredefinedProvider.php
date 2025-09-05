@@ -25,34 +25,34 @@ class PredefinedProvider {
                 [
                     'id' => 1,
                     'type' => 'text',
-                    'label' => 'Author Name',
-                    'name' => 'author_name',
-                    'required' => true,
-                    'placeholder' => 'Enter your full name'
-                ],
-                [
-                    'id' => 2,
-                    'type' => 'email',
-                    'label' => 'Author Email',
-                    'name' => 'author_email',
-                    'required' => true,
-                    'placeholder' => 'your.email@example.com'
-                ],
-                [
-                    'id' => 3,
-                    'type' => 'text',
                     'label' => 'Article Title',
                     'name' => 'post_title',  // Map to WordPress post_title field
                     'required' => true,
                     'placeholder' => 'Enter your article title'
                 ],
                 [
-                    'id' => 4,
+                    'id' => 2,
                     'type' => 'textarea',
                     'label' => 'Article Content',
                     'name' => 'post_content',  // Map to WordPress post_content field
                     'required' => true,
                     'placeholder' => 'Enter your complete article content...'
+                ],
+                [
+                    'id' => 3,
+                    'type' => 'text',
+                    'label' => 'Author Name',
+                    'name' => 'author_name',
+                    'required' => true,
+                    'placeholder' => 'Enter your full name'
+                ],
+                [
+                    'id' => 4,
+                    'type' => 'email',
+                    'label' => 'Author Email',
+                    'name' => 'author_email',
+                    'required' => true,
+                    'placeholder' => 'your.email@example.com'
                 ],
                 [
                     'id' => 5,
@@ -96,13 +96,29 @@ class PredefinedProvider {
                 [
                     'id' => 1,
                     'type' => 'text',
+                    'label' => 'Portfolio Title',
+                    'name' => 'post_title',
+                    'required' => true,
+                    'placeholder' => 'My Creative Portfolio'
+                ],
+                [
+                    'id' => 2,
+                    'type' => 'textarea',
+                    'label' => 'Project Description',
+                    'name' => 'post_content',
+                    'required' => true,
+                    'placeholder' => 'Describe your portfolio and key projects...'
+                ],
+                [
+                    'id' => 3,
+                    'type' => 'text',
                     'label' => 'Full Name',
                     'name' => 'full_name',
                     'required' => true,
                     'placeholder' => 'Enter your full name'
                 ],
                 [
-                    'id' => 2,
+                    'id' => 4,
                     'type' => 'email',
                     'label' => 'Email Address',
                     'name' => 'email',
@@ -110,15 +126,7 @@ class PredefinedProvider {
                     'placeholder' => 'your@email.com'
                 ],
                 [
-                    'id' => 3,
-                    'type' => 'text',
-                    'label' => 'Portfolio Title',
-                    'name' => 'post_title',
-                    'required' => true,
-                    'placeholder' => 'My Creative Portfolio'
-                ],
-                [
-                    'id' => 4,
+                    'id' => 5,
                     'type' => 'select',
                     'label' => 'Skills/Expertise',
                     'name' => 'skills',
@@ -132,20 +140,12 @@ class PredefinedProvider {
                     ]
                 ],
                 [
-                    'id' => 5,
+                    'id' => 6,
                     'type' => 'file',
                     'label' => 'Portfolio Files',
                     'name' => 'portfolio_files',
                     'required' => true,
                     'allowed_types' => 'pdf,jpg,png,gif,doc,docx'
-                ],
-                [
-                    'id' => 6,
-                    'type' => 'textarea',
-                    'label' => 'Project Description',
-                    'name' => 'post_content',
-                    'required' => true,
-                    'placeholder' => 'Describe your portfolio and key projects...'
                 ],
                 [
                     'id' => 7,
@@ -243,26 +243,26 @@ class PredefinedProvider {
                 [
                     'id' => 1,
                     'type' => 'text',
-                    'label' => 'Business Name',
-                    'name' => 'business_name',
-                    'required' => true,
-                    'placeholder' => 'Enter your business name'
-                ],
-                [
-                    'id' => 2,
-                    'type' => 'text',
                     'label' => 'Coupon Title',
                     'name' => 'post_title',
                     'required' => true,
                     'placeholder' => 'e.g., 50% Off All Items'
                 ],
                 [
-                    'id' => 3,
+                    'id' => 2,
                     'type' => 'textarea',
                     'label' => 'Coupon Description',
                     'name' => 'post_content',
                     'required' => true,
                     'placeholder' => 'Describe your offer in detail...'
+                ],
+                [
+                    'id' => 3,
+                    'type' => 'text',
+                    'label' => 'Business Name',
+                    'name' => 'business_name',
+                    'required' => true,
+                    'placeholder' => 'Enter your business name'
                 ],
                 [
                     'id' => 4,
@@ -714,10 +714,6 @@ class PredefinedProvider {
      * @return array Generated form data
      */
     public function generateForm($prompt, $session_id = '') {
-        // Debug: Ensure we're using the updated version
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('WPUF AI DEBUG: PredefinedProvider generateForm called with updated convertToWPUFFormat method');
-        }
         // Simulate AI processing delay
         sleep(1);
 
@@ -798,6 +794,8 @@ class PredefinedProvider {
 
         // Convert to WPUF template format
         $wpuf_fields = $this->convertToWPUFFormat($response['fields']);
+        
+        
         $form_settings = $this->getDefaultFormSettings($response['form_title']);
 
         // Add metadata and WPUF format
@@ -821,28 +819,10 @@ class PredefinedProvider {
         // This ensures RestController logs show the correct field structure
         $response['fields'] = $wpuf_fields;
         
-        // Debug: Log the actual field structure we're returning
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('WPUF AI DEBUG: PredefinedProvider returning field structure: ' . wp_json_encode($response['fields'][0] ?? []));
-        }
 
         return $response;
     }
 
-    /**
-     * Generate unique field ID for WPUF compatibility
-     *
-     * @param string $name Field name
-     * @param int $index Field index
-     * @return int
-     */
-    private function generateFieldId($name, $index) {
-        // Generate a consistent unique ID based on field name and index
-        // WPUF typically uses integer IDs, so we'll create one
-        $hash = crc32($name . '_' . $index);
-        // Ensure it's a positive integer and not too large
-        return abs($hash) % 999999999;
-    }
 
     /**
      * Convert fields to WPUF template format
@@ -854,10 +834,16 @@ class PredefinedProvider {
         $wpuf_fields = [];
         
         foreach ($fields as $index => $field) {
+            // For WordPress core fields, template should match the field name
+            $template = in_array($field['name'], ['post_title', 'post_content', 'post_excerpt']) 
+                ? $field['name'] 
+                : $this->mapToWPUFTemplate($field['type']);
+            
+            
             $wpuf_field = [
                 'id' => 'field_' . ($index + 1), // Generate proper WPUF field IDs like "field_1", "field_2"
                 'input_type' => $this->mapToWPUFInputType($field['type']),
-                'template' => $this->mapToWPUFTemplate($field['type']),
+                'template' => $template,
                 'required' => $field['required'] ? 'yes' : 'no',
                 'label' => $field['label'],
                 'name' => $field['name'],
@@ -877,6 +863,7 @@ class PredefinedProvider {
 
             // Add field-specific properties
             $this->addFieldSpecificProperties($wpuf_field, $field);
+            
             
             $wpuf_fields[] = $wpuf_field;
         }

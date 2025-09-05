@@ -10,7 +10,7 @@ use WeDevs\Wpuf\Lib\AI\PredefinedProvider;
  * Main service class that handles form generation using different AI providers
  * Uses WordPress native HTTP API for lightweight implementation
  * 
- * @since 1.0.0
+ * @since WPUF_SINCE
  */
 class FormGenerator {
 
@@ -35,12 +35,6 @@ class FormGenerator {
      */
     private $api_key;
 
-    /**
-     * AI Client Loader instance
-     *
-     * @var AIClientLoader
-     */
-    private $ai_client_loader;
 
     /**
      * Provider configurations
@@ -93,7 +87,6 @@ class FormGenerator {
      * Constructor
      */
     public function __construct() {
-        $this->ai_client_loader = AIClientLoader::getInstance();
         $this->load_settings();
     }
 
@@ -186,24 +179,7 @@ class FormGenerator {
                 return $predefined_provider->generateForm($prompt, $options['session_id'] ?? '');
             }
 
-            // Skip AI Client for now due to dependency issues
-            // The AI Client SDK requires HTTP Discovery packages that aren't available
-            // Using direct API implementation instead
-            /*
-            if ($this->ai_client_loader->is_available() && !empty($this->api_key)) {
-                try {
-                    $ai_options = array_merge($options, [
-                        'provider' => $this->current_provider,
-                        'model' => $this->current_model
-                    ]);
-                    
-                    return $this->ai_client_loader->generate_form($prompt, $ai_options);
-                } catch (\Exception $e) {
-                    // Fall back to manual implementation if AI Client fails
-                    error_log('WPUF AI Client failed, falling back to manual implementation: ' . $e->getMessage());
-                }
-            }
-            */
+            // Using direct API implementation for AI providers
 
             // Use manual AI provider implementation as fallback
             switch ($this->current_provider) {

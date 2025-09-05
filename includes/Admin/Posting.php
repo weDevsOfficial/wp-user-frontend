@@ -461,9 +461,6 @@ class Posting {
                 wpuf_map_items = [];
             }
             
-            // Test if field initialization script is loaded
-            console.log('Admin metabox script loaded');
-            console.log('WPUF_Field_Initializer available:', typeof WPUF_Field_Initializer !== 'undefined');
         </script>
 
             <?php
@@ -562,15 +559,20 @@ class Posting {
                             var $container = $(this);
                             var fieldName = $container.data('field-name');
                             var maxRepeats = parseInt($container.data('max-repeats')) || -1;
+                            
 
                             wpuf.updateRepeatButtons($container);
 
                             $container.on('click', '.wpuf-add-repeat', function() {
+                                var $instance = $(this).closest('.wpuf-repeat-instance');
+                                var instanceIndex = $instance.attr('data-instance');
                                 wpuf.addRepeatInstance($container, fieldName, maxRepeats);
                             });
 
                             $container.on('click', '.wpuf-remove-repeat', function() {
-                                wpuf.removeRepeatInstance($(this).closest('.wpuf-repeat-instance'), $container);
+                                var $instance = $(this).closest('.wpuf-repeat-instance');
+                                var instanceIndex = $instance.attr('data-instance');
+                                wpuf.removeRepeatInstance($instance, $container);
                             });
                         });
                     },
@@ -578,6 +580,7 @@ class Posting {
                     addRepeatInstance: function($container, fieldName, maxRepeats) {
                         var $instances = $container.find('.wpuf-repeat-instance');
                         var currentInstances = $instances.length;
+                        
 
                         if (maxRepeats !== -1 && currentInstances >= maxRepeats) {
                             return;
@@ -626,14 +629,27 @@ class Posting {
                         wpuf.reindexInstances($container, fieldName);
                         wpuf.updateRepeatButtons($container);
 
+                        // Set up MutationObserver for new buttons
+                        if (window.MutationObserver && typeof observer !== 'undefined') {
+                            $newInstance.find('.wpuf-add-repeat, .wpuf-remove-repeat').each(function() {
+                                observer.observe(this, { attributes: true, attributeFilter: ['style', 'class'] });
+                            });
+                        }
+
                         // Initialize fields in the new instance
                         if (typeof WPUF_Field_Initializer !== 'undefined') {
                             WPUF_Field_Initializer.init();
+                            
+                            // Re-apply button visibility after field initializer runs on new instance
+                            setTimeout(function() {
+                                wpuf.updateRepeatButtons($container);
+                            }, 100);
                         }
                     },
 
                     removeRepeatInstance: function($instance, $container) {
                         var fieldName = $container.data('field-name');
+                        var instanceIndex = $instance.attr('data-instance');
                         $instance.remove();
                         wpuf.reindexInstances($container, fieldName);
                         wpuf.updateRepeatButtons($container);
@@ -642,6 +658,7 @@ class Posting {
                     reindexInstances: function($container, fieldName) {
                         $container.find('.wpuf-repeat-instance').each(function(index) {
                             var $instance = $(this);
+                            var oldIndex = $instance.attr('data-instance');
                             $instance.attr('data-instance', index);
 
                             $instance.find('[name], [id], [for]').each(function() {
@@ -671,31 +688,111 @@ class Posting {
                     updateRepeatButtons: function($container) {
                         var $instances = $container.find('.wpuf-repeat-instance');
                         var count = $instances.length;
+                        
+                        
+                        // Prevent rapid successive calls
+                        if ($container.data('updating-buttons')) {
+                            return;
+                        }
+                        $container.data('updating-buttons', true);
+                        
 
                         $instances.each(function(i) {
-                            var $controls = $(this).find('.wpuf-repeat-controls');
+                            var $instance = $(this);
+                            var $controls = $instance.find('.wpuf-repeat-controls');
                             var isLast = i === count - 1;
-                            var isOnlyOne = count === 1;
+                            var isOnlyInstance = count === 1;
                             
-                            // Show add button only on the last instance
-                            $controls.find('.wpuf-add-repeat').toggle(isLast);
+                            // Clear existing buttons first
+                            $controls.empty();
                             
-                            // Show remove button on all instances except when there's only one instance
-                            $controls.find('.wpuf-remove-repeat').toggle(!isOnlyOne);
+                            // Create and add buttons based on logic
+                            var addButtonHtml = '<button type="button" class="wpuf-add-repeat button" data-instance="' + i + '">+</button>';
+                            var removeButtonHtml = '<button type="button" class="wpuf-remove-repeat button" data-instance="' + i + '">-</button>';
+                            
+                            // Add button: show only on last instance
+                            if (isLast) {
+                                $controls.append(addButtonHtml);
+                            }
+                            
+                            // Remove button: show on all instances EXCEPT when there's only 1 instance
+                            if (!isOnlyInstance) {
+                                $controls.append(removeButtonHtml);
+                            }
                         });
+                        
+                        // Clear the flag after a short delay
+                        setTimeout(function() {
+                            $container.removeData('updating-buttons');
+                        }, 100);
+                        
                     }
                 };
 
                 wpuf.init();
+                
+                // Set up MutationObserver to watch for button visibility changes
+                if (window.MutationObserver) {
+                    var observer = new MutationObserver(function(mutations) {
+                        var shouldUpdate = false;
+                        mutations.forEach(function(mutation) {
+                            if (mutation.type === 'attributes' && 
+                                (mutation.attributeName === 'style' || mutation.attributeName === 'class')) {
+                                var $target = $(mutation.target);
+                                if ($target.hasClass('wpuf-add-repeat') || $target.hasClass('wpuf-remove-repeat')) {
+                                    shouldUpdate = true;
+                                }
+                            }
+                        });
+                        
+                        if (shouldUpdate) {
+                            setTimeout(function() {
+                                $('.wpuf-repeat-container').each(function() {
+                                    var $container = $(this);
+                                    wpuf.updateRepeatButtons($container);
+                                });
+                            }, 50);
+                        }
+                    });
+                    
+                    // Start observing
+                    $('.wpuf-repeat-container').each(function() {
+                        var $container = $(this);
+                        $container.find('.wpuf-add-repeat, .wpuf-remove-repeat').each(function() {
+                            observer.observe(this, { attributes: true, attributeFilter: ['style', 'class'] });
+                        });
+                    });
+                }
 
                 // Initialize fields after the form is rendered with a delay to ensure DOM is ready
                 setTimeout(function() {
+                    // First, render all repeat field buttons
+                    $('.wpuf-repeat-container').each(function() {
+                        var $container = $(this);
+                        wpuf.updateRepeatButtons($container);
+                    });
+                    
                     if (typeof WPUF_Field_Initializer !== 'undefined') {
-                        console.log('Calling WPUF_Field_Initializer.init() from admin metabox');
                         WPUF_Field_Initializer.init();
-                    } else {
-                        console.log('WPUF_Field_Initializer is not defined');
+                        
+                        // Re-apply button visibility after field initializer runs
+                        setTimeout(function() {
+                            $('.wpuf-repeat-container').each(function() {
+                                var $container = $(this);
+                                wpuf.updateRepeatButtons($container);
+                            });
+                        }, 100);
+                        
+                        // Also re-apply after a longer delay to catch any async field initialization
+                        setTimeout(function() {
+                            $('.wpuf-repeat-container').each(function() {
+                                var $container = $(this);
+                                wpuf.updateRepeatButtons($container);
+                            });
+                        }, 1000);
                     }
+                    
+                    console.log('=== MAIN INITIALIZATION END ===');
                 }, 500);
             });
 

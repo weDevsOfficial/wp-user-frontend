@@ -489,7 +489,7 @@ class FormGenerator {
      * @return string System prompt
      */
     private function get_system_prompt($context = []) {
-        // Load the comprehensive system prompt (required file)
+        // Load the main system prompt (required file)
         $prompt_file = plugin_dir_path(dirname(__FILE__)) . 'AI/system-prompt.md';
         
         if (!file_exists($prompt_file)) {
@@ -497,6 +497,14 @@ class FormGenerator {
         }
         
         $system_prompt = file_get_contents($prompt_file);
+        
+        // Load the field reference documentation if available
+        $reference_file = plugin_dir_path(dirname(__FILE__)) . 'AI/wpuf-post-form-fields-reference.md';
+        if (file_exists($reference_file)) {
+            $reference_content = file_get_contents($reference_file);
+            // Append reference to system prompt
+            $system_prompt .= "\n\n" . $reference_content;
+        }
         
         // Add conversation context if provided
         if (!empty($context)) {

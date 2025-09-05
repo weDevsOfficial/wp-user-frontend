@@ -792,7 +792,6 @@ class Posting {
                         }, 1000);
                     }
                     
-                    console.log('=== MAIN INITIALIZATION END ===');
                 }, 500);
             });
 

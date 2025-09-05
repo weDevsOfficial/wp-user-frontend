@@ -6816,6 +6816,10 @@ details.wpuf-collapse summary::-webkit-details-marker {
   transition-duration: 200ms;
 }
 
+.wpuf-duration-500 {
+  transition-duration: 500ms;
+}
+
 .wpuf-duration-75 {
   transition-duration: 75ms;
 }

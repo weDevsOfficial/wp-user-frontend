@@ -10,18 +10,23 @@ if ( !class_exists( 'WeDevs\Wpuf\Free\Pro_Prompt' ) ) {
     }
 }
 
-// Check AI provider configuration - temporarily returns true for development
+// Check AI provider configuration
 function wpuf_check_ai_configuration() {
-    // Placeholder - will check actual settings when available
-    // $ai_provider = get_option( 'wpuf_ai_provider', '' );
-    // $ai_api_key = get_option( 'wpuf_ai_api_key', '' );
-    // $ai_model = get_option( 'wpuf_ai_model', '' );
-    // return !empty( $ai_provider ) && !empty( $ai_api_key ) && !empty( $ai_model );
+    // Get AI settings from WPUF options
+    $ai_settings = get_option( 'wpuf_ai', [] );
     
-    return true; // Temporarily return true for development
+    $ai_provider = isset( $ai_settings['ai_provider'] ) ? $ai_settings['ai_provider'] : '';
+    $ai_api_key  = isset( $ai_settings['ai_api_key'] ) ? $ai_settings['ai_api_key'] : '';
+    $ai_model    = isset( $ai_settings['ai_model'] ) ? $ai_settings['ai_model'] : '';
+    
+    // For other providers, check that all required settings are present
+    return !empty( $ai_provider ) && !empty( $ai_api_key ) && !empty( $ai_model );
 }
 
 $form_type = ! empty( $form_type ) ?  $form_type : 'Post Form';
+
+// Check if this is a post form or registration/profile form
+$is_post_form = strpos( strtolower( $form_type ), 'registration' ) === false && strpos( strtolower( $form_type ), 'profile' ) === false;
 
 // Define categories based on form type
 $categories = [];
@@ -146,7 +151,14 @@ if ( ! empty( $registry ) ) {
                                     <span><?php esc_html_e( 'All Templates', 'wp-user-frontend' ); ?></span>
                                     <span class="wpuf-border wpuf-border-primary wpuf-text-primary wpuf-text-sm wpuf-font-semibold wpuf-px-2.5 wpuf-py-0.5 wpuf-rounded-full wpuf-ml-6">
                                         <?php
-                                        $total_count = count($registry) + 2; // +2 for blank form and AI form
+                                        // Base count: registry templates + blank form
+                                        $total_count = count($registry) + 1;
+                                        
+                                        // Add AI form only for post forms
+                                        if ( $is_post_form ) {
+                                            $total_count += 1;
+                                        }
+                                        
                                         if (!empty($pro_templates)) {
                                             $total_count += count($pro_templates);
                                         }
@@ -189,21 +201,19 @@ if ( ! empty( $registry ) ) {
                             <p class="wpuf-text-sm wpuf-text-gray-700 wpuf-text-center wpuf-font-medium"><?php echo esc_html( 'Blank Form' ); ?></p>
                         </div>
 
-                        <!-- AI Forms Template -->
+                        <!-- AI Forms Template - Only show for Post Forms -->
                         <?php 
-                        $ai_form_category = strpos( strtolower( $form_type ), 'registration' ) !== false || strpos( strtolower( $form_type ), 'profile' ) !== false ? 'registration' : 'post';
-                        $ai_configured = wpuf_check_ai_configuration();
-                        $ai_form_url = $ai_configured ? add_query_arg( [
-                            'action'   => $action_name,
-                            'template' => 'ai_form',
-                            '_wpnonce' => wp_create_nonce( 'wpuf_create_from_template' ),
-                        ], admin_url( 'admin.php' ) ) : '#';
-                        
-                        // Debug output
-                        error_log( 'AI Configured: ' . ( $ai_configured ? 'true' : 'false' ) );
-                        error_log( 'AI Form URL: ' . $ai_form_url );
-                        ?>
-                        <div class="template-box wpuf-template-item wpuf-ai-forms-template" data-category="<?php echo esc_attr($ai_form_category); ?>" data-title="ai forms" data-ai-configured="<?php echo $ai_configured ? 'true' : 'false'; ?>" style="width: calc(25% - 12px);">
+                        // Only show AI Forms for post forms, not registration/profile forms
+                        if ( $is_post_form ) :
+                            $ai_form_category = 'post';
+                            $ai_configured = wpuf_check_ai_configuration();
+                            $ai_form_url = $ai_configured ? add_query_arg( [
+                                'action'   => $action_name,
+                                'template' => 'ai_form',
+                                '_wpnonce' => wp_create_nonce( 'wpuf_create_from_template' ),
+                            ], admin_url( 'admin.php' ) ) : '#';
+                            ?>
+                            <div class="template-box wpuf-template-item wpuf-ai-forms-template" data-category="<?php echo esc_attr($ai_form_category); ?>" data-title="ai forms" data-ai-configured="<?php echo $ai_configured ? 'true' : 'false'; ?>" style="width: calc(25% - 12px);">
                             <div class="wpuf-relative wpuf-group wpuf-shadow-base">
                                 <div class="wpuf-bg-white wpuf-rounded-lg wpuf-flex wpuf-items-center wpuf-justify-center">
                                     <svg width="246" height="249" viewBox="0 0 246 249" fill="none" xmlns="http://www.w3.org/2000/svg" class="wpuf-w-full wpuf-h-auto">
@@ -255,6 +265,7 @@ if ( ! empty( $registry ) ) {
                             </div>
                             <p class="wpuf-text-sm wpuf-text-gray-700 wpuf-text-center wpuf-font-medium"><?php echo esc_html( 'AI Forms' ); ?></p>
                         </div>
+                        <?php endif; // End AI Forms template check ?>
 
                         <?php
                             $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';

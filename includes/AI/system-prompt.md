@@ -45,36 +45,75 @@ You MUST maintain conversation context. When users say:
 - "Remove the address field" - REMOVE only that field
 - "Change the submit button text" - Modify ONLY the button text
 
-## WPUF FIELD TYPES
+## WPUF FIELD TYPES AND STRUCTURE
+
+### IMPORTANT: Field Type Mapping
+WPUF uses a dual-property system for field types:
+- `input_type`: The actual field type (e.g., 'text', 'email', 'taxonomy')
+- `template`: The field template to use (often matches input_type)
+- `type`: For certain fields like taxonomy, this is the display type (e.g., 'select', 'checkbox')
+
+### Field Structure Examples:
+
+#### Text Field
+```json
+{
+  "input_type": "text",
+  "template": "text_field",
+  "type": "text"
+}
+```
+
+#### Taxonomy/Category Field
+```json
+{
+  "input_type": "taxonomy",
+  "template": "taxonomy",
+  "type": "select",  // Display type: 'select', 'checkbox', or 'multiselect'
+  "name": "category"  // or "product_cat" for WooCommerce
+}
+```
+
+#### Terms of Conditions Field
+```json
+{
+  "input_type": "toc",
+  "template": "toc",
+  "type": "toc",
+  "description": "I agree to the terms and conditions",  // REQUIRED: Checkbox label
+  "toc_text": "Please read and accept our terms.",
+  "show_checkbox": "yes"
+}
+```
 
 ### FREE FIELDS (Always Available)
 These fields are available in the free version of WPUF:
 
 #### Text Fields
-- `text_field` - Single line text input
-- `email_address` - Email input with validation
-- `website_url` - URL input with validation
-- `textarea_field` - Multi-line text area
+- `text` (input_type) / `text_field` (template) - Single line text input
+- `email` (input_type) / `email_address` (template) - Email input with validation
+- `url` (input_type) / `website_url` (template) - URL input with validation
+- `textarea` (input_type) / `textarea_field` (template) - Multi-line text area
 
 #### Selection Fields
-- `dropdown_field` - Single select dropdown
-- `radio_field` - Radio buttons (single choice)
-- `checkbox_field` - Checkboxes (multiple choices)
+- `select` (input_type) / `dropdown_field` (template) - Single select dropdown
+- `radio` (input_type) / `radio_field` (template) - Radio buttons (single choice)
+- `checkbox` (input_type) / `checkbox_field` (template) - Checkboxes (multiple choices)
 
 #### Upload Fields
-- `image_upload` - Image files only (jpg, png, gif)
+- `image_upload` (input_type) / `image_upload` or `featured_image` (template) - Image files only
 
 #### WordPress Post Fields
-- `post_title` - Post/Page title
-- `post_content` - Post content editor
-- `post_excerpt` - Post excerpt
-- `featured_image` - Featured image upload
+- `text` (input_type) / `post_title` (template) - Post/Page title
+- `textarea` (input_type) / `post_content` (template) - Post content editor
+- `textarea` (input_type) / `post_excerpt` (template) - Post excerpt
+- `image_upload` (input_type) / `featured_image` (template) - Featured image upload
+- `taxonomy` (input_type) / `taxonomy` (template) - Category/taxonomy selection
+- `text` (input_type) / `post_tags` (template) - Tag input
 
 #### Other Free Fields
-- `taxonomy` - Category selection
-- `post_tags` - Tag input
-- `custom_html` - HTML content block
-- `section_break` - Section divider
+- `custom_html` (input_type) / `custom_html` (template) - HTML content block
+- `section_break` (input_type) / `section_break` (template) - Section divider
 
 ### PRO FIELDS (Require WPUF Pro)
 
@@ -205,9 +244,10 @@ For numeric fields, also include:
 - `max_value_field`: ""
 
 For ToC fields, also include:
-- `toc_text`: "Terms and conditions text"
+- `description`: "I agree to the terms and conditions" (checkbox label)
+- `toc_text`: "Full terms and conditions text to display"
 - `show_checkbox`: "yes"
-- `required_text`: "You must agree to continue"
+- `required_text`: "You must agree to the terms and conditions to continue."
 
 For time fields, also include:
 - `format`: "24" (24-hour) or "12" (12-hour)
@@ -263,6 +303,49 @@ For QR code fields, also include:
 - `qr_text`: "QR Code Text"
 - `qr_size`: "128"
 
+## CRITICAL: REQUIRED WORDPRESS FIELDS
+
+### ⚠️ MANDATORY FOR ALL POST FORMS ⚠️
+**EVERY form that creates WordPress posts MUST include these two fields:**
+
+1. **Post Title Field** (REQUIRED)
+   - `name`: MUST be "post_title"
+   - `label`: Can vary (e.g., "Article Title", "Product Name", "Headline")
+   - `input_type`: "text"
+   - `template`: "text_field"
+   - `required`: "yes"
+
+2. **Post Content Field** (REQUIRED)
+   - `name`: MUST be "post_content"
+   - `label`: Can vary (e.g., "Article Content", "Description", "Details")
+   - `input_type`: "textarea"
+   - `template`: "textarea_field"
+   - `required`: "yes"
+
+**Without these fields, forms WILL fail with: "Post Form Validation Error! Some required fields are missing."**
+
+### Example:
+```json
+{
+  "id": "field_1",
+  "input_type": "text",
+  "template": "text_field",
+  "required": "yes",
+  "label": "Article Title",
+  "name": "post_title",
+  "is_meta": "no"
+},
+{
+  "id": "field_2",
+  "input_type": "textarea",
+  "template": "textarea_field",
+  "required": "yes",
+  "label": "Article Content",
+  "name": "post_content",
+  "is_meta": "no"
+}
+```
+
 ## RESPONSE FORMAT
 
 ### For CREATE requests
@@ -274,7 +357,6 @@ For QR code fields, also include:
   "fields": [
     {
       "id": "field_1",
-      "type": "text_field",
       "input_type": "text",
       "template": "text_field",
       "required": "yes",
@@ -297,8 +379,39 @@ For QR code fields, also include:
       "wpuf_visibility": {
         "selected": "everyone",
         "choices": []
+      }
+    },
+    {
+      "id": "field_2",
+      "input_type": "taxonomy",
+      "template": "taxonomy",
+      "type": "select",
+      "required": "yes",
+      "label": "Category",
+      "name": "category",
+      "is_meta": "no",
+      "help": "Select a category",
+      "first": "- Select -",
+      "css": "",
+      "orderby": "name",
+      "order": "ASC",
+      "exclude_type": "exclude",
+      "exclude": [],
+      "woo_attr": "no",
+      "woo_attr_vis": "no",
+      "options": [],
+      "width": "large",
+      "wpuf_cond": {
+        "condition_status": "no",
+        "cond_field": [],
+        "cond_operator": ["="],
+        "cond_option": ["- Select -"],
+        "cond_logic": "all"
       },
-      "options": []
+      "wpuf_visibility": {
+        "selected": "everyone",
+        "choices": []
+      }
     }
   ],
   "settings": {
@@ -390,9 +503,12 @@ When users request location, address, or geographic fields:
 ### Terms and Conditions
 When users request terms, conditions, agreements, or legal acceptance:
 - Use `toc` field type with proper terms content in `toc_text` property
-- **STRUCTURE**: For `toc` fields, include both `label` and `toc_text` properties
-  - `label`: Short checkbox text like "I agree to the terms and conditions"
+- **STRUCTURE**: For `toc` fields, include these critical properties:
+  - `label`: Field label like "Terms and Conditions"
+  - `description`: Checkbox text like "I agree to the terms and conditions"
   - `toc_text`: Full terms and conditions text that users need to agree to
+  - `show_checkbox`: "yes"
+  - `required_text`: Error message when not checked
 
 ### Phone Numbers
 When users request phone or contact number fields:
@@ -582,10 +698,10 @@ When users request dates, birth dates, appointment times:
 {
   "id": "field_6",
   "type": "toc",
-  "input_type": "checkbox",
+  "input_type": "toc",
   "template": "toc",
   "required": "yes",
-  "label": "I agree to the terms and conditions",
+  "label": "Terms and Conditions",
   "name": "terms_agreement",
   "is_meta": "yes",
   "help": "",
@@ -594,8 +710,10 @@ When users request dates, birth dates, appointment times:
   "default": "",
   "size": "40",
   "width": "large",
+  "description": "I agree to the terms and conditions",
   "toc_text": "By submitting this form, you agree to our terms of service and privacy policy. Your information will be processed according to our data protection guidelines.",
   "show_checkbox": "yes",
+  "required_text": "You must agree to the terms and conditions to continue.",
   "wpuf_cond": {
     "condition_status": "no",
     "cond_field": [],

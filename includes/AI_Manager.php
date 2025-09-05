@@ -4,7 +4,6 @@ namespace WeDevs\Wpuf;
 
 use WeDevs\Wpuf\AI\RestController;
 use WeDevs\Wpuf\AI\FormGenerator;
-use WeDevs\Wpuf\AI\AIClientLoader;
 
 /**
  * AI Manager Class
@@ -30,12 +29,6 @@ class AI_Manager {
      */
     private $form_generator;
 
-    /**
-     * AI Client Loader instance
-     *
-     * @var AIClientLoader
-     */
-    private $ai_client_loader;
 
     /**
      * Constructor
@@ -58,9 +51,6 @@ class AI_Manager {
      * Initialize classes
      */
     private function init_classes() {
-        // Initialize AI Client Loader first
-        $this->ai_client_loader = AIClientLoader::getInstance();
-        
         // Initialize Form Generator
         $this->form_generator = new FormGenerator();
         

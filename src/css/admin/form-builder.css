@@ -1,6 +1,62 @@
-@tailwind base;
+/* Include base styles but scope them to WPUF containers */
 @tailwind components;
 @tailwind utilities;
+
+/* Scoped base styles for WPUF form builder only */
+.wpuf-form-builder-wrapper,
+.wpuf-admin-container,
+.wpuf-ai-form-builder,
+.wpuf-form-editor,
+.wpuf-forms-list-table,
+.wpuf-form-builder-container {
+    /* Typography resets */
+    & h1, & h2, & h3, & h4, & h5, & h6 {
+        font-size: inherit;
+        font-weight: inherit;
+        margin: 0;
+    }
+    
+    & p {
+        margin: 0;
+    }
+    
+    & ol, & ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    
+    & button {
+        background-color: transparent;
+        background-image: none;
+        padding: 0;
+        cursor: pointer;
+    }
+    
+    & a {
+        color: inherit;
+        text-decoration: inherit;
+    }
+    
+    /* Form elements */
+    & input,
+    & select,
+    & textarea {
+        padding: 0;
+        line-height: inherit;
+        color: inherit;
+        margin: 0;
+        font-family: inherit;
+        font-size: 100%;
+    }
+    
+    & *, & ::before, & ::after {
+        box-sizing: border-box;
+        border-width: 0;
+        border-style: solid;
+        border-color: #e5e7eb;
+    }
+}
 
 @layer components {
     .wpuf-btn-primary {
@@ -50,7 +106,15 @@
     }
 }
 
-#wpcontent {
+/* Scope background to WPUF-specific pages only to avoid affecting other plugins */
+/* These classes are added to the body tag on WPUF admin pages */
+body.toplevel_page_wpuf-post-forms #wpcontent,
+body.wpuf_page_wpuf-post-forms #wpcontent,
+body.post-forms_page_wpuf-ai-form-builder #wpcontent,
+body.admin_page_wpuf_subscribers #wpcontent,
+body.user-frontend_page_wpuf_subscribers #wpcontent,
+body[class*="page_wpuf"] #wpcontent,
+body[class*="_wpuf-"] #wpcontent {
     background: #fff;
 }
 /* Transition styles */

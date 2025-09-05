@@ -439,6 +439,38 @@ class FormGenerator {
             throw new \Exception('Failed to parse AI response JSON');
         }
 
+        // Debug: Log what Google returned
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('WPUF AI Google Raw Response Structure: ' . json_encode(array_keys($form_data)));
+            error_log('WPUF AI Google Response: Has wpuf_fields: ' . (isset($form_data['wpuf_fields']) ? 'YES (' . count($form_data['wpuf_fields']) . ' fields)' : 'NO'));
+            error_log('WPUF AI Google Response: Has fields: ' . (isset($form_data['fields']) ? 'YES (' . count($form_data['fields']) . ' fields)' : 'NO'));
+            
+            // Check wpuf_fields structure
+            if (isset($form_data['wpuf_fields']) && !empty($form_data['wpuf_fields'])) {
+                $has_post_title = false;
+                $has_post_content = false;
+                foreach ($form_data['wpuf_fields'] as $field) {
+                    if (isset($field['name']) && $field['name'] === 'post_title') $has_post_title = true;
+                    if (isset($field['name']) && $field['name'] === 'post_content') $has_post_content = true;
+                }
+                error_log('WPUF AI Google wpuf_fields: Has post_title: ' . ($has_post_title ? 'YES' : 'NO') . ', Has post_content: ' . ($has_post_content ? 'YES' : 'NO'));
+                
+                // Log first field structure as example
+                error_log('WPUF AI Google First wpuf_field: ' . json_encode($form_data['wpuf_fields'][0] ?? []));
+            }
+            
+            // Check fields structure (simplified format)
+            if (isset($form_data['fields']) && !empty($form_data['fields'])) {
+                $has_post_title = false;
+                $has_post_content = false;
+                foreach ($form_data['fields'] as $field) {
+                    if (isset($field['name']) && $field['name'] === 'post_title') $has_post_title = true;
+                    if (isset($field['name']) && $field['name'] === 'post_content') $has_post_content = true;
+                }
+                error_log('WPUF AI Google fields: Has post_title: ' . ($has_post_title ? 'YES' : 'NO') . ', Has post_content: ' . ($has_post_content ? 'YES' : 'NO'));
+            }
+        }
+
         // Add metadata
         $form_data['session_id'] = $options['session_id'] ?? uniqid('wpuf_ai_session_');
         $form_data['response_id'] = uniqid('google_resp_');

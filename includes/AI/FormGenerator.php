@@ -457,9 +457,14 @@ class FormGenerator {
      * @return string System prompt
      */
     private function get_system_prompt($context = []) {
-        // Load the comprehensive system prompt
+        // Load the comprehensive system prompt (required file)
         $prompt_file = plugin_dir_path(dirname(__FILE__)) . 'AI/system-prompt.md';
-        $system_prompt = file_exists($prompt_file) ? file_get_contents($prompt_file) : '';
+        
+        if (!file_exists($prompt_file)) {
+            throw new \Exception('System prompt file not found: ' . $prompt_file);
+        }
+        
+        $system_prompt = file_get_contents($prompt_file);
         
         // Add conversation context if provided
         if (!empty($context)) {
@@ -467,35 +472,9 @@ class FormGenerator {
             $system_prompt .= json_encode($context, JSON_PRETTY_PRINT);
         }
         
-        // Fallback to basic prompt if file not found
-        if (empty($system_prompt)) {
-            $system_prompt = $this->get_fallback_system_prompt();
-        }
-        
         return $system_prompt;
     }
     
-    /**
-     * Get fallback system prompt
-     *
-     * @return string Basic system prompt
-     */
-    private function get_fallback_system_prompt() {
-        return 'You are an expert form builder assistant for WPUF (WP User Frontend). 
-
-CRITICAL: You can ONLY help with form-related requests. For ANY non-form request, respond with:
-{
-  "error": true,
-  "error_type": "invalid_request",
-  "message": "I can only help you create and modify forms. Please provide a form-related request."
-}
-
-For valid form requests, respond with proper JSON structure for form creation or modification.
-
-WPUF Field Types: text_field, email_address, website_url, textarea_field, dropdown_field, radio_field, checkbox_field, multiple_select, image_upload, file_upload, date_field, time_field, phone_number, numeric_text_field, post_title, post_content, taxonomy, section_break, custom_html
-
-Always validate requests and maintain conversation context for modifications.';
-    }
 
     /**
      * Get available providers

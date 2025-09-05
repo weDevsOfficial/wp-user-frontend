@@ -32,6 +32,8 @@
             @regenerate-form="regenerateForm"
             @edit-in-builder="editInBuilder"
             @edit-with-builder="editWithBuilder"
+            @form-updated="handleFormUpdated"
+            @title-updated="handleTitleUpdated"
         />
     </div>
 </template>
@@ -138,6 +140,7 @@ export default {
                     // Store the generated form data
                     this.generatedFormData = result.data;
                     this.formTitle = result.data.form_title || 'Generated Form';
+                    // For preview, use fields (simplified), but wpuf_fields is stored in generatedFormData for form creation
                     this.formFields = this.convertFieldsToPreview(result.data.fields || []);
                     
                     // Simulate processing delay for UX
@@ -284,6 +287,7 @@ export default {
             if (result.form_data) {
                 this.generatedFormData = result.form_data;
                 this.formTitle = result.form_data.form_title || 'Generated Form';
+                // For preview, use fields (simplified), but store wpuf_fields for actual form creation
                 this.formFields = this.convertFieldsToPreview(result.form_data.fields || []);
                 
                 setTimeout(() => {
@@ -391,13 +395,81 @@ export default {
         },
         
         convertFieldsToPreview(fields) {
-            return fields.map(field => ({
+            return fields.map(field => {
+                // Determine the display type based on WPUF field structure
+                let displayType = field.type;
+                
+                // If this is a WPUF formatted field (has input_type or template)
+                if (field.input_type || field.template) {
+                    // Use template as the primary type indicator
+                    if (field.template === 'taxonomy') {
+                        displayType = 'taxonomy';
+                    } else if (field.template === 'post_title') {
+                        displayType = 'text_field';
+                    } else if (field.template === 'post_content') {
+                        displayType = 'textarea_field';
+                    } else if (field.template === 'post_excerpt') {
+                        displayType = 'textarea_field';
+                    } else if (field.template === 'post_tags') {
+                        displayType = 'text_field';
+                    } else if (field.template === 'featured_image') {
+                        displayType = 'image_upload';
+                    } else if (field.input_type === 'toc') {
+                        displayType = 'toc';
+                    } else if (field.input_type === 'text') {
+                        displayType = 'text_field';
+                    } else if (field.input_type === 'email') {
+                        displayType = 'email_address';
+                    } else if (field.input_type === 'textarea') {
+                        displayType = 'textarea_field';
+                    } else if (field.input_type === 'select' || field.input_type === 'dropdown_field') {
+                        displayType = 'select';
+                    } else if (field.input_type === 'radio') {
+                        displayType = 'radio_field';
+                    } else if (field.input_type === 'checkbox') {
+                        displayType = 'checkbox_field';
+                    } else if (field.input_type === 'image_upload' || field.input_type === 'file_upload') {
+                        displayType = 'image_upload';
+                    } else if (field.input_type) {
+                        // Use input_type as fallback
+                        displayType = field.input_type;
+                    }
+                }
+                
+                return {
+                    id: field.id,
+                    type: displayType,
+                    label: field.label,
+                    placeholder: field.placeholder || field.help || field.help_text || '',
+                    required: field.required === 'yes' || field.required === true,
+                    options: field.options || [],
+                    name: field.name || '',
+                    help_text: field.help_text || field.help || '',
+                    default: field.default || '',
+                    // ToC specific fields
+                    toc_text: field.toc_text || '',
+                    description: field.description || '',
+                    show_checkbox: field.show_checkbox || ''
+                };
+            });
+        },
+        
+        convertPreviewFieldsToAPI(previewFields) {
+            // Convert preview fields back to API format
+            return previewFields.map(field => ({
                 id: field.id,
                 type: field.type,
                 label: field.label,
-                placeholder: field.placeholder || field.help_text || '',
+                name: field.name || field.label.toLowerCase().replace(/\s+/g, '_'),
+                placeholder: field.placeholder || '',
+                help_text: field.help_text || field.placeholder || '',
                 required: field.required || false,
-                options: field.options || []
+                options: field.options || [],
+                default: field.default || '',
+                // ToC specific fields
+                toc_text: field.toc_text || '',
+                description: field.description || '',
+                show_checkbox: field.show_checkbox || ''
             }));
         },
         
@@ -478,6 +550,16 @@ export default {
                 const nonce = config.nonce || '';
 
                 console.log('Creating and applying form...');
+                
+                // Always use wpuf_fields from generated data - they already have correct WPUF format
+                const wpufFields = this.generatedFormData.wpuf_fields || [];
+                
+                // Prepare form data with wpuf_fields
+                const formDataToSend = {
+                    ...this.generatedFormData,
+                    form_title: this.formTitle || this.generatedFormData.form_title,
+                    wpuf_fields: wpufFields  // Use wpuf_fields directly, no conversion needed
+                };
 
                 const response = await fetch(restUrl + 'wpuf/v1/ai-form-builder/create-form', {
                     method: 'POST',
@@ -486,7 +568,7 @@ export default {
                         'X-WP-Nonce': nonce
                     },
                     body: JSON.stringify({
-                        form_data: this.generatedFormData
+                        form_data: formDataToSend
                     })
                 });
 
@@ -546,12 +628,14 @@ export default {
                 console.log('Creating form from AI data...');
                 console.log('Original form data:', this.generatedFormData);
 
-                // Prepare form data for API (convert fields to wpuf_fields)
+                // Use wpuf_fields directly - they're already in correct format
+                const wpufFields = this.generatedFormData.wpuf_fields || [];
+                
                 const formDataForAPI = {
-                    form_title: this.generatedFormData.form_title,
+                    form_title: this.formTitle || this.generatedFormData.form_title,
                     form_description: this.generatedFormData.form_description || '',
-                    wpuf_fields: this.generatedFormData.fields || [], // API expects wpuf_fields
-                    form_settings: this.generatedFormData.settings || {}
+                    wpuf_fields: wpufFields, // Use wpuf_fields directly from generated data
+                    form_settings: this.generatedFormData.form_settings || {}
                 };
 
                 console.log('Sending to API:', formDataForAPI);
@@ -592,6 +676,35 @@ export default {
         
         editWithBuilder() {
             this.editInBuilder();
+        },
+        
+        handleFormUpdated(updatedFormData) {
+            // Update form data when changes are made in the chat
+            console.log('Form updated from chat:', updatedFormData);
+            
+            if (updatedFormData) {
+                // Update the generated form data with the changes from chat
+                this.generatedFormData = {
+                    ...this.generatedFormData,
+                    ...updatedFormData
+                };
+                
+                // Update formFields if fields were changed
+                if (updatedFormData.fields) {
+                    this.formFields = this.convertFieldsToPreview(updatedFormData.fields);
+                }
+                
+                // Update form title if changed
+                if (updatedFormData.form_title) {
+                    this.formTitle = updatedFormData.form_title;
+                }
+            }
+        },
+        
+        handleTitleUpdated(newTitle) {
+            // Update form title when changed in chat
+            console.log('Form title updated:', newTitle);
+            this.formTitle = newTitle;
         }
     },
     

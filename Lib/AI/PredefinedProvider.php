@@ -42,7 +42,7 @@ class PredefinedProvider {
                     'id' => 3,
                     'type' => 'text',
                     'label' => 'Article Title',
-                    'name' => 'article_title',
+                    'name' => 'post_title',  // Map to WordPress post_title field
                     'required' => true,
                     'placeholder' => 'Enter your article title'
                 ],
@@ -50,7 +50,7 @@ class PredefinedProvider {
                     'id' => 4,
                     'type' => 'textarea',
                     'label' => 'Article Content',
-                    'name' => 'article_content',
+                    'name' => 'post_content',  // Map to WordPress post_content field
                     'required' => true,
                     'placeholder' => 'Enter your complete article content...'
                 ],
@@ -78,11 +78,12 @@ class PredefinedProvider {
                 ],
                 [
                     'id' => 7,
-
                     'type' => 'toc',
-                    'label' => 'I agree to the publication guidelines',
+                    'label' => 'Terms and Conditions',
                     'name' => 'guidelines_agreement',
                     'required' => true,
+                    'description' => 'I agree to the publication guidelines and terms of service',
+                    'show_checkbox' => 'yes',
                     'toc_text' => 'By submitting this form, you agree to our publication guidelines and terms of service. Your guest post will be reviewed before publication.'
                 ]
             ]
@@ -112,7 +113,7 @@ class PredefinedProvider {
                     'id' => 3,
                     'type' => 'text',
                     'label' => 'Portfolio Title',
-                    'name' => 'portfolio_title',
+                    'name' => 'post_title',
                     'required' => true,
                     'placeholder' => 'My Creative Portfolio'
                 ],
@@ -142,7 +143,7 @@ class PredefinedProvider {
                     'id' => 6,
                     'type' => 'textarea',
                     'label' => 'Project Description',
-                    'name' => 'project_description',
+                    'name' => 'post_content',
                     'required' => true,
                     'placeholder' => 'Describe your portfolio and key projects...'
                 ],
@@ -165,7 +166,7 @@ class PredefinedProvider {
                     'id' => 1,
                     'type' => 'text',
                     'label' => 'Ad Title',
-                    'name' => 'ad_title',
+                    'name' => 'post_title',
                     'required' => true,
                     'placeholder' => 'Enter a catchy title for your ad'
                 ],
@@ -173,7 +174,7 @@ class PredefinedProvider {
                     'id' => 2,
                     'type' => 'textarea',
                     'label' => 'Ad Description',
-                    'name' => 'ad_description',
+                    'name' => 'post_content',
                     'required' => true,
                     'placeholder' => 'Describe your item or service in detail...'
                 ],
@@ -251,7 +252,7 @@ class PredefinedProvider {
                     'id' => 2,
                     'type' => 'text',
                     'label' => 'Coupon Title',
-                    'name' => 'coupon_title',
+                    'name' => 'post_title',
                     'required' => true,
                     'placeholder' => 'e.g., 50% Off All Items'
                 ],
@@ -259,7 +260,7 @@ class PredefinedProvider {
                     'id' => 3,
                     'type' => 'textarea',
                     'label' => 'Coupon Description',
-                    'name' => 'coupon_description',
+                    'name' => 'post_content',
                     'required' => true,
                     'placeholder' => 'Describe your offer in detail...'
                 ],
@@ -306,7 +307,7 @@ class PredefinedProvider {
                     'id' => 1,
                     'type' => 'text',
                     'label' => 'Property Title',
-                    'name' => 'property_title',
+                    'name' => 'post_title',
                     'required' => true,
                     'placeholder' => 'Beautiful 3BR House in Downtown'
                 ],
@@ -314,7 +315,7 @@ class PredefinedProvider {
                     'id' => 2,
                     'type' => 'textarea',
                     'label' => 'Property Description',
-                    'name' => 'property_description',
+                    'name' => 'post_content',
                     'required' => true,
                     'placeholder' => 'Describe the property features and location...'
                 ],
@@ -399,7 +400,7 @@ class PredefinedProvider {
                     'id' => 1,
                     'type' => 'text',
                     'label' => 'Headline',
-                    'name' => 'headline',
+                    'name' => 'post_title',
                     'required' => true,
                     'placeholder' => 'Enter an attention-grabbing headline'
                 ],
@@ -407,7 +408,7 @@ class PredefinedProvider {
                     'id' => 2,
                     'type' => 'textarea',
                     'label' => 'Article Content',
-                    'name' => 'article_content',
+                    'name' => 'post_content',
                     'required' => true,
                     'placeholder' => 'Write your news article or press release...'
                 ],
@@ -537,9 +538,11 @@ class PredefinedProvider {
                 [
                     'id' => 9,
                     'type' => 'toc',
-                    'label' => 'I agree to the event terms and conditions',
+                    'label' => 'Terms and Conditions',
                     'name' => 'terms_agreement',
                     'required' => true,
+                    'description' => 'I agree to the event terms and conditions',
+                    'show_checkbox' => 'yes',
                     'toc_text' => 'By registering for this event, you agree to our terms and conditions. Cancellation policy: Full refund available up to 48 hours before the event.'
                 ]
             ]
@@ -624,7 +627,7 @@ class PredefinedProvider {
                     'id' => 1,
                     'type' => 'text',
                     'label' => 'Product Name',
-                    'name' => 'product_name',
+                    'name' => 'post_title',
                     'required' => true,
                     'placeholder' => 'Enter product name'
                 ],
@@ -632,7 +635,7 @@ class PredefinedProvider {
                     'id' => 2,
                     'type' => 'textarea',
                     'label' => 'Product Description',
-                    'name' => 'product_description',
+                    'name' => 'post_content',
                     'required' => true,
                     'placeholder' => 'Describe your product features and benefits...'
                 ],
@@ -752,7 +755,7 @@ class PredefinedProvider {
                   strpos($prompt_lower, 'product listing') !== false) {
             $response = $this->predefined_responses['product_listing'];
         } else {
-            // Default fallback response
+            // Default fallback response - must include post_title and post_content for WordPress
             $response = [
                 'form_title' => 'Custom Form',
                 'form_description' => 'Form generated based on: ' . substr($prompt, 0, 100),
@@ -760,26 +763,34 @@ class PredefinedProvider {
                     [
                         'id' => 1,
                         'type' => 'text',
-                        'label' => 'Full Name',
-                        'name' => 'full_name',
+                        'label' => 'Title',
+                        'name' => 'post_title',
+                        'required' => true,
+                        'placeholder' => 'Enter title'
+                    ],
+                    [
+                        'id' => 2,
+                        'type' => 'textarea',
+                        'label' => 'Content',
+                        'name' => 'post_content',
+                        'required' => true,
+                        'placeholder' => 'Enter content...'
+                    ],
+                    [
+                        'id' => 3,
+                        'type' => 'text',
+                        'label' => 'Your Name',
+                        'name' => 'your_name',
                         'required' => true,
                         'placeholder' => 'Enter your full name'
                     ],
                     [
-                        'id' => 2,
+                        'id' => 4,
                         'type' => 'email',
                         'label' => 'Email Address',
                         'name' => 'email',
                         'required' => true,
                         'placeholder' => 'your@email.com'
-                    ],
-                    [
-                        'id' => 3,
-                        'type' => 'textarea',
-                        'label' => 'Additional Details',
-                        'name' => 'details',
-                        'required' => false,
-                        'placeholder' => 'Please provide additional information...'
                     ]
                 ]
             ];
@@ -845,7 +856,6 @@ class PredefinedProvider {
         foreach ($fields as $index => $field) {
             $wpuf_field = [
                 'id' => 'field_' . ($index + 1), // Generate proper WPUF field IDs like "field_1", "field_2"
-                'type' => $this->mapToWPUFTemplate($field['type']), // Use 'type' instead of 'template' for consistency
                 'input_type' => $this->mapToWPUFInputType($field['type']),
                 'template' => $this->mapToWPUFTemplate($field['type']),
                 'required' => $field['required'] ? 'yes' : 'no',
@@ -854,12 +864,16 @@ class PredefinedProvider {
                 'is_meta' => $this->shouldBeMeta($field['name']) ? 'yes' : 'no',
                 'help' => $field['help_text'] ?? '',
                 'css' => '',
-                'placeholder' => $field['placeholder'] ?? '',
-                'default' => $field['default'] ?? '',
                 'wpuf_cond' => $this->getDefaultConditionals(),
                 'wpuf_visibility' => $this->getDefaultVisibility(),
                 'width' => 'large' // Default width like WPUF templates
             ];
+            
+            // Only add these fields for certain types (following WPUF template patterns)
+            if (!in_array($field['type'], ['taxonomy', 'image', 'file'])) {
+                $wpuf_field['placeholder'] = $field['placeholder'] ?? '';
+                $wpuf_field['default'] = $field['default'] ?? '';
+            }
 
             // Add field-specific properties
             $this->addFieldSpecificProperties($wpuf_field, $field);
@@ -905,23 +919,23 @@ class PredefinedProvider {
      */
     private function mapToWPUFInputType($type) {
         $mapping = [
-            // Free WPUF fields  
+            // Free WPUF fields (matching actual field class input_type values)
             'text' => 'text',
             'email' => 'email',
             'textarea' => 'textarea',
-            'select' => 'select',
-            'radio' => 'radio',
-            'checkbox' => 'checkbox',
+            'select' => 'dropdown_field',  // Dropdown uses dropdown_field
+            'radio' => 'radio_field',      // Radio uses radio_field
+            'checkbox' => 'checkbox_field', // Checkbox uses checkbox_field
             'url' => 'url',
             
-            // Pro WPUF fields (matching Field_File.php input_type)
+            // Pro WPUF fields (from Pro templates)
             'file' => 'file_upload',
-            'number' => 'numeric_text',
+            'number' => 'numeric_text_field',  // Numeric uses numeric_text_field
             'date' => 'date',
             'time' => 'time',
             'tel' => 'text',
             'phone' => 'text',
-            'country' => 'select',
+            'country' => 'dropdown_field',
             'address' => 'address_field',
             'address_field' => 'address_field',
             'map' => 'google_map',
@@ -930,7 +944,10 @@ class PredefinedProvider {
             
             // Free image fields
             'image' => 'image_upload',
-            'featured_image' => 'image_upload'
+            'featured_image' => 'image_upload',
+            
+            // Taxonomy is special
+            'taxonomy' => 'taxonomy'
         ];
 
         return $mapping[$type] ?? 'text';
@@ -988,13 +1005,16 @@ class PredefinedProvider {
 
     /**
      * Add field-specific properties
+     * This should only add additional properties, not override input_type/template
      *
      * @param array &$wpuf_field
      * @param array $field
      */
     private function addFieldSpecificProperties(&$wpuf_field, $field) {
         $type = $field['type'];
-
+        
+        // Don't override input_type and template - they're already set by mapping functions
+        
         switch ($type) {
             case 'textarea':
                 $wpuf_field['rows'] = '5';
@@ -1010,69 +1030,85 @@ class PredefinedProvider {
                 break;
 
             case 'select':
-            case 'radio':
-            case 'checkbox':
-                $wpuf_field['first'] = __('- Select -', 'wp-user-frontend');
-                $wpuf_field['options'] = [];
-                if (isset($field['options'])) {
-                    if (is_array($field['options'])) {
-                        foreach ($field['options'] as $key => $value) {
-                            if (is_string($key)) {
-                                $wpuf_field['options'][$key] = $value;
-                            } else {
-                                $wpuf_field['options'][$value] = $value;
-                            }
-                        }
-                    }
-                }
-                
-                // Special handling for taxonomy fields - but only if not explicitly set to radio_field
-                if (($wpuf_field['name'] === 'category' || $wpuf_field['name'] === 'post_category') && 
-                    $wpuf_field['type'] !== 'radio_field' && $wpuf_field['type'] !== 'checkbox_field') {
+                // ONLY handle WordPress default category as taxonomy
+                // Everything else is a simple dropdown
+                if ($wpuf_field['name'] === 'category') {
+                    // This is WordPress default category - make it taxonomy
                     $wpuf_field['input_type'] = 'taxonomy';
                     $wpuf_field['template'] = 'taxonomy';
-                    $wpuf_field['type'] = 'select';
+                    $wpuf_field['type'] = 'select'; // This is the taxonomy display type
+                    $wpuf_field['first'] = __('- Select -', 'wp-user-frontend');
                     $wpuf_field['orderby'] = 'name';
                     $wpuf_field['order'] = 'ASC';
                     $wpuf_field['exclude_type'] = 'exclude';
                     $wpuf_field['exclude'] = [];
                     $wpuf_field['woo_attr'] = 'no';
                     $wpuf_field['woo_attr_vis'] = 'no';
+                    $wpuf_field['options'] = [];
                     $wpuf_field['show_inline'] = false;
+                    // Remove fields that taxonomy doesn't have
+                    unset($wpuf_field['placeholder']);
+                    unset($wpuf_field['default']);
+                    unset($wpuf_field['size']);
+                } else {
+                    // Regular dropdown field (like Content Category)
+                    // Use the values from mapping functions - they're already correct
+                    $wpuf_field['first'] = __('- Select -', 'wp-user-frontend');
+                    $wpuf_field['options'] = [];
+                    if (isset($field['options'])) {
+                        if (is_array($field['options'])) {
+                            foreach ($field['options'] as $key => $value) {
+                                if (is_string($key)) {
+                                    $wpuf_field['options'][$key] = $value;
+                                } else {
+                                    $wpuf_field['options'][$value] = $value;
+                                }
+                            }
+                        }
+                    }
                 }
                 break;
 
             case 'file':
+            case 'image':
                 $wpuf_field['max_size'] = '1024';
                 $wpuf_field['count'] = '1';
                 
+                // Remove fields that file/image uploads don't have (following WPUF templates)
+                unset($wpuf_field['placeholder']);
+                unset($wpuf_field['default']);
+                unset($wpuf_field['size']);
+                
                 // Set proper file extensions and templates based on field name/type
-                if (strpos($wpuf_field['name'], 'image') !== false || strpos(strtolower($wpuf_field['label']), 'image') !== false) {
+                if ($field['type'] === 'image' || strpos($wpuf_field['name'], 'image') !== false || strpos(strtolower($wpuf_field['label']), 'image') !== false) {
                     // Image upload field
                     $wpuf_field['input_type'] = 'image_upload';
                     $wpuf_field['template'] = 'image_upload';
-                    $wpuf_field['extension'] = ['images'];
                     if ($wpuf_field['name'] === 'featured_image') {
                         $wpuf_field['template'] = 'featured_image';
-                        $wpuf_field['button_label'] = __('Featured Image', 'wp-user-frontend');
+                        $wpuf_field['button_label'] = $wpuf_field['label'];
                     }
                 } else {
                     // Regular file upload (Pro field)
                     $wpuf_field['input_type'] = 'file_upload';
                     $wpuf_field['template'] = 'file_upload';
-                    $wpuf_field['extension'] = ['images', 'pdf', 'office'];
+                    $wpuf_field['extension'] = isset($field['allowed_types']) ? explode(',', $field['allowed_types']) : ['pdf', 'doc', 'docx'];
                 }
                 break;
 
             case 'number':
+                // Numeric fields use 'numeric_text_field' input type  
+                $wpuf_field['input_type'] = 'numeric_text_field';
+                $wpuf_field['template'] = 'numeric_text_field';
                 $wpuf_field['step_text_field'] = '1';
                 $wpuf_field['min_value_field'] = '0';
                 $wpuf_field['max_value_field'] = '';
+                $wpuf_field['size'] = '40';
                 break;
 
             case 'date':
                 // Set default format for date field
-                $wpuf_field['format'] = isset($field['format']) ? $field['format'] : 'mm/dd/yy';
+                $wpuf_field['format'] = $field['format'] ?? 'mm/dd/yy';
                 $wpuf_field['time'] = 'no';
                 $wpuf_field['mintime'] = '';
                 $wpuf_field['maxtime'] = '';
@@ -1080,8 +1116,9 @@ class PredefinedProvider {
 
             case 'toc':
                 // Terms of Conditions field specific properties
+                $wpuf_field['description'] = $field['description'] ?? 'I agree to the terms and conditions';
                 $wpuf_field['toc_text'] = $field['toc_text'] ?? 'Please read and accept our terms and conditions.';
-                $wpuf_field['show_checkbox'] = 'yes';
+                $wpuf_field['show_checkbox'] = $field['show_checkbox'] ?? 'yes';
                 $wpuf_field['required_text'] = 'You must agree to the terms and conditions to continue.';
                 break;
 

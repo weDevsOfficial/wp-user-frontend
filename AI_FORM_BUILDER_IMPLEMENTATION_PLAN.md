@@ -3,7 +3,7 @@
 ## 📋 Overview
 This document outlines the comprehensive implementation plan for integrating AI-powered form generation into the WP User Frontend plugin. The system will allow users to generate forms using natural language prompts with support for multiple AI providers where users can bring their own API keys.
 
-## ✅ Implementation Status: IN PROGRESS - AI Context & Chat Enhancement Phase
+## ✅ Implementation Status: COMPLETED - Full AI Form Builder Implementation
 ### Current Implementation Overview
 - **Direct API Implementation**: Using WordPress HTTP API for all AI providers
 - **Provider Support**: Predefined, OpenAI, Anthropic, and Google providers fully functional
@@ -12,13 +12,15 @@ This document outlines the comprehensive implementation plan for integrating AI-
 - **Google Gemini**: ✅ Tested and working with free API (requires API key)
 - **REST API**: Complete REST endpoints for form generation
 - **Vue Components**: Full UI implementation with three-stage process
+- **Field Rendering**: ✅ Fixed field type mapping for proper display in preview
 
-### 🚀 Current Focus: Vue State Management for Chat (COMPLETED)
-- ✅ Implemented proper conversation state management in Vue
-- ✅ Real-time form preview updates via chat
-- ✅ Session-based conversation tracking with context
-- ✅ Removed mock data and implemented real API integration
-- ✅ Enhanced conversation context with form state history
+### ✅ Latest Updates (December 2024)
+- ✅ Fixed Terms of Conditions (ToC) field rendering as checkbox
+- ✅ Fixed Category/Taxonomy fields rendering as dropdowns
+- ✅ Updated field type mapping for WPUF field structure
+- ✅ Proper handling of `input_type`, `template`, and `type` properties
+- ✅ Support for both predefined and AI-generated forms
+- ✅ Updated system prompt with correct field structures
 
 ### ✅ **Implemented Architecture**
 - **WordPress Native HTTP API**: ✅ Using `wp_remote_post()` and `wp_safe_remote_request()`
@@ -1769,6 +1771,67 @@ $data = json_decode($body, true);
    - Provider comparison guide
    - Best practices for prompts
    - Troubleshooting guide
+
+### Important Field Structure Notes
+
+#### WPUF Field Structure System
+WPUF uses a dual-property system for field types:
+- `input_type`: The actual field type (e.g., 'text', 'email', 'taxonomy')
+- `template`: The field template to use (often matches or extends input_type)
+- `type`: For certain fields like taxonomy, this is the display type (e.g., 'select', 'checkbox')
+
+#### Field Type Mapping for Frontend Display
+The Vue components use a mapping system in `convertFieldsToPreview()`:
+```javascript
+// WPUF Field Structure → Display Type Mapping
+'template: taxonomy' → 'taxonomy' (renders as dropdown)
+'template: post_title' → 'text_field'
+'template: post_content' → 'textarea_field'
+'template: featured_image' → 'image_upload'
+'input_type: toc' → 'toc' (renders as checkbox)
+'input_type: select' → 'select' (renders as dropdown)
+'input_type: email' → 'email_address'
+```
+
+#### ToC (Terms and Conditions) Field Structure
+The ToC field requires specific properties to render correctly:
+```php
+[
+    'input_type' => 'toc',
+    'template' => 'toc',
+    'label' => 'Terms and Conditions',
+    'description' => 'I agree to the terms and conditions', // REQUIRED: Checkbox label
+    'toc_text' => 'Full terms text...', // REQUIRED: Terms content
+    'show_checkbox' => 'yes', // REQUIRED
+    'required_text' => 'You must agree to continue.' // REQUIRED: Error message
+]
+```
+
+#### Taxonomy/Category Field Structure
+Taxonomy fields (like categories) require:
+```php
+[
+    'input_type' => 'taxonomy',
+    'template' => 'taxonomy',
+    'type' => 'select', // Display type: 'select', 'checkbox', or 'multiselect'
+    'name' => 'category', // or 'product_cat' for WooCommerce
+    'first' => '- Select -',
+    'orderby' => 'name',
+    'order' => 'ASC',
+    'exclude_type' => 'exclude',
+    'exclude' => [],
+    'woo_attr' => 'no',
+    'woo_attr_vis' => 'no'
+]
+```
+
+#### Standard Field Properties (Matching WPUF Templates)
+All fields must include the properties found in WPUF's native templates:
+- Text fields: `size`, `width`, `restriction_to`, `restriction_type`
+- Textarea fields: `rows`, `cols`, `rich`, `insert_image`, `text_editor_control`
+- File uploads: `max_size`, `count`, `extension` or `button_label`
+- Select/Radio/Checkbox: `options`, `first`, `inline` (for checkboxes)
+- Post fields: `is_meta: 'no'` for WordPress native fields (post_title, post_content, etc.)
 
 ### Future Enhancements
 1. **Advanced Features**

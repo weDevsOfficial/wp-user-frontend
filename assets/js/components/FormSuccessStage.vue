@@ -149,7 +149,7 @@
                                     </div>
                                     
                                     <!-- WPUF Dropdown/Select -->
-                                    <div v-else-if="['dropdown_field', 'select'].includes(field.type)" class="wpuf-form-select-container">
+                                    <div v-else-if="['dropdown_field', 'select', 'dropdown'].includes(field.type)" class="wpuf-form-select-container">
                                         <div class="wpuf-form-input wpuf-select wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-p-3 wpuf-text-sm wpuf-bg-gray-50 wpuf-flex wpuf-items-center wpuf-justify-between wpuf-cursor-pointer"
                                              :class="''"
                                         >
@@ -184,6 +184,21 @@
                                                 </div>
                                             </template>
                                             <div v-else class="wpuf-text-gray-400 wpuf-text-sm">{{ __('No options configured', 'wp-user-frontend') }}</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- WPUF Terms of Conditions (ToC) -->
+                                    <div v-else-if="field.type === 'toc'" class="wpuf-form-toc-container">
+                                        <div class="wpuf-toc-wrapper wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-p-4 wpuf-bg-gray-50">
+                                            <div v-if="field.toc_text" class="wpuf-toc-text wpuf-text-sm wpuf-text-gray-600 wpuf-mb-3">
+                                                {{ field.toc_text }}
+                                            </div>
+                                            <div class="wpuf-toc-checkbox wpuf-flex wpuf-items-start wpuf-gap-2">
+                                                <input type="checkbox" disabled class="wpuf-checkbox-input wpuf-text-emerald-600 wpuf-mt-1">
+                                                <label class="wpuf-checkbox-label wpuf-text-sm wpuf-font-medium wpuf-text-gray-700">
+                                                    {{ field.description || 'I agree to the terms and conditions' }}
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                     
@@ -297,8 +312,22 @@
                                         <input type="text" :placeholder="__('Enter code', 'wp-user-frontend')" disabled class="wpuf-w-full wpuf-p-2 wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-text-center">
                                     </div>
                                     
+                                    <!-- WPUF Taxonomy (Category) Field -->
+                                    <div v-else-if="field.type === 'taxonomy'" 
+                                         class="wpuf-form-select-container"
+                                    >
+                                        <div class="wpuf-form-input wpuf-select wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-p-3 wpuf-text-sm wpuf-bg-gray-50 wpuf-flex wpuf-items-center wpuf-justify-between wpuf-cursor-pointer"
+                                             :class="field.required ? 'wpuf-border-blue-300' : ''"
+                                        >
+                                            <span class="wpuf-text-gray-400">{{ field.placeholder || '- Select -' }}</span>
+                                            <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M13.25 0.875001L7 7.125L0.75 0.875001" stroke="#4B5563" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg> 
+                                        </div>
+                                    </div>
+                                    
                                     <!-- WPUF Post Fields -->
-                                    <div v-else-if="['post_title', 'post_content', 'post_excerpt', 'post_tags', 'taxonomy'].includes(field.type)" 
+                                    <div v-else-if="['post_title', 'post_content', 'post_excerpt', 'post_tags'].includes(field.type)" 
                                          class="wpuf-form-post-field wpuf-border wpuf-border-blue-200 wpuf-bg-blue-50 wpuf-rounded wpuf-p-3"
                                          :class="field.required ? 'wpuf-border-blue-300' : ''"
                                     >
@@ -319,7 +348,7 @@
                                     </div>
                                     
                                     <!-- WPUF Custom Fields -->
-                                    <div v-else-if="['custom_html', 'shortcode', 'action_hook', 'toc'].includes(field.type)" 
+                                    <div v-else-if="['custom_html', 'shortcode', 'action_hook'].includes(field.type)" 
                                          class="wpuf-form-custom wpuf-border wpuf-border-yellow-300 wpuf-bg-yellow-50 wpuf-rounded wpuf-p-4"
                                     >
                                         <div class="wpuf-flex wpuf-items-center wpuf-gap-2 wpuf-mb-2">

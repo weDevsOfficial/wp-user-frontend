@@ -521,11 +521,45 @@ export default {
     },
     watch: {
         initialFormFields: {
-            handler(newFields) {
-                console.log('FormSuccessStage: initialFormFields prop changed:', newFields);
-                if (newFields && newFields.length > 0) {
+            handler(newFields, oldFields) {
+                console.log('FormSuccessStage: initialFormFields prop changed:', {
+                    oldFields: oldFields ? oldFields.length : 0,
+                    newFields: newFields ? newFields.length : 0,
+                    currentFields: this.formFields.length
+                });
+                
+                // Skip if no new fields
+                if (!newFields || newFields.length === 0) {
+                    return;
+                }
+                
+                // Check if fields are actually different
+                const fieldsAreDifferent = JSON.stringify(this.formFields) !== JSON.stringify(newFields);
+                
+                // Only show loader if we have current fields and they're changing
+                if (this.formFields.length > 0 && fieldsAreDifferent) {
+                    // Show loader during the transition
+                    console.log('Fields are changing, showing loader...');
+                    this.isFormUpdating = true;
+                    
+                    // Update fields after a brief delay to show the loader
+                    setTimeout(() => {
+                        this.formFields = [...newFields];
+                        console.log('FormSuccessStage: Updated formFields:', this.formFields);
+                        
+                        // Hide loader after fields are updated
+                        setTimeout(() => {
+                            this.isFormUpdating = false;
+                            console.log('Form update complete, hiding loader');
+                        }, 800);
+                    }, 200);
+                } else if (!fieldsAreDifferent) {
+                    // Fields are the same, no need to update
+                    console.log('Fields are the same, no update needed');
+                } else {
+                    // Initial load, update without loader
                     this.formFields = [...newFields];
-                    console.log('FormSuccessStage: Updated formFields:', this.formFields);
+                    console.log('Initial fields set:', this.formFields);
                 }
             },
             immediate: true,
@@ -1771,9 +1805,13 @@ export default {
         }
     },
     mounted() {
-        // Initialize form fields from props
+        // Initialize form fields from props or defaults
         this.formFields = this.initializeFormFields();
         this.previousFormFields = [...this.formFields];
+        
+        // Don't show loader initially - only show it during actual transitions
+        // The loader should only appear when fields are actively changing
+        this.isFormUpdating = false;
         
         // Initialize chat messages from props
         this.chatMessages = this.initializeChatMessages();

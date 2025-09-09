@@ -97,6 +97,8 @@ export default {
         },
         
         handleGenerationComplete() {
+            console.log('handleGenerationComplete called with formFields:', this.formFields);
+            console.log('formFields length:', this.formFields.length);
             this.currentStage = 'success';
             this.isGenerating = false;
             this.initializeChatData();
@@ -140,8 +142,16 @@ export default {
                     // Store the generated form data
                     this.generatedFormData = result.data;
                     this.formTitle = result.data.form_title || 'Generated Form';
-                    // For preview, use fields (simplified), but wpuf_fields is stored in generatedFormData for form creation
-                    this.formFields = this.convertFieldsToPreview(result.data.fields || []);
+                    // For preview, use wpuf_fields if available, otherwise use fields
+                    const fieldsToPreview = result.data.wpuf_fields || result.data.fields || [];
+                    this.formFields = this.convertFieldsToPreview(fieldsToPreview);
+                    
+                    // Debug log
+                    console.log('Form generation success:', {
+                        title: this.formTitle,
+                        fieldsCount: this.formFields.length,
+                        fields: this.formFields
+                    });
                     
                     // Simulate processing delay for UX
                     setTimeout(() => {
@@ -395,9 +405,14 @@ export default {
         },
         
         convertFieldsToPreview(fields) {
+            if (!fields || !Array.isArray(fields)) {
+                console.warn('Invalid fields provided to convertFieldsToPreview:', fields);
+                return [];
+            }
+            
             return fields.map(field => {
                 // Determine the display type based on WPUF field structure
-                let displayType = field.type;
+                let displayType = field.type || field.input_type;
                 
                 // If this is a WPUF formatted field (has input_type or template)
                 if (field.input_type || field.template) {
@@ -422,30 +437,39 @@ export default {
                         displayType = 'email_address';
                     } else if (field.input_type === 'textarea') {
                         displayType = 'textarea_field';
-                    } else if (field.input_type === 'select' || field.input_type === 'dropdown_field') {
-                        displayType = 'select';
+                    } else if (field.input_type === 'select' || field.input_type === 'dropdown_field' || field.input_type === 'dropdown') {
+                        displayType = 'dropdown_field';
                     } else if (field.input_type === 'radio') {
                         displayType = 'radio_field';
                     } else if (field.input_type === 'checkbox') {
                         displayType = 'checkbox_field';
                     } else if (field.input_type === 'image_upload' || field.input_type === 'file_upload') {
                         displayType = 'image_upload';
+                    } else if (field.input_type === 'date') {
+                        displayType = 'date_field';
                     } else if (field.input_type) {
                         // Use input_type as fallback
                         displayType = field.input_type;
                     }
                 }
                 
+                // Debug log for each field
+                console.log('Converting field:', {
+                    original: field,
+                    displayType: displayType,
+                    label: field.label
+                });
+                
                 return {
-                    id: field.id,
+                    id: field.id || field.field_id || Math.random().toString(36).substr(2, 9),
                     type: displayType,
-                    label: field.label,
+                    label: field.label || field.field_label || 'Field',
                     placeholder: field.placeholder || field.help || field.help_text || '',
                     required: field.required === 'yes' || field.required === true,
                     options: field.options || [],
-                    name: field.name || '',
+                    name: field.name || field.field_name || '',
                     help_text: field.help_text || field.help || '',
-                    default: field.default || '',
+                    default: field.default || field.default_value || '',
                     // ToC specific fields
                     toc_text: field.toc_text || '',
                     description: field.description || '',
@@ -715,12 +739,19 @@ export default {
         // Set initial data from localized script
         this.currentStage = localData.stage || 'input';
         this.formId = localData.formId || '';
-        this.formTitle = localData.formTitle || 'Portfolio Submission';
+        // Only set formTitle if it's not already set from API response
+        if (!this.formTitle || this.formTitle === 'Generated Form') {
+            this.formTitle = localData.formTitle || 'Generated Form';
+        }
         this.formDescription = localData.description || '';
         this.selectedPrompt = localData.prompt || '';
         
         // If we're in success stage, initialize data
-        if (this.currentStage === 'success') {
+        if (this.currentStage === 'success' && localData.formTitle) {
+            // If we have a form title from localized data in success stage, use it
+            this.formTitle = localData.formTitle;
+            this.initializeChatData();
+        } else if (this.currentStage === 'success') {
             this.initializeChatData();
         }
     }

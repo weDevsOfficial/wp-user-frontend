@@ -75,9 +75,10 @@ class FormGenerator {
             'name' => 'Google Gemini',
             'endpoint' => 'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent',
             'models' => [
+                'gemini-1.5-flash-latest' => 'Gemini 1.5 Flash Latest (Best Free)',
                 'gemini-1.5-flash' => 'Gemini 1.5 Flash (Free)',
-                'gemini-1.5-pro' => 'Gemini 1.5 Pro',
-                'gemini-pro' => 'Gemini Pro'
+                'gemini-1.5-pro' => 'Gemini 1.5 Pro (Paid)',
+                'gemini-pro' => 'Gemini Pro (Paid)'
             ],
             'requires_key' => true
         ]

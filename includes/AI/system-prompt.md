@@ -177,7 +177,7 @@ Every field MUST include ALL these properties:
    - `numeric` → template: `numeric_text_field`
    - `phone` → template: `phone_field`
    - `country` → template: `country_list_field`
-   - `address` → template: `address_field`
+   - `address` → template: `address_field` (SPECIAL: See Address Field Structure below)
    - `google_map` → template: `google_map`
 
 2. **File & Media**
@@ -288,6 +288,201 @@ Every field MUST include ALL these properties:
   }
 }
 ```
+
+### Address Field Structure (IMPORTANT - SPECIAL CASE)
+**The address field MUST include a nested `address` object with specific sub-fields:**
+
+```json
+{
+  "id": "field_6",
+  "input_type": "address_field",
+  "template": "address_field",
+  "required": "yes",
+  "label": "Location",
+  "name": "location_address",
+  "is_meta": "yes",
+  "help": "",
+  "css": "",
+  "width": "large",
+  "address": {
+    "street_address": {
+      "checked": "checked",
+      "type": "text",
+      "required": "checked",
+      "label": "Address Line 1",
+      "value": "",
+      "placeholder": ""
+    },
+    "street_address2": {
+      "checked": "checked",
+      "type": "text",
+      "required": "",
+      "label": "Address Line 2",
+      "value": "",
+      "placeholder": ""
+    },
+    "city_name": {
+      "checked": "checked",
+      "type": "text",
+      "required": "checked",
+      "label": "City",
+      "value": "",
+      "placeholder": ""
+    },
+    "zip": {
+      "checked": "checked",
+      "type": "text",
+      "required": "checked",
+      "label": "Zip Code",
+      "value": "",
+      "placeholder": ""
+    },
+    "country_select": {
+      "checked": "checked",
+      "type": "select",
+      "required": "checked",
+      "label": "Country",
+      "value": "",
+      "country_list_visibility_opt_name": "all",
+      "country_select_hide_list": [],
+      "country_select_show_list": []
+    },
+    "state": {
+      "checked": "checked",
+      "type": "select",
+      "required": "checked",
+      "label": "State",
+      "value": "",
+      "placeholder": ""
+    }
+  },
+  "show_in_post": "yes",
+  "hide_field_label": "no",
+  "wpuf_cond": {
+    "condition_status": "no",
+    "cond_field": [],
+    "cond_operator": ["="],
+    "cond_option": ["- Select -"],
+    "cond_logic": "all"
+  },
+  "wpuf_visibility": {
+    "selected": "everyone",
+    "choices": []
+  }
+}
+```
+
+**CRITICAL:** The `address` property is REQUIRED for address fields. Without it, PHP errors will occur. Each sub-field in the address object must have the exact structure shown above.
+
+### Image Upload Field Structure
+**Image upload fields have specific properties:**
+
+```json
+{
+  "id": "field_7",
+  "input_type": "image_upload",
+  "template": "image_upload",
+  "required": "yes",
+  "label": "Product Images",
+  "name": "product_images",
+  "is_meta": "yes",
+  "help": "",
+  "css": "",
+  "width": "large",
+  "max_size": "1024",
+  "count": "1",
+  "button_label": "Select Image",
+  "wpuf_cond": {
+    "condition_status": "no",
+    "cond_field": [],
+    "cond_operator": ["="],
+    "cond_option": ["- Select -"],
+    "cond_logic": "all"
+  },
+  "wpuf_visibility": {
+    "selected": "everyone",
+    "choices": []
+  }
+}
+```
+
+### Featured Image Field Structure  
+**Featured image is a special WordPress field:**
+
+```json
+{
+  "id": "field_8",
+  "input_type": "featured_image",
+  "template": "featured_image",
+  "required": "no",
+  "label": "Featured Image",
+  "name": "featured_image",
+  "is_meta": "no",
+  "help": "",
+  "css": "",
+  "width": "large",
+  "max_size": "1024",
+  "count": "1",
+  "button_label": "Set Featured Image",
+  "wpuf_cond": {
+    "condition_status": "no",
+    "cond_field": [],
+    "cond_operator": ["="],
+    "cond_option": ["- Select -"],
+    "cond_logic": "all"
+  },
+  "wpuf_visibility": {
+    "selected": "everyone",
+    "choices": []
+  }
+}
+```
+
+**IMPORTANT NOTES for Image Fields:**
+- `max_size` is in KB (e.g., "1024" = 1MB)
+- `count` determines how many images can be uploaded (usually "1")
+- `button_label` customizes the upload button text
+- Featured image MUST have `is_meta: "no"` and `name: "featured_image"`
+- Regular image uploads have `is_meta: "yes"` with custom field names
+- Never set placeholder, default, or size properties for image fields
+
+### File Upload Field Structure (PRO)
+**For non-image file uploads:**
+
+```json
+{
+  "id": "field_9",
+  "input_type": "file_upload",
+  "template": "file_upload",
+  "required": "yes",
+  "label": "Attachments",
+  "name": "attachments",
+  "is_meta": "yes",
+  "help": "Upload your documents",
+  "css": "",
+  "width": "large",
+  "max_size": "2048",
+  "count": "3",
+  "extension": ["pdf", "doc", "docx", "xls", "xlsx"],
+  "wpuf_cond": {
+    "condition_status": "no",
+    "cond_field": [],
+    "cond_operator": ["="],
+    "cond_option": ["- Select -"],
+    "cond_logic": "all"
+  },
+  "wpuf_visibility": {
+    "selected": "everyone",
+    "choices": []
+  }
+}
+```
+
+**File Upload vs Image Upload:**
+- Use `file_upload` for documents, PDFs, spreadsheets, etc.
+- Use `image_upload` for photos and images (jpg, png, gif, etc.)
+- File upload requires `extension` array with allowed file types
+- Image upload automatically handles image formats
 
 ## RESPONSE EXAMPLES
 

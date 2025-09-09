@@ -150,15 +150,15 @@
                                     
                                     <!-- WPUF Dropdown/Select -->
                                     <div v-else-if="['dropdown_field', 'select', 'dropdown'].includes(field.type)" class="wpuf-form-select-container">
-                                        <div class="wpuf-form-input wpuf-select wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-p-3 wpuf-text-sm wpuf-bg-gray-50 wpuf-flex wpuf-items-center wpuf-justify-between wpuf-cursor-pointer"
+                                        <div class="wpuf-form-input wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-p-3 wpuf-text-sm wpuf-bg-gray-50 wpuf-flex wpuf-items-center wpuf-justify-between wpuf-cursor-pointer"
                                              :class="''"
+                                             style="background-image: none;"
                                         >
                                             <span class="wpuf-text-gray-400">{{ field.placeholder || __('Select an option', 'wp-user-frontend') }}</span>
                                             <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M13.25 0.875001L7 7.125L0.75 0.875001" stroke="#4B5563" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg> 
+                                            </svg>
                                         </div>
-
                                     </div>
                                     
                                     <!-- WPUF Radio Buttons -->
@@ -316,13 +316,14 @@
                                     <div v-else-if="field.type === 'taxonomy'" 
                                          class="wpuf-form-select-container"
                                     >
-                                        <div class="wpuf-form-input wpuf-select wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-p-3 wpuf-text-sm wpuf-bg-gray-50 wpuf-flex wpuf-items-center wpuf-justify-between wpuf-cursor-pointer"
+                                        <div class="wpuf-form-input wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-p-3 wpuf-text-sm wpuf-bg-gray-50 wpuf-flex wpuf-items-center wpuf-justify-between wpuf-cursor-pointer"
                                              :class="field.required ? 'wpuf-border-blue-300' : ''"
+                                             style="background-image: none;"
                                         >
                                             <span class="wpuf-text-gray-400">{{ field.placeholder || '- Select -' }}</span>
                                             <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M13.25 0.875001L7 7.125L0.75 0.875001" stroke="#4B5563" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg> 
+                                            </svg>
                                         </div>
                                     </div>
                                     

@@ -27,7 +27,7 @@ if ( $action === 'wpuf_ai_form_generating' ) {
 $description = isset( $_GET['description'] ) && ! empty( $_GET['description'] ) ? sanitize_text_field( wp_unslash( $_GET['description'] ) ) : '';
 $prompt = isset( $_GET['prompt'] ) && ! empty( $_GET['prompt'] ) ? sanitize_text_field( wp_unslash( $_GET['prompt'] ) ) : '';
 $form_id = isset( $_GET['form_id'] ) && ! empty( $_GET['form_id'] ) ? sanitize_text_field( wp_unslash( $_GET['form_id'] ) ) : '';
-$form_title = isset( $_GET['form_title'] ) && ! empty( $_GET['form_title'] ) ? sanitize_text_field( wp_unslash( $_GET['form_title'] ) ) : 'Portfolio Submission';
+$form_title = isset( $_GET['form_title'] ) && ! empty( $_GET['form_title'] ) ? sanitize_text_field( wp_unslash( $_GET['form_title'] ) ) : '';
 
 // Note: Scripts are already enqueued in the handler, so we don't need to enqueue them here
 

@@ -508,15 +508,28 @@ export default {
                 template_modified: false,
                 original_form_hash: null
             },
-            chatMessages: this.initializeChatMessages(),
-            formFields: this.initializeFormFields(),
-            previousFormFields: this.initializeFormFields(), // Store previous state for reject
+            chatMessages: [],
+            formFields: [],
+            previousFormFields: [], // Store previous state for reject
             pendingChanges: null, // Store pending changes from chat
             isApplying: false,
             isFormUpdating: false,
             visibleStatuses: new Set(), // Track which status messages are visible
             statusTimeouts: new Map() // Track timeout IDs for auto-hide
         };
+    },
+    watch: {
+        initialFormFields: {
+            handler(newFields) {
+                console.log('FormSuccessStage: initialFormFields prop changed:', newFields);
+                if (newFields && newFields.length > 0) {
+                    this.formFields = [...newFields];
+                    console.log('FormSuccessStage: Updated formFields:', this.formFields);
+                }
+            },
+            immediate: true,
+            deep: true
+        }
     },
     methods: {
         __: window.__ || ((text) => text),
@@ -567,11 +580,17 @@ export default {
         },
         
         initializeFormFields() {
+            console.log('FormSuccessStage initializeFormFields called');
+            console.log('initialFormFields prop:', this.initialFormFields);
+            console.log('initialFormFields length:', this.initialFormFields ? this.initialFormFields.length : 0);
+            
             // If we have initial form fields from props, use them
             if (this.initialFormFields && this.initialFormFields.length > 0) {
+                console.log('Using initialFormFields from props');
                 return [...this.initialFormFields];
             }
             
+            console.log('Using default form fields');
             // Otherwise start with basic portfolio submission form
             return [
                 { id: 1, type: 'text_field', label: 'First Name', placeholder: 'Enter your first name', required: true },
@@ -1736,6 +1755,13 @@ export default {
         }
     },
     mounted() {
+        // Initialize form fields from props
+        this.formFields = this.initializeFormFields();
+        this.previousFormFields = [...this.formFields];
+        
+        // Initialize chat messages from props
+        this.chatMessages = this.initializeChatMessages();
+        
         this.scrollToBottom();
         
         // Initialize conversation state if we have initial messages

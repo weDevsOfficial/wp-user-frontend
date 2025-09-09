@@ -97,8 +97,6 @@ export default {
         },
         
         handleGenerationComplete() {
-            console.log('handleGenerationComplete called with formFields:', this.formFields);
-            console.log('formFields length:', this.formFields.length);
             this.currentStage = 'success';
             this.isGenerating = false;
             this.initializeChatData();
@@ -139,21 +137,12 @@ export default {
                 console.log('API Response:', result);
                 
                 if (result.success) {
-                    // Store the generated form data
+                    // Store everything as-is from API
                     this.generatedFormData = result.data;
                     this.formTitle = result.data.form_title || 'Generated Form';
-                    // For preview, use wpuf_fields if available, otherwise use fields
-                    const fieldsToPreview = result.data.wpuf_fields || result.data.fields || [];
-                    this.formFields = this.convertFieldsToPreview(fieldsToPreview);
+                    this.formFields = result.data.wpuf_fields || [];
                     
-                    // Debug log
-                    console.log('Form generation success:', {
-                        title: this.formTitle,
-                        fieldsCount: this.formFields.length,
-                        fields: this.formFields
-                    });
-                    
-                    // Simulate processing delay for UX
+                    // Move to success stage
                     setTimeout(() => {
                         this.handleGenerationComplete();
                     }, 1000);
@@ -404,97 +393,17 @@ export default {
             setTimeout(closeModal, 15000);
         },
         
-        convertFieldsToPreview(fields) {
-            if (!fields || !Array.isArray(fields)) {
-                console.warn('Invalid fields provided to convertFieldsToPreview:', fields);
-                return [];
-            }
-            
-            return fields.map(field => {
-                // Determine the display type based on WPUF field structure
-                let displayType = field.type || field.input_type;
-                
-                // If this is a WPUF formatted field (has input_type or template)
-                if (field.input_type || field.template) {
-                    // Use template as the primary type indicator
-                    if (field.template === 'taxonomy') {
-                        displayType = 'taxonomy';
-                    } else if (field.template === 'post_title') {
-                        displayType = 'text_field';
-                    } else if (field.template === 'post_content') {
-                        displayType = 'textarea_field';
-                    } else if (field.template === 'post_excerpt') {
-                        displayType = 'textarea_field';
-                    } else if (field.template === 'post_tags') {
-                        displayType = 'text_field';
-                    } else if (field.template === 'featured_image') {
-                        displayType = 'image_upload';
-                    } else if (field.input_type === 'toc') {
-                        displayType = 'toc';
-                    } else if (field.input_type === 'text') {
-                        displayType = 'text_field';
-                    } else if (field.input_type === 'email') {
-                        displayType = 'email_address';
-                    } else if (field.input_type === 'textarea') {
-                        displayType = 'textarea_field';
-                    } else if (field.input_type === 'select' || field.input_type === 'dropdown_field' || field.input_type === 'dropdown') {
-                        displayType = 'dropdown_field';
-                    } else if (field.input_type === 'radio') {
-                        displayType = 'radio_field';
-                    } else if (field.input_type === 'checkbox') {
-                        displayType = 'checkbox_field';
-                    } else if (field.input_type === 'image_upload' || field.input_type === 'file_upload') {
-                        displayType = 'image_upload';
-                    } else if (field.input_type === 'date') {
-                        displayType = 'date_field';
-                    } else if (field.input_type) {
-                        // Use input_type as fallback
-                        displayType = field.input_type;
-                    }
-                }
-                
-                // Debug log for each field
-                console.log('Converting field:', {
-                    original: field,
-                    displayType: displayType,
-                    label: field.label
-                });
-                
-                return {
-                    id: field.id || field.field_id || Math.random().toString(36).substr(2, 9),
-                    type: displayType,
-                    label: field.label || field.field_label || 'Field',
-                    placeholder: field.placeholder || field.help || field.help_text || '',
-                    required: field.required === 'yes' || field.required === true,
-                    options: field.options || [],
-                    name: field.name || field.field_name || '',
-                    help_text: field.help_text || field.help || '',
-                    default: field.default || field.default_value || '',
-                    // ToC specific fields
-                    toc_text: field.toc_text || '',
-                    description: field.description || '',
-                    show_checkbox: field.show_checkbox || ''
-                };
-            });
-        },
-        
-        convertPreviewFieldsToAPI(previewFields) {
-            // Convert preview fields back to API format
-            return previewFields.map(field => ({
-                id: field.id,
-                type: field.type,
-                label: field.label,
-                name: field.name || field.label.toLowerCase().replace(/\s+/g, '_'),
-                placeholder: field.placeholder || '',
-                help_text: field.help_text || field.placeholder || '',
-                required: field.required || false,
-                options: field.options || [],
-                default: field.default || '',
-                // ToC specific fields
-                toc_text: field.toc_text || '',
-                description: field.description || '',
-                show_checkbox: field.show_checkbox || ''
-            }));
+        // Simple helper to get field display type
+        getFieldDisplayType(field) {
+            // If field has template, use it
+            if (field.template === 'post_title' || field.input_type === 'text') return 'text_field';
+            if (field.template === 'post_content' || field.input_type === 'textarea') return 'textarea_field';
+            if (field.input_type === 'select' || field.input_type === 'dropdown') return 'dropdown_field';
+            if (field.input_type === 'radio') return 'radio_field';
+            if (field.input_type === 'checkbox') return 'checkbox_field';
+            if (field.input_type === 'date') return 'date_field';
+            if (field.input_type === 'email') return 'email_address';
+            return field.input_type || field.type || 'text_field';
         },
         
         getSessionId() {
@@ -519,8 +428,9 @@ export default {
             
             if (this.generatedFormData) {
                 const fieldsList = this.formFields.map(field => {
-                    const requiredText = field.required ? ' (Required)' : '';
-                    return `<li>${field.label}${requiredText} - ${this.getFieldTypeDescription(field.type)}</li>`;
+                    const requiredText = (field.required === 'yes' || field.required === true) ? ' (Required)' : '';
+                    const fieldType = this.getFieldDisplayType(field);
+                    return `<li>${field.label}${requiredText} - ${this.getFieldTypeDescription(fieldType)}</li>`;
                 }).join('');
                 
                 const successMessage = {
@@ -632,37 +542,27 @@ export default {
         },
         
         async editInBuilder() {
-            if (this.formId) {
-                // Form already exists, just redirect to edit
-                window.location.href = `admin.php?page=wpuf-post-forms&action=edit&id=${this.formId}`;
-                return;
-            }
-
-            // Need to create form first from AI generated data
-            if (!this.generatedFormData) {
-                alert(this.__('No form data available. Please generate a form first.'));
-                return;
-            }
-
             try {
                 const config = window.wpufAIFormBuilder || {};
                 const restUrl = config.restUrl || (window.location.origin + '/wp-json/');
                 const nonce = config.nonce || '';
 
-                console.log('Creating form from AI data...');
-                console.log('Original form data:', this.generatedFormData);
-
-                // Use wpuf_fields directly - they're already in correct format
-                const wpufFields = this.generatedFormData.wpuf_fields || [];
-                
-                const formDataForAPI = {
-                    form_title: this.formTitle || this.generatedFormData.form_title,
-                    form_description: this.generatedFormData.form_description || '',
-                    wpuf_fields: wpufFields, // Use wpuf_fields directly from generated data
-                    form_settings: this.generatedFormData.form_settings || {}
+                // Use current form fields directly
+                const currentFormData = {
+                    form_title: this.formTitle,
+                    form_description: this.generatedFormData?.form_description || '',
+                    wpuf_fields: this.formFields, // Use formFields directly - they're already WPUF format
+                    form_settings: this.generatedFormData?.form_settings || {}
                 };
 
-                console.log('Sending to API:', formDataForAPI);
+                if (this.formId) {
+                    // Form exists, just redirect to edit
+                    window.location.href = `admin.php?page=wpuf-post-forms&action=edit&id=${this.formId}`;
+                    return;
+                }
+
+                // Create new form
+                console.log('Creating form with fields:', this.formFields);
 
                 const response = await fetch(restUrl + 'wpuf/v1/ai-form-builder/create-form', {
                     method: 'POST',
@@ -671,30 +571,27 @@ export default {
                         'X-WP-Nonce': nonce
                     },
                     body: JSON.stringify({
-                        form_data: formDataForAPI
+                        form_data: currentFormData
                     })
                 });
 
                 if (!response.ok) {
-                    // Get error details from response
                     const errorData = await response.json().catch(() => ({}));
-                    console.error('API Error Response:', errorData);
                     throw new Error(`HTTP ${response.status}: ${errorData.message || response.statusText}`);
                 }
 
                 const result = await response.json();
 
                 if (result.success && result.form_id) {
-                    console.log('Form created successfully with ID:', result.form_id);
-                    // Redirect to form builder with the new form ID
+                    this.formId = result.form_id;
                     window.location.href = result.edit_url;
                 } else {
                     throw new Error(result.message || 'Failed to create form');
                 }
 
             } catch (error) {
-                console.error('Failed to create form:', error);
-                alert(this.__('Error creating form: ') + error.message);
+                console.error('Failed to create/edit form:', error);
+                alert(this.__('Error: ') + error.message);
             }
         },
         
@@ -713,9 +610,11 @@ export default {
                     ...updatedFormData
                 };
                 
-                // Update formFields if fields were changed
-                if (updatedFormData.fields) {
-                    this.formFields = this.convertFieldsToPreview(updatedFormData.fields);
+                // Update formFields directly - no conversion needed
+                if (updatedFormData.wpuf_fields) {
+                    this.formFields = updatedFormData.wpuf_fields;
+                } else if (updatedFormData.fields) {
+                    this.formFields = updatedFormData.fields;
                 }
                 
                 // Update form title if changed

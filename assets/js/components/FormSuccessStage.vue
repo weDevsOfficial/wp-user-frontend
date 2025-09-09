@@ -141,15 +141,15 @@
                                     <p v-if="field.help_text" class="wpuf-field-help wpuf-text-sm wpuf-text-gray-500 wpuf-m-0 wpuf-mb-1">{{ field.help_text }}</p>
                                     
                                     <!-- WPUF Text Fields -->
-                                    <div v-if="['text_field', 'text', 'email_address', 'email', 'website_url', 'url', 'numeric_text_field', 'phone_field'].includes(field.type)" 
+                                    <div v-if="['text', 'email', 'url', 'number', 'tel', 'post_title'].includes(getWPUFFieldType(field))" 
                                          class="wpuf-form-input wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-p-3 wpuf-text-sm wpuf-bg-gray-50"
                                          :class="''"
                                     >
-                                        <span class="wpuf-text-gray-400">{{ field.placeholder || getFieldPlaceholder(field.type) }}</span>
+                                        <span class="wpuf-text-gray-400">{{ field.placeholder || field.help || 'Enter text' }}</span>
                                     </div>
                                     
                                     <!-- WPUF Dropdown/Select -->
-                                    <div v-else-if="['dropdown_field', 'select', 'dropdown'].includes(field.type)" class="wpuf-form-select-container">
+                                    <div v-else-if="['select', 'dropdown', 'dropdown_field'].includes(getWPUFFieldType(field))" class="wpuf-form-select-container">
                                         <div class="wpuf-form-input wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-p-3 wpuf-text-sm wpuf-bg-gray-50 wpuf-flex wpuf-items-center wpuf-justify-between wpuf-cursor-pointer"
                                              :class="''"
                                              style="background-image: none;"
@@ -162,7 +162,7 @@
                                     </div>
                                     
                                     <!-- WPUF Radio Buttons -->
-                                    <div v-else-if="['radio_field', 'radio'].includes(field.type)" class="wpuf-form-radio-container">
+                                    <div v-else-if="getWPUFFieldType(field) === 'radio'" class="wpuf-form-radio-container">
                                         <div class="wpuf-radio-group wpuf-flex wpuf-flex-col wpuf-gap-2" :class="field.required ? 'wpuf-border wpuf-rounded wpuf-p-3' : ''">
                                             <template v-if="field.options && field.options.length">
                                                 <div v-for="option in field.options" :key="option.value" class="wpuf-radio-option wpuf-flex wpuf-items-center wpuf-gap-2">
@@ -203,7 +203,7 @@
                                     </div>
                                     
                                     <!-- WPUF File Upload -->
-                                    <div v-else-if="['image_upload', 'file', 'featured_image', 'file_upload'].includes(field.type)" 
+                                    <div v-else-if="['image_upload', 'file', 'featured_image', 'file_upload'].includes(getWPUFFieldType(field))" 
                                          class="wpuf-form-file wpuf-border-2 wpuf-border-dashed wpuf-border-gray-300 wpuf-rounded wpuf-p-5 wpuf-flex wpuf-flex-col wpuf-items-center wpuf-gap-2 wpuf-bg-gray-50 wpuf-text-gray-500 wpuf-text-center wpuf-text-sm"
                                          :class="''"
                                     >
@@ -211,17 +211,17 @@
                                             <path d="M12 4V16M12 4L8 8M12 4L16 8M4 17V18C4 19.1046 4.89543 20 6 20H18C19.1046 20 20 19.1046 20 18V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
                                         <div class="wpuf-file-text">
-                                            <strong>{{ __('Click to upload', 'wp-user-frontend') }}</strong>
-                                            <div class="wpuf-text-gray-400">{{ field.placeholder || 'Drop files here or click to upload' }}</div>
+                                            <strong>{{ field.button_label || __('Select Image', 'wp-user-frontend') }}</strong>
+                                            <div class="wpuf-text-gray-400">{{ getWPUFFieldType(field) === 'image_upload' ? 'Upload image files' : 'Drop files here or click to upload' }}</div>
                                         </div>
                                     </div>
                                     
                                     <!-- WPUF Textarea -->
-                                    <div v-else-if="['textarea_field', 'textarea'].includes(field.type)" 
+                                    <div v-else-if="['textarea', 'post_content', 'post_excerpt'].includes(getWPUFFieldType(field))" 
                                          class="wpuf-form-textarea wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-p-3 wpuf-text-sm wpuf-bg-gray-50 wpuf-min-h-[100px] wpuf-relative"
                                          :class="''"
                                     >
-                                        <span class="wpuf-text-gray-400">{{ field.placeholder || __('Enter your text here...', 'wp-user-frontend') }}</span>
+                                        <span class="wpuf-text-gray-400">{{ field.placeholder || field.help || __('Enter your text here...', 'wp-user-frontend') }}</span>
                                     </div>
                                     
                                     <!-- WPUF Multiple Select -->
@@ -234,12 +234,12 @@
 
                                     </div>
                                     
-                                    <!-- WPUF Pro Date/Time Fields -->
-                                    <div v-else-if="['date_field', 'time_field', 'date', 'time', 'datetime'].includes(field.type)" 
+                                    <!-- WPUF Date/Time Fields -->
+                                    <div v-else-if="field.input_type === 'date' || field.template === 'date_field' || ['date_field', 'time_field', 'date', 'time', 'datetime'].includes(field.type)" 
                                          class="wpuf-form-input wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-p-3 wpuf-text-sm wpuf-bg-gray-50 wpuf-flex wpuf-items-center wpuf-justify-between"
                                          :class="''"
                                     >
-                                        <span class="wpuf-text-gray-400">{{ getFieldPlaceholder(field.type) }}</span>
+                                        <span class="wpuf-text-gray-400">{{ field.placeholder || 'Select date' }}</span>
                                         <svg class="wpuf-date-icon wpuf-w-4 wpuf-h-4 wpuf-text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                         </svg>
@@ -537,6 +537,14 @@ export default {
         
         generateSessionId() {
             return 'wpuf_chat_session_' + Date.now() + '_' + Math.random().toString(36).substring(2, 11);
+        },
+        
+        // Get the actual field type from WPUF field structure
+        getWPUFFieldType(field) {
+            // Priority: input_type > template > type
+            if (field.input_type) return field.input_type;
+            if (field.template) return field.template;
+            return field.type || 'text';
         },
         
         // Status visibility methods
@@ -1278,6 +1286,13 @@ export default {
             // Accept the pending changes (they're already applied to formFields)
             if (this.pendingChanges) {
                 console.log('✅ Accepted pending changes:', this.pendingChanges);
+                
+                // Update parent component with new form data
+                this.$emit('form-updated', {
+                    wpuf_fields: this.formFields,
+                    form_title: this.formTitle,
+                    form_description: this.formDescription
+                });
                 
                 // Clear pending changes but keep the current form state
                 this.pendingChanges = null;

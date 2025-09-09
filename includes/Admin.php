@@ -190,7 +190,7 @@ class Admin {
                 'rest_url'   => esc_url_raw( rest_url() ),
                 'restUrl'    => esc_url_raw( rest_url() ), // Some components use restUrl
                 'provider'   => $ai_settings['ai_provider'] ?? 'google',
-                'model'      => $ai_settings['ai_model'] ?? 'gemini-1.5-flash',
+                'model'      => $ai_settings['ai_model'] ?? 'gemini-1.5-flash-latest',
                 'hasApiKey'  => !empty($ai_settings['ai_api_key']),
                 'isProActive' => class_exists( 'WP_User_Frontend_Pro' ),
                 'temperature' => 0.7,

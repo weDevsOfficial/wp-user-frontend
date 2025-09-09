@@ -675,9 +675,10 @@ function wpuf_settings_fields() {
                     'claude-3-haiku-20240307' => 'Claude 3 Haiku (Anthropic)',
                     
                     // Google Models (Free tier available!)
+                    'gemini-1.5-flash-latest' => 'Gemini 1.5 Flash Latest - Best Free (Google)',
                     'gemini-1.5-flash' => 'Gemini 1.5 Flash - Free Tier (Google)',
-                    'gemini-1.5-pro' => 'Gemini 1.5 Pro (Google)',
-                    'gemini-pro' => 'Gemini Pro (Google)',
+                    'gemini-1.5-pro' => 'Gemini 1.5 Pro - Paid (Google)',
+                    'gemini-pro' => 'Gemini Pro - Paid (Google)',
                     
                 ]),
                 'default' => 'gpt-3.5-turbo',

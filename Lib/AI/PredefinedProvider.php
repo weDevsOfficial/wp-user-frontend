@@ -227,11 +227,10 @@ class PredefinedProvider {
                 ],
                 [
                     'id' => 8,
-                    'type' => 'file',
+                    'type' => 'image',
                     'label' => 'Ad Images',
                     'name' => 'ad_images',
-                    'required' => false,
-                    'allowed_types' => 'jpg,jpeg,png,gif'
+                    'required' => false
                 ]
             ]
         ],
@@ -375,11 +374,10 @@ class PredefinedProvider {
                 ],
                 [
                     'id' => 9,
-                    'type' => 'file',
+                    'type' => 'image',
                     'label' => 'Property Images',
                     'name' => 'property_images',
-                    'required' => true,
-                    'allowed_types' => 'jpg,jpeg,png,gif'
+                    'required' => true
                 ],
                 [
                     'id' => 10,
@@ -672,11 +670,10 @@ class PredefinedProvider {
                 ],
                 [
                     'id' => 6,
-                    'type' => 'file',
+                    'type' => 'image',
                     'label' => 'Product Images',
                     'name' => 'product_images',
-                    'required' => true,
-                    'allowed_types' => 'jpg,jpeg,png,gif'
+                    'required' => true
                 ],
                 [
                     'id' => 7,
@@ -1071,10 +1068,12 @@ class PredefinedProvider {
                     // Image upload field
                     $wpuf_field['input_type'] = 'image_upload';
                     $wpuf_field['template'] = 'image_upload';
+                    $wpuf_field['button_label'] = isset($field['button_label']) ? $field['button_label'] : __('Select Image', 'wp-user-frontend');
                     if ($wpuf_field['name'] === 'featured_image') {
                         $wpuf_field['template'] = 'featured_image';
                         $wpuf_field['button_label'] = $wpuf_field['label'];
                     }
+                    // Don't set extension for image fields - it's handled by WPUF internally
                 } else {
                     // Regular file upload (Pro field)
                     $wpuf_field['input_type'] = 'file_upload';
@@ -1107,6 +1106,69 @@ class PredefinedProvider {
                 $wpuf_field['toc_text'] = $field['toc_text'] ?? 'Please read and accept our terms and conditions.';
                 $wpuf_field['show_checkbox'] = $field['show_checkbox'] ?? 'yes';
                 $wpuf_field['required_text'] = 'You must agree to the terms and conditions to continue.';
+                break;
+
+            case 'address':
+            case 'address_field':
+                // Address field specific properties - must have the nested 'address' array structure
+                $wpuf_field['address'] = [
+                    'street_address' => [
+                        'checked' => 'checked',
+                        'type' => 'text',
+                        'required' => 'checked',
+                        'label' => __('Address Line 1', 'wp-user-frontend'),
+                        'value' => '',
+                        'placeholder' => ''
+                    ],
+                    'street_address2' => [
+                        'checked' => 'checked',
+                        'type' => 'text',
+                        'required' => '',
+                        'label' => __('Address Line 2', 'wp-user-frontend'),
+                        'value' => '',
+                        'placeholder' => ''
+                    ],
+                    'city_name' => [
+                        'checked' => 'checked',
+                        'type' => 'text',
+                        'required' => 'checked',
+                        'label' => __('City', 'wp-user-frontend'),
+                        'value' => '',
+                        'placeholder' => ''
+                    ],
+                    'zip' => [
+                        'checked' => 'checked',
+                        'type' => 'text',
+                        'required' => 'checked',
+                        'label' => __('Zip Code', 'wp-user-frontend'),
+                        'value' => '',
+                        'placeholder' => ''
+                    ],
+                    'country_select' => [
+                        'checked' => 'checked',
+                        'type' => 'select',
+                        'required' => 'checked',
+                        'label' => __('Country', 'wp-user-frontend'),
+                        'value' => '',
+                        'country_list_visibility_opt_name' => 'all',
+                        'country_select_hide_list' => [],
+                        'country_select_show_list' => []
+                    ],
+                    'state' => [
+                        'checked' => 'checked',
+                        'type' => 'select',
+                        'required' => 'checked',
+                        'label' => __('State', 'wp-user-frontend'),
+                        'value' => '',
+                        'placeholder' => ''
+                    ]
+                ];
+                $wpuf_field['show_in_post'] = 'yes';
+                $wpuf_field['hide_field_label'] = 'no';
+                // Remove fields that address field doesn't use
+                unset($wpuf_field['placeholder']);
+                unset($wpuf_field['default']);
+                unset($wpuf_field['size']);
                 break;
 
             case 'text':

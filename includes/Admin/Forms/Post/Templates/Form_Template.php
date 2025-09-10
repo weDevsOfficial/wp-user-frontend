@@ -12,7 +12,7 @@ namespace WeDevs\Wpuf\Admin\Forms\Post\Templates;
 class Form_Template {
 
     public function __construct() {
-        add_action( 'wpuf_load_post_forms', [ $this, 'enqueue_scripts' ] );
+        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'deregister_scripts' ], 99 );
 
         // post form templates

@@ -65,7 +65,8 @@ class Posting {
         add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes'] );
         add_action( 'add_meta_boxes', [ $this, 'add_meta_box_form_select'] );
         add_action( 'add_meta_boxes', [ $this, 'add_meta_box_post_lock'] );
-        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_script'] );
+        // Remove global CSS loading to prevent leaks - only load on WPUF pages via hook
+        // add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_script'] );
         add_action( 'wpuf_load_post_forms', [ $this, 'enqueue_script' ] );
         // add_action( 'admin_enqueue_scripts', [ $this, 'dequeue_assets' ] );
         add_action( 'wpuf_load_registration_forms', [ $this, 'enqueue_script' ] );
@@ -105,11 +106,7 @@ class Posting {
     public function enqueue_script() {
         $api_key = wpuf_get_option( 'gmap_api_key', 'wpuf_general' );
 
-        // Only load on WPUF admin pages to prevent CSS leaks
-        $screen = get_current_screen();
-        if ($screen && (strpos($screen->id, 'wpuf') !== false || strpos($screen->base, 'wpuf') !== false)) {
-            wp_enqueue_style( 'wpuf-admin-form-builder' );
-        }
+        wp_enqueue_style( 'wpuf-admin-form-builder' );
 
         wp_enqueue_style( 'jquery-ui' );
         wp_enqueue_script( 'jquery-ui-slider' );

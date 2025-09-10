@@ -12,7 +12,7 @@ namespace WeDevs\Wpuf\Admin\Forms\Post\Templates;
 class Form_Template {
 
     public function __construct() {
-        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+        add_action( 'wpuf_load_post_forms', [ $this, 'enqueue_scripts' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'deregister_scripts' ], 99 );
 
         // post form templates
@@ -82,11 +82,7 @@ class Form_Template {
             wp_enqueue_style( $deps );
         }
 
-        // Only load on WPUF admin pages to prevent CSS leaks
-        $screen = get_current_screen();
-        if ($screen && (strpos($screen->id, 'wpuf') !== false || strpos($screen->base, 'wpuf') !== false)) {
-            wp_enqueue_style( 'wpuf-admin-form-builder' );
-        }
+        wp_enqueue_style( 'wpuf-admin-form-builder' );
     }
 
     /**

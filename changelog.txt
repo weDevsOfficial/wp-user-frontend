@@ -1,3 +1,8 @@
+= v4.1.10 (01 September, 2025) =
+* New - Allow webp image format in file upload fields
+* Enhancement - Cleanup post form settings by removing form template option
+* Fix - Prevent same name file conflicts upload
+
 = v4.1.9 (12 August, 2025) =
 * Fix - The Events Calendar integration
 

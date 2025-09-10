@@ -154,7 +154,7 @@ class Upload_Ajax {
     public function handle_upload( $upload_data ) {
         // Always make filenames unique to prevent conflicts between users
         $upload_data['name'] = $this->wpuf_filename_unique( $upload_data['name'] );
-        
+
         $uploaded_file = wp_handle_upload( $upload_data, [ 'test_form' => false ] );
         // If the wp_handle_upload call returned a local path for the image
         if ( isset( $uploaded_file['file'] ) ) {
@@ -297,8 +297,8 @@ class Upload_Ajax {
      * Make filename unique by adding user ID prefix to prevent conflicts between users
      * while still allowing WordPress to handle duplicates for the same user
      *
-     * @since WPUF_SINCE
-     * 
+     * @since 4.1.10
+     *
      * @param string $filename
      *
      * @return string
@@ -307,13 +307,13 @@ class Upload_Ajax {
         $info = pathinfo( $filename );
         $ext  = empty( $info['extension'] ) ? '' : '.' . $info['extension'];
         $name = basename( $filename, $ext );
-        
+
         // Sanitize the base name
         $name = sanitize_file_name( $name );
-        
+
         // Get current user ID for user isolation
         $user_id = get_current_user_id();
-        
+
         // For logged-in users, add user ID prefix to prevent cross-user conflicts
         // For guests, add a session-based or timestamp prefix
         if ( $user_id > 0 ) {
@@ -325,11 +325,11 @@ class Upload_Ajax {
             // This prevents guests from overwriting each other's files
             $unique_prefix = 'guest-' . time() . '-' . substr( uniqid(), -4 );
         }
-        
+
         // Combine prefix with filename
         // This ensures user isolation while preserving WordPress duplicate handling
         $new_filename = $unique_prefix . '-' . $name . $ext;
-        
+
         // Apply filter to allow customization of the unique filename
         $new_filename = apply_filters( 'wpuf_upload_file_name', $new_filename, [
             'original_name' => $filename,
@@ -338,7 +338,7 @@ class Upload_Ajax {
             'user_id'       => $user_id,
             'unique_prefix' => $unique_prefix,
         ] );
-        
+
         return $new_filename;
     }
 }

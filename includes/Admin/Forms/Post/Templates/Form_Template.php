@@ -82,7 +82,11 @@ class Form_Template {
             wp_enqueue_style( $deps );
         }
 
-        wp_enqueue_style( 'wpuf-admin-form-builder' );
+        // Only load on WPUF admin pages to prevent CSS leaks
+        $screen = get_current_screen();
+        if ($screen && (strpos($screen->id, 'wpuf') !== false || strpos($screen->base, 'wpuf') !== false)) {
+            wp_enqueue_style( 'wpuf-admin-form-builder' );
+        }
     }
 
     /**

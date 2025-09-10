@@ -1,4 +1,4 @@
-/* @tailwind base; */
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -50,15 +50,7 @@
     }
 }
 
-/* Scope background to WPUF-specific pages only to avoid affecting other plugins */
-/* These classes are added to the body tag on WPUF admin pages */
-body.toplevel_page_wpuf-post-forms #wpcontent,
-body.wpuf_page_wpuf-post-forms #wpcontent,
-body.post-forms_page_wpuf-ai-form-builder #wpcontent,
-body.admin_page_wpuf_subscribers #wpcontent,
-body.user-frontend_page_wpuf_subscribers #wpcontent,
-body[class*="page_wpuf"] #wpcontent,
-body[class*="_wpuf-"] #wpcontent {
+#wpcontent {
     background: #fff;
 }
 /* Transition styles */

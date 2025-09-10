@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 4.1.10\n"
+"Project-Id-Version: WP User Frontend 4.1.11\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2025-09-01 13:32:40+00:00\n"
+"POT-Creation-Date: 2025-09-10 10:31:20+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1107,56 +1107,56 @@ msgid "Sample Form"
 msgstr ""
 
 #: admin/posting.php:74 class/render-form.php:1703
-#: includes/Admin/Posting.php:129 includes/Admin.php:133
+#: includes/Admin/Posting.php:130 includes/Admin.php:133
 #: includes/Fields/Field_Contract.php:937 includes/Frontend.php:72
 #: includes/Render_Form.php:1594
 msgid "Are you sure?"
 msgstr ""
 
 #: admin/posting.php:75 includes/Admin/Forms/Admin_Form_Builder.php:325
-#: includes/Admin/Posting.php:130 includes/Admin.php:134
+#: includes/Admin/Posting.php:131 includes/Admin.php:134
 #: includes/Fields/Field_Contract.php:938 includes/Frontend.php:73
 msgid "Yes, delete it"
 msgstr ""
 
-#: admin/posting.php:76 includes/Admin/Posting.php:131 includes/Admin.php:135
+#: admin/posting.php:76 includes/Admin/Posting.php:132 includes/Admin.php:135
 #: includes/Fields/Field_Contract.php:939 includes/Frontend.php:74
 msgid "No, cancel it"
 msgstr ""
 
-#: admin/posting.php:82 includes/Admin/Posting.php:137 includes/Admin.php:143
+#: admin/posting.php:82 includes/Admin/Posting.php:138 includes/Admin.php:143
 #: includes/Fields/Field_Contract.php:949 includes/Frontend.php:84
 msgid "Allowed Files"
 msgstr ""
 
-#: admin/posting.php:85 includes/Admin/Posting.php:140 includes/Admin.php:149
+#: admin/posting.php:85 includes/Admin/Posting.php:141 includes/Admin.php:149
 #: includes/Fields/Field_Contract.php:955 includes/Frontend.php:90
 msgid "Maximum number of files reached!"
 msgstr ""
 
-#: admin/posting.php:86 includes/Admin/Posting.php:141 includes/Admin.php:150
+#: admin/posting.php:86 includes/Admin/Posting.php:142 includes/Admin.php:150
 #: includes/Fields/Field_Contract.php:956 includes/Frontend.php:91
 msgid "The file you have uploaded exceeds the file size limit. Please try again."
 msgstr ""
 
-#: admin/posting.php:87 includes/Admin/Posting.php:142 includes/Admin.php:151
+#: admin/posting.php:87 includes/Admin/Posting.php:143 includes/Admin.php:151
 #: includes/Fields/Field_Contract.php:960 includes/Frontend.php:95
 msgid "You have uploaded an incorrect file type. Please try again."
 msgstr ""
 
-#: admin/posting.php:106 includes/Admin/Posting.php:181
+#: admin/posting.php:106 includes/Admin/Posting.php:182
 msgid "WPUF Form"
 msgstr ""
 
-#: admin/posting.php:134 includes/Admin/Posting.php:209
+#: admin/posting.php:134 includes/Admin/Posting.php:210
 msgid "Learn more"
 msgstr ""
 
-#: admin/posting.php:181 includes/Admin/Posting.php:256
+#: admin/posting.php:181 includes/Admin/Posting.php:257
 msgid "WPUF Lock User"
 msgstr ""
 
-#: admin/posting.php:209 includes/Admin/Posting.php:284
+#: admin/posting.php:209 includes/Admin/Posting.php:285
 #. translators: %s is the Post ID
 #. translators: %s is the post ID.
 msgid ""
@@ -1164,7 +1164,7 @@ msgid ""
 "id=\"wpuf_clear_schedule_lock\" data=\"%s\" href=\"#\">Click here</a>"
 msgstr ""
 
-#: admin/posting.php:218 includes/Admin/Posting.php:295
+#: admin/posting.php:218 includes/Admin/Posting.php:296
 #. translators: %1$s is local time and %2$ is Post ID
 #. translators: %1$s The time when the post edit access will be locked and %2$s
 #. The post ID.
@@ -1174,23 +1174,23 @@ msgid ""
 "Or,"
 msgstr ""
 
-#: admin/posting.php:239 includes/Admin/Posting.php:318
+#: admin/posting.php:239 includes/Admin/Posting.php:319
 msgid "Lock Post Permanently"
 msgstr ""
 
-#: admin/posting.php:244 includes/Admin/Posting.php:323
+#: admin/posting.php:244 includes/Admin/Posting.php:324
 msgid "Lock user from editing this post from the frontend dashboard"
 msgstr ""
 
-#: admin/posting.php:295 includes/Admin/Posting.php:374
+#: admin/posting.php:295 includes/Admin/Posting.php:375
 msgid "WPUF Custom Fields"
 msgstr ""
 
-#: admin/posting.php:352 includes/Admin/Posting.php:439
+#: admin/posting.php:352 includes/Admin/Posting.php:440
 msgid "No custom fields found."
 msgstr ""
 
-#: admin/posting.php:547 includes/Admin/Posting.php:868
+#: admin/posting.php:547 includes/Admin/Posting.php:869
 #: includes/Admin/Promotion.php:216 includes/Admin/Promotion.php:220
 #: includes/Admin/Promotion.php:224 includes/Admin/Promotion.php:301
 #: includes/Admin/Promotion.php:305 includes/Admin/Promotion.php:309

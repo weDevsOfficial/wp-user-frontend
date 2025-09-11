@@ -155,6 +155,7 @@ final class WP_User_Frontend {
     public function includes() {
         require_once __DIR__ . '/wpuf-functions.php';
         require_once __DIR__ . '/includes/class-frontend-render-form.php';
+        require_once __DIR__ . '/includes/class-wpuf-icon-loader.php';
 
         // add reCaptcha library if not found
         if ( ! function_exists( 'recaptcha_get_html' ) ) {

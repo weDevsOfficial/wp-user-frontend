@@ -17,12 +17,16 @@
             data-source="stage"
         >
             <div v-if="!is_full_width(field.template)" class="wpuf-label">
+                <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'left_label'" 
+                      class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-mr-1">
+                      <i :class="[field.field_icon, 'wpuf-field-icon']"></i>
+                </span>
                 <label v-if="!is_invisible(field)" :for="'wpuf-' + field.name ? field.name : 'cls'">
                     {{ field.label }} <span v-if="field.required && 'yes' === field.required" class="required">*</span>
                 </label>
-                <span v-if="field.icon && field.show_icon === 'yes'" 
-                      class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-ml-2"
-                      v-html="field.icon">
+                <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'right_label'" 
+                      class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-ml-2">
+                      <i :class="[field.field_icon, 'wpuf-field-icon']"></i>
                 </span>
             </div>
 

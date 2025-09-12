@@ -130,7 +130,20 @@ export default {
                 console.log('Response status:', response.status);
                 
                 if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    // Try to get detailed error from response
+                    let errorDetails = `HTTP ${response.status}: ${response.statusText}`;
+                    try {
+                        const errorData = await response.json();
+                        if (errorData.message) {
+                            errorDetails = `${errorDetails} - ${errorData.message}`;
+                        }
+                        if (errorData.data && errorData.data.details) {
+                            errorDetails = `${errorDetails} (${errorData.data.details})`;
+                        }
+                    } catch (e) {
+                        // If can't parse JSON, use original error
+                    }
+                    throw new Error(errorDetails);
                 }
                 
                 const result = await response.json();
@@ -154,13 +167,14 @@ export default {
                         // Non-form request error
                         this.handleGenerationError(
                             result.message || 'Form generation failed',
-                            'invalid_request'
+                            'invalid_request',
+                            result
                         );
                     } else if (result.warning && result.warning_type === 'pro_field_requested') {
                         // Pro field warning - still generate the form
                         this.handleProFieldWarning(result);
                     } else {
-                        this.handleGenerationError(result.message || 'Form generation failed');
+                        this.handleGenerationError(result.message || 'Form generation failed', 'general', result);
                     }
                 }
             } catch (error) {
@@ -173,11 +187,19 @@ export default {
                     errorMessage = 'Cannot connect to server. Please check if WordPress REST API is accessible.';
                 }
                 
-                this.handleGenerationError(errorMessage);
+                // Create error data object with full error information
+                const errorData = {
+                    name: error.name,
+                    message: error.message,
+                    stack: error.stack,
+                    type: 'network_error'
+                };
+                
+                this.handleGenerationError(errorMessage, 'general', errorData);
             }
         },
         
-        handleGenerationError(message, errorType = 'general') {
+        handleGenerationError(message, errorType = 'general', errorData = null) {
             this.isGenerating = false;
             this.currentStage = 'input';
             
@@ -191,16 +213,58 @@ export default {
             errorContainer.innerHTML = `
                 <div class="wpuf-ai-error-overlay"></div>
                 <div class="wpuf-ai-error-content">
+                    <!-- Error Icon -->
+                    <div class="wpuf-ai-error-icon">
+                        ${errorType === 'invalid_request' ? `
+                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="24" cy="24" r="20" fill="#FEF3F2" stroke="#FEE4E2" stroke-width="2"/>
+                                <path d="M24 16V24" stroke="#F97066" stroke-width="2" stroke-linecap="round"/>
+                                <circle cx="24" cy="30" r="1.5" fill="#F97066"/>
+                            </svg>
+                        ` : `
+                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="24" cy="24" r="20" fill="#FEF2F2" stroke="#FECACA" stroke-width="2"/>
+                                <path d="M18 18L30 30M30 18L18 30" stroke="#EF4444" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        `}
+                    </div>
+                    
+                    <!-- Title -->
                     <h3 class="wpuf-ai-error-title">
                         ${errorType === 'invalid_request' ? (i18n.invalidRequest || 'Invalid Request') : (i18n.errorTitle || 'Error')}
                     </h3>
+                    
+                    <!-- Message -->
                     <p class="wpuf-ai-error-message">${message}</p>
-                    ${errorType === 'invalid_request' ? `
-                        <p class="wpuf-ai-error-hint">
-                            ${i18n.nonFormRequest || 'I can only help with form creation. Try: "Create a contact form"'}
-                        </p>
+                    
+                    <!-- Detailed Error Information -->
+                    ${errorData ? `
+                        <div class="wpuf-ai-error-details">
+                            <details>
+                                <summary>Technical Details</summary>
+                                <div class="wpuf-ai-error-details-content">
+                                    ${errorData.code ? `<p><strong>Error Code:</strong> ${errorData.code}</p>` : ''}
+                                    ${errorData.data ? `<p><strong>Details:</strong> ${JSON.stringify(errorData.data, null, 2)}</p>` : ''}
+                                    ${errorData.stack ? `<p><strong>Stack:</strong> <pre>${errorData.stack}</pre></p>` : ''}
+                                </div>
+                            </details>
+                        </div>
                     ` : ''}
-                    <button class="wpuf-ai-error-close button button-primary">
+                    
+                    <!-- Hint for invalid requests -->
+                    ${errorType === 'invalid_request' ? `
+                        <div class="wpuf-ai-error-hint">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="8" cy="8" r="7" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/>
+                                <path d="M8 5.33333V8.66667" stroke="#1D4ED8" stroke-width="1.2" stroke-linecap="round"/>
+                                <circle cx="8" cy="11" r="0.8" fill="#1D4ED8"/>
+                            </svg>
+                            <span>${i18n.nonFormRequest || 'I can only help with form creation. Try: "Create a contact form"'}</span>
+                        </div>
+                    ` : ''}
+                    
+                    <!-- Button -->
+                    <button class="wpuf-ai-error-close">
                         ${i18n.tryAgain || 'Try Again'}
                     </button>
                 </div>
@@ -223,6 +287,8 @@ export default {
                         display: flex;
                         align-items: center;
                         justify-content: center;
+                        backdrop-filter: blur(4px);
+                        animation: wpufFadeIn 0.2s ease-out;
                     }
                     .wpuf-ai-error-overlay {
                         position: absolute;
@@ -230,36 +296,132 @@ export default {
                         left: 0;
                         right: 0;
                         bottom: 0;
-                        background: rgba(0, 0, 0, 0.5);
+                        background: rgba(17, 24, 39, 0.7);
+                        animation: wpufFadeIn 0.2s ease-out;
                     }
                     .wpuf-ai-error-content {
                         position: relative;
                         background: white;
-                        padding: 30px;
-                        border-radius: 8px;
-                        max-width: 500px;
-                        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+                        padding: 40px;
+                        border-radius: 16px;
+                        max-width: 480px;
+                        width: 90%;
+                        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+                        text-align: center;
+                        animation: wpufSlideUp 0.3s ease-out;
+                        border: 1px solid #f3f4f6;
+                    }
+                    .wpuf-ai-error-icon {
+                        display: flex;
+                        justify-content: center;
+                        margin-bottom: 24px;
                     }
                     .wpuf-ai-error-title {
-                        color: #dc3545;
-                        margin: 0 0 15px 0;
-                        font-size: 20px;
+                        color: #111827;
+                        margin: 0 0 16px 0;
+                        font-size: 24px;
+                        font-weight: 600;
+                        line-height: 1.3;
                     }
                     .wpuf-ai-error-message {
-                        color: #333;
-                        margin: 0 0 10px 0;
+                        color: #6b7280;
+                        margin: 0 0 24px 0;
+                        line-height: 1.6;
+                        font-size: 16px;
+                    }
+                    .wpuf-ai-error-details {
+                        margin: 16px 0 24px 0;
+                        padding: 16px;
+                        background: #f9fafb;
+                        border: 1px solid #e5e7eb;
+                        border-radius: 8px;
+                        text-align: left;
+                    }
+                    .wpuf-ai-error-details details {
+                        font-size: 14px;
+                    }
+                    .wpuf-ai-error-details summary {
+                        cursor: pointer;
+                        font-weight: 600;
+                        color: #374151;
+                        padding: 8px 0;
+                        border-bottom: 1px solid #e5e7eb;
+                        margin-bottom: 12px;
+                    }
+                    .wpuf-ai-error-details summary:hover {
+                        color: #111827;
+                    }
+                    .wpuf-ai-error-details-content {
+                        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+                        font-size: 12px;
                         line-height: 1.5;
+                        color: #374151;
+                    }
+                    .wpuf-ai-error-details-content p {
+                        margin: 8px 0;
+                    }
+                    .wpuf-ai-error-details-content strong {
+                        color: #111827;
+                    }
+                    .wpuf-ai-error-details-content pre {
+                        background: #f3f4f6;
+                        padding: 8px;
+                        border-radius: 4px;
+                        overflow-x: auto;
+                        white-space: pre-wrap;
+                        word-break: break-all;
                     }
                     .wpuf-ai-error-hint {
-                        color: #666;
-                        font-style: italic;
-                        margin: 10px 0 20px 0;
-                        padding: 10px;
-                        background: #f8f9fa;
-                        border-left: 3px solid #007cba;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        color: #1d4ed8;
+                        margin: 20px 0 24px 0;
+                        padding: 16px;
+                        background: #f0f9ff;
+                        border: 1px solid #dbeafe;
+                        border-radius: 12px;
+                        font-size: 14px;
+                        line-height: 1.5;
+                        text-align: left;
+                    }
+                    .wpuf-ai-error-hint svg {
+                        flex-shrink: 0;
                     }
                     .wpuf-ai-error-close {
-                        margin-top: 15px;
+                        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                        color: white;
+                        border: none;
+                        padding: 12px 32px;
+                        border-radius: 8px;
+                        font-size: 16px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.2s ease;
+                        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                        min-width: 120px;
+                    }
+                    .wpuf-ai-error-close:hover {
+                        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+                        transform: translateY(-1px);
+                        box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.15);
+                    }
+                    .wpuf-ai-error-close:active {
+                        transform: translateY(0);
+                    }
+                    @keyframes wpufFadeIn {
+                        from { opacity: 0; }
+                        to { opacity: 1; }
+                    }
+                    @keyframes wpufSlideUp {
+                        from { 
+                            opacity: 0;
+                            transform: translateY(20px);
+                        }
+                        to { 
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
                     }
                 `;
                 document.head.appendChild(style);

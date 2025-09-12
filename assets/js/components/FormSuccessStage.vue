@@ -400,6 +400,41 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Regenerate Confirmation Modal -->
+        <div v-if="showRegenerateModal" class="wpuf-modal-overlay wpuf-fixed wpuf-inset-0 wpuf-bg-black wpuf-bg-opacity-75 wpuf-z-50 wpuf-flex wpuf-items-center wpuf-justify-center">
+            <div class="wpuf-modal-content wpuf-bg-white wpuf-rounded-lg wpuf-shadow-lg" style="width: 660px; height: 480px; position: relative;">
+                <div class="wpuf-flex wpuf-flex-col wpuf-items-center wpuf-justify-center wpuf-h-full wpuf-px-8 wpuf-py-12">
+                    <!-- Icon -->
+                    <div class="wpuf-flex wpuf-items-center wpuf-justify-center wpuf-mb-8">
+                        <svg width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="110" height="110" rx="55" fill="#D1FAE5"/>
+                            <path d="M60 51V46C60 44.3431 58.6569 43 57 43L49 43C47.3431 43 46 44.3431 46 46L46 64C46 65.6569 47.3431 67 49 67H57C58.6569 67 60 65.6569 60 64V59M55 51L51 55M51 55L55 59M51 55L68 55" stroke="#0F172A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- Title -->
+                    <h3 class="wpuf-modal-title">
+                        {{ __('Are you sure you want to leave and regenerate the form?', 'wp-user-frontend') }}
+                    </h3>
+                    
+                    <!-- Description -->
+                    <p class="wpuf-modal-description">
+                        {{ __('If you decide to leave and regenerate the form, please be aware that you will lost the information you\'ve currently generated.', 'wp-user-frontend') }}
+                    </p>
+                    
+                    <!-- Buttons -->
+                    <div class="wpuf-flex wpuf-gap-4">
+                        <button @click="confirmRegenerate" class="wpuf-modal-cancel-btn">
+                            {{ __('Leave & Regenerate', 'wp-user-frontend') }}
+                        </button>
+                        <button @click="showRegenerateModal = false" class="wpuf-modal-regenerate-btn">
+                            {{ __('Cancel', 'wp-user-frontend') }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -482,6 +517,75 @@
 .wpuf-duration-500 {
     transition-duration: 500ms;
 }
+
+/* Regenerate Modal Styles */
+.wpuf-modal-title {
+    font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    text-align: center;
+    color: #111827;
+    margin: 0 0 24px 0;
+    max-width: 480px;
+}
+
+.wpuf-modal-description {
+    font-weight: 400;
+    font-size: 14px;
+    letter-spacing: 0%;
+    text-align: center;
+    color: #6B7280;
+    margin: 0 0 32px 0;
+    max-width: 420px;
+}
+
+.wpuf-modal-cancel-btn {
+    width: 201px;
+    height: 50px;
+    border-radius: 6px;
+    padding: 13px 25px 13px 23px;
+    gap: 12px;
+    border: 1px solid #D1D5DB;
+    background: #FFFFFF;
+    color: #374151;
+    font-weight: 500;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wpuf-modal-cancel-btn:hover {
+    background: #F9FAFB;
+    border-color: #9CA3AF;
+}
+
+.wpuf-modal-regenerate-btn {
+    width: 201px;
+    height: 50px;
+    border-radius: 6px;
+    padding: 13px 25px 13px 23px;
+    gap: 12px;
+    border: 1px solid #059669;
+    background: #059669;
+    color: #FFFFFF;
+    font-weight: 500;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wpuf-modal-regenerate-btn:hover {
+    background: #059669;
+    border-color: #059669;
+}
 </style>
 
 <script>
@@ -527,7 +631,8 @@ export default {
             isApplying: false,
             isFormUpdating: false,
             visibleStatuses: new Set(), // Track which status messages are visible
-            statusTimeouts: new Map() // Track timeout IDs for auto-hide
+            statusTimeouts: new Map(), // Track timeout IDs for auto-hide
+            showRegenerateModal: false // Track regenerate confirmation modal
         };
     },
     watch: {
@@ -1519,6 +1624,35 @@ export default {
         },
         
         handleRegenerate() {
+            // Show confirmation modal before regenerating
+            this.showRegenerateModal = true;
+        },
+        
+        confirmRegenerate() {
+            // Close modal
+            this.showRegenerateModal = false;
+            
+            // Clear all chat messages and form state
+            this.chatMessages = [];
+            this.formFields = [];
+            this.previousFormFields = [];
+            this.pendingChanges = null;
+            this.formDescription = '';
+            this.userInput = '';
+            this.conversationState = {
+                original_prompt: '',
+                form_created: false,
+                modifications_count: 0,
+                context_history: [],
+                is_predefined_template: false,
+                template_modified: false,
+                original_form_hash: null
+            };
+            
+            // Generate new session ID to close current session
+            this.sessionId = this.generateSessionId();
+            
+            // Emit regenerate event to parent
             this.$emit('regenerate-form');
         },
         

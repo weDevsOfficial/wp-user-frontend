@@ -208,14 +208,7 @@ class RestController {
         $temperature = $request->get_param('temperature');
         $max_tokens = $request->get_param('max_tokens');
 
-        // Rate limiting check
-        if (!$this->check_rate_limit()) {
-            return new WP_Error(
-                'rate_limit_exceeded',
-                __('Rate limit exceeded. Please try again later.', 'wp-user-frontend'),
-                ['status' => 429]
-            );
-        }
+        // Google API handles its own rate limiting, no need for additional limits
 
         try {
             $options = [
@@ -402,32 +395,6 @@ class RestController {
         return true;
     }
 
-    /**
-     * Check rate limit for current user
-     *
-     * @return bool
-     */
-    private function check_rate_limit() {
-        $user_id = get_current_user_id();
-        $rate_limit_key = 'wpuf_ai_rate_limit_' . $user_id;
-        
-        $current_count = get_transient($rate_limit_key);
-        $max_requests = 50; // 50 requests per hour
-        
-        if ($current_count === false) {
-            // First request in this hour
-            set_transient($rate_limit_key, 1, HOUR_IN_SECONDS);
-            return true;
-        }
-        
-        if ($current_count >= $max_requests) {
-            return false;
-        }
-        
-        // Increment counter
-        set_transient($rate_limit_key, $current_count + 1, HOUR_IN_SECONDS);
-        return true;
-    }
 
     /**
      * Create form from AI generated data

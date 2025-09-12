@@ -187,10 +187,10 @@
             add_form_field_element: function (state, payload) {
                 // Initialize icon properties for new fields to ensure Vue reactivity
                 if (!payload.field.hasOwnProperty('show_icon')) {
-                    payload.field.show_icon = 'yes';
+                    payload.field.show_icon = 'no';
                 }
                 if (!payload.field.hasOwnProperty('field_icon')) {
-                    payload.field.field_icon = 'fas fa-user';
+                    payload.field.field_icon = '';
                 }
                 if (!payload.field.hasOwnProperty('icon_position')) {
                     payload.field.icon_position = 'left_label';

@@ -50,8 +50,8 @@ class WPUF_Icon_Loader {
      */
     public function load_all_icons() {
         $icons = [];
-        $svg_base_path = WPUF_ASSET_URI . '/vendor/font-awesome-6/svgs/';
-        $svg_file_path = WPUF_ROOT . '/assets/vendor/font-awesome-6/svgs/';
+        $svg_base_path = WPUF_ASSET_URI . '/vendor/font-awesome-7/svgs/';
+        $svg_file_path = WPUF_ROOT . '/assets/vendor/font-awesome-7/svgs/';
         
         // Define icon styles to scan
         $styles = [

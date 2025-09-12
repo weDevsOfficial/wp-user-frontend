@@ -319,7 +319,7 @@ abstract class Field_Contract {
                 ],
                 'section'   => 'basic',
                 'priority'  => 22,
-                'default'   => 'yes',
+                'default'   => 'no',
                 'inline'    => true,
                 'help_text' => __( 'Enable to show an icon with this field', 'wp-user-frontend' ),
             ],

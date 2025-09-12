@@ -79,6 +79,26 @@
                                                     </button>
                                                     <button @click="handleReject" :disabled="isApplying" class="wpuf-btn-reject wpuf-bg-red-600 wpuf-text-white wpuf-border-none wpuf-py-1.5 wpuf-px-3 wpuf-rounded wpuf-text-sm wpuf-cursor-pointer wpuf-transition-colors hover:wpuf-bg-red-800 disabled:wpuf-bg-gray-400 disabled:wpuf-cursor-not-allowed">{{ __('Reject', 'wp-user-frontend') }}</button>
                                                 </div>
+                                                <!-- Accepted status indicator -->
+                                                <div v-if="message.acceptedStatus" class="wpuf-accepted-status wpuf-mt-2 wpuf-text-xs wpuf-text-green-600 wpuf-flex wpuf-items-center wpuf-gap-1">
+                                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                                    </svg>
+                                                    {{ message.acceptedStatus }}
+                                                </div>
+                                                <!-- Checkpoint restore button (checkpoints are auto-saved) -->
+                                                <div v-if="message.hasCheckpoint && message.checkpointSaved" class="wpuf-checkpoint-actions wpuf-mt-2 wpuf-flex wpuf-items-center wpuf-gap-2">
+                                                    <button 
+                                                        @click="restoreCheckpoint(index)" 
+                                                        class="wpuf-btn-restore wpuf-bg-blue-500 wpuf-text-white wpuf-border-none wpuf-py-1 wpuf-px-2.5 wpuf-rounded wpuf-text-xs wpuf-cursor-pointer wpuf-transition-all hover:wpuf-bg-blue-600 wpuf-flex wpuf-items-center wpuf-gap-1.5"
+                                                        title="Restore form to this checkpoint"
+                                                    >
+                                                        <svg width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M3 10C3 13.866 6.13401 17 10 17C13.866 17 17 13.866 17 10C17 6.13401 13.866 3 10 3C7.07421 3 4.56316 4.77516 3.52779 7.28M3 3V7.5H7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                        </svg>
+                                                        {{ __('Restore to this checkpoint', 'wp-user-frontend') }}
+                                                    </button>
+                                                </div>
                                             </div>
                                             <div v-if="message.status && isStatusVisible(index)" class="wpuf-message-status wpuf-mt-2 wpuf-font-normal wpuf-italic wpuf-text-sm wpuf-leading-6 wpuf-tracking-normal wpuf-text-right wpuf-text-emerald-600 wpuf-transition-all wpuf-duration-500" :class="{'wpuf-opacity-100': isStatusVisible(index), 'wpuf-opacity-0': !isStatusVisible(index)}">
                                                 <span>{{ message.status }}</span>
@@ -517,6 +537,47 @@
     opacity: 0 !important;
 }
 
+/* Checkpoint button styles */
+.wpuf-checkpoint-actions {
+    animation: wpuf-fade-in 0.3s ease-in-out;
+}
+
+@keyframes wpuf-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.wpuf-btn-checkpoint,
+.wpuf-btn-restore {
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.wpuf-btn-checkpoint:hover,
+.wpuf-btn-restore:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.wpuf-checkpoint-saved {
+    animation: wpuf-pulse 1.5s ease-in-out;
+}
+
+@keyframes wpuf-pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
 .wpuf-transition-all {
     transition: all 0.5s ease-in-out;
 }
@@ -639,7 +700,8 @@ export default {
             isFormUpdating: false,
             visibleStatuses: new Set(), // Track which status messages are visible
             statusTimeouts: new Map(), // Track timeout IDs for auto-hide
-            showRegenerateModal: false // Track regenerate confirmation modal
+            showRegenerateModal: false, // Track regenerate confirmation modal
+            checkpoints: new Map() // Store checkpoints: messageIndex => formState
         };
     },
     watch: {
@@ -690,6 +752,72 @@ export default {
         
         generateSessionId() {
             return 'wpuf_chat_session_' + Date.now() + '_' + Math.random().toString(36).substring(2, 11);
+        },
+        
+        // Checkpoint management methods
+        saveCheckpoint(messageIndex) {
+            // Save current form state as checkpoint
+            const checkpoint = {
+                formFields: JSON.parse(JSON.stringify(this.formFields)), // Deep clone
+                formTitle: this.formTitle,
+                formDescription: this.formDescription,
+                formSettings: JSON.parse(JSON.stringify(this.formSettings)),
+                timestamp: Date.now(),
+                messageContent: this.chatMessages[messageIndex]?.content || ''
+            };
+            
+            // Store checkpoint
+            this.checkpoints.set(messageIndex, checkpoint);
+            
+            // Mark message as having saved checkpoint
+            if (this.chatMessages[messageIndex]) {
+                this.chatMessages[messageIndex].checkpointSaved = true;
+            }
+            
+            // Show success feedback
+            this.showStatusMessage('Checkpoint saved successfully', 'success');
+        },
+        
+        restoreCheckpoint(messageIndex) {
+            const checkpoint = this.checkpoints.get(messageIndex);
+            if (!checkpoint) {
+                this.showStatusMessage('No checkpoint found', 'error');
+                return;
+            }
+            
+            // Show loading state
+            this.isFormUpdating = true;
+            
+            // Restore form state from checkpoint
+            setTimeout(() => {
+                this.formFields = JSON.parse(JSON.stringify(checkpoint.formFields));
+                this.formDescription = checkpoint.formDescription;
+                this.formSettings = JSON.parse(JSON.stringify(checkpoint.formSettings));
+                
+                // Update the form title if available
+                if (checkpoint.formTitle) {
+                    this.$emit('update-form-title', checkpoint.formTitle);
+                }
+                
+                // Hide loading state
+                this.isFormUpdating = false;
+                
+                // Show success message
+                this.showStatusMessage('Form restored to checkpoint', 'success');
+                
+                // Scroll to form preview
+                this.$nextTick(() => {
+                    const formPreview = document.querySelector('.wpuf-form-preview');
+                    if (formPreview) {
+                        formPreview.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            }, 300); // Small delay for visual feedback
+        },
+        
+        showStatusMessage(message, type = 'info') {
+            // Add a temporary status message (you can expand this to show a toast notification)
+            console.log(`[${type.toUpperCase()}] ${message}`);
         },
         
         // Get the actual field type from WPUF field structure
@@ -1079,11 +1207,33 @@ export default {
                         type: 'ai',
                         content: messageContent,
                         showButtons: this.shouldShowButtons(response, messageContent),
+                        hasCheckpoint: false, // Will be set after auto-save
+                        checkpointSaved: false,
                         response_data: response,
                         timestamp: new Date().toISOString()
                     };
                     
                     this.chatMessages.push(aiMessage);
+                    
+                    // Auto-save checkpoint for successful responses (not error responses)
+                    if (response.form_data && !response.error) {
+                        const messageIndex = this.chatMessages.length - 1;
+                        const checkpoint = {
+                            formFields: JSON.parse(JSON.stringify(this.formFields)),
+                            formTitle: this.formTitle,
+                            formDescription: this.formDescription,
+                            formSettings: JSON.parse(JSON.stringify(this.formSettings)),
+                            timestamp: Date.now(),
+                            messageContent: messageContent
+                        };
+                        
+                        // Store checkpoint
+                        this.checkpoints.set(messageIndex, checkpoint);
+                        
+                        // Mark message as having checkpoint
+                        this.chatMessages[messageIndex].hasCheckpoint = true;
+                        this.chatMessages[messageIndex].checkpointSaved = true;
+                    }
                     
                     // Show status if message has one
                     if (aiMessage.status) {
@@ -1478,8 +1628,34 @@ export default {
                 this.previousFormFields = null;
             }
             
-            // Hide buttons from the current chat message
-            this.hideLastMessageButtons();
+            // Find the message with buttons and auto-save checkpoint
+            for (let i = this.chatMessages.length - 1; i >= 0; i--) {
+                if (this.chatMessages[i].showButtons) {
+                    // Hide buttons and add checkpoint properties
+                    this.chatMessages[i].showButtons = false;
+                    
+                    // Auto-save checkpoint for this accepted state
+                    const checkpoint = {
+                        formFields: JSON.parse(JSON.stringify(this.formFields)),
+                        formTitle: this.formTitle,
+                        formDescription: this.formDescription,
+                        formSettings: JSON.parse(JSON.stringify(this.formSettings)),
+                        timestamp: Date.now(),
+                        messageContent: this.chatMessages[i]?.content || ''
+                    };
+                    
+                    // Store checkpoint
+                    this.checkpoints.set(i, checkpoint);
+                    
+                    // Mark as having checkpoint and already saved
+                    this.chatMessages[i].hasCheckpoint = true;
+                    this.chatMessages[i].checkpointSaved = true;
+                    
+                    // Add a status message for accepted changes
+                    this.chatMessages[i].acceptedStatus = '✓ Changes accepted & checkpoint saved';
+                    break;
+                }
+            }
         },
         
         /**
@@ -1646,6 +1822,7 @@ export default {
             this.pendingChanges = null;
             this.formDescription = '';
             this.userInput = '';
+            this.checkpoints.clear(); // Clear all checkpoints
             this.conversationState = {
                 original_prompt: '',
                 form_created: false,
@@ -1664,6 +1841,9 @@ export default {
         },
         
         handleEditInBuilder() {
+            // Clear all checkpoints when editing in builder
+            this.checkpoints.clear();
+            
             // Check if form has pro fields and show notification only if Pro is not active
             const config = window.wpufAIFormBuilder || {};
             const isProActive = config.isProActive || false;

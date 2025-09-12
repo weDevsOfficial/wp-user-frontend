@@ -123,13 +123,24 @@
                             </svg>
                             <p class="wpuf-text-emerald-600 wpuf-font-medium wpuf-text-lg">{{ __('Generating...', 'wp-user-frontend') }}</p>
                         </div>
-                        <div class="wpuf-form-header wpuf-border-b wpuf-border-gray-200 wpuf-pb-4 wpuf-flex-shrink-0">
-                            <h3 class="wpuf-form-title wpuf-font-bold wpuf-text-3xl wpuf-leading-9 wpuf-tracking-normal wpuf-text-center wpuf-text-gray-900 wpuf-m-0 wpuf-mb-2">{{ formTitle }}</h3>
-                            <p class="wpuf-form-description wpuf-font-normal wpuf-text-lg wpuf-leading-6 wpuf-tracking-normal wpuf-text-center wpuf-text-gray-500 wpuf-m-0">{{ __('Please complete all information below', 'wp-user-frontend') }}</p>
+                        <div v-if="formTitle || formFields.length > 0" class="wpuf-form-header wpuf-border-b wpuf-border-gray-200 wpuf-pb-4 wpuf-flex-shrink-0">
+                            <h3 v-if="formTitle" class="wpuf-form-title wpuf-font-bold wpuf-text-3xl wpuf-leading-9 wpuf-tracking-normal wpuf-text-center wpuf-text-gray-900 wpuf-m-0 wpuf-mb-2">{{ formTitle }}</h3>
+                            <p v-if="formFields.length > 0" class="wpuf-form-description wpuf-font-normal wpuf-text-lg wpuf-leading-6 wpuf-tracking-normal wpuf-text-center wpuf-text-gray-500 wpuf-m-0">{{ formDescription || __('Please complete all information below', 'wp-user-frontend') }}</p>
                         </div>
                         
                         <div class="wpuf-form-scrollable wpuf-flex-1 wpuf-overflow-y-auto wpuf-mb-4" style="scrollbar-width: thin; scrollbar-color: #10B981 transparent;">
-                            <div class="wpuf-form-fields wpuf-flex wpuf-flex-col wpuf-gap-5">
+                            <!-- Empty State -->
+                            <div v-if="formFields.length === 0 && !isFormUpdating" class="wpuf-empty-state wpuf-flex wpuf-flex-col wpuf-items-center wpuf-justify-center wpuf-h-full wpuf-min-h-[300px]">
+                                <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" class="wpuf-mb-4">
+                                    <circle cx="40" cy="40" r="40" fill="#F3F4F6"/>
+                                    <path d="M28 32H52M28 40H52M28 48H44" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                                <p class="wpuf-text-gray-500 wpuf-text-lg wpuf-text-center wpuf-mb-2">{{ __('Your form is being generated', 'wp-user-frontend') }}</p>
+                                <p class="wpuf-text-gray-400 wpuf-text-sm wpuf-text-center">{{ __('Form fields will appear here once generated', 'wp-user-frontend') }}</p>
+                            </div>
+                            
+                            <!-- Form Fields -->
+                            <div v-if="formFields.length > 0" class="wpuf-form-fields wpuf-flex wpuf-flex-col wpuf-gap-5">
                                 <div v-for="field in formFields" :key="field.id" class="wpuf-form-field wpuf-flex wpuf-flex-col wpuf-gap-2">
                                     <!-- Field Label with Required Indicator -->
                                     <label class="wpuf-form-label wpuf-font-normal wpuf-text-base wpuf-leading-6 wpuf-tracking-normal wpuf-text-gray-900 wpuf-flex wpuf-items-center wpuf-gap-1">
@@ -479,7 +490,7 @@ export default {
     props: {
         formTitle: {
             type: String,
-            default: 'Portfolio Submission'
+            default: ''
         },
         formId: {
             type: [String, Number],
@@ -538,21 +549,17 @@ export default {
                 
                 // Only show loader if we have current fields and they're changing
                 if (this.formFields.length > 0 && fieldsAreDifferent) {
-                    // Show loader during the transition
-                    console.log('Fields are changing, showing loader...');
+                    // Update fields immediately without delay
+                    console.log('Updating form fields immediately...');
                     this.isFormUpdating = true;
+                    this.formFields = [...newFields];
+                    console.log('FormSuccessStage: Updated formFields:', this.formFields);
                     
-                    // Update fields after a brief delay to show the loader
-                    setTimeout(() => {
-                        this.formFields = [...newFields];
-                        console.log('FormSuccessStage: Updated formFields:', this.formFields);
-                        
-                        // Hide loader after fields are updated
-                        setTimeout(() => {
-                            this.isFormUpdating = false;
-                            console.log('Form update complete, hiding loader');
-                        }, 800);
-                    }, 200);
+                    // Remove loader quickly
+                    this.$nextTick(() => {
+                        this.isFormUpdating = false;
+                        console.log('Form update complete');
+                    });
                 } else if (!fieldsAreDifferent) {
                     // Fields are the same, no need to update
                     console.log('Fields are the same, no update needed');
@@ -633,19 +640,9 @@ export default {
                 return [...this.initialFormFields];
             }
             
-            console.log('Using default form fields');
-            // Otherwise start with basic portfolio submission form
-            return [
-                { id: 1, type: 'text_field', label: 'First Name', placeholder: 'Enter your first name', required: true },
-                { id: 2, type: 'email_address', label: 'Email', placeholder: 'Enter email address', required: true },
-                { id: 3, type: 'dropdown_field', label: 'Subject', placeholder: 'Select subject', required: false, options: [
-                    { label: 'General Inquiry', value: 'general' },
-                    { label: 'Portfolio Review', value: 'portfolio' },
-                    { label: 'Collaboration', value: 'collaboration' }
-                ]},
-                { id: 4, type: 'file_upload', label: 'Portfolio Files', placeholder: 'Upload your portfolio files (PDF, images)', required: false },
-                { id: 5, type: 'textarea_field', label: 'Message', placeholder: 'Tell us about your work', required: false }
-            ];
+            console.log('Starting with empty form - waiting for AI generation');
+            // Start with empty form - no default fields
+            return [];
         },
         
         updateConversationState(userMessage, aiResponse) {
@@ -697,15 +694,34 @@ export default {
         
         convertFieldsToPreview(apiFields) {
             // Convert API response fields to preview format
+            // Handle both WPUF format (input_type, template) and simplified format (type)
             return apiFields.map((field, index) => ({
-                id: field.id || index + 1,
-                type: field.type || 'text_field',
+                id: field.id || `field_${index + 1}`,
+                type: field.type || field.template || field.input_type || 'text_field',
+                input_type: field.input_type || field.type || 'text',
+                template: field.template || field.type || 'text_field',
                 label: field.label || field.name || 'Untitled Field',
+                name: field.name || field.label?.toLowerCase().replace(/\s+/g, '_') || `field_${index + 1}`,
                 placeholder: field.placeholder || field.help || '',
-                required: field.required || false,
+                required: field.required === 'yes' || field.required === true || field.required === 'true',
                 options: this.normalizeOptions(field.options),
                 default: field.default || '',
-                help_text: field.help || field.description || ''
+                help_text: field.help || field.description || '',
+                is_meta: field.is_meta || 'yes',
+                size: field.size || '40',
+                width: field.width || 'large',
+                css: field.css || '',
+                wpuf_cond: field.wpuf_cond || {
+                    condition_status: 'no',
+                    cond_field: [],
+                    cond_operator: ['='],
+                    cond_option: ['- Select -'],
+                    cond_logic: 'all'
+                },
+                wpuf_visibility: field.wpuf_visibility || {
+                    selected: 'everyone',
+                    choices: []
+                }
             }));
         },
 
@@ -968,24 +984,36 @@ export default {
                     this.updateConversationState(userMessage, aiMessage);
                     
                     // If form was modified, update the preview
-                    if (response.form_data) {
-                        if (response.form_data.wpuf_fields) {
-                            this.formFields = this.convertFieldsToPreview(response.form_data.wpuf_fields);
-                        } else if (response.form_data.fields) {
-                            this.formFields = this.convertFieldsToPreview(response.form_data.fields);
+                    // Check both response.form_data (for initial generation) and response.data (for chat modifications)
+                    const formData = response.form_data || response.data;
+                    
+                    if (formData && formData.wpuf_fields) {
+                        // Store previous form state before making changes
+                        this.previousFormFields = JSON.parse(JSON.stringify(this.formFields));
+                        const previousDescription = this.formDescription;
+                        
+                        // Convert and store new fields
+                        const newFields = this.convertFieldsToPreview(formData.wpuf_fields);
+                        
+                        // Store as pending changes for accept/reject
+                        this.pendingChanges = {
+                            type: 'form_update',
+                            fields: newFields,
+                            formTitle: formData.form_title || this.formTitle,
+                            formDescription: formData.form_description || this.formDescription,
+                            previousDescription: previousDescription,
+                            originalResponse: formData
+                        };
+                        
+                        // Apply changes to preview temporarily (will be reverted on reject)
+                        this.formFields = newFields;
+                        
+                        if (formData.form_description) {
+                            this.formDescription = formData.form_description;
                         }
                         
-                        if (response.form_data.form_title) {
-                            this.$emit('title-updated', response.form_data.form_title);
-                        }
-                        
-                        // Emit form update event
-                        this.$emit('form-updated', response.form_data);
-                        
-                        // Add a small delay before removing blur to show the update visually
-                        setTimeout(() => {
-                            this.isFormUpdating = false;
-                        }, 300);
+                        // Remove blur immediately
+                        this.isFormUpdating = false;
                     } else if (response.data && response.data.modification_type === 'add_field' && response.data.changes && response.data.changes.field) {
                         // Store previous form state before making changes
                         this.previousFormFields = JSON.parse(JSON.stringify(this.formFields));
@@ -1015,10 +1043,8 @@ export default {
                         this.formFields.push(formattedField);
                         console.log('📝 Stored pending field addition:', formattedField);
                         
-                        // Add a small delay before removing blur to show the update visually
-                        setTimeout(() => {
-                            this.isFormUpdating = false;
-                        }, 300);
+                        // Remove blur immediately
+                        this.isFormUpdating = false;
                     } else {
                         // No form changes, remove blur immediately
                         this.isFormUpdating = false;
@@ -1126,34 +1152,19 @@ export default {
                 }
             });
             
-            // Determine endpoint based on request type
-            const isModificationRequest = this.isModificationPrompt(message) || this.chatMessages.length > 1;
-            const endpoint = isModificationRequest && this.formId ? 
-                            'wpuf/v1/ai-form-builder/modify-form' : 
-                            'wpuf/v1/ai-form-builder/generate';
+            // Always use generate endpoint for chat modifications since form isn't saved yet
+            // Only use modify-form endpoint if we have a saved form ID from database
+            const endpoint = 'wpuf/v1/ai-form-builder/generate';
 
-            // Prepare request body based on endpoint
-            let requestBody;
-            if (endpoint.includes('modify-form') && this.formId) {
-                requestBody = {
-                    form_id: this.formId,
-                    modification_data: {
-                        prompt: message,
-                        session_id: this.sessionId,
-                        current_form: {
-                            form_title: this.formTitle,
-                            form_description: this.formDescription,
-                            wpuf_fields: this.formFields
-                        },
-                        conversation_context: conversationContext
-                    }
-                };
-            } else {
-                requestBody = {
-                    prompt: message,
-                    conversation_context: conversationContext
-                };
-            }
+            // Prepare request body for generate endpoint
+            const requestBody = {
+                prompt: message,
+                session_id: this.sessionId,
+                conversation_context: conversationContext,
+                provider: config.provider || 'google',
+                temperature: config.temperature || 0.7,
+                max_tokens: config.maxTokens || 2000
+            };
 
             const response = await fetch(restUrl + endpoint, {
                 method: 'POST',
@@ -1304,7 +1315,14 @@ export default {
         handleReject() {
             // Revert to previous form state if there are pending changes
             if (this.pendingChanges && this.previousFormFields) {
+                // Restore previous form fields
                 this.formFields = JSON.parse(JSON.stringify(this.previousFormFields));
+                
+                // If this was a full form update, we might need to restore description too
+                if (this.pendingChanges.type === 'form_update' && this.pendingChanges.previousDescription !== undefined) {
+                    this.formDescription = this.pendingChanges.previousDescription;
+                }
+                
                 console.log('🔄 Reverted form to previous state');
                 
                 // Clear pending changes
@@ -1321,12 +1339,27 @@ export default {
             if (this.pendingChanges) {
                 console.log('✅ Accepted pending changes:', this.pendingChanges);
                 
-                // Update parent component with new form data
-                this.$emit('form-updated', {
-                    wpuf_fields: this.formFields,
-                    form_title: this.formTitle,
-                    form_description: this.formDescription
-                });
+                // Handle different types of pending changes
+                if (this.pendingChanges.type === 'form_update') {
+                    // Full form update - emit title and form update
+                    if (this.pendingChanges.formTitle && this.pendingChanges.formTitle !== this.formTitle) {
+                        this.$emit('title-updated', this.pendingChanges.formTitle);
+                    }
+                    
+                    // Emit the complete form update with current fields
+                    this.$emit('form-updated', {
+                        wpuf_fields: this.formFields,
+                        form_title: this.pendingChanges.formTitle || this.formTitle,
+                        form_description: this.pendingChanges.formDescription || this.formDescription
+                    });
+                } else {
+                    // Field addition - just emit form update
+                    this.$emit('form-updated', {
+                        wpuf_fields: this.formFields,
+                        form_title: this.formTitle,
+                        form_description: this.formDescription
+                    });
+                }
                 
                 // Clear pending changes but keep the current form state
                 this.pendingChanges = null;
@@ -1494,8 +1527,11 @@ export default {
             if (this.checkForProFields()) {
                 this.showProNotification();
             }
-            // Always proceed to edit
-            this.$emit('edit-in-builder', this.formId);
+            // Pass both formId and current form fields to parent
+            this.$emit('edit-in-builder', {
+                formId: this.formId,
+                formFields: this.formFields
+            });
         },
         
         handleEditWithBuilder() {
@@ -1503,8 +1539,11 @@ export default {
             if (this.checkForProFields()) {
                 this.showProNotification();
             }
-            // Always proceed to edit
-            this.$emit('edit-with-builder', this.formId);
+            // Pass both formId and current form fields to parent
+            this.$emit('edit-with-builder', {
+                formId: this.formId,
+                formFields: this.formFields
+            });
         },
         
         checkForProFields() {

@@ -490,27 +490,64 @@ class FormGenerator {
      * @return string System prompt
      */
     private function get_system_prompt($context = []) {
-        // Load the main system prompt (required file)
-        $prompt_file = plugin_dir_path(dirname(__FILE__)) . 'AI/system-prompt.md';
+        // Use the optimized combined prompt file
+        $prompt_file = plugin_dir_path(dirname(__FILE__)) . 'AI/wpuf-ai-system-prompt-optimized.md';
         
+        // Fallback to original files if optimized doesn't exist
         if (!file_exists($prompt_file)) {
-            throw new \Exception('System prompt file not found: ' . $prompt_file);
-        }
-        
-        $system_prompt = file_get_contents($prompt_file);
-        
-        // Load the field reference documentation if available
-        $reference_file = plugin_dir_path(dirname(__FILE__)) . 'AI/wpuf-post-form-fields-reference.md';
-        if (file_exists($reference_file)) {
-            $reference_content = file_get_contents($reference_file);
-            // Append reference to system prompt
-            $system_prompt .= "\n\n" . $reference_content;
+            $prompt_file = plugin_dir_path(dirname(__FILE__)) . 'AI/system-prompt.md';
+            
+            if (!file_exists($prompt_file)) {
+                throw new \Exception('System prompt file not found: ' . $prompt_file);
+            }
+            
+            $system_prompt = file_get_contents($prompt_file);
+            
+            // Load the field reference documentation if available
+            $reference_file = plugin_dir_path(dirname(__FILE__)) . 'AI/wpuf-post-form-fields-reference.md';
+            if (file_exists($reference_file)) {
+                $reference_content = file_get_contents($reference_file);
+                // Append reference to system prompt
+                $system_prompt .= "\n\n" . $reference_content;
+            }
+        } else {
+            // Use the optimized combined prompt
+            $system_prompt = file_get_contents($prompt_file);
         }
         
         // Add conversation context if provided
         if (!empty($context)) {
             $system_prompt .= "\n\n## CURRENT CONVERSATION CONTEXT\n";
-            $system_prompt .= json_encode($context, JSON_PRETTY_PRINT);
+            
+            // Simplify context for better AI understanding
+            $simplified_context = [
+                'session_id' => $context['session_id'] ?? '',
+                'current_form_title' => $context['current_form']['form_title'] ?? '',
+                'current_fields_count' => count($context['current_form']['wpuf_fields'] ?? []),
+                'last_user_message' => end($context['chat_history'])['content'] ?? '',
+                'modification_requested' => true
+            ];
+            
+            // Include current fields summary
+            if (!empty($context['current_form']['wpuf_fields'])) {
+                $field_summary = [];
+                foreach ($context['current_form']['wpuf_fields'] as $field) {
+                    $field_summary[] = [
+                        'label' => $field['label'] ?? '',
+                        'type' => $field['type'] ?? $field['template'] ?? '',
+                        'name' => $field['name'] ?? ''
+                    ];
+                }
+                $simplified_context['current_fields'] = $field_summary;
+            }
+            
+            $system_prompt .= json_encode($simplified_context, JSON_PRETTY_PRINT);
+            
+            // Add specific instruction for modifications
+            $system_prompt .= "\n\n## MODIFICATION INSTRUCTION\n";
+            $system_prompt .= "The user is requesting a modification to the existing form. ";
+            $system_prompt .= "Return the COMPLETE form with ALL existing fields PLUS the requested changes. ";
+            $system_prompt .= "DO NOT remove existing fields unless explicitly asked.";
         }
         
         return $system_prompt;

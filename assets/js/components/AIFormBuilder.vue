@@ -541,28 +541,32 @@ export default {
             this.selectedPrompt = '';
         },
         
-        async editInBuilder() {
+        async editInBuilder(eventData) {
             try {
                 const config = window.wpufAIFormBuilder || {};
                 const restUrl = config.restUrl || (window.location.origin + '/wp-json/');
                 const nonce = config.nonce || '';
 
-                // Use current form fields directly
+                // Get formId and fields from the event data
+                const formIdToUse = eventData.formId || this.formId;
+                const fieldsToUse = eventData.formFields || this.formFields;
+
+                // Use current form fields from event
                 const currentFormData = {
                     form_title: this.formTitle,
                     form_description: this.generatedFormData?.form_description || '',
-                    wpuf_fields: this.formFields, // Use formFields directly - they're already WPUF format
+                    wpuf_fields: fieldsToUse, // Use fields from event
                     form_settings: this.generatedFormData?.form_settings || {}
                 };
 
-                if (this.formId) {
+                if (formIdToUse) {
                     // Form exists, just redirect to edit
-                    window.location.href = `admin.php?page=wpuf-post-forms&action=edit&id=${this.formId}`;
+                    window.location.href = `admin.php?page=wpuf-post-forms&action=edit&id=${formIdToUse}`;
                     return;
                 }
 
                 // Create new form
-                console.log('Creating form with fields:', this.formFields);
+                console.log('Creating form with fields:', fieldsToUse);
 
                 const response = await fetch(restUrl + 'wpuf/v1/ai-form-builder/create-form', {
                     method: 'POST',
@@ -595,8 +599,8 @@ export default {
             }
         },
         
-        editWithBuilder() {
-            this.editInBuilder();
+        editWithBuilder(eventData) {
+            this.editInBuilder(eventData);
         },
         
         handleFormUpdated(updatedFormData) {

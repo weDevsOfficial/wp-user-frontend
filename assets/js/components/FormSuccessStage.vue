@@ -1664,10 +1664,15 @@ export default {
         },
         
         handleEditInBuilder() {
-            // Check if form has pro fields and show notification
-            if (this.checkForProFields()) {
-                this.showProNotification();
+            // Check if form has pro fields and show notification only if Pro is not active
+            const config = window.wpufAIFormBuilder || {};
+            const isProActive = config.isProActive || false;
+            
+            if (!isProActive && this.checkForProFields()) {
+                this.showProModal();
+                return; // Don't proceed to edit if Pro is not active and form has pro fields
             }
+            
             // Pass both formId and current form fields to parent
             this.$emit('edit-in-builder', {
                 formId: this.formId,
@@ -1676,10 +1681,15 @@ export default {
         },
         
         handleEditWithBuilder() {
-            // Check if form has pro fields and show notification
-            if (this.checkForProFields()) {
-                this.showProNotification();
+            // Check if form has pro fields and show notification only if Pro is not active
+            const config = window.wpufAIFormBuilder || {};
+            const isProActive = config.isProActive || false;
+            
+            if (!isProActive && this.checkForProFields()) {
+                this.showProModal();
+                return; // Don't proceed to edit if Pro is not active and form has pro fields
             }
+            
             // Pass both formId and current form fields to parent
             this.$emit('edit-with-builder', {
                 formId: this.formId,
@@ -1688,125 +1698,375 @@ export default {
         },
         
         checkForProFields() {
-            // List of pro field types
-            const proFields = [
-                'numeric_text_field', 'phone_number', 'address_field', 'country_list_field',
-                'repeat_field', 'date_field', 'time_field', 'datetime_field',
-                'multiple_select', 'checkbox_grid', 'multiple_choice_grid',
-                'file_upload', 'audio_upload', 'video_upload',
-                'google_map', 'really_simple_captcha', 'recaptcha',
-                'ratings', 'linear_scale', 'qr_code', 'embed',
-                'shortcode', 'action_hook', 'toc', 'column_field', 'step_start'
+            // Comprehensive list of WPUF Pro field types
+            // These can appear in type, input_type, or template properties
+            const proFieldIdentifiers = [
+                // Date/Time fields (Pro)
+                'date_field',
+                'time_field',
+                'datetime_field',
+                
+                // Number/Phone fields (Pro)
+                'numeric_text_field', 'numeric_field',
+                'phone_field', 'phone_number',
+                
+                // Location fields (Pro)
+                'address_field',
+                'country_list_field', 'country_list',
+                'google_map',
+                
+                // Advanced selection fields (Pro)
+                'multiple_select', 'multi_select',
+                'checkbox_grid',
+                'multiple_choice_grid',
+                
+                // File upload fields (Pro)
+                'file_upload',
+                'audio_upload',
+                'video_upload',
+                
+                // Special fields (Pro)
+                'ratings', 'rating',
+                'linear_scale',
+                'qr_code',
+                'embed',
+                'shortcode',
+                'action_hook',
+                'toc', 'terms_conditions',
+                'column_field',
+                'step_start', 'multistep',
+                'repeat_field', 'repeater',
+                'really_simple_captcha',
+                'math_captcha'
+            ];
+            
+            // List of free fields that should NOT be considered as pro
+            const freeFieldIdentifiers = [
+                'text', 'text_field',
+                'email', 'email_address',
+                'url', 'website_url',
+                'textarea', 'textarea_field',
+                'dropdown', 'dropdown_field', 'select',
+                'checkbox', 'checkbox_field',
+                'radio', 'radio_field',
+                'hidden', 'hidden_field',
+                'html', 'section_break',
+                'post_title', 'post_content', 'post_excerpt',
+                'post_tags', 'taxonomy', 'category',
+                'featured_image', 'image_upload',
+                'recaptcha', 'recaptcha_v2', 'recaptcha_v3',
+                'cloudflare_turnstile'
             ];
             
             // Check if any field in the form is a pro field
-            return this.formFields.some(field => proFields.includes(field.type));
+            // Check type, input_type, and template properties
+            const foundProFields = this.formFields.filter(field => {
+                // Check all three properties for field identifiers
+                const fieldType = (field.type || '').toLowerCase();
+                const inputType = (field.input_type || '').toLowerCase();
+                const template = (field.template || '').toLowerCase();
+                
+                // First check if it's explicitly a free field
+                const isFreeField = freeFieldIdentifiers.some(freeType => {
+                    const freeTypeLower = freeType.toLowerCase();
+                    return fieldType === freeTypeLower || 
+                           inputType === freeTypeLower || 
+                           template === freeTypeLower;
+                });
+                
+                // If it's a free field, don't mark it as pro
+                if (isFreeField) {
+                    return false;
+                }
+                
+                // Check if it's a pro field
+                return proFieldIdentifiers.some(proType => {
+                    const proTypeLower = proType.toLowerCase();
+                    return fieldType === proTypeLower || 
+                           inputType === proTypeLower || 
+                           template === proTypeLower;
+                });
+            });
+            
+            console.log('Pro field detection:', {
+                totalFields: this.formFields.length,
+                proFieldsFound: foundProFields.length,
+                proFields: foundProFields.map(f => ({
+                    name: f.name,
+                    type: f.type,
+                    input_type: f.input_type,
+                    template: f.template
+                }))
+            });
+            
+            return foundProFields.length > 0 ? foundProFields : null;
         },
         
-        showProNotification() {
-            // Create a simple notification popup
-            const notificationContainer = document.createElement('div');
-            notificationContainer.className = 'wpuf-pro-notification';
-            notificationContainer.innerHTML = `
-                <div class="wpuf-pro-notification-content">
-                    <span class="dashicons dashicons-info-outline"></span>
-                    <div class="wpuf-pro-notification-text">
-                        <strong>${this.__('Pro Fields Detected', 'wp-user-frontend')}</strong>
-                        <p>${this.__('This form contains pro fields. Some features may be limited without WPUF Pro.', 'wp-user-frontend')}</p>
+        showProModal() {
+            // Get the pro fields in the form
+            const proFields = this.checkForProFields();
+            if (!proFields) return;
+            
+            // Get unique field types with proper labels
+            const fieldTypeLabels = {
+                // Date/Time (Pro)
+                'date_field': 'Date Picker',
+                'time_field': 'Time Picker',
+                'datetime_field': 'Date & Time',
+                
+                // Number/Phone
+                'numeric_text_field': 'Numeric Text',
+                'numeric_field': 'Numeric Text',
+                'phone_field': 'Phone Number',
+                'phone_number': 'Phone Number',
+                'phone': 'Phone Number',
+                
+                // Location
+                'address_field': 'Address',
+                'address': 'Address',
+                'country_list_field': 'Country List',
+                'country_list': 'Country List',
+                'google_map': 'Google Map',
+                'map': 'Google Map',
+                
+                // Selection
+                'multiple_select': 'Multi Select',
+                'multi_select': 'Multi Select',
+                'checkbox_grid': 'Checkbox Grid',
+                'multiple_choice_grid': 'Multiple Choice Grid',
+                
+                // Files
+                'file_upload': 'File Upload',
+                'file': 'File Upload',
+                'audio_upload': 'Audio Upload',
+                'audio': 'Audio Upload',
+                'video_upload': 'Video Upload',
+                'video': 'Video Upload',
+                
+                // Special
+                'ratings': 'Ratings',
+                'rating': 'Ratings',
+                'linear_scale': 'Linear Scale',
+                'qr_code': 'QR Code',
+                'embed': 'Embed',
+                'shortcode': 'Shortcode',
+                'action_hook': 'Action Hook',
+                'toc': 'Terms & Conditions',
+                'terms_conditions': 'Terms & Conditions',
+                'column_field': 'Column Field',
+                'column': 'Column Field',
+                'step_start': 'Multi-Step Start',
+                'multistep': 'Multi-Step Start',
+                'repeat_field': 'Repeat Field',
+                'repeater': 'Repeat Field',
+                'really_simple_captcha': 'Really Simple Captcha',
+                'captcha': 'Captcha',
+                'recaptcha': 'reCAPTCHA',
+                'recaptcha_v2': 'reCAPTCHA',
+                'recaptcha_v3': 'reCAPTCHA v3'
+            };
+            
+            // Get unique pro field types - check type, input_type, and template
+            const getFieldDisplayType = (field) => {
+                // Try to get the most specific identifier for the field
+                return field.type || field.input_type || field.template || 'Unknown Field';
+            };
+            
+            const uniqueProFields = [...new Set(proFields.map(field => getFieldDisplayType(field)))];
+            const displayFields = uniqueProFields.slice(0, 4).map(type => {
+                // Try to find a label for any of the possible type values
+                const typeLower = type.toLowerCase();
+                return {
+                    fieldKey: typeLower,
+                    label: fieldTypeLabels[typeLower] || fieldTypeLabels[type] || type
+                };
+            });
+            
+            // Create modal overlay
+            const modalOverlay = document.createElement('div');
+            modalOverlay.className = 'wpuf-pro-modal-overlay';
+            modalOverlay.innerHTML = `
+                <div class="wpuf-pro-modal">
+                    <div class="wpuf-pro-modal-header">
+                        <svg width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="110" height="110" rx="55" fill="#D1FAE5"/>
+                            <path d="M66.0557 51.0931C66.0594 51.1593 66.0545 51.2268 66.0379 51.2937L64.5576 59.0337C64.4829 59.333 64.2155 59.5434 63.9082 59.545L55.0259 59.59H55.0225H46.1402C45.8312 59.59 45.5619 59.3789 45.4873 59.0781L44.0069 51.3156C43.9899 51.2468 43.9849 51.1775 43.9892 51.1096C43.4166 50.9286 43 50.391 43 49.7575C43 48.9759 43.6339 48.34 44.4131 48.34C45.1923 48.34 45.8262 48.9759 45.8262 49.7575C45.8262 50.1977 45.6251 50.5915 45.3103 50.8517L47.1637 52.725C47.6321 53.1985 48.2822 53.4699 48.9472 53.4699C49.7335 53.4699 50.4832 53.0953 50.9553 52.4678L54.0012 48.4192C53.7454 48.1627 53.5869 47.8083 53.5869 47.4175C53.5869 46.6358 54.2208 46 55 46C55.7792 46 56.4131 46.6358 56.4131 47.4175C56.4131 47.7966 56.2631 48.1406 56.0206 48.3953L56.0232 48.3984L59.0471 52.4581C59.519 53.0917 60.2714 53.47 61.0599 53.47C61.731 53.47 62.3621 53.2078 62.8367 52.7317L64.7017 50.8608C64.3803 50.6007 64.1738 50.2031 64.1738 49.7575C64.1738 48.9759 64.8077 48.34 65.5869 48.34C66.3661 48.34 67 48.9759 67 49.7575C67 50.3741 66.6048 50.8985 66.0557 51.0931ZM64.4131 61.705C64.4131 61.3322 64.1118 61.03 63.7402 61.03H46.3346C45.963 61.03 45.6617 61.3322 45.6617 61.705V63.325C45.6617 63.6978 45.963 64 46.3346 64H63.7402C64.1118 64 64.4131 63.6978 64.4131 63.325V61.705Z" fill="#0F172A"/>
+                        </svg>
                     </div>
-                    <button class="wpuf-pro-notification-close">×</button>
+                    <h2 class="wpuf-pro-modal-title">${this.__('Pro feature detected', 'wp-user-frontend')}</h2>
+                    <p class="wpuf-pro-modal-description">${this.__('Your form includes fields that require WPUF Pro version:', 'wp-user-frontend')}</p>
+                    <div class="wpuf-pro-fields-list">
+                        ${displayFields.map(field => {
+                            const fieldKey = field.fieldKey || field;
+                            const fieldLabel = field.label || field;
+                            const iconUrl = this.getProFieldIcon(fieldKey);
+                            const iconHtml = iconUrl 
+                                ? `<img src="${iconUrl}" alt="${fieldLabel}" class="wpuf-pro-field-icon" onerror="this.style.display='none'" />` 
+                                : '';
+                            return `
+                            <div class="wpuf-pro-field-item">
+                                ${iconHtml}
+                                <span>${fieldLabel}</span>
+                            </div>
+                        `;
+                        }).join('')}
+                    </div>
+                    <div class="wpuf-pro-modal-buttons">
+                        <button class="wpuf-pro-btn-continue">${this.__('Continue without Pro', 'wp-user-frontend')}</button>
+                        <button class="wpuf-pro-btn-upgrade">${this.__('Upgrade to Pro', 'wp-user-frontend')}</button>
+                    </div>
                 </div>
             `;
             
-            document.body.appendChild(notificationContainer);
+            document.body.appendChild(modalOverlay);
             
             // Add styles if not already present
-            if (!document.getElementById('wpuf-pro-notification-styles')) {
+            if (!document.getElementById('wpuf-pro-modal-styles')) {
                 const style = document.createElement('style');
-                style.id = 'wpuf-pro-notification-styles';
+                style.id = 'wpuf-pro-modal-styles';
                 style.textContent = `
-                    .wpuf-pro-notification {
+                    .wpuf-pro-modal-overlay {
                         position: fixed;
-                        top: 100px;
-                        right: 20px;
-                        z-index: 999999;
-                        animation: slideInRight 0.3s ease;
-                    }
-                    .wpuf-pro-notification-content {
-                        background: white;
-                        border-left: 4px solid #f0b849;
-                        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                        border-radius: 4px;
-                        padding: 15px 40px 15px 15px;
-                        max-width: 400px;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background: rgba(0, 0, 0, 0.5);
                         display: flex;
-                        align-items: start;
-                        gap: 12px;
-                        position: relative;
+                        align-items: center;
+                        justify-content: center;
+                        z-index: 999999;
+                        animation: fadeIn 0.3s ease;
                     }
-                    .wpuf-pro-notification-content .dashicons {
-                        color: #f0b849;
-                        font-size: 24px;
+                    .wpuf-pro-modal {
+                        background: white;
+                        border-radius: 8px;
+                        width: 660px;
+                        max-height: 702px;
+                        padding: 40px;
+                        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+                        animation: slideUp 0.3s ease;
+                        position: relative;
+                        text-align: center;
+                    }
+                    .wpuf-pro-modal-header {
+                        position: relative;
+                        display: inline-block;
+                        margin-bottom: 24px;
+                    }
+                    .wpuf-pro-modal-header svg {
+                        width: 110px;
+                        height: 110px;
+                    }
+                    
+                    .wpuf-pro-modal-title {
+                        font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                        font-size: 28px;
+                        font-weight: 600;
+                        color: #1F2937;
+                        margin: 0 0 12px 0;
+                        line-height: 1.2;
+                    }
+                    .wpuf-pro-modal-description {
+                        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                        font-size: 16px;
+                        color: #6B7280;
+                        margin: 0 0 32px 0;
+                        line-height: 1.5;
+                    }
+                    .wpuf-pro-fields-list {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 8px;
+                        margin: 20px 0 24px;
+                        padding: 0;
+                    }
+                    .wpuf-pro-field-item {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        width: 494px;
+                        height: 56px;
+                        padding: 16px 12px;
+                        background: #FFFFFF;
+                        border: 1px solid #E2E8F0;
+                        border-radius: 8px;
+                        font-size: 14px;
+                        color: #374151;
+                        box-sizing: border-box;
+                        margin: 0 auto;
+                    }
+                    .wpuf-pro-field-icon {
                         width: 24px;
                         height: 24px;
                         flex-shrink: 0;
-                        margin-top: 2px;
                     }
-                    .wpuf-pro-notification-text strong {
-                        display: block;
-                        color: #23282d;
-                        margin-bottom: 4px;
-                        font-size: 14px;
+                    .wpuf-pro-modal-buttons {
+                        display: flex;
+                        gap: 16px;
+                        justify-content: center;
                     }
-                    .wpuf-pro-notification-text p {
-                        margin: 0;
-                        color: #666;
-                        font-size: 13px;
-                        line-height: 1.4;
-                    }
-                    .wpuf-pro-notification-close {
-                        position: absolute;
-                        top: 8px;
-                        right: 8px;
-                        background: none;
-                        border: none;
-                        font-size: 24px;
-                        color: #999;
+                    .wpuf-pro-btn-continue,
+                    .wpuf-pro-btn-upgrade {
+                        padding: 12px 24px;
+                        border-radius: 6px;
+                        font-size: 16px;
+                        font-weight: 500;
                         cursor: pointer;
-                        padding: 0;
-                        width: 24px;
-                        height: 24px;
-                        line-height: 20px;
+                        transition: all 0.2s ease;
+                        border: none;
+                        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                     }
-                    .wpuf-pro-notification-close:hover {
-                        color: #666;
+                    .wpuf-pro-btn-continue {
+                        background: white;
+                        color: #334155;
+                        border: 1px solid #E5E7EB;
                     }
-                    @keyframes slideInRight {
-                        from { 
-                            transform: translateX(100%);
-                            opacity: 0;
-                        }
-                        to { 
-                            transform: translateX(0);
-                            opacity: 1;
-                        }
+                    .wpuf-pro-btn-upgrade {
+                        background: #059669;
+                        color: white;
+                    }
+                    .wpuf-pro-btn-upgrade:hover {
+                        background: #059669;
+                    }
+                    @keyframes fadeIn {
+                        from { opacity: 0; }
+                        to { opacity: 1; }
+                    }
+                    @keyframes slideUp {
+                        from { transform: translateY(20px); opacity: 0; }
+                        to { transform: translateY(0); opacity: 1; }
                     }
                 `;
                 document.head.appendChild(style);
             }
             
-            // Auto-close after 5 seconds
-            setTimeout(() => {
-                if (notificationContainer && notificationContainer.parentNode) {
-                    notificationContainer.remove();
-                }
-            }, 5000);
+            // Handle button clicks
+            const continueBtn = modalOverlay.querySelector('.wpuf-pro-btn-continue');
+            const upgradeBtn = modalOverlay.querySelector('.wpuf-pro-btn-upgrade');
             
-            // Close on button click
-            notificationContainer.querySelector('.wpuf-pro-notification-close').addEventListener('click', () => {
-                notificationContainer.remove();
+            continueBtn.addEventListener('click', () => {
+                modalOverlay.remove();
+                // Proceed with editing anyway
+                this.$emit('edit-in-builder', {
+                    formId: this.formId,
+                    formFields: this.formFields
+                });
+            });
+            
+            upgradeBtn.addEventListener('click', () => {
+                window.open('https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=wpdashboard&utm_medium=popup', '_blank');
+                modalOverlay.remove();
+            });
+            
+            // Close on overlay click
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) {
+                    modalOverlay.remove();
+                }
             });
         },
+        
         
         getProFieldsList() {
             const proFieldsMap = {
@@ -1849,6 +2109,74 @@ export default {
             }
             
             return proFieldsInForm.join('');
+        },
+        
+        getProFieldIcon(fieldKey) {
+            // Map field keys to their corresponding WPUF Pro icons
+            const iconMap = {
+                // Date/Time fields (Pro only)
+                'date': 'clock',
+                'date_field': 'clock',
+                'time': 'clock',
+                'time_field': 'clock',
+                'datetime': 'clock',
+                'datetime_field': 'clock',
+                
+                // Location fields (Pro)
+                'address_field': 'map',
+                'country_list': 'globe-alt',
+                'country_list_field': 'globe-alt',
+                'google_map': 'location-marker',
+                
+                // Input fields (Pro)
+                'numeric_text_field': 'adjustments-horizontal',
+                'numeric_field': 'adjustments-horizontal',
+                'phone_field': 'phone',
+                'phone_number': 'phone',
+                
+                // File fields (Pro)
+                'file_upload': 'arrow-up-tray',
+                'audio_upload': 'arrow-up-tray',
+                'video_upload': 'arrow-up-tray',
+                
+                // Special fields
+                'ratings': 'star',
+                'rating': 'star',
+                'linear_scale': 'ellipsis-h',
+                'qr_code': 'qrcode',
+                'embed': 'code-bracket-square',
+                'shortcode': 'code-bracket-square',
+                'action_hook': 'command-line',
+                'toc': 'exclamation-circle',
+                'terms_conditions': 'exclamation-circle',
+                'step_start': 'play',
+                'multistep': 'play',
+                'repeat_field': 'rectangle-stack',
+                'repeater': 'rectangle-stack',
+                'really_simple_captcha': 'document-check',
+                'captcha': 'document-check',
+                'math_captcha': 'check-circle',
+                'checkbox_grid': 'th',
+                'multiple_choice_grid': 'braille',
+                'column_field': 'th',
+                'multiple_select': 'squares-2x2',
+                'multi_select': 'squares-2x2'
+            };
+            
+            const iconName = iconMap[fieldKey];
+            
+            // If no icon found, return empty string (no icon)
+            if (!iconName) {
+                console.warn(`No icon mapping found for field: ${fieldKey}`);
+                return '';
+            }
+            
+            // Build the icon URL based on WPUF's asset structure
+            const config = window.wpufAIFormBuilder || {};
+            const assetUrl = config.assetUrl || '/wp-content/plugins/wp-user-frontend/assets';
+            
+            // Always use the regular asset URL for icons (they're in the free version)
+            return `${assetUrl}/images/${iconName}.svg`;
         },
         
         // WPUF field type helper methods

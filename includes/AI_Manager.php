@@ -78,6 +78,7 @@ class AI_Manager {
             'temperature' => get_option('wpuf_ai_settings')['temperature'] ?? 0.7,
             'maxTokens' => get_option('wpuf_ai_settings')['max_tokens'] ?? 2000,
             'assetUrl' => WPUF_ASSET_URI,
+            'isProActive' => class_exists('WP_User_Frontend_Pro'),
             'strings' => [
                 'generating' => __('Generating form...', 'wp-user-frontend'),
                 'error' => __('Error occurred while generating form', 'wp-user-frontend'),
@@ -96,6 +97,7 @@ class AI_Manager {
                     'temperature' => get_option('wpuf_ai_settings')['temperature'] ?? 0.7,
                     'maxTokens' => get_option('wpuf_ai_settings')['max_tokens'] ?? 2000,
                     'assetUrl' => WPUF_ASSET_URI,
+                    'isProActive' => class_exists('WP_User_Frontend_Pro'),
                 ]);
                 break;
             }
@@ -115,6 +117,7 @@ class AI_Manager {
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'provider' => get_option('wpuf_ai_settings')['provider'] ?? 'predefined',
             'hasApiKey' => !empty(get_option('wpuf_ai_settings')['api_key']),
+            'isProActive' => class_exists('WP_User_Frontend_Pro'),
             'strings' => [
                 'testConnection' => __('Test Connection', 'wp-user-frontend'),
                 'connectionSuccess' => __('Connection successful', 'wp-user-frontend'),

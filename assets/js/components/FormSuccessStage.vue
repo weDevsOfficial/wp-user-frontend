@@ -404,7 +404,7 @@
         <!-- Regenerate Confirmation Modal -->
         <div v-if="showRegenerateModal" class="wpuf-modal-overlay wpuf-fixed wpuf-inset-0 wpuf-bg-black wpuf-bg-opacity-75 wpuf-z-50 wpuf-flex wpuf-items-center wpuf-justify-center">
             <div class="wpuf-modal-content wpuf-bg-white wpuf-rounded-lg wpuf-shadow-lg" style="width: 660px; height: 480px; position: relative;">
-                <div class="wpuf-flex wpuf-flex-col wpuf-items-center wpuf-justify-center wpuf-h-full wpuf-px-8 wpuf-py-12">
+                <div class="wpuf-flex wpuf-flex-col wpuf-items-center wpuf-justify-center wpuf-h-full">
                     <!-- Icon -->
                     <div class="wpuf-flex wpuf-items-center wpuf-justify-center wpuf-mb-8">
                         <svg width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -400,7 +400,10 @@ math_captcha → math_captcha
       "type": "select",
       "required": "checked",
       "label": "Country",
-      "value": ""
+      "value": "",
+      "country_list_visibility_opt_name": "all",
+      "country_select_hide_list": [],
+      "country_select_show_list": []
     }
   },
   "wpuf_cond": {

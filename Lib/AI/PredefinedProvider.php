@@ -831,15 +831,15 @@ class PredefinedProvider {
         $wpuf_fields = [];
         
         foreach ($fields as $index => $field) {
-            // For WordPress core fields, template should match the field name
-            $template = in_array($field['name'], ['post_title', 'post_content', 'post_excerpt']) 
-                ? $field['name'] 
-                : $this->mapToWPUFTemplate($field['type']);
+            // For WordPress core fields, both template and input_type should match the field name
+            $is_core_field = in_array($field['name'], ['post_title', 'post_content', 'post_excerpt']);
+            $template = $is_core_field ? $field['name'] : $this->mapToWPUFTemplate($field['type']);
+            $input_type = $is_core_field ? $field['name'] : $this->mapToWPUFInputType($field['type']);
             
             
             $wpuf_field = [
                 'id' => 'field_' . ($index + 1), // Generate proper WPUF field IDs like "field_1", "field_2"
-                'input_type' => $this->mapToWPUFInputType($field['type']),
+                'input_type' => $input_type,
                 'template' => $template,
                 'required' => $field['required'] ? 'yes' : 'no',
                 'label' => $field['label'],
@@ -853,12 +853,17 @@ class PredefinedProvider {
             ];
             
             // Only add these fields for certain types (following WPUF template patterns)
-            if (!in_array($field['type'], ['taxonomy', 'image', 'file'])) {
+            if (!in_array($field['type'], ['taxonomy', 'image', 'file', 'address', 'address_field'])) {
                 $wpuf_field['placeholder'] = $field['placeholder'] ?? '';
                 $wpuf_field['default'] = $field['default'] ?? '';
             }
 
-            // Add field-specific properties
+            // If the field already has address structure from AI, preserve it
+            if (isset($field['address']) && is_array($field['address'])) {
+                $wpuf_field['address'] = $field['address'];
+            }
+            
+            // Add field-specific properties (this will add default address if not present)
             $this->addFieldSpecificProperties($wpuf_field, $field);
             
             
@@ -1007,6 +1012,7 @@ class PredefinedProvider {
                 $wpuf_field['restriction_to'] = 'max';
                 $wpuf_field['restriction_type'] = 'character';
                 $wpuf_field['text_editor_control'] = [];
+                // For post_content fields that come in as textarea type, set rich editor
                 if ($wpuf_field['name'] === 'post_content') {
                     $wpuf_field['rich'] = 'yes';
                     $wpuf_field['insert_image'] = 'yes';
@@ -1078,7 +1084,12 @@ class PredefinedProvider {
                     // Regular file upload (Pro field)
                     $wpuf_field['input_type'] = 'file_upload';
                     $wpuf_field['template'] = 'file_upload';
-                    $wpuf_field['extension'] = isset($field['allowed_types']) ? explode(',', $field['allowed_types']) : ['pdf', 'doc', 'docx'];
+                    // Map file extensions to WPUF extension categories
+                    if (isset($field['allowed_types'])) {
+                        $wpuf_field['extension'] = $this->mapExtensionsToWPUFCategories($field['allowed_types']);
+                    } else {
+                        $wpuf_field['extension'] = ['pdf', 'office'];
+                    }
                 }
                 break;
 
@@ -1111,7 +1122,13 @@ class PredefinedProvider {
             case 'address':
             case 'address_field':
                 // Address field specific properties - must have the nested 'address' array structure
-                $wpuf_field['address'] = [
+                // Check if address structure already exists from AI response
+                if (isset($field['address']) && is_array($field['address'])) {
+                    // Use the existing address structure from AI
+                    $wpuf_field['address'] = $field['address'];
+                } else {
+                    // Create default address structure
+                    $wpuf_field['address'] = [
                     'street_address' => [
                         'checked' => 'checked',
                         'type' => 'text',
@@ -1163,6 +1180,7 @@ class PredefinedProvider {
                         'placeholder' => ''
                     ]
                 ];
+                }
                 $wpuf_field['show_in_post'] = 'yes';
                 $wpuf_field['hide_field_label'] = 'no';
                 // Remove fields that address field doesn't use
@@ -1184,6 +1202,57 @@ class PredefinedProvider {
                 }
                 break;
         }
+        
+        // Special handling for post_content fields - ensure all required properties are set
+        // This handles cases where post_content might be defined with different types in templates
+        if ($wpuf_field['name'] === 'post_content') {
+            $wpuf_field['rows'] = $wpuf_field['rows'] ?? '5';
+            $wpuf_field['cols'] = $wpuf_field['cols'] ?? '25';
+            $wpuf_field['rich'] = $wpuf_field['rich'] ?? 'yes';
+            $wpuf_field['restriction_to'] = $wpuf_field['restriction_to'] ?? 'max';
+            $wpuf_field['restriction_type'] = $wpuf_field['restriction_type'] ?? 'character';
+            $wpuf_field['text_editor_control'] = $wpuf_field['text_editor_control'] ?? [];
+            $wpuf_field['insert_image'] = $wpuf_field['insert_image'] ?? 'yes';
+        }
+    }
+    
+    /**
+     * Map individual file extensions to WPUF extension categories
+     * 
+     * @param string $allowed_types Comma-separated list of file extensions
+     * @return array Array of WPUF extension category keys
+     */
+    private function mapExtensionsToWPUFCategories($allowed_types) {
+        $extensions = explode(',', strtolower(str_replace(' ', '', $allowed_types)));
+        $categories = [];
+        
+        // Map extensions to WPUF categories
+        $extension_map = [
+            'images' => ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'webp'],
+            'audio' => ['mp3', 'wav', 'ogg', 'wma', 'mka', 'm4a', 'ra', 'mid', 'midi'],
+            'video' => ['avi', 'divx', 'flv', 'mov', 'ogv', 'mkv', 'mp4', 'm4v', 'mpg', 'mpeg', 'mpe'],
+            'pdf' => ['pdf'],
+            'office' => ['doc', 'ppt', 'pps', 'xls', 'mdb', 'docx', 'xlsx', 'pptx', 'odt', 'odp', 'ods', 'odg', 'odc', 'odb', 'odf', 'rtf', 'txt'],
+            'zip' => ['zip', 'gz', 'gzip', 'rar', '7z'],
+            'exe' => ['exe'],
+            'csv' => ['csv']
+        ];
+        
+        foreach ($extensions as $ext) {
+            foreach ($extension_map as $category => $cat_extensions) {
+                if (in_array($ext, $cat_extensions) && !in_array($category, $categories)) {
+                    $categories[] = $category;
+                    break;
+                }
+            }
+        }
+        
+        // If no categories matched, default to allowing all common document types
+        if (empty($categories)) {
+            $categories = ['pdf', 'office', 'images'];
+        }
+        
+        return $categories;
     }
 
     /**

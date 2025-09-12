@@ -95,9 +95,16 @@
                                     v-model="userInput"
                                     @keyup.enter.prevent="handleSendMessage"
                                     class="wpuf-chat-input wpuf-flex-1 wpuf-border wpuf-border-gray-300 wpuf-rounded-lg wpuf-p-3 wpuf-text-sm wpuf-resize-none wpuf-min-h-[44px] wpuf-max-h-[120px] wpuf-font-inherit wpuf-outline-none focus:wpuf-border-emerald-500 focus:wpuf-shadow-lg focus:wpuf-shadow-emerald-100"
-                                    :placeholder="__('Type your message here...', 'wp-user-frontend')"
+                                    :placeholder="isFormUpdating ? __('Please wait while form is being generated...', 'wp-user-frontend') : __('Type your message here...', 'wp-user-frontend')"
+                                    :disabled="isFormUpdating"
+                                    :class="{ 'wpuf-opacity-50 wpuf-cursor-not-allowed': isFormUpdating }"
                                 ></textarea>
-                                <button @click="handleSendMessage" class="wpuf-send-button wpuf-bg-emerald-600 wpuf-text-white wpuf-border-none wpuf-rounded-lg wpuf-w-11 wpuf-h-11 wpuf-flex wpuf-items-center wpuf-justify-center wpuf-cursor-pointer wpuf-flex-shrink-0 hover:wpuf-bg-emerald-800 wpuf-transition-colors">
+                                <button 
+                                    @click="handleSendMessage" 
+                                    class="wpuf-send-button wpuf-bg-emerald-600 wpuf-text-white wpuf-border-none wpuf-rounded-lg wpuf-w-11 wpuf-h-11 wpuf-flex wpuf-items-center wpuf-justify-center wpuf-cursor-pointer wpuf-flex-shrink-0 hover:wpuf-bg-emerald-800 wpuf-transition-colors"
+                                    :disabled="isFormUpdating"
+                                    :class="{ 'wpuf-opacity-50 wpuf-cursor-not-allowed': isFormUpdating }"
+                                >
                                     <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M3.99972 10L1.2688 1.12451C7.88393 3.04617 14.0276 6.07601 19.4855 9.99974C14.0276 13.9235 7.884 16.9535 1.26889 18.8752L3.99972 10ZM3.99972 10L11.5 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
@@ -1000,7 +1007,7 @@ export default {
         },
         
         async handleSendMessage() {
-            if (!this.userInput.trim()) return;
+            if (!this.userInput.trim() || this.isFormUpdating) return;
             
             const userMessage = this.userInput.trim();
             this.userInput = '';

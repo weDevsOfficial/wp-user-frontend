@@ -36,6 +36,7 @@ class PredefinedProvider {
                     'label' => 'Article Content',
                     'name' => 'post_content',  // Map to WordPress post_content field
                     'required' => true,
+                    'rich' => 'yes',  // Enable rich text editor
                     'placeholder' => 'Enter your complete article content...'
                 ],
                 [
@@ -107,6 +108,7 @@ class PredefinedProvider {
                     'label' => 'Project Description',
                     'name' => 'post_content',
                     'required' => true,
+                    'rich' => 'yes',  // Enable rich text editor
                     'placeholder' => 'Describe your portfolio and key projects...'
                 ],
                 [
@@ -176,6 +178,7 @@ class PredefinedProvider {
                     'label' => 'Ad Description',
                     'name' => 'post_content',
                     'required' => true,
+                    'rich' => 'yes',  // Enable rich text editor
                     'placeholder' => 'Describe your item or service in detail...'
                 ],
                 [
@@ -253,6 +256,7 @@ class PredefinedProvider {
                     'label' => 'Coupon Description',
                     'name' => 'post_content',
                     'required' => true,
+                    'rich' => 'yes',  // Enable rich text editor
                     'placeholder' => 'Describe your offer in detail...'
                 ],
                 [
@@ -316,6 +320,7 @@ class PredefinedProvider {
                     'label' => 'Property Description',
                     'name' => 'post_content',
                     'required' => true,
+                    'rich' => 'yes',  // Enable rich text editor
                     'placeholder' => 'Describe the property features and location...'
                 ],
                 [
@@ -408,6 +413,7 @@ class PredefinedProvider {
                     'label' => 'Article Content',
                     'name' => 'post_content',
                     'required' => true,
+                    'rich' => 'yes',  // Enable rich text editor
                     'placeholder' => 'Write your news article or press release...'
                 ],
                 [
@@ -635,6 +641,7 @@ class PredefinedProvider {
                     'label' => 'Product Description',
                     'name' => 'post_content',
                     'required' => true,
+                    'rich' => 'yes',  // Enable rich text editor
                     'placeholder' => 'Describe your product features and benefits...'
                 ],
                 [
@@ -767,6 +774,7 @@ class PredefinedProvider {
                         'label' => 'Content',
                         'name' => 'post_content',
                         'required' => true,
+                        'rich' => 'yes',  // Enable rich text editor
                         'placeholder' => 'Enter content...'
                     ],
                     [

@@ -80,10 +80,7 @@
                                                     <button @click="handleReject" :disabled="isApplying" class="wpuf-btn-reject wpuf-bg-red-600 wpuf-text-white wpuf-border-none wpuf-py-1.5 wpuf-px-3 wpuf-rounded wpuf-text-sm wpuf-cursor-pointer wpuf-transition-colors hover:wpuf-bg-red-800 disabled:wpuf-bg-gray-400 disabled:wpuf-cursor-not-allowed">{{ __('Reject', 'wp-user-frontend') }}</button>
                                                 </div>
                                                 <!-- Accepted status indicator -->
-                                                <div v-if="message.acceptedStatus" class="wpuf-accepted-status wpuf-mt-2 wpuf-text-xs wpuf-text-green-600 wpuf-flex wpuf-items-center wpuf-gap-1">
-                                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
-                                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                                                    </svg>
+                                                <div v-if="message.acceptedStatus" class="wpuf-accepted-status wpuf-mt-2 wpuf-text-xs wpuf-text-green-600">
                                                     {{ message.acceptedStatus }}
                                                 </div>
                                                 <!-- Checkpoint restore button (checkpoints are auto-saved) -->
@@ -115,15 +112,15 @@
                                     v-model="userInput"
                                     @keyup.enter.prevent="handleSendMessage"
                                     class="wpuf-chat-input wpuf-flex-1 wpuf-border wpuf-border-gray-300 wpuf-rounded-lg wpuf-p-3 wpuf-text-sm wpuf-resize-none wpuf-min-h-[44px] wpuf-max-h-[120px] wpuf-font-inherit wpuf-outline-none focus:wpuf-border-emerald-500 focus:wpuf-shadow-lg focus:wpuf-shadow-emerald-100"
-                                    :placeholder="isFormUpdating ? __('Please wait while form is being generated...', 'wp-user-frontend') : __('Type your message here...', 'wp-user-frontend')"
-                                    :disabled="isFormUpdating"
-                                    :class="{ 'wpuf-opacity-50 wpuf-cursor-not-allowed': isFormUpdating }"
+                                    :placeholder="hasPendingButtons ? __('Please accept or reject the changes above', 'wp-user-frontend') : (isFormUpdating ? __('Please wait while form is being generated...', 'wp-user-frontend') : __('Type your message here...', 'wp-user-frontend'))"
+                                    :disabled="isFormUpdating || hasPendingButtons"
+                                    :class="{ 'wpuf-opacity-50 wpuf-cursor-not-allowed': isFormUpdating || hasPendingButtons }"
                                 ></textarea>
                                 <button 
                                     @click="handleSendMessage" 
                                     class="wpuf-send-button wpuf-bg-emerald-600 wpuf-text-white wpuf-border-none wpuf-rounded-lg wpuf-w-11 wpuf-h-11 wpuf-flex wpuf-items-center wpuf-justify-center wpuf-cursor-pointer wpuf-flex-shrink-0 hover:wpuf-bg-emerald-800 wpuf-transition-colors"
-                                    :disabled="isFormUpdating"
-                                    :class="{ 'wpuf-opacity-50 wpuf-cursor-not-allowed': isFormUpdating }"
+                                    :disabled="isFormUpdating || hasPendingButtons"
+                                    :class="{ 'wpuf-opacity-50 wpuf-cursor-not-allowed': isFormUpdating || hasPendingButtons }"
                                 >
                                     <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M3.99972 10L1.2688 1.12451C7.88393 3.04617 14.0276 6.07601 19.4855 9.99974C14.0276 13.9235 7.884 16.9535 1.26889 18.8752L3.99972 10ZM3.99972 10L11.5 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -704,6 +701,12 @@ export default {
             checkpoints: new Map() // Store checkpoints: messageIndex => formState
         };
     },
+    computed: {
+        // Check if there are any pending accept/reject buttons
+        hasPendingButtons() {
+            return this.chatMessages.some(message => message.showButtons === true);
+        }
+    },
     watch: {
         initialFormFields: {
             handler(newFields, oldFields) {
@@ -935,34 +938,81 @@ export default {
         convertFieldsToPreview(apiFields) {
             // Convert API response fields to preview format
             // Handle both WPUF format (input_type, template) and simplified format (type)
-            return apiFields.map((field, index) => ({
-                id: field.id || `field_${index + 1}`,
-                type: field.type || field.template || field.input_type || 'text_field',
-                input_type: field.input_type || field.type || 'text',
-                template: field.template || field.type || 'text_field',
-                label: field.label || field.name || 'Untitled Field',
-                name: field.name || field.label?.toLowerCase().replace(/\s+/g, '_') || `field_${index + 1}`,
-                placeholder: field.placeholder || field.help || '',
-                required: field.required === 'yes' || field.required === true || field.required === 'true',
-                options: this.normalizeOptions(field.options),
-                default: field.default || '',
-                help_text: field.help || field.description || '',
-                is_meta: field.is_meta || 'yes',
-                size: field.size || '40',
-                width: field.width || 'large',
-                css: field.css || '',
-                wpuf_cond: field.wpuf_cond || {
-                    condition_status: 'no',
-                    cond_field: [],
-                    cond_operator: ['='],
-                    cond_option: ['- Select -'],
-                    cond_logic: 'all'
-                },
-                wpuf_visibility: field.wpuf_visibility || {
-                    selected: 'everyone',
-                    choices: []
+            return apiFields.map((field, index) => {
+                // Create base field object
+                const convertedField = {
+                    id: field.id || `field_${index + 1}`,
+                    type: field.type || field.template || field.input_type || 'text_field',
+                    input_type: field.input_type || field.type || 'text',
+                    template: field.template || field.type || 'text_field',
+                    label: field.label || field.name || 'Untitled Field',
+                    name: field.name || field.label?.toLowerCase().replace(/\s+/g, '_') || `field_${index + 1}`,
+                    placeholder: field.placeholder || field.help || '',
+                    required: field.required === 'yes' || field.required === true || field.required === 'true',
+                    default: field.default || '',
+                    help_text: field.help || field.description || '',
+                    is_meta: field.is_meta || 'yes',
+                    size: field.size || '40',
+                    width: field.width || 'large',
+                    css: field.css || '',
+                    wpuf_cond: field.wpuf_cond || {
+                        condition_status: 'no',
+                        cond_field: [],
+                        cond_operator: ['='],
+                        cond_option: ['- Select -'],
+                        cond_logic: 'all'
+                    },
+                    wpuf_visibility: field.wpuf_visibility || {
+                        selected: 'everyone',
+                        choices: []
+                    }
+                };
+                
+                // Handle options carefully for fields that need them
+                // WPUF expects options as an object/associative array for radio, checkbox, dropdown
+                if (field.options !== undefined && field.options !== null) {
+                    // Check if options is already an object (WPUF format)
+                    if (typeof field.options === 'object' && !Array.isArray(field.options)) {
+                        convertedField.options = field.options;
+                    } else if (Array.isArray(field.options)) {
+                        // Convert array format to WPUF object format
+                        // WPUF expects: { 'value1': 'Label 1', 'value2': 'Label 2' }
+                        const optionsObj = {};
+                        field.options.forEach(opt => {
+                            if (typeof opt === 'object' && opt !== null && opt.value && opt.label) {
+                                optionsObj[opt.value] = opt.label;
+                            } else if (typeof opt === 'string') {
+                                // If just a string, use it as both value and label
+                                optionsObj[opt] = opt;
+                            }
+                        });
+                        convertedField.options = optionsObj;
+                    } else if (typeof field.options === 'string') {
+                        // If it's a string, parse it into object format
+                        const optionsObj = {};
+                        const lines = field.options.split('\n');
+                        lines.forEach(line => {
+                            if (line && line.includes('|')) {
+                                const [value, label] = line.split('|');
+                                if (value && label) {
+                                    optionsObj[value.trim()] = label.trim();
+                                }
+                            } else if (line && line.trim()) {
+                                optionsObj[line.trim()] = line.trim();
+                            }
+                        });
+                        convertedField.options = optionsObj;
+                    } else {
+                        convertedField.options = {};
+                    }
+                } else if (['radio_field', 'checkbox_field', 'dropdown_field'].includes(convertedField.type) ||
+                          ['radio', 'checkbox', 'select', 'dropdown'].includes(convertedField.input_type)) {
+                    // Ensure options exist for fields that need them
+                    convertedField.options = {};
                 }
-            }));
+                
+                return convertedField;
+            });
         },
 
         /**
@@ -1608,9 +1658,10 @@ export default {
                         this.$emit('title-updated', this.pendingChanges.formTitle);
                     }
                     
-                    // Emit the complete form update with current fields
+                    // Emit the complete form update with original response fields
+                    // Use the original fields from pendingChanges to preserve proper format
                     this.$emit('form-updated', {
-                        wpuf_fields: this.formFields,
+                        wpuf_fields: this.pendingChanges.originalResponse?.wpuf_fields || this.formFields,
                         form_title: this.pendingChanges.formTitle || this.formTitle,
                         form_description: this.pendingChanges.formDescription || this.formDescription
                     });
@@ -1635,8 +1686,11 @@ export default {
                     this.chatMessages[i].showButtons = false;
                     
                     // Auto-save checkpoint for this accepted state
+                    // Use original response fields if available to preserve proper format
                     const checkpoint = {
-                        formFields: JSON.parse(JSON.stringify(this.formFields)),
+                        formFields: this.pendingChanges?.originalResponse?.wpuf_fields 
+                            ? JSON.parse(JSON.stringify(this.pendingChanges.originalResponse.wpuf_fields))
+                            : JSON.parse(JSON.stringify(this.formFields)),
                         formTitle: this.formTitle,
                         formDescription: this.formDescription,
                         formSettings: JSON.parse(JSON.stringify(this.formSettings)),

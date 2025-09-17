@@ -487,6 +487,62 @@ Vue.component('field-icon_selector', {
         }
     },
 
+    watch: {
+        'editing_form_field.show_icon': function(newVal, oldVal) {
+            // When show_icon changes from 'no' to 'yes' and field_icon is empty or 'fas fa-0'
+            if (newVal === 'yes' && oldVal === 'no') {
+                if (!this.editing_form_field.field_icon || this.editing_form_field.field_icon === 'fas fa-0') {
+                    // Set a proper default icon based on field type
+                    var defaultIcons = {
+                        'text': 'fa-solid fa-font',
+                        'email': 'fa-solid fa-envelope',
+                        'password': 'fa-solid fa-lock',
+                        'url': 'fa-solid fa-link',
+                        'phone': 'fa-solid fa-phone',
+                        'textarea': 'fa-solid fa-align-left',
+                        'select': 'fa-solid fa-caret-down',
+                        'checkbox': 'fa-solid fa-check-square',
+                        'radio': 'fa-solid fa-circle-dot',
+                        'date': 'fa-solid fa-calendar',
+                        'time': 'fa-solid fa-clock',
+                        'file': 'fa-solid fa-file',
+                        'image': 'fa-solid fa-image',
+                        'address': 'fa-solid fa-location-dot',
+                        'address_field': 'fa-solid fa-location-dot',
+                        'map': 'fa-solid fa-map',
+                        'google_map': 'fa-solid fa-map',
+                        'numeric': 'fa-solid fa-hashtag',
+                        'numeric_text_field': 'fa-solid fa-hashtag',
+                        'rating': 'fa-solid fa-star',
+                        'ratings': 'fa-solid fa-star',
+                        'user_login': 'fa-solid fa-user',
+                        'user_email': 'fa-solid fa-envelope',
+                        'user_bio': 'fa-solid fa-user-pen',
+                        'user_url': 'fa-solid fa-globe',
+                        'nickname': 'fa-solid fa-user-tag',
+                        'first_name': 'fa-solid fa-user',
+                        'last_name': 'fa-solid fa-user',
+                        'display_name': 'fa-solid fa-id-card',
+                        'repeat_field': 'fa-solid fa-copy',
+                        'toc': 'fa-solid fa-check-square'
+                    };
+
+                    // Get the field type/template
+                    var fieldType = this.editing_form_field.template || this.editing_form_field.input_type || 'text';
+
+                    // Set the default icon based on field type
+                    var defaultIcon = defaultIcons[fieldType] || 'fa-solid fa-circle';
+
+                    this.$store.commit('update_editing_form_field', {
+                        editing_field_id: this.editing_form_field.id,
+                        field_name: 'field_icon',
+                        value: defaultIcon
+                    });
+                }
+            }
+        }
+    },
+
     methods: {
         getAllIcons: function() {
             // Comprehensive Font Awesome 6 icon collection

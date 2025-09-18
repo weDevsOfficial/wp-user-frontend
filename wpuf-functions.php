@@ -673,6 +673,20 @@ function wpuf_avatar_add_image_size() {
  * @return string
  */
 function wpuf_get_custom_avatar( $user_id ) {
+    // First check for profile photo (higher priority)
+    $profile_photo = get_user_meta( $user_id, 'wpuf_profile_photo', true );
+
+    if ( absint( $profile_photo ) > 0 ) {
+        wpuf_avatar_add_image_size();
+
+        $avatar_source = wp_get_attachment_image_src( $profile_photo, 'wpuf_avatar_image_size' );
+
+        if ( $avatar_source ) {
+            return $avatar_source[0];
+        }
+    }
+
+    // Fall back to user avatar if no profile photo
     $avatar = get_user_meta( $user_id, 'user_avatar', true );
 
     if ( absint( $avatar ) > 0 ) {

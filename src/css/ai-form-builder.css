@@ -4,6 +4,11 @@
 
 /* AI Form Builder - All styles converted to Tailwind utilities in Vue components */
 
+/* WordPress admin body padding fix */
+#wpbody-content {
+    padding-bottom: unset!important;
+}
+
 /* Animations */
 @keyframes spin {
     from { transform: rotate(0deg); }

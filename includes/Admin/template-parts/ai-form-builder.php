@@ -54,7 +54,7 @@ do_action( 'wpuf_load_ai_form_builder_page' );
 ?>
 
 <!-- Vue.js AI Form Builder Component Mount Point -->
-<div id="wpuf-ai-form-builder" class="wpuf-pr-[20px]">
+<div id="wpuf-ai-form-builder" class="wpuf-h-100vh wpuf-bg-white wpuf-ml-[-20px] wpuf-py-0 wpuf-px-[20px]">
     <noscript>
         <strong>
             <?php esc_html_e( "We're sorry but this page doesn't work properly without JavaScript. Please enable it to continue.", 'wp-user-frontend' ); ?>

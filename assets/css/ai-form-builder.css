@@ -4508,6 +4508,10 @@ details.wpuf-collapse summary::-webkit-details-marker {
   min-height: 100px;
 }
 
+.wpuf-min-h-\[300px\] {
+  min-height: 300px;
+}
+
 .wpuf-min-h-\[416px\] {
   min-height: 416px;
 }
@@ -4969,6 +4973,10 @@ details.wpuf-collapse summary::-webkit-details-marker {
 
 .wpuf-gap-1 {
   gap: 0.25rem;
+}
+
+.wpuf-gap-1\.5 {
+  gap: 0.375rem;
 }
 
 .wpuf-gap-12 {
@@ -6703,6 +6711,12 @@ details.wpuf-collapse summary::-webkit-details-marker {
 
 /* AI Form Builder - All styles converted to Tailwind utilities in Vue components */
 
+/* WordPress admin body padding fix */
+
+#wpbody-content {
+  padding-bottom: unset!important;
+}
+
 /* Animations */
 
 @keyframes spin {
@@ -6958,6 +6972,11 @@ details.wpuf-collapse summary::-webkit-details-marker {
 .hover\:wpuf-bg-amber-600:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(217 119 6 / var(--tw-bg-opacity));
+}
+
+.hover\:wpuf-bg-blue-600:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity));
 }
 
 .hover\:wpuf-bg-blue-700:hover {

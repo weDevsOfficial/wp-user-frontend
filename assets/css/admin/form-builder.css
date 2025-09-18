@@ -3598,6 +3598,10 @@ details.wpuf-collapse summary::-webkit-details-marker {
   min-height: 100px;
 }
 
+.wpuf-min-h-\[300px\] {
+  min-height: 300px;
+}
+
 .wpuf-min-h-\[416px\] {
   min-height: 416px;
 }
@@ -3608,10 +3612,6 @@ details.wpuf-collapse summary::-webkit-details-marker {
 
 .wpuf-min-h-\[672px\] {
   min-height: 672px;
-}
-
-.wpuf-min-h-\[80px\] {
-  min-height: 80px;
 }
 
 .wpuf-min-h-full {
@@ -4087,6 +4087,10 @@ details.wpuf-collapse summary::-webkit-details-marker {
 
 .wpuf-gap-1 {
   gap: 0.25rem;
+}
+
+.wpuf-gap-1\.5 {
+  gap: 0.375rem;
 }
 
 .wpuf-gap-12 {
@@ -6500,6 +6504,11 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
 .hover\:wpuf-bg-amber-600:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(217 119 6 / var(--tw-bg-opacity));
+}
+
+.hover\:wpuf-bg-blue-600:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity));
 }
 
 .hover\:wpuf-bg-blue-700:hover {

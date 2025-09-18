@@ -46,56 +46,56 @@ class WPUF_Icon_Loader {
     }
     
     /**
-     * Load all Font Awesome SVG icons
+     * Load all Font Awesome icons from predefined list
      */
     public function load_all_icons() {
-        $icons = [];
-        $svg_base_path = WPUF_ASSET_URI . '/vendor/font-awesome-7/svgs/';
-        $svg_file_path = WPUF_ROOT . '/assets/vendor/font-awesome-7/svgs/';
-        
-        // Define icon styles to scan
-        $styles = [
-            'solid' => 'fas',
-            'regular' => 'far', 
-            'brands' => 'fab'
-        ];
-        
-        foreach ( $styles as $style_dir => $style_prefix ) {
-            $style_path = $svg_file_path . $style_dir . '/';
-            
-            if ( ! is_dir( $style_path ) ) {
-                continue;
-            }
-            
-            $svg_files = glob( $style_path . '*.svg' );
-            
-            foreach ( $svg_files as $svg_file ) {
-                $filename = basename( $svg_file, '.svg' );
-                $icon_name = $this->format_icon_name( $filename );
-                $class_name = $style_prefix . ' fa-' . $filename;
-                
-                // Read SVG content
-                $svg_content = file_get_contents( $svg_file );
-                
-                if ( $svg_content ) {
-                    $icons[] = [
-                        'class' => $class_name,
-                        'name' => $icon_name,
-                        'filename' => $filename,
-                        'style' => $style_dir,
-                        'svg' => $svg_content,
-                        'url' => $svg_base_path . $style_dir . '/' . $filename . '.svg'
-                    ];
-                }
-            }
-        }
-        
+        // Return basic icon list since we're using CDN
+        $icons = $this->get_common_icons();
+
         // Sort icons alphabetically by name
         usort( $icons, function( $a, $b ) {
             return strcmp( $a['name'], $b['name'] );
         });
-        
+
         return $icons;
+    }
+
+    /**
+     * Get commonly used Font Awesome icons
+     */
+    private function get_common_icons() {
+        return [
+            ['class' => 'fas fa-home', 'name' => 'Home', 'filename' => 'home', 'style' => 'solid'],
+            ['class' => 'fas fa-user', 'name' => 'User', 'filename' => 'user', 'style' => 'solid'],
+            ['class' => 'fas fa-envelope', 'name' => 'Envelope', 'filename' => 'envelope', 'style' => 'solid'],
+            ['class' => 'fas fa-phone', 'name' => 'Phone', 'filename' => 'phone', 'style' => 'solid'],
+            ['class' => 'fas fa-calendar', 'name' => 'Calendar', 'filename' => 'calendar', 'style' => 'solid'],
+            ['class' => 'fas fa-image', 'name' => 'Image', 'filename' => 'image', 'style' => 'solid'],
+            ['class' => 'fas fa-file', 'name' => 'File', 'filename' => 'file', 'style' => 'solid'],
+            ['class' => 'fas fa-star', 'name' => 'Star', 'filename' => 'star', 'style' => 'solid'],
+            ['class' => 'fas fa-heart', 'name' => 'Heart', 'filename' => 'heart', 'style' => 'solid'],
+            ['class' => 'fas fa-search', 'name' => 'Search', 'filename' => 'search', 'style' => 'solid'],
+            ['class' => 'fas fa-plus', 'name' => 'Plus', 'filename' => 'plus', 'style' => 'solid'],
+            ['class' => 'fas fa-minus', 'name' => 'Minus', 'filename' => 'minus', 'style' => 'solid'],
+            ['class' => 'fas fa-edit', 'name' => 'Edit', 'filename' => 'edit', 'style' => 'solid'],
+            ['class' => 'fas fa-trash', 'name' => 'Trash', 'filename' => 'trash', 'style' => 'solid'],
+            ['class' => 'fas fa-download', 'name' => 'Download', 'filename' => 'download', 'style' => 'solid'],
+            ['class' => 'fas fa-upload', 'name' => 'Upload', 'filename' => 'upload', 'style' => 'solid'],
+            ['class' => 'fas fa-link', 'name' => 'Link', 'filename' => 'link', 'style' => 'solid'],
+            ['class' => 'fas fa-lock', 'name' => 'Lock', 'filename' => 'lock', 'style' => 'solid'],
+            ['class' => 'fas fa-unlock', 'name' => 'Unlock', 'filename' => 'unlock', 'style' => 'solid'],
+            ['class' => 'fas fa-cog', 'name' => 'Settings', 'filename' => 'cog', 'style' => 'solid'],
+            ['class' => 'fas fa-check', 'name' => 'Check', 'filename' => 'check', 'style' => 'solid'],
+            ['class' => 'fas fa-times', 'name' => 'Times', 'filename' => 'times', 'style' => 'solid'],
+            ['class' => 'fas fa-arrow-up', 'name' => 'Arrow Up', 'filename' => 'arrow-up', 'style' => 'solid'],
+            ['class' => 'fas fa-arrow-down', 'name' => 'Arrow Down', 'filename' => 'arrow-down', 'style' => 'solid'],
+            ['class' => 'fas fa-arrow-left', 'name' => 'Arrow Left', 'filename' => 'arrow-left', 'style' => 'solid'],
+            ['class' => 'fas fa-arrow-right', 'name' => 'Arrow Right', 'filename' => 'arrow-right', 'style' => 'solid'],
+            ['class' => 'fab fa-facebook', 'name' => 'Facebook', 'filename' => 'facebook', 'style' => 'brands'],
+            ['class' => 'fab fa-twitter', 'name' => 'Twitter', 'filename' => 'twitter', 'style' => 'brands'],
+            ['class' => 'fab fa-instagram', 'name' => 'Instagram', 'filename' => 'instagram', 'style' => 'brands'],
+            ['class' => 'fab fa-linkedin', 'name' => 'LinkedIn', 'filename' => 'linkedin', 'style' => 'brands'],
+        ];
     }
     
     /**

@@ -133,7 +133,7 @@ class Assets {
                 'version' => '11.4.8',
             ],
             'font-awesome'        => [
-                'src'     => WPUF_ASSET_URI . '/vendor/font-awesome-7/css/all.min.css',
+                'src'     => 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css',
                 'version' => '7.0.1',
             ],
             'selectize'           => [

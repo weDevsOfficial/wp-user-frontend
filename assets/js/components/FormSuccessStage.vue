@@ -784,37 +784,80 @@ export default {
         restoreCheckpoint(messageIndex) {
             const checkpoint = this.checkpoints.get(messageIndex);
             if (!checkpoint) {
-                this.showStatusMessage('No checkpoint found', 'error');
+                // Add error message to chat
+                const errorMessage = {
+                    type: 'ai',
+                    content: 'Sorry, no checkpoint was found for this state.',
+                    showButtons: false,
+                    isError: true,
+                    timestamp: new Date().toISOString()
+                };
+                this.chatMessages.push(errorMessage);
+                this.scrollToBottom();
                 return;
             }
-            
+
             // Show loading state
             this.isFormUpdating = true;
-            
+
             // Restore form state from checkpoint
             setTimeout(() => {
+                // Store current state for comparison
+                const previousFieldCount = this.formFields.length;
+                const previousTitle = this.formTitle;
+
+                // Restore checkpoint data
                 this.formFields = JSON.parse(JSON.stringify(checkpoint.formFields));
                 this.formDescription = checkpoint.formDescription;
                 this.formSettings = JSON.parse(JSON.stringify(checkpoint.formSettings));
-                
+
                 // Update the form title if available
                 if (checkpoint.formTitle) {
+                    this.formTitle = checkpoint.formTitle;
                     this.$emit('update-form-title', checkpoint.formTitle);
                 }
-                
+
                 // Hide loading state
                 this.isFormUpdating = false;
-                
-                // Show success message
-                this.showStatusMessage('Form restored to checkpoint', 'success');
-                
-                // Scroll to form preview
+
+                // Add success message to chat
+                const restoredFieldCount = checkpoint.formFields.length;
+                let restoreMessage = `Form has been restored to the checkpoint. `;
+
+                if (restoredFieldCount !== previousFieldCount) {
+                    restoreMessage += `The form now has ${restoredFieldCount} field${restoredFieldCount !== 1 ? 's' : ''}.`;
+                }
+
+                if (checkpoint.formTitle !== previousTitle) {
+                    restoreMessage += ` Form title: "${checkpoint.formTitle}".`;
+                }
+
+                const successMessage = {
+                    type: 'ai',
+                    content: restoreMessage,
+                    showButtons: false,
+                    status: '✓ Checkpoint restored',
+                    timestamp: new Date().toISOString()
+                };
+
+                this.chatMessages.push(successMessage);
+
+                // Show status briefly
                 this.$nextTick(() => {
+                    const newMessageIndex = this.chatMessages.length - 1;
+                    this.showStatus(newMessageIndex);
+                });
+
+                // Scroll to bottom to show message
+                this.scrollToBottom();
+
+                // Then scroll to form preview after a short delay
+                setTimeout(() => {
                     const formPreview = document.querySelector('.wpuf-form-preview');
                     if (formPreview) {
                         formPreview.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }
-                });
+                }, 500);
             }, 300); // Small delay for visual feedback
         },
         
@@ -1175,33 +1218,208 @@ export default {
          */
         isModificationRequest(message) {
             const modificationKeywords = [
-                'add', 'remove', 'delete', 'change', 'modify', 'update', 'edit', 
-                'replace', 'include', 'exclude', 'insert', 'new field', 
+                'add', 'remove', 'delete', 'change', 'modify', 'update', 'edit',
+                'replace', 'include', 'exclude', 'insert', 'new field',
                 'another field', 'more fields', 'different', 'custom',
                 'need to add', 'can you add', 'please add', 'also add',
                 'make it', 'instead of', 'rather than', 'without the'
             ];
-            
+
             const messageLower = message.toLowerCase();
             return modificationKeywords.some(keyword => messageLower.includes(keyword));
+        },
+
+        /**
+         * Check if user message is an informational query
+         */
+        isInformationalQuery(message) {
+            if (!message || typeof message !== 'string') {
+                return false;
+            }
+
+            const messageLower = message.toLowerCase().trim();
+
+            // Quick check for question mark
+            const hasQuestionMark = message.includes('?');
+
+            // If it has modification keywords, it's not just a question
+            if (this.isModificationRequest(message)) {
+                return false;
+            }
+
+            // Pattern-based question detection
+            const questionPatterns = [
+                // WH-questions
+                /^(what|when|where|why|who|whom|whose|which|how)\s+/i,
+                /\b(what|when|where|why|who|whom|whose|which|how)\s+(is|are|was|were|do|does|did|can|could|will|would|should)\b/i,
+
+                // Yes/No questions
+                /^(is|are|was|were|do|does|did|can|could|will|would|should|may|might|must|shall)\s+/i,
+
+                // Specific inquiry patterns
+                /\b(meaning|purpose|reason|explanation|definition)\s+(of|for|behind)?\b/i,
+                /\b(explain|describe|tell|show|clarify|define)\s+(me|us|about|what|how|why)?\b/i,
+
+                // Information seeking
+                /\b(need to know|want to know|wondering|curious|question about)\b/i,
+                /\b(any idea|do you know|can you tell|could you explain)\b/i,
+
+                // Clarification requests
+                /\b(what does .+ mean|what is .+ for|why .+ needed)\b/i,
+                /\b(purpose of|use of|reason for|point of)\b/i,
+
+                // General inquiry words
+                /\b(information|details|info|help me understand)\b/i
+            ];
+
+            // Check if message matches any question pattern
+            const matchesQuestionPattern = questionPatterns.some(pattern => pattern.test(messageLower));
+
+            // Check for informal/conversational queries (but keep them form-related)
+            const informalQueries = [
+                'meaning', 'purpose', 'explain', 'tell me', 'show me',
+                'help me understand', 'clarify', 'describe',
+                'is this', 'is that', 'are these', 'are those',
+                'do i need', 'should i', 'must i', 'can i',
+                'what about', 'how about', 'and the'
+            ];
+
+            const hasInformalQuery = informalQueries.some(phrase => messageLower.includes(phrase));
+
+            // Final decision: It's a question if it has a question mark, matches patterns, or has informal query phrases
+            return hasQuestionMark || matchesQuestionPattern || hasInformalQuery;
         },
         
         /**
          * Generate a helpful response for predefined templates without making API calls
          */
-        generatePredefinedResponse() {
+        generatePredefinedResponse(userMessage = '') {
+            const messageLower = userMessage.toLowerCase().trim();
+
+            // Check if it's an irrelevant or off-topic query
+            if (this.isIrrelevantQuery(userMessage)) {
+                return this.getHelpfulExamplesResponse();
+            }
+
+            // Check if it's a question
+            if (this.isInformationalQuery(userMessage)) {
+                // Analyze the type of question for more specific responses
+                let response = '';
+
+                // Questions about specific fields
+                if (messageLower.includes('meaning') || messageLower.includes('purpose') || messageLower.includes('what is')) {
+                    response = "Each field in this form has a specific purpose. The required fields ensure we collect essential information, while optional fields allow you to provide additional details. Which specific field would you like to know more about?";
+                }
+                // Questions about why fields are needed
+                else if (messageLower.includes('why') || messageLower.includes('reason')) {
+                    response = "The fields in this form are designed to collect all necessary information for proper processing. Required fields are essential for submission, while optional fields provide additional context that may be helpful.";
+                }
+                // Questions about how to use the form
+                else if (messageLower.includes('how') || messageLower.includes('help')) {
+                    response = this.getHelpfulExamplesResponse();
+                }
+                // General conversational queries
+                else if (messageLower.includes('how are you') || messageLower.includes('hello') || messageLower.includes('hi')) {
+                    response = `I'm a form builder assistant. I can help you with form-related tasks.\n\n${this.getQuickExamples()}`;
+                }
+                // Default informational response
+                else {
+                    const questionResponses = [
+                        "I can help explain the form fields. Each field serves a specific purpose for collecting information. Which field would you like to know more about?",
+                        "The form fields are designed to collect all required information. If you have questions about specific fields or need to make changes, please let me know.",
+                        "I'm here to help with form-related tasks. You can ask about specific fields, or request to add, remove, or modify fields as needed.",
+                        "This form contains the essential fields for your submission. Need clarification about any field or want to make changes? Just let me know."
+                    ];
+                    const randomIndex = Math.floor(Math.random() * questionResponses.length);
+                    response = questionResponses[randomIndex];
+                }
+
+                return response;
+            }
+
+            // Default responses for non-questions
             const responses = [
-                "This form is based on our predefined template. The current fields are optimized for this type of submission. If you'd like to modify the form, please let me know what changes you need and I'll help customize it for you.",
-                "I can see you're working with our predefined template. The form looks good as it is! If you need to add, remove, or modify any fields, just tell me what changes you'd like to make.",
+                "This form is based on our predefined template. The current fields are optimized for this type of submission. If you'd like to modify the form, please let me know what changes you need.",
+                "The form is ready with all essential fields. If you need to add, remove, or modify any fields, just tell me what changes you'd like to make.",
                 "This form uses our predefined structure which works well for most cases. Would you like me to add any additional fields or modify the existing ones?",
-                "The current form is optimized for this type of submission. If you need any customizations, please let me know what specific changes you'd like me to make."
+                "The current form is optimized for this type of submission. Need any customizations? Please let me know what specific changes you'd like."
             ];
-            
+
             // Return a random helpful response
             const randomIndex = Math.floor(Math.random() * responses.length);
             return responses[randomIndex];
         },
-        
+
+        /**
+         * Check if query is irrelevant to form building
+         */
+        isIrrelevantQuery(message) {
+            if (!message || typeof message !== 'string') {
+                return false;
+            }
+
+            const messageLower = message.toLowerCase().trim();
+
+            // Off-topic patterns
+            const irrelevantPatterns = [
+                /^(tell me a joke|sing a song|write a poem|tell a story)/i,
+                /\b(weather|news|sports|movie|music|recipe|game)\b/i,
+                /\b(math|calculate|solve|equation)\b/i,
+                /\b(translate|language|french|spanish|german)\b/i,
+            ];
+
+            // Check if message contains form-related keywords
+            const formKeywords = ['form', 'field', 'input', 'submit', 'add', 'remove', 'modify', 'change', 'update', 'portfolio', 'email', 'required'];
+            const hasFormKeyword = formKeywords.some(keyword => messageLower.includes(keyword));
+
+            // If it has form keywords, it's not irrelevant
+            if (hasFormKeyword) {
+                return false;
+            }
+
+            // Check if it matches irrelevant patterns
+            return irrelevantPatterns.some(pattern => pattern.test(messageLower));
+        },
+
+        /**
+         * Get helpful examples response
+         */
+        getHelpfulExamplesResponse() {
+            return `I'm a form builder assistant. I can help you with form-related tasks only.
+
+Here are some examples of what you can ask:
+
+**To modify fields:**
+• "Add a phone number field"
+• "Remove the years of experience field"
+• "Change email field to required"
+• "Add a file upload field for documents"
+
+**To get information:**
+• "What fields are in this form?"
+• "Why is the email field required?"
+• "Explain the purpose of portfolio files"
+
+**To customize the form:**
+• "Make all fields optional except email"
+• "Add a dropdown for country selection"
+• "Include a terms and conditions checkbox"
+
+What would you like me to help you with?`;
+        },
+
+        /**
+         * Get quick examples for greetings
+         */
+        getQuickExamples() {
+            return `Try asking me to:
+• Add a new field: "Add a phone number field"
+• Remove a field: "Remove the experience field"
+• Modify a field: "Make email field optional"
+• Get information: "What fields are required?"`;
+        },
+
+
         async handleSendMessage() {
             if (!this.userInput.trim() || this.isFormUpdating) return;
             
@@ -1254,11 +1472,11 @@ export default {
                     // Provide predefined response without API call
                     response = {
                         success: true,
-                        message: this.generatePredefinedResponse(),
+                        message: this.generatePredefinedResponse(userMessage),
                         action: 'info',
                         form_data: null // No form changes
                     };
-                    
+
                     console.log('🚀 Using predefined response (no API call needed)');
                 }
                 
@@ -1270,7 +1488,38 @@ export default {
                 
                 // Add AI response
                 if (response.success) {
-                    const messageContent = response.message || 'Form has been updated successfully.';
+                    // Determine if form actually changed
+                    const responseFormData = response.form_data || response.data;
+                    const hasFormChanges = responseFormData && (responseFormData.wpuf_fields || responseFormData.modification_type === 'add_field');
+
+                    // Check if this is an informational query
+                    const isQuestion = this.isInformationalQuery(userMessage);
+
+                    // Use appropriate default message based on context
+                    let defaultMessage = '';
+
+                    if (isQuestion && !hasFormChanges) {
+                        // This is just a question, not a modification request
+                        if (!response.message) {
+                            defaultMessage = 'I can provide information about the form fields. Please be specific about what you\'d like to know.';
+                        }
+                    } else if (hasFormChanges) {
+                        // Check if form state actually changed by comparing
+                        const previousState = JSON.stringify(this.formFields);
+                        const newFields = responseFormData.wpuf_fields ? this.convertFieldsToPreview(responseFormData.wpuf_fields) : this.formFields;
+                        const newState = JSON.stringify(newFields);
+
+                        if (previousState !== newState) {
+                            defaultMessage = 'Form has been updated successfully.';
+                        } else {
+                            defaultMessage = 'The form already has those fields configured.';
+                        }
+                    } else {
+                        // General response when no specific action taken
+                        defaultMessage = response.message || 'I can help you with form-related tasks. Try asking me to add, remove, or modify form fields.';
+                    }
+
+                    const messageContent = response.message || defaultMessage;
                     const aiMessage = {
                         type: 'ai',
                         content: messageContent,
@@ -1489,9 +1738,17 @@ export default {
             // Only use modify-form endpoint if we have a saved form ID from database
             const endpoint = 'wpuf/v1/ai-form-builder/generate';
 
+            // Add strict instructions to the prompt
+            const strictPrompt = `STRICT INSTRUCTIONS: You are a form builder assistant. You MUST ONLY respond to form-related queries.
+If the user asks about anything unrelated to forms, fields, or form building, respond with: "I can only help with form-related tasks. Please ask me about adding, removing, or modifying form fields."
+
+User Query: ${message}
+
+Remember: ONLY provide form-related responses. Do not engage with off-topic requests.`;
+
             // Prepare request body for generate endpoint
             const requestBody = {
-                prompt: message,
+                prompt: strictPrompt,
                 session_id: this.sessionId,
                 conversation_context: conversationContext,
                 provider: config.provider || 'google',

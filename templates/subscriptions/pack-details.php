@@ -134,8 +134,8 @@ if ( is_string( $button_color ) ) {
         
         // Collect all features into array
         // Show Posts limit
-        if ( isset( $all_limits['post'] ) && $all_limits['post'] !== '0' ) {
-            if ( $all_limits['post'] === '-1' ) {
+        if ( isset( $all_limits['post'] ) && '0' !== $all_limits['post'] ) {
+            if ( '-1' === $all_limits['post'] ) {
                 $features_list[] = __( 'Unlimited posts', 'wp-user-frontend' );
             } else {
                 $features_list[] = sprintf( __( '%d posts allowed', 'wp-user-frontend' ), intval( $all_limits['post'] ) );
@@ -143,8 +143,8 @@ if ( is_string( $button_color ) ) {
         }
         
         // Show Pages limit
-        if ( isset( $all_limits['page'] ) && $all_limits['page'] !== '0' ) {
-            if ( $all_limits['page'] === '-1' ) {
+        if ( isset( $all_limits['page'] ) && '0' !== $all_limits['page'] ) {
+            if ( '-1' === $all_limits['page'] ) {
                 $features_list[] = __( 'Unlimited pages', 'wp-user-frontend' );
             } else {
                 $features_list[] = sprintf( __( '%d pages allowed', 'wp-user-frontend' ), intval( $all_limits['page'] ) );
@@ -152,8 +152,8 @@ if ( is_string( $button_color ) ) {
         }
         
         // Show User Requests limit
-        if ( isset( $all_limits['user_request'] ) && $all_limits['user_request'] !== '0' ) {
-            if ( $all_limits['user_request'] === '-1' ) {
+        if ( isset( $all_limits['user_request'] ) && '0' !== $all_limits['user_request'] ) {
+            if ( '-1' === $all_limits['user_request'] ) {
                 $features_list[] = __( 'Unlimited user requests', 'wp-user-frontend' );
             } else {
                 $features_list[] = sprintf( __( '%d user requests allowed', 'wp-user-frontend' ), intval( $all_limits['user_request'] ) );
@@ -161,8 +161,8 @@ if ( is_string( $button_color ) ) {
         }
         
         // Show WooCommerce Products limit if exists
-        if ( isset( $all_limits['product'] ) && $all_limits['product'] !== '0' ) {
-            if ( $all_limits['product'] === '-1' ) {
+        if ( isset( $all_limits['product'] ) && '0' !== $all_limits['product'] ) {
+            if ( '-1' === $all_limits['product'] ) {
                 $features_list[] = __( 'Unlimited products', 'wp-user-frontend' );
             } else {
                 $features_list[] = sprintf( __( '%d products allowed', 'wp-user-frontend' ), intval( $all_limits['product'] ) );
@@ -170,8 +170,8 @@ if ( is_string( $button_color ) ) {
         }
         
         // Show Reusable Blocks limit (Design Elements)
-        if ( isset( $all_limits['wp_block'] ) && $all_limits['wp_block'] !== '0' ) {
-            if ( $all_limits['wp_block'] === '-1' ) {
+        if ( isset( $all_limits['wp_block'] ) && '0' !== $all_limits['wp_block'] ) {
+            if ( '-1' === $all_limits['wp_block'] ) {
                 $features_list[] = __( 'Unlimited reusable blocks', 'wp-user-frontend' );
             } else {
                 $features_list[] = sprintf( __( '%d reusable blocks allowed', 'wp-user-frontend' ), intval( $all_limits['wp_block'] ) );
@@ -179,8 +179,8 @@ if ( is_string( $button_color ) ) {
         }
         
         // Show Templates limit (Design Elements)
-        if ( isset( $all_limits['wp_template'] ) && $all_limits['wp_template'] !== '0' ) {
-            if ( $all_limits['wp_template'] === '-1' ) {
+        if ( isset( $all_limits['wp_template'] ) && '0' !== $all_limits['wp_template'] ) {
+            if ( '-1' === $all_limits['wp_template'] ) {
                 $features_list[] = __( 'Unlimited templates', 'wp-user-frontend' );
             } else {
                 $features_list[] = sprintf( __( '%d templates allowed', 'wp-user-frontend' ), intval( $all_limits['wp_template'] ) );
@@ -188,8 +188,8 @@ if ( is_string( $button_color ) ) {
         }
         
         // Show Template Parts limit (Design Elements)
-        if ( isset( $all_limits['wp_template_part'] ) && $all_limits['wp_template_part'] !== '0' ) {
-            if ( $all_limits['wp_template_part'] === '-1' ) {
+        if ( isset( $all_limits['wp_template_part'] ) && '0' !== $all_limits['wp_template_part'] ) {
+            if ( '-1' === $all_limits['wp_template_part'] ) {
                 $features_list[] = __( 'Unlimited template parts', 'wp-user-frontend' );
             } else {
                 $features_list[] = sprintf( __( '%d template parts allowed', 'wp-user-frontend' ), intval( $all_limits['wp_template_part'] ) );
@@ -197,8 +197,8 @@ if ( is_string( $button_color ) ) {
         }
         
         // Show Navigation Menus limit (Design Elements)
-        if ( isset( $all_limits['wp_navigation'] ) && $all_limits['wp_navigation'] !== '0' ) {
-            if ( $all_limits['wp_navigation'] === '-1' ) {
+        if ( isset( $all_limits['wp_navigation'] ) && '0' !== $all_limits['wp_navigation'] ) {
+            if ( '-1' === $all_limits['wp_navigation'] ) {
                 $features_list[] = __( 'Unlimited navigation menus', 'wp-user-frontend' );
             } else {
                 $features_list[] = sprintf( __( '%d navigation menus allowed', 'wp-user-frontend' ), intval( $all_limits['wp_navigation'] ) );
@@ -206,8 +206,8 @@ if ( is_string( $button_color ) ) {
         }
         
         // Show Global Styles limit (Additional Options)
-        if ( isset( $all_limits['wp_global_styles'] ) && $all_limits['wp_global_styles'] !== '0' ) {
-            if ( $all_limits['wp_global_styles'] === '-1' ) {
+        if ( isset( $all_limits['wp_global_styles'] ) && '0' !== $all_limits['wp_global_styles'] ) {
+            if ( '-1' === $all_limits['wp_global_styles'] ) {
                 $features_list[] = __( 'Unlimited global styles', 'wp-user-frontend' );
             } else {
                 $features_list[] = sprintf( __( '%d global styles allowed', 'wp-user-frontend' ), intval( $all_limits['wp_global_styles'] ) );
@@ -215,8 +215,8 @@ if ( is_string( $button_color ) ) {
         }
         
         // Show Font Families limit (Additional Options)
-        if ( isset( $all_limits['wp_font_family'] ) && $all_limits['wp_font_family'] !== '0' ) {
-            if ( $all_limits['wp_font_family'] === '-1' ) {
+        if ( isset( $all_limits['wp_font_family'] ) && '0' !== $all_limits['wp_font_family'] ) {
+            if ( '-1' === $all_limits['wp_font_family'] ) {
                 $features_list[] = __( 'Unlimited font families', 'wp-user-frontend' );
             } else {
                 $features_list[] = sprintf( __( '%d font families allowed', 'wp-user-frontend' ), intval( $all_limits['wp_font_family'] ) );
@@ -224,8 +224,8 @@ if ( is_string( $button_color ) ) {
         }
         
         // Show Font Faces limit (Additional Options)
-        if ( isset( $all_limits['wp_font_face'] ) && $all_limits['wp_font_face'] !== '0' ) {
-            if ( $all_limits['wp_font_face'] === '-1' ) {
+        if ( isset( $all_limits['wp_font_face'] ) && '0' !== $all_limits['wp_font_face'] ) {
+            if ( '-1' === $all_limits['wp_font_face'] ) {
                 $features_list[] = __( 'Unlimited font faces', 'wp-user-frontend' );
             } else {
                 $features_list[] = sprintf( __( '%d font faces allowed', 'wp-user-frontend' ), intval( $all_limits['wp_font_face'] ) );
@@ -233,8 +233,8 @@ if ( is_string( $button_color ) ) {
         }
         
         // Show Product Variations limit (WooCommerce)
-        if ( isset( $all_limits['product_variation'] ) && $all_limits['product_variation'] !== '0' ) {
-            if ( $all_limits['product_variation'] === '-1' ) {
+        if ( isset( $all_limits['product_variation'] ) && '0' !== $all_limits['product_variation'] ) {
+            if ( '-1' === $all_limits['product_variation'] ) {
                 $features_list[] = __( 'Unlimited product variations', 'wp-user-frontend' );
             } else {
                 $features_list[] = sprintf( __( '%d product variations allowed', 'wp-user-frontend' ), intval( $all_limits['product_variation'] ) );
@@ -242,8 +242,8 @@ if ( is_string( $button_color ) ) {
         }
         
         // Show Shop Orders limit (WooCommerce)
-        if ( isset( $all_limits['shop_order'] ) && $all_limits['shop_order'] !== '0' ) {
-            if ( $all_limits['shop_order'] === '-1' ) {
+        if ( isset( $all_limits['shop_order'] ) && '0' !== $all_limits['shop_order'] ) {
+            if ( '-1' === $all_limits['shop_order'] ) {
                 $features_list[] = __( 'Unlimited shop orders', 'wp-user-frontend' );
             } else {
                 $features_list[] = sprintf( __( '%d shop orders allowed', 'wp-user-frontend' ), intval( $all_limits['shop_order'] ) );
@@ -251,8 +251,8 @@ if ( is_string( $button_color ) ) {
         }
         
         // Show Shop Refunds limit (WooCommerce)
-        if ( isset( $all_limits['shop_order_refund'] ) && $all_limits['shop_order_refund'] !== '0' ) {
-            if ( $all_limits['shop_order_refund'] === '-1' ) {
+        if ( isset( $all_limits['shop_order_refund'] ) && '0' !== $all_limits['shop_order_refund'] ) {
+            if ( '-1' === $all_limits['shop_order_refund'] ) {
                 $features_list[] = __( 'Unlimited shop refunds', 'wp-user-frontend' );
             } else {
                 $features_list[] = sprintf( __( '%d shop refunds allowed', 'wp-user-frontend' ), intval( $all_limits['shop_order_refund'] ) );
@@ -260,8 +260,8 @@ if ( is_string( $button_color ) ) {
         }
         
         // Show Shop Coupons limit (WooCommerce)
-        if ( isset( $all_limits['shop_coupon'] ) && $all_limits['shop_coupon'] !== '0' ) {
-            if ( $all_limits['shop_coupon'] === '-1' ) {
+        if ( isset( $all_limits['shop_coupon'] ) && '0' !== $all_limits['shop_coupon'] ) {
+            if ( '-1' === $all_limits['shop_coupon'] ) {
                 $features_list[] = __( 'Unlimited shop coupons', 'wp-user-frontend' );
             } else {
                 $features_list[] = sprintf( __( '%d shop coupons allowed', 'wp-user-frontend' ), intval( $all_limits['shop_coupon'] ) );
@@ -269,8 +269,8 @@ if ( is_string( $button_color ) ) {
         }
         
         // Show Featured items limit
-        if ( isset( $pack->meta_value['_total_feature_item'] ) && $pack->meta_value['_total_feature_item'] !== '0' ) {
-            if ( $pack->meta_value['_total_feature_item'] === '-1' ) {
+        if ( isset( $pack->meta_value['_total_feature_item'] ) && '0' !== $pack->meta_value['_total_feature_item'] ) {
+            if ( '-1' === $pack->meta_value['_total_feature_item'] ) {
                 $features_list[] = __( 'Unlimited featured items', 'wp-user-frontend' );
             } else {
                 $features_list[] = sprintf( __( '%d featured items', 'wp-user-frontend' ), intval( $pack->meta_value['_total_feature_item'] ) );
@@ -278,7 +278,7 @@ if ( is_string( $button_color ) ) {
         }
         
         // Show Post expiration
-        if ( isset( $pack->meta_value['_enable_post_expiration'] ) && $pack->meta_value['_enable_post_expiration'] === 'yes' ) {
+        if ( isset( $pack->meta_value['_enable_post_expiration'] ) && 'yes' === $pack->meta_value['_enable_post_expiration'] ) {
             $expiry_period = isset( $pack->meta_value['_post_expiration_number'] ) ? intval( $pack->meta_value['_post_expiration_number'] ) : 0;
             $expiry_type = isset( $pack->meta_value['_post_expiration_period'] ) ? $pack->meta_value['_post_expiration_period'] : 'day';
             
@@ -290,12 +290,12 @@ if ( is_string( $button_color ) ) {
         }
         
         // Show Recurring payment feature
-        if ( isset( $pack->meta_value['_recurring_pay'] ) && $pack->meta_value['_recurring_pay'] === 'yes' ) {
+        if ( isset( $pack->meta_value['_recurring_pay'] ) && 'yes' === $pack->meta_value['_recurring_pay'] ) {
             $features_list[] = __( 'Recurring subscription', 'wp-user-frontend' );
         }
         
         // Show Trial period if available
-        if ( isset( $pack->meta_value['_trial_status'] ) && $pack->meta_value['_trial_status'] === 'yes' ) {
+        if ( isset( $pack->meta_value['_trial_status'] ) && 'yes' === $pack->meta_value['_trial_status'] ) {
             $trial_duration = isset( $pack->meta_value['_trial_duration'] ) ? intval( $pack->meta_value['_trial_duration'] ) : 0;
             $trial_type = isset( $pack->meta_value['_trial_duration_type'] ) ? $pack->meta_value['_trial_duration_type'] : 'day';
             
@@ -307,7 +307,7 @@ if ( is_string( $button_color ) ) {
         }
         
         // Show Mail notification on expiry
-        if ( isset( $pack->meta_value['_enable_mail_after_expired'] ) && $pack->meta_value['_enable_mail_after_expired'] === 'yes' ) {
+        if ( isset( $pack->meta_value['_enable_mail_after_expired'] ) && 'yes' === $pack->meta_value['_enable_mail_after_expired'] ) {
             $features_list[] = __( 'Email notifications on post expiry', 'wp-user-frontend' );
         }
         

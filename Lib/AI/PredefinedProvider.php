@@ -37,6 +37,8 @@ class PredefinedProvider {
                     'name' => 'post_content',  // Map to WordPress post_content field
                     'required' => true,
                     'rich' => 'yes',  // Enable rich text editor
+                    'rows' => '10',
+                    'cols' => '25',
                     'placeholder' => 'Enter your complete article content...'
                 ],
                 [
@@ -109,6 +111,8 @@ class PredefinedProvider {
                     'name' => 'post_content',
                     'required' => true,
                     'rich' => 'yes',  // Enable rich text editor
+                    'rows' => '5',
+                    'cols' => '25',
                     'placeholder' => 'Describe your portfolio and key projects...'
                 ],
                 [
@@ -147,7 +151,10 @@ class PredefinedProvider {
                     'label' => 'Portfolio Files',
                     'name' => 'portfolio_files',
                     'required' => true,
-                    'allowed_types' => 'pdf,jpg,png,gif,doc,docx'
+                    'allowed_types' => 'pdf,jpg,png,gif,doc,docx',
+                    'extension' => ['pdf', 'images', 'office'],
+                    'max_size' => '2048',
+                    'count' => '3'
                 ],
                 [
                     'id' => 7,
@@ -179,6 +186,8 @@ class PredefinedProvider {
                     'name' => 'post_content',
                     'required' => true,
                     'rich' => 'yes',  // Enable rich text editor
+                    'rows' => '8',
+                    'cols' => '25',
                     'placeholder' => 'Describe your item or service in detail...'
                 ],
                 [

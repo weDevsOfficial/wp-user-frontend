@@ -967,7 +967,25 @@ export default {
                         choices: []
                     }
                 };
-                
+
+                // Add textarea-specific attributes
+                if (field.template === 'textarea' || field.template === 'post_content' || field.template === 'post_excerpt' || field.type === 'textarea') {
+                    convertedField.rows = field.rows || '5';
+                    convertedField.cols = field.cols || '25';
+                    convertedField.rich = field.rich || 'no';
+                    if (field.template === 'post_content') {
+                        convertedField.rich = field.rich || 'yes';
+                        convertedField.insert_image = field.insert_image || 'yes';
+                    }
+                }
+
+                // Add file field-specific attributes
+                if (field.template === 'file_upload' || field.template === 'file' || field.type === 'file_upload') {
+                    convertedField.extension = field.extension || [];
+                    convertedField.max_size = field.max_size || '2048';
+                    convertedField.count = field.count || '1';
+                }
+
                 // Handle options carefully for fields that need them
                 // WPUF expects options as an object/associative array for radio, checkbox, dropdown
                 if (field.options !== undefined && field.options !== null) {
@@ -1369,16 +1387,19 @@ export default {
                         isError: true,
                         timestamp: new Date().toISOString()
                     };
-                    
+
                     this.chatMessages.push(errorMessage);
-                    
+
                     // Show status if error message has one
                     if (errorMessage.status) {
                         this.$nextTick(() => {
                             this.showStatus(this.chatMessages.length - 1);
                         });
                     }
-                    
+
+                    // Remove form updating blur on error
+                    this.isFormUpdating = false;
+
                     this.updateConversationState(userMessage, errorMessage);
                 }
                 

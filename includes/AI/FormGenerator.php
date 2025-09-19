@@ -52,8 +52,14 @@ class FormGenerator {
             'name' => 'OpenAI',
             'endpoint' => 'https://api.openai.com/v1/chat/completions',
             'models' => [
-                'gpt-4o' => 'GPT-4o',
-                'gpt-4o-mini' => 'GPT-4o Mini',
+                'gpt-4.1' => 'GPT-4.1 - Latest Flagship',
+                'gpt-4.1-mini' => 'GPT-4.1 Mini - Fast & Smart',
+                'gpt-4.1-nano' => 'GPT-4.1 Nano - Fastest & Cheapest',
+                'o1' => 'O1 - Full Reasoning Model',
+                'o1-mini' => 'O1 Mini - Cost-Effective Reasoning',
+                'o1-preview' => 'O1 Preview - Limited Access',
+                'gpt-4o' => 'GPT-4o - Multimodal',
+                'gpt-4o-mini' => 'GPT-4o Mini - Efficient Multimodal',
                 'gpt-4-turbo' => 'GPT-4 Turbo',
                 'gpt-4' => 'GPT-4',
                 'gpt-3.5-turbo' => 'GPT-3.5 Turbo'
@@ -64,7 +70,13 @@ class FormGenerator {
             'name' => 'Anthropic Claude',
             'endpoint' => 'https://api.anthropic.com/v1/messages',
             'models' => [
-                'claude-3-5-sonnet-20241022' => 'Claude 3.5 Sonnet',
+                'claude-4.1-opus' => 'Claude 4.1 Opus - Most Capable',
+                'claude-4-opus' => 'Claude 4 Opus - Best Coding Model',
+                'claude-4-sonnet' => 'Claude 4 Sonnet - Advanced Reasoning',
+                'claude-3.7-sonnet' => 'Claude 3.7 Sonnet - Hybrid Reasoning',
+                'claude-3-5-sonnet-20241022' => 'Claude 3.5 Sonnet Latest',
+                'claude-3-5-sonnet-20240620' => 'Claude 3.5 Sonnet',
+                'claude-3-5-haiku-20241022' => 'Claude 3.5 Haiku',
                 'claude-3-opus-20240229' => 'Claude 3 Opus',
                 'claude-3-sonnet-20240229' => 'Claude 3 Sonnet',
                 'claude-3-haiku-20240307' => 'Claude 3 Haiku'
@@ -75,10 +87,16 @@ class FormGenerator {
             'name' => 'Google Gemini',
             'endpoint' => 'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent',
             'models' => [
-                'gemini-1.5-flash-latest' => 'Gemini 1.5 Flash Latest (Best Free)',
-                'gemini-1.5-flash' => 'Gemini 1.5 Flash (Free)',
-                'gemini-1.5-pro' => 'Gemini 1.5 Pro (Paid)',
-                'gemini-pro' => 'Gemini Pro (Paid)'
+                'gemini-2.5-pro' => 'Gemini 2.5 Pro - State-of-the-art',
+                'gemini-2.5-flash' => 'Gemini 2.5 Flash - Best Price-Performance',
+                'gemini-2.5-flash-lite' => 'Gemini 2.5 Flash Lite - Fast & Cheap',
+                'gemini-2.0-flash' => 'Gemini 2.0 Flash - Next-Gen Features',
+                'gemini-2.0-flash-001' => 'Gemini 2.0 Flash Stable',
+                'gemini-2.0-flash-lite' => 'Gemini 2.0 Flash Lite - Cost Optimized',
+                'gemini-1.5-flash-latest' => 'Gemini 1.5 Flash Latest - Free Tier',
+                'gemini-1.5-flash' => 'Gemini 1.5 Flash - Free Tier',
+                'gemini-1.5-flash-8b' => 'Gemini 1.5 Flash 8B - Fast & Free',
+                'gemini-1.5-pro' => 'Gemini 1.5 Pro'
             ],
             'requires_key' => true
         ]

@@ -657,31 +657,64 @@ function wpuf_settings_fields() {
                 'desc'    => __( 'Select the AI model to use for content generation.', 'wp-user-frontend' ),
                 'type'    => 'select',
                 'options' => apply_filters('wpuf_ai_model_options', [
-                    // OpenAI Models (supported by PHP SDK)
-                    'gpt-4o' => 'GPT-4o (OpenAI)',
-                    'gpt-4o-mini' => 'GPT-4o Mini (OpenAI)',
-                    'gpt-4o-2024-08-06' => 'GPT-4o Latest (OpenAI)',
+                    // OpenAI GPT-4.1 Series (Latest - December 2024)
+                    'gpt-4.1' => 'GPT-4.1 - Latest Flagship (OpenAI)',
+                    'gpt-4.1-mini' => 'GPT-4.1 Mini - Fast & Smart (OpenAI)',
+                    'gpt-4.1-nano' => 'GPT-4.1 Nano - Fastest & Cheapest (OpenAI)',
+
+                    // OpenAI O1 Series (Reasoning Models)
+                    'o1' => 'O1 - Full Reasoning Model (OpenAI)',
+                    'o1-mini' => 'O1 Mini - Cost-Effective Reasoning (OpenAI)',
+                    'o1-preview' => 'O1 Preview - Limited Access (OpenAI)',
+
+                    // OpenAI GPT-4o Series (Multimodal)
+                    'gpt-4o' => 'GPT-4o - Multimodal (OpenAI)',
+                    'gpt-4o-mini' => 'GPT-4o Mini - Efficient Multimodal (OpenAI)',
+                    'gpt-4o-2024-08-06' => 'GPT-4o Latest Snapshot (OpenAI)',
+
+                    // OpenAI GPT-4 Turbo & Legacy
                     'gpt-4-turbo' => 'GPT-4 Turbo (OpenAI)',
+                    'gpt-4-turbo-2024-04-09' => 'GPT-4 Turbo Latest (OpenAI)',
                     'gpt-4' => 'GPT-4 (OpenAI)',
                     'gpt-3.5-turbo' => 'GPT-3.5 Turbo (OpenAI)',
-                    'o1-preview' => 'O1 Preview (OpenAI)',
-                    'o1-mini' => 'O1 Mini (OpenAI)',
-                    
-                    // Anthropic Models (supported by PHP SDK with exact model IDs)
-                    'claude-3-5-sonnet-20241022' => 'Claude 3.5 Sonnet (Anthropic)',
+                    'gpt-3.5-turbo-0125' => 'GPT-3.5 Turbo Latest (OpenAI)',
+
+                    // Anthropic Claude 4 Series (Latest Generation)
+                    'claude-4-opus' => 'Claude 4 Opus - Best Coding Model (Anthropic)',
+                    'claude-4-sonnet' => 'Claude 4 Sonnet - Advanced Reasoning (Anthropic)',
+                    'claude-4.1-opus' => 'Claude 4.1 Opus - Most Capable (Anthropic)',
+
+                    // Anthropic Claude 3.7 Series
+                    'claude-3.7-sonnet' => 'Claude 3.7 Sonnet - Hybrid Reasoning (Anthropic)',
+
+                    // Anthropic Claude 3.5 Series (Current Available)
+                    'claude-3-5-sonnet-20241022' => 'Claude 3.5 Sonnet Latest (Anthropic)',
+                    'claude-3-5-sonnet-20240620' => 'Claude 3.5 Sonnet (Anthropic)',
                     'claude-3-5-haiku-20241022' => 'Claude 3.5 Haiku (Anthropic)',
+
+                    // Anthropic Claude 3 Legacy
                     'claude-3-opus-20240229' => 'Claude 3 Opus (Anthropic)',
                     'claude-3-sonnet-20240229' => 'Claude 3 Sonnet (Anthropic)',
                     'claude-3-haiku-20240307' => 'Claude 3 Haiku (Anthropic)',
-                    
-                    // Google Models (Free tier available!)
-                    'gemini-1.5-flash-latest' => 'Gemini 1.5 Flash Latest - Best Free (Google)',
+
+                    // Google Gemini 2.5 Series (Latest Generation)
+                    'gemini-2.5-pro' => 'Gemini 2.5 Pro - State-of-the-art (Google)',
+                    'gemini-2.5-flash' => 'Gemini 2.5 Flash - Best Price-Performance (Google)',
+                    'gemini-2.5-flash-lite' => 'Gemini 2.5 Flash Lite - Fast & Cheap (Google)',
+
+                    // Google Gemini 2.0 Series
+                    'gemini-2.0-flash' => 'Gemini 2.0 Flash - Next-Gen Features (Google)',
+                    'gemini-2.0-flash-001' => 'Gemini 2.0 Flash Stable (Google)',
+                    'gemini-2.0-flash-lite' => 'Gemini 2.0 Flash Lite - Cost Optimized (Google)',
+
+                    // Google Gemini 1.5 Legacy (Being Retired)
+                    'gemini-1.5-flash-latest' => 'Gemini 1.5 Flash Latest - Free Tier (Google)',
                     'gemini-1.5-flash' => 'Gemini 1.5 Flash - Free Tier (Google)',
-                    'gemini-1.5-pro' => 'Gemini 1.5 Pro - Paid (Google)',
-                    'gemini-pro' => 'Gemini Pro - Paid (Google)',
-                    
+                    'gemini-1.5-flash-8b' => 'Gemini 1.5 Flash 8B - Fast & Free (Google)',
+                    'gemini-1.5-pro' => 'Gemini 1.5 Pro (Google)',
+
                 ]),
-                'default' => 'gpt-3.5-turbo',
+                'default' => 'gemini-1.5-flash-latest',
                 'class'   => 'ai-model-select',
             ],
             [

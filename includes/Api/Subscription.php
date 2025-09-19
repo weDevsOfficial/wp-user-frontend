@@ -571,20 +571,32 @@ class Subscription extends WP_REST_Controller {
      *
      * @param WP_REST_Request $request
      *
-     * @return WP_REST_Response
+     * @return WP_REST_Response|\WP_Error
      */
     public function update_subscription_settings( $request ) {
         $params = $request->get_params();
-        
+
         // Only keep button_color, remove old settings
         $settings = [];
-        
+
         if ( isset( $params['button_color'] ) ) {
-            $settings['button_color'] = sanitize_hex_color( $params['button_color'] );
+            $sanitized_color = sanitize_hex_color( $params['button_color'] );
+
+            // Validate that the color was properly sanitized
+            if ( $sanitized_color === null || $sanitized_color === '' ) {
+                return new \WP_Error(
+                    'invalid_color',
+                    __( 'Invalid color format. Please provide a valid hex color (e.g., #FF0000).', 'wp-user-frontend' ),
+                    [ 'status' => 400 ]
+                );
+            }
+
+            $settings['button_color'] = $sanitized_color;
         }
-        
+
+        // Only update if we have valid settings
         update_option( 'wpuf_subscription_settings', $settings );
-        
+
         return rest_ensure_response( [
             'success' => true,
             'settings' => $settings,

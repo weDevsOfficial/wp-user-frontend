@@ -14,8 +14,29 @@
  * @var $button_name
  */
 
-// Get the button color from settings
+// Gate before any output
+$action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
+if ( 'wpuf_pay' === $action || ! empty( $coupon_status ) ) {
+    return;
+}
+
+// Get the button color from settings and validate it
 $button_color = wpuf_get_option( 'button_color', 'wpuf_subscription_settings', '#4f46e5' );
+
+// Ensure it's a string and validate/sanitize the color value to prevent CSS injection
+if ( is_string( $button_color ) ) {
+    $sanitized_color = sanitize_hex_color( $button_color );
+    // If sanitization succeeded, use the sanitized value
+    if ( ! empty( $sanitized_color ) ) {
+        $button_color = $sanitized_color;
+    } else {
+        // If sanitization failed, use default
+        $button_color = '#4f46e5';
+    }
+} else {
+    // If not a string, use default
+    $button_color = '#4f46e5';
+}
 ?>
 <style>
 /* Critical inline styles to prevent FOUC */
@@ -75,11 +96,10 @@ $button_color = wpuf_get_option( 'button_color', 'wpuf_subscription_settings', '
     
     <!-- Button Section -->
     <div class="wpuf-mt-6">
-        <?php if ( esc_attr( $current_pack_status ) == 'completed' ) : ?>
+        <?php if ( 'completed' === $current_pack_status ) : ?>
             <a class="wpuf-block wpuf-w-full wpuf-rounded-md wpuf-px-3 wpuf-py-2 wpuf-text-center wpuf-text-sm wpuf-font-semibold wpuf-text-gray-400 wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 wpuf-cursor-not-allowed wpuf-bg-gray-100 wpuf-leading-6"
-               href="javascript:void(0)" 
-               onclick="<?php echo esc_attr( $details_meta['onclick'] ); ?>">
-                <?php echo esc_html( $button_name ); ?>
+               href="javascript:void(0)">
+                <?php echo esc_html( is_string( $button_name ) ? $button_name : strval( $button_name ) ); ?>
             </a>
         <?php else : ?>
             <style>
@@ -352,9 +372,4 @@ $button_color = wpuf_get_option( 'button_color', 'wpuf_subscription_settings', '
 </div>
 
 <?php
-$action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
-
-if ( $action == 'wpuf_pay' || $coupon_status ) {
-    return;
-}
 ?>

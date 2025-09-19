@@ -61,29 +61,32 @@ if ( $packs ) {
             
             // Add event listener to the document
             document.addEventListener('click', function(e) {
-                // Check if clicked element has the toggle features data attribute
-                if (e.target && e.target.hasAttribute('data-wpuf-toggle-features')) {
+                // Find the controlling element with toggle features data attribute
+                // This handles clicks on the button itself or any child elements
+                const control = e.target.closest('[data-wpuf-toggle-features]');
+
+                if (control) {
                     e.preventDefault();
-                    
-                    const packId = e.target.getAttribute('data-wpuf-pack-id');
+
+                    const packId = control.getAttribute('data-wpuf-pack-id');
                     if (!packId) return;
-                    
+
                     // Get the specific pack's elements using the unique pack ID
                     const featuresList = document.getElementById('wpuf-features-list-' + packId);
                     const seeMoreBtn = document.getElementById('wpuf-see-more-btn-' + packId);
                     const seeLessBtn = document.getElementById('wpuf-see-less-btn-' + packId);
-                    
+
                     if (!featuresList || !seeMoreBtn || !seeLessBtn) {
                         console.warn('Elements not found for pack ID:', packId);
                         return;
                     }
-                    
+
                     // Only get expandable features from this specific pack
                     const expandableFeatures = featuresList.querySelectorAll('.wpuf-expandable-feature');
-                    
+
                     // Toggle visibility based on current state
-                    const isExpanded = e.target.getAttribute('data-expanded') === 'true';
-                    
+                    const isExpanded = control.getAttribute('data-expanded') === 'true';
+
                     if (isExpanded) {
                         // Currently expanded, collapse it
                         expandableFeatures.forEach(function(feature) {
@@ -91,6 +94,11 @@ if ( $packs ) {
                         });
                         seeMoreBtn.classList.remove('wpuf-hidden');
                         seeLessBtn.classList.add('wpuf-hidden');
+
+                        // Update control's state and ARIA attributes
+                        control.setAttribute('data-expanded', 'false');
+                        control.setAttribute('aria-expanded', 'false');
+                        seeMoreBtn.setAttribute('aria-expanded', 'false');
                     } else {
                         // Currently collapsed, expand it
                         expandableFeatures.forEach(function(feature) {
@@ -98,6 +106,11 @@ if ( $packs ) {
                         });
                         seeMoreBtn.classList.add('wpuf-hidden');
                         seeLessBtn.classList.remove('wpuf-hidden');
+
+                        // Update control's state and ARIA attributes
+                        control.setAttribute('data-expanded', 'true');
+                        control.setAttribute('aria-expanded', 'true');
+                        seeLessBtn.setAttribute('aria-expanded', 'true');
                     }
                 }
             });

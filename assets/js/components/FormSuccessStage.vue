@@ -1,6 +1,6 @@
 <template>
-    <div class="wpuf-ai-form-wrapper wpuf-font-sans wpuf-bg-white wpuf-w-full wpuf-h-screen wpuf-overflow-hidden wpuf-relative">
-        <div class="wpuf-ai-form-container wpuf-h-screen wpuf-overflow-hidden">
+    <div class="wpuf-ai-form-wrapper wpuf-font-sans wpuf-bg-white wpuf-w-full wpuf-min-h-screen wpuf-pb-20 md:wpuf-pb-16 lg:wpuf-pb-12 wpuf-relative">
+        <div class="wpuf-ai-form-container wpuf-min-h-[calc(100vh-5rem)] wpuf-flex wpuf-flex-col">
             <div class="wpuf-ai-form-content wpuf-bg-white wpuf-rounded-lg wpuf-h-full wpuf-flex wpuf-flex-col">
                 
                 <!-- Header Section -->
@@ -37,19 +37,11 @@
                     </div>
                 </div>
                 
-                <div class="wpuf-grid-container wpuf-flex wpuf-flex-col lg:wpuf-flex-row wpuf-gap-5 wpuf-p-2 sm:wpuf-p-5">
+                <div class="wpuf-grid-container wpuf-grid wpuf-grid-cols-1 lg:wpuf-grid-cols-[400px_1fr] wpuf-gap-5 wpuf-p-2 sm:wpuf-p-5">
                     <!-- Left Side - Chat Box -->
-                    <div class="wpuf-chat-box wpuf-w-full wpuf-h-[60vh] sm:wpuf-h-[70vh] md:wpuf-h-[75vh] lg:wpuf-h-[80vh] xl:wpuf-h-[85vh] wpuf-max-h-[1072px] wpuf-bg-slate-50 wpuf-border wpuf-border-slate-200 wpuf-rounded-lg wpuf-p-4 sm:wpuf-p-6 lg:wpuf-p-9 wpuf-flex wpuf-flex-col wpuf-shadow-md wpuf-overflow-hidden">
-                        <div class="wpuf-chat-header wpuf-mb-6 wpuf-pb-4 wpuf-border-b wpuf-border-slate-200 wpuf-flex-shrink-0">
-                            <div class="wpuf-flex wpuf-items-center wpuf-gap-3">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M8.625 9.75C8.625 9.95711 8.45711 10.125 8.25 10.125C8.04289 10.125 7.875 9.95711 7.875 9.75C7.875 9.54289 8.04289 9.375 8.25 9.375C8.45711 9.375 8.625 9.54289 8.625 9.75ZM8.625 9.75H8.25M12.375 9.75C12.375 9.95711 12.2071 10.125 12 10.125C11.7929 10.125 11.625 9.95711 11.625 9.75C11.625 9.54289 11.7929 9.375 12 9.375C12.2071 9.375 12.375 9.54289 12.375 9.75ZM12.375 9.75H12M16.125 9.75C16.125 9.95711 15.9571 10.125 15.75 10.125C15.5429 10.125 15.375 9.95711 15.375 9.75C15.375 9.54289 15.5429 9.375 15.75 9.375C15.9571 9.375 16.125 9.54289 16.125 9.75ZM16.125 9.75H15.75M2.25 12.7593C2.25 14.3604 3.37341 15.754 4.95746 15.987C6.04357 16.1467 7.14151 16.27 8.25 16.3556V21L12.4335 16.8165C12.6402 16.6098 12.9193 16.4923 13.2116 16.485C15.1872 16.4361 17.1331 16.2678 19.0425 15.9871C20.6266 15.7542 21.75 14.3606 21.75 12.7595V6.74056C21.75 5.13946 20.6266 3.74583 19.0425 3.51293C16.744 3.17501 14.3926 3 12.0003 3C9.60776 3 7.25612 3.17504 4.95747 3.51302C3.37342 3.74593 2.25 5.13956 2.25 6.74064V12.7593Z" stroke="#4B5563" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                                <h2 class="wpuf-success-title wpuf-text-lg wpuf-font-semibold wpuf-text-gray-800 wpuf-m-0">{{ __('WPUF Form Generation Chat', 'wp-user-frontend') }}</h2>
-                            </div>
-                        </div>
+                    <div class="wpuf-chat-box wpuf-h-[calc(100vh-14rem)] sm:wpuf-h-[calc(100vh-10rem)] wpuf-bg-slate-50 wpuf-border wpuf-border-slate-200 wpuf-rounded-lg wpuf-pt-6 wpuf-px-6 wpuf-flex wpuf-flex-col wpuf-shadow-md wpuf-overflow-hidden">
                         
-                        <div class="wpuf-chat-scrollable wpuf-flex-1 wpuf-overflow-y-auto wpuf-mb-4 wpuf-max-h-[calc(100vh-300px)]" ref="chatContainer" style="scrollbar-width: thin; scrollbar-color: #10B981 transparent;">
+                        <div class="wpuf-chat-scrollable wpuf-flex-1 wpuf-overflow-y-auto wpuf-max-h-[calc(100vh-300px)]" ref="chatContainer" style="scrollbar-width: thin; scrollbar-color: transparent transparent;" onmouseover="this.style.scrollbarColor='#10B981 transparent';" onmouseleave="this.style.scrollbarColor='transparent transparent';">
                             <div class="wpuf-chat-messages wpuf-flex wpuf-flex-col wpuf-gap-4">
                                 <div v-for="(message, index) in chatMessages" :key="index" 
                                      :class="message.type === 'user' ? 'wpuf-message-user wpuf-flex wpuf-justify-end' : 'wpuf-message-ai wpuf-flex wpuf-gap-3 wpuf-items-start'">
@@ -106,23 +98,26 @@
                             </div>
                         </div>
                         
-                        <div class="wpuf-chat-input-container wpuf-border-t wpuf-border-slate-200 wpuf-pt-4 wpuf-flex-shrink-0">
-                            <div class="wpuf-chat-input-wrapper wpuf-flex wpuf-gap-3 wpuf-items-end">
-                                <textarea 
+                        <div class="wpuf-chat-input-container wpuf-flex-shrink-0 wpuf-pb-3 wpuf-pt-4">
+                            <div class="wpuf-chat-input-wrapper wpuf-relative">
+                                <textarea
                                     v-model="userInput"
                                     @keyup.enter.prevent="handleSendMessage"
-                                    class="wpuf-chat-input wpuf-flex-1 wpuf-border wpuf-border-gray-300 wpuf-rounded-lg wpuf-p-3 wpuf-text-sm wpuf-resize-none wpuf-min-h-[44px] wpuf-max-h-[120px] wpuf-font-inherit wpuf-outline-none focus:wpuf-border-emerald-500 focus:wpuf-shadow-lg focus:wpuf-shadow-emerald-100"
+                                    class="wpuf-chat-input wpuf-w-full wpuf-border wpuf-border-gray-300 wpuf-rounded-lg wpuf-p-2 wpuf-pr-16 wpuf-text-base wpuf-resize-none wpuf-min-h-[98px] wpuf-max-h-[200px] wpuf-font-inherit wpuf-outline-none focus:wpuf-outline-none"
+                                    style="outline: none !important; box-shadow: none !important;"
+                                    @focus="$event.target.style.borderColor = '#10B981'; $event.target.style.boxShadow = '0 10px 15px -3px rgba(16, 185, 129, 0.1), 0 4px 6px -2px rgba(16, 185, 129, 0.05)';"
+                                    @blur="$event.target.style.borderColor = '#D1D5DB'; $event.target.style.boxShadow = 'none';"
                                     :placeholder="hasPendingButtons ? __('Please accept or reject the changes above', 'wp-user-frontend') : (isFormUpdating ? __('Please wait while form is being generated...', 'wp-user-frontend') : __('Type your message here...', 'wp-user-frontend'))"
                                     :disabled="isFormUpdating || hasPendingButtons"
                                     :class="{ 'wpuf-opacity-50 wpuf-cursor-not-allowed': isFormUpdating || hasPendingButtons }"
                                 ></textarea>
-                                <button 
-                                    @click="handleSendMessage" 
-                                    class="wpuf-send-button wpuf-bg-emerald-600 wpuf-text-white wpuf-border-none wpuf-rounded-lg wpuf-w-11 wpuf-h-11 wpuf-flex wpuf-items-center wpuf-justify-center wpuf-cursor-pointer wpuf-flex-shrink-0 hover:wpuf-bg-emerald-800 wpuf-transition-colors"
+                                <button
+                                    @click="handleSendMessage"
+                                    class="wpuf-send-button wpuf-absolute wpuf-bottom-3 wpuf-right-3 wpuf-bg-emerald-600 wpuf-text-white wpuf-border-none wpuf-rounded-full wpuf-w-10 wpuf-h-10 wpuf-flex wpuf-items-center wpuf-justify-center wpuf-cursor-pointer hover:wpuf-bg-emerald-800 wpuf-transition-colors"
                                     :disabled="isFormUpdating || hasPendingButtons"
                                     :class="{ 'wpuf-opacity-50 wpuf-cursor-not-allowed': isFormUpdating || hasPendingButtons }"
                                 >
-                                    <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <svg width="18" height="18" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M3.99972 10L1.2688 1.12451C7.88393 3.04617 14.0276 6.07601 19.4855 9.99974C14.0276 13.9235 7.884 16.9535 1.26889 18.8752L3.99972 10ZM3.99972 10L11.5 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
                                 </button>
@@ -131,7 +126,7 @@
                     </div>
                     
                     <!-- Right Side - Form Preview -->
-                    <div class="wpuf-form-preview wpuf-w-full wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-rounded-lg wpuf-p-4 sm:wpuf-p-6 lg:wpuf-p-8 wpuf-flex wpuf-flex-col wpuf-gap-6 wpuf-shadow-md wpuf-h-[60vh] sm:wpuf-h-[70vh] md:wpuf-h-[75vh] lg:wpuf-h-[80vh] xl:wpuf-h-[85vh] wpuf-max-h-[1072px] wpuf-relative" 
+                    <div class="wpuf-form-preview wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-rounded-lg wpuf-p-4 sm:wpuf-p-6 lg:wpuf-p-8 wpuf-flex wpuf-flex-col wpuf-gap-6 wpuf-shadow-md wpuf-h-[calc(100vh-12rem)] sm:wpuf-h-[calc(100vh-10rem)] wpuf-relative" 
                          :class="{ 'wpuf-form-updating': isFormUpdating }">
                         
                         <!-- Form Updating Overlay -->
@@ -152,7 +147,7 @@
                             <p v-if="formFields.length > 0" class="wpuf-form-description wpuf-font-normal wpuf-text-lg wpuf-leading-6 wpuf-tracking-normal wpuf-text-center wpuf-text-gray-500 wpuf-m-0">{{ formDescription || __('Please complete all information below', 'wp-user-frontend') }}</p>
                         </div>
                         
-                        <div class="wpuf-form-scrollable wpuf-flex-1 wpuf-overflow-y-auto wpuf-mb-4" style="scrollbar-width: thin; scrollbar-color: #10B981 transparent;">
+                        <div class="wpuf-form-scrollable wpuf-flex-1 wpuf-overflow-y-auto wpuf-mb-4" style="scrollbar-width: thin; scrollbar-color: transparent transparent;" onmouseover="this.style.scrollbarColor='#10B981 transparent';" onmouseleave="this.style.scrollbarColor='transparent transparent';">
                             <!-- Empty State -->
                             <div v-if="formFields.length === 0 && !isFormUpdating" class="wpuf-empty-state wpuf-flex wpuf-flex-col wpuf-items-center wpuf-justify-center wpuf-h-full wpuf-min-h-[300px]">
                                 <!-- Show loading spinner when waiting for AI -->

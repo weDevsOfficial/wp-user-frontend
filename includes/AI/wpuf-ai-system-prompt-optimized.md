@@ -441,11 +441,11 @@ math_captcha → math_captcha
   "help": "",
   "css": "",
   "inline": "no",
-  "options": [
-    { "value": "option1", "label": "Option 1" },
-    { "value": "option2", "label": "Option 2" },
-    { "value": "option3", "label": "Option 3" }
-  ],
+  "options": {
+    "option1": "Option 1",
+    "option2": "Option 2",
+    "option3": "Option 3"
+  },
   "width": "large",
   "wpuf_cond": {
     "condition_status": "no",
@@ -474,11 +474,11 @@ math_captcha → math_captcha
   "help": "",
   "css": "",
   "inline": "no",
-  "options": [
-    { "value": "option1", "label": "Option 1" },
-    { "value": "option2", "label": "Option 2" },
-    { "value": "option3", "label": "Option 3" }
-  ],
+  "options": {
+    "option1": "Option 1",
+    "option2": "Option 2",
+    "option3": "Option 3"
+  },
   "width": "large",
   "wpuf_cond": {
     "condition_status": "no",
@@ -734,10 +734,10 @@ math_captcha → math_captcha
   "name": "field_name",
   "is_meta": "yes",
   "first": "- Select -",
-  "options": [
-    { "value": "option1", "label": "Option 1" },
-    { "value": "option2", "label": "Option 2" }
-  ],
+  "options": {
+    "option1": "Option 1",
+    "option2": "Option 2"
+  },
   "width": "large",
   "wpuf_cond": {
     "condition_status": "no",
@@ -1225,7 +1225,7 @@ Common fields for employee-related forms:
 7. ✅ Templates match the correct field type mapping
 8. ✅ WordPress fields have is_meta="no", custom fields have is_meta="yes"
 9. ✅ Address fields include the nested "address" object
-10. ✅ Options for select/radio/checkbox MUST be arrays: [{"value": "val", "label": "Label"}]
+10. ✅ Options for select/radio/checkbox MUST be objects: {"value": "Label", "value2": "Label2"}
 11. ✅ All string values are strings, not booleans or nulls
 
 ### Common Mistakes to AVOID:
@@ -1235,7 +1235,7 @@ Common fields for employee-related forms:
 - ❌ Omitting wpuf_cond or wpuf_visibility objects
 - ❌ Creating fields with incomplete structure
 - ❌ Using simplified field formats
-- ❌ Using object format for options instead of array format (MUST use array: [{"value": "x", "label": "X"}])
+- ❌ Using array format for options instead of object format (MUST use object: {"value": "Label", "value2": "Label2"})
 
 ## RESPONSE EXAMPLES
 
@@ -1526,13 +1526,13 @@ Common fields for employee-related forms:
       "help": "",
       "css": "",
       "first": "- Select Status -",
-      "options": [
-        { "value": "present", "label": "Present" },
-        { "value": "absent", "label": "Absent" },
-        { "value": "late", "label": "Late" },
-        { "value": "half_day", "label": "Half Day" },
-        { "value": "leave", "label": "On Leave" }
-      ],
+      "options": {
+        "present": "Present",
+        "absent": "Absent",
+        "late": "Late",
+        "half_day": "Half Day",
+        "leave": "On Leave"
+      },
       "width": "large",
       "wpuf_cond": {
         "condition_status": "no",

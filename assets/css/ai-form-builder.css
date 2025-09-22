@@ -5175,6 +5175,10 @@ details.wpuf-collapse summary::-webkit-details-marker {
   border-radius: 1.5rem;
 }
 
+.wpuf-rounded-\[10px\] {
+  border-radius: 10px;
+}
+
 .wpuf-rounded-\[5px\] {
   border-radius: 5px;
 }
@@ -5384,6 +5388,11 @@ details.wpuf-collapse summary::-webkit-details-marker {
 
 .\!wpuf-border-transparent {
   border-color: transparent !important;
+}
+
+.wpuf-border-\[\#E3E5E8\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(227 229 232 / var(--tw-border-opacity));
 }
 
 .wpuf-border-blue-200 {
@@ -6210,6 +6219,10 @@ details.wpuf-collapse summary::-webkit-details-marker {
 
 .wpuf-text-\[14px\] {
   font-size: 14px;
+}
+
+.wpuf-text-\[16px\] {
+  font-size: 16px;
 }
 
 .wpuf-text-\[17px\] {

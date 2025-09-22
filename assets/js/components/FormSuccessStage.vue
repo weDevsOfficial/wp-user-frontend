@@ -16,19 +16,19 @@
                         </svg>
                         <div>
                             <h1 class="wpuf-text-2xl wpuf-font-semibold wpuf-text-gray-900 wpuf-m-0">{{ __('AI Form Builder', 'wp-user-frontend') }}</h1>
-                            <p class="wpuf-text-sm wpuf-text-gray-500 wpuf-m-0">{{ __('Generate forms instantly with AI assistance', 'wp-user-frontend') }}</p>
+                            <p class="wpuf-text-base wpuf-leading-6 wpuf-text-gray-500 wpuf-m-0">{{ __('Generate forms instantly with AI assistance', 'wp-user-frontend') }}</p>
                         </div>
                     </div>
                     
                     <!-- Right Side - Buttons -->
                     <div class="wpuf-flex wpuf-gap-3">
-                        <button @click="handleRegenerate" class="wpuf-btn-regenerate wpuf-bg-white wpuf-text-gray-500 wpuf-border wpuf-border-gray-300 wpuf-py-2 wpuf-px-4 wpuf-rounded-lg wpuf-text-sm wpuf-cursor-pointer wpuf-flex wpuf-items-center wpuf-gap-2 wpuf-transition-all hover:wpuf-bg-gray-50 hover:wpuf-border-gray-400">
+                        <button @click="handleRegenerate" class="wpuf-btn-regenerate wpuf-bg-white wpuf-text-gray-500 wpuf-border wpuf-border-[#E3E5E8] wpuf-py-2 wpuf-px-4 wpuf-rounded-lg wpuf-text-base wpuf-leading-6 wpuf-cursor-pointer wpuf-flex wpuf-items-center wpuf-gap-2 wpuf-transition-all hover:wpuf-bg-white hover:wpuf-border-gray-400">
                             {{ __('Regenerate', 'wp-user-frontend') }}
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M13.3523 7.79032H17.5128V7.78884M2.48682 16.3703V12.2098M2.48682 12.2098L6.64735 12.2098M2.48682 12.2098L5.13756 14.8622C5.963 15.6892 7.01055 16.3166 8.22034 16.6408C11.8879 17.6235 15.6577 15.447 16.6405 11.7794M3.35898 8.22068C4.3417 4.5531 8.11152 2.37659 11.7791 3.35932C12.9889 3.68348 14.0365 4.31091 14.8619 5.1379L17.5128 7.78884M17.5128 3.62982V7.78884" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </button>
-                        <button @click="handleEditInBuilder" class="wpuf-btn-edit-builder wpuf-bg-emerald-600 wpuf-text-white wpuf-border-none wpuf-py-2 wpuf-px-4 wpuf-rounded-lg wpuf-text-sm wpuf-cursor-pointer wpuf-flex wpuf-items-center wpuf-gap-2 wpuf-transition-colors hover:wpuf-bg-emerald-800">
+                        <button @click="handleEditInBuilder" class="wpuf-btn-edit-builder wpuf-bg-emerald-600 wpuf-text-white wpuf-border-none wpuf-py-2 wpuf-px-4 wpuf-rounded-lg wpuf-text-base wpuf-leading-6 wpuf-cursor-pointer wpuf-flex wpuf-items-center wpuf-gap-2 wpuf-transition-colors hover:wpuf-bg-emerald-800">
                             {{ __('Edit in Builder', 'wp-user-frontend') }}
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M16.8898 3.11019L17.4201 2.57986V2.57986L16.8898 3.11019ZM5.41667 17.5296V18.2796C5.61558 18.2796 5.80634 18.2005 5.947 18.0599L5.41667 17.5296ZM2.5 17.5296H1.75C1.75 17.9438 2.08579 18.2796 2.5 18.2796V17.5296ZM2.5 14.5537L1.96967 14.0233C1.82902 14.164 1.75 14.3548 1.75 14.5537H2.5ZM13.9435 3.11019L14.4738 3.64052C14.9945 3.11983 15.8387 3.11983 16.3594 3.64052L16.8898 3.11019L17.4201 2.57986C16.3136 1.47338 14.5196 1.47338 13.4132 2.57986L13.9435 3.11019ZM16.8898 3.11019L16.3594 3.64052C16.8801 4.16122 16.8801 5.00544 16.3594 5.52614L16.8898 6.05647L17.4201 6.5868C18.5266 5.48032 18.5266 3.68635 17.4201 2.57986L16.8898 3.11019ZM16.8898 6.05647L16.3594 5.52614L4.88634 16.9992L5.41667 17.5296L5.947 18.0599L17.4201 6.5868L16.8898 6.05647ZM5.41667 17.5296V16.7796H2.5V17.5296V18.2796H5.41667V17.5296ZM13.9435 3.11019L13.4132 2.57986L1.96967 14.0233L2.5 14.5537L3.03033 15.084L14.4738 3.64052L13.9435 3.11019ZM2.5 14.5537H1.75V17.5296H2.5H3.25V14.5537H2.5ZM12.6935 4.36019L12.1632 4.89052L15.1094 7.8368L15.6398 7.30647L16.1701 6.77614L13.2238 3.82986L12.6935 4.36019Z" fill="white"/>
@@ -48,8 +48,8 @@
                                     
                                     <!-- User Message -->
                                     <div v-if="message.type === 'user'">
-                                        <div class="wpuf-py-3 wpuf-px-4 wpuf-rounded-2xl wpuf-w-full wpuf-bg-[#ECFDF5] wpuf-text-emerald-800 wpuf-rounded-br wpuf-font-normal wpuf-leading-6" style="font-size: 1.25rem !important;">
-                                            <p class="wpuf-text-base wpuf-m-0">{{ message.content }}</p>
+                                        <div class="wpuf-py-3 wpuf-px-4 wpuf-rounded-2xl wpuf-w-full wpuf-bg-[#ECFDF5] wpuf-text-emerald-800 wpuf-rounded-br wpuf-font-normal wpuf-leading-6" style="font-size: 16px !important;">
+                                            {{ message.content }}
                                         </div>
                                     </div>
                                     
@@ -62,14 +62,14 @@
                                             <path d="M23.8896 11H19.8924V13.4865H23.8896C24.2315 13.4865 24.5127 13.7622 24.5127 14.1096C24.5127 14.4514 24.237 14.7271 23.8896 14.7271H19.8924V17.2136H23.8896C25.6043 17.2136 26.9992 15.8187 26.9992 14.104C26.9992 12.3949 25.6043 11 23.8896 11Z" fill="white"/>
                                             <path d="M15.3767 14.7296H10.2548L11.0046 17.2161H15.3767V14.7296Z" fill="white"/>
                                         </svg>
-                                        <div class="wpuf-flex-1 wpuf-flex-1">
+                                        <div class="wpuf-flex-1">
                                             <div class="wpuf-message-bubble wpuf-message-bubble-ai wpuf-py-3 wpuf-px-4 wpuf-rounded-2xl wpuf-w-full wpuf-bg-white wpuf-text-gray-600 wpuf-rounded-bl wpuf-text-base" style="color: #4B5563 !important; font-size: 1rem !important;">
-                                                <p class="wpuf-text-gray-600 wpuf-text-base wpuf-m-0" v-html="message.content"></p>
+                                                <p class="wpuf-text-gray-600 wpuf-text-[16px] wpuf-m-0" v-html="message.content"></p>
                                                 <div v-if="message.showButtons" class="wpuf-message-actions wpuf-mt-3 wpuf-flex wpuf-gap-2">
-                                                    <button @click="handleAccept" :disabled="isApplying" class="wpuf-btn-accept wpuf-bg-emerald-600 wpuf-text-white wpuf-border-none wpuf-py-1.5 wpuf-px-3 wpuf-rounded wpuf-text-sm wpuf-cursor-pointer wpuf-transition-colors hover:wpuf-bg-emerald-800 disabled:wpuf-bg-gray-400 disabled:wpuf-cursor-not-allowed">
+                                                    <button @click="handleAccept" :disabled="isApplying" class="wpuf-btn-accept wpuf-bg-emerald-600 wpuf-text-white wpuf-border-none wpuf-py-1.5 wpuf-px-3 wpuf-rounded wpuf-text-base wpuf-leading-6 wpuf-cursor-pointer wpuf-transition-colors hover:wpuf-bg-emerald-800 disabled:wpuf-bg-gray-400 disabled:wpuf-cursor-not-allowed">
                                                         {{ __('Accept', 'wp-user-frontend') }}
                                                     </button>
-                                                    <button @click="handleReject" :disabled="isApplying" class="wpuf-btn-reject wpuf-bg-red-600 wpuf-text-white wpuf-border-none wpuf-py-1.5 wpuf-px-3 wpuf-rounded wpuf-text-sm wpuf-cursor-pointer wpuf-transition-colors hover:wpuf-bg-red-800 disabled:wpuf-bg-gray-400 disabled:wpuf-cursor-not-allowed">{{ __('Reject', 'wp-user-frontend') }}</button>
+                                                    <button @click="handleReject" :disabled="isApplying" class="wpuf-btn-reject wpuf-bg-red-600 wpuf-text-white wpuf-border-none wpuf-py-1.5 wpuf-px-3 wpuf-rounded wpuf-text-base wpuf-leading-6 wpuf-cursor-pointer wpuf-transition-colors hover:wpuf-bg-red-800 disabled:wpuf-bg-gray-400 disabled:wpuf-cursor-not-allowed">{{ __('Reject', 'wp-user-frontend') }}</button>
                                                 </div>
                                                 <!-- Accepted status indicator -->
                                                 <div v-if="message.acceptedStatus" class="wpuf-accepted-status wpuf-mt-2 wpuf-text-xs wpuf-text-green-600">
@@ -89,7 +89,7 @@
                                                     </button>
                                                 </div>
                                             </div>
-                                            <div v-if="message.status && isStatusVisible(index)" class="wpuf-message-status wpuf-mt-2 wpuf-font-normal wpuf-italic wpuf-text-sm wpuf-leading-6 wpuf-tracking-normal wpuf-text-right wpuf-text-emerald-600 wpuf-transition-all wpuf-duration-500" :class="{'wpuf-opacity-100': isStatusVisible(index), 'wpuf-opacity-0': !isStatusVisible(index)}">
+                                            <div v-if="message.status && isStatusVisible(index)" class="wpuf-message-status wpuf-mt-2 wpuf-font-normal wpuf-italic wpuf-text-base wpuf-leading-6 wpuf-leading-6 wpuf-tracking-normal wpuf-text-right wpuf-text-emerald-600 wpuf-transition-all wpuf-duration-500" :class="{'wpuf-opacity-100': isStatusVisible(index), 'wpuf-opacity-0': !isStatusVisible(index)}">
                                                 <span>{{ message.status }}</span>
                                             </div>
                                         </div>
@@ -103,7 +103,7 @@
                                 <textarea
                                     v-model="userInput"
                                     @keyup.enter.prevent="handleSendMessage"
-                                    class="wpuf-chat-input wpuf-w-full wpuf-border wpuf-border-gray-300 wpuf-rounded-lg wpuf-p-2 wpuf-pr-16 wpuf-text-base wpuf-resize-none wpuf-min-h-[98px] wpuf-max-h-[200px] wpuf-font-inherit wpuf-outline-none focus:wpuf-outline-none"
+                                    class="wpuf-chat-input wpuf-w-full wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-lg wpuf-p-2 wpuf-pr-16 wpuf-text-base wpuf-resize-none wpuf-min-h-[98px] wpuf-max-h-[200px] wpuf-font-inherit wpuf-outline-none focus:wpuf-outline-none"
                                     style="outline: none !important; box-shadow: none !important;"
                                     @focus="$event.target.style.borderColor = '#10B981'; $event.target.style.boxShadow = '0 10px 15px -3px rgba(16, 185, 129, 0.1), 0 4px 6px -2px rgba(16, 185, 129, 0.05)';"
                                     @blur="$event.target.style.borderColor = '#D1D5DB'; $event.target.style.boxShadow = 'none';"
@@ -164,8 +164,8 @@
                                 </svg>
                                 <p v-if="isWaitingForAI" class="wpuf-text-gray-700 wpuf-text-lg wpuf-text-center wpuf-mb-2 wpuf-font-medium">{{ __('Your form is being generated', 'wp-user-frontend') }}</p>
                                 <p v-else class="wpuf-text-gray-500 wpuf-text-lg wpuf-text-center wpuf-mb-2">{{ __('No form fields yet', 'wp-user-frontend') }}</p>
-                                <p v-if="isWaitingForAI" class="wpuf-text-gray-500 wpuf-text-sm wpuf-text-center wpuf-animate-pulse">{{ __('Please wait...', 'wp-user-frontend') }}</p>
-                                <p v-else class="wpuf-text-gray-400 wpuf-text-sm wpuf-text-center">{{ __('Use the chat to create your form', 'wp-user-frontend') }}</p>
+                                <p v-if="isWaitingForAI" class="wpuf-text-gray-500 wpuf-text-base wpuf-leading-6 wpuf-text-center wpuf-animate-pulse">{{ __('Please wait...', 'wp-user-frontend') }}</p>
+                                <p v-else class="wpuf-text-gray-400 wpuf-text-base wpuf-leading-6 wpuf-text-center">{{ __('Use the chat to create your form', 'wp-user-frontend') }}</p>
                             </div>
                             
                             <!-- Form Fields -->
@@ -178,11 +178,11 @@
                                     </label>
                                     
                                     <!-- Help Text -->
-                                    <p v-if="field.help_text" class="wpuf-field-help wpuf-text-sm wpuf-text-gray-500 wpuf-m-0 wpuf-mb-1">{{ field.help_text }}</p>
+                                    <p v-if="field.help_text" class="wpuf-field-help wpuf-text-base wpuf-leading-6 wpuf-text-gray-500 wpuf-m-0 wpuf-mb-1">{{ field.help_text }}</p>
                                     
                                     <!-- WPUF Text Fields -->
                                     <div v-if="['text', 'email', 'url', 'number', 'tel', 'post_title'].includes(getWPUFFieldType(field))" 
-                                         class="wpuf-form-input wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-p-3 wpuf-text-sm wpuf-bg-gray-50"
+                                         class="wpuf-form-input wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white"
                                          :class="''"
                                     >
                                         <span class="wpuf-text-gray-400">{{ field.placeholder || field.help || 'Enter text' }}</span>
@@ -190,7 +190,7 @@
                                     
                                     <!-- WPUF Dropdown/Select -->
                                     <div v-else-if="['select', 'dropdown', 'dropdown_field'].includes(getWPUFFieldType(field))" class="wpuf-form-select-container">
-                                        <div class="wpuf-form-input wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-p-3 wpuf-text-sm wpuf-bg-gray-50 wpuf-flex wpuf-items-center wpuf-justify-between wpuf-cursor-pointer"
+                                        <div class="wpuf-form-input wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white wpuf-flex wpuf-items-center wpuf-justify-between wpuf-cursor-pointer"
                                              :class="''"
                                              style="background-image: none;"
                                         >
@@ -203,39 +203,39 @@
                                     
                                     <!-- WPUF Radio Buttons -->
                                     <div v-else-if="getWPUFFieldType(field) === 'radio'" class="wpuf-form-radio-container">
-                                        <div class="wpuf-radio-group wpuf-flex wpuf-flex-col wpuf-gap-2" :class="field.required ? 'wpuf-border wpuf-rounded wpuf-p-3' : ''">
+                                        <div class="wpuf-radio-group wpuf-flex wpuf-flex-col wpuf-gap-2" :class="field.required ? 'wpuf-border wpuf-rounded-[10px] wpuf-p-3' : ''">
                                             <template v-if="field.options && field.options.length">
                                                 <div v-for="option in field.options" :key="option.value" class="wpuf-radio-option wpuf-flex wpuf-items-center wpuf-gap-2">
                                                     <input type="radio" :name="`field_${field.id}`" :value="option.value" disabled class="wpuf-radio-input wpuf-text-emerald-600">
-                                                    <label class="wpuf-radio-label wpuf-text-sm wpuf-text-gray-700">{{ option.label }}</label>
+                                                    <label class="wpuf-radio-label wpuf-text-base wpuf-leading-6 wpuf-text-gray-700">{{ option.label }}</label>
                                                 </div>
                                             </template>
-                                            <div v-else class="wpuf-text-gray-400 wpuf-text-sm">{{ __('No options configured', 'wp-user-frontend') }}</div>
+                                            <div v-else class="wpuf-text-gray-400 wpuf-text-base wpuf-leading-6">{{ __('No options configured', 'wp-user-frontend') }}</div>
                                         </div>
                                     </div>
                                     
                                     <!-- WPUF Checkboxes -->
                                     <div v-else-if="['checkbox_field', 'checkbox'].includes(field.type)" class="wpuf-form-checkbox-container">
-                                        <div class="wpuf-checkbox-group wpuf-flex wpuf-flex-col wpuf-gap-2" :class="field.required ? 'wpuf-border wpuf-rounded wpuf-p-3' : ''">
+                                        <div class="wpuf-checkbox-group wpuf-flex wpuf-flex-col wpuf-gap-2" :class="field.required ? 'wpuf-border wpuf-rounded-[10px] wpuf-p-3' : ''">
                                             <template v-if="field.options && field.options.length">
                                                 <div v-for="option in field.options" :key="option.value" class="wpuf-checkbox-option wpuf-flex wpuf-items-center wpuf-gap-2">
                                                     <input type="checkbox" :value="option.value" disabled class="wpuf-checkbox-input wpuf-text-emerald-600">
-                                                    <label class="wpuf-checkbox-label wpuf-text-sm wpuf-text-gray-700">{{ option.label }}</label>
+                                                    <label class="wpuf-checkbox-label wpuf-text-base wpuf-leading-6 wpuf-text-gray-700">{{ option.label }}</label>
                                                 </div>
                                             </template>
-                                            <div v-else class="wpuf-text-gray-400 wpuf-text-sm">{{ __('No options configured', 'wp-user-frontend') }}</div>
+                                            <div v-else class="wpuf-text-gray-400 wpuf-text-base wpuf-leading-6">{{ __('No options configured', 'wp-user-frontend') }}</div>
                                         </div>
                                     </div>
                                     
                                     <!-- WPUF Terms of Conditions (ToC) -->
                                     <div v-else-if="field.type === 'toc'" class="wpuf-form-toc-container">
-                                        <div class="wpuf-toc-wrapper wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-p-4 wpuf-bg-gray-50">
-                                            <div v-if="field.toc_text" class="wpuf-toc-text wpuf-text-sm wpuf-text-gray-600 wpuf-mb-3">
+                                        <div class="wpuf-toc-wrapper wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-4 wpuf-bg-white">
+                                            <div v-if="field.toc_text" class="wpuf-toc-text wpuf-text-base wpuf-leading-6 wpuf-text-gray-600 wpuf-mb-3">
                                                 {{ field.toc_text }}
                                             </div>
                                             <div class="wpuf-toc-checkbox wpuf-flex wpuf-items-start wpuf-gap-2">
                                                 <input type="checkbox" disabled class="wpuf-checkbox-input wpuf-text-emerald-600 wpuf-mt-1">
-                                                <label class="wpuf-checkbox-label wpuf-text-sm wpuf-font-medium wpuf-text-gray-700">
+                                                <label class="wpuf-checkbox-label wpuf-text-base wpuf-leading-6 wpuf-font-medium wpuf-text-gray-700">
                                                     {{ field.description || 'I agree to the terms and conditions' }}
                                                 </label>
                                             </div>
@@ -244,7 +244,7 @@
                                     
                                     <!-- WPUF File Upload -->
                                     <div v-else-if="['image_upload', 'file', 'featured_image', 'file_upload'].includes(getWPUFFieldType(field))" 
-                                         class="wpuf-form-file wpuf-border-2 wpuf-border-dashed wpuf-border-gray-300 wpuf-rounded wpuf-p-5 wpuf-flex wpuf-flex-col wpuf-items-center wpuf-gap-2 wpuf-bg-gray-50 wpuf-text-gray-500 wpuf-text-center wpuf-text-sm"
+                                         class="wpuf-form-file wpuf-border-2 wpuf-border-dashed wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-5 wpuf-flex wpuf-flex-col wpuf-items-center wpuf-gap-2 wpuf-bg-white wpuf-text-gray-500 wpuf-text-center wpuf-text-base wpuf-leading-6"
                                          :class="''"
                                     >
                                         <svg class="wpuf-file-icon wpuf-w-8 wpuf-h-8 wpuf-text-gray-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -258,7 +258,7 @@
                                     
                                     <!-- WPUF Textarea -->
                                     <div v-else-if="['textarea', 'post_content', 'post_excerpt'].includes(getWPUFFieldType(field))" 
-                                         class="wpuf-form-textarea wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-p-3 wpuf-text-sm wpuf-bg-gray-50 wpuf-min-h-[100px] wpuf-relative"
+                                         class="wpuf-form-textarea wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white wpuf-min-h-[100px] wpuf-relative"
                                          :class="''"
                                     >
                                         <span class="wpuf-text-gray-400">{{ field.placeholder || field.help || __('Enter your text here...', 'wp-user-frontend') }}</span>
@@ -266,7 +266,7 @@
                                     
                                     <!-- WPUF Multiple Select -->
                                     <div v-else-if="['multiple_select', 'country_list_field'].includes(field.type)" class="wpuf-form-multiselect-container">
-                                        <div class="wpuf-form-input wpuf-multiselect wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-p-3 wpuf-text-sm wpuf-bg-gray-50"
+                                        <div class="wpuf-form-input wpuf-multiselect wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white"
                                              :class="''"
                                         >
                                             <span class="wpuf-text-gray-400">{{ field.placeholder || getFieldPlaceholder(field.type) }}</span>
@@ -276,7 +276,7 @@
                                     
                                     <!-- WPUF Date/Time Fields -->
                                     <div v-else-if="field.input_type === 'date' || field.template === 'date_field' || ['date_field', 'time_field', 'date', 'time', 'datetime'].includes(field.type)" 
-                                         class="wpuf-form-input wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-p-3 wpuf-text-sm wpuf-bg-gray-50 wpuf-flex wpuf-items-center wpuf-justify-between"
+                                         class="wpuf-form-input wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white wpuf-flex wpuf-items-center wpuf-justify-between"
                                          :class="''"
                                     >
                                         <span class="wpuf-text-gray-400">{{ field.placeholder || 'Select date' }}</span>
@@ -287,7 +287,7 @@
                                     
                                     <!-- WPUF Pro Rating Fields -->
                                     <div v-else-if="['ratings', 'linear_scale'].includes(field.type)" class="wpuf-form-rating-container">
-                                        <div class="wpuf-rating-display wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-p-3 wpuf-text-sm wpuf-bg-gray-50 wpuf-flex wpuf-items-center wpuf-gap-2"
+                                        <div class="wpuf-rating-display wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white wpuf-flex wpuf-items-center wpuf-gap-2"
                                              :class="''"
                                         >
                                             <template v-if="field.type === 'ratings'">
@@ -295,7 +295,7 @@
                                             </template>
                                             <template v-else>
                                                 <span class="wpuf-text-gray-400">{{ __('1', 'wp-user-frontend') }}</span>
-                                                <div class="wpuf-flex-1 wpuf-bg-gray-200 wpuf-h-2 wpuf-rounded"></div>
+                                                <div class="wpuf-flex-1 wpuf-bg-gray-200 wpuf-h-2 wpuf-rounded-[10px]"></div>
                                                 <span class="wpuf-text-gray-400">{{ __('10', 'wp-user-frontend') }}</span>
                                             </template>
                                         </div>
@@ -303,7 +303,7 @@
                                     
                                     <!-- WPUF Pro Grid Fields -->
                                     <div v-else-if="['checkbox_grid', 'multiple_choice_grid'].includes(field.type)" class="wpuf-form-grid-container">
-                                        <div class="wpuf-grid-preview wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-p-4 wpuf-text-sm wpuf-bg-gray-50"
+                                        <div class="wpuf-grid-preview wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-4 wpuf-text-base wpuf-leading-6 wpuf-bg-white"
                                              :class="''"
                                         >
                                             <div class="wpuf-grid-header wpuf-flex wpuf-items-center wpuf-gap-4 wpuf-mb-3">
@@ -323,7 +323,7 @@
                                     
                                     <!-- WPUF Pro Special Fields -->
                                     <div v-else-if="['google_map', 'address_field', 'embed', 'qr_code'].includes(field.type)" 
-                                         class="wpuf-form-special wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-p-5 wpuf-text-center wpuf-bg-gray-50"
+                                         class="wpuf-form-special wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-5 wpuf-text-center wpuf-bg-white"
                                          :class="''"
                                     >
                                         <div class="wpuf-special-icon wpuf-text-gray-400 wpuf-mb-2">
@@ -343,20 +343,20 @@
                                     
                                     <!-- WPUF Pro Captcha Fields -->
                                     <div v-else-if="['really_simple_captcha', 'math_captcha'].includes(field.type)" 
-                                         class="wpuf-form-captcha wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-p-4 wpuf-text-center wpuf-bg-gray-50"
+                                         class="wpuf-form-captcha wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-4 wpuf-text-center wpuf-bg-white"
                                          :class="''"
                                     >
-                                        <div class="wpuf-captcha-display wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-rounded wpuf-p-3 wpuf-mb-3 wpuf-text-lg wpuf-font-mono">
+                                        <div class="wpuf-captcha-display wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-rounded-[10px] wpuf-p-3 wpuf-mb-3 wpuf-text-lg wpuf-font-mono">
                                             {{ field.type === 'math_captcha' ? '3 + 5 = ?' : 'CAPTCHA' }}
                                         </div>
-                                        <input type="text" :placeholder="__('Enter code', 'wp-user-frontend')" disabled class="wpuf-w-full wpuf-p-2 wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-text-center">
+                                        <input type="text" :placeholder="__('Enter code', 'wp-user-frontend')" disabled class="wpuf-w-full wpuf-p-2 wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-text-center">
                                     </div>
                                     
                                     <!-- WPUF Taxonomy (Category) Field -->
                                     <div v-else-if="field.type === 'taxonomy'" 
                                          class="wpuf-form-select-container"
                                     >
-                                        <div class="wpuf-form-input wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-p-3 wpuf-text-sm wpuf-bg-gray-50 wpuf-flex wpuf-items-center wpuf-justify-between wpuf-cursor-pointer"
+                                        <div class="wpuf-form-input wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white wpuf-flex wpuf-items-center wpuf-justify-between wpuf-cursor-pointer"
                                              :class="field.required ? 'wpuf-border-blue-300' : ''"
                                              style="background-image: none;"
                                         >
@@ -369,7 +369,7 @@
                                     
                                     <!-- WPUF Post Fields -->
                                     <div v-else-if="['post_title', 'post_content', 'post_excerpt', 'post_tags'].includes(field.type)" 
-                                         class="wpuf-form-post-field wpuf-border wpuf-border-blue-200 wpuf-bg-blue-50 wpuf-rounded wpuf-p-3"
+                                         class="wpuf-form-post-field wpuf-border wpuf-border-blue-200 wpuf-bg-blue-50 wpuf-rounded-[10px] wpuf-p-3"
                                          :class="field.required ? 'wpuf-border-blue-300' : ''"
                                     >
                                         <div class="wpuf-flex wpuf-items-center wpuf-gap-2 wpuf-mb-2">
@@ -378,19 +378,19 @@
                                             </svg>
                                             <span class="wpuf-text-blue-800 wpuf-font-medium">{{ field.label }}</span>
                                         </div>
-                                        <div class="wpuf-text-blue-600 wpuf-text-sm">{{ field.placeholder || getFieldPlaceholder(field.type) }}</div>
+                                        <div class="wpuf-text-blue-600 wpuf-text-base wpuf-leading-6">{{ field.placeholder || getFieldPlaceholder(field.type) }}</div>
                                     </div>
                                     
                                     <!-- WPUF Layout Fields -->
                                     <div v-else-if="['section_break', 'column_field', 'step_start'].includes(field.type)" 
-                                         class="wpuf-form-layout wpuf-border-2 wpuf-border-dashed wpuf-border-purple-300 wpuf-bg-purple-50 wpuf-rounded wpuf-p-4 wpuf-text-center"
+                                         class="wpuf-form-layout wpuf-border-2 wpuf-border-dashed wpuf-border-purple-300 wpuf-bg-purple-50 wpuf-rounded-[10px] wpuf-p-4 wpuf-text-center"
                                     >
                                         <div class="wpuf-text-purple-600 wpuf-font-medium">{{ field.label }}</div>
                                     </div>
                                     
                                     <!-- WPUF Custom Fields -->
                                     <div v-else-if="['custom_html', 'shortcode', 'action_hook'].includes(field.type)" 
-                                         class="wpuf-form-custom wpuf-border wpuf-border-yellow-300 wpuf-bg-yellow-50 wpuf-rounded wpuf-p-4"
+                                         class="wpuf-form-custom wpuf-border wpuf-border-yellow-300 wpuf-bg-yellow-50 wpuf-rounded-[10px] wpuf-p-4"
                                     >
                                         <div class="wpuf-flex wpuf-items-center wpuf-gap-2 wpuf-mb-2">
                                             <svg class="wpuf-w-4 wpuf-h-4 wpuf-text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -398,16 +398,16 @@
                                             </svg>
                                             <span class="wpuf-text-yellow-800 wpuf-font-medium">{{ field.label }}</span>
                                         </div>
-                                        <div class="wpuf-text-yellow-600 wpuf-text-sm">{{ field.placeholder || getFieldPlaceholder(field.type) }}</div>
+                                        <div class="wpuf-text-yellow-600 wpuf-text-base wpuf-leading-6">{{ field.placeholder || getFieldPlaceholder(field.type) }}</div>
                                     </div>
                                     
                                     <!-- Fallback for unknown field types -->
-                                    <div v-else class="wpuf-form-input wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-p-3 wpuf-text-sm wpuf-bg-gray-100 wpuf-flex wpuf-items-center wpuf-gap-2">
+                                    <div v-else class="wpuf-form-input wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white wpuf-flex wpuf-items-center wpuf-gap-2">
                                         <span class="wpuf-text-gray-500">{{ field.placeholder || __('Custom field', 'wp-user-frontend') }}</span>
                                     </div>
                                     
                                     <!-- Default Value Display -->
-                                    <div v-if="field.default" class="wpuf-field-default wpuf-text-sm wpuf-text-blue-600 wpuf-flex wpuf-items-center wpuf-gap-1">
+                                    <div v-if="field.default" class="wpuf-field-default wpuf-text-base wpuf-leading-6 wpuf-text-blue-600 wpuf-flex wpuf-items-center wpuf-gap-1">
                                         <svg class="wpuf-w-4 wpuf-h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                         </svg>
@@ -418,7 +418,7 @@
                         </div>
                         
                         <div class="wpuf-form-footer wpuf-border-t wpuf-border-gray-200 wpuf-pt-4 wpuf-flex-shrink-0">
-                            <button @click="handleEditWithBuilder" class="wpuf-btn-edit-full wpuf-bg-emerald-600 wpuf-text-white wpuf-border-none wpuf-py-3 wpuf-px-5 wpuf-rounded-lg wpuf-text-sm wpuf-font-medium wpuf-cursor-pointer wpuf-flex wpuf-items-center wpuf-gap-2 wpuf-w-full wpuf-justify-center hover:wpuf-bg-emerald-800 wpuf-transition-colors">
+                            <button @click="handleEditWithBuilder" class="wpuf-btn-edit-full wpuf-bg-emerald-600 wpuf-text-white wpuf-border-none wpuf-py-3 wpuf-px-5 wpuf-rounded-lg wpuf-text-base wpuf-leading-6 wpuf-font-medium wpuf-cursor-pointer wpuf-flex wpuf-items-center wpuf-gap-2 wpuf-w-full wpuf-justify-center hover:wpuf-bg-emerald-800 wpuf-transition-colors">
                                 {{ __('Edit with Builder', 'wp-user-frontend') }}
                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M16.8898 3.11019L17.4201 2.57986V2.57986L16.8898 3.11019ZM5.41667 17.5296V18.2796C5.61558 18.2796 5.80634 18.2005 5.947 18.0599L5.41667 17.5296ZM2.5 17.5296H1.75C1.75 17.9438 2.08579 18.2796 2.5 18.2796V17.5296ZM2.5 14.5537L1.96967 14.0233C1.82902 14.164 1.75 14.3548 1.75 14.5537H2.5ZM13.9435 3.11019L14.4738 3.64052C14.9945 3.11983 15.8387 3.11983 16.3594 3.64052L16.8898 3.11019L17.4201 2.57986C16.3136 1.47338 14.5196 1.47338 13.4132 2.57986L13.9435 3.11019ZM16.8898 3.11019L16.3594 3.64052C16.8801 4.16122 16.8801 5.00544 16.3594 5.52614L16.8898 6.05647L17.4201 6.5868C18.5266 5.48032 18.5266 3.68635 17.4201 2.57986L16.8898 3.11019ZM16.8898 6.05647L16.3594 5.52614L4.88634 16.9992L5.41667 17.5296L5.947 18.0599L17.4201 6.5868L16.8898 6.05647ZM5.41667 17.5296V16.7796H2.5V17.5296V18.2796H5.41667V17.5296ZM13.9435 3.11019L13.4132 2.57986L1.96967 14.0233L2.5 14.5537L3.03033 15.084L14.4738 3.64052L13.9435 3.11019ZM2.5 14.5537H1.75V17.5296H2.5H3.25V14.5537H2.5ZM12.6935 4.36019L12.1632 4.89052L15.1094 7.8368L15.6398 7.30647L16.1701 6.77614L13.2238 3.82986L12.6935 4.36019Z" fill="white"/>

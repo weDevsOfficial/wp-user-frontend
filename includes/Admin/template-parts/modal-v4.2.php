@@ -609,10 +609,8 @@ if ( ! empty( $registry ) ) {
             
             goToSettings: function( e ) {
                 e.preventDefault();
-                // Placeholder for settings URL - update when settings page is available
-                // For now, just close the modal
-                alert( 'Settings page is not available yet. Please configure AI settings when available.' );
-                this.closeAIConfigModal( e );
+                // Redirect to WPUF AI Settings page
+                window.location.href = '<?php echo admin_url( 'admin.php?page=wpuf-settings#wpuf_ai' ); ?>';
             },
         };
 

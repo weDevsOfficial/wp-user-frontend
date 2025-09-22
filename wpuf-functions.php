@@ -681,7 +681,7 @@ function wpuf_get_custom_avatar( $user_id ) {
 
         $avatar_source = wp_get_attachment_image_src( $profile_photo, 'wpuf_avatar_image_size' );
 
-        if ( $avatar_source && is_array( $avatar_source ) && isset( $avatar_source[0] ) ) {
+        if ( $avatar_source && is_array( $avatar_source ) && ! empty( $avatar_source[0] ) ) {
             return $avatar_source[0];
         }
     }
@@ -694,7 +694,7 @@ function wpuf_get_custom_avatar( $user_id ) {
 
         $avatar_source = wp_get_attachment_image_src( $avatar, 'wpuf_avatar_image_size' );
 
-        if ( $avatar_source && is_array( $avatar_source ) && isset( $avatar_source[0] ) ) {
+        if ( $avatar_source && is_array( $avatar_source ) && ! empty( $avatar_source[0] ) ) {
             $avatar = $avatar_source[0];
         }
     }

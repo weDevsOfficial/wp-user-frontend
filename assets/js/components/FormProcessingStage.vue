@@ -111,6 +111,10 @@ export default {
         completeDelay: {
             type: Number,
             default: 2000
+        },
+        waitForAI: {
+            type: Boolean,
+            default: true
         }
     },
     data() {
@@ -118,7 +122,8 @@ export default {
             currentStep: this.initialStep,
             showConfetti: false,
             confettiUrl: '',
-            isProcessing: false
+            isProcessing: false,
+            aiResponseReceived: false
         };
     },
     methods: {
@@ -126,30 +131,88 @@ export default {
         
         startGeneration() {
             if (this.isProcessing) return;
-            
+
             this.isProcessing = true;
             this.currentStep = 1;
             this.showConfetti = false;
-            
-            const steps = [1, 2, 3, 4];
-            
-            steps.forEach((step, index) => {
-                setTimeout(() => {
-                    this.currentStep = step;
-                    
-                    if (step === 4) {
-                        setTimeout(() => {
-                            this.showConfetti = true;
-                            this.confettiUrl = this.getConfettiUrl();
-                            
+            this.aiResponseReceived = false;
+
+            if (!this.waitForAI) {
+                // Use old fixed timing behavior
+                const steps = [1, 2, 3, 4];
+
+                steps.forEach((step, index) => {
+                    setTimeout(() => {
+                        this.currentStep = step;
+
+                        if (step === 4) {
                             setTimeout(() => {
-                                this.$emit('generation-complete');
-                                this.isProcessing = false;
-                            }, this.completeDelay);
-                        }, this.confettiDelay);
-                    }
-                }, (index + 1) * this.stepDelay);
-            });
+                                this.showConfetti = true;
+                                this.confettiUrl = this.getConfettiUrl();
+
+                                setTimeout(() => {
+                                    this.$emit('generation-complete');
+                                    this.isProcessing = false;
+                                }, this.completeDelay);
+                            }, this.confettiDelay);
+                        }
+                    }, (index + 1) * this.stepDelay);
+                });
+            } else {
+                // Use AI-aware timing
+                this.startStepsWithAIAwareness();
+            }
+        },
+
+        startStepsWithAIAwareness() {
+            // Progress through steps 1-3 normally
+            setTimeout(() => {
+                this.currentStep = 2;
+            }, this.stepDelay);
+
+            setTimeout(() => {
+                this.currentStep = 3;
+            }, this.stepDelay * 2);
+
+            // Step 4 waits for AI response
+            setTimeout(() => {
+                this.waitForAICompletion();
+            }, this.stepDelay * 3);
+        },
+
+        waitForAICompletion() {
+            // Check if AI response already received
+            if (this.aiResponseReceived) {
+                this.completeGeneration();
+                return;
+            }
+
+            // Set to step 4 and wait for AI
+            this.currentStep = 4;
+
+            // Check every 500ms for AI completion
+            const checkInterval = setInterval(() => {
+                if (this.aiResponseReceived) {
+                    clearInterval(checkInterval);
+                    this.completeGeneration();
+                }
+            }, 500);
+        },
+
+        completeGeneration() {
+            setTimeout(() => {
+                this.showConfetti = true;
+                this.confettiUrl = this.getConfettiUrl();
+
+                setTimeout(() => {
+                    this.$emit('generation-complete');
+                    this.isProcessing = false;
+                }, this.completeDelay);
+            }, this.confettiDelay);
+        },
+
+        onAIResponseReceived() {
+            this.aiResponseReceived = true;
         },
         
         getConfettiUrl() {
@@ -161,6 +224,7 @@ export default {
             this.currentStep = 1;
             this.showConfetti = false;
             this.isProcessing = false;
+            this.aiResponseReceived = false;
         }
     },
     mounted() {

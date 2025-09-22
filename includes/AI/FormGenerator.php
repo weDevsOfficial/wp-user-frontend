@@ -52,17 +52,11 @@ class FormGenerator {
             'name' => 'OpenAI',
             'endpoint' => 'https://api.openai.com/v1/chat/completions',
             'models' => [
-                'gpt-4.1' => 'GPT-4.1 - Latest Flagship',
-                'gpt-4.1-mini' => 'GPT-4.1 Mini - Fast & Smart',
-                'gpt-4.1-nano' => 'GPT-4.1 Nano - Fastest & Cheapest',
-                'o1' => 'O1 - Full Reasoning Model',
-                'o1-mini' => 'O1 Mini - Cost-Effective Reasoning',
-                'o1-preview' => 'O1 Preview - Limited Access',
-                'gpt-4o' => 'GPT-4o - Multimodal',
-                'gpt-4o-mini' => 'GPT-4o Mini - Efficient Multimodal',
-                'gpt-4-turbo' => 'GPT-4 Turbo',
-                'gpt-4' => 'GPT-4',
-                'gpt-3.5-turbo' => 'GPT-3.5 Turbo'
+                'gpt-4o' => 'GPT-4o - Most Capable Multimodal',
+                'gpt-4o-mini' => 'GPT-4o Mini - Efficient & Fast',
+                'gpt-4-turbo' => 'GPT-4 Turbo - High Performance',
+                'gpt-4' => 'GPT-4 - Advanced Reasoning',
+                'gpt-3.5-turbo' => 'GPT-3.5 Turbo - Fast & Affordable'
             ],
             'requires_key' => true
         ],
@@ -228,6 +222,258 @@ class FormGenerator {
     }
 
     /**
+     * Get model-specific parameter configuration
+     * 
+     * This centralizes all model-specific parameter mappings for easy maintenance.
+     * Different AI providers and models have different parameter requirements:
+     * 
+     * - Token parameters: 'max_tokens' vs 'max_completion_tokens' vs 'maxOutputTokens'
+     * - Temperature: Some models only support default temperature (1.0)
+     * - Response format: Some models don't support JSON mode
+     * 
+     * @param string $provider Provider name (openai, anthropic, google)
+     * @param string $model Model name (e.g., gpt-5, claude-4.1-opus, gemini-2.5-pro)
+     * @return array Model configuration with parameter restrictions and requirements
+     */
+    private function get_model_config($provider, $model) {
+        $model_configs = [
+            'openai' => [
+                // Models with special requirements
+                'o1' => [
+                    'token_param' => 'max_completion_tokens',
+                    'token_location' => 'body',
+                    'temperature' => 1.0, // Fixed temperature
+                    'supports_json_mode' => false,
+                    'supports_custom_temperature' => false
+                ],
+                'o1-mini' => [
+                    'token_param' => 'max_completion_tokens',
+                    'token_location' => 'body',
+                    'temperature' => 1.0,
+                    'supports_json_mode' => false,
+                    'supports_custom_temperature' => false
+                ],
+                'o1-preview' => [
+                    'token_param' => 'max_completion_tokens',
+                    'token_location' => 'body',
+                    'temperature' => 1.0,
+                    'supports_json_mode' => false,
+                    'supports_custom_temperature' => false
+                ],
+                // GPT-4 Series - All support JSON mode and custom temperature
+                'gpt-4o' => [
+                    'token_param' => 'max_tokens',
+                    'token_location' => 'body',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ],
+                'gpt-4o-mini' => [
+                    'token_param' => 'max_tokens',
+                    'token_location' => 'body',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ],
+                'gpt-4-turbo' => [
+                    'token_param' => 'max_tokens',
+                    'token_location' => 'body',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ],
+                'gpt-4' => [
+                    'token_param' => 'max_tokens',
+                    'token_location' => 'body',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ],
+                'gpt-3.5-turbo' => [
+                    'token_param' => 'max_tokens',
+                    'token_location' => 'body',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ]
+            ],
+            'anthropic' => [
+                // Anthropic models with special requirements
+                'claude-4.1-opus' => [
+                    'token_param' => 'max_completion_tokens',
+                    'token_location' => 'body',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ],
+                'claude-4-opus' => [
+                    'token_param' => 'max_completion_tokens',
+                    'token_location' => 'body',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ],
+                // All other Anthropic models support standard configuration
+                'claude-4-sonnet' => [
+                    'token_param' => 'max_tokens',
+                    'token_location' => 'body',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ],
+                'claude-3.7-sonnet' => [
+                    'token_param' => 'max_tokens',
+                    'token_location' => 'body',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ],
+                'claude-3-5-sonnet-20241022' => [
+                    'token_param' => 'max_tokens',
+                    'token_location' => 'body',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ],
+                'claude-3-5-sonnet-20240620' => [
+                    'token_param' => 'max_tokens',
+                    'token_location' => 'body',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ],
+                'claude-3-5-haiku-20241022' => [
+                    'token_param' => 'max_tokens',
+                    'token_location' => 'body',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ],
+                'claude-3-opus-20240229' => [
+                    'token_param' => 'max_tokens',
+                    'token_location' => 'body',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ],
+                'claude-3-sonnet-20240229' => [
+                    'token_param' => 'max_tokens',
+                    'token_location' => 'body',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ],
+                'claude-3-haiku-20240307' => [
+                    'token_param' => 'max_tokens',
+                    'token_location' => 'body',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ]
+            ],
+            'google' => [
+                // All Google models support JSON mode and custom temperature
+                'gemini-2.5-pro' => [
+                    'token_param' => 'maxOutputTokens',
+                    'token_location' => 'generationConfig',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ],
+                'gemini-2.5-flash' => [
+                    'token_param' => 'maxOutputTokens',
+                    'token_location' => 'generationConfig',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ],
+                'gemini-2.5-flash-lite' => [
+                    'token_param' => 'maxOutputTokens',
+                    'token_location' => 'generationConfig',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ],
+                'gemini-2.0-flash' => [
+                    'token_param' => 'maxOutputTokens',
+                    'token_location' => 'generationConfig',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ],
+                'gemini-2.0-flash-001' => [
+                    'token_param' => 'maxOutputTokens',
+                    'token_location' => 'generationConfig',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ],
+                'gemini-2.0-flash-lite' => [
+                    'token_param' => 'maxOutputTokens',
+                    'token_location' => 'generationConfig',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ],
+                'gemini-1.5-flash-latest' => [
+                    'token_param' => 'maxOutputTokens',
+                    'token_location' => 'generationConfig',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ],
+                'gemini-1.5-flash' => [
+                    'token_param' => 'maxOutputTokens',
+                    'token_location' => 'generationConfig',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ],
+                'gemini-1.5-flash-8b' => [
+                    'token_param' => 'maxOutputTokens',
+                    'token_location' => 'generationConfig',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ],
+                'gemini-1.5-pro' => [
+                    'token_param' => 'maxOutputTokens',
+                    'token_location' => 'generationConfig',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ],
+                // Default fallback for any Google model not explicitly listed
+                'default' => [
+                    'token_param' => 'maxOutputTokens',
+                    'token_location' => 'generationConfig',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ]
+            ]
+        ];
+
+        // Check for exact model match first
+        if (isset($model_configs[$provider][$model])) {
+            return $model_configs[$provider][$model];
+        }
+
+        // Check for pattern matches (e.g., gpt-5-turbo-preview matches gpt-5-turbo)
+        if (isset($model_configs[$provider])) {
+            foreach ($model_configs[$provider] as $pattern => $config) {
+                if ($pattern !== 'default' && strpos($model, $pattern) === 0) {
+                    return $config;
+                }
+            }
+        }
+
+        // Use provider default if available
+        if (isset($model_configs[$provider]['default'])) {
+            return $model_configs[$provider]['default'];
+        }
+
+        // Fallback defaults for each provider
+        $defaults = [
+            'openai' => [
+                'token_param' => 'max_tokens',
+                'token_location' => 'body',
+                'supports_json_mode' => true,
+                'supports_custom_temperature' => true
+            ],
+            'anthropic' => [
+                'token_param' => 'max_tokens',
+                'token_location' => 'body',
+                'supports_json_mode' => true,
+                'supports_custom_temperature' => true
+            ],
+            'google' => [
+                'token_param' => 'maxOutputTokens',
+                'token_location' => 'generationConfig',
+                'supports_json_mode' => true,
+                'supports_custom_temperature' => true
+            ]
+        ];
+
+        return $defaults[$provider] ?? $defaults['openai'];
+    }
+
+
+    /**
      * Generate form using OpenAI
      *
      * @param string $prompt User prompt
@@ -238,16 +484,57 @@ class FormGenerator {
         $context = $options['conversation_context'] ?? [];
         $system_prompt = $this->get_system_prompt($context);
 
+        // Get model-specific configuration
+        $model_config = $this->get_model_config('openai', $this->current_model);
+        
+        // Debug logging
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('WPUF AI OpenAI Model Config for ' . $this->current_model . ': ' . json_encode($model_config));
+        }
+
         $body = [
             'model' => $this->current_model,
             'messages' => [
                 ['role' => 'system', 'content' => $system_prompt],
                 ['role' => 'user', 'content' => $prompt]
-            ],
-            'temperature' => floatval($options['temperature'] ?? 0.7),
-            'max_tokens' => intval($options['max_tokens'] ?? 2000),
-            'response_format' => ['type' => 'json_object']
+            ]
         ];
+
+        // Set temperature based on model capabilities
+        if ($model_config['supports_custom_temperature']) {
+            $body['temperature'] = floatval($options['temperature'] ?? 0.7);
+        } else {
+            // Use fixed temperature for models that don't support custom temperature
+            $body['temperature'] = $model_config['temperature'] ?? 1.0;
+        }
+
+        // Set response format based on model capabilities
+        if ($model_config['supports_json_mode']) {
+            $body['response_format'] = ['type' => 'json_object'];
+        } else {
+            // For models that don't support JSON mode, add explicit instruction to system prompt
+            $system_prompt .= "\n\nIMPORTANT: You must respond with ONLY valid JSON. Do not include any explanatory text, markdown formatting, or code blocks. Return ONLY the JSON object.";
+        }
+        
+        // Debug log the request body
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('WPUF AI OpenAI Request Body: ' . json_encode($body, JSON_PRETTY_PRINT));
+        }
+
+        // Set token parameter based on model
+        if ($model_config['token_location'] === 'body') {
+            // GPT-5 needs significantly more tokens for reasoning + output
+            if (strpos($this->current_model, 'gpt-5') === 0) {
+                $body[$model_config['token_param']] = intval($options['max_tokens'] ?? 65536);
+            } else {
+                $body[$model_config['token_param']] = intval($options['max_tokens'] ?? 2000);
+            }
+        }
+
+        // Debug log the API key status
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('WPUF AI OpenAI API Key Status: ' . (empty($this->api_key) ? 'EMPTY' : 'Present (hidden)'));
+        }
 
         $args = [
             'method' => 'POST',
@@ -274,19 +561,67 @@ class FormGenerator {
         $body = wp_remote_retrieve_body($response);
         $data = json_decode($body, true);
 
+        // Debug log the full response
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('WPUF AI OpenAI Full Response: ' . json_encode($data, JSON_PRETTY_PRINT));
+        }
+
         if (isset($data['error'])) {
             throw new \Exception('OpenAI API Error: ' . $data['error']['message']);
         }
 
         if (!isset($data['choices'][0]['message']['content'])) {
-            throw new \Exception('Invalid OpenAI response format');
+            throw new \Exception('Invalid OpenAI response format. Response: ' . json_encode($data));
         }
 
         $content = $data['choices'][0]['message']['content'];
-        $form_data = json_decode($content, true);
+
+        // Debug log the raw response content
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('WPUF AI OpenAI Raw Response Content: ' . $content);
+        }
+        
+        // Check for empty response
+        if (empty($content)) {
+            $error_msg = 'AI model returned empty response. The token limit may be insufficient or there was an API issue.';
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('WPUF AI OpenAI Empty Response Error: ' . $error_msg);
+            }
+
+            // Return error response instead of fallback
+            return [
+                'success' => false,
+                'error' => true,
+                'message' => $error_msg,
+                'provider' => 'openai',
+                'model' => $this->current_model
+            ];
+        }
+        
+        // Try to extract JSON from the response if it's wrapped in text
+        $json_content = $content;
+        if (preg_match('/\{.*\}/s', $content, $matches)) {
+            $json_content = $matches[0];
+        }
+        
+        $form_data = json_decode($json_content, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \Exception('Failed to parse AI response JSON');
+            $error_msg = 'Failed to parse AI response JSON. Error: ' . json_last_error_msg();
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('WPUF AI JSON Parse Error: ' . $error_msg);
+                error_log('WPUF AI Raw Content: ' . $content);
+                error_log('WPUF AI Extracted JSON: ' . $json_content);
+            }
+            
+            // Return error response instead of fallback
+            return [
+                'success' => false,
+                'error' => true,
+                'message' => $error_msg,
+                'provider' => 'openai',
+                'model' => $this->current_model
+            ];
         }
 
         // Add metadata
@@ -301,6 +636,25 @@ class FormGenerator {
     }
 
     /**
+     * Create a fallback form when AI response parsing fails
+     *
+     * @param string $prompt User prompt
+     * @return array|null Fallback form data or null if creation fails
+     */
+    private function create_fallback_form($prompt) {
+        try {
+            // Use predefined provider as fallback
+            $predefined_provider = new PredefinedProvider();
+            return $predefined_provider->generateForm($prompt, uniqid('wpuf_fallback_'));
+        } catch (\Exception $e) {
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('WPUF AI Fallback form creation failed: ' . $e->getMessage());
+            }
+            return null;
+        }
+    }
+
+    /**
      * Generate form using Anthropic Claude
      *
      * @param string $prompt User prompt
@@ -311,15 +665,34 @@ class FormGenerator {
         $context = $options['conversation_context'] ?? [];
         $system_prompt = $this->get_system_prompt($context);
 
+        // Get model-specific configuration
+        $model_config = $this->get_model_config('anthropic', $this->current_model);
+
         $body = [
             'model' => $this->current_model,
-            'max_tokens' => intval($options['max_tokens'] ?? 2000),
             'system' => $system_prompt,
             'messages' => [
                 ['role' => 'user', 'content' => $prompt]
-            ],
-            'temperature' => floatval($options['temperature'] ?? 0.7)
+            ]
         ];
+
+        // Set temperature based on model capabilities
+        if ($model_config['supports_custom_temperature']) {
+            $body['temperature'] = floatval($options['temperature'] ?? 0.7);
+        } else {
+            // Use fixed temperature for models that don't support custom temperature
+            $body['temperature'] = $model_config['temperature'] ?? 1.0;
+        }
+
+        // Set token parameter based on model
+        if ($model_config['token_location'] === 'body') {
+            // GPT-5 needs significantly more tokens for reasoning + output
+            if (strpos($this->current_model, 'gpt-5') === 0) {
+                $body[$model_config['token_param']] = intval($options['max_tokens'] ?? 65536);
+            } else {
+                $body[$model_config['token_param']] = intval($options['max_tokens'] ?? 2000);
+            }
+        }
 
         $args = [
             'method' => 'POST',
@@ -381,6 +754,7 @@ class FormGenerator {
         return $form_data;
     }
 
+
     /**
      * Generate form using Google Gemini
      *
@@ -391,6 +765,9 @@ class FormGenerator {
     private function generate_with_google($prompt, $options = []) {
         $context = $options['conversation_context'] ?? [];
         $system_prompt = $this->get_system_prompt($context);
+        
+        // Get model-specific configuration
+        $model_config = $this->get_model_config('google', $this->current_model);
         
         // Build endpoint with model
         $endpoint = str_replace('{model}', $this->current_model, $this->provider_configs['google']['endpoint']);
@@ -404,12 +781,26 @@ class FormGenerator {
                     ]
                 ]
             ],
-            'generationConfig' => [
-                'temperature' => floatval($options['temperature'] ?? 0.7),
-                'maxOutputTokens' => intval($options['max_tokens'] ?? 2000),
-                'responseMimeType' => 'application/json'
-            ]
+            'generationConfig' => []
         ];
+
+        // Set temperature based on model capabilities
+        if ($model_config['supports_custom_temperature']) {
+            $body['generationConfig']['temperature'] = floatval($options['temperature'] ?? 0.7);
+        } else {
+            // Use fixed temperature for models that don't support custom temperature
+            $body['generationConfig']['temperature'] = $model_config['temperature'] ?? 1.0;
+        }
+
+        // Set response format based on model capabilities
+        if ($model_config['supports_json_mode']) {
+            $body['generationConfig']['responseMimeType'] = 'application/json';
+        }
+
+        // Set token parameter based on model
+        if ($model_config['token_location'] === 'generationConfig') {
+            $body['generationConfig'][$model_config['token_param']] = intval($options['max_tokens'] ?? 2000);
+        }
 
         $args = [
             'method' => 'POST',

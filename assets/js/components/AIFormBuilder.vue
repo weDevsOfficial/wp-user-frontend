@@ -16,6 +16,8 @@
         <FormProcessingStage
             v-else-if="currentStage === 'generating'"
             :autoStart="true"
+            :waitForAI="true"
+            ref="processingStage"
             @generation-complete="handleGenerationComplete"
         />
         
@@ -121,9 +123,8 @@ export default {
                     body: JSON.stringify({
                         prompt: prompt,
                         session_id: this.getSessionId(),
-                        provider: config.provider || 'predefined',
-                        temperature: config.temperature || 0.7,
-                        max_tokens: config.maxTokens || 2000
+                        provider: config.provider || 'predefined'
+                        // Note: temperature and max_tokens are now handled by backend based on model configuration
                     })
                 });
                 
@@ -154,11 +155,13 @@ export default {
                     this.generatedFormData = result.data;
                     this.formTitle = result.data.form_title || 'Generated Form';
                     this.formFields = result.data.wpuf_fields || [];
-                    
-                    // Move to success stage
-                    setTimeout(() => {
-                        this.handleGenerationComplete();
-                    }, 1000);
+
+                    // Notify processing stage that AI response is received
+                    if (this.$refs.processingStage) {
+                        this.$refs.processingStage.onAIResponseReceived();
+                    }
+
+                    // Processing stage will handle the transition timing
                 } else {
                     console.error('Form generation failed:', result);
                     
@@ -200,6 +203,11 @@ export default {
         },
         
         handleGenerationError(message, errorType = 'general', errorData = null) {
+            // Notify processing stage that AI response is received (even if error)
+            if (this.$refs.processingStage) {
+                this.$refs.processingStage.onAIResponseReceived();
+            }
+
             this.isGenerating = false;
             this.currentStage = 'input';
             
@@ -450,19 +458,24 @@ export default {
                 this.formTitle = result.form_data.form_title || 'Generated Form';
                 // For preview, use fields (simplified), but store wpuf_fields for actual form creation
                 this.formFields = this.convertFieldsToPreview(result.form_data.fields || []);
-                
-                setTimeout(() => {
-                    this.handleGenerationComplete();
-                    
-                    // Only show pro field warning if Pro is not active
-                    if (!isProActive) {
+
+                // Notify processing stage that AI response is received
+                if (this.$refs.processingStage) {
+                    this.$refs.processingStage.onAIResponseReceived();
+                }
+
+                // Processing stage will handle the transition timing
+                // Show pro field warning if Pro is not active after transition
+                if (!isProActive) {
+                    // Show the warning after the success stage is loaded
+                    this.$nextTick(() => {
                         setTimeout(() => {
                             this.showProFieldModal(result.message);
                         }, 500);
-                    } else {
-                        console.log('Pro is active, no need to show warning');
-                    }
-                }, 1000);
+                    });
+                } else {
+                    console.log('Pro is active, no need to show warning');
+                }
             }
         },
         

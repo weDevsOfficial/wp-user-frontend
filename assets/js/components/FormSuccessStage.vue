@@ -155,12 +155,22 @@
                         <div class="wpuf-form-scrollable wpuf-flex-1 wpuf-overflow-y-auto wpuf-mb-4" style="scrollbar-width: thin; scrollbar-color: #10B981 transparent;">
                             <!-- Empty State -->
                             <div v-if="formFields.length === 0 && !isFormUpdating" class="wpuf-empty-state wpuf-flex wpuf-flex-col wpuf-items-center wpuf-justify-center wpuf-h-full wpuf-min-h-[300px]">
-                                <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" class="wpuf-mb-4">
+                                <!-- Show loading spinner when waiting for AI -->
+                                <div v-if="isWaitingForAI" class="wpuf-mb-4">
+                                    <svg class="wpuf-animate-spin wpuf-h-16 wpuf-w-16 wpuf-text-emerald-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="wpuf-opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="wpuf-opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                </div>
+                                <!-- Show static icon when not waiting -->
+                                <svg v-else width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" class="wpuf-mb-4">
                                     <circle cx="40" cy="40" r="40" fill="#F3F4F6"/>
                                     <path d="M28 32H52M28 40H52M28 48H44" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"/>
                                 </svg>
-                                <p class="wpuf-text-gray-500 wpuf-text-lg wpuf-text-center wpuf-mb-2">{{ __('Your form is being generated', 'wp-user-frontend') }}</p>
-                                <p class="wpuf-text-gray-400 wpuf-text-sm wpuf-text-center">{{ __('Form fields will appear here once generated', 'wp-user-frontend') }}</p>
+                                <p v-if="isWaitingForAI" class="wpuf-text-gray-700 wpuf-text-lg wpuf-text-center wpuf-mb-2 wpuf-font-medium">{{ __('Your form is being generated', 'wp-user-frontend') }}</p>
+                                <p v-else class="wpuf-text-gray-500 wpuf-text-lg wpuf-text-center wpuf-mb-2">{{ __('No form fields yet', 'wp-user-frontend') }}</p>
+                                <p v-if="isWaitingForAI" class="wpuf-text-gray-500 wpuf-text-sm wpuf-text-center wpuf-animate-pulse">{{ __('Please wait...', 'wp-user-frontend') }}</p>
+                                <p v-else class="wpuf-text-gray-400 wpuf-text-sm wpuf-text-center">{{ __('Use the chat to create your form', 'wp-user-frontend') }}</p>
                             </div>
                             
                             <!-- Form Fields -->
@@ -695,6 +705,7 @@ export default {
             pendingChanges: null, // Store pending changes from chat
             isApplying: false,
             isFormUpdating: false,
+            isWaitingForAI: false, // Track if we're waiting for AI to generate initial form
             visibleStatuses: new Set(), // Track which status messages are visible
             statusTimeouts: new Map(), // Track timeout IDs for auto-hide
             showRegenerateModal: false, // Track regenerate confirmation modal
@@ -735,6 +746,7 @@ export default {
                     // Remove loader quickly
                     this.$nextTick(() => {
                         this.isFormUpdating = false;
+                        this.isWaitingForAI = false;
                         console.log('Form update complete');
                     });
                 } else if (!fieldsAreDifferent) {
@@ -819,6 +831,7 @@ export default {
 
                 // Hide loading state
                 this.isFormUpdating = false;
+                this.isWaitingForAI = false;
 
                 // Add success message to chat
                 const restoredFieldCount = checkpoint.formFields.length;
@@ -1448,6 +1461,16 @@ What would you like me to help you with?`;
                 timestamp: new Date().toISOString()
             });
             
+            // Set loading state IMMEDIATELY before adding processing message
+            // This ensures UI shows loading state right away
+            if (shouldCallAPI) {
+                if (this.formFields.length > 0) {
+                    this.isFormUpdating = true;
+                } else {
+                    this.isWaitingForAI = true;
+                }
+            }
+
             // Add processing indicator
             const processingMessage = {
                 type: 'ai',
@@ -1458,14 +1481,12 @@ What would you like me to help you with?`;
             };
             this.chatMessages.push(processingMessage);
             this.scrollToBottom();
-            
+
             try {
                 let response;
-                
+
                 if (shouldCallAPI) {
-                    // Enable form updating blur effect for API calls
-                    this.isFormUpdating = true;
-                    
+
                     // Make real API call for modified templates or non-predefined forms
                     response = await this.callChatAPI(userMessage);
                 } else {
@@ -1590,9 +1611,10 @@ What would you like me to help you with?`;
                         if (formData.form_description) {
                             this.formDescription = formData.form_description;
                         }
-                        
+
                         // Remove blur immediately
                         this.isFormUpdating = false;
+                        this.isWaitingForAI = false;
                     } else if (response.data && response.data.modification_type === 'add_field' && response.data.changes && response.data.changes.field) {
                         // Store previous form state before making changes
                         this.previousFormFields = JSON.parse(JSON.stringify(this.formFields));
@@ -1624,9 +1646,11 @@ What would you like me to help you with?`;
                         
                         // Remove blur immediately
                         this.isFormUpdating = false;
+                        this.isWaitingForAI = false;
                     } else {
                         // No form changes, remove blur immediately
                         this.isFormUpdating = false;
+                        this.isWaitingForAI = false;
                     }
                 } else {
                     const errorMessage = {
@@ -1648,6 +1672,7 @@ What would you like me to help you with?`;
 
                     // Remove form updating blur on error
                     this.isFormUpdating = false;
+                    this.isWaitingForAI = false;
 
                     this.updateConversationState(userMessage, errorMessage);
                 }
@@ -1663,6 +1688,7 @@ What would you like me to help you with?`;
                 
                 // Remove form updating blur
                 this.isFormUpdating = false;
+                this.isWaitingForAI = false;
                 
                 // Add error message
                 const errorMessage = {
@@ -1751,9 +1777,8 @@ Remember: ONLY provide form-related responses. Do not engage with off-topic requ
                 prompt: strictPrompt,
                 session_id: this.sessionId,
                 conversation_context: conversationContext,
-                provider: config.provider || 'google',
-                temperature: config.temperature || 0.7,
-                max_tokens: config.maxTokens || 2000
+                provider: config.provider || 'google'
+                // Note: temperature and max_tokens are now handled by backend based on model configuration
             };
 
             const response = await fetch(restUrl + endpoint, {
@@ -1899,6 +1924,7 @@ Remember: ONLY provide form-related responses. Do not engage with off-topic requ
             } finally {
                 this.isApplying = false;
                 this.isFormUpdating = false; // Ensure blur is removed in any case
+                this.isWaitingForAI = false;
             }
         },
         
@@ -2832,6 +2858,7 @@ Remember: ONLY provide form-related responses. Do not engage with off-topic requ
         // Don't show loader initially - only show it during actual transitions
         // The loader should only appear when fields are actively changing
         this.isFormUpdating = false;
+        this.isWaitingForAI = false;
         
         // Initialize chat messages from props
         this.chatMessages = this.initializeChatMessages();

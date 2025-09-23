@@ -1,18 +1,25 @@
 <?php
+
+namespace WeDevs\Wpuf;
+
 /**
- * WPUF Icon Loader - Dynamically loads Font Awesome SVG icons
+ * Icon Loader - Dynamically loads Font Awesome SVG icons
  *
  * @since 4.2.0
  */
 class WPUF_Icon_Loader {
-    
+
     /**
      * Instance
+     *
+     * @var WPUF_Icon_Loader|null
      */
     private static $instance = null;
-    
+
     /**
      * Get instance
+     *
+     * @return WPUF_Icon_Loader
      */
     public static function get_instance() {
         if ( ! self::$instance ) {
@@ -20,33 +27,37 @@ class WPUF_Icon_Loader {
         }
         return self::$instance;
     }
-    
+
     /**
      * Constructor
      */
     public function __construct() {
         add_action( 'wp_ajax_wpuf_get_font_awesome_icons', [ $this, 'ajax_get_icons' ] );
     }
-    
+
     /**
      * AJAX handler to get all Font Awesome icons
+     *
+     * @return void
      */
     public function ajax_get_icons() {
         // Verify nonce
         if ( ! wp_verify_nonce( $_POST['nonce'] ?? '', 'wpuf_form_builder_wpuf_forms' ) ) {
             wp_send_json_error( 'Invalid nonce' );
         }
-        
+
         $icons = $this->load_all_icons();
-        
+
         wp_send_json_success([
             'icons' => $icons,
             'total' => count( $icons )
         ]);
     }
-    
+
     /**
      * Load all Font Awesome icons from predefined list
+     *
+     * @return array
      */
     public function load_all_icons() {
         // Return basic icon list since we're using CDN
@@ -62,6 +73,8 @@ class WPUF_Icon_Loader {
 
     /**
      * Get commonly used Font Awesome icons
+     *
+     * @return array
      */
     private function get_common_icons() {
         return [
@@ -97,15 +110,18 @@ class WPUF_Icon_Loader {
             ['class' => 'fab fa-linkedin', 'name' => 'LinkedIn', 'filename' => 'linkedin', 'style' => 'brands'],
         ];
     }
-    
+
     /**
      * Format icon filename to readable name
+     *
+     * @param string $filename
+     * @return string
      */
     private function format_icon_name( $filename ) {
         // Convert kebab-case to Title Case
         $name = str_replace( '-', ' ', $filename );
         $name = ucwords( $name );
-        
+
         // Handle common abbreviations
         $replacements = [
             'Css' => 'CSS',
@@ -134,14 +150,23 @@ class WPUF_Icon_Loader {
             'Mp4' => 'MP4',
             'Avi' => 'AVI'
         ];
-        
+
         foreach ( $replacements as $search => $replace ) {
             $name = str_replace( $search, $replace, $name );
         }
-        
+
         return $name;
     }
-}
 
-// Initialize
-WPUF_Icon_Loader::get_instance();
+    /**
+     * Initialize the Icon Loader
+     *
+     * @return void
+     */
+    public static function init() {
+        // Only initialize on admin pages or AJAX requests
+        if ( is_admin() || wp_doing_ajax() ) {
+            self::get_instance();
+        }
+    }
+}

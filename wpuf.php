@@ -155,7 +155,12 @@ final class WP_User_Frontend {
     public function includes() {
         require_once __DIR__ . '/wpuf-functions.php';
         require_once __DIR__ . '/includes/class-frontend-render-form.php';
-        require_once __DIR__ . '/includes/class-wpuf-icon-loader.php';
+
+        // Load Icon Loader only when needed (admin or AJAX)
+        if ( is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
+            require_once __DIR__ . '/includes/WPUF_Icon_Loader.php';
+            \WeDevs\Wpuf\WPUF_Icon_Loader::init();
+        }
 
         // add reCaptcha library if not found
         if ( ! function_exists( 'recaptcha_get_html' ) ) {

@@ -272,7 +272,7 @@ class Assets {
             ],
             'form-builder-components'  => [
                 'src'       => WPUF_ASSET_URI . '/js/wpuf-form-builder-components.js',
-                'deps'      => [ 'wpuf-form-builder-mixins' ],
+                'deps'      => [ 'wpuf-form-builder-mixins', 'wpuf-field-icon-selector-config' ],
                 'in_footer' => true,
             ],
             'form-builder'             => [
@@ -298,9 +298,14 @@ class Assets {
                 'deps'      => [ 'jquery-ui-datepicker' ],
                 'version'   => '1.2',
             ],
+            'field-icon-selector-config' => [
+                'src'       => WPUF_ROOT_URI . '/admin/form-builder/assets/js/components/field-icon_selector/icons-config.js',
+                'deps'      => [],
+                'in_footer' => true,
+            ],
             'form-builder-wpuf-forms'  => [
                 'src'       => WPUF_ASSET_URI . '/js/wpuf-form-builder-wpuf-forms.js',
-                'deps'      => [ 'jquery', 'underscore', 'wpuf-vue', 'wpuf-vuex' ],
+                'deps'      => [ 'jquery', 'underscore', 'wpuf-vue', 'wpuf-vuex', 'wpuf-field-icon-selector-config' ],
                 'in_footer' => true,
             ],
             'registration-forms'       => [

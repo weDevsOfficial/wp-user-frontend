@@ -21,21 +21,17 @@ if ( 'wpuf_pay' === $action || ! empty( $coupon_status ) ) {
 }
 
 // Get the button color from settings and validate it
-$button_color = wpuf_get_option( 'button_color', 'wpuf_subscription_settings', '#4f46e5' );
+$button_color = wpuf_get_option( 'button_color', 'wpuf_subscription_settings', '' );
 
-// Ensure it's a string and validate/sanitize the color value to prevent CSS injection
-if ( is_string( $button_color ) ) {
+// Check if custom color is set, otherwise use Tailwind primary class
+$use_custom_color = false;
+if ( is_string( $button_color ) && ! empty( $button_color ) ) {
     $sanitized_color = sanitize_hex_color( $button_color );
-    // If sanitization succeeded, use the sanitized value
+    // If sanitization succeeded, use the custom color
     if ( ! empty( $sanitized_color ) ) {
         $button_color = $sanitized_color;
-    } else {
-        // If sanitization failed, use default
-        $button_color = '#4f46e5';
+        $use_custom_color = true;
     }
-} else {
-    // If not a string, use default
-    $button_color = '#4f46e5';
 }
 ?>
 <style>
@@ -107,9 +103,13 @@ if ( is_string( $button_color ) ) {
                     filter: brightness(0.9);
                 }
             </style>
-            <a class="wpuf-subscription-buy-btn wpuf-block wpuf-w-full wpuf-rounded-md wpuf-px-3 wpuf-py-2 wpuf-text-center wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm wpuf-ring-0 wpuf-transition-all wpuf-duration-200 wpuf-leading-6"
+            <a class="wpuf-subscription-buy-btn wpuf-block wpuf-w-full wpuf-rounded-md <?php echo $use_custom_color ? '' : 'wpuf-bg-primary hover:wpuf-bg-primaryHover'; ?> wpuf-px-3 wpuf-py-2 wpuf-text-center wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm wpuf-ring-0 wpuf-transition-all wpuf-duration-200 wpuf-leading-6"
+               <?php if ( $use_custom_color ) : ?>
                style="background-color: <?php echo esc_attr( $button_color ); ?>;"
-               href="<?php echo esc_attr( add_query_arg( $query_args, esc_url( $query_url ) ) ); ?>" 
+               onmouseover="this.style.filter='brightness(0.9)'"
+               onmouseout="this.style.filter='brightness(1)'"
+               <?php endif; ?>
+               href="<?php echo esc_attr( add_query_arg( $query_args, esc_url( $query_url ) ) ); ?>"
                onclick="<?php echo esc_attr( $details_meta['onclick'] ); ?>">
                 <?php echo esc_html( $button_name ); ?>
             </a>
@@ -337,11 +337,13 @@ if ( is_string( $button_color ) ) {
             <?php if ( $features_count > $initial_display_count ) : ?>
                 <div class="wpuf-mt-3">
                     <button 
-                        type="button" 
-                        class="wpuf-text-sm wpuf-font-medium wpuf-transition-colors wpuf-duration-200" 
+                        type="button"
+                        class="<?php echo $use_custom_color ? '' : 'wpuf-text-primary hover:wpuf-text-primaryHover'; ?> wpuf-text-sm wpuf-font-medium wpuf-transition-colors wpuf-duration-200"
+                        <?php if ( $use_custom_color ) : ?>
                         style="color: <?php echo esc_attr( $button_color ); ?>;"
-                        onmouseover="this.style.opacity='0.8'" 
+                        onmouseover="this.style.opacity='0.8'"
                         onmouseout="this.style.opacity='1'"
+                        <?php endif; ?>
                         data-wpuf-toggle-features="true"
                         data-wpuf-pack-id="<?php echo esc_attr( $pack->ID ); ?>"
                         data-expanded="false"
@@ -351,11 +353,13 @@ if ( is_string( $button_color ) ) {
                         <?php printf( esc_html__( 'See %d more features', 'wp-user-frontend' ), $features_count - $initial_display_count ); ?>
                     </button>
                     <button 
-                        type="button" 
-                        class="wpuf-text-sm wpuf-font-medium wpuf-transition-colors wpuf-duration-200 wpuf-hidden" 
+                        type="button"
+                        class="<?php echo $use_custom_color ? '' : 'wpuf-text-primary hover:wpuf-text-primaryHover'; ?> wpuf-text-sm wpuf-font-medium wpuf-transition-colors wpuf-duration-200 wpuf-hidden"
+                        <?php if ( $use_custom_color ) : ?>
                         style="color: <?php echo esc_attr( $button_color ); ?>;"
-                        onmouseover="this.style.opacity='0.8'" 
+                        onmouseover="this.style.opacity='0.8'"
                         onmouseout="this.style.opacity='1'"
+                        <?php endif; ?>
                         data-wpuf-toggle-features="true"
                         data-wpuf-pack-id="<?php echo esc_attr( $pack->ID ); ?>"
                         data-expanded="true"

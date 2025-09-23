@@ -558,7 +558,8 @@ class Subscription extends WP_REST_Controller {
      */
     public function get_subscription_settings( $request ) {
         $settings = [
-            'button_color' => wpuf_get_option( 'button_color', 'wpuf_subscription_settings', '#4f46e5' ),
+            // Empty string means use Tailwind's wpuf-bg-primary class
+            'button_color' => wpuf_get_option( 'button_color', 'wpuf_subscription_settings', '' ),
         ];
 
         return rest_ensure_response( $settings );
@@ -575,11 +576,10 @@ class Subscription extends WP_REST_Controller {
      */
     public function update_subscription_settings( $request ) {
         $params = $request->get_params();
-
-        // Only keep button_color, remove old settings
         $settings = [];
 
-        if ( isset( $params['button_color'] ) ) {
+        // Handle button_color - empty means use Tailwind primary
+        if ( isset( $params['button_color'] ) && ! empty( $params['button_color'] ) ) {
             $sanitized_color = sanitize_hex_color( $params['button_color'] );
 
             // Validate that the color was properly sanitized
@@ -592,9 +592,11 @@ class Subscription extends WP_REST_Controller {
             }
 
             $settings['button_color'] = $sanitized_color;
+        } else {
+            // Empty string means use default Tailwind primary color
+            $settings['button_color'] = '';
         }
 
-        // Only update if we have valid settings
         update_option( 'wpuf_subscription_settings', $settings );
 
         return rest_ensure_response( [

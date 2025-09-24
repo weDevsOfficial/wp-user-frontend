@@ -584,20 +584,36 @@ class FormGenerator {
             ];
         }
         
-        // Try to extract JSON from the response if it's wrapped in text
-        $json_content = $content;
-        if (preg_match('/\{.*\}/s', $content, $matches)) {
-            $json_content = $matches[0];
+        // Clean and extract JSON from the response
+        $json_content = trim($content);
+
+        // Remove any markdown code blocks if present
+        $json_content = preg_replace('/^```(?:json)?\s*|\s*```$/m', '', $json_content);
+
+        // Try to find the JSON object (handle nested braces properly)
+        $start = strpos($json_content, '{');
+        $end = strrpos($json_content, '}');
+
+        if ($start !== false && $end !== false && $end > $start) {
+            $json_content = substr($json_content, $start, $end - $start + 1);
         }
-        
+
+        // Attempt to decode JSON
         $form_data = json_decode($json_content, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             $error_msg = 'Failed to parse AI response JSON. Error: ' . json_last_error_msg();
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 error_log('WPUF AI JSON Parse Error: ' . $error_msg);
-                error_log('WPUF AI Raw Content: ' . $content);
-                error_log('WPUF AI Extracted JSON: ' . $json_content);
+                error_log('WPUF AI Content Length: ' . strlen($content));
+                // Log a safe preview (first 500 chars only to see structure)
+                $preview = substr($json_content, 0, 500);
+                error_log('WPUF AI Content Preview: ' . $preview . (strlen($json_content) > 500 ? '...' : ''));
+                // Also log the last 200 chars to see if JSON is complete
+                if (strlen($json_content) > 500) {
+                    $end_preview = substr($json_content, -200);
+                    error_log('WPUF AI Content End: ...' . $end_preview);
+                }
             }
             
             // Return error response instead of fallback
@@ -610,9 +626,11 @@ class FormGenerator {
             ];
         }
 
-        // Add metadata
-        $form_data['session_id'] = $options['session_id'] ?? uniqid('wpuf_ai_session_');
-        $form_data['response_id'] = uniqid('openai_resp_');
+        // Add metadata with better uniqueness
+        $timestamp = microtime(true);
+        $random = bin2hex(random_bytes(5));
+        $form_data['session_id'] = $options['session_id'] ?? 'wpuf_ai_session_' . $timestamp . '_' . $random;
+        $form_data['response_id'] = 'openai_resp_' . $timestamp . '_' . $random;
         $form_data['provider'] = 'openai';
         $form_data['model'] = $this->current_model;
         $form_data['generated_at'] = current_time('mysql');
@@ -713,22 +731,40 @@ class FormGenerator {
 
         $content = $data['content'][0]['text'];
         
-        // Extract JSON from content (Claude may include explanatory text)
-        if (preg_match('/\{.*\}/s', $content, $matches)) {
-            $json_content = $matches[0];
-        } else {
-            $json_content = $content;
+        // Clean and extract JSON from the response (Claude may include explanatory text)
+        $json_content = trim($content);
+
+        // Remove any markdown code blocks if present
+        $json_content = preg_replace('/^```(?:json)?\s*|\s*```$/m', '', $json_content);
+
+        // Try to find the JSON object (handle nested braces properly)
+        $start = strpos($json_content, '{');
+        $end = strrpos($json_content, '}');
+
+        if ($start !== false && $end !== false && $end > $start) {
+            $json_content = substr($json_content, $start, $end - $start + 1);
         }
 
+        // Attempt to decode JSON
         $form_data = json_decode($json_content, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \Exception('Failed to parse AI response JSON');
+            // Log error details for debugging
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('WPUF AI Anthropic JSON Parse Error: ' . json_last_error_msg());
+                error_log('WPUF AI Anthropic Content Length: ' . strlen($content));
+                // Log a safe preview
+                $preview = substr($json_content, 0, 500);
+                error_log('WPUF AI Anthropic Content Preview: ' . $preview . (strlen($json_content) > 500 ? '...' : ''));
+            }
+            throw new \Exception('Failed to parse AI response JSON: ' . json_last_error_msg());
         }
 
-        // Add metadata
-        $form_data['session_id'] = $options['session_id'] ?? uniqid('wpuf_ai_session_');
-        $form_data['response_id'] = uniqid('anthropic_resp_');
+        // Add metadata with better uniqueness
+        $timestamp = microtime(true);
+        $random = bin2hex(random_bytes(5));
+        $form_data['session_id'] = $options['session_id'] ?? 'wpuf_ai_session_' . $timestamp . '_' . $random;
+        $form_data['response_id'] = 'anthropic_resp_' . $timestamp . '_' . $random;
         $form_data['provider'] = 'anthropic';
         $form_data['model'] = $this->current_model;
         $form_data['generated_at'] = current_time('mysql');
@@ -818,38 +854,64 @@ class FormGenerator {
         }
 
         $content = $data['candidates'][0]['content']['parts'][0]['text'];
-        
-        // Extract JSON from content
-        if (preg_match('/\{.*\}/s', $content, $matches)) {
-            $json_content = $matches[0];
-        } else {
-            $json_content = $content;
+
+        // Clean and extract JSON from content
+        $json_content = trim($content);
+
+        // Remove any markdown code blocks if present
+        $json_content = preg_replace('/^```(?:json)?\s*|\s*```$/m', '', $json_content);
+
+        // Try to find the JSON object (handle nested braces properly)
+        $start = strpos($json_content, '{');
+        $end = strrpos($json_content, '}');
+
+        if ($start !== false && $end !== false && $end > $start) {
+            $json_content = substr($json_content, $start, $end - $start + 1);
         }
 
+        // Attempt to decode JSON
         $form_data = json_decode($json_content, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \Exception('Failed to parse AI response JSON');
+            // Log error details for debugging
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('WPUF AI JSON Parse Error: ' . json_last_error_msg());
+                error_log('WPUF AI Content Length: ' . strlen($content));
+                // Log a safe preview (first 200 chars only)
+                $preview = substr($json_content, 0, 200);
+                error_log('WPUF AI Content Preview: ' . $preview . (strlen($json_content) > 200 ? '...' : ''));
+            }
+            throw new \Exception('Failed to parse AI response JSON: ' . json_last_error_msg());
         }
 
-        // Debug: Log what Google returned
+        // Debug: Log what Google returned (with safe logging)
         if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('WPUF AI Google Raw Response Structure: ' . json_encode(array_keys($form_data)));
-            error_log('WPUF AI Google Response: Has wpuf_fields: ' . (isset($form_data['wpuf_fields']) ? 'YES (' . count($form_data['wpuf_fields']) . ' fields)' : 'NO'));
-            error_log('WPUF AI Google Response: Has fields: ' . (isset($form_data['fields']) ? 'YES (' . count($form_data['fields']) . ' fields)' : 'NO'));
-            
-            // Check wpuf_fields structure
-            if (isset($form_data['wpuf_fields']) && !empty($form_data['wpuf_fields'])) {
-                $has_post_title = false;
-                $has_post_content = false;
-                foreach ($form_data['wpuf_fields'] as $field) {
-                    if (isset($field['name']) && $field['name'] === 'post_title') $has_post_title = true;
-                    if (isset($field['name']) && $field['name'] === 'post_content') $has_post_content = true;
+            try {
+                // Log basic structure
+                error_log('WPUF AI Google Raw Response Structure: ' . json_encode(array_keys($form_data)));
+                error_log('WPUF AI Google Response: Has wpuf_fields: ' . (isset($form_data['wpuf_fields']) ? 'YES (' . count($form_data['wpuf_fields']) . ' fields)' : 'NO'));
+                error_log('WPUF AI Google Response: Has fields: ' . (isset($form_data['fields']) ? 'YES (' . count($form_data['fields']) . ' fields)' : 'NO'));
+
+                // Check wpuf_fields structure
+                if (isset($form_data['wpuf_fields']) && !empty($form_data['wpuf_fields'])) {
+                    $has_post_title = false;
+                    $has_post_content = false;
+                    foreach ($form_data['wpuf_fields'] as $field) {
+                        if (isset($field['name']) && $field['name'] === 'post_title') $has_post_title = true;
+                        if (isset($field['name']) && $field['name'] === 'post_content') $has_post_content = true;
+                    }
+                    error_log('WPUF AI Google wpuf_fields: Has post_title: ' . ($has_post_title ? 'YES' : 'NO') . ', Has post_content: ' . ($has_post_content ? 'YES' : 'NO'));
+
+                    // Log first field info safely (without full JSON to avoid truncation)
+                    if (isset($form_data['wpuf_fields'][0])) {
+                        $first_field = $form_data['wpuf_fields'][0];
+                        error_log('WPUF AI Google First field: type=' . ($first_field['input_type'] ?? 'unknown') .
+                                 ', name=' . ($first_field['name'] ?? 'unknown') .
+                                 ', template=' . ($first_field['template'] ?? 'unknown'));
+                    }
                 }
-                error_log('WPUF AI Google wpuf_fields: Has post_title: ' . ($has_post_title ? 'YES' : 'NO') . ', Has post_content: ' . ($has_post_content ? 'YES' : 'NO'));
-                
-                // Log first field structure as example
-                error_log('WPUF AI Google First wpuf_field: ' . json_encode($form_data['wpuf_fields'][0] ?? []));
+            } catch (\Exception $e) {
+                error_log('WPUF AI Debug logging error: ' . $e->getMessage());
             }
             
             // Check fields structure (simplified format)
@@ -864,9 +926,11 @@ class FormGenerator {
             }
         }
 
-        // Add metadata
-        $form_data['session_id'] = $options['session_id'] ?? uniqid('wpuf_ai_session_');
-        $form_data['response_id'] = uniqid('google_resp_');
+        // Add metadata with better uniqueness
+        $timestamp = microtime(true);
+        $random = bin2hex(random_bytes(5));
+        $form_data['session_id'] = $options['session_id'] ?? 'wpuf_ai_session_' . $timestamp . '_' . $random;
+        $form_data['response_id'] = 'google_resp_' . $timestamp . '_' . $random;
         $form_data['provider'] = 'google';
         $form_data['model'] = $this->current_model;
         $form_data['generated_at'] = current_time('mysql');
@@ -882,31 +946,39 @@ class FormGenerator {
      * @return string System prompt
      */
     private function get_system_prompt($context = []) {
-        // Use the optimized combined prompt file
-        $prompt_file = plugin_dir_path(dirname(__FILE__)) . 'AI/wpuf-ai-system-prompt-optimized.md';
-        
-        // Fallback to original files if optimized doesn't exist
+        // Use the compact prompt file to avoid truncation
+        $prompt_file = plugin_dir_path(dirname(__FILE__)) . 'AI/wpuf-ai-system-prompt-compact.md';
+
+        // Fallback to optimized version if compact doesn't exist
         if (!file_exists($prompt_file)) {
-            $prompt_file = plugin_dir_path(dirname(__FILE__)) . 'AI/system-prompt.md';
-            
-            if (!file_exists($prompt_file)) {
-                throw new \Exception('System prompt file not found: ' . $prompt_file);
-            }
-            
-            $system_prompt = file_get_contents($prompt_file);
-            
-            // Load the field reference documentation if available
-            $reference_file = plugin_dir_path(dirname(__FILE__)) . 'AI/wpuf-post-form-fields-reference.md';
-            if (file_exists($reference_file)) {
-                $reference_content = file_get_contents($reference_file);
-                // Append reference to system prompt
-                $system_prompt .= "\n\n" . $reference_content;
-            }
-        } else {
-            // Use the optimized combined prompt
-            $system_prompt = file_get_contents($prompt_file);
+            $prompt_file = plugin_dir_path(dirname(__FILE__)) . 'AI/wpuf-ai-system-prompt-optimized.md';
         }
-        
+
+        // Check if file exists
+        if (!file_exists($prompt_file)) {
+            throw new \Exception('System prompt file not found: ' . $prompt_file);
+        }
+
+        // Load the prompt file
+        $system_prompt = file_get_contents($prompt_file);
+
+        // Check prompt size to prevent truncation (max ~40KB for safety)
+        if (strlen($system_prompt) > 40000) {
+            // Log warning and try to use compact version
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('WPUF AI Warning: System prompt too large (' . strlen($system_prompt) . ' bytes), may cause truncation');
+            }
+
+            // Try to load compact version as emergency fallback
+            $compact_file = plugin_dir_path(dirname(__FILE__)) . 'AI/wpuf-ai-system-prompt-compact.md';
+            if (file_exists($compact_file) && $compact_file !== $prompt_file) {
+                $system_prompt = file_get_contents($compact_file);
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log('WPUF AI: Switched to compact prompt (' . strlen($system_prompt) . ' bytes)');
+                }
+            }
+        }
+
         // Add conversation context if provided
         if (!empty($context)) {
             $system_prompt .= "\n\n## CURRENT CONVERSATION CONTEXT\n";

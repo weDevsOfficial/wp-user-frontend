@@ -100,7 +100,6 @@ export default {
                 this.__('Coupon Submission', 'wp-user-frontend'),
                 this.__('Real Estate Property Listing', 'wp-user-frontend'),
                 this.__('News/Press Release Submission', 'wp-user-frontend'),
-                this.__('WooCommerce Product Listing', 'wp-user-frontend'),
                 this.__('Product Listing', 'wp-user-frontend'),
                 this.__('Generic Form Builder', 'wp-user-frontend')
             ],
@@ -112,7 +111,6 @@ export default {
                 'Coupon Submission': 'Create a coupon submission form. Include fields for coupon title, description, discount code, discount type (percentage/fixed), discount value, store/brand name, expiry date, and store logo. Add an optional field for affiliate link. Mark required vs optional fields and suggest field types like text input, date picker, dropdown, and file upload.',
                 'Real Estate Property Listing': 'Create a real estate property listing form. Include fields for property title, description, price, property type (house, apartment, land), location (address, map), number of bedrooms, bathrooms, square footage, and image/video gallery. Add contact details for the agent/owner. Mark required vs optional fields. Suggest field types such as text, number, dropdown, file upload, and Google Maps/location.',
                 'News/Press Release Submission': 'Create a news/press release submission form. Include fields for headline, news content, featured image, category, tags, organization/author name, author email, and press release date. Add an optional document upload (PDF/Word). Mark required vs optional fields and suggest field types like text, WYSIWYG editor, file upload, and date picker.',
-                'WooCommerce Product Listing': 'Create a WooCommerce product listing form. Include fields for product title, description, price, sale price, product category, tags, product image gallery, SKU, and stock quantity. Add optional fields for shipping details, variations (size, color), and attributes. Mark required vs optional fields and suggest field types like text input, number, dropdown, file upload, and checkbox.',
                 'Product Listing': 'Create a product listing form with fields for product name, description, category, pricing, images, inventory details, shipping information, and seller contact details.',
                 'Generic Form Builder': 'Create a [POST TYPE] submission form for a [USE CASE]. Include standard fields (Post Title, Post Content, Featured Image) and specialized fields relevant to this use case. Suggest appropriate field types (text area, dropdown, file upload, checkbox, radio, etc.). Indicate which fields should be required and which should be optional. The form should make it easy for users to submit posts from the frontend.'
             }

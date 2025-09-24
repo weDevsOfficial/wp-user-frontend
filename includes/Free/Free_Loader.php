@@ -3,7 +3,10 @@
 namespace WeDevs\Wpuf\Free;
 
 use WeDevs\Wpuf\Admin\Forms\Post\Templates\Post_Form_Template_WooCommerce;
+use WeDevs\Wpuf\Admin\Forms\Post\Templates\Pro_Form_Preview_Artwork;
 use WeDevs\Wpuf\Admin\Forms\Post\Templates\Pro_Form_Preview_EDD;
+use WeDevs\Wpuf\Admin\Forms\Post\Templates\Pro_Form_Preview_Press_Release;
+use WeDevs\Wpuf\Admin\Forms\Post\Templates\Pro_Form_Preview_Professional_Video;
 use WeDevs\Wpuf\Pro\Admin\Coupon_Elements;
 use WeDevs\Wpuf\Hooks\Form_Settings_Cleanup;
 
@@ -951,9 +954,10 @@ class Free_Loader extends Pro_Prompt {
      * @return array
      */
     public function pro_form_previews( $integrations ) {
-        // include_once __DIR__ . '/post-form-templates/WPUF_Pro_Form_Preview_EDD.php';
-
         $integrations['WPUF_Pro_Form_Preview_EDD'] = new Pro_Form_Preview_EDD();
+        $integrations['WPUF_Pro_Form_Preview_Press_Release'] = new Pro_Form_Preview_Press_Release();
+        $integrations['WPUF_Pro_Form_Preview_Professional_Video'] = new Pro_Form_Preview_Professional_Video();
+        $integrations['WPUF_Pro_Form_Preview_Artwork'] = new Pro_Form_Preview_Artwork();
 
         return $integrations;
     }

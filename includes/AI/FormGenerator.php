@@ -2,7 +2,6 @@
 
 namespace WeDevs\Wpuf\AI;
 
-use WeDevs\Wpuf\Lib\AI\PredefinedProvider;
 
 /**
  * AI Form Generator Service
@@ -42,12 +41,6 @@ class FormGenerator {
      * @var array
      */
     private $provider_configs = [
-        'predefined' => [
-            'name' => 'Predefined Provider (Testing)',
-            'endpoint' => '',
-            'models' => ['predefined'],
-            'requires_key' => false
-        ],
         'openai' => [
             'name' => 'OpenAI',
             'endpoint' => 'https://api.openai.com/v1/chat/completions',
@@ -104,7 +97,7 @@ class FormGenerator {
     }
 
     /**
-     * Check if prompt matches predefined templates (using same logic as PredefinedProvider)
+     * Check if prompt matches predefined templates
      * 
      * @param string $prompt
      * @return bool
@@ -115,19 +108,35 @@ class FormGenerator {
         
         // Define keyword patterns that match predefined templates
         $predefined_patterns = [
+            'paid guest post submission form',
             'paid guest post',
             'guest post',
+            'portfolio submission form',
+            'portfolio submission',
             'portfolio',
-            'classified ad',
+            'classified ad submission form',
+            'classified ads',
             'classified',
+            'coupon submission form',
+            'coupon submission',
             'coupon',
+            'real estate property listing form',
+            'real estate listing',
             'real estate',
             'property listing',
-            'property',
-            'news',
+            'news press release submission',
+            'news submission',
+            'press release submission',
             'press release',
+            'news',
+            'woocommerce product listing form',
+            'woocommerce product listing',
+            'woocommerce',
             'product listing',
-            'product'
+            'product',
+            'generic form builder',
+            'generic form',
+            'custom form'
         ];
         
         // Check if prompt contains any predefined pattern
@@ -148,15 +157,13 @@ class FormGenerator {
         $settings = get_option('wpuf_ai', []);
 
         // Get individual settings
-        $this->current_provider = $settings['ai_provider'] ?? 'predefined';
+        $this->current_provider = $settings['ai_provider'] ?? 'openai';
         $this->current_model = $settings['ai_model'] ?? 'gpt-3.5-turbo';
         $this->api_key = $settings['ai_api_key'] ?? '';
 
-        // If no provider is set or no API key for non-predefined providers, use predefined
-        if (empty($this->current_provider) || 
-            ($this->current_provider !== 'predefined' && empty($this->api_key))) {
-            $this->current_provider = 'predefined';
-            $this->current_model = 'predefined';
+        // If no API key is set, return error
+        if (empty($this->api_key) && $this->current_provider !== 'test') {
+            // Will fail later with proper error message
         }
     }
 
@@ -169,28 +176,7 @@ class FormGenerator {
      */
     public function generate_form($prompt, $options = []) {
         try {
-            // Check if prompt matches predefined templates
-            $is_predefined = $this->isPredefinedPrompt($prompt);
-            
-            // Debug log
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('WPUF AI: Checking prompt "' . $prompt . '" - Is predefined: ' . ($is_predefined ? 'YES' : 'NO'));
-            }
-            
-            if ($is_predefined) {
-                // Use predefined provider for matching prompts (saves API costs)
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    error_log('WPUF AI: Using predefined provider for prompt: ' . $prompt);
-                }
-                $predefined_provider = new PredefinedProvider();
-                return $predefined_provider->generateForm($prompt, $options['session_id'] ?? '');
-            }
-            
-            // Use predefined provider if explicitly set or no API key
-            if ($this->current_provider === 'predefined') {
-                $predefined_provider = new PredefinedProvider();
-                return $predefined_provider->generateForm($prompt, $options['session_id'] ?? '');
-            }
+            // All prompts now go through AI providers
 
             // Using direct API implementation for AI providers
 
@@ -642,16 +628,13 @@ class FormGenerator {
      * @return array|null Fallback form data or null if creation fails
      */
     private function create_fallback_form($prompt) {
-        try {
-            // Use predefined provider as fallback
-            $predefined_provider = new PredefinedProvider();
-            return $predefined_provider->generateForm($prompt, uniqid('wpuf_fallback_'));
-        } catch (\Exception $e) {
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('WPUF AI Fallback form creation failed: ' . $e->getMessage());
-            }
-            return null;
-        }
+        // Return a simple error response instead of predefined fallback
+        return [
+            'success' => false,
+            'error' => 'AI form generation failed. Please check your AI provider settings.',
+            'form_title' => 'Form Generation Failed',
+            'fields' => []
+        ];
     }
 
     /**
@@ -991,7 +974,7 @@ class FormGenerator {
             return [
                 'success' => true,
                 'provider' => 'predefined',
-                'message' => 'Predefined provider is always available'
+                'message' => 'AI service is available'
             ];
         }
 

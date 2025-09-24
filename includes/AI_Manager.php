@@ -208,12 +208,7 @@ class AI_Manager {
     public function is_ai_available() {
         $settings = $this->get_ai_settings();
         
-        // Predefined provider is always available
-        if ($settings['provider'] === 'predefined') {
-            return true;
-        }
-
-        // Other providers require API key
+        // All providers require API key
         return !empty($settings['api_key']);
     }
 

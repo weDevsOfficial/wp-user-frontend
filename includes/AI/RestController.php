@@ -75,8 +75,8 @@ class RestController {
                 'provider' => [
                     'required' => false,
                     'type' => 'string',
-                    'default' => 'predefined',
-                    'enum' => ['predefined', 'openai', 'anthropic', 'google']
+                    'default' => 'openai',
+                    'enum' => ['openai', 'anthropic', 'google']
                 ],
                 'temperature' => [
                     'required' => false,
@@ -118,7 +118,7 @@ class RestController {
                 'provider' => [
                     'required' => true,
                     'type' => 'string',
-                    'enum' => ['predefined', 'openai', 'anthropic']
+                    'enum' => ['openai', 'anthropic']
                 ],
                 'model' => [
                     'required' => false,
@@ -301,7 +301,7 @@ class RestController {
 
         // Update with new values
         $settings = [
-            'ai_provider' => $provider ?: ($existing['ai_provider'] ?? 'predefined'),
+            'ai_provider' => $provider ?: ($existing['ai_provider'] ?? 'openai'),
             'ai_model' => $model ?: ($existing['ai_model'] ?? 'gpt-3.5-turbo'),
             'ai_api_key' => !empty($api_key) ? $api_key : ($existing['ai_api_key'] ?? '')
         ];
@@ -333,7 +333,7 @@ class RestController {
         
         // Map to expected format
         $settings = [
-            'provider' => $wpuf_ai_settings['ai_provider'] ?? 'predefined',
+            'provider' => $wpuf_ai_settings['ai_provider'] ?? 'openai',
             'model' => $wpuf_ai_settings['ai_model'] ?? 'gpt-3.5-turbo',
             'temperature' => 0.7,
             'max_tokens' => 2000,
@@ -446,7 +446,7 @@ class RestController {
             
             // Create child posts for each field (WPUF's storage method)
             foreach ($wpuf_fields as $order => $field) {
-                // Field already has correct structure from PredefinedProvider
+                // Field already has correct structure from AI provider
                 
                 $field_post = array(
                     'post_type' => 'wpuf_input',
@@ -464,7 +464,7 @@ class RestController {
             }
             
             // Also save as meta for compatibility (some functions might still use this)
-            // Fields already have correct structure from PredefinedProvider
+            // Fields already have correct structure from AI provider
             update_post_meta($form_id, 'wpuf_form_fields', $wpuf_fields);
             
             // Add form version for compatibility
@@ -554,7 +554,7 @@ class RestController {
             // Call AI to get modification instructions
             $ai_response = $this->form_generator->generate_form($enhanced_prompt, [
                 'session_id' => $modification_data['session_id'] ?? $this->generate_session_id(),
-                'provider' => get_option('wpuf_ai')['ai_provider'] ?? 'predefined',
+                'provider' => get_option('wpuf_ai')['ai_provider'] ?? 'openai',
                 'temperature' => 0.3, // Lower temperature for more consistent modifications
                 'context' => $conversation_context
             ]);

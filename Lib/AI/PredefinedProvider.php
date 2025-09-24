@@ -632,6 +632,119 @@ class PredefinedProvider {
             ]
         ],
 
+        'woocommerce_product_listing' => [
+            'form_title' => 'WooCommerce Product Listing',
+            'form_description' => 'Add new products to your WooCommerce store',
+            'fields' => [
+                [
+                    'id' => 1,
+                    'type' => 'text',
+                    'label' => 'Product Name',
+                    'name' => 'post_title',
+                    'required' => true,
+                    'placeholder' => 'Enter product name'
+                ],
+                [
+                    'id' => 2,
+                    'type' => 'textarea',
+                    'label' => 'Product Description',
+                    'name' => 'post_content',
+                    'required' => true,
+                    'rich' => 'yes',
+                    'placeholder' => 'Describe your product features and benefits...'
+                ],
+                [
+                    'id' => 3,
+                    'type' => 'number',
+                    'label' => 'Regular Price ($)',
+                    'name' => 'regular_price',
+                    'required' => true,
+                    'placeholder' => '29.99'
+                ],
+                [
+                    'id' => 4,
+                    'type' => 'number',
+                    'label' => 'Sale Price ($)',
+                    'name' => 'sale_price',
+                    'required' => false,
+                    'placeholder' => '24.99'
+                ],
+                [
+                    'id' => 5,
+                    'type' => 'select',
+                    'label' => 'Product Category',
+                    'name' => 'product_cat',
+                    'required' => true,
+                    'options' => [
+                        'uncategorized' => 'Uncategorized',
+                        'electronics' => 'Electronics',
+                        'clothing' => 'Clothing',
+                        'books' => 'Books',
+                        'home_garden' => 'Home & Garden'
+                    ]
+                ],
+                [
+                    'id' => 6,
+                    'type' => 'text',
+                    'label' => 'Product Tags',
+                    'name' => 'product_tag',
+                    'required' => false,
+                    'placeholder' => 'tag1, tag2, tag3'
+                ],
+                [
+                    'id' => 7,
+                    'type' => 'image',
+                    'label' => 'Product Gallery',
+                    'name' => 'product_images',
+                    'required' => true
+                ],
+                [
+                    'id' => 8,
+                    'type' => 'text',
+                    'label' => 'SKU',
+                    'name' => 'sku',
+                    'required' => false,
+                    'placeholder' => 'PROD-12345'
+                ],
+                [
+                    'id' => 9,
+                    'type' => 'number',
+                    'label' => 'Stock Quantity',
+                    'name' => 'stock_quantity',
+                    'required' => true,
+                    'placeholder' => '100'
+                ],
+                [
+                    'id' => 10,
+                    'type' => 'select',
+                    'label' => 'Stock Status',
+                    'name' => 'stock_status',
+                    'required' => true,
+                    'options' => [
+                        'instock' => 'In Stock',
+                        'outofstock' => 'Out of Stock',
+                        'onbackorder' => 'On Backorder'
+                    ]
+                ],
+                [
+                    'id' => 11,
+                    'type' => 'number',
+                    'label' => 'Weight (lbs)',
+                    'name' => 'weight',
+                    'required' => false,
+                    'placeholder' => '1.5'
+                ],
+                [
+                    'id' => 12,
+                    'type' => 'textarea',
+                    'label' => 'Shipping Details',
+                    'name' => 'shipping_details',
+                    'required' => false,
+                    'placeholder' => 'Shipping dimensions, special handling requirements...'
+                ]
+            ]
+        ],
+
         'product_listing' => [
             'form_title' => 'Product Listing',
             'form_description' => 'List your product for sale',
@@ -735,72 +848,135 @@ class PredefinedProvider {
 
         $response = null;
 
-        // Match prompt to appropriate form template
-        if (strpos($prompt_lower, 'paid guest post') !== false || 
-            strpos($prompt_lower, 'guest post') !== false) {
+        // Match prompt to appropriate form template based on your specific prompts
+        if (strpos($prompt_lower, 'paid guest post') !== false) {
             $response = $this->predefined_responses['paid_guest_post'];
-        } elseif (strpos($prompt_lower, 'portfolio') !== false) {
+        } elseif (strpos($prompt_lower, 'portfolio submission') !== false) {
             $response = $this->predefined_responses['portfolio_submission'];
-        } elseif (strpos($prompt_lower, 'classified') !== false || 
+        } elseif (strpos($prompt_lower, 'classified ads') !== false ||
                   strpos($prompt_lower, 'classified ad') !== false) {
             $response = $this->predefined_responses['classified_ads'];
-        } elseif (strpos($prompt_lower, 'coupon') !== false) {
+        } elseif (strpos($prompt_lower, 'coupon submission') !== false) {
             $response = $this->predefined_responses['coupon_submission'];
-        } elseif (strpos($prompt_lower, 'real estate') !== false || 
-                  strpos($prompt_lower, 'property') !== false) {
+        } elseif (strpos($prompt_lower, 'real estate property listing') !== false ||
+                  strpos($prompt_lower, 'real estate') !== false) {
             $response = $this->predefined_responses['real_estate_listing'];
-        } elseif (strpos($prompt_lower, 'news') !== false || 
+        } elseif (strpos($prompt_lower, 'news') !== false ||
                   strpos($prompt_lower, 'press release') !== false) {
             $response = $this->predefined_responses['news_press_release'];
-        } elseif (strpos($prompt_lower, 'event') !== false || 
+        } elseif (strpos($prompt_lower, 'woocommerce product listing') !== false ||
+                  (strpos($prompt_lower, 'woocommerce') !== false && strpos($prompt_lower, 'product') !== false)) {
+            $response = $this->predefined_responses['woocommerce_product_listing'];
+        } elseif (strpos($prompt_lower, 'event') !== false ||
                   strpos($prompt_lower, 'registration') !== false ||
                   strpos($prompt_lower, 'event registration') !== false) {
             $response = $this->predefined_responses['event_registration'];
-        } elseif (strpos($prompt_lower, 'survey') !== false || 
+        } elseif (strpos($prompt_lower, 'survey') !== false ||
                   strpos($prompt_lower, 'feedback') !== false ||
                   strpos($prompt_lower, 'customer survey') !== false) {
             $response = $this->predefined_responses['survey_form'];
-        } elseif (strpos($prompt_lower, 'product') !== false || 
-                  strpos($prompt_lower, 'product listing') !== false) {
+        } elseif (strpos($prompt_lower, 'generic form builder') !== false ||
+                  strpos($prompt_lower, 'generic form') !== false ||
+                  strpos($prompt_lower, 'custom form') !== false) {
+            // Use the generic template directly for Generic Form Builder requests
+            $response = null; // This will fall through to the else block
+        } elseif (strpos($prompt_lower, 'product listing') !== false ||
+                  strpos($prompt_lower, 'product') !== false) {
             $response = $this->predefined_responses['product_listing'];
         } else {
-            // Default fallback response - must include post_title and post_content for WordPress
+            // Generic AI Form Builder Prompt - comprehensive fallback template
             $response = [
-                'form_title' => 'Custom Form',
-                'form_description' => 'Form generated based on: ' . substr($prompt, 0, 100),
+                'form_title' => 'Custom Submission Form',
+                'form_description' => 'Create a submission form for your use case. Include standard fields and specialized fields relevant to this use case. Based on: ' . substr($prompt, 0, 80) . '...',
                 'fields' => [
                     [
                         'id' => 1,
                         'type' => 'text',
-                        'label' => 'Title',
+                        'label' => 'Post Title',
                         'name' => 'post_title',
                         'required' => true,
-                        'placeholder' => 'Enter title'
+                        'placeholder' => 'Enter a descriptive title for your submission'
                     ],
                     [
                         'id' => 2,
                         'type' => 'textarea',
-                        'label' => 'Content',
+                        'label' => 'Post Content',
                         'name' => 'post_content',
                         'required' => true,
-                        'rich' => 'yes',  // Enable rich text editor
-                        'placeholder' => 'Enter content...'
+                        'rich' => 'yes',
+                        'placeholder' => 'Enter your detailed content here...'
                     ],
                     [
                         'id' => 3,
+                        'type' => 'image',
+                        'label' => 'Featured Image',
+                        'name' => 'featured_image',
+                        'required' => false
+                    ],
+                    [
+                        'id' => 4,
+                        'type' => 'select',
+                        'label' => 'Category',
+                        'name' => 'category',
+                        'required' => true,
+                        'options' => [
+                            'general' => 'General',
+                            'news' => 'News',
+                            'business' => 'Business',
+                            'technology' => 'Technology',
+                            'lifestyle' => 'Lifestyle',
+                            'other' => 'Other'
+                        ]
+                    ],
+                    [
+                        'id' => 5,
                         'type' => 'text',
-                        'label' => 'Your Name',
-                        'name' => 'your_name',
+                        'label' => 'Tags',
+                        'name' => 'post_tags',
+                        'required' => false,
+                        'placeholder' => 'tag1, tag2, tag3 (comma separated)'
+                    ],
+                    [
+                        'id' => 6,
+                        'type' => 'text',
+                        'label' => 'Author Name',
+                        'name' => 'author_name',
                         'required' => true,
                         'placeholder' => 'Enter your full name'
                     ],
                     [
-                        'id' => 4,
+                        'id' => 7,
                         'type' => 'email',
-                        'label' => 'Email Address',
-                        'name' => 'email',
+                        'label' => 'Author Email',
+                        'name' => 'author_email',
                         'required' => true,
                         'placeholder' => 'your@email.com'
+                    ],
+                    [
+                        'id' => 8,
+                        'type' => 'textarea',
+                        'label' => 'Author Bio',
+                        'name' => 'author_bio',
+                        'required' => false,
+                        'placeholder' => 'Brief description about yourself...'
+                    ],
+                    [
+                        'id' => 9,
+                        'type' => 'file',
+                        'label' => 'Supporting Documents',
+                        'name' => 'supporting_files',
+                        'required' => false,
+                        'allowed_types' => 'pdf,doc,docx,jpg,png'
+                    ],
+                    [
+                        'id' => 10,
+                        'type' => 'toc',
+                        'label' => 'Terms and Conditions',
+                        'name' => 'terms_agreement',
+                        'required' => true,
+                        'description' => 'I agree to the submission guidelines',
+                        'show_checkbox' => 'yes',
+                        'toc_text' => 'By submitting this form, you agree to our content guidelines and terms of service. Content will be reviewed before publication.'
                     ]
                 ]
             ];

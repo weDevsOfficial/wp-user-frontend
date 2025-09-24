@@ -100,17 +100,21 @@ export default {
                 this.__('Coupon Submission', 'wp-user-frontend'),
                 this.__('Real Estate Property Listing', 'wp-user-frontend'),
                 this.__('News/Press Release Submission', 'wp-user-frontend'),
-                this.__('Product Listing', 'wp-user-frontend')
+                this.__('WooCommerce Product Listing', 'wp-user-frontend'),
+                this.__('Product Listing', 'wp-user-frontend'),
+                this.__('Generic Form Builder', 'wp-user-frontend')
             ],
             // AI prompts for each template (not shown in UI - used for AI generation)
             promptAIInstructions: {
-                'Paid Guest Post': 'Create a form for paid guest post submissions with fields for author information, post content, payment details, publication preferences, and content guidelines acceptance.',
-                'Portfolio Submission': 'Create a portfolio submission form with fields for personal information, project showcase, file uploads for portfolio items, skills, experience level, and contact preferences.',
-                'Classified Ads': 'Create a classified ads submission form with fields for ad title, description, category selection, pricing, location, contact information, and ad duration preferences.',
-                'Coupon Submission': 'Create a coupon submission form with fields for business information, coupon details, discount amount, expiration date, terms and conditions, and promotional content.',
-                'Real Estate Property Listing': 'Create a real estate property listing form with fields for property details, location, pricing, features, images upload, contact information, and listing preferences.',
-                'News/Press Release Submission': 'Create a news/press release submission form with fields for headline, content body, media attachments, publication date, author information, and distribution preferences.',
-                'Product Listing': 'Create a product listing form with fields for product name, description, category, pricing, images, inventory details, shipping information, and seller contact details.'
+                'Paid Guest Post': 'Create a paid guest post submission form. Include fields for post title, content, featured image, categories, tags, and author bio. Add payment fields (pricing option, payment method, transaction ID). Mark required vs optional fields. Suggest appropriate field types like text, file upload, dropdown, and payment integration.',
+                'Portfolio Submission': 'Create a portfolio submission form. Include fields for project title, description, project category, skills/technologies used, project link, and multiple image/video uploads. Add author/creator bio and contact information. Mark required vs optional fields. Suggest appropriate field types such as text input, textarea, file upload, and URL.',
+                'Classified Ads': 'Create a classified ad submission form. Include fields for ad title, description, category, price, location, contact information, and image upload. Add optional fields for condition (new/used), availability, and seller type (individual/business). Mark required vs optional fields and suggest the right field types (dropdown, text, number, file upload).',
+                'Coupon Submission': 'Create a coupon submission form. Include fields for coupon title, description, discount code, discount type (percentage/fixed), discount value, store/brand name, expiry date, and store logo. Add an optional field for affiliate link. Mark required vs optional fields and suggest field types like text input, date picker, dropdown, and file upload.',
+                'Real Estate Property Listing': 'Create a real estate property listing form. Include fields for property title, description, price, property type (house, apartment, land), location (address, map), number of bedrooms, bathrooms, square footage, and image/video gallery. Add contact details for the agent/owner. Mark required vs optional fields. Suggest field types such as text, number, dropdown, file upload, and Google Maps/location.',
+                'News/Press Release Submission': 'Create a news/press release submission form. Include fields for headline, news content, featured image, category, tags, organization/author name, author email, and press release date. Add an optional document upload (PDF/Word). Mark required vs optional fields and suggest field types like text, WYSIWYG editor, file upload, and date picker.',
+                'WooCommerce Product Listing': 'Create a WooCommerce product listing form. Include fields for product title, description, price, sale price, product category, tags, product image gallery, SKU, and stock quantity. Add optional fields for shipping details, variations (size, color), and attributes. Mark required vs optional fields and suggest field types like text input, number, dropdown, file upload, and checkbox.',
+                'Product Listing': 'Create a product listing form with fields for product name, description, category, pricing, images, inventory details, shipping information, and seller contact details.',
+                'Generic Form Builder': 'Create a [POST TYPE] submission form for a [USE CASE]. Include standard fields (Post Title, Post Content, Featured Image) and specialized fields relevant to this use case. Suggest appropriate field types (text area, dropdown, file upload, checkbox, radio, etc.). Indicate which fields should be required and which should be optional. The form should make it easy for users to submit posts from the frontend.'
             }
         };
     },

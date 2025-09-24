@@ -26,7 +26,6 @@ $files_to_check = [
     'includes/AI/RestController.php',
     'includes/AI/AIClientLoader.php',
     'includes/AI_Manager.php',
-    'Lib/AI/PredefinedProvider.php',
 ];
 
 echo "File Status:\n";
@@ -46,34 +45,26 @@ echo "- Generate: $rest_url\n";
 
 // Test the form generator
 echo "\n=== Quick Test ===\n";
-if (!empty($settings['ai_api_key']) && $settings['ai_provider'] === 'google') {
-    echo "Testing with predefined provider first...\n";
-    
+if (!empty($settings['ai_api_key'])) {
+    echo "Testing with {$settings['ai_provider']} provider...\n";
+
     // Load the necessary files
     require_once plugin_dir_path(__FILE__) . 'includes/AI/AIClientLoader.php';
     require_once plugin_dir_path(__FILE__) . 'includes/AI/FormGenerator.php';
-    
+
     try {
         $generator = new \WeDevs\Wpuf\AI\FormGenerator();
-        
-        // Force predefined provider for testing
-        $old_settings = $settings;
-        $settings['ai_provider'] = 'predefined';
-        update_option('wpuf_ai', $settings);
-        
+
         $result = $generator->generate_form('Create a contact form');
-        
+
         if (isset($result['success']) && $result['success']) {
-            echo "✅ Predefined provider works!\n";
+            echo "✅ AI provider works!\n";
             echo "Form title: " . ($result['form_title'] ?? 'N/A') . "\n";
             echo "Fields: " . count($result['fields'] ?? []) . "\n";
         } else {
-            echo "❌ Predefined provider test failed\n";
+            echo "❌ AI provider test failed\n";
         }
-        
-        // Restore settings
-        update_option('wpuf_ai', $old_settings);
-        
+
     } catch (Exception $e) {
         echo "❌ Error: " . $e->getMessage() . "\n";
     }

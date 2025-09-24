@@ -720,7 +720,7 @@ function wpuf_settings_fields() {
             [
                 'name'    => 'ai_api_key',
                 'label'   => __( 'API Key', 'wp-user-frontend' ),
-                'desc'    => __( 'Enter your AI service API key. Keep this secure and never share it publicly.', 'wp-user-frontend' ),
+                'desc'    => __( 'Enter your AI service API key. Need help finding your <a href="https://platform.openai.com/api-keys" target="_blank" class="wpuf-api-key-link" data-openai="https://platform.openai.com/api-keys" data-anthropic="https://console.anthropic.com/settings/keys" data-google="https://aistudio.google.com/app/apikey" style="text-decoration: underline;">API Key?</a>', 'wp-user-frontend' ),
                 'type'    => 'text',
                 'default' => '',
             ],

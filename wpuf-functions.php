@@ -5606,7 +5606,7 @@ function wpuf_get_forms_counts_with_status( $post_type = 'wpuf_forms' ) {
 
     $post_statuses = apply_filters( 'wpuf_post_forms_list_table_post_statuses', [
         'all'     => __( 'All', 'wp-user-frontend' ),
-        'publish' => __( 'Published', 'wp-user-frontend' ),
+        'publish' => __( 'Saved', 'wp-user-frontend' ),
         'trash'   => __( 'Trash', 'wp-user-frontend' ),
     ] );
 

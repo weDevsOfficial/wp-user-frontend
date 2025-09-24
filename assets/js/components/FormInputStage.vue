@@ -119,6 +119,20 @@ export default {
     watch: {
         generating(newVal) {
             this.isGenerating = newVal;
+        },
+
+        formDescription(newVal, oldVal) {
+            // If user manually edits the description, deselect any selected prompt
+            if (this.selectedPrompt && oldVal && newVal !== oldVal) {
+                // Check if the new value matches any of our predefined prompts
+                const matchesPrompt = Object.values(this.promptAIInstructions).includes(newVal);
+
+                // If it doesn't match any prompt, deselect the current prompt
+                if (!matchesPrompt) {
+                    this.selectedPrompt = '';
+                    this.$emit('update:selectedPrompt', '');
+                }
+            }
         }
     },
     methods: {

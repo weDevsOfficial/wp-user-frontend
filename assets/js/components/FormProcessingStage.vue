@@ -216,7 +216,22 @@ export default {
         },
         
         getConfettiUrl() {
-            const baseUrl = window.wpufAIFormBuilder?.assetUrl || '/wp-content/plugins/wp-user-frontend/assets';
+            // Use localized asset URL from PHP, with safer fallback
+            const config = window.wpufAIFormBuilder || {};
+
+            // Try multiple fallback options for better compatibility
+            const baseUrl = config.assetUrl ||
+                           config.pluginUrl ||
+                           (typeof wpuf_frontend !== 'undefined' ? wpuf_frontend.asset_url : null) ||
+                           (document.querySelector('script[src*="/wp-user-frontend/"]')?.src.replace(/\/[^\/]+$/, '').replace(/\/js$/, '')) ||
+                           '';
+
+            // If we still don't have a base URL, construct from current script
+            if (!baseUrl) {
+                console.warn('WPUF: Unable to determine asset URL for confetti image');
+                return '';
+            }
+
             return `${baseUrl}/images/confetti_transparent.gif`;
         },
         

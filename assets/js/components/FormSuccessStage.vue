@@ -2706,8 +2706,19 @@ Remember: ONLY provide form-related responses. Do not engage with off-topic requ
             
             // Build the icon URL based on WPUF's asset structure
             const config = window.wpufAIFormBuilder || {};
-            const assetUrl = config.assetUrl || '/wp-content/plugins/wp-user-frontend/assets';
-            
+
+            // Try multiple fallback options for better compatibility with multisite and custom directories
+            const assetUrl = config.assetUrl ||
+                           config.pluginUrl ||
+                           (typeof wpuf_frontend !== 'undefined' ? wpuf_frontend.asset_url : null) ||
+                           (document.querySelector('script[src*="/wp-user-frontend/"]')?.src.replace(/\/[^\/]+$/, '').replace(/\/js$/, '')) ||
+                           '';
+
+            if (!assetUrl) {
+                console.warn('WPUF: Unable to determine asset URL for field icon');
+                return '';
+            }
+
             // Always use the regular asset URL for icons (they're in the free version)
             return `${assetUrl}/images/${iconName}.svg`;
         },

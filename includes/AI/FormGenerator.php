@@ -97,59 +97,6 @@ class FormGenerator {
     }
 
     /**
-     * Check if prompt matches predefined templates
-     * 
-     * @param string $prompt
-     * @return bool
-     */
-    private function isPredefinedPrompt($prompt) {
-        // Convert to lowercase for consistent matching
-        $prompt_lower = strtolower($prompt);
-        
-        // Define keyword patterns that match predefined templates
-        $predefined_patterns = [
-            'paid guest post submission form',
-            'paid guest post',
-            'guest post',
-            'portfolio submission form',
-            'portfolio submission',
-            'portfolio',
-            'classified ad submission form',
-            'classified ads',
-            'classified',
-            'coupon submission form',
-            'coupon submission',
-            'coupon',
-            'real estate property listing form',
-            'real estate listing',
-            'real estate',
-            'property listing',
-            'news press release submission',
-            'news submission',
-            'press release submission',
-            'press release',
-            'news',
-            'woocommerce product listing form',
-            'woocommerce product listing',
-            'woocommerce',
-            'product listing',
-            'product',
-            'generic form builder',
-            'generic form',
-            'custom form'
-        ];
-        
-        // Check if prompt contains any predefined pattern
-        foreach ($predefined_patterns as $pattern) {
-            if (strpos($prompt_lower, $pattern) !== false) {
-                return true;
-            }
-        }
-        
-        return false;
-    }
-
-    /**
      * Load settings from WordPress options
      */
     private function load_settings() {
@@ -637,22 +584,6 @@ class FormGenerator {
         $form_data['success'] = true;
 
         return $form_data;
-    }
-
-    /**
-     * Create a fallback form when AI response parsing fails
-     *
-     * @param string $prompt User prompt
-     * @return array|null Fallback form data or null if creation fails
-     */
-    private function create_fallback_form($prompt) {
-        // Return a simple error response instead of predefined fallback
-        return [
-            'success' => false,
-            'error' => 'AI form generation failed. Please check your AI provider settings.',
-            'form_title' => 'Form Generation Failed',
-            'fields' => []
-        ];
     }
 
     /**

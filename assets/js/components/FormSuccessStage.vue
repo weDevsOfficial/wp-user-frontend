@@ -2456,6 +2456,12 @@ Remember: ONLY provide form-related responses. Do not engage with off-topic requ
                         `;
                         }).join('')}
                     </div>
+                    <div class="wpuf-pro-warning-message">
+                        <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M6.83406 1.50265C7.79613 -0.164945 10.2029 -0.164945 11.165 1.50265L17.2936 12.1256C18.2551 13.7922 17.0523 15.8749 15.1281 15.8749H2.87091C0.946769 15.8749 -0.256088 13.7922 0.705451 12.1256L6.83406 1.50265ZM8.99969 5.87482C9.34487 5.87482 9.62469 6.15464 9.62469 6.49982V9.62482C9.62469 9.96999 9.34487 10.2498 8.99969 10.2498C8.65452 10.2498 8.37469 9.96999 8.37469 9.62482V6.49982C8.37469 6.15464 8.65452 5.87482 8.99969 5.87482ZM8.99969 12.7498C9.34487 12.7498 9.62469 12.47 9.62469 12.1248C9.62469 11.7796 9.34487 11.4998 8.99969 11.4998C8.65452 11.4998 8.37469 11.7796 8.37469 12.1248C8.37469 12.47 8.65452 12.7498 8.99969 12.7498Z" fill="#FACC15"/>
+                        </svg>
+                        <span>Without Pro, these fields won't be included in your form.</span>
+                    </div>
                     <div class="wpuf-pro-modal-buttons">
                         <button class="wpuf-pro-btn-continue">${this.__('Continue without Pro', 'wp-user-frontend')}</button>
                         <button class="wpuf-pro-btn-upgrade">${this.__('Upgrade to Pro', 'wp-user-frontend')}</button>
@@ -2545,6 +2551,32 @@ Remember: ONLY provide form-related responses. Do not engage with off-topic requ
                         width: 24px;
                         height: 24px;
                         flex-shrink: 0;
+                    }
+                    .wpuf-pro-warning-message {
+                        display: flex;
+                        align-items: center;
+                        width: 490px;
+                        height: 52px;
+                        padding: 16px;
+                        gap: 12px;
+                        background: #FFFBEB;
+                        border-radius: 8px;
+                        margin: 32px auto 64px auto;
+                        box-sizing: border-box;
+                        opacity: 1;
+                    }
+                    .wpuf-pro-warning-message span {
+                        font-weight: 500;
+                        font-size: 14px;
+                        line-height: 20px;
+                        letter-spacing: 0%;
+                        color: #92400E;
+                        margin: 0;
+                    }
+                    .wpuf-pro-warning-message svg {
+                        flex-shrink: 0;
+                        width: 18px;
+                        height: 16px;
                     }
                     .wpuf-pro-modal-buttons {
                         display: flex;

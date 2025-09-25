@@ -125,6 +125,14 @@ class Menu {
                 wp_enqueue_style( 'wpuf-admin' );
                 wp_enqueue_style( 'wpuf-forms-list' );
                 wp_enqueue_script( 'wpuf-forms-list' );
+                // Check AI configuration status
+                $ai_settings = get_option( 'wpuf_ai', [] );
+                $ai_provider = isset( $ai_settings['ai_provider'] ) ? $ai_settings['ai_provider'] : '';
+                $ai_model    = isset( $ai_settings['ai_model'] ) ? $ai_settings['ai_model'] : '';
+                $provider_key_field = $ai_provider . '_api_key';
+                $ai_api_key = isset( $ai_settings[$provider_key_field] ) ? $ai_settings[$provider_key_field] : '';
+                $ai_configured = !empty( $ai_provider ) && !empty( $ai_api_key ) && !empty( $ai_model );
+
                 wp_localize_script('wpuf-forms-list', 'wpuf_forms_list',
                     [
                         'post_counts'            => wpuf_get_forms_counts_with_status(),
@@ -134,6 +142,8 @@ class Menu {
                         'template_nonce'         => wp_create_nonce( 'wpuf_create_from_template' ),
                         'is_plain_permalink'     => empty( get_option( 'permalink_structure' ) ),
                         'permalink_settings_url' => admin_url( 'options-permalink.php' ),
+                        'ai_configured'          => $ai_configured,
+                        'ai_settings_url'        => admin_url( 'admin.php?page=wpuf-settings#wpuf_ai' ),
                     ]
                 );
                 require_once WPUF_INCLUDES . '/Admin/views/post-forms-list-table-view.php';

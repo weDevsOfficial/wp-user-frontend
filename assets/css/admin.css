@@ -1470,3 +1470,94 @@ body.wpuf-modal-open {
 .wpuf-subscription-pack-settings .subscription-nav-content section .form-table td {
   padding: 15px 0;
 }
+
+/* AI Provider Inline Radio Buttons */
+.wpuf-radio-inline-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.wpuf-radio-inline-group.wpuf-ai-provider-radio {
+  gap: 12px;
+  display: inline-flex;
+  background: transparent;
+}
+
+.wpuf-radio-inline-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 130px;
+  height: 37px;
+  padding: 9px 9px;
+  border: 1px solid #8C8F94;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  background: #fff;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.wpuf-radio-inline-group.wpuf-ai-provider-radio .wpuf-radio-inline-item:hover {
+  background: #f6f7f7;
+  border-color: #646970;
+}
+
+.wpuf-radio-inline-item input[type="radio"] {
+  margin-right: 8px;
+  margin-top: 0;
+  flex-shrink: 0;
+}
+
+.wpuf-radio-inline-item .wpuf-radio-label {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 100%;
+  letter-spacing: 0px;
+  color: #1d2327;
+  white-space: nowrap;
+}
+
+.wpuf-radio-inline-group.wpuf-ai-provider-radio .wpuf-radio-inline-item input[type="radio"]:checked + .wpuf-radio-label {
+  color: #2271b1;
+  font-weight: 600;
+}
+
+.wpuf-radio-inline-group.wpuf-ai-provider-radio .wpuf-radio-inline-item:has(input[type="radio"]:checked) {
+  background: #f0f8ff;
+  border-color: #2271b1;
+  padding: 9px 9px; /* Compensate for thicker border */
+}
+
+/* Focus styles for accessibility */
+.wpuf-radio-inline-group.wpuf-ai-provider-radio .wpuf-radio-inline-item:focus-within {
+  outline: none;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .wpuf-radio-inline-group.wpuf-ai-provider-radio {
+    flex-direction: column;
+    align-items: stretch;
+    display: flex;
+    gap: 8px;
+  }
+
+  .wpuf-radio-inline-group.wpuf-ai-provider-radio .wpuf-radio-inline-item {
+    width: 100%;
+    max-width: 200px;
+  }
+}
+
+/* Hide provider-specific API key fields */
+.wpuf-provider-api-key.hidden {
+  display: none !important;
+}
+
+/* Hide the entire row for provider API keys */
+tr:has(.wpuf-provider-api-key) {
+  display: none !important;
+}

@@ -106,7 +106,10 @@ class FormGenerator {
         // Get individual settings
         $this->current_provider = $settings['ai_provider'] ?? 'openai';
         $this->current_model = $settings['ai_model'] ?? 'gpt-3.5-turbo';
-        $this->api_key = $settings['ai_api_key'] ?? '';
+
+        // Get provider-specific API key
+        $provider_key = $this->current_provider . '_api_key';
+        $this->api_key = $settings[$provider_key] ?? '';
 
         // If no API key is set, return error
         if (empty($this->api_key) && $this->current_provider !== 'test') {

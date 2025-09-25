@@ -642,14 +642,14 @@ function wpuf_settings_fields() {
                 'name'    => 'ai_provider',
                 'label'   => __( 'AI Provider', 'wp-user-frontend' ),
                 'desc'    => __( 'Select the AI service provider you want to use.', 'wp-user-frontend' ),
-                'type'    => 'select',
+                'type'    => 'radio_inline',
                 'options' => [
                     'openai'    => 'OpenAI',
                     'anthropic' => 'Anthropic',
                     'google'    => 'Google',
                 ],
                 'default' => 'openai',
-                'class'   => 'ai-provider-select',
+                'class'   => 'wpuf-ai-provider-radio',
             ],
             [
                 'name'    => 'ai_model',
@@ -718,11 +718,11 @@ function wpuf_settings_fields() {
                 'class'   => 'ai-model-select',
             ],
             [
-                'name'    => 'ai_api_key',
+                'name'    => 'api_key_current',
                 'label'   => __( 'API Key', 'wp-user-frontend' ),
                 'desc'    => __( 'Enter your AI service API key. Need help finding your <a href="https://platform.openai.com/api-keys" target="_blank" class="wpuf-api-key-link" data-openai="https://platform.openai.com/api-keys" data-anthropic="https://console.anthropic.com/settings/keys" data-google="https://aistudio.google.com/app/apikey" style="text-decoration: underline;">API Key?</a>', 'wp-user-frontend' ),
-                'type'    => 'text',
-                'default' => '',
+                'type'    => 'callback',
+                'callback' => 'wpuf_ai_api_key_field',
             ],
         ] ),
     ];
@@ -792,3 +792,57 @@ function wpuf_settings_field_profile( $form ) {
 }
 
 add_action( 'wsa_form_bottom_wpuf_profile', 'wpuf_settings_field_profile' );
+
+/**
+ * Render dynamic API key field based on selected provider
+ */
+function wpuf_ai_api_key_field( $args ) {
+    $settings = get_option( 'wpuf_ai', [] );
+
+    // Get current provider
+    $current_provider = $settings['ai_provider'] ?? 'openai';
+
+    // Get all API keys
+    $openai_key = $settings['openai_api_key'] ?? '';
+    $anthropic_key = $settings['anthropic_api_key'] ?? '';
+    $google_key = $settings['google_api_key'] ?? '';
+
+    ?>
+    <input type="text"
+           id="wpuf_ai_api_key_field"
+           class="regular-text wpuf-ai-api-key-dynamic"
+           value="<?php echo esc_attr( $settings[$current_provider . '_api_key'] ?? '' ); ?>"
+           placeholder="Enter your API key">
+
+    <!-- Store API keys for each provider -->
+    <input type="hidden" name="wpuf_ai[openai_api_key]" id="wpuf_ai_openai_key" value="<?php echo esc_attr($openai_key); ?>">
+    <input type="hidden" name="wpuf_ai[anthropic_api_key]" id="wpuf_ai_anthropic_key" value="<?php echo esc_attr($anthropic_key); ?>">
+    <input type="hidden" name="wpuf_ai[google_api_key]" id="wpuf_ai_google_key" value="<?php echo esc_attr($google_key); ?>">
+
+    <p class="description">
+        Enter your AI service API key. Need help finding your
+        <a href="#" class="wpuf-api-key-link"
+           data-openai="https://platform.openai.com/api-keys"
+           data-anthropic="https://console.anthropic.com/settings/keys"
+           data-google="https://aistudio.google.com/app/apikey"
+           style="text-decoration: underline;">API Key?</a>
+    </p>
+
+    <script>
+    jQuery(document).ready(function($) {
+        // Update API key field when provider changes
+        $('input[name="wpuf_ai[ai_provider]"]').on('change', function() {
+            var provider = $(this).val();
+            var apiKey = $('#wpuf_ai_' + provider + '_key').val();
+            $('#wpuf_ai_api_key_field').val(apiKey);
+        });
+
+        // Save API key to hidden field when typing
+        $('#wpuf_ai_api_key_field').on('input', function() {
+            var provider = $('input[name="wpuf_ai[ai_provider]"]:checked').val();
+            $('#wpuf_ai_' + provider + '_key').val($(this).val());
+        });
+    });
+    </script>
+    <?php
+}

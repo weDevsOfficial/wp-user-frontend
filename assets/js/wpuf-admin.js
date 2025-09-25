@@ -218,16 +218,18 @@ jQuery(function($) {
         }
     });
 
+    // Simple: The API key handling is now in the PHP callback function
+    // We just need to handle model filtering here
+
+    // Store all model options initially
+    var aiModelSelect = $('#wpuf_ai\\[ai_model\\]');
+    var allModelOptions = aiModelSelect.find('option').clone();
+    aiModelSelect.data('all-options', allModelOptions);
+
     // AI Provider change event listener to filter AI Models
-    $('#wpuf_ai\\[ai_provider\\]').on('change', function() {
+    $('input[name="wpuf_ai[ai_provider]"]').on('change', function() {
         var selectedProvider = $(this).val();
         var aiModelSelect = $('#wpuf_ai\\[ai_model\\]');
-        var allOptions = aiModelSelect.find('option').clone();
-        
-        // Store all options for restoration if needed
-        if (!aiModelSelect.data('all-options')) {
-            aiModelSelect.data('all-options', allOptions);
-        }
         
         // Clear current options
         aiModelSelect.empty();
@@ -236,35 +238,39 @@ jQuery(function($) {
         aiModelSelect.append('<option value="">Select AI Model</option>');
         
         // Filter and add relevant options based on provider
+        var modelsAdded = 0;
         aiModelSelect.data('all-options').each(function() {
             var option = $(this);
             var optionText = option.text();
             var optionValue = option.val();
-            
+
             // Skip empty value option
             if (!optionValue) return;
-            
+
             // Check if option belongs to selected provider
             if (selectedProvider === 'openai' && optionText.includes('(OpenAI)')) {
                 aiModelSelect.append(option.clone());
+                modelsAdded++;
             } else if (selectedProvider === 'anthropic' && optionText.includes('(Anthropic)')) {
                 aiModelSelect.append(option.clone());
+                modelsAdded++;
             } else if (selectedProvider === 'google' && optionText.includes('(Google)')) {
                 aiModelSelect.append(option.clone());
-            } else if (selectedProvider === 'others' && optionText.includes('(Others)')) {
-                aiModelSelect.append(option.clone());
+                modelsAdded++;
             }
         });
+
+        // Log for debugging
+        console.log('Provider changed to:', selectedProvider, '- Models loaded:', modelsAdded);
         
         // Check if there's a pre-selected value from database
         var currentDbValue = aiModelSelect.attr('data-current-value') || aiModelSelect.val();
         
         // Set default model for the selected provider
         var defaultModels = {
-            'openai': 'gpt-3.5-turbo',
-            'anthropic': 'claude-3-haiku',
-            'google': 'gemini-pro',
-            'others': 'llama'
+            'openai': 'gpt-4o-mini',
+            'anthropic': 'claude-3-5-sonnet-20241022',
+            'google': 'gemini-1.5-flash-latest'
         };
         
         // First try to keep the current DB value if it's valid for the selected provider
@@ -276,6 +282,8 @@ jQuery(function($) {
         }
     });
 
+    // API key management is now handled by the PHP callback function
+
     // Trigger change event on page load to filter models based on pre-selected provider
-    $('#wpuf_ai\\[ai_provider\\]').trigger('change');
+    $('input[name="wpuf_ai[ai_provider]"]:checked').trigger('change');
 });

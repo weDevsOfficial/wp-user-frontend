@@ -14,12 +14,15 @@ if ( !class_exists( 'WeDevs\Wpuf\Free\Pro_Prompt' ) ) {
 function wpuf_check_ai_configuration() {
     // Get AI settings from WPUF options
     $ai_settings = get_option( 'wpuf_ai', [] );
-    
+
     $ai_provider = isset( $ai_settings['ai_provider'] ) ? $ai_settings['ai_provider'] : '';
-    $ai_api_key  = isset( $ai_settings['ai_api_key'] ) ? $ai_settings['ai_api_key'] : '';
     $ai_model    = isset( $ai_settings['ai_model'] ) ? $ai_settings['ai_model'] : '';
-    
-    // For other providers, check that all required settings are present
+
+    // Check for provider-specific API key
+    $provider_key_field = $ai_provider . '_api_key';
+    $ai_api_key = isset( $ai_settings[$provider_key_field] ) ? $ai_settings[$provider_key_field] : '';
+
+    // Check that provider, model and provider-specific API key are present
     return !empty( $ai_provider ) && !empty( $ai_api_key ) && !empty( $ai_model );
 }
 

@@ -26,7 +26,7 @@ class AI_Form_Handler {
      */
     public function handle_ai_form_template() {
         // Verify nonce
-        if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'wpuf_create_from_template' ) ) {
+        if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'wpuf_create_from_template' ) ) {
             wp_die( __( 'Security check failed', 'wp-user-frontend' ) );
         }
         
@@ -39,11 +39,8 @@ class AI_Form_Handler {
         remove_all_actions( 'admin_notices' );
         remove_all_actions( 'all_admin_notices' );
         
-        // Load CSS
-        wp_enqueue_style( 'wpuf-ai-form-builder' );
-        
-        // Load scripts
-        wp_enqueue_script( 'wpuf-ai-form-builder' );
+        // Let Admin enqueue + localize assets consistently
+        do_action( 'wpuf_load_ai_form_builder_page' );
         
         // Set up proper admin page variables
         set_current_screen( 'wpuf-ai-form-generation' );
@@ -68,7 +65,7 @@ class AI_Form_Handler {
      */
     public function handle_ai_form_generating() {
         // Verify nonce
-        if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'wpuf_ai_generate_form' ) ) {
+        if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'wpuf_ai_generate_form' ) ) {
             wp_die( __( 'Security check failed', 'wp-user-frontend' ) );
         }
         
@@ -81,9 +78,8 @@ class AI_Form_Handler {
         remove_all_actions( 'admin_notices' );
         remove_all_actions( 'all_admin_notices' );
         
-        // Load CSS and scripts
-        wp_enqueue_style( 'wpuf-ai-form-builder' );
-        wp_enqueue_script( 'wpuf-ai-form-builder' );
+        // Let Admin enqueue + localize assets consistently
+        do_action( 'wpuf_load_ai_form_builder_page' );
         
         // Set up proper admin page variables
         set_current_screen( 'wpuf-ai-form-generating' );
@@ -107,6 +103,12 @@ class AI_Form_Handler {
      * Handle AI form success action
      */
     public function handle_ai_form_success() {
+        // Verify nonce
+        $nonce = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '';
+        if ( ! $nonce || ! wp_verify_nonce( $nonce, 'wpuf_ai_success' ) ) {
+            wp_die( __( 'Security check failed', 'wp-user-frontend' ) );
+        }
+
         // Check permissions
         if ( ! current_user_can( wpuf_admin_role() ) ) {
             wp_die( __( 'You do not have sufficient permissions to access this page.', 'wp-user-frontend' ) );
@@ -116,9 +118,8 @@ class AI_Form_Handler {
         remove_all_actions( 'admin_notices' );
         remove_all_actions( 'all_admin_notices' );
         
-        // Load CSS and scripts
-        wp_enqueue_style( 'wpuf-ai-form-builder' );
-        wp_enqueue_script( 'wpuf-ai-form-builder' );
+        // Let Admin enqueue + localize assets consistently
+        do_action( 'wpuf_load_ai_form_builder_page' );
         
         // Set up proper admin page variables
         set_current_screen( 'wpuf-ai-form-success' );

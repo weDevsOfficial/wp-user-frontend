@@ -840,8 +840,10 @@ class PredefinedProvider {
      * @return array Generated form data
      */
     public function generateForm($prompt, $session_id = '') {
-        // Simulate AI processing delay
-        sleep(1);
+        // Optional: Add configurable delay for testing
+        if (defined('WPUF_AI_TEST_MODE') && WPUF_AI_TEST_MODE) {
+            sleep(1);
+        }
 
         // Convert prompt to lowercase for matching
         $prompt_lower = strtolower($prompt);

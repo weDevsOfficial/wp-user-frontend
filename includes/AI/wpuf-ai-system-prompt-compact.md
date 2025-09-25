@@ -104,7 +104,7 @@ time → time_field
 file_upload → file_upload
 image_upload → image_upload
 featured_image → featured_image
-numeric_text_field → numeric_text_field
+numeric_text_field → numeric_text_field (MUST include: step_text_field, min_value_field, max_value_field)
 phone_field → phone_field
 address_field → address_field
 country_list → country_list_field
@@ -155,10 +155,25 @@ Add: `"inline":"no","options":{"opt1":"Option 1","opt2":"Option 2"}`
 Remove size, add: `"format":"mm/dd/yy","time":"no"`
 
 ### File Upload
-Add: `"max_size":"2048","count":"3","extension":["pdf","doc","docx"]`
+Add: `"max_size":"2048","count":"3","extension":["images","office","pdf"]`
+
+**CRITICAL:** Extension field must use CATEGORIES, not individual extensions:
+- `images` → Images (jpg, jpeg, gif, png, bmp, webp)
+- `audio` → Audio (mp3, wav, ogg, wma, mka, m4a, ra, mid, midi)
+- `video` → Videos (avi, divx, flv, mov, ogv, mkv, mp4, m4v, divx, mpg, mpeg, mpe)
+- `pdf` → PDF (pdf)
+- `office` → Office Documents (doc, ppt, pps, xls, mdb, docx, xlsx, pptx, odt, odp, ods, odg, odc, odb, odf, rtf, txt)
+- `zip` → Zip Archives (zip, gz, gzip, rar, 7z)
+- `exe` → Executable Files (exe)
+- `csv` → CSV (csv)
+
+DEFAULT: All categories enabled by default. Use specific categories for restrictions.
 
 ### Image Upload
 Add: `"max_size":"1024","count":"1","button_label":"Select Image"`
+
+### Numeric Field
+Add: `"step_text_field":"1","min_value_field":"0","max_value_field":""`
 
 ### Address Field
 ```json

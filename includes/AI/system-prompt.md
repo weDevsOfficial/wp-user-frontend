@@ -470,7 +470,7 @@ Every field MUST include ALL these properties:
   "width": "large",
   "max_size": "2048",
   "count": "3",
-  "extension": ["pdf", "doc", "docx", "xls", "xlsx"],
+  "extension": ["office", "pdf"],
   "wpuf_cond": {
     "condition_status": "no",
     "cond_field": [],
@@ -488,8 +488,20 @@ Every field MUST include ALL these properties:
 **File Upload vs Image Upload:**
 - Use `file_upload` for documents, PDFs, spreadsheets, etc.
 - Use `image_upload` for photos and images (jpg, png, gif, etc.)
-- File upload requires `extension` array with allowed file types
+- File upload requires `extension` array with CATEGORY names (images, video, pdf, office, etc.) NOT individual extensions
 - Image upload automatically handles image formats
+
+**Available Extension Categories:**
+- `images` → Images (jpg, jpeg, gif, png, bmp, webp)
+- `audio` → Audio (mp3, wav, ogg, wma, mka, m4a, ra, mid, midi)
+- `video` → Videos (avi, divx, flv, mov, ogv, mkv, mp4, m4v, divx, mpg, mpeg, mpe)
+- `pdf` → PDF (pdf)
+- `office` → Office Documents (doc, ppt, pps, xls, mdb, docx, xlsx, pptx, odt, odp, ods, odg, odc, odb, odf, rtf, txt)
+- `zip` → Zip Archives (zip, gz, gzip, rar, 7z)
+- `exe` → Executable Files (exe)
+- `csv` → CSV (csv)
+
+**Default:** All categories enabled: `["images", "audio", "video", "pdf", "office", "zip", "exe", "csv"]`
 
 ## RESPONSE EXAMPLES
 

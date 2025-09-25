@@ -126,6 +126,18 @@ class FormGenerator {
      */
     public function generate_form($prompt, $options = []) {
         try {
+            // Store original provider and model for restoration
+            $original_provider = $this->current_provider;
+            $original_model = $this->current_model;
+            
+            // Apply per-request overrides if provided
+            if ( isset($options['provider']) && ! empty($options['provider']) ) {
+                $this->current_provider = $options['provider'];
+            }
+            if ( isset($options['model']) && ! empty($options['model']) ) {
+                $this->current_model = $options['model'];
+            }
+
             // All prompts now go through AI providers
 
             // Using direct API implementation for AI providers
@@ -133,19 +145,32 @@ class FormGenerator {
             // Use manual AI provider implementation as fallback
             switch ($this->current_provider) {
                 case 'openai':
-                    return $this->generate_with_openai($prompt, $options);
+                    $result = $this->generate_with_openai($prompt, $options);
+                    break;
 
                 case 'anthropic':
-                    return $this->generate_with_anthropic($prompt, $options);
+                    $result = $this->generate_with_anthropic($prompt, $options);
+                    break;
 
                 case 'google':
-                    return $this->generate_with_google($prompt, $options);
+                    $result = $this->generate_with_google($prompt, $options);
+                    break;
 
                 default:
                     throw new \Exception('Unsupported AI provider: ' . $this->current_provider);
             }
+            
+            // Restore original provider and model
+            $this->current_provider = $original_provider;
+            $this->current_model = $original_model;
+            
+            return $result;
 
         } catch (\Exception $e) {
+            // Ensure restoration even on exception
+            $this->current_provider = $original_provider ?? $this->current_provider;
+            $this->current_model = $original_model ?? $this->current_model;
+            
             error_log('WPUF AI Form Generator Error: ' . $e->getMessage());
             
             return [
@@ -485,7 +510,14 @@ class FormGenerator {
         $response = wp_safe_remote_request($this->provider_configs['openai']['endpoint'], $args);
 
         if (is_wp_error($response)) {
-            throw new \Exception('OpenAI API request failed: ' . $response->get_error_message());
+            $error_message = $response->get_error_message();
+            
+            // Check for specific timeout errors
+            if (strpos($error_message, 'timeout') !== false || strpos($error_message, 'timed out') !== false) {
+                throw new \Exception('OpenAI API request timed out. Please try again later.');
+            }
+            
+            throw new \Exception('OpenAI API request failed: ' . $error_message);
         }
 
         $status_code = wp_remote_retrieve_response_code($response);
@@ -496,6 +528,11 @@ class FormGenerator {
 
         $body = wp_remote_retrieve_body($response);
         $data = json_decode($body, true);
+
+        // Validate JSON response
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \Exception('Invalid JSON response from AI provider: ' . json_last_error_msg());
+        }
 
         // Debug log the full response
         if (defined('WP_DEBUG') && WP_DEBUG) {
@@ -655,6 +692,11 @@ class FormGenerator {
         $body = wp_remote_retrieve_body($response);
         $data = json_decode($body, true);
 
+        // Validate JSON response
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \Exception('Invalid JSON response from Anthropic API: ' . json_last_error_msg());
+        }
+
         if (isset($data['error'])) {
             throw new \Exception('Anthropic API Error: ' . $data['error']['message']);
         }
@@ -779,6 +821,11 @@ class FormGenerator {
         $body = wp_remote_retrieve_body($response);
         $data = json_decode($body, true);
 
+        // Validate JSON response
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \Exception('Invalid JSON response from Google API: ' . json_last_error_msg());
+        }
+
         if (isset($data['error'])) {
             throw new \Exception('Google API Error: ' . ($data['error']['message'] ?? 'Unknown error'));
         }
@@ -818,9 +865,17 @@ class FormGenerator {
             throw new \Exception('Failed to parse AI response JSON: ' . json_last_error_msg());
         }
 
-        // Debug: Log what Google returned (with safe logging)
+        // Debug: Log what Google returned (with safe logging and memory monitoring)
         if (defined('WP_DEBUG') && WP_DEBUG) {
             try {
+                // Monitor memory usage
+                $memory_usage = memory_get_usage(true);
+                $memory_limit = wp_convert_hr_to_bytes(ini_get('memory_limit'));
+                
+                if ($memory_usage > ($memory_limit * 0.8)) {
+                    error_log('WPUF AI Warning: High memory usage detected: ' . size_format($memory_usage));
+                }
+                
                 // Log basic structure
                 error_log('WPUF AI Google Raw Response Structure: ' . json_encode(array_keys($form_data)));
                 error_log('WPUF AI Google Response: Has wpuf_fields: ' . (isset($form_data['wpuf_fields']) ? 'YES (' . count($form_data['wpuf_fields']) . ' fields)' : 'NO'));

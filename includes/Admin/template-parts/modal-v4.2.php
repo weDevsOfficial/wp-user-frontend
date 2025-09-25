@@ -11,6 +11,7 @@ if ( !class_exists( 'WeDevs\Wpuf\Free\Pro_Prompt' ) ) {
 }
 
 // Check AI provider configuration
+if ( ! function_exists( 'wpuf_check_ai_configuration' ) ) {
 function wpuf_check_ai_configuration() {
     // Get AI settings from WPUF options
     $ai_settings = get_option( 'wpuf_ai', [] );
@@ -24,6 +25,7 @@ function wpuf_check_ai_configuration() {
 
     // Check that provider, model and provider-specific API key are present
     return !empty( $ai_provider ) && !empty( $ai_api_key ) && !empty( $ai_model );
+}
 }
 
 $form_type = ! empty( $form_type ) ?  $form_type : 'Post Form';

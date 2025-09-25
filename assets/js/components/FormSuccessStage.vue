@@ -1897,6 +1897,18 @@ Remember: ONLY provide form-related responses. Do not engage with off-topic requ
             } catch (error) {
                 console.error('❌ Apply Form Error:', error);
                 
+                // Enhanced error context
+                if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    // Network error
+                    alert('Network error: Please check your connection and try again.');
+                } else if (error.response && error.response.status === 413) {
+                    // Payload too large
+                    alert('Form is too complex. Please simplify and try again.');
+                } else {
+                    // Generic error
+                    alert('An error occurred while applying the form. Please try again.');
+                }
+                
                 // Show error to user
                 const errorMessage = {
                     type: 'ai',

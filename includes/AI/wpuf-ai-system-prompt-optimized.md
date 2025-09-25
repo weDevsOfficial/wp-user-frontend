@@ -306,7 +306,7 @@ math_captcha → math_captcha
 }
 ```
 
-#### Numeric Field
+#### Numeric Field (REQUIRED FIELDS: step_text_field, min_value_field, max_value_field)
 ```json
 {
   "id": "field_X",
@@ -529,7 +529,7 @@ math_captcha → math_captcha
   "width": "large",
   "max_size": "2048",
   "count": "3",
-  "extension": ["pdf", "doc", "docx", "xls", "xlsx"],
+  "extension": ["office", "pdf"],
   "wpuf_cond": {
     "condition_status": "no",
     "cond_field": [],
@@ -543,6 +543,20 @@ math_captcha → math_captcha
   }
 }
 ```
+
+**CRITICAL: File Extension Categories**
+Extension field must use CATEGORIES, not individual extensions:
+- `images` → Images (jpg, jpeg, gif, png, bmp, webp)
+- `audio` → Audio (mp3, wav, ogg, wma, mka, m4a, ra, mid, midi)
+- `video` → Videos (avi, divx, flv, mov, ogv, mkv, mp4, m4v, divx, mpg, mpeg, mpe)
+- `pdf` → PDF (pdf)
+- `office` → Office Documents (doc, ppt, pps, xls, mdb, docx, xlsx, pptx, odt, odp, ods, odg, odc, odb, odf, rtf, txt)
+- `zip` → Zip Archives (zip, gz, gzip, rar, 7z)
+- `exe` → Executable Files (exe)
+- `csv` → CSV (csv)
+
+DEFAULT: `["images", "audio", "video", "pdf", "office", "zip", "exe", "csv"]` (all enabled)
+Example: `"extension": ["images", "video"]` NOT `["jpg", "mp4"]`
 
 #### Image Upload Field
 ```json
@@ -726,7 +740,10 @@ math_captcha → math_captcha
       "template": "numeric_text_field",
       "label": "Quantity",
       "name": "item_quantity",
-      "placeholder": "0"
+      "placeholder": "0",
+      "step_text_field": "1",
+      "min_value_field": "0",
+      "max_value_field": ""
     }
   ],
   "wpuf_cond": {
@@ -1245,12 +1262,14 @@ Common fields for employee-related forms:
 7. ✅ Templates match the correct field type mapping
 8. ✅ WordPress fields have is_meta="no", custom fields have is_meta="yes"
 9. ✅ Address fields include the nested "address" object
-10. ✅ Options for select/radio/checkbox MUST be objects: {"value": "Label", "value2": "Label2"}
-11. ✅ All string values are strings, not booleans or nulls
+10. ✅ Numeric fields MUST include: step_text_field, min_value_field, max_value_field
+11. ✅ Options for select/radio/checkbox MUST be objects: {"value": "Label", "value2": "Label2"}
+12. ✅ All string values are strings, not booleans or nulls
 
 ### Common Mistakes to AVOID:
 - ❌ Using wrong template names (e.g., "text" instead of "text_field")
 - ❌ Missing the nested "address" object in address fields
+- ❌ Missing required numeric field properties: step_text_field, min_value_field, max_value_field
 - ❌ Using boolean true/false instead of "yes"/"no" strings
 - ❌ Omitting wpuf_cond or wpuf_visibility objects
 - ❌ Creating fields with incomplete structure

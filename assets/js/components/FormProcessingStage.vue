@@ -127,7 +127,13 @@ export default {
         };
     },
     methods: {
-        __: window.__ || ((text) => text),
+        __: (text, domain = 'wp-user-frontend') => {
+            if (typeof window.__ === 'function') {
+                return window.__(text, domain);
+            }
+            console.warn('Translation function not available:', text);
+            return text;
+        },
         
         startGeneration() {
             if (this.isProcessing) return;

@@ -80,8 +80,13 @@ export default {
     
     methods: {
         __( text ) {
-            // Translation function placeholder
-            return window.__ ? window.__(text, 'wp-user-frontend') : text;
+            // Translation function placeholder with error handling
+            try {
+                return window.__ ? window.__(text, 'wp-user-frontend') : text;
+            } catch (error) {
+                console.warn('Translation function error:', error);
+                return text;
+            }
         },
         
         goBack() {
@@ -110,9 +115,6 @@ export default {
                 const config = window.wpufAIFormBuilder || {};
                 const restUrl = config.restUrl || (window.location.origin + '/wp-json/');
                 const nonce = config.nonce || '';
-                
-                console.log('AI Form Builder Config:', config);
-                console.log('Using REST URL:', restUrl + 'wpuf/v1/ai-form-builder/generate');
                 
                 const response = await fetch(restUrl + 'wpuf/v1/ai-form-builder/generate', {
                     method: 'POST',
@@ -456,8 +458,8 @@ export default {
             if (result.form_data) {
                 this.generatedFormData = result.form_data;
                 this.formTitle = result.form_data.form_title || 'Generated Form';
-                // For preview, use fields (simplified), but store wpuf_fields for actual form creation
-                this.formFields = this.convertFieldsToPreview(result.form_data.fields || []);
+                // Use wpuf_fields directly from the response
+                this.formFields = result.form_data.wpuf_fields || result.form_data.fields || [];
 
                 // Notify processing stage that AI response is received
                 if (this.$refs.processingStage) {

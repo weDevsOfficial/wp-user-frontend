@@ -49,26 +49,29 @@ class Admin {
     }
 
     /**
-     * Create post form templates depending on the action
-     *
-     * @since 4.0.0
+     * Create a post form from the selected template
      *
      * @return void
      */
     public function create_post_form_from_template() {
         // Check if this is an AI form template
-        $template_name = isset( $_GET['template'] ) ? sanitize_text_field( wp_unslash( $_GET['template'] ) ) : '';
+        // Verify the template parameter is set and valid
+        if ( ! isset( $_GET['template'] ) ) {
+            $this->container['form_template']->create_post_form_from_template();
+            return;
+        }
+        
+        $template_name = sanitize_text_field( wp_unslash( $_GET['template'] ) );
         
         if ( $template_name === 'ai_form' ) {
+            // AI Form Handler will verify its own nonce
             $this->container['ai_form_handler']->handle_ai_form_template();
             return;
         }
         
         // Otherwise, handle normal templates
         $this->container['form_template']->create_post_form_from_template();
-    }
-
-    /**
+    }    /**
      * Enqueue the common CSS and JS needed for WordPress admin area
      *
      * @since 4.0.0
@@ -201,6 +204,9 @@ class Admin {
         // Get AI settings
         $ai_settings = get_option('wpuf_ai', []);
         
+        // Determine if we should expose API key status based on user capabilities
+        $show_api_status = current_user_can( wpuf_admin_role() );
+        
         wp_localize_script(
             'wpuf-ai-form-builder', 'wpufAIFormBuilder',
             [
@@ -212,10 +218,10 @@ class Admin {
                 'restUrl'    => esc_url_raw( rest_url() ), // Some components use restUrl
                 'provider'   => $ai_settings['ai_provider'] ?? 'google',
                 'model'      => $ai_settings['ai_model'] ?? 'gemini-1.5-flash-latest',
-                'hasApiKey'  => !empty($ai_settings['ai_api_key']),
+                'hasApiKey'  => $show_api_status ? !empty($ai_settings['ai_api_key']) : null,
                 'isProActive' => class_exists( 'WP_User_Frontend_Pro' ),
-                'temperature' => 0.7,
-                'maxTokens'  => 2000,
+                'temperature' => floatval( $ai_settings['temperature'] ?? 0.7 ),
+                'maxTokens'  => intval( $ai_settings['max_tokens'] ?? 2000 ),
                 'i18n' => [
                     'errorTitle' => __('Error', 'wp-user-frontend'),
                     'errorMessage' => __('Something went wrong. Please try again.', 'wp-user-frontend'),

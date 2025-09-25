@@ -31,26 +31,20 @@ $form_title = isset( $_GET['form_title'] ) && ! empty( $_GET['form_title'] ) ? s
 
 // Note: Scripts are already enqueued in the handler, so we don't need to enqueue them here
 
-// Localize script data for Vue component
-wp_localize_script(
-    'wpuf-ai-form-builder', 'wpufAIFormBuilder',
-    [
-        'version'      => WPUF_VERSION,
-        'assetUrl'     => WPUF_ASSET_URI,
-        'siteUrl'      => site_url(),
-        'nonce'        => wp_create_nonce( 'wp_rest' ),
-        'rest_url'     => esc_url_raw( rest_url() ),
+// Trigger action to allow other scripts to be enqueued and localized
+do_action( 'wpuf_load_ai_form_builder_page' );
+
+// Pass template data to the enqueued scripts
+add_filter( 'wpuf_ai_form_builder_localize_data', function( $data ) use ( $stage, $description, $prompt, $form_id, $form_title ) {
+    return array_merge( $data, [
         'stage'        => $stage,
         'description'  => $description,
         'prompt'       => $prompt,
         'formId'       => $form_id,
         'formTitle'    => $form_title,
         'confettiUrl'  => WPUF_ASSET_URI . '/images/confetti_transparent.gif',
-    ]
-);
-
-// Trigger action to allow other scripts to be enqueued
-do_action( 'wpuf_load_ai_form_builder_page' );
+    ]);
+});
 ?>
 
 <!-- Vue.js AI Form Builder Component Mount Point -->

@@ -1476,7 +1476,6 @@ body.wpuf-modal-open {
   display: flex;
   gap: 12px;
   align-items: center;
-  margin: 5px 0;
 }
 
 .wpuf-radio-inline-group.wpuf-ai-provider-radio {

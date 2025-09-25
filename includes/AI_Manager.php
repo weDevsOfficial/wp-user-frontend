@@ -74,9 +74,9 @@ class AI_Manager {
         wp_localize_script('wpuf-form-builder-mixins', 'wpufAIFormBuilder', [
             'restUrl' => rest_url('/'),
             'nonce' => wp_create_nonce('wp_rest'),
-            'provider' => get_option('wpuf_ai_settings')['provider'] ?? 'predefined',
-            'temperature' => get_option('wpuf_ai_settings')['temperature'] ?? 0.7,
-            'maxTokens' => get_option('wpuf_ai_settings')['max_tokens'] ?? 2000,
+            'provider' => get_option('wpuf_ai')['ai_provider'] ?? 'predefined',
+            'temperature' => get_option('wpuf_ai')['ai_temperature'] ?? 0.7,
+            'maxTokens' => get_option('wpuf_ai')['ai_max_tokens'] ?? 2000,
             'assetUrl' => WPUF_ASSET_URI,
             'isProActive' => class_exists('WP_User_Frontend_Pro'),
             'strings' => [
@@ -93,9 +93,9 @@ class AI_Manager {
                 wp_localize_script($script_handle, 'wpufAIFormBuilder', [
                     'restUrl' => rest_url('/'),
                     'nonce' => wp_create_nonce('wp_rest'),
-                    'provider' => get_option('wpuf_ai_settings')['provider'] ?? 'predefined',
-                    'temperature' => get_option('wpuf_ai_settings')['temperature'] ?? 0.7,
-                    'maxTokens' => get_option('wpuf_ai_settings')['max_tokens'] ?? 2000,
+                    'provider' => get_option('wpuf_ai')['ai_provider'] ?? 'predefined',
+                    'temperature' => get_option('wpuf_ai')['ai_temperature'] ?? 0.7,
+                    'maxTokens' => get_option('wpuf_ai')['ai_max_tokens'] ?? 2000,
                     'assetUrl' => WPUF_ASSET_URI,
                     'isProActive' => class_exists('WP_User_Frontend_Pro'),
                 ]);
@@ -115,8 +115,8 @@ class AI_Manager {
             'restUrl' => rest_url('/'),
             'nonce' => wp_create_nonce('wp_rest'),
             'ajaxUrl' => admin_url('admin-ajax.php'),
-            'provider' => get_option('wpuf_ai_settings')['provider'] ?? 'predefined',
-            'hasApiKey' => !empty(get_option('wpuf_ai_settings')['api_key']),
+            'provider' => get_option('wpuf_ai')['ai_provider'] ?? 'predefined',
+            'hasApiKey' => !empty(get_option('wpuf_ai')['ai_api_key']),
             'isProActive' => class_exists('WP_User_Frontend_Pro'),
             'strings' => [
                 'testConnection' => __('Test Connection', 'wp-user-frontend'),
@@ -191,7 +191,7 @@ class AI_Manager {
      * @return array
      */
     public function get_ai_settings() {
-        return get_option('wpuf_ai_settings', [
+        return get_option('wpuf_ai', [
             'provider' => 'predefined',
             'model' => 'predefined',
             'temperature' => 0.7,

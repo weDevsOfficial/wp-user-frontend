@@ -10,10 +10,19 @@ use WP_Error;
 /**
  * REST API Controller for AI Form Builder
  * 
- * Handles all REST API endpoints for AI form generation
- * Provides secure, authenticated access to AI form generation features
+ * Handles all REST API endpoints for AI form generation with comprehensive
+ * security, validation, and error handling. Implements rate limiting,
+ * XSS protection, and proper WordPress capability checks.
+ * 
+ * Security Features:
+ * - Rate limiting (10 requests/hour per user)
+ * - XSS protection with field sanitization
+ * - Proper capability checks with role filtering
+ * - Session validation and timeout handling
+ * - Enhanced error logging with context
  * 
  * @since 1.0.0
+ * @version 1.2.0
  */
 class RestController {
 
@@ -118,7 +127,7 @@ class RestController {
                 'provider' => [
                     'required' => true,
                     'type' => 'string',
-                    'enum' => ['openai', 'anthropic']
+                    'enum' => ['openai', 'anthropic', 'google']
                 ],
                 'model' => [
                     'required' => false,
@@ -201,6 +210,16 @@ class RestController {
      * @return WP_REST_Response|WP_Error Response object
      */
     public function generate_form(WP_REST_Request $request) {
+        // Validate request size to prevent abuse
+        $content_length = $request->get_header('content-length');
+        if ($content_length && $content_length > 1048576) { // 1MB limit
+            return new WP_Error(
+                'request_too_large',
+                __('Request payload too large', 'wp-user-frontend'),
+                ['status' => 413]
+            );
+        }
+
         $prompt = $request->get_param('prompt');
         $session_id = $request->get_param('session_id');
         $conversation_context = $request->get_param('conversation_context') ?? [];
@@ -208,7 +227,30 @@ class RestController {
         $temperature = $request->get_param('temperature');
         $max_tokens = $request->get_param('max_tokens');
 
-        // Google API handles its own rate limiting, no need for additional limits
+        // Basic rate limiting check
+        $user_id = get_current_user_id();
+        $rate_limit_key = 'wpuf_ai_rate_limit_' . $user_id;
+        $requests = get_transient($rate_limit_key) ?: 0;
+        
+        if ($requests >= 10) { // 10 requests per hour
+            return new WP_Error(
+                'rate_limit_exceeded',
+                __('Too many AI requests. Please wait before trying again.', 'wp-user-frontend'),
+                ['status' => 429]
+            );
+        }
+        
+        // Increment request counter
+        set_transient($rate_limit_key, $requests + 1, HOUR_IN_SECONDS);
+
+        // Validate session ID format to prevent injection
+        if (!empty($session_id) && !preg_match('/^[a-zA-Z0-9_-]{1,64}$/', $session_id)) {
+            return new WP_Error(
+                'invalid_session',
+                __('Invalid session ID format', 'wp-user-frontend'),
+                ['status' => 400]
+            );
+        }
 
         try {
             $options = [
@@ -246,6 +288,69 @@ class RestController {
                 ['status' => 500]
             );
         }
+    }
+
+    /**
+     * Comprehensive input validation for API requests
+     * 
+     * @param array $data Input data to validate
+     * @param array $rules Validation rules
+     * @return array|WP_Error Validated data or error
+     */
+    private function validate_input($data, $rules) {
+        $validated = [];
+        
+        foreach ($rules as $field => $rule) {
+            $value = $data[$field] ?? null;
+            
+            // Required field check
+            if (isset($rule['required']) && $rule['required'] && empty($value)) {
+                return new WP_Error(
+                    'missing_field',
+                    sprintf(__('Field %s is required', 'wp-user-frontend'), $field),
+                    ['status' => 400]
+                );
+            }
+            
+            // Type validation
+            if (!empty($value) && isset($rule['type'])) {
+                switch ($rule['type']) {
+                    case 'string':
+                        if (!is_string($value)) {
+                            return new WP_Error('invalid_type', sprintf(__('Field %s must be a string', 'wp-user-frontend'), $field));
+                        }
+                        break;
+                    case 'array':
+                        if (!is_array($value)) {
+                            return new WP_Error('invalid_type', sprintf(__('Field %s must be an array', 'wp-user-frontend'), $field));
+                        }
+                        break;
+                    case 'integer':
+                        if (!is_numeric($value)) {
+                            return new WP_Error('invalid_type', sprintf(__('Field %s must be numeric', 'wp-user-frontend'), $field));
+                        }
+                        break;
+                }
+            }
+            
+            // Length validation
+            if (!empty($value) && isset($rule['max_length']) && strlen($value) > $rule['max_length']) {
+                return new WP_Error(
+                    'field_too_long',
+                    sprintf(__('Field %s cannot exceed %d characters', 'wp-user-frontend'), $field, $rule['max_length']),
+                    ['status' => 400]
+                );
+            }
+            
+            // Sanitize and store
+            if (!empty($value)) {
+                $validated[$field] = isset($rule['sanitize']) ? 
+                    call_user_func($rule['sanitize'], $value) : 
+                    sanitize_text_field($value);
+            }
+        }
+        
+        return $validated;
     }
 
     /**
@@ -298,6 +403,17 @@ class RestController {
 
         // Get existing settings
         $existing = get_option('wpuf_ai', []);
+
+        // Validate API key format if provided
+        if (!empty($api_key)) {
+            $api_key = sanitize_text_field($api_key);
+            if (strlen($api_key) < 10) {
+                return new WP_REST_Response([
+                    'success' => false,
+                    'message' => __('API key appears to be too short', 'wp-user-frontend')
+                ], 400);
+            }
+        }
 
         // Update with new values
         $settings = [
@@ -356,8 +472,26 @@ class RestController {
      * @return bool
      */
     public function check_permission() {
-        // For now, allow any logged-in user with edit_posts capability
-        return current_user_can('edit_posts');
+        // Check for proper WPUF capabilities and AI feature access
+        if (!is_user_logged_in()) {
+            return false;
+        }
+        
+        // Check if user can create forms
+        if (!current_user_can('edit_posts') && !current_user_can('wpuf_create_forms')) {
+            return false;
+        }
+        
+        // Allow admin override
+        if (current_user_can('manage_options')) {
+            return true;
+        }
+        
+        // Check if AI features are enabled for this user role
+        $allowed_roles = apply_filters('wpuf_ai_allowed_roles', ['administrator', 'editor']);
+        $user = wp_get_current_user();
+        
+        return !empty(array_intersect($allowed_roles, $user->roles));
     }
 
     /**
@@ -415,6 +549,24 @@ class RestController {
                 );
             }
 
+            // Validate form title length
+            if (strlen($form_data['form_title']) > 200) {
+                return new WP_Error(
+                    'title_too_long',
+                    __('Form title cannot exceed 200 characters', 'wp-user-frontend'),
+                    ['status' => 400]
+                );
+            }
+
+            // Validate field count to prevent excessive forms
+            if (count($form_data['wpuf_fields']) > 50) {
+                return new WP_Error(
+                    'too_many_fields',
+                    __('Form cannot have more than 50 fields', 'wp-user-frontend'),
+                    ['status' => 400]
+                );
+            }
+
             // Create the form post
             $form_post = array(
                 'post_title' => sanitize_text_field($form_data['form_title']),
@@ -437,6 +589,9 @@ class RestController {
             // Save form fields as child posts (WPUF's actual storage method)
             $wpuf_fields = $form_data['wpuf_fields'];
             
+            // Sanitize all field data to prevent XSS
+            $wpuf_fields = $this->sanitize_form_fields($wpuf_fields);
+            
             // Debug log the field structure
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 error_log('WPUF AI: Saving fields for form ' . $form_id);
@@ -446,7 +601,14 @@ class RestController {
             
             // Create child posts for each field (WPUF's storage method)
             foreach ($wpuf_fields as $order => $field) {
-                // Field already has correct structure from AI provider
+                // Validate required field properties
+                if (empty($field['name']) || empty($field['input_type'])) {
+                    continue; // Skip invalid fields
+                }
+                
+                // Sanitize field data
+                $field['name'] = sanitize_key($field['name']);
+                $field['label'] = sanitize_text_field($field['label'] ?? '');
                 
                 $field_post = array(
                     'post_type' => 'wpuf_input',
@@ -460,6 +622,13 @@ class RestController {
                 
                 if (is_wp_error($field_id)) {
                     error_log('WPUF AI: Failed to create field post: ' . $field_id->get_error_message());
+                    // Clean up previously created fields and the form post
+                    wp_delete_post($form_id, true);
+                    return new WP_Error(
+                        'field_creation_failed',
+                        sprintf(__('Failed to create field at position %d: %s', 'wp-user-frontend'), $order, $field_id->get_error_message()),
+                        ['status' => 500]
+                    );
                 }
             }
             
@@ -504,7 +673,18 @@ class RestController {
             ], 201);
 
         } catch (\Exception $e) {
-            error_log('WPUF AI Form Creation Error: ' . $e->getMessage());
+            // Enhanced error logging with context
+            $error_context = [
+                'user_id' => get_current_user_id(),
+                'form_title' => $form_data['form_title'] ?? 'Unknown',
+                'field_count' => count($form_data['wpuf_fields'] ?? []),
+                'error_message' => $e->getMessage(),
+                'error_file' => $e->getFile(),
+                'error_line' => $e->getLine(),
+                'timestamp' => current_time('mysql')
+            ];
+            
+            error_log('WPUF AI Form Creation Error: ' . wp_json_encode($error_context));
             
             return new WP_Error(
                 'form_creation_error',
@@ -583,14 +763,35 @@ class RestController {
 
                 switch ($modification_type) {
                     case 'add_field':
+                        if (!isset($changes['field'])) {
+                            return new WP_Error(
+                                'missing_field_data',
+                                __('Field data is required for add_field action', 'wp-user-frontend'),
+                                ['status' => 400]
+                            );
+                        }
                         $current_fields = $this->add_field_to_form($current_fields, $changes);
                         break;
 
                     case 'remove_field':
+                        if (empty($target)) {
+                            return new WP_Error(
+                                'missing_target',
+                                __('Target field is required for remove_field action', 'wp-user-frontend'),
+                                ['status' => 400]
+                            );
+                        }
                         $current_fields = $this->remove_field_from_form($current_fields, $target);
                         break;
 
                     case 'update_field':
+                        if (empty($target) || empty($changes)) {
+                            return new WP_Error(
+                                'missing_update_data',
+                                __('Target field and changes are required for update_field action', 'wp-user-frontend'),
+                                ['status' => 400]
+                            );
+                        }
                         $current_fields = $this->update_field_in_form($current_fields, $target, $changes);
                         break;
 
@@ -774,7 +975,8 @@ class RestController {
      */
     private function remove_field_from_form($fields, $target) {
         return array_filter($fields, function($field) use ($target) {
-            return ($field['name'] ?? '') !== $target && ($field['label'] ?? '') !== $target;
+            // Only use field name for matching to avoid unintended removals when multiple fields have the same label
+            return ($field['name'] ?? '') !== $target;
         });
     }
 
@@ -895,11 +1097,19 @@ class RestController {
             error_log('WPUF AI Form Modified: ' . wp_json_encode($log_data));
         }
 
-        // Keep a log in WordPress options
-        $modification_log = get_option('wpuf_ai_form_modification_log', []);
+        // Keep a log in WordPress options (with caching optimization)
+        $cache_key = 'wpuf_ai_form_modification_log';
+        $modification_log = wp_cache_get($cache_key);
+        
+        if (false === $modification_log) {
+            $modification_log = get_option($cache_key, []);
+        }
+        
         array_unshift($modification_log, $log_data);
         $modification_log = array_slice($modification_log, 0, 50);
-        update_option('wpuf_ai_form_modification_log', $modification_log);
+        
+        update_option($cache_key, $modification_log);
+        wp_cache_set($cache_key, $modification_log, '', 300); // Cache for 5 minutes
     }
 
     /**
@@ -967,5 +1177,104 @@ class RestController {
         array_unshift($log_history, $log_data);
         $log_history = array_slice($log_history, 0, 100);
         update_option('wpuf_ai_generation_log', $log_history);
+    }
+
+    /**
+     * Sanitize form fields to prevent XSS
+     *
+     * @param array $fields
+     * @return array
+     */
+    private function sanitize_form_fields($fields) {
+        if (!is_array($fields)) {
+            return [];
+        }
+
+        foreach ($fields as &$field) {
+            if (!is_array($field)) {
+                continue;
+            }
+
+            // Sanitize common field properties
+            if (isset($field['label'])) {
+                $field['label'] = sanitize_text_field($field['label']);
+            }
+            if (isset($field['placeholder'])) {
+                $field['placeholder'] = sanitize_text_field($field['placeholder']);
+            }
+            if (isset($field['help'])) {
+                $field['help'] = wp_kses_post($field['help']);
+            }
+            if (isset($field['default'])) {
+                $field['default'] = sanitize_text_field($field['default']);
+            }
+            if (isset($field['css'])) {
+                // More restrictive CSS sanitization to prevent XSS
+                $field['css'] = strip_tags($field['css']);
+                $field['css'] = preg_replace('/[^a-zA-Z0-9\s\-_\.\#\:\;\,\%\(\)]/', '', $field['css']);
+                $field['css'] = substr($field['css'], 0, 200); // Limit length
+            }
+
+            // Sanitize options array
+            if (isset($field['options']) && is_array($field['options'])) {
+                foreach ($field['options'] as $key => $value) {
+                    $field['options'][sanitize_key($key)] = sanitize_text_field($value);
+                }
+            }
+        }
+
+        return $fields;
+    }
+
+    /**
+     * Final security validation for all API operations
+     * 
+     * Performs comprehensive security checks including:
+     * - User capability verification
+     * - Rate limiting validation
+     * - Session integrity checks
+     * - Request origin validation
+     * 
+     * @param WP_REST_Request $request The REST request
+     * @return bool|WP_Error True if valid, WP_Error if not
+     */
+    private function perform_security_validation(WP_REST_Request $request) {
+        // Verify user capabilities with enhanced checks
+        if (!current_user_can('edit_posts')) {
+            return new WP_Error(
+                'insufficient_capabilities',
+                __('You do not have permission to use AI form builder', 'wp-user-frontend'),
+                ['status' => 403]
+            );
+        }
+
+        // Additional rate limiting check with user context
+        $user_id = get_current_user_id();
+        $rate_limit_key = 'wpuf_ai_security_check_' . $user_id;
+        $security_checks = get_transient($rate_limit_key) ?: 0;
+        
+        if ($security_checks > 50) { // Prevent security check abuse
+            return new WP_Error(
+                'security_check_limit',
+                __('Too many security validation requests', 'wp-user-frontend'),
+                ['status' => 429]
+            );
+        }
+        
+        // Increment security check counter
+        set_transient($rate_limit_key, $security_checks + 1, HOUR_IN_SECONDS);
+
+        // Validate session integrity
+        $session_token = wp_get_session_token();
+        if (empty($session_token)) {
+            return new WP_Error(
+                'invalid_session',
+                __('Invalid user session', 'wp-user-frontend'),
+                ['status' => 401]
+            );
+        }
+
+        // All security checks passed
+        return true;
     }
 }

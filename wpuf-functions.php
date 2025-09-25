@@ -1854,37 +1854,12 @@ function wpuf_get_form_fields( $form_id ) {
                 $field['multiple'] = '';
             }
 
-            // if old repeat field format
+            // Ensure inner_fields is a simple array (not column structure)
             if ( empty( $field['inner_fields'] ) ) {
-                $old_id            = $field['id'];
-                $old_meta          = $field['name'];
-                $old_label         = $field['label'];
-                $new_id            = wpuf_form_field_id_generator();
-                $field['template'] = 'text_field';
-
-                // set the new compatible values
-                $field['id']                       = $new_id;
-                $field['name']                     = $old_meta . '_' . $new_id;
-                $field['label']                    = '';
-                $field['inner_fields']['column-1'] = [ $field ];
-                $field['inner_fields']['column-2'] = [];
-                $field['inner_fields']['column-3'] = [];
-                $field['template']                 = 'repeat_field';
-                $field['columns']                  = 1;
-                $field['min_column']               = 1;
-                $field['max_column']               = 3;
-                $field['column_space']             = 5;
-
-                $field['id']    = $old_id;
-                $field['label'] = $old_label;
-                $field['name']  = $old_meta;
-            }
-
-            // if old repeat field format
-            if ( empty( $field['inner_columns_size'] ) ) {
-                $field['inner_columns_size']['column-1'] = '100%';
-                $field['inner_columns_size']['column-2'] = '100%';
-                $field['inner_columns_size']['column-3'] = '100%';
+                $field['inner_fields'] = [];
+            } elseif ( isset( $field['inner_fields']['column-1'] ) ) {
+                // Convert column structure to simple array
+                $field['inner_fields'] = $field['inner_fields']['column-1'];
             }
         }
 

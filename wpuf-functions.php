@@ -1041,11 +1041,13 @@ function wpuf_show_custom_fields( $content ) {
                                 $wpuf_allowed_extensions    = wpuf_allowed_extensions();
                                 $allowed_audio_extensions   = explode( ',', $wpuf_allowed_extensions['audio']['ext'] );
                                 $allowed_video_extensions   = explode( ',', $wpuf_allowed_extensions['video']['ext'] );
-                                $allowed_extenstions        = array_merge( $allowed_audio_extensions, $allowed_video_extensions );
+                                $allowed_iframe_extensions   = explode( ',', $wpuf_allowed_extensions['pdf']['ext'] );
+                                $allowed_extenstions        = array_merge( $allowed_audio_extensions, $allowed_video_extensions, $allowed_iframe_extensions );
 
                                 if ( 'yes' === $playable && in_array( $extension, $allowed_extenstions, true ) ) {
                                     $is_video       = in_array( $extension, $allowed_video_extensions, true );
                                     $is_audio       = in_array( $extension, $allowed_audio_extensions, true );
+                                    $is_iframe       = in_array( $extension, $allowed_iframe_extensions, true );
                                     $preview_width  = isset( $attr['preview_width'] ) ? $attr['preview_width'] : '123';
                                     $preview_height = isset( $attr['preview_height'] ) ? $attr['preview_height'] : '456';
 
@@ -1057,6 +1059,10 @@ function wpuf_show_custom_fields( $content ) {
 
                                     if ( $is_audio ) {
                                         $image_html .= '[audio src="' . $full_size . '" width="' . $preview_width . '" height="' . $preview_height . '"]';
+                                    }
+
+                                    if ( $is_iframe ) {
+                                        $image_html .= '<iframe src="' . $full_size . '" width="' . $preview_width . '" height="' . $preview_height . '"></iframe>';
                                     }
 
                                     $image_html .= '</div>';

@@ -47,8 +47,14 @@ add_filter( 'wpuf_ai_form_builder_localize_data', function( $data ) use ( $stage
 do_action( 'wpuf_load_ai_form_builder_page' );
 ?>
 
+<style>
+    #wpcontent {
+        padding-left: unset;
+    }
+</style>
+
 <!-- Vue.js AI Form Builder Component Mount Point -->
-<div id="wpuf-ai-form-builder" class="wpuf-h-100vh wpuf-ml-[-20px] wpuf-py-0 wpuf-px-[20px]" style="background-color: #F5F5F5;">
+<div id="wpuf-ai-form-builder" class="wpuf-h-100vh !wpuf-pl-0 wpuf-py-0" style="background-color: #FFFFFF;">
     <noscript>
         <strong>
             <?php esc_html_e( "We're sorry but this page doesn't work properly without JavaScript. Please enable it to continue.", 'wp-user-frontend' ); ?>

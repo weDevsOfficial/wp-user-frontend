@@ -5152,6 +5152,10 @@ details.wpuf-collapse summary::-webkit-details-marker {
   padding-bottom: 0.75rem !important;
 }
 
+.\!wpuf-pl-0 {
+  padding-left: 0px !important;
+}
+
 .wpuf-pb-0 {
   padding-bottom: 0px;
 }

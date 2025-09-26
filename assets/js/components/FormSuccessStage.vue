@@ -48,7 +48,7 @@
                                     
                                     <!-- User Message -->
                                     <div v-if="message.type === 'user'">
-                                        <div class="wpuf-py-3 wpuf-px-4 wpuf-rounded-2xl wpuf-w-full wpuf-bg-[#ECFDF5] wpuf-text-emerald-800 wpuf-rounded-br wpuf-font-normal wpuf-leading-6" style="font-size: 16px !important;">
+                                        <div class="wpuf-py-3 wpuf-px-4 wpuf-rounded-2xl wpuf-w-full wpuf-bg-[#ECFDF5] wpuf-text-emerald-800 wpuf-rounded-br wpuf-font-normal wpuf-leading-6" style="font-size: 16px !important; border: 1px solid #34D399;">
                                             {{ message.content }}
                                         </div>
                                     </div>
@@ -63,7 +63,7 @@
                                             <path d="M15.3767 14.7296H10.2548L11.0046 17.2161H15.3767V14.7296Z" fill="white"/>
                                         </svg>
                                         <div class="wpuf-flex-1">
-                                            <div class="wpuf-message-bubble wpuf-message-bubble-ai wpuf-py-3 wpuf-px-4 wpuf-rounded-2xl wpuf-w-full wpuf-bg-white wpuf-text-gray-600 wpuf-rounded-bl wpuf-text-base" style="color: #4B5563 !important; font-size: 1rem !important;">
+                                            <div class="wpuf-message-bubble wpuf-message-bubble-ai wpuf-py-3 wpuf-px-4 wpuf-rounded-2xl wpuf-w-full wpuf-bg-white wpuf-text-gray-600 wpuf-rounded-bl wpuf-text-base" style="color: #4B5563 !important; font-size: 1rem !important; border: 1px solid #E5E7EB !important;">
                                                 <p class="wpuf-text-gray-600 wpuf-text-[16px] wpuf-m-0" v-html="message.content"></p>
                                                 <div v-if="message.showButtons" class="wpuf-message-actions wpuf-mt-3 wpuf-flex wpuf-gap-2">
                                                     <button @click="handleAccept" :disabled="isApplying" class="wpuf-btn-accept wpuf-bg-emerald-600 wpuf-text-white wpuf-border-none wpuf-py-1.5 wpuf-px-3 wpuf-rounded wpuf-text-base wpuf-leading-6 wpuf-cursor-pointer wpuf-transition-colors hover:wpuf-bg-emerald-800 disabled:wpuf-bg-gray-400 disabled:wpuf-cursor-not-allowed">
@@ -155,7 +155,7 @@
                             </svg>
                             <p class="wpuf-text-emerald-600 wpuf-font-medium wpuf-text-lg">{{ __('Generating...', 'wp-user-frontend') }}</p>
                         </div>
-                        <div v-if="localFormTitle || formFields.length > 0" class="wpuf-form-header wpuf-border-b wpuf-border-gray-200 wpuf-pb-4 wpuf-flex-shrink-0">
+                        <div v-if="localFormTitle || formFields.length > 0" class="wpuf-form-header wpuf-pb-8 wpuf-flex-shrink-0">
                             <h3 v-if="localFormTitle" class="wpuf-form-title wpuf-font-bold wpuf-text-3xl wpuf-leading-9 wpuf-tracking-normal wpuf-text-center wpuf-text-gray-900 wpuf-m-0 wpuf-mb-2">{{ localFormTitle }}</h3>
                             <p v-if="formFields.length > 0" class="wpuf-form-description wpuf-font-normal wpuf-text-lg wpuf-leading-6 wpuf-tracking-normal wpuf-text-center wpuf-text-gray-500 wpuf-m-0">{{ formDescription || __('Please complete all information below', 'wp-user-frontend') }}</p>
                         </div>
@@ -430,7 +430,7 @@
                             </div>
                         </div>
                         
-                        <div class="wpuf-form-footer wpuf-border-t wpuf-border-gray-200 wpuf-pt-4 wpuf-flex-shrink-0">
+                        <div class="wpuf-form-footer wpuf-border-t wpuf-border-gray-200 wpuf-pt-4 wpuf-flex-shrink-0 wpuf--mx-4 sm:wpuf--mx-6 lg:wpuf--mx-8 wpuf-px-4 sm:wpuf-px-6 lg:wpuf-px-8">
                             <button @click="handleEditWithBuilder" class="wpuf-btn-edit-full wpuf-bg-emerald-600 wpuf-text-white wpuf-border-none wpuf-py-3 wpuf-px-5 wpuf-rounded-lg wpuf-text-base wpuf-leading-6 wpuf-font-medium wpuf-cursor-pointer wpuf-flex wpuf-items-center wpuf-gap-2 wpuf-w-full wpuf-justify-center hover:wpuf-bg-emerald-800 wpuf-transition-colors">
                                 {{ __('Edit with Builder', 'wp-user-frontend') }}
                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

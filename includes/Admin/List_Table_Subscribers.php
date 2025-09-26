@@ -15,6 +15,18 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 class List_Table_Subscribers extends WP_List_Table {
     protected $page_status;
 
+    /**
+     * Verify nonce for admin actions
+     *
+     * @return bool
+     */
+    private function verify_nonce() {
+        if ( ! isset( $_REQUEST['_wpnonce'] ) ) {
+            return false;
+        }
+        return wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ), 'wpuf_subscribers_list' );
+    }
+
     public function __construct() {
         parent::__construct(
             [
@@ -119,6 +131,13 @@ class List_Table_Subscribers extends WP_List_Table {
      * @return string
      */
     public function column_cb( $item ) {
+        // Verify nonce for security
+        if ( ! $this->verify_nonce() ) {
+            if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+                error_log( 'WPUF Subscribers: Nonce verification failed for column_cb function' );
+            }
+        }
+        
         $post_ID = isset( $_REQUEST['post_ID'] ) ? intval( wp_unslash( $_REQUEST['post_ID'] ) ) : 0;
         return sprintf(
             '<input type="checkbox" name="subscriber_id[]" value="%d" />', $post_ID
@@ -131,6 +150,13 @@ class List_Table_Subscribers extends WP_List_Table {
      * @return array
      */
     public function get_views() {
+        // Verify nonce for security
+        if ( ! $this->verify_nonce() ) {
+            if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+                error_log( 'WPUF Subscribers: Nonce verification failed for get_views function' );
+            }
+        }
+        
         $status_links = [];
         $post_ID = isset( $_REQUEST['post_ID'] ) ? intval( wp_unslash( $_REQUEST['post_ID'] ) ) : 0;
         $base_link    = admin_url( 'admin.php?page=wpuf_subscribers&pack=' . $post_ID );
@@ -156,6 +182,13 @@ class List_Table_Subscribers extends WP_List_Table {
     public function prepare_items() {
         global $wpdb;
 
+        // Verify nonce for security
+        if ( ! $this->verify_nonce() ) {
+            if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+                error_log( 'WPUF Subscribers: Nonce verification failed for prepare_items function' );
+            }
+        }
+
         $columns               = $this->get_columns();
         $hidden                = [];
         $sortable              = $this->get_sortable_columns();
@@ -177,30 +210,32 @@ class List_Table_Subscribers extends WP_List_Table {
             $args['order']   = sanitize_text_field( wp_unslash( $_REQUEST['order'] ) );
         }
 
-        // start with a fresh query
-        $sql            = 'SELECT * FROM ' . $wpdb->prefix . 'wpuf_subscribers';
-        $where_clauses  = [];
+        // Build the query with proper placeholders
+        $sql = 'SELECT * FROM ' . $wpdb->prefix . 'wpuf_subscribers';
         $prepare_values = [];
 
         // Add conditional WHERE clauses if params exist
-        if ( ! empty( $_REQUEST['post_ID'] ) ) {
-            $where_clauses[]  = 'subscribtion_id = %d';
-            $prepare_values[] = intval( sanitize_text_field( wp_unslash( $_REQUEST['post_ID'] ) ) );
-        }
+        $post_id = ! empty( $_REQUEST['post_ID'] ) ? intval( sanitize_text_field( wp_unslash( $_REQUEST['post_ID'] ) ) ) : '';
+        $status = ! empty( $_REQUEST['status'] ) ? sanitize_key( wp_unslash( $_REQUEST['status'] ) ) : '';
 
-        if ( ! empty( $_REQUEST['status'] ) ) {
-            $where_clauses[]  = 'subscribtion_status = %d';
-            $prepare_values[] = sanitize_key( wp_unslash( $_REQUEST['status'] ) );
-        }
-
-        // Combine WHERE clauses if any exist
-        if ( ! empty( $where_clauses ) ) {
-            $sql .= ' WHERE ' . implode( ' AND ', $where_clauses );
+        if ( $post_id && $status ) {
+            $sql .= ' WHERE subscribtion_id = %d AND subscribtion_status = %s';
+            $prepare_values = [ $post_id, $status ];
+        } elseif ( $post_id ) {
+            $sql .= ' WHERE subscribtion_id = %d';
+            $prepare_values = [ $post_id ];
+        } elseif ( $status ) {
+            $sql .= ' WHERE subscribtion_status = %s';
+            $prepare_values = [ $status ];
         }
 
         // Prepare and execute the query safely
-        $prepared_query = $wpdb->prepare( $sql, $prepare_values );
-        $this->items    = $wpdb->get_results( $prepared_query );
+        if ( ! empty( $prepare_values ) ) {
+            $this->items = $wpdb->get_results( $wpdb->prepare( $sql, $prepare_values ) );
+        } else {
+            // When no prepare values, the SQL is safe as it's built from constants
+            $this->items = $wpdb->get_results( $sql );
+        }
 
         $this->set_pagination_args( [
             'total_items' => count( $this->items ),

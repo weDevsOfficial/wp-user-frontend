@@ -94,7 +94,7 @@ class Form_Field_Time extends Form_Field_Pro {
  */
 class Form_Field_Phone extends Form_Field_Pro {
     public function __construct() {
-        $this->name       = __( 'Phone Field', 'wpuf-pro' );
+        $this->name       = __( 'Phone Field', 'wp-user-frontend' );
         $this->input_type = 'phone_field';
         $this->icon       = 'phone';
     }

@@ -332,10 +332,10 @@ class Admin_Form_Builder {
                 'column'                  => __( 'Column', 'wp-user-frontend' ),
                 'last_column_warn_msg'    => __( 'This field must contain at least one column', 'wp-user-frontend' ),
                 'is_a_pro_feature'        => __( 'is a pro feature', 'wp-user-frontend' ),
-                'pro_feature_msg'         => __(
-                    '<p class="wpuf-text-gray-500 wpuf-font-medium wpuf-text-xl">Please upgrade to the Pro version to unlock all these awesome features</p>',
+                'pro_feature_msg'         => '<p class="wpuf-text-gray-500 wpuf-font-medium wpuf-text-xl">' . __(
+                    'Please upgrade to the Pro version to unlock all these awesome features',
                     'wp-user-frontend'
-                ),
+                ) . '</p>',
                 'upgrade_to_pro'          => __( 'Upgrade to PRO', 'wp-user-frontend' ),
                 'select'                  => __( 'Select', 'wp-user-frontend' ),
                 'saved_form_data'         => __( 'Saved form data', 'wp-user-frontend' ),

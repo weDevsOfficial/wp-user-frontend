@@ -3,7 +3,7 @@ Contributors: tareq1988, nizamuddinbabu, wedevs
 Donate link: https://tareq.co/donate/
 Tags: frontend post, forms, user directory, profile builder, membership
 Requires at least: 4.0
-Tested up to: 6.8.2
+Tested up to: 6.8
 Stable tag: 4.1.12
 Requires PHP: 5.6
 License: GPLv2

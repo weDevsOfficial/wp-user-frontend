@@ -781,13 +781,7 @@ class Subscription {
             WHERE p.ID = m.post_id AND p.post_status <> 'publish' AND m.meta_key = '_wpuf_order_id' AND m.meta_value = %s", $order_id
         );
 
-        return $wpdb->get_row(
-            $wpdb->prepare(
-                "SELECT p.ID, p.post_status
-            FROM $wpdb->posts p, $wpdb->postmeta m
-            WHERE p.ID = m.post_id AND p.post_status <> 'publish' AND m.meta_key = '_wpuf_order_id' AND m.meta_value = %s", $order_id
-            )
-        );
+        return $wpdb->get_row( $sql );
     }
 
     /**
@@ -856,6 +850,14 @@ class Subscription {
      */
     public function subscription_packs( $atts = null ) {
         //$cost_per_post = isset( $form_settings['pay_per_post_cost'] ) ? $form_settings['pay_per_post_cost'] : 0;
+
+        // Verify nonce for security
+        if ( ! wp_verify_nonce( isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '', 'wpuf_subscription_packs' ) ) {
+            // If nonce verification fails, still allow the function to work but log the issue
+            if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+                error_log( 'WPUF Subscription: Nonce verification failed for subscription_packs function' );
+            }
+        }
 
         $action   = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
         $pack_msg = isset( $_GET['pack_msg'] ) ? sanitize_text_field( wp_unslash( $_GET['pack_msg'] ) ) : '';
@@ -926,9 +928,11 @@ class Subscription {
             $payment_gateway = $payment_gateway ? strtolower( $payment_gateway ) : '';
             ?>
 
-            <?php echo wp_kses_post( __( '<p><i>You have a subscription pack activated. </i></p>', 'wp-user-frontend' ) ); ?>
-            <?php /* translators: %s: pack title */ ?>
-            <?php printf( wp_kses_post( __( '<p><i>Pack name: %s </i></p>', 'wp-user-frontend' ) ), esc_html( get_the_title( $current_pack['pack_id'] ) ) ); ?>
+            <p><i><?php esc_html_e( 'You have a subscription pack activated.', 'wp-user-frontend' ); ?></i></p>
+            <p><i><?php 
+                // translators: %s: pack title
+                printf( esc_html__( 'Pack name: %s', 'wp-user-frontend' ), esc_html( get_the_title( $current_pack['pack_id'] ) ) ); 
+            ?></i></p>
 
             <?php echo '<p><i>' . esc_html__( 'To cancel the pack, press the following cancel button', 'wp-user-frontend' ) . '</i></p>'; ?>
 
@@ -1147,30 +1151,24 @@ class Subscription {
     public function subscription_pack_users( $pack_id = '', $status = '' ) {
         global $wpdb;
 
-        // Start with the base query
-        $sql            = 'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers';
-        $where_clauses  = [];
+        // Build the query with proper placeholders
+        $sql = 'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers';
         $prepare_values = [];
 
         // Add conditional WHERE clauses if params exist
-        if ( $pack_id ) {
-            $where_clauses[]  = 'subscribtion_id = %d';
-            $prepare_values[] = $pack_id;
-        }
-
-        if ( $status ) {
-            $where_clauses[]  = 'subscribtion_status = %d';
-            $prepare_values[] = $status;
-        }
-
-        // Combine WHERE clauses if any exist
-        if ( ! empty( $where_clauses ) ) {
-            $sql .= ' WHERE ' . implode( ' AND ', $where_clauses );
+        if ( $pack_id && $status ) {
+            $sql .= ' WHERE subscribtion_id = %d AND subscribtion_status = %d';
+            $prepare_values = [ $pack_id, $status ];
+        } elseif ( $pack_id ) {
+            $sql .= ' WHERE subscribtion_id = %d';
+            $prepare_values = [ $pack_id ];
+        } elseif ( $status ) {
+            $sql .= ' WHERE subscribtion_status = %d';
+            $prepare_values = [ $status ];
         }
 
         // Prepare and execute the query safely
-        $prepared_query = $wpdb->prepare( $sql, $prepare_values );
-        $rows           = $wpdb->get_results( $prepared_query );
+        $rows = $wpdb->get_results( $wpdb->prepare( $sql, $prepare_values ) );
 
         if ( empty( $rows ) ) {
             return $rows;

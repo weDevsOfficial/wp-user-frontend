@@ -130,7 +130,7 @@ class Frontend_Render_Form {
             <head>
                 <meta charset="UTF-8">
                 <title>__( 'Form Preview', 'wp-user-frontend' )</title>
-                <link rel="stylesheet" href="<?php echo esc_url( plugins_url( 'assets/css/frontend-forms.css', __DIR__ ) ); ?>">
+                <?php wp_enqueue_style( 'wpuf-frontend-forms', plugins_url( 'assets/css/frontend-forms.css', __DIR__ ) ); ?>
 
                 <style type="text/css">
                     body {
@@ -150,7 +150,7 @@ class Frontend_Render_Form {
                     }
                 </style>
 
-                <script type="text/javascript" src="<?php echo esc_url( includes_url( 'js/jquery/jquery.js' ) ); ?>"></script>
+                <?php wp_enqueue_script( 'jquery' ); ?>
             </head>
             <body>
             <div class="container">

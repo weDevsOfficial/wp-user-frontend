@@ -628,18 +628,22 @@ class Payment {
 
         switch ( $payment_type ) {
             case 'trial':
+                // translators: %s is the site name
                 $subject = sprintf( __( '[%s] Your Trial Subscription is Active', 'wp-user-frontend' ), $site_name );
                 $message = sprintf(
-                    __( 'Hello %s,<br><br>Your trial subscription has been activated successfully at %s.<br><br>Thank you!', 'wp-user-frontend' ),
+                    // translators: %1$s is the user display name, %2$s is the site name
+                    __( 'Hello %1$s,<br><br>Your trial subscription has been activated successfully at %2$s.<br><br>Thank you!', 'wp-user-frontend' ),
                     $user->display_name,
                     $site_name
                 );
                 break;
 
             case 'subscription':
+                // translators: %s is the site name
                 $subject = sprintf( __( '[%s] Payment Confirmation - Subscription', 'wp-user-frontend' ), $site_name );
                 $message = sprintf(
-                    __( 'Hello %s,<br><br>Thank you for your payment of %s for your subscription at %s.<br><br>Your subscription is now active.<br><br>Thank you!', 'wp-user-frontend' ),
+                    // translators: %1$s is the user display name, %2$s is the payment amount, %3$s is the site name
+                    __( 'Hello %1$s,<br><br>Thank you for your payment of %2$s for your subscription at %3$s.<br><br>Your subscription is now active.<br><br>Thank you!', 'wp-user-frontend' ),
                     $user->display_name,
                     $amount,
                     $site_name
@@ -647,9 +651,11 @@ class Payment {
                 break;
 
             case 'post':
+                // translators: %s is the site name
                 $subject = sprintf( __( '[%s] Payment Confirmation - Post Submission', 'wp-user-frontend' ), $site_name );
                 $message = sprintf(
-                    __( 'Hello %s,<br><br>Thank you for your payment of %s for post submission at %s.<br><br>Your post has been submitted successfully.<br><br>Thank you!', 'wp-user-frontend' ),
+                    // translators: %1$s is the user display name, %2$s is the payment amount, %3$s is the site name
+                    __( 'Hello %1$s,<br><br>Thank you for your payment of %2$s for post submission at %3$s.<br><br>Your post has been submitted successfully.<br><br>Thank you!', 'wp-user-frontend' ),
                     $user->display_name,
                     $amount,
                     $site_name
@@ -657,9 +663,11 @@ class Payment {
                 break;
 
             default:
+                // translators: %s is the site name
                 $subject = sprintf( __( '[%s] Payment Confirmation', 'wp-user-frontend' ), $site_name );
                 $message = sprintf(
-                    __( 'Hello %s,<br><br>Thank you for your payment of %s at %s.<br><br>Thank you!', 'wp-user-frontend' ),
+                    // translators: %1$s is the user display name, %2$s is the payment amount, %3$s is the site name
+                    __( 'Hello %1$s,<br><br>Thank you for your payment of %2$s at %3$s.<br><br>Thank you!', 'wp-user-frontend' ),
                     $user->display_name,
                     $amount,
                     $site_name
@@ -815,6 +823,7 @@ class Payment {
             $post = get_post( $info['post_id'] );
             if ( $post ) {
                 $item_name = mb_strimwidth( $post->post_title, 0, 40, '...' );
+                // translators: %s is the post title
                 return sprintf( __( 'Payment for post submission (%s)', 'wp-user-frontend' ), $item_name );
             }
         }
@@ -822,6 +831,7 @@ class Payment {
         if ( isset( $info['pack_id'] ) && $info['pack_id'] > 0 ) {
             $pack = get_post( $info['pack_id'] );
             if ( $pack ) {
+                // translators: %s is the subscription pack title
                 return sprintf( __( 'Subscription: %s', 'wp-user-frontend' ), $pack->post_title );
             }
         }
@@ -848,6 +858,7 @@ class Payment {
         $send_attachment = wpuf_get_option( 'send_attachment', 'wpuf_payment_invoices', 'on' );
 
         if ( empty( $subj ) ) {
+            // translators: %s is the site name
             $subj = sprintf( __( '[%s] Your Payment Invoice', 'wp-user-frontend' ), get_bloginfo( 'name' ) );
         }
 

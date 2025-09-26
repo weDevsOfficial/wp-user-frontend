@@ -124,6 +124,7 @@ class Bank {
         $msg     = sprintf(
             // translators: %s is displayname
             __( 'Hello %s,', 'wp-user-frontend' ), $user->display_name ) . "\r\n";
+        // translators: %s is the payment amount
         $msg .= sprintf( __( 'We have received your payment amount of %s through bank . ', 'wp-user-frontend' ), $transaction['cost'] ) . "\r\n\r\n";
         $msg .= __( 'Thanks for being with us.', 'wp-user-frontend' ) . "\r\n";
 

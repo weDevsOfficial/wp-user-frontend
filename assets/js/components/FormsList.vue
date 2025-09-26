@@ -423,7 +423,8 @@ onMounted(() => {
   <div class="wpuf-flex wpuf-justify-between wpuf-items-center wpuf-mt-9">
     <h3 class="wpuf-text-2xl wpuf-font-bold wpuf-m-0 wpuf-p-0 wpuf-leading-none">{{ __( 'Post Forms', 'wp-user-frontend' ) }}</h3>
     <div class="wpuf-flex wpuf-gap-3">
-      <a
+      <button
+        type="button"
         @click="openAIFormBuilder"
         class="wpuf-rounded-md wpuf-text-center wpuf-bg-gradient-to-r wpuf-from-purple-600 wpuf-to-blue-600 wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-from-purple-700 hover:wpuf-to-blue-700 hover:wpuf-text-white focus:wpuf-from-purple-700 focus:wpuf-to-blue-700 focus:wpuf-text-white focus:wpuf-shadow-none hover:wpuf-cursor-pointer wpuf-inline-flex wpuf-items-center">
         <svg class="wpuf-w-5 wpuf-h-5 wpuf-pr-1" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -432,14 +433,15 @@ onMounted(() => {
             <path d="M14.0785 17.1394L13.75 18.125L13.4215 17.1394C13.2348 16.5795 12.7955 16.1402 12.2356 15.9535L11.25 15.625L12.2356 15.2965C12.7955 15.1098 13.2348 14.6705 13.4215 14.1106L13.75 13.125L14.0785 14.1106C14.2652 14.6705 14.7045 15.1098 15.2644 15.2965L16.25 15.625L15.2644 15.9535C14.7045 16.1402 14.2652 16.5795 14.0785 17.1394Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         {{ __( 'AI Form Builder', 'wp-user-frontend' ) }}
-      </a>
-      <a
+      </button>
+      <button
+        type="button"
         @click="openModal"
         class="new-wpuf-form wpuf-rounded-md wpuf-text-center wpuf-bg-primary wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-primaryHover hover:wpuf-text-white focus:wpuf-bg-primaryHover focus:wpuf-text-white focus:wpuf-shadow-none hover:wpuf-cursor-pointer">
       <span class="dashicons dashicons-plus-alt2"></span>
       &nbsp;
       {{ __( 'Add New ', 'wp-user-frontend' ) }}
-      </a>
+      </button>
     </div>
   </div>
   <div class="wpuf-flex wpuf-mt-9">
@@ -518,7 +520,8 @@ onMounted(() => {
                 </p>
 
                 <div class="wpuf-flex wpuf-gap-3 wpuf-justify-center">
-                    <a
+                    <button
+                        type="button"
                         @click="openAIFormBuilder"
                         class="wpuf-rounded-md wpuf-text-center wpuf-bg-gradient-to-r wpuf-from-purple-600 wpuf-to-blue-600 wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-from-purple-700 hover:wpuf-to-blue-700 hover:wpuf-text-white focus:wpuf-from-purple-700 focus:wpuf-to-blue-700 focus:wpuf-text-white focus:wpuf-shadow-none hover:wpuf-cursor-pointer wpuf-inline-flex wpuf-items-center">
                             <svg class="wpuf-w-5 wpuf-h-5 wpuf-pr-1" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -527,14 +530,15 @@ onMounted(() => {
                                 <path d="M14.0785 17.1394L13.75 18.125L13.4215 17.1394C13.2348 16.5795 12.7955 16.1402 12.2356 15.9535L11.25 15.625L12.2356 15.2965C12.7955 15.1098 13.2348 14.6705 13.4215 14.1106L13.75 13.125L14.0785 14.1106C14.2652 14.6705 14.7045 15.1098 15.2644 15.2965L16.25 15.625L15.2644 15.9535C14.7045 16.1402 14.2652 16.5795 14.0785 17.1394Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                           {{ __( 'AI Form Builder', 'wp-user-frontend' ) }}
-                    </a>
-                    <a
+                    </button>
+                    <button
+                        type="button"
                         @click="openModal"
                         class="new-wpuf-form wpuf-rounded-md wpuf-text-center wpuf-bg-primary wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-primaryHover hover:wpuf-text-white focus:wpuf-bg-primaryHover focus:wpuf-text-white focus:wpuf-shadow-none hover:wpuf-cursor-pointer">
                         <span class="dashicons dashicons-plus-alt2"></span>
                         &nbsp;
                         {{ __( 'Add New ', 'wp-user-frontend' ) }}
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>

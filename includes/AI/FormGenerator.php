@@ -2,6 +2,7 @@
 
 namespace WeDevs\Wpuf\AI;
 
+use WeDevs\Wpuf\Lib\AI\PredefinedProvider;
 
 /**
  * AI Form Generator Service
@@ -41,6 +42,14 @@ class FormGenerator {
      * @var array
      */
     private $provider_configs = [
+        'predefined' => [
+            'name' => 'Predefined',
+            'endpoint' => null,
+            'models' => [
+                'builtin' => 'Built‑in templates'
+            ],
+            'requires_key' => false
+        ],
         'openai' => [
             'name' => 'OpenAI',
             'endpoint' => 'https://api.openai.com/v1/chat/completions',
@@ -111,8 +120,8 @@ class FormGenerator {
         $provider_key = $this->current_provider . '_api_key';
         $this->api_key = $settings[$provider_key] ?? '';
 
-        // If no API key is set, return error
-        if (empty($this->api_key) && $this->current_provider !== 'test') {
+        // If no API key is set, allow predefined; others will fail gracefully at call time
+        if (empty($this->api_key) && $this->current_provider !== 'predefined') {
             // Will fail later with proper error message
         }
     }
@@ -144,6 +153,11 @@ class FormGenerator {
 
             // Use manual AI provider implementation as fallback
             switch ($this->current_provider) {
+                case 'predefined':
+                    $provider = new PredefinedProvider();
+                    $session_id = $options['session_id'] ?? '';
+                    $result = $provider->generateForm($prompt, $session_id);
+                    break;
                 case 'openai':
                     $result = $this->generate_with_openai($prompt, $options);
                     break;
@@ -256,13 +270,13 @@ class FormGenerator {
             'anthropic' => [
                 // Anthropic models with special requirements
                 'claude-4.1-opus' => [
-                    'token_param' => 'max_completion_tokens',
+                    'token_param' => 'max_tokens',
                     'token_location' => 'body',
                     'supports_json_mode' => true,
                     'supports_custom_temperature' => true
                 ],
                 'claude-4-opus' => [
-                    'token_param' => 'max_completion_tokens',
+                    'token_param' => 'max_tokens',
                     'token_location' => 'body',
                     'supports_json_mode' => true,
                     'supports_custom_temperature' => true
@@ -475,6 +489,8 @@ class FormGenerator {
         } else {
             // For models that don't support JSON mode, add explicit instruction to system prompt
             $system_prompt .= "\n\nIMPORTANT: You must respond with ONLY valid JSON. Do not include any explanatory text, markdown formatting, or code blocks. Return ONLY the JSON object.";
+            // Update the message payload with the modified system prompt
+            $body['messages'][0]['content'] = $system_prompt;
         }
         
         // Debug log the request body
@@ -972,13 +988,37 @@ class FormGenerator {
         if (!empty($context)) {
             $system_prompt .= "\n\n## CURRENT CONVERSATION CONTEXT\n";
             
+            // Safely extract last user message
+            $last_user_message = '';
+            if (isset($context['chat_history']) && is_array($context['chat_history']) && count($context['chat_history']) > 0) {
+                $last_message = end($context['chat_history']);
+                $last_user_message = $last_message['content'] ?? '';
+            }
+            
+            // Determine modification intent
+            $modification_requested = false;
+            if (isset($context['modification_requested'])) {
+                // Use explicit value when provided
+                $modification_requested = (bool) $context['modification_requested'];
+            } else {
+                // Infer intent conservatively from last user message
+                $modification_keywords = ['edit', 'modify', 'update', 'change', 'add', 'remove', 'delete', 'replace'];
+                $modification_requested = false;
+                foreach ($modification_keywords as $keyword) {
+                    if (stripos($last_user_message, $keyword) !== false) {
+                        $modification_requested = true;
+                        break;
+                    }
+                }
+            }
+            
             // Simplify context for better AI understanding
             $simplified_context = [
                 'session_id' => $context['session_id'] ?? '',
                 'current_form_title' => $context['current_form']['form_title'] ?? '',
                 'current_fields_count' => count($context['current_form']['wpuf_fields'] ?? []),
-                'last_user_message' => end($context['chat_history'])['content'] ?? '',
-                'modification_requested' => true
+                'last_user_message' => $last_user_message,
+                'modification_requested' => $modification_requested
             ];
             
             // Include current fields summary

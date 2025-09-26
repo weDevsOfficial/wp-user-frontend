@@ -70,13 +70,16 @@ class AI_Manager {
      * Enqueue frontend scripts
      */
     public function enqueue_scripts() {
+        // Safe fetch of AI settings
+        $wpuf_ai = get_option('wpuf_ai', []);
+        
         // Always localize the data for Vue components that might be loaded dynamically
         wp_localize_script('wpuf-form-builder-mixins', 'wpufAIFormBuilder', [
             'restUrl' => rest_url('/'),
             'nonce' => wp_create_nonce('wp_rest'),
-            'provider' => get_option('wpuf_ai')['ai_provider'] ?? 'predefined',
-            'temperature' => get_option('wpuf_ai')['ai_temperature'] ?? 0.7,
-            'maxTokens' => get_option('wpuf_ai')['ai_max_tokens'] ?? 2000,
+            'provider' => $wpuf_ai['ai_provider'] ?? 'predefined',
+            'temperature' => $wpuf_ai['temperature'] ?? 0.7,
+            'maxTokens' => $wpuf_ai['max_tokens'] ?? 2000,
             'assetUrl' => WPUF_ASSET_URI,
             'isProActive' => class_exists('WP_User_Frontend_Pro'),
             'strings' => [
@@ -93,9 +96,9 @@ class AI_Manager {
                 wp_localize_script($script_handle, 'wpufAIFormBuilder', [
                     'restUrl' => rest_url('/'),
                     'nonce' => wp_create_nonce('wp_rest'),
-                    'provider' => get_option('wpuf_ai')['ai_provider'] ?? 'predefined',
-                    'temperature' => get_option('wpuf_ai')['ai_temperature'] ?? 0.7,
-                    'maxTokens' => get_option('wpuf_ai')['ai_max_tokens'] ?? 2000,
+                    'provider' => $wpuf_ai['ai_provider'] ?? 'predefined',
+                    'temperature' => $wpuf_ai['temperature'] ?? 0.7,
+                    'maxTokens' => $wpuf_ai['max_tokens'] ?? 2000,
                     'assetUrl' => WPUF_ASSET_URI,
                     'isProActive' => class_exists('WP_User_Frontend_Pro'),
                 ]);
@@ -116,7 +119,7 @@ class AI_Manager {
             'nonce' => wp_create_nonce('wp_rest'),
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'provider' => get_option('wpuf_ai')['ai_provider'] ?? 'predefined',
-            'hasApiKey' => !empty(get_option('wpuf_ai')['ai_api_key']),
+            'hasApiKey' => (get_option('wpuf_ai')['ai_provider'] ?? 'predefined') === 'predefined' || !empty(get_option('wpuf_ai')['ai_api_key']),
             'isProActive' => class_exists('WP_User_Frontend_Pro'),
             'strings' => [
                 'testConnection' => __('Test Connection', 'wp-user-frontend'),
@@ -191,13 +194,15 @@ class AI_Manager {
      * @return array
      */
     public function get_ai_settings() {
-        return get_option('wpuf_ai', [
-            'provider' => 'predefined',
-            'model' => 'predefined',
-            'temperature' => 0.7,
-            'max_tokens' => 2000,
-            'api_key' => ''
-        ]);
+        $settings = get_option('wpuf_ai', []);
+
+        return [
+            'provider'   => $settings['ai_provider'] ?? 'predefined',
+            'model'      => $settings['ai_model'] ?? 'gpt-3.5-turbo',
+            'temperature'=> isset($settings['temperature']) ? floatval($settings['temperature']) : 0.7,
+            'max_tokens' => isset($settings['max_tokens']) ? intval($settings['max_tokens']) : 2000,
+            'has_api_key'=> !empty($settings['ai_api_key']),
+        ];
     }
 
     /**
@@ -208,8 +213,8 @@ class AI_Manager {
     public function is_ai_available() {
         $settings = $this->get_ai_settings();
         
-        // All providers require API key
-        return !empty($settings['api_key']);
+        // Predefined provider doesn't require API key, others do
+        return $settings['provider'] === 'predefined' || $settings['has_api_key'];
     }
 
     /**

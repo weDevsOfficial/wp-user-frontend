@@ -31,10 +31,7 @@ $form_title = isset( $_GET['form_title'] ) && ! empty( $_GET['form_title'] ) ? s
 
 // Note: Scripts are already enqueued in the handler, so we don't need to enqueue them here
 
-// Trigger action to allow other scripts to be enqueued and localized
-do_action( 'wpuf_load_ai_form_builder_page' );
-
-// Pass template data to the enqueued scripts
+// Pass template data to the enqueued scripts (register filter before action is fired)
 add_filter( 'wpuf_ai_form_builder_localize_data', function( $data ) use ( $stage, $description, $prompt, $form_id, $form_title ) {
     return array_merge( $data, [
         'stage'        => $stage,
@@ -45,10 +42,13 @@ add_filter( 'wpuf_ai_form_builder_localize_data', function( $data ) use ( $stage
         'confettiUrl'  => WPUF_ASSET_URI . '/images/confetti_transparent.gif',
     ]);
 });
+
+// Trigger action to allow other scripts to be enqueued and localized
+do_action( 'wpuf_load_ai_form_builder_page' );
 ?>
 
 <!-- Vue.js AI Form Builder Component Mount Point -->
-<div id="wpuf-ai-form-builder" class="wpuf-h-100vh wpuf-bg-white wpuf-ml-[-20px] wpuf-py-0 wpuf-px-[20px]">
+<div id="wpuf-ai-form-builder" class="wpuf-h-100vh wpuf-ml-[-20px] wpuf-py-0 wpuf-px-[20px]" style="background-color: #F5F5F5;">
     <noscript>
         <strong>
             <?php esc_html_e( "We're sorry but this page doesn't work properly without JavaScript. Please enable it to continue.", 'wp-user-frontend' ); ?>

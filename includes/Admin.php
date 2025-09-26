@@ -54,6 +54,11 @@ class Admin {
      * @return void
      */
     public function create_post_form_from_template() {
+        // Verify nonce for security
+        if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'wpuf_create_from_template' ) ) {
+            wp_die( __( 'Security check failed', 'wp-user-frontend' ) );
+        }
+        
         // Check if this is an AI form template
         // Verify the template parameter is set and valid
         if ( ! isset( $_GET['template'] ) ) {
@@ -64,7 +69,7 @@ class Admin {
         $template_name = sanitize_text_field( wp_unslash( $_GET['template'] ) );
         
         if ( $template_name === 'ai_form' ) {
-            // AI Form Handler will verify its own nonce
+            // AI Form Handler will verify its own nonce (redundant but safe)
             $this->container['ai_form_handler']->handle_ai_form_template();
             return;
         }
@@ -216,9 +221,9 @@ class Admin {
                 'nonce'      => wp_create_nonce( 'wp_rest' ),
                 'rest_url'   => esc_url_raw( rest_url() ),
                 'restUrl'    => esc_url_raw( rest_url() ), // Some components use restUrl
-                'provider'   => $ai_settings['ai_provider'] ?? 'google',
-                'model'      => $ai_settings['ai_model'] ?? 'gemini-1.5-flash-latest',
-                'hasApiKey'  => $show_api_status ? !empty($ai_settings['ai_api_key']) : null,
+                'provider'   => $ai_settings['ai_provider'] ?? 'predefined',
+                'model'      => $ai_settings['ai_model'] ?? 'gpt-3.5-turbo',
+                'hasApiKey'  => $show_api_status ? (($ai_settings['ai_provider'] ?? 'predefined') === 'predefined' || !empty($ai_settings['ai_api_key'])) : null,
                 'isProActive' => class_exists( 'WP_User_Frontend_Pro' ),
                 'temperature' => floatval( $ai_settings['temperature'] ?? 0.7 ),
                 'maxTokens'  => intval( $ai_settings['max_tokens'] ?? 2000 ),

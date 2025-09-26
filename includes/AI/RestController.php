@@ -227,21 +227,7 @@ class RestController {
         $temperature = $request->get_param('temperature');
         $max_tokens = $request->get_param('max_tokens');
 
-        // Basic rate limiting check
-        $user_id = get_current_user_id();
-        $rate_limit_key = 'wpuf_ai_rate_limit_' . $user_id;
-        $requests = get_transient($rate_limit_key) ?: 0;
-        
-        if ($requests >= 10) { // 10 requests per hour
-            return new WP_Error(
-                'rate_limit_exceeded',
-                __('Too many AI requests. Please wait before trying again.', 'wp-user-frontend'),
-                ['status' => 429]
-            );
-        }
-        
-        // Increment request counter
-        set_transient($rate_limit_key, $requests + 1, HOUR_IN_SECONDS);
+        // Rate limiting removed - AI provider handles their own limits
 
         // Validate session ID format to prevent injection
         if (!empty($session_id) && !preg_match('/^[a-zA-Z0-9_-]{1,64}$/', $session_id)) {
@@ -397,9 +383,11 @@ class RestController {
      * @return WP_REST_Response Response object
      */
     public function save_settings(WP_REST_Request $request) {
-        $provider = $request->get_param('provider');
-        $model = $request->get_param('model');
-        $api_key = $request->get_param('api_key');
+        $provider    = $request->get_param('provider');
+        $model       = $request->get_param('model');
+        $api_key     = $request->get_param('api_key');
+        $temperature = $request->get_param('temperature');
+        $max_tokens  = $request->get_param('max_tokens');
 
         // Get existing settings
         $existing = get_option('wpuf_ai', []);
@@ -415,11 +403,27 @@ class RestController {
             }
         }
 
+        // Normalize optional params
+        if ($temperature !== null) {
+            $temperature = max(0.0, min(1.0, (float) $temperature));
+        }
+        if ($max_tokens !== null) {
+            $max_tokens = max(100, min(4000, (int) $max_tokens));
+        }
+
         // Update with new values
         $settings = [
             'ai_provider' => $provider ?: ($existing['ai_provider'] ?? 'openai'),
-            'ai_model' => $model ?: ($existing['ai_model'] ?? 'gpt-3.5-turbo'),
-            'ai_api_key' => !empty($api_key) ? $api_key : ($existing['ai_api_key'] ?? '')
+            'ai_model'    => $model    ?: ($existing['ai_model']    ?? 'gpt-3.5-turbo'),
+            'ai_api_key'  => !empty($api_key)
+                                ? $api_key
+                                : ($existing['ai_api_key'] ?? ''),
+            'temperature' => $temperature !== null
+                                ? $temperature
+                                : ($existing['temperature'] ?? 0.7),
+            'max_tokens'  => $max_tokens !== null
+                                ? $max_tokens
+                                : ($existing['max_tokens']  ?? 2000),
         ];
 
         $saved = update_option('wpuf_ai', $settings);
@@ -451,8 +455,8 @@ class RestController {
         $settings = [
             'provider' => $wpuf_ai_settings['ai_provider'] ?? 'openai',
             'model' => $wpuf_ai_settings['ai_model'] ?? 'gpt-3.5-turbo',
-            'temperature' => 0.7,
-            'max_tokens' => 2000,
+            'temperature' => $wpuf_ai_settings['temperature'] ?? 0.7,
+            'max_tokens' => $wpuf_ai_settings['max_tokens'] ?? 2000,
             'api_key' => $wpuf_ai_settings['ai_api_key'] ?? ''
         ];
 
@@ -736,7 +740,7 @@ class RestController {
                 'session_id' => $modification_data['session_id'] ?? $this->generate_session_id(),
                 'provider' => get_option('wpuf_ai')['ai_provider'] ?? 'openai',
                 'temperature' => 0.3, // Lower temperature for more consistent modifications
-                'context' => $conversation_context
+                'conversation_context' => $conversation_context
             ]);
 
             if (!$ai_response || !$ai_response['success']) {
@@ -747,19 +751,17 @@ class RestController {
                 );
             }
 
-            $ai_data = $ai_response['data'];
-
             // Process AI response - could be direct modification instructions or new form data
-            if (isset($ai_data['action']) && $ai_data['action'] === 'modify') {
+            if (isset($ai_response['action']) && $ai_response['action'] === 'modify') {
                 // Direct modification instructions from AI
                 $current_fields = get_post_meta($form_id, 'wpuf_form_fields', true);
                 if (!is_array($current_fields)) {
                     $current_fields = [];
                 }
 
-                $modification_type = $ai_data['modification_type'] ?? '';
-                $target = $ai_data['target'] ?? '';
-                $changes = $ai_data['changes'] ?? [];
+                $modification_type = $ai_response['modification_type'] ?? '';
+                $target = $ai_response['target'] ?? '';
+                $changes = $ai_response['changes'] ?? [];
 
                 switch ($modification_type) {
                     case 'add_field':
@@ -827,12 +829,12 @@ class RestController {
                         'form_title' => $form->post_title,
                         'form_description' => $form->post_content
                     ],
-                    'message' => $ai_data['message'] ?? __('Form modified successfully', 'wp-user-frontend')
+                    'message' => $ai_response['message'] ?? __('Form modified successfully', 'wp-user-frontend')
                 ];
 
-            } elseif (isset($ai_data['fields']) || isset($ai_data['wpuf_fields'])) {
+            } elseif (isset($ai_response['fields']) || isset($ai_response['wpuf_fields'])) {
                 // AI returned complete modified form - update entire form
-                $new_fields = $ai_data['wpuf_fields'] ?? $ai_data['fields'] ?? [];
+                $new_fields = $ai_response['wpuf_fields'] ?? $ai_response['fields'] ?? [];
                 
                 // Fields already have correct structure, no conversion needed
                 $converted_fields = $new_fields;
@@ -844,17 +846,17 @@ class RestController {
                 $this->update_form_field_posts($form_id, $converted_fields);
 
                 // Update form title/description if provided
-                if (isset($ai_data['form_title'])) {
+                if (isset($ai_response['form_title'])) {
                     wp_update_post([
                         'ID' => $form_id,
-                        'post_title' => sanitize_text_field($ai_data['form_title'])
+                        'post_title' => sanitize_text_field($ai_response['form_title'])
                     ]);
                 }
 
-                if (isset($ai_data['form_description'])) {
+                if (isset($ai_response['form_description'])) {
                     wp_update_post([
                         'ID' => $form_id,
-                        'post_content' => sanitize_textarea_field($ai_data['form_description'])
+                        'post_content' => sanitize_textarea_field($ai_response['form_description'])
                     ]);
                 }
 
@@ -863,10 +865,10 @@ class RestController {
                     'form_id' => $form_id,
                     'form_data' => [
                         'wpuf_fields' => $converted_fields,
-                        'form_title' => $ai_data['form_title'] ?? $form->post_title,
-                        'form_description' => $ai_data['form_description'] ?? $form->post_content
+                        'form_title' => $ai_response['form_title'] ?? $form->post_title,
+                        'form_description' => $ai_response['form_description'] ?? $form->post_content
                     ],
-                    'message' => $ai_data['message'] ?? __('Form updated successfully', 'wp-user-frontend')
+                    'message' => $ai_response['message'] ?? __('Form updated successfully', 'wp-user-frontend')
                 ];
             } else {
                 return new WP_Error(
@@ -879,8 +881,8 @@ class RestController {
             // Log the modification
             $this->log_form_modification($form_id, [
                 'prompt' => $prompt,
-                'action' => $ai_data['action'] ?? 'modify',
-                'modification_type' => $ai_data['modification_type'] ?? 'update_form'
+                'action' => $ai_response['action'] ?? 'modify',
+                'modification_type' => $ai_response['modification_type'] ?? 'update_form'
             ]);
 
             return new WP_REST_Response($response_data);
@@ -909,9 +911,11 @@ class RestController {
         $context .= "Current Fields:\n";
         
         foreach ($fields as $index => $field) {
-            $required = $field['required'] ? ' (Required)' : ' (Optional)';
-            $type = $this->get_human_readable_field_type($field['type'] ?? 'text');
-            $context .= "- {$field['label']}{$required} - {$type}\n";
+            $label = $field['label'] ?? 'Unnamed';
+            $required = ($field['required'] ?? false) ? ' (Required)' : ' (Optional)';
+            $input_type = $field['input_type'] ?? $field['type'] ?? 'text';
+            $type = $this->get_human_readable_field_type($input_type);
+            $context .= "- {$label}{$required} - {$type}\n";
         }
 
         $context .= "\nUSER REQUEST: {$prompt}\n\n";
@@ -1050,29 +1054,46 @@ class RestController {
      * @param array $fields Updated fields
      */
     private function update_form_field_posts($form_id, $fields) {
-        // Delete existing field posts
+        // Get existing field posts ordered by menu_order
         $existing_posts = get_posts([
             'post_type' => 'wpuf_input',
             'post_parent' => $form_id,
             'posts_per_page' => -1,
-            'post_status' => 'any'
+            'post_status' => 'any',
+            'orderby' => 'menu_order',
+            'order' => 'ASC'
         ]);
 
-        foreach ($existing_posts as $post) {
-            wp_delete_post($post->ID, true);
-        }
-
-        // Create new field posts
+        $existing_count = count($existing_posts);
+        $new_count = count($fields);
+        
+        // Update or create field posts
         foreach ($fields as $order => $field) {
-            $field_post = array(
-                'post_type' => 'wpuf_input',
-                'post_status' => 'publish',
-                'post_parent' => $form_id,
-                'menu_order' => $order,
-                'post_content' => serialize($field)
-            );
-
-            wp_insert_post($field_post);
+            if ($order < $existing_count) {
+                // Update existing post
+                wp_update_post([
+                    'ID' => $existing_posts[$order]->ID,
+                    'menu_order' => $order,
+                    'post_content' => serialize($field)
+                ]);
+            } else {
+                // Create new post
+                $field_post = array(
+                    'post_type' => 'wpuf_input',
+                    'post_status' => 'publish',
+                    'post_parent' => $form_id,
+                    'menu_order' => $order,
+                    'post_content' => serialize($field)
+                );
+                wp_insert_post($field_post);
+            }
+        }
+        
+        // Delete excess posts if new count is less than existing
+        if ($new_count < $existing_count) {
+            for ($i = $new_count; $i < $existing_count; $i++) {
+                wp_delete_post($existing_posts[$i]->ID, true);
+            }
         }
     }
 
@@ -1248,21 +1269,7 @@ class RestController {
             );
         }
 
-        // Additional rate limiting check with user context
-        $user_id = get_current_user_id();
-        $rate_limit_key = 'wpuf_ai_security_check_' . $user_id;
-        $security_checks = get_transient($rate_limit_key) ?: 0;
-        
-        if ($security_checks > 50) { // Prevent security check abuse
-            return new WP_Error(
-                'security_check_limit',
-                __('Too many security validation requests', 'wp-user-frontend'),
-                ['status' => 429]
-            );
-        }
-        
-        // Increment security check counter
-        set_transient($rate_limit_key, $security_checks + 1, HOUR_IN_SECONDS);
+        // Security rate limiting removed - AI provider handles their own limits
 
         // Validate session integrity
         $session_token = wp_get_session_token();

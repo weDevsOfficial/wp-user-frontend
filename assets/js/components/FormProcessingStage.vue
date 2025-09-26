@@ -1,5 +1,5 @@
 <template>
-    <div class="wpuf-ai-form-wrapper wpuf-font-sans wpuf-w-full wpuf-h-screen wpuf-overflow-hidden wpuf-relative">
+    <div class="wpuf-ai-form-wrapper wpuf-font-sans wpuf-w-full wpuf-h-screen wpuf-overflow-hidden wpuf-relative" style="background-color: #F5F5F5;">
         <div class="wpuf-ai-form-content wpuf-w-full wpuf-max-w-[768px] wpuf-h-auto wpuf-min-h-[416px] wpuf-absolute wpuf-top-[275px] wpuf-left-1/2 wpuf-transform wpuf--translate-x-1/2 wpuf-mx-4 sm:wpuf-mx-auto wpuf-bg-white wpuf-border wpuf-border-slate-300 wpuf-rounded-lg wpuf-p-6 sm:wpuf-p-9">
             <!-- Animated Icon -->
             <div class="wpuf-flex wpuf-justify-center wpuf-mb-5">
@@ -115,6 +115,10 @@ export default {
         waitForAI: {
             type: Boolean,
             default: true
+        },
+        aiWaitTimeoutMs: {
+            type: Number,
+            default: 30000 // 30 seconds timeout
         }
     },
     data() {
@@ -123,7 +127,8 @@ export default {
             showConfetti: false,
             confettiUrl: '',
             isProcessing: false,
-            aiResponseReceived: false
+            aiResponseReceived: false,
+            _intervals: [] // Track intervals for cleanup
         };
     },
     methods: {
@@ -196,13 +201,19 @@ export default {
             // Set to step 4 and wait for AI
             this.currentStep = 4;
 
-            // Check every 500ms for AI completion
+            // Check every 500ms for AI completion with timeout
+            const started = Date.now();
             const checkInterval = setInterval(() => {
                 if (this.aiResponseReceived) {
                     clearInterval(checkInterval);
                     this.completeGeneration();
+                } else if (Date.now() - started >= this.aiWaitTimeoutMs) {
+                    clearInterval(checkInterval);
+                    this.isProcessing = false;
+                    this.$emit('generation-timeout');
                 }
             }, 500);
+            this._intervals.push(checkInterval);
         },
 
         completeGeneration() {
@@ -246,6 +257,15 @@ export default {
             this.showConfetti = false;
             this.isProcessing = false;
             this.aiResponseReceived = false;
+            this.clearIntervals();
+        },
+        
+        clearIntervals() {
+            // Clear all tracked intervals
+            this._intervals.forEach(interval => {
+                clearInterval(interval);
+            });
+            this._intervals = [];
         }
     },
     mounted() {
@@ -256,6 +276,11 @@ export default {
         if (this.autoStart) {
             this.startGeneration();
         }
+    },
+    
+    beforeUnmount() {
+        // Clean up intervals when component is destroyed
+        this.clearIntervals();
     }
 };
 </script>

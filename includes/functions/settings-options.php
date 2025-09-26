@@ -714,7 +714,7 @@ function wpuf_settings_fields() {
                     'gemini-1.5-pro' => 'Gemini 1.5 Pro (Google)',
 
                 ]),
-                'default' => 'gemini-1.5-flash-latest',
+                'default' => 'gpt-3.5-turbo',
                 'class'   => 'ai-model-select',
             ],
             [
@@ -808,11 +808,13 @@ function wpuf_ai_api_key_field( $args ) {
     $google_key = $settings['google_api_key'] ?? '';
 
     ?>
-    <input type="text"
+    <input type="password"
            id="wpuf_ai_api_key_field"
+           name="wpuf_ai[<?php echo esc_attr( $current_provider ); ?>_api_key]"
            class="regular-text wpuf-ai-api-key-dynamic"
-           value="<?php echo esc_attr( $settings[$current_provider . '_api_key'] ?? '' ); ?>"
-           placeholder="Enter your API key">
+           value="<?php echo esc_attr( $settings[ $current_provider . '_api_key' ] ?? '' ); ?>"
+           placeholder="<?php esc_attr_e( 'Enter your API key', 'wp-user-frontend' ); ?>"
+           autocomplete="off">
 
     <!-- Store API keys for each provider -->
     <input type="hidden" name="wpuf_ai[openai_api_key]" id="wpuf_ai_openai_key" value="<?php echo esc_attr($openai_key); ?>">

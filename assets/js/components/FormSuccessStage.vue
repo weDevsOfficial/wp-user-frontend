@@ -1,7 +1,7 @@
 <template>
-    <div class="wpuf-ai-form-wrapper wpuf-font-sans wpuf-bg-white wpuf-w-full wpuf-min-h-screen wpuf-pb-20 md:wpuf-pb-16 lg:wpuf-pb-12 wpuf-relative">
+    <div class="wpuf-ai-form-wrapper wpuf-font-sans wpuf-w-full wpuf-min-h-screen wpuf-pb-20 md:wpuf-pb-16 lg:wpuf-pb-12 wpuf-relative" style="background-color: #F5F5F5;">
         <div class="wpuf-ai-form-container wpuf-min-h-[calc(100vh-5rem)] wpuf-flex wpuf-flex-col">
-            <div class="wpuf-ai-form-content wpuf-bg-white wpuf-rounded-lg wpuf-h-full wpuf-flex wpuf-flex-col">
+            <div class="wpuf-ai-form-content wpuf-rounded-lg wpuf-h-full wpuf-flex wpuf-flex-col">
                 
                 <!-- Header Section -->
                 <div class="wpuf-flex wpuf-justify-between wpuf-items-center wpuf-px-6 wpuf-pt-6 wpuf-pb-3">
@@ -37,9 +37,9 @@
                     </div>
                 </div>
                 
-                <div class="wpuf-grid-container wpuf-grid wpuf-grid-cols-1 lg:wpuf-grid-cols-[400px_1fr] wpuf-gap-5 wpuf-p-2 sm:wpuf-p-5">
+                <div class="wpuf-resizable-container wpuf-flex wpuf-flex-col lg:wpuf-flex-row wpuf-gap-5 lg:wpuf-gap-0 wpuf-p-2 sm:wpuf-p-5 wpuf-relative" ref="resizableContainer">
                     <!-- Left Side - Chat Box -->
-                    <div class="wpuf-chat-box wpuf-h-[calc(100vh-14rem)] sm:wpuf-h-[calc(100vh-10rem)] wpuf-bg-slate-50 wpuf-border wpuf-border-slate-200 wpuf-rounded-lg wpuf-pt-6 wpuf-px-6 wpuf-flex wpuf-flex-col wpuf-shadow-md wpuf-overflow-hidden">
+                    <div class="wpuf-chat-box wpuf-h-[calc(100vh-14rem)] sm:wpuf-h-[calc(100vh-10rem)] wpuf-bg-slate-50 wpuf-border wpuf-border-slate-200 wpuf-rounded-lg lg:wpuf-rounded-r-none wpuf-pt-6 wpuf-px-6 wpuf-flex wpuf-flex-col wpuf-shadow-md wpuf-overflow-hidden" :style="isLargeScreen ? { width: chatWidth + '%' } : { width: '100%' }" ref="chatPanel">
                         
                         <div class="wpuf-chat-scrollable wpuf-flex-1 wpuf-overflow-y-auto wpuf-max-h-[calc(100vh-300px)]" ref="chatContainer" style="scrollbar-width: thin; scrollbar-color: transparent transparent;" onmouseover="this.style.scrollbarColor='#10B981 transparent';" onmouseleave="this.style.scrollbarColor='transparent transparent';">
                             <div class="wpuf-chat-messages wpuf-flex wpuf-flex-col wpuf-gap-4">
@@ -124,9 +124,22 @@
                             </div>
                         </div>
                     </div>
-                    
+
+                    <!-- Resize Handle -->
+                    <div v-if="isLargeScreen"
+                         class="wpuf-resize-handle wpuf-w-2 wpuf-bg-gray-300 hover:wpuf-bg-emerald-500 wpuf-relative wpuf-flex wpuf-items-center wpuf-justify-center wpuf-transition-all hover:wpuf-w-3"
+                         @mousedown="startResize"
+                         :class="{ 'wpuf-bg-emerald-500 wpuf-w-3': isResizing }"
+                         style="cursor: col-resize !important;">
+                        <div class="wpuf-flex wpuf-flex-col wpuf-gap-1 wpuf-pointer-events-none">
+                            <div class="wpuf-w-1 wpuf-h-1 wpuf-bg-gray-500 wpuf-rounded-full"></div>
+                            <div class="wpuf-w-1 wpuf-h-1 wpuf-bg-gray-500 wpuf-rounded-full"></div>
+                            <div class="wpuf-w-1 wpuf-h-1 wpuf-bg-gray-500 wpuf-rounded-full"></div>
+                        </div>
+                    </div>
+
                     <!-- Right Side - Form Preview -->
-                    <div class="wpuf-form-preview wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-rounded-lg wpuf-p-4 sm:wpuf-p-6 lg:wpuf-p-8 wpuf-flex wpuf-flex-col wpuf-gap-6 wpuf-shadow-md wpuf-h-[calc(100vh-12rem)] sm:wpuf-h-[calc(100vh-10rem)] wpuf-relative" 
+                    <div class="wpuf-form-preview wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-rounded-lg lg:wpuf-rounded-l-none wpuf-p-4 sm:wpuf-p-6 lg:wpuf-p-8 wpuf-flex wpuf-flex-col wpuf-gap-6 wpuf-shadow-md wpuf-h-[calc(100vh-12rem)] sm:wpuf-h-[calc(100vh-10rem)] wpuf-relative" :style="isLargeScreen ? { width: formWidth + '%' } : { width: '100%' }" ref="formPanel" 
                          :class="{ 'wpuf-form-updating': isFormUpdating }">
                         
                         <!-- Form Updating Overlay -->
@@ -142,8 +155,8 @@
                             </svg>
                             <p class="wpuf-text-emerald-600 wpuf-font-medium wpuf-text-lg">{{ __('Generating...', 'wp-user-frontend') }}</p>
                         </div>
-                        <div v-if="formTitle || formFields.length > 0" class="wpuf-form-header wpuf-border-b wpuf-border-gray-200 wpuf-pb-4 wpuf-flex-shrink-0">
-                            <h3 v-if="formTitle" class="wpuf-form-title wpuf-font-bold wpuf-text-3xl wpuf-leading-9 wpuf-tracking-normal wpuf-text-center wpuf-text-gray-900 wpuf-m-0 wpuf-mb-2">{{ formTitle }}</h3>
+                        <div v-if="localFormTitle || formFields.length > 0" class="wpuf-form-header wpuf-border-b wpuf-border-gray-200 wpuf-pb-4 wpuf-flex-shrink-0">
+                            <h3 v-if="localFormTitle" class="wpuf-form-title wpuf-font-bold wpuf-text-3xl wpuf-leading-9 wpuf-tracking-normal wpuf-text-center wpuf-text-gray-900 wpuf-m-0 wpuf-mb-2">{{ localFormTitle }}</h3>
                             <p v-if="formFields.length > 0" class="wpuf-form-description wpuf-font-normal wpuf-text-lg wpuf-leading-6 wpuf-tracking-normal wpuf-text-center wpuf-text-gray-500 wpuf-m-0">{{ formDescription || __('Please complete all information below', 'wp-user-frontend') }}</p>
                         </div>
                         
@@ -656,6 +669,99 @@
     background: #059669;
     border-color: #059669;
 }
+/* Resize handle styles */
+.wpuf-resizable-container {
+    display: flex;
+    position: relative;
+}
+
+.wpuf-resize-handle {
+    position: relative;
+    z-index: 20;
+    flex-shrink: 0;
+    align-self: stretch;
+    min-height: 100%;
+    background: #d4dbd1;
+    transition: all 0.2s ease;
+    cursor: col-resize !important;
+}
+
+.wpuf-resize-handle:hover {
+    background: #069668;
+    width: 0.75rem !important;
+    cursor: col-resize !important;
+}
+
+.wpuf-resize-handle::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -10px;
+    right: -10px;
+    cursor: col-resize !important;
+    z-index: 21;
+}
+
+.wpuf-resize-handle:hover .wpuf-w-1 {
+    background: white !important;
+}
+
+/* Ensure panels don't overflow when resized */
+.wpuf-chat-box,
+.wpuf-form-preview {
+    min-width: 0;
+    flex-shrink: 0;
+    transition: width 0.1s ease-out;
+}
+
+/* Desktop layout and resize styles */
+@media (min-width: 1024px) {
+    .wpuf-resizable-container {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: stretch !important;
+        gap: 0 !important;
+    }
+
+    .wpuf-chat-box,
+    .wpuf-form-preview {
+        flex-grow: 0 !important;
+        flex-shrink: 0 !important;
+    }
+
+    .wpuf-chat-box {
+        border-radius: 0.5rem 0 0 0.5rem !important;
+    }
+
+    .wpuf-form-preview {
+        border-radius: 0 0.5rem 0.5rem 0 !important;
+        border-left: none !important;
+    }
+}
+
+/* Mobile and tablet styles - stack vertically */
+@media (max-width: 1023px) {
+    .wpuf-resizable-container {
+        flex-direction: column !important;
+        gap: 1.25rem !important;
+    }
+
+    .wpuf-chat-box,
+    .wpuf-form-preview {
+        width: 100% !important;
+        border-radius: 0.5rem !important;
+        border: 1px solid #e5e7eb !important;
+    }
+
+    .wpuf-resize-handle {
+        display: none !important;
+    }
+
+    .wpuf-form-preview {
+        border-left: 1px solid #e5e7eb !important;
+    }
+}
 </style>
 
 <script>
@@ -682,9 +788,17 @@ export default {
     data() {
         return {
             userInput: '',
+            localFormTitle: this.formTitle, // Local copy of formTitle prop
             formDescription: '',
             formSettings: {},
             sessionId: this.generateSessionId(),
+            // Resize properties
+            chatWidth: 30,
+            formWidth: 70,
+            isResizing: false,
+            minPanelWidth: 20,
+            maxPanelWidth: 80,
+            isLargeScreen: false,
             conversationState: {
                 original_prompt: '',
                 form_created: false,
@@ -714,6 +828,9 @@ export default {
         }
     },
     watch: {
+        formTitle(newVal) {
+            this.localFormTitle = newVal;
+        },
         initialFormFields: {
             handler(newFields, oldFields) {
                 console.log('FormSuccessStage: initialFormFields prop changed:', {
@@ -769,7 +886,7 @@ export default {
             // Save current form state as checkpoint
             const checkpoint = {
                 formFields: JSON.parse(JSON.stringify(this.formFields)), // Deep clone
-                formTitle: this.formTitle,
+                formTitle: this.localFormTitle,
                 formDescription: this.formDescription,
                 formSettings: JSON.parse(JSON.stringify(this.formSettings)),
                 timestamp: Date.now(),
@@ -820,7 +937,7 @@ export default {
 
                 // Update the form title if available
                 if (checkpoint.formTitle) {
-                    this.formTitle = checkpoint.formTitle;
+                    this.localFormTitle = checkpoint.formTitle;
                     this.$emit('update-form-title', checkpoint.formTitle);
                 }
 
@@ -1553,7 +1670,7 @@ What would you like me to help you with?`;
                         const messageIndex = this.chatMessages.length - 1;
                         const checkpoint = {
                             formFields: JSON.parse(JSON.stringify(this.formFields)),
-                            formTitle: this.formTitle,
+                            formTitle: this.localFormTitle,
                             formDescription: this.formDescription,
                             formSettings: JSON.parse(JSON.stringify(this.formSettings)),
                             timestamp: Date.now(),
@@ -1688,7 +1805,7 @@ What would you like me to help you with?`;
                 // Add error message
                 const errorMessage = {
                     type: 'ai',
-                    content: 'Sorry, there was an error processing your request. Please check your connection and try again.',
+                    content: error.message || 'Sorry, there was an error processing your request. Please try again.',
                     showButtons: false,
                     isError: true,
                     timestamp: new Date().toISOString()
@@ -2002,7 +2119,7 @@ Remember: ONLY provide form-related responses. Do not engage with off-topic requ
                         formFields: this.pendingChanges?.originalResponse?.wpuf_fields 
                             ? JSON.parse(JSON.stringify(this.pendingChanges.originalResponse.wpuf_fields))
                             : JSON.parse(JSON.stringify(this.formFields)),
-                        formTitle: this.formTitle,
+                        formTitle: this.localFormTitle,
                         formDescription: this.formDescription,
                         formSettings: JSON.parse(JSON.stringify(this.formSettings)),
                         timestamp: Date.now(),
@@ -2898,13 +3015,63 @@ Remember: ONLY provide form-related responses. Do not engage with off-topic requ
                 'datetime': 'Date & Time'
             };
             return labels[fieldType] || fieldType;
+        },
+
+        // Resize methods
+        checkScreenSize() {
+            this.isLargeScreen = window.innerWidth >= 1024;
+        },
+
+        startResize() {
+            if (!this.isLargeScreen) return;
+
+            this.isResizing = true;
+            const container = this.$refs.resizableContainer;
+            const containerRect = container.getBoundingClientRect();
+            const containerWidth = containerRect.width;
+
+            const handleMouseMove = (e) => {
+                if (!this.isResizing) return;
+
+                // Calculate new widths based on mouse position
+                const mouseX = e.clientX - containerRect.left;
+                let chatWidthPercent = (mouseX / containerWidth) * 100;
+
+                // Apply constraints
+                chatWidthPercent = Math.max(this.minPanelWidth, Math.min(this.maxPanelWidth, chatWidthPercent));
+
+                // Update panel widths
+                this.chatWidth = chatWidthPercent;
+                this.formWidth = 100 - chatWidthPercent;
+            };
+
+            const handleMouseUp = () => {
+                this.isResizing = false;
+                document.removeEventListener('mousemove', handleMouseMove);
+                document.removeEventListener('mouseup', handleMouseUp);
+
+                // Remove selection prevention
+                document.body.style.userSelect = '';
+                document.body.style.cursor = '';
+            };
+
+            // Prevent text selection during drag
+            document.body.style.userSelect = 'none';
+            document.body.style.cursor = 'col-resize';
+
+            document.addEventListener('mousemove', handleMouseMove);
+            document.addEventListener('mouseup', handleMouseUp);
         }
     },
     mounted() {
         // Initialize form fields from props or defaults
         this.formFields = this.initializeFormFields();
         this.previousFormFields = [...this.formFields];
-        
+
+        // Check screen size
+        this.checkScreenSize();
+        window.addEventListener('resize', this.checkScreenSize);
+
         // Don't show loader initially - only show it during actual transitions
         // The loader should only appear when fields are actively changing
         this.isFormUpdating = false;
@@ -2945,6 +3112,9 @@ Remember: ONLY provide form-related responses. Do not engage with off-topic requ
             clearTimeout(timeoutId);
         });
         this.statusTimeouts.clear();
+
+        // Remove resize event listener
+        window.removeEventListener('resize', this.checkScreenSize);
     }
 };
 </script>

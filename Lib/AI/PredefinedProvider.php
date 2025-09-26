@@ -881,107 +881,13 @@ class PredefinedProvider {
                   strpos($prompt_lower, 'generic form') !== false ||
                   strpos($prompt_lower, 'custom form') !== false) {
             // Use the generic template directly for Generic Form Builder requests
-            $response = null; // This will fall through to the else block
+            $response = $this->getFallbackFormTemplate($prompt);
         } elseif (strpos($prompt_lower, 'product listing') !== false ||
                   strpos($prompt_lower, 'product') !== false) {
             $response = $this->predefined_responses['product_listing'];
         } else {
             // Generic AI Form Builder Prompt - comprehensive fallback template
-            $response = [
-                'form_title' => 'Custom Submission Form',
-                'form_description' => 'Create a submission form for your use case. Include standard fields and specialized fields relevant to this use case. Based on: ' . substr($prompt, 0, 80) . '...',
-                'fields' => [
-                    [
-                        'id' => 1,
-                        'type' => 'text',
-                        'label' => 'Post Title',
-                        'name' => 'post_title',
-                        'required' => true,
-                        'placeholder' => 'Enter a descriptive title for your submission'
-                    ],
-                    [
-                        'id' => 2,
-                        'type' => 'textarea',
-                        'label' => 'Post Content',
-                        'name' => 'post_content',
-                        'required' => true,
-                        'rich' => 'yes',
-                        'placeholder' => 'Enter your detailed content here...'
-                    ],
-                    [
-                        'id' => 3,
-                        'type' => 'image',
-                        'label' => 'Featured Image',
-                        'name' => 'featured_image',
-                        'required' => false
-                    ],
-                    [
-                        'id' => 4,
-                        'type' => 'select',
-                        'label' => 'Category',
-                        'name' => 'category',
-                        'required' => true,
-                        'options' => [
-                            'general' => 'General',
-                            'news' => 'News',
-                            'business' => 'Business',
-                            'technology' => 'Technology',
-                            'lifestyle' => 'Lifestyle',
-                            'other' => 'Other'
-                        ]
-                    ],
-                    [
-                        'id' => 5,
-                        'type' => 'text',
-                        'label' => 'Tags',
-                        'name' => 'post_tags',
-                        'required' => false,
-                        'placeholder' => 'tag1, tag2, tag3 (comma separated)'
-                    ],
-                    [
-                        'id' => 6,
-                        'type' => 'text',
-                        'label' => 'Author Name',
-                        'name' => 'author_name',
-                        'required' => true,
-                        'placeholder' => 'Enter your full name'
-                    ],
-                    [
-                        'id' => 7,
-                        'type' => 'email',
-                        'label' => 'Author Email',
-                        'name' => 'author_email',
-                        'required' => true,
-                        'placeholder' => 'your@email.com'
-                    ],
-                    [
-                        'id' => 8,
-                        'type' => 'textarea',
-                        'label' => 'Author Bio',
-                        'name' => 'author_bio',
-                        'required' => false,
-                        'placeholder' => 'Brief description about yourself...'
-                    ],
-                    [
-                        'id' => 9,
-                        'type' => 'file',
-                        'label' => 'Supporting Documents',
-                        'name' => 'supporting_files',
-                        'required' => false,
-                        'allowed_types' => 'pdf,doc,docx,jpg,png'
-                    ],
-                    [
-                        'id' => 10,
-                        'type' => 'toc',
-                        'label' => 'Terms and Conditions',
-                        'name' => 'terms_agreement',
-                        'required' => true,
-                        'description' => 'I agree to the submission guidelines',
-                        'show_checkbox' => 'yes',
-                        'toc_text' => 'By submitting this form, you agree to our content guidelines and terms of service. Content will be reviewed before publication.'
-                    ]
-                ]
-            ];
+            $response = $this->getFallbackFormTemplate($prompt);
         }
 
         // Convert to WPUF template format
@@ -1015,6 +921,109 @@ class PredefinedProvider {
         return $response;
     }
 
+    /**
+     * Get fallback form template for generic/custom forms
+     *
+     * @param string $prompt Original user prompt
+     * @return array Fallback form template
+     */
+    private function getFallbackFormTemplate($prompt) {
+        return [
+            'form_title' => 'Custom Submission Form',
+            'form_description' => 'Create a submission form for your use case. Include standard fields and specialized fields relevant to this use case. Based on: ' . substr($prompt, 0, 80) . '...',
+            'fields' => [
+                [
+                    'id' => 1,
+                    'type' => 'text',
+                    'label' => 'Post Title',
+                    'name' => 'post_title',
+                    'required' => true,
+                    'placeholder' => 'Enter a descriptive title for your submission'
+                ],
+                [
+                    'id' => 2,
+                    'type' => 'textarea',
+                    'label' => 'Post Content',
+                    'name' => 'post_content',
+                    'required' => true,
+                    'rich' => 'yes',
+                    'placeholder' => 'Enter your detailed content here...'
+                ],
+                [
+                    'id' => 3,
+                    'type' => 'image',
+                    'label' => 'Featured Image',
+                    'name' => 'featured_image',
+                    'required' => false
+                ],
+                [
+                    'id' => 4,
+                    'type' => 'select',
+                    'label' => 'Category',
+                    'name' => 'category',
+                    'required' => true,
+                    'options' => [
+                        'general' => 'General',
+                        'news' => 'News',
+                        'business' => 'Business',
+                        'technology' => 'Technology',
+                        'lifestyle' => 'Lifestyle',
+                        'other' => 'Other'
+                    ]
+                ],
+                [
+                    'id' => 5,
+                    'type' => 'text',
+                    'label' => 'Tags',
+                    'name' => 'post_tags',
+                    'required' => false,
+                    'placeholder' => 'tag1, tag2, tag3 (comma separated)'
+                ],
+                [
+                    'id' => 6,
+                    'type' => 'text',
+                    'label' => 'Author Name',
+                    'name' => 'author_name',
+                    'required' => true,
+                    'placeholder' => 'Enter your full name'
+                ],
+                [
+                    'id' => 7,
+                    'type' => 'email',
+                    'label' => 'Author Email',
+                    'name' => 'author_email',
+                    'required' => true,
+                    'placeholder' => 'your@email.com'
+                ],
+                [
+                    'id' => 8,
+                    'type' => 'textarea',
+                    'label' => 'Author Bio',
+                    'name' => 'author_bio',
+                    'required' => false,
+                    'placeholder' => 'Brief description about yourself...'
+                ],
+                [
+                    'id' => 9,
+                    'type' => 'file',
+                    'label' => 'Supporting Documents',
+                    'name' => 'supporting_files',
+                    'required' => false,
+                    'allowed_types' => 'pdf,doc,docx,jpg,png'
+                ],
+                [
+                    'id' => 10,
+                    'type' => 'toc',
+                    'label' => 'Terms and Conditions',
+                    'name' => 'terms_agreement',
+                    'required' => true,
+                    'description' => 'I agree to the submission guidelines',
+                    'show_checkbox' => 'yes',
+                    'toc_text' => 'By submitting this form, you agree to our content guidelines and terms of service. Content will be reviewed before publication.'
+                ]
+            ]
+        ];
+    }
 
     /**
      * Convert fields to WPUF template format

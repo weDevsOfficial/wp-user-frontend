@@ -336,7 +336,7 @@ class WeDevs_Settings_API {
             $html .= '<label class="wpuf-radio-inline-item">';
             $html .= sprintf( '<input type="radio" class="radio" id="wpuf-%1$s[%2$s][%3$s]" name="%1$s[%2$s]" value="%3$s" %4$s %5$s />',
                 $args['section'], $args['id'], $key, checked( $value, $key, false ), $disabled );
-            $html .= sprintf( '<span class="wpuf-radio-label">%s</span>', $label );
+            $html .= sprintf( '<span class="wpuf-radio-label">%s</span>', esc_html( $label ) );
             $html .= '</label>';
         }
 

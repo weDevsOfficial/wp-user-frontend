@@ -1,5 +1,5 @@
 <template>
-    <div class="wpuf-ai-form-wrapper wpuf-font-sans wpuf-bg-white wpuf-w-full wpuf-h-screen wpuf-overflow-hidden wpuf-relative">
+    <div class="wpuf-ai-form-wrapper wpuf-font-sans wpuf-w-full wpuf-h-screen wpuf-overflow-hidden wpuf-relative" style="background-color: white;">
         <div class="wpuf-ai-form-content wpuf-w-full wpuf-max-w-[720px] wpuf-h-auto wpuf-min-h-[672px] wpuf-absolute wpuf-top-[93px] wpuf-left-1/2 wpuf-transform wpuf--translate-x-1/2 wpuf-mx-4 sm:wpuf-mx-auto wpuf-bg-white wpuf-p-4 sm:wpuf-p-6">
             <!-- Header -->
             <div class="wpuf-text-center wpuf-mb-6">
@@ -18,12 +18,12 @@
                         v-model="formDescription"
                         class="wpuf-w-full wpuf-px-4 wpuf-py-3 wpuf-border wpuf-border-gray-300 wpuf-rounded-lg wpuf-text-gray-500 wpuf-resize-none focus:wpuf-outline-none focus:wpuf-border-emerald-500 focus:wpuf-ring-2 focus:wpuf-ring-emerald-200 wpuf-transition-all"
                         rows="6"
-                        maxlength="500"
+                        :maxlength="maxDescriptionLength"
                         :placeholder="__('Describe your form', 'wp-user-frontend')"
                     ></textarea>
                 </div>
                 <div class="wpuf-text-right wpuf-mt-2 wpuf-text-sm wpuf-text-gray-600">
-                    {{ formDescription.length }}/500 {{ __('Characters', 'wp-user-frontend') }}
+                    {{ formDescription.length }}/{{ maxDescriptionLength }} {{ __('Characters', 'wp-user-frontend') }}
                 </div>
             </div>
 
@@ -80,7 +80,7 @@ export default {
             default: ''
         },
         initialSelectedPrompt: {
-            type: String,
+            type: [String, Object],
             default: ''
         },
         generating: {
@@ -91,8 +91,9 @@ export default {
     data() {
         return {
             formDescription: this.initialDescription,
-            selectedPrompt: this.initialSelectedPrompt,
+            selectedPrompt: typeof this.initialSelectedPrompt === 'object' ? this.initialSelectedPrompt : '',
             isGenerating: this.generating,
+            maxDescriptionLength: 500,
             promptTemplates: [
                 { id: 'paid_guest_post', label: this.__('Paid Guest Post', 'wp-user-frontend') },
                 { id: 'portfolio_submission', label: this.__('Portfolio Submission', 'wp-user-frontend') },
@@ -143,10 +144,9 @@ export default {
             // Use the detailed AI instruction instead of just the template name
             const aiInstruction = this.promptAIInstructions[tpl.id] || tpl.label;
             
-            // Validate instruction length
-            if (aiInstruction.length > 2000) {
-                console.warn('AI instruction too long, truncating');
-                this.formDescription = aiInstruction.substring(0, 2000);
+            // Enforce UI max length
+            if (aiInstruction.length > this.maxDescriptionLength) {
+                this.formDescription = aiInstruction.substring(0, this.maxDescriptionLength);
             } else {
                 this.formDescription = aiInstruction;
             }
@@ -164,7 +164,7 @@ export default {
             
             this.$emit('start-generation', {
                 description: this.formDescription,
-                selectedPrompt: this.selectedPrompt
+                selectedPrompt: this.selectedPrompt?.id || this.selectedPrompt || ''
             });
         }
     }

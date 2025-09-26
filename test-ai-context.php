@@ -5,7 +5,11 @@
  * This demonstrates how the AI should handle different types of user prompts
  */
 
-require_once 'includes/AI/FormGenerator.php';
+// Load Composer autoloader
+$autoload = __DIR__ . '/vendor/autoload.php';
+if ( file_exists( $autoload ) ) {
+    require_once $autoload;
+}
 
 use WeDevs\Wpuf\AI\FormGenerator;
 

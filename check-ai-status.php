@@ -48,9 +48,11 @@ echo "\n=== Quick Test ===\n";
 if (!empty($settings['ai_api_key'])) {
     echo "Testing with {$settings['ai_provider']} provider...\n";
 
-    // Load the necessary files
-    require_once plugin_dir_path(__FILE__) . 'includes/AI/AIClientLoader.php';
-    require_once plugin_dir_path(__FILE__) . 'includes/AI/FormGenerator.php';
+    // Load Composer autoloader
+    $autoload = __DIR__ . '/vendor/autoload.php';
+    if ( file_exists( $autoload ) ) {
+        require_once $autoload;
+    }
 
     try {
         $generator = new \WeDevs\Wpuf\AI\FormGenerator();

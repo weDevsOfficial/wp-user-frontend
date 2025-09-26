@@ -312,10 +312,10 @@ export default {
                     .wpuf-ai-error-content {
                         position: relative;
                         background: white;
-                        padding: 40px;
-                        border-radius: 16px;
-                        max-width: 480px;
-                        width: 90%;
+                        padding: 56px 80px 56px;
+                        border-radius: 8px;
+                        width: 660px;
+                        max-width: 90%;
                         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
                         text-align: center;
                         animation: wpufSlideUp 0.3s ease-out;
@@ -327,17 +327,18 @@ export default {
                         margin-bottom: 24px;
                     }
                     .wpuf-ai-error-title {
-                        color: #111827;
-                        margin: 0 0 16px 0;
-                        font-size: 24px;
-                        font-weight: 600;
-                        line-height: 1.3;
+                        color: #4B5563;
+                        margin: 32px 0 12px 0;
+                        font-size: 30px;
+                        font-weight: 800;
+                        line-height: 36px;
                     }
                     .wpuf-ai-error-message {
-                        color: #6b7280;
-                        margin: 0 0 24px 0;
-                        line-height: 1.6;
-                        font-size: 16px;
+                        color: #6B7280;
+                        margin: 0 0 32px 0;
+                        line-height: 28px;
+                        font-size: 20px;
+                        font-weight: 500;
                     }
                     .wpuf-ai-error-details {
                         margin: 16px 0 24px 0;
@@ -399,22 +400,23 @@ export default {
                         flex-shrink: 0;
                     }
                     .wpuf-ai-error-close {
-                        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                        background: #10b981;
                         color: white;
                         border: none;
-                        padding: 12px 32px;
-                        border-radius: 8px;
+                        padding: 13px 25px;
+                        border-radius: 6px;
                         font-size: 16px;
-                        font-weight: 600;
+                        font-weight: 500;
                         cursor: pointer;
                         transition: all 0.2s ease;
-                        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-                        min-width: 120px;
+                        box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+                        width: 151px;
+                        height: 50px;
+                        line-height: 24px;
                     }
                     .wpuf-ai-error-close:hover {
-                        background: linear-gradient(135deg, #059669 0%, #047857 100%);
-                        transform: translateY(-1px);
-                        box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.15);
+                        background: #059669;
+                        box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
                     }
                     .wpuf-ai-error-close:active {
                         transform: translateY(0);

@@ -127,11 +127,24 @@ class Menu {
                 wp_enqueue_script( 'wpuf-forms-list' );
                 // Check AI configuration status
                 $ai_settings = get_option( 'wpuf_ai', [] );
-                $ai_provider = isset( $ai_settings['ai_provider'] ) ? $ai_settings['ai_provider'] : '';
+                $ai_provider = isset( $ai_settings['ai_provider'] ) ? sanitize_text_field( $ai_settings['ai_provider'] ) : '';
                 $ai_model    = isset( $ai_settings['ai_model'] ) ? $ai_settings['ai_model'] : '';
-                $provider_key_field = $ai_provider . '_api_key';
-                $ai_api_key = isset( $ai_settings[$provider_key_field] ) ? $ai_settings[$provider_key_field] : '';
-                $ai_configured = !empty( $ai_provider ) && !empty( $ai_api_key ) && !empty( $ai_model );
+
+                // Define providers that don't require an API key
+                $keyless_providers = [ 'predefined', 'local', 'builtin', 'mock' ];
+
+                // Check if provider is keyless
+                $is_keyless_provider = in_array( $ai_provider, $keyless_providers, true );
+
+                if ( $is_keyless_provider ) {
+                    // For keyless providers, only require provider and model
+                    $ai_configured = !empty( $ai_provider ) && !empty( $ai_model );
+                } else {
+                    // For providers requiring API keys, safely build the key field and check it
+                    $provider_key_field = $ai_provider ? sanitize_key( $ai_provider . '_api_key' ) : '';
+                    $ai_api_key = !empty( $provider_key_field ) && isset( $ai_settings[$provider_key_field] ) ? $ai_settings[$provider_key_field] : '';
+                    $ai_configured = !empty( $ai_provider ) && !empty( $ai_api_key ) && !empty( $ai_model );
+                }
 
                 wp_localize_script('wpuf-forms-list', 'wpuf_forms_list',
                     [

@@ -1263,6 +1263,23 @@ class PredefinedProvider {
                 }
                 break;
 
+            case 'radio':
+            case 'checkbox':
+                $wpuf_field['inline'] = 'no';
+                $wpuf_field['options'] = [];
+                if (!empty($field['options']) && is_array($field['options'])) {
+                    foreach ($field['options'] as $key => $value) {
+                        if (is_array($value) && isset($value['value'], $value['label'])) {
+                            $wpuf_field['options'][(string) $value['value']] = (string) $value['label'];
+                        } elseif (is_string($key) && is_string($value)) {
+                            $wpuf_field['options'][$key] = $value;
+                        } elseif (is_string($value)) {
+                            $wpuf_field['options'][$value] = $value;
+                        }
+                    }
+                }
+                break;
+
             case 'file':
             case 'image':
                 $wpuf_field['max_size'] = '1024';

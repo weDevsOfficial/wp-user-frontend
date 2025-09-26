@@ -59,16 +59,10 @@ class Subscription {
     public static function subscriber_cancel( $user_id, $pack_id ) {
         global $wpdb;
 
-        $sql = $wpdb->prepare(
+        $result = $wpdb->get_row( $wpdb->prepare(
             'SELECT transaction_id FROM ' . $wpdb->prefix . 'wpuf_transaction
             WHERE user_id = %d AND pack_id = %d LIMIT 1', $user_id, $pack_id
-        );
-        $result = $wpdb->get_row(
-            $wpdb->prepare(
-                'SELECT transaction_id FROM ' . $wpdb->prefix . 'wpuf_transaction
-            WHERE user_id = %d AND pack_id = %d LIMIT 1', $user_id, $pack_id
-            )
-        );
+        ) );
 
         $transaction_id = $result ? $result->transaction_id : 'Free';
 
@@ -775,13 +769,11 @@ class Subscription {
         global $wpdb;
 
         //$post = get_post( $post_id );
-        $sql = $wpdb->prepare(
+        return $wpdb->get_row( $wpdb->prepare(
             "SELECT p.ID, p.post_status
             FROM $wpdb->posts p, $wpdb->postmeta m
             WHERE p.ID = m.post_id AND p.post_status <> 'publish' AND m.meta_key = '_wpuf_order_id' AND m.meta_value = %s", $order_id
-        );
-
-        return $wpdb->get_row( $sql );
+        ) );
     }
 
     /**
@@ -1151,24 +1143,25 @@ class Subscription {
     public function subscription_pack_users( $pack_id = '', $status = '' ) {
         global $wpdb;
 
-        // Build the query with proper placeholders
-        $sql = 'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers';
-        $prepare_values = [];
-
-        // Add conditional WHERE clauses if params exist
+        // Build and execute the query with proper placeholders
         if ( $pack_id && $status ) {
-            $sql .= ' WHERE subscribtion_id = %d AND subscribtion_status = %d';
-            $prepare_values = [ $pack_id, $status ];
+            $rows = $wpdb->get_results( $wpdb->prepare(
+                'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers WHERE subscribtion_id = %d AND subscribtion_status = %d',
+                $pack_id, $status
+            ) );
         } elseif ( $pack_id ) {
-            $sql .= ' WHERE subscribtion_id = %d';
-            $prepare_values = [ $pack_id ];
+            $rows = $wpdb->get_results( $wpdb->prepare(
+                'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers WHERE subscribtion_id = %d',
+                $pack_id
+            ) );
         } elseif ( $status ) {
-            $sql .= ' WHERE subscribtion_status = %d';
-            $prepare_values = [ $status ];
+            $rows = $wpdb->get_results( $wpdb->prepare(
+                'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers WHERE subscribtion_status = %d',
+                $status
+            ) );
+        } else {
+            $rows = $wpdb->get_results( 'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers' );
         }
-
-        // Prepare and execute the query safely
-        $rows = $wpdb->get_results( $wpdb->prepare( $sql, $prepare_values ) );
 
         if ( empty( $rows ) ) {
             return $rows;

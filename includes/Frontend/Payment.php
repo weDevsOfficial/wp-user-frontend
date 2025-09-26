@@ -475,9 +475,6 @@ class Payment {
         global $wpdb;
         $user_id = get_current_user_id();
         //check if it's already there
-        $sql = $wpdb->prepare( 'SELECT transaction_id
-            FROM ' . $wpdb->prefix . 'wpuf_transaction
-            WHERE transaction_id = %s LIMIT 1', $transaction_id );
         $result = $wpdb->get_row( $wpdb->prepare( 'SELECT transaction_id
             FROM ' . $wpdb->prefix . 'wpuf_transaction
             WHERE transaction_id = %s LIMIT 1', $transaction_id ) );

@@ -211,7 +211,7 @@ class List_Table_Subscribers extends WP_List_Table {
         }
 
         // Build the query with proper placeholders
-        $sql = 'SELECT * FROM ' . $wpdb->prefix . 'wpuf_subscribers';
+        $base_sql = 'SELECT * FROM ' . $wpdb->prefix . 'wpuf_subscribers';
         $prepare_values = [];
 
         // Add conditional WHERE clauses if params exist
@@ -219,19 +219,21 @@ class List_Table_Subscribers extends WP_List_Table {
         $status = ! empty( $_REQUEST['status'] ) ? sanitize_key( wp_unslash( $_REQUEST['status'] ) ) : '';
 
         if ( $post_id && $status ) {
-            $sql .= ' WHERE subscribtion_id = %d AND subscribtion_status = %s';
+            $sql = $base_sql . ' WHERE subscribtion_id = %d AND subscribtion_status = %s';
             $prepare_values = [ $post_id, $status ];
         } elseif ( $post_id ) {
-            $sql .= ' WHERE subscribtion_id = %d';
+            $sql = $base_sql . ' WHERE subscribtion_id = %d';
             $prepare_values = [ $post_id ];
         } elseif ( $status ) {
-            $sql .= ' WHERE subscribtion_status = %s';
+            $sql = $base_sql . ' WHERE subscribtion_status = %s';
             $prepare_values = [ $status ];
+        } else {
+            $sql = $base_sql;
         }
 
         // Prepare and execute the query safely
         if ( ! empty( $prepare_values ) ) {
-            $this->items = $wpdb->get_results( $wpdb->prepare( $sql, $prepare_values ) );
+            $this->items = $wpdb->get_results( $wpdb->prepare( $sql, ...$prepare_values ) );
         } else {
             // When no prepare values, the SQL is safe as it's built from constants
             $this->items = $wpdb->get_results( $sql );

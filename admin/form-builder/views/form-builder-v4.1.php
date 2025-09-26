@@ -56,11 +56,15 @@
                 if ( count( $shortcodes ) > 1 && isset( $shortcodes[0]['type'] ) ) {
                     foreach ( $shortcodes as $shortcode ) {
                         ?>
+                        <?php
+                        // translators: %s is the shortcode type (e.g., form, post, profile)
+                        $title = sprintf( __( 'Click to copy %s shortcode', 'wp-user-frontend' ), esc_attr( $shortcode['type'] ) );
+                        $clipboard = sprintf( '[%s type="%s" id="%s"]', $shortcode['name'], esc_attr( $shortcode['type'] ), esc_attr( $form_id ) );
+                        ?>
                         <span
                             class="form-id wpuf-group wpuf-flex wpuf-items-center wpuf-px-[18px] wpuf-py-[10px] wpuf-rounded-md wpuf-border wpuf-border-gray-300 hover:wpuf-cursor-pointer wpuf-ml-6 wpuf-text-gray-700 wpuf-text-base wpuf-leading-none wpuf-shadow-sm"
-                            title="<?php // translators: %s is the shortcode type (e.g., form, post, profile)
-                            printf( esc_attr( __( 'Click to copy %s shortcode', 'wp-user-frontend' ) ), esc_attr( $shortcode['type'] ) ); ?>"
-                            data-clipboard-text="<?php printf( esc_attr( '[' . $shortcode['name'] . ' type="' . esc_attr( $shortcode['type'] ) . '" id="' . esc_attr( $form_id ) . '"]' ) ); ?>"><?php echo esc_attr( ucwords( $shortcode['type'] ) ); ?>: #{{ post.ID }}
+                            title="<?php echo esc_attr( $title ); ?>"
+                            data-clipboard-text="<?php echo esc_attr( $clipboard ); ?>"><?php echo esc_attr( ucwords( $shortcode['type'] ) ); ?>: #{{ post.ID }}
                             <span id="default-icon" class="wpuf-ml-2">
                                 <svg
                                     class="group-hover:wpuf-rotate-6 group-hover:wpuf-stroke-gray-500 wpuf-stroke-gray-400"

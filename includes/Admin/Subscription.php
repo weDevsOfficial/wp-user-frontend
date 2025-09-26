@@ -844,10 +844,12 @@ class Subscription {
         //$cost_per_post = isset( $form_settings['pay_per_post_cost'] ) ? $form_settings['pay_per_post_cost'] : 0;
 
         // Verify nonce for security
-        if ( ! wp_verify_nonce( isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '', 'wpuf_subscription_packs' ) ) {
-            // If nonce verification fails, still allow the function to work but log the issue
-            if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-                error_log( 'WPUF Subscription: Nonce verification failed for subscription_packs function' );
+        if ( isset( $_GET['_wpnonce'] ) ) {
+            if ( ! wp_verify_nonce( sanitize_key( wp_unslash( $_GET['_wpnonce'] ) ), 'wpuf_subscription_packs' ) ) {
+                // If nonce verification fails, still allow the function to work but log the issue
+                if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+                    error_log( 'WPUF Subscription: Nonce verification failed for subscription_packs function' );
+                }
             }
         }
 
@@ -1145,22 +1147,20 @@ class Subscription {
 
         // Build and execute the query with proper placeholders
         if ( $pack_id && $status ) {
-            $rows = $wpdb->get_results( $wpdb->prepare(
-                'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers WHERE subscribtion_id = %d AND subscribtion_status = %d',
-                $pack_id, $status
-            ) );
+            $sql = 'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers WHERE subscribtion_id = %d AND subscribtion_status = %s';
+            $prepare_values = [ $pack_id, $status ];
+            $rows = $wpdb->get_results( $wpdb->prepare( $sql, $prepare_values ) );
         } elseif ( $pack_id ) {
-            $rows = $wpdb->get_results( $wpdb->prepare(
-                'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers WHERE subscribtion_id = %d',
-                $pack_id
-            ) );
+            $sql = 'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers WHERE subscribtion_id = %d';
+            $prepare_values = [ $pack_id ];
+            $rows = $wpdb->get_results( $wpdb->prepare( $sql, $prepare_values ) );
         } elseif ( $status ) {
-            $rows = $wpdb->get_results( $wpdb->prepare(
-                'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers WHERE subscribtion_status = %d',
-                $status
-            ) );
+            $sql = 'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers WHERE subscribtion_status = %s';
+            $prepare_values = [ $status ];
+            $rows = $wpdb->get_results( $wpdb->prepare( $sql, $prepare_values ) );
         } else {
-            $rows = $wpdb->get_results( 'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers' );
+            $sql = 'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers';
+            $rows = $wpdb->get_results( $sql );
         }
 
         if ( empty( $rows ) ) {

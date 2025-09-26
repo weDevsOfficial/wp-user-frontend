@@ -26,7 +26,7 @@
                     :class="active_settings_tab === 'modules'? 'wpuf-bg-primary active_settings_tab wpuf-m-0 wpuf-text-white' : ''"
                     class="wpuf-group/sidebar-item hover:wpuf-bg-primary hover:wpuf-cursor-pointer hover:wpuf-text-white wpuf-rounded-lg wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out wpuf-items-center wpuf-w-full wpuf-m-0 wpuf-py-2 wpuf-px-3 wpuf--ml-3 wpuf-flex wpuf-text-gray-600">
                     <?php
-                    echo esc_html( $icon );
+                    echo wp_kses( $icon, array('span' => array('class' => array()), 'i' => array('class' => array())) );
                     ?>
                     <span class="wpuf-ml-2">
                         <?php
@@ -39,7 +39,7 @@
                 <div class="wpuf-mb-4 wpuf-flex wpuf-justify-between wpuf-items-center">
                     <h2 class="wpuf-text-base wpuf-text-gray-600 wpuf-m-0 wpuf-flex wpuf-items-center">
                         <?php
-                        echo esc_html( $icon );
+                        echo wp_kses( $icon, array('span' => array('class' => array()), 'i' => array('class' => array())) );
                         ?>
                         <span class="wpuf-ml-2">
                 <?php
@@ -69,7 +69,7 @@
                                     :class="active_settings_tab === '<?php echo esc_attr( $sub_key ); ?>' ? 'wpuf-text-white' : 'wpuf-text-gray-600'"
                                     class="wpuf-ml-2 wpuf-text-sm group-hover/sidebar-item:wpuf-text-white wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out focus:wpuf-shadow-none focus:wpuf-outline-none wpuf-flex wpuf-items-center">
                                     <?php
-                                    echo esc_html( $sub_icon );
+                                    echo wp_kses( $sub_icon, array('span' => array('class' => array()), 'i' => array('class' => array())) );
                                     ?>
                                     <span class="wpuf-ml-2">
                                         <?php
@@ -408,13 +408,17 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                             @click="$event.target.querySelector('input').click()"
                             class="wpuf-flex wpuf-justify-center wpuf-items-center wpuf-space-x-1 wpuf-px-2 wpuf-py-1.5 wpuf-rounded-md wpuf-bg-white wpuf-border wpuf-cursor-pointer wpuf-relative">
                             <div class="wpuf-w-6 wpuf-h-6 wpuf-overflow-hidden wpuf-border wpuf-border-gray-200 wpuf-rounded-full wpuf-flex wpuf-justify-center wpuf-items-center">
+                                <?php
+                                $sanitized_default = sanitize_hex_color( $field['default'] ) ?: '';
+                                $sanitized_value = sanitize_hex_color( $value ) ?: '';
+                                ?>
                                 <input
                                     type="color"
                                     class="wpuf-w-8 wpuf-h-12 !wpuf-border-gray-50 !wpuf--m-4 hover:!wpuf-cursor-pointer"
                                     name="<?php echo esc_attr( $name ); ?>"
                                     id="<?php echo esc_attr( $field_key ); ?>"
-                                    style="background: <?php echo esc_attr( $field['default'] ); ?>"
-                                    value="<?php echo esc_attr( $value ); ?>">
+                                    style="background: <?php echo esc_attr( $sanitized_default ); ?>"
+                                    value="<?php echo esc_attr( $sanitized_value ); ?>">
                             </div>
                             <i
                                 @click="$event.target.closest('div').querySelector('input').click()"
@@ -434,7 +438,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                     :class="setting_class_names('dropdown')">
                     <?php
                     foreach ( $field['options'] as $index => $option ) {
-                        printf( '<option data-select-value="%s" data-select-index="%s" value="%s"%s>%s</option>', esc_attr( $value ), esc_attr( $index ), esc_attr( $index ), esc_attr( selected( $value, $index, false ) ), esc_html( $option ) );
+                        printf( '<option data-select-value="%s" data-select-index="%s" value="%s"%s>%s</option>', esc_attr( $value_str ), esc_attr( $index ), esc_attr( $index ), esc_attr( selected( $value, $index, false ) ), esc_html( $option ) );
                     }
                     ?>
                 </select>
@@ -475,7 +479,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                     :class="setting_class_names('text')"
                     type="<?php echo esc_attr( $field['type'] ); ?>"
                     name="<?php echo $is_pro_preview ? '' : esc_attr( $name ); ?>"
-                    <?php echo ! empty( $field['placeholder'] ) ? 'placeholder=' . esc_attr( $field['placeholder'] ) : ''; ?>
+                    <?php echo ! empty( $field['placeholder'] ) ? 'placeholder="' . esc_attr( $field['placeholder'] ) . '"' : ''; ?>
                     <?php echo $is_pro_preview ? 'disabled' : ''; ?>
                     id="<?php echo esc_attr( $field_key ); ?>"
                     value="<?php echo esc_attr( $value ); ?>"/>
@@ -626,7 +630,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                             class="!wpuf-mt-2"
                             type="<?php echo esc_attr( $inner_field['type'] ); ?>"
                             name="wpuf_settings[<?php echo esc_attr( $inner_field_key ); ?>]"
-                            <?php echo ! empty( $inner_field['placeholder'] ) ? 'placeholder=' . esc_attr( $inner_field['placeholder'] ) : ''; ?>
+                            <?php echo ! empty( $inner_field['placeholder'] ) ? 'placeholder="' . esc_attr( $inner_field['placeholder'] ) . '"' : ''; ?>
                             id="<?php echo esc_attr( $inner_field_key ); ?>"
                             value="<?php echo esc_attr( $value ); ?>"/>
                         <?php
@@ -655,7 +659,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                             :class="setting_class_names('dropdown')">
                             <?php
                             foreach ( $inner_field['options'] as $index => $option ) {
-                                printf( '<option data-select-value="%s" data-select-index="%s" value="%s"%s>%s</option>', esc_attr( $value ), esc_attr( $index ), esc_attr( $index ), esc_attr( selected( $value, $index, false ) ), esc_html( $option ) );
+                                printf( '<option data-select-value="%s" data-select-index="%s" value="%s"%s>%s</option>', esc_attr( $value_str ), esc_attr( $index ), esc_attr( $index ), esc_attr( selected( $value, $index, false ) ), esc_html( $option ) );
                             }
                             ?>
                         </select>

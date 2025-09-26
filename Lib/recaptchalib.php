@@ -123,10 +123,26 @@ function recaptcha_get_html ($pubkey, $enable_no_captcha = false, $error = null,
 
     if ( $enable_no_captcha == true ) {
         wp_enqueue_script( 'wpuf-recaptcha', 'https://www.google.com/recaptcha/api.js', array(), null, true );
-        $return_var =  '<div class="g-recaptcha" data-sitekey="'.$pubkey.'"></div>';
+        $return_var =  '<div class="g-recaptcha" data-sitekey="'.esc_attr($pubkey).'"></div>';
     } else {
         wp_enqueue_script( 'wpuf-recaptcha-legacy', $server . '/challenge?k=' . $pubkey . $errorpart, array(), null, true );
-        $return_var = '';
+        $container_id = 'wpuf-recaptcha-legacy-' . uniqid();
+        $return_var = '<div id="' . esc_attr($container_id) . '" class="wpuf-recaptcha-legacy-container"></div>
+<script>
+(function() {
+    var container = document.getElementById("' . esc_js($container_id) . '");
+    if (container) {
+        var originalWrite = document.write;
+        document.write = function(content) {
+            container.innerHTML = content;
+        };
+        // Reset document.write after a short delay to avoid interfering with other scripts
+        setTimeout(function() {
+            document.write = originalWrite;
+        }, 100);
+    }
+})();
+</script>';
     }
 
         return $return_var.'

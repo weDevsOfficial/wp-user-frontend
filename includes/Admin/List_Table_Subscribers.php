@@ -216,7 +216,7 @@ class List_Table_Subscribers extends WP_List_Table {
 
         // Add conditional WHERE clauses if params exist
         $post_id = ! empty( $_REQUEST['post_ID'] ) ? intval( sanitize_text_field( wp_unslash( $_REQUEST['post_ID'] ) ) ) : '';
-        $status = ! empty( $_REQUEST['status'] ) ? sanitize_key( wp_unslash( $_REQUEST['status'] ) ) : '';
+        $status = ! empty( $_REQUEST['status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) : '';
 
         if ( $post_id && $status ) {
             $sql = $base_sql . ' WHERE subscribtion_id = %d AND subscribtion_status = %s';

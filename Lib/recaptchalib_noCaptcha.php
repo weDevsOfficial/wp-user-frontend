@@ -98,14 +98,22 @@ class WPUF_ReCaptcha
         // Use WordPress HTTP API instead of cURL
         $response = wp_remote_get($url, array(
             'timeout' => 3,
-            'sslverify' => false
+            'sslverify' => true
         ));
         
         if (is_wp_error($response)) {
             return false;
         }
         
-        return wp_remote_retrieve_body($response);
+        $response_code = wp_remote_retrieve_response_code($response);
+        $response_body = wp_remote_retrieve_body($response);
+        
+        // Return false for non-200 responses or empty bodies
+        if ($response_code !== 200 || empty($response_body)) {
+            return false;
+        }
+        
+        return $response_body;
     }
 
 

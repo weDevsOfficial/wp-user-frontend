@@ -122,6 +122,7 @@ class Frontend_Render_Form {
 
         if ( $form_id ) {
             wp_enqueue_script( 'jquery' );
+            wp_register_style( 'wpuf-frontend-forms', plugins_url( 'assets/css/frontend-forms.css', __DIR__ ) );
             wp_enqueue_style( 'wpuf-frontend-forms' );
             ?>
 
@@ -129,8 +130,8 @@ class Frontend_Render_Form {
             <html lang="en">
             <head>
                 <meta charset="UTF-8">
-                <title>__( 'Form Preview', 'wp-user-frontend' )</title>
-                <?php wp_enqueue_style( 'wpuf-frontend-forms', plugins_url( 'assets/css/frontend-forms.css', __DIR__ ) ); ?>
+                <title><?php echo esc_html( __( 'Form Preview', 'wp-user-frontend' ) ); ?></title>
+                <?php wp_head(); ?>
 
                 <style type="text/css">
                     body {

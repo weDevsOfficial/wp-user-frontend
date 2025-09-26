@@ -548,7 +548,7 @@ onMounted(() => {
                       'wpuf-bg-gray-100 wpuf-border-gray-200 wpuf-text-gray-800': form.post_status === 'draft'
                     }"
                     class="wpuf-inline-flex wpuf-items-center wpuf-py-[2px] wpuf-px-[12px] wpuf-rounded-[5px] wpuf-text-xs wpuf-font-medium wpuf-border">
-                    {{ form.post_status === 'publish' ? 'Saved' :
+                    {{ form.post_status === 'publish' ? 'Published' :
                        form.post_status === 'pending' ? 'Pending Review' :
                        form.post_status === 'private' ? 'Private' : 'Draft' }}
                   </span>

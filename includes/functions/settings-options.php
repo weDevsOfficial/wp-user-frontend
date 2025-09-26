@@ -821,22 +821,53 @@ function wpuf_ai_api_key_field( $args ) {
     <input type="hidden" name="wpuf_ai[anthropic_api_key]" id="wpuf_ai_anthropic_key" value="<?php echo esc_attr($anthropic_key); ?>">
     <input type="hidden" name="wpuf_ai[google_api_key]" id="wpuf_ai_google_key" value="<?php echo esc_attr($google_key); ?>">
 
+    <?php
+    // Determine the correct API key link based on current provider
+    $api_key_links = [
+        'openai' => 'https://platform.openai.com/api-keys',
+        'anthropic' => 'https://console.anthropic.com/settings/keys',
+        'google' => 'https://aistudio.google.com/app/apikey'
+    ];
+    $current_link = $api_key_links[$current_provider] ?? $api_key_links['openai'];
+    ?>
+
     <p class="description">
         Enter your AI service API key. Need help finding your
-        <a href="#" class="wpuf-api-key-link"
+        <a href="<?php echo esc_url($current_link); ?>" class="wpuf-api-key-link"
            data-openai="https://platform.openai.com/api-keys"
            data-anthropic="https://console.anthropic.com/settings/keys"
            data-google="https://aistudio.google.com/app/apikey"
+           target="_blank"
            style="text-decoration: underline;">API Key?</a>
     </p>
 
     <script>
     jQuery(document).ready(function($) {
-        // Update API key field when provider changes
+        // Function to update API key link
+        function updateApiKeyLink(provider) {
+            var apiKeyLink = $('.wpuf-api-key-link');
+            if (apiKeyLink.length > 0) {
+                var providerLinks = {
+                    'openai': 'https://platform.openai.com/api-keys',
+                    'anthropic': 'https://console.anthropic.com/settings/keys',
+                    'google': 'https://aistudio.google.com/app/apikey'
+                };
+
+                var newLink = providerLinks[provider] || providerLinks['openai'];
+                apiKeyLink.prop('href', newLink);
+                apiKeyLink.attr('href', newLink);
+                console.log('[Settings] Updated API key link for', provider, 'to:', newLink);
+            }
+        }
+
+        // Update API key field and link when provider changes
         $('input[name="wpuf_ai[ai_provider]"]').on('change', function() {
             var provider = $(this).val();
             var apiKey = $('#wpuf_ai_' + provider + '_key').val();
             $('#wpuf_ai_api_key_field').val(apiKey);
+
+            // Update the API key link
+            updateApiKeyLink(provider);
         });
 
         // Save API key to hidden field when typing

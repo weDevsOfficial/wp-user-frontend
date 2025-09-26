@@ -226,11 +226,34 @@ jQuery(function($) {
     var allModelOptions = aiModelSelect.find('option').clone();
     aiModelSelect.data('all-options', allModelOptions);
 
-    // AI Provider change event listener to filter AI Models
+    // AI Provider change event listener to filter AI Models and update API key link
     $('input[name="wpuf_ai[ai_provider]"]').on('change', function() {
         var selectedProvider = $(this).val();
         var aiModelSelect = $('#wpuf_ai\\[ai_model\\]');
-        
+
+        // Update API Key help link based on selected provider
+        var apiKeyLink = $('.wpuf-api-key-link');
+        console.log('Provider changed to:', selectedProvider);
+        console.log('API key link element found:', apiKeyLink.length);
+
+        if (apiKeyLink.length > 0) {
+            var providerLinks = {
+                'openai': 'https://platform.openai.com/api-keys',
+                'anthropic': 'https://console.anthropic.com/settings/keys',
+                'google': 'https://aistudio.google.com/app/apikey'
+            };
+
+            var newLink = providerLinks[selectedProvider] || providerLinks['openai'];
+            console.log('Updating API key link to:', newLink);
+
+            // Force update the href attribute
+            apiKeyLink.prop('href', newLink);
+            apiKeyLink.attr('href', newLink);
+
+            // Also update the data attribute for consistency
+            apiKeyLink.attr('data-current-provider', selectedProvider);
+        }
+
         // Clear current options
         aiModelSelect.empty();
         
@@ -260,6 +283,9 @@ jQuery(function($) {
             }
         });
 
+        // Force update API key link again after model loading
+        updateApiKeyLink(selectedProvider);
+
         // Log for debugging
         console.log('Provider changed to:', selectedProvider, '- Models loaded:', modelsAdded);
         
@@ -284,6 +310,59 @@ jQuery(function($) {
 
     // API key management is now handled by the PHP callback function
 
+    // Function to update API key link
+    function updateApiKeyLink(provider) {
+        // Try multiple selectors in case the element has different classes
+        var apiKeyLink = $('.wpuf-api-key-link, a[data-openai][data-anthropic][data-google]');
+
+        if (apiKeyLink.length === 0) {
+            // If not found, wait a bit and try again
+            setTimeout(function() {
+                apiKeyLink = $('.wpuf-api-key-link, a[data-openai][data-anthropic][data-google]');
+                if (apiKeyLink.length > 0) {
+                    updateLink(apiKeyLink, provider);
+                }
+            }, 100);
+        } else {
+            updateLink(apiKeyLink, provider);
+        }
+
+        function updateLink(element, provider) {
+            var providerLinks = {
+                'openai': 'https://platform.openai.com/api-keys',
+                'anthropic': 'https://console.anthropic.com/settings/keys',
+                'google': 'https://aistudio.google.com/app/apikey'
+            };
+
+            var newLink = providerLinks[provider] || providerLinks['openai'];
+
+            // Multiple methods to ensure the link updates
+            element.each(function() {
+                var $this = $(this);
+                $this[0].href = newLink;  // Direct DOM manipulation
+                $this.prop('href', newLink);
+                $this.attr('href', newLink);
+                $this.removeAttr('href').attr('href', newLink); // Force attribute reset
+            });
+
+            console.log('Updated API key link for', provider, 'to:', newLink);
+        }
+    }
+
+    // Set initial API key link based on the pre-selected provider
+    var initialProvider = $('input[name="wpuf_ai[ai_provider]"]:checked').val();
+    if (initialProvider) {
+        updateApiKeyLink(initialProvider);
+    }
+
     // Trigger change event on page load to filter models based on pre-selected provider
     $('input[name="wpuf_ai[ai_provider]"]:checked').trigger('change');
+
+    // Also use delegated event handler for dynamically loaded elements
+    $(document).on('change', 'input[name="wpuf_ai[ai_provider]"]', function() {
+        var provider = $(this).val();
+        setTimeout(function() {
+            updateApiKeyLink(provider);
+        }, 50);
+    });
 });

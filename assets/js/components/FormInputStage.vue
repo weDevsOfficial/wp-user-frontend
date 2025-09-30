@@ -115,7 +115,7 @@ export default {
             formDescription: this.initialDescription,
             selectedPrompt: selectedPrompt,
             isGenerating: this.generating,
-            maxDescriptionLength: 500,
+            maxDescriptionLength: 300,
             promptTemplates: promptTemplates,
             // AI prompts for each template (not shown in UI - used for AI generation)
             promptAIInstructions: {
@@ -183,3 +183,11 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+textarea:focus {
+    outline: none !important;
+    border-color: #059669 !important;
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1) !important;
+}
+</style>

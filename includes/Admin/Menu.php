@@ -127,12 +127,10 @@ class Menu {
                 wp_enqueue_script( 'wpuf-forms-list' );
                 // Check AI configuration status
                 $ai_settings = get_option( 'wpuf_ai', [] );
-                $ai_provider = isset( $ai_settings['ai_provider'] ) ? sanitize_text_field( $ai_settings['ai_provider'] ) : '';
+                $ai_provider = isset( $ai_settings['ai_provider'] ) ? $ai_settings['ai_provider'] : '';
                 $ai_model    = isset( $ai_settings['ai_model'] ) ? $ai_settings['ai_model'] : '';
-
-                // All providers require API keys
-                $provider_key_field = $ai_provider ? sanitize_key( $ai_provider . '_api_key' ) : '';
-                $ai_api_key = !empty( $provider_key_field ) && isset( $ai_settings[$provider_key_field] ) ? $ai_settings[$provider_key_field] : '';
+                $provider_key_field = $ai_provider . '_api_key';
+                $ai_api_key = isset( $ai_settings[$provider_key_field] ) ? $ai_settings[$provider_key_field] : '';
                 $ai_configured = !empty( $ai_provider ) && !empty( $ai_api_key ) && !empty( $ai_model );
 
                 wp_localize_script('wpuf-forms-list', 'wpuf_forms_list',

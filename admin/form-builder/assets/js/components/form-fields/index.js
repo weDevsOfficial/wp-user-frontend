@@ -23,7 +23,7 @@ Vue.component('form-fields', {
     mounted: function () {
         // bind jquery ui draggable
         $(this.$el).find('.panel-form-field-buttons .button').draggable({
-            connectToSortable: '#form-preview-stage, #form-preview-stage .wpuf-form, .wpuf-column-inner-fields .wpuf-column-fields-sortable-list',
+            connectToSortable: '#form-preview-stage, #form-preview-stage .wpuf-form, .wpuf-column-inner-fields .wpuf-column-fields-sortable-list, .wpuf-repeat-fields-sortable-list',
             helper: 'clone',
             revert: 'invalid',
             cancel: '.button-faded',

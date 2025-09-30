@@ -94,7 +94,6 @@
 
         <p class="wpuf-text-sm wpuf-text-gray-500"><?php esc_html_e( 'Add the necessary field and build your form.', 'wp-user-frontend' ); ?></p>
     </div>
-
     <ul
         :class="['form-label-' + label_type]"
         class="wpuf-form sortable-list wpuf-py-8">
@@ -110,7 +109,7 @@
                     ]"
             class="wpuf-group wpuf-rounded-lg hover:!wpuf-bg-green-50 wpuf-transition wpuf-duration-150 wpuf-ease-out !wpuf-m-0 !wpuf-p-0">
             <div
-                v-if="field.input_type !== 'column_field'"
+                v-if="field.input_type !== 'column_field' && field.input_type !== 'repeat'"
                 :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-bg-green-50 wpuf-border-green-400' : 'wpuf-border-transparent'"
                 class="wpuf-flex wpuf-justify-between wpuf-p-6 wpuf-rounded-t-md wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed group-hover:wpuf-border-green-400 group-hover:wpuf-cursor-pointer !wpuf-pb-3">
                 <div v-if="!(is_full_width(field.template) || is_pro_preview(field.template))" class="wpuf-w-1/4 wpuf-flex wpuf-items-center">
@@ -145,7 +144,7 @@
                 </div>
             </div>
             <component
-                v-if="is_template_available(field) && field.input_type === 'column_field'"
+                v-if="is_template_available(field) && (field.input_type === 'column_field' || field.input_type === 'repeat')"
                 :is="'form-' + field.template"
                 :field="field">
             </component>

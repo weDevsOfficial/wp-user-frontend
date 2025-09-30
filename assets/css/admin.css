@@ -640,7 +640,8 @@ ul.wpuf-form .wpuf-field-columns .wpuf-column-field-inner-columns .wpuf-column .
   margin: 0;
   padding: 15px 0;
 }
-#form-preview-stage .field-items .wpuf-field-columns + div.control-buttons {
+#form-preview-stage .field-items .wpuf-field-columns + div.control-buttons,
+#form-preview-stage .field-items .wpuf-repeat-field + div.control-buttons {
   top: 10px;
   z-index: 10;
   height: auto;

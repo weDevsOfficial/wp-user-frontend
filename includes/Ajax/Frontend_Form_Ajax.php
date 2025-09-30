@@ -228,6 +228,21 @@ class Frontend_Form_Ajax {
         // if post_id is passed, we update the post
         if ( isset( $_POST['post_id'] ) ) {
             $post_id                   = intval( wp_unslash( $_POST['post_id'] ) );
+
+            // Security: Check if user has permission to edit this post (Broken Access Control fix)
+            $post_author = get_post_field( 'post_author', $post_id );
+            $current_user_id = get_current_user_id();
+
+            // Allow edit if: user is post author OR user has edit_others_posts capability
+            if ( $current_user_id != $post_author && ! current_user_can( 'edit_others_posts' ) ) {
+                wpuf()->ajax->send_error( __( 'You do not have permission to edit this post.', 'wp-user-frontend' ) );
+            }
+
+            // Verify the post exists
+            if ( ! get_post( $post_id ) ) {
+                wpuf()->ajax->send_error( __( 'Post not found.', 'wp-user-frontend' ) );
+            }
+
             $is_update                 = true;
             $postarr['ID']             = $post_id;
             $postarr['post_date']      = isset( $_POST['post_date'] ) ? sanitize_text_field( wp_unslash( $_POST['post_date'] ) ) : '';

@@ -77,7 +77,7 @@ class AI_Manager {
         wp_localize_script('wpuf-form-builder-mixins', 'wpufAIFormBuilder', [
             'restUrl' => rest_url('/'),
             'nonce' => wp_create_nonce('wp_rest'),
-            'provider' => $wpuf_ai['ai_provider'] ?? 'predefined',
+            'provider' => $wpuf_ai['ai_provider'] ?? 'openai',
             'temperature' => $wpuf_ai['temperature'] ?? 0.7,
             'maxTokens' => $wpuf_ai['max_tokens'] ?? 2000,
             'assetUrl' => WPUF_ASSET_URI,
@@ -96,7 +96,7 @@ class AI_Manager {
                 wp_localize_script($script_handle, 'wpufAIFormBuilder', [
                     'restUrl' => rest_url('/'),
                     'nonce' => wp_create_nonce('wp_rest'),
-                    'provider' => $wpuf_ai['ai_provider'] ?? 'predefined',
+                    'provider' => $wpuf_ai['ai_provider'] ?? 'openai',
                     'temperature' => $wpuf_ai['temperature'] ?? 0.7,
                     'maxTokens' => $wpuf_ai['max_tokens'] ?? 2000,
                     'assetUrl' => WPUF_ASSET_URI,
@@ -113,13 +113,22 @@ class AI_Manager {
     public function enqueue_admin_scripts($hook) {
         // Always localize for admin pages that might have Vue components
         $admin_scripts_to_try = ['wpuf-form-builder-mixins', 'wpuf-admin-script', 'wpuf-vue-admin'];
-        
+
+        // Fetch AI settings once and cast to array to avoid "array offset on bool" notices
+        $wpuf_ai = (array) get_option('wpuf_ai', []);
+
+        // Get provider with fallback
+        $provider = $wpuf_ai['ai_provider'] ?? 'openai';
+
+        // Check if API key is available
+        $hasApiKey = !empty($wpuf_ai['ai_api_key']);
+
         $localization_data = [
             'restUrl' => rest_url('/'),
             'nonce' => wp_create_nonce('wp_rest'),
             'ajaxUrl' => admin_url('admin-ajax.php'),
-            'provider' => get_option('wpuf_ai')['ai_provider'] ?? 'predefined',
-            'hasApiKey' => (get_option('wpuf_ai')['ai_provider'] ?? 'predefined') === 'predefined' || !empty(get_option('wpuf_ai')['ai_api_key']),
+            'provider' => $provider,
+            'hasApiKey' => $hasApiKey,
             'isProActive' => class_exists('WP_User_Frontend_Pro'),
             'strings' => [
                 'testConnection' => __('Test Connection', 'wp-user-frontend'),
@@ -143,22 +152,6 @@ class AI_Manager {
                 echo '</script>';
             });
         }
-    }
-
-    /**
-     * Check if current page is AI form builder page
-     *
-     * @return bool
-     */
-    private function is_ai_form_builder_page() {
-        // Check if we're on a page that uses AI form builder
-        if (is_admin()) {
-            return false;
-        }
-
-        // Add your conditions here for when AI form builder should be available
-        // For example, specific pages or shortcodes
-        return false; // Modify this based on your requirements
     }
 
     /**
@@ -197,7 +190,7 @@ class AI_Manager {
         $settings = get_option('wpuf_ai', []);
 
         return [
-            'provider'   => $settings['ai_provider'] ?? 'predefined',
+            'provider'   => $settings['ai_provider'] ?? 'openai',
             'model'      => $settings['ai_model'] ?? 'gpt-3.5-turbo',
             'temperature'=> isset($settings['temperature']) ? floatval($settings['temperature']) : 0.7,
             'max_tokens' => isset($settings['max_tokens']) ? intval($settings['max_tokens']) : 2000,
@@ -212,9 +205,9 @@ class AI_Manager {
      */
     public function is_ai_available() {
         $settings = $this->get_ai_settings();
-        
-        // Predefined provider doesn't require API key, others do
-        return $settings['provider'] === 'predefined' || $settings['has_api_key'];
+
+        // All providers require API key
+        return $settings['has_api_key'];
     }
 
     /**

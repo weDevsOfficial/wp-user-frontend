@@ -208,38 +208,54 @@ class Admin {
 
         // Get AI settings
         $ai_settings = get_option('wpuf_ai', []);
-        
+
         // Determine if we should expose API key status based on user capabilities
         $show_api_status = current_user_can( wpuf_admin_role() );
-        
-        wp_localize_script(
-            'wpuf-ai-form-builder', 'wpufAIFormBuilder',
-            [
-                'version'    => WPUF_VERSION,
-                'assetUrl'   => WPUF_ASSET_URI,
-                'siteUrl'    => site_url(),
-                'nonce'      => wp_create_nonce( 'wp_rest' ),
-                'rest_url'   => esc_url_raw( rest_url() ),
-                'restUrl'    => esc_url_raw( rest_url() ), // Some components use restUrl
-                'provider'   => $ai_settings['ai_provider'] ?? 'predefined',
-                'model'      => $ai_settings['ai_model'] ?? 'gpt-3.5-turbo',
-                'hasApiKey'  => $show_api_status ? (($ai_settings['ai_provider'] ?? 'predefined') === 'predefined' || !empty($ai_settings['ai_api_key'])) : null,
-                'isProActive' => class_exists( 'WP_User_Frontend_Pro' ),
-                'temperature' => floatval( $ai_settings['temperature'] ?? 0.7 ),
-                'maxTokens'  => intval( $ai_settings['max_tokens'] ?? 2000 ),
-                'i18n' => [
-                    'errorTitle' => __('Error', 'wp-user-frontend'),
-                    'errorMessage' => __('Something went wrong. Please try again.', 'wp-user-frontend'),
-                    'invalidRequest' => __('Invalid Request', 'wp-user-frontend'),
-                    'nonFormRequest' => __('I can only help with form creation. Try: "Create a contact form"', 'wp-user-frontend'),
-                    'proFieldWarning' => __('Pro Feature Required', 'wp-user-frontend'),
-                    'proFieldMessage' => __('This field type requires WP User Frontend Pro. You can continue without it or upgrade to Pro for full functionality.', 'wp-user-frontend'),
-                    'continueWithoutPro' => __('Continue without Pro', 'wp-user-frontend'),
-                    'upgradeToPro' => __('Upgrade to Pro', 'wp-user-frontend'),
-                    'tryAgain' => __('Try Again', 'wp-user-frontend'),
-                    'close' => __('Close', 'wp-user-frontend'),
-                ]
+
+        // Prepare localization data
+        $localize_data = [
+            'version'    => WPUF_VERSION,
+            'assetUrl'   => WPUF_ASSET_URI,
+            'siteUrl'    => site_url(),
+            'nonce'      => wp_create_nonce( 'wp_rest' ),
+            'rest_url'   => esc_url_raw( rest_url() ),
+            'restUrl'    => esc_url_raw( rest_url() ), // Some components use restUrl
+            'provider'   => $ai_settings['ai_provider'] ?? 'openai',
+            'model'      => $ai_settings['ai_model'] ?? 'gpt-3.5-turbo',
+            'hasApiKey'  => $show_api_status ? !empty($ai_settings['ai_api_key']) : null,
+            'isProActive' => class_exists( 'WP_User_Frontend_Pro' ),
+            'temperature' => floatval( $ai_settings['temperature'] ?? 0.7 ),
+            'maxTokens'  => intval( $ai_settings['max_tokens'] ?? 2000 ),
+            'i18n' => [
+                'errorTitle' => __('Error', 'wp-user-frontend'),
+                'errorMessage' => __('Something went wrong. Please try again.', 'wp-user-frontend'),
+                'invalidRequest' => __('Invalid Request', 'wp-user-frontend'),
+                'nonFormRequest' => __('I can only help with form creation. Try: "Create a contact form"', 'wp-user-frontend'),
+                'proFieldWarning' => __('Pro Feature Required', 'wp-user-frontend'),
+                'proFieldMessage' => __('This field type requires WP User Frontend Pro. You can continue without it or upgrade to Pro for full functionality.', 'wp-user-frontend'),
+                'continueWithoutPro' => __('Continue without Pro', 'wp-user-frontend'),
+                'upgradeToPro' => __('Upgrade to Pro', 'wp-user-frontend'),
+                'tryAgain' => __('Try Again', 'wp-user-frontend'),
+                'close' => __('Close', 'wp-user-frontend'),
             ]
+        ];
+
+        /**
+         * Filter the AI Form Builder localization data.
+         *
+         * Allows external code to modify or enrich the data passed to the frontend,
+         * including custom templates, stages, prompts, or form details.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array $localize_data Localization data array to be passed to wp_localize_script.
+         */
+        $localize_data = apply_filters( 'wpuf_ai_form_builder_localize_data', $localize_data );
+
+        wp_localize_script(
+            'wpuf-ai-form-builder',
+            'wpufAIFormBuilder',
+            $localize_data
         );
     }
 

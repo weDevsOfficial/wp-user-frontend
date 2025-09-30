@@ -29,7 +29,7 @@
 
             <!-- Prompt Templates -->
             <div class="wpuf-mb-6">
-                <p class="wpuf-text-gray-900 wpuf-mb-4 wpuf-text-lg">
+                <p class="wpuf-text-gray-900 wpuf-mb-4 wpuf-text-[16px]">
                     {{ __('Or create using our Prompts:', 'wp-user-frontend') }}
                 </p>
                 <div class="wpuf-flex wpuf-flex-wrap wpuf-gap-4">
@@ -89,21 +89,34 @@ export default {
         }
     },
     data() {
+        const promptTemplates = [
+            { id: 'paid_guest_post', label: this.__('Paid Guest Post', 'wp-user-frontend') },
+            { id: 'portfolio_submission', label: this.__('Portfolio Submission', 'wp-user-frontend') },
+            { id: 'classified_ads', label: this.__('Classified Ads', 'wp-user-frontend') },
+            { id: 'coupon_submission', label: this.__('Coupon Submission', 'wp-user-frontend') },
+            { id: 'real_estate', label: this.__('Real Estate Property Listing', 'wp-user-frontend') },
+            { id: 'news_press', label: this.__('News/Press Release Submission', 'wp-user-frontend') },
+            { id: 'product_listing', label: this.__('Product Listing', 'wp-user-frontend') },
+            { id: 'generic_form', label: this.__('Generic Form Builder', 'wp-user-frontend') }
+        ];
+
+        // Handle selectedPrompt initialization
+        let selectedPrompt = '';
+        if (typeof this.initialSelectedPrompt === 'object' && this.initialSelectedPrompt !== null) {
+            // Already an object, keep it as-is
+            selectedPrompt = this.initialSelectedPrompt;
+        } else if (typeof this.initialSelectedPrompt === 'string' && this.initialSelectedPrompt !== '') {
+            // It's a string ID, look up the corresponding template object
+            const foundTemplate = promptTemplates.find(tpl => tpl.id === this.initialSelectedPrompt);
+            selectedPrompt = foundTemplate || '';
+        }
+
         return {
             formDescription: this.initialDescription,
-            selectedPrompt: typeof this.initialSelectedPrompt === 'object' ? this.initialSelectedPrompt : '',
+            selectedPrompt: selectedPrompt,
             isGenerating: this.generating,
             maxDescriptionLength: 500,
-            promptTemplates: [
-                { id: 'paid_guest_post', label: this.__('Paid Guest Post', 'wp-user-frontend') },
-                { id: 'portfolio_submission', label: this.__('Portfolio Submission', 'wp-user-frontend') },
-                { id: 'classified_ads', label: this.__('Classified Ads', 'wp-user-frontend') },
-                { id: 'coupon_submission', label: this.__('Coupon Submission', 'wp-user-frontend') },
-                { id: 'real_estate', label: this.__('Real Estate Property Listing', 'wp-user-frontend') },
-                { id: 'news_press', label: this.__('News/Press Release Submission', 'wp-user-frontend') },
-                { id: 'product_listing', label: this.__('Product Listing', 'wp-user-frontend') },
-                { id: 'generic_form', label: this.__('Generic Form Builder', 'wp-user-frontend') }
-            ],
+            promptTemplates: promptTemplates,
             // AI prompts for each template (not shown in UI - used for AI generation)
             promptAIInstructions: {
                 paid_guest_post: 'Create a paid guest post submission form. Include fields for post title, content, featured image, categories, tags, and author bio. Add payment fields (pricing option, payment method, transaction ID). Mark required vs optional fields. Suggest appropriate field types like text, file upload, dropdown, and payment integration.',

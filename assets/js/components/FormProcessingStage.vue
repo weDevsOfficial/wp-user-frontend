@@ -136,7 +136,6 @@ export default {
             if (typeof window.__ === 'function') {
                 return window.__(text, domain);
             }
-            console.warn('Translation function not available:', text);
             return text;
         },
         
@@ -187,49 +186,24 @@ export default {
 
             // Step 4 waits for AI response
             setTimeout(() => {
-                this.waitForAICompletion();
+                this.currentStep = 4;
             }, this.stepDelay * 3);
         },
 
-        waitForAICompletion() {
-            // Check if AI response already received
-            if (this.aiResponseReceived) {
-                this.completeGeneration();
-                return;
-            }
-
-            // Set to step 4 and wait for AI
-            this.currentStep = 4;
-
-            // Check every 500ms for AI completion with timeout
-            const started = Date.now();
-            const checkInterval = setInterval(() => {
-                if (this.aiResponseReceived) {
-                    clearInterval(checkInterval);
-                    this.completeGeneration();
-                } else if (Date.now() - started >= this.aiWaitTimeoutMs) {
-                    clearInterval(checkInterval);
-                    this.isProcessing = false;
-                    this.$emit('generation-timeout');
-                }
-            }, 500);
-            this._intervals.push(checkInterval);
-        },
-
         completeGeneration() {
-            setTimeout(() => {
-                this.showConfetti = true;
-                this.confettiUrl = this.getConfettiUrl();
+            this.showConfetti = true;
+            this.confettiUrl = this.getConfettiUrl();
 
-                setTimeout(() => {
-                    this.$emit('generation-complete');
-                    this.isProcessing = false;
-                }, this.completeDelay);
-            }, this.confettiDelay);
+            setTimeout(() => {
+                this.$emit('generation-complete');
+                this.isProcessing = false;
+            }, this.completeDelay);
         },
 
         onAIResponseReceived() {
             this.aiResponseReceived = true;
+            // Complete generation immediately when AI response is received
+            this.completeGeneration();
         },
         
         getConfettiUrl() {

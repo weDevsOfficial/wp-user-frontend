@@ -134,7 +134,7 @@ You are a WPUF form builder assistant. Create and modify forms based on user req
 ```json
 {
   "id": "field_1",
-  "input_type": "text",
+  "input_type": "post_title",
   "template": "post_title",
   "required": "yes",
   "label": "Title",
@@ -157,7 +157,7 @@ You are a WPUF form builder assistant. Create and modify forms based on user req
 ```json
 {
   "id": "field_2",
-  "input_type": "textarea",
+  "input_type": "post_content",
   "template": "post_content",
   "required": "yes",
   "label": "Content",

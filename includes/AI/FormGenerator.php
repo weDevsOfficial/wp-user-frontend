@@ -2,11 +2,9 @@
 
 namespace WeDevs\Wpuf\AI;
 
-use WeDevs\Wpuf\Lib\AI\PredefinedProvider;
-
 /**
  * AI Form Generator Service
- * 
+ *
  * Main service class that handles form generation using different AI providers
  * Uses WordPress native HTTP API for lightweight implementation
  * 
@@ -42,14 +40,6 @@ class FormGenerator {
      * @var array
      */
     private $provider_configs = [
-        'predefined' => [
-            'name' => 'Predefined',
-            'endpoint' => null,
-            'models' => [
-                'builtin' => 'Built‑in templates'
-            ],
-            'requires_key' => false
-        ],
         'openai' => [
             'name' => 'OpenAI',
             'endpoint' => 'https://api.openai.com/v1/chat/completions',
@@ -119,11 +109,6 @@ class FormGenerator {
         // Get provider-specific API key
         $provider_key = $this->current_provider . '_api_key';
         $this->api_key = $settings[$provider_key] ?? '';
-
-        // If no API key is set, allow predefined; others will fail gracefully at call time
-        if (empty($this->api_key) && $this->current_provider !== 'predefined') {
-            // Will fail later with proper error message
-        }
     }
 
     /**
@@ -135,13 +120,19 @@ class FormGenerator {
      */
     public function generate_form($prompt, $options = []) {
         try {
-            // Store original provider and model for restoration
+            // Store original provider, model, and API key for restoration
             $original_provider = $this->current_provider;
             $original_model = $this->current_model;
-            
+            $original_api_key = $this->api_key;
+
             // Apply per-request overrides if provided
             if ( isset($options['provider']) && ! empty($options['provider']) ) {
                 $this->current_provider = $options['provider'];
+
+                // Update API key to match the new provider
+                $settings = get_option('wpuf_ai', []);
+                $provider_key = $this->current_provider . '_api_key';
+                $this->api_key = $settings[$provider_key] ?? '';
             }
             if ( isset($options['model']) && ! empty($options['model']) ) {
                 $this->current_model = $options['model'];
@@ -153,11 +144,6 @@ class FormGenerator {
 
             // Use manual AI provider implementation as fallback
             switch ($this->current_provider) {
-                case 'predefined':
-                    $provider = new PredefinedProvider();
-                    $session_id = $options['session_id'] ?? '';
-                    $result = $provider->generateForm($prompt, $session_id);
-                    break;
                 case 'openai':
                     $result = $this->generate_with_openai($prompt, $options);
                     break;
@@ -173,20 +159,22 @@ class FormGenerator {
                 default:
                     throw new \Exception('Unsupported AI provider: ' . $this->current_provider);
             }
-            
-            // Restore original provider and model
+
+            // Restore original provider, model, and API key
             $this->current_provider = $original_provider;
             $this->current_model = $original_model;
-            
+            $this->api_key = $original_api_key;
+
             return $result;
 
         } catch (\Exception $e) {
-            // Ensure restoration even on exception
+            // Ensure full restoration even on exception
             $this->current_provider = $original_provider ?? $this->current_provider;
             $this->current_model = $original_model ?? $this->current_model;
-            
+            $this->api_key = $original_api_key ?? $this->api_key;
+
             error_log('WPUF AI Form Generator Error: ' . $e->getMessage());
-            
+
             return [
                 'success' => false,
                 'error' => true,
@@ -1071,14 +1059,6 @@ class FormGenerator {
      * @return array Test result
      */
     public function test_connection() {
-        if ($this->current_provider === 'predefined') {
-            return [
-                'success' => true,
-                'provider' => 'predefined',
-                'message' => 'AI service is available'
-            ];
-        }
-
         try {
             $test_prompt = 'Generate a simple contact form with name and email fields.';
             $result = $this->generate_form($test_prompt, ['max_tokens' => 500]);

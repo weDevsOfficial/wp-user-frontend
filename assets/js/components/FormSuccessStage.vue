@@ -114,7 +114,7 @@
                                                     {{ message.acceptedStatus }}
                                                 </div>
                                                 <!-- Checkpoint restore button (checkpoints are auto-saved) -->
-                                                <div v-if="message.hasCheckpoint && message.checkpointSaved" class="wpuf-checkpoint-actions wpuf-mt-2 wpuf-flex wpuf-items-center wpuf-gap-2">
+                                                <div v-if="message.hasCheckpoint && message.checkpointSaved && index !== chatMessages.length - 1" class="wpuf-checkpoint-actions wpuf-mt-2 wpuf-flex wpuf-items-center wpuf-gap-2">
                                                     <button 
                                                         @click="restoreCheckpoint(index)" 
                                                         class="wpuf-btn-restore wpuf-bg-blue-500 wpuf-text-white wpuf-border-none wpuf-py-1 wpuf-px-2.5 wpuf-rounded wpuf-text-xs wpuf-cursor-pointer wpuf-transition-all hover:wpuf-bg-blue-600 wpuf-flex wpuf-items-center wpuf-gap-1.5"

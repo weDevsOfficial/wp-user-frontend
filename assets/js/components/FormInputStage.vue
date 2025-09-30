@@ -16,7 +16,7 @@
                 <div class="wpuf-relative">
                     <textarea 
                         v-model="formDescription"
-                        class="wpuf-w-full wpuf-px-4 wpuf-py-3 wpuf-border wpuf-border-gray-300 wpuf-rounded-lg wpuf-text-gray-500 wpuf-resize-none focus:wpuf-outline-none focus:wpuf-border-emerald-500 focus:wpuf-ring-2 focus:wpuf-ring-emerald-200 wpuf-transition-all"
+                        class="wpuf-w-full wpuf-px-4 wpuf-py-3 wpuf-border wpuf-border-gray-300 wpuf-rounded-lg wpuf-text-gray-500 wpuf-resize-none focus:wpuf-outline-none focus:wpuf-border-emerald-700 focus:wpuf-ring-2 focus:wpuf-ring-emerald-200 wpuf-transition-all"
                         rows="6"
                         :maxlength="maxDescriptionLength"
                         :placeholder="__('Describe your form', 'wp-user-frontend')"

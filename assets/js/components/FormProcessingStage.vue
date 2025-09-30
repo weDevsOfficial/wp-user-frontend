@@ -1,6 +1,6 @@
 <template>
-    <div class="wpuf-ai-form-wrapper wpuf-font-sans wpuf-w-full wpuf-h-screen wpuf-overflow-hidden wpuf-relative" style="background-color: #F5F5F5;">
-        <div class="wpuf-ai-form-content wpuf-w-full wpuf-max-w-[768px] wpuf-h-auto wpuf-min-h-[416px] wpuf-absolute wpuf-top-[275px] wpuf-left-1/2 wpuf-transform wpuf--translate-x-1/2 wpuf-mx-4 sm:wpuf-mx-auto wpuf-bg-white wpuf-border wpuf-border-slate-300 wpuf-rounded-lg wpuf-p-6 sm:wpuf-p-9">
+    <div class="wpuf-ai-form-wrapper wpuf-font-sans wpuf-w-full wpuf-h-screen wpuf-overflow-hidden wpuf-relative wpuf-flex wpuf-items-center wpuf-justify-center" style="background-color: #F5F5F5;">
+        <div class="wpuf-ai-form-content wpuf-w-full wpuf-max-w-[768px] wpuf-h-auto wpuf-min-h-[416px] wpuf-mx-4 sm:wpuf-mx-auto wpuf-bg-white wpuf-border wpuf-border-slate-300 wpuf-rounded-lg wpuf-p-6 sm:wpuf-p-9">
             <!-- Animated Icon -->
             <div class="wpuf-flex wpuf-justify-center wpuf-mb-5">
                 <div class="wpuf-relative">

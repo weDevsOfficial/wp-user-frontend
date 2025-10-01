@@ -101,7 +101,7 @@ class Pro_Upgrades {
         $new_sections = [];
         $inserted = false;
 
-        foreach ( $sections as $index => $section ) {
+        foreach ( $sections as $section ) {
             $new_sections[] = $section;
 
             // Insert after Custom Fields section

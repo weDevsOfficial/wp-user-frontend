@@ -697,21 +697,12 @@ function wpuf_settings_fields() {
                     'claude-3-sonnet-20240229' => 'Claude 3 Sonnet (Anthropic)',
                     'claude-3-haiku-20240307' => 'Claude 3 Haiku (Anthropic)',
 
-                    // Google Gemini 2.5 Series (Latest Generation)
-                    'gemini-2.5-pro' => 'Gemini 2.5 Pro - State-of-the-art (Google)',
-                    'gemini-2.5-flash' => 'Gemini 2.5 Flash - Best Price-Performance (Google)',
-                    'gemini-2.5-flash-lite' => 'Gemini 2.5 Flash Lite - Fast & Cheap (Google)',
-
-                    // Google Gemini 2.0 Series
-                    'gemini-2.0-flash' => 'Gemini 2.0 Flash - Next-Gen Features (Google)',
-                    'gemini-2.0-flash-001' => 'Gemini 2.0 Flash Stable (Google)',
-                    'gemini-2.0-flash-lite' => 'Gemini 2.0 Flash Lite - Cost Optimized (Google)',
-
-                    // Google Gemini 1.5 Legacy (Being Retired)
-                    'gemini-1.5-flash-latest' => 'Gemini 1.5 Flash Latest - Free Tier (Google)',
-                    'gemini-1.5-flash' => 'Gemini 1.5 Flash - Free Tier (Google)',
+                    // Google Gemini (Current Models)
+                    'gemini-2.0-flash-exp' => 'Gemini 2.0 Flash Experimental - Latest (Google)',
+                    'gemini-1.5-flash' => 'Gemini 1.5 Flash - Fast & Free (Google)',
                     'gemini-1.5-flash-8b' => 'Gemini 1.5 Flash 8B - Fast & Free (Google)',
-                    'gemini-1.5-pro' => 'Gemini 1.5 Pro (Google)',
+                    'gemini-1.5-pro' => 'Gemini 1.5 Pro - Most Capable (Google)',
+                    'gemini-1.0-pro' => 'Gemini 1.0 Pro - Stable (Google)',
 
                 ]),
                 'default' => 'gpt-3.5-turbo',

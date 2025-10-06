@@ -119,14 +119,14 @@ export default {
             promptTemplates: promptTemplates,
             // AI prompts for each template (not shown in UI - used for AI generation)
             promptAIInstructions: {
-                paid_guest_post: 'Create a paid guest post submission form. Include fields for post title, content, featured image, categories, tags, and author bio. Add payment fields (pricing option, payment method, transaction ID). Mark required vs optional fields. Suggest appropriate field types like text, file upload, dropdown, and payment integration.',
-                portfolio_submission: 'Create a portfolio submission form. Include fields for project title, description, project category, skills/technologies used, project link, and multiple image/video uploads. Add author/creator bio and contact information. Mark required vs optional fields. Suggest appropriate field types such as text input, textarea, file upload, and URL.',
-                classified_ads: 'Create a classified ad submission form. Include fields for ad title, description, category, price, location, contact information, and image upload. Add optional fields for condition (new/used), availability, and seller type (individual/business). Mark required vs optional fields and suggest the right field types (dropdown, text, number, file upload).',
-                coupon_submission: 'Create a coupon submission form. Include fields for coupon title, description, discount code, discount type (percentage/fixed), discount value, store/brand name, expiry date, and store logo. Add an optional field for affiliate link. Mark required vs optional fields and suggest field types like text input, date picker, dropdown, and file upload.',
-                real_estate: 'Create a real estate property listing form. Include fields for property title, description, price, property type (house, apartment, land), location (address, map), number of bedrooms, bathrooms, square footage, and image/video gallery. Add contact details for the agent/owner. Mark required vs optional fields. Suggest field types such as text, number, dropdown, file upload, and Google Maps/location.',
-                news_press: 'Create a news/press release submission form. Include fields for headline, news content, featured image, category, tags, organization/author name, author email, and press release date. Add an optional document upload (PDF/Word). Mark required vs optional fields and suggest field types like text, WYSIWYG editor, file upload, and date picker.',
-                product_listing: 'Create a product listing form with fields for product name, description, category, pricing, images, inventory details, shipping information, and seller contact details.',
-                generic_form: 'Create a [POST TYPE] submission form for a [USE CASE]. Include standard fields (Post Title, Post Content, Featured Image) and specialized fields relevant to this use case. Suggest appropriate field types (text area, dropdown, file upload, checkbox, radio, etc.). Indicate which fields should be required and which should be optional. The form should make it easy for users to submit posts from the frontend.'
+                paid_guest_post: 'Guest post form with featured image, category, author bio',
+                portfolio_submission: 'Portfolio form with project category, skills, link, images',
+                classified_ads: 'Classified ad form with category, price, location, images',
+                coupon_submission: 'Coupon form with discount code, value, brand, expiry, logo',
+                real_estate: 'Property form with price, type, location, bedrooms, bathrooms, images',
+                news_press: 'News form with featured image, category, author email, date',
+                product_listing: 'Product form with category, price, images, inventory',
+                generic_form: 'Form with custom fields'
             }
         };
     },

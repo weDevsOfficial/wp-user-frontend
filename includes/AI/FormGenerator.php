@@ -73,16 +73,11 @@ class FormGenerator {
             'name' => 'Google Gemini',
             'endpoint' => 'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent',
             'models' => [
-                'gemini-2.5-pro' => 'Gemini 2.5 Pro - State-of-the-art',
-                'gemini-2.5-flash' => 'Gemini 2.5 Flash - Best Price-Performance',
-                'gemini-2.5-flash-lite' => 'Gemini 2.5 Flash Lite - Fast & Cheap',
-                'gemini-2.0-flash' => 'Gemini 2.0 Flash - Next-Gen Features',
-                'gemini-2.0-flash-001' => 'Gemini 2.0 Flash Stable',
-                'gemini-2.0-flash-lite' => 'Gemini 2.0 Flash Lite - Cost Optimized',
-                'gemini-1.5-flash-latest' => 'Gemini 1.5 Flash Latest - Free Tier',
-                'gemini-1.5-flash' => 'Gemini 1.5 Flash - Free Tier',
+                'gemini-2.0-flash-exp' => 'Gemini 2.0 Flash Experimental - Latest',
+                'gemini-1.5-flash' => 'Gemini 1.5 Flash - Fast & Free',
                 'gemini-1.5-flash-8b' => 'Gemini 1.5 Flash 8B - Fast & Free',
-                'gemini-1.5-pro' => 'Gemini 1.5 Pro'
+                'gemini-1.5-pro' => 'Gemini 1.5 Pro - Most Capable',
+                'gemini-1.0-pro' => 'Gemini 1.0 Pro - Stable'
             ],
             'requires_key' => true
         ]
@@ -321,43 +316,7 @@ class FormGenerator {
             ],
             'google' => [
                 // All Google models support JSON mode and custom temperature
-                'gemini-2.5-pro' => [
-                    'token_param' => 'maxOutputTokens',
-                    'token_location' => 'generationConfig',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ],
-                'gemini-2.5-flash' => [
-                    'token_param' => 'maxOutputTokens',
-                    'token_location' => 'generationConfig',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ],
-                'gemini-2.5-flash-lite' => [
-                    'token_param' => 'maxOutputTokens',
-                    'token_location' => 'generationConfig',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ],
-                'gemini-2.0-flash' => [
-                    'token_param' => 'maxOutputTokens',
-                    'token_location' => 'generationConfig',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ],
-                'gemini-2.0-flash-001' => [
-                    'token_param' => 'maxOutputTokens',
-                    'token_location' => 'generationConfig',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ],
-                'gemini-2.0-flash-lite' => [
-                    'token_param' => 'maxOutputTokens',
-                    'token_location' => 'generationConfig',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ],
-                'gemini-1.5-flash-latest' => [
+                'gemini-2.0-flash-exp' => [
                     'token_param' => 'maxOutputTokens',
                     'token_location' => 'generationConfig',
                     'supports_json_mode' => true,
@@ -376,6 +335,12 @@ class FormGenerator {
                     'supports_custom_temperature' => true
                 ],
                 'gemini-1.5-pro' => [
+                    'token_param' => 'maxOutputTokens',
+                    'token_location' => 'generationConfig',
+                    'supports_json_mode' => true,
+                    'supports_custom_temperature' => true
+                ],
+                'gemini-1.0-pro' => [
                     'token_param' => 'maxOutputTokens',
                     'token_location' => 'generationConfig',
                     'supports_json_mode' => true,

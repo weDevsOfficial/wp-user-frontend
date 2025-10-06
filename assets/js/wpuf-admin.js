@@ -296,7 +296,7 @@ jQuery(function($) {
         var defaultModels = {
             'openai': 'gpt-4o-mini',
             'anthropic': 'claude-3-5-sonnet-20241022',
-            'google': 'gemini-1.5-flash-latest'
+            'google': 'gemini-1.5-flash'
         };
         
         // First try to keep the current DB value if it's valid for the selected provider

@@ -135,7 +135,6 @@ class Admin {
         wp_add_inline_script( 'wpuf-admin', '
             jQuery(document).ready(function($) {
                 function updateAPIKeyLink() {
-                    console.log("Updating API key link...");
                     var provider = $("[name=\'wpuf_ai[ai_provider]\']").val() || "openai";
                     var $link = $(".wpuf-api-key-link");
                     if ($link.length) {
@@ -148,7 +147,7 @@ class Admin {
                 $(document).on("change", "[name=\'wpuf_ai[ai_provider]\']", updateAPIKeyLink);
 
                 // Initial update when page loads
-                setTimeout(updateAPIKeyLink, 100);
+                updateAPIKeyLink();
             });
         ' );
     }

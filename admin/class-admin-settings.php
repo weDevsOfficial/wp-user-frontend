@@ -488,7 +488,10 @@ class WPUF_Admin_Settings {
         }
 
         wp_enqueue_style( 'wpuf-admin', WPUF_ASSET_URI . '/css/admin.css', false, WPUF_VERSION );
-        wp_enqueue_script( 'wpuf-admin-script', WPUF_ASSET_URI . '/js/wpuf-admin.js', [ 'jquery' ], WPUF_VERSION . '.' . time(), false );
+
+        $script_path = WPUF_ROOT . '/assets/js/wpuf-admin.js';
+        $script_version = file_exists( $script_path ) ? filemtime( $script_path ) : WPUF_VERSION;
+        wp_enqueue_script( 'wpuf-admin-script', WPUF_ASSET_URI . '/js/wpuf-admin.js', [ 'jquery' ], $script_version, false );
 
         wp_localize_script(
             'wpuf-admin-script', 'wpuf_admin_script', [

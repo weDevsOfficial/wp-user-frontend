@@ -186,10 +186,11 @@ export default {
             this.showConfetti = true;
             this.confettiUrl = this.getConfettiUrl();
 
-            setTimeout(() => {
+            const timeoutId = setTimeout(() => {
                 this.$emit('generation-complete');
                 this.isProcessing = false;
             }, this.completeDelay);
+            this._intervals.push(timeoutId);
         },
 
         onAIResponseReceived() {

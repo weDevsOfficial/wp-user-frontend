@@ -851,11 +851,24 @@ function wpuf_ai_api_key_field( $args ) {
             }
         }
 
+        // Function to update visible input's name attribute
+        function updateVisibleInputName(provider) {
+            var $visibleInput = $('#wpuf_ai_api_key_field');
+            $visibleInput.attr('name', 'wpuf_ai[' + provider + '_api_key]');
+        }
+
+        // Set the initial name on page load
+        var initialProvider = $('input[name="wpuf_ai[ai_provider]"]:checked').val() || 'openai';
+        updateVisibleInputName(initialProvider);
+
         // Update API key field and link when provider changes
         $('input[name="wpuf_ai[ai_provider]"]').on('change', function() {
             var provider = $(this).val();
             var apiKey = $('#wpuf_ai_' + provider + '_key').val();
             $('#wpuf_ai_api_key_field').val(apiKey);
+
+            // Update the visible input's name attribute to match the new provider
+            updateVisibleInputName(provider);
 
             // Update the API key link
             updateApiKeyLink(provider);

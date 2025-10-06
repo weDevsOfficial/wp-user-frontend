@@ -81,6 +81,13 @@ class RestController {
                     'type' => 'object',
                     'default' => []
                 ],
+                'form_type' => [
+                    'required' => false,
+                    'type' => 'string',
+                    'default' => 'post',
+                    'enum' => ['post', 'profile', 'registration'],
+                    'sanitize_callback' => 'sanitize_text_field'
+                ],
                 'provider' => [
                     'required' => false,
                     'type' => 'string',
@@ -164,10 +171,16 @@ class RestController {
                     'type' => 'object',
                     'properties' => [
                         'form_title' => ['type' => 'string'],
-                        'form_description' => ['type' => 'string'], 
+                        'form_description' => ['type' => 'string'],
                         'wpuf_fields' => ['type' => 'array'],
                         'form_settings' => ['type' => 'object']
                     ]
+                ],
+                'form_type' => [
+                    'required' => false,
+                    'type' => 'string',
+                    'default' => 'post',
+                    'enum' => ['post', 'profile', 'registration'],
                 ]
             ]
         ]);
@@ -223,6 +236,7 @@ class RestController {
         $prompt = $request->get_param('prompt');
         $session_id = $request->get_param('session_id');
         $conversation_context = $request->get_param('conversation_context') ?? [];
+        $form_type = $request->get_param('form_type') ?? 'post';
         $provider = $request->get_param('provider');
         $temperature = $request->get_param('temperature');
         $max_tokens = $request->get_param('max_tokens');
@@ -242,6 +256,7 @@ class RestController {
             $options = [
                 'session_id' => $session_id,
                 'conversation_context' => $conversation_context,
+                'form_type' => $form_type,
                 'provider' => $provider,
                 'temperature' => $temperature,
                 'max_tokens' => $max_tokens
@@ -543,6 +558,7 @@ class RestController {
     public function create_form_from_ai(WP_REST_Request $request) {
         try {
             $form_data = $request->get_param('form_data');
+            $form_type = $request->get_param('form_type') ?? 'post'; // Get form type, default to 'post'
 
             // Validate required fields
             if (empty($form_data['form_title']) || empty($form_data['wpuf_fields'])) {
@@ -571,12 +587,15 @@ class RestController {
                 );
             }
 
+            // Determine post type based on form type
+            $post_type = ($form_type === 'profile' || $form_type === 'registration') ? 'wpuf_profile' : 'wpuf_forms';
+
             // Create the form post
             $form_post = array(
                 'post_title' => sanitize_text_field($form_data['form_title']),
                 'post_content' => sanitize_textarea_field($form_data['form_description'] ?? ''),
                 'post_status' => 'publish',
-                'post_type' => 'wpuf_forms',
+                'post_type' => $post_type,
                 'post_author' => get_current_user_id()
             );
 
@@ -669,10 +688,16 @@ class RestController {
             // Log the form creation
             $this->log_form_creation($form_id, $form_data);
 
+            // Determine the correct edit URL based on form type
+            $page = ($form_type === 'profile' || $form_type === 'registration') ? 'wpuf-profile-forms' : 'wpuf-post-forms';
+            $list_page = ($form_type === 'profile' || $form_type === 'registration') ? 'wpuf-profile-forms' : 'wpuf-post-forms';
+
             return new WP_REST_Response([
                 'success' => true,
                 'form_id' => $form_id,
-                'edit_url' => admin_url("admin.php?page=wpuf-post-forms&action=edit&id={$form_id}"),
+                'form_type' => $form_type,
+                'edit_url' => admin_url("admin.php?page={$page}&action=edit&id={$form_id}"),
+                'list_url' => admin_url("admin.php?page={$list_page}"),
                 'message' => __('Form created successfully', 'wp-user-frontend')
             ], 201);
 

@@ -418,7 +418,8 @@ class FormGenerator {
      */
     private function generate_with_openai($prompt, $options = []) {
         $context = $options['conversation_context'] ?? [];
-        $system_prompt = $this->get_system_prompt($context);
+        $form_type = $options['form_type'] ?? 'post';
+        $system_prompt = $this->get_system_prompt($context, $form_type);
 
         // Get model-specific configuration
         $model_config = $this->get_model_config('openai', $this->current_model);
@@ -570,7 +571,8 @@ class FormGenerator {
      */
     private function generate_with_anthropic($prompt, $options = []) {
         $context = $options['conversation_context'] ?? [];
-        $system_prompt = $this->get_system_prompt($context);
+        $form_type = $options['form_type'] ?? 'post';
+        $system_prompt = $this->get_system_prompt($context, $form_type);
 
         // Get model-specific configuration
         $model_config = $this->get_model_config('anthropic', $this->current_model);
@@ -688,7 +690,8 @@ class FormGenerator {
      */
     private function generate_with_google($prompt, $options = []) {
         $context = $options['conversation_context'] ?? [];
-        $system_prompt = $this->get_system_prompt($context);
+        $form_type = $options['form_type'] ?? 'post';
+        $system_prompt = $this->get_system_prompt($context, $form_type);
         
         // Get model-specific configuration
         $model_config = $this->get_model_config('google', $this->current_model);
@@ -805,15 +808,23 @@ class FormGenerator {
      * @since WPUF_SINCE
      *
      * @param array $context Conversation context
+     * @param string $form_type Form type ('post' or 'profile')
      * @return string System prompt
      */
-    private function get_system_prompt($context = []) {
-        // Use the compact prompt file to avoid truncation
-        $prompt_file = plugin_dir_path(dirname(__FILE__)) . 'AI/wpuf-ai-system-prompt-compact.md';
+    private function get_system_prompt($context = [], $form_type = 'post') {
+        // Determine which prompt file to use based on form type
+        if ($form_type === 'profile' || $form_type === 'registration') {
+            // Registration/Profile form prompt
+            $prompt_file = plugin_dir_path(dirname(__FILE__)) . 'AI/wpuf-ai-system-prompt-registration.md';
+        } else {
+            // Post form prompt (default)
+            // Use the compact prompt file to avoid truncation
+            $prompt_file = plugin_dir_path(dirname(__FILE__)) . 'AI/wpuf-ai-system-prompt-compact.md';
 
-        // Fallback to optimized version if compact doesn't exist
-        if (!file_exists($prompt_file)) {
-            $prompt_file = plugin_dir_path(dirname(__FILE__)) . 'AI/wpuf-ai-system-prompt-optimized.md';
+            // Fallback to optimized version if compact doesn't exist
+            if (!file_exists($prompt_file)) {
+                $prompt_file = plugin_dir_path(dirname(__FILE__)) . 'AI/wpuf-ai-system-prompt-optimized.md';
+            }
         }
 
         // Check if file exists

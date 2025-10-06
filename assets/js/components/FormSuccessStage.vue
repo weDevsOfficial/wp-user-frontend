@@ -2015,6 +2015,7 @@ Remember: ONLY provide form-related responses. Do not engage with off-topic requ
                 prompt: strictPrompt,
                 session_id: this.sessionId,
                 conversation_context: conversationContext,
+                form_type: config.formType || 'post', // Pass form type to API
                 provider: config.provider || 'google'
                 // Note: temperature and max_tokens are now handled by backend based on model configuration
             };

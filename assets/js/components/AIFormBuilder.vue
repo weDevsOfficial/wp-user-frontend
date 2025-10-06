@@ -125,6 +125,7 @@ export default {
                     body: JSON.stringify({
                         prompt: prompt,
                         session_id: this.getSessionId(),
+                        form_type: config.formType || 'post', // Pass form type to API
                         provider: config.provider || 'openai'
                         // Note: temperature and max_tokens are now handled by backend based on model configuration
                     })
@@ -613,12 +614,13 @@ export default {
                 const config = window.wpufAIFormBuilder || {};
                 const restUrl = config.restUrl || (window.location.origin + '/wp-json/');
                 const nonce = config.nonce || '';
+                const formType = config.formType || 'post';
 
                 console.log('Creating and applying form...');
-                
+
                 // Always use wpuf_fields from generated data - they already have correct WPUF format
                 const wpufFields = this.generatedFormData.wpuf_fields || [];
-                
+
                 // Prepare form data with wpuf_fields
                 const formDataToSend = {
                     ...this.generatedFormData,
@@ -633,7 +635,8 @@ export default {
                         'X-WP-Nonce': nonce
                     },
                     body: JSON.stringify({
-                        form_data: formDataToSend
+                        form_data: formDataToSend,
+                        form_type: formType
                     })
                 });
 
@@ -648,8 +651,8 @@ export default {
 
                 if (result.success && result.form_id) {
                     console.log('Form created and applied successfully with ID:', result.form_id);
-                    // Redirect to forms list to show the new form
-                    window.location.href = 'admin.php?page=wpuf-post-forms';
+                    // Redirect to forms list based on form type
+                    window.location.href = result.list_url || 'admin.php?page=wpuf-post-forms';
                 } else {
                     throw new Error(result.message || 'Failed to create form');
                 }
@@ -677,6 +680,7 @@ export default {
                 const config = window.wpufAIFormBuilder || {};
                 const restUrl = config.restUrl || (window.location.origin + '/wp-json/');
                 const nonce = config.nonce || '';
+                const formType = config.formType || 'post';
 
                 // Get formId and fields from the event data
                 const formIdToUse = eventData.formId || this.formId;
@@ -691,8 +695,9 @@ export default {
                 };
 
                 if (formIdToUse) {
-                    // Form exists, just redirect to edit
-                    window.location.href = `admin.php?page=wpuf-post-forms&action=edit&id=${formIdToUse}`;
+                    // Form exists, just redirect to edit based on form type
+                    const page = (formType === 'profile' || formType === 'registration') ? 'wpuf-profile-forms' : 'wpuf-post-forms';
+                    window.location.href = `admin.php?page=${page}&action=edit&id=${formIdToUse}`;
                     return;
                 }
 
@@ -706,7 +711,8 @@ export default {
                         'X-WP-Nonce': nonce
                     },
                     body: JSON.stringify({
-                        form_data: currentFormData
+                        form_data: currentFormData,
+                        form_type: formType
                     })
                 });
 

@@ -31,7 +31,9 @@ $form_title = isset( $_GET['form_title'] ) && ! empty( $_GET['form_title'] ) ? s
 
 // Note: Scripts are already enqueued in the handler, so we don't need to enqueue them here
 
-// Pass template data to the enqueued scripts (register filter before action is fired)
+// Pass template data to the enqueued scripts
+// Note: The wpuf_load_ai_form_builder_page action is already called by AI_Form_Handler
+// We just need to add additional data here via the filter
 add_filter( 'wpuf_ai_form_builder_localize_data', function( $data ) use ( $stage, $description, $prompt, $form_id, $form_title ) {
     return array_merge( $data, [
         'stage'        => $stage,
@@ -41,10 +43,7 @@ add_filter( 'wpuf_ai_form_builder_localize_data', function( $data ) use ( $stage
         'formTitle'    => $form_title,
         'confettiUrl'  => WPUF_ASSET_URI . '/images/confetti_transparent.gif',
     ]);
-});
-
-// Trigger action to allow other scripts to be enqueued and localized
-do_action( 'wpuf_load_ai_form_builder_page' );
+}, 5); // Priority 5 to merge after the main localization
 ?>
 
 <style>

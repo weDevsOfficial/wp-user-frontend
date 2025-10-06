@@ -357,8 +357,8 @@ const openAIFormBuilder = (event) => {
     return;
   }
 
-  // Use the correct action as per Admin.php and same nonce as modal templates
-  const action = 'post_form_template';
+  // Use the correct action based on form type
+  const action = formType === 'profile' ? 'wpuf_profile_form_template' : 'post_form_template';
 
   // Navigate to AI form creation with proper parameters (same as modal-v4.2.php)
   const params = new URLSearchParams({

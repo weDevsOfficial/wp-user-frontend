@@ -89,15 +89,56 @@ export default {
         }
     },
     data() {
-        const promptTemplates = [
-            { id: 'paid_guest_post', label: this.__('Paid Guest Post', 'wp-user-frontend') },
-            { id: 'portfolio_submission', label: this.__('Portfolio Submission', 'wp-user-frontend') },
-            { id: 'classified_ads', label: this.__('Classified Ads', 'wp-user-frontend') },
-            { id: 'coupon_submission', label: this.__('Coupon Submission', 'wp-user-frontend') },
-            { id: 'real_estate', label: this.__('Real Estate Property Listing', 'wp-user-frontend') },
-            { id: 'news_press', label: this.__('News/Press Release Submission', 'wp-user-frontend') },
-            { id: 'generic_form', label: this.__('Generic Form Builder', 'wp-user-frontend') }
-        ];
+        // Get form type from wpufAIFormBuilder.formType (localized from PHP)
+        const formType = (window.wpufAIFormBuilder && window.wpufAIFormBuilder.formType) || 'post';
+
+        // Debug: Log the form type
+        console.log('🔍 FormInputStage - Form Type:', formType);
+        console.log('🔍 FormInputStage - wpufAIFormBuilder:', window.wpufAIFormBuilder);
+
+        // Define prompts based on form type
+        let promptTemplates = [];
+        let promptAIInstructions = {};
+
+        if (formType === 'profile' || formType === 'registration') {
+            // Registration/Profile form prompts
+            promptTemplates = [
+                { id: 'basic_registration', label: this.__('Basic User Registration', 'wp-user-frontend') },
+                { id: 'member_directory', label: this.__('Member Directory Profile', 'wp-user-frontend') },
+                { id: 'job_applicant', label: this.__('Job Applicant Registration', 'wp-user-frontend') },
+                { id: 'event_registration', label: this.__('Event Registration', 'wp-user-frontend') },
+                { id: 'newsletter_signup', label: this.__('Newsletter Signup', 'wp-user-frontend') }
+            ];
+
+            promptAIInstructions = {
+                basic_registration: 'User registration with email, first name, last name, username, password',
+                member_directory: 'Member profile with name, email, bio, social links, profile photo',
+                job_applicant: 'Job application with name, email, phone, resume upload, cover letter',
+                event_registration: 'Event registration with name, email, phone, dietary preferences, t-shirt size',
+                newsletter_signup: 'Newsletter signup with email and first name only'
+            };
+        } else {
+            // Post form prompts (default)
+            promptTemplates = [
+                { id: 'paid_guest_post', label: this.__('Paid Guest Post', 'wp-user-frontend') },
+                { id: 'portfolio_submission', label: this.__('Portfolio Submission', 'wp-user-frontend') },
+                { id: 'classified_ads', label: this.__('Classified Ads', 'wp-user-frontend') },
+                { id: 'coupon_submission', label: this.__('Coupon Submission', 'wp-user-frontend') },
+                { id: 'real_estate', label: this.__('Real Estate Property Listing', 'wp-user-frontend') },
+                { id: 'news_press', label: this.__('News/Press Release Submission', 'wp-user-frontend') },
+                { id: 'generic_form', label: this.__('Generic Form Builder', 'wp-user-frontend') }
+            ];
+
+            promptAIInstructions = {
+                paid_guest_post: 'Guest post form with image, category, bio',
+                portfolio_submission: 'Portfolio form with category, skills, link, images',
+                classified_ads: 'Classified ad form with category, price, location, images',
+                coupon_submission: 'Coupon form with code, value, brand, date, logo',
+                real_estate: 'Property form with price, type, bedrooms, bathrooms, images',
+                news_press: 'News form with image, category, email, date',
+                generic_form: 'Simple form'
+            };
+        }
 
         // Handle selectedPrompt initialization
         let selectedPrompt = '';
@@ -115,17 +156,9 @@ export default {
             selectedPrompt: selectedPrompt,
             isGenerating: this.generating,
             maxDescriptionLength: 300,
+            formType: formType,
             promptTemplates: promptTemplates,
-            // AI prompts for each template (not shown in UI - used for AI generation)
-            promptAIInstructions: {
-                paid_guest_post: 'Guest post form with image, category, bio',
-                portfolio_submission: 'Portfolio form with category, skills, link, images',
-                classified_ads: 'Classified ad form with category, price, location, images',
-                coupon_submission: 'Coupon form with code, value, brand, date, logo',
-                real_estate: 'Property form with price, type, bedrooms, bathrooms, images',
-                news_press: 'News form with image, category, email, date',
-                generic_form: 'Simple form'
-            }
+            promptAIInstructions: promptAIInstructions
         };
     },
     watch: {

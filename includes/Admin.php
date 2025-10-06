@@ -199,9 +199,13 @@ class Admin {
      *
      * @since 4.0.0
      *
+     * @param string $form_type Form type ('post' or 'profile')
      * @return void
      */
-    public function enqueue_ai_form_builder_scripts() {
+    public function enqueue_ai_form_builder_scripts( $form_type = 'post' ) {
+        // Debug: Log form type
+        error_log( '🔍 WPUF AI Form Builder - Form Type: ' . $form_type );
+
         wp_enqueue_script( 'wpuf-ai-form-builder' );
         wp_enqueue_style( 'wpuf-ai-form-builder' );
 
@@ -219,6 +223,7 @@ class Admin {
             'nonce'      => wp_create_nonce( 'wp_rest' ),
             'rest_url'   => esc_url_raw( rest_url() ),
             'restUrl'    => esc_url_raw( rest_url() ), // Some components use restUrl
+            'formType'   => $form_type, // Pass form type to frontend
             'provider'   => $ai_settings['ai_provider'] ?? 'openai',
             'model'      => $ai_settings['ai_model'] ?? 'gpt-3.5-turbo',
             'hasApiKey'  => $show_api_status ? !empty($ai_settings['ai_api_key']) : null,
@@ -256,6 +261,11 @@ class Admin {
             'wpufAIFormBuilder',
             $localize_data
         );
+
+        // Debug: Output form type as HTML comment for verification
+        add_action( 'admin_footer', function() use ( $form_type ) {
+            echo "\n<!-- WPUF AI Form Builder Debug: formType = " . esc_html( $form_type ) . " -->\n";
+        } );
     }
 
     /**

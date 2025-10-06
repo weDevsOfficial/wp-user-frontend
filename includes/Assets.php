@@ -302,6 +302,7 @@ class Assets {
             'ai-form-builder'          => [
                 'src'       => WPUF_ASSET_URI . '/js/ai-form-builder.min.js',
                 'in_footer' => true,
+                'version'   => time(), // Cache busting - force browser to reload
             ],
             'timepicker'               => [
                 'src'       => WPUF_ASSET_URI . '/js/jquery-ui-timepicker-addon.js',

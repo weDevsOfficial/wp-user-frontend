@@ -119,14 +119,14 @@ export default {
             promptTemplates: promptTemplates,
             // AI prompts for each template (not shown in UI - used for AI generation)
             promptAIInstructions: {
-                paid_guest_post: 'Guest post form with featured image, category, author bio',
-                portfolio_submission: 'Portfolio form with project category, skills, link, images',
+                paid_guest_post: 'Guest post form with image, category, bio',
+                portfolio_submission: 'Portfolio form with category, skills, link, images',
                 classified_ads: 'Classified ad form with category, price, location, images',
-                coupon_submission: 'Coupon form with discount code, value, brand, expiry, logo',
-                real_estate: 'Property form with price, type, location, bedrooms, bathrooms, images',
-                news_press: 'News form with featured image, category, author email, date',
-                product_listing: 'Product form with category, price, images, inventory',
-                generic_form: 'Form with custom fields'
+                coupon_submission: 'Coupon form with code, value, brand, date, logo',
+                real_estate: 'Property form with price, type, bedrooms, bathrooms, images',
+                news_press: 'News form with image, category, email, date',
+                product_listing: 'Product form with category, price, images',
+                generic_form: 'Simple form'
             }
         };
     },

@@ -1385,18 +1385,99 @@ export default {
         
         /**
          * Check if user message contains modification requests
+         * Uses a generalized approach based on linguistic patterns and intent
          */
         isModificationRequest(message) {
-            const modificationKeywords = [
+            if (!message || typeof message !== 'string') {
+                return false;
+            }
+
+            const messageLower = message.toLowerCase().trim();
+
+            // First check: If it's clearly a question, it's likely NOT a modification request
+            // Questions typically ask about the form, not request changes
+            const isLikelyQuestion = message.includes('?') ||
+                /^(what|when|where|why|who|how|is|are|do|does|can)\s+/i.test(messageLower);
+
+            // 1. Action verbs that indicate intent to change/modify
+            const actionVerbs = [
                 'add', 'remove', 'delete', 'change', 'modify', 'update', 'edit',
-                'replace', 'include', 'exclude', 'insert', 'new field',
-                'another field', 'more fields', 'different', 'custom',
-                'need to add', 'can you add', 'please add', 'also add',
-                'make it', 'instead of', 'rather than', 'without the'
+                'replace', 'insert', 'create', 'enable', 'disable', 'toggle',
+                'rename', 'reorder', 'adjust', 'configure', 'customize'
             ];
 
-            const messageLower = message.toLowerCase();
-            return modificationKeywords.some(keyword => messageLower.includes(keyword));
+            // 2. Imperative patterns: "make X Y" (make all required, make field optional, etc.)
+            const imperativePatterns = [
+                /\bmake\s+(\w+\s+)?(\w+\s+)?(field|fields|form|all|everything|it|them|this|that|these|those)/i,
+                /\bset\s+(\w+\s+)?(field|fields|all)\s+(to|as)/i,
+                /\bturn\s+(\w+\s+)?(field|fields)\s+(into|to)/i,
+                /\bconvert\s+(\w+\s+)?(field|fields)\s+(to|into)/i
+            ];
+
+            // 3. Request patterns: "can you", "please", "I want", "I need"
+            const requestPatterns = [
+                /\b(can|could|would|will)\s+you\s+(add|remove|change|modify|update|make|set|create|delete)/i,
+                /\bplease\s+(add|remove|change|modify|update|make|set|create|delete)/i,
+                /\bi\s+(want|need|would like)\s+to\s+(add|remove|change|modify|update|make|set|create|delete)/i,
+                /\bi\s+(want|need|would like)\s+(a|an|the|some|more|another|new)\s+(field|option|column)/i
+            ];
+
+            // 4. Modification intent patterns (action + field property)
+            // Only match when there's clear intent to change something
+            const modificationIntentPatterns = [
+                /\b(make|set|change|turn|convert)\s+.*(required|optional|mandatory|mendatory|hidden|visible)/i,
+                /\b(required|optional|mandatory|mendatory)\s+(field|fields|all)/i,
+                /\ball\s+(field|fields).*\b(required|optional|mandatory|mendatory)/i
+            ];
+
+            // 5. Comparative/replacement patterns
+            const replacementPatterns = [
+                /\binstead\s+of/i,
+                /\brather\s+than/i,
+                /\bwithout\s+(the|a|an)\s+(field|option)/i,
+                /\breplace\s+.+\s+with/i,
+                /\bswap\s+.+\s+(for|with)/i
+            ];
+
+            // 6. Quantifier patterns (new, more, another, different, etc.)
+            const quantifierPatterns = [
+                /\b(new|more|another|additional|extra|different|custom)\s+(field|option|choice|column|section)/i,
+                /\b(fewer|less|no)\s+(field|fields|option|options)/i,
+                /\bwithout\s+(the|a|an)\s+(field|option)/i
+            ];
+
+            // Check if message matches any modification pattern
+
+            // Check action verbs (but not if it's a question)
+            const hasActionVerb = !isLikelyQuestion && actionVerbs.some(verb => {
+                const regex = new RegExp(`\\b${verb}\\b`, 'i');
+                return regex.test(messageLower);
+            });
+
+            // Check imperative patterns
+            const hasImperativePattern = imperativePatterns.some(pattern => pattern.test(message));
+
+            // Check request patterns
+            const hasRequestPattern = requestPatterns.some(pattern => pattern.test(message));
+
+            // Check modification intent patterns (action + property)
+            const hasModificationIntent = modificationIntentPatterns.some(pattern => pattern.test(message));
+
+            // Check replacement patterns
+            const hasReplacementPattern = replacementPatterns.some(pattern => pattern.test(message));
+
+            // Check quantifier patterns
+            const hasQuantifierPattern = quantifierPatterns.some(pattern => pattern.test(message));
+
+            // It's a modification request if:
+            // - Has imperative pattern (strongest signal), OR
+            // - Has request pattern (explicit ask), OR
+            // - Has modification intent (action + property combo), OR
+            // - Has action verb AND (replacement OR quantifier pattern), OR
+            // - Has replacement or quantifier pattern alone
+            return hasImperativePattern || hasRequestPattern || hasModificationIntent ||
+                   (hasActionVerb && (hasReplacementPattern || hasQuantifierPattern)) ||
+                   hasReplacementPattern || hasQuantifierPattern;
         },
 
         /**

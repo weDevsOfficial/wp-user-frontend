@@ -96,7 +96,6 @@ export default {
             { id: 'coupon_submission', label: this.__('Coupon Submission', 'wp-user-frontend') },
             { id: 'real_estate', label: this.__('Real Estate Property Listing', 'wp-user-frontend') },
             { id: 'news_press', label: this.__('News/Press Release Submission', 'wp-user-frontend') },
-            { id: 'product_listing', label: this.__('Product Listing', 'wp-user-frontend') },
             { id: 'generic_form', label: this.__('Generic Form Builder', 'wp-user-frontend') }
         ];
 
@@ -125,7 +124,6 @@ export default {
                 coupon_submission: 'Coupon form with code, value, brand, date, logo',
                 real_estate: 'Property form with price, type, bedrooms, bathrooms, images',
                 news_press: 'News form with image, category, email, date',
-                product_listing: 'Product form with category, price, images',
                 generic_form: 'Simple form'
             }
         };

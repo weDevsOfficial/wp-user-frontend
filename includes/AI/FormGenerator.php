@@ -85,6 +85,8 @@ class FormGenerator {
 
     /**
      * Constructor
+     *
+     * @since WPUF_SINCE
      */
     public function __construct() {
         $this->load_settings();
@@ -92,6 +94,8 @@ class FormGenerator {
 
     /**
      * Load settings from WordPress options
+     *
+     * @since WPUF_SINCE
      */
     private function load_settings() {
         // Get settings from WPUF settings system
@@ -108,6 +112,8 @@ class FormGenerator {
 
     /**
      * Generate form based on prompt
+     *
+     * @since WPUF_SINCE
      *
      * @param string $prompt User prompt
      * @param array $options Additional options including conversation context
@@ -168,8 +174,6 @@ class FormGenerator {
             $this->current_model = $original_model ?? $this->current_model;
             $this->api_key = $original_api_key ?? $this->api_key;
 
-            error_log('WPUF AI Form Generator Error: ' . $e->getMessage());
-
             return [
                 'success' => false,
                 'error' => true,
@@ -181,14 +185,16 @@ class FormGenerator {
 
     /**
      * Get model-specific parameter configuration
-     * 
+     *
      * This centralizes all model-specific parameter mappings for easy maintenance.
      * Different AI providers and models have different parameter requirements:
-     * 
+     *
      * - Token parameters: 'max_tokens' vs 'max_completion_tokens' vs 'maxOutputTokens'
      * - Temperature: Some models only support default temperature (1.0)
      * - Response format: Some models don't support JSON mode
-     * 
+     *
+     * @since WPUF_SINCE
+     *
      * @param string $provider Provider name (openai, anthropic, google)
      * @param string $model Model name (e.g., gpt-5, claude-4.1-opus, gemini-2.5-pro)
      * @return array Model configuration with parameter restrictions and requirements
@@ -404,6 +410,8 @@ class FormGenerator {
     /**
      * Generate form using OpenAI
      *
+     * @since WPUF_SINCE
+     *
      * @param string $prompt User prompt
      * @param array $options Additional options
      * @return array Generated form data
@@ -414,11 +422,6 @@ class FormGenerator {
 
         // Get model-specific configuration
         $model_config = $this->get_model_config('openai', $this->current_model);
-        
-        // Debug logging
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('WPUF AI OpenAI Model Config for ' . $this->current_model . ': ' . json_encode($model_config));
-        }
 
         $body = [
             'model' => $this->current_model,
@@ -445,11 +448,6 @@ class FormGenerator {
             // Update the message payload with the modified system prompt
             $body['messages'][0]['content'] = $system_prompt;
         }
-        
-        // Debug log the request body
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('WPUF AI OpenAI Request Body: ' . json_encode($body, JSON_PRETTY_PRINT));
-        }
 
         // Set token parameter based on model
         if ($model_config['token_location'] === 'body') {
@@ -459,11 +457,6 @@ class FormGenerator {
             } else {
                 $body[$model_config['token_param']] = intval($options['max_tokens'] ?? 2000);
             }
-        }
-
-        // Debug log the API key status
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('WPUF AI OpenAI API Key Status: ' . (empty($this->api_key) ? 'EMPTY' : 'Present (hidden)'));
         }
 
         $args = [
@@ -503,11 +496,6 @@ class FormGenerator {
             throw new \Exception('Invalid JSON response from AI provider: ' . json_last_error_msg());
         }
 
-        // Debug log the full response
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('WPUF AI OpenAI Full Response: ' . json_encode($data, JSON_PRETTY_PRINT));
-        }
-
         if (isset($data['error'])) {
             throw new \Exception('OpenAI API Error: ' . $data['error']['message']);
         }
@@ -518,23 +506,13 @@ class FormGenerator {
 
         $content = $data['choices'][0]['message']['content'];
 
-        // Debug log the raw response content
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('WPUF AI OpenAI Raw Response Content: ' . $content);
-        }
-        
         // Check for empty response
         if (empty($content)) {
-            $error_msg = 'AI model returned empty response. The token limit may be insufficient or there was an API issue.';
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('WPUF AI OpenAI Empty Response Error: ' . $error_msg);
-            }
-
             // Return error response instead of fallback
             return [
                 'success' => false,
                 'error' => true,
-                'message' => $error_msg,
+                'message' => 'AI model returned empty response. Please try again.',
                 'provider' => 'openai',
                 'model' => $this->current_model
             ];
@@ -558,25 +536,11 @@ class FormGenerator {
         $form_data = json_decode($json_content, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            $error_msg = 'Failed to parse AI response JSON. Error: ' . json_last_error_msg();
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('WPUF AI JSON Parse Error: ' . $error_msg);
-                error_log('WPUF AI Content Length: ' . strlen($content));
-                // Log a safe preview (first 500 chars only to see structure)
-                $preview = substr($json_content, 0, 500);
-                error_log('WPUF AI Content Preview: ' . $preview . (strlen($json_content) > 500 ? '...' : ''));
-                // Also log the last 200 chars to see if JSON is complete
-                if (strlen($json_content) > 500) {
-                    $end_preview = substr($json_content, -200);
-                    error_log('WPUF AI Content End: ...' . $end_preview);
-                }
-            }
-            
-            // Return error response instead of fallback
+            // Return user-friendly error message
             return [
                 'success' => false,
                 'error' => true,
-                'message' => $error_msg,
+                'message' => 'Unable to generate form. Please try again or simplify your request.',
                 'provider' => 'openai',
                 'model' => $this->current_model
             ];
@@ -597,6 +561,8 @@ class FormGenerator {
 
     /**
      * Generate form using Anthropic Claude
+     *
+     * @since WPUF_SINCE
      *
      * @param string $prompt User prompt
      * @param array $options Additional options
@@ -694,15 +660,7 @@ class FormGenerator {
         $form_data = json_decode($json_content, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            // Log error details for debugging
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('WPUF AI Anthropic JSON Parse Error: ' . json_last_error_msg());
-                error_log('WPUF AI Anthropic Content Length: ' . strlen($content));
-                // Log a safe preview
-                $preview = substr($json_content, 0, 500);
-                error_log('WPUF AI Anthropic Content Preview: ' . $preview . (strlen($json_content) > 500 ? '...' : ''));
-            }
-            throw new \Exception('Failed to parse AI response JSON: ' . json_last_error_msg());
+            throw new \Exception('Unable to generate form. Please try again or simplify your request.');
         }
 
         // Add metadata with better uniqueness
@@ -721,6 +679,8 @@ class FormGenerator {
 
     /**
      * Generate form using Google Gemini
+     *
+     * @since WPUF_SINCE
      *
      * @param string $prompt User prompt
      * @param array $options Additional options
@@ -823,65 +783,7 @@ class FormGenerator {
         $form_data = json_decode($json_content, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            // Log error details for debugging
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('WPUF AI JSON Parse Error: ' . json_last_error_msg());
-                error_log('WPUF AI Content Length: ' . strlen($content));
-                // Log a safe preview (first 200 chars only)
-                $preview = substr($json_content, 0, 200);
-                error_log('WPUF AI Content Preview: ' . $preview . (strlen($json_content) > 200 ? '...' : ''));
-            }
-            throw new \Exception('Failed to parse AI response JSON: ' . json_last_error_msg());
-        }
-
-        // Debug: Log what Google returned (with safe logging and memory monitoring)
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            try {
-                // Monitor memory usage
-                $memory_usage = memory_get_usage(true);
-                $memory_limit = wp_convert_hr_to_bytes(ini_get('memory_limit'));
-                
-                if ($memory_usage > ($memory_limit * 0.8)) {
-                    error_log('WPUF AI Warning: High memory usage detected: ' . size_format($memory_usage));
-                }
-                
-                // Log basic structure
-                error_log('WPUF AI Google Raw Response Structure: ' . json_encode(array_keys($form_data)));
-                error_log('WPUF AI Google Response: Has wpuf_fields: ' . (isset($form_data['wpuf_fields']) ? 'YES (' . count($form_data['wpuf_fields']) . ' fields)' : 'NO'));
-                error_log('WPUF AI Google Response: Has fields: ' . (isset($form_data['fields']) ? 'YES (' . count($form_data['fields']) . ' fields)' : 'NO'));
-
-                // Check wpuf_fields structure
-                if (isset($form_data['wpuf_fields']) && !empty($form_data['wpuf_fields'])) {
-                    $has_post_title = false;
-                    $has_post_content = false;
-                    foreach ($form_data['wpuf_fields'] as $field) {
-                        if (isset($field['name']) && $field['name'] === 'post_title') $has_post_title = true;
-                        if (isset($field['name']) && $field['name'] === 'post_content') $has_post_content = true;
-                    }
-                    error_log('WPUF AI Google wpuf_fields: Has post_title: ' . ($has_post_title ? 'YES' : 'NO') . ', Has post_content: ' . ($has_post_content ? 'YES' : 'NO'));
-
-                    // Log first field info safely (without full JSON to avoid truncation)
-                    if (isset($form_data['wpuf_fields'][0])) {
-                        $first_field = $form_data['wpuf_fields'][0];
-                        error_log('WPUF AI Google First field: type=' . ($first_field['input_type'] ?? 'unknown') .
-                                 ', name=' . ($first_field['name'] ?? 'unknown') .
-                                 ', template=' . ($first_field['template'] ?? 'unknown'));
-                    }
-                }
-            } catch (\Exception $e) {
-                error_log('WPUF AI Debug logging error: ' . $e->getMessage());
-            }
-            
-            // Check fields structure (simplified format)
-            if (isset($form_data['fields']) && !empty($form_data['fields'])) {
-                $has_post_title = false;
-                $has_post_content = false;
-                foreach ($form_data['fields'] as $field) {
-                    if (isset($field['name']) && $field['name'] === 'post_title') $has_post_title = true;
-                    if (isset($field['name']) && $field['name'] === 'post_content') $has_post_content = true;
-                }
-                error_log('WPUF AI Google fields: Has post_title: ' . ($has_post_title ? 'YES' : 'NO') . ', Has post_content: ' . ($has_post_content ? 'YES' : 'NO'));
-            }
+            throw new \Exception('Unable to generate form. Please try again or simplify your request.');
         }
 
         // Add metadata with better uniqueness
@@ -899,6 +801,8 @@ class FormGenerator {
 
     /**
      * Get system prompt for AI form generation
+     *
+     * @since WPUF_SINCE
      *
      * @param array $context Conversation context
      * @return string System prompt
@@ -922,18 +826,10 @@ class FormGenerator {
 
         // Check prompt size to prevent truncation (max ~40KB for safety)
         if (strlen($system_prompt) > 40000) {
-            // Log warning and try to use compact version
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('WPUF AI Warning: System prompt too large (' . strlen($system_prompt) . ' bytes), may cause truncation');
-            }
-
             // Try to load compact version as emergency fallback
             $compact_file = plugin_dir_path(dirname(__FILE__)) . 'AI/wpuf-ai-system-prompt-compact.md';
             if (file_exists($compact_file) && $compact_file !== $prompt_file) {
                 $system_prompt = file_get_contents($compact_file);
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    error_log('WPUF AI: Switched to compact prompt (' . strlen($system_prompt) . ' bytes)');
-                }
             }
         }
 
@@ -1003,6 +899,8 @@ class FormGenerator {
     /**
      * Get available providers
      *
+     * @since WPUF_SINCE
+     *
      * @return array Provider configurations
      */
     public function get_providers() {
@@ -1012,6 +910,8 @@ class FormGenerator {
     /**
      * Get current provider
      *
+     * @since WPUF_SINCE
+     *
      * @return string Current provider
      */
     public function get_current_provider() {
@@ -1020,6 +920,8 @@ class FormGenerator {
 
     /**
      * Test connection to current provider
+     *
+     * @since WPUF_SINCE
      *
      * @return array Test result
      */

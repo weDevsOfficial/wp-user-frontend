@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 4.1.12\n"
+"Project-Id-Version: WP User Frontend 4.1.13\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2025-09-24 10:19:15+00:00\n"
+"POT-Creation-Date: 2025-10-07 10:08:52+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -304,19 +304,19 @@ msgstr ""
 msgid "You do not have sufficient permissions to do this action"
 msgstr ""
 
-#: admin/class-admin-settings.php:624 includes/Admin/Admin_Tools.php:463
+#: admin/class-admin-settings.php:624 includes/Admin/Admin_Tools.php:475
 msgid "Missing file_id param"
 msgstr ""
 
-#: admin/class-admin-settings.php:634 includes/Admin/Admin_Tools.php:474
+#: admin/class-admin-settings.php:634 includes/Admin/Admin_Tools.php:486
 msgid "JSON file not found"
 msgstr ""
 
-#: admin/class-admin-settings.php:643 includes/Admin/Admin_Tools.php:484
+#: admin/class-admin-settings.php:643 includes/Admin/Admin_Tools.php:496
 msgid "Provided file is not a JSON file."
 msgstr ""
 
-#: admin/class-admin-settings.php:660 includes/Admin/Admin_Tools.php:496
+#: admin/class-admin-settings.php:660 includes/Admin/Admin_Tools.php:508
 msgid "Forms imported successfully."
 msgstr ""
 
@@ -1191,10 +1191,11 @@ msgstr ""
 msgid "No custom fields found."
 msgstr ""
 
-#: admin/posting.php:547 includes/Admin/Posting.php:869
-#: includes/Admin/Promotion.php:216 includes/Admin/Promotion.php:220
-#: includes/Admin/Promotion.php:224 includes/Admin/Promotion.php:301
-#: includes/Admin/Promotion.php:305 includes/Admin/Promotion.php:309
+#: admin/posting.php:547 includes/Admin/Admin_Tools.php:465
+#: includes/Admin/Posting.php:869 includes/Admin/Promotion.php:216
+#: includes/Admin/Promotion.php:220 includes/Admin/Promotion.php:224
+#: includes/Admin/Promotion.php:301 includes/Admin/Promotion.php:305
+#: includes/Admin/Promotion.php:309
 #: includes/Ajax/Admin_Form_Builder_Ajax.php:27
 #: includes/Ajax/Admin_Form_Builder_Ajax.php:31
 #: includes/Ajax/Admin_Form_Builder_Ajax.php:35
@@ -1204,6 +1205,8 @@ msgstr ""
 #: includes/Ajax/Admin_Form_Builder_Ajax.php:142
 #: includes/Ajax/Admin_Form_Builder_Ajax.php:146
 #: includes/Ajax/Admin_Form_Builder_Ajax.php:150
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:226
+#: includes/Frontend_Render_Form.php:123
 #: includes/Integrations/WPUF_ACF_Compatibility.php:76
 #: includes/Integrations/WPUF_ACF_Compatibility.php:94
 #: includes/Integrations/WPUF_ACF_Compatibility.php:160
@@ -1672,12 +1675,12 @@ msgstr ""
 msgid "Invisible reCAPTCHA validation failed"
 msgstr ""
 
-#: class/render-form.php:378 includes/Frontend_Render_Form.php:182
+#: class/render-form.php:378 includes/Frontend_Render_Form.php:187
 #: includes/Render_Form.php:235 includes/class-frontend-render-form.php:289
 msgid "Your selected form is no longer available."
 msgstr ""
 
-#: class/render-form.php:384 includes/Frontend_Render_Form.php:188
+#: class/render-form.php:384 includes/Frontend_Render_Form.php:193
 #: includes/Render_Form.php:241 includes/class-frontend-render-form.php:295
 msgid "Please make sure you've published your form."
 msgstr ""
@@ -4379,7 +4382,7 @@ msgstr ""
 msgid "Default %s %s"
 msgstr ""
 
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:224
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:231
 msgid "Choose who can submit post "
 msgstr ""
 
@@ -4408,28 +4411,36 @@ msgstr ""
 msgid "Using %s as shortcode is restricted"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:374 includes/Api/Subscription.php:264
+#: includes/Ajax/Frontend_Form_Ajax.php:235
+msgid "Post not found."
+msgstr ""
+
+#: includes/Ajax/Frontend_Form_Ajax.php:244
+msgid "You do not have permission to edit this post."
+msgstr ""
+
+#: includes/Ajax/Frontend_Form_Ajax.php:390 includes/Api/Subscription.php:264
 #: includes/Api/Subscription.php:294 includes/Api/Subscription.php:368
 msgid "Something went wrong"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:446
-#: includes/Ajax/Frontend_Form_Ajax.php:452
+#: includes/Ajax/Frontend_Form_Ajax.php:462
+#: includes/Ajax/Frontend_Form_Ajax.php:468
 msgid ""
 "Thank you for posting on our site. We have sent you an confirmation email. "
 "Please check your inbox!"
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:667
+#: includes/Ajax/Frontend_Form_Ajax.php:683
 msgid "Invalid email address."
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:681
+#: includes/Ajax/Frontend_Form_Ajax.php:697
 msgid "You already have an account in our site. Please login to continue."
 msgstr ""
 
-#: includes/Ajax/Frontend_Form_Ajax.php:736
-#: includes/Frontend_Render_Form.php:222
+#: includes/Ajax/Frontend_Form_Ajax.php:752
+#: includes/Frontend_Render_Form.php:227
 #: includes/class-frontend-render-form.php:323
 msgid "You do not have sufficient permissions to access this form."
 msgstr ""
@@ -6117,12 +6128,12 @@ msgstr ""
 msgid "Learn More →"
 msgstr ""
 
-#: includes/Frontend/Form_Preview.php:82
-msgid "You must be logged in to preview this form."
+#: includes/Frontend/Form_Preview.php:45 includes/Frontend/Form_Preview.php:89
+msgid "You do not have permission to preview this form."
 msgstr ""
 
-#: includes/Frontend/Form_Preview.php:87
-msgid "Sorry, you are not eligible to preview this form."
+#: includes/Frontend/Form_Preview.php:95
+msgid "Invalid form ID."
 msgstr ""
 
 #: includes/Frontend/Frontend_Account.php:43
@@ -6563,13 +6574,13 @@ msgstr ""
 msgid "Please Cancel Your Currently Active Pack first!"
 msgstr ""
 
-#: includes/Frontend_Render_Form.php:322
+#: includes/Frontend_Render_Form.php:327
 #: includes/class-frontend-render-form.php:928
 #: templates/dashboard/posts.php:120
 msgid "Featured"
 msgstr ""
 
-#: includes/Frontend_Render_Form.php:329
+#: includes/Frontend_Render_Form.php:334
 #: includes/class-frontend-render-form.php:935
 #. translators: %1$s is Post type and %2$d is item
 #. translators: %1$s is Post type and %2$s is total feature item

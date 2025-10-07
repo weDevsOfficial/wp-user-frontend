@@ -523,7 +523,7 @@ class Form_Field_Post_Taxonomy extends Field_Contract {
         // return sanitize_text_field($_POST[$field['name']]);
         check_ajax_referer( 'wpuf_form_add' );
 
-        $val = isset( $_POST[ $field['name'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $field['name'] ] ) ) : '';
+        $val = isset( $_POST[ $field['name'] ] ) ? strip_shortcodes( sanitize_text_field( wp_unslash( $_POST[ $field['name'] ] ) ) ) : '';
 
         return isset( $field['options'][ $val ] ) ? $field['options'][ $val ] : '';
     }

@@ -89,7 +89,7 @@ class Form_Field_Email extends Form_Field_Text {
                 return $user->user_email;
             }
         }
-        $value = !empty( $_POST[$field['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$field['name']] ) ) : '';
+        $value = !empty( $_POST[$field['name']] ) ? strip_shortcodes( sanitize_text_field( wp_unslash( $_POST[$field['name']] ) ) ) : '';
 
         return sanitize_text_field( trim( $value ) );
     }

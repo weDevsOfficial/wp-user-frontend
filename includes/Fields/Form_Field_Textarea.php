@@ -157,7 +157,7 @@ class Form_Field_Textarea extends Field_Contract {
     public function prepare_entry( $field ) {
         check_ajax_referer( 'wpuf_form_add' );
 
-        $field = isset( $_POST[ $field['name'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $field['name'] ] ) ) : '';
+        $field = isset( $_POST[ $field['name'] ] ) ? strip_shortcodes( sanitize_text_field( wp_unslash( $_POST[ $field['name'] ] ) ) ) : '';
         return trim( $field );
     }
 
@@ -189,7 +189,7 @@ class Form_Field_Textarea extends Field_Contract {
                <?php if ( ! $hide_label ) : ?>
                     <label><?php echo esc_html( $field['label'] ); ?>:</label>
                 <?php endif; ?>
-               <?php echo wp_kses_post( wpautop( make_clickable( $data ) ) ); ?>
+               <?php echo wp_kses_post( wpautop( make_clickable( strip_shortcodes( $data ) ) ) ); ?>
             </li>
          <?php
             return ob_get_clean();
@@ -206,6 +206,6 @@ class Form_Field_Textarea extends Field_Contract {
       * @return string
       */
     public function sanitize_field_data( $data, $field ) {
-        return wp_kses_post( $data );
+        return strip_shortcodes( wp_kses_post( $data ) );
     }
 }

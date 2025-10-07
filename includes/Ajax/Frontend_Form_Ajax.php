@@ -159,9 +159,9 @@ class Frontend_Form_Ajax {
             'post_type'    => ! empty( $this->form_settings['post_type'] ) ? $this->form_settings['post_type'] : 'post',
             'post_status'  => isset( $this->form_settings['post_status'] ) ? $this->form_settings['post_status'] : 'publish',
             'post_author'  => $post_author,
-            'post_title'   => isset( $_POST['post_title'] ) ? sanitize_text_field( wp_unslash( $_POST['post_title'] ) ) : '',
-            'post_content' => isset( $_POST['post_content'] ) ? wp_kses( wp_unslash( $_POST['post_content'] ), $allowed_tags ) : '',
-            'post_excerpt' => isset( $_POST['post_excerpt'] ) ? wp_kses( wp_unslash( $_POST['post_excerpt'] ), $allowed_tags ) : '',
+            'post_title'   => isset( $_POST['post_title'] ) ? strip_shortcodes( sanitize_text_field( wp_unslash( $_POST['post_title'] ) ) ) : '',
+            'post_content' => isset( $_POST['post_content'] ) ? strip_shortcodes( wp_kses( wp_unslash( $_POST['post_content'] ), $allowed_tags ) ) : '',
+            'post_excerpt' => isset( $_POST['post_excerpt'] ) ? strip_shortcodes( wp_kses( wp_unslash( $_POST['post_excerpt'] ), $allowed_tags ) ) : '',
         ];
 
         // $charging_enabled = wpuf_get_option( 'charge_posting', 'wpuf_payment' );
@@ -236,7 +236,7 @@ class Frontend_Form_Ajax {
             }
 
             // Security: Check if user has permission to edit this post (Broken Access Control fix)
-            $post_author = get_post_field( 'post_author', $post_id );
+            $post_author = (int) get_post_field( 'post_author', $post_id );
             $current_user_id = get_current_user_id();
 
             // Allow edit if: user is post author OR user has edit_others_posts capability

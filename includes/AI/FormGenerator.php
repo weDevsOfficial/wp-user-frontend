@@ -39,49 +39,7 @@ class FormGenerator {
      *
      * @var array
      */
-    private $provider_configs = [
-        'openai' => [
-            'name' => 'OpenAI',
-            'endpoint' => 'https://api.openai.com/v1/chat/completions',
-            'models' => [
-                'gpt-4o' => 'GPT-4o - Most Capable Multimodal',
-                'gpt-4o-mini' => 'GPT-4o Mini - Efficient & Fast',
-                'gpt-4-turbo' => 'GPT-4 Turbo - High Performance',
-                'gpt-4' => 'GPT-4 - Advanced Reasoning',
-                'gpt-3.5-turbo' => 'GPT-3.5 Turbo - Fast & Affordable'
-            ],
-            'requires_key' => true
-        ],
-        'anthropic' => [
-            'name' => 'Anthropic Claude',
-            'endpoint' => 'https://api.anthropic.com/v1/messages',
-            'models' => [
-                'claude-4.1-opus' => 'Claude 4.1 Opus - Most Capable',
-                'claude-4-opus' => 'Claude 4 Opus - Best Coding Model',
-                'claude-4-sonnet' => 'Claude 4 Sonnet - Advanced Reasoning',
-                'claude-3.7-sonnet' => 'Claude 3.7 Sonnet - Hybrid Reasoning',
-                'claude-3-5-sonnet-20241022' => 'Claude 3.5 Sonnet Latest',
-                'claude-3-5-sonnet-20240620' => 'Claude 3.5 Sonnet',
-                'claude-3-5-haiku-20241022' => 'Claude 3.5 Haiku',
-                'claude-3-opus-20240229' => 'Claude 3 Opus',
-                'claude-3-sonnet-20240229' => 'Claude 3 Sonnet',
-                'claude-3-haiku-20240307' => 'Claude 3 Haiku'
-            ],
-            'requires_key' => true
-        ],
-        'google' => [
-            'name' => 'Google Gemini',
-            'endpoint' => 'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent',
-            'models' => [
-                'gemini-2.0-flash-exp' => 'Gemini 2.0 Flash Experimental - Latest',
-                'gemini-1.5-flash' => 'Gemini 1.5 Flash - Fast & Free',
-                'gemini-1.5-flash-8b' => 'Gemini 1.5 Flash 8B - Fast & Free',
-                'gemini-1.5-pro' => 'Gemini 1.5 Pro - Most Capable',
-                'gemini-1.0-pro' => 'Gemini 1.0 Pro - Stable'
-            ],
-            'requires_key' => true
-        ]
-    ];
+    private $provider_configs = [];
 
     /**
      * Constructor
@@ -89,7 +47,56 @@ class FormGenerator {
      * @since WPUF_SINCE
      */
     public function __construct() {
+        $this->init_provider_configs();
         $this->load_settings();
+    }
+
+    /**
+     * Initialize provider configurations dynamically from settings
+     *
+     * @since WPUF_SINCE
+     */
+    private function init_provider_configs() {
+        // Get AI model options from settings (filtered)
+        $ai_model_options = apply_filters('wpuf_ai_model_options', []);
+
+        // Organize models by provider
+        $openai_models = [];
+        $anthropic_models = [];
+        $google_models = [];
+
+        foreach ($ai_model_options as $model_id => $model_name) {
+            // Determine provider by model prefix or label
+            if (strpos($model_id, 'gpt-') === 0 || strpos($model_id, 'o1') === 0 || strpos($model_name, '(OpenAI)') !== false) {
+                $openai_models[$model_id] = $model_name;
+            } elseif (strpos($model_id, 'claude-') === 0 || strpos($model_name, '(Anthropic)') !== false) {
+                $anthropic_models[$model_id] = $model_name;
+            } elseif (strpos($model_id, 'gemini-') === 0 || strpos($model_name, '(Google)') !== false) {
+                $google_models[$model_id] = $model_name;
+            }
+        }
+
+        // Build provider configurations
+        $this->provider_configs = [
+            'openai' => [
+                'name' => 'OpenAI',
+                'endpoint' => 'https://api.openai.com/v1/chat/completions',
+                'models' => $openai_models,
+                'requires_key' => true
+            ],
+            'anthropic' => [
+                'name' => 'Anthropic Claude',
+                'endpoint' => 'https://api.anthropic.com/v1/messages',
+                'models' => $anthropic_models,
+                'requires_key' => true
+            ],
+            'google' => [
+                'name' => 'Google Gemini',
+                'endpoint' => 'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent',
+                'models' => $google_models,
+                'requires_key' => true
+            ]
+        ];
     }
 
     /**
@@ -872,8 +879,8 @@ class FormGenerator {
                 }
             }
             
-            // Simplify context for better AI understanding
-            $simplified_context = [
+            // Build context with COMPLETE form structure for accurate modifications
+            $context_for_ai = [
                 'session_id' => $context['session_id'] ?? '',
                 'current_form_title' => $context['current_form']['form_title'] ?? '',
                 'current_fields_count' => count($context['current_form']['wpuf_fields'] ?? []),
@@ -881,26 +888,32 @@ class FormGenerator {
                 'modification_requested' => $modification_requested
             ];
             
-            // Include current fields summary
+            // Include COMPLETE current fields structure (not just summaries)
+            // This is critical for the AI to properly reconstruct the form with all WPUF properties
             if (!empty($context['current_form']['wpuf_fields'])) {
-                $field_summary = [];
-                foreach ($context['current_form']['wpuf_fields'] as $field) {
-                    $field_summary[] = [
-                        'label' => $field['label'] ?? '',
-                        'type' => $field['type'] ?? $field['template'] ?? '',
-                        'name' => $field['name'] ?? ''
-                    ];
-                }
-                $simplified_context['current_fields'] = $field_summary;
+                $context_for_ai['current_form_fields'] = $context['current_form']['wpuf_fields'];
             }
             
-            $system_prompt .= json_encode($simplified_context, JSON_PRETTY_PRINT);
+            $system_prompt .= json_encode($context_for_ai, JSON_PRETTY_PRINT);
             
             // Add specific instruction for modifications
             $system_prompt .= "\n\n## MODIFICATION INSTRUCTION\n";
-            $system_prompt .= "The user is requesting a modification to the existing form. ";
-            $system_prompt .= "Return the COMPLETE form with ALL existing fields PLUS the requested changes. ";
-            $system_prompt .= "DO NOT remove existing fields unless explicitly asked.";
+            if ($modification_requested) {
+                $system_prompt .= "The user wants to MODIFY the existing form. You MUST:\n";
+                $system_prompt .= "1. Take ALL existing fields from current_form_fields array (it contains the COMPLETE WPUF structure)\n";
+                $system_prompt .= "2. Keep ALL existing fields EXACTLY as they are with ALL their properties\n";
+                $system_prompt .= "3. Apply the requested modification (add/remove/edit specific fields)\n";
+                $system_prompt .= "4. Renumber field IDs sequentially (field_1, field_2, field_3, etc.)\n";
+                $system_prompt .= "5. For new fields, use the same complete structure as existing fields\n";
+                $system_prompt .= "6. Return the complete form with form_title, form_description, wpuf_fields, and form_settings\n\n";
+                $system_prompt .= "CRITICAL: The current_form_fields array contains COMPLETE field objects with all WPUF properties (id, input_type, template, required, label, name, is_meta, help, css, placeholder, default, size, width, wpuf_cond, wpuf_visibility, etc.). You MUST preserve ALL these properties for existing fields and include them for new fields.\n\n";
+                $system_prompt .= "Example: If asked to 'add last name field', you must:\n";
+                $system_prompt .= "1. Include ALL existing fields from current_form_fields\n";
+                $system_prompt .= "2. Add a new last name field with complete WPUF structure\n";
+                $system_prompt .= "3. Return the full form JSON with all fields";
+            } else {
+                $system_prompt .= "The user is asking a question about the form. Provide a helpful, conversational response explaining the requested information. DO NOT return form field structures unless the user explicitly requests a modification.";
+            }
         }
         
         return $system_prompt;

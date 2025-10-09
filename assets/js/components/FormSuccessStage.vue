@@ -1964,16 +1964,44 @@ What would you like me to help you with?`;
                 current_form: {
                     form_title: this.formTitle,
                     form_description: this.formDescription,
-                    wpuf_fields: this.formFields.map(field => ({
-                        name: field.label,
-                        type: field.type,
-                        label: field.label,
-                        placeholder: field.placeholder,
-                        help: field.help_text,
-                        required: field.required ? 'yes' : 'no',
-                        options: field.options || [],
-                        default: field.default || ''
-                    })),
+                    // Send FULL field structures with all WPUF properties for accurate modifications
+                    wpuf_fields: this.formFields.map((field, index) => {
+                        // If field already has full WPUF structure, use it
+                        if (field.input_type && field.template && field.wpuf_cond) {
+                            return field;
+                        }
+                        
+                        // Otherwise, convert to full WPUF structure
+                        const fieldType = field.type || 'text_field';
+                        return {
+                            id: field.id || `field_${index + 1}`,
+                            type: fieldType,
+                            input_type: this.mapToInputType(fieldType),
+                            template: fieldType,
+                            required: field.required === true || field.required === 'yes' ? 'yes' : 'no',
+                            label: field.label || 'Field',
+                            name: field.name || (field.label ? field.label.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') : `field_${index + 1}`),
+                            is_meta: this.shouldBeMeta(field.name || field.label) ? 'yes' : 'no',
+                            help: field.help_text || field.help || '',
+                            css: field.css || '',
+                            placeholder: field.placeholder || '',
+                            default: field.default || '',
+                            size: field.size || '40',
+                            width: field.width || 'large',
+                            options: field.options || {},
+                            wpuf_cond: field.wpuf_cond || {
+                                condition_status: 'no',
+                                cond_field: [],
+                                cond_operator: ['='],
+                                cond_option: ['- Select -'],
+                                cond_logic: 'all'
+                            },
+                            wpuf_visibility: field.wpuf_visibility || {
+                                selected: 'everyone',
+                                choices: []
+                            }
+                        };
+                    }),
                     settings: this.formSettings || {}
                 },
                 // Send cleaned chat history (without processing/error messages)

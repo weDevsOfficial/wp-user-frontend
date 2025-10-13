@@ -13,7 +13,7 @@ Vue.component('field-icon_selector', {
         return {
             showIconPicker: false,
             searchTerm: '',
-            icons: window.getAllIcons ? window.getAllIcons() : []
+            icons: wpuf_form_builder.icons || []
         };
     },
 
@@ -62,7 +62,7 @@ Vue.component('field-icon_selector', {
             if (newVal === 'yes' && oldVal === 'no') {
                 if (!this.editing_form_field.field_icon || this.editing_form_field.field_icon === 'fas fa-0') {
                     // Set a proper default icon based on field type
-                    var defaultIcons = window.defaultIcons || {};
+                    var defaultIcons = wpuf_form_builder.defaultIcons || {};
 
                     // Get the field type/template
                     var fieldType = this.editing_form_field.template || this.editing_form_field.input_type || 'text';

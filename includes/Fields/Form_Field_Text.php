@@ -152,7 +152,7 @@ class Form_Field_Text extends Field_Contract {
     public function prepare_entry( $field ) {
         check_ajax_referer( 'wpuf_form_add' );
 
-        $value = isset( $_POST[ $field['name'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $field['name'] ] ) ) : '';
+        $value = isset( $_POST[ $field['name'] ] ) ? strip_shortcodes( sanitize_text_field( wp_unslash( $_POST[ $field['name'] ] ) ) ) : '';
         // return sanitize_text_field( trim( $_POST[$field['name']] ) );
         return $value;
     }

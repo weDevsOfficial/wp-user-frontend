@@ -923,6 +923,18 @@ html {
     --tw-text-opacity: 1;
     color: var(--fallback-pc,oklch(var(--pc)/var(--tw-text-opacity)));
   }
+
+  .wpuf-table tr.wpuf-hover:hover,
+  .wpuf-table tr.wpuf-hover:nth-child(even):hover {
+    --tw-bg-opacity: 1;
+    background-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-bg-opacity)));
+  }
+
+  .wpuf-table-zebra tr.wpuf-hover:hover,
+  .wpuf-table-zebra tr.wpuf-hover:nth-child(even):hover {
+    --tw-bg-opacity: 1;
+    background-color: var(--fallback-b3,oklch(var(--b3)/var(--tw-bg-opacity)));
+  }
 }
 
 .wpuf-btn {
@@ -1945,6 +1957,44 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   display: block;
 }
 
+.wpuf-table {
+  position: relative;
+  width: 100%;
+  border-radius: var(--rounded-box, 1rem);
+  text-align: left;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.wpuf-table :where(.wpuf-table-pin-rows thead tr) {
+  position: sticky;
+  top: 0px;
+  z-index: 1;
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
+}
+
+.wpuf-table :where(.wpuf-table-pin-rows tfoot tr) {
+  position: sticky;
+  bottom: 0px;
+  z-index: 1;
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
+}
+
+.wpuf-table :where(.wpuf-table-pin-cols tr th) {
+  position: sticky;
+  left: 0px;
+  right: 0px;
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
+}
+
+.wpuf-table-zebra tbody tr:nth-child(even) :where(.wpuf-table-pin-cols tr th) {
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-bg-opacity)));
+}
+
 .wpuf-toggle {
   flex-shrink: 0;
   --tglbg: var(--fallback-b1,oklch(var(--b1)/1));
@@ -2775,6 +2825,18 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   color: var(--fallback-pc,oklch(var(--pc)/var(--tw-text-opacity)));
 }
 
+.wpuf-table:where([dir="rtl"], [dir="rtl"] *) {
+  text-align: right;
+}
+
+.wpuf-table :where(th, td) {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  vertical-align: middle;
+}
+
 .wpuf-table tr.wpuf-active,
   .wpuf-table tr.wpuf-active:nth-child(even),
   .wpuf-table-zebra tbody tr:nth-child(even) {
@@ -2787,6 +2849,26 @@ input.wpuf-tab:checked + .wpuf-tab-content,
     .wpuf-table-zebra-zebra tbody tr:nth-child(even) {
   --tw-bg-opacity: 1;
   background-color: var(--fallback-b3,oklch(var(--b3)/var(--tw-bg-opacity)));
+}
+
+.wpuf-table :where(thead tr, tbody tr:not(:last-child), tbody tr:first-child:last-child) {
+  border-bottom-width: 1px;
+  --tw-border-opacity: 1;
+  border-bottom-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-border-opacity)));
+}
+
+.wpuf-table :where(thead, tfoot) {
+  white-space: nowrap;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 700;
+  color: var(--fallback-bc,oklch(var(--bc)/0.6));
+}
+
+.wpuf-table :where(tfoot) {
+  border-top-width: 1px;
+  --tw-border-opacity: 1;
+  border-top-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-border-opacity)));
 }
 
 @keyframes toast-pop {
@@ -2895,20 +2977,56 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   }
 }
 
+.wpuf-btm-nav-xs {
+  height: 2.5rem;
+}
+
 .wpuf-btm-nav-xs > *:where(.wpuf-active) {
   border-top-width: 1px;
+}
+
+.wpuf-btm-nav-xs .wpuf-btm-nav-label {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.wpuf-btm-nav-sm {
+  height: 3rem;
 }
 
 .wpuf-btm-nav-sm > *:where(.wpuf-active) {
   border-top-width: 2px;
 }
 
+.wpuf-btm-nav-sm .wpuf-btm-nav-label {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.wpuf-btm-nav-md {
+  height: 4rem;
+}
+
 .wpuf-btm-nav-md > *:where(.wpuf-active) {
   border-top-width: 2px;
 }
 
+.wpuf-btm-nav-md .wpuf-btm-nav-label {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.wpuf-btm-nav-lg {
+  height: 5rem;
+}
+
 .wpuf-btm-nav-lg > *:where(.wpuf-active) {
   border-top-width: 4px;
+}
+
+.wpuf-btm-nav-lg .wpuf-btm-nav-label {
+  font-size: 1rem;
+  line-height: 1.5rem;
 }
 
 .wpuf-join.wpuf-join-vertical {
@@ -3958,6 +4076,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-inline-flex {
   display: inline-flex;
+}
+
+.wpuf-table {
+  display: table;
 }
 
 .wpuf-flow-root {

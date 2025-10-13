@@ -39,7 +39,14 @@ class Form_Preview {
         if ( ! isset( $_GET['wpuf_preview'] ) && empty( $_GET['wpuf'] ) ) {
             return;
         }
-        $this->form_id = isset( $_GET['form_id'] ) ? intval( $_GET['form_id'] ) : 0;
+
+        // Security: Check user has proper capabilities before allowing preview
+        if ( ! is_user_logged_in() || ! current_user_can( wpuf_admin_role() ) ) {
+            wp_die( __( 'You do not have permission to preview this form.', 'wp-user-frontend' ), 403 );
+        }
+
+        // Security: Validate and sanitize form_id parameter
+        $this->form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
         add_action( 'pre_get_posts', [ $this, 'pre_get_posts' ] );
         // add_filter( 'template_include', [ $this, 'template_include' ] );
         add_filter( 'the_title', [ $this, 'the_title' ] );
@@ -77,18 +84,18 @@ class Form_Preview {
      * @return string
      */
     public function the_content( $content ) {
-        if ( $this->is_preview ) {
-            if ( ! is_user_logged_in() ) {
-                return __( 'You must be logged in to preview this form.', 'wp-user-frontend' );
-            }
-            $viewing_capability = apply_filters( 'wpuf_preview_form_cap',
-                'edit_posts' ); // at least has to be contributor
-            if ( ! current_user_can( $viewing_capability ) ) {
-                return __( 'Sorry, you are not eligible to preview this form.', 'wp-user-frontend' );
-            }
+        // Security: Double-check admin capabilities
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            return __( 'You do not have permission to preview this form.', 'wp-user-frontend' );
         }
 
-        return do_shortcode( sprintf( '[wpuf_form id="%d"]', $this->form_id ) );
+        // Security: Validate form_id is a valid integer to prevent injection
+        $form_id = absint( $this->form_id );
+        if ( $form_id === 0 ) {
+            return __( 'Invalid form ID.', 'wp-user-frontend' );
+        }
+
+        return do_shortcode( sprintf( '[wpuf_form id="%d"]', $form_id ) );
     }
 
     /**

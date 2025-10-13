@@ -1202,15 +1202,15 @@ function wpuf_show_custom_fields( $content ) {
                                     // Handle different field types
                                     if ( 'checkbox' === $inner_field['input_type'] && is_array( $inner_field_value ) ) {
                                         // For checkbox fields, join multiple values
-                                        $repeat_html .= '<span>' . make_clickable( implode( ', ', $inner_field_value ) ) . '</span>';
+                                        $repeat_html .= '<span>' . make_clickable( strip_shortcodes( implode( ', ', $inner_field_value ) ) ) . '</span>';
                                     } elseif ( 'multiselect' === $inner_field['input_type'] && is_array( $inner_field_value ) ) {
-                                        $repeat_html .= '<span>' . make_clickable( implode( ', ', $inner_field_value ) ) . '</span>';
+                                        $repeat_html .= '<span>' . make_clickable( strip_shortcodes( implode( ', ', $inner_field_value ) ) ) . '</span>';
                                     } elseif ( 'radio' === $inner_field['input_type'] || 'select' === $inner_field['input_type'] ) {
                                         // For radio and select fields, display single value
-                                        $repeat_html .= '<span>' . make_clickable( $inner_field_value ) . '</span>';
+                                        $repeat_html .= '<span>' . make_clickable( strip_shortcodes( $inner_field_value ) ) . '</span>';
                                     } else {
                                         // For text and other fields
-                                        $repeat_html .= '<span>' . make_clickable( $inner_field_value ) . '</span>';
+                                        $repeat_html .= '<span>' . make_clickable( strip_shortcodes( $inner_field_value ) ) . '</span>';
                                     }
 
                                     $repeat_html .= '</li>';
@@ -1279,7 +1279,7 @@ function wpuf_show_custom_fields( $content ) {
                         $html .= '<label>' . $attr['label'] . ':</label>';
                     }
 
-                    $html .= sprintf( ' %s</li>', make_clickable( $value ) );
+                    $html .= sprintf( ' %s</li>', make_clickable( strip_shortcodes( $value ) ) );
                     break;
 
                 case 'country_list':
@@ -1297,7 +1297,7 @@ function wpuf_show_custom_fields( $content ) {
                         $html .= '<label>' . $attr['label'] . ':</label>';
                     }
 
-                    $html .= sprintf( ' %s</li>', make_clickable( $value ) );
+                    $html .= sprintf( ' %s</li>', make_clickable( strip_shortcodes( $value ) ) );
                     break;
 
                 default:
@@ -1318,7 +1318,7 @@ function wpuf_show_custom_fields( $content ) {
                                 $html .= '<label>' . $attr['label'] . ':</label>';
                             }
 
-                            $html .= sprintf( ' %s</li>', make_clickable( $modified_value ) );
+                            $html .= sprintf( ' %s</li>', make_clickable( strip_shortcodes( $modified_value ) ) );
                         }
                     } elseif ( ( 'checkbox' === $attr['input_type'] || 'multiselect' === $attr['input_type'] ) && is_array( $value[0] ) ) {
                         if ( ! empty( $value[0] ) ) {
@@ -1331,7 +1331,7 @@ function wpuf_show_custom_fields( $content ) {
                                     $html .= '<label>' . $attr['label'] . ':</label>';
                                 }
 
-                                $html .= sprintf( ' %s</li>', make_clickable( $modified_value ) );
+                                $html .= sprintf( ' %s</li>', make_clickable( strip_shortcodes( $modified_value ) ) );
                             }
                         }
                     } else {
@@ -1344,7 +1344,7 @@ function wpuf_show_custom_fields( $content ) {
                                 $html .= '<label>' . $attr['label'] . ':</label>';
                             }
 
-                            $html .= sprintf( ' %s</li>', make_clickable( $new ) );
+                            $html .= sprintf( ' %s</li>', make_clickable( strip_shortcodes( $new ) ) );
                         }
                     }
 
@@ -1519,7 +1519,7 @@ function wpuf_meta_shortcode( $atts ) {
     } elseif ( 'normal' === $type ) {
         return implode( ', ', get_post_meta( $post->ID, $name ) );
     } else {
-        return make_clickable( implode( ', ', get_post_meta( $post->ID, $name ) ) );
+        return make_clickable( strip_shortcodes( implode( ', ', get_post_meta( $post->ID, $name ) ) ) );
     }
 }
 
@@ -2153,6 +2153,7 @@ function wpuf_is_license_expired() {
  */
 function wpuf_get_post_form_templates() {
     $integrations['post_form_template_post'] = new WeDevs\Wpuf\Admin\Forms\Post\Templates\Post_Form_Template_Post();
+    $integrations['post_form_template_video'] = new WeDevs\Wpuf\Admin\Forms\Post\Templates\Post_Form_Template_Video();
 
     return apply_filters( 'wpuf_get_post_form_templates', $integrations );
 }
@@ -5081,11 +5082,15 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
     unset( $post_types['oembed_cache'] );
 
     $template_options = [
-        ''                                   => __( '-- Select Template --', 'wp-user-frontend' ),
-        'post_form_template_post'            => __( 'Post Form', 'wp-user-frontend' ),
-        'post_form_template_woocommerce'     => __( 'WooCommerce Product Form', 'wp-user-frontend' ),
-        'post_form_template_edd'             => __( 'EDD Download Form', 'wp-user-frontend' ),
-        'post_form_template_events_calendar' => __( 'Event Form', 'wp-user-frontend' ),
+        ''                                     => __( '-- Select Template --', 'wp-user-frontend' ),
+        'post_form_template_post'              => __( 'Post Form', 'wp-user-frontend' ),
+        'post_form_template_woocommerce'       => __( 'WooCommerce Product Form', 'wp-user-frontend' ),
+        'post_form_template_edd'               => __( 'EDD Download Form', 'wp-user-frontend' ),
+        'post_form_template_events_calendar'   => __( 'Event Form', 'wp-user-frontend' ),
+        'post_form_template_video'             => __( 'Video Form', 'wp-user-frontend' ),
+        'post_form_template_professional_video' => __( 'Professional Video Form', 'wp-user-frontend' ),
+        'post_form_template_artwork'           => __( 'Artwork Form', 'wp-user-frontend' ),
+        'post_form_template_press_release'     => __( 'Press Release Form', 'wp-user-frontend' ),
     ];
 
     $registry = wpuf_get_post_form_templates();

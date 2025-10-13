@@ -103,6 +103,7 @@ class Form_Field_MultiDropdown extends Form_Field_Dropdown {
         check_ajax_referer( 'wpuf_form_add' );
 
         $field_name = isset( $_POST[$field['name']] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[$field['name']] ) ) : [];
+        $field_name = array_map( 'strip_shortcodes', $field_name );
         $entry_value  = ( is_array( $field_name ) && $field_name ) ? $field_name : [];
 
         if ( $entry_value ) {

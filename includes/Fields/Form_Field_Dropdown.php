@@ -127,7 +127,7 @@ class Form_Field_Dropdown extends Field_Contract {
     public function prepare_entry( $field ) {
         check_ajax_referer( 'wpuf_form_add' );
 
-        $val = isset( $_POST[$field['name']] ) ? sanitize_text_field( wp_unslash( $_POST[$field['name']] ) ) : '';
+        $val = isset( $_POST[$field['name']] ) ? strip_shortcodes( sanitize_text_field( wp_unslash( $_POST[$field['name']] ) ) ) : '';
 
         return isset( $field['options'][$val] ) ? $field['options'][$val] : '';
     }

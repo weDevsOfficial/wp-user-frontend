@@ -1358,29 +1358,21 @@ export default {
         },
         
         /**
-         * Determine if an API call is necessary based on template state and user message
+         * Determine if an API call is necessary based on user message
          */
         shouldMakeAPICall(userMessage) {
-            // Always make API call if not a predefined template
-            if (!this.conversationState.is_predefined_template) {
-                return true;
-            }
-            
-            // If template has been modified, make API calls
-            if (this.conversationState.template_modified || this.hasTemplateBeenModified()) {
-                return true;
-            }
-            
             // Check if user message requests modifications
             if (this.isModificationRequest(userMessage)) {
-                this.conversationState.template_modified = true;
-                console.log('🔧 User requested modifications, enabling API calls');
                 return true;
             }
             
-            // For predefined templates that haven't been modified, 
-            // provide helpful responses without API calls
-            return false;
+            // For informational queries, provide helpful responses without API calls
+            if (this.isInformationalQuery(userMessage)) {
+                return false;
+            }
+            
+            // Default: make API call
+            return true;
         },
         
         /**
@@ -1473,9 +1465,13 @@ export default {
             // - Has imperative pattern (strongest signal), OR
             // - Has request pattern (explicit ask), OR
             // - Has modification intent (action + property combo), OR
+            // - Has action verb AND message mentions "field" (simple "add field" pattern), OR
             // - Has action verb AND (replacement OR quantifier pattern), OR
             // - Has replacement or quantifier pattern alone
+            const mentionsField = /\b(field|fields)\b/i.test(message);
+            
             return hasImperativePattern || hasRequestPattern || hasModificationIntent ||
+                   (hasActionVerb && mentionsField) ||
                    (hasActionVerb && (hasReplacementPattern || hasQuantifierPattern)) ||
                    hasReplacementPattern || hasQuantifierPattern;
         },
@@ -2030,17 +2026,10 @@ What would you like me to help you with?`;
             // Only use modify-form endpoint if we have a saved form ID from database
             const endpoint = 'wpuf/v1/ai-form-builder/generate';
 
-            // Add strict instructions to the prompt
-            const strictPrompt = `STRICT INSTRUCTIONS: You are a form builder assistant. You MUST ONLY respond to form-related queries.
-If the user asks about anything unrelated to forms, fields, or form building, respond with: "I can only help with form-related tasks. Please ask me about adding, removing, or modifying form fields."
-
-User Query: ${message}
-
-Remember: ONLY provide form-related responses. Do not engage with off-topic requests.`;
-
             // Prepare request body for generate endpoint
+            // Let the backend handle the system prompt - don't override it here
             const requestBody = {
-                prompt: strictPrompt,
+                prompt: message,  // Send the user's message as-is
                 session_id: this.sessionId,
                 conversation_context: conversationContext,
                 form_type: config.formType || 'post', // Pass form type to API

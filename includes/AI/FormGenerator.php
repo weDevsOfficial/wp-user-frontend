@@ -531,6 +531,10 @@ class FormGenerator {
 
         // Remove any markdown code blocks if present
         $json_content = preg_replace('/^```(?:json)?\s*|\s*```$/m', '', $json_content);
+        
+        // Remove any text before the first { or after the last }
+        $json_content = preg_replace('/^[^{]*/', '', $json_content);
+        $json_content = preg_replace('/[^}]*$/', '', $json_content);
 
         // Try to find the JSON object (handle nested braces properly)
         $start = strpos($json_content, '{');
@@ -544,11 +548,10 @@ class FormGenerator {
         $form_data = json_decode($json_content, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            // Return user-friendly error message
             return [
                 'success' => false,
                 'error' => true,
-                'message' => 'Unable to generate form. Please try again or simplify your request.',
+                'message' => 'Unable to generate form. Please try again or rephrase your request.',
                 'provider' => 'openai',
                 'model' => $this->current_model
             ];
@@ -656,6 +659,10 @@ class FormGenerator {
 
         // Remove any markdown code blocks if present
         $json_content = preg_replace('/^```(?:json)?\s*|\s*```$/m', '', $json_content);
+        
+        // Remove any text before the first { or after the last }
+        $json_content = preg_replace('/^[^{]*/', '', $json_content);
+        $json_content = preg_replace('/[^}]*$/', '', $json_content);
 
         // Try to find the JSON object (handle nested braces properly)
         $start = strpos($json_content, '{');
@@ -669,7 +676,7 @@ class FormGenerator {
         $form_data = json_decode($json_content, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \Exception('Unable to generate form. Please try again or simplify your request.');
+            throw new \Exception('Unable to generate form. Please try again or rephrase your request.');
         }
 
         // Add metadata with better uniqueness
@@ -780,6 +787,10 @@ class FormGenerator {
 
         // Remove any markdown code blocks if present
         $json_content = preg_replace('/^```(?:json)?\s*|\s*```$/m', '', $json_content);
+        
+        // Remove any text before the first { or after the last }
+        $json_content = preg_replace('/^[^{]*/', '', $json_content);
+        $json_content = preg_replace('/[^}]*$/', '', $json_content);
 
         // Try to find the JSON object (handle nested braces properly)
         $start = strpos($json_content, '{');
@@ -793,7 +804,7 @@ class FormGenerator {
         $form_data = json_decode($json_content, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \Exception('Unable to generate form. Please try again or simplify your request.');
+            throw new \Exception('Unable to generate form. Please try again or rephrase your request.');
         }
 
         // Add metadata with better uniqueness

@@ -222,58 +222,67 @@ jQuery(function($) {
     $('#wpuf_ai\\[ai_provider\\]').on('change', function() {
         var selectedProvider = $(this).val();
         var aiModelSelect = $('#wpuf_ai\\[ai_model\\]');
-        var allOptions = aiModelSelect.find('option').clone();
+        var $this = $(this);
+        
+        // If no provider selected, show all models
+        if (!selectedProvider) {
+            // Restore all options if stored
+            if (aiModelSelect.data('all-options')) {
+                aiModelSelect.empty().append(aiModelSelect.data('all-options'));
+            }
+            return;
+        }
         
         // Store all options for restoration if needed
         if (!aiModelSelect.data('all-options')) {
-            aiModelSelect.data('all-options', allOptions);
+            aiModelSelect.data('all-options', aiModelSelect.find('option').clone());
         }
         
-        // Clear current options
-        aiModelSelect.empty();
-        
-        // Add default option
-        aiModelSelect.append('<option value="">Select AI Model</option>');
-        
-        // Filter and add relevant options based on provider
-        aiModelSelect.data('all-options').each(function() {
-            var option = $(this);
-            var optionText = option.text();
-            var optionValue = option.val();
-            
-            // Skip empty value option
-            if (!optionValue) return;
-            
-            // Check if option belongs to selected provider
-            if (selectedProvider === 'openai' && optionText.includes('(OpenAI)')) {
-                aiModelSelect.append(option.clone());
-            } else if (selectedProvider === 'anthropic' && optionText.includes('(Anthropic)')) {
-                aiModelSelect.append(option.clone());
-            } else if (selectedProvider === 'google' && optionText.includes('(Google)')) {
-                aiModelSelect.append(option.clone());
-            } else if (selectedProvider === 'others' && optionText.includes('(Others)')) {
-                aiModelSelect.append(option.clone());
+        // Get provider configuration via AJAX
+        $.ajax({
+            url: wpuf_admin_script.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'wpuf_get_ai_provider_configs',
+                nonce: wpuf_admin_script.nonce
+            },
+            success: function(response) {
+                if (response.success && response.data) {
+                    var providerConfigs = response.data;
+                    var selectedProviderConfig = providerConfigs[selectedProvider];
+                    
+                    if (selectedProviderConfig && selectedProviderConfig.models) {
+                        // Clear current options
+                        aiModelSelect.empty();
+                        
+                        // Add default option
+                        aiModelSelect.append('<option value="">Select AI Model</option>');
+                        
+                        // Add models for the selected provider
+                        $.each(selectedProviderConfig.models, function(modelKey, modelName) {
+                            aiModelSelect.append('<option value="' + modelKey + '">' + modelName + '</option>');
+                        });
+                        
+                        // Try to preserve current selection if it's valid for the selected provider
+                        var currentDbValue = aiModelSelect.attr('data-current-value') || aiModelSelect.val();
+                        if (currentDbValue && selectedProviderConfig.models[currentDbValue]) {
+                            aiModelSelect.val(currentDbValue);
+                        } else {
+                            // Set first available model as default
+                            var firstModelKey = Object.keys(selectedProviderConfig.models)[0];
+                            if (firstModelKey) {
+                                aiModelSelect.val(firstModelKey);
+                            }
+                        }
+                    }
+                } else {
+                    console.error('Failed to load AI provider configurations');
+                }
+            },
+            error: function() {
+                console.error('AJAX error loading AI provider configurations');
             }
         });
-        
-        // Check if there's a pre-selected value from database
-        var currentDbValue = aiModelSelect.attr('data-current-value') || aiModelSelect.val();
-        
-        // Set default model for the selected provider
-        var defaultModels = {
-            'openai': 'gpt-3.5-turbo',
-            'anthropic': 'claude-3-haiku',
-            'google': 'gemini-pro',
-            'others': 'llama'
-        };
-        
-        // First try to keep the current DB value if it's valid for the selected provider
-        if (currentDbValue && aiModelSelect.find('option[value="' + currentDbValue + '"]').length > 0) {
-            aiModelSelect.val(currentDbValue);
-        } else if (defaultModels[selectedProvider]) {
-            // Fall back to default model for the provider
-            aiModelSelect.val(defaultModels[selectedProvider]);
-        }
     });
 
     // Trigger change event on page load to filter models based on pre-selected provider

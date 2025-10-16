@@ -898,13 +898,6 @@ class RestController {
                 );
             }
 
-            // Log the modification
-            $this->log_form_modification($form_id, [
-                'prompt' => $prompt,
-                'action' => $ai_response['action'] ?? 'modify',
-                'modification_type' => $ai_response['modification_type'] ?? 'update_form'
-            ]);
-
             return new WP_REST_Response($response_data);
 
         } catch (\Exception $e) {
@@ -1114,42 +1107,6 @@ class RestController {
                 wp_delete_post($existing_posts[$i]->ID, true);
             }
         }
-    }
-
-    /**
-     * Log form modification for monitoring
-     *
-     * @param int $form_id Modified form ID
-     * @param array $modification_data Modification data
-     */
-    private function log_form_modification($form_id, $modification_data) {
-        $log_data = [
-            'form_id' => $form_id,
-            'user_id' => get_current_user_id(),
-            'timestamp' => current_time('mysql'),
-            'modification_type' => $modification_data['modification_type'] ?? 'unknown',
-            'target' => $modification_data['target'] ?? '',
-            'action' => $modification_data['action'] ?? ''
-        ];
-
-        // Log to WordPress debug log if enabled
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('WPUF AI Form Modified: ' . wp_json_encode($log_data));
-        }
-
-        // Keep a log in WordPress options (with caching optimization)
-        $cache_key = 'wpuf_ai_form_modification_log';
-        $modification_log = wp_cache_get($cache_key);
-        
-        if (false === $modification_log) {
-            $modification_log = get_option($cache_key, []);
-        }
-        
-        array_unshift($modification_log, $log_data);
-        $modification_log = array_slice($modification_log, 0, 50);
-        
-        update_option($cache_key, $modification_log);
-        wp_cache_set($cache_key, $modification_log, '', 300); // Cache for 5 minutes
     }
 
     /**

@@ -877,12 +877,6 @@ export default {
         },
         initialFormFields: {
             handler(newFields, oldFields) {
-                console.log('FormSuccessStage: initialFormFields prop changed:', {
-                    oldFields: oldFields ? oldFields.length : 0,
-                    newFields: newFields ? newFields.length : 0,
-                    currentFields: this.formFields.length
-                });
-                
                 // Skip if no new fields
                 if (!newFields || newFields.length === 0) {
                     return;
@@ -894,24 +888,19 @@ export default {
                 // Only show loader if we have current fields and they're changing
                 if (this.formFields.length > 0 && fieldsAreDifferent) {
                     // Update fields immediately without delay
-                    console.log('Updating form fields immediately...');
                     this.isFormUpdating = true;
                     this.formFields = [...newFields];
-                    console.log('FormSuccessStage: Updated formFields:', this.formFields);
                     
                     // Remove loader quickly
                     this.$nextTick(() => {
                         this.isFormUpdating = false;
                         this.isWaitingForAI = false;
-                        console.log('Form update complete');
                     });
                 } else if (!fieldsAreDifferent) {
                     // Fields are the same, no need to update
-                    console.log('Fields are the same, no update needed');
                 } else {
                     // Initial load, update without loader
                     this.formFields = [...newFields];
-                    console.log('Initial fields set:', this.formFields);
                 }
             },
             immediate: true,
@@ -1033,7 +1022,6 @@ export default {
         
         showStatusMessage(message, type = 'info') {
             // Add a temporary status message (you can expand this to show a toast notification)
-            console.log(`[${type.toUpperCase()}] ${message}`);
         },
         
         // Get the actual field type from WPUF field structure
@@ -1086,17 +1074,11 @@ export default {
         },
         
         initializeFormFields() {
-            console.log('FormSuccessStage initializeFormFields called');
-            console.log('initialFormFields prop:', this.initialFormFields);
-            console.log('initialFormFields length:', this.initialFormFields ? this.initialFormFields.length : 0);
-            
             // If we have initial form fields from props, use them
             if (this.initialFormFields && this.initialFormFields.length > 0) {
-                console.log('Using initialFormFields from props');
                 return [...this.initialFormFields];
             }
             
-            console.log('Starting with empty form - waiting for AI generation');
             // Start with empty form - no default fields
             return [];
         },
@@ -1329,12 +1311,6 @@ export default {
                 this.conversationState.is_predefined_template = this.isPredefinedPrompt(originalPrompt);
                 this.conversationState.original_form_hash = this.generateFormHash();
                 this.conversationState.form_created = true;
-                
-                console.log('🔍 Form initialized:', {
-                    prompt: originalPrompt,
-                    is_predefined: this.conversationState.is_predefined_template,
-                    form_hash: this.conversationState.original_form_hash
-                });
             }
         },
         
@@ -1351,7 +1327,6 @@ export default {
             
             if (isModified && !this.conversationState.template_modified) {
                 this.conversationState.template_modified = true;
-                console.log('📝 Predefined template has been modified, enabling API calls');
             }
             
             return isModified;
@@ -1681,13 +1656,6 @@ What would you like me to help you with?`;
             // Check if we need to make an API call or can provide a predefined response
             const shouldCallAPI = this.shouldMakeAPICall(userMessage);
             
-            console.log('💭 Chat message analysis:', {
-                message: userMessage,
-                is_predefined_template: this.conversationState.is_predefined_template,
-                template_modified: this.conversationState.template_modified,
-                should_call_api: shouldCallAPI
-            });
-            
             // Add user message to chat
             this.chatMessages.push({
                 type: 'user',
@@ -1731,8 +1699,6 @@ What would you like me to help you with?`;
                         action: 'info',
                         form_data: null // No form changes
                     };
-
-                    console.log('🚀 Using predefined response (no API call needed)');
                 }
                 
                 // Remove processing message
@@ -1876,7 +1842,6 @@ What would you like me to help you with?`;
                         
                         // Apply changes to preview temporarily (will be reverted on reject)
                         this.formFields.push(formattedField);
-                        console.log('📝 Stored pending field addition:', formattedField);
                         
                         // Remove blur immediately
                         this.isFormUpdating = false;
@@ -1912,8 +1877,6 @@ What would you like me to help you with?`;
                 }
                 
             } catch (error) {
-                console.error('Chat API error:', error);
-                
                 // Remove processing message
                 const processingIndex = this.chatMessages.findIndex(msg => msg.isProcessing);
                 if (processingIndex !== -1) {
@@ -2011,17 +1974,6 @@ What would you like me to help you with?`;
                     }))
             };
             
-            console.log('🚀 Sending chat API request:', {
-                prompt: message,
-                context_summary: {
-                    session_id: this.sessionId,
-                    form_title: this.formTitle,
-                    fields_count: this.formFields.length,
-                    messages_count: conversationContext.chat_history.length,
-                    modifications_count: this.conversationState.modifications_count
-                }
-            });
-            
             // Always use generate endpoint for chat modifications since form isn't saved yet
             // Only use modify-form endpoint if we have a saved form ID from database
             const endpoint = 'wpuf/v1/ai-form-builder/generate';
@@ -2048,16 +2000,10 @@ What would you like me to help you with?`;
             
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                console.error('❌ Chat API Error:', {
-                    status: response.status,
-                    statusText: response.statusText,
-                    error: errorData
-                });
                 throw new Error(`HTTP ${response.status}: ${errorData.message || response.statusText}`);
             }
             
             const result = await response.json();
-            console.log('✅ Chat API Response:', result);
             
             return result;
         },
@@ -2128,8 +2074,6 @@ What would you like me to help you with?`;
                     }
                 };
                 
-                console.log('🚀 Applying form with data:', formData);
-                
                 // Call the create form API
                 const response = await fetch(restUrl + 'wpuf/v1/ai-form-builder/create-form', {
                     method: 'POST',
@@ -2142,12 +2086,10 @@ What would you like me to help you with?`;
                 
                 if (!response.ok) {
                     const errorData = await response.json().catch(() => ({}));
-                    console.error('❌ Apply Form Error:', errorData);
                     throw new Error(`HTTP ${response.status}: ${errorData.message || response.statusText}`);
                 }
                 
                 const result = await response.json();
-                console.log('✅ Form Applied Successfully:', result);
                 
                 // Emit success event with form ID
                 this.$emit('form-applied', {
@@ -2156,8 +2098,6 @@ What would you like me to help you with?`;
                 });
                 
             } catch (error) {
-                console.error('❌ Apply Form Error:', error);
-                
                 // Enhanced error context
                 if (error.name === 'TypeError' && error.message.includes('fetch')) {
                     // Network error
@@ -2207,8 +2147,6 @@ What would you like me to help you with?`;
                     this.formDescription = this.pendingChanges.previousDescription;
                 }
                 
-                console.log('🔄 Reverted form to previous state');
-                
                 // Clear pending changes
                 this.pendingChanges = null;
                 this.previousFormFields = null;
@@ -2221,8 +2159,6 @@ What would you like me to help you with?`;
         handleAccept() {
             // Accept the pending changes (they're already applied to formFields)
             if (this.pendingChanges) {
-                console.log('✅ Accepted pending changes:', this.pendingChanges);
-                
                 // Handle different types of pending changes
                 if (this.pendingChanges.type === 'form_update') {
                     // Full form update - emit title and form update
@@ -2604,17 +2540,6 @@ What would you like me to help you with?`;
                            inputType === proTypeLower || 
                            template === proTypeLower;
                 });
-            });
-            
-            console.log('Pro field detection:', {
-                totalFields: this.formFields.length,
-                proFieldsFound: foundProFields.length,
-                proFields: foundProFields.map(f => ({
-                    name: f.name,
-                    type: f.type,
-                    input_type: f.input_type,
-                    template: f.template
-                }))
             });
             
             return foundProFields.length > 0 ? foundProFields : null;
@@ -3017,7 +2942,6 @@ What would you like me to help you with?`;
             
             // If no icon found, return empty string (no icon)
             if (!iconName) {
-                console.warn(`No icon mapping found for field: ${fieldKey}`);
                 return '';
             }
             
@@ -3032,7 +2956,6 @@ What would you like me to help you with?`;
                            '';
 
             if (!assetUrl) {
-                console.warn('WPUF: Unable to determine asset URL for field icon');
                 return '';
             }
 

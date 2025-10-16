@@ -51,7 +51,7 @@ jQuery(function($) {
                 });
             },
             error: function(errorThrown){
-                console.log(errorThrown);
+                // Error occurred
             }
         });
         $(this).closest("p").hide();
@@ -233,8 +233,6 @@ jQuery(function($) {
 
         // Update API Key help link based on selected provider
         var apiKeyLink = $('.wpuf-api-key-link');
-        console.log('Provider changed to:', selectedProvider);
-        console.log('API key link element found:', apiKeyLink.length);
 
         if (apiKeyLink.length > 0) {
             var providerLinks = {
@@ -244,7 +242,6 @@ jQuery(function($) {
             };
 
             var newLink = providerLinks[selectedProvider] || providerLinks['openai'];
-            console.log('Updating API key link to:', newLink);
 
             // Force update the href attribute
             apiKeyLink.prop('href', newLink);
@@ -285,9 +282,6 @@ jQuery(function($) {
 
         // Force update API key link again after model loading
         updateApiKeyLink(selectedProvider);
-
-        // Log for debugging
-        console.log('Provider changed to:', selectedProvider, '- Models loaded:', modelsAdded);
         
         // Check if there's a pre-selected value from database
         var currentDbValue = aiModelSelect.attr('data-current-value') || aiModelSelect.val();
@@ -344,8 +338,6 @@ jQuery(function($) {
                 $this.attr('href', newLink);
                 $this.removeAttr('href').attr('href', newLink); // Force attribute reset
             });
-
-            console.log('Updated API key link for', provider, 'to:', newLink);
         }
     }
 

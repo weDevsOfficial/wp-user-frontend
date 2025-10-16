@@ -281,8 +281,6 @@ class RestController {
             ], 200);
 
         } catch (\Exception $e) {
-            error_log('WPUF AI REST Error: ' . $e->getMessage());
-            
             return new WP_Error(
                 'generation_error',
                 __('An error occurred while generating the form. Please try again.', 'wp-user-frontend'),
@@ -644,7 +642,6 @@ class RestController {
                 $field_id = wp_insert_post($field_post);
                 
                 if (is_wp_error($field_id)) {
-                    error_log('WPUF AI: Failed to create field post: ' . $field_id->get_error_message());
                     // Clean up previously created fields and the form post
                     wp_delete_post($form_id, true);
                     return new WP_Error(
@@ -712,8 +709,6 @@ class RestController {
                 'error_line' => $e->getLine(),
                 'timestamp' => current_time('mysql')
             ];
-            
-            error_log('WPUF AI Form Creation Error: ' . wp_json_encode($error_context));
             
             return new WP_Error(
                 'form_creation_error',
@@ -913,7 +908,6 @@ class RestController {
             return new WP_REST_Response($response_data);
 
         } catch (\Exception $e) {
-            error_log('WPUF AI Form Modification Error: ' . $e->getMessage());
             return new WP_Error(
                 'modification_error',
                 __('Form modification failed', 'wp-user-frontend'),

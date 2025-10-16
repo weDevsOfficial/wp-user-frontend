@@ -122,12 +122,8 @@ const fetchForms = async (page = 1, status = 'any', search = '') => {
     
     } else {
       clearFormsState();
-      if (!data.success) {
-        console.warn('API returned success: false');
-      }
     }
   } catch (error) {
-    console.error('Error fetching forms:', error);
     clearFormsState();
   } finally {
     loading.value = false;
@@ -241,7 +237,7 @@ const copyToClipboard = async (shortcode, $event) => {
       }, 2000);
     }
   } catch (err) {
-    console.error('Failed to copy shortcode: ', err);
+    // Failed to copy
   }
 };
 

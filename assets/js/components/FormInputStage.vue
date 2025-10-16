@@ -92,10 +92,6 @@ export default {
         // Get form type from wpufAIFormBuilder.formType (localized from PHP)
         const formType = (window.wpufAIFormBuilder && window.wpufAIFormBuilder.formType) || 'post';
 
-        // Debug: Log the form type
-        console.log('🔍 FormInputStage - Form Type:', formType);
-        console.log('🔍 FormInputStage - wpufAIFormBuilder:', window.wpufAIFormBuilder);
-
         // Define prompts based on form type
         let promptTemplates = [];
         let promptAIInstructions = {};

@@ -84,7 +84,6 @@ export default {
             try {
                 return window.__ ? window.__(text, 'wp-user-frontend') : text;
             } catch (error) {
-                console.warn('Translation function error:', error);
                 return text;
             }
         },
@@ -131,8 +130,6 @@ export default {
                     })
                 });
                 
-                console.log('Response status:', response.status);
-                
                 if (!response.ok) {
                     // Try to get detailed error from response
                     let errorDetails = `HTTP ${response.status}: ${response.statusText}`;
@@ -151,7 +148,6 @@ export default {
                 }
                 
                 const result = await response.json();
-                console.log('API Response:', result);
                 
                 if (result.success) {
                     // Store everything as-is from API
@@ -164,13 +160,10 @@ export default {
                     const notifyProcessingStage = (retries = 3) => {
                         this.$nextTick(() => {
                             if (this.$refs.processingStage) {
-                                console.log('✅ Notifying processing stage - response received');
                                 this.$refs.processingStage.onAIResponseReceived();
                             } else if (retries > 0) {
-                                console.warn(`⚠️ Processing stage ref not available, retrying... (${retries} attempts left)`);
                                 setTimeout(() => notifyProcessingStage(retries - 1), 100);
                             } else {
-                                console.warn('⚠️ Processing stage ref not available after retries, completing immediately');
                                 this.handleGenerationComplete();
                             }
                         });
@@ -179,8 +172,6 @@ export default {
 
                     // Processing stage will handle the transition timing
                 } else {
-                    console.error('Form generation failed:', result);
-                    
                     // Check for specific error types
                     if (result.code === 'invalid_request' || result.code === 'generation_failed') {
                         // Non-form request error
@@ -197,7 +188,6 @@ export default {
                     }
                 }
             } catch (error) {
-                console.error('API call failed:', error);
                 let errorMessage = 'Network error occurred';
 
                 if (error.message.includes('HTTP')) {
@@ -408,8 +398,6 @@ export default {
             const config = window.wpufAIFormBuilder || {};
             const isProActive = config.isProActive || false;
             
-            console.warn('Pro field requested:', result.message);
-            
             if (result.form_data) {
                 this.generatedFormData = result.form_data;
                 this.formTitle = result.form_data.form_title || 'Generated Form';
@@ -430,8 +418,6 @@ export default {
                             this.showProFieldModal(result.message);
                         }, 500);
                     });
-                } else {
-                    console.log('Pro is active, no need to show warning');
                 }
             }
         },
@@ -600,7 +586,6 @@ export default {
         
         handleSendMessage(message) {
             // Handle sending message to AI backend
-            console.log('Sending message:', message);
             // TODO: Implement API call
         },
         
@@ -615,8 +600,6 @@ export default {
                 const restUrl = config.restUrl || (window.location.origin + '/wp-json/');
                 const nonce = config.nonce || '';
                 const formType = config.formType || 'post';
-
-                console.log('Creating and applying form...');
 
                 // Always use wpuf_fields from generated data - they already have correct WPUF format
                 const wpufFields = this.generatedFormData.wpuf_fields || [];
@@ -643,14 +626,12 @@ export default {
                 if (!response.ok) {
                     // Get error details from response
                     const errorData = await response.json().catch(() => ({}));
-                    console.error('API Error Response:', errorData);
                     throw new Error(`HTTP ${response.status}: ${errorData.message || response.statusText}`);
                 }
 
                 const result = await response.json();
 
                 if (result.success && result.form_id) {
-                    console.log('Form created and applied successfully with ID:', result.form_id);
                     // Redirect to forms list based on form type
                     window.location.href = result.list_url || 'admin.php?page=wpuf-post-forms';
                 } else {
@@ -658,18 +639,15 @@ export default {
                 }
 
             } catch (error) {
-                console.error('Failed to apply form:', error);
                 alert(this.__('Error applying form: ') + error.message);
             }
         },
         
         rejectForm() {
-            console.log('Form rejected');
             // TODO: Implement form rejection logic
         },
         
         regenerateForm() {
-            console.log('Regenerating form');
             this.currentStage = 'input';
             this.formDescription = '';
             this.selectedPrompt = '';
@@ -702,8 +680,6 @@ export default {
                 }
 
                 // Create new form
-                console.log('Creating form with fields:', fieldsToUse);
-
                 const response = await fetch(restUrl + 'wpuf/v1/ai-form-builder/create-form', {
                     method: 'POST',
                     headers: {
@@ -731,7 +707,6 @@ export default {
                 }
 
             } catch (error) {
-                console.error('Failed to create/edit form:', error);
                 alert(this.__('Error: ') + error.message);
             }
         },
@@ -742,8 +717,6 @@ export default {
         
         handleFormUpdated(updatedFormData) {
             // Update form data when changes are made in the chat
-            console.log('Form updated from chat:', updatedFormData);
-
             if (updatedFormData) {
                 // Update the generated form data with the changes from chat
                 this.generatedFormData = {
@@ -765,7 +738,6 @@ export default {
         
         handleTitleUpdated(newTitle) {
             // Update form title when changed in chat
-            console.log('Form title updated:', newTitle);
             this.formTitle = newTitle;
         }
     },

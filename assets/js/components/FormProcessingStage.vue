@@ -221,7 +221,6 @@ export default {
 
             // If we still don't have a base URL, construct from current script
             if (!baseUrl) {
-                console.warn('WPUF: Unable to determine asset URL for confetti image');
                 return '';
             }
 

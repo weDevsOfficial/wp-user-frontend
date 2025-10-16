@@ -73,7 +73,7 @@ class AI_Manager {
         // Safe fetch of AI settings
         $wpuf_ai = get_option('wpuf_ai', []);
         
-        // Always localize the data for Vue components that might be loaded dynamically
+        // Localize the data for Vue components to the main form builder script
         wp_localize_script('wpuf-form-builder-mixins', 'wpufAIFormBuilder', [
             'restUrl' => rest_url('/'),
             'nonce' => wp_create_nonce('wp_rest'),
@@ -88,32 +88,12 @@ class AI_Manager {
                 'success' => __('Form generated successfully', 'wp-user-frontend'),
             ]
         ]);
-        
-        // Also try to localize to any existing WPUF scripts that might be loaded
-        $scripts_to_try = ['wpuf-form-builder-mixins', 'wpuf-admin-script', 'wpuf-main-script'];
-        foreach ($scripts_to_try as $script_handle) {
-            if (wp_script_is($script_handle, 'enqueued') || wp_script_is($script_handle, 'registered')) {
-                wp_localize_script($script_handle, 'wpufAIFormBuilder', [
-                    'restUrl' => rest_url('/'),
-                    'nonce' => wp_create_nonce('wp_rest'),
-                    'provider' => $wpuf_ai['ai_provider'] ?? 'openai',
-                    'temperature' => $wpuf_ai['temperature'] ?? 0.7,
-                    'maxTokens' => $wpuf_ai['max_tokens'] ?? 2000,
-                    'assetUrl' => WPUF_ASSET_URI,
-                    'isProActive' => class_exists('WP_User_Frontend_Pro'),
-                ]);
-                break;
-            }
-        }
     }
 
     /**
      * Enqueue admin scripts
      */
     public function enqueue_admin_scripts($hook) {
-        // Always localize for admin pages that might have Vue components
-        $admin_scripts_to_try = ['wpuf-form-builder-mixins', 'wpuf-admin-script', 'wpuf-vue-admin'];
-
         // Fetch AI settings once and cast to array to avoid "array offset on bool" notices
         $wpuf_ai = (array) get_option('wpuf_ai', []);
 
@@ -137,12 +117,8 @@ class AI_Manager {
             ]
         ];
         
-        foreach ($admin_scripts_to_try as $script_handle) {
-            if (wp_script_is($script_handle, 'enqueued') || wp_script_is($script_handle, 'registered')) {
-                wp_localize_script($script_handle, 'wpufAIFormBuilder', $localization_data);
-                break;
-            }
-        }
+        // Localize to the main form builder script
+        wp_localize_script('wpuf-form-builder-mixins', 'wpufAIFormBuilder', $localization_data);
         
         // Also add a fallback by injecting directly into the page
         if ($this->is_ai_form_builder_admin_page($hook)) {

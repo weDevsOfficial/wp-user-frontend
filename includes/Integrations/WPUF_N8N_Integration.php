@@ -12,7 +12,122 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_N8N_Integration' ) ) {
 
         public function __construct() {
             add_filter( 'wpuf_settings_sections', [ $this, 'add_n8n_settings_section' ] );
-            add_filter( 'wpuf_settings_fields', [ $this, 'add_n8n_settings_fields' ], 20 );
+            add_filter( 'wpuf_settings_fields', [ $this, 'add_n8n_settings_fields' ] );
+            add_filter( 'wpuf_post_form_builder_setting_menu_titles', [ $this, 'add_n8n_menu_title' ] );
+            add_filter( 'wpuf_post_form_builder_setting_menu_contents', [ $this, 'add_n8n_form_settings' ] );
+
+            // Hook into post submission
+            add_action( 'wpuf_add_post_after_insert', [ $this, 'send_post_to_n8n' ], 20, 4 );
+        }
+
+        /**
+         * Send post to N8N
+         *
+         * @since WPUF_PRO_SINCE
+         *
+         * @param int $post_id
+         * @param int $form_id
+         * @param array $form_settings
+         * @param array $meta_vars
+         */
+        public function send_post_to_n8n( $post_id, $form_id, $form_settings, $meta_vars ) {
+            // Check if N8N integration is enabled for this form
+            if ( empty( $form_settings['enable_n8n'] ) || ! wpuf_is_checkbox_or_toggle_on( $form_settings['enable_n8n'] ) ) {
+                return;
+            }
+
+            // Get the webhook URL
+            $n8n_webhook_url = isset( $form_settings['n8n_webhook_url'] ) ? $form_settings['n8n_webhook_url'] : '';
+            if ( empty( $n8n_webhook_url ) ) {
+                return;
+            }
+
+            // Sanitize the URL
+            $n8n_webhook_url = esc_url_raw( $n8n_webhook_url );
+
+            // Get the post data
+            $post = get_post( $post_id );
+            if ( ! $post ) {
+                return;
+            }
+
+            // Prepare the data to send to N8N
+            $post_data = [
+                'post_id' => $post_id,
+                'form_id' => $form_id,
+                'post_title' => $post->post_title,
+                'post_content' => $post->post_content,
+                'post_excerpt' => $post->post_excerpt,
+                'post_status' => $post->post_status,
+                'post_type' => $post->post_type,
+                'post_author' => $post->post_author,
+                'post_date' => $post->post_date,
+                'post_modified' => $post->post_modified,
+                'meta_vars' => $meta_vars,
+                'form_settings' => $form_settings,
+            ];
+
+            // Add custom fields if any
+            if ( ! empty( $meta_vars ) ) {
+                foreach ( $meta_vars as $meta_key => $meta_value ) {
+                    $post_data['custom_fields'][ $meta_key ] = $meta_value;
+                }
+            }
+
+            // Get global N8N settings for authentication
+            $n8n_settings = get_option( 'n8n', [] );
+
+            // Prepare headers for authentication
+            $headers = [
+                'Content-Type' => 'application/json',
+            ];
+
+            // Add authentication based on global settings
+            $auth_type = isset( $n8n_settings['authentication_type'] ) ? $n8n_settings['authentication_type'] : 'none';
+
+            switch ( $auth_type ) {
+                case 'basic_auth':
+                    $username = isset( $n8n_settings['basic_auth_username'] ) ? $n8n_settings['basic_auth_username'] : '';
+                    $password = isset( $n8n_settings['basic_auth_password'] ) ? $n8n_settings['basic_auth_password'] : '';
+                    if ( ! empty( $username ) && ! empty( $password ) ) {
+                        $headers['Authorization'] = 'Basic ' . base64_encode( $username . ':' . $password );
+                    }
+                    break;
+
+                case 'header_auth':
+                    $header_name = isset( $n8n_settings['header_auth_name'] ) ? $n8n_settings['header_auth_name'] : '';
+                    $header_value = isset( $n8n_settings['header_auth_value'] ) ? $n8n_settings['header_auth_value'] : '';
+                    if ( ! empty( $header_name ) && ! empty( $header_value ) ) {
+                        $headers[ $header_name ] = $header_value;
+                    }
+                    break;
+
+                case 'jwt_auth':
+                    $jwt_key_type = isset( $n8n_settings['jwt_key_type'] ) ? $n8n_settings['jwt_key_type'] : 'passphrase';
+                    $jwt_key = '';
+                    
+                    if ( $jwt_key_type === 'passphrase' ) {
+                        $jwt_key = isset( $n8n_settings['jwt_key_passphrase'] ) ? $n8n_settings['jwt_key_passphrase'] : '';
+                    } elseif ( $jwt_key_type === 'pem_key' ) {
+                        $jwt_key = isset( $n8n_settings['jwt_key_pem_key'] ) ? $n8n_settings['jwt_key_pem_key'] : '';
+                    }
+                    
+                    if ( ! empty( $jwt_key ) ) {
+                        $jwt_token = $this->create_jwt_token( $jwt_key );
+                        if ( $jwt_token ) {
+                            $headers['Authorization'] = 'Bearer ' . $jwt_token;
+                        }
+                    }
+                    break;
+            }
+
+            // Send data to N8N webhook
+            $response = wp_remote_post( $n8n_webhook_url, [
+                'method' => 'POST',
+                'timeout' => 30,
+                'headers' => $headers,
+                'body' => wp_json_encode( $post_data ),
+            ] );
         }
 
         /**
@@ -34,6 +149,15 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_N8N_Integration' ) ) {
             return $sections;
         }
 
+        /**
+         * Add N8N settings fields
+         *
+         * @since WPUF_PRO_SINCE
+         *
+         * @param array $fields
+         *
+         * @return array
+         */
         public function add_n8n_settings_fields( $fields ) {
             $settings = [
                 'n8n' => [
@@ -147,6 +271,87 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_N8N_Integration' ) ) {
             ];
 
             return array_merge( $fields, $settings );
+        }
+
+        /**
+         * Add N8N to menu titles
+         *
+         * This adds "N8N" to the sidebar menu in form builder
+         *
+         * @since WPUF_PRO_SINCE
+         *
+         * @param array $settings
+         * @return array
+         */
+        public function add_n8n_menu_title( $settings ) {
+            // Create N8N menu item
+            $n8n = [
+                'n8n' => [
+                    'label' => __( 'N8N', 'wp-user-frontend' ),
+                    'icon'  => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="custom-stroke">
+                                <path d="M10 1.66675L12.5 7.50008L18.3333 10.0001L12.5 12.5001L10 18.3334L7.5 12.5001L1.66667 10.0001L7.5 7.50008L10 1.66675Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              </svg>',
+                ],
+            ];
+
+            return array_merge( $settings, $n8n );
+        }
+
+        /**
+         * Add N8N form settings
+         *
+         * @since WPUF_PRO_SINCE
+         *
+         * @param array $settings
+         *
+         * @return array
+         */
+        public function add_n8n_form_settings( $settings ) {
+            $settings['post_settings']['n8n']['enable_n8n'] = [
+                'label'       => __( 'Enable N8N Integration', 'wp-user-frontend' ),
+                'type'        => 'toggle',
+                'help_text'   => __( 'Enable N8N integration', 'wp-user-frontend' ),
+                'default'     => 'off',
+            ];
+
+            $settings['post_settings']['n8n']['n8n_webhook_url'] = [
+                'label'       => __( 'Webhook URL', 'wp-user-frontend' ),
+                'type'        => 'text',
+                'help_text'   => __( 'Enter the N8N webhook URL to send form data when posts are submitted', 'wp-user-frontend' ),
+                'placeholder' => __( 'https://your-n8n-instance.com/webhook/your-webhook-id', 'wp-user-frontend' ),
+            ];
+
+            return $settings;
+        }
+
+        /**
+         * Create JWT token for authentication
+         *
+         * @since WPUF_PRO_SINCE
+         *
+         * @param string $secret_key
+         * @return string|false
+         */
+        private function create_jwt_token( $secret_key ) {
+            // Simple JWT implementation - you might want to use a proper JWT library
+            $header = json_encode( [
+                'typ' => 'JWT',
+                'alg' => 'HS256'
+            ] );
+
+            $payload = json_encode( [
+                'iat' => time(),
+                'exp' => time() + 3600, // 1 hour expiration
+                'iss' => get_site_url(),
+            ] );
+
+            $base64_header = str_replace( ['+', '/', '='], ['-', '_', ''], base64_encode( $header ) );
+            $base64_payload = str_replace( ['+', '/', '='], ['-', '_', ''], base64_encode( $payload ) );
+
+            $signature = hash_hmac( 'sha256', $base64_header . '.' . $base64_payload, $secret_key, true );
+            $base64_signature = str_replace( ['+', '/', '='], ['-', '_', ''], base64_encode( $signature ) );
+
+            return $base64_header . '.' . $base64_payload . '.' . $base64_signature;
         }
     }
 }

@@ -52,51 +52,13 @@ class FormGenerator {
     }
 
     /**
-     * Initialize provider configurations dynamically from settings
+     * Initialize provider configurations from centralized Config
      *
      * @since WPUF_SINCE
      */
     private function init_provider_configs() {
-        // Get AI model options from settings (filtered)
-        $ai_model_options = apply_filters('wpuf_ai_model_options', []);
-
-        // Organize models by provider
-        $openai_models = [];
-        $anthropic_models = [];
-        $google_models = [];
-
-        foreach ($ai_model_options as $model_id => $model_name) {
-            // Determine provider by model prefix or label
-            if (strpos($model_id, 'gpt-') === 0 || strpos($model_id, 'o1') === 0 || strpos($model_name, '(OpenAI)') !== false) {
-                $openai_models[$model_id] = $model_name;
-            } elseif (strpos($model_id, 'claude-') === 0 || strpos($model_name, '(Anthropic)') !== false) {
-                $anthropic_models[$model_id] = $model_name;
-            } elseif (strpos($model_id, 'gemini-') === 0 || strpos($model_name, '(Google)') !== false) {
-                $google_models[$model_id] = $model_name;
-            }
-        }
-
-        // Build provider configurations
-        $this->provider_configs = [
-            'openai' => [
-                'name' => 'OpenAI',
-                'endpoint' => 'https://api.openai.com/v1/chat/completions',
-                'models' => $openai_models,
-                'requires_key' => true
-            ],
-            'anthropic' => [
-                'name' => 'Anthropic Claude',
-                'endpoint' => 'https://api.anthropic.com/v1/messages',
-                'models' => $anthropic_models,
-                'requires_key' => true
-            ],
-            'google' => [
-                'name' => 'Google Gemini',
-                'endpoint' => 'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent',
-                'models' => $google_models,
-                'requires_key' => true
-            ]
-        ];
+        // Get provider configurations from centralized Config class
+        $this->provider_configs = Config::get_provider_configs();
     }
 
     /**
@@ -207,188 +169,15 @@ class FormGenerator {
      * @return array Model configuration with parameter restrictions and requirements
      */
     private function get_model_config($provider, $model) {
-        $model_configs = [
-            'openai' => [
-                // Models with special requirements
-                'o1' => [
-                    'token_param' => 'max_completion_tokens',
-                    'token_location' => 'body',
-                    'temperature' => 1.0, // Fixed temperature
-                    'supports_json_mode' => false,
-                    'supports_custom_temperature' => false
-                ],
-                'o1-mini' => [
-                    'token_param' => 'max_completion_tokens',
-                    'token_location' => 'body',
-                    'temperature' => 1.0,
-                    'supports_json_mode' => false,
-                    'supports_custom_temperature' => false
-                ],
-                'o1-preview' => [
-                    'token_param' => 'max_completion_tokens',
-                    'token_location' => 'body',
-                    'temperature' => 1.0,
-                    'supports_json_mode' => false,
-                    'supports_custom_temperature' => false
-                ],
-                // GPT-4 Series - All support JSON mode and custom temperature
-                'gpt-4o' => [
-                    'token_param' => 'max_tokens',
-                    'token_location' => 'body',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ],
-                'gpt-4o-mini' => [
-                    'token_param' => 'max_tokens',
-                    'token_location' => 'body',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ],
-                'gpt-4-turbo' => [
-                    'token_param' => 'max_tokens',
-                    'token_location' => 'body',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ],
-                'gpt-4' => [
-                    'token_param' => 'max_tokens',
-                    'token_location' => 'body',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ],
-                'gpt-3.5-turbo' => [
-                    'token_param' => 'max_tokens',
-                    'token_location' => 'body',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ]
-            ],
-            'anthropic' => [
-                // Anthropic models with special requirements
-                'claude-4.1-opus' => [
-                    'token_param' => 'max_tokens',
-                    'token_location' => 'body',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ],
-                'claude-4-opus' => [
-                    'token_param' => 'max_tokens',
-                    'token_location' => 'body',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ],
-                // All other Anthropic models support standard configuration
-                'claude-4-sonnet' => [
-                    'token_param' => 'max_tokens',
-                    'token_location' => 'body',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ],
-                'claude-3.7-sonnet' => [
-                    'token_param' => 'max_tokens',
-                    'token_location' => 'body',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ],
-                'claude-3-5-sonnet-20241022' => [
-                    'token_param' => 'max_tokens',
-                    'token_location' => 'body',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ],
-                'claude-3-5-sonnet-20240620' => [
-                    'token_param' => 'max_tokens',
-                    'token_location' => 'body',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ],
-                'claude-3-5-haiku-20241022' => [
-                    'token_param' => 'max_tokens',
-                    'token_location' => 'body',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ],
-                'claude-3-opus-20240229' => [
-                    'token_param' => 'max_tokens',
-                    'token_location' => 'body',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ],
-                'claude-3-sonnet-20240229' => [
-                    'token_param' => 'max_tokens',
-                    'token_location' => 'body',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ],
-                'claude-3-haiku-20240307' => [
-                    'token_param' => 'max_tokens',
-                    'token_location' => 'body',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ]
-            ],
-            'google' => [
-                // All Google models support JSON mode and custom temperature
-                'gemini-2.0-flash-exp' => [
-                    'token_param' => 'maxOutputTokens',
-                    'token_location' => 'generationConfig',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ],
-                'gemini-1.5-flash' => [
-                    'token_param' => 'maxOutputTokens',
-                    'token_location' => 'generationConfig',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ],
-                'gemini-1.5-flash-8b' => [
-                    'token_param' => 'maxOutputTokens',
-                    'token_location' => 'generationConfig',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ],
-                'gemini-1.5-pro' => [
-                    'token_param' => 'maxOutputTokens',
-                    'token_location' => 'generationConfig',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ],
-                'gemini-1.0-pro' => [
-                    'token_param' => 'maxOutputTokens',
-                    'token_location' => 'generationConfig',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ],
-                // Default fallback for any Google model not explicitly listed
-                'default' => [
-                    'token_param' => 'maxOutputTokens',
-                    'token_location' => 'generationConfig',
-                    'supports_json_mode' => true,
-                    'supports_custom_temperature' => true
-                ]
-            ]
-        ];
-
-        // Check for exact model match first
-        if (isset($model_configs[$provider][$model])) {
-            return $model_configs[$provider][$model];
+        // Get configuration from centralized Config class
+        $config = Config::get_model_config($model);
+        
+        // Return config if found, otherwise use safe defaults
+        if ($config !== null) {
+            return $config;
         }
 
-        // Check for pattern matches (e.g., gpt-5-turbo-preview matches gpt-5-turbo)
-        if (isset($model_configs[$provider])) {
-            foreach ($model_configs[$provider] as $pattern => $config) {
-                if ($pattern !== 'default' && strpos($model, $pattern) === 0) {
-                    return $config;
-                }
-            }
-        }
-
-        // Use provider default if available
-        if (isset($model_configs[$provider]['default'])) {
-            return $model_configs[$provider]['default'];
-        }
-
-        // Fallback defaults for each provider
+        // Fallback defaults for each provider if model not found
         $defaults = [
             'openai' => [
                 'token_param' => 'max_tokens',

@@ -643,11 +643,7 @@ function wpuf_settings_fields() {
                 'label'   => __( 'AI Provider', 'wp-user-frontend' ),
                 'desc'    => __( 'Select the AI service provider you want to use.', 'wp-user-frontend' ),
                 'type'    => 'radio_inline',
-                'options' => [
-                    'openai'    => 'OpenAI',
-                    'anthropic' => 'Anthropic',
-                    'google'    => 'Google',
-                ],
+                'options' => \WeDevs\Wpuf\AI\Config::get_provider_options(),
                 'default' => 'openai',
                 'class'   => 'wpuf-ai-provider-radio',
             ],
@@ -656,55 +652,7 @@ function wpuf_settings_fields() {
                 'label'   => __( 'AI Model', 'wp-user-frontend' ),
                 'desc'    => __( 'Select the AI model to use for content generation.', 'wp-user-frontend' ),
                 'type'    => 'select',
-                'options' => apply_filters('wpuf_ai_model_options', [
-                    // OpenAI GPT-4.1 Series (Latest - December 2024)
-                    'gpt-4.1' => 'GPT-4.1 - Latest Flagship (OpenAI)',
-                    'gpt-4.1-mini' => 'GPT-4.1 Mini - Fast & Smart (OpenAI)',
-                    'gpt-4.1-nano' => 'GPT-4.1 Nano - Fastest & Cheapest (OpenAI)',
-
-                    // OpenAI O1 Series (Reasoning Models)
-                    'o1' => 'O1 - Full Reasoning Model (OpenAI)',
-                    'o1-mini' => 'O1 Mini - Cost-Effective Reasoning (OpenAI)',
-                    'o1-preview' => 'O1 Preview - Limited Access (OpenAI)',
-
-                    // OpenAI GPT-4o Series (Multimodal)
-                    'gpt-4o' => 'GPT-4o - Multimodal (OpenAI)',
-                    'gpt-4o-mini' => 'GPT-4o Mini - Efficient Multimodal (OpenAI)',
-                    'gpt-4o-2024-08-06' => 'GPT-4o Latest Snapshot (OpenAI)',
-
-                    // OpenAI GPT-4 Turbo & Legacy
-                    'gpt-4-turbo' => 'GPT-4 Turbo (OpenAI)',
-                    'gpt-4-turbo-2024-04-09' => 'GPT-4 Turbo Latest (OpenAI)',
-                    'gpt-4' => 'GPT-4 (OpenAI)',
-                    'gpt-3.5-turbo' => 'GPT-3.5 Turbo (OpenAI)',
-                    'gpt-3.5-turbo-0125' => 'GPT-3.5 Turbo Latest (OpenAI)',
-
-                    // Anthropic Claude 4 Series (Latest Generation)
-                    'claude-4-opus' => 'Claude 4 Opus - Best Coding Model (Anthropic)',
-                    'claude-4-sonnet' => 'Claude 4 Sonnet - Advanced Reasoning (Anthropic)',
-                    'claude-4.1-opus' => 'Claude 4.1 Opus - Most Capable (Anthropic)',
-
-                    // Anthropic Claude 3.7 Series
-                    'claude-3.7-sonnet' => 'Claude 3.7 Sonnet - Hybrid Reasoning (Anthropic)',
-
-                    // Anthropic Claude 3.5 Series (Current Available)
-                    'claude-3-5-sonnet-20241022' => 'Claude 3.5 Sonnet Latest (Anthropic)',
-                    'claude-3-5-sonnet-20240620' => 'Claude 3.5 Sonnet (Anthropic)',
-                    'claude-3-5-haiku-20241022' => 'Claude 3.5 Haiku (Anthropic)',
-
-                    // Anthropic Claude 3 Legacy
-                    'claude-3-opus-20240229' => 'Claude 3 Opus (Anthropic)',
-                    'claude-3-sonnet-20240229' => 'Claude 3 Sonnet (Anthropic)',
-                    'claude-3-haiku-20240307' => 'Claude 3 Haiku (Anthropic)',
-
-                    // Google Gemini (Current Models)
-                    'gemini-2.0-flash-exp' => 'Gemini 2.0 Flash Experimental - Latest (Google)',
-                    'gemini-1.5-flash' => 'Gemini 1.5 Flash - Fast & Free (Google)',
-                    'gemini-1.5-flash-8b' => 'Gemini 1.5 Flash 8B - Fast & Free (Google)',
-                    'gemini-1.5-pro' => 'Gemini 1.5 Pro - Most Capable (Google)',
-                    'gemini-1.0-pro' => 'Gemini 1.0 Pro - Stable (Google)',
-
-                ]),
+                'options' => apply_filters('wpuf_ai_model_options', \WeDevs\Wpuf\AI\Config::get_model_options()),
                 'default' => 'gpt-3.5-turbo',
                 'class'   => 'ai-model-select',
             ],

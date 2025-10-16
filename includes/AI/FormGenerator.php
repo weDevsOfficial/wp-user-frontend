@@ -622,16 +622,11 @@ class FormGenerator {
         // Determine which prompt file to use based on form type
         if ($form_type === 'profile' || $form_type === 'registration') {
             // Registration/Profile form prompt
-            $prompt_file = plugin_dir_path(dirname(__FILE__)) . 'AI/wpuf-ai-system-prompt-registration.md';
+            $prompt_file = WPUF_ROOT . '/includes/AI/wpuf-ai-system-prompt-registration.md';
         } else {
             // Post form prompt (default)
             // Use the compact prompt file to avoid truncation
-            $prompt_file = plugin_dir_path(dirname(__FILE__)) . 'AI/wpuf-ai-system-prompt-compact.md';
-
-            // Fallback to optimized version if compact doesn't exist
-            if (!file_exists($prompt_file)) {
-                $prompt_file = plugin_dir_path(dirname(__FILE__)) . 'AI/wpuf-ai-system-prompt-optimized.md';
-            }
+            $prompt_file = WPUF_ROOT . '/includes/AI/wpuf-ai-system-prompt-compact.md';
         }
 
         // Check if file exists
@@ -645,7 +640,7 @@ class FormGenerator {
         // Check prompt size to prevent truncation (max ~40KB for safety)
         if (strlen($system_prompt) > 40000) {
             // Try to load compact version as emergency fallback
-            $compact_file = plugin_dir_path(dirname(__FILE__)) . 'AI/wpuf-ai-system-prompt-compact.md';
+            $compact_file = WPUF_ROOT . '/includes/AI/wpuf-ai-system-prompt-compact.md';
             if (file_exists($compact_file) && $compact_file !== $prompt_file) {
                 $system_prompt = file_get_contents($compact_file);
             }

@@ -2,6 +2,7 @@
 
 namespace WeDevs\Wpuf\AI;
 
+use WP_REST_Controller;
 use WP_REST_Server;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -21,24 +22,28 @@ use WP_Error;
  * - Session validation and timeout handling
  * - Enhanced error logging with context
  * 
- * @since 1.0.0
+ * @since WPUF_SINCE
  * @version 1.2.0
  */
-class RestController {
+class RestController extends WP_REST_Controller {
 
     /**
-     * REST API namespace
+     * The namespace of this controller's route.
+     *
+     * @since WPUF_SINCE
      *
      * @var string
      */
-    private $namespace = 'wpuf/v1';
+    protected $namespace = 'wpuf/v1';
 
     /**
-     * REST API base route
+     * Route name
+     *
+     * @since WPUF_SINCE
      *
      * @var string
      */
-    private $rest_base = 'ai-form-builder';
+    protected $rest_base = 'ai-form-builder';
 
     /**
      * Form Generator instance
@@ -49,14 +54,19 @@ class RestController {
 
     /**
      * Constructor
+     *
+     * @since WPUF_SINCE
      */
     public function __construct() {
         $this->form_generator = new FormGenerator();
-        add_action('rest_api_init', [$this, 'register_routes']);
     }
 
     /**
-     * Register REST API routes
+     * Register the routes for the objects of the controller.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
      */
     public function register_routes() {
         // Generate form endpoint

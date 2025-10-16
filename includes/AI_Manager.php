@@ -11,7 +11,7 @@ use WeDevs\Wpuf\AI\FormGenerator;
  * Manages AI form builder functionality
  * Initializes REST API endpoints and handles AI client integration
  * 
- * @since 1.0.0
+ * @since WPUF_SINCE
  */
 class AI_Manager {
 
@@ -62,8 +62,8 @@ class AI_Manager {
      * Initialize REST API
      */
     public function init_rest_api() {
-        // REST API is already initialized in RestController constructor
-        // This hook ensures it runs at the right time
+        // Register REST API routes for AI form builder
+        $this->rest_controller->register_routes();
     }
 
     /**

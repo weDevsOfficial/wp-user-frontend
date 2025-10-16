@@ -436,25 +436,42 @@ class Admin_Form_Builder {
         $config_file = WPUF_ROOT . '/config/icons-config.json';
 
         if ( ! file_exists( $config_file ) ) {
-            return [
+            $icon_config = [
                 'icons' => [],
                 'defaultIcons' => [],
             ];
+
+            /** This filter is documented in includes/Admin/Forms/Admin_Form_Builder.php */
+            return apply_filters( 'wpuf_form_builder_icon_config', $icon_config );
         }
 
         $config = json_decode( file_get_contents( $config_file ), true );
 
         if ( json_last_error() !== JSON_ERROR_NONE ) {
-            return [
+            $icon_config = [
                 'icons' => [],
                 'defaultIcons' => [],
             ];
+
+            /** This filter is documented in includes/Admin/Forms/Admin_Form_Builder.php */
+            return apply_filters( 'wpuf_form_builder_icon_config', $icon_config );
         }
 
-        return [
+        $icon_config = [
             'icons' => $config['icons'] ?? [],
             'defaultIcons' => $config['defaultIcons'] ?? [],
         ];
+
+        /**
+         * Filter the icon configuration for form builder
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array $icon_config The icon configuration array
+         *                           - icons: array of icon data
+         *                           - defaultIcons: array of default icons
+         */
+        return apply_filters( 'wpuf_form_builder_icon_config', $icon_config );
     }
 
     /**

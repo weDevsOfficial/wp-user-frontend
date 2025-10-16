@@ -112,7 +112,7 @@ export default {
             try {
                 // Get configuration with fallbacks
                 const config = window.wpufAIFormBuilder || {};
-                const restUrl = config.restUrl || (window.location.origin + '/wp-json/');
+                const restUrl = config.rest_url || (window.location.origin + '/wp-json/');
                 const nonce = config.nonce || '';
                 
                 const response = await fetch(restUrl + 'wpuf/v1/ai-form-builder/generate', {
@@ -597,7 +597,7 @@ export default {
 
             try {
                 const config = window.wpufAIFormBuilder || {};
-                const restUrl = config.restUrl || (window.location.origin + '/wp-json/');
+                const restUrl = config.rest_url || (window.location.origin + '/wp-json/');
                 const nonce = config.nonce || '';
                 const formType = config.formType || 'post';
 
@@ -656,7 +656,7 @@ export default {
         async editInBuilder(eventData) {
             try {
                 const config = window.wpufAIFormBuilder || {};
-                const restUrl = config.restUrl || (window.location.origin + '/wp-json/');
+                const restUrl = config.rest_url || (window.location.origin + '/wp-json/');
                 const nonce = config.nonce || '';
                 const formType = config.formType || 'post';
 

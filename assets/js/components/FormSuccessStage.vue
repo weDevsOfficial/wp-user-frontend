@@ -1913,7 +1913,7 @@ What would you like me to help you with?`;
         
         async callChatAPI(message) {
             const config = window.wpufAIFormBuilder || {};
-            const restUrl = config.restUrl || (window.location.origin + '/wp-json/');
+            const restUrl = config.rest_url || (window.location.origin + '/wp-json/');
             const nonce = config.nonce || '';
             
             // Build comprehensive conversation context
@@ -2023,7 +2023,7 @@ What would you like me to help you with?`;
             
             try {
                 const config = window.wpufAIFormBuilder || {};
-                const restUrl = config.restUrl || (window.location.origin + '/wp-json/');
+                const restUrl = config.rest_url || (window.location.origin + '/wp-json/');
                 const nonce = config.nonce || '';
                 
                 // Prepare form data in WPUF format

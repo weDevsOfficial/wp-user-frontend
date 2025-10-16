@@ -75,7 +75,7 @@ class AI_Manager {
         
         // Localize the data for Vue components to the main form builder script
         wp_localize_script('wpuf-form-builder-mixins', 'wpufAIFormBuilder', [
-            'restUrl' => rest_url('/'),
+            'rest_url' => get_rest_url(null, '/'),
             'nonce' => wp_create_nonce('wp_rest'),
             'provider' => $wpuf_ai['ai_provider'] ?? 'openai',
             'temperature' => $wpuf_ai['temperature'] ?? 0.7,
@@ -104,7 +104,7 @@ class AI_Manager {
         $hasApiKey = !empty($wpuf_ai['ai_api_key']);
 
         $localization_data = [
-            'restUrl' => rest_url('/'),
+            'rest_url' => get_rest_url(null, '/'),
             'nonce' => wp_create_nonce('wp_rest'),
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'provider' => $provider,

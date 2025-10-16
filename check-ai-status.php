@@ -50,8 +50,8 @@ foreach ($files_to_check as $file) {
 
 // Check REST API endpoint
 echo "\nREST API Endpoints:\n";
-if (function_exists('rest_url')) {
-    $rest_url = rest_url('wpuf/v1/ai-form-builder/generate');
+if (function_exists('get_rest_url')) {
+    $rest_url = get_rest_url(null, 'wpuf/v1/ai-form-builder/generate');
     echo "- Generate: $rest_url\n";
 } else {
     echo "- Generate: (WordPress REST API not available)\n";

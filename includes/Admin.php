@@ -222,7 +222,6 @@ class Admin {
             'siteUrl'    => site_url(),
             'nonce'      => wp_create_nonce( 'wp_rest' ),
             'rest_url'   => esc_url_raw( rest_url() ),
-            'restUrl'    => esc_url_raw( rest_url() ), // Some components use restUrl
             'formType'   => $form_type, // Pass form type to frontend
             'provider'   => $ai_settings['ai_provider'] ?? 'openai',
             'model'      => $ai_settings['ai_model'] ?? 'gpt-3.5-turbo',

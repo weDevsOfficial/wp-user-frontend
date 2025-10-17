@@ -2,6 +2,8 @@
 
 namespace WeDevs\Wpuf\Integrations;
 
+use WeDevs\Wpuf\Traits\FieldableTrait;
+
 if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_N8N_Integration' ) ) {
     /**
      * WPUF N8N Integration Class
@@ -9,6 +11,8 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_N8N_Integration' ) ) {
      * @since WPUF_PRO_SINCE
      */
     class WPUF_N8N_Integration {
+
+        use FieldableTrait;
 
         public function __construct() {
             add_filter( 'wpuf_settings_sections', [ $this, 'add_n8n_settings_section' ] );
@@ -29,6 +33,8 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_N8N_Integration' ) ) {
          * @param int $form_id
          * @param array $form_settings
          * @param array $meta_vars
+         *
+         * @retun void
          */
         public function send_post_to_n8n( $post_id, $form_id, $form_settings, $meta_vars ) {
             // Check if N8N integration is enabled for this form
@@ -55,23 +61,34 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_N8N_Integration' ) ) {
             $post_data = [
                 'post_id' => $post_id,
                 'form_id' => $form_id,
-                'post_title' => $post->post_title,
-                'post_content' => $post->post_content,
-                'post_excerpt' => $post->post_excerpt,
-                'post_status' => $post->post_status,
-                'post_type' => $post->post_type,
-                'post_author' => $post->post_author,
-                'post_date' => $post->post_date,
-                'post_modified' => $post->post_modified,
-                'meta_vars' => $meta_vars,
-                'form_settings' => $form_settings,
             ];
 
-            // Add custom fields if any
-            if ( ! empty( $meta_vars ) ) {
-                foreach ( $meta_vars as $meta_key => $meta_value ) {
-                    $post_data['custom_fields'][ $meta_key ] = $meta_value;
-                }
+            if ( ! empty( $post->post_title ) ) {
+                $post_data['post_title'] = $post->post_title;
+            }
+            if ( ! empty( $post->post_content ) ) {
+                $post_data['post_content'] = $post->post_content;
+            }
+            if ( ! empty( $post->post_excerpt ) ) {
+                $post_data['post_excerpt'] = $post->post_excerpt;
+            }
+            if ( ! empty( $post->post_status ) ) {
+                $post_data['post_status'] = $post->post_status;
+            }
+            if ( ! empty( $post->post_type ) ) {
+                $post_data['post_type'] = $post->post_type;
+            }
+            if ( ! empty( $post->post_author ) ) {
+                $post_data['post_author'] = $post->post_author;
+            }
+            if ( ! empty( $post->post_date ) ) {
+                $post_data['post_date'] = $post->post_date;
+            }
+
+            [ $meta_key_value, $multi_repeated, $files ] = self::prepare_meta_fields( $meta_vars );
+
+            foreach ( $meta_key_value as $meta_key => $meta_value ) {
+                $post_data[$meta_key] = $meta_value;
             }
 
             // Get global N8N settings for authentication
@@ -105,13 +122,13 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_N8N_Integration' ) ) {
                 case 'jwt_auth':
                     $jwt_key_type = isset( $n8n_settings['jwt_key_type'] ) ? $n8n_settings['jwt_key_type'] : 'passphrase';
                     $jwt_key = '';
-                    
+
                     if ( $jwt_key_type === 'passphrase' ) {
                         $jwt_key = isset( $n8n_settings['jwt_key_passphrase'] ) ? $n8n_settings['jwt_key_passphrase'] : '';
                     } elseif ( $jwt_key_type === 'pem_key' ) {
                         $jwt_key = isset( $n8n_settings['jwt_key_pem_key'] ) ? $n8n_settings['jwt_key_pem_key'] : '';
                     }
-                    
+
                     if ( ! empty( $jwt_key ) ) {
                         $jwt_token = $this->create_jwt_token( $jwt_key );
                         if ( $jwt_token ) {
@@ -122,12 +139,14 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_N8N_Integration' ) ) {
             }
 
             // Send data to N8N webhook
-            $response = wp_remote_post( $n8n_webhook_url, [
-                'method' => 'POST',
-                'timeout' => 30,
-                'headers' => $headers,
-                'body' => wp_json_encode( $post_data ),
-            ] );
+            $response = wp_remote_post(
+                $n8n_webhook_url, [
+                    'method'  => 'POST',
+                    'timeout' => 30,
+                    'headers' => $headers,
+                    'body'    => wp_json_encode( $post_data ),
+                ]
+            );
         }
 
         /**
@@ -241,7 +260,7 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_N8N_Integration' ) ) {
                     ],
                     [
                         'name'     => 'jwt_key_passphrase',
-                        'label'    => __( 'JWT Key Passphrase Secret', 'wp-user-frontend' ),
+                        'label'    => __( 'Passphrase', 'wp-user-frontend' ),
                         'desc'     => __(
                             'Enter the passphrase for the JWT Auth authentication.',
                             'wp-user-frontend'
@@ -255,7 +274,7 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_N8N_Integration' ) ) {
                     ],
                     [
                         'name'     => 'jwt_key_pem_key',
-                        'label'    => __( 'JWT Key PEM Key', 'wp-user-frontend' ),
+                        'label'    => __( 'PEM Key', 'wp-user-frontend' ),
                         'desc'     => __(
                             'Enter the PEM key for the JWT Auth authentication.',
                             'wp-user-frontend'
@@ -264,7 +283,7 @@ if ( ! class_exists( 'WeDevs\Wpuf\Integrations\WPUF_N8N_Integration' ) ) {
                         'callback' => 'wpuf_settings_password_preview',
                         'depends_on' => [
                             'authentication_type' => 'jwt_auth',
-                            'jwt_key_type' => 'pem_key'
+                            'jwt_key_type'        => 'pem_key',
                         ],
                     ],
                 ],

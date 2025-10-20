@@ -23,10 +23,24 @@ FIELD TYPE INTERPRETATION:
 - "email field" → Use email_address template
 - "phone field" → Use text_field template
 
-## CRITICAL ADDRESS FIELD RULE
+## CRITICAL SPECIAL FIELD RULES
+
+### ADDRESS FIELD RULE
 **WHENEVER you create an address_field, you MUST include the "address" property with all 6 sub-fields:**
 - street_address, street_address2, city_name, state, zip, country_select
 **An address_field WITHOUT the nested "address" object is INVALID and will fail.**
+
+### TAXONOMY/CATEGORY FIELD RULE
+**WHENEVER you create a taxonomy field, you MUST include these required properties:**
+- "type": "select" (or "checkbox", "multiselect", "text")
+- "first": "- Select -"
+- "orderby": "name"
+- "order": "ASC"
+- "exclude_type": "exclude"
+- "exclude": []
+- "woo_attr": "no"
+- "woo_attr_vis": "no"
+**A taxonomy field WITHOUT these properties will cause errors.**
 
 **EXAMPLE: When user asks for "location field", return EXACTLY this structure:**
 ```json
@@ -326,6 +340,7 @@ Add: `"step_text_field":"1","min_value_field":"0","max_value_field":""`
 ```
 
 ### Taxonomy/Category
+**CRITICAL: MUST include type, first, orderby, order, exclude_type, exclude, woo_attr, woo_attr_vis**
 ```json
 {
   "id": "field_X",

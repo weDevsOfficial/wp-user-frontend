@@ -1305,6 +1305,35 @@ class RestController extends WP_REST_Controller {
                 }
                 unset($subfield); // Break reference
             }
+
+            // Handle taxonomy field: Auto-populate missing required properties
+            if ($field['input_type'] === 'taxonomy' || $field['template'] === 'taxonomy') {
+                // Add missing required properties with defaults
+                if (!isset($field['type'])) {
+                    $field['type'] = 'select';
+                }
+                if (!isset($field['first'])) {
+                    $field['first'] = '- Select -';
+                }
+                if (!isset($field['orderby'])) {
+                    $field['orderby'] = 'name';
+                }
+                if (!isset($field['order'])) {
+                    $field['order'] = 'ASC';
+                }
+                if (!isset($field['exclude_type'])) {
+                    $field['exclude_type'] = 'exclude';
+                }
+                if (!isset($field['exclude'])) {
+                    $field['exclude'] = [];
+                }
+                if (!isset($field['woo_attr'])) {
+                    $field['woo_attr'] = 'no';
+                }
+                if (!isset($field['woo_attr_vis'])) {
+                    $field['woo_attr_vis'] = 'no';
+                }
+            }
         }
 
         return $fields;

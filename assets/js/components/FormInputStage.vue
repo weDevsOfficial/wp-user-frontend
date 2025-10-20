@@ -102,7 +102,6 @@ export default {
                 { id: 'basic_registration', label: this.__('Basic User Registration', 'wp-user-frontend') },
                 { id: 'member_directory', label: this.__('Member Directory Profile', 'wp-user-frontend') },
                 { id: 'job_applicant', label: this.__('Job Applicant Registration', 'wp-user-frontend') },
-                { id: 'event_registration', label: this.__('Event Registration', 'wp-user-frontend') },
                 { id: 'newsletter_signup', label: this.__('Newsletter Signup', 'wp-user-frontend') }
             ];
 
@@ -110,7 +109,6 @@ export default {
                 basic_registration: 'User registration with email, first name, last name, username, password',
                 member_directory: 'Member profile with name, email, bio, social links, profile photo',
                 job_applicant: 'Job application with name, email, phone, resume upload, cover letter',
-                event_registration: 'Event registration with name, email, phone, dietary preferences, t-shirt size',
                 newsletter_signup: 'Newsletter signup with email and first name only'
             };
         } else {

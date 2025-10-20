@@ -10,8 +10,6 @@ module.exports = {
         './includes/Admin/template-parts/*.php',
         './admin/form-builder/views/*.php',
         './admin/form-builder/assets/js/**/*.php',
-        './includes/**/*.php',
-        './templates/**/*.php',
         'wpuf-functions.php',
         // New paths from upstream (for subscription templates)
         './templates/**/*.php',

@@ -739,7 +739,7 @@
     	<ul>
     		<?php
 
-                if ( class_exists( 'WPUF_Subscription' ) ) {
+                if ( class_exists( 'WeDevs\Wpuf\Admin\Subscription' ) ) {
                     $subscriptions  = wpuf()->subscription->get_subscriptions();
 
                     if ( $subscriptions ) {

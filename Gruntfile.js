@@ -3,7 +3,8 @@ module.exports = function( grunt) {
     const tailwindFileMap = {
         'admin/form-builder/views/form-builder-v4.1.php': 'admin/form-builder.css',
         'admin/form-builder/views/post-form-settings.php': 'admin/form-builder.css',
-        'assets/js/forms-list.js': 'admin/form-builder.css'
+        'assets/js/forms-list.js': 'admin/form-builder.css',
+        'templates/account.php': 'frontend/account.css'
     }
 
     var formBuilderAssets = require('./admin/form-builder/assets/js/form-builder-assets.js');
@@ -128,6 +129,7 @@ module.exports = function( grunt) {
                     'admin/form-builder/assets/js/**/*.php',
                     'admin/form-builder/assets/js/**/*.js',
                     'includes/Admin/**/*.php',
+                    'templates/**/*.php',
                     'wpuf-functions.php',
                     'assets/js/forms-list.js',
                 ],
@@ -249,7 +251,7 @@ module.exports = function( grunt) {
             },
             tailwind: {
                 command: function ( input, output ) {
-                    return `npx tailwindcss -i ${input} -o ${output}`;
+                    return `npx tailwindcss -i ${input} -o ${output} --minify`;
                 }
             }
         }

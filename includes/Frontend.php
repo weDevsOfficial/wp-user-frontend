@@ -178,6 +178,11 @@ class Frontend {
                 ]
             );
         }
+
+        // Enqueue account page Tailwind CSS
+        if ( wpuf_has_shortcode( 'wpuf_account' ) || wpuf_has_shortcode( 'wpuf_editprofile' ) ) {
+            wp_enqueue_style( 'wpuf-account', WPUF_ASSET_URI . '/css/frontend/account.css', [], WPUF_VERSION );
+        }
     }
 
     /**

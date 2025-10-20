@@ -1,0 +1,533 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Account page specific utilities */
+@layer components {
+    .wpuf-account-container {
+        @apply wpuf-flex wpuf-gap-6 wpuf-max-w-7xl wpuf-mx-auto wpuf-p-4 sm:wpuf-p-6 lg:wpuf-p-8;
+    }
+
+    /* Sidebar Styles */
+    .wpuf-account-sidebar {
+        @apply wpuf-w-full lg:wpuf-w-80 wpuf-flex-shrink-0 wpuf-space-y-6;
+    }
+
+    /* Profile Section */
+    .wpuf-profile-section {
+        @apply wpuf-bg-white wpuf-rounded-lg wpuf-shadow-sm wpuf-p-6 wpuf-text-center;
+    }
+
+    .wpuf-profile-avatar {
+        @apply wpuf-mb-4 wpuf-flex wpuf-justify-center;
+    }
+
+    .wpuf-profile-avatar img {
+        @apply wpuf-rounded-full wpuf-w-24 wpuf-h-24 wpuf-object-cover;
+    }
+
+    .wpuf-profile-name {
+        @apply wpuf-text-xl wpuf-font-semibold wpuf-text-gray-900 wpuf-mb-1 wpuf-mt-0;
+    }
+
+    .wpuf-profile-role {
+        @apply wpuf-text-sm wpuf-text-gray-500 wpuf-mb-4;
+    }
+
+    .wpuf-edit-profile-btn {
+        @apply wpuf-inline-flex wpuf-items-center wpuf-justify-center wpuf-w-full wpuf-bg-primary wpuf-text-white wpuf-px-4 wpuf-py-2 wpuf-rounded-md hover:wpuf-bg-primaryHover wpuf-transition-colors wpuf-font-medium wpuf-text-sm wpuf-no-underline;
+    }
+
+    /* Navigation Styles */
+    .wpuf-account-nav {
+        @apply wpuf-bg-white wpuf-rounded-lg wpuf-shadow-sm wpuf-p-4;
+    }
+
+    .wpuf-account-nav ul {
+        @apply wpuf-space-y-1;
+    }
+
+    .wpuf-account-nav-item {
+        @apply wpuf-flex wpuf-items-center wpuf-gap-3 wpuf-px-4 wpuf-py-3 wpuf-text-gray-700 wpuf-rounded-md hover:wpuf-bg-gray-50 wpuf-transition-colors wpuf-no-underline;
+    }
+
+    .wpuf-account-nav-item svg {
+        @apply wpuf-flex-shrink-0;
+    }
+
+    .wpuf-account-nav-item span {
+        @apply wpuf-flex-1;
+    }
+
+    .wpuf-account-nav-item.active {
+        @apply wpuf-bg-emerald-50 wpuf-text-emerald-600 hover:wpuf-bg-emerald-50;
+    }
+
+    /* Logout Section */
+    .wpuf-logout-section {
+        @apply wpuf-bg-white wpuf-rounded-lg wpuf-shadow-sm wpuf-p-4;
+    }
+
+    .wpuf-logout-link {
+        @apply wpuf-flex wpuf-items-center wpuf-gap-3 wpuf-px-4 wpuf-py-3 wpuf-text-red-600 wpuf-rounded-md hover:wpuf-bg-red-50 wpuf-transition-colors wpuf-no-underline;
+    }
+
+    .wpuf-logout-link svg {
+        @apply wpuf-flex-shrink-0;
+    }
+
+    /* Main Content Area */
+    .wpuf-account-content {
+        @apply wpuf-flex-1 wpuf-min-w-0 wpuf-bg-white wpuf-rounded-lg wpuf-shadow-sm wpuf-p-6 lg:wpuf-p-8;
+    }
+
+    /* Edit Profile Container */
+    .wpuf-edit-profile-container {
+        @apply wpuf-w-full;
+    }
+
+    /* Page Header */
+    .wpuf-page-header {
+        @apply wpuf-mb-8;
+    }
+
+    .wpuf-page-title {
+        @apply wpuf-text-2xl wpuf-font-semibold wpuf-text-gray-900 wpuf-mb-2 wpuf-mt-0;
+    }
+
+    .wpuf-page-subtitle {
+        @apply wpuf-text-sm wpuf-text-gray-500 wpuf-mb-0;
+    }
+
+    /* Edit Profile Form */
+    .wpuf-edit-profile-form {
+        @apply wpuf-space-y-6;
+    }
+
+    /* Form Group */
+    .wpuf-form-group {
+        @apply wpuf-mb-5;
+    }
+
+    .wpuf-form-label {
+        @apply wpuf-block wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900 wpuf-mb-2;
+    }
+
+    .wpuf-form-add .wpuf-label {
+        margin-bottom: 0 !important;
+    }
+
+    .wpuf-form-add .wpuf-label label {
+        display: block !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 14px !important;
+        line-height: 20px !important;
+        font-weight: 500 !important;
+        color: #334155 !important;
+        margin-bottom: 8px !important;
+        letter-spacing: 0 !important;
+    }
+
+    .wpuf-form-add .wpuf-fields {
+        margin-bottom: 0 !important;
+    }
+
+    .wpuf-form-add .wpuf-fields input[type="text"],
+    .wpuf-form-add .wpuf-fields input[type="email"],
+    .wpuf-form-add .wpuf-fields input[type="password"],
+    .wpuf-form-add .wpuf-fields input.textfield,
+    .wpuf-form-add .wpuf-fields input.password {
+        width: 100% !important;
+        max-width: 772px !important;
+        height: 42px !important;
+        padding: 9px 13px !important;
+        font-size: 0.875rem !important;
+        line-height: 1.25rem !important;
+        color: rgb(17, 24, 39) !important;
+        background-color: rgb(255, 255, 255) !important;
+        border: 1px solid rgb(203, 213, 225) !important;
+        border-radius: 0.375rem !important;
+        opacity: 1 !important;
+        transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: none !important;
+        margin-bottom: 0 !important;
+    }
+
+    .wpuf-form-input {
+        width: 100% !important;
+        max-width: 772px !important;
+        height: 42px !important;
+        padding: 9px 13px !important;
+        font-size: 0.875rem !important;
+        line-height: 1.25rem !important;
+        color: rgb(17, 24, 39) !important;
+        background-color: rgb(255, 255, 255) !important;
+        border: 1px solid rgb(203, 213, 225) !important;
+        border-radius: 0.375rem !important;
+        opacity: 1 !important;
+        transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: none !important;
+    }
+
+    .wpuf-form-input:focus {
+        outline: none !important;
+        border-color: transparent !important;
+        box-shadow: 0 0 0 2px rgb(59, 130, 246) !important;
+    }
+
+    .wpuf-form-input::placeholder {
+        color: rgb(156, 163, 175) !important;
+        font-size: 0.875rem !important;
+    }
+
+    /* Password Field */
+    .wpuf-password-field {
+        @apply wpuf-relative wpuf-max-w-[772px];
+    }
+
+    .wpuf-password-toggle {
+        @apply wpuf-absolute wpuf-right-3 wpuf-top-1/2 wpuf-transform -wpuf-translate-y-1/2 wpuf-cursor-pointer wpuf-w-5 wpuf-h-5 wpuf-opacity-50 hover:wpuf-opacity-100 wpuf-transition-opacity;
+    }
+
+    .wpuf-password-strength {
+        @apply wpuf-block wpuf-mt-2 wpuf-text-xs wpuf-font-medium wpuf-text-gray-600;
+    }
+
+    .wpuf-password-strength.short {
+        @apply wpuf-text-red-600;
+    }
+
+    .wpuf-password-strength.bad {
+        @apply wpuf-text-orange-600;
+    }
+
+    .wpuf-password-strength.good {
+        @apply wpuf-text-yellow-600;
+    }
+
+    .wpuf-password-strength.strong {
+        @apply wpuf-text-green-600;
+    }
+
+    /* Form Actions */
+    .wpuf-form-actions {
+        @apply wpuf-flex wpuf-items-center wpuf-gap-3 wpuf-pt-6 wpuf-mt-8 wpuf-border-t wpuf-border-gray-200;
+    }
+
+    /* Buttons */
+    .wpuf-btn {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0.625rem 1.5rem !important;
+        font-size: 0.875rem !important;
+        line-height: 1.25rem !important;
+        font-weight: 600 !important;
+        border-radius: 0.375rem !important;
+        text-decoration: none !important;
+        cursor: pointer !important;
+        transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+        border: none !important;
+    }
+
+    .wpuf-btn:hover {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .wpuf-btn-primary {
+        background-color: rgb(5, 150, 105) !important;
+        color: rgb(255, 255, 255) !important;
+    }
+
+    .wpuf-btn-primary:hover {
+        background-color: rgb(16, 185, 129) !important;
+    }
+
+    .wpuf-btn-primary:focus {
+        outline: none !important;
+        box-shadow: 0 0 0 2px rgb(255, 255, 255), 0 0 0 4px rgb(5, 150, 105) !important;
+    }
+
+    .wpuf-btn-secondary {
+        background-color: rgb(255, 255, 255) !important;
+        color: rgb(55, 65, 81) !important;
+        border: 1px solid rgb(209, 213, 219) !important;
+    }
+
+    .wpuf-btn-secondary:hover {
+        background-color: rgb(249, 250, 251) !important;
+    }
+
+    .wpuf-btn-secondary:focus {
+        outline: none !important;
+        box-shadow: 0 0 0 2px rgb(255, 255, 255), 0 0 0 4px rgb(209, 213, 219) !important;
+    }
+
+    /* WPUF Form Builder Styles */
+    .wpuf-form-add ul.wpuf-form {
+        list-style: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .wpuf-form-add ul.wpuf-form > li {
+        margin-bottom: 1.25rem !important;
+        list-style: none !important;
+    }
+
+    .wpuf-form-add .wpuf-label {
+        margin-bottom: 0 !important;
+    }
+
+    .wpuf-form-add .wpuf-label label {
+        display: block !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 14px !important;
+        line-height: 20px !important;
+        font-weight: 500 !important;
+        color: #334155 !important;
+        margin-bottom: 8px !important;
+        letter-spacing: 0 !important;
+    }
+
+    .wpuf-form-add .wpuf-fields {
+        margin-bottom: 0 !important;
+    }
+
+    .wpuf-form-add .wpuf-fields input[type="text"],
+    .wpuf-form-add .wpuf-fields input[type="email"],
+    .wpuf-form-add .wpuf-fields input[type="password"],
+    .wpuf-form-add .wpuf-fields input.textfield,
+    .wpuf-form-add .wpuf-fields input.password {
+        width: 100% !important;
+        max-width: 772px !important;
+        height: 42px !important;
+        padding: 9px 13px !important;
+        font-size: 0.875rem !important;
+        line-height: 1.25rem !important;
+        color: rgb(17, 24, 39) !important;
+        background-color: rgb(255, 255, 255) !important;
+        border: 1px solid rgb(203, 213, 225) !important;
+        border-radius: 0.375rem !important;
+        opacity: 1 !important;
+        transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: none !important;
+        margin-bottom: 0 !important;
+    }
+
+    .wpuf-form-add .wpuf-fields input[type="text"]:focus,
+    .wpuf-form-add .wpuf-fields input[type="email"]:focus,
+    .wpuf-form-add .wpuf-fields input[type="password"]:focus,
+    .wpuf-form-add .wpuf-fields input.textfield:focus,
+    .wpuf-form-add .wpuf-fields input.password:focus {
+        outline: none !important;
+        border-color: transparent !important;
+        box-shadow: 0 0 0 2px rgb(59, 130, 246) !important;
+    }
+
+    .wpuf-form-add .wpuf-fields input::placeholder {
+        color: rgb(156, 163, 175) !important;
+        font-size: 0.875rem !important;
+    }
+
+    /* Password field with eye icon */
+    .wpuf-form-add .wpuf-fields-inline {
+        position: relative !important;
+        max-width: 772px !important;
+    }
+
+    .wpuf-form-add .wpuf-fields-inline .wpuf-eye {
+        position: absolute !important;
+        right: 0.75rem !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        cursor: pointer !important;
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+        opacity: 0.5 !important;
+        transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .wpuf-form-add .wpuf-fields-inline .wpuf-eye:hover {
+        opacity: 1 !important;
+    }
+
+    /* Password strength indicator */
+    .wpuf-form-add .pass-strength-result {
+        display: block !important;
+        margin-top: 0.5rem !important;
+        font-size: 0.75rem !important;
+        line-height: 1rem !important;
+        font-weight: 500 !important;
+        color: rgb(107, 114, 128) !important;
+        padding: 0.5rem !important;
+        border-radius: 0.375rem !important;
+        background-color: rgb(249, 250, 251) !important;
+    }
+
+    .wpuf-form-add .pass-strength-result.short {
+        color: rgb(220, 38, 38) !important;
+        background-color: rgb(254, 242, 242) !important;
+    }
+
+    .wpuf-form-add .pass-strength-result.bad {
+        color: rgb(249, 115, 22) !important;
+        background-color: rgb(255, 247, 237) !important;
+    }
+
+    .wpuf-form-add .pass-strength-result.good {
+        color: rgb(234, 179, 8) !important;
+        background-color: rgb(254, 252, 232) !important;
+    }
+
+    .wpuf-form-add .pass-strength-result.strong {
+        color: rgb(22, 163, 74) !important;
+        background-color: rgb(240, 253, 244) !important;
+    }
+
+    /* Social fields with icons and @ prefix */
+    .wpuf-form-add .wpuf-label-with-icon {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .wpuf-form-add .wpuf-social-label-icon {
+        flex-shrink: 0 !important;
+    }
+
+    .wpuf-form-add .wpuf-social-label-icon svg {
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+        fill: rgb(107, 114, 128) !important;
+    }
+
+    .wpuf-form-add .wpuf-social-input-wrapper {
+        position: relative !important;
+        max-width: 772px !important;
+    }
+
+    .wpuf-form-add .wpuf-at-prefix {
+        position: absolute !important;
+        left: 13px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        color: rgb(107, 114, 128) !important;
+        font-size: 0.875rem !important;
+        pointer-events: none !important;
+        z-index: 1 !important;
+    }
+
+    .wpuf-form-add .wpuf-twitter-with-prefix {
+        padding-left: 30px !important;
+    }
+
+    /* Help text */
+    .wpuf-form-add .wpuf-help {
+        display: block !important;
+        margin-top: 0.5rem !important;
+        font-size: 0.75rem !important;
+        line-height: 1rem !important;
+        color: rgb(107, 114, 128) !important;
+    }
+
+    /* Required asterisk */
+    .wpuf-form-add .required {
+        color: rgb(220, 38, 38) !important;
+        font-weight: 600 !important;
+    }
+
+    /* Avatar upload section */
+    .wpuf-form-add .wpuf-attachment-upload-filelist {
+        max-width: 772px !important;
+    }
+
+    .wpuf-form-add .file-selector {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0.625rem 1.5rem !important;
+        font-size: 0.875rem !important;
+        line-height: 1.25rem !important;
+        font-weight: 600 !important;
+        border-radius: 0.375rem !important;
+        text-decoration: none !important;
+        cursor: pointer !important;
+        transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        background-color: rgb(255, 255, 255) !important;
+        color: rgb(55, 65, 81) !important;
+        border: 1px solid rgb(209, 213, 219) !important;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+    }
+
+    .wpuf-form-add .file-selector:hover {
+        background-color: rgb(249, 250, 251) !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .wpuf-form-add .wpuf-attachment-list {
+        list-style: none !important;
+        padding: 0 !important;
+        margin-top: 1rem !important;
+    }
+
+    /* Submit button */
+    .wpuf-form-add .wpuf-submit {
+        margin-top: 2rem !important;
+        padding-top: 1.5rem !important;
+        border-top: 1px solid rgb(229, 231, 235) !important;
+    }
+
+    .wpuf-form-add .wpuf-submit-button {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0.625rem 1.5rem !important;
+        font-size: 0.875rem !important;
+        line-height: 1.25rem !important;
+        font-weight: 600 !important;
+        border-radius: 0.375rem !important;
+        text-decoration: none !important;
+        cursor: pointer !important;
+        transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+        border: none !important;
+        background-color: rgb(5, 150, 105) !important;
+        color: rgb(255, 255, 255) !important;
+    }
+
+    .wpuf-form-add .wpuf-submit-button:hover {
+        background-color: rgb(16, 185, 129) !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .wpuf-form-add .wpuf-submit-button:focus {
+        outline: none !important;
+        box-shadow: 0 0 0 2px rgb(255, 255, 255), 0 0 0 4px rgb(5, 150, 105) !important;
+    }
+
+    /* Remove default form styling */
+    .wpuf-form-add {
+        background: none !important;
+        border: none !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1023px) {
+        .wpuf-account-container {
+            @apply wpuf-flex-col;
+        }
+
+        .wpuf-account-sidebar {
+            @apply wpuf-w-full;
+        }
+
+        .wpuf-account-content {
+            @apply wpuf-p-4;
+        }
+    }
+}

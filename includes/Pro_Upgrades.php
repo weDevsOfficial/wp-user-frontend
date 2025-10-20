@@ -17,6 +17,7 @@ class Pro_Upgrades {
         add_filter( 'wpuf_form_fields', [ $this, 'register_pro_fields' ] );
         add_filter( 'wpuf_form_fields_custom_fields', [ $this, 'add_to_custom_fields' ] );
         add_filter( 'wpuf_form_fields_others_fields', [ $this, 'add_to_others_fields' ] );
+        add_filter( 'wpuf_form_fields_groups', [ $this, 'add_pricing_fields_section' ], 15 );
     }
 
     /**
@@ -74,6 +75,48 @@ class Pro_Upgrades {
         ];
 
         return array_merge( $fields, $pro_fields );
+    }
+
+    /**
+     * Add pricing fields section (PRO preview)
+     *
+     * @param array $sections
+     *
+     * @return array
+     */
+    public function add_pricing_fields_section( $sections ) {
+        $pricing_section = [
+            'title'  => __( 'Pricing Fields', 'wp-user-frontend' ),
+            'id'     => 'pricing-fields',
+            'fields' => [
+                'pricing_radio',
+                'pricing_checkbox',
+                'pricing_dropdown',
+                'pricing_multiselect',
+                'cart_total',
+            ],
+        ];
+
+        // Insert Pricing Fields after Custom Fields (position 2-3 depending on taxonomies)
+        $new_sections = [];
+        $inserted = false;
+
+        foreach ( $sections as $section ) {
+            $new_sections[] = $section;
+
+            // Insert after Custom Fields section
+            if ( isset( $section['id'] ) && $section['id'] === 'custom-fields' && ! $inserted ) {
+                $new_sections[] = $pricing_section;
+                $inserted = true;
+            }
+        }
+
+        // If not inserted (Custom Fields not found), append at end before Others
+        if ( ! $inserted ) {
+            array_splice( $new_sections, -1, 0, [ $pricing_section ] );
+        }
+
+        return $new_sections;
     }
 
     /**

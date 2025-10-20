@@ -862,6 +862,21 @@
 
                 e.clearSelection();
             });
+
+            // Mutual exclusivity between Enable Payments and Enable Pricing Fields Payment
+            $(document).on('change', '#payment_options', function() {
+                if ($(this).is(':checked')) {
+                    // When Enable Payments is turned ON, turn OFF Enable Pricing Fields Payment
+                    $('#enable_pricing_payment').prop('checked', false).trigger('change');
+                }
+            });
+
+            $(document).on('change', '#enable_pricing_payment', function() {
+                if ($(this).is(':checked')) {
+                    // When Enable Pricing Fields Payment is turned ON, turn OFF Enable Payments
+                    $('#payment_options').prop('checked', false).trigger('change');
+                }
+            });
         },
 
         methods: {

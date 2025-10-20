@@ -133,8 +133,8 @@ class Assets {
                 'version' => '11.4.8',
             ],
             'font-awesome'        => [
-                'src'     => WPUF_ASSET_URI . '/vendor/font-awesome/css/font-awesome.min.css',
-                'version' => '4.7.0',
+                'src'     => WPUF_ASSET_URI . '/vendor/font-awesome/css/all.min.css',
+                'version' => '7.0.1',
             ],
             'selectize'           => [
                 'src'     => WPUF_ASSET_URI . '/vendor/selectize/css/selectize.default.css',

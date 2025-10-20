@@ -175,6 +175,9 @@ class Admin_Form_Builder {
         $has_hidden_taxonomies = $this->has_filtered_taxonomies( $original_fields, $filtered_fields );
         $hidden_taxonomy_ids = $this->get_hidden_taxonomy_ids( $original_fields, $filtered_fields );
 
+        // Load icon configuration
+        $icon_config = $this->get_icon_config();
+
         $wpuf_form_builder = apply_filters(
             'wpuf_form_builder_localize_script',
             [
@@ -203,6 +206,8 @@ class Admin_Form_Builder {
                 'settings_items'   => wpuf_get_post_form_builder_setting_menu_contents(),
                 'lock_icon'        => $lock_icon,
                 'free_icon'        => $free_icon,
+                'icons'            => $icon_config['icons'],
+                'defaultIcons'     => $icon_config['defaultIcons'],
             ]
         );
         $wpuf_form_builder = wpuf_unset_conditional( $wpuf_form_builder );
@@ -418,6 +423,55 @@ class Admin_Form_Builder {
         update_post_meta( $data['form_id'], 'integrations', $data['integrations'] );
 
         return $saved_wpuf_inputs;
+    }
+
+    /**
+     * Get icon configuration from JSON file
+     *
+     * @since 4.2.0
+     *
+     * @return array
+     */
+    protected function get_icon_config() {
+        $config_file = WPUF_ROOT . '/config/icons-config.json';
+
+        if ( ! file_exists( $config_file ) ) {
+            $icon_config = [
+                'icons' => [],
+                'defaultIcons' => [],
+            ];
+
+            /** This filter is documented in includes/Admin/Forms/Admin_Form_Builder.php */
+            return apply_filters( 'wpuf_form_builder_icon_config', $icon_config );
+        }
+
+        $config = json_decode( file_get_contents( $config_file ), true );
+
+        if ( json_last_error() !== JSON_ERROR_NONE ) {
+            $icon_config = [
+                'icons' => [],
+                'defaultIcons' => [],
+            ];
+
+            /** This filter is documented in includes/Admin/Forms/Admin_Form_Builder.php */
+            return apply_filters( 'wpuf_form_builder_icon_config', $icon_config );
+        }
+
+        $icon_config = [
+            'icons' => $config['icons'] ?? [],
+            'defaultIcons' => $config['defaultIcons'] ?? [],
+        ];
+
+        /**
+         * Filter the icon configuration for form builder
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array $icon_config The icon configuration array
+         *                           - icons: array of icon data
+         *                           - defaultIcons: array of default icons
+         */
+        return apply_filters( 'wpuf_form_builder_icon_config', $icon_config );
     }
 
     /**

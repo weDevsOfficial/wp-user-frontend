@@ -4,7 +4,7 @@
 
 @layer components {
     .wpuf-btn-primary {
-        @apply wpuf-rounded-md wpuf-bg-emerald-600 !wpuf-text-white wpuf-px-4 wpuf-py-3 wpuf-text-sm wpuf-font-semibold hover:wpuf-bg-emerald-700 hover:wpuf-text-white focus:wpuf-text-white focus:wpuf-shadow-none;
+        @apply wpuf-rounded-md wpuf-bg-primary !wpuf-text-white wpuf-px-4 wpuf-py-3 wpuf-text-sm wpuf-font-semibold hover:wpuf-bg-primaryHover hover:wpuf-text-white focus:wpuf-text-white focus:wpuf-shadow-none;
     }
 
     .wpuf-btn-secondary {

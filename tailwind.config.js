@@ -8,7 +8,12 @@ module.exports = {
         './assets/js/**/*.{js,vue}',
     ],
     theme: {
-        extend: {},
+         extend: {
+            colors: {
+                primary: colors.emerald[600],
+                primaryHover: colors.emerald[500],
+            }
+        },
     },
     plugins: [
         require('@tailwindcss/forms'),

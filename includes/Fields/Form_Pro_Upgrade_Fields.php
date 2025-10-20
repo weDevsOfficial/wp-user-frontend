@@ -23,6 +23,11 @@ class Form_Pro_Upgrade_Fields {
         $this->fields['toc']                   = new Form_Field_Toc();
         $this->fields['math_captcha']          = new Form_Field_Math_Captcha();
         $this->fields['qr_code']               = new Form_Field_QR_Code();
+        $this->fields['pricing_radio']         = new Form_Field_Pricing_Radio();
+        $this->fields['pricing_checkbox']      = new Form_Field_Pricing_Checkbox();
+        $this->fields['pricing_dropdown']      = new Form_Field_Pricing_Dropdown();
+        $this->fields['pricing_multiselect']   = new Form_Field_Pricing_MultiSelect();
+        $this->fields['cart_total']            = new Form_Field_Cart_Total();
     }
 
     public function get_fields() {
@@ -272,5 +277,65 @@ class Form_Field_QR_Code extends Form_Field_Pro {
         $this->name       = __( 'QR Code', 'wp-user-frontend' );
         $this->input_type = 'qr_code';
         $this->icon       = 'qrcode';
+    }
+}
+
+/**
+ * Pricing Radio Field Class
+ */
+class Form_Field_Pricing_Radio extends Form_Field_Pro {
+
+    public function __construct() {
+        $this->name       = __( 'Pricing Radio', 'wp-user-frontend' );
+        $this->input_type = 'pricing_radio';
+        $this->icon       = 'currency-dollar';
+    }
+}
+
+/**
+ * Pricing Checkbox Field Class
+ */
+class Form_Field_Pricing_Checkbox extends Form_Field_Pro {
+
+    public function __construct() {
+        $this->name       = __( 'Pricing Checkbox', 'wp-user-frontend' );
+        $this->input_type = 'pricing_checkbox';
+        $this->icon       = 'currency-dollar';
+    }
+}
+
+/**
+ * Pricing Dropdown Field Class
+ */
+class Form_Field_Pricing_Dropdown extends Form_Field_Pro {
+
+    public function __construct() {
+        $this->name       = __( 'Pricing Dropdown', 'wp-user-frontend' );
+        $this->input_type = 'pricing_dropdown';
+        $this->icon       = 'currency-dollar';
+    }
+}
+
+/**
+ * Pricing Multi Select Field Class
+ */
+class Form_Field_Pricing_MultiSelect extends Form_Field_Pro {
+
+    public function __construct() {
+        $this->name       = __( 'Pricing Multi Select', 'wp-user-frontend' );
+        $this->input_type = 'pricing_multiselect';
+        $this->icon       = 'currency-dollar';
+    }
+}
+
+/**
+ * Cart Total Field Class
+ */
+class Form_Field_Cart_Total extends Form_Field_Pro {
+
+    public function __construct() {
+        $this->name       = __( 'Cart Total', 'wp-user-frontend' );
+        $this->input_type = 'cart_total';
+        $this->icon       = 'receipt-percent';
     }
 }

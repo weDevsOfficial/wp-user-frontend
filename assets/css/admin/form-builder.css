@@ -1725,6 +1725,10 @@ video {
   justify-content: space-evenly;
 }
 
+.wpuf-gap-1 {
+  gap: 0.25rem;
+}
+
 .wpuf-gap-12 {
   gap: 3rem;
 }
@@ -3923,6 +3927,11 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
 .hover\:wpuf-text-primary:hover {
   --tw-text-opacity: 1;
   color: rgb(5 150 105 / var(--tw-text-opacity));
+}
+
+.hover\:wpuf-text-red-500:hover {
+  --tw-text-opacity: 1;
+  color: rgb(239 68 68 / var(--tw-text-opacity));
 }
 
 .hover\:wpuf-text-white:hover {

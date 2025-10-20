@@ -461,6 +461,11 @@ class Subscription extends WP_REST_Controller {
         ) : '';
         $sort_order = ! empty( $subscription['meta_value']['_sort_order'] ) ? (int) $subscription['meta_value']['_sort_order'] : 1;
         
+        // Process view restriction data
+        $view_allowed_term_ids = ! empty( $subscription['meta_value']['_sub_view_allowed_term_ids'] ) 
+            ? $subscription['meta_value']['_sub_view_allowed_term_ids'] 
+            : array();
+        
         if ( $sort_order < 1 ) {
             $sort_order = 1;
         }
@@ -479,7 +484,7 @@ class Subscription extends WP_REST_Controller {
                 'post_content'      => $post_content,
                 'post_title'        => $name,
                 'post_status'       => $status,
-                'post_modified'     => $current_time,
+                'post_modified'     => $current_time->format( 'Y-m-d H:i:s' ),
                 'post_modified_gmt' => get_gmt_from_date( $current_time->format( 'Y-m-d H:i:s' ) ),
             ];
 
@@ -528,8 +533,12 @@ class Subscription extends WP_REST_Controller {
             update_post_meta( $id, '_total_feature_item', $total_feature_item );
             update_post_meta( $id, '_remove_feature_item', $remove_feature_item );
             update_post_meta( $id, '_sort_order', $sort_order );
+            update_post_meta( $id, '_sub_view_allowed_term_ids', $view_allowed_term_ids );
 
             do_action( 'wpuf_after_update_subscription_pack_meta', $id, $request );
+
+            // Update global taxonomy view restriction status
+            $this->update_global_taxonomy_view_restriction_status( $view_allowed_term_ids );
 
             return rest_ensure_response(
                 [
@@ -603,6 +612,20 @@ class Subscription extends WP_REST_Controller {
             'success' => true,
             'settings' => $settings,
         ] );
+    }
+
+    /**
+     * Update global taxonomy view restriction status
+     *
+     * @since 4.1.9
+     *
+     * @param array $current_view_restrictions Current subscription's view restrictions
+     */
+    private function update_global_taxonomy_view_restriction_status( $current_view_restrictions = array() ) {
+        // If current subscription has view restrictions, global status should be 'yes'
+        if ( ! empty( $current_view_restrictions ) ) {
+            update_option( 'wpuf_taxonomy_view_restrictions_enabled', 'yes' );
+        }
     }
 
     /**

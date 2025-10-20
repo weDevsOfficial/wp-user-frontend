@@ -24,6 +24,10 @@
                 :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-bg-green-50 wpuf-border-green-400' : 'wpuf-border-transparent'"
                 class="wpuf-flex wpuf-justify-between wpuf-p-6 wpuf-rounded-t-md wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed group-hover:wpuf-border-green-400 group-hover:wpuf-cursor-pointer !wpuf-pb-3">
                 <div v-if="!(is_full_width(field.template) || is_pro_preview(field.template))" class="wpuf-w-1/4 wpuf-flex wpuf-items-center">
+                    <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'left_label'" 
+                          class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-mr-1">
+                          <i :class="[field.field_icon, 'wpuf-field-icon']"></i>
+                    </span>
                     <label
                         v-if="!is_invisible(field)"
                         :for="'wpuf-' + field.name ? field.name : 'cls'"
@@ -31,9 +35,9 @@
                         {{ field.label }} <span v-if="field.required && 'yes' === field.required"
                                                 class="required">*</span>
                     </label>
-                    <span v-if="field.icon && field.show_icon === 'yes'" 
-                          class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-ml-2"
-                          v-html="field.icon">
+                    <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'right_label'" 
+                          class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-ml-2">
+                          <i :class="[field.field_icon, 'wpuf-field-icon']"></i>
                     </span>
                 </div>
                 <div

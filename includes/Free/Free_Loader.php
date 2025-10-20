@@ -222,6 +222,13 @@ class Free_Loader extends Pro_Prompt {
                 'icon'           => 'dashicons-admin-network',
                 'class'          => 'pro-preview-html',
                 'is_pro_preview' => true,
+            ],
+            [
+                'id'             => 'wpuf_seo_settings',
+                'title'          => __( 'SEO Settings', 'wp-user-frontend' ) . '<span class="pro-icon-title"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+                'icon'           => 'dashicons-search',
+                'class'          => 'pro-preview-html',
+                'is_pro_preview' => true,
             ]
         ];
 
@@ -853,6 +860,26 @@ class Free_Loader extends Pro_Prompt {
             ],
         ];
 
+        // SEO Settings
+        $settings_fields['wpuf_seo_settings'] = [
+            [
+                'name'  => 'user_directory_section',
+                'label' => __( 'User Directory SEO Settings', 'wp-user-frontend' ),
+                'type'  => 'html',
+                'class' => 'pro-preview-html',
+                'is_pro_preview' => true,
+            ],
+            [
+                'name'           => 'avoid_indexing_profiles',
+                'label'          => __( 'Avoid indexing profile by search engines', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon_path ) . '</span>',
+                'desc'           => __( 'Enable this to add a noindex meta tag to all user profile pages across directories. Useful if you want some profiles hidden from search engines.', 'wp-user-frontend' ),
+                'type'           => 'checkbox',
+                'default'        => 'off',
+                'class'          => 'pro-preview',
+                'is_pro_preview' => true,
+            ],
+        ];
+
         return $settings_fields;
     }
 
@@ -1268,6 +1295,12 @@ class Free_Loader extends Pro_Prompt {
                 'description' => 'Stripe payment gateway for WP User Frontend',
                 'plugin_uri'  => 'https://wedevs.com/docs/wp-user-frontend-pro/modules/stripe/',
                 'thumbnail'   => 'wpuf-stripe.png',
+            ],
+            'seo/wpuf-seo.php' => [
+                'name'        => 'SEO Settings',
+                'description' => 'SEO settings for user directory and profiles',
+                'plugin_uri'  => 'https://wedevs.com/products/plugins/wp-user-frontend-pro/seo-settings/',
+                'thumbnail'   => 'wpuf-seo.png',
             ],
         ];
     }

@@ -456,6 +456,18 @@ class Admin_Tools {
      */
     public function import_forms() {
         check_ajax_referer( 'wpuf_admin_tools' );
+
+        // Security: Check user has proper admin capabilities
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            wp_send_json_error(
+                new WP_Error(
+                    'wpuf_ajax_import_forms_error',
+                    __( 'Unauthorized operation', 'wp-user-frontend' )
+                ),
+                WP_Http::FORBIDDEN
+            );
+        }
+
         if ( ! isset( $_POST['file_id'] ) ) {
             wp_send_json_error(
                 new WP_Error(

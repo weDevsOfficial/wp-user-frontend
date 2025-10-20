@@ -1,18 +1,16 @@
-/** @type {import('tailwindcss').Config} */
-const colors = require('tailwindcss/colors')
+const colors = require('tailwindcss/colors');
 
+/** @type {import('tailwindcss').Config} */
 module.exports = {
     prefix: 'wpuf-',
     content: [
-        './assets/**/*.{js,jsx,ts,tsx,vue,html}',
-        './includes/Admin/**/*.php',
-        './includes/Admin/template-parts/*.php',
+        './templates/**/*.php',
         './admin/form-builder/views/*.php',
-        './admin/form-builder/assets/js/**/*.php',
-        'wpuf-functions.php',
+        './src/**/*.{js,css}',
+        './assets/js/**/*.{js,vue}',
     ],
     theme: {
-        extend: {
+         extend: {
             colors: {
                 primary: colors.emerald[600],
                 primaryHover: colors.emerald[500],
@@ -21,9 +19,5 @@ module.exports = {
     },
     plugins: [
         require('@tailwindcss/forms'),
-        require('daisyui'),
     ],
-    daisyui: {
-        themes: [],
-    },
 }

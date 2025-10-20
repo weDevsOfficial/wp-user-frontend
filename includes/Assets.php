@@ -109,6 +109,9 @@ class Assets {
             'frontend-forms'      => [
                 'src' => WPUF_ASSET_URI . '/css/frontend-forms.css',
             ],
+            'frontend-subscriptions' => [
+                'src' => WPUF_ASSET_URI . '/css/frontend-subscriptions.min.css',
+            ],
             'layout1'             => [
                 'src' => WPUF_ASSET_URI . '/css/frontend-form/layout1.css',
             ],
@@ -390,6 +393,10 @@ class Assets {
             ],
             'forms-list'         => [
                 'src'       => WPUF_ASSET_URI . '/js/forms-list.min.js',
+                'in_footer' => true,
+            ],
+            'frontend-subscriptions' => [
+                'src'       => WPUF_ASSET_URI . '/js/frontend-subscriptions.min.js',
                 'in_footer' => true,
             ],
         ];

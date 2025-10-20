@@ -1228,6 +1228,83 @@ class RestController extends WP_REST_Controller {
                     $field['options'][sanitize_key($key)] = sanitize_text_field($value);
                 }
             }
+
+            // Handle address_field: Auto-populate missing address structure
+            if (($field['input_type'] === 'address_field' || $field['template'] === 'address_field') && !isset($field['address'])) {
+                // AI didn't include the required address structure, add it as fallback
+                $field['address'] = [
+                    'street_address' => [
+                        'checked' => 'checked',
+                        'type' => 'text',
+                        'required' => 'checked',
+                        'label' => 'Address Line 1',
+                        'value' => '',
+                        'placeholder' => ''
+                    ],
+                    'street_address2' => [
+                        'checked' => 'checked',
+                        'type' => 'text',
+                        'required' => '',
+                        'label' => 'Address Line 2',
+                        'value' => '',
+                        'placeholder' => ''
+                    ],
+                    'city_name' => [
+                        'checked' => 'checked',
+                        'type' => 'text',
+                        'required' => 'checked',
+                        'label' => 'City',
+                        'value' => '',
+                        'placeholder' => ''
+                    ],
+                    'state' => [
+                        'checked' => 'checked',
+                        'type' => 'select',
+                        'required' => 'checked',
+                        'label' => 'State',
+                        'value' => '',
+                        'placeholder' => ''
+                    ],
+                    'zip' => [
+                        'checked' => 'checked',
+                        'type' => 'text',
+                        'required' => 'checked',
+                        'label' => 'Zip Code',
+                        'value' => '',
+                        'placeholder' => ''
+                    ],
+                    'country_select' => [
+                        'checked' => 'checked',
+                        'type' => 'select',
+                        'required' => 'checked',
+                        'label' => 'Country',
+                        'value' => '',
+                        'country_list_visibility_opt_name' => 'all',
+                        'country_select_hide_list' => [],
+                        'country_select_show_list' => []
+                    ]
+                ];
+            }
+
+            // Sanitize address field nested structure (if present or just added)
+            if (isset($field['address']) && is_array($field['address'])) {
+                foreach ($field['address'] as $subfield_key => &$subfield) {
+                    if (is_array($subfield)) {
+                        // Sanitize each sub-field property
+                        if (isset($subfield['label'])) {
+                            $subfield['label'] = sanitize_text_field($subfield['label']);
+                        }
+                        if (isset($subfield['placeholder'])) {
+                            $subfield['placeholder'] = sanitize_text_field($subfield['placeholder']);
+                        }
+                        if (isset($subfield['value'])) {
+                            $subfield['value'] = sanitize_text_field($subfield['value']);
+                        }
+                        // Keep other properties like 'checked', 'type', 'required' as-is (they're already validated)
+                    }
+                }
+                unset($subfield); // Break reference
+            }
         }
 
         return $fields;

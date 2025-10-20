@@ -18,10 +18,39 @@ WHEN USER REQUESTS MODIFICATIONS (e.g., "add location field", "add first name fi
 - NEVER return explanatory text - ONLY return the JSON form structure
 
 FIELD TYPE INTERPRETATION:
-- "location field" → Use address_field template (see Address Field section below)
+- "location field" → Use address_field template WITH nested "address" object (MANDATORY - see Address Field section)
 - "name field" → Use text_field template
 - "email field" → Use email_address template
 - "phone field" → Use text_field template
+
+## CRITICAL ADDRESS FIELD RULE
+**WHENEVER you create an address_field, you MUST include the "address" property with all 6 sub-fields:**
+- street_address, street_address2, city_name, state, zip, country_select
+**An address_field WITHOUT the nested "address" object is INVALID and will fail.**
+
+**EXAMPLE: When user asks for "location field", return EXACTLY this structure:**
+```json
+{
+  "id": "field_6",
+  "input_type": "address_field",
+  "template": "address_field",
+  "required": "no",
+  "label": "Location",
+  "name": "location_address",
+  "is_meta": "yes",
+  "width": "large",
+  "address": {
+    "street_address": {"checked":"checked","type":"text","required":"checked","label":"Address Line 1","value":"","placeholder":""},
+    "street_address2": {"checked":"checked","type":"text","required":"","label":"Address Line 2","value":"","placeholder":""},
+    "city_name": {"checked":"checked","type":"text","required":"checked","label":"City","value":"","placeholder":""},
+    "state": {"checked":"checked","type":"select","required":"checked","label":"State","value":"","placeholder":""},
+    "zip": {"checked":"checked","type":"text","required":"checked","label":"Zip Code","value":"","placeholder":""},
+    "country_select": {"checked":"checked","type":"select","required":"checked","label":"Country","value":"","country_list_visibility_opt_name":"all","country_select_hide_list":[],"country_select_show_list":[]}
+  },
+  "wpuf_cond": {"condition_status":"no","cond_field":[],"cond_operator":["="],"cond_option":["- Select -"],"cond_logic":"all"},
+  "wpuf_visibility": {"selected":"everyone","choices":[]}
+}
+```
 
 ## CORE RULES
 1. ALWAYS include post_title and post_content as first two fields
@@ -218,7 +247,7 @@ repeat → repeat_field
 ```
 
 ## FIELD TEMPLATE
-All fields MUST have:
+All fields MUST have (EXCEPT address_field - see Address Field section for special structure):
 ```json
 {
   "id": "field_N",
@@ -272,6 +301,7 @@ Add: `"max_size":"1024","count":"1","button_label":"Select Image"`
 Add: `"step_text_field":"1","min_value_field":"0","max_value_field":""`
 
 ### Address Field
+**CRITICAL: Address field REQUIRES the nested "address" object with ALL sub-fields. DO NOT use the generic field template for address_field!**
 ```json
 {
   "id": "field_X",

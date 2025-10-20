@@ -1334,6 +1334,81 @@ class RestController extends WP_REST_Controller {
                     $field['woo_attr_vis'] = 'no';
                 }
             }
+
+            // Handle phone_field: Auto-populate missing required properties
+            if ($field['input_type'] === 'phone_field' || $field['template'] === 'phone_field') {
+                if (!isset($field['show_country_list'])) {
+                    $field['show_country_list'] = 'yes';
+                }
+                if (!isset($field['auto_placeholder'])) {
+                    $field['auto_placeholder'] = 'yes';
+                }
+                if (!isset($field['country_list'])) {
+                    $field['country_list'] = [
+                        'name' => '',
+                        'country_list_visibility_opt_name' => 'all',
+                        'country_select_show_list' => [],
+                        'country_select_hide_list' => []
+                    ];
+                }
+            }
+
+            // Handle password field: Auto-populate missing required properties
+            if ($field['input_type'] === 'password' || $field['template'] === 'password') {
+                if (!isset($field['min_length'])) {
+                    $field['min_length'] = '5';
+                }
+                if (!isset($field['repeat_pass'])) {
+                    $field['repeat_pass'] = 'yes';
+                }
+                if (!isset($field['re_pass_label'])) {
+                    $field['re_pass_label'] = 'Confirm Password';
+                }
+                if (!isset($field['pass_strength'])) {
+                    $field['pass_strength'] = 'yes';
+                }
+                if (!isset($field['re_pass_placeholder'])) {
+                    $field['re_pass_placeholder'] = '';
+                }
+                if (!isset($field['minimum_strength'])) {
+                    $field['minimum_strength'] = 'weak';
+                }
+                if (!isset($field['re_pass_help'])) {
+                    $field['re_pass_help'] = '';
+                }
+            }
+
+            // Handle country_list_field: Auto-populate missing required properties
+            if ($field['input_type'] === 'country_list' || $field['template'] === 'country_list_field') {
+                if (!isset($field['country_list'])) {
+                    $field['country_list'] = [
+                        'name' => '',
+                        'country_list_visibility_opt_name' => 'all',
+                        'country_select_show_list' => [],
+                        'country_select_hide_list' => []
+                    ];
+                }
+            }
+
+            // Handle date_field: Auto-populate missing required properties
+            if ($field['input_type'] === 'date' || $field['input_type'] === 'date_field' || $field['template'] === 'date_field') {
+                if (!isset($field['format'])) {
+                    $field['format'] = 'dd/mm/yy';
+                }
+            }
+
+            // Handle file_upload: Auto-populate missing required properties
+            if ($field['input_type'] === 'file_upload' || $field['template'] === 'file_upload') {
+                if (!isset($field['max_size'])) {
+                    $field['max_size'] = '1024';
+                }
+                if (!isset($field['count'])) {
+                    $field['count'] = '1';
+                }
+                if (!isset($field['extension'])) {
+                    $field['extension'] = ['images', 'audio', 'video', 'pdf', 'office', 'zip', 'exe', 'csv'];
+                }
+            }
         }
 
         return $fields;

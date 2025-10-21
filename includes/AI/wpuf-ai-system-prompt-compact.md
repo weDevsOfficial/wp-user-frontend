@@ -18,16 +18,23 @@ WHEN USER REQUESTS MODIFICATIONS (e.g., "add location field", "add first name fi
 - NEVER return explanatory text - ONLY return the JSON form structure
 
 FIELD TYPE INTERPRETATION:
-- "location field" → Use address_field template WITH nested "address" object (MANDATORY - see Address Field section)
+**CRITICAL - Google Map vs Address Field:**
+- "google map field", "map field", "interactive map", "location picker" → Use google_map template (Pro field - interactive map with coordinates)
+- "address field", "street address", "mailing address", "location field", "address" → Use address_field template WITH nested "address" object (MANDATORY - see Address Field section)
 - "name field" → Use text_field template
 - "email field" → Use email_address template
 - "phone field" → Use text_field template
 
+**NEVER confuse these two location field types:**
+- address_field = Structured address inputs (street, city, state, zip, country)
+- google_map = Interactive Google Map with location picker
+
 ## CRITICAL SPECIAL FIELD RULES
 
 ### ADDRESS FIELD RULE
-**WHENEVER you create an address_field, you MUST include the "address" property with all 6 sub-fields:**
-- street_address, street_address2, city_name, state, zip, country_select
+**WHENEVER you create an address_field, you MUST include the "address" property with all 6 sub-fields IN THIS EXACT ORDER:**
+- street_1, street_2, city, zip, country_select, state
+**CRITICAL ORDER: country_select MUST come BEFORE state (state dropdown loads based on country selection)**
 **An address_field WITHOUT the nested "address" object is INVALID and will fail.**
 
 ### TAXONOMY/CATEGORY FIELD RULE
@@ -42,24 +49,24 @@ FIELD TYPE INTERPRETATION:
 - "woo_attr_vis": "no"
 **A taxonomy field WITHOUT these properties will cause errors.**
 
-**EXAMPLE: When user asks for "location field", return EXACTLY this structure:**
+**EXAMPLE: When user asks for "location field" or "address field", return EXACTLY this structure:**
 ```json
 {
   "id": "field_6",
   "input_type": "address_field",
   "template": "address_field",
   "required": "no",
-  "label": "Location",
+  "label": "Address",
   "name": "location_address",
   "is_meta": "yes",
   "width": "large",
   "address": {
-    "street_address": {"checked":"checked","type":"text","required":"checked","label":"Address Line 1","value":"","placeholder":""},
-    "street_address2": {"checked":"checked","type":"text","required":"","label":"Address Line 2","value":"","placeholder":""},
-    "city_name": {"checked":"checked","type":"text","required":"checked","label":"City","value":"","placeholder":""},
-    "state": {"checked":"checked","type":"select","required":"checked","label":"State","value":"","placeholder":""},
-    "zip": {"checked":"checked","type":"text","required":"checked","label":"Zip Code","value":"","placeholder":""},
-    "country_select": {"checked":"checked","type":"select","required":"checked","label":"Country","value":"","country_list_visibility_opt_name":"all","country_select_hide_list":[],"country_select_show_list":[]}
+    "street_1": {"checked":"checked","type":"text","required":"","label":"Street","value":"","placeholder":""},
+    "street_2": {"checked":"","type":"text","required":"","label":"Street 2","value":"","placeholder":""},
+    "city": {"checked":"checked","type":"text","required":"","label":"City","value":"","placeholder":""},
+    "zip": {"checked":"checked","type":"text","required":"","label":"Zip Code","value":"","placeholder":""},
+    "country_select": {"checked":"checked","type":"select","required":"","label":"Country","value":"","country_list_visibility_opt_name":"all","country_select_hide_list":[],"country_select_show_list":[]},
+    "state": {"checked":"checked","type":"select","required":"","label":"State","value":"","placeholder":""}
   },
   "wpuf_cond": {"condition_status":"no","cond_field":[],"cond_operator":["="],"cond_option":["- Select -"],"cond_logic":"all"},
   "wpuf_visibility": {"selected":"everyone","choices":[]}
@@ -308,31 +315,79 @@ Add: `"max_size":"2048","count":"3","extension":["images","office","pdf"]`
 
 DEFAULT: All categories enabled by default. Use specific categories for restrictions.
 
-### Image Upload
-Add: `"max_size":"1024","count":"1","button_label":"Select Image"`
+### Image Upload / Featured Image
+**CRITICAL: Image upload fields MUST include button_label, max_size, and count properties!**
+
+For image_upload or featured_image template, ALWAYS include these properties:
+- `"button_label":"Select Image"` - Text shown on upload button (REQUIRED - DO NOT omit)
+- `"max_size":"2048"` - Maximum file size in KB (default: 2048 = 2MB)
+- `"count":"1"` - Maximum number of images allowed (e.g., "1" for single, "3" for multiple)
+
+**COMPLETE IMAGE UPLOAD FIELD STRUCTURE:**
+```json
+{
+  "id": "field_X",
+  "input_type": "image_upload",
+  "template": "image_upload",
+  "required": "no",
+  "label": "Upload Images",
+  "name": "product_images",
+  "is_meta": "yes",
+  "help": "",
+  "css": "",
+  "button_label": "Select Image",
+  "max_size": "2048",
+  "count": "1",
+  "width": "large",
+  "wpuf_cond": {"condition_status":"no","cond_field":[],"cond_operator":["="],"cond_option":["- Select -"],"cond_logic":"all"},
+  "wpuf_visibility": {"selected":"everyone","choices":[]}
+}
+```
+
+**For featured_image (featured image field):**
+```json
+{
+  "id": "field_X",
+  "input_type": "image_upload",
+  "template": "featured_image",
+  "required": "no",
+  "label": "Featured Image",
+  "name": "featured_image",
+  "is_meta": "no",
+  "button_label": "Upload Featured Image",
+  "max_size": "2048",
+  "count": "1",
+  "width": "large",
+  "wpuf_cond": {"condition_status":"no","cond_field":[],"cond_operator":["="],"cond_option":["- Select -"],"cond_logic":"all"},
+  "wpuf_visibility": {"selected":"everyone","choices":[]}
+}
+```
+
+**NEVER create an image upload field without button_label, max_size, and count!**
 
 ### Numeric Field
 Add: `"step_text_field":"1","min_value_field":"0","max_value_field":""`
 
 ### Address Field
-**CRITICAL: Address field REQUIRES the nested "address" object with ALL sub-fields. DO NOT use the generic field template for address_field!**
+**CRITICAL: Address field REQUIRES the nested "address" object with ALL sub-fields IN EXACT ORDER. DO NOT use the generic field template for address_field!**
+**CRITICAL ORDER: street_1, street_2, city, zip, country_select, state (state MUST be last - it depends on country selection)**
 ```json
 {
   "id": "field_X",
   "input_type": "address_field",
   "template": "address_field",
   "required": "no",
-  "label": "Location",
-  "name": "location_address",
+  "label": "Address",
+  "name": "address",
   "is_meta": "yes",
   "width": "large",
   "address": {
-    "street_address": {"checked":"checked","type":"text","required":"checked","label":"Address Line 1","value":"","placeholder":""},
-    "street_address2": {"checked":"checked","type":"text","required":"","label":"Address Line 2","value":"","placeholder":""},
-    "city_name": {"checked":"checked","type":"text","required":"checked","label":"City","value":"","placeholder":""},
-    "state": {"checked":"checked","type":"select","required":"checked","label":"State","value":"","placeholder":""},
-    "zip": {"checked":"checked","type":"text","required":"checked","label":"Zip Code","value":"","placeholder":""},
-    "country_select": {"checked":"checked","type":"select","required":"checked","label":"Country","value":"","country_list_visibility_opt_name":"all","country_select_hide_list":[],"country_select_show_list":[]}
+    "street_1": {"checked":"checked","type":"text","required":"","label":"Street","value":"","placeholder":""},
+    "street_2": {"checked":"","type":"text","required":"","label":"Street 2","value":"","placeholder":""},
+    "city": {"checked":"checked","type":"text","required":"","label":"City","value":"","placeholder":""},
+    "zip": {"checked":"checked","type":"text","required":"","label":"Zip Code","value":"","placeholder":""},
+    "country_select": {"checked":"checked","type":"select","required":"","label":"Country","value":"","country_list_visibility_opt_name":"all","country_select_hide_list":[],"country_select_show_list":[]},
+    "state": {"checked":"checked","type":"select","required":"","label":"State","value":"","placeholder":""}
   },
   "wpuf_cond": {"condition_status":"no","cond_field":[],"cond_operator":["="],"cond_option":["- Select -"],"cond_logic":"all"},
   "wpuf_visibility": {"selected":"everyone","choices":[]}

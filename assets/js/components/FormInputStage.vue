@@ -14,7 +14,7 @@
             <!-- Form Description -->
             <div class="wpuf-mb-6">
                 <div class="wpuf-relative">
-                    <textarea 
+                    <textarea
                         v-model="formDescription"
                         class="wpuf-w-full wpuf-px-4 wpuf-py-3 wpuf-border wpuf-border-gray-300 wpuf-rounded-lg wpuf-text-gray-500 wpuf-resize-none focus:wpuf-outline-none focus:wpuf-border-emerald-700 focus:wpuf-ring-2 focus:wpuf-ring-emerald-200 wpuf-transition-all"
                         rows="6"
@@ -33,8 +33,8 @@
                     {{ __('Or create using our Prompts:', 'wp-user-frontend') }}
                 </p>
                 <div class="wpuf-flex wpuf-flex-wrap wpuf-gap-4">
-                    <button 
-                        v-for="tpl in promptTemplates" 
+                    <button
+                        v-for="tpl in promptTemplates"
                         :key="tpl.id"
                         @click="selectPrompt(tpl)"
                         :class="selectedPrompt?.id === tpl.id ? 'wpuf-prompt-btn-active wpuf-bg-emerald-600 wpuf-text-white wpuf-border-emerald-600 hover:wpuf-text-emerald-200 wpuf-px-4 wpuf-py-2 wpuf-rounded-md wpuf-transition-all wpuf-text-sm wpuf-font-medium' : 'wpuf-px-4 wpuf-py-2 wpuf-border wpuf-border-gray-200 wpuf-rounded-md wpuf-text-gray-700 hover:wpuf-bg-gray-50 hover:wpuf-border-emerald-600 hover:wpuf-text-emerald-700 wpuf-transition-all wpuf-text-sm wpuf-font-medium'"
@@ -42,17 +42,17 @@
                         {{ tpl.label }}
                     </button>
                 </div>
-            </div> 
+            </div>
 
             <!-- Action Buttons -->
             <div class="wpuf-flex wpuf-justify-center wpuf-gap-4">
-                <button 
+                <button
                     @click="goBack"
                     class="wpuf-px-6 wpuf-py-3 wpuf-border wpuf-text-base wpuf-leading-6 wpuf-border-gray-300 wpuf-rounded-md wpuf-text-gray-700 wpuf-font-medium hover:wpuf-bg-gray-50 wpuf-transition-colors"
                 >
                     {{ __('Back', 'wp-user-frontend') }}
                 </button>
-                <button 
+                <button
                     @click="startGeneration"
                     :disabled="!formDescription.trim() || isGenerating"
                     class="wpuf-px-8 wpuf-py-4 wpuf-bg-emerald-600 hover:wpuf-bg-emerald-700 wpuf-text-white wpuf-rounded-lg wpuf-transition-colors wpuf-flex wpuf-items-center wpuf-gap-2 disabled:wpuf-opacity-50 disabled:wpuf-cursor-not-allowed"
@@ -106,10 +106,10 @@ export default {
             ];
 
             promptAIInstructions = {
-                basic_registration: 'User registration with email, first name, last name, username, password',
-                member_directory: 'Member profile with name, email, bio, social links, profile photo',
-                job_applicant: 'Job application with name, email, phone, resume upload, cover letter',
-                newsletter_signup: 'Newsletter signup with email and first name only'
+                basic_registration: 'Create a Basic User Registration form with email, name, username, password',
+                member_directory: 'Create a Member Directory Profile form with name, email, bio, profile photo',
+                job_applicant: 'Create a Job Applicant Registration form with name, email, phone, resume upload',
+                newsletter_signup: 'Create a Newsletter Signup form with email, first name'
             };
         } else {
             // Post form prompts (default)
@@ -124,13 +124,13 @@ export default {
             ];
 
             promptAIInstructions = {
-                paid_guest_post: 'Guest post form with image, category, bio',
-                portfolio_submission: 'Portfolio form with category, skills, link, images',
-                classified_ads: 'Classified ad form with category, price, location, images',
-                coupon_submission: 'Coupon form with code, value, brand, date, logo',
-                real_estate: 'Property form with price, type, bedrooms, bathrooms, images',
-                news_press: 'News form with image, category, email, date',
-                generic_form: 'Simple form'
+                paid_guest_post: 'Create a Paid Guest Post submission form with title, content, author name, email, category',
+                portfolio_submission: 'Create a Portfolio Submission form with title, description, name, email, skills, portfolio files',
+                classified_ads: 'Create a Classified Ads submission form with title, description, category, price, address field, contact email',
+                coupon_submission: 'Create a Coupon Submission form with title, description, business name, discount amount, expiration date',
+                real_estate: 'Create a Real Estate Property Listing form with title, description, address field, price, bedrooms, bathrooms, images',
+                news_press: 'Create a News/Press Release submission form with headline, content, author, contact email, category',
+                generic_form: 'Create a simple generic form with basic contact fields'
             };
         }
 
@@ -176,30 +176,30 @@ export default {
     },
     methods: {
         __: window.__ || ((text) => text),
-        
+
         selectPrompt(tpl) {
             this.selectedPrompt = tpl;
             // Use the detailed AI instruction instead of just the template name
             const aiInstruction = this.promptAIInstructions[tpl.id] || tpl.label;
-            
+
             // Enforce UI max length
             if (aiInstruction.length > this.maxDescriptionLength) {
                 this.formDescription = aiInstruction.substring(0, this.maxDescriptionLength);
             } else {
                 this.formDescription = aiInstruction;
             }
-            
+
             this.$emit('update:selectedPrompt', tpl.id);
             this.$emit('update:formDescription', this.formDescription);
         },
-        
+
         goBack() {
             this.$emit('go-back');
         },
-        
+
         startGeneration() {
             if (!this.formDescription.trim() || this.isGenerating) return;
-            
+
             this.$emit('start-generation', {
                 description: this.formDescription,
                 selectedPrompt: this.selectedPrompt?.id || this.selectedPrompt || ''

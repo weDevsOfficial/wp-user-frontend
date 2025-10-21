@@ -7,7 +7,7 @@ namespace WeDevs\Wpuf\AI;
  *
  * Main service class that handles form generation using different AI providers
  * Uses WordPress native HTTP API for lightweight implementation
- * 
+ *
  * @since WPUF_SINCE
  */
 class FormGenerator {
@@ -171,7 +171,7 @@ class FormGenerator {
     private function get_model_config($provider, $model) {
         // Get configuration from centralized Config class
         $config = Config::get_model_config($model);
-        
+
         // Return config if found, otherwise use safe defaults
         if ($config !== null) {
             return $config;
@@ -270,12 +270,12 @@ class FormGenerator {
 
         if (is_wp_error($response)) {
             $error_message = $response->get_error_message();
-            
+
             // Check for specific timeout errors
             if (strpos($error_message, 'timeout') !== false || strpos($error_message, 'timed out') !== false) {
                 throw new \Exception('OpenAI API request timed out. Please try again later.');
             }
-            
+
             throw new \Exception('OpenAI API request failed: ' . $error_message);
         }
 
@@ -314,13 +314,13 @@ class FormGenerator {
                 'model' => $this->current_model
             ];
         }
-        
+
         // Clean and extract JSON from the response
         $json_content = trim($content);
 
         // Remove any markdown code blocks if present
         $json_content = preg_replace('/^```(?:json)?\s*|\s*```$/m', '', $json_content);
-        
+
         // Remove any text before the first { or after the last }
         $json_content = preg_replace('/^[^{]*/', '', $json_content);
         $json_content = preg_replace('/[^}]*$/', '', $json_content);
@@ -334,13 +334,38 @@ class FormGenerator {
         }
 
         // Attempt to decode JSON
-        $form_data = json_decode($json_content, true);
+        $ai_response = json_decode($json_content, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             return [
                 'success' => false,
                 'error' => true,
                 'message' => 'Unable to generate form. Please try again or rephrase your request.',
+                'provider' => 'openai',
+                'model' => $this->current_model
+            ];
+        }
+
+        // Check for error response from AI
+        if ( ! empty( $ai_response['error'] ) ) {
+            return [
+                'success' => false,
+                'error' => true,
+                'message' => $ai_response['message'] ?? 'AI returned an error response',
+                'provider' => 'openai',
+                'model' => $this->current_model
+            ];
+        }
+
+        // Build complete form from minimal AI response
+        $form_data = Form_Builder::build_form( $ai_response );
+
+        // Check if form building failed
+        if ( ! empty( $form_data['error'] ) ) {
+            return [
+                'success' => false,
+                'error' => true,
+                'message' => $form_data['message'] ?? 'Failed to build form structure',
                 'provider' => 'openai',
                 'model' => $this->current_model
             ];
@@ -442,33 +467,51 @@ class FormGenerator {
         }
 
         $content = $data['content'][0]['text'];
-        
+
         // Clean and extract JSON from the response (Claude may include explanatory text)
         $json_content = trim($content);
-
-        // Remove any markdown code blocks if present
         $json_content = preg_replace('/^```(?:json)?\s*|\s*```$/m', '', $json_content);
-        
-        // Remove any text before the first { or after the last }
         $json_content = preg_replace('/^[^{]*/', '', $json_content);
         $json_content = preg_replace('/[^}]*$/', '', $json_content);
 
-        // Try to find the JSON object (handle nested braces properly)
         $start = strpos($json_content, '{');
         $end = strrpos($json_content, '}');
-
         if ($start !== false && $end !== false && $end > $start) {
             $json_content = substr($json_content, $start, $end - $start + 1);
         }
 
-        // Attempt to decode JSON
-        $form_data = json_decode($json_content, true);
-
+        // Decode JSON
+        $ai_response = json_decode($json_content, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new \Exception('Unable to generate form. Please try again or rephrase your request.');
         }
 
-        // Add metadata with better uniqueness
+        // Check for error response from AI
+        if ( ! empty( $ai_response['error'] ) ) {
+            return [
+                'success' => false,
+                'error' => true,
+                'message' => $ai_response['message'] ?? 'AI returned an error response',
+                'provider' => 'anthropic',
+                'model' => $this->current_model
+            ];
+        }
+
+        // Build complete form from minimal AI response
+        $form_data = Form_Builder::build_form( $ai_response );
+
+        // Check if form building failed
+        if ( ! empty( $form_data['error'] ) ) {
+            return [
+                'success' => false,
+                'error' => true,
+                'message' => $form_data['message'] ?? 'Failed to build form structure',
+                'provider' => 'anthropic',
+                'model' => $this->current_model
+            ];
+        }
+
+        // Add metadata
         $timestamp = microtime(true);
         $random = bin2hex(random_bytes(5));
         $form_data['session_id'] = $options['session_id'] ?? 'wpuf_ai_session_' . $timestamp . '_' . $random;
@@ -495,10 +538,10 @@ class FormGenerator {
         $context = $options['conversation_context'] ?? [];
         $form_type = $options['form_type'] ?? 'post';
         $system_prompt = $this->get_system_prompt($context, $form_type);
-        
+
         // Get model-specific configuration
         $model_config = $this->get_model_config('google', $this->current_model);
-        
+
         // Build endpoint with model
         $endpoint = str_replace('{model}', $this->current_model, $this->provider_configs['google']['endpoint']);
         $endpoint .= '?key=' . $this->api_key;
@@ -576,7 +619,7 @@ class FormGenerator {
 
         // Remove any markdown code blocks if present
         $json_content = preg_replace('/^```(?:json)?\s*|\s*```$/m', '', $json_content);
-        
+
         // Remove any text before the first { or after the last }
         $json_content = preg_replace('/^[^{]*/', '', $json_content);
         $json_content = preg_replace('/[^}]*$/', '', $json_content);
@@ -590,10 +633,35 @@ class FormGenerator {
         }
 
         // Attempt to decode JSON
-        $form_data = json_decode($json_content, true);
+        $ai_response = json_decode($json_content, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new \Exception('Unable to generate form. Please try again or rephrase your request.');
+        }
+
+        // Check for error response from AI
+        if ( ! empty( $ai_response['error'] ) ) {
+            return [
+                'success' => false,
+                'error' => true,
+                'message' => $ai_response['message'] ?? 'AI returned an error response',
+                'provider' => 'google',
+                'model' => $this->current_model
+            ];
+        }
+
+        // Build complete form from minimal AI response
+        $form_data = Form_Builder::build_form( $ai_response );
+
+        // Check if form building failed
+        if ( ! empty( $form_data['error'] ) ) {
+            return [
+                'success' => false,
+                'error' => true,
+                'message' => $form_data['message'] ?? 'Failed to build form structure',
+                'provider' => 'google',
+                'model' => $this->current_model
+            ];
         }
 
         // Add metadata with better uniqueness
@@ -620,100 +688,100 @@ class FormGenerator {
      */
     private function get_system_prompt($context = [], $form_type = 'post') {
         // Determine which prompt file to use based on form type
-        if ($form_type === 'profile' || $form_type === 'registration') {
-            // Registration/Profile form prompt
-            $prompt_file = WPUF_ROOT . '/includes/AI/wpuf-ai-system-prompt-registration.md';
+        if ( 'profile' === $form_type || 'registration' === $form_type ) {
+            // Registration/Profile form prompt - USE MINIMAL REGISTRATION PROMPT
+            $prompt_file = WPUF_ROOT . '/includes/AI/wpuf-ai-minimal-prompt-registration.md';
         } else {
-            // Post form prompt (default)
-            // Use the compact prompt file to avoid truncation
-            $prompt_file = WPUF_ROOT . '/includes/AI/wpuf-ai-system-prompt-compact.md';
+            // Post form prompt - USE MINIMAL PROMPT
+            $prompt_file = WPUF_ROOT . '/includes/AI/wpuf-ai-minimal-prompt.md';
         }
 
         // Check if file exists
-        if (!file_exists($prompt_file)) {
-            throw new \Exception('System prompt file not found: ' . $prompt_file);
+        if ( ! file_exists( $prompt_file ) ) {
+            throw new \Exception( 'System prompt file not found: ' . $prompt_file );
         }
 
         // Load the prompt file
-        $system_prompt = file_get_contents($prompt_file);
+        $system_prompt = file_get_contents( $prompt_file );
 
-        // Check prompt size to prevent truncation (max ~40KB for safety)
-        if (strlen($system_prompt) > 40000) {
-            // Try to load compact version as emergency fallback
-            $compact_file = WPUF_ROOT . '/includes/AI/wpuf-ai-system-prompt-compact.md';
-            if (file_exists($compact_file) && $compact_file !== $prompt_file) {
-                $system_prompt = file_get_contents($compact_file);
-            }
+        // Add form type enforcement instruction
+        $system_prompt .= "\n\n## FORM TYPE ENFORCEMENT\n";
+        if ( 'profile' === $form_type || 'registration' === $form_type ) {
+            $system_prompt .= "CRITICAL: You are in REGISTRATION/PROFILE form mode.\n";
+            $system_prompt .= "- You can ONLY create registration/profile forms with user fields (user_email, user_login, password, first_name, last_name, biography, social fields, etc.)\n";
+            $system_prompt .= "- You CANNOT create post forms with post fields (post_title, post_content, post_excerpt, featured_image, taxonomy, etc.)\n";
+            $system_prompt .= "- If user asks for a post form, blog form, article form, or content submission form, return an error:\n";
+            $system_prompt .= '  {"error": true, "message": "This is a registration form builder. To create post forms, please use the Post Form builder instead. Registration forms are for user sign-up and profile editing only."}' . "\n";
+        } else {
+            $system_prompt .= "CRITICAL: You are in POST form mode.\n";
+            $system_prompt .= "- You can ONLY create post forms with post fields (post_title, post_content, post_excerpt, featured_image, taxonomy, etc.)\n";
+            $system_prompt .= "- You CANNOT create registration/profile forms with user fields (user_email, user_login, password, first_name, etc.)\n";
+            $system_prompt .= "- If user asks for a registration form, sign-up form, or user profile form, return an error:\n";
+            $system_prompt .= '  {"error": true, "message": "This is a post form builder. To create registration forms, please use the Registration Form builder instead. Post forms are for content submission only."}' . "\n";
         }
 
         // Add conversation context if provided
-        if (!empty($context)) {
+        if ( ! empty( $context ) ) {
             $system_prompt .= "\n\n## CURRENT CONVERSATION CONTEXT\n";
-            
+
             // Safely extract last user message
             $last_user_message = '';
-            if (isset($context['chat_history']) && is_array($context['chat_history']) && count($context['chat_history']) > 0) {
-                $last_message = end($context['chat_history']);
+            if ( isset( $context['chat_history'] ) && is_array( $context['chat_history'] ) && count( $context['chat_history'] ) > 0 ) {
+                $last_message = end( $context['chat_history'] );
                 $last_user_message = $last_message['content'] ?? '';
             }
-            
+
             // Determine modification intent
             $modification_requested = false;
-            if (isset($context['modification_requested'])) {
-                // Use explicit value when provided
+            if ( isset( $context['modification_requested'] ) ) {
                 $modification_requested = (bool) $context['modification_requested'];
             } else {
-                // Infer intent conservatively from last user message
-                $modification_keywords = ['edit', 'modify', 'update', 'change', 'add', 'remove', 'delete', 'replace'];
-                $modification_requested = false;
-                foreach ($modification_keywords as $keyword) {
-                    if (stripos($last_user_message, $keyword) !== false) {
+                $modification_keywords = [ 'edit', 'modify', 'update', 'change', 'add', 'remove', 'delete', 'replace' ];
+                foreach ( $modification_keywords as $keyword ) {
+                    if ( false !== stripos( $last_user_message, $keyword ) ) {
                         $modification_requested = true;
                         break;
                     }
                 }
             }
-            
-            // Build context with COMPLETE form structure for accurate modifications
+
+            // Build MINIMAL context - only send template + label, not full structures
             $context_for_ai = [
-                'session_id' => $context['session_id'] ?? '',
-                'current_form_title' => $context['current_form']['form_title'] ?? '',
-                'current_fields_count' => count($context['current_form']['wpuf_fields'] ?? []),
-                'last_user_message' => $last_user_message,
-                'modification_requested' => $modification_requested
+                'session_id'             => $context['session_id'] ?? '',
+                'last_user_message'      => $last_user_message,
+                'modification_requested' => $modification_requested,
+                'form_type'              => $form_type, // Pass form type to AI for validation
             ];
-            
-            // Include COMPLETE current fields structure (not just summaries)
-            // This is critical for the AI to properly reconstruct the form with all WPUF properties
-            if (!empty($context['current_form']['wpuf_fields'])) {
-                $context_for_ai['current_form_fields'] = $context['current_form']['wpuf_fields'];
+
+            // Include MINIMAL current fields (template + label + custom props only)
+            if ( ! empty( $context['current_form'] ) ) {
+                $minimal_fields = Form_Builder::extract_minimal_fields( $context['current_form'] );
+                if ( ! empty( $minimal_fields ) ) {
+                    $context_for_ai['current_fields']     = $minimal_fields;
+                    $context_for_ai['form_title']         = $context['current_form']['form_title'] ?? '';
+                    $context_for_ai['form_description']   = $context['current_form']['form_description'] ?? '';
+                }
             }
-            
-            $system_prompt .= json_encode($context_for_ai, JSON_PRETTY_PRINT);
-            
+
+            $system_prompt .= json_encode( $context_for_ai, JSON_PRETTY_PRINT );
+
             // Add specific instruction for modifications
             $system_prompt .= "\n\n## MODIFICATION INSTRUCTION\n";
-            if ($modification_requested) {
+            if ( $modification_requested ) {
                 $system_prompt .= "The user wants to MODIFY the existing form. You MUST:\n";
-                $system_prompt .= "1. Take ALL existing fields from current_form_fields array (it contains the COMPLETE WPUF structure)\n";
-                $system_prompt .= "2. Keep ALL existing fields EXACTLY as they are with ALL their properties\n";
-                $system_prompt .= "3. Apply the requested modification (add/remove/edit specific fields)\n";
-                $system_prompt .= "4. Renumber field IDs sequentially (field_1, field_2, field_3, etc.)\n";
-                $system_prompt .= "5. For new fields, use the same complete structure as existing fields\n";
-                $system_prompt .= "6. Return the complete form with form_title, form_description, wpuf_fields, and form_settings\n\n";
-                $system_prompt .= "CRITICAL: The current_form_fields array contains COMPLETE field objects with all WPUF properties (id, input_type, template, required, label, name, is_meta, help, css, placeholder, default, size, width, wpuf_cond, wpuf_visibility, etc.). You MUST preserve ALL these properties for existing fields and include them for new fields.\n\n";
-                $system_prompt .= "Example: If asked to 'add last name field', you must:\n";
-                $system_prompt .= "1. Include ALL existing fields from current_form_fields\n";
-                $system_prompt .= "2. Add a new last name field with complete WPUF structure\n";
-                $system_prompt .= "3. Return the full form JSON with all fields";
+                $system_prompt .= "1. Return ALL existing fields from current_fields array (keep template + label + custom props)\n";
+                $system_prompt .= "2. Apply the requested modification (add/remove/edit specific fields)\n";
+                $system_prompt .= "3. Return COMPLETE field list with all fields in the 'fields' array\n";
+                $system_prompt .= "4. Include form_title and form_description from context\n\n";
+                $system_prompt .= "Example: If asked to 'add email field' and current_fields has 3 fields, return ALL 4 fields (existing 3 + new email field).\n";
             } else {
-                $system_prompt .= "The user is asking a question about the form. Provide a helpful, conversational response explaining the requested information. DO NOT return form field structures unless the user explicitly requests a modification.";
+                $system_prompt .= "The user is asking a question. Return an error response with helpful message.";
             }
         }
-        
+
         return $system_prompt;
     }
-    
+
 
     /**
      * Get available providers

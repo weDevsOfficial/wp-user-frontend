@@ -1,0 +1,1057 @@
+<?php
+
+namespace WeDevs\Wpuf\AI;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+/**
+ * Field Templates Helper
+ *
+ * Provides complete field structures for POST form fields only.
+ * AI returns minimal data, this class builds the full structure.
+ *
+ * @since WPUF_SINCE
+ */
+class Field_Templates {
+
+    /**
+     * Get complete field structure
+     *
+     * @param string $template Field template name
+     * @param string $label Field label
+     * @param string $field_id Field ID
+     * @param array $custom_props Custom properties from AI
+     * @return array Complete field structure
+     */
+    public static function get_field_structure( $template, $label, $field_id, $custom_props = [] ) {
+        $method = 'get_' . $template . '_template';
+
+        if ( method_exists( self::class, $method ) ) {
+            $field = call_user_func( [ self::class, $method ], $label, $field_id );
+
+            // Merge custom props - AI properties override template defaults
+            // This ensures 'required', 'placeholder', 'options', etc. from AI take precedence
+            $field = array_merge( $field, $custom_props );
+
+            return $field;
+        }
+
+        return [];
+    }
+
+    /**
+     * Get common properties
+     */
+    private static function get_common() {
+        return [
+            'wpuf_cond' => [
+                'condition_status' => 'no',
+                'cond_field' => [],
+                'cond_operator' => [ '=' ],
+                'cond_option' => [ '- Select -' ],
+                'cond_logic' => 'all',
+            ],
+            'wpuf_visibility' => [
+                'selected' => 'everyone',
+                'choices' => [],
+            ],
+        ];
+    }
+
+    /**
+     * Generate field name from label
+     */
+    private static function name( $label ) {
+        // Convert to lowercase FIRST, then replace non-alphanumeric with underscore
+        $name = strtolower( trim( $label ) );
+        $name = preg_replace( '/[^a-z0-9]+/', '_', $name );
+        $name = trim( $name, '_' ); // Remove leading/trailing underscores
+        return $name;
+    }
+
+    // ========== POST FIELDS ==========
+
+    private static function get_post_title_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'post_title',
+            'template' => 'post_title',
+            'required' => 'yes',
+            'label' => $label,
+            'name' => 'post_title',
+            'is_meta' => 'no',
+            'help' => '',
+            'css' => '',
+            'placeholder' => '',
+            'default' => '',
+            'size' => '40',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_post_content_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'post_content',
+            'template' => 'post_content',
+            'required' => 'yes',
+            'label' => $label,
+            'name' => 'post_content',
+            'is_meta' => 'no',
+            'help' => '',
+            'css' => '',
+            'placeholder' => '',
+            'default' => '',
+            'rows' => '5',
+            'cols' => '25',
+            'rich' => 'yes',
+            'insert_image' => 'yes',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_post_excerpt_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'post_excerpt',
+            'template' => 'post_excerpt',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'post_excerpt',
+            'is_meta' => 'no',
+            'help' => '',
+            'css' => '',
+            'placeholder' => '',
+            'default' => '',
+            'rows' => '5',
+            'cols' => '25',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_post_tags_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'post_tags',
+            'template' => 'post_tags',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'post_tags',
+            'is_meta' => 'no',
+            'help' => '',
+            'css' => '',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_taxonomy_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'taxonomy',
+            'template' => 'taxonomy',
+            'type' => 'select',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'category',
+            'is_meta' => 'no',
+            'first' => '- Select -',
+            'orderby' => 'name',
+            'order' => 'ASC',
+            'exclude_type' => 'exclude',
+            'exclude' => [],
+            'woo_attr' => 'no',
+            'woo_attr_vis' => 'no',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_featured_image_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'image_upload',
+            'template' => 'featured_image',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'featured_image',
+            'is_meta' => 'no',
+            'help' => '',
+            'css' => '',
+            'max_size' => '2048',
+            'count' => '1',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    // ========== BASIC FIELDS ==========
+
+    private static function get_text_field_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'text',
+            'template' => 'text_field',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'size' => '40',
+            'placeholder' => '',
+            'show_icon' => 'no',
+        ], self::get_common() );
+    }
+
+    private static function get_email_address_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'email',
+            'template' => 'email_address',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'is_meta' => 'yes',
+            'help' => '',
+            'show_icon' => 'no',
+            'css' => '',
+            'placeholder' => '',
+            'default' => '',
+            'size' => '40',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_textarea_field_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'textarea',
+            'template' => 'textarea_field',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'is_meta' => 'yes',
+            'show_icon' => 'no',
+            'help' => '',
+            'css' => '',
+            'placeholder' => '',
+            'default' => '',
+            'rows' => '5',
+            'cols' => '25',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_website_url_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'url',
+            'template' => 'website_url',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'show_icon' => 'no',
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'placeholder' => 'https://',
+            'default' => '',
+            'size' => '40',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_dropdown_field_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'select',
+            'template' => 'dropdown_field',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'show_icon' => 'no',
+            'first' => '- Select -',
+            'options' => [ 'option1' => 'Option 1', 'option2' => 'Option 2' ],
+            'selected' => '',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_multiple_select_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'multiple_select',
+            'template' => 'multiple_select',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'show_icon' => 'no',
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'first' => '- Select -',
+            'options' => [ 'option1' => 'Option 1', 'option2' => 'Option 2' ],
+            'selected' => '',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_radio_field_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'radio',
+            'template' => 'radio_field',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'show_icon' => 'no',
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'inline' => 'no',
+            'options' => [ 'option1' => 'Option 1', 'option2' => 'Option 2' ],
+            'selected' => '',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_checkbox_field_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'checkbox',
+            'template' => 'checkbox_field',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'show_icon' => 'no',
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'inline' => 'no',
+            'options' => [ 'option1' => 'Option 1', 'option2' => 'Option 2' ],
+            'selected' => [],
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_image_upload_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'image_upload',
+            'template' => 'image_upload',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'max_size' => '2048',
+            'count' => '1',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_recaptcha_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'recaptcha',
+            'template' => 'recaptcha',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'recaptcha',
+            'is_meta' => 'no',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_cloudflare_turnstile_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'cloudflare_turnstile',
+            'template' => 'cloudflare_turnstile',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'cloudflare_turnstile',
+            'is_meta' => 'no',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_custom_html_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'html',
+            'template' => 'custom_html',
+            'required' => 'no',
+            'label' => $label,
+            'name' => '',
+            'is_meta' => 'no',
+            'html' => '<p>Custom HTML content</p>',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_custom_hidden_field_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'hidden',
+            'template' => 'custom_hidden_field',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'is_meta' => 'yes',
+            'default' => '',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_section_break_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'section_break',
+            'template' => 'section_break',
+            'required' => 'no',
+            'label' => $label,
+            'name' => '',
+            'is_meta' => 'no',
+            'description' => '',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_column_field_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'column_field',
+            'template' => 'column_field',
+            'required' => 'no',
+            'label' => $label,
+            'name' => '',
+            'is_meta' => 'no',
+            'columns' => '2',
+            'inner_fields' => [ 'column-1' => [], 'column-2' => [] ],
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    // ========== PRO FIELDS ==========
+
+    private static function get_file_upload_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'file_upload',
+            'template' => 'file_upload',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'max_size' => '2048',
+            'count' => '1',
+            'extension' => [ 'images', 'pdf', 'office' ],
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_date_field_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'date_field',
+            'template' => 'date_field',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'format' => 'mm/dd/yy',
+            'time' => 'no',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_time_field_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'time_field',
+            'template' => 'time_field',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'time_format' => 'g:i a',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_numeric_text_field_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'numeric_text_field',
+            'template' => 'numeric_text_field',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'show_icon' => 'no',
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'placeholder' => '',
+            'default' => '',
+            'step_text_field' => '1',
+            'min_value_field' => '0',
+            'max_value_field' => '',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_address_field_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'address_field',
+            'template' => 'address_field',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'is_meta' => 'yes',
+            'width' => 'large',
+            'address' => [
+                'street_1' => [
+                    'checked' => 'checked',
+                    'type' => 'text',
+                    'required' => '',
+                    'label' => 'Street',
+                    'value' => '',
+                    'placeholder' => '',
+                ],
+                'city' => [
+                    'checked' => 'checked',
+                    'type' => 'text',
+                    'required' => '',
+                    'label' => 'City',
+                    'value' => '',
+                    'placeholder' => '',
+                ],
+                'zip' => [
+                    'checked' => 'checked',
+                    'type' => 'text',
+                    'required' => '',
+                    'label' => 'Zip Code',
+                    'value' => '',
+                    'placeholder' => '',
+                ],
+                'country_select' => [
+                    'checked' => 'checked',
+                    'type' => 'select',
+                    'required' => '',
+                    'label' => 'Country',
+                    'value' => '',
+                    'country_list_visibility_opt_name' => 'all',
+                    'country_select_hide_list' => [],
+                    'country_select_show_list' => [],
+                ],
+                'state' => [
+                    'checked' => 'checked',
+                    'type' => 'select',
+                    'required' => '',
+                    'label' => 'State',
+                    'value' => '',
+                    'placeholder' => '',
+                ],
+            ],
+        ], self::get_common() );
+    }
+
+    private static function get_country_list_field_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'country_list_field',
+            'template' => 'country_list_field',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'first' => '- Select Country -',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_phone_field_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'phone_field',
+            'template' => 'phone_field',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'show_icon' => 'no',
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'placeholder' => '',
+            'default' => '',
+            'size' => '40',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_repeat_field_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'repeat_field',
+            'template' => 'repeat_field',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'multiple' => '',
+            'columns' => '1',
+            'inner_fields' => [],
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_google_map_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'google_map',
+            'template' => 'google_map',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'default' => '',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_shortcode_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'shortcode',
+            'template' => 'shortcode',
+            'required' => 'no',
+            'label' => $label,
+            'name' => '',
+            'is_meta' => 'no',
+            'shortcode' => '',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_action_hook_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'action_hook',
+            'template' => 'action_hook',
+            'required' => 'no',
+            'label' => $label,
+            'name' => '',
+            'is_meta' => 'no',
+            'hook_name' => '',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_ratings_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'ratings',
+            'template' => 'ratings',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'default' => '0',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_step_start_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'step_start',
+            'template' => 'step_start',
+            'required' => 'no',
+            'label' => $label,
+            'name' => '',
+            'is_meta' => 'no',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_toc_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'toc',
+            'template' => 'toc',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'is_meta' => 'no',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_embed_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'embed',
+            'template' => 'embed',
+            'required' => 'no',
+            'label' => $label,
+            'name' => '',
+            'is_meta' => 'no',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_really_simple_captcha_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'really_simple_captcha',
+            'template' => 'really_simple_captcha',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'really_simple_captcha',
+            'is_meta' => 'no',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_math_captcha_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'math_captcha',
+            'template' => 'math_captcha',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'math_captcha',
+            'is_meta' => 'no',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    // ========== REGISTRATION/PROFILE FIELDS ==========
+
+    private static function get_user_email_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'user_email',
+            'template' => 'user_email',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'user_email',
+            'is_meta' => 'no',
+            'help' => '',
+            'css' => '',
+            'show_icon' => 'no',
+            'placeholder' => '',
+            'default' => '',
+            'size' => '40',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_user_login_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'user_login',
+            'template' => 'user_login',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'user_login',
+            'is_meta' => 'no',
+            'help' => '',
+            'css' => '',
+            'show_icon' => 'no',
+            'placeholder' => '',
+            'default' => '',
+            'size' => '40',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_password_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'password',
+            'template' => 'password',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'password',
+            'is_meta' => 'no',
+            'help' => '',
+            'css' => '',
+            'show_icon' => 'no',
+            'placeholder' => '',
+            'default' => '',
+            'size' => '40',
+            'min_length' => '5',
+            'repeat_pass' => 'yes',
+            're_pass_label' => 'Confirm Password',
+            'pass_strength' => 'yes',
+            're_pass_placeholder' => '',
+            'minimum_strength' => 'weak',
+            're_pass_help' => '',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_first_name_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'first_name',
+            'template' => 'first_name',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'first_name',
+            'is_meta' => 'no',
+            'help' => '',
+            'css' => '',
+            'show_icon' => 'no',
+            'placeholder' => '',
+            'default' => '',
+            'size' => '40',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_last_name_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'last_name',
+            'template' => 'last_name',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'last_name',
+            'is_meta' => 'no',
+            'help' => '',
+            'css' => '',
+            'show_icon' => 'no',
+            'placeholder' => '',
+            'default' => '',
+            'size' => '40',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_nickname_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'nickname',
+            'template' => 'nickname',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'nickname',
+            'is_meta' => 'no',
+            'help' => '',
+            'css' => '',
+            'show_icon' => 'no',
+            'placeholder' => '',
+            'default' => '',
+            'size' => '40',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_display_name_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'display_name',
+            'template' => 'display_name',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'display_name',
+            'is_meta' => 'no',
+            'help' => '',
+            'css' => '',
+            'show_icon' => 'no',
+            'placeholder' => '',
+            'default' => '',
+            'size' => '40',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_user_url_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'user_url',
+            'template' => 'user_url',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'user_url',
+            'is_meta' => 'no',
+            'help' => '',
+            'css' => '',
+            'show_icon' => 'no',
+            'placeholder' => 'https://',
+            'default' => '',
+            'size' => '40',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_biography_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'biography',
+            'template' => 'biography',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'description',
+            'is_meta' => 'no',
+            'help' => '',
+            'css' => '',
+            'show_icon' => 'no',
+            'placeholder' => '',
+            'default' => '',
+            'rows' => '5',
+            'cols' => '25',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_user_avatar_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'image_upload',
+            'template' => 'user_avatar',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'user_avatar',
+            'is_meta' => 'no',
+            'help' => '',
+            'css' => '',
+            'button_label' => 'Select Image',
+            'max_size' => '2048',
+            'count' => '1',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_profile_photo_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'profile_photo',
+            'template' => 'profile_photo',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'wpuf_profile_photo',
+            'is_meta' => 'no',
+            'help' => '',
+            'css' => '',
+            'button_label' => 'Select Image',
+            'max_size' => '2048',
+            'count' => '1',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    // ========== SOCIAL MEDIA FIELDS ==========
+
+    private static function get_facebook_url_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'facebook_url',
+            'template' => 'facebook_url',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'wpuf_social_facebook',
+            'is_meta' => 'yes',
+            'help' => 'Enter your Facebook username or full URL',
+            'css' => '',
+            'show_icon' => 'no',
+            'placeholder' => 'username',
+            'default' => '',
+            'size' => '40',
+            'open_in_new_window' => 'yes',
+            'nofollow' => 'yes',
+            'username_validation' => 'strict',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_twitter_url_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'twitter_url',
+            'template' => 'twitter_url',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'wpuf_social_twitter',
+            'is_meta' => 'yes',
+            'help' => 'Enter your X (Twitter) username (without @) or full URL',
+            'css' => '',
+            'show_icon' => 'no',
+            'placeholder' => 'username',
+            'default' => '',
+            'size' => '40',
+            'open_in_new_window' => 'yes',
+            'nofollow' => 'yes',
+            'username_validation' => 'strict',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_instagram_url_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'instagram_url',
+            'template' => 'instagram_url',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'wpuf_social_instagram',
+            'is_meta' => 'yes',
+            'help' => 'Enter your Instagram username or full URL',
+            'css' => '',
+            'show_icon' => 'no',
+            'placeholder' => 'username',
+            'default' => '',
+            'size' => '40',
+            'open_in_new_window' => 'yes',
+            'nofollow' => 'yes',
+            'username_validation' => 'strict',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_linkedin_url_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'linkedin_url',
+            'template' => 'linkedin_url',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'wpuf_social_linkedin',
+            'is_meta' => 'yes',
+            'help' => 'Enter your LinkedIn username or full URL',
+            'css' => '',
+            'show_icon' => 'no',
+            'placeholder' => 'john-doe',
+            'default' => '',
+            'size' => '40',
+            'open_in_new_window' => 'yes',
+            'nofollow' => 'yes',
+            'username_validation' => 'strict',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+}
+
+

@@ -133,7 +133,7 @@ module.exports = function( grunt) {
                     'wpuf-functions.php',
                     'assets/js/forms-list.js',
                 ],
-                tasks: ['shell:tailwind:src/css/admin/form-builder.css:assets/css/admin/form-builder.css'],
+                tasks: ['tailwind'],
                 options: {
                     spawn: false
                 }

@@ -120,7 +120,6 @@ export default {
                 { id: 'coupon_submission', label: this.__('Coupon Submission', 'wp-user-frontend') },
                 { id: 'real_estate', label: this.__('Real Estate Property Listing', 'wp-user-frontend') },
                 { id: 'news_press', label: this.__('News/Press Release Submission', 'wp-user-frontend') },
-                { id: 'generic_form', label: this.__('Generic Form Builder', 'wp-user-frontend') }
             ];
 
             promptAIInstructions = {
@@ -129,8 +128,7 @@ export default {
                 classified_ads: 'Create a Classified Ads submission form with title, description, category, price, address field, contact email',
                 coupon_submission: 'Create a Coupon Submission form with title, description, business name, discount amount, expiration date',
                 real_estate: 'Create a Real Estate Property Listing form with title, description, address field, price, bedrooms, bathrooms, images',
-                news_press: 'Create a News/Press Release submission form with headline, content, author, contact email, category',
-                generic_form: 'Create a simple generic form with basic contact fields'
+                news_press: 'Create a News/Press Release submission form with headline, content, author, contact email, category'
             };
         }
 

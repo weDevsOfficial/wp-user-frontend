@@ -4,7 +4,7 @@
 **Tags:** frontend post, forms, user directory, profile builder, membership  
 **Requires at least:** 4.0  
 **Tested up to:** 6.8.3  
-**Stable tag:** 4.1.13  
+**Stable tag:** 4.1.14  
 **Requires PHP:** 5.6  
 **License:** GPLv2  
 **License URL:** https://www.gnu.org/licenses/gpl-2.0.html  
@@ -254,6 +254,10 @@ This page is for the purpose of editing posts. You shouldn't access this page di
 First, you need to go to the dashboard, then when you click "edit", you'll be
 redirected to the edit page with that post id. Then you'll see the edit post form.
 
+### Where do I report security bugs found in this plugin? ###
+
+Please report security bugs found in the source code of the WP User Frontend plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/8e79568c-ae3d-4e3e-9633-e478e8b0610e). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
+
 ###  ###
 
 
@@ -277,7 +281,14 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 14. Customize your Forms in Gutenberg Editor
 
 ## Changelog ##
-### v4.1.12 (07 October, 2025) ###
+### v4.1.14 (21 October, 2025) ###
+* New - Dynamic Field Icons for improved visual customization
+* New - Taxonomy View Restriction settings to control visibility by taxonomy
+* Enhancement – Added Upgrade and Discount links on the plugin page for easier access
+* Enhancement – Pricing Fields PRO preview section added to the Form Builder
+* Enhancement – Renamed "Published" tab to "Saved" on Form List pages for better clarity
+
+### v4.1.13 (07 October, 2025) ###
 * Enhancement - Security and Capabilities check
 
 ### v4.1.12 (24 September, 2025) ###

@@ -1257,6 +1257,22 @@ class Paypal {
             $billing_amount = empty( $data['price'] ) ? 0 : $data['price'];
             $tax_amount = 0;
 
+            // Check if pricing fields payment is enabled and update price accordingly
+            $post_id = isset( $data['item_number'] ) && $data['type'] === 'post' ? $data['item_number'] : 0;
+            if ( $post_id && $data['type'] === 'post' ) {
+                $form_id = get_post_meta( $post_id, '_wpuf_form_id', true );
+                if ( $form_id ) {
+                    $form_settings = wpuf_get_form_settings( $form_id );
+                    $pricing_enabled = isset( $form_settings['enable_pricing_payment'] ) && wpuf_is_checkbox_or_toggle_on( $form_settings['enable_pricing_payment'] );
+                    if ( $pricing_enabled ) {
+                        $pricing_cost = get_post_meta( $post_id, '_wpuf_pricing_field_cost', true );
+                        if ( $pricing_cost && is_numeric( $pricing_cost ) ) {
+                            $billing_amount = floatval( $pricing_cost );
+                        }
+                    }
+                }
+            }
+
             // Handle tax if enabled
             if ( $this->wpuf_tax_enabled() ) {
                 $tax_rate = $this->wpuf_current_tax_rate();
@@ -1276,7 +1292,7 @@ class Paypal {
 
             $data['subtotal'] = $billing_amount - $tax_amount;
             $data['tax'] = $tax_amount;
-            $billing_amount = apply_filters( 'wpuf_payment_amount', $billing_amount );
+            $billing_amount = apply_filters( 'wpuf_payment_amount', $billing_amount, $post_id );
 
             // Handle free payments
             if ( $billing_amount == 0 ) {

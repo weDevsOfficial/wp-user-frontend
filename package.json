@@ -1,15 +1,16 @@
 {
   "name": "wp-user-frontend",
-  "version": "4.1.13",
+  "version": "4.1.14",
   "description": "A Frontend Plugin for WordPress",
   "author": "Tareq Hasan",
   "license": "GPL",
   "private": true,
   "scripts": {
     "release": "grunt release",
-    "build": "npm run build:forms-list && npm run build:subscriptions",
+    "build": "npm run build:forms-list && npm run build:subscriptions && npm run build:frontend-subscriptions",
     "build:forms-list": "ENTRY=forms-list vite build",
-    "build:subscriptions": "ENTRY=subscriptions vite build"
+    "build:subscriptions": "ENTRY=subscriptions vite build",
+    "build:frontend-subscriptions": "ENTRY=frontend-subscriptions vite build"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",

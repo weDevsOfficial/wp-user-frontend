@@ -313,6 +313,9 @@ class Frontend_Form extends Frontend_Render_Form {
         $info                         = apply_filters( 'wpuf_addpost_notice', $info, $id, $this->form_settings );
         $user_can_post                = apply_filters( 'wpuf_can_post', $user_can_post, $id, $this->form_settings );
 
+        // Enqueue FontAwesome for field icons
+        wp_enqueue_style( 'wpuf-font-awesome' );
+
         if ( $user_can_post === 'yes' ) {
             $this->render_form( $id, null, $atts, $form );
         } else {

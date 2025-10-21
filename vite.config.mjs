@@ -1,48 +1,40 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-const input = {
+const entries = {
     'subscriptions': './assets/js/subscriptions.js',
+    'frontend-subscriptions': './assets/js/frontend-subscriptions.js', 
     'forms-list': './assets/js/forms-list.js',
 };
 
-const adminAssets = [
-    'subscriptions.css',
-];
-
-// Create separate configs for each entry point
-export default defineConfig(({ mode }) => {
-    // Get the entry point from command line argument or process all
+export default defineConfig(() => {
     const entryPoint = process.env.ENTRY;
-    const entries = entryPoint ? { [entryPoint]: input[entryPoint] } : input;
+    const input = entryPoint ? { [entryPoint]: entries[entryPoint] } : entries;
 
     return {
         plugins: [vue()],
         build: {
             rollupOptions: {
-                input: entries,
+                input,
                 output: {
                     entryFileNames: 'js/[name].min.js',
                     assetFileNames: (assetInfo) => {
-                        const info = assetInfo.name.split('.');
-                        const extType = info[info.length - 1];
-                        if (/\.(css)$/.test(assetInfo.name)) {
-                            if (adminAssets.includes(assetInfo.name)) {
-                                return `css/admin/[name].min.${extType}`;
-                            }
-                            return `css/[name].min.${extType}`;
+                        if (assetInfo.name.endsWith('.css')) {
+                            return assetInfo.name === 'subscriptions.css' 
+                                ? 'css/admin/[name].min.css'
+                                : 'css/[name].min.css';
                         }
+                        return 'assets/[name]-[hash][extname]';
                     },
                     format: 'iife',
                     name: 'WPUF',
-                    inlineDynamicImports: true,
                 },
             },
             outDir: './assets',
             emptyOutDir: false,
             sourcemap: true,
             assetsInlineLimit: 0,
-            chunkSizeWarningLimit: 1000, // Increase warning limit to 1000 kB
+            chunkSizeWarningLimit: 1000,
         },
     }
 });

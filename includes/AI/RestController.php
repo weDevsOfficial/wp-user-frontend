@@ -10,18 +10,18 @@ use WP_Error;
 
 /**
  * REST API Controller for AI Form Builder
- * 
+ *
  * Handles all REST API endpoints for AI form generation with comprehensive
  * security, validation, and error handling. Implements rate limiting,
  * XSS protection, and proper WordPress capability checks.
- * 
+ *
  * Security Features:
  * - Rate limiting (10 requests/hour per user)
  * - XSS protection with field sanitization
  * - Proper capability checks with role filtering
  * - Session validation and timeout handling
  * - Enhanced error logging with context
- * 
+ *
  * @since WPUF_SINCE
  * @version 1.2.0
  */
@@ -135,7 +135,7 @@ class RestController extends WP_REST_Controller {
             'permission_callback' => [$this, 'check_permission']
         ]);
 
-        // Save settings endpoint  
+        // Save settings endpoint
         register_rest_route($this->namespace, '/' . $this->rest_base . '/settings', [
             'methods' => WP_REST_Server::CREATABLE,
             'callback' => [$this, 'save_settings'],
@@ -301,17 +301,17 @@ class RestController extends WP_REST_Controller {
 
     /**
      * Comprehensive input validation for API requests
-     * 
+     *
      * @param array $data Input data to validate
      * @param array $rules Validation rules
      * @return array|WP_Error Validated data or error
      */
     private function validate_input($data, $rules) {
         $validated = [];
-        
+
         foreach ($rules as $field => $rule) {
             $value = $data[$field] ?? null;
-            
+
             // Required field check
             if (isset($rule['required']) && $rule['required'] && empty($value)) {
                 return new WP_Error(
@@ -320,7 +320,7 @@ class RestController extends WP_REST_Controller {
                     ['status' => 400]
                 );
             }
-            
+
             // Type validation
             if (!empty($value) && isset($rule['type'])) {
                 switch ($rule['type']) {
@@ -341,7 +341,7 @@ class RestController extends WP_REST_Controller {
                         break;
                 }
             }
-            
+
             // Length validation
             if (!empty($value) && isset($rule['max_length']) && strlen($value) > $rule['max_length']) {
                 return new WP_Error(
@@ -350,15 +350,15 @@ class RestController extends WP_REST_Controller {
                     ['status' => 400]
                 );
             }
-            
+
             // Sanitize and store
             if (!empty($value)) {
-                $validated[$field] = isset($rule['sanitize']) ? 
-                    call_user_func($rule['sanitize'], $value) : 
+                $validated[$field] = isset($rule['sanitize']) ?
+                    call_user_func($rule['sanitize'], $value) :
                     sanitize_text_field($value);
             }
         }
-        
+
         return $validated;
     }
 
@@ -473,7 +473,7 @@ class RestController extends WP_REST_Controller {
     public function get_settings(WP_REST_Request $request) {
         // Get settings from WPUF settings system
         $wpuf_ai_settings = get_option('wpuf_ai', []);
-        
+
         // Map to expected format
         $settings = [
             'provider' => $wpuf_ai_settings['ai_provider'] ?? 'openai',
@@ -503,21 +503,21 @@ class RestController extends WP_REST_Controller {
         if (!is_user_logged_in()) {
             return false;
         }
-        
+
         // Check if user can create forms
         if (!current_user_can('edit_posts') && !current_user_can('wpuf_create_forms')) {
             return false;
         }
-        
+
         // Allow admin override
         if (current_user_can('manage_options')) {
             return true;
         }
-        
+
         // Check if AI features are enabled for this user role
         $allowed_roles = apply_filters('wpuf_ai_allowed_roles', ['administrator', 'editor']);
         $user = wp_get_current_user();
-        
+
         return !empty(array_intersect($allowed_roles, $user->roles));
     }
 
@@ -619,28 +619,28 @@ class RestController extends WP_REST_Controller {
 
             // Save form fields as child posts (WPUF's actual storage method)
             $wpuf_fields = $form_data['wpuf_fields'];
-            
+
             // Sanitize all field data to prevent XSS
             $wpuf_fields = $this->sanitize_form_fields($wpuf_fields);
-            
+
             // Debug log the field structure
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 error_log('WPUF AI: Saving fields for form ' . $form_id);
                 error_log('WPUF AI: Field count: ' . count($wpuf_fields));
                 error_log('WPUF AI: First field structure: ' . wp_json_encode($wpuf_fields[0] ?? []));
             }
-            
+
             // Create child posts for each field (WPUF's storage method)
             foreach ($wpuf_fields as $order => $field) {
                 // Validate required field properties
                 if (empty($field['name']) || empty($field['input_type'])) {
                     continue; // Skip invalid fields
                 }
-                
+
                 // Sanitize field data
                 $field['name'] = sanitize_key($field['name']);
                 $field['label'] = sanitize_text_field($field['label'] ?? '');
-                
+
                 $field_post = array(
                     'post_type' => 'wpuf_input',
                     'post_status' => 'publish',
@@ -648,9 +648,9 @@ class RestController extends WP_REST_Controller {
                     'menu_order' => $order,
                     'post_content' => serialize($field) // WPUF stores field data as serialized content
                 );
-                
+
                 $field_id = wp_insert_post($field_post);
-                
+
                 if (is_wp_error($field_id)) {
                     // Clean up previously created fields and the form post
                     wp_delete_post($form_id, true);
@@ -661,11 +661,11 @@ class RestController extends WP_REST_Controller {
                     );
                 }
             }
-            
+
             // Also save as meta for compatibility (some functions might still use this)
             // Fields already have correct structure from AI provider
             update_post_meta($form_id, 'wpuf_form_fields', $wpuf_fields);
-            
+
             // Add form version for compatibility
             update_post_meta($form_id, 'wpuf_form_version', WPUF_VERSION);
 
@@ -719,7 +719,7 @@ class RestController extends WP_REST_Controller {
                 'error_line' => $e->getLine(),
                 'timestamp' => current_time('mysql')
             ];
-            
+
             return new WP_Error(
                 'form_creation_error',
                 __('An error occurred while creating the form. Please try again.', 'wp-user-frontend'),
@@ -753,7 +753,7 @@ class RestController extends WP_REST_Controller {
             $prompt = $modification_data['prompt'] ?? '';
             $current_form = $modification_data['current_form'] ?? [];
             $conversation_context = $modification_data['conversation_context'] ?? [];
-            
+
             if (empty($prompt)) {
                 return new WP_Error(
                     'missing_prompt',
@@ -764,7 +764,7 @@ class RestController extends WP_REST_Controller {
 
             // Prepare enhanced prompt for AI with current form context
             $enhanced_prompt = $this->prepare_modification_prompt($prompt, $current_form);
-            
+
             // Call AI to get modification instructions
             $ai_response = $this->form_generator->generate_form($enhanced_prompt, [
                 'session_id' => $modification_data['session_id'] ?? $this->generate_session_id(),
@@ -865,7 +865,7 @@ class RestController extends WP_REST_Controller {
             } elseif (isset($ai_response['fields']) || isset($ai_response['wpuf_fields'])) {
                 // AI returned complete modified form - update entire form
                 $new_fields = $ai_response['wpuf_fields'] ?? $ai_response['fields'] ?? [];
-                
+
                 // Fields already have correct structure, no conversion needed
                 $converted_fields = $new_fields;
 
@@ -931,7 +931,7 @@ class RestController extends WP_REST_Controller {
         $context .= "Form Title: {$form_title}\n";
         $context .= "Form Description: {$form_description}\n";
         $context .= "Current Fields:\n";
-        
+
         foreach ($fields as $index => $field) {
             $label = $field['label'] ?? 'Unnamed';
             $required = ($field['required'] ?? false) ? ' (Required)' : ' (Optional)';
@@ -1088,7 +1088,7 @@ class RestController extends WP_REST_Controller {
 
         $existing_count = count($existing_posts);
         $new_count = count($fields);
-        
+
         // Update or create field posts
         foreach ($fields as $order => $field) {
             if ($order < $existing_count) {
@@ -1110,7 +1110,7 @@ class RestController extends WP_REST_Controller {
                 wp_insert_post($field_post);
             }
         }
-        
+
         // Delete excess posts if new count is less than existing
         if ($new_count < $existing_count) {
             for ($i = $new_count; $i < $existing_count; $i++) {
@@ -1257,14 +1257,6 @@ class RestController extends WP_REST_Controller {
                         'value' => '',
                         'placeholder' => ''
                     ],
-                    'state' => [
-                        'checked' => 'checked',
-                        'type' => 'select',
-                        'required' => 'checked',
-                        'label' => 'State',
-                        'value' => '',
-                        'placeholder' => ''
-                    ],
                     'zip' => [
                         'checked' => 'checked',
                         'type' => 'text',
@@ -1282,6 +1274,14 @@ class RestController extends WP_REST_Controller {
                         'country_list_visibility_opt_name' => 'all',
                         'country_select_hide_list' => [],
                         'country_select_show_list' => []
+                    ],
+                    'state' => [
+                        'checked' => 'checked',
+                        'type' => 'select',
+                        'required' => 'checked',
+                        'label' => 'State',
+                        'value' => '',
+                        'placeholder' => ''
                     ]
                 ];
             }
@@ -1416,13 +1416,13 @@ class RestController extends WP_REST_Controller {
 
     /**
      * Final security validation for all API operations
-     * 
+     *
      * Performs comprehensive security checks including:
      * - User capability verification
      * - Rate limiting validation
      * - Session integrity checks
      * - Request origin validation
-     * 
+     *
      * @param WP_REST_Request $request The REST request
      * @return bool|WP_Error True if valid, WP_Error if not
      */

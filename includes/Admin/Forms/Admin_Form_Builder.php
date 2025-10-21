@@ -395,7 +395,7 @@ class Admin_Form_Builder {
                 wp_delete_post( $delete_id, true );
             }
         }
-        
+
         // Filter out pro notification settings if pro version is not active
         if ( ! wpuf_is_pro_active() && isset( $data['form_settings']['notification'] ) ) {
             // Remove update post notification settings for free version
@@ -412,12 +412,12 @@ class Admin_Form_Builder {
                 unset( $data['form_settings']['notification']['edit_body'] );
             }
         }
-        
+
         // Also filter out standalone notification_edit field if it exists
         if ( ! wpuf_is_pro_active() && isset( $data['form_settings']['notification_edit'] ) ) {
             unset( $data['form_settings']['notification_edit'] );
         }
-        
+
         update_post_meta( $data['form_id'], $data['form_settings_key'], $data['form_settings'] );
         update_post_meta( $data['form_id'], 'notifications', $data['notifications'] );
         update_post_meta( $data['form_id'], 'integrations', $data['integrations'] );
@@ -465,7 +465,7 @@ class Admin_Form_Builder {
         /**
          * Filter the icon configuration for form builder
          *
-         * @since WPUF_SINCE
+         * @since 4.1.14
          *
          * @param array $icon_config The icon configuration array
          *                           - icons: array of icon data
@@ -519,10 +519,10 @@ class Admin_Form_Builder {
 
         // Built-in taxonomies that should always be available
         $builtin_taxonomies = array( 'category', 'post_tag' );
-        
+
         // Filter out custom taxonomy fields
         $filtered_fields = array();
-        
+
         foreach ( $form_fields as $field ) {
             // Skip custom taxonomy fields when pro is not active
             if ( isset( $field['input_type'] ) && $field['input_type'] === 'taxonomy' ) {
@@ -530,11 +530,11 @@ class Admin_Form_Builder {
                     continue; // Skip this custom taxonomy field
                 }
             }
-            
+
             // Keep all other fields including built-in taxonomies
             $filtered_fields[] = $field;
         }
-        
+
         return $filtered_fields;
     }
 
@@ -591,7 +591,7 @@ class Admin_Form_Builder {
 
         $hidden_ids = array();
         $builtin_taxonomies = array( 'category', 'post_tag' );
-        
+
         // Extract IDs from filtered fields for quick lookup
         $filtered_ids = array();
         foreach ( $filtered_fields as $field ) {
@@ -599,7 +599,7 @@ class Admin_Form_Builder {
                 $filtered_ids[] = $field['id'];
             }
         }
-        
+
         // Find original fields that are custom taxonomy fields and were filtered out
         foreach ( $original_fields as $field ) {
             if ( isset( $field['input_type'] ) && $field['input_type'] === 'taxonomy' ) {
@@ -610,7 +610,7 @@ class Admin_Form_Builder {
                 }
             }
         }
-        
+
         return $hidden_ids;
     }
 }

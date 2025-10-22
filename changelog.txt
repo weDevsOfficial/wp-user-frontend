@@ -1,3 +1,6 @@
+= v4.1.15 (22 October, 2025) =
+* Fix - Unwanted text appearing in 'View' and 'Preview' links
+
 = v4.1.14 (21 October, 2025) =
 * New - Dynamic Field Icons for improved visual customization
 * Enhancement – Renamed "Published" tab to "Saved" on Form List pages for better clarity

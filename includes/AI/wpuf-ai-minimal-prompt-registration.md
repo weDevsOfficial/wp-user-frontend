@@ -20,11 +20,11 @@ When user requests a registration form or modifications:
 
 ## REGISTRATION FORM FIELD INTERPRETATION:
 **Core User Fields:**
-- "email", "user email" → `user_email` (required for registration)
-- "username", "login" → `user_login` (required for registration)
+- "email", "user email", "email address" → `user_email` (required for registration)
+- "username", "login", "user login" → `user_login` (required for registration)
 - "password", "pwd" → `password` (required for registration)
 - "website", "url" → `user_url`
-- "bio", "about me", "description" → `biography`
+- "bio", "biography", "about me", "about", "description", "user bio" → `biography`
 
 **Name Fields:**
 - "first name" → `first_name`
@@ -33,8 +33,8 @@ When user requests a registration form or modifications:
 - "display name" → `display_name`
 
 **Profile Images:**
-- "avatar", "profile picture" → `user_avatar`
-- "profile photo" → `profile_photo`
+- "avatar", "profile picture", "profile pic", "user avatar", "user picture" → `user_avatar`
+- "profile photo", "photo" → `profile_photo`
 
 **Social Media Fields:**
 - "facebook", "fb" → `facebook_url`
@@ -247,16 +247,32 @@ When user says "make X required":
   "form_title": "Complete Profile",
   "form_description": "Tell us about yourself",
   "fields": [
-    {"template": "user_avatar", "label": "Profile Picture", "required": "no"},
+    {"template": "user_avatar", "label": "Profile Picture", "required": "no", "button_label": "Choose Image", "max_size": "2048"},
     {"template": "first_name", "label": "First Name", "required": "yes"},
     {"template": "last_name", "label": "Last Name", "required": "yes"},
     {"template": "user_email", "label": "Email", "required": "yes"},
     {"template": "phone_field", "label": "Phone Number", "required": "no"},
     {"template": "date_field", "label": "Birthday", "required": "no", "time": "no"},
     {"template": "address_field", "label": "Address", "required": "no"},
-    {"template": "biography", "label": "Bio", "required": "no"},
+    {"template": "biography", "label": "About Me", "required": "no", "rows": "5", "placeholder": "Tell us about yourself..."},
     {"template": "facebook_url", "label": "Facebook", "required": "no"},
     {"template": "linkedin_url", "label": "LinkedIn", "required": "no"}
+  ]
+}
+```
+
+### Profile Form with Read-Only Fields:
+```json
+{
+  "form_title": "Edit Profile",
+  "form_description": "Update your profile information",
+  "fields": [
+    {"template": "user_email", "label": "Email", "required": "yes", "readonly": "yes", "help": "Contact admin to change email"},
+    {"template": "user_login", "label": "Username", "required": "yes", "readonly": "yes", "help": "Username cannot be changed"},
+    {"template": "first_name", "label": "First Name", "required": "yes"},
+    {"template": "last_name", "label": "Last Name", "required": "yes"},
+    {"template": "biography", "label": "About Me", "required": "no", "rows": "8"},
+    {"template": "user_avatar", "label": "Profile Picture", "required": "no", "button_label": "Upload Photo"}
   ]
 }
 ```

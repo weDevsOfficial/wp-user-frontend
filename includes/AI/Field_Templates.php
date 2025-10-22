@@ -750,8 +750,8 @@ class Field_Templates {
 
     private static function get_user_email_template( $label, $field_id ) {
         return array_merge( [
-            'id' => $field_id,
             'type' => 'user_email',
+            'id' => $field_id,
             'input_type' => 'user_email',
             'template' => 'user_email',
             'required' => 'no',
@@ -764,14 +764,15 @@ class Field_Templates {
             'placeholder' => '',
             'default' => '',
             'size' => '40',
+            'readonly' => 'no',
             'width' => 'large',
         ], self::get_common() );
     }
 
     private static function get_user_login_template( $label, $field_id ) {
         return array_merge( [
-            'id' => $field_id,
             'type' => 'user_login',
+            'id' => $field_id,
             'input_type' => 'user_login',
             'template' => 'user_login',
             'required' => 'no',
@@ -784,14 +785,15 @@ class Field_Templates {
             'placeholder' => '',
             'default' => '',
             'size' => '40',
+            'readonly' => 'no',
             'width' => 'large',
         ], self::get_common() );
     }
 
     private static function get_password_template( $label, $field_id ) {
         return array_merge( [
-            'id' => $field_id,
             'type' => 'password',
+            'id' => $field_id,
             'input_type' => 'password',
             'template' => 'password',
             'required' => 'no',
@@ -804,6 +806,7 @@ class Field_Templates {
             'placeholder' => '',
             'default' => '',
             'size' => '40',
+            'readonly' => 'no',
             'min_length' => '5',
             'repeat_pass' => 'yes',
             're_pass_label' => 'Confirm Password',
@@ -817,8 +820,8 @@ class Field_Templates {
 
     private static function get_first_name_template( $label, $field_id ) {
         return array_merge( [
-            'id' => $field_id,
             'type' => 'first_name',
+            'id' => $field_id,
             'input_type' => 'first_name',
             'template' => 'first_name',
             'required' => 'no',
@@ -831,14 +834,15 @@ class Field_Templates {
             'placeholder' => '',
             'default' => '',
             'size' => '40',
+            'readonly' => 'no',
             'width' => 'large',
         ], self::get_common() );
     }
 
     private static function get_last_name_template( $label, $field_id ) {
         return array_merge( [
-            'id' => $field_id,
             'type' => 'last_name',
+            'id' => $field_id,
             'input_type' => 'last_name',
             'template' => 'last_name',
             'required' => 'no',
@@ -851,14 +855,15 @@ class Field_Templates {
             'placeholder' => '',
             'default' => '',
             'size' => '40',
+            'readonly' => 'no',
             'width' => 'large',
         ], self::get_common() );
     }
 
     private static function get_nickname_template( $label, $field_id ) {
         return array_merge( [
-            'id' => $field_id,
             'type' => 'nickname',
+            'id' => $field_id,
             'input_type' => 'nickname',
             'template' => 'nickname',
             'required' => 'no',
@@ -871,14 +876,15 @@ class Field_Templates {
             'placeholder' => '',
             'default' => '',
             'size' => '40',
+            'readonly' => 'no',
             'width' => 'large',
         ], self::get_common() );
     }
 
     private static function get_display_name_template( $label, $field_id ) {
         return array_merge( [
-            'id' => $field_id,
             'type' => 'display_name',
+            'id' => $field_id,
             'input_type' => 'display_name',
             'template' => 'display_name',
             'required' => 'no',
@@ -891,14 +897,15 @@ class Field_Templates {
             'placeholder' => '',
             'default' => '',
             'size' => '40',
+            'readonly' => 'no',
             'width' => 'large',
         ], self::get_common() );
     }
 
     private static function get_user_url_template( $label, $field_id ) {
         return array_merge( [
-            'id' => $field_id,
             'type' => 'user_url',
+            'id' => $field_id,
             'input_type' => 'user_url',
             'template' => 'user_url',
             'required' => 'no',
@@ -911,14 +918,15 @@ class Field_Templates {
             'placeholder' => 'https://',
             'default' => '',
             'size' => '40',
+            'readonly' => 'no',
             'width' => 'large',
         ], self::get_common() );
     }
 
     private static function get_biography_template( $label, $field_id ) {
         return array_merge( [
-            'id' => $field_id,
             'type' => 'biography',
+            'id' => $field_id,
             'input_type' => 'biography',
             'template' => 'biography',
             'required' => 'no',
@@ -930,8 +938,11 @@ class Field_Templates {
             'show_icon' => 'no',
             'placeholder' => '',
             'default' => '',
+            'size' => '40',
             'rows' => '5',
             'cols' => '25',
+            'readonly' => 'no',
+            'word_restriction' => '',
             'width' => 'large',
         ], self::get_common() );
     }
@@ -948,17 +959,22 @@ class Field_Templates {
             'is_meta' => 'no',
             'help' => '',
             'css' => '',
+            'show_icon' => 'no',
+            'placeholder' => '',
+            'default' => '',
+            'size' => '40',
             'button_label' => 'Select Image',
             'max_size' => '2048',
             'count' => '1',
+            'readonly' => 'no',
             'width' => 'large',
         ], self::get_common() );
     }
 
     private static function get_profile_photo_template( $label, $field_id ) {
         return array_merge( [
-            'id' => $field_id,
             'type' => 'profile_photo',
+            'id' => $field_id,
             'input_type' => 'profile_photo',
             'template' => 'profile_photo',
             'required' => 'no',
@@ -967,9 +983,14 @@ class Field_Templates {
             'is_meta' => 'no',
             'help' => '',
             'css' => '',
+            'show_icon' => 'no',
+            'placeholder' => '',
+            'default' => '',
+            'size' => '40',
             'button_label' => 'Select Image',
             'max_size' => '2048',
             'count' => '1',
+            'readonly' => 'no',
             'width' => 'large',
         ], self::get_common() );
     }
@@ -978,8 +999,8 @@ class Field_Templates {
 
     private static function get_facebook_url_template( $label, $field_id ) {
         return array_merge( [
-            'id' => $field_id,
             'type' => 'facebook_url',
+            'id' => $field_id,
             'input_type' => 'facebook_url',
             'template' => 'facebook_url',
             'required' => 'no',
@@ -992,6 +1013,7 @@ class Field_Templates {
             'placeholder' => 'username',
             'default' => '',
             'size' => '40',
+            'readonly' => 'no',
             'open_in_new_window' => 'yes',
             'nofollow' => 'yes',
             'username_validation' => 'strict',
@@ -1001,8 +1023,8 @@ class Field_Templates {
 
     private static function get_twitter_url_template( $label, $field_id ) {
         return array_merge( [
-            'id' => $field_id,
             'type' => 'twitter_url',
+            'id' => $field_id,
             'input_type' => 'twitter_url',
             'template' => 'twitter_url',
             'required' => 'no',
@@ -1015,6 +1037,7 @@ class Field_Templates {
             'placeholder' => 'username',
             'default' => '',
             'size' => '40',
+            'readonly' => 'no',
             'open_in_new_window' => 'yes',
             'nofollow' => 'yes',
             'username_validation' => 'strict',
@@ -1024,8 +1047,8 @@ class Field_Templates {
 
     private static function get_instagram_url_template( $label, $field_id ) {
         return array_merge( [
-            'id' => $field_id,
             'type' => 'instagram_url',
+            'id' => $field_id,
             'input_type' => 'instagram_url',
             'template' => 'instagram_url',
             'required' => 'no',
@@ -1038,6 +1061,7 @@ class Field_Templates {
             'placeholder' => 'username',
             'default' => '',
             'size' => '40',
+            'readonly' => 'no',
             'open_in_new_window' => 'yes',
             'nofollow' => 'yes',
             'username_validation' => 'strict',
@@ -1047,8 +1071,8 @@ class Field_Templates {
 
     private static function get_linkedin_url_template( $label, $field_id ) {
         return array_merge( [
-            'id' => $field_id,
             'type' => 'linkedin_url',
+            'id' => $field_id,
             'input_type' => 'linkedin_url',
             'template' => 'linkedin_url',
             'required' => 'no',
@@ -1061,6 +1085,7 @@ class Field_Templates {
             'placeholder' => 'john-doe',
             'default' => '',
             'size' => '40',
+            'readonly' => 'no',
             'open_in_new_window' => 'yes',
             'nofollow' => 'yes',
             'username_validation' => 'strict',

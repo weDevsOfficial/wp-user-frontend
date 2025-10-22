@@ -5,12 +5,12 @@
 /* Account page specific utilities */
 @layer components {
     .wpuf-account-container {
-        @apply wpuf-flex wpuf-gap-[62px] wpuf-max-w-7xl wpuf-mx-auto wpuf-p-4 sm:wpuf-p-6 lg:wpuf-p-8;
+        @apply wpuf-flex wpuf-gap-12 wpuf-max-w-7xl wpuf-mx-auto wpuf-p-4 sm:wpuf-p-6 lg:wpuf-p-8;
     }
 
     /* Sidebar Styles */
     .wpuf-account-sidebar {
-        @apply wpuf-w-full lg:wpuf-w-[260px] wpuf-flex-shrink-0 wpuf-space-y-[62px] wpuf-h-[856px] wpuf-opacity-100;
+        @apply wpuf-w-full lg:wpuf-w-[260px] wpuf-flex-shrink-0 wpuf-space-y-[62px] wpuf-h-full wpuf-opacity-100;
     }
 
     /* Profile Section */
@@ -65,7 +65,7 @@
 
     /* Logout Section */
     .wpuf-logout-section {
-        @apply wpuf-bg-transparent wpuf-p-4;
+        @apply wpuf-bg-transparent;
     }
 
     .wpuf-logout-link {
@@ -78,7 +78,7 @@
 
     /* Main Content Area */
     .wpuf-account-content {
-        @apply wpuf-flex-1 wpuf-min-w-0 wpuf-bg-transparent wpuf-p-6 lg:wpuf-p-8 wpuf-border-l wpuf-border-gray-200 wpuf-pl-12;
+        @apply wpuf-flex-1 wpuf-min-w-0 wpuf-bg-transparent wpuf-p-6 lg:wpuf-p-8 lg:wpuf-border-l wpuf-border-gray-200 lg:wpuf-pl-12;
     }
 
     /* Edit Profile Container */

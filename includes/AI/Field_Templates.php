@@ -26,6 +26,22 @@ class Field_Templates {
      * @return array Complete field structure
      */
     public static function get_field_structure( $template, $label, $field_id, $custom_props = [] ) {
+        // Map AI field names to actual registered field types
+        $field_mapping = [
+            'biography' => class_exists( 'WPUF_PRO' ) ? 'user_bio' : 'textarea_field',
+            'bio' => class_exists( 'WPUF_PRO' ) ? 'user_bio' : 'textarea_field',
+        ];
+
+        // Apply field mapping if exists
+        if ( isset( $field_mapping[ $template ] ) ) {
+            $template = $field_mapping[ $template ];
+
+            // For textarea fallback in free version, set name to 'description' for WordPress compatibility
+            if ( 'textarea_field' === $template && ! isset( $custom_props['name'] ) ) {
+                $custom_props['name'] = 'description';
+            }
+        }
+
         $method = 'get_' . $template . '_template';
 
         if ( method_exists( self::class, $method ) ) {
@@ -689,6 +705,7 @@ class Field_Templates {
 
     private static function get_google_map_template( $label, $field_id ) {
         return array_merge( [
+            'type' => 'google_map',
             'id' => $field_id,
             'input_type' => 'google_map',
             'template' => 'google_map',
@@ -698,9 +715,10 @@ class Field_Templates {
             'is_meta' => 'yes',
             'help' => '',
             'css' => '',
+            'show_icon' => 'no',
             'zoom' => '12',
             'default_pos' => '40.7143528,-74.0059731',
-            'directions' => true,
+            'directions' => false,
             'address' => 'no',
             'show_lat' => 'no',
             'show_in_post' => 'yes',
@@ -1003,6 +1021,30 @@ class Field_Templates {
             'id' => $field_id,
             'input_type' => 'biography',
             'template' => 'biography',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'description',
+            'is_meta' => 'no',
+            'help' => '',
+            'css' => '',
+            'show_icon' => 'no',
+            'placeholder' => '',
+            'default' => '',
+            'size' => '40',
+            'rows' => '5',
+            'cols' => '25',
+            'readonly' => 'no',
+            'word_restriction' => '',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_user_bio_template( $label, $field_id ) {
+        return array_merge( [
+            'type' => 'user_bio',
+            'id' => $field_id,
+            'input_type' => 'user_bio',
+            'template' => 'user_bio',
             'required' => 'no',
             'label' => $label,
             'name' => 'description',

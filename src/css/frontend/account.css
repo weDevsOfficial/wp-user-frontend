@@ -5,21 +5,21 @@
 /* Account page specific utilities */
 @layer components {
     .wpuf-account-container {
-        @apply wpuf-flex wpuf-gap-6 wpuf-max-w-7xl wpuf-mx-auto wpuf-p-4 sm:wpuf-p-6 lg:wpuf-p-8;
+        @apply wpuf-flex wpuf-gap-[62px] wpuf-max-w-7xl wpuf-mx-auto wpuf-p-4 sm:wpuf-p-6 lg:wpuf-p-8;
     }
 
     /* Sidebar Styles */
     .wpuf-account-sidebar {
-        @apply wpuf-w-full lg:wpuf-w-80 wpuf-flex-shrink-0 wpuf-space-y-6;
+        @apply wpuf-w-full lg:wpuf-w-[260px] wpuf-flex-shrink-0 wpuf-space-y-[62px] wpuf-h-[856px] wpuf-opacity-100;
     }
 
     /* Profile Section */
     .wpuf-profile-section {
-        @apply wpuf-bg-white wpuf-rounded-lg wpuf-shadow-sm wpuf-p-6 wpuf-text-center;
+        @apply wpuf-bg-transparent wpuf-text-base;
     }
 
     .wpuf-profile-avatar {
-        @apply wpuf-mb-4 wpuf-flex wpuf-justify-center;
+        @apply wpuf-mb-4 wpuf-flex wpuf-justify-start;
     }
 
     .wpuf-profile-avatar img {
@@ -27,20 +27,20 @@
     }
 
     .wpuf-profile-name {
-        @apply wpuf-text-xl wpuf-font-semibold wpuf-text-gray-900 wpuf-mb-1 wpuf-mt-0;
+        @apply wpuf-text-xl wpuf-font-semibold wpuf-text-gray-900 wpuf-mb-[10px] wpuf-mt-0;
     }
 
     .wpuf-profile-role {
-        @apply wpuf-text-sm wpuf-text-gray-500 wpuf-mb-4;
+        @apply wpuf-text-[18px] wpuf-text-gray-400 wpuf-mb-[32px];
     }
 
     .wpuf-edit-profile-btn {
-        @apply wpuf-inline-flex wpuf-items-center wpuf-justify-center wpuf-w-full wpuf-bg-primary wpuf-text-white wpuf-px-4 wpuf-py-2 wpuf-rounded-md hover:wpuf-bg-primaryHover wpuf-transition-colors wpuf-font-medium wpuf-text-sm wpuf-no-underline;
+        @apply wpuf-inline-flex wpuf-items-center wpuf-justify-center wpuf-gap-[10px] wpuf-bg-[#059669] wpuf-text-white wpuf-px-6 wpuf-py-[10px] wpuf-rounded-lg wpuf-transition-colors wpuf-font-normal wpuf-text-base wpuf-leading-6 wpuf-tracking-[0.13px] wpuf-no-underline wpuf-w-[166px] wpuf-h-[44px];
     }
 
     /* Navigation Styles */
     .wpuf-account-nav {
-        @apply wpuf-bg-white wpuf-rounded-lg wpuf-shadow-sm wpuf-p-4;
+        @apply wpuf-bg-transparent;
     }
 
     .wpuf-account-nav ul {
@@ -48,7 +48,7 @@
     }
 
     .wpuf-account-nav-item {
-        @apply wpuf-flex wpuf-items-center wpuf-gap-3 wpuf-px-4 wpuf-py-3 wpuf-text-gray-700 wpuf-rounded-md hover:wpuf-bg-gray-50 wpuf-transition-colors wpuf-no-underline;
+        @apply wpuf-flex wpuf-items-center wpuf-gap-3 wpuf-px-4 wpuf-py-3 wpuf-text-gray-700 wpuf-rounded-md hover:wpuf-bg-gray-50 wpuf-transition-colors wpuf-no-underline wpuf-text-base wpuf-leading-none focus:wpuf-outline-none;
     }
 
     .wpuf-account-nav-item svg {
@@ -60,16 +60,16 @@
     }
 
     .wpuf-account-nav-item.active {
-        @apply wpuf-bg-emerald-50 wpuf-text-emerald-600 hover:wpuf-bg-emerald-50;
+        @apply wpuf-flex wpuf-items-center wpuf-gap-[10px] wpuf-px-4 wpuf-py-3 wpuf-text-gray-700 wpuf-rounded-lg wpuf-transition-colors wpuf-no-underline wpuf-text-base wpuf-leading-none focus:wpuf-outline-none wpuf-w-[260px] wpuf-h-[48px] wpuf-py-[12px] wpuf-px-4;
     }
 
     /* Logout Section */
     .wpuf-logout-section {
-        @apply wpuf-bg-white wpuf-rounded-lg wpuf-shadow-sm wpuf-p-4;
+        @apply wpuf-bg-transparent wpuf-p-4;
     }
 
     .wpuf-logout-link {
-        @apply wpuf-flex wpuf-items-center wpuf-gap-3 wpuf-px-4 wpuf-py-3 wpuf-text-red-600 wpuf-rounded-md hover:wpuf-bg-red-50 wpuf-transition-colors wpuf-no-underline;
+        @apply wpuf-flex wpuf-items-center wpuf-gap-3 wpuf-px-4 wpuf-py-3 wpuf-text-red-600 wpuf-rounded-md hover:wpuf-bg-red-50 wpuf-transition-colors wpuf-no-underline wpuf-text-base wpuf-leading-none focus:wpuf-outline-none;
     }
 
     .wpuf-logout-link svg {
@@ -78,7 +78,7 @@
 
     /* Main Content Area */
     .wpuf-account-content {
-        @apply wpuf-flex-1 wpuf-min-w-0 wpuf-bg-white wpuf-rounded-lg wpuf-shadow-sm wpuf-p-6 lg:wpuf-p-8;
+        @apply wpuf-flex-1 wpuf-min-w-0 wpuf-bg-transparent wpuf-p-6 lg:wpuf-p-8 wpuf-border-l wpuf-border-gray-200 wpuf-pl-12;
     }
 
     /* Edit Profile Container */
@@ -513,6 +513,44 @@
         border: none !important;
         padding: 0 !important;
         box-shadow: none !important;
+    }
+
+    /* Posts Table Styling */
+    .items-table {
+        @apply wpuf-text-sm wpuf-text-gray-900;
+    }
+
+    .items-table thead th {
+        @apply wpuf-bg-gray-50 wpuf-font-medium;
+    }
+
+    .items-table tbody tr:last-child {
+        @apply wpuf-border-b-0;
+    }
+
+    .items-table a {
+        @apply wpuf-text-emerald-600 hover:wpuf-text-emerald-700 wpuf-no-underline wpuf-transition-colors;
+    }
+
+    .items-table .wpuf-posts-options {
+        @apply wpuf-no-underline;
+    }
+
+    /* Status badges */
+    .items-table .post-status {
+        @apply wpuf-inline-flex wpuf-items-center wpuf-px-2.5 wpuf-py-0.5 wpuf-rounded-full wpuf-text-xs wpuf-font-medium;
+    }
+
+    .items-table .post-status.publish {
+        @apply wpuf-bg-green-100 wpuf-text-green-800;
+    }
+
+    .items-table .post-status.draft {
+        @apply wpuf-bg-gray-100 wpuf-text-gray-800;
+    }
+
+    .items-table .post-status.pending {
+        @apply wpuf-bg-yellow-100 wpuf-text-yellow-800;
     }
 
     /* Responsive adjustments */

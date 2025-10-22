@@ -18,10 +18,10 @@
                 ?>
             </p>
             <a href="<?php echo esc_url( add_query_arg( [ 'section' => 'edit-profile' ], get_permalink() ) ); ?>" class="wpuf-edit-profile-btn">
-                <svg class="wpuf-w-4 wpuf-h-4 wpuf-mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                </svg>
                 <?php esc_html_e( 'Edit Profile', 'wp-user-frontend' ); ?>
+                <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.75 2.75H2.75C1.64543 2.75 0.75 3.64543 0.75 4.75V15.75C0.75 16.8546 1.64543 17.75 2.75 17.75H13.75C14.8546 17.75 15.75 16.8546 15.75 15.75V10.75M14.3358 1.33579C15.1168 0.554738 16.3832 0.554738 17.1642 1.33579C17.9453 2.11683 17.9453 3.38316 17.1642 4.16421L8.57842 12.75H5.75L5.75 9.92157L14.3358 1.33579Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
             </a>
         </div>
 

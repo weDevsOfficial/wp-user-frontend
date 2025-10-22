@@ -262,6 +262,24 @@ class Form_Builder {
                     $custom_props['default'] = $field['default'];
                 }
                 break;
+
+            case 'google_map':
+                if ( ! empty( $field['zoom'] ) ) {
+                    $custom_props['zoom'] = $field['zoom'];
+                }
+                if ( ! empty( $field['default_pos'] ) ) {
+                    $custom_props['default_pos'] = $field['default_pos'];
+                }
+                if ( isset( $field['directions'] ) ) {
+                    $custom_props['directions'] = $field['directions'];
+                }
+                if ( ! empty( $field['address'] ) ) {
+                    $custom_props['address'] = $field['address'];
+                }
+                if ( ! empty( $field['show_lat'] ) ) {
+                    $custom_props['show_lat'] = $field['show_lat'];
+                }
+                break;
         }
 
         return $custom_props;

@@ -763,15 +763,20 @@ class RestController extends WP_REST_Controller {
                 );
             }
 
-            // Prepare enhanced prompt for AI with current form context
-            $enhanced_prompt = $this->prepare_modification_prompt($prompt, $current_form);
+            // Prepare conversation context with current form for AI
+            // This ensures AI gets proper system prompt with field templates
+            $modification_context = $conversation_context;
+            $modification_context['modification_requested'] = true;
+            $modification_context['current_form'] = $current_form;
 
             // Call AI to get modification instructions
-            $ai_response = $this->form_generator->generate_form($enhanced_prompt, [
+            // Do NOT use prepare_modification_prompt() - let FormGenerator handle system prompt
+            $ai_response = $this->form_generator->generate_form($prompt, [
                 'session_id' => $modification_data['session_id'] ?? $this->generate_session_id(),
                 'provider' => get_option('wpuf_ai')['ai_provider'] ?? 'openai',
                 'temperature' => 0.3, // Lower temperature for more consistent modifications
-                'conversation_context' => $conversation_context
+                'conversation_context' => $modification_context,
+                'form_type' => $current_form['form_type'] ?? 'post'
             ]);
 
             if (!$ai_response || !$ai_response['success']) {
@@ -867,8 +872,15 @@ class RestController extends WP_REST_Controller {
                 // AI returned complete modified form - update entire form
                 $new_fields = $ai_response['wpuf_fields'] ?? $ai_response['fields'] ?? [];
 
-                // Fields already have correct structure, no conversion needed
-                $converted_fields = $new_fields;
+                // Convert minimal field structures to complete structures
+                $converted_fields = [];
+                foreach ( $new_fields as $index => $field ) {
+                    $field_id = $field['id'] ?? 'field_' . ( $index + 1 );
+                    $complete_field = $this->convert_field_to_complete( $field, $field_id );
+                    if ( ! empty( $complete_field ) ) {
+                        $converted_fields[] = $complete_field;
+                    }
+                }
 
                 // Update form meta
                 update_post_meta($form_id, 'wpuf_form_fields', $converted_fields);
@@ -978,17 +990,46 @@ class RestController extends WP_REST_Controller {
     }
 
     /**
+     * Convert minimal field to complete structure
+     *
+     * @param array $field Field data
+     * @param string $field_id Field ID
+     * @return array Complete field structure
+     */
+    private function convert_field_to_complete( $field, $field_id ) {
+        // Check if field needs conversion (has template + label but missing wpuf_cond)
+        if ( isset( $field['template'] ) && isset( $field['label'] ) && ! isset( $field['wpuf_cond'] ) ) {
+            // Extract custom properties
+            $custom_props = array_diff_key( $field, [ 'template' => '', 'label' => '', 'id' => '' ] );
+
+            // Build complete field structure
+            return \WeDevs\Wpuf\AI\Field_Templates::get_field_structure(
+                $field['template'],
+                $field['label'],
+                $field_id,
+                $custom_props
+            );
+        }
+
+        // Already complete
+        return $field;
+    }
+
+    /**
      * Add field to form
      *
      * @param array $fields Current fields
      * @param array $changes Changes containing new field
      * @return array Updated fields
      */
-    private function add_field_to_form($fields, $changes) {
-        if (isset($changes['field'])) {
-            $new_field = $changes['field'];
-            // Field already has correct structure
-            $fields[] = $new_field;
+    private function add_field_to_form( $fields, $changes ) {
+        if ( isset( $changes['field'] ) ) {
+            $field_id = 'field_' . ( count( $fields ) + 1 );
+            $complete_field = $this->convert_field_to_complete( $changes['field'], $field_id );
+
+            if ( ! empty( $complete_field ) ) {
+                $fields[] = $complete_field;
+            }
         }
         return $fields;
     }
@@ -1015,15 +1056,16 @@ class RestController extends WP_REST_Controller {
      * @param array $changes Changes to apply
      * @return array Updated fields
      */
-    private function update_field_in_form($fields, $target, $changes) {
-        foreach ($fields as &$field) {
-            if (($field['name'] ?? '') === $target || ($field['label'] ?? '') === $target) {
-                // If we're replacing the entire field
-                if (isset($changes['field'])) {
-                    $field = $changes['field'];
+    private function update_field_in_form( $fields, $target, $changes ) {
+        foreach ( $fields as $index => &$field ) {
+            if ( ( $field['name'] ?? '' ) === $target || ( $field['label'] ?? '' ) === $target ) {
+                if ( isset( $changes['field'] ) ) {
+                    // Replace entire field - convert if minimal
+                    $field_id = $field['id'] ?? 'field_' . ( $index + 1 );
+                    $field = $this->convert_field_to_complete( $changes['field'], $field_id );
                 } else {
                     // Apply individual property changes
-                    foreach ($changes as $key => $value) {
+                    foreach ( $changes as $key => $value ) {
                         $field[$key] = $value;
                     }
                 }

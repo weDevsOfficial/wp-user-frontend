@@ -75,6 +75,7 @@ class Field_Templates {
 
     private static function get_post_title_template( $label, $field_id ) {
         return array_merge( [
+            'type' => 'post_title',
             'id' => $field_id,
             'input_type' => 'post_title',
             'template' => 'post_title',
@@ -84,15 +85,18 @@ class Field_Templates {
             'is_meta' => 'no',
             'help' => '',
             'css' => '',
+            'show_icon' => 'no',
             'placeholder' => '',
             'default' => '',
             'size' => '40',
+            'readonly' => 'no',
             'width' => 'large',
         ], self::get_common() );
     }
 
     private static function get_post_content_template( $label, $field_id ) {
         return array_merge( [
+            'type' => 'post_content',
             'id' => $field_id,
             'input_type' => 'post_content',
             'template' => 'post_content',
@@ -102,18 +106,21 @@ class Field_Templates {
             'is_meta' => 'no',
             'help' => '',
             'css' => '',
+            'show_icon' => 'no',
             'placeholder' => '',
             'default' => '',
             'rows' => '5',
             'cols' => '25',
             'rich' => 'yes',
             'insert_image' => 'yes',
+            'readonly' => 'no',
             'width' => 'large',
         ], self::get_common() );
     }
 
     private static function get_post_excerpt_template( $label, $field_id ) {
         return array_merge( [
+            'type' => 'post_excerpt',
             'id' => $field_id,
             'input_type' => 'post_excerpt',
             'template' => 'post_excerpt',
@@ -123,16 +130,19 @@ class Field_Templates {
             'is_meta' => 'no',
             'help' => '',
             'css' => '',
+            'show_icon' => 'no',
             'placeholder' => '',
             'default' => '',
             'rows' => '5',
             'cols' => '25',
+            'readonly' => 'no',
             'width' => 'large',
         ], self::get_common() );
     }
 
     private static function get_post_tags_template( $label, $field_id ) {
         return array_merge( [
+            'type' => 'post_tags',
             'id' => $field_id,
             'input_type' => 'post_tags',
             'template' => 'post_tags',
@@ -142,20 +152,24 @@ class Field_Templates {
             'is_meta' => 'no',
             'help' => '',
             'css' => '',
+            'show_icon' => 'no',
             'width' => 'large',
         ], self::get_common() );
     }
 
     private static function get_taxonomy_template( $label, $field_id ) {
         return array_merge( [
+            'type' => 'select',
             'id' => $field_id,
             'input_type' => 'taxonomy',
             'template' => 'taxonomy',
-            'type' => 'select',
             'required' => 'no',
             'label' => $label,
             'name' => 'category',
             'is_meta' => 'no',
+            'help' => '',
+            'css' => '',
+            'show_icon' => 'no',
             'first' => '- Select -',
             'orderby' => 'name',
             'order' => 'ASC',
@@ -169,6 +183,7 @@ class Field_Templates {
 
     private static function get_featured_image_template( $label, $field_id ) {
         return array_merge( [
+            'type' => 'image_upload',
             'id' => $field_id,
             'input_type' => 'image_upload',
             'template' => 'featured_image',
@@ -178,8 +193,14 @@ class Field_Templates {
             'is_meta' => 'no',
             'help' => '',
             'css' => '',
+            'show_icon' => 'no',
+            'placeholder' => '',
+            'default' => '',
+            'size' => '40',
+            'button_label' => 'Select Image',
             'max_size' => '2048',
             'count' => '1',
+            'readonly' => 'no',
             'width' => 'large',
         ], self::get_common() );
     }
@@ -188,6 +209,7 @@ class Field_Templates {
 
     private static function get_text_field_template( $label, $field_id ) {
         return array_merge( [
+            'type' => 'text',
             'id' => $field_id,
             'input_type' => 'text',
             'template' => 'text_field',
@@ -197,14 +219,19 @@ class Field_Templates {
             'is_meta' => 'yes',
             'help' => '',
             'css' => '',
-            'size' => '40',
-            'placeholder' => '',
             'show_icon' => 'no',
+            'placeholder' => '',
+            'default' => '',
+            'size' => '40',
+            'readonly' => 'no',
+            'show_in_post' => 'yes',
+            'width' => 'large',
         ], self::get_common() );
     }
 
     private static function get_email_address_template( $label, $field_id ) {
         return array_merge( [
+            'type' => 'email',
             'id' => $field_id,
             'input_type' => 'email',
             'template' => 'email_address',
@@ -213,17 +240,20 @@ class Field_Templates {
             'name' => self::name( $label ),
             'is_meta' => 'yes',
             'help' => '',
-            'show_icon' => 'no',
             'css' => '',
+            'show_icon' => 'no',
             'placeholder' => '',
             'default' => '',
             'size' => '40',
+            'show_in_post' => 'yes',
+            'readonly' => 'no',
             'width' => 'large',
         ], self::get_common() );
     }
 
     private static function get_textarea_field_template( $label, $field_id ) {
         return array_merge( [
+            'type' => 'textarea',
             'id' => $field_id,
             'input_type' => 'textarea',
             'template' => 'textarea_field',
@@ -231,38 +261,44 @@ class Field_Templates {
             'label' => $label,
             'name' => self::name( $label ),
             'is_meta' => 'yes',
-            'show_icon' => 'no',
             'help' => '',
             'css' => '',
+            'show_icon' => 'no',
             'placeholder' => '',
             'default' => '',
             'rows' => '5',
+            'show_in_post' => 'yes',
             'cols' => '25',
+            'readonly' => 'no',
             'width' => 'large',
         ], self::get_common() );
     }
 
     private static function get_website_url_template( $label, $field_id ) {
         return array_merge( [
+            'type' => 'url',
             'id' => $field_id,
             'input_type' => 'url',
             'template' => 'website_url',
             'required' => 'no',
             'label' => $label,
             'name' => self::name( $label ),
-            'show_icon' => 'no',
             'is_meta' => 'yes',
             'help' => '',
             'css' => '',
+            'show_icon' => 'no',
             'placeholder' => 'https://',
+            'show_in_post' => 'yes',
             'default' => '',
             'size' => '40',
+            'readonly' => 'no',
             'width' => 'large',
         ], self::get_common() );
     }
 
     private static function get_dropdown_field_template( $label, $field_id ) {
         return array_merge( [
+            'type' => 'select',
             'id' => $field_id,
             'input_type' => 'select',
             'template' => 'dropdown_field',
@@ -272,6 +308,7 @@ class Field_Templates {
             'is_meta' => 'yes',
             'help' => '',
             'css' => '',
+            'show_in_post' => 'yes',
             'show_icon' => 'no',
             'first' => '- Select -',
             'options' => [ 'option1' => 'Option 1', 'option2' => 'Option 2' ],
@@ -282,35 +319,39 @@ class Field_Templates {
 
     private static function get_multiple_select_template( $label, $field_id ) {
         return array_merge( [
+            'type' => 'multiselect',
             'id' => $field_id,
-            'input_type' => 'multiple_select',
+            'input_type' => 'multiselect',
             'template' => 'multiple_select',
             'required' => 'no',
             'label' => $label,
             'name' => self::name( $label ),
-            'show_icon' => 'no',
             'is_meta' => 'yes',
             'help' => '',
+            'show_in_post' => 'yes',
             'css' => '',
+            'show_icon' => 'no',
             'first' => '- Select -',
             'options' => [ 'option1' => 'Option 1', 'option2' => 'Option 2' ],
-            'selected' => '',
+            'selected' => [],
             'width' => 'large',
         ], self::get_common() );
     }
 
     private static function get_radio_field_template( $label, $field_id ) {
         return array_merge( [
+            'type' => 'radio',
             'id' => $field_id,
             'input_type' => 'radio',
             'template' => 'radio_field',
             'required' => 'no',
             'label' => $label,
             'name' => self::name( $label ),
-            'show_icon' => 'no',
             'is_meta' => 'yes',
+            'show_in_post' => 'yes',
             'help' => '',
             'css' => '',
+            'show_icon' => 'no',
             'inline' => 'no',
             'options' => [ 'option1' => 'Option 1', 'option2' => 'Option 2' ],
             'selected' => '',
@@ -320,16 +361,18 @@ class Field_Templates {
 
     private static function get_checkbox_field_template( $label, $field_id ) {
         return array_merge( [
+            'type' => 'checkbox',
             'id' => $field_id,
             'input_type' => 'checkbox',
             'template' => 'checkbox_field',
             'required' => 'no',
             'label' => $label,
             'name' => self::name( $label ),
-            'show_icon' => 'no',
+            'show_in_post' => 'yes',
             'is_meta' => 'yes',
             'help' => '',
             'css' => '',
+            'show_icon' => 'no',
             'inline' => 'no',
             'options' => [ 'option1' => 'Option 1', 'option2' => 'Option 2' ],
             'selected' => [],
@@ -339,6 +382,7 @@ class Field_Templates {
 
     private static function get_image_upload_template( $label, $field_id ) {
         return array_merge( [
+            'type' => 'image_upload',
             'id' => $field_id,
             'input_type' => 'image_upload',
             'template' => 'image_upload',
@@ -348,8 +392,15 @@ class Field_Templates {
             'is_meta' => 'yes',
             'help' => '',
             'css' => '',
+            'show_in_post' => 'yes',
+            'show_icon' => 'no',
+            'placeholder' => '',
+            'default' => '',
+            'size' => '40',
+            'button_label' => 'Select Image',
             'max_size' => '2048',
             'count' => '1',
+            'readonly' => 'no',
             'width' => 'large',
         ], self::get_common() );
     }
@@ -441,6 +492,7 @@ class Field_Templates {
 
     private static function get_file_upload_template( $label, $field_id ) {
         return array_merge( [
+            'type' => 'file_upload',
             'id' => $field_id,
             'input_type' => 'file_upload',
             'template' => 'file_upload',
@@ -450,9 +502,16 @@ class Field_Templates {
             'is_meta' => 'yes',
             'help' => '',
             'css' => '',
+            'show_icon' => 'no',
+            'placeholder' => '',
+            'default' => '',
+            'size' => '40',
+            'button_label' => 'Select File',
             'max_size' => '2048',
             'count' => '1',
             'extension' => [ 'images', 'pdf', 'office' ],
+            'readonly' => 'no',
+            'show_in_post' => 'yes',
             'width' => 'large',
         ], self::get_common() );
     }
@@ -469,6 +528,7 @@ class Field_Templates {
             'help' => '',
             'css' => '',
             'format' => 'mm/dd/yy',
+            'show_in_post' => 'yes',
             'time' => 'no',
             'width' => 'large',
         ], self::get_common() );
@@ -484,6 +544,7 @@ class Field_Templates {
             'name' => self::name( $label ),
             'is_meta' => 'yes',
             'help' => '',
+            'show_in_post' => 'yes',
             'css' => '',
             'time_format' => 'g:i a',
             'width' => 'large',
@@ -504,6 +565,7 @@ class Field_Templates {
             'css' => '',
             'placeholder' => '',
             'default' => '',
+            'show_in_post' => 'yes',
             'step_text_field' => '1',
             'min_value_field' => '0',
             'max_value_field' => '',
@@ -516,6 +578,7 @@ class Field_Templates {
             'id' => $field_id,
             'input_type' => 'address_field',
             'template' => 'address_field',
+            'show_in_post' => 'yes',
             'required' => 'no',
             'label' => $label,
             'name' => self::name( $label ),
@@ -575,6 +638,7 @@ class Field_Templates {
             'template' => 'country_list_field',
             'required' => 'no',
             'label' => $label,
+            'show_in_post' => 'yes',
             'name' => self::name( $label ),
             'is_meta' => 'yes',
             'help' => '',
@@ -593,6 +657,7 @@ class Field_Templates {
             'label' => $label,
             'name' => self::name( $label ),
             'show_icon' => 'no',
+            'show_in_post' => 'yes',
             'is_meta' => 'yes',
             'help' => '',
             'css' => '',
@@ -611,6 +676,7 @@ class Field_Templates {
             'required' => 'no',
             'label' => $label,
             'name' => self::name( $label ),
+            'show_in_post' => 'yes',
             'is_meta' => 'yes',
             'help' => '',
             'css' => '',
@@ -632,7 +698,12 @@ class Field_Templates {
             'is_meta' => 'yes',
             'help' => '',
             'css' => '',
-            'default' => '',
+            'zoom' => '12',
+            'default_pos' => '40.7143528,-74.0059731',
+            'directions' => true,
+            'address' => 'no',
+            'show_lat' => 'no',
+            'show_in_post' => 'yes',
             'width' => 'large',
         ], self::get_common() );
     }
@@ -671,6 +742,7 @@ class Field_Templates {
             'input_type' => 'ratings',
             'template' => 'ratings',
             'required' => 'no',
+            'show_in_post' => 'yes',
             'label' => $label,
             'name' => self::name( $label ),
             'is_meta' => 'yes',
@@ -697,6 +769,7 @@ class Field_Templates {
     private static function get_toc_template( $label, $field_id ) {
         return array_merge( [
             'id' => $field_id,
+            'show_in_post' => 'yes',
             'input_type' => 'toc',
             'template' => 'toc',
             'required' => 'no',
@@ -710,6 +783,7 @@ class Field_Templates {
     private static function get_embed_template( $label, $field_id ) {
         return array_merge( [
             'id' => $field_id,
+            'show_in_post' => 'yes',
             'input_type' => 'embed',
             'template' => 'embed',
             'required' => 'no',

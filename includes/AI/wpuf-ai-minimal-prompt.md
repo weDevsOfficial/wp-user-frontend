@@ -57,7 +57,7 @@ NEVER include properties with null, empty string, or undefined values.
 - `textarea_field` - Multi-line text
 - `website_url` - URL input
 - `dropdown_field` - Single select dropdown
-- `multiselect` - Multiple select dropdown
+- `multiple_select` - Multiple select dropdown
 - `radio_field` - Radio buttons
 - `checkbox_field` - Checkboxes
 - `post_excerpt` - Post excerpt
@@ -116,8 +116,9 @@ NEVER include properties with null, empty string, or undefined values.
       "template": "dropdown_field",
       "label": "Category",
       "options": {
-        "option1": "Option 1",
-        "option2": "Option 2"
+        "technology": "Technology",
+        "business": "Business",
+        "lifestyle": "Lifestyle"
       }
     },
     {
@@ -142,17 +143,69 @@ NEVER include properties with null, empty string, or undefined values.
 ## FIELD-SPECIFIC OPTIONS:
 
 ### Dropdown/Radio/Checkbox:
-Include `options` object:
+⚠️ CRITICAL: For dropdown_field, multiple_select, radio_field, and checkbox_field, you MUST ALWAYS include the `options` object with meaningful values based on the field's purpose.
+
+**DO NOT use generic "Option 1", "Option 2" - provide actual relevant choices!**
+
+Examples with meaningful options:
+
+**Dropdown Field:**
 ```json
 {
   "template": "dropdown_field",
-  "label": "Select Option",
+  "label": "Category",
   "options": {
-    "key1": "Label 1",
-    "key2": "Label 2"
+    "technology": "Technology",
+    "business": "Business",
+    "lifestyle": "Lifestyle",
+    "education": "Education"
   }
 }
 ```
+
+**Multi-Select Field:**
+```json
+{
+  "template": "multiple_select",
+  "label": "Select Services",
+  "options": {
+    "web_design": "Web Design",
+    "seo": "SEO Optimization",
+    "content_writing": "Content Writing",
+    "social_media": "Social Media Marketing"
+  }
+}
+```
+
+**Radio Field:**
+```json
+{
+  "template": "radio_field",
+  "label": "Experience Level",
+  "options": {
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "expert": "Expert"
+  }
+}
+```
+
+**Checkbox Field:**
+```json
+{
+  "template": "checkbox_field",
+  "label": "Interests",
+  "options": {
+    "sports": "Sports",
+    "music": "Music",
+    "travel": "Travel",
+    "photography": "Photography"
+  }
+}
+```
+
+**Always provide 3-5 realistic options relevant to the field label and form purpose.**
 
 ### Image Upload:
 Include `count` for max images:

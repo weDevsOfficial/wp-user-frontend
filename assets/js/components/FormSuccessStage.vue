@@ -231,16 +231,20 @@
                                     </div>
 
                                     <!-- WPUF Dropdown/Select -->
-                                    <div v-else-if="['select', 'dropdown', 'dropdown_field'].includes(getWPUFFieldType(field))" class="wpuf-form-select-container">
-                                        <div class="wpuf-form-input wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white wpuf-flex wpuf-items-center wpuf-justify-between wpuf-cursor-pointer"
-                                             :class="''"
-                                             style="background-image: none;"
+                                    <div v-else-if="['select', 'dropdown', 'dropdown_field'].includes(getWPUFFieldType(field))" class="wpuf-form-select-container wpuf-relative">
+                                        <select
+                                            class="wpuf-form-select wpuf-form-input wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white wpuf-w-full wpuf-text-gray-700 wpuf-cursor-pointer focus:wpuf-outline-none focus:wpuf-ring-2 focus:wpuf-ring-emerald-500 focus:wpuf-border-emerald-500 wpuf-pr-10"
                                         >
-                                            <span class="wpuf-text-gray-400">{{ field.placeholder || __('Select an option', 'wp-user-frontend') }}</span>
-                                            <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M13.25 0.875001L7 7.125L0.75 0.875001" stroke="#4B5563" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
-                                        </div>
+                                            <option value="" class="wpuf-text-gray-400">{{ field.first || field.placeholder || __('Select an option', 'wp-user-frontend') }}</option>
+                                            <template v-if="field.options && normalizeOptions(field.options).length > 0">
+                                                <option v-for="option in normalizeOptions(field.options)" :key="option.value" :value="option.value">
+                                                    {{ option.label }}
+                                                </option>
+                                            </template>
+                                        </select>
+                                        <svg class="wpuf-select-caret wpuf-absolute wpuf-right-3 wpuf-top-1/2 wpuf-transform wpuf--translate-y-1/2 wpuf-pointer-events-none wpuf-text-gray-500" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
                                     </div>
 
                                     <!-- WPUF Radio Buttons -->
@@ -307,13 +311,19 @@
                                     </div>
 
                                     <!-- WPUF Multiple Select -->
-                                    <div v-else-if="['multiple_select', 'country_list_field'].includes(field.type)" class="wpuf-form-multiselect-container">
-                                        <div class="wpuf-form-input wpuf-multiselect wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white"
-                                             :class="''"
+                                    <div v-else-if="['multiple_select', 'multiselect', 'multi_select', 'country_list_field'].includes(getWPUFFieldType(field))" class="wpuf-form-multiselect-container wpuf-relative">
+                                        <select
+                                            multiple
+                                            class="wpuf-form-multiselect wpuf-form-input wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white wpuf-w-full wpuf-text-gray-700 focus:wpuf-outline-none focus:wpuf-ring-2 focus:wpuf-ring-emerald-500 focus:wpuf-border-emerald-500"
+                                            style="min-height: 120px;"
                                         >
-                                            <span class="wpuf-text-gray-400">{{ field.placeholder || getFieldPlaceholder(field.type) }}</span>
-                                        </div>
-
+                                            <template v-if="field.options && normalizeOptions(field.options).length > 0">
+                                                <option v-for="option in normalizeOptions(field.options)" :key="option.value" :value="option.value" class="wpuf-py-2 wpuf-px-3">
+                                                    {{ option.label }}
+                                                </option>
+                                            </template>
+                                            <option v-else disabled class="wpuf-text-gray-400">{{ field.placeholder || getFieldPlaceholder(getWPUFFieldType(field)) }}</option>
+                                        </select>
                                     </div>
 
                                     <!-- WPUF Date/Time Fields -->
@@ -530,6 +540,58 @@
 .wpuf-chat-scrollable::-webkit-scrollbar-thumb:hover,
 .wpuf-form-scrollable::-webkit-scrollbar-thumb:hover {
     background: #e4e4e4;
+}
+
+/* Override WordPress core select styling */
+.wpuf-form-select,
+.wpuf-form-multiselect {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background: #fff !important;
+    background-image: none !important;
+    border: 1px solid #E3E5E8 !important;
+    border-radius: 10px !important;
+    padding: 0.75rem !important;
+    font-size: 1rem !important;
+    line-height: 1.5rem !important;
+    color: #374151 !important;
+    min-height: auto !important;
+    max-width: 100% !important;
+    box-shadow: none !important;
+}
+
+.wpuf-form-select {
+    padding-right: 2.5rem !important;
+}
+
+.wpuf-form-select::-ms-expand {
+    display: none;
+}
+
+.wpuf-form-select-container {
+    position: relative;
+}
+
+.wpuf-select-caret {
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Multi-select specific styling */
+.wpuf-form-multiselect {
+    cursor: pointer !important;
+    padding: 0.75rem !important;
+}
+
+.wpuf-form-multiselect option {
+    padding: 0.5rem 0.75rem !important;
+    cursor: pointer !important;
+}
+
+.wpuf-form-multiselect option:checked {
+    background-color: #10B981 !important;
+    color: white !important;
 }
 
 /* Loading spinner animation */
@@ -2465,7 +2527,6 @@ What would you like me to help you with?`;
                 'shortcode',
                 'action_hook',
                 'toc', 'terms_conditions',
-                'column_field',
                 'step_start', 'multistep',
                 'repeat_field', 'repeater',
                 'really_simple_captcha',

@@ -168,7 +168,70 @@ When user requests a registration form or modifications:
 - `cols` - Number of columns (default: "25")
 
 ### Dropdown/Radio/Checkbox:
-- `options` - Array of value/label pairs
+⚠️ CRITICAL: For dropdown_field, multiple_select, radio_field, and checkbox_field, you MUST ALWAYS include the `options` object with meaningful values based on the field's purpose.
+
+**DO NOT use generic "Option 1", "Option 2" - provide actual relevant choices!**
+
+Examples with meaningful options:
+
+**Dropdown Field:**
+```json
+{
+  "template": "dropdown_field",
+  "label": "How did you hear about us?",
+  "options": {
+    "search_engine": "Search Engine",
+    "social_media": "Social Media",
+    "friend_referral": "Friend Referral",
+    "advertisement": "Advertisement",
+    "other": "Other"
+  }
+}
+```
+
+**Multi-Select Field:**
+```json
+{
+  "template": "multiple_select",
+  "label": "Areas of Interest",
+  "options": {
+    "technology": "Technology",
+    "design": "Design",
+    "marketing": "Marketing",
+    "business": "Business",
+    "education": "Education"
+  }
+}
+```
+
+**Radio Field:**
+```json
+{
+  "template": "radio_field",
+  "label": "Account Type",
+  "options": {
+    "personal": "Personal",
+    "business": "Business",
+    "enterprise": "Enterprise"
+  }
+}
+```
+
+**Checkbox Field:**
+```json
+{
+  "template": "checkbox_field",
+  "label": "Newsletter Preferences",
+  "options": {
+    "weekly_digest": "Weekly Digest",
+    "product_updates": "Product Updates",
+    "special_offers": "Special Offers",
+    "community_news": "Community News"
+  }
+}
+```
+
+**Always provide 3-5 realistic options relevant to the field label and form purpose.**
 - `selected` - Default selected option
 
 ### Password:

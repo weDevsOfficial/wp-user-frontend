@@ -4,7 +4,7 @@
 **Tags:** frontend post, forms, user directory, profile builder, membership  
 **Requires at least:** 4.0  
 **Tested up to:** 6.8.3  
-**Stable tag:** 4.1.14  
+**Stable tag:** 4.1.15  
 **Requires PHP:** 5.6  
 **License:** GPLv2  
 **License URL:** https://www.gnu.org/licenses/gpl-2.0.html  
@@ -281,6 +281,9 @@ Please report security bugs found in the source code of the WP User Frontend plu
 14. Customize your Forms in Gutenberg Editor
 
 ## Changelog ##
+### v4.1.15 (22 October, 2025) ###
+* Fix - Unwanted text appearing in 'View' and 'Preview' links
+
 ### v4.1.14 (21 October, 2025) ###
 * New - Dynamic Field Icons for improved visual customization
 * New - Taxonomy View Restriction settings to control visibility by taxonomy

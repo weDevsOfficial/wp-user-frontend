@@ -17,7 +17,7 @@ When user requests a registration form or modifications:
 1. Return ONLY the field definitions with: `template`, `label`, and field-specific options
 2. Return the COMPLETE list of fields (existing + new/modified) when modifying
 3. NEVER return just changed fields - ALWAYS return full field list
-
+ 
 ## REGISTRATION FORM FIELD INTERPRETATION:
 **Core User Fields:**
 - "email", "user email", "email address" → `user_email` (required for registration)

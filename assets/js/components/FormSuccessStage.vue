@@ -57,7 +57,7 @@
                             <p class="wpuf-text-base wpuf-leading-6 wpuf-text-gray-500 wpuf-m-0">{{ __('Generate forms instantly with AI assistance', 'wp-user-frontend') }}</p>
                         </div>
                     </div>
-                    
+
                     <!-- Right Side - Buttons -->
                     <div class="wpuf-flex wpuf-gap-3">
                         <button @click="handleRegenerate" class="wpuf-btn-regenerate wpuf-bg-white wpuf-text-gray-500 wpuf-border wpuf-border-[#E3E5E8] wpuf-py-2 wpuf-px-4 wpuf-rounded-lg wpuf-text-base wpuf-leading-6 wpuf-cursor-pointer wpuf-flex wpuf-items-center wpuf-gap-2 wpuf-transition-all hover:wpuf-bg-white hover:wpuf-border-gray-400">
@@ -74,23 +74,23 @@
                         </button>
                     </div>
                 </div>
-                
+
                 <div class="wpuf-resizable-container wpuf-flex wpuf-flex-col lg:wpuf-flex-row wpuf-gap-5 lg:wpuf-gap-0 wpuf-p-2 sm:wpuf-p-5 wpuf-relative" ref="resizableContainer">
                     <!-- Left Side - Chat Box -->
                     <div class="wpuf-chat-box wpuf-h-[calc(100vh-14rem)] sm:wpuf-h-[calc(100vh-10rem)] wpuf-bg-slate-50 wpuf-border wpuf-border-slate-200 wpuf-rounded-lg lg:wpuf-rounded-r-none wpuf-pt-6 wpuf-px-6 wpuf-flex wpuf-flex-col wpuf-shadow-md wpuf-overflow-hidden" :style="isLargeScreen ? { width: chatWidth + '%' } : { width: '100%' }" ref="chatPanel">
-                        
+
                         <div class="wpuf-chat-scrollable wpuf-flex-1 wpuf-overflow-y-auto wpuf-max-h-[calc(100vh-300px)]" ref="chatContainer" style="scrollbar-width: thin; scrollbar-color: transparent transparent;" onmouseover="this.style.scrollbarColor='#10B981 transparent';" onmouseleave="this.style.scrollbarColor='transparent transparent';">
                             <div class="wpuf-chat-messages wpuf-flex wpuf-flex-col wpuf-gap-4">
-                                <div v-for="(message, index) in chatMessages" :key="index" 
+                                <div v-for="(message, index) in chatMessages" :key="index"
                                      :class="message.type === 'user' ? 'wpuf-message-user wpuf-flex wpuf-justify-end' : 'wpuf-message-ai wpuf-flex wpuf-gap-3 wpuf-items-start'">
-                                    
+
                                     <!-- User Message -->
                                     <div v-if="message.type === 'user'">
                                         <div class="wpuf-py-3 wpuf-px-4 wpuf-rounded-2xl wpuf-w-full wpuf-bg-[#ECFDF5] wpuf-text-emerald-800 wpuf-rounded-br wpuf-font-normal wpuf-leading-6" style="font-size: 16px !important; border: 1px solid #34D399;">
                                             {{ message.content }}
                                         </div>
                                     </div>
-                                    
+
                                     <!-- AI Message -->
                                     <div v-else class="wpuf-ai-message wpuf-flex wpuf-gap-3 wpuf-items-start">
                                         <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="wpuf-ai-icon wpuf-flex-shrink-0 wpuf-w-9 wpuf-h-9">
@@ -114,9 +114,9 @@
                                                     {{ message.acceptedStatus }}
                                                 </div>
                                                 <!-- Checkpoint restore button (checkpoints are auto-saved) -->
-                                                <div v-if="message.hasCheckpoint && message.checkpointSaved && index !== chatMessages.length - 1" class="wpuf-checkpoint-actions wpuf-mt-2 wpuf-flex wpuf-items-center wpuf-gap-2">
-                                                    <button 
-                                                        @click="restoreCheckpoint(index)" 
+                                                <div v-if="message.hasCheckpoint && message.checkpointSaved" class="wpuf-checkpoint-actions wpuf-mt-2 wpuf-flex wpuf-items-center wpuf-gap-2">
+                                                    <button
+                                                        @click="restoreCheckpoint(index)"
                                                         class="wpuf-btn-restore wpuf-bg-blue-500 wpuf-text-white wpuf-border-none wpuf-py-1 wpuf-px-2.5 wpuf-rounded wpuf-text-xs wpuf-cursor-pointer wpuf-transition-all hover:wpuf-bg-blue-600 wpuf-flex wpuf-items-center wpuf-gap-1.5"
                                                         title="Restore form to this checkpoint"
                                                     >
@@ -135,7 +135,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="wpuf-chat-input-container wpuf-flex-shrink-0 wpuf-pb-3 wpuf-pt-4">
                             <div class="wpuf-chat-input-wrapper wpuf-relative">
                                 <textarea
@@ -177,9 +177,9 @@
                     </div>
 
                     <!-- Right Side - Form Preview -->
-                    <div class="wpuf-form-preview wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-rounded-lg lg:wpuf-rounded-l-none wpuf-p-4 sm:wpuf-p-6 lg:wpuf-p-8 wpuf-flex wpuf-flex-col wpuf-gap-6 wpuf-shadow-md wpuf-h-[calc(100vh-12rem)] sm:wpuf-h-[calc(100vh-10rem)] wpuf-relative" :style="isLargeScreen ? { width: formWidth + '%' } : { width: '100%' }" ref="formPanel" 
+                    <div class="wpuf-form-preview wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-rounded-lg lg:wpuf-rounded-l-none wpuf-p-4 sm:wpuf-p-6 lg:wpuf-p-8 wpuf-flex wpuf-flex-col wpuf-gap-6 wpuf-shadow-md wpuf-h-[calc(100vh-12rem)] sm:wpuf-h-[calc(100vh-10rem)] wpuf-relative" :style="isLargeScreen ? { width: formWidth + '%' } : { width: '100%' }" ref="formPanel"
                          :class="{ 'wpuf-form-updating': isFormUpdating }">
-                        
+
                         <!-- Form Updating Overlay -->
                         <div v-if="isFormUpdating" class="wpuf-form-updating-overlay wpuf-absolute wpuf-inset-0 wpuf-bg-white wpuf-bg-opacity-80 wpuf-flex wpuf-flex-col wpuf-items-center wpuf-justify-center wpuf-z-10 wpuf-rounded-lg">
                             <img :src="getAIStarUrl()" alt="Processing" class="wpuf-w-24 wpuf-h-24"/>
@@ -188,7 +188,7 @@
                             <h3 v-if="localFormTitle" class="wpuf-form-title wpuf-font-bold wpuf-text-3xl wpuf-leading-9 wpuf-tracking-normal wpuf-text-center wpuf-text-gray-900 wpuf-m-0 wpuf-mb-2">{{ localFormTitle }}</h3>
                             <p v-if="formFields.length > 0" class="wpuf-form-description wpuf-font-normal wpuf-text-lg wpuf-leading-6 wpuf-tracking-normal wpuf-text-center wpuf-text-gray-500 wpuf-m-0">{{ formDescription || __('Please complete all information below', 'wp-user-frontend') }}</p>
                         </div>
-                        
+
                         <div class="wpuf-form-scrollable wpuf-flex-1 wpuf-overflow-y-auto wpuf-mb-4" style="scrollbar-width: thin; scrollbar-color: transparent transparent;" onmouseover="this.style.scrollbarColor='#10B981 transparent';" onmouseleave="this.style.scrollbarColor='transparent transparent';">
                             <!-- Empty State -->
                             <div v-if="formFields.length === 0 && !isFormUpdating" class="wpuf-empty-state wpuf-flex wpuf-flex-col wpuf-items-center wpuf-justify-center wpuf-h-full wpuf-min-h-[300px]">
@@ -209,7 +209,7 @@
                                 <p v-if="isWaitingForAI" class="wpuf-text-gray-500 wpuf-text-base wpuf-leading-6 wpuf-text-center wpuf-animate-pulse">{{ __('Please wait...', 'wp-user-frontend') }}</p>
                                 <p v-else class="wpuf-text-gray-400 wpuf-text-base wpuf-leading-6 wpuf-text-center">{{ __('Use the chat to create your form', 'wp-user-frontend') }}</p>
                             </div>
-                            
+
                             <!-- Form Fields -->
                             <div v-if="formFields.length > 0" class="wpuf-form-fields wpuf-flex wpuf-flex-col wpuf-gap-5">
                                 <div v-for="field in formFields" :key="field.id" class="wpuf-form-field wpuf-flex wpuf-flex-col wpuf-gap-2">
@@ -218,18 +218,18 @@
                                         {{ field.label }}
                                         <span v-if="field.required === 'yes' || field.required === true" class="wpuf-required wpuf-text-red-500 wpuf-font-bold">*</span>
                                     </label>
-                                    
+
                                     <!-- Help Text -->
                                     <p v-if="field.help_text" class="wpuf-field-help wpuf-text-base wpuf-leading-6 wpuf-text-gray-500 wpuf-m-0 wpuf-mb-1">{{ field.help_text }}</p>
-                                    
+
                                     <!-- WPUF Text Fields -->
-                                    <div v-if="['text', 'email', 'url', 'number', 'tel', 'post_title'].includes(getWPUFFieldType(field))" 
+                                    <div v-if="['text', 'email', 'url', 'number', 'tel', 'post_title'].includes(getWPUFFieldType(field))"
                                          class="wpuf-form-input wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white"
                                          :class="''"
                                     >
                                         <span class="wpuf-text-gray-400">{{ field.placeholder || field.help || 'Enter text' }}</span>
                                     </div>
-                                    
+
                                     <!-- WPUF Dropdown/Select -->
                                     <div v-else-if="['select', 'dropdown', 'dropdown_field'].includes(getWPUFFieldType(field))" class="wpuf-form-select-container">
                                         <div class="wpuf-form-input wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white wpuf-flex wpuf-items-center wpuf-justify-between wpuf-cursor-pointer"
@@ -242,7 +242,7 @@
                                             </svg>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- WPUF Radio Buttons -->
                                     <div v-else-if="getWPUFFieldType(field) === 'radio'" class="wpuf-form-radio-container">
                                         <div class="wpuf-radio-group wpuf-flex wpuf-flex-col wpuf-gap-2" :class="field.required ? 'wpuf-border wpuf-rounded-[10px] wpuf-p-3' : ''">
@@ -255,7 +255,7 @@
                                             <div v-else class="wpuf-text-gray-400 wpuf-text-base wpuf-leading-6">{{ __('No options configured', 'wp-user-frontend') }}</div>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- WPUF Checkboxes -->
                                     <div v-else-if="['checkbox_field', 'checkbox'].includes(field.type)" class="wpuf-form-checkbox-container">
                                         <div class="wpuf-checkbox-group wpuf-flex wpuf-flex-col wpuf-gap-2" :class="field.required ? 'wpuf-border wpuf-rounded-[10px] wpuf-p-3' : ''">
@@ -268,7 +268,7 @@
                                             <div v-else class="wpuf-text-gray-400 wpuf-text-base wpuf-leading-6">{{ __('No options configured', 'wp-user-frontend') }}</div>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- WPUF Terms of Conditions (ToC) -->
                                     <div v-else-if="field.type === 'toc'" class="wpuf-form-toc-container">
                                         <div class="wpuf-toc-wrapper wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-4 wpuf-bg-white">
@@ -283,9 +283,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- WPUF File Upload -->
-                                    <div v-else-if="['image_upload', 'file', 'featured_image', 'file_upload'].includes(getWPUFFieldType(field))" 
+                                    <div v-else-if="['image_upload', 'file', 'featured_image', 'file_upload'].includes(getWPUFFieldType(field))"
                                          class="wpuf-form-file wpuf-border-2 wpuf-border-dashed wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-5 wpuf-flex wpuf-flex-col wpuf-items-center wpuf-gap-2 wpuf-bg-white wpuf-text-gray-500 wpuf-text-center wpuf-text-base wpuf-leading-6"
                                          :class="''"
                                     >
@@ -297,15 +297,15 @@
                                             <div class="wpuf-text-gray-400">{{ getWPUFFieldType(field) === 'image_upload' ? 'Upload image files' : 'Drop files here or click to upload' }}</div>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- WPUF Textarea -->
-                                    <div v-else-if="['textarea', 'post_content', 'post_excerpt'].includes(getWPUFFieldType(field))" 
+                                    <div v-else-if="['textarea', 'post_content', 'post_excerpt'].includes(getWPUFFieldType(field))"
                                          class="wpuf-form-textarea wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white wpuf-min-h-[100px] wpuf-relative"
                                          :class="''"
                                     >
                                         <span class="wpuf-text-gray-400">{{ field.placeholder || field.help || __('Enter your text here...', 'wp-user-frontend') }}</span>
                                     </div>
-                                    
+
                                     <!-- WPUF Multiple Select -->
                                     <div v-else-if="['multiple_select', 'country_list_field'].includes(field.type)" class="wpuf-form-multiselect-container">
                                         <div class="wpuf-form-input wpuf-multiselect wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white"
@@ -315,9 +315,9 @@
                                         </div>
 
                                     </div>
-                                    
+
                                     <!-- WPUF Date/Time Fields -->
-                                    <div v-else-if="field.input_type === 'date' || field.template === 'date_field' || ['date_field', 'time_field', 'date', 'time', 'datetime'].includes(field.type)" 
+                                    <div v-else-if="field.input_type === 'date' || field.template === 'date_field' || ['date_field', 'time_field', 'date', 'time', 'datetime'].includes(field.type)"
                                          class="wpuf-form-input wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white wpuf-flex wpuf-items-center wpuf-justify-between"
                                          :class="''"
                                     >
@@ -326,7 +326,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                         </svg>
                                     </div>
-                                    
+
                                     <!-- WPUF Pro Rating Fields -->
                                     <div v-else-if="['ratings', 'linear_scale'].includes(field.type)" class="wpuf-form-rating-container">
                                         <div class="wpuf-rating-display wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white wpuf-flex wpuf-items-center wpuf-gap-2"
@@ -342,7 +342,7 @@
                                             </template>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- WPUF Pro Grid Fields -->
                                     <div v-else-if="['checkbox_grid', 'multiple_choice_grid'].includes(field.type)" class="wpuf-form-grid-container">
                                         <div class="wpuf-grid-preview wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-4 wpuf-text-base wpuf-leading-6 wpuf-bg-white"
@@ -362,9 +362,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- WPUF Pro Special Fields -->
-                                    <div v-else-if="['google_map', 'address_field', 'embed', 'qr_code'].includes(field.type)" 
+                                    <div v-else-if="['google_map', 'address_field', 'embed', 'qr_code'].includes(field.type)"
                                          class="wpuf-form-special wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-5 wpuf-text-center wpuf-bg-white"
                                          :class="''"
                                     >
@@ -382,9 +382,9 @@
                                         </div>
                                         <div class="wpuf-text-xs wpuf-text-gray-500">{{ field.placeholder || getFieldPlaceholder(field.type) }}</div>
                                     </div>
-                                    
+
                                     <!-- WPUF Pro Captcha Fields -->
-                                    <div v-else-if="['really_simple_captcha', 'math_captcha'].includes(field.type)" 
+                                    <div v-else-if="['really_simple_captcha', 'math_captcha'].includes(field.type)"
                                          class="wpuf-form-captcha wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-4 wpuf-text-center wpuf-bg-white"
                                          :class="''"
                                     >
@@ -393,9 +393,9 @@
                                         </div>
                                         <input type="text" :placeholder="__('Enter code', 'wp-user-frontend')" disabled class="wpuf-w-full wpuf-p-2 wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-text-center">
                                     </div>
-                                    
+
                                     <!-- WPUF Taxonomy (Category) Field -->
-                                    <div v-else-if="field.type === 'taxonomy'" 
+                                    <div v-else-if="field.type === 'taxonomy'"
                                          class="wpuf-form-select-container"
                                     >
                                         <div class="wpuf-form-input wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white wpuf-flex wpuf-items-center wpuf-justify-between wpuf-cursor-pointer"
@@ -408,9 +408,9 @@
                                             </svg>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- WPUF Post Fields -->
-                                    <div v-else-if="['post_title', 'post_content', 'post_excerpt', 'post_tags'].includes(field.type)" 
+                                    <div v-else-if="['post_title', 'post_content', 'post_excerpt', 'post_tags'].includes(field.type)"
                                          class="wpuf-form-post-field wpuf-border wpuf-border-blue-200 wpuf-bg-blue-50 wpuf-rounded-[10px] wpuf-p-3"
                                          :class="field.required ? 'wpuf-border-blue-300' : ''"
                                     >
@@ -422,16 +422,16 @@
                                         </div>
                                         <div class="wpuf-text-blue-600 wpuf-text-base wpuf-leading-6">{{ field.placeholder || getFieldPlaceholder(field.type) }}</div>
                                     </div>
-                                    
+
                                     <!-- WPUF Layout Fields -->
-                                    <div v-else-if="['section_break', 'column_field', 'step_start'].includes(field.type)" 
+                                    <div v-else-if="['section_break', 'column_field', 'step_start'].includes(field.type)"
                                          class="wpuf-form-layout wpuf-border-2 wpuf-border-dashed wpuf-border-purple-300 wpuf-bg-purple-50 wpuf-rounded-[10px] wpuf-p-4 wpuf-text-center"
                                     >
                                         <div class="wpuf-text-purple-600 wpuf-font-medium">{{ field.label }}</div>
                                     </div>
-                                    
+
                                     <!-- WPUF Custom Fields -->
-                                    <div v-else-if="['custom_html', 'shortcode', 'action_hook'].includes(field.type)" 
+                                    <div v-else-if="['custom_html', 'shortcode', 'action_hook'].includes(field.type)"
                                          class="wpuf-form-custom wpuf-border wpuf-border-yellow-300 wpuf-bg-yellow-50 wpuf-rounded-[10px] wpuf-p-4"
                                     >
                                         <div class="wpuf-flex wpuf-items-center wpuf-gap-2 wpuf-mb-2">
@@ -442,12 +442,12 @@
                                         </div>
                                         <div class="wpuf-text-yellow-600 wpuf-text-base wpuf-leading-6">{{ field.placeholder || getFieldPlaceholder(field.type) }}</div>
                                     </div>
-                                    
+
                                     <!-- Fallback for unknown field types -->
                                     <div v-else class="wpuf-form-input wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white wpuf-flex wpuf-items-center wpuf-gap-2">
                                         <span class="wpuf-text-gray-500">{{ field.placeholder || __('Custom field', 'wp-user-frontend') }}</span>
                                     </div>
-                                    
+
                                     <!-- Default Value Display -->
                                     <div v-if="field.default" class="wpuf-field-default wpuf-text-base wpuf-leading-6 wpuf-text-blue-600 wpuf-flex wpuf-items-center wpuf-gap-1">
                                         <svg class="wpuf-w-4 wpuf-h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -458,7 +458,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="wpuf-form-footer wpuf-border-t wpuf-border-gray-200 wpuf-pt-4 wpuf-flex-shrink-0 wpuf--mx-4 sm:wpuf--mx-6 lg:wpuf--mx-8 wpuf-px-4 sm:wpuf-px-6 lg:wpuf-px-8">
                             <button @click="handleEditWithBuilder" class="wpuf-btn-edit-full wpuf-bg-emerald-600 wpuf-text-white wpuf-border-none wpuf-py-3 wpuf-px-5 wpuf-rounded-lg wpuf-text-base wpuf-leading-6 wpuf-font-medium wpuf-cursor-pointer wpuf-flex wpuf-items-center wpuf-gap-2 wpuf-w-full wpuf-justify-center hover:wpuf-bg-emerald-800 wpuf-transition-colors">
                                 {{ __('Edit with Builder', 'wp-user-frontend') }}
@@ -471,7 +471,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Regenerate Confirmation Modal -->
         <div v-if="showRegenerateModal" class="wpuf-modal-overlay wpuf-fixed wpuf-inset-0 wpuf-bg-black wpuf-bg-opacity-75 wpuf-z-50 wpuf-flex wpuf-items-center wpuf-justify-center">
             <div class="wpuf-modal-content wpuf-bg-white wpuf-rounded-lg wpuf-shadow-lg" style="width: 660px; height: 480px; position: relative;">
@@ -483,17 +483,17 @@
                             <path d="M60 51V46C60 44.3431 58.6569 43 57 43L49 43C47.3431 43 46 44.3431 46 46L46 64C46 65.6569 47.3431 67 49 67H57C58.6569 67 60 65.6569 60 64V59M55 51L51 55M51 55L55 59M51 55L68 55" stroke="#0F172A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </div>
-                    
+
                     <!-- Title -->
                     <h3 class="wpuf-modal-title">
                         {{ __('Are you sure you want to leave and regenerate the form?', 'wp-user-frontend') }}
                     </h3>
-                    
+
                     <!-- Description -->
                     <p class="wpuf-modal-description">
                         {{ __('If you decide to leave and regenerate the form, please be aware that you will lost the information you\'ve currently generated.', 'wp-user-frontend') }}
                     </p>
-                    
+
                     <!-- Buttons -->
                     <div class="wpuf-flex wpuf-gap-4">
                         <button @click="confirmRegenerate" class="wpuf-modal-cancel-btn">
@@ -876,21 +876,21 @@ export default {
             this.localFormTitle = newVal;
         },
         initialFormFields: {
-            handler(newFields, oldFields) {
+            handler(newFields) {
                 // Skip if no new fields
                 if (!newFields || newFields.length === 0) {
                     return;
                 }
-                
+
                 // Check if fields are actually different
                 const fieldsAreDifferent = JSON.stringify(this.formFields) !== JSON.stringify(newFields);
-                
+
                 // Only show loader if we have current fields and they're changing
                 if (this.formFields.length > 0 && fieldsAreDifferent) {
                     // Update fields immediately without delay
                     this.isFormUpdating = true;
                     this.formFields = [...newFields];
-                    
+
                     // Remove loader quickly
                     this.$nextTick(() => {
                         this.isFormUpdating = false;
@@ -939,7 +939,7 @@ export default {
             const assetUrl = config.assetUrl || '';
             return `${assetUrl}/images/ai-star.gif`;
         },
-        
+
         // Checkpoint management methods
         saveCheckpoint(messageIndex) {
             // Save current form state as checkpoint
@@ -951,19 +951,19 @@ export default {
                 timestamp: Date.now(),
                 messageContent: this.chatMessages[messageIndex]?.content || ''
             };
-            
+
             // Store checkpoint
             this.checkpoints.set(messageIndex, checkpoint);
-            
+
             // Mark message as having saved checkpoint
             if (this.chatMessages[messageIndex]) {
                 this.chatMessages[messageIndex].checkpointSaved = true;
             }
-            
+
             // Show success feedback
             this.showStatusMessage('Checkpoint saved successfully', 'success');
         },
-        
+
         restoreCheckpoint(messageIndex) {
             const checkpoint = this.checkpoints.get(messageIndex);
             if (!checkpoint) {
@@ -985,9 +985,6 @@ export default {
 
             // Restore form state from checkpoint
             setTimeout(() => {
-                // Store current state for comparison
-                const previousFieldCount = this.formFields.length;
-                const previousTitle = this.formTitle;
 
                 // Restore checkpoint data
                 this.formFields = JSON.parse(JSON.stringify(checkpoint.formFields));
@@ -1019,11 +1016,11 @@ export default {
                 }, 500);
             }, 300); // Small delay for visual feedback
         },
-        
+
         showStatusMessage(message, type = 'info') {
             // Add a temporary status message (you can expand this to show a toast notification)
         },
-        
+
         // Get the actual field type from WPUF field structure
         getWPUFFieldType(field) {
             // Priority: input_type > template > type
@@ -1031,58 +1028,58 @@ export default {
             if (field.template) return field.template;
             return field.type || 'text';
         },
-        
+
         // Status visibility methods
         isStatusVisible(messageIndex) {
             return this.visibleStatuses.has(messageIndex);
         },
-        
+
         showStatus(messageIndex) {
             this.visibleStatuses.add(messageIndex);
-            
+
             // Clear any existing timeout for this status
             if (this.statusTimeouts.has(messageIndex)) {
                 clearTimeout(this.statusTimeouts.get(messageIndex));
             }
-            
+
             // Set timeout to hide status after 3 seconds
             const timeoutId = setTimeout(() => {
                 this.hideStatus(messageIndex);
             }, 3000);
-            
+
             this.statusTimeouts.set(messageIndex, timeoutId);
         },
-        
+
         hideStatus(messageIndex) {
             this.visibleStatuses.delete(messageIndex);
-            
+
             // Clear timeout if it exists
             if (this.statusTimeouts.has(messageIndex)) {
                 clearTimeout(this.statusTimeouts.get(messageIndex));
                 this.statusTimeouts.delete(messageIndex);
             }
         },
-        
+
         initializeChatMessages() {
             // If we have initial messages from props, use them
             if (this.initialMessages && this.initialMessages.length > 0) {
                 return [...this.initialMessages];
             }
-            
+
             // Otherwise start with empty chat
             return [];
         },
-        
+
         initializeFormFields() {
             // If we have initial form fields from props, use them
             if (this.initialFormFields && this.initialFormFields.length > 0) {
                 return [...this.initialFormFields];
             }
-            
+
             // Start with empty form - no default fields
             return [];
         },
-        
+
         updateConversationState(userMessage, aiResponse) {
             this.conversationState.context_history.push({
                 timestamp: new Date().toISOString(),
@@ -1094,12 +1091,12 @@ export default {
                     field_types: this.formFields.map(f => f.type)
                 }
             });
-            
+
             // Keep only last 10 interactions to avoid memory issues
             if (this.conversationState.context_history.length > 10) {
                 this.conversationState.context_history = this.conversationState.context_history.slice(-10);
             }
-            
+
             this.conversationState.modifications_count++;
         },
 
@@ -1110,26 +1107,26 @@ export default {
             const modificationKeywords = [
                 // Add/Create operations
                 'add', 'create', 'insert', 'include', 'append',
-                
-                // Remove/Delete operations  
+
+                // Remove/Delete operations
                 'remove', 'delete', 'take out', 'eliminate', 'drop',
-                
+
                 // Update/Change operations
                 'modify', 'change', 'update', 'edit', 'alter', 'replace', 'convert',
                 'make', 'set', 'turn', 'switch', 'transform',
-                
+
                 // Field-specific operations
                 'field', 'button', 'text', 'label', 'title', 'description',
                 'required', 'optional', 'dropdown', 'radio', 'checkbox',
-                
+
                 // Common modification phrases
                 'from', 'to', 'into', 'instead of', 'rather than'
             ];
-            
+
             const lowerPrompt = prompt.toLowerCase();
             return modificationKeywords.some(keyword => lowerPrompt.includes(keyword));
         },
-        
+
         convertFieldsToPreview(apiFields) {
             // Convert API response fields to preview format
             // Handle both WPUF format (input_type, template) and simplified format (type)
@@ -1223,7 +1220,7 @@ export default {
                     // Ensure options exist for fields that need them
                     convertedField.options = {};
                 }
-                
+
                 return convertedField;
             });
         },
@@ -1233,7 +1230,7 @@ export default {
          */
         normalizeOptions(options) {
             if (!options) return [];
-            
+
             // If options is already an array, return as-is
             if (Array.isArray(options)) {
                 return options.map(option => {
@@ -1246,7 +1243,7 @@ export default {
                     };
                 });
             }
-            
+
             // If options is an object (WPUF format), convert to array
             if (typeof options === 'object') {
                 return Object.entries(options).map(([key, value]) => ({
@@ -1254,10 +1251,10 @@ export default {
                     label: value
                 }));
             }
-            
+
             return [];
         },
-        
+
         /**
          * Check if a prompt matches predefined template patterns
          */
@@ -1265,7 +1262,7 @@ export default {
             const prompt_lower = prompt.toLowerCase();
             const predefined_patterns = [
                 'paid guest post',
-                'guest post', 
+                'guest post',
                 'portfolio',
                 'classified ad',
                 'classified',
@@ -1278,10 +1275,10 @@ export default {
                 'product listing',
                 'product'
             ];
-            
+
             return predefined_patterns.some(pattern => prompt_lower.includes(pattern));
         },
-        
+
         /**
          * Generate a hash of the current form state for change detection
          */
@@ -1295,13 +1292,13 @@ export default {
                     options: field.options
                 }))
             };
-            
+
             // Simple hash generation
             return JSON.stringify(formState).split('').reduce((hash, char) => {
                 return ((hash << 5) - hash + char.charCodeAt(0)) & 0xffffffff;
             }, 0);
         },
-        
+
         /**
          * Initialize conversation state based on the original prompt
          */
@@ -1313,7 +1310,7 @@ export default {
                 this.conversationState.form_created = true;
             }
         },
-        
+
         /**
          * Check if the current form has been modified from the original predefined template
          */
@@ -1321,17 +1318,17 @@ export default {
             if (!this.conversationState.is_predefined_template) {
                 return false; // Not a predefined template, always allow API calls
             }
-            
+
             const currentHash = this.generateFormHash();
             const isModified = currentHash !== this.conversationState.original_form_hash;
-            
+
             if (isModified && !this.conversationState.template_modified) {
                 this.conversationState.template_modified = true;
             }
-            
+
             return isModified;
         },
-        
+
         /**
          * Determine if an API call is necessary based on user message
          */
@@ -1340,16 +1337,16 @@ export default {
             if (this.isModificationRequest(userMessage)) {
                 return true;
             }
-            
+
             // For informational queries, provide helpful responses without API calls
             if (this.isInformationalQuery(userMessage)) {
                 return false;
             }
-            
+
             // Default: make API call
             return true;
         },
-        
+
         /**
          * Check if user message contains modification requests
          * Uses a generalized approach based on linguistic patterns and intent
@@ -1444,7 +1441,7 @@ export default {
             // - Has action verb AND (replacement OR quantifier pattern), OR
             // - Has replacement or quantifier pattern alone
             const mentionsField = /\b(field|fields)\b/i.test(message);
-            
+
             return hasImperativePattern || hasRequestPattern || hasModificationIntent ||
                    (hasActionVerb && mentionsField) ||
                    (hasActionVerb && (hasReplacementPattern || hasQuantifierPattern)) ||
@@ -1511,7 +1508,7 @@ export default {
             // Final decision: It's a question if it has a question mark, matches patterns, or has informal query phrases
             return hasQuestionMark || matchesQuestionPattern || hasInformalQuery;
         },
-        
+
         /**
          * Generate a helpful response for predefined templates without making API calls
          */
@@ -1644,25 +1641,25 @@ What would you like me to help you with?`;
 
         async handleSendMessage() {
             if (!this.userInput.trim() || this.isFormUpdating) return;
-            
+
             const userMessage = this.userInput.trim();
             this.userInput = '';
-            
+
             // Store original prompt if this is the first message
             if (!this.conversationState.form_created && this.chatMessages.length === 0) {
                 this.initializeConversationState(userMessage);
             }
-            
+
             // Check if we need to make an API call or can provide a predefined response
             const shouldCallAPI = this.shouldMakeAPICall(userMessage);
-            
+
             // Add user message to chat
             this.chatMessages.push({
                 type: 'user',
                 content: userMessage,
                 timestamp: new Date().toISOString()
             });
-            
+
             // Set loading state IMMEDIATELY before adding processing message
             // This ensures UI shows loading state right away
             if (shouldCallAPI) {
@@ -1700,13 +1697,13 @@ What would you like me to help you with?`;
                         form_data: null // No form changes
                     };
                 }
-                
+
                 // Remove processing message
                 const processingIndex = this.chatMessages.findIndex(msg => msg.isProcessing);
                 if (processingIndex !== -1) {
                     this.chatMessages.splice(processingIndex, 1);
                 }
-                
+
                 // Add AI response
                 if (response.success) {
                     // Determine if form actually changed
@@ -1741,84 +1738,64 @@ What would you like me to help you with?`;
                     }
 
                     const messageContent = response.message || defaultMessage;
+
                     const aiMessage = {
                         type: 'ai',
                         content: messageContent,
                         showButtons: this.shouldShowButtons(response, messageContent),
-                        hasCheckpoint: false, // Will be set after auto-save
-                        checkpointSaved: false,
+                        hasCheckpoint: false, // Will be set to true after user accepts
+                        checkpointSaved: false, // Will be set to true after user accepts
                         response_data: response,
                         timestamp: new Date().toISOString()
                     };
-                    
+
                     this.chatMessages.push(aiMessage);
-                    
-                    // Auto-save checkpoint for successful responses (not error responses)
-                    if (response.form_data && !response.error) {
-                        const messageIndex = this.chatMessages.length - 1;
-                        const checkpoint = {
-                            formFields: JSON.parse(JSON.stringify(this.formFields)),
-                            formTitle: this.localFormTitle,
-                            formDescription: this.formDescription,
-                            formSettings: JSON.parse(JSON.stringify(this.formSettings)),
-                            timestamp: Date.now(),
-                            messageContent: messageContent
-                        };
-                        
-                        // Store checkpoint
-                        this.checkpoints.set(messageIndex, checkpoint);
-                        
-                        // Mark message as having checkpoint
-                        this.chatMessages[messageIndex].hasCheckpoint = true;
-                        this.chatMessages[messageIndex].checkpointSaved = true;
-                    }
-                    
+
+
                     // Show status if message has one
                     if (aiMessage.status) {
                         this.$nextTick(() => {
                             this.showStatus(this.chatMessages.length - 1);
                         });
                     }
-                    
+
                     // Update conversation state
                     this.updateConversationState(userMessage, aiMessage);
-                    
+
                     // If form was modified, update the preview
                     // Check both response.form_data (for initial generation) and response.data (for chat modifications)
-                    const formData = response.form_data || response.data;
-                    
-                    if (formData && formData.wpuf_fields) {
-                        // Store previous form state before making changes
-                        this.previousFormFields = JSON.parse(JSON.stringify(this.formFields));
-                        const previousDescription = this.formDescription;
-                        
-                        // Convert and store new fields
-                        const newFields = this.convertFieldsToPreview(formData.wpuf_fields);
-                        
-                        // Store as pending changes for accept/reject
-                        this.pendingChanges = {
-                            type: 'form_update',
-                            fields: newFields,
-                            formTitle: formData.form_title || this.formTitle,
-                            formDescription: formData.form_description || this.formDescription,
-                            previousDescription: previousDescription,
-                            originalResponse: formData
-                        };
-                        
-                        // Apply changes to preview temporarily (will be reverted on reject)
-                        this.formFields = newFields;
-                        
-                        if (formData.form_description) {
-                            this.formDescription = formData.form_description;
+                    if (responseFormData && responseFormData.wpuf_fields) {
+                         // Store previous form state before making changes
+                         this.previousFormFields = JSON.parse(JSON.stringify(this.formFields));
+                         const previousDescription = this.formDescription;
+
+                         // Convert and store new fields
+                         const newFields = this.convertFieldsToPreview(responseFormData.wpuf_fields);
+
+                         // Store as pending changes for accept/reject
+                         this.pendingChanges = {
+                             type: 'form_update',
+                             fields: newFields,
+                             formTitle: responseFormData.form_title || this.formTitle,
+                             formDescription: responseFormData.form_description || this.formDescription,
+                             previousDescription: previousDescription,
+                             originalResponse: responseFormData
+                         };
+
+                         // Apply changes to preview temporarily (will be reverted on reject)
+                         this.formFields = newFields;
+
+                        if (responseFormData.form_description) {
+                            this.formDescription = responseFormData.form_description;
                         }
 
-                        // Remove blur immediately
-                        this.isFormUpdating = false;
-                        this.isWaitingForAI = false;
-                    } else if (response.data && response.data.modification_type === 'add_field' && response.data.changes && response.data.changes.field) {
+                         // Remove blur immediately
+                         this.isFormUpdating = false;
+                         this.isWaitingForAI = false;
+                     } else if (response.data && response.data.modification_type === 'add_field' && response.data.changes && response.data.changes.field) {
                         // Store previous form state before making changes
                         this.previousFormFields = JSON.parse(JSON.stringify(this.formFields));
-                        
+
                         // Handle chat API field additions - store as pending changes
                         const newField = response.data.changes.field;
                         const formattedField = {
@@ -1832,17 +1809,17 @@ What would you like me to help you with?`;
                             options: newField.options || [],
                             default: newField.default || ''
                         };
-                        
+
                         // Store pending changes instead of applying immediately
                         this.pendingChanges = {
                             type: 'add_field',
                             field: formattedField,
                             originalResponse: response.data
                         };
-                        
+
                         // Apply changes to preview temporarily (will be reverted on reject)
                         this.formFields.push(formattedField);
-                        
+
                         // Remove blur immediately
                         this.isFormUpdating = false;
                         this.isWaitingForAI = false;
@@ -1875,18 +1852,18 @@ What would you like me to help you with?`;
 
                     this.updateConversationState(userMessage, errorMessage);
                 }
-                
+
             } catch (error) {
                 // Remove processing message
                 const processingIndex = this.chatMessages.findIndex(msg => msg.isProcessing);
                 if (processingIndex !== -1) {
                     this.chatMessages.splice(processingIndex, 1);
                 }
-                
+
                 // Remove form updating blur
                 this.isFormUpdating = false;
                 this.isWaitingForAI = false;
-                
+
                 // Add error message
                 const errorMessage = {
                     type: 'ai',
@@ -1895,27 +1872,27 @@ What would you like me to help you with?`;
                     isError: true,
                     timestamp: new Date().toISOString()
                 };
-                
+
                 this.chatMessages.push(errorMessage);
-                
+
                 // Show status if error message has one
                 if (errorMessage.status) {
                     this.$nextTick(() => {
                         this.showStatus(this.chatMessages.length - 1);
                     });
                 }
-                
+
                 this.updateConversationState(userMessage, errorMessage);
             }
-            
+
             this.scrollToBottom();
         },
-        
+
         async callChatAPI(message) {
             const config = window.wpufAIFormBuilder || {};
             const restUrl = config.rest_url || (window.location.origin + '/wp-json/');
             const nonce = config.nonce || '';
-            
+
             // Build comprehensive conversation context
             const conversationContext = {
                 session_id: this.sessionId,
@@ -1929,7 +1906,7 @@ What would you like me to help you with?`;
                         if (field.input_type && field.template && field.wpuf_cond) {
                             return field;
                         }
-                        
+
                         // Otherwise, convert to full WPUF structure
                         const fieldType = field.type || 'text_field';
                         return {
@@ -1973,7 +1950,7 @@ What would you like me to help you with?`;
                         timestamp: msg.timestamp
                     }))
             };
-            
+
             // Always use generate endpoint for chat modifications since form isn't saved yet
             // Only use modify-form endpoint if we have a saved form ID from database
             const endpoint = 'wpuf/v1/ai-form-builder/generate';
@@ -1997,18 +1974,18 @@ What would you like me to help you with?`;
                 },
                 body: JSON.stringify(requestBody)
             });
-            
+
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
                 throw new Error(`HTTP ${response.status}: ${errorData.message || response.statusText}`);
             }
-            
+
             const result = await response.json();
-            
+
             return result;
         },
-        
-        
+
+
         scrollToBottom() {
             this.$nextTick(() => {
                 if (this.$refs.chatContainer) {
@@ -2016,16 +1993,16 @@ What would you like me to help you with?`;
                 }
             });
         },
-        
+
         async handleApply() {
             // Apply the current form state and create the actual WPUF form
             this.isApplying = true;
-            
+
             try {
                 const config = window.wpufAIFormBuilder || {};
                 const restUrl = config.rest_url || (window.location.origin + '/wp-json/');
                 const nonce = config.nonce || '';
-                
+
                 // Prepare form data in WPUF format
                 const formData = {
                     form_title: this.formTitle || 'AI Generated Form',
@@ -2035,7 +2012,7 @@ What would you like me to help you with?`;
                         if (field.input_type && field.template && field.wpuf_cond) {
                             return field;
                         }
-                        
+
                         // Otherwise, convert to full WPUF structure (for chat-added fields)
                         const fieldType = field.type || 'text_field';
                         return {
@@ -2073,7 +2050,7 @@ What would you like me to help you with?`;
                         form_template: 'default'
                     }
                 };
-                
+
                 // Call the create form API
                 const response = await fetch(restUrl + 'wpuf/v1/ai-form-builder/create-form', {
                     method: 'POST',
@@ -2083,20 +2060,20 @@ What would you like me to help you with?`;
                     },
                     body: JSON.stringify({ form_data: formData })
                 });
-                
+
                 if (!response.ok) {
                     const errorData = await response.json().catch(() => ({}));
                     throw new Error(`HTTP ${response.status}: ${errorData.message || response.statusText}`);
                 }
-                
+
                 const result = await response.json();
-                
+
                 // Emit success event with form ID
                 this.$emit('form-applied', {
                     form_id: result.form_id,
                     edit_url: result.edit_url
                 });
-                
+
             } catch (error) {
                 // Enhanced error context
                 if (error.name === 'TypeError' && error.message.includes('fetch')) {
@@ -2109,7 +2086,7 @@ What would you like me to help you with?`;
                     // Generic error
                     alert('An error occurred while applying the form. Please try again.');
                 }
-                
+
                 // Show error to user
                 const errorMessage = {
                     type: 'ai',
@@ -2118,16 +2095,16 @@ What would you like me to help you with?`;
                     isError: true,
                     timestamp: new Date().toISOString()
                 };
-                
+
                 this.chatMessages.push(errorMessage);
-                
+
                 // Show status if error message has one
                 if (errorMessage.status) {
                     this.$nextTick(() => {
                         this.showStatus(this.chatMessages.length - 1);
                     });
                 }
-                
+
                 this.scrollToBottom();
             } finally {
                 this.isApplying = false;
@@ -2135,27 +2112,27 @@ What would you like me to help you with?`;
                 this.isWaitingForAI = false;
             }
         },
-        
+
         handleReject() {
             // Revert to previous form state if there are pending changes
             if (this.pendingChanges && this.previousFormFields) {
                 // Restore previous form fields
                 this.formFields = JSON.parse(JSON.stringify(this.previousFormFields));
-                
+
                 // If this was a full form update, we might need to restore description too
                 if (this.pendingChanges.type === 'form_update' && this.pendingChanges.previousDescription !== undefined) {
                     this.formDescription = this.pendingChanges.previousDescription;
                 }
-                
+
                 // Clear pending changes
                 this.pendingChanges = null;
                 this.previousFormFields = null;
             }
-            
+
             // Hide buttons from the current chat message
             this.hideLastMessageButtons();
         },
-        
+
         handleAccept() {
             // Accept the pending changes (they're already applied to formFields)
             if (this.pendingChanges) {
@@ -2165,7 +2142,7 @@ What would you like me to help you with?`;
                     if (this.pendingChanges.formTitle && this.pendingChanges.formTitle !== this.formTitle) {
                         this.$emit('title-updated', this.pendingChanges.formTitle);
                     }
-                    
+
                     // Emit the complete form update with original response fields
                     // Use the original fields from pendingChanges to preserve proper format
                     this.$emit('form-updated', {
@@ -2181,22 +2158,20 @@ What would you like me to help you with?`;
                         form_description: this.formDescription
                     });
                 }
-                
-                // Clear pending changes but keep the current form state
-                this.pendingChanges = null;
-                this.previousFormFields = null;
+
+                // We'll clear pendingChanges after we save a checkpoint below to ensure we can reference originalResponse
             }
-            
+
             // Find the message with buttons and auto-save checkpoint
             for (let i = this.chatMessages.length - 1; i >= 0; i--) {
                 if (this.chatMessages[i].showButtons) {
                     // Hide buttons and add checkpoint properties
                     this.chatMessages[i].showButtons = false;
-                    
+
                     // Auto-save checkpoint for this accepted state
                     // Use original response fields if available to preserve proper format
                     const checkpoint = {
-                        formFields: this.pendingChanges?.originalResponse?.wpuf_fields 
+                        formFields: (this.pendingChanges && this.pendingChanges.originalResponse && this.pendingChanges.originalResponse.wpuf_fields)
                             ? JSON.parse(JSON.stringify(this.pendingChanges.originalResponse.wpuf_fields))
                             : JSON.parse(JSON.stringify(this.formFields)),
                         formTitle: this.localFormTitle,
@@ -2205,21 +2180,24 @@ What would you like me to help you with?`;
                         timestamp: Date.now(),
                         messageContent: this.chatMessages[i]?.content || ''
                     };
-                    
+
                     // Store checkpoint
                     this.checkpoints.set(i, checkpoint);
-                    
+
                     // Mark as having checkpoint and already saved
                     this.chatMessages[i].hasCheckpoint = true;
                     this.chatMessages[i].checkpointSaved = true;
-                    
-                    // Add a status message for accepted changes
                     this.chatMessages[i].acceptedStatus = '✓ Changes accepted & checkpoint saved';
+
+                    // Clear pending changes now that checkpoint is saved
+                    this.pendingChanges = null;
+                    this.previousFormFields = null;
+
                     break;
                 }
             }
         },
-        
+
         /**
          * Determine if accept/reject buttons should be shown for a response
          */
@@ -2235,7 +2213,7 @@ What would you like me to help you with?`;
             }
 
             // Never show buttons for initial form creation
-            if (messageContent.includes('Perfect! I\'ve created') || 
+            if (messageContent.includes('Perfect! I\'ve created') ||
                 messageContent.includes('Successfully created the form') ||
                 this.chatMessages.length === 0) {
                 return false;
@@ -2291,7 +2269,7 @@ What would you like me to help you with?`;
                 'certainly'
             ];
 
-            if (simpleConfirmations.some(phrase => lowerContent.includes(phrase)) && 
+            if (simpleConfirmations.some(phrase => lowerContent.includes(phrase)) &&
                 lowerContent.length < 100) {
                 return false;
             }
@@ -2299,7 +2277,7 @@ What would you like me to help you with?`;
             // Show buttons for form modifications that require user confirmation
             if (response.form_data || response.data) {
                 // Check if it's a form modification
-                const hasFormChanges = response.form_data?.wpuf_fields || 
+                const hasFormChanges = response.form_data?.wpuf_fields ||
                                      response.form_data?.fields ||
                                      response.data?.modification_type ||
                                      response.data?.changes;
@@ -2311,11 +2289,11 @@ What would you like me to help you with?`;
 
             // Show buttons for subsequent messages with actionable content
             const isSubsequentMessage = this.chatMessages.length > 1;
-            const hasActionableContent = lowerContent.includes('added') || 
-                                       lowerContent.includes('removed') || 
-                                       lowerContent.includes('changed') || 
-                                       lowerContent.includes('updated') || 
-                                       lowerContent.includes('modified') || 
+            const hasActionableContent = lowerContent.includes('added') ||
+                                       lowerContent.includes('removed') ||
+                                       lowerContent.includes('changed') ||
+                                       lowerContent.includes('updated') ||
+                                       lowerContent.includes('modified') ||
                                        lowerContent.includes('converted') ||
                                        lowerContent.includes('replaced') ||
                                        lowerContent.includes('field') ||
@@ -2336,12 +2314,12 @@ What would you like me to help you with?`;
                 }
             }
         },
-        
+
         mapToInputType(fieldType) {
             // Map WPUF field types to input types
             const typeMap = {
                 'text_field': 'text',
-                'email_address': 'email', 
+                'email_address': 'email',
                 'website_url': 'url',
                 'numeric_text_field': 'number',
                 'phone_field': 'tel',
@@ -2361,22 +2339,22 @@ What would you like me to help you with?`;
             };
             return typeMap[fieldType] || 'text';
         },
-        
+
         shouldBeMeta(fieldName) {
             // Standard WordPress meta fields
             const metaFields = ['title', 'content', 'excerpt', 'author', 'category', 'tags'];
             return !metaFields.includes(fieldName?.toLowerCase());
         },
-        
+
         handleRegenerate() {
             // Show confirmation modal before regenerating
             this.showRegenerateModal = true;
         },
-        
+
         confirmRegenerate() {
             // Close modal
             this.showRegenerateModal = false;
-            
+
             // Clear all chat messages and form state
             this.chatMessages = [];
             this.formFields = [];
@@ -2394,14 +2372,14 @@ What would you like me to help you with?`;
                 template_modified: false,
                 original_form_hash: null
             };
-            
+
             // Generate new session ID to close current session
             this.sessionId = this.generateSessionId();
-            
+
             // Emit regenerate event to parent
             this.$emit('regenerate-form');
         },
-        
+
         handleEditInBuilder() {
             // Clear all checkpoints when editing in builder
             this.checkpoints.clear();
@@ -2427,7 +2405,7 @@ What would you like me to help you with?`;
                 formFields: normalizedFields
             });
         },
-        
+
         handleEditWithBuilder() {
             // Check if form has pro fields and show notification only if Pro is not active
             const config = window.wpufAIFormBuilder || {};
@@ -2450,7 +2428,7 @@ What would you like me to help you with?`;
                 formFields: normalizedFields
             });
         },
-        
+
         checkForProFields() {
             // Comprehensive list of WPUF Pro field types
             // These can appear in type, input_type, or template properties
@@ -2459,26 +2437,26 @@ What would you like me to help you with?`;
                 'date_field',
                 'time_field',
                 'datetime_field',
-                
+
                 // Number/Phone fields (Pro)
                 'numeric_text_field', 'numeric_field',
                 'phone_field', 'phone_number',
-                
+
                 // Location fields (Pro)
                 'address_field',
                 'country_list_field', 'country_list',
                 'google_map',
-                
+
                 // Advanced selection fields (Pro)
                 'multiple_select', 'multi_select',
                 'checkbox_grid',
                 'multiple_choice_grid',
-                
+
                 // File upload fields (Pro)
                 'file_upload',
                 'audio_upload',
                 'video_upload',
-                
+
                 // Special fields (Pro)
                 'ratings', 'rating',
                 'linear_scale',
@@ -2493,7 +2471,7 @@ What would you like me to help you with?`;
                 'really_simple_captcha',
                 'math_captcha'
             ];
-            
+
             // List of free fields that should NOT be considered as pro
             const freeFieldIdentifiers = [
                 'text', 'text_field',
@@ -2511,7 +2489,7 @@ What would you like me to help you with?`;
                 'recaptcha', 'recaptcha_v2', 'recaptcha_v3',
                 'cloudflare_turnstile'
             ];
-            
+
             // Check if any field in the form is a pro field
             // Check type, input_type, and template properties
             const foundProFields = this.formFields.filter(field => {
@@ -2519,65 +2497,63 @@ What would you like me to help you with?`;
                 const fieldType = (field.type || '').toLowerCase();
                 const inputType = (field.input_type || '').toLowerCase();
                 const template = (field.template || '').toLowerCase();
-                
+
                 // First check if it's explicitly a free field
                 const isFreeField = freeFieldIdentifiers.some(freeType => {
                     const freeTypeLower = freeType.toLowerCase();
-                    return fieldType === freeTypeLower || 
-                           inputType === freeTypeLower || 
+                    return fieldType === freeTypeLower ||
+                           inputType === freeTypeLower ||
                            template === freeTypeLower;
                 });
-                
+
                 // If it's a free field, don't mark it as pro
                 if (isFreeField) {
                     return false;
                 }
-                
+
                 // Check if it's a pro field
                 return proFieldIdentifiers.some(proType => {
                     const proTypeLower = proType.toLowerCase();
-                    return fieldType === proTypeLower || 
-                           inputType === proTypeLower || 
+                    return fieldType === proTypeLower ||
+                           inputType === proTypeLower ||
                            template === proTypeLower;
                 });
             });
-            
+
             return foundProFields.length > 0 ? foundProFields : null;
         },
-        
+
         showProModal() {
             // Get the pro fields in the form
             const proFields = this.checkForProFields();
             if (!proFields) return;
-            
+
             // Get unique field types with proper labels
             const fieldTypeLabels = {
                 // Date/Time (Pro)
                 'date_field': 'Date Picker',
                 'time_field': 'Time Picker',
                 'datetime_field': 'Date & Time',
-                
+
                 // Number/Phone
                 'numeric_text_field': 'Numeric Text',
                 'numeric_field': 'Numeric Text',
                 'phone_field': 'Phone Number',
                 'phone_number': 'Phone Number',
                 'phone': 'Phone Number',
-                
+
                 // Location
                 'address_field': 'Address',
-                'address': 'Address',
                 'country_list_field': 'Country List',
-                'country_list': 'Country List',
-                'google_map': 'Google Map',
+                'google_map': 'Google Maps',
                 'map': 'Google Map',
-                
+
                 // Selection
                 'multiple_select': 'Multi Select',
                 'multi_select': 'Multi Select',
                 'checkbox_grid': 'Checkbox Grid',
                 'multiple_choice_grid': 'Multiple Choice Grid',
-                
+
                 // Files
                 'file_upload': 'File Upload',
                 'file': 'File Upload',
@@ -2585,307 +2561,42 @@ What would you like me to help you with?`;
                 'audio': 'Audio Upload',
                 'video_upload': 'Video Upload',
                 'video': 'Video Upload',
-                
+
                 // Special
-                'ratings': 'Ratings',
-                'rating': 'Ratings',
+                'ratings': 'Star Rating',
+                'rating': 'Star Rating',
                 'linear_scale': 'Linear Scale',
                 'qr_code': 'QR Code',
                 'embed': 'Embed',
-                'shortcode': 'Shortcode',
+                'shortcode': 'Code',
                 'action_hook': 'Action Hook',
                 'toc': 'Terms & Conditions',
                 'terms_conditions': 'Terms & Conditions',
-                'column_field': 'Column Field',
-                'column': 'Column Field',
-                'step_start': 'Multi-Step Start',
-                'multistep': 'Multi-Step Start',
-                'repeat_field': 'Repeat Field',
+                'step_start': 'Multi-step Start',
+                'multistep': 'Multi-step Start',
+                'repeat_field': 'Repeatable Field',
                 'repeater': 'Repeat Field',
-                'really_simple_captcha': 'Really Simple Captcha',
+                'really_simple_captcha': 'Simple Captcha',
                 'captcha': 'Captcha',
                 'recaptcha': 'reCAPTCHA',
                 'recaptcha_v2': 'reCAPTCHA',
                 'recaptcha_v3': 'reCAPTCHA v3'
             };
-            
-            // Get unique pro field types - check type, input_type, and template
-            const getFieldDisplayType = (field) => {
-                // Try to get the most specific identifier for the field
-                return field.type || field.input_type || field.template || 'Unknown Field';
-            };
-            
-            const uniqueProFields = [...new Set(proFields.map(field => getFieldDisplayType(field)))];
-            const displayFields = uniqueProFields.slice(0, 4).map(type => {
-                // Try to find a label for any of the possible type values
-                const typeLower = type.toLowerCase();
-                return {
-                    fieldKey: typeLower,
-                    label: fieldTypeLabels[typeLower] || fieldTypeLabels[type] || type
-                };
-            });
-            
-            // Create modal overlay
-            const modalOverlay = document.createElement('div');
-            modalOverlay.className = 'wpuf-pro-modal-overlay';
-            modalOverlay.innerHTML = `
-                <div class="wpuf-pro-modal">
-                    <div class="wpuf-pro-modal-header">
-                        <svg width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="110" height="110" rx="55" fill="#D1FAE5"/>
-                            <path d="M66.0557 51.0931C66.0594 51.1593 66.0545 51.2268 66.0379 51.2937L64.5576 59.0337C64.4829 59.333 64.2155 59.5434 63.9082 59.545L55.0259 59.59H55.0225H46.1402C45.8312 59.59 45.5619 59.3789 45.4873 59.0781L44.0069 51.3156C43.9899 51.2468 43.9849 51.1775 43.9892 51.1096C43.4166 50.9286 43 50.391 43 49.7575C43 48.9759 43.6339 48.34 44.4131 48.34C45.1923 48.34 45.8262 48.9759 45.8262 49.7575C45.8262 50.1977 45.6251 50.5915 45.3103 50.8517L47.1637 52.725C47.6321 53.1985 48.2822 53.4699 48.9472 53.4699C49.7335 53.4699 50.4832 53.0953 50.9553 52.4678L54.0012 48.4192C53.7454 48.1627 53.5869 47.8083 53.5869 47.4175C53.5869 46.6358 54.2208 46 55 46C55.7792 46 56.4131 46.6358 56.4131 47.4175C56.4131 47.7966 56.2631 48.1406 56.0206 48.3953L56.0232 48.3984L59.0471 52.4581C59.519 53.0917 60.2714 53.47 61.0599 53.47C61.731 53.47 62.3621 53.2078 62.8367 52.7317L64.7017 50.8608C64.3803 50.6007 64.1738 50.2031 64.1738 49.7575C64.1738 48.9759 64.8077 48.34 65.5869 48.34C66.3661 48.34 67 48.9759 67 49.7575C67 50.3741 66.6048 50.8985 66.0557 51.0931ZM64.4131 61.705C64.4131 61.3322 64.1118 61.03 63.7402 61.03H46.3346C45.963 61.03 45.6617 61.3322 45.6617 61.705V63.325C45.6617 63.6978 45.963 64 46.3346 64H63.7402C64.1118 64 64.4131 63.6978 64.4131 63.325V61.705Z" fill="#0F172A"/>
-                        </svg>
-                    </div>
-                    <h2 class="wpuf-pro-modal-title">${this.__('Pro feature detected', 'wp-user-frontend')}</h2>
-                    <p class="wpuf-pro-modal-description">${this.__('Your form includes fields that require WPUF Pro version:', 'wp-user-frontend')}</p>
-                    <div class="wpuf-pro-fields-list">
-                        ${displayFields.map(field => {
-                            const fieldKey = field.fieldKey || field;
-                            const fieldLabel = field.label || field;
-                            const iconUrl = this.getProFieldIcon(fieldKey);
-                            const iconHtml = iconUrl 
-                                ? `<img src="${iconUrl}" alt="${fieldLabel}" class="wpuf-pro-field-icon" onerror="this.style.display='none'" />` 
-                                : '';
-                            return `
-                            <div class="wpuf-pro-field-item">
-                                ${iconHtml}
-                                <span>${fieldLabel}</span>
-                            </div>
-                        `;
-                        }).join('')}
-                    </div>
-                    <div class="wpuf-pro-warning-message">
-                        <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M6.83406 1.50265C7.79613 -0.164945 10.2029 -0.164945 11.165 1.50265L17.2936 12.1256C18.2551 13.7922 17.0523 15.8749 15.1281 15.8749H2.87091C0.946769 15.8749 -0.256088 13.7922 0.705451 12.1256L6.83406 1.50265ZM8.99969 5.87482C9.34487 5.87482 9.62469 6.15464 9.62469 6.49982V9.62482C9.62469 9.96999 9.34487 10.2498 8.99969 10.2498C8.65452 10.2498 8.37469 9.96999 8.37469 9.62482V6.49982C8.37469 6.15464 8.65452 5.87482 8.99969 5.87482ZM8.99969 12.7498C9.34487 12.7498 9.62469 12.47 9.62469 12.1248C9.62469 11.7796 9.34487 11.4998 8.99969 11.4998C8.65452 11.4998 8.37469 11.7796 8.37469 12.1248C8.37469 12.47 8.65452 12.7498 8.99969 12.7498Z" fill="#FACC15"/>
-                        </svg>
-                        <span>Without Pro, these fields won't be included in your form.</span>
-                    </div>
-                    <div class="wpuf-pro-modal-buttons">
-                        <button class="wpuf-pro-btn-continue">${this.__('Continue without Pro', 'wp-user-frontend')}</button>
-                        <button class="wpuf-pro-btn-upgrade">${this.__('Upgrade to Pro', 'wp-user-frontend')}</button>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(modalOverlay);
-            
-            // Add styles if not already present
-            if (!document.getElementById('wpuf-pro-modal-styles')) {
-                const style = document.createElement('style');
-                style.id = 'wpuf-pro-modal-styles';
-                style.textContent = `
-                    .wpuf-pro-modal-overlay {
-                        position: fixed;
-                        top: 0;
-                        left: 0;
-                        right: 0;
-                        bottom: 0;
-                        background: rgba(0, 0, 0, 0.5);
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        z-index: 999999;
-                        animation: fadeIn 0.3s ease;
-                    }
-                    .wpuf-pro-modal {
-                        background: white;
-                        border-radius: 8px;
-                        width: 660px;
-                        max-height: 702px;
-                        padding: 40px;
-                        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-                        animation: slideUp 0.3s ease;
-                        position: relative;
-                        text-align: center;
-                    }
-                    .wpuf-pro-modal-header {
-                        position: relative;
-                        display: inline-block;
-                        margin-bottom: 24px;
-                    }
-                    .wpuf-pro-modal-header svg {
-                        width: 110px;
-                        height: 110px;
-                    }
-                    
-                    .wpuf-pro-modal-title {
-                        font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                        font-size: 28px;
-                        font-weight: 600;
-                        color: #1F2937;
-                        margin: 0 0 12px 0;
-                        line-height: 1.2;
-                    }
-                    .wpuf-pro-modal-description {
-                        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                        font-size: 16px;
-                        color: #6B7280;
-                        margin: 0 0 32px 0;
-                        line-height: 1.5;
-                    }
-                    .wpuf-pro-fields-list {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 8px;
-                        margin: 20px 0 24px;
-                        padding: 0;
-                    }
-                    .wpuf-pro-field-item {
-                        display: flex;
-                        align-items: center;
-                        gap: 8px;
-                        width: 494px;
-                        height: 56px;
-                        padding: 16px 12px;
-                        background: #FFFFFF;
-                        border: 1px solid #E2E8F0;
-                        border-radius: 8px;
-                        font-size: 14px;
-                        color: #374151;
-                        box-sizing: border-box;
-                        margin: 0 auto;
-                    }
-                    .wpuf-pro-field-icon {
-                        width: 24px;
-                        height: 24px;
-                        flex-shrink: 0;
-                    }
-                    .wpuf-pro-warning-message {
-                        display: flex;
-                        align-items: center;
-                        width: 490px;
-                        height: 52px;
-                        padding: 16px;
-                        gap: 12px;
-                        background: #FFFBEB;
-                        border-radius: 8px;
-                        margin: 32px auto 64px auto;
-                        box-sizing: border-box;
-                        opacity: 1;
-                    }
-                    .wpuf-pro-warning-message span {
-                        font-weight: 500;
-                        font-size: 14px;
-                        line-height: 20px;
-                        letter-spacing: 0%;
-                        color: #92400E;
-                        margin: 0;
-                    }
-                    .wpuf-pro-warning-message svg {
-                        flex-shrink: 0;
-                        width: 18px;
-                        height: 16px;
-                    }
-                    .wpuf-pro-modal-buttons {
-                        display: flex;
-                        gap: 16px;
-                        justify-content: center;
-                    }
-                    .wpuf-pro-btn-continue,
-                    .wpuf-pro-btn-upgrade {
-                        padding: 12px 24px;
-                        border-radius: 6px;
-                        font-size: 16px;
-                        font-weight: 500;
-                        cursor: pointer;
-                        transition: all 0.2s ease;
-                        border: none;
-                        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                    }
-                    .wpuf-pro-btn-continue {
-                        background: white;
-                        color: #334155;
-                        border: 1px solid #E5E7EB;
-                    }
-                    .wpuf-pro-btn-upgrade {
-                        background: #059669;
-                        color: white;
-                    }
-                    .wpuf-pro-btn-upgrade:hover {
-                        background: #059669;
-                    }
-                    @keyframes fadeIn {
-                        from { opacity: 0; }
-                        to { opacity: 1; }
-                    }
-                    @keyframes slideUp {
-                        from { transform: translateY(20px); opacity: 0; }
-                        to { transform: translateY(0); opacity: 1; }
-                    }
-                `;
-                document.head.appendChild(style);
-            }
-            
-            // Handle button clicks
-            const continueBtn = modalOverlay.querySelector('.wpuf-pro-btn-continue');
-            const upgradeBtn = modalOverlay.querySelector('.wpuf-pro-btn-upgrade');
-            
-            continueBtn.addEventListener('click', () => {
-                modalOverlay.remove();
-                // Proceed with editing anyway
-                this.$emit('edit-in-builder', {
-                    formId: this.formId,
-                    formFields: this.formFields
-                });
-            });
-            
-            upgradeBtn.addEventListener('click', () => {
-                window.open('https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=wpdashboard&utm_medium=popup', '_blank');
-                modalOverlay.remove();
-            });
-            
-            // Close on overlay click
-            modalOverlay.addEventListener('click', (e) => {
-                if (e.target === modalOverlay) {
-                    modalOverlay.remove();
-                }
-            });
-        },
-        
-        
-        getProFieldsList() {
-            const proFieldsMap = {
-                'numeric_text_field': 'Numeric Text Field',
-                'phone_number': 'Phone Number',
-                'address_field': 'Address Field',
-                'country_list_field': 'Country List',
-                'repeat_field': 'Repeatable Field',
-                'date_field': 'Date Picker',
-                'time_field': 'Time Picker',
-                'datetime_field': 'Date & Time',
-                'multiple_select': 'Multiple Select',
-                'checkbox_grid': 'Checkbox Grid',
-                'multiple_choice_grid': 'Radio Grid',
-                'file_upload': 'File Upload',
-                'audio_upload': 'Audio Upload',
-                'video_upload': 'Video Upload',
-                'google_map': 'Google Maps',
-                'really_simple_captcha': 'Simple Captcha',
-                'recaptcha': 'reCAPTCHA',
-                'ratings': 'Star Rating',
-                'linear_scale': 'Linear Scale',
-                'qr_code': 'QR Code',
-                'embed': 'Embed',
-                'shortcode': 'Shortcode',
-                'action_hook': 'Action Hook',
-                'toc': 'Terms & Conditions',
-                'column_field': 'Column Layout',
-                'step_start': 'Multi-step Form'
-            };
-            
+
+
             // Get unique pro fields in this form
             const proFieldsInForm = this.formFields
                 .filter(field => proFieldsMap[field.type])
                 .map(field => `<li>${field.label} <span class="field-type">${proFieldsMap[field.type]}</span></li>`)
                 .slice(0, 5); // Show max 5 fields
-            
+
             if (proFieldsInForm.length === 0) {
                 return '<li>No pro fields detected</li>';
             }
-            
+
             return proFieldsInForm.join('');
         },
-        
+
         getProFieldIcon(fieldKey) {
             // Map field keys to their corresponding WPUF Pro icons
             const iconMap = {
@@ -2896,24 +2607,24 @@ What would you like me to help you with?`;
                 'time_field': 'clock',
                 'datetime': 'clock',
                 'datetime_field': 'clock',
-                
+
                 // Location fields (Pro)
                 'address_field': 'map',
                 'country_list': 'globe-alt',
                 'country_list_field': 'globe-alt',
                 'google_map': 'location-marker',
-                
+
                 // Input fields (Pro)
                 'numeric_text_field': 'adjustments-horizontal',
                 'numeric_field': 'adjustments-horizontal',
                 'phone_field': 'phone',
                 'phone_number': 'phone',
-                
+
                 // File fields (Pro)
                 'file_upload': 'arrow-up-tray',
                 'audio_upload': 'arrow-up-tray',
                 'video_upload': 'arrow-up-tray',
-                
+
                 // Special fields
                 'ratings': 'star',
                 'rating': 'star',
@@ -2937,14 +2648,14 @@ What would you like me to help you with?`;
                 'multiple_select': 'squares-2x2',
                 'multi_select': 'squares-2x2'
             };
-            
+
             const iconName = iconMap[fieldKey];
-            
+
             // If no icon found, return empty string (no icon)
             if (!iconName) {
                 return '';
             }
-            
+
             // Build the icon URL based on WPUF's asset structure
             const config = window.wpufAIFormBuilder || {};
 
@@ -2962,7 +2673,7 @@ What would you like me to help you with?`;
             // Always use the regular asset URL for icons (they're in the free version)
             return `${assetUrl}/images/${iconName}.svg`;
         },
-        
+
         // WPUF field type helper methods
         getFieldPlaceholder(fieldType) {
             const placeholders = {
@@ -2986,7 +2697,7 @@ What would you like me to help you with?`;
                 'file': 'Upload files',
                 'featured_image': 'Upload featured image',
                 'custom_hidden_field': 'Hidden field value',
-                
+
                 // Pro fields
                 'address_field': 'Enter full address...',
                 'country_list_field': 'Select country',
@@ -3008,20 +2719,20 @@ What would you like me to help you with?`;
                 'shortcode': 'Shortcode output',
                 'action_hook': 'Custom hook execution',
                 'toc': 'Accept terms and conditions',
-                
+
                 // Post fields
                 'post_title': 'Enter post title',
                 'post_content': 'Enter post content',
                 'post_excerpt': 'Enter post excerpt',
                 'post_tags': 'Enter tags (comma separated)',
                 'taxonomy': 'Select categories',
-                
+
                 // Layout fields
                 'section_break': 'Section break',
                 'column_field': 'Column layout',
                 'step_start': 'Multi-step form section',
                 'custom_html': 'Custom HTML content',
-                
+
                 // Date/time
                 'date': 'Select date',
                 'time': 'Select time',
@@ -3029,7 +2740,7 @@ What would you like me to help you with?`;
             };
             return placeholders[fieldType] || 'Enter value...';
         },
-        
+
         getWPUFFieldTypeLabel(fieldType) {
             const labels = {
                 // Free fields
@@ -3057,7 +2768,7 @@ What would you like me to help you with?`;
                 'column_field': 'Column Layout',
                 'recaptcha': 'reCAPTCHA',
                 'cloudflare_turnstile': 'Cloudflare Turnstile',
-                
+
                 // Pro fields
                 'address_field': 'Address Field',
                 'country_list_field': 'Country List',
@@ -3080,14 +2791,14 @@ What would you like me to help you with?`;
                 'action_hook': 'Action Hook',
                 'toc': 'Terms & Conditions',
                 'step_start': 'Step Start',
-                
+
                 // Post fields
                 'post_title': 'Post Title',
                 'post_content': 'Post Content',
                 'post_excerpt': 'Post Excerpt',
                 'post_tags': 'Post Tags',
                 'taxonomy': 'Taxonomy/Categories',
-                
+
                 // Date/time fallbacks
                 'date': 'Date',
                 'time': 'Time',
@@ -3155,12 +2866,12 @@ What would you like me to help you with?`;
         // The loader should only appear when fields are actively changing
         this.isFormUpdating = false;
         this.isWaitingForAI = false;
-        
+
         // Initialize chat messages from props
         this.chatMessages = this.initializeChatMessages();
-        
+
         this.scrollToBottom();
-        
+
         // Initialize conversation state if we have initial messages
         if (this.initialMessages && this.initialMessages.length > 0) {
             // Find the first user message to determine if it was from a predefined template
@@ -3168,7 +2879,7 @@ What would you like me to help you with?`;
             if (firstUserMessage) {
                 this.initializeConversationState(firstUserMessage.content);
             }
-            
+
             // Show status messages for initial messages that have them
             this.$nextTick(() => {
                 this.chatMessages.forEach((message, index) => {
@@ -3178,13 +2889,14 @@ What would you like me to help you with?`;
                 });
             });
         }
-        
-        // If formTitle suggests a predefined template, initialize accordingly  
+
+        // If formTitle suggests a predefined template, initialize accordingly
         if (this.formTitle && !this.conversationState.form_created) {
             this.initializeConversationState(this.formTitle);
         }
     },
-    
+
+
     beforeDestroy() {
         // Clear all status timeouts to prevent memory leaks
         this.statusTimeouts.forEach(timeoutId => {

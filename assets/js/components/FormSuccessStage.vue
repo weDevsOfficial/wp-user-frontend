@@ -246,8 +246,8 @@
                                     <!-- WPUF Radio Buttons -->
                                     <div v-else-if="getWPUFFieldType(field) === 'radio'" class="wpuf-form-radio-container">
                                         <div class="wpuf-radio-group wpuf-flex wpuf-flex-col wpuf-gap-2" :class="field.required ? 'wpuf-border wpuf-rounded-[10px] wpuf-p-3' : ''">
-                                            <template v-if="field.options && field.options.length">
-                                                <div v-for="option in field.options" :key="option.value" class="wpuf-radio-option wpuf-flex wpuf-items-center wpuf-gap-2">
+                                            <template v-if="field.options && normalizeOptions(field.options).length > 0">
+                                                <div v-for="option in normalizeOptions(field.options)" :key="option.value" class="wpuf-radio-option wpuf-flex wpuf-items-center wpuf-gap-2">
                                                     <input type="radio" :name="`field_${field.id}`" :value="option.value" disabled class="wpuf-radio-input wpuf-text-emerald-600">
                                                     <label class="wpuf-radio-label wpuf-text-base wpuf-leading-6 wpuf-text-gray-700">{{ option.label }}</label>
                                                 </div>
@@ -259,8 +259,8 @@
                                     <!-- WPUF Checkboxes -->
                                     <div v-else-if="['checkbox_field', 'checkbox'].includes(field.type)" class="wpuf-form-checkbox-container">
                                         <div class="wpuf-checkbox-group wpuf-flex wpuf-flex-col wpuf-gap-2" :class="field.required ? 'wpuf-border wpuf-rounded-[10px] wpuf-p-3' : ''">
-                                            <template v-if="field.options && field.options.length">
-                                                <div v-for="option in field.options" :key="option.value" class="wpuf-checkbox-option wpuf-flex wpuf-items-center wpuf-gap-2">
+                                            <template v-if="field.options && normalizeOptions(field.options).length > 0">
+                                                <div v-for="option in normalizeOptions(field.options)" :key="option.value" class="wpuf-checkbox-option wpuf-flex wpuf-items-center wpuf-gap-2">
                                                     <input type="checkbox" :value="option.value" disabled class="wpuf-checkbox-input wpuf-text-emerald-600">
                                                     <label class="wpuf-checkbox-label wpuf-text-base wpuf-leading-6 wpuf-text-gray-700">{{ option.label }}</label>
                                                 </div>

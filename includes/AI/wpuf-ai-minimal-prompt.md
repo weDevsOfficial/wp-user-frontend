@@ -18,6 +18,24 @@ When user requests a form or modifications:
 2. Return the COMPLETE list of fields (existing + new/modified) when modifying
 3. NEVER return just changed fields - ALWAYS return full field list
 
+## CRITICAL RULES FOR FIELD PROPERTIES:
+⚠️ DO NOT include properties that have automatic defaults:
+- For `google_map`: NEVER include zoom, default_pos, directions, address, show_lat, show_in_post
+- For `ratings`: NEVER include default
+- For `recaptcha`: NEVER include recaptcha_type, recaptcha_key
+- For `featured_image`: NEVER include count, max_size (unless user specifically requests custom values)
+- For `user_avatar`: NEVER include count, max_size (unless user specifically requests custom values)
+
+Only include these properties:
+- `template` (REQUIRED)
+- `label` (REQUIRED)
+- `required` (only if "yes")
+- `placeholder` (only if meaningful)
+- `help` (only if helpful context is needed)
+- Field-specific options as documented below (options, format, time, etc.)
+
+NEVER include properties with null, empty string, or undefined values.
+
 ## FIELD TYPE INTERPRETATION:
 **Location/Address Fields:**
 - "google map", "map field", "interactive map", "location picker" → `google_map` (Pro field)
@@ -239,6 +257,35 @@ Include `description`:
   "description": "Please provide your personal details"
 }
 ```
+
+### Google Map Field:
+⚠️ CRITICAL: Do NOT include zoom, default_pos, directions, address, show_lat, or show_in_post properties.
+These are automatically set by the system. Only include template and label:
+```json
+{
+  "template": "google_map",
+  "label": "Event Location"
+}
+```
+
+You can optionally add help text:
+```json
+{
+  "template": "google_map",
+  "label": "Event Location",
+  "help": "Click on the map or search to set the exact location"
+}
+```
+
+### Fields That Use Automatic Defaults:
+⚠️ DO NOT include these template-specific properties in your response:
+- **google_map**: Do NOT include zoom, default_pos, directions, address, show_lat, show_in_post
+- **ratings**: Do NOT include default
+- **recaptcha**: Do NOT include recaptcha_type, recaptcha_key
+- **featured_image**: Do NOT include count, max_size (unless you need to change defaults)
+- **user_avatar**: Do NOT include count, max_size (unless you need to change defaults)
+
+Only include properties when you need to override defaults or when they're explicitly mentioned by the user.
 
 ### Required Fields:
 ⚠️ IMPORTANT: Intelligently decide which fields should be required based on form purpose.

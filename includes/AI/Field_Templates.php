@@ -47,9 +47,27 @@ class Field_Templates {
         if ( method_exists( self::class, $method ) ) {
             $field = call_user_func( [ self::class, $method ], $label, $field_id );
 
-            // Merge custom props - AI properties override template defaults
+            // Filter out empty custom props to prevent overriding template defaults
+            // This ensures fields like google_map keep their required properties (zoom, default_pos, etc.)
+            // Remove keys with null, empty string, or empty array values
+            $filtered_custom_props = [];
+            foreach ( $custom_props as $key => $value ) {
+                // Keep the value if it's meaningful:
+                // - Not null
+                // - Not empty string
+                // - Not empty array
+                // - Allow boolean false (valid value)
+                // - Allow number 0 (valid value)
+                // - Allow non-empty strings
+                if ( $value !== null && $value !== '' && $value !== [] ) {
+                    $filtered_custom_props[$key] = $value;
+                }
+            }
+
+            // Merge filtered custom props - AI properties override template defaults only if non-empty
             // This ensures 'required', 'placeholder', 'options', etc. from AI take precedence
-            $field = array_merge( $field, $custom_props );
+            $field = array_merge( $field, $filtered_custom_props );
+
 
             return $field;
         }

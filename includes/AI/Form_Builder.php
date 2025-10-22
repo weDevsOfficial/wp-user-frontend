@@ -43,7 +43,17 @@ class Form_Builder {
             $field_id = 'field_' . $field_counter;
 
             // Extract custom properties (everything except template and label)
-            $custom_props = array_diff_key( $minimal_field, [ 'template' => '', 'label' => '' ] );
+            $raw_custom_props = array_diff_key( $minimal_field, [ 'template' => '', 'label' => '' ] );
+
+            // Filter out null/empty values to prevent overriding template defaults
+            // This is critical for fields like google_map that have automatic defaults
+            $custom_props = [];
+            foreach ( $raw_custom_props as $key => $value ) {
+                // Only keep meaningful values (not null, not empty string, not empty array)
+                if ( $value !== null && $value !== '' && $value !== [] ) {
+                    $custom_props[$key] = $value;
+                }
+            }
 
             // Get complete field structure
             $complete_field = Field_Templates::get_field_structure( $template, $label, $field_id, $custom_props );
@@ -270,7 +280,7 @@ class Form_Builder {
                 if ( ! empty( $field['default_pos'] ) ) {
                     $custom_props['default_pos'] = $field['default_pos'];
                 }
-                if ( isset( $field['directions'] ) ) {
+                if ( ! empty( $field['directions'] ) ) {
                     $custom_props['directions'] = $field['directions'];
                 }
                 if ( ! empty( $field['address'] ) ) {

@@ -624,12 +624,6 @@ class RestController extends WP_REST_Controller {
             // Sanitize all field data to prevent XSS
             $wpuf_fields = $this->sanitize_form_fields($wpuf_fields);
 
-            // Debug log the field structure
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('WPUF AI: Saving fields for form ' . $form_id);
-                error_log('WPUF AI: Field count: ' . count($wpuf_fields));
-                error_log('WPUF AI: First field structure: ' . wp_json_encode($wpuf_fields[0] ?? []));
-            }
 
             // Create child posts for each field (WPUF's storage method)
             foreach ($wpuf_fields as $order => $field) {
@@ -779,6 +773,7 @@ class RestController extends WP_REST_Controller {
                 'form_type' => $current_form['form_type'] ?? 'post'
             ]);
 
+
             if (!$ai_response || !$ai_response['success']) {
                 return new WP_Error(
                     'ai_generation_failed',
@@ -869,18 +864,21 @@ class RestController extends WP_REST_Controller {
                 ];
 
             } elseif (isset($ai_response['fields']) || isset($ai_response['wpuf_fields'])) {
-                // AI returned complete modified form - update entire form
-                $new_fields = $ai_response['wpuf_fields'] ?? $ai_response['fields'] ?? [];
+                // AI returned complete modified form - use SAME path as initial generation
+                // Build complete form from AI response using Form_Builder (same as FormGenerator)
+                $form_data = \WeDevs\Wpuf\AI\Form_Builder::build_form( $ai_response );
 
-                // Convert minimal field structures to complete structures
-                $converted_fields = [];
-                foreach ( $new_fields as $index => $field ) {
-                    $field_id = $field['id'] ?? 'field_' . ( $index + 1 );
-                    $complete_field = $this->convert_field_to_complete( $field, $field_id );
-                    if ( ! empty( $complete_field ) ) {
-                        $converted_fields[] = $complete_field;
-                    }
+                // Check if form building failed
+                if ( ! empty( $form_data['error'] ) ) {
+                    return new WP_Error(
+                        'form_build_failed',
+                        $form_data['message'] ?? __('Failed to build form structure', 'wp-user-frontend'),
+                        ['status' => 500]
+                    );
                 }
+
+                $converted_fields = $form_data['wpuf_fields'] ?? [];
+
 
                 // Update form meta
                 update_post_meta($form_id, 'wpuf_form_fields', $converted_fields);
@@ -997,12 +995,50 @@ class RestController extends WP_REST_Controller {
      * @return array Complete field structure
      */
     private function convert_field_to_complete( $field, $field_id ) {
-        // Check if field needs conversion (has template + label but missing wpuf_cond)
-        if ( isset( $field['template'] ) && isset( $field['label'] ) && ! isset( $field['wpuf_cond'] ) ) {
-            // Extract custom properties
+        if ( ! isset( $field['template'] ) || ! isset( $field['label'] ) ) {
+            return $field;
+        }
+
+        // AI always returns minimal fields - check if this field needs conversion to complete structure
+        // The primary indicator is the absence of wpuf_cond (required for all complete WPUF fields)
+        $needs_conversion = ! isset( $field['wpuf_cond'] );
+
+        // Additional checks for template-specific required properties
+        if ( ! $needs_conversion ) {
+            $template = $field['template'];
+
+            switch ( $template ) {
+                case 'google_map':
+                    // Google map requires zoom, default_pos, and other properties
+                    if ( empty( $field['zoom'] ) || empty( $field['default_pos'] ) ) {
+                        $needs_conversion = true;
+                    }
+                    break;
+
+                case 'file_upload':
+                case 'image_upload':
+                    // File fields require count and max_size
+                    if ( empty( $field['count'] ) || empty( $field['max_size'] ) ) {
+                        $needs_conversion = true;
+                    }
+                    break;
+
+                case 'repeat_field':
+                case 'column_field':
+                    // Layout fields require columns
+                    if ( empty( $field['columns'] ) ) {
+                        $needs_conversion = true;
+                    }
+                    break;
+            }
+        }
+
+        if ( $needs_conversion ) {
+            // Extract custom properties (everything except template, label, and id)
             $custom_props = array_diff_key( $field, [ 'template' => '', 'label' => '', 'id' => '' ] );
 
-            // Build complete field structure
+            // Build complete field structure using Field_Templates
+            // This ensures all required properties (zoom, default_pos, wpuf_cond, etc.) are added
             return \WeDevs\Wpuf\AI\Field_Templates::get_field_structure(
                 $field['template'],
                 $field['label'],
@@ -1178,10 +1214,6 @@ class RestController extends WP_REST_Controller {
             'has_settings' => !empty($form_data['form_settings'])
         ];
 
-        // Log to WordPress debug log if enabled
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('WPUF AI Form Created: ' . wp_json_encode($log_data));
-        }
 
         // Store in option for analytics
         $creation_log = get_option('wpuf_ai_form_creation_log', []);
@@ -1217,10 +1249,6 @@ class RestController extends WP_REST_Controller {
             'session_id' => $result['session_id'] ?? ''
         ];
 
-        // Log to WordPress debug log if enabled
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('WPUF AI Generation: ' . wp_json_encode($log_data));
-        }
 
         // Store in option for basic analytics (keep last 100 entries)
         $log_history = get_option('wpuf_ai_generation_log', []);
@@ -1269,6 +1297,29 @@ class RestController extends WP_REST_Controller {
             if (isset($field['options']) && is_array($field['options'])) {
                 foreach ($field['options'] as $key => $value) {
                     $field['options'][sanitize_key($key)] = sanitize_text_field($value);
+                }
+            }
+
+            // Handle google_map field: Auto-populate missing required properties
+            if (($field['input_type'] === 'google_map' || $field['template'] === 'google_map')) {
+                // Ensure all required Google Map properties exist with defaults
+                if (!isset($field['zoom']) || empty($field['zoom'])) {
+                    $field['zoom'] = '12';
+                }
+                if (!isset($field['default_pos']) || empty($field['default_pos'])) {
+                    $field['default_pos'] = '40.7143528,-74.0059731';
+                }
+                if (!isset($field['directions'])) {
+                    $field['directions'] = false;
+                }
+                if (!isset($field['address']) || empty($field['address'])) {
+                    $field['address'] = 'no';
+                }
+                if (!isset($field['show_lat']) || empty($field['show_lat'])) {
+                    $field['show_lat'] = 'no';
+                }
+                if (!isset($field['show_in_post']) || empty($field['show_in_post'])) {
+                    $field['show_in_post'] = 'yes';
                 }
             }
 

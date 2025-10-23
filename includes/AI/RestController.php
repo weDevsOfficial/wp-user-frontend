@@ -842,8 +842,8 @@ class RestController extends WP_REST_Controller {
 
                 // Update form fields if they were modified
                 if (in_array($modification_type, ['add_field', 'remove_field', 'update_field'])) {
-                    // Fields already have correct structure, no conversion needed
-                    $converted_fields = $current_fields;
+                    // Sanitize fields to ensure show_in_post and other properties are properly set
+                    $converted_fields = $this->sanitize_form_fields($current_fields);
 
                     // Update form meta
                     update_post_meta($form_id, 'wpuf_form_fields', $converted_fields);
@@ -877,8 +877,8 @@ class RestController extends WP_REST_Controller {
                     );
                 }
 
-                $converted_fields = $form_data['wpuf_fields'] ?? [];
-
+                // Sanitize fields to ensure show_in_post and other properties are properly set
+                $converted_fields = $this->sanitize_form_fields($form_data['wpuf_fields'] ?? []);
 
                 // Update form meta
                 update_post_meta($form_id, 'wpuf_form_fields', $converted_fields);
@@ -1320,6 +1320,39 @@ class RestController extends WP_REST_Controller {
                 }
                 if (!isset($field['show_in_post']) || empty($field['show_in_post'])) {
                     $field['show_in_post'] = 'yes';
+                }
+            }
+
+            // CRITICAL FIX: Ensure 'show_in_post' is set for ALL meta fields
+            // This is a safety net in case Field_Templates didn't set it (shouldn't happen but ensures consistency)
+            // Matches WPUF default behavior where all meta fields show data in posts by default
+            if (isset($field['is_meta']) && $field['is_meta'] === 'yes') {
+                if (!isset($field['show_in_post']) || empty($field['show_in_post']) || $field['show_in_post'] === null) {
+                    $field['show_in_post'] = 'yes';
+                }
+            }
+
+            // CRITICAL FIX: Ensure 'hide_field_label' is set to 'no' for ALL fields
+            // This is a safety net to ensure field labels are shown by default
+            // Matches WPUF default behavior where all fields show labels by default
+            // 'no' means "don't hide" = show the label (default behavior)
+            if (!isset($field['hide_field_label']) || empty($field['hide_field_label']) || $field['hide_field_label'] === null) {
+                $field['hide_field_label'] = 'no';
+            }
+
+            // CRITICAL FIX: Ensure 'button_label' is set for upload fields
+            // Matches WPUF default behavior for image/file upload fields
+            if (!isset($field['button_label']) || empty($field['button_label'])) {
+                $template = $field['template'] ?? '';
+                $defaults = [
+                    'image_upload' => 'Select Image',
+                    'file_upload' => 'Select File',
+                    'featured_image' => 'Select Image',
+                    'user_avatar' => 'Select Image',
+                    'profile_photo' => 'Select Image'
+                ];
+                if (isset($defaults[$template])) {
+                    $field['button_label'] = $defaults[$template];
                 }
             }
 

@@ -33,6 +33,20 @@ const showProBadge = computed( () => {
 } );
 
 const getFieldValue = () => {
+    // Special handling for taxonomy restriction fields
+    if ( field.value.type === 'multi-select' && field.value.id ) {
+        if ( field.value.id.startsWith( 'view_' ) ) {
+            // This is a view restriction field
+            const value = subscriptionStore.taxonomyViewRestriction[field.value.id] || [];
+            return value;
+        } else {
+            // This is a regular taxonomy restriction field
+            const value = subscriptionStore.taxonomyRestriction[field.value.id] || [];
+            return value;
+        }
+    }
+    
+    // Regular field handling
     switch (field.value.db_type) {
         case 'meta':
             return subscriptionStore.getMetaValue( field.value.db_key );
@@ -47,8 +61,9 @@ const getFieldValue = () => {
 
 const value = computed(() => {
     const fieldValue = getFieldValue( field.value.db_type, field.value.db_key );
-
-    return getModifiedValue( field.value.type, fieldValue );
+    const modifiedValue = getModifiedValue( field.value.type, fieldValue );
+    
+    return modifiedValue;
 });
 
 const getModifiedValue = (fieldType, fieldValue) => {
@@ -125,21 +140,42 @@ const processNumber = (event) => {
 }
 
 const options = computed( () => {
-    if ( ! wpufSubscriptions.fields.advanced_configuration.hasOwnProperty( 'taxonomy_restriction' ) ) {
-        return [];
+    // Handle both taxonomy_restriction and taxonomy_view_restriction sections
+    if ( field.value.id && field.value.id.startsWith( 'view_' ) ) {
+        // This is a view restriction field
+        const taxonomyName = field.value.id.replace( 'view_', '' );
+        if ( wpufSubscriptions.fields.advanced_configuration.hasOwnProperty( 'taxonomy_view_restriction' ) &&
+             wpufSubscriptions.fields.advanced_configuration.taxonomy_view_restriction.hasOwnProperty( taxonomyName ) ) {
+            return wpufSubscriptions.fields.advanced_configuration.taxonomy_view_restriction[taxonomyName].term_fields;
+        }
+    } else {
+        // This is a regular taxonomy restriction field
+        if ( wpufSubscriptions.fields.advanced_configuration.hasOwnProperty( 'taxonomy_restriction' ) &&
+             wpufSubscriptions.fields.advanced_configuration.taxonomy_restriction.hasOwnProperty( field.value.id ) ) {
+            return wpufSubscriptions.fields.advanced_configuration.taxonomy_restriction[field.value.id].term_fields;
+        }
     }
 
-    return wpufSubscriptions.fields.advanced_configuration.taxonomy_restriction[field.value.id].term_fields;
+    return [];
 } );
 
 const onMultiSelectChange = ( currentValue ) => {
-    const tempObj = toRaw( subscriptionStore.taxonomyRestriction );
-
-    tempObj[fieldId.value] = currentValue;
-
-    subscriptionStore.$patch({
-        taxonomyRestriction: tempObj,
-    });
+    // Handle both taxonomy restriction types
+    if ( field.value.id && field.value.id.startsWith( 'view_' ) ) {
+        // This is a view restriction field - use a separate store property
+        const tempObj = toRaw( subscriptionStore.taxonomyViewRestriction || {} );
+        tempObj[field.value.id] = currentValue;  // Use field.value.id instead of fieldId.value
+        subscriptionStore.$patch({
+            taxonomyViewRestriction: tempObj,
+        });
+    } else {
+        // This is a regular taxonomy restriction field
+        const tempObj = toRaw( subscriptionStore.taxonomyRestriction );
+        tempObj[field.value.id] = currentValue;  // Use field.value.id instead of fieldId.value
+        subscriptionStore.$patch({
+            taxonomyRestriction: tempObj,
+        });
+    }
 };
 
 const fieldLabelClasses = computed(() => {
@@ -166,28 +202,62 @@ onMounted(() => {
         return;
     }
 
-    // first get all the term fields as an array
-    const termFields = wpufSubscriptions.fields.advanced_configuration.taxonomy_restriction[field.value.id].term_fields.map( ( item ) => {
-        return item.value;
-    } );
+    // Only initialize if the store doesn't already have data for this field
+    const hasExistingData = field.value.id.startsWith( 'view_' ) 
+        ? subscriptionStore.taxonomyViewRestriction[field.value.id] 
+        : subscriptionStore.taxonomyRestriction[field.value.id];
+    
+    if ( hasExistingData && hasExistingData.length > 0 ) {
+        // Data already exists in store, don't override
+        return;
+    }
 
+    let termFields = [];
     let selectedValues = [];
 
-    // then check if the selected values are in the term fields array
-    value.value.map( ( item ) => {
-        if (termFields.includes( item )) {
-            selectedValues.push( item );
+    // Handle both taxonomy restriction types
+    if ( field.value.id && field.value.id.startsWith( 'view_' ) ) {
+        // This is a view restriction field
+        const taxonomyName = field.value.id.replace( 'view_', '' );
+        if ( wpufSubscriptions.fields.advanced_configuration.hasOwnProperty( 'taxonomy_view_restriction' ) &&
+             wpufSubscriptions.fields.advanced_configuration.taxonomy_view_restriction.hasOwnProperty( taxonomyName ) ) {
+            termFields = wpufSubscriptions.fields.advanced_configuration.taxonomy_view_restriction[taxonomyName].term_fields.map( ( item ) => {
+                return item.value;
+            } );
         }
-    } );
+    } else {
+        // This is a regular taxonomy restriction field
+        if ( wpufSubscriptions.fields.advanced_configuration.hasOwnProperty( 'taxonomy_restriction' ) &&
+             wpufSubscriptions.fields.advanced_configuration.taxonomy_restriction.hasOwnProperty( field.value.id ) ) {
+            termFields = wpufSubscriptions.fields.advanced_configuration.taxonomy_restriction[field.value.id].term_fields.map( ( item ) => {
+                return item.value;
+            } );
+        }
+    }
 
-    const tempObj = toRaw( subscriptionStore.taxonomyRestriction );
+    // Check if the selected values are in the term fields array
+    if ( value.value && Array.isArray( value.value ) ) {
+        value.value.forEach( ( item ) => {
+            if ( termFields.includes( item ) ) {
+                selectedValues.push( item );
+            }
+        } );
+    }
 
-    tempObj[fieldId.value] = selectedValues;
-
-    // update the store
-    subscriptionStore.$patch({
-        taxonomyRestriction: tempObj,
-    });
+    // Update the appropriate store
+    if ( field.value.id && field.value.id.startsWith( 'view_' ) ) {
+        const tempObj = toRaw( subscriptionStore.taxonomyViewRestriction || {} );
+        tempObj[field.value.id] = selectedValues;
+        subscriptionStore.$patch({
+            taxonomyViewRestriction: tempObj,
+        });
+    } else {
+        const tempObj = toRaw( subscriptionStore.taxonomyRestriction );
+        tempObj[field.value.id] = selectedValues;
+        subscriptionStore.$patch({
+            taxonomyRestriction: tempObj,
+        });
+    }
 });
 
 </script>

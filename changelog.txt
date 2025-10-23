@@ -1,3 +1,15 @@
+= v4.1.15 (22 October, 2025) =
+* Fix - Unwanted text appearing in 'View' and 'Preview' links
+
+= v4.1.14 (21 October, 2025) =
+* New - Dynamic Field Icons for improved visual customization
+* Enhancement – Renamed "Published" tab to "Saved" on Form List pages for better clarity
+* Enhancement – Added Upgrade and Discount links on the plugin page for easier access
+* Enhancement – Pricing Fields PRO preview section added to the Form Builder
+
+= v4.1.13 (07 October, 2025) =
+* Enhancement - Security and Capabilities check
+
 = v4.1.12 (24 September, 2025) =
 * New - Video Content Submission post form template
 

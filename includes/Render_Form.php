@@ -1334,12 +1334,12 @@ class Render_Form {
         if ( $form_field['input_type'] !== 'taxonomy' ) {
             return false;
         }
-        
+
         // If pro is active, no fields are gated
         if ( wpuf_is_pro_active() ) {
             return false;
         }
-        
+
         // Check if this is a custom taxonomy
         $builtin_taxonomies = apply_filters( 'wpuf_builtin_taxonomies_free', array( 'category', 'post_tag' ) );
         return ! in_array( $form_field['name'], $builtin_taxonomies, true );

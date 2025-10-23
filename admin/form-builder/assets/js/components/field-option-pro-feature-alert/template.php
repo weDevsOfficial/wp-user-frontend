@@ -3,6 +3,6 @@
     <label
         class="wpuf-pro-text-alert wpuf-ml-2 wpuf-tooltip-top"
         data-tip="<?php esc_attr_e( 'Available in PRO version', 'wp-user-frontend' ); ?>">
-        <a :href="pro_link" target="_blank"><img src="<?php echo wpuf_get_pro_icon() ?>" alt="pro icon"></a>
+        <a :href="pro_link" target="_blank"><img src="<?php echo esc_url( wpuf_get_pro_icon() ) ?>" alt="pro icon"></a>
     </label>
 </div>

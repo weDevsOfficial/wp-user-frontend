@@ -56,7 +56,7 @@ class TEC_Venue_Organizer_Fix {
             return;
         }
         
-        echo '<script type="text/javascript">' . $this->get_inline_script() . '</script>';
+        echo '<script type="text/javascript">' . esc_js( $this->get_inline_script() ) . '</script>';
     }
     
     /**

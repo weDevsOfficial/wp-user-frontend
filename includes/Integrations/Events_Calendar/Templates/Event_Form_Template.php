@@ -292,8 +292,9 @@ class Event_Form_Template extends Form_Template {
             'edit_post_status' => 'publish',
             'edit_redirect_to' => 'same',
             'update_message'   => sprintf(
+                // translators: %1$s is opening link tag, %2$s is closing link tag
                 __(
-                    'Event has been updated successfully. %sView event%s',
+                    'Event has been updated successfully. %1$sView event%2$s',
                     'wp-user-frontend'
                 ),
 

@@ -69,7 +69,7 @@ class Form_Field_reCaptcha extends Field_Contract {
 
                 if ( $is_invisible ) { ?>
 
-                    <script src="https://www.google.com/recaptcha/api.js?onload=wpufreCaptchaLoaded&render=explicit&hl=en" async defer></script>
+                    <?php wp_enqueue_script( 'wpuf-recaptcha-invisible', 'https://www.google.com/recaptcha/api.js?onload=wpufreCaptchaLoaded&render=explicit&hl=en', array(), null, true ); ?>
 
                     <script>
 
@@ -102,7 +102,7 @@ class Form_Field_reCaptcha extends Field_Contract {
 
                 <?php } else { ?>
 
-                    <script src="https://www.google.com/recaptcha/api.js"></script>
+                    <?php wp_enqueue_script( 'wpuf-recaptcha', 'https://www.google.com/recaptcha/api.js', array(), null, true ); ?>
                     <div id='recaptcha' data-theme="<?php echo esc_attr( $theme ); ?>" class="g-recaptcha" data-sitekey="<?php echo esc_attr( $public_key ); ?>" data-callback="wpufRecaptchaCallback"></div>
                 <?php } ?>
 

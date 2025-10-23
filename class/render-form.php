@@ -1761,7 +1761,7 @@ class WPUF_Render_Form {
         }
 
         if ( $enable_invisible_recaptcha ) { ?>
-            <script src="https://www.google.com/recaptcha/api.js?onload=wpufreCaptchaLoaded&render=explicit&hl=en" async defer></script>
+            <?php wp_enqueue_script( 'wpuf-recaptcha-invisible', 'https://www.google.com/recaptcha/api.js?onload=wpufreCaptchaLoaded&render=explicit&hl=en', array(), null, true ); ?>
             <script>
                 jQuery(document).ready(function($) {
                     jQuery('[name="submit"]').removeClass('wpuf-submit-button').addClass('g-recaptcha').attr('data-sitekey', '<?php echo esc_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ) ); ?>');

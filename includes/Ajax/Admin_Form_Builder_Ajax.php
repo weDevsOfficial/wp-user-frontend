@@ -186,7 +186,8 @@ class Admin_Form_Builder_Ajax {
                 $cat .= '<div class="wpuf-mt-6 wpuf-input-container taxonomy-container" data-taxonomy="' . esc_attr( $tax->name ) . '">';
                 $cat .= '<div class="wpuf-flex wpuf-items-center">';
                 $cat .= '<label for="' . esc_attr( $select_id ) . '" class="wpuf-text-sm wpuf-text-gray-700 wpuf-my-2">';
-                $cat .= sprintf( __( 'Default %s %s', 'wp-user-frontend' ), $post_type, $tax->label );
+                // translators: %1$s is the post type, %2$s is the taxonomy label
+                $cat .= sprintf( __( 'Default %1$s %2$s', 'wp-user-frontend' ), $post_type, $tax->label );
                 $cat .= '</label></div>';
 
                 $cat .= '<select

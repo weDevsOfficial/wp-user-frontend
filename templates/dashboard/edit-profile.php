@@ -10,9 +10,16 @@ wp_enqueue_script( 'password-strength-meter' );
 
 <div class="wpuf-edit-profile-container">
     <!-- Page Title -->
-    <div class="wpuf-page-header">
-        <h2 class="wpuf-page-title"><?php esc_html_e( 'Account details', 'wp-user-frontend' ); ?></h2>
-        <p class="wpuf-page-subtitle"><?php esc_html_e( 'The following addresses will be used on the checkout page by default.', 'wp-user-frontend' ); ?></p>
+    <div class="wpuf-bg-transparent wpuf-rounded-t-lg wpuf-mb-3">
+        <h2 class="wpuf-text-gray-700 wpuf-font-bold wpuf-text-[32px] wpuf-leading-[48px] wpuf-tracking-[0.13px] wpuf-m-0">
+            <?php esc_html_e( 'Account details', 'wp-user-frontend' ); ?>
+        </h2>
+    </div>
+
+    <div class="wpuf-bg-transparent wpuf-mb-[48px]">
+        <p class="wpuf-text-gray-400 wpuf-font-normal wpuf-text-[18px] wpuf-leading-[24px] wpuf-tracking-[0.13px] wpuf-m-0">
+            <?php esc_html_e( 'The following addresses will be used on the checkout page by default.', 'wp-user-frontend' ); ?>
+        </p>
     </div>
 
     <form class="wpuf-edit-profile-form" action="" method="post">

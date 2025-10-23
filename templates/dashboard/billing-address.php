@@ -205,9 +205,9 @@ if ( isset( $_POST['update_billing_address'] ) ) {
             type="submit"
             name="update_billing_address"
             id="wpuf-account-update-billing_address"
-            class="wpuf-bg-primary wpuf-text-white wpuf-px-6 wpuf-py-2 wpuf-rounded-md hover:wpuf-bg-primaryHover wpuf-transition-colors wpuf-font-medium"
+            class="wpuf-edit-profile-btn"
         >
-            <?php esc_html_e( 'Update Billing Address', 'wp-user-frontend' ); ?>
+            <?php esc_html_e( 'Update', 'wp-user-frontend' ); ?>
         </button>
     </div>
 </form>

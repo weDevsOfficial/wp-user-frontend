@@ -5706,3 +5706,117 @@ if ( ! function_exists( 'wpuf_field_profile_photo_allowed_mimes' ) ) {
         return apply_filters( 'wpuf_field_profile_photo_allowed_mimes', $profile_photo_mimes );
     }
 }
+
+/**
+ * Get AI provider configurations
+ *
+ * @since WPUF_SINCE
+ *
+ * @return array
+ */
+function wpuf_get_ai_provider_configs() {
+    $provider_configs = [
+        'openai'    => [
+            'name'         => 'OpenAI',
+            'endpoint'     => 'https://api.openai.com/v1/chat/completions',
+            'models'       => [
+                'gpt-4o'        => 'GPT-4o - Most Capable Multimodal',
+                'gpt-4o-mini'   => 'GPT-4o Mini - Efficient & Fast',
+                'gpt-4-turbo'   => 'GPT-4 Turbo - High Performance',
+                'gpt-4'         => 'GPT-4 - Advanced Reasoning',
+                'gpt-3.5-turbo' => 'GPT-3.5 Turbo - Fast & Affordable',
+            ],
+            'requires_key' => true,
+        ],
+        'anthropic' => [
+            'name'         => 'Anthropic Claude',
+            'endpoint'     => 'https://api.anthropic.com/v1/messages',
+            'models'       => [
+                'claude-4.1-opus'            => 'Claude 4.1 Opus - Most Capable',
+                'claude-4-opus'              => 'Claude 4 Opus - Best Coding Model',
+                'claude-4-sonnet'            => 'Claude 4 Sonnet - Advanced Reasoning',
+                'claude-3.7-sonnet'          => 'Claude 3.7 Sonnet - Hybrid Reasoning',
+                'claude-3-5-sonnet-20241022' => 'Claude 3.5 Sonnet Latest',
+                'claude-3-5-sonnet-20240620' => 'Claude 3.5 Sonnet',
+                'claude-3-5-haiku-20241022'  => 'Claude 3.5 Haiku',
+                'claude-3-opus-20240229'     => 'Claude 3 Opus',
+                'claude-3-sonnet-20240229'   => 'Claude 3 Sonnet',
+                'claude-3-haiku-20240307'    => 'Claude 3 Haiku',
+            ],
+            'requires_key' => true,
+        ],
+        'google'    => [
+            'name'         => 'Google Gemini',
+            'endpoint'     => 'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent',
+            'models'       => [
+                'gemini-2.0-flash-exp'      => 'Gemini 2.0 Flash Experimental - Latest',
+                'gemini-2.0-flash'          => 'Gemini 2.0 Flash - Stable',
+                'gemini-2.0-flash-001'      => 'Gemini 2.0 Flash 001 - Stable Version',
+                'gemini-2.0-flash-lite-001' => 'Gemini 2.0 Flash-Lite 001 - Lightweight',
+                'gemini-2.0-flash-lite'     => 'Gemini 2.0 Flash-Lite - Lightweight',
+                'gemini-2.5-flash'          => 'Gemini 2.5 Flash - Latest Stable',
+                'gemini-2.5-pro'            => 'Gemini 2.5 Pro - Most Capable',
+                'gemini-2.5-flash-lite'     => 'Gemini 2.5 Flash-Lite - Efficient',
+                'gemini-flash-latest'       => 'Gemini Flash Latest - Auto-Updated',
+                'gemini-pro-latest'         => 'Gemini Pro Latest - Auto-Updated',
+            ],
+            'requires_key' => true,
+        ],
+    ];
+    return apply_filters( 'wpuf_ai_provider_configs', $provider_configs );
+}
+
+/**
+ * Get AI provider options for settings
+ *
+ * @since WPUF_SINCE
+ *
+ * @return array
+ */
+function wpuf_get_ai_provider_options() {
+    $configs = wpuf_get_ai_provider_configs();
+    $options = [];
+
+    foreach ( $configs as $key => $config ) {
+        $options[ $key ] = $config['name'];
+    }
+
+    return $options;
+}
+
+/**
+ * Get AI model options for settings
+ *
+ * @since WPUF_SINCE
+ * @return array
+ */
+function wpuf_get_ai_model_options() {
+    $configs    = wpuf_get_ai_provider_configs();
+    $all_models = [];
+    foreach ( $configs as $provider_key => $config ) {
+        foreach ( $config['models'] as $model_key => $model_name ) {
+            $all_models[ $model_key ] = $model_name;
+        }
+    }
+
+    return apply_filters( 'wpuf_ai_model_options', $all_models );
+}
+
+/**
+ * AJAX handler to get AI provider configurations
+ *
+ * @since WPUF_SINCE
+ */
+function wpuf_get_ai_provider_configs_ajax() {
+    // Verify nonce for security
+    if ( ! wp_verify_nonce( $_POST['nonce'] ?? '', 'wpuf_nonce' ) ) {
+        wp_send_json_error( 'Invalid nonce' );
+    }
+    // Check user capabilities
+    if ( ! current_user_can( 'manage_options' ) ) {
+        wp_send_json_error( 'Insufficient permissions' );
+    }
+    // Get AI provider configurations
+    $configs = wpuf_get_ai_provider_configs();
+    wp_send_json_success( $configs );
+}

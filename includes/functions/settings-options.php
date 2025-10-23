@@ -49,6 +49,11 @@ function wpuf_settings_sections() {
             'title' => __( 'Privacy Options', 'wp-user-frontend' ),
             'icon'  => 'dashicons-shield-alt',
         ],
+        [
+            'id'    => 'wpuf_ai',
+            'title' => __( 'AI Settings', 'wp-user-frontend' ),
+            'icon'  => 'dashicons-admin-network',
+        ],
     ];
 
     return apply_filters( 'wpuf_settings_sections', $sections );
@@ -630,6 +635,33 @@ function wpuf_settings_fields() {
                 'desc'     => __( 'Select the post types you will allow users to export.', 'wp-user-frontend' ),
                 'callback' => 'wpuf_settings_multiselect',
                 'options'  => $post_types,
+            ],
+        ] ),
+        'wpuf_ai'               => apply_filters( 'wpuf_ai_options', [
+            [
+                'name'    => 'ai_provider',
+                'label'   => __( 'AI Provider', 'wp-user-frontend' ),
+                'desc'    => __( 'Select the AI service provider you want to use.', 'wp-user-frontend' ),
+                'type'    => 'select',
+                'options' => wpuf_get_ai_provider_options(),
+                'default' => 'openai',
+                'class'   => 'ai-provider-select',
+            ],
+            [
+                'name'    => 'ai_model',
+                'label'   => __( 'AI Model', 'wp-user-frontend' ),
+                'desc'    => __( 'Select the AI model to use for content generation.', 'wp-user-frontend' ),
+                'type'    => 'select',
+                'options' => wpuf_get_ai_model_options(),
+                'default' => 'gpt-3.5-turbo',
+                'class'   => 'ai-model-select',
+            ],
+            [
+                'name'    => 'ai_api_key',
+                'label'   => __( 'API Key', 'wp-user-frontend' ),
+                'desc'    => __( 'Enter your AI service API key. Keep this secure and never share it publicly.', 'wp-user-frontend' ),
+                'type'    => 'text',
+                'default' => '',
             ],
         ] ),
     ];

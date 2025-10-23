@@ -930,7 +930,7 @@ class WPUF_Frontend_Render_Form {
                 <div >
                     <label >
                          <input type="checkbox" class="wpuf_is_featured" name="is_featured_item" value="1" <?php echo $is_featured ? 'checked' : ''; ?> >
-                         <span class="wpuf-items-table-containermessage-box" id="remaining-feature-item"> <?php echo sprintf( 
+                         <span class="wpuf-items-table-containermessage-box" id="remaining-feature-item"> <?php echo sprintf(
                             // translators: %1$s is Post type and %2$s is total feature item
                             wp_kses_post(__( 'Mark the %1$s as featured (remaining %2$d)', 'wp-user-frontend' ), esc_html ($this->form_settings['post_type'] ), esc_html( $user_sub['total_feature_item'] ) )); ?></span>
                     </label>

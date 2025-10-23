@@ -50,6 +50,7 @@ class Ajax {
         $this->register_ajax( 'wpuf_ajax_address', 'wpuf_ajax_get_states_field' );
         $this->register_ajax( 'wpuf_update_billing_address', 'wpuf_update_billing_address' );
         $this->register_ajax( 'wpuf_clear_schedule_lock', 'wpuf_clear_schedule_lock', $this->logged_in_only );
+        $this->register_ajax( 'wpuf_get_ai_provider_configs', 'wpuf_get_ai_provider_configs_ajax', $this->logged_in_only );
     }
 
     /**

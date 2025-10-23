@@ -217,4 +217,74 @@ jQuery(function($) {
             $('.wpuf-fields input[type="radio"][name="_downloadable"][value="no"]').prop('checked', true);
         }
     });
+
+    // AI Provider change event listener to filter AI Models
+    $('#wpuf_ai\\[ai_provider\\]').on('change', function() {
+        var selectedProvider = $(this).val();
+        var aiModelSelect = $('#wpuf_ai\\[ai_model\\]');
+        var $this = $(this);
+        
+        // If no provider selected, show all models
+        if (!selectedProvider) {
+            // Restore all options if stored
+            if (aiModelSelect.data('all-options')) {
+                aiModelSelect.empty().append(aiModelSelect.data('all-options'));
+            }
+            return;
+        }
+        
+        // Store all options for restoration if needed
+        if (!aiModelSelect.data('all-options')) {
+            aiModelSelect.data('all-options', aiModelSelect.find('option').clone());
+        }
+        
+        // Get provider configuration via AJAX
+        $.ajax({
+            url: wpuf_admin_script.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'wpuf_get_ai_provider_configs',
+                nonce: wpuf_admin_script.nonce
+            },
+            success: function(response) {
+                if (response.success && response.data) {
+                    var providerConfigs = response.data;
+                    var selectedProviderConfig = providerConfigs[selectedProvider];
+                    
+                    if (selectedProviderConfig && selectedProviderConfig.models) {
+                        // Clear current options
+                        aiModelSelect.empty();
+                        
+                        // Add default option
+                        aiModelSelect.append('<option value="">Select AI Model</option>');
+                        
+                        // Add models for the selected provider
+                        $.each(selectedProviderConfig.models, function(modelKey, modelName) {
+                            aiModelSelect.append('<option value="' + modelKey + '">' + modelName + '</option>');
+                        });
+                        
+                        // Try to preserve current selection if it's valid for the selected provider
+                        var currentDbValue = aiModelSelect.attr('data-current-value') || aiModelSelect.val();
+                        if (currentDbValue && selectedProviderConfig.models[currentDbValue]) {
+                            aiModelSelect.val(currentDbValue);
+                        } else {
+                            // Set first available model as default
+                            var firstModelKey = Object.keys(selectedProviderConfig.models)[0];
+                            if (firstModelKey) {
+                                aiModelSelect.val(firstModelKey);
+                            }
+                        }
+                    }
+                } else {
+                    console.error('Failed to load AI provider configurations');
+                }
+            },
+            error: function() {
+                console.error('AJAX error loading AI provider configurations');
+            }
+        });
+    });
+
+    // Trigger change event on page load to filter models based on pre-selected provider
+    $('#wpuf_ai\\[ai_provider\\]').trigger('change');
 });

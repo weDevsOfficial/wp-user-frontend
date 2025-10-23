@@ -2,6 +2,7 @@
 
 namespace WeDevs\Wpuf;
 
+use WeDevs\Wpuf\Admin\Forms\Form;
 use WeDevs\Wpuf\Admin\Subscription;
 
 class Frontend_Render_Form {
@@ -197,15 +198,24 @@ class Frontend_Render_Form {
 
         $label_position = isset( $this->form_settings['label_position'] ) ? $this->form_settings['label_position'] : 'left';
 
-        $layout = isset( $this->form_settings['form_layout'] ) ? $this->form_settings['form_layout'] : 'layout1';
+        $layout = 'layout1';
 
         $theme_css = isset( $this->form_settings['use_theme_css'] ) ? $this->form_settings['use_theme_css'] : 'wpuf-style';
 
         do_action( 'wpuf_before_form_render', $form_id );
 
+        $form = new Form($form_id);
+
+        if ( 'wpuf_profile' === $form->data->post_type ) {
+            $layout = isset( $this->form_settings['profile_form_layout'] ) ? $this->form_settings['profile_form_layout'] : 'layout1';
+        } else {
+            $layout = isset( $this->form_settings['form_layout'] ) ? $this->form_settings['form_layout'] : 'layout1';
+        }
+
         if ( ! empty( $layout ) ) {
             wp_enqueue_style( 'wpuf-' . $layout );
         }
+
         if ( ! is_user_logged_in() && ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' !== $this->form_settings['post_permission'] ) ) {
             $login        = wpuf()->frontend->simple_login->get_login_url();
             $register     = wpuf()->frontend->simple_login->get_registration_url();

@@ -10,7 +10,8 @@
     "build": "npm run build:forms-list && npm run build:subscriptions && npm run build:frontend-subscriptions && npm run build:account",
     "build:forms-list": "ENTRY=forms-list vite build",
     "build:subscriptions": "ENTRY=subscriptions vite build",
-    "build:frontend-subscriptions": "ENTRY=frontend-subscriptions vite build"
+    "build:frontend-subscriptions": "ENTRY=frontend-subscriptions vite build",
+    "build:account": "ENTRY=account vite build"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",

@@ -1536,6 +1536,18 @@ class RestController extends WP_REST_Controller {
                     $field['extension'] = ['images', 'audio', 'video', 'pdf', 'office', 'zip', 'exe', 'csv'];
                 }
             }
+
+            // Handle image_upload and other image upload variants: Auto-populate missing required properties
+            if ($field['input_type'] === 'image_upload' || $field['template'] === 'image_upload' ||
+                $field['template'] === 'featured_image' || $field['template'] === 'user_avatar' ||
+                $field['template'] === 'profile_photo') {
+                if (!isset($field['max_size'])) {
+                    $field['max_size'] = '2048';
+                }
+                if (!isset($field['count'])) {
+                    $field['count'] = '1';
+                }
+            }
         }
 
         return $fields;

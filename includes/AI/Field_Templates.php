@@ -836,13 +836,22 @@ class Field_Templates {
     private static function get_embed_template( $label, $field_id ) {
         return array_merge( [
             'id' => $field_id,
-            'show_in_post' => 'yes',
             'input_type' => 'embed',
             'template' => 'embed',
             'required' => 'no',
             'label' => $label,
-            'name' => '',
-            'is_meta' => 'no',
+            'name' => self::name( $label ),
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'show_icon' => 'no',
+            'placeholder' => '',
+            'default' => '',
+            'size' => '40',
+            'preview_width' => '123',
+            'preview_height' => '456',
+            'show_in_post' => 'yes',
+            'hide_field_label' => 'no',
             'width' => 'large',
         ], self::get_common() );
     }

@@ -290,6 +290,15 @@ class Form_Builder {
                     $custom_props['show_lat'] = $field['show_lat'];
                 }
                 break;
+
+            case 'embed':
+                if ( ! empty( $field['preview_width'] ) ) {
+                    $custom_props['preview_width'] = $field['preview_width'];
+                }
+                if ( ! empty( $field['preview_height'] ) ) {
+                    $custom_props['preview_height'] = $field['preview_height'];
+                }
+                break;
         }
 
         return $custom_props;

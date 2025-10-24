@@ -1548,6 +1548,16 @@ class RestController extends WP_REST_Controller {
                     $field['count'] = '1';
                 }
             }
+
+            // Handle embed: Auto-populate missing required properties
+            if ($field['input_type'] === 'embed' || $field['template'] === 'embed') {
+                if (!isset($field['preview_width'])) {
+                    $field['preview_width'] = '123';
+                }
+                if (!isset($field['preview_height'])) {
+                    $field['preview_height'] = '456';
+                }
+            }
         }
 
         return $fields;

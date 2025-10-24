@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* AI Form Builder - All styles converted to Tailwind utilities in Vue components */
+
+/* WordPress admin body padding fix */
+#wpbody-content {
+    padding-bottom: unset!important;
+}
+
+/* Animations */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Tailwind animation utility with wpuf prefix */
+.wpuf-animate-spin {
+    animation: spin 1s linear infinite;
+}

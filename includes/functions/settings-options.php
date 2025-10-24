@@ -49,6 +49,11 @@ function wpuf_settings_sections() {
             'title' => __( 'Privacy Options', 'wp-user-frontend' ),
             'icon'  => 'dashicons-shield-alt',
         ],
+        [
+            'id'    => 'wpuf_ai',
+            'title' => __( 'AI Settings', 'wp-user-frontend' ),
+            'icon'  => 'dashicons-admin-network',
+        ],
     ];
 
     return apply_filters( 'wpuf_settings_sections', $sections );
@@ -632,6 +637,33 @@ function wpuf_settings_fields() {
                 'options'  => $post_types,
             ],
         ] ),
+        'wpuf_ai'               => apply_filters( 'wpuf_ai_options', [
+            [
+                'name'    => 'ai_provider',
+                'label'   => __( 'AI Provider', 'wp-user-frontend' ),
+                'desc'    => __( 'Select the AI service provider you want to use.', 'wp-user-frontend' ),
+                'type'    => 'radio_inline',
+                'options' => \WeDevs\Wpuf\AI\Config::get_provider_options(),
+                'default' => 'openai',
+                'class'   => 'wpuf-ai-provider-radio',
+            ],
+            [
+                'name'    => 'ai_model',
+                'label'   => __( 'AI Model', 'wp-user-frontend' ),
+                'desc'    => __( 'Select the AI model to use for content generation.', 'wp-user-frontend' ),
+                'type'    => 'select',
+                'options' => apply_filters('wpuf_ai_model_options', \WeDevs\Wpuf\AI\Config::get_model_options()),
+                'default' => 'gpt-3.5-turbo',
+                'class'   => 'ai-model-select',
+            ],
+            [
+                'name'    => 'api_key_current',
+                'label'   => __( 'API Key', 'wp-user-frontend' ),
+                'desc'    => __( 'Enter your AI service API key. Need help finding your <a href="https://platform.openai.com/api-keys" target="_blank" class="wpuf-api-key-link" data-openai="https://platform.openai.com/api-keys" data-anthropic="https://console.anthropic.com/settings/keys" data-google="https://aistudio.google.com/app/apikey" style="text-decoration: underline;">API Key?</a>', 'wp-user-frontend' ),
+                'type'    => 'callback',
+                'callback' => 'wpuf_ai_api_key_field',
+            ],
+        ] ),
     ];
 
     return apply_filters( 'wpuf_settings_fields', $settings_fields );
@@ -699,3 +731,103 @@ function wpuf_settings_field_profile( $form ) {
 }
 
 add_action( 'wsa_form_bottom_wpuf_profile', 'wpuf_settings_field_profile' );
+
+/**
+ * Render dynamic API key field based on selected provider
+ */
+function wpuf_ai_api_key_field( $args ) {
+    $settings = get_option( 'wpuf_ai', [] );
+
+    // Get current provider
+    $current_provider = $settings['ai_provider'] ?? 'openai';
+
+    // Get all API keys
+    $openai_key = $settings['openai_api_key'] ?? '';
+    $anthropic_key = $settings['anthropic_api_key'] ?? '';
+    $google_key = $settings['google_api_key'] ?? '';
+
+    ?>
+    <input type="password"
+           id="wpuf_ai_api_key_field"
+           name="wpuf_ai[<?php echo esc_attr( $current_provider ); ?>_api_key]"
+           class="regular-text wpuf-ai-api-key-dynamic"
+           value="<?php echo esc_attr( $settings[ $current_provider . '_api_key' ] ?? '' ); ?>"
+           placeholder="<?php esc_attr_e( 'Enter your API key', 'wp-user-frontend' ); ?>"
+           autocomplete="off">
+
+    <!-- Store API keys for each provider -->
+    <input type="hidden" name="wpuf_ai[openai_api_key]" id="wpuf_ai_openai_key" value="<?php echo esc_attr($openai_key); ?>">
+    <input type="hidden" name="wpuf_ai[anthropic_api_key]" id="wpuf_ai_anthropic_key" value="<?php echo esc_attr($anthropic_key); ?>">
+    <input type="hidden" name="wpuf_ai[google_api_key]" id="wpuf_ai_google_key" value="<?php echo esc_attr($google_key); ?>">
+
+    <?php
+    // Determine the correct API key link based on current provider
+    $api_key_links = [
+        'openai' => 'https://platform.openai.com/api-keys',
+        'anthropic' => 'https://console.anthropic.com/settings/keys',
+        'google' => 'https://aistudio.google.com/app/apikey'
+    ];
+    $current_link = $api_key_links[$current_provider] ?? $api_key_links['openai'];
+    ?>
+
+    <p class="description">
+        Enter your AI service API key. Need help finding your
+        <a href="<?php echo esc_url($current_link); ?>" class="wpuf-api-key-link"
+           data-openai="https://platform.openai.com/api-keys"
+           data-anthropic="https://console.anthropic.com/settings/keys"
+           data-google="https://aistudio.google.com/app/apikey"
+           target="_blank"
+           style="text-decoration: underline;">API Key?</a>
+    </p>
+
+    <script>
+    jQuery(document).ready(function($) {
+        // Function to update API key link
+        function updateApiKeyLink(provider) {
+            var apiKeyLink = $('.wpuf-api-key-link');
+            if (apiKeyLink.length > 0) {
+                var providerLinks = {
+                    'openai': 'https://platform.openai.com/api-keys',
+                    'anthropic': 'https://console.anthropic.com/settings/keys',
+                    'google': 'https://aistudio.google.com/app/apikey'
+                };
+
+                var newLink = providerLinks[provider] || providerLinks['openai'];
+                apiKeyLink.prop('href', newLink);
+                apiKeyLink.attr('href', newLink);
+                console.log('[Settings] Updated API key link for', provider, 'to:', newLink);
+            }
+        }
+
+        // Function to update visible input's name attribute
+        function updateVisibleInputName(provider) {
+            var $visibleInput = $('#wpuf_ai_api_key_field');
+            $visibleInput.attr('name', 'wpuf_ai[' + provider + '_api_key]');
+        }
+
+        // Set the initial name on page load
+        var initialProvider = $('input[name="wpuf_ai[ai_provider]"]:checked').val() || 'openai';
+        updateVisibleInputName(initialProvider);
+
+        // Update API key field and link when provider changes
+        $('input[name="wpuf_ai[ai_provider]"]').on('change', function() {
+            var provider = $(this).val();
+            var apiKey = $('#wpuf_ai_' + provider + '_key').val();
+            $('#wpuf_ai_api_key_field').val(apiKey);
+
+            // Update the visible input's name attribute to match the new provider
+            updateVisibleInputName(provider);
+
+            // Update the API key link
+            updateApiKeyLink(provider);
+        });
+
+        // Save API key to hidden field when typing
+        $('#wpuf_ai_api_key_field').on('input', function() {
+            var provider = $('input[name="wpuf_ai[ai_provider]"]:checked').val();
+            $('#wpuf_ai_' + provider + '_key').val($(this).val());
+        });
+    });
+    </script>
+    <?php
+}

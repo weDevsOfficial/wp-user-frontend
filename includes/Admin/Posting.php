@@ -461,10 +461,6 @@ class Posting {
             if ( typeof wpuf_map_items === 'undefined' ) {
                 wpuf_map_items = [];
             }
-            
-            // Test if field initialization script is loaded
-            console.log('Admin metabox script loaded');
-            console.log('WPUF_Field_Initializer available:', typeof WPUF_Field_Initializer !== 'undefined');
         </script>
 
             <?php
@@ -692,10 +688,9 @@ class Posting {
                 // Initialize fields after the form is rendered with a delay to ensure DOM is ready
                 setTimeout(function() {
                     if (typeof WPUF_Field_Initializer !== 'undefined') {
-                        console.log('Calling WPUF_Field_Initializer.init() from admin metabox');
                         WPUF_Field_Initializer.init();
                     } else {
-                        console.log('WPUF_Field_Initializer is not defined');
+                        // console.log('WPUF_Field_Initializer is not defined');
                     }
                 }, 500);
             });

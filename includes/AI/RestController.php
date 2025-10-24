@@ -1558,6 +1558,42 @@ class RestController extends WP_REST_Controller {
                     $field['preview_height'] = '456';
                 }
             }
+
+            // Handle ratings: Auto-populate missing required properties
+            if ($field['input_type'] === 'ratings' || $field['template'] === 'ratings') {
+                if (!isset($field['options']) || empty($field['options'])) {
+                    $field['options'] = [
+                        '1' => '1',
+                        '2' => '2',
+                        '3' => '3',
+                        '4' => '4',
+                        '5' => '5',
+                    ];
+                }
+                if (!isset($field['selected'])) {
+                    $field['selected'] = '';
+                }
+                if (!isset($field['inline'])) {
+                    $field['inline'] = 'no';
+                }
+            }
+
+            // Handle shortcode: Auto-populate missing required properties
+            if ($field['input_type'] === 'shortcode' || $field['template'] === 'shortcode') {
+                if (!isset($field['shortcode']) || empty($field['shortcode'])) {
+                    $field['shortcode'] = '[your_shortcode]';
+                }
+            }
+
+            // Handle column_field: Auto-populate missing required properties
+            if ($field['input_type'] === 'column_field' || $field['template'] === 'column_field') {
+                if (!isset($field['columns']) || empty($field['columns'])) {
+                    $field['columns'] = '2';
+                }
+                if (!isset($field['inner_fields']) || empty($field['inner_fields'])) {
+                    $field['inner_fields'] = [ 'column-1' => [], 'column-2' => [] ];
+                }
+            }
         }
 
         return $fields;

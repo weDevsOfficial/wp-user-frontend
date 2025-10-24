@@ -268,8 +268,17 @@ class Form_Builder {
                 break;
 
             case 'ratings':
-                if ( ! empty( $field['default'] ) ) {
-                    $custom_props['default'] = $field['default'];
+                if ( ! empty( $field['options'] ) ) {
+                    $custom_props['options'] = $field['options'];
+                }
+                if ( ! empty( $field['selected'] ) ) {
+                    $custom_props['selected'] = $field['selected'];
+                }
+                if ( ! empty( $field['inline'] ) ) {
+                    $custom_props['inline'] = $field['inline'];
+                }
+                if ( ! empty( $field['show_icon'] ) ) {
+                    $custom_props['show_icon'] = $field['show_icon'];
                 }
                 break;
 

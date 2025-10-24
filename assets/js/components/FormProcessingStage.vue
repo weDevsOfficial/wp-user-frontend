@@ -183,19 +183,23 @@ export default {
         },
 
         completeGeneration() {
-            this.showConfetti = true;
-            this.confettiUrl = this.getConfettiUrl();
+            // Add 500ms delay before showing confetti
+            const confettiTimeoutId = setTimeout(() => {
+                this.showConfetti = true;
+                this.confettiUrl = this.getConfettiUrl();
+            }, 500);
+            this._intervals.push(confettiTimeoutId);
 
             const timeoutId = setTimeout(() => {
                 this.$emit('generation-complete');
                 this.isProcessing = false;
-            }, this.completeDelay);
+            }, this.completeDelay + 500); // Add 500ms to complete delay to account for confetti delay
             this._intervals.push(timeoutId);
         },
 
         onAIResponseReceived() {
             this.aiResponseReceived = true;
-            // Complete generation immediately when AI response is received
+            // Complete generation with delay when AI response is received
             this.completeGeneration();
         },
         

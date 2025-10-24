@@ -773,7 +773,15 @@ class FormGenerator {
                 $system_prompt .= "2. Apply the requested modification (add/remove/edit specific fields)\n";
                 $system_prompt .= "3. Return COMPLETE field list with all fields in the 'fields' array\n";
                 $system_prompt .= "4. Include form_title and form_description from context\n\n";
-                $system_prompt .= "Example: If asked to 'add email field' and current_fields has 3 fields, return ALL 4 fields (existing 3 + new email field).\n";
+                $system_prompt .= "### Modification Types:\n";
+                $system_prompt .= "- **Add field**: Return existing fields + new field\n";
+                $system_prompt .= "- **Remove field**: Return existing fields without the specified field\n";
+                $system_prompt .= "- **Edit field**: Update the field's properties (label, required, placeholder, etc.)\n";
+                $system_prompt .= "- **Change field type**: Replace the field with a new template (e.g., checkbox_field → dropdown_field)\n";
+                $system_prompt .= "  Example: 'change skills checkbox to dropdown' → Replace checkbox_field template with dropdown_field template\n\n";
+                $system_prompt .= "Examples:\n";
+                $system_prompt .= "- 'add email field' with 3 existing fields → return ALL 4 fields\n";
+                $system_prompt .= "- 'change skills from checkbox to dropdown' → return all fields with skills field having template: 'dropdown_field' instead of 'checkbox_field'\n";
             } else {
                 $system_prompt .= "The user is asking a question. Return an error response with helpful message.";
             }

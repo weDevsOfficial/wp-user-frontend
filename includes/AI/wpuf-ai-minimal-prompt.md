@@ -553,8 +553,16 @@ Add `required: "yes"` for fields that are essential for the form to function pro
 
 When context includes `current_fields`:
 1. Extract all existing field templates and labels from context
-2. Apply requested changes (add/remove/edit)
+2. Apply requested changes (add/remove/edit/change field type)
 3. Return COMPLETE updated field list with all fields
+
+### Supported Modifications:
+- **Add field**: Include existing fields + new field
+- **Remove field**: Exclude the specified field from the list
+- **Edit field properties**: Update label, required, placeholder, options, etc.
+- **Change field type**: Replace the template (e.g., checkbox_field → dropdown_field)
+  - User says "change skills checkbox to dropdown" → Replace template: "checkbox_field" with template: "dropdown_field"
+  - Keep the same label and transfer applicable properties (e.g., options)
 
 Example modification context:
 ```json
@@ -582,6 +590,20 @@ Your response should include ALL fields:
   ]
 }
 ```
+
+Example field type change (checkbox → dropdown):
+User request: "change skills from checkbox to dropdown"
+```json
+{
+  "form_title": "Job Application",
+  "form_description": "Apply for a position",
+  "fields": [
+    {"template": "text_field", "label": "Name"},
+    {"template": "dropdown_field", "label": "Skills", "options": {"frontend": "Frontend", "backend": "Backend", "fullstack": "Full Stack"}}
+  ]
+}
+```
+Note: Changed template from "checkbox_field" to "dropdown_field" and kept the options.
 
 ## ERROR RESPONSE:
 For non-form requests:

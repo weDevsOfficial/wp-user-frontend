@@ -520,6 +520,7 @@ class Field_Templates {
             'name' => '',
             'is_meta' => 'no',
             'description' => '',
+            'hide_field_label' => 'no',
             'width' => 'large',
         ], self::get_common() );
     }
@@ -535,6 +536,7 @@ class Field_Templates {
             'is_meta' => 'no',
             'columns' => '2',
             'inner_fields' => [ 'column-1' => [], 'column-2' => [] ],
+            'hide_field_label' => 'no',
             'width' => 'large',
         ], self::get_common() );
     }
@@ -769,8 +771,9 @@ class Field_Templates {
             'required' => 'no',
             'label' => $label,
             'name' => '',
-            'is_meta' => 'no',
-            'shortcode' => '',
+            'is_meta' => 'yes',
+            'shortcode' => '[your_shortcode]',
+            'hide_field_label' => 'no',
             'width' => 'large',
         ], self::get_common() );
     }
@@ -795,13 +798,23 @@ class Field_Templates {
             'input_type' => 'ratings',
             'template' => 'ratings',
             'required' => 'no',
-            'show_in_post' => 'yes',
             'label' => $label,
             'name' => self::name( $label ),
             'is_meta' => 'yes',
             'help' => '',
             'css' => '',
-            'default' => '0',
+            'show_icon' => 'no',
+            'selected' => '',
+            'options' => [
+                '1' => '1',
+                '2' => '2',
+                '3' => '3',
+                '4' => '4',
+                '5' => '5',
+            ],
+            'inline' => 'no',
+            'show_in_post' => 'yes',
+            'hide_field_label' => 'no',
             'width' => 'large',
         ], self::get_common() );
     }

@@ -75,6 +75,16 @@ trait FieldableTrait {
             $wpuf_post_types[] = 'tribe_events';
         }
         
+        // Add product if WooCommerce post type is registered
+        if ( post_type_exists( 'product' ) && ! in_array( 'product', $wpuf_post_types, true ) ) {
+            $wpuf_post_types[] = 'product';
+        }
+        
+        // Add download if Easy Digital Downloads post type is registered
+        if ( post_type_exists( 'download' ) && ! in_array( 'download', $wpuf_post_types, true ) ) {
+            $wpuf_post_types[] = 'download';
+        }
+        
         $ignore_taxonomies = apply_filters( 'wpuf-ignore-taxonomies', [
             'post_format',
         ] );
@@ -99,6 +109,26 @@ trait FieldableTrait {
                 // Add post_tag as a canonical field for Event Calendar forms
                 $this->wp_post_types[ $post_type ]['post_tag'] = [
                     'title'        => __( 'Tags', 'wp-user-frontend' ),
+                    'hierarchical' => false,
+                    'terms'        => [],
+                ];
+            }
+            
+            // Special handling for product to include product_tag in free version
+            if ( 'product' === $post_type && ! isset( $this->wp_post_types[ $post_type ]['product_tag'] ) ) {
+                // Add product_tag as a canonical field for WooCommerce forms
+                $this->wp_post_types[ $post_type ]['product_tag'] = [
+                    'title'        => __( 'Product Tags', 'wp-user-frontend' ),
+                    'hierarchical' => false,
+                    'terms'        => [],
+                ];
+            }
+            
+            // Special handling for download to include download_tag in free version
+            if ( 'download' === $post_type && ! isset( $this->wp_post_types[ $post_type ]['download_tag'] ) ) {
+                // Add download_tag as a canonical field for EDD forms
+                $this->wp_post_types[ $post_type ]['download_tag'] = [
+                    'title'        => __( 'Download Tags', 'wp-user-frontend' ),
                     'hierarchical' => false,
                     'terms'        => [],
                 ];
@@ -496,6 +526,20 @@ trait FieldableTrait {
                      'post_tag' === $taxonomy['name'] && 
                      ! is_object_in_taxonomy( $this->form_settings['post_type'], $taxonomy['name'] ) ) {
                     register_taxonomy_for_object_type( 'post_tag', 'tribe_events' );
+                }
+                
+                // Auto-register product_tag taxonomy for product if not already registered
+                if ( 'product' === $this->form_settings['post_type'] && 
+                     'product_tag' === $taxonomy['name'] && 
+                     ! is_object_in_taxonomy( $this->form_settings['post_type'], $taxonomy['name'] ) ) {
+                    register_taxonomy_for_object_type( 'product_tag', 'product' );
+                }
+                
+                // Auto-register download_tag taxonomy for download if not already registered
+                if ( 'download' === $this->form_settings['post_type'] && 
+                     'download_tag' === $taxonomy['name'] && 
+                     ! is_object_in_taxonomy( $this->form_settings['post_type'], $taxonomy['name'] ) ) {
+                    register_taxonomy_for_object_type( 'download_tag', 'download' );
                 }
                 
                 if ( is_object_in_taxonomy( $this->form_settings['post_type'], $taxonomy['name'] ) ) {

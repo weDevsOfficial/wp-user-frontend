@@ -58,7 +58,7 @@
                             data-source="panel"
                             @click="alert_pro_feature(field)"
                             class="wpuf-relative wpuf-group/pro-field">
-                                <div class="wpuf-opacity-50 wpuf-field-button wpuf-flex wpuf-items-center wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-bg-white wpuf-shadow-sm wpuf-px-4 wpuf-py-3 hover:wpuf-border-gray-300 hover:wpuf-cursor-pointer">
+                                <div class="wpuf-opacity-50 wpuf-field-button wpuf-flex wpuf-items-center wpuf-rounded-lg wpuf-border wpuf-border-gray-200 wpuf-bg-white wpuf-shadow-sm wpuf-p-4 hover:wpuf-border-gray-300 hover:wpuf-cursor-pointer">
                                     <div
                                         v-if="field_settings[field].icon"
                                         class="wpuf-shrink-0 wpuf-mr-2 wpuf-text-gray-400">

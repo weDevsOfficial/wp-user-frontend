@@ -273,6 +273,70 @@
                                         </div>
                                     </div>
 
+                                    <!-- WPUF Pricing Radio -->
+                                    <div v-else-if="getWPUFFieldType(field) === 'pricing_radio'" class="wpuf-form-pricing-container">
+                                        <div class="wpuf-pricing-group wpuf-flex wpuf-flex-col wpuf-gap-2">
+                                            <template v-if="field.options && normalizeOptions(field.options).length > 0">
+                                                <div v-for="option in normalizeOptions(field.options)" :key="option.value" class="wpuf-pricing-option wpuf-flex wpuf-items-center wpuf-justify-between wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-bg-white">
+                                                    <div class="wpuf-flex wpuf-items-center wpuf-gap-2">
+                                                        <input type="radio" :name="`field_${field.id}`" :value="option.value" disabled class="wpuf-radio-input wpuf-text-emerald-600">
+                                                        <label class="wpuf-radio-label wpuf-text-base wpuf-leading-6 wpuf-text-gray-700">{{ option.label }}</label>
+                                                    </div>
+                                                    <span class="wpuf-text-base wpuf-font-medium wpuf-text-emerald-600">{{ field.currency_symbol || '$' }}{{ field.prices && field.prices[option.value] ? field.prices[option.value] : '0' }}</span>
+                                                </div>
+                                            </template>
+                                            <div v-else class="wpuf-text-gray-400 wpuf-text-base wpuf-leading-6">{{ __('No pricing options configured', 'wp-user-frontend') }}</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- WPUF Pricing Checkbox -->
+                                    <div v-else-if="getWPUFFieldType(field) === 'pricing_checkbox'" class="wpuf-form-pricing-container">
+                                        <div class="wpuf-pricing-group wpuf-flex wpuf-flex-col wpuf-gap-2">
+                                            <template v-if="field.options && normalizeOptions(field.options).length > 0">
+                                                <div v-for="option in normalizeOptions(field.options)" :key="option.value" class="wpuf-pricing-option wpuf-flex wpuf-items-center wpuf-justify-between wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-bg-white">
+                                                    <div class="wpuf-flex wpuf-items-center wpuf-gap-2">
+                                                        <input type="checkbox" :value="option.value" disabled class="wpuf-checkbox-input wpuf-text-emerald-600">
+                                                        <label class="wpuf-checkbox-label wpuf-text-base wpuf-leading-6 wpuf-text-gray-700">{{ option.label }}</label>
+                                                    </div>
+                                                    <span class="wpuf-text-base wpuf-font-medium wpuf-text-emerald-600">{{ field.currency_symbol || '$' }}{{ field.prices && field.prices[option.value] ? field.prices[option.value] : '0' }}</span>
+                                                </div>
+                                            </template>
+                                            <div v-else class="wpuf-text-gray-400 wpuf-text-base wpuf-leading-6">{{ __('No pricing options configured', 'wp-user-frontend') }}</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- WPUF Pricing Dropdown -->
+                                    <div v-else-if="getWPUFFieldType(field) === 'pricing_dropdown'" class="wpuf-form-pricing-dropdown-container">
+                                        <select disabled class="wpuf-form-input wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white wpuf-w-full">
+                                            <template v-if="field.options && normalizeOptions(field.options).length > 0">
+                                                <option v-for="option in normalizeOptions(field.options)" :key="option.value" :value="option.value">
+                                                    {{ option.label }} - {{ field.currency_symbol || '$' }}{{ field.prices && field.prices[option.value] ? field.prices[option.value] : '0' }}
+                                                </option>
+                                            </template>
+                                            <option v-else disabled class="wpuf-text-gray-400">{{ __('No pricing options configured', 'wp-user-frontend') }}</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- WPUF Pricing Multiselect -->
+                                    <div v-else-if="getWPUFFieldType(field) === 'pricing_multiselect'" class="wpuf-form-pricing-multiselect-container wpuf-relative">
+                                        <select multiple disabled class="wpuf-form-multiselect wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white wpuf-w-full" style="min-height: 120px;">
+                                            <template v-if="field.options && normalizeOptions(field.options).length > 0">
+                                                <option v-for="option in normalizeOptions(field.options)" :key="option.value" :value="option.value" class="wpuf-py-2 wpuf-px-3">
+                                                    {{ option.label }} - {{ field.currency_symbol || '$' }}{{ field.prices && field.prices[option.value] ? field.prices[option.value] : '0' }}
+                                                </option>
+                                            </template>
+                                            <option v-else disabled class="wpuf-text-gray-400">{{ __('No pricing options configured', 'wp-user-frontend') }}</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- WPUF Cart Total -->
+                                    <div v-else-if="getWPUFFieldType(field) === 'cart_total'" class="wpuf-form-cart-total wpuf-border-2 wpuf-border-emerald-200 wpuf-bg-emerald-50 wpuf-rounded-[10px] wpuf-p-4">
+                                        <div class="wpuf-flex wpuf-items-center wpuf-justify-between">
+                                            <span class="wpuf-text-lg wpuf-font-semibold wpuf-text-gray-800">{{ field.label || __('Total', 'wp-user-frontend') }}</span>
+                                            <span class="wpuf-text-2xl wpuf-font-bold wpuf-text-emerald-600">{{ field.currency_symbol || '$' }}0.00</span>
+                                        </div>
+                                    </div>
+
                                     <!-- WPUF Terms of Conditions (ToC) -->
                                     <div v-else-if="field.type === 'toc'" class="wpuf-form-toc-container">
                                         <div class="wpuf-toc-wrapper wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-4 wpuf-bg-white">
@@ -1912,7 +1976,8 @@ What would you like me to help you with?`;
                     this.isFormUpdating = false;
                     this.isWaitingForAI = false;
 
-                    this.updateConversationState(userMessage, errorMessage);
+                    // DO NOT update conversation state with error messages
+                    // This prevents error context from polluting future requests
                 }
 
             } catch (error) {
@@ -1944,7 +2009,8 @@ What would you like me to help you with?`;
                     });
                 }
 
-                this.updateConversationState(userMessage, errorMessage);
+                // DO NOT update conversation state with error messages
+                // This prevents error context from polluting future requests
             }
 
             this.scrollToBottom();
@@ -2039,7 +2105,7 @@ What would you like me to help you with?`;
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                throw new Error(`HTTP ${response.status}: ${errorData.message || response.statusText}`);
+                throw new Error(errorData.message || response.statusText);
             }
 
             const result = await response.json();
@@ -2125,7 +2191,7 @@ What would you like me to help you with?`;
 
                 if (!response.ok) {
                     const errorData = await response.json().catch(() => ({}));
-                    throw new Error(`HTTP ${response.status}: ${errorData.message || response.statusText}`);
+                    throw new Error(errorData.message || response.statusText);
                 }
 
                 const result = await response.json();

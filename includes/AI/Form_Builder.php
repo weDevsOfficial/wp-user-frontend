@@ -308,6 +308,45 @@ class Form_Builder {
                     $custom_props['preview_height'] = $field['preview_height'];
                 }
                 break;
+
+            case 'pricing_radio':
+            case 'pricing_checkbox':
+            case 'pricing_dropdown':
+            case 'pricing_multiselect':
+                if ( ! empty( $field['options'] ) ) {
+                    $custom_props['options'] = $field['options'];
+                }
+                if ( ! empty( $field['prices'] ) ) {
+                    $custom_props['prices'] = $field['prices'];
+                }
+                if ( ! empty( $field['inline'] ) ) {
+                    $custom_props['inline'] = $field['inline'];
+                }
+                if ( ! empty( $field['show_price_label'] ) ) {
+                    $custom_props['show_price_label'] = $field['show_price_label'];
+                }
+                if ( ! empty( $field['enable_quantity'] ) ) {
+                    $custom_props['enable_quantity'] = $field['enable_quantity'];
+                }
+                if ( ! empty( $field['currency_symbol'] ) ) {
+                    $custom_props['currency_symbol'] = $field['currency_symbol'];
+                }
+                if ( ! empty( $field['selected'] ) ) {
+                    $custom_props['selected'] = $field['selected'];
+                }
+                if ( ! empty( $field['first'] ) ) {
+                    $custom_props['first'] = $field['first'];
+                }
+                break;
+
+            case 'cart_total':
+                if ( ! empty( $field['show_summary'] ) ) {
+                    $custom_props['show_summary'] = $field['show_summary'];
+                }
+                if ( ! empty( $field['currency_symbol'] ) ) {
+                    $custom_props['currency_symbol'] = $field['currency_symbol'];
+                }
+                break;
         }
 
         return $custom_props;

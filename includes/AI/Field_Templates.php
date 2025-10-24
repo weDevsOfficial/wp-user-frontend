@@ -86,6 +86,28 @@ class Field_Templates {
                 $field['hide_field_label'] = 'no';
             }
 
+            // CRITICAL FIX: Enforce required properties for upload fields (avatar, profile_photo, image_upload, file_upload, featured_image)
+            // These fields MUST have 'readonly' and 'show_icon' properties to function correctly
+            // Force these properties even if AI or custom props don't include them
+            $upload_fields = [ 'user_avatar', 'profile_photo', 'image_upload', 'file_upload', 'featured_image' ];
+            if ( in_array( $template, $upload_fields, true ) || ( isset( $field['input_type'] ) && $field['input_type'] === 'image_upload' ) ) {
+                if ( ! isset( $field['readonly'] ) ) {
+                    $field['readonly'] = 'no';
+                }
+                if ( ! isset( $field['show_icon'] ) ) {
+                    $field['show_icon'] = 'no';
+                }
+                if ( ! isset( $field['button_label'] ) || empty( $field['button_label'] ) ) {
+                    $field['button_label'] = ( in_array( $template, [ 'file_upload' ], true ) ) ? 'Select File' : 'Select Image';
+                }
+                if ( ! isset( $field['max_size'] ) ) {
+                    $field['max_size'] = '2048';
+                }
+                if ( ! isset( $field['count'] ) ) {
+                    $field['count'] = '1';
+                }
+            }
+
             return $field;
         }
 
@@ -1262,6 +1284,155 @@ class Field_Templates {
             'open_in_new_window' => 'yes',
             'nofollow' => 'yes',
             'username_validation' => 'strict',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    // ========== PRICING FIELDS ==========
+
+    private static function get_pricing_radio_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'pricing_radio',
+            'template' => 'pricing_radio',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'show_icon' => 'no',
+            'selected' => '',
+            'inline' => 'no',
+            'show_price_label' => 'yes',
+            'enable_quantity' => 'no',
+            'currency_symbol' => '$',
+            'options' => [
+                'first_item' => 'First Item',
+                'second_item' => 'Second Item',
+                'third_item' => 'Third Item',
+            ],
+            'prices' => [
+                'first_item' => '10',
+                'second_item' => '25',
+                'third_item' => '50',
+            ],
+            'show_in_post' => 'yes',
+            'hide_field_label' => 'no',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_pricing_checkbox_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'pricing_checkbox',
+            'template' => 'pricing_checkbox',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'show_icon' => 'no',
+            'selected' => [],
+            'inline' => 'no',
+            'show_price_label' => 'yes',
+            'enable_quantity' => 'no',
+            'currency_symbol' => '$',
+            'options' => [
+                'first_item' => 'First Item',
+                'second_item' => 'Second Item',
+                'third_item' => 'Third Item',
+            ],
+            'prices' => [
+                'first_item' => '10',
+                'second_item' => '25',
+                'third_item' => '50',
+            ],
+            'show_in_post' => 'yes',
+            'hide_field_label' => 'no',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_pricing_dropdown_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'pricing_dropdown',
+            'template' => 'pricing_dropdown',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'show_icon' => 'no',
+            'enable_quantity' => 'no',
+            'currency_symbol' => '$',
+            'options' => [
+                'first_item' => 'First Item',
+                'second_item' => 'Second Item',
+                'third_item' => 'Third Item',
+            ],
+            'prices' => [
+                'first_item' => '10',
+                'second_item' => '25',
+                'third_item' => '50',
+            ],
+            'first' => '- Select -',
+            'show_in_post' => 'yes',
+            'hide_field_label' => 'no',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_pricing_multiselect_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'pricing_multiselect',
+            'template' => 'pricing_multiselect',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'show_icon' => 'no',
+            'selected' => [],
+            'enable_quantity' => 'no',
+            'currency_symbol' => '$',
+            'options' => [
+                'first_item' => 'First Item',
+                'second_item' => 'Second Item',
+                'third_item' => 'Third Item',
+            ],
+            'prices' => [
+                'first_item' => '10',
+                'second_item' => '25',
+                'third_item' => '50',
+            ],
+            'show_in_post' => 'yes',
+            'hide_field_label' => 'no',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    private static function get_cart_total_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'cart_total',
+            'template' => 'cart_total',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'show_summary' => 'yes',
+            'currency_symbol' => 'USD',
+            'show_in_post' => 'yes',
+            'hide_field_label' => 'no',
             'width' => 'large',
         ], self::get_common() );
     }

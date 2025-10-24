@@ -1280,6 +1280,13 @@ class RestController extends WP_REST_Controller {
             if (isset($field['placeholder'])) {
                 $field['placeholder'] = sanitize_text_field($field['placeholder']);
             }
+
+            // CRITICAL FIX: Map 'help_text' to 'help' if needed (standardize property name)
+            // WPUF uses 'help' as the standard property name, but AI might generate 'help_text'
+            if (isset($field['help_text']) && !isset($field['help'])) {
+                $field['help'] = $field['help_text'];
+            }
+
             if (isset($field['help'])) {
                 $field['help'] = wp_kses_post($field['help']);
             }
@@ -1547,6 +1554,12 @@ class RestController extends WP_REST_Controller {
                 if (!isset($field['count'])) {
                     $field['count'] = '1';
                 }
+                if (!isset($field['readonly'])) {
+                    $field['readonly'] = 'no';
+                }
+                if (!isset($field['show_icon'])) {
+                    $field['show_icon'] = 'no';
+                }
             }
 
             // Handle embed: Auto-populate missing required properties
@@ -1592,6 +1605,56 @@ class RestController extends WP_REST_Controller {
                 }
                 if (!isset($field['inner_fields']) || empty($field['inner_fields'])) {
                     $field['inner_fields'] = [ 'column-1' => [], 'column-2' => [] ];
+                }
+            }
+
+            // Handle pricing fields: Auto-populate missing required properties
+            if (in_array($field['input_type'], ['pricing_radio', 'pricing_checkbox', 'pricing_dropdown', 'pricing_multiselect']) ||
+                in_array($field['template'], ['pricing_radio', 'pricing_checkbox', 'pricing_dropdown', 'pricing_multiselect'])) {
+                if (!isset($field['options']) || empty($field['options'])) {
+                    $field['options'] = [
+                        'first_item' => 'First Item',
+                        'second_item' => 'Second Item',
+                        'third_item' => 'Third Item',
+                    ];
+                }
+                if (!isset($field['prices']) || empty($field['prices'])) {
+                    $field['prices'] = [
+                        'first_item' => '10',
+                        'second_item' => '25',
+                        'third_item' => '50',
+                    ];
+                }
+                if (!isset($field['currency_symbol'])) {
+                    $field['currency_symbol'] = '$';
+                }
+                if (!isset($field['enable_quantity'])) {
+                    $field['enable_quantity'] = 'no';
+                }
+                // Pricing radio and checkbox specific
+                if (in_array($field['template'], ['pricing_radio', 'pricing_checkbox'])) {
+                    if (!isset($field['inline'])) {
+                        $field['inline'] = 'no';
+                    }
+                    if (!isset($field['show_price_label'])) {
+                        $field['show_price_label'] = 'yes';
+                    }
+                }
+                // Pricing dropdown specific
+                if ($field['template'] === 'pricing_dropdown') {
+                    if (!isset($field['first'])) {
+                        $field['first'] = '- Select -';
+                    }
+                }
+            }
+
+            // Handle cart_total: Auto-populate missing required properties
+            if ($field['input_type'] === 'cart_total' || $field['template'] === 'cart_total') {
+                if (!isset($field['show_summary'])) {
+                    $field['show_summary'] = 'yes';
+                }
+                if (!isset($field['currency_symbol'])) {
+                    $field['currency_symbol'] = 'USD';
                 }
             }
         }

@@ -704,20 +704,17 @@ class FormGenerator {
         // Load the prompt file
         $system_prompt = file_get_contents( $prompt_file );
 
-        // Add form type enforcement instruction
-        $system_prompt .= "\n\n## FORM TYPE ENFORCEMENT\n";
+        // Add form type context (informational, not restrictive)
+        $system_prompt .= "\n\n## FORM TYPE CONTEXT\n";
         if ( 'profile' === $form_type || 'registration' === $form_type ) {
-            $system_prompt .= "CRITICAL: You are in REGISTRATION/PROFILE form mode.\n";
-            $system_prompt .= "- You can ONLY create registration/profile forms with user fields (user_email, user_login, password, first_name, last_name, biography, social fields, etc.)\n";
-            $system_prompt .= "- You CANNOT create post forms with post fields (post_title, post_content, post_excerpt, featured_image, taxonomy, etc.)\n";
-            $system_prompt .= "- If user asks for a post form, blog form, article form, or content submission form, return an error:\n";
-            $system_prompt .= '  {"error": true, "message": "This is a registration form builder. To create post forms, please use the Post Form builder instead. Registration forms are for user sign-up and profile editing only."}' . "\n";
+            $system_prompt .= "You are working with a REGISTRATION/PROFILE form.\n";
+            $system_prompt .= "- Use registration/profile fields: user_email, user_login, password, first_name, last_name, biography, user_avatar, social fields, phone_field, address_field, dropdown_field, radio_field, checkbox_field, etc.\n";
+            $system_prompt .= "- Custom fields like dropdown, radio, checkbox, text fields are fully supported for additional profile information\n";
+            $system_prompt .= "- Focus on helping users collect user registration and profile data\n";
         } else {
-            $system_prompt .= "CRITICAL: You are in POST form mode.\n";
-            $system_prompt .= "- You can ONLY create post forms with post fields (post_title, post_content, post_excerpt, featured_image, taxonomy, etc.)\n";
-            $system_prompt .= "- You CANNOT create registration/profile forms with user fields (user_email, user_login, password, first_name, etc.)\n";
-            $system_prompt .= "- If user asks for a registration form, sign-up form, or user profile form, return an error:\n";
-            $system_prompt .= '  {"error": true, "message": "This is a post form builder. To create registration forms, please use the Registration Form builder instead. Post forms are for content submission only."}' . "\n";
+            $system_prompt .= "You are working with a POST submission form.\n";
+            $system_prompt .= "- Use post fields: post_title, post_content, post_excerpt, featured_image, taxonomy, custom fields, etc.\n";
+            $system_prompt .= "- Focus on helping users collect content submission data\n";
         }
 
         // Add conversation context if provided

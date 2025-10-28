@@ -353,7 +353,7 @@
                                     </div>
 
                                     <!-- WPUF File Upload -->
-                                    <div v-else-if="['image_upload', 'file', 'featured_image', 'file_upload'].includes(getWPUFFieldType(field))"
+                                    <div v-else-if="['image_upload', 'file', 'featured_image', 'file_upload', 'avatar', 'profile_photo'].includes(getWPUFFieldType(field))"
                                          class="wpuf-form-file wpuf-border-2 wpuf-border-dashed wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-5 wpuf-flex wpuf-flex-col wpuf-items-center wpuf-gap-2 wpuf-bg-white wpuf-text-gray-500 wpuf-text-center wpuf-text-base wpuf-leading-6"
                                          :class="''"
                                     >
@@ -2614,7 +2614,15 @@ What would you like me to help you with?`;
                 'post_tags', 'taxonomy', 'category',
                 'featured_image', 'image_upload',
                 'recaptcha', 'recaptcha_v2', 'recaptcha_v3',
-                'cloudflare_turnstile'
+                'cloudflare_turnstile',
+                // Registration/Profile fields (Free)
+                'user_login', 'user_email', 'user_url',
+                'first_name', 'last_name', 'nickname', 'display_name',
+                'user_bio', 'biography',
+                'user_avatar', 'profile_photo',
+                'password',
+                'facebook_url', 'twitter_url', 'instagram_url', 'linkedin_url',
+                'column_field', 'custom_html', 'custom_hidden_field'
             ];
 
             // Check if any field in the form is a pro field
@@ -2825,6 +2833,24 @@ What would you like me to help you with?`;
                 'featured_image': 'Upload featured image',
                 'custom_hidden_field': 'Hidden field value',
 
+                // Registration/Profile fields
+                'user_login': 'Enter username...',
+                'user_email': 'Enter email address...',
+                'user_url': 'Enter website URL...',
+                'first_name': 'Enter first name...',
+                'last_name': 'Enter last name...',
+                'nickname': 'Enter nickname...',
+                'display_name': 'Enter display name...',
+                'user_bio': 'Enter biography...',
+                'biography': 'Enter biography...',
+                'password': 'Enter password...',
+                'avatar': 'Upload profile picture',
+                'profile_photo': 'Upload profile photo',
+                'facebook_url': 'Enter Facebook URL...',
+                'twitter_url': 'Enter Twitter/X URL...',
+                'instagram_url': 'Enter Instagram URL...',
+                'linkedin_url': 'Enter LinkedIn URL...',
+
                 // Pro fields
                 'address_field': 'Enter full address...',
                 'country_list_field': 'Select country',
@@ -2895,6 +2921,24 @@ What would you like me to help you with?`;
                 'column_field': 'Column Layout',
                 'recaptcha': 'reCAPTCHA',
                 'cloudflare_turnstile': 'Cloudflare Turnstile',
+
+                // Registration/Profile fields
+                'user_login': 'Username',
+                'user_email': 'User Email',
+                'user_url': 'User Website',
+                'first_name': 'First Name',
+                'last_name': 'Last Name',
+                'nickname': 'Nickname',
+                'display_name': 'Display Name',
+                'user_bio': 'Biography',
+                'biography': 'Biography',
+                'password': 'Password',
+                'avatar': 'Avatar',
+                'profile_photo': 'Profile Photo',
+                'facebook_url': 'Facebook',
+                'twitter_url': 'Twitter/X',
+                'instagram_url': 'Instagram',
+                'linkedin_url': 'LinkedIn',
 
                 // Pro fields
                 'address_field': 'Address Field',

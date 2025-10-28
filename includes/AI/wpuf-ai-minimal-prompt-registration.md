@@ -121,7 +121,7 @@ When user requests a registration form or modifications:
 - "display name" → `display_name`
 
 **Profile Images:**
-- "avatar", "profile picture", "profile pic", "user avatar", "user picture" → `user_avatar`
+- "avatar", "profile picture", "profile pic", "user avatar", "user picture" → `avatar`
 - "profile photo", "photo" → `profile_photo`
 
 **Social Media Fields:**
@@ -135,6 +135,8 @@ When user requests a registration form or modifications:
 - "address", "location" → `address_field` (Pro)
 - "country" → `country_list_field` (Pro)
 - "date", "birthday", "birth date" → `date_field` (Pro)
+- "gender", "sex" → `radio_field` with label "Gender" and options: {"male": "Male", "female": "Female", "other": "Other", "prefer_not_to_say": "Prefer not to say"}
+- "age group", "age range" → `radio_field` or `dropdown_field` with age range options
 - "custom text field" → `text_field`
 - "dropdown", "select" → `dropdown_field`
 - "checkbox" → `checkbox_field`
@@ -156,7 +158,7 @@ When user requests a registration form or modifications:
 - `display_name` - Display name
 
 ### Profile Images:
-- `user_avatar` - User avatar/profile picture
+- `avatar` - User avatar/profile picture
 - `profile_photo` - Profile photo
 
 ### Social Media Fields:
@@ -407,7 +409,7 @@ When user says "make X field radio button" or "change X to dropdown":
   "form_title": "Complete Profile",
   "form_description": "Tell us about yourself",
   "fields": [
-    {"template": "user_avatar", "label": "Profile Picture", "required": "no", "button_label": "Choose Image", "max_size": "2048"},
+    {"template": "avatar", "label": "Profile Picture", "required": "no", "button_label": "Choose Image", "max_size": "2048"},
     {"template": "first_name", "label": "First Name", "required": "yes"},
     {"template": "last_name", "label": "Last Name", "required": "yes"},
     {"template": "user_email", "label": "Email", "required": "yes"},
@@ -417,6 +419,24 @@ When user says "make X field radio button" or "change X to dropdown":
     {"template": "biography", "label": "About Me", "required": "no", "rows": "5", "placeholder": "Tell us about yourself..."},
     {"template": "facebook_url", "label": "Facebook", "required": "no"},
     {"template": "linkedin_url", "label": "LinkedIn", "required": "no"}
+  ]
+}
+```
+
+### Registration Form with Gender Field:
+```json
+{
+  "form_title": "User Registration",
+  "form_description": "Create your account",
+  "fields": [
+    {"template": "user_email", "label": "Email Address", "required": "yes"},
+    {"template": "user_login", "label": "Username", "required": "yes"},
+    {"template": "password", "label": "Password", "required": "yes"},
+    {"template": "first_name", "label": "First Name", "required": "yes"},
+    {"template": "last_name", "label": "Last Name", "required": "yes"},
+    {"template": "radio_field", "label": "Gender", "required": "no", "options": {"male": "Male", "female": "Female", "other": "Other", "prefer_not_to_say": "Prefer not to say"}},
+    {"template": "date_field", "label": "Date of Birth", "required": "no", "time": "no"},
+    {"template": "avatar", "label": "Profile Picture", "required": "no", "button_label": "Upload Photo"}
   ]
 }
 ```
@@ -432,7 +452,7 @@ When user says "make X field radio button" or "change X to dropdown":
     {"template": "first_name", "label": "First Name", "required": "yes"},
     {"template": "last_name", "label": "Last Name", "required": "yes"},
     {"template": "biography", "label": "About Me", "required": "no", "rows": "8"},
-    {"template": "user_avatar", "label": "Profile Picture", "required": "no", "button_label": "Upload Photo"}
+    {"template": "avatar", "label": "Profile Picture", "required": "no", "button_label": "Upload Photo"}
   ]
 }
 ```

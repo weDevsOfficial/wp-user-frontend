@@ -168,6 +168,7 @@ class Form_Builder {
             case 'image_upload':
             case 'file_upload':
             case 'featured_image':
+            case 'avatar':
             case 'user_avatar':
             case 'profile_photo':
                 if ( ! empty( $field['count'] ) ) {

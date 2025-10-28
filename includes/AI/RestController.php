@@ -1355,6 +1355,7 @@ class RestController extends WP_REST_Controller {
                     'image_upload' => 'Select Image',
                     'file_upload' => 'Select File',
                     'featured_image' => 'Select Image',
+                    'avatar' => 'Select Image',
                     'user_avatar' => 'Select Image',
                     'profile_photo' => 'Select Image'
                 ];
@@ -1546,8 +1547,8 @@ class RestController extends WP_REST_Controller {
 
             // Handle image_upload and other image upload variants: Auto-populate missing required properties
             if ($field['input_type'] === 'image_upload' || $field['template'] === 'image_upload' ||
-                $field['template'] === 'featured_image' || $field['template'] === 'user_avatar' ||
-                $field['template'] === 'profile_photo') {
+                $field['template'] === 'featured_image' || $field['template'] === 'avatar' ||
+                $field['template'] === 'user_avatar' || $field['template'] === 'profile_photo') {
                 if (!isset($field['max_size'])) {
                     $field['max_size'] = '2048';
                 }

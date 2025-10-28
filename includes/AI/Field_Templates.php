@@ -89,7 +89,7 @@ class Field_Templates {
             // CRITICAL FIX: Enforce required properties for upload fields (avatar, profile_photo, image_upload, file_upload, featured_image)
             // These fields MUST have 'readonly' and 'show_icon' properties to function correctly
             // Force these properties even if AI or custom props don't include them
-            $upload_fields = [ 'user_avatar', 'profile_photo', 'image_upload', 'file_upload', 'featured_image' ];
+            $upload_fields = [ 'avatar', 'user_avatar', 'profile_photo', 'image_upload', 'file_upload', 'featured_image' ];
             if ( in_array( $template, $upload_fields, true ) || ( isset( $field['input_type'] ) && $field['input_type'] === 'image_upload' ) ) {
                 if ( ! isset( $field['readonly'] ) ) {
                     $field['readonly'] = 'no';
@@ -1144,10 +1144,10 @@ class Field_Templates {
 
     private static function get_user_avatar_template( $label, $field_id ) {
         return array_merge( [
-            'type' => 'user_avatar',
+            'type' => 'avatar',
             'id' => $field_id,
             'input_type' => 'image_upload',
-            'template' => 'user_avatar',
+            'template' => 'avatar',
             'required' => 'no',
             'label' => $label,
             'name' => 'user_avatar',

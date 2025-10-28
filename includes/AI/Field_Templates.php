@@ -794,7 +794,7 @@ class Field_Templates {
             'label' => $label,
             'name' => '',
             'is_meta' => 'yes',
-            'shortcode' => '[your_shortcode]',
+            'shortcode' => '[custom_content]',
             'hide_field_label' => 'no',
             'width' => 'large',
         ], self::get_common() );

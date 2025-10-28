@@ -342,12 +342,65 @@ Include `html` content:
 ```
 
 ### Shortcode:
-Include `shortcode`:
+⚠️ IMPORTANT: When users request shortcode fields, generate contextually appropriate shortcode values based on their description.
+
+Include `shortcode` property with the actual shortcode the user wants:
+```json
+{
+  "template": "shortcode",
+  "label": "Contact Form",
+  "shortcode": "[contact-form-7 id=\"1\"]"
+}
+```
+
+**Common shortcode examples by use case:**
+- Contact forms: `[contact-form-7]`, `[wpforms]`, `[gravityform]`
+- Newsletter: `[mc4wp_form]`, `[mailchimp_subscriber]`
+- WooCommerce: `[woocommerce_cart]`, `[woocommerce_checkout]`, `[products]`
+- Social media: `[instagram-feed]`, `[custom-twitter-feeds]`
+- Custom content: `[display_content]`, `[custom_output]`
+
+**Instructions:**
+- If user specifies a shortcode name → use that exact shortcode
+- If user mentions a plugin (e.g., "Contact Form 7") → use appropriate shortcode
+- If generic request → use descriptive shortcode like `[custom_content]`
+- NEVER use generic placeholders like `[my_shortcode]` - always make it contextual
+
+**Example scenarios:**
+
+User: "add a Contact Form 7 shortcode"
+```json
+{
+  "template": "shortcode",
+  "label": "Contact Form",
+  "shortcode": "[contact-form-7 id=\"1\"]"
+}
+```
+
+User: "add mailchimp signup form"
+```json
+{
+  "template": "shortcode",
+  "label": "Newsletter Signup",
+  "shortcode": "[mc4wp_form id=\"123\"]"
+}
+```
+
+User: "add a shortcode for displaying recent posts"
+```json
+{
+  "template": "shortcode",
+  "label": "Recent Posts",
+  "shortcode": "[recent_posts limit=\"5\"]"
+}
+```
+
+User: "add custom shortcode" (generic request)
 ```json
 {
   "template": "shortcode",
   "label": "Custom Content",
-  "shortcode": "[my_shortcode]"
+  "shortcode": "[custom_content]"
 }
 ```
 

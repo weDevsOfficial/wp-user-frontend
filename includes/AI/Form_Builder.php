@@ -42,6 +42,13 @@ class Form_Builder {
             $label = $minimal_field['label'] ?? 'Untitled Field';
             $field_id = 'field_' . $field_counter;
 
+            // Special handling for shortcode template - ensure shortcode property exists
+            if ( $template === 'shortcode' && empty( $minimal_field['shortcode'] ) ) {
+                // If AI didn't provide shortcode property, use a placeholder
+                // This will be shown to user in form builder so they can edit it
+                $minimal_field['shortcode'] = '[your_shortcode]';
+            }
+
             // Extract custom properties (everything except template and label)
             $raw_custom_props = array_diff_key( $minimal_field, [ 'template' => '', 'label' => '' ] );
 

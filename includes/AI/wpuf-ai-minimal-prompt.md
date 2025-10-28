@@ -87,6 +87,9 @@ Only include these properties:
 
 NEVER include properties with null, empty string, or undefined values.
 
+**EXCEPTIONS:**
+- For `shortcode` template: ALWAYS include the `shortcode` property with the actual shortcode value requested by the user
+
 ## FIELD TYPE INTERPRETATION:
 **Location/Address Fields:**
 - "google map", "map field", "interactive map", "location picker" → `google_map` (Pro field)
@@ -171,6 +174,11 @@ NEVER include properties with null, empty string, or undefined values.
         "business": "Business",
         "lifestyle": "Lifestyle"
       }
+    },
+    {
+      "template": "shortcode",
+      "label": "Custom Content",
+      "shortcode": "[your_shortcode]"
     },
     {
       "template": "address_field",
@@ -258,6 +266,22 @@ Examples with meaningful options:
 
 **Always provide 3-5 realistic options relevant to the field label and form purpose.**
 
+### Shortcode:
+⚠️ CRITICAL: For shortcode template, you MUST ALWAYS include the `shortcode` property with the actual shortcode value the user requests.
+
+**Extract shortcode names from user messages:**
+- If user says "add shortcode hello_dolly" → use `"shortcode": "[hello_dolly]"`
+- If user says "add shortcode [my_code]" → use `"shortcode": "[my_code]"`
+- If user says "shortcode: test_123" → use `"shortcode": "[test_123]"`
+
+```json
+{
+  "template": "shortcode",
+  "label": "Shortcode",
+  "shortcode": "[hello_dolly]"
+}
+```
+
 ### Image Upload:
 Include `count` for max images:
 ```json
@@ -342,68 +366,13 @@ Include `html` content:
 }
 ```
 
-### Shortcode:
-⚠️ IMPORTANT: When users request shortcode fields, generate contextually appropriate shortcode values based on their description.
-
-Include `shortcode` property with the actual shortcode the user wants:
-```json
-{
-  "template": "shortcode",
-  "label": "Contact Form",
-  "shortcode": "[contact-form-7 id=\"1\"]"
-}
-```
-
-**Common shortcode examples by use case:**
-- Contact forms: `[contact-form-7]`, `[wpforms]`, `[gravityform]`
-- Newsletter: `[mc4wp_form]`, `[mailchimp_subscriber]`
-- WooCommerce: `[woocommerce_cart]`, `[woocommerce_checkout]`, `[products]`
-- Social media: `[instagram-feed]`, `[custom-twitter-feeds]`
-- Custom content: `[display_content]`, `[custom_output]`
-
-**Instructions:**
-- If user specifies a shortcode name → use that exact shortcode
-- If user mentions a plugin (e.g., "Contact Form 7") → use appropriate shortcode
-- If generic request → use descriptive shortcode like `[custom_content]`
-- NEVER use generic placeholders like `[my_shortcode]` - always make it contextual
-
-**Example scenarios:**
-
-User: "add a Contact Form 7 shortcode"
-```json
-{
-  "template": "shortcode",
-  "label": "Contact Form",
-  "shortcode": "[contact-form-7 id=\"1\"]"
-}
-```
-
-User: "add mailchimp signup form"
-```json
-{
-  "template": "shortcode",
-  "label": "Newsletter Signup",
-  "shortcode": "[mc4wp_form id=\"123\"]"
-}
-```
-
-User: "add a shortcode for displaying recent posts"
-```json
-{
-  "template": "shortcode",
-  "label": "Recent Posts",
-  "shortcode": "[recent_posts limit=\"5\"]"
-}
-```
-
-User: "add custom shortcode" (generic request)
-```json
-{
-  "template": "shortcode",
-  "label": "Custom Content",
-  "shortcode": "[custom_content]"
-}
-```
+### Shortcode - Plugin Examples:
+**Common plugin shortcodes:**
+- Contact Form 7: `[contact-form-7 id="1"]`
+- WPForms: `[wpforms id="123"]`
+- Mailchimp: `[mc4wp_form id="123"]`
+- WooCommerce Cart: `[woocommerce_cart]`
+- Instagram Feed: `[instagram-feed]`
 
 ### Section Break:
 Include `description`:

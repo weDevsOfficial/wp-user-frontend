@@ -68,6 +68,11 @@ class Field_Templates {
             // This ensures 'required', 'placeholder', 'options', etc. from AI take precedence
             $field = array_merge( $field, $filtered_custom_props );
 
+            // CRITICAL FIX: For shortcode template, ensure shortcode property always exists
+            if ( $template === 'shortcode' && empty( $field['shortcode'] ) ) {
+                $field['shortcode'] = '[your_shortcode]';
+            }
+
             // CRITICAL FIX: For column_field, dynamically adjust inner_fields and inner_columns_size based on columns count
             if ( 'column_field' === $template && isset( $field['columns'] ) ) {
                 $columns = intval( $field['columns'] );
@@ -839,7 +844,7 @@ class Field_Templates {
             'label' => $label,
             'name' => '',
             'is_meta' => 'yes',
-            'shortcode' => '[custom_content]',
+            'shortcode' => '', // Default empty - will be set by AI or custom props
             'hide_field_label' => 'no',
             'width' => 'large',
         ], self::get_common() );

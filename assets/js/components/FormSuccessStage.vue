@@ -530,7 +530,9 @@
                                             </svg>
                                             <span class="wpuf-text-yellow-800 wpuf-font-medium">{{ field.label }}</span>
                                         </div>
-                                        <div class="wpuf-text-yellow-600 wpuf-text-base wpuf-leading-6">{{ field.placeholder || getFieldPlaceholder(field.type) }}</div>
+                                        <div class="wpuf-text-yellow-600 wpuf-text-base wpuf-leading-6">
+                                            {{ (field.type === 'shortcode' || field.template === 'shortcode' || field.input_type === 'shortcode') ? (field.shortcode || getFieldPlaceholder(field.type)) : (field.placeholder || getFieldPlaceholder(field.type)) }}
+                                        </div>
                                     </div>
 
                                     <!-- Fallback for unknown field types -->

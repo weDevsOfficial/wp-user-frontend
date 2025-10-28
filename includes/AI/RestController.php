@@ -700,6 +700,11 @@ class RestController extends WP_REST_Controller {
                 'success' => true,
                 'form_id' => $form_id,
                 'form_type' => $form_type,
+                'form_data' => [
+                    'wpuf_fields' => $wpuf_fields,
+                    'form_title' => $form_data['form_title'],
+                    'form_description' => $form_data['form_description'] ?? ''
+                ],
                 'edit_url' => admin_url("admin.php?page={$page}&action=edit&id={$form_id}"),
                 'list_url' => admin_url("admin.php?page={$list_page}"),
                 'message' => __('Form created successfully', 'wp-user-frontend')
@@ -1637,16 +1642,17 @@ class RestController extends WP_REST_Controller {
                 }
             }
 
-            // Handle shortcode: Auto-populate missing required properties and validate format
+            // Handle shortcode: Validate format and ensure square brackets
             if ($field['input_type'] === 'shortcode' || $field['template'] === 'shortcode') {
-                if (!isset($field['shortcode']) || empty($field['shortcode'])) {
-                    $field['shortcode'] = '[custom_content]';
-                } else {
+                if (isset($field['shortcode']) && !empty($field['shortcode'])) {
                     // Ensure shortcode has proper format with square brackets
                     $shortcode = trim($field['shortcode']);
                     if (!empty($shortcode) && $shortcode[0] !== '[') {
                         $field['shortcode'] = "[$shortcode]";
                     }
+                } else {
+                    // FALLBACK: If still empty after all processing, set a placeholder
+                    $field['shortcode'] = '[your_shortcode]';
                 }
             }
 

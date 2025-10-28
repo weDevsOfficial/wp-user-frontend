@@ -497,8 +497,24 @@
                                         <div class="wpuf-text-blue-600 wpuf-text-base wpuf-leading-6">{{ field.placeholder || getFieldPlaceholder(field.type) }}</div>
                                     </div>
 
-                                    <!-- WPUF Layout Fields -->
-                                    <div v-else-if="['section_break', 'column_field', 'step_start'].includes(field.type)"
+                                    <!-- WPUF Column Field -->
+                                    <div v-else-if="field.type === 'column_field' || field.template === 'column_field'"
+                                         class="wpuf-form-column-field wpuf-border-2 wpuf-border-dashed wpuf-border-purple-300 wpuf-bg-purple-50 wpuf-rounded-[10px] wpuf-p-4"
+                                    >
+                                        <div class="wpuf-text-purple-600 wpuf-font-medium wpuf-text-center wpuf-mb-3">{{ field.label }}</div>
+                                        <div class="wpuf-column-preview wpuf-flex wpuf-gap-2">
+                                            <div
+                                                v-for="n in getColumnCount(field)"
+                                                :key="n"
+                                                class="wpuf-column-placeholder wpuf-flex-1 wpuf-border wpuf-border-purple-300 wpuf-bg-white wpuf-rounded wpuf-p-3 wpuf-text-center wpuf-text-sm wpuf-text-purple-500"
+                                            >
+                                                {{ __('Column', 'wp-user-frontend') }} {{ n }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- WPUF Section Break and Step Start -->
+                                    <div v-else-if="['section_break', 'step_start'].includes(field.type)"
                                          class="wpuf-form-layout wpuf-border-2 wpuf-border-dashed wpuf-border-purple-300 wpuf-bg-purple-50 wpuf-rounded-[10px] wpuf-p-4 wpuf-text-center"
                                     >
                                         <div class="wpuf-text-purple-600 wpuf-font-medium">{{ field.label }}</div>
@@ -2892,6 +2908,14 @@ What would you like me to help you with?`;
                 'datetime': 'Select date and time'
             };
             return placeholders[fieldType] || 'Enter value...';
+        },
+
+        getColumnCount(field) {
+            // Get the number of columns from field properties
+            // Supports both 'columns' string and number, defaults to 2
+            const columns = parseInt(field.columns) || 2;
+            // CRITICAL: Enforce maximum 3 columns limit - clamp between 1 and 3
+            return Math.max(1, Math.min(3, columns));
         },
 
         getWPUFFieldTypeLabel(fieldType) {

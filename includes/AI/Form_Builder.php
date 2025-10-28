@@ -258,7 +258,22 @@ class Form_Builder {
 
             case 'column_field':
                 if ( ! empty( $field['columns'] ) ) {
-                    $custom_props['columns'] = $field['columns'];
+                    $custom_props['columns'] = intval( $field['columns'] );  // Always integer
+                }
+                if ( ! empty( $field['column_space'] ) ) {
+                    $custom_props['column_space'] = $field['column_space'];
+                }
+                if ( isset( $field['min_column'] ) ) {
+                    $custom_props['min_column'] = intval( $field['min_column'] );  // Always integer
+                }
+                if ( isset( $field['max_column'] ) ) {
+                    $custom_props['max_column'] = intval( $field['max_column'] );  // Always integer
+                }
+                if ( ! empty( $field['inner_columns_size'] ) ) {
+                    $custom_props['inner_columns_size'] = $field['inner_columns_size'];
+                }
+                if ( ! empty( $field['inner_fields'] ) ) {
+                    $custom_props['inner_fields'] = $field['inner_fields'];
                 }
                 break;
 

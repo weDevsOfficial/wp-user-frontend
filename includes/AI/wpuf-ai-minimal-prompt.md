@@ -414,6 +414,80 @@ Include `description`:
 }
 ```
 
+### Column Field:
+⚠️ IMPORTANT: The `column_field` creates a multi-column layout for organizing fields side-by-side.
+
+⚠️ CRITICAL: Maximum 3 columns allowed. Any value above 3 will be automatically limited to 3.
+
+**Basic usage** - Include `columns` (number of columns, 1-3):
+```json
+{
+  "template": "column_field",
+  "label": "Contact Details",
+  "columns": "2"
+}
+```
+
+**With spacing** - Optionally include `column_space` (pixels between columns):
+```json
+{
+  "template": "column_field",
+  "label": "Name Fields",
+  "columns": "2",
+  "column_space": "10"
+}
+```
+
+**How it works:**
+- The column field creates a layout container that can hold other fields
+- **Maximum 3 columns** - values above 3 are automatically clamped to 3
+- Fields are NOT added inside `column_field` when generating via AI
+- In the builder, users drag and drop fields into the columns
+- The AI should only create the column structure, not populate it with fields
+- Columns are automatically sized equally (2 columns = 50% each, 3 columns = 33.33% each)
+- `inner_fields` and `inner_columns_size` are automatically generated - DO NOT include them
+
+**Example scenarios:**
+
+User: "add a 2 column layout"
+```json
+{
+  "template": "column_field",
+  "label": "Two Columns",
+  "columns": "2"
+}
+```
+
+User: "create 3 columns for organizing fields"
+```json
+{
+  "template": "column_field",
+  "label": "Three Column Layout",
+  "columns": "3",
+  "column_space": "15"
+}
+```
+
+User: "add 5 column layout" (invalid - will be clamped to 3)
+```json
+{
+  "template": "column_field",
+  "label": "Layout",
+  "columns": "3"
+}
+```
+Note: Always use 3 as the maximum, never exceed it.
+
+**NEVER do this** (don't try to add fields inside columns or exceed 3 columns):
+```json
+{
+  "template": "column_field",
+  "label": "Columns",
+  "columns": "5",  // ❌ WRONG - exceeds maximum of 3
+  "inner_fields": { ... }  // ❌ WRONG - system handles this
+}
+```
+
 ### Pricing Fields:
 ⚠️ CRITICAL: When you include ANY pricing field (pricing_radio, pricing_checkbox, pricing_dropdown, pricing_multiselect), you MUST also include a `cart_total` field at the end of your fields array.
 

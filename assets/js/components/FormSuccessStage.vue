@@ -977,6 +977,7 @@ export default {
             formDescription: '',
             formSettings: {},
             sessionId: this.generateSessionId(),
+            selectedLanguage: '', // Store the current selected language
             // Resize properties
             chatWidth: 30,
             formWidth: 70,
@@ -2106,7 +2107,8 @@ What would you like me to help you with?`;
                 session_id: this.sessionId,
                 conversation_context: conversationContext,
                 form_type: config.formType || 'post', // Pass form type to API
-                provider: config.provider || 'google'
+                provider: config.provider || 'google',
+                language: this.selectedLanguage || 'English' // Pass selected language to API
                 // Note: temperature and max_tokens are now handled by backend based on model configuration
             };
 
@@ -3053,6 +3055,19 @@ What would you like me to help you with?`;
         this.formFields = this.initializeFormFields();
         this.previousFormFields = [...this.formFields];
 
+        // Initialize language from global config or window object
+        const config = window.wpufAIFormBuilder || {};
+        this.selectedLanguage = config.selectedLanguage || window.wpufSelectedLanguage || 'English';
+
+        // Watch for language changes from global config
+        this.languageCheckInterval = setInterval(() => {
+            const config = window.wpufAIFormBuilder || {};
+            const newLanguage = config.selectedLanguage || window.wpufSelectedLanguage || 'English';
+            if (newLanguage !== this.selectedLanguage) {
+                this.selectedLanguage = newLanguage;
+            }
+        }, 500); // Check every 500ms
+
         // Check screen size
         this.checkScreenSize();
         window.addEventListener('resize', this.checkScreenSize);
@@ -3098,6 +3113,11 @@ What would you like me to help you with?`;
             clearTimeout(timeoutId);
         });
         this.statusTimeouts.clear();
+
+        // Clear language check interval
+        if (this.languageCheckInterval) {
+            clearInterval(this.languageCheckInterval);
+        }
 
         // Remove resize event listener
         window.removeEventListener('resize', this.checkScreenSize);

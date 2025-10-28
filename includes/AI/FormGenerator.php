@@ -215,6 +215,11 @@ class FormGenerator {
     private function generate_with_openai($prompt, $options = []) {
         $context = $options['conversation_context'] ?? [];
         $form_type = $options['form_type'] ?? 'post';
+        $language = $options['language'] ?? 'English';
+
+        // Add language to context for system prompt
+        $context['language'] = $language;
+
         $system_prompt = $this->get_system_prompt($context, $form_type);
 
         // Get model-specific configuration
@@ -396,6 +401,11 @@ class FormGenerator {
     private function generate_with_anthropic($prompt, $options = []) {
         $context = $options['conversation_context'] ?? [];
         $form_type = $options['form_type'] ?? 'post';
+        $language = $options['language'] ?? 'English';
+
+        // Add language to context for system prompt
+        $context['language'] = $language;
+
         $system_prompt = $this->get_system_prompt($context, $form_type);
 
         // Get model-specific configuration
@@ -537,6 +547,11 @@ class FormGenerator {
     private function generate_with_google($prompt, $options = []) {
         $context = $options['conversation_context'] ?? [];
         $form_type = $options['form_type'] ?? 'post';
+        $language = $options['language'] ?? 'English';
+
+        // Add language to context for system prompt
+        $context['language'] = $language;
+
         $system_prompt = $this->get_system_prompt($context, $form_type);
 
         // Get model-specific configuration
@@ -717,6 +732,34 @@ class FormGenerator {
             $system_prompt .= "- Focus on helping users collect content submission data\n";
         }
 
+        // Add language context if provided or extract from user message
+        $target_language = $context['language'] ?? 'English';
+
+        // Extract language from user message if they're requesting conversion/translation
+        if ( ! empty( $context['chat_history'] ) && is_array( $context['chat_history'] ) && count( $context['chat_history'] ) > 0 ) {
+            $last_message = end( $context['chat_history'] );
+            $last_user_message = $last_message['content'] ?? '';
+
+            // Detect language conversion/translation requests
+            if ( preg_match( '/(?:convert|translate|change|make).*?(?:to|in|into)\s+(\w+)/i', $last_user_message, $matches ) ) {
+                $detected_language = ucfirst( strtolower( $matches[1] ) );
+                $target_language = $detected_language;
+            }
+        }
+
+        if ( ! empty( $target_language ) && $target_language !== 'English' ) {
+            $system_prompt .= "\n\n## TARGET LANGUAGE\n";
+            $system_prompt .= "**CRITICAL: The user has selected '{$target_language}' as their target language.**\n";
+            $system_prompt .= "- Generate ALL field labels in {$target_language}\n";
+            $system_prompt .= "- Generate ALL field placeholders in {$target_language}\n";
+            $system_prompt .= "- Generate ALL field help text in {$target_language}\n";
+            $system_prompt .= "- Generate ALL dropdown/radio/checkbox options in {$target_language}\n";
+            $system_prompt .= "- Generate form_title and form_description in {$target_language}\n";
+            $system_prompt .= "- When adding new fields, use {$target_language} for all text content\n";
+            $system_prompt .= "- Even if the user's message is in English, generate field content in {$target_language}\n";
+            $system_prompt .= "- This is a language conversion request - update ALL existing field labels to {$target_language}\n\n";
+        }
+
         // Add conversation context if provided
         if ( ! empty( $context ) ) {
             $system_prompt .= "\n\n## CURRENT CONVERSATION CONTEXT\n";
@@ -733,7 +776,7 @@ class FormGenerator {
             if ( isset( $context['modification_requested'] ) ) {
                 $modification_requested = (bool) $context['modification_requested'];
             } else {
-                $modification_keywords = [ 'edit', 'modify', 'update', 'change', 'add', 'remove', 'delete', 'replace' ];
+                $modification_keywords = [ 'edit', 'modify', 'update', 'change', 'add', 'remove', 'delete', 'replace', 'convert', 'translate', 'make' ];
                 foreach ( $modification_keywords as $keyword ) {
                     if ( false !== stripos( $last_user_message, $keyword ) ) {
                         $modification_requested = true;

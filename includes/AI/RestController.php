@@ -250,6 +250,7 @@ class RestController extends WP_REST_Controller {
         $provider = $request->get_param('provider');
         $temperature = $request->get_param('temperature');
         $max_tokens = $request->get_param('max_tokens');
+        $language = $request->get_param('language') ?? 'English';
 
         // Rate limiting removed - AI provider handles their own limits
 
@@ -269,7 +270,8 @@ class RestController extends WP_REST_Controller {
                 'form_type' => $form_type,
                 'provider' => $provider,
                 'temperature' => $temperature,
-                'max_tokens' => $max_tokens
+                'max_tokens' => $max_tokens,
+                'language' => $language
             ];
 
             $result = $this->form_generator->generate_form($prompt, $options);

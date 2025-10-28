@@ -1364,6 +1364,49 @@ class RestController extends WP_REST_Controller {
                 }
             }
 
+            // CRITICAL ENFORCEMENT: Ensure column_field ALWAYS has min_column and max_column
+            // This fixes old AI-generated forms that were created before these properties were added
+            // Matches normal builder behavior where these are REQUIRED for slider to work
+            if (($field['template'] ?? '') === 'column_field' || ($field['input_type'] ?? '') === 'column_field') {
+                // Enforce columns as integer
+                if (isset($field['columns'])) {
+                    $field['columns'] = intval($field['columns']);
+                    // Clamp between 1 and 3
+                    if ($field['columns'] < 1) {
+                        $field['columns'] = 1;
+                    } elseif ($field['columns'] > 3) {
+                        $field['columns'] = 3;
+                    }
+                } else {
+                    $field['columns'] = 2; // Default
+                }
+
+                // HARD ENFORCE: Always set min_column and max_column
+                $field['min_column'] = 1;
+                $field['max_column'] = 3;
+
+                // Ensure column_space exists
+                if (!isset($field['column_space']) || $field['column_space'] === '') {
+                    $field['column_space'] = '5';
+                }
+
+                // Ensure inner_fields and inner_columns_size are properly structured
+                if (!isset($field['inner_fields']) || !is_array($field['inner_fields'])) {
+                    $field['inner_fields'] = [];
+                    for ($i = 1; $i <= $field['columns']; $i++) {
+                        $field['inner_fields']['column-' . $i] = [];
+                    }
+                }
+
+                if (!isset($field['inner_columns_size']) || !is_array($field['inner_columns_size'])) {
+                    $field['inner_columns_size'] = [];
+                    $column_width = 100 / $field['columns'];
+                    for ($i = 1; $i <= $field['columns']; $i++) {
+                        $field['inner_columns_size']["column-$i"] = number_format($column_width, 2, '.', '') . '%';
+                    }
+                }
+            }
+
             // Handle address_field: Auto-populate missing address structure
             if (($field['input_type'] === 'address_field' || $field['template'] === 'address_field') && !isset($field['address'])) {
                 // AI didn't include the required address structure, add it as fallback

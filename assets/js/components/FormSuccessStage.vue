@@ -1292,6 +1292,7 @@ export default {
                     size: field.size || '40',
                     width: field.width || 'large',
                     css: field.css || '',
+                    shortcode: field.shortcode || '', // CRITICAL: Preserve shortcode property for shortcode fields
                     wpuf_cond: field.wpuf_cond || {
                         condition_status: 'no',
                         cond_field: [],

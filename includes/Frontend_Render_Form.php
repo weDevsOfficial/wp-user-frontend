@@ -212,11 +212,17 @@ class Frontend_Render_Form {
                 case 'layout2':
                     wp_enqueue_style( 'wpuf-reg-template-2' );
                     break;
+
                 case 'layout3':
                     wp_enqueue_style( 'wpuf-reg-template-3' );
                     break;
+
                 case 'layout4':
                     wp_enqueue_style( 'wpuf-reg-template-4' );
+                    break;
+
+                case 'layout5':
+                    wp_enqueue_style( 'wpuf-reg-template-5' );
                     break;
 
                 default:

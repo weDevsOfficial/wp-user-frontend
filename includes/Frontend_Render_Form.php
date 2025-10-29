@@ -208,12 +208,27 @@ class Frontend_Render_Form {
 
         if ( 'wpuf_profile' === $form->data->post_type ) {
             $layout = isset( $this->form_settings['profile_form_layout'] ) ? $this->form_settings['profile_form_layout'] : 'layout1';
+            switch ( $layout ) {
+                case 'layout2':
+                    wp_enqueue_style( 'wpuf-reg-template-2' );
+                    break;
+                case 'layout3':
+                    wp_enqueue_style( 'wpuf-reg-template-3' );
+                    break;
+                case 'layout4':
+                    wp_enqueue_style( 'wpuf-reg-template-4' );
+                    break;
+
+                default:
+                    wp_enqueue_style( 'wpuf-reg-template-1' );
+                    break;
+            }
         } else {
             $layout = isset( $this->form_settings['form_layout'] ) ? $this->form_settings['form_layout'] : 'layout1';
-        }
 
-        if ( ! empty( $layout ) ) {
-            wp_enqueue_style( 'wpuf-' . $layout );
+            if ( ! empty( $layout ) ) {
+                wp_enqueue_style( 'wpuf-' . $layout );
+            }
         }
 
         if ( ! is_user_logged_in() && ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' !== $this->form_settings['post_permission'] ) ) {

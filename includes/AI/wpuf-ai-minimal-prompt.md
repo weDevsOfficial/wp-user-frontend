@@ -149,6 +149,14 @@ NEVER include properties with null, empty string, or undefined values.
 - `really_simple_captcha` - Simple CAPTCHA
 - `math_captcha` - Math CAPTCHA
 
+### Pricing Fields (Pro):
+- `price_field` - Price input field (allows user to enter custom amount)
+- `pricing_radio` - Radio button pricing options
+- `pricing_checkbox` - Checkbox pricing options (multiple selections)
+- `pricing_dropdown` - Dropdown pricing options
+- `pricing_multiselect` - Multi-select pricing options
+- `cart_total` - Cart total display (REQUIRED when using any pricing field)
+
 ## MINIMAL JSON STRUCTURE:
 
 ```json
@@ -465,7 +473,7 @@ Note: Always use 3 as the maximum, never exceed it.
 ```
 
 ### Pricing Fields:
-⚠️ CRITICAL: When you include ANY pricing field (pricing_radio, pricing_checkbox, pricing_dropdown, pricing_multiselect), you MUST also include a `cart_total` field at the end of your fields array.
+⚠️ CRITICAL: When you include ANY pricing field (price_field, pricing_radio, pricing_checkbox, pricing_dropdown, pricing_multiselect), you MUST also include a `cart_total` field at the end of your fields array.
 
 ⚠️ IMPORTANT: When adding pricing fields:
 - If user specifies prices, use those exact values

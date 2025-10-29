@@ -1468,6 +1468,30 @@ class Field_Templates {
         ], self::get_common() );
     }
 
+    private static function get_price_field_template( $label, $field_id ) {
+        return array_merge( [
+            'id' => $field_id,
+            'input_type' => 'price_field',
+            'template' => 'price_field',
+            'required' => 'no',
+            'label' => $label,
+            'name' => self::name( $label ),
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'price_input_mode' => 'user_input',
+            'price_hidden' => 'no',
+            'price_min' => '0',
+            'price_max' => '',
+            'currency_symbol' => '$',
+            'default' => '',
+            'placeholder' => 'Enter amount',
+            'show_in_post' => 'yes',
+            'hide_field_label' => 'no',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
     private static function get_cart_total_template( $label, $field_id ) {
         return array_merge( [
             'id' => $field_id,

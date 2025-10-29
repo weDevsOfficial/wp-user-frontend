@@ -65,10 +65,6 @@ class AI_Form_Handler {
         // Determine form type
         $form_type = $this->get_form_type_from_referer();
 
-        // Debug: Log the detected form type
-        error_log( '🔍 AI_Form_Handler::handle_ai_form_template - Detected Form Type: ' . $form_type );
-        error_log( '🔍 AI_Form_Handler::handle_ai_form_template - Action: ' . ( isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : 'none' ) );
-
         // Remove admin notices for this page
         remove_all_actions( 'admin_notices' );
         remove_all_actions( 'all_admin_notices' );

@@ -203,9 +203,6 @@ class Admin {
      * @return void
      */
     public function enqueue_ai_form_builder_scripts( $form_type = 'post' ) {
-        // Debug: Log form type
-        error_log( '🔍 WPUF AI Form Builder - Form Type: ' . $form_type );
-
         wp_enqueue_script( 'wpuf-ai-form-builder' );
         wp_enqueue_style( 'wpuf-ai-form-builder' );
 

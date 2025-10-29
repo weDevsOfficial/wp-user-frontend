@@ -795,7 +795,6 @@ function wpuf_ai_api_key_field( $args ) {
                 var newLink = providerLinks[provider] || providerLinks['openai'];
                 apiKeyLink.prop('href', newLink);
                 apiKeyLink.attr('href', newLink);
-                console.log('[Settings] Updated API key link for', provider, 'to:', newLink);
             }
         }
 

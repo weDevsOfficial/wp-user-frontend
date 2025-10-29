@@ -676,8 +676,8 @@ class WeDevs_Settings_API {
         ?>
         <script>
             jQuery(document).ready(function($) {
-                //Initiate Color Picker
-                $('.wp-color-picker-field').wpColorPicker();
+                //Initiate Color Picker (skip disabled fields for pro preview)
+                $('.wp-color-picker-field:not([disabled])').wpColorPicker();
 
                 // Switches option sections
                 $('.group').hide();

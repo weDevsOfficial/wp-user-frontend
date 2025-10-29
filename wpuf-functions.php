@@ -5706,3 +5706,93 @@ if ( ! function_exists( 'wpuf_field_profile_photo_allowed_mimes' ) ) {
         return apply_filters( 'wpuf_field_profile_photo_allowed_mimes', $profile_photo_mimes );
     }
 }
+
+/**
+ * Get login layout options for settings
+ *
+ * @since 4.1.0
+ *
+ * @return array Layout options with labels and image URLs
+ */
+function wpuf_get_login_layout_options() {
+    $image_url = WPUF_ASSET_URI . '/images/login-layouts/';
+
+    $layouts = [
+        'layout1' => __( 'Layout 1 - Classic', 'wp-user-frontend' ),
+        'layout2' => __( 'Layout 2 - Modern Dark', 'wp-user-frontend' ),
+        'layout3' => __( 'Layout 3 - Minimal', 'wp-user-frontend' ),
+        'layout4' => __( 'Layout 4 - Bordered', 'wp-user-frontend' ),
+        'layout5' => __( 'Layout 5 - Rounded', 'wp-user-frontend' ),
+        'layout6' => __( 'Layout 6 - Clean', 'wp-user-frontend' ),
+        'layout7' => __( 'Layout 7 - Premium', 'wp-user-frontend' ),
+    ];
+
+    $options = [];
+    foreach ( $layouts as $key => $label ) {
+        $options[ $key ] = [
+            'label' => $label,
+            'image' => $image_url . $key . '.svg',
+        ];
+    }
+
+    return $options;
+}
+
+/**
+ * Render login layout radio image field
+ *
+ * @since 4.1.0
+ *
+ * @param array $args Field arguments
+ */
+function wpuf_render_login_layout_field( $args ) {
+    if ( empty( $args['section'] ) || empty( $args['id'] ) || empty( $args['options'] ) ) {
+        return;
+    }
+
+    $value   = get_option( $args['section'] );
+    $current = $value[ $args['id'] ] ?? $args['std'] ?? '';
+    $disabled = ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ? 'disabled' : '';
+    $wrapper_class = ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ? 'pro-preview-html' : '';
+
+    echo '<fieldset>';
+
+    printf( '<div class="wpuf-radio-image-wrapper %s">', esc_attr( $wrapper_class ) );
+
+    foreach ( $args['options'] as $key => $option ) {
+        $checked = checked( $current, $key, false );
+        $label   = esc_html( $option['label'] ?? $key );
+        $image   = esc_url( $option['image'] ?? '' );
+
+        printf(
+            '<div class="wpuf-radio-image-option">
+                <input type="radio" id="%1$s_%2$s" name="%3$s[%1$s]" value="%2$s" %4$s %5$s>
+                <label for="%1$s_%2$s" title="%6$s">',
+            esc_attr( $args['id'] ),
+            esc_attr( $key ),
+            esc_attr( $args['section'] ),
+            $checked,
+            $disabled,
+            $label
+        );
+
+        if ( $image ) {
+            printf( '<img src="%s" alt="%s">', $image, $label );
+        }
+
+        echo '</label></div>';
+    }
+
+    // Add pro preview overlay inside the wrapper
+    if ( ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ) {
+        echo wpuf_get_pro_preview_html();
+    }
+
+    echo '</div>';
+
+    if ( ! empty( $args['desc'] ) ) {
+        printf( '<p class="description">%s</p>', wp_kses_post( $args['desc'] ) );
+    }
+
+    echo '</fieldset>';
+}

@@ -1306,6 +1306,40 @@ export default {
                     }
                 };
 
+                // CRITICAL FIX: For profile fields, ALWAYS ensure name and meta_key are hardcoded
+                // These are fixed values and should never be overridden (matches PHP backend logic)
+                const template = convertedField.template || '';
+
+                if (template === 'gender' || template === 'gender_field') {
+                    convertedField.name = 'wpuf_gender';
+                    convertedField.meta_key = 'wpuf_gender';
+                }
+
+                if (template === 'facebook_url') {
+                    convertedField.name = 'wpuf_social_facebook';
+                    convertedField.meta_key = 'wpuf_social_facebook';
+                }
+
+                if (template === 'twitter_url') {
+                    convertedField.name = 'wpuf_social_twitter';
+                    convertedField.meta_key = 'wpuf_social_twitter';
+                }
+
+                if (template === 'instagram_url') {
+                    convertedField.name = 'wpuf_social_instagram';
+                    convertedField.meta_key = 'wpuf_social_instagram';
+                }
+
+                if (template === 'linkedin_url') {
+                    convertedField.name = 'wpuf_social_linkedin';
+                    convertedField.meta_key = 'wpuf_social_linkedin';
+                }
+
+                if (template === 'profile_photo') {
+                    convertedField.name = 'wpuf_profile_photo';
+                    convertedField.meta_key = 'wpuf_profile_photo';
+                }
+
                 // Add textarea-specific attributes
                 if (field.template === 'textarea' || field.template === 'post_content' || field.template === 'post_excerpt' || field.type === 'textarea') {
                     convertedField.rows = field.rows || '5';

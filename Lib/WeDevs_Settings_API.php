@@ -461,7 +461,20 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo wp_kses( $html, array('input' => ['type' => [],'class' => [],'id' => [],'name' => [],'value' => [],'disabled' => [],'data-default-color' => []], 'p' => ['class' => []], 'div' => ['class' => []], 'a' => ['href' => [],'target' => [],'class' => []], 'span' => ['class' => []], 'svg' => ['width' => [],'height' => [],'viewBox' => [],'fill' => [],'xmlns' => [],],'path' => ['d' => [], 'fill' => []]) );
+        // Allow input tags with necessary attributes for color picker fields
+        // wp_kses_post() strips <input> tags by default, so we need to explicitly allow them
+        $allowed_html = wp_kses_allowed_html( 'post' );
+        $allowed_html['input'] = [
+            'type'               => true,
+            'class'              => true,
+            'id'                 => true,
+            'name'               => true,
+            'value'              => true,
+            'data-default-color' => true,
+            'disabled'           => true,
+        ];
+
+        echo wp_kses( $html, $allowed_html );
     }
 
     /**

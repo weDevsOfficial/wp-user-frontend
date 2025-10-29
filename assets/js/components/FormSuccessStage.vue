@@ -230,8 +230,8 @@
                                         <span class="wpuf-text-gray-400">{{ field.placeholder || field.help || 'Enter text' }}</span>
                                     </div>
 
-                                    <!-- WPUF Dropdown/Select -->
-                                    <div v-else-if="['select', 'dropdown', 'dropdown_field'].includes(getWPUFFieldType(field))" class="wpuf-form-select-container wpuf-relative">
+                                    <!-- WPUF Dropdown/Select (includes Gender Field) -->
+                                    <div v-else-if="['select', 'dropdown', 'dropdown_field', 'gender_field'].includes(getWPUFFieldType(field))" class="wpuf-form-select-container wpuf-relative">
                                         <select
                                             class="wpuf-form-select wpuf-form-input wpuf-border wpuf-border-[#E3E5E8] wpuf-rounded-[10px] wpuf-p-3 wpuf-text-base wpuf-leading-6 wpuf-bg-white wpuf-w-full wpuf-text-gray-700 wpuf-cursor-pointer focus:wpuf-outline-none focus:wpuf-ring-2 focus:wpuf-ring-emerald-500 focus:wpuf-border-emerald-500 wpuf-pr-10"
                                         >
@@ -2065,6 +2065,7 @@ What would you like me to help you with?`;
                             required: field.required === true || field.required === 'yes' ? 'yes' : 'no',
                             label: field.label || 'Field',
                             name: field.name || (field.label ? field.label.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') : `field_${index + 1}`),
+                            meta_key: field.meta_key || '',  // ✅ CRITICAL: Preserve meta_key for fields with fixed meta keys
                             is_meta: this.shouldBeMeta(field.name || field.label) ? 'yes' : 'no',
                             help: field.help_text || field.help || '',
                             css: field.css || '',
@@ -2172,6 +2173,7 @@ What would you like me to help you with?`;
                             required: field.required === true || field.required === 'yes' ? 'yes' : 'no',
                             label: field.label || 'New Field',
                             name: field.name || (field.label ? field.label.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') : `field_${index + 1}`),
+                            meta_key: field.meta_key || '',  // ✅ CRITICAL: Preserve meta_key for fields with fixed meta keys
                             is_meta: this.shouldBeMeta(field.name || field.label) ? 'yes' : 'no',
                             help: field.help_text || field.help || '',
                             css: field.css || '',

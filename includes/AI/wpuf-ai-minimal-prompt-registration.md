@@ -122,8 +122,16 @@ When user requests a registration form or modifications:
 - "display name" → `display_name`
 
 **Profile Images:**
-- "avatar", "profile picture", "profile pic", "user avatar", "user picture" → `avatar`
-- "profile photo", "photo" → `profile_photo`
+⚠️ IMPORTANT: These are TWO DIFFERENT WPUF fields - do NOT mix them up!
+- "avatar", "user avatar" → `avatar` (WPUF avatar field - for user avatar/gravatar)
+- "profile photo", "profile picture", "profile pic", "photo" → `profile_photo` (WPUF Pro - Custom profile photo upload with meta_key: wpuf_profile_photo)
+
+**Key Difference:**
+- `avatar` = WPUF avatar field (name: 'avatar', no custom meta_key, uses WP avatar system)
+- `profile_photo` = WPUF Pro profile photo field (name: 'wpuf_profile_photo', meta_key: 'wpuf_profile_photo', custom upload)
+
+**When user says "profile photo", "profile picture", or "photo" → ALWAYS use `profile_photo` template (NOT avatar!)**
+**When user says "avatar" or "user avatar" → use `avatar` template**
 
 **Social Media Fields:**
 - "facebook", "fb" → `facebook_url`
@@ -136,7 +144,7 @@ When user requests a registration form or modifications:
 - "address", "location" → `address_field` (Pro)
 - "country" → `country_list_field` (Pro)
 - "date", "birthday", "birth date" → `date_field` (Pro)
-- "gender", "sex" → `radio_field` with label "Gender" and options: {"male": "Male", "female": "Female", "other": "Other", "prefer_not_to_say": "Prefer not to say"}
+- "gender", "sex" → `gender` (Pro - ⚠️ MUST use `gender` template, NOT radio_field or dropdown_field. This field has predefined options: Male, Female, Non-binary, Prefer not to say)
 - "age group", "age range" → `radio_field` or `dropdown_field` with age range options
 - "custom text field" → `text_field`
 - "dropdown", "select" → `dropdown_field`
@@ -159,8 +167,16 @@ When user requests a registration form or modifications:
 - `display_name` - Display name
 
 ### Profile Images:
-- `avatar` - User avatar/profile picture
-- `profile_photo` - Profile photo
+⚠️ THESE ARE TWO DIFFERENT WPUF FIELDS:
+- `avatar` - WPUF avatar field (for user avatar/gravatar, name: 'avatar')
+- `profile_photo` - WPUF Pro profile photo upload field (name: 'wpuf_profile_photo', meta_key: 'wpuf_profile_photo')
+
+**When to use which:**
+- User says "avatar" or "user avatar" → use `avatar`
+- User says "profile photo", "profile picture", "profile pic", or "photo" → use `profile_photo`
+
+### Profile Information Fields (Pro):
+- `gender` - Predefined gender dropdown (Male, Female, Non-binary, Prefer not to say)
 
 ### Social Media Fields:
 - `facebook_url` - Facebook profile
@@ -220,6 +236,10 @@ When user requests a registration form or modifications:
       "template": "last_name",
       "label": "Last Name",
       "required": "yes"
+    },
+    {
+      "template": "gender",
+      "label": "Gender"
     },
     {
       "template": "user_email",
@@ -329,6 +349,42 @@ Examples with meaningful options:
   }
 }
 ```
+
+**Gender Field (Pro):**
+⚠️ IMPORTANT: For gender field, DO NOT add `options` - the field has predefined options (Male, Female, Non-binary, Prefer not to say).
+```json
+{
+  "template": "gender",
+  "label": "Gender",
+  "required": "no"
+}
+```
+
+**Avatar Field vs Profile Photo Field:**
+⚠️ CRITICAL: These are DIFFERENT WPUF fields - do NOT confuse them!
+
+**Avatar Field (WPUF avatar field):**
+```json
+{
+  "template": "avatar",
+  "label": "Avatar"
+}
+```
+- Use when user says: "avatar", "user avatar"
+- WPUF field with name: 'avatar'
+- No custom meta_key (uses WP avatar/gravatar system)
+
+**Profile Photo Field (WPUF Pro - Custom upload):**
+```json
+{
+  "template": "profile_photo",
+  "label": "Profile Photo"
+}
+```
+- Use when user says: "profile photo", "profile picture", "profile pic", "photo"
+- WPUF Pro field with name: 'wpuf_profile_photo'
+- Has meta_key: wpuf_profile_photo
+- Stores uploaded photo as user meta
 
 **Always provide 3-5 realistic options relevant to the field label and form purpose.**
 - `selected` - Default selected option

@@ -172,6 +172,60 @@ class Form_Builder {
                 }
                 break;
 
+            case 'gender_field':
+                // Preserve gender field options and first option text
+                if ( ! empty( $field['options'] ) ) {
+                    $custom_props['options'] = $field['options'];
+                }
+                if ( ! empty( $field['first'] ) ) {
+                    $custom_props['first'] = $field['first'];
+                }
+                if ( ! empty( $field['selected'] ) ) {
+                    $custom_props['selected'] = $field['selected'];
+                }
+                // Preserve name for gender field (always 'wpuf_gender')
+                if ( ! empty( $field['name'] ) ) {
+                    $custom_props['name'] = $field['name'];
+                }
+                // Preserve meta_key for gender field (always 'wpuf_gender')
+                if ( ! empty( $field['meta_key'] ) ) {
+                    $custom_props['meta_key'] = $field['meta_key'];
+                }
+                break;
+
+            case 'facebook_url':
+            case 'twitter_url':
+            case 'instagram_url':
+            case 'linkedin_url':
+                // Preserve name and meta_key for social media fields (fixed values)
+                if ( ! empty( $field['name'] ) ) {
+                    $custom_props['name'] = $field['name'];
+                }
+                if ( ! empty( $field['meta_key'] ) ) {
+                    $custom_props['meta_key'] = $field['meta_key'];
+                }
+                // Preserve social media specific properties
+                if ( ! empty( $field['open_in_new_window'] ) ) {
+                    $custom_props['open_in_new_window'] = $field['open_in_new_window'];
+                }
+                if ( ! empty( $field['nofollow'] ) ) {
+                    $custom_props['nofollow'] = $field['nofollow'];
+                }
+                if ( ! empty( $field['username_validation'] ) ) {
+                    $custom_props['username_validation'] = $field['username_validation'];
+                }
+                break;
+
+            case 'profile_photo':
+                // Preserve name and meta_key for profile_photo field (fixed value)
+                if ( ! empty( $field['name'] ) ) {
+                    $custom_props['name'] = $field['name'];
+                }
+                if ( ! empty( $field['meta_key'] ) ) {
+                    $custom_props['meta_key'] = $field['meta_key'];
+                }
+                break;
+
             case 'image_upload':
             case 'file_upload':
             case 'featured_image':

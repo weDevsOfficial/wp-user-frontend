@@ -30,6 +30,9 @@ class Field_Templates {
         $field_mapping = [
             'biography' => class_exists( 'WPUF_PRO' ) ? 'user_bio' : 'textarea_field',
             'bio' => class_exists( 'WPUF_PRO' ) ? 'user_bio' : 'textarea_field',
+            'avatar' => 'user_avatar',
+            'profile_photo' => 'profile_photo',
+            'gender' => 'gender',
         ];
 
         // Apply field mapping if exists
@@ -67,6 +70,41 @@ class Field_Templates {
             // Merge filtered custom props - AI properties override template defaults only if non-empty
             // This ensures 'required', 'placeholder', 'options', etc. from AI take precedence
             $field = array_merge( $field, $filtered_custom_props );
+
+            // CRITICAL FIX: For gender_field, ALWAYS ensure name and meta_key are 'wpuf_gender'
+            // These are fixed values and should never be overridden by custom props
+            if ( $template === 'gender' || $template === 'gender_field' ) {
+                $field['name'] = 'wpuf_gender';
+                $field['meta_key'] = 'wpuf_gender';
+            }
+
+            // CRITICAL FIX: For social media fields, ALWAYS ensure name and meta_key are hardcoded
+            // These are fixed values and should never be overridden by custom props
+            if ( $template === 'facebook_url' ) {
+                $field['name'] = 'wpuf_social_facebook';
+                $field['meta_key'] = 'wpuf_social_facebook';
+            }
+
+            if ( $template === 'twitter_url' ) {
+                $field['name'] = 'wpuf_social_twitter';
+                $field['meta_key'] = 'wpuf_social_twitter';
+            }
+
+            if ( $template === 'instagram_url' ) {
+                $field['name'] = 'wpuf_social_instagram';
+                $field['meta_key'] = 'wpuf_social_instagram';
+            }
+
+            if ( $template === 'linkedin_url' ) {
+                $field['name'] = 'wpuf_social_linkedin';
+                $field['meta_key'] = 'wpuf_social_linkedin';
+            }
+
+            // CRITICAL FIX: For profile_photo, ALWAYS ensure name and meta_key are hardcoded
+            if ( $template === 'profile_photo' ) {
+                $field['name'] = 'wpuf_profile_photo';
+                $field['meta_key'] = 'wpuf_profile_photo';
+            }
 
             // CRITICAL FIX: For shortcode template, ensure shortcode property always exists
             if ( $template === 'shortcode' && empty( $field['shortcode'] ) ) {
@@ -1200,7 +1238,7 @@ class Field_Templates {
             'template' => 'avatar',
             'required' => 'no',
             'label' => $label,
-            'name' => 'user_avatar',
+            'name' => 'avatar',
             'is_meta' => 'no',
             'help' => '',
             'css' => '',
@@ -1209,7 +1247,7 @@ class Field_Templates {
             'default' => '',
             'size' => '40',
             'button_label' => 'Select Image',
-            'max_size' => '2048',
+            'max_size' => '1024',
             'count' => '1',
             'readonly' => 'no',
             'width' => 'large',
@@ -1225,6 +1263,7 @@ class Field_Templates {
             'required' => 'no',
             'label' => $label,
             'name' => 'wpuf_profile_photo',
+            'meta_key' => 'wpuf_profile_photo',
             'is_meta' => 'no',
             'help' => '',
             'css' => '',
@@ -1240,6 +1279,38 @@ class Field_Templates {
         ], self::get_common() );
     }
 
+    private static function get_gender_template( $label, $field_id ) {
+        return array_merge( [
+            'type' => 'gender',
+            'id' => $field_id,
+            'input_type' => 'gender_field',
+            'template' => 'gender_field',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'wpuf_gender',
+            'meta_key' => 'wpuf_gender',
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'placeholder' => '',
+            'default' => '',
+            'size' => '40',
+            'options' => [
+                'male' => 'Male',
+                'female' => 'Female',
+                'non_binary' => 'Non-binary',
+                'prefer_not_say' => 'Prefer not to say',
+            ],
+            'first' => 'Select your gender',
+            'selected' => '',
+            'show_in_post' => 'yes',
+            'hide_field_label' => 'no',
+            'readonly' => 'no',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+
     // ========== SOCIAL MEDIA FIELDS ==========
 
     private static function get_facebook_url_template( $label, $field_id ) {
@@ -1251,6 +1322,7 @@ class Field_Templates {
             'required' => 'no',
             'label' => $label,
             'name' => 'wpuf_social_facebook',
+            'meta_key' => 'wpuf_social_facebook',
             'is_meta' => 'yes',
             'help' => 'Enter your Facebook username or full URL',
             'css' => '',
@@ -1275,6 +1347,7 @@ class Field_Templates {
             'required' => 'no',
             'label' => $label,
             'name' => 'wpuf_social_twitter',
+            'meta_key' => 'wpuf_social_twitter',
             'is_meta' => 'yes',
             'help' => 'Enter your X (Twitter) username (without @) or full URL',
             'css' => '',
@@ -1299,6 +1372,7 @@ class Field_Templates {
             'required' => 'no',
             'label' => $label,
             'name' => 'wpuf_social_instagram',
+            'meta_key' => 'wpuf_social_instagram',
             'is_meta' => 'yes',
             'help' => 'Enter your Instagram username or full URL',
             'css' => '',
@@ -1323,6 +1397,7 @@ class Field_Templates {
             'required' => 'no',
             'label' => $label,
             'name' => 'wpuf_social_linkedin',
+            'meta_key' => 'wpuf_social_linkedin',
             'is_meta' => 'yes',
             'help' => 'Enter your LinkedIn username or full URL',
             'css' => '',

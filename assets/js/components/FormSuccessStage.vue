@@ -2642,6 +2642,13 @@ What would you like me to help you with?`;
                 'audio_upload',
                 'video_upload',
 
+                // Pricing fields (Pro)
+                'pricing_radio',
+                'pricing_checkbox',
+                'pricing_dropdown',
+                'pricing_multiselect',
+                'cart_total',
+
                 // Special fields (Pro)
                 'ratings', 'rating',
                 'linear_scale',
@@ -2736,8 +2743,10 @@ What would you like me to help you with?`;
 
                 // Location
                 'address_field': 'Address',
+                'address': 'Address',
                 'country_list_field': 'Country List',
-                'google_map': 'Google Maps',
+                'country_list': 'Country List',
+                'google_map': 'Google Map',
                 'map': 'Google Map',
 
                 // Selection
@@ -2754,39 +2763,235 @@ What would you like me to help you with?`;
                 'video_upload': 'Video Upload',
                 'video': 'Video Upload',
 
+                // Pricing
+                'pricing_radio': 'Pricing Radio',
+                'pricing_checkbox': 'Pricing Checkbox',
+                'pricing_dropdown': 'Pricing Dropdown',
+                'pricing_multiselect': 'Pricing Multi Select',
+                'cart_total': 'Cart Total',
+
                 // Special
-                'ratings': 'Star Rating',
-                'rating': 'Star Rating',
+                'ratings': 'Ratings',
+                'rating': 'Ratings',
                 'linear_scale': 'Linear Scale',
                 'qr_code': 'QR Code',
                 'embed': 'Embed',
-                'shortcode': 'Code',
+                'shortcode': 'Shortcode',
                 'action_hook': 'Action Hook',
                 'toc': 'Terms & Conditions',
                 'terms_conditions': 'Terms & Conditions',
-                'step_start': 'Multi-step Start',
-                'multistep': 'Multi-step Start',
-                'repeat_field': 'Repeatable Field',
+                'column_field': 'Column Field',
+                'column': 'Column Field',
+                'step_start': 'Multi-Step Start',
+                'multistep': 'Multi-Step Start',
+                'repeat_field': 'Repeat Field',
                 'repeater': 'Repeat Field',
-                'really_simple_captcha': 'Simple Captcha',
+                'really_simple_captcha': 'Really Simple Captcha',
                 'captcha': 'Captcha',
                 'recaptcha': 'reCAPTCHA',
                 'recaptcha_v2': 'reCAPTCHA',
                 'recaptcha_v3': 'reCAPTCHA v3'
             };
 
+            // Get unique pro field types - check type, input_type, and template
+            const getFieldDisplayType = (field) => {
+                // Try to get the most specific identifier for the field
+                return field.type || field.input_type || field.template || 'Unknown Field';
+            };
 
-            // Get unique pro fields in this form
-            const proFieldsInForm = this.formFields
-                .filter(field => proFieldsMap[field.type])
-                .map(field => `<li>${field.label} <span class="field-type">${proFieldsMap[field.type]}</span></li>`)
-                .slice(0, 5); // Show max 5 fields
+            const uniqueProFields = [...new Set(proFields.map(field => getFieldDisplayType(field)))];
+            const displayFields = uniqueProFields.slice(0, 4).map(type => {
+                // Try to find a label for any of the possible type values
+                const typeLower = type.toLowerCase();
+                return {
+                    fieldKey: typeLower,
+                    label: fieldTypeLabels[typeLower] || fieldTypeLabels[type] || type
+                };
+            });
 
-            if (proFieldsInForm.length === 0) {
-                return '<li>No pro fields detected</li>';
+            // Create modal overlay
+            const modalOverlay = document.createElement('div');
+            modalOverlay.className = 'wpuf-pro-modal-overlay';
+            modalOverlay.innerHTML = `
+                <div class="wpuf-pro-modal">
+                    <div class="wpuf-pro-modal-header">
+                        <svg width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="110" height="110" rx="55" fill="#D1FAE5"/>
+                            <path d="M66.0557 51.0931C66.0594 51.1593 66.0545 51.2268 66.0379 51.2937L64.5576 59.0337C64.4829 59.333 64.2155 59.5434 63.9082 59.545L55.0259 59.59H55.0225H46.1402C45.8312 59.59 45.5619 59.3789 45.4873 59.0781L44.0069 51.3156C43.9899 51.2468 43.9849 51.1775 43.9892 51.1096C43.4166 50.9286 43 50.391 43 49.7575C43 48.9759 43.6339 48.34 44.4131 48.34C45.1923 48.34 45.8262 48.9759 45.8262 49.7575C45.8262 50.1977 45.6251 50.5915 45.3103 50.8517L47.1637 52.725C47.6321 53.1985 48.2822 53.4699 48.9472 53.4699C49.7335 53.4699 50.4832 53.0953 50.9553 52.4678L54.0012 48.4192C53.7454 48.1627 53.5869 47.8083 53.5869 47.4175C53.5869 46.6358 54.2208 46 55 46C55.7792 46 56.4131 46.6358 56.4131 47.4175C56.4131 47.7966 56.2631 48.1406 56.0206 48.3953L56.0232 48.3984L59.0471 52.4581C59.519 53.0917 60.2714 53.47 61.0599 53.47C61.731 53.47 62.3621 53.2078 62.8367 52.7317L64.7017 50.8608C64.3803 50.6007 64.1738 50.2031 64.1738 49.7575C64.1738 48.9759 64.8077 48.34 65.5869 48.34C66.3661 48.34 67 48.9759 67 49.7575C67 50.3741 66.6048 50.8985 66.0557 51.0931ZM64.4131 61.705C64.4131 61.3322 64.1118 61.03 63.7402 61.03H46.3346C45.963 61.03 45.6617 61.3322 45.6617 61.705V63.325C45.6617 63.6978 45.963 64 46.3346 64H63.7402C64.1118 64 64.4131 63.6978 64.4131 63.325V61.705Z" fill="#0F172A"/>
+                        </svg>
+                    </div>
+                    <h2 class="wpuf-pro-modal-title">${this.__('Pro feature detected', 'wp-user-frontend')}</h2>
+                    <p class="wpuf-pro-modal-description">${this.__('Your form includes fields that require WPUF Pro version:', 'wp-user-frontend')}</p>
+                    <div class="wpuf-pro-fields-list">
+                        ${displayFields.map(field => {
+                            const fieldKey = field.fieldKey || field;
+                            const fieldLabel = field.label || field;
+                            const iconUrl = this.getProFieldIcon(fieldKey);
+                            const iconHtml = iconUrl
+                                ? `<img src="${iconUrl}" alt="${fieldLabel}" class="wpuf-pro-field-icon" onerror="this.style.display='none'" />`
+                                : '';
+                            return `
+                            <div class="wpuf-pro-field-item">
+                                ${iconHtml}
+                                <span>${fieldLabel}</span>
+                            </div>
+                        `;
+                        }).join('')}
+                    </div>
+                    <div class="wpuf-pro-modal-buttons">
+                        <button class="wpuf-pro-btn-continue">${this.__('Continue without Pro', 'wp-user-frontend')}</button>
+                        <button class="wpuf-pro-btn-upgrade">${this.__('Upgrade to Pro', 'wp-user-frontend')}</button>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(modalOverlay);
+
+            // Add styles if not already present
+            if (!document.getElementById('wpuf-pro-modal-styles')) {
+                const style = document.createElement('style');
+                style.id = 'wpuf-pro-modal-styles';
+                style.textContent = `
+                    .wpuf-pro-modal-overlay {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background: rgba(0, 0, 0, 0.5);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        z-index: 999999;
+                        animation: fadeIn 0.3s ease;
+                    }
+                    .wpuf-pro-modal {
+                        background: white;
+                        border-radius: 8px;
+                        width: 660px;
+                        max-height: 702px;
+                        padding: 40px;
+                        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+                        animation: slideUp 0.3s ease;
+                        position: relative;
+                        text-align: center;
+                    }
+                    .wpuf-pro-modal-header {
+                        position: relative;
+                        display: inline-block;
+                        margin-bottom: 24px;
+                    }
+                    .wpuf-pro-modal-header svg {
+                        width: 110px;
+                        height: 110px;
+                    }
+
+                    .wpuf-pro-modal-title {
+                        font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                        font-size: 28px;
+                        font-weight: 600;
+                        color: #1F2937;
+                        margin: 0 0 12px 0;
+                        line-height: 1.2;
+                    }
+                    .wpuf-pro-modal-description {
+                        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                        font-size: 16px;
+                        color: #6B7280;
+                        margin: 0 0 32px 0;
+                        line-height: 1.5;
+                    }
+                    .wpuf-pro-fields-list {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 8px;
+                        margin: 20px 0 24px;
+                        padding: 0;
+                    }
+                    .wpuf-pro-field-item {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        width: 494px;
+                        height: 56px;
+                        padding: 16px 12px;
+                        background: #FFFFFF;
+                        border: 1px solid #E2E8F0;
+                        border-radius: 8px;
+                        font-size: 14px;
+                        color: #374151;
+                        box-sizing: border-box;
+                        margin: 0 auto;
+                    }
+                    .wpuf-pro-field-icon {
+                        width: 24px;
+                        height: 24px;
+                        flex-shrink: 0;
+                    }
+                    .wpuf-pro-modal-buttons {
+                        display: flex;
+                        gap: 16px;
+                        justify-content: center;
+                    }
+                    .wpuf-pro-btn-continue,
+                    .wpuf-pro-btn-upgrade {
+                        padding: 12px 24px;
+                        border-radius: 6px;
+                        font-size: 16px;
+                        font-weight: 500;
+                        cursor: pointer;
+                        transition: all 0.2s ease;
+                        border: none;
+                        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                    }
+                    .wpuf-pro-btn-continue {
+                        background: white;
+                        color: #334155;
+                        border: 1px solid #E5E7EB;
+                    }
+                    .wpuf-pro-btn-upgrade {
+                        background: #059669;
+                        color: white;
+                    }
+                    .wpuf-pro-btn-upgrade:hover {
+                        background: #059669;
+                    }
+                    @keyframes fadeIn {
+                        from { opacity: 0; }
+                        to { opacity: 1; }
+                    }
+                    @keyframes slideUp {
+                        from { transform: translateY(20px); opacity: 0; }
+                        to { transform: translateY(0); opacity: 1; }
+                    }
+                `;
+                document.head.appendChild(style);
             }
 
-            return proFieldsInForm.join('');
+            // Handle button clicks
+            const continueBtn = modalOverlay.querySelector('.wpuf-pro-btn-continue');
+            const upgradeBtn = modalOverlay.querySelector('.wpuf-pro-btn-upgrade');
+
+            continueBtn.addEventListener('click', () => {
+                modalOverlay.remove();
+                // Proceed with editing anyway
+                this.$emit('edit-in-builder', {
+                    formId: this.formId,
+                    formFields: this.formFields
+                });
+            });
+
+            upgradeBtn.addEventListener('click', () => {
+                window.open('https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=wpdashboard&utm_medium=popup', '_blank');
+                modalOverlay.remove();
+            });
+
+            // Close on overlay click
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) {
+                    modalOverlay.remove();
+                }
+            });
         },
 
         getProFieldIcon(fieldKey) {
@@ -2816,6 +3021,13 @@ What would you like me to help you with?`;
                 'file_upload': 'arrow-up-tray',
                 'audio_upload': 'arrow-up-tray',
                 'video_upload': 'arrow-up-tray',
+
+                // Pricing fields (Pro)
+                'pricing_radio': 'currency-dollar',
+                'pricing_checkbox': 'currency-dollar',
+                'pricing_dropdown': 'currency-dollar',
+                'pricing_multiselect': 'currency-dollar',
+                'cart_total': 'receipt-percent',
 
                 // Special fields
                 'ratings': 'star',

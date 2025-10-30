@@ -298,21 +298,15 @@ module.exports = function( grunt) {
     grunt.loadNpmTasks( 'grunt-shell' );
     grunt.loadNpmTasks( 'grunt-postcss' );
 
-    grunt.registerTask( 'default', [ 'less', 'concat', 'uglify', 'i18n', 'build-tailwind' ] );
+    grunt.registerTask( 'default', [ 'less', 'concat', 'uglify', 'i18n', 'tailwind' ] );
 
     // file auto generation
     grunt.registerTask( 'i18n', [ 'makepot' ] );
     grunt.registerTask( 'readme', [ 'wp_readme_to_markdown' ] );
 
     // build stuff
-    grunt.registerTask( 'release', [ 'less', 'concat', 'uglify', 'i18n', 'readme', 'build-tailwind' ] );
+    grunt.registerTask( 'release', [ 'less', 'concat', 'uglify', 'i18n', 'readme', 'tailwind' ] );
     grunt.registerTask( 'zip', [ 'clean', 'copy', 'compress' ] );
-    
-    // Build all Tailwind CSS files
-    grunt.registerTask( 'build-tailwind', [ 'shell:tailwind:src/css/ai-form-builder.css:assets/css/ai-form-builder.css', 'tailwind' ] );
-    
-    // Build AI Form Builder assets
-    grunt.registerTask( 'build-ai-form-builder', [ 'shell:tailwind:src/css/ai-form-builder.css:assets/css/ai-form-builder.css', 'shell:npm_build_ai_form_builder' ] );
 
     grunt.event.on('watch', function(action, filepath, target) {
         if (target === 'tailwind') {

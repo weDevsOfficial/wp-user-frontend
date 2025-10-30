@@ -2887,7 +2887,6 @@ What would you like me to help you with?`;
                     }
 
                     .wpuf-pro-modal-title {
-                        font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                         font-size: 28px;
                         font-weight: 600;
                         color: #1F2937;
@@ -2895,7 +2894,6 @@ What would you like me to help you with?`;
                         line-height: 1.2;
                     }
                     .wpuf-pro-modal-description {
-                        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                         font-size: 16px;
                         color: #6B7280;
                         margin: 0 0 32px 0;
@@ -2942,7 +2940,6 @@ What would you like me to help you with?`;
                         cursor: pointer;
                         transition: all 0.2s ease;
                         border: none;
-                        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                     }
                     .wpuf-pro-btn-continue {
                         background: white;

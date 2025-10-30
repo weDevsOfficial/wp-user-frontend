@@ -1124,7 +1124,7 @@ body.wpuf-modal-open {
 .wpuf-radio-inline-group.wpuf-ai-provider-radio .wpuf-radio-inline-item {
   border: 1px solid #8C8F94;
   border-radius: 4px;
-  padding: 10px 12px;
+  padding: 12px 20px;
   margin: 0;
   cursor: pointer;
   display: inline-flex;

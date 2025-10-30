@@ -22,7 +22,7 @@ use WP_Error;
  * - Session validation and timeout handling
  * - Enhanced error logging with context
  *
- * @since WPUF_SINCE
+ * @since 4.2.1
  * @version 1.2.0
  */
 class RestController extends WP_REST_Controller {
@@ -30,7 +30,7 @@ class RestController extends WP_REST_Controller {
     /**
      * The namespace of this controller's route.
      *
-     * @since WPUF_SINCE
+     * @since 4.2.1
      *
      * @var string
      */
@@ -39,7 +39,7 @@ class RestController extends WP_REST_Controller {
     /**
      * Route name
      *
-     * @since WPUF_SINCE
+     * @since 4.2.1
      *
      * @var string
      */
@@ -55,7 +55,7 @@ class RestController extends WP_REST_Controller {
     /**
      * Constructor
      *
-     * @since WPUF_SINCE
+     * @since 4.2.1
      */
     public function __construct() {
         $this->form_generator = new FormGenerator();
@@ -64,7 +64,7 @@ class RestController extends WP_REST_Controller {
     /**
      * Register the routes for the objects of the controller.
      *
-     * @since WPUF_SINCE
+     * @since 4.2.1
      *
      * @return void
      */

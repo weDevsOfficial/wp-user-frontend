@@ -8,7 +8,7 @@ namespace WeDevs\Wpuf\AI;
  * Main service class that handles form generation using different AI providers
  * Uses WordPress native HTTP API for lightweight implementation
  *
- * @since WPUF_SINCE
+ * @since 4.2.1
  */
 class FormGenerator {
 
@@ -44,7 +44,7 @@ class FormGenerator {
     /**
      * Constructor
      *
-     * @since WPUF_SINCE
+     * @since 4.2.1
      */
     public function __construct() {
         $this->init_provider_configs();
@@ -54,7 +54,7 @@ class FormGenerator {
     /**
      * Initialize provider configurations from centralized Config
      *
-     * @since WPUF_SINCE
+     * @since 4.2.1
      */
     private function init_provider_configs() {
         // Get provider configurations from centralized Config class
@@ -64,7 +64,7 @@ class FormGenerator {
     /**
      * Load settings from WordPress options
      *
-     * @since WPUF_SINCE
+     * @since 4.2.1
      */
     private function load_settings() {
         // Get settings from WPUF settings system
@@ -82,7 +82,7 @@ class FormGenerator {
     /**
      * Generate form based on prompt
      *
-     * @since WPUF_SINCE
+     * @since 4.2.1
      *
      * @param string $prompt User prompt
      * @param array $options Additional options including conversation context
@@ -162,7 +162,7 @@ class FormGenerator {
      * - Temperature: Some models only support default temperature (1.0)
      * - Response format: Some models don't support JSON mode
      *
-     * @since WPUF_SINCE
+     * @since 4.2.1
      *
      * @param string $provider Provider name (openai, anthropic, google)
      * @param string $model Model name (e.g., gpt-5, claude-4.1-opus, gemini-2.5-pro)
@@ -206,7 +206,7 @@ class FormGenerator {
     /**
      * Generate form using OpenAI
      *
-     * @since WPUF_SINCE
+     * @since 4.2.1
      *
      * @param string $prompt User prompt
      * @param array $options Additional options
@@ -392,7 +392,7 @@ class FormGenerator {
     /**
      * Generate form using Anthropic Claude
      *
-     * @since WPUF_SINCE
+     * @since 4.2.1
      *
      * @param string $prompt User prompt
      * @param array $options Additional options
@@ -538,7 +538,7 @@ class FormGenerator {
     /**
      * Generate form using Google Gemini
      *
-     * @since WPUF_SINCE
+     * @since 4.2.1
      *
      * @param string $prompt User prompt
      * @param array $options Additional options
@@ -695,7 +695,7 @@ class FormGenerator {
     /**
      * Get system prompt for AI form generation
      *
-     * @since WPUF_SINCE
+     * @since 4.2.1
      *
      * @param array $context Conversation context
      * @param string $form_type Form type ('post' or 'profile')
@@ -834,7 +834,7 @@ class FormGenerator {
     /**
      * Get available providers
      *
-     * @since WPUF_SINCE
+     * @since 4.2.1
      *
      * @return array Provider configurations
      */
@@ -845,7 +845,7 @@ class FormGenerator {
     /**
      * Get current provider
      *
-     * @since WPUF_SINCE
+     * @since 4.2.1
      *
      * @return string Current provider
      */
@@ -856,7 +856,7 @@ class FormGenerator {
     /**
      * Test connection to current provider
      *
-     * @since WPUF_SINCE
+     * @since 4.2.1
      *
      * @return array Test result
      */

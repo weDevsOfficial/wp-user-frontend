@@ -58,22 +58,22 @@ class Admin {
         if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'wpuf_create_from_template' ) ) {
             wp_die( __( 'Security check failed', 'wp-user-frontend' ) );
         }
-        
+
         // Check if this is an AI form template
         // Verify the template parameter is set and valid
         if ( ! isset( $_GET['template'] ) ) {
             $this->container['form_template']->create_post_form_from_template();
             return;
         }
-        
+
         $template_name = sanitize_text_field( wp_unslash( $_GET['template'] ) );
-        
+
         if ( $template_name === 'ai_form' ) {
             // AI Form Handler will verify its own nonce (redundant but safe)
             $this->container['ai_form_handler']->handle_ai_form_template();
             return;
         }
-        
+
         // Otherwise, handle normal templates
         $this->container['form_template']->create_post_form_from_template();
     }    /**
@@ -246,7 +246,7 @@ class Admin {
          * Allows external code to modify or enrich the data passed to the frontend,
          * including custom templates, stages, prompts, or form details.
          *
-         * @since WPUF_SINCE
+         * @since 4.2.1
          *
          * @param array $localize_data Localization data array to be passed to wp_localize_script.
          */

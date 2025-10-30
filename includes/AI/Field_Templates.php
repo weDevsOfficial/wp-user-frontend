@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Provides complete field structures for POST form fields only.
  * AI returns minimal data, this class builds the full structure.
  *
- * @since WPUF_SINCE
+ * @since 4.2.1
  */
 class Field_Templates {
 

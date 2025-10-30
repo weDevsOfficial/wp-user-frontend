@@ -323,7 +323,7 @@ class WeDevs_Settings_API {
     /**
      * Displays inline radio buttons for a settings field
      *
-     * @since WPUF_SINCE
+     * @since 4.2.1
      *
      * @param array   $args settings field args
      */

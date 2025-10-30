@@ -4,13 +4,13 @@ namespace WeDevs\Wpuf\Admin\Forms;
 
 /**
  * AI Form Handler
- * 
+ *
  * Handles AI form generation functionality
- * 
- * @since WPUF_SINCE
+ *
+ * @since 4.2.1
  */
 class AI_Form_Handler {
-    
+
     /**
      * Constructor
      */
@@ -20,7 +20,7 @@ class AI_Form_Handler {
         // Hook to handle the success page
         add_action( 'admin_action_wpuf_ai_form_success', [ $this, 'handle_ai_form_success' ] );
     }
-    
+
     /**
      * Determine the form type based on the HTTP referer or action parameter
      *
@@ -89,7 +89,7 @@ class AI_Form_Handler {
         require_once ABSPATH . 'wp-admin/admin-footer.php';
         exit;
     }
-    
+
     /**
      * Handle AI form generating action
      */
@@ -131,7 +131,7 @@ class AI_Form_Handler {
         require_once ABSPATH . 'wp-admin/admin-footer.php';
         exit;
     }
-    
+
     /**
      * Handle AI form success action
      */

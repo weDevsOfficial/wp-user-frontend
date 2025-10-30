@@ -8,7 +8,7 @@ namespace WeDevs\Wpuf\AI;
  * Centralized configuration for all AI providers and models.
  * This class provides consistent data across the entire plugin.
  *
- * @since WPUF_SINCE
+ * @since 4.2.1
  */
 class Config {
 
@@ -332,7 +332,7 @@ class Config {
      */
     public static function get_model_config($model_id) {
         $models = self::get_models();
-        
+
         // Check for exact match
         if (isset($models[$model_id])) {
             return $models[$model_id];
@@ -435,7 +435,7 @@ class Config {
 
         foreach ($providers as $provider_id => $provider_config) {
             $provider_models = [];
-            
+
             // Get all models for this provider
             foreach ($models as $model_id => $model_config) {
                 if ($model_config['provider'] === $provider_id) {

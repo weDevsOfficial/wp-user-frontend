@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Processes minimal AI output and constructs complete WPUF form structures.
  *
- * @since WPUF_SINCE
+ * @since 4.2.1
  */
 class Form_Builder {
 

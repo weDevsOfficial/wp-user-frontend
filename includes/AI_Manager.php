@@ -7,11 +7,11 @@ use WeDevs\Wpuf\AI\FormGenerator;
 
 /**
  * AI Manager Class
- * 
+ *
  * Manages AI form builder functionality
  * Initializes REST API endpoints and handles AI client integration
- * 
- * @since WPUF_SINCE
+ *
+ * @since 4.2.1
  */
 class AI_Manager {
 
@@ -53,7 +53,7 @@ class AI_Manager {
     private function init_classes() {
         // Initialize Form Generator
         $this->form_generator = new FormGenerator();
-        
+
         // Initialize REST Controller
         $this->rest_controller = new RestController();
     }
@@ -72,7 +72,7 @@ class AI_Manager {
     public function enqueue_scripts() {
         // Safe fetch of AI settings
         $wpuf_ai = get_option('wpuf_ai', []);
-        
+
         // Localize the data for Vue components to the main form builder script
         wp_localize_script('wpuf-form-builder-mixins', 'wpufAIFormBuilder', [
             'rest_url' => get_rest_url(null, '/'),
@@ -116,10 +116,10 @@ class AI_Manager {
                 'connectionFailed' => __('Connection failed', 'wp-user-frontend'),
             ]
         ];
-        
+
         // Localize to the main form builder script
         wp_localize_script('wpuf-form-builder-mixins', 'wpufAIFormBuilder', $localization_data);
-        
+
         // Also add a fallback by injecting directly into the page
         if ($this->is_ai_form_builder_admin_page($hook)) {
             add_action('admin_footer', function() use ($localization_data) {

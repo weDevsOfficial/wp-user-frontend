@@ -3,7 +3,8 @@ module.exports = function( grunt) {
     const tailwindFileMap = {
         'admin/form-builder/views/form-builder-v4.1.php': 'admin/form-builder.css',
         'admin/form-builder/views/post-form-settings.php': 'admin/form-builder.css',
-        'assets/js/forms-list.js': 'admin/form-builder.css'
+        'assets/js/forms-list.js': 'admin/form-builder.css',
+        'ai-form-builder': 'ai-form-builder.css'
     }
 
     var formBuilderAssets = require('./admin/form-builder/assets/js/form-builder-assets.js');
@@ -121,6 +122,17 @@ module.exports = function( grunt) {
                 ]
             },
 
+            aiFormBuilderVue: {
+                files: [
+                    'assets/js/ai-form-builder.js',
+                    'assets/js/components/**/*.vue',
+                    'assets/js/stores/**/*.js',
+                ],
+                tasks: [
+                    'shell:npm_build_ai_form_builder'
+                ]
+            },
+
             tailwind: {
                 files: [
                     'src/css/**/*.css',
@@ -136,6 +148,19 @@ module.exports = function( grunt) {
                     spawn: false
                 }
             },
+
+            aiFormBuilder: {
+                files: [
+                    'src/css/ai-form-builder.css',
+                    'assets/**/*.{js,jsx,ts,tsx,vue,html}',
+                    'includes/Admin/**/*.php',
+                ],
+                tasks: ['shell:tailwind:src/css/ai-form-builder.css:assets/css/ai-form-builder.css'],
+                options: {
+                    spawn: false
+                }
+            },
+
         },
 
         // Clean up build directory
@@ -247,6 +272,9 @@ module.exports = function( grunt) {
             npm_build: {
                 command: 'npm run build',
             },
+            npm_build_ai_form_builder: {
+                command: 'npm run build:ai-form-builder',
+            },
             tailwind: {
                 command: function ( input, output ) {
                     return `npx tailwindcss -i ${input} -o ${output}`;
@@ -270,14 +298,14 @@ module.exports = function( grunt) {
     grunt.loadNpmTasks( 'grunt-shell' );
     grunt.loadNpmTasks( 'grunt-postcss' );
 
-    grunt.registerTask( 'default', [ 'less', 'concat', 'uglify', 'i18n' ] );
+    grunt.registerTask( 'default', [ 'less', 'concat', 'uglify', 'i18n', 'tailwind' ] );
 
     // file auto generation
     grunt.registerTask( 'i18n', [ 'makepot' ] );
     grunt.registerTask( 'readme', [ 'wp_readme_to_markdown' ] );
 
     // build stuff
-    grunt.registerTask( 'release', [ 'less', 'concat', 'uglify', 'i18n', 'readme' ] );
+    grunt.registerTask( 'release', [ 'less', 'concat', 'uglify', 'i18n', 'readme', 'tailwind' ] );
     grunt.registerTask( 'zip', [ 'clean', 'copy', 'compress' ] );
 
     grunt.event.on('watch', function(action, filepath, target) {

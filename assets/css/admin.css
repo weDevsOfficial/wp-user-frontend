@@ -1114,6 +1114,47 @@ body.wpuf-modal-open {
     width: 100%;
   }
 }
+.wpuf-radio-inline-group.wpuf-ai-provider-radio {
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+.wpuf-radio-inline-group.wpuf-ai-provider-radio .wpuf-radio-inline-item {
+  border: 1px solid #8C8F94;
+  border-radius: 4px;
+  padding: 12px 20px;
+  margin: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  background: #fff;
+}
+.wpuf-radio-inline-group.wpuf-ai-provider-radio .wpuf-radio-inline-item:hover {
+  border-color: #999;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.wpuf-radio-inline-group.wpuf-ai-provider-radio .wpuf-radio-inline-item input[type="radio"] {
+  margin: 0;
+  cursor: pointer;
+}
+.wpuf-radio-inline-group.wpuf-ai-provider-radio .wpuf-radio-inline-item .wpuf-radio-label {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
+}
+.wpuf-radio-inline-group.wpuf-ai-provider-radio .wpuf-radio-inline-item input[type="radio"]:checked + .wpuf-radio-label {
+  color: #2271b1;
+}
+.wpuf-radio-inline-group.wpuf-ai-provider-radio .wpuf-radio-inline-item:has(input[type="radio"]:checked) {
+  border-color: #2271b1;
+  background: #f0f6fc;
+  box-shadow: 0 0 0 1px #2271b1;
+}
 .wpuf-help-tabbed {
   display: flex;
   width: 100%;

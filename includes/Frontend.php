@@ -69,6 +69,7 @@ class Frontend {
             // Load appropriate subscription script based on shortcode
             if ( wpuf_has_shortcode( 'wpuf_sub_pack' ) ) {
                 // Load new frontend-subscriptions script for subscription pack shortcode (pricing page)
+                wp_enqueue_style( 'wpuf-frontend-subscriptions' );
                 wp_enqueue_script( 'wpuf-frontend-subscriptions' );
             } else {
                 // Load old subscriptions script for all other pages (dashboard, account, etc.)

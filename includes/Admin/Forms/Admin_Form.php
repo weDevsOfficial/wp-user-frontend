@@ -394,19 +394,17 @@ class Admin_Form {
     public function i18n( $i18n ) {
         return array_merge( $i18n, [
             'any_of_three_needed' =>
-                __(
-                    sprintf(
-                        '%sSome required fields are missing. Please include a %sTitle%s, %sBody%s, or %sExcerpt%s to continue.%s',
-                        '<p class="!wpuf-m-0 wpuf-text-xl wpuf-text-gray-500">',
-                        '<span class="wpuf-font-semibold">',
-                        '</span>',
-                        '<span class="wpuf-font-semibold">',
-                        '</span>',
-                        '<span class="wpuf-font-semibold">',
-                        '</span>',
-                        '</p>'
-                    ),
-                    'wp-user-frontend'
+                sprintf(
+                    // translators: %1$s, %2$s, %3$s, %4$s, %5$s, %6$s, %7$s, %8$s are HTML markup for styling
+                    __( '%1$sSome required fields are missing. Please include a %2$sTitle%3$s, %4$sBody%5$s, or %6$sExcerpt%7$s to continue.%8$s', 'wp-user-frontend' ),
+                    '<p class="!wpuf-m-0 wpuf-text-xl wpuf-text-gray-500">',
+                    '<span class="wpuf-font-semibold">',
+                    '</span>',
+                    '<span class="wpuf-font-semibold">',
+                    '</span>',
+                    '<span class="wpuf-font-semibold">',
+                    '</span>',
+                    '</p>'
                 )
         ] );
     }

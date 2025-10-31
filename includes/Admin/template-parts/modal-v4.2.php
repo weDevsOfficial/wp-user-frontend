@@ -120,6 +120,7 @@ if ( ! empty( $registry ) ) {
             <div class="wpuf-mb-14 wpuf-mt-10 wpuf-ml-10">
                 <h1 class="wpuf-text-3xl wpuf-text-gray-900 wpuf-m-0 wpuf-p-0" id="template-modal-title">
                     <?php
+                        // translators: %s is the form type (e.g., 'Post', 'Registration')
                         echo esc_html( sprintf( __( 'Select a %s Template', 'wp-user-frontend' ), $form_type ) );
                     ?>
                 </h1>

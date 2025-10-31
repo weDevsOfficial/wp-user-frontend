@@ -24,7 +24,7 @@ class Invisible_Recaptcha {
 
 		if ( $secret_key == null || $secret_key == "" ) {
             die("To use reCAPTCHA you must get an API key from <a href='"
-                . self::$_signupUrl . "'>" . self::$_signupUrl . "</a>");
+                . esc_url( self::$_signupUrl ) . "'>" . esc_html( self::$_signupUrl ) . "</a>");
         }
         $this->config = array(
 			'client-key' => $site_key,

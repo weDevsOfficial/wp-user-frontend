@@ -272,7 +272,7 @@ class License {
 
                 <div class="appsero-license-details">
                     <p>
-                        <?php printf( wp_kses_post( $this->client->__trans( 'Activate <strong>%s</strong> by your license key to get professional support and automatic update from your WordPress dashboard.' ) ), $this->client->name ); ?>
+                        <?php printf( wp_kses_post( $this->client->__trans( 'Activate <strong>%s</strong> by your license key to get professional support and automatic update from your WordPress dashboard.' ) ), esc_html( $this->client->name ) ); ?>
                     </p>
                     <form method="post" novalidate="novalidate" spellcheck="false">
                         <input type="hidden" name="_action" value="<?php echo esc_attr( $action ); ?>">

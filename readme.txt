@@ -4,7 +4,7 @@ Donate link: https://tareq.co/donate/
 Tags: frontend post, forms, user directory, profile builder, membership
 Requires at least: 4.0
 Tested up to: 6.8.3
-Stable tag: 4.2.1
+Stable tag: 4.2.2
 Requires PHP: 5.6
 License: GPLv2
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -293,6 +293,10 @@ Please report security bugs found in the source code of the WP User Frontend plu
 14. Customize your Forms in Gutenberg Editor
 
 == Changelog ==
+= v4.2.2 (04 November, 2025) =
+* Fix - Show/Hide field based on subscription plan
+* Fix - Frontend subscription page CSS fixes
+
 = v4.2.1 (30 October, 2025) =
 * New - AI Powered Post Form Creation
 

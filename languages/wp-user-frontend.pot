@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 4.2.1\n"
+"Project-Id-Version: WP User Frontend 4.2.2\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2025-10-30 11:42:59+00:00\n"
+"POT-Creation-Date: 2025-11-04 05:08:46+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -568,7 +568,7 @@ msgstr ""
 #: includes/Fields/Field_Contract.php:519
 #: includes/Fields/Form_Field_Checkbox.php:86
 #: includes/Fields/Form_Field_Radio.php:86 includes/Free/Form_Element.php:525
-#: includes/Frontend.php:121 includes/functions/settings-options.php:128
+#: includes/Frontend.php:122 includes/functions/settings-options.php:128
 #: includes/functions/settings-options.php:147
 #: includes/functions/settings-options.php:268
 #: includes/functions/settings-options.php:279
@@ -586,7 +586,7 @@ msgstr ""
 #: includes/Fields/Field_Contract.php:518
 #: includes/Fields/Form_Field_Checkbox.php:85
 #: includes/Fields/Form_Field_Radio.php:85 includes/Free/Form_Element.php:524
-#: includes/Frontend.php:120 includes/functions/settings-options.php:127
+#: includes/Frontend.php:121 includes/functions/settings-options.php:127
 #: includes/functions/settings-options.php:146
 #: includes/functions/settings-options.php:267
 #: includes/functions/settings-options.php:278
@@ -1112,39 +1112,39 @@ msgstr ""
 
 #: admin/posting.php:74 class/render-form.php:1703
 #: includes/Admin/Posting.php:130 includes/Admin.php:172
-#: includes/Fields/Field_Contract.php:996 includes/Frontend.php:80
+#: includes/Fields/Field_Contract.php:996 includes/Frontend.php:81
 #: includes/Render_Form.php:1594
 msgid "Are you sure?"
 msgstr ""
 
 #: admin/posting.php:75 includes/Admin/Forms/Admin_Form_Builder.php:330
 #: includes/Admin/Posting.php:131 includes/Admin.php:173
-#: includes/Fields/Field_Contract.php:997 includes/Frontend.php:81
+#: includes/Fields/Field_Contract.php:997 includes/Frontend.php:82
 msgid "Yes, delete it"
 msgstr ""
 
 #: admin/posting.php:76 includes/Admin/Posting.php:132 includes/Admin.php:174
-#: includes/Fields/Field_Contract.php:998 includes/Frontend.php:82
+#: includes/Fields/Field_Contract.php:998 includes/Frontend.php:83
 msgid "No, cancel it"
 msgstr ""
 
 #: admin/posting.php:82 includes/Admin/Posting.php:138 includes/Admin.php:182
-#: includes/Fields/Field_Contract.php:1008 includes/Frontend.php:92
+#: includes/Fields/Field_Contract.php:1008 includes/Frontend.php:93
 msgid "Allowed Files"
 msgstr ""
 
 #: admin/posting.php:85 includes/Admin/Posting.php:141 includes/Admin.php:188
-#: includes/Fields/Field_Contract.php:1014 includes/Frontend.php:98
+#: includes/Fields/Field_Contract.php:1014 includes/Frontend.php:99
 msgid "Maximum number of files reached!"
 msgstr ""
 
 #: admin/posting.php:86 includes/Admin/Posting.php:142 includes/Admin.php:189
-#: includes/Fields/Field_Contract.php:1015 includes/Frontend.php:99
+#: includes/Fields/Field_Contract.php:1015 includes/Frontend.php:100
 msgid "The file you have uploaded exceeds the file size limit. Please try again."
 msgstr ""
 
 #: admin/posting.php:87 includes/Admin/Posting.php:143 includes/Admin.php:190
-#: includes/Fields/Field_Contract.php:1019 includes/Frontend.php:103
+#: includes/Fields/Field_Contract.php:1019 includes/Frontend.php:104
 msgid "You have uploaded an incorrect file type. Please try again."
 msgstr ""
 
@@ -1204,11 +1204,9 @@ msgstr ""
 #: includes/Ajax/Admin_Form_Builder_Ajax.php:35
 #: includes/Ajax/Admin_Form_Builder_Ajax.php:91
 #: includes/Ajax/Admin_Form_Builder_Ajax.php:95
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:99
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:138
 #: includes/Ajax/Admin_Form_Builder_Ajax.php:142
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:146
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:150
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:226
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:218
 #: includes/Frontend_Render_Form.php:123
 #: includes/Integrations/WPUF_ACF_Compatibility.php:76
 #: includes/Integrations/WPUF_ACF_Compatibility.php:94
@@ -1593,7 +1591,7 @@ msgstr ""
 #: includes/Admin/Forms/Admin_Template.php:592
 #: includes/Admin/Forms/Admin_Template.php:661
 #: includes/Admin/Forms/Admin_Template.php:746
-#: includes/Ajax/Upload_Ajax.php:230
+#: includes/Ajax/Upload_Ajax.php:227
 #: includes/Fields/Form_Field_Cloudflare_Turnstile.php:108
 #: includes/Fields/Form_Field_SectionBreak.php:57
 #: includes/Fields/Form_Field_reCaptcha.php:160 templates/dashboard/list.php:10
@@ -1616,7 +1614,7 @@ msgid "Enter the meta value"
 msgstr ""
 
 #: admin/template.php:583 includes/Admin/Forms/Admin_Template.php:668
-#: includes/Ajax/Upload_Ajax.php:238
+#: includes/Ajax/Upload_Ajax.php:235
 #: includes/Fields/Form_Field_SectionBreak.php:65 wpuf-functions.php:1079
 msgid "Description"
 msgstr ""
@@ -1655,25 +1653,25 @@ msgid "Enable noCaptcha"
 msgstr ""
 
 #: class/render-form.php:87 includes/Render_Form.php:71
-#: includes/Traits/FieldableTrait.php:258
+#: includes/Traits/FieldableTrait.php:288
 #: includes/class-frontend-render-form.php:84
 msgid "Really Simple Captcha validation failed"
 msgstr ""
 
 #: class/render-form.php:127 includes/Render_Form.php:111
-#: includes/Traits/FieldableTrait.php:295
+#: includes/Traits/FieldableTrait.php:325
 #: includes/class-frontend-render-form.php:121
 msgid "noCaptcha reCAPTCHA validation failed"
 msgstr ""
 
 #: class/render-form.php:136 includes/Render_Form.php:120
-#: includes/Traits/FieldableTrait.php:304
+#: includes/Traits/FieldableTrait.php:334
 #: includes/class-frontend-render-form.php:130
 msgid "reCAPTCHA validation failed"
 msgstr ""
 
 #: class/render-form.php:146 includes/Render_Form.php:130
-#: includes/Traits/FieldableTrait.php:314
+#: includes/Traits/FieldableTrait.php:344
 #: includes/class-frontend-render-form.php:140
 msgid "Invisible reCAPTCHA validation failed"
 msgstr ""
@@ -3107,7 +3105,7 @@ msgstr ""
 
 #: includes/Admin/Forms/Post/Templates/Post_Form_Template_Post.php:125
 #: includes/Fields/Form_Field_Post_Tags.php:9
-#: includes/Traits/FieldableTrait.php:101
+#: includes/Traits/FieldableTrait.php:111
 msgid "Tags"
 msgstr ""
 
@@ -4600,7 +4598,7 @@ msgstr ""
 msgid "Try Again"
 msgstr ""
 
-#: includes/Ajax/Address_Form_Ajax.php:40 includes/Frontend.php:177
+#: includes/Ajax/Address_Form_Ajax.php:40 includes/Frontend.php:178
 msgid "Some Required Fields are not filled!"
 msgstr ""
 
@@ -4650,20 +4648,20 @@ msgid ""
 "Pay-per-post billing when limit exceeds is enabled."
 msgstr ""
 
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:103
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:154
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:99
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:146
 msgid "Invalid post type"
 msgstr ""
 
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:116
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:112
 msgid "Default "
 msgstr ""
 
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:189
-msgid "Default %s %s"
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:181
+msgid "Default %s"
 msgstr ""
 
-#: includes/Ajax/Admin_Form_Builder_Ajax.php:231
+#: includes/Ajax/Admin_Form_Builder_Ajax.php:223
 msgid "Choose who can submit post "
 msgstr ""
 
@@ -4726,27 +4724,27 @@ msgstr ""
 msgid "You do not have sufficient permissions to access this form."
 msgstr ""
 
-#: includes/Ajax/Upload_Ajax.php:234 wpuf-functions.php:1075
+#: includes/Ajax/Upload_Ajax.php:231 wpuf-functions.php:1075
 msgid "Caption"
 msgstr ""
 
-#: includes/Ajax/Upload_Ajax.php:262
+#: includes/Ajax/Upload_Ajax.php:259
 msgid "attach_id is required."
 msgstr ""
 
-#: includes/Ajax/Upload_Ajax.php:267
+#: includes/Ajax/Upload_Ajax.php:264
 msgid "attachment not found."
 msgstr ""
 
-#: includes/Ajax/Upload_Ajax.php:276
+#: includes/Ajax/Upload_Ajax.php:273
 msgid "Attachment deleted successfully."
 msgstr ""
 
-#: includes/Ajax/Upload_Ajax.php:278
+#: includes/Ajax/Upload_Ajax.php:275
 msgid "Could not deleted the attachment"
 msgstr ""
 
-#: includes/Ajax/Upload_Ajax.php:280
+#: includes/Ajax/Upload_Ajax.php:277
 msgid "Something went wrong."
 msgstr ""
 
@@ -6219,7 +6217,7 @@ msgstr ""
 msgid "Password is required."
 msgstr ""
 
-#: includes/Free/Simple_Login.php:556 includes/Traits/FieldableTrait.php:221
+#: includes/Free/Simple_Login.php:556 includes/Traits/FieldableTrait.php:251
 #: includes/class-frontend-render-form.php:895
 msgid "Empty reCaptcha Field"
 msgstr ""
@@ -6828,86 +6826,86 @@ msgstr ""
 msgid "Subscription Page settings not set in admin settings"
 msgstr ""
 
-#: includes/Frontend.php:114
+#: includes/Frontend.php:115
 msgid "Please fix the errors to proceed"
 msgstr ""
 
-#: includes/Frontend.php:116
+#: includes/Frontend.php:117
 msgid "Word limit reached"
 msgstr ""
 
-#: includes/Frontend.php:117
+#: includes/Frontend.php:118
 msgid "Are you sure you want to cancel your current subscription ?"
 msgstr ""
 
-#: includes/Frontend.php:122
+#: includes/Frontend.php:123
 msgid "Maximum word limit reached. Please shorten your texts."
 msgstr ""
 
-#: includes/Frontend.php:125
+#: includes/Frontend.php:126
 msgid ""
 "This field supports a maximum of %number% words, and the limit is reached. "
 "Remove a few words to reach the acceptable limit of the field."
 msgstr ""
 
-#: includes/Frontend.php:129
+#: includes/Frontend.php:130
 msgid "Minimum word required."
 msgstr ""
 
-#: includes/Frontend.php:130
+#: includes/Frontend.php:131
 msgid "This field requires minimum %number% words. Please add some more text."
 msgstr ""
 
-#: includes/Frontend.php:133
+#: includes/Frontend.php:134
 msgid "Maximum character limit reached. Please shorten your texts."
 msgstr ""
 
-#: includes/Frontend.php:136
+#: includes/Frontend.php:137
 msgid ""
 "This field supports a maximum of %number% characters, and the limit is "
 "reached. Remove a few characters to reach the acceptable limit of the field."
 msgstr ""
 
-#: includes/Frontend.php:140
+#: includes/Frontend.php:141
 msgid "Minimum character required."
 msgstr ""
 
-#: includes/Frontend.php:141
+#: includes/Frontend.php:142
 msgid ""
 "This field requires minimum %number% characters. Please add some more "
 "character."
 msgstr ""
 
-#: includes/Frontend.php:147
+#: includes/Frontend.php:148
 #. translators: %shortcode% is the shortcode name
 msgid "Using %shortcode% is restricted"
 msgstr ""
 
-#: includes/Frontend.php:148
+#: includes/Frontend.php:149
 msgid "Your password should be at least weak in strength"
 msgstr ""
 
-#: includes/Frontend.php:149
+#: includes/Frontend.php:150
 msgid "Your password needs to be medium strength for better protection"
 msgstr ""
 
-#: includes/Frontend.php:150
+#: includes/Frontend.php:151
 msgid "Create a strong password for maximum security"
 msgstr ""
 
-#: includes/Frontend.php:156
+#: includes/Frontend.php:157
 msgid "is required"
 msgstr ""
 
-#: includes/Frontend.php:157
+#: includes/Frontend.php:158
 msgid "does not match"
 msgstr ""
 
-#: includes/Frontend.php:158
+#: includes/Frontend.php:159
 msgid "is not valid"
 msgstr ""
 
-#: includes/Frontend.php:167
+#: includes/Frontend.php:168
 msgid "Please Cancel Your Currently Active Pack first!"
 msgstr ""
 
@@ -7296,6 +7294,14 @@ msgstr ""
 
 #: includes/Setup_Wizard.php:445
 msgid "Go to Full Settings"
+msgstr ""
+
+#: includes/Traits/FieldableTrait.php:121
+msgid "Product Tags"
+msgstr ""
+
+#: includes/Traits/FieldableTrait.php:131
+msgid "Download Tags"
 msgstr ""
 
 #: includes/Traits/TaxableTrait.php:82 includes/Traits/TaxableTrait.php:217

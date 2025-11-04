@@ -279,6 +279,11 @@ module.exports = function( grunt) {
                 command: function ( input, output ) {
                     return `npx tailwindcss -i ${input} -o ${output}`;
                 }
+            },
+            tailwind_minify: {
+                command: function ( input, output ) {
+                    return `npx tailwindcss -i ${input} -o ${output} --minify`;
+                }
             }
         }
     });
@@ -305,7 +310,7 @@ module.exports = function( grunt) {
     grunt.registerTask( 'readme', [ 'wp_readme_to_markdown' ] );
 
     // build stuff
-    grunt.registerTask( 'release', [ 'less', 'concat', 'uglify', 'i18n', 'readme', 'tailwind' ] );
+    grunt.registerTask( 'release', [ 'less', 'concat', 'uglify', 'i18n', 'readme', 'tailwind', 'tailwind-minify' ] );
     grunt.registerTask( 'zip', [ 'clean', 'copy', 'compress' ] );
 
     grunt.event.on('watch', function(action, filepath, target) {
@@ -330,5 +335,20 @@ module.exports = function( grunt) {
         });
 
         done();
+    });
+
+    grunt.registerTask('tailwind-minify', function() {
+        const cssFiles = [
+            { input: 'assets/css/forms-list.css', output: 'assets/css/forms-list.min.css' },
+            { input: 'assets/css/frontend-subscriptions.css', output: 'assets/css/frontend-subscriptions.min.css' },
+            { input: 'assets/css/ai-form-builder.css', output: 'assets/css/ai-form-builder.min.css' },
+            { input: 'assets/css/admin/subscriptions.css', output: 'assets/css/admin/subscriptions.min.css' }
+        ];
+
+        cssFiles.forEach(file => {
+            if (grunt.file.exists(file.input)) {
+                grunt.task.run(`shell:tailwind_minify:${file.input}:${file.output}`);
+            }
+        });
     });
 };

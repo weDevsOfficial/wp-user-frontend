@@ -4,7 +4,7 @@ module.exports = function( grunt) {
         'admin/form-builder/views/form-builder-v4.1.php': 'admin/form-builder.css',
         'admin/form-builder/views/post-form-settings.php': 'admin/form-builder.css',
         'assets/js/forms-list.js': 'admin/form-builder.css',
-        'templates/account.php': 'frontend/account.css'
+        'templates/account.php': 'frontend/account.css',
         'ai-form-builder': 'ai-form-builder.css'
     }
 

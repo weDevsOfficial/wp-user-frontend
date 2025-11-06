@@ -152,9 +152,6 @@ class Upload_Ajax {
      * @return array attachment result with success status and attach_id
      */
     public function handle_upload( $upload_data ) {
-        // Always make filenames unique to prevent conflicts between users
-        $upload_data['name'] = $this->wpuf_filename_unique( $upload_data['name'] );
-
         $uploaded_file = wp_handle_upload( $upload_data, [ 'test_form' => false ] );
         // If the wp_handle_upload call returned a local path for the image
         if ( isset( $uploaded_file['file'] ) ) {
@@ -292,53 +289,5 @@ class Upload_Ajax {
     public function insert_image() {
         $this->upload_file( true );
     }
-
-    /**
-     * Make filename unique by adding user ID prefix to prevent conflicts between users
-     * while still allowing WordPress to handle duplicates for the same user
-     *
-     * @since 4.1.10
-     *
-     * @param string $filename
-     *
-     * @return string
-     */
-    private function wpuf_filename_unique( $filename ) {
-        $info = pathinfo( $filename );
-        $ext  = empty( $info['extension'] ) ? '' : '.' . $info['extension'];
-        $name = basename( $filename, $ext );
-
-        // Sanitize the base name
-        $name = sanitize_file_name( $name );
-
-        // Get current user ID for user isolation
-        $user_id = get_current_user_id();
-
-        // For logged-in users, add user ID prefix to prevent cross-user conflicts
-        // For guests, add a session-based or timestamp prefix
-        if ( $user_id > 0 ) {
-            // Add user ID prefix to isolate files between users
-            // Format: u123-filename.ext (WordPress will handle duplicates as u123-filename-1.ext)
-            $unique_prefix = 'u' . $user_id;
-        } else {
-            // For guest uploads, use timestamp to ensure uniqueness
-            // This prevents guests from overwriting each other's files
-            $unique_prefix = 'guest-' . time() . '-' . substr( uniqid(), -4 );
-        }
-
-        // Combine prefix with filename
-        // This ensures user isolation while preserving WordPress duplicate handling
-        $new_filename = $unique_prefix . '-' . $name . $ext;
-
-        // Apply filter to allow customization of the unique filename
-        $new_filename = apply_filters( 'wpuf_upload_file_name', $new_filename, [
-            'original_name' => $filename,
-            'base_name'     => $name,
-            'extension'     => $ext,
-            'user_id'       => $user_id,
-            'unique_prefix' => $unique_prefix,
-        ] );
-
-        return $new_filename;
-    }
+    
 }

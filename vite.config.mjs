@@ -6,6 +6,7 @@ const entries = {
     'frontend-subscriptions': './assets/js/frontend-subscriptions.js', 
     'forms-list': './assets/js/forms-list.js',
     'account': './assets/js/account.js',
+    'ai-form-builder': './assets/js/ai-form-builder.js',
 };
 
 export default defineConfig(() => {
@@ -21,9 +22,7 @@ export default defineConfig(() => {
                     entryFileNames: 'js/[name].min.js',
                     assetFileNames: (assetInfo) => {
                         if (assetInfo.name.endsWith('.css')) {
-                            return assetInfo.name === 'subscriptions.css' 
-                                ? 'css/admin/[name].min.css'
-                                : 'css/[name].min.css';
+                            return 'css/[name].min.css';
                         }
                         return 'assets/[name]-[hash][extname]';
                     },

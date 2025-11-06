@@ -17,8 +17,6 @@ npm-debug.log
 vendor
 !assets/vendor
 phpcs-report.txt
-assets/css/admin/subscriptions.min.css
-assets/js/subscriptions.min.js
 
 # Ignore the following directories and files for automation tests
 test-results

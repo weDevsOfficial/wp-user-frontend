@@ -2218,7 +2218,9 @@ function wpuf_get_account_sections() {
         foreach ( $post_types as $post_type ) {
             $post_type_object = get_post_type_object( $post_type );
 
-            $cpt_sections[ $post_type ] = $post_type_object->label;
+            if ( $post_type_object ) {
+                $cpt_sections[ $post_type ] = $post_type_object->label;
+            }
         }
     }
 

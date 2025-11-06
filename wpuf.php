@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: weDevs
-Version: 4.1.15
+Version: 4.2.2
 Author URI: https://wedevs.com/?utm_source=WPUF_Author_URI
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -23,7 +23,7 @@ if ( file_exists( $autoload ) ) {
     require_once $autoload;
 }
 
-define( 'WPUF_VERSION', '4.1.15' );
+define( 'WPUF_VERSION', '4.2.2' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -161,6 +161,9 @@ final class WP_User_Frontend {
             require_once __DIR__ . '/Lib/recaptchalib.php';
             require_once __DIR__ . '/Lib/invisible_recaptcha.php';
         }
+
+        // AI Form Builder includes
+        require_once __DIR__ . '/includes/AI_Manager.php';
     }
 
     /**
@@ -177,6 +180,7 @@ final class WP_User_Frontend {
         $this->container['paypal']       = new WeDevs\Wpuf\Lib\Gateway\Paypal();
         $this->container['api']          = new WeDevs\Wpuf\API();
         $this->container['integrations'] = new WeDevs\Wpuf\Integrations();
+        $this->container['ai_manager']   = new WeDevs\Wpuf\AI_Manager();
 
         if ( is_admin() ) {
             $this->container['admin']        = new WeDevs\Wpuf\Admin();

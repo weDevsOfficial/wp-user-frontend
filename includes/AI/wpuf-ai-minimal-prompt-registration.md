@@ -212,13 +212,6 @@ When user requests a registration form or modifications:
 - `repeat_field` - Repeatable field group
 - `toc` - Terms and conditions agreement
 
-### Pricing Fields (Pro):
-- `price_field` - Price input field (allows user to enter custom amount)
-- `pricing_radio` - Radio button pricing options
-- `pricing_checkbox` - Checkbox pricing options (multiple selections)
-- `pricing_dropdown` - Dropdown pricing options
-- `pricing_multiselect` - Multi-select pricing options
-- `cart_total` - Cart total display (REQUIRED when using any pricing field)
 
 ## RESPONSE FORMAT:
 
@@ -408,123 +401,17 @@ Examples with meaningful options:
 ### Address Field:
 - Automatically includes: street, city, state, zip, country
 
-### Pricing Fields:
-⚠️ CRITICAL: When you include ANY pricing field (price_field, pricing_radio, pricing_checkbox, pricing_dropdown, pricing_multiselect), you MUST also include a `cart_total` field at the end of your fields array.
+## ⚠️ PRICING FIELDS ARE NOT ALLOWED IN REGISTRATION FORMS:
+**CRITICAL:** Pricing fields are ONLY for post forms, NOT for registration forms.
+- DO NOT use `price_field`
+- DO NOT use `pricing_radio`
+- DO NOT use `pricing_checkbox`
+- DO NOT use `pricing_dropdown`
+- DO NOT use `pricing_multiselect`
+- DO NOT use `cart_total`
 
-⚠️ IMPORTANT: When adding pricing fields:
-- If user specifies prices, use those exact values
-- If user does NOT specify prices, generate realistic demo prices based on the field label and context
-- NEVER leave prices empty or set to "0"
-- Always provide 3-5 pricing options with appropriate demo amounts
-- For cart_total field, do NOT include prices (it calculates automatically)
-
-**Currency Symbol:**
-You MUST ONLY use one of these valid currency symbols. Do NOT use any other symbol:
-- $ (USD, AUD, CAD, HKD, MXN, NZD, SGD, AZD, CLP, COP)
-- € (EUR)
-- £ (GBP)
-- ¥ (CNY, JPY)
-- ₹ (INR, MUR, NPR)
-- د.إ (AED)
-- ৳ (BDT)
-- R$ (BRL)
-- лв. (BGN)
-- Kč (CZK)
-- kr. (DKK, NOK, SEK, ISK)
-- RD$ (DOP)
-- DA; (DZD)
-- Kn (HRK)
-- Ft (HUF)
-- Rp (IDR)
-- Rs (PKR, INR)
-- Rs. (NPR)
-- ₪ (ILS)
-- ₭ (KIP)
-- ₩ (KRW)
-- RM (MYR)
-- ₦ (NGN)
-- N$ (NAD)
-- ر.ع. (OMR)
-- ﷼ (IRR)
-- ₲ (PYG)
-- ₱ (PHP)
-- zł (PLN)
-- lei (RON)
-- руб. (RUB)
-- SR (SR)
-- R (ZAR)
-- CHF (CHF)
-- NT$ (TWD)
-- ฿ (THB)
-- ₺ (TRY)
-- TT$ (TTD)
-- ₫ (VND)
-- EGP (EGP)
-- د.أ (JOD)
-
-**Price Field (User Input):**
-For user-entered custom amounts, use `price_field`:
-```json
-{
-  "template": "price_field",
-  "label": "Donation Amount",
-  "currency_symbol": "$",
-  "price_input_mode": "user_input",
-  "price_min": "1",
-  "price_max": "10000",
-  "placeholder": "Enter your donation amount"
-}
-```
-
-**Price Field (Fixed Amount):**
-For fixed price that users cannot change:
-```json
-{
-  "template": "price_field",
-  "label": "Registration Fee",
-  "currency_symbol": "$",
-  "price_input_mode": "fixed",
-  "default": "25"
-}
-```
-
-Price Field Properties:
-- `price_input_mode` - "user_input" (allows custom amount) or "fixed" (read-only default)
-- `price_min` - Minimum allowed value (only for user_input mode)
-- `price_max` - Maximum allowed value (only for user_input mode)
-- `price_hidden` - "yes" or "no" - Hide field on frontend (still used in calculations)
-- `default` - Default/fixed price value
-- `placeholder` - Placeholder text
-- `currency_symbol` - Currency symbol (use valid symbols from list below)
-
-**Pricing Selection Fields:**
-Include `options`, `prices`, and `currency_symbol` for pricing fields:
-```json
-{
-  "template": "pricing_radio",
-  "label": "Membership Plan",
-  "options": {
-    "free": "Free Member",
-    "basic": "Basic Member",
-    "premium": "Premium Member"
-  },
-  "prices": {
-    "free": "0",
-    "basic": "10",
-    "premium": "25"
-  },
-  "currency_symbol": "$"
-}
-```
-
-**IMPORTANT:** Always add cart_total field when pricing fields are present:
-```json
-{
-  "template": "cart_total",
-  "label": "Total Amount",
-  "currency_symbol": "$"
-}
-```
+If a user requests pricing/payment functionality in a registration form:
+- Inform them: "Pricing fields are only available for post forms, not registration forms. For membership subscriptions or paid registrations, please use a dedicated membership plugin alongside WPUF."
 
 ## MODIFICATION RULES:
 When user says "add X field":
@@ -646,4 +533,5 @@ When user says "make X field radio button" or "change X to dropdown":
 3. Use appropriate registration field templates
 4. Set sensible defaults for required fields
 5. ONLY registration/profile fields - NO post fields (post_title, post_content, featured_image, etc.)
+6. NO pricing fields (price_field, pricing_radio, pricing_checkbox, pricing_dropdown, pricing_multiselect, cart_total) - these are ONLY for post forms
 

@@ -1,3 +1,13 @@
+= v4.2.2 (04 November, 2025) =
+* Fix - Show/Hide field based on subscription plan
+* Fix - Frontend subscription page CSS fixes
+
+= v4.2.1 (30 October, 2025) =
+* New - AI Powered Post Form Creation
+
+= v4.1.15 (22 October, 2025) =
+* Fix - Unwanted text appearing in 'View' and 'Preview' links
+
 = v4.1.14 (21 October, 2025) =
 * New - Dynamic Field Icons for improved visual customization
 * Enhancement – Renamed "Published" tab to "Saved" on Form List pages for better clarity

@@ -307,7 +307,7 @@ onMounted(() => {
             class="wpuf-w-full wpuf-col-span-2 wpuf-relative wpuf-group">
             <div
                 v-if="showProBadge"
-                class="wpuf-hidden wpuf-rounded-md group-hover:wpuf-flex group-hover:wpuf-cursor-pointer wpuf-absolute wpuf-items-center wpuf-justify-center wpuf-bg-black/25 wpuf-z-10 wpuf-p-4 wpuf-w-[104%] wpuf-h-[180%] wpuf-top-[-40%] wpuf-left-[-2%]">
+                class="wpuf-hidden wpuf-rounded-md wpuf-border wpuf-border-dashed wpuf-border-emerald-200 group-hover:wpuf-flex group-hover:wpuf-cursor-pointer wpuf-absolute wpuf-items-center wpuf-justify-center wpuf-bg-emerald-50/50 wpuf-backdrop-blur-sm wpuf-z-10 wpuf-p-4 wpuf-w-[104%] wpuf-h-[180%] wpuf-top-[-40%] wpuf-left-[-2%]">
                 <a href="https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=wpdashboard&amp;utm_medium=popup"
                    target="_blank"
                    class="wpuf-button button-upgrade-to-pro wpuf-inline-flex wpuf-items-center wpuf-px-4 wpuf-py-2 wpuf-bg-emerald-600 focus:wpuf-bg-emerald-700 hover:wpuf-bg-emerald-700 wpuf-text-white hover:wpuf-text-white wpuf-rounded-md wpuf-gap-2 wpuf-font-medium wpuf-text-sm">

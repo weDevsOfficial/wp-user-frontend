@@ -28,7 +28,7 @@ class Pro_Form_Preview_Press_Release {
     public function __construct() {
         $this->title    = __( 'News/Press Release Submission', 'wp-user-frontend' );
         $this->image    = WPUF_ASSET_URI . '/images/templates/press-release.svg';
-        $this->pro_icon = WPUF_ASSET_URI . '/images/templates/crown.svg';
+        $this->pro_icon = WPUF_ASSET_URI . '/images/templates/pro-badge.svg';
     }
 
     /**

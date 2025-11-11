@@ -68,7 +68,7 @@ const toggleDependentFields = ( fieldId, status ) => {
                     <span v-if="subSection.sub_label" class="wpuf-relative wpuf-m-0 wpuf-p-0 wpuf-ml-2 wpuf-mt-[1px] wpuf-italic wpuf-text-[11px] wpuf-text-gray-400">
                         {{ subSection.sub_label }}
                     </span>
-                    <span class="pro-icon-title wpuf-relative wpuf-pt-1 wpuf-group wpuf-ml-2">
+                    <span class="pro-icon-title wpuf-relative wpuf-group wpuf-ml-2">
                         <ProBadge v-if="subSection.is_pro" />
                         <ProTooltip />
                     </span>

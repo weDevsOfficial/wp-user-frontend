@@ -4650,11 +4650,9 @@ function wpuf_get_image_sizes_array( $size = '' ) {
  * @return string
  */
 function wpuf_get_pro_preview_html() {
-    $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
     return sprintf( '<div class="pro-field-overlay">
-                        <a href="%1$s" target="%2$s" class="%3$s">Upgrade to PRO<span class="pro-icon icon-white"> %4$s</span></a>
-                    </div>', esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro',
-        file_get_contents( $crown_icon ) );
+                        <a href="%1$s" target="%2$s" class="%3$s">Upgrade to PRO</a>
+                    </div>', esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro' );
 }
 
 /**
@@ -4665,7 +4663,6 @@ function wpuf_get_pro_preview_html() {
  * @return string
  */
 function wpuf_get_pro_preview_tooltip() {
-    $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
     $check_icon = WPUF_ROOT . '/assets/images/check.svg';
     $features = [
         '24/7 Priority Support',
@@ -4687,9 +4684,8 @@ function wpuf_get_pro_preview_tooltip() {
     }
 
     $html .= '</ul>';
-    $html .= sprintf( '<div class="pro-link"><a href="%1$s" target="%2$s" class="%3$s">Upgrade to PRO<span class="pro-icon icon-white"> %4$s</span></a></div>',
-        esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro',
-        file_get_contents( $crown_icon ) );
+    $html .= sprintf( '<div class="pro-link"><a href="%1$s" target="%2$s" class="%3$s">Upgrade to PRO</a></div>',
+        esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro' );
 
     $html .= '<i></i>';
     $html .= '</div>';

@@ -5,7 +5,7 @@ namespace WeDevs\Wpuf\Free;
 class Subscription_Element extends Pro_Prompt {
 
     public static function add_subscription_element( $sub_meta, $hidden_recurring_class, $hidden_trial_class, $obj ) {
-        $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
+        $crown_icon = WPUF_ROOT . '/assets/images/pro-badge.svg';
         $crown      = '';
 
         if ( file_exists( $crown_icon ) ) {

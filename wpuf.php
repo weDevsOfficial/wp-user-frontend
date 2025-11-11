@@ -4,7 +4,7 @@ Plugin Name: WP User Frontend
 Plugin URI: https://wordpress.org/plugins/wp-user-frontend/
 Description: Create, edit, delete, manages your post, pages or custom post types from frontend. Create registration forms, frontend profile and more...
 Author: weDevs
-Version: 4.1.13
+Version: 4.2.2
 Author URI: https://wedevs.com/?utm_source=WPUF_Author_URI
 License: GPL2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -23,7 +23,7 @@ if ( file_exists( $autoload ) ) {
     require_once $autoload;
 }
 
-define( 'WPUF_VERSION', '4.1.13' );
+define( 'WPUF_VERSION', '4.2.2' );
 define( 'WPUF_FILE', __FILE__ );
 define( 'WPUF_ROOT', __DIR__ );
 define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
@@ -161,6 +161,9 @@ final class WP_User_Frontend {
             require_once __DIR__ . '/Lib/recaptchalib.php';
             require_once __DIR__ . '/Lib/invisible_recaptcha.php';
         }
+
+        // AI Form Builder includes
+        require_once __DIR__ . '/includes/AI_Manager.php';
     }
 
     /**
@@ -177,6 +180,7 @@ final class WP_User_Frontend {
         $this->container['paypal']       = new WeDevs\Wpuf\Lib\Gateway\Paypal();
         $this->container['api']          = new WeDevs\Wpuf\API();
         $this->container['integrations'] = new WeDevs\Wpuf\Integrations();
+        $this->container['ai_manager']   = new WeDevs\Wpuf\AI_Manager();
 
         if ( is_admin() ) {
             $this->container['admin']        = new WeDevs\Wpuf\Admin();
@@ -346,12 +350,13 @@ final class WP_User_Frontend {
      * @return array
      */
     public function plugin_action_links( $links ) {
-        if ( ! $this->is_pro() ) {
-            $links[] = '<a href="' . WeDevs\Wpuf\Free\Pro_Prompt::get_pro_url() . '" target="_blank" style="color: red;">Get PRO</a>';
-        }
+        $links[] = '<a href="' . admin_url( 'admin.php?page=wpuf-settings' ) . '">' . esc_html( 'Settings' ) . '</a>';
+        $links[] = '<a href="https://wedevs.com/docs/wp-user-frontend-pro/getting-started/how-to-install/" target="_blank"> '. esc_html( 'Docs' ) . '</a>';
 
-        $links[] = '<a href="' . admin_url( 'admin.php?page=wpuf-settings' ) . '">Settings</a>';
-        $links[] = '<a href="https://wedevs.com/docs/wp-user-frontend-pro/getting-started/how-to-install/" target="_blank">Documentation</a>';
+        if ( ! $this->is_pro() ) {
+            $links[] = '<a href="https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=installed_plugins" target="_blank" style="color: #64C273;"> '. esc_html( 'Upgrade to Pro' ) . '</a>';
+            $links[] = '<a href="https://wedevs.com/coupons/?utm_source=installed_plugins" target="_blank" style="color: #5368FF;">'. esc_html( 'Check Discounts' ) . '</a>';
+        }
 
         return $links;
     }

@@ -205,6 +205,20 @@ class WeDevs_Settings_API {
     }
 
     /**
+     * Displays a hidden field for a settings field
+     *
+     * @param array   $args settings field args
+     */
+    function callback_hidden( $args ) {
+        $value = esc_attr( $this->get_option( $args['id'], $args['section'], $args['std'] ) );
+        $html  = sprintf(
+            '<input type="hidden" id="%1$s[%2$s]" name="%1$s[%2$s]" value="%3$s" />',
+            $args['section'], $args['id'], $value
+        );
+        echo wp_kses_post( $html );
+    }
+
+    /**
      * Displays a url field for a settings field
      *
      * @param array   $args settings field args
@@ -314,6 +328,49 @@ class WeDevs_Settings_API {
         }
 
         echo wp_kses( $html, array('fieldset' => [], 'label' => ['for' => []], 'input' => ['type' => [], 'class' => [], 'id' => [], 'name' => [], 'value' => [], 'checked' => [], 'disabled' => []], 'img' => ['class' => [], 'src' => [], 'alt' => []], 'br' => [], 'div' => ['class' => []], 'a' => ['href' => [], 'target' => [], 'class' => []], 'span' => ['class' => []], 'svg' => ['width' => [], 'height' => [], 'viewBox' => [], 'fill' => [], 'xmlns' => []], 'path' => ['d' => [], 'fill' => [] ] ) );
+    }
+
+    /**
+     * Displays inline radio buttons for a settings field
+     *
+     * @since 4.2.1
+     *
+     * @param array   $args settings field args
+     */
+    function callback_radio_inline( $args ) {
+        $value    = $this->get_option( $args['id'], $args['section'], $args['std'] );
+        $disabled = ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ? 'disabled' : '';
+        $class    = ! empty( $args['class'] ) ? $args['class'] : '';
+
+        $html = '<fieldset class="wpuf-radio-inline-group ' . esc_attr( $class ) . '">';
+
+        foreach ( $args['options'] as $key => $label ) {
+            $html .= '<label class="wpuf-radio-inline-item">';
+            $html .= sprintf( '<input type="radio" class="radio" id="wpuf-%1$s[%2$s][%3$s]" name="%1$s[%2$s]" value="%3$s" %4$s %5$s />',
+                $args['section'], $args['id'], $key, checked( $value, $key, false ), $disabled );
+            $html .= sprintf( '<span class="wpuf-radio-label">%s</span>', esc_html( $label ) );
+            $html .= '</label>';
+        }
+
+        $html .= '</fieldset>';
+        $html .= $this->get_field_description( $args );
+
+        if ( ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ) {
+            $html .= wpuf_get_pro_preview_html();
+        }
+
+        echo wp_kses( $html, array(
+            'fieldset' => ['class' => []],
+            'label'    => ['for' => [], 'class' => []],
+            'input'    => ['type' => [], 'class' => [], 'id' => [], 'name' => [], 'value' => [], 'checked' => [], 'disabled' => []],
+            'span'     => ['class' => []],
+            'br'       => [],
+            'p'        => ['class' => []],
+            'div'      => ['class' => []],
+            'a'        => ['href' => [], 'target' => [], 'class' => []],
+            'svg'      => ['width' => [], 'height' => [], 'viewBox' => [], 'fill' => [], 'xmlns' => []],
+            'path'     => ['d' => [], 'fill' => [] ]
+        ) );
     }
 
     /**

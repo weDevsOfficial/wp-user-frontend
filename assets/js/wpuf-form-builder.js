@@ -185,6 +185,16 @@
 
             // add new form field element
             add_form_field_element: function (state, payload) {
+                // Initialize icon properties for new fields to ensure Vue reactivity
+                if (!payload.field.hasOwnProperty('show_icon')) {
+                    payload.field.show_icon = 'no';
+                }
+                if (!payload.field.hasOwnProperty('field_icon')) {
+                    payload.field.field_icon = '';
+                }
+                if (!payload.field.hasOwnProperty('icon_position')) {
+                    payload.field.icon_position = 'left_label';
+                }
 
                 state.form_fields.splice(payload.toIndex, 0, payload.field);
                 var sprintf = wp.i18n.sprintf;
@@ -729,6 +739,24 @@
         },
 
         mounted: function () {
+            // Ensure all fields have proper default values for icon settings when editing existing forms
+            this.$store.state.form_fields.forEach(function(field) {
+                // If show_icon is not set in the database, default it to 'no'
+                if (field.show_icon === undefined || field.show_icon === null) {
+                    field.show_icon = 'no';
+                }
+
+                // If field_icon is not set in the database, set it to default icon fas fa-0
+                if (field.field_icon === undefined || field.field_icon === null) {
+                    field.field_icon = 'fas fa-0';
+                }
+
+                // If icon_position is not set, default it to 'left_label'
+                if (field.icon_position === undefined || field.icon_position === null) {
+                    field.icon_position = 'left_label';
+                }
+            });
+
             // Check if there are hidden custom taxonomy fields and show warning
             if (wpuf_form_builder.has_hidden_taxonomies && !wpuf_form_builder.is_pro_active) {
                 var self = this;
@@ -833,6 +861,21 @@
                 }, 1000);
 
                 e.clearSelection();
+            });
+
+            // Mutual exclusivity between Enable Payments and Enable Pricing Fields Payment
+            $(document).on('change', '#payment_options', function() {
+                if ($(this).is(':checked')) {
+                    // When Enable Payments is turned ON, turn OFF Enable Pricing Fields Payment
+                    $('#enable_pricing_payment').prop('checked', false).trigger('change');
+                }
+            });
+
+            $(document).on('change', '#enable_pricing_payment', function() {
+                if ($(this).is(':checked')) {
+                    // When Enable Pricing Fields Payment is turned ON, turn OFF Enable Payments
+                    $('#payment_options').prop('checked', false).trigger('change');
+                }
             });
         },
 

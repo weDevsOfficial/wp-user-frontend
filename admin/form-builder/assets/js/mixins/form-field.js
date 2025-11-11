@@ -80,6 +80,21 @@ wpuf_mixins.form_field_mixin = {
             }
 
             return false;
+        },
+
+        format_price: function (price) {
+            // Safely format price with validation
+            if (price === null || price === undefined || price === '') {
+                return '0.00';
+            }
+
+            var numPrice = parseFloat(price);
+
+            if (isNaN(numPrice)) {
+                return '0.00';
+            }
+
+            return numPrice.toFixed(2);
         }
     }
 };

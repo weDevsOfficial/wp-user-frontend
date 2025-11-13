@@ -224,6 +224,20 @@ class RestController extends WP_REST_Controller {
             'callback' => [$this, 'get_settings'],
             'permission_callback' => [$this, 'check_admin_permission']
         ]);
+
+        // Refresh Google models endpoint
+        register_rest_route($this->namespace, '/' . $this->rest_base . '/refresh-google-models', [
+            'methods' => WP_REST_Server::CREATABLE,
+            'callback' => [$this, 'refresh_google_models'],
+            'permission_callback' => [$this, 'check_admin_permission']
+        ]);
+
+        // Get available models endpoint
+        register_rest_route($this->namespace, '/' . $this->rest_base . '/models', [
+            'methods' => WP_REST_Server::READABLE,
+            'callback' => [$this, 'get_models'],
+            'permission_callback' => [$this, 'check_permission']
+        ]);
     }
 
     /**
@@ -454,6 +468,23 @@ class RestController extends WP_REST_Controller {
 
         $saved = update_option('wpuf_ai', $settings);
 
+        // Auto-refresh all models when settings are saved
+        if ($saved) {
+            // Check if models need refresh (cache older than 1 hour or not exists)
+            $cached = get_transient('wpuf_ai_models_cache');
+            $should_refresh = true;
+
+            if (false !== $cached && is_array($cached) && isset($cached['last_updated'])) {
+                $cache_age = time() - $cached['last_updated'];
+                $should_refresh = $cache_age > HOUR_IN_SECONDS;
+            }
+
+            if ($should_refresh) {
+                // Fetch all models from all providers (don't fail if this errors)
+                Config::update_all_models();
+            }
+        }
+
         if ($saved) {
             return new WP_REST_Response([
                 'success' => true,
@@ -493,6 +524,62 @@ class RestController extends WP_REST_Controller {
         return new WP_REST_Response([
             'success' => true,
             'settings' => $settings
+        ], 200);
+    }
+
+    /**
+     * Refresh Google models from API
+     *
+     * @param WP_REST_Request $request REST request object
+     * @return WP_REST_Response Response object
+     */
+    public function refresh_google_models(WP_REST_Request $request) {
+        // Get Google API key from settings
+        $wpuf_ai_settings = get_option('wpuf_ai', []);
+
+        // Check for Google API key (stored as google_api_key)
+        $api_key = $wpuf_ai_settings['google_api_key'] ?? '';
+
+        if (empty($api_key)) {
+            return new WP_REST_Response([
+                'success' => false,
+                'message' => __('Google API key not configured. Please save your Google API key first.', 'wp-user-frontend')
+            ], 400);
+        }
+
+        // Fetch models from all providers
+        $result = Config::update_all_models();
+
+        if (is_wp_error($result)) {
+            return new WP_REST_Response([
+                'success' => false,
+                'message' => $result->get_error_message()
+            ], 400);
+        }
+
+        // Get the updated models
+        $models = Config::get_models();
+
+        return new WP_REST_Response([
+            'success' => true,
+            'message' => __('Google models updated successfully', 'wp-user-frontend'),
+            'models' => $models
+        ], 200);
+    }
+
+    /**
+     * Get available models
+     *
+     * @param WP_REST_Request $request REST request object
+     * @return WP_REST_Response Response object
+     */
+    public function get_models(WP_REST_Request $request) {
+        // Get all models from cache
+        $models = Config::get_models();
+
+        return new WP_REST_Response([
+            'success' => true,
+            'models' => $models
         ], 200);
     }
 

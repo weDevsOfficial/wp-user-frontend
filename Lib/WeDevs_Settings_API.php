@@ -818,7 +818,6 @@ class WeDevs_Settings_API {
                     var data_depends_on = $this.data('depends-on');
                     var data_depends_on_value = $this.data('depends-on-value');
 
-
                     if (!data_depends_on) {
                         return;
                     }
@@ -869,8 +868,25 @@ class WeDevs_Settings_API {
                         }
 
                         dependency_fields[field_name] = $depends_on;
+                        var current_value = $depends_on.val();
+                        var is_checkbox = $depends_on.attr('type') === 'checkbox';
+                        var is_checked = is_checkbox ? $depends_on.is(':checked') : null;
                         
-                        if ($depends_on.val() !== expected_value) {
+                        // For checkboxes, handle empty string as "checked" expectation
+                        var value_matches = false;
+                        if (is_checkbox) {
+                            if (expected_value === '' || expected_value === null || expected_value === undefined) {
+                                // Empty expected value means "show when checked" (typical use case)
+                                value_matches = is_checked;
+                            } else {
+                                // Non-empty expected value means "show when checked with this value"
+                                value_matches = is_checked && (current_value === expected_value || expected_value === 'on');
+                            }
+                        } else {
+                            value_matches = current_value === expected_value;
+                        }
+                        
+                        if (!value_matches) {
                             all_dependencies_met = false;
                         }
                     }
@@ -921,12 +937,31 @@ class WeDevs_Settings_API {
                                 $depends_on = $("input[id*='"+ field_name +"'], select[id*='"+ field_name +"']");
                             }
                             
-                            if ($depends_on.length === 0 || $depends_on.val() !== expected_value) {
+                            var current_value = $depends_on.length > 0 ? $depends_on.val() : 'NOT_FOUND';
+                            var is_checkbox = $depends_on.length > 0 && $depends_on.attr('type') === 'checkbox';
+                            var is_checked = is_checkbox ? $depends_on.is(':checked') : null;
+                            
+                            // For checkboxes, handle empty string as "checked" expectation
+                            var value_matches = false;
+                            if ($depends_on.length === 0) {
+                                value_matches = false;
+                            } else if (is_checkbox) {
+                                if (expected_value === '' || expected_value === null || expected_value === undefined) {
+                                    // Empty expected value means "show when checked" (typical use case)
+                                    value_matches = is_checked;
+                                } else {
+                                    // Non-empty expected value means "show when checked with this value"
+                                    value_matches = is_checked && (current_value === expected_value || expected_value === 'on');
+                                }
+                            } else {
+                                value_matches = current_value === expected_value;
+                            }
+                            
+                            if (!value_matches) {
                                 all_met = false;
                                 break;
                             }
                         }
-                        
                         
                         if (all_met) {
                             $this.closest('tr').show();

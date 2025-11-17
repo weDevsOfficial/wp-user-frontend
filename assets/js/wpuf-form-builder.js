@@ -1289,13 +1289,6 @@
                         field: 'limit_entries',
                         value: true
                     }]
-                },
-                n8n_webhook_url: {
-                    type: 'text',
-                    dependsOn: [{
-                        field: 'enable_n8n',
-                        value: true
-                    }]
                 }
             }
         };

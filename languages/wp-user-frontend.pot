@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 4.2.2\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2025-11-04 05:08:46+00:00\n"
+"POT-Creation-Date: 2025-11-17 06:56:23+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -779,7 +779,7 @@ msgstr ""
 
 #: admin/html/form-settings-post.php:22 class/render-form.php:776
 #: includes/Admin/Forms/Admin_Form_Builder.php:83
-#: includes/Frontend_Render_Form.php:79 includes/Render_Form.php:638
+#: includes/Frontend_Render_Form.php:80 includes/Render_Form.php:638
 #: includes/class-frontend-render-form.php:183
 msgid "Save Draft"
 msgstr ""
@@ -1207,7 +1207,7 @@ msgstr ""
 #: includes/Ajax/Admin_Form_Builder_Ajax.php:138
 #: includes/Ajax/Admin_Form_Builder_Ajax.php:142
 #: includes/Ajax/Admin_Form_Builder_Ajax.php:218
-#: includes/Frontend_Render_Form.php:123
+#: includes/Frontend_Render_Form.php:124
 #: includes/Integrations/WPUF_ACF_Compatibility.php:76
 #: includes/Integrations/WPUF_ACF_Compatibility.php:94
 #: includes/Integrations/WPUF_ACF_Compatibility.php:160
@@ -1255,7 +1255,7 @@ msgstr ""
 #: admin/template-post.php:150 includes/Admin/Forms/Template_Post.php:159
 #: includes/Fields/Field_Contract.php:494
 #: includes/Fields/Form_Field_MultiDropdown.php:11
-#: includes/Fields/Form_Field_MultiDropdown.php:81
+#: includes/Fields/Form_Field_MultiDropdown.php:84
 msgid "Multi Select"
 msgstr ""
 
@@ -1676,12 +1676,12 @@ msgstr ""
 msgid "Invisible reCAPTCHA validation failed"
 msgstr ""
 
-#: class/render-form.php:378 includes/Frontend_Render_Form.php:187
+#: class/render-form.php:378 includes/Frontend_Render_Form.php:188
 #: includes/Render_Form.php:235 includes/class-frontend-render-form.php:289
 msgid "Your selected form is no longer available."
 msgstr ""
 
-#: class/render-form.php:384 includes/Frontend_Render_Form.php:193
+#: class/render-form.php:384 includes/Frontend_Render_Form.php:194
 #: includes/Render_Form.php:241 includes/class-frontend-render-form.php:295
 msgid "Please make sure you've published your form."
 msgstr ""
@@ -2886,7 +2886,7 @@ msgstr ""
 #: includes/Admin/Forms/Post/Templates/Post_Form_Template_Video.php:104
 #: includes/Fields/Field_Contract.php:238
 #: includes/Fields/Form_Field_Dropdown.php:110
-#: includes/Fields/Form_Field_MultiDropdown.php:85
+#: includes/Fields/Form_Field_MultiDropdown.php:88
 #: includes/Fields/Form_Field_Post_Taxonomy.php:500
 msgid "- Select -"
 msgstr ""
@@ -2927,7 +2927,7 @@ msgstr ""
 #: includes/Admin/Forms/Admin_Form_Builder.php:336
 #: includes/Fields/Form_Field_Checkbox.php:112
 #: includes/Fields/Form_Field_Dropdown.php:109
-#: includes/Fields/Form_Field_MultiDropdown.php:84
+#: includes/Fields/Form_Field_MultiDropdown.php:87
 #: includes/Fields/Form_Field_Radio.php:111
 msgid "Option"
 msgstr ""
@@ -4719,7 +4719,7 @@ msgid "You already have an account in our site. Please login to continue."
 msgstr ""
 
 #: includes/Ajax/Frontend_Form_Ajax.php:752
-#: includes/Frontend_Render_Form.php:227
+#: includes/Frontend_Render_Form.php:258
 #: includes/class-frontend-render-form.php:323
 msgid "You do not have sufficient permissions to access this form."
 msgstr ""
@@ -6909,13 +6909,13 @@ msgstr ""
 msgid "Please Cancel Your Currently Active Pack first!"
 msgstr ""
 
-#: includes/Frontend_Render_Form.php:327
+#: includes/Frontend_Render_Form.php:358
 #: includes/class-frontend-render-form.php:928
 #: templates/dashboard/posts.php:120
 msgid "Featured"
 msgstr ""
 
-#: includes/Frontend_Render_Form.php:334
+#: includes/Frontend_Render_Form.php:365
 #: includes/class-frontend-render-form.php:936
 #. translators: %1$s is Post type and %2$d is item
 #. translators: %1$s is Post type and %2$s is total feature item

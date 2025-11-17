@@ -251,7 +251,7 @@ class Render_Form {
 
         do_action( 'wpuf_before_form_render', $form_id );
 
-        if ( !empty( $layout ) ) {
+        if ( ! empty( $layout ) && 'on' !== $theme_css ) {
             wp_enqueue_style( 'wpuf-' . $layout );
         }
 

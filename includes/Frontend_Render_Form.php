@@ -206,7 +206,10 @@ class Frontend_Render_Form {
 
         $form = new Form($form_id);
 
-        if ( 'wpuf_profile' === $form->data->post_type ) {
+        // Check if Use Theme CSS is enabled - if so, don't enqueue plugin styles
+        $use_theme_css = isset( $this->form_settings['use_theme_css'] ) ? $this->form_settings['use_theme_css'] : '';
+
+        if ( 'wpuf_profile' === $form->data->post_type && 'on' !== $use_theme_css ) {
             $layout = isset( $this->form_settings['profile_form_layout'] ) ? $this->form_settings['profile_form_layout'] : 'layout1';
             switch ( $layout ) {
                 case 'layout2':
@@ -232,7 +235,9 @@ class Frontend_Render_Form {
         } else {
             $layout = isset( $this->form_settings['form_layout'] ) ? $this->form_settings['form_layout'] : 'layout1';
 
-            if ( ! empty( $layout ) ) {
+            if ( ! empty( $layout ) && 'on' !== $use_theme_css ) {
+                // Always enqueue the base template style
+                wp_enqueue_style( 'wpuf-reg-template-base' );
                 wp_enqueue_style( 'wpuf-' . $layout );
             }
         }

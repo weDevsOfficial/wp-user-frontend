@@ -103,12 +103,23 @@ class AI_Manager {
         // Check if API key is available
         $hasApiKey = !empty($wpuf_ai['ai_api_key']);
 
+        // Determine form type based on current admin page
+        $form_type = 'post'; // Default to post
+        if ( isset( $_GET['page'] ) ) {
+            if ( 'wpuf-profile-forms' === $_GET['page'] ) {
+                $form_type = 'profile';
+            } elseif ( 'wpuf-post-forms' === $_GET['page'] ) {
+                $form_type = 'post';
+            }
+        }
+
         $localization_data = [
             'rest_url' => get_rest_url(null, '/'),
             'nonce' => wp_create_nonce('wp_rest'),
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'provider' => $provider,
             'hasApiKey' => $hasApiKey,
+            'formType' => $form_type,
             'isProActive' => class_exists('WP_User_Frontend_Pro'),
             'strings' => [
                 'testConnection' => __('Test Connection', 'wp-user-frontend'),

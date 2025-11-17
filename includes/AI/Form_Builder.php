@@ -75,8 +75,21 @@ class Form_Builder {
             'form_title'       => $ai_response['form_title'] ?? 'Untitled Form',
             'form_description' => $ai_response['form_description'] ?? '',
             'wpuf_fields'      => $complete_fields,
-            'form_settings'    => self::get_default_settings(),
+            'form_settings'    => self::merge_form_settings( $ai_response['form_settings'] ?? [] ),
         ];
+    }
+
+    /**
+     * Merge AI form settings with defaults
+     *
+     * @param array $ai_settings Settings from AI response
+     * @return array
+     */
+    private static function merge_form_settings( $ai_settings ) {
+        $defaults = self::get_default_settings();
+        
+        // Merge AI settings with defaults, AI settings take priority
+        return array_merge( $defaults, $ai_settings );
     }
 
     /**

@@ -702,12 +702,32 @@ class FormGenerator {
      * @return string System prompt
      */
     private function get_system_prompt($context = [], $form_type = 'post') {
-        // Determine which prompt file to use based on form type
+        // Get integration type from context if provided
+        $integration = $context['integration'] ?? '';
+
+        // Check if Pro is active using the proper function
+        $is_pro_active = function_exists( 'wpuf_is_pro_active' ) && wpuf_is_pro_active();
+
+        // Determine which prompt file to use based on form type and integration
         if ( 'profile' === $form_type || 'registration' === $form_type ) {
-            // Registration/Profile form prompt - USE MINIMAL REGISTRATION PROMPT
+            // Registration/Profile form - use registration prompt
             $prompt_file = WPUF_ROOT . '/includes/AI/wpuf-ai-minimal-prompt-registration.md';
-        } else {
-            // Post form prompt - USE MINIMAL PROMPT
+        } elseif ( 'post' === $form_type && ! empty( $integration ) ) {
+            // Post form WITH integration - use integration-specific prompts
+            $integration_prompts = [
+                'woocommerce'      => WPUF_ROOT . '/includes/AI/wpuf-ai-prompt-woocommerce.md',
+                'edd'              => WPUF_ROOT . '/includes/AI/wpuf-ai-prompt-edd.md',
+                'events_calendar'  => WPUF_ROOT . '/includes/AI/wpuf-ai-prompt-events-calendar.md',
+            ];
+
+            // Use integration prompt if available, fallback to minimal prompt
+            if ( isset( $integration_prompts[ $integration ] ) && file_exists( $integration_prompts[ $integration ] ) ) {
+                $prompt_file = $integration_prompts[ $integration ];
+            } else {
+                $prompt_file = WPUF_ROOT . '/includes/AI/wpuf-ai-minimal-prompt.md';
+            }
+        } elseif ( 'post' === $form_type && empty( $integration ) ) {
+            // Post form WITHOUT integration - use minimal prompt
             $prompt_file = WPUF_ROOT . '/includes/AI/wpuf-ai-minimal-prompt.md';
         }
 
@@ -718,6 +738,31 @@ class FormGenerator {
 
         // Load the prompt file
         $system_prompt = file_get_contents( $prompt_file );
+
+        // Add Pro version status ONLY for integration forms
+        if ( ! empty( $integration ) ) {
+            $system_prompt .= "\n\n## WPUF VERSION INFO\n";
+            if ( $is_pro_active ) {
+                $system_prompt .= "**WP User Frontend Pro is ACTIVE**\n";
+                $system_prompt .= "- You can use ALL field types including Pro-only fields\n";
+                if ( 'woocommerce' === $integration ) {
+                    $system_prompt .= "- For WooCommerce: Use numeric_text_field for pricing fields (_regular_price, _sale_price)\n";
+                    $system_prompt .= "- Pro fields available: numeric_text_field, phone_field, country_list_field, address_field, etc.\n";
+                } elseif ( 'events_calendar' === $integration ) {
+                    $system_prompt .= "- Pro fields available: phone_field, country_list_field, address_field, google_map, etc.\n";
+                }
+            } else {
+                $system_prompt .= "**WP User Frontend FREE version (Pro NOT active)**\n";
+                $system_prompt .= "- Use ONLY free version fields\n";
+                if ( 'woocommerce' === $integration ) {
+                    $system_prompt .= "- For WooCommerce: Use text_field (not numeric_text_field) for pricing fields (_regular_price, _sale_price)\n";
+                } elseif ( 'events_calendar' === $integration ) {
+                    $system_prompt .= "- For Events Calendar: Use text_field for venue name, address, etc.\n";
+                }
+                $system_prompt .= "- Free fields: text_field, textarea_field, dropdown_field, radio_field, checkbox_field, email_address, website_url, date_field, etc.\n";
+                $system_prompt .= "- Do NOT use Pro-only fields like numeric_text_field, phone_field, country_list_field, address_field\n";
+            }
+        }
 
         // Add form type context (informational, not restrictive)
         $system_prompt .= "\n\n## FORM TYPE CONTEXT\n";

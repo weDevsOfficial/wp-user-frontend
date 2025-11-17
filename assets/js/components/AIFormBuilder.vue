@@ -5,10 +5,12 @@
             v-if="currentStage === 'input'"
             :initialDescription="formDescription"
             :initialSelectedPrompt="selectedPrompt"
+            :initialIntegration="selectedIntegration"
             :generating="isGenerating"
             @go-back="goBack"
             @start-generation="handleStartGeneration"
             @update:selectedPrompt="selectedPrompt = $event"
+            @update:selectedIntegration="selectedIntegration = $event"
             @update:formDescription="formDescription = $event"
         />
         
@@ -58,20 +60,21 @@ export default {
         return {
             // Stage management
             currentStage: 'input', // 'input', 'generating', 'success'
-            
+
             // Form data
             formDescription: '',
             selectedPrompt: '',
+            selectedIntegration: '',
             isGenerating: false,
             formTitle: 'Generated Form',
             formId: null,
-            
+
             // Chat data
             chatMessages: [],
-            
+
             // Form fields
             formFields: [],
-            
+
             // API data
             generatedFormData: null,
             sessionId: null
@@ -95,11 +98,12 @@ export default {
         handleStartGeneration(data) {
             this.formDescription = data.description;
             this.selectedPrompt = data.selectedPrompt;
+            this.selectedIntegration = data.integration || '';
             this.isGenerating = true;
             this.currentStage = 'generating';
-            
+
             // Call AI form generation API
-            this.callAIFormGenerationAPI(data.description);
+            this.callAIFormGenerationAPI(data.description, data.integration);
         },
         
         handleGenerationComplete() {
@@ -108,26 +112,34 @@ export default {
             this.initializeChatData();
         },
         
-        async callAIFormGenerationAPI(prompt) {
+        async callAIFormGenerationAPI(prompt, integration = '') {
             try {
                 // Get configuration with fallbacks
                 const config = window.wpufAIFormBuilder || {};
                 const restUrl = config.rest_url || (window.location.origin + '/wp-json/');
                 const nonce = config.nonce || '';
-                
+
+                // Build request body
+                const requestBody = {
+                    prompt: prompt,
+                    session_id: this.getSessionId(),
+                    form_type: config.formType || 'post', // Pass form type to API
+                    provider: config.provider || 'openai'
+                    // Note: temperature and max_tokens are now handled by backend based on model configuration
+                };
+
+                // Add integration parameter if selected
+                if (integration) {
+                    requestBody.integration = integration;
+                }
+
                 const response = await fetch(restUrl + 'wpuf/v1/ai-form-builder/generate', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-WP-Nonce': nonce
                     },
-                    body: JSON.stringify({
-                        prompt: prompt,
-                        session_id: this.getSessionId(),
-                        form_type: config.formType || 'post', // Pass form type to API
-                        provider: config.provider || 'openai'
-                        // Note: temperature and max_tokens are now handled by backend based on model configuration
-                    })
+                    body: JSON.stringify(requestBody)
                 });
                 
                 if (!response.ok) {

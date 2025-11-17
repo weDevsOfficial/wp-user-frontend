@@ -98,6 +98,13 @@ class RestController extends WP_REST_Controller {
                     'enum' => ['post', 'profile', 'registration'],
                     'sanitize_callback' => 'sanitize_text_field'
                 ],
+                'integration' => [
+                    'required' => false,
+                    'type' => 'string',
+                    'default' => '',
+                    'enum' => ['', 'woocommerce', 'edd', 'events_calendar'],
+                    'sanitize_callback' => 'sanitize_text_field'
+                ],
                 'provider' => [
                     'required' => false,
                     'type' => 'string',
@@ -133,6 +140,22 @@ class RestController extends WP_REST_Controller {
             'methods' => WP_REST_Server::READABLE,
             'callback' => [$this, 'get_providers'],
             'permission_callback' => [$this, 'check_permission']
+        ]);
+
+        // Get available integrations endpoint
+        register_rest_route($this->namespace, '/' . $this->rest_base . '/integrations', [
+            'methods' => WP_REST_Server::READABLE,
+            'callback' => [$this, 'get_integrations'],
+            'permission_callback' => [$this, 'check_permission'],
+            'args' => [
+                'form_type' => [
+                    'required' => false,
+                    'type' => 'string',
+                    'default' => 'post',
+                    'enum' => ['post', 'profile', 'registration'],
+                    'sanitize_callback' => 'sanitize_text_field'
+                ]
+            ]
         ]);
 
         // Save settings endpoint
@@ -247,6 +270,7 @@ class RestController extends WP_REST_Controller {
         $session_id = $request->get_param('session_id');
         $conversation_context = $request->get_param('conversation_context') ?? [];
         $form_type = $request->get_param('form_type') ?? 'post';
+        $integration = $request->get_param('integration') ?? '';
         $provider = $request->get_param('provider');
         $temperature = $request->get_param('temperature');
         $max_tokens = $request->get_param('max_tokens');
@@ -264,6 +288,11 @@ class RestController extends WP_REST_Controller {
         }
 
         try {
+            // Add integration to conversation context
+            if ( ! empty( $integration ) ) {
+                $conversation_context['integration'] = $integration;
+            }
+
             $options = [
                 'session_id' => $session_id,
                 'conversation_context' => $conversation_context,
@@ -399,6 +428,63 @@ class RestController extends WP_REST_Controller {
             'success' => true,
             'providers' => $providers,
             'current_provider' => $current_provider
+        ], 200);
+    }
+
+    /**
+     * Get available integrations
+     *
+     * Returns list of available integrations based on installed plugins
+     *
+     * @since 4.2.1
+     *
+     * @param WP_REST_Request $request REST request object
+     * @return WP_REST_Response Response object
+     */
+    public function get_integrations(WP_REST_Request $request) {
+        $form_type = $request->get_param('form_type') ?? 'post';
+
+        // Define all possible integrations with their requirements
+        $all_integrations = [
+            'woocommerce' => [
+                'id'          => 'woocommerce',
+                'label'       => __( 'WooCommerce Product', 'wp-user-frontend' ),
+                'description' => __( 'Create WooCommerce product submission forms', 'wp-user-frontend' ),
+                'enabled'     => class_exists( 'WooCommerce' ),
+                'form_types'  => [ 'post' ],
+                'icon'        => 'woocommerce'
+            ],
+            'edd' => [
+                'id'          => 'edd',
+                'label'       => __( 'Easy Digital Downloads', 'wp-user-frontend' ),
+                'description' => __( 'Create EDD download submission forms', 'wp-user-frontend' ),
+                'enabled'     => class_exists( 'Easy_Digital_Downloads' ),
+                'form_types'  => [ 'post' ],
+                'icon'        => 'download'
+            ],
+            'events_calendar' => [
+                'id'          => 'events_calendar',
+                'label'       => __( 'The Events Calendar', 'wp-user-frontend' ),
+                'description' => __( 'Create event submission forms', 'wp-user-frontend' ),
+                'enabled'     => class_exists( 'Tribe__Events__Main' ),
+                'form_types'  => [ 'post' ],
+                'icon'        => 'calendar'
+            ]
+        ];
+
+        // Filter integrations based on form type and enabled status
+        $available_integrations = [];
+        foreach ( $all_integrations as $key => $integration ) {
+            // Only include if enabled and supports the current form type
+            if ( $integration['enabled'] && in_array( $form_type, $integration['form_types'], true ) ) {
+                $available_integrations[] = $integration;
+            }
+        }
+
+        return new WP_REST_Response([
+            'success' => true,
+            'integrations' => $available_integrations,
+            'form_type' => $form_type
         ], 200);
     }
 

@@ -28,7 +28,7 @@ class Pro_Form_Preview_Professional_Video {
     public function __construct() {
         $this->title    = __( 'Professional Video Submission', 'wp-user-frontend' );
         $this->image    = WPUF_ASSET_URI . '/images/templates/professional-video.svg';
-        $this->pro_icon = WPUF_ASSET_URI . '/images/templates/crown.svg';
+        $this->pro_icon = WPUF_ASSET_URI . '/images/templates/pro-badge.svg';
     }
 
     /**

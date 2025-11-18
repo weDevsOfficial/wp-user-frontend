@@ -1,0 +1,74 @@
+<svg width="246" height="249" viewBox="0 0 246 249" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_dd_artwork)">
+<path d="M3 10C3 5.58172 6.58172 2 11 2H235C239.418 2 243 5.58172 243 10V237C243 241.418 239.418 245 235 245H11C6.58173 245 3 241.418 3 237V10Z" fill="white"/>
+<path d="M3.5 10C3.5 5.85786 6.85786 2.5 11 2.5H235C239.142 2.5 242.5 5.85786 242.5 10V237C242.5 241.142 239.142 244.5 235 244.5H11C6.85787 244.5 3.5 241.142 3.5 237V10Z" stroke="#E2E8F0"/>
+</g>
+<!-- Canvas/Frame -->
+<rect x="63" y="30" width="120" height="90" rx="2" fill="#FAFAFA" stroke="#94A3B8" stroke-width="2"/>
+<rect x="68" y="35" width="110" height="80" rx="1" fill="white"/>
+<!-- Abstract Artwork -->
+<circle cx="98" cy="65" r="18" fill="#EF4444" opacity="0.7"/>
+<circle cx="118" cy="75" r="22" fill="#3B82F6" opacity="0.7"/>
+<rect x="128" y="55" width="35" height="35" rx="2" fill="#10B981" opacity="0.7"/>
+<path d="M78 85L88 95L98 85L108 95L118 85" stroke="#F59E0B" stroke-width="3" stroke-linecap="round"/>
+<!-- Palette Icon -->
+<ellipse cx="190" cy="40" rx="15" ry="12" fill="#F3F4F6" stroke="#9CA3AF" stroke-width="1"/>
+<circle cx="185" cy="36" r="3" fill="#EF4444"/>
+<circle cx="195" cy="36" r="3" fill="#3B82F6"/>
+<circle cx="185" cy="44" r="3" fill="#10B981"/>
+<circle cx="195" cy="44" r="3" fill="#F59E0B"/>
+<circle cx="190" cy="40" r="2" fill="#1F2937"/>
+<!-- Artist Info Fields -->
+<rect x="47.25" y="128" width="152.5" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="52" y="131" width="60" height="4" rx="1" fill="#CBD5E1"/>
+<text x="115" y="134.5" font-family="system-ui, -apple-system, sans-serif" font-size="7" fill="#64748B">Artist Name</text>
+<!-- Artwork Title -->
+<rect x="47.25" y="144" width="152.5" height="12" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="52" y="148" width="80" height="4" rx="1" fill="#94A3B8"/>
+<!-- Medium & Dimensions -->
+<rect x="47.25" y="162" width="72" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="52" y="165" width="40" height="4" rx="1" fill="#E2E8F0"/>
+<text x="95" y="168.5" font-family="system-ui, -apple-system, sans-serif" font-size="6" fill="#64748B">Oil on canvas</text>
+<rect x="127.25" y="162" width="72" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="132" y="165" width="30" height="4" rx="1" fill="#E2E8F0"/>
+<text x="165" y="168.5" font-family="system-ui, -apple-system, sans-serif" font-size="6" fill="#64748B">60x80 cm</text>
+<!-- Artist Statement -->
+<rect x="47.25" y="178" width="152.5" height="26" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<rect x="52" y="182" width="142" height="2" rx="1" fill="#E2E8F0"/>
+<rect x="52" y="186" width="142" height="2" rx="1" fill="#E2E8F0"/>
+<rect x="52" y="190" width="110" height="2" rx="1" fill="#E2E8F0"/>
+<rect x="52" y="194" width="125" height="2" rx="1" fill="#E2E8F0"/>
+<rect x="52" y="198" width="90" height="2" rx="1" fill="#E2E8F0"/>
+<!-- Contact & Portfolio -->
+<rect x="47.25" y="210" width="46" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<path d="M52 215L54 213H56L58 215" stroke="#94A3B8" stroke-width="1" stroke-linecap="round"/>
+<rect x="52" y="217" width="2" height="1" fill="#94A3B8"/>
+<rect x="56" y="217" width="2" height="1" fill="#94A3B8"/>
+<rect x="62" y="214" width="25" height="2" rx="1" fill="#CBD5E1"/>
+<rect x="99.25" y="210" width="46" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<circle cx="104" cy="215" r="2" stroke="#94A3B8" stroke-width="0.8"/>
+<rect x="109" y="214" width="30" height="2" rx="1" fill="#CBD5E1"/>
+<rect x="151.25" y="210" width="48" height="10" rx="3.25" fill="white" stroke="#D4DBE3" stroke-width="0.5"/>
+<path d="M156 215H163M156 215L158 213M156 215L158 217M163 215L161 213M163 215L161 217" stroke="#94A3B8" stroke-width="0.8"/>
+<rect x="167" y="214" width="25" height="2" rx="1" fill="#CBD5E1"/>
+<!-- Terms Checkbox -->
+<rect x="47.25" y="226" width="152.5" height="10" rx="3.25" fill="#FEF3C7" stroke="#F59E0B" stroke-width="0.5"/>
+<rect x="52" y="230" width="4" height="4" rx="1" stroke="#F59E0B" stroke-width="0.5" fill="none"/>
+<text x="60" y="233" font-family="system-ui, -apple-system, sans-serif" font-size="7" fill="#92400E">I agree to gallery terms and commission policies</text>
+<defs>
+<filter id="filter0_dd_artwork" x="0" y="0" width="246" height="249" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1"/>
+<feGaussianBlur stdDeviation="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1"/>
+<feGaussianBlur stdDeviation="1.5"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/>
+<feBlend mode="normal" in2="effect1_dropShadow" result="effect2_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow" result="shape"/>
+</filter>
+</defs>
+</svg>

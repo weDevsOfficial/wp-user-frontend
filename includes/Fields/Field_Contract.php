@@ -310,6 +310,50 @@ abstract class Field_Contract {
             ],
 
             [
+                'name'      => 'show_icon',
+                'title'     => __( 'Show Icon', 'wp-user-frontend' ),
+                'type'      => 'radio',
+                'options'   => [
+                    'yes'   => __( 'Yes', 'wp-user-frontend' ),
+                    'no'    => __( 'No', 'wp-user-frontend' ),
+                ],
+                'section'   => 'basic',
+                'priority'  => 22,
+                'default'   => 'no',
+                'inline'    => true,
+                'help_text' => __( 'Enable to show an icon with this field', 'wp-user-frontend' ),
+            ],
+            [
+                'name'      => 'field_icon',
+                'title'     => __( 'Field Icon', 'wp-user-frontend' ),
+                'type'      => 'icon_selector',
+                'section'   => 'basic',
+                'priority'  => 23,
+                'default'   => 'fas fa-user',
+                'help_text' => __( 'Select an icon to display with this field', 'wp-user-frontend' ),
+                'dependencies' => [
+                    'show_icon' => 'yes'
+                ],
+            ],
+
+            [
+                'name'      => 'icon_position',
+                'title'     => __( 'Icon Position', 'wp-user-frontend' ),
+                'type'      => 'select',
+                'options'   => [
+                    'left_label'  => __( 'Left of Label', 'wp-user-frontend' ),
+                    'right_label' => __( 'Right of Label', 'wp-user-frontend' ),
+                ],
+                'section'   => 'basic',
+                'priority'  => 23,
+                'default'   => 'left_label',
+                'help_text' => __( 'Choose where to display the icon', 'wp-user-frontend' ),
+                'dependencies' => [
+                    'show_icon' => 'yes'
+                ],
+            ],
+
+            [
                 'name'      => 'width',
                 'title'     => __( 'Field Size', 'wp-user-frontend' ),
                 'type'      => 'radio',
@@ -776,7 +820,21 @@ abstract class Field_Contract {
     public function print_label( $field, $form_id = 0 ) {
         ?>
         <div class="wpuf-label">
-            <label for="<?php echo isset( $field['name'] ) ? esc_attr( $field['name'] ) . '_' . esc_attr( $form_id ) : 'cls'; ?>"><?php echo wp_kses_post( $field['label'] . $this->required_mark( $field ) ); ?></label>
+            <label for="<?php echo isset( $field['name'] ) ? esc_attr( $field['name'] ) . '_' . esc_attr( $form_id ) : 'cls'; ?>">
+                <?php 
+                // Render icon before label if position is left
+                if ( ! empty( $field['show_icon'] ) && $field['show_icon'] === 'yes' && ! empty( $field['field_icon'] ) && ! empty( $field['icon_position'] ) && $field['icon_position'] === 'left_label' ) {
+                    echo '<i class="' . esc_attr( $field['field_icon'] ) . ' wpuf-field-icon wpuf-field-icon-left"></i> ';
+                }
+                
+                echo wp_kses_post( $field['label'] . $this->required_mark( $field ) );
+                
+                // Render icon after label if position is right
+                if ( ! empty( $field['show_icon'] ) && $field['show_icon'] === 'yes' && ! empty( $field['field_icon'] ) && ! empty( $field['icon_position'] ) && $field['icon_position'] === 'right_label' ) {
+                    echo ' <i class="' . esc_attr( $field['field_icon'] ) . ' wpuf-field-icon wpuf-field-icon-right"></i>';
+                }
+                ?>
+            </label>
         </div>
         <?php
     }
@@ -807,6 +865,7 @@ abstract class Field_Contract {
         if ( $this->is_required( $field ) ) {
             return ' <span class="required">*</span>';
         }
+        return '';
     }
 
     /**
@@ -871,7 +930,7 @@ abstract class Field_Contract {
     public function prepare_entry( $field ) {
         check_ajax_referer( 'wpuf_form_add' );
 
-        $value = ! empty( $_POST[ $field['name'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $field['name'] ] ) ) :
+        $value = ! empty( $_POST[ $field['name'] ] ) ? strip_shortcodes( sanitize_text_field( wp_unslash( $_POST[ $field['name'] ] ) ) ) :
             '';
 
         if ( is_array( $value ) ) {

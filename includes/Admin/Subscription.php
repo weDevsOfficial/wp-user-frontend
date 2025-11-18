@@ -274,7 +274,7 @@ class Subscription {
         if ( $posts ) {
             foreach ( $posts as $key => $post ) {
                 $post->meta_value = $this->get_subscription_meta( $post->ID, $posts );
-                
+
                 // Set default sort order if not set
                 if ( empty( $post->meta_value['_sort_order'] ) ) {
                     $sort_order = 1;
@@ -337,6 +337,10 @@ class Subscription {
         $meta['_total_feature_item']        = get_post_meta( $subscription_id, '_total_feature_item', true );
         $meta['_remove_feature_item']       = get_post_meta( $subscription_id, '_remove_feature_item', true );
         $meta['_sort_order']                = get_post_meta( $subscription_id, '_sort_order', true );
+
+        // Taxonomy restriction meta keys
+        $meta['_sub_allowed_term_ids']      = get_post_meta( $subscription_id, '_sub_allowed_term_ids', true );
+        $meta['_sub_view_allowed_term_ids'] = get_post_meta( $subscription_id, '_sub_view_allowed_term_ids', true );
 
         $meta = apply_filters( 'wpuf_get_subscription_meta', $meta, $subscription_id );
 
@@ -458,7 +462,7 @@ class Subscription {
         update_post_meta( $subscription_id, 'additional_cpt_options', array_map( 'sanitize_text_field', $post_data['additional_cpt_options'] ) );
         update_post_meta( $subscription_id, '_enable_post_expiration', $enable_post_expir );
         update_post_meta( $subscription_id, '_post_expiration_time', $expiration_time );
-        
+
         // Handle sort order field
         $sort_order = isset( $post_data['sort_order'] ) ? absint( $post_data['sort_order'] ) : 1;
         if ( $sort_order < 1 ) {
@@ -470,7 +474,7 @@ class Subscription {
         update_post_meta( $subscription_id, '_post_expiration_message', $post_expire_msg );
         update_post_meta( $subscription_id, '_total_feature_item', ( isset( $post_data['total_feature_item'] ) ? sanitize_text_field( wp_unslash( $post_data['total_feature_item'] ) ) : '' ) );
         update_post_meta( $subscription_id, '_remove_feature_item', ( isset( $post_data['remove_feature_item'] ) ? sanitize_text_field( wp_unslash( $post_data['remove_feature_item'] ) ) : '' ) );
-        
+
         do_action( 'wpuf_update_subscription_pack', $subscription_id, $post_data );
     }
 
@@ -877,7 +881,7 @@ class Subscription {
 
         // Prepare arguments for get_subscriptions, only include ordering if explicitly set
         $subscription_args = [];
-        
+
         // Only pass order/orderby if they were explicitly set in shortcode attributes
         if ( ! empty( $atts['order'] ) ) {
             $subscription_args['order'] = $args['order'];
@@ -1213,6 +1217,10 @@ class Subscription {
         $current_user   = wpuf_get_user();
         $current_pack   = $current_user->subscription()->current_pack();
         $has_post_count = isset( $form_settings['post_type'] ) ? $current_user->subscription()->has_post_count( $form_settings['post_type'] ) : false;
+
+        if ( current_user_can( wpuf_admin_role() ) ) {
+            return 'yes';
+        }
 
         if ( $current_user->subscription()->current_pack_id() && ! $has_post_count ) {
             return 'no';

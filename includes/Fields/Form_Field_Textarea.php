@@ -39,7 +39,7 @@ class Form_Field_Textarea extends Field_Contract {
         $this->field_print_label( $field_settings, $form_id ); ?>
 
             <?php
-            if ( in_array( $field_settings['rich'], [ 'yes', 'teeny' ], true ) ) {
+            if ( isset( $field_settings['rich'] ) && in_array( $field_settings['rich'], [ 'yes', 'teeny' ], true ) ) {
                 ?>
                 <div class="wpuf-fields wpuf-rich-validation <?php printf( 'wpuf_%s_%s', esc_attr( $field_settings['name'] ), esc_attr( $form_id ) ); ?>" data-type="rich" data-required="<?php echo esc_attr( $field_settings['required'] ); ?>" data-id="<?php echo esc_attr( $field_settings['name'] ) . '_' . esc_attr( $form_id ); ?>" data-name="<?php echo esc_attr( $field_settings['name'] ); ?>">
             <?php } else { ?>
@@ -49,9 +49,9 @@ class Form_Field_Textarea extends Field_Contract {
                 <?php
                     $tinymce_settings = wpuf_filter_editor_toolbar( $field_settings );
 
-                if ( ( $field_settings['rich'] === 'teeny' || $field_settings['rich'] === 'yes' ) ) {
+                if ( isset( $field_settings['rich'] ) && ( $field_settings['rich'] === 'teeny' || $field_settings['rich'] === 'yes' ) ) {
                     $editor_settings = [
-                        'textarea_rows' => $field_settings['rows'],
+                        'textarea_rows' => isset( $field_settings['rows'] ) ? $field_settings['rows'] : 5,
                         'quicktags'     => false,
                         'media_buttons' => false,
                         'editor_class'  => $req_class,
@@ -66,7 +66,7 @@ class Form_Field_Textarea extends Field_Contract {
                         $editor_settings['tinymce'] = $tinymce_settings;
                     }
 
-                    if ( $field_settings['rich'] === 'teeny' ) {
+                    if ( isset( $field_settings['rich'] ) && $field_settings['rich'] === 'teeny' ) {
                         $editor_settings['teeny'] = true;
                     }
 
@@ -84,8 +84,8 @@ class Form_Field_Textarea extends Field_Contract {
                         data-type="textarea"
                         data-id="<?php echo esc_attr( $field_settings['name'] . '_' . $form_id ); ?>"
                         placeholder="<?php echo esc_attr( $field_settings['placeholder'] ); ?>"
-                        rows="<?php echo esc_attr( $field_settings['rows'] ); ?>"
-                        cols="<?php echo esc_attr( $field_settings['cols'] ); ?>"
+                        rows="<?php echo esc_attr( isset( $field_settings['rows'] ) ? $field_settings['rows'] : 5 ); ?>"
+                        cols="<?php echo esc_attr( isset( $field_settings['cols'] ) ? $field_settings['cols'] : 25 ); ?>"
                     ><?php echo esc_textarea( $value ); ?></textarea>
 
                         <?php
@@ -157,7 +157,7 @@ class Form_Field_Textarea extends Field_Contract {
     public function prepare_entry( $field ) {
         check_ajax_referer( 'wpuf_form_add' );
 
-        $field = isset( $_POST[ $field['name'] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $field['name'] ] ) ) : '';
+        $field = isset( $_POST[ $field['name'] ] ) ? strip_shortcodes( sanitize_text_field( wp_unslash( $_POST[ $field['name'] ] ) ) ) : '';
         return trim( $field );
     }
 
@@ -189,7 +189,7 @@ class Form_Field_Textarea extends Field_Contract {
                <?php if ( ! $hide_label ) : ?>
                     <label><?php echo esc_html( $field['label'] ); ?>:</label>
                 <?php endif; ?>
-               <?php echo wp_kses_post( wpautop( make_clickable( $data ) ) ); ?>
+               <?php echo wp_kses_post( wpautop( make_clickable( strip_shortcodes( $data ) ) ) ); ?>
             </li>
          <?php
             return ob_get_clean();
@@ -206,6 +206,6 @@ class Form_Field_Textarea extends Field_Contract {
       * @return string
       */
     public function sanitize_field_data( $data, $field ) {
-        return wp_kses_post( $data );
+        return strip_shortcodes( wp_kses_post( $data ) );
     }
 }

@@ -95,10 +95,6 @@ class Admin_Form_Builder_Ajax {
             wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
         }
 
-        if ( ! current_user_can( wpuf_admin_role() ) ) {
-            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
-        }
-
         if ( isset( $post_type ) && empty( $post_data['post_type'] ) ) {
             wp_send_json_error( __( 'Invalid post type', 'wp-user-frontend' ) );
         }
@@ -146,10 +142,6 @@ class Admin_Form_Builder_Ajax {
             wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
         }
 
-        if ( ! current_user_can( wpuf_admin_role() ) ) {
-            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
-        }
-
         if ( isset( $post_type ) && empty( $post_data['post_type'] ) ) {
             wp_send_json_error( __( 'Invalid post type', 'wp-user-frontend' ) );
         }
@@ -186,7 +178,7 @@ class Admin_Form_Builder_Ajax {
                 $cat .= '<div class="wpuf-mt-6 wpuf-input-container taxonomy-container" data-taxonomy="' . esc_attr( $tax->name ) . '">';
                 $cat .= '<div class="wpuf-flex wpuf-items-center">';
                 $cat .= '<label for="' . esc_attr( $select_id ) . '" class="wpuf-text-sm wpuf-text-gray-700 wpuf-my-2">';
-                $cat .= sprintf( __( 'Default %s %s', 'wp-user-frontend' ), $post_type, $tax->label );
+                $cat .= sprintf( __( 'Default %s', 'wp-user-frontend' ), $tax->label );
                 $cat .= '</label></div>';
 
                 $cat .= '<select
@@ -219,6 +211,13 @@ class Admin_Form_Builder_Ajax {
     }
 
     public function get_roles() {
+        // Security: Check nonce and user capabilities
+        check_ajax_referer( 'wpuf-form-builder' );
+
+        if ( ! current_user_can( wpuf_admin_role() ) ) {
+            wp_send_json_error( __( 'Unauthorized operation', 'wp-user-frontend' ) );
+        }
+
         $roles = wpuf_get_user_roles();
 
         $html = '<div class="wpuf-mt-6 wpuf-input-container"><div class="wpuf-flex wpuf-items-center"><label for="default_category" class="wpuf-text-sm wpuf-text-gray-700 wpuf-my-2">' . __( 'Choose who can submit post ', 'wp-user-frontend' ) . '</label></div>';

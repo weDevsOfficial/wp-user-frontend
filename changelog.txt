@@ -1,3 +1,28 @@
+= v4.2.2 (04 November, 2025) =
+* Fix - Show/Hide field based on subscription plan
+* Fix - Frontend subscription page CSS fixes
+
+= v4.2.1 (30 October, 2025) =
+* New - AI Powered Post Form Creation
+
+= v4.1.15 (22 October, 2025) =
+* Fix - Unwanted text appearing in 'View' and 'Preview' links
+
+= v4.1.14 (21 October, 2025) =
+* New - Dynamic Field Icons for improved visual customization
+* Enhancement – Renamed "Published" tab to "Saved" on Form List pages for better clarity
+* Enhancement – Added Upgrade and Discount links on the plugin page for easier access
+* Enhancement – Pricing Fields PRO preview section added to the Form Builder
+
+= v4.1.13 (07 October, 2025) =
+* Enhancement - Security and Capabilities check
+
+= v4.1.12 (24 September, 2025) =
+* New - Video Content Submission post form template
+
+= v4.1.11 (10 September, 2025) =
+* Fix - CSS scope conflict
+
 = v4.1.10 (01 September, 2025) =
 * New - Allow webp image format in file upload fields
 * Enhancement - Cleanup post form settings by removing form template option

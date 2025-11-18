@@ -16,7 +16,6 @@
                 <input
                     type="radio"
                     :value="key"
-                    :name="option_field.name"
                     v-model="value"
                     :class="builder_class_names('radio')">
                 {{ option }}
@@ -33,7 +32,6 @@
                 type="radio"
                 :value="key"
                 v-model="value"
-                :name="option_field.name"
                 :class="builder_class_names('radio')">
             {{ option }}
         </label>

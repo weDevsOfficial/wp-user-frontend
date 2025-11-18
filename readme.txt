@@ -3,8 +3,8 @@ Contributors: tareq1988, nizamuddinbabu, wedevs
 Donate link: https://tareq.co/donate/
 Tags: frontend post, forms, user directory, profile builder, membership
 Requires at least: 4.0
-Tested up to: 6.8.2
-Stable tag: 4.1.10
+Tested up to: 6.8.3
+Stable tag: 4.2.2
 Requires PHP: 5.6
 License: GPLv2
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -107,6 +107,18 @@ This WordPress Registration Form Plugin also allows you to build registration fo
 
 Custom field data are viewable to visitors on frontend on single post pages. Admins can also disable this if they don’t want to display custom fields to everyone.
 
+<strong>AI Powered Form Creation</strong>
+
+WPUF is introducing a brand-new AI Form Builder that helps you create complete forms with a single prompt. Just tell the AI what kind of form you need: a post submission form, job application, product submission form, survey, anything, and it instantly generates a ready-to-use form with suggested fields, labels, and structure in any language.
+
+What the AI Form Builder can do:
+
+* Create full forms based on natural language prompts
+* Suggest the most relevant fields automatically
+* Apply proper formatting, field types, and placeholders
+* Save time for busy site owners, agencies, and marketplace admins
+* Reduce setup errors and repetitive manual work
+
 = How to download and install WPUF FREE =
 
 [youtube https://www.youtube.com/watch?v=rzxdIN8ZMYc]
@@ -183,21 +195,21 @@ Check out the <a href="https://wedevs.com/wp-user-frontend-pro/pricing/?utm_medi
 
 = Checkout Our Other Products =
 
-*[Dokan:](https://wordpress.org/plugins/dokan-lite/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) The pioneer WooCommerce multivendor marketplace solution for WordPress. Start your own multi vendor marketplace like Amazon, eBay, Etsy - in minutes!
+* [Dokan:](https://wordpress.org/plugins/dokan-lite/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) The pioneer WooCommerce multivendor marketplace solution for WordPress. Start your own multi vendor marketplace like Amazon, eBay, Etsy - in minutes!
 
-*[Texty:](https://wordpress.org/plugins/texty/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) A lightweight SMS Notification plugin for WordPress, WooCommerce, Dokan, and more. Get instant notification with gateways like Twilio, Vonage – Formerly Nexmo, etc.
+* [Texty:](https://wordpress.org/plugins/texty/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) A lightweight SMS Notification plugin for WordPress, WooCommerce, Dokan, and more. Get instant notification with gateways like Twilio, Vonage – Formerly Nexmo, etc.
 
-*[weDocs:](https://wordpress.org/plugins/wedocs/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) The best WordPress documentation and knowledge base plugin for managing your self-hosted knowledge base, wiki, and docs.
+* [weDocs:](https://wordpress.org/plugins/wedocs/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) The best WordPress documentation and knowledge base plugin for managing your self-hosted knowledge base, wiki, and docs.
 
-*[weMail:](https://wordpress.org/plugins/wemail/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) A simplified WordPress solution for email marketing, newsletter, opt-in form, subscription form, and more!
+* [weMail:](https://wordpress.org/plugins/wemail/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) A simplified WordPress solution for email marketing, newsletter, opt-in form, subscription form, and more!
 
-*[wePOS:](https://wordpress.org/plugins/wepos/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) WooCommerce point of sale solution for WordPress by weDevs.
+* [wePOS:](https://wordpress.org/plugins/wepos/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) WooCommerce point of sale solution for WordPress by weDevs.
 
-*[WP Project Manager:](https://wordpress.org/plugins/wedevs-project-manager/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) A project management plugin by weDevs making task scheduling, project management, and team collaboration simpler than ever featuring a Kanban board and Gantt charts.
+* [WP Project Manager:](https://wordpress.org/plugins/wedevs-project-manager/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) A project management plugin by weDevs making task scheduling, project management, and team collaboration simpler than ever featuring a Kanban board and Gantt charts.
 
-*[Happy Addons for Elementor:](https://wordpress.org/plugins/happy-elementor-addons/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) An Elementor Addon solution that comes with Header Footer Builder, 500+ templates, 143+ free & essential pro elementor widget like – Theme Builder, Mega Menu, and more!
+* [Happy Addons for Elementor:](https://wordpress.org/plugins/happy-elementor-addons/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) An Elementor Addon solution that comes with Header Footer Builder, 500+ templates, 143+ free & essential pro elementor widget like – Theme Builder, Mega Menu, and more!
 
-*[WP ERP:](https://wordpress.org/plugins/erp/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) An ERP with complete HR, Recruitment, and Job Listings for Business Managers with WooCommerce CRM and accounting solutions by weDevs.
+* [WP ERP:](https://wordpress.org/plugins/erp/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) An ERP with complete HR, Recruitment, and Job Listings for Business Managers with WooCommerce CRM and accounting solutions by weDevs.
 
 = Privacy Policy =
 WP User Frontend uses [Appsero](https://appsero.com) SDK to collect some telemetry data upon user's confirmation. This helps us to troubleshoot problems faster & make product improvements.
@@ -254,6 +266,10 @@ This page is for the purpose of editing posts. You shouldn't access this page di
 First, you need to go to the dashboard, then when you click "edit", you'll be
 redirected to the edit page with that post id. Then you'll see the edit post form.
 
+= Where do I report security bugs found in this plugin? =
+
+Please report security bugs found in the source code of the WP User Frontend plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/8e79568c-ae3d-4e3e-9633-e478e8b0610e). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
+
 =  =
 
 
@@ -277,6 +293,32 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 14. Customize your Forms in Gutenberg Editor
 
 == Changelog ==
+= v4.2.2 (04 November, 2025) =
+* Fix - Show/Hide field based on subscription plan
+* Fix - Frontend subscription page CSS fixes
+
+= v4.2.1 (30 October, 2025) =
+* New - AI Powered Post Form Creation
+
+= v4.1.15 (22 October, 2025) =
+* Fix - Unwanted text appearing in 'View' and 'Preview' links
+
+= v4.1.14 (21 October, 2025) =
+* New - Dynamic Field Icons for improved visual customization
+* New - Taxonomy View Restriction settings to control visibility by taxonomy
+* Enhancement – Added Upgrade and Discount links on the plugin page for easier access
+* Enhancement – Pricing Fields PRO preview section added to the Form Builder
+* Enhancement – Renamed "Published" tab to "Saved" on Form List pages for better clarity
+
+= v4.1.13 (07 October, 2025) =
+* Enhancement - Security and Capabilities check
+
+= v4.1.12 (24 September, 2025) =
+* New - Video Content Submission post form template
+
+= v4.1.11 (10 September, 2025) =
+* Fix - CSS scope conflict
+
 = v4.1.10 (01 September, 2025) =
 * New - Allow webp image format in file upload fields
 * Enhancement - Cleanup post form settings by removing form template option

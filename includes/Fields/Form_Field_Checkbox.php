@@ -130,6 +130,7 @@ class Form_Field_Checkbox extends Field_Contract {
         check_ajax_referer( 'wpuf_form_add' );
 
         $field_name = isset( $_POST[$field['name']] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[$field['name']] ) ) : [];
+        $field_name = array_map( 'sanitize_text_field', array_map( 'strip_shortcodes', $field_name ) );
 
         $entry_value  = ( is_array( $field_name ) && $field_name ) ? $field_name : [];
 

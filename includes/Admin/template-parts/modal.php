@@ -109,7 +109,7 @@
                         <?php
                     }
 
-                    $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
+                    $crown_icon = WPUF_ROOT . '/assets/images/pro-badge.svg';
                     foreach ( $pro_templates as $template ) {
                         $class = 'template-inactive is-pro-template';
                         $image = $template->get_image();

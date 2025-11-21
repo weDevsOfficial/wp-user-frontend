@@ -729,11 +729,20 @@ span.pro-icon img {
   margin-left: 5px;
   vertical-align: middle;
 }
+.form-table th span.pro-icon,
+.form-table label span.pro-icon {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  line-height: 0;
+  position: relative;
+  top: -1px;
+}
 /* span.pro-icon.icon-white svg path {
-  fill: #fff;
+    fill: #fff;
 } */
 /* label span.pro-icon svg path {
-  fill: #10b981;
+    fill: #10b981;
 } */
 img.profile-header,
 img.user-listing {

@@ -18,7 +18,7 @@ $form_type = ! empty( $form_type ) ?  $form_type : 'Post Form';
             <div class="wpuf-mb-12">
                 <h1 class="wpuf-text-3xl wpuf-text-black wpuf-m-0 wpuf-p-0">
                     <?php
-                        printf( esc_html__( 'Select a %s Template', 'wp-user-frontend' ), $form_type );
+                        printf( esc_html__( 'Select a %s Template', 'wp-user-frontend' ), esc_html( $form_type ) );
                     ?>
                 </h1>
                 <p class="wpuf-text-base wpuf-text-gray-500 wpuf-mt-3 wpuf-p-0">

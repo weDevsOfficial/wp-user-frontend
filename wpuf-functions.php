@@ -5704,3 +5704,109 @@ if ( ! function_exists( 'wpuf_field_profile_photo_allowed_mimes' ) ) {
         return apply_filters( 'wpuf_field_profile_photo_allowed_mimes', $profile_photo_mimes );
     }
 }
+
+/**
+ * Check if a taxonomy is registered by Advanced Custom Fields (ACF)
+ *
+ * ACF taxonomies should be available in the free version as they are user-created
+ * via ACF, not plugin-specific custom taxonomies.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param string $taxonomy_name The taxonomy name to check
+ * @return bool True if taxonomy is registered by ACF, false otherwise
+ */
+if ( ! function_exists( 'wpuf_is_acf_taxonomy' ) ) {
+    function wpuf_is_acf_taxonomy( $taxonomy_name ) {
+        // If taxonomy doesn't exist, it can't be an ACF taxonomy
+        if ( ! taxonomy_exists( $taxonomy_name ) ) {
+            return false;
+        }
+
+        // Get the taxonomy object
+        $taxonomy = get_taxonomy( $taxonomy_name );
+        
+        if ( ! $taxonomy ) {
+            return false;
+        }
+
+        // ACF taxonomies typically have these characteristics:
+        // 1. They are not built-in (_builtin = false)
+        // 2. They are registered by ACF (check for ACF-specific properties)
+        
+        // Check if ACF is active
+        if ( ! class_exists( 'acf' ) ) {
+            return false;
+        }
+
+        // ACF stores taxonomy configuration in the database
+        // Check if there's an ACF post type that registered this taxonomy
+        global $wpdb;
+
+        // ACF saves custom taxonomies as posts of type 'acf-taxonomy'
+        // The taxonomy slug is stored in the serialized post_content, not post_name
+        // post_name is ACF's internal key like 'taxonomy_69242380c35d7'
+        $acf_taxonomies = $wpdb->get_results(
+            "SELECT post_content FROM {$wpdb->posts}
+            WHERE post_type = 'acf-taxonomy'
+            AND post_status = 'publish'"
+        );
+
+        if ( ! empty( $acf_taxonomies ) ) {
+            foreach ( $acf_taxonomies as $acf_tax ) {
+                // ACF stores the taxonomy configuration as serialized data
+                $config = maybe_unserialize( $acf_tax->post_content );
+
+                // Check if the taxonomy key matches our taxonomy name
+                if ( is_array( $config ) && isset( $config['taxonomy'] ) && $config['taxonomy'] === $taxonomy_name ) {
+                    return true;
+                }
+            }
+        }
+
+        // Additional check: ACF taxonomies often have 'acf' in their labels or registration
+        // Check if the taxonomy object has ACF-specific metadata
+        if ( isset( $taxonomy->acf ) || isset( $taxonomy->_builtin ) && ! $taxonomy->_builtin ) {
+            // Check if registered via ACF by looking for ACF functions
+            if ( function_exists( 'acf_get_internal_post_type' ) ) {
+                $internal_types = acf_get_internal_post_type( 'acf-taxonomy', 'names' );
+                if ( is_array( $internal_types ) && in_array( $taxonomy_name, $internal_types, true ) ) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+}
+
+/**
+ * Get list of taxonomies that should be available in free version
+ *
+ * This includes built-in taxonomies and ACF-registered taxonomies.
+ *
+ * @since WPUF_SINCE
+ *
+ * @return array Array of taxonomy names that are available in free version
+ */
+if ( ! function_exists( 'wpuf_get_free_taxonomies' ) ) {
+    function wpuf_get_free_taxonomies() {
+        // Built-in taxonomies that are always available
+        $free_taxonomies = array( 'category', 'post_tag' );
+
+        // Allow filtering to add more free taxonomies
+        $free_taxonomies = apply_filters( 'wpuf_free_taxonomies', $free_taxonomies );
+
+        // Add all ACF taxonomies if ACF is active
+        if ( class_exists( 'acf' ) ) {
+            $all_taxonomies = get_taxonomies( array( '_builtin' => false ), 'names' );
+            foreach ( $all_taxonomies as $taxonomy_name ) {
+                if ( wpuf_is_acf_taxonomy( $taxonomy_name ) && ! in_array( $taxonomy_name, $free_taxonomies, true ) ) {
+                    $free_taxonomies[] = $taxonomy_name;
+                }
+            }
+        }
+
+        return $free_taxonomies;
+    }
+}

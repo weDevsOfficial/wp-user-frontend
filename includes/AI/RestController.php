@@ -59,6 +59,7 @@ class RestController extends WP_REST_Controller {
      */
     public function __construct() {
         $this->form_generator = new FormGenerator();
+        add_action( 'wp_ajax_wpuf_ai_generate_field_options', [ $this, 'ajax_generate_field_options' ] );
     }
 
     /**
@@ -237,6 +238,48 @@ class RestController extends WP_REST_Controller {
             'methods' => WP_REST_Server::READABLE,
             'callback' => [$this, 'get_models'],
             'permission_callback' => [$this, 'check_permission']
+        ]);
+
+        // Generate field options endpoint
+        register_rest_route($this->namespace, '/' . $this->rest_base . '/generate-options', [
+            'methods' => WP_REST_Server::CREATABLE,
+            'callback' => [$this, 'generate_field_options'],
+            'permission_callback' => [$this, 'check_permission'],
+            'args' => [
+                'prompt' => [
+                    'required' => true,
+                    'type' => 'string',
+                    'sanitize_callback' => 'sanitize_textarea_field',
+                    'validate_callback' => [$this, 'validate_prompt']
+                ],
+                'field_type' => [
+                    'required' => true,
+                    'type' => 'string',
+                    'enum' => ['dropdown_field', 'radio_field', 'checkbox_field', 'multiple_select'],
+                    'sanitize_callback' => 'sanitize_text_field'
+                ],
+                'output_format' => [
+                    'required' => false,
+                    'type' => 'string',
+                    'enum' => ['one_per_line', 'value_label'],
+                    'default' => 'one_per_line',
+                    'sanitize_callback' => 'sanitize_text_field'
+                ],
+                'tone' => [
+                    'required' => false,
+                    'type' => 'string',
+                    'enum' => ['casual', 'formal', 'professional', 'friendly'],
+                    'default' => 'casual',
+                    'sanitize_callback' => 'sanitize_text_field'
+                ],
+                'max_options' => [
+                    'required' => false,
+                    'type' => 'integer',
+                    'minimum' => 1,
+                    'maximum' => 100,
+                    'default' => 20
+                ]
+            ]
         ]);
     }
 
@@ -581,6 +624,123 @@ class RestController extends WP_REST_Controller {
             'success' => true,
             'models' => $models
         ], 200);
+    }
+
+    /**
+     * Generate field options using AI
+     *
+     * @param WP_REST_Request $request REST request object
+     * @return WP_REST_Response|WP_Error Response object
+     */
+    public function generate_field_options(WP_REST_Request $request) {
+        try {
+            $prompt = $request->get_param('prompt');
+            $field_type = $request->get_param('field_type');
+            $output_format = $request->get_param('output_format') ?? 'one_per_line';
+            $tone = $request->get_param('tone') ?? 'casual';
+            $max_options = $request->get_param('max_options') ?? 20;
+
+            // Validate max options
+            if ($max_options < 1 || $max_options > 100) {
+                return new WP_Error(
+                    'invalid_max_options',
+                    __('Maximum options must be between 1 and 100', 'wp-user-frontend'),
+                    ['status' => 400]
+                );
+            }
+
+            // Call FormGenerator to generate options
+            $result = $this->form_generator->generate_field_options($prompt, [
+                'field_type' => $field_type,
+                'output_format' => $output_format,
+                'tone' => $tone,
+                'max_options' => $max_options
+            ]);
+
+            if (isset($result['error']) && $result['error']) {
+                return new WP_Error(
+                    'generation_failed',
+                    $result['message'] ?? __('Failed to generate field options', 'wp-user-frontend'),
+                    ['status' => 400]
+                );
+            }
+
+            // Sanitize generated options
+            $sanitized_options = $this->sanitize_field_options($result['options'] ?? []);
+
+            return new WP_REST_Response([
+                'success' => true,
+                'options' => $sanitized_options,
+                'message' => __('Options generated successfully', 'wp-user-frontend')
+            ], 200);
+
+        } catch (\Exception $e) {
+            return new WP_Error(
+                'generation_error',
+                __('An error occurred while generating options. Please try again.', 'wp-user-frontend'),
+                ['status' => 500]
+            );
+        }
+    }
+
+    /**
+     * Sanitize field options
+     *
+     * @param array $options Raw options from AI
+     * @return array Sanitized options
+     */
+    private function sanitize_field_options($options) {
+        if (!is_array($options)) {
+            return [];
+        }
+
+        $sanitized = [];
+        foreach ($options as $key => $value) {
+            // Generate safe key from value if numeric key
+            if (is_numeric($key)) {
+                $safe_key = sanitize_key(strtolower(str_replace(' ', '_', $value)));
+            } else {
+                $safe_key = sanitize_key($key);
+            }
+
+            $sanitized[$safe_key] = sanitize_text_field($value);
+        }
+
+        return $sanitized;
+    }
+
+    /**
+     * AJAX handler for generating field options
+     *
+     * @since 4.2.2
+     *
+     * @return void
+     */
+    public function ajax_generate_field_options() {
+        check_ajax_referer( 'form-builder-setting-nonce', 'nonce' );
+
+        if ( ! $this->check_permission() ) {
+            wp_send_json_error( [ 'message' => __( 'Permission denied', 'wp-user-frontend' ) ] );
+        }
+
+        $prompt = sanitize_textarea_field( $_POST['prompt'] ?? '' );
+        $field_type = sanitize_text_field( $_POST['field_type'] ?? 'dropdown_field' );
+
+        if ( empty( $prompt ) ) {
+            wp_send_json_error( [ 'message' => __( 'Prompt is required', 'wp-user-frontend' ) ] );
+        }
+
+        $result = $this->form_generator->generate_field_options( $prompt, [ 'field_type' => $field_type ] );
+
+        if ( is_wp_error( $result ) ) {
+            wp_send_json_error( [ 'message' => $result->get_error_message() ] );
+        }
+
+        if ( isset( $result['success'] ) && $result['success'] ) {
+            wp_send_json_success( [ 'options' => $result['options'] ] );
+        }
+
+        wp_send_json_error( [ 'message' => $result['message'] ?? __( 'Failed to generate options', 'wp-user-frontend' ) ] );
     }
 
     /**

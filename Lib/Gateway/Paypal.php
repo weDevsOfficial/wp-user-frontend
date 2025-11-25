@@ -292,14 +292,19 @@ class Paypal {
 
             // Verify payment amount
             $payment_amount = number_format( $payment['amount']['value'], 2, '.', '' );
-            $expected_amount = number_format( $custom_data['subtotal'], 2, '.', '' );
+
+            // Calculate expected total (subtotal + tax)
+            $expected_subtotal = isset( $custom_data['subtotal'] ) ? floatval( $custom_data['subtotal'] ) : 0;
+            $expected_tax = isset( $custom_data['tax'] ) ? floatval( $custom_data['tax'] ) : 0;
+            $expected_total = $expected_subtotal + $expected_tax;
+            $expected_amount = number_format( $expected_total, 2, '.', '' );
 
             if ( $payment['amount']['value'] < 0 ) {
                 throw new \Exception( 'Invalid payment amount: negative value' );
             }
 
             if ( $payment_amount !== $expected_amount ) {
-                throw new \Exception( 'Payment amount mismatch' );
+                throw new \Exception( 'Payment amount mismatch. Expected: ' . $expected_amount . ', Received: ' . $payment_amount );
             }
 
             // Check if transaction already exists
@@ -321,17 +326,9 @@ class Paypal {
                 throw new \Exception( 'Invalid user' );
             }
 
-            // Calculate tax
-            $tax_amount = 0;
-            if ( $this->wpuf_tax_enabled() ) {
-                $tax_rate = $this->wpuf_current_tax_rate();
-                $payment_amount = $payment['amount']['value'];
-                // Calculate tax from total amount
-                $tax_amount = ( $payment_amount * $tax_rate ) / ( 100 + $tax_rate );
-                $subtotal = $payment_amount - $tax_amount;
-            } else {
-                $subtotal = $payment['amount']['value'];
-            }
+            // Use tax and subtotal from custom_data (already calculated correctly)
+            $subtotal = $expected_subtotal;
+            $tax_amount = $expected_tax;
 
             // Create payment record
             $data = [
@@ -1292,7 +1289,18 @@ class Paypal {
 
             $data['subtotal'] = $billing_amount - $tax_amount;
             $data['tax'] = $tax_amount;
+
+            // Store the correctly calculated billing amount before filters
+            $correct_billing_amount = $billing_amount;
+
+            // Apply filters but ensure we use the correct amount if tax was already calculated
             $billing_amount = apply_filters( 'wpuf_payment_amount', $billing_amount, $post_id );
+
+            // If tax was enabled and the filter changed the amount, it likely double-taxed
+            // Revert to the correct amount we calculated above
+            if ( $tax_amount > 0 && $billing_amount !== $correct_billing_amount ) {
+                $billing_amount = $correct_billing_amount;
+            }
 
             // Handle free payments
             if ( $billing_amount == 0 ) {
@@ -1454,30 +1462,56 @@ class Paypal {
                 wp_safe_redirect( $approval_url );
                 exit();
             } else {
+                // Prepare payment data structure
+                $purchase_unit = [
+                    'amount' => [
+                        'currency_code' => $data['currency'],
+                        'value' => number_format( $billing_amount, 2, '.', '' ),
+                    ],
+                    'description' => isset( $data['custom']['post_title'] ) ? $data['custom']['post_title'] : $data['item_name'],
+                    'custom_id' => wp_json_encode(
+                        [
+                            'type' => $data['type'],
+                            'user_id' => $user_id,
+                            'coupon_id' => $coupon_id,
+                            'subtotal' => $data['subtotal'],
+                            'tax' => $data['tax'],
+                            'item_number' => $data['item_number'],
+                            'first_name' => $data['user_info']['first_name'],
+                            'last_name' => $data['user_info']['last_name'],
+                            'email' => $data['user_info']['email'],
+                        ]
+                    ),
+                ];
+
+                // Add breakdown and items only if tax is enabled to prevent double taxation
+                if ( $tax_amount > 0 ) {
+                    $purchase_unit['amount']['breakdown'] = [
+                        'item_total' => [
+                            'currency_code' => $data['currency'],
+                            'value' => number_format( $data['subtotal'], 2, '.', '' ),
+                        ],
+                        'tax_total' => [
+                            'currency_code' => $data['currency'],
+                            'value' => number_format( $tax_amount, 2, '.', '' ),
+                        ],
+                    ];
+
+                    $purchase_unit['items'] = [
+                        [
+                            'name' => isset( $data['custom']['post_title'] ) ? $data['custom']['post_title'] : $data['item_name'],
+                            'quantity' => '1',
+                            'unit_amount' => [
+                                'currency_code' => $data['currency'],
+                                'value' => number_format( $data['subtotal'], 2, '.', '' ),
+                            ],
+                        ],
+                    ];
+                }
+
                 $payment_data = [
                     'intent' => 'CAPTURE',
-                    'purchase_units' => [
-						[
-							'amount' => [
-								'currency_code' => $data['currency'],
-								'value' => number_format( $billing_amount, 2, '.', '' ),
-							],
-							'description' => isset( $data['custom']['post_title'] ) ? $data['custom']['post_title'] : $data['item_name'],
-							'custom_id' => wp_json_encode(
-                                [
-									'type' => $data['type'],
-									'user_id' => $user_id,
-									'coupon_id' => $coupon_id,
-									'subtotal' => $data['subtotal'],
-									'tax' => $data['tax'],
-									'item_number' => $data['item_number'],
-									'first_name' => $data['user_info']['first_name'],
-									'last_name' => $data['user_info']['last_name'],
-									'email' => $data['user_info']['email'],
-								]
-                            ),
-						],
-					],
+                    'purchase_units' => [ $purchase_unit ],
                     'application_context' => [
                         'return_url' => $return_url,
                         'cancel_url' => $cancel_url,
@@ -1508,7 +1542,9 @@ class Paypal {
                 $body = json_decode( wp_remote_retrieve_body( $response ), true );
 
                 if ( ! isset( $body['id'] ) ) {
-                    throw new \Exception( 'Invalid response from PayPal - no order ID' );
+                    // Log the full error response for debugging
+                    $error_details = isset( $body['details'] ) ? wp_json_encode( $body['details'] ) : wp_remote_retrieve_body( $response );
+                    throw new \Exception( 'Invalid response from PayPal - no order ID. Error: ' . $error_details );
                 }
 
                 // Find approval URL

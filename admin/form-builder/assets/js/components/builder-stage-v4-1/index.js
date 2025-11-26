@@ -188,5 +188,62 @@ Vue.component('builder-stage-v4-1', {
                 comp.openFieldPicker();
             }
         },
+
+        /**
+         * Filter CSS classes to prevent hiding fields in the builder
+         * Removes classes that would make the field invisible or hidden in the backend
+         * while preserving them for frontend rendering
+         *
+         * @param {string} cssClasses - Space-separated CSS class names
+         * @return {string} Filtered CSS classes safe for builder
+         */
+        filter_builder_css_classes: function(cssClasses) {
+            if (!cssClasses || typeof cssClasses !== 'string') {
+                return '';
+            }
+
+            // List of CSS classes that should not be applied in the builder
+            // These classes would hide or make fields invisible in the backend
+            var forbiddenClasses = [
+                'hidden',           // Tailwind: display: none
+                'd-none',           // Bootstrap: display: none
+                'hide',             // Generic hide class
+                'invisible',        // Tailwind: visibility: hidden
+                'opacity-0',        // Tailwind: opacity: 0 (could make field uneditable)
+                'sr-only',          // Screen reader only
+                'visually-hidden',  // Bootstrap screen reader only
+            ];
+
+            // Split classes, filter out forbidden ones, and rejoin
+            var classes = cssClasses.split(/\s+/).filter(function(className) {
+                return className && forbiddenClasses.indexOf(className.toLowerCase()) === -1;
+            });
+
+            return classes.join(' ');
+        },
+
+        /**
+         * Check if field has CSS classes that would hide it on the frontend
+         * Used to display a visual indicator in the builder
+         *
+         * @param {string} cssClasses - Space-separated CSS class names
+         * @return {boolean} True if field has hiding CSS classes
+         */
+        has_hidden_css_class: function(cssClasses) {
+            if (!cssClasses || typeof cssClasses !== 'string') {
+                return false;
+            }
+
+            var hiddenClasses = ['hidden', 'd-none', 'hide', 'invisible'];
+            var classes = cssClasses.toLowerCase().split(/\s+/);
+
+            for (var i = 0; i < hiddenClasses.length; i++) {
+                if (classes.indexOf(hiddenClasses[i]) !== -1) {
+                    return true;
+                }
+            }
+
+            return false;
+        },
     }
 });

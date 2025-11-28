@@ -23,16 +23,16 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array Colors array.
  */
 function wpuf_ud_free_get_layout_colors( $layout = 'layout-3' ) {
-    // Default purple colors for Free version
+    // Default purple colors for Free version (with ! prefix for important)
     return [
-        'primary_600'            => 'wpuf-bg-purple-600',
-        'primary_700'            => 'wpuf-bg-purple-700',
-        'text_primary_600'       => 'wpuf-text-purple-600',
-        'border_primary_600'     => 'wpuf-border-purple-600',
-        'hover_primary_600'      => 'hover:wpuf-text-purple-600',
-        'hover_primary_700'      => 'hover:wpuf-bg-purple-700',
-        'hover_border_primary_600' => 'hover:wpuf-border-purple-600',
-        'focus_ring_primary_500' => 'focus:wpuf-ring-purple-500',
+        'primary_600'            => '!wpuf-bg-purple-600',
+        'primary_700'            => '!wpuf-bg-purple-700',
+        'text_primary_600'       => '!wpuf-text-purple-600',
+        'border_primary_600'     => '!wpuf-border-purple-600',
+        'hover_primary_600'      => 'hover:!wpuf-text-purple-600',
+        'hover_primary_700'      => 'hover:!wpuf-bg-purple-700',
+        'hover_border_primary_600' => 'hover:!wpuf-border-purple-600',
+        'focus_ring_primary_500' => 'focus:!wpuf-ring-purple-500',
     ];
 }
 

@@ -48,7 +48,7 @@ $colors = wpuf_ud_get_layout_colors( $layout );
     </div>
 
     <!-- Reset Button -->
-    <button type="button" class="wpuf-ud-reset-filters !wpuf-w-full md:!wpuf-w-auto !wpuf-h-[42px] !wpuf-px-6 !wpuf-py-2 !<?php echo esc_attr( $colors['primary_600'] ); ?> !wpuf-text-white !wpuf-rounded-md !wpuf-text-sm !wpuf-font-medium <?php echo esc_attr( $colors['hover_primary_700'] ); ?> focus:!wpuf-outline-none focus:!wpuf-ring-2 <?php echo esc_attr( $colors['focus_ring_primary_500'] ); ?> focus:!wpuf-ring-offset-2"
+    <button type="button" class="wpuf-ud-reset-filters !wpuf-w-full md:!wpuf-w-auto !wpuf-h-[42px] !wpuf-px-6 !wpuf-py-2 <?php echo esc_attr( $colors['primary_600'] ); ?> !wpuf-text-white !wpuf-rounded-md !wpuf-text-sm !wpuf-font-medium <?php echo esc_attr( $colors['hover_primary_700'] ); ?> focus:!wpuf-outline-none focus:!wpuf-ring-2 <?php echo esc_attr( $colors['focus_ring_primary_500'] ); ?> focus:!wpuf-ring-offset-2"
             data-block-id="<?php echo esc_attr( $block_id ); ?>"
             data-page-id="<?php echo esc_attr( $page_id ); ?>">
         <?php esc_html_e( 'Reset', 'wp-user-frontend' ); ?>

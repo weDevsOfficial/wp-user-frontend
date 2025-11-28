@@ -17,7 +17,15 @@ module.exports = {
         './includes/Free/User_Directory/views/**/*.php',
     ],
     safelist: [
-        // Purple color classes for layout colors
+        // Purple color classes for layout colors (with ! prefix)
+        'wpuf-bg-purple-500',
+        'wpuf-bg-purple-600',
+        'wpuf-bg-purple-700',
+        'wpuf-text-purple-600',
+        'wpuf-text-purple-700',
+        'wpuf-border-purple-600',
+        'wpuf-border-purple-700',
+        'wpuf-ring-purple-500',
         '!wpuf-bg-purple-500',
         '!wpuf-bg-purple-600',
         '!wpuf-bg-purple-700',
@@ -26,10 +34,15 @@ module.exports = {
         '!wpuf-border-purple-600',
         '!wpuf-border-purple-700',
         '!wpuf-ring-purple-500',
-        '!hover:wpuf-text-purple-600',
-        '!hover:wpuf-bg-purple-700',
-        '!hover:wpuf-border-purple-600',
-        '!focus:wpuf-ring-purple-500',
+        // Purple hover/focus states
+        'hover:wpuf-text-purple-600',
+        'hover:wpuf-bg-purple-700',
+        'hover:wpuf-border-purple-600',
+        'focus:wpuf-ring-purple-500',
+        'hover:!wpuf-text-purple-600',
+        'hover:!wpuf-bg-purple-700',
+        'hover:!wpuf-border-purple-600',
+        'focus:!wpuf-ring-purple-500',
         // Emerald color classes (default)
         '!wpuf-bg-emerald-500',
         '!wpuf-bg-emerald-600',

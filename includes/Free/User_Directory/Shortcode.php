@@ -396,13 +396,17 @@ class Shortcode {
      * @return string HTML output.
      */
     private function render_profile( $user, $settings, $directory_id ) {
+        // Get profile size from settings (Free uses profile_size)
+        $profile_size = $settings['profile_size'] ?? 'thumbnail';
+
         // Build profile data
         $profile_data = [
-            'user'         => $user,
-            'settings'     => $settings,
-            'directory_id' => $directory_id,
-            'avatar_size'  => absint( $settings['avatar_size'] ?? 192 ),
-            'back_url'     => $this->get_directory_url(),
+            'user'            => $user,
+            'settings'        => $settings,
+            'directory_id'    => $directory_id,
+            'avatar_size'     => absint( $settings['avatar_size'] ?? 192 ),
+            'back_url'        => $this->get_directory_url(),
+            'profile_size'    => $profile_size,
         ];
 
         /**

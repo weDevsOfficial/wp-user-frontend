@@ -393,13 +393,14 @@ function wpuf_ud_get_profile_data( $user, $template_data = [], $layout = 'layout
     $template_config = [
         'show_avatar'       => true,
         'enable_tabs'       => true,
-        'default_tabs'      => [ 'about', 'posts', 'comments' ],
+        'default_tabs'      => [ 'about', 'posts', 'comments', 'file' ],
         'default_active_tab'=> 'about',
         'avatar_size'       => $avatar_size,
         'custom_tab_labels' => [
             'about'    => __( 'About', 'wp-user-frontend' ),
             'posts'    => __( 'Posts', 'wp-user-frontend' ),
             'comments' => __( 'Comments', 'wp-user-frontend' ),
+            'file'     => __( 'Files', 'wp-user-frontend' ),
         ],
     ];
 
@@ -425,6 +426,11 @@ function wpuf_ud_get_profile_data( $user, $template_data = [], $layout = 'layout
             'label'     => __( 'Comments', 'wp-user-frontend' ),
             'is_active' => false,
             'content'   => 'comments',
+        ],
+        'file' => [
+            'label'     => __( 'Files', 'wp-user-frontend' ),
+            'is_active' => false,
+            'content'   => 'file',
         ],
     ];
 
@@ -463,13 +469,14 @@ function wpuf_ud_get_default_template_config() {
     return [
         'show_avatar'       => true,
         'enable_tabs'       => true,
-        'default_tabs'      => [ 'about', 'posts', 'comments' ],
+        'default_tabs'      => [ 'about', 'posts', 'comments', 'file' ],
         'default_active_tab'=> 'about',
         'avatar_size'       => 192,
         'custom_tab_labels' => [
             'about'    => __( 'About', 'wp-user-frontend' ),
             'posts'    => __( 'Posts', 'wp-user-frontend' ),
             'comments' => __( 'Comments', 'wp-user-frontend' ),
+            'file'     => __( 'Files', 'wp-user-frontend' ),
         ],
     ];
 }
@@ -548,6 +555,7 @@ function wpuf_ud_get_tab_label( $tab, $profile_data = [] ) {
         'about'    => __( 'About', 'wp-user-frontend' ),
         'posts'    => __( 'Posts', 'wp-user-frontend' ),
         'comments' => __( 'Comments', 'wp-user-frontend' ),
+        'file'     => __( 'Files', 'wp-user-frontend' ),
         'files'    => __( 'Files', 'wp-user-frontend' ),
         'activity' => __( 'Activity', 'wp-user-frontend' ),
     ];

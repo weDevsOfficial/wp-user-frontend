@@ -161,6 +161,18 @@ module.exports = function( grunt) {
                 }
             },
 
+            userDirectory: {
+                files: [
+                    'src/js/user-directory/styles/*.css',
+                    'includes/Free/User_Directory/**/*.php',
+                    'includes/Free/User_Directory/views/**/*.php',
+                ],
+                tasks: ['build-user-directory'],
+                options: {
+                    spawn: false
+                }
+            },
+
         },
 
         // Clean up build directory
@@ -275,6 +287,9 @@ module.exports = function( grunt) {
             npm_build_ai_form_builder: {
                 command: 'npm run build:ai-form-builder',
             },
+            npm_build_user_directory: {
+                command: 'npm run build:user-directory',
+            },
             tailwind: {
                 command: function ( input, output ) {
                     return `npx tailwindcss -i ${input} -o ${output}`;
@@ -303,15 +318,20 @@ module.exports = function( grunt) {
     grunt.loadNpmTasks( 'grunt-shell' );
     grunt.loadNpmTasks( 'grunt-postcss' );
 
-    grunt.registerTask( 'default', [ 'less', 'concat', 'uglify', 'i18n', 'tailwind' ] );
+    grunt.registerTask( 'default', [ 'less', 'concat', 'uglify', 'i18n', 'tailwind', 'build-user-directory' ] );
 
     // file auto generation
     grunt.registerTask( 'i18n', [ 'makepot' ] );
     grunt.registerTask( 'readme', [ 'wp_readme_to_markdown' ] );
 
     // build stuff
-    grunt.registerTask( 'release', [ 'less', 'concat', 'uglify', 'i18n', 'readme', 'tailwind', 'tailwind-minify' ] );
+    grunt.registerTask( 'release', [ 'less', 'concat', 'uglify', 'i18n', 'readme', 'tailwind', 'tailwind-minify', 'build-user-directory' ] );
     grunt.registerTask( 'zip', [ 'clean', 'copy', 'compress' ] );
+
+    // User Directory CSS build task
+    grunt.registerTask( 'build-user-directory', 'Build User Directory CSS with Tailwind', function() {
+        grunt.task.run('shell:npm_build_user_directory');
+    });
 
     grunt.event.on('watch', function(action, filepath, target) {
         if (target === 'tailwind') {

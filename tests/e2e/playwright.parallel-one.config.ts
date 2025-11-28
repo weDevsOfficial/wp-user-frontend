@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 import * as dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config({ quiet: true });
 
 /**
  * Playwright configuration for PARALLEL LITE ONE phase
@@ -13,7 +13,7 @@ export default defineConfig({
     fullyParallel: false,
     forbidOnly: false,
     retries: process.env.CI ? 0 : 0,
-    workers: process.env.CI ? 2 : 2,
+    workers: process.env.CI ? 3 : 3,
     reporter: process.env.CI
         ? [
             ['list', { printSteps: true }],
@@ -43,6 +43,7 @@ export default defineConfig({
             testMatch: [
                 'tests/postFormTest.spec.ts',
                 'tests/regFormTestPro.spec.ts',
+                'tests/fieldOptionSettingsTest.spec.ts',
             ],
             use: { ...devices['Desktop Chrome'] },
         },

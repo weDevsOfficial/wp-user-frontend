@@ -684,7 +684,7 @@ function wpuf_settings_field_profile( $form ) {
     $val = get_option( 'wpuf_profile', [] );
 
     if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {
-        $crown_icon = sprintf( '<span class="pro-icon"> %s</span>', file_get_contents( WPUF_ROOT . '/assets/images/crown.svg' ) );
+        $crown_icon = sprintf( '<span class="pro-icon"><img src="%s" alt="PRO"></span>', WPUF_ASSET_URI . '/images/pro-badge.svg' );
         $class      = 'class="pro-preview"';
         $disabled   = 'disabled';
     }
@@ -819,6 +819,14 @@ function wpuf_ai_api_key_field( $args ) {
 
             // Update the API key link
             updateApiKeyLink(provider);
+
+            // Filter model list by provider
+            filterModelsByProvider(provider);
+
+            // Refresh model list if API key exists
+            if (apiKey) {
+                refreshAllModels();
+            }
         });
 
         // Save API key to hidden field when typing
@@ -826,6 +834,174 @@ function wpuf_ai_api_key_field( $args ) {
             var provider = $('input[name="wpuf_ai[ai_provider]"]:checked').val();
             $('#wpuf_ai_' + provider + '_key').val($(this).val());
         });
+
+        // Store all models globally for filtering
+        var allModels = {};
+
+        // Function to filter models by provider
+        function filterModelsByProvider(provider, preserveValue) {
+            var $modelSelect = $('select[name="wpuf_ai[ai_model]"]');
+            if (!$modelSelect.length) return;
+
+            // If we don't have models loaded yet, try to load them first
+            if (Object.keys(allModels).length === 0) {
+                addProviderDataAttributes();
+                return;
+            }
+
+            // Get the value to preserve (either passed in or current selection)
+            var valueToPreserve = preserveValue || $modelSelect.val();
+            var options = '';
+
+            // Build options only for selected provider
+            for (var modelId in allModels) {
+                if (allModels.hasOwnProperty(modelId)) {
+                    var modelConfig = allModels[modelId];
+                    if (modelConfig.provider === provider) {
+                        var selected = (modelId === valueToPreserve) ? ' selected' : '';
+                        options += '<option value="' + modelId + '" data-provider="' + modelConfig.provider + '"' + selected + '>' + modelConfig.name + '</option>';
+                    }
+                }
+            }
+
+            // Update dropdown with filtered options
+            if (options) {
+                $modelSelect.html(options);
+            }
+        }
+
+        // Function to refresh all models from API
+        function refreshAllModels() {
+            var $modelSelect = $('select[name="wpuf_ai[ai_model]"]');
+            if (!$modelSelect.length) return;
+
+            // Show loading state
+            var originalHtml = $modelSelect.html();
+            var currentValue = $modelSelect.val();
+            var currentProvider = $('input[name="wpuf_ai[ai_provider]"]:checked').val();
+            $modelSelect.html('<option>Loading models...</option>').prop('disabled', true);
+
+            // Call API to refresh models
+            $.ajax({
+                url: '<?php echo esc_url(rest_url('wpuf/v1/ai-form-builder/refresh-google-models')); ?>',
+                method: 'POST',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-WP-Nonce', '<?php echo wp_create_nonce('wp_rest'); ?>');
+                },
+                success: function(response) {
+                    if (response && response.success && response.models) {
+                        // Store all models globally
+                        allModels = response.models;
+
+                        // Enable dropdown
+                        $modelSelect.prop('disabled', false);
+
+                        // Filter by current provider
+                        filterModelsByProvider(currentProvider);
+
+                        // Try to restore previous selection if it exists and matches current provider
+                        if (currentValue) {
+                            var currentModel = allModels[currentValue];
+                            if (currentModel && currentModel.provider === currentProvider) {
+                                $modelSelect.val(currentValue);
+                            }
+                        }
+
+                    } else {
+                        $modelSelect.html(originalHtml).prop('disabled', false);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    $modelSelect.html(originalHtml).prop('disabled', false);
+                }
+            });
+        }
+
+        // Function to load all models and add provider data attributes
+        function addProviderDataAttributes() {
+            var $modelSelect = $('select[name="wpuf_ai[ai_model]"]');
+            if (!$modelSelect.length) return;
+
+            // Save the current selected value before we fetch
+            var savedModelValue = $modelSelect.val();
+
+            // Fetch model configs via REST API to get provider info
+            $.ajax({
+                url: '<?php echo esc_url(rest_url('wpuf/v1/ai-form-builder/models')); ?>',
+                method: 'GET',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-WP-Nonce', '<?php echo wp_create_nonce('wp_rest'); ?>');
+                },
+                success: function(response) {
+                    if (response && response.success && response.models) {
+                        // Store all models globally
+                        allModels = response.models;
+
+                        // Filter by current provider and preserve saved selection
+                        var currentProvider = $('input[name="wpuf_ai[ai_provider]"]:checked').val();
+                        if (currentProvider) {
+                            filterModelsByProvider(currentProvider, savedModelValue);
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize provider data attributes on page load
+        addProviderDataAttributes();
+
+        // Function to refresh Google models (backward compatibility)
+        function refreshGoogleModels() {
+            var $modelSelect = $('select[name="wpuf_ai[ai_model]"]');
+            if (!$modelSelect.length) return;
+
+            // Show loading state
+            var originalHtml = $modelSelect.html();
+            var currentValue = $modelSelect.val();
+            $modelSelect.html('<option>Loading Google models...</option>').prop('disabled', true);
+
+            // Call API to refresh models
+            $.ajax({
+                url: '<?php echo esc_url(rest_url('wpuf/v1/ai-form-builder/refresh-google-models')); ?>',
+                method: 'POST',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-WP-Nonce', '<?php echo wp_create_nonce('wp_rest'); ?>');
+                },
+                success: function(response) {
+                    if (response && response.success && response.models) {
+                        // Update dropdown with new models
+                        var options = '';
+                        var models = response.models;
+
+                        // Check if models is an object
+                        if (typeof models === 'object' && models !== null) {
+                            for (var modelId in models) {
+                                if (models.hasOwnProperty(modelId)) {
+                                    var modelConfig = models[modelId];
+                                    var modelName = modelConfig.name || modelId;
+                                    options += '<option value="' + modelId + '">' + modelName + '</option>';
+                                }
+                            }
+                        }
+
+                        if (options) {
+                            $modelSelect.html(options).prop('disabled', false);
+                            // Try to restore previous selection
+                            if (currentValue) {
+                                $modelSelect.val(currentValue);
+                            }
+                        } else {
+                            $modelSelect.html(originalHtml).prop('disabled', false);
+                        }
+                    } else {
+                        $modelSelect.html(originalHtml).prop('disabled', false);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    $modelSelect.html(originalHtml).prop('disabled', false);
+                }
+            });
+        }
     });
     </script>
     <?php

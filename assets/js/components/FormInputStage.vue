@@ -131,14 +131,18 @@ export default {
                 { id: 'basic_registration', label: this.__('Basic User Registration', 'wp-user-frontend') },
                 { id: 'member_directory', label: this.__('Member Directory Profile', 'wp-user-frontend') },
                 { id: 'job_applicant', label: this.__('Job Applicant Registration', 'wp-user-frontend') },
-                { id: 'newsletter_signup', label: this.__('Newsletter Signup', 'wp-user-frontend') }
+                { id: 'blog_author_signup', label: this.__('Blog Author Signup', 'wp-user-frontend') },
+                { id: 'community_member_join', label: this.__('Community Member Join', 'wp-user-frontend') },
+                { id: 'freelancer_profile_signup', label: this.__('Freelancer Profile Signup', 'wp-user-frontend') }
             ];
 
             promptAIInstructions = {
                 basic_registration: 'Create a Basic User Registration form with email, name, username, password',
                 member_directory: 'Create a Member Directory Profile form with name, email, bio, profile photo',
                 job_applicant: 'Create a Job Applicant Registration form with name, email, phone, resume upload',
-                newsletter_signup: 'Create a Newsletter Signup form with email, first name'
+                blog_author_signup: 'Create a registration form for new blog authors. Collect their login details, public display information, a short introduction about themselves, a profile photo or avatar, and an optional personal website link.',
+                community_member_join: 'Create a registration form for new community members. Collect their basic personal details, login information, a public name, a nickname, their interests (as checkboxes), a short personal introduction, and a profile picture',
+                freelancer_profile_signup: 'Create a registration form for freelancers that captures their professional details, skills, experience summary, portfolio information, and profile photo.'
             };
         } else {
             // Post form prompts (default)

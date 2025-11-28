@@ -143,20 +143,49 @@ export default {
                 });
                 
                 if (!response.ok) {
-                    // Try to get detailed error from response
-                    let errorDetails = `HTTP ${response.status}: ${response.statusText}`;
+                    // Try to get detailed error from response and extract clean message
+                    let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+
                     try {
                         const errorData = await response.json();
+
+                        // Extract the actual error message from the API response
                         if (errorData.message) {
-                            errorDetails = `${errorDetails} - ${errorData.message}`;
+                            // Check if the message contains JSON with error details
+                            const jsonMatch = errorData.message.match(/\{[\s\S]*\}/);
+                            if (jsonMatch) {
+                                try {
+                                    const parsedError = JSON.parse(jsonMatch[0]);
+                                    if (parsedError.error && parsedError.error.message) {
+                                        // Use the clean error message from the API
+                                        errorMessage = parsedError.error.message;
+                                    } else {
+                                        errorMessage = errorData.message;
+                                    }
+                                } catch (e) {
+                                    errorMessage = errorData.message;
+                                }
+                            } else {
+                                errorMessage = errorData.message;
+                            }
                         }
+
+                        // Add additional details if available
                         if (errorData.data && errorData.data.details) {
-                            errorDetails = `${errorDetails} (${errorData.data.details})`;
+                            const detailsText = typeof errorData.data.details === 'string'
+                                ? errorData.data.details
+                                : JSON.stringify(errorData.data.details);
+
+                            // Only add details if they're different from the main message
+                            if (!errorMessage.includes(detailsText)) {
+                                errorMessage += ` (${detailsText})`;
+                            }
                         }
                     } catch (e) {
                         // If can't parse JSON, use original error
                     }
-                    throw new Error(errorDetails);
+
+                    throw new Error(errorMessage);
                 }
                 
                 const result = await response.json();

@@ -1,0 +1,54 @@
+/**
+ * User Directory Free - Main Styles
+ *
+ * Tailwind CSS with wpuf- prefix
+ *
+ * @package WPUF
+ * @subpackage Free/User_Directory
+ * @since 4.3.0
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .wpuf-btn-primary {
+        @apply wpuf-rounded-md wpuf-bg-primary !wpuf-text-white wpuf-px-4 wpuf-py-3 wpuf-text-sm wpuf-font-semibold hover:wpuf-bg-emerald-700 hover:wpuf-text-white focus:wpuf-text-white focus:wpuf-shadow-none;
+    }
+
+    .wpuf-btn-white {
+        @apply wpuf-rounded-md wpuf-bg-white wpuf-text-gray-700 wpuf-px-4 wpuf-py-3 wpuf-text-sm wpuf-font-medium hover:wpuf-bg-gray-100 wpuf-border wpuf-border-gray-300;
+    }
+}
+
+/* Reset WordPress core select styles for the wizard */
+.wp-core-ui select {
+    min-height: unset !important;
+    max-width: unset !important;
+}
+
+/* Full page white background - matches Pro */
+#wpcontent, #wpbody {
+    background: #fff;
+}
+
+/* Custom animations */
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.wpuf-animate-fadein {
+    animation: fade-in 0.3s ease-out forwards;
+}
+
+#wpuf-ud-free-app {
+    max-width: 100%;
+}

@@ -76,10 +76,35 @@ class Free_Loader extends Pro_Prompt {
         // class files to include pro elements
         require_once WPUF_INCLUDES . '/functions/user/edit-user.php';
         require_once WPUF_INCLUDES . '/Hooks/Form_Settings_Cleanup.php';
+
+        // User Directory Free - only load if Pro module is not active
+        if ( ! $this->is_pro_user_directory_active() ) {
+            require_once WPUF_INCLUDES . '/Free/User_Directory/User_Directory.php';
+        }
+    }
+
+    /**
+     * Check if Pro User Directory module is active
+     *
+     * @since 4.3.0
+     *
+     * @return bool
+     */
+    private function is_pro_user_directory_active() {
+        if ( ! wpuf_is_pro_active() ) {
+            return false;
+        }
+
+        return class_exists( 'WPUF_User_Listing' );
     }
 
     public function instantiate() {
         $this->edit_profile = new Edit_Profile();
+
+        // Initialize User Directory Free if Pro module is not active
+        if ( ! $this->is_pro_user_directory_active() ) {
+            User_Directory\User_Directory::get_instance();
+        }
 
         if ( is_admin() ) {
 

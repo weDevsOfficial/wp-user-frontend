@@ -14,6 +14,9 @@ module.exports = {
         // New paths from upstream (for subscription templates)
         './templates/**/*.php',
         './src/**/*.{js,css}',
+        // Free User Directory frontend templates
+        './includes/Free/User_Directory/**/*.php',
+        './includes/Free/User_Directory/views/**/*.php',
     ],
     theme: {
          extend: {

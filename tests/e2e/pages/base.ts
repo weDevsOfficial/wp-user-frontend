@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ quiet: true });
 import { expect, type Page } from '@playwright/test';
 import { Urls } from '../utils/testData';
 import { faker } from '@faker-js/faker';
@@ -38,6 +38,7 @@ export class Base {
     readonly wpufRegistrationPage: string = Urls.baseUrl + '/registration-page/';
     readonly newRegFormPage: string = Urls.baseUrl + '/reg-here/';
     readonly wpufLoginPage: string = Urls.baseUrl + '/login/';
+    readonly productsPage: string = Urls.baseUrl + '/wp-admin/edit.php?post_type=product';
     readonly productBrandPage: string = Urls.baseUrl + '/wp-admin/edit-tags.php?taxonomy=product_brand&post_type=product';
     readonly productCategoryPage: string = Urls.baseUrl + '/wp-admin/edit-tags.php?taxonomy=product_cat&post_type=product';
     readonly productTagPage: string = Urls.baseUrl + '/wp-admin/edit-tags.php?taxonomy=product_tag&post_type=product';
@@ -52,6 +53,8 @@ export class Base {
     readonly wcVendorRegistrationPage: string = Urls.baseUrl + '/reg-wc-vendor/';
     readonly wcVendorsPage: string = Urls.baseUrl + '/wp-admin/admin.php?page=wcv-all-vendors#/';
     readonly wcfmMemberRegistrationPage: string = Urls.baseUrl + '/reg-member/';
+    readonly accessFormWithId: string = Urls.baseUrl + '/wp-admin/admin.php?page=wpuf-post-forms&action=edit&id=';
+    readonly accessFormPreview: string = Urls.baseUrl + '/wpuf-preview/?wpuf_preview=1&form_id=';
 
     constructor(page: Page) {
         this.page = page;
@@ -83,6 +86,19 @@ export class Base {
         } catch (error) {
             console.log('\x1b[31m%s\x1b[0m', `❌ Failed to assert ${locator}: ${error}`);
             throw error;
+        }
+    }
+
+    // Extract form ID from URL (can be current page URL or provided URL)
+    async getFormId(): Promise<string> {
+        try {
+            const targetUrl = this.page.url();
+            const urlObj = new URL(targetUrl);
+            const idParam = urlObj.searchParams.get('id');
+            return idParam;
+        } catch (error) {
+            console.log('\x1b[31m%s\x1b[0m', `❌ Failed to extract form ID from URL: ${error}`);
+            return null;
         }
     }
 

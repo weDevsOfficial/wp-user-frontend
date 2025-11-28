@@ -17,12 +17,12 @@ export default defineConfig({
     reporter: process.env.CI
         ? [
             ['list', { printSteps: true }],
-            ['json', { outputFile: './parallel-two/parallel-two-results.json' }],
-            ['html', { outputFolder: './playwright-report/parallel-two-report', open: 'never' }]
+            ['json', { outputFile: './parallel-three/parallel-three-results.json' }],
+            ['html', { outputFolder: './playwright-report/parallel-three-report', open: 'never' }]
         ]
         : [
-            ['json', { outputFile: './parallel-two/parallel-two-results.json' }],
-            ['html', { outputFolder: './playwright-report/parallel-two-report', open: 'never' }],
+            ['json', { outputFile: './parallel-three/parallel-three-results.json' }],
+            ['html', { outputFolder: './playwright-report/parallel-three-report', open: 'never' }],
         ],
     use: {
         actionTimeout: 0,
@@ -41,10 +41,9 @@ export default defineConfig({
     },
     projects: [
         {
-            name: 'parallel-two',
+            name: 'parallel-three',
             testMatch: [
-                'tests/postFormSettingsTest.spec.ts',
-                'tests/regFormSettingsTestPro.spec.ts',
+                'tests/fieldOptionSettingsTest.spec.ts',
             ],
             use: { ...devices['Desktop Chrome'] },
         },

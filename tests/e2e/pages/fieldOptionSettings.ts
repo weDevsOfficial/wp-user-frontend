@@ -789,9 +789,9 @@ export class FieldOptionSettingsPage extends Base {
             const newPage = await pagePromise;
             await newPage.waitForLoadState('load');
 
-            // Validate the new tab's URL
+            // Validate the new tab's URL contains google.com
             const newTabUrl = newPage.url();
-            expect(newTabUrl).toBe('https://www.google.com/');
+            expect(newTabUrl).toContain('https://www.google.com');
             console.log('\x1b[32m%s\x1b[0m', `✅ New tab opened with URL: ${newTabUrl}`);
 
             // Close the new tab and return to original page

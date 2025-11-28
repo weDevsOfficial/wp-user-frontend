@@ -394,28 +394,37 @@ class Directory extends WP_REST_Controller {
      * @return WP_REST_Response
      */
     public function get_user_count( $request ) {
-        $roles         = ! empty( $request['roles'] ) ? sanitize_text_field( $request['roles'] ) : '';
-        $exclude_users = ! empty( $request['exclude_users'] ) ? sanitize_text_field( $request['exclude_users'] ) : '';
-        $max_item      = ! empty( $request['max_item'] ) ? absint( $request['max_item'] ) : 0;
+        $roles         = $request->get_param( 'roles' );
+        $exclude_users = $request->get_param( 'exclude_users' );
+        $max_item      = $request->get_param( 'max_item' );
 
-        $args = [
-            'count_total' => true,
-            'number'      => $max_item > 0 ? $max_item : -1,
-        ];
+        $args = [ 'count_total' => true ];
 
-        if ( $roles ) {
-            $args['role__in'] = array_map( 'trim', explode( ',', $roles ) );
+        // Handle roles - skip filter if 'all' or empty
+        if ( $roles && 'all' !== strtolower( $roles ) ) {
+            $args['role__in'] = array_map( 'sanitize_text_field', array_map( 'trim', explode( ',', $roles ) ) );
         }
 
+        // Handle excluded users
         if ( $exclude_users ) {
-            $args['exclude'] = array_map( 'absint', explode( ',', $exclude_users ) );
+            $excluded_user_ids = array_map( 'intval', array_map( 'trim', explode( ',', $exclude_users ) ) );
+            $excluded_user_ids = array_filter( $excluded_user_ids ); // Remove zeros/false values
+            if ( ! empty( $excluded_user_ids ) ) {
+                $args['exclude'] = $excluded_user_ids;
+            }
         }
 
         $user_query = new \WP_User_Query( $args );
+        $count      = isset( $user_query->total_users ) ? (int) $user_query->total_users : 0;
+
+        // Apply max_item limit if set and greater than 0
+        if ( $max_item && intval( $max_item ) > 0 ) {
+            $count = min( $count, intval( $max_item ) );
+        }
 
         return rest_ensure_response( [
             'success' => true,
-            'count'   => $user_query->get_total(),
+            'count'   => $count,
         ] );
     }
 
@@ -586,12 +595,24 @@ class Directory extends WP_REST_Controller {
             }
         }
 
-        // Integer fields
+        // Integer fields (use absint for positive-only integers)
         $int_fields = [ 'per_page', 'users_per_row', 'users_per_page', 'max_users' ];
 
         foreach ( $int_fields as $field ) {
             if ( isset( $params[ $field ] ) ) {
                 $settings[ $field ] = absint( $params[ $field ] );
+            }
+        }
+
+        // Handle max_item specially: can be -1 (all users), null, or a positive integer
+        if ( array_key_exists( 'max_item', $params ) ) {
+            $max_item_value = $params['max_item'];
+            if ( null === $max_item_value || '' === $max_item_value ) {
+                // Empty/null means unlimited - store as null (same as Pro)
+                $settings['max_item'] = null;
+            } else {
+                // Store as integer (preserves -1 for unlimited, or positive value for limit)
+                $settings['max_item'] = intval( $max_item_value );
             }
         }
 

@@ -23,6 +23,8 @@ const DirectoryList = ( {directories, currentPage, totalPages, onPageChange, fet
     const [copiedId, setCopiedId] = useState( null );
     const [openMenuId, setOpenMenuId] = useState(null);
     const menuRefs = useRef({});
+    const [memberCounts, setMemberCounts] = useState({});
+    const [loadingCounts, setLoadingCounts] = useState({});
 
     const handleCopy = ( shortcode, id ) => {
         navigator.clipboard.writeText( shortcode );
@@ -47,6 +49,68 @@ const DirectoryList = ( {directories, currentPage, totalPages, onPageChange, fet
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [openMenuId]);
+
+    useEffect(() => {
+        // Fetch member counts for all directories
+        directories.forEach(dir => {
+            let post_content = {};
+            try {
+                if (dir.post_content && typeof dir.post_content === 'string' && dir.post_content.trim() !== '') {
+                    post_content = JSON.parse(dir.post_content);
+                }
+            } catch (e) {
+                post_content = {};
+            }
+            const roles = post_content?.roles || 'all';
+            const excluded_users = post_content?.excluded_users || [];
+            const max_item = post_content?.max_item;
+            if (memberCounts[dir.ID] === undefined && !loadingCounts[dir.ID]) {
+                setLoadingCounts(prev => ({ ...prev, [dir.ID]: true }));
+                
+                // Build query parameters
+                const queryParams = new URLSearchParams();
+                queryParams.append('roles', roles);
+                
+                // Add max_item if set and greater than 0 (not -1 or empty)
+                if (max_item && parseInt(max_item) > 0) {
+                    queryParams.append('max_item', max_item);
+                }
+                
+                // Add excluded users if any
+                if (excluded_users && excluded_users.length > 0) {
+                    // Extract user IDs from excluded_users array
+                    const userIds = excluded_users.map(user => {
+                        if (typeof user === 'object' && user.id) {
+                            return user.id;
+                        } else if (typeof user === 'number') {
+                            return user;
+                        }
+                        return null;
+                    }).filter(id => id !== null);
+                    
+                    if (userIds.length > 0) {
+                        queryParams.append('exclude_users', userIds.join(','));
+                    }
+                }
+                
+                fetch(`/wp-json/wpuf/v1/user_directory/user_count?${queryParams.toString()}`, {
+                    headers: {
+                        'X-WP-Nonce': window.wpuf_ud_free?.rest_nonce || window.wpuf_ud?.rest_nonce || '',
+                    },
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        setMemberCounts(prev => ({ ...prev, [dir.ID]: data && data.success ? data.count : 0 }));
+                        setLoadingCounts(prev => ({ ...prev, [dir.ID]: false }));
+                    })
+                    .catch(() => {
+                        setMemberCounts(prev => ({ ...prev, [dir.ID]: 0 }));
+                        setLoadingCounts(prev => ({ ...prev, [dir.ID]: false }));
+                    });
+            }
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [directories]);
 
     const renderPagination = () => {
         if (totalPages <= 1) return null;
@@ -173,8 +237,12 @@ const DirectoryList = ( {directories, currentPage, totalPages, onPageChange, fet
                                     <span className="hover:wpuf-cursor-pointer hover:wpuf-text-primary" onClick={() => { onEdit && onEdit(dir);}} >{dir.post_title}</span>
                                 </td>
                                 <td className="wpuf-whitespace-nowrap wpuf-px-3 wpuf-py-4 wpuf-text-sm wpuf-font-medium wpuf-text-gray-500">{dir.ID}</td>
-                                <td className="wpuf-whitespace-nowrap wpuf-px-3 wpuf-py-4 wpuf-text-sm wpuf-text-gray-400">
-                                    <span className="wpuf-italic">—</span>
+                                <td className="wpuf-whitespace-nowrap wpuf-px-3 wpuf-py-4 wpuf-text-sm">
+                                    {loadingCounts[dir.ID] ? (
+                                        <span className="wpuf-text-gray-400">Loading…</span>
+                                    ) : (
+                                        memberCounts[dir.ID] !== undefined ? memberCounts[dir.ID] : 0
+                                    )}
                                 </td>
                                 <td className="wpuf-whitespace-nowrap wpuf-px-3 wpuf-py-4 wpuf-text-sm wpuf-font-medium wpuf-text-gray-500">
                                     <div className="wpuf-flex wpuf-items-center">

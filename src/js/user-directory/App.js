@@ -13,6 +13,16 @@ import DirectoryList from './components/DirectoryList';
 import DirectoryWizard from './components/DirectoryWizard';
 import DeleteConfirmModal from './components/common/DeleteConfirmModal';
 
+// Pro Badge Component - uses the same SVG as modules page
+const ProBadge = ({ className = '' }) => (
+    <img 
+        src={(window.wpuf_ud_free?.asset_url || window.wpuf_ud?.asset_url || window.wpuf_admin_script?.asset_url || '') + '/images/pro-badge.svg'} 
+        alt="Pro" 
+        className={className}
+        style={{ width: '39px', height: '22px', display: 'inline-block', verticalAlign: 'middle' }}
+    />
+);
+
 const App = () => {
     const [view, setView] = useState('list'); // 'list' or 'wizard'
     const [directories, setDirectories] = useState([]);
@@ -138,15 +148,22 @@ const App = () => {
                     <div className="wpuf-flex wpuf-justify-between wpuf-items-center">
                         <div></div>
                         
-                        <button
-                            className="wpuf-btn-primary wpuf-flex disabled:wpuf-opacity-50 disabled:wpuf-cursor-not-allowed"
-                            onClick={handleCreate}
-                            disabled={hasReachedLimit}
-                        >
-                            <span className="dashicons dashicons-plus-alt2"></span>
-                            &nbsp;
-                            {__('New Directory', 'wp-user-frontend')}
-                        </button>
+                        <div className="wpuf-relative wpuf-inline-block wpuf-group">
+                            <button
+                                className={`wpuf-flex wpuf-items-center ${hasReachedLimit ? 'wpuf-bg-gray-100 wpuf-text-gray-400 wpuf-border wpuf-border-gray-300 wpuf-rounded-md wpuf-px-4 wpuf-py-2 wpuf-cursor-not-allowed' : 'wpuf-btn-primary'}`}
+                                onClick={handleCreate}
+                                disabled={hasReachedLimit}
+                            >
+                                <span className="dashicons dashicons-plus-alt2"></span>
+                                &nbsp;
+                                {__('New Directory', 'wp-user-frontend')}
+                            </button>
+                            {hasReachedLimit && (
+                                <div className="wpuf-absolute wpuf-left-1/2 wpuf--translate-x-1/2 wpuf-top-full wpuf-mt-2 wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-transition-opacity wpuf-duration-200 wpuf-z-50">
+                                    <ProBadge />
+                                </div>
+                            )}
+                        </div>
                     </div>
 
                     {/* Limit Warning */}

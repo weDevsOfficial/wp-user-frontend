@@ -71,7 +71,7 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
         }
     };
 
-    // Common input style
+    // Common input style for select dropdowns
     const inputStyle = {
         maxWidth: '793px',
         width: '100%',
@@ -98,6 +98,25 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
         appearance: 'none',
         WebkitAppearance: 'none',
         MozAppearance: 'none'
+    };
+
+    // Number input style (shows native spinners like Pro)
+    const numberInputStyle = {
+        maxWidth: '793px',
+        width: '100%',
+        height: '42px',
+        borderRadius: '6px',
+        borderWidth: '1px',
+        paddingTop: '9px',
+        paddingRight: '13px',
+        paddingBottom: '9px',
+        paddingLeft: '13px',
+        backgroundColor: '#FFFFFF',
+        borderColor: '#CBD5E1',
+        borderStyle: 'solid',
+        opacity: 1,
+        boxSizing: 'border-box',
+        fontSize: '16px'
     };
 
     // Pro badge component
@@ -192,11 +211,8 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                         name="users_per_page"
                         min="1"
                         max="100"
-                        className="wpuf-block wpuf-min-w-full wpuf-text-gray-700 wpuf-font-normal focus:wpuf-ring-transparent wpuf-border"
-                        style={{
-                            ...inputStyle,
-                            backgroundImage: 'none'
-                        }}
+                        className="wpuf-block wpuf-min-w-full wpuf-m-0 wpuf-leading-none wpuf-text-gray-700 placeholder:wpuf-text-gray-400 wpuf-max-w-full focus:wpuf-ring-transparent"
+                        style={numberInputStyle}
                         value={formData.users_per_page || formData.max_item_per_page || 12}
                         onChange={handleChange}
                     />
@@ -214,11 +230,8 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                         type="number"
                         id="max_item"
                         name="max_item"
-                        className="wpuf-block wpuf-min-w-full wpuf-text-gray-700 wpuf-font-normal focus:wpuf-ring-transparent wpuf-border"
-                        style={{
-                            ...inputStyle,
-                            backgroundImage: 'none'
-                        }}
+                        className="wpuf-block wpuf-min-w-full wpuf-m-0 wpuf-leading-none wpuf-text-gray-700 placeholder:wpuf-text-gray-400 wpuf-max-w-full focus:wpuf-ring-transparent"
+                        style={numberInputStyle}
                         value={formData.max_item || ''}
                         onChange={handleChange}
                         placeholder={__('Enter -1 for all users', 'wp-user-frontend')}

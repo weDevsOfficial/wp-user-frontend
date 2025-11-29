@@ -3,18 +3,18 @@
  * User Directory REST API Controller
  *
  * @package WPUF
- * @subpackage Free/User_Directory
+ * @subpackage Modules/User_Directory
  * @since 4.3.0
  */
 
-namespace WeDevs\Wpuf\Free\User_Directory\Api;
+namespace WeDevs\Wpuf\Modules\User_Directory\Api;
 
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
-use WeDevs\Wpuf\Free\User_Directory\User_Directory;
+use WeDevs\Wpuf\Modules\User_Directory\User_Directory;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

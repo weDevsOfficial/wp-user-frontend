@@ -3,11 +3,11 @@
  * User Directory Pretty URLs Handler
  *
  * @package WPUF
- * @subpackage Free/User_Directory
+ * @subpackage Modules/User_Directory
  * @since 4.3.0
  */
 
-namespace WeDevs\Wpuf\Free\User_Directory;
+namespace WeDevs\Wpuf\Modules\User_Directory;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

@@ -36,7 +36,7 @@ $initials = wpuf_ud_get_user_initials( $user );
 $can_edit = is_user_logged_in() && get_current_user_id() === $user->ID;
 
 ?>
-<div class="wpuf-avatar-wrapper !wpuf-relative <?php echo esc_attr( $wrapper_class ); ?>" data-user-id="<?php echo esc_attr( $user->ID ); ?>">
+<div class="wpuf-avatar-wrapper !wpuf-relative !wpuf-w-full !wpuf-h-full <?php echo esc_attr( $wrapper_class ); ?>" data-user-id="<?php echo esc_attr( $user->ID ); ?>">
     <?php if ( $avatar_type === 'custom' || $avatar_type === 'gravatar' ) : ?>
         <!-- Show avatar image with fallback -->
         <img src="<?php echo esc_url( $avatar_url ); ?>"

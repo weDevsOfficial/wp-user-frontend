@@ -3,11 +3,11 @@
  * User Directory Shortcode Handler
  *
  * @package WPUF
- * @subpackage Free/User_Directory
+ * @subpackage Modules/User_Directory
  * @since 4.3.0
  */
 
-namespace WeDevs\Wpuf\Free\User_Directory;
+namespace WeDevs\Wpuf\Modules\User_Directory;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -242,16 +242,9 @@ class Shortcode {
      * @return string HTML output.
      */
     private function render_directory( $settings, $directory_id ) {
-        // Get current page - check WordPress query var first (for /page/X/ URLs), then legacy udpage param
-        $paged = get_query_var( 'paged' ) ? absint( get_query_var( 'paged' ) ) : 1;
-        if ( ! $paged || 1 === $paged ) {
-            $paged = get_query_var( 'page' ) ? absint( get_query_var( 'page' ) ) : 1;
-        }
-        // Fallback to legacy udpage param for backwards compatibility
+        // Get current page
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-        if ( ! $paged || 1 === $paged ) {
-            $paged = isset( $_GET['udpage'] ) ? absint( $_GET['udpage'] ) : 1;
-        }
+        $paged = isset( $_GET['udpage'] ) ? absint( $_GET['udpage'] ) : 1;
         $paged = max( 1, $paged ); // Ensure paged is at least 1
 
         // Get search term
@@ -396,17 +389,26 @@ class Shortcode {
      * @return string HTML output.
      */
     private function render_profile( $user, $settings, $directory_id ) {
-        // Get profile size from settings (Free uses profile_size)
-        $profile_size = $settings['profile_size'] ?? 'thumbnail';
+        // Get default tabs from settings or use Free version defaults
+        $default_tabs = [ 'about', 'posts', 'comments', 'file' ];
+        if ( ! empty( $settings['default_tabs'] ) && is_array( $settings['default_tabs'] ) ) {
+            $default_tabs = $settings['default_tabs'];
+        } elseif ( ! empty( $settings['default_tabs'] ) && is_string( $settings['default_tabs'] ) ) {
+            $default_tabs = array_map( 'trim', explode( ',', $settings['default_tabs'] ) );
+        }
 
         // Build profile data
         $profile_data = [
-            'user'            => $user,
-            'settings'        => $settings,
-            'directory_id'    => $directory_id,
-            'avatar_size'     => absint( $settings['avatar_size'] ?? 192 ),
-            'back_url'        => $this->get_directory_url(),
-            'profile_size'    => $profile_size,
+            'user'               => $user,
+            'settings'           => $settings,
+            'directory_id'       => $directory_id,
+            'avatar_size'        => absint( $settings['avatar_size'] ?? 192 ),
+            'back_url'           => $this->get_directory_url(),
+            'show_avatar'        => ! empty( $settings['show_avatar'] ) || ! isset( $settings['show_avatar'] ),
+            'enable_tabs'        => ! empty( $settings['enable_tabs'] ) || ! isset( $settings['enable_tabs'] ),
+            'default_tabs'       => $default_tabs,
+            'default_active_tab' => $settings['default_active_tab'] ?? 'about',
+            'profile_size'       => $settings['profile_size'] ?? 'thumbnail',
         ];
 
         /**

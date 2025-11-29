@@ -3,7 +3,7 @@
  * User Directory Admin Page Template
  *
  * @package WPUF
- * @subpackage Free/User_Directory
+ * @subpackage Modules/User_Directory
  * @since 4.3.0
  */
 

@@ -5,7 +5,7 @@
  * These functions mirror the Pro version helpers to ensure template compatibility.
  *
  * @package WPUF
- * @subpackage Free/User_Directory
+ * @subpackage Modules/User_Directory
  * @since 4.3.0
  */
 
@@ -23,16 +23,16 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array Colors array.
  */
 function wpuf_ud_free_get_layout_colors( $layout = 'layout-3' ) {
-    // Default purple colors for Free version (with ! prefix for important)
+    // Default emerald colors for Free version
     return [
-        'primary_600'            => '!wpuf-bg-purple-600',
-        'primary_700'            => '!wpuf-bg-purple-700',
-        'text_primary_600'       => '!wpuf-text-purple-600',
-        'border_primary_600'     => '!wpuf-border-purple-600',
-        'hover_primary_600'      => 'hover:!wpuf-text-purple-600',
-        'hover_primary_700'      => 'hover:!wpuf-bg-purple-700',
-        'hover_border_primary_600' => 'hover:!wpuf-border-purple-600',
-        'focus_ring_primary_500' => 'focus:!wpuf-ring-purple-500',
+        'primary_600'            => 'wpuf-bg-emerald-600',
+        'primary_700'            => 'wpuf-bg-emerald-700',
+        'text_primary_600'       => 'wpuf-text-emerald-600',
+        'border_primary_600'     => 'wpuf-border-emerald-600',
+        'hover_primary_600'      => 'hover:wpuf-text-emerald-600',
+        'hover_primary_700'      => 'hover:wpuf-bg-emerald-700',
+        'hover_border_primary_600' => 'hover:wpuf-border-emerald-600',
+        'focus_ring_primary_500' => 'focus:wpuf-ring-emerald-500',
     ];
 }
 
@@ -267,42 +267,98 @@ function wpuf_ud_get_profile_url( $user, $data = [] ) {
         // If it's just a path, build a full URL
         if ( strpos( $current_url, 'http' ) !== 0 ) {
             $scheme = is_ssl() ? 'https' : 'http';
-            $host = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : '';
+            $host   = isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '';
             $current_url = $scheme . '://' . $host . $current_url;
         }
     } else {
         // Fallback to detecting current URL
-        $current_url = get_permalink();
-
-        // Fallback to current URL if no permalink
-        if ( empty( $current_url ) ) {
-            $current_url = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . strtok( $_SERVER['REQUEST_URI'], '?' );
+        // Try to get the current post/page URL
+        if ( is_singular() ) {
+            $current_url = get_permalink();
+        } elseif ( is_home() ) {
+            $current_url = home_url();
+        } elseif ( is_front_page() ) {
+            $current_url = home_url();
+        } else {
+            // Fallback to current request URL - strip query string
+            $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+            $current_url = ( is_ssl() ? 'https://' : 'http://' ) . ( isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '' ) . strtok( $request_uri, '?' );
         }
     }
 
+    // Determine the user identifier based on profile base
     if ( 'user_id' === $profile_base ) {
-        $slug = $user->ID;
+        $user_identifier = $user->ID;
     } else {
-        $slug = rawurlencode( $user->user_login );
+        $user_identifier = $user->user_login;
     }
 
-    // For shortcodes (AJAX requests), ALWAYS use clean URL format - no query parameters
-    if ( ! empty( $data['is_shortcode'] ) || ! empty( $data['base_url'] ) ) {
+    // Check if this is a shortcode-based directory
+    $is_shortcode = false;
+
+    // First check if explicitly passed in data (from templates)
+    if ( ! empty( $data['is_shortcode'] ) ) {
+        $is_shortcode = true;
+    } else {
+        // Check multiple ways to detect shortcode context
+        // Method 1: Check global post for shortcode
+        global $post;
+        if ( $post && ( has_shortcode( $post->post_content, 'wpuf_user_listing' ) ||
+                       has_shortcode( $post->post_content, 'wpuf_user_listing_id' ) ) ) {
+            $is_shortcode = true;
+        }
+
+        // Method 2: Try to get page ID from URL and check for shortcode
+        if ( ! $is_shortcode ) {
+            // Get page ID from current URL
+            $page_id = url_to_postid( $current_url );
+
+            // If we have pagination, try removing it to get the base page
+            if ( ! $page_id && preg_match( '#/page/\d+/#', $current_url ) ) {
+                $base_url = preg_replace( '#/page/\d+/#', '/', $current_url );
+                $page_id  = url_to_postid( $base_url );
+            }
+
+            if ( $page_id ) {
+                $page_content = get_post_field( 'post_content', $page_id );
+                if ( $page_content && (
+                    strpos( $page_content, '[wpuf_user_listing' ) !== false ||
+                    strpos( $page_content, '[wpuf_user_listing_id' ) !== false
+                ) ) {
+                    $is_shortcode = true;
+                }
+            }
+        }
+    }
+
+    // For shortcodes, ALWAYS use clean URL format - strictly no query parameters
+    if ( $is_shortcode ) {
         // Generate clean URL: /directory/username or /directory/123
         $clean_base_url = strtok( $current_url, '?' );
         // Remove pagination from URL if present to get the base directory URL
         $clean_base_url = preg_replace( '#/page/\d+/?$#', '', $clean_base_url );
         $clean_base_url = rtrim( $clean_base_url, '/' );
 
-        return esc_url( $clean_base_url . '/' . $slug );
+        return esc_url( $clean_base_url . '/' . rawurlencode( (string) $user_identifier ) );
     }
+
+    // Parse the current URL and clean it
+    $parsed_url = wp_parse_url( $current_url );
+    $scheme     = isset( $parsed_url['scheme'] ) ? $parsed_url['scheme'] : 'http';
+    $host       = isset( $parsed_url['host'] ) ? $parsed_url['host'] : '';
+    $path       = isset( $parsed_url['path'] ) ? $parsed_url['path'] : '';
+
+    // Remove any page numbers from path (e.g., /page/2/)
+    $path = preg_replace( '#/page/\d+/?$#', '/', $path );
+    $path = rtrim( $path, '/' );
+
+    // Rebuild the base URL without query parameters
+    $current_url = $scheme . '://' . $host . $path;
 
     // Check if pretty URLs are enabled
     if ( get_option( 'permalink_structure' ) ) {
         // Clean URL format matching Pro: /ud/username (no extra /user/ segment)
-        $current_url = rtrim( $current_url, '/' );
-
-        return esc_url( $current_url . '/' . $slug );
+        return esc_url( $current_url . '/' . rawurlencode( (string) $user_identifier ) );
     }
 
     // Fallback to query parameter
@@ -369,7 +425,7 @@ function wpuf_ud_get_profile_data( $user, $template_data = [], $layout = 'layout
         'bio'          => get_user_meta( $user->ID, 'description', true ),
     ];
 
-    // Build contact info with proper icons for layout-2 (emerald/green theme)
+    // Build contact info - Using Pro-style icons with green circular background
     $contact_info = [];
     if ( ! empty( $user->user_email ) ) {
         $contact_info['email'] = [
@@ -389,12 +445,19 @@ function wpuf_ud_get_profile_data( $user, $template_data = [], $layout = 'layout
         ];
     }
 
-    // Build template config
+    // Build template config - Read from template_data if available
+    $default_tabs = [ 'about', 'posts', 'comments', 'file' ];
+    if ( isset( $template_data['default_tabs'] ) && is_array( $template_data['default_tabs'] ) ) {
+        $default_tabs = $template_data['default_tabs'];
+    } elseif ( isset( $settings['default_tabs'] ) && is_array( $settings['default_tabs'] ) ) {
+        $default_tabs = $settings['default_tabs'];
+    }
+
     $template_config = [
-        'show_avatar'       => true,
-        'enable_tabs'       => true,
-        'default_tabs'      => [ 'about', 'posts', 'comments', 'file' ],
-        'default_active_tab'=> 'about',
+        'show_avatar'       => isset( $template_data['show_avatar'] ) ? $template_data['show_avatar'] : true,
+        'enable_tabs'       => isset( $template_data['enable_tabs'] ) ? $template_data['enable_tabs'] : true,
+        'default_tabs'      => $default_tabs,
+        'default_active_tab'=> isset( $template_data['default_active_tab'] ) ? $template_data['default_active_tab'] : 'about',
         'avatar_size'       => $avatar_size,
         'custom_tab_labels' => [
             'about'    => __( 'About', 'wp-user-frontend' ),
@@ -555,7 +618,6 @@ function wpuf_ud_get_tab_label( $tab, $profile_data = [] ) {
         'about'    => __( 'About', 'wp-user-frontend' ),
         'posts'    => __( 'Posts', 'wp-user-frontend' ),
         'comments' => __( 'Comments', 'wp-user-frontend' ),
-        'file'     => __( 'Files', 'wp-user-frontend' ),
         'files'    => __( 'Files', 'wp-user-frontend' ),
         'activity' => __( 'Activity', 'wp-user-frontend' ),
     ];

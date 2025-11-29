@@ -2,11 +2,11 @@
 /**
  * Directory Custom Styles
  *
- * @package WPUF\Free\UserDirectory
+ * @package WPUF\Modules\UserDirectory
  * @since 4.3.0
  */
 
-namespace WeDevs\Wpuf\Free\User_Directory;
+namespace WeDevs\Wpuf\Modules\User_Directory;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

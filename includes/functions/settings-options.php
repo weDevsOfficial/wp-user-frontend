@@ -648,6 +648,13 @@ function wpuf_settings_fields() {
                 'class'   => 'wpuf-ai-provider-radio',
             ],
             [
+                'name'    => 'api_key_current',
+                'label'   => __( 'API Key', 'wp-user-frontend' ),
+                'desc'    => __( 'Enter your AI service API key. Need help finding your <a href="https://platform.openai.com/api-keys" target="_blank" class="wpuf-api-key-link" data-openai="https://platform.openai.com/api-keys" data-anthropic="https://console.anthropic.com/settings/keys" data-google="https://aistudio.google.com/app/apikey" style="text-decoration: underline;">API Key?</a>', 'wp-user-frontend' ),
+                'type'    => 'callback',
+                'callback' => 'wpuf_ai_api_key_field',
+            ],
+            [
                 'name'    => 'ai_model',
                 'label'   => __( 'AI Model', 'wp-user-frontend' ),
                 'desc'    => __( 'Select the AI model to use for content generation.', 'wp-user-frontend' ),
@@ -657,11 +664,12 @@ function wpuf_settings_fields() {
                 'class'   => 'ai-model-select',
             ],
             [
-                'name'    => 'api_key_current',
-                'label'   => __( 'API Key', 'wp-user-frontend' ),
-                'desc'    => __( 'Enter your AI service API key. Need help finding your <a href="https://platform.openai.com/api-keys" target="_blank" class="wpuf-api-key-link" data-openai="https://platform.openai.com/api-keys" data-anthropic="https://console.anthropic.com/settings/keys" data-google="https://aistudio.google.com/app/apikey" style="text-decoration: underline;">API Key?</a>', 'wp-user-frontend' ),
-                'type'    => 'callback',
-                'callback' => 'wpuf_ai_api_key_field',
+                'name'     => 'temperature',
+                'label'    => __( 'Temperature', 'wp-user-frontend' ),
+                'desc'     => __( 'Controls randomness in responses. Lower values (0.1-0.3) are more focused and deterministic. Higher values (0.7-1.0) are more creative and varied.', 'wp-user-frontend' ),
+                'type'     => 'callback',
+                'callback' => 'wpuf_ai_temperature_field',
+                'default'  => '0.7',
             ],
         ] ),
     ];
@@ -746,14 +754,59 @@ function wpuf_ai_api_key_field( $args ) {
     $anthropic_key = $settings['anthropic_api_key'] ?? '';
     $google_key = $settings['google_api_key'] ?? '';
 
+    // Get current provider key
+    $current_key = $settings[ $current_provider . '_api_key' ] ?? '';
+
+    // Mask the API key for display
+    $masked_key = '';
+    if ( ! empty( $current_key ) ) {
+        $key_length = strlen( $current_key );
+        if ( $key_length > 8 ) {
+            $masked_key = substr( $current_key, 0, 4 ) . str_repeat( '*', $key_length - 8 ) . substr( $current_key, -4 );
+        } else {
+            $masked_key = str_repeat( '*', $key_length );
+        }
+    }
+
     ?>
-    <input type="password"
-           id="wpuf_ai_api_key_field"
-           name="wpuf_ai[<?php echo esc_attr( $current_provider ); ?>_api_key]"
-           class="regular-text wpuf-ai-api-key-dynamic"
-           value="<?php echo esc_attr( $settings[ $current_provider . '_api_key' ] ?? '' ); ?>"
-           placeholder="<?php esc_attr_e( 'Enter your API key', 'wp-user-frontend' ); ?>"
-           autocomplete="off">
+    <div class="wpuf-ai-api-key-wrapper">
+        <?php if ( ! empty( $current_key ) ) : ?>
+            <!-- Show masked key as text -->
+            <input type="text"
+                   id="wpuf_ai_api_key_display"
+                   class="regular-text wpuf-api-key-display"
+                   value="<?php echo esc_attr( $masked_key ); ?>"
+                   readonly
+                   style="background-color: #f0f0f1; cursor: default;">
+
+            <button type="button"
+                    id="wpuf-change-api-key-btn"
+                    class="button button-secondary"
+                    style="margin-left: 5px;">
+                <?php esc_html_e( 'Change', 'wp-user-frontend' ); ?>
+            </button>
+        <?php endif; ?>
+
+        <!-- Actual password input field -->
+        <input type="password"
+               id="wpuf_ai_api_key_field"
+               name="wpuf_ai[<?php echo esc_attr( $current_provider ); ?>_api_key]"
+               class="regular-text wpuf-ai-api-key-dynamic"
+               value="<?php echo esc_attr( $current_key ); ?>"
+               placeholder="<?php esc_attr_e( 'Enter your API key', 'wp-user-frontend' ); ?>"
+               autocomplete="off"
+               <?php echo ! empty( $current_key ) ? 'style="display: none;"' : ''; ?>>
+
+        <button type="button"
+                id="wpuf-test-connection-btn"
+                class="button button-secondary"
+                style="margin-left: 10px;">
+            <span class="dashicons dashicons-update" style="margin-top: 3px;"></span>
+            <?php esc_html_e( 'Test Connection', 'wp-user-frontend' ); ?>
+        </button>
+
+        <span id="wpuf-connection-status" style="margin-left: 10px;"></span>
+    </div>
 
     <!-- Store API keys for each provider -->
     <input type="hidden" name="wpuf_ai[openai_api_key]" id="wpuf_ai_openai_key" value="<?php echo esc_attr($openai_key); ?>">
@@ -808,6 +861,41 @@ function wpuf_ai_api_key_field( $args ) {
         var initialProvider = $('input[name="wpuf_ai[ai_provider]"]:checked').val() || 'openai';
         updateVisibleInputName(initialProvider);
 
+        // Handle "Change" button click to show password field
+        $('#wpuf-change-api-key-btn').on('click', function() {
+            $('#wpuf_ai_api_key_display').hide();
+            $(this).hide();
+            $('#wpuf_ai_api_key_field').show().focus().select();
+            $('#wpuf-connection-status').html('').show();
+        });
+
+        // Function to mask API key display
+        function maskApiKey(key) {
+            if (!key || key.length === 0) return '';
+            var keyLength = key.length;
+            if (keyLength > 8) {
+                return key.substr(0, 4) + '*'.repeat(keyLength - 8) + key.substr(-4);
+            }
+            return '*'.repeat(keyLength);
+        }
+
+        // Function to show/hide API key fields based on whether key exists
+        function updateApiKeyDisplay(provider) {
+            var apiKey = $('#wpuf_ai_' + provider + '_key').val();
+            var hasKey = apiKey && apiKey.trim().length > 0;
+
+            if (hasKey) {
+                var masked = maskApiKey(apiKey);
+                $('#wpuf_ai_api_key_display').val(masked).show();
+                $('#wpuf-change-api-key-btn').show();
+                $('#wpuf_ai_api_key_field').hide();
+            } else {
+                $('#wpuf_ai_api_key_display').hide();
+                $('#wpuf-change-api-key-btn').hide();
+                $('#wpuf_ai_api_key_field').show();
+            }
+        }
+
         // Update API key field and link when provider changes
         $('input[name="wpuf_ai[ai_provider]"]').on('change', function() {
             var provider = $(this).val();
@@ -820,19 +908,161 @@ function wpuf_ai_api_key_field( $args ) {
             // Update the API key link
             updateApiKeyLink(provider);
 
+            // Update display/input visibility
+            updateApiKeyDisplay(provider);
+
+            // Enable/disable test connection button
+            $('#wpuf-test-connection-btn').prop('disabled', !apiKey || apiKey.trim().length < 10);
+
+            // Update model field state
+            updateModelFieldState(apiKey);
+
             // Filter model list by provider
             filterModelsByProvider(provider);
 
             // Refresh model list if API key exists
-            if (apiKey) {
+            if (apiKey && apiKey.trim().length >= 10) {
                 refreshAllModels();
             }
+
+            // Clear connection status
+            $('#wpuf-connection-status').html('').show();
         });
 
         // Save API key to hidden field when typing
         $('#wpuf_ai_api_key_field').on('input', function() {
             var provider = $('input[name="wpuf_ai[ai_provider]"]:checked').val();
-            $('#wpuf_ai_' + provider + '_key').val($(this).val());
+            var apiKey = $(this).val();
+            $('#wpuf_ai_' + provider + '_key').val(apiKey);
+
+            // Enable/disable test connection button
+            $('#wpuf-test-connection-btn').prop('disabled', !apiKey || apiKey.trim().length < 10);
+
+            // Enable/disable model field based on API key
+            updateModelFieldState(apiKey);
+        });
+
+        // Function to update model field state
+        function updateModelFieldState(apiKey) {
+            var $modelSelect = $('select[name="wpuf_ai[ai_model]"]');
+            var hasValidKey = apiKey && apiKey.trim().length >= 10;
+
+            if (!hasValidKey) {
+                $modelSelect.prop('disabled', true);
+                $modelSelect.closest('tr').find('.description').html(
+                    '<?php esc_html_e( 'Please enter a valid API key and test the connection first.', 'wp-user-frontend' ); ?>'
+                );
+            } else {
+                $modelSelect.prop('disabled', false);
+                $modelSelect.closest('tr').find('.description').html(
+                    '<?php esc_html_e( 'Select the AI model to use for content generation.', 'wp-user-frontend' ); ?>'
+                );
+            }
+        }
+
+        // Initialize model field state on page load
+        var initialApiKey = $('#wpuf_ai_api_key_field').val();
+        updateModelFieldState(initialApiKey);
+
+        // Temperature field validation (HTML5 handles basic validation, this adds visual feedback)
+        $('#wpuf_ai_temperature').on('input change', function() {
+            var $input = $(this);
+            var value = parseFloat($input.val());
+
+            // Use HTML5 validity check
+            if (!this.checkValidity() || isNaN(value) || value < 0 || value > 1) {
+                $input.css('border-color', '#d63638');
+            } else {
+                $input.css('border-color', '#50C878');
+                // Auto-clear green border after 1 second
+                setTimeout(function() {
+                    $input.css('border-color', '');
+                }, 1000);
+            }
+        });
+
+        // Store timeout ID for clearing
+        var statusTimeout = null;
+
+        // Test connection button handler
+        $('#wpuf-test-connection-btn').on('click', function() {
+            var $btn = $(this);
+            var $status = $('#wpuf-connection-status');
+            var provider = $('input[name="wpuf_ai[ai_provider]"]:checked').val();
+            var apiKey = $('#wpuf_ai_api_key_field').val();
+            var model = $('select[name="wpuf_ai[ai_model]"]').val();
+
+            // Clear any previous timeout
+            if (statusTimeout) {
+                clearTimeout(statusTimeout);
+            }
+
+            // Make sure status is visible
+            $status.stop(true, true).show().css('opacity', '1');
+
+            if (!apiKey || apiKey.trim().length < 10) {
+                $status.html('<span style="color: #d63638;">⚠ <?php esc_html_e( 'Please enter a valid API key', 'wp-user-frontend' ); ?></span>');
+                return;
+            }
+
+            // Update button state
+            $btn.prop('disabled', true);
+            $btn.find('.dashicons').addClass('spin');
+            $status.html('<span style="color: #999;">⏳ <?php esc_html_e( 'Testing connection...', 'wp-user-frontend' ); ?></span>');
+
+            // Call test connection endpoint with API key, provider, and model
+            $.ajax({
+                url: '<?php echo esc_url( rest_url( 'wpuf/v1/ai-form-builder/test' ) ); ?>',
+                method: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    api_key: apiKey,
+                    provider: provider,
+                    model: model
+                }),
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-WP-Nonce', '<?php echo wp_create_nonce( 'wp_rest' ); ?>');
+                },
+                success: function(response) {
+                    $btn.prop('disabled', false);
+                    $btn.find('.dashicons').removeClass('spin');
+
+                    // Ensure status is visible
+                    $status.stop(true, true).show().css('opacity', '1');
+
+                    if (response && response.success) {
+                        $status.html('<span style="color: #00a32a;">✓ ' + (response.message || '<?php esc_html_e( 'Connection successful!', 'wp-user-frontend' ); ?>') + '</span>');
+
+                        // Enable model field and refresh models
+                        updateModelFieldState(apiKey);
+                        refreshAllModels();
+
+                        // Auto-hide success message after 5 seconds
+                        statusTimeout = setTimeout(function() {
+                            $status.fadeOut(400);
+                        }, 5000);
+                    } else {
+                        var errorMsg = response.message || '<?php esc_html_e( 'Connection failed', 'wp-user-frontend' ); ?>';
+                        $status.html('<span style="color: #d63638;">✗ ' + errorMsg + '</span>');
+                        // Error messages stay visible
+                    }
+                },
+                error: function(xhr, status, error) {
+                    $btn.prop('disabled', false);
+                    $btn.find('.dashicons').removeClass('spin');
+
+                    // Ensure status is visible
+                    $status.stop(true, true).show().css('opacity', '1');
+
+                    var errorMsg = '<?php esc_html_e( 'Connection failed. Please check your API key.', 'wp-user-frontend' ); ?>';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMsg = xhr.responseJSON.message;
+                    }
+                    $status.html('<span style="color: #d63638;">✗ ' + errorMsg + '</span>');
+                    // Error messages stay visible
+                }
+            });
         });
 
         // Store all models globally for filtering
@@ -1004,5 +1234,53 @@ function wpuf_ai_api_key_field( $args ) {
         }
     });
     </script>
+    <style>
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .dashicons.spin {
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+        .wpuf-ai-api-key-wrapper {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        #wpuf-connection-status {
+            display: inline-block;
+            min-width: 200px;
+        }
+    </style>
+    <?php
+}
+
+/**
+ * Render temperature field with proper HTML5 attributes
+ *
+ * @param array $args Field arguments (unused but required by Settings API)
+ */
+function wpuf_ai_temperature_field( $args ) {
+    $settings = get_option( 'wpuf_ai', [] );
+    $value = isset( $settings['temperature'] ) ? floatval( $settings['temperature'] ) : 0.7;
+
+    // Ensure value is within valid range
+    $value = max( 0.0, min( 1.0, $value ) );
+
+    ?>
+    <input type="number"
+           id="wpuf_ai_temperature"
+           name="wpuf_ai[temperature]"
+           class="regular-text wpuf-ai-temperature"
+           value="<?php echo esc_attr( $value ); ?>"
+           min="0"
+           max="1"
+           step="0.1"
+           required>
+    <p class="description">
+        <?php esc_html_e( 'Controls randomness in responses. Lower values (0.1-0.3) are more focused and deterministic. Higher values (0.7-1.0) are more creative and varied.', 'wp-user-frontend' ); ?>
+    </p>
     <?php
 }

@@ -123,9 +123,26 @@ class RestController extends WP_REST_Controller {
 
         // Test connection endpoint
         register_rest_route($this->namespace, '/' . $this->rest_base . '/test', [
-            'methods' => WP_REST_Server::READABLE,
+            'methods' => WP_REST_Server::CREATABLE,
             'callback' => [$this, 'test_connection'],
-            'permission_callback' => [$this, 'check_permission']
+            'permission_callback' => [$this, 'check_permission'],
+            'args' => [
+                'api_key' => [
+                    'required' => false,
+                    'type' => 'string',
+                    'sanitize_callback' => 'sanitize_text_field'
+                ],
+                'provider' => [
+                    'required' => false,
+                    'type' => 'string',
+                    'enum' => ['openai', 'anthropic', 'google']
+                ],
+                'model' => [
+                    'required' => false,
+                    'type' => 'string',
+                    'sanitize_callback' => 'sanitize_text_field'
+                ]
+            ]
         ]);
 
         // Get providers endpoint
@@ -387,7 +404,13 @@ class RestController extends WP_REST_Controller {
      */
     public function test_connection(WP_REST_Request $request) {
         try {
-            $result = $this->form_generator->test_connection();
+            // Get parameters from request
+            $api_key = $request->get_param('api_key');
+            $provider = $request->get_param('provider');
+            $model = $request->get_param('model');
+
+            // Pass provider and model to test_connection
+            $result = $this->form_generator->test_connection($api_key, $provider, $model);
 
             return new WP_REST_Response($result, $result['success'] ? 200 : 400);
 

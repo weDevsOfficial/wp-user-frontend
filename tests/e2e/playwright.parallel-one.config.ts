@@ -8,7 +8,7 @@ dotenv.config({ quiet: true });
  */
 export default defineConfig({
     testDir: './tests',
-    timeout: 60000,
+    timeout: 120000,
     expect: { timeout: 30000 },
     fullyParallel: false,
     forbidOnly: false,

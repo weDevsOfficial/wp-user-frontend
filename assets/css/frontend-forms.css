@@ -1796,11 +1796,19 @@ img.wpuf-eye {
 }
 /* CSS utility classes for hiding fields on frontend */
 .wpuf-form .hidden,
+.wpuf-form .Hidden,
+.wpuf-form .HIDDEN,
 .wpuf-form .d-none,
-.wpuf-form .hide {
+.wpuf-form .D-none,
+.wpuf-form .D-None,
+.wpuf-form .hide,
+.wpuf-form .Hide,
+.wpuf-form .HIDE {
   display: none !important;
 }
-.wpuf-form .invisible {
+.wpuf-form .invisible,
+.wpuf-form .Invisible,
+.wpuf-form .INVISIBLE {
   visibility: hidden !important;
 }
 .wpuf-form .sr-only,

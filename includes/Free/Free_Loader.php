@@ -1813,28 +1813,29 @@ class Free_Loader extends Pro_Prompt {
     public function render_field_option_data_button() {
         $pro_icon = WPUF_ASSET_URI . '/images/pro-badge.svg';
         ?>
-        <div class="wpuf-relative wpuf-inline-block wpuf-group/pro-button">
-            <button
-                type="button"
-                class="wpuf-inline-flex wpuf-items-center wpuf-gap-x-1 wpuf-rounded-md wpuf-px-2 wpuf-py-1 wpuf-text-xs wpuf-font-medium wpuf-text-gray-600 wpuf-bg-gray-100 hover:wpuf-bg-gray-200 wpuf-cursor-not-allowed"
-                disabled
-                title="<?php esc_attr_e( 'Available in Pro Version', 'wp-user-frontend' ); ?>">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="wpuf-size-4">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                </svg>
-                <?php esc_html_e( 'Bulk Add', 'wp-user-frontend' ); ?>
-            </button>
-            <div
-                class="wpuf-absolute wpuf-top-0 wpuf-right-0 wpuf-opacity-0 group-hover/pro-button:wpuf-opacity-100 wpuf-transition-all wpuf-pointer-events-none">
-                <img src="<?php echo esc_url( $pro_icon ); ?>" alt="<?php esc_attr_e( 'Pro', 'wp-user-frontend' ); ?>">
+        <a href="<?php echo esc_url( Pro_Prompt::get_pro_url() ); ?>" target="_blank">
+            <div class="wpuf-relative wpuf-inline-block wpuf-group/pro-button">
+                <button
+                    type="button"
+                    class="wpuf-inline-flex wpuf-items-center wpuf-gap-x-1 wpuf-rounded-md wpuf-px-2 wpuf-py-1 wpuf-text-xs wpuf-font-medium wpuf-text-gray-600 wpuf-bg-gray-100 hover:wpuf-bg-gray-200 wpuf-cursor-pointer"
+                    title="<?php esc_attr_e( 'Available in Pro Version', 'wp-user-frontend' ); ?>">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="wpuf-size-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    </svg>
+                    <?php esc_html_e( 'Bulk Add', 'wp-user-frontend' ); ?>
+                </button>
+                <div
+                    class="wpuf-absolute wpuf-top-0 wpuf-right-0 wpuf-opacity-0 group-hover/pro-button:wpuf-opacity-100 wpuf-transition-all wpuf-pointer-events-none">
+                    <img src="<?php echo esc_url( $pro_icon ); ?>" alt="<?php esc_attr_e( 'Pro', 'wp-user-frontend' ); ?>">
+                </div>
             </div>
-        </div>
+        </a>
         <?php
     }
 }

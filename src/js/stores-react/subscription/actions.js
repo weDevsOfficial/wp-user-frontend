@@ -216,6 +216,16 @@ export function fetchItems(status, offset = 0) {
     };
 }
 
+// Alias for backward compatibility with Subscriptions.jsx
+export function setSubscriptionsByStatus(status, offset = 0) {
+    return fetchItems(status, offset);
+}
+
+// Alias for getSubscriptionCount
+export function getSubscriptionCount(status = 'all') {
+    return fetchCounts(status);
+}
+
 export function fetchCounts(status = 'all') {
     return async ({ dispatch }) => {
         const wpufSubscriptions = getWpufSubscriptions();

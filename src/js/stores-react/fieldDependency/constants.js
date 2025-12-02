@@ -1,0 +1,7 @@
+export const STORE_NAME = 'wpuf/subscriptions-field-dependency';
+
+export const ACTION_TYPES = {
+    SET_MODIFIER_FIELDS: 'SET_MODIFIER_FIELDS',
+    SET_HIDDEN_FIELDS: 'SET_HIDDEN_FIELDS',
+    SET_MODIFIER_FIELD_STATUS: 'SET_MODIFIER_FIELD_STATUS',
+};

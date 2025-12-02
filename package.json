@@ -10,6 +10,8 @@
     "build": "npm run build:forms-list && npm run build:subscriptions && npm run build:frontend-subscriptions && npm run build:ai-form-builder && npm run build:css",
     "build:forms-list": "ENTRY=forms-list vite build",
     "build:subscriptions": "ENTRY=subscriptions vite build",
+    "build:subscriptions-react": "wp-scripts build",
+    "start:subscriptions-react": "wp-scripts start",
     "build:frontend-subscriptions": "ENTRY=frontend-subscriptions vite build",
     "build:ai-form-builder": "ENTRY=ai-form-builder vite build",
     "build:css": "grunt tailwind-minify"
@@ -18,6 +20,7 @@
     "@tailwindcss/forms": "^0.5.7",
     "@types/node": "^18.11.18",
     "@vitejs/plugin-vue": "^5.0.4",
+    "@wordpress/scripts": "^27.0.0",
     "autoprefixer": "^10.4.16",
     "daisyui": "^4.12.2",
     "grunt": "^1.5.3",
@@ -46,15 +49,25 @@
     "vite": "^5.1.4"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.18",
     "@headlessui/vue": "^1.7.23",
+    "@heroicons/react": "^2.1.1",
     "@heroicons/vue": "^2.1.1",
     "@vueform/multiselect": "^2.6.8",
     "@vuepic/vue-datepicker": "^8.2.0",
     "@wordpress/api-fetch": "^6.49.0",
+    "@wordpress/data": "^9.0.0",
+    "@wordpress/element": "^5.0.0",
     "@wordpress/i18n": "^4.52.0",
+    "array-uniq": "^3.0.0",
     "cli": "^1.0.1",
+    "clsx": "^2.1.0",
     "epic-spinners": "^2.0.0",
     "pinia": "^2.1.7",
+    "react": "^18.2.0",
+    "react-datepicker": "^6.0.0",
+    "react-dom": "^18.2.0",
+    "react-select": "^5.8.0",
     "vue": "^3.4.19",
     "vue-router": "^4.3.2"
   }

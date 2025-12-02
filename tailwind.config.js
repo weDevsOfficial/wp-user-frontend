@@ -14,9 +14,14 @@ module.exports = {
         // New paths from upstream (for subscription templates)
         './templates/**/*.php',
         './src/**/*.{js,css}',
+        // React components for subscriptions
+        './assets/js/components-react/**/*.{js,jsx}',
+        './assets/js/subscriptions-react.jsx',
+        './src/js/components-react/**/*.{js,jsx}',
+        './src/js/subscriptions-react.jsx',
     ],
     theme: {
-         extend: {
+        extend: {
             colors: {
                 primary: colors.emerald[600],
                 primaryHover: colors.emerald[500],

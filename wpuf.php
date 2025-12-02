@@ -13,13 +13,15 @@ Domain Path: /languages
 */
 
 // don't call the file directly
-if ( ! defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) )
+{
     exit;
 }
 
 $autoload = __DIR__ . '/vendor/autoload.php';
 
-if ( file_exists( $autoload ) ) {
+if ( file_exists( $autoload ) )
+{
     require_once $autoload;
 }
 
@@ -30,12 +32,19 @@ define( 'WPUF_ROOT_URI', plugins_url( '', __FILE__ ) );
 define( 'WPUF_ASSET_URI', WPUF_ROOT_URI . '/assets' );
 define( 'WPUF_INCLUDES', WPUF_ROOT . '/includes' );
 
+// Feature flag for React subscriptions (set to true in wp-config.php to enable)
+if ( !defined( 'WPUF_USE_REACT_SUBSCRIPTIONS' ) )
+{
+    define( 'WPUF_USE_REACT_SUBSCRIPTIONS', true );
+}
+
 use WeDevs\WpUtils\SingletonTrait;
 
 /**
  * Main bootstrap class for WP User Frontend
  */
-final class WP_User_Frontend {
+final class WP_User_Frontend
+{
     use SingletonTrait;
 
     /**
@@ -71,8 +80,10 @@ final class WP_User_Frontend {
     /**
      * Fire up the plugin
      */
-    public function __construct() {
-        if ( ! $this->is_supported_php() ) {
+    public function __construct()
+    {
+        if ( !$this->is_supported_php() )
+        {
             add_action( 'admin_notices', [ $this, 'php_version_notice' ] );
 
             return;
@@ -92,10 +103,12 @@ final class WP_User_Frontend {
      *
      * @return bool
      */
-    public function is_supported_php( $min_php = null ) {
+    public function is_supported_php( $min_php = null )
+    {
         $min_php = $min_php ? $min_php : $this->min_php;
 
-        if ( version_compare( PHP_VERSION, $min_php, '<=' ) ) {
+        if ( version_compare( PHP_VERSION, $min_php, '<=' ) )
+        {
             return false;
         }
 
@@ -107,12 +120,14 @@ final class WP_User_Frontend {
      *
      * @return void
      */
-    public function php_version_notice() {
-        if ( $this->is_supported_php() || ! current_user_can( 'manage_options' ) ) {
+    public function php_version_notice()
+    {
+        if ( $this->is_supported_php() || !current_user_can( 'manage_options' ) )
+        {
             return;
         }
 
-        $error = __( 'Your installed PHP Version is: ', 'wp-user-frontend' ) . PHP_VERSION . '. ';
+        $error  = __( 'Your installed PHP Version is: ', 'wp-user-frontend' ) . PHP_VERSION . '. ';
         $error .= __( 'The <strong>WP User Frontend</strong> plugin requires PHP version <strong>', 'wp-user-frontend' ) . $this->min_php . __( '</strong> or greater.', 'wp-user-frontend' ); ?>
         <div class="error">
             <p><?php printf( esc_html( $error ) ); ?></p>
@@ -127,7 +142,8 @@ final class WP_User_Frontend {
      *
      * @return void
      */
-    public function init_hooks() {
+    public function init_hooks()
+    {
         add_action( 'plugins_loaded', [ $this, 'init_insights' ], 8 );
         add_action( 'plugins_loaded', [ $this, 'wpuf_loader' ] );
         add_action( 'plugins_loaded', [ $this, 'process_wpuf_pro_version' ] );
@@ -142,9 +158,10 @@ final class WP_User_Frontend {
         add_action( 'widgets_init', [ $this, 'register_widgets' ] );
     }
 
-    public function init_insights() {
+    public function init_insights()
+    {
         // Insight class instantiate
-        $this->container['tracker'] = new WeDevs\Wpuf\Lib\WeDevs_Insights( __FILE__ );
+        $this->container[ 'tracker' ] = new WeDevs\Wpuf\Lib\WeDevs_Insights( __FILE__ );
     }
 
     /**
@@ -152,12 +169,14 @@ final class WP_User_Frontend {
      *
      * @return void
      */
-    public function includes() {
+    public function includes()
+    {
         require_once __DIR__ . '/wpuf-functions.php';
         require_once __DIR__ . '/includes/class-frontend-render-form.php';
 
         // add reCaptcha library if not found
-        if ( ! function_exists( 'recaptcha_get_html' ) ) {
+        if ( !function_exists( 'recaptcha_get_html' ) )
+        {
             require_once __DIR__ . '/Lib/recaptchalib.php';
             require_once __DIR__ . '/Lib/invisible_recaptcha.php';
         }
@@ -171,27 +190,31 @@ final class WP_User_Frontend {
      *
      * @return void
      */
-    public function instantiate() {
-        $this->container['assets']       = new WeDevs\Wpuf\Assets();
-        $this->container['subscription'] = new WeDevs\Wpuf\Admin\Subscription();
-        $this->container['fields']       = new WeDevs\Wpuf\Admin\Forms\Field_Manager();
-        $this->container['customize']    = new WeDevs\Wpuf\Admin\Customizer_Options();
-        $this->container['bank']         = new WeDevs\Wpuf\Lib\Gateway\Bank();
-        $this->container['paypal']       = new WeDevs\Wpuf\Lib\Gateway\Paypal();
-        $this->container['api']          = new WeDevs\Wpuf\API();
-        $this->container['integrations'] = new WeDevs\Wpuf\Integrations();
-        $this->container['ai_manager']   = new WeDevs\Wpuf\AI_Manager();
+    public function instantiate()
+    {
+        $this->container[ 'assets' ]       = new WeDevs\Wpuf\Assets();
+        $this->container[ 'subscription' ] = new WeDevs\Wpuf\Admin\Subscription();
+        $this->container[ 'fields' ]       = new WeDevs\Wpuf\Admin\Forms\Field_Manager();
+        $this->container[ 'customize' ]    = new WeDevs\Wpuf\Admin\Customizer_Options();
+        $this->container[ 'bank' ]         = new WeDevs\Wpuf\Lib\Gateway\Bank();
+        $this->container[ 'paypal' ]       = new WeDevs\Wpuf\Lib\Gateway\Paypal();
+        $this->container[ 'api' ]          = new WeDevs\Wpuf\API();
+        $this->container[ 'integrations' ] = new WeDevs\Wpuf\Integrations();
+        $this->container[ 'ai_manager' ]   = new WeDevs\Wpuf\AI_Manager();
 
-        if ( is_admin() ) {
-            $this->container['admin']        = new WeDevs\Wpuf\Admin();
-            $this->container['setup_wizard'] = new WeDevs\Wpuf\Setup_Wizard();
-            $this->container['pro_upgrades'] = new WeDevs\Wpuf\Pro_Upgrades();
-            $this->container['privacy']      = new WeDevs\Wpuf\WPUF_Privacy();
-        } else {
-            $this->container['frontend'] = new WeDevs\Wpuf\Frontend();
+        if ( is_admin() )
+        {
+            $this->container[ 'admin' ]        = new WeDevs\Wpuf\Admin();
+            $this->container[ 'setup_wizard' ] = new WeDevs\Wpuf\Setup_Wizard();
+            $this->container[ 'pro_upgrades' ] = new WeDevs\Wpuf\Pro_Upgrades();
+            $this->container[ 'privacy' ]      = new WeDevs\Wpuf\WPUF_Privacy();
+        } else
+        {
+            $this->container[ 'frontend' ] = new WeDevs\Wpuf\Frontend();
         }
 
-        if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+        if ( defined( 'DOING_AJAX' ) && DOING_AJAX )
+        {
             // Initialize the ajax class inside init hook for translation issue
             add_action( 'init', [ $this, 'init_ajax' ] );
         }
@@ -204,8 +227,9 @@ final class WP_User_Frontend {
      *
      * @return void
      */
-    public function init_ajax() {
-        $this->container['ajax'] = new WeDevs\Wpuf\Ajax();
+    public function init_ajax()
+    {
+        $this->container[ 'ajax' ] = new WeDevs\Wpuf\Ajax();
     }
 
     /**
@@ -213,7 +237,8 @@ final class WP_User_Frontend {
      *
      * @global object $wpdb
      */
-    public function install() {
+    public function install()
+    {
         $installer = new WeDevs\Wpuf\Installer();
         $installer->install();
     }
@@ -225,12 +250,14 @@ final class WP_User_Frontend {
      *
      * @return void
      */
-    public function plugin_upgrades() {
-        if ( ! is_admin() && ! current_user_can( 'manage_options' ) ) {
+    public function plugin_upgrades()
+    {
+        if ( !is_admin() && !current_user_can( 'manage_options' ) )
+        {
             return;
         }
 
-        $this->container['upgrades'] = new WeDevs\Wpuf\Admin\Upgrades();
+        $this->container[ 'upgrades' ] = new WeDevs\Wpuf\Admin\Upgrades();
     }
 
     /**
@@ -240,9 +267,11 @@ final class WP_User_Frontend {
      *
      * @return void
      */
-    public function process_wpuf_pro_version() {
+    public function process_wpuf_pro_version()
+    {
         // check whether the version of wpuf pro is prior to the code restructure
-        if ( defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4', '<' ) ) {
+        if ( defined( 'WPUF_PRO_VERSION' ) && version_compare( WPUF_PRO_VERSION, '4', '<' ) )
+        {
             // deactivate_plugins( WPUF_PRO_FILE );
 
             add_action( 'admin_notices', [ $this, 'wpuf_upgrade_notice' ] );
@@ -254,7 +283,8 @@ final class WP_User_Frontend {
      *
      * @since 2.4.2
      */
-    public function wpuf_upgrade_notice() {
+    public function wpuf_upgrade_notice()
+    {
         ?>
         <div class="notice error" id="wpuf-pro-installer-notice" style="padding: 1em; position: relative;">
             <h2><?php esc_html_e( 'Your WP User Frontend Pro is almost ready!', 'wp-user-frontend' ); ?></h2>
@@ -273,20 +303,24 @@ final class WP_User_Frontend {
      *
      * @since 2.5.4
      */
-    public function wpuf_loader() {
+    public function wpuf_loader()
+    {
         $has_pro = class_exists( 'WP_User_Frontend_Pro' );
 
-        if ( $has_pro ) {
+        if ( $has_pro )
+        {
             $this->is_pro = true;
-        } else {
-            $this->container['free_loader'] = new WeDevs\Wpuf\Free\Free_Loader();
+        } else
+        {
+            $this->container[ 'free_loader' ] = new WeDevs\Wpuf\Free\Free_Loader();
 
-            $this->container['free_loader']->includes();
-            $this->container['free_loader']->instantiate();
-            $this->container['free_loader']->run_hooks();
+            $this->container[ 'free_loader' ]->includes();
+            $this->container[ 'free_loader' ]->instantiate();
+            $this->container[ 'free_loader' ]->run_hooks();
 
             // Load TEC venue/organizer fix when Pro is not active
-            if ( file_exists( WPUF_INCLUDES . '/Integrations/TEC_Venue_Organizer_Fix.php' ) ) {
+            if ( file_exists( WPUF_INCLUDES . '/Integrations/TEC_Venue_Organizer_Fix.php' ) )
+            {
                 require_once WPUF_INCLUDES . '/Integrations/TEC_Venue_Organizer_Fix.php';
             }
         }
@@ -301,7 +335,8 @@ final class WP_User_Frontend {
      *
      * @return void
      */
-    public static function uninstall() {
+    public static function uninstall()
+    {
         wp_clear_scheduled_hook( 'wpuf_remove_expired_post_hook' );
     }
 
@@ -312,7 +347,8 @@ final class WP_User_Frontend {
      *
      * @author Tareq Hasan
      */
-    public function load_textdomain() {
+    public function load_textdomain()
+    {
         load_plugin_textdomain( 'wp-user-frontend', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
     }
 
@@ -324,7 +360,8 @@ final class WP_User_Frontend {
      * @param string $type type of the error. e.g: debug, error, info
      * @param string $msg
      */
-    public static function log( $type = '', $msg = '' ) {
+    public static function log( $type = '', $msg = '' )
+    {
         $msg = sprintf( "[%s][%s] %s\n", date( 'd.m.Y h:i:s' ), $type, $msg ); // phpcs:ignore
         error_log( $msg, 3, __DIR__ . '/log.txt' );
     }
@@ -336,7 +373,8 @@ final class WP_User_Frontend {
      *
      * @return bool
      */
-    public function is_pro() {
+    public function is_pro()
+    {
         return $this->is_pro;
     }
 
@@ -349,13 +387,15 @@ final class WP_User_Frontend {
      *
      * @return array
      */
-    public function plugin_action_links( $links ) {
+    public function plugin_action_links( $links )
+    {
         $links[] = '<a href="' . admin_url( 'admin.php?page=wpuf-settings' ) . '">' . esc_html( 'Settings' ) . '</a>';
-        $links[] = '<a href="https://wedevs.com/docs/wp-user-frontend-pro/getting-started/how-to-install/" target="_blank"> '. esc_html( 'Docs' ) . '</a>';
+        $links[] = '<a href="https://wedevs.com/docs/wp-user-frontend-pro/getting-started/how-to-install/" target="_blank"> ' . esc_html( 'Docs' ) . '</a>';
 
-        if ( ! $this->is_pro() ) {
-            $links[] = '<a href="https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=installed_plugins" target="_blank" style="color: #64C273;"> '. esc_html( 'Upgrade to Pro' ) . '</a>';
-            $links[] = '<a href="https://wedevs.com/coupons/?utm_source=installed_plugins" target="_blank" style="color: #5368FF;">'. esc_html( 'Check Discounts' ) . '</a>';
+        if ( !$this->is_pro() )
+        {
+            $links[] = '<a href="https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=installed_plugins" target="_blank" style="color: #64C273;"> ' . esc_html( 'Upgrade to Pro' ) . '</a>';
+            $links[] = '<a href="https://wedevs.com/coupons/?utm_source=installed_plugins" target="_blank" style="color: #5368FF;">' . esc_html( 'Check Discounts' ) . '</a>';
         }
 
         return $links;
@@ -368,10 +408,12 @@ final class WP_User_Frontend {
      *
      * @return void
      */
-    public function register_widgets() {
-        $this->container['widgets'] = new WeDevs\Wpuf\Widgets\Manager();
+    public function register_widgets()
+    {
+        $this->container[ 'widgets' ] = new WeDevs\Wpuf\Widgets\Manager();
     }
-    public function license_expired() {
+    public function license_expired()
+    {
         echo '<div class="error">';
         echo '<p>Your <strong>WP User Frontend Pro</strong> License has been expired. Please <a href="https://wedevs.com/account/" target="_blank">renew your license</a>.</p>';
         echo '</div>';
@@ -384,7 +426,8 @@ final class WP_User_Frontend {
      *
      * @return string
      */
-    public function get_field_seperator() {
+    public function get_field_seperator()
+    {
         return self::$field_separator;
     }
 
@@ -397,8 +440,10 @@ final class WP_User_Frontend {
      *
      * @return object Class Instance
      */
-    public function __get( $prop ) {
-        if ( array_key_exists( $prop, $this->container ) ) {
+    public function __get( $prop )
+    {
+        if ( array_key_exists( $prop, $this->container ) )
+        {
             return $this->container[ $prop ];
         }
     }
@@ -410,7 +455,8 @@ final class WP_User_Frontend {
      *
      * @return string
      */
-    public function get_db_version_key() {
+    public function get_db_version_key()
+    {
         return 'wpuf_version';
     }
 }
@@ -420,7 +466,8 @@ final class WP_User_Frontend {
  *
  * @return WP_User_Frontend
  */
-function wpuf() {
+function wpuf()
+{
     return WP_User_Frontend::instance();
 }
 

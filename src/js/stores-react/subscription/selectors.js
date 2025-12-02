@@ -178,3 +178,23 @@ export function getTermById(state, termId) {
 
     return null;
 }
+
+export function getMetaValue(state, key) {
+    const item = state.item;
+    if (!item || !item.meta_value) {
+        return '';
+    }
+    return item.meta_value[key] || '';
+}
+
+export function getSerializedMetaValue(state, key, serializeKey) {
+    const item = state.item;
+    if (!item || !item.meta_value || !item.meta_value[key]) {
+        return '';
+    }
+    const serializedData = item.meta_value[key];
+    if (typeof serializedData === 'object' && serializeKey) {
+        return serializedData[serializeKey] || '';
+    }
+    return serializedData || '';
+}

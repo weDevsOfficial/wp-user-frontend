@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
-import { Spinner } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 // Stores
@@ -177,7 +176,9 @@ export default function Subscriptions() {
 
             {(isSubscriptionLoading || !CurrentView) && (
                 <div className="wpuf-flex wpuf-h-svh wpuf-items-center wpuf-justify-center">
-                    <Spinner />
+                    <div className="wpuf-inline-block wpuf-h-8 wpuf-w-8 wpuf-animate-spin wpuf-rounded-full wpuf-border-4 wpuf-border-solid wpuf-border-primary wpuf-border-r-transparent" role="status">
+                        <span className="wpuf-sr-only">{__('Loading...', 'wp-user-frontend')}</span>
+                    </div>
                 </div>
             )}
 

@@ -186,7 +186,6 @@ export function fetchItems(status, offset = 0) {
         dispatch.setCurrentStatus(status);
 
         const wpufSubscriptions = getWpufSubscriptions();
-        const restApiRoot = wpufSubscriptions.rest_url.replace(/\/$/, '');
 
         const queryParams = {
             'per_page': wpufSubscriptions.perPage,
@@ -196,12 +195,8 @@ export function fetchItems(status, offset = 0) {
 
         try {
             const response = await apiFetch({
-                path: addQueryArgs(`${restApiRoot}/wpuf/v1/wpuf_subscription`, queryParams),
+                path: addQueryArgs('/wpuf/v1/wpuf_subscription', queryParams),
                 method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-WP-Nonce': wpufSubscriptions.nonce,
-                },
             });
 
             if (response.success) {
@@ -228,9 +223,7 @@ export function getSubscriptionCount(status = 'all') {
 
 export function fetchCounts(status = 'all') {
     return async ({ dispatch }) => {
-        const wpufSubscriptions = getWpufSubscriptions();
-        const restApiRoot = wpufSubscriptions.rest_url.replace(/\/$/, '');
-        let path = `${restApiRoot}/wpuf/v1/wpuf_subscription/count`;
+        let path = '/wpuf/v1/wpuf_subscription/count';
 
         if (status !== 'all') {
             path += '/' + status;
@@ -240,9 +233,6 @@ export function fetchCounts(status = 'all') {
             const response = await apiFetch({
                 path: addQueryArgs(path),
                 method: 'GET',
-                headers: {
-                    'X-WP-Nonce': wpufSubscriptions.nonce,
-                },
             });
 
             if (response.success) {
@@ -293,28 +283,21 @@ export function updateItem() {
         // Since we just dispatched modifyItem, the state should be updated.
         const updatedItem = select.getItem();
 
-        const wpufSubscriptions = getWpufSubscriptions();
-        const restApiRoot = wpufSubscriptions.rest_url.replace(/\/$/, '');
-        let requestUrl = `${restApiRoot}/wpuf/v1/wpuf_subscription`;
+        let path = '/wpuf/v1/wpuf_subscription';
 
         if (updatedItem.ID) {
-            requestUrl += '/' + updatedItem.ID;
+            path += '/' + updatedItem.ID;
         }
 
         try {
-            const response = await fetch(requestUrl, {
+            const response = await apiFetch({
+                path: path,
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-WP-Nonce': wpufSubscriptions.nonce,
-                },
-                body: JSON.stringify({ subscription: updatedItem })
+                data: { subscription: updatedItem }
             });
 
-            const data = await response.json();
-
             dispatch.setIsDirty(false);
-            return data;
+            return response;
         } catch (error) {
             dispatch.setError('fetch', 'An error occurred while updating the subscription.');
         } finally {
@@ -325,18 +308,12 @@ export function updateItem() {
 
 export function deleteItem(id) {
     return async () => {
-        const wpufSubscriptions = getWpufSubscriptions();
-        const restApiRoot = wpufSubscriptions.rest_url.replace(/\/$/, '');
-
         try {
-            const response = await fetch(`${restApiRoot}/wpuf/v1/wpuf_subscription/${id}`, {
+            const response = await apiFetch({
+                path: `/wpuf/v1/wpuf_subscription/${id}`,
                 method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-WP-Nonce': wpufSubscriptions.nonce,
-                },
             });
-            return await response.json();
+            return response;
         } catch (error) {
             console.error(error);
         }

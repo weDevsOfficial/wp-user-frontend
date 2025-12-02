@@ -218,7 +218,7 @@ const isPasswordProtected = computed( () => {
             <div>
                 <div class="wpuf-flex wpuf-py-1 wpuf-text-gray-900 wpuf-m-0 wpuf-font-medium"
                      :title="'id: ' + subscription.ID">
-                    {{ title }} &nbsp;
+                    vue: {{ title }} &nbsp;
                     <span v-if="isPasswordProtected">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd"

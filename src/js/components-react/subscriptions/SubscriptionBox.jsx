@@ -87,17 +87,12 @@ export default function SubscriptionBox({ subscription }) {
     // Fetch subscribers count
     useEffect(() => {
         const getSubscribers = async () => {
-            const wpufSubscriptions = window.wpufSubscriptions || {};
-            const restApiRoot = wpufSubscriptions.rest_url.replace(/\/$/, '');
             const queryParams = { subscription_id: subscription.ID };
 
             try {
                 const response = await apiFetch({
-                    path: addQueryArgs(`${restApiRoot}/wpuf/v1/wpuf_subscription/subscribers`, queryParams),
+                    path: addQueryArgs('/wpuf/v1/wpuf_subscription/subscribers', queryParams),
                     method: 'GET',
-                    headers: {
-                        'X-WP-Nonce': wpufSubscriptions.nonce,
-                    },
                 });
                 setSubscribers(response.subscribers || 0);
             } catch (error) {

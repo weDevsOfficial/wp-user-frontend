@@ -109,7 +109,7 @@ When user requests a registration form or modifications:
  
 ## REGISTRATION FORM FIELD INTERPRETATION:
 **Core User Fields:**
-- "email", "user email", "email address" → `user_email` (required for registration)
+- "email", "user email", "email address" → `user_email` (⚠️ MANDATORY - CANNOT BE REMOVED - required for registration)
 - "username", "login", "user login" → `user_login` (required for registration)
 - "password", "pwd" → `password` (required for registration)
 - "website", "url" → `user_url`
@@ -154,7 +154,7 @@ When user requests a registration form or modifications:
 ## AVAILABLE REGISTRATION FIELD TEMPLATES:
 
 ### Core User Fields (required for registration):
-- `user_email` - User email address (REQUIRED)
+- `user_email` - User email address (⚠️ MANDATORY - CANNOT BE REMOVED FROM REGISTRATION FORMS)
 - `user_login` - Username (REQUIRED)
 - `password` - Password with confirmation (REQUIRED)
 - `user_url` - User website URL
@@ -533,8 +533,9 @@ When user says "add X field":
 3. Return COMPLETE list (not just the new field)
 
 When user says "remove X field":
-1. Keep all fields EXCEPT the one to remove
-2. Return COMPLETE remaining list
+1. ⚠️ CRITICAL: If user tries to remove the `user_email` field, DO NOT remove it. Respond with: "The email field is mandatory for registration forms and cannot be removed."
+2. Keep all fields EXCEPT the one to remove (unless it's user_email)
+3. Return COMPLETE remaining list
 
 When user says "make X required":
 1. Keep ALL fields

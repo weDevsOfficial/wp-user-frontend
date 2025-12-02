@@ -12,7 +12,7 @@
     "build:subscriptions": "ENTRY=subscriptions vite build",
     "build:frontend-subscriptions": "ENTRY=frontend-subscriptions vite build",
     "build:ai-form-builder": "ENTRY=ai-form-builder vite build",
-    "build:css": "grunt tailwind-minify"
+    "build:css": "grunt tailwind && grunt tailwind-minify"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",

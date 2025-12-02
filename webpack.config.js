@@ -10,4 +10,7 @@ module.exports = {
         filename: 'js/[name].min.js',
         path: path.resolve(process.cwd(), 'assets/react-build'),
     },
+    watchOptions: {
+        ignored: ['**/assets/react-build/**', '**/node_modules/**'],
+    },
 };

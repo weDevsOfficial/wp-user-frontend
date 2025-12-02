@@ -65,7 +65,16 @@ class Frontend {
             wp_enqueue_script( 'wpuf-upload' );
             wp_enqueue_script( 'wpuf-frontend-form' );
             wp_enqueue_script( 'wpuf-sweetalert2' );
-            wp_enqueue_script( 'wpuf-subscriptions' );
+            
+            // Load appropriate subscription script based on shortcode
+            if ( wpuf_has_shortcode( 'wpuf_sub_pack' ) ) {
+                // Load new frontend-subscriptions script for subscription pack shortcode (pricing page)
+                wp_enqueue_style( 'wpuf-frontend-subscriptions' );
+                wp_enqueue_script( 'wpuf-frontend-subscriptions' );
+            } else {
+                // Load old subscriptions script for all other pages (dashboard, account, etc.)
+                wp_enqueue_script( 'wpuf-subscriptions' );
+            }
 
             wp_localize_script(
                 'wpuf-upload', 'wpuf_upload', [
@@ -151,8 +160,10 @@ class Frontend {
                 ]
             );
 
+            // Localize subscription script data for whichever script is loaded
+            $subscription_script_handle = wpuf_has_shortcode( 'wpuf_sub_pack' ) ? 'wpuf-frontend-subscriptions' : 'wpuf-subscriptions';
             wp_localize_script(
-                'wpuf-subscriptions', 'wpuf_subscription', apply_filters(
+                $subscription_script_handle, 'wpuf_subscription', apply_filters(
                     'wpuf_subscription_js_data', [
                         'pack_notice'  => __( 'Please Cancel Your Currently Active Pack first!', 'wp-user-frontend' ),
                     ]

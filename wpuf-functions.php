@@ -2218,7 +2218,9 @@ function wpuf_get_account_sections() {
         foreach ( $post_types as $post_type ) {
             $post_type_object = get_post_type_object( $post_type );
 
-            $cpt_sections[ $post_type ] = $post_type_object->label;
+            if ( $post_type_object ) {
+                $cpt_sections[ $post_type ] = $post_type_object->label;
+            }
         }
     }
 
@@ -4648,11 +4650,9 @@ function wpuf_get_image_sizes_array( $size = '' ) {
  * @return string
  */
 function wpuf_get_pro_preview_html() {
-    $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
     return sprintf( '<div class="pro-field-overlay">
-                        <a href="%1$s" target="%2$s" class="%3$s">Upgrade to PRO<span class="pro-icon icon-white"> %4$s</span></a>
-                    </div>', esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro',
-        file_get_contents( $crown_icon ) );
+                        <a href="%1$s" target="%2$s" class="%3$s">Upgrade to PRO</a>
+                    </div>', esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro' );
 }
 
 /**
@@ -4663,7 +4663,6 @@ function wpuf_get_pro_preview_html() {
  * @return string
  */
 function wpuf_get_pro_preview_tooltip() {
-    $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
     $check_icon = WPUF_ROOT . '/assets/images/check.svg';
     $features = [
         '24/7 Priority Support',
@@ -4685,9 +4684,8 @@ function wpuf_get_pro_preview_tooltip() {
     }
 
     $html .= '</ul>';
-    $html .= sprintf( '<div class="pro-link"><a href="%1$s" target="%2$s" class="%3$s">Upgrade to PRO<span class="pro-icon icon-white"> %4$s</span></a></div>',
-        esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro',
-        file_get_contents( $crown_icon ) );
+    $html .= sprintf( '<div class="pro-link"><a href="%1$s" target="%2$s" class="%3$s">Upgrade to PRO</a></div>',
+        esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro' );
 
     $html .= '<i></i>';
     $html .= '</div>';
@@ -5611,7 +5609,7 @@ function wpuf_get_forms_counts_with_status( $post_type = 'wpuf_forms' ) {
 
     $post_statuses = apply_filters( 'wpuf_post_forms_list_table_post_statuses', [
         'all'     => __( 'All', 'wp-user-frontend' ),
-        'publish' => __( 'Published', 'wp-user-frontend' ),
+        'publish' => __( 'Saved', 'wp-user-frontend' ),
         'trash'   => __( 'Trash', 'wp-user-frontend' ),
     ] );
 

@@ -21,6 +21,7 @@ export const useSubscriptionStore = defineStore( 'subscription', {
         } ),
         allCount: ref( {} ),
         taxonomyRestriction: ref( {} ),
+        taxonomyViewRestriction: ref( {} ),
         currentPageNumber: ref( 1 ),
     } ),
     getters: {
@@ -68,6 +69,11 @@ export const useSubscriptionStore = defineStore( 'subscription', {
     actions: {
         setCurrentSubscription( subscription ) {
             this.currentSubscription = subscription;
+            
+            // Populate taxonomy restriction data when loading a subscription for editing
+            if ( subscription && subscription.meta_value ) {
+                this.populateTaxonomyRestrictionData( subscription );
+            }
         },
         setCurrentSubscriptionCopy() {
             this.currentSubscriptionCopy = this.subscription;
@@ -133,6 +139,7 @@ export const useSubscriptionStore = defineStore( 'subscription', {
 
             this.isUpdating = true;
 
+            // Handle posting taxonomy restrictions
             let allTaxonomies = [];
 
             for (const [key, taxonomy] of Object.entries( this.taxonomyRestriction )) {
@@ -140,11 +147,23 @@ export const useSubscriptionStore = defineStore( 'subscription', {
             }
 
             const taxonomyIntValue = allTaxonomies.map( ( item ) => parseInt( item ) );
-
             const uniqueTaxonomies = [...new Set( taxonomyIntValue )];
 
             // custom meta key for taxonomy restriction
             this.setMetaValue( '_sub_allowed_term_ids', uniqueTaxonomies );
+
+            // Handle view taxonomy restrictions
+            let allViewTaxonomies = [];
+
+            for (const [key, taxonomy] of Object.entries( this.taxonomyViewRestriction )) {
+                allViewTaxonomies = allViewTaxonomies.concat( taxonomy );
+            }
+
+            const viewTaxonomyIntValue = allViewTaxonomies.map( ( item ) => parseInt( item ) );
+            const uniqueViewTaxonomies = [...new Set( viewTaxonomyIntValue )];
+
+            // custom meta key for view taxonomy restriction
+            this.setMetaValue( '_sub_view_allowed_term_ids', uniqueViewTaxonomies );
 
             const subscription = this.currentSubscription;
             // Use the correct REST API root, including subdirectory if present
@@ -419,6 +438,101 @@ export const useSubscriptionStore = defineStore( 'subscription', {
         },
         isRecurring( subscription ) {
             return subscription.meta_value.recurring_pay === 'on' || subscription.meta_value.recurring_pay === 'yes'
+        },
+        
+        /**
+         * Populate taxonomy restriction data from subscription meta
+         *
+         * @param {Object} subscription The subscription object
+         */
+        populateTaxonomyRestrictionData( subscription ) {
+            // Reset taxonomy restriction data
+            this.taxonomyRestriction = {};
+            this.taxonomyViewRestriction = {};
+            
+            if ( ! subscription.meta_value ) {
+                return;
+            }
+            
+            // Handle posting taxonomy restrictions
+            const allowedTermIds = subscription.meta_value._sub_allowed_term_ids;
+            
+            if ( allowedTermIds && Array.isArray( allowedTermIds ) ) {
+                // Group term IDs by taxonomy
+                const taxonomyGroups = {};
+                
+                allowedTermIds.forEach( termId => {
+                    // Get the term to find its taxonomy
+                    const term = this.getTermById( termId );
+                    if ( term && term.taxonomy ) {
+                        if ( ! taxonomyGroups[ term.taxonomy ] ) {
+                            taxonomyGroups[ term.taxonomy ] = [];
+                        }
+                        taxonomyGroups[ term.taxonomy ].push( termId );
+                    }
+                } );
+                
+                this.taxonomyRestriction = taxonomyGroups;
+            }
+            
+            // Handle view taxonomy restrictions
+            const viewAllowedTermIds = subscription.meta_value._sub_view_allowed_term_ids;
+            
+            if ( viewAllowedTermIds && Array.isArray( viewAllowedTermIds ) ) {
+                // Group term IDs by taxonomy
+                const viewTaxonomyGroups = {};
+                
+                viewAllowedTermIds.forEach( termId => {
+                    // Get the term to find its taxonomy
+                    const term = this.getTermById( termId );
+                    if ( term && term.taxonomy ) {
+                        const fieldId = 'view_' + term.taxonomy;
+                        if ( ! viewTaxonomyGroups[ fieldId ] ) {
+                            viewTaxonomyGroups[ fieldId ] = [];
+                        }
+                        viewTaxonomyGroups[ fieldId ].push( termId );
+                    }
+                } );
+                
+                this.taxonomyViewRestriction = viewTaxonomyGroups;
+            }
+        },
+        
+        /**
+         * Get term by ID from WordPress terms
+         *
+         * @param {number} termId The term ID
+         * @returns {Object|null} The term object or null if not found
+         */
+        getTermById( termId ) {
+            // This is a simplified version - in a real implementation,
+            // you might want to fetch this data from the server
+            // For now, we'll use the available taxonomy data from wpufSubscriptions
+            if ( wpufSubscriptions.fields && wpufSubscriptions.fields.advanced_configuration ) {
+                // Check taxonomy_restriction section
+                if ( wpufSubscriptions.fields.advanced_configuration.taxonomy_restriction ) {
+                    for ( const taxonomyName in wpufSubscriptions.fields.advanced_configuration.taxonomy_restriction ) {
+                        const termFields = wpufSubscriptions.fields.advanced_configuration.taxonomy_restriction[taxonomyName].term_fields;
+                        const term = termFields.find( t => t.value == termId );
+                        if ( term ) {
+                            return { ...term, taxonomy: taxonomyName };
+                        }
+                    }
+                }
+                
+                // Check taxonomy_view_restriction section
+                if ( wpufSubscriptions.fields.advanced_configuration.taxonomy_view_restriction ) {
+                    for ( const taxonomyName in wpufSubscriptions.fields.advanced_configuration.taxonomy_view_restriction ) {
+                        const termFields = wpufSubscriptions.fields.advanced_configuration.taxonomy_view_restriction[taxonomyName].term_fields;
+                        const term = termFields.find( t => t.value == termId );
+                        if ( term ) {
+                            return { ...term, taxonomy: taxonomyName };
+                        }
+                    }
+                }
+            }
+            
+            return null;
         }
     }
 } );

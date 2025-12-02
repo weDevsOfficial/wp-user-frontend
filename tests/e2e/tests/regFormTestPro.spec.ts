@@ -1,5 +1,3 @@
-import * as dotenv from 'dotenv';
-dotenv.config();
 import { Browser, BrowserContext, Page, test, chromium } from "@playwright/test";
 import { BasicLoginPage } from '../pages/basicLogin';
 import { RegFormPage } from '../pages/regForm';
@@ -58,7 +56,7 @@ test.describe('Registration-Forms', () => {
 
     let activationLink: string = '';
     test('RF0001 : Admin is checking Registration Forms - Pro Feature Page', { tag: ['@Pro'] }, async () => {
-        await page.waitForTimeout(15000);
+        await page.waitForTimeout(30000);
         const BasicLogin = new BasicLoginPage(page);
         const RegForm = new RegFormPage(page);
         //Basic login

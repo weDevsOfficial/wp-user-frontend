@@ -20,6 +20,7 @@ class Admin {
         $this->container['form_template']         = new Admin\Forms\Post\Templates\Form_Template();
         $this->container['admin_form']            = new Admin\Forms\Admin_Form();
         $this->container['admin_form_handler']    = new Admin\Forms\Admin_Form_Handler();
+        $this->container['ai_form_handler']       = new Admin\Forms\AI_Form_Handler();
         $this->container['admin_subscription']    = new Admin\Admin_Subscription();
         $this->container['admin_installer']       = new Admin\Admin_Installer();
         $this->container['settings']              = new Admin\Admin_Settings();
@@ -41,23 +42,41 @@ class Admin {
         // enqueue common scripts that will load throughout WordPress dashboard. notice, what's new etc.
         add_action( 'init', [ $this, 'enqueue_common_scripts' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_cpt_page_scripts' ] );
+        add_action( 'wpuf_load_ai_form_builder_page', [ $this, 'enqueue_ai_form_builder_scripts' ] );
 
         // block admin access as per wpuf settings
         add_action( 'admin_init', [ $this, 'block_admin_access' ] );
     }
 
     /**
-     * Create post form templates depending on the action
-     *
-     * @since 4.0.0
+     * Create a post form from the selected template
      *
      * @return void
      */
     public function create_post_form_from_template() {
-        $this->container['form_template']->create_post_form_from_template();
-    }
+        // Verify nonce for security
+        if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'wpuf_create_from_template' ) ) {
+            wp_die( __( 'Security check failed', 'wp-user-frontend' ) );
+        }
 
-    /**
+        // Check if this is an AI form template
+        // Verify the template parameter is set and valid
+        if ( ! isset( $_GET['template'] ) ) {
+            $this->container['form_template']->create_post_form_from_template();
+            return;
+        }
+
+        $template_name = sanitize_text_field( wp_unslash( $_GET['template'] ) );
+
+        if ( $template_name === 'ai_form' ) {
+            // AI Form Handler will verify its own nonce (redundant but safe)
+            $this->container['ai_form_handler']->handle_ai_form_template();
+            return;
+        }
+
+        // Otherwise, handle normal templates
+        $this->container['form_template']->create_post_form_from_template();
+    }    /**
      * Enqueue the common CSS and JS needed for WordPress admin area
      *
      * @since 4.0.0
@@ -111,6 +130,26 @@ class Admin {
                 ),
             ]
         );
+
+        // Add inline script for dynamic API key link
+        wp_add_inline_script( 'wpuf-admin', '
+            jQuery(document).ready(function($) {
+                function updateAPIKeyLink() {
+                    var provider = $("[name=\'wpuf_ai[ai_provider]\']").val() || "openai";
+                    var $link = $(".wpuf-api-key-link");
+                    if ($link.length) {
+                        var url = $link.data(provider) || $link.data("openai");
+                        $link.attr("href", url);
+                    }
+                }
+
+                // Update on provider change
+                $(document).on("change", "[name=\'wpuf_ai[ai_provider]\']", updateAPIKeyLink);
+
+                // Initial update when page loads
+                updateAPIKeyLink();
+            });
+        ' );
     }
 
     public function enqueue_cpt_page_scripts( $hook_suffix ) {
@@ -153,6 +192,76 @@ class Admin {
                 ]
             );
         }
+    }
+
+    /**
+     * Enqueue scripts for AI form builder page
+     *
+     * @since 4.0.0
+     *
+     * @param string $form_type Form type ('post' or 'profile')
+     * @return void
+     */
+    public function enqueue_ai_form_builder_scripts( $form_type = 'post' ) {
+        wp_enqueue_script( 'wpuf-ai-form-builder' );
+        wp_enqueue_style( 'wpuf-ai-form-builder' );
+
+        // Get AI settings
+        $ai_settings = get_option('wpuf_ai', []);
+
+        // Determine if we should expose API key status based on user capabilities
+        $show_api_status = current_user_can( wpuf_admin_role() );
+
+        // Prepare localization data
+        $localize_data = [
+            'version'    => WPUF_VERSION,
+            'assetUrl'   => WPUF_ASSET_URI,
+            'siteUrl'    => site_url(),
+            'nonce'      => wp_create_nonce( 'wp_rest' ),
+            'rest_url'   => esc_url_raw( rest_url() ),
+            'formType'   => $form_type, // Pass form type to frontend
+            'provider'   => $ai_settings['ai_provider'] ?? 'openai',
+            'model'      => $ai_settings['ai_model'] ?? 'gpt-3.5-turbo',
+            'hasApiKey'  => $show_api_status ? !empty($ai_settings['ai_api_key']) : null,
+            'isProActive' => class_exists( 'WP_User_Frontend_Pro' ),
+            'temperature' => floatval( $ai_settings['temperature'] ?? 0.7 ),
+            'maxTokens'  => intval( $ai_settings['max_tokens'] ?? 2000 ),
+            'i18n' => [
+                'errorTitle' => __('Error', 'wp-user-frontend'),
+                'errorMessage' => __('Something went wrong. Please try again.', 'wp-user-frontend'),
+                'invalidRequest' => __('Invalid Request', 'wp-user-frontend'),
+                'nonFormRequest' => __('I can only help with form creation. Try: "Create a contact form"', 'wp-user-frontend'),
+                'proFieldWarning' => __('Pro Feature Required', 'wp-user-frontend'),
+                'proFieldMessage' => __('This field type requires WP User Frontend Pro. You can continue without it or upgrade to Pro for full functionality.', 'wp-user-frontend'),
+                'continueWithoutPro' => __('Continue without Pro', 'wp-user-frontend'),
+                'upgradeToPro' => __('Upgrade to Pro', 'wp-user-frontend'),
+                'tryAgain' => __('Try Again', 'wp-user-frontend'),
+                'close' => __('Close', 'wp-user-frontend'),
+            ]
+        ];
+
+        /**
+         * Filter the AI Form Builder localization data.
+         *
+         * Allows external code to modify or enrich the data passed to the frontend,
+         * including custom templates, stages, prompts, or form details.
+         *
+         * @since 4.2.1
+         *
+         * @param array $localize_data Localization data array to be passed to wp_localize_script.
+         */
+        $localize_data = apply_filters( 'wpuf_ai_form_builder_localize_data', $localize_data );
+
+        wp_localize_script(
+            'wpuf-ai-form-builder',
+            'wpufAIFormBuilder',
+            $localize_data
+        );
+
+        // Debug: Output form type as HTML comment for verification
+        add_action( 'admin_footer', function() use ( $form_type ) {
+            echo "\n<!-- WPUF AI Form Builder Debug: formType = " . esc_html( $form_type ) . " -->\n";
+        } );
     }
 
     /**

@@ -723,7 +723,8 @@ class FormGenerator {
         $system_prompt .= "\n\n## FORM TYPE CONTEXT\n";
         if ( 'profile' === $form_type || 'registration' === $form_type ) {
             $system_prompt .= "You are working with a REGISTRATION/PROFILE form.\n";
-            $system_prompt .= "- Use registration/profile fields: user_email, user_login, password, first_name, last_name, biography, user_avatar, social fields, phone_field, address_field, dropdown_field, radio_field, checkbox_field, etc.\n";
+            $system_prompt .= "- Use registration/profile fields: user_email, user_login, password, first_name, last_name, biography, user_avatar, secondary_email, social fields, phone_field, address_field, dropdown_field, radio_field, checkbox_field, etc.\n";
+            $system_prompt .= "- secondary_email is for collecting an alternate/backup email address (meta key: wpuf_secondary_email)\n";
             $system_prompt .= "- Custom fields like dropdown, radio, checkbox, text fields are fully supported for additional profile information\n";
             $system_prompt .= "- Focus on helping users collect user registration and profile data\n";
         } else {

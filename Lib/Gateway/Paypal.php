@@ -293,9 +293,15 @@ class Paypal {
             // Verify payment amount
             $payment_amount = number_format( $payment['amount']['value'], 2, '.', '' );
 
+            // Validate subtotal and tax exist and are numeric
+            if ( ! isset( $custom_data['subtotal'], $custom_data['tax'] ) ||
+                ! is_numeric( $custom_data['subtotal'] ) || ! is_numeric( $custom_data['tax'] ) ) {
+                throw new \Exception( 'Invalid or missing subtotal/tax in custom data' );
+            }
+
             // Calculate expected total (subtotal + tax)
-            $expected_subtotal = isset( $custom_data['subtotal'] ) ? floatval( $custom_data['subtotal'] ) : 0;
-            $expected_tax = isset( $custom_data['tax'] ) ? floatval( $custom_data['tax'] ) : 0;
+            $expected_subtotal = (float) $custom_data['subtotal'];
+            $expected_tax = (float) $custom_data['tax'];
             $expected_total = $expected_subtotal + $expected_tax;
             $expected_amount = number_format( $expected_total, 2, '.', '' );
 
@@ -1232,6 +1238,12 @@ class Paypal {
      */
     public function prepare_to_send( $data ) {
         try {
+            // Debug logging
+            error_log( 'WPUF PayPal prepare_to_send called' );
+            error_log( 'Data type: ' . $data['type'] );
+            error_log( 'Item number: ' . $data['item_number'] );
+            error_log( 'Price: ' . $data['price'] );
+            
             $user_id = $data['user_info']['id'];
             $return_url = add_query_arg(
                 [
@@ -1242,12 +1254,14 @@ class Paypal {
 					'_wpnonce' => wp_create_nonce( 'wpuf_paypal_return' ),
                 ], wpuf_payment_success_page(
                     [
-						'type' => isset( $_GET['type'] ) ? sanitize_text_field( wp_unslash( $_GET['type'] ) ) : 'pack',
-						'item_number' => isset( $_GET['item_number'] ) ? sanitize_text_field( wp_unslash( $_GET['item_number'] ) ) : '',
+						'type' => $data['type'],
+						'item_number' => $data['item_number'],
 						'wpuf_payment_method' => 'paypal',
 					]
                 )
             );
+            
+            error_log( 'Return URL: ' . $return_url );
 
             $cancel_url = $return_url;
 
@@ -1270,37 +1284,33 @@ class Paypal {
                 }
             }
 
-            // Handle tax if enabled
-            if ( $this->wpuf_tax_enabled() ) {
-                $tax_rate = $this->wpuf_current_tax_rate();
-                $tax_amount = $billing_amount * ( $tax_rate / 100 );
-                $billing_amount = $billing_amount + $tax_amount;
-            }
+            // Store subtotal before tax
+            $subtotal = $billing_amount;
 
-            // Handle coupon if present
+            // Handle coupon if present - apply to subtotal BEFORE tax (same as Stripe)
+            $coupon_id = '';
             if ( isset( $_POST['coupon_id'] ) && ! empty( $_POST['coupon_id'] ) &&
                 isset( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'wpuf_payment_coupon' ) &&
-                is_numeric( sanitize_text_field( wp_unslash( $_POST['coupon_id'] ) ) ) ) {
+                is_numeric( sanitize_text_field( wp_unslash( $_POST['coupon_id'] ) ) ) &&
+                function_exists( 'wpuf_pro' ) ) {
                 $coupon_id = absint( sanitize_text_field( wp_unslash( $_POST['coupon_id'] ) ) );
-                $billing_amount = wpuf_pro()->coupon->discount( $billing_amount, $coupon_id, $data['item_number'] );
+                $subtotal = wpuf_pro()->coupon->discount( $subtotal, $coupon_id, $data['item_number'] );
+            }
+
+            // Calculate tax on the (possibly discounted) subtotal
+            // Note: We do NOT apply wpuf_payment_amount filter here because it adds tax
+            // via Pro's Tax class, and we calculate tax separately to maintain proper
+            // subtotal/tax breakdown for PayPal API. This is the same pattern used by Stripe.
+            if ( $this->wpuf_tax_enabled() ) {
+                $tax_rate = $this->wpuf_current_tax_rate();
+                $tax_amount = $subtotal * ( $tax_rate / 100 );
+                $billing_amount = $subtotal + $tax_amount;
             } else {
-                $coupon_id = '';
+                $billing_amount = $subtotal;
             }
 
-            $data['subtotal'] = $billing_amount - $tax_amount;
+            $data['subtotal'] = $subtotal;
             $data['tax'] = $tax_amount;
-
-            // Store the correctly calculated billing amount before filters
-            $correct_billing_amount = $billing_amount;
-
-            // Apply filters but ensure we use the correct amount if tax was already calculated
-            $billing_amount = apply_filters( 'wpuf_payment_amount', $billing_amount, $post_id );
-
-            // If tax was enabled and the filter changed the amount, it likely double-taxed
-            // Revert to the correct amount we calculated above
-            if ( $tax_amount > 0 && $billing_amount !== $correct_billing_amount ) {
-                $billing_amount = $correct_billing_amount;
-            }
 
             // Handle free payments
             if ( $billing_amount == 0 ) {

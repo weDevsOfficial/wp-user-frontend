@@ -427,10 +427,19 @@ class Frontend_Form_Ajax {
             }
         }
 
-        if ( $charging_enabled === 'yes' && isset( $this->form_settings['payment_options'] )
-             && 'enable_pay_per_post' === $this->form_settings['payment_options']
-             && ! $is_update
-        ) {
+        // Check if pay-per-post is enabled
+        // New Vue form builder uses: payment_options (toggle) + choose_payment_option (select)
+        // Old form settings used: enable_pay_per_post (checkbox)
+        $is_pay_per_post = false;
+        if ( isset( $this->form_settings['choose_payment_option'] ) && 'enable_pay_per_post' === $this->form_settings['choose_payment_option'] ) {
+            // New Vue form builder
+            $is_pay_per_post = wpuf_is_checkbox_or_toggle_on( $this->form_settings['payment_options'] ?? false );
+        } elseif ( isset( $this->form_settings['enable_pay_per_post'] ) ) {
+            // Old form settings (backward compatibility)
+            $is_pay_per_post = wpuf_validate_boolean( $this->form_settings['enable_pay_per_post'] );
+        }
+
+        if ( $charging_enabled === 'yes' && $is_pay_per_post && ! $is_update ) {
             $redirect_to = add_query_arg(
                 [
                     'action'  => 'wpuf_pay',

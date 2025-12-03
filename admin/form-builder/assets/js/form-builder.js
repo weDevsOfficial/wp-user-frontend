@@ -404,6 +404,7 @@
             delete_form_field_element: function (state, index) {
                 state.current_panel = 'form-fields-v4-1';
                 state.form_fields.splice(index, 1);
+                state.editing_field_id = 0;
             },
 
             // set fields for a panel section

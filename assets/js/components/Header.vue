@@ -8,11 +8,6 @@ const props = defineProps({
         required: false,
         default: 'wpuf-header',
     },
-    isPro: {
-        type: Boolean,
-        required: false,
-        default: false,
-    },
 });
 const utm = props.utm;
 
@@ -22,11 +17,11 @@ const upgradeUrl = wpuf.upgradeUrl + '?utm_source=' + utm + '&utm_medium=wpuf-he
 const supportUrl = wpuf.support_url;
 
 const headerTitle = computed(() => {
-    return props.isPro && wpuf.isProActive ? 'WP User Frontend Pro' : 'WP User Frontend';
+    return wpuf.isProActive ? 'WP User Frontend Pro' : 'WP User Frontend';
 });
 
 const headerVersion = computed(() => {
-    return props.isPro && wpuf.pro_version ? wpuf.pro_version : wpuf.version;
+    return wpuf.isProActive && wpuf.pro_version ? wpuf.pro_version : wpuf.version;
 });
 </script>
 

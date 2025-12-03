@@ -1238,12 +1238,6 @@ class Paypal {
      */
     public function prepare_to_send( $data ) {
         try {
-            // Debug logging
-            error_log( 'WPUF PayPal prepare_to_send called' );
-            error_log( 'Data type: ' . $data['type'] );
-            error_log( 'Item number: ' . $data['item_number'] );
-            error_log( 'Price: ' . $data['price'] );
-            
             $user_id = $data['user_info']['id'];
             $return_url = add_query_arg(
                 [
@@ -1261,8 +1255,6 @@ class Paypal {
                 )
             );
             
-            error_log( 'Return URL: ' . $return_url );
-
             $cancel_url = $return_url;
 
             $billing_amount = empty( $data['price'] ) ? 0 : $data['price'];

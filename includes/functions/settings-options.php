@@ -648,10 +648,19 @@ function wpuf_settings_fields() {
                 'class'   => 'wpuf-ai-provider-radio',
             ],
             [
-                'name'    => 'api_key_current',
-                'label'   => __( 'API Key', 'wp-user-frontend' ),
-                'desc'    => __( 'Enter your AI service API key. Need help finding your <a href="https://platform.openai.com/api-keys" target="_blank" class="wpuf-api-key-link" data-openai="https://platform.openai.com/api-keys" data-anthropic="https://console.anthropic.com/settings/keys" data-google="https://aistudio.google.com/app/apikey" style="text-decoration: underline;">API Key?</a>', 'wp-user-frontend' ),
-                'type'    => 'callback',
+                'name'     => 'api_key_current',
+                'label'    => __( 'API Key', 'wp-user-frontend' ),
+                'desc'     => sprintf(
+                    // translators: %1$s is the OpenAI URL, %2$s is the Anthropic URL, %3$s is the Google URL
+                    __(
+                        'Enter your AI service API key. Need help finding your <a href="%1$s" target="_blank" class="wpuf-api-key-link" data-openai="%1$s" data-anthropic="%2$s" data-google="%3$s" style="text-decoration: underline;">API Key?</a>',
+                        'wp-user-frontend'
+                    ),
+                    esc_url( 'https://platform.openai.com/api-keys' ),
+                    esc_url( 'https://console.anthropic.com/settings/keys' ),
+                    esc_url( 'https://aistudio.google.com/app/apikey' )
+                ),
+                'type'     => 'callback',
                 'callback' => 'wpuf_ai_api_key_field',
             ],
             [

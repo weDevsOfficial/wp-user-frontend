@@ -870,33 +870,33 @@ class FormGenerator {
      * @param string $model Optional model to test (if not provided, uses saved settings)
      * @return array Test result
      */
-    public function test_connection($api_key = '', $provider = '', $model = '') {
+    public function test_connection( $api_key = '', $provider = '', $model = '' ) {
         try {
             // Reload settings to get latest data
             $this->load_settings();
 
             // Store originals for restoration
             $original_provider = $this->current_provider;
-            $original_model = $this->current_model;
-            $original_key = $this->api_key;
+            $original_model    = $this->current_model;
+            $original_key      = $this->api_key;
 
             // Use provided values or fall back to saved settings
-            if (!empty($provider)) {
+            if ( ! empty( $provider ) ) {
                 $this->current_provider = $provider;
             }
 
-            if (!empty($model)) {
+            if ( ! empty( $model ) ) {
                 $this->current_model = $model;
             }
 
-            $test_api_key = !empty($api_key) ? $api_key : $this->api_key;
+            $test_api_key = ! empty( $api_key ) ? $api_key : $this->api_key;
 
             // Validate API key exists
-            if (empty($test_api_key)) {
+            if ( empty( $test_api_key ) ) {
                 return [
-                    'success' => false,
+                    'success'  => false,
                     'provider' => $this->current_provider,
-                    'message' => __('No API key provided', 'wp-user-frontend')
+                    'message'  => __( 'No API key provided', 'wp-user-frontend' ),
                 ];
             }
 
@@ -908,16 +908,16 @@ class FormGenerator {
 
             // Restore original values
             $this->current_provider = $original_provider;
-            $this->current_model = $original_model;
-            $this->api_key = $original_key;
+            $this->current_model    = $original_model;
+            $this->api_key          = $original_key;
 
             return $result;
 
-        } catch (\Exception $e) {
+        } catch ( \Exception $e ) {
             return [
-                'success' => false,
+                'success'  => false,
                 'provider' => $this->current_provider,
-                'message' => $e->getMessage()
+                'message'  => $e->getMessage(),
             ];
         }
     }
@@ -930,7 +930,7 @@ class FormGenerator {
      * @return array Test result
      */
     private function test_provider_api() {
-        switch ($this->current_provider) {
+        switch ( $this->current_provider ) {
             case 'openai':
                 return $this->test_openai_connection();
 
@@ -942,9 +942,9 @@ class FormGenerator {
 
             default:
                 return [
-                    'success' => false,
+                    'success'  => false,
                     'provider' => $this->current_provider,
-                    'message' => __('Unknown provider', 'wp-user-frontend')
+                    'message'  => __( 'Unknown provider', 'wp-user-frontend' ),
                 ];
         }
     }
@@ -953,44 +953,44 @@ class FormGenerator {
      * Test OpenAI connection
      */
     private function test_openai_connection() {
-        $response = wp_remote_post('https://api.openai.com/v1/chat/completions', [
+        $response = wp_remote_post( 'https://api.openai.com/v1/chat/completions', [
             'timeout' => 30,
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->api_key,
-                'Content-Type' => 'application/json'
+                'Content-Type'  => 'application/json',
             ],
-            'body' => wp_json_encode([
-                'model' => $this->current_model,
-                'messages' => [['role' => 'user', 'content' => 'Hi']],
-                'max_tokens' => 5
-            ])
-        ]);
+            'body'    => wp_json_encode( [
+                'model'      => $this->current_model,
+                'messages'   => [ [ 'role' => 'user', 'content' => 'Hi' ] ],
+                'max_tokens' => 5,
+            ] ),
+        ] );
 
-        if (is_wp_error($response)) {
+        if ( is_wp_error( $response ) ) {
             return [
-                'success' => false,
+                'success'  => false,
                 'provider' => 'openai',
-                'message' => $response->get_error_message()
+                'message'  => $response->get_error_message(),
             ];
         }
 
-        $status_code = wp_remote_retrieve_response_code($response);
+        $status_code = wp_remote_retrieve_response_code( $response );
 
-        if ($status_code === 200) {
+        if ( $status_code === 200 ) {
             return [
-                'success' => true,
+                'success'  => true,
                 'provider' => 'openai',
-                'message' => __('OpenAI connection successful!', 'wp-user-frontend')
+                'message'  => __( 'OpenAI connection successful!', 'wp-user-frontend' ),
             ];
         }
 
-        $body = json_decode(wp_remote_retrieve_body($response), true);
-        $error_message = $body['error']['message'] ?? __('Connection failed', 'wp-user-frontend');
+        $body          = json_decode( wp_remote_retrieve_body( $response ), true );
+        $error_message = $body['error']['message'] ?? __( 'Connection failed', 'wp-user-frontend' );
 
         return [
-            'success' => false,
+            'success'  => false,
             'provider' => 'openai',
-            'message' => $error_message
+            'message'  => $error_message,
         ];
     }
 
@@ -998,45 +998,45 @@ class FormGenerator {
      * Test Anthropic connection
      */
     private function test_anthropic_connection() {
-        $response = wp_remote_post('https://api.anthropic.com/v1/messages', [
+        $response = wp_remote_post( 'https://api.anthropic.com/v1/messages', [
             'timeout' => 30,
             'headers' => [
-                'x-api-key' => $this->api_key,
+                'x-api-key'         => $this->api_key,
                 'anthropic-version' => '2023-06-01',
-                'Content-Type' => 'application/json'
+                'Content-Type'      => 'application/json',
             ],
-            'body' => wp_json_encode([
-                'model' => $this->current_model,
-                'messages' => [['role' => 'user', 'content' => 'Hi']],
-                'max_tokens' => 5
-            ])
-        ]);
+            'body'    => wp_json_encode( [
+                'model'      => $this->current_model,
+                'messages'   => [ [ 'role' => 'user', 'content' => 'Hi' ] ],
+                'max_tokens' => 5,
+            ] ),
+        ] );
 
-        if (is_wp_error($response)) {
+        if ( is_wp_error( $response ) ) {
             return [
-                'success' => false,
+                'success'  => false,
                 'provider' => 'anthropic',
-                'message' => $response->get_error_message()
+                'message'  => $response->get_error_message(),
             ];
         }
 
-        $status_code = wp_remote_retrieve_response_code($response);
+        $status_code = wp_remote_retrieve_response_code( $response );
 
-        if ($status_code === 200) {
+        if ( $status_code === 200 ) {
             return [
-                'success' => true,
+                'success'  => true,
                 'provider' => 'anthropic',
-                'message' => __('Anthropic connection successful!', 'wp-user-frontend')
+                'message'  => __( 'Anthropic connection successful!', 'wp-user-frontend' ),
             ];
         }
 
-        $body = json_decode(wp_remote_retrieve_body($response), true);
-        $error_message = $body['error']['message'] ?? __('Connection failed', 'wp-user-frontend');
+        $body          = json_decode( wp_remote_retrieve_body( $response ), true );
+        $error_message = $body['error']['message'] ?? __( 'Connection failed', 'wp-user-frontend' );
 
         return [
-            'success' => false,
+            'success'  => false,
             'provider' => 'anthropic',
-            'message' => $error_message
+            'message'  => $error_message,
         ];
     }
 
@@ -1044,48 +1044,49 @@ class FormGenerator {
      * Test Google connection
      */
     private function test_google_connection() {
-        $endpoint = str_replace('{model}', $this->current_model, 'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent');
+        $endpoint = str_replace( '{model}', $this->current_model, 'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent' );
 
-        $response = wp_remote_post($endpoint . '?key=' . $this->api_key, [
+        $response = wp_remote_post( $endpoint, [
             'timeout' => 30,
             'headers' => [
-                'Content-Type' => 'application/json'
+                'Content-Type'   => 'application/json',
+                'x-goog-api-key' => $this->api_key,
             ],
-            'body' => wp_json_encode([
+            'body'    => wp_json_encode( [
                 'contents' => [
-                    ['parts' => [['text' => 'Hi']]]
+                    [ 'parts' => [ [ 'text' => 'Hi' ] ] ],
                 ],
                 'generationConfig' => [
-                    'maxOutputTokens' => 5
-                ]
-            ])
-        ]);
+                    'maxOutputTokens' => 5,
+                ],
+            ] ),
+        ] );
 
-        if (is_wp_error($response)) {
+        if ( is_wp_error( $response ) ) {
             return [
-                'success' => false,
+                'success'  => false,
                 'provider' => 'google',
-                'message' => $response->get_error_message()
+                'message'  => $response->get_error_message(),
             ];
         }
 
-        $status_code = wp_remote_retrieve_response_code($response);
+        $status_code = wp_remote_retrieve_response_code( $response );
 
-        if ($status_code === 200) {
+        if ( $status_code === 200 ) {
             return [
-                'success' => true,
+                'success'  => true,
                 'provider' => 'google',
-                'message' => __('Google AI connection successful!', 'wp-user-frontend')
+                'message'  => __( 'Google AI connection successful!', 'wp-user-frontend' ),
             ];
         }
 
-        $body = json_decode(wp_remote_retrieve_body($response), true);
-        $error_message = $body['error']['message'] ?? __('Connection failed', 'wp-user-frontend');
+        $body          = json_decode( wp_remote_retrieve_body( $response ), true );
+        $error_message = $body['error']['message'] ?? __( 'Connection failed', 'wp-user-frontend' );
 
         return [
-            'success' => false,
+            'success'  => false,
             'provider' => 'google',
-            'message' => $error_message
+            'message'  => $error_message,
         ];
     }
 }

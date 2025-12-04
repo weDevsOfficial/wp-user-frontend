@@ -22,7 +22,6 @@ export const Selectors = {
         validateBasicLogin: {
             // Validate LOGIN
             logingSuccessDashboard: '//div[text()="Dashboard"]',
-            clickWPUFSidebar: '#toplevel_page_wp-user-frontend > a',
         },
 
         // Basic Navigation
@@ -30,8 +29,6 @@ export const Selectors = {
             // Sidebar
             clickWPUFSidebar: '//div[normalize-space(text())="User Frontend"]',
             clickDokanSidebar: '//div[normalize-space(text())="Dokan"]',
-            // Hover Settings Menu
-            hoverSettings: '//div[text()="Settings"]',
             licenseTab: '//li[@id="toplevel_page_wp-user-frontend"]//ul//li[normalize-space()="License"]',
         },
     },
@@ -66,7 +63,6 @@ export const Selectors = {
             clickRunUpdater: '//a[normalize-space()="Run the updater"]',
             fillLicenseKey: '//div[@class="license-input-key"]//input[1]',
             submitLicenseKey: '//div[@class="license-input-key"]/following-sibling::button[1]',
-            deactivateLicenseKey: '//div[@class="license-input-key"]/following-sibling::button[1]',
             activationRemaining: '//h3[normalize-space()="Activations Remaining"]',
             
         },
@@ -80,7 +76,6 @@ export const Selectors = {
             clickRegFormMenuOption: '//h3[normalize-space()="Registration Forms"]',
             wpufPostFormCheckAddButton: ' //button[contains(@class,"new-wpuf-form wpuf-rounded-md")]',
             wpufRegFormCheckAddButton: ' //a[contains(@class,"new-wpuf-form wpuf-rounded-md")]',
-            postFormsPageFormTitleCheck: '//a[@class="row-title"][1]',
             noFormMsg: '//h2[normalize-space()="No Post Forms Created Yet"]',
             formTitleCheck: (formName: string) => `//span[normalize-space(text())='${formName}']`,
             clickRegFormListPage: '//a[normalize-space()="Registration Forms"]'
@@ -94,7 +89,6 @@ export const Selectors = {
             wpufSubscriptionPage: '//a[normalize-space()="Subscription"]//..//span[normalize-space()="WPUF Subscription Page"]',
             wpufLoginPage: '//a[normalize-space()="Login"]//..//span[normalize-space()="WPUF Login Page"]',
             orderReceivedPage: '//strong//a[normalize-space()="Order Received"]',
-            wpufRegistrationPage: '//a[normalize-space()="Registration"]//..//span[normalize-space()="WPUF Registration Page"]',
             thankYouPage: '//strong//a[normalize-space()="Thank You"]',
             paymentPage: '//strong//a[normalize-space()="Payment"]',
             clickNextPage: '(//span[text()="Next page"]/following-sibling::span)[2]',
@@ -135,7 +129,6 @@ export const Selectors = {
             validateWPUFSetupPage: '//h1[text()="Welcome to the world of WPUF!"]',
             // Continue Setup
             clickWPUFSetupLetsGo: '//a[contains(@class,"button-primary button")]',
-            checkWPUFInstallPages: '//input[@name="install_wpuf_pages"]',
             clickWPUFSetupContinue: '//input[@type="submit"]',
             clickWPUFSetupEnd: '//a[contains(@class,"button button-primary")]',
         },
@@ -178,16 +171,10 @@ export const Selectors = {
 
         // Set Permalink
         setPermalink: {
-            // Permalink Side Menu
-            clickPermalinksSideMenu: '//a[text()="Permalinks"]',
-
             // Custom Structure fillup box
             fillCustomStructure: '//input[@id="permalink_structure"]',
             // Click Permalink-Postname
             clickCustomStructurePostName: '//button[@data-added="postname added to permalink structure"]',
-            // Validate Permalink-Postname 
-            validatePermalinkPostname: '//input[@id="permalink_structure"]',
-
             // Save Permalink Settings
             savePermalinkSettings: '//input[@id="submit"]',
         },
@@ -217,11 +204,8 @@ export const Selectors = {
             newUserLastName: '//input[@id="last_name"]',
             // Enter Password
             newUserPassword: '//input[@id="pass1"]',
-            // Allow weak Password        
-            newUserWeakPasswordAllow: '//input[@class="pw-checkbox"]',
             // Select Role
             newUserSelectRole: '//select[@id="role"]',
-            newUserSelectRoleCustomer: '//option[@value="customer"]',
             // Create User
             newUserSubmit: '//input[@type="submit"]',
         },
@@ -229,7 +213,6 @@ export const Selectors = {
         categories: {
             clickCategoryMenu: '//a[normalize-space()="Categories"]',
             addNewCategory: '//input[@id="tag-name"]',
-            addCategorySlug: '//input[@id="tag-slug"]',
             submitCategory: '//input[@id="submit"]',
             validateCategory: (categoryName: string) => `//tbody[@id="the-list"]//tr//td//strong//a[normalize-space()="${categoryName}"]`,
         },
@@ -237,7 +220,6 @@ export const Selectors = {
         tags: {
             clickTagsMenu: '//a[normalize-space()="Tags"]',
             addNewTag: '//input[@id="tag-name"]',
-            addTagSlug: '//input[@id="tag-slug"]',
             submitTag: '//input[@id="submit"]',
             validateTag: (tagName: string) => `//tbody[@id="the-list"]//tr//td//strong//a[normalize-space()="${tagName}"]`,
         },
@@ -259,16 +241,9 @@ export const Selectors = {
         payment: {
             clickPaymentTab: '//a[@id="wpuf_payment-tab"]',
             clickPaymentGatewayBank: '//input[@id="wpuf-wpuf_payment[active_gateways][bank]"]',
-            clickPaymentGatewayPaypal: '//input[@id="wpuf-wpuf_payment[active_gateways][paypal]"]',
-            clickPaymentGatewayStripe: '//input[@id="wpuf-wpuf_payment[active_gateways][stripe]"]',
             settingsTabPaymentSave: '//div[@id="wpuf_payment"]//form[@method="post"]//div//input[@id="submit"]',
         },
 
-        pluginInstall: {
-            clickPluginInstall: (pluginName: string, pluginSlug: string) => `//a[contains(text(),"${pluginName}")]/../../..//a[@data-slug="${pluginSlug}"]`,
-            validatePluginInstalled: (pluginName: string) => `//strong[normalize-space()='${pluginName}']`,
-            validatePluginActived: (pluginSlug: string) => `//a[@id='deactivate-${pluginSlug}']`,
-        }
     },
 
     /*********************************/
@@ -321,25 +296,16 @@ export const Selectors = {
         createPreset_PF: {
             // Start > Preset Form
             clickPresetForm: '//a[@title="Post Form" and contains(text(), "Create Form")]',
-
-            // Enter_NAME
-            editNewFormName: '//input[@name="post_title"]',
         },
 
         createProduct_PF: {
             // Start > Preset Form
             clickProductForm: '//a[@title="WooCommerce Product" and contains(text(), "Create Form")]',
-
-            // Enter_NAME
-            editNewFormName: '//input[@name="post_title"]',
         },
 
         createDownloads_PF: {
             // Start > Preset Form
             clickDownloadsForm: '//a[@title="EDD Download" and contains(text(), "Create Form")]',
-
-            // Enter_NAME
-            editNewFormName: '//input[@name="post_title"]',
         },
 
         /* Locators for All Fields Options + Save */
@@ -502,7 +468,6 @@ export const Selectors = {
             othersColumns: '//p[normalize-space(text())="Columns"]',
             othersSectionBreak: '//p[normalize-space(text())="Section Break"]',
             othersCustomHTML: '//p[normalize-space(text())="Custom HTML"]',
-            othersQrCode: '//p[normalize-space(text())="QR Code"]',
             othersReCaptcha: '//p[normalize-space(text())="reCaptcha"]',
             reCaptchaEdit: '//label[@for="recaptcha"]//..//..//..//span[normalize-space()="Edit"]',
             invisibleReCaptcha: '//input[@value="invisible_recaptcha"]',
@@ -800,7 +765,7 @@ export const Selectors = {
             downloadsImage: '//figure[@class="wp-block-post-featured-image"]',
             titleBE: (title: string) => `//a[normalize-space()='${title}']`,
             price: (price: string) => `(//input[@id="edd_price" and @value="${price}.00" ])[2]`,
-            clickDownload: '//span[normalize-space()="Download"]',
+            clickDownload: '//div[@class="interface-complementary-area editor-sidebar"]//div//button//span[normalize-space()="Download"]',
             clickCategory: '//button[normalize-space()="Categories"]',
             categoryBE: (category: string) => `//label[normalize-space()='${category}']`,
             clickTag: '//button[normalize-space()="Tags"]',
@@ -1035,14 +1000,10 @@ export const Selectors = {
         wpResetSubmitButton: '//a[@id="wp_reset_submit"]',
         // Confirm WordPress Reset
         wpResetConfirmWordpressReset: '//button[text()="Reset WordPress"]',
-        // Validate Reset
-        notRightNowButton: '//div[@class="wpuf-setup-content"]',
         // Reactivate Theme
         reActivateTheme: '//input[@id="reactivate-theme"]',
         // Reactivate Plugins
         reActivatePlugins: '//input[@id="reactivate-plugins"]',
-        // Allow analytics
-        allowAnalytics: '//a[normalize-space()="Allow"]',
     },
 
     postFormSettings: {
@@ -1641,39 +1602,15 @@ export const Selectors = {
             // Basic Options - Common to most fields
             fieldLabel: '(//label[normalize-space(text())="Field Label"]/following::input)[1]',
             metaKey: '(//label[normalize-space(text())="Meta Key"]/following::input)[1]',
-            metaValue: '(//label[normalize-space(text())="Meta Value"]/following::input)[1]',
             helpText: '(//label[normalize-space(text())="Help text"]/following::input)[1]',
             selectText: '(//label[normalize-space(text())="Select Text"]/following::input)[1]',
             readOnly: '(//label[normalize-space(text())="Read Only"]/following::input)[1]',
-            optionsShowValue: '(//label[normalize-space(text())="Options"]/following::input)[1]',
-            optionsSyncValue: '(//label[normalize-space(text())="Options"]/following::input)[2]',
-            labelValues: '(//span[normalize-space(text())="Label & Values"]/following::input)[1]',
-            labelValuesEdit: '(//span[normalize-space(text())="Label & Values"]/following::input)[2]',
-            plusButton: '//div[@class="plus-buttons hover:wpuf-cursor-pointer !wpuf-border-0"]',
-            minusButton: (index: number) => `//div[@class="action-buttons hover:wpuf-cursor-pointer"][${index}]`,
-            clearSelection: "(//a[normalize-space()='Clear Selection'])[1]",
             openInSameWindow: '(//label[normalize-space(text())="Open in :"]/following::input)[1]',
             openInNewWindow: '(//label[normalize-space(text())="Open in :"]/following::input)[2]',
-            mapAddressSearchBoxOn: '//label[normalize-space()="Show address search box"]',
-            previewWidth: '(//label[normalize-space(text())="Preview Width"]/following::input)[1]',
-            previewHeight: '(//label[normalize-space(text())="Preview Height"]/following::input)[1]',
-            numberOfColumns: '(//label[normalize-space(text())="Number of Columns"]/following::input)[1]',
-            title: '(//label[normalize-space(text())="Title"]/following::input)[1]',
-            description: '(//label[normalize-space(text())="Description"]/following::textarea)[1]',
-            htmlCodes: '(//label[normalize-space(text())="HTML Codes"]/following::textarea)[1]',
-            shortcode: '//label[@for="shortcode"]//..//..//input',
-            tcInput: '(//label[normalize-space(text())="Terms & Conditions"]/following::textarea)[1]',
-            tcCheckbox: '(//label[normalize-space(text())="Terms & Conditions"]/following::input)[1]',
 
             advancedOptions: {
                 placeholderText: '(//label[normalize-space(text())="Placeholder text"]/following::input)[1]',
                 defaultValue: '(//label[normalize-space(text())="Default value"]/following::input)[1]',
-                required: '(//label[normalize-space(text())="Required"]/following::input)[1]',
-                cRTypeMin: '(//label[normalize-space(text())="Content restricted type"]/following::input)[1]',
-                cRTypeMax: '(//label[normalize-space(text())="Content restricted type"]/following::input)[2]',
-                cRByChar: '(//label[normalize-space(text())="Content restricted by"]/following::input)[1]',
-                cRByword: '(//label[normalize-space(text())="Content restricted by"]/following::input)[2]',
-                cRInput: '(//label[normalize-space(text())="Content Restriction"]/following::input)[1]',
                 fieldSize:(fieldSize:string)=> {
                     if(fieldSize === 'small'){
                         return '(//label[normalize-space(text())="Field Size"]/following::input)[1]'
@@ -1687,45 +1624,6 @@ export const Selectors = {
                 fieldSizeMedium: '(//label[normalize-space(text())="Field Size"]/following::input)[2]', 
                 fieldSizeLarge: '(//label[normalize-space(text())="Field Size"]/following::input)[3]',
                 cssClassName: '(//label[normalize-space(text())="CSS Class Name"]/following::input)[1]',
-                showDataInPost: '//label[normalize-space()="Show Data in Post"]/following::label[normalize-space()="Yes"][1]',
-                hideFieldLabel: '//label[normalize-space()="Hide Field Label in Post"]/following::label[normalize-space()="Yes"][1]',
-                visibilityEveryone: '(//label[normalize-space(text())="Visibility"]/following::input)[1]',
-                visibilityHidden: '(//label[normalize-space(text())="Visibility"]/following::input)[2]',
-                visibilityUsers: '(//label[normalize-space(text())="Visibility"]/following::input)[3]',
-                visibilitySubscribers: '(//label[normalize-space(text())="Visibility"]/following::input)[4]',
-                conditionalLogicYes: '(//label[normalize-space(text())="Conditional Logic"]/following::input)[1]',
-                conditionalLogicNo: '(//label[normalize-space(text())="Conditional Logic"]/following::input)[2]',
-                clFieldSelection1: '(//ul[@class="condiotional-logic-repeater"]//select)[1]',
-                clLogicSelection2: '(//ul[@class="condiotional-logic-repeater"]//select)[2]',
-                clOption: '//div[@class="cond-option"]//input[1]',
-                clRepeaterAdd: '//span[contains(@class,"wpuf-repeater-add hover:wpuf-cursor-pointer")]',
-                clRepeaterRemove: '//span[contains(@class,"wpuf-repeater-remove hover:wpuf-cursor-pointer")]',
-                clFieldSelection3: '(//ul[@class="condiotional-logic-repeater"]//select)[3]',
-                clFieldSelection4: '(//ul[@class="condiotional-logic-repeater"]//select)[4]',
-                dropdownOptions: '//button[normalize-space()="Add Option"]',
-                radioOptions: '//button[normalize-space()="Add Option"]',
-                checkboxOptions: '//button[normalize-space()="Add Option"]',
-                numericOptions: '//label[normalize-space()="Step Size"]/following-sibling::input',
-                dateTimeOptions: '//label[normalize-space()="Date Format"]/following-sibling::select',
-                fileUploadOptions: '//label[normalize-space()="Allowed File Types"]/following-sibling::input',
-                imageUploadOptions: '//label[normalize-space()="Allowed Image Types"]/following-sibling::input',
-                googleMapOptions: '//label[normalize-space()="Default Location"]/following-sibling::input',
-                addressOptions: '//label[normalize-space()="Show Address Line 2"]/following-sibling::input[@type="checkbox"]',
-                countryOptions: '//label[normalize-space()="Select Type"]/following-sibling::select',
-                phoneOptions: '//label[normalize-space()="Phone Format"]/following-sibling::select',
-                reCaptchaOptions: '//label[normalize-space()="reCaptcha Type"]/following-sibling::select',
-                sectionBreakOptions: '//label[normalize-space()="Description"]/following-sibling::textarea',
-                customHtmlOptions: '//label[normalize-space()="HTML Content"]/following-sibling::textarea',
-                termsOptions: '//label[normalize-space()="Terms Title"]/following-sibling::input',
-                ratingsOptions: '//label[normalize-space()="Max Rating"]/following-sibling::input',
-                shortcodeOptions: '//label[normalize-space()="Shortcode"]/following-sibling::input',
-                actionHookOptions: '//label[normalize-space()="Hook Name"]/following-sibling::input',
-                embedOptions: '//label[normalize-space()="Embed URL"]/following-sibling::input',
-                repeatOptions: '//label[normalize-space()="Column Count"]/following-sibling::input',
-                columnOptions: '//label[normalize-space()="Number of Columns"]/following-sibling::select',
-                qrCodeOptions: '//label[normalize-space()="QR Text"]/following-sibling::input',
-                stepStartOptions: '//label[normalize-space()="Step Title"]/following-sibling::input',
-                mathCaptchaOptions: '//label[normalize-space()="Operation Type"]/following-sibling::select',
             },
             // Required Field Toggle
             requiredToggle: {
@@ -1805,11 +1703,7 @@ export const Selectors = {
                 optionValue1:'(//span[normalize-space(text())="Label & Values"]/following::input)[3]',
                 optionLabel2:'(//span[normalize-space(text())="Label & Values"]/following::input)[5]',
                 optionValue2:'(//span[normalize-space(text())="Label & Values"]/following::input)[6]',
-                defaultOption:'(//span[normalize-space(text())="Label & Values"]/following::input)[4]',
-                clearSelection: '//a[normalize-space(text())="Clear Selection"]',
-
                 selectDropdownOption:'(//select[@name="dropdown"])',
-
             },
 
             categoryTypeOptions: (type: string)=>{
@@ -1979,92 +1873,16 @@ export const Selectors = {
             },
 
             // Ratings Options
-            ratingsOptions: {
-                maxRating: '//label[normalize-space()="Max Rating"]/following-sibling::input',
-                ratingText: '//label[normalize-space()="Rating Text"]/following-sibling::input',
-            },
-
-            // Shortcode Options
-            shortcodeOptions: {
-                shortcodeContent: '//label[normalize-space()="Shortcode"]/following-sibling::input',
-            },
-
-            // Action Hook Options
-            actionHookOptions: {
-                hookName: '//label[normalize-space()="Hook Name"]/following-sibling::input',
-            },
-
-            // Embed Options
-            embedOptions: {
-                embedUrl: '//label[normalize-space()="Embed URL"]/following-sibling::input',
-                width: '//label[normalize-space()="Width"]/following-sibling::input',
-                height: '//label[normalize-space()="Height"]/following-sibling::input',
-            },
-
-            // Repeat Field Options
-            repeatOptions: {
-                columnCount: '//label[normalize-space()="Column Count"]/following-sibling::input',
-                multiple: '//label[normalize-space()="Multiple"]/following-sibling::input[@type="checkbox"]',
-            },
-
-            // Columns Field Options
-            columnOptions: {
-                columnCount: '//label[normalize-space()="Number of Columns"]/following-sibling::select',
-                innerFields: '//div[contains(@class,"column-inner-fields")]',
-            },
-
-            // QR Code Options
-            qrCodeOptions: {
-                qrText: '//label[normalize-space()="QR Text"]/following-sibling::input',
-                qrSize: '//label[normalize-space()="QR Size"]/following-sibling::input',
-            },
-
-            // Step Start Options
-            stepStartOptions: {
-                stepTitle: '//label[normalize-space()="Step Title"]/following-sibling::input',
-                stepDescription: '//label[normalize-space()="Step Description"]/following-sibling::textarea',
-            },
-
-            // Math Captcha Options
-            mathCaptchaOptions: {
-                operationType: '//label[normalize-space()="Operation Type"]/following-sibling::select',
-            },
-        },
-
-        // Validation Messages
-        validationMessages: {
-            fieldSaved: '//div[contains(@class,"success")][contains(text(),"Field saved")]',
-            fieldDeleted: '//div[contains(@class,"success")][contains(text(),"Field deleted")]',
-            formSaved: '//div[contains(@class,"success")][contains(text(),"Form saved")]',
-            errorMessage: '//div[contains(@class,"error")]',
         },
 
         // Frontend Validation Selectors
         frontend: {
             fieldContainer: (fieldName: string) => `//li[@data-label="${fieldName}"]`,
             fieldInput: (fieldName: string) => `//input[@name="${fieldName}"]`,
-            fieldTextarea: (fieldName: string) => `//textarea[@name="${fieldName}"]`,
-            fieldSelect: (fieldName: string) => `//select[@name="${fieldName}"]`,
             fieldLabel: (fieldName: string) => `//label[normalize-space()='${fieldName}']`,
             requiredIndicator: (fieldLabel: string) => `//li[@data-label="${fieldLabel}"]//span[contains(@class,"required")]`,
-            errorMessage: (fieldName: string) => `//div[contains(@class,"wpuf-error")][contains(@data-field,"${fieldName}")]`,
-            helpText: (fieldName: string) => `//div[contains(@class,"wpuf-help")][contains(@data-field,"${fieldName}")]`,
             placeHolderText: (placeHolder: string) => `//input[@placeholder="${placeHolder}"]`,
             defaultValue: (fieldLabel: string, defaultValue: string) => `//li[@data-label="${fieldLabel}"]//input[@value="${defaultValue}"]`,
-        },
-
-        // Form Buttons
-        formButtons: {
-            cancelChanges: '//button[normalize-space(text())="Cancel"]',
-            previewForm: '//a[normalize-space(text())="Preview"]',
-        },
-
-        // Pro Feature Warnings
-        proFeatures: {
-            proAlert: '//div[contains(@class,"wpuf-pro-text-alert")]',
-            upgradeButton: '//button[normalize-space()="Get the Pro version"]',
-            proFeatureModal: '//div[contains(@class,"swal2-popup")]',
-            closeProModal: '//button[@aria-label="Close this dialog"]',
         },
     },
 };

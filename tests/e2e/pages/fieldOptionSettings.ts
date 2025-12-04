@@ -737,10 +737,10 @@ export class FieldOptionSettingsPage extends Base {
         await this.validateAndFillStrings(Selectors.fieldOptionsSettings.fieldOptionsPanel.dateTimeOptions.format, format);
     }
 
-    async validateDateFormat(expectedFormat: string) {
-        await this.assertionValidate(Selectors.fieldOptionsSettings.fieldOptionsPanel.dateTimeOptions.validateFormat(expectedFormat));
-        console.log(`Date format validated: ${expectedFormat}`);
-    }
+        async validateDateFormat(expectedFormat: string) {
+            await this.assertionValidate(Selectors.fieldOptionsSettings.fieldOptionsPanel.dateTimeOptions.validateFormat(expectedFormat));
+            console.log(`Date format validated: ${expectedFormat}`);
+        }
 
     async enableTimeInput() {
         await this.validateAndClick(Selectors.fieldOptionsSettings.fieldOptionsPanel.dateTimeOptions.enableInput);

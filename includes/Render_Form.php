@@ -251,7 +251,7 @@ class Render_Form {
 
         do_action( 'wpuf_before_form_render', $form_id );
 
-        if ( !empty( $layout ) ) {
+        if ( ! empty( $layout ) && 'on' !== $theme_css ) {
             wp_enqueue_style( 'wpuf-' . $layout );
         }
 
@@ -1334,7 +1334,7 @@ class Render_Form {
         if ( $form_field['input_type'] !== 'taxonomy' ) {
             return false;
         }
-        
+
         // If pro is active, no fields are gated
         if ( wpuf_is_pro_active() ) {
             return false;

@@ -1549,3 +1549,25 @@ body.wpuf-modal-open {
 .wpuf-subscription-pack-settings .subscription-nav-content section .form-table td {
   padding: 15px 0;
 }
+/* Disabled color picker for pro preview */
+.wp-picker-container input[type="text"].wp-color-picker-field[disabled] {
+  cursor: not-allowed !important;
+  opacity: 0.5 !important;
+  background-color: #f0f0f0 !important;
+  pointer-events: none !important;
+}
+.wp-picker-container .wp-color-result[disabled],
+.wp-picker-container input[disabled] ~ .wp-picker-input-wrap .wp-color-result {
+  cursor: not-allowed !important;
+  opacity: 0.5 !important;
+  pointer-events: none !important;
+}
+.wp-picker-container .wp-color-result[disabled]:hover,
+.wp-picker-container input[disabled] ~ .wp-picker-input-wrap .wp-color-result:hover {
+  background-color: inherit !important;
+  border-color: inherit !important;
+}
+.wp-picker-container .wp-color-result[disabled]:active,
+.wp-picker-container input[disabled] ~ .wp-picker-input-wrap .wp-color-result:active {
+  transform: none !important;
+}

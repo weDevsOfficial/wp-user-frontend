@@ -89,9 +89,14 @@
             </script>
         <?php } ?>
 
-        <p class="forgetmenot">
-            <input name="rememberme" type="checkbox" id="wpuf-rememberme" value="forever" />
-            <label for="wpuf-rememberme"><?php esc_html_e( 'Remember Me', 'wp-user-frontend' ); ?></label>
+        <p class="forgetmenot wpuf-remember-forgot-wrapper">
+            <span class="wpuf-remember-me">
+                <input name="rememberme" type="checkbox" id="wpuf-rememberme" value="forever" />
+                <label for="wpuf-rememberme"><?php esc_html_e( 'Remember Me', 'wp-user-frontend' ); ?></label>
+            </span>
+            <span class="wpuf-lost-password">
+                <a href="<?php echo esc_url( wp_lostpassword_url() ); ?>"><?php esc_html_e( 'Lost Password', 'wp-user-frontend' ); ?></a>
+            </span>
         </p>
 
         <p class="submit">
@@ -106,5 +111,5 @@
         </p>
     </form>
 
-    <?php echo wp_kses_post( wpuf()->frontend->simple_login->get_action_links( [ 'login' => false ] ) ); ?>
+    <?php echo wp_kses_post( wpuf()->frontend->simple_login->get_action_links( [ 'login' => false, 'lostpassword' => false ] ) ); ?>
 </div>

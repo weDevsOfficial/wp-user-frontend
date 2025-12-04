@@ -538,7 +538,20 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo wp_kses_post( $html );
+        // Allow input tags with necessary attributes for color picker fields
+        // wp_kses_post() strips <input> tags by default, so we need to explicitly allow them
+        $allowed_html = wp_kses_allowed_html( 'post' );
+        $allowed_html['input'] = [
+            'type'               => true,
+            'class'              => true,
+            'id'                 => true,
+            'name'               => true,
+            'value'              => true,
+            'data-default-color' => true,
+            'disabled'           => true,
+        ];
+
+        echo wp_kses( $html, $allowed_html );
     }
 
     /**
@@ -740,8 +753,8 @@ class WeDevs_Settings_API {
         ?>
         <script>
             jQuery(document).ready(function($) {
-                //Initiate Color Picker
-                $('.wp-color-picker-field').wpColorPicker();
+                //Initiate Color Picker (skip disabled fields for pro preview)
+                $('.wp-color-picker-field:not([disabled])').wpColorPicker();
 
                 // Switches option sections
                 $('.group').hide();

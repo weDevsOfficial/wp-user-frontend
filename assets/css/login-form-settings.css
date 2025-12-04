@@ -1,0 +1,109 @@
+/**
+ * Login Form Settings - Admin Styles
+ *
+ * Static styles for the login form settings page in admin area.
+ * Radio image selection styles for layout chooser.
+ *
+ * @package WP User Frontend
+ * @subpackage Assets/CSS
+ */
+
+.wpuf-radio-image-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.wpuf-radio-image-option {
+    flex: 0 0 calc(25% - 12px);
+    min-width: 200px;
+}
+
+.wpuf-radio-image-option input[type='radio'] {
+    position: absolute;
+    opacity: 0;
+}
+
+.wpuf-radio-image-option label {
+    position: relative;
+    display: block;
+    cursor: pointer;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    transition: all 0.3s ease;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.wpuf-radio-image-option label:hover {
+    border-color: #0073aa;
+    box-shadow: 0 4px 8px rgba(0, 115, 170, 0.2);
+    transform: translateY(-2px);
+}
+
+.wpuf-radio-image-option input[type='radio']:checked + label {
+    border-color: #0073aa;
+    background-color: #f0f8ff;
+    box-shadow: 0 4px 8px rgba(0, 115, 170, 0.3);
+}
+
+.wpuf-radio-image-option input[type='radio']:checked + label::after {
+    content: '✓';
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #0073aa;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 24px;
+    text-align: center;
+}
+
+.wpuf-radio-image-option img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+}
+
+/* Free plugin specific: Fix WordPress Settings API table layout */
+/* Force horizontal flex layout inside form tables */
+
+/* Override fieldset constraints */
+.form-table fieldset {
+    max-width: none !important;
+}
+
+.form-table td fieldset {
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+/* Force flex display on wrapper - works in all browsers */
+.form-table .wpuf-radio-image-wrapper,
+.form-table fieldset .wpuf-radio-image-wrapper,
+.form-table td .wpuf-radio-image-wrapper {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    flex-direction: row !important;
+    width: 100% !important;
+    gap: 15px !important;
+}
+
+/* Ensure each option displays inline */
+.form-table .wpuf-radio-image-option {
+    flex: 0 0 calc(25% - 12px) !important;
+    min-width: 200px !important;
+    display: inline-flex !important;
+    vertical-align: top !important;
+}
+
+

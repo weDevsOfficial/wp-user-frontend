@@ -5725,7 +5725,7 @@ if ( ! function_exists( 'wpuf_is_acf_taxonomy' ) ) {
 
         // Get the taxonomy object
         $taxonomy = get_taxonomy( $taxonomy_name );
-        
+
         if ( ! $taxonomy ) {
             return false;
         }
@@ -5733,7 +5733,7 @@ if ( ! function_exists( 'wpuf_is_acf_taxonomy' ) ) {
         // ACF taxonomies typically have these characteristics:
         // 1. They are not built-in (_builtin = false)
         // 2. They are registered by ACF (check for ACF-specific properties)
-        
+
         // Check if ACF is active
         if ( ! class_exists( 'acf' ) ) {
             return false;
@@ -5781,6 +5781,39 @@ if ( ! function_exists( 'wpuf_is_acf_taxonomy' ) ) {
 }
 
 /**
+ * Get taxonomy object types (post types the taxonomy is associated with)
+ *
+ * This works for all taxonomies - built-in, custom, ACF, or any other.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param string $taxonomy_name The taxonomy name to check
+ * @return array Array of post type names associated with the taxonomy
+ */
+if ( ! function_exists( 'wpuf_get_taxonomy_post_types' ) ) {
+    function wpuf_get_taxonomy_post_types( $taxonomy_name ) {
+        // If taxonomy doesn't exist, return empty array
+        if ( ! taxonomy_exists( $taxonomy_name ) ) {
+            return [];
+        }
+
+        // Get the taxonomy object
+        $taxonomy = get_taxonomy( $taxonomy_name );
+
+        if ( ! $taxonomy ) {
+            return [];
+        }
+
+        // WordPress stores associated post types in object_type property
+        if ( isset( $taxonomy->object_type ) && is_array( $taxonomy->object_type ) ) {
+            return $taxonomy->object_type;
+        }
+
+        return [];
+    }
+}
+
+/**
  * Get list of taxonomies that should be available in free version
  *
  * This includes built-in taxonomies and ACF-registered taxonomies.
@@ -5795,13 +5828,34 @@ if ( ! function_exists( 'wpuf_get_free_taxonomies' ) ) {
         $free_taxonomies = array( 'category', 'post_tag' );
 
         // Allow filtering to add more free taxonomies
-        $free_taxonomies = apply_filters( 'wpuf_free_taxonomies', $free_taxonomies );
+        //$free_taxonomies = apply_filters( 'wpuf_free_taxonomies', $free_taxonomies );
 
-        // Add all ACF taxonomies if ACF is active
-        if ( class_exists( 'acf' ) ) {
-            $all_taxonomies = get_taxonomies( array( '_builtin' => false ), 'names' );
-            foreach ( $all_taxonomies as $taxonomy_name ) {
-                if ( wpuf_is_acf_taxonomy( $taxonomy_name ) && ! in_array( $taxonomy_name, $free_taxonomies, true ) ) {
+        // Get all registered taxonomies (built-in and custom)
+        $all_taxonomies = get_taxonomies( array(), 'names' );
+
+        foreach ( $all_taxonomies as $taxonomy_name ) {
+            // Skip if already in free list
+            if ( in_array( $taxonomy_name, $free_taxonomies, true ) ) {
+                continue;
+            }
+
+            // Get the post types this taxonomy is associated with
+            $post_types = wpuf_get_taxonomy_post_types( $taxonomy_name );
+
+            // Only allow taxonomies that are associated with 'post' or 'page' in free version
+            if ( ! empty( $post_types ) ) {
+                $allowed_post_types = array( 'post', 'page' );
+                $has_allowed_type = false;
+
+                foreach ( $post_types as $post_type ) {
+                    if ( in_array( $post_type, $allowed_post_types, true ) ) {
+                        $has_allowed_type = true;
+                        break;
+                    }
+                }
+
+                // If this taxonomy is for post or page, add it to free list
+                if ( $has_allowed_type ) {
                     $free_taxonomies[] = $taxonomy_name;
                 }
             }

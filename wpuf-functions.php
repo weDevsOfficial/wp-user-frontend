@@ -481,10 +481,10 @@ function wpuf_get_field_settings_excludes( $field_settings, $exclude_type ) {
         foreach ( $attributes as $attr ) {
             $terms = get_terms(
                 $field_settings['name'],
-                array(
+                [
                     'hide_empty' => false,
                     'parent'     => $attr,
-                )
+                ]
             );
 
             foreach ( $terms as $term ) {
@@ -3855,7 +3855,7 @@ function wpuf_update_option( $option, $section, $value ) {
     $options = get_option( $section );
 
     if ( ! is_array( $options ) ) {
-        $options = array();
+        $options = [];
     }
 
     $options[ $option ] = $value;
@@ -5760,81 +5760,6 @@ if ( ! function_exists( 'wpuf_field_profile_photo_allowed_mimes' ) ) {
 }
 
 /**
- * Check if a taxonomy is registered by Advanced Custom Fields (ACF)
- *
- * ACF taxonomies should be available in the free version as they are user-created
- * via ACF, not plugin-specific custom taxonomies.
- *
- * @since WPUF_SINCE
- *
- * @param string $taxonomy_name The taxonomy name to check
- * @return bool True if taxonomy is registered by ACF, false otherwise
- */
-if ( ! function_exists( 'wpuf_is_acf_taxonomy' ) ) {
-    function wpuf_is_acf_taxonomy( $taxonomy_name ) {
-        // If taxonomy doesn't exist, it can't be an ACF taxonomy
-        if ( ! taxonomy_exists( $taxonomy_name ) ) {
-            return false;
-        }
-
-        // Get the taxonomy object
-        $taxonomy = get_taxonomy( $taxonomy_name );
-
-        if ( ! $taxonomy ) {
-            return false;
-        }
-
-        // ACF taxonomies typically have these characteristics:
-        // 1. They are not built-in (_builtin = false)
-        // 2. They are registered by ACF (check for ACF-specific properties)
-
-        // Check if ACF is active
-        if ( ! class_exists( 'acf' ) ) {
-            return false;
-        }
-
-        // ACF stores taxonomy configuration in the database
-        // Check if there's an ACF post type that registered this taxonomy
-        global $wpdb;
-
-        // ACF saves custom taxonomies as posts of type 'acf-taxonomy'
-        // The taxonomy slug is stored in the serialized post_content, not post_name
-        // post_name is ACF's internal key like 'taxonomy_69242380c35d7'
-        $acf_taxonomies = $wpdb->get_results(
-            "SELECT post_content FROM {$wpdb->posts}
-            WHERE post_type = 'acf-taxonomy'
-            AND post_status = 'publish'"
-        );
-
-        if ( ! empty( $acf_taxonomies ) ) {
-            foreach ( $acf_taxonomies as $acf_tax ) {
-                // ACF stores the taxonomy configuration as serialized data
-                $config = maybe_unserialize( $acf_tax->post_content );
-
-                // Check if the taxonomy key matches our taxonomy name
-                if ( is_array( $config ) && isset( $config['taxonomy'] ) && $config['taxonomy'] === $taxonomy_name ) {
-                    return true;
-                }
-            }
-        }
-
-        // Additional check: ACF taxonomies often have 'acf' in their labels or registration
-        // Check if the taxonomy object has ACF-specific metadata
-        if ( isset( $taxonomy->acf ) || isset( $taxonomy->_builtin ) && ! $taxonomy->_builtin ) {
-            // Check if registered via ACF by looking for ACF functions
-            if ( function_exists( 'acf_get_internal_post_type' ) ) {
-                $internal_types = acf_get_internal_post_type( 'acf-taxonomy', 'names' );
-                if ( is_array( $internal_types ) && in_array( $taxonomy_name, $internal_types, true ) ) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-}
-
-/**
  * Get taxonomy object types (post types the taxonomy is associated with)
  *
  * This works for all taxonomies - built-in, custom, ACF, or any other.
@@ -5879,13 +5804,13 @@ if ( ! function_exists( 'wpuf_get_taxonomy_post_types' ) ) {
 if ( ! function_exists( 'wpuf_get_free_taxonomies' ) ) {
     function wpuf_get_free_taxonomies() {
         // Built-in taxonomies that are always available
-        $free_taxonomies = array( 'category', 'post_tag' );
+        $free_taxonomies = [ 'category', 'post_tag' ];
 
         // Allow filtering to add more free taxonomies
         //$free_taxonomies = apply_filters( 'wpuf_free_taxonomies', $free_taxonomies );
 
         // Get all registered taxonomies (built-in and custom)
-        $all_taxonomies = get_taxonomies( array(), 'names' );
+        $all_taxonomies = get_taxonomies( [], 'names' );
 
         foreach ( $all_taxonomies as $taxonomy_name ) {
             // Skip if already in free list
@@ -5898,7 +5823,7 @@ if ( ! function_exists( 'wpuf_get_free_taxonomies' ) ) {
 
             // Only allow taxonomies that are associated with 'post' or 'page' in free version
             if ( ! empty( $post_types ) ) {
-                $allowed_post_types = array( 'post', 'page' );
+                $allowed_post_types = [ 'post', 'page' ];
                 $has_allowed_type = false;
 
                 foreach ( $post_types as $post_type ) {
@@ -5917,6 +5842,9 @@ if ( ! function_exists( 'wpuf_get_free_taxonomies' ) ) {
 
         return $free_taxonomies;
     }
+}
+
+/**
  * Get login layout options for settings
  *
  * @since 4.1.0

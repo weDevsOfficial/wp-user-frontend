@@ -189,6 +189,14 @@ Vue.component('builder-stage-v4-1', {
             }
         },
 
+        hiddenClasses: function() {
+            return [
+                'hidden',           // Tailwind: display: none
+                'wpuf_hidden_field',
+                'screen-reader-text'
+            ];
+        },
+
         /**
          * Filter CSS classes to prevent hiding fields in the builder
          * Removes classes that would make the field invisible or hidden in the backend
@@ -202,22 +210,10 @@ Vue.component('builder-stage-v4-1', {
                 return '';
             }
 
-            // List of CSS classes that should not be applied in the builder
-            // These classes would hide or make fields invisible in the backend
-            var forbiddenClasses = [
-                'hidden',           // Tailwind: display: none
-                'd-none',           // Bootstrap: display: none
-                'hide',             // Generic hide class
-                'invisible',        // Tailwind: visibility: hidden
-                'opacity-0',        // Tailwind: opacity: 0 (could make field uneditable)
-                'sr-only',          // Screen reader only
-                'visually-hidden',  // Bootstrap screen reader only
-            ];
-
             // Split classes, filter out forbidden ones, and rejoin
             var classes = cssClasses.split(/\s+/).filter(function(className) {
-                return className && forbiddenClasses.indexOf(className.toLowerCase()) === -1;
-            });
+                return className && this.hiddenClasses().indexOf(className.toLowerCase()) === -1;
+            }.bind(this));
 
             return classes.join(' ');
         },
@@ -234,7 +230,7 @@ Vue.component('builder-stage-v4-1', {
                 return false;
             }
 
-            var hiddenClasses = ['hidden', 'd-none', 'hide', 'invisible'];
+            var hiddenClasses = this.hiddenClasses();
             var classes = cssClasses.toLowerCase().split(/\s+/);
 
             for (var i = 0; i < hiddenClasses.length; i++) {

@@ -531,15 +531,15 @@ function wpuf_get_image_sizes() {
 function wpuf_allowed_extensions() {
     $extesions = [
         'images' => [
-            'ext' => 'jpg,jpeg,gif,png,bmp,webp',
+            'ext' => 'jpg, jpeg, gif, png, bmp, webp',
             'label' => __( 'Images', 'wp-user-frontend' ),
         ],
         'audio'  => [
-            'ext' => 'mp3,wav,ogg,wma,mka,m4a,ra,mid,midi',
+            'ext' => 'mp3, wav, ogg, wma, mka, m4a, ra, mid, midi',
             'label' => __( 'Audio', 'wp-user-frontend' ),
         ],
         'video'  => [
-            'ext' => 'avi,divx,flv,mov,ogv,mkv,mp4,m4v,divx,mpg,mpeg,mpe',
+            'ext' => 'avi, divx, flv, mov, ogv, mkv, mp4, m4v, divx, mpg, mpeg, mpe',
             'label' => __( 'Videos', 'wp-user-frontend' ),
         ],
         'pdf'    => [
@@ -547,11 +547,11 @@ function wpuf_allowed_extensions() {
             'label' => __( 'PDF', 'wp-user-frontend' ),
         ],
         'office' => [
-            'ext' => 'doc,ppt,pps,xls,mdb,docx,xlsx,pptx,odt,odp,ods,odg,odc,odb,odf,rtf,txt',
+            'ext' => 'doc, ppt, pps, xls, mdb, docx, xlsx, pptx, odt, odp, ods, odg, odc, odb, odf, rtf, txt',
             'label' => __( 'Office Documents', 'wp-user-frontend' ),
         ],
         'zip'    => [
-            'ext' => 'zip,gz,gzip,rar,7z',
+            'ext' => 'zip, gz, gzip, rar, 7z',
             'label' => __( 'Zip Archives', 'wp-user-frontend' ),
         ],
         'exe'    => [

@@ -141,6 +141,7 @@ class WeDevs_Settings_API {
                     'step'              => isset( $option['step'] ) ? $option['step'] : '',
                     'is_pro_preview'    => ! empty( $option['is_pro_preview'] ) ? $option['is_pro_preview'] : false,
                     'depends_on'        => ! empty( $option['depends_on'] ) ? $option['depends_on'] : '',
+                    'depends_on_value'  => ! empty( $option['depends_on_value'] ) ? $option['depends_on_value'] : '',
                 );
 
                 add_settings_field( $section . '[' . $option['name'] . ']', $option['label'], (isset($option['callback']) ? $option['callback'] : array($this, 'callback_' . $type )), $section, $section, $args );
@@ -180,10 +181,19 @@ class WeDevs_Settings_API {
         $placeholder = empty( $args['placeholder'] ) ? '' : ' placeholder="' . $args['placeholder'] . '"';
         $disabled    = ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ? 'disabled' : '';
         $depends_on  = ! empty( $args['depends_on'] ) ? $args['depends_on'] : '';
+        $depends_on_value = ! empty( $args['depends_on_value'] ) ? $args['depends_on_value'] : '';
+
+        // Handle array dependencies
+        if (is_array($depends_on)) {
+            $depends_on_json = esc_attr( json_encode($depends_on) );
+            $depends_on_value = ''; // Not used for array format
+        } else {
+            $depends_on_json = esc_attr( $depends_on );
+        }
 
         $html        = sprintf(
-            '<input type="%1$s" class="%2$s-text" id="%3$s[%4$s]" name="%3$s[%4$s]" value="%5$s"%6$s %7$s data-depends-on="%8$s" />',
-            $type, $size, $args['section'], $args['id'], $value, $placeholder, $disabled, $depends_on
+            '<input type="%1$s" class="%2$s-text" id="%3$s[%4$s]" name="%3$s[%4$s]" value="%5$s"%6$s %7$s data-depends-on=\'%8$s\' data-depends-on-value="%9$s" />',
+            $type, $size, $args['section'], $args['id'], $value, $placeholder, $disabled, $depends_on_json, esc_attr( $depends_on_value )
         );
         $html       .= $this->get_field_description( $args );
 
@@ -191,7 +201,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo wp_kses( $html, array('input' => ['type' => [],'class' => [],'id' => [],'name' => [],'value' => [],'disabled' => [],'data-depends-on' => []], 'p' => ['class' => []], 'div' => ['class' => []], 'a' => ['href' => [],'target' => [],'class' => []], 'span' => ['class' => []], 'svg' => ['width' => [],'height' => [],'viewBox' => [],'fill' => [],'xmlns' => [],],));
+        echo wp_kses( $html, array('input' => ['type' => [],'class' => [],'id' => [],'name' => [],'value' => [],'disabled' => [],'data-depends-on' => [],'data-depends-on-value' => []], 'p' => ['class' => []], 'div' => ['class' => []], 'a' => ['href' => [],'target' => [],'class' => []], 'span' => ['class' => []], 'svg' => ['width' => [],'height' => [],'viewBox' => [],'fill' => [],'xmlns' => [],],));
     }
 
     /**
@@ -372,8 +382,18 @@ class WeDevs_Settings_API {
         $value    = esc_attr( $this->get_option( $args['id'], $args['section'], $args['std'] ) );
         $disabled = ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ? 'disabled' : '';
         $size     = isset( $args['size'] ) && ! is_null( $args['size'] ) ? $args['size'] : 'regular';
+        $depends_on = ! empty( $args['depends_on'] ) ? $args['depends_on'] : '';
+        $depends_on_value = ! empty( $args['depends_on_value'] ) ? $args['depends_on_value'] : '';
 
-        $html  = sprintf( '<select class="%1$s" name="%2$s[%3$s]" id="%2$s[%3$s]" %4$s>', $size, $args['section'], $args['id'], $disabled );
+        // Handle array dependencies
+        if (is_array($depends_on)) {
+            $depends_on_json = esc_attr( json_encode($depends_on) );
+            $depends_on_value = ''; // Not used for array format
+        } else {
+            $depends_on_json = esc_attr( $depends_on );
+        }
+
+        $html  = sprintf( '<select class="%1$s" name="%2$s[%3$s]" id="%2$s[%3$s]" %4$s data-depends-on=\'%5$s\' data-depends-on-value="%6$s">', $size, $args['section'], $args['id'], $disabled, $depends_on_json, esc_attr( $depends_on_value ) );
 
         foreach ( $args['options'] as $key => $label ) {
             $html .= sprintf( '<option value="%s"%s>%s</option>', $key, selected( $value, $key, false ), $label );
@@ -386,7 +406,7 @@ class WeDevs_Settings_API {
             $html .= wpuf_get_pro_preview_html();
         }
 
-        echo wp_kses( $html, array('select' => ['class' => [], 'name' => [], 'id' => [], 'disabled' => []], 'option' => ['value' => [], 'selected' => []], 'p' => ['class' => []], 'div' => ['class' => []], 'a' => ['href' => [], 'target' => [], 'class' => []], 'span' => ['class' => []], 'svg' => ['width' => [], 'height' => [], 'viewBox' => [], 'fill' => [], 'xmlns' => []], 'path' => ['d' => [], 'fill' => [] ] ) );
+        echo wp_kses( $html, array('select' => ['class' => [], 'name' => [], 'id' => [], 'disabled' => [], 'data-depends-on' => [], 'data-depends-on-value' => []], 'option' => ['value' => [], 'selected' => []], 'p' => ['class' => []], 'div' => ['class' => []], 'a' => ['href' => [], 'target' => [], 'class' => []], 'span' => ['class' => []], 'svg' => ['width' => [], 'height' => [], 'viewBox' => [], 'fill' => [], 'xmlns' => []], 'path' => ['d' => [], 'fill' => [] ] ) );
     }
 
     /**
@@ -796,35 +816,158 @@ class WeDevs_Settings_API {
                 fields.each(function() {
                     var $this = $(this);
                     var data_depends_on = $this.data('depends-on');
+                    var data_depends_on_value = $this.data('depends-on-value');
 
                     if (!data_depends_on) {
                         return;
                     }
 
-                    var $depends_on = $("input[id*='"+ data_depends_on +"']");
-                    var $depends_on_type = $depends_on.attr('type');
+                    // Handle multiple dependencies
+                    var dependencies = {};
+                    if (typeof data_depends_on === 'string' && data_depends_on.startsWith('{')) {
+                        // JSON string format: '{"field1": "value1", "field2": "value2"}'
+                        try {
+                            dependencies = JSON.parse(data_depends_on);
+                        } catch (e) {
+                            return;
+                        }
+                    } else if (typeof data_depends_on === 'object') {
+                        // Multiple dependencies: {field1: 'value1', field2: 'value2'}
+                        dependencies = data_depends_on;
+                    } else {
+                        // Single dependency: field_name => expected_value
+                        dependencies[data_depends_on] = data_depends_on_value;
+                    }
 
-                    if ($depends_on_type === 'checkbox') {
-                        if ($depends_on.is(':checked')) {
+                    // Check all dependencies
+                    var all_dependencies_met = true;
+                    var dependency_fields = {};
+
+                    for (var field_name in dependencies) {
+                        var expected_value = dependencies[field_name];
+                        var $depends_on = $("input[id*='"+ field_name +"'], select[id*='"+ field_name +"']");
+                        
+                        // If no field found with the simple selector, try more specific selectors
+                        if ($depends_on.length === 0) {
+                            $depends_on = $("input[name*='["+ field_name +"]'], select[name*='["+ field_name +"]']");
+                        }
+                        
+                        // If still no field found, try looking for the field name in the ID attribute
+                        if ($depends_on.length === 0) {
+                            $depends_on = $("input[id*='["+ field_name +"]'], select[id*='["+ field_name +"]']");
+                        }
+                        
+                        // If still no field found, try looking for the field name anywhere in the ID
+                        if ($depends_on.length === 0) {
+                            $depends_on = $("input[id*='"+ field_name +"'], select[id*='"+ field_name +"']");
+                        }
+                        
+                        if ($depends_on.length === 0) {
+                            all_dependencies_met = false;
+                            break;
+                        }
+
+                        dependency_fields[field_name] = $depends_on;
+                        var current_value = $depends_on.val();
+                        var is_checkbox = $depends_on.attr('type') === 'checkbox';
+                        var is_checked = is_checkbox ? $depends_on.is(':checked') : null;
+                        
+                        // For checkboxes, handle empty string as "checked" expectation
+                        var value_matches = false;
+                        if (is_checkbox) {
+                            if (expected_value === '' || expected_value === null || expected_value === undefined) {
+                                // Empty expected value means "show when checked" (typical use case)
+                                value_matches = is_checked;
+                            } else {
+                                // Non-empty expected value means "show when checked with this value"
+                                value_matches = is_checked && (current_value === expected_value || expected_value === 'on');
+                            }
+                        } else {
+                            value_matches = current_value === expected_value;
+                        }
+                        
+                        if (!value_matches) {
+                            all_dependencies_met = false;
+                        }
+                    }
+
+                    // Show/hide based on all dependencies
+                    if (all_dependencies_met) {
+                        $this.closest('tr').show();
+                    } else {
+                        $this.closest('tr').hide();
+                    }
+
+                    // Set up event handlers for all dependency fields
+                    for (var field_name in dependency_fields) {
+                        var $depends_on = dependency_fields[field_name];
+                        var expected_value = dependencies[field_name];
+                        var $depends_on_type = $depends_on.attr('type');
+
+                        if ($depends_on_type === 'checkbox') {
+                            $depends_on.on('change', function() {
+                                checkAllDependencies();
+                            });
+                        } else {
+                            $depends_on.on('keyup change', function() {
+                                checkAllDependencies();
+                            });
+                        }
+                    }
+
+                    // Function to check all dependencies
+                    function checkAllDependencies() {
+                        var all_met = true;
+                        for (var field_name in dependencies) {
+                            var expected_value = dependencies[field_name];
+                            var $depends_on = $("input[id*='"+ field_name +"'], select[id*='"+ field_name +"']");
+                            
+                            // If no field found with the simple selector, try more specific selectors
+                            if ($depends_on.length === 0) {
+                                $depends_on = $("input[name*='["+ field_name +"]'], select[name*='["+ field_name +"]']");
+                            }
+                            
+                            // If still no field found, try looking for the field name in the ID attribute
+                            if ($depends_on.length === 0) {
+                                $depends_on = $("input[id*='["+ field_name +"]'], select[id*='["+ field_name +"]']");
+                            }
+                            
+                            // If still no field found, try looking for the field name anywhere in the ID
+                            if ($depends_on.length === 0) {
+                                $depends_on = $("input[id*='"+ field_name +"'], select[id*='"+ field_name +"']");
+                            }
+                            
+                            var current_value = $depends_on.length > 0 ? $depends_on.val() : 'NOT_FOUND';
+                            var is_checkbox = $depends_on.length > 0 && $depends_on.attr('type') === 'checkbox';
+                            var is_checked = is_checkbox ? $depends_on.is(':checked') : null;
+                            
+                            // For checkboxes, handle empty string as "checked" expectation
+                            var value_matches = false;
+                            if ($depends_on.length === 0) {
+                                value_matches = false;
+                            } else if (is_checkbox) {
+                                if (expected_value === '' || expected_value === null || expected_value === undefined) {
+                                    // Empty expected value means "show when checked" (typical use case)
+                                    value_matches = is_checked;
+                                } else {
+                                    // Non-empty expected value means "show when checked with this value"
+                                    value_matches = is_checked && (current_value === expected_value || expected_value === 'on');
+                                }
+                            } else {
+                                value_matches = current_value === expected_value;
+                            }
+                            
+                            if (!value_matches) {
+                                all_met = false;
+                                break;
+                            }
+                        }
+                        
+                        if (all_met) {
                             $this.closest('tr').show();
                         } else {
                             $this.closest('tr').hide();
                         }
-                        $depends_on.on('change', function() {
-                            if ($(this).is(':checked')) {
-                                $this.closest('tr').show();
-                            } else {
-                                $this.closest('tr').hide();
-                            }
-                        });
-                    } else {
-                        $depends_on.on('keyup change', function() {
-                            if ($(this).val() === $this.data('depends-on-value')) {
-                                $this.closest('tr').show();
-                            } else {
-                                $this.closest('tr').hide();
-                            }
-                        });
                     }
                 });
             });

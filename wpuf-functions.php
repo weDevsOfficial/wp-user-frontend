@@ -4041,6 +4041,52 @@ function wpuf_settings_multiselect( $args ) {
 }
 
 /**
+ * Password preview field callback
+ *
+ * @param array $args Field arguments
+ * @since WPUF_PRO_SINCE
+ */
+function wpuf_settings_password_preview( $args ) {
+    wpuf_require_once( WPUF_ROOT . '/Lib/WeDevs_Settings_API.php' );
+
+    $settings = new WeDevs_Settings_API();
+    $value    = $settings->get_option( $args['id'], $args['section'], $args['std'] );
+    $disabled = ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ? 'disabled' : '';
+    $size     = isset( $args['size'] ) && ! is_null( $args['size'] ) ? $args['size'] : 'regular';
+    
+    // Create masked preview of the password
+    $preview_value = '';
+    if ( ! empty( $value ) ) {
+        $length = strlen( $value );
+        if ( $length >= 4 ) {
+            $preview_value = substr( $value, 0, 2 ) . str_repeat( '*', $length - 4 ) . substr( $value, -2 );
+        } else {
+            $preview_value = str_repeat( '*', $length );
+        }
+    }
+
+    $depends_on = ! empty( $args['depends_on'] ) ? $args['depends_on'] : '';
+    $depends_on_value = ! empty( $args['depends_on_value'] ) ? $args['depends_on_value'] : '';
+    
+    // Handle array dependencies
+    if (is_array($depends_on)) {
+        $depends_on_json = esc_attr( json_encode($depends_on) );
+        $depends_on_value = ''; // Not used for array format
+    } else {
+        $depends_on_json = esc_attr( $depends_on );
+    }
+    
+    $html  = sprintf( '<input type="text" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]" value="%4$s" %5$s data-depends-on=\'%6$s\' data-depends-on-value="%7$s"/>', $size, $args['section'], $args['id'], $preview_value, $disabled, $depends_on_json, esc_attr( $depends_on_value ) );
+    $html  .= $settings->get_field_description( $args );
+
+    if ( ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ) {
+        $html .= wpuf_get_pro_preview_html();
+    }
+
+    echo wp_kses( $html, array( 'input' => array( 'type' => array(), 'class' => array(), 'id' => array(), 'name' => array(), 'value' => array(), 'readonly' => array(), 'style' => array(), 'disabled' => array(), 'data-depends-on' => array(), 'data-depends-on-value' => array() ), 'p' => array( 'class' => array() ), 'div' => array( 'class' => array() ), 'a' => array( 'href' => array(), 'target' => array(), 'class' => array() ), 'span' => array( 'class' => array() ), 'svg' => array( 'width' => array(), 'height' => array(), 'viewBox' => array(), 'fill' => array(), 'xmlns' => array() ), 'path' => array( 'd' => array(), 'fill' => array() ) ) );
+}
+
+/**
  * Displays Form Schedule Messages
  *
  * @since 2.8.10

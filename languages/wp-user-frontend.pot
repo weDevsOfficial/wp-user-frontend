@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 4.2.3\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2025-11-20 04:26:12+00:00\n"
+"POT-Creation-Date: 2025-11-21 05:50:32+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -205,11 +205,11 @@ msgstr ""
 msgid "for step-by-step webhook configuration instructions."
 msgstr ""
 
-#: Lib/WeDevs_Settings_API.php:470
+#: Lib/WeDevs_Settings_API.php:490
 msgid "Choose File"
 msgstr ""
 
-#: Lib/WeDevs_Settings_API.php:635
+#: Lib/WeDevs_Settings_API.php:655
 msgid "Search in settings"
 msgstr ""
 
@@ -526,26 +526,26 @@ msgstr ""
 msgid "Learn More"
 msgstr ""
 
-#: admin/html/form-settings-display.php:11 wpuf-functions.php:5492
+#: admin/html/form-settings-display.php:11 wpuf-functions.php:5538
 msgid "Label Position"
 msgstr ""
 
-#: admin/html/form-settings-display.php:16 wpuf-functions.php:5495
+#: admin/html/form-settings-display.php:16 wpuf-functions.php:5541
 msgid "Above Element"
 msgstr ""
 
-#: admin/html/form-settings-display.php:17 wpuf-functions.php:5496
+#: admin/html/form-settings-display.php:17 wpuf-functions.php:5542
 msgid "Left of Element"
 msgstr ""
 
-#: admin/html/form-settings-display.php:18 wpuf-functions.php:5497
+#: admin/html/form-settings-display.php:18 wpuf-functions.php:5543
 msgid "Right of Element"
 msgstr ""
 
 #: admin/html/form-settings-display.php:19
 #: includes/Admin/Customizer_Options.php:119
 #: includes/Fields/Field_Contract.php:400
-#: includes/Fields/Form_Field_Column.php:112 wpuf-functions.php:5498
+#: includes/Fields/Form_Field_Column.php:112 wpuf-functions.php:5544
 msgid "Hidden"
 msgstr ""
 
@@ -553,7 +553,7 @@ msgstr ""
 msgid "Where the labels of the form should display"
 msgstr ""
 
-#: admin/html/form-settings-display.php:35 wpuf-functions.php:5485
+#: admin/html/form-settings-display.php:35 wpuf-functions.php:5531
 msgid "Use Theme CSS"
 msgstr ""
 
@@ -606,7 +606,7 @@ msgid "Payment Options"
 msgstr ""
 
 #: admin/html/form-settings-payment.php:26 includes/Setup_Wizard.php:339
-#: includes/functions/settings-options.php:477 wpuf-functions.php:5366
+#: includes/functions/settings-options.php:477 wpuf-functions.php:5412
 msgid "Enable Payments"
 msgstr ""
 
@@ -671,7 +671,7 @@ msgid "Amount to be charged per post"
 msgstr ""
 
 #: admin/html/form-settings-payment.php:88
-#: includes/functions/settings-options.php:563 wpuf-functions.php:5401
+#: includes/functions/settings-options.php:563 wpuf-functions.php:5447
 msgid "Payment Success Page"
 msgstr ""
 
@@ -692,7 +692,7 @@ msgstr ""
 msgid "Set Post Status to"
 msgstr ""
 
-#: admin/html/form-settings-post-edit.php:24 wpuf-functions.php:5224
+#: admin/html/form-settings-post-edit.php:24 wpuf-functions.php:5270
 msgid "No Change"
 msgstr ""
 
@@ -702,7 +702,7 @@ msgid "Redirect To"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:36
-#: admin/html/form-settings-post.php:138 wpuf-functions.php:5152
+#: admin/html/form-settings-post.php:138 wpuf-functions.php:5198
 msgid "Newly created post"
 msgstr ""
 
@@ -713,13 +713,13 @@ msgstr ""
 
 #: admin/html/form-settings-post-edit.php:38
 #: admin/html/form-settings-post.php:140 includes/Free/Form_Element.php:422
-#: wpuf-functions.php:5154 wpuf-functions.php:5239
+#: wpuf-functions.php:5200 wpuf-functions.php:5285
 msgid "To a page"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:39
 #: admin/html/form-settings-post.php:141 includes/Free/Form_Element.php:423
-#: wpuf-functions.php:5155 wpuf-functions.php:5240
+#: wpuf-functions.php:5201 wpuf-functions.php:5286
 msgid "To a custom URL"
 msgstr ""
 
@@ -727,19 +727,19 @@ msgstr ""
 msgid "After successfull submit, where the page will redirect to"
 msgstr ""
 
-#: admin/html/form-settings-post-edit.php:54 wpuf-functions.php:5244
+#: admin/html/form-settings-post-edit.php:54 wpuf-functions.php:5290
 msgid "Post Update Message"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:61
 #: admin/html/form-settings-post.php:163 includes/Free/Form_Element.php:452
-#: wpuf-functions.php:5164 wpuf-functions.php:5258
+#: wpuf-functions.php:5210 wpuf-functions.php:5304
 msgid "Page"
 msgstr ""
 
 #: admin/html/form-settings-post-edit.php:76
 #: admin/html/form-settings-post.php:178 includes/Free/Form_Element.php:475
-#: wpuf-functions.php:5170 wpuf-functions.php:5264
+#: wpuf-functions.php:5216 wpuf-functions.php:5310
 msgid "Custom URL"
 msgstr ""
 
@@ -769,7 +769,7 @@ msgstr ""
 msgid "This page is restricted. Please {login} / {register} to view this page."
 msgstr ""
 
-#: admin/html/form-settings-post.php:15 wpuf-functions.php:5161
+#: admin/html/form-settings-post.php:15 wpuf-functions.php:5207
 msgid "Post saved"
 msgstr ""
 
@@ -784,7 +784,7 @@ msgstr ""
 msgid "Save Draft"
 msgstr ""
 
-#: admin/html/form-settings-post.php:29 wpuf-functions.php:5125
+#: admin/html/form-settings-post.php:29 wpuf-functions.php:5171
 msgid "Post Type"
 msgstr ""
 
@@ -826,7 +826,7 @@ msgstr ""
 msgid "After successful submit, where the page will redirect to"
 msgstr ""
 
-#: admin/html/form-settings-post.php:156 wpuf-functions.php:5159
+#: admin/html/form-settings-post.php:156 wpuf-functions.php:5205
 msgid "Message to show"
 msgstr ""
 
@@ -834,11 +834,11 @@ msgstr ""
 msgid "Comment Status"
 msgstr ""
 
-#: admin/html/form-settings-post.php:188 wpuf-functions.php:5516
+#: admin/html/form-settings-post.php:188 wpuf-functions.php:5562
 msgid "Open"
 msgstr ""
 
-#: admin/html/form-settings-post.php:189 wpuf-functions.php:5517
+#: admin/html/form-settings-post.php:189 wpuf-functions.php:5563
 msgid "Closed"
 msgstr ""
 
@@ -861,6 +861,7 @@ msgstr ""
 #: admin/html/form-submission-restriction.php:11 admin/template-post.php:160
 #: includes/Admin/Forms/Template_Post.php:177
 #: includes/Fields/Field_Contract.php:533 includes/Free/Edit_Profile.php:103
+#: includes/Integrations/WPUF_N8N_Integration.php:224
 #: templates/registration-form.php:31
 msgid "Name"
 msgstr ""
@@ -871,7 +872,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:29 wpuf-functions.php:5298
+#: admin/html/form-submission-restriction.php:29 wpuf-functions.php:5344
 msgid "Guest Post"
 msgstr ""
 
@@ -891,7 +892,7 @@ msgstr ""
 msgid "User Details"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:46 wpuf-functions.php:5307
+#: admin/html/form-submission-restriction.php:46 wpuf-functions.php:5353
 msgid "Require Name and Email address"
 msgstr ""
 
@@ -901,7 +902,7 @@ msgid ""
 "name and email address"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:53 wpuf-functions.php:5317
+#: admin/html/form-submission-restriction.php:53 wpuf-functions.php:5363
 msgid "Name Label"
 msgstr ""
 
@@ -909,7 +910,7 @@ msgstr ""
 msgid "Label text for name field"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:63 wpuf-functions.php:5325
+#: admin/html/form-submission-restriction.php:63 wpuf-functions.php:5371
 msgid "E-Mail Label"
 msgstr ""
 
@@ -950,7 +951,7 @@ msgid "Choose which roles can submit posts."
 msgstr ""
 
 #: admin/html/form-submission-restriction.php:117
-#: includes/functions/settings-options.php:338 wpuf-functions.php:5349
+#: includes/functions/settings-options.php:338 wpuf-functions.php:5395
 msgid "Unauthorized Message"
 msgstr ""
 
@@ -976,16 +977,16 @@ msgstr ""
 msgid "Schedule Period"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:140 wpuf-functions.php:5530
+#: admin/html/form-submission-restriction.php:140 wpuf-functions.php:5576
 msgid "From"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:151 wpuf-functions.php:5540
+#: admin/html/form-submission-restriction.php:151 wpuf-functions.php:5586
 msgid "Form Pending Message"
 msgstr ""
 
 #: admin/html/form-submission-restriction.php:158
-#: includes/Free/Free_Loader.php:1775 wpuf-functions.php:5544
+#: includes/Free/Free_Loader.php:1775 wpuf-functions.php:5590
 msgid "Form Expired Message"
 msgstr ""
 
@@ -1001,11 +1002,11 @@ msgstr ""
 msgid "Limit the number of entries allowed for this form"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:180 wpuf-functions.php:5553
+#: admin/html/form-submission-restriction.php:180 wpuf-functions.php:5599
 msgid "Number of Entries"
 msgstr ""
 
-#: admin/html/form-submission-restriction.php:187 wpuf-functions.php:5558
+#: admin/html/form-submission-restriction.php:187 wpuf-functions.php:5604
 msgid "Limit Reached Message"
 msgstr ""
 
@@ -2110,7 +2111,7 @@ msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:436
 #: includes/Admin/Admin_Subscription.php:1053
-#: includes/Admin/views/support.php:77 wpuf-functions.php:5010
+#: includes/Admin/views/support.php:77 wpuf-functions.php:5056
 msgid "Payment Settings"
 msgstr ""
 
@@ -2149,7 +2150,7 @@ msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:532
 #: includes/Admin/Admin_Subscription.php:1085 includes/Free/Form_Element.php:59
-#: wpuf-functions.php:5036
+#: wpuf-functions.php:5082
 msgid "Post Expiration"
 msgstr ""
 
@@ -2425,12 +2426,12 @@ msgid "Publish"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:1284 wpuf-functions.php:68
-#: wpuf-functions.php:5177 wpuf-functions.php:5220
+#: wpuf-functions.php:5223 wpuf-functions.php:5266
 msgid "Draft"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1285 wpuf-functions.php:5178
-#: wpuf-functions.php:5221
+#: includes/Admin/Admin_Subscription.php:1285 wpuf-functions.php:5224
+#: wpuf-functions.php:5267
 msgid "Pending Review"
 msgstr ""
 
@@ -2609,7 +2610,7 @@ msgstr ""
 #: includes/Admin/Admin_Tools.php:55 includes/Admin/Admin_Tools.php:118
 #: includes/Admin/List_Table_Subscribers.php:144
 #: includes/Admin/List_Table_Transactions.php:97 wpuf-functions.php:3681
-#: wpuf-functions.php:5611
+#: wpuf-functions.php:5657
 msgid "All"
 msgstr ""
 
@@ -3049,7 +3050,7 @@ msgid "&mdash; No Template &mdash;"
 msgstr ""
 
 #: includes/Admin/Forms/Post/Templates/Form_Template.php:231
-#: includes/Free/Free_Loader.php:1703 wpuf-functions.php:5201
+#: includes/Free/Free_Loader.php:1703 wpuf-functions.php:5247
 msgid ""
 "If selected a form template, it will try to execute that integration "
 "options when new post created and updated."
@@ -3060,7 +3061,7 @@ msgstr ""
 #: includes/Admin/views/shortcode-builder.php:8
 #: includes/Free/Free_Loader.php:1709 includes/Free/Free_Loader.php:1713
 #: includes/Free/Free_Loader.php:1717 includes/Free/Free_Loader.php:1721
-#: includes/Free/Free_Loader.php:1725 wpuf-functions.php:5084
+#: includes/Free/Free_Loader.php:1725 wpuf-functions.php:5130
 msgid "Post Form"
 msgstr ""
 
@@ -5479,7 +5480,7 @@ msgstr ""
 msgid "Choose how you want the progressbar"
 msgstr ""
 
-#: includes/Free/Form_Element.php:227 wpuf-functions.php:5435
+#: includes/Free/Form_Element.php:227 wpuf-functions.php:5481
 msgid "New post created"
 msgstr ""
 
@@ -5487,8 +5488,8 @@ msgstr ""
 msgid "A post has been edited"
 msgstr ""
 
-#: includes/Free/Form_Element.php:236 wpuf-functions.php:5414
-#: wpuf-functions.php:5421
+#: includes/Free/Form_Element.php:236 wpuf-functions.php:5460
+#: wpuf-functions.php:5467
 msgid "New Post Notification"
 msgstr ""
 
@@ -5505,13 +5506,13 @@ msgid "Learn more about Email Notification"
 msgstr ""
 
 #: includes/Free/Form_Element.php:255 includes/Free/Form_Element.php:292
-#: includes/Free/Free_Loader.php:1633 wpuf-functions.php:5427
-#: wpuf-functions.php:5534
+#: includes/Free/Free_Loader.php:1633 wpuf-functions.php:5473
+#: wpuf-functions.php:5580
 msgid "To"
 msgstr ""
 
 #: includes/Free/Form_Element.php:262 includes/Free/Form_Element.php:297
-#: includes/Free/Free_Loader.php:1638 wpuf-functions.php:5433
+#: includes/Free/Free_Loader.php:1638 wpuf-functions.php:5479
 msgid "Subject"
 msgstr ""
 
@@ -5519,7 +5520,7 @@ msgstr ""
 msgid "Message"
 msgstr ""
 
-#: includes/Free/Form_Element.php:274 wpuf-functions.php:5463
+#: includes/Free/Form_Element.php:274 wpuf-functions.php:5509
 msgid "Update Post Notification"
 msgstr ""
 
@@ -6153,7 +6154,7 @@ msgstr ""
 msgid "Enable Update Post Notification"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1643 wpuf-functions.php:5439
+#: includes/Free/Free_Loader.php:1643 wpuf-functions.php:5485
 msgid "Email Body"
 msgstr ""
 
@@ -6161,7 +6162,7 @@ msgstr ""
 msgid "Conditional Logic on Submit"
 msgstr ""
 
-#: includes/Free/Free_Loader.php:1701 wpuf-functions.php:5478
+#: includes/Free/Free_Loader.php:1701 wpuf-functions.php:5524
 msgid "Choose Form Style"
 msgstr ""
 
@@ -7210,6 +7211,109 @@ msgstr ""
 #: includes/Integrations/WPUF_WCMp_Integration.php:52
 #: includes/Integrations/WPUF_WC_Vendors_Integration.php:43
 msgid "Select a post form that will show on the vendor dashboard."
+msgstr ""
+
+#: includes/Integrations/WPUF_N8N_Integration.php:163
+#: includes/Integrations/WPUF_N8N_Integration.php:309
+msgid "N8N"
+msgstr ""
+
+#: includes/Integrations/WPUF_N8N_Integration.php:185
+msgid "Authentication Type"
+msgstr ""
+
+#: includes/Integrations/WPUF_N8N_Integration.php:186
+msgid "Select the authentication type for the N8N integration."
+msgstr ""
+
+#: includes/Integrations/WPUF_N8N_Integration.php:193 wpuf-functions.php:3682
+msgid "None"
+msgstr ""
+
+#: includes/Integrations/WPUF_N8N_Integration.php:194
+msgid "Basic Auth"
+msgstr ""
+
+#: includes/Integrations/WPUF_N8N_Integration.php:195
+msgid "Header Auth"
+msgstr ""
+
+#: includes/Integrations/WPUF_N8N_Integration.php:196
+msgid "JWT Auth"
+msgstr ""
+
+#: includes/Integrations/WPUF_N8N_Integration.php:201
+msgid "Basic Auth Username"
+msgstr ""
+
+#: includes/Integrations/WPUF_N8N_Integration.php:202
+msgid "Enter the username for the Basic Auth authentication."
+msgstr ""
+
+#: includes/Integrations/WPUF_N8N_Integration.php:212
+msgid "Basic Auth Password"
+msgstr ""
+
+#: includes/Integrations/WPUF_N8N_Integration.php:213
+msgid "Enter the password for the Basic Auth authentication."
+msgstr ""
+
+#: includes/Integrations/WPUF_N8N_Integration.php:225
+msgid "Enter the name for the Header Auth authentication."
+msgstr ""
+
+#: includes/Integrations/WPUF_N8N_Integration.php:235
+msgid "Header Auth Value"
+msgstr ""
+
+#: includes/Integrations/WPUF_N8N_Integration.php:236
+msgid "Enter the value for the Header Auth authentication."
+msgstr ""
+
+#: includes/Integrations/WPUF_N8N_Integration.php:247
+msgid "JWT Key Type"
+msgstr ""
+
+#: includes/Integrations/WPUF_N8N_Integration.php:248
+msgid "Select the type of JWT key for the JWT Auth authentication."
+msgstr ""
+
+#: includes/Integrations/WPUF_N8N_Integration.php:255
+#: includes/Integrations/WPUF_N8N_Integration.php:263
+msgid "Passphrase"
+msgstr ""
+
+#: includes/Integrations/WPUF_N8N_Integration.php:256
+#: includes/Integrations/WPUF_N8N_Integration.php:277
+msgid "PEM Key"
+msgstr ""
+
+#: includes/Integrations/WPUF_N8N_Integration.php:264
+msgid "Enter the passphrase for the JWT Auth authentication."
+msgstr ""
+
+#: includes/Integrations/WPUF_N8N_Integration.php:278
+msgid "Enter the PEM key for the JWT Auth authentication."
+msgstr ""
+
+#: includes/Integrations/WPUF_N8N_Integration.php:330
+msgid "Enable N8N Integration"
+msgstr ""
+
+#: includes/Integrations/WPUF_N8N_Integration.php:332
+msgid "Enable N8N integration"
+msgstr ""
+
+#: includes/Integrations/WPUF_N8N_Integration.php:337
+msgid "Webhook URL"
+msgstr ""
+
+#: includes/Integrations/WPUF_N8N_Integration.php:339
+msgid "Enter the N8N webhook URL to send form data when posts are submitted"
+msgstr ""
+
+#: includes/Integrations/WPUF_N8N_Integration.php:340
+msgid "https://your-n8n-instance.com/webhook/your-webhook-id"
 msgstr ""
 
 #: includes/Integrations/WPUF_WCMp_Integration.php:42
@@ -8861,11 +8965,11 @@ msgstr ""
 msgid "Scheduled"
 msgstr ""
 
-#: wpuf-functions.php:44 wpuf-functions.php:5179 wpuf-functions.php:5222
+#: wpuf-functions.php:44 wpuf-functions.php:5225 wpuf-functions.php:5268
 msgid "Private"
 msgstr ""
 
-#: wpuf-functions.php:65 wpuf-functions.php:5180 wpuf-functions.php:5223
+#: wpuf-functions.php:65 wpuf-functions.php:5226 wpuf-functions.php:5269
 msgid "Published"
 msgstr ""
 
@@ -9125,336 +9229,332 @@ msgstr ""
 msgid "Jordanian dinar"
 msgstr ""
 
-#: wpuf-functions.php:3682
-msgid "None"
-msgstr ""
-
-#: wpuf-functions.php:5004
+#: wpuf-functions.php:5050
 msgid "General"
 msgstr ""
 
-#: wpuf-functions.php:5018
+#: wpuf-functions.php:5064
 msgid "Notification Settings"
 msgstr ""
 
-#: wpuf-functions.php:5024
+#: wpuf-functions.php:5070
 msgid "Display Settings"
 msgstr ""
 
-#: wpuf-functions.php:5030
+#: wpuf-functions.php:5076
 msgid "Advanced"
 msgstr ""
 
-#: wpuf-functions.php:5048
+#: wpuf-functions.php:5094
 msgid "Post Settings"
 msgstr ""
 
-#: wpuf-functions.php:5083
+#: wpuf-functions.php:5129
 msgid "-- Select Template --"
 msgstr ""
 
-#: wpuf-functions.php:5085
+#: wpuf-functions.php:5131
 msgid "WooCommerce Product Form"
 msgstr ""
 
-#: wpuf-functions.php:5086
+#: wpuf-functions.php:5132
 msgid "EDD Download Form"
 msgstr ""
 
-#: wpuf-functions.php:5087
+#: wpuf-functions.php:5133
 msgid "Event Form"
 msgstr ""
 
-#: wpuf-functions.php:5088
+#: wpuf-functions.php:5134
 msgid "Video Form"
 msgstr ""
 
-#: wpuf-functions.php:5089
+#: wpuf-functions.php:5135
 msgid "Professional Video Form"
 msgstr ""
 
-#: wpuf-functions.php:5090
+#: wpuf-functions.php:5136
 msgid "Artwork Form"
 msgstr ""
 
-#: wpuf-functions.php:5091
+#: wpuf-functions.php:5137
 msgid "Press Release Form"
 msgstr ""
 
-#: wpuf-functions.php:5108
+#: wpuf-functions.php:5154
 msgid "Before Post Settings"
 msgstr ""
 
-#: wpuf-functions.php:5109
+#: wpuf-functions.php:5155
 msgid ""
 "Configure how the form behaves before submission, including content type, "
 "default category, post status, draft-saving options, and submit button "
 "customization"
 msgstr ""
 
-#: wpuf-functions.php:5115
+#: wpuf-functions.php:5161
 msgid "Show Form Title"
 msgstr ""
 
-#: wpuf-functions.php:5117
+#: wpuf-functions.php:5163
 msgid "Toggle whether the form title should be displayed on the frontend"
 msgstr ""
 
-#: wpuf-functions.php:5120
+#: wpuf-functions.php:5166
 msgid "Form Description"
 msgstr ""
 
-#: wpuf-functions.php:5122
+#: wpuf-functions.php:5168
 msgid ""
 "Add a brief message or instruction that will be displayed before the form — "
 "helpful for guiding users before they start filling it out"
 msgstr ""
 
-#: wpuf-functions.php:5128
+#: wpuf-functions.php:5174
 msgid ""
 "Select the content type this form will create, like a post, product, or "
 "custom type"
 msgstr ""
 
-#: wpuf-functions.php:5137
+#: wpuf-functions.php:5183
 msgid "Default Category"
 msgstr ""
 
-#: wpuf-functions.php:5139
+#: wpuf-functions.php:5185
 msgid "Select the default category for posts submitted through this form"
 msgstr ""
 
-#: wpuf-functions.php:5145 wpuf-functions.php:5231
+#: wpuf-functions.php:5191 wpuf-functions.php:5277
 msgid "Successful Redirection"
 msgstr ""
 
-#: wpuf-functions.php:5147
+#: wpuf-functions.php:5193
 msgid "Select where users will be redirected after successfully submitting the form"
 msgstr ""
 
-#: wpuf-functions.php:5153 wpuf-functions.php:5238
+#: wpuf-functions.php:5199 wpuf-functions.php:5284
 msgid "Same page"
 msgstr ""
 
-#: wpuf-functions.php:5167 wpuf-functions.php:5261
+#: wpuf-functions.php:5213 wpuf-functions.php:5307
 msgid "Choose the default category for the post"
 msgstr ""
 
-#: wpuf-functions.php:5174
+#: wpuf-functions.php:5220
 msgid "Post Submission Status"
 msgstr ""
 
-#: wpuf-functions.php:5182
+#: wpuf-functions.php:5228
 msgid "Select the status of the post after submission"
 msgstr ""
 
-#: wpuf-functions.php:5185
+#: wpuf-functions.php:5231
 msgid "Enable saving as draft"
 msgstr ""
 
-#: wpuf-functions.php:5187
+#: wpuf-functions.php:5233
 msgid "Allow users to save posts before final submission"
 msgstr ""
 
-#: wpuf-functions.php:5192
+#: wpuf-functions.php:5238
 msgid "Submit Post Button Text"
 msgstr ""
 
-#: wpuf-functions.php:5194
+#: wpuf-functions.php:5240
 msgid "Customize the text on the 'Submit' button for this form"
 msgstr ""
 
-#: wpuf-functions.php:5199
+#: wpuf-functions.php:5245
 msgid "Choose Form Template"
 msgstr ""
 
-#: wpuf-functions.php:5210
+#: wpuf-functions.php:5256
 msgid "After Post Settings"
 msgstr ""
 
-#: wpuf-functions.php:5211
+#: wpuf-functions.php:5257
 msgid ""
 "Manage what happens after submission, such as setting post update status, "
 "displaying success messages, redirecting users, limiting edit time, and "
 "customizing the update button"
 msgstr ""
 
-#: wpuf-functions.php:5217
+#: wpuf-functions.php:5263
 msgid "Post Update Status"
 msgstr ""
 
-#: wpuf-functions.php:5226
+#: wpuf-functions.php:5272
 msgid "Select the status the post will have after being updated"
 msgstr ""
 
-#: wpuf-functions.php:5233
+#: wpuf-functions.php:5279
 msgid "After successfully submit, where the page will redirect to"
 msgstr ""
 
-#: wpuf-functions.php:5237
+#: wpuf-functions.php:5283
 msgid "Updated post"
 msgstr ""
 
-#: wpuf-functions.php:5247
+#: wpuf-functions.php:5293
 msgid ""
 "Post has been updated successfully. <a target=\"_blank\" href=\"%s\">View "
 "post</a>"
 msgstr ""
 
-#: wpuf-functions.php:5252
+#: wpuf-functions.php:5298
 msgid "Customize the message displayed after a post is successfully updated"
 msgstr ""
 
-#: wpuf-functions.php:5268
+#: wpuf-functions.php:5314
 msgid "Lock User Editing After"
 msgstr ""
 
-#: wpuf-functions.php:5270
+#: wpuf-functions.php:5316
 msgid ""
 "Set the number of hours after which users can no longer edit their "
 "submitted post"
 msgstr ""
 
-#: wpuf-functions.php:5275
+#: wpuf-functions.php:5321
 msgid "Hours"
 msgstr ""
 
-#: wpuf-functions.php:5278
+#: wpuf-functions.php:5324
 msgid "Update Post Button Text"
 msgstr ""
 
-#: wpuf-functions.php:5280
+#: wpuf-functions.php:5326
 msgid "Customize the text on the 'Update' button for this form"
 msgstr ""
 
-#: wpuf-functions.php:5287
+#: wpuf-functions.php:5333
 msgid "Posting Control"
 msgstr ""
 
-#: wpuf-functions.php:5288
+#: wpuf-functions.php:5334
 msgid ""
 "Define who can submit posts using this form. Choose whether to allow guest "
 "submissions or restrict access based on user roles"
 msgstr ""
 
-#: wpuf-functions.php:5294
+#: wpuf-functions.php:5340
 msgid "Post Permission"
 msgstr ""
 
-#: wpuf-functions.php:5297
+#: wpuf-functions.php:5343
 msgid "- Select Post Permission -"
 msgstr ""
 
-#: wpuf-functions.php:5299
+#: wpuf-functions.php:5345
 msgid "Role Based Post"
 msgstr ""
 
-#: wpuf-functions.php:5301
+#: wpuf-functions.php:5347
 msgid ""
 "Select who can submit posts using this form, either guests or specific user "
 "roles"
 msgstr ""
 
-#: wpuf-functions.php:5309
+#: wpuf-functions.php:5355
 msgid ""
 "If enabled, guest users will be automatically registered using their name "
 "and email"
 msgstr ""
 
-#: wpuf-functions.php:5319
+#: wpuf-functions.php:5365
 msgid "Customize the label for the name field in guest submissions"
 msgstr ""
 
-#: wpuf-functions.php:5327
+#: wpuf-functions.php:5373
 msgid "Customize the label for the email field in guest submissions"
 msgstr ""
 
-#: wpuf-functions.php:5335
+#: wpuf-functions.php:5381
 msgid "Require email verification"
 msgstr ""
 
-#: wpuf-functions.php:5337
+#: wpuf-functions.php:5383
 msgid "If enabled, users must verify their email before submitting a post"
 msgstr ""
 
-#: wpuf-functions.php:5342
+#: wpuf-functions.php:5388
 msgid "Choose who can submit post"
 msgstr ""
 
-#: wpuf-functions.php:5344
+#: wpuf-functions.php:5390
 msgid "Select the user roles who can submit posts"
 msgstr ""
 
-#: wpuf-functions.php:5351
+#: wpuf-functions.php:5397
 msgid ""
 "Display this message to non-logged-in users. Use {login} and {register} "
 "placeholders to add login and registration links"
 msgstr ""
 
-#: wpuf-functions.php:5368
+#: wpuf-functions.php:5414
 msgid "Enable payments for this form to charge users for submissions"
 msgstr ""
 
-#: wpuf-functions.php:5373
+#: wpuf-functions.php:5419
 msgid "Choose Payment Option"
 msgstr ""
 
-#: wpuf-functions.php:5376
+#: wpuf-functions.php:5422
 msgid "Mandatory Subscription"
 msgstr ""
 
-#: wpuf-functions.php:5377
+#: wpuf-functions.php:5423
 msgid "Pay as you post"
 msgstr ""
 
-#: wpuf-functions.php:5379
+#: wpuf-functions.php:5425
 msgid "Select how users will pay for submitting posts"
 msgstr ""
 
-#: wpuf-functions.php:5384
+#: wpuf-functions.php:5430
 msgid "Pay-per-post billing when limit exceeds"
 msgstr ""
 
-#: wpuf-functions.php:5386
+#: wpuf-functions.php:5432
 msgid "Switch to pay-per-post billing if pack limit is exceeded"
 msgstr ""
 
-#: wpuf-functions.php:5389
+#: wpuf-functions.php:5435
 msgid "Cost for each additional post after pack limit is reached"
 msgstr ""
 
-#: wpuf-functions.php:5391
+#: wpuf-functions.php:5437
 msgid ""
 "This field is required when Pay-per-post billing when limit exceeds is "
 "enabled."
 msgstr ""
 
-#: wpuf-functions.php:5394
+#: wpuf-functions.php:5440
 msgid "Charge for each post"
 msgstr ""
 
-#: wpuf-functions.php:5396
+#: wpuf-functions.php:5442
 msgid ""
 "Set a fee for each post submission. This field is required when Pay as you "
 "post is selected."
 msgstr ""
 
-#: wpuf-functions.php:5404
+#: wpuf-functions.php:5450
 msgid "Select the page users will be redirected to after a successful payment"
 msgstr ""
 
-#: wpuf-functions.php:5415
+#: wpuf-functions.php:5461
 msgid ""
 "Enable email alerts for new post submissions via the frontend form. This "
 "feature keeps you updated on user activity, allowing for timely review and "
 "approval of content"
 msgstr ""
 
-#: wpuf-functions.php:5423
+#: wpuf-functions.php:5469
 msgid "Enable email alerts for each new post submitted through this form"
 msgstr ""
 
-#: wpuf-functions.php:5464
+#: wpuf-functions.php:5510
 msgid ""
 "Enable this feature to receive email alerts whenever an existing post is "
 "updated through the frontend form. This ensures you're promptly informed "
@@ -9462,67 +9562,67 @@ msgid ""
 "updates"
 msgstr ""
 
-#: wpuf-functions.php:5479
+#: wpuf-functions.php:5525
 msgid ""
 "Customize the appearance and layout of your form. Select a form template "
 "that best suits your website's design for a cohesive look and feel"
 msgstr ""
 
-#: wpuf-functions.php:5487
+#: wpuf-functions.php:5533
 msgid "Apply your site's theme CSS for consistent styling and appearance"
 msgstr ""
 
-#: wpuf-functions.php:5500
+#: wpuf-functions.php:5546
 msgid ""
 "Customize the position of form labels for improved user navigation and "
 "clarity"
 msgstr ""
 
-#: wpuf-functions.php:5512
+#: wpuf-functions.php:5558
 msgid "Enable User Comment"
 msgstr ""
 
-#: wpuf-functions.php:5514
+#: wpuf-functions.php:5560
 msgid "Allow users to comment on posts submitted via this form"
 msgstr ""
 
-#: wpuf-functions.php:5521
+#: wpuf-functions.php:5567
 msgid "Enable Form Scheduling"
 msgstr ""
 
-#: wpuf-functions.php:5523
+#: wpuf-functions.php:5569
 msgid "Set specific dates and times for when the form will be accessible to users"
 msgstr ""
 
-#: wpuf-functions.php:5548
+#: wpuf-functions.php:5594
 msgid "Limit Form Entries"
 msgstr ""
 
-#: wpuf-functions.php:5550
+#: wpuf-functions.php:5596
 msgid "Limit the number of submissions allowed for the form"
 msgstr ""
 
-#: wpuf-functions.php:5612
+#: wpuf-functions.php:5658
 msgid "Saved"
 msgstr ""
 
-#: wpuf-functions.php:5613
+#: wpuf-functions.php:5659
 msgid "Trash"
 msgstr ""
 
-#: wpuf-functions.php:5656
+#: wpuf-functions.php:5702
 msgid "JPG"
 msgstr ""
 
-#: wpuf-functions.php:5657
+#: wpuf-functions.php:5703
 msgid "JPEG"
 msgstr ""
 
-#: wpuf-functions.php:5658
+#: wpuf-functions.php:5704
 msgid "PNG"
 msgstr ""
 
-#: wpuf-functions.php:5659
+#: wpuf-functions.php:5705
 msgid "GIF"
 msgstr ""
 

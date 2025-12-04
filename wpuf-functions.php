@@ -531,15 +531,15 @@ function wpuf_get_image_sizes() {
 function wpuf_allowed_extensions() {
     $extesions = [
         'images' => [
-            'ext' => 'jpg, jpeg, gif, png, bmp, webp',
+            'ext' => 'jpg,jpeg,gif,png,bmp,webp',
             'label' => __( 'Images', 'wp-user-frontend' ),
         ],
         'audio'  => [
-            'ext' => 'mp3, wav, ogg, wma, mka, m4a, ra, mid, midi',
+            'ext' => 'mp3,wav,ogg,wma,mka,m4a,ra,mid,midi',
             'label' => __( 'Audio', 'wp-user-frontend' ),
         ],
         'video'  => [
-            'ext' => 'avi, divx, flv, mov, ogv, mkv, mp4, m4v, divx, mpg, mpeg, mpe',
+            'ext' => 'avi,divx,flv,mov,ogv,mkv,mp4,m4v,divx,mpg,mpeg,mpe',
             'label' => __( 'Videos', 'wp-user-frontend' ),
         ],
         'pdf'    => [
@@ -547,11 +547,11 @@ function wpuf_allowed_extensions() {
             'label' => __( 'PDF', 'wp-user-frontend' ),
         ],
         'office' => [
-            'ext' => 'doc, ppt, pps, xls, mdb, docx, xlsx, pptx, odt, odp, ods, odg, odc, odb, odf, rtf, txt',
+            'ext' => 'doc,ppt,pps,xls,mdb,docx,xlsx,pptx,odt,odp,ods,odg,odc,odb,odf,rtf,txt',
             'label' => __( 'Office Documents', 'wp-user-frontend' ),
         ],
         'zip'    => [
-            'ext' => 'zip, gz, gzip, rar, 7z',
+            'ext' => 'zip,gz,gzip,rar,7z',
             'label' => __( 'Zip Archives', 'wp-user-frontend' ),
         ],
         'exe'    => [
@@ -1034,18 +1034,26 @@ function wpuf_show_custom_fields( $content ) {
 
                             $full_size = wp_get_attachment_url( $attachment_id );
                             $path      = parse_url( $full_size, PHP_URL_PATH );
-                            $extension = pathinfo( $path, PATHINFO_EXTENSION );
+                            $extension = strtolower( pathinfo( $path, PATHINFO_EXTENSION ) );
 
                             if ( $thumb ) {
-                                $playable                   = isset( $attr['playable_audio_video'] ) ? $attr['playable_audio_video'] : 'no';
-                                $wpuf_allowed_extensions    = wpuf_allowed_extensions();
-                                $allowed_audio_extensions   = explode( ',', $wpuf_allowed_extensions['audio']['ext'] );
-                                $allowed_video_extensions   = explode( ',', $wpuf_allowed_extensions['video']['ext'] );
-                                $allowed_extenstions        = array_merge( $allowed_audio_extensions, $allowed_video_extensions );
+                                $playable                 = isset( $attr['playable_audio_video'] ) ? $attr['playable_audio_video'] : 'no';
+                                $wpuf_allowed_extensions  = wpuf_allowed_extensions();
+                                $allowed_audio_extensions = array_map(
+                                    'strtolower',
+                                    array_map( 'trim', explode( ',', $wpuf_allowed_extensions['audio']['ext'] ) )
+                                );
+                                $allowed_video_extensions = array_map(
+                                    'strtolower',
+                                    array_map( 'trim', explode( ',', $wpuf_allowed_extensions['video']['ext'] ) )
+                                );
+                                $allowed_extensions       = array_merge(
+                                    $allowed_audio_extensions, $allowed_video_extensions
+                                );
 
-                                if ( 'yes' === $playable && in_array( $extension, $allowed_extenstions, true ) ) {
-                                    $is_video       = in_array( $extension, $allowed_video_extensions, true );
-                                    $is_audio       = in_array( $extension, $allowed_audio_extensions, true );
+                                if ( 'yes' === $playable && in_array( $extension, $allowed_extensions, true ) ) {
+                                    $is_video = in_array( $extension, $allowed_video_extensions, true );
+                                    $is_audio = in_array( $extension, $allowed_audio_extensions, true );
                                     $preview_width  = isset( $attr['preview_width'] ) ? $attr['preview_width'] : '123';
                                     $preview_height = isset( $attr['preview_height'] ) ? $attr['preview_height'] : '456';
 
@@ -4053,7 +4061,7 @@ function wpuf_settings_password_preview( $args ) {
     $value    = $settings->get_option( $args['id'], $args['section'], $args['std'] );
     $disabled = ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ? 'disabled' : '';
     $size     = isset( $args['size'] ) && ! is_null( $args['size'] ) ? $args['size'] : 'regular';
-    
+
     // Create masked preview of the password
     $preview_value = '';
     if ( ! empty( $value ) ) {
@@ -4067,7 +4075,7 @@ function wpuf_settings_password_preview( $args ) {
 
     $depends_on = ! empty( $args['depends_on'] ) ? $args['depends_on'] : '';
     $depends_on_value = ! empty( $args['depends_on_value'] ) ? $args['depends_on_value'] : '';
-    
+
     // Handle array dependencies
     if (is_array($depends_on)) {
         $depends_on_json = esc_attr( json_encode($depends_on) );
@@ -4075,7 +4083,7 @@ function wpuf_settings_password_preview( $args ) {
     } else {
         $depends_on_json = esc_attr( $depends_on );
     }
-    
+
     $html  = sprintf( '<input type="text" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]" value="%4$s" %5$s data-depends-on=\'%6$s\' data-depends-on-value="%7$s"/>', $size, $args['section'], $args['id'], $preview_value, $disabled, $depends_on_json, esc_attr( $depends_on_value ) );
     $html  .= $settings->get_field_description( $args );
 

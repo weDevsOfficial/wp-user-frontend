@@ -2,7 +2,7 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 4.2.2\n"
+"Project-Id-Version: WP User Frontend 4.2.3\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
 "POT-Creation-Date: 2025-11-21 05:50:32+00:00\n"
 "MIME-Version: 1.0\n"

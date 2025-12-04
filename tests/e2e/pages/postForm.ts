@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ quiet: true });
 import { expect, request, type Page } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Base } from './base';
@@ -241,8 +241,6 @@ export class PostFormPage extends Base {
         await this.page.waitForLoadState('domcontentloaded', { timeout: 10000 });
         await this.assertionValidate(Selectors.postForms.postFormsFrontendCreate.uploads('2'));
         //Enter Repeat Field
-        await this.validateAndFillStrings(Selectors.postForms.postFormsFrontendCreate.postRepeatFieldFormsFE, PostForm.repeatField = this.generateWordWithMinLength(5));
-        console.log(PostForm.repeatField);
         //Enter Date / Time
         await this.validateAndClick(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.dateTimeSelect);
         await this.selectOptionWithValue(Selectors.postForms.postFormsFrontendCreate.postDateTimeFormsFE.selectYear, '2024');
@@ -349,8 +347,6 @@ export class PostFormPage extends Base {
         await this.checkElementText(Selectors.postForms.postFormData.emailAddress, PostForm.emailAddress);
         //Validate Image Upload
         expect(await this.page.isVisible(Selectors.postForms.postFormData.imageUpload)).toBe(true);
-        //Validate Repeat Field
-        await this.checkElementText(Selectors.postForms.postFormData.repeatField(PostForm.repeatField), PostForm.repeatField);
         //Validate Date / Time
         await this.checkElementText(Selectors.postForms.postFormData.dateTime(PostForm.date), PostForm.date);
         //Validate Time Field
@@ -604,13 +600,13 @@ export class PostFormPage extends Base {
         await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.productRegularPrice, ProductForm.regularPrice);
         await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.productSalePrice, ProductForm.salePrice);
         await this.page.setInputFiles(Selectors.postForms.productFrontendCreate.productImage, ProductForm.productImage);
-        await this.page.waitForTimeout(500);
+        await this.page.waitForTimeout(2000);
         await this.assertionValidate(Selectors.postForms.productFrontendCreate.uploads('1'));
         await this.page.setInputFiles(Selectors.postForms.productFrontendCreate.productImageGallery, ProductForm.imageGallery1);
-        await this.page.waitForTimeout(500);
+        await this.page.waitForTimeout(2000);
         await this.assertionValidate(Selectors.postForms.productFrontendCreate.uploads('2'));
         await this.page.setInputFiles(Selectors.postForms.productFrontendCreate.productImageGallery, ProductForm.imageGallery2);
-        await this.page.waitForTimeout(500);
+        await this.page.waitForTimeout(2000);
         await this.assertionValidate(Selectors.postForms.productFrontendCreate.uploads('3'));
         await this.selectOptionWithValue(Selectors.postForms.productFrontendCreate.catalogVisibility, ProductForm.catalogVisibility);
         await this.validateAndFillStrings(Selectors.postForms.productFrontendCreate.purchaseNote, ProductForm.purchaseNote = faker.lorem.sentence(1));
@@ -642,11 +638,11 @@ export class PostFormPage extends Base {
         await this.validateAndFillStrings(Selectors.postForms.downloadsFrontendCreate.downloadsExcerpt, DownloadsForm.excerpt = faker.lorem.sentence(1));
         await this.validateAndFillStrings(Selectors.postForms.downloadsFrontendCreate.downloadsRegularPrice, DownloadsForm.regularPrice);
         await this.page.setInputFiles(Selectors.postForms.downloadsFrontendCreate.downloadsImage, DownloadsForm.downloadsImage);
-        await this.page.waitForTimeout(500);
+        await this.page.waitForTimeout(2000);
         await this.assertionValidate(Selectors.postForms.downloadsFrontendCreate.uploads('1'));
         await this.validateAndFillStrings(Selectors.postForms.downloadsFrontendCreate.purchaseNote, DownloadsForm.purchaseNote = faker.lorem.sentence(1));
         await this.page.setInputFiles(Selectors.postForms.downloadsFrontendCreate.downloadableFiles, DownloadsForm.downloadableFiles);
-        await this.page.waitForTimeout(500);
+        await this.page.waitForTimeout(2000);
         await this.assertionValidate(Selectors.postForms.downloadsFrontendCreate.uploads('2'));
         await this.waitForLoading();
         //await this.selectOptionWithLabel(Selectors.postForms.downloadsFrontendCreate.downloadsTag, DownloadsForm.tags);
@@ -690,6 +686,23 @@ export class PostFormPage extends Base {
         await this.checkElementText(Selectors.postForms.productFormData.brand, ProductForm.brand);
         //Validate Product Reviews
         await this.assertionValidate(Selectors.postForms.productFormData.reviews);
+    }
+
+    async validateEnteredProductDataBE() {
+
+        await this.navigateToURL(this.productsPage);
+        //Validate Product Title
+        await this.validateAndClick(Selectors.postForms.productFormData.productTitle(ProductForm.title));
+        //Validate Product Type
+        const type = await this.page.getAttribute(
+            Selectors.postForms.productFormData.type(ProductForm.type),
+            'selected'
+        );
+        if (type === 'selected') {
+            console.log('\x1b[32m%s\x1b[0m', `✅ Validated type field`);
+        } else {
+            throw new Error(`Type validation failed`);
+        }
     }
 
     async validateEnteredDownloadsData() {

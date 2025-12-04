@@ -1,3 +1,9 @@
+= v4.2.3 (20 November, 2025) =
+* Enhancement – Add dynamic AI model fetching and improved error handling
+* Enhancement – System prompt update for better output for AI form builder
+* Enhancement – Change pricing field logo
+* Enhancement – Styling, CSS > replaced all old pro icon with new icon
+
 = v4.2.2 (04 November, 2025) =
 * Fix - Show/Hide field based on subscription plan
 * Fix - Frontend subscription page CSS fixes

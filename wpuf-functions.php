@@ -5455,7 +5455,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                 'label'   => __( 'Payment Success Page', 'wp-user-frontend' ),
                 'type'    => 'select',
                 'options' => $pages,
-                'help'    => __( 'Select the page users will be redirected to after a successful payment', 'wp-user-frontend' ),
+                'help_text'    => __( 'Select the page to redirect after successful payment.', 'wp-user-frontend' ),
             ],
         ]
     );
@@ -5474,7 +5474,7 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
                         'new'         => [
                             'label' => __( 'New Post Notification', 'wp-user-frontend' ),
                             'type'  => 'toggle',
-                            'help'  => __( 'Enable email alerts for each new post submitted through this form', 'wp-user-frontend' ),
+                            'help_text'  => __( 'Enable email alerts for new submissions through this form', 'wp-user-frontend' ),
                             'name'  => 'wpuf_settings[notification][new]',
                         ],
                         'new_to'      => [

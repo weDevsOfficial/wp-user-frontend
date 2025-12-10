@@ -177,7 +177,7 @@ class Form_Field_MultiDropdown extends Form_Field_Dropdown {
     /**
      * Enqueue custom multi-select assets
      *
-     * @since WPUF_SINCE
+     * @since 4.2.4
      *
      * @return void
      */

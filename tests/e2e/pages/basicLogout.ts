@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ quiet: true });
 import { expect, Page } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Urls } from '../utils/testData';

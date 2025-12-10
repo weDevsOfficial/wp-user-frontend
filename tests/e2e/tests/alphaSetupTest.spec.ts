@@ -1,5 +1,3 @@
-import * as dotenv from 'dotenv';
-dotenv.config();
 import { Browser, BrowserContext, Page, test, chromium } from "@playwright/test";
 import { BasicLoginPage } from '../pages/basicLogin';
 import { BasicLogoutPage } from '../pages/basicLogout';
@@ -56,7 +54,7 @@ test.describe('Login and Setup', () => {
      * @Test_LS0024 : Admin is logging out succesfully
      *  
      */
-    if (process.env.CI == 'false') {
+    if (process.env.CI !== 'true') {
         test('RS0001 : Admin is resetting Site', { tag: ['@Basic'] }, async () => {
             const BasicLogin = new BasicLoginPage(page);
             const SettingsSetup = new SettingsSetupPage(page);

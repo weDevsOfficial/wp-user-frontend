@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ quiet: true });
 import { expect, type Page } from '@playwright/test';
 import { Base } from './base';
 import { Users } from '../utils/testData';

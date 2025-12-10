@@ -13,13 +13,29 @@ Frontend post, content restriction, user login & registration, subscription & me
 
 == Description ==
 
-WP User Frontend makes the frontend better for you! It includes frontend dashboard, frontend editor, publishing, and uploader for WordPress user profile, post submissions, and memberships.
+Get AI-powered frontend post creation, user directory, membership, user profiles, user registration and content restriction to manage any WordPress site easily. WP User Frontend also includes frontend dashboard, frontend editor, subscriptions, publishing, post submissions, and uploader for WordPress users.
 
 <strong>#1 Frontend Post Submission, Membership, Profile Builder, & WordPress Editor Plugin</strong>
 
 <strong>FREE FEATURES</strong>
 
-<strong>Unlimited post-type form creation</strong>
+<strong>AI Post Form Builder</strong>
+
+Describe the type of form you want, and the AI generates a complete post submission form with smart fields, labels, and structure, saving you time and setup effort.
+
+<strong>n8n Integration to Automate Post Form Data</strong>
+
+Send every post submission straight to n8n in real time. Use the captured data instantly to trigger actions, run workflows, and sync information across your tools without any manual steps.
+
+<strong>One Time Payments</strong>
+
+Offer simple one-off payment options so users can pay once for posting or upgrades, remove recurring fees, and complete purchases with more confidence.
+
+<strong>Post Form Templates</strong>
+
+Pick from ready-made form templates for jobs, products, events, listings and more, letting you launch fully designed post forms in minutes.
+
+<strong>Unlimited Post-Type Form Creation</strong>
 
 The forms let users create new posts and edit their profile from the site frontend, with no need to access admin panel or backend.
 
@@ -97,27 +113,15 @@ Approve or keep membership requests pending – you’re in complete control. Vi
 
 <strong>Manage and Import/Export Forms Easily</strong>
 
-Install required WPUF pages in a click, delete post forms, registration forms, or subscriptions in one go. Import forms from other places and export forms as JSON.
+Install required WPUF pages in a click, delete post forms, user registration forms, or subscriptions in one go. Import forms from other places and export forms as JSON.
 
 <strong>Custom Login & Registration Form</strong>
 
-This WordPress Registration Form Plugin also allows you to build registration forms using default templates. More fields can be added with PRO.
+This WordPress Registration Form Plugin also allows you to build user registration forms using default templates. More fields can be added with PRO.
 
 <strong>Display Custom Fields Data in Post</strong>
 
 Custom field data are viewable to visitors on frontend on single post pages. Admins can also disable this if they don’t want to display custom fields to everyone.
-
-<strong>AI Powered Form Creation</strong>
-
-WPUF is introducing a brand-new AI Form Builder that helps you create complete forms with a single prompt. Just tell the AI what kind of form you need: a post submission form, job application, product submission form, survey, anything, and it instantly generates a ready-to-use form with suggested fields, labels, and structure in any language.
-
-What the AI Form Builder can do:
-
-* Create full forms based on natural language prompts
-* Suggest the most relevant fields automatically
-* Apply proper formatting, field types, and placeholders
-* Save time for busy site owners, agencies, and marketplace admins
-* Reduce setup errors and repetitive manual work
 
 = How to download and install WPUF FREE =
 
@@ -141,6 +145,17 @@ Try an <a href="https://wedevs.com/in/wpuf/demo/?utm_medium=referral&utm_source=
 <strong>WP User Frontend PRO – Premium Features</strong>
 
 * **20+ Modules** [BuddyPress, Paid Memberships Pro, Social Login, User Directory, User Activity, Stripe, MailChimp, Private Messaging, HTML Email Templates & more]
+* **AI Registration Form Builder:** Describe the registration form you need and the AI builds it instantly with smart, relevant field suggestions.
+* **20+ Pro/Advanced Form Templates:** Start quickly with templates for vendors, memberships, directories, events and more, all ready to customize.
+* **Flexible Pricing Fields:** Add pricing inputs that support fees, add-ons and dynamic amounts right inside your forms.
+* **Social Fields:** Let users add their social profile links to their frontend profile with clean, easy-to-use field options.
+* **Social Login (Facebook, X, LinkedIn):** Allow users to log in with their preferred social accounts and skip long registration steps.
+* **Subscription View/Post Control:** Control who can post or view content based on the subscription pack they currently have.
+* **Repeat Fields:** Let users add repeating field groups for links, skills, gallery items or any repeatable inputs.
+* **User Directory:** Show all users in a searchable, filterable and fully customizable frontend directory.
+* **Gutenberg Blocks for User Directory & Profile:** Insert user listings, single profiles or compact profile blocks directly in Gutenberg.
+* **SEO Module:** Add clean metadata to user-submitted posts so search engines understand and rank their content better.
+* **Social Login (GitHub):** Let developers and tech-savvy users log in quickly using their GitHub account.
 * **Content restriction:** Restrict or lock your exclusive content or pages or just a specific part of a content, based on registration, user roles, or subscriptions.
 * **Menu restriction:** Lock or hide your website's menu links for certain users based on user roles, registration, or subscriptions.
 * **Post expiration facility:** Automatically take down published posts on your sites after a given time based on subscription packs or specific forms.
@@ -169,7 +184,8 @@ Try an <a href="https://wedevs.com/in/wpuf/demo/?utm_medium=referral&utm_source=
 Subscription Packs.
 
 <strong>Premium Modules</strong>
-
+* [User Directory](https://wedevs.com/wp-user-frontend-pro/modules/user-directory/)
+* [Social Login & Registration](https://wedevs.com/wp-user-frontend-pro/modules/social-login/)
 * [BuddyPress Profile](https://wedevs.com/wp-user-frontend-pro/modules/buddypress/)
 * [Campaign Monitor](https://wedevs.com/wp-user-frontend-pro/modules/campaign-monitor/)
 * [Comments Manager](https://wedevs.com/wp-user-frontend-pro/modules/comments-manager/)
@@ -184,21 +200,18 @@ Subscription Packs.
 * [QR Code Generator](https://wedevs.com/wp-user-frontend-pro/modules/qr-code-generator/)
 * [Reports](https://wedevs.com/wp-user-frontend-pro/modules/reports/)
 * [SMS Notification](https://wedevs.com/wp-user-frontend-pro/modules/sms-notification/)
-* [Social Login & Registration](https://wedevs.com/wp-user-frontend-pro/modules/social-login/)
 * [Stripe Payment](https://wedevs.com/products/plugins/wp-user-frontend-pro/stripe-gateway/)
 * [User Analytics](https://wedevs.com/wp-user-frontend-pro/modules/user-analytics/)
-* [User Directory](https://wedevs.com/wp-user-frontend-pro/modules/user-directory/)
 * [User Activity](https://wedevs.com/wp-user-frontend-pro/modules/user-activity/)
 * [Zapier](https://wedevs.com/wp-user-frontend-pro/modules/zapier/)
 
 Check out the <a href="https://wedevs.com/wp-user-frontend-pro/pricing/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme">full feature list and pricing plans </a> of the Pro version.
 
+You can always explore every update, fix and improvement in the **full changelog** here: [https://headwayapp.co/wp-user-frontend-changelog](https://headwayapp.co/wp-user-frontend-changelog)
+
 = Checkout Our Other Products =
 
-* [Dokan:](https://wordpress.org/plugins/dokan-lite/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) The pioneer WooCommerce multivendor marketplace solution for WordPress. Start your own multi vendor marketplace like Amazon, eBay, Etsy - in minutes!
-
-* [Texty:](https://wordpress.org/plugins/texty/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) A lightweight SMS Notification plugin for WordPress, WooCommerce, Dokan, and more. Get instant notification with gateways like Twilio, Vonage – Formerly Nexmo, etc.
-
+* [Dokan:](https://wordpress.org/plugins/dokan-lite/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) The pioneer WooCommerce multivendor marketplace solution for WordPress. Start your own multi vendor marketplace like Amazon, eBay, Etsy – in minutes!
 * [weDocs:](https://wordpress.org/plugins/wedocs/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) The best WordPress documentation and knowledge base plugin for managing your self-hosted knowledge base, wiki, and docs.
 
 * [weMail:](https://wordpress.org/plugins/wemail/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) A simplified WordPress solution for email marketing, newsletter, opt-in form, subscription form, and more!

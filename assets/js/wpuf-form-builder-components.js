@@ -410,7 +410,6 @@ Vue.component('field-checkbox', {
                     value = value ? Object.keys(this.option_field.options)[0] : '';
                 }
 
-
                 this.$store.commit('update_editing_form_field', {
                     editing_field_id: this.editing_form_field.id,
                     field_name: this.option_field.name,

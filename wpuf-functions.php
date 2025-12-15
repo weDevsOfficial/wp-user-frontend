@@ -1034,18 +1034,26 @@ function wpuf_show_custom_fields( $content ) {
 
                             $full_size = wp_get_attachment_url( $attachment_id );
                             $path      = parse_url( $full_size, PHP_URL_PATH );
-                            $extension = pathinfo( $path, PATHINFO_EXTENSION );
+                            $extension = strtolower( pathinfo( $path, PATHINFO_EXTENSION ) );
 
                             if ( $thumb ) {
-                                $playable                   = isset( $attr['playable_audio_video'] ) ? $attr['playable_audio_video'] : 'no';
-                                $wpuf_allowed_extensions    = wpuf_allowed_extensions();
-                                $allowed_audio_extensions   = explode( ',', $wpuf_allowed_extensions['audio']['ext'] );
-                                $allowed_video_extensions   = explode( ',', $wpuf_allowed_extensions['video']['ext'] );
-                                $allowed_extenstions        = array_merge( $allowed_audio_extensions, $allowed_video_extensions );
+                                $playable                 = isset( $attr['playable_audio_video'] ) ? $attr['playable_audio_video'] : 'no';
+                                $wpuf_allowed_extensions  = wpuf_allowed_extensions();
+                                $allowed_audio_extensions = array_map(
+                                    'strtolower',
+                                    array_map( 'trim', explode( ',', $wpuf_allowed_extensions['audio']['ext'] ) )
+                                );
+                                $allowed_video_extensions = array_map(
+                                    'strtolower',
+                                    array_map( 'trim', explode( ',', $wpuf_allowed_extensions['video']['ext'] ) )
+                                );
+                                $allowed_extensions       = array_merge(
+                                    $allowed_audio_extensions, $allowed_video_extensions
+                                );
 
-                                if ( 'yes' === $playable && in_array( $extension, $allowed_extenstions, true ) ) {
-                                    $is_video       = in_array( $extension, $allowed_video_extensions, true );
-                                    $is_audio       = in_array( $extension, $allowed_audio_extensions, true );
+                                if ( 'yes' === $playable && in_array( $extension, $allowed_extensions, true ) ) {
+                                    $is_video = in_array( $extension, $allowed_video_extensions, true );
+                                    $is_audio = in_array( $extension, $allowed_audio_extensions, true );
                                     $preview_width  = isset( $attr['preview_width'] ) ? $attr['preview_width'] : '123';
                                     $preview_height = isset( $attr['preview_height'] ) ? $attr['preview_height'] : '456';
 
@@ -4041,6 +4049,52 @@ function wpuf_settings_multiselect( $args ) {
 }
 
 /**
+ * Password preview field callback
+ *
+ * @param array $args Field arguments
+ * @since WPUF_PRO_SINCE
+ */
+function wpuf_settings_password_preview( $args ) {
+    wpuf_require_once( WPUF_ROOT . '/Lib/WeDevs_Settings_API.php' );
+
+    $settings = new WeDevs_Settings_API();
+    $value    = $settings->get_option( $args['id'], $args['section'], $args['std'] );
+    $disabled = ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ? 'disabled' : '';
+    $size     = isset( $args['size'] ) && ! is_null( $args['size'] ) ? $args['size'] : 'regular';
+
+    // Create masked preview of the password
+    $preview_value = '';
+    if ( ! empty( $value ) ) {
+        $length = strlen( $value );
+        if ( $length >= 4 ) {
+            $preview_value = substr( $value, 0, 2 ) . str_repeat( '*', $length - 4 ) . substr( $value, -2 );
+        } else {
+            $preview_value = str_repeat( '*', $length );
+        }
+    }
+
+    $depends_on = ! empty( $args['depends_on'] ) ? $args['depends_on'] : '';
+    $depends_on_value = ! empty( $args['depends_on_value'] ) ? $args['depends_on_value'] : '';
+
+    // Handle array dependencies
+    if (is_array($depends_on)) {
+        $depends_on_json = esc_attr( json_encode($depends_on) );
+        $depends_on_value = ''; // Not used for array format
+    } else {
+        $depends_on_json = esc_attr( $depends_on );
+    }
+
+    $html  = sprintf( '<input type="text" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]" value="%4$s" %5$s data-depends-on=\'%6$s\' data-depends-on-value="%7$s"/>', $size, $args['section'], $args['id'], $preview_value, $disabled, $depends_on_json, esc_attr( $depends_on_value ) );
+    $html  .= $settings->get_field_description( $args );
+
+    if ( ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ) {
+        $html .= wpuf_get_pro_preview_html();
+    }
+
+    echo wp_kses( $html, array( 'input' => array( 'type' => array(), 'class' => array(), 'id' => array(), 'name' => array(), 'value' => array(), 'readonly' => array(), 'style' => array(), 'disabled' => array(), 'data-depends-on' => array(), 'data-depends-on-value' => array() ), 'p' => array( 'class' => array() ), 'div' => array( 'class' => array() ), 'a' => array( 'href' => array(), 'target' => array(), 'class' => array() ), 'span' => array( 'class' => array() ), 'svg' => array( 'width' => array(), 'height' => array(), 'viewBox' => array(), 'fill' => array(), 'xmlns' => array() ), 'path' => array( 'd' => array(), 'fill' => array() ) ) );
+}
+
+/**
  * Displays Form Schedule Messages
  *
  * @since 2.8.10
@@ -4650,11 +4704,9 @@ function wpuf_get_image_sizes_array( $size = '' ) {
  * @return string
  */
 function wpuf_get_pro_preview_html() {
-    $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
     return sprintf( '<div class="pro-field-overlay">
-                        <a href="%1$s" target="%2$s" class="%3$s">Upgrade to PRO<span class="pro-icon icon-white"> %4$s</span></a>
-                    </div>', esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro',
-        file_get_contents( $crown_icon ) );
+                        <a href="%1$s" target="%2$s" class="%3$s">Upgrade to PRO</a>
+                    </div>', esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro' );
 }
 
 /**
@@ -4665,7 +4717,6 @@ function wpuf_get_pro_preview_html() {
  * @return string
  */
 function wpuf_get_pro_preview_tooltip() {
-    $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
     $check_icon = WPUF_ROOT . '/assets/images/check.svg';
     $features = [
         '24/7 Priority Support',
@@ -4687,9 +4738,8 @@ function wpuf_get_pro_preview_tooltip() {
     }
 
     $html .= '</ul>';
-    $html .= sprintf( '<div class="pro-link"><a href="%1$s" target="%2$s" class="%3$s">Upgrade to PRO<span class="pro-icon icon-white"> %4$s</span></a></div>',
-        esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro',
-        file_get_contents( $crown_icon ) );
+    $html .= sprintf( '<div class="pro-link"><a href="%1$s" target="%2$s" class="%3$s">Upgrade to PRO</a></div>',
+        esc_url( Pro_Prompt::get_upgrade_to_pro_popup_url() ), '_blank', 'wpuf-button button-upgrade-to-pro' );
 
     $html .= '<i></i>';
     $html .= '</div>';
@@ -5707,4 +5757,94 @@ if ( ! function_exists( 'wpuf_field_profile_photo_allowed_mimes' ) ) {
          */
         return apply_filters( 'wpuf_field_profile_photo_allowed_mimes', $profile_photo_mimes );
     }
+}
+
+/**
+ * Get login layout options for settings
+ *
+ * @since 4.1.0
+ *
+ * @return array Layout options with labels and image URLs
+ */
+function wpuf_get_login_layout_options() {
+    $image_url = WPUF_ASSET_URI . '/images/login-layouts/';
+
+    $layouts = [
+        'layout1' => __( 'Layout 1 - Classic', 'wp-user-frontend' ),
+        'layout2' => __( 'Layout 2 - Modern Dark', 'wp-user-frontend' ),
+        'layout3' => __( 'Layout 3 - Minimal', 'wp-user-frontend' ),
+        'layout4' => __( 'Layout 4 - Bordered', 'wp-user-frontend' ),
+        'layout5' => __( 'Layout 5 - Rounded', 'wp-user-frontend' ),
+        'layout6' => __( 'Layout 6 - Clean', 'wp-user-frontend' ),
+        'layout7' => __( 'Layout 7 - Premium', 'wp-user-frontend' ),
+    ];
+
+    $options = [];
+    foreach ( $layouts as $key => $label ) {
+        $options[ $key ] = [
+            'label' => $label,
+            'image' => $image_url . $key . '.svg',
+        ];
+    }
+
+    return $options;
+}
+
+/**
+ * Render login layout radio image field
+ *
+ * @since 4.1.0
+ *
+ * @param array $args Field arguments
+ */
+function wpuf_render_login_layout_field( $args ) {
+    if ( empty( $args['section'] ) || empty( $args['id'] ) || empty( $args['options'] ) ) {
+        return;
+    }
+
+    $value   = get_option( $args['section'] );
+    $current = $value[ $args['id'] ] ?? $args['std'] ?? '';
+    $disabled = ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ? 'disabled' : '';
+    $wrapper_class = ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ? 'pro-preview-html' : '';
+
+    echo '<fieldset>';
+
+    printf( '<div class="wpuf-radio-image-wrapper %s">', esc_attr( $wrapper_class ) );
+
+    foreach ( $args['options'] as $key => $option ) {
+        $checked = checked( $current, $key, false );
+        $label   = esc_html( $option['label'] ?? $key );
+        $image   = esc_url( $option['image'] ?? '' );
+
+        printf(
+            '<div class="wpuf-radio-image-option">
+                <input type="radio" id="%1$s_%2$s" name="%3$s[%1$s]" value="%2$s" %4$s %5$s>
+                <label for="%1$s_%2$s" title="%6$s">',
+            esc_attr( $args['id'] ),
+            esc_attr( $key ),
+            esc_attr( $args['section'] ),
+            $checked,
+            $disabled,
+            $label
+        );
+
+        if ( $image ) {
+            printf( '<img src="%s" alt="%s">', $image, $label );
+        }
+
+        echo '</label></div>';
+    }
+
+    // Add pro preview overlay inside the wrapper
+    if ( ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ) {
+        echo wpuf_get_pro_preview_html();
+    }
+
+    echo '</div>';
+
+    if ( ! empty( $args['desc'] ) ) {
+        printf( '<p class="description">%s</p>', wp_kses_post( $args['desc'] ) );
+    }
+
+    echo '</fieldset>';
 }

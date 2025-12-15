@@ -1,5 +1,5 @@
 <?php
-$crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
+$crown_icon = WPUF_ROOT . '/assets/images/pro-badge.svg';
 
 $pro_features = [
     [

@@ -324,7 +324,7 @@ class Simple_Login {
         }
 
         if ( $args['register'] && get_option( 'users_can_register' ) ) {
-            $links[] = sprintf( 'Don\'t have an account? <a href="%s">%s</a>', $this->get_action_url( 'register' ), __( 'Register', 'wp-user-frontend' ) );
+            $links[] = sprintf( '%sDon\'t have an account? %s<a href="%s">%s</a>', '<span class="wpuf-register-text">', '</span>', $this->get_action_url( 'register' ), __( 'Register', 'wp-user-frontend' ) );
         }
 
         if ( $args['lostpassword'] ) {

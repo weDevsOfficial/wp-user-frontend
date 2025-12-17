@@ -320,11 +320,11 @@ class Simple_Login {
         $links = [];
 
         if ( $args['login'] ) {
-            $links[] = sprintf( '<a href="%s">%s</a>', $this->get_action_url( 'login' ), __( 'Log In', 'wp-user-frontend' ) );
+            $links[] = sprintf( 'Already have an account? <a href="%s">%s</a>', $this->get_action_url( 'login' ), __( 'Log In', 'wp-user-frontend' ) );
         }
 
         if ( $args['register'] && get_option( 'users_can_register' ) ) {
-            $links[] = sprintf( '<a href="%s">%s</a>', $this->get_action_url( 'register' ), __( 'Register', 'wp-user-frontend' ) );
+            $links[] = sprintf( 'Don\'t have an account? <a href="%s">%s</a>', $this->get_action_url( 'register' ), __( 'Register', 'wp-user-frontend' ) );
         }
 
         if ( $args['lostpassword'] ) {

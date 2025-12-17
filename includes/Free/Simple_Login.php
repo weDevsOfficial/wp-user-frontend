@@ -320,8 +320,9 @@ class Simple_Login {
         $links = [];
 
         if ( $args['login'] ) {
-            $links[] = /* translators: %1$s: login URL, %2$s: login text */
+            $links[] =
                     sprintf(
+                        /* translators: %1$s: login URL, %2$s: login text */
                         wp_kses_post( __( 'Already have an account? <a href="%1$s">%2$s</a>', 'wp-user-frontend' ) ),
                         esc_url( $this->get_action_url( 'login' ) ),
                         esc_html( __( 'Login', 'wp-user-frontend' ) )

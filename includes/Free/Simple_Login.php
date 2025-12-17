@@ -320,7 +320,12 @@ class Simple_Login {
         $links = [];
 
         if ( $args['login'] ) {
-            $links[] = sprintf( 'Already have an account? <a href="%s">%s</a>', $this->get_action_url( 'login' ), __( 'Log In', 'wp-user-frontend' ) );
+            $links[] = /* translators: %1$s: login URL, %2$s: login text */
+                    sprintf(
+                        wp_kses_post( __( 'Already have an account? <a href="%1$s">%2$s</a>', 'wp-user-frontend' ) ),
+                        esc_url( $this->get_action_url( 'login' ) ),
+                        esc_html( __( 'Login', 'wp-user-frontend' ) )
+                    );
         }
 
         if ( $args['register'] && get_option( 'users_can_register' ) ) {

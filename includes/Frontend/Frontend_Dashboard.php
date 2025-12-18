@@ -90,11 +90,12 @@ class Frontend_Dashboard {
         $post_type = explode( ',', $post_type );
         unset( $attributes['post_type'] );
         $args = [
-            'author'         => get_current_user_id(),
-            'post_status'    => [ 'draft', 'future', 'pending', 'publish', 'private' ],
-            'post_type'      => $post_type,
-            'posts_per_page' => wpuf_get_option( 'per_page', 'wpuf_dashboard', 10 ),
-            'paged'          => $pagenum,
+            'author'                       => get_current_user_id(),
+            'post_status'                  => [ 'draft', 'future', 'pending', 'publish', 'private' ],
+            'post_type'                    => $post_type,
+            'posts_per_page'               => wpuf_get_option( 'per_page', 'wpuf_dashboard', 10 ),
+            'paged'                        => $pagenum,
+            'tribe_suppress_query_filters' => true, // Prevent TEC from filtering draft events
         ];
         if ( isset( $attributes['form_id'] ) && $attributes['form_id'] !== 'off' ) {
             $args['meta_query'] = [

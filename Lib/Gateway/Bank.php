@@ -65,9 +65,26 @@ class Bank {
             $data['price'] = (new Coupons())->discount( $data['price'], $_POST['coupon_id'], $data['item_number'] );
         }
 
-        $data['cost']     = apply_filters( 'wpuf_payment_amount', $data['price'] ); //price with tax from pro
+        $post_id = isset( $data['item_number'] ) && $data['type'] === 'post' ? $data['item_number'] : 0;
+
+        // Check if pricing fields payment is enabled and update price accordingly
+        if ( $post_id && $data['type'] === 'post' ) {
+            $form_id = get_post_meta( $post_id, '_wpuf_form_id', true );
+            if ( $form_id ) {
+                $form_settings = wpuf_get_form_settings( $form_id );
+                $pricing_enabled = isset( $form_settings['enable_pricing_payment'] ) && wpuf_is_checkbox_or_toggle_on( $form_settings['enable_pricing_payment'] );
+                if ( $pricing_enabled ) {
+                    $pricing_cost = get_post_meta( $post_id, '_wpuf_pricing_field_cost', true );
+                    if ( $pricing_cost && is_numeric( $pricing_cost ) ) {
+                        $data['price'] = floatval( $pricing_cost );
+                    }
+                }
+            }
+        }
+
+        $data['cost']     = apply_filters( 'wpuf_payment_amount', $data['price'], $post_id ); //price with tax from pro
         $data['tax']      = floatval( $data['cost'] ) -  floatval( $data['price'] );
-        $data['subtotal'] = $data['price'] + $data['tax'];
+        $data['subtotal'] = $data['price'];
 
         if ( $order_id ) {
             update_post_meta( $order_id, '_data', $data );

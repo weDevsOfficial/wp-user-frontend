@@ -11,6 +11,7 @@ import List from './subscriptions/List.vue';
 import Empty from './subscriptions/Empty.vue';
 import Edit from './subscriptions/Edit.vue';
 import New from './subscriptions/New.vue';
+import Preferences from './subscriptions/Preferences.vue';
 import QuickEdit from './subscriptions/QuickEdit.vue';
 import {useQuickEditStore} from '../stores/quickEdit';
 import Notice from './subscriptions/Notice.vue';
@@ -27,6 +28,7 @@ const {notices} = storeToRefs( noticeStore );
 
 const component = ref( null );
 const tempSubscriptionStatus = ref( 'all' );
+const tempNavigationTarget = ref( null );
 const componentKey = ref( 0 );
 const noticeKey = ref( 0 );
 
@@ -47,9 +49,21 @@ onBeforeMount( () => {
 } );
 
 const checkIsDirty = ( subscriptionStatus = 'all' ) => {
-    if (subscriptionStore.isDirty) {
+    if (subscriptionStatus === 'preferences') {
+        // Handle preferences separately
+        if (subscriptionStore.isDirty) {
+            subscriptionStore.isUnsavedPopupOpen = true;
+            tempNavigationTarget.value = 'preferences';
+            // Keep current subscription status for list navigation
+            tempSubscriptionStatus.value = subscriptionStore.currentSubscriptionStatus || 'all';
+        } else {
+            componentStore.setCurrentComponent( 'Preferences' );
+            subscriptionStore.currentSubscriptionStatus = 'preferences';
+        }
+    } else if (subscriptionStore.isDirty) {
         subscriptionStore.isUnsavedPopupOpen = true;
         tempSubscriptionStatus.value = subscriptionStatus;
+        tempNavigationTarget.value = null;
     } else {
         subscriptionStore.isDirty = false;
         subscriptionStore.isUnsavedPopupOpen = false;
@@ -66,10 +80,17 @@ const goToList = () => {
     subscriptionStore.isDirty = false;
     subscriptionStore.isUnsavedPopupOpen = false;
 
-    subscriptionStore.setSubscriptionsByStatus( tempSubscriptionStatus.value );
-    componentStore.setCurrentComponent( 'List' );
-    subscriptionStore.setCurrentSubscription(null);
-    subscriptionStore.currentPageNumber = 1;
+    // Check if we're navigating to preferences
+    if (tempNavigationTarget.value === 'preferences') {
+        componentStore.setCurrentComponent( 'Preferences' );
+        subscriptionStore.currentSubscriptionStatus = 'preferences';
+        tempNavigationTarget.value = null;
+    } else {
+        subscriptionStore.setSubscriptionsByStatus( tempSubscriptionStatus.value );
+        componentStore.setCurrentComponent( 'List' );
+        subscriptionStore.setCurrentSubscription(null);
+        subscriptionStore.currentPageNumber = 1;
+    }
 };
 
 const removeNotice = ( index ) => {
@@ -90,6 +111,9 @@ watch(
             case 'New':
                 component.value = New;
                 break;
+            case 'Preferences':
+                component.value = Preferences;
+                break;
             default:
                 component.value = Empty;
         }
@@ -101,47 +125,50 @@ watch(
 </script>
 
 <template>
-    <Header utm="wpuf-subscription"/>
-    <div v-if="subscriptionStore.isSubscriptionLoading || component === null" class="wpuf-flex wpuf-h-svh wpuf-items-center wpuf-justify-center">
-        <hollow-dots-spinner
-            :animation-duration="1000"
-            :dot-size="20"
-            :dots-num="3"
-            :color="'#7DC442'"
-        />
-    </div>
-    <div
-        v-if="quickEditStore.isQuickEdit"
-        @click="[quickEditStore.setQuickEditStatus(false), subscriptionStore.errors = {}]"
-        class="wpuf-absolute wpuf-w-full wpuf-h-screen wpuf-z-10 wpuf-left-[-20px]"></div>
-    <template v-if="quickEditStore.isQuickEdit">
-        <QuickEdit />
-    </template>
-    <ContentHeader />
-    <div
-        v-if="!subscriptionStore.isSubscriptionLoading"
-        :class="quickEditStore.isQuickEdit ? 'wpuf-blur' : ''"
-        class="wpuf-flex wpuf-pt-[40px] wpuf-pr-[20px] wpuf-pl-[20px]">
-        <div class="wpuf-basis-1/5 wpuf-border-r-2 wpuf-border-gray-200">
-            <keep-alive>
-                <SidebarMenu @check-is-dirty="checkIsDirty" />
-            </keep-alive>
+    <div>
+        <Header utm="wpuf-subscription"/>
+        <div v-if="subscriptionStore.isSubscriptionLoading || component === null" class="wpuf-flex wpuf-h-svh wpuf-items-center wpuf-justify-center">
+            <hollow-dots-spinner
+                :animation-duration="1000"
+                :dot-size="20"
+                :dots-num="3"
+                :color="'#7DC442'"
+            />
         </div>
         <div
-            class="wpuf-basis-4/5">
-            <component :key="componentKey" :is="component" @go-to-list="goToList" @check-is-dirty="checkIsDirty" />
+            v-if="quickEditStore.isQuickEdit"
+            @click="[quickEditStore.setQuickEditStatus(false), subscriptionStore.errors = {}]"
+            class="wpuf-absolute wpuf-w-full wpuf-h-screen wpuf-z-10 wpuf-left-[-20px]"></div>
+        <template v-if="quickEditStore.isQuickEdit">
+            <QuickEdit />
+        </template>
+        <ContentHeader />
+        <div
+            v-if="!subscriptionStore.isSubscriptionLoading"
+            :class="quickEditStore.isQuickEdit ? 'wpuf-blur' : ''"
+            class="wpuf-flex wpuf-pt-[40px] wpuf-pr-[20px] wpuf-pl-[20px]">
+            <div class="wpuf-basis-1/5 wpuf-border-r-2 wpuf-border-gray-200">
+                <keep-alive>
+                    <SidebarMenu @check-is-dirty="checkIsDirty" />
+                </keep-alive>
+            </div>
+            <div
+                class="wpuf-basis-4/5">
+                <component :key="componentKey" :is="component" @go-to-list="goToList" @check-is-dirty="checkIsDirty" />
+            </div>
+            <Unsaved v-if="subscriptionStore.isUnsavedPopupOpen" @close-popup="subscriptionStore.isUnsavedPopupOpen = false" @goToList="goToList" />
         </div>
-        <Unsaved v-if="subscriptionStore.isUnsavedPopupOpen" @close-popup="subscriptionStore.isUnsavedPopupOpen = false" @goToList="goToList" />
-    </div>
-    <div class="wpuf-fixed wpuf-top-20 wpuf-right-8 wpuf-z-10">
-        <Notice
-            v-if="noticeStore.display"
-            v-for="(notice, index) in notices"
-            :key="noticeKey"
-            :index="index"
-            :type="notice.type"
-            :message="notice.message"
-            @removeNotice="removeNotice(index)"
-        />
+        <div class="wpuf-fixed wpuf-top-20 wpuf-right-8 wpuf-z-10">
+            <template v-if="noticeStore.display">
+                <Notice
+                    v-for="(notice, index) in notices"
+                    :key="`notice-${index}`"
+                    :index="index"
+                    :type="notice.type"
+                    :message="notice.message"
+                    @removeNotice="removeNotice(index)"
+                />
+            </template>
+        </div>
     </div>
 </template>

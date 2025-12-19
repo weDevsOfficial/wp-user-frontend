@@ -146,7 +146,7 @@ $post_type_obj   = get_post_type_object( $post_type );
 
                             <?php } else { ?>
 
-                                <a href="<?php the_permalink(); ?>" title="<?php printf( 
+                                <a href="<?php the_permalink(); ?>" title="<?php printf(
                                     // translators: %s is title
                                     esc_attr__( 'Permalink to %s', 'wp-user-frontend' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php echo esc_html( $title ); ?></a>
 
@@ -172,7 +172,7 @@ $post_type_obj   = get_post_type_object( $post_type );
                             printf(
                                 '<a href="%s" target="_blank">%s</a>',
                                 esc_url( $the_link ),
-                                esc_url( $link_text )
+                                esc_html( $link_text )
                             );
                             ?>
                         </td>
@@ -251,10 +251,10 @@ $post_type_obj   = get_post_type_object( $post_type );
 
             <?php
         } else {
-            printf( 
+            printf(
                 // translators: %s is label
-                '<div class="wpuf-message">' . esc_attr( __( 'No %s found', 'wp-user-frontend' ) ) . '</div>', 
-                esc_html( $post_type_obj->label ) 
+                '<div class="wpuf-message">' . esc_attr( __( 'No %s found', 'wp-user-frontend' ) ) . '</div>',
+                esc_html( $post_type_obj->label )
             );
             do_action( 'wpuf_account_posts_nopost', $userdata->ID, $post_type_obj );
         }

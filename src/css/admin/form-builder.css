@@ -4,7 +4,7 @@
 
 @layer components {
     .wpuf-btn-primary {
-        @apply wpuf-rounded-md wpuf-bg-primary !wpuf-text-white wpuf-px-4 wpuf-py-3 wpuf-text-sm wpuf-font-semibold hover:wpuf-bg-emerald-700 hover:wpuf-text-white focus:wpuf-text-white focus:wpuf-shadow-none;
+        @apply wpuf-rounded-md wpuf-bg-primary !wpuf-text-white wpuf-px-4 wpuf-py-3 wpuf-text-sm wpuf-font-semibold hover:wpuf-bg-primaryHover hover:wpuf-text-white focus:wpuf-text-white focus:wpuf-shadow-none;
     }
 
     .wpuf-btn-secondary {
@@ -16,7 +16,7 @@
     }
 
     .wpuf-input-checkbox {
-        @apply wpuf-bg-transparent wpuf-text-white checked:wpuf-bg-transparent checked:wpuf-shadow-primary checked:hover:wpuf-shadow-transparent checked:hover:wpuf-bg-transparent checked:focus:wpuf-bg-transparent
+        @apply wpuf-bg-transparent wpuf-text-white checked:wpuf-bg-transparent checked:wpuf-shadow-sm checked:hover:wpuf-shadow-none checked:hover:wpuf-bg-transparent checked:focus:wpuf-bg-transparent
     }
 
     .wpuf-pill-green {

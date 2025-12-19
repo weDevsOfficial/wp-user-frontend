@@ -1,0 +1,82 @@
+/* Import subscription template classes to ensure Tailwind includes them */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.subscription-template-classes {
+  @apply wpuf-rounded-xl wpuf-p-6 wpuf-ring-1 wpuf-ring-gray-200 wpuf-bg-white wpuf-shadow-md hover:wpuf-shadow-lg wpuf-transition-all wpuf-duration-300 wpuf-relative wpuf-h-full wpuf-flex wpuf-flex-col wpuf-m-2
+}
+
+.subscription-header {
+  @apply wpuf-flex wpuf-items-center wpuf-justify-between wpuf-gap-x-4;
+}
+
+.subscription-title {
+  @apply wpuf-text-lg wpuf-font-semibold wpuf-text-gray-900 wpuf-leading-8;
+}
+
+.subscription-badge {
+  @apply wpuf-rounded-full wpuf-bg-indigo-600/10 wpuf-px-2.5 wpuf-py-1 wpuf-text-xs wpuf-font-semibold wpuf-text-indigo-600 wpuf-leading-5;
+}
+
+.subscription-description {
+  @apply wpuf-mt-2 wpuf-text-sm wpuf-leading-5 wpuf-text-gray-600;
+}
+
+.subscription-price {
+  @apply wpuf-mt-4 wpuf-flex wpuf-items-baseline wpuf-gap-x-1;
+}
+
+.subscription-price-amount {
+  @apply wpuf-text-3xl wpuf-font-bold wpuf-tracking-tight wpuf-text-gray-900;
+}
+
+.subscription-price-period {
+  @apply wpuf-text-sm wpuf-font-semibold wpuf-text-gray-600 wpuf-leading-6;
+}
+
+.subscription-trial {
+  @apply wpuf-text-sm wpuf-text-gray-600 wpuf-bg-gray-50 wpuf-px-3 wpuf-py-2 wpuf-rounded-md wpuf-border;
+}
+
+.subscription-button-active {
+  @apply wpuf-block wpuf-w-full wpuf-rounded-md wpuf-px-3 wpuf-py-2 wpuf-text-center wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-bg-indigo-600 hover:wpuf-bg-indigo-500 wpuf-shadow-sm wpuf-ring-0 focus-visible:wpuf-outline focus-visible:wpuf-outline-2 focus-visible:wpuf-outline-offset-2 focus-visible:wpuf-outline-indigo-600 wpuf-transition-colors wpuf-duration-200 wpuf-leading-6;
+}
+
+.subscription-button-disabled {
+  @apply wpuf-block wpuf-w-full wpuf-rounded-md wpuf-px-3 wpuf-py-2 wpuf-text-center wpuf-text-sm wpuf-font-semibold wpuf-text-gray-400 wpuf-ring-1 wpuf-ring-inset wpuf-ring-gray-300 wpuf-cursor-not-allowed wpuf-bg-gray-100 wpuf-leading-6;
+}
+
+.subscription-features {
+  @apply wpuf-mt-8 wpuf-space-y-3 wpuf-text-sm wpuf-text-gray-600 xl:wpuf-mt-10 wpuf-leading-6;
+}
+
+.subscription-feature-item {
+  @apply wpuf-flex wpuf-gap-x-3;
+}
+
+.subscription-feature-icon {
+  @apply wpuf-h-6 wpuf-w-5 wpuf-flex-none wpuf-text-indigo-600;
+}
+
+/* Grid layout classes */
+.subscription-grid {
+  @apply wpuf-grid wpuf-grid-cols-1 md:wpuf-grid-cols-2 lg:wpuf-grid-cols-3 wpuf-gap-4 wpuf-max-w-4xl wpuf-mx-auto wpuf-px-4 wpuf-items-stretch;
+}
+
+/* Force margin-top for subscription packs list */
+ul.wpuf_packs {
+  margin-top: 30px !important;
+}
+
+/* Utility classes */
+@layer utilities {
+  .wpuf-no-underline {
+    text-decoration: none !important;
+  }
+  
+  .wpuf-no-underline:hover {
+    text-decoration: none !important;
+  }
+}

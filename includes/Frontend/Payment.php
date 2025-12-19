@@ -267,10 +267,10 @@ class Payment {
                                     $current_pack = $current_user->subscription()->current_pack();
                                     if ( $force_pack && ! is_wp_error( $current_pack ) && $fallback_enabled ) {
                                         $post_cost      = $fallback_cost;
-                                        $billing_amount = apply_filters( 'wpuf_payment_amount', $fallback_cost );
+                                        $billing_amount = apply_filters( 'wpuf_payment_amount', $fallback_cost, $post_id );
                                     } else {
                                         $post_cost      = $pay_per_post_cost;
-                                        $billing_amount = apply_filters( 'wpuf_payment_amount', $pay_per_post_cost );
+                                        $billing_amount = apply_filters( 'wpuf_payment_amount', $pay_per_post_cost, $post_id );
                                     }
                                     ?>
                                     <div id="wpuf_type" style="display: none"><?php echo 'post'; ?></div>

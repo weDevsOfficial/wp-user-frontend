@@ -49,12 +49,18 @@ function wpuf_settings_sections() {
             'title' => __( 'Privacy Options', 'wp-user-frontend' ),
             'icon'  => 'dashicons-shield-alt',
         ],
+        [
+            'id'    => 'wpuf_ai',
+            'title' => __( 'AI Settings', 'wp-user-frontend' ),
+            'icon'  => 'dashicons-admin-network',
+        ],
     ];
 
     return apply_filters( 'wpuf_settings_sections', $sections );
 }
 
 function wpuf_settings_fields() {
+    $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
     $pages      = wpuf_get_pages();
     $users      = wpuf_list_users();
     $post_types = get_post_types();
@@ -465,6 +471,93 @@ function wpuf_settings_fields() {
                 'default'    => 'off',
                 'depends_on' => 'enable_turnstile',
             ],
+            [
+                'name'           => 'wpuf_login_form_layout',
+                'label'          => __( 'Login Form Layout', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon ) . '</span>',
+                'desc'           => __( 'Choose a layout style for your login forms.', 'wp-user-frontend' ),
+                'type'           => 'radio',
+                'options'        => wpuf_get_login_layout_options(),
+                'default'        => 'layout1',
+                'is_pro_preview' => ! wpuf_is_pro_active(),
+                'callback'       => 'wpuf_render_login_layout_field',
+            ],
+            [
+                'name'           => 'wpuf_login_form_bg_color',
+                'label'          => __( 'Form Background Color', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon ) . '</span>',
+                'type'           => 'color',
+                'default'        => 'transparent',
+                'is_pro_preview' => ! wpuf_is_pro_active(),
+            ],
+            [
+                'name'           => 'wpuf_login_form_border_color',
+                'label'          => __( 'Form Border Color', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon ) . '</span>',
+                'type'           => 'color',
+                'default'        => 'transparent',
+                'is_pro_preview' => ! wpuf_is_pro_active(),
+            ],
+            [
+                'name'           => 'wpuf_login_field_border_color',
+                'label'          => __( 'Field Border Color', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon ) . '</span>',
+                'type'           => 'color',
+                'default'        => '#D1D5DB',
+                'is_pro_preview' => ! wpuf_is_pro_active(),
+            ],
+            [
+                'name'           => 'wpuf_login_field_bg_color',
+                'label'          => __( 'Field Background Color', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon ) . '</span>',
+                'type'           => 'color',
+                'default'        => 'transparent',
+                'is_pro_preview' => ! wpuf_is_pro_active(),
+            ],
+            [
+                'name'           => 'wpuf_login_label_text_color',
+                'label'          => __( 'Label Text Color', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon ) . '</span>',
+                'type'           => 'color',
+                'default'        => '#333333',
+                'is_pro_preview' => ! wpuf_is_pro_active(),
+            ],
+            [
+                'name'           => 'wpuf_login_placeholder_color',
+                'label'          => __( 'Placeholder Color', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon ) . '</span>',
+                'type'           => 'color',
+                'default'        => '#9CA3AF',
+                'is_pro_preview' => ! wpuf_is_pro_active(),
+            ],
+            [
+                'name'           => 'wpuf_login_input_text_color',
+                'label'          => __( 'Input Text Color', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon ) . '</span>',
+                'type'           => 'color',
+                'default'        => '#111827',
+                'is_pro_preview' => ! wpuf_is_pro_active(),
+            ],
+            [
+                'name'           => 'wpuf_login_help_text_color',
+                'label'          => __( 'Help Text Color', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon ) . '</span>',
+                'type'           => 'color',
+                'default'        => '#6B7280',
+                'is_pro_preview' => ! wpuf_is_pro_active(),
+            ],
+            [
+                'name'           => 'wpuf_login_button_bg_color',
+                'label'          => __( 'Button Background Color', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon ) . '</span>',
+                'type'           => 'color',
+                'default'        => '#3B82F6',
+                'is_pro_preview' => ! wpuf_is_pro_active(),
+            ],
+            [
+                'name'           => 'wpuf_login_button_border_color',
+                'label'          => __( 'Button Border Color', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon ) . '</span>',
+                'type'           => 'color',
+                'default'        => '',
+                'is_pro_preview' => ! wpuf_is_pro_active(),
+            ],
+            [
+                'name'           => 'wpuf_login_button_text_color',
+                'label'          => __( 'Button Text Color', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . file_get_contents( $crown_icon ) . '</span>',
+                'type'           => 'color',
+                'default'        => '#ffffff',
+                'is_pro_preview' => ! wpuf_is_pro_active(),
+            ],
         ] ),
         'wpuf_payment'          => apply_filters( 'wpuf_options_payment', [
             [
@@ -632,6 +725,33 @@ function wpuf_settings_fields() {
                 'options'  => $post_types,
             ],
         ] ),
+        'wpuf_ai'               => apply_filters( 'wpuf_ai_options', [
+            [
+                'name'    => 'ai_provider',
+                'label'   => __( 'AI Provider', 'wp-user-frontend' ),
+                'desc'    => __( 'Select the AI service provider you want to use.', 'wp-user-frontend' ),
+                'type'    => 'radio_inline',
+                'options' => \WeDevs\Wpuf\AI\Config::get_provider_options(),
+                'default' => 'openai',
+                'class'   => 'wpuf-ai-provider-radio',
+            ],
+            [
+                'name'    => 'ai_model',
+                'label'   => __( 'AI Model', 'wp-user-frontend' ),
+                'desc'    => __( 'Select the AI model to use for content generation.', 'wp-user-frontend' ),
+                'type'    => 'select',
+                'options' => apply_filters('wpuf_ai_model_options', \WeDevs\Wpuf\AI\Config::get_model_options()),
+                'default' => 'gpt-3.5-turbo',
+                'class'   => 'ai-model-select',
+            ],
+            [
+                'name'    => 'api_key_current',
+                'label'   => __( 'API Key', 'wp-user-frontend' ),
+                'desc'    => __( 'Enter your AI service API key. Need help finding your <a href="https://platform.openai.com/api-keys" target="_blank" class="wpuf-api-key-link" data-openai="https://platform.openai.com/api-keys" data-anthropic="https://console.anthropic.com/settings/keys" data-google="https://aistudio.google.com/app/apikey" style="text-decoration: underline;">API Key?</a>', 'wp-user-frontend' ),
+                'type'    => 'callback',
+                'callback' => 'wpuf_ai_api_key_field',
+            ],
+        ] ),
     ];
 
     return apply_filters( 'wpuf_settings_fields', $settings_fields );
@@ -652,7 +772,7 @@ function wpuf_settings_field_profile( $form ) {
     $val = get_option( 'wpuf_profile', [] );
 
     if ( ! class_exists( 'WP_User_Frontend_Pro' ) ) {
-        $crown_icon = sprintf( '<span class="pro-icon"> %s</span>', file_get_contents( WPUF_ROOT . '/assets/images/crown.svg' ) );
+        $crown_icon = sprintf( '<span class="pro-icon"><img src="%s" alt="PRO"></span>', WPUF_ASSET_URI . '/images/pro-badge.svg' );
         $class      = 'class="pro-preview"';
         $disabled   = 'disabled';
     }
@@ -699,3 +819,278 @@ function wpuf_settings_field_profile( $form ) {
 }
 
 add_action( 'wsa_form_bottom_wpuf_profile', 'wpuf_settings_field_profile' );
+
+/**
+ * Render dynamic API key field based on selected provider
+ */
+function wpuf_ai_api_key_field( $args ) {
+    $settings = get_option( 'wpuf_ai', [] );
+
+    // Get current provider
+    $current_provider = $settings['ai_provider'] ?? 'openai';
+
+    // Get all API keys
+    $openai_key = $settings['openai_api_key'] ?? '';
+    $anthropic_key = $settings['anthropic_api_key'] ?? '';
+    $google_key = $settings['google_api_key'] ?? '';
+
+    ?>
+    <input type="password"
+           id="wpuf_ai_api_key_field"
+           name="wpuf_ai[<?php echo esc_attr( $current_provider ); ?>_api_key]"
+           class="regular-text wpuf-ai-api-key-dynamic"
+           value="<?php echo esc_attr( $settings[ $current_provider . '_api_key' ] ?? '' ); ?>"
+           placeholder="<?php esc_attr_e( 'Enter your API key', 'wp-user-frontend' ); ?>"
+           autocomplete="off">
+
+    <!-- Store API keys for each provider -->
+    <input type="hidden" name="wpuf_ai[openai_api_key]" id="wpuf_ai_openai_key" value="<?php echo esc_attr($openai_key); ?>">
+    <input type="hidden" name="wpuf_ai[anthropic_api_key]" id="wpuf_ai_anthropic_key" value="<?php echo esc_attr($anthropic_key); ?>">
+    <input type="hidden" name="wpuf_ai[google_api_key]" id="wpuf_ai_google_key" value="<?php echo esc_attr($google_key); ?>">
+
+    <?php
+    // Determine the correct API key link based on current provider
+    $api_key_links = [
+        'openai' => 'https://platform.openai.com/api-keys',
+        'anthropic' => 'https://console.anthropic.com/settings/keys',
+        'google' => 'https://aistudio.google.com/app/apikey'
+    ];
+    $current_link = $api_key_links[$current_provider] ?? $api_key_links['openai'];
+    ?>
+
+    <p class="description">
+        Enter your AI service API key. Need help finding your
+        <a href="<?php echo esc_url($current_link); ?>" class="wpuf-api-key-link"
+           data-openai="https://platform.openai.com/api-keys"
+           data-anthropic="https://console.anthropic.com/settings/keys"
+           data-google="https://aistudio.google.com/app/apikey"
+           target="_blank"
+           style="text-decoration: underline;">API Key?</a>
+    </p>
+
+    <script>
+    jQuery(document).ready(function($) {
+        // Function to update API key link
+        function updateApiKeyLink(provider) {
+            var apiKeyLink = $('.wpuf-api-key-link');
+            if (apiKeyLink.length > 0) {
+                var providerLinks = {
+                    'openai': 'https://platform.openai.com/api-keys',
+                    'anthropic': 'https://console.anthropic.com/settings/keys',
+                    'google': 'https://aistudio.google.com/app/apikey'
+                };
+
+                var newLink = providerLinks[provider] || providerLinks['openai'];
+                apiKeyLink.prop('href', newLink);
+                apiKeyLink.attr('href', newLink);
+            }
+        }
+
+        // Function to update visible input's name attribute
+        function updateVisibleInputName(provider) {
+            var $visibleInput = $('#wpuf_ai_api_key_field');
+            $visibleInput.attr('name', 'wpuf_ai[' + provider + '_api_key]');
+        }
+
+        // Set the initial name on page load
+        var initialProvider = $('input[name="wpuf_ai[ai_provider]"]:checked').val() || 'openai';
+        updateVisibleInputName(initialProvider);
+
+        // Update API key field and link when provider changes
+        $('input[name="wpuf_ai[ai_provider]"]').on('change', function() {
+            var provider = $(this).val();
+            var apiKey = $('#wpuf_ai_' + provider + '_key').val();
+            $('#wpuf_ai_api_key_field').val(apiKey);
+
+            // Update the visible input's name attribute to match the new provider
+            updateVisibleInputName(provider);
+
+            // Update the API key link
+            updateApiKeyLink(provider);
+
+            // Filter model list by provider
+            filterModelsByProvider(provider);
+
+            // Refresh model list if API key exists
+            if (apiKey) {
+                refreshAllModels();
+            }
+        });
+
+        // Save API key to hidden field when typing
+        $('#wpuf_ai_api_key_field').on('input', function() {
+            var provider = $('input[name="wpuf_ai[ai_provider]"]:checked').val();
+            $('#wpuf_ai_' + provider + '_key').val($(this).val());
+        });
+
+        // Store all models globally for filtering
+        var allModels = {};
+
+        // Function to filter models by provider
+        function filterModelsByProvider(provider, preserveValue) {
+            var $modelSelect = $('select[name="wpuf_ai[ai_model]"]');
+            if (!$modelSelect.length) return;
+
+            // If we don't have models loaded yet, try to load them first
+            if (Object.keys(allModels).length === 0) {
+                addProviderDataAttributes();
+                return;
+            }
+
+            // Get the value to preserve (either passed in or current selection)
+            var valueToPreserve = preserveValue || $modelSelect.val();
+            var options = '';
+
+            // Build options only for selected provider
+            for (var modelId in allModels) {
+                if (allModels.hasOwnProperty(modelId)) {
+                    var modelConfig = allModels[modelId];
+                    if (modelConfig.provider === provider) {
+                        var selected = (modelId === valueToPreserve) ? ' selected' : '';
+                        options += '<option value="' + modelId + '" data-provider="' + modelConfig.provider + '"' + selected + '>' + modelConfig.name + '</option>';
+                    }
+                }
+            }
+
+            // Update dropdown with filtered options
+            if (options) {
+                $modelSelect.html(options);
+            }
+        }
+
+        // Function to refresh all models from API
+        function refreshAllModels() {
+            var $modelSelect = $('select[name="wpuf_ai[ai_model]"]');
+            if (!$modelSelect.length) return;
+
+            // Show loading state
+            var originalHtml = $modelSelect.html();
+            var currentValue = $modelSelect.val();
+            var currentProvider = $('input[name="wpuf_ai[ai_provider]"]:checked').val();
+            $modelSelect.html('<option>Loading models...</option>').prop('disabled', true);
+
+            // Call API to refresh models
+            $.ajax({
+                url: '<?php echo esc_url(rest_url('wpuf/v1/ai-form-builder/refresh-google-models')); ?>',
+                method: 'POST',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-WP-Nonce', '<?php echo wp_create_nonce('wp_rest'); ?>');
+                },
+                success: function(response) {
+                    if (response && response.success && response.models) {
+                        // Store all models globally
+                        allModels = response.models;
+
+                        // Enable dropdown
+                        $modelSelect.prop('disabled', false);
+
+                        // Filter by current provider
+                        filterModelsByProvider(currentProvider);
+
+                        // Try to restore previous selection if it exists and matches current provider
+                        if (currentValue) {
+                            var currentModel = allModels[currentValue];
+                            if (currentModel && currentModel.provider === currentProvider) {
+                                $modelSelect.val(currentValue);
+                            }
+                        }
+
+                    } else {
+                        $modelSelect.html(originalHtml).prop('disabled', false);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    $modelSelect.html(originalHtml).prop('disabled', false);
+                }
+            });
+        }
+
+        // Function to load all models and add provider data attributes
+        function addProviderDataAttributes() {
+            var $modelSelect = $('select[name="wpuf_ai[ai_model]"]');
+            if (!$modelSelect.length) return;
+
+            // Save the current selected value before we fetch
+            var savedModelValue = $modelSelect.val();
+
+            // Fetch model configs via REST API to get provider info
+            $.ajax({
+                url: '<?php echo esc_url(rest_url('wpuf/v1/ai-form-builder/models')); ?>',
+                method: 'GET',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-WP-Nonce', '<?php echo wp_create_nonce('wp_rest'); ?>');
+                },
+                success: function(response) {
+                    if (response && response.success && response.models) {
+                        // Store all models globally
+                        allModels = response.models;
+
+                        // Filter by current provider and preserve saved selection
+                        var currentProvider = $('input[name="wpuf_ai[ai_provider]"]:checked').val();
+                        if (currentProvider) {
+                            filterModelsByProvider(currentProvider, savedModelValue);
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize provider data attributes on page load
+        addProviderDataAttributes();
+
+        // Function to refresh Google models (backward compatibility)
+        function refreshGoogleModels() {
+            var $modelSelect = $('select[name="wpuf_ai[ai_model]"]');
+            if (!$modelSelect.length) return;
+
+            // Show loading state
+            var originalHtml = $modelSelect.html();
+            var currentValue = $modelSelect.val();
+            $modelSelect.html('<option>Loading Google models...</option>').prop('disabled', true);
+
+            // Call API to refresh models
+            $.ajax({
+                url: '<?php echo esc_url(rest_url('wpuf/v1/ai-form-builder/refresh-google-models')); ?>',
+                method: 'POST',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-WP-Nonce', '<?php echo wp_create_nonce('wp_rest'); ?>');
+                },
+                success: function(response) {
+                    if (response && response.success && response.models) {
+                        // Update dropdown with new models
+                        var options = '';
+                        var models = response.models;
+
+                        // Check if models is an object
+                        if (typeof models === 'object' && models !== null) {
+                            for (var modelId in models) {
+                                if (models.hasOwnProperty(modelId)) {
+                                    var modelConfig = models[modelId];
+                                    var modelName = modelConfig.name || modelId;
+                                    options += '<option value="' + modelId + '">' + modelName + '</option>';
+                                }
+                            }
+                        }
+
+                        if (options) {
+                            $modelSelect.html(options).prop('disabled', false);
+                            // Try to restore previous selection
+                            if (currentValue) {
+                                $modelSelect.val(currentValue);
+                            }
+                        } else {
+                            $modelSelect.html(originalHtml).prop('disabled', false);
+                        }
+                    } else {
+                        $modelSelect.html(originalHtml).prop('disabled', false);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    $modelSelect.html(originalHtml).prop('disabled', false);
+                }
+            });
+        }
+    });
+    </script>
+    <?php
+}

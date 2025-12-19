@@ -2,6 +2,7 @@
 
 namespace WeDevs\Wpuf;
 
+use WeDevs\Wpuf\Admin\Forms\Form;
 use WeDevs\Wpuf\Admin\Subscription;
 
 class Frontend_Render_Form {
@@ -198,15 +199,50 @@ class Frontend_Render_Form {
 
         $label_position = isset( $this->form_settings['label_position'] ) ? $this->form_settings['label_position'] : 'left';
 
-        $layout = isset( $this->form_settings['form_layout'] ) ? $this->form_settings['form_layout'] : 'layout1';
+        $layout = 'layout1';
 
         $theme_css = isset( $this->form_settings['use_theme_css'] ) ? $this->form_settings['use_theme_css'] : 'wpuf-style';
 
         do_action( 'wpuf_before_form_render', $form_id );
 
-        if ( ! empty( $layout ) ) {
-            wp_enqueue_style( 'wpuf-' . $layout );
+        $form = new Form($form_id);
+
+        // Check if Use Theme CSS is enabled - if so, don't enqueue plugin styles
+        $use_theme_css = isset( $this->form_settings['use_theme_css'] ) ? $this->form_settings['use_theme_css'] : '';
+
+        if ( 'wpuf_profile' === $form->data->post_type && 'on' !== $use_theme_css ) {
+            $layout = isset( $this->form_settings['profile_form_layout'] ) ? $this->form_settings['profile_form_layout'] : 'layout1';
+            switch ( $layout ) {
+                case 'layout2':
+                    wp_enqueue_style( 'wpuf-reg-template-2' );
+                    break;
+
+                case 'layout3':
+                    wp_enqueue_style( 'wpuf-reg-template-3' );
+                    break;
+
+                case 'layout4':
+                    wp_enqueue_style( 'wpuf-reg-template-4' );
+                    break;
+
+                case 'layout5':
+                    wp_enqueue_style( 'wpuf-reg-template-5' );
+                    break;
+
+                default:
+                    wp_enqueue_style( 'wpuf-reg-template-1' );
+                    break;
+            }
+        } else {
+            $layout = isset( $this->form_settings['form_layout'] ) ? $this->form_settings['form_layout'] : 'layout1';
+
+            if ( ! empty( $layout ) && 'on' !== $use_theme_css ) {
+                // Always enqueue the base template style
+                wp_enqueue_style( 'wpuf-reg-template-base' );
+                wp_enqueue_style( 'wpuf-' . $layout );
+            }
         }
+
         if ( ! is_user_logged_in() && ( ! empty( $this->form_settings['post_permission'] ) && 'guest_post' !== $this->form_settings['post_permission'] ) ) {
             $login        = wpuf()->frontend->simple_login->get_login_url();
             $register     = wpuf()->frontend->simple_login->get_registration_url();

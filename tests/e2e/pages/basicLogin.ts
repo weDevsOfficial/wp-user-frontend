@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
-dotenv.config();
-import { expect, type Page } from '@playwright/test';
+dotenv.config({ quiet: true });
+import { test, expect, type Page } from '@playwright/test';
 import { Selectors } from './selectors';
 import { SettingsSetupPage } from './settingsSetup';
 import { Base } from './base';
@@ -32,27 +32,31 @@ export class BasicLoginPage extends Base {
         else {
             await this.frontendLogin(adminEmail, adminPassword);
         }
+
     }
 
     //Login and Plugin Visit
     async basicLoginAndPluginVisit(email: string, password: string) {
-        const SettingsSetup = new SettingsSetupPage(this.page);
-        const adminEmail = email;
-        const adminPassword = password;
+        await test.step("Login from backend and visit the wpuf plugin page", async () => {
+            const SettingsSetup = new SettingsSetupPage(this.page);
+            const adminEmail = email;
+            const adminPassword = password;
 
-        await this.navigateToURL(this.wpAdminPage);
+            await this.navigateToURL(this.wpAdminPage);
 
-        const emailStateCheck = await this.page.isVisible(Selectors.login.basicLogin.loginEmailField);
-        //if in BackEnd or FrontEnd
-        if (emailStateCheck == true) {
-            await this.backendLogin(adminEmail, adminPassword);
-        }
-        else {
-            await this.frontendLogin(adminEmail, adminPassword);
-        }
+            const emailStateCheck = await this.page.isVisible(Selectors.login.basicLogin.loginEmailField);
+            //if in BackEnd or FrontEnd
+            if (emailStateCheck == true) {
+                await this.backendLogin(adminEmail, adminPassword);
+            }
+            else {
+                await this.frontendLogin(adminEmail, adminPassword);
+            }
 
-        //Redirection to WPUF Home Page
-        await SettingsSetup.pluginVisitWPUF();
+            //Redirection to WPUF Home Page
+            await SettingsSetup.pluginVisitWPUF();
+
+        })
     }
 
     //Validate Login
@@ -78,6 +82,7 @@ export class BasicLoginPage extends Base {
         await this.validateAndClick(Selectors.login.basicLogin.rememberMeField);
         await this.page.waitForTimeout(500);
         await this.validateAndClick(Selectors.login.basicLogin.loginButton);
+
     }
 
     //FrontEnd Login

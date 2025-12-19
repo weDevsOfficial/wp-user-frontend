@@ -42,7 +42,7 @@ $form_type = ! empty( $form_type ) ?  $form_type : 'Post Form';
                     </div>
 
                     <?php
-                        $crown_icon = WPUF_ROOT . '/assets/images/crown.svg';
+                        $crown_icon = WPUF_ROOT . '/assets/images/pro-badge.svg';
                         $pro_badge = WPUF_ASSET_URI . '/images/pro-badge.svg';
 
                         foreach ( $registry as $key => $template ) {

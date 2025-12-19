@@ -871,11 +871,12 @@ tr.pro-preview .pro-field-overlay,
     position: absolute;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, .4);
+    background: rgba(236, 253, 245, 0.5);
     border-radius: 5px;
     top: 0;
     left: 0;
     display: none;
+    border: 1px dashed #10b981;
 }
 
 tr.pro-preview-html th {
@@ -892,17 +893,22 @@ tr.pro-preview-html th {
 
 .wpuf-subscription-pack-settings nav .tab-current a.wpuf-button.button-upgrade-to-pro,
 a.wpuf-button.button-upgrade-to-pro {
-    padding: 10px 15px;
-    background: #ff9000;
+    padding: 8px 16px;
+    background: #059669;
     color: #fff;
     min-height: auto;
-    border-radius: 5px;
+    border-radius: 6px;
     text-decoration: none;
     border: none;
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    justify-content: center;
+    gap: 8px;
     white-space: nowrap;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    transition: background-color 0.2s ease;
 }
 
 .pro-field-overlay a.wpuf-button.button-upgrade-to-pro {
@@ -915,26 +921,40 @@ a.wpuf-button.button-upgrade-to-pro {
 
 .wpuf-subscription-pack-settings nav .tab-current a.wpuf-button.button-upgrade-to-pro:hover,
 a.wpuf-button.button-upgrade-to-pro:hover {
-    background: #d07805;
+    background: #10b981;
 }
 
 span.pro-icon {
     display: inline-flex;
     align-items: center;
+    vertical-align: middle;
 }
 
-span.pro-icon svg {
-    height: 1em;
+span.pro-icon svg,
+span.pro-icon img {
+    max-width: 100%;
+    height: auto;
     margin-left: 5px;
+    vertical-align: middle;
 }
 
-span.pro-icon.icon-white svg path {
+.form-table th span.pro-icon,
+.form-table label span.pro-icon {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    line-height: 0;
+    position: relative;
+    top: -1px;
+}
+
+/* span.pro-icon.icon-white svg path {
     fill: #fff;
-}
+} */
 
-label span.pro-icon svg path {
-    fill: #fB9a28;
-}
+/* label span.pro-icon svg path {
+    fill: #10b981;
+} */
 
 img.profile-header, img.user-listing {
     display: block;
@@ -1047,11 +1067,24 @@ tr.pro-preview.wpuf-subscription-recurring td {
 tr.pro-preview span.pro-icon,
 tr span.pro-icon-title {
     position: relative;
-    padding-top: 10px;
 }
 
 a span.pro-icon-title {
     position: relative;
+}
+
+span.pro-icon-title {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+}
+
+span.pro-icon-title svg,
+span.pro-icon-title img {
+    max-width: 100%;
+    height: auto;
+    margin-left: 5px;
+    vertical-align: middle;
 }
 
 a span.pro-icon-title .wpuf-pro-field-tooltip {
@@ -1068,6 +1101,15 @@ span.pro-icon:hover .wpuf-pro-field-tooltip {
     display: block;
     -webkit-opacity: 1;
     opacity: 1;
+}
+
+.wpuf-module-pro-badge {
+    display: block;
+    width: 39px;
+    height: 22px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }
 
 .wpuf-xmp-tag{
@@ -1360,6 +1402,63 @@ body.wpuf-modal-open {
 
 // ==========================================================================
 // End Template Modal Styles
+// ==========================================================================
+
+// ==========================================================================
+// AI Provider Radio Buttons Styles
+// ==========================================================================
+
+.wpuf-radio-inline-group.wpuf-ai-provider-radio {
+    display: flex;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    border: none;
+
+    .wpuf-radio-inline-item {
+        border: 1px solid #8C8F94;
+        border-radius: 4px;
+        padding: 12px 20px;
+        margin: 0;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s ease;
+        background: #fff;
+
+        &:hover {
+            border-color: #999;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="radio"] {
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .wpuf-radio-label {
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        input[type="radio"]:checked + .wpuf-radio-label {
+            color: #2271b1;
+        }
+    }
+
+    // Selected state for the entire label
+    .wpuf-radio-inline-item:has(input[type="radio"]:checked) {
+        border-color: #2271b1;
+        background: #f0f6fc;
+        box-shadow: 0 0 0 1px #2271b1;
+    }
+}
+
+// ==========================================================================
+// End AI Provider Radio Buttons Styles
 // ==========================================================================
 
 @import "help.less";

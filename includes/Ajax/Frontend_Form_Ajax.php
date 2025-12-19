@@ -159,10 +159,6 @@ class Frontend_Form_Ajax {
             if ( $post_id_for_edit > 0 ) {
                 $attachment_parent = (int) $attachment->post_parent;
 
-                // Allow deletion only if:
-                // 1. Attachment is orphaned (post_parent = 0) - likely from current upload session
-                // 2. Attachment is attached to the post being edited
-                // 3. User has capability to delete others' posts (admin)
                 if ( $attachment_parent !== 0 && $attachment_parent !== $post_id_for_edit && ! $can_delete_others ) {
                     continue;
                 }

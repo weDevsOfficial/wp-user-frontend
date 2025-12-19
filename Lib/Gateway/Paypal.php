@@ -2082,7 +2082,7 @@ class Paypal {
                 }
             }
         } catch ( \Exception $e ) {
-            throw new \Exception( 'Error handling subscription activation: ' . esc_html( $e->getMessage() ) );
+            throw new \Exception( 'Error handling subscription activation: ' . $e->getMessage(), 0, $e );
         }
     }
 }

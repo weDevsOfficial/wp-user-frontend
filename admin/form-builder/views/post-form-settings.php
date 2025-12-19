@@ -653,7 +653,7 @@ function wpuf_render_settings_field( $field_key, $field, $form_settings, $post_t
                         ?>
                         <select
                             id="<?php echo esc_attr( $inner_field_key ); ?>"
-                            name="<?php echo esc_attr( $inner_field_key ); ?>"
+                            name="wpuf_settings[<?php echo esc_attr( $inner_field_key ); ?>]"
                             data-value="<?php echo esc_attr( $value_str ); ?>"
                             class="!wpuf-mt-2"
                             :class="setting_class_names('dropdown')">

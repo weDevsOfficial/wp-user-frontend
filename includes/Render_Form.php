@@ -1651,32 +1651,41 @@ class Render_Form {
             $enable_no_captcha          = $attr['recaptcha_type'] == 'enable_no_captcha' ? true : false;
         }
 
-        if ( $enable_invisible_recaptcha ) { ?>
-            <?php wp_enqueue_script( 'wpuf-recaptcha-invisible', 'https://www.google.com/recaptcha/api.js?onload=wpufreCaptchaLoaded&render=explicit&hl=en', array(), null, true ); ?>
-            <script>
-                jQuery(document).ready(function($) {
-                    jQuery('[name="submit"]').removeClass('wpuf-submit-button').addClass('g-recaptcha').attr('data-sitekey', '<?php echo esc_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ) ); ?>');
+        if ( $enable_invisible_recaptcha ) {
+            wp_enqueue_script( 'wpuf-recaptcha-invisible', 'https://www.google.com/recaptcha/api.js?onload=wpufreCaptchaLoaded&render=explicit&hl=en', array(), null, true );
+
+            $inline_script = sprintf(
+                "jQuery(document).ready(function($) {
+                    jQuery('[name=\"submit\"]').removeClass('wpuf-submit-button').addClass('g-recaptcha').attr('data-sitekey', '%s');
 
                     $(document).on('click','.g-recaptcha', function(e){
                         e.preventDefault();
                         e.stopPropagation();
-                        grecaptcha.execute();
+                        if (typeof grecaptcha !== 'undefined') {
+                            grecaptcha.execute();
+                        }
                     })
                 });
 
                 var wpufreCaptchaLoaded = function() {
-                    grecaptcha.render('recaptcha', {
-                        'size' : 'invisible',
-                        'callback' : wpufRecaptchaCallback
-                    });
-                    grecaptcha.execute();
+                    if (typeof grecaptcha !== 'undefined') {
+                        grecaptcha.render('recaptcha', {
+                            'size' : 'invisible',
+                            'callback' : wpufRecaptchaCallback
+                        });
+                        grecaptcha.execute();
+                    }
                 };
 
                 function wpufRecaptchaCallback(token) {
-                    jQuery('[name="g-recaptcha-response"]').val(token);
-                    jQuery('[name="submit"]').removeClass('g-recaptcha').addClass('wpuf-submit-button');
-                }
-            </script>
+                    jQuery('[name=\"g-recaptcha-response\"]').val(token);
+                    jQuery('[name=\"submit\"]').removeClass('g-recaptcha').addClass('wpuf-submit-button');
+                }",
+                esc_js( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ) )
+            );
+
+            wp_add_inline_script( 'wpuf-recaptcha-invisible', $inline_script, 'after' );
+            ?>
 
             <div type="submit" id='recaptcha' class="g-recaptcha" data-sitekey=<?php echo esc_attr( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ) ); ?> data-callback="onSubmit" data-size="invisible"></div>
         <?php } else { ?>

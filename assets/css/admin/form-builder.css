@@ -5306,6 +5306,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   border-color: rgb(167 243 208 / var(--tw-border-opacity));
 }
 
+.wpuf-border-emerald-400 {
+  --tw-border-opacity: 1;
+  border-color: rgb(52 211 153 / var(--tw-border-opacity));
+}
+
 .wpuf-border-emerald-500 {
   --tw-border-opacity: 1;
   border-color: rgb(16 185 129 / var(--tw-border-opacity));
@@ -5359,6 +5364,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 .wpuf-border-primary {
   --tw-border-opacity: 1;
   border-color: rgb(5 150 105 / var(--tw-border-opacity));
+}
+
+.wpuf-border-primaryHover {
+  --tw-border-opacity: 1;
+  border-color: rgb(16 185 129 / var(--tw-border-opacity));
 }
 
 .wpuf-border-purple-300 {
@@ -7379,11 +7389,6 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
   background-color: rgb(240 253 244 / var(--tw-bg-opacity));
 }
 
-.hover\:wpuf-bg-green-700:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(21 128 61 / var(--tw-bg-opacity));
-}
-
 .hover\:wpuf-bg-indigo-500:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(99 102 241 / var(--tw-bg-opacity));
@@ -7819,14 +7824,14 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
   cursor: pointer;
 }
 
-.wpuf-group\/column-inner:hover .group-hover\/column-inner\:wpuf-border-green-400 {
+.wpuf-group\/column-inner:hover .group-hover\/column-inner\:wpuf-border-primary {
   --tw-border-opacity: 1;
-  border-color: rgb(74 222 128 / var(--tw-border-opacity));
+  border-color: rgb(5 150 105 / var(--tw-border-opacity));
 }
 
-.wpuf-group\/hidden-fields:hover .group-hover\/hidden-fields\:wpuf-border-green-400 {
+.wpuf-group\/hidden-fields:hover .group-hover\/hidden-fields\:wpuf-border-primaryHover {
   --tw-border-opacity: 1;
-  border-color: rgb(74 222 128 / var(--tw-border-opacity));
+  border-color: rgb(16 185 129 / var(--tw-border-opacity));
 }
 
 .wpuf-group:hover .group-hover\:\!wpuf-border-green-400 {
@@ -7834,9 +7839,9 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
   border-color: rgb(74 222 128 / var(--tw-border-opacity)) !important;
 }
 
-.wpuf-group:hover .group-hover\:wpuf-border-green-400 {
+.wpuf-group:hover .group-hover\:wpuf-border-primary {
   --tw-border-opacity: 1;
-  border-color: rgb(74 222 128 / var(--tw-border-opacity));
+  border-color: rgb(5 150 105 / var(--tw-border-opacity));
 }
 
 .wpuf-group\/hidden-fields:hover .group-hover\/hidden-fields\:wpuf-bg-green-50 {

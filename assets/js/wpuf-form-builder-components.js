@@ -434,7 +434,7 @@ Vue.component('field-icon_selector', {
     mixins: [
         wpuf_mixins.option_field_mixin
     ],
-    
+
     mounted: function() {
         document.addEventListener('click', this.handleClickOutside);
     },
@@ -475,9 +475,9 @@ Vue.component('field-icon_selector', {
         filteredIcons: function() {
             var self = this;
             if (!this.icons.length) return [];
-            
+
             if (!this.searchTerm) return this.icons;
-            
+
             var searchLower = this.searchTerm.toLowerCase();
             return this.icons.filter(function(icon) {
                 return icon.name.toLowerCase().indexOf(searchLower) !== -1 ||
@@ -537,6 +537,7 @@ Vue.component('field-icon_selector', {
         document.removeEventListener('click', this.handleClickOutside);
     }
 });
+
 Vue.component('field-multiselect', {
     template: '#tmpl-wpuf-field-multiselect',
 

@@ -114,10 +114,10 @@
             class="wpuf-group wpuf-rounded-lg hover:!wpuf-bg-green-50 wpuf-transition wpuf-duration-150 wpuf-ease-out !wpuf-m-0 !wpuf-p-0">
             <div
                 v-if="field.input_type !== 'column_field' && field.input_type !== 'repeat'"
-                :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-bg-green-50 wpuf-border-green-400' : 'wpuf-border-transparent'"
-                class="wpuf-flex wpuf-justify-between wpuf-p-6 wpuf-rounded-t-md wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed group-hover:wpuf-border-green-400 group-hover:wpuf-cursor-pointer !wpuf-pb-3">
+                :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-bg-green-50 wpuf-border-primary' : 'wpuf-border-transparent'"
+                class="wpuf-flex wpuf-justify-between wpuf-p-6 wpuf-rounded-t-md wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed group-hover:wpuf-border-primary group-hover:wpuf-cursor-pointer !wpuf-pb-3">
                 <div v-if="!(is_full_width(field.template) || is_pro_preview(field.template))" class="wpuf-w-1/4 wpuf-flex wpuf-items-center">
-                    <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'left_label'" 
+                    <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'left_label'"
                           class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-mr-1">
                           <i :class="[field.field_icon, 'wpuf-field-icon']"></i>
                     </span>
@@ -128,7 +128,7 @@
                         {{ field.label }} <span v-if="field.required && 'yes' === field.required"
                                                 class="required">*</span>
                     </label>
-                    <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'right_label'" 
+                    <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'right_label'"
                           class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-ml-2">
                           <i :class="[field.field_icon, 'wpuf-field-icon']"></i>
                     </span>
@@ -158,7 +158,7 @@
             </component>
             <div
                 :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-opacity-100' : 'wpuf-opacity-0'"
-                class="field-buttons group-hover:wpuf-opacity-100 wpuf-rounded-b-lg !wpuf-bg-green-600 wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out wpuf-flex wpuf-justify-around">
+                class="field-buttons group-hover:wpuf-opacity-100 wpuf-rounded-b-lg !wpuf-bg-primary wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out wpuf-flex wpuf-justify-around">
                 <div class="wpuf-flex wpuf-justify-around wpuf-text-green-200">
                     <template v-if="!is_failed_to_validate(field.template)">
                         <span class="!wpuf-mt-2.5">
@@ -203,7 +203,7 @@
                         </span>
                     <span
                         v-if="is_pro_preview(field.template)"
-                        :class="action_button_classes" class="hover:wpuf-bg-green-700">
+                        :class="action_button_classes" class="hover:wpuf-bg-primary">
                             <a
                                 :href="pro_link"
                                 target="_blank"
@@ -227,8 +227,8 @@
                 class="field-items wpuf-group/hidden-fields !wpuf-m-0 !wpuf-p-0 hover:wpuf-cursor-pointer"
             >
                 <div
-                    :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-bg-green-50 wpuf-border-green-400' : 'wpuf-border-transparent'"
-                    class="wpuf-flex wpuf-rounded-t-lg wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed group-hover/hidden-fields:wpuf-border-green-400 group-hover/hidden-fields:wpuf-bg-green-50">
+                    :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-bg-green-50 wpuf-border-primaryHover' : 'wpuf-border-transparent'"
+                    class="wpuf-flex wpuf-rounded-t-lg wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed group-hover/hidden-fields:wpuf-border-primaryHover group-hover/hidden-fields:wpuf-bg-green-50">
                     <div class="wpuf-bg-primary wpuf-m-4 wpuf-py-2 wpuf-px-4 wpuf-w-full wpuf-rounded-lg">
                         <strong><?php esc_html_e( 'key', 'wp-user-frontend' ); ?></strong>: {{ field.name }} |
                         <strong><?php esc_html_e( 'value', 'wp-user-frontend' ); ?></strong>: {{ field.meta_value }}
@@ -236,7 +236,7 @@
                 </div>
                 <div
                     :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-opacity-100' : 'wpuf-opacity-0'"
-                    class="field-buttons wpuf-opacity-0 group-hover/hidden-fields:wpuf-opacity-100 wpuf-bg-green-600 wpuf-rounded-b-lg wpuf-transition wpuf-duration-150 wpuf-ease-out wpuf-flex wpuf-items-center wpuf-justify-around">
+                    class="field-buttons wpuf-opacity-0 group-hover/hidden-fields:wpuf-opacity-100 wpuf-bg-primary wpuf-rounded-b-lg wpuf-transition wpuf-duration-150 wpuf-ease-out wpuf-flex wpuf-items-center wpuf-justify-around">
                     <div class="wpuf-flex wpuf-justify-around wpuf-text-green-200">
                         <template v-if="!is_failed_to_validate(field.template)">
                             <span
@@ -518,11 +518,11 @@
     <div v-else>
         <div class="option-fields-section wpuf-mt-6">
             <h3
-                :class="show_basic_settings ? 'wpuf-text-green-600' : 'wpuf-text-gray-500'"
+                :class="show_basic_settings ? 'wpuf-text-primary' : 'wpuf-text-gray-500'"
                 class="wpuf-flex wpuf-mt-0 wpuf-mb-6 wpuf-justify-between hover:wpuf-cursor-pointer wpuf-font-medium wpuf-text-lg"
                 @click="show_basic_settings = !show_basic_settings">
                 {{ form_field_type_title }}
-                <i :class="show_basic_settings ? 'fa fa-angle-down wpuf-text-green-600' : 'fa fa-angle-right wpuf-text-gray-500'"></i>
+                <i :class="show_basic_settings ? 'fa fa-angle-down wpuf-text-primary' : 'fa fa-angle-right wpuf-text-gray-500'"></i>
             </h3>
 
             <transition name="slide-fade">
@@ -540,11 +540,11 @@
 
         <div v-if="advanced_settings.length" class="option-fields-section">
             <h3
-                :class="show_advanced_settings ? 'wpuf-text-green-600' : 'wpuf-text-gray-500'"
+                :class="show_advanced_settings ? 'wpuf-text-primary' : 'wpuf-text-gray-500'"
                 class="wpuf-flex wpuf-mt-0 wpuf-mb-6 wpuf-justify-between hover:wpuf-cursor-pointer wpuf-font-medium wpuf-text-lg"
                 @click="show_advanced_settings = !show_advanced_settings">
                 {{ i18n.advanced_options }}
-                <i :class="show_advanced_settings ? 'fa fa-angle-down wpuf-text-green-600' : 'fa fa-angle-right wpuf-text-gray-500'"></i>
+                <i :class="show_advanced_settings ? 'fa fa-angle-down wpuf-text-primary' : 'fa fa-angle-right wpuf-text-gray-500'"></i>
             </h3>
 
             <transition name="slide-fade">
@@ -948,7 +948,7 @@
                         ('custom_hidden_field' === field.template) ? 'hidden-field' : '',
                         parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-bg-green-50' : ''
                       ]">
-                    <div class="wpuf-flex wpuf-flex-col md:wpuf-flex-row wpuf-gap-2 wpuf-p-4 wpuf-border-transparent group-hover/column-inner:wpuf-border-green-400 wpuf-rounded-t-md wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed wpuf-border-green-400">
+                    <div class="wpuf-flex wpuf-flex-col md:wpuf-flex-row wpuf-gap-2 wpuf-p-4 wpuf-border-transparent group-hover/column-inner:wpuf-border-primary wpuf-rounded-t-md wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed wpuf-border-emerald-400">
                         <div
                             v-if="!(is_full_width(field.template) || is_pro_preview(field.template))">
                             <label v-if="!is_invisible(field)"
@@ -984,7 +984,7 @@
                         </div>
                     </div>
                     <div
-                        class="wpuf-column-field-control-buttons wpuf-opacity-0 group-hover/column-inner:wpuf-opacity-100 wpuf-rounded-b-lg wpuf-bg-green-600 wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out wpuf-flex wpuf-justify-center">
+                        class="wpuf-column-field-control-buttons wpuf-opacity-0 group-hover/column-inner:wpuf-opacity-100 wpuf-rounded-b-lg wpuf-bg-primary wpuf-items-center wpuf-transition wpuf-duration-150 wpuf-ease-out wpuf-flex wpuf-justify-center">
                         <div class="wpuf-items-center wpuf-text-green-200 wpuf-flex wpuf-justify-evenly wpuf-p-1">
                             <template v-if="!is_failed_to_validate(field.template)">
                                 <span class="!wpuf-mt-2.5">
@@ -1023,7 +1023,7 @@
                         </span>
                             <span :class="action_button_classes"
                                 v-if="is_pro_preview(field.template)"
-                                class="hover:wpuf-bg-green-700">
+                                class="hover:wpuf-bg-primary">
                             <a
                                 :href="pro_link"
                                 target="_blank"
@@ -1201,12 +1201,12 @@
             v-for="(section, index) in panel_sections">
             <div v-if="section.fields.length" class="panel-form-field-group wpuf-mb-8">
                 <h3
-                    :class="section.show ? 'wpuf-text-green-600' : 'wpuf-text-gray-500'"
+                    :class="section.show ? 'wpuf-text-primary' : 'wpuf-text-gray-500'"
                     class="wpuf-flex wpuf-justify-between hover:wpuf-cursor-pointer wpuf-text-base wpuf-m-0 !wpuf-font-medium"
                     @click="panel_toggle(index)">
                     {{ section.title }}
                     <i
-                        :class="[section.show ? 'fa fa-angle-down wpuf-text-green-600' : 'fa fa-angle-right wpuf-text-gray-500']"
+                        :class="[section.show ? 'fa fa-angle-down wpuf-text-primary' : 'fa fa-angle-right wpuf-text-gray-500']"
                         class="wpuf-text-[24px]"></i>
                 </h3>
                 <div

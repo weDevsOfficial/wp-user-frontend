@@ -175,7 +175,7 @@ const App = () => {
                                     {config.i18n?.directory_limit || __('You can only create 1 directory in the free version.', 'wp-user-frontend')}
                                 </p>
                                 <p className="wpuf-text-amber-700 wpuf-mt-1 wpuf-m-0">
-                                    <a href={config.upgrade_url || 'https://wedevs.com/wp-user-frontend-pro/pricing/'} target="_blank" rel="noopener noreferrer" className="wpuf-text-indigo-600 wpuf-font-medium hover:wpuf-underline">
+                                    <a href={config.upgrade_url || 'https://wedevs.com/wp-user-frontend-pro/pricing/'} target="_blank" rel="noopener noreferrer" className="wpuf-text-emerald-600 wpuf-font-medium hover:wpuf-underline">
                                         {config.i18n?.upgrade_to_pro || __('Upgrade to Pro', 'wp-user-frontend')}
                                     </a> {__('to create unlimited directories.', 'wp-user-frontend')}
                                 </p>

@@ -34,7 +34,7 @@ $custom_tab_labels = $config['custom_tab_labels'];
 
 ?>
 
-<div class="wp-user-frontendfile-layout-2">
+<div class="wpuf-user-profile wpuf-profile-layout-2">
     <!-- Back Button -->
     <div class="!wpuf-max-w-6xl !wpuf-mx-auto !wpuf-px-4 !wpuf-mb-8">
         <button onclick="wpuf_ud_goBack()" class="wpuf-back-button !wpuf-inline-flex !wpuf-items-center !wpuf-px-4 !wpuf-py-2 !wpuf-text-sm !wpuf-font-medium !wpuf-text-gray-600 !wpuf-bg-white !wpuf-border !wpuf-border-gray-300 !wpuf-rounded-lg hover:!wpuf-bg-gray-50 hover:!wpuf-text-emerald-600 !wpuf-transition-colors !wpuf-shadow-sm">
@@ -45,8 +45,15 @@ $custom_tab_labels = $config['custom_tab_labels'];
         </button>
     </div>
 
+    <!-- Cover Photo Section -->
+    <div class="!wpuf-max-w-6xl !wpuf-mx-auto !wpuf-px-4 !wpuf-mb-8">
+        <div class="!wpuf-w-full !wpuf-h-[200px] !wpuf-rounded-lg !wpuf-overflow-hidden">
+            <div class="!wpuf-w-full !wpuf-h-full !wpuf-bg-gray-200 !wpuf-border !wpuf-border-gray-300"></div>
+        </div>
+    </div>
+
     <!-- Main Content Container -->
-    <div class="!wpuf-max-w-6xl !wpuf-mx-auto !wpuf-px-4">
+    <div class="!wpuf-max-w-6xl !wpuf-mx-auto !wpuf-px-4 wpuf-profile-header-overlap">
         <!-- Profile Header Card -->
         <div class="!wpuf-bg-transparent !wpuf-rounded-lg !wpuf-mb-12">
             <!-- Avatar and Basic Info -->
@@ -388,7 +395,7 @@ jQuery(document).ready(function($) {
         e.preventDefault();
 
         var targetTab = $(this).data('tab');
-        var $tabsContainer = $(this).closest('.wp-user-frontendfile-layout-2');
+        var $tabsContainer = $(this).closest('.wpuf-user-profile');
 
         // Remove active class from all tab buttons
         $tabsContainer.find('.wpuf-tab-button-2').removeClass('active');
@@ -433,6 +440,9 @@ jQuery(document).ready(function($) {
 }
 .wpuf-tab-button-2.active::after {
     background-color: #059669; /* Emerald-600 */
+}
+.wpuf-profile-header-overlap {
+    margin-top: -80px !important;
 }
 </style>
 

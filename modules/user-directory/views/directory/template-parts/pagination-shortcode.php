@@ -20,6 +20,11 @@ if ( empty( $pagination ) || ! isset( $pagination['total_pages'] ) || (int) $pag
     return;
 }
 
+// Also exit if there are no items (users)
+if ( isset( $pagination['total_items'] ) && (int) $pagination['total_items'] === 0 ) {
+    return;
+}
+
 // Get layout-specific colors
 $layout = isset( $layout ) ? $layout : 'layout-1';
 
@@ -117,7 +122,7 @@ if ( $total <= $max_visible ) {
                     </span>
                 <?php elseif ( $page == $current ) : ?>
                     <span aria-current="page"
-                          class="!wpuf-relative !wpuf-inline-flex !wpuf-items-center !wpuf-px-4 !wpuf-py-2 !wpuf-text-sm !wpuf-font-medium !wpuf-text-purple-600 !wpuf-border-t-2 !wpuf-border-purple-600">
+                          class="!wpuf-relative !wpuf-inline-flex !wpuf-items-center !wpuf-px-4 !wpuf-py-2 !wpuf-text-sm !wpuf-font-medium <?php echo esc_attr( $colors['text_primary_600'] ); ?> !wpuf-border-t-2 <?php echo esc_attr( $colors['border_primary_600'] ); ?>">
                         <?php echo esc_html( $page ); ?>
                     </span>
                 <?php else : ?>

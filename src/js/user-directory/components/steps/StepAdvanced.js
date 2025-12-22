@@ -8,12 +8,12 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
     
     // Free version options
     const freeAvatarSizes = ['192']; // Only 192 is free
-    const freeSortOptions = ['ID']; // Only User ID is free
+    const freeSortOptions = ['id']; // Only User ID is free
     const freeGallerySizes = ['thumbnail']; // Only thumbnail is free
-    
+
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        
+
         if (name === 'users_per_page') {
             setFormData(prev => ({
                 ...prev,
@@ -37,14 +37,11 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                 max_item: numericValue
             }));
         } else if (name === 'default_sort_by') {
-            // Only allow free sort options
-            if (freeSortOptions.includes(value)) {
-                setFormData(prev => ({
-                    ...prev,
-                    default_sort_by: value,
-                    orderby: value
-                }));
-            }
+            setFormData(prev => ({
+                ...prev,
+                default_sort_by: value,
+                orderby: value
+            }));
         } else if (name === 'default_sort_order') {
             setFormData(prev => ({
                 ...prev,
@@ -57,12 +54,8 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                 setFormData(prev => ({ ...prev, [name]: value }));
             }
         } else if (name === 'profile_size') {
-            // Only allow free gallery sizes
-            if (freeGallerySizes.includes(value)) {
-                setFormData(prev => ({ ...prev, [name]: value }));
-            }
+            setFormData(prev => ({ ...prev, [name]: value }));
         } else if (name === 'profile_base') {
-            // Profile permalink is all free
             setFormData(prev => ({ ...prev, [name]: value }));
         } else if (type === 'checkbox') {
             setFormData(prev => ({ ...prev, [name]: checked }));
@@ -121,21 +114,20 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
 
     // Pro badge component
     const ProBadge = ({ small = false }) => (
-        <img 
-            src={(config?.asset_url || window.wpuf_ud_free?.asset_url || '') + '/images/pro-badge.svg'} 
-            alt="Pro" 
+        <img
+            src={(config?.asset_url || window.wpuf_ud_free?.asset_url || '') + '/images/pro-badge.svg'}
+            alt="Pro"
             style={{ width: small ? '30px' : '32px', height: small ? '17px' : '18px' }}
         />
     );
 
     // Sort options with Pro status
     const sortOptions = [
-        { value: 'ID', label: __('User ID', 'wp-user-frontend'), isFree: true },
-        { value: 'display_name', label: __('Display Name', 'wp-user-frontend'), isFree: false },
-        { value: 'user_registered', label: __('Registration Date', 'wp-user-frontend'), isFree: false },
+        { value: 'id', label: __('User ID', 'wp-user-frontend'), isFree: true },
         { value: 'user_login', label: __('Username', 'wp-user-frontend'), isFree: false },
         { value: 'user_email', label: __('Email', 'wp-user-frontend'), isFree: false },
-        { value: 'post_count', label: __('Post Count', 'wp-user-frontend'), isFree: false },
+        { value: 'display_name', label: __('Display Name', 'wp-user-frontend'), isFree: false },
+        { value: 'registered', label: __('Registration Date', 'wp-user-frontend'), isFree: false },
     ];
 
     // Avatar sizes with Pro status
@@ -194,7 +186,7 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                     textAlign: 'center',
                     color: '#64748B'
                 }}
-            >{__('Fine-tune your directory settings with customizable options for sorting, pagination, and display preferences', 'wp-user-frontend')}</p>
+            >{__('Manage how your user directory looks and behaves, from permalinks, socials and avatars display to sorting, for a clean, intuitive directory experience', 'wp-user-frontend')}</p>
             
             <div className="wpuf-mt-8">
                 {/* Users Per Page - Available in Free */}
@@ -213,7 +205,7 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                         max="100"
                         className="wpuf-block wpuf-min-w-full wpuf-m-0 wpuf-leading-none wpuf-text-gray-700 placeholder:wpuf-text-gray-400 wpuf-max-w-full focus:wpuf-ring-transparent"
                         style={numberInputStyle}
-                        value={formData.users_per_page || formData.max_item_per_page || 12}
+                        value={formData.users_per_page || formData.max_item_per_page || 10}
                         onChange={handleChange}
                     />
                 </div>
@@ -240,7 +232,7 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
 
                 {/* Default Sort By - User ID is free, rest are Pro */}
                 <div className="wpuf-mt-[25px]">
-                    <label htmlFor="default_sort_by" className="wpuf-flex wpuf-text-left wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 wpuf-mb-3">
+                    <label className="wpuf-flex wpuf-text-left wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 wpuf-mb-3">
                         {__('Default Sort By', 'wp-user-frontend')}
                         <Tooltip className="wpuf-ml-2" content={__('Select the field by which users will be sorted by default', 'wp-user-frontend')}>
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.375 9.375L9.40957 9.35771C9.88717 9.11891 10.4249 9.55029 10.2954 10.0683L9.70458 12.4317C9.57507 12.9497 10.1128 13.3811 10.5904 13.1423L10.625 13.125M17.5 10C17.5 14.1421 14.1421 17.5 10 17.5C5.85786 17.5 2.5 14.1421 2.5 10C2.5 5.85786 5.85786 2.5 10 2.5C14.1421 2.5 17.5 5.85786 17.5 10ZM10 6.875H10.0063V6.88125H10V6.875Z" stroke="#9CA3AF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
@@ -248,9 +240,9 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                     </label>
                     <div className="wpuf-flex wpuf-flex-wrap wpuf-gap-2">
                         {sortOptions.map(option => {
-                            const isSelected = (formData.default_sort_by || formData.orderby || 'ID') === option.value;
+                            const isSelected = (formData.default_sort_by || formData.orderby || 'id') === option.value;
                             const isHovered = hoveredOption === `sort-${option.value}`;
-                            
+
                             return (
                                 <div
                                     key={option.value}
@@ -268,10 +260,10 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                                         type="button"
                                         onClick={() => option.isFree && handleChange({ target: { name: 'default_sort_by', value: option.value } })}
                                         className={`wpuf-px-4 wpuf-py-2 wpuf-rounded-lg wpuf-text-sm wpuf-font-medium wpuf-transition-all ${
-                                            !option.isFree 
+                                            !option.isFree
                                                 ? `wpuf-cursor-not-allowed ${isHovered ? 'wpuf-opacity-80' : 'wpuf-opacity-60'} wpuf-bg-gray-50 wpuf-text-gray-400`
-                                                : isSelected 
-                                                    ? 'wpuf-bg-emerald-50 wpuf-text-emerald-600 wpuf-border-emerald-500' 
+                                                : isSelected
+                                                    ? 'wpuf-bg-emerald-50 wpuf-text-emerald-600 wpuf-border-emerald-500'
                                                     : 'wpuf-bg-white wpuf-text-gray-700 wpuf-border-gray-300 hover:wpuf-border-gray-400'
                                         }`}
                                         style={{
@@ -382,7 +374,7 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                         {gallerySizes.map(option => {
                             const isSelected = (formData.profile_size || 'thumbnail') === option.value;
                             const isHovered = hoveredOption === `gallery-${option.value}`;
-                            
+
                             return (
                                 <div
                                     key={option.value}
@@ -400,10 +392,10 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                                         type="button"
                                         onClick={() => option.isFree && handleChange({ target: { name: 'profile_size', value: option.value } })}
                                         className={`wpuf-px-4 wpuf-py-2 wpuf-rounded-lg wpuf-text-sm wpuf-font-medium wpuf-transition-all ${
-                                            !option.isFree 
+                                            !option.isFree
                                                 ? `wpuf-cursor-not-allowed ${isHovered ? 'wpuf-opacity-80' : 'wpuf-opacity-60'} wpuf-bg-gray-50 wpuf-text-gray-400`
-                                                : isSelected 
-                                                    ? 'wpuf-bg-emerald-50 wpuf-text-emerald-600 wpuf-border-emerald-500' 
+                                                : isSelected
+                                                    ? 'wpuf-bg-emerald-50 wpuf-text-emerald-600 wpuf-border-emerald-500'
                                                     : 'wpuf-bg-white wpuf-text-gray-700 wpuf-border-gray-300 hover:wpuf-border-gray-400'
                                         }`}
                                         style={{
@@ -421,14 +413,97 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                     </div>
                 </div>
 
-                {/* Avatar Size - Only 192 is free */}
+                {/* Show Avatar in Table Layout - Pro feature, only visible for layout-1 */}
+                {formData.directory_layout === 'layout-1' && (
+                    <div
+                        className="wpuf-mt-[25px] wpuf-relative"
+                        onMouseEnter={() => setHoveredOption('show-avatar-table')}
+                        onMouseLeave={() => setHoveredOption(null)}
+                    >
+                        {/* Pro Badge on hover */}
+                        {hoveredOption === 'show-avatar-table' && (
+                            <div className="wpuf-absolute wpuf-z-10" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+                                <ProBadge />
+                            </div>
+                        )}
+                        <label
+                            className={`wpuf-flex wpuf-items-center wpuf-text-sm wpuf-text-gray-700 wpuf-cursor-not-allowed ${hoveredOption === 'show-avatar-table' ? 'wpuf-opacity-80' : 'wpuf-opacity-60'}`}
+                            style={{
+                                padding: '12px',
+                                borderRadius: '6px',
+                                border: hoveredOption === 'show-avatar-table' ? '2px dashed #9CA3AF' : '1px solid #E5E7EB',
+                                backgroundColor: '#F9FAFB'
+                            }}
+                        >
+                            <div className="wpuf-relative wpuf-mr-3">
+                                <input
+                                    type="checkbox"
+                                    name="show_avatar_in_table"
+                                    className="wpuf-sr-only"
+                                    checked={true}
+                                    disabled={true}
+                                    readOnly
+                                />
+                                <div className="wpuf-w-5 wpuf-h-5 wpuf-border-2 wpuf-rounded wpuf-flex wpuf-items-center wpuf-justify-center wpuf-bg-gray-200 wpuf-border-gray-300">
+                                    <svg className="wpuf-w-3 wpuf-h-3 wpuf-text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                    </svg>
+                                </div>
+                            </div>
+                            {__('Show avatar in table layout', 'wp-user-frontend')}
+                            <Tooltip className="wpuf-ml-2" content={__('Enable or disable avatars for the table layout to control how compact the user listing appears', 'wp-user-frontend')}>
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.375 9.375L9.40957 9.35771C9.88717 9.11891 10.4249 9.55029 10.2954 10.0683L9.70458 12.4317C9.57507 12.9497 10.1128 13.3811 10.5904 13.1423L10.625 13.125M17.5 10C17.5 14.1421 14.1421 17.5 10 17.5C5.85786 17.5 2.5 14.1421 2.5 10C2.5 5.85786 5.85786 2.5 10 2.5C14.1421 2.5 17.5 5.85786 17.5 10ZM10 6.875H10.0063V6.88125H10V6.875Z" stroke="#9CA3AF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
+                            </Tooltip>
+                        </label>
+                    </div>
+                )}
+
+                {/* Avatar Size - Cards like Pro */}
                 <div className="wpuf-mt-[25px]">
                     <label className="wpuf-flex wpuf-text-left wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 wpuf-mb-3">
                         {__('Avatar Size', 'wp-user-frontend')}
-                        <Tooltip className="wpuf-ml-2" content={__('Set the avatar size to display in directory layouts', 'wp-user-frontend')}>
+                        <Tooltip className="wpuf-ml-2" content={__('Set the avatar size to display in directory layouts (this does not affect individual user profiles)', 'wp-user-frontend')}>
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.375 9.375L9.40957 9.35771C9.88717 9.11891 10.4249 9.55029 10.2954 10.0683L9.70458 12.4317C9.57507 12.9497 10.1128 13.3811 10.5904 13.1423L10.625 13.125M17.5 10C17.5 14.1421 14.1421 17.5 10 17.5C5.85786 17.5 2.5 14.1421 2.5 10C2.5 5.85786 5.85786 2.5 10 2.5C14.1421 2.5 17.5 5.85786 17.5 10ZM10 6.875H10.0063V6.88125H10V6.875Z" stroke="#9CA3AF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
                         </Tooltip>
                     </label>
+                    {/* Info box for recommended avatar size - Pro feature locked */}
+                    {formData.directory_layout && (
+                        <div
+                            className="wpuf-mb-3 wpuf-flex wpuf-items-center wpuf-relative"
+                            style={{
+                                width: '793px',
+                                maxWidth: '100%',
+                                height: '52px',
+                                borderRadius: '6px',
+                                opacity: 0.6,
+                                gap: '12px',
+                                padding: '16px',
+                                backgroundColor: '#EFF6FF'
+                            }}
+                            onMouseEnter={() => setHoveredOption('avatar-info')}
+                            onMouseLeave={() => setHoveredOption(null)}
+                        >
+                            {hoveredOption === 'avatar-info' && (
+                                <div className="wpuf-absolute wpuf-z-10" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+                                    <ProBadge />
+                                </div>
+                            )}
+                            <svg className="wpuf-flex-shrink-0" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fillRule="evenodd" clipRule="evenodd" d="M18 10C18 14.4183 14.4183 18 10 18C5.58172 18 2 14.4183 2 10C2 5.58172 5.58172 2 10 2C14.4183 2 18 5.58172 18 10ZM11 6C11 6.55228 10.5523 7 10 7C9.44772 7 9 6.55228 9 6C9 5.44772 9.44772 5 10 5C10.5523 5 11 5.44772 11 6ZM9 9C8.44772 9 8 9.44772 8 10C8 10.5523 8.44772 11 9 11V14C9 14.5523 9.44772 15 10 15H11C11.5523 15 12 14.5523 12 14C12 13.4477 11.5523 13 11 13V10C11 9.44772 10.5523 9 10 9H9Z" fill="#1E40AF"/>
+                            </svg>
+                            <span
+                                style={{
+                                    fontWeight: 500,
+                                    fontSize: '14px',
+                                    lineHeight: '20px',
+                                    letterSpacing: '0%',
+                                    color: '#1E40AF'
+                                }}
+                            >
+                                {__('Recommended avatar size info available in Pro', 'wp-user-frontend')}
+                            </span>
+                        </div>
+                    )}
                     <div className="wpuf-flex wpuf-flex-wrap wpuf-gap-2">
                         {avatarSizes.map(size => {
                             const isSelected = (formData.avatar_size || '192') === size.value;

@@ -1,7 +1,9 @@
-import type { PlaywrightTestConfig } from '@playwright/test';
-import { devices } from '@playwright/test';
+import { defineConfig, devices } from '@playwright/test';
+import * as dotenv from 'dotenv';
 
-const config: PlaywrightTestConfig = {
+dotenv.config({ quiet: true });
+
+export default defineConfig({
     testDir: './tests',
 
     timeout: 120000,
@@ -53,6 +55,4 @@ const config: PlaywrightTestConfig = {
             },
         },
     ],
-};
-
-export default config;
+});

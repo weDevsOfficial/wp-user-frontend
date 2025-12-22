@@ -2,6 +2,7 @@
  * User Directory Free - Main Styles
  *
  * Tailwind CSS with wpuf- prefix
+ * Matches Pro's wpuf-ud.css exactly
  *
  * @package WPUF
  * @subpackage Free/User_Directory
@@ -28,27 +29,274 @@
     max-width: unset !important;
 }
 
-/* Full page white background - matches Pro */
-#wpcontent, #wpbody {
-    background: #fff;
+/* Set white background for WordPress admin body - matches forms-list.css pattern */
+/* This file is only loaded on User Directory page, so no scoping needed */
+#wpbody,
+#wpcontent,
+#wpbody-content {
+    background: #fff !important;
 }
 
-/* Custom animations */
-@keyframes fade-in {
+#wpbody-content {
+    min-height: 100vh;
+}
+
+.wpuf-user-directory-empty {
+    text-align: center;
+    padding: 2rem;
+    color: #6b7280;
+    font-style: italic;
+}
+
+
+.wpuf-ud-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.wpuf-ud-thead {
+    background-color: #FFFFFF;
+}
+
+.wpuf-ud-tbody {
+    background-color: white;
+}
+
+.wpuf-ud-row {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.wpuf-ud-row:hover {
+    background-color: #f9fafb;
+}
+
+/* User field styles - Basic typography */
+.wpuf-user-email,
+.wpuf-user-role,
+.wpuf-user-posts,
+.wpuf-user-joined,
+.wpuf-user-field {
+    color: #374151;
+    font-size: 0.875rem;
+}
+
+/* Profile link styles */
+.wpuf-text-indigo-600 {
+    color: #4f46e5;
+}
+
+.hover\:wpuf-text-indigo-900:hover {
+    color: #312e81;
+}
+
+/* Loading States */
+.wpuf-directory-loading {
+    text-align: center;
+    padding: 3rem;
+}
+
+.wpuf-directory-loading .wpuf-animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
     from {
-        opacity: 0;
-        transform: translateY(10px);
+        transform: rotate(0deg);
     }
     to {
-        opacity: 1;
-        transform: translateY(0);
+        transform: rotate(360deg);
     }
 }
 
-.wpuf-animate-fadein {
-    animation: fade-in 0.3s ease-out forwards;
+/* Empty State */
+.wpuf-directory-empty {
+    text-align: center;
+    padding: 3rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
 }
 
-#wpuf-ud-free-app {
+/* Custom Field Styles - Basic */
+.wpuf-custom-field {
+    font-size: 0.875rem;
+    color: #374151;
+}
+
+/* WordPress Block Editor Color Support for Custom Fields */
+.wpuf-custom-field.has-text-color,
+.wpuf-custom-field.has-text-color * {
+    color: inherit !important;
+}
+
+.wpuf-custom-field[style*="color"],
+.wpuf-custom-field[style*="color"] * {
+    color: inherit !important;
+}
+
+/* Focus States */
+.wpuf-btn:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+    .wpuf-pagination,
+    .wpuf-action-buttons {
+        display: none !important;
+    }
+
+    .wpuf-table-body {
+        border: 1px solid #000;
+    }
+
+    .wpuf-user-row {
+        border-bottom: 1px solid #000;
+    }
+}
+
+/* Dropdown Text Truncation - Prevent caret overlap */
+.wpuf-ud-search-in,
+.wpuf-ud-sort-by,
+.wpuf-ud-sort-order {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    /* Ensure sufficient space for caret icon */
+    padding-right: 3rem !important;
+    /* Ensure consistent appearance across all dropdowns */
     max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Ensure dropdown options are also properly truncated */
+.wpuf-ud-search-in option,
+.wpuf-ud-sort-by option,
+.wpuf-ud-sort-order option {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 100%;
+}
+
+/* Override any theme/plugin styles that might affect layout preview images */
+.wpuf-user-directory-setup img {
+    width: auto !important;
+    height: auto !important;
+    max-width: none !important;
+    max-height: none !important;
+    object-fit: initial !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+}
+
+/* Dropdown menu z-index fix for table rows */
+.wpuf-z-\[9999\] {
+    z-index: 9999 !important;
+}
+
+/* Ensure table container doesn't create stacking context */
+.wpuf-overflow-hidden {
+    overflow: visible !important;
+}
+
+/* Loading spinner - Free version specific */
+.wpuf-loader {
+    width: 24px;
+    height: 24px;
+    border: 3px solid #e5e7eb;
+    border-top-color: #059669;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/**
+ * Layout-3 specific styles for User Directory Listing
+ * Matches Pro's wpuf-ud.css layout-3 styles
+ */
+
+/* Remove empty paragraph elements from layout */
+.wpuf-ud-list-layout-3 p:empty {
+    display: none !important;
+}
+
+/* Add spacing only between non-empty elements */
+.wpuf-ud-list-layout-3 p:not(:empty) + p:not(:empty) {
+    margin-top: 0.25rem;
+}
+
+/* Dynamic card heights - prevent excessive whitespace */
+.wpuf-ud-list-layout-3 li {
+    height: auto !important;
+    min-height: 280px;
+}
+
+/* Hide empty flex containers */
+.wpuf-ud-list .wpuf-flex-col > *:empty {
+    display: none !important;
+}
+
+/* Social icons container - hide if empty */
+.wpuf-social-icons:empty {
+    display: none !important;
+}
+
+/* Ensure View Profile button stays at bottom with proper spacing */
+.wpuf-ud-list-layout-3 .wpuf-flex-shrink-0:last-child {
+    margin-top: auto;
+    padding-top: 1rem;
+}
+
+/* Ensure button area doesn't collapse */
+.wpuf-ud-list a[href*="profile"] {
+    display: inline-flex !important;
+}
+
+/* Optimize spacing for user info sections */
+.wpuf-ud-list .wpuf-flex-col.wpuf-text-center > :first-child {
+    margin-top: 0;
+}
+
+.wpuf-ud-list .wpuf-flex-col.wpuf-text-center > :last-child {
+    margin-bottom: 0;
+}
+
+/* Compact spacing when minimal data is present */
+.wpuf-ud-list li:has(p:empty) {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+}
+
+/* Grid adjustments for responsive behavior */
+@media (max-width: 768px) {
+    .wpuf-ud-list-layout-3 ul {
+        gap: 1rem;
+    }
+
+    .wpuf-ud-list-layout-3 li {
+        min-height: auto;
+    }
+}
+
+/* Ensure consistent avatar spacing */
+.wpuf-ud-list .wpuf-flex-shrink-0:has(img) {
+    flex-shrink: 0;
+}
+
+/* Handle empty bio/description fields */
+.wpuf-ud-list .wpuf-user-bio:empty {
+    display: none !important;
+}
+
+/* Dropdown menu z-index fix for table rows */
+.wpuf-z-\[9999\] {
+    z-index: 9999 !important;
+}
+
+/* Ensure table container doesn't create stacking context */
+.wpuf-overflow-hidden {
+    overflow: visible !important;
 }

@@ -258,9 +258,9 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                                     onMouseEnter={() => !option.isFree && setHoveredOption(`sort-${option.value}`)}
                                     onMouseLeave={() => setHoveredOption(null)}
                                 >
-                                    {/* Pro Badge on hover */}
+                                    {/* Pro Badge on hover - vertically centered */}
                                     {!option.isFree && isHovered && (
-                                        <div className="wpuf-absolute wpuf-z-10" style={{ top: '-24px', left: '50%', transform: 'translateX(-50%)' }}>
+                                        <div className="wpuf-absolute wpuf-z-10" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
                                             <ProBadge small />
                                         </div>
                                     )}
@@ -345,13 +345,13 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                         onMouseEnter={() => setHoveredOption('social-profiles')}
                         onMouseLeave={() => setHoveredOption(null)}
                     >
-                        {/* Pro Badge on hover */}
+                        {/* Pro Badge on hover - vertically centered */}
                         {hoveredOption === 'social-profiles' && (
-                            <div className="wpuf-absolute wpuf-z-10" style={{ top: '-24px', left: '50%', transform: 'translateX(-50%)' }}>
+                            <div className="wpuf-absolute wpuf-z-10" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
                                 <ProBadge />
                             </div>
                         )}
-                        <div 
+                        <div
                             className={`wpuf-flex wpuf-flex-wrap wpuf-gap-2 wpuf-p-3 wpuf-rounded-lg wpuf-cursor-not-allowed ${hoveredOption === 'social-profiles' ? 'wpuf-opacity-80' : 'wpuf-opacity-60'}`}
                             style={{
                                 border: hoveredOption === 'social-profiles' ? '2px dashed #9CA3AF' : '1px solid #E5E7EB',
@@ -390,9 +390,9 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                                     onMouseEnter={() => !option.isFree && setHoveredOption(`gallery-${option.value}`)}
                                     onMouseLeave={() => setHoveredOption(null)}
                                 >
-                                    {/* Pro Badge on hover */}
+                                    {/* Pro Badge on hover - vertically centered */}
                                     {!option.isFree && isHovered && (
-                                        <div className="wpuf-absolute wpuf-z-10" style={{ top: '-24px', left: '50%', transform: 'translateX(-50%)' }}>
+                                        <div className="wpuf-absolute wpuf-z-10" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
                                             <ProBadge small />
                                         </div>
                                     )}
@@ -441,9 +441,9 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                                     onMouseEnter={() => !size.isFree && setHoveredOption(`avatar-${size.value}`)}
                                     onMouseLeave={() => setHoveredOption(null)}
                                 >
-                                    {/* Pro Badge on hover */}
+                                    {/* Pro Badge on hover - vertically centered */}
                                     {!size.isFree && isHovered && (
-                                        <div className="wpuf-absolute wpuf-z-10" style={{ top: '-24px', left: '50%', transform: 'translateX(-50%)' }}>
+                                        <div className="wpuf-absolute wpuf-z-10" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
                                             <ProBadge small />
                                         </div>
                                     )}

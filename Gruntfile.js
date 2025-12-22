@@ -163,9 +163,11 @@ module.exports = function( grunt) {
 
             userDirectory: {
                 files: [
+                    'src/js/user-directory/**/*.js',
+                    'src/js/user-directory/**/*.jsx',
+                    'src/js/user-directory/**/*.css',
                     'src/js/user-directory/styles/*.css',
-                    'includes/Free/User_Directory/**/*.php',
-                    'includes/Free/User_Directory/views/**/*.php',
+                    'modules/user-directory/**/*.php',
                 ],
                 tasks: ['build-user-directory'],
                 options: {

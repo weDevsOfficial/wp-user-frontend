@@ -1,22 +1,21 @@
-/**
- * Tailwind CSS Configuration for User Directory Free
- *
- * Uses wpuf- prefix to avoid conflicts
- *
- * @package WPUF
- * @subpackage Free/User_Directory
- * @since 4.3.0
- */
-
 /** @type {import('tailwindcss').Config} */
+import {
+    scopedPreflightStyles,
+    isolateInsideOfContainer,
+} from 'tailwindcss-scoped-preflight';
+
 module.exports = {
     prefix: 'wpuf-',
     content: [
-        './src/js/user-directory/**/*.js',
-        './src/js/user-directory/**/*.jsx',
-        './includes/Free/User_Directory/views/**/*.php',
+        '../../src/js/user-directory/**/*.js',
+        '../../src/js/user-directory/**/*.jsx',
+        './views/**/*.php',
     ],
     safelist: [
+        // Responsive classes used in components
+        'sm:wpuf-pl-6',
+        'sm:wpuf-pr-6',
+        'md:wpuf-inline-block',
         // Purple color classes for layout colors (with ! prefix)
         'wpuf-bg-purple-500',
         'wpuf-bg-purple-600',
@@ -56,10 +55,6 @@ module.exports = {
         '!wpuf-border-emerald-600',
         '!wpuf-border-emerald-700',
         '!wpuf-ring-emerald-500',
-        '!hover:wpuf-text-emerald-600',
-        '!hover:wpuf-bg-emerald-700',
-        '!hover:wpuf-border-emerald-600',
-        '!focus:wpuf-ring-emerald-500',
         'hover:!wpuf-bg-emerald-700',
         'hover:!wpuf-bg-emerald-100',
         'hover:!wpuf-bg-emerald-50',
@@ -77,28 +72,26 @@ module.exports = {
         '!wpuf-border-gray-800',
         '!wpuf-border-gray-700',
         '!wpuf-ring-gray-800',
-        '!hover:wpuf-text-gray-800',
-        '!hover:wpuf-bg-gray-700',
-        '!hover:wpuf-border-gray-800',
-        '!focus:wpuf-ring-gray-800',
     ],
     theme: {
         extend: {
-            animation: {
-                'fade-in': 'fade-in 0.3s ease-out forwards',
-                'spin': 'spin 1s linear infinite',
-            },
-            keyframes: {
-                'fade-in': {
-                    '0%': { opacity: '0', transform: 'translateY(10px)' },
-                    '100%': { opacity: '1', transform: 'translateY(0)' },
-                },
+            colors: {
+                primary: '#059669',
+                primaryHover: '#10b981',
             },
         },
     },
-    plugins: [],
-    // Important: This ensures our styles don't conflict with WordPress admin
-    corePlugins: {
-        preflight: false, // Disable base reset to avoid conflicts
-    },
+    plugins: [
+        scopedPreflightStyles({
+            isolationStrategy: isolateInsideOfContainer(
+                [
+                    '.wpuf-user-directory',
+                    '.wpuf-user-directory-setup',
+                    '.wpuf-user-listing',
+                    '.wpuf-user-profile',
+                ], {}
+            ),
+        }),
+        require('@tailwindcss/forms'),
+    ],
 };

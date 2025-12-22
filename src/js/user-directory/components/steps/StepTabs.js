@@ -198,19 +198,19 @@ const StepTabs = ({ formData, setFormData, config }) => {
                                 </div>
                                 
                                 <div className="wpuf-flex wpuf-items-center wpuf-gap-3 wpuf-relative">
-                                    {/* Pro Badge on hover - positioned in center above both icons */}
+                                    {/* Pro Badge on hover - vertically centered */}
                                     {isHovered && (
-                                        <div 
+                                        <div
                                             className="wpuf-absolute wpuf-z-10"
-                                            style={{ 
-                                                top: '-28px', 
-                                                left: '50%', 
-                                                transform: 'translateX(-50%)' 
+                                            style={{
+                                                top: '50%',
+                                                left: '50%',
+                                                transform: 'translate(-50%, -50%)'
                                             }}
                                         >
-                                            <img 
-                                                src={(config?.asset_url || window.wpuf_ud_free?.asset_url || '') + '/images/pro-badge.svg'} 
-                                                alt="Pro" 
+                                            <img
+                                                src={(config?.asset_url || window.wpuf_ud_free?.asset_url || '') + '/images/pro-badge.svg'}
+                                                alt="Pro"
                                                 style={{ width: '32px', height: '18px' }}
                                             />
                                         </div>
@@ -322,12 +322,12 @@ const StepTabs = ({ formData, setFormData, config }) => {
                         </span>
                     </button>
                     
-                    {/* Pro Badge on hover */}
+                    {/* Pro Badge on hover - vertically centered */}
                     {hoveredContentType === 'add-content' && (
-                        <div className="wpuf-absolute" style={{ top: '-24px', left: '50%', transform: 'translateX(-50%)' }}>
-                            <img 
-                                src={(config?.asset_url || window.wpuf_ud_free?.asset_url || '') + '/images/pro-badge.svg'} 
-                                alt="Pro" 
+                        <div className="wpuf-absolute wpuf-z-10" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+                            <img
+                                src={(config?.asset_url || window.wpuf_ud_free?.asset_url || '') + '/images/pro-badge.svg'}
+                                alt="Pro"
                                 style={{ width: '32px', height: '18px' }}
                             />
                         </div>
@@ -338,16 +338,16 @@ const StepTabs = ({ formData, setFormData, config }) => {
                 <div className="wpuf-mt-4 wpuf-p-4 wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-rounded-lg" style={{ width: '590px' }}>
                     <div className="wpuf-flex wpuf-gap-2 wpuf-items-center wpuf-justify-center">
                         {/* Meta Field */}
-                        <div 
+                        <div
                             className="wpuf-relative"
                             onMouseEnter={() => setHoveredContentType('meta-field')}
                             onMouseLeave={() => setHoveredContentType(null)}
                         >
                             {hoveredContentType === 'meta-field' && (
-                                <div className="wpuf-absolute wpuf-z-10" style={{ top: '-24px', left: '50%', transform: 'translateX(-50%)' }}>
-                                    <img 
-                                        src={(config?.asset_url || window.wpuf_ud_free?.asset_url || '') + '/images/pro-badge.svg'} 
-                                        alt="Pro" 
+                                <div className="wpuf-absolute wpuf-z-10" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+                                    <img
+                                        src={(config?.asset_url || window.wpuf_ud_free?.asset_url || '') + '/images/pro-badge.svg'}
+                                        alt="Pro"
                                         style={{ width: '32px', height: '18px' }}
                                     />
                                 </div>
@@ -370,16 +370,16 @@ const StepTabs = ({ formData, setFormData, config }) => {
                         </div>
                         
                         {/* Section */}
-                        <div 
+                        <div
                             className="wpuf-relative"
                             onMouseEnter={() => setHoveredContentType('section')}
                             onMouseLeave={() => setHoveredContentType(null)}
                         >
                             {hoveredContentType === 'section' && (
-                                <div className="wpuf-absolute wpuf-z-10" style={{ top: '-24px', left: '50%', transform: 'translateX(-50%)' }}>
-                                    <img 
-                                        src={(config?.asset_url || window.wpuf_ud_free?.asset_url || '') + '/images/pro-badge.svg'} 
-                                        alt="Pro" 
+                                <div className="wpuf-absolute wpuf-z-10" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+                                    <img
+                                        src={(config?.asset_url || window.wpuf_ud_free?.asset_url || '') + '/images/pro-badge.svg'}
+                                        alt="Pro"
                                         style={{ width: '32px', height: '18px' }}
                                     />
                                 </div>
@@ -402,16 +402,16 @@ const StepTabs = ({ formData, setFormData, config }) => {
                         </div>
                         
                         {/* Post Type */}
-                        <div 
+                        <div
                             className="wpuf-relative"
                             onMouseEnter={() => setHoveredContentType('post-type')}
                             onMouseLeave={() => setHoveredContentType(null)}
                         >
                             {hoveredContentType === 'post-type' && (
-                                <div className="wpuf-absolute wpuf-z-10" style={{ top: '-24px', left: '50%', transform: 'translateX(-50%)' }}>
-                                    <img 
-                                        src={(config?.asset_url || window.wpuf_ud_free?.asset_url || '') + '/images/pro-badge.svg'} 
-                                        alt="Pro" 
+                                <div className="wpuf-absolute wpuf-z-10" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+                                    <img
+                                        src={(config?.asset_url || window.wpuf_ud_free?.asset_url || '') + '/images/pro-badge.svg'}
+                                        alt="Pro"
                                         style={{ width: '32px', height: '18px' }}
                                     />
                                 </div>
@@ -434,16 +434,16 @@ const StepTabs = ({ formData, setFormData, config }) => {
                         </div>
                         
                         {/* Comment */}
-                        <div 
+                        <div
                             className="wpuf-relative"
                             onMouseEnter={() => setHoveredContentType('comment')}
                             onMouseLeave={() => setHoveredContentType(null)}
                         >
                             {hoveredContentType === 'comment' && (
-                                <div className="wpuf-absolute wpuf-z-10" style={{ top: '-24px', left: '50%', transform: 'translateX(-50%)' }}>
-                                    <img 
-                                        src={(config?.asset_url || window.wpuf_ud_free?.asset_url || '') + '/images/pro-badge.svg'} 
-                                        alt="Pro" 
+                                <div className="wpuf-absolute wpuf-z-10" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+                                    <img
+                                        src={(config?.asset_url || window.wpuf_ud_free?.asset_url || '') + '/images/pro-badge.svg'}
+                                        alt="Pro"
                                         style={{ width: '32px', height: '18px' }}
                                     />
                                 </div>
@@ -466,16 +466,16 @@ const StepTabs = ({ formData, setFormData, config }) => {
                         </div>
                         
                         {/* Image/File */}
-                        <div 
+                        <div
                             className="wpuf-relative"
                             onMouseEnter={() => setHoveredContentType('image-file')}
                             onMouseLeave={() => setHoveredContentType(null)}
                         >
                             {hoveredContentType === 'image-file' && (
-                                <div className="wpuf-absolute wpuf-z-10" style={{ top: '-24px', left: '50%', transform: 'translateX(-50%)' }}>
-                                    <img 
-                                        src={(config?.asset_url || window.wpuf_ud_free?.asset_url || '') + '/images/pro-badge.svg'} 
-                                        alt="Pro" 
+                                <div className="wpuf-absolute wpuf-z-10" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+                                    <img
+                                        src={(config?.asset_url || window.wpuf_ud_free?.asset_url || '') + '/images/pro-badge.svg'}
+                                        alt="Pro"
                                         style={{ width: '32px', height: '18px' }}
                                     />
                                 </div>

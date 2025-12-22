@@ -1,10 +1,8 @@
 /**
  * Webpack Configuration for User Directory Free
  *
- * Based on Pro's user-directory module build setup
- *
  * @package WPUF
- * @subpackage Free/User_Directory
+ * @subpackage Modules/User_Directory
  * @since 4.3.0
  */
 
@@ -14,13 +12,13 @@ const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extract
 
 module.exports = {
     entry: {
-        'wpuf-user-directory-free': './src/js/user-directory/index.js',
+        'wpuf-user-directory-free': '../../src/js/user-directory/index.js',
     },
     output: {
-        path: path.resolve(__dirname, 'assets/js'),
+        path: path.resolve(__dirname, '../../assets/js'),
         filename: '[name].js',
         publicPath: '',
-        clean: false, // Don't clean other files
+        clean: false,
     },
     module: {
         rules: [

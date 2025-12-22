@@ -112,74 +112,32 @@ const DirectoryList = ( {directories, currentPage, totalPages, onPageChange, fet
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [directories]);
 
-    const renderPagination = () => {
-        if (totalPages <= 1) return null;
-        const range = [];
-        const delta = 2;
-        for (
-            let i = Math.max( 1, currentPage - delta );
-            i <= Math.min( totalPages, currentPage + delta );
-            i++
-        ) {
-            range.push( i );
-        }
-        return (
-            <div className="wpuf-flex wpuf-items-center wpuf-justify-center wpuf-mt-8">
-                <nav className="wpuf-flex wpuf-items-center wpuf-w-full">
-                    <button
-                        onClick={() => onPageChange( currentPage - 1 )}
-                        disabled={currentPage === 1}
-                        className={`wpuf-mr-3 wpuf-rounded-md wpuf-inline-flex wpuf-items-center wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 hover:wpuf-text-primary ${currentPage === 1 ? 'wpuf-cursor-not-allowed wpuf-opacity-50' : ''}`}
-                    >
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path
-                                d="M7.70711 14.7071C7.31658 15.0976 6.68342 15.0976 6.2929 14.7071L2.29289 10.7071C1.90237 10.3166 1.90237 9.68342 2.29289 9.29289L6.29289 5.29289C6.68342 4.90237 7.31658 4.90237 7.70711 5.29289C8.09763 5.68342 8.09763 6.31658 7.70711 6.70711L5.41421 9L17 9C17.5523 9 18 9.44771 18 10C18 10.5523 17.5523 11 17 11L5.41421 11L7.70711 13.2929C8.09763 13.6834 8.09763 14.3166 7.70711 14.7071Z"
-                                fill="#94A3B8"/>
-                        </svg>
-                        &nbsp;Previous
-                    </button>
-                    <div className="wpuf-flex wpuf-items-center">
-                        {range.map( page => (
-                            <span
-                                key={page}
-                                onClick={() => onPageChange( page )}
-                                className={`wpuf-inline-flex wpuf-items-center wpuf-px-4 wpuf-py-2 wpuf-text-sm wpuf-font-medium wpuf-cursor-pointer wpuf-mx-1 wpuf-border-t-2 ${page === currentPage ? 'wpuf-text-primary wpuf-border-primary' : 'wpuf-text-gray-500 wpuf-border-transparent'} hover:wpuf-border-primary wpuf-transition-all`}
-                            >
-                                {page}
-                            </span>
-                        ) )}
-                    </div>
-                    <button
-                        onClick={() => onPageChange( currentPage + 1 )}
-                        disabled={currentPage === totalPages}
-                        className={`wpuf-ml-3 wpuf-rounded-md wpuf-inline-flex wpuf-items-center wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 hover:wpuf-text-primary ${currentPage === totalPages ? 'wpuf-cursor-not-allowed wpuf-opacity-50' : ''}`}
-                    >
-                        Next&nbsp;
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path
-                                d="M12.2929 5.29289C12.6834 4.90237 13.3166 4.90237 13.7071 5.29289L17.7071 9.29289C18.0976 9.68342 18.0976 10.3166 17.7071 10.7071L13.7071 14.7071C13.3166 15.0976 12.6834 15.0976 12.2929 14.7071C11.9024 14.31658 11.9024 13.6834 12.2929 13.2929L14.5858 11H3C2.44772 11 2 10.5523 2 10C2 9.44772 2.44772 9 3 9H14.5858L12.2929 6.70711C11.9024 6.31658 11.9024 5.68342 12.2929 5.29289Z"
-                                fill="#94A3B8"/>
-                        </svg>
-                    </button>
-                </nav>
-            </div>
-        );
-    };
-
     return (
-        <>
-            <div className={`wpuf-bg-white wpuf-border wpuf-border-gray-200 wpuf-shadow wpuf-rounded-[8px] ${className}`}>
-                <table className="wpuf-min-w-full wpuf-divide-y wpuf-divide-gray-200">
-                    <thead>
-                        <tr>
-                            <th className="wpuf-py-3.5 wpuf-pl-4 wpuf-pr-3 wpuf-text-left wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900 sm:wpuf-pl-6">{__('Directory Name', 'wp-user-frontend')}</th>
-                            <th className="wpuf-px-3 wpuf-py-3.5 wpuf-text-left wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900">{__('ID', 'wp-user-frontend')}</th>
-                            <th className="wpuf-px-3 wpuf-py-3.5 wpuf-text-left wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900">{__('Members', 'wp-user-frontend')}</th>
-                            <th className="wpuf-px-3 wpuf-py-3.5 wpuf-text-left wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900">{__('Shortcode', 'wp-user-frontend')}</th>
-                            <th className="wpuf-px-3 wpuf-py-3.5 wpuf-text-right wpuf-text-sm wpuf-font-semibold wpuf-text-gray-900">&nbsp;</th>
-                        </tr>
-                    </thead>
-                    <tbody className="wpuf-divide-y wpuf-divide-gray-200">
+        <div className={`wpuf-transition-opacity wpuf-duration-300 ${className}`}>
+            <div className="wpuf-flow-root">
+                <div className="wpuf-inline-block wpuf-min-w-full wpuf-align-middle">
+                    <div className="wpuf-overflow-hidden wpuf-shadow wpuf-ring-1 wpuf-ring-black wpuf-ring-opacity-5 wpuf-rounded-lg">
+                        <table className="wpuf-min-w-full wpuf-divide-y wpuf-divide-gray-300">
+                            <thead className="wpuf-bg-white">
+                                <tr>
+                                    <th scope="col" className="wpuf-py-3.5 wpuf-pl-4 wpuf-pr-3 wpuf-text-left wpuf-text-sm wpuf-font-medium wpuf-text-gray-900 sm:wpuf-pl-6">
+                                        {__('Title', 'wp-user-frontend')}
+                                    </th>
+                                    <th scope="col" className="wpuf-px-3 wpuf-py-3.5 wpuf-text-left wpuf-text-sm wpuf-font-medium wpuf-text-gray-900">
+                                        {__('ID', 'wp-user-frontend')}
+                                    </th>
+                                    <th scope="col" className="wpuf-px-3 wpuf-py-3.5 wpuf-text-left wpuf-text-sm wpuf-font-medium wpuf-text-gray-900">
+                                        {__('Members', 'wp-user-frontend')}
+                                    </th>
+                                    <th scope="col" className="wpuf-px-3 wpuf-py-3.5 wpuf-text-left wpuf-text-sm wpuf-font-medium wpuf-text-gray-900">
+                                        {__('Shortcode', 'wp-user-frontend')}
+                                    </th>
+                                    <th scope="col" className="wpuf-relative wpuf-py-3.5 wpuf-pl-3 wpuf-pr-4 sm:wpuf-pr-6">
+                                        <span className="wpuf-sr-only">{__('Actions', 'wp-user-frontend')}</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody className="wpuf-bg-white wpuf-divide-y wpuf-divide-gray-200">
                     {directories.map( dir => {
                         // Helper to escape shortcode attribute values
                         const escapeShortcodeAttr = (val) => {
@@ -233,7 +191,7 @@ const DirectoryList = ( {directories, currentPage, totalPages, onPageChange, fet
                         const displayShortcode = `[wpuf_user_listing id="${dir.ID}"]`;
                         return (
                             <tr key={dir.ID} className="wpuf-group">
-                                <td className="wpuf-text-sm wpuf-font-medium wpuf-text-gray-900 sm:wpuf-pl-6" title={'ID: ' + dir.ID}>
+                                <td className="wpuf-whitespace-nowrap wpuf-py-4 wpuf-pl-4 wpuf-pr-3 wpuf-text-sm wpuf-font-medium wpuf-text-gray-900 sm:wpuf-pl-6" title={'ID: ' + dir.ID}>
                                     <span className="hover:wpuf-cursor-pointer hover:wpuf-text-primary" onClick={() => { onEdit && onEdit(dir);}} >{dir.post_title}</span>
                                 </td>
                                 <td className="wpuf-whitespace-nowrap wpuf-px-3 wpuf-py-4 wpuf-text-sm wpuf-font-medium wpuf-text-gray-500">{dir.ID}</td>
@@ -283,7 +241,7 @@ const DirectoryList = ( {directories, currentPage, totalPages, onPageChange, fet
                                             </svg>
                                         </button>
                                         {openMenuId === dir.ID && (
-                                            <div className="wpuf-absolute wpuf-right-0 wpuf-mt-2 wpuf-w-40 wpuf-origin-top-right wpuf-rounded-md wpuf-bg-white wpuf-shadow-lg wpuf-ring-1 wpuf-ring-black wpuf-ring-opacity-5 wpuf-z-10" ref={el => menuRefs.current[dir.ID] = el}>
+                                            <div className="wpuf-absolute wpuf-right-0 wpuf-mt-2 wpuf-w-40 wpuf-origin-top-right wpuf-rounded-md wpuf-bg-white wpuf-shadow-lg wpuf-ring-1 wpuf-ring-black wpuf-ring-opacity-5 wpuf-z-[9999]" ref={el => menuRefs.current[dir.ID] = el}>
                                                 <button className="wpuf-block wpuf-w-full wpuf-text-left wpuf-px-4 wpuf-py-2 wpuf-text-sm wpuf-text-gray-700 hover:wpuf-bg-gray-100" onClick={() => { onEdit && onEdit(dir); setOpenMenuId(null); }}>{__('Edit', 'wp-user-frontend')}</button>
                                                 <div className="wpuf-flex wpuf-items-center wpuf-justify-between wpuf-px-4 wpuf-py-2 wpuf-text-sm wpuf-text-gray-400 wpuf-cursor-not-allowed wpuf-bg-gray-50">
                                                     <span>{__('Duplicate', 'wp-user-frontend')}</span>
@@ -298,10 +256,72 @@ const DirectoryList = ( {directories, currentPage, totalPages, onPageChange, fet
                         );
                     } )}
                     </tbody>
-                </table>
+                        </table>
+                    </div>
+
+                    {/* Pagination */}
+                    {totalPages > 1 && (
+                        <div className="wpuf-flex wpuf-items-center wpuf-justify-center wpuf-mt-20">
+                            <nav className="wpuf-flex wpuf-items-center wpuf-w-full">
+                                <div>
+                                    <button
+                                        onClick={() => onPageChange(currentPage - 1)}
+                                        disabled={currentPage === 1}
+                                        className={`wpuf-mr-3 wpuf-rounded-md wpuf-relative wpuf-inline-flex wpuf-items-center wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 hover:wpuf-text-primary ${currentPage === 1 ? 'wpuf-cursor-not-allowed wpuf-opacity-50' : ''}`}
+                                    >
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                            <path fillRule="evenodd" clipRule="evenodd" d="M7.70711 14.7071C7.31658 15.0976 6.68342 15.0976 6.2929 14.7071L2.29289 10.7071C1.90237 10.3166 1.90237 9.68342 2.29289 9.29289L6.29289 5.29289C6.68342 4.90237 7.31658 4.90237 7.70711 5.29289C8.09763 5.68342 8.09763 6.31658 7.70711 6.70711L5.41421 9L17 9C17.5523 9 18 9.44771 18 10C18 10.5523 17.5523 11 17 11L5.41421 11L7.70711 13.2929C8.09763 13.6834 8.09763 14.3166 7.70711 14.7071Z" fill="#94A3B8"/>
+                                        </svg>
+                                        &nbsp;
+                                        {__('Previous', 'wp-user-frontend')}
+                                    </button>
+                                </div>
+
+                                <div className="wpuf-flex wpuf-items-center">
+                                    {[...Array(totalPages)].map((_, i) => {
+                                        const page = i + 1;
+                                        if (
+                                            page === 1 ||
+                                            page === totalPages ||
+                                            (page >= currentPage - 2 && page <= currentPage + 2)
+                                        ) {
+                                            return (
+                                                <span
+                                                    key={page}
+                                                    onClick={() => onPageChange(page)}
+                                                    className={`wpuf-relative wpuf-inline-flex wpuf-items-center wpuf-px-4 wpuf-py-2 wpuf-text-sm wpuf-font-medium wpuf-cursor-pointer wpuf-mx-1 wpuf-border-t-2 hover:wpuf-border-primary wpuf-transition-all ${
+                                                        page === currentPage
+                                                            ? 'wpuf-text-primary wpuf-border-primary'
+                                                            : 'wpuf-text-gray-500 wpuf-border-transparent'
+                                                    }`}
+                                                >
+                                                    {page}
+                                                </span>
+                                            );
+                                        }
+                                        return null;
+                                    })}
+                                </div>
+
+                                <div>
+                                    <button
+                                        onClick={() => onPageChange(currentPage + 1)}
+                                        disabled={currentPage === totalPages}
+                                        className={`wpuf-ml-3 wpuf-rounded-md wpuf-relative wpuf-inline-flex wpuf-items-center wpuf-text-sm wpuf-font-medium wpuf-text-gray-700 hover:wpuf-text-primary ${currentPage === totalPages ? 'wpuf-cursor-not-allowed wpuf-opacity-50' : ''}`}
+                                    >
+                                        {__('Next', 'wp-user-frontend')}
+                                        &nbsp;
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                            <path fillRule="evenodd" clipRule="evenodd" d="M12.2929 5.29289C12.6834 4.90237 13.3166 4.90237 13.7071 5.29289L17.7071 9.29289C18.0976 9.68342 18.0976 10.3166 17.7071 10.7071L13.7071 14.7071C13.3166 15.0976 12.6834 15.0976 12.2929 14.7071C11.9024 14.3166 11.9024 13.6834 12.2929 13.2929L14.5858 11H3C2.44772 11 2 10.5523 2 10C2 9.44772 2.44772 9 3 9H14.5858L12.2929 6.70711C11.9024 6.31658 11.9024 5.68342 12.2929 5.29289Z" fill="#94A3B8"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </nav>
+                        </div>
+                    )}
+                </div>
             </div>
-            {renderPagination()}
-        </>
+        </div>
     );
 };
 

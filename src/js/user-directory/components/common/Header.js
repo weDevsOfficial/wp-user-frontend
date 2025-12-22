@@ -31,7 +31,7 @@ const Header = ({ utm = 'wpuf-user-directory' }) => {
     }, []);
 
     return (
-        <div className="wpuf-w-[calc(100%+40px)] wpuf-ml-[-20px] wpuf-px-[20px] wpuf-flex wpuf-mt-4 wpuf-justify-between wpuf-items-center wpuf-border-b-2 wpuf-border-gray-100 wpuf-pb-4">
+        <div className="!wpuf-w-[calc(100%+40px)] !wpuf-ml-[-20px] !wpuf-px-[20px] !wpuf-flex !wpuf-mt-4 !wpuf-justify-between !wpuf-items-center !wpuf-border-b-2 !wpuf-border-gray-100 !wpuf-pb-4">
             <div className="wpuf-flex wpuf-justify-start wpuf-items-center">
                 <img src={logoUrl} alt="WPUF Icon" className="wpuf-w-12 wpuf-mr-4" />
                 <h2 className="wpuf-text-2xl wpuf-leading-7 wpuf-font-bold wpuf-m-0">{__('WP User Frontend', 'wp-user-frontend')}</h2>

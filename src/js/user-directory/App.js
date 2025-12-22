@@ -143,14 +143,11 @@ const App = () => {
             <Header />
             <div className="wpuf-w-[calc(100%+40px)] wpuf-ml-[-20px] wpuf-px-[20px] wpuf-my-10">
                 <div className="wpuf-mb-8">
-                    <h1 className="wpuf-text-2xl wpuf-font-bold wpuf-m-0 wpuf-mb-6">{__('User Directories', 'wp-user-frontend')}</h1>
-                    
-                    <div className="wpuf-flex wpuf-justify-between wpuf-items-center">
-                        <div></div>
-                        
+                    <div className="wpuf-flex wpuf-justify-between wpuf-items-center wpuf-mb-6">
+                        <h1 className="wpuf-text-2xl wpuf-font-bold wpuf-m-0">{__('User Directories', 'wp-user-frontend')}</h1>
                         <div className="wpuf-relative wpuf-inline-block wpuf-group">
                             <button
-                                className={`wpuf-flex wpuf-items-center ${hasReachedLimit ? 'wpuf-bg-gray-100 wpuf-text-gray-400 wpuf-border wpuf-border-gray-300 wpuf-rounded-md wpuf-px-4 wpuf-py-2 wpuf-cursor-not-allowed' : 'wpuf-btn-primary'}`}
+                                className={`wpuf-flex wpuf-items-center ${hasReachedLimit ? 'wpuf-bg-gray-100 wpuf-text-gray-400 wpuf-border wpuf-border-gray-300 wpuf-rounded-md wpuf-px-4 wpuf-py-2 wpuf-cursor-not-allowed' : 'new-wpuf-form wpuf-rounded-md wpuf-text-center wpuf-bg-primary wpuf-px-3 wpuf-py-2 wpuf-text-sm wpuf-font-semibold wpuf-text-white wpuf-shadow-sm hover:wpuf-bg-primaryHover hover:wpuf-text-white focus:wpuf-bg-primaryHover focus:wpuf-text-white focus:wpuf-shadow-none hover:wpuf-cursor-pointer'}`}
                                 onClick={handleCreate}
                                 disabled={hasReachedLimit}
                             >
@@ -158,8 +155,9 @@ const App = () => {
                                 &nbsp;
                                 {__('New Directory', 'wp-user-frontend')}
                             </button>
+                            {/* Pro Badge on hover - vertically centered */}
                             {hasReachedLimit && (
-                                <div className="wpuf-absolute wpuf-left-1/2 wpuf--translate-x-1/2 wpuf-top-full wpuf-mt-2 wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-transition-opacity wpuf-duration-200 wpuf-z-50">
+                                <div className="wpuf-absolute wpuf-z-50 wpuf-opacity-0 group-hover:wpuf-opacity-100 wpuf-transition-opacity wpuf-duration-200" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
                                     <ProBadge />
                                 </div>
                             )}
@@ -168,7 +166,7 @@ const App = () => {
 
                     {/* Limit Warning */}
                     {hasReachedLimit && (
-                        <div className="wpuf-flex wpuf-items-start wpuf-gap-3 wpuf-p-4 wpuf-bg-amber-50 wpuf-border wpuf-border-amber-200 wpuf-rounded-lg wpuf-mt-6">
+                        <div className="wpuf-flex wpuf-items-start wpuf-gap-3 wpuf-p-4 wpuf-bg-amber-50 wpuf-border wpuf-border-amber-200 wpuf-rounded-lg wpuf-mt-6 wpuf-mb-6">
                             <svg className="wpuf-w-5 wpuf-h-5 wpuf-text-amber-600 wpuf-flex-shrink-0 wpuf-mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                             </svg>
@@ -186,7 +184,11 @@ const App = () => {
                     )}
                 </div>
 
-                {loading ? null : (directories.length === 0 ? (
+                {loading ? (
+                    <div className="wpuf-flex wpuf-h-16 wpuf-items-center wpuf-justify-center">
+                        <div className="wpuf-loader"></div>
+                    </div>
+                ) : directories.length === 0 ? (
                     <EmptyState onCreate={handleCreate} config={config} />
                 ) : (
                     <DirectoryList
@@ -201,7 +203,7 @@ const App = () => {
                         onEdit={handleEdit}
                         config={config}
                     />
-                ))}
+                )}
             </div>
 
             <DeleteConfirmModal

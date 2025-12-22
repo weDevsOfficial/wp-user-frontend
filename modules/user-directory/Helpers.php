@@ -516,6 +516,7 @@ function wpuf_ud_get_profile_data( $user, $template_data = [], $layout = 'layout
         'user_meta'       => $user_meta,
         'contact_info'    => $contact_info,
         'social_media'    => [], // Pro feature
+        'cover_photo'     => wpuf_ud_get_cover_photo_data( $user ),
         'navigation'      => $navigation,
         'tab_config'      => $tab_config,
     ];
@@ -720,6 +721,46 @@ function wpuf_ud_get_user_initials( $user ) {
 function wpuf_ud_get_user_social_links( $user ) {
     // Social links are Pro feature - return empty
     return [];
+}
+
+/**
+ * Get cover photo data for a user
+ *
+ * @since 4.3.0
+ *
+ * @param WP_User|int $user User object or user ID.
+ *
+ * @return array Cover photo data with url, has_custom, and attachment_id.
+ */
+function wpuf_ud_get_cover_photo_data( $user ) {
+    // Handle user ID passed instead of user object
+    if ( is_numeric( $user ) ) {
+        $user = get_user_by( 'id', $user );
+    }
+
+    // Early return if user is not valid
+    if ( ! $user || ! is_a( $user, 'WP_User' ) ) {
+        return [
+            'url'           => '',
+            'has_custom'    => false,
+            'attachment_id' => '',
+        ];
+    }
+
+    // Check for wpuf_cover_photo user meta (attachment ID)
+    $cover_photo_id  = get_user_meta( $user->ID, 'wpuf_cover_photo', true );
+    $cover_photo_url = '';
+
+    if ( $cover_photo_id ) {
+        // Get the attachment URL if it exists
+        $cover_photo_url = wp_get_attachment_image_url( $cover_photo_id, 'full' );
+    }
+
+    return [
+        'url'           => $cover_photo_url ? $cover_photo_url : '',
+        'has_custom'    => ! empty( $cover_photo_id ) && ! empty( $cover_photo_url ),
+        'attachment_id' => $cover_photo_id,
+    ];
 }
 
 /**

@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Shortcode Class
  *
  * Handles the [wpuf_user_listing] shortcode rendering.
+ * Provides hooks for Pro version to extend functionality.
  *
  * @since 4.3.0
  */
@@ -39,14 +40,30 @@ class Shortcode {
      * @return void
      */
     private function register_hooks() {
-        // Only register if Pro module is not active
-        if ( $this->is_pro_module_active() ) {
+        /**
+         * Filter to allow Pro to take over shortcode registration
+         *
+         * When Pro is active, it can return true to prevent Free from registering its shortcode.
+         * Pro will then register its own shortcode with the same name.
+         *
+         * @since 4.3.0
+         *
+         * @param bool $skip_shortcode Whether to skip Free shortcode registration. Default false.
+         */
+        if ( apply_filters( 'wpuf_ud_skip_free_shortcode', false ) ) {
             return;
         }
 
         add_shortcode( 'wpuf_user_listing', [ $this, 'render_shortcode' ] );
         add_shortcode( 'wpuf_user_listing_id', [ $this, 'render_shortcode_with_id' ] );
         add_action( 'wp_enqueue_scripts', [ $this, 'register_assets' ] );
+
+        /**
+         * Action fired after User Directory shortcodes are registered
+         *
+         * @since 4.3.0
+         */
+        do_action( 'wpuf_ud_shortcodes_registered' );
     }
 
     /**
@@ -547,21 +564,15 @@ class Shortcode {
             $message  .= ' <a href="' . esc_url( $admin_url ) . '">' . __( 'Create one now', 'wp-user-frontend' ) . '</a>';
         }
 
+        /**
+         * Filter the no directory message
+         *
+         * @since 4.3.0
+         *
+         * @param string $message The message HTML.
+         */
+        $message = apply_filters( 'wpuf_ud_no_directory_message', $message );
+
         return '<div class="wpuf-ud-notice">' . wp_kses_post( $message ) . '</div>';
-    }
-
-    /**
-     * Check if Pro module is active
-     *
-     * @since 4.3.0
-     *
-     * @return bool
-     */
-    private function is_pro_module_active() {
-        if ( ! wpuf_is_pro_active() ) {
-            return false;
-        }
-
-        return class_exists( 'WPUF_User_Listing' );
     }
 }

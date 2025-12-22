@@ -664,6 +664,20 @@ class Directory extends WP_REST_Controller {
      * @return array
      */
     private function enforce_free_limits( $settings ) {
+        /**
+         * Filter to skip enforcing free limits
+         *
+         * Pro can return true to skip all free version restrictions.
+         *
+         * @since 4.3.0
+         *
+         * @param bool  $skip_limits Whether to skip free limits. Default false.
+         * @param array $settings    The settings array.
+         */
+        if ( apply_filters( 'wpuf_ud_skip_free_limits', false, $settings ) ) {
+            return $settings;
+        }
+
         if ( wpuf_is_pro_active() ) {
             return $settings;
         }
@@ -688,7 +702,14 @@ class Directory extends WP_REST_Controller {
         // Profile tabs: Don't set profile_tabs in Free version to avoid breaking Pro
         // Pro will use its own defaults when profile_tabs is not set
 
-        return $settings;
+        /**
+         * Filter settings after free limits are applied
+         *
+         * @since 4.3.0
+         *
+         * @param array $settings The settings array with free limits applied.
+         */
+        return apply_filters( 'wpuf_ud_free_limited_settings', $settings );
     }
 
     /**

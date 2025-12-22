@@ -48,7 +48,16 @@ $custom_tab_labels = $config['custom_tab_labels'];
     <!-- Cover Photo Section -->
     <div class="!wpuf-max-w-6xl !wpuf-mx-auto !wpuf-px-4 !wpuf-mb-8">
         <div class="!wpuf-w-full !wpuf-h-[200px] !wpuf-rounded-lg !wpuf-overflow-hidden">
-            <div class="!wpuf-w-full !wpuf-h-full !wpuf-bg-gray-200 !wpuf-border !wpuf-border-gray-300"></div>
+            <?php
+            $cover_photo = wpuf_ud_get_cover_photo_data( $user );
+            if ( ! empty( $cover_photo['url'] ) ) :
+            ?>
+                <img src="<?php echo esc_url( $cover_photo['url'] ); ?>"
+                     alt="<?php echo esc_attr( sprintf( __( '%s cover photo', 'wp-user-frontend' ), $user_meta['display_name'] ) ); ?>"
+                     class="!wpuf-w-full !wpuf-h-full !wpuf-object-cover" />
+            <?php else : ?>
+                <div class="!wpuf-w-full !wpuf-h-full !wpuf-bg-gray-200 !wpuf-border !wpuf-border-gray-300"></div>
+            <?php endif; ?>
         </div>
     </div>
 

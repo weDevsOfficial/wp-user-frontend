@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Admin Menu Class
  *
  * Handles the User Directories admin menu registration and rendering.
+ * Provides hooks for Pro version to extend functionality.
  *
  * @since 4.3.0
  */
@@ -40,8 +41,17 @@ class Admin_Menu {
      * @return void
      */
     public function add_menu() {
-        // Don't add menu if Pro module is handling it
-        if ( $this->is_pro_module_active() ) {
+        /**
+         * Filter to allow Pro to take over menu registration
+         *
+         * When Pro is active, it can return true to prevent Free from registering its menu.
+         * Pro will then register its own menu with the same slug.
+         *
+         * @since 4.3.0
+         *
+         * @param bool $skip_menu Whether to skip Free menu registration. Default false.
+         */
+        if ( apply_filters( 'wpuf_ud_skip_free_admin_menu', false ) ) {
             return;
         }
 
@@ -55,6 +65,15 @@ class Admin_Menu {
         );
 
         add_action( 'load-' . $hook, [ $this, 'enqueue_scripts' ] );
+
+        /**
+         * Action fired after User Directory admin menu is registered
+         *
+         * @since 4.3.0
+         *
+         * @param string $hook The hook suffix for the menu page.
+         */
+        do_action( 'wpuf_ud_admin_menu_registered', $hook );
     }
 
     /**
@@ -65,8 +84,28 @@ class Admin_Menu {
      * @return void
      */
     public function render_page() {
+        /**
+         * Filter the admin page container ID
+         *
+         * @since 4.3.0
+         *
+         * @param string $container_id The container element ID.
+         */
+        $container_id = apply_filters( 'wpuf_ud_admin_container_id', 'wpuf-ud-free-app' );
+
+        /**
+         * Filter the admin page container CSS classes
+         *
+         * @since 4.3.0
+         *
+         * @param string $container_class The container element CSS classes.
+         */
+        $container_class = apply_filters(
+            'wpuf_ud_admin_container_class',
+            'wpuf-user-directory wpuf-h-100vh wpuf-bg-white wpuf-ml-[-20px] !wpuf-py-0 wpuf-px-[20px]'
+        );
         ?>
-        <div id="wpuf-ud-free-app" class="wpuf-user-directory wpuf-h-100vh wpuf-bg-white wpuf-ml-[-20px] !wpuf-py-0 wpuf-px-[20px]">
+        <div id="<?php echo esc_attr( $container_id ); ?>" class="<?php echo esc_attr( $container_class ); ?>">
             <noscript>
                 <strong>
                     <?php esc_html_e( "We're sorry but this page doesn't work properly without JavaScript. Please enable it to continue.", 'wp-user-frontend' ); ?>
@@ -79,6 +118,13 @@ class Admin_Menu {
         if ( function_exists( 'wpuf_load_headway_badge' ) ) {
             wpuf_load_headway_badge();
         }
+
+        /**
+         * Action fired after User Directory admin page is rendered
+         *
+         * @since 4.3.0
+         */
+        do_action( 'wpuf_ud_admin_page_rendered' );
     }
 
     /**
@@ -89,6 +135,20 @@ class Admin_Menu {
      * @return void
      */
     public function enqueue_scripts() {
+        /**
+         * Filter to allow Pro to take over script enqueuing
+         *
+         * When Pro is active, it can return true to prevent Free from enqueuing its scripts.
+         * Pro will then enqueue its own scripts.
+         *
+         * @since 4.3.0
+         *
+         * @param bool $skip_scripts Whether to skip Free script enqueuing. Default false.
+         */
+        if ( apply_filters( 'wpuf_ud_skip_free_admin_scripts', false ) ) {
+            return;
+        }
+
         // Use the generated asset file for dependencies and version (like Pro does)
         $asset_path = WPUF_ROOT . '/assets/js/wpuf-user-directory-free.asset.php';
 
@@ -102,9 +162,18 @@ class Admin_Menu {
             ];
         }
 
+        /**
+         * Filter script handle name
+         *
+         * @since 4.3.0
+         *
+         * @param string $handle Script handle name.
+         */
+        $script_handle = apply_filters( 'wpuf_ud_admin_script_handle', 'wpuf-user-directory-free' );
+
         // Enqueue React-based script with WordPress dependencies
         wp_enqueue_script(
-            'wpuf-user-directory-free',
+            $script_handle,
             WPUF_ASSET_URI . '/js/wpuf-user-directory-free.js',
             $asset['dependencies'],
             $asset['version'],
@@ -118,12 +187,30 @@ class Admin_Menu {
             $asset['version']
         );
 
+        /**
+         * Filter the localized script variable name
+         *
+         * @since 4.3.0
+         *
+         * @param string $var_name JavaScript variable name.
+         */
+        $localize_var = apply_filters( 'wpuf_ud_admin_localize_var', 'wpuf_ud_free' );
+
         // Localize script data
         wp_localize_script(
-            'wpuf-user-directory-free',
-            'wpuf_ud_free',
+            $script_handle,
+            $localize_var,
             $this->get_localized_data()
         );
+
+        /**
+         * Action fired after User Directory admin scripts are enqueued
+         *
+         * @since 4.3.0
+         *
+         * @param string $script_handle The script handle name.
+         */
+        do_action( 'wpuf_ud_admin_scripts_enqueued', $script_handle );
     }
 
     /**
@@ -134,7 +221,7 @@ class Admin_Menu {
      * @return array
      */
     private function get_localized_data() {
-        return [
+        $data = [
             'site_url'             => site_url(),
             'rest_url'             => rest_url(),
             'asset_url'            => WPUF_ASSET_URI,
@@ -153,6 +240,17 @@ class Admin_Menu {
             'profile_tabs'         => $this->get_profile_tabs(),
             'i18n'                 => $this->get_i18n_strings(),
         ];
+
+        /**
+         * Filter the localized data for User Directory admin
+         *
+         * This is the main extension point for Pro to add additional data.
+         *
+         * @since 4.3.0
+         *
+         * @param array $data The localized data array.
+         */
+        return apply_filters( 'wpuf_ud_admin_localized_data', $data );
     }
 
     /**
@@ -186,7 +284,7 @@ class Admin_Menu {
     private function get_directory_layouts() {
         $image_base = $this->get_layout_images_url();
 
-        return [
+        $layouts = [
             'layout-3' => [
                 'name'    => __( 'Grid Round', 'wp-user-frontend' ),
                 'image'   => $image_base . 'directory-layout-3.png',
@@ -218,6 +316,18 @@ class Admin_Menu {
                 'is_free' => false,
             ],
         ];
+
+        /**
+         * Filter directory layouts
+         *
+         * Pro can modify layout availability by changing is_free flags.
+         *
+         * @since 4.3.0
+         *
+         * @param array  $layouts    The layouts array.
+         * @param string $image_base The base URL for layout images.
+         */
+        return apply_filters( 'wpuf_ud_directory_layouts', $layouts, $image_base );
     }
 
     /**
@@ -252,7 +362,7 @@ class Admin_Menu {
     private function get_profile_layouts() {
         $image_base = $this->get_layout_images_url();
 
-        return [
+        $layouts = [
             'layout-2' => [
                 'name'    => __( 'Centered', 'wp-user-frontend' ),
                 'image'   => $image_base . 'profile-layout-2.png',
@@ -269,6 +379,18 @@ class Admin_Menu {
                 'is_free' => false,
             ],
         ];
+
+        /**
+         * Filter profile layouts
+         *
+         * Pro can modify layout availability by changing is_free flags.
+         *
+         * @since 4.3.0
+         *
+         * @param array  $layouts    The layouts array.
+         * @param string $image_base The base URL for layout images.
+         */
+        return apply_filters( 'wpuf_ud_profile_layouts', $layouts, $image_base );
     }
 
     /**
@@ -279,7 +401,7 @@ class Admin_Menu {
      * @return array
      */
     private function get_avatar_sizes() {
-        return [
+        $sizes = [
             '192' => [
                 'label'   => '192 x 192',
                 'is_free' => true,
@@ -309,6 +431,17 @@ class Admin_Menu {
                 'is_free' => false,
             ],
         ];
+
+        /**
+         * Filter avatar sizes
+         *
+         * Pro can modify size availability by changing is_free flags.
+         *
+         * @since 4.3.0
+         *
+         * @param array $sizes The avatar sizes array.
+         */
+        return apply_filters( 'wpuf_ud_avatar_sizes', $sizes );
     }
 
     /**
@@ -327,6 +460,15 @@ class Admin_Menu {
         // Free sizes: thumbnail and medium
         $free_sizes = [ 'thumbnail', 'medium' ];
 
+        /**
+         * Filter which profile sizes are available in free version
+         *
+         * @since 4.3.0
+         *
+         * @param array $free_sizes Array of size names available in free version.
+         */
+        $free_sizes = apply_filters( 'wpuf_ud_free_profile_sizes', $free_sizes );
+
         foreach ( $registered_sizes as $name => $size ) {
             $sizes[ $name ] = [
                 'label'   => ucfirst( str_replace( '_', ' ', $name ) ) . ' (' . $size['width'] . 'x' . $size['height'] . ')',
@@ -334,7 +476,16 @@ class Admin_Menu {
             ];
         }
 
-        return $sizes;
+        /**
+         * Filter profile sizes
+         *
+         * Pro can modify size availability by changing is_free flags.
+         *
+         * @since 4.3.0
+         *
+         * @param array $sizes The profile sizes array.
+         */
+        return apply_filters( 'wpuf_ud_profile_sizes', $sizes );
     }
 
     /**
@@ -345,7 +496,7 @@ class Admin_Menu {
      * @return array
      */
     private function get_orderby_options() {
-        return [
+        $options = [
             'ID' => [
                 'label'   => __( 'User ID', 'wp-user-frontend' ),
                 'is_free' => true,
@@ -371,6 +522,17 @@ class Admin_Menu {
                 'is_free' => false,
             ],
         ];
+
+        /**
+         * Filter orderby options
+         *
+         * Pro can modify option availability by changing is_free flags.
+         *
+         * @since 4.3.0
+         *
+         * @param array $options The orderby options array.
+         */
+        return apply_filters( 'wpuf_ud_orderby_options', $options );
     }
 
     /**
@@ -381,7 +543,7 @@ class Admin_Menu {
      * @return array
      */
     private function get_profile_tabs() {
-        return [
+        $tabs = [
             'about' => [
                 'label'     => __( 'About', 'wp-user-frontend' ),
                 'default'   => 'About',
@@ -407,6 +569,17 @@ class Admin_Menu {
                 'is_free'   => false,
             ],
         ];
+
+        /**
+         * Filter profile tabs
+         *
+         * Pro can add additional tabs or modify availability.
+         *
+         * @since 4.3.0
+         *
+         * @param array $tabs The profile tabs array.
+         */
+        return apply_filters( 'wpuf_ud_profile_tabs', $tabs );
     }
 
     /**
@@ -417,7 +590,7 @@ class Admin_Menu {
      * @return array
      */
     private function get_i18n_strings() {
-        return [
+        $strings = [
             'user_directories'    => __( 'User Directories', 'wp-user-frontend' ),
             'new_directory'       => __( 'New Directory', 'wp-user-frontend' ),
             'edit_directory'      => __( 'Edit Directory', 'wp-user-frontend' ),
@@ -459,6 +632,17 @@ class Admin_Menu {
             'copy_shortcode'      => __( 'Copy Shortcode', 'wp-user-frontend' ),
             'copied'              => __( 'Copied!', 'wp-user-frontend' ),
         ];
+
+        /**
+         * Filter i18n strings for User Directory admin
+         *
+         * Pro can add or modify translation strings.
+         *
+         * @since 4.3.0
+         *
+         * @param array $strings The i18n strings array.
+         */
+        return apply_filters( 'wpuf_ud_i18n_strings', $strings );
     }
 
     /**
@@ -474,20 +658,5 @@ class Admin_Menu {
         }
 
         return 'https://wedevs.com/wp-user-frontend-pro/pricing/';
-    }
-
-    /**
-     * Check if Pro User Directory module is active
-     *
-     * @since 4.3.0
-     *
-     * @return bool
-     */
-    private function is_pro_module_active() {
-        if ( ! wpuf_is_pro_active() ) {
-            return false;
-        }
-
-        return class_exists( 'WPUF_User_Listing' );
     }
 }

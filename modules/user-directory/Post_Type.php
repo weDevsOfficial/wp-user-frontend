@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Post Type Class
  *
  * Registers the wpuf_user_listing post type for storing directory configurations.
+ * Provides hooks for Pro version to modify registration.
  *
  * @since 4.3.0
  */
@@ -39,8 +40,17 @@ class Post_Type {
      * @return void
      */
     public function register_post_type() {
-        // Don't register if Pro module is handling it
-        if ( $this->is_pro_module_active() ) {
+        /**
+         * Filter to allow Pro to take over post type registration
+         *
+         * When Pro is active, it can return true to prevent Free from registering.
+         * This is useful when Pro has different post type arguments.
+         *
+         * @since 4.3.0
+         *
+         * @param bool $skip_registration Whether to skip Free post type registration. Default false.
+         */
+        if ( apply_filters( 'wpuf_ud_skip_free_post_type', false ) ) {
             return;
         }
 
@@ -56,6 +66,15 @@ class Post_Type {
             'not_found'          => __( 'No directories found', 'wp-user-frontend' ),
             'not_found_in_trash' => __( 'No directories found in Trash', 'wp-user-frontend' ),
         ];
+
+        /**
+         * Filter post type labels
+         *
+         * @since 4.3.0
+         *
+         * @param array $labels The post type labels.
+         */
+        $labels = apply_filters( 'wpuf_ud_post_type_labels', $labels );
 
         $args = [
             'labels'              => $labels,
@@ -75,27 +94,26 @@ class Post_Type {
             'supports'            => [ 'title' ],
         ];
 
+        /**
+         * Filter post type arguments
+         *
+         * Pro can modify registration arguments.
+         *
+         * @since 4.3.0
+         *
+         * @param array $args The post type arguments.
+         */
+        $args = apply_filters( 'wpuf_ud_post_type_args', $args );
+
         register_post_type( User_Directory::POST_TYPE, $args );
-    }
 
-    /**
-     * Check if Pro User Directory module is active
-     *
-     * @since 4.3.0
-     *
-     * @return bool
-     */
-    private function is_pro_module_active() {
-        // Check if Pro is active and User Directory module is enabled
-        if ( ! wpuf_is_pro_active() ) {
-            return false;
-        }
-
-        // Check if the Pro module class exists
-        if ( class_exists( 'WPUF_User_Listing' ) ) {
-            return true;
-        }
-
-        return false;
+        /**
+         * Action fired after User Directory post type is registered
+         *
+         * @since 4.3.0
+         *
+         * @param string $post_type The registered post type name.
+         */
+        do_action( 'wpuf_ud_post_type_registered', User_Directory::POST_TYPE );
     }
 }

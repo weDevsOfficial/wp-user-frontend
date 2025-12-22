@@ -77,7 +77,7 @@ const Toast = ({ message, type = 'success', duration = 3000, onClose }) => {
                                 onClose && onClose();
                             }, 300);
                         }}
-                        className="wpuf-ml-4 wpuf-flex-shrink-0 wpuf-inline-flex wpuf-text-white hover:wpuf-text-gray-200 focus:wpuf-outline-none"
+                        className="wpuf-ml-4 wpuf-flex-shrink-0 wpuf-inline-flex wpuf-bg-transparent wpuf-border-0 wpuf-p-0 wpuf-text-white hover:wpuf-text-gray-200 focus:wpuf-outline-none wpuf-cursor-pointer"
                     >
                         <svg className="wpuf-w-4 wpuf-h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>

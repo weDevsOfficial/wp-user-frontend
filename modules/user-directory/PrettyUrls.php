@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * PrettyUrls Class
  *
  * Handles pretty URL rewrite rules for user profile pages.
+ * Provides hooks for Pro version to extend functionality.
  *
  * @since 4.3.0
  */
@@ -28,14 +29,29 @@ class PrettyUrls {
      * @since 4.3.0
      */
     public function __construct() {
-        // Don't register if Pro module is active
-        if ( $this->is_pro_module_active() ) {
+        /**
+         * Filter to allow Pro to take over pretty URL registration
+         *
+         * When Pro is active, it can return true to prevent Free from registering its rewrite rules.
+         *
+         * @since 4.3.0
+         *
+         * @param bool $skip_pretty_urls Whether to skip Free pretty URL registration. Default false.
+         */
+        if ( apply_filters( 'wpuf_ud_skip_free_pretty_urls', false ) ) {
             return;
         }
 
         add_action( 'init', [ $this, 'add_rewrite_rules' ], 5 );
         add_filter( 'query_vars', [ $this, 'add_query_vars' ] );
         add_action( 'save_post', [ $this, 'maybe_flush_rules' ] );
+
+        /**
+         * Action fired after User Directory pretty URLs are initialized
+         *
+         * @since 4.3.0
+         */
+        do_action( 'wpuf_ud_pretty_urls_initialized' );
     }
 
     /**
@@ -52,13 +68,50 @@ class PrettyUrls {
         foreach ( $pages as $page ) {
             $page_slug = $page->post_name;
 
-            // Add rewrite rule matching Pro: /page-slug/username/ (no /user/ segment)
-            add_rewrite_rule(
+            /**
+             * Filter the rewrite rule pattern for a directory page
+             *
+             * @since 4.3.0
+             *
+             * @param string   $pattern   The regex pattern for the rewrite rule.
+             * @param \WP_Post $page      The page object.
+             * @param string   $page_slug The page slug.
+             */
+            $pattern = apply_filters(
+                'wpuf_ud_rewrite_pattern',
                 '^' . preg_quote( $page_slug, '/' ) . '/([^/]+)/?$',
-                'index.php?pagename=' . $page_slug . '&wpuf_user_profile=$matches[1]',
-                'top'
+                $page,
+                $page_slug
             );
+
+            /**
+             * Filter the rewrite rule redirect for a directory page
+             *
+             * @since 4.3.0
+             *
+             * @param string   $redirect  The redirect query string.
+             * @param \WP_Post $page      The page object.
+             * @param string   $page_slug The page slug.
+             */
+            $redirect = apply_filters(
+                'wpuf_ud_rewrite_redirect',
+                'index.php?pagename=' . $page_slug . '&wpuf_user_profile=$matches[1]',
+                $page,
+                $page_slug
+            );
+
+            // Add rewrite rule matching Pro: /page-slug/username/ (no /user/ segment)
+            add_rewrite_rule( $pattern, $redirect, 'top' );
         }
+
+        /**
+         * Action fired after User Directory rewrite rules are added
+         *
+         * @since 4.3.0
+         *
+         * @param array $pages The directory pages.
+         */
+        do_action( 'wpuf_ud_rewrite_rules_added', $pages );
     }
 
     /**
@@ -73,7 +126,14 @@ class PrettyUrls {
     public function add_query_vars( $vars ) {
         $vars[] = 'wpuf_user_profile';
 
-        return $vars;
+        /**
+         * Filter query vars for User Directory
+         *
+         * @since 4.3.0
+         *
+         * @param array $vars The query vars array.
+         */
+        return apply_filters( 'wpuf_ud_query_vars', $vars );
     }
 
     /**
@@ -99,7 +159,15 @@ class PrettyUrls {
             }
         }
 
-        return $directory_pages;
+        /**
+         * Filter the directory pages for rewrite rules
+         *
+         * @since 4.3.0
+         *
+         * @param array $directory_pages The directory pages.
+         * @param array $pages           All published pages.
+         */
+        return apply_filters( 'wpuf_ud_directory_pages', $directory_pages, $pages );
     }
 
     /**
@@ -128,20 +196,5 @@ class PrettyUrls {
              has_shortcode( $post->post_content, 'wpuf_user_listing_id' ) ) {
             flush_rewrite_rules();
         }
-    }
-
-    /**
-     * Check if Pro module is active
-     *
-     * @since 4.3.0
-     *
-     * @return bool
-     */
-    private function is_pro_module_active() {
-        if ( ! wpuf_is_pro_active() ) {
-            return false;
-        }
-
-        return class_exists( 'WPUF_User_Listing' );
     }
 }

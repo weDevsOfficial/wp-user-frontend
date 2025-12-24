@@ -1131,7 +1131,7 @@ export class RegFormSettingsPage extends Base {
         await this.page.waitForTimeout(2000);
         // Validate registration success message
         const successMessage = await this.page.innerText(Selectors.regFormSettings.successMessage);
-        expect(successMessage).toContain('Registration successful. Please wait for admin approval');
+        expect(successMessage).toContain('Welcome! Your account has been created successfully. Please check your email for further instruction.');
 
         // Login as admin to check WP Mail Log
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);
@@ -1201,7 +1201,7 @@ export class RegFormSettingsPage extends Base {
         await this.page.waitForTimeout(2000);
         // Validate registration success message
         const successMessage = await this.page.innerText(Selectors.regFormSettings.successMessage);
-        expect(successMessage).toContain('Registration successful. Please wait for admin approval');
+        expect(successMessage).toContain('Welcome! Your account has been created successfully. Please check your email for further instruction.');
 
         // Login as admin to check WP Mail Log
         await new BasicLoginPage(this.page).basicLogin(Users.adminUsername, Users.adminPassword);

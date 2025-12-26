@@ -240,7 +240,8 @@ const StepAdvanced = ({ formData, setFormData, config }) => {
                     </label>
                     <div className="wpuf-flex wpuf-flex-wrap wpuf-gap-2">
                         {sortOptions.map(option => {
-                            const isSelected = (formData.default_sort_by || formData.orderby || 'id') === option.value;
+                            const currentValue = (formData.default_sort_by || formData.orderby || 'id').toLowerCase();
+                            const isSelected = currentValue === option.value;
                             const isHovered = hoveredOption === `sort-${option.value}`;
 
                             return (

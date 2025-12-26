@@ -29,6 +29,9 @@ const DEFAULTS = {
     profile_size: 'medium',
     enable_search: true,
     roles: [],
+    // Profile tabs - all enabled by default (consistent with Pro)
+    profile_tabs: ['about', 'posts', 'files', 'comments'],
+    profile_tabs_order: ['about', 'posts', 'files', 'comments'],
 };
 
 const DirectoryWizard = ({ onClose, initialData, config = {} }) => {

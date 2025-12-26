@@ -168,11 +168,26 @@
                     hideLoading();
 
                     try {
+                        // If we have results, restore the user list container first
                         if (data.rows_html && data.rows_html.trim() !== '') {
+                            // Remove "no results" message if it exists
+                            const noResultsContainer = listingDiv.querySelector('.wpuf-no-users-container');
+                            if (noResultsContainer) {
+                                const listContainer = listingDiv.querySelector('.wpuf-ud-list');
+                                if (listContainer) {
+                                    // Restore the original list structure (matches layout-3.php template)
+                                    listContainer.innerHTML = '<div><ul role="list" class="!wpuf-mx-auto !wpuf-grid !wpuf-max-w-2xl !wpuf-grid-cols-1 !wpuf-gap-x-6 !wpuf-gap-y-6 sm:!wpuf-grid-cols-2 lg:!wpuf-mx-0 lg:!wpuf-max-w-none lg:!wpuf-grid-cols-3"></ul></div>';
+                                }
+                                // Re-query the user list element
+                                userList = listingDiv.querySelector('.wpuf-ud-tbody, ul[role="list"]');
+                            }
+
+                            // Now update the user list with new data
                             if (userList) {
                                 userList.innerHTML = data.rows_html;
                             }
                         } else {
+                            // No results - show "no users found" message
                             if (!data.usercount || data.usercount === 0) {
                                 if (userList) {
                                     userList.innerHTML = '';
@@ -212,14 +227,6 @@
                                 }
                                 noResultsContainer.style.display = 'flex';
                             }
-                        }
-
-                        if (data.usercount && data.usercount > 0) {
-                            const noResultsContainer = listingDiv.querySelector('.wpuf-no-users-container');
-                            if (noResultsContainer) {
-                                noResultsContainer.remove();
-                            }
-                            userList = listingDiv.querySelector('.wpuf-ud-tbody, ul[role="list"]');
                         }
 
                         if (data.pagination_html && pagination) {

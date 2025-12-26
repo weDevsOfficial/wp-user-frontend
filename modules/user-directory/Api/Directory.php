@@ -262,6 +262,9 @@ class Directory extends WP_REST_Controller {
         // Build settings array
         $settings = $this->sanitize_settings( $params );
 
+        // Merge with defaults to ensure all required fields are present
+        $settings = wp_parse_args( $settings, User_Directory::get_default_settings() );
+
         // Force free version defaults
         $settings = $this->enforce_free_limits( $settings );
 
@@ -323,8 +326,15 @@ class Directory extends WP_REST_Controller {
             ? sanitize_text_field( $params['directory_title'] )
             : $post->post_title;
 
+        // Get existing settings
+        $existing_settings = json_decode( $post->post_content, true ) ?: [];
+
         // Build settings array
         $settings = $this->sanitize_settings( $params );
+
+        // Merge with existing settings first, then with defaults
+        $settings = wp_parse_args( $settings, $existing_settings );
+        $settings = wp_parse_args( $settings, User_Directory::get_default_settings() );
 
         // Force free version defaults
         $settings = $this->enforce_free_limits( $settings );
@@ -637,13 +647,23 @@ class Directory extends WP_REST_Controller {
             $settings['searchable_fields'] = array_map( 'sanitize_text_field', $params['searchable_fields'] );
         }
 
-        // Profile tabs (complex array)
+        // Profile tabs (array of enabled tab keys) - Pro compatible
         if ( isset( $params['profile_tabs'] ) && is_array( $params['profile_tabs'] ) ) {
-            $settings['profile_tabs'] = $params['profile_tabs'];
+            $settings['profile_tabs'] = array_map( 'sanitize_text_field', $params['profile_tabs'] );
         }
 
+        // Profile tabs order (array of all tab keys in order) - Pro compatible
         if ( isset( $params['profile_tabs_order'] ) && is_array( $params['profile_tabs_order'] ) ) {
             $settings['profile_tabs_order'] = array_map( 'sanitize_text_field', $params['profile_tabs_order'] );
+        }
+
+        // Profile tabs custom labels (object with custom labels) - Pro only
+        if ( isset( $params['profile_tabs_labels'] ) && is_array( $params['profile_tabs_labels'] ) ) {
+            $sanitized_labels = [];
+            foreach ( $params['profile_tabs_labels'] as $key => $label ) {
+                $sanitized_labels[ sanitize_text_field( $key ) ] = sanitize_text_field( $label );
+            }
+            $settings['profile_tabs_labels'] = $sanitized_labels;
         }
 
         // Handle excluded_users array (like Pro version) - convert to exclude_users string
@@ -659,6 +679,9 @@ class Directory extends WP_REST_Controller {
 
     /**
      * Enforce free version limits on settings
+     *
+     * Note: In Free version, we save all user settings to the database for Pro compatibility.
+     * Restrictions are enforced during frontend rendering, not during save.
      *
      * @since 4.3.0
      *
@@ -685,25 +708,8 @@ class Directory extends WP_REST_Controller {
             return $settings;
         }
 
-        // Force free layout
-        $settings['directory_layout'] = User_Directory::FREE_DIRECTORY_LAYOUT;
-        $settings['profile_layout']   = User_Directory::FREE_PROFILE_LAYOUT;
-
-        // Force free orderby (User ID only)
-        $settings['orderby'] = 'ID';
-
-        // Force free avatar size
-        if ( ! in_array( $settings['avatar_size'] ?? '', [ '192', '128' ], true ) ) {
-            $settings['avatar_size'] = '192';
-        }
-
-        // Force free profile size
-        if ( ! in_array( $settings['profile_size'] ?? '', [ 'thumbnail', 'medium' ], true ) ) {
-            $settings['profile_size'] = 'medium';
-        }
-
-        // Profile tabs: Don't set profile_tabs in Free version to avoid breaking Pro
-        // Pro will use its own defaults when profile_tabs is not set
+        // In Free version: Save all settings as-is for Pro compatibility
+        // Frontend rendering in Shortcode.php enforces Free restrictions
 
         /**
          * Filter settings after free limits are applied

@@ -6,6 +6,7 @@ const StepTabs = ({ formData, setFormData, config }) => {
     const defaultTabs = config?.profile_tabs || {
         about: __('About', 'wp-user-frontend'),
         posts: __('Posts', 'wp-user-frontend'),
+        files: __('Files', 'wp-user-frontend'),
         comments: __('Comments', 'wp-user-frontend'),
     };
 

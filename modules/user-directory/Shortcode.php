@@ -227,6 +227,8 @@ class Shortcode {
         $profile_slug = get_query_var( 'wpuf_user_profile' );
 
         if ( $profile_slug ) {
+            // Decode URL-encoded characters (like %20 for spaces)
+            $profile_slug = urldecode( $profile_slug );
             $profile_base = $settings['profile_base'] ?? 'username';
 
             if ( 'user_id' === $profile_base ) {

@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
-dotenv.config();
-import { expect, test, type Page, type Dialog } from '@playwright/test';
+dotenv.config({ quiet: true });
+import { expect, type Page, type Dialog } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Urls } from '../utils/testData';
 import { Base } from './base';
@@ -125,7 +125,7 @@ export class SettingsSetupPage extends Base {
         //ASSERTION > Check if-VALID
         const availableText = await this.page.isVisible(Selectors.settingsSetup.pluginVisit.clickRegFormMenuOption);
         if (availableText == true) {
-            await this.checkElementText(Selectors.settingsSetup.pluginVisit.wpufPostFormCheckAddButton, 'Add New');
+            await this.checkElementText(Selectors.settingsSetup.pluginVisit.wpufRegFormCheckAddButton, 'Add New');
             expect(this.page.locator(Selectors.settingsSetup.pluginVisit.noFormMsg)).not.toBeVisible();
             await this.assertionValidate(Selectors.settingsSetup.pluginVisit.formTitleCheck('Registration'));
         }
@@ -194,22 +194,54 @@ export class SettingsSetupPage extends Base {
             }
         };
         this.page.on('dialog', dialogHandler);
-        await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickRunUpdater);
+        try {
+            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickRunUpdater);
+        } catch (error) {
+            console.log('Failed to click Run Updater:', error);
+        }
         this.page.off('dialog', dialogHandler);
 
-        await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow1);
+        try {
+            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow1);
+        } catch (error) {
+            console.log('Failed to click Allow1:', error);
+        }
 
-        await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
+        try {
+            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickAllow);
+        } catch (error) {
+            console.log('Failed to click Allow:', error);
+        }
 
-        await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickSkipSetup);
+        try {
+            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickSkipSetup);
+        } catch (error) {
+            console.log('Failed to click Skip Setup:', error);
+        }
 
-        await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickSwitchCart);
+        try {
+            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickSwitchCart);
+        } catch (error) {
+            console.log('Failed to click Switch Cart:', error);
+        }
 
-        // await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickDismiss);
+        // try {
+        //     await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickDismiss);
+        // } catch (error) {
+        //     console.log('Failed to click Dismiss:', error);
+        // }
 
-        await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickEDDnoticeCross);
+        try {
+            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickEDDnoticeCross);
+        } catch (error) {
+            console.log('Failed to click EDD notice Cross:', error);
+        }
 
-        await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickPayPalCross);
+        try {
+            await this.validateAndClick(Selectors.settingsSetup.pluginStatusCheck.clickPayPalCross);
+        } catch (error) {
+            console.log('Failed to click PayPal Cross:', error);
+        }
 
         if (ifWPUFLite == true) {
             //Activate Plugin

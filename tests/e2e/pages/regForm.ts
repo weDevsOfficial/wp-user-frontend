@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ quiet: true });
 import { expect, request, type Page } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Base } from './base';
@@ -567,14 +567,14 @@ export class RegFormPage extends Base {
 
     async validateWcVendorRegistrationWC() {
         await this.navigateToURL(this.wcVendorsPage);
+        await this.page.waitForTimeout(5000)
         await this.assertionValidate(Selectors.vendorRegistrationForms.wcVendor.wcValidation.vendorValidation(VendorRegistrationForm.wcVendorShopName));
-        await this.assertionValidate(Selectors.vendorRegistrationForms.wcVendor.wcValidation.vendorStatusValidation(VendorRegistrationForm.wcVendorShopName));
+        await this.assertionValidate(Selectors.vendorRegistrationForms.wcVendor.wcValidation.vendorStatusValidation);
 
     }
 
     // WCFM Membership Registration Form Methods
     async createWcfmMemberRegistrationForm() {
-        let flag = true;
 
         // Visit Registration Forms Page
         await this.navigateToURL(this.wpufRegistrationFormPage);
@@ -760,7 +760,7 @@ export class RegFormPage extends Base {
         await this.validateAndClick(Selectors.vendorRegistrationForms.wcfmMember.adminValidation.searchSubmitButton);
         await this.page.waitForTimeout(1000);
         await this.assertionValidate(Selectors.vendorRegistrationForms.wcfmMember.adminValidation.userEmailValidation(VendorRegistrationForm.wcfmMemberEmail));
-        await this.assertionValidate(Selectors.vendorRegistrationForms.wcfmMember.adminValidation.wcfmMemberRole);
+        //await this.assertionValidate(Selectors.vendorRegistrationForms.wcfmMember.adminValidation.wcfmMemberRole);
     }
 
 

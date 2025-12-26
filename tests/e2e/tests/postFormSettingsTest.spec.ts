@@ -1,5 +1,3 @@
-import * as dotenv from 'dotenv';
-dotenv.config();
 import { Browser, BrowserContext, Page, test, chromium } from "@playwright/test";
 import { faker } from '@faker-js/faker';
 import { PostFormSettingsPage } from '../pages/postFormSettings';
@@ -117,11 +115,14 @@ test.describe('Post Form Settings Tests', () => {
      * @Test_PFS0084 : Admin is limiting form entries
      * @Test_PFS0085 : Admin is validating limit form entries
      * @Test_PFS0086 : Admin is unlimiting form entries
-     * @Test_PFS0087 : Admin is enabling conditional logic on form submission
-     * @Test_PFS0088 : Admin is validating conditional logic on form submission
-     * @Test_PFS0089 : Admin is enabling post expiration
-     * @Test_PFS0090 : Admin is setting post permission to role based
-     * @Test_PFS0091 : Admin is validating post permission role based
+     * @Test_PFS0087 : Admin is enabling conditional logic for any condition
+     * @Test_PFS0088 : Admin is validating conditional logic for any condition
+     * @Test_PFS0089 : Admin is enabling conditional logic for all condition
+     * @Test_PFS0090 : Admin is validating conditional logic for all condition
+     * @Test_PFS0091 : Admin is disabling conditional logic
+     * @Test_PFS0092 : Admin is enabling post expiration
+     * @Test_PFS0093 : Admin is setting post permission role based
+     * @Test_PFS0094 : Admin is validating post permission restriction
      */
 
     let formName: string;
@@ -714,27 +715,42 @@ test.describe('Post Form Settings Tests', () => {
         await postFormSettings.unlimitFormEntries(formName);
     });
 
-    test.skip('PFS0087 : Admin is enabling conditional logic on form submission', { tag: ['@Pro'] }, async () => {
+    test('PFS0087 : Admin is enabling conditional logic for any condition', { tag: ['@Pro'] }, async () => {
         const postFormSettings = new PostFormSettingsPage(page);
-
+        await postFormSettings.enableConditionalLogicForAnyCondition(formName);
     });
 
-    test.skip('PFS0088 : Admin is validating conditional logic on form submission', { tag: ['@Pro'] }, async () => {
+    test('PFS0088 : Admin is validating conditional logic for any condition', { tag: ['@Pro'] }, async () => {
         const postFormSettings = new PostFormSettingsPage(page);
-
+        await postFormSettings.validateConditionalLogicForAnyCondition();
     });
 
-    test('PFS0089 : Admin is enabling post expiration', { tag: ['@Pro'] }, async () => {
+    test('PFS0089 : Admin is enabling conditional logic for all condition', { tag: ['@Pro'] }, async () => {
+        const postFormSettings = new PostFormSettingsPage(page);
+        await postFormSettings.conditionalLogicForAllConditions(formName);
+    });
+
+    test('PFS0090 : Admin is validating conditional logic for all condition', { tag: ['@Pro'] }, async () => {
+        const postFormSettings = new PostFormSettingsPage(page);
+        await postFormSettings.validateConditionalLogicForAllCondition();
+    });
+
+    test('PFS0091 : Admin is disabling conditional logic', { tag: ['@Pro'] }, async () => {
+        const postFormSettings = new PostFormSettingsPage(page);
+        await postFormSettings.disableConditionalLogic(formName);
+    });
+
+    test('PFS0092 : Admin is enabling post expiration', { tag: ['@Pro'] }, async () => {
         const postFormSettings = new PostFormSettingsPage(page);
         await postFormSettings.enablePostExpiration(formName);
     });
 
-    test('PFS0090 : Admin is setting post permission role based', { tag: ['@Lite'] }, async () => {
+    test('PFS0093 : Admin is setting post permission role based', { tag: ['@Lite'] }, async () => {
         const postFormSettings = new PostFormSettingsPage(page);
         await postFormSettings.setPostPermissionRoleBased(formName);
     });
 
-    test('PFS0091 : Admin is validating post permission restriction', { tag: ['@Lite'] }, async () => {
+    test('PFS0094 : Admin is validating post permission restriction', { tag: ['@Lite'] }, async () => {
         const postFormSettings = new PostFormSettingsPage(page);
         await postFormSettings.validatePostPermissionRoleBased(formName);
     });

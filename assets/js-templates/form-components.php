@@ -803,7 +803,7 @@
                         $partially_filtered = preg_replace('/(<input[^>]+)/', '$1 ' . $attr, $partially_filtered, 1);
                     }
 
-                    echo wp_kses_post( $partially_filtered );
+                    echo esc_html( $partially_filtered );
                 }
             ?>
 	    </ul>
@@ -851,7 +851,7 @@
                                 $partially_filtered = preg_replace('/(<input[^>]+)/', '$1 ' . $attr, $partially_filtered, 1);
                             }
 
-                            echo wp_kses_post( $partially_filtered );
+                            echo esc_html( $partially_filtered );
                         }
                     } else {
                         esc_html_e( 'No subscription plan found.', 'wp-user-frontend' );
@@ -1027,7 +1027,7 @@
                                 :href="pro_link"
                                 target="_blank"
                                 class="wpuf-rounded-r-md hover:wpuf-bg-slate-500 hover:wpuf-cursor-pointer wpuf-transition wpuf-duration-150 wpuf-ease-out hover:wpuf-transition-all">
-                                <img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="">
+                                <img src="<?php echo esc_attr( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="">
                             </a>
                         </span>
                         </div>
@@ -1236,7 +1236,7 @@
                                 </div>
                             <div
                                 class="wpuf-absolute wpuf-top-4 wpuf-right-4 wpuf-opacity-0 group-hover/pro-field:wpuf-opacity-100 wpuf-transition-all">
-                                <img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="">
+                                <img src="<?php echo esc_attr( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="">
                             </div>
                         </div>
                         <div

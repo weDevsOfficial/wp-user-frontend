@@ -213,34 +213,64 @@ class List_Table_Subscribers extends WP_List_Table {
         // Build the query with proper placeholders
         $base_sql = 'SELECT * FROM ' . $wpdb->prefix . 'wpuf_subscribers';
         $prepare_values = [];
+        $where_clause = '';
 
         // Add conditional WHERE clauses if params exist
         $post_id = ! empty( $_REQUEST['post_ID'] ) ? intval( sanitize_text_field( wp_unslash( $_REQUEST['post_ID'] ) ) ) : '';
         $status = ! empty( $_REQUEST['status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) : '';
 
         if ( $post_id && $status ) {
-            $sql = $base_sql . ' WHERE subscribtion_id = %d AND subscribtion_status = %s';
+            $where_clause = ' WHERE subscribtion_id = %d AND subscribtion_status = %s';
             $prepare_values = [ $post_id, $status ];
         } elseif ( $post_id ) {
-            $sql = $base_sql . ' WHERE subscribtion_id = %d';
+            $where_clause = ' WHERE subscribtion_id = %d';
             $prepare_values = [ $post_id ];
         } elseif ( $status ) {
-            $sql = $base_sql . ' WHERE subscribtion_status = %s';
+            $where_clause = ' WHERE subscribtion_status = %s';
             $prepare_values = [ $status ];
-        } else {
-            $sql = $base_sql;
         }
 
-        // Prepare and execute the query safely
+        // Get total count for pagination
+        $count_sql = 'SELECT COUNT(*) FROM ' . $wpdb->prefix . 'wpuf_subscribers' . $where_clause;
+
+        if ( ! empty( $prepare_values ) ) {
+            $total_items = (int) $wpdb->get_var( $wpdb->prepare( $count_sql, ...$prepare_values ) );
+        } else {
+            $total_items = (int) $wpdb->get_var( $count_sql );
+        }
+
+        // Build ORDER BY clause with whitelisted columns
+        $order_by = 'id';
+        $order    = 'DESC';
+
+        if ( ! empty( $args['orderby'] ) ) {
+            $allowed_cols = [ 'id', 'user_id', 'subscribtion_id', 'subscribtion_status', 'starts_from', 'expire' ];
+            $candidate    = sanitize_key( $args['orderby'] );
+
+            if ( in_array( $candidate, $allowed_cols, true ) ) {
+                $order_by = $candidate;
+            }
+        }
+
+        if ( ! empty( $args['order'] ) && in_array( strtoupper( $args['order'] ), [ 'ASC', 'DESC' ], true ) ) {
+            $order = strtoupper( $args['order'] );
+        }
+
+        // Build final query with ORDER BY, LIMIT, and OFFSET
+        $sql = $base_sql . $where_clause . " ORDER BY {$order_by} {$order} LIMIT %d OFFSET %d";
+        $prepare_values[] = (int) $per_page;
+        $prepare_values[] = (int) $offset;
+
+        // Execute the paginated query
         if ( ! empty( $prepare_values ) ) {
             $this->items = $wpdb->get_results( $wpdb->prepare( $sql, ...$prepare_values ) );
         } else {
-            // When no prepare values, the SQL is safe as it's built from constants
-            $this->items = $wpdb->get_results( $sql );
+            // This should not happen as we always have LIMIT and OFFSET
+            $this->items = [];
         }
 
         $this->set_pagination_args( [
-            'total_items' => count( $this->items ),
+            'total_items' => $total_items,
             'per_page'    => $per_page,
         ] );
     }

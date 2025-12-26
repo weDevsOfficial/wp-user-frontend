@@ -22,7 +22,9 @@ wp_enqueue_script( 'password-strength-meter' );
         </p>
     </div>
 
-    <form class="wpuf-edit-profile-form" action="" method="post">
+    <!-- Wrapper Container with Border (Form Only) -->
+    <div style="border: 1px solid #E1E5E8; border-radius: 24px; padding: 48px;">
+    <form class="wpuf-form wpuf-edit-profile-form wpuf-update-profile-form" action="" method="post">
 
         <div style="display: none;" class="wpuf-success wpuf-bg-green-50 wpuf-border wpuf-border-green-200 wpuf-text-green-800 wpuf-rounded-lg wpuf-p-4"><?php esc_html_e( 'Profile updated successfully!', 'wp-user-frontend' ); ?></div>
         <div style="display: none;" class="wpuf-error wpuf-bg-red-50 wpuf-border wpuf-border-red-200 wpuf-text-red-800 wpuf-rounded-lg wpuf-p-4"><?php esc_html_e( 'Something went wrong!', 'wp-user-frontend' ); ?></div>
@@ -59,18 +61,19 @@ wp_enqueue_script( 'password-strength-meter' );
             >
         </div>
 
-        <!-- Display Name -->
+        <!-- Email -->
         <div class="wpuf-form-group">
-            <label for="display_name" class="wpuf-form-label">
-                <?php esc_html_e( 'Display Name', 'wp-user-frontend' ); ?>
+            <label for="email" class="wpuf-form-label">
+                <?php esc_html_e( 'Email Address', 'wp-user-frontend' ); ?>
             </label>
             <input
-                type="text"
-                name="display_name"
-                id="display_name"
-                placeholder="<?php esc_attr_e( 'Display Name', 'wp-user-frontend' ); ?>"
-                value="<?php echo esc_attr( $current_user->display_name ); ?>"
+                type="email"
+                name="email"
+                id="email"
+                placeholder="<?php esc_attr_e( 'Email Address', 'wp-user-frontend' ); ?>"
+                value="<?php echo esc_attr( $current_user->user_email ); ?>"
                 class="wpuf-form-input"
+                required
             >
         </div>
 
@@ -135,63 +138,6 @@ wp_enqueue_script( 'password-strength-meter' );
             <span class="wpuf-password-strength" id="pass-strength-result"><?php esc_html_e( 'Strength indicator', 'wp-user-frontend' ); ?></span>
         </div>
 
-        <!-- Social Fields -->
-        <div class="wpuf-form-group">
-            <label for="facebook" class="wpuf-form-label">
-                <?php esc_html_e( 'Facebook', 'wp-user-frontend' ); ?>
-            </label>
-            <input
-                type="text"
-                name="facebook"
-                id="facebook"
-                placeholder="<?php esc_attr_e( 'Facebook User Name', 'wp-user-frontend' ); ?>"
-                value="<?php echo esc_attr( get_user_meta( $current_user->ID, 'facebook', true ) ); ?>"
-                class="wpuf-form-input"
-            >
-        </div>
-
-        <div class="wpuf-form-group">
-            <label for="twitter" class="wpuf-form-label">
-                <?php esc_html_e( 'X', 'wp-user-frontend' ); ?>
-            </label>
-            <input
-                type="text"
-                name="twitter"
-                id="twitter"
-                placeholder="<?php esc_attr_e( 'X Handle', 'wp-user-frontend' ); ?>"
-                value="<?php echo esc_attr( get_user_meta( $current_user->ID, 'twitter', true ) ); ?>"
-                class="wpuf-form-input"
-            >
-        </div>
-
-        <div class="wpuf-form-group">
-            <label for="linkedin" class="wpuf-form-label">
-                <?php esc_html_e( 'LinkedIn', 'wp-user-frontend' ); ?>
-            </label>
-            <input
-                type="text"
-                name="linkedin"
-                id="linkedin"
-                placeholder="<?php esc_attr_e( 'LinkedIn User Name', 'wp-user-frontend' ); ?>"
-                value="<?php echo esc_attr( get_user_meta( $current_user->ID, 'linkedin', true ) ); ?>"
-                class="wpuf-form-input"
-            >
-        </div>
-
-        <div class="wpuf-form-group">
-            <label for="instagram" class="wpuf-form-label">
-                <?php esc_html_e( 'Instagram', 'wp-user-frontend' ); ?>
-            </label>
-            <input
-                type="text"
-                name="instagram"
-                id="instagram"
-                placeholder="<?php esc_attr_e( 'Instagram User Name', 'wp-user-frontend' ); ?>"
-                value="<?php echo esc_attr( get_user_meta( $current_user->ID, 'instagram', true ) ); ?>"
-                class="wpuf-form-input"
-            >
-        </div>
-
         <!-- Submit Buttons -->
         <div class="wpuf-form-actions">
             <?php wp_nonce_field( 'wpuf-account-update-profile' ); ?>
@@ -202,7 +148,7 @@ wp_enqueue_script( 'password-strength-meter' );
                 id="wpuf-account-update-profile"
                 class="wpuf-btn wpuf-btn-primary"
             >
-                <?php esc_html_e( 'Update', 'wp-user-frontend' ); ?>
+                <?php esc_html_e( 'Update Profile', 'wp-user-frontend' ); ?>
             </button>
             <button
                 type="button"
@@ -266,6 +212,7 @@ wp_enqueue_script( 'password-strength-meter' );
         </script>
 
     </form>
+    </div><!-- Close wrapper container with border -->
 </div>
 
 <?php

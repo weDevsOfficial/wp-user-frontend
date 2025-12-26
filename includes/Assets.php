@@ -381,6 +381,11 @@ class Assets {
                 'src'  => WPUF_ASSET_URI . '/js/frontend-form' . $this->suffix . '.js',
                 'deps' => [ 'jquery' ],
             ],
+            'account'                  => [
+                'src'       => WPUF_ASSET_URI . '/js/account' . $this->suffix . '.js',
+                'deps'      => [ 'jquery' ],
+                'in_footer' => true,
+            ],
             'upload'                   => [
                 'src'  => WPUF_ASSET_URI . '/js/upload' . $this->suffix . '.js',
                 'deps' => [ 'jquery', 'plupload-handlers', 'jquery-ui-sortable' ],

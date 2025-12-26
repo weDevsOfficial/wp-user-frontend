@@ -3903,10 +3903,12 @@ function wpuf_ajax_get_states_field() {
     $states    = $cs->getStates( $countries[ $country ] );
 
     if ( ! empty( $states ) ) {
+        $field_name = isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '';
+
         $args = [
-            'name'             => isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '',
-            'id'               => isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '',
-            'class'            => isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '',
+            'name'             => $field_name,
+            'id'               => $field_name,
+            'class'            => "{$field_name} wpuf-w-full wpuf-rounded-md wpuf-border-gray-300 focus:wpuf-border-primary focus:wpuf-ring-primary",
             'options'          => $states,
             'show_option_all'  => false,
             'show_option_none' => false,

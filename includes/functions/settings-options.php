@@ -482,7 +482,7 @@ function wpuf_settings_fields() {
             ],
             [
                 'name'           => 'wpuf_login_form_bg_color',
-                'label'          => __( 'Form Background Color', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . '<img src="' . esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ) . '" alt="' . esc_attr__( 'PRO', 'wp-user-frontend' ) . '">' . '</span>',
+                'label'          => __( 'Form BG Color', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . '<img src="' . esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ) . '" alt="' . esc_attr__( 'PRO', 'wp-user-frontend' ) . '">' . '</span>',
                 'type'           => 'color',
                 'default'        => 'transparent',
                 'is_pro_preview' => ! wpuf_is_pro_active(),
@@ -503,7 +503,7 @@ function wpuf_settings_fields() {
             ],
             [
                 'name'           => 'wpuf_login_field_bg_color',
-                'label'          => __( 'Field Background Color', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . '<img src="' . esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ) . '" alt="' . esc_attr__( 'PRO', 'wp-user-frontend' ) . '">' . '</span>',
+                'label'          => __( 'Field BG Color', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . '<img src="' . esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ) . '" alt="' . esc_attr__( 'PRO', 'wp-user-frontend' ) . '">' . '</span>',
                 'type'           => 'color',
                 'default'        => 'transparent',
                 'is_pro_preview' => ! wpuf_is_pro_active(),
@@ -538,7 +538,7 @@ function wpuf_settings_fields() {
             ],
             [
                 'name'           => 'wpuf_login_button_bg_color',
-                'label'          => __( 'Button Background Color', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . '<img src="' . esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ) . '" alt="' . esc_attr__( 'PRO', 'wp-user-frontend' ) . '">' . '</span>',
+                'label'          => __( 'Button BG Color', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . '<img src="' . esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ) . '" alt="' . esc_attr__( 'PRO', 'wp-user-frontend' ) . '">' . '</span>',
                 'type'           => 'color',
                 'default'        => '#3B82F6',
                 'is_pro_preview' => ! wpuf_is_pro_active(),

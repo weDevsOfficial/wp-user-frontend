@@ -81,7 +81,7 @@
                         $partially_filtered = preg_replace('/(<input[^>]+)/', '$1 ' . $attr, $partially_filtered, 1);
                     }
 
-                    echo esc_html( $partially_filtered );
+                    echo $partially_filtered;
                 }
             ?>
 	    </ul>
@@ -129,7 +129,7 @@
                                 $partially_filtered = preg_replace('/(<input[^>]+)/', '$1 ' . $attr, $partially_filtered, 1);
                             }
 
-                            echo esc_html( $partially_filtered );
+                            echo $partially_filtered;
                         }
                     } else {
                         esc_html_e( 'No subscription plan found.', 'wp-user-frontend' );

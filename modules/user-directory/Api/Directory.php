@@ -481,9 +481,12 @@ class Directory extends WP_REST_Controller {
             'order'   => in_array( $order, [ 'ASC', 'DESC' ], true ) ? $order : 'DESC',
         ];
 
-        // Roles filter
+        // Roles filter - skip if 'all' is selected
         if ( ! empty( $settings['roles'] ) && is_array( $settings['roles'] ) ) {
-            $args['role__in'] = array_map( 'sanitize_text_field', $settings['roles'] );
+            // Skip role filter if 'all' is in the roles array
+            if ( ! \in_array( 'all', $settings['roles'], true ) ) {
+                $args['role__in'] = array_map( 'sanitize_text_field', $settings['roles'] );
+            }
         }
 
         // Exclude users

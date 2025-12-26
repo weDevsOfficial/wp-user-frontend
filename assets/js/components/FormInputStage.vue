@@ -28,17 +28,19 @@
             </div>
 
             <!-- Integration Selector (Only for Post Forms) -->
-            <div v-if="formType === 'post' && availableIntegrations.length > 0" class="wpuf-mb-6">
+            <div v-if="formType === 'post' && (availableIntegrations.length > 0 || loadingIntegrations)" class="wpuf-mb-6">
                 <label class="wpuf-block wpuf-text-gray-900 wpuf-mb-2 wpuf-text-[16px] wpuf-font-medium">
                     {{ __('Form Type (Optional)', 'wp-user-frontend') }}
                 </label>
                 <select
                     v-model="selectedIntegration"
-                    class="wpuf-block !wpuf-w-full wpuf-max-w-full !wpuf-py-[10px] !wpuf-px-[14px] wpuf-text-gray-700 wpuf-font-normal !wpuf-shadow-sm wpuf-border !wpuf-border-gray-300 !wpuf-rounded-[6px] focus:!wpuf-ring-emerald-500 focus:!wpuf-border-emerald-500 hover:wpuf-border-gray-400 !wpuf-text-base !wpuf-leading-6 wpuf-bg-white wpuf-transition-all"
+                    :disabled="loadingIntegrations"
+                    class="wpuf-block !wpuf-w-full wpuf-max-w-full !wpuf-py-[10px] !wpuf-px-[14px] wpuf-text-gray-700 wpuf-font-normal !wpuf-shadow-sm wpuf-border !wpuf-border-gray-300 !wpuf-rounded-[6px] focus:!wpuf-ring-emerald-500 focus:!wpuf-border-emerald-500 hover:wpuf-border-gray-400 !wpuf-text-base !wpuf-leading-6 wpuf-bg-white wpuf-transition-all disabled:wpuf-opacity-50 disabled:wpuf-cursor-not-allowed"
                     style="width: 100% !important; max-width: 100% !important;"
                     @change="onIntegrationChange"
                 >
-                    <option value="">{{ __('Regular Form (No Integration)', 'wp-user-frontend') }}</option>
+                    <option value="" v-if="loadingIntegrations">{{ __('Loading integrations...', 'wp-user-frontend') }}</option>
+                    <option value="" v-else>{{ __('Regular Form (No Integration)', 'wp-user-frontend') }}</option>
                     <option
                         v-for="integration in availableIntegrations"
                         :key="integration.id"
@@ -48,7 +50,14 @@
                     </option>
                 </select>
                 <p class="wpuf-text-sm wpuf-text-gray-500 wpuf-mt-2">
-                    {{ __('Choose a form type if you want to create a form for a specific integration', 'wp-user-frontend') }}
+                    <span v-if="loadingIntegrations" class="wpuf-inline-flex wpuf-items-center wpuf-gap-2">
+                        <svg class="wpuf-animate-spin wpuf-h-4 wpuf-w-4 wpuf-text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="wpuf-opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="wpuf-opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        {{ __('Loading available integrations...', 'wp-user-frontend') }}
+                    </span>
+                    <span v-else>{{ __('Choose a form type if you want to create a form for a specific integration', 'wp-user-frontend') }}</span>
                 </p>
             </div>
 
@@ -145,24 +154,9 @@ export default {
                 freelancer_profile_signup: 'Create a registration form for freelancers that captures their professional details, skills, experience summary, portfolio information, and profile photo.'
             };
         } else {
-            // Post form prompts (default)
-            promptTemplates = [
-                { id: 'paid_guest_post', label: this.__('Paid Guest Post', 'wp-user-frontend') },
-                { id: 'portfolio_submission', label: this.__('Portfolio Submission', 'wp-user-frontend') },
-                { id: 'classified_ads', label: this.__('Classified Ads', 'wp-user-frontend') },
-                { id: 'coupon_submission', label: this.__('Coupon Submission', 'wp-user-frontend') },
-                { id: 'real_estate', label: this.__('Real Estate Property Listing', 'wp-user-frontend') },
-                { id: 'news_press', label: this.__('News/Press Release Submission', 'wp-user-frontend') },
-            ];
-
-            promptAIInstructions = {
-                paid_guest_post: 'Create a Paid Guest Post submission form with title, content, author name, email, category',
-                portfolio_submission: 'Create a Portfolio Submission form with title, description, name, email, skills, portfolio files',
-                classified_ads: 'Create a Classified Ads submission form with title, description, category, price, address field, contact email',
-                coupon_submission: 'Create a Coupon Submission form with title, description, business name, discount amount, expiration date',
-                real_estate: 'Create a Real Estate Property Listing form with title, description, address field, price, bedrooms, bathrooms, images',
-                news_press: 'Create a News/Press Release submission form with headline, content, author, contact email, category'
-            };
+            // Post form prompts - will be populated by updatePromptTemplates() in mounted()
+            promptTemplates = [];
+            promptAIInstructions = {};
         }
 
         // Handle selectedPrompt initialization
@@ -196,6 +190,10 @@ export default {
         // Emit initial integration to parent if provided
         if (this.initialIntegration) {
             this.$emit('update:selectedIntegration', this.selectedIntegration);
+        }
+        // Initialize prompt templates based on integration (if post form)
+        if (this.formType === 'post') {
+            this.updatePromptTemplates();
         }
     },
     watch: {
@@ -284,10 +282,10 @@ export default {
                 ];
 
                 this.promptAIInstructions = {
-                    woo_simple_product: 'Create a WooCommerce Simple Product form with product title, product description, short description, regular price (_regular_price), sale price (_sale_price), featured image, product gallery (_product_image), product categories (product_cat), product tags (product_tag), catalog visibility (_visibility)',
-                    woo_digital_product: 'Create a WooCommerce Digital Product form with product title, product description, regular price (_regular_price), featured image, product categories (product_cat), product tags (product_tag), SKU (_sku)',
-                    woo_service_listing: 'Create a WooCommerce Service form with product title, product description, regular price (_regular_price), featured image, product categories (product_cat), purchase note (_purchase_note)',
-                    woo_handmade_product: 'Create a WooCommerce Handmade Product form with product title, product description, short description, regular price (_regular_price), featured image, product gallery (_product_image), product categories (product_cat), product tags (product_tag), product attributes (pa_size, pa_color), weight (_weight), dimensions (_length, _width, _height)'
+                    woo_simple_product: 'Create a WooCommerce Simple Product form with product title, product description, short description, regular price, sale price, featured image, product gallery, catalog visibility',
+                    woo_digital_product: 'Create a WooCommerce Digital Product form with product title, product description, regular price, featured image, SKU',
+                    woo_service_listing: 'Create a WooCommerce Service form with product title, product description, regular price, featured image, purchase note',
+                    woo_handmade_product: 'Create a WooCommerce Handmade Product form with product title, product description, short description, regular price, featured image, product gallery, product attributes for size and color, weight, dimensions'
                 };
             } else if (this.selectedIntegration === 'edd') {
                 // Easy Digital Downloads prompts
@@ -299,10 +297,10 @@ export default {
                 ];
 
                 this.promptAIInstructions = {
-                    edd_digital_download: 'Create an EDD Digital Download form with download title, download description, short description, price (edd_price), downloadable files (edd_download_files), featured image, download categories (download_category), download tags (download_tag)',
-                    edd_software: 'Create an EDD Software Product form with download title, download description, price (edd_price), downloadable files (edd_download_files), product notes (edd_product_notes), featured image, download categories (download_category)',
-                    edd_ebook: 'Create an EDD eBook form with download title, download description, short description, price (edd_price), downloadable files (edd_download_files), featured image, download categories (download_category), download tags (download_tag)',
-                    edd_course: 'Create an EDD Online Course form with download title, download description, price (edd_price), downloadable files (edd_download_files), product notes (edd_product_notes), featured image, download categories (download_category)'
+                    edd_digital_download: 'Create an EDD Digital Download form with download title, download description, short description, price, downloadable files, featured image, download categories',
+                    edd_software: 'Create an EDD Software Product form with download title, download description, price, downloadable files, product notes, featured image, download categories',
+                    edd_ebook: 'Create an EDD eBook form with download title, download description, short description, price, downloadable files, featured image, download categories',
+                    edd_course: 'Create an EDD Online Course form with download title, download description, price, downloadable files, product notes, featured image, download categories'
                 };
             } else if (this.selectedIntegration === 'events_calendar') {
                 // The Events Calendar prompts
@@ -314,10 +312,10 @@ export default {
                 ];
 
                 this.promptAIInstructions = {
-                    event_conference: 'Create a Conference Event form with event title, event details, event start date (_EventStartDate), event end date (_EventEndDate), venue name (_EventVenueName), event address, event city, event cost (_EventCost), currency symbol (_EventCurrencySymbol), featured image, event categories (tribe_events_cat), event tags',
-                    event_workshop: 'Create a Workshop/Training Event form with event title, event details, event start date (_EventStartDate), event end date (_EventEndDate), venue name (_EventVenueName), event address, event cost (_EventCost), featured image, event categories (tribe_events_cat)',
-                    event_meetup: 'Create a Meetup/Networking Event form with event title, event details, short description, event start date (_EventStartDate), event end date (_EventEndDate), venue name (_EventVenueName), event address, event website (_EventURL), featured image, event categories (tribe_events_cat), event tags',
-                    event_webinar: 'Create a Webinar Event form with event title, event details, event start date (_EventStartDate), event end date (_EventEndDate), event website (_EventURL), event cost (_EventCost), currency symbol (_EventCurrencySymbol), featured image, event categories (tribe_events_cat)'
+                    event_conference: 'Create a Conference Event form with event title, event details, event start date, event end date, venue name, event address, event city, event cost, currency symbol, featured image, event categories',
+                    event_workshop: 'Create a Workshop/Training Event form with event title, event details, event start date, event end date, venue name, event address, event cost, featured image, event categories',
+                    event_meetup: 'Create a Meetup/Networking Event form with event title, event details, short description, event start date, event end date, venue name, event address, event website, featured image, event categories',
+                    event_webinar: 'Create a Webinar Event form with event title, event details, event start date, event end date, event website, event cost, currency symbol, featured image, event categories'
                 };
             } else {
                 // Default post form prompts (no integration selected)

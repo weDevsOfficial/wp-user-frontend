@@ -31,6 +31,8 @@ When creating a WooCommerce product form, you MUST follow this EXACT field order
 
 **This is the standard WooCommerce product form.** When user asks for a WooCommerce product form without specific requirements, generate this exact structure.
 
+**NOTE:** Product Category (`product_cat`) and Product Tags (`product_tag`) are NOT included in the standard template. Only add them if the user explicitly requests categories or tags.
+
 ## CRITICAL: POST TYPE FOR WOOCOMMERCE
 
 **You MUST include form_settings in your JSON response with the correct post type:**
@@ -86,7 +88,7 @@ When creating a WooCommerce product form, you MUST follow this EXACT field order
 
 **Product Categories & Tags:**
 - `taxonomy` - Product Categories (taxonomy name: `product_cat`) ⚠️ NEVER use `category`
-- `taxonomy` - Product Tags (taxonomy name: `product_tag`) ⚠️ NEVER use `post_tag`
+- `taxonomy` - Product Tags (taxonomy name: `product_tag`) ⚠️ NEVER use `post_tag` - **NOTE: NOT included in standard template, only add if user explicitly requests tags**
 
 **Product Attributes (Custom Taxonomies):**
 - Use `taxonomy` with `woo_attr: "yes"` for WooCommerce attributes
@@ -200,7 +202,8 @@ When creating a WooCommerce product form, you MUST follow this EXACT field order
 }
 ```
 
-### Product Tags (Taxonomy - CRITICAL):
+### Product Tags (Taxonomy - OPTIONAL, NOT IN STANDARD TEMPLATE):
+⚠️ **ONLY include if user explicitly requests tags**
 ⚠️ **MUST USE `product_tag` - DO NOT use `post_tag` or any other taxonomy name**
 ```json
 {
@@ -356,14 +359,6 @@ When creating a WooCommerce product form, you MUST follow this EXACT field order
       "placeholder": "Sale price"
     },
     {
-      "template": "taxonomy",
-      "label": "Product Category",
-      "name": "product_cat",
-      "required": "yes",
-      "type": "select",
-      "help": "Select a category for your product"
-    },
-    {
       "template": "featured_image",
       "label": "Product Image",
       "required": "yes",
@@ -392,6 +387,14 @@ When creating a WooCommerce product form, you MUST follow this EXACT field order
         "search": "Search",
         "hidden": "Hidden"
       }
+    },
+    {
+      "template": "textarea_field",
+      "label": "Purchase Note",
+      "name": "_purchase_note",
+      "is_meta": "yes",
+      "help": "Enter an optional note to send to the customer after purchase",
+      "rows": "5"
     },
     {
       "template": "checkbox_field",

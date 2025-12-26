@@ -106,9 +106,10 @@ class AI_Manager {
         // Determine form type based on current admin page
         $form_type = 'post'; // Default to post
         if ( isset( $_GET['page'] ) ) {
-            if ( 'wpuf-profile-forms' === $_GET['page'] ) {
+            $page = sanitize_text_field( wp_unslash( $_GET['page'] ) );
+            if ( 'wpuf-profile-forms' === $page ) {
                 $form_type = 'profile';
-            } elseif ( 'wpuf-post-forms' === $_GET['page'] ) {
+            } elseif ( 'wpuf-post-forms' === $page ) {
                 $form_type = 'post';
             }
         }
@@ -161,8 +162,11 @@ class AI_Manager {
         }
 
         // Check by page parameter
-        if (isset($_GET['page']) && strpos($_GET['page'], 'wpuf') !== false) {
-            return true;
+        if ( isset( $_GET['page'] ) ) {
+            $page = sanitize_text_field( wp_unslash( $_GET['page'] ) );
+            if ( strpos( $page, 'wpuf' ) !== false ) {
+                return true;
+            }
         }
 
         return false;

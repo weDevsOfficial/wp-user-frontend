@@ -331,6 +331,11 @@ class RestController extends WP_REST_Controller {
             }
 
 
+            // Add integration to response so it can be persisted for regeneration
+            if ( ! empty( $integration ) ) {
+                $result['integration'] = $integration;
+            }
+
             return new WP_REST_Response([
                 'success' => true,
                 'data' => $result
@@ -488,7 +493,7 @@ class RestController extends WP_REST_Controller {
 
         // Filter integrations based on form type and enabled status
         $available_integrations = [];
-        foreach ( $all_integrations as $key => $integration ) {
+        foreach ( $all_integrations as $integration ) {
             // Only include if enabled and supports the current form type
             if ( $integration['enabled'] && in_array( $form_type, $integration['form_types'], true ) ) {
                 $available_integrations[] = $integration;

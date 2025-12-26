@@ -196,6 +196,11 @@ export default {
                     this.formTitle = result.data.form_title || 'Generated Form';
                     this.formFields = result.data.wpuf_fields || [];
 
+                    // Store integration for regeneration persistence
+                    if (result.data.integration) {
+                        this.selectedIntegration = result.data.integration;
+                    }
+
                     // Notify processing stage that AI response is received
                     // Use nextTick to ensure ref is mounted, with retry fallback
                     const notifyProcessingStage = (retries = 3) => {
@@ -692,6 +697,7 @@ export default {
             this.currentStage = 'input';
             this.formDescription = '';
             this.selectedPrompt = '';
+            // Note: selectedIntegration is intentionally NOT cleared to persist integration selection
         },
         
         async editInBuilder(eventData) {

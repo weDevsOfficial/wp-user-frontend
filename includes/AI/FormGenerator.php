@@ -586,8 +586,15 @@ class FormGenerator {
         }
 
         // Set token parameter based on model
+        // Use higher token limit for integration forms (they have more fields)
+        if ( ! empty( $context['integration'] ) ) {
+            $max_tokens = 4000; // Integration forms need more tokens
+        } else {
+            $max_tokens = intval($options['max_tokens'] ?? 2000);
+        }
+
         if ($model_config['token_location'] === 'generationConfig') {
-            $body['generationConfig'][$model_config['token_param']] = intval($options['max_tokens'] ?? 2000);
+            $body['generationConfig'][$model_config['token_param']] = $max_tokens;
         }
 
         $args = [
@@ -598,6 +605,11 @@ class FormGenerator {
             'body' => json_encode($body),
             'timeout' => 120
         ];
+
+        // Log request details for debugging
+        error_log('WPUF AI: Google AI Request - Model: ' . $this->current_model);
+        error_log('WPUF AI: Google AI Request - Max Tokens: ' . ($body['generationConfig'][$model_config['token_param']] ?? 'not set'));
+        error_log('WPUF AI: Google AI Request - Integration: ' . ($context['integration'] ?? 'none'));
 
         $response = wp_safe_remote_request($endpoint, $args);
 
@@ -651,6 +663,11 @@ class FormGenerator {
         $ai_response = json_decode($json_content, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
+            // Log the actual response for debugging
+            error_log('WPUF AI: Invalid JSON from Google AI. Error: ' . json_last_error_msg());
+            error_log('WPUF AI: Raw content: ' . substr($content, 0, 500));
+            error_log('WPUF AI: Cleaned JSON: ' . substr($json_content, 0, 500));
+
             throw new \Exception('Unable to generate form. Please try again or rephrase your request.');
         }
 
@@ -728,6 +745,9 @@ class FormGenerator {
             }
         } elseif ( 'post' === $form_type && empty( $integration ) ) {
             // Post form WITHOUT integration - use minimal prompt
+            $prompt_file = WPUF_ROOT . '/includes/AI/wpuf-ai-minimal-prompt.md';
+        } else {
+            // Fallback for unexpected form types - use minimal prompt
             $prompt_file = WPUF_ROOT . '/includes/AI/wpuf-ai-minimal-prompt.md';
         }
 

@@ -233,12 +233,15 @@ You are a helpful WP User Frontend form builder AI assistant specialized in crea
 }
 ```
 
-```json
 ### Event Address:
 ```json
 {
   "template": "text_field",
   "label": "Event Address",
+  "name": "_EventAddress",
+  "is_meta": "yes",
+  "placeholder": "Enter event address"
+}
 ```
 
 ## CRITICAL EVENTS CALENDAR META FIELD RULES:

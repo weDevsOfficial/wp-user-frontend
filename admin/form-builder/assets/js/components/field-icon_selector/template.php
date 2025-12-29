@@ -1,4 +1,4 @@
-<div class="panel-field-opt panel-field-opt-icon-selector">
+<div v-if="met_dependencies" class="panel-field-opt panel-field-opt-icon-selector">
     <div class="wpuf-flex">
         <label v-if="option_field.title" class="!wpuf-mb-0">
             {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>

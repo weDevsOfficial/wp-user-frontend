@@ -292,7 +292,7 @@
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-field-icon_selector">
-<div class="panel-field-opt panel-field-opt-icon-selector">
+<div v-if="met_dependencies" class="panel-field-opt panel-field-opt-icon-selector">
     <div class="wpuf-flex">
         <label v-if="option_field.title" class="!wpuf-mb-0">
             {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
@@ -628,7 +628,7 @@
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-field-select">
-<div class="panel-field-opt panel-field-opt-select">
+<div v-if="met_dependencies" class="panel-field-opt panel-field-opt-select">
     <div class="wpuf-flex">
         <label v-if="option_field.title" class="!wpuf-mb-0">
             {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>

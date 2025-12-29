@@ -460,9 +460,7 @@ class Subscription extends WP_REST_Controller {
             $subscription['meta_value']['_remove_feature_item']
         ) : '';
         $sort_order = ! empty( $subscription['meta_value']['_sort_order'] ) ? (int) $subscription['meta_value']['_sort_order'] : 1;
-        $postnum_rollback_on_delete = ! empty( $subscription['meta_value']['postnum_rollback_on_delete'] ) ? sanitize_text_field(
-            $subscription['meta_value']['postnum_rollback_on_delete']
-        ) : '';
+        $postnum_rollback_on_delete = ! empty( $subscription['meta_value']['postnum_rollback_on_delete'] ) && 'yes' === $subscription['meta_value']['postnum_rollback_on_delete'] ? 'yes' : '';
 
         // Process view restriction data
         $view_allowed_term_ids = ! empty( $subscription['meta_value']['_sub_view_allowed_term_ids'] ) 

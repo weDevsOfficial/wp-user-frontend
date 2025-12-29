@@ -24,16 +24,16 @@
   "author": "Rubaiyat E Mohammad",
   "license": "MIT",
   "devDependencies": {
-    "@faker-js/faker": "^9.9.0",
-    "@playwright/test": "^1.54.2",
+    "@faker-js/faker": "^10.1.0",
+    "@playwright/test": "^1.57.0",
     "@types/js-yaml": "^4.0.9",
-    "@types/node": "^24.3.0",
+    "@types/node": "^24.10.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@wordpress/env": "^10.28.0",
-    "dotenv": "^17.2.1",
+    "@wordpress/env": "^10.36.0",
+    "dotenv": "^17.2.3",
     "js-yaml": "^4.0.9"
   }
 }

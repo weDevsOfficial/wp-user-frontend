@@ -24,6 +24,9 @@ class Form_Field_MultiDropdown extends Form_Field_Dropdown {
      * @return void
      */
     public function render( $field_settings, $form_id, $type = 'post', $post_id = null ) {
+        // Enqueue custom multi-select assets
+        $this->enqueue_multiselect_assets();
+
         if ( isset( $post_id ) && $post_id != '0' ) {
             $selected = $this->get_meta( $post_id, $field_settings['name'], $type );
 
@@ -47,7 +50,7 @@ class Form_Field_MultiDropdown extends Form_Field_Dropdown {
             <?php do_action( 'WPUF_multidropdown_field_after_label', $field_settings ); ?>
 
             <div class="wpuf-fields">
-                <select multiple="multiple" class="multiselect <?php echo 'wpuf_' . esc_attr( $field_settings['name'] ) . '_' . esc_attr( $form_id ); ?>" id="<?php echo esc_attr( $field_settings['name'] ) . '_' . esc_attr( $form_id ); ?>" name="<?php echo esc_attr( $name ); ?>" mulitple="multiple" data-required="<?php echo esc_attr( $field_settings['required'] ); ?>" data-type="multiselect">
+                <select multiple="multiple" class="multiselect wpuf-multiselect-field <?php echo 'wpuf_' . esc_attr( $field_settings['name'] ) . '_' . esc_attr( $form_id ); ?>" id="<?php echo esc_attr( $field_settings['name'] ) . '_' . esc_attr( $form_id ); ?>" name="<?php echo esc_attr( $name ); ?>" multiple="multiple" data-required="<?php echo esc_attr( $field_settings['required'] ); ?>" data-type="multiselect" data-placeholder="<?php echo esc_attr( $field_settings['first'] ); ?>">
 
                     <?php if ( !empty( $field_settings['first'] ) ) { ?>
                         <option value="-1"><?php echo esc_attr( $field_settings['first'] ); ?></option>
@@ -169,5 +172,19 @@ class Form_Field_MultiDropdown extends Form_Field_Dropdown {
             </li>
         <?php
         return ob_get_clean();
+    }
+
+    /**
+     * Enqueue custom multi-select assets
+     *
+     * @since 4.2.4
+     *
+     * @return void
+     */
+    private function enqueue_multiselect_assets() {
+        // Check if we're in the frontend
+        if ( ! is_admin() ) {
+            wp_enqueue_script( 'wpuf-custom-multiselect' );
+        }
     }
 }

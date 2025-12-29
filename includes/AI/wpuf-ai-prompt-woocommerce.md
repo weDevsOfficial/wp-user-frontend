@@ -313,6 +313,39 @@ When creating a WooCommerce product form, you MUST follow this EXACT field order
 }
 ```
 
+### Downloadable Product (for Digital Products) - PRO ONLY:
+⚠️ **PRO-ONLY FIELD - Only include if Pro is active**
+⚠️ **MUST USE radio_field with yes/no options - NOT checkbox_field**
+```json
+{
+  "template": "radio_field",
+  "label": "Downloadable Product",
+  "name": "_downloadable",
+  "is_meta": "yes",
+  "required": "yes",
+  "help": "Select if this is a downloadable product",
+  "options": {
+    "yes": "Yes",
+    "no": "No"
+  }
+}
+```
+
+### Downloadable Files (for Digital Products) - PRO ONLY:
+⚠️ **PRO-ONLY FIELD - Only include if Pro is active**
+```json
+{
+  "template": "file_upload",
+  "label": "Downloadable Files",
+  "name": "_woo_files",
+  "is_meta": "yes",
+  "required": "yes",
+  "count": "5",
+  "help": "Choose your downloadable files",
+  "extension": ["images", "audio", "video", "pdf", "office", "zip", "exe", "csv"]
+}
+```
+
 ## CRITICAL META FIELD RULES:
 ⚠️ **IMPORTANT:** For WooCommerce meta fields, you MUST include:
 - `is_meta: "yes"` - Marks field as custom meta field
@@ -409,6 +442,78 @@ When creating a WooCommerce product form, you MUST follow this EXACT field order
 }
 ```
 
+### Digital Product Form (for Downloadable Products) - PRO ONLY:
+⚠️ **PRO-ONLY TEMPLATE - Only use if Pro is active**
+⚠️ **CRITICAL: The Downloadable Product field MUST be radio_field with yes/no options, NOT checkbox_field**
+```json
+{
+  "form_title": "Add Digital Product",
+  "form_description": "Submit your digital/downloadable product",
+  "form_settings": {
+    "post_type": "product",
+    "submit_text": "Submit Product"
+  },
+  "fields": [
+    {
+      "template": "post_title",
+      "label": "Product Name",
+      "required": "yes",
+      "placeholder": "Enter product name"
+    },
+    {
+      "template": "post_content",
+      "label": "Product Description",
+      "required": "yes",
+      "help": "Write the full description of your product"
+    },
+    {
+      "template": "text_field",
+      "label": "Regular Price",
+      "name": "_regular_price",
+      "is_meta": "yes",
+      "required": "yes",
+      "placeholder": "Regular price"
+    },
+    {
+      "template": "featured_image",
+      "label": "Product Image",
+      "required": "yes",
+      "help": "Upload the main image",
+      "max_size": "1024"
+    },
+    {
+      "template": "text_field",
+      "label": "SKU",
+      "name": "_sku",
+      "is_meta": "yes",
+      "placeholder": "Product SKU"
+    },
+    {
+      "template": "radio_field",
+      "label": "Downloadable Product",
+      "name": "_downloadable",
+      "is_meta": "yes",
+      "required": "yes",
+      "help": "Select if this is a downloadable product",
+      "options": {
+        "yes": "Yes",
+        "no": "No"
+      }
+    },
+    {
+      "template": "file_upload",
+      "label": "Downloadable Files",
+      "name": "_woo_files",
+      "is_meta": "yes",
+      "required": "yes",
+      "count": "5",
+      "help": "Choose your downloadable files",
+      "extension": ["images", "audio", "video", "pdf", "office", "zip", "exe", "csv"]
+    }
+  ]
+}
+```
+
 ## RESPONSE TYPES:
 
 ### 1. For Form Creation/Modification Requests:
@@ -464,3 +569,4 @@ When context includes `current_fields`:
 9. Use correct WooCommerce meta key names (`_regular_price`, `_sale_price`, etc.)
 10. **DO NOT use generic WordPress taxonomies** - use ONLY WooCommerce taxonomies
 11. Your response must be PARSEABLE by JSON.parse()
+12. **For Downloadable Product field (`_downloadable`) - PRO ONLY: Use `radio_field` with options `{"yes": "Yes", "no": "No"}` - NEVER use checkbox_field. Only include if Pro is active.**

@@ -767,6 +767,7 @@ class FormGenerator {
                 $system_prompt .= "- You can use ALL field types including Pro-only fields\n";
                 if ( 'woocommerce' === $integration ) {
                     $system_prompt .= "- For WooCommerce: Use numeric_text_field for pricing fields (_regular_price, _sale_price)\n";
+                    $system_prompt .= "- For Digital Products: Include Downloadable Product (radio_field with yes/no) and Downloadable Files (file_upload)\n";
                     $system_prompt .= "- Pro fields available: numeric_text_field, phone_field, country_list_field, address_field, etc.\n";
                 } elseif ( 'events_calendar' === $integration ) {
                     $system_prompt .= "- Pro fields available: phone_field, country_list_field, address_field, google_map, etc.\n";
@@ -776,6 +777,7 @@ class FormGenerator {
                 $system_prompt .= "- Use ONLY free version fields\n";
                 if ( 'woocommerce' === $integration ) {
                     $system_prompt .= "- For WooCommerce: Use text_field (not numeric_text_field) for pricing fields (_regular_price, _sale_price)\n";
+                    $system_prompt .= "- Do NOT include Downloadable Product or Downloadable Files fields (these are Pro-only features)\n";
                 } elseif ( 'events_calendar' === $integration ) {
                     $system_prompt .= "- For Events Calendar: Use text_field for venue name, address, etc.\n";
                 }

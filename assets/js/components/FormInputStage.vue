@@ -283,7 +283,7 @@ export default {
 
                 this.promptAIInstructions = {
                     woo_simple_product: 'Create a WooCommerce Simple Product form with product title, product description, short description, regular price, sale price, featured image, product gallery, catalog visibility',
-                    woo_digital_product: 'Create a WooCommerce Digital Product form with product title, product description, regular price, featured image, SKU',
+                    woo_digital_product: 'Create a WooCommerce Digital Product form with product title, product description, regular price, featured image, SKU, Downloadable Product, Downloadable Files',
                     woo_service_listing: 'Create a WooCommerce Service form with product title, product description, regular price, featured image, purchase note',
                     woo_handmade_product: 'Create a WooCommerce Handmade Product form with product title, product description, short description, regular price, featured image, product gallery, product attributes for size and color, weight, dimensions'
                 };

@@ -111,13 +111,13 @@
                         field.width ? 'field-size-' + field.width : '',
                         ('custom_hidden_field' === field.template) ? 'hidden-field' : ''
                     ]"
-            class="wpuf-group wpuf-rounded-lg hover:!wpuf-bg-green-50 wpuf-transition wpuf-duration-150 wpuf-ease-out !wpuf-m-0 !wpuf-p-0">
+            class="wpuf-group wpuf-rounded-lg hover:!wpuf-bg-green-50 wpuf-transition wpuf-duration-150 wpuf-ease-out !wpuf-m-0 !wpuf-p-0 wpuf-overflow-hidden">
             <div
                 v-if="field.input_type !== 'column_field' && field.input_type !== 'repeat'"
                 :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-bg-green-50 wpuf-border-green-400' : 'wpuf-border-transparent'"
                 class="wpuf-flex wpuf-justify-between wpuf-p-6 wpuf-rounded-t-md wpuf-border-t wpuf-border-r wpuf-border-l wpuf-border-dashed group-hover:wpuf-border-green-400 group-hover:wpuf-cursor-pointer !wpuf-pb-3">
                 <div v-if="!(is_full_width(field.template) || is_pro_preview(field.template))" class="wpuf-w-1/4 wpuf-flex wpuf-items-center">
-                    <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'left_label'" 
+                    <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'left_label'"
                           class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-mr-1">
                           <i :class="[field.field_icon, 'wpuf-field-icon']"></i>
                     </span>
@@ -128,7 +128,7 @@
                         {{ field.label }} <span v-if="field.required && 'yes' === field.required"
                                                 class="required">*</span>
                     </label>
-                    <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'right_label'" 
+                    <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'right_label'"
                           class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-ml-2">
                           <i :class="[field.field_icon, 'wpuf-field-icon']"></i>
                     </span>

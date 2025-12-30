@@ -513,9 +513,7 @@
 <script type="text/x-template" id="tmpl-wpuf-field-options">
 <div class="wpuf-form-builder-field-options">
     <div v-if="!parseInt(editing_field_id)" class="options-fileds-section text-center">
-        <p>
-            <span class="loader"></span>
-        </p>
+        <p class="wpuf-text-gray-500 wpuf-text-lg wpuf-font-medium">{{ i18n.empty_field_options_msg }}</p>
     </div>
 
     <div v-else>

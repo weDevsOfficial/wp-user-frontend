@@ -181,7 +181,7 @@
                     </div>
                 </section>
             </div>
-    </div>
+        </div>
     </div>
     <div
         v-show="active_tab === 'form-settings'"

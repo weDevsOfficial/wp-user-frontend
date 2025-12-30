@@ -346,6 +346,7 @@ class Admin_Form_Builder {
                 'saved_form_data'         => __( 'Saved form data', 'wp-user-frontend' ),
                 'unsaved_changes'         => __( 'You have unsaved changes.', 'wp-user-frontend' ),
                 'copy_shortcode'          => __( 'Click to copy shortcode', 'wp-user-frontend' ),
+                'empty_field_options_msg' => __( 'To view field options, please start adding fields in the builder', 'wp-user-frontend' ),
                 'pro_field_message'       => $field_messages,
             ]
         );

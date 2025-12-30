@@ -101,7 +101,8 @@ class Date_Validator {
             if ( isset( $date_data[ $field ] ) ) {
                 $value = $date_data[ $field ];
                 if ( !$this->is_valid_time_value( $value, $field ) ) {
-                    $errors[] = sprintf( 
+                    $errors[] = sprintf(
+                        // translators: %s is the field name (e.g., StartTime, EndTime)
                         __( 'Time field "%s" is not valid.', 'wp-user-frontend' ),
                         $field
                     );
@@ -336,6 +337,7 @@ class Date_Validator {
             case 'EventEndDate':
                 if ( !isset( $date_data[ $field ] ) || !$this->is_valid_date_format( $date_data[ $field ] ) ) {
                     $errors[] = sprintf( 
+                        // translators: %s is the field name (e.g., StartDate, EndDate)
                         __( 'Event %s format is not valid.', 'wp-user-frontend' ),
                         str_replace( 'Event', '', str_replace( 'Date', '', $field ) )
                     );
@@ -344,8 +346,9 @@ class Date_Validator {
 
             case 'EventStartHour':
             case 'EventEndHour':
-                if ( isset( $date_data[ $field ] ) && !$this->is_valid_time_value( $date_data[ $field ], $field ) ) {
+                if ( isset( $date_data[ $field ] ) && !$this->is_valid_time_value( $date_data[ $field ], $field ) ) {                  
                     $errors[] = sprintf( 
+                        // translators: %s is the field name (e.g., StartHour, EndHour)
                         __( 'Event %s must be between 0 and 23.', 'wp-user-frontend' ),
                         str_replace( 'Event', '', $field )
                     );
@@ -355,7 +358,8 @@ class Date_Validator {
             case 'EventStartMinute':
             case 'EventEndMinute':
                 if ( isset( $date_data[ $field ] ) && !$this->is_valid_time_value( $date_data[ $field ], $field ) ) {
-                    $errors[] = sprintf( 
+                    $errors[] = sprintf(
+                        // translators: %s is the field name (e.g., StartMinute, EndMinute)
                         __( 'Event %s must be between 0 and 59.', 'wp-user-frontend' ),
                         str_replace( 'Event', '', $field )
                     );

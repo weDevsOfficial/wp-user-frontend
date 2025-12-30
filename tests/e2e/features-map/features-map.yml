@@ -83,18 +83,20 @@ features:
   - id: PF0016
     name: Admin is validating entered product data
   - id: PF0017
-    name: Admin is setting necessary setup for downloads form
+    name: Admin is validating entered product data BE
   - id: PF0018
-    name: Admin is creating a downloads Post Form
+    name: Admin is setting necessary setup for downloads form
   - id: PF0019
-    name: Admin is creating downloads page with shortcode
+    name: Admin is creating a downloads Post Form
   - id: PF0020
-    name: Admin is creating downloads from FE
+    name: Admin is creating downloads page with shortcode
   - id: PF0021
-    name: Admin is validating downloads created
+    name: Admin is creating downloads from FE
   - id: PF0022
-    name: Admin is validating entered downloads data
+    name: Admin is validating downloads created
   - id: PF0023
+    name: Admin is validating entered downloads data
+  - id: PF0024
     name: Admin is validating entered downloads data BE
 
   # Registration Forms
@@ -319,15 +321,21 @@ features:
   - id: PFS0086
     name: Admin is unlimiting form entries
   - id: PFS0087
-    name: Admin is enabling conditional logic on form submission
+    name: Admin is enabling conditional logic for any condition
   - id: PFS0088
-    name: Admin is validating conditional logic on form submission
+    name: Admin is validating conditional logic for any condition
   - id: PFS0089
-    name: Admin is enabling post expiration
+    name: Admin is enabling conditional logic for all condition
   - id: PFS0090
-    name: Admin is setting post permission to role based
+    name: Admin is validating conditional logic for all condition
   - id: PFS0091
-    name: Admin is validating post permission role based
+    name: Admin is disabling conditional logic
+  - id: PFS0092
+    name: Admin is enabling post expiration
+  - id: PFS0093
+    name: Admin is setting post permission role based
+  - id: PFS0094
+    name: Admin is validating post permission restriction
 
 # Registration Form Settings
   - id: RFS0001
@@ -448,3 +456,215 @@ features:
     name: Admin is validating multi-step by step
   - id: RFS0059
     name: Admin is disabling multi-step form
+
+# Field Options Settings
+  - id: FOS0001
+    name: Admin is creating a test form for field options testing
+  - id: FOS0002
+    name: Admin is configuring Field Label option (using Text field)
+  - id: FOS0003
+    name: Admin is validating Field Label option in frontend
+  - id: FOS0004
+    name: Admin is configuring Meta Key option (using Text field)
+  - id: FOS0005
+    name: Admin is validating Meta Key option in backend
+  - id: FOS0006
+    name: Admin is configuring Help Text option (using Text field)
+  - id: FOS0007
+    name: Admin is validating Help Text option in frontend
+  - id: FOS0008
+    name: Admin is configuring Placeholder Text option (using Text field)
+  - id: FOS0009
+    name: Admin is validating Placeholder Text option in frontend
+  - id: FOS0010
+    name: Admin is configuring Default Value option (using Text field)
+  - id: FOS0011
+    name: Admin is validating Default Value option in frontend
+  - id: FOS0012
+    name: Admin is configuring Required field option (using Text field)
+  - id: FOS0013
+    name: Admin is validating Required field option in frontend
+  - id: FOS0014
+    name: Admin is configuring CSS Class Name option (using Text field)
+  - id: FOS0015
+    name: Admin is validating CSS Class Name option in frontend
+  - id: FOS0016
+    name: Admin is configuring Field Size option (using Text field)
+  - id: FOS0017
+    name: Admin is validating Field Size option in frontend
+  - id: FOS0018
+    name: Admin is configuring Read Only option (using Text field)
+  - id: FOS0019
+    name: Admin is validating Read Only option in frontend
+  - id: FOS0020
+    name: Admin is configuring Show Data in Post option (using Text field)
+  - id: FOS0021
+    name: Admin is validating Show Data in Post option in backend
+  - id: FOS0022
+    name: Admin is configuring Hide Field Label option (using Text field)
+  - id: FOS0023
+    name: Admin is validating Hide Field Label option in frontend
+  - id: FOS0024
+    name: Admin is configuring Visibility option (using Text field)
+  - id: FOS0025
+    name: Admin is validating Visibility option in frontend
+  - id: FOS0026
+    name: Admin is configuring Content Restriction option for min character length
+  - id: FOS0027
+    name: Admin is validating Content Restriction option for min character length in FE
+  - id: FOS0028
+    name: Admin is configuring Content Restriction option for max character length
+  - id: FOS0029
+    name: Admin is validating Content Restriction option for max character length in FE
+  - id: FOS0030
+    name: Admin is configuring Content Restriction option for min word length
+  - id: FOS0031
+    name: Admin is validating Content Restriction option for min word length in FE
+  - id: FOS0032
+    name: Admin is configuring Content Restriction option for max word length
+  - id: FOS0033
+    name: Admin is validating Content Restriction option for max word length in FE
+  - id: FOS0034
+    name: Admin is configuring Conditional Logic option
+  - id: FOS0035
+    name: Admin is validating Conditional Logic option in frontend
+  - id: FOS0036
+    name: Admin is configuring Rich Text Editor option
+  - id: FOS0037
+    name: Admin is validating Rich Text Editor option in frontend
+  - id: FOS0038
+    name: Admin is configuring Dropdown Options
+  - id: FOS0039
+    name: Admin is validating Dropdown Options in frontend
+  - id: FOS0040
+    name: Admin is configuring Select Text option
+  - id: FOS0041
+    name: Admin is validating Select Text option in frontend
+  - id: FOS0042
+    name: Admin is configuring Category type option - text
+  - id: FOS0043
+    name: Admin is validating Category type option - text
+  - id: FOS0044
+    name: Admin is configuring Category type option - checkbox
+  - id: FOS0045
+    name: Admin is validating Category type option - checkbox
+  - id: FOS0046
+    name: Admin is configuring Category type option - multiselect
+  - id: FOS0047
+    name: Admin is validating Category type option - multiselect
+  - id: FOS0048
+    name: Admin is configuring selection type option - exclude
+  - id: FOS0049
+    name: Admin is validating selection type option - exclude
+  - id: FOS0050
+    name: Admin is configuring selection type option - include
+  - id: FOS0051
+    name: Admin is validating selection type option - include
+  - id: FOS0052
+    name: Admin is configuring Show in inline list Options
+  - id: FOS0053
+    name: Admin is validating in line list Options in frontend
+  - id: FOS0054
+    name: Admin is configuring Time Format option and interval
+  - id: FOS0055
+    name: Admin is validating Time Format option and interval in frontend
+  - id: FOS0056
+    name: Admin is configuring Max Files number
+  - id: FOS0057
+    name: Admin is validating Max Files option in frontend
+  - id: FOS0058
+    name: Admin is configuring Max Image Size option
+  - id: FOS0059
+    name: Admin is validating Max Image Size option in frontend
+  - id: FOS0060
+    name: Admin is configuring Button Text option (using Image Upload field)
+  - id: FOS0061
+    name: Admin is validating Button Text option in frontend
+  - id: FOS0062
+    name: Admin is configuring Default Country option
+  - id: FOS0063
+    name: Admin is validating Default Country option in frontend
+  - id: FOS0064
+    name: Admin is configuring Hide Countries option
+  - id: FOS0065
+    name: Admin is validating Hide Countries option in frontend
+  - id: FOS0066
+    name: Admin is configuring Only Show Countries option
+  - id: FOS0067
+    name: Admin is validating Only Show Countries option in frontend
+  - id: FOS0068
+    name: Admin is configuring Show Address Line 2 required option
+  - id: FOS0069
+    name: Admin is validating Show Address Line 2 required option in frontend
+  - id: FOS0070
+    name: Admin is configuring Show Address Line 2 default option
+  - id: FOS0071
+    name: Admin is validating Show Address Line 2 default option in frontend
+  - id: FOS0072
+    name: Admin is configuring Show Address Line 2 placeholder option
+  - id: FOS0073
+    name: Admin is validating Show Address Line 2 placeholder option in frontend
+  - id: FOS0074
+    name: Admin is configuring Show Icons option
+  - id: FOS0075
+    name: Admin is validating Show Icons option in frontend
+  - id: FOS0076
+    name: Admin is configuring Min Value option
+  - id: FOS0077
+    name: Admin is configuring Max Value option
+  - id: FOS0078
+    name: Admin is configuring Step option
+  - id: FOS0079
+    name: Admin is validating Numeric value options in frontend
+  - id: FOS0080
+    name: Admin is validating Max Value option in frontend
+  - id: FOS0081
+    name: Admin is validating Step option in frontend
+  - id: FOS0082
+    name: Admin is creating another test form for other field options testing
+  - id: FOS0083
+    name: Admin is configuring Date Format option
+  - id: FOS0084
+    name: Admin is configuring Enable Time Input option
+  - id: FOS0085
+    name: Admin is configuring Min Date range option
+  - id: FOS0086
+    name: Admin is configuring Max Date range option
+  - id: FOS0087
+    name: Admin is configuring Publish Time Field option
+  - id: FOS0088
+    name: Admin is validating Date Format option in frontend
+  - id: FOS0089
+    name: Admin is validating Time Input option in frontend
+  - id: FOS0090
+    name: Admin is validating Min Date range option in frontend
+  - id: FOS0091
+    name: Admin is validating Max Date range option in frontend
+  - id: FOS0092
+    name: Admin is validating Publish Time option in frontend
+  - id: FOS0093
+    name: Admin is creating another test form for other field options testing
+  - id: FOS0094
+    name: Admin is configuring Hide Field Label option
+  - id: FOS0095
+    name: Admin is configuring Show Data in Post option
+  - id: FOS0096
+    name: Admin is validating Hide Field Label option in frontend
+  - id: FOS0097
+    name: Admin is validating Hide Data in Post option in frontend
+  - id: FOS0098
+    name: Admin is configuring Visibility option hidden
+  - id: FOS0099
+    name: Admin is validating Visibility option, hidden, in frontend
+  - id: FOS0100
+    name: Admin is configuring Visibility option subscription only
+  - id: FOS0101
+    name: Admin is validating Visibility option, subscription only, in frontend
+  - id: FOS0102
+    name: Admin is configuring Visibility option logged in only
+  - id: FOS0103
+    name: Admin is validating Visibility option, logged in only, in frontend
+  - id: FOS0104
+    name: Admin is configuring Open in New Window option
+  - id: FOS0105
+    name: Admin is validating Open in New Window option in frontend

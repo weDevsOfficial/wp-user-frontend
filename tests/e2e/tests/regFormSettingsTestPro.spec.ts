@@ -1,5 +1,3 @@
-import * as dotenv from 'dotenv';
-dotenv.config();
 import { Browser, BrowserContext, Page, test, chromium } from "@playwright/test";
 import { faker } from '@faker-js/faker';
 import { RegFormSettingsPage } from '../pages/regFormSettings';
@@ -200,7 +198,7 @@ test.describe('Reg Form Settings Tests', () => {
     test('RFS0017 : Admin is validating after registration redirection to same page', { tag: ['@Pro'] }, async () => {
         userEmail = faker.internet.email();
         userPassword = userEmail;
-        const expectedMessage = 'Registration successful. Please wait for admin approval';
+        const expectedMessage = 'Registration successful';
         const regFormSettings = new RegFormSettingsPage(page);
         await regFormSettings.validateAfterRegistrationRedirectionToSamePage(userEmail, userPassword, expectedMessage);
     });
@@ -235,14 +233,14 @@ test.describe('Reg Form Settings Tests', () => {
 
     test('RFS0022 : Admin is setting registration success message', { tag: ['@Pro'] }, async () => {
         const regFormSettings = new RegFormSettingsPage(page);
-        const customMessage = 'Registration successful. Please wait for admin approval';
+        const customMessage = 'Welcome! Your account has been created successfully. Please check your email for further instruction.';
         await regFormSettings.setRegistrationSuccessMessage(formName, customMessage);
     });
 
     test('RFS0023 : Admin is validating registration success message', { tag: ['@Pro'] }, async () => {
         userEmail = faker.internet.email();
         userPassword = userEmail;
-        const expectedMessage = 'Registration successful. Please wait for admin approval';
+        const expectedMessage = 'Welcome! Your account has been created successfully. Please check your email for further instruction.';
         const regFormSettings = new RegFormSettingsPage(page);
         await regFormSettings.validateRegistrationSuccessMessage(userEmail, userPassword, expectedMessage);
     });
@@ -337,25 +335,25 @@ test.describe('Reg Form Settings Tests', () => {
         await regFormSettings.setEmailVerificationNotification(formName);
     });
 
-    test.skip('RFS0038 : Admin is setting email verification notification subject', { tag: ['@Pro'] }, async () => {
+    test('RFS0038 : Admin is setting email verification notification subject', { tag: ['@Pro'] }, async () => {
         const regFormSettings = new RegFormSettingsPage(page);
         const subject = 'Verify Your Email Address';
         await regFormSettings.setEmailVerificationNotificationSubject(formName, subject);
     });
 
-    test.skip('RFS0039 : Admin is setting email verification notification body', { tag: ['@Pro'] }, async () => {
+    test('RFS0039 : Admin is setting email verification notification body', { tag: ['@Pro'] }, async () => {
         const regFormSettings = new RegFormSettingsPage(page);
         const body = 'Congrats {username}! You are Successfully registered to {blogname}. To activate your account, please click the link below {activation_link} Thanks!';
         await regFormSettings.setEmailVerificationNotificationBody(formName, body);
     });
 
-    test.skip('RFS0040 : Admin is clicking template tags for email verification notification', { tag: ['@Pro'] }, async () => {
+    test('RFS0040 : Admin is clicking template tags for email verification notification', { tag: ['@Pro'] }, async () => {
         const regFormSettings = new RegFormSettingsPage(page);
         const tags = ['{username}', '{blogname}', '{activation_link}'];
         await regFormSettings.clickTemplateTagsForEmailVerificationNotification(formName, tags);
     });
 
-    test.skip('RFS0041 : User registers and validates email verification notification', { tag: ['@Pro'] }, async () => {
+    test('RFS0041 : User registers and validates email verification notification', { tag: ['@Pro'] }, async () => {
         const regFormSettings = new RegFormSettingsPage(page);
         userEmail = faker.internet.email();
         userPassword = userEmail;
@@ -363,36 +361,36 @@ test.describe('Reg Form Settings Tests', () => {
         activationLink = await regFormSettings.registerUserAndValidateEmailVerification(userEmail, userPassword, expectedSubject);
     });
 
-    test.skip('RFS0042 : User clicks on activation link and validates email verification', { tag: ['@Pro'] }, async () => {
+    test('RFS0042 : User clicks on activation link and validates email verification', { tag: ['@Pro'] }, async () => {
         const regFormSettings = new RegFormSettingsPage(page);
         await regFormSettings.approveNewUser(userEmail);
         await regFormSettings.validateEmailVerification(activationLink, userEmail, userPassword);
     });
 
-    test.skip('RFS0043 : Admin is setting welcome email notification', { tag: ['@Pro'] }, async () => {
+    test('RFS0043 : Admin is setting welcome email notification', { tag: ['@Pro'] }, async () => {
         const regFormSettings = new RegFormSettingsPage(page);
         await regFormSettings.setWelcomeEmailNotification(formName);
     });
 
-    test.skip('RFS0044 : Admin is setting welcome email notification subject', { tag: ['@Pro'] }, async () => {
+    test('RFS0044 : Admin is setting welcome email notification subject', { tag: ['@Pro'] }, async () => {
         const regFormSettings = new RegFormSettingsPage(page);
         const subject = 'Welcome to Our Platform!';
         await regFormSettings.setWelcomeEmailNotificationSubject(formName, subject);
     });
 
-    test.skip('RFS0045 : Admin is setting welcome email notification body', { tag: ['@Pro'] }, async () => {
+    test('RFS0045 : Admin is setting welcome email notification body', { tag: ['@Pro'] }, async () => {
         const regFormSettings = new RegFormSettingsPage(page);
         const body = 'Hi {username}, Congrats! You are Successfully registered to {blogname}. Thanks';
         await regFormSettings.setWelcomeEmailNotificationBody(formName, body);
     });
 
-    test.skip('RFS0046 : Admin is clicking template tags for welcome email notification', { tag: ['@Pro'] }, async () => {
+    test('RFS0046 : Admin is clicking template tags for welcome email notification', { tag: ['@Pro'] }, async () => {
         const regFormSettings = new RegFormSettingsPage(page);
         const tags = ['{username}', '{blogname}'];
         await regFormSettings.clickTemplateTagsForWelcomeEmailNotification(formName, tags);
     });
 
-    test.skip('RFS0047 : User registers and validates welcome email notification', { tag: ['@Pro'] }, async () => {
+    test('RFS0047 : User registers and validates welcome email notification', { tag: ['@Pro'] }, async () => {
         const regFormSettings = new RegFormSettingsPage(page);
         userEmail = faker.internet.email();
         userPassword = userEmail;

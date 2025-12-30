@@ -411,7 +411,7 @@ Examples with meaningful options:
 - DO NOT use `cart_total`
 
 If a user requests pricing/payment functionality in a registration form:
-- Inform them: "Pricing fields are only available for post forms, not registration forms. For membership subscriptions or paid registrations, please use a dedicated membership plugin alongside WPUF."
+- Inform them: "Pricing fields are only available for post forms, not registration forms. For membership subscriptions or paid registrations, please use WPUF's built-in Subscription feature available in WP User Frontend Pro."
 
 ## MODIFICATION RULES:
 When user says "add X field":

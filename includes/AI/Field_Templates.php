@@ -1431,7 +1431,6 @@ class Field_Templates {
             'inline' => 'no',
             'show_price_label' => 'yes',
             'enable_quantity' => 'no',
-            'currency_symbol' => '$',
             'options' => [
                 'first_item' => 'First Item',
                 'second_item' => 'Second Item',
@@ -1464,7 +1463,6 @@ class Field_Templates {
             'inline' => 'no',
             'show_price_label' => 'yes',
             'enable_quantity' => 'no',
-            'currency_symbol' => '$',
             'options' => [
                 'first_item' => 'First Item',
                 'second_item' => 'Second Item',
@@ -1494,7 +1492,6 @@ class Field_Templates {
             'css' => '',
             'show_icon' => 'no',
             'enable_quantity' => 'no',
-            'currency_symbol' => '$',
             'options' => [
                 'first_item' => 'First Item',
                 'second_item' => 'Second Item',
@@ -1526,7 +1523,6 @@ class Field_Templates {
             'show_icon' => 'no',
             'selected' => [],
             'enable_quantity' => 'no',
-            'currency_symbol' => '$',
             'options' => [
                 'first_item' => 'First Item',
                 'second_item' => 'Second Item',
@@ -1558,7 +1554,6 @@ class Field_Templates {
             'price_hidden' => 'no',
             'price_min' => '0',
             'price_max' => '',
-            'currency_symbol' => '$',
             'default' => '',
             'placeholder' => 'Enter amount',
             'show_in_post' => 'yes',
@@ -1579,7 +1574,6 @@ class Field_Templates {
             'help' => '',
             'css' => '',
             'show_summary' => 'yes',
-            'currency_symbol' => 'USD',
             'show_in_post' => 'yes',
             'hide_field_label' => 'no',
             'width' => 'large',

@@ -1252,7 +1252,6 @@ class Paypal {
             $cancel_url = $return_url;
 
             $billing_amount = empty( $data['price'] ) ? 0 : $data['price'];
-            $tax_amount = 0;
 
             // Check if pricing fields payment is enabled and update price accordingly
             $post_id = isset( $data['item_number'] ) && $data['type'] === 'post' ? $data['item_number'] : 0;
@@ -1495,7 +1494,7 @@ class Paypal {
                 ];
 
                 // Add breakdown and items only if tax is enabled to prevent double taxation
-                if ( $tax_amount > 0 ) {
+                if ( $data['tax'] > 0 ) {
                     $purchase_unit['amount']['breakdown'] = [
                         'item_total' => [
                             'currency_code' => $data['currency'],
@@ -1503,7 +1502,7 @@ class Paypal {
                         ],
                         'tax_total' => [
                             'currency_code' => $data['currency'],
-                            'value' => number_format( $tax_amount, 2, '.', '' ),
+                            'value' => number_format( $data['tax'], 2, '.', '' ),
                         ],
                     ];
 

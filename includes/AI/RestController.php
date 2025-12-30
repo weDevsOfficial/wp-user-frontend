@@ -860,6 +860,17 @@ class RestController extends WP_REST_Controller {
             ];
 
             $form_settings = wp_parse_args($form_data['form_settings'] ?? [], $default_settings);
+
+            // Set form_template based on post_type for proper integration handling
+            // This is critical for integrations to properly save meta fields via their hooks
+            if ( ! empty( $form_settings['post_type'] ) ) {
+                $form_template = $this->get_form_template_for_post_type( $form_settings['post_type'] );
+
+                if ( $form_template ) {
+                    $form_settings['form_template'] = $form_template;
+                }
+            }
+
             update_post_meta($form_id, 'wpuf_form_settings', $form_settings);
 
             // Add form creation metadata
@@ -1330,6 +1341,15 @@ class RestController extends WP_REST_Controller {
             }
         }
 
+        // Set form_template based on post_type for proper integration handling
+        if ( ! empty( $current_settings['post_type'] ) ) {
+            $form_template = $this->get_form_template_for_post_type( $current_settings['post_type'] );
+
+            if ( $form_template ) {
+                $current_settings['form_template'] = $form_template;
+            }
+        }
+
         update_post_meta($form_id, 'wpuf_form_settings', $current_settings);
     }
 
@@ -1416,6 +1436,29 @@ class RestController extends WP_REST_Controller {
     private function should_be_meta($field_name) {
         $post_fields = ['post_title', 'post_content', 'post_excerpt', 'post_tags', 'post_category'];
         return !in_array($field_name, $post_fields);
+    }
+
+    /**
+     * Get form template for a given post type
+     *
+     * Maps integration post types to their corresponding form templates.
+     * This is critical for integrations to properly trigger their hooks
+     * (e.g., WooCommerce's update_price() hook to set _price meta).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $post_type The post type
+     *
+     * @return string|null Form template identifier or null if no mapping exists
+     */
+    private function get_form_template_for_post_type( $post_type ) {
+        $post_type_to_template_map = [
+            'product'      => 'post_form_template_woocommerce',     // WooCommerce products
+            'download'     => 'post_form_template_edd',             // Easy Digital Downloads
+            'tribe_events' => 'post_form_template_events_calendar', // The Events Calendar
+        ];
+
+        return $post_type_to_template_map[ $post_type ] ?? null;
     }
 
     /**

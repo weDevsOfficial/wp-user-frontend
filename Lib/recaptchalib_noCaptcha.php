@@ -58,7 +58,7 @@ class WPUF_ReCaptcha
     {
         if ($secret == null || $secret == "") {
             die("To use reCAPTCHA you must get an API key from <a href='"
-                . self::$_signupUrl . "'>" . self::$_signupUrl . "</a>");
+                . esc_url( self::$_signupUrl ) . "'>" . esc_html( self::$_signupUrl ) . "</a>");
         }
         $this->_secret=$secret;
     }
@@ -95,35 +95,27 @@ class WPUF_ReCaptcha
         $req = $this->_encodeQS($data);
         $url = $path . $req;
 
-        // Use curl if possible because allow_url_fopen is off in many
-        // environments, making file_get_contents fail.
-        if (function_exists('curl_init')) {
-            $response = $this->_curl($url);
-        } else {
-            $response = file_get_contents($url);
+        // Use WordPress HTTP API instead of cURL
+        $response = wp_remote_get($url, array(
+            'timeout' => 3,
+            'sslverify' => true
+        ));
+        
+        if (is_wp_error($response)) {
+            return false;
         }
-        return $response;
+        
+        $response_code = wp_remote_retrieve_response_code($response);
+        $response_body = wp_remote_retrieve_body($response);
+        
+        // Return false for non-200 responses or empty bodies
+        if ($response_code !== 200 || empty($response_body)) {
+            return false;
+        }
+        
+        return $response_body;
     }
 
-    private function _curl($url)
-    {
-        // Initiate curl.
-        $c = curl_init();
-        // Set timeout.
-        $timeout = 3;
-        curl_setopt($c, CURLOPT_CONNECTTIMEOUT, $timeout);
-        curl_setopt($c, CURLOPT_RETURNTRANSFER, TRUE);
-        // Set url for call.
-        curl_setopt($c, CURLOPT_URL, $url);
-
-        // Execute curl call.
-        $response = curl_exec($c);
-
-        // Close curl.
-        curl_close($c);
-
-        return $response;
-    }
 
     /**
      * Calls the reCAPTCHA siteverify API to verify whether the user passes

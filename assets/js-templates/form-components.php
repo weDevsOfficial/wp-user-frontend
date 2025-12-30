@@ -93,7 +93,7 @@
 <script type="text/x-template" id="tmpl-wpuf-builder-stage-v4-1">
 <div id="form-preview-stage" class="wpuf-h-[70vh]">
     <div v-if="!form_fields.length" class="wpuf-flex wpuf-flex-col wpuf-items-center wpuf-justify-center wpuf-h-[80vh]">
-        <img src="<?php echo WPUF_ASSET_URI . '/images/form-blank-state.svg'; ?>" alt="">
+        <img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/form-blank-state.svg' ); ?>" alt="">
         <h2 class="wpuf-text-lg wpuf-text-gray-800 wpuf-mt-8 wpuf-mb-2"><?php esc_html_e( 'Add fields and build your desired form', 'wp-user-frontend' ); ?></h2>
 
         <p class="wpuf-text-sm wpuf-text-gray-500"><?php esc_html_e( 'Add the necessary field and build your form.', 'wp-user-frontend' ); ?></p>
@@ -146,7 +146,7 @@
                         <label class="wpuf-pro-text-alert">
                             <a :href="pro_link" target="_blank"
                                class="wpuf-text-gray-700 wpuf-text-base"><strong>{{ get_field_name( field.template )
-                                    }}</strong> <?php _e( 'is available in Pro Version', 'wp-user-frontend' ); ?></a>
+                                    }}</strong> <?php esc_html_e( 'is available in Pro Version', 'wp-user-frontend' ); ?></a>
                         </label>
                     </div>
                 </div>
@@ -208,7 +208,7 @@
                                 :href="pro_link"
                                 target="_blank"
                                 class="wpuf-rounded-r-md hover:wpuf-bg-slate-500 hover:wpuf-cursor-pointer wpuf-transition wpuf-duration-150 wpuf-ease-out hover:wpuf-transition-all">
-                                <img src="<?php esc_attr_e( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="">
+                                <img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="">
                             </a>
                         </span>
                 </div>
@@ -501,7 +501,7 @@
     <label
         class="wpuf-pro-text-alert wpuf-ml-2 wpuf-tooltip-top"
         data-tip="<?php esc_attr_e( 'Available in PRO version', 'wp-user-frontend' ); ?>">
-        <a :href="pro_link" target="_blank"><img src="<?php echo wpuf_get_pro_icon() ?>" alt="pro icon"></a>
+        <a :href="pro_link" target="_blank"><img src="<?php echo esc_url( wpuf_get_pro_icon() ) ?>" alt="pro icon"></a>
     </label>
 </div>
 </script>
@@ -851,7 +851,7 @@
                                 $partially_filtered = preg_replace('/(<input[^>]+)/', '$1 ' . $attr, $partially_filtered, 1);
                             }
 
-                            echo $partially_filtered;
+                            echo esc_html( $partially_filtered );
                         }
                     } else {
                         esc_html_e( 'No subscription plan found.', 'wp-user-frontend' );
@@ -1027,7 +1027,7 @@
                                 :href="pro_link"
                                 target="_blank"
                                 class="wpuf-rounded-r-md hover:wpuf-bg-slate-500 hover:wpuf-cursor-pointer wpuf-transition wpuf-duration-150 wpuf-ease-out hover:wpuf-transition-all">
-                                <img src="<?php esc_attr_e( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="">
+                                <img src="<?php echo esc_attr( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="">
                             </a>
                         </span>
                         </div>
@@ -1236,7 +1236,7 @@
                                 </div>
                             <div
                                 class="wpuf-absolute wpuf-top-4 wpuf-right-4 wpuf-opacity-0 group-hover/pro-field:wpuf-opacity-100 wpuf-transition-all">
-                                <img src="<?php esc_attr_e( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="">
+                                <img src="<?php echo esc_attr( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="">
                             </div>
                         </div>
                         <div

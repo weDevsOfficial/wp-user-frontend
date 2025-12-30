@@ -620,12 +620,6 @@ class Paypal {
             $period = isset( $pack_meta['_cycle_period'] ) ? $pack_meta['_cycle_period'] : 'month';
             $interval = isset( $pack_meta['_billing_cycle_number'] ) ? intval( $pack_meta['_billing_cycle_number'] ) : 1;
 
-            // Get tax rate if enabled
-            $tax_rate = 0;
-            if ( $this->wpuf_tax_enabled() ) {
-                $tax_rate = $this->wpuf_current_tax_rate();
-            }
-
             // Create subscription data structure with all necessary meta
             $subscription_data = [
                 'pack_id' => $custom_data['item_number'],
@@ -1289,23 +1283,38 @@ class Paypal {
                 $subtotal = wpuf_pro()->coupon->discount( $subtotal, $coupon_id, $data['item_number'] );
             }
 
-            // Calculate tax on the (possibly discounted) subtotal
-            // Note: We do NOT apply wpuf_payment_amount filter here because it adds tax
-            // via Pro's Tax class, and we calculate tax separately to maintain proper
-            // subtotal/tax breakdown for PayPal API. This is the same pattern used by Stripe.
-            if ( $this->wpuf_tax_enabled() ) {
-                $tax_rate = $this->wpuf_current_tax_rate();
-                $tax_amount = $subtotal * ( $tax_rate / 100 );
-                $billing_amount = $subtotal + $tax_amount;
-            } else {
-                $billing_amount = $subtotal;
+            //Remove Pro's tax filter temporarily to get subtotal before tax
+            $pro_tax_removed = false;
+            if ( function_exists( 'wpuf_pro' ) && isset( wpuf_pro()->tax ) ) {
+                $pro_tax_removed = remove_filter( 'wpuf_payment_amount', [ wpuf_pro()->tax, 'wpuf_amount_with_tax' ] );
             }
 
-            $data['subtotal'] = $subtotal;
-            $data['tax'] = $tax_amount;
+            $subtotal = apply_filters( 'wpuf_payment_amount', $subtotal, $post_id );
+
+            // Restore Pro's tax filter
+            if ( $pro_tax_removed ) {
+                add_filter( 'wpuf_payment_amount', [ wpuf_pro()->tax, 'wpuf_amount_with_tax' ] );
+            }
+
+            // Get tax breakdown for payment gateway.
+            // Pro hooks into 'wpuf_payment_tax_breakdown' to provide tax calculation.
+            $tax_breakdown = apply_filters(
+                'wpuf_payment_tax_breakdown',
+                [
+                    'subtotal' => $subtotal,
+                    'tax'      => 0,
+                    'total'    => $subtotal,
+                ],
+                $subtotal,
+                $post_id
+            );
+
+            $data['subtotal'] = $tax_breakdown['subtotal'];
+            $data['tax']      = $tax_breakdown['tax'];
+            $billing_amount   = $tax_breakdown['total'];
 
             // Handle free payments
-            if ( $billing_amount == 0 ) {
+            if ( 0 === $billing_amount ) {
                 wpuf_get_user( $user_id )->subscription()->add_pack( $data['item_number'], null, false, 'Free' );
                 wp_safe_redirect( $return_url );
                 exit();
@@ -1369,11 +1378,10 @@ class Paypal {
                     throw new \Exception( 'Failed to create or get subscription plan' );
                 }
 
-                // Get tax rate if enabled
-                $tax_rate = 0;
-                if ( $this->wpuf_tax_enabled() ) {
-                    $tax_rate = $this->wpuf_current_tax_rate();
-                }
+                // Get tax rate from the tax breakdown (Pro provides this via filter)
+                $tax_rate = ( $data['subtotal'] > 0 && $data['tax'] > 0 )
+                    ? ( $data['tax'] / $data['subtotal'] ) * 100
+                    : 0;
 
                 // Prepare subscription data
                 $subscription_data = [

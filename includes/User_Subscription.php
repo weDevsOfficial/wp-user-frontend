@@ -221,12 +221,10 @@ class User_Subscription {
             $this->update_meta( $user_meta );
 
             if ( ! $this->is_free_pack( $pack_id ) ) {
-                $sql = $wpdb->prepare(
+                $result = $wpdb->get_row( $wpdb->prepare(
                     'SELECT * FROM ' . $wpdb->prefix . 'wpuf_transaction
                 WHERE user_id = %d AND pack_id = %d ORDER BY id DESC LIMIT 1', $this->user->id, $pack_id
-                );
-
-                $result = $wpdb->get_row( $sql );
+                ) );
             }
 
             if ( $result ) {

@@ -154,7 +154,7 @@ class TEC_V6_Compatibility {
                 $start_date = $this->format_date_for_tec( $all_data['_EventStartDate'] );
                 if ( $start_date ) {
                     // Set end date to same day at 23:59:59
-                    $end_date             = date( 'Y-m-d 23:59:59', strtotime( $start_date ) );
+                    $end_date             = gmdate( 'Y-m-d 23:59:59', strtotime( $start_date ) );
                     $orm_args['end_date'] = $end_date;
                 }
             }
@@ -600,7 +600,7 @@ class TEC_V6_Compatibility {
             // Fallback to WordPress date parsing
             $timestamp = strtotime( $date_string );
             if ( $timestamp !== false ) {
-                $formatted = date( 'Y-m-d H:i:s', $timestamp );
+                $formatted = gmdate( 'Y-m-d H:i:s', $timestamp );
 
                 return $formatted;
             }

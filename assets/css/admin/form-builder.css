@@ -2073,6 +2073,44 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   background-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-bg-opacity)));
 }
 
+.wpuf-table {
+  position: relative;
+  width: 100%;
+  border-radius: var(--rounded-box, 1rem);
+  text-align: left;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.wpuf-table :where(.wpuf-table-pin-rows thead tr) {
+  position: sticky;
+  top: 0px;
+  z-index: 1;
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
+}
+
+.wpuf-table :where(.wpuf-table-pin-rows tfoot tr) {
+  position: sticky;
+  bottom: 0px;
+  z-index: 1;
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
+}
+
+.wpuf-table :where(.wpuf-table-pin-cols tr th) {
+  position: sticky;
+  left: 0px;
+  right: 0px;
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
+}
+
+.wpuf-table-zebra tbody tr:nth-child(even) :where(.wpuf-table-pin-cols tr th) {
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-bg-opacity)));
+}
+
 .wpuf-toast {
   position: fixed;
   display: flex;
@@ -2962,6 +3000,26 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .wpuf-toast > * {
   animation: toast-pop 0.25s ease-out;
+}
+
+.wpuf-table :where(thead tr, tbody tr:not(:last-child), tbody tr:first-child:last-child) {
+  border-bottom-width: 1px;
+  --tw-border-opacity: 1;
+  border-bottom-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-border-opacity)));
+}
+
+.wpuf-table :where(thead, tfoot) {
+  white-space: nowrap;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 700;
+  color: var(--fallback-bc,oklch(var(--bc)/0.6));
+}
+
+.wpuf-table :where(tfoot) {
+  border-top-width: 1px;
+  --tw-border-opacity: 1;
+  border-top-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-border-opacity)));
 }
 
 @keyframes toast-pop {
@@ -7369,6 +7427,11 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
 
+.hover\:wpuf-bg-gray-200:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+
 .hover\:wpuf-bg-gray-50:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity));
@@ -7858,6 +7921,10 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
 }
 
 .wpuf-group\/hidden-fields:hover .group-hover\/hidden-fields\:wpuf-opacity-100 {
+  opacity: 1;
+}
+
+.wpuf-group\/pro-button:hover .group-hover\/pro-button\:wpuf-opacity-100 {
   opacity: 1;
 }
 

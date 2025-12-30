@@ -129,7 +129,7 @@ class Paypal {
                     type: 'POST',
                     data: {
                         action: 'wpuf_dismiss_paypal_notice',
-                        nonce: '<?php echo wp_create_nonce( 'wpuf_dismiss_paypal_notice' ); ?>'
+                        nonce: '<?php echo esc_js( wp_create_nonce( 'wpuf_dismiss_paypal_notice' ) ); ?>'
                     },
                     success: function(response) {
                         // Handle success if needed
@@ -468,7 +468,7 @@ class Paypal {
 
                 $acknowledged = true;
             } catch ( \Exception $e ) {
-               throw new \Exception( 'Webhook processing failed: ' . $e->getMessage() );
+               throw new \Exception( 'Webhook processing failed: ' . esc_html( $e->getMessage() ) );
             }
 
             // Always acknowledge to PayPal
@@ -1584,7 +1584,7 @@ class Paypal {
                 exit();
             }
         } catch ( \Exception $e ) {
-            wp_die( $e->getMessage() );
+            wp_die( esc_html( $e->getMessage() ) );
         }
     }
 
@@ -2128,7 +2128,7 @@ class Paypal {
                 }
             }
         } catch ( \Exception $e ) {
-            throw new \Exception( 'Error handling subscription activation: ' . $e->getMessage() );
+            throw new \Exception( 'Error handling subscription activation: ' . $e->getMessage(), 0, $e );
         }
     }
 }

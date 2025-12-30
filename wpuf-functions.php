@@ -5762,7 +5762,7 @@ if ( ! function_exists( 'wpuf_field_profile_photo_allowed_mimes' ) ) {
 /**
  * Get taxonomy object types (post types the taxonomy is associated with)
  *
- * This works for all taxonomies - built-in, custom, ACF, or any other.
+ * This works for all taxonomies - built-in or custom.
  *
  * @since WPUF_SINCE
  *
@@ -5795,7 +5795,7 @@ if ( ! function_exists( 'wpuf_get_taxonomy_post_types' ) ) {
 /**
  * Get list of taxonomies that should be available in free version
  *
- * This includes built-in taxonomies and ACF-registered taxonomies.
+ * This includes built-in taxonomies and custom taxonomies associated with 'post' or 'page' post types.
  *
  * @since WPUF_SINCE
  *

@@ -1340,7 +1340,7 @@ class Render_Form {
             return false;
         }
         
-        // Get free taxonomies (built-in + ACF taxonomies)
+        // Get free taxonomies (built-in + taxonomies for post/page)
         $free_taxonomies = wpuf_get_free_taxonomies();
         return ! in_array( $form_field['name'], $free_taxonomies, true );
     }
@@ -1352,10 +1352,10 @@ class Render_Form {
      * @param int|null $post_id
      */
     public function taxonomy( $attr, $post_id, $form_id ) {
-        // Check if this is a custom taxonomy and pro is not active (excluding ACF taxonomies)
+        // Check if this is a custom taxonomy and pro is not active
         $free_taxonomies = wpuf_get_free_taxonomies();
         if ( ! in_array( $attr['name'], $free_taxonomies, true ) && ! wpuf_is_pro_active() ) {
-            // Don't render custom taxonomies when pro is not active (ACF taxonomies are allowed)
+            // Don't render custom taxonomies when pro is not active
             return;
         }
 

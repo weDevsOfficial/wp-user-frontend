@@ -657,7 +657,8 @@ class RestController extends WP_REST_Controller {
                 'max_options' => $max_options
             ]);
 
-            if (isset($result['error']) && $result['error']) {
+            // Check for both error === true and success === false as failure conditions
+            if ( ( isset( $result['error'] ) && $result['error'] ) || ( isset( $result['success'] ) && ! $result['success'] ) ) {
                 return new WP_Error(
                     'generation_failed',
                     $result['message'] ?? __('Failed to generate field options', 'wp-user-frontend'),
@@ -736,8 +737,15 @@ class RestController extends WP_REST_Controller {
             wp_send_json_error( [ 'message' => $result->get_error_message() ] );
         }
 
+        // Check for both error === true and success === false as failure conditions
+        if ( ( isset( $result['error'] ) && $result['error'] ) || ( isset( $result['success'] ) && ! $result['success'] ) ) {
+            wp_send_json_error( [ 'message' => $result['message'] ?? __( 'Failed to generate options', 'wp-user-frontend' ) ] );
+        }
+
         if ( isset( $result['success'] ) && $result['success'] ) {
-            wp_send_json_success( [ 'options' => $result['options'] ] );
+            // Sanitize options before returning (matching REST handler behavior)
+            $sanitized_options = $this->sanitize_field_options( $result['options'] ?? [] );
+            wp_send_json_success( [ 'options' => $sanitized_options ] );
         }
 
         wp_send_json_error( [ 'message' => $result['message'] ?? __( 'Failed to generate options', 'wp-user-frontend' ) ] );

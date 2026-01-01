@@ -359,6 +359,7 @@ class Admin_Form_Builder {
                 'copy_shortcode'          => __( 'Click to copy shortcode', 'wp-user-frontend' ),
                 'empty_field_options_msg' => __( 'To view field options, please start adding fields in the builder', 'wp-user-frontend' ),
                 'pro_field_message'       => $field_messages,
+                'something_went_wrong'    => __( 'Something went wrong. Please try again.', 'wp-user-frontend' ),
             ]
         );
     }

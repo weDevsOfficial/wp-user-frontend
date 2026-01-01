@@ -786,7 +786,7 @@ Vue.component('field-option-data', {
             var field_type = this.editing_form_field.template;
 
             wp.ajax.post('wpuf_ai_generate_field_options', {
-                prompt: this.ai_prompt,
+                prompt: this.ai_prompt.trim(),
                 field_type: field_type,
                 nonce: wpuf_form_builder.nonce
             }).done(function(response) {

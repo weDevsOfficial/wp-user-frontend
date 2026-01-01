@@ -931,11 +931,6 @@ class FormGenerator {
                     throw new \Exception('Unsupported AI provider: ' . $this->current_provider);
             }
 
-            // Restore original provider settings
-            $this->current_provider = $original_provider;
-            $this->current_model = $original_model;
-            $this->api_key = $original_api_key;
-
             if (isset($ai_response['error']) && $ai_response['error']) {
                 return [
                     'success' => false,
@@ -959,6 +954,11 @@ class FormGenerator {
                 'message' => $e->getMessage(),
                 'provider' => $this->current_provider
             ];
+        } finally {
+            // Always restore original provider settings
+            $this->current_provider = $original_provider;
+            $this->current_model = $original_model;
+            $this->api_key = $original_api_key;
         }
     }
 
@@ -1145,7 +1145,6 @@ class FormGenerator {
         $model_config = $this->get_model_config('google', $this->current_model);
 
         $endpoint = str_replace('{model}', $this->current_model, $this->provider_configs['google']['endpoint']);
-        $endpoint .= '?key=' . $this->api_key;
 
         $body = [
             'contents' => [
@@ -1168,7 +1167,8 @@ class FormGenerator {
         $args = [
             'method' => 'POST',
             'headers' => [
-                'Content-Type' => 'application/json'
+                'Content-Type' => 'application/json',
+                'x-goog-api-key' => $this->api_key
             ],
             'body' => json_encode($body),
             'timeout' => 60

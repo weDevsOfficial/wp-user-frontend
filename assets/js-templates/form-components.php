@@ -18,14 +18,14 @@
             data-source="stage"
         >
             <div v-if="!is_full_width(field.template)" class="wpuf-label">
-                <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'left_label'"
+                <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'left_label'" 
                       class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-mr-1">
                       <i :class="[field.field_icon, 'wpuf-field-icon']"></i>
                 </span>
                 <label v-if="!is_invisible(field)" :for="'wpuf-' + field.name ? field.name : 'cls'">
                     {{ field.label }} <span v-if="field.required && 'yes' === field.required" class="required">*</span>
                 </label>
-                <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'right_label'"
+                <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'right_label'" 
                       class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-ml-2">
                       <i :class="[field.field_icon, 'wpuf-field-icon']"></i>
                 </span>
@@ -322,9 +322,9 @@
         >
             <!-- Search -->
             <div class="wpuf-p-3 wpuf-border-b wpuf-border-gray-200">
-                <input
+                <input 
                     v-model="searchTerm"
-                    type="text"
+                    type="text" 
                     placeholder="Search icons... (e.g., user, email, home)"
                     class="wpuf-w-full !wpuf-px-4 !wpuf-py-1.5 wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-text-sm wpuf-text-gray-900 placeholder:wpuf-text-gray-400 wpuf-shadow focus:!wpuf-shadow-none"
                 >
@@ -851,7 +851,7 @@
                                 $partially_filtered = preg_replace('/(<input[^>]+)/', '$1 ' . $attr, $partially_filtered, 1);
                             }
 
-                            echo esc_html( $partially_filtered );
+                            echo $partially_filtered;
                         }
                     } else {
                         esc_html_e( 'No subscription plan found.', 'wp-user-frontend' );

@@ -872,8 +872,10 @@ class FormGenerator {
      */
     public function test_connection( $api_key = '', $provider = '', $model = '' ) {
         try {
-            // Reload settings to get latest data
-            $this->load_settings();
+            // Only reload settings if we need to use saved values (reduces DB call)
+            if ( empty( $api_key ) || empty( $provider ) || empty( $model ) ) {
+                $this->load_settings();
+            }
 
             // Store originals for restoration
             $original_provider = $this->current_provider;
@@ -925,7 +927,7 @@ class FormGenerator {
     /**
      * Test provider API with minimal request
      *
-     * @since 4.2.1
+     * @since WPUF_SINCE
      *
      * @return array Test result
      */

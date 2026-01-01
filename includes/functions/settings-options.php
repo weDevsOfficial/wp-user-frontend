@@ -1081,6 +1081,11 @@ function wpuf_ai_api_key_field( $args ) {
         // Store timeout ID for clearing
         var statusTimeout = null;
 
+        // Helper function to escape HTML and prevent XSS
+        function escapeHtml(text) {
+            return $('<div>').text(text || '').html();
+        }
+
         // Test connection button handler
         $('#wpuf-test-connection-btn').on('click', function() {
             var $btn = $(this);
@@ -1129,7 +1134,7 @@ function wpuf_ai_api_key_field( $args ) {
                     $status.stop(true, true).show().css('opacity', '1');
 
                     if (response && response.success) {
-                        $status.html('<span style="color: #00a32a;">✓ ' + (response.message || '<?php esc_html_e( 'Connection successful!', 'wp-user-frontend' ); ?>') + '</span>');
+                        $status.html('<span style="color: #00a32a;">✓ ' + escapeHtml(response.message || '<?php esc_html_e( 'Connection successful!', 'wp-user-frontend' ); ?>') + '</span>');
 
                         // Enable model field and refresh models
                         updateModelFieldState(apiKey);
@@ -1141,7 +1146,7 @@ function wpuf_ai_api_key_field( $args ) {
                         }, 5000);
                     } else {
                         var errorMsg = response.message || '<?php esc_html_e( 'Connection failed', 'wp-user-frontend' ); ?>';
-                        $status.html('<span style="color: #d63638;">✗ ' + errorMsg + '</span>');
+                        $status.html('<span style="color: #d63638;">✗ ' + escapeHtml(errorMsg) + '</span>');
                         // Error messages stay visible
                     }
                 },
@@ -1156,7 +1161,7 @@ function wpuf_ai_api_key_field( $args ) {
                     if (xhr.responseJSON && xhr.responseJSON.message) {
                         errorMsg = xhr.responseJSON.message;
                     }
-                    $status.html('<span style="color: #d63638;">✗ ' + errorMsg + '</span>');
+                    $status.html('<span style="color: #d63638;">✗ ' + escapeHtml(errorMsg) + '</span>');
                     // Error messages stay visible
                 }
             });

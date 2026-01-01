@@ -69,7 +69,7 @@ class Form_Field_reCaptcha extends Field_Contract {
 
                 if ( $is_invisible ) { ?>
 
-                    <script src="https://www.google.com/recaptcha/api.js?onload=wpufreCaptchaLoaded&render=explicit&hl=en" async defer></script>
+                    <?php wp_enqueue_script( 'wpuf-recaptcha-invisible', 'https://www.google.com/recaptcha/api.js?onload=wpufreCaptchaLoaded&render=explicit&hl=en', array(), null, true ); ?>
 
                     <script>
 
@@ -102,7 +102,7 @@ class Form_Field_reCaptcha extends Field_Contract {
 
                 <?php } else { ?>
 
-                    <script src="https://www.google.com/recaptcha/api.js"></script>
+                    <?php wp_enqueue_script( 'wpuf-recaptcha', 'https://www.google.com/recaptcha/api.js', array(), null, true ); ?>
                     <div id='recaptcha' data-theme="<?php echo esc_attr( $theme ); ?>" class="g-recaptcha" data-sitekey="<?php echo esc_attr( $public_key ); ?>" data-callback="wpufRecaptchaCallback"></div>
                 <?php } ?>
 
@@ -129,7 +129,7 @@ class Form_Field_reCaptcha extends Field_Contract {
             'msg_title'     => __( 'Site key and Secret key', 'wp-user-frontend' ),
             'msg'           => sprintf(
                 // translators: %1$s wpuf admin settings url and %2$s is recaptcha url
-                __( 'You need to set Site key and Secret key in <a href="%1$s" target="_blank">Settings</a> in order to use "Recaptcha" field. <a href="%2$s" target="_blank">Click here to get the these key</a>.', 'wp-user-frontend' ),
+                __( 'You need to set Site key and Secret key in <a class="wpuf-text-primary wpuf-italic wpuf-font-bold" style="text-decoration: underline;" href="%1$s" target="_blank">Settings</a> in order to use "Recaptcha" field. <a class="wpuf-text-primary" href="%2$s" target="_blank">Click here to get the these key</a>.', 'wp-user-frontend' ),
                 admin_url( 'admin.php?page=wpuf-settings' ),
                 __( 'Settings', 'wp-user-frontend' ),
                 __( 'in order to use "Recaptcha" field.', 'wp-user-frontend' ),

@@ -65,7 +65,7 @@
     }
 
     .wpuf-account-nav-item.active {
-        @apply wpuf-flex wpuf-items-center wpuf-gap-[10px] wpuf-px-4 wpuf-py-3 !wpuf-bg-[#E1E6EA] !wpuf-text-gray-800 wpuf-rounded-lg wpuf-transition-colors wpuf-no-underline wpuf-text-md wpuf-leading-none focus:wpuf-outline-none wpuf-w-[260px] wpuf-h-[48px];
+        @apply wpuf-flex wpuf-items-center wpuf-gap-[10px] wpuf-px-4 wpuf-py-3 !wpuf-bg-[#E1E6EA] !wpuf-text-gray-800 wpuf-rounded-lg wpuf-transition-colors wpuf-no-underline wpuf-text-base wpuf-leading-none focus:wpuf-outline-none wpuf-w-[260px] wpuf-h-[48px];
     }
 
     .wpuf-account-nav-item:hover {

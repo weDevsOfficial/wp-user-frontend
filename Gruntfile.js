@@ -142,6 +142,7 @@ module.exports = function( grunt) {
                     'admin/form-builder/assets/js/**/*.js',
                     'includes/Admin/**/*.php',
                     'templates/**/*.php',
+                    'includes/Free/Free_Loader.php',
                     'wpuf-functions.php',
                     'assets/js/forms-list.js',
                 ],

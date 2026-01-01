@@ -687,24 +687,30 @@ class RestController extends WP_REST_Controller {
     /**
      * Sanitize field options
      *
-     * @param array $options Raw options from AI
-     * @return array Sanitized options
+     * @param array $options Raw options from AI (array of objects with 'label' and 'value' keys)
+     * @return array Sanitized options as indexed array
      */
-    private function sanitize_field_options($options) {
-        if (!is_array($options)) {
+    private function sanitize_field_options( $options ) {
+        if ( ! is_array( $options ) ) {
             return [];
         }
 
         $sanitized = [];
-        foreach ($options as $key => $value) {
-            // Generate safe key from value if numeric key
-            if (is_numeric($key)) {
-                $safe_key = sanitize_key(strtolower(str_replace(' ', '_', $value)));
-            } else {
-                $safe_key = sanitize_key($key);
-            }
 
-            $sanitized[$safe_key] = sanitize_text_field($value);
+        foreach ( $options as $option ) {
+            // Handle array of objects with label/value structure (from generate_field_options)
+            if ( is_array( $option ) && isset( $option['label'] ) && isset( $option['value'] ) ) {
+                $sanitized[] = [
+                    'label' => sanitize_text_field( $option['label'] ),
+                    'value' => sanitize_key( $option['value'] ),
+                ];
+            } elseif ( is_string( $option ) ) {
+                // Handle simple string options
+                $sanitized[] = [
+                    'label' => sanitize_text_field( $option ),
+                    'value' => sanitize_key( strtolower( str_replace( ' ', '_', $option ) ) ),
+                ];
+            }
         }
 
         return $sanitized;

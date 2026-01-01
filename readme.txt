@@ -1,10 +1,10 @@
-=== Registration, User Profile, Membership, Content Restriction, User Directory, and Frontend Post Submission – WP User Frontend ===
+=== User Frontend: AI Powered Frontend Posting, User Directory, Profile, Membership & User Registration ===
 Contributors: wedevs, tareq1988, nizamuddinbabu
 Donate link: https://tareq.co/donate/
 Tags: frontend post, user directory, membership, user profile, user registration, content restriction, guest post, submit post, subscriptions, directory, login form, registration form, user profile, profile builder, forms
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 4.2.4
+Stable tag: 4.2.5
 Requires PHP: 5.6
 License: GPLv2
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -13,7 +13,7 @@ Create forms, guest posts, subscriptions, user directory, user registration, mem
 
 == Description ==
 
-Get AI-powered frontend post creation, user directory, membership, user profiles, user registration and content restriction to manage any WordPress site easily. WP User Frontend also includes frontend dashboard, frontend editor, subscriptions, publishing, post submissions, and uploader for WordPress users.
+Get AI-powered frontend post creation, user directory, membership, user profiles, user registration and content restriction to manage any WordPress site easily. User Frontend also includes frontend dashboard, frontend editor, subscriptions, publishing, post submissions, and uploader for WordPress users.
 
 <strong>#1 Frontend Post Submission, Membership, Profile Builder, & WordPress Editor Plugin</strong>
 
@@ -65,7 +65,7 @@ All of the forms get a unique shortcode which you can paste on any page and the 
 
 <strong>WordPress Guest Post Submission</strong>
 
-Enable guests to post from your site frontend without registering with WP User Frontend, the WordPress User Registration plugin. Choose to require name and email address to register automatically and allow them to comment on the posts. Allow email verification for guests.
+Enable guests to post from your site frontend without registering with User Frontend, the WordPress User Registration plugin. Choose to require name and email address to register automatically and allow them to comment on the posts. Allow email verification for guests.
 
 <strong>Role Based Access Control</strong>
 
@@ -77,7 +77,7 @@ Users can upload images, fill out forms, even enter data with multiple choice me
 
 <strong>Build Customized Forms with Custom Post Types</strong>
 
-Taking advantage of custom post types will allow you to work on any platform. WP User Frontend is WooCommerce supported, so you can also create products for your WooCommerce site using our forms.
+Taking advantage of custom post types will allow you to work on any platform. User Frontend is WooCommerce supported, so you can also create products for your WooCommerce site using our forms.
 
 <strong>Set Post Status, Post Message, Update Post Button text</strong>
 
@@ -127,7 +127,7 @@ Custom field data are viewable to visitors on frontend on single post pages. Adm
 
 [youtube https://www.youtube.com/watch?v=rzxdIN8ZMYc]
 
-= Checkout all WP User Frontend resources: =
+= Checkout all User Frontend resources: =
 
 * <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#unlimited-forms">Home page</a>
 * <a href="https://wedevs.com/docs/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#unlimited-forms">Documentation</a>
@@ -142,7 +142,7 @@ Try an <a href="https://wedevs.com/in/wpuf/demo/?utm_medium=referral&utm_source=
 * Persian translation by Abolfazl Esmailinejad
 * Turkish translation by mugurcagdas
 
-<strong>WP User Frontend PRO – Premium Features</strong>
+<strong>User Frontend PRO – Premium Features</strong>
 
 * **20+ Modules** [BuddyPress, Paid Memberships Pro, Social Login, User Directory, User Activity, Stripe, MailChimp, Private Messaging, HTML Email Templates & more]
 * **AI Registration Form Builder:** Describe the registration form you need and the AI builds it instantly with smart, relevant field suggestions.
@@ -217,12 +217,29 @@ You can always explore every update, fix and improvement in the **full changelog
 * [weDocs](https://wordpress.org/plugins/wedocs/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme): A simple documentation and knowledge base plugin for organizing and managing docs on your site.
 * [weMail](https://wordpress.org/plugins/wemail/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme): A WordPress email marketing tool for newsletters, opt in forms, and audience growth.
 * [wePOS](https://wordpress.org/plugins/wepos/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme): A fast WooCommerce point of sale solution for in store sales and real time inventory sync.
-* [WP Project Manager](https://wordpress.org/plugins/wedevs-project-manager/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme): Task management and team collaboration made easy with boards, milestones, and Gantt charts.
+* [Project Manager](https://wordpress.org/plugins/wedevs-project-manager/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme): Task management and team collaboration made easy with boards, milestones, and Gantt charts.
 * [Happy Addons for Elementor](https://wordpress.org/plugins/happy-elementor-addons/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme): Elementor enhancements with 500 plus templates, advanced widgets, Theme Builder, and Mega Menu.
-* [WP ERP](https://wordpress.org/plugins/erp/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme): HR, CRM, and Accounting in one place for managing people, finances, and business operations inside WordPress.
+* [ERP](https://wordpress.org/plugins/erp/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme): HR, CRM, and Accounting in one place for managing people, finances, and business operations inside WordPress.
+
+== External Services ==
+
+Project Manager uses the following third-party services to enhance project management features. All data shared with these services is necessary for the plugin functionality and handled securely.
+
+1. **OpenAI API** – Used to generate AI-assisted project plans, task lists, and suggestions. Task titles, descriptions, and deadlines may be sent for AI processing.
+   – **[Terms of Service](https://openai.com/terms) and [Privacy Policy](https://openai.com/privacy)**
+
+2. **Google Generative Language API** – Assists content generation for tasks and projects. Task titles, descriptions, and comments may be sent for AI suggestions.
+   – **[Terms of Service](https://cloud.google.com/terms) and [Privacy Policy](https://policies.google.com/privacy)**
+
+3. **Anthropic API** – Provides AI-assisted responses and task suggestions. Task details like titles, descriptions, and deadlines may be sent for AI processing.
+   – **[Terms of Service](https://cloud.anthropic.com/terms) and [Privacy Policy](https://anthropic.com/privacy)**
+
+= Terms and Conditions =
+– [weDevs Terms of Service](https://wedevs.com/terms-and-conditions/)
+– [weDevs Privacy Policy](https://wedevs.com/privacy-policy/)
 
 = Privacy Policy =
-WP User Frontend uses [Appsero](https://appsero.com) SDK to collect some telemetry data upon user's confirmation. This helps us to troubleshoot problems faster & make product improvements.
+User Frontend uses [Appsero](https://appsero.com) SDK to collect some telemetry data upon user's confirmation. This helps us to troubleshoot problems faster & make product improvements.
 
 Appsero SDK **does not gather any data by default.** The SDK only starts gathering basic telemetry data **when a user allows it via the admin notice**. We collect the data to ensure great user experience for all our users.
 
@@ -318,7 +335,7 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 = Where do I report security bugs found in this plugin? =
 
-Please report security bugs found in the source code of the WP User Frontend plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/8e79568c-ae3d-4e3e-9633-e478e8b0610e). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
+Please report security bugs found in the source code of the User Frontend plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/8e79568c-ae3d-4e3e-9633-e478e8b0610e). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
 
 =  =
 
@@ -342,10 +359,17 @@ Please report security bugs found in the source code of the WP User Frontend plu
 15. Create AI Powered Post Form
 
 == Changelog ==
+= v4.2.5 (01 January, 2026) =
+* Enhancement – Warning message for empty field options
+* Enhancement – Login and Registration help text
+* Fix – Add authorization checks for attachment deletion in form submission
+* Fix – Update security by WordPress plugin check
+* Fix – Radio and checkbox options going out for long list in form builder
+* Fix – Add italic, underline, and bold styling to Settings link in field validators
 
 = v4.2.4 (10 December, 2025) =
-* New - n8n integration for post form
-* Fix - Duplicate event on update for event calendar integration
+* New – n8n integration for post form
+* Fix – Duplicate event on update for event calendar integration
 
 = v4.2.3 (20 November, 2025) =
 * Enhancement – Add dynamic AI model fetching and improved error handling
@@ -396,7 +420,7 @@ Please report security bugs found in the source code of the WP User Frontend plu
 * Fix – Ensure Google Map fields display on frontend posts
 * Fix – Required field validation for 'Pay as you post' to prevent empty submission
 * Fix – Conditionally show 'Require email verification' only when 'Require Name and Email address' is checked
-* Fix – A typo From Expired Message <span aria-hidden="true" class="wp-exclude-emoji"><span aria-hidden="true" class="wp-exclude-emoji">→</span></span> Form Expired Message
+* Fix – A typo From Expired Message <span aria-hidden="true" class="wp-exclude-emoji"><span aria-hidden="true" class="wp-exclude-emoji"><span aria-hidden="true" class="wp-exclude-emoji">→</span></span></span> Form Expired Message
 * Fix – Post forms list table CSS
 
 = v4.1.7 (15 July, 2025) =

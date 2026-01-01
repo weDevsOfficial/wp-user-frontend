@@ -25,7 +25,10 @@
     </div>
 
     <div class="wpuf-mt-4">
-        <span class="wpuf-text-[14px] wpuf-text-gray-700 wpuf-font-medium"><?php esc_attr_e( 'Label & Values', 'wp-user-frontend' ); ?></span>
+        <div class="wpuf-flex wpuf-items-center wpuf-justify-between wpuf-mb-2">
+            <span class="wpuf-text-[14px] wpuf-text-gray-700 wpuf-font-medium"><?php esc_attr_e( 'Label & Values', 'wp-user-frontend' ); ?></span>
+            <?php do_action( 'wpuf_field_option_data_actions' ); ?>
+        </div>
         <table class="option-field-option-chooser">
             <tbody>
                 <tr
@@ -107,4 +110,5 @@
         @click.prevent="clear_selection">
         <?php esc_attr_e( 'Clear Selection', 'wp-user-frontend' ); ?>
     </a>
+    <?php do_action( 'wpuf_field_option_data_after' ); ?>
 </div>

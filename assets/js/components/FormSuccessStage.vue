@@ -2144,10 +2144,9 @@ What would you like me to help you with?`;
                 prompt: message,  // Send the user's message as-is
                 session_id: this.sessionId,
                 conversation_context: conversationContext,
-                form_type: config.formType || 'post', // Pass form type to API
+                form_type: config.formType || 'post',
                 provider: config.provider || 'google',
-                language: this.selectedLanguage || 'English' // Pass selected language to API
-                // Note: temperature and max_tokens are now handled by backend based on model configuration
+                language: this.selectedLanguage || 'English'
             };
 
             const response = await fetch(restUrl + endpoint, {

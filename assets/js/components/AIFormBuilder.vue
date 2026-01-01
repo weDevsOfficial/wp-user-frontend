@@ -123,9 +123,8 @@ export default {
                 const requestBody = {
                     prompt: prompt,
                     session_id: this.getSessionId(),
-                    form_type: config.formType || 'post', // Pass form type to API
+                    form_type: config.formType || 'post',
                     provider: config.provider || 'openai'
-                    // Note: temperature and max_tokens are now handled by backend based on model configuration
                 };
 
                 // Add integration parameter if selected

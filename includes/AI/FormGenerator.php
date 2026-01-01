@@ -606,11 +606,6 @@ class FormGenerator {
             'timeout' => 120
         ];
 
-        // Log request details for debugging
-        error_log('WPUF AI: Google AI Request - Model: ' . $this->current_model);
-        error_log('WPUF AI: Google AI Request - Max Tokens: ' . ($body['generationConfig'][$model_config['token_param']] ?? 'not set'));
-        error_log('WPUF AI: Google AI Request - Integration: ' . ($context['integration'] ?? 'none'));
-
         $response = wp_safe_remote_request($endpoint, $args);
 
         if (is_wp_error($response)) {
@@ -663,11 +658,6 @@ class FormGenerator {
         $ai_response = json_decode($json_content, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            // Log the actual response for debugging
-            error_log('WPUF AI: Invalid JSON from Google AI. Error: ' . json_last_error_msg());
-            error_log('WPUF AI: Raw content: ' . substr($content, 0, 500));
-            error_log('WPUF AI: Cleaned JSON: ' . substr($json_content, 0, 500));
-
             throw new \Exception('Unable to generate form. Please try again or rephrase your request.');
         }
 

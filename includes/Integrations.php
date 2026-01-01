@@ -23,11 +23,20 @@ class Integrations {
         'WCMp'                => 'WPUF_WCMp_Integration',
         'ACF'                 => 'WPUF_ACF_Compatibility',
         'Tribe__Events__Main' => 'Events_Calendar\Events_Calendar_Integration',
+        'N8N'                 => 'WPUF_N8N_Integration',
     ];
 
     public function __construct() {
         foreach ( $this->integrations as $external_class => $integration_class ) {
-            if ( class_exists( $external_class ) ) {
+            // Special case for N8N - always load since it's a service integration
+            if ( $external_class === 'N8N' ) {
+                $full_class_name = __NAMESPACE__ . '\\Integrations\\' . $integration_class;
+                try {
+                    $this->container[ strtolower( $external_class ) ] = new $full_class_name();
+                } catch ( \Exception $e ) {
+                    \WP_User_Frontend::log( 'integration', print_r( $external_class . ' integration failed', true ) );
+                }
+            } elseif ( class_exists( $external_class ) ) {
                 $full_class_name = __NAMESPACE__ . '\\Integrations\\' . $integration_class;
                 try {
                     $this->container[ strtolower( $external_class ) ] = new $full_class_name();

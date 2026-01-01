@@ -251,7 +251,7 @@ class Render_Form {
 
         do_action( 'wpuf_before_form_render', $form_id );
 
-        if ( !empty( $layout ) ) {
+        if ( ! empty( $layout ) && 'on' !== $theme_css ) {
             wp_enqueue_style( 'wpuf-' . $layout );
         }
 
@@ -866,7 +866,7 @@ class Render_Form {
             <script type="text/javascript">
                 ;(function($) {
                     $(document).ready( function(){
-                        $('li.tags input[name=tags]').suggest( wpuf_frontend.ajaxurl + '<?php echo $query_string; ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
+                        $('li.tags input[name=tags]').suggest( wpuf_frontend.ajaxurl + '<?php echo esc_js( $query_string ); ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
                     });
                 })(jQuery);
             </script>
@@ -1334,12 +1334,12 @@ class Render_Form {
         if ( $form_field['input_type'] !== 'taxonomy' ) {
             return false;
         }
-        
+
         // If pro is active, no fields are gated
         if ( wpuf_is_pro_active() ) {
             return false;
         }
-        
+
         // Check if this is a custom taxonomy
         $builtin_taxonomies = apply_filters( 'wpuf_builtin_taxonomies_free', array( 'category', 'post_tag' ) );
         return ! in_array( $form_field['name'], $builtin_taxonomies, true );
@@ -1498,7 +1498,7 @@ class Render_Form {
                         <script type="text/javascript">
                             ;(function($) {
                                 $(document).ready( function(){
-                                    $('#<?php echo esc_attr( $attr['name'] ); ?>').suggest( wpuf_frontend.ajaxurl + '<?php echo $query_string; ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
+                                    $('#<?php echo esc_attr( $attr['name'] ); ?>').suggest( wpuf_frontend.ajaxurl + '<?php echo esc_js( $query_string ); ?>', { delay: 500, minchars: 2, multiple: true, multipleSep: ', ' } );
                                 });
                             })(jQuery);
                         </script>
@@ -1651,32 +1651,41 @@ class Render_Form {
             $enable_no_captcha          = $attr['recaptcha_type'] == 'enable_no_captcha' ? true : false;
         }
 
-        if ( $enable_invisible_recaptcha ) { ?>
-            <script src="https://www.google.com/recaptcha/api.js?onload=wpufreCaptchaLoaded&render=explicit&hl=en" async defer></script>
-            <script>
-                jQuery(document).ready(function($) {
-                    jQuery('[name="submit"]').removeClass('wpuf-submit-button').addClass('g-recaptcha').attr('data-sitekey', '<?php echo esc_html( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ) ); ?>');
+        if ( $enable_invisible_recaptcha ) {
+            wp_enqueue_script( 'wpuf-recaptcha-invisible', 'https://www.google.com/recaptcha/api.js?onload=wpufreCaptchaLoaded&render=explicit&hl=en', array(), null, true );
+
+            $inline_script = sprintf(
+                "jQuery(document).ready(function($) {
+                    jQuery('[name=\"submit\"]').removeClass('wpuf-submit-button').addClass('g-recaptcha').attr('data-sitekey', '%s');
 
                     $(document).on('click','.g-recaptcha', function(e){
                         e.preventDefault();
                         e.stopPropagation();
-                        grecaptcha.execute();
+                        if (typeof grecaptcha !== 'undefined') {
+                            grecaptcha.execute();
+                        }
                     })
                 });
 
                 var wpufreCaptchaLoaded = function() {
-                    grecaptcha.render('recaptcha', {
-                        'size' : 'invisible',
-                        'callback' : wpufRecaptchaCallback
-                    });
-                    grecaptcha.execute();
+                    if (typeof grecaptcha !== 'undefined') {
+                        grecaptcha.render('recaptcha', {
+                            'size' : 'invisible',
+                            'callback' : wpufRecaptchaCallback
+                        });
+                        grecaptcha.execute();
+                    }
                 };
 
                 function wpufRecaptchaCallback(token) {
-                    jQuery('[name="g-recaptcha-response"]').val(token);
-                    jQuery('[name="submit"]').removeClass('g-recaptcha').addClass('wpuf-submit-button');
-                }
-            </script>
+                    jQuery('[name=\"g-recaptcha-response\"]').val(token);
+                    jQuery('[name=\"submit\"]').removeClass('g-recaptcha').addClass('wpuf-submit-button');
+                }",
+                esc_js( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ) )
+            );
+
+            wp_add_inline_script( 'wpuf-recaptcha-invisible', $inline_script, 'after' );
+            ?>
 
             <div type="submit" id='recaptcha' class="g-recaptcha" data-sitekey=<?php echo esc_attr( wpuf_get_option( 'recaptcha_public', 'wpuf_general' ) ); ?> data-callback="onSubmit" data-size="invisible"></div>
         <?php } else { ?>

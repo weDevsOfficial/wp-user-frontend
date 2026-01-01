@@ -154,7 +154,7 @@ class TEC_V6_Compatibility {
                 $start_date = $this->format_date_for_tec( $all_data['_EventStartDate'] );
                 if ( $start_date ) {
                     // Set end date to same day at 23:59:59
-                    $end_date             = date( 'Y-m-d 23:59:59', strtotime( $start_date ) );
+                    $end_date             = gmdate( 'Y-m-d 23:59:59', strtotime( $start_date ) );
                     $orm_args['end_date'] = $end_date;
                 }
             }
@@ -463,7 +463,12 @@ class TEC_V6_Compatibility {
         if ( empty( $args ) || ! is_array( $args ) ) {
             return 0;
         }
-        // Remove ID if present (should not be set for new posts)
+
+        // Check if this is an update operation
+        $post_id = isset( $postarr['ID'] ) ? intval( $postarr['ID'] ) : 0;
+        $is_update = $post_id > 0;
+
+        // Remove ID from args as TEC ORM handles it differently
         if ( isset( $args['ID'] ) ) {
             unset( $args['ID'] );
         }
@@ -488,24 +493,32 @@ class TEC_V6_Compatibility {
         // Call the TEC ORM API
         try {
             if ( function_exists( 'tribe_events' ) ) {
-                $event = tribe_events()->set_args( $args )->create();
-                if ( $event instanceof \WP_Post ) {
+                // Update existing event or create new one
+                if ( $is_update ) {
+                    $event = tribe_events()->where( 'id', $post_id )->set_args( $args )->save();
+                    $event_id = $event ? $post_id : 0;
+                } else {
+                    $event = tribe_events()->set_args( $args )->create();
+                    $event_id = ( $event instanceof \WP_Post ) ? $event->ID : 0;
+                }
+
+                if ( $event_id ) {
                     $post_status = ! empty( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'draft';
                     wp_update_post(
                         [
-                            'ID'          => $event->ID,
+                            'ID'          => $event_id,
                             'post_status' => $post_status,
                         ]
                     );
 
                     // Add tags if they exist - use wp_set_post_tags for better reliability
                     if ( ! empty( $args['tags_input'] ) ) {
-                        wp_set_post_tags( $event->ID, $args['tags_input'], false );
+                        wp_set_post_tags( $event_id, $args['tags_input'], false );
                     }
 
                     // Add event categories if they exist
                     if ( ! empty( $args['categories'] ) ) {
-                        wp_set_post_terms( $event->ID, $args['categories'], 'tribe_events_cat', false );
+                        wp_set_post_terms( $event_id, $args['categories'], 'tribe_events_cat', false );
                     }
 
                     /**
@@ -524,9 +537,9 @@ class TEC_V6_Compatibility {
                      * @param int   $form_id      The WPUF form ID
                      * @param array $form_settings The WPUF form settings
                      */
-                    do_action( 'wpuf_tec_after_create_event', $event->ID, $args, $postarr, $meta_vars, $form_id, $form_settings );
+                    do_action( 'wpuf_tec_after_create_event', $event_id, $args, $postarr, $meta_vars, $form_id, $form_settings );
 
-                    return $event->ID;
+                    return $event_id;
                 } else {
                     return 0;
                 }
@@ -587,7 +600,7 @@ class TEC_V6_Compatibility {
             // Fallback to WordPress date parsing
             $timestamp = strtotime( $date_string );
             if ( $timestamp !== false ) {
-                $formatted = date( 'Y-m-d H:i:s', $timestamp );
+                $formatted = gmdate( 'Y-m-d H:i:s', $timestamp );
 
                 return $formatted;
             }

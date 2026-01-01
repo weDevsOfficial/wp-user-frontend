@@ -1,25 +1,41 @@
-# Registration, User Profile, Membership, Content Restriction, User Directory, and Frontend Post Submission – WP User Frontend #
-**Contributors:** [tareq1988](https://profiles.wordpress.org/tareq1988), [nizamuddinbabu](https://profiles.wordpress.org/nizamuddinbabu), [wedevs](https://profiles.wordpress.org/wedevs)  
+# User Frontend: AI Powered Frontend Posting, User Directory, Profile, Membership & User Registration #
+**Contributors:** [wedevs](https://profiles.wordpress.org/wedevs), [tareq1988](https://profiles.wordpress.org/tareq1988), [nizamuddinbabu](https://profiles.wordpress.org/nizamuddinbabu)  
 **Donate link:** https://tareq.co/donate/  
-**Tags:** frontend post, forms, user directory, profile builder, membership  
-**Requires at least:** 4.0  
-**Tested up to:** 6.8.3  
-**Stable tag:** 4.2.3  
+**Tags:** frontend post, user directory, membership, user profile, user registration, content restriction, guest post, submit post, subscriptions, directory, login form, registration form, user profile, profile builder, forms  
+**Requires at least:** 5.0  
+**Tested up to:** 6.9  
+**Stable tag:** 4.2.5  
 **Requires PHP:** 5.6  
 **License:** GPLv2  
 **License URL:** https://www.gnu.org/licenses/gpl-2.0.html  
 
-Frontend post, content restriction, user login & registration, subscription & membership, forms, user directory & profile builder for your website.
+Create forms, guest posts, subscriptions, user directory, user registration, membership, frontend posts, profile builder, content restriction rules.
 
 ## Description ##
 
-WP User Frontend makes the frontend better for you! It includes frontend dashboard, frontend editor, publishing, and uploader for WordPress user profile, post submissions, and memberships.
+Get AI-powered frontend post creation, user directory, membership, user profiles, user registration and content restriction to manage any WordPress site easily. User Frontend also includes frontend dashboard, frontend editor, subscriptions, publishing, post submissions, and uploader for WordPress users.
 
 <strong>#1 Frontend Post Submission, Membership, Profile Builder, & WordPress Editor Plugin</strong>
 
 <strong>FREE FEATURES</strong>
 
-<strong>Unlimited post-type form creation</strong>
+<strong>AI Post Form Builder</strong>
+
+Describe the type of form you want, and the AI generates a complete post submission form with smart fields, labels, and structure, saving you time and setup effort.
+
+<strong>n8n Integration to Automate Post Form Data</strong>
+
+Send every post submission straight to n8n in real time. Use the captured data instantly to trigger actions, run workflows, and sync information across your tools without any manual steps.
+
+<strong>One Time Payments</strong>
+
+Offer simple one-off payment options so users can pay once for posting or upgrades, remove recurring fees, and complete purchases with more confidence.
+
+<strong>Post Form Templates</strong>
+
+Pick from ready-made form templates for jobs, products, events, listings and more, letting you launch fully designed post forms in minutes.
+
+<strong>Unlimited Post-Type Form Creation</strong>
 
 The forms let users create new posts and edit their profile from the site frontend, with no need to access admin panel or backend.
 
@@ -49,7 +65,7 @@ All of the forms get a unique shortcode which you can paste on any page and the 
 
 <strong>WordPress Guest Post Submission</strong>
 
-Enable guests to post from your site frontend without registering with WP User Frontend, the WordPress User Registration plugin. Choose to require name and email address to register automatically and allow them to comment on the posts. Allow email verification for guests.
+Enable guests to post from your site frontend without registering with User Frontend, the WordPress User Registration plugin. Choose to require name and email address to register automatically and allow them to comment on the posts. Allow email verification for guests.
 
 <strong>Role Based Access Control</strong>
 
@@ -61,7 +77,7 @@ Users can upload images, fill out forms, even enter data with multiple choice me
 
 <strong>Build Customized Forms with Custom Post Types</strong>
 
-Taking advantage of custom post types will allow you to work on any platform. WP User Frontend is WooCommerce supported, so you can also create products for your WooCommerce site using our forms.
+Taking advantage of custom post types will allow you to work on any platform. User Frontend is WooCommerce supported, so you can also create products for your WooCommerce site using our forms.
 
 <strong>Set Post Status, Post Message, Update Post Button text</strong>
 
@@ -97,33 +113,21 @@ Approve or keep membership requests pending – you’re in complete control. Vi
 
 <strong>Manage and Import/Export Forms Easily</strong>
 
-Install required WPUF pages in a click, delete post forms, registration forms, or subscriptions in one go. Import forms from other places and export forms as JSON.
+Install required WPUF pages in a click, delete post forms, user registration forms, or subscriptions in one go. Import forms from other places and export forms as JSON.
 
 <strong>Custom Login & Registration Form</strong>
 
-This WordPress Registration Form Plugin also allows you to build registration forms using default templates. More fields can be added with PRO.
+This WordPress Registration Form Plugin also allows you to build user registration forms using default templates. More fields can be added with PRO.
 
 <strong>Display Custom Fields Data in Post</strong>
 
 Custom field data are viewable to visitors on frontend on single post pages. Admins can also disable this if they don’t want to display custom fields to everyone.
 
-<strong>AI Powered Form Creation</strong>
-
-WPUF is introducing a brand-new AI Form Builder that helps you create complete forms with a single prompt. Just tell the AI what kind of form you need: a post submission form, job application, product submission form, survey, anything, and it instantly generates a ready-to-use form with suggested fields, labels, and structure in any language.
-
-What the AI Form Builder can do:
-
-* Create full forms based on natural language prompts
-* Suggest the most relevant fields automatically
-* Apply proper formatting, field types, and placeholders
-* Save time for busy site owners, agencies, and marketplace admins
-* Reduce setup errors and repetitive manual work
-
 ### How to download and install WPUF FREE ###
 
 [youtube https://www.youtube.com/watch?v=rzxdIN8ZMYc]
 
-### Checkout all WP User Frontend resources: ###
+### Checkout all User Frontend resources: ###
 
 * <a href="https://wedevs.com/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#unlimited-forms">Home page</a>
 * <a href="https://wedevs.com/docs/wp-user-frontend-pro/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme&utm_content=WP+User+Frontend+Pro#unlimited-forms">Documentation</a>
@@ -138,9 +142,20 @@ Try an <a href="https://wedevs.com/in/wpuf/demo/?utm_medium=referral&utm_source=
 * Persian translation by Abolfazl Esmailinejad
 * Turkish translation by mugurcagdas
 
-<strong>WP User Frontend PRO – Premium Features</strong>
+<strong>User Frontend PRO – Premium Features</strong>
 
 * **20+ Modules** [BuddyPress, Paid Memberships Pro, Social Login, User Directory, User Activity, Stripe, MailChimp, Private Messaging, HTML Email Templates & more]
+* **AI Registration Form Builder:** Describe the registration form you need and the AI builds it instantly with smart, relevant field suggestions.
+* **20+ Pro/Advanced Form Templates:** Start quickly with templates for vendors, memberships, directories, events and more, all ready to customize.
+* **Flexible Pricing Fields:** Add pricing inputs that support fees, add-ons and dynamic amounts right inside your forms.
+* **Social Fields:** Let users add their social profile links to their frontend profile with clean, easy-to-use field options.
+* **Social Login (Facebook, X, LinkedIn):** Allow users to log in with their preferred social accounts and skip long registration steps.
+* **Subscription View/Post Control:** Control who can post or view content based on the subscription pack they currently have.
+* **Repeat Fields:** Let users add repeating field groups for links, skills, gallery items or any repeatable inputs.
+* **User Directory:** Show all users in a searchable, filterable and fully customizable frontend directory.
+* **Gutenberg Blocks for User Directory & Profile:** Insert user listings, single profiles or compact profile blocks directly in Gutenberg.
+* **SEO Module:** Add clean metadata to user-submitted posts so search engines understand and rank their content better.
+* **Social Login (GitHub):** Let developers and tech-savvy users log in quickly using their GitHub account.
 * **Content restriction:** Restrict or lock your exclusive content or pages or just a specific part of a content, based on registration, user roles, or subscriptions.
 * **Menu restriction:** Lock or hide your website's menu links for certain users based on user roles, registration, or subscriptions.
 * **Post expiration facility:** Automatically take down published posts on your sites after a given time based on subscription packs or specific forms.
@@ -165,11 +180,12 @@ Try an <a href="https://wedevs.com/in/wpuf/demo/?utm_medium=referral&utm_source=
 * **Avatar upload:** Let users upload profile pictures. It supports Gravatar and locally uploaded avatars work side by side.
 * **Frontend Customizer:** Allows admins to customize colors and labels for some important frontend elements and features of WPUF.
 * **More email notification options:** Configure email notifications for the important events.
-* **Tax in payments:** Apply custom country and state-wise tax rates to: Pay Per Post Forms and
-Subscription Packs.
+* **Tax in payments:** Apply custom country and state-wise tax rates to: Pay Per Post Forms and Subscription Packs.
 
-<strong>Premium Modules</strong>
+### Premium Modules ###
 
+* [User Directory](https://wedevs.com/wp-user-frontend-pro/modules/user-directory/)
+* [Social Login & Registration](https://wedevs.com/wp-user-frontend-pro/modules/social-login/)
 * [BuddyPress Profile](https://wedevs.com/wp-user-frontend-pro/modules/buddypress/)
 * [Campaign Monitor](https://wedevs.com/wp-user-frontend-pro/modules/campaign-monitor/)
 * [Comments Manager](https://wedevs.com/wp-user-frontend-pro/modules/comments-manager/)
@@ -184,35 +200,46 @@ Subscription Packs.
 * [QR Code Generator](https://wedevs.com/wp-user-frontend-pro/modules/qr-code-generator/)
 * [Reports](https://wedevs.com/wp-user-frontend-pro/modules/reports/)
 * [SMS Notification](https://wedevs.com/wp-user-frontend-pro/modules/sms-notification/)
-* [Social Login & Registration](https://wedevs.com/wp-user-frontend-pro/modules/social-login/)
 * [Stripe Payment](https://wedevs.com/products/plugins/wp-user-frontend-pro/stripe-gateway/)
 * [User Analytics](https://wedevs.com/wp-user-frontend-pro/modules/user-analytics/)
-* [User Directory](https://wedevs.com/wp-user-frontend-pro/modules/user-directory/)
 * [User Activity](https://wedevs.com/wp-user-frontend-pro/modules/user-activity/)
 * [Zapier](https://wedevs.com/wp-user-frontend-pro/modules/zapier/)
 
 Check out the <a href="https://wedevs.com/wp-user-frontend-pro/pricing/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme">full feature list and pricing plans </a> of the Pro version.
 
+You can always explore every update, fix and improvement in the **full changelog** here: [https://headwayapp.co/wp-user-frontend-changelog](https://headwayapp.co/wp-user-frontend-changelog)
+
+
+
 ### Checkout Our Other Products ###
 
-* [Dokan:](https://wordpress.org/plugins/dokan-lite/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) The pioneer WooCommerce multivendor marketplace solution for WordPress. Start your own multi vendor marketplace like Amazon, eBay, Etsy - in minutes!
+* [Dokan](https://wordpress.org/plugins/dokan-lite/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme): The multivendor marketplace solution for WordPress that lets you build a store like Amazon or Etsy in minutes.
+* [weDocs](https://wordpress.org/plugins/wedocs/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme): A simple documentation and knowledge base plugin for organizing and managing docs on your site.
+* [weMail](https://wordpress.org/plugins/wemail/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme): A WordPress email marketing tool for newsletters, opt in forms, and audience growth.
+* [wePOS](https://wordpress.org/plugins/wepos/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme): A fast WooCommerce point of sale solution for in store sales and real time inventory sync.
+* [Project Manager](https://wordpress.org/plugins/wedevs-project-manager/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme): Task management and team collaboration made easy with boards, milestones, and Gantt charts.
+* [Happy Addons for Elementor](https://wordpress.org/plugins/happy-elementor-addons/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme): Elementor enhancements with 500 plus templates, advanced widgets, Theme Builder, and Mega Menu.
+* [ERP](https://wordpress.org/plugins/erp/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme): HR, CRM, and Accounting in one place for managing people, finances, and business operations inside WordPress.
 
-* [Texty:](https://wordpress.org/plugins/texty/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) A lightweight SMS Notification plugin for WordPress, WooCommerce, Dokan, and more. Get instant notification with gateways like Twilio, Vonage – Formerly Nexmo, etc.
+## External Services ##
 
-* [weDocs:](https://wordpress.org/plugins/wedocs/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) The best WordPress documentation and knowledge base plugin for managing your self-hosted knowledge base, wiki, and docs.
+Project Manager uses the following third-party services to enhance project management features. All data shared with these services is necessary for the plugin functionality and handled securely.
 
-* [weMail:](https://wordpress.org/plugins/wemail/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) A simplified WordPress solution for email marketing, newsletter, opt-in form, subscription form, and more!
+1. **OpenAI API** – Used to generate AI-assisted project plans, task lists, and suggestions. Task titles, descriptions, and deadlines may be sent for AI processing.
+   – **[Terms of Service](https://openai.com/terms) and [Privacy Policy](https://openai.com/privacy)**
 
-* [wePOS:](https://wordpress.org/plugins/wepos/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) WooCommerce point of sale solution for WordPress by weDevs.
+2. **Google Generative Language API** – Assists content generation for tasks and projects. Task titles, descriptions, and comments may be sent for AI suggestions.
+   – **[Terms of Service](https://cloud.google.com/terms) and [Privacy Policy](https://policies.google.com/privacy)**
 
-* [WP Project Manager:](https://wordpress.org/plugins/wedevs-project-manager/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) A project management plugin by weDevs making task scheduling, project management, and team collaboration simpler than ever featuring a Kanban board and Gantt charts.
+3. **Anthropic API** – Provides AI-assisted responses and task suggestions. Task details like titles, descriptions, and deadlines may be sent for AI processing.
+   – **[Terms of Service](https://cloud.anthropic.com/terms) and [Privacy Policy](https://anthropic.com/privacy)**
 
-* [Happy Addons for Elementor:](https://wordpress.org/plugins/happy-elementor-addons/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) An Elementor Addon solution that comes with Header Footer Builder, 500+ templates, 143+ free & essential pro elementor widget like – Theme Builder, Mega Menu, and more!
-
-* [WP ERP:](https://wordpress.org/plugins/erp/?utm_medium=referral&utm_source=wporg&utm_campaign=WPUF+Readme) An ERP with complete HR, Recruitment, and Job Listings for Business Managers with WooCommerce CRM and accounting solutions by weDevs.
+### Terms and Conditions ###
+– [weDevs Terms of Service](https://wedevs.com/terms-and-conditions/)
+– [weDevs Privacy Policy](https://wedevs.com/privacy-policy/)
 
 ### Privacy Policy ###
-WP User Frontend uses [Appsero](https://appsero.com) SDK to collect some telemetry data upon user's confirmation. This helps us to troubleshoot problems faster & make product improvements.
+User Frontend uses [Appsero](https://appsero.com) SDK to collect some telemetry data upon user's confirmation. This helps us to troubleshoot problems faster & make product improvements.
 
 Appsero SDK **does not gather any data by default.** The SDK only starts gathering basic telemetry data **when a user allows it via the admin notice**. We collect the data to ensure great user experience for all our users.
 
@@ -239,6 +266,46 @@ After having installed the plugin:
 [youtube https://www.youtube.com/watch?v=rzxdIN8ZMYc]
 
 ## Frequently Asked Questions ##
+
+### What is the AI Form Builder and who gets it? ###
+
+The AI Form Builder lets you describe a form and generates it instantly with a live preview. It’s available **free for Post Forms** and in **Personal+ for Registration Forms**. Advanced fields like custom, pricing, and social fields require any paid plan.
+
+### Can I charge users directly from forms? ###
+
+Yes. You can use pricing fields (single price, radio, checkbox, multi-select, cart total) and PayPal REST or Stripe with full REST API and webhook support. Available in all paid plans.
+
+### Which plan do I need for a multisite or subdirectory install? ###
+
+WPUF supports subdirectory installs. Choose any paid plan for multisite-level integrations and priority support.
+
+### Does WPUF support recurring subscriptions and trials? ###
+
+Yes. You can offer recurring subscriptions, trials, next billing dates and stop-billing-cycle controls.
+
+### Do invoices attach as PDFs? ###
+
+Yes. PDF invoice attachments and a rich text invoice editor are available in the Professional+ plan.
+
+### Can I create searchable user directories and control SEO? ###
+
+Yes. Professional includes a setup wizard, 11+ Gutenberg blocks, unlimited directories, profile layouts and SEO controls for profile pages.
+
+### Which social logins and social fields are supported? ###
+
+LinkedIn, X and Facebook are available from the Personal plan. GitHub login is available on Professional & Business tiers.
+
+### Does WPUF work with my marketing stack? ###
+
+Yes. Mailchimp, GetResponse and ConvertKit integrations are supported, with conditional logic. Zapier and webhook automation are available in Professional/Business.
+
+### How does WPUF prevent spam and abuse? ###
+
+WPUF supports Cloudflare Turnstile, reCaptcha, Math Captcha and multiple anti-bot features. Security issues are patched quickly and documented in the changelog.
+
+### I lost access to Pro features after license expiry — what happens? ###
+
+When the license expires, Pro features lock. Your data stays safe, and you can renew anytime to restore features and updates.
 
 ### Can I create new posts from frontend? ###
 
@@ -268,11 +335,9 @@ redirected to the edit page with that post id. Then you'll see the edit post for
 
 ### Where do I report security bugs found in this plugin? ###
 
-Please report security bugs found in the source code of the WP User Frontend plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/8e79568c-ae3d-4e3e-9633-e478e8b0610e). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
+Please report security bugs found in the source code of the User Frontend plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/8e79568c-ae3d-4e3e-9633-e478e8b0610e). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
 
 ###  ###
-
-
 
 
 ## Screenshots ##
@@ -291,738 +356,229 @@ Please report security bugs found in the source code of the WP User Frontend plu
 12. Control and configure everything from Powerful User Frontend Settings
 13. Login, Restriction, Frontend Security
 14. Customize your Forms in Gutenberg Editor
+15. Create AI Powered Post Form
 
 ## Changelog ##
+### v4.2.5 (01 January, 2026) ###
+* Enhancement – Warning message for empty field options
+* Enhancement – Login and Registration help text
+* Fix – Add authorization checks for attachment deletion in form submission
+* Fix – Update security by WordPress plugin check
+* Fix – Radio and checkbox options going out for long list in form builder
+* Fix – Add italic, underline, and bold styling to Settings link in field validators
+
+### v4.2.4 (10 December, 2025) ###
+* New – n8n integration for post form
+* Fix – Duplicate event on update for event calendar integration
+
 ### v4.2.3 (20 November, 2025) ###
 * Enhancement – Add dynamic AI model fetching and improved error handling
+* Enhancement – System prompt update for better output for AI form builder
 * Enhancement – Change pricing field logo
 * Enhancement – Styling, CSS > replaced all old pro icon with new icon
 
 ### v4.2.2 (04 November, 2025) ###
-* Fix - Show/Hide field based on subscription plan
-* Fix - Frontend subscription page CSS fixes
+* Fix – Show/Hide field based on subscription plan
+* Fix – Frontend subscription page CSS fixes
 
 ### v4.2.1 (30 October, 2025) ###
-* New - AI Powered Post Form Creation
+* New – AI Powered Post Form Creation
 
 ### v4.1.15 (22 October, 2025) ###
-* Fix - Unwanted text appearing in 'View' and 'Preview' links
+* Fix – Unwanted text appearing in 'View' and 'Preview' links
 
 ### v4.1.14 (21 October, 2025) ###
-* New - Dynamic Field Icons for improved visual customization
-* New - Taxonomy View Restriction settings to control visibility by taxonomy
+* New – Dynamic Field Icons for improved visual customization
+* New – Taxonomy View Restriction settings to control visibility by taxonomy
 * Enhancement – Added Upgrade and Discount links on the plugin page for easier access
 * Enhancement – Pricing Fields PRO preview section added to the Form Builder
 * Enhancement – Renamed "Published" tab to "Saved" on Form List pages for better clarity
 
 ### v4.1.13 (07 October, 2025) ###
-* Enhancement - Security and Capabilities check
+* Enhancement – Security and Capabilities check
 
 ### v4.1.12 (24 September, 2025) ###
-* New - Video Content Submission post form template
+* New – Video Content Submission post form template
 
 ### v4.1.11 (10 September, 2025) ###
-* Fix - CSS scope conflict
+* Fix – CSS scope conflict
 
 ### v4.1.10 (01 September, 2025) ###
-* New - Allow webp image format in file upload fields
-* Enhancement - Cleanup post form settings by removing form template option
-* Fix - Prevent same name file conflicts upload
+* New – Allow webp image format in file upload fields
+* Enhancement – Cleanup post form settings by removing form template option
+* Fix – Prevent same name file conflicts upload
 
 ### v4.1.9 (12 August, 2025) ###
-* Fix - The Events Calendar integration
+* Fix – The Events Calendar integration
 
 ### v4.1.8 (04 August, 2025) ###
-* New - Template filtering search in post form
-* Fix - Invoice and email not sent for payment gateways
-* Fix - Product tag suggestion for WooCommerce
-* Fix - Guest Post Email Verification Issue
-* Fix - Namespaced global JS to prevent conflicts with other plugins
-* Fix - Ensure Google Map fields display on frontend posts
-* Fix - Required field validation for 'Pay as you post' to prevent empty submission
-* Fix - Conditionally show 'Require email verification' only when 'Require Name and Email address' is checked
-* Fix - A typo From Expired Message → Form Expired Message
-* Fix - Post forms list table CSS
+* New – Template filtering search in post form
+* Fix – Invoice and email not sent for payment gateways
+* Fix – Product tag suggestion for WooCommerce
+* Fix – Guest Post Email Verification Issue
+* Fix – Namespaced global JS to prevent conflicts with other plugins
+* Fix – Ensure Google Map fields display on frontend posts
+* Fix – Required field validation for 'Pay as you post' to prevent empty submission
+* Fix – Conditionally show 'Require email verification' only when 'Require Name and Email address' is checked
+* Fix – A typo From Expired Message <span aria-hidden="true" class="wp-exclude-emoji"><span aria-hidden="true" class="wp-exclude-emoji"><span aria-hidden="true" class="wp-exclude-emoji">→</span></span></span> Form Expired Message
+* Fix – Post forms list table CSS
 
 ### v4.1.7 (15 July, 2025) ###
-* New - Add Sort Order for subscription
-* Enhancement - Update country list and improve state handling
-* Fix - Conflict with email log plugin
-* Fix - Disable "Update Post Notification" pro features preview
-* Fix - CSS on long form lists
+* New – Add Sort Order for subscription
+* Enhancement – Update country list and improve state handling
+* Fix – Conflict with email log plugin
+* Fix – Disable "Update Post Notification" pro features preview
+* Fix – CSS on long form lists
 
 ### v4.1.6 (30 June, 2025) ###
-* Enhancement - form title, description toggle added for post form
-* Enhancement - separate translation context for date range "To"
-* Fix - PayPal redirection issues
-* Fix - Allowed memory size error on the Post Forms List Page
-* Fix - Improved registration page redirects to prevent interference with XML sitemap and XML file requests
-* Fix - Dynamic url for {login} and {register} in un-authorized message
+* Enhancement – form title, description toggle added for post form
+* Enhancement – separate translation context for date range "To"
+* Fix – PayPal redirection issues
+* Fix – Allowed memory size error on the Post Forms List Page
+* Fix – Improved registration page redirects to prevent interference with XML sitemap and XML file requests
+* Fix – Dynamic url for {login} and {register} in un-authorized message
 
 ### v4.1.5 (2 June, 2025) ###
-* Enhancement - Added support for unlimited subscriptions.
-* Enhancement - Added trial period & next billing dates in subscription.
-* Enhancement - Added “Show More” button for subscriptions with many post types.
-* Enhancement - Support for PayPal REST API for payments.
-* Enhancement - Real-time PayPal Webhook support for payment events.
-* Enhancement - Added REST API credentials & test mode to Payment settings.
-* Fix - Forms list not loading issue fixed.
-* Fix - Fixed issues with null gateways causing errors.
-* Fix - Improved handling of duplicate PayPal transactions.
-* Fix - Fixed several subscription-related bugs.
-* Fix - Fixed tag auto-suggestions not appearing in post forms.
+* Enhancement – Added support for unlimited subscriptions.
+* Enhancement – Added trial period & next billing dates in subscription.
+* Enhancement – Added “Show More” button for subscriptions with many post types.
+* Enhancement – Support for PayPal REST API for payments.
+* Enhancement – Real-time PayPal Webhook support for payment events.
+* Enhancement – Added REST API credentials & test mode to Payment settings.
+* Fix – Forms list not loading issue fixed.
+* Fix – Fixed issues with null gateways causing errors.
+* Fix – Improved handling of duplicate PayPal transactions.
+* Fix – Fixed several subscription-related bugs.
+* Fix – Fixed tag auto-suggestions not appearing in post forms.
 
 ### v4.1.4 (12 May, 2025) ###
-* Enhance - Post form list page UI and UX
-* Fix - Coupon functionality
-* Fix - Post submission when name email not required
-* Fix - Styling on multiple pages
+* Enhance – Post form list page UI and UX
+* Fix – Coupon functionality
+* Fix – Post submission when name email not required
+* Fix – Styling on multiple pages
 
 ### v4.1.3 (23 April, 2025) ###
-* Fix - Draft button does not appear
-* Fix - Post submission when name email not required
-* Fix - Subscription number not showing
-* Fix - Image upload button condition
-* Fix - Email body not respecting spaces
-* Fix - Show recurring and trial info on subscription
-* Fix - Minor css and styling
+* Fix – Draft button does not appear
+* Fix – Post submission when name email not required
+* Fix – Subscription number not showing
+* Fix – Image upload button condition
+* Fix – Email body not respecting spaces
+* Fix – Show recurring and trial info on subscription
+* Fix – Minor css and styling
 
 ### v4.1.2 (16 April, 2025) ###
-* Fix - Help page of profile editing has duplicated text
-* Fix - Warning message not showing when guest post submitted with duplicate email, username
+* Fix – Help page of profile editing has duplicated text
+* Fix – Warning message not showing when guest post submitted with duplicate email, username
 
 ### v4.1.1 (27 March, 2025) ###
-* Fix - Resolved validation issue with error (!) after form submission.
-* Fix - Improve template selection UX to uncheck a selected post form template.
+* Fix – Resolved validation issue with error (!) after form submission.
+* Fix – Improve template selection UX to uncheck a selected post form template.
 
 ### v4.1.0 (20 March, 2025) ###
-* Enhance - Redesigned Post Form Builder UI/UX
-* Enhance - Reorganized Forms Settings for better structure
-* Enhance - Added a search bar for quick field filtering
-* Enhance - Added new field & feature request submission area
-* Enhance - Improved field grouping & customization
+* Enhance – Redesigned Post Form Builder UI/UX
+* Enhance – Reorganized Forms Settings for better structure
+* Enhance – Added a search bar for quick field filtering
+* Enhance – Added new field & feature request submission area
+* Enhance – Improved field grouping & customization
 
 ### v4.0.15 (19 March, 2025) ###
-* Fix - Security vulnerabilities: escaped variables & sanitized inputs
-* Fix - Reverted SweetAlert2 to v11.4.8 for compliance
-* Fix - Removed unnecessary files
+* Fix – Security vulnerabilities: escaped variables & sanitized inputs
+* Fix – Reverted SweetAlert2 to v11.4.8 for compliance
+* Fix – Removed unnecessary files
 
 ### v4.0.14 (23 Nov, 2024) ###
-* Fix - Error in login page
-* Fix - Support situations in which (WPUF) translations are loaded too early
+* Fix – Error in login page
+* Fix – Support situations in which (WPUF) translations are loaded too early
 
 ### v4.0.13 (14 Nov, 2024) ###
-* Enhance - Cloudflare Turnstile field on form builder
-* Enhance - Cloudflare Turnstile on login form
-* Fix - Events calendar post form integration
-* Fix - Post form submission with same email
-* Fix - Post description image broken for block theme
+* Enhance – Cloudflare Turnstile field on form builder
+* Enhance – Cloudflare Turnstile on login form
+* Fix – Events calendar post form integration
+* Fix – Post form submission with same email
+* Fix – Post description image broken for block theme
 
 ### v4.0.12 (14 Oct, 2024) ###
-* Enhance - Decimal value for subscription pack
-* Fix - Required asterisk on password label
-* Fix - Field overlapping in address field
-* Fix - Read-only does not work for 'Teeny Rich textarea'
-* Fix - Integrations not loading properly for Dokan, ACF, WC Vendors
+* Enhance – Decimal value for subscription pack
+* Fix – Required asterisk on password label
+* Fix – Field overlapping in address field
+* Fix – Read-only does not work for 'Teeny Rich textarea'
+* Fix – Integrations not loading properly for Dokan, ACF, WC Vendors
 
 ### v4.0.11 (12 Sep, 2024) ###
-* Enhance - Subscription design revamp
-* Enhance - Consistent format in email templates
-* Enhance - Move newsletter subscription to weMail
-* Fix - Translation for password strength
-* Fix - Different languages breaking design
-* Fix - State field is not changing
+* Enhance – Subscription design revamp
+* Enhance – Consistent format in email templates
+* Enhance – Move newsletter subscription to weMail
+* Fix – Translation for password strength
+* Fix – Different languages breaking design
+* Fix – State field is not changing
 
 ### v4.0.10 (08 Aug, 2024) ###
-* Fix - Error on WC post template
-* Fix - Move login validation to pro
+* Fix – Error on WC post template
+* Fix – Move login validation to pro
 
 ### v4.0.9 (17 Jul, 2024) ###
-* Fix - Remove PHP AllowDynamicProperties warning on plugin pages
-* Fix - Remove print_emoji_styles is deprecated message from setup page
+* Fix – Remove PHP AllowDynamicProperties warning on plugin pages
+* Fix – Remove print_emoji_styles is deprecated message from setup page
 
 ### v4.0.8 (03 Jul, 2024) ###
-* Fix - Optimized the script loading process by removing a Promise polyfill
-* Fix - Added validation on the transaction page
+* Fix – Optimized the script loading process by removing a Promise polyfill
+* Fix – Added validation on the transaction page
 
 ### v4.0.7 (11 Jun, 2024) ###
-* Enhance - Remove what's new page
-* Fix - Pending user can log in
-* Fix - Error when multiple password fields in form
-* Fix - Error when using CPT on post form
-* Fix - File upload problem using page builders
-* Fix - Conflict with WC Stripe Gateway plugin
-* Fix - Edit link on mail not working
-* Fix - Form import is not working
+* Enhance – Remove what's new page
+* Fix – Pending user can log in
+* Fix – Error when multiple password fields in form
+* Fix – Error when using CPT on post form
+* Fix – File upload problem using page builders
+* Fix – Conflict with WC Stripe Gateway plugin
+* Fix – Edit link on mail not working
+* Fix – Form import is not working
 
 ### v4.0.6 (13 Feb, 2024) ###
-* Enhance - Update deprecated uses for PHP versions and latest WordPress
-* Enhance - Eye icon inside password field
-* Fix - Error after PayPal payment
-* Fix - Reset password not working
-* Fix - Subscription posting restriction not working
+* Enhance – Update deprecated uses for PHP versions and latest WordPress
+* Enhance – Eye icon inside password field
+* Fix – Error after PayPal payment
+* Fix – Reset password not working
+* Fix – Subscription posting restriction not working
 
 ### v4.0.5 (31 Jan, 2024) ###
-* Enhance - Integrate headway and canny
+* Enhance – Integrate headway and canny
 
 ### v4.0.4 (25 Jan, 2024) ###
-* Enhance - Add visibility to the Columns field
-* Fix - Login with reCAPTCHA gives error
-* Fix - AJAX image upload
-* Fix - Error on multi select form custom taxonomy
-* Fix - Frontend registration form is not showing
-* Fix - Handle email for guest post
-* Fix - Default form template not selecting
-* Fix - Error in setup wizard
+* Enhance – Add visibility to the Columns field
+* Fix – Login with reCAPTCHA gives error
+* Fix – AJAX image upload
+* Fix – Error on multi select form custom taxonomy
+* Fix – Frontend registration form is not showing
+* Fix – Handle email for guest post
+* Fix – Default form template not selecting
+* Fix – Error in setup wizard
 
 ### v4.0.3 (05 Jan, 2024) ###
-* Enhance - Restructure plugin codes
-* Fix - Error when editing the featured post
-* Fix - add/edit post forms if the site language is set to Simplified Chinese
-* Fix - Errors with Post Form Conditional Logic
+* Enhance – Restructure plugin codes
+* Fix – Error when editing the featured post
+* Fix – add/edit post forms if the site language is set to Simplified Chinese
+* Fix – Errors with Post Form Conditional Logic
 
 ### v4.0.2 (03 Jan, 2024) ###
-* Enhance - Restructure plugin codes
-* Fix - Error when editing the featured post
-* Fix - add/edit post forms if the site language is set to Simplified Chinese
-* Fix - Errors with Post Form Conditional Logic
+* Enhance – Restructure plugin codes
+* Fix – Error when editing the featured post
+* Fix – add/edit post forms if the site language is set to Simplified Chinese
+* Fix – Errors with Post Form Conditional Logic
 
 ### v4.0.1 (03 Jan, 2024) ###
-* Enhance - Restructure plugin codes
-* Fix - Error when editing the featured post
-* Fix - add/edit post forms if the site language is set to Simplified Chinese
-* Fix - Errors with Post Form Conditional Logic
+* Enhance – Restructure plugin codes
+* Fix – Error when editing the featured post
+* Fix – add/edit post forms if the site language is set to Simplified Chinese
+* Fix – Errors with Post Form Conditional Logic
 
 ### v4.0.0 (02 Jan, 2024) ###
-* Enhance - Restructure plugin codes
-* Fix - Error when editing the featured post
-* Fix - add/edit post forms if the site language is set to Simplified Chinese
-* Fix - Errors with Post Form Conditional Logic
-
-### v3.6.9 (11 Sep, 2023) ###
-* Enhance - add capabilities check on AJAX actions
-
-### v3.6.8 (31 Aug, 2023) ###
-* Fix - Delete upload file even after clicking cancel button
-* Fix - Taxonomy data not showing for checkbox
-* Fix - Some validation for AJAX actions
-
-### v3.6.7 (09 Aug, 2023) ###
-
-* Fix - conflicts with Advanced Custom Fields Pro Plugin
-* Fix - conflicts with the Classic Editor Plugin
-* Fix - multiple HTML field inside column field
-
-### v3.6.6 (27 Jul, 2023) ###
-
-* Enhancement - Restrict shortcode in post form
-* Enhancement - Add custom note on plugin update page
-
-### v3.6.5 (25 May, 2023) ###
-
-* Enhancement - Revamp registration page design
-
-* Fix - Expiration time not showing for admin
-* Fix - Error when editing user profile
-
-### v3.6.4 (4 Apr, 2023) ###
-
-* Fix - Post submission for dokan vendors
-* Fix - Paypal transaction not showing
-* Fix - Predefined category field not working
-* Fix - Field visibility not working
-
-### v3.6.3 (13 Feb, 2023) ###
-
-* Fix - Error if Dokan not installed
-* Fix - Style conflict with LearnPress
-
-### v3.6.2 (8 Feb, 2023) ###
-
-* Fix - Post submission for the Dokan Vendors
-
-### v3.6.1 (2 Jan, 2023) ###
-
-* Enhancement - Add responsiveness to the upgrade-to-pro popup widget
-* Enhancement - Update Appsero SDK to the latest version
-* Enhancement - warning before updating a subscription package
-
-* Fix - Subscription shouldn't be editable from user's profile
-* Fix - Text field append '0' when character exceeds content restriction limit
-* Fix - Fields within column doesn't behave as expected in forms
-* Fix - Change sweetalert2 to v11.4.19 to remove anti-war message
-
-### v3.6.0 (23 Nov, 2022) ###
-
-* Enhancement - Admin dashboard news and update meta-box added
-* Enhancement - Upgrade prompts design
-
-* Fix - Email style handled
-* Fix - text-area type selection(Normal, Rich text-area, Teeny Rich text-area) bug in field options
-* Fix - Frontend form validation
-* Fix - Default value not saving for radio, dropdown, checkbox
-
-* Update - sweetalert2 version
-
-### v3.5.29 (15 Sep, 2022) ###
-
-* Enhancement - Short-code encryption updated for registration page
-
-### v3.5.28 (17 Jun, 2022) ###
-
-* Tweak - Updated compatibility with the latest version of WordPress 6.0
-* Tweak - Improved some backend implementations
-
-### v3.5.27 (15 Mar, 2022) ###
-
-* Enhancement - Email template enhanced for after activation
-* Enhancement - Read only option for custom field
-* Enhancement - Editor toolbar exclude option enhanced
-* Enhancement - Preview option enhanced  for user profile
-* Enhancement - Meta key enhanced for user email notification
-* Enhancement - Global option for disable post edit on account
-* Enhancement - Filter for conditional logic for fields added
-* Fix - PHP 8 compatibility handled
-* Fix - Address / Billing address inconsistency handled
-* Fix - Content restriction several issue fixed
-* Fix - Tax calculation properly handled for all areas
-* Fix - Validation added for invalid email and URL formats
-* Fix - Special character password handled for login
-* Fix - Reset password handled for sidebar widget
-* Fix - Required google map issues handled
-* Fix - Translation related issue handled for admin menu
-* Fix - Label & query enhanced for transaction table
-* Fix - Template override for child theme fixed
-* Fix - Custom field modal handled for registration form
-* Fix - Redundant CSS issues handled
-* Fix - Address field inconsistency fixed
-* Fix - Plugin page spin loading issue handled
-* Fix - Warning on exit for draft post fixed
-* Fix - Unlimited expire on admin user profile handled
-* Fix - No value checkbox issue handled
-* Fix - Tag search security Vulnerability handled
-* Fix - Multi dropdown field error handled
-
-### v3.5.23 (18 Nov, 2021) ###
-
-* Fix - Security Vulnerability fixed
-
-### v3.5.22 (28 Oct, 2021) ###
-
-* Enhancement - Settings page search implemented
-* Enhancement - Featured item for subscriber
-* Enhancement - Warning added for unsaved form data on frontend
-* Enhancement - Editor added for registration form email template
-* Fix - Fallback pay per post not working with when draft enabled
-* Fix - User Dashboard responsive issues fixed
-* Fix - Showing wrong license expire message handled
-* Fix - Remove expire cron handled for once daily
-* Fix - Billing address validation handled
-* Update - Promotion notice restricted for WPUF menu
-
-### v3.5.21 (21 Oct, 2021) ###
-
-* Fix - reCaptcha issue with other plugin handled
-* Fix - Multiple post type for wpuf dashboard not working fixed
-* Fix - Billing address ajax request issue handled
-* Update - Halloween promotion notice added
-
-### v3.5.20 (16 Sep, 2021) ###
-
-* Enhancement - Content restriction for minimum, maximum value enhanced
-* Enhancement - New option for redirection after pay per post payment in form setting
-* Enhancement - Controller added for various email notification
-* Enhancement - Placeholder added for unauth message option
-* Update - Subscription Post expiration option change to input field
-* Fix - Content restriction message translatable
-* Fix - ACF integration inconsistency handled
-* Fix - Enable payment checkbox handled for child option
-* Fix - Broken asset link handled for custom field popup
-* Fix - Rollback inconsistency for CPT handled
-* Fix - Login form loaded after resetting password
-* Fix - Billing address inconsistency handled
-* Fix - Form duplication on creation handled
-* Fix - Field Dragging inconsistency fixed
-
-### v3.5.19 (16 Jul, 2021) ###
-
- * Enhancement - Updated compatibility with WordPress 5.8
- * Enhancement - Promotional campaign
-
-### v3.5.18 (06 Jul, 2021) ###
-
-* Enhancement - Google Map field enhanced along with acf google map
-* Enhancement - Filter added for dashboard account menu
-* Fix - Fallback Pay Per Post inconsistency handled
-* Fix - Google map search field not showing
-* Fix - Form preview page inconsistency with builder
-* Fix - Category not showing as hierarchy
-* Fix - TOC field randering issue with registration form
-* Fix - Custom plupload filter inconsistency with file upload handled
-* Fix - Guest Pay Per Post inconsistency handled
-
-### v3.5.17 (08 Jun, 2021) ###
-
-* Enhancement - Preview page added for post form and registration form
-* Enhancement - Post types menu on account page added
-* Enhancement - Dashboard shortcode attributes enhanced
-* Enhancement - Account page post type list new design
-* Fix - Payment page restricted from direct unauthenticated access
-* Fix - Timepicker conflict with dokan handled
-* Fix - Trial inconsistency with paypal fixed
-* Fix - Subscription does not cancel with paypal due to profile missing id
-* Fix - Subscription email notification inconsistency fixed
-* Fix - Various issues on payment page for non-logged in user handled
-* Fix - Column inner field cloning inconsistency fixed
-* Fix - Popup z-index changed due to other plugin z-index
-
-### v3.5.16 (08 May, 2021) ###
-
-* Update - Added Mauritian Rupee for currency
-* Update - Added eid promotional offer notice
-* Fix - Multiple google map validation for same form
-* Fix - Various issues on verification, autologin payments & address field
-* Fix - Docs update for file & attachments feature which is pro only
-
-### v3.5.15 (15 March, 2021) ###
-
-* Notice - Limited time promotion for weDevs birthday
-* Fix - Overflow footer on form builder page
-* Fix - WordPress 5.7 compatibility
-
-### v3.5.14 (08 March, 2021) ###
-
-* Fix - Meta key will not change if label update
-* Fix - Login redirect empty previous url
-* Fix - Email doesnt set as username
-* Fix - Post redirection to payment doesn't work
-* Fix - Address field not working when used with conditional logic
-* Fix - Non recurring subscription did not work
-* Fix - Ajax type category child of not working
-
-### v3.5.13 (05 February, 2021) ###
-
-* Fix - Menu position has chenged due to dokan has same menu position
-* Fix - Drag and drop not working properly for new field
-
-### v3.5.12 (13 January, 2021) ###
-
- * Fix - Santized PayPal transaction ID for better security
-
-### v3.5.11 (12 January, 2021) ###
-* Fix - QR and math captcha added to pro feature list
-* Fix - Tooltip for category navigate
-* Fix - Understandable guest payment notice
-* Fix - Paypal non recurring pack id does not set
-
-### v3.5.10 (18 December, 2020) ###
-* Update - Added holiday promotional offer notice
-
-### v3.5.9 (11 December, 2020) ###
-* Fix - Once trial subscription is used, it couldn't reset
-* Fix - Subscription cancel doesn't work
-* Fix - The tax rate was not calculated with the total amount
-* Fix - The width of the column field was breaking
-* Enhancement - Paypal recurring payment
-
-### v3.5.8 (21 November, 2020) ###
-* Fix - Updated codebase to fix timezone mismatch
-
-### v3.5.7 (21 November, 2020) ###
-* Enhancement - Custom html content field's width
-* Enhancement - All states of New Zealand are added
-
-### v3.5.6 (13 November, 2020) ###
-* Fix - Can't edit post
-* Fix - Show warning if newly created post form doesn't set role base enable
-* Fix - Show warning in dashboard billing address tab
-
-### v3.5.5 (12 November, 2020) ###
-* Fix - Dashboard page broken and couldn't render [wpuf_account], [wpuf_sub_pack], [wpuf_dashboard] shortcodes
-
-### v3.5.4 (11 November, 2020) ###
-* Fix - Get appropriate user id when role based conditions are present
-* Fix - Show Invalid subscription message if wrong pack id passed
-* Fix - URL field new window not working
-* Fix - Option label not working when & use
-* Fix - Ajax type category not showing on edit
-* Fix - Multiple file image can't select
-* Fix - Subscription pack PayPal Checkout gets "Error: Access Denied"
-* Fix - Conflict image field with acf image field
-* Enhancement - Missing Auckland State for New Zealand country.
-* Enhancement - Added support for WooCommerce product category value replacemen
-
-### v3.5.3 (21 October, 2020) ###
-* Fix - Default post form is not showing on the frontend account
-* Fix - Missing featured image field when previewing a post form
-* Fix - Post query loop for post forms
-* Fix - Post edit could not be edited after unlocking post edit
-* Fix - Taxes couldn't count properly when selecting different tax region
-* Fix - Google map field validation doesn't work
-* Fix - Redirect payment page after post updating
-* Fix - Custom field value and link send as plain text when sending an email for post notification
-
-### v3.5.2 (22 September, 2020) ###
-* Fix - Changelog for wordpress.org
-
-### v3.5.0 (22 September, 2020) ###
-* New - Add character restriction feature
-* Tweak - Make sure post author edit link works only in frontend
-* Fix - Inconsistency in lost password reset email message
-* Fix - Saving custom taxonomy terms when input type is text
-* Fix - Taxonomy field JS error in builder
-* Fix - Showing WPUF edit link for WP default roles
-* Fix - Upload button unresponsive issue in iOS
-
-### v3.4.0 (24 August, 2020) ###
-* New - Add post edit link for post authors in single or archive pages
-* Enhancement - Enhance post delete message
-* Tweak - Refactor control buttons visibility in form builder
-* Fix - Add missing colons after field label
-* Fix - Post edit map capability condition
-* Fix - Role based permission for accessing a post form
-* Fix - Section-break field alignment
-* Fix - Pay per post doesn't work if subscription pack is activated
-* Fix - Mime type for uploading JSON files
-* Fix - File upload with same file name
-* Fix - Post preview missing fields
-* Fix - Illigal variable declartion
-* Fix - Featured image updating issue
-* Fix - Conflict with Phlox theme
-* Fix - Textarea custom field data sanitization
-* Fix - exclude_type warning in wpuf_category_checklist
-* Fix - Category field not showing all child categories for selection type child of
-* Fix - Conflict between image and file upload custom fields
-* Fix - Login url when login page is not set
-
-### v3.3.1 (16 June, 2020) ###
-* Tweak - Use common names for Ivory Coast, North Korea and Sourth Korea instead of their official names
-* Fix - Condition to use default avatar
-* Fix - Make Email and URL fields clickable
-* Fix - Redirect after user login
-* Fix - Sanitize textarea field data
-* Fix - Missing colon to email, URL, text and textarea labels when renders their data
-* Fix - Prevent showing empty labels for fields that have render_field_data method
-
-### v3.3.0 (11 June, 2020) ###
-* Enhancement - Add Namibian Dollar in currency list
-* Enhancement - Add sync values option for option data fields
-* Tweak - Allow uploading image that having filesize meets php ini settings
-* Tweak - Limit the selection of one image at a time
-* Tweak - Use file name and size to generate hash to prevent duplicant image upload
-* Tweak - Sanitize text and textarea field data
-* Tweak - Show label instead of values for radio, checkbox, dropdown and multiselect data
-* Fix - Saving custom taxonomies for type text input
-* Fix - Admin settings link for recaptcha helper text
-* Fix - Undefined name property for Custom HTML fields
-* Fix - Delete attachment process
-* Fix - Missing billing address in invoice PDF
-* Fix - Showing country field value in frontend post content
-* Fix - Avatar size display not complying with admin settings size
-* Fix - Display default avatars on admin settings discussion page
-* Fix - Redirect to subscription page at registration
-* Fix - Error notice regarding registration page redirect
-* Fix - Escaping html in registration errors
-* Fix - Default login redirect link
-* Fix - Implementing default WP login page override option
-* Fix - Transparent background of autosuggestion dropdown
-
-### v3.2.0 (14 April, 2020) ###
-* **Improvement:** Import forms system
-* **Improvement:** Password reset system
-* **Improvement:** Updated url validation regex to support modern tlds
-* **Fix** Export WPUF forms individually from admin tools page
-* **Fix** Subscription cycle label translation issue
-* **Fix** ACF integration for checkbox fields
-* **Fix** Illegal string offset warning while updating settings
-* **Fix** Conditional logic for Section Break field
-* **Fix** Subscriptions cannot be deleted from backend
-* **Fix** A regression regarding saving checkbox data
-* **Fix** Default value of multi-select fields is not showing
-
-### v3.1.18 (13 March, 2020) ###
-* **Improvement:** Hide post edit option when subscription is expired
-* **Improvement:** Check files to prevent duplicity in media upload
-* **Improvement:** Added Jordanian Dinar to currency list
-* **Improvement:** Update post edit button display logic
-* **Improvement:** Update some notice messages
-* **Improvement:** Made some query and asset loading improvements
-* **Improvement:** Refactor address fields in Account section & Payment page
-* **Improvement:** Enqueue color picker only in some WPUF pages
-* **Improvement:** Update Paypal payment gateway
-* **Improvement:** Inconsistency with the Shop Name & Shop URL in WPUF Vendor registration form
-* **Fix:** Prevent taxonomy and category fields from being duplicated
-* **Fix:** Selected form export issue
-* **Fix:** Category column issue in dashboard
-* **Fix:** Taxonomy checkbox checked not showing
-* **Fix:** Fatal error after updating privacy policy page
-* **Fix:** Fixed some instances of wrong escaping
-* **Fix:** Submit issue with image and reCaptcha
-* **Fix:** Expired subscription pack throwing error on dashboard
-* **Fix:** Photo insert option in content editor and feature image field is not working on windows server
-* **Fix:** HTML Tags are not rendering the HTML format for the Radio or Checkbox Field
-* **Fix:** Country List field issue in frontend
-* **Fix:** Multi-column Repeater field data saving issue
-* **Fix:** Multistep form conflict with Elementor
-* **Fix:** Compatibility issue with ACF date time field
-* **Fix:** Meta field issue with multiple images
-* **Fix:** Category type as "Text Input" is not saving.
-* **Fix:** Some warnings in user directory
-* **Fix:** File upload can fail in some cases
-* **Fix:** Media title, caption & description not saving
-* **Fix:** Address Field not rendering properly in email notification
-* **Fix:** Checkbox data not saving from WPUF Custom Fields metabox
-* **Fix:** Workaround for The Events Calendar venue and organizer fields in metabox
-
-### v3.1.17 (31 January, 2020) ###
-* **Fix:** some regressions after phpcs fixes
-
-### v3.1.16 (17 January, 2020) ###
-* **Fix:** Photo insert option in content editor
-* **Fix:** Subscription page is not showing the content/package description as formatted content
-* **Fix:** Predefined form is not saving on the WPUF form page's backend area
-* **Fix:** WPUF Custom HTML field is not saving the data
-* **Improve:** Improve Code Quality
-
-### v3.1.15 (14 January, 2020) ###
-* **Fix:** update url validation
-* **Tweak:** Added privacy policy info in setup wizard for admin
-
-### v3.1.14 (13 December, 2019) ###
-
-* **Fix:** Fixed a warning while in block editor
-* **Fix:** Add better URL validation
-* **New:** Added two filters on transaction
-* **Fix:** Notification Checkbox not working
-* **Fix:** Fixed some Column field issues
-
-### v3.1.13 (18 November, 2019) ###
-
-* **New:** Added Arabic translations.
-* **Fix:** Free subscription info was not showing in dashboard.
-* **Fix:** Fixed subscriptions can't be assigned from user profile due to a regression.
-* **Fix:** Fixed some column field issues. closes #734
-* **Fix:** Guest post hook was not working properly. Closes #704
-* **Fix:** Fixed missing default value for post content rich text editor. Closes #730
-
-### v3.1.12 (17 October, 2019) ###
-
-* **Fix:** Nonce not verify on login
-
-### v3.1.11 (02 October, 2019) ###
-
-* **Feature:** Option to set which tab shows as active on the account page.
-* **Fix:** Unlock option was unavailable after the post being locked.
-* **Fix:** Gutenberg block of WPUF didn't work on bedrock installation.
-* **Fix:** Sending admin payment received email twice.
-* **Enhancement:** Add shortcode support to display post information in the Post Expiration Message.
-* **Enhancement:** Add Appsero option checkbox on the setup wizard.
-
-### v3.1.10 (06 September, 2019) ###
-
-* **Fix:** Posts were not assigned to the selected default post owner.
-* **Fix:** Google reCaptcha was not working, users could submit the form without reCaptcha validation.
-
-### v3.1.9 (22 July, 2019) ###
-
-* **Fix:** call_user_func_array() error while editing or add a new post from admin panel.
-* **Fix:** Address fields on payment page were not checking which fields are optional.
-* **Fix:** WooCommerce gallery images were not being shown on the frontend.
-* **Fix:** Show & hide coupon message based on response.
-* **Fix:** Login page was including registration page link even when user registration was turned off.
-* **Fix:** Notification emails were not respecting the spaces.
-
-### v3.1.8 (26 June, 2019) ###
-
-* **Fix:** Multistep form was scrolling to the top of the browser instead of moving to the top of the form when clicking on `Next` or `Previous` button.
-* **Fix:** Uploaded images were not showing in the ACF gallery field.
-* **Fix:** Billing address was not saved from the frontend payment page.
-* **Fix:** Added translation functions to the missing strings.
-* **Fix:** Dependency styles error of Gutenblock-editor.css.
-
-### v3.1.7 (31 May, 2019) ###
-
-* **Fix:** check for 'button_label' existence before using it.
-* **Fix:** after accepting bank payment, post status was not changing.
-* **Fix:** custom taxonomy empty value was not saving when editing a post & field type is a checkbox.
-* **Fix:** fix PHP warning.
-* **Improvement:** added `Select Country` text for billing address country field.
-
-### v3.1.6 (23 May, 2019) ###
-
-* **Fix:** URL field empty value was not saving.
-* **Fix:** Custom taxonomy field empty data were not updating.
-* **Fix:** Added translation function for missing strings.
-* **Improvement:** Added active class to account page menu items.
-* **Improvement:** Responsive frontend pages.
-
-### v3.1.5 (02 May, 2019) ###
-
-* **Fix:** Conflict weDevs insight library with WP Project Manager plugin.
-
-### v3.1.4 (02 May, 2019) ###
-
-* **Fix:** Category field data were not being saved when conditional logic is applied to custom taxonomy fields based on category field.
-* **Fix:** While editing the checkbox values from the backend user profile page, the values were not being saved.
-* **Fix:** While editing profile, using the default profile form, the password strength indicator didn't respond.
-* **Fix:** Insights data were not being sent.
-
-### v3.1.3 (15 April, 2019) ###
-
-* **Fix:** Required option of checkbox field was not validating on the frontend.
-* **Fix:** Select mulitple options in checkbox field doesn't save the data.
-* **Fix:** Fallback pay per post was not respecting the payment procedure & fallback cost was not correct on the payment page.
-
-### v3.1.2 (01 April, 2019) ###
-
-* **Feature:** Added column field: Now, creating multi-column in a single row is super easy with WPUF Column field. Just drag the column field in the builder area, configure columns number, column space and add any fields you want inside that Column field.
-* **Fix:** Unable to render the events on the front-end: On the frontend dashboard, the submitted events were not showing, you will get it fixed in this version.
-* **Fix:** Page order getting 0(zero) after editing from the frontend: Page order was not saving while editing a post using WPUF form, it has been fixed.
-* **Fix:** Text Input field for Taxonomies not working: When taxonomy field type is set to `Text Input` then a fatal error was showing on the frontend, no error with taxonomy field in the latest version
-* **Fix:** In radio and checkbox field use conditional logic that value does not save in database: The selected value of radio and checkbox field were not showing while editing posts from the backend or frontend, you can see the selected value in this version.
-* **Fix:** The args parameter not working with get_avatar filter: The args parameter did not exist with get_avatar filter, which now exists.
-* **Fix:** The item in ajax taxonomy field is not selected: When the taxonomy field type is set to Ajax, the submitted terms were not showing in the backend and frontend which have been fixed.
-
-### v3.1.1 (28 February, 2019) ###
-
-* **Fix:** Help text in the Category field were not displaying on the frontend.
-* **Fix:** Category was not editable when editing the post from the frontend.
-* **Fix:** Display the admin bar when user role exist.
-* **Fix:** When the admin edits a post from the backend, it was creating duplicate post.
-* **Fix:** After enabling post expiration in post form do not save post_expiration meta.
-* **Fix:** Checkboxes were not linking/syncing with ACF field.
-* **Fix:** Publish time input option in the Date/Time field, was not working.
-
-### v3.1.0 (31 January, 2019) ###
-
-* **Fix:** The Default registration form `[wpuf-registration]` was unable to send the new user registration email.
-* **Fix:** With the latest version of WordPress the Gutenberg block of WP User Frontend were not working. Fixed in this version.
-* **Fix:** While using Gutenberg editor, the pages were not being updated with WPUF shortcode consisting`[wpuf dashboard]`
-* **Fix:** From the User Frontend Settings, you had the capability to set if the Administrator, Editor, Vendor etc can see the admin bar. Now, the super admin want one specific user ( who has the user role from the above ) can't see the admin bar and disabled it from the Toolbar form that specific user profile. And this configuration ( Toolbar ) from the specific user profile were unable to impact on the frontend.
-* **Fix:** WP User Frontend was unable to install with PHP 5.4 or lower version.
-* **Fix:** When a user uploaded single image for product gallery using WPUF WooCommerce product form, that image was not showing on the frontend.
-
-### v3.0.2 (1 January, 2019) ###
-
-* **Feature:** Added post lock feature based on posts and user
-* **Fix:** 'show directions' link doesn't show with the google map on submitted post
-* **Fix:** Subscription pack price not formatting according to the settings
-* **Fix:** Post date is not updating when enable time input option for date field
-
-### v3.0.1 (5 December, 2018) ###
-
-* **Fix:** Image is duplicating
-
-### v3.0.0 (4 December, 2018) ###
-
-* **New:** Integrated WC Marketplace plugin: vendor can submit post from their frontend dashboard
-* **New:** Integrated WC Vendors plugin: vendor can submit post from their frontend dashboard
-* **Fix:** Post is getting duplicate while updating
-
-For the changelog history, view the full [changelog.txt](https://github.com/weDevsOfficial/wp-user-frontend/blob/develop/changelog.txt).
-
+* Enhance – Restructure plugin codes
+* Fix – Error when editing the featured post
+* Fix – add/edit post forms if the site language is set to Simplified Chinese
+* Fix – Errors with Post Form Conditional Logic
 
 ## Upgrade Notice ##
 
-### 2.3 ###
- * It's a **massive update and change** from the previous version 1.3.2. Please do test in your site and main compatibility.
+### v2.3 ###
+* It's a **massive update and change** from the previous version 1.3.2. Please do test in your site and main compatibility.

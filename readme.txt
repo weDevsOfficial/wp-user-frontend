@@ -4,7 +4,7 @@ Donate link: https://tareq.co/donate/
 Tags: frontend post, user directory, membership, user profile, user registration, content restriction, guest post, submit post, subscriptions, directory, login form, registration form, user profile, profile builder, forms
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 4.2.4
+Stable tag: 4.2.5
 Requires PHP: 5.6
 License: GPLv2
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -359,6 +359,13 @@ Please report security bugs found in the source code of the User Frontend plugin
 15. Create AI Powered Post Form
 
 == Changelog ==
+= v4.2.5 (01 January, 2026) =
+* Enhancement – Warning message for empty field options
+* Enhancement – Login and Registration help text
+* Fix – Add authorization checks for attachment deletion in form submission
+* Fix – Update security by WordPress plugin check
+* Fix – Radio and checkbox options going out for long list in form builder
+* Fix – Add italic, underline, and bold styling to Settings link in field validators
 
 = v4.2.4 (10 December, 2025) =
 * New – n8n integration for post form

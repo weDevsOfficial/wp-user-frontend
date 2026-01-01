@@ -1806,7 +1806,7 @@ class Free_Loader extends Pro_Prompt {
     /**
      * Render field option data button for free version
      *
-     * @since WPUF_SINCE
+     * @since 4.2.5
      *
      * @return void
      */

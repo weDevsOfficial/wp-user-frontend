@@ -1,3 +1,6 @@
+/*!*************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./src/css/subscriptions-react.css ***!
+  \*************************************************************************************************************************************************************************************/
 /* DESCRIPTION: Subscriptions React page styles with Tailwind CSS v3 */
 /* ! tailwindcss v3.4.11 | MIT License | https://tailwindcss.com */
 /*
@@ -875,6 +878,9 @@ video {
 .wpuf-mt-\[40px\] {
   margin-top: 40px;
 }
+.wpuf-ml-auto {
+  margin-left: auto;
+}
 .wpuf-block {
   display: block;
 }
@@ -1461,6 +1467,11 @@ video {
   margin-right: calc(1rem * var(--tw-space-x-reverse));
   margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
 }
+.wpuf-space-y-1 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
+}
 .wpuf-space-y-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
@@ -1602,6 +1613,9 @@ video {
 }
 .wpuf-border-2 {
   border-width: 2px;
+}
+.wpuf-border-4 {
+  border-width: 4px;
 }
 .wpuf-border-y {
   border-top-width: 1px;
@@ -1786,6 +1800,10 @@ video {
 .wpuf-border-zinc-300 {
   --tw-border-opacity: 1;
   border-color: rgb(212 212 216 / var(--tw-border-opacity));
+}
+.wpuf-border-green-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(34 197 94 / var(--tw-border-opacity));
 }
 .wpuf-border-t-transparent {
   border-top-color: transparent;
@@ -3059,6 +3077,10 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(254 249 195 / var(--tw-bg-opacity));
 }
+.hover\:wpuf-bg-gray-200:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
 .hover\:\!wpuf-bg-none:hover {
   background-image: none !important;
 }
@@ -3582,3 +3604,5 @@ video {
   text-align: right;
 }
 
+
+/*# sourceMappingURL=subscriptions-react.css.map*/

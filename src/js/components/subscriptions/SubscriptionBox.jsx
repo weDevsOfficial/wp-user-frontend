@@ -15,7 +15,7 @@ const SubscriptionBox = ( { subscription } ) => {
 	const [ subscribers, setSubscribers ] = useState( 0 );
 
 	const { getReadableBillingAmount, isRecurring } = useSelect( ( select ) => select( 'wpuf/subscriptions' ), [] );
-	const { setCurrentItem, updateItem, deleteItem } = useDispatch( 'wpuf/subscriptions' );
+	const { setItem, updateItem, deleteItem } = useDispatch( 'wpuf/subscriptions' );
 
 	const isPasswordProtected = useMemo( () => {
 		return subscription.post_password !== '';
@@ -63,14 +63,10 @@ const SubscriptionBox = ( { subscription } ) => {
 	// Fetch subscribers count
 	useEffect( () => {
 		const queryParams = { 'subscription_id': subscription.ID };
-		const restApiRoot = window.wpufSubscriptions.rest_url.replace( /\/$/, '' );
-
+		// Use path directly without restApiRoot prefix - apiFetch prepends the WP API root
 		apiFetch( {
-			path: addQueryArgs( `${restApiRoot}/wpuf/v1/wpuf_subscription/subscribers`, queryParams ),
+			path: addQueryArgs( `/wpuf/v1/wpuf_subscription/subscribers`, queryParams ),
 			method: 'GET',
-			headers: {
-				'X-WP-Nonce': window.wpufSubscriptions.nonce,
-			},
 		} )
 			.then( ( response ) => {
 				setSubscribers( response.subscribers );
@@ -103,19 +99,19 @@ const SubscriptionBox = ( { subscription } ) => {
 	}, [ quickMenuStatus ] );
 
 	const handleEdit = useCallback( () => {
-		setCurrentItem( subscription );
+		setItem( subscription );
 		// Navigate to edit page
 		const url = new URL( window.location.href );
 		url.searchParams.set( 'action', 'edit' );
 		url.searchParams.set( 'id', subscription.ID );
 		window.location.href = url.toString();
-	}, [ subscription, setCurrentItem ] );
+	}, [ subscription, setItem ] );
 
 	const handleQuickEdit = useCallback( () => {
-		setCurrentItem( subscription );
+		setItem( subscription );
 		// TODO: Open quick edit modal
 		setQuickMenuStatus( false );
-	}, [ subscription, setCurrentItem ] );
+	}, [ subscription, setItem ] );
 
 	const handleToggleStatus = useCallback( () => {
 		const newStatus = subscription.post_status === 'draft' ? 'publish' : 'draft';
@@ -124,7 +120,7 @@ const SubscriptionBox = ( { subscription } ) => {
 			edit_row_name: 'post_status',
 			edit_row_value: newStatus,
 		};
-		setCurrentItem( updatedSubscription );
+		setItem( updatedSubscription );
 		updateItem().then( ( result ) => {
 			if ( result.success ) {
 				setShowBox( false );
@@ -133,7 +129,7 @@ const SubscriptionBox = ( { subscription } ) => {
 			}
 		} );
 		setQuickMenuStatus( false );
-	}, [ subscription, setCurrentItem, updateItem ] );
+	}, [ subscription, setItem, updateItem ] );
 
 	const handleTrash = useCallback( () => {
 		setShowPopup( true );
@@ -146,7 +142,7 @@ const SubscriptionBox = ( { subscription } ) => {
 			edit_row_name: 'post_status',
 			edit_row_value: 'draft',
 		};
-		setCurrentItem( updatedSubscription );
+		setItem( updatedSubscription );
 		updateItem().then( ( result ) => {
 			if ( result.success ) {
 				setShowBox( false );
@@ -154,7 +150,7 @@ const SubscriptionBox = ( { subscription } ) => {
 			}
 		} );
 		setQuickMenuStatus( false );
-	}, [ subscription, setCurrentItem, updateItem ] );
+	}, [ subscription, setItem, updateItem ] );
 
 	const handleDelete = useCallback( () => {
 		deleteItem( subscription.ID ).then( ( result ) => {

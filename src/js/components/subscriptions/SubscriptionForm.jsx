@@ -44,17 +44,25 @@ const SubscriptionForm = ( { mode = 'add-new', subscriptionId = null, onNavigate
 	// Fetch subscription data if in edit mode
 	useEffect( () => {
 		if ( mode === 'edit' && subscriptionId ) {
-			// Fetch the subscription via API
+			// Fetch all subscriptions and find the one we need
+			// Note: The API doesn't have a single subscription endpoint, so we fetch the list
 			apiFetch( {
-				path: `/wpuf/v1/wpuf_subscription/${ subscriptionId }`,
+				path: '/wpuf/v1/wpuf_subscription',
 				method: 'GET',
 			} )
 				.then( ( data ) => {
-					setItem( data );
-					setItemCopy( JSON.parse( JSON.stringify( data ) ) );
+					if ( data.success && data.subscriptions ) {
+						const found = data.subscriptions.find( ( sub ) => sub.ID === parseInt( subscriptionId ) );
+						if ( found ) {
+							setItem( found );
+							setItemCopy( JSON.parse( JSON.stringify( found ) ) );
+						} else {
+							setError( __( 'Subscription not found', 'wp-user-frontend' ) );
+						}
+					}
 				} )
 				.catch( ( err ) => {
-					setError( err.message );
+					setError( err.message || __( 'Failed to load subscription', 'wp-user-frontend' ) );
 				} );
 		} else if ( mode === 'add-new' ) {
 			// Initialize blank item for new subscription

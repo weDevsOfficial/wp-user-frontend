@@ -6,6 +6,7 @@ import { useState, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { useSelect, useDispatch } from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';
+import Header from '../Header';
 import SidebarMenu from './SidebarMenu';
 import SubscriptionDetails from './SubscriptionDetails';
 import UpdateButton from './UpdateButton';
@@ -29,8 +30,6 @@ const SubscriptionForm = ( { mode = 'add-new', subscriptionId = null, onNavigate
 		[]
 	);
 
-	console.log('[SubscriptionForm] subscription from store:', subscription);
-
 	// Store actions
 	const {
 		setItem,
@@ -44,7 +43,6 @@ const SubscriptionForm = ( { mode = 'add-new', subscriptionId = null, onNavigate
 
 	// Fetch subscription data if in edit mode
 	useEffect( () => {
-		console.log('[SubscriptionForm] useEffect triggered, mode:', mode, 'subscriptionId:', subscriptionId);
 		if ( mode === 'edit' && subscriptionId ) {
 			// Fetch the subscription via API
 			apiFetch( {
@@ -60,7 +58,6 @@ const SubscriptionForm = ( { mode = 'add-new', subscriptionId = null, onNavigate
 				} );
 		} else if ( mode === 'add-new' ) {
 			// Initialize blank item for new subscription
-			console.log('[SubscriptionForm] calling setBlankItem');
 			setBlankItem();
 		}
 	}, [ mode, subscriptionId, setItem, setItemCopy, setBlankItem ] );
@@ -163,7 +160,9 @@ const SubscriptionForm = ( { mode = 'add-new', subscriptionId = null, onNavigate
 	}
 
 	return (
-		<div className={ `wpuf-flex wpuf-pt-[40px] wpuf-px-[20px] ${ isUnsavedPopupOpen ? 'wpuf-blur' : '' }` }>
+		<>
+			<Header utm="wpuf-subscription-form" />
+			<div className={ `wpuf-flex wpuf-pt-[40px] wpuf-px-[20px] ${ isUnsavedPopupOpen ? 'wpuf-blur' : '' }` }>
 			{/* Left Sidebar */}
 			<div className="wpuf-basis-1/5 wpuf-border-r-2 wpuf-border-gray-200">
 				<SidebarMenu
@@ -224,6 +223,7 @@ const SubscriptionForm = ( { mode = 'add-new', subscriptionId = null, onNavigate
 				) }
 			</div>
 		</div>
+		</>
 	);
 };
 

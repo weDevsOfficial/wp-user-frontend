@@ -61,7 +61,6 @@ const SubscriptionList = () => {
 	const checkIsDirty = ( status ) => {
 		// TODO: Implement dirty check before switching status
 		setCurrentSubscriptionStatus( status );
-		console.log( 'Switching to status:', status );
 	};
 
 	return (

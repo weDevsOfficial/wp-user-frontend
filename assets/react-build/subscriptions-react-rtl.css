@@ -1,3 +1,6 @@
+/*!*************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./src/css/subscriptions-react.css ***!
+  \*************************************************************************************************************************************************************************************/
 /* DESCRIPTION: Subscriptions React page styles with Tailwind CSS v3 */
 /* ! tailwindcss v3.4.11 | MIT License | https://tailwindcss.com */
 /*
@@ -875,6 +878,9 @@ video {
 .wpuf-mt-\[40px\] {
   margin-top: 40px;
 }
+.wpuf-ml-auto {
+  margin-right: auto;
+}
 .wpuf-block {
   display: block;
 }
@@ -1460,6 +1466,11 @@ video {
   --tw-space-x-reverse: 0;
   margin-left: calc(1rem * var(--tw-space-x-reverse));
   margin-right: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
+}
+.wpuf-space-y-1 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
 }
 .wpuf-space-y-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;

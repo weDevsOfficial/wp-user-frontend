@@ -83,9 +83,7 @@ export function getFieldNames(state) {
 
 export function getFields(state) {
     const wpufSubscriptions = getWpufSubscriptions();
-    console.log('[getFields] wpufSubscriptions:', wpufSubscriptions);
     const sections = wpufSubscriptions.fields;
-    console.log('[getFields] sections:', sections);
     const fields = [];
 
     // The actual structure from PHP is:
@@ -94,22 +92,18 @@ export function getFields(state) {
         if (!sections.hasOwnProperty(section)) {
             continue;
         }
-        console.log('[getFields] section:', section);
         for (const subsection in sections[section]) {
             if (!sections[section].hasOwnProperty(subsection)) {
                 continue;
             }
-            console.log('[getFields] subsection:', subsection);
             for (const field in sections[section][subsection]) {
                 if (sections[section][subsection].hasOwnProperty(field)) {
-                    console.log('[getFields] field:', field, 'data:', sections[section][subsection][field]);
                     fields.push(sections[section][subsection][field]);
                 }
             }
         }
     }
 
-    console.log('[getFields] returning fields:', fields);
     return fields;
 }
 

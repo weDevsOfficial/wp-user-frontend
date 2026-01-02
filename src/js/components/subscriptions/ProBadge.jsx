@@ -4,7 +4,7 @@
  */
 import { __ } from '@wordpress/i18n';
 
-const ProBadge = ( { isPro = true } ) => {
+const ProBadge = ( { isPro = false } ) => {
 	const wpufSubscriptions = window.wpufSubscriptions || {};
 
 	// Don't show badge if Pro is active or if not a Pro feature

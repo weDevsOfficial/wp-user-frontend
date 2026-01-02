@@ -41,6 +41,11 @@ class Admin_Subscription
         add_action( 'wpuf_load_subscription_page', [ $this, 'enqueue_admin_scripts' ] );
         add_action( 'wpuf_load_subscription_page', [ $this, 'modify_admin_footer_text' ] );
 
+        // React subscriptions page - always enqueue React version
+        add_action( 'wpuf_load_subscriptions_react_page', [ $this, 'remove_notices' ] );
+        add_action( 'wpuf_load_subscriptions_react_page', [ $this, 'enqueue_react_scripts' ] );
+        add_action( 'wpuf_load_subscriptions_react_page', [ $this, 'modify_admin_footer_text' ] );
+
         add_action( 'admin_init', [ $this, 'set_default_sort_order_for_existing_subscriptions' ] );
     }
 
@@ -125,6 +130,45 @@ class Admin_Subscription
             wp_enqueue_style( 'wpuf-admin-subscriptions' );
             $script_handle = 'wpuf-admin-subscriptions';
         }
+
+        wp_localize_script(
+            $script_handle,
+            'wpufSubscriptions',
+            [
+                'version'         => WPUF_VERSION,
+                'assetUrl'        => WPUF_ASSET_URI,
+                'siteUrl'         => site_url(),
+                'currencySymbol'  => wpuf_get_currency( 'symbol' ),
+                'supportUrl'      => esc_url(
+                    'https://wedevs.com/contact/?utm_source=wpuf-subscription'
+                ),
+                'isProActive'     => class_exists( 'WP_User_Frontend_Pro' ),
+                'upgradeUrl'      => esc_url(
+                    'https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=wpuf-subscription'
+                ),
+                'nonce'           => wp_create_nonce( 'wp_rest' ),
+                'rest_url'        => esc_url_raw( rest_url() ),
+                'sections'        => $this->get_sections(),
+                'subSections'     => $this->get_sub_sections(),
+                'fields'          => $this->get_fields(),
+                'dependentFields' => $this->get_dependent_fields(),
+                'perPage'         => apply_filters( 'wpuf_subscription_per_page', 9 ),
+            ]
+        );
+    }
+
+    /**
+     * Enqueue scripts for React subscriptions page
+     *
+     * @since 4.0.0
+     *
+     * @return void
+     */
+    public function enqueue_react_scripts() {
+        // Always enqueue React version for the React page
+        wp_enqueue_script( 'wpuf-admin-subscriptions-react', WPUF_ASSET_URI . '/react-build/js/subscriptions-react.min.js', [ 'wp-element', 'wp-data', 'wp-api-fetch', 'wp-i18n' ], WPUF_VERSION, true );
+        wp_enqueue_style( 'wpuf-subscriptions-react', WPUF_ASSET_URI . '/react-build/subscriptions-react.css', [], WPUF_VERSION );
+        $script_handle = 'wpuf-admin-subscriptions-react';
 
         wp_localize_script(
             $script_handle,

@@ -13,4 +13,11 @@ module.exports = {
     watchOptions: {
         ignored: ['**/assets/react-build/**', '**/node_modules/**'],
     },
+    resolve: {
+        ...defaultConfig.resolve,
+        alias: {
+            ...defaultConfig.resolve.alias,
+            'postcss-config$': path.resolve(__dirname, 'postcss.config.react.js'),
+        },
+    },
 };

@@ -95,7 +95,7 @@ class Admin {
         wp_enqueue_script( 'wpuf-admin' );
 
         $page = isset( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : '';
-        $selected_page = [ 'wpuf-post-forms', 'wpuf-profile-forms', 'wpuf_subscription', 'wpuf_transaction', 'wpuf_tools' ];
+        $selected_page = [ 'wpuf-post-forms', 'wpuf-profile-forms', 'wpuf_subscription', 'wpuf_subscriptions_react', 'wpuf_transaction', 'wpuf_tools' ];
 
         if ( in_array( $page, $selected_page ) ) {
             wpuf_load_headway_badge();

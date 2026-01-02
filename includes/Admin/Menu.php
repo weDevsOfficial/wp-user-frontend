@@ -56,6 +56,18 @@ class Menu {
             $this->all_submenu_hooks['subscription_hook'] = $subscription_hook;
             add_action( 'load-' . $subscription_hook, [ $this, 'subscription_menu_action' ] );
 
+            $subscriptions_react_hook = add_submenu_page(
+                $this->parent_slug,
+                __( 'Subscriptions React', 'wp-user-frontend' ),
+                __( 'Subscriptions React', 'wp-user-frontend' ),
+                $capability,
+                'wpuf_subscriptions_react',
+                [ $this, 'subscriptions_react_menu_page' ]
+            );
+
+            $this->all_submenu_hooks['subscriptions_react_hook'] = $subscriptions_react_hook;
+            add_action( 'load-' . $subscriptions_react_hook, [ $this, 'subscriptions_react_menu_action' ] );
+
             $transactions_page = add_submenu_page( $this->parent_slug, __( 'Transactions', 'wp-user-frontend' ), __( 'Transactions', 'wp-user-frontend' ), $capability, 'wpuf_transaction', [ $this, 'transactions_page' ] );
 
             add_action( 'load-' . $transactions_page, [ $this, 'transactions_screen_option' ] );
@@ -201,6 +213,14 @@ class Menu {
         do_action( 'wpuf_load_subscription_page' );
     }
 
+    public function subscriptions_react_menu_action() {
+        /**
+         * Backdoor for calling the React subscriptions menu hook.
+         * This hook won't get translated even the site language is changed
+         */
+        do_action( 'wpuf_load_subscriptions_react_page' );
+    }
+
     /**
      * The content of the Subscription page.
      *
@@ -210,6 +230,19 @@ class Menu {
      */
     public function subscription_menu_page() {
         $page = WPUF_INCLUDES . '/Admin/views/subscriptions.php';
+
+        wpuf_require_once( $page );
+    }
+
+    /**
+     * The content of the Subscriptions React page.
+     *
+     * @since 4.0.0
+     *
+     * @return void
+     */
+    public function subscriptions_react_menu_page() {
+        $page = WPUF_INCLUDES . '/Admin/views/subscriptions-react.php';
 
         wpuf_require_once( $page );
     }

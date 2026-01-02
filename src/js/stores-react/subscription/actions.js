@@ -132,11 +132,13 @@ export function setError(field, message) {
 
 export function setBlankItem() {
     return ({ dispatch, select }) => {
+        console.log('[setBlankItem] Starting...');
         const item = {
             meta_value: {},
         };
 
         const fields = select.getFields();
+        console.log('[setBlankItem] fields from selector:', fields);
 
         for (const field of fields) {
             if (field.hasOwnProperty('type') && field.type === 'inline') {
@@ -148,7 +150,9 @@ export function setBlankItem() {
             }
         }
 
+        console.log('[setBlankItem] populated item:', item);
         dispatch.setItem(item);
+        console.log('[setBlankItem] item dispatched to store');
     };
 }
 

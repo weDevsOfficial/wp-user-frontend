@@ -4,7 +4,7 @@ const colors = require('tailwindcss/colors');
 module.exports = {
     prefix: 'wpuf-',
     content: [
-        // Original paths (critical for form builder - keeps @tailwindcss/forms styles)
+        // Original paths (critical for form builder)
         './assets/**/*.{js,jsx,ts,tsx,vue,html}',
         './includes/Admin/**/*.php',
         './includes/Admin/template-parts/*.php',
@@ -28,11 +28,5 @@ module.exports = {
             }
         },
     },
-    plugins: [
-        require('@tailwindcss/forms'),
-        require('daisyui'),
-    ],
-    daisyui: {
-        themes: [],
-    },
+    plugins: [],
 }

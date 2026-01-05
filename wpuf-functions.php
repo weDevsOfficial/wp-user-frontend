@@ -5823,3 +5823,132 @@ function wpuf_render_login_layout_field( $args ) {
 
     echo '</fieldset>';
 }
+
+/**
+ * Get WPUF logout URL
+ *
+ * Returns the logout URL with proper nonce. If WPUF login override is enabled,
+ * it returns the WPUF logout URL, otherwise falls back to WordPress default.
+ *
+ * @since WPUF_SINCE
+ *
+ * @param string $redirect_to Optional. URL to redirect after logout.
+ *
+ * @return string The logout URL
+ */
+function wpuf_get_logout_url( $redirect_to = '' ) {
+    $override = wpuf_get_option( 'register_link_override', 'wpuf_profile', 'off' );
+
+    if ( 'on' === $override ) {
+        $login_page_id = wpuf_get_option( 'login_page', 'wpuf_profile', false );
+
+        if ( $login_page_id ) {
+            $root_url   = get_permalink( $login_page_id );
+            $logout_url = wp_nonce_url( add_query_arg( [ 'action' => 'logout' ], $root_url ), 'log-out' );
+
+            if ( ! empty( $redirect_to ) ) {
+                $logout_url = add_query_arg( 'redirect_to', urlencode( $redirect_to ), $logout_url );
+            }
+
+            return $logout_url;
+        }
+    }
+
+    return wp_logout_url( $redirect_to );
+}
+
+/**
+ * Add logout link to WordPress navigation menu
+ *
+ * @since WPUF_SINCE
+ *
+ * @param int    $menu_id     The menu ID to add the logout link to.
+ * @param string $menu_label  Optional. The label for the logout menu item.
+ * @param int    $parent_id   Optional. The parent menu item ID.
+ *
+ * @return int|WP_Error The menu item ID on success, WP_Error on failure.
+ */
+function wpuf_add_logout_to_menu( $menu_id, $menu_label = '', $parent_id = 0 ) {
+    if ( empty( $menu_label ) ) {
+        $menu_label = __( 'Logout', 'wp-user-frontend' );
+    }
+
+    $logout_url = wpuf_get_logout_url();
+
+    $menu_item_data = [
+        'menu-item-title'   => $menu_label,
+        'menu-item-url'     => $logout_url,
+        'menu-item-status'  => 'publish',
+        'menu-item-type'    => 'custom',
+        'menu-item-parent-id' => $parent_id,
+    ];
+
+    $menu_item_id = wp_update_nav_menu_item( $menu_id, 0, $menu_item_data );
+
+    // Add CSS class to identify WPUF logout menu items
+    if ( ! is_wp_error( $menu_item_id ) ) {
+        update_post_meta( $menu_item_id, '_menu_item_classes', [ 'wpuf-logout-link' ] );
+    }
+
+    return $menu_item_id;
+}
+
+/**
+ * Filter navigation menu items to hide logout link when user is not logged in
+ *
+ * @since WPUF_SINCE
+ *
+ * @param array $items The menu items.
+ *
+ * @return array Filtered menu items.
+ */
+function wpuf_filter_logout_menu_items( $items ) {
+    // If user is logged in, show all items
+    if ( is_user_logged_in() ) {
+        return $items;
+    }
+
+    // Remove logout items for non-logged-in users
+    foreach ( $items as $key => $item ) {
+        // Check if this is a logout link by URL or CSS class
+        if (
+            strpos( $item->url, 'action=logout' ) !== false ||
+            ( is_array( $item->classes ) && in_array( 'wpuf-logout-link', $item->classes, true ) )
+        ) {
+            unset( $items[ $key ] );
+        }
+    }
+
+    return $items;
+}
+add_filter( 'wp_nav_menu_objects', 'wpuf_filter_logout_menu_items', 10, 1 );
+
+/**
+ * Add CSS to hide logout links for non-logged-in users (for FSE themes)
+ *
+ * This handles cases where the logout link is in a block navigation
+ * that doesn't go through wp_nav_menu_objects filter.
+ *
+ * @since WPUF_SINCE
+ *
+ * @return void
+ */
+function wpuf_logout_visibility_css() {
+    // Only output CSS if user is NOT logged in
+    if ( is_user_logged_in() ) {
+        return;
+    }
+
+    ?>
+    <style type="text/css">
+        /* Hide logout links for non-logged-in users */
+        .wp-block-navigation a[href*="action=logout"],
+        .wp-block-navigation-item a[href*="action=logout"],
+        a.wpuf-logout-link,
+        .wpuf-logout-link {
+            display: none !important;
+        }
+    </style>
+    <?php
+}
+add_action( 'wp_head', 'wpuf_logout_visibility_css', 100 );

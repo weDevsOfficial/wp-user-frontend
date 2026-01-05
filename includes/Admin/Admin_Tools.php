@@ -380,6 +380,313 @@ class Admin_Tools {
     }
 
     /**
+     * Display shortcodes page with all available shortcodes
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function shortcodes_page() {
+        $shortcodes    = $this->get_all_shortcodes();
+        $is_pro_active = class_exists( 'WP_User_Frontend_Pro' );
+        ?>
+        <div class="wpuf-shortcodes-wrapper">
+            <p class="description" style="margin-bottom: 15px;">
+                <?php esc_html_e( 'Copy and paste these shortcodes into your pages or posts. Click the copy icon to copy a shortcode to your clipboard.', 'wp-user-frontend' ); ?>
+            </p>
+
+            <?php if ( ! $is_pro_active ) : ?>
+                <div class="notice notice-info inline" style="margin: 0 0 20px 0; padding: 10px 15px;">
+                    <p>
+                        <?php
+                        printf(
+                            /* translators: %s: Pro badge */
+                            esc_html__( 'Shortcodes marked with %s require WP User Frontend Pro.', 'wp-user-frontend' ),
+                            '<span style="background: #ff6b35; color: #fff; padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: 600; text-transform: uppercase;">Pro</span>'
+                        );
+                        ?>
+                        <a href="https://wedevs.com/wp-user-frontend-pro/" target="_blank" style="margin-left: 5px;"><?php esc_html_e( 'Upgrade to Pro', 'wp-user-frontend' ); ?></a>
+                    </p>
+                </div>
+            <?php endif; ?>
+
+            <?php foreach ( $shortcodes as $category_key => $category ) : ?>
+                <div class="postbox wpuf-shortcode-category" style="margin-bottom: 20px;">
+                    <h3 style="padding: 10px 15px; margin: 0; border-bottom: 1px solid #ccd0d4;">
+                        <?php echo esc_html( $category['title'] ); ?>
+                    </h3>
+                    <div class="inside" style="padding: 15px;">
+                        <?php if ( ! empty( $category['description'] ) ) : ?>
+                            <p class="description" style="margin-bottom: 15px;">
+                                <?php echo esc_html( $category['description'] ); ?>
+                            </p>
+                        <?php endif; ?>
+
+                        <table class="wp-list-table widefat fixed striped">
+                            <thead>
+                                <tr>
+                                    <th style="width: 25%;"><?php esc_html_e( 'Shortcode', 'wp-user-frontend' ); ?></th>
+                                    <th style="width: 45%;"><?php esc_html_e( 'Description', 'wp-user-frontend' ); ?></th>
+                                    <th style="width: 30%;"><?php esc_html_e( 'Example', 'wp-user-frontend' ); ?></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ( $category['shortcodes'] as $shortcode ) : ?>
+                                    <?php $is_pro_shortcode = ! empty( $shortcode['pro'] ); ?>
+                                    <tr<?php echo $is_pro_shortcode ? ' class="wpuf-pro-shortcode"' : ''; ?>>
+                                        <td>
+                                            <div class="wpuf-shortcode-copy-wrapper" style="display: flex; align-items: center; gap: 8px;">
+                                                <code class="wpuf-shortcode-code" style="background: #f0f0f1; padding: 4px 8px; border-radius: 3px;">
+                                                    <?php echo esc_html( $shortcode['code'] ); ?>
+                                                </code>
+                                                <?php if ( $is_pro_shortcode ) : ?>
+                                                    <span class="wpuf-pro-badge" style="background: #ff6b35; color: #fff; padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: 600; text-transform: uppercase;"><?php esc_html_e( 'Pro', 'wp-user-frontend' ); ?></span>
+                                                <?php endif; ?>
+                                                <button type="button" class="wpuf-copy-shortcode button button-small" data-shortcode="<?php echo esc_attr( $shortcode['code'] ); ?>" title="<?php esc_attr_e( 'Copy to clipboard', 'wp-user-frontend' ); ?>">
+                                                    <span class="dashicons dashicons-clipboard" style="font-size: 16px; width: 16px; height: 16px; vertical-align: middle;"></span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <?php echo esc_html( $shortcode['description'] ); ?>
+                                        </td>
+                                        <td>
+                                            <?php if ( ! empty( $shortcode['example'] ) ) : ?>
+                                                <div class="wpuf-shortcode-copy-wrapper" style="display: flex; align-items: center; gap: 8px;">
+                                                    <code style="background: #e7f3ff; padding: 4px 8px; border-radius: 3px; font-size: 12px;">
+                                                        <?php echo esc_html( $shortcode['example'] ); ?>
+                                                    </code>
+                                                    <button type="button" class="wpuf-copy-shortcode button button-small" data-shortcode="<?php echo esc_attr( $shortcode['example'] ); ?>" title="<?php esc_attr_e( 'Copy to clipboard', 'wp-user-frontend' ); ?>">
+                                                        <span class="dashicons dashicons-clipboard" style="font-size: 16px; width: 16px; height: 16px; vertical-align: middle;"></span>
+                                                    </button>
+                                                </div>
+                                            <?php else : ?>
+                                                <span class="description"><?php esc_html_e( 'Same as shortcode', 'wp-user-frontend' ); ?></span>
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+
+        <style>
+            .wpuf-shortcodes-wrapper .wpuf-copy-shortcode {
+                padding: 2px 6px;
+                min-height: 28px;
+            }
+            .wpuf-shortcodes-wrapper .wpuf-copy-shortcode:hover {
+                background: #2271b1;
+                color: #fff;
+                border-color: #2271b1;
+            }
+            .wpuf-shortcodes-wrapper .wpuf-copy-shortcode:hover .dashicons {
+                color: #fff;
+            }
+            .wpuf-shortcodes-wrapper .wpuf-copy-shortcode.copied {
+                background: #00a32a;
+                border-color: #00a32a;
+                color: #fff;
+            }
+            .wpuf-shortcodes-wrapper .wpuf-copy-shortcode.copied .dashicons {
+                color: #fff;
+            }
+            .wpuf-shortcodes-wrapper .wpuf-copy-shortcode.copied .dashicons::before {
+                content: "\f147";
+            }
+            .wpuf-shortcode-category table td,
+            .wpuf-shortcode-category table th {
+                vertical-align: middle;
+            }
+        </style>
+
+        <script>
+            (function($) {
+                'use strict';
+
+                $(document).on('click', '.wpuf-copy-shortcode', function(e) {
+                    e.preventDefault();
+
+                    var $button = $(this);
+                    var shortcode = $button.data('shortcode');
+
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(shortcode).then(function() {
+                            $button.addClass('copied');
+                            setTimeout(function() {
+                                $button.removeClass('copied');
+                            }, 1500);
+                        });
+                    } else {
+                        var $temp = $('<textarea>');
+                        $('body').append($temp);
+                        $temp.val(shortcode).select();
+                        document.execCommand('copy');
+                        $temp.remove();
+
+                        $button.addClass('copied');
+                        setTimeout(function() {
+                            $button.removeClass('copied');
+                        }, 1500);
+                    }
+                });
+            })(jQuery);
+        </script>
+        <?php
+    }
+
+    /**
+     * Get all available shortcodes organized by category
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array
+     */
+    public function get_all_shortcodes() {
+        $shortcodes = [
+            'account' => [
+                'title'       => __( 'Account & Profile', 'wp-user-frontend' ),
+                'description' => __( 'Shortcodes for user account management, login, and registration.', 'wp-user-frontend' ),
+                'shortcodes'  => [
+                    [
+                        'code'        => '[wpuf_account]',
+                        'description' => __( 'Displays the user account page with profile, posts, and subscription info.', 'wp-user-frontend' ),
+                        'example'     => '',
+                    ],
+                    [
+                        'code'        => '[wpuf_dashboard]',
+                        'description' => __( 'Shows the frontend dashboard where users can view and manage their posts.', 'wp-user-frontend' ),
+                        'example'     => '[wpuf_dashboard post_type="post"]',
+                    ],
+                    [
+                        'code'        => '[wpuf_editprofile]',
+                        'description' => __( 'Displays the profile edit form for logged-in users.', 'wp-user-frontend' ),
+                        'example'     => '',
+                    ],
+                    [
+                        'code'        => '[wpuf-login]',
+                        'description' => __( 'Displays a login form for users.', 'wp-user-frontend' ),
+                        'example'     => '[wpuf-login redirect="https://example.com"]',
+                    ],
+                    [
+                        'code'        => '[wpuf-registration]',
+                        'description' => __( 'Displays a registration form. Use id attribute to specify a form.', 'wp-user-frontend' ),
+                        'example'     => '[wpuf-registration id="123"]',
+                    ],
+                    [
+                        'code'        => '[wpuf_profile]',
+                        'description' => __( 'Displays a profile form for users to update their profile. (Pro)', 'wp-user-frontend' ),
+                        'example'     => '[wpuf_profile id="123"]',
+                        'pro'         => true,
+                    ],
+                ],
+            ],
+            'forms' => [
+                'title'       => __( 'Post Forms', 'wp-user-frontend' ),
+                'description' => __( 'Shortcodes for displaying and editing post submission forms.', 'wp-user-frontend' ),
+                'shortcodes'  => [
+                    [
+                        'code'        => '[wpuf_form]',
+                        'description' => __( 'Displays a post submission form. Use id attribute to specify which form.', 'wp-user-frontend' ),
+                        'example'     => '[wpuf_form id="123"]',
+                    ],
+                    [
+                        'code'        => '[wpuf_edit]',
+                        'description' => __( 'Allows users to edit their submitted posts.', 'wp-user-frontend' ),
+                        'example'     => '',
+                    ],
+                ],
+            ],
+            'subscription' => [
+                'title'       => __( 'Subscription & Payments', 'wp-user-frontend' ),
+                'description' => __( 'Shortcodes for subscription packs and user subscription information.', 'wp-user-frontend' ),
+                'shortcodes'  => [
+                    [
+                        'code'        => '[wpuf_sub_pack]',
+                        'description' => __( 'Displays all available subscription packs/pricing plans.', 'wp-user-frontend' ),
+                        'example'     => '[wpuf_sub_pack]',
+                    ],
+                    [
+                        'code'        => '[wpuf_sub_info]',
+                        'description' => __( 'Shows the current user\'s subscription information and status.', 'wp-user-frontend' ),
+                        'example'     => '',
+                    ],
+                ],
+            ],
+            'user_directory' => [
+                'title'       => __( 'User Directory', 'wp-user-frontend' ),
+                'description' => __( 'Shortcodes for displaying and managing user directories.', 'wp-user-frontend' ),
+                'shortcodes'  => [
+                    [
+                        'code'        => '[wpuf-edit-users]',
+                        'description' => __( 'Displays a list of users that can be edited (admin only).', 'wp-user-frontend' ),
+                        'example'     => '',
+                    ],
+                    [
+                        'code'        => '[wpuf_user_listing]',
+                        'description' => __( 'Displays a user directory listing with search and filters. (Pro)', 'wp-user-frontend' ),
+                        'example'     => '[wpuf_user_listing id="123"]',
+                        'pro'         => true,
+                    ],
+                    [
+                        'code'        => '[wpuf_user_listing_id]',
+                        'description' => __( 'Displays a single user profile from the directory. (Pro)', 'wp-user-frontend' ),
+                        'example'     => '[wpuf_user_listing_id id="123"]',
+                        'pro'         => true,
+                    ],
+                ],
+            ],
+            'content_restriction' => [
+                'title'       => __( 'Content Restriction (Pro)', 'wp-user-frontend' ),
+                'description' => __( 'Shortcodes for restricting content based on subscriptions or user roles.', 'wp-user-frontend' ),
+                'shortcodes'  => [
+                    [
+                        'code'        => '[wpuf_restrict]',
+                        'description' => __( 'Restricts content inside the shortcode to specific subscription packs.', 'wp-user-frontend' ),
+                        'example'     => '[wpuf_restrict pack="1,2"]Content here[/wpuf_restrict]',
+                        'pro'         => true,
+                    ],
+                    [
+                        'code'        => '[wpuf_partial_restriction]',
+                        'description' => __( 'Shows partial content with a message to subscribe for full access.', 'wp-user-frontend' ),
+                        'example'     => '[wpuf_partial_restriction]',
+                        'pro'         => true,
+                    ],
+                ],
+            ],
+            'utility' => [
+                'title'       => __( 'Utility Shortcodes', 'wp-user-frontend' ),
+                'description' => __( 'Helper shortcodes for displaying meta fields and other utilities.', 'wp-user-frontend' ),
+                'shortcodes'  => [
+                    [
+                        'code'        => '[wpuf-meta]',
+                        'description' => __( 'Displays a custom field/meta value. Use name attribute to specify the meta key.', 'wp-user-frontend' ),
+                        'example'     => '[wpuf-meta name="my_custom_field"]',
+                    ],
+                    [
+                        'code'        => '[wpuf_qr]',
+                        'description' => __( 'Displays a QR code for a field value. (Pro)', 'wp-user-frontend' ),
+                        'example'     => '[wpuf_qr]',
+                        'pro'         => true,
+                    ],
+                ],
+            ],
+        ];
+
+        /**
+         * Filter the shortcodes list for the tools page
+         *
+         * @since WPUF_SINCE
+         *
+         * @param array $shortcodes The shortcodes array organized by category
+         */
+        return apply_filters( 'wpuf_tools_shortcodes_list', $shortcodes );
+    }
+
+    /**
      * Handle tools page action
      *
      * @return void

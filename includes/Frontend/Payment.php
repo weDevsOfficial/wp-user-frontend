@@ -473,36 +473,37 @@ class Payment {
      */
     public static function insert_payment( $data, $transaction_id = 0, $recurring = false ) {
         global $wpdb;
+        
         $user_id = get_current_user_id();
         //check if it's already there
         $result = $wpdb->get_row( $wpdb->prepare( 'SELECT transaction_id
             FROM ' . $wpdb->prefix . 'wpuf_transaction
             WHERE transaction_id = %s LIMIT 1', $transaction_id ) );
-        if ( $recurring !== false ) {
-            $profile_id = $data['profile_id'];
-        }
-        if ( isset( $data['profile_id'] ) || empty( $data['profile_id'] ) ) {
-            unset( $data['profile_id'] );
-        }
-        if ( empty( $data['tax'] ) ) {
-            $data['tax'] = floatval( $data['cost'] ) - floatval( $data['subtotal'] );
-        }
+        
+        // Store profile_id separately if it exists (needed for wpuf_payment_received action)
+        // but don't insert it into database as the column doesn't exist
+        $profile_id = isset( $data['profile_id'] ) ? $data['profile_id'] : null;
+        
         if ( wpuf_get_option( 'show_address', 'wpuf_address_options', false ) && ! empty( $data['user_id'] ) ) {
             $data['payer_address'] = wpuf_get_user_address( $data['user_id'] );
         }
         if ( ! empty( $data['payer_address'] ) ) {
             $data['payer_address'] = maybe_serialize( $data['payer_address'] );
         }
-        if ( isset( $profile_id ) ) {
-            $data['profile_id'] = $profile_id;
+        
+        // Create a copy of data for database insert (without profile_id)
+        $db_data = $data;
+        if ( isset( $db_data['profile_id'] ) ) {
+            unset( $db_data['profile_id'] );
         }
 
+
         if ( ! $result ) {
-            $wpdb->insert( $wpdb->prefix . 'wpuf_transaction', $data );
+            $wpdb->insert( $wpdb->prefix . 'wpuf_transaction', $db_data );
 
             do_action( 'wpuf_payment_received', $data, $recurring );
         } else {
-            $wpdb->update( $wpdb->prefix . 'wpuf_transaction', $data, [ 'transaction_id' => $transaction_id ] );
+            $wpdb->update( $wpdb->prefix . 'wpuf_transaction', $db_data, [ 'transaction_id' => $transaction_id ] );
         }
         //workaround for subscriptions can't be assigned from user profile regression
         if ( ! did_action( 'wpuf_payment_received' ) ) {

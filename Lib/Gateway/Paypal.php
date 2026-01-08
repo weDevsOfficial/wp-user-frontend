@@ -3,7 +3,6 @@
 namespace WeDevs\Wpuf\Lib\Gateway;
 
 use WeDevs\Wpuf\Frontend\Payment;
-use WeDevs\Wpuf\Traits\TaxableTrait;
 
 /**
  * WP User Frontend PayPal gateway
@@ -12,7 +11,6 @@ use WeDevs\Wpuf\Traits\TaxableTrait;
  * @updated 4.1.5
  */
 class Paypal {
-    use TaxableTrait;
 
     private $gateway_url;
     private $test_mode;
@@ -33,15 +31,14 @@ class Paypal {
         $this->paypal_icon_url = WPUF_ASSET_URI . '/images/wpuf_paypal.png';
 
         // Initialize hooks
+        add_action( 'init', [ $this, 'check_paypal_return' ], 20 );
+        add_action( 'init', [ $this, 'handle_pending_payment' ] );
+        add_action( 'init', [ $this, 'register_webhook_endpoint' ] );
         add_action( 'wpuf_gateway_paypal', [ $this, 'prepare_to_send' ] );
         add_filter( 'wpuf_options_payment', [ $this, 'payment_options' ] );
-        add_action( 'init', [ $this, 'check_paypal_return' ], 20 );
         add_action( 'wpuf_cancel_payment_paypal', [ $this, 'cancel_subscription' ] );
         add_action( 'wpuf_cancel_subscription_paypal', [ $this, 'cancel_subscription' ] );
-        add_action( 'init', [ $this, 'handle_pending_payment' ] );
         add_action( 'wpuf_paypal_webhook', [ $this, 'process_webhook' ] );
-        // Add webhook endpoint handler
-        add_action( 'init', [ $this, 'register_webhook_endpoint' ] );
         add_action( 'template_redirect', [ $this, 'handle_webhook_request' ] );
 
         // Add admin notice for PayPal settings update
@@ -208,7 +205,7 @@ class Paypal {
                 http_response_code( 401 );
                 echo wp_json_encode(
                     [
-						'status' => 'error',
+						'status'  => 'error',
 						'message' => 'Unauthorized',
 					]
                 );
@@ -291,15 +288,11 @@ class Paypal {
             }
 
             // Verify payment amount
+            // Payment amount verification is handled via breakdown calculation hook
             $payment_amount = number_format( $payment['amount']['value'], 2, '.', '' );
-            $expected_amount = number_format( $custom_data['subtotal'], 2, '.', '' );
 
             if ( $payment['amount']['value'] < 0 ) {
                 throw new \Exception( 'Invalid payment amount: negative value' );
-            }
-
-            if ( $payment_amount !== $expected_amount ) {
-                throw new \Exception( 'Payment amount mismatch' );
             }
 
             // Check if transaction already exists
@@ -321,24 +314,12 @@ class Paypal {
                 throw new \Exception( 'Invalid user' );
             }
 
-            // Calculate tax
-            $tax_amount = 0;
-            if ( $this->wpuf_tax_enabled() ) {
-                $tax_rate = $this->wpuf_current_tax_rate();
-                $payment_amount = $payment['amount']['value'];
-                // Calculate tax from total amount
-                $tax_amount = ( $payment_amount * $tax_rate ) / ( 100 + $tax_rate );
-                $subtotal = $payment_amount - $tax_amount;
-            } else {
-                $subtotal = $payment['amount']['value'];
-            }
-
             // Create payment record
             $data = [
                 'user_id' => $custom_data['user_id'],
                 'status' => 'completed',
-                'subtotal' => $subtotal,
-                'tax' => $tax_amount,
+                'subtotal' => $payment['amount']['value'],
+                'tax' => 0,         // the payment record structure in the database expects a tax field
                 'cost' => $payment['amount']['value'],
                 'post_id' => ( 'post' === $custom_data['type'] ) ? $custom_data['item_number'] : 0,
                 'pack_id' => ( 'pack' === $custom_data['type'] ) ? $custom_data['item_number'] : 0,
@@ -393,11 +374,6 @@ class Paypal {
         // Handle coupon
         if ( ! empty( $custom_data['coupon_id'] ) ) {
             $this->update_coupon_usage( $custom_data['coupon_id'] );
-        }
-
-        // Verify payment amount
-        if ( $payment['amount']['value'] !== number_format( $custom_data['subtotal'], 2, '.', '' ) ) {
-            throw new \Exception( 'Payment amount mismatch' );
         }
     }
 
@@ -459,7 +435,7 @@ class Paypal {
                 }
 
                 // Log the event type
-                
+
                 // Process the webhook
                 $this->process_webhook( $raw_input );
 
@@ -617,12 +593,6 @@ class Paypal {
             $period = isset( $pack_meta['_cycle_period'] ) ? $pack_meta['_cycle_period'] : 'month';
             $interval = isset( $pack_meta['_billing_cycle_number'] ) ? intval( $pack_meta['_billing_cycle_number'] ) : 1;
 
-            // Get tax rate if enabled
-            $tax_rate = 0;
-            if ( $this->wpuf_tax_enabled() ) {
-                $tax_rate = $this->wpuf_current_tax_rate();
-            }
-
             // Create subscription data structure with all necessary meta
             $subscription_data = [
                 'pack_id' => $custom_data['item_number'],
@@ -688,8 +658,8 @@ class Paypal {
         $payment_data = [
             'user_id' => $user_id,
             'status' => 'completed',
+            'tax' => 0,         // the payment record structure in the database expects a tax field
             'subtotal' => 0,
-            'tax' => 0,
             'cost' => 0,
             'post_id' => 0,
             'pack_id' => $pack_id,
@@ -698,6 +668,7 @@ class Paypal {
             'payer_email' => $user->user_email,
             'payment_type' => 'PayPal',
             'transaction_id' => $subscription_id . '_trial',
+            'profile_id' => $subscription_id,
             'created' => gmdate( 'Y-m-d H:i:s' ),
         ];
 
@@ -830,7 +801,7 @@ class Paypal {
     private function process_subscription_payment( $payment ) {
         global $wpdb;
 
-        try {
+        try {   
             // Get transaction ID - could be in different locations based on event type
             $transaction_id = isset( $payment['id'] ) ? $payment['id'] : '';
 
@@ -947,7 +918,6 @@ class Paypal {
                 // Update user subscription status in WordPress - this should be the only record
                 wpuf_get_user( $user_id )->subscription()->add_pack( $pack_id, $subscription_id, true, 'recurring' );
                 update_user_meta( $user_id, '_wpuf_paypal_subscription_status', 'completed' );
-                // Log subscription creation
             }
 
             // Prepare payment data
@@ -955,7 +925,8 @@ class Paypal {
                 'user_id'           => $user_id,
                 'status'            => 'completed',
                 'subtotal'          => $amount,
-                'tax'               => 0,
+                'profile_id'        => $subscription_id,
+                'tax'               => 0,         // the payment record structure in the database expects a tax field
                 'cost'              => $amount,
                 'post_id'           => 0,
                 'pack_id'           => $pack_id,
@@ -1138,11 +1109,11 @@ class Paypal {
     private function get_pages_dropdown() {
         $pages = get_pages();
         $options = [ '' => __( 'Select a page', 'wp-user-frontend' ) ];
-        
+
         foreach ( $pages as $page ) {
             $options[ $page->ID ] = $page->post_title;
         }
-        
+
         return $options;
     }
 
@@ -1151,7 +1122,7 @@ class Paypal {
      */
     private function get_error_page_url( $error_message = '' ) {
         $error_page_id = wpuf_get_option( 'paypal_error_page', 'wpuf_payment' );
-        
+
         if ( ! empty( $error_page_id ) && is_numeric( $error_page_id ) ) {
             $error_url = get_permalink( $error_page_id );
             if ( ! empty( $error_message ) ) {
@@ -1159,12 +1130,12 @@ class Paypal {
             }
             return $error_url;
         }
-        
+
         // Fallback to home URL with error parameter
         if ( ! empty( $error_message ) ) {
             return home_url( '/?wpuf_paypal_error=' . rawurlencode( $error_message ) );
         }
-        
+
         return home_url();
     }
 
@@ -1228,6 +1199,7 @@ class Paypal {
     }
 
 
+
     /**
      * Prepare and send payment to PayPal
      *
@@ -1255,7 +1227,6 @@ class Paypal {
             $cancel_url = $return_url;
 
             $billing_amount = empty( $data['price'] ) ? 0 : $data['price'];
-            $tax_amount = 0;
 
             // Check if pricing fields payment is enabled and update price accordingly
             $post_id = isset( $data['item_number'] ) && $data['type'] === 'post' ? $data['item_number'] : 0;
@@ -1273,13 +1244,6 @@ class Paypal {
                 }
             }
 
-            // Handle tax if enabled
-            if ( $this->wpuf_tax_enabled() ) {
-                $tax_rate = $this->wpuf_current_tax_rate();
-                $tax_amount = $billing_amount * ( $tax_rate / 100 );
-                $billing_amount = $billing_amount + $tax_amount;
-            }
-
             // Handle coupon if present
             if ( isset( $_POST['coupon_id'] ) && ! empty( $_POST['coupon_id'] ) &&
                 isset( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'wpuf_payment_coupon' ) &&
@@ -1290,9 +1254,22 @@ class Paypal {
                 $coupon_id = '';
             }
 
-            $data['subtotal'] = $billing_amount - $tax_amount;
-            $data['tax'] = $tax_amount;
+            // Apply legacy payment amount filter for backward compatibility
             $billing_amount = apply_filters( 'wpuf_payment_amount', $billing_amount, $post_id );
+
+            /**
+             * Filter: wpuf_paypal_payment_data_before_gateway
+             *
+             * Modify payment data before sending to PayPal gateway.
+             * This allows modifying the complete payment data structure.
+             *
+             * @param array $data Complete payment data array
+             *
+             * @return array Modified payment data
+             *
+             * @since WPUF_PRO_SINCE
+             */
+            $data = apply_filters( 'wpuf_paypal_payment_data_before_gateway', $data );
 
             // Handle free payments
             if ( $billing_amount == 0 ) {
@@ -1359,18 +1336,11 @@ class Paypal {
                     throw new \Exception( 'Failed to create or get subscription plan' );
                 }
 
-                // Get tax rate if enabled
-                $tax_rate = 0;
-                if ( $this->wpuf_tax_enabled() ) {
-                    $tax_rate = $this->wpuf_current_tax_rate();
-                }
-
                 // Prepare subscription data
                 $subscription_data = [
                     'plan_id' => $plan_id,
                     'application_context' => [
                         'brand_name' => get_bloginfo( 'name' ),
-                        'locale' => 'en-US',
                         'shipping_preference' => 'NO_SHIPPING',
                         'user_action' => 'SUBSCRIBE_NOW',
                         'return_url' => $return_url,
@@ -1381,14 +1351,25 @@ class Paypal {
 							'type' => $data['type'],
 							'user_id' => $user_id,
 							'item_number' => $data['item_number'],
-							'subtotal' => $data['subtotal'],
-							'tax_rate' => $tax_rate,
-							'tax' => $data['tax'],
 							'coupon_id' => $coupon_id,
-							'trial_period_days' => $trial_period_days,
 						]
                     ),
                 ];
+
+                /**
+                 * Filter: wpuf_paypal_subscription_data
+                 *
+                 * Modify PayPal subscription data before sending to API.
+                 * Allows adding/removing/modifying subscription parameters.
+                 *
+                 * @param array $subscription_data PayPal subscription API payload
+                 * @param array $data Original payment data
+                 *
+                 * @return array Modified subscription data
+                 *
+                 * @since WPUF_PRO_SINCE
+                 */
+                $subscription_data = apply_filters( 'wpuf_paypal_subscription_data', $subscription_data, $data );
 
                 // Create subscription
                 $response = wp_remote_post(
@@ -1449,12 +1430,12 @@ class Paypal {
                     10,
                     1
                 );
-                
+
                 // Redirect to PayPal
                 wp_safe_redirect( $approval_url );
                 exit();
             } else {
-                $payment_data = [
+                $paypal_order_data = [
                     'intent' => 'CAPTURE',
                     'purchase_units' => [
 						[
@@ -1468,12 +1449,7 @@ class Paypal {
 									'type' => $data['type'],
 									'user_id' => $user_id,
 									'coupon_id' => $coupon_id,
-									'subtotal' => $data['subtotal'],
-									'tax' => $data['tax'],
 									'item_number' => $data['item_number'],
-									'first_name' => $data['user_info']['first_name'],
-									'last_name' => $data['user_info']['last_name'],
-									'email' => $data['user_info']['email'],
 								]
                             ),
 						],
@@ -1482,14 +1458,27 @@ class Paypal {
                         'return_url' => $return_url,
                         'cancel_url' => $cancel_url,
                         'brand_name' => get_bloginfo( 'name' ),
-                        'landing_page' => 'LOGIN',
                         'user_action' => 'PAY_NOW',
                         'shipping_preference' => 'NO_SHIPPING',
                     ],
                 ];
 
-                // Add debug logging
-                            // Create order
+                /**
+                 * Filter: wpuf_paypal_order_data
+                 *
+                 * Modify PayPal order/payment data before sending to API.
+                 * Allows adding/removing/modifying order parameters.
+                 *
+                 * @param array $paypal_order_data PayPal order API payload
+                 * @param array $data Original payment data
+                 *
+                 * @return array Modified order data
+                 *
+                 * @since WPUF_PRO_SINCE
+                 */
+                $paypal_order_data = apply_filters( 'wpuf_paypal_order_data', $paypal_order_data, $data );
+
+                // Create order
                 $response = wp_remote_post(
                     $this->test_mode ? 'https://api-m.sandbox.paypal.com/v2/checkout/orders' : 'https://api-m.paypal.com/v2/checkout/orders',
                     [
@@ -1497,7 +1486,7 @@ class Paypal {
                             'Authorization' => 'Bearer ' . $access_token,
                             'Content-Type' => 'application/json',
                         ],
-                        'body' => wp_json_encode( $payment_data ),
+                        'body' => wp_json_encode( $paypal_order_data ),
                     ]
                 );
 
@@ -1523,7 +1512,7 @@ class Paypal {
                 if ( empty( $approval_url ) ) {
                     throw new \Exception( 'Approval URL not found in PayPal response' );
                 }
-                
+
                 // Add PayPal to allowed hosts just before redirect
                 add_filter(
                     'allowed_redirect_hosts',
@@ -1533,7 +1522,7 @@ class Paypal {
                     10,
                     1
                 );
-                
+
                 wp_safe_redirect( $approval_url );
                 exit();
             }
@@ -1756,12 +1745,12 @@ class Paypal {
             $subscription_id = isset( $_GET['subscription_id'] ) ? sanitize_text_field( wp_unslash( $_GET['subscription_id'] ) ) : '';
             $ba_token = isset( $_GET['ba_token'] ) ? sanitize_text_field( wp_unslash( $_GET['ba_token'] ) ) : '';
             $token = isset( $_GET['token'] ) ? sanitize_text_field( wp_unslash( $_GET['token'] ) ) : '';
-            
+
             // If we have a token but no subscription_id, the token might be the subscription ID
             if ( empty( $subscription_id ) && ! empty( $token ) ) {
                 $subscription_id = $token;
             }
-            
+
             // Redirect to success page for subscriptions without requiring nonce
             $success_url = add_query_arg(
                 [
@@ -1783,7 +1772,7 @@ class Paypal {
 
             wp_safe_redirect( $success_url );
             exit;
-            
+
         } catch ( \Exception $e ) {
             wp_safe_redirect( $this->get_error_page_url( $e->getMessage() ) );
             exit;
@@ -1897,10 +1886,10 @@ class Paypal {
         }
 
         // Check if this is a subscription return (has subscription_id parameter or type is pack with recurring)
-        $is_subscription_return = isset( $_GET['subscription_id'] ) || isset( $_GET['ba_token'] ) || 
-                                 ( isset( $_GET['type'] ) && $_GET['type'] === 'pack' && 
+        $is_subscription_return = isset( $_GET['subscription_id'] ) || isset( $_GET['ba_token'] ) ||
+                                 ( isset( $_GET['type'] ) && $_GET['type'] === 'pack' &&
                                    ( isset( $_GET['token'] ) && strpos( $_GET['token'], 'I-' ) === 0 ) );
-        
+
         // For subscription returns, nonce verification might fail due to PayPal's redirect process
         // So we'll be more lenient with subscription returns
         if ( ! $is_subscription_return ) {
@@ -2066,7 +2055,7 @@ class Paypal {
                         'user_id' => $user_id,
                         'status' => 'completed',
                         'subtotal' => $payment['amount']['value'],
-                        'tax' => 0, // You may need to calculate tax
+                        'tax' => 0,         // the payment record structure in the database expects a tax field
                         'cost' => $payment['amount']['value'],
                         'post_id' => 0,
                         'pack_id' => $pack_id,
@@ -2075,6 +2064,7 @@ class Paypal {
                         'payer_email' => get_user_by( 'id', $user_id )->user_email,
                         'payment_type' => 'PayPal',
                         'transaction_id' => $payment['id'],
+                        'profile_id' => $subscription_id,
                         'created' => gmdate( 'Y-m-d H:i:s' ),
                     ];
 

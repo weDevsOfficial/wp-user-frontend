@@ -1879,7 +1879,18 @@ function wpuf_get_form_fields( $form_id ) {
         $form_fields[] = apply_filters( 'wpuf-get-form-fields', $field );
     }
 
-    return $form_fields;
+    /**
+     * Filter form fields data array before returning
+     *
+     * Allows filtering the complete form fields array. Used to filter out
+     * pro-only fields when pro plugin is not active.
+     *
+     * @since WPUF_SINCE
+     *
+     * @param array $form_fields The array of form fields data
+     * @param int   $form_id     The form ID
+     */
+    return apply_filters( 'wpuf_form_fields_data', $form_fields, $form_id );
 }
 
 add_action( 'wp_ajax_wpuf_get_child_cat', 'wpuf_get_child_cats' );

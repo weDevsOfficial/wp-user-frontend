@@ -485,11 +485,16 @@ class Paypal {
                 'https://api.sandbox.paypal.com/v1/notifications/verify-webhook-signature' :
                 'https://api.paypal.com/v1/notifications/verify-webhook-signature';
 
+            $webhook_id = $this->webhook_id;
+            if ( empty( $webhook_id ) ) {
+                return false;
+            }
+
             $verification_data = [
                 'transmission_id'    => $headers['paypal-transmission-id'],
                 'transmission_time'  => $headers['paypal-transmission-time'],
                 'cert_url'           => $headers['paypal-cert-url'],
-                'webhook_id'         => $this->webhook_id,
+                'webhook_id'         => $webhook_id,
                 'webhook_event'      => json_decode( $raw_input, false ),
                 'transmission_sig'   => $headers['paypal-transmission-sig'],
                 'auth_algo'          => $headers['paypal-auth-algo'],
@@ -801,7 +806,7 @@ class Paypal {
     private function process_subscription_payment( $payment ) {
         global $wpdb;
 
-        try {   
+        try {
             // Get transaction ID - could be in different locations based on event type
             $transaction_id = isset( $payment['id'] ) ? $payment['id'] : '';
 
@@ -1398,11 +1403,11 @@ class Paypal {
                 set_transient(
                     'wpuf_paypal_pending_' . $body['id'],
                     [
-                        'user_id' => $user_id,
-                        'pack_id' => $data['item_number'],
-                        'subscription_id' => $body['id'],
-                        'status' => 'pending',
-                        'created' => gmdate( 'Y-m-d H:i:s' ),
+                        'user_id'           => $user_id,
+                        'pack_id'           => $data['item_number'],
+                        'subscription_id'   => $body['id'],
+                        'status'            => 'pending',
+                        'created'           => gmdate( 'Y-m-d H:i:s' ),
                         'trial_period_days' => $trial_period_days,
                     ],
                     HOUR_IN_SECONDS * 24 // Expire after 24 hours

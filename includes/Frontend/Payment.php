@@ -24,19 +24,29 @@ class Payment {
     }
 
     public static function get_payment_gateways() {
-        // default, built-in gateways
-        $gateways = [
-            'paypal' => [
-                'admin_label'    => __( 'PayPal', 'wp-user-frontend' ),
-                'checkout_label' => __( 'PayPal', 'wp-user-frontend' ),
-                'icon'           => apply_filters( 'wpuf_paypal_checkout_icon', WPUF_ASSET_URI . '/images/paypal.png' ),
-            ],
-            'bank'   => [
-                'admin_label'    => __( 'Bank Payment', 'wp-user-frontend' ),
-                'checkout_label' => __( 'Bank Payment', 'wp-user-frontend' ),
-            ],
-        ];
-        $gateways = apply_filters( 'wpuf_payment_gateways', $gateways );
+        /**
+         * Filter payment gateways
+         * 
+         * This filter now works with the new Gateway Manager architecture.
+         * Gateways registered via Gateway_Manager will be automatically included.
+         * 
+         * For backward compatibility, you can still add gateways using this filter:
+         * 
+         * add_filter( 'wpuf_payment_gateways', function( $gateways ) {
+         *     $gateways['custom_gateway'] = [
+         *         'admin_label'    => 'Custom Gateway',
+         *         'checkout_label' => 'Custom Gateway',
+         *         'icon'           => 'url-to-icon',
+         *     ];
+         *     return $gateways;
+         * });
+         * 
+         * @since 0.8
+         * @since WPUF_PRO_SINCE Updated to work with Gateway Manager
+         * 
+         * @param array $gateways Array of gateway configurations
+         */
+        $gateways = apply_filters( 'wpuf_payment_gateways', [] );
 
         return $gateways;
     }

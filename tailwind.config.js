@@ -38,7 +38,9 @@ module.exports = {
                     '.wpuf_packs',
                     '#wpuf-subscription-page',
                     '#wpuf-form-builder',
-                    '#wpuf-profile-forms-list-table-view'
+                    '#wpuf-profile-forms-list-table-view',
+                    '#wpuf-post-forms-list-table-view',
+                    '.swal2-container'
                 ], {}
             ),
         } ),

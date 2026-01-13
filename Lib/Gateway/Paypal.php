@@ -315,7 +315,8 @@ class Paypal {
 
             // Extract tax and subtotal from PayPal's breakdown
             // PayPal returns the breakdown we sent during order creation
-            $subtotal = $payment['amount']['value']; // Default to total
+            $total_amount = floatval( $payment['amount']['value'] );
+            $subtotal = $total_amount; // Default to total
             $tax = 0;
 
             if ( isset( $payment['amount']['breakdown'] ) ) {
@@ -328,11 +329,75 @@ class Paypal {
                 if ( isset( $payment['amount']['breakdown']['tax_total']['value'] ) ) {
                     $tax = floatval( $payment['amount']['breakdown']['tax_total']['value'] );
                 }
+
+                // Validate breakdown: item_total + tax_total should equal total (within rounding)
+                $breakdown_total = $subtotal + $tax;
+                $difference = abs( $breakdown_total - $total_amount );
+                
+                // If breakdown doesn't add up correctly, recalculate from total
+                // This handles cases where PayPal returns incorrect breakdown values
+                if ( $difference > 0.01 ) {
+                    // Breakdown is incorrect, try to fix it
+                    // If we have custom_data, use that instead
+                    if ( isset( $custom_data['subtotal'] ) && isset( $custom_data['tax'] ) ) {
+                        $subtotal = floatval( $custom_data['subtotal'] );
+                        $tax = floatval( $custom_data['tax'] );
+                    } else {
+                        // Recalculate: assume tax is correct, adjust subtotal
+                        // Or if subtotal seems wrong (equals total), calculate from total - tax
+                        if ( abs( $subtotal - $total_amount ) < 0.01 && $tax > 0 ) {
+                            // Subtotal equals total, which is wrong - recalculate
+                            $subtotal = $total_amount - $tax;
+                        } elseif ( $tax > 0 && $subtotal > 0 ) {
+                            // Both exist but don't add up - trust the total and recalculate
+                            $subtotal = $total_amount - $tax;
+                        }
+                    }
+                }
             } elseif ( isset( $custom_data['subtotal'] ) && isset( $custom_data['tax'] ) ) {
                 // Fallback: Use custom_id data if breakdown not available
                 $subtotal = floatval( $custom_data['subtotal'] );
                 $tax = floatval( $custom_data['tax'] );
+            } else {
+                // If no breakdown and no custom_data, try to recalculate from subscription pack
+                // This ensures accurate tax calculation based on current settings
+                if ( 'pack' === $custom_data['type'] && ! empty( $custom_data['item_number'] ) ) {
+                    /**
+                     * Filter: wpuf_recalculate_tax_from_pack
+                     *
+                     * Allows extensions (like WPUF Pro Tax) to recalculate tax from subscription pack
+                     * when PayPal breakdown data is missing or incorrect.
+                     *
+                     * @since WPUF_PRO_SINCE
+                     *
+                     * @param false|array $tax_data Array with 'subtotal', 'tax', and 'cost' keys, or false
+                     * @param int          $pack_id  Subscription pack ID
+                     * @param int          $user_id  User ID
+                     * @param float        $total_amount Total amount from PayPal (for validation)
+                     * @param string      $payment_type Payment type ('pack' or 'post')
+                     *
+                     * @return array|false Array with tax breakdown or false if unable to calculate
+                     */
+                    $recalculated = apply_filters(
+                        'wpuf_recalculate_tax_from_pack',
+                        false,
+                        $custom_data['item_number'],
+                        $custom_data['user_id'],
+                        $total_amount,
+                        $custom_data['type']
+                    );
+                    
+                    if ( $recalculated && is_array( $recalculated ) ) {
+                        $subtotal = isset( $recalculated['subtotal'] ) ? floatval( $recalculated['subtotal'] ) : $subtotal;
+                        $tax = isset( $recalculated['tax'] ) ? floatval( $recalculated['tax'] ) : $tax;
+                    }
+                }
             }
+
+            // Ensure cost is always subtotal + tax (for consistency)
+            // Use total_amount as fallback if calculation seems off
+            $calculated_cost = $subtotal + $tax;
+            $cost = abs( $calculated_cost - $total_amount ) < 0.01 ? $calculated_cost : $total_amount;
 
             // Create payment record
             $data = [
@@ -340,7 +405,7 @@ class Paypal {
                 'status' => 'completed',
                 'subtotal' => $subtotal,
                 'tax' => $tax,
-                'cost' => $payment['amount']['value'],
+                'cost' => $cost,
                 'post_id' => ( 'post' === $custom_data['type'] ) ? $custom_data['item_number'] : 0,
                 'pack_id' => ( 'pack' === $custom_data['type'] ) ? $custom_data['item_number'] : 0,
                 'payer_first_name' => $user->first_name,
@@ -948,7 +1013,8 @@ class Paypal {
 
             // Extract tax and subtotal from PayPal's breakdown if available
             // For subscription payments, PayPal may include breakdown
-            $subtotal = $amount; // Default to total amount
+            $total_amount = floatval( $amount );
+            $subtotal = $total_amount; // Default to total amount
             $tax = 0;
 
             if ( isset( $payment['amount']['breakdown'] ) ) {
@@ -961,11 +1027,91 @@ class Paypal {
                 if ( isset( $payment['amount']['breakdown']['tax_total']['value'] ) ) {
                     $tax = floatval( $payment['amount']['breakdown']['tax_total']['value'] );
                 }
+
+                // Validate breakdown: item_total + tax_total should equal total (within rounding)
+                $breakdown_total = $subtotal + $tax;
+                $difference = abs( $breakdown_total - $total_amount );
+                
+                // If breakdown doesn't add up correctly, recalculate from total
+                // This handles cases where PayPal returns incorrect breakdown values
+                if ( $difference > 0.01 ) {
+                    // Breakdown is incorrect, try to fix it
+                    // If we have custom_data, use that instead
+                    if ( isset( $custom_data['subtotal'] ) && isset( $custom_data['tax'] ) ) {
+                        $subtotal = floatval( $custom_data['subtotal'] );
+                        $tax = floatval( $custom_data['tax'] );
+                    } else {
+                        // Recalculate: assume tax is correct, adjust subtotal
+                        // Or if subtotal seems wrong (equals total), calculate from total - tax
+                        if ( abs( $subtotal - $total_amount ) < 0.01 && $tax > 0 ) {
+                            // Subtotal equals total, which is wrong - recalculate
+                            $subtotal = $total_amount - $tax;
+                        } elseif ( $tax > 0 && $subtotal > 0 ) {
+                            // Both exist but don't add up - trust the total and recalculate
+                            $subtotal = $total_amount - $tax;
+                        }
+                    }
+                }
             } elseif ( isset( $custom_data['subtotal'] ) && isset( $custom_data['tax'] ) ) {
                 // Fallback: Use custom_id data if breakdown not available
                 $subtotal = floatval( $custom_data['subtotal'] );
                 $tax = floatval( $custom_data['tax'] );
+            } else {
+                // Fallback: Try to recalculate from subscription pack
+                // This ensures accurate tax calculation based on current settings
+                if ( $pack_id > 0 ) {
+                    /**
+                     * Filter: wpuf_recalculate_tax_from_pack
+                     *
+                     * Allows extensions (like WPUF Pro Tax) to recalculate tax from subscription pack
+                     * when PayPal breakdown data is missing or incorrect.
+                     *
+                     * @since WPUF_PRO_SINCE
+                     *
+                     * @param false|array $tax_data Array with 'subtotal', 'tax', and 'cost' keys, or false
+                     * @param int          $pack_id  Subscription pack ID
+                     * @param int          $user_id  User ID
+                     * @param float        $total_amount Total amount from PayPal (for validation)
+                     * @param string      $payment_type Payment type ('pack' or 'post')
+                     *
+                     * @return array|false Array with tax breakdown or false if unable to calculate
+                     */
+                    $recalculated = apply_filters(
+                        'wpuf_recalculate_tax_from_pack',
+                        false,
+                        $pack_id,
+                        $user_id,
+                        $total_amount,
+                        'pack'
+                    );
+                    
+                    if ( $recalculated && is_array( $recalculated ) ) {
+                        $subtotal = isset( $recalculated['subtotal'] ) ? floatval( $recalculated['subtotal'] ) : $subtotal;
+                        $tax = isset( $recalculated['tax'] ) ? floatval( $recalculated['tax'] ) : $tax;
+                    } else {
+                        // If recalculation failed, try subscription plan tax percentage
+                        $tax_percentage = $this->get_subscription_tax_percentage( $subscription_id );
+                        if ( $tax_percentage > 0 ) {
+                            // Reverse calculate: subtotal = total / (1 + tax_percentage/100)
+                            $subtotal = $total_amount / ( 1 + ( $tax_percentage / 100 ) );
+                            $tax = $total_amount - $subtotal;
+                        }
+                    }
+                } else {
+                    // If no pack_id, try subscription plan tax percentage
+                    $tax_percentage = $this->get_subscription_tax_percentage( $subscription_id );
+                    if ( $tax_percentage > 0 ) {
+                        // Reverse calculate: subtotal = total / (1 + tax_percentage/100)
+                        $subtotal = $total_amount / ( 1 + ( $tax_percentage / 100 ) );
+                        $tax = $total_amount - $subtotal;
+                    }
+                }
             }
+
+            // Ensure cost is always subtotal + tax (for consistency)
+            // Use total_amount as fallback if calculation seems off
+            $calculated_cost = $subtotal + $tax;
+            $cost = abs( $calculated_cost - $total_amount ) < 0.01 ? $calculated_cost : $total_amount;
 
             // Prepare payment data
             $data = [
@@ -974,7 +1120,7 @@ class Paypal {
                 'subtotal'          => $subtotal,
                 'profile_id'        => $subscription_id,
                 'tax'               => $tax,
-                'cost'              => $amount,
+                'cost'              => $cost,
                 'post_id'           => 0,
                 'pack_id'           => $pack_id,
                 'payer_first_name'  => $user->first_name,
@@ -996,7 +1142,6 @@ class Paypal {
             // Final cleanup of any transients after successful processing
             $this->clean_up_transients( $subscription_id );
         } catch ( \Exception $e ) {
-            
             // Even in case of error, try to clean up transients
             if ( isset( $subscription_id ) ) {
                 $this->clean_up_transients( $subscription_id );
@@ -2117,38 +2262,58 @@ class Paypal {
                 $custom_data = json_decode( $subscription['custom_id'], true );
             }
 
-            if ( ! $custom_data || ! isset( $custom_data['user_id'] ) ) {
-                // Try to find the user based on subscription ID
-                $subscription_id = $subscription['id'];
-                $user_id = $this->get_user_id_by_subscription( $subscription_id );
-
-                if ( ! $user_id ) {
-                    throw new \Exception( 'Could not find user for subscription: ' . $subscription_id );
-                }
-                
-            } else {
-                $user_id = $custom_data['user_id'];
+            // Get pack_id from custom_data (item_number is the subscription pack ID)
+            $pack_id = 0;
+            if ( isset( $custom_data['item_number'] ) && 'pack' === $custom_data['type'] ) {
+                $pack_id = intval( $custom_data['item_number'] );
             }
 
-            // Get the subscription pack
-            $subscription_id = $subscription['id'];
+            if ( ! $pack_id ) {
+                throw new \Exception( 'No subscription pack ID found in custom_data' );
+            }
+
+            // Get the subscription pack directly by pack ID
+            $subscription_pack = wpuf()->subscription->get_subscription( $pack_id );
+
+            if ( ! $subscription_pack || ! isset( $subscription_pack->meta_value ) ) {
+                throw new \Exception( sprintf( 'No subscription pack found for pack ID: %d', $pack_id ) );
+            }
+
+            // Get user_id from custom_data or try to find by subscription ID
+            $user_id = 0;
+            if ( isset( $custom_data['user_id'] ) ) {
+                $user_id = intval( $custom_data['user_id'] );
+            } else {
+                // Try to find the user based on subscription ID
+                $user_id = $this->get_user_id_by_subscription( $subscription_id );
+            }
+
+            if ( ! $user_id ) {
+                throw new \Exception( 'Could not find user for subscription: ' . $subscription_id );
+            }
+
+            // Get user pack to check status and trial
             $user_pack = get_user_meta( $user_id, '_wpuf_subscription_pack', true );
 
-            if ( ! $user_pack || ! isset( $user_pack['pack_id'] ) ) {
-                throw new \Exception( 'No subscription pack found for user: ' . $user_id );
+            // Update subscription status if needed
+            if ( ! $user_pack || ! isset( $user_pack['pack_id'] ) || $user_pack['pack_id'] !== $pack_id ) {
+                // User pack doesn't exist or doesn't match, create/update it
+                $user_pack = [
+                    'pack_id' => $pack_id,
+                    'status' => 'completed',
+                ];
             }
 
-            $pack_id = $user_pack['pack_id'];
-
-            // Update subscription status if needed
             if ( isset( $user_pack['status'] ) && 'completed' !== $user_pack['status'] ) {
                 $user_pack['status'] = 'completed';
-                update_user_meta( $user_id, '_wpuf_subscription_pack', $user_pack );
-                update_user_meta( $user_id, '_wpuf_paypal_subscription_id', $subscription_id );
             }
 
+            // Update user meta with subscription pack and PayPal subscription ID
+            update_user_meta( $user_id, '_wpuf_subscription_pack', $user_pack );
+            update_user_meta( $user_id, '_wpuf_paypal_subscription_id', $subscription_id );
+
             // If this is the first payment after a trial, create a payment record
-            if ( isset( $user_pack['trial'] ) && 'yes' === $user_pack['trial'] ) {                
+            if ( isset( $user_pack['trial'] ) && 'yes' === $user_pack['trial'] ) {
                 // Get subscription details from PayPal
                 $access_token = $this->get_access_token();
                 $subscription_url = ( $this->test_mode ? 'https://api-m.sandbox.paypal.com' : 'https://api-m.paypal.com' ) .
@@ -2196,6 +2361,45 @@ class Paypal {
         } catch ( \Exception $e ) {
             throw new \Exception( 'Error handling subscription activation: ' . $e->getMessage(), 0, $e );
         }
+    }
+
+    /**
+     * Get tax percentage from subscription plan
+     *
+     * @since WPUF_PRO_SINCE
+     *
+     * @param string $subscription_id PayPal subscription ID
+     *
+     * @return float Tax percentage (0 if not found)
+     */
+    private function get_subscription_tax_percentage( $subscription_id ) {
+        if ( empty( $subscription_id ) ) {
+            return 0;
+        }
+
+        try {
+            $access_token = $this->get_access_token();
+            $subscription_url = ( $this->test_mode ? 'https://api-m.sandbox.paypal.com' : 'https://api-m.paypal.com' ) .
+                                '/v1/billing/subscriptions/' . $subscription_id;
+
+            $response = wp_remote_get(
+                $subscription_url, [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $access_token,
+                        'Content-Type' => 'application/json',
+                    ],
+                ]
+            );
+
+            if ( ! is_wp_error( $response ) ) {
+                $subscription_details = json_decode( wp_remote_retrieve_body( $response ), true );
+                if ( isset( $subscription_details['plan']['taxes']['percentage'] ) ) {
+                    return floatval( $subscription_details['plan']['taxes']['percentage'] );
+                }
+            }
+        } catch ( \Exception $e ) {}
+
+        return 0;
     }
 
     /**

@@ -507,7 +507,6 @@ class Payment {
             unset( $db_data['profile_id'] );
         }
 
-
         if ( ! $result ) {
             $wpdb->insert( $wpdb->prefix . 'wpuf_transaction', $db_data );
 

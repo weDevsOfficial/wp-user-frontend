@@ -178,6 +178,15 @@ class Admin_Form_Builder {
         // Load icon configuration
         $icon_config = $this->get_icon_config();
 
+        // Check AI configuration directly
+        $ai_settings   = get_option( 'wpuf_ai', [] );
+        $ai_provider   = isset( $ai_settings['ai_provider'] ) ? $ai_settings['ai_provider'] : '';
+        $ai_model      = isset( $ai_settings['ai_model'] ) ? $ai_settings['ai_model'] : '';
+        $provider_key  = $ai_provider . '_api_key';
+        $ai_api_key    = isset( $ai_settings[ $provider_key ] ) ? $ai_settings[ $provider_key ] : '';
+        $ai_configured = ! empty( $ai_provider ) && ! empty( $ai_api_key ) && ! empty( $ai_model );
+        $ai_settings_url = admin_url( 'admin.php?page=wpuf-settings#/ai' );
+
         $wpuf_form_builder = apply_filters(
             'wpuf_form_builder_localize_script',
             [
@@ -208,6 +217,8 @@ class Admin_Form_Builder {
                 'free_icon'        => $free_icon,
                 'icons'            => $icon_config['icons'],
                 'defaultIcons'     => $icon_config['defaultIcons'],
+                'ai_configured'    => $ai_configured,
+                'ai_settings_url'  => $ai_settings_url,
             ]
         );
         $wpuf_form_builder = wpuf_unset_conditional( $wpuf_form_builder );
@@ -348,6 +359,7 @@ class Admin_Form_Builder {
                 'copy_shortcode'          => __( 'Click to copy shortcode', 'wp-user-frontend' ),
                 'empty_field_options_msg' => __( 'To view field options, please start adding fields in the builder', 'wp-user-frontend' ),
                 'pro_field_message'       => $field_messages,
+                'something_went_wrong'    => __( 'Something went wrong. Please try again.', 'wp-user-frontend' ),
             ]
         );
     }

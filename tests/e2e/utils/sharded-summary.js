@@ -33,7 +33,7 @@ async function cleanupResultFiles() {
   const directoriesToClean = [
     path.join(__dirname, '../setup'),
     path.join(__dirname, '../parallel-one'),
-    path.join(__dirname, '../parallel-two')
+    path.join(__dirname, '../parallel-two'),
   ];
   
   // Remove JSON files
@@ -143,7 +143,7 @@ async function mergeParallelResults() {
     },
     // Store individual shard durations for sharded execution calculation
     parallelOneDuration: 0,
-    parallelTwoDuration: 0
+    parallelTwoDuration: 0,
   };
 
   let totalDuration = 0;
@@ -310,6 +310,7 @@ function getFeatureCategory(testId, featuresMap) {
     case 'RF': return { category: 'Registration Forms', feature: 'Registration Forms' };
     case 'PFS': return { category: 'Post Form Settings', feature: 'Post Form Settings' };
     case 'RFS': return { category: 'Registration Form Settings', feature: 'Registration Form Settings' };
+    case 'FOS': return { category: 'Field Option Settings', feature: 'Field Option Settings' };
     default: return { category: 'Other', feature: 'Other' };
   }
 }

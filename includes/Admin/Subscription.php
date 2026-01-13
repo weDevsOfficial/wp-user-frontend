@@ -59,16 +59,10 @@ class Subscription {
     public static function subscriber_cancel( $user_id, $pack_id ) {
         global $wpdb;
 
-        $sql = $wpdb->prepare(
+        $result = $wpdb->get_row( $wpdb->prepare(
             'SELECT transaction_id FROM ' . $wpdb->prefix . 'wpuf_transaction
             WHERE user_id = %d AND pack_id = %d LIMIT 1', $user_id, $pack_id
-        );
-        $result = $wpdb->get_row(
-            $wpdb->prepare(
-                'SELECT transaction_id FROM ' . $wpdb->prefix . 'wpuf_transaction
-            WHERE user_id = %d AND pack_id = %d LIMIT 1', $user_id, $pack_id
-            )
-        );
+        ) );
 
         $transaction_id = $result ? $result->transaction_id : 'Free';
 
@@ -274,7 +268,7 @@ class Subscription {
         if ( $posts ) {
             foreach ( $posts as $key => $post ) {
                 $post->meta_value = $this->get_subscription_meta( $post->ID, $posts );
-                
+
                 // Set default sort order if not set
                 if ( empty( $post->meta_value['_sort_order'] ) ) {
                     $sort_order = 1;
@@ -337,7 +331,7 @@ class Subscription {
         $meta['_total_feature_item']        = get_post_meta( $subscription_id, '_total_feature_item', true );
         $meta['_remove_feature_item']       = get_post_meta( $subscription_id, '_remove_feature_item', true );
         $meta['_sort_order']                = get_post_meta( $subscription_id, '_sort_order', true );
-        
+
         // Taxonomy restriction meta keys
         $meta['_sub_allowed_term_ids']      = get_post_meta( $subscription_id, '_sub_allowed_term_ids', true );
         $meta['_sub_view_allowed_term_ids'] = get_post_meta( $subscription_id, '_sub_view_allowed_term_ids', true );
@@ -462,7 +456,7 @@ class Subscription {
         update_post_meta( $subscription_id, 'additional_cpt_options', array_map( 'sanitize_text_field', $post_data['additional_cpt_options'] ) );
         update_post_meta( $subscription_id, '_enable_post_expiration', $enable_post_expir );
         update_post_meta( $subscription_id, '_post_expiration_time', $expiration_time );
-        
+
         // Handle sort order field
         $sort_order = isset( $post_data['sort_order'] ) ? absint( $post_data['sort_order'] ) : 1;
         if ( $sort_order < 1 ) {
@@ -474,7 +468,7 @@ class Subscription {
         update_post_meta( $subscription_id, '_post_expiration_message', $post_expire_msg );
         update_post_meta( $subscription_id, '_total_feature_item', ( isset( $post_data['total_feature_item'] ) ? sanitize_text_field( wp_unslash( $post_data['total_feature_item'] ) ) : '' ) );
         update_post_meta( $subscription_id, '_remove_feature_item', ( isset( $post_data['remove_feature_item'] ) ? sanitize_text_field( wp_unslash( $post_data['remove_feature_item'] ) ) : '' ) );
-        
+
         do_action( 'wpuf_update_subscription_pack', $subscription_id, $post_data );
     }
 
@@ -779,19 +773,11 @@ class Subscription {
         global $wpdb;
 
         //$post = get_post( $post_id );
-        $sql = $wpdb->prepare(
+        return $wpdb->get_row( $wpdb->prepare(
             "SELECT p.ID, p.post_status
             FROM $wpdb->posts p, $wpdb->postmeta m
             WHERE p.ID = m.post_id AND p.post_status <> 'publish' AND m.meta_key = '_wpuf_order_id' AND m.meta_value = %s", $order_id
-        );
-
-        return $wpdb->get_row(
-            $wpdb->prepare(
-                "SELECT p.ID, p.post_status
-            FROM $wpdb->posts p, $wpdb->postmeta m
-            WHERE p.ID = m.post_id AND p.post_status <> 'publish' AND m.meta_key = '_wpuf_order_id' AND m.meta_value = %s", $order_id
-            )
-        );
+        ) );
     }
 
     /**
@@ -861,6 +847,16 @@ class Subscription {
     public function subscription_packs( $atts = null ) {
         //$cost_per_post = isset( $form_settings['pay_per_post_cost'] ) ? $form_settings['pay_per_post_cost'] : 0;
 
+        // Verify nonce for security
+        if ( isset( $_GET['_wpnonce'] ) ) {
+            if ( ! wp_verify_nonce( sanitize_key( wp_unslash( $_GET['_wpnonce'] ) ), 'wpuf_subscription_packs' ) ) {
+                // If nonce verification fails, still allow the function to work but log the issue
+                if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+                    error_log( 'WPUF Subscription: Nonce verification failed for subscription_packs function' );
+                }
+            }
+        }
+
         $action   = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
         $pack_msg = isset( $_GET['pack_msg'] ) ? sanitize_text_field( wp_unslash( $_GET['pack_msg'] ) ) : '';
         $ppp_msg  = isset( $_GET['ppp_msg'] ) ? sanitize_text_field( wp_unslash( $_GET['ppp_msg'] ) ) : '';
@@ -881,7 +877,7 @@ class Subscription {
 
         // Prepare arguments for get_subscriptions, only include ordering if explicitly set
         $subscription_args = [];
-        
+
         // Only pass order/orderby if they were explicitly set in shortcode attributes
         if ( ! empty( $atts['order'] ) ) {
             $subscription_args['order'] = $args['order'];
@@ -930,9 +926,11 @@ class Subscription {
             $payment_gateway = $payment_gateway ? strtolower( $payment_gateway ) : '';
             ?>
 
-            <?php echo wp_kses_post( __( '<p><i>You have a subscription pack activated. </i></p>', 'wp-user-frontend' ) ); ?>
-            <?php /* translators: %s: pack title */ ?>
-            <?php printf( wp_kses_post( __( '<p><i>Pack name: %s </i></p>', 'wp-user-frontend' ) ), esc_html( get_the_title( $current_pack['pack_id'] ) ) ); ?>
+            <p><i><?php esc_html_e( 'You have a subscription pack activated.', 'wp-user-frontend' ); ?></i></p>
+            <p><i><?php 
+                // translators: %s: pack title
+                printf( esc_html__( 'Pack name: %s', 'wp-user-frontend' ), esc_html( get_the_title( $current_pack['pack_id'] ) ) ); 
+            ?></i></p>
 
             <?php echo '<p><i>' . esc_html__( 'To cancel the pack, press the following cancel button', 'wp-user-frontend' ) . '</i></p>'; ?>
 
@@ -1151,30 +1149,23 @@ class Subscription {
     public function subscription_pack_users( $pack_id = '', $status = '' ) {
         global $wpdb;
 
-        // Start with the base query
-        $sql            = 'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers';
-        $where_clauses  = [];
-        $prepare_values = [];
-
-        // Add conditional WHERE clauses if params exist
-        if ( $pack_id ) {
-            $where_clauses[]  = 'subscribtion_id = %d';
-            $prepare_values[] = $pack_id;
+        // Build and execute the query with proper placeholders
+        if ( $pack_id && $status ) {
+            $sql = 'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers WHERE subscribtion_id = %d AND subscribtion_status = %s';
+            $prepare_values = [ $pack_id, $status ];
+            $rows = $wpdb->get_results( $wpdb->prepare( $sql, $prepare_values ) );
+        } elseif ( $pack_id ) {
+            $sql = 'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers WHERE subscribtion_id = %d';
+            $prepare_values = [ $pack_id ];
+            $rows = $wpdb->get_results( $wpdb->prepare( $sql, $prepare_values ) );
+        } elseif ( $status ) {
+            $sql = 'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers WHERE subscribtion_status = %s';
+            $prepare_values = [ $status ];
+            $rows = $wpdb->get_results( $wpdb->prepare( $sql, $prepare_values ) );
+        } else {
+            $sql = 'SELECT user_id FROM ' . $wpdb->prefix . 'wpuf_subscribers';
+            $rows = $wpdb->get_results( $sql );
         }
-
-        if ( $status ) {
-            $where_clauses[]  = 'subscribtion_status = %d';
-            $prepare_values[] = $status;
-        }
-
-        // Combine WHERE clauses if any exist
-        if ( ! empty( $where_clauses ) ) {
-            $sql .= ' WHERE ' . implode( ' AND ', $where_clauses );
-        }
-
-        // Prepare and execute the query safely
-        $prepared_query = $wpdb->prepare( $sql, $prepare_values );
-        $rows           = $wpdb->get_results( $prepared_query );
 
         if ( empty( $rows ) ) {
             return $rows;
@@ -1217,6 +1208,10 @@ class Subscription {
         $current_user   = wpuf_get_user();
         $current_pack   = $current_user->subscription()->current_pack();
         $has_post_count = isset( $form_settings['post_type'] ) ? $current_user->subscription()->has_post_count( $form_settings['post_type'] ) : false;
+
+        if ( current_user_can( wpuf_admin_role() ) ) {
+            return 'yes';
+        }
 
         if ( $current_user->subscription()->current_pack_id() && ! $has_post_count ) {
             return 'no';

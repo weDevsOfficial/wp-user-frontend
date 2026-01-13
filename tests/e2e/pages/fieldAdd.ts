@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ quiet: true });
 import { expect, type Page } from '@playwright/test';
 import { Selectors } from './selectors';
 import { Base } from './base';
@@ -223,6 +223,16 @@ export class FieldAddPage extends Base {
 
     }
 
+    async addTextRelatedFields() {
+        //CustomFields
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsText);
+        
+        if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
+        }
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsTextarea);
+    }
+
     //Validate > CustomFields
     async validateCustomFields_Common() {
         //Validate
@@ -363,6 +373,60 @@ export class FieldAddPage extends Base {
             //Not visible
             //MathCaptcha
             await this.assertionValidate(Selectors.postForms.validateOthers_Common.validateMathCaptcha);
+        }
+    }
+
+    async addFOS() {
+        //FOS
+        await this.validateAndClick(Selectors.postForms.addPostFields_PF.postTitleBlock);
+        await this.validateAndClick(Selectors.postForms.addTaxonomies_PF.categoryBlock);
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsText);
+        
+        if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
+        }
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsTextarea);
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsDropdown);
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsRadio);
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsImageUpload);
+        //TimeField
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsTimeField);
+        //FileUpload    
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsFileUpload);
+        //CountryList
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsCountryList);
+
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsEmbed);
+
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsEmailAddress);
+
+        //AddressField  
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsAddressField);
+
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsWebsiteUrl);
+
+        //NumericField
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsNumericField);
+
+    }
+    
+    async addFOS_more() {
+        //FOS
+        await this.validateAndClick(Selectors.postForms.addPostFields_PF.postTitleBlock);
+        //DateTime
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsDateTime);
+        if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
+        }
+
+    }
+
+    async addFOS_again() {
+        //FOS
+        await this.validateAndClick(Selectors.postForms.addPostFields_PF.postTitleBlock);
+        await this.validateAndClick(Selectors.postForms.addCustomFields_Common.customFieldsWebsiteUrl);
+        if (await this.page.isVisible(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose)) {
+            await this.validateAndClick(Selectors.postForms.addCustomFields_Common.prompt1PopUpModalClose);
         }
     }
 

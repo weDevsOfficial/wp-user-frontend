@@ -12,6 +12,7 @@ module.exports = {
         // Original paths (critical for form builder - keeps @tailwindcss/forms styles)
         './assets/**/*.{js,jsx,ts,tsx,vue,html}',
         './includes/Admin/**/*.php',
+        './includes/Free/Free_Loader.php',
         './includes/Admin/template-parts/*.php',
         './admin/form-builder/views/*.php',
         './admin/form-builder/assets/js/**/*.php',

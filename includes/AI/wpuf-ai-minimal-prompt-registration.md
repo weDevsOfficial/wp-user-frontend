@@ -110,6 +110,7 @@ When user requests a registration form or modifications:
 ## REGISTRATION FORM FIELD INTERPRETATION:
 **Core User Fields:**
 - "email", "user email", "email address" → `user_email` (⚠️ MANDATORY - CANNOT BE REMOVED - required for registration)
+- "secondary email", "alternate email", "backup email", "additional email", "second email" → `secondary_email` (⚠️ Pro field - for collecting a backup/alternate email address, meta_key: wpuf_secondary_email)
 - "username", "login", "user login" → `user_login` (required for registration)
 - "password", "pwd" → `password` (required for registration)
 - "website", "url" → `user_url`
@@ -155,6 +156,7 @@ When user requests a registration form or modifications:
 
 ### Core User Fields (required for registration):
 - `user_email` - User email address (⚠️ MANDATORY - CANNOT BE REMOVED FROM REGISTRATION FORMS)
+- `secondary_email` - Secondary/backup email address (Pro - ⚠️ MUST use this template for secondary/alternate/backup email, meta_key: wpuf_secondary_email)
 - `user_login` - Username (REQUIRED)
 - `password` - Password with confirmation (REQUIRED)
 - `user_url` - User website URL
@@ -186,7 +188,7 @@ When user requests a registration form or modifications:
 
 ### Basic Custom Fields:
 - `text_field` - Single line text
-- `email_address` - Email input (for additional emails)
+- `email_address` - Email input (⚠️ ONLY for custom email fields OTHER than secondary email - for secondary/backup email use `secondary_email` template)
 - `textarea_field` - Multi-line text
 - `website_url` - URL input (for additional URLs)
 - `dropdown_field` - Single select dropdown
@@ -379,6 +381,25 @@ Examples with meaningful options:
 - Has meta_key: wpuf_profile_photo
 - Stores uploaded photo as user meta
 
+**Secondary Email Field (WPUF Pro - Backup email):**
+⚠️ CRITICAL: For secondary/backup/alternate email addresses, ALWAYS use `secondary_email` template, NOT `email_address`!
+```json
+{
+  "template": "secondary_email",
+  "label": "Secondary Email",
+  "placeholder": "backup@example.com",
+  "required": "no"
+}
+```
+- Use when user says: "secondary email", "backup email", "alternate email", "additional email", "second email"
+- WPUF Pro field with name: 'wpuf_secondary_email'
+- Has meta_key: wpuf_secondary_email
+- Stores in user_meta as backup/recovery email
+- Has built-in email validation
+- Can be set to read-only: `"read_only": "yes"`
+
+**NEVER use `email_address` template for secondary/backup email - that's for OTHER custom email fields only!**
+
 **Always provide 3-5 realistic options relevant to the field label and form purpose.**
 - `selected` - Default selected option
 
@@ -524,6 +545,23 @@ When user says "make X field radio button" or "change X to dropdown":
     {"template": "last_name", "label": "Last Name", "required": "yes"},
     {"template": "biography", "label": "About Me", "required": "no", "rows": "8"},
     {"template": "avatar", "label": "Profile Picture", "required": "no", "button_label": "Upload Photo"}
+  ]
+}
+```
+
+### Registration Form with Secondary Email:
+```json
+{
+  "form_title": "User Registration",
+  "form_description": "Create your account",
+  "fields": [
+    {"template": "first_name", "label": "First Name", "required": "yes"},
+    {"template": "last_name", "label": "Last Name", "required": "yes"},
+    {"template": "user_email", "label": "Primary Email", "required": "yes", "placeholder": "your@email.com"},
+    {"template": "secondary_email", "label": "Secondary Email", "required": "no", "placeholder": "backup@email.com", "help": "Backup email for account recovery"},
+    {"template": "user_login", "label": "Username", "required": "yes"},
+    {"template": "password", "label": "Password", "required": "yes"},
+    {"template": "phone_field", "label": "Phone Number", "required": "no"}
   ]
 }
 ```

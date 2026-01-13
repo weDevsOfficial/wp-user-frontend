@@ -891,6 +891,58 @@ tr.pro-preview-html th {
     display: block;
 }
 
+/* Color picker pro preview styles */
+.wpuf-color-picker-wrapper {
+    position: relative;
+    display: inline-block;
+    min-width: 255px;
+    min-height: 40px;
+}
+
+.wpuf-color-picker-wrapper .wp-picker-container {
+    pointer-events: none;
+}
+
+.wpuf-color-picker-wrapper:hover .pro-field-overlay,
+tr.pro-preview:hover .wpuf-color-picker-wrapper .pro-field-overlay {
+    display: block;
+    opacity: 1;
+}
+
+tr.pro-preview td .wp-picker-container {
+    pointer-events: none;
+    position: relative;
+}
+
+tr.pro-preview td:hover .wp-picker-container {
+    pointer-events: none;
+}
+
+tr.pro-preview td .wp-picker-container .wp-color-result,
+tr.pro-preview td .wp-picker-container input {
+    cursor: not-allowed;
+}
+
+/* Ensure overlay appears above color picker */
+.wpuf-color-picker-wrapper .pro-field-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(236, 253, 245, 0.5);
+    border-radius: 5px;
+    display: none;
+    border: 1px dashed #10b981;
+    z-index: 10;
+    pointer-events: auto;
+}
+
+tr.pro-preview td .pro-field-overlay {
+    z-index: 10;
+    pointer-events: auto;
+}
+
 .wpuf-subscription-pack-settings nav .tab-current a.wpuf-button.button-upgrade-to-pro,
 a.wpuf-button.button-upgrade-to-pro {
     padding: 8px 16px;

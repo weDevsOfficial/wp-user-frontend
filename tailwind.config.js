@@ -1,5 +1,10 @@
 const colors = require('tailwindcss/colors');
 
+import {
+    scopedPreflightStyles,
+    isolateInsideOfContainer,
+} from 'tailwindcss-scoped-preflight';
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     prefix: 'wpuf-',
@@ -27,6 +32,17 @@ module.exports = {
     plugins: [
         require('@tailwindcss/forms'),
         require('daisyui'),
+        scopedPreflightStyles( {
+            isolationStrategy: isolateInsideOfContainer(
+                [
+                    '.wpuf_packs',
+                    '#wpuf-subscription-page',
+                    '#wpuf-form-builder',
+                    '#wpuf-profile-forms-list-table-view'
+                ], {}
+            ),
+        } ),
+        require('@tailwindcss/forms'),
     ],
     daisyui: {
         themes: [],

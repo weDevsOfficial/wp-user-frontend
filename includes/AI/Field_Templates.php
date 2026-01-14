@@ -107,7 +107,7 @@ class Field_Templates {
             }
 
             // CRITICAL FIX: For secondary_email, ALWAYS ensure name and meta_key are hardcoded
-            // @since WPUF_SINCE
+            // @since 4.2.6
             if ( 'secondary_email' === $template ) {
                 $field['name'] = 'wpuf_secondary_email';
                 $field['meta_key'] = 'wpuf_secondary_email';
@@ -1038,7 +1038,7 @@ class Field_Templates {
     /**
      * Get secondary email field template
      *
-     * @since WPUF_SINCE
+     * @since 4.2.6
      *
      * @param string $label
      * @param int    $field_id

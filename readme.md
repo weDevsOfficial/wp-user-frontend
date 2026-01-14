@@ -4,7 +4,7 @@
 **Tags:** frontend post, user directory, membership, user profile, user registration, content restriction, guest post, submit post, subscriptions, directory, login form, registration form, user profile, profile builder, forms  
 **Requires at least:** 5.0  
 **Tested up to:** 6.9  
-**Stable tag:** 4.2.5  
+**Stable tag:** 4.2.6  
 **Requires PHP:** 5.6  
 **License:** GPLv2  
 **License URL:** https://www.gnu.org/licenses/gpl-2.0.html  
@@ -359,6 +359,15 @@ Please report security bugs found in the source code of the User Frontend plugin
 15. Create AI Powered Post Form
 
 ## Changelog ##
+### v4.2.6 (14 January, 2026) ###
+* New – Add AI-powered field options generator for dropdown, radio, and checkbox fields
+* Fix – Correctly detect ACF taxonomies
+* Fix – Subscription page title is broken
+* Fix – Hidden CSS class removes fields from builder
+* Fix – Color picker PRO badge icon and hover overlay in settings
+* Fix – Resolve subscription post number rollback toggle not saving
+* Fix – Event Venue & Organizer Handling Issues in Frontend Event Submission
+
 ### v4.2.5 (01 January, 2026) ###
 * Enhancement – Warning message for empty field options
 * Enhancement – Login and Registration help text

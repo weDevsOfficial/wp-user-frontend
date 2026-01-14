@@ -105,10 +105,11 @@
 .wpuf-registration-page-area .wpuf-box .heading .crown-icon.pro-icon {
   width: 40px;
   height: 40px;
+  background: linear-gradient(0deg, #FF9000, #FF9000), linear-gradient(225deg, #FFD707 -6.25%, #FF5C16 97.92%);
+  border-radius: 7px;
   margin-right: 20px;
 }
-.wpuf-registration-page-area .wpuf-box .heading .crown-icon.pro-icon svg,
-.wpuf-registration-page-area .wpuf-box .heading .crown-icon.pro-icon img {
+.wpuf-registration-page-area .wpuf-box .heading .crown-icon.pro-icon svg {
   display: block;
   margin: auto;
   height: 100%;

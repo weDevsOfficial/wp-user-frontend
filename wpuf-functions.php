@@ -5739,7 +5739,7 @@ if ( ! function_exists( 'wpuf_field_profile_photo_allowed_mimes' ) ) {
  *
  * This works for all taxonomies - built-in or custom.
  *
- * @since WPUF_SINCE
+ * @since 4.2.6
  *
  * @param string $taxonomy_name The taxonomy name to check
  * @return array Array of post type names associated with the taxonomy
@@ -5772,7 +5772,7 @@ if ( ! function_exists( 'wpuf_get_taxonomy_post_types' ) ) {
  *
  * This includes built-in taxonomies and custom taxonomies associated with 'post' or 'page' post types.
  *
- * @since WPUF_SINCE
+ * @since 4.2.6
  *
  * @return array Array of taxonomy names that are available in free version
  */

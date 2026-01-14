@@ -1,3 +1,12 @@
+= v4.2.6 (14 January, 2026) =
+* New – Add AI-powered field options generator for dropdown, radio, and checkbox fields
+* Fix – Correctly detect ACF taxonomies
+* Fix – Subscription page title is broken
+* Fix – Hidden CSS class removes fields from builder
+* Fix – Color picker PRO badge icon and hover overlay in settings
+* Fix – Resolve subscription post number rollback toggle not saving
+* Fix – Event Venue & Organizer Handling Issues in Frontend Event Submission
+
 = v4.2.5 (01 January, 2026) =
 * Enhancement – Warning message for empty field options
 * Enhancement – Login and Registration help text

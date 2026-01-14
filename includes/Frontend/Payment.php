@@ -250,6 +250,9 @@ class Payment {
                                         <?php } ?>
                                     </div>
 
+                                    <div id="wpuf_type" style="display: none"><?php echo 'pack'; ?></div>
+                                    <div id="wpuf_id" style="display: none"><?php echo esc_attr( $pack_id ); ?></div>
+
                                     <?php
                                 }
                                 if ( $post_id ) {

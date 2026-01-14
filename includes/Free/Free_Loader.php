@@ -800,8 +800,8 @@ class Free_Loader extends Pro_Prompt {
             ],
             [
                 'name'           => 'wpuf_base_country_state',
-                'label'          => '<strong>' . __( 'Business Country and State', 'wp-user-frontend' ) . '</strong>',
-                'desc'           => __( 'Select your business country and state', 'wp-user-frontend' ),
+                'label'          => '<strong>' . __( 'Base Country and State', 'wp-user-frontend' ) . '</strong>',
+                'desc'           => __( 'The Base Country is where your business or company is located', 'wp-user-frontend' ),
                 'is_pro_preview' => true,
             ],
             [

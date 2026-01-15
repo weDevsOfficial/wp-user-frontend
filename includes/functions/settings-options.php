@@ -471,6 +471,18 @@ function wpuf_settings_fields() {
                 'depends_on' => 'enable_turnstile',
             ],
             [
+                'name'     => 'profile_form_roles',
+                'label'    => __( 'Profile Forms for User Roles', 'wp-user-frontend' ),
+                'type'     => 'html',
+                'callback' => 'wpuf_settings_field_profile',
+            ],
+            [
+                'name'     => 'login_form_settings_section',
+                'label'    => '',
+                'type'     => 'html',
+                'callback' => 'wpuf_render_login_settings_section_header',
+            ],
+            [
                 'name'           => 'wpuf_login_form_layout',
                 'label'          => __( 'Login Form Layout', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . '<img src="' . esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ) . '" alt="' . esc_attr__( 'PRO', 'wp-user-frontend' ) . '">' . '</span>',
                 'desc'           => __( 'Choose a layout style for your login forms.', 'wp-user-frontend' ),
@@ -632,6 +644,22 @@ function wpuf_settings_fields() {
                 'label'          => __( 'Login Button Text', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . '<img src="' . esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ) . '" alt="' . esc_attr__( 'PRO', 'wp-user-frontend' ) . '">' . '</span>',
                 'type'           => 'text',
                 'default'        => __( 'Log In', 'wp-user-frontend' ),
+                'is_pro_preview' => ! wpuf_is_pro_active(),
+            ],
+            [
+                'name'           => 'pending_user_message',
+                'label'          => __( 'Pending User Message', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . '<img src="' . esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ) . '" alt="' . esc_attr__( 'PRO', 'wp-user-frontend' ) . '">' . '</span>',
+                'desc'           => __( 'Pending user will see this message when try to log in.', 'wp-user-frontend' ),
+                'type'           => 'textarea',
+                'default'        => '<strong>' . __( 'ERROR:', 'wp-user-frontend' ) . '</strong> ' . __( 'Your account has to be approved by an administrator before you can login.', 'wp-user-frontend' ),
+                'is_pro_preview' => ! wpuf_is_pro_active(),
+            ],
+            [
+                'name'           => 'denied_user_message',
+                'label'          => __( 'Denied User Message', 'wp-user-frontend' ) . '<span class="pro-icon"> ' . '<img src="' . esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ) . '" alt="' . esc_attr__( 'PRO', 'wp-user-frontend' ) . '">' . '</span>',
+                'desc'           => __( 'Denied user will see this message when try to log in.', 'wp-user-frontend' ),
+                'type'           => 'textarea',
+                'default'        => '<strong>' . __( 'ERROR:', 'wp-user-frontend' ) . '</strong> ' . __( 'Your account has been denied by an administrator, please contact admin to approve your account.', 'wp-user-frontend' ),
                 'is_pro_preview' => ! wpuf_is_pro_active(),
             ],
         ] ),
@@ -833,9 +861,9 @@ function wpuf_settings_fields() {
     return apply_filters( 'wpuf_settings_fields', $settings_fields );
 }
 
-function wpuf_settings_field_profile( $form ) {
-    $user_roles = apply_filters( 'wpuf_settings_user_roles', wpuf_get_user_roles() );
-    $forms      = get_posts(
+function wpuf_settings_field_profile( $args = [] ) {
+    $user_roles    = apply_filters( 'wpuf_settings_user_roles', wpuf_get_user_roles() );
+    $profile_forms = get_posts(
         [
             'numberposts' => -1,
             'post_type'   => 'wpuf_profile',
@@ -856,24 +884,24 @@ function wpuf_settings_field_profile( $form ) {
     if ( ! empty( $user_roles ) ) {
         ?>
 
-    <p style="padding-left: 10px; font-style: italic; font-size: 13px;">
+    <p style="padding-left: 0; font-style: italic; font-size: 13px;">
         <strong><?php esc_html_e( 'Select profile/registration forms for user roles. These forms will be used to populate extra edit profile fields in backend.', 'wp-user-frontend' ); ?></strong>
     </p>
-    <table class="form-table">
+    <table class="form-table" style="margin-top: 0;">
         <?php
         foreach ( $user_roles as $role => $name ) {
             $current = isset( $val['roles'][ $role ] ) ? $val['roles'][ $role ] : '';
             ?>
             <tr valign="top" <?php echo esc_attr( $class ); ?>>
-                <th scrope="row"><?php echo esc_attr( $name ) . wp_kses( $crown_icon, array('svg' => [ 'xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true ], 'path' => [ 'd' => true, 'fill' => true ], 'circle' => [ 'cx' => true, 'cy' => true, 'r' => true ], ) ); ?></th>
+                <th scrope="row"><?php echo esc_attr( $name ) . wp_kses( $crown_icon, [ 'svg' => [ 'xmlns' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true ], 'path' => [ 'd' => true, 'fill' => true ], 'circle' => [ 'cx' => true, 'cy' => true, 'r' => true ] ] ); ?></th>
                 <td>
                     <select name="wpuf_profile[roles][<?php echo esc_attr( $role ); ?>]" class="regular" style="min-width: 300px;" <?php echo esc_attr( $disabled ); ?>>
                         <option value=""><?php esc_html_e( '&mdash; Select &mdash;', 'wp-user-frontend' ); ?></option>
                         <?php
                         if ( class_exists( 'WP_User_Frontend_Pro' ) ) {
-                            foreach ( $forms as $form ) {
+                            foreach ( $profile_forms as $profile_form ) {
                                 ?>
-                                <option value="<?php echo esc_attr( $form->ID ); ?>"<?php selected( $current, $form->ID ); ?>><?php echo esc_html( $form->post_title ); ?></option>
+                                <option value="<?php echo esc_attr( $profile_form->ID ); ?>"<?php selected( $current, $profile_form->ID ); ?>><?php echo esc_html( $profile_form->post_title ); ?></option>
                                 <?php
                             }
                         }
@@ -894,7 +922,125 @@ function wpuf_settings_field_profile( $form ) {
     }
 }
 
-add_action( 'wsa_form_bottom_wpuf_profile', 'wpuf_settings_field_profile' );
+/**
+ * Render login form settings section header
+ *
+ * @since 4.2.7
+ *
+ * @param array $args Settings field args.
+ *
+ * @return void
+ */
+function wpuf_render_login_settings_section_header( $args = [] ) {
+    ?>
+    </td></tr></tbody></table>
+    <h2 class="wpuf-settings-section-title" style="margin: 30px 0 10px 0; padding-bottom: 10px; border-bottom: 1px solid #c3c4c7; font-size: 1.3em;">
+        <?php esc_html_e( 'Login Form Customization', 'wp-user-frontend' ); ?>
+    </h2>
+    <p class="description" style="margin-bottom: 15px;">
+        <?php esc_html_e( 'Customize the appearance and text of your login forms.', 'wp-user-frontend' ); ?>
+    </p>
+
+    <div class="wpuf-login-settings-tabs" style="margin: 20px 0;">
+        <nav class="wpuf-login-tabs-nav" style="display: flex; gap: 0; border-bottom: 1px solid #c3c4c7;">
+            <a href="#" class="wpuf-login-tab-link active" data-tab="appearance" style="padding: 10px 20px; text-decoration: none; color: #2271b1; font-weight: 500; border-bottom: 2px solid #2271b1; margin-bottom: -1px; background: transparent;">
+                <?php esc_html_e( 'Appearance', 'wp-user-frontend' ); ?>
+            </a>
+            <a href="#" class="wpuf-login-tab-link" data-tab="fields" style="padding: 10px 20px; text-decoration: none; color: #646970; font-weight: 500; border-bottom: 2px solid transparent; margin-bottom: -1px; background: transparent;">
+                <?php esc_html_e( 'Fields', 'wp-user-frontend' ); ?>
+            </a>
+        </nav>
+    </div>
+
+    <style>
+        .wpuf-login-tab-link:hover {
+            color: #2271b1 !important;
+        }
+        .wpuf-login-tab-link.active {
+            color: #2271b1 !important;
+            border-bottom-color: #2271b1 !important;
+        }
+        .wpuf-login-settings-row.hidden {
+            display: none !important;
+        }
+    </style>
+
+    <script>
+    jQuery(document).ready(function($) {
+        var appearanceFields = [
+            'wpuf_login_form_layout',
+            'wpuf_login_form_bg_color',
+            'wpuf_login_form_border_color',
+            'wpuf_login_field_border_color',
+            'wpuf_login_field_bg_color',
+            'wpuf_login_label_text_color',
+            'wpuf_login_placeholder_color',
+            'wpuf_login_input_text_color',
+            'wpuf_login_help_text_color',
+            'wpuf_login_button_bg_color',
+            'wpuf_login_button_border_color',
+            'wpuf_login_button_text_color'
+        ];
+
+        var fieldsFields = [
+            'wpuf_login_form_title',
+            'wpuf_login_form_subtitle',
+            'wpuf_login_username_label',
+            'wpuf_login_username_placeholder',
+            'wpuf_login_username_help',
+            'wpuf_login_password_label',
+            'wpuf_login_password_placeholder',
+            'wpuf_login_password_help',
+            'wpuf_login_remember_me_text',
+            'wpuf_login_lost_password_text',
+            'wpuf_login_button_text',
+            'pending_user_message',
+            'denied_user_message'
+        ];
+
+        function markRows() {
+            appearanceFields.forEach(function(field) {
+                $('tr').has('[name*="' + field + '"]').addClass('wpuf-login-settings-row wpuf-tab-appearance');
+            });
+            fieldsFields.forEach(function(field) {
+                $('tr').has('[name*="' + field + '"]').addClass('wpuf-login-settings-row wpuf-tab-fields');
+            });
+        }
+
+        function showTab(tab) {
+            if (tab === 'appearance') {
+                $('.wpuf-tab-appearance').removeClass('hidden');
+                $('.wpuf-tab-fields').addClass('hidden');
+            } else {
+                $('.wpuf-tab-fields').removeClass('hidden');
+                $('.wpuf-tab-appearance').addClass('hidden');
+            }
+        }
+
+        markRows();
+        showTab('appearance');
+
+        $('.wpuf-login-tab-link').on('click', function(e) {
+            e.preventDefault();
+            var tab = $(this).data('tab');
+
+            $('.wpuf-login-tab-link').removeClass('active').css({
+                'color': '#646970',
+                'border-bottom-color': 'transparent'
+            });
+            $(this).addClass('active').css({
+                'color': '#2271b1',
+                'border-bottom-color': '#2271b1'
+            });
+
+            showTab(tab);
+        });
+    });
+    </script>
+
+    <table class="form-table" role="presentation"><tbody><tr style="display:none;"><td>
+    <?php
+}
 
 /**
  * Render dynamic API key field based on selected provider

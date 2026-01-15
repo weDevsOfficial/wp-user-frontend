@@ -179,29 +179,69 @@ class WeDevs_Settings_API {
         $size        = isset( $args['size'] ) && !is_null( $args['size'] ) ? $args['size'] : 'regular';
         $type        = isset( $args['type'] ) ? $args['type'] : 'text';
         $placeholder = empty( $args['placeholder'] ) ? '' : ' placeholder="' . $args['placeholder'] . '"';
-        $disabled    = ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ? 'disabled' : '';
+        $is_pro_preview = ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'];
+        $disabled    = $is_pro_preview ? 'disabled' : '';
         $depends_on  = ! empty( $args['depends_on'] ) ? $args['depends_on'] : '';
         $depends_on_value = ! empty( $args['depends_on_value'] ) ? $args['depends_on_value'] : '';
 
         // Handle array dependencies
-        if (is_array($depends_on)) {
-            $depends_on_json = esc_attr( json_encode($depends_on) );
+        if ( is_array( $depends_on ) ) {
+            $depends_on_json = esc_attr( wp_json_encode( $depends_on ) );
             $depends_on_value = ''; // Not used for array format
         } else {
             $depends_on_json = esc_attr( $depends_on );
         }
 
-        $html        = sprintf(
+        // For pro preview, show empty value
+        if ( $is_pro_preview ) {
+            $value = '';
+        }
+
+        // Wrap text field in a container for pro preview
+        $html = '';
+        if ( $is_pro_preview ) {
+            $html .= '<div class="wpuf-text-field-wrapper" style="position: relative; display: inline-block;">';
+        }
+
+        $html .= sprintf(
             '<input type="%1$s" class="%2$s-text" id="%3$s[%4$s]" name="%3$s[%4$s]" value="%5$s"%6$s %7$s data-depends-on=\'%8$s\' data-depends-on-value="%9$s" />',
             $type, $size, $args['section'], $args['id'], $value, $placeholder, $disabled, $depends_on_json, esc_attr( $depends_on_value )
         );
-        $html       .= $this->get_field_description( $args );
+        $html .= $this->get_field_description( $args );
 
-        if ( ! empty( $args['is_pro_preview'] ) && $args['is_pro_preview'] ) {
+        if ( $is_pro_preview ) {
             $html .= wpuf_get_pro_preview_html();
+            $html .= '</div>';
         }
 
-        echo wp_kses( $html, array('input' => ['type' => [],'class' => [],'id' => [],'name' => [],'value' => [],'disabled' => [],'data-depends-on' => [],'data-depends-on-value' => []], 'p' => ['class' => []], 'div' => ['class' => []], 'a' => ['href' => [],'target' => [],'class' => []], 'span' => ['class' => []], 'svg' => ['width' => [],'height' => [],'viewBox' => [],'fill' => [],'xmlns' => [],],));
+        // Allow input tags with necessary attributes for text fields
+        // wp_kses_post() strips <input> tags by default, so we need to explicitly allow them
+        $allowed_html = wp_kses_allowed_html( 'post' );
+        $allowed_html['input'] = [
+            'type'               => true,
+            'class'              => true,
+            'id'                 => true,
+            'name'               => true,
+            'value'              => true,
+            'placeholder'        => true,
+            'disabled'           => true,
+            'data-depends-on'    => true,
+            'data-depends-on-value' => true,
+        ];
+        $allowed_html['div']['style'] = true;
+        $allowed_html['svg'] = [
+            'width'   => true,
+            'height'  => true,
+            'viewBox' => true,
+            'fill'    => true,
+            'xmlns'   => true,
+        ];
+        $allowed_html['path'] = [
+            'd'    => true,
+            'fill' => true,
+        ];
+
+        echo wp_kses( $html, $allowed_html );
     }
 
     /**

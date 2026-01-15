@@ -6,7 +6,6 @@ namespace WeDevs\Wpuf\Lib\Gateway;
  * Payment Gateway Manager
  *
  * Manages registration and initialization of payment gateways.
- * Follows Dokan's architecture pattern for better extensibility.
  *
  * @since WPUF_PRO_SINCE
  */

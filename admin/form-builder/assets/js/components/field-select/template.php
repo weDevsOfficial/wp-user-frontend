@@ -6,15 +6,15 @@
     </div>
 
     <div class="option-fields-section wpuf-relative">
-        <p
+        <div
             @click="showOptions = !showOptions"
-            class="wpuf-w-full wpuf-min-w-full !wpuf-py-[10px] !wpuf-px-[14px] wpuf-text-gray-700 wpuf-font-medium !wpuf-shadow-sm wpuf-border !wpuf-border-gray-300 !wpuf-rounded-[6px] focus:!wpuf-ring-transparent focus:checked:!wpuf-ring-transparent hover:checked:!wpuf-ring-transparent hover:!wpuf-text-gray-700 wpuf-flex wpuf-justify-between wpuf-items-center !wpuf-text-base"
+            class="wpuf-my-4 wpuf-w-full wpuf-min-w-full !wpuf-py-[10px] !wpuf-px-[14px] wpuf-text-gray-700 wpuf-font-medium !wpuf-shadow-sm wpuf-border !wpuf-border-gray-300 !wpuf-rounded-[6px] focus:!wpuf-ring-transparent focus:checked:!wpuf-ring-transparent hover:checked:!wpuf-ring-transparent hover:!wpuf-text-gray-700 wpuf-flex wpuf-justify-between wpuf-items-center !wpuf-text-base"
         >
             {{ selectedOption }}
             <i
                 :class="showOptions ? 'fa-angle-up' : 'fa-angle-down'"
                 class="fa wpuf-text-base"></i>
-        </p>
+        </div>
 
         <div
             v-if="showOptions"

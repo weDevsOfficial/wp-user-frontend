@@ -566,8 +566,8 @@ export class RegFormPage extends Base {
     }
 
     async validateWcVendorRegistrationWC() {
+        await this.page.waitForTimeout(5000)
         await this.navigateToURL(this.wcVendorsPage);
-        await this.page.waitForTimeout(2000)
         await this.assertionValidate(Selectors.vendorRegistrationForms.wcVendor.wcValidation.vendorValidation(VendorRegistrationForm.wcVendorShopName));
         await this.assertionValidate(Selectors.vendorRegistrationForms.wcVendor.wcValidation.vendorStatusValidation);
 

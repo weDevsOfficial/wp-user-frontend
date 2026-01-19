@@ -1,6 +1,6 @@
 <div id="form-preview-stage" class="wpuf-h-[70vh]">
     <div v-if="!form_fields.length" class="wpuf-flex wpuf-flex-col wpuf-items-center wpuf-justify-center wpuf-h-[80vh]">
-        <img src="<?php echo WPUF_ASSET_URI . '/images/form-blank-state.svg'; ?>" alt="">
+        <img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/form-blank-state.svg' ); ?>" alt="">
         <h2 class="wpuf-text-lg wpuf-text-gray-800 wpuf-mt-8 wpuf-mb-2"><?php esc_html_e( 'Add fields and build your desired form', 'wp-user-frontend' ); ?></h2>
 
         <p class="wpuf-text-sm wpuf-text-gray-500"><?php esc_html_e( 'Add the necessary field and build your form.', 'wp-user-frontend' ); ?></p>
@@ -14,11 +14,11 @@
             :data-index="index"
             data-source="stage"
             :class="[
-                        'field-items', 'wpuf-el', field.name, field.css, 'form-field-' + field.template,
+                        'field-items', 'wpuf-el', field.name, filter_builder_css_classes(field.css), 'form-field-' + field.template,
                         field.width ? 'field-size-' + field.width : '',
                         ('custom_hidden_field' === field.template) ? 'hidden-field' : ''
                     ]"
-            class="wpuf-group wpuf-rounded-lg hover:!wpuf-bg-green-50 wpuf-transition wpuf-duration-150 wpuf-ease-out !wpuf-m-0 !wpuf-p-0">
+            class="wpuf-group wpuf-rounded-lg hover:!wpuf-bg-green-50 wpuf-transition wpuf-duration-150 wpuf-ease-out !wpuf-m-0 !wpuf-p-0 wpuf-overflow-hidden">
             <div
                 v-if="field.input_type !== 'column_field' && field.input_type !== 'repeat'"
                 :class="parseInt(editing_form_id) === parseInt(field.id) ? 'wpuf-bg-green-50 wpuf-border-primary' : 'wpuf-border-transparent'"
@@ -34,6 +34,14 @@
                         class="wpuf-block wpuf-text-sm wpuf-font-medium wpuf-leading-6 wpuf-text-gray-900">
                         {{ field.label }} <span v-if="field.required && 'yes' === field.required"
                                                 class="required">*</span>
+                        <span v-if="has_hidden_css_class(field.css)"
+                              class="wpuf-inline-flex wpuf-items-center wpuf-ml-2 wpuf-px-2 wpuf-py-0.5 wpuf-rounded wpuf-text-xs wpuf-font-medium wpuf-bg-yellow-100 wpuf-text-yellow-800 wpuf-border wpuf-border-yellow-300"
+                              title="This field will be hidden on the frontend due to CSS class">
+                            <svg class="wpuf-w-3 wpuf-h-3 wpuf-mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+                            </svg>
+                            Hidden on frontend
+                        </span>
                     </label>
                     <span v-if="field.show_icon === 'yes' && field.field_icon && field.icon_position === 'right_label'"
                           class="wpuf-field-label-icon wpuf-inline-flex wpuf-items-center wpuf-ml-2">
@@ -53,7 +61,7 @@
                         <label class="wpuf-pro-text-alert">
                             <a :href="pro_link" target="_blank"
                                class="wpuf-text-gray-700 wpuf-text-base"><strong>{{ get_field_name( field.template )
-                                    }}</strong> <?php _e( 'is available in Pro Version', 'wp-user-frontend' ); ?></a>
+                                    }}</strong> <?php esc_html_e( 'is available in Pro Version', 'wp-user-frontend' ); ?></a>
                         </label>
                     </div>
                 </div>
@@ -115,7 +123,7 @@
                                 :href="pro_link"
                                 target="_blank"
                                 class="wpuf-rounded-r-md hover:wpuf-bg-slate-500 hover:wpuf-cursor-pointer wpuf-transition wpuf-duration-150 wpuf-ease-out hover:wpuf-transition-all">
-                                <img src="<?php esc_attr_e( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="">
+                                <img src="<?php echo esc_url( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="">
                             </a>
                         </span>
                 </div>

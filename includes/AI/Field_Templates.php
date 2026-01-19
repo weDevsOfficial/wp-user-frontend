@@ -106,8 +106,15 @@ class Field_Templates {
                 $field['meta_key'] = 'wpuf_profile_photo';
             }
 
+            // CRITICAL FIX: For secondary_email, ALWAYS ensure name and meta_key are hardcoded
+            // @since 4.2.6
+            if ( 'secondary_email' === $template ) {
+                $field['name'] = 'wpuf_secondary_email';
+                $field['meta_key'] = 'wpuf_secondary_email';
+            }
+
             // CRITICAL FIX: For shortcode template, ensure shortcode property always exists
-            if ( $template === 'shortcode' && empty( $field['shortcode'] ) ) {
+            if ( 'shortcode' === $template && empty( $field['shortcode'] ) ) {
                 $field['shortcode'] = '[your_shortcode]';
             }
 
@@ -1024,6 +1031,39 @@ class Field_Templates {
             'default' => '',
             'size' => '40',
             'readonly' => 'no',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
+    /**
+     * Get secondary email field template
+     *
+     * @since 4.2.6
+     *
+     * @param string $label
+     * @param int    $field_id
+     *
+     * @return array
+     */
+    private static function get_secondary_email_template( $label, $field_id ) {
+        return array_merge( [
+            'type' => 'secondary_email',
+            'id' => $field_id,
+            'input_type' => 'secondary_email',
+            'template' => 'secondary_email',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'wpuf_secondary_email',
+            'meta_key' => 'wpuf_secondary_email',
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'placeholder' => 'example@domain.com',
+            'default' => '',
+            'size' => '40',
+            'read_only' => 'no',
+            'show_in_post' => 'yes',
+            'hide_field_label' => 'no',
             'width' => 'large',
         ], self::get_common() );
     }

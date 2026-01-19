@@ -105,7 +105,7 @@
                                 :href="pro_link"
                                 target="_blank"
                                 class="wpuf-rounded-r-md hover:wpuf-bg-slate-500 hover:wpuf-cursor-pointer wpuf-transition wpuf-duration-150 wpuf-ease-out hover:wpuf-transition-all">
-                                <img src="<?php esc_attr_e( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="">
+                                <img src="<?php echo esc_attr( WPUF_ASSET_URI . '/images/pro-badge.svg' ); ?>" alt="">
                             </a>
                         </span>
                         </div>

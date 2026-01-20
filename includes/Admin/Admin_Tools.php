@@ -15,6 +15,7 @@ class Admin_Tools {
 
     public function __construct() {
         add_action( 'wpuf_load_tools', [ $this, 'handle_tools_action' ] );
+        add_action( 'wpuf_load_tools', [ $this, 'add_logout_to_menu' ] );
         add_filter( 'upload_mimes', [ $this, 'add_json_mime_type' ] );
         add_filter( 'wp_handle_upload_prefilter', [ $this, 'enable_json_upload' ] );
     }
@@ -309,6 +310,7 @@ class Admin_Tools {
     public function tool_page() {
         $msg                   = isset( $_GET['msg'] ) ? sanitize_text_field( wp_unslash( $_GET['msg'] ) ) : '';
         $text                  = '';
+        $error_text            = '';
         $confirmation_message  = __( 'Are you Sure?', 'wp-user-frontend' );
         switch ( $msg ) {
             case 'del_forms':
@@ -322,6 +324,18 @@ class Admin_Tools {
             case 'del_trans':
                 $text = __( 'All transactions has been deleted!', 'wp-user-frontend' );
                 break;
+
+            case 'logout_menu_added':
+                $text = __( 'Logout link has been added to the menu successfully!', 'wp-user-frontend' );
+                break;
+
+            case 'logout_menu_error':
+                $error_text = __( 'Failed to add logout link to the menu.', 'wp-user-frontend' );
+                break;
+
+            case 'no_menu_selected':
+                $error_text = __( 'Please select a menu to add the logout link.', 'wp-user-frontend' );
+                break;
         }
 
         if ( $text ) {
@@ -329,6 +343,16 @@ class Admin_Tools {
             <div class="updated">
                 <p>
                     <?php echo esc_html( $text ); ?>
+                </p>
+            </div>
+
+        <?php }
+
+        if ( $error_text ) {
+            ?>
+            <div class="error">
+                <p>
+                    <?php echo esc_html( $error_text ); ?>
                 </p>
             </div>
 
@@ -374,6 +398,115 @@ class Admin_Tools {
 
                     <a class="button button-primary" href="<?php echo esc_url( wp_nonce_url( add_query_arg( [ 'wpuf_action' => 'clear_transaction' ], 'admin.php?page=wpuf_tools&action=tools' ), 'wpuf-tools-action' ) ); ?>" onclick="return confirm('<?php echo esc_attr( $confirmation_message ); ?>');"><?php esc_html_e( 'Delete Transactions', 'wp-user-frontend' ); ?></a>
                 </div>
+            </div>
+
+            <?php $this->logout_menu_tool(); ?>
+        </div>
+        <?php
+    }
+
+    /**
+     * Render the logout menu tool UI
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function logout_menu_tool() {
+        $menus         = $this->get_nav_menus();
+        $is_block_theme = $this->is_block_theme();
+        $logout_url    = wpuf_get_logout_url();
+        ?>
+        <div class="postbox">
+            <h3><?php esc_html_e( 'Add Logout to Menu', 'wp-user-frontend' ); ?></h3>
+
+            <div class="inside">
+                <p><?php esc_html_e( 'Add a logout link to your navigation menu so users can easily log out from the frontend.', 'wp-user-frontend' ); ?></p>
+
+                <?php if ( $is_block_theme ) : ?>
+                    <div class="wpuf-fse-notice" style="background: #fff8e5; border-left: 4px solid #ffb900; padding: 12px; margin-bottom: 15px;">
+                        <strong><?php esc_html_e( 'Block Theme Detected (FSE)', 'wp-user-frontend' ); ?></strong>
+                        <p style="margin: 8px 0 0;">
+                            <?php esc_html_e( 'Your theme uses the Full Site Editor. To add a logout link to your navigation:', 'wp-user-frontend' ); ?>
+                        </p>
+                        <ol style="margin: 10px 0 10px 20px;">
+                            <li><?php esc_html_e( 'Go to Appearance > Editor > Navigation', 'wp-user-frontend' ); ?></li>
+                            <li><?php esc_html_e( 'Click the + button to add a new item', 'wp-user-frontend' ); ?></li>
+                            <li><?php esc_html_e( 'Select "Custom Link"', 'wp-user-frontend' ); ?></li>
+                            <li><?php esc_html_e( 'Use the URL and label below', 'wp-user-frontend' ); ?></li>
+                        </ol>
+                    </div>
+                <?php endif; ?>
+
+                <div class="wpuf-logout-url-info" style="background: #f6f7f7; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 10px;"><strong><?php esc_html_e( 'Logout URL (copy this):', 'wp-user-frontend' ); ?></strong></p>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <input type="text" id="wpuf-logout-url" value="<?php echo esc_url( $logout_url ); ?>" readonly style="flex: 1; padding: 8px;" onclick="this.select();" />
+                        <button type="button" class="button" onclick="navigator.clipboard.writeText(document.getElementById('wpuf-logout-url').value); this.textContent='<?php echo esc_js( __( 'Copied!', 'wp-user-frontend' ) ); ?>'; setTimeout(() => this.textContent='<?php echo esc_js( __( 'Copy', 'wp-user-frontend' ) ); ?>', 2000);">
+                            <?php esc_html_e( 'Copy', 'wp-user-frontend' ); ?>
+                        </button>
+                    </div>
+                    <p style="margin: 10px 0 0; color: #666; font-size: 12px;">
+                        <?php esc_html_e( 'Note: The logout URL contains a security nonce that may expire. For dynamic logout URLs, consider using a shortcode or widget.', 'wp-user-frontend' ); ?>
+                    </p>
+                </div>
+
+                <?php if ( ! empty( $menus ) && ! $is_block_theme ) : ?>
+                    <form method="post" action="">
+                        <?php wp_nonce_field( 'wpuf-add-logout-to-menu', 'wpuf_add_logout_nonce' ); ?>
+
+                        <table class="form-table">
+                            <tr>
+                                <th scope="row">
+                                    <label for="wpuf_menu_id"><?php esc_html_e( 'Select Menu', 'wp-user-frontend' ); ?></label>
+                                </th>
+                                <td>
+                                    <select name="wpuf_menu_id" id="wpuf_menu_id" style="min-width: 200px;">
+                                        <option value=""><?php esc_html_e( '— Select a menu —', 'wp-user-frontend' ); ?></option>
+                                        <?php foreach ( $menus as $menu ) : ?>
+                                            <option value="<?php echo esc_attr( $menu->term_id ); ?>">
+                                                <?php echo esc_html( $menu->name ); ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    <label for="wpuf_logout_label"><?php esc_html_e( 'Menu Label', 'wp-user-frontend' ); ?></label>
+                                </th>
+                                <td>
+                                    <input type="text" name="wpuf_logout_label" id="wpuf_logout_label" value="<?php esc_attr_e( 'Logout', 'wp-user-frontend' ); ?>" class="regular-text" />
+                                </td>
+                            </tr>
+                        </table>
+
+                        <p>
+                            <input type="submit" class="button button-primary" value="<?php esc_attr_e( 'Add Logout to Menu', 'wp-user-frontend' ); ?>" />
+                        </p>
+                    </form>
+                <?php elseif ( empty( $menus ) && ! $is_block_theme ) : ?>
+                    <p style="color: #666;">
+                        <?php
+                        printf(
+                            /* translators: %s: URL to create menu */
+                            wp_kses_post( __( 'No menus found. <a href="%s">Create a menu</a> first, then come back to add the logout link.', 'wp-user-frontend' ) ),
+                            esc_url( admin_url( 'nav-menus.php' ) )
+                        );
+                        ?>
+                    </p>
+                <?php endif; ?>
+
+                <p style="margin-top: 15px;">
+                    <a href="<?php echo esc_url( admin_url( 'nav-menus.php' ) ); ?>" class="button">
+                        <?php esc_html_e( 'Go to Menus', 'wp-user-frontend' ); ?>
+                    </a>
+                    <?php if ( $is_block_theme ) : ?>
+                        <a href="<?php echo esc_url( admin_url( 'site-editor.php?path=%2Fnavigation' ) ); ?>" class="button">
+                            <?php esc_html_e( 'Go to Site Editor Navigation', 'wp-user-frontend' ); ?>
+                        </a>
+                    <?php endif; ?>
+                </p>
             </div>
         </div>
         <?php
@@ -563,5 +696,80 @@ class Admin_Tools {
             }
         }
         wp_reset_postdata();
+    }
+
+    /**
+     * Get all navigation menus
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array
+     */
+    public function get_nav_menus() {
+        $menus = wp_get_nav_menus();
+
+        return $menus;
+    }
+
+    /**
+     * Add logout link to navigation menu
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function add_logout_to_menu() {
+        if ( ! isset( $_POST['wpuf_add_logout_nonce'] ) ) {
+            return;
+        }
+
+        check_admin_referer( 'wpuf-add-logout-to-menu', 'wpuf_add_logout_nonce' );
+
+        if ( ! current_user_can( 'manage_options' ) ) {
+            return;
+        }
+
+        $menu_id    = isset( $_POST['wpuf_menu_id'] ) ? intval( $_POST['wpuf_menu_id'] ) : 0;
+        $menu_label = isset( $_POST['wpuf_logout_label'] ) ? sanitize_text_field( wp_unslash( $_POST['wpuf_logout_label'] ) ) : __( 'Logout', 'wp-user-frontend' );
+
+        if ( ! $menu_id ) {
+            wp_safe_redirect( add_query_arg( [ 'msg' => 'no_menu_selected' ], admin_url( 'admin.php?page=wpuf_tools&tab=tools' ) ) );
+            exit;
+        }
+
+        $result = wpuf_add_logout_to_menu( $menu_id, $menu_label );
+
+        if ( is_wp_error( $result ) ) {
+            wp_safe_redirect( add_query_arg( [ 'msg' => 'logout_menu_error' ], admin_url( 'admin.php?page=wpuf_tools&tab=tools' ) ) );
+            exit;
+        }
+
+        wp_safe_redirect( add_query_arg( [ 'msg' => 'logout_menu_added' ], admin_url( 'admin.php?page=wpuf_tools&tab=tools' ) ) );
+        exit;
+    }
+
+    /**
+     * Get logout URL info for display
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array
+     */
+    public function get_logout_url_info() {
+        return [
+            'url'   => wpuf_get_logout_url(),
+            'label' => __( 'Logout', 'wp-user-frontend' ),
+        ];
+    }
+
+    /**
+     * Check if current theme is a block theme (FSE)
+     *
+     * @since WPUF_SINCE
+     *
+     * @return bool
+     */
+    public function is_block_theme() {
+        return function_exists( 'wp_is_block_theme' ) && wp_is_block_theme();
     }
 }

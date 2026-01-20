@@ -445,6 +445,16 @@ class Setup_Wizard {
                 <h2><a href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf-settings&wpuf_steup='. wp_create_nonce('wpuf-setup') ) ); ?>"><?php esc_html_e( 'Go to Full Settings', 'wp-user-frontend' ); ?></a></h2>
             </div>
         </div>
+
+        <div class="wpuf-setup-tip" style="margin-top: 30px; padding: 20px; background: #f6f7f7; border-left: 4px solid #7dc443; border-radius: 4px; clear: both;">
+            <h3 style="margin: 0 0 10px;"><?php esc_html_e( 'Add Logout Link to Your Menu', 'wp-user-frontend' ); ?></h3>
+            <p style="margin: 0 0 15px; color: #555;">
+                <?php esc_html_e( 'Help your users easily log out by adding a logout link to your navigation menu.', 'wp-user-frontend' ); ?>
+            </p>
+            <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpuf_tools&tab=tools' ) ); ?>" class="button">
+                <?php esc_html_e( 'Add Logout to Menu', 'wp-user-frontend' ); ?>
+            </a>
+        </div>
         <?php
     }
 

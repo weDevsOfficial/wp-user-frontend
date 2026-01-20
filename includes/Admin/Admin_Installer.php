@@ -138,11 +138,144 @@ class Admin_Installer {
             ] );
         }
         update_option( '_wpuf_page_created', '1' );
+
+        // Auto-add logout link to the primary menu
+        $this->auto_add_logout_to_menu();
+
         $page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
         if ( $page != 'wpuf-setup' ) {
             wp_redirect( admin_url( 'admin.php?page=wpuf-settings&wpuf_page_installed=1' ) );
             exit;
         }
+    }
+
+    /**
+     * Automatically add logout link to the primary navigation menu
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    public function auto_add_logout_to_menu() {
+        // Check if it's a block theme (FSE)
+        if ( function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() ) {
+            // For FSE themes, try to add to wp_navigation post type
+            $this->add_logout_to_fse_navigation();
+            return;
+        }
+
+        // For classic themes, find the primary menu and add logout
+        $this->add_logout_to_classic_menu();
+    }
+
+    /**
+     * Add logout link to classic theme menu
+     *
+     * @since WPUF_SINCE
+     *
+     * @return bool
+     */
+    private function add_logout_to_classic_menu() {
+        // Get all registered menu locations
+        $locations = get_nav_menu_locations();
+
+        // Priority order for menu locations to add logout
+        $priority_locations = [ 'primary', 'main', 'main-menu', 'primary-menu', 'header', 'header-menu', 'top', 'top-menu' ];
+
+        $menu_id = 0;
+
+        // Try to find a menu in priority order
+        foreach ( $priority_locations as $location ) {
+            if ( ! empty( $locations[ $location ] ) ) {
+                $menu_id = $locations[ $location ];
+                break;
+            }
+        }
+
+        // If no priority location found, try the first available menu location
+        if ( ! $menu_id && ! empty( $locations ) ) {
+            $menu_id = reset( $locations );
+        }
+
+        // If still no menu, try to get any existing menu
+        if ( ! $menu_id ) {
+            $menus = wp_get_nav_menus();
+            if ( ! empty( $menus ) ) {
+                $menu_id = $menus[0]->term_id;
+            }
+        }
+
+        if ( ! $menu_id ) {
+            return false;
+        }
+
+        // Check if logout already exists in this menu
+        $menu_items = wp_get_nav_menu_items( $menu_id );
+        if ( $menu_items ) {
+            foreach ( $menu_items as $item ) {
+                if ( strpos( $item->url, 'action=logout' ) !== false ) {
+                    // Logout already exists
+                    return true;
+                }
+            }
+        }
+
+        // Add logout to menu
+        if ( function_exists( 'wpuf_add_logout_to_menu' ) ) {
+            $result = wpuf_add_logout_to_menu( $menu_id, __( 'Logout', 'wp-user-frontend' ) );
+            return ! is_wp_error( $result );
+        }
+
+        return false;
+    }
+
+    /**
+     * Add logout link to FSE navigation
+     *
+     * @since WPUF_SINCE
+     *
+     * @return bool
+     */
+    private function add_logout_to_fse_navigation() {
+        // Get all wp_navigation posts
+        $navigations = get_posts( [
+            'post_type'      => 'wp_navigation',
+            'posts_per_page' => -1,
+            'post_status'    => 'publish',
+        ] );
+
+        if ( empty( $navigations ) ) {
+            return false;
+        }
+
+        $logout_url   = function_exists( 'wpuf_get_logout_url' ) ? wpuf_get_logout_url() : wp_logout_url();
+        $logout_label = __( 'Logout', 'wp-user-frontend' );
+        $logout_block = sprintf(
+            '<!-- wp:navigation-link {"label":"%s","url":"%s","kind":"custom","isTopLevelLink":true} /-->',
+            esc_attr( $logout_label ),
+            esc_url( $logout_url )
+        );
+
+        $updated = false;
+
+        foreach ( $navigations as $navigation ) {
+            // Check if logout already exists
+            if ( strpos( $navigation->post_content, 'action=logout' ) !== false || strpos( $navigation->post_content, 'Logout' ) !== false ) {
+                continue;
+            }
+
+            // Append logout link to the navigation content
+            $new_content = $navigation->post_content . "\n" . $logout_block;
+
+            wp_update_post( [
+                'ID'           => $navigation->ID,
+                'post_content' => $new_content,
+            ] );
+
+            $updated = true;
+        }
+
+        return $updated;
     }
 
     /**

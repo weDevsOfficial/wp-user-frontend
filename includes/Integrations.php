@@ -45,6 +45,10 @@ class Integrations {
                 }
             }
         }
+
+        add_action('elementor/init', function() {
+            $this->container['elementor'] = new Integrations\Elementor\Elementor();
+        });
     }
 
     /**

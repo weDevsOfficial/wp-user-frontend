@@ -252,12 +252,12 @@ class FormGenerator {
         }
 
         // Set token parameter based on model
-        // Use higher token limit for integration forms (they have more fields)
-        if ( ! empty( $context['integration'] ) ) {
-            $max_tokens = 4000; // Integration forms need more tokens
-        } elseif ( strpos( $this->current_model, 'gpt-5' ) === 0 ) {
+        // GPT-5 check must come first since it needs high tokens even for integrations
+        if ( strpos( $this->current_model, 'gpt-5' ) === 0 ) {
             // GPT-5 needs significantly more tokens for reasoning + output
             $max_tokens = intval( $options['max_tokens'] ?? 65536 );
+        } elseif ( ! empty( $context['integration'] ) ) {
+            $max_tokens = 4000; // Integration forms need more tokens
         } else {
             $max_tokens = intval( $options['max_tokens'] ?? 2000 );
         }

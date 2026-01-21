@@ -9,6 +9,8 @@ $tools_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab
         <a class="nav-tab <?php echo ( $tools_tab == 'import' ) ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( add_query_arg( [ 'page'   => 'wpuf_tools', 'tab' => 'import' ], admin_url( 'admin.php' ) ) ); ?>"><?php esc_html_e( 'Import', 'wp-user-frontend' ); ?></a>
 
         <a class="nav-tab <?php echo ( $tools_tab == 'export' ) ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( add_query_arg( [ 'page'   => 'wpuf_tools', 'tab' => 'export' ], admin_url( 'admin.php' ) ) ); ?>"><?php esc_html_e( 'Export', 'wp-user-frontend' ); ?></a>
+
+        <a class="nav-tab <?php echo ( $tools_tab == 'shortcodes' ) ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( add_query_arg( [ 'page' => 'wpuf_tools', 'tab' => 'shortcodes' ], admin_url( 'admin.php' ) ) ); ?>"><?php esc_html_e( 'Shortcodes', 'wp-user-frontend' ); ?></a>
     </h2>
 
     <?php
@@ -21,6 +23,10 @@ $tools_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab
 
         case 'import':
             wpuf()->admin->tools->import_data();
+            break;
+
+        case 'shortcodes':
+            wpuf()->admin->tools->shortcodes_page();
             break;
 
         default:

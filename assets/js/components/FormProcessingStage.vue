@@ -9,12 +9,12 @@
             </div>
             
             <!-- Title -->
-            <h3 class="wpuf-text-center wpuf-text-xl wpuf-font-normal wpuf-text-gray-900 wpuf-mb-12">
+            <h3 class="wpuf-text-center wpuf-text-xl wpuf-font-normal wpuf-text-gray-900 wpuf-mb-6">
                 {{ __('Generating your form...', 'wp-user-frontend') }}
             </h3>
             
             <!-- Progress Steps -->
-            <div class="wpuf-grid wpuf-grid-cols-1 wpuf-justify-items-center wpuf-gap-1">
+            <div class="wpuf-grid wpuf-grid-cols-1 wpuf-justify-items-center wpuf-gap-2">
                 <!-- Step 1 -->
                 <div class="wpuf-flex wpuf-items-center wpuf-gap-3 wpuf-justify-center wpuf-w-full wpuf-max-w-md" :class="{ 'wpuf-opacity-100': currentStep >= 1, 'wpuf-opacity-40': currentStep < 1 }">
                     <div class="wpuf-flex-shrink-0">
@@ -26,7 +26,7 @@
                         <div v-else-if="currentStep === 1" class="wpuf-w-5 wpuf-h-5 wpuf-border-2 wpuf-border-emerald-600 wpuf-border-t-transparent wpuf-rounded-full wpuf-animate-spin"></div>
                         <div v-else class="wpuf-w-5 wpuf-h-5 wpuf-border-2 wpuf-border-gray-300 wpuf-rounded-full"></div>
                     </div>
-                    <p class="wpuf-text-gray-600 wpuf-text-sm wpuf-leading-8 wpuf-flex-1">{{ __('Analyzing your request and detecting the form type...', 'wp-user-frontend') }}</p>
+                    <p class="wpuf-text-gray-600 wpuf-text-sm wpuf-leading-6 wpuf-flex-1">{{ __('Analyzing your request and detecting the form type...', 'wp-user-frontend') }}</p>
                 </div>
                 
                 <!-- Step 2 -->
@@ -40,7 +40,7 @@
                         <div v-else-if="currentStep === 2" class="wpuf-w-5 wpuf-h-5 wpuf-border-2 wpuf-border-emerald-600 wpuf-border-t-transparent wpuf-rounded-full wpuf-animate-spin"></div>
                         <div v-else class="wpuf-w-5 wpuf-h-5 wpuf-border-2 wpuf-border-gray-300 wpuf-rounded-full"></div>
                     </div>
-                    <p class="wpuf-text-gray-600 wpuf-text-sm wpuf-leading-8 wpuf-flex-1">{{ __('Finalizing the title, required fields, and labels...', 'wp-user-frontend') }}</p>
+                    <p class="wpuf-text-gray-600 wpuf-text-sm wpuf-leading-6 wpuf-flex-1">{{ __('Finalizing the title, required fields, and labels...', 'wp-user-frontend') }}</p>
                 </div>
                 
                 <!-- Step 3 -->
@@ -54,7 +54,7 @@
                         <div v-else-if="currentStep === 3" class="wpuf-w-5 wpuf-h-5 wpuf-border-2 wpuf-border-emerald-600 wpuf-border-t-transparent wpuf-rounded-full wpuf-animate-spin"></div>
                         <div v-else class="wpuf-w-5 wpuf-h-5 wpuf-border-2 wpuf-border-gray-300 wpuf-rounded-full"></div>
                     </div>
-                    <p class="wpuf-text-gray-600 wpuf-text-sm wpuf-leading-8 wpuf-flex-1">{{ __('Almost done! Generating your form preview...', 'wp-user-frontend') }}</p>
+                    <p class="wpuf-text-gray-600 wpuf-text-sm wpuf-leading-6 wpuf-flex-1">{{ __('Almost done! Generating your form preview...', 'wp-user-frontend') }}</p>
                 </div>
                 
                 <!-- Step 4 -->
@@ -68,7 +68,7 @@
                         <div v-else-if="currentStep === 4" class="wpuf-w-5 wpuf-h-5 wpuf-border-2 wpuf-border-emerald-600 wpuf-border-t-transparent wpuf-rounded-full wpuf-animate-spin"></div>
                         <div v-else class="wpuf-w-5 wpuf-h-5 wpuf-border-2 wpuf-border-gray-300 wpuf-rounded-full"></div>
                     </div>
-                    <p class="wpuf-text-gray-600 wpuf-text-sm wpuf-leading-8 wpuf-flex-1">{{ __('Here\'s your AI-generated form - ready to customize and use!', 'wp-user-frontend') }}</p>
+                    <p class="wpuf-text-gray-600 wpuf-text-sm wpuf-leading-6 wpuf-flex-1">{{ __('Here\'s your AI-generated form - ready to customize and use!', 'wp-user-frontend') }}</p>
                 </div>
             </div>
             

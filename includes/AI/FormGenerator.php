@@ -717,8 +717,24 @@ class FormGenerator {
 
         // Determine which prompt file to use based on form type and integration
         if ( 'profile' === $form_type || 'registration' === $form_type ) {
-            // Registration/Profile form - use registration prompt
-            $prompt_file = WPUF_ROOT . '/includes/AI/wpuf-ai-minimal-prompt-registration.md';
+            // Registration/Profile form - check for integration-specific prompts first
+            if ( ! empty( $integration ) ) {
+                $registration_integration_prompts = [
+                    'dokan'      => WPUF_ROOT . '/includes/AI/wpuf-ai-prompt-dokan-registration.md',
+                    'wc_vendors' => WPUF_ROOT . '/includes/AI/wpuf-ai-prompt-wc-vendors-registration.md',
+                    'wcfm'       => WPUF_ROOT . '/includes/AI/wpuf-ai-prompt-wcfm-registration.md',
+                ];
+
+                // Use integration prompt if available, fallback to default registration prompt
+                if ( isset( $registration_integration_prompts[ $integration ] ) && file_exists( $registration_integration_prompts[ $integration ] ) ) {
+                    $prompt_file = $registration_integration_prompts[ $integration ];
+                } else {
+                    $prompt_file = WPUF_ROOT . '/includes/AI/wpuf-ai-minimal-prompt-registration.md';
+                }
+            } else {
+                // No integration - use default registration prompt
+                $prompt_file = WPUF_ROOT . '/includes/AI/wpuf-ai-minimal-prompt-registration.md';
+            }
         } elseif ( 'post' === $form_type && ! empty( $integration ) ) {
             // Post form WITH integration - use integration-specific prompts
             $integration_prompts = [
@@ -761,6 +777,15 @@ class FormGenerator {
                     $system_prompt .= "- Pro fields available: numeric_text_field, phone_field, country_list_field, address_field, etc.\n";
                 } elseif ( 'events_calendar' === $integration ) {
                     $system_prompt .= "- Pro fields available: phone_field, country_list_field, address_field, google_map, etc.\n";
+                } elseif ( 'dokan' === $integration ) {
+                    $system_prompt .= "- For Dokan: Use profile_photo for vendor profile picture, image_upload for shop banner\n";
+                    $system_prompt .= "- Pro fields available: phone_field, address_field, google_map for store location, etc.\n";
+                } elseif ( 'wc_vendors' === $integration ) {
+                    $system_prompt .= "- For WC Vendors: Use image_upload for shop logo and banner\n";
+                    $system_prompt .= "- Pro fields available: phone_field, address_field, etc.\n";
+                } elseif ( 'wcfm' === $integration ) {
+                    $system_prompt .= "- For WCFM: Use image_upload for store logo and banner, address_field for store address\n";
+                    $system_prompt .= "- Pro fields available: phone_field, address_field, google_map, etc.\n";
                 }
             } else {
                 $system_prompt .= "**WP User Frontend FREE version (Pro NOT active)**\n";
@@ -770,8 +795,11 @@ class FormGenerator {
                     $system_prompt .= "- Do NOT include Downloadable Product or Downloadable Files fields (these are Pro-only features)\n";
                 } elseif ( 'events_calendar' === $integration ) {
                     $system_prompt .= "- For Events Calendar: Use text_field for venue name, address, etc.\n";
+                } elseif ( 'dokan' === $integration || 'wc_vendors' === $integration || 'wcfm' === $integration ) {
+                    $system_prompt .= "- For vendor registration: Use text_field, textarea_field, image_upload for basic fields\n";
+                    $system_prompt .= "- Do NOT use phone_field, address_field, google_map (these are Pro-only features)\n";
                 }
-                $system_prompt .= "- Free fields: text_field, textarea_field, dropdown_field, radio_field, checkbox_field, email_address, website_url, date_field, etc.\n";
+                $system_prompt .= "- Free fields: text_field, textarea_field, dropdown_field, radio_field, checkbox_field, email_address, website_url, date_field, image_upload, etc.\n";
                 $system_prompt .= "- Do NOT use Pro-only fields like numeric_text_field, phone_field, country_list_field, address_field\n";
             }
         }

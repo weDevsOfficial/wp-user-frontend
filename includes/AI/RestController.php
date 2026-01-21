@@ -103,7 +103,7 @@ class RestController extends WP_REST_Controller {
                     'required' => false,
                     'type' => 'string',
                     'default' => '',
-                    'enum' => ['', 'woocommerce', 'edd', 'events_calendar'],
+                    'enum' => ['', 'woocommerce', 'edd', 'events_calendar', 'dokan', 'wc_vendors', 'wcfm'],
                     'sanitize_callback' => 'sanitize_text_field'
                 ],
                 'provider' => [
@@ -508,6 +508,7 @@ class RestController extends WP_REST_Controller {
 
         // Define all possible integrations with their requirements
         $all_integrations = [
+            // Post form integrations
             'woocommerce' => [
                 'id'          => 'woocommerce',
                 'label'       => __( 'WooCommerce Product', 'wp-user-frontend' ),
@@ -531,6 +532,31 @@ class RestController extends WP_REST_Controller {
                 'enabled'     => class_exists( 'Tribe__Events__Main' ),
                 'form_types'  => [ 'post' ],
                 'icon'        => 'calendar'
+            ],
+            // Registration form integrations
+            'dokan' => [
+                'id'          => 'dokan',
+                'label'       => __( 'Dokan Vendor', 'wp-user-frontend' ),
+                'description' => __( 'Create Dokan vendor registration forms', 'wp-user-frontend' ),
+                'enabled'     => class_exists( 'WeDevs_Dokan' ),
+                'form_types'  => [ 'profile', 'registration' ],
+                'icon'        => 'store'
+            ],
+            'wc_vendors' => [
+                'id'          => 'wc_vendors',
+                'label'       => __( 'WC Vendors', 'wp-user-frontend' ),
+                'description' => __( 'Create WC Vendors registration forms', 'wp-user-frontend' ),
+                'enabled'     => class_exists( 'WC_Vendors' ),
+                'form_types'  => [ 'profile', 'registration' ],
+                'icon'        => 'store'
+            ],
+            'wcfm' => [
+                'id'          => 'wcfm',
+                'label'       => __( 'WCFM Membership', 'wp-user-frontend' ),
+                'description' => __( 'Create WCFM vendor registration forms', 'wp-user-frontend' ),
+                'enabled'     => class_exists( 'WCFMvm' ),
+                'form_types'  => [ 'profile', 'registration' ],
+                'icon'        => 'store'
             ]
         ];
 

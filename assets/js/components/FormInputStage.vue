@@ -27,8 +27,8 @@
                 </div>
             </div>
 
-            <!-- Integration Selector (Only for Post Forms) -->
-            <div v-if="formType === 'post' && (availableIntegrations.length > 0 || loadingIntegrations)" class="wpuf-mb-6">
+            <!-- Integration Selector (For Post and Registration Forms) -->
+            <div v-if="(availableIntegrations.length > 0 || loadingIntegrations)" class="wpuf-mb-6">
                 <label class="wpuf-block wpuf-text-gray-900 wpuf-mb-2 wpuf-text-[16px] wpuf-font-medium">
                     {{ __('Form Type (Optional)', 'wp-user-frontend') }}
                 </label>
@@ -135,24 +135,10 @@ export default {
         let promptAIInstructions = {};
 
         if (formType === 'profile' || formType === 'registration') {
-            // Registration/Profile form prompts
-            promptTemplates = [
-                { id: 'basic_registration', label: this.__('Basic User Registration', 'wp-user-frontend') },
-                { id: 'member_directory', label: this.__('Member Directory Profile', 'wp-user-frontend') },
-                { id: 'job_applicant', label: this.__('Job Applicant Registration', 'wp-user-frontend') },
-                { id: 'blog_author_signup', label: this.__('Blog Author Signup', 'wp-user-frontend') },
-                { id: 'community_member_join', label: this.__('Community Member Join', 'wp-user-frontend') },
-                { id: 'freelancer_profile_signup', label: this.__('Freelancer Profile Signup', 'wp-user-frontend') }
-            ];
-
-            promptAIInstructions = {
-                basic_registration: 'Create a Basic User Registration form with email, name, username, password',
-                member_directory: 'Create a Member Directory Profile form with name, email, bio, profile photo',
-                job_applicant: 'Create a Job Applicant Registration form with name, email, phone, resume upload',
-                blog_author_signup: 'Create a registration form for new blog authors. Collect their login details, public display information, a short introduction about themselves, a profile photo or avatar, and an optional personal website link.',
-                community_member_join: 'Create a registration form for new community members. Collect their basic personal details, login information, a public name, a nickname, their interests (as checkboxes), a short personal introduction, and a profile picture',
-                freelancer_profile_signup: 'Create a registration form for freelancers that captures their professional details, skills, experience summary, portfolio information, and profile photo.'
-            };
+            // Registration/Profile form prompts - will be populated by updatePromptTemplates() in mounted()
+            // based on whether integrations are available
+            promptTemplates = [];
+            promptAIInstructions = {};
         } else {
             // Post form prompts - will be populated by updatePromptTemplates() in mounted()
             promptTemplates = [];
@@ -191,10 +177,8 @@ export default {
         if (this.initialIntegration) {
             this.$emit('update:selectedIntegration', this.selectedIntegration);
         }
-        // Initialize prompt templates based on integration (if post form)
-        if (this.formType === 'post') {
-            this.updatePromptTemplates();
-        }
+        // Initialize prompt templates based on integration
+        this.updatePromptTemplates();
     },
     watch: {
         generating(newVal) {
@@ -219,11 +203,6 @@ export default {
         __: window.__ || ((text) => text),
 
         async fetchAvailableIntegrations() {
-            // Only fetch integrations for post forms
-            if (this.formType !== 'post') {
-                return;
-            }
-
             this.loadingIntegrations = true;
 
             try {
@@ -267,11 +246,77 @@ export default {
         },
 
         updatePromptTemplates() {
-            // Only update for post forms
-            if (this.formType !== 'post') {
+            // Handle registration/profile form integrations
+            if (this.formType === 'profile' || this.formType === 'registration') {
+                if (this.selectedIntegration === 'dokan') {
+                    // Dokan vendor registration prompts
+                    this.promptTemplates = [
+                        { id: 'dokan_basic', label: this.__('Basic Vendor Registration', 'wp-user-frontend') },
+                        { id: 'dokan_complete', label: this.__('Complete Vendor Profile', 'wp-user-frontend') },
+                        { id: 'dokan_marketplace', label: this.__('Marketplace Seller', 'wp-user-frontend') },
+                        { id: 'dokan_simple', label: this.__('Simple Vendor Signup', 'wp-user-frontend') }
+                    ];
+
+                    this.promptAIInstructions = {
+                        dokan_basic: 'Create a Dokan basic vendor registration form with first name, last name, email, shop name, password',
+                        dokan_complete: 'Create a Dokan complete vendor registration form with first name, last name, email, shop name, shop URL, profile picture, shop banner, phone number, address, store location map, password',
+                        dokan_marketplace: 'Create a Dokan marketplace seller registration form with first name, last name, email, shop name, shop URL, store description, profile picture, shop banner, phone number, PayPal email, password',
+                        dokan_simple: 'Create a Dokan simple vendor signup form with email, shop name, password'
+                    };
+                } else if (this.selectedIntegration === 'wc_vendors') {
+                    // WC Vendors registration prompts
+                    this.promptTemplates = [
+                        { id: 'wcv_basic', label: this.__('Basic Vendor Registration', 'wp-user-frontend') },
+                        { id: 'wcv_complete', label: this.__('Complete Vendor Profile', 'wp-user-frontend') },
+                        { id: 'wcv_seller', label: this.__('Seller Application', 'wp-user-frontend') },
+                        { id: 'wcv_simple', label: this.__('Simple Vendor Signup', 'wp-user-frontend') }
+                    ];
+
+                    this.promptAIInstructions = {
+                        wcv_basic: 'Create a WC Vendors basic registration form with email, PayPal address, shop name, password',
+                        wcv_complete: 'Create a WC Vendors complete registration form with email, first name, last name, PayPal address, shop name, seller info, shop description, shop logo, password',
+                        wcv_seller: 'Create a WC Vendors seller application form with email, first name, last name, PayPal address, shop name, seller info, shop description, password',
+                        wcv_simple: 'Create a WC Vendors simple vendor signup form with email, shop name, PayPal address, password'
+                    };
+                } else if (this.selectedIntegration === 'wcfm') {
+                    // WCFM Membership registration prompts
+                    this.promptTemplates = [
+                        { id: 'wcfm_basic', label: this.__('Basic Vendor Registration', 'wp-user-frontend') },
+                        { id: 'wcfm_complete', label: this.__('Complete Vendor Profile', 'wp-user-frontend') },
+                        { id: 'wcfm_marketplace', label: this.__('Marketplace Vendor', 'wp-user-frontend') },
+                        { id: 'wcfm_multistep', label: this.__('Multi-Step Registration', 'wp-user-frontend') }
+                    ];
+
+                    this.promptAIInstructions = {
+                        wcfm_basic: 'Create a WCFM basic vendor registration form with email, store name (username), password',
+                        wcfm_complete: 'Create a WCFM complete vendor registration form with email, store name, first name, last name, phone number, store logo, store banner, store description, store address, social links (Facebook, Twitter, Instagram, LinkedIn), password',
+                        wcfm_marketplace: 'Create a WCFM marketplace vendor registration form with email, store name, first name, last name, phone, store logo, store description, address, password',
+                        wcfm_multistep: 'Create a WCFM multi-step vendor registration form with section breaks: Step 1 (email, store name, password), Step 2 (store logo, store banner, store description), Step 3 (phone, address, social links)'
+                    };
+                } else {
+                    // Default registration prompts (no integration)
+                    this.promptTemplates = [
+                        { id: 'basic_registration', label: this.__('Basic User Registration', 'wp-user-frontend') },
+                        { id: 'member_directory', label: this.__('Member Directory Profile', 'wp-user-frontend') },
+                        { id: 'job_applicant', label: this.__('Job Applicant Registration', 'wp-user-frontend') },
+                        { id: 'blog_author_signup', label: this.__('Blog Author Signup', 'wp-user-frontend') },
+                        { id: 'community_member_join', label: this.__('Community Member Join', 'wp-user-frontend') },
+                        { id: 'freelancer_profile_signup', label: this.__('Freelancer Profile Signup', 'wp-user-frontend') }
+                    ];
+
+                    this.promptAIInstructions = {
+                        basic_registration: 'Create a Basic User Registration form with email, name, username, password',
+                        member_directory: 'Create a Member Directory Profile form with name, email, bio, profile photo',
+                        job_applicant: 'Create a Job Applicant Registration form with name, email, phone, resume upload',
+                        blog_author_signup: 'Create a registration form for new blog authors. Collect their login details, public display information, a short introduction about themselves, a profile photo or avatar, and an optional personal website link.',
+                        community_member_join: 'Create a registration form for new community members. Collect their basic personal details, login information, a public name, a nickname, their interests (as checkboxes), a short personal introduction, and a profile picture',
+                        freelancer_profile_signup: 'Create a registration form for freelancers that captures their professional details, skills, experience summary, portfolio information, and profile photo.'
+                    };
+                }
                 return;
             }
 
+            // Handle post form integrations
             if (this.selectedIntegration === 'woocommerce') {
                 // WooCommerce-specific prompts
                 this.promptTemplates = [

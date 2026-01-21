@@ -893,8 +893,30 @@ class Frontend_Form_Ajax {
         preg_match_all( '/{custom_([\w-]*)\b}/', $content, $matches );
         [ $search, $replace ] = $matches;
 
+        $args = array(
+            'post_type' => 'wpuf_input',
+            'posts_per_page' => -1
+        );
+        $wpuf_posts = get_posts($args);
+
         if ( $replace ) {
             foreach ( $replace as $index => $meta_key ) {
+                $input_type = '';
+                foreach ($wpuf_posts as $post) {
+                    $post_content = $post->post_content;
+                    $data = unserialize($post_content);
+                    if ($data['name'] == $meta_key){
+                        $input_type = $data['input_type'];
+                        break;
+                    }
+                }
+
+                $use_attachment_url = false;
+                if ($input_type == "image_upload" || $input_type == "file_upload"){
+                    $use_attachment_url = true;
+                }
+                    
+
                 $value = get_post_meta( $post_id, $meta_key, false );
 
                 if ( isset( $value[0] ) && is_array( $value[0] ) ) {
@@ -911,21 +933,21 @@ class Frontend_Form_Ajax {
 
                     foreach ( $value as $val ) {
                         if ( $is_first ) {
-                            if ( get_post_mime_type( (int) $val ) ) {
+                            if ( $use_attachment_url ) {
                                 $meta_val = wp_get_attachment_url( $val );
                             } else {
                                 $meta_val = $val;
                             }
                             $is_first = false;
                         } else {
-                            if ( get_post_mime_type( (int) $val ) ) {
+                            if ( $use_attachment_url ) {
                                 $meta_val = $meta_val . ', ' . wp_get_attachment_url( $val );
                             } else {
                                 $meta_val = $meta_val . ', ' . $val;
                             }
                         }
 
-                        if ( get_post_mime_type( (int) $val ) ) {
+                        if ( $use_attachment_url ) {
                             $meta_val = $meta_val . ',' . wp_get_attachment_url( $val );
                         } else {
                             $meta_val = $meta_val . ',' . $val;
@@ -938,7 +960,7 @@ class Frontend_Form_Ajax {
                         $new_value = implode( ', ', $value );
                     }
 
-                    if ( get_post_mime_type( (int) $new_value ) ) {
+                    if ( $use_attachment_url ) {
                         $original_value = wp_get_attachment_url( $new_value );
                     } else {
                         $original_value = $new_value;

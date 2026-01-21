@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Frontend 4.2.6\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2026-01-14 08:50:52+00:00\n"
+"POT-Creation-Date: 2026-01-21 05:31:58+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1564,6 +1564,7 @@ msgstr ""
 
 #: admin/template.php:127 includes/Admin/Forms/Admin_Template.php:146
 #: includes/Fields/Field_Contract.php:652
+#: includes/Integrations/Elementor/Widget.php:536
 msgid "Size"
 msgstr ""
 
@@ -1604,6 +1605,8 @@ msgstr ""
 
 #: admin/template.php:188 includes/Admin/Forms/Admin_Template.php:217
 #: includes/Fields/Field_Contract.php:740
+#: includes/Integrations/Elementor/Widget.php:376
+#: includes/Integrations/Elementor/Widget.php:623
 msgid "Normal"
 msgstr ""
 
@@ -6250,6 +6253,11 @@ msgid "Background color for progressbar or active step."
 msgstr ""
 
 #: includes/Free/Free_Loader.php:1609
+#: includes/Integrations/Elementor/Widget.php:381
+#: includes/Integrations/Elementor/Widget.php:442
+#: includes/Integrations/Elementor/Widget.php:628
+#: includes/Integrations/Elementor/Widget.php:689
+#: includes/Integrations/Elementor/Widget.php:739
 msgid "Background Color"
 msgstr ""
 
@@ -7088,6 +7096,169 @@ msgstr ""
 #. translators: %1$s is Post type and %2$d is item
 #. translators: %1$s is Post type and %2$s is total feature item
 msgid "Mark the %1$s as featured (remaining %2$d)"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:42
+msgid "User Frontend Form"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:89
+msgid "Content"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:96
+msgid "Select Form"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:130
+msgid "Select a Form"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:152
+msgid "Form Container"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:161
+msgid "Background"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:170
+msgid "Link Color"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:181
+msgid "Max Width"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:197
+#: includes/Integrations/Elementor/Widget.php:363
+#: includes/Integrations/Elementor/Widget.php:597
+msgid "Alignment"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:201
+#: includes/functions/settings-options.php:116
+msgid "Default"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:205
+#: includes/Integrations/Elementor/Widget.php:366
+#: includes/Integrations/Elementor/Widget.php:600
+#: includes/functions/settings-options.php:595
+msgid "Left"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:209
+#: includes/Integrations/Elementor/Widget.php:367
+#: includes/Integrations/Elementor/Widget.php:601
+msgid "Center"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:213
+#: includes/Integrations/Elementor/Widget.php:368
+#: includes/Integrations/Elementor/Widget.php:602
+#: includes/functions/settings-options.php:597
+msgid "Right"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:224
+#: includes/Integrations/Elementor/Widget.php:419
+#: includes/Integrations/Elementor/Widget.php:666
+#: includes/Integrations/Elementor/Widget.php:815
+msgid "Padding"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:236
+#: includes/Integrations/Elementor/Widget.php:825
+msgid "Margin"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:256
+#: includes/Integrations/Elementor/Widget.php:409
+#: includes/Integrations/Elementor/Widget.php:656
+msgid "Border Radius"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:287
+msgid "Labels"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:295
+#: includes/Integrations/Elementor/Widget.php:390
+#: includes/Integrations/Elementor/Widget.php:508
+#: includes/Integrations/Elementor/Widget.php:637
+#: includes/Integrations/Elementor/Widget.php:698
+#: includes/Integrations/Elementor/Widget.php:750
+msgid "Text Color"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:314
+msgid "Asterisk Color"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:326
+msgid "Asterisk Size"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:355
+msgid "Input & Textarea"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:437
+msgid "Focus"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:473
+msgid "Field Spacing"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:498
+msgid "Placeholder"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:528
+msgid "Radio & Checkbox"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:550
+msgid "Spacing"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:576
+msgid "Submit Button"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:584
+#: includes/Integrations/Elementor/Widget.php:612
+msgid "Width"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:588
+msgid "Full Width"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:589
+msgid "Custom"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:684
+msgid "Hover"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:707
+msgid "Border Color"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:731
+msgid "Success Message"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:788
+msgid "Error Message"
+msgstr ""
+
+#: includes/Integrations/Elementor/Widget.php:798
+msgid "Color"
 msgstr ""
 
 #: includes/Integrations/Events_Calendar/Templates/Event_Form_Template.php:23
@@ -8121,10 +8292,6 @@ msgstr ""
 msgid "Admins, Editors, Authors, Contributors"
 msgstr ""
 
-#: includes/functions/settings-options.php:116
-msgid "Default"
-msgstr ""
-
 #: includes/functions/settings-options.php:121
 msgid "Override the post edit link"
 msgstr ""
@@ -8534,14 +8701,6 @@ msgstr ""
 
 #: includes/functions/settings-options.php:591
 msgid "Currency Position"
-msgstr ""
-
-#: includes/functions/settings-options.php:595
-msgid "Left"
-msgstr ""
-
-#: includes/functions/settings-options.php:597
-msgid "Right"
 msgstr ""
 
 #: includes/functions/settings-options.php:599
@@ -9883,11 +10042,11 @@ msgstr ""
 msgid "</strong> or greater."
 msgstr ""
 
-#: wpuf.php:260
+#: wpuf.php:273
 msgid "Your WP User Frontend Pro is almost ready!"
 msgstr ""
 
-#: wpuf.php:264
+#: wpuf.php:277
 #. translators: 1: opening anchor tag, 2: closing anchor tag.
 msgid ""
 "We've pushed a major update on both <b>WP User Frontend Free</b> and <b>WP "

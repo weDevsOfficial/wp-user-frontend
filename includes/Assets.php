@@ -109,6 +109,9 @@ class Assets {
             'frontend-forms'      => [
                 'src' => WPUF_ASSET_URI . '/css/frontend-forms.css',
             ],
+            'elementor-frontend-forms'      => [
+                'src' => WPUF_ASSET_URI . '/css/elementor-frontend-forms.css',
+            ],
             'frontend-subscriptions' => [
                 'src' => WPUF_ASSET_URI . '/css/frontend-subscriptions.min.css',
             ],

@@ -1,4 +1,9 @@
 <?php
+/**
+ * DESCRIPTION: Elementor widget for displaying WPUF forms
+ *
+ * @package WPUF\Elementor
+ */
 
 namespace WeDevs\Wpuf\Integrations\Elementor;
 
@@ -15,22 +20,68 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Widget extends Widget_Base {
 
+    /**
+     * Retrieve the widget name
+     *
+     * @since WPUF_SINCE
+     *
+     * @return string Widget name
+     */
     public function get_name() {
         return 'wpuf-form';
     }
 
+    /**
+     * Retrieve the widget title
+     *
+     * @since WPUF_SINCE
+     *
+     * @return string Widget title
+     */
     public function get_title() {
         return __( 'User Frontend Form', 'wp-user-frontend' );
     }
 
+    /**
+     * Retrieve the widget icon
+     *
+     * @since WPUF_SINCE
+     *
+     * @return string Widget icon
+     */
     public function get_icon() {
         return 'eicon-form-horizontal';
     }
 
+    /**
+     * Retrieve the list of widget categories
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array Widget categories
+     */
     public function get_categories() {
         return [ 'general' ];
     }
 
+    /**
+     * Retrieve the list of styles the widget depends on.
+     *
+     * @since 4.0.0
+     *
+     * @return array
+     */
+    public function get_style_depends() {
+        return [ 'wpuf-elementor-frontend-forms' ];
+    }
+
+    /**
+     * Register widget controls
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
     protected function register_controls() {
         $this->start_controls_section(
             'section_content',
@@ -55,9 +106,20 @@ class Widget extends Widget_Base {
         $this->register_container_style_controls();
         $this->register_label_style_controls();
         $this->register_input_style_controls();
+        $this->register_placeholder_style_controls();
+        $this->register_radio_checkbox_style_controls();
         $this->register_submit_button_style_controls();
+        $this->register_success_message_style_controls();
+        $this->register_error_message_style_controls();
     }
 
+    /**
+     * Retrieve all published WPUF forms
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array Array of forms formatted as select options
+     */
     protected function get_wpuf_forms() {
         $forms = get_posts( [
             'post_type'      => 'wpuf_forms',
@@ -76,6 +138,13 @@ class Widget extends Widget_Base {
         return $options;
     }
 
+    /**
+     * Register container style controls
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
     protected function register_container_style_controls() {
         $this->start_controls_section(
             'section_container_style',
@@ -92,6 +161,60 @@ class Widget extends Widget_Base {
                 'label'    => __( 'Background', 'wp-user-frontend' ),
                 'types'    => [ 'classic', 'gradient' ],
                 'selector' => '{{WRAPPER}} .wpuf-elementor-widget-wrapper',
+            ]
+        );
+
+        $this->add_control(
+            'container_link_color',
+            [
+                'label'     => __( 'Link Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .wpuf-elementor-widget-wrapper .wpuf-form a' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'container_max_width',
+            [
+                'label'      => __( 'Max Width', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::SLIDER,
+                'size_units' => [ 'px', 'em', '%' ],
+                'range'      => [
+                    'px' => [ 'min' => 10, 'max' => 1500 ],
+                    'em' => [ 'min' => 1, 'max' => 80 ],
+                ],
+                'selectors'  => [
+                    '{{WRAPPER}} .wpuf-elementor-widget-wrapper' => 'width: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'container_alignment',
+            [
+                'label'   => __( 'Alignment', 'wp-user-frontend' ),
+                'type'    => Controls_Manager::CHOOSE,
+                'options' => [
+                    'default' => [
+                        'title' => __( 'Default', 'wp-user-frontend' ),
+                        'icon'  => 'eicon-ban',
+                    ],
+                    'left'   => [
+                        'title' => __( 'Left', 'wp-user-frontend' ),
+                        'icon'  => 'eicon-h-align-left',
+                    ],
+                    'center' => [
+                        'title' => __( 'Center', 'wp-user-frontend' ),
+                        'icon'  => 'eicon-h-align-center',
+                    ],
+                    'right'  => [
+                        'title' => __( 'Right', 'wp-user-frontend' ),
+                        'icon'  => 'eicon-h-align-right',
+                    ],
+                ],
+                'default' => 'default',
             ]
         );
 
@@ -150,6 +273,13 @@ class Widget extends Widget_Base {
         $this->end_controls_section();
     }
 
+    /**
+     * Register label style controls
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
     protected function register_label_style_controls() {
         $this->start_controls_section(
             'section_label_style',
@@ -178,26 +308,79 @@ class Widget extends Widget_Base {
             ]
         );
 
+        $this->add_control(
+            'label_asterisk_color',
+            [
+                'label'     => __( 'Asterisk Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .wpuf-form .wpuf-label .required' => 'color: {{VALUE}};',
+                ],
+                'separator' => 'before',
+            ]
+        );
+
+        $this->add_control(
+            'label_asterisk_size',
+            [
+                'label'      => __( 'Asterisk Size', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::SLIDER,
+                'size_units' => [ 'px', 'em', '%' ],
+                'range'      => [
+                    'px' => [ 'min' => 0, 'max' => 30, 'step' => 1 ],
+                    '%'  => [ 'min' => 0, 'max' => 30, 'step' => 1 ],
+                ],
+                'selectors'  => [
+                    '{{WRAPPER}} .wpuf-form .wpuf-label .required' => 'font-size: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
         $this->end_controls_section();
     }
 
+    /**
+     * Register input field style controls
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
     protected function register_input_style_controls() {
+        $input_selector = '{{WRAPPER}} .wpuf-form input[type="text"], {{WRAPPER}} .wpuf-form input[type="email"], {{WRAPPER}} .wpuf-form input[type="url"], {{WRAPPER}} .wpuf-form input[type="password"], {{WRAPPER}} .wpuf-form input[type="number"], {{WRAPPER}} .wpuf-form textarea, {{WRAPPER}} .wpuf-form select';
+
         $this->start_controls_section(
             'section_input_style',
             [
-                'label' => __( 'Input Fields', 'wp-user-frontend' ),
+                'label' => __( 'Input & Textarea', 'wp-user-frontend' ),
                 'tab'   => Controls_Manager::TAB_STYLE,
             ]
         );
+
+        $this->add_responsive_control(
+            'input_alignment',
+            [
+                'label'   => __( 'Alignment', 'wp-user-frontend' ),
+                'type'    => Controls_Manager::CHOOSE,
+                'options' => [
+                    'left'   => [ 'title' => __( 'Left', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-left' ],
+                    'center' => [ 'title' => __( 'Center', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-center' ],
+                    'right'  => [ 'title' => __( 'Right', 'wp-user-frontend' ), 'icon' => 'eicon-text-align-right' ],
+                ],
+                'selectors' => [ $input_selector => 'text-align: {{VALUE}};' ],
+            ]
+        );
+
+        $this->start_controls_tabs( 'tabs_input_style' );
+
+        $this->start_controls_tab( 'tab_input_normal', [ 'label' => __( 'Normal', 'wp-user-frontend' ) ] );
 
         $this->add_control(
             'input_bg_color',
             [
                 'label'     => __( 'Background Color', 'wp-user-frontend' ),
                 'type'      => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .wpuf-form input[type="text"], {{WRAPPER}} .wpuf-form input[type="email"], {{WRAPPER}} .wpuf-form input[type="url"], {{WRAPPER}} .wpuf-form input[type="password"], {{WRAPPER}} .wpuf-form textarea, {{WRAPPER}} .wpuf-form select' => 'background-color: {{VALUE}};',
-                ],
+                'selectors' => [ $input_selector => 'background-color: {{VALUE}};' ],
             ]
         );
 
@@ -206,26 +389,18 @@ class Widget extends Widget_Base {
             [
                 'label'     => __( 'Text Color', 'wp-user-frontend' ),
                 'type'      => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .wpuf-form input[type="text"], {{WRAPPER}} .wpuf-form input[type="email"], {{WRAPPER}} .wpuf-form input[type="url"], {{WRAPPER}} .wpuf-form input[type="password"], {{WRAPPER}} .wpuf-form textarea, {{WRAPPER}} .wpuf-form select' => 'color: {{VALUE}};',
-                ],
+                'selectors' => [ $input_selector => 'color: {{VALUE}};' ],
             ]
         );
 
         $this->add_group_control(
             Group_Control_Typography::get_type(),
-            [
-                'name'     => 'input_typography',
-                'selector' => '{{WRAPPER}} .wpuf-form input[type="text"], {{WRAPPER}} .wpuf-form input[type="email"], {{WRAPPER}} .wpuf-form input[type="url"], {{WRAPPER}} .wpuf-form input[type="password"], {{WRAPPER}} .wpuf-form textarea, {{WRAPPER}} .wpuf-form select',
-            ]
+            [ 'name' => 'input_typography', 'selector' => $input_selector ]
         );
 
         $this->add_group_control(
             Group_Control_Border::get_type(),
-            [
-                'name'     => 'input_border',
-                'selector' => '{{WRAPPER}} .wpuf-form input[type="text"], {{WRAPPER}} .wpuf-form input[type="email"], {{WRAPPER}} .wpuf-form input[type="url"], {{WRAPPER}} .wpuf-form input[type="password"], {{WRAPPER}} .wpuf-form textarea, {{WRAPPER}} .wpuf-form select',
-            ]
+            [ 'name' => 'input_border', 'selector' => $input_selector ]
         );
 
         $this->add_control(
@@ -234,9 +409,7 @@ class Widget extends Widget_Base {
                 'label'      => __( 'Border Radius', 'wp-user-frontend' ),
                 'type'       => Controls_Manager::DIMENSIONS,
                 'size_units' => [ 'px', '%' ],
-                'selectors'  => [
-                    '{{WRAPPER}} .wpuf-form input[type="text"], {{WRAPPER}} .wpuf-form input[type="email"], {{WRAPPER}} .wpuf-form input[type="url"], {{WRAPPER}} .wpuf-form input[type="password"], {{WRAPPER}} .wpuf-form textarea, {{WRAPPER}} .wpuf-form select' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-                ],
+                'selectors'  => [ $input_selector => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ],
             ]
         );
 
@@ -246,8 +419,140 @@ class Widget extends Widget_Base {
                 'label'      => __( 'Padding', 'wp-user-frontend' ),
                 'type'       => Controls_Manager::DIMENSIONS,
                 'size_units' => [ 'px', 'em', '%' ],
+                'selectors'  => [ $input_selector => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Box_Shadow::get_type(),
+            [
+                'name'     => 'input_box_shadow',
+                'selector' => $input_selector,
+                'separator' => 'before',
+            ]
+        );
+
+        $this->end_controls_tab();
+
+        $this->start_controls_tab( 'tab_input_focus', [ 'label' => __( 'Focus', 'wp-user-frontend' ) ] );
+
+        $this->add_control(
+            'input_focus_bg_color',
+            [
+                'label'     => __( 'Background Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .wpuf-form input[type="text"]:focus, {{WRAPPER}} .wpuf-form input[type="email"]:focus, {{WRAPPER}} .wpuf-form input[type="url"]:focus, {{WRAPPER}} .wpuf-form input[type="password"]:focus, {{WRAPPER}} .wpuf-form input[type="number"]:focus, {{WRAPPER}} .wpuf-form textarea:focus, {{WRAPPER}} .wpuf-form select:focus' => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Border::get_type(),
+            [
+                'name'     => 'input_focus_border',
+                'selector' => '{{WRAPPER}} .wpuf-form input[type="text"]:focus, {{WRAPPER}} .wpuf-form input[type="email"]:focus, {{WRAPPER}} .wpuf-form input[type="url"]:focus, {{WRAPPER}} .wpuf-form input[type="password"]:focus, {{WRAPPER}} .wpuf-form input[type="number"]:focus, {{WRAPPER}} .wpuf-form textarea:focus, {{WRAPPER}} .wpuf-form select:focus',
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Box_Shadow::get_type(),
+            [
+                'name'     => 'input_focus_box_shadow',
+                'selector' => '{{WRAPPER}} .wpuf-form input[type="text"]:focus, {{WRAPPER}} .wpuf-form input[type="email"]:focus, {{WRAPPER}} .wpuf-form input[type="url"]:focus, {{WRAPPER}} .wpuf-form input[type="password"]:focus, {{WRAPPER}} .wpuf-form input[type="number"]:focus, {{WRAPPER}} .wpuf-form textarea:focus, {{WRAPPER}} .wpuf-form select:focus',
+            ]
+        );
+
+        $this->end_controls_tab();
+
+        $this->end_controls_tabs();
+
+        $this->add_responsive_control(
+            'input_field_spacing',
+            [
+                'label'      => __( 'Field Spacing', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::SLIDER,
+                'size_units' => [ 'px', 'em' ],
+                'range'      => [ 'px' => [ 'min' => 0, 'max' => 100, 'step' => 1 ] ],
                 'selectors'  => [
-                    '{{WRAPPER}} .wpuf-form input[type="text"], {{WRAPPER}} .wpuf-form input[type="email"], {{WRAPPER}} .wpuf-form input[type="url"], {{WRAPPER}} .wpuf-form input[type="password"], {{WRAPPER}} .wpuf-form textarea, {{WRAPPER}} .wpuf-form select' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    '{{WRAPPER}} .wpuf-form .field-items' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+                ],
+                'separator' => 'before',
+            ]
+        );
+
+        $this->end_controls_section();
+    }
+
+    /**
+     * Register placeholder style controls.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    protected function register_placeholder_style_controls() {
+        $this->start_controls_section(
+            'section_placeholder_style',
+            [
+                'label' => __( 'Placeholder', 'wp-user-frontend' ),
+                'tab'   => Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $placeholder_selector = '{{WRAPPER}} .wpuf-form input::placeholder, {{WRAPPER}} .wpuf-form textarea::placeholder, {{WRAPPER}} .wpuf-form input::-webkit-input-placeholder, {{WRAPPER}} .wpuf-form textarea::-webkit-input-placeholder, {{WRAPPER}} .wpuf-form input::-moz-placeholder, {{WRAPPER}} .wpuf-form textarea::-moz-placeholder, {{WRAPPER}} .wpuf-form input:-ms-input-placeholder, {{WRAPPER}} .wpuf-form textarea:-ms-input-placeholder';
+
+        $this->add_control(
+            'placeholder_color',
+            [
+                'label'     => __( 'Text Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [ $placeholder_selector => 'color: {{VALUE}};' ],
+            ]
+        );
+
+        $this->end_controls_section();
+    }
+
+    /**
+     * Register radio and checkbox style controls.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    protected function register_radio_checkbox_style_controls() {
+        $this->start_controls_section(
+            'section_radio_checkbox_style',
+            [
+                'label' => __( 'Radio & Checkbox', 'wp-user-frontend' ),
+                'tab'   => Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $this->add_responsive_control(
+            'radio_checkbox_size',
+            [
+                'label'      => __( 'Size', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::SLIDER,
+                'size_units' => [ 'px' ],
+                'range'      => [ 'px' => [ 'min' => 0, 'max' => 80, 'step' => 1 ] ],
+                'default'    => [ 'size' => 18, 'unit' => 'px' ],
+                'selectors'  => [
+                    '{{WRAPPER}} .wpuf-form input[type="radio"], {{WRAPPER}} .wpuf-form input[type="checkbox"]' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'radio_checkbox_spacing',
+            [
+                'label'      => __( 'Spacing', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::SLIDER,
+                'size_units' => [ 'px', 'em' ],
+                'range'      => [ 'px' => [ 'min' => 0, 'max' => 30, 'step' => 1 ] ],
+                'selectors'  => [
+                    '{{WRAPPER}} .wpuf-form input[type="radio"], {{WRAPPER}} .wpuf-form input[type="checkbox"]' => 'margin-right: {{SIZE}}{{UNIT}};',
                 ],
             ]
         );
@@ -255,7 +560,16 @@ class Widget extends Widget_Base {
         $this->end_controls_section();
     }
 
+    /**
+     * Register submit button style controls
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
     protected function register_submit_button_style_controls() {
+        $btn_selector = '{{WRAPPER}} .wpuf-form .wpuf-submit-button';
+
         $this->start_controls_section(
             'section_submit_button_style',
             [
@@ -264,23 +578,56 @@ class Widget extends Widget_Base {
             ]
         );
 
-        $this->start_controls_tabs( 'tabs_submit_button_style' );
-
-        $this->start_controls_tab(
-            'tab_submit_button_normal',
+        $this->add_control(
+            'submit_button_width_type',
             [
-                'label' => __( 'Normal', 'wp-user-frontend' ),
+                'label'   => __( 'Width', 'wp-user-frontend' ),
+                'type'    => Controls_Manager::SELECT,
+                'default' => 'custom',
+                'options' => [
+                    'full-width' => __( 'Full Width', 'wp-user-frontend' ),
+                    'custom'     => __( 'Custom', 'wp-user-frontend' ),
+                ],
             ]
         );
+
+        $this->add_responsive_control(
+            'submit_button_align',
+            [
+                'label'     => __( 'Alignment', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::CHOOSE,
+                'options'   => [
+                    'left'   => [ 'title' => __( 'Left', 'wp-user-frontend' ), 'icon' => 'eicon-h-align-left' ],
+                    'center' => [ 'title' => __( 'Center', 'wp-user-frontend' ), 'icon' => 'eicon-h-align-center' ],
+                    'right'  => [ 'title' => __( 'Right', 'wp-user-frontend' ), 'icon' => 'eicon-h-align-right' ],
+                ],
+                'selectors' => [ '{{WRAPPER}} .wpuf-form .wpuf-submit' => 'text-align: {{VALUE}};' ],
+                'condition' => [ 'submit_button_width_type' => 'custom' ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'submit_button_width',
+            [
+                'label'     => __( 'Width', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::SLIDER,
+                'size_units' => [ 'px', '%' ],
+                'range'     => [ 'px' => [ 'min' => 0, 'max' => 1200, 'step' => 1 ] ],
+                'selectors' => [ $btn_selector => 'width: {{SIZE}}{{UNIT}};' ],
+                'condition' => [ 'submit_button_width_type' => 'custom' ],
+            ]
+        );
+
+        $this->start_controls_tabs( 'tabs_submit_button_style' );
+
+        $this->start_controls_tab( 'tab_submit_button_normal', [ 'label' => __( 'Normal', 'wp-user-frontend' ) ] );
 
         $this->add_control(
             'submit_button_bg_color',
             [
                 'label'     => __( 'Background Color', 'wp-user-frontend' ),
                 'type'      => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .wpuf-form .wpuf-submit-button' => 'background-color: {{VALUE}};',
-                ],
+                'selectors' => [ $btn_selector => 'background-color: {{VALUE}};' ],
             ]
         );
 
@@ -289,62 +636,18 @@ class Widget extends Widget_Base {
             [
                 'label'     => __( 'Text Color', 'wp-user-frontend' ),
                 'type'      => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .wpuf-form .wpuf-submit-button' => 'color: {{VALUE}};',
-                ],
+                'selectors' => [ $btn_selector => 'color: {{VALUE}};' ],
             ]
         );
 
         $this->add_group_control(
             Group_Control_Typography::get_type(),
-            [
-                'name'     => 'submit_button_typography',
-                'selector' => '{{WRAPPER}} .wpuf-form .wpuf-submit-button',
-            ]
+            [ 'name' => 'submit_button_typography', 'selector' => $btn_selector ]
         );
-
-        $this->end_controls_tab();
-
-        $this->start_controls_tab(
-            'tab_submit_button_hover',
-            [
-                'label' => __( 'Hover', 'wp-user-frontend' ),
-            ]
-        );
-
-        $this->add_control(
-            'submit_button_hover_bg_color',
-            [
-                'label'     => __( 'Background Color', 'wp-user-frontend' ),
-                'type'      => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .wpuf-form .wpuf-submit-button:hover' => 'background-color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'submit_button_hover_text_color',
-            [
-                'label'     => __( 'Text Color', 'wp-user-frontend' ),
-                'type'      => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .wpuf-form .wpuf-submit-button:hover' => 'color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->end_controls_tab();
-
-        $this->end_controls_tabs();
 
         $this->add_group_control(
             Group_Control_Border::get_type(),
-            [
-                'name'     => 'submit_button_border',
-                'selector' => '{{WRAPPER}} .wpuf-form .wpuf-submit-button',
-                'separator' => 'before',
-            ]
+            [ 'name' => 'submit_button_border', 'selector' => $btn_selector ]
         );
 
         $this->add_control(
@@ -353,9 +656,7 @@ class Widget extends Widget_Base {
                 'label'      => __( 'Border Radius', 'wp-user-frontend' ),
                 'type'       => Controls_Manager::DIMENSIONS,
                 'size_units' => [ 'px', '%' ],
-                'selectors'  => [
-                    '{{WRAPPER}} .wpuf-form .wpuf-submit-button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-                ],
+                'selectors'  => [ $btn_selector => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ],
             ]
         );
 
@@ -365,15 +666,179 @@ class Widget extends Widget_Base {
                 'label'      => __( 'Padding', 'wp-user-frontend' ),
                 'type'       => Controls_Manager::DIMENSIONS,
                 'size_units' => [ 'px', 'em', '%' ],
-                'selectors'  => [
-                    '{{WRAPPER}} .wpuf-form .wpuf-submit-button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                'selectors'  => [ $btn_selector => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Box_Shadow::get_type(),
+            [
+                'name'     => 'submit_button_box_shadow',
+                'selector' => $btn_selector,
+                'separator' => 'before',
+            ]
+        );
+
+        $this->end_controls_tab();
+
+        $this->start_controls_tab( 'tab_submit_button_hover', [ 'label' => __( 'Hover', 'wp-user-frontend' ) ] );
+
+        $this->add_control(
+            'submit_button_hover_bg_color',
+            [
+                'label'     => __( 'Background Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [ $btn_selector . ':hover' => 'background-color: {{VALUE}};' ],
+            ]
+        );
+
+        $this->add_control(
+            'submit_button_hover_text_color',
+            [
+                'label'     => __( 'Text Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [ $btn_selector . ':hover' => 'color: {{VALUE}};' ],
+            ]
+        );
+
+        $this->add_control(
+            'submit_button_hover_border_color',
+            [
+                'label'     => __( 'Border Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [ $btn_selector . ':hover' => 'border-color: {{VALUE}};' ],
+            ]
+        );
+
+        $this->end_controls_tab();
+
+        $this->end_controls_tabs();
+
+        $this->end_controls_section();
+    }
+
+    /**
+     * Register success message style controls.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    protected function register_success_message_style_controls() {
+        $this->start_controls_section(
+            'section_success_message_style',
+            [
+                'label' => __( 'Success Message', 'wp-user-frontend' ),
+                'tab'   => Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $this->add_control(
+            'success_message_bg_color',
+            [
+                'label'     => __( 'Background Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .wpuf-elementor-widget-wrapper .wpuf-success' => 'background-color: {{VALUE}};',
                 ],
+            ]
+        );
+
+        $this->add_control(
+            'success_message_text_color',
+            [
+                'label'     => __( 'Text Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .wpuf-elementor-widget-wrapper .wpuf-success' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Typography::get_type(),
+            [
+                'name'     => 'success_message_typography',
+                'selector' => '{{WRAPPER}} .wpuf-elementor-widget-wrapper .wpuf-success',
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Border::get_type(),
+            [
+                'name'     => 'success_message_border',
+                'selector' => '{{WRAPPER}} .wpuf-elementor-widget-wrapper .wpuf-success',
             ]
         );
 
         $this->end_controls_section();
     }
 
+    /**
+     * Register error message style controls.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
+    protected function register_error_message_style_controls() {
+        $this->start_controls_section(
+            'section_error_message_style',
+            [
+                'label' => __( 'Error Message', 'wp-user-frontend' ),
+                'tab'   => Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $error_selector = '{{WRAPPER}} .wpuf-elementor-widget-wrapper .wpuf-form .wpuf-error, {{WRAPPER}} .wpuf-elementor-widget-wrapper .wpuf-form .error';
+
+        $this->add_control(
+            'error_message_color',
+            [
+                'label'     => __( 'Color', 'wp-user-frontend' ),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [ $error_selector => 'color: {{VALUE}};' ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Typography::get_type(),
+            [
+                'name'     => 'error_message_typography',
+                'selector' => $error_selector,
+            ]
+        );
+
+        $this->add_responsive_control(
+            'error_message_padding',
+            [
+                'label'      => __( 'Padding', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', 'em', '%' ],
+                'selectors'  => [ $error_selector => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'error_message_margin',
+            [
+                'label'      => __( 'Margin', 'wp-user-frontend' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', 'em', '%' ],
+                'selectors'  => [ $error_selector => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ],
+            ]
+        );
+
+        $this->end_controls_section();
+    }
+
+    /**
+     * Render the widget output on the frontend
+     *
+     * @since WPUF_SINCE
+     *
+     * @return void
+     */
     protected function render() {
         $settings = $this->get_settings_for_display();
         $form_id  = isset( $settings['form_id'] ) ? $settings['form_id'] : null;
@@ -382,10 +847,23 @@ class Widget extends Widget_Base {
             return;
         }
 
+        $wrapper_classes = [ 'wpuf-elementor-widget-wrapper' ];
+
+        if ( ! empty( $settings['submit_button_width_type'] ) && 'full-width' === $settings['submit_button_width_type'] ) {
+            $wrapper_classes[] = 'wpuf-elementor-submit-full';
+        }
+
+        $this->add_render_attribute( 'wrapper', 'class', $wrapper_classes );
+
+        // Set alignment attribute if not default
+        if ( ! empty( $settings['container_alignment'] ) && 'default' !== $settings['container_alignment'] ) {
+            $this->add_render_attribute( 'wrapper', 'data-align', $settings['container_alignment'] );
+        }
+
         $shortcode_str = '[wpuf_form id="' . $form_id . '"]';
         $output        = do_shortcode( $shortcode_str );
 
-        echo '<div class="wpuf-elementor-widget-wrapper">';
+        echo '<div ' . wp_kses_post( $this->get_render_attribute_string( 'wrapper' ) ) . '>';
         echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- shortcode output
         echo '</div>';
     }
@@ -397,7 +875,7 @@ class Widget extends Widget_Base {
      * will fall back to using the render() method for both frontend
      * and editor preview.
      *
-     * @since 4.2.7
+     * @since WPUF_SINCE
      *
      * @access protected
      */

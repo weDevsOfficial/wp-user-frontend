@@ -206,6 +206,20 @@ class Form_Builder {
                 }
                 break;
 
+            case 'secondary_email':
+                // Preserve name and meta_key for secondary_email field (fixed to 'wpuf_secondary_email')
+                if ( ! empty( $field['name'] ) ) {
+                    $custom_props['name'] = $field['name'];
+                }
+                if ( ! empty( $field['meta_key'] ) ) {
+                    $custom_props['meta_key'] = $field['meta_key'];
+                }
+                // Preserve read_only setting
+                if ( ! empty( $field['read_only'] ) ) {
+                    $custom_props['read_only'] = $field['read_only'];
+                }
+                break;
+
             case 'facebook_url':
             case 'twitter_url':
             case 'instagram_url':
@@ -237,6 +251,16 @@ class Form_Builder {
                 if ( ! empty( $field['meta_key'] ) ) {
                     $custom_props['meta_key'] = $field['meta_key'];
                 }
+                // Also handle upload properties
+                if ( ! empty( $field['count'] ) ) {
+                    $custom_props['count'] = $field['count'];
+                }
+                if ( ! empty( $field['max_size'] ) ) {
+                    $custom_props['max_size'] = $field['max_size'];
+                }
+                if ( ! empty( $field['button_label'] ) ) {
+                    $custom_props['button_label'] = $field['button_label'];
+                }
                 break;
 
             case 'image_upload':
@@ -244,7 +268,6 @@ class Form_Builder {
             case 'featured_image':
             case 'avatar':
             case 'user_avatar':
-            case 'profile_photo':
                 if ( ! empty( $field['count'] ) ) {
                     $custom_props['count'] = $field['count'];
                 }

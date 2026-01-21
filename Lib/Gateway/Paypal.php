@@ -635,7 +635,7 @@ class Paypal {
                 'recurring' => 'yes',
                 'cycle_period' => $period,
                 'cycle_number' => $interval,
-                'postnum_rollback_on_delete' => isset( $pack_meta['_postnum_rollback_on_delete'] ) ? $pack_meta['_postnum_rollback_on_delete'] : '',
+                'postnum_rollback_on_delete' => isset( $pack_meta['postnum_rollback_on_delete'] ) ? $pack_meta['postnum_rollback_on_delete'] : '',
                 '_enable_post_expiration' => isset( $pack_meta['_enable_post_expiration'] ) ? $pack_meta['_enable_post_expiration'] : 'no',
                 '_post_expiration_time' => isset( $pack_meta['_post_expiration_time'] ) ? $pack_meta['_post_expiration_time'] : '',
                 '_expired_post_status' => isset( $pack_meta['_expired_post_status'] ) ? $pack_meta['_expired_post_status'] : 'publish',

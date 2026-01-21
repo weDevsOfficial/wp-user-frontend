@@ -42,9 +42,9 @@ class AI_Manager {
      * Initialize hooks
      */
     private function init_hooks() {
-        add_action('rest_api_init', [$this, 'init_rest_api']);
-        add_action('wp_enqueue_scripts', [$this, 'enqueue_scripts']);
-        add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_scripts']);
+        add_action( 'rest_api_init', [ $this, 'init_rest_api' ] );
+        add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_scripts' ] );
     }
 
     /**

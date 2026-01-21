@@ -252,13 +252,18 @@ class FormGenerator {
         }
 
         // Set token parameter based on model
-        if ($model_config['token_location'] === 'body') {
+        // Use higher token limit for integration forms (they have more fields)
+        if ( ! empty( $context['integration'] ) ) {
+            $max_tokens = 4000; // Integration forms need more tokens
+        } elseif ( strpos( $this->current_model, 'gpt-5' ) === 0 ) {
             // GPT-5 needs significantly more tokens for reasoning + output
-            if (strpos($this->current_model, 'gpt-5') === 0) {
-                $body[$model_config['token_param']] = intval($options['max_tokens'] ?? 65536);
-            } else {
-                $body[$model_config['token_param']] = intval($options['max_tokens'] ?? 2000);
-            }
+            $max_tokens = intval( $options['max_tokens'] ?? 65536 );
+        } else {
+            $max_tokens = intval( $options['max_tokens'] ?? 2000 );
+        }
+
+        if ( $model_config['token_location'] === 'body' ) {
+            $body[ $model_config['token_param'] ] = $max_tokens;
         }
 
         $args = [
@@ -428,13 +433,15 @@ class FormGenerator {
         }
 
         // Set token parameter based on model
-        if ($model_config['token_location'] === 'body') {
-            // GPT-5 needs significantly more tokens for reasoning + output
-            if (strpos($this->current_model, 'gpt-5') === 0) {
-                $body[$model_config['token_param']] = intval($options['max_tokens'] ?? 65536);
-            } else {
-                $body[$model_config['token_param']] = intval($options['max_tokens'] ?? 2000);
-            }
+        // Use higher token limit for integration forms (they have more fields)
+        if ( ! empty( $context['integration'] ) ) {
+            $max_tokens = 4000; // Integration forms need more tokens
+        } else {
+            $max_tokens = intval( $options['max_tokens'] ?? 2000 );
+        }
+
+        if ( $model_config['token_location'] === 'body' ) {
+            $body[ $model_config['token_param'] ] = $max_tokens;
         }
 
         $args = [

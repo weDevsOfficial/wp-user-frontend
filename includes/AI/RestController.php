@@ -513,7 +513,7 @@ class RestController extends WP_REST_Controller {
                 'id'          => 'woocommerce',
                 'label'       => __( 'WooCommerce Product', 'wp-user-frontend' ),
                 'description' => __( 'Create WooCommerce product submission forms', 'wp-user-frontend' ),
-                'enabled'     => class_exists( 'WooCommerce' ),
+                'enabled'     => class_exists( 'WooCommerce', false ),
                 'form_types'  => [ 'post' ],
                 'icon'        => 'woocommerce'
             ],
@@ -1547,6 +1547,9 @@ class RestController extends WP_REST_Controller {
 
             if ( $form_template ) {
                 $current_settings['form_template'] = $form_template;
+            } else {
+                // Clear stale form_template when post_type has no mapped template
+                $current_settings['form_template'] = '';
             }
         }
 

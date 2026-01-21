@@ -50,7 +50,13 @@ class Form_Builder {
             }
 
             // Extract custom properties (everything except template and label)
-            $raw_custom_props = array_diff_key( $minimal_field, [ 'template' => '', 'label' => '' ] );
+            $raw_custom_props = array_diff_key(
+                $minimal_field,
+                [
+                    'template' => '',
+                    'label'    => '',
+                ]
+            );
 
             // Filter out null/empty values to prevent overriding template defaults
             // This is critical for fields like google_map that have automatic defaults
@@ -67,7 +73,7 @@ class Form_Builder {
 
             if ( ! empty( $complete_field ) ) {
                 $complete_fields[] = $complete_field;
-                $field_counter++;
+                ++$field_counter;
             }
         }
 
@@ -87,9 +93,15 @@ class Form_Builder {
      */
     private static function merge_form_settings( $ai_settings ) {
         $defaults = self::get_default_settings();
-        
-        // Merge AI settings with defaults, AI settings take priority
-        return array_merge( $defaults, $ai_settings );
+
+        // Ensure $ai_settings is an array to prevent warnings
+        if ( ! is_array( $ai_settings ) ) {
+            $ai_settings = [];
+        }
+
+        // Recursive merge so nested defaults (e.g., 'notification') are preserved
+        // while AI-specified values override defaults at any level
+        return array_replace_recursive( $defaults, $ai_settings );
     }
 
     /**

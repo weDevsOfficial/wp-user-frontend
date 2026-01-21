@@ -179,6 +179,17 @@ export default {
         }
         // Initialize prompt templates based on integration
         this.updatePromptTemplates();
+        
+        // Rehydrate selectedPrompt from initialSelectedPrompt after promptTemplates are populated
+        // This handles the case where initialSelectedPrompt is a string ID that needs to be resolved
+        // after templates exist (initialSelectedPrompt, selectedPrompt, promptTemplates)
+        if (typeof this.initialSelectedPrompt === 'string' && this.initialSelectedPrompt !== '' && !this.selectedPrompt) {
+            const foundTemplate = this.promptTemplates.find(tpl => tpl.id === this.initialSelectedPrompt);
+            if (foundTemplate) {
+                this.selectedPrompt = foundTemplate;
+                this.$emit('update:selectedPrompt', this.selectedPrompt.id);
+            }
+        }
     },
     watch: {
         generating(newVal) {

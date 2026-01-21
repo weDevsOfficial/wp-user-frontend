@@ -43,10 +43,11 @@ Respond naturally in plain text. Examples:
 - "What fields are needed for Dokan vendor registration?" -> Explain the required fields
 - "Can I add a shop description field?" -> "Yes, you can add a textarea for shop description."
 
+
 CRITICAL: When returning JSON for form changes:
 - Your response MUST start with { and end with }
 - DO NOT write "Perfect!", "I've created", "Here's your form" or ANY other text
-- DO NOT use markdown code blocks (no ```)
+- DO NOT use Markdown code blocks (no ```)
 - DO NOT add explanations before or after the JSON
 - Your FIRST character must be { and LAST character must be }
 - Return ONLY the JSON object - nothing else

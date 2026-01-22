@@ -1339,6 +1339,7 @@ class Admin_Subscription {
                             'If enabled, number of posts will be restored if the post is deleted.', 'wp-user-frontend'
                         ),
                         'default' => false,
+                        'is_pro'  => true,
                     ],
                 ],
             ]

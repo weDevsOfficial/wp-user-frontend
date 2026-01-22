@@ -2086,3 +2086,37 @@ img.wpuf-eye {
     top: 50%;
     transform: translateY(-50%) translateX(-6%);
 }
+
+/* CSS utility classes for hiding fields on frontend */
+.wpuf-form {
+    .hidden,
+    .Hidden,
+    .HIDDEN,
+    .d-none,
+    .D-none,
+    .D-None,
+    .hide,
+    .Hide,
+    .HIDE {
+        display: none !important;
+    }
+
+    .invisible,
+    .Invisible,
+    .INVISIBLE {
+        visibility: hidden !important;
+    }
+
+    .sr-only,
+    .visually-hidden {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
+    }
+}

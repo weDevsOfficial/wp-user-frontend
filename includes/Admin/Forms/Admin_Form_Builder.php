@@ -178,6 +178,15 @@ class Admin_Form_Builder {
         // Load icon configuration
         $icon_config = $this->get_icon_config();
 
+        // Check AI configuration directly
+        $ai_settings   = get_option( 'wpuf_ai', [] );
+        $ai_provider   = isset( $ai_settings['ai_provider'] ) ? $ai_settings['ai_provider'] : '';
+        $ai_model      = isset( $ai_settings['ai_model'] ) ? $ai_settings['ai_model'] : '';
+        $provider_key  = $ai_provider . '_api_key';
+        $ai_api_key    = isset( $ai_settings[ $provider_key ] ) ? $ai_settings[ $provider_key ] : '';
+        $ai_configured = ! empty( $ai_provider ) && ! empty( $ai_api_key ) && ! empty( $ai_model );
+        $ai_settings_url = admin_url( 'admin.php?page=wpuf-settings#/ai' );
+
         $wpuf_form_builder = apply_filters(
             'wpuf_form_builder_localize_script',
             [
@@ -208,6 +217,8 @@ class Admin_Form_Builder {
                 'free_icon'        => $free_icon,
                 'icons'            => $icon_config['icons'],
                 'defaultIcons'     => $icon_config['defaultIcons'],
+                'ai_configured'    => $ai_configured,
+                'ai_settings_url'  => $ai_settings_url,
             ]
         );
         $wpuf_form_builder = wpuf_unset_conditional( $wpuf_form_builder );
@@ -348,6 +359,7 @@ class Admin_Form_Builder {
                 'copy_shortcode'          => __( 'Click to copy shortcode', 'wp-user-frontend' ),
                 'empty_field_options_msg' => __( 'To view field options, please start adding fields in the builder', 'wp-user-frontend' ),
                 'pro_field_message'       => $field_messages,
+                'something_went_wrong'    => __( 'Something went wrong. Please try again.', 'wp-user-frontend' ),
             ]
         );
     }
@@ -518,16 +530,16 @@ class Admin_Form_Builder {
             return $form_fields;
         }
 
-        // Built-in taxonomies that should always be available
-        $builtin_taxonomies = array( 'category', 'post_tag' );
+        // Get free taxonomies (built-in + taxonomies for post/page)
+        $free_taxonomies = wpuf_get_free_taxonomies();
 
-        // Filter out custom taxonomy fields
+        // Filter out custom taxonomy fields that are not in the free list
         $filtered_fields = array();
 
         foreach ( $form_fields as $field ) {
             // Skip custom taxonomy fields when pro is not active
             if ( isset( $field['input_type'] ) && $field['input_type'] === 'taxonomy' ) {
-                if ( isset( $field['name'] ) && ! in_array( $field['name'], $builtin_taxonomies, true ) ) {
+                if ( isset( $field['name'] ) && ! in_array( $field['name'], $free_taxonomies, true ) ) {
                     continue; // Skip this custom taxonomy field
                 }
             }
@@ -550,7 +562,8 @@ class Admin_Form_Builder {
         if ( wpuf_is_pro_active() ) {
             return false;
         }
-        $builtin = [ 'category', 'post_tag' ];
+        // Get free taxonomies (built-in + taxonomies for post/page)
+        $free_taxonomies = wpuf_get_free_taxonomies();
         $stack = is_array($original_fields) ? $original_fields : [];
         while ( $stack ) {
             $f = array_pop( $stack );
@@ -569,7 +582,7 @@ class Admin_Form_Builder {
             }
             if ( isset( $f['input_type'] ) && $f['input_type'] === 'taxonomy' ) {
                 $slug = $f['name'] ?? ($f['taxonomy'] ?? null);
-                if ( $slug && ! in_array( $slug, $builtin, true ) ) {
+                if ( $slug && ! in_array( $slug, $free_taxonomies, true ) ) {
                     return true;
                 }
             }
@@ -591,7 +604,8 @@ class Admin_Form_Builder {
         }
 
         $hidden_ids = array();
-        $builtin_taxonomies = array( 'category', 'post_tag' );
+        // Get free taxonomies (built-in + taxonomies for post/page)
+        $free_taxonomies = wpuf_get_free_taxonomies();
 
         // Extract IDs from filtered fields for quick lookup
         $filtered_ids = array();
@@ -604,7 +618,7 @@ class Admin_Form_Builder {
         // Find original fields that are custom taxonomy fields and were filtered out
         foreach ( $original_fields as $field ) {
             if ( isset( $field['input_type'] ) && $field['input_type'] === 'taxonomy' ) {
-                if ( isset( $field['name'] ) && ! in_array( $field['name'], $builtin_taxonomies, true ) ) {
+                if ( isset( $field['name'] ) && ! in_array( $field['name'], $free_taxonomies, true ) ) {
                     if ( isset( $field['id'] ) && ! in_array( $field['id'], $filtered_ids, true ) ) {
                         $hidden_ids[] = $field['id'];
                     }

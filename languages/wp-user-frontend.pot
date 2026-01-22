@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Frontend 4.2.5\n"
+"Project-Id-Version: WP User Frontend 4.2.6\n"
 "Report-Msgid-Bugs-To: https://wedevs.com/contact/\n"
-"POT-Creation-Date: 2026-01-01 05:44:50+00:00\n"
+"POT-Creation-Date: 2026-01-14 08:50:52+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -32,7 +32,7 @@ msgstr ""
 msgid "Bank Payment Success Page"
 msgstr ""
 
-#: Lib/Gateway/Bank.php:40 includes/functions/settings-options.php:652
+#: Lib/Gateway/Bank.php:40 includes/functions/settings-options.php:651
 msgid "After payment users will be redirected here"
 msgstr ""
 
@@ -210,7 +210,7 @@ msgstr ""
 msgid "Choose File"
 msgstr ""
 
-#: Lib/WeDevs_Settings_API.php:668
+#: Lib/WeDevs_Settings_API.php:688
 msgid "Search in settings"
 msgstr ""
 
@@ -327,32 +327,32 @@ msgid "Add fields by dragging the fields from the right sidebar to this area."
 msgstr ""
 
 #: admin/form-builder/assets/js/components/builder-stage/template.php:37
-#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:56
+#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:64
 #: admin/form-builder/assets/js/components/form-column_field/template.php:57
 #: assets/js-templates/form-components.php:38
-#: assets/js-templates/form-components.php:149
-#: assets/js-templates/form-components.php:979
+#: assets/js-templates/form-components.php:157
+#: assets/js-templates/form-components.php:1096
 msgid "is available in Pro Version"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/builder-stage/template.php:68
-#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:130
+#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:138
 #: assets/js-templates/form-components.php:69
-#: assets/js-templates/form-components.php:223
+#: assets/js-templates/form-components.php:231
 msgid "Hidden Fields"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/builder-stage/template.php:75
-#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:140
+#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:148
 #: assets/js-templates/form-components.php:76
-#: assets/js-templates/form-components.php:233
+#: assets/js-templates/form-components.php:241
 msgid "key"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/builder-stage/template.php:75
-#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:141
+#: admin/form-builder/assets/js/components/builder-stage-v4-1/template.php:149
 #: assets/js-templates/form-components.php:76
-#: assets/js-templates/form-components.php:234
+#: assets/js-templates/form-components.php:242
 msgid "value"
 msgstr ""
 
@@ -367,40 +367,122 @@ msgid "Add the necessary field and build your form."
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-data/template.php:15
-#: admin/template.php:231 assets/js-templates/form-components.php:400
+#: admin/template.php:231 assets/js-templates/form-components.php:408
 #: includes/Admin/Forms/Admin_Template.php:270
 msgid "Show values"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-option-data/template.php:23
-#: assets/js-templates/form-components.php:408
+#: assets/js-templates/form-components.php:416
 msgid "Sync values"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/field-option-data/template.php:29
-#: assets/js-templates/form-components.php:414
+#: admin/form-builder/assets/js/components/field-option-data/template.php:30
+#: assets/js-templates/form-components.php:423
 msgid "Label & Values"
 msgstr ""
 
-#: admin/form-builder/assets/js/components/field-option-data/template.php:111
-#: assets/js-templates/form-components.php:496
+#: admin/form-builder/assets/js/components/field-option-data/template.php:36
+#: admin/form-builder/assets/js/components/field-option-data/template.php:132
+#: assets/js-templates/form-components.php:429
+#: assets/js-templates/form-components.php:525
+msgid "AI Generate Options"
+msgstr ""
+
+#: admin/form-builder/assets/js/components/field-option-data/template.php:125
+#: assets/js-templates/form-components.php:518
 msgid "Clear Selection"
 msgstr ""
 
+#: admin/form-builder/assets/js/components/field-option-data/template.php:137
+#: assets/js-templates/form-components.php:530
+msgid "Describe the options you need"
+msgstr ""
+
+#: admin/form-builder/assets/js/components/field-option-data/template.php:143
+#: assets/js-templates/form-components.php:536
+msgid "e.g., List of US states, Business categories, Job titles"
+msgstr ""
+
+#: admin/form-builder/assets/js/components/field-option-data/template.php:148
+#: assets/js-templates/form-components.php:541
+msgid "Generated Options"
+msgstr ""
+
+#: admin/form-builder/assets/js/components/field-option-data/template.php:150
+#: assets/js-templates/form-components.php:543
+msgid "Deselect All"
+msgstr ""
+
+#: admin/form-builder/assets/js/components/field-option-data/template.php:150
+#: assets/js-templates/form-components.php:543
+msgid "Select All"
+msgstr ""
+
+#: admin/form-builder/assets/js/components/field-option-data/template.php:166
+#: admin/form-builder/assets/js/components/field-option-data/template.php:211
+#: admin/form-builder/views/post-form-settings.php:284
+#: assets/js-templates/form-components.php:559
+#: assets/js-templates/form-components.php:604 class/subscription.php:900
+#: includes/Admin/Admin_Subscription.php:941
+#: includes/Admin/Forms/Admin_Form_Builder.php:342
+#: includes/Admin/Forms/Admin_Form_Builder.php:344
+#: includes/Admin/List_Table_Subscribers.php:172
+#: includes/Admin/Subscription.php:942
+#: includes/Admin/template-parts/modal-v4.2.php:401
+#: includes/Frontend/Payment.php:242 templates/dashboard/subscription.php:97
+msgid "Cancel"
+msgstr ""
+
+#: admin/form-builder/assets/js/components/field-option-data/template.php:175
+#: assets/js-templates/form-components.php:568
+msgid "Generating..."
+msgstr ""
+
+#: admin/form-builder/assets/js/components/field-option-data/template.php:175
+#: assets/js-templates/form-components.php:568
+msgid "Generate"
+msgstr ""
+
+#: admin/form-builder/assets/js/components/field-option-data/template.php:178
+#: assets/js-templates/form-components.php:571
+msgid "Import Selected"
+msgstr ""
+
+#: admin/form-builder/assets/js/components/field-option-data/template.php:197
+#: assets/js-templates/form-components.php:590
+#: includes/Admin/template-parts/modal-v4.2.php:390
+msgid "AI Provider Not Configured"
+msgstr ""
+
+#: admin/form-builder/assets/js/components/field-option-data/template.php:202
+#: assets/js-templates/form-components.php:595
+#: includes/Admin/template-parts/modal-v4.2.php:395
+msgid ""
+"To use AI Form Generation, please connect an AI provider by adding your API "
+"key in the settings"
+msgstr ""
+
+#: admin/form-builder/assets/js/components/field-option-data/template.php:217
+#: assets/js-templates/form-components.php:610
+#: includes/Admin/template-parts/modal-v4.2.php:404
+msgid "Go to Settings"
+msgstr ""
+
 #: admin/form-builder/assets/js/components/field-option-pro-feature-alert/template.php:5
-#: assets/js-templates/form-components.php:507
+#: assets/js-templates/form-components.php:624
 msgid "Available in PRO version"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/field-visibility/template.php:135
-#: assets/js-templates/form-components.php:857
+#: assets/js-templates/form-components.php:974
 msgid "No subscription plan found."
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-featured_image/template.php:7
 #: admin/form-builder/assets/js/components/form-image_upload/template.php:11
-#: assets/js-templates/form-components.php:1095
-#: assets/js-templates/form-components.php:1312 class/render-form.php:1685
+#: assets/js-templates/form-components.php:1212
+#: assets/js-templates/form-components.php:1429 class/render-form.php:1685
 #: includes/Fields/Form_Field_Featured_Image.php:128
 #: includes/Fields/Form_Field_Image.php:122
 #: includes/Fields/Form_Field_Image.php:143 includes/Render_Form.php:1576
@@ -408,38 +490,38 @@ msgid "Select Image"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-fields-v4-1/template.php:10
-#: assets/js-templates/form-components.php:1173
+#: assets/js-templates/form-components.php:1290
 msgid "Search Field"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-fields-v4-1/template.php:122
-#: assets/js-templates/form-components.php:1285
+#: assets/js-templates/form-components.php:1402
 msgid "Got an idea for a new field?"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-fields-v4-1/template.php:125
-#: assets/js-templates/form-components.php:1288
+#: assets/js-templates/form-components.php:1405
 msgid "We'd love to hear it!"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-fields-v4-1/template.php:131
-#: assets/js-templates/form-components.php:1294
+#: assets/js-templates/form-components.php:1411
 msgid "Share Your Idea"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-post_content/template.php:11
-#: assets/js-templates/form-components.php:1360 class/render-form.php:1073
+#: assets/js-templates/form-components.php:1477 class/render-form.php:1073
 #: includes/Fields/Form_Field_Post_Content.php:72 includes/Render_Form.php:935
 msgid "Insert Photo"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-recaptcha/template.php:12
-#: assets/js-templates/form-components.php:1474
+#: assets/js-templates/form-components.php:1591
 msgid "Invisible reCaptcha"
 msgstr ""
 
 #: admin/form-builder/assets/js/components/form-taxonomy/template.php:15
-#: assets/js-templates/form-components.php:1516
+#: assets/js-templates/form-components.php:1633
 msgid "— Select —"
 msgstr ""
 
@@ -452,7 +534,7 @@ msgstr ""
 
 #: admin/form-builder/views/form-builder-v4.1.php:87
 #: admin/form-builder/views/form-builder.php:50
-#: includes/Admin/Forms/Admin_Form_Builder.php:348
+#: includes/Admin/Forms/Admin_Form_Builder.php:359
 msgid "Click to copy shortcode"
 msgstr ""
 
@@ -500,7 +582,7 @@ msgstr ""
 #: admin/form-builder/views/post-form-settings.php:148
 #: admin/form-builder/views/post-form-settings.php:187
 #: admin/form-builder/views/post-form-settings.php:220
-#: includes/Admin/Forms/Admin_Form_Builder.php:344
+#: includes/Admin/Forms/Admin_Form_Builder.php:355
 #: includes/Admin/template-parts/modal-v4.1.php:125
 #: includes/Admin/template-parts/modal-v4.2.php:361
 #: includes/Admin/template-parts/modal.php:138
@@ -511,17 +593,6 @@ msgstr ""
 
 #: admin/form-builder/views/post-form-settings.php:271
 msgid "Go To Module Page"
-msgstr ""
-
-#: admin/form-builder/views/post-form-settings.php:284
-#: class/subscription.php:900 includes/Admin/Admin_Subscription.php:941
-#: includes/Admin/Forms/Admin_Form_Builder.php:331
-#: includes/Admin/Forms/Admin_Form_Builder.php:333
-#: includes/Admin/List_Table_Subscribers.php:172
-#: includes/Admin/Subscription.php:942
-#: includes/Admin/template-parts/modal-v4.2.php:401
-#: includes/Frontend/Payment.php:242 templates/dashboard/subscription.php:97
-msgid "Cancel"
 msgstr ""
 
 #: admin/form-builder/views/post-form-settings.php:366
@@ -570,10 +641,10 @@ msgstr ""
 #: includes/Fields/Field_Contract.php:519
 #: includes/Fields/Form_Field_Checkbox.php:86
 #: includes/Fields/Form_Field_Radio.php:86 includes/Free/Form_Element.php:525
-#: includes/Frontend.php:122 includes/functions/settings-options.php:129
-#: includes/functions/settings-options.php:148
-#: includes/functions/settings-options.php:269
-#: includes/functions/settings-options.php:280
+#: includes/Frontend.php:122 includes/functions/settings-options.php:128
+#: includes/functions/settings-options.php:147
+#: includes/functions/settings-options.php:268
+#: includes/functions/settings-options.php:279
 msgid "No"
 msgstr ""
 
@@ -588,10 +659,10 @@ msgstr ""
 #: includes/Fields/Field_Contract.php:518
 #: includes/Fields/Form_Field_Checkbox.php:85
 #: includes/Fields/Form_Field_Radio.php:85 includes/Free/Form_Element.php:524
-#: includes/Frontend.php:121 includes/functions/settings-options.php:128
-#: includes/functions/settings-options.php:147
-#: includes/functions/settings-options.php:268
-#: includes/functions/settings-options.php:279
+#: includes/Frontend.php:121 includes/functions/settings-options.php:127
+#: includes/functions/settings-options.php:146
+#: includes/functions/settings-options.php:267
+#: includes/functions/settings-options.php:278
 msgid "Yes"
 msgstr ""
 
@@ -608,7 +679,7 @@ msgid "Payment Options"
 msgstr ""
 
 #: admin/html/form-settings-payment.php:26 includes/Setup_Wizard.php:339
-#: includes/functions/settings-options.php:565 wpuf-functions.php:5395
+#: includes/functions/settings-options.php:564 wpuf-functions.php:5395
 msgid "Enable Payments"
 msgstr ""
 
@@ -673,7 +744,7 @@ msgid "Amount to be charged per post"
 msgstr ""
 
 #: admin/html/form-settings-payment.php:88
-#: includes/functions/settings-options.php:651 wpuf-functions.php:5430
+#: includes/functions/settings-options.php:650 wpuf-functions.php:5430
 msgid "Payment Success Page"
 msgstr ""
 
@@ -953,7 +1024,7 @@ msgid "Choose which roles can submit posts."
 msgstr ""
 
 #: admin/html/form-submission-restriction.php:117
-#: includes/functions/settings-options.php:339 wpuf-functions.php:5378
+#: includes/functions/settings-options.php:338 wpuf-functions.php:5378
 msgid "Unauthorized Message"
 msgstr ""
 
@@ -1120,7 +1191,7 @@ msgstr ""
 msgid "Are you sure?"
 msgstr ""
 
-#: admin/posting.php:75 includes/Admin/Forms/Admin_Form_Builder.php:330
+#: admin/posting.php:75 includes/Admin/Forms/Admin_Form_Builder.php:341
 #: includes/Admin/Posting.php:131 includes/Admin.php:173
 #: includes/Fields/Field_Contract.php:997 includes/Frontend.php:82
 msgid "Yes, delete it"
@@ -1869,159 +1940,193 @@ msgstr ""
 msgid "Failed to fetch models from any provider."
 msgstr ""
 
-#: includes/AI/RestController.php:255
+#: includes/AI/RestController.php:298
 msgid "Request payload too large"
 msgstr ""
 
-#: includes/AI/RestController.php:275
+#: includes/AI/RestController.php:318
 msgid "Invalid session ID format"
 msgstr ""
 
-#: includes/AI/RestController.php:299
+#: includes/AI/RestController.php:342
 msgid "Form generation failed"
 msgstr ""
 
-#: includes/AI/RestController.php:313
+#: includes/AI/RestController.php:356
 msgid "An error occurred while generating the form. Please try again."
 msgstr ""
 
-#: includes/AI/RestController.php:336
+#: includes/AI/RestController.php:379
 msgid "Field %s is required"
 msgstr ""
 
-#: includes/AI/RestController.php:346
+#: includes/AI/RestController.php:389
 msgid "Field %s must be a string"
 msgstr ""
 
-#: includes/AI/RestController.php:351
+#: includes/AI/RestController.php:394
 msgid "Field %s must be an array"
 msgstr ""
 
-#: includes/AI/RestController.php:356
+#: includes/AI/RestController.php:399
 msgid "Field %s must be numeric"
 msgstr ""
 
-#: includes/AI/RestController.php:366
+#: includes/AI/RestController.php:409
 msgid "Field %s cannot exceed %d characters"
 msgstr ""
 
-#: includes/AI/RestController.php:441
+#: includes/AI/RestController.php:484
 msgid "API key appears to be too short"
 msgstr ""
 
-#: includes/AI/RestController.php:491
+#: includes/AI/RestController.php:534
 msgid "Settings saved successfully"
 msgstr ""
 
-#: includes/AI/RestController.php:496
+#: includes/AI/RestController.php:539
 msgid "Failed to save settings"
 msgstr ""
 
-#: includes/AI/RestController.php:546
+#: includes/AI/RestController.php:589
 msgid "Google API key not configured. Please save your Google API key first."
 msgstr ""
 
-#: includes/AI/RestController.php:565
+#: includes/AI/RestController.php:608
 msgid "Google models updated successfully"
 msgstr ""
 
-#: includes/AI/RestController.php:635
+#: includes/AI/RestController.php:647
+msgid "Maximum options must be between 1 and 100"
+msgstr ""
+
+#: includes/AI/RestController.php:664
+msgid "Failed to generate field options"
+msgstr ""
+
+#: includes/AI/RestController.php:675
+msgid "Options generated successfully"
+msgstr ""
+
+#: includes/AI/RestController.php:681
+msgid "An error occurred while generating options. Please try again."
+msgstr ""
+
+#: includes/AI/RestController.php:730
+#: includes/Integrations/WPUF_ACF_Compatibility.php:72
+#: includes/Integrations/WPUF_ACF_Compatibility.php:90
+#: includes/Integrations/WPUF_ACF_Compatibility.php:156
+#: includes/Widgets/Login_Widget.php:36 includes/Widgets/Login_Widget.php:62
+#: includes/Widgets/Login_Widget.php:79 wpuf-functions.php:1636
+#: wpuf-functions.php:1909
+msgid "Permission denied"
+msgstr ""
+
+#: includes/AI/RestController.php:737
+msgid "Prompt is required"
+msgstr ""
+
+#: includes/AI/RestController.php:748 includes/AI/RestController.php:757
+msgid "Failed to generate options"
+msgstr ""
+
+#: includes/AI/RestController.php:809
 msgid "Prompt cannot be empty"
 msgstr ""
 
-#: includes/AI/RestController.php:642
+#: includes/AI/RestController.php:816
 msgid "Prompt is too long. Maximum 1000 characters allowed."
 msgstr ""
 
-#: includes/AI/RestController.php:665
+#: includes/AI/RestController.php:839
 msgid "Form title and fields are required"
 msgstr ""
 
-#: includes/AI/RestController.php:674
+#: includes/AI/RestController.php:848
 msgid "Form title cannot exceed 200 characters"
 msgstr ""
 
-#: includes/AI/RestController.php:683
+#: includes/AI/RestController.php:857
 msgid "Form cannot have more than 50 fields"
 msgstr ""
 
-#: includes/AI/RestController.php:743
+#: includes/AI/RestController.php:917
 msgid "Failed to create field at position %d: %s"
 msgstr ""
 
-#: includes/AI/RestController.php:764
+#: includes/AI/RestController.php:938
 msgid "Submit Form"
 msgstr ""
 
-#: includes/AI/RestController.php:767
+#: includes/AI/RestController.php:941
 msgid "Form has been updated successfully."
 msgstr ""
 
-#: includes/AI/RestController.php:768
+#: includes/AI/RestController.php:942
 msgid "Update Form"
 msgstr ""
 
-#: includes/AI/RestController.php:797
+#: includes/AI/RestController.php:971
 msgid "Form created successfully"
 msgstr ""
 
-#: includes/AI/RestController.php:814
+#: includes/AI/RestController.php:988
 msgid "An error occurred while creating the form. Please try again."
 msgstr ""
 
-#: includes/AI/RestController.php:836
+#: includes/AI/RestController.php:1010
 msgid "Form not found"
 msgstr ""
 
-#: includes/AI/RestController.php:849
+#: includes/AI/RestController.php:1023
 msgid "Modification prompt is required"
 msgstr ""
 
-#: includes/AI/RestController.php:874
+#: includes/AI/RestController.php:1048
 msgid "Failed to process modification request"
 msgstr ""
 
-#: includes/AI/RestController.php:896
+#: includes/AI/RestController.php:1070
 msgid "Field data is required for add_field action"
 msgstr ""
 
-#: includes/AI/RestController.php:907
+#: includes/AI/RestController.php:1081
 msgid "Target field is required for remove_field action"
 msgstr ""
 
-#: includes/AI/RestController.php:918
+#: includes/AI/RestController.php:1092
 msgid "Target field and changes are required for update_field action"
 msgstr ""
 
-#: includes/AI/RestController.php:932
+#: includes/AI/RestController.php:1106
 msgid "Invalid modification type from AI"
 msgstr ""
 
-#: includes/AI/RestController.php:957
+#: includes/AI/RestController.php:1131
 msgid "Form modified successfully"
 msgstr ""
 
-#: includes/AI/RestController.php:969
+#: includes/AI/RestController.php:1143
 msgid "Failed to build form structure"
 msgstr ""
 
-#: includes/AI/RestController.php:1006
+#: includes/AI/RestController.php:1180
 msgid "Form updated successfully"
 msgstr ""
 
-#: includes/AI/RestController.php:1011
+#: includes/AI/RestController.php:1185
 msgid "AI response format not recognized"
 msgstr ""
 
-#: includes/AI/RestController.php:1021
+#: includes/AI/RestController.php:1195
 msgid "Form modification failed"
 msgstr ""
 
-#: includes/AI/RestController.php:1827
+#: includes/AI/RestController.php:2001
 msgid "You do not have permission to use AI form builder"
 msgstr ""
 
-#: includes/AI/RestController.php:1839
+#: includes/AI/RestController.php:2013
 msgid "Invalid user session"
 msgstr ""
 
@@ -2197,28 +2302,28 @@ msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:677
 #: includes/Admin/Admin_Subscription.php:1267
-#: includes/Admin/Admin_Subscription.php:1382
+#: includes/Admin/Admin_Subscription.php:1383
 #: includes/Free/Free_Loader.php:1765
 msgid "Day(s)"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:678
 #: includes/Admin/Admin_Subscription.php:1268
-#: includes/Admin/Admin_Subscription.php:1383
+#: includes/Admin/Admin_Subscription.php:1384
 #: includes/Free/Free_Loader.php:1766
 msgid "Week(s)"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:679
 #: includes/Admin/Admin_Subscription.php:1269
-#: includes/Admin/Admin_Subscription.php:1384
+#: includes/Admin/Admin_Subscription.php:1385
 #: includes/Free/Free_Loader.php:1767
 msgid "Month(s)"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:680
 #: includes/Admin/Admin_Subscription.php:1270
-#: includes/Admin/Admin_Subscription.php:1385
+#: includes/Admin/Admin_Subscription.php:1386
 msgid "Year(s)"
 msgstr ""
 
@@ -2280,7 +2385,7 @@ msgid "Select Package:"
 msgstr ""
 
 #: includes/Admin/Admin_Subscription.php:950
-#: includes/functions/settings-options.php:795 wpuf-functions.php:1961
+#: includes/functions/settings-options.php:794 wpuf-functions.php:1961
 #: wpuf-functions.php:2229
 msgid "&mdash; Select &mdash;"
 msgstr ""
@@ -2475,132 +2580,132 @@ msgstr ""
 msgid "If enabled, number of posts will be restored if the post is deleted."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1355
+#: includes/Admin/Admin_Subscription.php:1356
 msgid "Billing Amount"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1356
+#: includes/Admin/Admin_Subscription.php:1357
 msgid ""
 "Enter the billing amount for the subscription that will be charged to users "
 "who subscribe to this plan"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1391
+#: includes/Admin/Admin_Subscription.php:1392
 msgid "Expire In"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1392
+#: includes/Admin/Admin_Subscription.php:1393
 msgid ""
 "Set the duration for the subscription to remain active before expiring. "
 "Enter -1 for no expiration"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1398
+#: includes/Admin/Admin_Subscription.php:1399
 #: includes/Free/Subscription_Element.php:20
 msgid "Enable Recurring Payment"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1399
+#: includes/Admin/Admin_Subscription.php:1400
 msgid ""
 "Enable recurring payments for this subscription. Users will be charged "
 "automatically at the end of each billing cycle until the subscription is "
 "canceled"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1419
+#: includes/Admin/Admin_Subscription.php:1420
 msgid "Maximum Number of Posts"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1420
+#: includes/Admin/Admin_Subscription.php:1421
 msgid ""
 "Set the maximum number of posts users can list within their subscription "
 "period. Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1433
+#: includes/Admin/Admin_Subscription.php:1434
 msgid "Maximum Number of Pages"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1434
+#: includes/Admin/Admin_Subscription.php:1435
 msgid ""
 "Set the maximum number of pages a user can list within the subscription "
 "period. Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1447
+#: includes/Admin/Admin_Subscription.php:1448
 msgid "Maximum Number of User Requests"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1448
+#: includes/Admin/Admin_Subscription.php:1449
 msgid ""
 "Set the maximum number of user requests allowed within the subscription "
 "period. Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1467
+#: includes/Admin/Admin_Subscription.php:1468
 msgid "Maximum Number of Reusable Block"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1468
+#: includes/Admin/Admin_Subscription.php:1469
 msgid ""
 "Set the maximum number of reusable blocks that users can create within the "
 "subscription period. Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1481
+#: includes/Admin/Admin_Subscription.php:1482
 msgid "Maximum Number of Templates"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1482
+#: includes/Admin/Admin_Subscription.php:1483
 msgid ""
 "Set the maximum number of templates users can use during the subscription "
 "period. Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1495
+#: includes/Admin/Admin_Subscription.php:1496
 msgid "Maximum Number of Template Parts"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1496
+#: includes/Admin/Admin_Subscription.php:1497
 msgid ""
 "Set maximum number of template parts that users can create within the "
 "subscription period. Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1509
+#: includes/Admin/Admin_Subscription.php:1510
 msgid "Maximum Number of Navigation Menus"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1510
+#: includes/Admin/Admin_Subscription.php:1511
 msgid ""
 "Set maximum number of navigation menus that users can use within the "
 "subscription period. Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1528
+#: includes/Admin/Admin_Subscription.php:1529
 msgid "Maximum Number of Featured Items"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1529
+#: includes/Admin/Admin_Subscription.php:1530
 msgid ""
 "Limit the featured items users can display during their subscription. "
 "Featured items gain more visibility, enhancing content or product exposure. "
 "Enter -1 for unlimited"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1541
+#: includes/Admin/Admin_Subscription.php:1542
 msgid "Remove Featured Item"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1542
+#: includes/Admin/Admin_Subscription.php:1543
 msgid "Remove featured items when plan expires"
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1617
+#: includes/Admin/Admin_Subscription.php:1618
 msgid "Thank you for using <strong>WP User Frontend</strong>."
 msgstr ""
 
-#: includes/Admin/Admin_Subscription.php:1620
+#: includes/Admin/Admin_Subscription.php:1621
 #. Translators: %s: link to the classic UI
 msgid "Use the <a href=\"%s\">classic UI</a>."
 msgstr ""
@@ -2731,7 +2836,7 @@ msgstr ""
 
 #: includes/Admin/Customizer_Options.php:44
 #: includes/Admin/Customizer_Options.php:85
-#: includes/functions/settings-options.php:378
+#: includes/functions/settings-options.php:377
 msgid "Show Billing Address"
 msgstr ""
 
@@ -2922,32 +3027,32 @@ msgid ""
 "%4$sBody%5$s, or %6$sExcerpt%7$s to continue.%8$s"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:325
+#: includes/Admin/Forms/Admin_Form_Builder.php:336
 msgid "Advanced Options"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:326
+#: includes/Admin/Forms/Admin_Form_Builder.php:337
 msgid "Delete Field Confirmation"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:327
+#: includes/Admin/Forms/Admin_Form_Builder.php:338
 msgid "Are you sure you want to delete this field? This action cannot be undone."
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:332
+#: includes/Admin/Forms/Admin_Form_Builder.php:343
 msgid "Okay"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:334
+#: includes/Admin/Forms/Admin_Form_Builder.php:345
 #: includes/Admin/views/shortcode-builder.php:70 includes/Admin.php:239
 msgid "Close"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:335
+#: includes/Admin/Forms/Admin_Form_Builder.php:346
 msgid "This field must contain at least one choice"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:336
+#: includes/Admin/Forms/Admin_Form_Builder.php:347
 #: includes/Fields/Form_Field_Checkbox.php:112
 #: includes/Fields/Form_Field_Dropdown.php:109
 #: includes/Fields/Form_Field_MultiDropdown.php:87
@@ -2955,37 +3060,41 @@ msgstr ""
 msgid "Option"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:337
+#: includes/Admin/Forms/Admin_Form_Builder.php:348
 msgid "Column"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:338
+#: includes/Admin/Forms/Admin_Form_Builder.php:349
 msgid "This field must contain at least one column"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:339
+#: includes/Admin/Forms/Admin_Form_Builder.php:350
 msgid "is a pro feature"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:340
+#: includes/Admin/Forms/Admin_Form_Builder.php:351
 msgid "Please upgrade to the Pro version to unlock all these awesome features"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:345
+#: includes/Admin/Forms/Admin_Form_Builder.php:356
 #: includes/Fields/Field_Contract.php:493
 msgid "Select"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:346
+#: includes/Admin/Forms/Admin_Form_Builder.php:357
 msgid "Saved form data"
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:347
+#: includes/Admin/Forms/Admin_Form_Builder.php:358
 msgid "You have unsaved changes."
 msgstr ""
 
-#: includes/Admin/Forms/Admin_Form_Builder.php:349
+#: includes/Admin/Forms/Admin_Form_Builder.php:360
 msgid "To view field options, please start adding fields in the builder"
+msgstr ""
+
+#: includes/Admin/Forms/Admin_Form_Builder.php:362 includes/Admin.php:231
+msgid "Something went wrong. Please try again."
 msgstr ""
 
 #: includes/Admin/Forms/Admin_Form_Handler.php:350
@@ -3495,20 +3604,6 @@ msgstr ""
 #: includes/Admin/template-parts/modal-v4.2.php:263
 #: includes/Admin/template-parts/modal.php:64
 msgid "Create with AI"
-msgstr ""
-
-#: includes/Admin/template-parts/modal-v4.2.php:390
-msgid "AI Provider Not Configured"
-msgstr ""
-
-#: includes/Admin/template-parts/modal-v4.2.php:395
-msgid ""
-"To use AI Form Generation, please connect an AI provider by adding your API "
-"key in the settings"
-msgstr ""
-
-#: includes/Admin/template-parts/modal-v4.2.php:404
-msgid "Go to Settings"
 msgstr ""
 
 #: includes/Admin/template-parts/modal.php:5
@@ -4229,7 +4324,7 @@ msgid "Learn More About Registration"
 msgstr ""
 
 #: includes/Admin/views/support.php:531
-#: includes/functions/settings-options.php:434
+#: includes/functions/settings-options.php:433
 msgid "Login Page"
 msgstr ""
 
@@ -4591,10 +4686,6 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: includes/Admin.php:231
-msgid "Something went wrong. Please try again."
-msgstr ""
-
 #: includes/Admin.php:232
 msgid "Invalid Request"
 msgstr ""
@@ -4800,7 +4891,7 @@ msgstr ""
 msgid "Failed to update subscription"
 msgstr ""
 
-#: includes/Api/Subscription.php:360 includes/Api/Subscription.php:494
+#: includes/Api/Subscription.php:360 includes/Api/Subscription.php:497
 msgid "Subscription updated successfully"
 msgstr ""
 
@@ -4808,15 +4899,15 @@ msgstr ""
 msgid "Subscription name cannot contain #"
 msgstr ""
 
-#: includes/Api/Subscription.php:496
+#: includes/Api/Subscription.php:499
 msgid "Subscription added successfully"
 msgstr ""
 
-#: includes/Api/Subscription.php:507
+#: includes/Api/Subscription.php:510
 msgid "Failed to insert post"
 msgstr ""
 
-#: includes/Api/Subscription.php:598
+#: includes/Api/Subscription.php:602
 msgid "Invalid color format. Please provide a valid hex color (e.g., #FF0000)."
 msgstr ""
 
@@ -6485,6 +6576,22 @@ msgstr ""
 msgid "How to setup →"
 msgstr ""
 
+#: includes/Free/templates/page-registration-form.php:148
+#: includes/functions/settings-options.php:475
+#: includes/functions/settings-options.php:485
+#: includes/functions/settings-options.php:492
+#: includes/functions/settings-options.php:499
+#: includes/functions/settings-options.php:506
+#: includes/functions/settings-options.php:513
+#: includes/functions/settings-options.php:520
+#: includes/functions/settings-options.php:527
+#: includes/functions/settings-options.php:534
+#: includes/functions/settings-options.php:541
+#: includes/functions/settings-options.php:548
+#: includes/functions/settings-options.php:555
+msgid "PRO"
+msgstr ""
+
 #: includes/Free/templates/page-registration-form.php:151
 msgid "Unlock PRO Features"
 msgstr ""
@@ -6513,22 +6620,22 @@ msgid "Invalid form ID."
 msgstr ""
 
 #: includes/Frontend/Frontend_Account.php:43
-#: includes/functions/settings-options.php:385
+#: includes/functions/settings-options.php:384
 msgid "Post Submission"
 msgstr ""
 
 #: includes/Frontend/Frontend_Account.php:44
-#: includes/functions/settings-options.php:386
+#: includes/functions/settings-options.php:385
 msgid "Enable if you want to allow users to submit post from the account page."
 msgstr ""
 
 #: includes/Frontend/Frontend_Account.php:51
-#: includes/functions/settings-options.php:393
+#: includes/functions/settings-options.php:392
 msgid "Submission Menu Label"
 msgstr ""
 
 #: includes/Frontend/Frontend_Account.php:52
-#: includes/functions/settings-options.php:394
+#: includes/functions/settings-options.php:393
 msgid "Label for post submission menu"
 msgstr ""
 
@@ -6536,17 +6643,17 @@ msgstr ""
 #: includes/Frontend/Frontend_Account.php:78
 #: includes/Integrations/WPUF_WCMp_Integration.php:128
 #: includes/Integrations/WPUF_WCMp_Integration.php:146
-#: includes/functions/settings-options.php:396
+#: includes/functions/settings-options.php:395
 msgid "Submit Post"
 msgstr ""
 
 #: includes/Frontend/Frontend_Account.php:58
-#: includes/functions/settings-options.php:400
+#: includes/functions/settings-options.php:399
 msgid "Submission Form"
 msgstr ""
 
 #: includes/Frontend/Frontend_Account.php:59
-#: includes/functions/settings-options.php:401
+#: includes/functions/settings-options.php:400
 msgid ""
 "Select a post form that will use to submit post by the users from their "
 "account page."
@@ -6615,15 +6722,15 @@ msgstr ""
 msgid "Your current password is incorrect."
 msgstr ""
 
-#: includes/Frontend/Frontend_Dashboard.php:88
+#: includes/Frontend/Frontend_Dashboard.php:72
 msgid "Post Deleted"
 msgstr ""
 
-#: includes/Frontend/Frontend_Dashboard.php:165
+#: includes/Frontend/Frontend_Dashboard.php:157
 msgid "Author Info"
 msgstr ""
 
-#: includes/Frontend/Frontend_Dashboard.php:204
+#: includes/Frontend/Frontend_Dashboard.php:196
 #: templates/dashboard/posts.php:34
 #. translators: %s: user display name
 msgid "You are not the post author. Cheating huh!"
@@ -7202,15 +7309,6 @@ msgstr ""
 #. translators: %s is the event field type (e.g., 'StartHour', 'EndHour')
 #. translators: %s is the event field type (e.g., 'StartMinute', 'EndMinute')
 msgid "Event %s must be a valid number."
-msgstr ""
-
-#: includes/Integrations/WPUF_ACF_Compatibility.php:72
-#: includes/Integrations/WPUF_ACF_Compatibility.php:90
-#: includes/Integrations/WPUF_ACF_Compatibility.php:156
-#: includes/Widgets/Login_Widget.php:36 includes/Widgets/Login_Widget.php:62
-#: includes/Widgets/Login_Widget.php:79 wpuf-functions.php:1636
-#: wpuf-functions.php:1909
-msgid "Permission denied"
 msgstr ""
 
 #: includes/Integrations/WPUF_ACF_Compatibility.php:182
@@ -7987,588 +8085,588 @@ msgstr ""
 msgid "AI Settings"
 msgstr ""
 
-#: includes/functions/settings-options.php:70
+#: includes/functions/settings-options.php:69
 msgid "Previous Page"
 msgstr ""
 
-#: includes/functions/settings-options.php:94
+#: includes/functions/settings-options.php:93
 msgid "Show Admin Bar"
 msgstr ""
 
-#: includes/functions/settings-options.php:95
+#: includes/functions/settings-options.php:94
 msgid "Select user by roles, who can view admin bar in frontend."
 msgstr ""
 
-#: includes/functions/settings-options.php:107
+#: includes/functions/settings-options.php:106
 msgid "Admin area access"
 msgstr ""
 
-#: includes/functions/settings-options.php:108
+#: includes/functions/settings-options.php:107
 msgid "Allow you to block specific user role to Ajax request and Media upload."
 msgstr ""
 
-#: includes/functions/settings-options.php:113
+#: includes/functions/settings-options.php:112
 msgid "Admin Only"
 msgstr ""
 
-#: includes/functions/settings-options.php:114
+#: includes/functions/settings-options.php:113
 msgid "Admins, Editors"
 msgstr ""
 
-#: includes/functions/settings-options.php:115
+#: includes/functions/settings-options.php:114
 msgid "Admins, Editors, Authors"
 msgstr ""
 
-#: includes/functions/settings-options.php:116
+#: includes/functions/settings-options.php:115
 msgid "Admins, Editors, Authors, Contributors"
 msgstr ""
 
-#: includes/functions/settings-options.php:117
+#: includes/functions/settings-options.php:116
 msgid "Default"
 msgstr ""
 
-#: includes/functions/settings-options.php:122
+#: includes/functions/settings-options.php:121
 msgid "Override the post edit link"
 msgstr ""
 
-#: includes/functions/settings-options.php:123
+#: includes/functions/settings-options.php:122
 msgid ""
 "Users see the edit link in post if s/he is capable to edit the post/page. "
 "Selecting <strong>Yes</strong> will override the default WordPress edit "
 "post link in frontend"
 msgstr ""
 
-#: includes/functions/settings-options.php:134
+#: includes/functions/settings-options.php:133
 msgid "ACF Compatibility"
 msgstr ""
 
-#: includes/functions/settings-options.php:137
+#: includes/functions/settings-options.php:136
 #. translators: %1$s and %2$s are strong tags
 msgid ""
 "Select %1$sYes%2$s if you want to make compatible WPUF custom fields data "
 "with advanced custom fields."
 msgstr ""
 
-#: includes/functions/settings-options.php:153
+#: includes/functions/settings-options.php:152
 msgid "Load Scripts"
 msgstr ""
 
-#: includes/functions/settings-options.php:154
+#: includes/functions/settings-options.php:153
 msgid "Load scripts/styles in all pages"
 msgstr ""
 
-#: includes/functions/settings-options.php:160
+#: includes/functions/settings-options.php:159
 msgid "reCAPTCHA Site Key"
 msgstr ""
 
-#: includes/functions/settings-options.php:164
+#: includes/functions/settings-options.php:163
 msgid "reCAPTCHA Secret Key"
 msgstr ""
 
-#: includes/functions/settings-options.php:165
+#: includes/functions/settings-options.php:164
 msgid ""
 "<a target=\"_blank\" href=\"https://www.google.com/recaptcha/\">Register "
 "here</a> to get reCaptcha Site and Secret keys."
 msgstr ""
 
-#: includes/functions/settings-options.php:170
+#: includes/functions/settings-options.php:169
 msgid "Enable Turnstile"
 msgstr ""
 
-#: includes/functions/settings-options.php:176
+#: includes/functions/settings-options.php:175
 msgid "Turnstile Site Key"
 msgstr ""
 
-#: includes/functions/settings-options.php:181
+#: includes/functions/settings-options.php:180
 msgid "Turnstile Secret Key"
 msgstr ""
 
-#: includes/functions/settings-options.php:185
+#: includes/functions/settings-options.php:184
 #. translators: %s is a link
 msgid ""
 "<a target=\"_blank\" href=\"%1$s\">Register here</a> to get Turnstile Site "
 "and Secret keys."
 msgstr ""
 
-#: includes/functions/settings-options.php:193
+#: includes/functions/settings-options.php:192
 msgid "Custom CSS codes"
 msgstr ""
 
-#: includes/functions/settings-options.php:194
+#: includes/functions/settings-options.php:193
 msgid ""
 "If you want to add your custom CSS code, it will be added on page header "
 "wrapped with style tag"
 msgstr ""
 
-#: includes/functions/settings-options.php:202
+#: includes/functions/settings-options.php:201
 msgid "Edit Page"
 msgstr ""
 
-#: includes/functions/settings-options.php:203
+#: includes/functions/settings-options.php:202
 msgid "Select the page where <code>[wpuf_edit]</code> is located"
 msgstr ""
 
-#: includes/functions/settings-options.php:209
+#: includes/functions/settings-options.php:208
 msgid "Default Post Owner"
 msgstr ""
 
-#: includes/functions/settings-options.php:210
+#: includes/functions/settings-options.php:209
 msgid ""
 "If guest post is enabled and user details are OFF, the posts are assigned "
 "to this user"
 msgstr ""
 
-#: includes/functions/settings-options.php:218
+#: includes/functions/settings-options.php:217
 msgid "Custom Fields in post"
 msgstr ""
 
-#: includes/functions/settings-options.php:219
+#: includes/functions/settings-options.php:218
 msgid "Show custom fields on post content area"
 msgstr ""
 
-#: includes/functions/settings-options.php:225
+#: includes/functions/settings-options.php:224
 msgid "Insert Photo image size"
 msgstr ""
 
-#: includes/functions/settings-options.php:226
+#: includes/functions/settings-options.php:225
 msgid ""
 "Default image size of \"<strong>Insert Photo</strong>\" button in post "
 "content area"
 msgstr ""
 
-#: includes/functions/settings-options.php:234
+#: includes/functions/settings-options.php:233
 msgid "Insert Photo image type"
 msgstr ""
 
-#: includes/functions/settings-options.php:235
+#: includes/functions/settings-options.php:234
 msgid ""
 "Default image type of \"<strong>Insert Photo</strong>\" button in post "
 "content area"
 msgstr ""
 
-#: includes/functions/settings-options.php:239
+#: includes/functions/settings-options.php:238
 msgid "Image only"
 msgstr ""
 
-#: includes/functions/settings-options.php:240
+#: includes/functions/settings-options.php:239
 msgid "Image with link"
 msgstr ""
 
-#: includes/functions/settings-options.php:246
+#: includes/functions/settings-options.php:245
 msgid "Enable Image Caption"
 msgstr ""
 
-#: includes/functions/settings-options.php:247
+#: includes/functions/settings-options.php:246
 msgid "Allow users to update image/video title, caption and description"
 msgstr ""
 
-#: includes/functions/settings-options.php:254
+#: includes/functions/settings-options.php:253
 msgid "Default Post Form"
 msgstr ""
 
-#: includes/functions/settings-options.php:255
+#: includes/functions/settings-options.php:254
 msgid "Fallback form for post editing if no associated form found"
 msgstr ""
 
-#: includes/functions/settings-options.php:263
+#: includes/functions/settings-options.php:262
 msgid "Users can edit post?"
 msgstr ""
 
-#: includes/functions/settings-options.php:264
+#: includes/functions/settings-options.php:263
 msgid "Users will be able to edit their own posts"
 msgstr ""
 
-#: includes/functions/settings-options.php:274
+#: includes/functions/settings-options.php:273
 msgid "User can delete post?"
 msgstr ""
 
-#: includes/functions/settings-options.php:275
+#: includes/functions/settings-options.php:274
 msgid "Users will be able to delete their own posts"
 msgstr ""
 
-#: includes/functions/settings-options.php:285
+#: includes/functions/settings-options.php:284
 msgid "Pending Post Edit"
 msgstr ""
 
-#: includes/functions/settings-options.php:286
+#: includes/functions/settings-options.php:285
 msgid "Disable post editing while post in \"pending\" status"
 msgstr ""
 
-#: includes/functions/settings-options.php:292
+#: includes/functions/settings-options.php:291
 msgid "Editing Published Post"
 msgstr ""
 
-#: includes/functions/settings-options.php:293
+#: includes/functions/settings-options.php:292
 msgid "Disable post editing while post in \"publish\" status"
 msgstr ""
 
-#: includes/functions/settings-options.php:299
+#: includes/functions/settings-options.php:298
 msgid "Posts per page"
 msgstr ""
 
-#: includes/functions/settings-options.php:300
+#: includes/functions/settings-options.php:299
 msgid "How many posts will be listed in a page"
 msgstr ""
 
-#: includes/functions/settings-options.php:306
+#: includes/functions/settings-options.php:305
 msgid "Show user bio"
 msgstr ""
 
-#: includes/functions/settings-options.php:307
+#: includes/functions/settings-options.php:306
 msgid "Users biographical info will be shown"
 msgstr ""
 
-#: includes/functions/settings-options.php:313
+#: includes/functions/settings-options.php:312
 msgid "Show post count"
 msgstr ""
 
-#: includes/functions/settings-options.php:314
+#: includes/functions/settings-options.php:313
 msgid "Show how many posts are created by the user"
 msgstr ""
 
-#: includes/functions/settings-options.php:320
+#: includes/functions/settings-options.php:319
 msgid "Show Featured Image"
 msgstr ""
 
-#: includes/functions/settings-options.php:321
+#: includes/functions/settings-options.php:320
 msgid "Show featured image of the post (Overridden by Shortcode)"
 msgstr ""
 
-#: includes/functions/settings-options.php:326
+#: includes/functions/settings-options.php:325
 msgid "Show Payment Column"
 msgstr ""
 
-#: includes/functions/settings-options.php:327
+#: includes/functions/settings-options.php:326
 msgid "Enable if you want show payment column on posts table"
 msgstr ""
 
-#: includes/functions/settings-options.php:333
+#: includes/functions/settings-options.php:332
 msgid "Featured Image size"
 msgstr ""
 
-#: includes/functions/settings-options.php:340
+#: includes/functions/settings-options.php:339
 msgid "Not logged in users will see this message"
 msgstr ""
 
-#: includes/functions/settings-options.php:347
+#: includes/functions/settings-options.php:346
 msgid "Account Page"
 msgstr ""
 
-#: includes/functions/settings-options.php:348
+#: includes/functions/settings-options.php:347
 msgid "Select the page which contains <code>[wpuf_account]</code> shortcode"
 msgstr ""
 
-#: includes/functions/settings-options.php:355
+#: includes/functions/settings-options.php:354
 msgid "Select Custom Post For Account Page"
 msgstr ""
 
-#: includes/functions/settings-options.php:356
+#: includes/functions/settings-options.php:355
 msgid "Select the post types you want to show on user dashboard."
 msgstr ""
 
-#: includes/functions/settings-options.php:362
+#: includes/functions/settings-options.php:361
 msgid "Active Tab"
 msgstr ""
 
-#: includes/functions/settings-options.php:363
+#: includes/functions/settings-options.php:362
 msgid "Which tab should be set as active by default when opening the account page"
 msgstr ""
 
-#: includes/functions/settings-options.php:370
+#: includes/functions/settings-options.php:369
 msgid "Show Subscriptions"
 msgstr ""
 
-#: includes/functions/settings-options.php:371
+#: includes/functions/settings-options.php:370
 msgid ""
 "Show Subscriptions tab in \"my account\" page where "
 "<code>[wpuf_account]</code> is located"
 msgstr ""
 
-#: includes/functions/settings-options.php:379
+#: includes/functions/settings-options.php:378
 msgid "Show billing address in account page."
 msgstr ""
 
-#: includes/functions/settings-options.php:410
+#: includes/functions/settings-options.php:409
 msgid "Auto Login After Registration"
 msgstr ""
 
-#: includes/functions/settings-options.php:411
+#: includes/functions/settings-options.php:410
 msgid "If enabled, users after registration will be logged in to the system"
 msgstr ""
 
-#: includes/functions/settings-options.php:418
+#: includes/functions/settings-options.php:417
 msgid "Login/Registration override"
 msgstr ""
 
-#: includes/functions/settings-options.php:419
+#: includes/functions/settings-options.php:418
 msgid ""
 "If enabled, default login and registration forms will be overridden by WPUF "
 "with pages below"
 msgstr ""
 
-#: includes/functions/settings-options.php:426
+#: includes/functions/settings-options.php:425
 msgid "Registration Page"
 msgstr ""
 
-#: includes/functions/settings-options.php:427
+#: includes/functions/settings-options.php:426
 msgid ""
 "Select the page you want to use as registration page override <em>(should "
 "have shortcode)</em>"
 msgstr ""
 
-#: includes/functions/settings-options.php:435
+#: includes/functions/settings-options.php:434
 msgid "Select the page which contains <code>[wpuf-login]</code> shortcode"
 msgstr ""
 
-#: includes/functions/settings-options.php:442
+#: includes/functions/settings-options.php:441
 msgid "Redirect After Login"
 msgstr ""
 
-#: includes/functions/settings-options.php:443
+#: includes/functions/settings-options.php:442
 msgid "After successfull login, where the page will redirect to"
 msgstr ""
 
-#: includes/functions/settings-options.php:449
+#: includes/functions/settings-options.php:448
 msgid "Default Login Redirect"
 msgstr ""
 
-#: includes/functions/settings-options.php:450
+#: includes/functions/settings-options.php:449
 msgid ""
 "If enabled, users who login using WordPress default login form will be "
 "redirected to the selected page."
 msgstr ""
 
-#: includes/functions/settings-options.php:457
+#: includes/functions/settings-options.php:456
 msgid "reCAPTCHA in Login Form"
 msgstr ""
 
-#: includes/functions/settings-options.php:458
+#: includes/functions/settings-options.php:457
 msgid ""
 "If enabled, users have to verify reCAPTCHA in login page. Also, make sure "
 "that reCAPTCHA is configured properly from <b>General Options</b>"
 msgstr ""
 
-#: includes/functions/settings-options.php:465
+#: includes/functions/settings-options.php:464
 msgid "Turnstile in Login Form"
 msgstr ""
 
-#: includes/functions/settings-options.php:466
+#: includes/functions/settings-options.php:465
 msgid ""
 "If enabled, users have to verify Cloudflare Turnstile in login page. Also, "
 "make sure that Turnstile is configured properly from <b>General Options</b>"
 msgstr ""
 
-#: includes/functions/settings-options.php:476
+#: includes/functions/settings-options.php:475
 msgid "Login Form Layout"
 msgstr ""
 
-#: includes/functions/settings-options.php:477
+#: includes/functions/settings-options.php:476
 msgid "Choose a layout style for your login forms."
 msgstr ""
 
-#: includes/functions/settings-options.php:486
-msgid "Form Background Color"
+#: includes/functions/settings-options.php:485
+msgid "Form BG Color"
 msgstr ""
 
-#: includes/functions/settings-options.php:493
+#: includes/functions/settings-options.php:492
 msgid "Form Border Color"
 msgstr ""
 
-#: includes/functions/settings-options.php:500
+#: includes/functions/settings-options.php:499
 msgid "Field Border Color"
 msgstr ""
 
-#: includes/functions/settings-options.php:507
-msgid "Field Background Color"
+#: includes/functions/settings-options.php:506
+msgid "Field BG Color"
 msgstr ""
 
-#: includes/functions/settings-options.php:514
+#: includes/functions/settings-options.php:513
 msgid "Label Text Color"
 msgstr ""
 
-#: includes/functions/settings-options.php:521
+#: includes/functions/settings-options.php:520
 msgid "Placeholder Color"
 msgstr ""
 
-#: includes/functions/settings-options.php:528
+#: includes/functions/settings-options.php:527
 msgid "Input Text Color"
 msgstr ""
 
-#: includes/functions/settings-options.php:535
+#: includes/functions/settings-options.php:534
 msgid "Help Text Color"
 msgstr ""
 
-#: includes/functions/settings-options.php:542
-msgid "Button Background Color"
+#: includes/functions/settings-options.php:541
+msgid "Button BG Color"
 msgstr ""
 
-#: includes/functions/settings-options.php:549
+#: includes/functions/settings-options.php:548
 msgid "Button Border Color"
 msgstr ""
 
-#: includes/functions/settings-options.php:556
+#: includes/functions/settings-options.php:555
 msgid "Button Text Color"
 msgstr ""
 
-#: includes/functions/settings-options.php:566
+#: includes/functions/settings-options.php:565
 msgid "Enable payments on your site."
 msgstr ""
 
-#: includes/functions/settings-options.php:572
+#: includes/functions/settings-options.php:571
 msgid "Subscription Pack Page"
 msgstr ""
 
-#: includes/functions/settings-options.php:573
+#: includes/functions/settings-options.php:572
 msgid "Select the page where <code>[wpuf_sub_pack]</code> located."
 msgstr ""
 
-#: includes/functions/settings-options.php:579
+#: includes/functions/settings-options.php:578
 msgid "Subscription at registration"
 msgstr ""
 
-#: includes/functions/settings-options.php:580
+#: includes/functions/settings-options.php:579
 msgid "Registration time redirect to subscription page"
 msgstr ""
 
-#: includes/functions/settings-options.php:585
+#: includes/functions/settings-options.php:584
 msgid "Currency"
 msgstr ""
 
-#: includes/functions/settings-options.php:592
+#: includes/functions/settings-options.php:591
 msgid "Currency Position"
 msgstr ""
 
-#: includes/functions/settings-options.php:596
+#: includes/functions/settings-options.php:595
 msgid "Left"
 msgstr ""
 
-#: includes/functions/settings-options.php:598
+#: includes/functions/settings-options.php:597
 msgid "Right"
 msgstr ""
 
-#: includes/functions/settings-options.php:600
+#: includes/functions/settings-options.php:599
 msgid "Left with space"
 msgstr ""
 
-#: includes/functions/settings-options.php:602
+#: includes/functions/settings-options.php:601
 msgid "Right with space"
 msgstr ""
 
-#: includes/functions/settings-options.php:608
+#: includes/functions/settings-options.php:607
 msgid "Thousand Separator"
 msgstr ""
 
-#: includes/functions/settings-options.php:609
+#: includes/functions/settings-options.php:608
 msgid "This sets the thousand separator of displayed prices."
 msgstr ""
 
-#: includes/functions/settings-options.php:617
+#: includes/functions/settings-options.php:616
 msgid "Decimal Separator"
 msgstr ""
 
-#: includes/functions/settings-options.php:618
+#: includes/functions/settings-options.php:617
 msgid "This sets the decimal separator of displayed prices."
 msgstr ""
 
-#: includes/functions/settings-options.php:624
+#: includes/functions/settings-options.php:623
 msgid "Number of Decimals"
 msgstr ""
 
-#: includes/functions/settings-options.php:625
+#: includes/functions/settings-options.php:624
 msgid "This sets the number of decimal points shown in displayed prices."
 msgstr ""
 
-#: includes/functions/settings-options.php:636
+#: includes/functions/settings-options.php:635
 msgid "Enable demo/sandbox mode"
 msgstr ""
 
-#: includes/functions/settings-options.php:637
+#: includes/functions/settings-options.php:636
 msgid "When sandbox mode is active, all payment gateway will be used in demo mode"
 msgstr ""
 
-#: includes/functions/settings-options.php:644
+#: includes/functions/settings-options.php:643
 msgid "Payment Page"
 msgstr ""
 
-#: includes/functions/settings-options.php:645
+#: includes/functions/settings-options.php:644
 msgid "This page will be used to process payment options"
 msgstr ""
 
-#: includes/functions/settings-options.php:658
+#: includes/functions/settings-options.php:657
 msgid "Payment Gateways"
 msgstr ""
 
-#: includes/functions/settings-options.php:659
+#: includes/functions/settings-options.php:658
 msgid "Active payment gateways"
 msgstr ""
 
-#: includes/functions/settings-options.php:665
+#: includes/functions/settings-options.php:664
 msgid "Retry Failed Payment"
 msgstr ""
 
-#: includes/functions/settings-options.php:666
+#: includes/functions/settings-options.php:665
 msgid "How many times should retry for failed payment max is 4"
 msgstr ""
 
-#: includes/functions/settings-options.php:680
+#: includes/functions/settings-options.php:679
 msgid "<span class=\"dashicons dashicons-universal-access-alt\"></span> Guest Email"
 msgstr ""
 
-#: includes/functions/settings-options.php:688
+#: includes/functions/settings-options.php:687
 msgid "Guest Email Notification"
 msgstr ""
 
-#: includes/functions/settings-options.php:689
+#: includes/functions/settings-options.php:688
 msgid "Enable Guest Email Notification ."
 msgstr ""
 
-#: includes/functions/settings-options.php:695
+#: includes/functions/settings-options.php:694
 msgid "Guest mail subject"
 msgstr ""
 
-#: includes/functions/settings-options.php:696
+#: includes/functions/settings-options.php:695
 msgid "This sets the subject of the emails sent to guest users"
 msgstr ""
 
-#: includes/functions/settings-options.php:703
+#: includes/functions/settings-options.php:702
 msgid "Guest mail body"
 msgstr ""
 
-#: includes/functions/settings-options.php:704
+#: includes/functions/settings-options.php:703
 msgid ""
 "This sets the body of the emails sent to guest users. Please DON'T edit the "
 "<code>{activation_link}</code> part, you can use {sitename} too."
 msgstr ""
 
-#: includes/functions/settings-options.php:722
+#: includes/functions/settings-options.php:721
 msgid "Post Types"
 msgstr ""
 
-#: includes/functions/settings-options.php:723
+#: includes/functions/settings-options.php:722
 msgid "Select the post types you will allow users to export."
 msgstr ""
 
-#: includes/functions/settings-options.php:731
+#: includes/functions/settings-options.php:730
 msgid "AI Provider"
 msgstr ""
 
-#: includes/functions/settings-options.php:732
+#: includes/functions/settings-options.php:731
 msgid "Select the AI service provider you want to use."
 msgstr ""
 
-#: includes/functions/settings-options.php:740
+#: includes/functions/settings-options.php:739
 msgid "AI Model"
 msgstr ""
 
-#: includes/functions/settings-options.php:741
+#: includes/functions/settings-options.php:740
 msgid "Select the AI model to use for content generation."
 msgstr ""
 
-#: includes/functions/settings-options.php:749
+#: includes/functions/settings-options.php:748
 msgid "API Key"
 msgstr ""
 
-#: includes/functions/settings-options.php:750
+#: includes/functions/settings-options.php:749
 msgid ""
 "Enter your AI service API key. Need help finding your <a "
 "href=\"https://platform.openai.com/api-keys\" target=\"_blank\" "
@@ -8579,13 +8677,13 @@ msgid ""
 "style=\"text-decoration: underline;\">API Key?</a>"
 msgstr ""
 
-#: includes/functions/settings-options.php:784
+#: includes/functions/settings-options.php:783
 msgid ""
 "Select profile/registration forms for user roles. These forms will be used "
 "to populate extra edit profile fields in backend."
 msgstr ""
 
-#: includes/functions/settings-options.php:843
+#: includes/functions/settings-options.php:842
 msgid "Enter your API key"
 msgstr ""
 
@@ -9745,31 +9843,31 @@ msgstr ""
 msgid "GIF"
 msgstr ""
 
-#: wpuf-functions.php:5748
+#: wpuf-functions.php:5833
 msgid "Layout 1 - Classic"
 msgstr ""
 
-#: wpuf-functions.php:5749
+#: wpuf-functions.php:5834
 msgid "Layout 2 - Modern Dark"
 msgstr ""
 
-#: wpuf-functions.php:5750
+#: wpuf-functions.php:5835
 msgid "Layout 3 - Minimal"
 msgstr ""
 
-#: wpuf-functions.php:5751
+#: wpuf-functions.php:5836
 msgid "Layout 4 - Bordered"
 msgstr ""
 
-#: wpuf-functions.php:5752
+#: wpuf-functions.php:5837
 msgid "Layout 5 - Rounded"
 msgstr ""
 
-#: wpuf-functions.php:5753
+#: wpuf-functions.php:5838
 msgid "Layout 6 - Clean"
 msgstr ""
 
-#: wpuf-functions.php:5754
+#: wpuf-functions.php:5839
 msgid "Layout 7 - Premium"
 msgstr ""
 

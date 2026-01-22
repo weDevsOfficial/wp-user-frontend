@@ -73,9 +73,6 @@ class Free_Loader extends Pro_Prompt {
 
         // field option data actions
         add_action( 'wpuf_field_option_data_actions', [ $this, 'render_field_option_data_button' ] );
-
-        // filter pro-only fields when pro is not active
-        add_filter( 'wpuf_form_fields_data', [ $this, 'filter_pro_only_fields' ], 10, 2 );
     }
 
     public function includes() {
@@ -975,37 +972,6 @@ class Free_Loader extends Pro_Prompt {
         }
 
         return $integrations;
-    }
-
-    /**
-     * Filter out pro-only fields when pro plugin is not active
-     *
-     * @since 4.1.9
-     *
-     * @param array $form_fields The array of form fields
-     * @param int   $form_id     The form ID
-     *
-     * @return array Filtered form fields
-     */
-    public function filter_pro_only_fields( $form_fields, $form_id ) {
-        // If pro is active, return all fields
-        if ( wpuf_is_pro_active() ) {
-            return $form_fields;
-        }
-
-        // Filter out fields marked as pro-only
-        $filtered_fields = [];
-
-        foreach ( $form_fields as $field ) {
-            // Skip fields marked as pro-only
-            if ( ! empty( $field['is_pro'] ) ) {
-                continue;
-            }
-
-            $filtered_fields[] = $field;
-        }
-
-        return $filtered_fields;
     }
 
     /**

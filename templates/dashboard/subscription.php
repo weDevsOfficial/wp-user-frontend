@@ -172,7 +172,7 @@ function get_next_billing_html( $subscription_data ) {
 
 <div class="wpuf-bg-transparent wpuf-mb-[48px]">
     <p class="wpuf-text-gray-400 wpuf-font-normal wpuf-text-[18px] wpuf-leading-[24px] wpuf-tracking-[0.13px] wpuf-m-0">
-        <?php esc_html_e( 'The following addresses will be used on the checkout page by default.', 'wp-user-frontend' ); ?>
+        <?php esc_html_e( 'View your current subscription status, billing details, and renewal information.', 'wp-user-frontend' ); ?>
     </p>
 </div>
 
@@ -289,10 +289,15 @@ function get_next_billing_html( $subscription_data ) {
                         }
                     }
 
+                    // Compute display value for user requests
+                    $user_requests_display = ( isset( $user_sub['total_feature_item'] ) && -1 === intval( $user_sub['total_feature_item'] ) )
+                        ? __( 'Unlimited', 'wp-user-frontend' )
+                        : ( isset( $user_sub['total_feature_item'] ) ? intval( $user_sub['total_feature_item'] ) : __( 'Unlimited', 'wp-user-frontend' ) );
+
                     // Add other features to reach 4
                     $basic_features = [
                         [ 'label' => __( 'Template Parts', 'wp-user-frontend' ), 'value' => __( 'Unlimited', 'wp-user-frontend' ) ],
-                        [ 'label' => __( 'User Requests', 'wp-user-frontend' ), 'value' => __( 'Unlimited', 'wp-user-frontend' ) ],
+                        [ 'label' => __( 'User Requests', 'wp-user-frontend' ), 'value' => $user_requests_display ],
                         [ 'label' => __( 'Global Styles', 'wp-user-frontend' ), 'value' => __( 'Unlimited', 'wp-user-frontend' ) ],
                         [ 'label' => __( 'Pages', 'wp-user-frontend' ), 'value' => __( 'Unlimited', 'wp-user-frontend' ) ],
                     ];

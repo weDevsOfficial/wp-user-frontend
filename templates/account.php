@@ -14,7 +14,7 @@
             <p class="wpuf-profile-role">
                 <?php
                 $user_roles = $current_user->roles;
-                echo esc_html( ucfirst( $user_roles[0] ) );
+                echo ! empty( $user_roles ) ? esc_html( ucfirst( $user_roles[0] ) ) : '';
                 ?>
             </p>
             <a href="<?php echo esc_url( add_query_arg( [ 'section' => 'edit-profile' ], get_permalink() ) ); ?>" class="wpuf-edit-profile-btn">
@@ -30,6 +30,8 @@
             <ul class="wpuf-space-y-1">
                 <?php
                     if ( is_user_logged_in() ) {
+                        $section_param = isset( $_GET['section'] ) ? sanitize_text_field( wp_unslash( $_GET['section'] ) ) : null;
+
                         foreach ( $sections as $section => $label ) {
                             // backward compatibility
                             if ( is_array( $label ) ) {
@@ -54,7 +56,7 @@
                             $default_active_tab = wpuf_get_option( 'account_page_active_tab', 'wpuf_my_account', 'dashboard' );
                             $active_tab         = false;
 
-                            if ( ( isset( $_GET['section'] ) && $_GET['section'] == $section ) || ( !isset( $_GET['section'] ) && $default_active_tab == $section ) ) {
+                            if ( ( null !== $section_param && $section_param === $section ) || ( null === $section_param && $default_active_tab === $section ) ) {
                                 $active_tab = true;
                             }
 

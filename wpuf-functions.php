@@ -3883,7 +3883,7 @@ function wpuf_ajax_get_states_field() {
         $args = [
             'name'             => $field_name,
             'id'               => $field_name,
-            'class'            => "{$field_name} wpuf-w-full wpuf-rounded-md wpuf-border-gray-300 focus:wpuf-border-primary focus:wpuf-ring-primary",
+            'class'            => $field_name,
             'options'          => $states,
             'show_option_all'  => false,
             'show_option_none' => false,

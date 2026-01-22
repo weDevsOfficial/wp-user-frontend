@@ -18,7 +18,7 @@ wp_enqueue_script( 'password-strength-meter' );
 
     <div class="wpuf-bg-transparent wpuf-mb-[48px]">
         <p class="wpuf-text-gray-400 wpuf-font-normal wpuf-text-[18px] wpuf-leading-[24px] wpuf-tracking-[0.13px] wpuf-m-0">
-            <?php esc_html_e( 'The following addresses will be used on the checkout page by default.', 'wp-user-frontend' ); ?>
+            <?php esc_html_e( 'Update your personal information and change your password here.', 'wp-user-frontend' ); ?>
         </p>
     </div>
 

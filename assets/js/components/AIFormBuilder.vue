@@ -116,8 +116,12 @@ export default {
             try {
                 // Get configuration with fallbacks
                 const config = window.wpufAIFormBuilder || {};
-                const restUrl = config.rest_url || (window.location.origin + '/wp-json/');
+                const generateUrl = config.endpoints?.generate;
                 const nonce = config.nonce || '';
+
+                if ( ! generateUrl ) {
+                    throw new Error( 'WPUF AI Form Builder: Generate endpoint not configured' );
+                }
 
                 // Build request body
                 const requestBody = {
@@ -132,7 +136,7 @@ export default {
                     requestBody.integration = integration;
                 }
 
-                const response = await fetch(restUrl + 'wpuf/v1/ai-form-builder/generate', {
+                const response = await fetch(generateUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -642,9 +646,13 @@ export default {
 
             try {
                 const config = window.wpufAIFormBuilder || {};
-                const restUrl = config.rest_url || (window.location.origin + '/wp-json/');
+                const createFormUrl = config.endpoints?.createForm;
                 const nonce = config.nonce || '';
                 const formType = config.formType || 'post';
+
+                if ( ! createFormUrl ) {
+                    throw new Error( 'WPUF AI Form Builder: Create form endpoint not configured' );
+                }
 
                 // Always use wpuf_fields from generated data - they already have correct WPUF format
                 const wpufFields = this.generatedFormData.wpuf_fields || [];
@@ -656,7 +664,7 @@ export default {
                     wpuf_fields: wpufFields  // Use wpuf_fields directly, no conversion needed
                 };
 
-                const response = await fetch(restUrl + 'wpuf/v1/ai-form-builder/create-form', {
+                const response = await fetch(createFormUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -702,7 +710,7 @@ export default {
         async editInBuilder(eventData) {
             try {
                 const config = window.wpufAIFormBuilder || {};
-                const restUrl = config.rest_url || (window.location.origin + '/wp-json/');
+                const createFormUrl = config.endpoints?.createForm;
                 const nonce = config.nonce || '';
                 const formType = config.formType || 'post';
 
@@ -725,8 +733,12 @@ export default {
                     return;
                 }
 
+                if ( ! createFormUrl ) {
+                    throw new Error( 'WPUF AI Form Builder: Create form endpoint not configured' );
+                }
+
                 // Create new form
-                const response = await fetch(restUrl + 'wpuf/v1/ai-form-builder/create-form', {
+                const response = await fetch(createFormUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

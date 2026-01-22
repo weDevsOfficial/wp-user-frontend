@@ -222,6 +222,11 @@ class Admin {
             'siteUrl'              => site_url(),
             'nonce'                => wp_create_nonce( 'wp_rest' ),
             'rest_url'             => esc_url_raw( rest_url() ),
+            'endpoints'            => [
+                'generate'     => esc_url_raw( rest_url( 'wpuf/v1/ai-form-builder/generate' ) ),
+                'createForm'   => esc_url_raw( rest_url( 'wpuf/v1/ai-form-builder/create-form' ) ),
+                'integrations' => esc_url_raw( rest_url( 'wpuf/v1/ai-form-builder/integrations' ) ),
+            ],
             'formType'             => $form_type, // Pass form type to frontend
             'provider'             => $ai_settings['ai_provider'] ?? 'openai',
             'model'                => $ai_settings['ai_model'] ?? 'gpt-3.5-turbo',

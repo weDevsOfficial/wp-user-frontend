@@ -1,0 +1,14 @@
+{
+  "landingPage": "/wp-admin/",
+  "preferredVersions": {
+    "php": "8.0",
+    "wp": "latest"
+  },
+  "plugins": ["wp-user-frontend"],
+  "steps": [
+    {
+      "step": "login",
+      "username": "admin"
+    }
+  ]
+}

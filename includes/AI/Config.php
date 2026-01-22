@@ -13,6 +13,15 @@ namespace WeDevs\Wpuf\AI;
 class Config {
 
     /**
+     * Max tokens constants
+     */
+    const MAX_TOKENS_DEFAULT     = 2000;
+    const MAX_TOKENS_INTEGRATION = 4000;
+    const MAX_TOKENS_GPT5        = 65536;
+    const MAX_TOKENS_TEST        = 500;
+    const MAX_TOKENS_OPTIONS     = 1000;
+
+    /**
      * Get all provider configurations
      *
      * @return array Provider configurations

@@ -252,13 +252,18 @@ class FormGenerator {
         }
 
         // Set token parameter based on model
-        if ($model_config['token_location'] === 'body') {
+        // GPT-5 check must come first since it needs high tokens even for integrations
+        if ( strpos( $this->current_model, 'gpt-5' ) === 0 ) {
             // GPT-5 needs significantly more tokens for reasoning + output
-            if (strpos($this->current_model, 'gpt-5') === 0) {
-                $body[$model_config['token_param']] = intval($options['max_tokens'] ?? 65536);
-            } else {
-                $body[$model_config['token_param']] = intval($options['max_tokens'] ?? 2000);
-            }
+            $max_tokens = intval( $options['max_tokens'] ?? Config::MAX_TOKENS_GPT5 );
+        } elseif ( ! empty( $context['integration'] ) ) {
+            $max_tokens = Config::MAX_TOKENS_INTEGRATION;
+        } else {
+            $max_tokens = intval( $options['max_tokens'] ?? Config::MAX_TOKENS_DEFAULT );
+        }
+
+        if ( $model_config['token_location'] === 'body' ) {
+            $body[ $model_config['token_param'] ] = $max_tokens;
         }
 
         $args = [
@@ -428,13 +433,15 @@ class FormGenerator {
         }
 
         // Set token parameter based on model
-        if ($model_config['token_location'] === 'body') {
-            // GPT-5 needs significantly more tokens for reasoning + output
-            if (strpos($this->current_model, 'gpt-5') === 0) {
-                $body[$model_config['token_param']] = intval($options['max_tokens'] ?? 65536);
-            } else {
-                $body[$model_config['token_param']] = intval($options['max_tokens'] ?? 2000);
-            }
+        // Use higher token limit for integration forms (they have more fields)
+        if ( ! empty( $context['integration'] ) ) {
+            $max_tokens = Config::MAX_TOKENS_INTEGRATION;
+        } else {
+            $max_tokens = intval( $options['max_tokens'] ?? Config::MAX_TOKENS_DEFAULT );
+        }
+
+        if ( $model_config['token_location'] === 'body' ) {
+            $body[ $model_config['token_param'] ] = $max_tokens;
         }
 
         $args = [
@@ -586,8 +593,15 @@ class FormGenerator {
         }
 
         // Set token parameter based on model
-        if ($model_config['token_location'] === 'generationConfig') {
-            $body['generationConfig'][$model_config['token_param']] = intval($options['max_tokens'] ?? 2000);
+        // Use higher token limit for integration forms (they have more fields)
+        if ( ! empty( $context['integration'] ) ) {
+            $max_tokens = Config::MAX_TOKENS_INTEGRATION;
+        } else {
+            $max_tokens = intval( $options['max_tokens'] ?? Config::MAX_TOKENS_DEFAULT );
+        }
+
+        if ( $model_config['token_location'] === 'generationConfig' ) {
+            $body['generationConfig'][ $model_config['token_param'] ] = $max_tokens;
         }
 
         $args = [
@@ -702,14 +716,42 @@ class FormGenerator {
      * @return string System prompt
      */
     private function get_system_prompt($context = [], $form_type = 'post') {
-        // Determine which prompt file to use based on form type
-        if ( 'profile' === $form_type || 'registration' === $form_type ) {
-            // Registration/Profile form prompt - USE MINIMAL REGISTRATION PROMPT
-            $prompt_file = WPUF_ROOT . '/includes/AI/wpuf-ai-minimal-prompt-registration.md';
-        } else {
-            // Post form prompt - USE MINIMAL PROMPT
-            $prompt_file = WPUF_ROOT . '/includes/AI/wpuf-ai-minimal-prompt.md';
+        // Get integration type from context if provided
+        $integration = $context['integration'] ?? '';
+
+        // Check if Pro is active using the proper function
+        $is_pro_active = function_exists( 'wpuf_is_pro_active' ) && wpuf_is_pro_active();
+
+        // Determine which prompt file to use based on form type and integration
+        // Free plugin has prompts for basic post forms, WooCommerce, and Events Calendar
+        // Pro plugin provides additional integration and registration prompts via filter
+        $prompt_file = WPUF_ROOT . '/includes/AI/prompts/wpuf-ai-minimal-prompt.md';
+
+        // Select integration-specific prompt file for free integrations
+        if ( ! empty( $integration ) ) {
+            switch ( $integration ) {
+                case 'woocommerce':
+                    $prompt_file = WPUF_ROOT . '/includes/AI/prompts/wpuf-ai-prompt-woocommerce.md';
+                    break;
+                case 'events_calendar':
+                    $prompt_file = WPUF_ROOT . '/includes/AI/prompts/wpuf-ai-prompt-events-calendar.md';
+                    break;
+            }
         }
+
+        /**
+         * Filter the AI prompt file path
+         *
+         * Allows pro plugin to override prompt file paths for different
+         * form types and integrations.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param string $prompt_file Path to the prompt file
+         * @param string $form_type   Form type ('post' or 'profile')
+         * @param string $integration Integration identifier
+         */
+        $prompt_file = apply_filters( 'wpuf_ai_prompt_file_path', $prompt_file, $form_type, $integration );
 
         // Check if file exists
         if ( ! file_exists( $prompt_file ) ) {
@@ -718,6 +760,45 @@ class FormGenerator {
 
         // Load the prompt file
         $system_prompt = file_get_contents( $prompt_file );
+
+        // Add Pro version status ONLY for integration forms
+        if ( ! empty( $integration ) ) {
+            $system_prompt .= "\n\n## WPUF VERSION INFO\n";
+            if ( $is_pro_active ) {
+                $system_prompt .= "**WP User Frontend Pro is ACTIVE**\n";
+                $system_prompt .= "- You can use ALL field types including Pro-only fields\n";
+                if ( 'woocommerce' === $integration ) {
+                    $system_prompt .= "- For WooCommerce: Use numeric_text_field for pricing fields (_regular_price, _sale_price)\n";
+                    $system_prompt .= "- For Digital Products: Include Downloadable Product (radio_field with yes/no) and Downloadable Files (file_upload)\n";
+                    $system_prompt .= "- Pro fields available: numeric_text_field, phone_field, country_list_field, address_field, etc.\n";
+                } elseif ( 'events_calendar' === $integration ) {
+                    $system_prompt .= "- Pro fields available: phone_field, country_list_field, address_field, google_map, etc.\n";
+                } elseif ( 'dokan' === $integration ) {
+                    $system_prompt .= "- For Dokan: Use profile_photo for vendor profile picture, image_upload for shop banner\n";
+                    $system_prompt .= "- Pro fields available: phone_field, address_field, google_map for store location, etc.\n";
+                } elseif ( 'wc_vendors' === $integration ) {
+                    $system_prompt .= "- For WC Vendors: Use image_upload for shop logo and banner\n";
+                    $system_prompt .= "- Pro fields available: phone_field, address_field, etc.\n";
+                } elseif ( 'wcfm' === $integration ) {
+                    $system_prompt .= "- For WCFM: Use image_upload for store logo and banner, address_field for store address\n";
+                    $system_prompt .= "- Pro fields available: phone_field, address_field, google_map, etc.\n";
+                }
+            } else {
+                $system_prompt .= "**WP User Frontend FREE version (Pro NOT active)**\n";
+                $system_prompt .= "- Use ONLY free version fields\n";
+                if ( 'woocommerce' === $integration ) {
+                    $system_prompt .= "- For WooCommerce: Use text_field (not numeric_text_field) for pricing fields (_regular_price, _sale_price)\n";
+                    $system_prompt .= "- Do NOT include Downloadable Product or Downloadable Files fields (these are Pro-only features)\n";
+                } elseif ( 'events_calendar' === $integration ) {
+                    $system_prompt .= "- For Events Calendar: Use text_field for venue name, address, etc.\n";
+                } elseif ( 'dokan' === $integration || 'wc_vendors' === $integration || 'wcfm' === $integration ) {
+                    $system_prompt .= "- For vendor registration: Use text_field, textarea_field, image_upload for basic fields\n";
+                    $system_prompt .= "- Do NOT use phone_field, address_field, google_map (these are Pro-only features)\n";
+                }
+                $system_prompt .= "- Free fields: text_field, textarea_field, dropdown_field, radio_field, checkbox_field, email_address, website_url, date_field, image_upload, etc.\n";
+                $system_prompt .= "- Do NOT use Pro-only fields like numeric_text_field, phone_field, country_list_field, address_field\n";
+            }
+        }
 
         // Add form type context (informational, not restrictive)
         $system_prompt .= "\n\n## FORM TYPE CONTEXT\n";
@@ -864,7 +945,7 @@ class FormGenerator {
     public function test_connection() {
         try {
             $test_prompt = 'Generate a simple contact form with name and email fields.';
-            $result = $this->generate_form($test_prompt, ['max_tokens' => 500]);
+            $result = $this->generate_form( $test_prompt, [ 'max_tokens' => Config::MAX_TOKENS_TEST ] );
 
             if (isset($result['success']) && $result['success']) {
                 return [
@@ -1021,30 +1102,30 @@ class FormGenerator {
         $model_config = $this->get_model_config('openai', $this->current_model);
 
         $body = [
-            'model' => $this->current_model,
-            'messages' => [
-                ['role' => 'system', 'content' => $system_prompt],
-                ['role' => 'user', 'content' => $user_prompt]
+            'model'       => $this->current_model,
+            'messages'    => [
+                [ 'role' => 'system', 'content' => $system_prompt ],
+                [ 'role' => 'user', 'content' => $user_prompt ],
             ],
             'temperature' => 0.7,
-            'max_tokens' => 1000
+            'max_tokens'  => Config::MAX_TOKENS_OPTIONS,
         ];
 
-        if ($model_config['supports_json_mode']) {
-            $body['response_format'] = ['type' => 'json_object'];
+        if ( $model_config['supports_json_mode'] ) {
+            $body['response_format'] = [ 'type' => 'json_object' ];
         }
 
         $args = [
-            'method' => 'POST',
+            'method'  => 'POST',
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->api_key,
-                'Content-Type' => 'application/json'
+                'Content-Type'  => 'application/json',
             ],
-            'body' => json_encode($body),
-            'timeout' => 60
+            'body'    => json_encode( $body ),
+            'timeout' => 60,
         ];
 
-        $response = wp_safe_remote_request($this->provider_configs['openai']['endpoint'], $args);
+        $response = wp_safe_remote_request( $this->provider_configs['openai']['endpoint'], $args );
 
         if (is_wp_error($response)) {
             throw new \Exception('OpenAI API request failed: ' . $response->get_error_message());
@@ -1082,29 +1163,29 @@ class FormGenerator {
      * @param array $options Additional options
      * @return array Result
      */
-    private function call_anthropic_for_options($system_prompt, $user_prompt, $options = []) {
+    private function call_anthropic_for_options( $system_prompt, $user_prompt, $options = [] ) {
         $body = [
-            'model' => $this->current_model,
-            'system' => $system_prompt,
-            'messages' => [
-                ['role' => 'user', 'content' => $user_prompt]
+            'model'       => $this->current_model,
+            'system'      => $system_prompt,
+            'messages'    => [
+                [ 'role' => 'user', 'content' => $user_prompt ],
             ],
             'temperature' => 0.7,
-            'max_tokens' => 1000
+            'max_tokens'  => Config::MAX_TOKENS_OPTIONS,
         ];
 
         $args = [
-            'method' => 'POST',
+            'method'  => 'POST',
             'headers' => [
-                'x-api-key' => $this->api_key,
+                'x-api-key'         => $this->api_key,
                 'anthropic-version' => '2023-06-01',
-                'Content-Type' => 'application/json'
+                'Content-Type'      => 'application/json',
             ],
-            'body' => json_encode($body),
-            'timeout' => 60
+            'body'    => json_encode( $body ),
+            'timeout' => 60,
         ];
 
-        $response = wp_safe_remote_request($this->provider_configs['anthropic']['endpoint'], $args);
+        $response = wp_safe_remote_request( $this->provider_configs['anthropic']['endpoint'], $args );
 
         if (is_wp_error($response)) {
             throw new \Exception('Anthropic API request failed: ' . $response->get_error_message());

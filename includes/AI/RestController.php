@@ -71,216 +71,283 @@ class RestController extends WP_REST_Controller {
      */
     public function register_routes() {
         // Generate form endpoint
-        register_rest_route($this->namespace, '/' . $this->rest_base . '/generate', [
-            'methods' => WP_REST_Server::CREATABLE,
-            'callback' => [$this, 'generate_form'],
-            'permission_callback' => [$this, 'check_permission'],
-            'args' => [
-                'prompt' => [
-                    'required' => true,
-                    'type' => 'string',
-                    'sanitize_callback' => 'sanitize_textarea_field',
-                    'validate_callback' => [$this, 'validate_prompt']
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base . '/generate',
+            [
+                'methods'             => WP_REST_Server::CREATABLE,
+                'callback'            => [ $this, 'generate_form' ],
+                'permission_callback' => [ $this, 'check_permission' ],
+                'args'                => [
+                    'prompt'               => [
+                        'required'          => true,
+                        'type'              => 'string',
+                        'sanitize_callback' => 'sanitize_textarea_field',
+                        'validate_callback' => [ $this, 'validate_prompt' ],
+                    ],
+                    'session_id'           => [
+                        'required'          => false,
+                        'type'              => 'string',
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                    'conversation_context' => [
+                        'required' => false,
+                        'type'     => 'object',
+                        'default'  => [],
+                    ],
+                    'form_type'            => [
+                        'required'          => false,
+                        'type'              => 'string',
+                        'default'           => 'post',
+                        'enum'              => [ 'post', 'profile', 'registration' ],
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                    'integration'          => [
+                        'required'          => false,
+                        'type'              => 'string',
+                        'default'           => '',
+                        'enum'              => [ '', 'woocommerce', 'edd', 'events_calendar', 'dokan', 'wc_vendors', 'wcfm' ],
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                    'provider'             => [
+                        'required' => false,
+                        'type'     => 'string',
+                        'default'  => 'openai',
+                        'enum'     => [ 'openai', 'anthropic', 'google' ],
+                    ],
+                    'temperature'          => [
+                        'required' => false,
+                        'type'     => 'number',
+                        'minimum'  => 0,
+                        'maximum'  => 1,
+                        'default'  => 0.7,
+                    ],
+                    'max_tokens'           => [
+                        'required' => false,
+                        'type'     => 'integer',
+                        'minimum'  => 100,
+                        'maximum'  => 4000,
+                        'default'  => 2000,
+                    ],
                 ],
-                'session_id' => [
-                    'required' => false,
-                    'type' => 'string',
-                    'sanitize_callback' => 'sanitize_text_field'
-                ],
-                'conversation_context' => [
-                    'required' => false,
-                    'type' => 'object',
-                    'default' => []
-                ],
-                'form_type' => [
-                    'required' => false,
-                    'type' => 'string',
-                    'default' => 'post',
-                    'enum' => ['post', 'profile', 'registration'],
-                    'sanitize_callback' => 'sanitize_text_field'
-                ],
-                'provider' => [
-                    'required' => false,
-                    'type' => 'string',
-                    'default' => 'openai',
-                    'enum' => ['openai', 'anthropic', 'google']
-                ],
-                'temperature' => [
-                    'required' => false,
-                    'type' => 'number',
-                    'minimum' => 0,
-                    'maximum' => 1,
-                    'default' => 0.7
-                ],
-                'max_tokens' => [
-                    'required' => false,
-                    'type' => 'integer',
-                    'minimum' => 100,
-                    'maximum' => 4000,
-                    'default' => 2000
-                ]
             ]
-        ]);
+        );
 
         // Test connection endpoint
-        register_rest_route($this->namespace, '/' . $this->rest_base . '/test', [
-            'methods' => WP_REST_Server::READABLE,
-            'callback' => [$this, 'test_connection'],
-            'permission_callback' => [$this, 'check_permission']
-        ]);
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base . '/test',
+            [
+                'methods'             => WP_REST_Server::READABLE,
+                'callback'            => [ $this, 'test_connection' ],
+                'permission_callback' => [ $this, 'check_permission' ],
+            ]
+        );
 
         // Get providers endpoint
-        register_rest_route($this->namespace, '/' . $this->rest_base . '/providers', [
-            'methods' => WP_REST_Server::READABLE,
-            'callback' => [$this, 'get_providers'],
-            'permission_callback' => [$this, 'check_permission']
-        ]);
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base . '/providers',
+            [
+                'methods'             => WP_REST_Server::READABLE,
+                'callback'            => [ $this, 'get_providers' ],
+                'permission_callback' => [ $this, 'check_permission' ],
+            ]
+        );
+
+        // Get available integrations endpoint
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base . '/integrations',
+            [
+                'methods'             => WP_REST_Server::READABLE,
+                'callback'            => [ $this, 'get_integrations' ],
+                'permission_callback' => [ $this, 'check_permission' ],
+                'args'                => [
+                    'form_type' => [
+                        'required'          => false,
+                        'type'              => 'string',
+                        'default'           => 'post',
+                        'enum'              => [ 'post', 'profile', 'registration' ],
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                ],
+            ]
+        );
 
         // Save settings endpoint
-        register_rest_route($this->namespace, '/' . $this->rest_base . '/settings', [
-            'methods' => WP_REST_Server::CREATABLE,
-            'callback' => [$this, 'save_settings'],
-            'permission_callback' => [$this, 'check_admin_permission'],
-            'args' => [
-                'provider' => [
-                    'required' => true,
-                    'type' => 'string',
-                    'enum' => ['openai', 'anthropic', 'google']
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base . '/settings',
+            [
+                'methods'             => WP_REST_Server::CREATABLE,
+                'callback'            => [ $this, 'save_settings' ],
+                'permission_callback' => [ $this, 'check_admin_permission' ],
+                'args'                => [
+                    'provider'    => [
+                        'required' => true,
+                        'type'     => 'string',
+                        'enum'     => [ 'openai', 'anthropic', 'google' ],
+                    ],
+                    'model'       => [
+                        'required' => false,
+                        'type'     => 'string',
+                    ],
+                    'api_key'     => [
+                        'required'          => false,
+                        'type'              => 'string',
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                    'temperature' => [
+                        'required' => false,
+                        'type'     => 'number',
+                        'minimum'  => 0,
+                        'maximum'  => 1,
+                    ],
+                    'max_tokens'  => [
+                        'required' => false,
+                        'type'     => 'integer',
+                        'minimum'  => 100,
+                        'maximum'  => 4000,
+                    ],
                 ],
-                'model' => [
-                    'required' => false,
-                    'type' => 'string'
-                ],
-                'api_key' => [
-                    'required' => false,
-                    'type' => 'string',
-                    'sanitize_callback' => 'sanitize_text_field'
-                ],
-                'temperature' => [
-                    'required' => false,
-                    'type' => 'number',
-                    'minimum' => 0,
-                    'maximum' => 1
-                ],
-                'max_tokens' => [
-                    'required' => false,
-                    'type' => 'integer',
-                    'minimum' => 100,
-                    'maximum' => 4000
-                ]
             ]
-        ]);
+        );
 
         // Create form from AI data endpoint
-        register_rest_route($this->namespace, '/' . $this->rest_base . '/create-form', [
-            'methods' => WP_REST_Server::CREATABLE,
-            'callback' => [$this, 'create_form_from_ai'],
-            'permission_callback' => [$this, 'check_permission'],
-            'args' => [
-                'form_data' => [
-                    'required' => true,
-                    'type' => 'object',
-                    'properties' => [
-                        'form_title' => ['type' => 'string'],
-                        'form_description' => ['type' => 'string'],
-                        'wpuf_fields' => ['type' => 'array'],
-                        'form_settings' => ['type' => 'object']
-                    ]
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base . '/create-form',
+            [
+                'methods'             => WP_REST_Server::CREATABLE,
+                'callback'            => [ $this, 'create_form_from_ai' ],
+                'permission_callback' => [ $this, 'check_permission' ],
+                'args'                => [
+                    'form_data' => [
+                        'required'   => true,
+                        'type'       => 'object',
+                        'properties' => [
+                            'form_title'       => [ 'type' => 'string' ],
+                            'form_description' => [ 'type' => 'string' ],
+                            'wpuf_fields'      => [ 'type' => 'array' ],
+                            'form_settings'    => [ 'type' => 'object' ],
+                        ],
+                    ],
+                    'form_type' => [
+                        'required' => false,
+                        'type'     => 'string',
+                        'default'  => 'post',
+                        'enum'     => [ 'post', 'profile', 'registration' ],
+                    ],
                 ],
-                'form_type' => [
-                    'required' => false,
-                    'type' => 'string',
-                    'default' => 'post',
-                    'enum' => ['post', 'profile', 'registration'],
-                ]
             ]
-        ]);
+        );
 
         // Modify form from AI data endpoint
-        register_rest_route($this->namespace, '/' . $this->rest_base . '/modify-form', [
-            'methods' => WP_REST_Server::CREATABLE,
-            'callback' => [$this, 'modify_form_from_ai'],
-            'permission_callback' => [$this, 'check_permission'],
-            'args' => [
-                'form_id' => [
-                    'required' => true,
-                    'type' => 'integer'
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base . '/modify-form',
+            [
+                'methods'             => WP_REST_Server::CREATABLE,
+                'callback'            => [ $this, 'modify_form_from_ai' ],
+                'permission_callback' => [ $this, 'check_permission' ],
+                'args'                => [
+                    'form_id'           => [
+                        'required' => true,
+                        'type'     => 'integer',
+                    ],
+                    'modification_data' => [
+                        'required'   => true,
+                        'type'       => 'object',
+                        'properties' => [
+                            'action'            => [ 'type' => 'string' ],
+                            'modification_type' => [ 'type' => 'string' ],
+                            'target'            => [ 'type' => 'string' ],
+                            'changes'           => [ 'type' => 'object' ],
+                        ],
+                    ],
                 ],
-                'modification_data' => [
-                    'required' => true,
-                    'type' => 'object',
-                    'properties' => [
-                        'action' => ['type' => 'string'],
-                        'modification_type' => ['type' => 'string'],
-                        'target' => ['type' => 'string'],
-                        'changes' => ['type' => 'object']
-                    ]
-                ]
             ]
-        ]);
+        );
 
         // Get settings endpoint
-        register_rest_route($this->namespace, '/' . $this->rest_base . '/settings', [
-            'methods' => WP_REST_Server::READABLE,
-            'callback' => [$this, 'get_settings'],
-            'permission_callback' => [$this, 'check_admin_permission']
-        ]);
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base . '/settings',
+            [
+                'methods'             => WP_REST_Server::READABLE,
+                'callback'            => [ $this, 'get_settings' ],
+                'permission_callback' => [ $this, 'check_admin_permission' ],
+            ]
+        );
 
         // Refresh Google models endpoint
-        register_rest_route($this->namespace, '/' . $this->rest_base . '/refresh-google-models', [
-            'methods' => WP_REST_Server::CREATABLE,
-            'callback' => [$this, 'refresh_google_models'],
-            'permission_callback' => [$this, 'check_admin_permission']
-        ]);
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base . '/refresh-google-models',
+            [
+                'methods'             => WP_REST_Server::CREATABLE,
+                'callback'            => [ $this, 'refresh_google_models' ],
+                'permission_callback' => [ $this, 'check_admin_permission' ],
+            ]
+        );
 
         // Get available models endpoint
-        register_rest_route($this->namespace, '/' . $this->rest_base . '/models', [
-            'methods' => WP_REST_Server::READABLE,
-            'callback' => [$this, 'get_models'],
-            'permission_callback' => [$this, 'check_permission']
-        ]);
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base . '/models',
+            [
+                'methods'             => WP_REST_Server::READABLE,
+                'callback'            => [ $this, 'get_models' ],
+                'permission_callback' => [ $this, 'check_permission' ],
+            ]
+        );
 
         // Generate field options endpoint
-        register_rest_route($this->namespace, '/' . $this->rest_base . '/generate-options', [
-            'methods' => WP_REST_Server::CREATABLE,
-            'callback' => [$this, 'generate_field_options'],
-            'permission_callback' => [$this, 'check_permission'],
-            'args' => [
-                'prompt' => [
-                    'required' => true,
-                    'type' => 'string',
-                    'sanitize_callback' => 'sanitize_textarea_field',
-                    'validate_callback' => [$this, 'validate_prompt']
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base . '/generate-options',
+            [
+                'methods'             => WP_REST_Server::CREATABLE,
+                'callback'            => [ $this, 'generate_field_options' ],
+                'permission_callback' => [ $this, 'check_permission' ],
+                'args'                => [
+                    'prompt'        => [
+                        'required'          => true,
+                        'type'              => 'string',
+                        'sanitize_callback' => 'sanitize_textarea_field',
+                        'validate_callback' => [ $this, 'validate_prompt' ],
+                    ],
+                    'field_type'    => [
+                        'required'          => true,
+                        'type'              => 'string',
+                        'enum'              => [ 'dropdown_field', 'radio_field', 'checkbox_field', 'multiple_select' ],
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                    'output_format' => [
+                        'required'          => false,
+                        'type'              => 'string',
+                        'enum'              => [ 'one_per_line', 'value_label' ],
+                        'default'           => 'one_per_line',
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                    'tone'          => [
+                        'required'          => false,
+                        'type'              => 'string',
+                        'enum'              => [ 'casual', 'formal', 'professional', 'friendly' ],
+                        'default'           => 'casual',
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                    'max_options'   => [
+                        'required' => false,
+                        'type'     => 'integer',
+                        'minimum'  => 1,
+                        'maximum'  => 100,
+                        'default'  => 20,
+                    ],
                 ],
-                'field_type' => [
-                    'required' => true,
-                    'type' => 'string',
-                    'enum' => ['dropdown_field', 'radio_field', 'checkbox_field', 'multiple_select'],
-                    'sanitize_callback' => 'sanitize_text_field'
-                ],
-                'output_format' => [
-                    'required' => false,
-                    'type' => 'string',
-                    'enum' => ['one_per_line', 'value_label'],
-                    'default' => 'one_per_line',
-                    'sanitize_callback' => 'sanitize_text_field'
-                ],
-                'tone' => [
-                    'required' => false,
-                    'type' => 'string',
-                    'enum' => ['casual', 'formal', 'professional', 'friendly'],
-                    'default' => 'casual',
-                    'sanitize_callback' => 'sanitize_text_field'
-                ],
-                'max_options' => [
-                    'required' => false,
-                    'type' => 'integer',
-                    'minimum' => 1,
-                    'maximum' => 100,
-                    'default' => 20
-                ]
             ]
-        ]);
+        );
     }
 
     /**
@@ -304,6 +371,7 @@ class RestController extends WP_REST_Controller {
         $session_id = $request->get_param('session_id');
         $conversation_context = $request->get_param('conversation_context') ?? [];
         $form_type = $request->get_param('form_type') ?? 'post';
+        $integration = $request->get_param('integration') ?? '';
         $provider = $request->get_param('provider');
         $temperature = $request->get_param('temperature');
         $max_tokens = $request->get_param('max_tokens');
@@ -321,6 +389,11 @@ class RestController extends WP_REST_Controller {
         }
 
         try {
+            // Add integration to conversation context
+            if ( ! empty( $integration ) ) {
+                $conversation_context['integration'] = $integration;
+            }
+
             $options = [
                 'session_id' => $session_id,
                 'conversation_context' => $conversation_context,
@@ -344,6 +417,11 @@ class RestController extends WP_REST_Controller {
                 );
             }
 
+
+            // Add integration to response so it can be persisted for regeneration
+            if ( ! empty( $integration ) ) {
+                $result['integration'] = $integration;
+            }
 
             return new WP_REST_Response([
                 'success' => true,
@@ -456,6 +534,101 @@ class RestController extends WP_REST_Controller {
             'success' => true,
             'providers' => $providers,
             'current_provider' => $current_provider
+        ], 200);
+    }
+
+    /**
+     * Get available integrations
+     *
+     * Returns list of available integrations based on installed plugins
+     *
+     * @since WPUF_SINCE
+     *
+     * @param WP_REST_Request $request REST request object
+     * @return WP_REST_Response Response object
+     */
+    public function get_integrations(WP_REST_Request $request) {
+        $form_type = $request->get_param('form_type') ?? 'post';
+
+        // Define all possible integrations with their requirements
+        $all_integrations = [
+            // Post form integrations
+            'woocommerce' => [
+                'id'          => 'woocommerce',
+                'label'       => __( 'WooCommerce Product', 'wp-user-frontend' ),
+                'description' => __( 'Create WooCommerce product submission forms', 'wp-user-frontend' ),
+                'enabled'     => class_exists( 'WooCommerce', false ),
+                'form_types'  => [ 'post' ],
+                'icon'        => 'woocommerce'
+            ],
+            'edd' => [
+                'id'          => 'edd',
+                'label'       => __( 'Easy Digital Downloads', 'wp-user-frontend' ),
+                'description' => __( 'Create EDD download submission forms', 'wp-user-frontend' ),
+                'enabled'     => class_exists( 'Easy_Digital_Downloads' ),
+                'form_types'  => [ 'post' ],
+                'icon'        => 'download'
+            ],
+            'events_calendar' => [
+                'id'          => 'events_calendar',
+                'label'       => __( 'The Events Calendar', 'wp-user-frontend' ),
+                'description' => __( 'Create event submission forms', 'wp-user-frontend' ),
+                'enabled'     => class_exists( 'Tribe__Events__Main' ),
+                'form_types'  => [ 'post' ],
+                'icon'        => 'calendar'
+            ],
+            // Registration form integrations
+            'dokan' => [
+                'id'          => 'dokan',
+                'label'       => __( 'Dokan Vendor', 'wp-user-frontend' ),
+                'description' => __( 'Create Dokan vendor registration forms', 'wp-user-frontend' ),
+                'enabled'     => class_exists( 'WeDevs_Dokan' ),
+                'form_types'  => [ 'profile', 'registration' ],
+                'icon'        => 'store'
+            ],
+            'wc_vendors' => [
+                'id'          => 'wc_vendors',
+                'label'       => __( 'WC Vendors', 'wp-user-frontend' ),
+                'description' => __( 'Create WC Vendors registration forms', 'wp-user-frontend' ),
+                'enabled'     => class_exists( 'WC_Vendors' ),
+                'form_types'  => [ 'profile', 'registration' ],
+                'icon'        => 'store'
+            ],
+            'wcfm' => [
+                'id'          => 'wcfm',
+                'label'       => __( 'WCFM Membership', 'wp-user-frontend' ),
+                'description' => __( 'Create WCFM vendor registration forms', 'wp-user-frontend' ),
+                'enabled'     => class_exists( 'WCFMvm' ),
+                'form_types'  => [ 'profile', 'registration' ],
+                'icon'        => 'store'
+            ]
+        ];
+
+        // Filter integrations based on form type and enabled status
+        $available_integrations = [];
+        foreach ( $all_integrations as $integration ) {
+            // Only include if enabled and supports the current form type
+            if ( $integration['enabled'] && in_array( $form_type, $integration['form_types'], true ) ) {
+                $available_integrations[] = $integration;
+            }
+        }
+
+        /**
+         * Filter available AI form builder integrations
+         *
+         * Allows pro plugin to add or modify available integrations.
+         *
+         * @since 4.2.2
+         *
+         * @param array  $available_integrations Array of integration objects
+         * @param string $form_type              Form type ('post' or 'profile')
+         */
+        $available_integrations = apply_filters( 'wpuf_ai_integrations', $available_integrations, $form_type );
+
+        return new WP_REST_Response([
+            'success' => true,
+            'integrations' => $available_integrations,
+            'form_type' => $form_type
         ], 200);
     }
 
@@ -943,6 +1116,17 @@ class RestController extends WP_REST_Controller {
             ];
 
             $form_settings = wp_parse_args($form_data['form_settings'] ?? [], $default_settings);
+
+            // Set form_template based on post_type for proper integration handling
+            // This is critical for integrations to properly save meta fields via their hooks
+            if ( ! empty( $form_settings['post_type'] ) ) {
+                $form_template = $this->get_form_template_for_post_type( $form_settings['post_type'] );
+
+                if ( $form_template ) {
+                    $form_settings['form_template'] = $form_template;
+                }
+            }
+
             update_post_meta($form_id, 'wpuf_form_settings', $form_settings);
 
             // Add form creation metadata
@@ -1413,6 +1597,18 @@ class RestController extends WP_REST_Controller {
             }
         }
 
+        // Set form_template based on post_type for proper integration handling
+        if ( ! empty( $current_settings['post_type'] ) ) {
+            $form_template = $this->get_form_template_for_post_type( $current_settings['post_type'] );
+
+            if ( $form_template ) {
+                $current_settings['form_template'] = $form_template;
+            } else {
+                // Clear stale form_template when post_type has no mapped template
+                $current_settings['form_template'] = '';
+            }
+        }
+
         update_post_meta($form_id, 'wpuf_form_settings', $current_settings);
     }
 
@@ -1499,6 +1695,29 @@ class RestController extends WP_REST_Controller {
     private function should_be_meta($field_name) {
         $post_fields = ['post_title', 'post_content', 'post_excerpt', 'post_tags', 'post_category'];
         return !in_array($field_name, $post_fields);
+    }
+
+    /**
+     * Get form template for a given post type
+     *
+     * Maps integration post types to their corresponding form templates.
+     * This is critical for integrations to properly trigger their hooks
+     * (e.g., WooCommerce's update_price() hook to set _price meta).
+     *
+     * @since WPUF_SINCE
+     *
+     * @param string $post_type The post type
+     *
+     * @return string|null Form template identifier or null if no mapping exists
+     */
+    private function get_form_template_for_post_type( $post_type ) {
+        $post_type_to_template_map = [
+            'product'      => 'post_form_template_woocommerce',     // WooCommerce products
+            'download'     => 'post_form_template_edd',             // Easy Digital Downloads
+            'tribe_events' => 'post_form_template_events_calendar', // The Events Calendar
+        ];
+
+        return $post_type_to_template_map[ $post_type ] ?? null;
     }
 
     /**

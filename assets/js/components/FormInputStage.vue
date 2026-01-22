@@ -27,6 +27,40 @@
                 </div>
             </div>
 
+            <!-- Integration Selector (For Post and Registration Forms) -->
+            <div v-if="(availableIntegrations.length > 0 || loadingIntegrations)" class="wpuf-mb-6">
+                <label class="wpuf-block wpuf-text-gray-900 wpuf-mb-2 wpuf-text-[16px] wpuf-font-medium">
+                    {{ __('Form Type (Optional)', 'wp-user-frontend') }}
+                </label>
+                <select
+                    v-model="selectedIntegration"
+                    :disabled="loadingIntegrations"
+                    class="wpuf-block !wpuf-w-full wpuf-max-w-full !wpuf-py-[10px] !wpuf-px-[14px] wpuf-text-gray-700 wpuf-font-normal !wpuf-shadow-sm wpuf-border !wpuf-border-gray-300 !wpuf-rounded-[6px] focus:!wpuf-ring-emerald-500 focus:!wpuf-border-emerald-500 hover:wpuf-border-gray-400 !wpuf-text-base !wpuf-leading-6 wpuf-bg-white wpuf-transition-all disabled:wpuf-opacity-50 disabled:wpuf-cursor-not-allowed"
+                    style="width: 100% !important; max-width: 100% !important;"
+                    @change="onIntegrationChange"
+                >
+                    <option value="" v-if="loadingIntegrations">{{ __('Loading integrations...', 'wp-user-frontend') }}</option>
+                    <option value="" v-else>{{ __('Regular Form (No Integration)', 'wp-user-frontend') }}</option>
+                    <option
+                        v-for="integration in availableIntegrations"
+                        :key="integration.id"
+                        :value="integration.id"
+                    >
+                        {{ integration.label }}
+                    </option>
+                </select>
+                <p class="wpuf-text-sm wpuf-text-gray-500 wpuf-mt-2">
+                    <span v-if="loadingIntegrations" class="wpuf-inline-flex wpuf-items-center wpuf-gap-2">
+                        <svg class="wpuf-animate-spin wpuf-h-4 wpuf-w-4 wpuf-text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="wpuf-opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="wpuf-opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        {{ __('Loading available integrations...', 'wp-user-frontend') }}
+                    </span>
+                    <span v-else>{{ __('Choose a form type if you want to create a form for a specific integration', 'wp-user-frontend') }}</span>
+                </p>
+            </div>
+
             <!-- Prompt Templates -->
             <div class="wpuf-mb-6">
                 <p class="wpuf-text-gray-900 wpuf-mb-4 wpuf-text-[16px]">
@@ -79,6 +113,10 @@ export default {
             type: String,
             default: ''
         },
+        initialIntegration: {
+            type: String,
+            default: ''
+        },
         initialSelectedPrompt: {
             type: [String, Object],
             default: ''
@@ -97,43 +135,14 @@ export default {
         let promptAIInstructions = {};
 
         if (formType === 'profile' || formType === 'registration') {
-            // Registration/Profile form prompts
-            promptTemplates = [
-                { id: 'basic_registration', label: this.__('Basic User Registration', 'wp-user-frontend') },
-                { id: 'member_directory', label: this.__('Member Directory Profile', 'wp-user-frontend') },
-                { id: 'job_applicant', label: this.__('Job Applicant Registration', 'wp-user-frontend') },
-                { id: 'blog_author_signup', label: this.__('Blog Author Signup', 'wp-user-frontend') },
-                { id: 'community_member_join', label: this.__('Community Member Join', 'wp-user-frontend') },
-                { id: 'freelancer_profile_signup', label: this.__('Freelancer Profile Signup', 'wp-user-frontend') }
-            ];
-
-            promptAIInstructions = {
-                basic_registration: 'Create a Basic User Registration form with email, name, username, password',
-                member_directory: 'Create a Member Directory Profile form with name, email, bio, profile photo',
-                job_applicant: 'Create a Job Applicant Registration form with name, email, phone, resume upload',
-                blog_author_signup: 'Create a registration form for new blog authors. Collect their login details, public display information, a short introduction about themselves, a profile photo or avatar, and an optional personal website link.',
-                community_member_join: 'Create a registration form for new community members. Collect their basic personal details, login information, a public name, a nickname, their interests (as checkboxes), a short personal introduction, and a profile picture',
-                freelancer_profile_signup: 'Create a registration form for freelancers that captures their professional details, skills, experience summary, portfolio information, and profile photo.'
-            };
+            // Registration/Profile form prompts - will be populated by updatePromptTemplates() in mounted()
+            // based on whether integrations are available
+            promptTemplates = [];
+            promptAIInstructions = {};
         } else {
-            // Post form prompts (default)
-            promptTemplates = [
-                { id: 'paid_guest_post', label: this.__('Paid Guest Post', 'wp-user-frontend') },
-                { id: 'portfolio_submission', label: this.__('Portfolio Submission', 'wp-user-frontend') },
-                { id: 'classified_ads', label: this.__('Classified Ads', 'wp-user-frontend') },
-                { id: 'coupon_submission', label: this.__('Coupon Submission', 'wp-user-frontend') },
-                { id: 'real_estate', label: this.__('Real Estate Property Listing', 'wp-user-frontend') },
-                { id: 'news_press', label: this.__('News/Press Release Submission', 'wp-user-frontend') },
-            ];
-
-            promptAIInstructions = {
-                paid_guest_post: 'Create a Paid Guest Post submission form with title, content, author name, email, category',
-                portfolio_submission: 'Create a Portfolio Submission form with title, description, name, email, skills, portfolio files',
-                classified_ads: 'Create a Classified Ads submission form with title, description, category, price, address field, contact email',
-                coupon_submission: 'Create a Coupon Submission form with title, description, business name, discount amount, expiration date',
-                real_estate: 'Create a Real Estate Property Listing form with title, description, address field, price, bedrooms, bathrooms, images',
-                news_press: 'Create a News/Press Release submission form with headline, content, author, contact email, category'
-            };
+            // Post form prompts - will be populated by updatePromptTemplates() in mounted()
+            promptTemplates = [];
+            promptAIInstructions = {};
         }
 
         // Handle selectedPrompt initialization
@@ -154,8 +163,33 @@ export default {
             maxDescriptionLength: 300,
             formType: formType,
             promptTemplates: promptTemplates,
-            promptAIInstructions: promptAIInstructions
+            promptAIInstructions: promptAIInstructions,
+            selectedIntegration: this.initialIntegration || '',
+            availableIntegrations: [],
+            loadingIntegrations: false
         };
+    },
+
+    mounted() {
+        // Fetch available integrations when component mounts
+        this.fetchAvailableIntegrations();
+        // Emit initial integration to parent if provided
+        if (this.initialIntegration) {
+            this.$emit('update:selectedIntegration', this.selectedIntegration);
+        }
+        // Initialize prompt templates based on integration
+        this.updatePromptTemplates();
+        
+        // Rehydrate selectedPrompt from initialSelectedPrompt after promptTemplates are populated
+        // This handles the case where initialSelectedPrompt is a string ID that needs to be resolved
+        // after templates exist (initialSelectedPrompt, selectedPrompt, promptTemplates)
+        if (typeof this.initialSelectedPrompt === 'string' && this.initialSelectedPrompt !== '' && !this.selectedPrompt) {
+            const foundTemplate = this.promptTemplates.find(tpl => tpl.id === this.initialSelectedPrompt);
+            if (foundTemplate) {
+                this.selectedPrompt = foundTemplate;
+                this.$emit('update:selectedPrompt', this.selectedPrompt.id);
+            }
+        }
     },
     watch: {
         generating(newVal) {
@@ -178,6 +212,94 @@ export default {
     },
     methods: {
         __: window.__ || ((text) => text),
+
+        async fetchAvailableIntegrations() {
+            this.loadingIntegrations = true;
+
+            try {
+                const config = window.wpufAIFormBuilder || {};
+                const integrationsUrl = config.endpoints?.integrations;
+                const nonce = config.nonce || '';
+
+                if ( ! integrationsUrl ) {
+                    console.error( 'WPUF AI Form Builder: Integrations endpoint not configured' );
+                    return;
+                }
+
+                const response = await fetch(integrationsUrl + '?form_type=' + this.formType, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-WP-Nonce': nonce
+                    }
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.success && result.integrations) {
+                        this.availableIntegrations = result.integrations;
+
+                        // Check if current selectedIntegration is still valid
+                        if ( this.selectedIntegration ) {
+                            const integrationExists = result.integrations.some(
+                                integration => integration.id === this.selectedIntegration
+                            );
+
+                            // If selected integration no longer exists, clear it and reinitialize
+                            if ( ! integrationExists ) {
+                                this.selectedIntegration = '';
+                                this.$emit( 'update:selectedIntegration', '' );
+                                this.updatePromptTemplates();
+                            }
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching integrations:', error);
+            } finally {
+                this.loadingIntegrations = false;
+            }
+        },
+
+        onIntegrationChange() {
+            // Update prompt templates based on selected integration
+            this.updatePromptTemplates();
+            
+            // Clear current prompt selection when integration changes
+            this.selectedPrompt = '';
+            this.formDescription = '';
+            
+            // Emit the selected integration to parent
+            this.$emit('update:selectedIntegration', this.selectedIntegration);
+            this.$emit('update:selectedPrompt', '');
+            this.$emit('update:formDescription', '');
+        },
+
+        updatePromptTemplates() {
+            // Get templates and instructions from PHP localized data
+            const config = window.wpufAIFormBuilder || {};
+            const allTemplates = config.promptTemplates || {};
+            const allInstructions = config.promptAIInstructions || {};
+
+            // Determine the form type key for template lookup
+            let formTypeKey = this.formType;
+            if ( formTypeKey === 'registration' ) {
+                formTypeKey = 'profile';
+            }
+
+            // Get templates for current form type
+            const formTypeTemplates = allTemplates[ formTypeKey ] || {};
+
+            // Get templates for current integration (or empty string for no integration)
+            const integrationKey = this.selectedIntegration || '';
+            const templates = formTypeTemplates[ integrationKey ] || [];
+
+            // Set templates - if empty array from PHP, keep it empty (Pro feature)
+            this.promptTemplates = templates;
+
+            // Build instructions object from all available instructions
+            this.promptAIInstructions = allInstructions;
+        },
 
         selectPrompt(tpl) {
             this.selectedPrompt = tpl;
@@ -204,7 +326,8 @@ export default {
 
             this.$emit('start-generation', {
                 description: this.formDescription,
-                selectedPrompt: this.selectedPrompt?.id || this.selectedPrompt || ''
+                selectedPrompt: this.selectedPrompt?.id || this.selectedPrompt || '',
+                integration: this.selectedIntegration
             });
         }
     }

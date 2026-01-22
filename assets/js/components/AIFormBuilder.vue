@@ -5,10 +5,12 @@
             v-if="currentStage === 'input'"
             :initialDescription="formDescription"
             :initialSelectedPrompt="selectedPrompt"
+            :initialIntegration="selectedIntegration"
             :generating="isGenerating"
             @go-back="goBack"
             @start-generation="handleStartGeneration"
             @update:selectedPrompt="selectedPrompt = $event"
+            @update:selectedIntegration="selectedIntegration = $event"
             @update:formDescription="formDescription = $event"
         />
         
@@ -58,20 +60,21 @@ export default {
         return {
             // Stage management
             currentStage: 'input', // 'input', 'generating', 'success'
-            
+
             // Form data
             formDescription: '',
             selectedPrompt: '',
+            selectedIntegration: '',
             isGenerating: false,
             formTitle: 'Generated Form',
             formId: null,
-            
+
             // Chat data
             chatMessages: [],
-            
+
             // Form fields
             formFields: [],
-            
+
             // API data
             generatedFormData: null,
             sessionId: null
@@ -95,11 +98,12 @@ export default {
         handleStartGeneration(data) {
             this.formDescription = data.description;
             this.selectedPrompt = data.selectedPrompt;
+            this.selectedIntegration = data.integration || '';
             this.isGenerating = true;
             this.currentStage = 'generating';
-            
+
             // Call AI form generation API
-            this.callAIFormGenerationAPI(data.description);
+            this.callAIFormGenerationAPI(data.description, data.integration);
         },
         
         handleGenerationComplete() {
@@ -108,26 +112,37 @@ export default {
             this.initializeChatData();
         },
         
-        async callAIFormGenerationAPI(prompt) {
+        async callAIFormGenerationAPI(prompt, integration = '') {
             try {
                 // Get configuration with fallbacks
                 const config = window.wpufAIFormBuilder || {};
-                const restUrl = config.rest_url || (window.location.origin + '/wp-json/');
+                const generateUrl = config.endpoints?.generate;
                 const nonce = config.nonce || '';
-                
-                const response = await fetch(restUrl + 'wpuf/v1/ai-form-builder/generate', {
+
+                if ( ! generateUrl ) {
+                    throw new Error( 'WPUF AI Form Builder: Generate endpoint not configured' );
+                }
+
+                // Build request body
+                const requestBody = {
+                    prompt: prompt,
+                    session_id: this.getSessionId(),
+                    form_type: config.formType || 'post',
+                    provider: config.provider || 'openai'
+                };
+
+                // Add integration parameter if selected
+                if (integration) {
+                    requestBody.integration = integration;
+                }
+
+                const response = await fetch(generateUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-WP-Nonce': nonce
                     },
-                    body: JSON.stringify({
-                        prompt: prompt,
-                        session_id: this.getSessionId(),
-                        form_type: config.formType || 'post', // Pass form type to API
-                        provider: config.provider || 'openai'
-                        // Note: temperature and max_tokens are now handled by backend based on model configuration
-                    })
+                    body: JSON.stringify(requestBody)
                 });
                 
                 if (!response.ok) {
@@ -183,6 +198,11 @@ export default {
                     this.generatedFormData = result.data;
                     this.formTitle = result.data.form_title || 'Generated Form';
                     this.formFields = result.data.wpuf_fields || [];
+
+                    // Store integration for regeneration persistence
+                    if (result.data.integration) {
+                        this.selectedIntegration = result.data.integration;
+                    }
 
                     // Notify processing stage that AI response is received
                     // Use nextTick to ensure ref is mounted, with retry fallback
@@ -626,9 +646,13 @@ export default {
 
             try {
                 const config = window.wpufAIFormBuilder || {};
-                const restUrl = config.rest_url || (window.location.origin + '/wp-json/');
+                const createFormUrl = config.endpoints?.createForm;
                 const nonce = config.nonce || '';
                 const formType = config.formType || 'post';
+
+                if ( ! createFormUrl ) {
+                    throw new Error( 'WPUF AI Form Builder: Create form endpoint not configured' );
+                }
 
                 // Always use wpuf_fields from generated data - they already have correct WPUF format
                 const wpufFields = this.generatedFormData.wpuf_fields || [];
@@ -640,7 +664,7 @@ export default {
                     wpuf_fields: wpufFields  // Use wpuf_fields directly, no conversion needed
                 };
 
-                const response = await fetch(restUrl + 'wpuf/v1/ai-form-builder/create-form', {
+                const response = await fetch(createFormUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -680,12 +704,13 @@ export default {
             this.currentStage = 'input';
             this.formDescription = '';
             this.selectedPrompt = '';
+            // Note: selectedIntegration is intentionally NOT cleared to persist integration selection
         },
         
         async editInBuilder(eventData) {
             try {
                 const config = window.wpufAIFormBuilder || {};
-                const restUrl = config.rest_url || (window.location.origin + '/wp-json/');
+                const createFormUrl = config.endpoints?.createForm;
                 const nonce = config.nonce || '';
                 const formType = config.formType || 'post';
 
@@ -708,8 +733,12 @@ export default {
                     return;
                 }
 
+                if ( ! createFormUrl ) {
+                    throw new Error( 'WPUF AI Form Builder: Create form endpoint not configured' );
+                }
+
                 // Create new form
-                const response = await fetch(restUrl + 'wpuf/v1/ai-form-builder/create-form', {
+                const response = await fetch(createFormUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

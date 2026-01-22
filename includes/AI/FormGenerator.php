@@ -255,11 +255,11 @@ class FormGenerator {
         // GPT-5 check must come first since it needs high tokens even for integrations
         if ( strpos( $this->current_model, 'gpt-5' ) === 0 ) {
             // GPT-5 needs significantly more tokens for reasoning + output
-            $max_tokens = intval( $options['max_tokens'] ?? 65536 );
+            $max_tokens = intval( $options['max_tokens'] ?? Config::MAX_TOKENS_GPT5 );
         } elseif ( ! empty( $context['integration'] ) ) {
-            $max_tokens = 4000; // Integration forms need more tokens
+            $max_tokens = Config::MAX_TOKENS_INTEGRATION;
         } else {
-            $max_tokens = intval( $options['max_tokens'] ?? 2000 );
+            $max_tokens = intval( $options['max_tokens'] ?? Config::MAX_TOKENS_DEFAULT );
         }
 
         if ( $model_config['token_location'] === 'body' ) {
@@ -435,9 +435,9 @@ class FormGenerator {
         // Set token parameter based on model
         // Use higher token limit for integration forms (they have more fields)
         if ( ! empty( $context['integration'] ) ) {
-            $max_tokens = 4000; // Integration forms need more tokens
+            $max_tokens = Config::MAX_TOKENS_INTEGRATION;
         } else {
-            $max_tokens = intval( $options['max_tokens'] ?? 2000 );
+            $max_tokens = intval( $options['max_tokens'] ?? Config::MAX_TOKENS_DEFAULT );
         }
 
         if ( $model_config['token_location'] === 'body' ) {
@@ -595,13 +595,13 @@ class FormGenerator {
         // Set token parameter based on model
         // Use higher token limit for integration forms (they have more fields)
         if ( ! empty( $context['integration'] ) ) {
-            $max_tokens = 4000; // Integration forms need more tokens
+            $max_tokens = Config::MAX_TOKENS_INTEGRATION;
         } else {
-            $max_tokens = intval($options['max_tokens'] ?? 2000);
+            $max_tokens = intval( $options['max_tokens'] ?? Config::MAX_TOKENS_DEFAULT );
         }
 
-        if ($model_config['token_location'] === 'generationConfig') {
-            $body['generationConfig'][$model_config['token_param']] = $max_tokens;
+        if ( $model_config['token_location'] === 'generationConfig' ) {
+            $body['generationConfig'][ $model_config['token_param'] ] = $max_tokens;
         }
 
         $args = [
@@ -956,7 +956,7 @@ class FormGenerator {
     public function test_connection() {
         try {
             $test_prompt = 'Generate a simple contact form with name and email fields.';
-            $result = $this->generate_form($test_prompt, ['max_tokens' => 500]);
+            $result = $this->generate_form( $test_prompt, [ 'max_tokens' => Config::MAX_TOKENS_TEST ] );
 
             if (isset($result['success']) && $result['success']) {
                 return [
@@ -1113,30 +1113,30 @@ class FormGenerator {
         $model_config = $this->get_model_config('openai', $this->current_model);
 
         $body = [
-            'model' => $this->current_model,
-            'messages' => [
-                ['role' => 'system', 'content' => $system_prompt],
-                ['role' => 'user', 'content' => $user_prompt]
+            'model'       => $this->current_model,
+            'messages'    => [
+                [ 'role' => 'system', 'content' => $system_prompt ],
+                [ 'role' => 'user', 'content' => $user_prompt ],
             ],
             'temperature' => 0.7,
-            'max_tokens' => 1000
+            'max_tokens'  => Config::MAX_TOKENS_OPTIONS,
         ];
 
-        if ($model_config['supports_json_mode']) {
-            $body['response_format'] = ['type' => 'json_object'];
+        if ( $model_config['supports_json_mode'] ) {
+            $body['response_format'] = [ 'type' => 'json_object' ];
         }
 
         $args = [
-            'method' => 'POST',
+            'method'  => 'POST',
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->api_key,
-                'Content-Type' => 'application/json'
+                'Content-Type'  => 'application/json',
             ],
-            'body' => json_encode($body),
-            'timeout' => 60
+            'body'    => json_encode( $body ),
+            'timeout' => 60,
         ];
 
-        $response = wp_safe_remote_request($this->provider_configs['openai']['endpoint'], $args);
+        $response = wp_safe_remote_request( $this->provider_configs['openai']['endpoint'], $args );
 
         if (is_wp_error($response)) {
             throw new \Exception('OpenAI API request failed: ' . $response->get_error_message());
@@ -1174,29 +1174,29 @@ class FormGenerator {
      * @param array $options Additional options
      * @return array Result
      */
-    private function call_anthropic_for_options($system_prompt, $user_prompt, $options = []) {
+    private function call_anthropic_for_options( $system_prompt, $user_prompt, $options = [] ) {
         $body = [
-            'model' => $this->current_model,
-            'system' => $system_prompt,
-            'messages' => [
-                ['role' => 'user', 'content' => $user_prompt]
+            'model'       => $this->current_model,
+            'system'      => $system_prompt,
+            'messages'    => [
+                [ 'role' => 'user', 'content' => $user_prompt ],
             ],
             'temperature' => 0.7,
-            'max_tokens' => 1000
+            'max_tokens'  => Config::MAX_TOKENS_OPTIONS,
         ];
 
         $args = [
-            'method' => 'POST',
+            'method'  => 'POST',
             'headers' => [
-                'x-api-key' => $this->api_key,
+                'x-api-key'         => $this->api_key,
                 'anthropic-version' => '2023-06-01',
-                'Content-Type' => 'application/json'
+                'Content-Type'      => 'application/json',
             ],
-            'body' => json_encode($body),
-            'timeout' => 60
+            'body'    => json_encode( $body ),
+            'timeout' => 60,
         ];
 
-        $response = wp_safe_remote_request($this->provider_configs['anthropic']['endpoint'], $args);
+        $response = wp_safe_remote_request( $this->provider_configs['anthropic']['endpoint'], $args );
 
         if (is_wp_error($response)) {
             throw new \Exception('Anthropic API request failed: ' . $response->get_error_message());

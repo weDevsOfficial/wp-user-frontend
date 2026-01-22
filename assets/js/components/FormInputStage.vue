@@ -218,8 +218,13 @@ export default {
 
             try {
                 const config = window.wpufAIFormBuilder || {};
-                const restUrl = config.rest_url || (window.location.origin + '/wp-json/');
+                const restUrl = config.rest_url;
                 const nonce = config.nonce || '';
+
+                if ( ! restUrl ) {
+                    console.error( 'WPUF AI Form Builder: REST URL not configured' );
+                    return;
+                }
 
                 const response = await fetch(restUrl + 'wpuf/v1/ai-form-builder/integrations?form_type=' + this.formType, {
                     method: 'GET',

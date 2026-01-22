@@ -188,6 +188,9 @@ class Assets {
             'forms-list'           => [
                 'src' => WPUF_ASSET_URI . '/css/forms-list.min.css',
             ],
+            'account'              => [
+                'src' => WPUF_ASSET_URI . '/css/frontend/account.css',
+            ],
         ];
 
         return apply_filters( 'wpuf_styles_to_register', $styles );

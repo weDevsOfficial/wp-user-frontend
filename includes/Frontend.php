@@ -182,7 +182,7 @@ class Frontend {
 
         // Enqueue account page Tailwind CSS and JS
         if ( wpuf_has_shortcode( 'wpuf_account' ) || wpuf_has_shortcode( 'wpuf_editprofile' ) ) {
-            wp_enqueue_style( 'wpuf-account', WPUF_ASSET_URI . '/css/frontend/account.css', [], WPUF_VERSION );
+            wp_enqueue_style( 'wpuf-account' );
             wp_enqueue_script( 'wpuf-account' );
         }
     }

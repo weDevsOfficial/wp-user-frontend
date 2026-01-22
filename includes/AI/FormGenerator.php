@@ -723,46 +723,35 @@ class FormGenerator {
         $is_pro_active = function_exists( 'wpuf_is_pro_active' ) && wpuf_is_pro_active();
 
         // Determine which prompt file to use based on form type and integration
-        if ( 'profile' === $form_type || 'registration' === $form_type ) {
-            // Registration/Profile form - check for integration-specific prompts first
-            if ( ! empty( $integration ) ) {
-                $registration_integration_prompts = [
-                    'dokan'      => WPUF_ROOT . '/includes/AI/wpuf-ai-prompt-dokan-registration.md',
-                    'wc_vendors' => WPUF_ROOT . '/includes/AI/wpuf-ai-prompt-wc-vendors-registration.md',
-                    'wcfm'       => WPUF_ROOT . '/includes/AI/wpuf-ai-prompt-wcfm-registration.md',
-                ];
+        // Free plugin has prompts for basic post forms, WooCommerce, and Events Calendar
+        // Pro plugin provides additional integration and registration prompts via filter
+        $prompt_file = WPUF_ROOT . '/includes/AI/prompts/wpuf-ai-minimal-prompt.md';
 
-                // Use integration prompt if available, fallback to default registration prompt
-                if ( isset( $registration_integration_prompts[ $integration ] ) && file_exists( $registration_integration_prompts[ $integration ] ) ) {
-                    $prompt_file = $registration_integration_prompts[ $integration ];
-                } else {
-                    $prompt_file = WPUF_ROOT . '/includes/AI/wpuf-ai-minimal-prompt-registration.md';
-                }
-            } else {
-                // No integration - use default registration prompt
-                $prompt_file = WPUF_ROOT . '/includes/AI/wpuf-ai-minimal-prompt-registration.md';
+        // Select integration-specific prompt file for free integrations
+        if ( ! empty( $integration ) ) {
+            switch ( $integration ) {
+                case 'woocommerce':
+                    $prompt_file = WPUF_ROOT . '/includes/AI/prompts/wpuf-ai-prompt-woocommerce.md';
+                    break;
+                case 'events_calendar':
+                    $prompt_file = WPUF_ROOT . '/includes/AI/prompts/wpuf-ai-prompt-events-calendar.md';
+                    break;
             }
-        } elseif ( 'post' === $form_type && ! empty( $integration ) ) {
-            // Post form WITH integration - use integration-specific prompts
-            $integration_prompts = [
-                'woocommerce'      => WPUF_ROOT . '/includes/AI/wpuf-ai-prompt-woocommerce.md',
-                'edd'              => WPUF_ROOT . '/includes/AI/wpuf-ai-prompt-edd.md',
-                'events_calendar'  => WPUF_ROOT . '/includes/AI/wpuf-ai-prompt-events-calendar.md',
-            ];
-
-            // Use integration prompt if available, fallback to minimal prompt
-            if ( isset( $integration_prompts[ $integration ] ) && file_exists( $integration_prompts[ $integration ] ) ) {
-                $prompt_file = $integration_prompts[ $integration ];
-            } else {
-                $prompt_file = WPUF_ROOT . '/includes/AI/wpuf-ai-minimal-prompt.md';
-            }
-        } elseif ( 'post' === $form_type && empty( $integration ) ) {
-            // Post form WITHOUT integration - use minimal prompt
-            $prompt_file = WPUF_ROOT . '/includes/AI/wpuf-ai-minimal-prompt.md';
-        } else {
-            // Fallback for unexpected form types - use minimal prompt
-            $prompt_file = WPUF_ROOT . '/includes/AI/wpuf-ai-minimal-prompt.md';
         }
+
+        /**
+         * Filter the AI prompt file path
+         *
+         * Allows pro plugin to override prompt file paths for different
+         * form types and integrations.
+         *
+         * @since WPUF_SINCE
+         *
+         * @param string $prompt_file Path to the prompt file
+         * @param string $form_type   Form type ('post' or 'profile')
+         * @param string $integration Integration identifier
+         */
+        $prompt_file = apply_filters( 'wpuf_ai_prompt_file_path', $prompt_file, $form_type, $integration );
 
         // Check if file exists
         if ( ! file_exists( $prompt_file ) ) {

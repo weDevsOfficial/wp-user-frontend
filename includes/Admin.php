@@ -212,20 +212,25 @@ class Admin {
         // Determine if we should expose API key status based on user capabilities
         $show_api_status = current_user_can( wpuf_admin_role() );
 
+        // Get AI Manager instance for templates
+        $ai_manager = wpuf()->ai_manager;
+
         // Prepare localization data
         $localize_data = [
-            'version'    => WPUF_VERSION,
-            'assetUrl'   => WPUF_ASSET_URI,
-            'siteUrl'    => site_url(),
-            'nonce'      => wp_create_nonce( 'wp_rest' ),
-            'rest_url'   => esc_url_raw( rest_url() ),
-            'formType'   => $form_type, // Pass form type to frontend
-            'provider'   => $ai_settings['ai_provider'] ?? 'openai',
-            'model'      => $ai_settings['ai_model'] ?? 'gpt-3.5-turbo',
-            'hasApiKey'  => $show_api_status ? !empty($ai_settings['ai_api_key']) : null,
-            'isProActive' => class_exists( 'WP_User_Frontend_Pro' ),
-            'temperature' => floatval( $ai_settings['temperature'] ?? 0.7 ),
-            'maxTokens'  => intval( $ai_settings['max_tokens'] ?? 2000 ),
+            'version'              => WPUF_VERSION,
+            'assetUrl'             => WPUF_ASSET_URI,
+            'siteUrl'              => site_url(),
+            'nonce'                => wp_create_nonce( 'wp_rest' ),
+            'rest_url'             => esc_url_raw( rest_url() ),
+            'formType'             => $form_type, // Pass form type to frontend
+            'provider'             => $ai_settings['ai_provider'] ?? 'openai',
+            'model'                => $ai_settings['ai_model'] ?? 'gpt-3.5-turbo',
+            'hasApiKey'            => $show_api_status ? !empty($ai_settings['ai_api_key']) : null,
+            'isProActive'          => class_exists( 'WP_User_Frontend_Pro' ),
+            'temperature'          => floatval( $ai_settings['temperature'] ?? 0.7 ),
+            'maxTokens'            => intval( $ai_settings['max_tokens'] ?? 2000 ),
+            'promptTemplates'      => $ai_manager->get_all_prompt_templates(),
+            'promptAIInstructions' => $ai_manager->get_all_prompt_ai_instructions(),
             'i18n' => [
                 'errorTitle' => __('Error', 'wp-user-frontend'),
                 'errorMessage' => __('Something went wrong. Please try again.', 'wp-user-frontend'),

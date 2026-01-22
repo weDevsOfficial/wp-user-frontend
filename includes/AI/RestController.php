@@ -613,6 +613,18 @@ class RestController extends WP_REST_Controller {
             }
         }
 
+        /**
+         * Filter available AI form builder integrations
+         *
+         * Allows pro plugin to add or modify available integrations.
+         *
+         * @since 4.2.2
+         *
+         * @param array  $available_integrations Array of integration objects
+         * @param string $form_type              Form type ('post' or 'profile')
+         */
+        $available_integrations = apply_filters( 'wpuf_ai_integrations', $available_integrations, $form_type );
+
         return new WP_REST_Response([
             'success' => true,
             'integrations' => $available_integrations,

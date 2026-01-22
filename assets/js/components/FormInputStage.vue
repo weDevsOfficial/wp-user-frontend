@@ -262,142 +262,29 @@ export default {
         },
 
         updatePromptTemplates() {
-            // Handle registration/profile form integrations
-            if (this.formType === 'profile' || this.formType === 'registration') {
-                if (this.selectedIntegration === 'dokan') {
-                    // Dokan vendor registration prompts
-                    this.promptTemplates = [
-                        { id: 'dokan_basic', label: this.__('Basic Vendor Registration', 'wp-user-frontend') },
-                        { id: 'dokan_complete', label: this.__('Complete Vendor Profile', 'wp-user-frontend') },
-                        { id: 'dokan_marketplace', label: this.__('Marketplace Seller', 'wp-user-frontend') },
-                        { id: 'dokan_simple', label: this.__('Simple Vendor Signup', 'wp-user-frontend') }
-                    ];
+            // Get templates and instructions from PHP localized data
+            const config = window.wpufAIFormBuilder || {};
+            const allTemplates = config.promptTemplates || {};
+            const allInstructions = config.promptAIInstructions || {};
 
-                    this.promptAIInstructions = {
-                        dokan_basic: 'Create a Dokan basic vendor registration form with first name, last name, email, shop name, password',
-                        dokan_complete: 'Create a Dokan complete vendor registration form with first name, last name, email, shop name, shop URL, profile picture, shop banner, phone number, address, store location map, password',
-                        dokan_marketplace: 'Create a Dokan marketplace seller registration form with first name, last name, email, shop name, shop URL, store description, profile picture, shop banner, phone number, PayPal email, password',
-                        dokan_simple: 'Create a Dokan simple vendor signup form with email, shop name, password'
-                    };
-                } else if (this.selectedIntegration === 'wc_vendors') {
-                    // WC Vendors registration prompts
-                    this.promptTemplates = [
-                        { id: 'wcv_basic', label: this.__('Basic Vendor Registration', 'wp-user-frontend') },
-                        { id: 'wcv_complete', label: this.__('Complete Vendor Profile', 'wp-user-frontend') },
-                        { id: 'wcv_seller', label: this.__('Seller Application', 'wp-user-frontend') },
-                        { id: 'wcv_simple', label: this.__('Simple Vendor Signup', 'wp-user-frontend') }
-                    ];
-
-                    this.promptAIInstructions = {
-                        wcv_basic: 'Create a WC Vendors basic registration form with email, PayPal address, shop name, password',
-                        wcv_complete: 'Create a WC Vendors complete registration form with email, first name, last name, PayPal address, shop name, seller info, shop description, shop logo, password',
-                        wcv_seller: 'Create a WC Vendors seller application form with email, first name, last name, PayPal address, shop name, seller info, shop description, password',
-                        wcv_simple: 'Create a WC Vendors simple vendor signup form with email, shop name, PayPal address, password'
-                    };
-                } else if (this.selectedIntegration === 'wcfm') {
-                    // WCFM Membership registration prompts
-                    this.promptTemplates = [
-                        { id: 'wcfm_basic', label: this.__('Basic Vendor Registration', 'wp-user-frontend') },
-                        { id: 'wcfm_complete', label: this.__('Complete Vendor Profile', 'wp-user-frontend') },
-                        { id: 'wcfm_marketplace', label: this.__('Marketplace Vendor', 'wp-user-frontend') },
-                        { id: 'wcfm_multistep', label: this.__('Multi-Step Registration', 'wp-user-frontend') }
-                    ];
-
-                    this.promptAIInstructions = {
-                        wcfm_basic: 'Create a WCFM basic vendor registration form with email, store name (username), password',
-                        wcfm_complete: 'Create a WCFM complete vendor registration form with email, store name, first name, last name, phone number, store logo, store banner, store description, store address, social links (Facebook, Twitter, Instagram, LinkedIn), password',
-                        wcfm_marketplace: 'Create a WCFM marketplace vendor registration form with email, store name, first name, last name, phone, store logo, store description, address, password',
-                        wcfm_multistep: 'Create a WCFM multi-step vendor registration form with section breaks: Step 1 (email, store name, password), Step 2 (store logo, store banner, store description), Step 3 (phone, address, social links)'
-                    };
-                } else {
-                    // Default registration prompts (no integration)
-                    this.promptTemplates = [
-                        { id: 'basic_registration', label: this.__('Basic User Registration', 'wp-user-frontend') },
-                        { id: 'member_directory', label: this.__('Member Directory Profile', 'wp-user-frontend') },
-                        { id: 'job_applicant', label: this.__('Job Applicant Registration', 'wp-user-frontend') },
-                        { id: 'blog_author_signup', label: this.__('Blog Author Signup', 'wp-user-frontend') },
-                        { id: 'community_member_join', label: this.__('Community Member Join', 'wp-user-frontend') },
-                        { id: 'freelancer_profile_signup', label: this.__('Freelancer Profile Signup', 'wp-user-frontend') }
-                    ];
-
-                    this.promptAIInstructions = {
-                        basic_registration: 'Create a Basic User Registration form with email, name, username, password',
-                        member_directory: 'Create a Member Directory Profile form with name, email, bio, profile photo',
-                        job_applicant: 'Create a Job Applicant Registration form with name, email, phone, resume upload',
-                        blog_author_signup: 'Create a registration form for new blog authors. Collect their login details, public display information, a short introduction about themselves, a profile photo or avatar, and an optional personal website link.',
-                        community_member_join: 'Create a registration form for new community members. Collect their basic personal details, login information, a public name, a nickname, their interests (as checkboxes), a short personal introduction, and a profile picture',
-                        freelancer_profile_signup: 'Create a registration form for freelancers that captures their professional details, skills, experience summary, portfolio information, and profile photo.'
-                    };
-                }
-                return;
+            // Determine the form type key for template lookup
+            let formTypeKey = this.formType;
+            if ( formTypeKey === 'registration' ) {
+                formTypeKey = 'profile';
             }
 
-            // Handle post form integrations
-            if (this.selectedIntegration === 'woocommerce') {
-                // WooCommerce-specific prompts
-                this.promptTemplates = [
-                    { id: 'woo_simple_product', label: this.__('Simple Product', 'wp-user-frontend') },
-                    { id: 'woo_digital_product', label: this.__('Digital Product', 'wp-user-frontend') },
-                    { id: 'woo_service_listing', label: this.__('Service Listing', 'wp-user-frontend') },
-                    { id: 'woo_handmade_product', label: this.__('Handmade Product', 'wp-user-frontend') }
-                ];
+            // Get templates for current form type
+            const formTypeTemplates = allTemplates[ formTypeKey ] || {};
 
-                this.promptAIInstructions = {
-                    woo_simple_product: 'Create a WooCommerce Simple Product form with product title, product description, short description, regular price, sale price, featured image, product gallery, catalog visibility',
-                    woo_digital_product: 'Create a WooCommerce Digital Product form with product title, product description, regular price, featured image, SKU, Downloadable Product, Downloadable Files',
-                    woo_service_listing: 'Create a WooCommerce Service form with product title, product description, regular price, featured image, purchase note',
-                    woo_handmade_product: 'Create a WooCommerce Handmade Product form with product title, product description, short description, regular price, featured image, product gallery, product attributes for size and color, weight, dimensions'
-                };
-            } else if (this.selectedIntegration === 'edd') {
-                // Easy Digital Downloads prompts
-                this.promptTemplates = [
-                    { id: 'edd_digital_download', label: this.__('Digital Download', 'wp-user-frontend') },
-                    { id: 'edd_software', label: this.__('Software Product', 'wp-user-frontend') },
-                    { id: 'edd_ebook', label: this.__('eBook', 'wp-user-frontend') },
-                    { id: 'edd_course', label: this.__('Online Course', 'wp-user-frontend') }
-                ];
+            // Get templates for current integration (or empty string for no integration)
+            const integrationKey = this.selectedIntegration || '';
+            const templates = formTypeTemplates[ integrationKey ] || [];
 
-                this.promptAIInstructions = {
-                    edd_digital_download: 'Create an EDD Digital Download form with download title, download description, short description, price, downloadable files, featured image, download categories',
-                    edd_software: 'Create an EDD Software Product form with download title, download description, price, downloadable files, product notes, featured image, download categories',
-                    edd_ebook: 'Create an EDD eBook form with download title, download description, short description, price, downloadable files, featured image, download categories',
-                    edd_course: 'Create an EDD Online Course form with download title, download description, price, downloadable files, product notes, featured image, download categories'
-                };
-            } else if (this.selectedIntegration === 'events_calendar') {
-                // The Events Calendar prompts
-                this.promptTemplates = [
-                    { id: 'event_conference', label: this.__('Conference Event', 'wp-user-frontend') },
-                    { id: 'event_workshop', label: this.__('Workshop/Training', 'wp-user-frontend') },
-                    { id: 'event_meetup', label: this.__('Meetup/Networking', 'wp-user-frontend') },
-                    { id: 'event_webinar', label: this.__('Webinar', 'wp-user-frontend') }
-                ];
+            // Set templates - if empty array from PHP, keep it empty (Pro feature)
+            this.promptTemplates = templates;
 
-                this.promptAIInstructions = {
-                    event_conference: 'Create a Conference Event form with event title, event details, event start date, event end date, venue name, event address, event city, event cost, currency symbol, featured image, event categories',
-                    event_workshop: 'Create a Workshop/Training Event form with event title, event details, event start date, event end date, venue name, event address, event cost, featured image, event categories',
-                    event_meetup: 'Create a Meetup/Networking Event form with event title, event details, short description, event start date, event end date, venue name, event address, event website, featured image, event categories',
-                    event_webinar: 'Create a Webinar Event form with event title, event details, event start date, event end date, event website, event cost, currency symbol, featured image, event categories'
-                };
-            } else {
-                // Default post form prompts (no integration selected)
-                this.promptTemplates = [
-                    { id: 'paid_guest_post', label: this.__('Paid Guest Post', 'wp-user-frontend') },
-                    { id: 'portfolio_submission', label: this.__('Portfolio Submission', 'wp-user-frontend') },
-                    { id: 'classified_ads', label: this.__('Classified Ads', 'wp-user-frontend') },
-                    { id: 'coupon_submission', label: this.__('Coupon Submission', 'wp-user-frontend') },
-                    { id: 'real_estate', label: this.__('Real Estate Property Listing', 'wp-user-frontend') },
-                    { id: 'news_press', label: this.__('News/Press Release Submission', 'wp-user-frontend') },
-                ];
-
-                this.promptAIInstructions = {
-                    paid_guest_post: 'Create a Paid Guest Post submission form with title, content, author name, email, category',
-                    portfolio_submission: 'Create a Portfolio Submission form with title, description, name, email, skills, portfolio files',
-                    classified_ads: 'Create a Classified Ads submission form with title, description, category, price, address field, contact email',
-                    coupon_submission: 'Create a Coupon Submission form with title, description, business name, discount amount, expiration date',
-                    real_estate: 'Create a Real Estate Property Listing form with title, description, address field, price, bedrooms, bathrooms, images',
-                    news_press: 'Create a News/Press Release submission form with headline, content, author, contact email, category'
-                };
-            }
+            // Build instructions object from all available instructions
+            this.promptAIInstructions = allInstructions;
         },
 
         selectPrompt(tpl) {

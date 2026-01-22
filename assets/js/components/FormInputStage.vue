@@ -238,6 +238,20 @@ export default {
                     const result = await response.json();
                     if (result.success && result.integrations) {
                         this.availableIntegrations = result.integrations;
+
+                        // Check if current selectedIntegration is still valid
+                        if ( this.selectedIntegration ) {
+                            const integrationExists = result.integrations.some(
+                                integration => integration.id === this.selectedIntegration
+                            );
+
+                            // If selected integration no longer exists, clear it and reinitialize
+                            if ( ! integrationExists ) {
+                                this.selectedIntegration = '';
+                                this.$emit( 'update:selectedIntegration', '' );
+                                this.updatePromptTemplates();
+                            }
+                        }
                     }
                 }
             } catch (error) {

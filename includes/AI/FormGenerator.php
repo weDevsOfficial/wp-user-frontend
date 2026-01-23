@@ -723,7 +723,8 @@ class FormGenerator {
         $system_prompt .= "\n\n## FORM TYPE CONTEXT\n";
         if ( 'profile' === $form_type || 'registration' === $form_type ) {
             $system_prompt .= "You are working with a REGISTRATION/PROFILE form.\n";
-            $system_prompt .= "- Use registration/profile fields: user_email, user_login, password, first_name, last_name, biography, user_avatar, social fields, phone_field, address_field, dropdown_field, radio_field, checkbox_field, etc.\n";
+            $system_prompt .= "- Use registration/profile fields: user_email, user_login, password, first_name, last_name, biography, user_avatar, secondary_email, social fields, phone_field, address_field, dropdown_field, radio_field, checkbox_field, etc.\n";
+            $system_prompt .= "- secondary_email is for collecting an alternate/backup email address (meta key: wpuf_secondary_email)\n";
             $system_prompt .= "- Custom fields like dropdown, radio, checkbox, text fields are fully supported for additional profile information\n";
             $system_prompt .= "- Focus on helping users collect user registration and profile data\n";
         } else {
@@ -886,5 +887,391 @@ class FormGenerator {
                 'message' => $e->getMessage()
             ];
         }
+    }
+
+    /**
+     * Generate field options using AI
+     *
+     * @since 4.2.2
+     *
+     * @param string $prompt User prompt describing the options to generate
+     * @param array $options Additional options
+     * @return array Generated options
+     */
+    public function generate_field_options($prompt, $options = []) {
+        try {
+            $field_type = $options['field_type'] ?? 'dropdown_field';
+            $output_format = $options['output_format'] ?? 'one_per_line';
+            $tone = $options['tone'] ?? 'casual';
+            $max_options = $options['max_options'] ?? 20;
+
+            // Build system prompt for option generation
+            $system_prompt = $this->get_field_options_system_prompt($field_type, $output_format, $tone, $max_options);
+
+            // Store original provider settings
+            $original_provider = $this->current_provider;
+            $original_model = $this->current_model;
+            $original_api_key = $this->api_key;
+
+            // Call AI provider
+            $ai_response = null;
+            switch ($this->current_provider) {
+                case 'openai':
+                    $ai_response = $this->call_openai_for_options($system_prompt, $prompt, $options);
+                    break;
+
+                case 'anthropic':
+                    $ai_response = $this->call_anthropic_for_options($system_prompt, $prompt, $options);
+                    break;
+
+                case 'google':
+                    $ai_response = $this->call_google_for_options($system_prompt, $prompt, $options);
+                    break;
+
+                default:
+                    throw new \Exception('Unsupported AI provider: ' . $this->current_provider);
+            }
+
+            if (isset($ai_response['error']) && $ai_response['error']) {
+                return [
+                    'success' => false,
+                    'error' => true,
+                    'message' => $ai_response['message'] ?? 'Failed to generate options',
+                    'provider' => $this->current_provider
+                ];
+            }
+
+            return [
+                'success' => true,
+                'options' => $ai_response['options'] ?? [],
+                'provider' => $this->current_provider,
+                'model' => $this->current_model
+            ];
+
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'error' => true,
+                'message' => $e->getMessage(),
+                'provider' => $this->current_provider
+            ];
+        } finally {
+            // Always restore original provider settings
+            $this->current_provider = $original_provider;
+            $this->current_model = $original_model;
+            $this->api_key = $original_api_key;
+        }
+    }
+
+    /**
+     * Get system prompt for field options generation
+     *
+     * @param string $field_type Field type
+     * @param string $output_format Output format
+     * @param string $tone Tone of options
+     * @param int $max_options Maximum number of options
+     * @return string System prompt
+     */
+    private function get_field_options_system_prompt($field_type, $output_format, $tone, $max_options) {
+        $prompt = "You are an AI assistant helping to generate field options for a WordPress form.\n\n";
+        $prompt .= "**Task:** Generate a list of options based on the user's request.\n\n";
+        $prompt .= "**Field Type:** {$field_type}\n";
+        $prompt .= "**Output Format:** {$output_format}\n";
+        $prompt .= "**Tone:** {$tone}\n";
+        $prompt .= "**Maximum Options:** {$max_options}\n\n";
+
+        $prompt .= "**Requirements:**\n";
+        $prompt .= "1. Generate between 1 and {$max_options} options\n";
+        $prompt .= "2. Each option should be clear, concise, and relevant\n";
+        $prompt .= "3. Options should be appropriate for the specified tone\n";
+        $prompt .= "4. Avoid duplicate or very similar options\n";
+        $prompt .= "5. Use proper capitalization and formatting\n\n";
+
+        if ($output_format === 'value_label') {
+            $prompt .= "**Output Format:** Return a JSON object with 'options' array containing objects with 'value' and 'label' keys.\n";
+            $prompt .= "Example:\n";
+            $prompt .= "{\n";
+            $prompt .= "  \"options\": [\n";
+            $prompt .= "    {\"value\": \"option_1\", \"label\": \"Option 1\"},\n";
+            $prompt .= "    {\"value\": \"option_2\", \"label\": \"Option 2\"}\n";
+            $prompt .= "  ]\n";
+            $prompt .= "}\n\n";
+        } else {
+            $prompt .= "**Output Format:** Return a JSON object with 'options' array containing simple strings (one option per item).\n";
+            $prompt .= "Example:\n";
+            $prompt .= "{\n";
+            $prompt .= "  \"options\": [\"Option 1\", \"Option 2\", \"Option 3\"]\n";
+            $prompt .= "}\n\n";
+        }
+
+        $prompt .= "**IMPORTANT:** Respond ONLY with valid JSON. Do not include any explanatory text, markdown formatting, or code blocks.\n";
+
+        return $prompt;
+    }
+
+    /**
+     * Call OpenAI for field options generation
+     *
+     * @param string $system_prompt System prompt
+     * @param string $user_prompt User prompt
+     * @param array $options Additional options
+     * @return array Result
+     */
+    private function call_openai_for_options($system_prompt, $user_prompt, $options = []) {
+        $model_config = $this->get_model_config('openai', $this->current_model);
+
+        $body = [
+            'model' => $this->current_model,
+            'messages' => [
+                ['role' => 'system', 'content' => $system_prompt],
+                ['role' => 'user', 'content' => $user_prompt]
+            ],
+            'temperature' => 0.7,
+            'max_tokens' => 1000
+        ];
+
+        if ($model_config['supports_json_mode']) {
+            $body['response_format'] = ['type' => 'json_object'];
+        }
+
+        $args = [
+            'method' => 'POST',
+            'headers' => [
+                'Authorization' => 'Bearer ' . $this->api_key,
+                'Content-Type' => 'application/json'
+            ],
+            'body' => json_encode($body),
+            'timeout' => 60
+        ];
+
+        $response = wp_safe_remote_request($this->provider_configs['openai']['endpoint'], $args);
+
+        if (is_wp_error($response)) {
+            throw new \Exception('OpenAI API request failed: ' . $response->get_error_message());
+        }
+
+        $status_code = wp_remote_retrieve_response_code($response);
+        if ($status_code !== 200) {
+            $error_body = wp_remote_retrieve_body($response);
+            throw new \Exception("OpenAI API returned HTTP {$status_code}: {$error_body}");
+        }
+
+        $body = wp_remote_retrieve_body($response);
+        $data = json_decode($body, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \Exception('Invalid JSON response from OpenAI API');
+        }
+
+        if (isset($data['error'])) {
+            throw new \Exception('OpenAI API Error: ' . $data['error']['message']);
+        }
+
+        if (!isset($data['choices'][0]['message']['content'])) {
+            throw new \Exception('Invalid OpenAI response format');
+        }
+
+        return $this->parse_options_response($data['choices'][0]['message']['content'], $options);
+    }
+
+    /**
+     * Call Anthropic for field options generation
+     *
+     * @param string $system_prompt System prompt
+     * @param string $user_prompt User prompt
+     * @param array $options Additional options
+     * @return array Result
+     */
+    private function call_anthropic_for_options($system_prompt, $user_prompt, $options = []) {
+        $body = [
+            'model' => $this->current_model,
+            'system' => $system_prompt,
+            'messages' => [
+                ['role' => 'user', 'content' => $user_prompt]
+            ],
+            'temperature' => 0.7,
+            'max_tokens' => 1000
+        ];
+
+        $args = [
+            'method' => 'POST',
+            'headers' => [
+                'x-api-key' => $this->api_key,
+                'anthropic-version' => '2023-06-01',
+                'Content-Type' => 'application/json'
+            ],
+            'body' => json_encode($body),
+            'timeout' => 60
+        ];
+
+        $response = wp_safe_remote_request($this->provider_configs['anthropic']['endpoint'], $args);
+
+        if (is_wp_error($response)) {
+            throw new \Exception('Anthropic API request failed: ' . $response->get_error_message());
+        }
+
+        $status_code = wp_remote_retrieve_response_code($response);
+        if ($status_code !== 200) {
+            $error_body = wp_remote_retrieve_body($response);
+            throw new \Exception("Anthropic API returned HTTP {$status_code}: {$error_body}");
+        }
+
+        $body = wp_remote_retrieve_body($response);
+        $data = json_decode($body, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \Exception('Invalid JSON response from Anthropic API');
+        }
+
+        if (isset($data['error'])) {
+            throw new \Exception('Anthropic API Error: ' . $data['error']['message']);
+        }
+
+        if (!isset($data['content'][0]['text'])) {
+            throw new \Exception('Invalid Anthropic response format');
+        }
+
+        return $this->parse_options_response($data['content'][0]['text'], $options);
+    }
+
+    /**
+     * Call Google for field options generation
+     *
+     * @param string $system_prompt System prompt
+     * @param string $user_prompt User prompt
+     * @param array $options Additional options
+     * @return array Result
+     */
+    private function call_google_for_options($system_prompt, $user_prompt, $options = []) {
+        $model_config = $this->get_model_config('google', $this->current_model);
+
+        $endpoint = str_replace('{model}', $this->current_model, $this->provider_configs['google']['endpoint']);
+
+        $body = [
+            'contents' => [
+                [
+                    'parts' => [
+                        ['text' => $system_prompt . "\n\nUser request: " . $user_prompt]
+                    ]
+                ]
+            ],
+            'generationConfig' => [
+                'temperature' => 0.7,
+                'maxOutputTokens' => 1000
+            ]
+        ];
+
+        if ($model_config['supports_json_mode']) {
+            $body['generationConfig']['responseMimeType'] = 'application/json';
+        }
+
+        $args = [
+            'method' => 'POST',
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'x-goog-api-key' => $this->api_key
+            ],
+            'body' => json_encode($body),
+            'timeout' => 60
+        ];
+
+        $response = wp_safe_remote_request($endpoint, $args);
+
+        if (is_wp_error($response)) {
+            throw new \Exception('Google API request failed: ' . $response->get_error_message());
+        }
+
+        $status_code = wp_remote_retrieve_response_code($response);
+        if ($status_code !== 200) {
+            $error_body = wp_remote_retrieve_body($response);
+            throw new \Exception("Google API returned HTTP {$status_code}: {$error_body}");
+        }
+
+        $body = wp_remote_retrieve_body($response);
+        $data = json_decode($body, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \Exception('Invalid JSON response from Google API');
+        }
+
+        if (isset($data['error'])) {
+            throw new \Exception('Google API Error: ' . ($data['error']['message'] ?? 'Unknown error'));
+        }
+
+        if (!isset($data['candidates'][0]['content']['parts'][0]['text'])) {
+            throw new \Exception('Invalid Google response format');
+        }
+
+        return $this->parse_options_response($data['candidates'][0]['content']['parts'][0]['text'], $options);
+    }
+
+    /**
+     * Parse options from AI response
+     *
+     * @param string $content AI response content
+     * @param array $options Request options
+     * @return array Parsed options
+     */
+    private function parse_options_response($content, $options = []) {
+        // Clean and extract JSON from the response
+        $json_content = trim($content);
+
+        // Remove any markdown code blocks if present
+        $json_content = preg_replace('/^```(?:json)?\s*|\s*```$/m', '', $json_content);
+
+        // Remove any text before the first { or after the last }
+        $json_content = preg_replace('/^[^{]*/', '', $json_content);
+        $json_content = preg_replace('/[^}]*$/', '', $json_content);
+
+        // Try to find the JSON object
+        $start = strpos($json_content, '{');
+        $end = strrpos($json_content, '}');
+
+        if ($start !== false && $end !== false && $end > $start) {
+            $json_content = substr($json_content, $start, $end - $start + 1);
+        }
+
+        // Attempt to decode JSON
+        $parsed = json_decode($json_content, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return [
+                'error' => true,
+                'message' => 'Unable to parse AI response. Please try again.'
+            ];
+        }
+
+        // Extract options from parsed response
+        $field_options = [];
+        $output_format = $options['output_format'] ?? 'one_per_line';
+
+        if (isset($parsed['options']) && is_array($parsed['options'])) {
+            if ($output_format === 'value_label') {
+                // Expecting array of objects with 'value' and 'label'
+                foreach ($parsed['options'] as $option) {
+                    if (is_array($option) && isset($option['value']) && isset($option['label'])) {
+                        $field_options[] = [
+                            'label' => $option['label'],
+                            'value' => $option['value']
+                        ];
+                    }
+                }
+            } else {
+                // Expecting array of strings (one per line)
+                foreach ($parsed['options'] as $index => $option) {
+                    if (is_string($option)) {
+                        $field_options[] = [
+                            'label' => $option,
+                            'value' => sanitize_title( $option )
+                        ];
+                    }
+                }
+            }
+        }
+
+        return [
+            'error' => false,
+            'options' => $field_options
+        ];
     }
 }

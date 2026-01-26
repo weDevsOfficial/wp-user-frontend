@@ -428,9 +428,6 @@ class Form_Builder {
                 if ( ! empty( $field['enable_quantity'] ) ) {
                     $custom_props['enable_quantity'] = $field['enable_quantity'];
                 }
-                if ( ! empty( $field['currency_symbol'] ) ) {
-                    $custom_props['currency_symbol'] = $field['currency_symbol'];
-                }
                 if ( ! empty( $field['selected'] ) ) {
                     $custom_props['selected'] = $field['selected'];
                 }
@@ -442,9 +439,6 @@ class Form_Builder {
             case 'cart_total':
                 if ( ! empty( $field['show_summary'] ) ) {
                     $custom_props['show_summary'] = $field['show_summary'];
-                }
-                if ( ! empty( $field['currency_symbol'] ) ) {
-                    $custom_props['currency_symbol'] = $field['currency_symbol'];
                 }
                 break;
         }

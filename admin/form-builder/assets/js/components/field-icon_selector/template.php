@@ -1,4 +1,4 @@
-<div class="panel-field-opt panel-field-opt-icon-selector">
+<div v-if="met_dependencies" class="panel-field-opt panel-field-opt-icon-selector">
     <div class="wpuf-flex">
         <label v-if="option_field.title" class="!wpuf-mb-0">
             {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
@@ -8,7 +8,7 @@
     <div class="option-fields-section wpuf-relative">
         <div
             @click.stop="togglePicker"
-            class="wpuf-w-full wpuf-min-w-full !wpuf-py-[10px] !wpuf-px-[14px] wpuf-text-gray-700 wpuf-font-medium !wpuf-shadow-sm wpuf-border !wpuf-border-gray-300 !wpuf-rounded-[6px] hover:!wpuf-text-gray-700 wpuf-flex wpuf-justify-between wpuf-items-center !wpuf-text-base wpuf-cursor-pointer"
+            class="wpuf-w-full wpuf-mt-4 wpuf-min-w-full !wpuf-py-[10px] !wpuf-px-[14px] wpuf-text-gray-700 wpuf-font-medium !wpuf-shadow-sm wpuf-border !wpuf-border-gray-300 !wpuf-rounded-[6px] hover:!wpuf-text-gray-700 wpuf-flex wpuf-justify-between wpuf-items-center !wpuf-text-base wpuf-cursor-pointer"
         >
             <div class="wpuf-flex wpuf-items-center wpuf-gap-2">
                 <i v-if="value" :class="value" class="wpuf-text-gray-600"></i>
@@ -28,9 +28,9 @@
         >
             <!-- Search -->
             <div class="wpuf-p-3 wpuf-border-b wpuf-border-gray-200">
-                <input 
+                <input
                     v-model="searchTerm"
-                    type="text" 
+                    type="text"
                     placeholder="Search icons... (e.g., user, email, home)"
                     class="wpuf-w-full !wpuf-px-4 !wpuf-py-1.5 wpuf-border wpuf-border-gray-300 wpuf-rounded wpuf-text-sm wpuf-text-gray-900 placeholder:wpuf-text-gray-400 wpuf-shadow focus:!wpuf-shadow-none"
                 >

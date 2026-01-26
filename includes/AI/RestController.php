@@ -1875,7 +1875,7 @@ class RestController extends WP_REST_Controller {
                     $field['count'] = '1';
                 }
                 if (!isset($field['extension'])) {
-                    $field['extension'] = ['images', 'audio', 'video', 'pdf', 'office', 'zip', 'exe', 'csv'];
+                    $field['extension'] = ['images', 'audio', 'video', 'pdf', 'office', 'zip', 'csv'];
                 }
             }
 

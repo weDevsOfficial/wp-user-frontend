@@ -5114,6 +5114,8 @@ function wpuf_get_post_form_builder_setting_menu_contents() {
         'post_form_template_professional_video' => __( 'Professional Video Form', 'wp-user-frontend' ),
         'post_form_template_artwork'           => __( 'Artwork Form', 'wp-user-frontend' ),
         'post_form_template_press_release'     => __( 'Press Release Form', 'wp-user-frontend' ),
+        'post_form_template_portfolio'         => __( 'Portfolio Form', 'wp-user-frontend' ),
+        'post_form_template_volunteer'         => __( 'Volunteer Opportunity Form', 'wp-user-frontend' ),
     ];
 
     $registry = wpuf_get_post_form_templates();

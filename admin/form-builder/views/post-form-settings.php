@@ -10,6 +10,32 @@
             'post_expiration',
         ];
 
+        // SVG allowlist for icon sanitization
+        $icon_allowed_html = [
+            'svg'   => [
+                'width'   => [],
+                'height'  => [],
+                'viewBox' => [],
+                'fill'    => [],
+                'xmlns'   => [],
+                'class'   => [],
+            ],
+            'path'  => [
+                'd'               => [],
+                'stroke-width'   => [],
+                'stroke-linecap' => [],
+                'stroke-linejoin' => [],
+                'stroke'         => [],
+                'fill'           => [],
+            ],
+            'span'  => [
+                'class' => [],
+            ],
+            'i'     => [
+                'class' => [],
+            ],
+        ];
+
         foreach ( $settings_titles as $key => $top_settings ) {
             $icon  = ! empty( $top_settings['icon'] ) ? $top_settings['icon'] : '';
             $label = ! empty( $top_settings['label'] ) ? $top_settings['label'] : '';
@@ -26,7 +52,7 @@
                     :class="active_settings_tab === 'modules'? 'wpuf-bg-primary active_settings_tab wpuf-m-0 wpuf-text-white' : ''"
                     class="wpuf-group/sidebar-item hover:wpuf-bg-primary hover:wpuf-cursor-pointer hover:wpuf-text-white wpuf-rounded-lg wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out wpuf-items-center wpuf-w-full wpuf-m-0 wpuf-py-2 wpuf-px-3 wpuf--ml-3 wpuf-flex wpuf-text-gray-600">
                     <?php
-                    echo wp_kses( $icon, array('span' => array('class' => array()), 'i' => array('class' => array())) );
+                    echo wp_kses( $icon, $icon_allowed_html );
                     ?>
                     <span class="wpuf-ml-2">
                         <?php
@@ -39,7 +65,7 @@
                 <div class="wpuf-mb-4 wpuf-flex wpuf-justify-between wpuf-items-center">
                     <h2 class="wpuf-text-base wpuf-text-gray-600 wpuf-m-0 wpuf-flex wpuf-items-center">
                         <?php
-                        echo wp_kses( $icon, array('span' => array('class' => array()), 'i' => array('class' => array())) );
+                        echo wp_kses( $icon, $icon_allowed_html );
                         ?>
                         <span class="wpuf-ml-2">
                 <?php
@@ -69,7 +95,7 @@
                                     :class="active_settings_tab === '<?php echo esc_attr( $sub_key ); ?>' ? 'wpuf-text-white' : 'wpuf-text-gray-600'"
                                     class="wpuf-ml-2 wpuf-text-sm group-hover/sidebar-item:wpuf-text-white wpuf-transition-all wpuf-duration-200 wpuf-ease-in-out focus:wpuf-shadow-none focus:wpuf-outline-none wpuf-flex wpuf-items-center">
                                     <?php
-                                    echo wp_kses( $sub_icon, array('span' => array('class' => array()), 'i' => array('class' => array())) );
+                                    echo wp_kses( $sub_icon, $icon_allowed_html );
                                     ?>
                                     <span class="wpuf-ml-2">
                                         <?php

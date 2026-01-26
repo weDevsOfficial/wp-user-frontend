@@ -78,7 +78,7 @@ class Form_Field_Image extends Field_Contract {
             <script type="text/javascript">
                 (function($) {
                     $(document).ready( function(){
-                        var uploader = new WPUF_Uploader('wpuf-<?php echo esc_attr( $unique_id ); ?>-pickfiles', 'wpuf-<?php echo esc_attr( $unique_id ); ?>-upload-container', <?php echo esc_attr( $field_settings['count'] ); ?>, '<?php echo esc_attr( $field_settings['name'] ); ?>', 'jpg,jpeg,gif,png,bmp,webp', <?php echo esc_attr( $field_settings['max_size'] ); ?>);
+                        var uploader = new WPUF_Uploader('wpuf-<?php echo esc_attr( $unique_id ); ?>-pickfiles', 'wpuf-<?php echo esc_attr( $unique_id ); ?>-upload-container', <?php echo esc_attr( isset( $field_settings['count'] ) ? $field_settings['count'] : 1 ); ?>, '<?php echo esc_attr( $field_settings['name'] ); ?>', 'jpg,jpeg,gif,png,bmp,webp', <?php echo esc_attr( isset( $field_settings['max_size'] ) ? $field_settings['max_size'] : 1024 ); ?>);
                         wpuf_plupload_items.push(uploader);
                     });
                 })(jQuery);

@@ -30,7 +30,7 @@ add_action( 'init', 'wpuf_buffer_start' );
 function wpuf_show_post_status( $status ) {
     if ( 'publish' === $status ) {
         $title     = __( 'Live', 'wp-user-frontend' );
-        $fontcolor = '#33CC33';
+        $fontcolor = 'rgb(5, 150, 105)';
     } elseif ( 'draft' === $status ) {
         $title     = __( 'Offline', 'wp-user-frontend' );
         $fontcolor = '#bbbbbb';
@@ -3874,10 +3874,12 @@ function wpuf_ajax_get_states_field() {
     $states    = $cs->getStates( $countries[ $country ] );
 
     if ( ! empty( $states ) ) {
+        $field_name = isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '';
+
         $args = [
-            'name'             => isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '',
-            'id'               => isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '',
-            'class'            => isset( $_POST['field_name'] ) ? sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) : '',
+            'name'             => $field_name,
+            'id'               => $field_name,
+            'class'            => $field_name,
             'options'          => $states,
             'show_option_all'  => false,
             'show_option_none' => false,

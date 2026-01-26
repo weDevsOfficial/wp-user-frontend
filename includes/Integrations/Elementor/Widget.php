@@ -871,9 +871,8 @@ class Widget extends Widget_Base {
     /**
      * Render the widget output in the editor.
      *
-     * Written as a Backbone JavaScript template. When empty, Elementor
-     * will fall back to using the render() method for both frontend
-     * and editor preview.
+     * When empty, Elementor will fall back to using the render() method for
+     * both frontend and editor preview.
      *
      * @since WPUF_SINCE
      *

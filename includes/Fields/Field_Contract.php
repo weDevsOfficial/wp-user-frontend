@@ -764,13 +764,40 @@ abstract class Field_Contract {
     }
 
     /**
+     * Check if we should render admin-style markup
+     *
+     * Returns true for admin dashboard, but false for Elementor editor
+     * since Elementor editor needs frontend-style markup for proper preview.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return bool
+     */
+    protected function use_admin_markup() {
+        if ( ! is_admin() ) {
+            return false;
+        }
+
+        // Check if we're in Elementor editor mode
+        // Elementor editor needs frontend markup for proper preview
+        if ( class_exists( '\Elementor\Plugin' ) ) {
+            $elementor = \Elementor\Plugin::$instance;
+            if ( $elementor && $elementor->editor && $elementor->editor->is_edit_mode() ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Prints form input label for admin
      *
      * @param array $attr
      * @param int   $form_id
      */
     public function field_print_label( $field, $form_id = 0 ) {
-        if ( is_admin() ) { ?>
+        if ( $this->use_admin_markup() ) { ?>
             <tr <?php $this->print_list_attributes( $field ); ?>> <th><strong> <?php echo wp_kses_post( $field['label'] . $this->required_mark( $field ) ); ?> </strong></th> <td>
         <?php } else { ?>
 
@@ -782,7 +809,7 @@ abstract class Field_Contract {
     }
 
     public function after_field_print_label() {
-        if ( is_admin() ) {
+        if ( $this->use_admin_markup() ) {
             ?>
                 </td></tr>
             <?php

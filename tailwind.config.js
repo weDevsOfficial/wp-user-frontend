@@ -41,7 +41,8 @@ module.exports = {
                     '#wpuf-form-builder',
                     '#wpuf-profile-forms-list-table-view',
                     '#wpuf-post-forms-list-table-view',
-                    '.swal2-container'
+                    '.swal2-container',
+                    '.wpuf-account-container'
                 ], {}
             ),
         } ),

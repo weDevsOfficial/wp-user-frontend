@@ -1944,9 +1944,6 @@ class RestController extends WP_REST_Controller {
                         'third_item' => '50',
                     ];
                 }
-                if (!isset($field['currency_symbol'])) {
-                    $field['currency_symbol'] = '$';
-                }
                 if (!isset($field['enable_quantity'])) {
                     $field['enable_quantity'] = 'no';
                 }
@@ -1971,9 +1968,6 @@ class RestController extends WP_REST_Controller {
             if ($field['input_type'] === 'cart_total' || $field['template'] === 'cart_total') {
                 if (!isset($field['show_summary'])) {
                     $field['show_summary'] = 'yes';
-                }
-                if (!isset($field['currency_symbol'])) {
-                    $field['currency_symbol'] = 'USD';
                 }
             }
         }

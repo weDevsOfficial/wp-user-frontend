@@ -1,451 +1,3 @@
-/*
-! tailwindcss v3.4.11 | MIT License | https://tailwindcss.com
-*/
-
-/*
-1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
-2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
-*/
-
-*,
-::before,
-::after {
-  box-sizing: border-box;
-  /* 1 */
-  border-width: 0;
-  /* 2 */
-  border-style: solid;
-  /* 2 */
-  border-color: #e5e7eb;
-  /* 2 */
-}
-
-::before,
-::after {
-  --tw-content: '';
-}
-
-/*
-1. Use a consistent sensible line-height in all browsers.
-2. Prevent adjustments of font size after orientation changes in iOS.
-3. Use a more readable tab size.
-4. Use the user's configured `sans` font-family by default.
-5. Use the user's configured `sans` font-feature-settings by default.
-6. Use the user's configured `sans` font-variation-settings by default.
-7. Disable tap highlights on iOS
-*/
-
-html,
-:host {
-  line-height: 1.5;
-  /* 1 */
-  -webkit-text-size-adjust: 100%;
-  /* 2 */
-  -moz-tab-size: 4;
-  /* 3 */
-  -o-tab-size: 4;
-     tab-size: 4;
-  /* 3 */
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  /* 4 */
-  font-feature-settings: normal;
-  /* 5 */
-  font-variation-settings: normal;
-  /* 6 */
-  -webkit-tap-highlight-color: transparent;
-  /* 7 */
-}
-
-/*
-1. Remove the margin in all browsers.
-2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.
-*/
-
-body {
-  margin: 0;
-  /* 1 */
-  line-height: inherit;
-  /* 2 */
-}
-
-/*
-1. Add the correct height in Firefox.
-2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)
-3. Ensure horizontal rules are visible by default.
-*/
-
-hr {
-  height: 0;
-  /* 1 */
-  color: inherit;
-  /* 2 */
-  border-top-width: 1px;
-  /* 3 */
-}
-
-/*
-Add the correct text decoration in Chrome, Edge, and Safari.
-*/
-
-abbr:where([title]) {
-  -webkit-text-decoration: underline dotted;
-          text-decoration: underline dotted;
-}
-
-/*
-Remove the default font size and weight for headings.
-*/
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-size: inherit;
-  font-weight: inherit;
-}
-
-/*
-Reset links to optimize for opt-in styling instead of opt-out.
-*/
-
-a {
-  color: inherit;
-  text-decoration: inherit;
-}
-
-/*
-Add the correct font weight in Edge and Safari.
-*/
-
-b,
-strong {
-  font-weight: bolder;
-}
-
-/*
-1. Use the user's configured `mono` font-family by default.
-2. Use the user's configured `mono` font-feature-settings by default.
-3. Use the user's configured `mono` font-variation-settings by default.
-4. Correct the odd `em` font sizing in all browsers.
-*/
-
-code,
-kbd,
-samp,
-pre {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  /* 1 */
-  font-feature-settings: normal;
-  /* 2 */
-  font-variation-settings: normal;
-  /* 3 */
-  font-size: 1em;
-  /* 4 */
-}
-
-/*
-Add the correct font size in all browsers.
-*/
-
-small {
-  font-size: 80%;
-}
-
-/*
-Prevent `sub` and `sup` elements from affecting the line height in all browsers.
-*/
-
-sub,
-sup {
-  font-size: 75%;
-  line-height: 0;
-  position: relative;
-  vertical-align: baseline;
-}
-
-sub {
-  bottom: -0.25em;
-}
-
-sup {
-  top: -0.5em;
-}
-
-/*
-1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)
-2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)
-3. Remove gaps between table borders by default.
-*/
-
-table {
-  text-indent: 0;
-  /* 1 */
-  border-color: inherit;
-  /* 2 */
-  border-collapse: collapse;
-  /* 3 */
-}
-
-/*
-1. Change the font styles in all browsers.
-2. Remove the margin in Firefox and Safari.
-3. Remove default padding in all browsers.
-*/
-
-button,
-input,
-optgroup,
-select,
-textarea {
-  font-family: inherit;
-  /* 1 */
-  font-feature-settings: inherit;
-  /* 1 */
-  font-variation-settings: inherit;
-  /* 1 */
-  font-size: 100%;
-  /* 1 */
-  font-weight: inherit;
-  /* 1 */
-  line-height: inherit;
-  /* 1 */
-  letter-spacing: inherit;
-  /* 1 */
-  color: inherit;
-  /* 1 */
-  margin: 0;
-  /* 2 */
-  padding: 0;
-  /* 3 */
-}
-
-/*
-Remove the inheritance of text transform in Edge and Firefox.
-*/
-
-button,
-select {
-  text-transform: none;
-}
-
-/*
-1. Correct the inability to style clickable types in iOS and Safari.
-2. Remove default button styles.
-*/
-
-button,
-input:where([type='button']),
-input:where([type='reset']),
-input:where([type='submit']) {
-  -webkit-appearance: button;
-  /* 1 */
-  background-color: transparent;
-  /* 2 */
-  background-image: none;
-  /* 2 */
-}
-
-/*
-Use the modern Firefox focus style for all focusable elements.
-*/
-
-:-moz-focusring {
-  outline: auto;
-}
-
-/*
-Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)
-*/
-
-:-moz-ui-invalid {
-  box-shadow: none;
-}
-
-/*
-Add the correct vertical alignment in Chrome and Firefox.
-*/
-
-progress {
-  vertical-align: baseline;
-}
-
-/*
-Correct the cursor style of increment and decrement buttons in Safari.
-*/
-
-::-webkit-inner-spin-button,
-::-webkit-outer-spin-button {
-  height: auto;
-}
-
-/*
-1. Correct the odd appearance in Chrome and Safari.
-2. Correct the outline style in Safari.
-*/
-
-[type='search'] {
-  -webkit-appearance: textfield;
-  /* 1 */
-  outline-offset: -2px;
-  /* 2 */
-}
-
-/*
-Remove the inner padding in Chrome and Safari on macOS.
-*/
-
-::-webkit-search-decoration {
-  -webkit-appearance: none;
-}
-
-/*
-1. Correct the inability to style clickable types in iOS and Safari.
-2. Change font properties to `inherit` in Safari.
-*/
-
-::-webkit-file-upload-button {
-  -webkit-appearance: button;
-  /* 1 */
-  font: inherit;
-  /* 2 */
-}
-
-/*
-Add the correct display in Chrome and Safari.
-*/
-
-summary {
-  display: list-item;
-}
-
-/*
-Removes the default spacing and border for appropriate elements.
-*/
-
-blockquote,
-dl,
-dd,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-hr,
-figure,
-p,
-pre {
-  margin: 0;
-}
-
-fieldset {
-  margin: 0;
-  padding: 0;
-}
-
-legend {
-  padding: 0;
-}
-
-ol,
-ul,
-menu {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-/*
-Reset default styling for dialogs.
-*/
-
-dialog {
-  padding: 0;
-}
-
-/*
-Prevent resizing textareas horizontally by default.
-*/
-
-textarea {
-  resize: vertical;
-}
-
-/*
-1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)
-2. Set the default placeholder color to the user's configured gray 400 color.
-*/
-
-input::-moz-placeholder, textarea::-moz-placeholder {
-  opacity: 1;
-  /* 1 */
-  color: #9ca3af;
-  /* 2 */
-}
-
-input::placeholder,
-textarea::placeholder {
-  opacity: 1;
-  /* 1 */
-  color: #9ca3af;
-  /* 2 */
-}
-
-/*
-Set the default cursor for buttons.
-*/
-
-button,
-[role="button"] {
-  cursor: pointer;
-}
-
-/*
-Make sure disabled buttons don't get the pointer cursor.
-*/
-
-:disabled {
-  cursor: default;
-}
-
-/*
-1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)
-2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)
-   This can trigger a poorly considered lint error in some tools but is included by design.
-*/
-
-img,
-svg,
-video,
-canvas,
-audio,
-iframe,
-embed,
-object {
-  display: block;
-  /* 1 */
-  vertical-align: middle;
-  /* 2 */
-}
-
-/*
-Constrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)
-*/
-
-img,
-video {
-  max-width: 100%;
-  height: auto;
-}
-
-/* Make elements with the HTML hidden attribute stay hidden by default */
-
-[hidden] {
-  display: none;
-}
-
 [type='text'],input:where(:not([type])),[type='email'],[type='url'],[type='password'],[type='number'],[type='date'],[type='datetime-local'],[type='month'],[type='search'],[type='tel'],[type='time'],[type='week'],[multiple],textarea,select {
   -webkit-appearance: none;
      -moz-appearance: none;
@@ -709,6 +261,654 @@ html {
 
 *:hover {
   scrollbar-color: color-mix(in oklch, currentColor 60%, transparent) transparent;
+}
+
+/*
+1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
+2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
+*/
+
+*:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *)::before,
+:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *)::after {
+  box-sizing: border-box;
+  /* 1 */
+  border-width: 0;
+  /* 2 */
+  border-style: solid;
+  /* 2 */
+  border-color: #e5e7eb;
+  /* 2 */
+}
+
+:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *)::before,
+:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *)::after {
+  --tw-content: '';
+}
+
+/*
+1. Use a consistent sensible line-height in all browsers.
+2. Prevent adjustments of font size after orientation changes in iOS.
+3. Use a more readable tab size.
+4. Use the user's configured `sans` font-family by default.
+5. Use the user's configured `sans` font-feature-settings by default.
+6. Use the user's configured `sans` font-variation-settings by default.
+7. Disable tap highlights on iOS
+*/
+
+.wpuf_packs,
+#wpuf-subscription-page,
+#wpuf-form-builder,
+#wpuf-profile-forms-list-table-view,
+#wpuf-post-forms-list-table-view,
+.swal2-container {
+  line-height: 1.5;
+  /* 1 */
+  -webkit-text-size-adjust: 100%;
+  /* 2 */
+  -moz-tab-size: 4;
+  /* 3 */
+  -o-tab-size: 4;
+     tab-size: 4;
+  /* 3 */
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  /* 4 */
+  font-feature-settings: normal;
+  /* 5 */
+  font-variation-settings: normal;
+  /* 6 */
+  -webkit-tap-highlight-color: transparent;
+  /* 7 */
+}
+
+/*
+1. Remove the margin in all browsers.
+2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.
+*/
+
+.wpuf_packs,
+#wpuf-subscription-page,
+#wpuf-form-builder,
+#wpuf-profile-forms-list-table-view,
+#wpuf-post-forms-list-table-view,
+.swal2-container {
+  margin: 0;
+  /* 1 */
+  line-height: inherit;
+  /* 2 */
+}
+
+/*
+1. Add the correct height in Firefox.
+2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)
+3. Ensure horizontal rules are visible by default.
+*/
+
+hr:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  height: 0;
+  /* 1 */
+  color: inherit;
+  /* 2 */
+  border-top-width: 1px;
+  /* 3 */
+}
+
+/*
+Add the correct text decoration in Chrome, Edge, and Safari.
+*/
+
+abbr:where([title]):where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  -webkit-text-decoration: underline dotted;
+          text-decoration: underline dotted;
+}
+
+/*
+Remove the default font size and weight for headings.
+*/
+
+h1:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+h2:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+h3:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+h4:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+h5:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+h6:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/*
+Reset links to optimize for opt-in styling instead of opt-out.
+*/
+
+a:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+/*
+Add the correct font weight in Edge and Safari.
+*/
+
+b:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+strong:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  font-weight: bolder;
+}
+
+/*
+1. Use the user's configured `mono` font-family by default.
+2. Use the user's configured `mono` font-feature-settings by default.
+3. Use the user's configured `mono` font-variation-settings by default.
+4. Correct the odd `em` font sizing in all browsers.
+*/
+
+code:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+kbd:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+samp:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+pre:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  /* 1 */
+  font-feature-settings: normal;
+  /* 2 */
+  font-variation-settings: normal;
+  /* 3 */
+  font-size: 1em;
+  /* 4 */
+}
+
+/*
+Add the correct font size in all browsers.
+*/
+
+small:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  font-size: 80%;
+}
+
+/*
+Prevent `sub` and `sup` elements from affecting the line height in all browsers.
+*/
+
+sub:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+sup:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  bottom: -0.25em;
+}
+
+sup:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  top: -0.5em;
+}
+
+/*
+1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)
+2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)
+3. Remove gaps between table borders by default.
+*/
+
+table:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  text-indent: 0;
+  /* 1 */
+  border-color: inherit;
+  /* 2 */
+  border-collapse: collapse;
+  /* 3 */
+}
+
+/*
+1. Change the font styles in all browsers.
+2. Remove the margin in Firefox and Safari.
+3. Remove default padding in all browsers.
+*/
+
+button:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+input:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+optgroup:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+select:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+textarea:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  font-family: inherit;
+  /* 1 */
+  font-feature-settings: inherit;
+  /* 1 */
+  font-variation-settings: inherit;
+  /* 1 */
+  font-size: 100%;
+  /* 1 */
+  font-weight: inherit;
+  /* 1 */
+  line-height: inherit;
+  /* 1 */
+  letter-spacing: inherit;
+  /* 1 */
+  color: inherit;
+  /* 1 */
+  margin: 0;
+  /* 2 */
+  padding: 0;
+  /* 3 */
+}
+
+/*
+Remove the inheritance of text transform in Edge and Firefox.
+*/
+
+button:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+select:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  text-transform: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Remove default button styles.
+*/
+
+button:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+input:where([type='button']):where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+input:where([type='reset']):where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+input:where([type='submit']):where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  -webkit-appearance: button;
+  /* 1 */
+  background-color: transparent;
+  /* 2 */
+  background-image: none;
+  /* 2 */
+}
+
+/*
+Use the modern Firefox focus style for all focusable elements.
+*/
+
+:-moz-focusring:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  outline: auto;
+}
+
+/*
+Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)
+*/
+
+:-moz-ui-invalid:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  box-shadow: none;
+}
+
+/*
+Add the correct vertical alignment in Chrome and Firefox.
+*/
+
+progress:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  vertical-align: baseline;
+}
+
+/*
+Correct the cursor style of increment and decrement buttons in Safari.
+*/
+
+:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) ::-webkit-inner-spin-button,
+:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) ::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/*
+1. Correct the odd appearance in Chrome and Safari.
+2. Correct the outline style in Safari.
+*/
+
+[type='search']:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  -webkit-appearance: textfield;
+  /* 1 */
+  outline-offset: -2px;
+  /* 2 */
+}
+
+/*
+Remove the inner padding in Chrome and Safari on macOS.
+*/
+
+:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) ::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Change font properties to `inherit` in Safari.
+*/
+
+:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) ::-webkit-file-upload-button {
+  -webkit-appearance: button;
+  /* 1 */
+  font: inherit;
+  /* 2 */
+}
+
+/*
+Add the correct display in Chrome and Safari.
+*/
+
+summary:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  display: list-item;
+}
+
+/*
+Removes the default spacing and border for appropriate elements.
+*/
+
+blockquote:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+dl:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+dd:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+h1:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+h2:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+h3:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+h4:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+h5:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+h6:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+hr:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+figure:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+p:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+pre:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  margin: 0;
+}
+
+fieldset:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  margin: 0;
+  padding: 0;
+}
+
+legend:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  padding: 0;
+}
+
+ol:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+ul:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+menu:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+Reset default styling for dialogs.
+*/
+
+dialog:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  padding: 0;
+}
+
+/*
+Prevent resizing textareas horizontally by default.
+*/
+
+textarea:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  resize: vertical;
+}
+
+/*
+1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)
+2. Set the default placeholder color to the user's configured gray 400 color.
+*/
+
+:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) input::-moz-placeholder, :where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) textarea::-moz-placeholder {
+  opacity: 1;
+  /* 1 */
+  color: #9ca3af;
+  /* 2 */
+}
+
+:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) input::placeholder,
+:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) textarea::placeholder {
+  opacity: 1;
+  /* 1 */
+  color: #9ca3af;
+  /* 2 */
+}
+
+/*
+Set the default cursor for buttons.
+*/
+
+button:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+[role="button"]:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  cursor: pointer;
+}
+
+/*
+Make sure disabled buttons don't get the pointer cursor.
+*/
+
+:disabled:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  cursor: default;
+}
+
+/*
+1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)
+2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)
+   This can trigger a poorly considered lint error in some tools but is included by design.
+*/
+
+img:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+svg:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+video:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+canvas:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+audio:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+iframe:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+embed:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+object:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  display: block;
+  /* 1 */
+  vertical-align: middle;
+  /* 2 */
+}
+
+/*
+Constrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)
+*/
+
+img:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *),
+video:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Make elements with the HTML hidden attribute stay hidden by default */
+
+[hidden]:where(.wpuf_packs,.wpuf_packs *,#wpuf-subscription-page,#wpuf-subscription-page *,#wpuf-form-builder,#wpuf-form-builder *,#wpuf-profile-forms-list-table-view,#wpuf-profile-forms-list-table-view *,#wpuf-post-forms-list-table-view,#wpuf-post-forms-list-table-view *,.swal2-container,.swal2-container *) {
+  display: none;
+}
+
+[type='text'],input:where(:not([type])),[type='email'],[type='url'],[type='password'],[type='number'],[type='date'],[type='datetime-local'],[type='month'],[type='search'],[type='tel'],[type='time'],[type='week'],[multiple],textarea,select {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background-color: #fff;
+  border-color: #6b7280;
+  border-width: 1px;
+  border-radius: 0px;
+  padding-top: 0.5rem;
+  padding-right: 0.75rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  --tw-shadow: 0 0 #0000;
+}
+
+[type='text']:focus, input:where(:not([type])):focus, [type='email']:focus, [type='url']:focus, [type='password']:focus, [type='number']:focus, [type='date']:focus, [type='datetime-local']:focus, [type='month']:focus, [type='search']:focus, [type='tel']:focus, [type='time']:focus, [type='week']:focus, [multiple]:focus, textarea:focus, select:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  --tw-ring-inset: var(--tw-empty,/*!*/ /*!*/);
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: #2563eb;
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  border-color: #2563eb;
+}
+
+input::-moz-placeholder, textarea::-moz-placeholder {
+  color: #6b7280;
+  opacity: 1;
+}
+
+input::placeholder,textarea::placeholder {
+  color: #6b7280;
+  opacity: 1;
+}
+
+::-webkit-datetime-edit-fields-wrapper {
+  padding: 0;
+}
+
+::-webkit-date-and-time-value {
+  min-height: 1.5em;
+  text-align: inherit;
+}
+
+::-webkit-datetime-edit {
+  display: inline-flex;
+}
+
+::-webkit-datetime-edit,::-webkit-datetime-edit-year-field,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute-field,::-webkit-datetime-edit-second-field,::-webkit-datetime-edit-millisecond-field,::-webkit-datetime-edit-meridiem-field {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+  -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+}
+
+[multiple],[size]:where(select:not([size="1"])) {
+  background-image: initial;
+  background-position: initial;
+  background-repeat: unset;
+  background-size: initial;
+  padding-right: 0.75rem;
+  -webkit-print-color-adjust: unset;
+          print-color-adjust: unset;
+}
+
+[type='checkbox'],[type='radio'] {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  padding: 0;
+  -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+  display: inline-block;
+  vertical-align: middle;
+  background-origin: border-box;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  flex-shrink: 0;
+  height: 1rem;
+  width: 1rem;
+  color: #2563eb;
+  background-color: #fff;
+  border-color: #6b7280;
+  border-width: 1px;
+  --tw-shadow: 0 0 #0000;
+}
+
+[type='checkbox'] {
+  border-radius: 0px;
+}
+
+[type='radio'] {
+  border-radius: 100%;
+}
+
+[type='checkbox']:focus,[type='radio']:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  --tw-ring-inset: var(--tw-empty,/*!*/ /*!*/);
+  --tw-ring-offset-width: 2px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: #2563eb;
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+[type='checkbox']:checked,[type='radio']:checked {
+  border-color: transparent;
+  background-color: currentColor;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+[type='checkbox']:checked {
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+}
+
+@media (forced-colors: active)  {
+  [type='checkbox']:checked {
+    -webkit-appearance: auto;
+       -moz-appearance: auto;
+            appearance: auto;
+  }
+}
+
+[type='radio']:checked {
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+}
+
+@media (forced-colors: active)  {
+  [type='radio']:checked {
+    -webkit-appearance: auto;
+       -moz-appearance: auto;
+            appearance: auto;
+  }
+}
+
+[type='checkbox']:checked:hover,[type='checkbox']:checked:focus,[type='radio']:checked:hover,[type='radio']:checked:focus {
+  border-color: transparent;
+  background-color: currentColor;
+}
+
+[type='checkbox']:indeterminate {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 16 16'%3e%3cpath stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 8h8'/%3e%3c/svg%3e");
+  border-color: transparent;
+  background-color: currentColor;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+@media (forced-colors: active)  {
+  [type='checkbox']:indeterminate {
+    -webkit-appearance: auto;
+       -moz-appearance: auto;
+            appearance: auto;
+  }
+}
+
+[type='checkbox']:indeterminate:hover,[type='checkbox']:indeterminate:focus {
+  border-color: transparent;
+  background-color: currentColor;
+}
+
+[type='file'] {
+  background: unset;
+  border-color: inherit;
+  border-width: 0;
+  border-radius: 0;
+  padding: 0;
+  font-size: unset;
+  line-height: inherit;
+}
+
+[type='file']:focus {
+  outline: 1px solid ButtonText;
+  outline: 1px auto -webkit-focus-ring-color;
 }
 
 *, ::before, ::after {
@@ -3532,6 +3732,84 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   bottom: var(--tooltip-tail-offset);
 }
 
+.wpuf-form-input,.wpuf-form-textarea,.wpuf-form-select,.wpuf-form-multiselect {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background-color: #fff;
+  border-color: #6b7280;
+  border-width: 1px;
+  border-radius: 0px;
+  padding-top: 0.5rem;
+  padding-right: 0.75rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  --tw-shadow: 0 0 #0000;
+}
+
+.wpuf-form-input:focus, .wpuf-form-textarea:focus, .wpuf-form-select:focus, .wpuf-form-multiselect:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  --tw-ring-inset: var(--tw-empty,/*!*/ /*!*/);
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: #2563eb;
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  border-color: #2563eb;
+}
+
+.wpuf-form-input::-moz-placeholder, .wpuf-form-textarea::-moz-placeholder {
+  color: #6b7280;
+  opacity: 1;
+}
+
+.wpuf-form-input::placeholder,.wpuf-form-textarea::placeholder {
+  color: #6b7280;
+  opacity: 1;
+}
+
+.wpuf-form-input::-webkit-datetime-edit-fields-wrapper {
+  padding: 0;
+}
+
+.wpuf-form-input::-webkit-date-and-time-value {
+  min-height: 1.5em;
+  text-align: inherit;
+}
+
+.wpuf-form-input::-webkit-datetime-edit {
+  display: inline-flex;
+}
+
+.wpuf-form-input::-webkit-datetime-edit,.wpuf-form-input::-webkit-datetime-edit-year-field,.wpuf-form-input::-webkit-datetime-edit-month-field,.wpuf-form-input::-webkit-datetime-edit-day-field,.wpuf-form-input::-webkit-datetime-edit-hour-field,.wpuf-form-input::-webkit-datetime-edit-minute-field,.wpuf-form-input::-webkit-datetime-edit-second-field,.wpuf-form-input::-webkit-datetime-edit-millisecond-field,.wpuf-form-input::-webkit-datetime-edit-meridiem-field {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.wpuf-form-select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+  -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+}
+
+.wpuf-form-select:where([size]:not([size="1"])) {
+  background-image: initial;
+  background-position: initial;
+  background-repeat: unset;
+  background-size: initial;
+  padding-right: 0.75rem;
+  -webkit-print-color-adjust: unset;
+          print-color-adjust: unset;
+}
+
 .wpuf-btn-primary {
   border-radius: 0.375rem;
   --tw-bg-opacity: 1;
@@ -3964,6 +4242,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 .wpuf-my-2 {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
+}
+
+.wpuf-my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .wpuf-my-8 {
@@ -4400,6 +4683,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   height: 100svh;
 }
 
+.wpuf-max-h-64 {
+  max-height: 16rem;
+}
+
 .wpuf-max-h-\[200px\] {
   max-height: 200px;
 }
@@ -4634,6 +4921,10 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 
 .\!wpuf-max-w-full {
   max-width: 100% !important;
+}
+
+.wpuf-max-w-2xl {
+  max-width: 42rem;
 }
 
 .wpuf-max-w-4xl {
@@ -5306,6 +5597,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
   border-color: rgb(167 243 208 / var(--tw-border-opacity));
 }
 
+.wpuf-border-emerald-400 {
+  --tw-border-opacity: 1;
+  border-color: rgb(52 211 153 / var(--tw-border-opacity));
+}
+
 .wpuf-border-emerald-500 {
   --tw-border-opacity: 1;
   border-color: rgb(16 185 129 / var(--tw-border-opacity));
@@ -5359,6 +5655,11 @@ input.wpuf-tab:checked + .wpuf-tab-content,
 .wpuf-border-primary {
   --tw-border-opacity: 1;
   border-color: rgb(5 150 105 / var(--tw-border-opacity));
+}
+
+.wpuf-border-primaryHover {
+  --tw-border-opacity: 1;
+  border-color: rgb(16 185 129 / var(--tw-border-opacity));
 }
 
 .wpuf-border-purple-300 {
@@ -7091,6 +7392,86 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
   border-radius: 0.25rem;
 }
 
+/* AI Field Options Modal */
+
+.wpuf-ai-modal-overlay {
+  position: fixed;
+  inset: 0px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+  --tw-bg-opacity: 0.5;
+}
+
+.wpuf-ai-modal {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  width: 100%;
+  max-width: 42rem;
+  border-radius: 0.5rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  max-height: 90vh;
+}
+
+.wpuf-ai-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom-width: 1px;
+  padding: 1.5rem;
+}
+
+.wpuf-ai-modal-header h3 {
+  margin: 0px;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+}
+
+.wpuf-ai-modal-close {
+  cursor: pointer;
+  border-width: 0px;
+  background-color: transparent;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  line-height: 1;
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity));
+}
+
+.wpuf-ai-modal-close:hover {
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity));
+}
+
+.wpuf-ai-modal-body {
+  padding: 1.5rem;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.wpuf-ai-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  border-top-width: 1px;
+  padding: 1.5rem;
+}
+
+.wpuf-ai-options-list {
+  max-height: 16rem;
+  overflow-y: auto;
+  border-radius: 0.25rem;
+  border-width: 1px;
+  padding: 0.75rem;
+}
+
 .placeholder\:wpuf-text-gray-400::-moz-placeholder {
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity));
@@ -7369,6 +7750,11 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
 
+.hover\:wpuf-bg-gray-200:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+
 .hover\:wpuf-bg-gray-50:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity));
@@ -7377,11 +7763,6 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
 .hover\:wpuf-bg-green-50:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(240 253 244 / var(--tw-bg-opacity));
-}
-
-.hover\:wpuf-bg-green-700:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(21 128 61 / var(--tw-bg-opacity));
 }
 
 .hover\:wpuf-bg-indigo-500:hover {
@@ -7507,6 +7888,10 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+.hover\:wpuf-underline:hover {
+  text-decoration-line: underline;
+}
+
 .hover\:wpuf-opacity-100:hover {
   opacity: 1;
 }
@@ -7514,6 +7899,12 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
 .hover\:wpuf-shadow-lg:hover {
   --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.hover\:wpuf-shadow-md:hover {
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
@@ -7819,14 +8210,14 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
   cursor: pointer;
 }
 
-.wpuf-group\/column-inner:hover .group-hover\/column-inner\:wpuf-border-green-400 {
+.wpuf-group\/column-inner:hover .group-hover\/column-inner\:wpuf-border-primary {
   --tw-border-opacity: 1;
-  border-color: rgb(74 222 128 / var(--tw-border-opacity));
+  border-color: rgb(5 150 105 / var(--tw-border-opacity));
 }
 
-.wpuf-group\/hidden-fields:hover .group-hover\/hidden-fields\:wpuf-border-green-400 {
+.wpuf-group\/hidden-fields:hover .group-hover\/hidden-fields\:wpuf-border-primaryHover {
   --tw-border-opacity: 1;
-  border-color: rgb(74 222 128 / var(--tw-border-opacity));
+  border-color: rgb(16 185 129 / var(--tw-border-opacity));
 }
 
 .wpuf-group:hover .group-hover\:\!wpuf-border-green-400 {
@@ -7834,9 +8225,9 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
   border-color: rgb(74 222 128 / var(--tw-border-opacity)) !important;
 }
 
-.wpuf-group:hover .group-hover\:wpuf-border-green-400 {
+.wpuf-group:hover .group-hover\:wpuf-border-primary {
   --tw-border-opacity: 1;
-  border-color: rgb(74 222 128 / var(--tw-border-opacity));
+  border-color: rgb(5 150 105 / var(--tw-border-opacity));
 }
 
 .wpuf-group\/hidden-fields:hover .group-hover\/hidden-fields\:wpuf-bg-green-50 {
@@ -7858,6 +8249,10 @@ button.swal2-cancel.swal2-styled.swal2-default-outline {
 }
 
 .wpuf-group\/hidden-fields:hover .group-hover\/hidden-fields\:wpuf-opacity-100 {
+  opacity: 1;
+}
+
+.wpuf-group\/pro-button:hover .group-hover\/pro-button\:wpuf-opacity-100 {
   opacity: 1;
 }
 

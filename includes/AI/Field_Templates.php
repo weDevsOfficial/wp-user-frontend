@@ -106,8 +106,15 @@ class Field_Templates {
                 $field['meta_key'] = 'wpuf_profile_photo';
             }
 
+            // CRITICAL FIX: For secondary_email, ALWAYS ensure name and meta_key are hardcoded
+            // @since 4.2.6
+            if ( 'secondary_email' === $template ) {
+                $field['name'] = 'wpuf_secondary_email';
+                $field['meta_key'] = 'wpuf_secondary_email';
+            }
+
             // CRITICAL FIX: For shortcode template, ensure shortcode property always exists
-            if ( $template === 'shortcode' && empty( $field['shortcode'] ) ) {
+            if ( 'shortcode' === $template && empty( $field['shortcode'] ) ) {
                 $field['shortcode'] = '[your_shortcode]';
             }
 
@@ -1028,6 +1035,39 @@ class Field_Templates {
         ], self::get_common() );
     }
 
+    /**
+     * Get secondary email field template
+     *
+     * @since 4.2.6
+     *
+     * @param string $label
+     * @param int    $field_id
+     *
+     * @return array
+     */
+    private static function get_secondary_email_template( $label, $field_id ) {
+        return array_merge( [
+            'type' => 'secondary_email',
+            'id' => $field_id,
+            'input_type' => 'secondary_email',
+            'template' => 'secondary_email',
+            'required' => 'no',
+            'label' => $label,
+            'name' => 'wpuf_secondary_email',
+            'meta_key' => 'wpuf_secondary_email',
+            'is_meta' => 'yes',
+            'help' => '',
+            'css' => '',
+            'placeholder' => 'example@domain.com',
+            'default' => '',
+            'size' => '40',
+            'read_only' => 'no',
+            'show_in_post' => 'yes',
+            'hide_field_label' => 'no',
+            'width' => 'large',
+        ], self::get_common() );
+    }
+
     private static function get_user_login_template( $label, $field_id ) {
         return array_merge( [
             'type' => 'user_login',
@@ -1431,7 +1471,6 @@ class Field_Templates {
             'inline' => 'no',
             'show_price_label' => 'yes',
             'enable_quantity' => 'no',
-            'currency_symbol' => '$',
             'options' => [
                 'first_item' => 'First Item',
                 'second_item' => 'Second Item',
@@ -1464,7 +1503,6 @@ class Field_Templates {
             'inline' => 'no',
             'show_price_label' => 'yes',
             'enable_quantity' => 'no',
-            'currency_symbol' => '$',
             'options' => [
                 'first_item' => 'First Item',
                 'second_item' => 'Second Item',
@@ -1494,7 +1532,6 @@ class Field_Templates {
             'css' => '',
             'show_icon' => 'no',
             'enable_quantity' => 'no',
-            'currency_symbol' => '$',
             'options' => [
                 'first_item' => 'First Item',
                 'second_item' => 'Second Item',
@@ -1526,7 +1563,6 @@ class Field_Templates {
             'show_icon' => 'no',
             'selected' => [],
             'enable_quantity' => 'no',
-            'currency_symbol' => '$',
             'options' => [
                 'first_item' => 'First Item',
                 'second_item' => 'Second Item',
@@ -1558,7 +1594,6 @@ class Field_Templates {
             'price_hidden' => 'no',
             'price_min' => '0',
             'price_max' => '',
-            'currency_symbol' => '$',
             'default' => '',
             'placeholder' => 'Enter amount',
             'show_in_post' => 'yes',
@@ -1579,7 +1614,6 @@ class Field_Templates {
             'help' => '',
             'css' => '',
             'show_summary' => 'yes',
-            'currency_symbol' => 'USD',
             'show_in_post' => 'yes',
             'hide_field_label' => 'no',
             'width' => 'large',

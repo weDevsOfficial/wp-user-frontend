@@ -115,20 +115,53 @@
                 for (i = 0; i < state.form_fields.length; i++) {
                     // check if the editing field exist in normal fields
                     if (state.form_fields[i].id === parseInt(payload.editing_field_id)) {
+                        // Store original values before making changes
+                        var original_read_only = state.form_fields[i].read_only;
+                        var original_required = state.form_fields[i].required;
+
                         if ( 'read_only' === payload.field_name && (payload.value === true || payload.value === 'yes') ) {
-                            state.form_fields[i].required = false;
+                            // Only set required to 'no' if it's currently 'yes' (to avoid unnecessary updates)
+                            if (state.form_fields[i].required === 'yes') {
+                                Vue.set(state.form_fields[i], 'required', 'no');
+                            }
                         }
 
                         if ( 'required' === payload.field_name && (payload.value === true || payload.value === 'yes') ) {
-                            state.form_fields[i].read_only = false;
+                            // Only set read_only to empty string if it's currently true/yes (to avoid unnecessary updates)
+                            // Empty string is what the checkbox expects when unchecked (for is_single_opt checkboxes)
+                            if (state.form_fields[i].read_only === true || state.form_fields[i].read_only === 'yes') {
+                                // Use Vue.set to ensure reactivity, and set it before assigning required
+                                Vue.set(state.form_fields[i], 'read_only', '');
+                                // Force object property access to ensure Vue processes the change
+                                // This creates a micro-delay that allows Vue's reactivity to propagate
+                                JSON.stringify({ r: state.form_fields[i].read_only });
+                            }
+                        }
+
+                        // Prevent infinite loop: if this mutation was triggered by our programmatic change,
+                        // don't apply mutual exclusion again
+                        if ( 'required' === payload.field_name && original_required === 'no' && payload.value === 'yes' ) {
+                            // This is likely a user trying to set required back to 'yes' after we set it to 'no'
+                            // Check if read_only was just set
+                            if (original_read_only === true || original_read_only === 'yes') {
+                                Vue.set(state.form_fields[i], 'read_only', '');
+                                // Force object property access to ensure Vue processes the change
+                                JSON.stringify({ r: state.form_fields[i].read_only });
+                            }
                         }
 
                         if (payload.field_name === 'name'  && ! state.form_fields[i].hasOwnProperty('is_new') ) {
                             continue;
                         } else {
+                            // Prevent setting required to 'yes' if read_only is true
+                            if (payload.field_name === 'required' && payload.value === 'yes') {
+                                if (state.form_fields[i].read_only === true || state.form_fields[i].read_only === 'yes') {
+                                    continue; // Skip updating required if read_only is set
+                                }
+                            }
+                            
                             state.form_fields[i][payload.field_name] = payload.value;
                         }
-
                     }
 
                     // check if the editing field belongs to a column field
@@ -404,6 +437,7 @@
             delete_form_field_element: function (state, index) {
                 state.current_panel = 'form-fields-v4-1';
                 state.form_fields.splice(index, 1);
+                state.editing_field_id = 0;
             },
 
             // set fields for a panel section

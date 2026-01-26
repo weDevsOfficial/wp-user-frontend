@@ -554,10 +554,6 @@ function wpuf_allowed_extensions() {
             'ext' => 'zip,gz,gzip,rar,7z',
             'label' => __( 'Zip Archives', 'wp-user-frontend' ),
         ],
-        'exe'    => [
-            'ext' => 'exe',
-            'label' => __( 'Executable Files', 'wp-user-frontend' ),
-        ],
         'csv'    => [
             'ext' => 'csv',
             'label' => __( 'CSV', 'wp-user-frontend' ),

@@ -1,6 +1,6 @@
 <div class="wpuf-space-y-6">
     <!-- Welcome Section -->
-    <div class="wpuf-bg-blue-50 wpuf-border wpuf-border-blue-200 wpuf-rounded-lg wpuf-p-4">
+    <div class="wpuf-bg-gray-50 wpuf-border wpuf-border-gray-200 wpuf-rounded-lg wpuf-p-4">
         <p class="wpuf-text-gray-800 wpuf-mb-0">
             <?php
             global $current_user;
@@ -8,7 +8,7 @@
             printf(
                 wp_kses_post(
                     // translators: %1$s is displayname and %2$s is permalink
-                    __( 'Hello %1$s, (not %1$s? <a href="%2$s" class="wpuf-text-blue-600 hover:wpuf-underline">Sign out</a>)', 'wp-user-frontend' ) ),
+                    __( 'Hello %1$s, (not %1$s? <a href="%2$s" class="wpuf-text-gray-900 wpuf-underline hover:wpuf-font-bold">Sign out</a>)', 'wp-user-frontend' ) ),
                 '<strong>' . esc_html( $current_user->display_name ) . '</strong>',
                 esc_url( wp_logout_url( get_permalink() ) )
              );
@@ -41,11 +41,11 @@
                 }
 
                 if ( $total_tabs == $count ) {
-                    $links .= ' <a href="' . esc_url( add_query_arg( [ 'section' => $section ], get_permalink() ) ) . '" class="wpuf-text-primary hover:wpuf-underline">' . esc_html( $label ) . '</a>';
+                    $links .= ' <a href="' . esc_url( add_query_arg( [ 'section' => $section ], get_permalink() ) ) . '" class="wpuf-text-gray-900 wpuf-underline hover:wpuf-font-bold">' . esc_html( $label ) . '</a>';
                     continue;
                 }
 
-                $links .= '<a href="' . esc_url( add_query_arg( [ 'section' => $section ], get_permalink() ) ) . '" class="wpuf-text-primary hover:wpuf-underline">' . esc_html( $label ) . '</a>, ';
+                $links .= '<a href="' . esc_url( add_query_arg( [ 'section' => $section ], get_permalink() ) ) . '" class="wpuf-text-gray-900 wpuf-underline hover:wpuf-font-bold">' . esc_html( $label ) . '</a>, ';
                 $count++;
             }
 

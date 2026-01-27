@@ -179,13 +179,13 @@ if ( $action == 'del' ) {
 
                                 <?php } ?>
                             </td>
-                            <td data-label="<?php esc_attr_e( 'Status: ', 'wp-user-frontend' ); ?>" class="wpuf-px-6 wpuf-py-4 data-column !wpuf-text-emerald-600" style="border-bottom: 1px solid #E5E7EB;">
+                            <td data-label="<?php esc_attr_e( 'Status: ', 'wp-user-frontend' ); ?>" class="wpuf-px-6 wpuf-py-4 data-column !wpuf-text-gray-600" style="border-bottom: 1px solid #E5E7EB;">
                                 <?php
                                 $current_post_status = $post->post_status;
                                 wpuf_show_post_status( $current_post_status );
                                 ?>
                             </td>
-                            <td data-label="<?php esc_attr_e( 'Link: ', 'wp-user-frontend' ); ?>" class="wpuf-px-6 wpuf-py-4 data-column !wpuf-text-emerald-600" style="border-bottom: 1px solid #E5E7EB;">
+                            <td data-label="<?php esc_attr_e( 'Link: ', 'wp-user-frontend' ); ?>" class="wpuf-px-6 wpuf-py-4 data-column !wpuf-text-gray-600" style="border-bottom: 1px solid #E5E7EB;">
                                 <?php
                                 if ( 'publish' === $current_post_status ) {
                                     $link_text = esc_html__( 'Live', 'wp-user-frontend' );
@@ -195,7 +195,7 @@ if ( $action == 'del' ) {
                                     $the_link  = get_preview_post_link();
                                 }
                                 ?>
-                                <a href="<?php echo esc_url( $the_link ); ?>" target="_blank" class="wpuf-inline-flex wpuf-items-center wpuf-justify-center wpuf-px-[12px] wpuf-py-[8px] wpuf-bg-emerald-600 !wpuf-text-white wpuf-text-base wpuf-rounded-sm hover:wpuf-bg-emerald-600 wpuf-transition-colors wpuf-no-underline">
+                                <a href="<?php echo esc_url( $the_link ); ?>" target="_blank" class="wpuf-inline-flex wpuf-items-center wpuf-justify-center wpuf-px-[12px] wpuf-py-[8px] !wpuf-bg-gray-900 !wpuf-text-white wpuf-text-base wpuf-rounded-sm hover:wpuf-bg-gray-950 hover:wpuf-text-gray-300 wpuf-transition-colors wpuf-no-underline">
                                     <?php echo esc_html( $link_text ); ?>
                                 </a>
                             </td>
@@ -380,12 +380,12 @@ if ( $action == 'del' ) {
                                     </span>
                                 <?php elseif ( $page == $current ) : ?>
                                     <span aria-current="page"
-                                          class="!wpuf-relative !wpuf-inline-flex !wpuf-items-center !wpuf-px-4 !wpuf-py-2 !wpuf-text-sm !wpuf-font-medium !wpuf-text-emerald-600 !wpuf-border-t-2 !wpuf-border-emerald-600">
+                                          class="!wpuf-relative !wpuf-inline-flex !wpuf-items-center !wpuf-px-4 !wpuf-py-2 !wpuf-text-sm !wpuf-font-medium !wpuf-text-gray-600 !wpuf-border-t-2 !wpuf-border-gray-900">
                                         <?php echo esc_html( $page ); ?>
                                     </span>
                                 <?php else : ?>
                                     <a href="<?php echo esc_url( add_query_arg( 'pagenum', $page ) ); ?>"
-                                       class="!wpuf-no-underline wpuf-pagination-link !wpuf-relative !wpuf-inline-flex !wpuf-items-center !wpuf-px-4 !wpuf-py-2 !wpuf-text-sm !wpuf-font-medium !wpuf-text-gray-700 hover:!wpuf-text-emerald-600 hover:!wpuf-border-emerald-600 hover:!wpuf-border-t-2 !wpuf-transition-colors">
+                                       class="!wpuf-no-underline wpuf-pagination-link !wpuf-relative !wpuf-inline-flex !wpuf-items-center !wpuf-px-4 !wpuf-py-2 !wpuf-text-sm !wpuf-font-medium !wpuf-text-gray-700 hover:!wpuf-text-gray-900 hover:!wpuf-border-gray-900 hover:!wpuf-border-t-2 !wpuf-transition-colors">
                                         <?php echo esc_html( $page ); ?>
                                     </a>
                                 <?php endif; ?>

@@ -7,8 +7,28 @@
 
         <!-- Profile Section -->
         <div class="wpuf-profile-section">
+            <?php
+            $avatar_size = 96;
+            $avatar_data = wpuf_get_user_avatar_data( $current_user, $avatar_size );
+            ?>
             <div class="wpuf-profile-avatar">
-                <?php echo get_avatar( $current_user->ID, 96, '', '', [ 'class' => 'wpuf-rounded-full' ] ); ?>
+                <div class="wpuf-avatar-wrapper" style="width: <?php echo esc_attr( $avatar_size ); ?>px; height: <?php echo esc_attr( $avatar_size ); ?>px;">
+                    <?php if ( $avatar_data['url'] ) : ?>
+                        <!-- Show avatar image (custom photo or Gravatar) -->
+                        <img src="<?php echo esc_url( $avatar_data['url'] ); ?>"
+                             alt="<?php echo esc_attr( $current_user->display_name ); ?>"
+                             class="wpuf-rounded-full wpuf-object-cover"
+                             width="<?php echo esc_attr( $avatar_size ); ?>"
+                             height="<?php echo esc_attr( $avatar_size ); ?>"
+                             style="width: <?php echo esc_attr( $avatar_size ); ?>px; height: <?php echo esc_attr( $avatar_size ); ?>px; object-fit: cover;" />
+                    <?php else : ?>
+                        <!-- Show initials (no image available) -->
+                        <div class="wpuf-avatar-initials wpuf-rounded-full wpuf-bg-gray-400 wpuf-text-white wpuf-flex wpuf-items-center wpuf-justify-center wpuf-font-semibold"
+                             style="width: <?php echo esc_attr( $avatar_size ); ?>px; height: <?php echo esc_attr( $avatar_size ); ?>px; font-size: <?php echo esc_attr( $avatar_data['font_size'] ); ?>px;">
+                            <?php echo esc_html( $avatar_data['initials'] ); ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
             </div>
             <h3 class="wpuf-profile-name"><?php echo esc_html( $current_user->display_name ); ?></h3>
             <p class="wpuf-profile-role">

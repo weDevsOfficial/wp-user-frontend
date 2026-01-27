@@ -35,12 +35,12 @@
     }
 
     .wpuf-edit-profile-btn {
-        @apply wpuf-inline-flex wpuf-items-center wpuf-justify-center wpuf-gap-[10px] wpuf-bg-[#99A7B2] wpuf-text-white wpuf-px-6 wpuf-py-[10px] wpuf-rounded-lg wpuf-transition-colors wpuf-font-normal wpuf-text-base wpuf-leading-6 wpuf-tracking-[0.13px] wpuf-no-underline wpuf-w-[166px] wpuf-h-[44px];
+        @apply wpuf-inline-flex wpuf-items-center wpuf-justify-center wpuf-gap-[10px] wpuf-bg-[#111827] wpuf-text-white wpuf-px-6 wpuf-py-[10px] wpuf-rounded-lg wpuf-transition-colors wpuf-font-normal wpuf-text-base wpuf-leading-6 wpuf-tracking-[0.13px] wpuf-no-underline wpuf-w-[166px] wpuf-h-[44px];
         text-shadow: unset!important;
     }
 
     .wpuf-edit-profile-btn:hover {
-        background-color: #7F8C96 !important;
+        background-color: #06090e !important;
     }
 
     /* Navigation Styles */
@@ -53,7 +53,7 @@
     }
 
     .wpuf-account-nav-item {
-        @apply wpuf-flex wpuf-items-center wpuf-gap-3 wpuf-px-4 wpuf-py-3 wpuf-text-[#2C3A41] wpuf-rounded-md hover:wpuf-bg-[#E1E6EA] wpuf-transition-colors wpuf-no-underline wpuf-text-base wpuf-leading-none focus:wpuf-outline-none;
+        @apply wpuf-flex wpuf-items-center wpuf-gap-3 wpuf-px-4 wpuf-py-3 wpuf-text-[#374151] wpuf-rounded-md hover:wpuf-bg-[#E1E6EA] wpuf-transition-colors wpuf-no-underline wpuf-text-base wpuf-leading-none focus:wpuf-outline-none;
     }
 
     .wpuf-account-nav-item svg {
@@ -65,11 +65,12 @@
     }
 
     .wpuf-account-nav-item.active {
-        @apply wpuf-flex wpuf-items-center wpuf-gap-[10px] wpuf-px-4 wpuf-py-3 !wpuf-bg-[#E1E6EA] !wpuf-text-gray-800 wpuf-rounded-lg wpuf-transition-colors wpuf-no-underline wpuf-text-base wpuf-leading-none focus:wpuf-outline-none wpuf-w-[260px] wpuf-h-[48px];
+        @apply wpuf-flex wpuf-items-center wpuf-gap-[10px] wpuf-px-4 wpuf-py-3 !wpuf-bg-[#F3F4F6] !wpuf-text-gray-900 wpuf-rounded-lg wpuf-transition-colors wpuf-no-underline wpuf-text-base wpuf-leading-none focus:wpuf-outline-none wpuf-w-[260px] wpuf-h-[48px];
     }
 
     .wpuf-account-nav-item:hover {
-        color: #99A7B2 !important;
+        background-color: #F3F4F6 !important;
+        color: #06090e !important;
     }
 
     /* Logout Section */
@@ -462,13 +463,14 @@
         transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
         border: none !important;
-        background-color: #99A7B2 !important;
+        background-color: #111827 !important;
         color: rgb(255, 255, 255) !important;
         text-shadow: unset !important;
     }
 
     .wpuf-form-add .wpuf-submit-button:hover {
-        background-color: #7F8C96 !important;
+        background-color: #030712 !important;
+        color: #D1D5DB !important;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1) !important;
     }
 

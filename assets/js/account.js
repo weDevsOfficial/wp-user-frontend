@@ -1,4 +1,4 @@
-// Account page CSS entry point
+ // Account page CSS entry point
 import '../css/frontend/account.css';
 
 // Account page JavaScript functionality

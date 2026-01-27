@@ -784,7 +784,7 @@ add_filter( 'get_avatar_data', 'wpuf_custom_avatar_data', 10, 2 );
  * Checks for custom profile photo first, then Gravatar, and provides
  * initials as fallback. This follows the same logic as user directory.
  *
- * @since WPUF_SINCE
+ * @since 4.2.7
  *
  * @param int|WP_User $user    User ID or WP_User object.
  * @param int         $size    Avatar size in pixels. Default 96.

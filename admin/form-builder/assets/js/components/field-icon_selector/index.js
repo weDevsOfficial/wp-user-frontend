@@ -13,6 +13,7 @@ Vue.component('field-icon_selector', {
         return {
             showIconPicker: false,
             searchTerm: '',
+            activeTab: 'icon',
             icons: wpuf_form_builder.icons || []
         };
     },
@@ -32,14 +33,22 @@ Vue.component('field-icon_selector', {
             }
         },
 
+        isImageValue: function() {
+            if (!this.value) return false;
+            return this.value.indexOf('http') === 0 || this.value.indexOf('//') === 0 || this.value.indexOf('/') === 0;
+        },
+
         selectedIconDisplay: function() {
             if (this.value) {
+                if (this.isImageValue) {
+                    return 'Custom image';
+                }
                 var icon = this.icons.find(function(item) {
                     return item.class === this.value;
                 }.bind(this));
                 return icon ? icon.name : this.value;
             }
-            return 'Select an icon';
+            return 'Select an icon or upload image';
         },
 
         filteredIcons: function() {
@@ -77,6 +86,13 @@ Vue.component('field-icon_selector', {
                     });
                 }
             }
+        },
+
+        value: function(newVal) {
+            // Auto-switch tab based on value type
+            if (newVal) {
+                this.activeTab = (newVal.indexOf('http') === 0 || newVal.indexOf('//') === 0 || newVal.indexOf('/') === 0) ? 'image' : 'icon';
+            }
         }
     },
 
@@ -94,6 +110,37 @@ Vue.component('field-icon_selector', {
 
         togglePicker: function() {
             this.showIconPicker = !this.showIconPicker;
+        },
+
+        switchTab: function(tab) {
+            this.activeTab = tab;
+        },
+
+        openMediaUploader: function(e) {
+            if (e) e.stopPropagation();
+
+            if (typeof wp === 'undefined' || !wp.media) {
+                return;
+            }
+
+            var self = this;
+            var frame = wp.media({
+                title: 'Select Icon Image',
+                button: { text: 'Use as Icon' },
+                multiple: false,
+                library: { type: 'image' }
+            });
+
+            frame.on('select', function() {
+                var attachment = frame.state().get('selection').first().toJSON();
+                var url = (attachment.sizes && attachment.sizes.thumbnail)
+                    ? attachment.sizes.thumbnail.url
+                    : attachment.url;
+                self.value = url;
+                self.showIconPicker = false;
+            });
+
+            frame.open();
         },
 
         handleClickOutside: function(event) {

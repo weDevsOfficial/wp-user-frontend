@@ -104,6 +104,8 @@ class Admin_Form_Builder {
         wp_enqueue_style( 'wp-color-picker' );
         do_action( 'wpuf_form_builder_enqueue_style' );
 
+        wp_enqueue_media();
+
         wp_enqueue_script( 'wpuf-vue' );
         wp_enqueue_script( 'wpuf-vuex' );
         wp_enqueue_script( 'wpuf-subscriptions' );

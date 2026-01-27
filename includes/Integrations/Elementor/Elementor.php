@@ -10,6 +10,7 @@ namespace WeDevs\Wpuf\Integrations\Elementor;
 class Elementor {
 
     public function __construct() {
+        add_action( 'elementor/elements/categories_registered', [ $this, 'register_category' ] );
         add_action( 'elementor/widgets/register', [ $this, 'register_widgets' ] );
 
         add_action( 'elementor/frontend/after_enqueue_styles', [ $this, 'enqueue_styles' ] );
@@ -190,6 +191,23 @@ class Elementor {
             $scheme = is_ssl() ? 'https' : 'http';
             wp_enqueue_script( 'wpuf-google-maps', $scheme . '://maps.google.com/maps/api/js?libraries=places&key=' . $api_key, [], null, true );
         }
+    }
+
+    /**
+     * Register Elementor Widget Category
+     *
+     * @param \Elementor\Elements_Manager $elements_manager
+     *
+     * @return void
+     */
+    public function register_category( $elements_manager ) {
+        $elements_manager->add_category(
+            'user-frontend',
+            [
+                'title' => __( 'User Frontend', 'wp-user-frontend' ),
+                'icon'  => 'eicon-form-horizontal',
+            ]
+        );
     }
 
     /**

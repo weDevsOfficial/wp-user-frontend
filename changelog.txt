@@ -1,3 +1,11 @@
+= v4.2.7 (27 January, 2026) =
+* New – Account page Re-Design
+* New – AI settings improvements with temperature control, API key masking, and connection testing
+* Enhance – Remove currency symbol from AI form builder pricing fields
+* Enhance – Form builder UI and usability tweaks
+* Enhance – Conditional options for field icon settings
+* Enhance – Improve string translation and escaping in modal templates
+
 = v4.2.6 (14 January, 2026) =
 * New – Add AI-powered field options generator for dropdown, radio, and checkbox fields
 * Fix – Correctly detect ACF taxonomies

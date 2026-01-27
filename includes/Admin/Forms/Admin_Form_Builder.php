@@ -142,6 +142,7 @@ class Admin_Form_Builder {
                 'taxonomy',
                 'cloudflare_turnstile',
                 'recaptcha',
+                'signature_field',
             ]
         );
         $taxonomy_terms = array_keys( get_taxonomies() );

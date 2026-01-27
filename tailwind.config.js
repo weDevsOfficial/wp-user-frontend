@@ -16,6 +16,7 @@ module.exports = {
         './includes/Admin/template-parts/*.php',
         './admin/form-builder/views/*.php',
         './admin/form-builder/assets/js/**/*.php',
+        './templates/**/*.php',
         'wpuf-functions.php',
         // New paths from upstream (for subscription templates)
         './templates/**/*.php',
@@ -40,7 +41,8 @@ module.exports = {
                     '#wpuf-form-builder',
                     '#wpuf-profile-forms-list-table-view',
                     '#wpuf-post-forms-list-table-view',
-                    '.swal2-container'
+                    '.swal2-container',
+                    '.wpuf-account-container'
                 ], {}
             ),
         } ),

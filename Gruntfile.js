@@ -4,6 +4,7 @@ module.exports = function( grunt) {
         'admin/form-builder/views/form-builder-v4.1.php': 'admin/form-builder.css',
         'admin/form-builder/views/post-form-settings.php': 'admin/form-builder.css',
         'assets/js/forms-list.js': 'admin/form-builder.css',
+        'templates/account.php': 'frontend/account.css',
         'ai-form-builder': 'ai-form-builder.css'
     }
 
@@ -140,11 +141,12 @@ module.exports = function( grunt) {
                     'admin/form-builder/assets/js/**/*.php',
                     'admin/form-builder/assets/js/**/*.js',
                     'includes/Admin/**/*.php',
+                    'templates/**/*.php',
                     'includes/Free/Free_Loader.php',
                     'wpuf-functions.php',
                     'assets/js/forms-list.js',
                 ],
-                tasks: ['shell:tailwind:src/css/admin/form-builder.css:assets/css/admin/form-builder.css'],
+                tasks: ['tailwind'],
                 options: {
                     spawn: false
                 }
@@ -278,7 +280,7 @@ module.exports = function( grunt) {
             },
             tailwind: {
                 command: function ( input, output ) {
-                    return `npx tailwindcss -i ${input} -o ${output}`;
+                    return `npx tailwindcss -i ${input} -o ${output} --minify`;
                 }
             },
             tailwind_minify: {

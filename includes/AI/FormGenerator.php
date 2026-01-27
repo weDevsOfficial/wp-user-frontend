@@ -944,7 +944,7 @@ class FormGenerator {
     /**
      * Test provider API with minimal request
      *
-     * @since WPUF_SINCE
+     * @since 4.2.7
      *
      * @return array Test result
      */

@@ -76,6 +76,19 @@ class Widget extends Widget_Base {
     }
 
     /**
+     * Retrieve the list of scripts the widget depends on.
+     *
+     * @since WPUF_SINCE
+     *
+     * @return array
+     */
+    public function get_script_depends() {
+        // Note: wp_enqueue_editor() is called in Elementor::enqueue_scripts()
+        // to ensure TinyMCE scripts are loaded in Elementor preview
+        return [];
+    }
+
+    /**
      * Register widget controls
      *
      * @since WPUF_SINCE
@@ -863,8 +876,152 @@ class Widget extends Widget_Base {
         $shortcode_str = '[wpuf_form id="' . $form_id . '"]';
         $output        = do_shortcode( $shortcode_str );
 
+        $is_elementor = class_exists( '\Elementor\Plugin' ) && (
+            ( isset( \Elementor\Plugin::$instance->editor ) && \Elementor\Plugin::$instance->editor->is_edit_mode() )
+            || ( isset( \Elementor\Plugin::$instance->preview ) && \Elementor\Plugin::$instance->preview->is_preview_mode() )
+        );
+
         echo '<div ' . wp_kses_post( $this->get_render_attribute_string( 'wrapper' ) ) . '>';
         echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- shortcode output
+
+        // Initialize TinyMCE in Elementor preview
+        if ( $is_elementor ) {
+            ?>
+            <script>
+            (function() {
+                // Suppress non-critical errors for fields that require external scripts
+                // (Google Maps, barrating) that may not be loaded in Elementor preview
+                var originalErrorHandler = window.onerror;
+                window.onerror = function(msg, url, line, col, error) {
+                    // Suppress Google Maps and barrating errors in Elementor preview
+                    if (msg && (
+                        msg.indexOf('google is not defined') !== -1 ||
+                        msg.indexOf('barrating is not a function') !== -1 ||
+                        msg.indexOf('$(...).barrating is not a function') !== -1
+                    )) {
+                        return true; // Suppress error
+                    }
+                    // Call original error handler for other errors
+                    if (originalErrorHandler) {
+                        return originalErrorHandler.apply(this, arguments);
+                    }
+                    return false;
+                };
+                
+                var wrapper = document.querySelector('.wpuf-elementor-widget-wrapper');
+                if (wrapper) {
+                    var textareas = wrapper.querySelectorAll('textarea.wp-editor-area');
+                    
+                    // Function to initialize TinyMCE for a textarea
+                    function initializeTinyMCE(textarea) {
+                        var editorId = textarea.id;
+                        
+                        // Wait for wp.editor to be available
+                        if (typeof wp === 'undefined' || typeof wp.editor === 'undefined') {
+                            setTimeout(function() {
+                                initializeTinyMCE(textarea);
+                            }, 100);
+                            return false;
+                        }
+                        
+                        if (typeof wp.editor.initialize !== 'function') {
+                            return false;
+                        }
+                        
+                        // Check if already initialized
+                        if (typeof tinymce !== 'undefined' && tinymce.get(editorId)) {
+                            return true;
+                        }
+                        
+                        // Get editor settings - try to match WordPress default settings
+                        // Check if there's a wp-editor-wrap parent to determine settings
+                        var wrap = textarea.closest('.wp-editor-wrap');
+                        var isTeeny = wrap && wrap.classList.contains('html-active') ? false : (wrap && wrap.classList.contains('tmce-active') ? false : true);
+                        
+                        var editorSettings = {
+                            tinymce: {
+                                wpautop: true,
+                                toolbar1: 'bold,italic,bullist,numlist,link',
+                                toolbar2: '',
+                                media_buttons: false,
+                                resize: true
+                            },
+                            quicktags: false,
+                            textarea_name: textarea.name || editorId
+                        };
+                        
+                        // If teeny mode, use simpler toolbar
+                        if (isTeeny || textarea.closest('.wpuf-fields').querySelector('.mce-tinymce')) {
+                            editorSettings.tinymce.toolbar1 = 'bold,italic,bullist,numlist';
+                            editorSettings.teeny = true;
+                        }
+                        
+                        try {
+                            wp.editor.initialize(editorId, editorSettings);
+                            return true;
+                        } catch(e) {
+                            return false;
+                        }
+                    }
+                    
+                    // Check existing instances and initialize if needed
+                    textareas.forEach(function(textarea) {
+                        var editorId = textarea.id;
+                        if (typeof tinymce === 'undefined' || !tinymce.get(editorId)) {
+                            initializeTinyMCE(textarea);
+                        }
+                    });
+                    
+                    // Check after a delay to see if TinyMCE initializes or retry if needed
+                    setTimeout(function() {
+                        textareas.forEach(function(textarea) {
+                            var editorId = textarea.id;
+                            if (typeof tinymce === 'undefined' || !tinymce.get(editorId)) {
+                                initializeTinyMCE(textarea);
+                            }
+                        });
+                    }, 500);
+                    
+                    // Also check when Elementor triggers content refresh
+                    if (typeof elementorFrontend !== 'undefined' && elementorFrontend.hooks) {
+                        elementorFrontend.hooks.addAction('frontend/element_ready/wpuf-form.default', function($scope) {
+                            setTimeout(function() {
+                                var textareas = $scope.find('textarea.wp-editor-area');
+                                textareas.each(function(idx, textarea) {
+                                    var editorId = textarea.id;
+                                    if (typeof tinymce === 'undefined' || !tinymce.get(editorId)) {
+                                        if (typeof wp !== 'undefined' && typeof wp.editor !== 'undefined' && typeof wp.editor.initialize === 'function') {
+                                            try {
+                                                wp.editor.initialize(editorId, {
+                                                    tinymce: {
+                                                        wpautop: true,
+                                                        toolbar1: 'bold,italic,bullist,numlist,link',
+                                                        toolbar2: '',
+                                                        media_buttons: false
+                                                    },
+                                                    quicktags: false
+                                                });
+                                            } catch(e) {
+                                                // Silent fail
+                                            }
+                                        }
+                                    }
+                                });
+                            }, 100);
+                        });
+                    }
+                }
+                
+                // Restore original error handler after initialization
+                setTimeout(function() {
+                    if (originalErrorHandler) {
+                        window.onerror = originalErrorHandler;
+                    }
+                }, 2000);
+            })();
+            </script>
+            <?php
+        }
         echo '</div>';
     }
 

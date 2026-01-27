@@ -1412,6 +1412,11 @@ function wpuf_shortcode_map( $location, $post_id = null, $args = [], $meta_key =
 
     <script type="text/javascript">
         jQuery(function($){
+            // Check if Google Maps API is loaded (may not be available in Elementor preview)
+            if (typeof google === 'undefined' || typeof google.maps === 'undefined') {
+                return;
+            }
+
             var curpoint = new google.maps.LatLng(<?php echo esc_html( $def_lat ); ?>, <?php echo esc_html( $def_long ); ?>);
 
             var gmap = new google.maps.Map( $('#wpuf-map-<?php echo esc_attr( $meta_key . $post->ID ); ?>')[0], {

@@ -609,6 +609,7 @@ class Widget extends Widget_Base {
             [
                 'label'     => __( 'Alignment', 'wp-user-frontend' ),
                 'type'      => Controls_Manager::CHOOSE,
+                'default'   => 'left',
                 'options'   => [
                     'left'   => [ 'title' => __( 'Left', 'wp-user-frontend' ), 'icon' => 'eicon-h-align-left' ],
                     'center' => [ 'title' => __( 'Center', 'wp-user-frontend' ), 'icon' => 'eicon-h-align-center' ],
@@ -640,6 +641,7 @@ class Widget extends Widget_Base {
             [
                 'label'     => __( 'Background Color', 'wp-user-frontend' ),
                 'type'      => Controls_Manager::COLOR,
+                'default'   => '#6b7280',
                 'selectors' => [ $btn_selector => 'background-color: {{VALUE}};' ],
             ]
         );
@@ -649,18 +651,52 @@ class Widget extends Widget_Base {
             [
                 'label'     => __( 'Text Color', 'wp-user-frontend' ),
                 'type'      => Controls_Manager::COLOR,
+                'default'   => '#ffffff',
                 'selectors' => [ $btn_selector => 'color: {{VALUE}};' ],
             ]
         );
 
         $this->add_group_control(
             Group_Control_Typography::get_type(),
-            [ 'name' => 'submit_button_typography', 'selector' => $btn_selector ]
+            [
+                'name'     => 'submit_button_typography',
+                'selector' => $btn_selector,
+                'fields_options' => [
+                    'font_weight' => [
+                        'default' => '500',
+                    ],
+                    'font_size' => [
+                        'default' => [
+                            'unit' => 'px',
+                            'size' => '16',
+                        ],
+                    ],
+                ],
+            ]
         );
 
         $this->add_group_control(
             Group_Control_Border::get_type(),
-            [ 'name' => 'submit_button_border', 'selector' => $btn_selector ]
+            [
+                'name'     => 'submit_button_border',
+                'selector' => $btn_selector,
+                'fields_options' => [
+                    'border' => [
+                        'default' => 'solid',
+                    ],
+                    'width' => [
+                        'default' => [
+                            'top'    => '0',
+                            'right'  => '0',
+                            'bottom' => '0',
+                            'left'   => '0',
+                        ],
+                    ],
+                    'color' => [
+                        'default' => 'transparent',
+                    ],
+                ],
+            ]
         );
 
         $this->add_control(
@@ -669,6 +705,13 @@ class Widget extends Widget_Base {
                 'label'      => __( 'Border Radius', 'wp-user-frontend' ),
                 'type'       => Controls_Manager::DIMENSIONS,
                 'size_units' => [ 'px', '%' ],
+                'default'    => [
+                    'top'    => '6',
+                    'right'  => '6',
+                    'bottom' => '6',
+                    'left'   => '6',
+                    'unit'   => 'px',
+                ],
                 'selectors'  => [ $btn_selector => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ],
             ]
         );
@@ -679,6 +722,13 @@ class Widget extends Widget_Base {
                 'label'      => __( 'Padding', 'wp-user-frontend' ),
                 'type'       => Controls_Manager::DIMENSIONS,
                 'size_units' => [ 'px', 'em', '%' ],
+                'default'    => [
+                    'top'    => '12',
+                    'right'  => '24',
+                    'bottom' => '12',
+                    'left'   => '24',
+                    'unit'   => 'px',
+                ],
                 'selectors'  => [ $btn_selector => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ],
             ]
         );
@@ -689,6 +739,20 @@ class Widget extends Widget_Base {
                 'name'     => 'submit_button_box_shadow',
                 'selector' => $btn_selector,
                 'separator' => 'before',
+                'fields_options' => [
+                    'box_shadow_type' => [
+                        'default' => 'yes',
+                    ],
+                    'box_shadow' => [
+                        'default' => [
+                            'horizontal' => 0,
+                            'vertical'   => 1,
+                            'blur'       => 3,
+                            'spread'     => 0,
+                            'color'      => 'rgba(0, 0, 0, 0.1)',
+                        ],
+                    ],
+                ],
             ]
         );
 
@@ -701,6 +765,7 @@ class Widget extends Widget_Base {
             [
                 'label'     => __( 'Background Color', 'wp-user-frontend' ),
                 'type'      => Controls_Manager::COLOR,
+                'default'   => '#4b5563',
                 'selectors' => [ $btn_selector . ':hover' => 'background-color: {{VALUE}};' ],
             ]
         );
@@ -710,6 +775,7 @@ class Widget extends Widget_Base {
             [
                 'label'     => __( 'Text Color', 'wp-user-frontend' ),
                 'type'      => Controls_Manager::COLOR,
+                'default'   => '#ffffff',
                 'selectors' => [ $btn_selector . ':hover' => 'color: {{VALUE}};' ],
             ]
         );
